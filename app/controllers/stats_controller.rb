@@ -9,8 +9,14 @@ class StatsController < ApplicationController
   end
 
   def range
-    @start = params[:start] ? Time.parse(params[:start]) : Time.now - 1.month
-    @end = params[:end] ? Time.parse(params[:end]) : Time.now
+    if params[:options].present?
+      @start = Time.now - convert(params[:options])
+      params[:start] = @start
+      params[:end] = Time.now
+    end
+    @start = params[:start] ? Time.parse(params[:start].to_s) : Time.now - 1.month
+    @end = params[:end] ? Time.parse(params[:end].to_s) : Time.now
+
     @notes = Node.select(%i(created type status))
       .where(type: 'note', status: 1, created: @start.to_i..@end.to_i)
       .count(:all)
@@ -18,8 +24,7 @@ class StatsController < ApplicationController
       .where(timestamp: @start.to_i..@end.to_i)
       .count - @notes # because notes each have one revision
     @people = User.where(created_at: @start..@end)
-      .joins('INNER JOIN users ON users.uid = rusers.id')
-      .where('users.status = 1')
+      .where(status: 1)
       .count
     @answers = Answer.where(created_at: @start..@end)
       .count
@@ -46,8 +51,7 @@ class StatsController < ApplicationController
       .where(timestamp: @time.to_i - 1.weeks.to_i..@time.to_i)
       .count
     @weekly_members = User.where(created_at: @time - 1.weeks..@time)
-      .joins('INNER JOIN users ON users.uid = rusers.id')
-      .where('users.status = 1')
+      .where(status: 1)
       .count
     @monthly_notes = Node.select(%i(created type status))
       .where(type: 'note', status: 1, created: @time.to_i - 1.months.to_i..@time.to_i)
@@ -56,8 +60,7 @@ class StatsController < ApplicationController
       .where(timestamp: @time.to_i - 1.months.to_i..@time.to_i)
       .count
     @monthly_members = User.where(created_at: @time - 1.months..@time)
-      .joins('INNER JOIN users ON users.uid = rusers.id')
-      .where('users.status = 1')
+      .where(status: 1)
       .count
 
     @notes_per_week_past_year = Node.select(%i(created type status))
@@ -85,5 +88,11 @@ class StatsController < ApplicationController
     Rails.cache.fetch("total-contributors-all-time", expires_in: 1.weeks) do
       @all_time_contributors = User.count_all_time_contributor
     end
+  end
+
+  private
+
+  def convert(option)
+    1.send(option.downcase)
   end
 end

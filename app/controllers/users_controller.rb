@@ -4,7 +4,6 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i(info followed following followers)
 
   def new
-    @spamaway = Spamaway.new
     @user = User.new
     @action = "create" # sets the form url
   end
@@ -25,7 +24,9 @@ class UsersController < ApplicationController
         rescue
           flash[:warning] = "We tried and failed to send you a welcome email, but your account was created anyhow. Sorry!"
         end
-        flash[:notice] = I18n.t('users_controller.registration_successful').html_safe
+        flash[:notice] = I18n.t('users_controller.registration_successful')
+        flash[:notice] += " " + I18n.t('users_controller.continue_where_you_left_off', :url1 => params[:return_to].to_s) if params[:return_to] && params[:return_to] != "/signup"
+        flash[:notice] = flash[:notice].html_safe
         flash[:warning] = I18n.t('users_controller.spectralworkbench_or_mapknitter', :url1 => "'#{session[:openid_return_to]}'").html_safe if session[:openid_return_to]
         session[:openid_return_to] = nil
         redirect_to "/dashboard"
@@ -57,7 +58,7 @@ class UsersController < ApplicationController
           redirect_to return_to
         else
           flash[:notice] = I18n.t('users_controller.successful_updated_profile') + "<a href='/dashboard'>" + I18n.t('users_controller.return_dashboard') + " &raquo;</a>"
-          return redirect_to "/profile/" + @user.username
+          return redirect_to "/profile/" + @user.username + "/edit"
         end
       else
         render :template => 'users/edit'
@@ -134,9 +135,8 @@ class UsersController < ApplicationController
     elsif !current_user && params[:id].nil?
       redirect_to "/"
     else
-      @user = DrupalUser.find_by(name: params[:id])
-      @profile_user = User.find_by(username: params[:id])
-      if !@user || !@profile_user
+      @user = User.find_by(username: params[:id])
+      if !@user
         flash[:error] = I18n.t('users_controller.no_user_found_name', username: params[:id])
         redirect_to "/"
       else
@@ -146,21 +146,27 @@ class UsersController < ApplicationController
                      .order("nid DESC")
                      .where(status: 1, uid: @user.uid)
 
-        if current_user && current_user.uid == @profile_user.uid
-          coauthor_nids = Node.joins(:node_tag).joins('LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid').select('node.*, term_data.*, community_tags.*').where(type: 'note', status: 3).where('term_data.name = (?)', "with:#{@profile_user.username}").collect(&:nid)
-          @drafts = Node.where('(nid IN (?) OR (status = 3 AND uid = ?))', coauthor_nids, @profile_user.uid).paginate(page: params[:page], per_page: 24)
+        if current_user && current_user.uid == @user.uid
+          coauthor_nids = Node.joins(:node_tag)
+            .joins('LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid')
+            .select('node.*, term_data.*, community_tags.*')
+            .where(type: 'note', status: 3)
+            .where('term_data.name = (?)', "with:#{@user.username}")
+            .collect(&:nid)
+          @drafts = Node.where('(nid IN (?) OR (status = 3 AND uid = ?))', coauthor_nids, @user.uid)
+            .paginate(page: params[:page], per_page: 24)
         end
-        @coauthored = @profile_user.coauthored_notes
-                                   .paginate(page: params[:page], per_page: 24)
-                                   .order('node_revisions.timestamp DESC')
-        @questions = @user.user.questions
-                               .order('node.nid DESC')
-                               .paginate(:page => params[:page], :per_page => 24)
+        @coauthored = @user.coauthored_notes
+          .paginate(page: params[:page], per_page: 24)
+          .order('node_revisions.timestamp DESC')
+        @questions = @user.questions
+                          .order('node.nid DESC')
+                          .paginate(page: params[:page], per_page: 24)
         @likes = (@user.liked_notes.includes(%i(tag comments)) + @user.liked_pages)
                        .paginate(page: params[:page], per_page: 24)
         questions = Node.questions
-                              .where(status: 1)
-                              .order('node.nid DESC')
+                        .where(status: 1)
+                        .order('node.nid DESC')
         ans_ques = questions.select { |q| q.answers.collect(&:author).include?(@user) }
         @answered_questions = ans_ques.paginate(page: params[:page], per_page: 24)
         wikis = Revision.order("nid DESC")
@@ -172,18 +178,18 @@ class UsersController < ApplicationController
         @comment_count = Comment.where(status: 1, uid: @user.uid).count
 
         # User's social links
-        @github = @profile_user.social_link("github")
-        @twitter = @profile_user.social_link("twitter")
-        @facebook = @profile_user.social_link("facebook")
-        @instagram = @profile_user.social_link("instagram")
+        @github = @user.social_link("github")
+        @twitter = @user.social_link("twitter")
+        @facebook = @user.social_link("facebook")
+        @instagram = @user.social_link("instagram")
         @count_activities_posted = Tag.tagged_nodes_by_author("activity:*", @user).count
         @count_activities_attempted = Tag.tagged_nodes_by_author("replication:*", @user).count
         @map_lat = nil
         @map_lon = nil
-        if @profile_user.has_power_tag("lat") && @profile_user.has_power_tag("lon")
-          @map_lat = @profile_user.get_value_of_power_tag("lat").to_f
-          @map_lon = @profile_user.get_value_of_power_tag("lon").to_f
-          @map_blurred = @profile_user.has_tag("blurred:true")
+        if @user.has_power_tag("lat") && @user.has_power_tag("lon")
+          @map_lat = @user.get_value_of_power_tag("lat").to_f
+          @map_lon = @user.get_value_of_power_tag("lon").to_f
+          @map_blurred = @user.has_tag("blurred:true")
         end
 
         if @user.status == 0
@@ -201,7 +207,7 @@ class UsersController < ApplicationController
   end
 
   def likes
-    @user = DrupalUser.find_by(name: params[:id])
+    @user = User.find_by(username: params[:id])
     @title = "Liked by " + @user.name
     @notes = @user.liked_notes
                   .includes(%i(tag comments))
@@ -213,7 +219,7 @@ class UsersController < ApplicationController
 
   def rss
     if params[:author]
-      @author = DrupalUser.where(name: params[:author], status: 1).first
+      @author = User.where(username: params[:author], status: 1).first
       if @author
         @notes = Node.order("nid DESC")
                            .where(type: 'note', status: 1, uid: @author.uid)
@@ -282,7 +288,7 @@ class UsersController < ApplicationController
   end
 
   def photo
-    @user = DrupalUser.find_by(uid: params[:uid]).user
+    @user = User.find_by(uid: params[:uid]).user
     if current_user.uid == @user.uid || current_user.admin?
       @user.photo = params[:photo]
       if @user.save!

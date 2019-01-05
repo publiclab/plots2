@@ -19,6 +19,9 @@
       <td>
       <i class="fa fa-comment-alt"></i> 
       <% if comment.author # some legacy comments have no author %>
+        <img class="img-circle" id="profile-photo" style="width:40px;margin-right:8px;border: 1px solid lightgrey;" 
+        style="<% unless comment.author.photo_file_name %>display:none;<% end %>
+        " src="<% if comment.author.photo %><%= comment.author.photo_path(:thumb) %><% end %>" />
         <a href="/profile/<%= comment.author.name %>"><%= comment.author.name %></a> 
       <% end %>
       </td>

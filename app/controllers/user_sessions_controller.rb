@@ -104,7 +104,7 @@ class UserSessionsController < ApplicationController
       if @user.nil?
         flash[:warning] = "There is nobody in our system by that name, are you sure you have the right username?"
         redirect_to '/login'
-      elsif params[:user_session].nil? || @user&.drupal_user&.status == 1
+      elsif params[:user_session].nil? || @user&.status == 1
         # an existing Rails user
         if params[:user_session].nil? || @user
           if @user&.crypted_password.nil? # the user has not created a pwd in the new site
@@ -152,15 +152,10 @@ class UserSessionsController < ApplicationController
             end
           end
         else # not a native user
-          if !DrupalUser.find_by(name: username).nil?
-            # this is a user from the old site who hasn't registered on the new site
-            redirect_to controller: :users, action: :create, user: { openid_identifier: username }
-          else # totally new user!
-            flash[:warning] = I18n.t('user_sessions_controller.sign_up_to_join')
-            redirect_to '/signup'
-          end
+          flash[:warning] = I18n.t('user_sessions_controller.sign_up_to_join')
+          redirect_to '/signup'
         end
-      elsif params[:user_session].nil? || @user&.drupal_user&.status == 5
+      elsif params[:user_session].nil? || @user&.status == 5
         flash[:error] = I18n.t('user_sessions_controller.user_has_been_moderated', username: @user.username).html_safe
         redirect_to '/'
       else
@@ -174,12 +169,14 @@ class UserSessionsController < ApplicationController
     @user_session = UserSession.find
     @user_session.destroy
     flash[:notice] = I18n.t('user_sessions_controller.logged_out')
-    redirect_to '/' + '?_=' + Time.now.to_i.to_s
+    prev_uri = URI(request.referer || "").path
+    redirect_to prev_uri + '?_=' + Time.now.to_i.to_s
   end
 
   def logout_remotely
     current_user.reset_persistence_token!
     flash[:notice] = I18n.t('user_sessions_controller.logged_out')
-    redirect_to '/' + '?_=' + Time.now.to_i.to_s
+    prev_uri = URI(request.referer || "").path
+    redirect_to prev_uri + '?_=' + Time.now.to_i.to_s
   end
 end

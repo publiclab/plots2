@@ -10,7 +10,7 @@
   <% nodes.each do |node| %>
     <tr>
       <td style="width:40%"><a href="<%= node.path %>"><%= node.latest.title %></a></td>
-      <td class="author"><a href="/profile/<%= node.author.username %>">@<%= node.author.username %> <%=node.author.new_author_contributor %></a></td>
+      <td class="author"><a href="/profile/<%= node.author.username %>">@<%= node.author.username %> <%=node.author.new_contributor %></a></td>
       <td class="updated" data-timestamp="<%= node.latest.timestamp.to_s %>"><%= distance_of_time_in_words(Time.at(node.latest.updated_at), Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></td>
       <td class="likes"><%= node.cached_likes.to_s %></td>
       <td><%= node.revisions.length %></td>

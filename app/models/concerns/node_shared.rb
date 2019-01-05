@@ -251,12 +251,14 @@ module NodeShared
     body.gsub(/(?<![\>`])(\<p\>)?\[map\:content\:(\S+)\:(\S+)\]/) do |_tagname|
       lat = Regexp.last_match(2)
       lon = Regexp.last_match(3)
+      tagname = nil
       a = ActionController::Base.new
       output = a.render_to_string(template: "map/_leaflet",
                                   layout:   false,
                                   locals:   {
                                     lat:   lat,
-                                    lon:   lon
+                                    lon:   lon,
+                                    tagname: tagname
                                   })
       output
     end
@@ -267,26 +269,13 @@ module NodeShared
       tagname = Regexp.last_match(2)
       lat = Regexp.last_match(3)
       lon = Regexp.last_match(4)
-      nids = NodeTag.joins(:tag)
-                                   .where('term_data.name = ?', tagname)
-                                   .collect(&:nid)
-      nids = NodeTag.joins(:tag)
-                                   .where(nid: nids)
-                                   .where('name LIKE ?', 'lat:' + lat[0..lat.length - 2] + '%')
-                                   .collect(&:nid)
-      nids ||= []
-      items = Node.includes(:tag)
-                  .references(:node, :term_data)
-                  .where('node.nid IN (?) AND term_data.name LIKE ?', nids, 'lon:' + lon[0..lon.length - 2] + '%')
-                  .limit(200)
-                  .order('node.nid DESC')
       a = ActionController::Base.new
       output = a.render_to_string(template: "map/_leaflet",
                                   layout:   false,
                                   locals:   {
                                     lat:   lat,
                                     lon:   lon,
-                                    items: items
+                                    tagname: tagname.to_s
                                   })
       output
     end

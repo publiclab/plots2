@@ -30,7 +30,7 @@ gem 'jquery-rails'
 gem 'less-rails', '~> 4.0'
 gem 'mocha', '~> 1.1'
 gem 'mustermann' , '1.0.3'
-gem 'omniauth', '~> 1.3', '>= 1.3.1'
+gem 'omniauth', '~> 1.9'
 gem 'omniauth-facebook', '~> 5.0'
 gem 'omniauth-github', '~> 1.1', '>= 1.1.2'
 gem 'omniauth-google-oauth2'
@@ -51,7 +51,7 @@ gem 'rb-readline'
 gem 'rdiscount', '~> 2.2', '>= 2.2.0.1'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'responders', '~> 2.0'
-gem 'rubocop', '~> 0.61.1', require: false
+gem 'rubocop', '~> 0.62.0', require: false
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
 gem 'sidekiq'
@@ -109,6 +109,7 @@ group :test, :development do
   gem 'test-unit'
   gem 'teaspoon-mocha'
   gem 'timecop'
+  gem 'pry-rails'
 end
 
 group :production do
