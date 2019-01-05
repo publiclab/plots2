@@ -342,13 +342,13 @@ class TagController < ApplicationController
     # only admins, mods, and tag authors can delete other peoples' tags
     if node_tag.uid == current_user.uid || current_user.role == 'admin' || current_user.role == 'moderator' || node.uid == current_user.uid
 
-      tagname = Tag.joins(:node_tag)
+      tag = Tag.joins(:node_tag)
                    .select('term_data.name')
                    .where(tid: params[:tid])
                    .first
 
-      if (tagname.name.split(':')[0] == "lat") || (tagname.name.split(':')[0] == "lon")
-        node.delete_coord(tagname.name)
+      if (tag.name.split(':')[0] == "lat") || (tag.name.split(':')[0] == "lon")
+        node.delete_coord_attribute(tag.name)
       end
 
       node_tag.delete
