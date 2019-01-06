@@ -22,7 +22,7 @@ can_merge = github.pr_json["mergeable"]
 warn("This pull request cannot be merged yet due to merge conflicts. Please resolve them -- probably by [rebasing](https://help.github.com/articles/about-git-rebase/) -- and ask for help (in the comments, or [in the chatroom](https://gitter.im/publiclab/publiclab) if you get into trouble!.", sticky: false) unless can_merge
 
 if github.pr_body.include?("* [ ]") && !github.pr_title.include?("[WIP]")
-  message "It looks like you haven't marked all the checkboxes. Help us review and accept your suggested changes by going through the steps one by one. If it is still a 'Work in progresss', please include '[WIP]' in the title."
+  message "It looks like you haven't marked all the checkboxes. Help us review and accept your suggested changes by going through the steps one by one. If it is still a 'Work in progress', please include '[WIP]' in the title."
 end
 
 message "Pull Request is marked as Work in Progress" if github.pr_title.include? "[WIP]"
