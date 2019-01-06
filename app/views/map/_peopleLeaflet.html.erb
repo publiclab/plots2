@@ -44,12 +44,14 @@
        var SElat = map<%= unique_id %>.getBounds().getSouthEast().lat ;
        var SElng = map<%= unique_id %>.getBounds().getSouthEast().lng ;
 
+       map<%= unique_id %>.spin(true) ;
        $.getJSON("/api/srch/nearbyPeople?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng + "&tag=<%= @tagname_param %>", function (data) {
            var layerGroup = L.layerGroup();
-           map<%= unique_id %>.spin(true) ;
+
            if (!!data.items) {
                for (i = 0; i < data.items.length; i++) {
                    var default_markers = PLmarker_default();
+                   var mid = data.items[i].doc_id ;
                    var url = data.items[i].doc_url;
                    var title = data.items[i].doc_title;
                    var m = L.marker([data.items[i].latitude, data.items[i].longitude], {
@@ -57,9 +59,9 @@
                        icon: default_markers
                    }) ;
 
-                   if(markers_hash.has(m) === false){
+                   if(markers_hash.has(mid) === false){
                        m.addTo(map<%= unique_id %>).bindPopup("<a href=" + url + ">" + title + "</a>") ;
-                       markers_hash.set(m , 1) ;
+                       markers_hash.set(mid , m) ;
                    }
 
                }
@@ -75,12 +77,13 @@
        var SElat = map<%= unique_id %>.getBounds().getSouthEast().lat ;
        var SElng = map<%= unique_id %>.getBounds().getSouthEast().lng ;
 
+       map<%= unique_id %>.spin(true) ;
        $.getJSON("/api/srch/nearbyPeople?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng + "&tag=<%= @tagname_param %>", function (data) {
            var layerGroup = L.layerGroup();
-           map<%= unique_id %>.spin(true) ;
            if (!!data.items) {
                for (i = 0; i < data.items.length; i++) {
                    var default_markers = PLmarker_default();
+                   var mid = data.items[i].doc_id ;
                    var url = data.items[i].doc_url;
                    var title = data.items[i].doc_title;
                    var m = L.marker([data.items[i].latitude, data.items[i].longitude], {
@@ -88,9 +91,9 @@
                        icon: default_markers
                    }) ;
 
-                   if(markers_hash.has(m) === false){
+                   if(markers_hash.has(mid) === false){
                        m.addTo(map<%= unique_id %>).bindPopup("<a href=" + url + ">" + title + "</a>") ;
-                       markers_hash.set(m , 1) ;
+                       markers_hash.set(mid , m) ;
                    }
 
                }
