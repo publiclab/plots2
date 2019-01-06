@@ -983,4 +983,14 @@ class Node < ActiveRecord::Base
     @token = slug.split('token:').last
     url = 'https://publiclab.org/notes/show/' + nid.to_s + '/' + @token.to_s
   end
+
+  def fetch_comments(user)
+    if user&.can_moderate?
+      self.comments.where('status = 1 OR status = 4')
+    elsif user
+      self.comments.where('comments.status = 1 OR (comments.status = 4 AND comments.uid = ?)', user.uid)
+    else
+      self.comments.where(status: 1)
+    end
+  end
 end

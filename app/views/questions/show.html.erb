@@ -48,14 +48,7 @@
 
   <hr />
 
-  <% if logged_in_as(['admin', 'moderator']) %>
-    <% comments = @node.comments.where('status = 1 OR status = 4') %>
-  <% elsif current_user %>
-    <% comments = @node.comments.where('comments.status = 1 OR (comments.status = 4 AND comments.uid = ?)', current_user.uid) %>
-  <% else %>
-    <% comments = @node.comments.where(status: 1) %>
-  <% end %>
-
+  <% comments = @node.fetch_comments(current_user) %>
   <h3><span id="answer-0-comment-count"><%= comments.length %></span> Comments</h3>
     <% comments.order("timestamp ASC").each do |comment| %>
       <%= render :partial => "notes/comment", :locals => {:comment => comment} %>
