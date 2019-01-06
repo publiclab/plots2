@@ -1,5 +1,6 @@
 <%= render :partial => "map/mapDependencies" %>
 
+
   <% if haslocation == true %>  
     <style>
       #map_leaflet{  height:300px; width:292px; margin: auto; position: relative;}
@@ -15,7 +16,7 @@
      map.setView([map_lat,map_lon], 2);
       
     setupFullScreen(map , map_lat , map_lon) ; 
-    setupLEL(map) ;
+    setupLEL(map , 1) ;
   //  var hash = new L.Hash(map);   
     <% if !(@map_blurred == true) %>
       var default_Icon =new PLmarker_default() ;

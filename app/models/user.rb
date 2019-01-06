@@ -11,6 +11,10 @@ class User < ActiveRecord::Base
   self.table_name = 'rusers'
   alias_attribute :name, :username
 
+  NORMAL = 1 # Usage: User::NORMAL
+  BANNED = 0 # Usage: User::BANNED
+  MODERATED = 5 # Usage: User::MODERATED
+
   acts_as_authentic do |c|
     VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
     c.validates_format_of_email_field_options = { with: VALID_EMAIL_REGEX }
@@ -42,6 +46,9 @@ class User < ActiveRecord::Base
   validates_format_of :username, with: /\A[A-Za-z\d_\-]+\z/
 
   before_save :set_token
+
+  scope :past_week, -> { where("created_at > ?", Time.now - 7.days) }
+  scope :past_month, -> { where("created_at > ?", Time.now - 1.months) }
 
   def self.search(query)
     User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', query + '*')
@@ -417,21 +424,6 @@ class User < ActiveRecord::Base
     top_picks = content_followed_in_period(Time.now - 1.week, Time.now)
     if top_picks.count > 0
       SubscriptionMailer.send_digest(id, top_picks).deliver_now
-    end
-  end
-
-  def customize_digest(type)
-    if type == UserTag::DIGEST_DAILY
-      newtag = 'digest:daily'
-    elsif type == UserTag::DIGEST_WEEKLY
-      newtag = 'digest:weekly'
-    elsif type == 2
-      UserTag.where('value LIKE (?)', 'digest%').destroy_all
-    end
-
-    unless newtag.blank?
-      UserTag.where('value LIKE (?)', 'digest%').destroy_all
-      UserTag.create(uid: id, value: newtag)
     end
   end
 
