@@ -35,9 +35,18 @@
    var markers_hash = new Map() ;
 
    window.setTimeout(function(){
-       map<%= unique_id %>.setZoom(2) ;
+      
+       <% if !@map_lat.nil? && !@map_lon.nil? %>
+         var map_lat = <%= @map_lat %> ;
+         var map_lon = <%= @map_lon %> ;
+         var user_latlng = L.latLng(map_lat, map_lon) ;
+         map<%= unique_id %>.setView(user_latlng , 3) ;
+       <% else %>
+         map<%= unique_id %>.setZoom(2) ;
+       <% end %>
+       
    }, 3500);
-
+   
    map<%= unique_id %>.on('zoomend' , function () {
        var NWlat = map<%= unique_id %>.getBounds().getNorthWest().lat ;
        var NWlng = map<%= unique_id %>.getBounds().getNorthWest().lng ;
@@ -103,13 +112,7 @@
    }) ;
 
 
-   <% if !@map_lat.nil? && !@map_lon.nil? %>
-      var map_lat = <%= @map_lat %> ;
-      var map_lon = <%= @map_lon %> ;
-      var user_latlng = L.latLng(map_lat, map_lon) ;
-      map<%= unique_id %>.setView(user_latlng , 3) ;
-   <% end %>
-
+   
 //  setupFullScreen(map< = unique_id >  , map_lat , map_lon) ;
     setupLEL(map<%= unique_id %> , 1) ;
 
