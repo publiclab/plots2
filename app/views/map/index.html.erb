@@ -25,7 +25,6 @@
     return new L.Icon.DefaultIcon();
   };
 
-
   var bounds = new L.LatLngBounds(new L.LatLng(84.67351257 , -172.96875) , new L.LatLng(-54.36775852 , 178.59375)) ;
   var map = L.map('map' , {
       maxBounds: bounds , 
@@ -35,7 +34,6 @@
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map) ; 
   map.options.minZoom = 1.5 ;
-  var hash = new L.Hash(map);
 
   <% @maps.each do |map| %>
     <% 
@@ -57,90 +55,8 @@
       map.setView(user_latlng , 3) ;
    <% end %>
 
-    var PurpleAirMarkerLayer = L.layerGroup.purpleAirMarkerLayer() ;
-    var SkyTruth = L.layerGroup.skyTruthLayer() ;
-    var Fractracker = L.layerGroup.fracTrackerLayer() ;
-    var OdorReport = L.layerGroup.odorReportLayer() ;
-    var MapKnitter = L.layerGroup.mapKnitterLayer() ;
-    var ToxicRelease = L.layerGroup.toxicReleaseLayer() ;
-    var OpenInfraMap_Power = L.tileLayer('https://tiles-{s}.openinframap.org/power/{z}/{x}/{y}.png',{
-        maxZoom: 18,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://www.openinframap.org/about.html">About OpenInfraMap</a>'
-    });
-    var OpenInfraMap_Petroleum = L.tileLayer('https://tiles-{s}.openinframap.org/petroleum/{z}/{x}/{y}.png', {
-      maxZoom: 18,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://www.openinframap.org/about.html">About OpenInfraMap</a>'
-    });
-    var OpenInfraMap_Telecom = L.tileLayer('https://tiles-{s}.openinframap.org/telecoms/{z}/{x}/{y}.png', {
-      maxZoom: 18,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://www.openinframap.org/about.html">About OpenInfraMap</a>'
-    });
-    var OpenInfraMap_Water = L.tileLayer('https://tiles-{s}.openinframap.org/water/{z}/{x}/{y}.png',{
-      maxZoom: 18,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://www.openinframap.org/about.html">About OpenInfraMap</a>'
-    });
-    var Justicemap_income = L.tileLayer.provider('JusticeMap.income') ;
-    var JusticeMap_americanIndian = L.tileLayer.provider('JusticeMap.americanIndian') ;
-    var JusticeMap_asian = L.tileLayer.provider('JusticeMap.asian') ;
-    var JusticeMap_black = L.tileLayer.provider('JusticeMap.black') ;
-    var JusticeMap_multi = L.tileLayer.provider('JusticeMap.multi') ;
-    var JusticeMap_hispanic = L.tileLayer.provider('JusticeMap.hispanic') ;
-    var JusticeMap_nonWhite = L.tileLayer.provider('JusticeMap.nonWhite') ;
-    var JusticeMap_white = L.tileLayer.provider('JusticeMap.white') ;
-    var JusticeMap_plurality = L.tileLayer.provider('JusticeMap.plurality') ;
-    
-    var clouds = L.OWM.clouds({showLegend: true, opacity: 0.5});
-    var cloudscls = L.OWM.cloudsClassic({});
-    var precipitation = L.OWM.precipitation({});
-    var precipitationcls = L.OWM.precipitationClassic({});
-    var rain = L.OWM.rain({});
-    var raincls = L.OWM.rainClassic({});
-    var snow = L.OWM.snow({});
-    var pressure = L.OWM.pressure({});
-    var pressurecntr = L.OWM.pressureContour({});
-    var temp = L.OWM.temperature({});
-    var wind = L.OWM.wind({});
-    var city = L.OWM.current({intervall: 15, minZoom: 3});
-    var windrose = L.OWM.current({intervall: 15, minZoom: 3, markerFunction: myWindroseMarker, popup: false, clusterSize: 50,imageLoadingBgUrl: 'https://openweathermap.org/img/w0/iwind.png' });
-    windrose.on('owmlayeradd', windroseAdded, windrose); 
-    var baseMaps = {
-      "Baselayer1": baselayer
-    };
-    var overlayMaps = {
-      "PurpleAirLayer-Markers": PurpleAirMarkerLayer ,
-      "SkyTruth": SkyTruth , 
-      "Fractracker" : Fractracker ,
-      "ToxicRelease": ToxicRelease ,
-      "OdorReport": OdorReport ,
-      "MapKnitter": MapKnitter ,
-      "OpenInfraMap_Power": OpenInfraMap_Power ,
-      "OpenInfraMap_Telecom": OpenInfraMap_Telecom ,
-      "OpenInfraMap_Petroleum": OpenInfraMap_Petroleum ,
-      "OpenInfraMap_Water": OpenInfraMap_Water ,
-      "Justicemap_income": Justicemap_income,
-      "JusticeMap_americanIndian": JusticeMap_americanIndian ,
-      "JusticeMap_asian": JusticeMap_asian ,
-      "JusticeMap_black": JusticeMap_black,
-      "JusticeMap_multi": JusticeMap_multi ,
-      "JusticeMap_hispanic": JusticeMap_hispanic ,
-      "JusticeMap_nonWhite": JusticeMap_nonWhite,
-      "JusticeMap_white": JusticeMap_white ,
-      "JusticeMap_plurality": JusticeMap_plurality ,
-         "Clouds": clouds ,
-         "clouds (classic)": cloudscls ,
-         "precipitation": precipitation ,
-         "precipitation (classic)": precipitationcls , 
-         "rain": rain , 
-         "rain (classic)": raincls ,
-         "snow": snow , 
-         "pressure": pressure ,
-         "pressure contour (zoom in)": pressurecntr , 
-         "temp": temp , 
-         "wind": wind , 
-         "Cities (zoom in)": city  , 
-         "windrose (zoom in)": windrose
-    };
-    L.control.layers(baseMaps,overlayMaps).addTo(map); 
+   setupLEL(map , 1) ;
+   setupFullScreen(map , map.getCenter().lat , map.getCenter().lng) ;
 </script>
 
 <br style="clear:both;" />
