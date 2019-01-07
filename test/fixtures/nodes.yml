@@ -318,3 +318,28 @@ scraped_image:
   type: "note"
   cached_likes: 0
   slug: bob-<%= DateTime.new(2018,8,20).strftime("%m-%d-%Y") %>-scraped-image-node
+
+search_trawl:
+  nid: 28
+  uid: 1
+  title: "BabyLegs start a trawl"
+  path: "/wiki/babylegs"
+  created: <%= DateTime.new(2019,1,07).to_i %>
+  changed: <%= DateTime.new(2019,1,07).to_i %>
+  status: 1
+  type: "page"
+  cached_likes: 0
+  slug: "babylegs"
+
+search_trawling:
+  nid: 29
+  uid: 1
+  title: "Could the BabyLegs DIY trawling?"
+  path: "/notes/admin/01-07-2019/could-the-babylegs-diy"
+  created: <%= DateTime.new(2019,1,07).to_i %>
+  changed: <%= DateTime.new(2019,1,07).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: "could-the-babylegs-diy"
+  
