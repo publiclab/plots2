@@ -1,21 +1,21 @@
 <div class="main_div">
 	<p class="small_heading"> Follow related tags: </p>
 	<%= form_with remote: true, url: '/subscribe/multiple/tag/:tagnames' do |f| %>
-		<% tags.each do |tag| %>
-			<div>
-			  <% if current_user.following(tag.name) %>
-				<input type="checkbox" id="<%= tag.id %>" name="tagnames[]" value="<%= tag.name %>" checked><span class="label <%= label_name %>" style="margin-left: 3px; margin-right: 10px; display: inline-block;"> <%= tag.name %> </span>
-			  <% else %>
-				<input type="checkbox" id="<%= tag.id %>" name="tagnames[]" value="<%= tag.name %>"><span class="label <%= label_name %>" style="margin-left: 3px; margin-right: 10px; display: inline-block;"> <%= tag.name %> </span>
-			  <% end %>
-			</div>
-		<% end %>
+	  <% tags.each do |tag| %>
+		<div>
+		  <% if current_user.following(tag.name) %>
+			<input type="checkbox" id="<%= tag.id %>" name="tagnames[]" value="<%= tag.name %>" checked><span class="label <%= label_name %>" style="margin-left: 3px; margin-right: 10px; display: inline-block;"> <%= tag.name %> </span>
+		  <% else %>
+			<input type="checkbox" id="<%= tag.id %>" name="tagnames[]" value="<%= tag.name %>"><span class="label <%= label_name %>" style="margin-left: 3px; margin-right: 10px; display: inline-block;"> <%= tag.name %> </span>
+		  <% end %>
+		</div>
+	  <% end %>
 		<% if current_user %>
 			<%= f.submit 'Subscribe', class: "btn btn-primary btn-sm", style: 'margin-top: 10px;' %>
 		<% else %>
 			<a data-toggle="modal" data-target="#loginModal" class="btn btn-primary btn-sm active" role="button" aria-pressed="true" style="margin-top: 10px">Subscribe</a>
 		<% end %>
-	<% end %>
+	  <% end %>
 </div>
 <style>
 	.main_div{
