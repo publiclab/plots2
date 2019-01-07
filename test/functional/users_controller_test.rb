@@ -208,7 +208,7 @@ class UsersControllerTest < ActionController::TestCase
     post :update, params: {
       user: {
         bio: 'Bio updated by hacker',
-        current_password:'wrong password',
+        current_password: 'wrong password',
         ui_update: 'true'
       }
     }
