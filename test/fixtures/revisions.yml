@@ -315,14 +315,14 @@ scraped_image:
 
 search_trawl:
   nid: 28
-  uid: 1
+  uid: 5
   title: "BabyLegs start a trawl"
   body: "BabyLegs is a research trawl."
   timestamp: <%= DateTime.new(2019,1,07).to_i %>
 
 search_trawling:
   nid: 29
-  uid: 1
+  uid: 5
   title: "Could the BabyLegs DIY trawling?"
   body: "BabyLegs is a research trawling."
   timestamp: <%= DateTime.new(2019,1,07).to_i %>
