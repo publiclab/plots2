@@ -146,11 +146,6 @@
                 <li class="hidden-lg">
                   <a rel="tooltip" title="<%= t('layout._header.become_part_community') %>" href="/signup"><%= t('layout._header.join') %></a>
                 </li>
-                <li class="hidden-lg hidden-md">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                     <%= t('layout._header.login.login_title') %>
-                  </a>
-                </li>
                 <% end %>
             </ul>
         </li>
@@ -236,7 +231,7 @@
       $("#loginContainer").find("#password-signup").val(pass);
     });
 
-    $("#toSignup").click(function(){ //Function runs when the "sign up to join" link in the login modal is clicked 
+    $("#toSignup").click(function(){ //Function runs when the "sign up to join" link in the login modal is clicked
       var user = $("#loginContainer").find("#username-signup").val(); //Username and password data is transferred to the other partial
       var pass = $("#loginContainer").find("#password-signup").val();
       showSignup(); // Modal switches to sign up view
