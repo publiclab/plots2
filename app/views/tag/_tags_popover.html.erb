@@ -3,7 +3,11 @@
 	<%= form_with remote: true, url: '/subscribe/multiple/tag/:tagnames' do |f| %>
 		<% tags.each do |tag| %>
 			<div>
-				<input type="checkbox" id="<%= tag.id %>" name="tagnames[]" value="<%= tag.name %>"><span class="label <%= label_name %>" style="margin-left: 3px; margin-right: 10px; display: inline-block;"> <%= tag.name %> </span>
+				<% if current_user.following(tag.name) %>
+					<input type="checkbox" id="<%= tag.id %>" name="tagnames[]" value="<%= tag.name %>" checked><span class="label <%= label_name %>" style="margin-left: 3px; margin-right: 10px; display: inline-block;"> <%= tag.name %> </span>
+				<% else %>
+					<input type="checkbox" id="<%= tag.id %>" name="tagnames[]" value="<%= tag.name %>"><span class="label <%= label_name %>" style="margin-left: 3px; margin-right: 10px; display: inline-block;"> <%= tag.name %> </span>
+				<% end %>
 			</div>
 		<% end %>
 		<% if current_user %>
