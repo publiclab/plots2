@@ -26,4 +26,31 @@ class NodeCoordinatesTest < ActiveSupport::TestCase
     assert table_updated
     assert_equal node.longitude, -9.0002
   end
+
+  test 'deleting latitude from node' do
+    node = nodes(:one)
+
+    # Adding the attributes first: latitude and precision
+    saved, tag, table_updated = node.add_tag('lat:10.0002', users(:bob))
+    assert table_updated
+
+    # Then deleting the attributes
+    table_updated = node.delete_coord_attribute('lat:10.0002')
+    assert table_updated
+    assert_nil node.precision
+    assert_nil node.latitude
+  end
+
+  test 'deleting longitude from node' do
+    node = nodes(:one)
+
+    # Adding the attribute first: longitude
+    saved, tag, table_updated = node.add_tag('lon:-9.0002', users(:bob))
+    assert table_updated
+
+    # Then deleting the attribute
+    table_updated = node.delete_coord_attribute('lon:-9.0002')
+    assert table_updated
+    assert_nil node.longitude
+  end
 end
