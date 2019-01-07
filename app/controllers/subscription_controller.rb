@@ -119,6 +119,7 @@ class SubscriptionController < ApplicationController
   end
 
   def multiple_add
+    #params[:same] contains the list of tag names separated by comma
     unless params[:same]
       flash[:notice] = "Please enter tags for subscription in the url."
       redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s

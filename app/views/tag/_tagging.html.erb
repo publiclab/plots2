@@ -1,9 +1,9 @@
 <div>
   <h1 style="display: inline-block;">Tags</h1>
   <% if @node %>
-    <a class="btn btn-default btn-xs sub" rel="popover" data-container="body" data-placement="bottom" data-template='<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-body"><%= render partial: 'tag/tags_pop', locals: {tags: @node.node_tags, label_name: 'label-info'} %></div></div>' data-html="true" data-content="sample" > <i class="fa fa-plus"> </i> Subscribe</a>
+    <a class="btn btn-default btn-xs sub" rel="popover" data-container="body" data-placement="bottom" data-template='<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-body"><%= render partial: 'tag/tags_popover', locals: {tags: @node.node_tags, label_name: 'label-info'} %></div></div>' data-html="true" data-content="sample" > <i class="fa fa-plus"> </i> Subscribe</a>
   <% else %>
-    <a class="btn btn-outline-primary sub" rel="popover" data-container="body" data-placement="bottom" data-template='<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-body"><%= render partial: 'tag/tags_pop', locals: {tags: @user.user_tags, label_name: 'label-info'} %></div></div>' data-html="true" data-content="sample" > Subscribe<i class="fa fa-plus"> </i> </a>
+    <a class="btn btn-outline-primary sub" rel="popover" data-container="body" data-placement="bottom" data-template='<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-body"><%= render partial: 'tag/tags_popover', locals: {tags: @user.user_tags, label_name: 'label-info'} %></div></div>' data-html="true" data-content="sample" > Subscribe<i class="fa fa-plus"> </i> </a>
   <% end %>
   </div>
   <em class="italics"><a href="/tags">Tags</a> organize our knowledge base. Click to learn more or subscribe to a topic.</em>
@@ -47,18 +47,8 @@
     <%= render partial: 'tag/replication' %>
     <%= render partial: 'tag/tags', locals: { power_tag: true, label_name: 'label-default', tags: @node.node_tags } %>
     <%= render partial: 'tag/tags', locals: { power_tag: false, label_name: 'label-primary', tags: @node.node_tags } %>
-    <% if current_user %>
-      <!-- <a href="/subscribe/multiple/tag" class="btn btn-primary btn-sm active" role="button" aria-pressed="true" style="margin-bottom: 10px" id="subs">Subscribe >></a> -->
-    <% else %>
-      <!-- <a data-toggle="modal" data-target="#loginModal" class="btn btn-primary btn-sm active" role="button" aria-pressed="true" style="margin-bottom: 10px">Subscribe >></a> -->
-    <% end %>
   <% else %>
-    <%= render partial: 'tag/tags', locals: { power_tag: false, label_name: 'label-primary', tags: @user.user_tags } %> 
-    <% if current_user %>
-      <!-- <a href="/subscribe/multiple/tag" class="btn btn-primary btn-sm active" role="button" aria-pressed="true" style="margin-bottom: 10px" id="subs">Subscribe >></a> -->
-    <% else %>
-      <!-- <a data-toggle="modal" data-target="#loginModal" class="btn btn-primary btn-sm active" role="button" aria-pressed="true" style="margin-bottom: 10px">Subscribe >></a> -->
-    <% end %>
+    <%= render partial: 'tag/tags', locals: { power_tag: false, label_name: 'label-primary', tags: @user.user_tags } %>
   <% end %>
 </div>
 <style>
