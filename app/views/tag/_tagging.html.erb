@@ -1,9 +1,9 @@
 <div>
   <h1 style="display: inline-block;">Tags</h1>
   <% if @node %>
-    <a class="btn btn-default btn-xs sub" rel="popover" data-container="body" data-placement="bottom" data-template='<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-body"><%= render partial: 'tag/tags_popover', locals: {tags: @node.node_tags, label_name: 'label-info'} %></div></div>' data-html="true" data-content="sample" > <i class="fa fa-plus"> </i> Subscribe</a>
+    <%= render partial: 'tag/subscribe_button', locals:{tags: @node.node_tags} %>
   <% else %>
-    <a class="btn btn-outline-primary sub" rel="popover" data-container="body" data-placement="bottom" data-template='<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-body"><%= render partial: 'tag/tags_popover', locals: {tags: @user.user_tags, label_name: 'label-info'} %></div></div>' data-html="true" data-content="sample" > Subscribe<i class="fa fa-plus"> </i> </a>
+    <%= render partial: 'tag/subscribe_button', locals:{tags: @user.user_tags} %>
   <% end %>
   </div>
   <em class="italics"><a href="/tags">Tags</a> organize our knowledge base. Click to learn more or subscribe to a topic.</em>
@@ -51,16 +51,6 @@
     <%= render partial: 'tag/tags', locals: { power_tag: false, label_name: 'label-primary', tags: @user.user_tags } %>
   <% end %>
 </div>
-<style>
-  .sub{
-    border-color: #006699;
-    border-width: 2px;
-    border-radius: 5px;
-    margin-left: 20px;
-    margin-bottom: 12px;
-  }
-
-</style>
 <script>
 $(function () {
   $('#tags [data-toggle="tooltip"]').tooltip()
