@@ -119,13 +119,12 @@ class SubscriptionController < ApplicationController
   end
 
   def multiple_add
-    #params[:same] contains the list of tag names separated by comma
-    unless params[:same]
+    unless params[:tagnames]
       flash[:notice] = "Please enter tags for subscription in the url."
       redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
       return
     end
-    tag_list = params[:same]
+    tag_list = params[:tagnames]
     # should be logged in to subscribe
     if current_user
       # assume tag, for now
@@ -163,7 +162,7 @@ class SubscriptionController < ApplicationController
             if request.xhr?
               render :json => true
             else
-              flash[:notice] = "You are now following '#{params[:same]}'."
+              flash[:notice] = "You are now following '#{params[:tagnames]}'."
               redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
             end
           end
@@ -173,7 +172,7 @@ class SubscriptionController < ApplicationController
       end
     else
       flash[:warning] = "You must be logged in to subscribe for email updates; please <a href='javascript:void()' onClick='login()'>log in</a> or <a href='/signup'>create an account</a>."
-      redirect_to "subscribe/multiple/" + params[:type] + params[:same]
+      redirect_to "subscribe/multiple/" + params[:type] + params[:tagnames]
     end
   end
 
