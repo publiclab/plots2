@@ -119,11 +119,12 @@ class SubscriptionController < ApplicationController
   end
 
   def multiple_add
-    unless params[:names]
+    unless params[:same]
       flash[:notice] = "Please enter tags for subscription in the url."
       redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
+      return
     end
-    tag_list = params[:names].split(',')
+    tag_list = params[:same]
     # should be logged in to subscribe
     if current_user
       # assume tag, for now
@@ -131,7 +132,7 @@ class SubscriptionController < ApplicationController
         tag_list.each do |t|
           if t.length.positive?
             tag = Tag.find_by(name: t)
-            # t should be not nil consider params[:names] = balloon,,mapping,,kites,oil
+            # t should be not nil consider params[:same] = balloon,,mapping,,kites,oil
             if tag.nil?
               # if the tag doesn't exist, we should create it!
               # this could fail validations; error out if so...
@@ -161,7 +162,7 @@ class SubscriptionController < ApplicationController
             if request.xhr?
               render :json => true
             else
-              flash[:notice] = "You are now following '#{params[:names]}'."
+              flash[:notice] = "You are now following '#{params[:same]}'."
               redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
             end
           end
@@ -170,8 +171,8 @@ class SubscriptionController < ApplicationController
         # user or node subscription
       end
     else
-      flash[:warning] = "You must be logged in to subscribe for email updates."
-      redirect_to "/login"
+      flash[:warning] = "You must be logged in to subscribe for email updates; please <a href='javascript:void()' onClick='login()'>log in</a> or <a href='/signup'>create an account</a>."
+      redirect_to "subscribe/multiple/" + params[:type] + params[:same]
     end
   end
 
