@@ -18,4 +18,11 @@ class WelcomeMailer < ActionMailer::Base
     @body = feature_node('welcome-email-body')
     mail(to: user.email, subject: subject)
   end
+
+  def send_verification_email(user)
+    subject = 'Email verification'
+    @user = user
+    @footer = feature('email-footer')
+    mail(to: user.email, subject: subject)
+  end
 end

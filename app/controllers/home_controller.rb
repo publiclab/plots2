@@ -1,5 +1,6 @@
 class HomeController < ApplicationController
   before_action :require_user, only: %i(subscriptions nearby)
+  before_action :check_email_verified, only: %i(dashboard)
 
   def home
     if current_user

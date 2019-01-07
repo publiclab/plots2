@@ -1,4 +1,4 @@
-require 'sidekiq/web'
+
 
 Plots2::Application.routes.draw do
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
@@ -53,6 +53,7 @@ Plots2::Application.routes.draw do
   get 'signup' => 'users#new'
   get 'home' => 'home#front'
   get 'verify/:token' => 'users#verify_email'
+  get 'verify-email' => 'users#send_verification_email'
   resources :relationships, only: [:create, :destroy]
 
   get '/wiki/:id/comments', to: 'wiki#comments'

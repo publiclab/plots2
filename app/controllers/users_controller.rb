@@ -2,7 +2,6 @@ class UsersController < ApplicationController
   before_action :require_no_user, :only => [:new]
   before_action :require_user, :only => %i(edit update save_settings)
   before_action :set_user, only: %i(info followed following followers)
-
   def new
     @user = User.new
     @action = "create" # sets the form url
@@ -385,6 +384,16 @@ class UsersController < ApplicationController
       end
     end
     redirect_to "/login", flash: { notice: action_msg }
+  end
+
+  def send_verification_email
+    begin
+      WelcomeMailer.send_verification_email(current_user).deliver_now
+      flash[:notice] = "We have sent you a email. Please verify your email id"
+    rescue
+      flash[:warning] = "We tried and failed to send you a welcome email, but your account was created anyhow. Sorry!"
+    end
+    redirect_to "/dashboard"
   end
 
   private

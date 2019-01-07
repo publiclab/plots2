@@ -296,4 +296,11 @@ class UsersControllerTest < ActionController::TestCase
     get :verify_email, params: { token: email_verification_token }
     assert_equal "Successfully verified email", flash[:notice]
   end
+
+  test 'send verification email' do
+    user = users(:bob)
+    UserSession.create(user)
+    get :send_verification_email
+    assert_response :redirect
+  end 
 end

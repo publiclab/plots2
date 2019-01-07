@@ -190,4 +190,12 @@ class ApplicationController < ActionController::Base
   def signed_in?
     !current_user.nil?
   end
+
+  def check_email_verified
+    unless current_user.nil?
+      unless current_user.is_verified
+        flash.now[:notice] = "Your email is not verified. Click <a href='../verify-email'>here</a> to verify email"
+      end
+    end
+  end
 end
