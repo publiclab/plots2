@@ -1,4 +1,8 @@
-<a class="btn btn-default btn-xs sub" rel="popover" data-container="body" data-placement="bottom" data-template='<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-body"><%= render partial: 'tag/tags_popover', locals: {tags: tags, label_name: 'label-info'} %></div></div>' data-html="true" data-content="sample" > <i class="fa fa-plus"> </i> Subscribe</a>
+<% if current_user %>
+  <a class="btn btn-default btn-xs sub" rel="popover" data-container="body" data-placement="bottom" data-template='<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-body"><%= render partial: 'tag/tags_popover', locals: {tags: tags, label_name: 'label-info'} %></div></div>' data-html="true" data-content="sample" > <i class="fa fa-plus"> </i> Subscribe</a>
+<% else %>
+  <a class="btn btn-default btn-xs sub" data-toggle="modal" data-target="#loginModal" role="button" aria-pressed="true"> <i class="fa fa-plus"> </i> Subscribe</a>
+<% end %>
 <style>
   .sub{
     border-color: #006699;
