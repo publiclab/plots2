@@ -1,27 +1,29 @@
-<button type="button" class="btn btn-default dropdown-toggle" id="pt-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i></button>
-<ul class="dropdown-menu pull-right" style="margin-top:5px;" id="pt-list">
-  <% if current_user %>
-    <li class="dropdown-header">Recently used tags</li>
-    <% NodeTag.where(uid: current_user.id).order('date DESC').limit(5).each do |tag| %>
-      <li onClick="addTag('<%= tag.name %>')"><a><i><%= tag.name %></i></a></li>
-    <% end %>
-  <% end %>
-  <li role="separator" class="divider"></li>
-  <% if @node && @node.type == "page" %>
-    <li><a href="#" data-value="parent:">Link to a "parent" page (wikis only)</a></li>
-    <li><a href="#" data-value="style:">Add style</a></li>
-    <li><a href="#" data-value="lang:">Add Translation widget</a></li>
-  <% else %>
-    <li><a href="#" data-value="seeks:photos">Request response photos</a></li>
-    <li><a href="#" data-value="hidden:response">Hide responses from dashboard</a></li>
-    <li><a href="#" data-value="with:">Add Coauthor (notes only)</a></li>
-    <li><a href="#" data-value="series:">Mark as part of a series</a></li>
-    <li><a href="#" data-value="comment-template:">Add template to the comment form</a></li>
-    <li><a target="_blank" href="/wiki/comment-templates">Write a template for the comment form</a></li>
-  <% end %>
-  <li role="separator" class="divider"></li>
-  <li><a href="https://publiclab.org/power-tags" target="_blank">Learn About Powertags</a></li>
-</ul>
+<div class="dropdown">
+    <button type="button" class="btn btn-outline-secondary dropdown-toggle" id="pt-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i></button>
+    <div class="dropdown-menu float-right" style="margin-top:5px;" id="pt-list">
+      <% if current_user %>
+        <h6 class="dropdown-header">Recently used tags</h6>
+        <% NodeTag.where(uid: current_user.id).order('date DESC').limit(5).each do |tag| %>
+          <a class="dropdown-item" onClick="addTag('<%= tag.name %>')"><i><%= tag.name %></i></a>
+        <% end %>
+      <% end %>
+      <div class="dropdown-divider"></div>
+      <% if @node && @node.type == "page" %>
+        <a class="dropdown-item" href="#" data-value="parent:">Link to a "parent" page (wikis only)</a>
+        <a class="dropdown-item" href="#" data-value="style:">Add style</a>
+        <a class="dropdown-item" href="#" data-value="lang:">Add Translation widget</a>
+      <% else %>
+        <a class="dropdown-item" href="#" data-value="seeks:photos">Request response photos</a>
+        <a class="dropdown-item" href="#" data-value="hidden:response">Hide responses from dashboard</a>
+        <a class="dropdown-item" href="#" data-value="with:">Add Coauthor (notes only)</a>
+        <a class="dropdown-item" href="#" data-value="series:">Mark as part of a series</a>
+        <a class="dropdown-item" href="#" data-value="comment-template:">Add template to the comment form</a>
+        <a class="dropdown-item" target="_blank" href="/wiki/comment-templates">Write a template for the comment form</a>
+      <% end %>
+      <div class="dropdown-divider"></div>
+      <a class="dropdown-item" href="https://publiclab.org/power-tags" target="_blank">Learn About Powertags</a>
+    </div>
+</div>
 
 <script type="text/javascript">
 

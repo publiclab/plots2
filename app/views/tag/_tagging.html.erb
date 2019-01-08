@@ -52,14 +52,16 @@ $(".label").on("click", function(e){
 <% if current_user && (parent != :profile || (current_user.id == user.id || current_user.role == "admin")) %>
 <% url = url || "/tag/create/" + @node.id.to_s %>
 
-<form id="tagform" class="form" data-remote="true" action="<%= url %>">
-  <div class="control-group">
-    <input name="remote" type="hidden" value="true" />
+<form id="tagform" data-remote="true" action="<%= url %>">
+  <div class="form-row">
+    <input class="form-control" name="remote" type="hidden" value="true" />
     <div class="input-group">
-      <span class="input-group-addon"><i class="fa fa-tags"></i></span>
+        <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fa fa-tags"></i></span>
+        </div>
       <input autocomplete="off" class="tag-input form-control" name="name" type="text" placeholder="<%= t('tag._tagging.enter_tags') %>" data-provide="typeahead" />
-      <div class="input-group-btn">
-        <a class="btn btn-default blurred-location-input" rel="tooltip" title="Link with a location">
+      <div class="input-group-append">
+        <a class="btn btn-outline-secondary blurred-location-input" rel="tooltip" title="Link with a location">
           <i class="fa fa-map-marker"></i>
         </a>
         <%= render partial: 'tag/advanced_tagging' %>
