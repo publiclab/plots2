@@ -171,8 +171,8 @@ class SubscriptionController < ApplicationController
         # user or node subscription
       end
     else
-      flash[:warning] = "You must be logged in to subscribe for email updates; please <a href='javascript:void()' onClick='login()'>log in</a> or <a href='/signup'>create an account</a>."
-      redirect_to "subscribe/multiple/" + params[:type] + params[:tagnames]
+      flash[:warning] = "You must be logged in to subscribe for email updates."
+      return_to "/login"
     end
   end
 
