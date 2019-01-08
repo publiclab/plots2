@@ -11,9 +11,9 @@
 		</div>
 	  <% end %>
 		<% if current_user %>
-			<%= f.submit 'Subscribe', class: "btn btn-primary btn-sm", style: 'margin-top: 10px;' %>
+		  <%= f.submit 'Subscribe', class: "btn btn-primary btn-sm", style: 'margin-top: 10px;' %>
 		<% else %>
-			<a data-toggle="modal" data-target="#loginModal" class="btn btn-primary btn-sm active" role="button" aria-pressed="true" style="margin-top: 10px">Subscribe</a>
+		  <a data-toggle="modal" data-target="#loginModal" class="btn btn-primary btn-sm active" role="button" aria-pressed="true" style="margin-top: 10px">Subscribe</a>
 		<% end %>
 	  <% end %>
 </div>
