@@ -1,86 +1,122 @@
-<h1>Activity</h1>
-
-<h4><b> Choose a date range to view statistics for</b></h4>
-<%= form_tag request.url, method: 'get' do %>
-    <div class="row">
-        <div class="col-md-8 well">
-            <span style="font-size: 1.25em; color:#3071a9">
-                <i class="fa fa-calendar" style="font-size: 2em;"></i> From <%= @start.to_formatted_s(:long) %> to <%= @end.to_formatted_s(:long) %>
-        </span>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-8">
-            <h5> Date Range </h5>
-            <%= select_tag :options, options_for_select(["Week", "Month","Year"]), prompt: "Choose a period to view statistics for",
-                class: " form-control input-lg", onchange: "this.form.submit();" %>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-            <h3><label class="label label-primary">Starting</label></h3>
-            <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%d-%m-%Y") %>" data-date-format="dd-mm-yyyy"  top="10px" tabindex="1" class="form-control input-lg" type="text" name="start" value="<%= (DateTime.now - 1.weeks).strftime("%d-%m-%Y") %>" />
-        </div>
-        <div class="col-md-4">
-            <h3><label class="label label-primary">Ending</label></h3>
-            <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%d-%m-%Y") %>"   data-date-format="dd-mm-yyyy" tabindex="1" class="form-control input-lg" type="text" name="end" value="<%= DateTime.now.strftime("%d-%m-%Y") %>" />
-        </div>
-        <div class="col-md-2">
-            <br> <br> <br> 
-            <%= button_tag type: 'submit' , class: 'btn btn-primary' do %>
-                <i class="fa fa-chevron-right fa-2x"></i>
-            <% end %>
-        </div>
-    </div>
-<% end %>
+<div class="col-md-3">
+    <h4> About this page </h4>
+    <p> There is a lot of content being added to the website everyday. In this page you can select a range to see the statistics of different types of content on the website within that range </p>
 </div>
-<hr />
+<div class="col-md-8 col-md-offset-1">
+    <h1>Activity</h1>
+    <hr>
+    <p>
+    Choose a period i.e week, month or year in the drop-down below to see the activity in the past week,<br> month or year respectively.
+    You can also choose a starting and an ending date in the field further down <br>to see activity during that range
+    </p>
+    <%= form_tag request.url, method: 'get' do %>
+        <div class="row">
+            <div class="col-md-9  well">
+                <span style="font-size: 1em; color:#3071a9">
+                    <i class="fa fa-calendar" style="font-size: 2em;"></i> Showing statistics from <%= @start.to_formatted_s(:long) %> to <%= @end.to_formatted_s(:long) %>
+            </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <h5> Date Range </h5>
+                <%= select_tag :options, options_for_select(["Week", "Month","Year"]), prompt: "Choose a period to view statistics for",
+                    class: " form-control input-lg", onchange: "this.form.submit();" %>
+        </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-4">
+                <label>Starting</label>
+                <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%d-%m-%Y") %>" data-date-format="dd-mm-yyyy" tabindex="1" class="form-control input-lg" type="text" name="start" placeholder="Start date">
+            </div>
+            <div class="col-md-4">
+                <label>Ending</label>
+                <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%d-%m-%Y") %>" data-date-format="dd-mm-yyyy" tabindex="1" class="form-control input-lg" type="text" name="end" placeholder="End date">
+            </div>
+            <div class="col-md-1">
+                <%= submit_tag "Go" , class: 'btn btn-primary', :style=>'margin-top:2em;'  %>
+            </div>
+        </div>
+    <% end %>
+    <hr />
 
-<table class="table">
-  <tr>
-    <td><%= @notes %></td>
-    <td>notes in this period</td>
-  </tr>
-  <tr>
-    <%= @wikis %></td>
-    wiki edits in this period</td>
-  </tr>
-  <tr>
-    <td><%= @people %></td>
-    <td>new member registrations in this period</td>
-  </tr>
-  <tr>
-    <td><%= @answers %></td>
-    <td>answers posted in this period</td>
-  </tr>
-  <tr>
-    <td><%= @comments %></td>
-    <td>comments posted in this period</td>
-  </tr>
-  <tr>
-    <td><%= @questions.count %></td>
-    <td>questions posted in this period</td>
-  </tr>
-  <tr>
-    <td><%= @contributors %></td>
-    <td>contributors in this period</td>
-  </tr>
-</table>
+    <table class="table">
+        <tr>
+            <td><%= @notes %></td>
+            <td>notes in this period</td>
+        </tr>
+        <tr>
+            <%= @wikis %></td>
+        wiki edits in this period</td>
+        </tr>
+        <tr>
+            <td><%= @people %></td>
+            <td>new member registrations in this period</td>
+        </tr>
+        <tr>
+            <td><%= @answers %></td>
+            <td>answers posted in this period</td>
+        </tr>
+        <tr>
+            <td><%= @comments %></td>
+            <td>comments posted in this period</td>
+        </tr>
+        <tr>
+            <td><%= @questions.count %></td>
+            <td>questions posted in this period</td>
+        </tr>
+        <tr>
+            <td><%= @contributors %></td>
+            <td>contributors in this period</td>
+        </tr>
+    </table>
 
-<p><i>Member registration may include spam accounts</i></p>
+    <%= link_to "/stats/range/#{(@start - 1.year).to_formatted_s(:long)} / #{(@end - 1.year).to_formatted_s(:long)}", class: 'btn btn-primary', title: '1 year back' do %>
+        <i class="fa fa-chevron-left" style="color:white"></i>
+        <i class="fa fa-chevron-left" style="color:white"></i>
+        <i class="fa fa-chevron-left" style="color:white"></i>
+        <i class="fa fa-chevron-left" style="color:white"></i>
+    <% end %>
 
-<p>
-  Back by:
-  <a href="/stats/range/<%= (@start - 1.week).to_formatted_s(:long)   %>/<%= (@end - 1.week).to_formatted_s(:long)   %>">one week</a>,
-  <a href="/stats/range/<%= (@start - 1.month).to_formatted_s(:long)  %>/<%= (@end - 1.month).to_formatted_s(:long)  %>">one month</a>,
-  <a href="/stats/range/<%= (@start - 3.months).to_formatted_s(:long) %>/<%= (@end - 3.months).to_formatted_s(:long) %>">three months</a>,
-  <a href="/stats/range/<%= (@start - 1.year).to_formatted_s(:long)   %>/<%= (@end - 1.year).to_formatted_s(:long)   %>">one year</a>
-</p>
+    <%= link_to "/stats/range/ #{(@start - 3.months).to_formatted_s(:long) }/ #{(@end - 3.months).to_formatted_s(:long) }", class: 'btn btn-primary',  title: '3 months back' do %>
+        <i class="fa fa-chevron-left" style="color:white"></i>
+        <i class="fa fa-chevron-left" style="color:white"></i>
+        <i class="fa fa-chevron-left" style="color:white"></i>
+    <% end %>
 
-<p>
-  Forward by:
-  <a href="/stats/range/<%= (@start + 1.week).to_formatted_s(:long)   %>/<%= (@end + 1.week).to_formatted_s(:long)   %>">one week</a>,
-  <a href="/stats/range/<%= (@start + 1.month).to_formatted_s(:long)  %>/<%= (@end + 1.month).to_formatted_s(:long)  %>">one month</a>,
-  <a href="/stats/range/<%= (@start + 3.months).to_formatted_s(:long) %>/<%= (@end + 3.months).to_formatted_s(:long) %>">three months</a>,
-  <a href="/stats/range/<%= (@start + 1.year).to_formatted_s(:long)   %>/<%= (@end + 1.year).to_formatted_s(:long)   %>">one year</a>
-</p>
+    <%= link_to "/stats/range/ #{(@start - 1.month).to_formatted_s(:long)}/ #{ (@end - 1.month).to_formatted_s(:long)}",  class: 'btn btn-primary', title: '1 month back' do %>
+        <i class="fa fa-chevron-left" style="color:white"></i>
+        <i class="fa fa-chevron-left" style="color:white"></i>
+    <% end %>
+
+    <%= link_to "/stats/range/#{(@start - 1.week).to_formatted_s(:long)}   / #{(@end - 1.week).to_formatted_s(:long)}", class: 'btn btn-primary', title: '1 week back' do %>
+        <i class="fa fa-chevron-left" style="color:white"></i>
+    <% end %>
+
+    Back by or Forward by
+
+    <%= link_to "/stats/range/ #{(@start + 1.week).to_formatted_s(:long)} / #{ (@end + 1.week).to_formatted_s(:long)}", class: 'btn btn-primary', title: '1 week forward' do  %>
+        <i class="fa fa-chevron-right" style="color:white"></i>
+    <% end %>
+
+    <%= link_to "/stats/range/#{(@start + 1.month).to_formatted_s(:long)}/ #{(@end + 1.month).to_formatted_s(:long)}", class: 'btn btn-primary', title: "1 month foward" do %>
+        <i class="fa fa-chevron-right" style="color:white"></i>
+        <i class="fa fa-chevron-right" style="color:white"></i>
+    <% end %>
+
+    <%= link_to "/stats/range/ #{(@start + 3.months).to_formatted_s(:long)} /#{(@end + 3.months).to_formatted_s(:long)}", class: 'btn btn-primary', title: "3 months forward" do %>
+        <i class="fa fa-chevron-right" style="color:white"></i>
+        <i class="fa fa-chevron-right" style="color:white"></i>
+        <i class="fa fa-chevron-right" style="color:white"></i>
+    <% end %>
+
+    <%= link_to "/stats/range/#{(@start + 1.year).to_formatted_s(:long)} / #{(@end + 1.year).to_formatted_s(:long)}", class: 'btn btn-primary',  title: "1 year forward" do %>
+        <i class="fa fa-chevron-right" style="color:white"></i>
+        <i class="fa fa-chevron-right" style="color:white"></i>
+        <i class="fa fa-chevron-right" style="color:white"></i>
+        <i class="fa fa-chevron-right" style="color:white"></i>
+    <% end %>
+    <br><br>
+    <p><i>Member registration may include spam accounts</i></p>
+</div>
