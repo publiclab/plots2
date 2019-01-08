@@ -3,9 +3,15 @@
   
   <%= hidden_field_tag "user_session[modal_login]", "true" %>
   <h2 id="toSignup"><%= raw t('user_sessions.new.log_in_or_sign_up', :url1 => "#") %></h2>
-  <% if f.error_messages != "" && flash[:modal_login] == "true" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
+  
+  <div class='col-lg-11 col-md-11 col-sm-11'>
+    <% if f.error_messages != "" && flash[:modal_login] == "true" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
+  </div>
 
-  <% if flash[:warning] && flash[:modal_login] == "true" %><div class="alert alert-warning"><button type="button" class="close" data-dismiss="alert">×</button><i class="fa fa-exclamation-mark"></i> <%= raw flash[:warning] %></div><% end %>
+  <div class='col-lg-11 col-md-11 col-sm-11'>
+    <% if flash[:warning] %><div class="alert alert-warning"><button type="button" class="close" data-dismiss="alert">×</button><i class="fa fa-exclamation-mark"></i><%= raw flash[:warning] %></div><% end %>
+  </div>
+
   <br style="clear:both;"/>
 
   <div class='col-lg-11 col-md-11 col-sm-11' style="display:flex; justify-content: center;">
