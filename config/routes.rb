@@ -52,6 +52,7 @@ Plots2::Application.routes.draw do
   get 'people/:tagname' => 'users#list'
   get 'signup' => 'users#new'
   get 'home' => 'home#front'
+  get 'verify/:token' => 'users#verify_email'
   resources :relationships, only: [:create, :destroy]
 
   get '/wiki/:id/comments', to: 'wiki#comments'
