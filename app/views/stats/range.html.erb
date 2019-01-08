@@ -1,6 +1,6 @@
 <h1>Activity</h1>
 
-<h4><b> Select a range below to view stats within the range </b></h4>
+<h4><b> Choose a date range to view statistics for</b></h4>
 <%= form_tag request.url, method: 'get' do %>
     <div class="row">
         <div class="col-md-8 well">
@@ -12,27 +12,21 @@
     <div class="row">
         <div class="col-md-8">
             <h5> Date Range </h5>
-            <%= select_tag :options, options_for_select(["Week", "Month","Year"]), prompt: "View stats in the past", class: " form-control input-lg", onchange: "this.form.submit();" %>
+            <%= select_tag :options, options_for_select(["Week", "Month","Year"]), prompt: "Choose a period to view statistics for",
+                class: " form-control input-lg", onchange: "this.form.submit();" %>
         </div>
     </div>
     <div class="row">
         <div class="col-md-4">
             <h3><label class="label label-primary">Starting</label></h3>
+            <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%d-%m-%Y") %>" data-date-format="dd-mm-yyyy"  top="10px" tabindex="1" class="form-control input-lg" type="text" name="start" value="<%= (DateTime.now - 1.weeks).strftime("%d-%m-%Y") %>" />
         </div>
         <div class="col-md-4">
             <h3><label class="label label-primary">Ending</label></h3>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-3">
-            <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%d-%m-%Y") %>" data-date-format="dd-mm-yyyy"  top="10px" tabindex="1" class="form-control input-lg" type="text" name="start" value="<%= (DateTime.now - 1.weeks).strftime("%d-%m-%Y") %>" />
-        </div>
-        <div class="col-md-1">
-        </div>
-        <div class="col-md-3">
             <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%d-%m-%Y") %>"   data-date-format="dd-mm-yyyy" tabindex="1" class="form-control input-lg" type="text" name="end" value="<%= DateTime.now.strftime("%d-%m-%Y") %>" />
         </div>
         <div class="col-md-2">
+            <br> <br> <br> 
             <%= button_tag type: 'submit' , class: 'btn btn-primary' do %>
                 <i class="fa fa-chevron-right fa-2x"></i>
             <% end %>
