@@ -45,7 +45,7 @@ class TagController < ApplicationController
         .where('node.status = ?', 1)
         .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
         .group(:name)
-      raw_tags = sort_according_to_followers(raw_tags)
+      raw_tags = Tag.sort_according_to_followers(raw_tags, params[:order])
       @tags = raw_tags.paginate(page: params[:page], per_page: 24)
     else
       tags = Tag.joins(:node_tag, :node)
@@ -486,17 +486,5 @@ class TagController < ApplicationController
     else
       params[:order] == "asc" ? "name ASC" : "name DESC"
     end
-  end
-
-  def sort_according_to_followers(raw_tags)
-    tags_with_their_followers = []
-    raw_tags.each do |i|
-      tags_with_their_followers << { "number_of_followers" => Tag.follower_count(i.name), "tags" => i }
-    end
-    tags_with_their_followers.sort_by! { |key| key["number_of_followers"] }
-    if params[:order] != "asc"
-      tags_with_their_followers.reverse!
-    end
-    tags = tags_with_their_followers.map { |x| x["tags"] }
   end
 end
