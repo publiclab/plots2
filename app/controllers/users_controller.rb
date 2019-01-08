@@ -92,11 +92,11 @@ class UsersController < ApplicationController
     end
 
     if sort_param == 'username'
-      order_string = 'name ASC'
+      order_string = 'username ASC'
     elsif sort_param == 'last_activity'
       order_string = 'last_updated DESC'
     elsif sort_param == 'joined'
-      order_string = 'created DESC'
+      order_string = 'created_at DESC'
     end
 
     @map_lat = nil
@@ -118,12 +118,12 @@ class UsersController < ApplicationController
 
     else
       # recently active
-      @users = User.select('*, rusers.status, MAX(node.changed) AS last_updated')
-                    .joins(:node)
-                    .group('rusers.id')
-                    .where('node.status = 1')
-                    .order(order_string)
-                    .page(params[:page])
+      @users = User.select('*, rusers.status, MAX(node_revisions.timestamp) AS last_updated')
+                   .joins(:revisions)
+                   .where("node_revisions.status = 1")
+                   .group('rusers.id')
+                   .order(order_string)
+                   .page(params[:page])
     end
 
     @users = @users.where('rusers.status = 1') unless current_user&.can_moderate?
