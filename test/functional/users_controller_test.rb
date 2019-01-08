@@ -216,6 +216,21 @@ class UsersControllerTest < ActionController::TestCase
     assert_equal User.find(user.id).bio, bio
   end
 
+  test 'update profile with correct password when ui_update is true' do
+    user = users(:bob)
+    bio = users(:bob).bio
+    UserSession.create(user)
+    post :update, params: {
+      user: {
+        bio: 'Bio updated by user',
+        current_password: 'secretive',
+        ui_update: 'true'
+      }
+    }
+    assert_response :redirect
+    assert_equal User.find(user.id).bio, 'Bio updated by user'
+  end
+
   test 'should redirect edit when not logged in' do
     user = users(:bob)
     get :edit, params: { id: user.name }
