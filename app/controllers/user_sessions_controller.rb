@@ -85,6 +85,7 @@ class UserSessionsController < ApplicationController
   end
 
   def handle_site_login_flow
+    flash[:modal_login] = params[:user_session][:modal_login]
     username = params[:user_session][:username] if params[:user_session]
     u = User.find_by(username: username)
     if u && u.password_checker != 0

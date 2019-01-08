@@ -196,6 +196,15 @@
   </div>
 </div>
 
+<!-- jquery to redirect to Login Modal-->
+<script>
+  <% if flash[:modal_login] == "true" %>
+    $(window).on('load',function(){
+      $('#loginModal').modal('show');
+    });
+  <% end %>
+</script>
+
 <!-- Modal jquery -->
 <script>
   var mode =""; //Either "login" or "signup". Used later to load partialis
