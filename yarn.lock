@@ -2325,22 +2325,21 @@ leaflet-d3@Asymmetrik/leaflet-d3#^0.3.8:
   version "0.3.8"
   resolved "https://codeload.github.com/Asymmetrik/leaflet-d3/tar.gz/bf557a3403d7d2583bb21d91209e16239b5189b0"
 
-leaflet-environmental-layers@^1.0.1:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/leaflet-environmental-layers/-/leaflet-environmental-layers-1.1.2.tgz#4af534e10225c6e06993744c06f05f8a41d6910a"
-  integrity sha512-Lf3abYHzPADeDa8t3o33DApHXxN7aubAdYXS8iXrd1QeV9Uw7/m7kjshmqubcE78ziaykkFaZbpOXP7o8jSGtQ==
+leaflet-environmental-layers@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/leaflet-environmental-layers/-/leaflet-environmental-layers-1.2.4.tgz#6e1ad03a4adf3f75b87d6a2bc87514172489b226"
+  integrity sha512-/nTy0I9jIHglyPAnPEZ0Upuwxd/hq9z++gcNe99vM9XdCDOV6yLEka97baVahb4Kg11VUmm7qYyO8BdXLdpuAA==
   dependencies:
     jquery "^3.3.1"
     leaflet "^1.3.1"
-    leaflet-hash "0.2.1"
+    leaflet-fullhash "github:sagarpreet-chadha/leaflet-fullHash"
     leaflet-heatmap "1.0.0"
     leaflet-providers "^1.1.17"
     leaflet-spin "1.1.0"
 
-leaflet-hash@*, leaflet-hash@0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/leaflet-hash/-/leaflet-hash-0.2.1.tgz#c36c718347c5243033b57cb4baea26119d82c701"
-  integrity sha1-w2xxg0fFJDAztXy0uuomEZ2CxwE=
+"leaflet-fullhash@github:sagarpreet-chadha/leaflet-fullHash":
+  version "1.0.0"
+  resolved "https://codeload.github.com/sagarpreet-chadha/leaflet-fullHash/tar.gz/6c547255ef7842281c6af3d6b879a2e994e1c54d"
 
 leaflet-heatmap@1.0.0:
   version "1.0.0"
