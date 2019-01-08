@@ -644,4 +644,27 @@ class TagControllerTest < ActionController::TestCase
     get :index
     assert_response :success
   end
+
+  test 'sort according to followers ascending' do
+    get :index, params: { :sort => "followers", :order => "asc" }
+    tags_array = assigns(:tags)
+    followers_array = []
+    tags_array.each do |i|
+      followers_array << Tag.follower_count(i.name)
+    end
+    sorted_followers_array = followers_array.sort
+    assert_equal sorted_followers_array, followers_array
+  end
+
+  test 'sort according to followers descending' do
+    get :index, params: { :sort => "followers", :order => "desc" }
+    tags_array = assigns(:tags)
+    followers_array = []
+    tags_array.each do |i|
+      followers_array << Tag.follower_count(i.name)
+    end
+    sorted_followers_array = followers_array.sort.reverse
+    assert_equal sorted_followers_array, followers_array
+  end
 end
+
