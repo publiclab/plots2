@@ -171,7 +171,7 @@ class SubscriptionController < ApplicationController
         # user or node subscription
       end
     else
-      flash[:warning] = "You must be logged in to subscribe for email updates."
+      flash[:warning] = "You must be logged in to subscribe for email updates!"
       return_to "/login"
     end
   end
