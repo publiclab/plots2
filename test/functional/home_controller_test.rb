@@ -45,9 +45,7 @@ class HomeControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
     get :dashboard
     assert_response :success
-    assert_response.match("mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+item+that+looks+like+spam+or+needs+to+be+moderated:+<%= node.title.gsub(/ /,'+') %>+https://publiclab.org/n/<%= node.id %>+by+https://publiclab.org/profile/<%= node.author.username %>+Thanks!")
-    #assert_equal response.match(string) will give undefined response object
-    #assert response.match(string) will give undefined method error
+    assert @response.match("mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+item+that+looks+like+spam+or+needs+to+be+moderated:+Canon+A1200+IR+conversion+at+PLOTS+Barnraising+at+LUMCON+https://publiclab.org/n/1+by+https://publiclab.org/profile/jeff+Thanks!")
   end
 
   test 'should show only unmoderated spam' do
