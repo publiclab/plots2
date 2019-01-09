@@ -98,17 +98,16 @@ class UserSessionsController < ApplicationController
       params[:user_session][:username] = params[:openid] if params[:openid] # second runthrough must preserve username
       @user = User.find_by(username: username)
       # try finding by email, if that exists
+      if params[:return_to] == ""
+        params[:return_to] = '/login'
+      end
       if @user.nil? && !User.where(email: username).empty?
         @user = User.find_by(email: username)
         params[:user_session][:username] = @user.username
       end
       if @user.nil?
         flash[:warning] = "There is nobody in our system by that name, are you sure you have the right username?"
-        if params[:return_to] == ""
-          redirect_to '/login'
-        else
-          redirect_to params[:return_to]
-        end
+        redirect_to params[:return_to]
       elsif params[:user_session].nil? || @user&.status == 1
         # an existing Rails user
         if params[:user_session].nil? || @user
@@ -153,12 +152,8 @@ class UserSessionsController < ApplicationController
             else
               # Login failed; probably bad password.
               # Errors will display on login form:
-              if params[:return_to] == ""
-                render action: 'new'
-              else
-                flash[:error] = @user_session.errors.full_messages.to_sentence
-                redirect_to params[:return_to]
-              end
+              flash[:error] = @user_session.errors.full_messages.to_sentence
+              redirect_to params[:return_to]
             end
           end
         else # not a native user
