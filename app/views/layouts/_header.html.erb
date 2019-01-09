@@ -192,7 +192,7 @@
             <%= render :partial => "users/create_form" %>
           </div>
           <div id="loginContainer"> <!-- login partial -->
-            <%= render :partial => "user_sessions/new" %>
+            <%= render :file => "user_sessions/new" %>
           </div>
         </div>
       </div>
@@ -236,7 +236,7 @@
       $("#loginContainer").find("#password-signup").val(pass);
     });
 
-    $("#toSignup").click(function(){ //Function runs when the "sign up to join" link in the login modal is clicked 
+    $("#toSignup").click(function(){ //Function runs when the "sign up to join" link in the login modal is clicked
       var user = $("#loginContainer").find("#username-signup").val(); //Username and password data is transferred to the other partial
       var pass = $("#loginContainer").find("#password-signup").val();
       showSignup(); // Modal switches to sign up view
