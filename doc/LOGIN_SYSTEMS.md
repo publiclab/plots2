@@ -8,7 +8,7 @@ Multiparty Authentication system currently has 4 providers, namely:
 * Twitter: Using the [omniauth-twitter](https://github.com/arunagw/omniauth-twitter) gem for OAuth.
 * Facebook: Using the [omniauth-facebook](https://github.com/mkdynamic/omniauth-facebook) gem for OAuth.
 
-To sign up or log in via a provider or to link a provider, go to https://publiclab.org/auth/:provider. Sign in through the provider with the desired email address and password. Then the user will be redirected to https://publiclab.org/auth/:provider/callback. Authentication hash is available in the callback. It can be accessed by `request.env['omniauth.auth']` for any provider. Now the user signs up, logs in or links his/her providers' accounts to his/her Public Lab account.
+To sign up or log in via a provider or to link a provider, go to https://publiclab.org/auth/:provider. Sign in through the provider with the desired email address and password. Then the user will be redirected to https://publiclab.org/auth/:provider/callback. Authentication hash is available in the callback. It can be accessed by `request.env['omniauth.auth']` for any provider. Now the user signs up, logs in or links their providers' accounts to their Public Lab account.
 
 Linking of any account through providers is based on the following cases:
 1) If the client is signed in and does not have any account of the same provider through which they are trying to connect to their Public Lab account, then the provider will be linked to their account.
@@ -19,7 +19,8 @@ Linking of any account through providers is based on the following cases:
 
 For a new account creation, `email_prefix` i.e. the part of email before `@` symbol, is used as username. In case there exists a user with the same username then randomly generated hexadecimal code is appended to the email_prefix. Then this email_prefix is used as username.
 Corresponding code is present in https://github.com/publiclab/plots2/blob/master/app/models/user.rb and https://github.com/publiclab/plots2/blob/master/app/controllers/user_sessions_controller.rb.
-6) Usertags are used to store the provider and the uid for authentication. The client may delete his/her usertag via the profile page in order to delete the corresponding provider from his/her account
+
+6) Usertags are used to store the provider and the uid for authentication. The client may delete their usertag via the profile page in order to delete the corresponding provider from their account.
 
 The functionality of this system is demonstrated on https://publiclab.org/oauth.  
 
@@ -61,11 +62,13 @@ They are accessed by ENV["OAUTH_GITHUB_APP_KEY"], ENV["OAUTH_GITHUB_APP_SECRET"]
 
 ## How to setup login on various locations?
 
-For better UI on the website, we recently created login and signup modals. The corresponding code is present here https://github.com/publiclab/plots2/blob/master/app/views/layouts/_header.html.erb#L176-L266.
+For better UI on the website, we recently created login and signup modals. The corresponding code is https://github.com/publiclab/plots2/blob/master/app/views/layouts/_header.html.erb#L176-L266.
 
 The `/login` and `/signup` pages still exist as some particular features require the pages.
 
-A custom Javascript class named as `requireLogin` is active and it can be inserted in anywhere for asking the user to log in first to use that particular function. For example, it can be implemented in a button with the button class as `btn btn-default requireLogin`.
+A custom Javascript class named as `requireLogin` is used and it can be inserted in any location where log in is required to use that particular function.
+
+For example, it can be implemented in a button with the button class as `btn btn-default requireLogin`.
 
 ## Variables used
 
