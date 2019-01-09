@@ -276,7 +276,7 @@ GEM
     parallel (1.12.1)
     parser (2.5.3.0)
       ast (~> 2.4.0)
-    passenger (6.0.0)
+    passenger (6.0.1)
       rack
       rake (>= 0.8.1)
     phantomjs (2.1.1.0)
@@ -568,4 +568,4 @@ RUBY VERSION
    ruby 2.4.4p296
 
 BUNDLED WITH
-   1.17.2
+   1.17.1
