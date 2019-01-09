@@ -104,7 +104,12 @@ class UserSessionsController < ApplicationController
       end
       if @user.nil?
         flash[:warning] = "There is nobody in our system by that name, are you sure you have the right username?"
-        redirect_to params[:return_to]
+        if params[:return_to] == ""
+          redirect_to '/login'
+        else
+          return_to = params[:return_to]
+          redirect_to return_to
+        end
       elsif params[:user_session].nil? || @user&.status == 1
         # an existing Rails user
         if params[:user_session].nil? || @user
@@ -149,8 +154,13 @@ class UserSessionsController < ApplicationController
             else
               # Login failed; probably bad password.
               # Errors will display on login form:
-              flash[:error] = @user_session.errors.full_messages.to_sentence
-              redirect_to params[:return_to]
+              if params[:return_to] == ""
+                render action: 'new'
+              else
+                flash[:error] = @user_session.errors.full_messages.to_sentence
+                return_to = params[:return_to]
+                redirect_to return_to
+              end
             end
           end
         else # not a native user
