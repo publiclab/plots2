@@ -179,7 +179,6 @@ GEM
     jwt (2.1.0)
     launchy (2.4.3)
       addressable (~> 2.3)
-    lemmatizer (0.1.1)
     less (2.6.0)
       commonjs (~> 0.2.7)
     less-rails (4.0.0)
@@ -276,7 +275,7 @@ GEM
     parallel (1.12.1)
     parser (2.5.3.0)
       ast (~> 2.4.0)
-    passenger (6.0.1)
+    passenger (6.0.0)
       rack
       rake (>= 0.8.1)
     phantomjs (2.1.1.0)
@@ -504,7 +503,6 @@ DEPENDENCIES
   jquery-atwho-rails
   jquery-rails
   json_expressions
-  lemmatizer (~> 0.1.1)
   less-rails (~> 4.0)
   letter_opener
   listen (~> 3.1.5)
