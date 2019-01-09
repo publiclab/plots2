@@ -62,11 +62,11 @@ They are accessed by ENV["OAUTH_GITHUB_APP_KEY"], ENV["OAUTH_GITHUB_APP_SECRET"]
 
 ## How to setup login on various locations?
 
-For better UI on the website, we recently created login and signup modals. The corresponding code is https://github.com/publiclab/plots2/blob/master/app/views/layouts/_header.html.erb#L176-L266.
+For improving UI, login and signup modals were created. The code for the login and signup modals is https://github.com/publiclab/plots2/blob/master/app/views/layouts/_header.html.erb#L176-L266.
 
-The `/login` and `/signup` pages still exist as some particular features require the pages.
+The `/login` and `/signup` pages still exist as particular features require those pages.
 
-A custom Javascript class named as `requireLogin` is used and it can be inserted in any location where log in is required to use that particular function.
+A custom JavaScript class named 'requireLogin' is inserted at the locations where login modal needs to be rendered.
 
 For example, it can be implemented in a button with the button class as `btn btn-default requireLogin`.
 
