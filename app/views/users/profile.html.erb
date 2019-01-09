@@ -4,7 +4,7 @@
 
   <h3 style="margin-top:0;"><%= @user.name %> <%= @user.new_contributor %>
     <small>
-      <a href="/p/<%= @user.username %>"><i class="fa fa-link"></i></a> 
+      <a href="/p/<%= @user.username %>"><i class="fa fa-link"></i></a>
       <%= @user.note_count %><a href='/notes/author/<%= @user.name %>'> research notes</a> and <%= @user.revisions.count %> wiki edits
       <% if current_user && current_user.role == "admin" %> | <%= @user.email %><% end %>
       <% if @user.role == "moderator" %> | <i class="fa fa-certificate"></i> <%= t('users.profile.moderator') %><% end %>
@@ -195,20 +195,39 @@
   <hr />
 
   <p>
-    <a class="btn btn-default btn-block" href="/feed/<%= @user.name %>.rss"><i class="fa fa-rss" style="color:orange;"></i> <%= t('users.profile.rss_feed_for') %> <%= @user.name %></a> 
+    <a class="btn btn-default btn-block" href="/feed/<%= @user.name %>.rss"><i class="fa fa-rss" style="color:orange;"></i> <%= t('users.profile.rss_feed_for') %> <%= @user.name %></a>
     <% if current_user && current_user.uid == @user.uid %>
-      <a href="/profile/<%= @user.name %>/edit" class="btn btn-default btn-block"><i class="fa fa-pencil"></i> <%= t('users.profile.edit_profile') %></a> 
+      <a href="/profile/<%= @user.name %>/edit" class="btn btn-default btn-block"><i class="fa fa-pencil"></i> <%= t('users.profile.edit_profile') %></a>
     <% end %>
   </p>
 
   <% if @user && current_user && @user == current_user %>
-    <button id="btn-token" class="btn btn-default btn-block">My Access Token</button>
-    <button data-toggle="modal" data-target="#socialModal" class="btn btn-default btn-block">Link Social media</button>
+    <button id="accessTokenButton" data-toggle="modal" data-target="#btn-token" class="btn btn-default btn-block">My Access Token</button>
+    <button data-toggle="modal" data-target="#socialModal" class="btn btn-default btn-block">Link Social Media</button>
+
+    <div class="modal fade" id="btn-token" tabindex="-1" role="dialog" aria-labelledby="accessModal" aria-hidden="true">
+      <div class="modal-dialog" role="document" id="token-popup">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" id="close-btn" data-dismiss="modal">x</button>
+            <h5 class="modal-title" id="accessModal">My Access Token</h5>
+          </div>
+          <div class="modal-body">
+            <p id="accessTokenForm" type="text" class="token form-control text-center"><%= @user.token %></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" id="copy-btn">Copy</button>
+          </div>
+        </div>
+      </div>
+      <div id="copyContainer"></div>
+    </div>
+
     <div class="modal fade" id="socialModal" tabindex="-1" role="dialog" aria-labelledby="socialModal" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="socialModal">Link Social media</h5>
+            <h5 class="modal-title" id="socialModal">Link Social Media</h5>
           </div>
           <div class="modal-body">
             <label for="social-name">Enter Your Social Media User name like twitter:publiclab or instagram:publiclab</label>
@@ -274,11 +293,26 @@
 
 </div>
 
-<%= render partial: 'users/token' %>
-
 <script src = "https://cdn.jsdelivr.net/npm/frappe-charts@0.0.8/dist/frappe-charts.min.iife.js"></script>
 
 <script type = "text/javascript">
+  //Upon clicking copy button, copyToken function is activated.
+  $('#copy-btn').on('click', copyToken);
+
+  //Function to copy access token to clipboard
+  function copyToken() {
+    let tokenContainer = document.getElementById("copyContainer");
+    let inputElement = document.createElement("input");
+    inputElement.type = "text";
+    console.log(tokenContainer);
+    tokenContainer.appendChild(inputElement);
+    inputElement.value = '<%= @user.token %>';
+    inputElement.select();
+    document.execCommand("Copy");
+    tokenContainer.removeChild(tokenContainer.lastChild);
+    $('#copy-btn').text('Copied').attr('disabled', 'true');
+  }
+
     $('#link_social_media').click(function(){
         sign = document.getElementById('social-name').value;
         $.post('/profile/tags/create/<%=@user.uid %> ',{"name": sign,"id":<%=@user.uid %>}, function(data) {
@@ -306,7 +340,6 @@
 
         profile.value.name = "<%= @user.name %>"
         profile.fetch_maps();
-
     })();
 </script>
 
@@ -325,6 +358,10 @@
   i:hover{
     transition-duration: .2s;
     transform: scale(1.2);
+  }
+
+  .token{
+    font-weight: bold;
   }
 </style>
 
