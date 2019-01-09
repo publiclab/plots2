@@ -107,8 +107,7 @@ class UserSessionsController < ApplicationController
         if params[:return_to] == ""
           redirect_to '/login'
         else
-          return_to = params[:return_to]
-          redirect_to return_to
+          redirect_to params[:return_to]
         end
       elsif params[:user_session].nil? || @user&.status == 1
         # an existing Rails user
@@ -158,8 +157,7 @@ class UserSessionsController < ApplicationController
                 render action: 'new'
               else
                 flash[:error] = @user_session.errors.full_messages.to_sentence
-                return_to = params[:return_to]
-                redirect_to return_to
+                redirect_to params[:return_to]
               end
             end
           end
