@@ -2,10 +2,12 @@
 <%= form_for :user_session, :as => :user_session, :url => "/user_sessions?return_to=" + request.fullpath, :html => {:class => "form col-md-6 offset-3"} do |f| %>
   
   <%= hidden_field_tag "user_session[modal_login]", "true" %>
-  <h2 id="toSignup"><%= raw t('user_sessions.new.log_in_or_sign_up', :url1 => "#") %></h2>
-  
   <div class='col-lg-11 col-md-11 col-sm-11'>
-    <% if f.error_messages != "" && flash[:modal_login] == "true" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
+  <h2 id="toSignup"><%= raw t('user_sessions.new.log_in_or_sign_up', :url1 => "#") %></h2>
+  </div>
+
+  <div class='col-lg-11 col-md-11 col-sm-11'>
+    <% if !flash[:error].nil? && flash[:modal_login] == "true" %><div class="alert alert-danger"><%= flash[:error] %></div><% end %>
   </div>
 
   <div class='col-lg-11 col-md-11 col-sm-11'>
