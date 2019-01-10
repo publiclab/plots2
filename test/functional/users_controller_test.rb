@@ -88,7 +88,7 @@ class UsersControllerTest < ActionController::TestCase
     user = users(:jeff)
     crypted_password = user.crypted_password
     key = user.generate_reset_key
-    user.save({})
+    user.save
 
     user_attributes = user.attributes
     user_attributes[:password] = 'newpassword'
@@ -109,7 +109,7 @@ class UsersControllerTest < ActionController::TestCase
     user = users(:jeff)
     assert_nil user.reset_key
     user.generate_reset_key
-    user.save({})
+    user.save
     assert_not_nil User.find(user.id).reset_key
 
     get :profile, params: { id: user.username }
@@ -124,7 +124,7 @@ class UsersControllerTest < ActionController::TestCase
     UserSession.create(users(:admin))
     user = users(:jeff)
     user.generate_reset_key
-    user.save({})
+    user.save
     assert_not_nil User.find(user.id).reset_key
     get :profile, params: { uid: user.username }
   end
