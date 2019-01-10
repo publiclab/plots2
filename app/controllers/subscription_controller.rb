@@ -172,7 +172,7 @@ class SubscriptionController < ApplicationController
       end
     else
       flash[:warning] = "You must be logged in to subscribe for email updates!"
-      return_to "/login"
+      redirect_to "/login?return_to=" + request.fullpath
     end
   end
 
