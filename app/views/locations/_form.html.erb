@@ -6,8 +6,8 @@
 
   <div class="row">
 
-  <p><b>Search by place name</b></p>
-  <p><input id="placenameInput" type="text" class="form-control" /></p>
+  <label for="placenameInput"><b>Search by place name</b></label>
+  <input id="placenameInput" type="text" class="form-control" />
 
   <p><b>By dragging the map</b></p>
 
@@ -27,21 +27,24 @@
   <p>   
     <b>Or by co-ordinates</b>
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-lg-6">
         <p><input id="lat" type="text" class="form-control" value="<%= latitude ||= 40 %>"></p>
       </div>
-      <div class="col-md-6">
+      <div class="col-lg-6">
         <p><input id="lng" type="text" class="form-control" value="<%= longitude ||= -90 %>"></p>
       </div>
     </div>
-  </p>
 
-  <p><b>Place name as it will be saved:</b></p>
-  <p><input editable="false" id="placenameDisplay" type="text" class="form-control" /></p>
+    <label for="placenameDisplay"> <b>Place name as it will be saved:</b></label>
+    <input editable="false" id="placenameDisplay" type="text" class="form-control" />
 
   <button data-dismiss="modal" class="btn btn-lg btn-primary" onclick="saveLocation()">Save</button>
 
+<<<<<<< HEAD
   <button id="ldi-geocode-button" class="btn btn-default btn-lg" onclick='blurredLocation.geocodeWithBrowser(true);'>Auto-locate me</button>
+=======
+  <button id="ldi-geocode-button" class="btn btn-outline-secondary btn-lg" onclick='blurredLocation.geocodeWithBrowser();'>Auto-locate me</button>
+>>>>>>> modified some features in map
   &nbsp; <label>
     <input id="obscureLocation" type="checkbox" checked onchange='blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);'>
     Blur my location
