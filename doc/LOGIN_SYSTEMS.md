@@ -60,11 +60,9 @@ Or, write them in config/application.yml file
 Add the app_id and app_secret in the Jenkins and containers/docker*.yml files in the production.
 They are accessed by ENV["OAUTH_GITHUB_APP_KEY"], ENV["OAUTH_GITHUB_APP_SECRET"] etc inside the (config/initializers/omniauth.rb)[https://github.com/publiclab/plots2/blob/master/config/initializers/omniauth.rb]
 
-## How to setup login on various locations?
+## How to setup login modal on various locations?
 
 For improving UI, login and signup modals were created. The code for the login and signup modals is https://github.com/publiclab/plots2/blob/master/app/views/layouts/_header.html.erb#L176-L266.
-
-The `/login` and `/signup` pages still exist as particular features require those pages.
 
 A custom JavaScript class named 'requireLogin' is inserted at the locations where login modal needs to be rendered.
 
