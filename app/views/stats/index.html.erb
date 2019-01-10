@@ -1,12 +1,14 @@
 <div class="col-md-3">
 
   <%= raw t('notes.stats.about_this_page') %>
+  <%= render 'stats_nav' %>
 
 </div>
 
-<div class="col-md-9" style="margin-bottom:20px;">
+<div class="col-md-8 col-md-offset-1" style="margin-bottom:20px;">
 
   <h2><%= raw t('notes.stats.contributors_statistics') %></h2>
+  <hr>
 
   <p>Also see <a href="/stats/subscriptions">subscription stats</a>, or these types of range-based stats queries:</p>
 
