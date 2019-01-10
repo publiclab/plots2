@@ -9,7 +9,7 @@
   <% @revisions.each do |revision| %>
     <tr id="n<%= revision.vid %>">
       <td>
-        <i class="fa fa-file"></i> <a href="<%= revision.parent.path %>"><%= revision.title.truncate(40) %></a><br />
+        <i class="fa fa-file"></i> <a href="<% if !revision.parent.nil? %><%= revision.parent.path %><% end %>"><%= revision.title.truncate(40) %></a><br />
         <span style="color:grey;"><%= time_ago_in_words(revision.timestamp.seconds.ago) %> ago</span>
       </td>
       <td style="width:200px;">
