@@ -97,17 +97,17 @@ class UserSessionsController < ApplicationController
     else
       params[:user_session][:username] = params[:openid] if params[:openid] # second runthrough must preserve username
       @user = User.find_by(username: username)
-      # try finding by email, if that exists
       if params[:return_to] == ""
         params[:return_to] = '/login'
       end
+      # try finding by email, if that exists
       if @user.nil? && !User.where(email: username).empty?
         @user = User.find_by(email: username)
         params[:user_session][:username] = @user.username
       end
       if @user.nil?
         flash[:warning] = "There is nobody in our system by that name, are you sure you have the right username?"
-        redirect_to params[:return_to]
+        redirect_to '/login'
       elsif params[:user_session].nil? || @user&.status == 1
         # an existing Rails user
         if params[:user_session].nil? || @user
