@@ -109,8 +109,8 @@ class NodeTest < ActiveSupport::TestCase
 
   # new_note also generates a revision
   test 'create a research note with new_note' do
-    assert !drupal_users(:jeff).first_time_poster
-    saved, node, revision = Node.new_note(uid: drupal_users(:jeff).uid,
+    assert !users(:jeff).first_time_poster
+    saved, node, revision = Node.new_note(uid: users(:jeff).uid,
                                           title: 'Title',
                                           body: 'New note body')
     assert saved
@@ -132,8 +132,8 @@ class NodeTest < ActiveSupport::TestCase
   end
 
   test 'first-time poster creates a research note with new_note' do
-    assert drupal_users(:lurker).first_time_poster
-    saved, node, revision = Node.new_note(uid: drupal_users(:lurker).uid,
+    assert users(:lurker).first_time_poster
+    saved, node, revision = Node.new_note(uid: users(:lurker).uid,
                                           title: 'Title',
                                           body: 'New note body')
     assert saved
@@ -269,7 +269,7 @@ class NodeTest < ActiveSupport::TestCase
     expected = [nodes(:one), nodes(:spam), nodes(:first_timer_note), nodes(:blog),
                 nodes(:moderated_user_note), nodes(:activity), nodes(:upgrade),
                 nodes(:draft), nodes(:post_test1), nodes(:post_test2),
-                nodes(:post_test3), nodes(:post_test4), nodes(:scraped_image)]
+                nodes(:post_test3), nodes(:post_test4), nodes(:scraped_image), nodes(:search_trawling)]
     assert_equal expected, notes
   end
 
@@ -343,14 +343,14 @@ class NodeTest < ActiveSupport::TestCase
 
   test "user likes node or not" do
     node = nodes(:one)
-    user = drupal_users(:jeff)
+    user = users(:jeff)
     assert !node.is_liked_by(user)
 
   end
 
   test "should change the number of cache likes" do
     node = nodes(:one)
-    user = drupal_users(:jeff)
+    user = users(:jeff)
     current_cached_likes = node.cached_likes
 
     node.toggle_like(user)

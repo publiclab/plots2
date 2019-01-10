@@ -1,14 +1,5 @@
-<%= stylesheet_link_tag "/lib/leaflet/dist/leaflet.css" %>
-<%= stylesheet_link_tag "/lib/leaflet-environmental-layers/dist/LeafletEnvironmentalLayers.css" %>
-<%= javascript_include_tag('/lib/leaflet-environmental-layers/dist/LeafletEnvironmentalLayers.js') %>
-<%= javascript_include_tag('/lib/leaflet-environmental-layers/dist/windRoseLayer.js') %>
-<%= javascript_include_tag('/lib/leaflet-hash/leaflet-hash.js') %>
+<%= render :partial => "map/mapDependencies" %>
 
-<%= javascript_include_tag('https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js') %>
-<%= stylesheet_link_tag "https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css" %>
-
-<%= javascript_include_tag('/lib/leaflet-spin/example/spin/dist/spin.min.js') %>
-<%= javascript_include_tag('/lib/leaflet-spin/example/leaflet.spin.min.js') %>
 
   <% if haslocation == true %>  
     <style>
@@ -25,11 +16,11 @@
      map.setView([map_lat,map_lon], 2);
       
     setupFullScreen(map , map_lat , map_lon) ; 
-    setupLEL(map) ;
+    setupLEL(map , 1) ;
   //  var hash = new L.Hash(map);   
     <% if !(@map_blurred == true) %>
       var default_Icon =new PLmarker_default() ;
-      L.marker([<%= @map_lat %>, <%= @map_lon %>] , {icon: default_Icon}).addTo(map).bindPopup("<a href='https://publiclab.org/profile/<%= @profile_user.username  %>'><%= @profile_user.username  %> </a>");
+      L.marker([<%= @map_lat %>, <%= @map_lon %>] , {icon: default_Icon}).addTo(map).bindPopup("<a href='https://publiclab.org/profile/<%= @user.username  %>'><%= @user.username  %> </a>");
     <% end %>
     </script>
   <% else %>

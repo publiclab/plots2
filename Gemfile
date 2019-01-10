@@ -18,7 +18,7 @@ gem 'geokit-rails'
 gem 'georuby', '2.0'
 gem 'grape'
 gem 'grape-entity'
-gem 'grape-swagger', '~> 0.32.0'
+gem 'grape-swagger', '~> 0.32.1'
 gem 'grape-swagger-entity', '0.3.1'
 gem 'grape-swagger-rails'
 gem 'grape-swagger-ui'
@@ -30,7 +30,7 @@ gem 'jquery-rails'
 gem 'less-rails', '~> 4.0'
 gem 'mocha', '~> 1.1'
 gem 'mustermann' , '1.0.3'
-gem 'omniauth', '~> 1.3', '>= 1.3.1'
+gem 'omniauth', '~> 1.9'
 gem 'omniauth-facebook', '~> 5.0'
 gem 'omniauth-github', '~> 1.1', '>= 1.1.2'
 gem 'omniauth-google-oauth2'
@@ -51,7 +51,7 @@ gem 'rb-readline'
 gem 'rdiscount', '~> 2.2', '>= 2.2.0.1'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'responders', '~> 2.0'
-gem 'rubocop', '~> 0.61.0', require: false
+gem 'rubocop', '~> 0.62.0', require: false
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
 gem 'sidekiq'
@@ -63,6 +63,7 @@ gem 'whenever', require: false
 gem 'will_paginate', '>= 3.0.6'
 gem 'will_paginate-bootstrap', '>= 1.0.1'
 gem 'jquery-atwho-rails'
+gem 'lemmatizer', '~> 0.1.1'
 # To implement incoming mail processing microframework
 gem 'mailman', require: false
 
@@ -103,12 +104,13 @@ group :test, :development do
   gem 'openssl', '~> 2.1.2'
   gem 'phantomjs'
   gem 'rails-perftest'
-  gem 'rake',  '~> 12.3.1'
+  gem 'rake',  '~> 12.3.2'
   gem 'rest-client'
   gem 'rspec'
   gem 'test-unit'
   gem 'teaspoon-mocha'
   gem 'timecop'
+  gem 'pry-rails'
 end
 
 group :production do

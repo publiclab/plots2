@@ -15,7 +15,11 @@ module CommentsShared
   end
 
   def author
-    DrupalUser.find_by(uid: uid)
+    if uid != 0
+      User.find(uid)
+    else
+      nil # some comments are anonymous
+    end
   end
 
   def parent_commenter_uids

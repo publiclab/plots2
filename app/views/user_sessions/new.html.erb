@@ -9,10 +9,7 @@
           <%= render :partial => "layouts/social_icons" %>
      </div>
 
-      <br />
-  <div class='col-lg-10 col-md-10 col-sm-10' style="display:flex; justify-content: center;">
-    <h3>OR</h3>
-  </div>
+  
   <br style="clear:both;"/>
 
   <div class="form-group">
@@ -25,7 +22,7 @@
   <div class="form-group">
 
     <label for="password"><%= t('user_sessions.new.password') %></label>
-    <%= f.password_field :password, { tabindex: 2, class: 'form-control', id: 'password-signup' } %>
+    <%= f.password_field :password, { tabindex: 2, class: 'form-control', id: 'password-signup', onpaste: 'return false;' } %>
 
   </div>
 

@@ -1,6 +1,6 @@
 class UniqueUsernameValidator < ActiveModel::Validator
   def validate(record)
-    if DrupalUser.find_by(name: record.username) && record.openid_identifier.nil?
+    if User.find_by(username: record.username) && record.openid_identifier.nil?
       record.errors[:base] << 'That username is already taken. If this is your username, you can simply log in to this site.'
     end
   end
@@ -8,11 +8,15 @@ end
 
 class User < ActiveRecord::Base
   extend Utils
+  include Statistics
   self.table_name = 'rusers'
   alias_attribute :name, :username
 
+  NORMAL = 1 # Usage: User::NORMAL
+  BANNED = 0 # Usage: User::BANNED
+  MODERATED = 5 # Usage: User::MODERATED
+
   acts_as_authentic do |c|
-    c.openid_required_fields = %i(nickname email)
     VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
     c.validates_format_of_email_field_options = { with: VALID_EMAIL_REGEX }
     c.crypto_provider = Authlogic::CryptoProviders::Sha512
@@ -24,24 +28,28 @@ class User < ActiveRecord::Base
   do_not_validate_attachment_file_type :photo_file_name
   # validates_attachment_content_type :photo_file_name, :content_type => %w(image/jpeg image/jpg image/png)
 
-  # this doesn't work... we should have a uid field on User
-  # has_one :drupal_users, :conditions => proc { ["drupal_users.name =  ?", self.username] }
   has_many :images, foreign_key: :uid
   has_many :node, foreign_key: 'uid'
+  has_many :node_selections, foreign_key: :user_id
+  has_many :revision, foreign_key: 'uid'
   has_many :user_tags, foreign_key: 'uid', dependent: :destroy
   has_many :active_relationships, class_name: 'Relationship', foreign_key: 'follower_id', dependent: :destroy
   has_many :passive_relationships, class_name: 'Relationship', foreign_key: 'followed_id', dependent: :destroy
   has_many :following_users, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
   has_many :likes
+  has_many :answers, foreign_key: :uid
+  has_many :answer_selections, foreign_key: :user_id
   has_many :revisions, through: :node
+  has_many :comments, foreign_key: :uid
 
   validates_with UniqueUsernameValidator, on: :create
   validates_format_of :username, with: /\A[A-Za-z\d_\-]+\z/
 
-  before_create :create_drupal_user
   before_save :set_token
-  after_destroy :destroy_drupal_user
+
+  scope :past_week, -> { where("created_at > ?", Time.now - 7.days) }
+  scope :past_month, -> { where("created_at > ?", Time.now - 1.months) }
 
   def self.search(query)
     User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', query + '*')
@@ -59,56 +67,12 @@ class User < ActiveRecord::Base
     return "<a href='/tag/first-time-poster' class='label label-success'><i>new contributor</i></a>".html_safe if is_new_contributor
   end
 
-  def create_drupal_user
-    self.bio ||= ''
-    if drupal_user.nil?
-      drupal_user = DrupalUser.new(name: username,
-                              pass: rand(100_000_000_000_000_000_000),
-                              mail: email,
-                              mode: 0,
-                              sort: 0,
-                              threshold: 0,
-                              theme: '',
-                              signature: '',
-                              signature_format: 0,
-                              created: DateTime.now.to_i,
-                              access: DateTime.now.to_i,
-                              login: DateTime.now.to_i,
-                              status: 1,
-                              timezone: nil,
-                              language: '',
-                              picture: '',
-                              init: '',
-                              data: nil,
-                              timezone_id: 0,
-                              timezone_name: '')
-      drupal_user.save!
-      self.id = drupal_user.uid
-    else
-      self.id = DrupalUser.find_by(name: username).uid
-    end
-  end
-
-  def destroy_drupal_user
-    drupal_user.destroy
-  end
-
   def set_token
     self.token = SecureRandom.uuid if token.nil?
   end
 
-  # this is ridiculous. We need to store uid in this model.
-  # ...migration is in progress. start getting rid of these calls...
-  def drupal_user
-    DrupalUser.find_by(name: username)
-  end
-
-  def last
-    drupal_user.last
-  end
-
-  def node_count
-    drupal_user.node_count
+  def nodes
+    node
   end
 
   def notes
@@ -136,7 +100,7 @@ class User < ActiveRecord::Base
   end
 
   def uid
-    drupal_user.uid
+    id
   end
 
   def title
@@ -233,107 +197,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  def weekly_note_tally(span = 52)
-    weeks = {}
-    (0..span).each do |week|
-      weeks[span - week] = Node.select(:created)
-        .where(uid: drupal_user.uid,
-                                       type: 'note',
-                                       status: 1,
-                                       created: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i)
-        .count
-    end
-    weeks
-  end
-
-  def daily_note_tally(span = 365)
-    days = {}
-    (1..span).each do |day|
-      time = Time.now.utc.beginning_of_day.to_i
-      days[(time - day.days.to_i)] = Node.select(:created)
-        .where(uid: uid,
-                                              type: 'note',
-                                              status: 1,
-                                              created: time - (day - 1).days.to_i..time - (day - 2).days.to_i)
-        .count
-    end
-    days
-  end
-
-  def weekly_comment_tally(span = 52)
-    weeks = {}
-    (0..span).each do |week|
-      weeks[span - week] = Comment.select(:timestamp)
-        .where(uid: drupal_user.uid,
-                                    status: 1,
-                                    timestamp: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i)
-        .count
-    end
-    weeks
-  end
-
-  def note_streak(span = 365)
-    days = {}
-    streak = 0
-    note_count = 0
-    (0..span).each do |day|
-      days[day] = Node.select(:created)
-        .where(uid: drupal_user.uid,
-                              type: 'note',
-                              status: 1,
-                              created: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
-        .count
-      break if days[day] == 0
-      streak += 1
-      note_count += days[day]
-    end
-    [streak, note_count]
-  end
-
-  def wiki_edit_streak(span = 365)
-    days = {}
-    streak = 0
-    wiki_edit_count = 0
-    (0..span).each do |day|
-      days[day] = Revision.joins(:node)
-        .where(uid: drupal_user.uid,
-                                  status: 1,
-                                  timestamp: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
-        .where('node.type != ?', 'note')
-        .count
-      break if days[day] == 0
-      streak += 1
-      wiki_edit_count += days[day]
-    end
-    [streak, wiki_edit_count]
-  end
-
-  def comment_streak(span = 365)
-    days = {}
-    streak = 0
-    comment_count = 0
-    (0..span).each do |day|
-      days[day] = Comment.select(:timestamp)
-        .where(uid: drupal_user.uid,
-                                 status: 1,
-                                 timestamp: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
-        .count
-      break if days[day] == 0
-      streak += 1
-      comment_count += days[day]
-    end
-    [streak, comment_count]
-  end
-
-  def streak(span = 365)
-    note_streak = self.note_streak(span)
-    wiki_edit_streak = self.wiki_edit_streak(span)
-    comment_streak = self.comment_streak(span)
-    streak_count = [note_streak[1], wiki_edit_streak[1], comment_streak[1]]
-    streak = [note_streak[0], wiki_edit_streak[0], comment_streak[0]]
-    [streak.max, streak_count]
-  end
-
   def barnstars
     NodeTag.includes(:node, :tag)
       .references(:term_data)
@@ -387,6 +250,7 @@ class User < ActiveRecord::Base
     Node.where(nid: node_ids)
       .includes(:revision, :tag)
       .references(:node_revision)
+      .where('node.status = 1')
       .where("(created >= #{start_time.to_i} AND created <= #{end_time.to_i}) OR (timestamp >= #{start_time.to_i}  AND timestamp <= #{end_time.to_i})")
       .order('node_revisions.timestamp DESC')
       .distinct
@@ -401,6 +265,61 @@ class User < ActiveRecord::Base
     nil
   end
 
+  def moderate
+    self.status = 5
+    self.save({})
+    # user is logged out next time they access current_user in a controller; see application controller
+    self
+  end
+
+  def unmoderate
+    self.status = 1
+    self.save({})
+    self
+  end
+
+  def ban
+    decrease_likes_banned
+    self.status = 0
+    self.save({})
+    # user is logged out next time they access current_user in a controller; see application controller
+    self
+  end
+
+  def unban
+    increase_likes_unbanned
+    self.status = 1
+    self.save({})
+    self
+  end
+
+  def banned?
+    status.zero?
+  end
+
+  def note_count
+    Node.where(status: 1, uid: uid, type: 'note').count
+  end
+
+  def node_count
+    Node.where(status: 1, uid: uid).count + Revision.where(uid: uid).count
+  end
+
+  def liked_notes
+    Node.includes(:node_selections)
+      .references(:node_selections)
+      .where("type = 'note' AND node_selections.liking = ? AND node_selections.user_id = ? AND node.status = 1", true, id)
+      .order('node_selections.nid DESC')
+  end
+
+  def liked_pages
+    nids = NodeSelection.where(user_id: uid, liking: true)
+      .collect(&:nid)
+    Node.where(nid: nids)
+      .where(type: 'page')
+      .order('nid DESC')
+  end
+
   def send_digest_email
     top_picks = content_followed_in_period(Time.now - 1.week, Time.now)
     if top_picks.count > 0
@@ -408,19 +327,18 @@ class User < ActiveRecord::Base
     end
   end
 
-  def customize_digest(type)
-    if type == UserTag::DIGEST_DAILY
-      newtag = 'digest:daily'
-    elsif type == UserTag::DIGEST_WEEKLY
-      newtag = 'digest:weekly'
-    elsif type == 2
-      UserTag.where('value LIKE (?)', 'digest%').destroy_all
+  def tag_counts
+    tags = {}
+    Node.order('nid DESC').where(type: 'note', status: 1, uid: id).limit(20).each do |node|
+      node.tags.each do |tag|
+        if tags[tag.name]
+          tags[tag.name] += 1
+        else
+          tags[tag.name] = 1
+        end
+      end
     end
-
-    unless newtag.blank?
-      UserTag.where('value LIKE (?)', 'digest%').destroy_all
-      UserTag.create(uid: id, value: newtag)
-    end
+    tags
   end
 
   def generate_token
@@ -443,6 +361,20 @@ class User < ActiveRecord::Base
   end
 
   private
+
+  def decrease_likes_banned
+    node_selections.each do |selection|
+      selection.node.cached_likes = selection.node.cached_likes - 1
+      selection.node.save!
+    end
+  end
+
+  def increase_likes_unbanned
+    node_selections.each do |selection|
+      selection.node.cached_likes = selection.node.cached_likes + 1
+      selection.node.save!
+    end
+  end
 
   def map_openid_registration(registration)
     self.email = registration['email'] if email.blank?

@@ -158,9 +158,9 @@ class CommentTest < ActiveSupport::TestCase
 
   test 'should relate answer comments to user and answer but not node' do
     answer = answers(:one)
-    user = drupal_users(:bob)
+    user = users(:bob)
     comment = Comment.new(comment: 'Test comment')
-    comment.drupal_user = user
+    comment.user = user
     comment.answer = answer
 
     assert comment.save

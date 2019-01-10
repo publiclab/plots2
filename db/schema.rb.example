@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_06_100000) do
+ActiveRecord::Schema.define(version: 2019_01_10_000000) do
 
   create_table "answer_selections", force: true do |t|
     t.integer "user_id"
@@ -234,6 +234,9 @@ ActiveRecord::Schema.define(version: 2018_12_06_100000) do
     t.string  "slug"
     t.integer "legacy_views",                           default: 0
     t.integer "views",                                  default: 0
+    t.decimal "latitude",                               precision: 20, scale: 17
+    t.decimal "longitude",                              precision: 20, scale: 17
+    t.integer "precision"
   end
 
   add_index "node", ["changed"], name: "node_changed", using: :btree
