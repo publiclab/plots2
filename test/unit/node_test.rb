@@ -121,7 +121,7 @@ class NodeTest < ActiveSupport::TestCase
   end
 
   test 'create node revision with emojis' do
-    saved, node, revision = Node.new_note(uid: drupal_users(:jeff).uid,
+    saved, node, revision = Node.new_note(uid: users(:jeff).uid,
                                           title: 'Title',
                                           body: 'Body with Emojis 😎😎😎')
     assert saved
