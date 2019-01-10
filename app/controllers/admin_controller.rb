@@ -9,7 +9,7 @@ class AdminController < ApplicationController
     unless @user.nil?
       if current_user && current_user.role == 'admin'
         @user.role = 'admin'
-        @user.save({})
+        @user.save
         flash[:notice] = "User '<a href='/profile/" + @user.username + "'>" + @user.username + "</a>' is now an admin."
       else
         flash[:error] = 'Only admins can promote other users to admins.'
@@ -23,7 +23,7 @@ class AdminController < ApplicationController
     unless @user.nil?
       if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
         @user.role = 'moderator'
-        @user.save({})
+        @user.save
         flash[:notice] = "User '<a href='/profile/" + @user.username + "'>" + @user.username + "</a>' is now a moderator."
       else
         flash[:error] = 'Only moderators can promote other users.'
@@ -37,7 +37,7 @@ class AdminController < ApplicationController
     unless @user.nil?
       if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
         @user.role = 'basic'
-        @user.save({})
+        @user.save
         flash[:notice] = "User '<a href='/profile/" + @user.username + "'>" + @user.username + "</a>' is no longer a moderator."
       else
         flash[:error] = 'Only admins and moderators can demote other users.'
@@ -51,7 +51,7 @@ class AdminController < ApplicationController
       user = User.find(params[:id])
       if user
         key = user.generate_reset_key
-        user.save({})
+        user.save
         # send key to user email
         PasswordResetMailer.reset_notify(user, key).deliver_now unless user.nil? # respond the same to both successes and failures; security
       end
