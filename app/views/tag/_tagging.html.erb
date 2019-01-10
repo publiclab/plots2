@@ -14,12 +14,12 @@
   <%= render partial: 'tag/replication' %>
 
   <span id="tags">
-  <%= render partial: 'tag/tags', locals: { power_tag: true, label_name: 'label-default', tags: @node.node_tags } %>
-  <%= render partial: 'tag/tags', locals: { power_tag: false, label_name: 'label-primary', tags: @node.node_tags } %>
+  <%= render partial: 'tag/tags', locals: { power_tag: true, badge_name: 'badge-default', tags: @node.node_tags } %>
+  <%= render partial: 'tag/tags', locals: { power_tag: false, badge_name: 'badge-primary', tags: @node.node_tags } %>
   </span>
 <% else %>
   <span id="tags">
-  <%= render partial: 'tag/tags', locals: { power_tag: false, label_name: 'label-primary', tags: user.user_tags, user: user } %>
+  <%= render partial: 'tag/tags', locals: { power_tag: false, badge_name: 'badge-primary', tags: user.user_tags, user: user } %>
   </span>
 <% end %>
 

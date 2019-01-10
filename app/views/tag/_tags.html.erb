@@ -3,7 +3,7 @@
   <% tags.each do |tag| %>
     <% if tag.class == NodeTag %>
       <% if power_tag ^ tag.name.include?(':') # XOR operator??? %>
-        <li style="width: 100%;"><span id="tag_<%= tag.tid %>" class="label <%= label_name %> pop" style="cursor:pointer" data-toggle="popover" data-trigger="focus" data-count=0 data-placement="top" data-content="<p style='text-align:center;'><a href='/tag/<%= tag.name %>'><%= Tag.tagged_node_count(tag.name) || 0 %> notes</a> - <a href='/contributors/<%= tag.name %>'><%= Tag.contributors(tag.name).count %> people <br></a></p> <p style='text-align:center;font-size:12px;'><%if tag.description %><%= tag.description %> |<% end %> created by <a href='/profile/<%= tag.try(:author).try(:username) %>'><%= tag.try(:author).try(:username) %></a> <%= time_ago_in_words(Time.at(tag.date)) %> ago </p><div style='text-align:center;' class='text-center'><a href='/subscribe/tag/<%= tag.name %>' class='btn btn-primary'>Follow</a></div>" data-html="true" title="<%= tag.name %>">
+        <li style="width: 100%;"><span id="tag_<%= tag.tid %>" class="badge <%= badge_name %> pop" style="cursor:pointer" data-toggle="popover" data-trigger="focus" data-count=0 data-placement="top" data-content="<p style='text-align:center;'><a href='/tag/<%= tag.name %>'><%= Tag.tagged_node_count(tag.name) || 0 %> notes</a> - <a href='/contributors/<%= tag.name %>'><%= Tag.contributors(tag.name).count %> people <br></a></p> <p style='text-align:center;font-size:12px;'><%if tag.description %><%= tag.description %> |<% end %> created by <a href='/profile/<%= tag.try(:author).try(:username) %>'><%= tag.try(:author).try(:username) %></a> <%= time_ago_in_words(Time.at(tag.date)) %> ago </p><div style='text-align:center;' class='text-center'><a href='/subscribe/tag/<%= tag.name %>' class='btn btn-primary'>Follow</a></div>" data-html="true" title="<%= tag.name %>">
          <%= tag.name %>
           <% if current_user && ( current_user.uid ==  @node.uid || current_user.uid == tag.uid  || current_user.role == "admin" || current_user.role == "moderator") %>
             <% if tag.name.include? ':' %>
@@ -17,7 +17,7 @@
 
     <% elsif tag.class == UserTag && (tag.name[0..4] != "oauth" || (current_user && (current_user.uid == tag.uid || current_user.role == "admin"))) %>
 
-        <li style="width: 100%;"><span id="tag_<%= tag.id %>" class="label <%= label_name %> pop" style="cursor:pointer" data-toggle="popover" data-trigger="manual" data-count=0 data-placement="top" data-content="<a href='/contributors/<%= tag.name %>'><%= Tag.tagged_node_count(tag.name) || 0 %> notes - <%= Tag.contributors(tag.name).count %> people <br></a>" data-html="true" title="<%= tag.name %>">
+        <li style="width: 100%;"><span id="tag_<%= tag.id %>" class="badge <%= label_name %> pop" style="cursor:pointer" data-toggle="popover" data-trigger="manual" data-count=0 data-placement="top" data-content="<a href='/contributors/<%= tag.name %>'><%= Tag.tagged_node_count(tag.name) || 0 %> notes - <%= Tag.contributors(tag.name).count %> people <br></a>" data-html="true" title="<%= tag.name %>">
           <% if tag.name[0..4] != "oauth" %>
             <%= tag.name %>
           <% else %>
