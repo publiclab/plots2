@@ -267,21 +267,21 @@ class User < ActiveRecord::Base
 
   def moderate
     self.status = 5
-    self.save({})
+    self.save
     # user is logged out next time they access current_user in a controller; see application controller
     self
   end
 
   def unmoderate
     self.status = 1
-    self.save({})
+    self.save
     self
   end
 
   def ban
     decrease_likes_banned
     self.status = 0
-    self.save({})
+    self.save
     # user is logged out next time they access current_user in a controller; see application controller
     self
   end
@@ -289,7 +289,7 @@ class User < ActiveRecord::Base
   def unban
     increase_likes_unbanned
     self.status = 1
-    self.save({})
+    self.save
     self
   end
 
