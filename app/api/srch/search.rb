@@ -221,7 +221,7 @@ module Srch
         end
       end
 
-      # Request URL should be /api/srch/taglocations?query=QRY[&tag=awesome]
+      # Request URL should be /api/srch/taglocations?nwlat=200.0&selat=0.0&nwlng=0.0&selng=200.0[&tag=awesome]
       # Note: Query(QRY as above) must have latitude and longitude as query=lat,lon
       desc 'Perform a search of documents having nearby latitude and longitude tag values', hidden: false,
                                                                                             is_array: false,
@@ -253,7 +253,7 @@ module Srch
         end
       end
 
-      # Request URL should be /api/srch/nearbyPeople?query=QRY[&tag=awesome&sort_by=recent]
+      # Request URL should be /api/srch/nearbyPeople?nwlat=200.0&selat=0.0&nwlng=0.0&selng=200.0[&tag=awesome&sort_by=recent]
       # Note: Query(QRY as above) must have latitude and longitude as query=lat,lon
       desc 'Perform a search to show people nearby a given location',  hidden: false,
                                                                        is_array: false,

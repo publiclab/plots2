@@ -71,7 +71,7 @@ class Node < ActiveRecord::Base
     updated_at.strftime('%B %Y')
   end
 
-  has_many :revision, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
+  has_many :revision, foreign_key: 'nid', dependent: :destroy
   # wasn't working to tie it to .vid, manually defining below
   #  has_one :drupal_main_image, :foreign_key => 'vid', :dependent => :destroy
   #  has_many :drupal_content_field_image_gallery, :foreign_key => 'nid'
@@ -782,6 +782,14 @@ class Node < ActiveRecord::Base
     end
   end
 
+  def delete_coord_attribute(tagname)
+    if tagname.split(':')[0] == "lat"
+      table_updated = update_attributes(:latitude => nil, :precision => nil)
+    else
+      table_updated = update_attributes(:longitude => nil)
+    end
+  end
+
   def mentioned_users
     usernames = body.scan(Callouts.const_get(:FINDER))
     User.where(username: usernames.map { |m| m[1] }).uniq
@@ -982,5 +990,15 @@ class Node < ActiveRecord::Base
   def draft_url
     @token = slug.split('token:').last
     url = 'https://publiclab.org/notes/show/' + nid.to_s + '/' + @token.to_s
+  end
+
+  def fetch_comments(user)
+    if user&.can_moderate?
+      comments.where('status = 1 OR status = 4')
+    elsif user
+      comments.where('comments.status = 1 OR (comments.status = 4 AND comments.uid = ?)', user.uid)
+    else
+      comments.where(status: 1)
+    end
   end
 end

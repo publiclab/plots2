@@ -14,7 +14,7 @@ class UsersController < ApplicationController
     using_recaptcha = !params[:spamaway] && Rails.env == "production"
     recaptcha = verify_recaptcha(model: @user) if using_recaptcha
     @spamaway = Spamaway.new(spamaway_params) unless using_recaptcha
-    if ((@spamaway&.valid?) || recaptcha) && @user.save({})
+    if ((@spamaway&.valid?) || recaptcha) && @user.save
       if current_user.crypted_password.nil? # the user has not created a pwd in the new site
         flash[:warning] = I18n.t('users_controller.account_migrated_create_new_password')
         redirect_to "/profile/edit"
@@ -50,7 +50,7 @@ class UsersController < ApplicationController
     @user = current_user
     @user = User.find_by(username: params[:id]) if params[:id] && current_user && current_user.role == "admin"
     @user.attributes = user_params
-    @user.save({}) do |result|
+    @user.save do |result|
       if result
         if session[:openid_return_to] # for openid login, redirects back to openid auth process
           return_to = session[:openid_return_to]
@@ -92,11 +92,11 @@ class UsersController < ApplicationController
     end
 
     if sort_param == 'username'
-      order_string = 'name ASC'
+      order_string = 'username ASC'
     elsif sort_param == 'last_activity'
       order_string = 'last_updated DESC'
     elsif sort_param == 'joined'
-      order_string = 'created DESC'
+      order_string = 'created_at DESC'
     end
 
     @map_lat = nil
@@ -118,12 +118,12 @@ class UsersController < ApplicationController
 
     else
       # recently active
-      @users = User.select('*, rusers.status, MAX(node.changed) AS last_updated')
-                    .joins(:node)
-                    .group('rusers.id')
-                    .where('node.status = 1')
-                    .order(order_string)
-                    .page(params[:page])
+      @users = User.select('*, rusers.status, MAX(node_revisions.timestamp) AS last_updated')
+                   .joins(:revisions)
+                   .where("node_revisions.status = 1")
+                   .group('rusers.id')
+                   .order(order_string)
+                   .page(params[:page])
     end
 
     @users = @users.where('rusers.status = 1') unless current_user&.can_moderate?
@@ -247,7 +247,7 @@ class UsersController < ApplicationController
             @user.password = params[:user][:password]
             @user.password_confirmation = params[:user][:password]
             @user.reset_key = nil
-            if @user.changed? && @user.save({})
+            if @user.changed? && @user.save
               flash[:notice] = I18n.t('users_controller.password_change_success')
               @user.password_checker = 0
               redirect_to "/dashboard"
@@ -270,7 +270,7 @@ class UsersController < ApplicationController
       user = User.find_by(email: params[:email])
       if user
         key = user.generate_reset_key
-        user.save({})
+        user.save
         # send key to user email
         PasswordResetMailer.reset_notify(user, key).deliver_now unless user.nil? # respond the same to both successes and failures; security
       end
