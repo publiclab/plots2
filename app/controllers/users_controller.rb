@@ -379,7 +379,7 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :bio, :status)
+    params.require(:user).permit(:email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :bio, :status)
   end
 
   def spamaway_params
