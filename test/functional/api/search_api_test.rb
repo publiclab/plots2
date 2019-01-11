@@ -140,8 +140,8 @@ class SearchApiTest < ActiveSupport::TestCase
 
     json = JSON.parse(last_response.body)
 
-    assert_equal "/profile/steff3",     json['items'][0]['doc_url']
-    assert_equal "/profile/steff2",     json['items'][1]['doc_url']
+    assert_equal "/profile/steff2",     json['items'][0]['doc_url']
+    assert_equal "/profile/steff3",     json['items'][1]['doc_url']
 
     assert matcher =~ json
   end

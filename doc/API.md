@@ -94,6 +94,11 @@ All the endpoints have the optional parameter `limit` (10 by default) where you 
 
   `tag=[string]`: the search can be refined by passing a tag field.
 
+  `order_direction=[string]`: It accepts `ASC` or `DESC` (the latter is the default).
+
+  `sort_by=[string]`: It accepts `recent`. It sorts the nodes by the most recent activity. If no value
+     provided, the results are then sorted by node creation (desc).
+
 ### NearbyPeople:
 
 * **URL**:  `https://publiclab.org/api/srch/nearbyPeople?nwlat=200.0&selat=0.0&nwlng=0.0&selng=200.0`
@@ -106,6 +111,10 @@ All the endpoints have the optional parameter `limit` (10 by default) where you 
   **Optional:**
 
   `tag=[string]`: the search can be refined by passing a tag field.
+
+  `order_direction=[string]`: It accepts `ASC` or `DESC` (the latter is the default).
+
+  `sort_by=[string]`: It accepts `recent` and `content`. Sort the profiles by the most recent activity or most nodes created. If no value provided, the results are then sorted by signup date (desc).
 
 ### PeopleLocations
 
