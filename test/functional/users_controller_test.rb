@@ -88,7 +88,7 @@ class UsersControllerTest < ActionController::TestCase
     user = users(:jeff)
     crypted_password = user.crypted_password
     key = user.generate_reset_key
-    user.save({})
+    user.save
 
     user_attributes = user.attributes
     user_attributes[:password] = 'newpassword'
@@ -109,7 +109,7 @@ class UsersControllerTest < ActionController::TestCase
     user = users(:jeff)
     assert_nil user.reset_key
     user.generate_reset_key
-    user.save({})
+    user.save
     assert_not_nil User.find(user.id).reset_key
 
     get :profile, params: { id: user.username }
@@ -124,7 +124,7 @@ class UsersControllerTest < ActionController::TestCase
     UserSession.create(users(:admin))
     user = users(:jeff)
     user.generate_reset_key
-    user.save({})
+    user.save
     assert_not_nil User.find(user.id).reset_key
     get :profile, params: { uid: user.username }
   end
@@ -295,5 +295,21 @@ class UsersControllerTest < ActionController::TestCase
     assert_raises(ActiveRecord::RecordNotFound) do
       get :shortlink, params: { username: invalid_username }
     end
+  end
+
+  test 'changing user settings' do
+    UserSession.create(users(:bob))
+    post :save_settings, params: {
+      "notify-comment-direct:false": "on",
+      "notify-likes-direct:false": "on",
+      "notify-comment-indirect:false": "on",
+      "digest:weekly": "on"
+    }
+    assert_response :success
+    assert_not_nil UserTag.where(uid: users(:bob).id, value: 'digest:weekly').last
+    assert_equal [], UserTag.where(uid: users(:bob).id, value: "notify-comment-direct:false")
+    assert_equal [], UserTag.where(uid: users(:bob).id, value: "notify-likes-direct:false")
+    assert_equal [], UserTag.where(uid: users(:bob).id, value: "notify-comment-indirect:false")
+    assert_equal [], UserTag.where(uid: users(:bob).id, value: 'digest:digest')
   end
 end

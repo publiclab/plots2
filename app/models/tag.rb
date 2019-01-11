@@ -166,6 +166,18 @@ class Tag < ApplicationRecord
         .where(status: [1, 4])
   end
 
+  def self.sort_according_to_followers(raw_tags, order)
+    tags_with_their_followers = []
+    raw_tags.each do |i|
+      tags_with_their_followers << { "number_of_followers" => Tag.follower_count(i.name), "tags" => i }
+    end
+    tags_with_their_followers.sort_by! { |key| key["number_of_followers"] }
+    if order != "asc"
+      tags_with_their_followers.reverse!
+    end
+    tags = tags_with_their_followers.map { |x| x["tags"] }
+  end
+
   # OPTIMIZE: this too!
   def weekly_tallies(type = 'note', span = 52)
     weeks = {}

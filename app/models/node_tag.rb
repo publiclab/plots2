@@ -23,10 +23,6 @@ class NodeTag < ApplicationRecord
     user
   end
 
-  def new_author_contributor
-    user.new_contributor
-  end
-
   def name
     tag.name
   end

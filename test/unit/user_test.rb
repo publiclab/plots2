@@ -8,7 +8,7 @@ class UserTest < ActiveSupport::TestCase
                     bio: 'my name is chris.',
                     email: 'test@publiclab.org')
 
-    assert user.save({})
+    assert user.save
 
     assert user.first_time_poster
     assert_not_nil user.id
@@ -142,7 +142,7 @@ class UserTest < ActiveSupport::TestCase
                     password: 'godzillas',
                     password_confirmation: 'godzillas',
                     email: 'testpubliclab.org')
-    assert_not user.save({})
+    assert_not user.save
     assert_equal 1, user.errors[:email].count
   end
 
@@ -162,13 +162,6 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 5, user.status
     user.unmoderate
     assert_equal 1, user.status
-  end
-
-  test 'daily_note_tally returns the correct type of array' do
-    user = users(:bob)
-    daily = user.daily_note_tally()
-    assert_not_empty daily
-    assert_equal daily.count, 365
   end
 
   test 'user roles' do
@@ -191,7 +184,7 @@ class UserTest < ActiveSupport::TestCase
                     password: 'nez',
                     password_confirmation: 'nez',
                     email: 'abc@.com')
-    assert_not user.save({})
+    assert_not user.save
   end
 
   test 'email validation' do
@@ -199,7 +192,7 @@ class UserTest < ActiveSupport::TestCase
                     password: 'bhallu',
                     password_confirmation: 'bhallu',
                     email: '@xyz.com')
-    assert_not user.save({})
+    assert_not user.save
   end
 
   test 'send_digest_email' do

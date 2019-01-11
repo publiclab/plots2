@@ -77,14 +77,25 @@ class HomeController < ApplicationController
       .page(params[:page])
     notes = notes.where('nid != (?)', blog.nid) if blog
 
+    comments = Comment.joins(:node, :user)
+                   .order('timestamp DESC')
+                   .where('timestamp - node.created > ?', 86_400) # don't report edits within 1 day of page creation
+                   .where('node.status = ?', 1)
+                   .page(params[:page])
+                   .group(['title', 'comments.cid']) # ONLY_FULL_GROUP_BY, issue #3120
+
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
       notes = notes.where('(node.status = 1 OR node.status = 4 OR node.status = 3)')
+      comments = comments.where('comments.status = 1 OR comments.status = 4')
     elsif current_user
       coauthor_nids = Node.joins(:node_tag).joins('LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid').select('node.*, term_data.*, community_tags.*').where(type: 'note', status: 3).where('term_data.name = (?)', "with:#{current_user.username}").collect(&:nid)
       notes = notes.where('(node.nid IN (?) OR node.status = 1 OR ((node.status = 3 OR node.status = 4) AND node.uid = ?))', coauthor_nids, current_user.uid)
+      comments = comments.where('comments.status = 1 OR (comments.status = 4 AND comments.uid = ?)', current_user.uid)
     else
       notes = notes.where('node.status = 1')
+      comments = comments.where('comments.status = 1')
     end
+
     notes = notes.to_a # ensure it can be serialized for caching
 
     # include revisions, then mix with new pages:
@@ -104,14 +115,7 @@ class HomeController < ApplicationController
     revisions = revisions.to_a # ensure it can be serialized for caching
     wikis += revisions
     wikis = wikis.sort_by(&:created_at).reverse
-    comments = Comment.where(status: 1)
-      .or(Comment.where(status: 4))
-      .joins(:node, :user)
-      .order('timestamp DESC')
-      .where('timestamp - node.created > ?', 86_400) # don't report edits within 1 day of page creation
-      .where('node.status = ?', 1)
-      .page(params[:page])
-      .group(['title', 'comments.cid']) # ONLY_FULL_GROUP_BY, issue #3120
+
     # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
     comments = comments.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
     comments = comments.to_a # ensure it can be serialized for caching
