@@ -50,6 +50,7 @@ class UsersController < ApplicationController
     @user = current_user
     @user = User.find_by(username: params[:id]) if params[:id] && current_user && current_user.role == "admin"
     @user.attributes = user_params
+    user_params["username"] = @user.username
     @user.save({}) do |result|
       if result
         if session[:openid_return_to] # for openid login, redirects back to openid auth process
@@ -379,7 +380,7 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :bio, :status)
+    params.require(:user).permit(:username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :bio, :status)
   end
 
   def spamaway_params
