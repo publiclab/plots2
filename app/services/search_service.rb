@@ -168,21 +168,22 @@ class SearchService
     end
 
     # sort users by their recent activities if the sort_by==recent
-    items = if sort_by == "recent"
-              items.joins(:revisions).where("node_revisions.status = 1")\
-                   .order("node_revisions.timestamp #{order_direction}")
-                   .distinct
-            else if sort_by == "content"
-              ids = items.collect(&:id).uniq || []
-              User.select('`rusers`.*, count(`node`.uid) AS ord')
-                  .joins(:node)
-                  .where('rusers.id IN (?)', ids)
-                  .group('`node`.`uid`')
-                  .order("ord #{order_direction}")
-            else
-              items.order("created_at #{order_direction}")
-                   .limit(limit)
-            end
+    items =
+      if sort_by == "recent"
+        items.joins(:revisions).where("node_revisions.status = 1")\
+             .order("node_revisions.timestamp #{order_direction}")
+             .distinct
+      else if sort_by == "content"
+        ids = items.collect(&:id).uniq || []
+        User.select('`rusers`.*, count(`node`.uid) AS ord')
+            .joins(:node)
+            .where('rusers.id IN (?)', ids)
+            .group('`node`.`uid`')
+            .order("ord #{order_direction}")
+      else
+        items.order("created_at #{order_direction}")
+              .limit(limit)
+      end
     end
   end
 
