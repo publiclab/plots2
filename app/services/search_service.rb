@@ -81,7 +81,7 @@ class SearchService
   end
 
   # Search nearby nodes with respect to given latitude, longitute and tags
-  def tagNearbyNodes(coordinates, tag, sort_by, order_direction, limit = 10)
+  def tagNearbyNodes(coordinates, tag, sort_by = nil, order_direction = nil, limit = 10)
     raise("Must contain all four coordinates") if coordinates["nwlat"].nil?
     raise("Must contain all four coordinates") if coordinates["nwlng"].nil?
     raise("Must contain all four coordinates") if coordinates["selat"].nil?
@@ -129,7 +129,7 @@ class SearchService
 
   # Search nearby people with respect to given latitude, longitute and tags
   # and package up as a DocResult
-  def tagNearbyPeople(coordinates, tag, sort_by, order_direction, limit = 10)
+  def tagNearbyPeople(coordinates, tag, sort_by = nil, order_direction = nil, limit = 10)
     raise("Must contain all four coordinates") if coordinates["nwlat"].nil?
     raise("Must contain all four coordinates") if coordinates["nwlng"].nil?
     raise("Must contain all four coordinates") if coordinates["selat"].nil?
