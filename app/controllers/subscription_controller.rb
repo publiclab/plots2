@@ -124,7 +124,11 @@ class SubscriptionController < ApplicationController
       redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
       return
     end
-    tag_list = params[:tagnames]
+    if params[:tagnames].is_a? String
+      tag_list = params[:tagnames].split(',') 
+    else
+      tag_list = params[:tagnames]
+    end
     # should be logged in to subscribe
     if current_user
       # assume tag, for now
