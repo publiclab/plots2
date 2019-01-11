@@ -81,7 +81,7 @@ class SearchService
   end
 
   # Search nearby nodes with respect to given latitude, longitute and tags
-  def tagNearbyNodes(coordinates, tag, limit = 10, sort_by, order_direction)
+  def tagNearbyNodes(coordinates, tag, sort_by, order_direction, limit = 10)
     raise("Must contain all four coordinates") if coordinates["nwlat"].nil?
     raise("Must contain all four coordinates") if coordinates["nwlng"].nil?
     raise("Must contain all four coordinates") if coordinates["selat"].nil?
@@ -175,10 +175,10 @@ class SearchService
             else if sort_by == "content"
               ids = items.collect(&:id).uniq || []
               User.select('`rusers`.*, count(`node`.uid) AS ord')
-                .joins(:node)
-                .where('rusers.id IN (?)', ids)
-                .group('`node`.`uid`')
-                .order("ord #{order_direction}")
+                  .joins(:node)
+                  .where('rusers.id IN (?)', ids)
+                  .group('`node`.`uid`')
+                  .order("ord #{order_direction}")
             else
               items.order("created_at #{order_direction}")
                    .limit(limit)
