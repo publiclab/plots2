@@ -81,7 +81,7 @@ class SearchService
   end
 
   # Search nearby nodes with respect to given latitude, longitute and tags
-  def tagNearbyNodes(coordinates, tag, limit = 10)
+  def tagNearbyNodes(coordinates, tag, limit = 10, sort_by, order_direction)
     raise("Must contain all four coordinates") if coordinates["nwlat"].nil?
     raise("Must contain all four coordinates") if coordinates["nwlng"].nil?
     raise("Must contain all four coordinates") if coordinates["selat"].nil?
@@ -109,8 +109,6 @@ class SearchService
       .where('node.nid IN (?)', nids)
       .where('term_data.name LIKE ?', 'lon%')
       .where('REPLACE(term_data.name, "lon:", "") BETWEEN ' + coordinates["nwlng"].to_s + ' AND ' + coordinates["selng"].to_s)
-      .order('node.nid DESC')
-      .limit(limit)
 
     # selects the items whose node_tags don't have the location:blurred tag
     items.select do |item|
@@ -118,11 +116,20 @@ class SearchService
         node_tag.name == "location:blurred"
       end
     end
+
+    # sort nodes by recent activities if the sort_by==recent
+    items = if sort_by == "recent"
+              items.order("changed #{order_direction}")
+                   .limit(limit)
+            else
+              items.order("created #{order_direction}")
+                   .limit(limit)
+            end
   end
 
   # Search nearby people with respect to given latitude, longitute and tags
   # and package up as a DocResult
-  def tagNearbyPeople(coordinates, tag, sort_by, limit = 10)
+  def tagNearbyPeople(coordinates, tag, sort_by, order_direction, limit = 10)
     raise("Must contain all four coordinates") if coordinates["nwlat"].nil?
     raise("Must contain all four coordinates") if coordinates["nwlng"].nil?
     raise("Must contain all four coordinates") if coordinates["selat"].nil?
@@ -163,12 +170,20 @@ class SearchService
     # sort users by their recent activities if the sort_by==recent
     items = if sort_by == "recent"
               items.joins(:revisions).where("node_revisions.status = 1")\
-                   .order("node_revisions.timestamp DESC")
+                   .order("node_revisions.timestamp #{order_direction}")
                    .distinct
+            else if sort_by == "content"
+              ids = items.collect(&:id).uniq || []
+              User.select('`rusers`.*, count(`node`.uid) AS ord')
+                .joins(:node)
+                .where('rusers.id IN (?)', ids)
+                .group('`node`.`uid`')
+                .order("ord #{order_direction}")
             else
-              items.order(id: :desc)
+              items.order("created_at #{order_direction}")
                    .limit(limit)
             end
+    end
   end
 
   # Returns the location of people with most recent contributions.
