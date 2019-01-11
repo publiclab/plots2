@@ -125,7 +125,7 @@ class SubscriptionController < ApplicationController
       return
     end
     if params[:tagnames].is_a? String
-      tag_list = params[:tagnames].split(',') 
+      tag_list = params[:tagnames].split(',')
     else
       tag_list = params[:tagnames]
     end
