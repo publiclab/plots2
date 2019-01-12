@@ -73,51 +73,65 @@
         </tr>
     </table>
 
-    <%= link_to "/stats/range/#{(@start - 1.year).to_formatted_s(:long)} / #{(@end - 1.year).to_formatted_s(:long)}", class: 'btn btn-primary', title: '1 year back' do %>
-        <i class="fa fa-chevron-left" style="color:white"></i>
-        <i class="fa fa-chevron-left" style="color:white"></i>
-        <i class="fa fa-chevron-left" style="color:white"></i>
-        <i class="fa fa-chevron-left" style="color:white"></i>
-    <% end %>
-
-    <%= link_to "/stats/range/ #{(@start - 3.months).to_formatted_s(:long) }/ #{(@end - 3.months).to_formatted_s(:long) }", class: 'btn btn-primary',  title: '3 months back' do %>
-        <i class="fa fa-chevron-left" style="color:white"></i>
-        <i class="fa fa-chevron-left" style="color:white"></i>
-        <i class="fa fa-chevron-left" style="color:white"></i>
-    <% end %>
-
-    <%= link_to "/stats/range/ #{(@start - 1.month).to_formatted_s(:long)}/ #{ (@end - 1.month).to_formatted_s(:long)}",  class: 'btn btn-primary', title: '1 month back' do %>
-        <i class="fa fa-chevron-left" style="color:white"></i>
-        <i class="fa fa-chevron-left" style="color:white"></i>
-    <% end %>
-
-    <%= link_to "/stats/range/#{(@start - 1.week).to_formatted_s(:long)}   / #{(@end - 1.week).to_formatted_s(:long)}", class: 'btn btn-primary', title: '1 week back' do %>
-        <i class="fa fa-chevron-left" style="color:white"></i>
-    <% end %>
-
-    Back by or Forward by
-
-    <%= link_to "/stats/range/ #{(@start + 1.week).to_formatted_s(:long)} / #{ (@end + 1.week).to_formatted_s(:long)}", class: 'btn btn-primary', title: '1 week forward' do  %>
-        <i class="fa fa-chevron-right" style="color:white"></i>
-    <% end %>
-
-    <%= link_to "/stats/range/#{(@start + 1.month).to_formatted_s(:long)}/ #{(@end + 1.month).to_formatted_s(:long)}", class: 'btn btn-primary', title: "1 month foward" do %>
-        <i class="fa fa-chevron-right" style="color:white"></i>
-        <i class="fa fa-chevron-right" style="color:white"></i>
-    <% end %>
-
-    <%= link_to "/stats/range/ #{(@start + 3.months).to_formatted_s(:long)} /#{(@end + 3.months).to_formatted_s(:long)}", class: 'btn btn-primary', title: "3 months forward" do %>
-        <i class="fa fa-chevron-right" style="color:white"></i>
-        <i class="fa fa-chevron-right" style="color:white"></i>
-        <i class="fa fa-chevron-right" style="color:white"></i>
-    <% end %>
-
-    <%= link_to "/stats/range/#{(@start + 1.year).to_formatted_s(:long)} / #{(@end + 1.year).to_formatted_s(:long)}", class: 'btn btn-primary',  title: "1 year forward" do %>
-        <i class="fa fa-chevron-right" style="color:white"></i>
-        <i class="fa fa-chevron-right" style="color:white"></i>
-        <i class="fa fa-chevron-right" style="color:white"></i>
-        <i class="fa fa-chevron-right" style="color:white"></i>
-    <% end %>
-    <br><br>
     <p><i>Member registration may include spam accounts</i></p>
+    <br>
+    <p> Move back or forward using the buttons below </p>
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <a href="/stats/range/<%= (@start - 1.year).to_formatted_s(:long)   %>/<%= (@end - 1.year).to_formatted_s(:long)   %>">
+            <button type="button" class="btn btn-secondary" title= "1 year back">
+                <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
+                <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
+                <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
+                <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
+            </button>
+        </a>
+        <a href="/stats/range/<%= (@start - 3.months).to_formatted_s(:long) %>/<%= (@end - 3.months).to_formatted_s(:long) %>">
+            <button type="button" class="btn btn-secondary" title="3 months back">
+                <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
+                <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
+                <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
+            </button>
+        </a>
+        <a href="/stats/range/<%= (@start - 1.month).to_formatted_s(:long)  %>/<%= (@end - 1.month).to_formatted_s(:long)  %>">
+            <button type="button" class="btn btn-secondary" title="1 month back">
+                <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
+                <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
+            </button>
+        </a>
+        <a href="/stats/range/<%= (@start - 1.week).to_formatted_s(:long)   %>/<%= (@end - 1.week).to_formatted_s(:long)   %>">
+            <button type="button" class="btn btn-secondary" title="1 week back">
+                <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
+            </button>
+        </a>
+    </div>
+
+    &emsp;&emsp;
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <a href="/stats/range/<%= (@start + 1.week).to_formatted_s(:long)   %>/<%= (@end + 1.week).to_formatted_s(:long)   %>">
+            <button type="button" class="btn btn-secondary" title="1 week forward">
+                <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
+            </button>
+        </a>
+        <a href="/stats/range/<%= (@start + 1.month).to_formatted_s(:long)  %>/<%= (@end + 1.month).to_formatted_s(:long)  %>">
+            <button type="button" class="btn btn-secondary" title="1 month forward">
+                <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
+                <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
+            </button>
+        </a>
+        <a href="/stats/range/<%= (@start + 3.months).to_formatted_s(:long) %>/<%= (@end + 3.months).to_formatted_s(:long) %>" >
+            <button type="button" class="btn btn-secondary" title="3 months forward">
+                <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
+                <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
+                <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
+            </button>
+        </a>
+        <a href="/stats/range/<%= (@start + 1.year).to_formatted_s(:long)   %>/<%= (@end + 1.year).to_formatted_s(:long)   %>">
+            <button type="button" class="btn btn-secondary" title="1 year forward">
+                <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
+                <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
+                <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
+                <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
+            </button>
+        </a>
+    </div>
 </div>

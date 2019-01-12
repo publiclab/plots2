@@ -111,7 +111,7 @@ en:
         <h4>About this page</h4>
 
         <p>Public Lab is built on the contributions of community members, and this website represents our collective open source work.</p>
-      contributors_statistics: "Contributor statistics"
+      contributors_statistics: "Contributor Statistics"
       looking_back: "Looking back from <i>%{time}</i>."
       try_time_further_back: |
         Try

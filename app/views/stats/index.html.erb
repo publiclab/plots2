@@ -10,22 +10,56 @@
   <h2><%= raw t('notes.stats.contributors_statistics') %></h2>
   <hr>
 
-  <p>Also see <a href="/stats/subscriptions">subscription stats</a>, or these types of range-based stats queries:</p>
+  <h4><b><%= raw t('notes.stats.research_notes_posted_by_contributors', :note_count => @all_notes, :contributors_count => @all_contributors,
+                   :time => time_ago_in_words(Node.find_by(type: 'note', status: 1).created_at)) %></b></h4>
+  <br>
 
-  <ul>
-    <li><a href="/stats/range/10-05-2015/10-05-2016/">/stats/range/10-05-2015/10-05-2016/</a></li>
-    <li><a href="/stats/range/1-1-2016/31-12-2016/">/stats/range/1-1-2016/12-31-2016/</a></li>
-  </ul>
+  &emsp;&emsp;
+  <div class="btn-group" role="group" aria-label="Basic example">
+      <a href="<%= "?time="+(@time-1.year).to_formatted_s(:long) %>">
+          <button type="button" class="btn btn-secondary" title="1 year back">
+              <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
+              <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
+              <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
+          </button>
+      </a>
+      <a href="<%= "?time="+(@time-1.month).to_formatted_s(:long)%>">
+          <button type="button" class="btn btn-secondary" title="1 month back">
+              <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
+              <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
+          </button>
+      </a>
+      <a href="<%= "?time="+(@time-1.week).to_formatted_s(:long) %>">
+          <button type="button" class="btn btn-secondary" title="1 week back">
+              <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
+          </button>
+      </a>
+  </div>
 
-  <p><%= raw t('notes.stats.looking_back', :time => @time.to_formatted_s(:long)) %></p>
-  <p>
-    <%= raw t('notes.stats.try_time_further_back', :url1 => "?time="+(@time-1.year).to_formatted_s(:long),
-    :url2 => "?time="+(@time-1.month).to_formatted_s(:long), :url3 => "?time="+(@time-1.week).to_formatted_s(:long)) %>
-  </p>
-  <p>
-    <%= raw t('notes.stats.try_time_further_forward', :url1 => "?time="+(@time+1.year).to_formatted_s(:long),
-    :url2 => "?time="+(@time+1.month).to_formatted_s(:long), :url3 => "?time="+(@time+1.week).to_formatted_s(:long)) %>
-  </p>
+  &emsp;&emsp;
+  <b><%= @time.to_formatted_s(:long) %></b>
+  &emsp;&emsp;
+  <div class="btn-group" role="group" aria-label="Basic example">
+      <a href="<%= "?time="+(@time+1.week).to_formatted_s(:long) %>">
+          <button type="button" class="btn btn-secondary" title="1 week forward">
+              <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
+          </button>
+      </a>
+      <a href="<%= "?time="+(@time+1.month).to_formatted_s(:long)%>">
+          <button type="button" class="btn btn-secondary" title="1 month forward">
+              <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
+              <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
+          </button>
+      </a>
+      <a href="<%= "?time="+(@time+1.year).to_formatted_s(:long) %>">
+          <button type="button" class="btn btn-secondary" title="1 year forward">
+              <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
+              <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
+              <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
+          </button>
+      </a>
+  </div>
+  <br> <br>
   <hr />
 
   <h4>
@@ -42,12 +76,23 @@
     <%= raw t('notes.stats.people_joined_past_month', :people_count => @monthly_members) %>
   </h4>
 
-
   <hr />
+<br> <br>
 
+<div class="col-md-4 col-md-offset-2">
+    <i class="fa fa-cloud-download fa-3x" style="color:blue"> </i>
+    Download as Json
+</div>
+<div class="col-md-4 col-md-offset-1">
+    <i class="fa fa-cloud-download fa-3x" style="color:purple"> </i>
+    Download as CSV
+</div>
 
-  <h4><%= raw t('notes.stats.research_notes_posted_by_contributors', :note_count => @all_notes, :contributors_count => @all_contributors,
-  :time => time_ago_in_words(Node.find_by(type: 'note', status: 1).created_at)) %></h4>
+</div>
+
+<br> <br>
+
+<div class="container">
   <h4><%= raw t('notes.stats.total_contributors', :all_contributors_count => @all_time_contributors) %></h4>
 
   <p><%= raw t('notes.stats.notes_per_week_past_year', :note_count => @notes_per_week_past_year.round(2)) %></p>
