@@ -122,7 +122,6 @@ class SubscriptionController < ApplicationController
     unless params[:tagnames]
       flash[:notice] = "Please enter tags for subscription in the url."
       redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
-      return
     end
     if params[:tagnames].is_a? String
       tag_list = params[:tagnames].split(',')
