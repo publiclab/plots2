@@ -119,11 +119,16 @@ class SubscriptionController < ApplicationController
   end
 
   def multiple_add
-    unless params[:names]
+    if !params[:names] || params[:names] == ''
       flash[:notice] = "Please enter tags for subscription in the url."
       redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
+      return
     end
-    tag_list = params[:names].split(',')
+    if params[:names].is_a? String
+      tag_list = params[:names].split(',')
+    else
+      tag_list = params[:names]
+    end
     # should be logged in to subscribe
     if current_user
       # assume tag, for now
@@ -170,8 +175,8 @@ class SubscriptionController < ApplicationController
         # user or node subscription
       end
     else
-      flash[:warning] = "You must be logged in to subscribe for email updates."
-      redirect_to "/login"
+      flash[:warning] = "You must be logged in to subscribe for email updates!"
+      redirect_to "/login?return_to=" + request.fullpath
     end
   end
 
