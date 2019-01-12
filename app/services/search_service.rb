@@ -109,7 +109,7 @@ class SearchService
     period["from"] = period["from"].nil? ? Date.new(1990, 01, 01).to_time.to_i : period["from"].to_time.to_i
     period["to"] = period["to"].nil? ? Time.now.to_i : period["to"].to_time.to_i
     if period["from"] > period["to"]
-      period["from"], period["to"] = period["to"], period["from"];
+      period["from"], period["to"] = period["to"], period["from"]
     end
 
     items = Node.includes(:tag)
