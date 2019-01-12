@@ -119,7 +119,7 @@ class SubscriptionController < ApplicationController
   end
 
   def multiple_add
-    unless params[:names]
+    if !params[:names] || params[:names] == ''
       flash[:notice] = "Please enter tags for subscription in the url."
       redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
       return
