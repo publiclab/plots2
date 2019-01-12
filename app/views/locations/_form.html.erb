@@ -3,16 +3,14 @@
 <%= javascript_include_tag('/lib/leaflet-spin/example/leaflet.spin.min.js') %>
 
 <div class="container blurred-location">
-
-  <div class="row">
-
-  <label for="placenameInput"><b>Search by place name</b></label>
-  <input id="placenameInput" type="text" class="form-control" />
+    <div class="form-group">
+      <label for="placenameInput"><b>Search by place name</b></label>
+      <input id="placenameInput" type="text" class="form-control" />
+    </div>
 
   <p><b>By dragging the map</b></p>
 
   <div id="map" class="leaflet-map" style="width: 100%; height: 300px; margin-bottom:10px;"></div>
-
   <p>
     <h3><strong>Scale</strong></h3>
     <div class="slidecontainer" style="border-bottom: 2px solid #ccc;">
@@ -27,19 +25,22 @@
   <p>   
     <b>Or by co-ordinates</b>
     <div class="row">
-      <div class="col-lg-6">
-        <p><input id="lat" type="text" class="form-control" value="<%= latitude ||= 40 %>"></p>
+      <div class="col-lg-6 form-group">
+          <input id="lat" type="text" class="form-control" value="<%= latitude ||= 40 %>">
       </div>
-      <div class="col-lg-6">
-        <p><input id="lng" type="text" class="form-control" value="<%= longitude ||= -90 %>"></p>
+      <div class="col-lg-6 form-group">
+        <input id="lng" type="text" class="form-control" value="<%= longitude ||= -90 %>">
       </div>
     </div>
 
-    <label for="placenameDisplay"> <b>Place name as it will be saved:</b></label>
-    <input editable="false" id="placenameDisplay" type="text" class="form-control" />
+    <div class="form-group">
+        <label for="placenameDisplay"> <b>Place name as it will be saved:</b></label>
+        <input editable="false" id="placenameDisplay" type="text" class="form-control" />
+    </div>
 
-  <button data-dismiss="modal" class="btn btn-lg btn-primary" onclick="saveLocation()">Save</button>
+      <button data-dismiss="modal" class="btn btn-lg btn-primary" onclick="saveLocation()">Save</button>
 
+<<<<<<< HEAD
 <<<<<<< HEAD
   <button id="ldi-geocode-button" class="btn btn-default btn-lg" onclick='blurredLocation.geocodeWithBrowser(true);'>Auto-locate me</button>
 =======
@@ -49,6 +50,13 @@
     <input id="obscureLocation" type="checkbox" checked onchange='blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);'>
     Blur my location
   </label>
+=======
+      <button id="ldi-geocode-button" class="btn btn-outline-secondary btn-lg" onclick='blurredLocation.geocodeWithBrowser();'>Auto-locate me</button>
+      &nbsp; <label>
+        <input id="obscureLocation" type="checkbox" checked onchange='blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);'>
+        Blur my location
+      </label>
+>>>>>>> made the maps modal look good
 
 </div>
 
