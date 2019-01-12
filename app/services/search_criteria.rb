@@ -13,7 +13,7 @@ class SearchCriteria
     @sort_by = args[:sort_by]
     @order_direction = args[:order_direction]
     @field = args[:field]
-    @period = { "from" => args[:from], "to" => args[:to]}
+    @period = { "from" => args[:from], "to" => args[:to] }
     @limit = args[:limit] || 10
   end
 

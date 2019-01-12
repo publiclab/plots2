@@ -81,7 +81,7 @@ class SearchService
   end
 
   # Search nearby nodes with respect to given latitude, longitute and tags
-  def tagNearbyNodes(coordinates, tag, period = {"from" => nil, "to" => nil}, sort_by = nil, order_direction = nil, limit = 10)
+  def tagNearbyNodes(coordinates, tag, period = { "from" => nil, "to" => nil }, sort_by = nil, order_direction = nil, limit = 10)
     raise("Must contain all four coordinates") if coordinates["nwlat"].nil?
     raise("Must contain all four coordinates") if coordinates["nwlng"].nil?
     raise("Must contain all four coordinates") if coordinates["selat"].nil?
@@ -106,8 +106,8 @@ class SearchService
 
     # If the period["from"] was not specified, we use (1990,01,01)
     # If the period["to"] was not specified, we use 'now'
-    period["from"] = period["from"].nil? ? Date.new(1990,01,01).to_time.to_i : period["from"].to_time.to_i;
-    period["to"] = period["to"].nil? ? Time.now.to_i : period["to"].to_time.to_i;
+    period["from"] = period["from"].nil? ? Date.new(1990, 01, 01).to_time.to_i : period["from"].to_time.to_i
+    period["to"] = period["to"].nil? ? Time.now.to_i : period["to"].to_time.to_i
     if period["from"] > period["to"]
       period["from"], period["to"] = period["to"], period["from"];
     end
@@ -178,16 +178,12 @@ class SearchService
 
     # Here we use period["from"] and period["to"] in the query only if they have been specified,
     # so we avoid to join revision table
-      if (!period["from"].nil? || !period["to"].nil?)
-        items = items.joins(:revisions).where("node_revisions.status = 1")\
+    if !period["from"].nil? || !period["to"].nil?
+      items = items.joins(:revisions).where("node_revisions.status = 1")\
                    .distinct
-        if !period["from"].nil?
-          items = items.where('node_revisions.timestamp > ' + period["from"].to_time.to_i.to_s)
-        end
-        if !period["to"].nil?
-          items = items.where('node_revisions.timestamp < ' + period["to"].to_time.to_i.to_s)
-        end
-      end
+      items = items.where('node_revisions.timestamp > ' + period["from"].to_time.to_i.to_s) unless period["from"].nil?
+      items = items.where('node_revisions.timestamp < ' + period["to"].to_time.to_i.to_s) unless period["to"].nil?
+    end
 
     # sort users by their recent activities if the sort_by==recent
     items =
