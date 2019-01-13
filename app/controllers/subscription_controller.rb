@@ -119,15 +119,15 @@ class SubscriptionController < ApplicationController
   end
 
   def multiple_add
-    if !params[:names] || params[:names] == ''
+    if !params[:tagnames] || params[:tagnames] == ''
       flash[:notice] = "Please enter tags for subscription in the url."
       redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
       return
     end
-    if params[:names].is_a? String
-      tag_list = params[:names].split(',')
+    if params[:tagnames].is_a? String
+      tag_list = params[:tagnames].split(',')
     else
-      tag_list = params[:names]
+      tag_list = params[:tagnames]
     end
     # should be logged in to subscribe
     if current_user
@@ -136,7 +136,7 @@ class SubscriptionController < ApplicationController
         tag_list.each do |t|
           if t.length.positive?
             tag = Tag.find_by(name: t)
-            # t should be not nil consider params[:names] = balloon,,mapping,,kites,oil
+            # t should be not nil consider params[:tagnames] = balloon,,mapping,,kites,oil
             if tag.nil?
               # if the tag doesn't exist, we should create it!
               # this could fail validations; error out if so...
@@ -166,7 +166,7 @@ class SubscriptionController < ApplicationController
             if request.xhr?
               render :json => true
             else
-              flash[:notice] = "You are now following '#{params[:names]}'."
+              flash[:notice] = "You are now following '#{params[:tagnames]}'."
               redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
             end
           end
