@@ -50,7 +50,6 @@ class UsersController < ApplicationController
     @user = current_user
     @user = User.find_by(username: params[:id]) if params[:id] && current_user && current_user.role == "admin"
     @user.attributes = user_params
-    user_params["username"] = @user.username
     @user.save do |result|
       if result
         if session[:openid_return_to] # for openid login, redirects back to openid auth process

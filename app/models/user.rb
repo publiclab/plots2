@@ -16,6 +16,8 @@ class User < ActiveRecord::Base
   BANNED = 0 # Usage: User::BANNED
   MODERATED = 5 # Usage: User::MODERATED
 
+  attr_readonly :username
+
   acts_as_authentic do |c|
     VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
     c.validates_format_of_email_field_options = { with: VALID_EMAIL_REGEX }
