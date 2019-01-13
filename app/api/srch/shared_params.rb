@@ -21,7 +21,7 @@ module Srch
     end
 
     params :ordering do
-      optional :order_direction, type: String, documentation: { example: 'desc' }
+      optional :order_direction, type: String, documentation: { example: 'DESC' }
     end
 
     params :sorting do
