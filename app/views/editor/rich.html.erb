@@ -1,3 +1,11 @@
+<!-- required for MapModule -->
+<!-- <script src="https://maps.googleapis.com/maps/api/js?libraries=places&language=en&key=AIzaSyDWgc7p4WWFsO3y0MTe50vF4l4NUPcPuwE"></script> -->
+<link href="/lib/leaflet/dist/leaflet.css" rel="stylesheet">
+<script src="/lib/leaflet/dist/leaflet.js"></script>
+<link href="/lib/leaflet-blurred-location/dist/Leaflet.BlurredLocation.css" rel="stylesheet">
+<script src="/lib/leaflet-blurred-location/dist/Leaflet.BlurredLocation.js"></script>
+    
+
 <link href="/lib/woofmark/dist/woofmark.min.css" rel="stylesheet">
 <link href="/lib/horsey/dist/horsey.min.css" rel="stylesheet">
 <link href="/lib/bootstrap-tokenfield/dist/css/tokenfield-typeahead.min.css" rel="stylesheet">
@@ -12,9 +20,11 @@
 <link href="/lib/publiclab-editor/dist/PublicLab.Editor.css" rel="stylesheet">
 <script src="/lib/publiclab-editor/dist/PublicLab.Editor.js"></script>
 
-<link href="/lib/publiclab-editor/dist/PublicLab.Editor.css" rel="stylesheet">
-
-<script src="/lib/publiclab-editor/dist/PublicLab.Editor.js"></script>
+<style type="text/css">
+  .leaflet-marker-icon {
+    background: url("https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-black.png") ; 
+  }
+</style>
 
 <div class="pl-editor">
 
@@ -77,12 +87,51 @@
     </div>
     <!-- end main_image module -->
 
+   <!-- Map Module start-->
+    <div class="ple-module-map ple-module container">
+
+      <div class="ple-module-guide col-md-3">
+        <h2>3</h2>
+      </div>
+
+      <div class="ple-module-content col-md-9">
+          <button id="location_button" class="btn btn-lg btn-default"><i class="fa fa-map-marker" aria-hidden="true"></i> Add Location</button>
+          <p class="ple-help"><span class="ple-help-minor">Search location through place-name , latitude and longitude or by panning the map .</span></p>
+
+          <div id="map_content">    
+            <div class="row">
+              <div class="col-md-6"> 
+                <div id="map" class="leaflet-map" style="width: 100% ; height: 300px;"></div>
+                </div>
+                <div class="col-md-6">
+                  <h4><b>By place name :</b></h4>
+                    <p>
+                      <input id="placenameInput" type="text" class="form-control" />
+                    </p>
+                     <p>
+                      <h4><b>By entering co-ordinates :</b></h4>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <p><input id="lat" type="text" class="form-control" placeholder="Latitude"></p>
+                        </div>
+                        <div class="col-md-6">
+                          <p><input id="lng" type="text" class="form-control" placeholder="Longitude"></p>
+                        </div>
+                      </div>
+                    </p>
+                </div>   
+            </div>
+          </div>
+      </div>
+    </div>
+    <!-- Map Module end -->  
+
 
     <!-- body module -->
     <div class="ple-module-body ple-module container">
 
       <div class="ple-module-guide col-md-3">
-        <h2>3</h2>
+        <h2>4</h2>
       </div>
 
       <div class="ple-module-content col-md-9 container">
@@ -97,7 +146,7 @@
     <div class="ple-module-tags ple-module container">
 
       <div class="ple-module-guide col-md-3">
-        <h2>4</h2>
+        <h2>5</h2>
       </div>
 
       <div class="ple-module-content col-md-9">
@@ -185,6 +234,13 @@
 
 </div>
 <script>
+
+  $( document ).ready(function() {
+      $("#map_content").hide() ;
+      $("#location_button").click(function(){
+          $("#map_content").toggle() ;
+      }) ;
+  });
 
   var editor;
 
