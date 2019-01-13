@@ -62,4 +62,19 @@ class SearchControllerTest < ActionController::TestCase
     assert_response :success
     assert assigns(:nodes).values.flatten.collect(&:type).uniq.length > 1
   end
+
+  test "search for trawl trawling and trawls yields the same result" do
+    get :all_content, params: { :query => "trawl" }
+    nodes_with_trawl = assigns(:nodes)
+
+    get :all_content, params: { :query => "trawling" }
+    nodes_with_trawling = assigns(:nodes)
+
+    get :all_content, params: { :query => "trawls" }
+    nodes_with_trawls = assigns(:nodes)
+
+    assert_equal nodes_with_trawl, nodes_with_trawling
+    assert_equal nodes_with_trawl, nodes_with_trawls
+    assert_response :success
+  end
 end

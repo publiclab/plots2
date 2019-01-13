@@ -119,14 +119,16 @@ class SubscriptionController < ApplicationController
   end
 
   def multiple_add
-    unless params[:tagnames]
+    unless params[:names]
+    if !params[:names] || params[:names] == ''
       flash[:notice] = "Please enter tags for subscription in the url."
       redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
+      return
     end
-    if params[:tagnames].is_a? String
-      tag_list = params[:tagnames].split(',')
+    if params[:names].is_a? String
+      tag_list = params[:names].split(',')
     else
-      tag_list = params[:tagnames]
+      tag_list = params[:names]
     end
     # should be logged in to subscribe
     if current_user
@@ -165,7 +167,7 @@ class SubscriptionController < ApplicationController
             if request.xhr?
               render :json => true
             else
-              flash[:notice] = "You are now following '#{params[:tagnames]}'."
+              flash[:notice] = "You are now following '#{params[:names]}'."
               redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
             end
           end

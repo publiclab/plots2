@@ -160,4 +160,34 @@ class TagTest < ActiveSupport::TestCase
     assert_equal 5,contributor_count
   end
 
+  test 'check sort according to followers ascending' do
+    tags = Tag.joins(:node_tag, :node)
+        .select('node.nid, node.status, term_data.*, community_tags.*')
+        .where('node.status = ?', 1)
+        .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
+        .group(:name)
+    tags = Tag.sort_according_to_followers(tags, "asc")
+    followers = []
+    tags.each do |i|
+      followers << Tag.follower_count(i.name)
+    end
+    followers_sorted = followers.sort
+    assert_equal followers_sorted, followers
+  end
+
+  test 'check sort according to followers descending' do
+    tags = Tag.joins(:node_tag, :node)
+        .select('node.nid, node.status, term_data.*, community_tags.*')
+        .where('node.status = ?', 1)
+        .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
+        .group(:name)
+    tags = Tag.sort_according_to_followers(tags, "desc")
+    followers = []
+    tags.each do |i|
+      followers << Tag.follower_count(i.name)
+    end
+    followers_sorted = followers.sort.reverse
+    assert_equal followers_sorted, followers
+  end
+
 end

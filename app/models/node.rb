@@ -71,7 +71,7 @@ class Node < ActiveRecord::Base
     updated_at.strftime('%B %Y')
   end
 
-  has_many :revision, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
+  has_many :revision, foreign_key: 'nid', dependent: :destroy
   # wasn't working to tie it to .vid, manually defining below
   #  has_one :drupal_main_image, :foreign_key => 'vid', :dependent => :destroy
   #  has_many :drupal_content_field_image_gallery, :foreign_key => 'nid'

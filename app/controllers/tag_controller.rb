@@ -40,13 +40,13 @@ class TagController < ApplicationController
         .order(order_string)
         .paginate(page: params[:page], per_page: 24)
     elsif @toggle == "followers"
-      @tags = Tag.joins(:node_tag, :node)
+      raw_tags = Tag.joins(:node_tag, :node)
         .select('node.nid, node.status, term_data.*, community_tags.*')
         .where('node.status = ?', 1)
         .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
         .group(:name)
-        .order(order_string)
-        .paginate(page: params[:page], per_page: 24)
+      raw_tags = Tag.sort_according_to_followers(raw_tags, params[:order])
+      @tags = raw_tags.paginate(page: params[:page], per_page: 24)
     else
       tags = Tag.joins(:node_tag, :node)
         .select('node.nid, node.status, term_data.*, community_tags.*')
