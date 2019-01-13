@@ -119,7 +119,6 @@ class SubscriptionController < ApplicationController
   end
 
   def multiple_add
-    unless params[:names]
     if !params[:names] || params[:names] == ''
       flash[:notice] = "Please enter tags for subscription in the url."
       redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
@@ -137,7 +136,7 @@ class SubscriptionController < ApplicationController
         tag_list.each do |t|
           if t.length.positive?
             tag = Tag.find_by(name: t)
-            # t should be not nil consider params[:tagnames] = balloon,,mapping,,kites,oil
+            # t should be not nil consider params[:names] = balloon,,mapping,,kites,oil
             if tag.nil?
               # if the tag doesn't exist, we should create it!
               # this could fail validations; error out if so...
