@@ -90,8 +90,6 @@ Plots2::Application.routes.draw do
   post 'subscribe/multiple/:type/:names' => 'subscription#multiple_add'
   get 'subscribe/multiple/:type' => 'subscription#multiple_add'
   post 'subscribe/multiple/:type' => 'subscription#multiple_add'
-
-
   get 'wiki/stale' => 'wiki#stale'
   get 'wiki/new' => 'wiki#new'
   get 'wiki/replace/:id' => 'wiki#replace'
