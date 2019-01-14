@@ -231,6 +231,21 @@ class UsersControllerTest < ActionController::TestCase
     assert_equal User.find(user.id).bio, 'Bio updated by user'
   end
 
+  test 'rejecting update profile with wrong password when ui_update is nil' do
+    user = users(:bob)
+    bio = users(:bob).bio
+    UserSession.create(user)
+    post :update, params: {
+      user: {
+        bio: 'Bio updated by user but with wrong password',
+        current_password: 'wrongpassword',
+        ui_update: nil
+      }
+    }
+    assert_response :redirect
+    assert_not_equal User.find(user.id).bio, 'Bio updated by user but with wrong password'
+  end
+
   test 'should redirect edit when not logged in' do
     user = users(:bob)
     get :edit, params: { id: user.name }
