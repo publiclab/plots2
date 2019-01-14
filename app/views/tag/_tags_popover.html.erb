@@ -1,0 +1,21 @@
+<div class="main_div">
+  <p class="small_heading"> Follow related tags: </p>
+  <%= form_with remote: true, url: '/subscribe/multiple/tag/:names' do |f| %>
+    <% tags.each do |tag| %>
+    <div>
+      <input type="checkbox" id="<%= tag.id %>" name="names[]" value="<%= tag.name %>" <% if current_user.following(tag.name) %> checked <% end %> ><span class="label <%= label_name %>" style="margin-left: 3px; margin-right: 10px; display: inline-block;"> <%= tag.name %></span>
+    </div>
+    <% end %>
+      <%= f.submit 'Subscribe', class: "btn btn-primary btn-sm", style: 'margin-top: 10px;' %>
+  <% end %>
+</div>
+<style>
+  .main_div{
+  margin: 10px;
+  margin-right: 50px;
+  }
+  .small_heading{
+  font-style: italic;
+  color: #004d80;
+  }
+</style> 
