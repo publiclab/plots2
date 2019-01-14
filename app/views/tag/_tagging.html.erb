@@ -1,12 +1,4 @@
-<!-- This is the sidebar tagging display, also renders Subscribe button for multiple subscription -->
-<div>
-  <h1 style="display: inline-block;">Tags</h1>
-  <% if @node %>
-    <%= render partial: 'tag/subscribe_button', locals:{tags: @node.node_tags} %>
-  <% else %>
-    <%= render partial: 'tag/subscribe_button', locals:{tags: @user.user_tags} %>
-  <% end %>
-</div>
+<h1>Tags</h1>
 <em class="italics"><a href="/tags">Tags</a> organize our knowledge base. Click to learn more or subscribe to a topic.</em>
 
 
@@ -27,7 +19,7 @@
 $(function () {
   $('#tags [data-toggle="tooltip"]').tooltip()
 })
-  
+
 var pops = $("[data-toggle=popover]");
 $(".label").on("click", function(e){
     if(e.target === this){
