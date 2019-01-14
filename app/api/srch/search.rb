@@ -348,7 +348,7 @@ module Srch
     def self.execute(endpoint, params)
       search_type = endpoint
       search_criteria = SearchCriteria.new(params)
-      search_criteria. validate_period_from_to
+      search_criteria.validate_period_from_to
       if search_criteria.valid?
         ExecuteSearch.new.by(search_type, search_criteria)
       else
