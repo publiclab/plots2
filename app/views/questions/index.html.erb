@@ -1,13 +1,13 @@
-<div class="col-md-12">
+<div class="col-lg-12">
 
   <% if params[:action] == 'answered' %>
-  <h2>Recently Answered <small class="hidden-sm">Recently answered questions</small></h2>
+  <h2>Recently Answered <small class="d-md-none d-lg-inline">Recently answered questions</small></h2>
   <% elsif params[:action] == 'popular' %>
-  <h2>Popular Questions <small class="hidden-sm">Most viewed questions</small></h2>
+  <h2>Popular Questions <small class="d-md-none d-lg-inline">Most viewed questions</small></h2>
   <% elsif params[:action] == 'unanswered' %>
-  <h2>Unanswered Questions <small class="hidden-sm">Unanswered questions</small></h2>
+  <h2>Unanswered Questions <small class="d-md-none d-lg-inline">Unanswered questions</small></h2>
   <% elsif params[:action] == 'liked' %>
-  <h2>Liked Questions <small class="hidden-sm">Most liked questions</small></h2>
+  <h2>Liked Questions <small class="d-md-none d-lg-inline">Most liked questions</small></h2>
   <% else %>
   <div class="text-center">
     <% cache('feature_questions-header', skip_digest: true) do %>
@@ -19,24 +19,24 @@
   <hr />
 
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-lg-6">
       <h4>Ask a question here</h4>
       <% if !current_user %>
         <p>To ask a question, please <a href="/login?return_to=/questions">log in</a> or <a href="/signup?return_to=/questions">sign up</a> first.</p>
       <% end %>
-      <form id="questions_searchform" class="form-horizontal" role="search" autocomplete="off" action="/post">
+      <form id="questions_searchform" role="search" autocomplete="off" action="/post">
         <div class="input-group">
           <input tabindex="1" id="questions_searchform_input" type="text" name="title" class="<%= "disabled " if !current_user %>form-control search-query typeahead" qryType="questions" placeholder="type your question">
           <input type="hidden" name="tags" value="question:general">
           <input type="hidden" name="template" value="question">
           <input type="hidden" name="redirect" value="question">
-          <span class="input-group-btn">
+          <div class="input-group-append">
             <button id="question_search" type="submit" rel="tooltip" title="Ask a question with the entered title" class="btn btn-primary">Continue</button>
-            </span>
+          </div>
         </div>
       </form>
     </div>
-    <div class="col-md-6">
+    <div class="col-lg-6">
       <% if params[:controller] == 'questions' %>
         <%= render partial: 'tag/sorting' %>
       <% end %>
@@ -48,29 +48,29 @@
   <%= render :partial => "notes/format_toggle" %>
 
   <ul class="nav nav-tabs">
-    <li<% if params[:action] == "index" %> class="active"<% end %>>
-      <a href="/questions/">
-        <i class="fa fa-refresh"></i> <span class="hidden-sm hidden-xs"> Recently Asked</span>
+    <li<% if params[:action] == "index" %> class="nav-item"<% end %>>
+      <a class="nav-link active" href="/questions/">
+        <i class="fa fa-refresh"></i> <span class="d-none d-lg-inline"> Recently Asked</span>
       </a>
     </li>
-    <li<% if params[:action] == "answered" %> class="active"<% end %>>
-      <a href="/questions/answered/">
-        <i class="fa fa-check"></i> <span class="hidden-sm hidden-xs"> Recently Answered</span>
+    <li<% if params[:action] == "answered" %> class="nav-item"<% end %>>
+      <a class="nav-link" href="/questions/answered/">
+        <i class="fa fa-check"></i> <span class="d-none d-lg-inline"> Recently Answered</span>
       </a>
     </li>
-    <li<% if params[:action] == "popular" %> class="active"<% end %>>
-      <a href="/questions/popular/">
-        <i class="fa fa-bolt"></i> <span class="hidden-sm hidden-xs"> Popular</span>
+    <li<% if params[:action] == "popular" %> class="nav-item"<% end %>>
+      <a class="nav-link" href="/questions/popular/">
+        <i class="fa fa-bolt"></i> <span class="d-none d-lg-inline"> Popular</span>
       </a>
     </li>
-    <li<% if params[:action] == "unanswered" %> class="active"<% end %>>
-      <a href="/questions/unanswered/">
-        <i class="fa fa-question-circle"></i> <span class="hidden-sm hidden-xs"> Unanswered</span>
+    <li<% if params[:action] == "unanswered" %> class="nav-item"<% end %>>
+      <a class="nav-link" href="/questions/unanswered/">
+        <i class="fa fa-question-circle"></i> <span class="d-none d-lg-inline"> Unanswered</span>
       </a>
     </li>
-    <li<% if params[:action] == "liked" %> class="active"<% end %>>
-      <a href="/questions/liked/">
-        <i class="fa fa-star-o"></i> <span class="hidden-sm hidden-xs"> Liked</span>
+    <li<% if params[:action] == "liked" %> class="nav-item"<% end %>>
+      <a class="nav-link" href="/questions/liked/">
+        <i class="fa fa-star-o"></i> <span class="d-none d-lg-inline"> Liked</span>
       </a>
     </li>
   </ul>
