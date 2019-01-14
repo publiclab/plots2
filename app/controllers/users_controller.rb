@@ -54,18 +54,19 @@ class UsersController < ApplicationController
       # correct password
       @user.attributes = user_params
       @user.save do |result|
-        if result
-          if session[:openid_return_to] # for openid login, redirects back to openid auth process
-            return_to = session[:openid_return_to]
-            session[:openid_return_to] = nil
-            redirect_to return_to
-          else
-            flash[:notice] = I18n.t('users_controller.successful_updated_profile') + "<a href='/dashboard'>" + I18n.t('users_controller.return_dashboard') + " &raquo;</a>"
-            return redirect_to "/profile/" + @user.username + "/edit"
-          end
-        else
-          render :template => 'users/edit'
-        end
+        render plain: 'kunal'
+        # if result
+        #   if session[:openid_return_to] # for openid login, redirects back to openid auth process
+        #     return_to = session[:openid_return_to]
+        #     session[:openid_return_to] = nil
+        #     redirect_to return_to
+        #   else
+        #     flash[:notice] = I18n.t('users_controller.successful_updated_profile') + "<a href='/dashboard'>" + I18n.t('users_controller.return_dashboard') + " &raquo;</a>"
+        #     return redirect_to "/profile/" + @user.username + "/edit"
+        #   end
+        # else
+        #   render :template => 'users/edit'
+        # end
       end
     else
       # incorrect password
