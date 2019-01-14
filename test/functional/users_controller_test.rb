@@ -201,23 +201,6 @@ class UsersControllerTest < ActionController::TestCase
     assert_equal User.find(user.id).bio, 'Hello, there!'
   end
 
-  test 'username should not be updated test_1' do
-    u = users(:bob)
-    user = users(:bob)
-    UserSession.create(user)
-    user.username = 'newval'
-    user.save
-    assert_equal u.username, 'newval'
-  end
-
-  test 'username should not be updated test_2' do
-    user = users(:bob)
-    UserSession.create(user)
-    assert_raises ActiveRecord::ActiveRecordError do
-      user.update_attribute(:username, 'new_user')
-    end
-  end  
-
   test 'should redirect edit when not logged in' do
     user = users(:bob)
     get :edit, params: { id: user.name }
