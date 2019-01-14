@@ -256,4 +256,16 @@ class UserTest < ActiveSupport::TestCase
     assert_equal user_obj.is_verified, false
   end
 
+  test 'username should not be updated' do
+    user = users(:bob)
+    UserSession.create(user)
+    user.username = 'newval'
+    user.save
+    user.reload
+    assert_equal user.username, 'Bob'
+    assert_raises ActiveRecord::ActiveRecordError do
+      user.update_attribute(:username, 'new_user')
+    end
+  end
+
 end
