@@ -284,9 +284,8 @@ class UserTest < ActiveSupport::TestCase
 
   test 'username should not be updated' do
     user = users(:bob)
-    UserSession.create(user)
     user.username = 'newval'
-    user.save
+    user.save!
     user.reload
     assert_equal user.username, 'Bob'
     assert_raises ActiveRecord::ActiveRecordError do
