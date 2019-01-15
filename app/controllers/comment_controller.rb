@@ -26,6 +26,12 @@ class CommentController < ApplicationController
     @user = current_user
     begin
       @comment = create_comment(@node, @user, @body)
+
+      if params[:reply_to].present?
+        @comment.reply_to = params[:reply_to].to_i
+        @comment.save
+      end
+
       respond_with do |format|
         if params[:type] && params[:type] == 'question'
           @answer_id = 0
