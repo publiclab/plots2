@@ -410,7 +410,7 @@ class User < ActiveRecord::Base
       user.username = email_prefix
       user.email = auth["info"]["email"]
       user.password = s
-      user.status = 1
+      #user.status = 1 # uncomment this when test properly fails
       user.password_confirmation = s
       user.password_checker = hash[auth["provider"]]
       user.save!
