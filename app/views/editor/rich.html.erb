@@ -20,6 +20,9 @@
 <link href="/lib/publiclab-editor/dist/PublicLab.Editor.css" rel="stylesheet">
 <script src="/lib/publiclab-editor/dist/PublicLab.Editor.js"></script>
 
+<%= javascript_include_tag('/lib/leaflet-spin/example/spin/dist/spin.min.js') %>
+<%= javascript_include_tag('/lib/leaflet-spin/example/leaflet.spin.min.js') %>
+
 <style type="text/css">
   .leaflet-marker-icon {
     background: url("https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-black.png") ; 
@@ -243,7 +246,7 @@
   });
 
   var editor;
-  
+
   (function() {
 
     editor = new PL.Editor({
