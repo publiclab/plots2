@@ -370,7 +370,6 @@ class Comment < ApplicationRecord
     comment.include?(COMMENT_FILTER)
   end
 
-<<<<<<< HEAD
   def self.receive_tweet
     comments = Comment.where.not(tweet_id: nil)
     if comments.any?
