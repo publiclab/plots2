@@ -34,6 +34,32 @@ class UserTest < ActiveSupport::TestCase
     assert_equal user.tagnames, user.tagnames
   end
 
+  test 'user creation with create_with_omniauth' do
+    auth = {
+      'info': {
+        'email': 'bobafett@email.com' # there should not already be a username like this
+      },
+      'provider': 'github'
+    }
+    user = User.create_with_omniauth(auth)
+    assert_equal 1, user.status
+    assert_equal 'bobafett', user.username
+    assert_equal 2, user.password_checker
+  end
+
+  test 'user with duplicate username creation with create_with_omniauth' do
+    auth = {
+      'info': {
+        'email': 'bob@email.com' # there should already be a bob user
+      },
+      'provider': 'facebook'
+    }
+    user = User.create_with_omniauth(auth)
+    assert_equal 1, user.status
+    assert_not_equal 'bob', user.username
+    assert_equal 1, user.password_checker
+  end
+
   test 'user mysql native fulltext search' do
     assert User.count > 0
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
