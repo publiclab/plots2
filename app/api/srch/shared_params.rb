@@ -33,8 +33,8 @@ module Srch
     end
 
     params :period do
-      optional :from, type: Date, documentation: { example: '14/12/1989' }
-      optional :to, type: Date, documentation: { example: '15/01/2019' }
+      optional :from, type: Date, documentation: { example: '14-12-1989' }
+      optional :to, type: Date, documentation: { example: '15-01-2019' }
     end
   end
 end

@@ -78,6 +78,12 @@ class SearchServiceTest < ActiveSupport::TestCase
     assert_equal result_1.length, 1
   end
 
+  test 'running search taglocations with valid params and specific period' do
+    result_1 = SearchService.new.tagNearbyNodes({ "nwlat" => 201.0, "nwlng" => 0.0, "selat" => 0.0, "selng" =>200.0 }, nil, period = { "from" => nil, "to" => Date.new(2018, 12, 01)}, sort_by = nil, order_direction = nil, limit = 10)
+    assert_not_nil result_1
+    assert_equal result_1.length, 3
+  end
+
   test 'running profiles by usertags' do
     users = [users(:steff3), users(:steff2), users(:steff1)]
 
