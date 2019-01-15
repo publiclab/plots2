@@ -36,10 +36,10 @@ class UserTest < ActiveSupport::TestCase
 
   test 'user creation with create_with_omniauth' do
     auth = {
-      'info': {
-        'email': 'bobafett@email.com' # there should not already be a username like this
+      'info' => {
+        'email' => 'bobafett@email.com' # there should not already be a username like this
       },
-      'provider': 'github'
+      'provider' => 'github'
     }
     user = User.create_with_omniauth(auth)
     assert_equal 1, user.status
@@ -49,10 +49,10 @@ class UserTest < ActiveSupport::TestCase
 
   test 'user with duplicate username creation with create_with_omniauth' do
     auth = {
-      'info': {
-        'email': 'bob@email.com' # there should already be a bob user
+      'info' => {
+        'email' => 'bob@email.com' # there should already be a bob user
       },
-      'provider': 'facebook'
+      'provider' => 'facebook'
     }
     user = User.create_with_omniauth(auth)
     assert_equal 1, user.status
