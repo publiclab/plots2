@@ -72,8 +72,6 @@ gem 'reverse_markdown'
 
 gem 'twitter'
 
-gem 'rake',  '~> 12.3.1'
-
 # run with `bundle install --without production` or `bundle install --without mysql` to exclude this
 group :mysql, :production do
   gem 'mysql2', '>= 0.4.4'
