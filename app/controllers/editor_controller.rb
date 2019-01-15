@@ -24,6 +24,18 @@ class EditorController < ApplicationController
     elsif params[:legacy] || params[:template] == 'event'
       legacy
     else
+      @lat = 1 
+      @lon = 10
+      if !params[:tags].nil?
+        params[:tags]&.tr(' ', ',')&.split(',').each do |tagname|
+          if tagname.include? "lat:"
+            @lat = tagname[4..-1]
+          end
+          if tagname.include? "lon:"
+            @lon = tagname[4..-1]
+          end
+        end
+      end
       rich
       render '/editor/rich'
     end
