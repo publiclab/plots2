@@ -10,19 +10,28 @@
 everything_tag = Tag.create! "name"=>"everything", "description"=>"", "weight"=>0
 
 # set up 3 basic users: admin, mod, and user
-admin = User.create! "username"=>"admin", "email"=>"admin@example.com",
-  "openid_identifier"=>nil, "password"=>"password",
-  "password_confirmation"=>"password"
+admin = User.create! "username" => "admin",
+  "email" => "admin@example.com",
+  "status" => 1,
+  "openid_identifier" => nil,
+  "password" => "password",
+  "password_confirmation" => "password"
 admin.role = "admin"
-admin.save({})
+admin.save()
 
-mod = User.create! "username"=>"moderator", "email"=>"moderator@example.com",
-  "password"=>"password", "password_confirmation"=>"password"
+mod = User.create! "username" => "moderator",
+  "email" => "moderator@example.com",
+  "status" => 1,
+  "password" => "password",
+  "password_confirmation" => "password"
 mod.role = "moderator"
 mod.save({})
 
-basic_user = User.create! "username"=>"user", "email"=>"user@example.com",
-  "password"=>"password", "password_confirmation"=>"password"
+basic_user = User.create! "username" => "user",
+  "email" => "user@example.com",
+  "status" => 1,
+  "password" => "password",
+  "password_confirmation" => "password"
 basic_user.role = "basic"
 basic_user.save({})
 
