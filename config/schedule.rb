@@ -19,6 +19,9 @@
 
 # Learn more: http://github.com/javan/whenever
 
+env :PATH, ENV['PATH']
+env :GEM_PATH, ENV['GEM_PATH']
+
 # Cron Job log file
 set :output, "#{Dir.pwd}/public/cron_log.log"
 
