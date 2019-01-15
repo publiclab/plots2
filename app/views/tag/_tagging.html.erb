@@ -2,9 +2,7 @@
 <div>
   <h1 style="display: inline-block;">Tags</h1>
   <% if @node && !@node.node_tags.empty? %>
-    <% if current_user && @node.liked_by(current_user.uid) %>
-      <%= render partial: 'tag/subscribe_button', locals:{tags: @node.node_tags} %>
-    <% elsif !current_user %>
+    <% if (current_user && @node.liked_by(current_user.uid)) || !current_user %>
       <%= render partial: 'tag/subscribe_button', locals:{tags: @node.node_tags} %>
     <% end %>
   <% elsif @user && !@user.user_tags.empty? %>
