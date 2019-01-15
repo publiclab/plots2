@@ -24,9 +24,9 @@ class EditorController < ApplicationController
     elsif params[:legacy] || params[:template] == 'event'
       legacy
     else
-      @lat = 1 
+      @lat = 1
       @lon = 10
-      if !params[:tags].nil?
+      unless params[:tags].nil?
         params[:tags]&.tr(' ', ',')&.split(',').each do |tagname|
           if tagname.include? "lat:"
             @lat = tagname[4..-1]
