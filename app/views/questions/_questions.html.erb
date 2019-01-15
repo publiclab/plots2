@@ -2,7 +2,7 @@
 <div id="notes">
 	<div class="row">
 	<% questions.each_with_index do |node,i| %>
-		<div class="<% if @widget %>col-xs-4 col-sm-4 <% end %>col-md-4 note note-container-question" style="margin-top:20px;">
+		<div class="<% if @widget %>col-xs-4 col-sm-4 col-md-4 <% end %>col-lg-4 note note-container-question" style="margin-top:20px;">
       <div class="note-pane note-question<% if node.status == 4 %> moderated<% end %>">
 
         <div class="header-icon"><i class="fa fa-question-circle"></i> <a href="/q/<%= node.id %>"><i class="fa fa-link"></i></a></div>
@@ -19,18 +19,18 @@
 
         <span id="tags">
         <% node.tags.limit(4).each do |tag| %>
-          <span id="tag_<%= tag.id %>" class="label label-primary"><a href="/questions/tag/<%= tag.name %>"><%= tag.name %></a></span>
+          <span id="tag_<%= tag.id %>" ><a class="badge badge-primary" href="/questions/tag/<%= tag.name %>"><%= tag.name %></a></span>
         <% end %>
         </span>
-        <a href="<%= node.path(:question) %>#post-answer" class="btn btn-default btn-xs">Post an answer</a></p>
+        <a href="<%= node.path(:question) %>#post-answer" class="btn btn-outline-secondary btn-sm">Post an answer</a></p>
         <p class="meta">asked <%= render partial: "dashboard/node_meta", locals: { node: node } %></p>
       </div>
     </div>
 
-  <% unless @widget %><hr class="visible-xs visible-sm" /><% end %>
+  <% unless @widget %><hr class="d-lg-none" /><% end %>
   <% if ((i+1)/3.0).to_i == ((i+1)/3.0) %>
   </div>
-  <% unless @widget %><hr class="visible-xs visible-sm grid" /><% end %>
+  <% unless @widget %><hr class="d-lg-none grid" /><% end %>
   <div class="row">
   <% end %>
   <% end %>
