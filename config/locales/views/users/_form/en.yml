@@ -13,7 +13,7 @@ en:
       bio: "Bio"
       add_bio: "Add a short bio to appear on your profile page"
       are_you_human: "Are you human?"
-      spam_filtering: "Sorry: spam filtering! Please answer these four questions to ensure you're a real person."
+      spam_filtering: "Sorry: spam filtering! Please select the animals - 🦁  - below to show that you're a real person."
       dont_write_here: "Don't write anything here if you're a real person."
       sign_up: "Sign up"
       log_in: "Log in"

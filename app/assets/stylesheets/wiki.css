@@ -68,3 +68,9 @@ a.navbar-offset {
     top: -100px;
     visibility: hidden;
 }
+
+@media (max-width: 768px) {
+  .add-subscriptions {
+    margin-top:10px;
+  }
+}

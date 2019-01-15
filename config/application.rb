@@ -55,7 +55,7 @@ module Plots2
     # Enable the asset pipeline
     config.assets.enabled = true
     
-    I18n.available_locales = [:en, :de]
+    I18n.available_locales = [:en, :de, "zh-CN"]
     config.i18n.default_locale = :en 
     
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
@@ -82,13 +82,8 @@ module Plots2
 
     ActiveRecord::SessionStore::Session.table_name = 'rsessions'
 
-    require Rails.root + 'lib/open_id_authentication/open_id_authentication.rb'
-
-    config.middleware.use OpenIdAuthentication
-
     config.after_initialize do
       OpenID::Util.logger = Rails.logger
-      ActionController::Base.send :include, OpenIdAuthentication
     end
 
     config.autoload_paths += %W(

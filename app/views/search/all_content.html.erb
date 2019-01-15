@@ -1,0 +1,112 @@
+<%= render :partial => "search/nav", :locals => { :section => "search-all" } %>
+
+<div class="container">
+    <% if  @nodes.all?{|k,v| v.blank?} %>
+        <h4>
+            No Content found for <%= params[:query] %> :-(
+            </br></br>
+            Try searching <a href="/search">for another topic</a>
+        </h4>
+    <% else %>
+        <h2> Results for <%= params[:query] %></h2>
+        <% unless @notes.blank? %>
+            <h3> NOTES</h3>
+            <table class="table inline-grid">
+                <tr>
+                    <th> </th>
+                    <th> Posted by </th>
+                    <th> Views</th>
+                </tr>
+                <% @notes.each_with_index do |note, index| %>
+                    <% if index < 9 %>
+                        <tr>
+                            <td style="width:40%"><a href=<%= "#{note.path}" %>><%= note.title %></td>
+                            <td><%=note.author.name%></td>
+                            <td><%= note.views%></td>
+                        </tr>
+                    <% end %>
+                <% end %>
+                <% if (@notes.count > 9) %>
+                    <tr> <td><b><%= link_to "More matching notes >>", "/search/notes/#{params[:query]}" %></b></td></tr>
+                <% end %>
+            </table>
+        <% end%>
+        <br>
+        <% unless  @wikis.blank? %>
+            <h3>WIKIS</h3>
+            <table class="table inline-grid">
+                <col width="80">
+                <tr>
+                    <th> </th>
+                    <th> Posted by </th>
+                    <th> Views</th>
+                </tr>
+                <% @wikis.each_with_index do |wiki, index| %>
+                    <% if index < 9 %>
+                        <tr>
+                            <td style="width:40%"><a href=<%= "#{wiki.path}" %>><%= wiki.title %></a></td>
+                            <td><%=wiki.author.name%></td>
+                            <td><%= wiki.views%></td>
+                        </tr>
+                    <% end %>
+                <% end %>
+                <% if (@wikis.count > 9) %>
+                    <tr> <td><b><%= link_to "More matching wikis >>", "/search/wikis/#{params[:query]}" %></b></td></tr>
+                <% end %>
+            </table>
+        <% end %>
+        <br>
+        <% unless @questions.blank? %>
+            <h3> QUESTIONS </h3>
+            <table class="table inline-grid">
+                <tr>
+                    <th></th>
+                    <th> Asked by </th>
+                    <th> Views</th>
+                </tr>
+                <% @questions.each_with_index do |question, index| %>
+                    <% if index < 9 %>
+                        <tr>
+                            <td style="width:40%"><a href=<%= "#{question.path}" %>><%= question.title %></a></td>
+                            <td><%=question.author.name%></td>
+                            <td><%= question.views%></td>
+                        </tr>
+                    <% end %>
+                <% end %>
+                <% if (@questions.count > 9) %>
+                    <tr> <td><b><%= link_to "More matching questions >>", "/search/questions/#{params[:query]}" %></b></td></tr>
+                <% end %>
+            </table>
+        <% end %>
+        <br>
+        <% unless @profiles.blank? %>
+            <table class="table inline-grid">
+                <tr><th> <h3>USERS</h3> </th><tr>
+                        <% @profiles.each_with_index do |profile, index| %>
+                            <% if index < 9 %>
+                                <tr><td style="width:40%"><a href= <%= "/profile/#{profile.username}" %> ><%= profile.username %></a><td></tr>
+                            <% end %>
+                        <% end %>
+                        <% if @profiles.count > 9 %>
+                            <tr> <td><b><%= link_to "More matching profiles >>", "/search/profiles/#{params[:query]}" %></b></td></tr>
+                        <% end %>
+            </table>
+        <% end %>
+        <br>
+        <% unless @tags.blank? %>
+            <h3>TAGS</h3>
+            <table class="table inline-grid">
+                <% @tags.each_with_index do |tag, index| %>
+                    <% if index < 9 %>
+                        <tr>
+                            <td style="width:40%"><a href=<%= "#{tag.path}" %>><%= tag.title %></a></td>
+                        </tr>
+                    <% end %>
+                <% end %>
+                <% if (@tags.count > 9) %>
+                    <tr> <td><b><%= link_to "More matching tags >>", "/search/tags/#{params[:query]}" %></b></td></tr>
+                <% end %>
+            </table>
+        <% end %>
+    <% end %>
+</div>

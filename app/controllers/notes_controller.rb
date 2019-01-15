@@ -60,7 +60,7 @@ class NotesController < ApplicationController
       flash[:warning] = "You need to login to view the page"
       redirect_to '/login'
       return
-    elsif @node.status == 3 && @node.author.user != current_user && !current_user.can_moderate? && !@node.has_tag("with:#{current_user.username}")
+    elsif @node.status == 3 && @node.author != current_user && !current_user.can_moderate? && !@node.has_tag("with:#{current_user.username}")
       flash[:notice] = "Only author can access the draft note"
       redirect_to '/'
       return
@@ -105,7 +105,7 @@ class NotesController < ApplicationController
   end
 
   def create
-    if current_user.drupal_user.status == 1
+    if current_user.status == 1
       saved, @node, @revision = Node.new_note(uid: current_user.uid,
                                               title: params[:title],
                                               body: params[:body],
@@ -131,6 +131,7 @@ class NotesController < ApplicationController
           @node.add_tag('event:rsvp', current_user)
           @node.add_tag('date:' + params[:date], current_user) if params[:date]
         end
+        @node.add_tag('first-time-poster', current_user) if current_user.first_time_poster
         if params[:draft] != "true"
           if current_user.first_time_poster
             flash[:first_time_post] = true
@@ -286,7 +287,7 @@ class NotesController < ApplicationController
 
   # notes for a given author
   def author
-    @user = DrupalUser.find_by(name: params[:id])
+    @user = User.find_by(name: params[:id])
     @title = @user.name
     @notes = Node.paginate(page: params[:page], per_page: 24)
       .order('nid DESC')
@@ -296,7 +297,7 @@ class NotesController < ApplicationController
 
   # notes for given comma-delimited tags params[:topic] for author
   def author_topic
-    @user = DrupalUser.find_by(name: params[:author])
+    @user = User.find_by(name: params[:author])
     @tagnames = params[:topic].split('+')
     @title = @user.name + " on '" + @tagnames.join(', ') + "'"
     @notes = @user.notes_for_tags(@tagnames)
@@ -387,7 +388,7 @@ class NotesController < ApplicationController
   # Updates title of a wiki page, takes id and title as query string params. maps to '/node/update/title'
   def update_title
     node = Node.find params[:id].to_i
-    unless current_user && current_user.drupal_user == node.author
+    unless current_user && current_user == node.author
       flash.keep[:error] = I18n.t('notes_controller.author_can_edit_note')
       return redirect_to URI.parse(node.path).path + "#comments"
     end

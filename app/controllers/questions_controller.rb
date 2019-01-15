@@ -1,4 +1,6 @@
 class QuestionsController < ApplicationController
+  before_action :quiz_stats, only: %i(index answered popular liked unanswered)
+
   private
 
   def filter_questions_by_tag(questions, tagnames)
@@ -16,6 +18,10 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def quiz_stats
+    @stats = helpers.questions_stats(params[:period])
+  end
+
   public
 
   def index
@@ -29,9 +35,11 @@ class QuestionsController < ApplicationController
 
   # a form for new questions, at /questions/new
   def new
-    if params[:n] && !params[:body] # use another node body as a template
-      node = Node.find(params[:n])
-      params[:body] = node.body if node
+    # use another node body as a template
+    node_id = params[:n].to_i
+    if node_id && !params[:body] && Node.exists?(node_id)
+      node = Node.find(node_id)
+      params[:body] = node.body
     end
     if current_user.nil?
       redirect_to new_user_session_path(return_to: request.path)

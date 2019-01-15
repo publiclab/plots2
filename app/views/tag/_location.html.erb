@@ -4,6 +4,7 @@
 <script>
   jQuery(document).ready(function() {
     $('.blurred-location-input').click(function createBlurredLocationInput() {
+      $(this).attr("disabled", "disabled");
       <% if params[:action] == "profile" %>
         $.ajax('/locations/modal?reload=true')
       <% else %>
@@ -11,8 +12,9 @@
       <% end %>
        .done(function(response) {
          $('.blurred-location-container').html(response);
-         $('.modal').on('shown.bs.modal', function () { blurredLocation.map.invalidateSize(); });
-         $('.modal').modal();
+         $('#blurred-location-modal').on('shown.bs.modal', function () { blurredLocation.map.invalidateSize(); });
+         $('#blurred-location-modal').on('hide.bs.modal', function() {$('.blurred-location-input').removeAttr('disabled');});
+         $('#blurred-location-modal').modal();
        });
     });
   });

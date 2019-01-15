@@ -166,6 +166,18 @@ class Tag < ApplicationRecord
         .where(status: [1, 4])
   end
 
+  def self.sort_according_to_followers(raw_tags, order)
+    tags_with_their_followers = []
+    raw_tags.each do |i|
+      tags_with_their_followers << { "number_of_followers" => Tag.follower_count(i.name), "tags" => i }
+    end
+    tags_with_their_followers.sort_by! { |key| key["number_of_followers"] }
+    if order != "asc"
+      tags_with_their_followers.reverse!
+    end
+    tags = tags_with_their_followers.map { |x| x["tags"] }
+  end
+
   # OPTIMIZE: this too!
   def weekly_tallies(type = 'note', span = 52)
     weeks = {}
@@ -265,13 +277,14 @@ class Tag < ApplicationRecord
     tag_followers.reject { |user| following_given_tags.include? user }
   end
 
+  # https://github.com/publiclab/plots2/pull/4266
   def self.trending(limit = 5, start_date = DateTime.now - 1.month, end_date = DateTime.now)
-    Tag.joins(:node_tag, :node)
-       .select('node.nid, node.created, node.status, term_data.*, community_tags.*')
+    Tag.select([:name])
+       .joins(:node_tag, :node)
        .where('node.status = ?', 1)
        .where('node.created > ?', start_date.to_i)
        .where('node.created <= ?', end_date.to_i)
-       .group([:name, 'node.nid', 'term_data.tid', 'community_tags.nid', 'community_tags.uid', 'community_tags.date']) # ONLY_FULL_GROUP_BY, issue #3120
+       .distinct
        .order('count DESC')
        .limit(limit)
   end

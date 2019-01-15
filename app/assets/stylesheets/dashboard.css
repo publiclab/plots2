@@ -375,8 +375,9 @@
   background: #f3ffc1;
 }
 
-span#searchSortingOptionsLinks {
-  margin-left: 5px;
-  font-size: small;
-  color: blue;
+@media (max-width:269px) {
+  .btn.btn-sm.btn-default
+  {
+    margin-top:10px;
+  }
 }

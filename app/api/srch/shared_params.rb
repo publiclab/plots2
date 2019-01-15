@@ -5,15 +5,23 @@ module Srch
     extend Grape::API::Helpers
 
     params :common do
-      requires :srchString, type: String, documentation: { example: 'Spec' }
+      requires :query, type: String, documentation: { example: 'Spec' }
+      optional :limit, type: Integer, documentation: { example: 10 }
+    end
+
+    params :geographical do
+      requires :nwlat, type: Float, documentation: { example: 10.2 }
+      requires :selat, type: Float, documentation: { example: 10.2 }
+      requires :nwlng, type: Float, documentation: { example: 10.2 }
+      requires :selng, type: Float, documentation: { example: 10.2 }
     end
 
     params :additional do
-      optional :tagName, type: String, documentation: { example: 'awesome' }
+      optional :tag, type: String, documentation: { example: 'awesome' }
     end
 
     params :ordering do
-      optional :order_direction, type: String, documentation: { example: 'desc' }
+      optional :order_direction, type: String, documentation: { example: 'DESC' }
     end
 
     params :sorting do
@@ -22,7 +30,6 @@ module Srch
 
     params :field do
       optional :field, type: String, documentation: { example: 'username' }
-      optional :limit, type: Integer, documentation: { example: 0 }
     end
   end
 end

@@ -110,3 +110,44 @@ function geocodeStringAndPan(string, onComplete) {
       },
   });
 }
+
+function promptTag(val) {
+  var input;
+  switch(val) {
+
+    case "series:":
+      input = prompt("Enter a unique tag to link your series together, using dashes; it will be displayed with a message like 'This is part of a series on monitoring-landfills'");
+      if (input !== null) addTag(val + input);
+      break;
+
+    case "lang:":
+      input = prompt("Enter the language code; for example, for Spanish, enter 'es'", 'es');
+      if (input !== null) addTag(val + input);
+      break;
+
+    case "parent:":
+      input = prompt("Enter the end of the URL for another wiki page; for example, for '/wiki/stormwater', enter 'stormwater'");
+      if (input !== null) addTag(val + input);
+      break;
+
+    case "style:":
+      input = prompt("What kind of style? (minimal, fancy, presentation, wide, nobanner)", "minimal");
+      if (input !== null) addTag(val + input);
+      break;
+
+    case "with:":
+      input = prompt("Who would you like to add as a coauthor?", "Username");
+      if (input !== null) addTag(val + input);
+      break;
+
+    case "comment-template:":
+      var input = prompt("Add a template for the comment field to guide responses; enter the name (i.e. 'survey-template' for /wiki/survey-template) of a wiki page to use as the template:", "wiki-template-name");
+      if (input !== null) addTag(val + input);
+      break;
+
+    default:
+      addTag(expr);
+      break;
+
+  }
+}

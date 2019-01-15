@@ -290,7 +290,7 @@ class NotesControllerTest < ActionController::TestCase
 
   test 'first-timer moderated note (status=4) shown to author in full view with notice' do
     node = nodes(:first_timer_note)
-    UserSession.create(node.author.user)
+    UserSession.create(node.author)
     assert_equal 4, node.status
 
     get :show,
@@ -306,14 +306,14 @@ class NotesControllerTest < ActionController::TestCase
 
   test 'first-timer moderated note (status=4) shown to author in list view with notice' do
     node = nodes(:first_timer_note)
-    UserSession.create(node.author.user)
+    UserSession.create(node.author)
     assert_equal 4, node.status
 
     get :index
 
     assert_response :success
     selector = css_select 'div.note'
-    assert_equal selector.size, 21
+    assert_equal selector.size, 23
     assert_select "div p", 'Pending approval by community moderators. Please be patient!'
   end
 
@@ -342,7 +342,7 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_response :success
     selector = css_select 'div.note'
-    assert_equal selector.size, 21
+    assert_equal selector.size, 23
     assert_select "p", "Moderate first-time post: \n              Approve\n              Spam"
   end
 
@@ -890,7 +890,7 @@ class NotesControllerTest < ActionController::TestCase
 
    test 'draft note (status=3) shown to author in full view with notice' do
      node = nodes(:draft)
-     UserSession.create(node.author.user)
+     UserSession.create(node.author)
      assert_equal 3, node.status
 
      get :show,

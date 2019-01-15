@@ -18,17 +18,23 @@ ENV PHANTOMJS_VERSION 2.1.1
 
 # Install dependencies
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
-RUN apt-get update -qq && apt-get install -y build-essential bundler libmariadbclient-dev ruby-rmagick libfreeimage3 wget curl procps cron make nodejs strace
+RUN apt-get update -qq && apt-get install -y build-essential bundler libmariadbclient-dev ruby-rmagick libfreeimage3 wget curl procps cron make nodejs
 RUN wget https://github.com/Medium/phantomjs/releases/download/v$PHANTOMJS_VERSION/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2 -O /tmp/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2; tar -xvf /tmp/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2 -C /opt ; cp /opt/phantomjs-$PHANTOMJS_VERSION-linux-x86_64/bin/* /usr/local/bin/
-RUN npm install -g bower
+
+# Install yarn
+RUN npm config set strict-ssl false
+RUN npm install -g yarn
+
+RUN rm -r /usr/local/bundle
 
 # Install bundle of gems
 WORKDIR /tmp
 ADD Gemfile /tmp/Gemfile
 ADD Gemfile.lock /tmp/Gemfile.lock
-RUN bundle install --jobs 4
+RUN bundle install --jobs=4
 
 ADD . /app
 WORKDIR /app
 
-RUN bower install --allow-root
+RUN yarn install && yarn postinstall && yarn upgrade
+RUN passenger-config compile-nginx-engine --connect-timeout 60 --idle-timeout 60

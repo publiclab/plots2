@@ -1,5 +1,5 @@
-/* 
-Junction is provided under the OFL and is available at http://www.theleagueofmoveabletype.com/junction or https://github.com/theleagueof/junction 
+/*
+Junction is provided under the OFL and is available at http://www.theleagueofmoveabletype.com/junction or https://github.com/theleagueof/junction
 It was originally created by Caroline Hadilaksono: http://www.hadilaksono.com
 */
 @font-face {
@@ -65,7 +65,7 @@ h4,h5,h6, h1 small, h3 small {
 }
 
 #profile-fileinput {
-  visibility: hidden; 
+  visibility: hidden;
 }
 
 #image_revision {
@@ -75,8 +75,8 @@ h4,h5,h6, h1 small, h3 small {
 /* fontawesome default color */
 a .fa { color:#222; }
 a .fa-white,
-.fa-white { 
-    color: white !important; 
+.fa-white {
+    color: white !important;
 }
 
 .label a {
@@ -111,6 +111,46 @@ a .fa-white,
   .visible-tiny {
     display:none;
   }
+}
+
+@media (max-width: 768px) {
+    .navbar-header {
+        float: none;
+    }
+    .navbar-left,.navbar-right {
+        float: none !important;
+    }
+    .navbar-toggle {
+        display: block;
+    }
+    .navbar-collapse {
+        border-top: 1px solid transparent;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+    .navbar-fixed-top {
+        top: 0;
+        border-width: 0 0 1px;
+    }
+    .navbar-collapse.collapse {
+        display: none!important;
+    }
+    .navbar-nav {
+        float: none!important;
+        margin-top: 7.5px;
+    }
+    .navbar-nav>li {
+        float: none;
+    }
+    .navbar-nav>li>a {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .collapse.in{
+        display:block !important;
+    }
+    #md-ham {
+        display: none;
+    }
 }
 
 body { padding-top: 70px; }
@@ -306,37 +346,60 @@ body { padding-top: 70px; }
 }
 
 .diff .diff-object,
-.diff .diff-object { 
-  padding: 3px; 
+.diff .diff-object {
+  padding: 3px;
 }
-.diff .diff-added { 
+.diff .diff-added {
   background: #afa;
   color: green;
 }
 .diff .diff-removed {
   color: #900;
-  background: #faa; 
+  background: #faa;
 }
 
 div.note .meta {
   color:#888;
 }
 
+.image-container {
+  height:auto;
+  overflow:auto;
+}
+/*start of img aspect css that will affect the 
+thumbnails which appears on the user's profile 
+under their notes*/
 #notes .note a.img {
-  max-height: 200px;
-  height:160px;
-  display: block;
+  height: auto;
+  display: inline-block;
   overflow: hidden;
   margin-bottom: 10px;
 }
+
+.note-image {
+  height: auto;
+  overflow: hidden;
+}
+.note-image img {
+  width: auto;
+}
+
+.grid-image {
+  width: auto;
+  height: auto;
+  display: block; 
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+/*end of img aspect css*/
 
 #notes .note h3 a {
   color: #444;
 }
 
-div.note-show.moderated .pl-content, 
-div.note.moderated .content, 
-div.note.moderated .meta, 
+div.note-show.moderated .pl-content,
+div.note.moderated .content,
+div.note.moderated .meta,
 div.note.moderated h4 {
   -moz-opacity: 0.5;
   opacity:.5;
@@ -378,43 +441,17 @@ div.note.moderated h4 {
   padding-top: 7.5px;
 }
 
-.nav-button-donate, .nav-button-store {
-  display: inline-block;
-  height: 35px;
-  background-color: transparent;
-  margin-left: 1em;
-  text-transform: uppercase;
-  padding-top: 7px !important;
-}
-
-.nav-button-donate {
-  border-color: #3355ee;
-  padding-top: 8px !important;
-}
-
-.nav-button-donate:hover {
-  background-color: #3355ee;
-}
-
-.nav-button-donate:hover, .nav-button-store:hover {
-  color: black;
-}
-
-.nav-button-donate {
-  color: #3355ee;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.nav-button-store {
-  color: #ccc;
-  text-decoration: none;
-  font-weight: 600;
-}
-
 @media (max-width:768px) {
   table {
     font-size: 90%;
+  }
+
+  .grid-image {
+  width: auto;
+  height: auto;
+  display: block; 
+  overflow: hidden;
+  margin-bottom: 10px;
   }
 }
 
@@ -423,15 +460,15 @@ div.note.moderated h4 {
     font-size: 80%;
   }
 }
- 
+
 .back-to-top {
 
   float: right;
 
 }
- 
+
 .back-to-top i {
- 
+
   font-size: 60px;
- 
+
 }

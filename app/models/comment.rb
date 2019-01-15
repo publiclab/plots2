@@ -3,7 +3,7 @@ class Comment < ApplicationRecord
 
   belongs_to :node, foreign_key: 'nid', touch: true, counter_cache: true
   # dependent: :destroy, counter_cache: true
-  belongs_to :drupal_user, foreign_key: 'uid'
+  belongs_to :user, foreign_key: 'uid'
   belongs_to :answer, foreign_key: 'aid'
   has_many :likes, :as => :likeable
 
@@ -41,13 +41,25 @@ class Comment < ApplicationRecord
       # initialising month variable with the month of the starting day
       # of the week
       month = (time - (week * 7 - 1).days).strftime('%m')
-
+      # loop for finding the maximum occurence of a month name in that week
+      # For eg. If this week has 3 days falling in March and 4 days falling
+      # in April, then we would give this week name as April and vice-versa
+      [0, 1, 2, 3, 4, 5, 6].each do |i|
+        curr_month = (time - (week * 7 - i).days).strftime('%m')
+        if month == 0
+          month = curr_month
+        elsif month != curr_month
+          if i <= 4
+            month = curr_month
+          end
+        end
+      end
       month = month.to_i
       # Now fetching comments per week
-      current_week = Comment.select(:timestamp)
-        .where(timestamp: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
-        .count
-      weeks[count] = [month, current_week]
+      curr_week = Comment.select(:timestamp)
+                      .where(timestamp: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
+                      .count
+      weeks[count] = [month, curr_week]
       count += 1
       week -= 1
     end
@@ -122,9 +134,9 @@ class Comment < ApplicationRecord
   end
 
   def notify_users(uids, current_user)
-    DrupalUser.where('uid IN (?)', uids).each do |user|
+    User.where('id IN (?)', uids).each do |user|
       if user.uid != current_user.uid
-        CommentMailer.notify(user.user, self).deliver_now
+        CommentMailer.notify(user, self).deliver_now
       end
     end
   end
@@ -132,18 +144,22 @@ class Comment < ApplicationRecord
   # email all users in this thread
   # plus all who've starred it
   def notify(current_user)
-    if parent.uid != current_user.uid && !UserTag.exists?(parent.uid, 'notify-comment-direct:false')
-      CommentMailer.notify_note_author(parent.author, self).deliver_now
+    if status == 4
+      AdminMailer.notify_comment_moderators(self).deliver_now
+    else
+      if parent.uid != current_user.uid && !UserTag.exists?(parent.uid, 'notify-comment-direct:false')
+        CommentMailer.notify_note_author(parent.author, self).deliver_now
+      end
+
+      notify_callout_users
+
+      # notify other commenters, revisers, and likers, but not those already @called out
+      already = mentioned_users.collect(&:uid) + [parent.uid]
+      uids = uids_to_notify - already
+
+      notify_users(uids, current_user)
+      notify_tag_followers(already + uids)
     end
-
-    notify_callout_users
-
-    # notify other commenters, revisers, and likers, but not those already @called out
-    already = mentioned_users.collect(&:uid) + [parent.uid]
-    uids = uids_to_notify - already
-
-    notify_users(uids, current_user)
-    notify_tag_followers(already + uids)
   end
 
   def answer_comment_notify(current_user)
@@ -230,19 +246,21 @@ class Comment < ApplicationRecord
                   gmail_parsed_mail mail_doc
                 elsif domain == "yahoo"
                   yahoo_parsed_mail mail_doc
+                elsif domain == "outlook"
+                  outlook_parsed_mail mail_doc
                 elsif gmail_quote_present?(mail_doc)
                   gmail_parsed_mail mail_doc
                 else
                   {
-                    "comment_content" => mail_doc,
-                    "extra_content" => nil
+                    comment_content: mail_doc,
+                    extra_content: nil
                   }
                 end
-      if content["extra_content"].nil?
-        comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
+      if content[:extra_content].nil?
+        comment_content_markdown = ReverseMarkdown.convert content[:comment_content]
       else
-        extra_content_markdown = ReverseMarkdown.convert content["extra_content"]
-        comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
+        extra_content_markdown = ReverseMarkdown.convert content[:extra_content]
+        comment_content_markdown = ReverseMarkdown.convert content[:comment_content]
         comment_content_markdown = comment_content_markdown + COMMENT_FILTER + extra_content_markdown
       end
       message_id = mail.message_id
@@ -267,19 +285,21 @@ class Comment < ApplicationRecord
                   gmail_parsed_mail mail_doc
                 elsif domain == "yahoo"
                   yahoo_parsed_mail mail_doc
+                elsif domain == "outlook"
+                  outlook_parsed_mail mail_doc
                 elsif gmail_quote_present?(mail_doc)
                   gmail_parsed_mail mail_doc
                 else
                   {
-                    "comment_content" => mail_doc,
-                    "extra_content" => nil
+                    comment_content: mail_doc,
+                    extra_content: nil
                   }
                 end
-      if content["extra_content"].nil?
-        comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
+      if content[:extra_content].nil?
+        comment_content_markdown = ReverseMarkdown.convert content[:comment_content]
       else
-        extra_content_markdown = ReverseMarkdown.convert content["extra_content"]
-        comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
+        extra_content_markdown = ReverseMarkdown.convert content[:extra_content]
+        comment_content_markdown = ReverseMarkdown.convert content[:comment_content]
         comment_content_markdown = comment_content_markdown + COMMENT_FILTER + extra_content_markdown
       end
       message_id = mail.message_id
@@ -307,8 +327,8 @@ class Comment < ApplicationRecord
     end
 
     {
-      "comment_content" => comment_content,
-      "extra_content" => extra_content
+      comment_content: comment_content,
+      extra_content: extra_content
     }
   end
 
@@ -323,8 +343,26 @@ class Comment < ApplicationRecord
     end
 
     {
-      "comment_content" => comment_content,
-      "extra_content" => extra_content
+      comment_content: comment_content,
+      extra_content: extra_content
+    }
+  end
+
+  def self.outlook_parsed_mail(mail_doc)
+    separator = mail_doc.inner_html.match(/(.+)(<div id="appendonsend"><\/div>)(.+)/m)
+    if separator.nil?
+      comment_content = mail_doc
+      extra_content = nil
+    else
+      body_message = separator[1].match(/(.+)(<body dir="ltr">)(.+)/m)
+      comment_content = Nokogiri::HTML(body_message[3])
+      trimmed_message = separator[3].match(/(.+)(<\/body>)(.+)/m)
+      extra_content = Nokogiri::HTML(trimmed_message[1])
+    end
+
+    {
+      comment_content:  comment_content,
+      extra_content: extra_content
     }
   end
 
@@ -332,6 +370,7 @@ class Comment < ApplicationRecord
     comment.include?(COMMENT_FILTER)
   end
 
+<<<<<<< HEAD
   def self.receive_tweet
     comments = Comment.where.not(tweet_id: nil)
     if comments.any?
@@ -425,4 +464,34 @@ class Comment < ApplicationRecord
       end
     end
   end
-end
+
+  def parse_quoted_text
+    match = body.match(/(.+)(On .+<.+@.+> wrote:)(.+)/m)
+    if match.nil?
+      false
+    else
+      {
+        body: match[1], # the new message text
+        boundary: match[2], # quote delimeter, i.e. "On Tuesday, 3 July 2018, 11:20:57 PM IST, RP <rp@email.com> wrote:"
+        quote: match[3] # quoted text from prior email chain
+      }
+    end
+  end
+
+  def scrub_quoted_text
+    parse_quoted_text[:body]
+  end
+
+  def render_body
+    body = RDiscount.new(
+      title_suggestion(self),
+      :autolink
+    ).to_html
+    # if it has quoted email text that wasn't caught by the yahoo and gmail filters,
+    # manually insert the comment filter delimeter:
+    parsed = parse_quoted_text
+    if !trimmed_content? && parsed != false
+      body = parsed[:body] + COMMENT_FILTER + parsed[:boundary] + parsed[:quote]
+    end
+    body
+  end

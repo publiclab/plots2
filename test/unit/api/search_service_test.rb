@@ -2,135 +2,90 @@ require 'test_helper'
 require "minitest/autorun"
 
 class SearchServiceTest < ActiveSupport::TestCase
-
-  def create_profiles_doc_list(list)
-    sresult = DocList.new
-    list.each do |match|
-      doc = DocResult.fromSearch(0, 'user', '/profile/' + match.name, match.name, '', 0)
-      sresult.addDoc(doc)
-    end
-    sresult
-  end
-
-  def create_people_location_doc_list(list)
-    sresult = DocList.new
-    list.each do |user|
-      blurred = user.has_power_tag("location") ? user.get_value_of_power_tag("location") : false
-      doc = DocResult.fromLocationSearch(user.id, 'people_coordinates', user.path, user.username, 0, 0, user.lat, user.lon, blurred)
-      sresult.addDoc(doc)
-    end
-    sresult
-  end
-
-  def create_notes_doc_list(notes)
-    sresult = DocList.new
-    notes.each do |match|
-      doc = DocResult.fromSearch(match.nid, 'file', match.path, match.title, match.body.split(/#+.+\n+/, 5)[1], 0)
-      sresult.addDoc(doc)
-    end
-    sresult
-  end
-
-  def create_tags_doc_list(notes)
-    sresult = DocList.new
-    notes.each do |match|
-      tagdoc = DocResult.fromSearch(match.nid, 'tag', match.path, match.title, '', 0)
-      sresult.addDoc(tagdoc)
-    end
-    sresult
-  end
-
-  def create_questions_doc_list(notes)
-    sresult = DocList.new
-    notes.each do |match|
-      doc = DocResult.fromSearch(match.nid, 'question-circle', match.path(:question), match.title, 0, match.answers.length.to_i)
-      sresult.addDoc(doc)
-    end
-    sresult
-  end
-
   test 'running profiles for specific username' do
     users = [users(:steff1)]
-    sresult = create_profiles_doc_list(users)
 
-    params = { srchString: 'steff1' }
+    params = { query: 'steff1' }
     search_criteria = SearchCriteria.new(params)
 
-    result = SearchService.new.profiles(search_criteria)
+    result = SearchService.new.search_profiles(search_criteria)
 
     assert_not_nil result
-    assert_equal result.getDocs.size, 1
-
-    assert_equal result.getDocs.to_json, sresult.getDocs.to_json
-    assert_equal result.getDocs.to_json.length, result.getDocs.uniq.to_json.length
-
+    assert_equal result.size, 1
   end
 
   test 'running profiles by username' do
     users = [users(:steff3), users(:steff2), users(:steff1)]
-    sresult = create_profiles_doc_list(users)
 
-    params = { srchString: 'steff', field: 'username' }
+    params = { query: 'steff', field: 'username' }
     search_criteria = SearchCriteria.new(params)
 
-    result = SearchService.new.profiles(search_criteria)
+    result = SearchService.new.search_profiles(search_criteria)
 
     assert_not_nil result
-    assert_equal result.getDocs.size, 3
-
-    assert_equal result.getDocs.to_json, sresult.getDocs.to_json
-    assert_equal result.getDocs.to_json.length, result.getDocs.uniq.to_json.length
+    assert_equal result.size, 3
   end
 
   test 'running people locations' do
-    users = [users(:bob)]
-    sresult = create_people_location_doc_list(users)
-
     result = SearchService.new.people_locations('10', limit = nil)
 
     assert_not_nil result
-    assert_equal 1, result.items.length
-
-    assert_equal result.getDocs.to_json, sresult.getDocs.to_json
-    assert_equal result.getDocs.to_json.length, result.getDocs.uniq.to_json.length
+    assert_equal result.size, 3
   end
 
   test 'running search notes' do
-    notes = [nodes(:blog)]
-    sresult = create_notes_doc_list(notes)
+    params = {query: 'Blog' }
+    search_criteria = SearchCriteria.new(params)
 
-    result = SearchService.new.textSearch_notes('Blog')
+    result = SearchService.new.search_notes(search_criteria.query)
 
     assert_not_nil result
-    assert_equal 1, result.items.length
+    assert_equal result.size, 1
 
-    assert_equal result.getDocs.to_json, sresult.getDocs.to_json
-    assert_equal result.getDocs.to_json.length, result.getDocs.uniq.to_json.length
   end
 
   test 'running search tags' do
-    notes = [nodes(:one), nodes(:about)]
-    sresult = create_tags_doc_list(notes)
 
-    result = SearchService.new.textSearch_tags('awesome')
+    result = SearchService.new.search_tags('awesome')
 
     assert_not_nil result
-    assert_equal 2, result.items.length
-
-    assert_equal result.getDocs.to_json, sresult.getDocs.to_json
-    assert_equal result.getDocs.to_json.length, result.getDocs.uniq.to_json.length
+    assert_equal result.size, 4
   end
 
   test 'running search questions' do
-    notes = [nodes(:question3), nodes(:question2)]
-    sresult = create_questions_doc_list(notes)
-
-    result = SearchService.new.textSearch_questions('question')
+    result = SearchService.new.search_questions('question')
 
     assert_not_nil result
-    assert_equal 2, result.items.length
+    assert_equal result.size, 3
+  end
 
-    assert_equal result.getDocs.to_json, sresult.getDocs.to_json
-    assert_equal result.getDocs.to_json.length, result.getDocs.uniq.to_json.length
+  test 'running search taglocations with a wrong param format raises an exception' do
+    exception = assert_raises(Exception) { SearchService.new.tagNearbyNodes('30:40', nil) }
+    assert_equal( "Must contain all four coordinates", exception.message )
+  end
+
+  test 'running search taglocations with invalid params' do
+    exception_1 = assert_raises(Exception) { SearchService.new.tagNearbyNodes({ "nwlat" =>'43', "nwlng" =>'43', "selat" =>'43', "selng" =>'43' }, nil) }
+
+    assert_equal( "Must be a float", exception_1.message )
+  end
+
+  test 'running search taglocations with valid params' do
+    result_1 = SearchService.new.tagNearbyNodes({ "nwlat" => 80.0, "nwlng" => 50.0, "selat" => 70.0, "selng" =>60.0 }, nil)
+
+    assert_not_nil result_1
+
+    assert_equal result_1.length, 1
+  end
+
+  test 'running profiles by usertags' do
+    users = [users(:steff3), users(:steff2), users(:steff1)]
+
+    params = { query: 'awesome', field: 'tag' }
+    search_criteria = SearchCriteria.new(params)
+    result = SearchService.new.search_profiles(search_criteria)
+
+    assert_not_nil result
+    assert_equal result.size, 1
   end
 end

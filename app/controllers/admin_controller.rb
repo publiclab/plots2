@@ -9,7 +9,7 @@ class AdminController < ApplicationController
     unless @user.nil?
       if current_user && current_user.role == 'admin'
         @user.role = 'admin'
-        @user.save({})
+        @user.save
         flash[:notice] = "User '<a href='/profile/" + @user.username + "'>" + @user.username + "</a>' is now an admin."
       else
         flash[:error] = 'Only admins can promote other users to admins.'
@@ -23,7 +23,7 @@ class AdminController < ApplicationController
     unless @user.nil?
       if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
         @user.role = 'moderator'
-        @user.save({})
+        @user.save
         flash[:notice] = "User '<a href='/profile/" + @user.username + "'>" + @user.username + "</a>' is now a moderator."
       else
         flash[:error] = 'Only moderators can promote other users.'
@@ -37,7 +37,7 @@ class AdminController < ApplicationController
     unless @user.nil?
       if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
         @user.role = 'basic'
-        @user.save({})
+        @user.save
         flash[:notice] = "User '<a href='/profile/" + @user.username + "'>" + @user.username + "</a>' is no longer a moderator."
       else
         flash[:error] = 'Only admins and moderators can demote other users.'
@@ -51,7 +51,7 @@ class AdminController < ApplicationController
       user = User.find(params[:id])
       if user
         key = user.generate_reset_key
-        user.save({})
+        user.save
         # send key to user email
         PasswordResetMailer.reset_notify(user, key).deliver_now unless user.nil? # respond the same to both successes and failures; security
       end
@@ -139,10 +139,11 @@ class AdminController < ApplicationController
   def mark_comment_spam
     @comment = Comment.find params[:id]
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
-      if @comment.status == 1
+      if @comment.status == 1 || @comment.status == 4
         @comment.spam
         user = @comment.author
         user.ban
+        AdminMailer.notify_moderators_of_comment_spam(@comment, current_user).deliver_now
         flash[:notice] = "Comment has been marked as spam and comment author has been banned. You can undo this on the <a href='/spam/comments'>spam moderation page</a>."
       else
         flash[:notice] = "Comment already marked as spam."
@@ -159,8 +160,17 @@ class AdminController < ApplicationController
       if @comment.status == 1
         flash[:notice] = 'Comment already published.'
       else
+        first_timer_comment = (@comment.status == 4)
         @comment.publish
-        flash[:notice] = 'Comment published.'
+        if @comment.author.banned?
+          @comment.author.unban
+        end
+        if first_timer_comment
+          AdminMailer.notify_author_of_comment_approval(@comment, current_user).deliver_now
+          AdminMailer.notify_moderators_of_comment_approval(@comment, current_user).deliver_now
+        else
+          flash[:notice] = 'Comment published.'
+        end
       end
       @node = @comment.node
       redirect_to @node.path
@@ -251,7 +261,7 @@ class AdminController < ApplicationController
   end
 
   def moderate
-    user = DrupalUser.find params[:id]
+    user = User.find params[:id]
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
       user.moderate
       flash[:notice] = 'The user has been moderated.'
@@ -262,7 +272,7 @@ class AdminController < ApplicationController
   end
 
   def unmoderate
-    user = DrupalUser.find params[:id]
+    user = User.find params[:id]
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
       user.unmoderate
       flash[:notice] = 'The user has been unmoderated.'
@@ -273,7 +283,7 @@ class AdminController < ApplicationController
   end
 
   def ban
-    user = DrupalUser.find params[:id]
+    user = User.find params[:id]
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
       user.ban
       flash[:notice] = 'The user has been banned.'
@@ -284,7 +294,7 @@ class AdminController < ApplicationController
   end
 
   def unban
-    user = DrupalUser.find params[:id]
+    user = User.find params[:id]
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
       user.unban
       flash[:notice] = 'The user has been unbanned.'
@@ -296,7 +306,7 @@ class AdminController < ApplicationController
 
   def users
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
-      @users = DrupalUser.order('uid DESC').limit(200)
+      @users = User.order('uid DESC').limit(200)
     else
       flash[:error] = 'Only moderators can moderate other users.'
       redirect_to '/dashboard'
@@ -325,7 +335,7 @@ class AdminController < ApplicationController
 
   def migrate
     if current_user && current_user.role == 'admin'
-      du = DrupalUser.find params[:id]
+      du = User.find params[:id]
       if du.user
         flash[:error] = 'The user has already been migrated.'
       else
@@ -352,4 +362,31 @@ class AdminController < ApplicationController
       redirect_to '/dashboard'
     end
   end
+
+  def smtp_test
+    require 'socket'
+
+    s = TCPSocket.new ActionMailer::Base.smtp_settings[:address], ActionMailer::Base.smtp_settings[:port]
+
+    while line = s.gets # Read lines from socket
+      puts line
+      if line.include? '220'
+        s.print "MAIL FROM: <example@publiclab.org>\n"
+      end
+      if line.include? '250 OK'
+        s.print "RCPT TO: <example@publiclab.org>\n"
+      end
+      if line.include? '250 Accepted'
+        render plain: "Email gateway OK"
+        s.close_write
+      elsif line.include? '550'
+        render plain: "Email gateway NOT OK"
+        render status: 500
+        s.close_write
+      end
+    end
+
+    s.close
+  end
+
 end

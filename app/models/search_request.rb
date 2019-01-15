@@ -3,17 +3,19 @@ class SearchRequest
   # Minimum query length, or we return an empty result
   MIN_QUERY_LENGTH = 3
 
-  attr_accessor :srchString, :seq, :showCount, :pageNum, :tagName
+  attr_accessor :query, :seq, :tag, :nwlat, :nwlng, :selat, :selng
 
   def initialize; end
 
   def self.fromRequest(rparams)
     obj = new
-    obj.srchString = rparams[:srchString]
+    obj.query = rparams[:query]
     obj.seq = rparams[:seq]
-    obj.showCount = rparams[:showCount]
-    obj.pageNum = rparams[:pageNum]
-    obj.tagName = rparams[:tagName]
+    obj.tag = rparams[:tag]
+    obj.nwlat = rparams[:nwlat]
+    obj.nwlng = rparams[:nwlng]
+    obj.selat = rparams[:selat]
+    obj.selng = rparams[:selng]
     obj
   end
 
@@ -21,18 +23,23 @@ class SearchRequest
   # and make sure it is at least 3 characters
   def valid?
     isValid = true
-    isValid &&= !srchString.blank?
-    isValid &&= srchString.length >= MIN_QUERY_LENGTH
+    isValid &&= !query.blank?
+    isValid &&= query.length >= MIN_QUERY_LENGTH
+    unless isValid
+      isValid ||= !nwlat.nil? && !nwlng.nil? && !selat.nil? && !selng.nil?
+    end
     isValid
   end
 
   # This subclass is used to auto-generate the RESTful data structure.  It is generally not useful for internal Ruby usage
   #  but must be included for full RESTful functionality.
   class Entity < Grape::Entity
-    expose :srchString, documentation: { type: 'String', desc: 'Search Query text.' }
-    expose :seq, documentation: { type: 'Integer', desc: 'Sequence value passed from client through to the SearchResult.  For client sequencing usage' }
-    expose :showCount, documentation: { type: 'Integer', desc: 'The requested number of records to show per page' }
-    expose :pageNum, documentation: { type: 'Integer', desc: 'Which page (zero-based counting, as in Array indexes) to show paginated data.' }
-    expose :tagName, documentation: { type: 'String', desc: 'To search users having specified tagName.' }
+    expose :query, documentation: { type: 'String', desc: 'Search Query text.' }
+    expose :seq, documentation: { type: 'Integer', desc: 'Sequence value passed from client through to the SearchResult. For client sequencing usage' }
+    expose :tag, documentation: { type: 'String', desc: 'Refine search by specified tag.' }
+    expose :nwlat, documentation: { type: 'Float', desc: 'Geograpical northwest latitude coordinate' }
+    expose :nwlng, documentation: { type: 'Float', desc: 'Geograpical northwest longitude coordinate' }
+    expose :selat, documentation: { type: 'Float', desc: 'Geograpical southeast latitude coordinate' }
+    expose :selng, documentation: { type: 'Float', desc: 'Geograpical southeast longitude coordinate' }
   end
 end

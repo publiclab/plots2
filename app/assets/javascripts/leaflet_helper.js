@@ -71,7 +71,7 @@
      });
    }
 
-   function setupLEL(map){ 
+   function setupLEL(map , sethash){ 
 
     var baselayer = L.tileLayer('https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -100,6 +100,9 @@
       maxZoom: 18,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://www.openinframap.org/about.html">About OpenInfraMap</a>'
     });
+
+    var Wisconsin_NM = wisconsinLayer(map) ;
+    var FracTracker_mobile = fracTrackerMobileLayer(map) ;
 
     var Justicemap_income = L.tileLayer.provider('JusticeMap.income') ;
     var JusticeMap_americanIndian = L.tileLayer.provider('JusticeMap.americanIndian') ;
@@ -132,6 +135,8 @@
     };
     var overlayMaps = {
      // "PurpleAirLayer-HeatMap": PurpleLayer ,
+        "Wisconsin Non-Metal" : Wisconsin_NM ,
+        "FracTracker_mobile" : FracTracker_mobile ,
       "PurpleAirLayer-Markers": PurpleAirMarkerLayer ,
       "SkyTruth": SkyTruth , 
       "Fractracker" : Fractracker ,
@@ -165,5 +170,49 @@
          "Cities (zoom in)": city  , 
          "windrose (zoom in)": windrose
     };
+    
+    if(sethash === 1) {
+      var allMapLayers = {
+        "BL1": baselayer,
+
+        "Wisconsin_NM": Wisconsin_NM,
+        "FT_mobile": FracTracker_mobile,
+        "Purple": PurpleAirMarkerLayer,
+        "STruth": SkyTruth,
+        "FracTL": Fractracker,
+        "ToxicR": ToxicRelease,
+        "OdorR": OdorReport,
+        "MapK": MapKnitter,
+        "OIMPower": OpenInfraMap_Power,
+        "OIMapTelecom": OpenInfraMap_Telecom,
+        "OIMPetroleum": OpenInfraMap_Petroleum,
+        "OIMWater": OpenInfraMap_Water,
+        "JMincome": Justicemap_income,
+        "JMamericanIndian": JusticeMap_americanIndian,
+        "JMasian": JusticeMap_asian,
+        "JMblack": JusticeMap_black,
+        "JMmulti": JusticeMap_multi,
+        "JMhispanic": JusticeMap_hispanic,
+        "JMnonWhite": JusticeMap_nonWhite,
+        "JMwhite": JusticeMap_white,
+        "JMplurality": JusticeMap_plurality,
+        "Clouds": clouds,
+        "cloudsclassic": cloudscls,
+        "precipitation": precipitation,
+        "precipcls": precipitationcls,
+        "rain": rain,
+        "raincls": raincls,
+        "snow": snow,
+        "pressure": pressure,
+        "pressurecontour": pressurecntr,
+        "temp": temp,
+        "wind": wind,
+        "Cities": city,
+        "windrose": windrose
+      };
+
+      var hash = new L.Hash(map, allMapLayers);	   
+          
+    }   
     L.control.layers(baseMaps,overlayMaps).addTo(map);
    }

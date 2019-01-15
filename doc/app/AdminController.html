@@ -7,7 +7,7 @@
 <title>class AdminController - Rails Application Documentation</title>
 
 <script type="text/javascript">
-  var rdoc_rel_prefix = "./";
+var rdoc_rel_prefix = './';
 </script>
 
 <script src="./js/jquery.js"></script>
@@ -50,64 +50,64 @@
 
   </div>
 
-  
+
 
   <div id="class-metadata">
-    
+
     <div id="parent-class-section" class="nav-section">
   <h3>Parent</h3>
 
-  
+
   <p class="link"><a href="ApplicationController.html">ApplicationController</a>
-  
+
 </div>
 
-    
-    
+
+
     <!-- Method Quickref -->
 <div id="method-list-section" class="nav-section">
   <h3>Methods</h3>
 
   <ul class="link-list" role="directory">
-    
+
     <li ><a href="#method-i-ban">#ban</a>
-    
+
     <li ><a href="#method-i-batch">#batch</a>
-    
+
     <li ><a href="#method-i-demote_basic">#demote_basic</a>
-    
+
     <li ><a href="#method-i-mark_spam">#mark_spam</a>
-    
+
     <li ><a href="#method-i-mark_spam_revision">#mark_spam_revision</a>
-    
+
     <li ><a href="#method-i-migrate">#migrate</a>
-    
+
     <li ><a href="#method-i-moderate">#moderate</a>
-    
+
     <li ><a href="#method-i-promote_admin">#promote_admin</a>
-    
+
     <li ><a href="#method-i-promote_moderator">#promote_moderator</a>
-    
+
     <li ><a href="#method-i-publish">#publish</a>
-    
+
     <li ><a href="#method-i-publish_revision">#publish_revision</a>
-    
+
     <li ><a href="#method-i-queue">#queue</a>
-    
+
     <li ><a href="#method-i-reset_user_password">#reset_user_password</a>
-    
+
     <li ><a href="#method-i-spam">#spam</a>
-    
+
     <li ><a href="#method-i-spam_revisions">#spam_revisions</a>
-    
+
     <li ><a href="#method-i-unban">#unban</a>
-    
+
     <li ><a href="#method-i-unmoderate">#unmoderate</a>
-    
+
     <li ><a href="#method-i-useremail">#useremail</a>
-    
+
     <li ><a href="#method-i-users">#users</a>
-    
+
   </ul>
 </div>
 
@@ -120,50 +120,50 @@
   </h1>
 
   <section class="description">
-    
+
   </section>
 
-  
-  
-  
+
+
+
   <section id="5Buntitled-5D" class="documentation-section">
-    
 
-    
 
-    
 
-    
 
-    
+
+
+
+
+
      <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
        <header>
          <h3>Public Instance Methods</h3>
        </header>
 
-    
+
       <div id="method-i-ban" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">ban</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="ban-source">
             <pre><span class="ruby-comment"># File app/controllers/admin_controller.rb, line 220</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">ban</span>
-  <span class="ruby-identifier">user</span> = <span class="ruby-constant">DrupalUser</span>.<span class="ruby-identifier">find</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>]
+  <span class="ruby-identifier">user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>]
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span> <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;moderator&#39;</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;admin&#39;</span>)
     <span class="ruby-identifier">user</span>.<span class="ruby-identifier">ban</span>
     <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-string">&#39;The user has been banned.&#39;</span>
@@ -173,33 +173,33 @@
   <span class="ruby-identifier">redirect_to</span> <span class="ruby-string">&#39;/profile/&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;?_=&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_s</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-batch" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">batch</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="batch-source">
             <pre><span class="ruby-comment"># File app/controllers/admin_controller.rb, line 251</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">batch</span>
@@ -222,33 +222,33 @@
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-demote_basic" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">demote_basic</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="demote_basic-source">
             <pre><span class="ruby-comment"># File app/controllers/admin_controller.rb, line 32</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">demote_basic</span>
@@ -265,33 +265,33 @@
   <span class="ruby-identifier">redirect_to</span> <span class="ruby-string">&#39;/profile/&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">username</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;?_=&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_s</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-mark_spam" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">mark_spam</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="mark_spam-source">
             <pre><span class="ruby-comment"># File app/controllers/admin_controller.rb, line 103</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">mark_spam</span>
@@ -317,33 +317,33 @@
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-mark_spam_revision" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">mark_spam_revision</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="mark_spam_revision-source">
             <pre><span class="ruby-comment"># File app/controllers/admin_controller.rb, line 159</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">mark_spam_revision</span>
@@ -368,38 +368,38 @@
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-migrate" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">migrate</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="migrate-source">
             <pre><span class="ruby-comment"># File app/controllers/admin_controller.rb, line 271</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">migrate</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;admin&#39;</span>
-    <span class="ruby-identifier">du</span> = <span class="ruby-constant">DrupalUser</span>.<span class="ruby-identifier">find</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>]
+    <span class="ruby-identifier">du</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>]
     <span class="ruby-keyword">if</span> <span class="ruby-identifier">du</span>.<span class="ruby-identifier">user</span>
       <span class="ruby-identifier">flash</span>[<span class="ruby-value">:error</span>] = <span class="ruby-string">&#39;The user has already been migrated.&#39;</span>
     <span class="ruby-keyword">else</span>
@@ -415,37 +415,37 @@
   <span class="ruby-identifier">redirect_to</span> <span class="ruby-string">&#39;/profile/&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">du</span>.<span class="ruby-identifier">name</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-moderate" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">moderate</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="moderate-source">
             <pre><span class="ruby-comment"># File app/controllers/admin_controller.rb, line 198</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">moderate</span>
-  <span class="ruby-identifier">user</span> = <span class="ruby-constant">DrupalUser</span>.<span class="ruby-identifier">find</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>]
+  <span class="ruby-identifier">user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>]
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span> <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;moderator&#39;</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;admin&#39;</span>)
     <span class="ruby-identifier">user</span>.<span class="ruby-identifier">moderate</span>
     <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-string">&#39;The user has been moderated.&#39;</span>
@@ -455,33 +455,33 @@
   <span class="ruby-identifier">redirect_to</span> <span class="ruby-string">&#39;/profile/&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;?_=&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_s</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-promote_admin" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">promote_admin</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="promote_admin-source">
             <pre><span class="ruby-comment"># File app/controllers/admin_controller.rb, line 4</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">promote_admin</span>
@@ -498,33 +498,33 @@
   <span class="ruby-identifier">redirect_to</span> <span class="ruby-string">&#39;/profile/&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">username</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;?_=&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_s</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-promote_moderator" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">promote_moderator</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="promote_moderator-source">
             <pre><span class="ruby-comment"># File app/controllers/admin_controller.rb, line 18</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">promote_moderator</span>
@@ -541,33 +541,33 @@
   <span class="ruby-identifier">redirect_to</span> <span class="ruby-string">&#39;/profile/&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">username</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;?_=&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_s</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-publish" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">publish</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="publish-source">
             <pre><span class="ruby-comment"># File app/controllers/admin_controller.rb, line 126</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">publish</span>
@@ -603,33 +603,33 @@
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-publish_revision" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">publish_revision</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="publish_revision-source">
             <pre><span class="ruby-comment"># File app/controllers/admin_controller.rb, line 181</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">publish_revision</span>
@@ -649,33 +649,33 @@
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-queue" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">queue</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="queue-source">
             <pre><span class="ruby-comment"># File app/controllers/admin_controller.rb, line 289</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">queue</span>
@@ -690,33 +690,33 @@
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-reset_user_password" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">reset_user_password</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="reset_user_password-source">
             <pre><span class="ruby-comment"># File app/controllers/admin_controller.rb, line 46</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">reset_user_password</span>
@@ -729,38 +729,38 @@
       <span class="ruby-constant">PasswordResetMailer</span>.<span class="ruby-identifier">reset_notify</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">key</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-comment"># respond the same to both successes and failures; security</span>
     <span class="ruby-keyword">end</span>
 
-    <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-node">&quot;#{user.name} should receive an email with instructions on how to reset their password. If they do not, please double check that they are using the email they registered with.&quot;</span> 
+    <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-node">&quot;#{user.name} should receive an email with instructions on how to reset their password. If they do not, please double check that they are using the email they registered with.&quot;</span>
     <span class="ruby-identifier">redirect_to</span> <span class="ruby-string">&quot;/profile/&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">name</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-spam" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">spam</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="spam-source">
             <pre><span class="ruby-comment"># File app/controllers/admin_controller.rb, line 76</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">spam</span>
@@ -778,33 +778,33 @@
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-spam_revisions" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">spam_revisions</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="spam_revisions-source">
             <pre><span class="ruby-comment"># File app/controllers/admin_controller.rb, line 91</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">spam_revisions</span>
@@ -819,37 +819,37 @@
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-unban" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">unban</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="unban-source">
             <pre><span class="ruby-comment"># File app/controllers/admin_controller.rb, line 231</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">unban</span>
-  <span class="ruby-identifier">user</span> = <span class="ruby-constant">DrupalUser</span>.<span class="ruby-identifier">find</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>]
+  <span class="ruby-identifier">user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>]
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span> <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;moderator&#39;</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;admin&#39;</span>)
     <span class="ruby-identifier">user</span>.<span class="ruby-identifier">unban</span>
     <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-string">&#39;The user has been unbanned.&#39;</span>
@@ -859,37 +859,37 @@
   <span class="ruby-identifier">redirect_to</span> <span class="ruby-string">&#39;/profile/&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;?_=&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_s</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-unmoderate" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">unmoderate</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="unmoderate-source">
             <pre><span class="ruby-comment"># File app/controllers/admin_controller.rb, line 209</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">unmoderate</span>
-  <span class="ruby-identifier">user</span> = <span class="ruby-constant">DrupalUser</span>.<span class="ruby-identifier">find</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>]
+  <span class="ruby-identifier">user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>]
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span> <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;moderator&#39;</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;admin&#39;</span>)
     <span class="ruby-identifier">user</span>.<span class="ruby-identifier">unmoderate</span>
     <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-string">&#39;The user has been unmoderated.&#39;</span>
@@ -899,33 +899,33 @@
   <span class="ruby-identifier">redirect_to</span> <span class="ruby-string">&#39;/profile/&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;?_=&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_s</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-useremail" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">useremail</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="useremail-source">
             <pre><span class="ruby-comment"># File app/controllers/admin_controller.rb, line 62</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">useremail</span>
@@ -942,55 +942,55 @@
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-users" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">users</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="users-source">
             <pre><span class="ruby-comment"># File app/controllers/admin_controller.rb, line 242</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">users</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span> <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;moderator&#39;</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;admin&#39;</span>)
-    <span class="ruby-ivar">@users</span> = <span class="ruby-constant">DrupalUser</span>.<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;uid DESC&#39;</span>).<span class="ruby-identifier">limit</span>(<span class="ruby-value">200</span>)
+    <span class="ruby-ivar">@users</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;uid DESC&#39;</span>).<span class="ruby-identifier">limit</span>(<span class="ruby-value">200</span>)
   <span class="ruby-keyword">else</span>
     <span class="ruby-identifier">flash</span>[<span class="ruby-value">:error</span>] = <span class="ruby-string">&#39;Only moderators can moderate other users.&#39;</span>
     <span class="ruby-identifier">redirect_to</span> <span class="ruby-string">&#39;/dashboard&#39;</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
     </section>
-  
+
   </section>
 </main>
 
@@ -1000,4 +1000,3 @@
   <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
-

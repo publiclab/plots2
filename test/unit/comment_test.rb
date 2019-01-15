@@ -16,7 +16,14 @@ class CommentTest < ActiveSupport::TestCase
       assert comments.length > 0
     end
   end
-
+  test 'should have gmail quote' do
+    require 'mail'
+    require 'nokogiri'
+    mail = Mail.read('test/fixtures/incoming_test_emails/gmail/incoming_gmail_email.eml') 
+    mail_doc = Nokogiri::HTML(mail.html_part.body.decoded) # To parse the mail to extract comment content and reply content 
+    gmail_quote = Comment.gmail_quote_present?(mail_doc)
+    assert_equal gmail_quote, true
+  end
   test 'should not save comment without body' do
     comment = Comment.new
     assert !comment.save, 'Saved the comment without body text'
@@ -151,9 +158,9 @@ class CommentTest < ActiveSupport::TestCase
 
   test 'should relate answer comments to user and answer but not node' do
     answer = answers(:one)
-    user = drupal_users(:bob)
+    user = users(:bob)
     comment = Comment.new(comment: 'Test comment')
-    comment.drupal_user = user
+    comment.user = user
     comment.answer = answer
 
     assert comment.save
@@ -240,56 +247,17 @@ class CommentTest < ActiveSupport::TestCase
     f.close()
   end
 
-  test 'should parse incoming mail from yahoo service correctly and add comment' do
-    require 'mail'
-    mail = Mail.read('test/fixtures/incoming_test_emails/yahoo/incoming_yahoo_email.eml')
+  test 'should parse text containing "On ____ <email@email.com> wrote:" from comments on display' do
     node = Node.last
-    mail.subject = "Re: #{node.title} (##{node.nid})"
-    Comment.receive_mail(mail)
-    f = File.open('test/fixtures/incoming_test_emails/yahoo/final_parsed_comment.txt', 'r')
-    comment = Comment.last
-    user_email = mail.from.first
-    assert_equal comment.comment, f.read
-    assert_equal comment.nid, node.id
-    assert_equal comment.message_id, mail.message_id
-    assert_equal comment.comment_via, 1
-    assert_equal User.find(comment.uid).email, user_email
-    f.close()
-  end
-
-  test 'should parse incoming mail from gmail service correctly and add answer comment' do
-    require 'mail'
-    mail = Mail.read('test/fixtures/incoming_test_emails/gmail/incoming_gmail_email.eml')
-    answer = Answer.last
-    mail.subject = "Re: (#a#{answer.id})"
-    Comment.receive_mail(mail)
-    f = File.open('test/fixtures/incoming_test_emails/gmail/final_parsed_comment.txt', 'r')
-    comment = Comment.last
-    user_email = mail.from.first
-    assert_equal comment.comment, f.read
-    assert_equal comment.aid, answer.id
-    assert_equal comment.message_id, mail.message_id
-    assert_equal comment.comment_via, 1
-    assert_equal User.find(comment.uid).email, user_email
-    f.close()
-  end
-
-  test 'should parse incoming mail from yahoo service correctly and add answer comment' do
-    require 'mail'
-    mail = Mail.read('test/fixtures/incoming_test_emails/yahoo/incoming_yahoo_email.eml')
-    # Mail contain ["01namangupta@gmail.com"] in from field.
-    answer = Answer.last
-    mail.subject = "Re: (#a#{answer.id})"
-    Comment.receive_mail(mail)
-    f = File.open('test/fixtures/incoming_test_emails/yahoo/final_parsed_comment.txt', 'r')
-    comment = Comment.last
-    user_email = mail.from.first
-    assert_equal comment.comment, f.read
-    assert_equal comment.aid, answer.id
-    assert_equal comment.message_id, mail.message_id
-    assert_equal comment.comment_via, 1
-    assert_equal User.find(comment.uid).email, user_email
-    f.close()
+    comment = Comment.new({
+      comment: "Thank you! On Tuesday, 3 July 2018, 11:20:57 PM IST, RP <rp@email.com> wrote:  Here you go."
+    })
+    parsed = comment.parse_quoted_text
+    assert_equal "Thank you! ", parsed[:body]
+    assert_equal "On Tuesday, 3 July 2018, 11:20:57 PM IST, RP <rp@email.com> wrote:", parsed[:boundary]
+    assert_equal "  Here you go.", parsed[:quote]
+    assert_equal "Thank you! ", comment.scrub_quoted_text
+    assert_equal "Thank you! <!-- @@$$%% Trimmed Content @@$$%% -->On Tuesday, 3 July 2018, 11:20:57 PM IST, RP <rp@email.com> wrote:  Here you go.", comment.render_body
   end
 
   test 'should give the domain of gmail correctly' do
@@ -335,21 +303,6 @@ class CommentTest < ActiveSupport::TestCase
     f.close()
   end
 
-  test 'should parse incoming mail from other domain who use gmail service correctly and add comment' do
-    require 'mail'
-    mail = Mail.read('test/fixtures/incoming_test_emails/gmail/incoming_gmail_email.eml')
-    node = Node.last
-    mail.subject = "Re: #{node.title} (##{node.nid})"
-    mail.from = ["jeff@publiclab.org"]
-    Comment.receive_mail(mail)
-    f = File.open('test/fixtures/incoming_test_emails/gmail/final_parsed_comment.txt', 'r')
-    comment = Comment.last
-    assert_equal comment.comment, f.read
-    assert_equal comment.nid, node.id
-    assert_equal comment.message_id, mail.message_id
-    assert_equal comment.comment_via, 1
-    assert_equal User.find(comment.uid).email, "jeff@publiclab.org"
-    f.close()
-  end
+
 
 end

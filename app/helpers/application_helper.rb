@@ -14,7 +14,7 @@ module ApplicationHelper
 
   def emojify(content)
     if content.present?
-      content.to_str.gsub(/:([\w+-]+):/) do |match|
+      content.to_str.gsub(/:([\w+-]+):(?![^\[]*\])/) do |match|
         if emoji = Emoji.find_by_alias(Regexp.last_match(1))
           if emoji.raw
             emoji.raw
@@ -79,6 +79,8 @@ module ApplicationHelper
   end
 
   def insert_extras(body)
+    body = NodeShared.nodes_grid(body)
+    body = NodeShared.notes_thumbnail_grid(body)
     body = NodeShared.notes_grid(body)
     body = NodeShared.questions_grid(body)
     body = NodeShared.activities_grid(body)
@@ -98,25 +100,16 @@ module ApplicationHelper
   end
 
   # we should move this to the Comment model:
-  # returns the comment body which is to be shown in the comments section
-  def render_comment_body(comment)
-    raw RDiscount.new(
-      title_suggestion(comment),
-      :autolink
-    ).to_html
-  end
-
-  # we should move this to the Comment model:
   # replaces inline title suggestion(e.g: {New Title}) with the required link to change the title
   def title_suggestion(comment)
     comment.body.gsub(/\[propose:title\](.*?)\[\/propose\]/) do
       a = ActionController::Base.new
-      is_creator = current_user.drupal_user == Node.find(comment.nid).author
+      is_creator = current_user == Node.find(comment.nid).author
       title = Regexp.last_match(1)
       output = a.render_to_string(template: "notes/_title_suggestion",
                                   layout:   false,
                                   locals:   {
-                                    user: comment.drupal_user.name,
+                                    user: comment.user.name,
                                     nid: comment.nid,
                                     title: title,
                                     is_creator: is_creator

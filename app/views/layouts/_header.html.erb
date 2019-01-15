@@ -7,69 +7,49 @@
   <%= stylesheet_link_tag "I18n" %>
 <% end %>
 
-<nav id="header" class="navbar navbar-inverse navbar-fixed-top" style="margin-bottom:20px;">
-
+<nav id="header" class="navbar navbar-inverse navbar-fixed-top">
   <div class="container">
-
-
     <!-- ||| menu, displayed for mobile: -->
     <div class="navbar-header">
-      <a class="navbar-brand" id="brand" href="/<%= "home" if current_user %>">Public Lab</a>
-      <a class="navbar-brand brand-compact" id="brand-compact" href="/<%= "home" if current_user %>">PL</a>
-      <% if current_user %><a class="navbar-brand home-icon visible-xs" href="/"><i class="fa fa-home fa fa-white"></i></a><% end %>
-
+      <a class="navbar-brand" id="brand" href="<%= root_path %>">Public Lab</a>
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-navbar-collapse">
         <span class="fa fa-white fa-bars"></span>
       </button>
     </div>
 
-
     <div class="collapse navbar-collapse" id="header-navbar-collapse">
+      <form class="navbar-form navbar-left" id="searchform" autocomplete="off">
+        <div class="input-group">
+          <input type="text" id="searchform_input" style="min-width: 220px;" class="form-control search-query typeahead" role="search" qryType="all" placeholder="<%= t('layout._header.search') %>"  value="<%= params[:query] %>" required>
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+          </span>
+        </div>
+      </form>
 
       <ul class="nav navbar-nav navbar-left">
-
-        <% if current_user %><li><a rel="tooltip" title="<%= t('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard"><i class="fa fa-home fa fa-white"></i></a></li><% end %>
-
         <li class="dropdown">
-
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            Get Involved <b class="caret"></b>
+            Get Involved <i class="fa fa-white fa-caret-down"></i>
           </a>
-
           <ul class="dropdown-menu">
             <li><a href="/events">Attend an event</a></li>
-	           <li><a href="/chat">Chat online</a></li>
-	           <li><a href="/questions">Ask a question</a></li>
+            <li><a href="/chat">Chat online</a></li>
+            <li><a href="/questions">Ask a question</a></li>
             <li><a href="/tags">Find a topic you care about</a></li>
+            <li><a href="/post" class="requireLogin">Post your work</a></li>
             <li><a href="/requests">Respond to a request</a></li>
             <li class="divider"></li>
             <li><a href="/dashboard">Browse recent research</a></li>
             <li><a href="/methods">Discover methods</a></li>
-	          <li><a href="/kits">Contribute a kit</a></li>
-	          <li><a href="/wiki/software-outreach">Software Projects</a></li>
-            <li class="divider"></li>
-            <% if !current_user %>
-              <li><a href="/signup">Create an account</a></li>
-            <% end %>
-            <li><a href="/post">Post your work</a></li>
-            <li class="hidden-lg hidden-xl"><a href="/donate">Donate</a></li>
+            <li><a href="/kits">Contribute a kit</a></li>
+            <li><a href="/wiki/software-outreach">Software Projects</a></li>
           </ul>
-
         </li>
-      </ul>
 
-      <form id="searchform" class="navbar-form navbar-left" role="search" autocomplete="off">
-        <div class="form-group">
-          <input tabindex="1" id="searchform_input" type="text" class="form-control search-query typeahead" qryType="all" placeholder="<%= t('layout._header.search') %>" required/>
-        </div>
-        <button type="submit" class="btn btn-primary" style="background:#444;border-color:#222;"><i class="fa fa-search"></i></button>
-      </form>
-
-      <ul class="nav navbar-nav">
-
-        <li class="dropdown hidden-xs hidden-sm">
+        <li class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            <%= t('layout._header.about.about_title') %> <b class="caret"></b>
+            <%= t('layout._header.about.about_title') %> <i class="fa fa-white fa-caret-down"></i>
           </a>
           <ul class="dropdown-menu">
             <li><a href="/wiki/stories"><%= t('layout._header.about.stories') %></a></li>
@@ -83,121 +63,98 @@
             <li class="divider"></li>
             <li><a href="/media"><%= t('layout._header.about.press_and_media') %></a></li>
             <li><a href="/wiki/contact"><%= t('layout._header.about.contact') %></a></li>
-            <li class="hidden-lg hidden-xl"><a href="//store.publiclab.org"><%= t('layout._header.store') %></a></li>
           </ul>
         </li>
 
-        <li class="nav-button-wrapper hidden-xs hidden-sm hidden-md">
-          <a class="btn btn-sm btn-default nav-button-store" href="//store.publiclab.org"><%= t('layout._header.store') %></a>
+        <li class="hidden-sm">
+          <a target="_blank" href="//store.publiclab.org"><%= t('layout._header.store') %></a>
+        </li>
+        <li class="hidden-sm">
+          <a href="/donate"><%= t('layout._header.donate') %></a>
         </li>
       </ul>
 
-
-      <div id="chat" class="chat-popover" data-placement="bottom" style="display:none;">
-        <a style="margin-right:4px;" class="pull-right btn btn-sm" href="https://chat.publiclab.org" target="_blank"><%= t('layout._header.chatroom.pop_out') %></a>
-        <p class="popover-title"><%= t('layout._header.chatroom.chatroom_title') %></p>
-
-      </div>
-
-      <% unless current_user %><a rel="tooltip" title="<%= t('layout._header.become_part_community') %>" data-placement="bottom" style="margin-left:14px;" href="/signup" class="btn btn-primary navbar-btn navbar-right hidden-xs"><%= t('layout._header.join') %></a><% end %>
-      <div class="nav-button-wrapper hidden-xs hidden-sm hidden-md navbar-right">
-        <a class="btn btn-sm nav-button-donate" href="/donate"><%= t('layout._header.donate') %></a>
-      </div>
-      <% unless params[:action] == "register" || params[:action] == "signup" %>
-        <ul class="nav navbar-nav navbar-right">
-          <li class="dropdown">
-            <a id="chat-button" style="cursor: pointer;">
-              <i class="fa fa-white fa fa-comments"></i>
-            </a>
+      <ul class="nav navbar-nav navbar-right">
+        <% if current_user %>
+          <li class="hidden-sm hidden-md">
+            <a rel="tooltip" title="<%= t('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard">Dashboard <i class="fa fa-white fa-home" aria-hidden="true"></i></a>
           </li>
-          <li class="dropdown">
+        <% else %>
+        <li class="hidden-sm hidden-md"> <!-- signup button -->
+          <a rel="tooltip" class="signupToggle" title="<%= t('layout._header.become_part_community') %>" href="#">
+            <%= t('layout._header.join') %>
+          </a>
+        </li>
+        <% end %>
+
+        <li class="dropdown">
+          <% unless params[:action] == "register" || params[:action] == "signup" %>
             <% if current_user %>
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-user fa fa-white"></i>
-               <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="dropdown-header"><%= current_user.username %><% if current_user.role === 'moderator' || current_user.role === 'admin'%>: <%= current_user.role %><% end %></li>
-              <% if params[:action] == "dashboard" %>
-                <li><a href="/home">Home</a></li>
-              <% else %>
-                <li><a href="/dashboard"><%= t('layout._header.dashboard') %></a></li>
-              <% end %>
-              <li><a href="/profile/<%= current_user.username %>"><%= t('layout._header.profile') %></a></li>
-              <li><a href="/profile/edit"><%= t('layout._header.edit_profile') %></a></li>
-              <li><a href="/settings" >Email Settings</a></li>
-              <li class="divider"></li>
-              <li><a href="/subscriptions"><%= t('layout._header.subscriptions') %></a></li>
-              <li><a href="/profile/<%= current_user.username %>/likes"><%= t('layout._header.notes_liked') %></a></li>
-              <li class="divider"></li>
-	      <% if current_user.role == 'admin' %>
-                <li><a href="/useremail">Email search</a></li>
-                <li><a href="/wiki/locked">Locked pages</a></li>
-                <li><a href="/spam">Spam moderation</a></li>
-                <li><a href="/people">Contributors</a></li>
-	        <li class="divider"></li>
-	      <% end %>
-              <li><%= link_to t('layout._header.logout'), logout_path %></li>
-              <li><a href="/logoutRemotely">Logout from all devices</a></li>
-            </ul>
-            <% else %>
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-user fa fa-white"></i>
-               <%= t('layout._header.login.login_title') %> <b class="caret"></b>
-            </a>
-            <ul id="login-dropdown" class="dropdown-menu" style="width:245px;">
-              <li style="padding:6px;">
-                <%= form_for :user_session, :as => :user_session, :url => { :controller => "user_sessions", :action => "create" }, :html => {:class => "form"} do |f| %>
-                <div class="form-group">
-                 <% if Rails.env == "production" %>
-                   <label style="display: block; text-align: center;">Log In with</label>
-                    <div class="loginbutton" style="float:left">
-                       <%= render :partial => "layouts/social_icons" %>
-                    </div>
-                    <br style="clear:both;"/>
-                   <label style="display: block; text-align: center; margin-top:13px;">OR</label>
-                  <% end %>
-                 </div>  
-		<div class="form-group">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                 Profile  <i class="fa fa-white fa-user" aria-hidden="true" ></i>
+              </a>
+              <ul class="dropdown-menu">
+                <div class="dropdown-header">
+                  <h5>
+                    <%= current_user.username %>
+                    <% if current_user.role === 'moderator' || current_user.role === 'admin'%>
+                       - logged as <%= current_user.role %>
+                    <% end %>
+                  </h5>
+                </div>
 
-                    <label for="username"><%= t('layout._header.login.username') %></label>
-                    <%= f.text_field :username, { tabindex: 1, class: 'form-control', id: 'username-login' } %>
-
-                <div class="form-group">
-
-                    <label for="password"><%= t('layout._header.login.password') %></label>
-                    <%= f.password_field :password, { tabindex: 2, class: 'form-control', id: 'password-login' } %>
-
-                  </div>
-
-                  <input type="hidden" name="return_to" value="<%= params[:return_to] || request.path %>" />
-
-                  <div class="checkbox">
-                    <label>
-                      <%= f.check_box :remember_me %> <%= t('layout._header.login.remember_me') %>
-                    </label>
-                  </div>
-
-                  <p>
-                    <button class="btn btn-primary" type="submit" tabindex="3"><%= t('layout._header.login.login_title') %></button>
-                    <a class="btn btn-default" href="/signup" tabindex="4"><%= t('layout._header.login.sign_up') %></a>
-                  </p>
-
-                  <p><a href="/reset/"><%= t('layout._header.login.reset_password') %></a></p>
-                   
-                <% end %>
-              </li>
-            </ul>
+                <li><a href="/profile/<%= current_user.username %>"><%= t('layout._header.profile') %></a></li>
+                <li><a href="/profile/edit"><%= t('layout._header.edit_profile') %></a></li>
+                <li><a href="/settings" >Email Settings</a></li>
+                <li class="divider"></li>
+                <li><a href="/subscriptions"><%= t('layout._header.subscriptions') %></a></li>
+                <li><a href="/subscriptions/digest">Your Digest</a></li>
+                <li><a href="/profile/<%= current_user.username %>/likes"><%= t('layout._header.notes_liked') %></a></li>
+                <li class="divider"></li>
+        	      <% if current_user.role == 'admin' %>
+                  <li><a href="/useremail">Email search</a></li>
+                  <li><a href="/wiki/locked">Locked pages</a></li>
+                  <li><a href="/spam">Spam moderation</a></li>
+                  <li><a href="/people">Contributors</a></li>
+        	        <li class="divider"></li>
+        	      <% end %>
+                <li><%= link_to t('layout._header.logout'), logout_path %></li>
+                <li><a href="/logoutRemotely">Logout from all devices</a></li>
+              </ul>
+            <% else %> <!-- Login button -->
+              <a class="loginToggle" href="#" >
+                <%= t('layout._header.login.login_title') %>
+              </a>
             <% end %>
-          </li>
-        </ul>
-      <% end %>
+          <% end %>
+        </li>
+        <li id="md-ham" class="hidden-lg dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-white fa-bars"></a>
+            <ul class="dropdown-menu">
+                <li class="hidden-lg hidden-md">
+                  <a href="//store.publiclab.org"><%= t('layout._header.store') %></a>
+                </li>
+                <li class="hidden-lg hidden-md">
+                  <a href="/donate"><%= t('layout._header.donate') %></a>
+                </li>
+                <!--- These menu items will only appear in the "More" dropdown menu. --->
+                <% if current_user %>
+                  <li class="hidden-lg">
+                    <a rel="tooltip" title="<%= t('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard">Dashboard</i></a>
+                  </li>
+                <% else %>
+                <li class="hidden-lg">
+                  <a rel="tooltip" title="<%= t('layout._header.become_part_community') %>" href="/signup"><%= t('layout._header.join') %></a>
+                </li>
+                <% end %>
+            </ul>
+        </li>
+      </ul>
     </div>
   </div>
 </nav>
 
 <div class="body-container container">
-
   <div class="visible-print">
     <% if params[:controller] == "notes" %><h1>Public Lab <small><%= t('layout._header.research_note') %></small></h1><% end %>
     <% if params[:controller] == "wiki" %><h1>Public Lab <small><%= t('layout._header.wiki_doc') %></small></h1><% end %>
@@ -212,7 +169,98 @@
           if($('#chat').is(':visible') == true)
             c.hide() ;
       });
-</script>
+  </script>
   <%= render :partial => "layouts/alerts" %>
-
 </div>
+
+<!-- Login/Signup Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <!-- close button -->
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <div class="clearfix"> <!-- clearfix class allows the modal to expand to fit the content of this div -->
+          <div id="signupContainer"> <!-- signup partial -->
+            <%= render :partial => "users/create_form" %>
+          </div>
+          <div id="loginContainer"> <!-- login partial -->
+            <%= render :partial => "user_sessions/new" %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal jquery -->
+<script>
+  var mode =""; //Either "login" or "signup". Used later to load partialis
+  function setMode(modalMode){ //Setter function for mode
+    mode = modalMode;
+  }
+
+  $('#loginModal').on('show.bs.modal', function (event) { //When this modal is toggled, run the following
+    var modal = $(this);
+
+    function showSignup(){
+      modal.find(".modal-dialog").addClass("modal-lg"); //Expands modal to show signup content better
+      modal.find('#signupContainer').show(); //Unhides the signup partial
+      modal.find('#loginContainer').hide(); //Hides the login partial
+    }
+    function showLogin(){
+      modal.find(".modal-dialog").removeClass("modal-lg"); //Minimises the modal size for better aesthetis
+      modal.find('#loginContainer').show(); // Unhides the login partial
+      modal.find('#signupContainer').hide(); //Hides the signup partial
+    }
+
+    if(mode == "signup"){
+      showSignup(); //If the mode that has been set is "signup", show the signup part of the partial
+    } else {
+      showLogin(); //Show the login partial otherwise
+    }
+
+    $("#toLogin").click(function(){ //Function runs when the "login" buttin in the signup modal is clicked
+      var user = $("#signupContainer").find("#username-signup").val(); //Username and password data is transferred to the other partial
+      var pass = $("#signupContainer").find("#password").val();
+      showLogin(); // Modal switches to login view
+      $("#loginContainer").find("#username-signup").val(user);
+      $("#loginContainer").find("#password-signup").val(pass);
+    });
+
+    $("#toSignup").click(function(){ //Function runs when the "sign up to join" link in the login modal is clicked
+      var user = $("#loginContainer").find("#username-signup").val(); //Username and password data is transferred to the other partial
+      var pass = $("#loginContainer").find("#password-signup").val();
+      showSignup(); // Modal switches to sign up view
+      $("#signupContainer").find("#username-signup:visible").val(user);
+      $("#signupContainer").find("#password").val(pass);
+      ;
+    });
+  });
+
+</script>
+
+<!-- The following css allows the modal to appear in the center of the screen -->
+<style>
+  .modal {
+    text-align: center;
+    padding: 0!important;
+  }
+
+  .modal:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -4px;
+  }
+
+  .modal-dialog {
+    display: inline-block;
+    text-align: left;
+    vertical-align: middle;
+  }
+</style>

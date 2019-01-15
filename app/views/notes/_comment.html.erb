@@ -1,22 +1,33 @@
 <div id="c<%= comment.cid %>" class="comment" style="margin-top: 20px;padding-bottom: 9px;">
 
   <div style="margin-bottom: 0;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-bottom: 0;" class="navbar navbar-default">
+    <% if comment.status == 4 %>
+      <p class="alert alert-warning moderated">
+        <% if logged_in_as(['admin','moderator']) %>
+          <%= t('dashboard._comment_moderate.first_time_post') %>
+          <a class="btn btn-default btn-xs" href="/admin/publish_comment/<%= comment.id %>"><%= t('dashboard.moderate.approve') %></a>
+          <a class="btn btn-default btn-xs" href="/admin/mark_comment_spam/<%= comment.id %>"><%= t('dashboard.moderate.spam') %></a>
+        <% else %>
+          <%= raw t('dashboard.moderate.pending_approval', :url => '/wiki/moderation') %>
+        <% end %>
+      </p>
+    <% end %>
 
     <div class="navbar-text pull-left visible-xs">&nbsp;&nbsp;</div>
 
     <div class="navbar-text pull-left">
       <% if comment.author %>
-        <% if comment.author.user && comment.author.user.photo_file_name %>
-          <img style="width:32px;margin-right:6px;" class="img-circle" src="<%= comment.author.user.photo_path(:thumb) %>" /> 
+        <% if comment.author && comment.author.photo_file_name %>
+          <img style="width:32px;margin-right:6px;" class="img-circle" src="<%= comment.author.photo_path(:thumb) %>" />
         <% else %>
-          <div style="vertical-align:middle;display:inline-block;height:32px;width:32px;margin-right:6px;background:#ccc;" class="img-circle"></div> 
+          <div style="vertical-align:middle;display:inline-block;height:32px;width:32px;margin-right:6px;background:#ccc;" class="img-circle"></div>
         <% end %>
         <a href="/profile/<%= comment.author.name %>"><%= comment.author.name %></a>
       <% end %>
       <span class="hidden-xs"><%= t('notes._comment.commented') %></span>
       <a style="color:#aaa;" href="#c<%= comment.cid %>"><%= distance_of_time_in_words(comment.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></a>
-      <% if comment.author && comment.author.user %>
-        <% streak = comment.author.user.streak %>
+      <% if comment.author %>
+        <% streak = comment.author.streak %>
         <% if streak[0] > 7 %>
           <a href="/wiki/streaks"><i class="fa fa-fire" style="padding-left:4px; font-size:16px; color:#f63;" data-toggle="tooltip" data-placement="top" title="<%= raw t('notes._comment.streak_title', :author => comment.author.name, :streak_notes => streak[1][0], :streak_wiki => streak[1][1], :streak_comments => streak[1][2], :streak_days => streak[0]) %>"></i></a>
         <% end %>
@@ -24,15 +35,33 @@
     </div>
 
     <div class="navbar-text navbar-right pull-right" style="padding-right:10px;">
-      <% if comment.author && comment.author.user && comment.author.user.role %>
+      <% if comment.author && comment.author && comment.author.role %>
       <!-- Role icon for admins & moderators
-        <% if comment.author.user.role == 'admin' %>
+        <% if comment.author.role == 'admin' %>
           <a href="/users/role/admin"><i class="fa fa-cog" style="font-size:20px; margin-top:8px;" data-toggle="tooltip" data-placement="top" title="Admin"></i></a>
-        <% elsif comment.author && comment.author.user.role == 'moderator' %>
+        <% elsif comment.author && comment.author.role == 'moderator' %>
           <a href="/wiki/moderators"><i class="fa fa-star" style="font-size:20px; margin-top:8px;" data-toggle="tooltip" data-placement="top" title="Moderator"></i></a>
         <% end %>
       -->
       <% end %>
+
+        <ul class="btn-group" style="margin-top: 10px;">
+          <% if !current_user %>
+              <li rel="tooltip" title="Helpful? Like it and get updates!" class="btn btn-default btn-sm btn-like">
+                <%= link_to  new_user_session_path( return_to: request.path ), style: "text-decoration: none; color: black;" do %>
+                    <span class="fa fa-star-o"></span>
+                    <span><%= comment.likers.count %></span>
+                <% end %>
+          <% else %>
+            <% str = "/comment/like?comment_id=#{comment.cid}&user_id=#{current_user.uid}" %>
+            <li rel="tooltip" title="Helpful? Like it and get updates!" class="btn btn-default btn-sm btn-like">
+              <%= link_to str, data: { method: "post", remote: true }, style: "text-decoration: none; color: black;" do %>
+                  <span id="comment-like-star-<%= comment.cid %>-<%= current_user.uid %>" class="fa fa-star<% if !comment.liked_by(current_user.uid) %>-o<% end %>"></span>
+                  <span id="comment-like-count-<%= comment.cid %>-<%= current_user.uid %>"><%= comment.likers.count %></span>
+              <% end %>
+          <% end %>
+          </li>
+        </ul>
 
       <% if current_user && comment.uid == current_user.uid %>
         <a class="btn btn-default btn-sm" href="javascript:void(0)" onClick="$('#c<%= comment.cid %>edit').toggle();$('#c<%= comment.cid %>show').toggle();setInit(<%= comment.cid %>);">
@@ -46,15 +75,14 @@
         <a class="btn btn-default btn-sm" id="comment-<%= comment.id %>-reorder-btn" data-remote="true" data-confirm="Are you sure? <% if current_user && comment.uid != current_user.uid %>Please exercise caution in promoting others' comments; this cannot be undone.<% end %>" rel="tooltip" title="<%= t('questions._comment.promotion') %>" data-placement="left" href="/comment/make_answer/<%= comment.id %>"><i class="fa fa-plus"></i></a>
       <% end %>
       <% if current_user &. can_moderate? %>
-          <a rel="tooltip" title="Mark as spam" class="btn btn-sm btn-default btn-flag-spam-<%= comment.id %>" data-confirm="Are you sure? The user will no longer be able to log in or publish, and their content will be hidden except comments." href="/admin/mark_comment_spam/<%= comment.id %>">
-            <i class="fa fa-ban"></i>
-          </a>
-    <% else %>
-          <a rel="tooltip" title="Flag as spam" class="btn btn-sm btn-default btn-flag-spam-<%= comment.id %>" href="mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+comment+that+looks+like+spam+or+needs+to+be+moderated:+https://publiclab.org/<%= comment.parent.path %>#c<%= comment.cid %>+by+https://publiclab.org/profile/<% if comment.author %><%= comment.author.name %><% end %>+Thanks!">
-            <i class="fa fa-flag"></i>
-          </a>
+        <a rel="tooltip" title="Mark as spam" class="btn btn-sm btn-default btn-flag-spam-<%= comment.id %>" data-confirm="Are you sure? The user will no longer be able to log in or publish, and their content will be hidden except comments." href="/admin/mark_comment_spam/<%= comment.id %>">
+          <i class="fa fa-ban"></i>
+        </a>
+      <% else %>
+        <a rel="tooltip" title="Flag as spam" class="btn btn-sm btn-default btn-flag-spam-<%= comment.id %>" href="mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+comment+that+looks+like+spam+or+needs+to+be+moderated:+https://publiclab.org/<%= comment.parent.path %>#c<%= comment.cid %>+by+https://publiclab.org/profile/<% if comment.author %><%= comment.author.name %><% end %>+Thanks!">
+          <i class="fa fa-flag"></i>
+        </a>
       <% end %>
-
       <% if current_user && (current_user.role == "admin" || current_user.role == "moderator" || comment.uid == current_user.uid || comment.parent.uid == current_user.uid) %>
         <a class="btn btn-default btn-sm" id="c<%= comment.cid %>delete-btn">
           <i class='icon fa fa-trash'></i>
@@ -107,27 +135,31 @@
               notyNotification('sunset', 3000, 'info', 'topRight', 'Comment deletion cancelled!');
           },
         }
-      });  
+      });
     });
 
     $(function () {
       $('[data-toggle="tooltip"]').tooltip()
     })
   </script>
-  
+
   <div style="border: 1px solid #e7e7e7;padding: 18px;" id="c<%= comment.cid %>show">
 
-    <% comment_body = render_comment_body(comment) %>
-    <p id="comment-body-<%= comment.cid %>"><%= raw filtered_comment_body(comment_body) %></p>
+    <% comment_body = comment.render_body %>
+    <p class="comment-body" id="comment-body-<%= comment.cid %>"><%= raw insert_extras(filtered_comment_body(comment_body)) %></p>
 
     <% if contain_trimmed_body?(comment_body) %>
-      <span><a class="email-toggle" data-toggle="collapse" data-target="#comment-<%= comment.cid %>-extra-content">...</a></span>
-      <div class="collapse" id="comment-<%= comment.cid %>-extra-content" ><%= raw trimmed_body(comment_body) %></div>
+      <span style="background-color: #DCDCDC;  border-radius: 7px; cursor: pointer;" ><a class="email-toggle" data-toggle="collapse" data-target="#comment-<%= comment.cid %>-extra-content" style='text-decoration: none;'>&nbsp;&ensp;&#x2022&#x2022&#x2022&nbsp;&ensp;</a></span>
+      <div class="collapse" id="comment-<%= comment.cid %>-extra-content" ><div class="blockquotestyle"><%= raw trimmed_body(comment_body) %></div></div>
     <% end %>
 
     <% if comment.body.include?('?') %>
       <p class="alert alert-info">Is this a question? <a href="/questions/new?title=<%= comment.body %>">Click here</a> to post it to the <a href="/questions">Questions page</a>.
       </p>
+    <% end %>
+    <% breakoutQuestions = Tag.find_nodes_by_type("from:#{comment.cid}") %>
+    <% if breakoutQuestions&.length > 0 %>
+      See <a href="/questions/tag/from:<%= comment.cid %>"><%= breakoutQuestions.length %> questions</a> broken out from this comment.
     <% end %>
     <% if comment.parent.has_power_tag('activity') && current_user && current_user.id == comment.uid %>
       <div class="alert alert-info">Have you attempted or completed this activity? Consider <a href="/post?n=15798&tags=replication:<%= comment.nid %>,<%= comment.parent.tagnames.join(',') %>">sharing how it went</a> to help refine and improve it.</div>

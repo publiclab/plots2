@@ -6,7 +6,6 @@
 <link href="/lib/publiclab-editor/dist/PublicLab.Editor.css" rel="stylesheet">
 
 <!-- required for TagsModule -->
-<script src="/lib/typeahead.js/dist/typeahead.jquery.js"></script>
 <script src="/lib/typeahead.js/dist/bloodhound.js"></script>
 <script src="/lib/bootstrap-tokenfield/dist/bootstrap-tokenfield.js"></script>
 
@@ -44,11 +43,11 @@
         <br />
         <div>
           <input class="form-control input-lg" type="text" placeholder="What's your question? Be specific." value="<%= if @node then @node.title else params[:title] end %>" />
-        </div>    
+        </div>
 
-      </div>    
+      </div>
 
-    </div>    
+    </div>
     <!-- end title module -->
 
     <!-- body module -->
@@ -108,9 +107,15 @@
       </div>
 
     </div>
-      
+
   </div>
 </div>
+
+<style>
+  .ple-module {
+    border-top: none;
+  }
+</style>
 
 <script>
 
@@ -164,14 +169,13 @@
       titleModule: {
         suggestRelated: true,
         fetchRelated: function(show) {
-          $.getJSON("/api/srch/notes?srchString=" + editor.titleModule.value(), function(response) {
-            /* API provides: 
+          $.getJSON("/api/srch/notes?query=" + editor.titleModule.value(), function(response) {
+            /* API provides:
             {"items":[{
-              "docId":14022,
-              "docType":"file",
-              "docUrl":"/notes/liz/03-15-2017/host-a-balloon-mapping-workshop",
-              "docTitle":"Host a balloon mapping workshop",
-              "docSummary":"...",
+              "doc_id":14022,
+              "doc_type":"file",
+              "doc_url":"/notes/liz/03-15-2017/host-a-balloon-mapping-workshop",
+              "doc_title":"Host a balloon mapping workshop",
               "docScore":0}
             ]}
             */
@@ -180,10 +184,10 @@
             if (response['items']) {
               response['items'].forEach(function(item) {
                 var formattedItem = {};
-                formattedItem.id = item.docId;
-                formattedItem.title = item.docTitle;
-                formattedItem.url = item.docUrl;
-                formattedItem.author = item.docUrl.split('/')[2];
+                formattedItem.id = item.doc_id;
+                formattedItem.title = item.doc_title;
+                formattedItem.url = item.doc_url;
+                formattedItem.author = item.doc_url.split('/')[2];
                 formatted.push(formattedItem);
               });
               show(formatted);

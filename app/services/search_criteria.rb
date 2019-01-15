@@ -1,17 +1,23 @@
 class SearchCriteria
-  attr_reader :query, :tag, :sort_by, :field, :limit
+  include TextSearch
+  attr_reader :query, :coordinates, :tag, :field, :limit
+  attr_accessor :sort_by
 
-  def initialize(params)
-    @query = params[:srchString]
-    @tag = params[:tagName]
-    @sort_by = params[:sort_by]
-    @order_direction = params[:order_direction]
-    @field = params[:field]
-    @limit = params[:limit]
+  def initialize(args)
+    @query = args[:query]
+    unless @query.nil?
+      @query = transform(@query)
+    end
+    @coordinates = { "nwlat" => args[:nwlat], "selat" => args[:selat], "nwlng" => args[:nwlng], "selng" => args[:selng] }
+    @tag = args[:tag]
+    @sort_by = args[:sort_by]
+    @order_direction = args[:order_direction]
+    @field = args[:field]
+    @limit = args[:limit] || 10
   end
 
   def valid?
-    !query.nil? && query != 0
+    (!query.nil? && query != 0) || !coordinates.nil?
   end
 
   def order_direction
@@ -28,5 +34,11 @@ class SearchCriteria
     else
       "DESC"
     end
+  end
+
+  def transform(query)
+    words = query.gsub(/\s+/m, ' ').strip.split(" ")
+    words.map! { |item| lemmatize(item) }
+    words.join(' ')
   end
 end

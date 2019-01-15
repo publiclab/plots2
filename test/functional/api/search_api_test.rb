@@ -7,77 +7,15 @@ class SearchApiTest < ActiveSupport::TestCase
     Rails.application
   end
 
-  test 'search all functionality' do
-     get '/api/srch/all?srchString=Blog'
-     assert last_response.ok?
-
-     # Expected search pattern
-     pattern = {
-       srchParams: {
-         srchString: 'Blog',
-         seq: nil,
-       }.ignore_extra_keys!
-     }.ignore_extra_keys!
-
-     matcher = JsonExpressions::Matcher.new(pattern)
-
-     json = JSON.parse(last_response.body)
-
-     assert_equal nodes(:blog).path, json['items'][0]['docUrl']
-     assert_equal "Blog post",       json['items'][0]['docTitle']
-     assert_equal 13,                json['items'][0]['docId']
-
-     assert matcher =~ json
-
-   end
-
-   test 'search all functionality with multiple responses' do
-      get '/api/srch/all?srchString=question'
-      assert last_response.ok?
-
-      # Expected search pattern
-      pattern = {
-        srchParams: {
-          srchString: 'question',
-          seq: nil,
-        }.ignore_extra_keys!
-      }.ignore_extra_keys!
-
-      matcher = JsonExpressions::Matcher.new(pattern)
-
-      json = JSON.parse(last_response.body)
-
-      assert matcher =~ json
-    end
-
-    test 'search all functionality without search query' do
-       get '/api/srch/all?srchString'
-       assert last_response.ok?
-
-       # Expected search pattern
-       pattern = {
-         srchParams: {
-           srchString: nil,
-           seq: nil,
-         }.ignore_extra_keys!
-       }.ignore_extra_keys!
-
-       matcher = JsonExpressions::Matcher.new(pattern)
-
-       json = JSON.parse(last_response.body)
-       assert matcher =~ json
-
-     end
-
    # search by username and returns users by id when order_by is not provided and sorted direction default DESC
    test 'search profiles by username without order_by and default sort_direction' do
-     get '/api/srch/profiles?srchString=steff&field=username'
+     get '/api/srch/profiles?query=steff&field=username'
      assert last_response.ok?
 
      # Expected search pattern
      pattern = {
        srchParams: {
-         srchString: 'steff',
+         query: 'steff',
          seq: nil,
        }.ignore_extra_keys!
      }.ignore_extra_keys!
@@ -86,9 +24,9 @@ class SearchApiTest < ActiveSupport::TestCase
 
      json = JSON.parse(last_response.body)
 
-     assert_equal "/profile/steff3",   json['items'][0]['docUrl']
-     assert_equal "/profile/steff2",   json['items'][1]['docUrl']
-     assert_equal "/profile/steff1",   json['items'][2]['docUrl']
+     assert_equal "/profile/steff3",   json['items'][0]['doc_url']
+     assert_equal "/profile/steff2",   json['items'][1]['doc_url']
+     assert_equal "/profile/steff1",   json['items'][2]['doc_url']
 
      assert matcher =~ json
 
@@ -96,13 +34,13 @@ class SearchApiTest < ActiveSupport::TestCase
 
    # search by username and returns users sorteded by recent activity and order direction default DESC
    test 'search recent profiles by username with sort_by=recent present' do
-     get '/api/srch/profiles?srchString=steff&field=username&sort_by=recent'
+     get '/api/srch/profiles?query=steff&field=username&sort_by=recent'
      assert last_response.ok?
 
      # Expected search pattern
      pattern = {
        srchParams: {
-         srchString: 'steff',
+         query: 'steff',
          seq: nil
        }.ignore_extra_keys!
      }.ignore_extra_keys!
@@ -111,22 +49,22 @@ class SearchApiTest < ActiveSupport::TestCase
 
      json = JSON.parse(last_response.body)
 
-     assert_equal "steff2",     json['items'][0]['docTitle']
-     assert_equal "steff3",     json['items'][1]['docTitle']
-     assert_equal "steff1",     json['items'][2]['docTitle']
+     assert_equal "steff2",     json['items'][0]['doc_title']
+     assert_equal "steff3",     json['items'][1]['doc_title']
+     assert_equal "steff1",     json['items'][2]['doc_title']
 
      assert matcher =~ json
    end
 
    # search by username and returns users ordered by recent activity and sorted by ASC direction
    test 'search recent profiles by username with sort_by=recent present and order_direction ASC' do
-     get '/api/srch/profiles?srchString=steff&field=username&sort_by=recent&order_direction=ASC'
+     get '/api/srch/profiles?query=steff&field=username&sort_by=recent&order_direction=ASC'
      assert last_response.ok?
 
      # Expected search pattern
      pattern = {
        srchParams: {
-         srchString: 'steff',
+         query: 'steff',
          seq: nil
        }.ignore_extra_keys!
      }.ignore_extra_keys!
@@ -135,89 +73,66 @@ class SearchApiTest < ActiveSupport::TestCase
 
      json = JSON.parse(last_response.body)
 
-     assert_equal "/profile/steff1",     json['items'][0]['docUrl']
-     assert_equal "/profile/steff3",     json['items'][1]['docUrl']
-     assert_equal "/profile/steff2",     json['items'][2]['docUrl']
+     assert_equal "/profile/steff1",     json['items'][0]['doc_url']
+     assert_equal "/profile/steff3",     json['items'][1]['doc_url']
+     assert_equal "/profile/steff2",     json['items'][2]['doc_url']
 
      assert matcher =~ json
-  end
-
-  test 'search notes functionality' do
-      get '/api/srch/notes?srchString=Blog'
-      assert last_response.ok?
-      # Expected search pattern
-      pattern = {
-        srchParams: {
-          srchString: 'Blog',
-          seq: nil,
-        }.ignore_extra_keys!
-      }.ignore_extra_keys!
-
-      matcher = JsonExpressions::Matcher.new(pattern)
-
-      json = JSON.parse(last_response.body)
-
-      assert_equal nodes(:blog).path, json['items'][0]['docUrl']
-      assert_equal "Blog post",       json['items'][0]['docTitle']
-      assert_equal 13,                json['items'][0]['docId']
-
-      assert matcher =~ json
-
-    end
-
-    test 'search questions functionality' do
-       get '/api/srch/questions?srchString=Question'
-       assert last_response.ok?
-
-       # Expected search pattern
-       pattern = {
-         srchParams: {
-           srchString: 'Question',
-           seq: nil,
-      }.ignore_extra_keys!
-    }.ignore_extra_keys!
-
-    matcher = JsonExpressions::Matcher.new(pattern)
-
-    json = JSON.parse(last_response.body)
-
-    assert_equal "Question by a moderated user", json['items'][0]['docTitle']
-    assert_equal 15,                             json['items'][0]['docId']
-
-
-    assert matcher =~ json
-
   end
 
   test 'search tags functionality' do
-     get '/api/srch/tags?srchString=Awesome'
-     assert last_response.ok?
+    get '/api/srch/tags?query=Awesome'
+    assert last_response.ok?
 
-     # Expected search pattern
-     pattern = {
-       srchParams: {
-         srchString: 'Awesome',
-          seq: nil,
-       }.ignore_extra_keys!
-     }.ignore_extra_keys!
+    # Expected search pattern
+    pattern = {
+      srchParams: {
+        query: 'Awesome',
+        seq: nil,
+      }.ignore_extra_keys!
+    }.ignore_extra_keys!
 
-     matcher = JsonExpressions::Matcher.new(pattern)
+    matcher = JsonExpressions::Matcher.new(pattern)
 
-     json = JSON.parse(last_response.body)
-     assert matcher =~ json
+    json = JSON.parse(last_response.body)
+    assert matcher =~ json
+  end
 
-    end
-
-  test 'search Tag Nearby Nodes functionality' do
-    get '/api/srch/taglocations?srchString=71.00,52.00&tagName=awesome'
+  test 'search Tag Nearby Nodes functionality with a valid query' do
+    get '/api/srch/taglocations?nwlat=200.0&selat=0.0&nwlng=0.0&selng=200.0'
     assert last_response.ok?
 
     # Expected search pattern
     pattern = {
         srchParams: {
-            srchString: '71.00,52.00',
-            tagName: 'awesome',
+            nwlat: 200.0,
+            nwlng: 0.0,
+            selat: 0.0,
+            selng: 200.0,
             seq: nil,
+            tag: nil,
+            query: nil
+        }.ignore_extra_keys!
+    }.ignore_extra_keys!
+
+    matcher = JsonExpressions::Matcher.new(pattern)
+
+    json = JSON.parse(last_response.body)
+    assert matcher    =~ json
+    assert_equal 13,  json['items'][0]['doc_id']
+  end
+
+  test 'search Tag Nearby People functionality' do
+    get '/api/srch/nearbyPeople?nwlat=31.0&selat=0.0&nwlng=0.0&selng=40.0'
+    assert last_response.ok?
+
+    # Expected search pattern
+    pattern = {
+        srchParams: {
+            nwlat: 31.0,
+            nwlng: 0.0,
+            selat: 0.0,
+            selng: 40.0
         }.ignore_extra_keys!
     }.ignore_extra_keys!
 
@@ -225,18 +140,68 @@ class SearchApiTest < ActiveSupport::TestCase
 
     json = JSON.parse(last_response.body)
 
-    assert matcher =~ json
+    assert_equal "/profile/steff2",     json['items'][0]['doc_url']
+    assert_equal "/profile/steff3",     json['items'][1]['doc_url']
 
+    assert matcher =~ json
+  end
+
+  test 'search Tag Nearby People functionality wth sort_by=recent' do
+    get '/api/srch/nearbyPeople?nwlat=31.0&selat=0.0&nwlng=0.0&selng=40.0&sort_by=recent'
+    assert last_response.ok?
+
+    # Expected search pattern
+    pattern = {
+        srchParams: {
+          nwlat: 31.0,
+          nwlng: 0.0,
+          selat: 0.0,
+          selng: 40.0,
+        }.ignore_extra_keys!
+    }.ignore_extra_keys!
+
+    matcher = JsonExpressions::Matcher.new(pattern)
+
+    json = JSON.parse(last_response.body)
+
+    assert_equal "/profile/steff2",     json['items'][0]['doc_url']
+    assert_equal "/profile/steff3",     json['items'][1]['doc_url']
+
+    assert matcher =~ json
+  end
+
+  test 'search Tag Nearby People functionality with tag=awesome' do
+    get '/api/srch/nearbyPeople?nwlat=31.0&selat=0.0&nwlng=0.0&selng=40.0&tag=awesome'
+    assert last_response.ok?
+
+    # Expected search pattern
+    pattern = {
+        srchParams: {
+          nwlat: 31.0,
+          nwlng: 0.0,
+          selat: 0.0,
+          selng: 40.0,
+          tag: 'awesome'
+        }.ignore_extra_keys!
+    }.ignore_extra_keys!
+
+    matcher = JsonExpressions::Matcher.new(pattern)
+
+    json = JSON.parse(last_response.body)
+
+    assert_equal "/profile/steff3",     json['items'][0]['doc_url']
+
+    assert matcher =~ json
   end
 
   test 'search Recent People functionality' do
-    get '/api/srch/peoplelocations?srchString=100'
+    get '/api/srch/peoplelocations?query=100'
     assert last_response.ok?
 
     # Expected search pattern
     pattern = {
         srchParams: {
-            srchString: '100',
+            query: '100',
             seq: nil,
         }.ignore_extra_keys!
     }.ignore_extra_keys!
@@ -245,23 +210,23 @@ class SearchApiTest < ActiveSupport::TestCase
 
     json = JSON.parse(last_response.body)
 
-    assert_equal users(:bob).username, json['items'][0]['docTitle']
-    assert_equal "people_coordinates", json['items'][0]['docType']
-    assert_equal 1,                    json['items'][0]['docId']
+    assert_equal users(:bob).username, json['items'][0]['doc_title']
+    assert_equal "PLACES",             json['items'][0]['doc_type']
+    assert_equal 1,                    json['items'][0]['doc_id']
 
     assert matcher =~ json
 
   end
 
   test 'search recent people functionality having specified tagName' do
-    get '/api/srch/peoplelocations?srchString=100&tagName=tool:barometer'
+    get '/api/srch/peoplelocations?query=100&tag=tool:barometer'
     assert last_response.ok?
 
     # Expected search pattern
     pattern = {
         srchParams: {
-            srchString: '100',
-            tagName: 'tool:barometer',
+            query: '100',
+            tag: 'tool:barometer',
             seq: nil,
         }.ignore_extra_keys!
     }.ignore_extra_keys!
@@ -270,12 +235,11 @@ class SearchApiTest < ActiveSupport::TestCase
 
     json = JSON.parse(last_response.body)
 
-    assert_equal users(:bob).username, json['items'][0]['docTitle']
-    assert_equal "people_coordinates", json['items'][0]['docType']
-    assert_equal 1,                    json['items'][0]['docId']
+    assert_equal users(:bob).username, json['items'][0]['doc_title']
+    assert_equal "PLACES",             json['items'][0]['doc_type']
+    assert_equal 1,                    json['items'][0]['doc_id']
 
     assert matcher =~ json
 
   end
-
 end

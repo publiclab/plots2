@@ -28,14 +28,24 @@
     <span>
       <% if @node.status == 0 || @node.status == 4 %><span class="label label-danger"><%= t('notes.show.unpublished') %></span> | <% end %>
       <% if @node.status == 3 %><span class="label label-success">Draft</span> | <% end %>
-      by <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> <%= @node.author.new_author_contributor %>
+      by <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> <%= @node.author.new_contributor %>
       <% if @node.has_power_tag('with') %>with <% @node.coauthors.each_with_index do |coauthor,i| %>
               <a href="/profile/<%= coauthor.username %>">
                 <%= coauthor.username%></a> <%= coauthor.new_contributor %>
-              <%= ',' if i < @node.coauthors.length-1 %><% end %><% end %> |
+              <%= ',' if i < @node.coauthors.length-1 %><% end %><% end %>
+              <% if current_user && current_user.id == @node.uid %><a onClick="promptTag('with:')" href="#"><i style="color:#aaa;" class="fa fa-pencil"></i></a><% end %> |
 
       <span class="hidden-xs hidden-sm">
         <%= @node.created_at.to_s(:long) %>
+      </span>
+      <a class="hidden-md hidden-lg hidden-xl collapse-btn" data-toggle="collapse" href="#collapse-info" role="button" aria-expanded="false" aria-controls="collapse-info" id="collapse-button">...</a>
+      <span class="collapse collapse-info" id="collapse-info">
+        | <%= number_with_delimiter(@node.totalviews) %> <%= t('notes.show.views') %>
+        <% if @node.comments %>
+          | <i class="fa fa-comment"></i>
+          <a href="#comments"> <%= @node.comments.length %> <%= t('notes.show.comments') %> </a>
+        <% end %>
+          | <a href="/n/<%= @node.id %>"><i class="fa fa-link"></i></a> <span class="hidden-xs hidden-sm hidden-md"><a href="/n/<%= @node.id %>">#<%= @node.id %></a></span>
       </span>
       <span class="hidden-xs hidden-sm hidden-print">
         | <%= number_with_delimiter(@node.totalviews) %> <%= t('notes.show.views') %>
@@ -106,8 +116,6 @@
 
     <%= render :partial => "notes/responses" %>
 
-    <%= render :partial => "home/social" %>
-
     <div>
       <%= render :partial => "notes/comments" %>
     </div>
@@ -116,3 +124,26 @@
 </div><!--/span-->
 
 <%= render partial: "sidebar/related" %>
+
+<style>
+  .collapse.in {
+      display: unset;
+  }
+  @media (min-width: 1000px){
+    .collapse-info {
+        display: none !important;
+    }
+  }
+  .collapse-btn{
+    padding: 0.2em 0.4em;
+    margin: 0;
+    font-size: 85%;
+    background-color: rgba(27, 31, 35, 0.14);
+    border-radius: 3px;
+  }
+</style>
+<script>
+  $("#collapse-button").click(function(){
+      $(this).remove();
+  });
+</script>

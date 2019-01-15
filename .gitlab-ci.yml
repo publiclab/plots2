@@ -17,18 +17,9 @@ before_script:
   - docker-compose up -d
   - docker-compose exec -T web rake db:setup
   - docker-compose exec -T web rake db:migrate
-  - docker-compose exec -T web bower install --allow-root
+  - docker-compose exec -T web yarn --ignore-engines --ignore-scripts --modules-folder ./public/lib
 
 job:
   script:
-    - docker-compose exec -T web strace -s 512 -o log/trace1.log rake test:all
-    - tail -n 3000 log/trace1.log > log/trace1.tail.log
-    - docker-compose exec -T web strace -s 512 -o log/trace2.log rails test -d
-    - tail -n 3000 log/trace2.log > log/trace2.tail.log
-  artifacts:
-    when: on_failure
-    paths:
-    - log/trace1.log
-    - log/trace1.tail.log
-    - log/trace2.log
-    - log/trace2.tail.log
+    - docker-compose exec -T web rake test:all
+    - docker-compose exec -T web rails test -d

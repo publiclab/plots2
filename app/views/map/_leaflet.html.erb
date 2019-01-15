@@ -1,12 +1,4 @@
-<%= stylesheet_link_tag "/lib/leaflet/dist/leaflet.css" %>
-<%= stylesheet_link_tag "/lib/leaflet-environmental-layers/dist/LeafletEnvironmentalLayers.css" %>
-<%= javascript_include_tag('/lib/leaflet-environmental-layers/dist/LeafletEnvironmentalLayers.js') %>
-<%= javascript_include_tag('/lib/leaflet-environmental-layers/dist/windRoseLayer.js') %>
-<%= javascript_include_tag('/lib/leaflet-hash/leaflet-hash.js') %>
-
-<%= javascript_include_tag('https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js') %>
-<%= stylesheet_link_tag "https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css" %>
-
+<%= render :partial => "map/mapDependencies" %>
 
   <% unique_id = rand(100) %>
   <style>
@@ -15,35 +7,54 @@
   <div class="leaflet-map" id="map<%= unique_id %>"></div>
   <% if defined? people %><p><i><small>Share your own location on <a href='/profile'>your profile</a>.</small></i></p><% end %>
   <script>
-   
+
     var bounds = new L.LatLngBounds(new L.LatLng(84.67351257 , -172.96875) , new L.LatLng(-54.36775852 , 178.59375)) ;
-  
+
     var map<%= unique_id %> = L.map('map<%= unique_id %>' , {
-      maxBounds: bounds , 
+      maxBounds: bounds ,
       maxBoundsViscosity: 0.75
     }).on('load', onMapLoad).setView([<%= lat %>,<%= lon %>], <%= lat.to_s.length.to_i %> + 6);
 
     var map_lat = <%= lat %> ;
-    var map_lon = <%= lon %> ; 
+    var map_lon = <%= lon %> ;
 
-    setupFullScreen(map<%= unique_id %>  , map_lat , map_lon) ; 
-    setupLEL(map<%= unique_id %> ) ;
-    var hash = new L.Hash(map<%= unique_id %> );  
-    
+    // setupFullScreen(map<= unique_id >  , map_lat , map_lon) ;
+    setupLEL(map<%= unique_id %> , 0) ;
+
     function onMapLoad(e){
-      var lat = <%= lat %> ;
-      var lon = <%= lon %> ;
+      var lat = <%= '%.2f' % lat.to_f %> ; // ensure format 0.00 (two decimal places)
+      var lon = <%= '%.2f' % lon.to_f %> ;
       var s = lat+","+lon ;
-      $.getJSON("/api/srch/locations?srchString="+s , function(data){
-        if (!!data.items){
-          for (i = 0; i < data.items.length ; i++) { 
-	        var url = data.items[i].docUrl ;
-	        var title = data.items[i].docTitle ;
-                var default_url = PLmarker_default() ;
-    	        L.marker([data.items[i].latitude , data.items[i].longitude] , {icon: default_url}).addTo(map<%= unique_id %>).bindPopup("<a href=" +  url + ">" + title + "</a>") ;
-	    }
-       }
-     });
+      var map_tagname ;
+
+        <% if (defined? tagname != nil and tagname.nil? == false) %>
+          map_tagname = "<%= tagname %>" ;
+        <% end %>
+
+      if(map_tagname == null) {
+          $.getJSON("/api/srch/taglocations?query=" + s, function (data) {
+              if (!!data.items) {
+                  for (i = 0; i < data.items.length; i++) {
+                      var url = data.items[i].doc_url;
+                      var title = data.items[i].doc_title;
+                      var default_url = PLmarker_default();
+                      L.marker([data.items[i].latitude, data.items[i].longitude], {icon: default_url}).addTo(map<%= unique_id %>).bindPopup("<a href=" + url + ">" + title + "</a>");
+                  }
+              }
+          });
+      }
+      else{
+          $.getJSON("/api/srch/taglocations?query=" + s + "&tag=" + map_tagname, function (data) {
+              if (!!data.items) {
+                  for (i = 0; i < data.items.length; i++) {
+                      var url = data.items[i].doc_url;
+                      var title = data.items[i].doc_title;
+                      var default_url = PLmarker_default();
+                      L.marker([data.items[i].latitude, data.items[i].longitude], {icon: default_url}).addTo(map<%= unique_id %>).bindPopup("<a href=" + url + ">" + title + "</a>");
+                  }
+              }
+          });
+      }
+
     }
   </script>
-

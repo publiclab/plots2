@@ -1,10 +1,10 @@
 <div class="row">
   <div id="comments" class="col-md-10 comments">
-
-    <h3><span id="comment-count"><%= @node.comments.where(status: 1).length %></span> <%= t('notes._comments.comments') %></h3>
+    <% comments = @node.fetch_comments(current_user) %>
+    <h3><span id="comment-count"><%= comments.length %></span> <%= t('notes._comments.comments') %></h3>
 
     <div style="margin-bottom: 50px;" id="comments-container">
-      <% @node.comments.where(status: 1).order('timestamp ASC').each do |comment| %>
+      <% comments.order('timestamp ASC').each do |comment| %>
         <% if comment.cid == @node.comments.first.cid %><a id="last" name="last"></a><% end %>
 
         <%= render :partial => "notes/comment", :locals => {:comment => comment} %>
@@ -15,7 +15,9 @@
     <% if current_user %>
       <%= render :partial => "comments/form", :locals => { title: I18n.t('notes._comments.post_comment'), comment: false, placeholder: I18n.t('notes._comments.post_placeholder') } %>
     <% else %>
-    <p><%= raw t('notes._comments.must_be_logged_in', :url1 => new_user_session_path( return_to: request.path )) %></p>
+    <p><a data-toggle="modal" data-target="#loginModal">
+                <%= t('layout._header.login.login_title') %> </a> to comment.
+            </p>
     <% end %>
 
   </div>

@@ -24,7 +24,7 @@ class Node < ActiveRecord::Base
   self.table_name = 'node'
   self.primary_key = 'nid'
 
-  def self.search(query:, order: :default, limit:)
+  def self.search(query:, order: :default, type: :natural, limit: 25)
     order_param = if order == :default
                     { changed: :desc }
                   elsif order == :likes
@@ -35,15 +35,29 @@ class Node < ActiveRecord::Base
 
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       if order == :natural
-        nids = Revision.select('node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST("' + query.to_s + '" IN NATURAL LANGUAGE MODE) AS score')
-          .where('MATCH(node_revisions.body, node_revisions.title) AGAINST(? IN NATURAL LANGUAGE MODE)', query)
-          .collect(&:nid)
+        query = connection.quote(query.to_s)
+        if type == :boolean
+          # Query is done as a boolean full-text search. More info here: https://dev.mysql.com/doc/refman/5.5/en/fulltext-boolean.html
+          nids = Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN BOOLEAN MODE) AS score")
+            .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN BOOLEAN MODE)")
+            .limit(limit)
+            .distinct
+            .collect(&:nid)
+        else
+          nids = Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE) AS score")
+            .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE)")
+            .limit(limit)
+            .distinct
+            .collect(&:nid)
+        end
         where(nid: nids, status: 1)
       else
         nids = Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query).collect(&:nid)
         tnids = Tag.find_nodes_by_type(query, type = %w(note page)).collect(&:nid) # include results by tag
         where(nid: nids + tnids, status: 1)
           .order(order_param)
+          .limit(limit)
+          .distinct
       end
     else
       nodes = Node.limit(limit)
@@ -57,7 +71,7 @@ class Node < ActiveRecord::Base
     updated_at.strftime('%B %Y')
   end
 
-  has_many :revision, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
+  has_many :revision, foreign_key: 'nid', dependent: :destroy
   # wasn't working to tie it to .vid, manually defining below
   #  has_one :drupal_main_image, :foreign_key => 'vid', :dependent => :destroy
   #  has_many :drupal_content_field_image_gallery, :foreign_key => 'nid'
@@ -75,10 +89,15 @@ class Node < ActiveRecord::Base
   has_many :node_selections, foreign_key: :nid, dependent: :destroy
   has_many :answers, foreign_key: :nid, dependent: :destroy
 
-  belongs_to :drupal_user, foreign_key: 'uid'
+  belongs_to :user, foreign_key: 'uid'
 
   validates :title, presence: :true
   validates_with UniqueUrlValidator, on: :create
+
+  scope :published, -> { where(status: 1) }
+  scope :past_week, -> { published.where("created > ?", (Time.now - 7.days).to_i) }
+  scope :past_month, -> { published.where("created > ?", (Time.now - 1.months).to_i) }
+  scope :past_year, -> { published.where("created > ?", (Time.now - 1.years).to_i) }
 
   # making drupal and rails database conventions play nice;
   # 'changed' is a reserved word in rails
@@ -118,7 +137,7 @@ class Node < ActiveRecord::Base
   # or, we should refactor to us node.created instead of Time.now
   def generate_path
     if type == 'note'
-      username = DrupalUser.find_by(uid: uid).name
+      username = User.find_by(id: uid).name
       "/notes/#{username}/#{Time.now.strftime('%m-%d-%Y')}/#{title.parameterize}"
     elsif type == 'page'
       '/wiki/' + title.parameterize
@@ -226,10 +245,10 @@ class Node < ActiveRecord::Base
   # users who like this node
   def likers
     node_selections
-      .joins(:drupal_user)
-      .references(:users)
+      .joins(:user)
+      .references(:rusers)
       .where(liking: true)
-      .where('users.status = ?', 1)
+      .where('rusers.status': 1)
       .collect(&:user)
   end
 
@@ -245,18 +264,8 @@ class Node < ActiveRecord::Base
       .order(timestamp: :desc)
   end
 
-  def revision_count
-    revision
-      .count
-  end
-
-  def comment_count
-    comments
-      .count
-  end
-
   def author
-    DrupalUser.find_by(uid: uid)
+    User.find(uid)
   end
 
   def coauthors
@@ -314,6 +323,13 @@ class Node < ActiveRecord::Base
     elsif drupal_main_image && node_type != :rails
       drupal_main_image.drupal_file
     end
+  end
+
+  # scan for first image in the body and use this instead
+  # (in future, maybe just do this for all images?)
+  def scraped_image
+    match = latest&.render_body&.scan(/<img(.*?)\/>/)&.first&.first
+    match&.split('src="')&.last&.split('"')&.first
   end
 
   # was unable to set up this relationship properly with ActiveRecord associations
@@ -520,6 +536,10 @@ class Node < ActiveRecord::Base
     drupal_content_type_map.last
   end
 
+  def blurred?
+    has_power_tag('location') && power_tag('location') == "blurred"
+  end
+
   def lat
     if has_power_tag('lat')
       power_tag('lat').to_f
@@ -562,23 +582,17 @@ class Node < ActiveRecord::Base
   # Automated constructors for associated models
 
   def add_comment(params = {})
-    thread = if !comments.empty? && !comments.last.nil?
-               comments.last.next_thread
-             else
-               '01/'
-    end
-    if params[:comment_via].nil?
-      comment_via_status = 0
-    else
-      comment_via_status = params[:comment_via].to_i
-    end
+    thread = !comments.empty? && !comments.last.nil? ? comments.last.next_thread : '01/'
+    comment_via_status = params[:comment_via].nil? ? 0 : params[:comment_via].to_i
+    user = User.find(params[:uid])
+    status = user.first_time_poster && user.first_time_commenter ? 4 : 1
     c = Comment.new(pid: 0,
                     nid: nid,
                     uid: params[:uid],
                     subject: '',
                     hostname: '',
                     comment: params[:body],
-                    status: 1,
+                    status: status,
                     format: 1,
                     thread: thread,
                     timestamp: DateTime.now.to_i,
@@ -602,7 +616,7 @@ class Node < ActiveRecord::Base
   # researching simultaneous creation of associated records
   def self.new_note(params)
     saved = false
-    author = DrupalUser.find(params[:uid])
+    author = User.find(params[:uid])
     node = Node.new(uid:     author.uid,
                     title:   params[:title],
                     comment: 2,
@@ -705,7 +719,7 @@ class Node < ActiveRecord::Base
   end
 
   def add_barnstar(tagname, giver)
-    add_tag(tagname, giver.drupal_user)
+    add_tag(tagname, giver)
     CommentMailer.notify_barnstar(giver, self).deliver_now
   end
 
@@ -713,6 +727,7 @@ class Node < ActiveRecord::Base
     tagname = tagname.downcase
     unless has_tag_without_aliasing(tagname)
       saved = false
+      table_updated = false
       tag = Tag.find_by(name: tagname) || Tag.new(vid:         3, # vocabulary id; 1
                                                   name:        tagname,
                                                   description: '',
@@ -732,6 +747,18 @@ class Node < ActiveRecord::Base
                                  uid: user.uid,
                                  date: DateTime.now.to_i,
                                  nid: id)
+
+          # Adding lat/lon values into node table
+          if tag.valid?
+            if tag.name.split(':')[0] == 'lat'
+              tagvalue = tag.name.split(':')[1]
+              table_updated = update_attributes(:latitude => tagvalue, :precision => decimals(tagvalue).to_s)
+            elsif tag.name.split(':')[0] == 'lon'
+              tagvalue = tag.name.split(':')[1]
+              table_updated = update_attributes(:longitude => tagvalue)
+            end
+          end
+
           if node_tag.save
             saved = true
             # send email notification if there are subscribers, status is OK, and less than 1 month old
@@ -744,7 +771,23 @@ class Node < ActiveRecord::Base
           end
         end
       end
-      return [saved, tag]
+      return [saved, tag, table_updated]
+    end
+  end
+
+  def decimals(n)
+    if !n.to_s.include? '.'
+      0
+    else
+      n.to_s.split('.').last.size
+    end
+  end
+
+  def delete_coord_attribute(tagname)
+    if tagname.split(':')[0] == "lat"
+      table_updated = update_attributes(:latitude => nil, :precision => nil)
+    else
+      table_updated = update_attributes(:longitude => nil)
     end
   end
 
@@ -948,5 +991,15 @@ class Node < ActiveRecord::Base
   def draft_url
     @token = slug.split('token:').last
     url = 'https://publiclab.org/notes/show/' + nid.to_s + '/' + @token.to_s
+  end
+
+  def fetch_comments(user)
+    if user&.can_moderate?
+      comments.where('status = 1 OR status = 4')
+    elsif user
+      comments.where('comments.status = 1 OR (comments.status = 4 AND comments.uid = ?)', user.uid)
+    else
+      comments.where(status: 1)
+    end
   end
 end

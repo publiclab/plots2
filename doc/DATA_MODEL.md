@@ -5,7 +5,7 @@ _This page attempts to explain the database model for the plots2 project._
 
 The [following diagram](https://docs.google.com/presentation/d/1aquQKyih8vvtD7U-AI0NlbAcgT-BVu9G8hloYg-c-QI/edit#slide=id.p) is a rough sketch of how the applications various tables interconnect:
 
-![data model diagram](https://publiclab.org/system/images/photos/000/021/061/original/diagram.png)
+![data model diagram](https://user-images.githubusercontent.com/24359/50705765-d84ae000-1029-11e9-9e4c-f166a0c0d5d1.png)
 
 ****
 
@@ -72,6 +72,12 @@ They are typically cached for quick loading, and can be inserted anywhere in the
 
 Comments belong to Notes via `nid`, and each have an author via `uid`; primary key `cid`. Maps also have comments via `nid`, and Answers may also have comments, via `aid`.
 
+Comment `status` -- a property of `comments`, can be:
+
+* 0: banned
+* 1: normal
+* 4: moderated -- i.e. comment created by a first-time poster, and has not yet been "approved"
+
 ### Answers
 
 Answers are similar to Comments, but are used in Question-type Notes, and may each have Comments of their own. Primary key `aid`.
@@ -80,15 +86,13 @@ Answers are similar to Comments, but are used in Question-type Notes, and may ea
 
 ## Users
 
-Our primary user type is User. We also maintain a legacy `DrupalUsers` type, but are in the process of deprecating it. Users and `DrupalUsers` both have `uid` fields, which are synced one-to-one, and to fully deprecate `DrupalUsers` we must migrate these fields over to User.
-
-Users can login via email using the [Authlogic gem (a simple ruby authentication
+Our primary user type is User. Users can login via email using the [Authlogic gem (a simple ruby authentication
 solution)](https://github.com/binarylogic/authlogic). Also, recently we have added the option to login via Twitter, Github, Facebook and Google using the
 [Omniauth gem](https://github.com/publiclab/plots2/blob/master/doc/Omniauth.md).
 
-Users each have a profile at `/profile/username`, which displays content stored in an associated `DrupalProfileValue` with `fid = 7`.
+Users each have a profile at `/profile/USERNAME`, which displays content stored in the `user.bio` text field.
 
-User `status` -- a property of `DrupalUser`, can be:
+`user.status` can be:
 
 * 0: banned
 * 1: normal
@@ -104,4 +108,4 @@ User `role` can be:
 
 ## Tagging
 
-Tags (`Tag`) are unique tag names with primary key `tid`, which may be linked to Nodes via NodeTag (database table `community_tag`) via the latter's `nid` and `tid` fields.
+Tags (`Tag`) are unique tag names with primary key `tid`, which may be linked (by a user) to Nodes via NodeTag (database table `community_tag`) via the latter's `nid` and `tid` fields.

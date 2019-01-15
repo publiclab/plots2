@@ -7,11 +7,20 @@
     <% end %>
   <% end %>
   <li role="separator" class="divider"></li>
-  <li><a href="#" data-value="style:">Style</a></li>
+  <% if @node && @node.type == "page" %>
+    <li><a href="#" data-value="parent:">Link to a "parent" page (wikis only)</a></li>
+    <li><a href="#" data-value="style:">Add style</a></li>
+    <li><a href="#" data-value="lang:">Add Translation widget</a></li>
+  <% else %>
+    <li><a href="#" data-value="seeks:photos">Request response photos</a></li>
+    <li><a href="#" data-value="hidden:response">Hide responses from dashboard</a></li>
+    <li><a href="#" data-value="with:">Add Coauthor (notes only)</a></li>
+    <li><a href="#" data-value="series:">Mark as part of a series</a></li>
+    <li><a href="#" data-value="comment-template:">Add template to the comment form</a></li>
+    <li><a target="_blank" href="/wiki/comment-templates">Write a template for the comment form</a></li>
+  <% end %>
   <li role="separator" class="divider"></li>
-  <li><a href="#"  data-value="with:">Add Coauthor</a></li>
-  <li role="separator" class="divider"></li>
-  <li><a href="https://publiclab.org/wiki/power-tags" target="_blank">Learn About Powertags</a></li>
+  <li><a href="https://publiclab.org/power-tags" target="_blank">Learn About Powertags</a></li>
 </ul>
 
 <script type="text/javascript">
@@ -19,28 +28,12 @@
   $(document).ready(function(){
 
     $( "#pt-list > li " ).each(function() {
-        $( this ).click(function(event){
-
-          var val = $(event.target).attr('data-value');
-
-          switch(val){
-
-            case "style:":
-              var input = prompt("What kind of style? (minimal, fancy, presentation, wide, nobanner)", "Style");
-              if (input != null) {
-                addTag(val + input);}
-              break;
-
-            case "with:":
-              var input = prompt("Who would you like to add as a coauthor?", "Username");
-              if (input != null) {
-                addTag(val + input);}
-              break;
-
-          }
-
-        });
+      $( this ).click(function(event){
+        var val = $(event.target).attr('data-value');
+        promptTag(val);
+      });
     });
+    
   });
-
+  
 </script>

@@ -9,12 +9,13 @@
      
       <% if node.main_image %>
         <a class="img" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" style="width:100%;" /></a>
+      <% elsif node.scraped_image %>
+        <a class="img" href="<%= node.path %>"><img src="<%= node.scraped_image %>" style="width:100%;" /></a>
       <% end %>
      
       <h4><a href="<%= node.path %>"><%= node.title %></a></h4>
      
       <a class="btn btn-default btn-xs pull-right respond rsvp">RSVP</a>
-      <a href="/n/<%= node.id %>" class="btn btn-default btn-xs pull-right respond answer"><i class="fa fa-link"></i> #<%= node.id %></a>
      
       <p class="meta">Event <%= render partial: "dashboard/node_meta", locals: { node: node } %></p>
 
