@@ -221,8 +221,6 @@ class SearchApiTest < ActiveSupport::TestCase
 
     json = JSON.parse(last_response.body)
 
-    puts json.inspect
-
     assert_equal "/profile/steff3",     json['items'][0]['doc_url']
 
     assert matcher =~ json
