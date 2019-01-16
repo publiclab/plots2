@@ -148,38 +148,38 @@ co-author:
   nid: 21
   date: <%= DateTime.now.to_i %>
 
-post_test1_lat:
+test1_lat:
   tid: 23
   uid: 15
   nid: 23
   date: <%= DateTime.now.to_i %>
 
-post_test2_lat:
+test2_lat:
+  tid: 23
+  uid: 17
+  nid: 24
+  date: <%= DateTime.now.to_i %>
+
+test3_lat:
+  tid: 23
+  uid: 16
+  nid: 25
+  date: <%= DateTime.now.to_i %>
+
+test1_lon:
+  tid: 24
+  uid: 15
+  nid: 23
+  date: <%= DateTime.now.to_i %>
+
+test2_lon:
   tid: 24
   uid: 17
   nid: 24
   date: <%= DateTime.now.to_i %>
 
-post_test3_lat:
-  tid: 25
-  uid: 16
-  nid: 25
-  date: <%= DateTime.now.to_i %>
-
-post_test1_lon:
-  tid: 26
-  uid: 15
-  nid: 23
-  date: <%= DateTime.now.to_i %>
-
-post_test2_lon:
-  tid: 27
-  uid: 17
-  nid: 24
-  date: <%= DateTime.now.to_i %>
-
-post_test3_lon:
-  tid: 28
+test3_lon:
+  tid: 24
   uid: 16
   nid: 25
   date: <%= DateTime.now.to_i %>

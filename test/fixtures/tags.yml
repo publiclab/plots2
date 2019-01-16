@@ -85,29 +85,13 @@ kites:
   name: kites
 
 balloon:
-  tid: 22
+  tid: 25
   name: balloon
 
-post_test1_lat:
+latitude:
   tid: 23
   name: lat:201.0
 
-post_test2_lat:
+longitude:
   tid: 24
-  name: lat:201.0
-
-post_test3_lat:
-  tid: 25
-  name: lat:201.0
-
-post_test1_lon:
-  tid: 26
   name: lon:52.0
-
-post_test2_lon:
-  tid: 27
-  name: lon:52.0
-
-post_test3_lon:
-  tid: 28
-  name: lon:52.0  
