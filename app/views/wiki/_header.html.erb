@@ -64,7 +64,7 @@
             </li>
         <% else %>
             <li>
-              <a rel="tooltip" title="Edit this wiki page." data-placement="top" href="<%= @node.edit_path %>?t=<%= Time.now.to_i %>">
+              <a rel="tooltip" title="Edit this wiki page." data-placement="top" href="<%= @node.edit_path %>?t=<%= Time.now.to_i %>" class="requireLogin">
                 <i class="fa fa-pencil"></i>
                 <span class="hidden-xs hidden-sm hidden-md"></span>
               </a>
