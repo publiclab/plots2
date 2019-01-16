@@ -109,14 +109,16 @@
   </div>
   <% end %>
   
+  <% cache('feature_signup-notice', skip_digest: true) do %>
+    <%= feature('signup-notice') %>
+  <% end %>
+
   <script>
     $("a.signupToggle").click(function(){ //When a button that toggles the signup is clicked
       setMode("signup"); //Sets the mode of the modal to signup so it only shows the signup partial
       $('#loginModal').modal(); //Toggles the modal
     })
-  </script>
-  <script>
-  function showFile(inp, disp){
+    function showFile(inp, disp){
       if (inp.files && inp.files[0]){
         var reader = new FileReader();
         let dp = $(`.${disp}`);
