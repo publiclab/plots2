@@ -346,7 +346,9 @@ class User < ActiveRecord::Base
   def first_time_poster
     notes.where(status: 1).count == 0
   end
-  
+  def awaiting_approval_poster
+    notes.where(status: 4).count > 1
+  end
   def first_time_commenter
     Comment.where(status: 1, uid: uid).count == 0
   end
@@ -430,7 +432,7 @@ class User < ActiveRecord::Base
 
   def self.validate_token(token)
     begin
-      decrypted_data = User.decrypt(token)      
+      decrypted_data = User.decrypt(token)
     rescue ActiveSupport::MessageVerifier::InvalidSignature => e
       puts e.message
       return 0
@@ -438,7 +440,7 @@ class User < ActiveRecord::Base
     if (Time.now - decrypted_data[:timestamp]) / 1.hour > 24.0
       return 0
     else
-      return decrypted_data[:id]   
+      return decrypted_data[:id]
     end
   end
 
@@ -481,7 +483,7 @@ class User < ActiveRecord::Base
       user.save!
     end
   end
-  
+
   def self.count_all_time_contributor
     notes = Node.where(type: 'note', status: 1).pluck(:uid)
     answers = Answer.pluck(:uid)
