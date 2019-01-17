@@ -81,7 +81,7 @@ class SearchService
   end
 
   # Search nearby nodes with respect to given latitude, longitute and tags
-  def tagNearbyNodes(coordinates, tag, sort_by = nil, order_direction = nil, limit = 10)
+  def tagNearbyNodes(coordinates, tag, period = { "from" => nil, "to" => nil }, sort_by = nil, order_direction = nil, limit = 10)
     raise("Must contain all four coordinates") if coordinates["nwlat"].nil?
     raise("Must contain all four coordinates") if coordinates["nwlng"].nil?
     raise("Must contain all four coordinates") if coordinates["selat"].nil?
@@ -91,6 +91,9 @@ class SearchService
     raise("Must be a float") unless coordinates["nwlng"].is_a? Float
     raise("Must be a float") unless coordinates["selat"].is_a? Float
     raise("Must be a float") unless coordinates["selng"].is_a? Float
+
+    raise("If 'from' is not null, must contain date") if period["from"] && !(period["from"].is_a? Date)
+    raise("If 'to' is not null, must contain date") if period["to"] && !(period["to"].is_a? Date)
 
     nodes_scope = NodeTag.joins(:tag)
       .where('name LIKE ?', 'lat%')
@@ -104,11 +107,20 @@ class SearchService
 
     nids = nodes_scope.collect(&:nid).uniq || []
 
+    # If the period["from"] was not specified, we use (1990,01,01)
+    # If the period["to"] was not specified, we use 'now'
+    period["from"] = period["from"].nil? ? Date.new(1990, 01, 01).to_time.to_i : period["from"].to_time.to_i
+    period["to"] = period["to"].nil? ? Time.now.to_i : period["to"].to_time.to_i
+    if period["from"] > period["to"]
+      period["from"], period["to"] = period["to"], period["from"]
+    end
+
     items = Node.includes(:tag)
       .references(:node, :term_data)
       .where('node.nid IN (?)', nids)
       .where('term_data.name LIKE ?', 'lon%')
       .where('REPLACE(term_data.name, "lon:", "") BETWEEN ' + coordinates["nwlng"].to_s + ' AND ' + coordinates["selng"].to_s)
+      .where('created BETWEEN ' + period["from"].to_s + ' AND ' + period["to"].to_s)
 
     # selects the items whose node_tags don't have the location:blurred tag
     items.select do |item|
@@ -129,7 +141,7 @@ class SearchService
 
   # Search nearby people with respect to given latitude, longitute and tags
   # and package up as a DocResult
-  def tagNearbyPeople(coordinates, tag, sort_by = nil, order_direction = nil, limit = 10)
+  def tagNearbyPeople(coordinates, tag, period = nil, sort_by = nil, order_direction = nil, limit = 10)
     raise("Must contain all four coordinates") if coordinates["nwlat"].nil?
     raise("Must contain all four coordinates") if coordinates["nwlng"].nil?
     raise("Must contain all four coordinates") if coordinates["selat"].nil?
@@ -139,6 +151,9 @@ class SearchService
     raise("Must be a float") unless coordinates["nwlng"].is_a? Float
     raise("Must be a float") unless coordinates["selat"].is_a? Float
     raise("Must be a float") unless coordinates["selng"].is_a? Float
+
+    raise("If 'from' is not null, must contain date") if period["from"] && !(period["from"].is_a? Date)
+    raise("If 'to' is not null, must contain date") if period["to"] && !(period["to"].is_a? Date)
 
     user_locations = User.where('rusers.status <> 0')
                          .joins(:user_tags)
@@ -165,6 +180,15 @@ class SearchService
       item.user_tags.none? do |user_tag|
         user_tag.name == "location:blurred"
       end
+    end
+
+    # Here we use period["from"] and period["to"] in the query only if they have been specified,
+    # so we avoid to join revision table
+    if !period["from"].nil? || !period["to"].nil?
+      items = items.joins(:revisions).where("node_revisions.status = 1")\
+                   .distinct
+      items = items.where('node_revisions.timestamp > ' + period["from"].to_time.to_i.to_s) unless period["from"].nil?
+      items = items.where('node_revisions.timestamp < ' + period["to"].to_time.to_i.to_s) unless period["to"].nil?
     end
 
     # sort users by their recent activities if the sort_by==recent
