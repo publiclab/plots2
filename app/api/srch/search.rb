@@ -228,7 +228,7 @@ module Srch
                                                                                             nickname: 'search_tag_locations'
 
       params do
-        use :geographical, :additional, :sorting, :ordering
+        use :geographical, :additional, :period, :sorting, :ordering
       end
       get :taglocations do
         search_request = SearchRequest.fromRequest(params)
@@ -259,7 +259,7 @@ module Srch
                                                                        is_array: false,
                                                                        nickname: 'search_nearby_people'
       params do
-        use :geographical, :additional, :sorting, :ordering
+        use :geographical, :additional, :period, :sorting, :ordering
       end
       get :nearbyPeople do
         search_request = SearchRequest.fromRequest(params)
@@ -348,7 +348,7 @@ module Srch
     def self.execute(endpoint, params)
       search_type = endpoint
       search_criteria = SearchCriteria.new(params)
-
+      search_criteria.validate_period_from_to
       if search_criteria.valid?
         ExecuteSearch.new.by(search_type, search_criteria)
       else

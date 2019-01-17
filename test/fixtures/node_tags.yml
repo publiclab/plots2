@@ -9,7 +9,7 @@ awesome:
   uid: 2
   nid: 1
   date: <%= DateTime.now.to_i %>
-  
+
 awesome2:
   tid: 2
   uid: 2
@@ -146,4 +146,40 @@ co-author:
   tid: 19
   uid: 2
   nid: 21
+  date: <%= DateTime.now.to_i %>
+
+test1_lat:
+  tid: 23
+  uid: 15
+  nid: 23
+  date: <%= DateTime.now.to_i %>
+
+test2_lat:
+  tid: 23
+  uid: 17
+  nid: 24
+  date: <%= DateTime.now.to_i %>
+
+test3_lat:
+  tid: 23
+  uid: 16
+  nid: 25
+  date: <%= DateTime.now.to_i %>
+
+test1_lon:
+  tid: 24
+  uid: 15
+  nid: 23
+  date: <%= DateTime.now.to_i %>
+
+test2_lon:
+  tid: 24
+  uid: 17
+  nid: 24
+  date: <%= DateTime.now.to_i %>
+
+test3_lon:
+  tid: 24
+  uid: 16
+  nid: 25
   date: <%= DateTime.now.to_i %>
