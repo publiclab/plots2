@@ -20,6 +20,7 @@
 # Learn more: http://github.com/javan/whenever
 
 # Work around whenever Gem issue (see https://github.com/publiclab/plots2/issues/3404)
+env :PATH, ENV['PATH']
 set :bundle_command, 'bundle exec'
 job_type :runner,  "cd :path && :bundle_command rails runner -e :environment ':task' :output"
 
