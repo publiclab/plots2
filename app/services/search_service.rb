@@ -92,11 +92,11 @@ class SearchService
     raise("Must be a float") unless coordinates["selat"].is_a? Float
     raise("Must be a float") unless coordinates["selng"].is_a? Float
 
-    if !(period["from"].nil?) && !(period["from"].is_a? Date)
+    if period["from"] && !(period["from"].is_a? Date)
       raise("If 'from' is not null, must contain date")
     end
 
-    if !(period["to"].nil?) && !(period["to"].is_a? Date)
+    if period["to"] && !(period["to"].is_a? Date)
       raise("If 'to' is not null, must contain date")
     end
 
@@ -157,11 +157,11 @@ class SearchService
     raise("Must be a float") unless coordinates["selat"].is_a? Float
     raise("Must be a float") unless coordinates["selng"].is_a? Float
 
-    if !(period["from"].nil?) && !(period["from"].is_a? Date)
+    if period["from"] && !(period["from"].is_a? Date)
       raise("If 'from' is not null, must contain date")
     end
 
-    if !(period["to"].nil?) && !(period["to"].is_a? Date)
+    if period["to"] && !(period["to"].is_a? Date)
       raise("If 'to' is not null, must contain date")
     end
 
