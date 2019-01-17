@@ -53,9 +53,10 @@ GEM
     ansi (1.5.0)
     arel (9.0.0)
     ast (2.4.0)
-    authlogic (4.4.2)
-      activerecord (>= 4.2, < 5.3)
-      activesupport (>= 4.2, < 5.3)
+    authlogic (5.0.0)
+      activemodel (>= 5.2, < 6.1)
+      activerecord (>= 5.2, < 6.1)
+      activesupport (>= 5.2, < 6.1)
       request_store (~> 1.0)
       scrypt (>= 1.2, < 4.0)
     authlogic-oid (1.0.4)
@@ -108,7 +109,7 @@ GEM
     execjs (2.7.0)
     faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
-    ffi (1.9.25)
+    ffi (1.10.0)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
@@ -476,7 +477,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-session_store
-  authlogic (= 4.4.2)
+  authlogic (= 5.0.0)
   authlogic-oid
   byebug
   ci_reporter_test_unit
