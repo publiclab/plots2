@@ -37,7 +37,7 @@
         </div>
         <a style="margin-left: 12px;" href="/profile/<%= user.username %>"><%= user.username %></a>
       </td>
-      <td style="padding-top:16px;"><%= time_ago_in_words(user.updated_at) %></td>
+      <td style="padding-top:16px;"><%= user.last_updated %></td>
       <td style="padding-top:16px;"><%= user.nodes.count %> <%= t('users.list.notes_and_edits') %></td>
       <td style="padding-top:16px;"><%= distance_of_time_in_words(user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></td>
       <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") %>
