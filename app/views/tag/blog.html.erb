@@ -1,6 +1,6 @@
-<div class="col-md-2">
+<div class="col-lg-2">
 </div>
-<div class="col-md-8 blog">
+<div class="col-lg-8 blog">
   <div class="blog-header">
     <h1><%= params[:id] == "blog" ? I18n.t('tag.blog.the_public_lab') : params[:id].split('-').join(' ').capitalize %> <%=raw translation('tag.blog.blog') %></h1>
 
@@ -13,13 +13,13 @@
         <a href="/tools"><%=raw translation('tag.methods') %></a>
       </p>
       <% if current_user %>
-        <a class="btn btn-default btn-sm" href="/feed/tag/<%= params[:id] %>.rss"><i class="fa fa-rss"></i> RSS</a>
+        <a class="btn btn-outline-secondary btn-sm" href="/feed/tag/<%= params[:id] %>.rss"><i class="fa fa-rss"></i> RSS</a>
         <% if current_user.following(params[:id]) %>
-        <a rel="tooltip" title="<%=raw translation('tag.blog.unfollow') %>" class="btn btn-default btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>"><i class="fa fa-user-plus" aria-hidden="true"></i> <%=raw translation('tag.blog.following') %> <b><%= params[:id] %></b></a>
+        <a rel="tooltip" title="<%=raw translation('tag.blog.unfollow') %>" class="btn btn-outline-secondary btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>"><i class="fa fa-user-plus" aria-hidden="true"></i> <%=raw translation('tag.blog.following') %> <b><%= params[:id] %></b></a>
         <% else %>
         <br><br>
         <div class="alert alert-success" role="alert">
-        Want to get updates for new blog posts? <a class="btn btn-default btn-sm" href="/subscribe/tag/<%= params[:id] %>">
+        Want to get updates for new blog posts? <a class="btn btn-outline-secondary btn-sm" href="/subscribe/tag/<%= params[:id] %>">
         <b><%=raw translation('Click here to subscribe!') %></b></a>
         </div>
         <% end %>
@@ -64,11 +64,11 @@
           <p>
             <%= render :partial => "like/like", :locals => {:node => node, :tagnames => node.tags.collect(&:name) } %>
             <% node.tags[0..3].each do |tag| %>
-              <a class="label label-primary" href="/tag/<%= tag.name %>"><%= tag.name %></a>
+              <a class="badge badge-primary" href="/tag/<%= tag.name %>"><%= tag.name %></a>
             <% end %>
           </p>
           <% if params[:mod] %>
-          <a class="btn btn-default btn-xs" href="#"><i class="fa fa-ban-circle"></i> <%=raw translation('tag.blog.spam') %></a>
+          <a class="btn btn-outline-secondary btn-sm" href="#"><i class="fa fa-ban-circle"></i> <%=raw translation('tag.blog.spam') %></a>
           <% end %>
         </div>
         <hr />

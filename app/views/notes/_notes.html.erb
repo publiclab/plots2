@@ -2,7 +2,7 @@
 <div id="notes">
     <div class="row">
     <% notes.each_with_index do |node,i| %>
-      <div class="<% if @widget %>col-3 col-md-3 <% end %><%= node.tagnames_as_classes %> col-lg-6 clearfix node note node-nid-<%= node.id %> note-nid-<%= node.id %><% if node.status == 4 %> moderated<% end %>" style="overflow:hidden; text-align:center">
+      <div class="<% if @widget %>col-3 <% end %><%= node.tagnames_as_classes %> col-lg-6 clearfix node note node-nid-<%= node.id %> note-nid-<%= node.id %><% if node.status == 4 %> moderated<% end %>" style="overflow:hidden; text-align:center">
 
         <% if node.main_image %>
           <a class="img" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" style="width:100%;" /></a>
