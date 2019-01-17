@@ -92,8 +92,13 @@ class SearchService
     raise("Must be a float") unless coordinates["selat"].is_a? Float
     raise("Must be a float") unless coordinates["selng"].is_a? Float
 
-    raise("If 'from' is not null, must contain date") if !(period["from"].nil?) && !(period["from"].is_a? Date)
-    raise("If 'to' is not null, must contain date") if !(period["to"].nil?) && !(period["to"].is_a? Date)
+    if !(period["from"].nil?) && !(period["from"].is_a? Date)
+      raise("If 'from' is not null, must contain date")
+    end
+
+    if !(period["to"].nil?) && !(period["to"].is_a? Date)
+      raise("If 'to' is not null, must contain date")
+    end
 
     nodes_scope = NodeTag.joins(:tag)
       .where('name LIKE ?', 'lat%')
@@ -152,8 +157,13 @@ class SearchService
     raise("Must be a float") unless coordinates["selat"].is_a? Float
     raise("Must be a float") unless coordinates["selng"].is_a? Float
 
-    raise("If 'from' is not null, must contain date") if !(period["from"].nil?) && !(period["from"].is_a? Date)
-    raise("If 'to' is not null, must contain date") if !(period["to"].nil?) && !(period["to"].is_a? Date)
+    if !(period["from"].nil?) && !(period["from"].is_a? Date)
+      raise("If 'from' is not null, must contain date")
+    end
+
+    if !(period["to"].nil?) && !(period["to"].is_a? Date)
+      raise("If 'to' is not null, must contain date")
+    end
 
     user_locations = User.where('rusers.status <> 0')
                          .joins(:user_tags)
