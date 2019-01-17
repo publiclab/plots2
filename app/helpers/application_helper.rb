@@ -132,4 +132,8 @@ module ApplicationHelper
   def trimmed_body(comment_body)
     comment_body.split(Comment::COMMENT_FILTER).second
   end
+
+  def current_page?(page)
+    'is-active' if request.path == page
+  end
 end

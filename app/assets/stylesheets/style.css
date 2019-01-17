@@ -472,3 +472,9 @@ div.note.moderated h4 {
   font-size: 60px;
 
 }
+
+.is-active{
+    cursor: default;
+    opacity: 0.6;
+    background-color: #e3f2fd;
+}
