@@ -100,7 +100,7 @@ group :test, :development do
   gem 'jasmine-jquery-rails'
   gem 'jasmine-rails'
   gem 'json_expressions'
-  gem 'minitest-reporters', '~> 1.3.5'
+  gem 'minitest-reporters', '~> 1.3.6'
   gem 'openssl', '~> 2.1.2'
   gem 'phantomjs'
   gem 'rails-perftest'
