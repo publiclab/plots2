@@ -330,8 +330,9 @@ class Tag < ApplicationRecord
     end
   end
 
-  def active_topics(user)
+  def active_topics(user,limit)
     t = TagSelection.where('user_id = ? AND following = ?', user.id, true)
+                    .limit(limit)
                     .collect(&:tid)
   end
 end
