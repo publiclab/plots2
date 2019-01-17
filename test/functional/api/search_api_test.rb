@@ -150,7 +150,35 @@ class SearchApiTest < ActiveSupport::TestCase
   end
 
   test 'search Tag Nearby Nodes functionality with a valid query and specific period' do
-    get '/api/srch/taglocations?nwlat=201.0&selat=0.0&nwlng=0.0&selng=200.0&sort_by=recent&order_direction=ASC&to=2018-12-01'
+    get '/api/srch/taglocations?nwlat=201.0&selat=0.0&nwlng=0.0&selng=200.0&sort_by=recent&order_direction=ASC&to=2018-08-16'
+    assert last_response.ok?
+
+    # Expected search pattern
+    pattern = {
+        srchParams: {
+            nwlat: 201.0,
+            nwlng: 0.0,
+            selat: 0.0,
+            selng: 200.0,
+            seq: nil,
+            tag: nil,
+            query: nil
+        }.ignore_extra_keys!
+    }.ignore_extra_keys!
+
+    matcher = JsonExpressions::Matcher.new(pattern)
+
+    json = JSON.parse(last_response.body)
+
+    assert matcher    =~ json
+
+    assert_equal 23,  json['items'][0]['doc_id']
+    assert_equal 24,  json['items'][1]['doc_id']
+    assert_equal 25,  json['items'][2]['doc_id']
+  end
+
+  test 'search Tag Nearby Nodes functionality with a valid query and from date greater then to date' do
+    get '/api/srch/taglocations?nwlat=201.0&selat=0.0&nwlng=0.0&selng=200.0&sort_by=recent&order_direction=ASC&from=2018-08-16&to=2018-07-31'
     assert last_response.ok?
 
     # Expected search pattern
