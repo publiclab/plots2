@@ -1,13 +1,13 @@
-<div align="center" >
-    <nav class="navbar navbar-dark bg-primary">
-       <h4><a href="/stats"  style="color:white;">All Stats</a></h4>
-    </nav>
+<div align="center">
+<nav class="navbar navbar-light bg-light <%= current_page? stats_path%>">
+    <h5><a href="/stats"> All Stats</a></h5>
+</nav>
 
-    <nav class="navbar navbar-light" style="background-color:  #81d4fa;">
-        <h4><a href="/stats/range" style="color:#000080;">Range-based Stats</a></h4>
-    </nav>
+<nav class="navbar navbar-light bg-light <%= current_page? stats_range_path%>">
+    <h5> <a href="/stats/range">Range-based Stats</a></h5>
+</nav>
 
-    <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-        <h4><a href="/stats/subscriptions">Subscription stats</a></h4>
-    </nav>
+<nav class="navbar navbar-light bg-light <%= current_page? stats_subscriptions_path%>">
+    <h5><a href="/stats/subscriptions">Subscription stats</a></h5>
+</nav>
 </div>
