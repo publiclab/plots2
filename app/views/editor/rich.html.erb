@@ -246,7 +246,7 @@
   });
 
   var editor;
-
+ 
   (function() {
 
     editor = new PL.Editor({
@@ -254,10 +254,10 @@
       data: {
         token: $('meta[name="csrf-token"]').attr('content')
       },
-
-      lat: <%= @lat %> , 
-      lon: <%= @lon %> ,
-
+      <% if @lat and @lon %>
+       lat: <%= @lat %> , 
+       lon: <%= @lon %> ,
+      <% end %>
       textarea:    $('.ple-textarea')[0],
 
       <% if @main_image %>
