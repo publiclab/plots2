@@ -84,6 +84,11 @@ class SearchServiceTest < ActiveSupport::TestCase
     assert_equal result_1.length, 3
   end
 
+  test 'running search taglocations with invalid period' do
+    exception_1 = assert_raises(Exception) { SearchService.new.tagNearbyNodes({ "nwlat" => 201.0, "nwlng" => 0.0, "selat" => 0.0, "selng" =>200.0 }, nil, period = { "from" => nil, "to" => 'date'}, sort_by = nil, order_direction = nil, limit = 10) }
+    assert_equal( "If 'to' is not null, must contain date", exception_1.message )
+  end
+
   test 'running profiles by usertags' do
     users = [users(:steff3), users(:steff2), users(:steff1)]
 
@@ -93,5 +98,10 @@ class SearchServiceTest < ActiveSupport::TestCase
 
     assert_not_nil result
     assert_equal result.size, 1
+  end
+
+  test 'running search nearby people with invalid period' do
+    exception_1 = assert_raises(Exception) { SearchService.new.tagNearbyPeople({ "nwlat" => 201.0, "nwlng" => 0.0, "selat" => 0.0, "selng" =>200.0 }, nil, period = { "from" => nil, "to" => 'date'}, sort_by = nil, order_direction = nil, limit = 10) }
+    assert_equal( "If 'to' is not null, must contain date", exception_1.message )
   end
 end
