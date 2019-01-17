@@ -19,8 +19,9 @@
 
 # Learn more: http://github.com/javan/whenever
 
-env :PATH, ENV['PATH']
-env :GEM_PATH, ENV['GEM_PATH']
+# Work around whenever Gem issue (see https://github.com/publiclab/plots2/issues/3404)
+set :bundle_command, 'bundle exec'
+job_type :runner,  "cd :path && :bundle_command rails runner -e :environment ':task' :output"
 
 # Cron Job log file
 set :output, "#{Dir.pwd}/public/cron_log.log"
