@@ -383,8 +383,7 @@ class User < ActiveRecord::Base
     self.username = registration['nickname'] if username.blank?
   end
 
-  def self.watching_location(nwlat,selat,nwlng,selng)
-
+  def self.watching_location( nwlat, selat, nwlng, selng)
     raise("Must contain all four coordinates") if nwlat.nil?
     raise("Must contain all four coordinates") if nwlng.nil?
     raise("Must contain all four coordinates") if selat.nil?
@@ -399,7 +398,6 @@ class User < ActiveRecord::Base
     uids = TagSelection.where('tag_selections.tid IN (?)', tids).collect(&:user_id).uniq || []
 
     User.where("id IN (?)", uids)
-
   end
 
   def self.find_by_username_case_insensitive(username)
