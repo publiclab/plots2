@@ -334,11 +334,17 @@ class Tag < ApplicationRecord
   def self.graph_data(limit = 250)
     Rails.cache.fetch("graph-data/#{limit}", expires_in: 1.weeks) do
       data = {}
-      data["tags"] = Tag.order(count: :desc).limit(limit).collect(&:name)
+      data["tags"] = []
+      Tag.order(count: :desc).limit(limit).each do |tag|
+        data["tags"] << {
+          "name" => tag.name,
+          "count" => tag.count
+        }
+      end
       data["edges"] = []
-      data["tags"].each do |tagname|
-        Tag.related(tagname).collect(&:name).each do |related_tag|
-          data["edges"] << { "from" => tagname, "to" => related_tag }
+      data["tags"].each do |tag|
+        Tag.related(tag["name"]).each do |related_tag|
+          data["edges"] << { "from" => tag["name"], "to" => related_tag.name }
         end
       end
       data
