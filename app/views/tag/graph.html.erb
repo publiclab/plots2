@@ -1,7 +1,7 @@
 <style>
 #cytoscape {
   width: 100%;
-  height: 400px;
+  height: 800px;
   display: block;
 }
 </style>
@@ -29,11 +29,17 @@
       edges: []
     }
 
-    data['tags'].forEach(function(tagname) {
-      output.nodes.push({ data: { id: tagname } });
+    var tagnames = [];
+    data['tags'].forEach(function(tag) {
+      tagnames.push(tag.name);
+      output.nodes.push({ data: { 
+        id: tag.name,
+        count: tag.count,
+        href: '/tag/' + tag.name
+      } });
     });
     data['edges'].forEach(function(edge) {
-      if (data['tags'].includes(edge.from) && data['tags'].includes(edge.to)) {
+      if (tagnames.includes(edge.from) && tagnames.includes(edge.to)) {
         output.edges.push({ data: { id: edge.from + "_" + edge.to, source: edge.from, target: edge.to } });
       }
     });
@@ -51,35 +57,56 @@
         edges: data.edges
       },
 
-      layout: 'cose',
-      animate: true,
-  
-      // The layout animates only after this many milliseconds for animate:true
-      // (prevents flashing on fast runs)
-      animationThreshold: 250,
-  
-      // Number of iterations between consecutive screen positions update
-      refresh: 20,
-  
-  
-      // Whether to fit the network view after when done
-      fit: true,
-  
-      // Padding on fit
-      padding: 30,
+      layout: {
+        name: 'cose',
+        idealEdgeLength: 100,
+        nodeOverlap: 20,
+        refresh: 20,
+        fit: true,
+        padding: 30,
+        randomize: false,
+        componentSpacing: 100,
+        nodeRepulsion: 400000,
+        edgeElasticity: 100,
+        nestingFactor: 5,
+        gravity: 80,
+        numIter: 1000,
+        initialTemp: 200,
+        coolingFactor: 0.95,
+        minTemp: 1.0
+      },
 
-      // so we can see the ids
+
       style: [
         {
           selector: 'node',
           style: {
-            'label': 'data(id)'
+            //'width': 'data(count)',
+            //'height': 'data(count)',
+            'width': 'mapData(count, 1, 100, 40, 60)',
+            'height': 'mapData(count, 1, 100, 40, 60)',
+            'background-color': '#ea8a31',
+            'label': 'data(id)',
+            'text-valign': 'center',
+            'color': 'white',
+            'text-outline-width': 2,
+            'text-outline-color': '#888'
+          }
+        },
+
+        {
+          selector: 'edge',
+          style: {
+            'curve-style': 'haystack',
+            'haystack-radius': 0,
+            'width': 3,
+            'opacity': 0.666,
+            'line-color': '#fcc694'
           }
         }
       ]
-    });
 
-    // cy.nodes().forEach(function(node) { node.style('width', '100px') })
+    });
 
   }
 
