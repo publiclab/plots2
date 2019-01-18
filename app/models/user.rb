@@ -383,7 +383,7 @@ class User < ActiveRecord::Base
     self.username = registration['nickname'] if username.blank?
   end
 
-  def self.watching_location( nwlat, selat, nwlng, selng)
+  def self.watching_location(nwlat, selat, nwlng, selng)
     raise("Must contain all four coordinates") if nwlat.nil?
     raise("Must contain all four coordinates") if nwlng.nil?
     raise("Must contain all four coordinates") if selat.nil?
