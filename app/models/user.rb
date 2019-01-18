@@ -33,7 +33,7 @@ class User < ActiveRecord::Base
   has_many :images, foreign_key: :uid
   has_many :node, foreign_key: 'uid'
   has_many :node_selections, foreign_key: :user_id
-  has_many :revision, foreign_key: 'uid'
+  has_many :tag_selections, foreign_key: :user_id
   has_many :user_tags, foreign_key: 'uid', dependent: :destroy
   has_many :active_relationships, class_name: 'Relationship', foreign_key: 'follower_id', dependent: :destroy
   has_many :passive_relationships, class_name: 'Relationship', foreign_key: 'followed_id', dependent: :destroy
@@ -212,7 +212,7 @@ class User < ActiveRecord::Base
   def first_time_poster
     notes.where(status: 1).count == 0
   end
-  
+
   def first_time_commenter
     Comment.where(status: 1, uid: uid).count == 0
   end
@@ -350,7 +350,7 @@ class User < ActiveRecord::Base
 
   def self.validate_token(token)
     begin
-      decrypted_data = User.decrypt(token)      
+      decrypted_data = User.decrypt(token)
     rescue ActiveSupport::MessageVerifier::InvalidSignature => e
       puts e.message
       return 0
@@ -358,7 +358,7 @@ class User < ActiveRecord::Base
     if (Time.now - decrypted_data[:timestamp]) / 1.hour > 24.0
       return 0
     else
-      return decrypted_data[:id]   
+      return decrypted_data[:id]
     end
   end
 
@@ -381,6 +381,25 @@ class User < ActiveRecord::Base
   def map_openid_registration(registration)
     self.email = registration['email'] if email.blank?
     self.username = registration['nickname'] if username.blank?
+  end
+
+  def self.watching_location(nwlat,selat,nwlng,selng)
+
+    raise("Must contain all four coordinates") if nwlat.nil?
+    raise("Must contain all four coordinates") if nwlng.nil?
+    raise("Must contain all four coordinates") if selat.nil?
+    raise("Must contain all four coordinates") if selng.nil?
+
+    raise("Must be a float") unless nwlat.is_a? Float
+    raise("Must be a float") unless nwlng.is_a? Float
+    raise("Must be a float") unless selat.is_a? Float
+    raise("Must be a float") unless selng.is_a? Float
+
+    tids = Tag.where("SUBSTRING_INDEX(term_data.name,':',1) = ? AND SUBSTRING_INDEX(SUBSTRING_INDEX(term_data.name, ':', 2),':',-1)+0 <= ? AND SUBSTRING_INDEX(SUBSTRING_INDEX(term_data.name, ':', 3),':',-1)+0 <= ? AND SUBSTRING_INDEX(SUBSTRING_INDEX(term_data.name, ':', 4),':',-1)+0 <= ? AND SUBSTRING_INDEX(term_data.name, ':', -1) <= ?", 'subscribed', nwlat, nwlng, selat, selng).collect(&:tid).uniq || []
+    uids = TagSelection.where('tag_selections.tid IN (?)', tids).collect(&:user_id).uniq || []
+
+    User.where("id IN (?)", uids)
+
   end
 
   def self.find_by_username_case_insensitive(username)
@@ -416,7 +435,7 @@ class User < ActiveRecord::Base
       user.save!
     end
   end
-  
+
   def self.count_all_time_contributor
     notes = Node.where(type: 'note', status: 1).pluck(:uid)
     answers = Answer.pluck(:uid)
