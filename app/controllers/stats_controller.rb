@@ -88,6 +88,11 @@ class StatsController < ApplicationController
     export_as_json('wiki')
   end
 
+  def comments
+    data = Comment.where(status: 1).all.to_json
+    send_data data, :type => 'application/json; header=present', :disposition => "attachment; filename=comment.json"
+  end
+
   private
 
   def export_as_json(type)
