@@ -101,6 +101,8 @@ Plots2::Application.routes.draw do
   get 'w/:id' => 'wiki#show'
 
   # these need precedence for tag listings
+  get 'tag/graph.json' => 'tag#graph_data'
+  get 'stats/graph' => 'tag#graph'
   get 'feed/tag/:tagname' => 'tag#rss'
   get ':node_type/tag/:id/author/:author' => 'tag#show_for_author'
   get 'tag/:id/author/:author' => 'tag#show_for_author'
