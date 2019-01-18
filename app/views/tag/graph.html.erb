@@ -13,10 +13,10 @@
 <script>
   var cy;
 
-  jQuery(document).ready(function() {
+  (function() {
 
   $.ajax({
-    url : '/tag/graph.json',
+    url : '/tag/graph.json?limit=' + <%= params[:limit] || 250 %>,
     type: 'GET',
     success: function(response){
       setup_cytoscape(response);
@@ -33,7 +33,9 @@
       output.nodes.push({ data: { id: tagname } });
     });
     data['edges'].forEach(function(edge) {
-      output.edges.push({ data: { id: edge.from + "_" + edge.to, source: edge.from, target: edge.to } });
+      if (data['tags'].includes(edge.from) && data['tags'].includes(edge.to)) {
+        output.edges.push({ data: { id: edge.from + "_" + edge.to, source: edge.from, target: edge.to } });
+      }
     });
     return output;
   }
@@ -81,6 +83,6 @@
 
   }
 
-});
+})();
 
 </script>
