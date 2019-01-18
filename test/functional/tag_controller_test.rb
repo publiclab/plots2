@@ -669,7 +669,7 @@ class TagControllerTest < ActionController::TestCase
 
   test 'graph data for cytoscape' do
     get :graph
-    assert_not_nil assigns(:nodes)
+    assert_not_nil assigns(:tags)
     assert_not_nil assigns(:edges)
     assert_response :success
   end
