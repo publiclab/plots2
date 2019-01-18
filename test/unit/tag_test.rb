@@ -190,4 +190,11 @@ class TagTest < ActiveSupport::TestCase
     assert_equal followers_sorted, followers
   end
 
+  test 'graph data for cytoscape' do
+    data = Tag.graph_data
+    assert_not_nil data
+    data = Tag.graph_data(10)
+    assert_not_nil data
+  end
+
 end
