@@ -1,0 +1,25 @@
+<h2 align="center">  Stats in Json </h2>
+<hr>
+<div class="btn-group" align="center" role="group" aria-label="Basic example">
+    <a href= "/stats">
+        <button type="button" class="btn btn-primary" title=" Back to Stats">
+            <i class="fa fa-arrow-left fa-2x"  style="color:#fff;"> </i>
+        </button>
+    </a>
+    <a href= "/stats/notes">
+        <button type="button" class="btn-lg btn-primary" title="Download notes">
+            Download notes as Json
+        </button>
+    </a>
+    <a href= "/stats/notes">
+        </button>
+        <button type="button" class="btn-lg btn-primary" title="Download wikis">
+            Download wikis as Json
+        </button>
+    </a>
+</div>
+<br> <br>
+<% @hash.each do |k,v|  %>
+<p><b><%= k %> </b></p>
+<p><%= v %> </p>
+<% end %>

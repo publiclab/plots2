@@ -71,7 +71,29 @@ class StatsController < ApplicationController
     end
   end
 
+  def stats_json
+    @hash = {}
+
+    @nodes = Node.where(status: 1).select(:type).uniq
+    @nodes.each do |n|
+      puts @hash[n.type] = Node.where(type: n.type, status: 1).to_json
+    end
+  end
+
+  def notes
+    export_as_json('note')
+  end
+
+  def wikis
+    export_as_json('wiki')
+  end
+
   private
+
+  def export_as_json(type)
+    data = Node.where(type: type, status: 1).all.to_json
+    send_data data, :type => 'application/json; header=present', :disposition => "attachment; filename=#{type}.json"
+  end
 
   def to_keyword(param)
     1.send(param.downcase)

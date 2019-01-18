@@ -243,6 +243,9 @@ Plots2::Application.routes.draw do
   get 'stats' => 'stats#index'
   get 'stats/range/:start/:end' => 'stats#range'
   get 'stats/subscriptions' => 'stats#subscriptions'
+  get 'stats/notes' => 'stats#notes'
+  get 'stats/wikis' => 'stats#wikis'
+  get 'stats/json' => 'stats#stats_json'
   get 'feed' => 'notes#rss'
   get 'rss.xml' => 'legacy#rss'
 
