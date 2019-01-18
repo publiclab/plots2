@@ -33,7 +33,7 @@ class User < ActiveRecord::Base
   has_many :images, foreign_key: :uid
   has_many :node, foreign_key: 'uid'
   has_many :node_selections, foreign_key: :user_id
-  has_many :tag_selections, foreign_key: :user_id
+  has_many :revision, foreign_key: 'uid'
   has_many :user_tags, foreign_key: 'uid', dependent: :destroy
   has_many :active_relationships, class_name: 'Relationship', foreign_key: 'follower_id', dependent: :destroy
   has_many :passive_relationships, class_name: 'Relationship', foreign_key: 'followed_id', dependent: :destroy
