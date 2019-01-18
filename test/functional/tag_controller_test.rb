@@ -666,5 +666,12 @@ class TagControllerTest < ActionController::TestCase
     sorted_followers_array = followers_array.sort.reverse
     assert_equal sorted_followers_array, followers_array
   end
+
+  test 'graph data for cytoscape' do
+    get :graph
+    assert_not_nil assigns(:nodes)
+    assert_not_nil assigns(:edges)
+    assert_response :success
+  end
 end
 
