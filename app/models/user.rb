@@ -384,20 +384,12 @@ class User < ActiveRecord::Base
   end
 
   def self.watching_location(nwlat, selat, nwlng, selng)
-    raise("Must contain all four coordinates") if nwlat.nil?
-    raise("Must contain all four coordinates") if nwlng.nil?
-    raise("Must contain all four coordinates") if selat.nil?
-    raise("Must contain all four coordinates") if selng.nil?
-
-    raise("Must be a float") unless nwlat.is_a? Float
-    raise("Must be a float") unless nwlng.is_a? Float
-    raise("Must be a float") unless selat.is_a? Float
-    raise("Must be a float") unless selng.is_a? Float
+    raise("Must be a float") unless (nwlat.is_a? Float) && (nwlng.is_a? Float) && (selat.is_a? Float) && (selng.is_a? Float)
 
     tids = Tag.where("SUBSTRING_INDEX(term_data.name,':',1) = ? AND SUBSTRING_INDEX(SUBSTRING_INDEX(term_data.name, ':', 2),':',-1)+0 <= ? AND SUBSTRING_INDEX(SUBSTRING_INDEX(term_data.name, ':', 3),':',-1)+0 <= ? AND SUBSTRING_INDEX(SUBSTRING_INDEX(term_data.name, ':', 4),':',-1)+0 <= ? AND SUBSTRING_INDEX(term_data.name, ':', -1) <= ?", 'subscribed', nwlat, nwlng, selat, selng).collect(&:tid).uniq || []
     uids = TagSelection.where('tag_selections.tid IN (?)', tids).collect(&:user_id).uniq || []
 
-    User.where("id IN (?)", uids)
+    User.where("id IN (?)", uids).order(:id)
   end
 
   def self.find_by_username_case_insensitive(username)

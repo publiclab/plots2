@@ -86,7 +86,7 @@ kites:
 
 SubLatitudeLongitude:
   tid: 22
-  name: subscribed:202.0:0.0:0.0:200.0
+  name: subscribed:80.0:2.123456:0.0:72.0
 
 latitude:
   tid: 23
@@ -98,7 +98,7 @@ longitude:
 
 SubLatitudeLongitude2:
   tid: 25
-  name: subscribed:302.0:0.0:0.0:200.0
+  name: subscribed:98.0:0.0:0.0:-14.0
 
 balloon:
   tid: 26
