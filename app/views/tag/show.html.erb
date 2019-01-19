@@ -33,6 +33,7 @@
 
   <%= render partial: "tag/show/questions" %>
   <%= render partial: "tag/show/related_tags" %>
+  <p> <%= render partial: 'tag/subscribe_button', locals:{tags: @related_tags } %></p>
   <%= render partial: 'tag/show/nav_tabs' %>
   
   <p style="padding-top:8px;">
