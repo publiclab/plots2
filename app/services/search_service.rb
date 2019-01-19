@@ -95,9 +95,8 @@ class SearchService
     raise("If 'from' is not null, must contain date") if period["from"] && !(period["from"].is_a? Date)
     raise("If 'to' is not null, must contain date") if period["to"] && !(period["to"].is_a? Date)
 
-    nodes_scope = NodeTag.joins(:tag)
-      .where('name LIKE ?', 'lat%')
-      .where('REPLACE(name, "lat:", "") BETWEEN ' + coordinates["selat"].to_s + ' AND ' + coordinates["nwlat"].to_s)
+    nodes_scope = Node.select(:nid)
+                      .where('`latitude` >= ? AND `latitude` <= ?' , coordinates["selat"], coordinates["nwlat"])
 
     if tag.present?
       nodes_scope = NodeTag.joins(:tag)
@@ -118,8 +117,7 @@ class SearchService
     items = Node.includes(:tag)
       .references(:node, :term_data)
       .where('node.nid IN (?)', nids)
-      .where('term_data.name LIKE ?', 'lon%')
-      .where('REPLACE(term_data.name, "lon:", "") BETWEEN ' + coordinates["nwlng"].to_s + ' AND ' + coordinates["selng"].to_s)
+      .where('`longitude` >= ? AND `longitude` <= ?' , coordinates["nwlng"], coordinates["selng"])
       .where('created BETWEEN ' + period["from"].to_s + ' AND ' + period["to"].to_s)
 
     # selects the items whose node_tags don't have the location:blurred tag
