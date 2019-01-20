@@ -72,7 +72,9 @@
     </div>
 
       <% if Rails.env == "production" && !params[:spamaway] %>
-        <%= recaptcha_tags %>
+        <div style="height: 120px">
+          <%= recaptcha_tags %>
+        </div>
         <p>If you cannot use the ReCaptcha to verify you are not a bot, <a href="/signup?spamaway=true">use this alternative verification</a>.</p>
       <% else %>
         <%= render partial: 'users/spamaway' %>
