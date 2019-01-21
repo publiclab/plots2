@@ -8,10 +8,14 @@
 
 <script src="/lib/cytoscape/dist/cytoscape.min.js" type="text/javascript"></script>
 
+<script>module = {}</script>
+
+<script type="text/javascript" src="/lib/jlouvain/jLouvain.js"></script>
+
 <div id="cytoscape"></div>
 
 <script>
-  var cy;
+  var cy, community, c_result;
 
   (function() {
 
@@ -25,13 +29,13 @@
 
   function parse_cyto_data(data) {
     var output = {
+      tagnames: [],
       nodes: [],
       edges: []
     }
 
-    var tagnames = [];
     data['tags'].forEach(function(tag) {
-      tagnames.push(tag.name);
+      output.tagnames.push(tag.name);
       output.nodes.push({ data: { 
         id: tag.name,
         count: tag.count,
@@ -39,8 +43,15 @@
       } });
     });
     data['edges'].forEach(function(edge) {
-      if (tagnames.includes(edge.from) && tagnames.includes(edge.to)) {
-        output.edges.push({ data: { id: edge.from + "_" + edge.to, source: edge.from, target: edge.to } });
+      if (output.tagnames.includes(edge.from) && output.tagnames.includes(edge.to)) {
+        output.edges.push({
+          data: {
+            id: edge.from + "_" + edge.to,
+            source: edge.from,
+            target: edge.to,
+            weight: 10 // <= dummy value for jlouvain
+          }
+        });
       }
     });
     return output;
@@ -83,14 +94,14 @@
           style: {
             //'width': 'data(count)',
             //'height': 'data(count)',
-            'width': 'mapData(count, 1, 100, 40, 60)',
-            'height': 'mapData(count, 1, 100, 40, 60)',
-            'background-color': '#ea8a31',
+            'width': 'mapData(count, 1, 100, 10, 500)',
+            'height': 'mapData(count, 1, 100, 10, 500)',
+            'background-color': '#f8a',
             'label': 'data(id)',
             'text-valign': 'center',
             'color': 'white',
             'text-outline-width': 2,
-            'text-outline-color': '#888'
+            'text-outline-color': '#c58'
           }
         },
 
@@ -101,12 +112,46 @@
             'haystack-radius': 0,
             'width': 3,
             'opacity': 0.666,
-            'line-color': '#fcc694'
+            'line-color': '#ccc'
           }
         }
       ]
 
     });
+
+    cy.on('tap', 'node', function(){
+      try { // your browser may block popups
+        window.open( this.data('href') );
+      } catch(e){ // fall back on url change
+        window.location.href = this.data('href');
+      }
+    });
+
+    var clusters = cy.elements().hca({
+      mode: 'threshold',
+      threshold: 15,
+      attributes: [
+        function( node ){ return node.data('count'); }
+      ]
+    });
+
+    // https://sashat.me/2017/01/11/list-of-20-simple-distinct-colors/ 
+    var colors = ['#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000', '#aaffc3', '#808000', '#ffd8b1', '#000075', '#808080', '#ffffff', '#000000'];
+ 
+    // clusters[0].forEach(function(n){n.style('backgroundColor','blue');})
+ 
+ 
+    community = jLouvain()
+      .nodes(data.tagnames)
+      .edges(data.edges)
+    c_result  = community();
+
+    cy.nodes().forEach(function(node) {
+      var index = c_result[node.id()];
+      if (index > colors.length) index = colors.length - 1;
+      color = colors[index];
+      node.style('backgroundColor', color);
+    });    
 
   }
 
