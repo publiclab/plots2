@@ -142,6 +142,9 @@ map:
   status: 1
   type: "map"
   cached_likes: 0
+  latitude: 71.0
+  longitude: 52.0
+  precision: 1
   slug: a-map-page-<%= Time.now.strftime("%m-%d-%Y") %>
 
 blog:
@@ -154,6 +157,9 @@ blog:
   status: 1
   type: "note"
   cached_likes: 0
+  latitude: 71.0
+  longitude: 52.0
+  precision: 1
   slug: jeff-<%= Time.now.strftime("%m-%d-%Y") %>-blog-post
 
 redirect:
@@ -269,6 +275,9 @@ post_test1:
   status: 1
   type: "note"
   cached_likes: 0
+  longitude: 52.0
+  latitude: 160.0
+  precision: 1
   slug: steff1-<%= DateTime.new(2018,8,1).strftime("%m-%d-%Y") %>-post-test1
 
 post_test2:
@@ -281,6 +290,9 @@ post_test2:
   status: 1
   type: "note"
   cached_likes: 0
+  longitude: 52.23
+  latitude: 34.57
+  precision: 2
   slug: steff3-<%= DateTime.new(2018,8,8).strftime("%m-%d-%Y") %>-post-test2
 
 post_test3:
@@ -293,6 +305,9 @@ post_test3:
   status: 1
   type: "note"
   cached_likes: 0
+  longitude: 52.0
+  latitude: 12.0
+  precision: 1
   slug: steff2-<%= DateTime.new(2018,8,15).strftime("%m-%d-%Y") %>-post-test3
 
 post_test4:
