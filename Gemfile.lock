@@ -149,10 +149,16 @@ GEM
     highline (2.0.0)
     hoe (3.17.0)
       rake (>= 0.8, < 13.0)
+    http (3.3.0)
+      addressable (~> 2.3)
+      http-cookie (~> 1.0)
+      http-form_data (~> 2.0)
+      http_parser.rb (~> 0.6.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     http-form_data (2.1.1)
     http_accept_language (2.1.1)
+    http_parser.rb (0.6.0)
     i18n (1.5.2)
       concurrent-ruby (~> 1.0)
     i18n-js (3.2.0)
@@ -449,6 +455,17 @@ GEM
     turbolinks (5.2.0)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
+    twitter (6.2.0)
+      addressable (~> 2.3)
+      buftok (~> 0.2.0)
+      equalizer (~> 0.0.11)
+      http (~> 3.0)
+      http-form_data (~> 2.0)
+      http_parser.rb (~> 0.6.0)
+      memoizable (~> 0.4.0)
+      multipart-post (~> 2.0)
+      naught (~> 1.0)
+      simple_oauth (~> 0.3.0)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
     uglifier (4.1.20)
@@ -573,7 +590,7 @@ DEPENDENCIES
   will_paginate-bootstrap (>= 1.0.1)
 
 RUBY VERSION
-   ruby 2.4.4p296
+   ruby 2.3.1p112
 
 BUNDLED WITH
    1.17.1
