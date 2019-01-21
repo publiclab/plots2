@@ -1,6 +1,6 @@
 class SearchCriteria
   include TextSearch
-  attr_reader :query, :coordinates, :tag, :field, :limit
+  attr_reader :query, :coordinates, :tag, :field, :period, :limit
   attr_accessor :sort_by
 
   def initialize(args)
@@ -13,6 +13,7 @@ class SearchCriteria
     @sort_by = args[:sort_by]
     @order_direction = args[:order_direction]
     @field = args[:field]
+    @period = { "from" => args[:from], "to" => args[:to] }
     @limit = args[:limit] || 10
   end
 
@@ -22,6 +23,10 @@ class SearchCriteria
 
   def order_direction
     sanitize_direction(@order_direction)
+  end
+
+  def validate_period_from_to
+    validate_period(@period)
   end
 
   private
@@ -40,5 +45,17 @@ class SearchCriteria
     words = query.gsub(/\s+/m, ' ').strip.split(" ")
     words.map! { |item| lemmatize(item) }
     words.join(' ')
+  end
+
+  def validate_period(period)
+    if !period["from"].nil? && (period["from"] > Time.now)
+      period["from"] = Time.now
+    end
+    if !period["to"].nil? && (period["to"] > Time.now)
+      period["to"] = Time.now
+    end
+    if (!period["from"].nil? && !period["to"].nil?) && (period["from"] > period["to"])
+      period["from"], period["to"] = period["to"], period["from"]
+    end
   end
 end

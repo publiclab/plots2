@@ -60,7 +60,7 @@
             <% end %>
           </small></p>
           <p><%= raw auto_link(insert_extras(node.latest.render_body), :sanitize => false) %></p>
-          <p><a href="<%= node.path %>"><%= t('tag.blog.read_more') %> &raquo;</a></p>
+          <p><a href="<%= node.path %>"><%= t('tag.blog.read_more') %> &raquo;</a><%= render partial: 'tag/subscribe_button', locals:{tags: node.tags} %></p>
           <p>
             <%= render :partial => "like/like", :locals => {:node => node, :tagnames => node.tags.collect(&:name) } %>
             <% node.tags[0..3].each do |tag| %>

@@ -329,4 +329,26 @@ class Tag < ApplicationRecord
          .limit(5)
     end
   end
+
+  # for Cytoscape.js http://js.cytoscape.org/
+  def self.graph_data(limit = 250)
+    Rails.cache.fetch("graph-data/#{limit}", expires_in: 1.weeks) do
+      data = {}
+      data["tags"] = []
+      Tag.order(count: :desc).limit(limit).each do |tag|
+        data["tags"] << {
+          "name" => tag.name,
+          "count" => tag.count
+        }
+      end
+      data["edges"] = []
+      data["tags"].each do |tag|
+        Tag.related(tag["name"]).each do |related_tag|
+          data["edges"] << { "from" => tag["name"], "to" => related_tag.name }
+        end
+      end
+      data
+    end
+  end
+
 end

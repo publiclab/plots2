@@ -99,6 +99,10 @@ All the endpoints have the optional parameter `limit` (10 by default) where you 
   `sort_by=[string]`: It accepts `recent`. It sorts the nodes by the most recent activity. If no value
      provided, the results are then sorted by node creation (desc).
 
+   `from=[date]`: It accepts a date, if not specified (1990,01,01). It searches for nodes created from the date.
+
+   `to=[date]`: Accepts a date, if not specified uses `now`. It searches for nodes created by the specified date.
+
 ### NearbyPeople:
 
 * **URL**:  `https://publiclab.org/api/srch/nearbyPeople?nwlat=200.0&selat=0.0&nwlng=0.0&selng=200.0`
@@ -115,6 +119,10 @@ All the endpoints have the optional parameter `limit` (10 by default) where you 
   `order_direction=[string]`: It accepts `ASC` or `DESC` (the latter is the default).
 
   `sort_by=[string]`: It accepts `recent` and `content`. Sort the profiles by the most recent activity or most nodes created. If no value provided, the results are then sorted by signup date (desc).
+
+  `from=[date]`: It accepts a date. It searches for users with some activity from the specified date.
+
+  `to=[date]`: Accepts a date. It searches for users with some activity by the specified date.
 
 ### PeopleLocations
 
