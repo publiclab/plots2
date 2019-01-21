@@ -315,8 +315,8 @@ class Tag < ApplicationRecord
         .count
   end
 
-  def self.related(tag_name)
-    Rails.cache.fetch('related-tags/' + tag_name, expires_in: 1.weeks) do
+  def self.related(tag_name, count = 5)
+    Rails.cache.fetch('related-tags/' + tag_name + '/' + count.to_s, expires_in: 1.weeks) do
       nids = NodeTag.joins(:tag)
                      .where(Tag.table_name => { name: tag_name })
                      .select(:nid)
@@ -326,7 +326,7 @@ class Tag < ApplicationRecord
          .where.not(name: tag_name)
          .group(:tid)
          .order('COUNT(term_data.tid) DESC')
-         .limit(5)
+         .limit(count)
     end
   end
 
@@ -343,7 +343,7 @@ class Tag < ApplicationRecord
       end
       data["edges"] = []
       data["tags"].each do |tag|
-        Tag.related(tag["name"]).each do |related_tag|
+        Tag.related(tag["name"], 10).each do |related_tag|
           data["edges"] << { "from" => tag["name"], "to" => related_tag.name }
         end
       end
