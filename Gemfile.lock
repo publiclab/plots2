@@ -216,7 +216,7 @@ GEM
     mini_mime (1.0.1)
     mini_portile2 (2.3.0)
     minitest (5.11.3)
-    minitest-reporters (1.3.5)
+    minitest-reporters (1.3.6)
       ansi
       builder
       minitest (>= 5.0)
@@ -510,7 +510,7 @@ DEPENDENCIES
   letter_opener
   listen (~> 3.1.5)
   mailman
-  minitest-reporters (~> 1.3.5)
+  minitest-reporters (~> 1.3.6)
   mocha (~> 1.8)
   mustermann (= 1.0.3)
   mysql2 (>= 0.4.4)
