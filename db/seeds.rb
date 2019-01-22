@@ -82,5 +82,5 @@ end
 
 # create a bunch of random tags
 tagnames = ['one', 'two', 'three', 'four', 'five', 'six']
-80.times { try { Node.find(rand(Node.count)).add_tag(tagnames[rand(tagnames.length-2)+1],User.first) } }
+80.times { try { Node.find(rand(Node.count-2)+1).add_tag(tagnames[rand(tagnames.length-1)],User.first) } }
 
