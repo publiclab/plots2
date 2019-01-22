@@ -38,7 +38,7 @@
       output.tagnames.push(tag.name);
       output.nodes.push({ data: { 
         id: tag.name,
-        count: tag.count,
+        weight: tag.count,
         href: '/tag/' + tag.name
       } });
     });
@@ -49,7 +49,7 @@
             id: edge.from + "_" + edge.to,
             source: edge.from,
             target: edge.to,
-            weight: 10 // <= dummy value for jlouvain
+            weight: Math.random()*10+3 // <= dummy value for jlouvain
           }
         });
       }
@@ -59,7 +59,13 @@
 
   function setup_cytoscape(data) {
 
-    var data = parse_cyto_data(data);
+    var data = parse_cyto_data(data),
+        weights = data.nodes.map(function(aa){ return aa.data.weight });
+
+    weights = weights.sort(function(a,b){return parseFloat(a) > parseFloat(b) ? -1 : 1 });
+
+    var max = weights[0],
+        min = weights.reverse()[0];
 
     cy = cytoscape({
       container: document.getElementById('cytoscape'),
@@ -70,38 +76,104 @@
 
       layout: {
         name: 'cose',
-        idealEdgeLength: 100,
-        nodeOverlap: 20,
+   
+        // Called on `layoutready`
+        ready: function(){},
+   
+        // Called on `layoutstop`
+        stop: function(){},
+   
+        // Whether to animate while running the layout
+        // true : Animate continuously as the layout is running
+        // false : Just show the end result
+        // 'end' : Animate with the end result, from the initial positions to the end positions
+        animate: true,
+   
+        // Easing of the animation for animate:'end'
+        animationEasing: undefined,
+   
+        // The duration of the animation for animate:'end'
+        animationDuration: undefined,
+   
+        // A function that determines whether the node should be animated
+        // All nodes animated by default on animate enabled
+        // Non-animated nodes are positioned immediately when the layout starts
+        animateFilter: function ( node, i ){ return true; },
+   
+   
+        // The layout animates only after this many milliseconds for animate:true
+        // (prevents flashing on fast runs)
+        animationThreshold: 250,
+   
+        // Number of iterations between consecutive screen positions update
         refresh: 20,
+   
+        // Whether to fit the network view after when done
         fit: true,
+   
+        // Padding on fit
         padding: 30,
+   
+        // Constrain layout bounds; { x1, y1, x2, y2 } or { x1, y1, w, h }
+        boundingBox: undefined,
+   
+        // Excludes the label when calculating node bounding boxes for the layout algorithm
+        nodeDimensionsIncludeLabels: false,
+   
+        // Randomize the initial positions of the nodes (true) or use existing positions (false)
         randomize: false,
+   
+        // Extra spacing between components in non-compound graphs
         componentSpacing: 100,
-        nodeRepulsion: 400000,
-        edgeElasticity: 100,
-        nestingFactor: 5,
-        gravity: 80,
+   
+        // Node repulsion (non overlapping) multiplier
+        nodeRepulsion: function( node ){ return 2048; },
+   
+        // Node repulsion (overlapping) multiplier
+        nodeOverlap: 50,
+   
+        // Ideal edge (non nested) length
+        idealEdgeLength: function( edge ){ return 100; },
+   
+        // Divisor to compute edge forces
+        edgeElasticity: function( edge ){ return 32; },
+   
+        // Nesting factor (multiplier) to compute ideal edge length for nested edges
+        nestingFactor: 1.2,
+   
+        // Gravity force (constant)
+        gravity: 1,
+   
+        // Maximum number of iterations to perform
         numIter: 1000,
-        initialTemp: 200,
-        coolingFactor: 0.95,
-        minTemp: 1.0
+   
+        // Initial temperature (maximum node displacement)
+        initialTemp: 1000,
+   
+        // Cooling factor (how the temperature is reduced between consecutive iterations
+        coolingFactor: 0.99,
+   
+        // Lower temperature threshold (below this point the layout will end)
+        minTemp: 1.0,
+   
+        // Pass a reference to weaver to use threads for calculations
+        weaver: false
       },
-
 
       style: [
         {
           selector: 'node',
           style: {
-            //'width': 'data(count)',
-            //'height': 'data(count)',
-            'width': 'mapData(count, 1, 100, 10, 500)',
-            'height': 'mapData(count, 1, 100, 10, 500)',
-            'background-color': '#f8a',
+            'width': 'mapData(weight, ' + min + ',' + max + ', 1, 100)',
+            'height': 'mapData(weight, ' + min + ',' + max + ', 1, 100)',
+            'background-color': '#ccc',
             'label': 'data(id)',
             'text-valign': 'center',
             'color': 'white',
+            'border-width': 3,
+            'border-color': 'white',
             'text-outline-width': 2,
-            'text-outline-color': '#c58'
+            'text-outline-color': '#444'
           }
         },
 
@@ -127,16 +199,18 @@
       }
     });
 
+    /*
     var clusters = cy.elements().hca({
       mode: 'threshold',
       threshold: 15,
       attributes: [
-        function( node ){ return node.data('count'); }
+        function( node ){ return node.data('weight'); }
       ]
     });
+    */
 
     // https://sashat.me/2017/01/11/list-of-20-simple-distinct-colors/ 
-    var colors = ['#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000', '#aaffc3', '#808000', '#ffd8b1', '#000075', '#808080', '#ffffff', '#000000'];
+    var colors = ['#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000', '#aaffc3', '#808000', '#ffd8b1', '#000075', '#808080', '#ffffff', '#000000', '#cccccc'];
  
     // clusters[0].forEach(function(n){n.style('backgroundColor','blue');})
  
@@ -145,6 +219,8 @@
       .nodes(data.tagnames)
       .edges(data.edges)
     c_result  = community();
+console.log('result', c_result);
+    // choose the sensitivity (higher means more communities)
 
     cy.nodes().forEach(function(node) {
       var index = c_result[node.id()];
