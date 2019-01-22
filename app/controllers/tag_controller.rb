@@ -495,6 +495,10 @@ class TagController < ApplicationController
     render json: params.key?(:limit) ? Tag.graph_data(params[:limit].to_i) : Tag.graph_data
   end
 
+  def stats
+    @tags = Tag.where(name: params[:id])
+  end
+
   private
 
   def order_string
