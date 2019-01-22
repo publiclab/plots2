@@ -21,8 +21,9 @@
 
 # Work around whenever Gem issue (see https://github.com/publiclab/plots2/issues/3404)
 env :PATH, ENV['PATH']
-set :bundle_command, 'bundle exec'
-job_type :runner,  "cd :path && :bundle_command rails runner -e :environment ':task' :output"
+env :GEM_HOME, ENV['GEM_HOME']
+env :SECRET_KEY_BASE, ENV['SECRET_KEY_BASE']
+env :REDIS_URL, ENV['REDIS_URL']
 
 # Cron Job log file
 set :output, "#{Dir.pwd}/public/cron_log.log"
