@@ -206,10 +206,9 @@ class Tag < ApplicationRecord
     while week >= 1
       # initialising month variable with the month of the starting day
       # of the week
-      month = (time - (week * 7 - 1).days).strftime('%m')
+      month = (time - (week * 7 - 1).days)
 
       # Now fetching the weekly data of notes or wikis
-      month = month.to_i
 
       current_week = Tag.nodes_for_period(
         type,
@@ -218,7 +217,7 @@ class Tag < ApplicationRecord
         (time.to_i - (week - 1).weeks.to_i).to_s
       ).count(:all)
 
-      weeks[count] = [month, current_week]
+      weeks[count] = [(month.to_f * 1000), current_week]
       count += 1
       week -= 1
     end

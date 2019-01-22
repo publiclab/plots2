@@ -493,6 +493,7 @@ class TagController < ApplicationController
 
   def stats
     @tags = Tag.where(name: params[:id])
+    @tag_graphs = @tags.first.contribution_graph_making
   end
 
   private
