@@ -1,7 +1,7 @@
 <h4> These are the statistics of the <b><%= params[:id] %></b> tag</h4>
 <hr>
-<br>
-<%= render partial: "tag/graph", locals: { tags: @tags } %>
+<br><br>
+<%= render partial: "tag/graph", locals: { tag_graphs: @tag_graphs  } %>
 <br>
 
 <% if @tags.first.count.nil? %>
