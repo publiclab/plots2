@@ -285,7 +285,7 @@ module Srch
 
       # Request URL should be /api/srch/groupPeopleByTopic?nwlat=200.0&selat=0.0&nwlng=0.0&selng=200.0&query=awesome[&sort_by=recent]
       # Note: Query(QRY as above) must have latitude and longitude as query=lat,lon
-      desc 'Perform a search to show people nearby a given location following the topic',  hidden: false,
+      desc 'Perform a search to show people nearby a given location following the topic', hidden: false,
                                                                        is_array: false,
                                                                        nickname: 'search_group_people_by_topic'
       params do

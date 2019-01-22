@@ -124,9 +124,7 @@ All the endpoints have the optional parameter `limit` (10 by default) where you 
 
   `to=[date]`: Accepts a date. It searches for users with some activity by the specified date.
 
-
-
-  ### groupPeopleByTopic:
+### groupPeopleByTopic:
 
   * **URL**:  `https://publiclab.org/api/srch/groupPeopleByTopic?nwlat=200.0&selat=0.0&nwlng=0.0&selng=200.0&query=water`
   * **URL Params** :
@@ -146,13 +144,6 @@ All the endpoints have the optional parameter `limit` (10 by default) where you 
     `from=[date]`: It accepts a date. It searches for users with some activity from the specified date.
 
     `to=[date]`: Accepts a date. It searches for users with some activity by the specified date.
-
-
-
-
-
-
-
 
 ### PeopleLocations
 
