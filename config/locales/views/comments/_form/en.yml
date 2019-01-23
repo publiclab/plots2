@@ -4,7 +4,7 @@ en:
   comments:
     _form:
       uploading: "Uploading..."
-      drag_and_drop: "Drag &amp; drop to add an image or file, or"
+      drag_and_drop: "Drag and; drop to add an image or file, or"
       choose_one: "choose one"
       upload_image: "Upload image"
       preview: "Preview"
