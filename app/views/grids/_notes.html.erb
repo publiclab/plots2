@@ -21,7 +21,7 @@
   </tr>
 <% if nodes.empty? %>
   <tr>
-    <td>Nothing yet on the topic "<b><a href="/tag/<%= tagname %>"><%= tagname %></a></b>" -- be the first to <a href="/post?tags=<%= tagname %>">post something</a>!</td>
+    <td>Nothing yet on the topic "<b><a href="/tag/<%= tagname %>"><%= tagname %></a></b>" -- be the first to <a href="/post?tags=<%= tagname %>" class="requireLogin">post something</a>!</td>
     <td></td>
     <td></td>
     <td></td>
@@ -35,14 +35,14 @@
   <% end %>
     <% if type == "notes" || type == "questions" %>
       <td class="title"><% if node.answered %><% if node.has_accepted_answers %><i class="fa fa-check-square" style="color:#0c8;"></i><% else %><i class="fa fa-check-square" style="color:#808080;"></i><% end %><% end %> <a href="<%= node.path %>"><%= node.title %></a></td>
-      <td class="author"><a href="/profile/<%= node.author.username %>">@<%= node.author.username %> <%=node.author.new_author_contributor %></a></td>
+      <td class="author"><a href="/profile/<%= node.author.username %>">@<%= node.author.username %> <%=node.author.new_contributor %></a></td>
       <td class="updated" data-timestamp="<%= node.latest.timestamp.to_s %>"><%= distance_of_time_in_words(Time.at(node.latest.updated_at), Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></td>
       <td class="likes"><%= node.cached_likes.to_s %></td>
     <% else %>
       <td class="title"><a href="<%= node.path %>"><%= node.title %></a></td>
       <td class="category"><%= node.has_power_tag('category') ? node.power_tag('category') : '-' %></td>
       <td class="status"><%= node.has_power_tag('status') ? node.power_tag('status') : '-' %></td>
-      <td class="author"><a href="/profile/<%= node.author.username %>">@<%= node.author.username %> <%=node.author.new_author_contributor %></a></td>
+      <td class="author"><a href="/profile/<%= node.author.username %>">@<%= node.author.username %> <%=node.author.new_contributor %></a></td>
       <td class="time"><%= node.has_power_tag('time') ? node.power_tag('time') : '-' %></td>
       <td class="difficulty"><%= node.has_power_tag('difficulty') ? node.power_tag('difficulty') : '-' %></td>
       <% if type == "activity" %>

@@ -23,9 +23,9 @@ class ExecuteSearch
      when :peoplelocations
        sservice.people_locations(search_criteria.query, search_criteria.tag)
      when :taglocations
-       sservice.tagNearbyNodes(search_criteria.coordinates, search_criteria.tag, search_criteria.limit)
+       sservice.tagNearbyNodes(search_criteria.coordinates, search_criteria.tag, search_criteria.period, search_criteria.sort_by, search_criteria.order_direction, search_criteria.limit)
      when :nearbyPeople
-       sservice.tagNearbyPeople(search_criteria.query, search_criteria.tag, search_criteria.sort_by, search_criteria.limit)
+       sservice.tagNearbyPeople(search_criteria.coordinates, search_criteria.tag, search_criteria.period, search_criteria.sort_by, search_criteria.order_direction, search_criteria.limit)
      else
        sresult = []
      end

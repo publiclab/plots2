@@ -99,16 +99,16 @@ class SearchApiTest < ActiveSupport::TestCase
   end
 
   test 'search Tag Nearby Nodes functionality with a valid query' do
-    get '/api/srch/taglocations?nwlat=200.0&selat=0.0&nwlng=0.0&selng=200.0'
+    get '/api/srch/taglocations?nwlat=180.0&selat=0.0&nwlng=0.0&selng=176.5'
     assert last_response.ok?
 
     # Expected search pattern
     pattern = {
         srchParams: {
-            nwlat: 200.0,
+            nwlat: 180.0,
             nwlng: 0.0,
             selat: 0.0,
-            selng: 200.0,
+            selng: 176.5,
             seq: nil,
             tag: nil,
             query: nil
@@ -118,19 +118,52 @@ class SearchApiTest < ActiveSupport::TestCase
     matcher = JsonExpressions::Matcher.new(pattern)
 
     json = JSON.parse(last_response.body)
+
     assert matcher    =~ json
-    assert_equal 13,  json['items'][0]['doc_id']
+
+    assert_equal 12,  json['items'][0]['doc_id']
+    assert_equal 13,  json['items'][1]['doc_id']
+    assert_equal 25,  json['items'][2]['doc_id']
+    assert_equal 24,  json['items'][3]['doc_id']
+    assert_equal 23,  json['items'][4]['doc_id']
   end
 
-  test 'search Tag Nearby People functionality' do
-    get '/api/srch/nearbyPeople?query=31.00,40.00'
+  test 'search Tag Nearby Nodes functionality with a wrong query' do
+    get '/api/srch/taglocations?nwlat=155.34&selat=0.0&nwlng=0.0&selng=178.9&from=date'
+
+    # Expected search pattern
+    pattern = {
+        srchParams: {
+            nwlat: 155.34,
+            nwlng: 0.0,
+            selat: 0.0,
+            selng: 178.9,
+            seq: nil,
+            tag: nil,
+            query: nil
+        }.ignore_extra_keys!
+    }.ignore_extra_keys!
+
+    matcher = JsonExpressions::Matcher.new(pattern)
+    json = JSON.parse(last_response.body)
+
+    assert_equal "from is invalid", json["error"]
+  end
+
+  test 'search Tag Nearby Nodes functionality with a valid query and specific period' do
+    get '/api/srch/taglocations?nwlat=171.0&selat=0.0&nwlng=0.0&selng=174.8&sort_by=recent&order_direction=ASC&to=2018-08-16'
     assert last_response.ok?
 
     # Expected search pattern
     pattern = {
         srchParams: {
-            query: '31.00,40.00',
-            seq: nil
+            nwlat: 171.0,
+            nwlng: 0.0,
+            selat: 0.0,
+            selng: 174.8,
+            seq: nil,
+            tag: nil,
+            query: nil
         }.ignore_extra_keys!
     }.ignore_extra_keys!
 
@@ -138,21 +171,52 @@ class SearchApiTest < ActiveSupport::TestCase
 
     json = JSON.parse(last_response.body)
 
-    assert_equal "/profile/steff3",     json['items'][0]['doc_url']
-    assert_equal "/profile/steff2",     json['items'][1]['doc_url']
+    assert matcher    =~ json
 
-    assert matcher =~ json
+    assert_equal 23,  json['items'][0]['doc_id']
+    assert_equal 24,  json['items'][1]['doc_id']
+    assert_equal 25,  json['items'][2]['doc_id']
   end
 
-  test 'search Tag Nearby People functionality wth sort_by=recent' do
-    get '/api/srch/nearbyPeople?query=31.00,40.00&sort_by=recent'
+  test 'search Tag Nearby Nodes functionality with a valid query and from date greater then to date' do
+    get '/api/srch/taglocations?nwlat=180.0&selat=0.0&nwlng=0.0&selng=180.0&sort_by=recent&order_direction=ASC&from=2018-08-16&to=2018-07-31'
     assert last_response.ok?
 
     # Expected search pattern
     pattern = {
         srchParams: {
-            query: '31.00,40.00',
-            seq: nil
+            nwlat: 180.0,
+            nwlng: 0.0,
+            selat: 0.0,
+            selng: 180.0,
+            seq: nil,
+            tag: nil,
+            query: nil
+        }.ignore_extra_keys!
+    }.ignore_extra_keys!
+
+    matcher = JsonExpressions::Matcher.new(pattern)
+
+    json = JSON.parse(last_response.body)
+
+    assert matcher    =~ json
+
+    assert_equal 23,  json['items'][0]['doc_id']
+    assert_equal 24,  json['items'][1]['doc_id']
+    assert_equal 25,  json['items'][2]['doc_id']
+  end
+
+  test 'search Tag Nearby People functionality' do
+    get '/api/srch/nearbyPeople?nwlat=31.0&selat=0.0&nwlng=0.0&selng=40.0'
+    assert last_response.ok?
+
+    # Expected search pattern
+    pattern = {
+        srchParams: {
+            nwlat: 31.0,
+            nwlng: 0.0,
+            selat: 0.0,
+            selng: 40.0
         }.ignore_extra_keys!
     }.ignore_extra_keys!
 
@@ -166,16 +230,85 @@ class SearchApiTest < ActiveSupport::TestCase
     assert matcher =~ json
   end
 
-  test 'search Tag Nearby People functionality with tag=awesome' do
-    get '/api/srch/nearbyPeople?query=31.00,40.00&tag=awesome'
+  test 'search Tag Nearby People functionality with wrong query' do
+    get '/api/srch/nearbyPeople?nwlat=31.0&selat=0.0&nwlng=0.0&selng=40.0&from=date'
+
+    # Expected search pattern
+    pattern = {
+        srchParams: {
+            nwlat: 31.0,
+            nwlng: 0.0,
+            selat: 0.0,
+            selng: 40.0
+        }.ignore_extra_keys!
+    }.ignore_extra_keys!
+
+    matcher = JsonExpressions::Matcher.new(pattern)
+
+    json = JSON.parse(last_response.body)
+    assert_equal "from is invalid", json["error"]
+
+  end
+
+  test 'search Tag Nearby People functionality wth sort_by=recent' do
+    get '/api/srch/nearbyPeople?nwlat=31.0&selat=0.0&nwlng=0.0&selng=40.0&sort_by=recent&order_direction=ASC'
     assert last_response.ok?
 
     # Expected search pattern
     pattern = {
         srchParams: {
-            query: '31.00,40.00',
-            tag: 'awesome',
-            seq: nil
+          nwlat: 31.0,
+          nwlng: 0.0,
+          selat: 0.0,
+          selng: 40.0,
+        }.ignore_extra_keys!
+    }.ignore_extra_keys!
+
+    matcher = JsonExpressions::Matcher.new(pattern)
+
+    json = JSON.parse(last_response.body)
+
+    assert_equal "/profile/steff3",     json['items'][0]['doc_url']
+    assert_equal "/profile/steff2",     json['items'][1]['doc_url']
+
+    assert matcher =~ json
+  end
+
+  test 'search Tag Nearby People functionality with specific period' do
+    get '/api/srch/nearbyPeople?nwlat=31.0&selat=0.0&nwlng=0.0&selng=40.0&to=2018-08-10'
+    assert last_response.ok?
+
+    # Expected search pattern
+    pattern = {
+        srchParams: {
+          nwlat: 31.0,
+          nwlng: 0.0,
+          selat: 0.0,
+          selng: 40.0,
+        }.ignore_extra_keys!
+    }.ignore_extra_keys!
+
+    matcher = JsonExpressions::Matcher.new(pattern)
+
+    json = JSON.parse(last_response.body)
+
+    assert_equal "/profile/steff3",     json['items'][0]['doc_url']
+
+    assert matcher =~ json
+  end
+
+  test 'search Tag Nearby People functionality with tag=awesome' do
+    get '/api/srch/nearbyPeople?nwlat=31.0&selat=0.0&nwlng=0.0&selng=40.0&tag=awesome'
+    assert last_response.ok?
+
+    # Expected search pattern
+    pattern = {
+        srchParams: {
+          nwlat: 31.0,
+          nwlng: 0.0,
+          selat: 0.0,
+          selng: 40.0,
+          tag: 'awesome'
         }.ignore_extra_keys!
     }.ignore_extra_keys!
 

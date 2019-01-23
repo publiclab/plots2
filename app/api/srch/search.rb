@@ -221,14 +221,14 @@ module Srch
         end
       end
 
-      # Request URL should be /api/srch/taglocations?query=QRY[&tag=awesome]
+      # Request URL should be /api/srch/taglocations?nwlat=200.0&selat=0.0&nwlng=0.0&selng=200.0[&tag=awesome]
       # Note: Query(QRY as above) must have latitude and longitude as query=lat,lon
       desc 'Perform a search of documents having nearby latitude and longitude tag values', hidden: false,
                                                                                             is_array: false,
                                                                                             nickname: 'search_tag_locations'
 
       params do
-        use :geographical
+        use :geographical, :additional, :period, :sorting, :ordering
       end
       get :taglocations do
         search_request = SearchRequest.fromRequest(params)
@@ -253,13 +253,13 @@ module Srch
         end
       end
 
-      # Request URL should be /api/srch/nearbyPeople?query=QRY[&tag=awesome&sort_by=recent]
+      # Request URL should be /api/srch/nearbyPeople?nwlat=200.0&selat=0.0&nwlng=0.0&selng=200.0[&tag=awesome&sort_by=recent]
       # Note: Query(QRY as above) must have latitude and longitude as query=lat,lon
       desc 'Perform a search to show people nearby a given location',  hidden: false,
                                                                        is_array: false,
                                                                        nickname: 'search_nearby_people'
       params do
-        use :common, :sorting, :additional
+        use :geographical, :additional, :period, :sorting, :ordering
       end
       get :nearbyPeople do
         search_request = SearchRequest.fromRequest(params)
@@ -348,7 +348,7 @@ module Srch
     def self.execute(endpoint, params)
       search_type = endpoint
       search_criteria = SearchCriteria.new(params)
-
+      search_criteria.validate_period_from_to
       if search_criteria.valid?
         ExecuteSearch.new.by(search_type, search_criteria)
       else

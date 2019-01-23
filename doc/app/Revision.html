@@ -7,7 +7,7 @@
 <title>class Revision - Rails Application Documentation</title>
 
 <script type="text/javascript">
-  var rdoc_rel_prefix = "./";
+var rdoc_rel_prefix = './';
 </script>
 
 <script src="./js/jquery.js"></script>
@@ -50,64 +50,64 @@
 
   </div>
 
-  
+
 
   <div id="class-metadata">
-    
+
     <div id="parent-class-section" class="nav-section">
   <h3>Parent</h3>
 
-  
+
   <p class="link">ActiveRecord::Base
-  
+
 </div>
 
-    
-    
+
+
     <!-- Method Quickref -->
 <div id="method-list-section" class="nav-section">
   <h3>Methods</h3>
 
   <ul class="link-list" role="directory">
-    
+
     <li ><a href="#method-i-author">#author</a>
-    
+
     <li ><a href="#method-i-body_extras">#body_extras</a>
-    
+
     <li ><a href="#method-i-body_preview">#body_preview</a>
-    
+
     <li ><a href="#method-i-body_raw">#body_raw</a>
-    
+
     <li ><a href="#method-i-body_rich">#body_rich</a>
-    
+
     <li ><a href="#method-i-created_at">#created_at</a>
-    
+
     <li ><a href="#method-i-inline_hashtags">#inline_hashtags</a>
-    
+
     <li ><a href="#method-i-inline_tags">#inline_tags</a>
-    
+
     <li ><a href="#method-i-is_initial-3F">#is_initial?</a>
-    
+
     <li ><a href="#method-i-next">#next</a>
-    
+
     <li ><a href="#method-i-parent">#parent</a>
-    
+
     <li ><a href="#method-i-path">#path</a>
-    
+
     <li ><a href="#method-i-previous">#previous</a>
-    
+
     <li ><a href="#method-i-publish">#publish</a>
-    
+
     <li ><a href="#method-i-render_body">#render_body</a>
-    
+
     <li ><a href="#method-i-render_body_email">#render_body_email</a>
-    
+
     <li ><a href="#method-i-setup">#setup</a>
-    
+
     <li ><a href="#method-i-spam">#spam</a>
-    
+
     <li ><a href="#method-i-updated_at">#updated_at</a>
-    
+
   </ul>
 </div>
 
@@ -120,79 +120,79 @@
   </h1>
 
   <section class="description">
-    
+
   </section>
 
-  
-  
-  
+
+
+
   <section id="5Buntitled-5D" class="documentation-section">
-    
 
-    
 
-    
 
-    
 
-    
+
+
+
+
+
      <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
        <header>
          <h3>Public Instance Methods</h3>
        </header>
 
-    
+
       <div id="method-i-author" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">author</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="author-source">
             <pre><span class="ruby-comment"># File app/models/revision.rb, line 67</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">author</span>
-  <span class="ruby-constant">DrupalUser</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">uid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">uid</span>)
+  <span class="ruby-constant">User</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">uid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">uid</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-body_extras" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">body_extras</span><span
             class="method-args">(content)</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="body_extras-source">
             <pre><span class="ruby-comment"># File app/models/revision.rb, line 126</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">body_extras</span>(<span class="ruby-identifier">content</span>)
@@ -206,33 +206,33 @@
   <span class="ruby-identifier">content</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-body_preview" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">body_preview</span><span
             class="method-args">(length = 100)</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="body_preview-source">
             <pre><span class="ruby-comment"># File app/models/revision.rb, line 111</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">body_preview</span>(<span class="ruby-identifier">length</span> = <span class="ruby-value">100</span>)
@@ -240,66 +240,66 @@
   <span class="ruby-identifier">newBody</span>.<span class="ruby-identifier">truncate</span>(<span class="ruby-identifier">length</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-body_raw" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">body_raw</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="body_raw-source">
             <pre><span class="ruby-comment"># File app/models/revision.rb, line 122</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">body_raw</span>
   <span class="ruby-identifier">body_extras</span>(<span class="ruby-identifier">body</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-body_rich" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">body_rich</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          <p>some adaptations for the new rich editor</p>
-          
-          
 
-          
+          <p>some adaptations for the new rich editor</p>
+
+
+
+
           <div class="method-source-code" id="body_rich-source">
             <pre><span class="ruby-comment"># File app/models/revision.rb, line 117</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">body_rich</span>
@@ -307,66 +307,66 @@
   <span class="ruby-identifier">body</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-node">/(^|\n)(#+)([A-z]+)/</span>, <span class="ruby-string">&#39;\1\2 \3&#39;</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-created_at" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">created_at</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="created_at-source">
             <pre><span class="ruby-comment"># File app/models/revision.rb, line 55</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">created_at</span>
   <span class="ruby-constant">Time</span>.<span class="ruby-identifier">at</span>(<span class="ruby-identifier">timestamp</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-inline_hashtags" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">inline_hashtags</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          <p>search for inline hashtags(such as hashtag) and create a new tag</p>
-          
-          
 
-          
+          <p>search for inline hashtags(such as hashtag) and create a new tag</p>
+
+
+
+
           <div class="method-source-code" id="inline_hashtags-source">
             <pre><span class="ruby-comment"># File app/models/revision.rb, line 49</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">inline_hashtags</span>
@@ -375,33 +375,33 @@
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-inline_tags" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">inline_tags</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          <p>search for inline special tags such as [question:foo]</p>
-          
-          
 
-          
+          <p>search for inline special tags such as [question:foo]</p>
+
+
+
+
           <div class="method-source-code" id="inline_tags-source">
             <pre><span class="ruby-comment"># File app/models/revision.rb, line 42</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">inline_tags</span>
@@ -410,66 +410,66 @@
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-is_initial-3F" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">is_initial?</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="is_initial-3F-source">
             <pre><span class="ruby-comment"># File app/models/revision.rb, line 75</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">is_initial?</span>
   <span class="ruby-identifier">parent</span>.<span class="ruby-identifier">revision</span>.<span class="ruby-identifier">count</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-next" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">next</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="next-source">
             <pre><span class="ruby-comment"># File app/models/revision.rb, line 85</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">next</span>
@@ -478,99 +478,99 @@
         .<span class="ruby-identifier">last</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-parent" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">parent</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="parent-source">
             <pre><span class="ruby-comment"># File app/models/revision.rb, line 71</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">parent</span>
   <span class="ruby-identifier">node</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-path" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">path</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="path-source">
             <pre><span class="ruby-comment"># File app/models/revision.rb, line 63</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">path</span>
   <span class="ruby-identifier">node</span>.<span class="ruby-identifier">path</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-previous" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">previous</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="previous-source">
             <pre><span class="ruby-comment"># File app/models/revision.rb, line 79</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">previous</span>
@@ -579,33 +579,33 @@
         .<span class="ruby-identifier">first</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-publish" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">publish</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="publish-source">
             <pre><span class="ruby-comment"># File app/models/revision.rb, line 29</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">publish</span>
@@ -614,33 +614,33 @@
   <span class="ruby-keyword">self</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-render_body" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">render_body</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          <p>filtered version of node content</p>
-          
-          
 
-          
+          <p>filtered version of node content</p>
+
+
+
+
           <div class="method-source-code" id="render_body-source">
             <pre><span class="ruby-comment"># File app/models/revision.rb, line 92</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">render_body</span>
@@ -653,36 +653,36 @@
   <span class="ruby-identifier">body_extras</span>(<span class="ruby-identifier">body</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-render_body_email" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">render_body_email</span><span
             class="method-args">(host = 'publiclab.org')</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
+
           <p>filtered version additionally appending http/https protocol to
 protocol-relative URLs like “/foo” <a
 href="Revision.html#method-i-render_body">#render_body</a> plus making all
 relative links absolute</p>
-          
-          
 
-          
+
+
+
           <div class="method-source-code" id="render_body_email-source">
             <pre><span class="ruby-comment"># File app/models/revision.rb, line 104</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">render_body_email</span>(<span class="ruby-identifier">host</span> = <span class="ruby-string">&#39;publiclab.org&#39;</span>)
@@ -692,33 +692,33 @@ relative links absolute</p>
   <span class="ruby-identifier">body</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-setup" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">setup</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="setup-source">
             <pre><span class="ruby-comment"># File app/models/revision.rb, line 22</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">setup</span>
@@ -728,33 +728,33 @@ relative links absolute</p>
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">format</span> = <span class="ruby-value">1</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-spam" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">spam</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="spam-source">
             <pre><span class="ruby-comment"># File app/models/revision.rb, line 35</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">spam</span>
@@ -763,50 +763,50 @@ relative links absolute</p>
   <span class="ruby-keyword">self</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-updated_at" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">updated_at</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="updated_at-source">
             <pre><span class="ruby-comment"># File app/models/revision.rb, line 59</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">updated_at</span>
   <span class="ruby-constant">Time</span>.<span class="ruby-identifier">at</span>(<span class="ruby-identifier">timestamp</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
     </section>
-  
+
   </section>
 </main>
 
@@ -816,4 +816,3 @@ relative links absolute</p>
   <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
-

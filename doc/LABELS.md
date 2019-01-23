@@ -3,7 +3,7 @@ At Public Lab, we use many different labels and tags to keep up with issues and 
 
 We use these labels and tags to mainly help our reviewers/maintainers review our work and also, these labels keep our **plots2** repository organized.
 
-Before contributing to the organization, one should be aware of these and keep them in mind while creating any isues or pull requests.
+Before contributing to the organization, one should be aware of these and keep them in mind while creating any issues or pull requests.
 
 ## Issue labels
 For keeping the issues in a systematic way, we use labels which describe the type of issue, the  ` programming language ` used in the issue and so on.

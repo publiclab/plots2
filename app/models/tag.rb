@@ -166,6 +166,18 @@ class Tag < ApplicationRecord
         .where(status: [1, 4])
   end
 
+  def self.sort_according_to_followers(raw_tags, order)
+    tags_with_their_followers = []
+    raw_tags.each do |i|
+      tags_with_their_followers << { "number_of_followers" => Tag.follower_count(i.name), "tags" => i }
+    end
+    tags_with_their_followers.sort_by! { |key| key["number_of_followers"] }
+    if order != "asc"
+      tags_with_their_followers.reverse!
+    end
+    tags = tags_with_their_followers.map { |x| x["tags"] }
+  end
+
   # OPTIMIZE: this too!
   def weekly_tallies(type = 'note', span = 52)
     weeks = {}
@@ -303,8 +315,8 @@ class Tag < ApplicationRecord
         .count
   end
 
-  def self.related(tag_name)
-    Rails.cache.fetch('related-tags/' + tag_name, expires_in: 1.weeks) do
+  def self.related(tag_name, count = 5)
+    Rails.cache.fetch('related-tags/' + tag_name + '/' + count.to_s, expires_in: 1.weeks) do
       nids = NodeTag.joins(:tag)
                      .where(Tag.table_name => { name: tag_name })
                      .select(:nid)
@@ -314,7 +326,29 @@ class Tag < ApplicationRecord
          .where.not(name: tag_name)
          .group(:tid)
          .order('COUNT(term_data.tid) DESC')
-         .limit(5)
+         .limit(count)
     end
   end
+
+  # for Cytoscape.js http://js.cytoscape.org/
+  def self.graph_data(limit = 250)
+    Rails.cache.fetch("graph-data/#{limit}", expires_in: 1.weeks) do
+      data = {}
+      data["tags"] = []
+      Tag.order(count: :desc).limit(limit).each do |tag|
+        data["tags"] << {
+          "name" => tag.name,
+          "count" => tag.count
+        }
+      end
+      data["edges"] = []
+      data["tags"].each do |tag|
+        Tag.related(tag["name"], 10).each do |related_tag|
+          data["edges"] << { "from" => tag["name"], "to" => related_tag.name }
+        end
+      end
+      data
+    end
+  end
+
 end

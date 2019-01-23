@@ -104,12 +104,12 @@ module ApplicationHelper
   def title_suggestion(comment)
     comment.body.gsub(/\[propose:title\](.*?)\[\/propose\]/) do
       a = ActionController::Base.new
-      is_creator = current_user.drupal_user == Node.find(comment.nid).author
+      is_creator = ((defined? current_user) && current_user == Node.find(comment.nid).author) == true
       title = Regexp.last_match(1)
       output = a.render_to_string(template: "notes/_title_suggestion",
                                   layout:   false,
                                   locals:   {
-                                    user: comment.drupal_user.name,
+                                    user: comment.user.name,
                                     nid: comment.nid,
                                     title: title,
                                     is_creator: is_creator
@@ -131,5 +131,9 @@ module ApplicationHelper
 
   def trimmed_body(comment_body)
     comment_body.split(Comment::COMMENT_FILTER).second
+  end
+
+  def current_page?(page)
+    'is-active' if request.path == page
   end
 end

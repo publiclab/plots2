@@ -83,31 +83,46 @@ All the endpoints have the optional parameter `limit` (10 by default) where you 
 
 ### TagLocations:
 
-* **URL**:  `https://publiclab.org/api/srch/taglocations?query=18.00,-66.00`
+* **URL**:  `https://publiclab.org/api/srch/taglocations?nwlat=200.0&selat=0.0&nwlng=0.0&selng=200.0`
 * **URL Params** :
 
   **Required:**
 
-  `query=[coordinates]`: search notes from users located near the query separated by `,`
-  and with at least one digit after the '.'. Taking a lat value as example, `lat:18.0`
-  or `lat:18.00` are valid but `lat:18` is not.
+  `nwlat=[northwest latitude],selat=[southeast latitude],nwlng=[northwest longitude],selng=[southeast longitude]`: search notes within the rectangle boundary made by these diagonally opposite coordinates.
 
   **Optional:**
 
   `tag=[string]`: the search can be refined by passing a tag field.
+
+  `order_direction=[string]`: It accepts `ASC` or `DESC` (the latter is the default).
+
+  `sort_by=[string]`: It accepts `recent`. It sorts the nodes by the most recent activity. If no value
+     provided, the results are then sorted by node creation (desc).
+
+   `from=[date]`: It accepts a date, if not specified (1990,01,01). It searches for nodes created from the date.
+
+   `to=[date]`: Accepts a date, if not specified uses `now`. It searches for nodes created by the specified date.
 
 ### NearbyPeople:
 
-* **URL**:  `https://publiclab.org/api/srch/nearbyPeople?query=18,-66`
+* **URL**:  `https://publiclab.org/api/srch/nearbyPeople?nwlat=200.0&selat=0.0&nwlng=0.0&selng=200.0`
 * **URL Params** :
 
   **Required:**
 
-  `query=[coordinates]`: search users located near the query separated by `,`.
+  `nwlat=[northwest latitude],selat=[southeast latitude],nwlng=[northwest longitude],selng=[southeast longitude]`: search notes within the rectangle boundary made by these diagonally opposite coordinates.
 
   **Optional:**
 
   `tag=[string]`: the search can be refined by passing a tag field.
+
+  `order_direction=[string]`: It accepts `ASC` or `DESC` (the latter is the default).
+
+  `sort_by=[string]`: It accepts `recent` and `content`. Sort the profiles by the most recent activity or most nodes created. If no value provided, the results are then sorted by signup date (desc).
+
+  `from=[date]`: It accepts a date. It searches for users with some activity from the specified date.
+
+  `to=[date]`: Accepts a date. It searches for users with some activity by the specified date.
 
 ### PeopleLocations
 

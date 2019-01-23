@@ -3,7 +3,7 @@ PublicLab.org
 
 [![Code of Conduct](https://img.shields.io/badge/code-of%20conduct-green.svg)](https://publiclab.org/conduct)
 [![Build Status](https://travis-ci.org/publiclab/plots2.svg)](https://travis-ci.org/publiclab/plots2)
-[![first-timers-only-friendly](http://img.shields.io/badge/first--timers--only-friendly-blue.svg?style=flat-square)](https://publiclab.github.io/community-toolbox/)
+[![first-timers-only-friendly](http://img.shields.io/badge/first--timers--only-friendly-blue.svg?style=flat-square)](https://code.publiclab.org#r=all)
 [![Join the chat at https://publiclab.org/chat](https://img.shields.io/badge/chat-in%20different%20ways-blue.svg)](https://publiclab.org/chat)
 [![Code Climate](https://codeclimate.com/github/publiclab/plots2/badges/gpa.svg)](https://codeclimate.com/github/publiclab/plots2)
 [![Coverage Status](https://coveralls.io/repos/github/publiclab/plots2/badge.svg?branch=HEAD)](https://coveralls.io/github/publiclab/plots2?branch=HEAD)
@@ -33,7 +33,7 @@ Some key features include:
     - [Standard Installation](#standard-installation)
 6. [SSL in Development](#ssl-in-development)
 7. [Testing](#testing)
-8. [API](#API)
+8. [API](https://github.com/publiclab/plots2/blob/master/doc/API.md)
 9. [Bundle Exec](#bundle-exec)
 10. [Reply-by-email](#reply-by-email)
 11. [Bugs and Support](#bugs-and-support)
@@ -58,7 +58,7 @@ Our mutual aims of democratizing inexpensive and accessible do-it-yourself techn
 
 ## Data Model
 
-![Diagram](https://publiclab.org/system/images/photos/000/021/061/original/diagram.png)
+![Diagram](https://user-images.githubusercontent.com/24359/50705765-d84ae000-1029-11e9-9e4c-f166a0c0d5d1.png)
 
 _(Above: draft of our [Data model](https://github.com/publiclab/plots2/blob/master/doc/DATA_MODEL.md))_
 

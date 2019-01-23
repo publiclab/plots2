@@ -142,6 +142,9 @@ map:
   status: 1
   type: "map"
   cached_likes: 0
+  latitude: 71.0
+  longitude: 52.0
+  precision: 1
   slug: a-map-page-<%= Time.now.strftime("%m-%d-%Y") %>
 
 blog:
@@ -154,6 +157,9 @@ blog:
   status: 1
   type: "note"
   cached_likes: 0
+  latitude: 71.0
+  longitude: 52.0
+  precision: 1
   slug: jeff-<%= Time.now.strftime("%m-%d-%Y") %>-blog-post
 
 redirect:
@@ -263,49 +269,58 @@ post_test1:
   nid: 23
   uid: 15
   title: "Post Test 1"
-  path: "/notes/user1/<%= DateTime.new(2018,8,1).strftime("%m-%d-%Y") %>/post-test1"
+  path: "/notes/steff1/<%= DateTime.new(2018,8,1).strftime("%m-%d-%Y") %>/post-test1"
   created: <%= DateTime.new(2018,8,1).to_i %>
   changed: <%= DateTime.new(2018,8,1).to_i %>
   status: 1
   type: "note"
   cached_likes: 0
-  slug: user1-<%= DateTime.new(2018,8,1).strftime("%m-%d-%Y") %>-post-test1
+  longitude: 52.0
+  latitude: 160.0
+  precision: 1
+  slug: steff1-<%= DateTime.new(2018,8,1).strftime("%m-%d-%Y") %>-post-test1
 
 post_test2:
   nid: 24
   uid: 17
   title: "Post Test 2"
-  path: "/notes/user2/<%= DateTime.new(2018,8,8).strftime("%m-%d-%Y") %>/post-test2"
+  path: "/notes/steff3/<%= DateTime.new(2018,8,8).strftime("%m-%d-%Y") %>/post-test2"
   created: <%= DateTime.new(2018,8,8).to_i %>
   changed: <%= DateTime.new(2018,8,8).to_i %>
   status: 1
   type: "note"
   cached_likes: 0
-  slug: user2-<%= DateTime.new(2018,8,8).strftime("%m-%d-%Y") %>-post-test2
+  longitude: 52.23
+  latitude: 34.57
+  precision: 2
+  slug: steff3-<%= DateTime.new(2018,8,8).strftime("%m-%d-%Y") %>-post-test2
 
 post_test3:
   nid: 25
   uid: 16
   title: "Post Test 3"
-  path: "/notes/user3/<%= DateTime.new(2018,8,15).strftime("%m-%d-%Y") %>/post-test3"
+  path: "/notes/steff2/<%= DateTime.new(2018,8,15).strftime("%m-%d-%Y") %>/post-test3"
   created: <%= DateTime.new(2018,8,15).to_i %>
   changed: <%= DateTime.new(2018,8,15).to_i %>
   status: 1
   type: "note"
   cached_likes: 0
-  slug: user3-<%= DateTime.new(2018,8,15).strftime("%m-%d-%Y") %>-post-test3
+  longitude: 52.0
+  latitude: 12.0
+  precision: 1
+  slug: steff2-<%= DateTime.new(2018,8,15).strftime("%m-%d-%Y") %>-post-test3
 
 post_test4:
   nid: 26
   uid: 18
   title: "Post Test 4"
-  path: "/notes/user4/<%= DateTime.new(2018,8,20).strftime("%m-%d-%Y") %>/post-test4"
+  path: "/notes/data/<%= DateTime.new(2018,8,20).strftime("%m-%d-%Y") %>/post-test4"
   created: <%= DateTime.new(2018,8,20).to_i %>
   changed: <%= DateTime.new(2018,8,20).to_i %>
   status: 1
   type: "note"
   cached_likes: 0
-  slug: user3-<%= DateTime.new(2018,8,20).strftime("%m-%d-%Y") %>-post-test4
+  slug: data-<%= DateTime.new(2018,8,20).strftime("%m-%d-%Y") %>-post-test4
 
 scraped_image:
   nid: 27
@@ -318,3 +333,27 @@ scraped_image:
   type: "note"
   cached_likes: 0
   slug: bob-<%= DateTime.new(2018,8,20).strftime("%m-%d-%Y") %>-scraped-image-node
+
+search_trawl:
+  nid: 28
+  uid: 5
+  title: "BabyLegs start a trawl"
+  path: "/wiki/babylegs"
+  created: <%= DateTime.new(2019,1,07).to_i %>
+  changed: <%= DateTime.new(2019,1,07).to_i %>
+  status: 1
+  type: "page"
+  cached_likes: 0
+  slug: "babylegs"
+
+search_trawling:
+  nid: 29
+  uid: 5
+  title: "Could the BabyLegs DIY trawling?"
+  path: "/notes/admin/01-07-2019/could-the-babylegs-diy"
+  created: <%= DateTime.new(2019,1,07).to_i %>
+  changed: <%= DateTime.new(2019,1,07).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: "could-the-babylegs-diy"

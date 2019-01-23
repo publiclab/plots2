@@ -50,9 +50,9 @@
           <% end %>
           <h1><a href="<%= node.path %>"><%= node.title %></a></h1>
           <p class="meta" style="color:#888;"><small>
-            <%= t('tag.blog.by') %> <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a>  <%= node.author.new_author_contributor %>
+            <%= t('tag.blog.by') %> <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a>  <%= node.author.new_contributor %>
 	    | <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>
-            | <a href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= node.comment_count %></a>
+            | <a href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= node.comments.count %></a>
             <% if params[:controller] == "notes" && params[:action] == "popular" %>
             | <%= number_with_delimiter(node.totalviews) %> <%= t('tag.blog.views') %>
             <% else %>
@@ -60,7 +60,7 @@
             <% end %>
           </small></p>
           <p><%= raw auto_link(insert_extras(node.latest.render_body), :sanitize => false) %></p>
-          <p><a href="<%= node.path %>"><%= t('tag.blog.read_more') %> &raquo;</a></p>
+          <p><a href="<%= node.path %>"><%= t('tag.blog.read_more') %> &raquo;</a><%= render partial: 'tag/subscribe_button', locals:{tags: node.tags} %></p>
           <p>
             <%= render :partial => "like/like", :locals => {:node => node, :tagnames => node.tags.collect(&:name) } %>
             <% node.tags[0..3].each do |tag| %>

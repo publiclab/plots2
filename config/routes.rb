@@ -86,9 +86,10 @@ Plots2::Application.routes.draw do
   get 'subscribe/:type/:name' => 'subscription#add'
   get 'subscriptions' => 'subscription#index'
   get 'subscriptions/digest' => 'subscription#digest'
-  get 'subscribe/multiple/:type/:names' => 'subscription#multiple_add'
-  put 'subscribe/multiple/:type/:names' => 'subscription#multiple_add'
-
+  get 'subscribe/multiple/:type/:tagnames' => 'subscription#multiple_add'
+  post 'subscribe/multiple/:type/:tagnames' => 'subscription#multiple_add'
+  get 'subscribe/multiple/:type' => 'subscription#multiple_add'
+  post 'subscribe/multiple/:type' => 'subscription#multiple_add'
   get 'wiki/stale' => 'wiki#stale'
   get 'wiki/new' => 'wiki#new'
   get 'wiki/replace/:id' => 'wiki#replace'
@@ -100,6 +101,8 @@ Plots2::Application.routes.draw do
   get 'w/:id' => 'wiki#show'
 
   # these need precedence for tag listings
+  get 'tag/graph.json' => 'tag#graph_data'
+  get 'stats/graph' => 'tag#graph'
   get 'feed/tag/:tagname' => 'tag#rss'
   get ':node_type/tag/:id/author/:author' => 'tag#show_for_author'
   get 'tag/:id/author/:author' => 'tag#show_for_author'
