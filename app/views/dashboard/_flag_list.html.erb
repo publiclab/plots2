@@ -1,38 +1,8 @@
-<div>
+<div class="pop-content" style="padding: 20px; border-radius: 10px;">
+  <a class="btn btn-primary btn-block" href="mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+item+that+looks+like+spam+or+needs+to+be+moderated:+<%= node.title.gsub(/ /,'+') %>+https://publiclab.org/n/<%= node.id %>+by+https://publiclab.org/profile/<%= node.author.username %>+Thanks!" role="button"> <i class="fa fa-flag fa-white"></i> Flag post to moderators</a> 
   <% if logged_in_as(['admin','moderator']) %>
-	<div class="pop-content">
-	  <ul class="flag-buttons">
-	    <li> <a class="btn btn-primary ap" href="mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+item+that+looks+like+spam+or+needs+to+be+moderated:+<%= node.title.gsub(/ /,'+') %>+https://publiclab.org/n/<%= node.id %>+by+https://publiclab.org/profile/<%= node.author.username %>+Thanks!" role="button"> <i class="fa fa-flag"></i> Flag post to moderators</a> </li>
-	    <li> <a class="btn btn-primary ap" href="/moderate/spam/<%= node.id %>" role="button"> <i class="fa fa-ban"></i> Spam Post </a> </li>
-	  </ul> 
-	</div>
+    <a class="btn btn-primary btn-block" href="/moderate/spam/<%= node.id %>" role="button"> <i class="fa fa-ban fa-white"></i> Spam Post </a> 
   <% else %>
-	<div class="pop-content">
-	  <ul class="flag-buttons">
-	    <li> <a class="btn btn-primary ap" href="mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+item+that+looks+like+spam+or+needs+to+be+moderated:+<%= node.title.gsub(/ /,'+') %>+https://publiclab.org/n/<%= node.id %>+by+https://publiclab.org/profile/<%= node.author.username %>+Thanks!" role="button"> <i class="fa fa-flag"></i> Flag post to moderators</a> </li>
-	    <li> <a class="btn btn-primary ap" href="/moderators" role="button">Become a moderator </a> </li>
-	  </ul> 
-	</div>
+    <a class="btn btn-primary btn-block" href="/moderators" role="button">Become a moderator </a> 
   <% end %>
 </div>
-<style>
-  a.ap{
-    display: block;
-  }
-  ul.flag-buttons{
-    list-style-type: none;
-    padding: 0;
-  }
-  .ap{
-  	background: none;
-  	border: 2px solid #007a99;
-	color: #007a99;
-	margin-bottom: 10px;
-  }
-  .pop-content{
-  	background-color: rgba(255, 255, 255,1);
-  	padding: 20px;
-  	border-radius: 10px;
-  }
-  
-</style>
