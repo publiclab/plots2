@@ -72,3 +72,13 @@ selection_eleven:
   user_id: 10
   tid: 20
   following: true
+
+SubLatitudeLongitude:
+  user_id: 16
+  tid: 22
+  following: true
+
+SubLatitudeLongitude2:
+  user_id: 17
+  tid: 25
+  following: true
