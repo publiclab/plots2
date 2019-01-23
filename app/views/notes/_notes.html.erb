@@ -37,7 +37,7 @@
           | <i style="<% if node.likes > 0 %>color:#db4;<% else %>color:#888;<% end %>" class="fa fa-star-o"></i> <%= node.likes %>
         </small></p>
 
-        <div class="content">
+        <div class="content" style="margin:auto">
           <% if @compact.nil? %>
             <% if params[:action].to_s.include?("methods") %>
               <p><small>
