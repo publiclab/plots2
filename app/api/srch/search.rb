@@ -259,7 +259,7 @@ module Srch
                                                                        is_array: false,
                                                                        nickname: 'search_nearby_people'
       params do
-        use :geographical, :additional, :period, :sorting, :ordering
+        use :geographical, :additional, :field, :period, :sorting, :ordering
       end
       get :nearbyPeople do
         search_request = SearchRequest.fromRequest(params)
