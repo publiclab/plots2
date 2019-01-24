@@ -126,6 +126,7 @@ All the endpoints have the optional parameter `limit` (10 by default) where you 
 
   `to=[date]`: Accepts a date. It searches for users with some activity by the specified date.
 
+<<<<<<< HEAD
 ### PeopleLocations
 
 * **URL**:  `https://publiclab.org/api/srch/peoplelocations?query=10`
@@ -139,6 +140,8 @@ All the endpoints have the optional parameter `limit` (10 by default) where you 
 
   `tag=[string]`: The search can be refined by passing a tag field.
 
+=======
+>>>>>>> removing  endpoint
 ## API code
 
 We are beginning to consolidate API methods into the [srch](https://github.com/publiclab/plots2/blob/master/app/api/srch) namespace, to reduce complexity in the non-API codebase and make the API more predictable and maintainable.

@@ -20,8 +20,6 @@ class ExecuteSearch
        sservice.search_questions(search_criteria.query, search_criteria.limit, search_criteria.sort_by)
      when :tags
        sservice.search_tags(search_criteria.query, search_criteria.limit)
-     when :peoplelocations
-       sservice.people_locations(search_criteria.query, search_criteria.tag)
      when :taglocations
        sservice.tagNearbyNodes(search_criteria.coordinates, search_criteria.tag, search_criteria.period, search_criteria.sort_by, search_criteria.order_direction, search_criteria.limit)
      when :nearbyPeople
