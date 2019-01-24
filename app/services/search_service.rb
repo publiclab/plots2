@@ -165,7 +165,7 @@ class SearchService
         uids = TagSelection.where('tag_selections.tid IN (?)', tids).collect(&:user_id).uniq || []
       else
         uids = User.joins(:user_tags)
-                   .where('user_tags.value LIKE ?', tag)
+                   .where('user_tags.value = ?', tag)
                    .where(id: user_locations.select("rusers.id"))
                    .collect(&:id).uniq || []
       end
