@@ -283,39 +283,6 @@ module Srch
         end
       end
 
-      # API TO FETCH QRY RECENT CONTRIBUTORS
-      # Request URL should be /api/srch/peoplelocations?query=QRY[&tag=group:partsandcrafts]
-      # QRY should be a number
-      desc 'Perform a search to show x Recent People',  hidden: false,
-                                                        is_array: false,
-                                                        nickname: 'search_people_locations'
-
-      params do
-        use :common, :additional
-      end
-      get :peoplelocations do
-        search_request = SearchRequest.fromRequest(params)
-        results = Search.execute(:peoplelocations, params)
-
-        if results.present?
-          docs = results.map do |model|
-            DocResult.new(
-              doc_id: model.id,
-              doc_type: 'PLACES',
-              doc_url: model.path,
-              doc_title: model.username,
-              latitude: model.lat,
-              longitude: model.lon,
-              blurred: model.blurred?
-            )
-          end
-
-          DocList.new(docs, search_request)
-        else
-          DocList.new('', search_request)
-        end
-      end
-
       # Request URL should be /api/srch/places?query=QRY
       desc 'Perform a search of places',           hidden: false,
                                                    is_array: false,
