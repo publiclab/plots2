@@ -273,7 +273,7 @@ GEM
       mime-types
       mimemagic (~> 0.3.0)
       terrapin (~> 0.6.0)
-    parallel (1.12.1)
+    parallel (1.13.0)
     parser (2.6.0.0)
       ast (~> 2.4.0)
     passenger (6.0.1)
@@ -372,7 +372,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.8.0)
     rspec-support (3.8.0)
-    rubocop (0.63.0)
+    rubocop (0.63.1)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
       parser (>= 2.5, != 2.5.1.1)
@@ -544,7 +544,7 @@ DEPENDENCIES
   rest-client
   reverse_markdown
   rspec
-  rubocop (~> 0.63.0)
+  rubocop (~> 0.63.1)
   ruby-openid
   sanitize
   sass-rails (~> 5.0, >= 5.0.7)
