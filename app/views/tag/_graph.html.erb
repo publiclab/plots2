@@ -1,13 +1,22 @@
 <div id="chart"> </div>
+<br><br> <br>
+<div id="chart2"> </div>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
 
-var values = <%= tag_graphs.values.collect { |ind| ind[1] } %>
-var months = <%= tag_graphs.values.collect { |ind| ind[0] } %>
-var dates = months.map(x=> new Date(x).getTime());
-series = [];
-for (var i=0; i<dates.length && i<values.length; i++)
-    series[i] = [dates[i], [values[i]]];
+var notes_values = <%= notes.values.collect { |ind| ind[1] } %>
+var notes_months = <%= notes.values.collect { |ind| ind[0] } %>
+var wiki_values = <%= wikis.values.collect { |ind| ind[1] } %>
+var wiki_months = <%= wikis.values.collect { |ind| ind[0] } %>
+var notes_dates = notes_months.map(x=> new Date(x).getTime());
+var wiki_dates = wiki_months.map(x=> new Date(x).getTime());
+notes_series = [];
+wiki_series = [];
+for (var i=0; i<notes_dates.length && i<notes_values.length; i++)
+    notes_series[i] = [notes_dates[i], [notes_values[i]]];
+
+for (var i=0; i<wiki_dates.length && i<wiki_values.length; i++)
+    wiki_series[i] = [wiki_dates[i], [wiki_values[i]]];
 
 var options = {
     colors: ['#00E396'],
@@ -25,15 +34,14 @@ var options = {
 
     },
     series: [{
-        name: 'tags',
-        data: series,
-
+        name: 'notes tags',
+        data: notes_series,
     }],
+
     title: {
-        text: "Stats for the last year",
+        text: 'Notes stats',
         align: 'left',
     },
-
     xaxis: {
         type: "datetime",
         axisBorder: {
@@ -87,6 +95,85 @@ var options = {
 }
 
 var chart = new ApexCharts(document.querySelector("#chart"), options);
-
 chart.render();
+
+
+var options2 = {
+    colors: ['#00E396'],
+    chart: {
+        type: 'area',
+        height: 500,
+
+    },
+    stroke: {
+        curve: 'smooth',
+
+    },
+    dataLabels: {
+        enabled: false,
+
+    },
+    series: [{
+        name: 'wiki tags',
+        data: wiki_series,
+    }],
+    title: {
+        text: 'Wiki edits stats',
+        align: 'left',
+    },
+    xaxis: {
+        type: "datetime",
+        axisBorder: {
+            show: false
+
+        },
+        axisTicks: {
+            show: false
+
+        }
+
+    },
+    yaxis: {
+        opposite: true,
+        labels: {
+            offsetX: 24,
+            offsetY: -5
+        },
+        tooltip: {
+            enabled: true
+
+        }
+    },
+
+    grid: {
+        padding: {
+            left: -5,
+            right: 5
+
+        }
+
+    },
+    tooltip: {
+        x: {
+            format: "dd MMM yyyy"
+
+        },
+
+    },
+    legend: {
+        position: 'top',
+        horizontalAlign: 'left'
+
+    },
+    fill: {
+        type: "solid",
+        fillOpacity: 0.7
+
+    }
+
+}
+
+var chart2 = new ApexCharts(document.querySelector("#chart2"), options2);
+chart2.render();
+
 </script>
