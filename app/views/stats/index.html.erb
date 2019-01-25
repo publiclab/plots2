@@ -98,13 +98,6 @@
 
 <div class="container">
 
-<%#     <h4><%= raw t('notes.stats.total_contributors', :all_contributors_count => @all_time_contributors) %1></h4> %>
-<%#     <h4><%= raw t('notes.stats.wiki_pages_posted', :count => Node.where(type: 'page', status: 1).count) %1></h4> %>
-<%#     <h4><%= raw t('notes.stats.comments_posted', :count => Comment.count) %1></h4> %>
-<%#     <h4><%= raw t('notes.stats.wiki_page_edits', :count => Revision.count(:all)) %1></h4> %>
-
-<%#     <p><%= raw t('notes.stats.edits_per_week', :count => @edits_per_week_past_year.round(2)) %1></p> %>
-<%#     <p><%= raw t('notes.stats.notes_per_week_past_year', :note_count => @notes_per_week_past_year.round(2)) %1></p> %>
 </div>
 
 <h3 align="center"> <u>  Notes, Wikis and Comments Statistics in the past year </u></h3>
@@ -115,12 +108,9 @@
     <br>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
-let months = <%= @graph_wikis.keys %>
-let date = months.map(x => new Date(x).toDateString());
-
 var options = {
     chart: {
-        type: "area",
+        type: "line",
         height: 500,
         foreColor: "#999",
         scroller: {
@@ -256,8 +246,8 @@ chart.render();
 function generateDayWiseTimeSeries(s, count) {
       var values = [
        <%= @graph_notes.values.collect {|ind| ind[1]} %>,
-        <%= @graph_wikis.values.collect {|ind| ind[1]} %>,
-        <%= @graph_wikis.values.collect {|ind| ind[1]} %>,
+       <%= @graph_wikis.values.collect {|ind| ind[1]} %>,
+       <%= @graph_comments.values.collect {|ind| ind[1]} %>,
       ];
 
       var i = 0;
