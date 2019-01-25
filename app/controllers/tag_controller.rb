@@ -492,8 +492,14 @@ class TagController < ApplicationController
   end
 
   def stats
+    @time = if params[:time]
+              Time.parse(params[:time])
+            else
+              Time.now
+            end
     @tags = Tag.where(name: params[:id])
-    @tag_graphs = @tags.first.contribution_graph_making
+    @tag_notes = @tags.first.contribution_graph_making('note', 52, @time)
+    @tag_wikis = @tags.first.contribution_graph_making('page', 52, @time)
   end
 
   private
