@@ -139,7 +139,7 @@ class SearchService
 
   # Search nearby people with respect to given latitude, longitute and tags
   # and package up as a DocResult
-  def tagNearbyPeople(coordinates, tag, period = nil, sort_by = nil, order_direction = nil, limit = 10)
+  def tagNearbyPeople(coordinates, tag, field, period = nil, sort_by = nil, order_direction = nil, limit = 10)
     raise("Must contain all four coordinates") if coordinates["nwlat"].nil?
     raise("Must contain all four coordinates") if coordinates["nwlng"].nil?
     raise("Must contain all four coordinates") if coordinates["selat"].nil?
@@ -160,16 +160,23 @@ class SearchService
                          .distinct
 
     if tag.present?
-      user_locations = User.joins(:user_tags)
-                           .where('user_tags.value LIKE ?', tag)
-                           .where(id: user_locations.select("rusers.id"))
+      if field.present? && field == 'node_tag'
+        tids = Tag.where("term_data.name = ?", tag).collect(&:tid).uniq || []
+        uids = TagSelection.where('tag_selections.tid IN (?)', tids).collect(&:user_id).uniq || []
+      else
+        uids = User.joins(:user_tags)
+                   .where('user_tags.value = ?', tag)
+                   .where(id: user_locations.select("rusers.id"))
+                   .collect(&:id).uniq || []
+      end
+      user_locations = user_locations.where('rusers.id IN (?)', uids).distinct
     end
 
-    ids = user_locations.collect(&:id).uniq || []
+    uids = user_locations.collect(&:id).uniq || []
 
     items = User.where('rusers.status <> 0')
       .joins(:user_tags)
-      .where('rusers.id IN (?)', ids)
+      .where('rusers.id IN (?)', uids)
       .where('user_tags.value LIKE ?', 'lon%')
       .where('REPLACE(user_tags.value, "lon:", "") BETWEEN ' + coordinates["nwlng"].to_s + ' AND ' + coordinates["selng"].to_s)
 
