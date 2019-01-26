@@ -1,3 +1,4 @@
+<%= javascript_include_tag('remote_link_handler.js') %>
 <div class="col-md-12">
   <h1 style="font-family:Junction Light;"><%= t('tag.index.popular_tags') %></h1>
 
@@ -13,33 +14,7 @@
       <button type="submit" rel="tooltip" title="View content with the entered title" class="btn btn-primary">Search</button>
     </span>
   </div>
-  </form>
-  <script>
-    jQuery(document).ready(function() {
-
-      $('#taginput').typeahead({
-        items: 8,
-        minLength: 3,
-        source: function (query, process) {
-          var replaced_query = query.replace(' ', /-/g);
-          return $.post('/tag/suggested/' + replaced_query, {}, function (data) {
-            return process(data)
-          })
-        },
-        updater: function(text) {
-          $('#taginput').val(text)
-          window.location = "/tag/" + text;
-        }
-      });
-
-      $('#tagform').submit(function(e) {
-        e.preventDefault();
-        window.location = "/tag/" + ($('#taginput').val()).replace(/\s/g, '-');
-      });
-
-    });
-  </script>
- 
+  </form> 
   <br/><br/>
 
   <table class="table">
@@ -63,11 +38,11 @@
           });
         </script>
         <% if current_user %>
-          <td>
+          <td id="follow-unfollow-column-<%=tag.tid%>">
              <% if current_user.following(tag.name) %>
                 <a rel="tooltip" title="<%= t('tag.show.unfollow') %>" class="btn btn-default btn-sm active" href="/unsubscribe/tag/<%= tag.name %>"><i class="fa fa-user-plus" aria-hidden="true"></i> <%= t('tag.show.following') %></a>
                 <% else %>
-                <a class="btn btn-default btn-sm" href="/subscribe/tag/<%= tag.name %>"><i class="fa fa-user-plus" aria-hidden="true"></i> <%= t('tag.show.follow') %></a>
+                <a class="btn btn-default btn-sm index-follow-buttons follow-btn-remote" href="/subscribe/tag/<%= tag.name %>" data-remote="true" ><i class="fa fa-user-plus" aria-hidden="true"></i> <%= t('tag.show.follow') %></a>
                 <% end %>
           </td>
         <% end %>
@@ -80,3 +55,4 @@
 </div>
 
 <div class="text-center"> <%= will_paginate @tags, :renderer => BootstrapPagination::Rails if @paginated %></div>
+
