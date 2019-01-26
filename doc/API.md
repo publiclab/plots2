@@ -116,7 +116,7 @@ All the endpoints have the optional parameter `limit` (10 by default) where you 
 
   `tag=[string]`: The search can be refined by passing a user tag field.
 
-  `field=[string]`: Accepts the value `node_tag` for searching users following the node tag (topic).
+  `field=[string]`: Accepts the value `node_tag` for searching users following the node tag (topic). When the endpoint receives a `tag` as parameter by default it searches users with the specified user tag, this parameter switches the use of the tag parameter to link node tags instead.
 
   `order_direction=[string]`: It accepts `ASC` or `DESC` (the latter is the default).
 
