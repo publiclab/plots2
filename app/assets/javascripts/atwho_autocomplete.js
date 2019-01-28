@@ -1,6 +1,6 @@
 (function() {
 
-  # settings at https://github.com/ichord/At.js/wiki/Base-Document#settings
+  // settings at https://github.com/ichord/At.js/wiki/Base-Document#settings
   var at_config = {
     at: "@",
     delay: 400,
