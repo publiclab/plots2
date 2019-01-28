@@ -2,7 +2,17 @@
 <%= form_for :user_session, :as => :user_session, :url => "/user_sessions?return_to=" + request.fullpath, :html => {:class => "form col-md-6 offset-3"} do |f| %>
 
   <h2 id="toSignup"><%= raw t('user_sessions.new.log_in_or_sign_up') %></h2>
-  <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
+  <% if @user_session.errors.any? %>
+    <div class="alert alert-danger">
+      <h2><%= pluralize(@user_session.errors.count, "error") %></h2>
+      <ul>
+        <% @user_session.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+          <% end %>
+      </ul>
+    </div>
+    <% end %>
+  <% end %>
   <br style="clear:both;"/>
 
   <div class='col-lg-11 col-md-11 col-sm-11' style="display:flex; justify-content: center;">
@@ -40,22 +50,22 @@
   <% end %>
   <% if !current_user %>
       <script>
-        $(document).ready(function() { 
+        $(document).ready(function() {
           $('a.requireLogin').click(function(e) { //For every link that should require login
             e.preventDefault(); //Prevent automatically redirecting to the link specified by href
             var mode = $(this).data('mode') || 'login';
             setMode(mode); //Sets the mode of the modal to login if data-mode not specified
             $('#loginModal').modal('show');//Open the login modal to allow user to login
             $.getJSON($(this).attr('href'));
-             /*send a request for the site the href specified, 
-             Because login modal uses request.fullpath as part of its 
+             /*send a request for the site the href specified,
+             Because login modal uses request.fullpath as part of its
              redirect parameters, we can send a request to the link
-             we want to redirect to so this variable gets updated to 
+             we want to redirect to so this variable gets updated to
              that link. Now when the user logs in, it should go to that link.*/
           });
         });
       </script>
-     
+
   <% end %>
   <script>
     $("a.loginToggle").click(function(){ //When a button that always toggles the login modal is clicked

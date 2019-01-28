@@ -1,8 +1,16 @@
 <div style="padding:10px;">
 <%= form_for @user, :url => {:controller => 'users', :action => 'update'}, :html => {:class => "row"} do |f| %>
   <div class="col-sm-10">
-    <% if f.error_messages != "" %>
-      <div class="alert alert-danger"><%= f.error_messages %></div>
+    <% if @user.errors.any? %>
+      <div class="alert alert-danger">
+        <h2><%= pluralize(@user.errors.count, "error") %></h2>
+        <ul>
+          <% @revision.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+            <% end %>
+        </ul>
+      </div>
+      <% end %>
     <% end %>
 
       <div class='col-sm-12' style="display:flex; justify-content: center;">

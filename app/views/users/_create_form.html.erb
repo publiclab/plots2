@@ -1,6 +1,16 @@
 <div style="padding:10px;">
  <%= form_for :user, :as => :user, :url => ("/register?return_to=" if params[:return_to].nil?).to_s + request.fullpath, :html => {:class => "row"} do |f| %>
- <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
+ <% if @user.errors.any? %>
+   <div class="alert alert-danger">
+     <h2><%= pluralize(@user.errors.count, "error") %></h2>
+     <ul>
+       <% @user.errors.full_messages.each do |msg| %>
+         <li><%= msg %></li>
+         <% end %>
+     </ul>
+   </div>
+   <% end %>
+ <% end %>
 
   <div class="col-sm-12">
       <div class='col-sm-12' style="display:flex; justify-content: center;">
@@ -97,7 +107,7 @@
 
   </div>
   <% end %>
-  
+
   <script>
     $("a.signupToggle").click(function(){ //When a button that toggles the signup is clicked
       setMode("signup"); //Sets the mode of the modal to signup so it only shows the signup partial
@@ -105,4 +115,3 @@
     })
   </script>
 </div>
-

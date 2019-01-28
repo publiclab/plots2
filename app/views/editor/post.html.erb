@@ -63,12 +63,31 @@
   end
   %>
   <%= form_for :node, :as => :drupal_node, :url => url do |f| %>
-    <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages :header_message => "Your note couldn't be saved." %></div><% end %>
+  <% if @node.errors.any? %>
+  <div class="alert alert-danger">
+      <h2><%= pluralize(@node.errors.count,"error")%></h2>
+      <ul>
+        <% @node.errors.full_messages.each do |msg|%>
+          <li><%= msg %></li>
+          <% end %>
+      </ul>
+      <% end %>
+  </div>
   <% end %>
 
   <%= form_for :revision, :as => :revision, :url => url, :html => {:class => "form well legacy-form"} do |f| %>
 
-    <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages :header_message => "Your note couldn't be saved." %></div><% end %>
+  <% if @revision.errors.any? %>
+    <div class="alert alert-danger">
+      <h2><%= pluralize(@revision.errors.count, "error") %></h2>
+      <ul>
+        <% @revision.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+          <% end %>
+      </ul>
+    </div>
+    <% end %>
+  <% end %>
 
     <%= render :partial => "editor/main_image" %>
 

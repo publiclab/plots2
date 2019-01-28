@@ -1,8 +1,17 @@
 <% url = { :controller => "features", :action => "update", :id => @node.id } %>
 
 <%= form_for @node, :as => :drupal_node, :url => url do |f| %>
-  <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
+<% if @node.errors.any? %>
+<div class="alert alert-danger">
 
+    <h2><%= pluralize(@node.errors.count,"error")%></h2>
+    <ul>
+      <% @node.errors.full_messages.each do |msg|%>
+        <li><%= msg %></li>
+        <% end %>
+    </ul>
+    <% end %>
+</div>
 <% if @node && @node.title %>
   <h3>Editing feature: <i><%= @node.title %></i></h3>
 <% end %>
