@@ -8,8 +8,7 @@ Below we provide you with information for getting involved and making your own p
 
 ## Rundown 
 
-- First things first:
-our community aspires to be a respectful place. Please read and abide by our [Code of Conduct](https://publiclab.org/conduct).
+- First things first: our community aspires to be a respectful place. Please read and abide by our [Code of Conduct](https://publiclab.org/conduct).
 
 - Check-ins are typically opened as issues anytime on Sunday or Monday.
 
@@ -18,10 +17,9 @@ our community aspires to be a respectful place. Please read and abide by our [Co
 -  When you open an issue please use our [Gitter](https://gitter.im/publiclab/publiclab) chatroom to
 notify everyone by referencing `@/all` and linking the post. Include a brief message for new contributors so that they know what it is. ex:
 
-_"Hey! Please see our weekly check-in here. Everyone is welcome to contribute and we encourage new users to get involved"_
+"<em>Hey! Please see our weekly check-in \<here\>. Everyone is welcome to contribute and we encourage new users to get involved</em>."
 
-
-- Check-ins have a _theme_. Select any theme that interests you to guide the general flow of responces from the communtiy. 
+- Check-ins have a <em>theme</em>. Select any theme that interests you to guide the general flow of responces from the communtiy. 
 
 - Add anything else you'd like. Discovered a new technology you'd like to share? Found an interesting article about open source? Have any questions? 
 
