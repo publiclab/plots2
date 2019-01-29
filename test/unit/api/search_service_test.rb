@@ -26,13 +26,6 @@ class SearchServiceTest < ActiveSupport::TestCase
     assert_equal result.size, 3
   end
 
-  test 'running people locations' do
-    result = SearchService.new.people_locations('10', limit = nil)
-
-    assert_not_nil result
-    assert_equal result.size, 3
-  end
-
   test 'running search notes' do
     params = {query: 'Blog' }
     search_criteria = SearchCriteria.new(params)

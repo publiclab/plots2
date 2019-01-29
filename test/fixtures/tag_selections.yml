@@ -82,3 +82,8 @@ SubLatitudeLongitude2:
   user_id: 17
   tid: 25
   following: true
+
+selection_spectrometer:
+  user_id: 17
+  tid: 12
+  following: true
