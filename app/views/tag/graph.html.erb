@@ -1,7 +1,25 @@
+<!DOCTYPE html>
+<html lang="<%= I18n.locale || 'en' %>">
+  <head>
+    <meta charset="utf-8" />
+    <title>&#127880; Public Lab<%= ": "+(@title || params[:action].capitalize) %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%= stylesheet_link_tag "application", :media => "all" %>
+    <link href="/lib/fontawesome/css/font-awesome.min.css" media="all" rel="stylesheet" type="text/css" />
+    <%= javascript_include_tag "application" %>
+  </head>
+  <body>
+
 <style>
+html, body {
+  background: #efefff;
+}
 #cytoscape {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 800px;
+  height: 100%;
   display: block;
 }
 </style>
@@ -164,15 +182,16 @@
         {
           selector: 'node',
           style: {
-            'width': 'mapData(weight, ' + min + ',' + max + ', 1, 100)',
-            'height': 'mapData(weight, ' + min + ',' + max + ', 1, 100)',
-            'background-color': '#ccc',
+            'width': 'mapData(weight, ' + min + ',' + max + ', 30, 150)',
+            'height': 'mapData(weight, ' + min + ',' + max + ', 30, 150)',
+            'background-color': '#888',
             'label': 'data(id)',
+            'font-size': 11,
             'text-valign': 'center',
             'color': 'white',
             'border-width': 3,
             'border-color': 'white',
-            'text-outline-width': 2,
+            'text-outline-width': 1.5,
             'text-outline-color': '#444'
           }
         },
@@ -182,9 +201,9 @@
           style: {
             'curve-style': 'haystack',
             'haystack-radius': 0,
-            'width': 3,
-            'opacity': 0.666,
-            'line-color': '#ccc'
+            'width': 2,
+            'opacity': 0.3,
+            'line-color': '#888'
           }
         }
       ]
@@ -199,7 +218,33 @@
       }
     });
 
+    cy.on('tapstart', 'node', function(e){
+      cy.elements().style('opacity', 0.2);
+      var node = e.target;
+      node.connectedEdges()
+        .style('opacity', 1)
+        .style('line-color', 'magenta');
+      node.connectedEdges()
+        .connectedNodes()
+        .style('opacity', 1)
+        .style('border-color', 'magenta');
+    });
+
+    cy.on('tapend', 'node', function(e){
+      cy.nodes().style('opacity', 1);
+      cy.edges().style('opacity', 0.3);
+      var node = e.target;
+      node.connectedEdges()
+        .style('line-color', '#888');
+      node.connectedEdges()
+        .connectedNodes()
+        .style('border-color', 'white');
+    });
+
+
     /*
+    //attempt to use cytoscape native clustering
+
     var clusters = cy.elements().hca({
       mode: 'threshold',
       threshold: 15,
@@ -210,7 +255,7 @@
     */
 
     // https://sashat.me/2017/01/11/list-of-20-simple-distinct-colors/ 
-    var colors = ['#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000', '#aaffc3', '#808000', '#ffd8b1', '#000075', '#808080', '#ffffff', '#000000', '#cccccc'];
+    var colors = ['#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000', '#aaffc3', '#808000', '#ffd8b1', '#000075', '#808080', '#ffffff', '#000000', '#999999'];
  
     // clusters[0].forEach(function(n){n.style('backgroundColor','blue');})
  
@@ -219,8 +264,7 @@
       .nodes(data.tagnames)
       .edges(data.edges)
     c_result  = community();
-console.log('result', c_result);
-    // choose the sensitivity (higher means more communities)
+//console.log(data.edges, 'result', c_result);
 
     cy.nodes().forEach(function(node) {
       var index = c_result[node.id()];
@@ -234,3 +278,4 @@ console.log('result', c_result);
 })();
 
 </script>
+</body>
