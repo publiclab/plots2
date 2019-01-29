@@ -1,6 +1,7 @@
 # Community Check-ins
 
-One of our community values is openness and diversity in thought. For this reason, we have started weekly check-ins run by our contributors (you!). The check-ins are currently opened as issues in the [plots2](https://github.com/publiclab/plots2/issues?utf8=%E2%9C%93&q=) repository for convenience, but are meant to instigate discussions about any and all repos / topics related to Public Lab. Find the current week's check-in pinned at the top for easy reference.
+One of our community values is openness and diversity in thought. For this reason, we have started weekly check-ins run by our contributors (you!). The check-ins are currently opened as issues on the plots2 repository [issues](https://github.com/publiclab/plots2/issues?utf8=%E2%9C%93&q=) page
+ for convenience, but are meant to instigate discussions about any and all repos / topics related to Public Lab. You can always find the most recent check-in pinned at the top of the page.
 
 New contributors are encouraged to get engaged :).
 
@@ -14,7 +15,7 @@ Below we provide you with information for getting involved and making your own p
 
 - Volunteer to open the next check-in by leaving a comment on the current one.
 
--  When you open an issue please use our [Gitter](https://gitter.im/publiclab/publiclab) chatroom to
+-  When you open a check-in please use our [Gitter](https://gitter.im/publiclab/publiclab) chatroom to
 notify everyone by referencing `@/all` and linking the post. Include a brief message for new contributors so that they know what it is. ex:
 
 "<em>Hey! Please see our weekly check-in \<here\>. Everyone is welcome to contribute and we encourage new users to get involved</em>."
