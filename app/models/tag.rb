@@ -325,7 +325,7 @@ class Tag < ApplicationRecord
          .where(NodeTag.table_name => { nid: nids })
          .where.not(name: tag_name)
          .group(:tid)
-         .order('COUNT(term_data.tid) DESC')
+         .order(count: :desc)
          .limit(count)
     end
   end
@@ -335,7 +335,10 @@ class Tag < ApplicationRecord
     Rails.cache.fetch("graph-data/#{limit}", expires_in: 1.weeks) do
       data = {}
       data["tags"] = []
-      Tag.order(count: :desc).limit(limit).each do |tag|
+      Tag.joins(:node_tag)
+        .group(:tid)
+        .order(count: :desc)
+        .limit(limit).each do |tag|
         data["tags"] << {
           "name" => tag.name,
           "count" => tag.count
