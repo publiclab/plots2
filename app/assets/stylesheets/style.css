@@ -385,7 +385,7 @@ under their notes*/
 }
 
 .grid-image {
-  width: auto;
+  width: 100% !important;
   height: auto;
   display: block; 
   overflow: hidden;

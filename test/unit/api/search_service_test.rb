@@ -26,13 +26,6 @@ class SearchServiceTest < ActiveSupport::TestCase
     assert_equal result.size, 3
   end
 
-  test 'running people locations' do
-    result = SearchService.new.people_locations('10', limit = nil)
-
-    assert_not_nil result
-    assert_equal result.size, 3
-  end
-
   test 'running search notes' do
     params = {query: 'Blog' }
     search_criteria = SearchCriteria.new(params)
@@ -101,7 +94,7 @@ class SearchServiceTest < ActiveSupport::TestCase
   end
 
   test 'running search nearby people with invalid period' do
-    exception_1 = assert_raises(Exception) { SearchService.new.tagNearbyPeople({ "nwlat" => 180.0, "nwlng" => 0.0, "selat" => 0.0, "selng" =>180.0 }, nil, period = { "from" => nil, "to" => 'date'}, sort_by = nil, order_direction = nil, limit = 10) }
+    exception_1 = assert_raises(Exception) { SearchService.new.tagNearbyPeople({ "nwlat" => 180.0, "nwlng" => 0.0, "selat" => 0.0, "selng" =>180.0 }, nil, nil, period = { "from" => nil, "to" => 'date'}, sort_by = nil, order_direction = nil, limit = 10) }
     assert_equal( "If 'to' is not null, must contain date", exception_1.message )
   end
 end
