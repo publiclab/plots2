@@ -6,8 +6,9 @@
 var options = {
     colors: ['#00E396', '#0090FF'],
     chart: {
-        type: "line",
+        type: "area",
         height: 500,
+        width: '120%',
         foreColor: "#999",
         scroller: {
             enabled: true,
@@ -89,6 +90,7 @@ var options = {
 
         },
         yaxis: {
+            tickAmount: 5,
             opposite: true,
             labels: {
                 offsetX: 24,
@@ -120,7 +122,12 @@ var options = {
             horizontalAlign: 'left'
 
         },
-        };
+        fill: {
+            type: "solid",
+            fillOpacity: 0.7
+
+        }
+};
 
 
 var chart = new ApexCharts(document.querySelector("#chart"), options);
