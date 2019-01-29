@@ -22,7 +22,15 @@ notify everyone by referencing `@/all` and linking the post. Include a brief mes
 
 - Check-ins have a <em>theme</em>. Select any theme that interests you to guide the general flow of responces from the communtiy. 
 
-- Add anything else you'd like. Discovered a new technology you'd like to share? Found an interesting article about open source? Have any questions? 
+- Add anything else you'd like. 
+
+  - Discovered a new technology you'd like to share? 
+
+  - Found an interesting article about open source? 
+
+  - Have any questions? 
+
+  - Troubleshot any issues that the rest of the community can learn from?
 
 - Include sections from the last post that make sense to carry over - if you need additional guidance reference past check-ins.
 
