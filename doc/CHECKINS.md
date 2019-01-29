@@ -36,7 +36,9 @@ notify everyone by referencing `@/all` and linking the post. Include a brief mes
 
 ## Thanks! 
 
-Thank you for helping us maintain our community! 🎉 🌍 🌎 🌏
+Thank you for helping us maintain our community! 🎉 🌐
+
+
 
 
 
