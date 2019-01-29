@@ -21,15 +21,12 @@ class SearchApiTest < ActiveSupport::TestCase
      }.ignore_extra_keys!
 
      matcher = JsonExpressions::Matcher.new(pattern)
-
      json = JSON.parse(last_response.body)
 
      assert_equal "/profile/steff3",   json['items'][0]['doc_url']
      assert_equal "/profile/steff2",   json['items'][1]['doc_url']
      assert_equal "/profile/steff1",   json['items'][2]['doc_url']
-
      assert matcher =~ json
-
    end
 
    # search by username and returns users sorteded by recent activity and order direction default DESC
@@ -46,13 +43,11 @@ class SearchApiTest < ActiveSupport::TestCase
      }.ignore_extra_keys!
 
      matcher = JsonExpressions::Matcher.new(pattern)
-
      json = JSON.parse(last_response.body)
 
      assert_equal "steff2",     json['items'][0]['doc_title']
      assert_equal "steff3",     json['items'][1]['doc_title']
      assert_equal "steff1",     json['items'][2]['doc_title']
-
      assert matcher =~ json
    end
 
@@ -70,13 +65,11 @@ class SearchApiTest < ActiveSupport::TestCase
      }.ignore_extra_keys!
 
      matcher = JsonExpressions::Matcher.new(pattern)
-
      json = JSON.parse(last_response.body)
 
      assert_equal "/profile/steff1",     json['items'][0]['doc_url']
      assert_equal "/profile/steff3",     json['items'][1]['doc_url']
      assert_equal "/profile/steff2",     json['items'][2]['doc_url']
-
      assert matcher =~ json
   end
 
@@ -93,8 +86,8 @@ class SearchApiTest < ActiveSupport::TestCase
     }.ignore_extra_keys!
 
     matcher = JsonExpressions::Matcher.new(pattern)
-
     json = JSON.parse(last_response.body)
+
     assert matcher =~ json
   end
 
@@ -116,11 +109,9 @@ class SearchApiTest < ActiveSupport::TestCase
     }.ignore_extra_keys!
 
     matcher = JsonExpressions::Matcher.new(pattern)
-
     json = JSON.parse(last_response.body)
 
     assert matcher    =~ json
-
     assert_equal 12,  json['items'][0]['doc_id']
     assert_equal 13,  json['items'][1]['doc_id']
     assert_equal 25,  json['items'][2]['doc_id']
@@ -168,11 +159,9 @@ class SearchApiTest < ActiveSupport::TestCase
     }.ignore_extra_keys!
 
     matcher = JsonExpressions::Matcher.new(pattern)
-
     json = JSON.parse(last_response.body)
 
     assert matcher    =~ json
-
     assert_equal 23,  json['items'][0]['doc_id']
     assert_equal 24,  json['items'][1]['doc_id']
     assert_equal 25,  json['items'][2]['doc_id']
@@ -196,11 +185,9 @@ class SearchApiTest < ActiveSupport::TestCase
     }.ignore_extra_keys!
 
     matcher = JsonExpressions::Matcher.new(pattern)
-
     json = JSON.parse(last_response.body)
 
     assert matcher    =~ json
-
     assert_equal 23,  json['items'][0]['doc_id']
     assert_equal 24,  json['items'][1]['doc_id']
     assert_equal 25,  json['items'][2]['doc_id']
@@ -221,12 +208,10 @@ class SearchApiTest < ActiveSupport::TestCase
     }.ignore_extra_keys!
 
     matcher = JsonExpressions::Matcher.new(pattern)
-
     json = JSON.parse(last_response.body)
 
     assert_equal "/profile/steff2",     json['items'][0]['doc_url']
     assert_equal "/profile/steff3",     json['items'][1]['doc_url']
-
     assert matcher =~ json
   end
 
@@ -244,10 +229,9 @@ class SearchApiTest < ActiveSupport::TestCase
     }.ignore_extra_keys!
 
     matcher = JsonExpressions::Matcher.new(pattern)
-
     json = JSON.parse(last_response.body)
-    assert_equal "from is invalid", json["error"]
 
+    assert_equal "from is invalid", json["error"]
   end
 
   test 'search Tag Nearby People functionality wth sort_by=recent' do
@@ -265,12 +249,10 @@ class SearchApiTest < ActiveSupport::TestCase
     }.ignore_extra_keys!
 
     matcher = JsonExpressions::Matcher.new(pattern)
-
     json = JSON.parse(last_response.body)
 
     assert_equal "/profile/steff3",     json['items'][0]['doc_url']
     assert_equal "/profile/steff2",     json['items'][1]['doc_url']
-
     assert matcher =~ json
   end
 
@@ -289,11 +271,9 @@ class SearchApiTest < ActiveSupport::TestCase
     }.ignore_extra_keys!
 
     matcher = JsonExpressions::Matcher.new(pattern)
-
     json = JSON.parse(last_response.body)
 
     assert_equal "/profile/steff3",     json['items'][0]['doc_url']
-
     assert matcher =~ json
   end
 
@@ -313,60 +293,53 @@ class SearchApiTest < ActiveSupport::TestCase
     }.ignore_extra_keys!
 
     matcher = JsonExpressions::Matcher.new(pattern)
-
     json = JSON.parse(last_response.body)
 
     assert_equal "/profile/steff3",     json['items'][0]['doc_url']
-
     assert matcher =~ json
   end
 
-  test 'search Recent People functionality' do
-    get '/api/srch/peoplelocations?query=100'
+  test 'search Tag Nearby People using tag=spectrometer (user_tag as default) should return no result' do
+    get '/api/srch/nearbyPeople?nwlat=31.0&selat=0.0&nwlng=0.0&selng=40.0&tag=spectrometer'
     assert last_response.ok?
 
     # Expected search pattern
     pattern = {
         srchParams: {
-            query: '100',
-            seq: nil,
+          nwlat: 31.0,
+          nwlng: 0.0,
+          selat: 0.0,
+          selng: 40.0,
+          tag: 'spectrometer'
         }.ignore_extra_keys!
     }.ignore_extra_keys!
 
     matcher = JsonExpressions::Matcher.new(pattern)
-
     json = JSON.parse(last_response.body)
 
-    assert_equal users(:bob).username, json['items'][0]['doc_title']
-    assert_equal "PLACES",             json['items'][0]['doc_type']
-    assert_equal 1,                    json['items'][0]['doc_id']
-
+    assert_equal "",     json['items']
     assert matcher =~ json
-
   end
 
-  test 'search recent people functionality having specified tagName' do
-    get '/api/srch/peoplelocations?query=100&tag=tool:barometer'
+  test 'search Tag Nearby People using tag=spectrometer and field=node_tag' do
+    get '/api/srch/nearbyPeople?nwlat=31.0&selat=0.0&nwlng=0.0&selng=40.0&tag=spectrometer&field=node_tag'
     assert last_response.ok?
 
     # Expected search pattern
     pattern = {
         srchParams: {
-            query: '100',
-            tag: 'tool:barometer',
-            seq: nil,
+          nwlat: 31.0,
+          nwlng: 0.0,
+          selat: 0.0,
+          selng: 40.0,
+          tag: 'spectrometer'
         }.ignore_extra_keys!
     }.ignore_extra_keys!
 
     matcher = JsonExpressions::Matcher.new(pattern)
-
     json = JSON.parse(last_response.body)
 
-    assert_equal users(:bob).username, json['items'][0]['doc_title']
-    assert_equal "PLACES",             json['items'][0]['doc_type']
-    assert_equal 1,                    json['items'][0]['doc_id']
-
+    assert_equal "/profile/steff3",     json['items'][0]['doc_url']
     assert matcher =~ json
-
   end
 end
