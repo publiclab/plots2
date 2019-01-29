@@ -45,8 +45,7 @@ class HomeControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
     get :dashboard
     assert_response :success
-    assert_equal '', @response.body
-    assert @response.body.match("mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+item+that+looks+like+spam+or+needs+to+be+moderated:+Canon+A1200+IR+conversion+at+PLOTS+Barnraising+at+LUMCON+https://publiclab.org/n/1+by+https://publiclab.org/profile/jeff+Thanks!")
+    assert @response.body.match("mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+item+that+looks+like+spam+or+needs+to+be+moderated:+Method+page+https://publiclab.org/n/20+by+https://publiclab.org/profile/lurker+Thanks!")
   end
 
   test 'should show only unmoderated spam' do
