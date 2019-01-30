@@ -335,8 +335,9 @@ class Tag < ApplicationRecord
     Rails.cache.fetch("graph-data/#{limit}", expires_in: 1.weeks) do
       data = {}
       data["tags"] = []
-      Tag.joins(:node_tag)
+      Tag.joins(:node)
         .group(:tid)
+        .where('node.status': 1)
         .order(count: :desc)
         .limit(limit).each do |tag|
         data["tags"] << {

@@ -487,6 +487,10 @@ class TagController < ApplicationController
     render layout: false
   end
 
+  def graph
+    render layout: false
+  end
+
   def graph_data
     render json: Tag.graph_data(params[:limit])
   end
