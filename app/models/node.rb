@@ -194,16 +194,15 @@ class Node < ActiveRecord::Base
     while week >= 1
       # initialising month variable with the month of the starting day
       # of the week
-      month = (time - (week * 7 - 1).days).strftime('%m')
+      month = time - (week * 7 - 1).days
 
       # Now fetching the weekly data of notes or wikis
-      month = month.to_i
       current_week = Node.select(:created)
-                     .where(type: type,
-                            status: 1,
-                            created: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
-                      .count
-      weeks[count] = [month, current_week]
+                    .where(type: type,
+                    status: 1,
+                    created: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
+                    .count
+      weeks[count] = [(month.to_f * 1000), current_week]
       count += 1
       week -= 1
     end
