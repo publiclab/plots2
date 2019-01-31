@@ -14,16 +14,57 @@
   </h3>
 
   <p><small><%= raw auto_link(RDiscount.new(@user.bio || '').to_html, :sanitize => false) %></small></p>
+  <hr/>
 
-  <hr />
-  <div class="row" id="highlight" style=" text-align: center;">
-    <h3 class="col-md-4 col-xs-12 col-sm-4"><a href = "/tag/question:*/author/<%= params[:id] %>"><%= Node.questions.where(status: 1, uid: @user.id).length %> questions asked </a><br><br> <%= Answer.where(uid: @user.id).count %> answers posted</h3>
-    <h3 class="col-md-4 col-xs-12 col-sm-4"><a href = "/tag/activity:*/author/<%= params[:id] %>"><%= @count_activities_posted %> activities posted </a><br><br> <a href = "/tag/replication:*/author/<%= params[:id] %>"><%= @count_activities_attempted %> activities attempted</a></h3>
-    <% if !@map_lat.nil? && !@map_lon.nil? %>
-      <%= render :partial => "map/userLeaflet" , locals: {haslocation: true} %>
-    <% elsif !current_user.nil? && current_user.id == @user.id %>
-      <%= render :partial => "map/userLeaflet" , locals: {haslocation: false} %>
-    <% end %>
+  <div class="" id="highlight" style="text-align: center; ">
+    
+    <div style=" display: flex;flex-wrap: wrap; height:440px; ">
+      <div style="  height: 350px; width: 363px; ">
+        <h3 class="col-md-4 col-xs-12 col-sm-4">
+          <div style=" background-color: red; width:345px ; height:139px;">
+            <a href = "/tag/question:*/author/<%= params[:id] %>" style="color:black ; position: relative; top: 39%;">
+              <%= Node.questions.where(status: 1, uid: @user.id).length %> questions asked  
+            </a>
+          </div>
+          
+          <br><br>  
+          <div style=" background-color: yellow; width:345px ; height:139px; color:black">
+            <span style="position: relative; top: 39%;">
+              <%= Answer.where(uid: @user.id).count %> answers posted 
+            </span>
+          </div>
+          
+        </h3>
+      </div>
+
+      <div style="  height: 350px; width: 363px;">
+        <h3 class="col-md-4 col-xs-12 col-sm-4">
+          <div style=" background-color: green; width:345px ; height:139px;">
+            <a href = "/tag/activity:*/author/<%= params[:id] %>" style="color:black ; position: relative; top: 39%;" >
+              <%= @count_activities_posted %> activities posted 
+            </a>
+          </div>
+          
+          <br><br>
+          <div style=" background-color: purple; width:345px ; height:139px;">
+            <a href = "/tag/replication:*/author/<%= params[:id] %>" style="color:black ; position: relative; top: 39%; " > 
+              <%= @count_activities_attempted %> activities attempted
+            </a>
+          </div>
+              
+        </h3>
+      </div>
+    </div>
+    
+
+    <div>
+      <% if !@map_lat.nil? && !@map_lon.nil? %>
+        <%= render :partial => "map/userLeaflet" , locals: {haslocation: true} %>
+      <% elsif !current_user.nil? && current_user.id == @user.id %>
+        <%= render :partial => "map/userLeaflet" , locals: {haslocation: false} %>
+      <% end %>
+    </div>
+    
   </div>
   <hr />
 
