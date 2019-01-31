@@ -15,7 +15,9 @@ class OpenidController < ApplicationController
 
   def index
     begin
-      permitted_params = params.permit('authenticity_token', 'back_to',
+      permitted_params = params.permit(
+        'authenticity_token', 'back_to',
+        'commit',
         'open_id', 'openid.assoc_handle',
         'openid.op_endpoint',
         'openid.response_nonce',
@@ -48,7 +50,8 @@ class OpenidController < ApplicationController
       return
     end
 
-    if current_user.nil? && !params['openid.mode']
+    if current_user.nil? && params['openid.mode'] != 'check_authentication'
+    #if current_user.nil? && !params['openid.mode']
       session[:openid_return_to] = request.env['ORIGINAL_FULLPATH']
       flash[:warning] = 'Please log in first.'
       redirect_to '/login'
