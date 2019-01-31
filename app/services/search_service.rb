@@ -97,6 +97,7 @@ class SearchService
 
     nodes_scope = Node.select(:nid)
                       .where('`latitude` >= ? AND `latitude` <= ?', coordinates["selat"], coordinates["nwlat"])
+                      .where(status: 1)
 
     if tag.present?
       nodes_scope = NodeTag.joins(:tag)
