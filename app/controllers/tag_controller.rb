@@ -492,7 +492,7 @@ class TagController < ApplicationController
   end
 
   def graph_data
-    render json: Tag.graph_data(params[:limit])
+    render json: params.key?(:limit) ? Tag.graph_data(params[:limit].to_i) : Tag.graph_data
   end
 
   private
