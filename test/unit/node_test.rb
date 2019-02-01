@@ -9,7 +9,7 @@ class NodeTest < ActiveSupport::TestCase
     assert_equal 'page', node.type
     assert_equal 1, node.status
     assert !node.answered
-    assert_equal [], node.location_tagnames
+    assert_equal [], node.location_tags
   end
 
   test 'basic question attributes' do
