@@ -49,13 +49,16 @@
             var mode = $(this).data('mode') || 'login';
             // set the mode of the modal to login if data-mode not specified
             setMode(mode);
-            // open the login modal to allow user to login:
-            $('.modal #loginModal').modal('show');
-            // ensure the original destination of the link is preserved as the return_to parameter, 
-            // thus redirecting there once login or signup is completed:
-            $('.login-modal-redirect').val($(this).attr('href'));
+            require_login_and_redirect_to($(this).attr('href'));
           });
         });
+        function require_login_and_redirect_to(url) {
+          // open the login modal to allow user to login:
+          $('#loginModal').modal('show');
+          // ensure the original destination of the link is preserved as the return_to parameter, 
+          // thus redirecting there once login or signup is completed:
+          $('.login-modal-redirect').val(url);
+        }
       </script>
 
   <% end %>
@@ -63,7 +66,7 @@
     $("a.loginToggle").click(function() {
       // When a button that always toggles the login modal is clicked
       setMode("login"); // Sets the mode of the modal to login, to show only the login partial
-      $('.modal #loginModal').modal(); // Open the login modal to allow user to login
+      $('#loginModal').modal(); // Open the login modal to allow user to login
     })
   </script>
 </div>
