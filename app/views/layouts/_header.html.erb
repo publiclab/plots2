@@ -173,4 +173,6 @@
   <%= render partial: "layouts/alerts" %>
 </div>
 
-<%= render partial: "layouts/signupLoginModal" %>
+<% unless (params[:controller] == 'users' && params[:action] == 'new') %>
+  <%= render partial: "layouts/signupLoginModal" %>
+<% end %>
