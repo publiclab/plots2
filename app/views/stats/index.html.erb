@@ -110,7 +110,7 @@
 <script>
 var options = {
     chart: {
-        type: "line",
+        type: "area",
         height: 500,
         foreColor: "#999",
         scroller: {
@@ -199,8 +199,9 @@ var options = {
 
         },
         yaxis: {
-            tickAmount: 4,
+            tickAmount: 6,
             min: 0,
+            opposite: true,
             labels: {
                 offsetX: 24,
                 offsetY: -5
