@@ -1,5 +1,7 @@
 <div class="container">
-<%= form_for :user_session, :as => :user_session, :url => "/user_sessions?return_to=" + request.fullpath, :html => {:class => "form col-md-6 offset-3"} do |f| %>
+<%= form_for :user_session, :as => :user_session, :url => "/user_sessions, :html => {:class => "form user-sessions-form col-md-6 offset-3"} do |f| %>
+
+  <input type="hidden" name="return_to" class="login-modal-redirect" value="<%= request.fullpath %>" />
 
   <h2 id="toSignup"><%= raw t('user_sessions.new.log_in_or_sign_up', :url1 => "#") %></h2>
   <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
@@ -42,25 +44,26 @@
       <script>
         $(document).ready(function() {
           $('a.requireLogin').click(function(e) { //For every link that should require login
-            e.preventDefault(); //Prevent automatically redirecting to the link specified by href
+             // intercept the function of the original link, don't go there (yet):
+            e.preventDefault();
             var mode = $(this).data('mode') || 'login';
-            setMode(mode); //Sets the mode of the modal to login if data-mode not specified
-            $('#loginModal').modal('show');//Open the login modal to allow user to login
-            $.getJSON($(this).attr('href'));
-             /*send a request for the site the href specified,
-             Because login modal uses request.fullpath as part of its
-             redirect parameters, we can send a request to the link
-             we want to redirect to so this variable gets updated to
-             that link. Now when the user logs in, it should go to that link.*/
+            // set the mode of the modal to login if data-mode not specified
+            setMode(mode);
+            // open the login modal to allow user to login:
+            $('.modal #loginModal').modal('show');
+            // ensure the original destination of the link is preserved as the return_to parameter, 
+            // thus redirecting there once login or signup is completed:
+            $('.login-modal-redirect').val($(this).attr('href'));
           });
         });
       </script>
 
   <% end %>
   <script>
-    $("a.loginToggle").click(function(){ //When a button that always toggles the login modal is clicked
-      setMode("login"); //Sets the mode of the modal to login, to show only the login partial
-      $('#loginModal').modal(); //Open the login modal to allow user to login
+    $("a.loginToggle").click(function() {
+      // When a button that always toggles the login modal is clicked
+      setMode("login"); // Sets the mode of the modal to login, to show only the login partial
+      $('.modal #loginModal').modal(); // Open the login modal to allow user to login
     })
   </script>
 </div>
