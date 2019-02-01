@@ -3,7 +3,7 @@
 
   <input type="hidden" name="return_to" class="login-modal-redirect" value="<%= request.fullpath %>" />
 
-  <h2 id="toSignup"><%= raw t('user_sessions.new.log_in_or_sign_up', :url1 => "#") %></h2>
+  <h2 id="toSignup"><%= raw t('user_sessions.new.log_in_or_sign_up', :url1 => "/signup") %></h2>
   <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
   <br style="clear:both;"/>
 
