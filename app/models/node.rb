@@ -401,7 +401,7 @@ class Node < ActiveRecord::Base
   # returns all tagnames for a given power tag
   def power_tags(tagname)
     tags = []
-    power_tag_objects(tag).each do |nt|
+    power_tag_objects(tagname).each do |nt|
       tags << nt.name.gsub(tagname + ':', '')
     end
     tags
