@@ -9,11 +9,19 @@ class NodeTest < ActiveSupport::TestCase
     assert_equal 'page', node.type
     assert_equal 1, node.status
     assert !node.answered
+    assert_equal [], node.location_tagnames
   end
 
   test 'basic question attributes' do
     question = nodes(:question)
     assert question.answered
+  end
+
+  test 'basic location attributes' do
+    map = nodes(:map)
+    assert map.lat
+    assert map.lon
+    assert map.location_tagnames
   end
 
   test 'emoji conversion' do
