@@ -173,6 +173,6 @@
   <%= render partial: "layouts/alerts" %>
 </div>
 
-<% unless (params[:controller] == 'users' && params[:action] == 'new') %>
+<% unless (params[:controller] == 'users' && params[:action] == 'new') %><!-- only show modal once per page -->
   <%= render partial: "layouts/signupLoginModal" %>
 <% end %>
