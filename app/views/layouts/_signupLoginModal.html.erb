@@ -56,8 +56,8 @@
     if (mode == "signup") showSignup(); //If the mode that has been set is "signup", show the signup part of the partial
     else showLogin(); //Show the login partial otherwise
 
-    // Function runs when the "login" buttin in the signup modal is clicked
-    $("#toLogin").click(function clickLogin() {
+    // Function runs when the "login" button in the signup modal is clicked
+    $(".modal #toLogin").click(function clickLogin() {
       var user = $("#signupContainer").find("#username-login").val(); //Username and password data is transferred to the other partial
       var pass = $("#signupContainer").find("#password").val();
       showLogin(); // Modal switches to login view
@@ -66,7 +66,7 @@
     });
 
     // Function runs when the "sign up to join" link in the login modal is clicked 
-    $("#toSignup").click(function clickSignup() {
+    $(".modal #toSignup").click(function clickSignup() {
       var user = $("#loginContainer").find("#username-signup").val(); //Username and password data is transferred to the other partial
       var pass = $("#loginContainer").find("#password-signup").val();
       showSignup(); // Modal switches to sign up view
