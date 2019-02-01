@@ -1,5 +1,5 @@
 <div class="container">
-<%= form_for :user_session, :as => :user_session, :url => "/user_sessions, :html => {:class => "form user-sessions-form col-md-6 offset-3"} do |f| %>
+<%= form_for :user_session, :as => :user_session, :url => "/user_sessions", :html => {:class => "form user-sessions-form col-md-6 offset-3"} do |f| %>
 
   <input type="hidden" name="return_to" class="login-modal-redirect" value="<%= request.fullpath %>" />
 
