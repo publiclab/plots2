@@ -27,8 +27,13 @@
       <div class="dashboard-blog">
  
         <% if @blog %> 
-          <div class="img"<% if @blog.main_image %> style="background-image: url('<%= @blog.main_image.path(:large) %>')"<% end %>>
-       
+
+          <% if @blog.main_image %>
+            <div class="img" style="background-image: url('<%= @blog.main_image.path(:large) %>')">
+          <% elsif @blog.scraped_image %>
+            <div class="img" style="background-image: url('<%= @blog.scraped_image %>')">
+          <% end %>
+
             <div class="blog-caption">
        
               <h4>
