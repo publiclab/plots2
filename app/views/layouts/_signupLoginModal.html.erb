@@ -17,7 +17,7 @@
 
           <div id="loginContainer">
             <!-- login partial -->
-            <%= render file: "user_sessions/new" %>
+            <%= render partial: "user_sessions/form" %>
           </div>
         </div>
 
@@ -57,7 +57,8 @@
     else showLogin(); //Show the login partial otherwise
 
     // Function runs when the "login" button in the signup modal is clicked
-    $(".modal #toLogin").click(function clickLogin() {
+    $(".modal #toLogin").click(function clickLogin(e) {
+      e.preventDefault(); // disable the link
       var user = $("#signupContainer").find("#username-login").val(); //Username and password data is transferred to the other partial
       var pass = $("#signupContainer").find("#password").val();
       showLogin(); // Modal switches to login view
@@ -66,7 +67,8 @@
     });
 
     // Function runs when the "sign up to join" link in the login modal is clicked 
-    $(".modal #toSignup").click(function clickSignup() {
+    $(".modal #toSignup a").click(function clickSignup(e) {
+      e.preventDefault(); // disable the link
       var user = $("#loginContainer").find("#username-signup").val(); //Username and password data is transferred to the other partial
       var pass = $("#loginContainer").find("#password-signup").val();
       showSignup(); // Modal switches to sign up view
@@ -79,12 +81,11 @@
 
 <!-- The following css allows the modal to appear in the center of the screen -->
 <style>
-  #loginModal.modal {
+  #loginModal {
     text-align: center;
-    padding: 0!important;
   }
 
-  #loginModal.modal:before {
+  #loginModal:before {
     content: '';
     display: inline-block;
     height: 100%;
@@ -92,7 +93,7 @@
     margin-right: -4px;
   }
 
-  #loginModal.modal-dialog {
+  #loginModal .modal-dialog {
     display: inline-block;
     text-align: left;
     vertical-align: middle;
