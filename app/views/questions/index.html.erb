@@ -1,17 +1,4 @@
 <div class="col-md-12">
-    <div class ="row">
-        <div class="col-md-6" >
-            <% if @stats.blank? %>
-                <h4><i> Select a range to view questions statistics within that period</i></h4>
-        <% end %>
-            <h4><b> <%= @stats if params[:period].present?  %></b></h4>
-        </div>
-        <div class="col-md-4">
-            <%= form_tag request.url, :method => 'get'  do %>
-                <%= select_tag :period, options_for_select(options),onchange: "this.form.submit();", include_blank: "Filter stats by week, month and year", class: "form-control"%>
-            <% end %>
-        </div>
-    </div>
 
   <% if params[:action] == 'answered' %>
   <h2>Recently Answered <small class="hidden-sm">Recently answered questions</small></h2>
@@ -103,3 +90,17 @@
 </script>
 <% end %>
 <%= stylesheet_link_tag "dashboard" %>
+
+<div class ="row">
+    <div class="col-md-6" >
+        <% if @stats.blank? %>
+            <h4><i> Select a range to view questions statistics within that period</i></h4>
+    <% end %>
+        <h4><b> <%= @stats if params[:period].present?  %></b></h4>
+    </div>
+    <div class="col-md-4">
+        <%= form_tag request.url, :method => 'get'  do %>
+            <%= select_tag :period, options_for_select(options),onchange: "this.form.submit();", include_blank: "Filter stats by week, month and year", class: "form-control"%>
+        <% end %>
+    </div>
+</div>
