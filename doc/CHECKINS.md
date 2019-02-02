@@ -20,7 +20,7 @@ notify everyone by referencing `@/all` and linking the post. Include a brief mes
 
 "<em>Hey! Please see our weekly check-in \<here\>. Everyone is welcome to contribute and we encourage new users to get involved</em>."
 
-- Check-ins have a <em>theme</em>. Select any theme that interests you to guide the general flow of responces from the communtiy. 
+- Check-ins have a <em>theme</em>. Select any theme that interests you to guide the general flow of responses from the community. 
 
 - Add anything else you'd like. 
 
@@ -32,7 +32,7 @@ notify everyone by referencing `@/all` and linking the post. Include a brief mes
 
   - Troubleshot any issues that the rest of the community can learn from?
 
-- Include sections from the [last check-in](https://github.com/publiclab/plots2/issues?q=is%3Aopen+is%3Aissue+label%3A%22community+check-in%22) that make sense to carry over. If you need hint for check-in template, theme or content, refer [past check-ins](https://github.com/publiclab/plots2/issues?utf8=%E2%9C%93&q=is%3Aissue+label%3A%22community+check-in%22+).
+- Include sections from the [last check-in](https://github.com/publiclab/plots2/issues?q=is%3Aopen+is%3Aissue+label%3A%22community+check-in%22) that make sense to carry over. If you need a hint, reference the template, theme, or content of [past check-ins](https://github.com/publiclab/plots2/issues?utf8=%E2%9C%93&q=is%3Aissue+label%3A%22community+check-in%22+).
 
 ## Thanks! 
 
