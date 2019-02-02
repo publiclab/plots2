@@ -19,8 +19,14 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'basic location attributes' do
     map = nodes(:map)
+    assert map.has_power_tag('lat')
+    assert map.has_power_tag('lon')
+    assert_not_nil map.power_tag('lat')
+    assert_not_nil map.power_tag('lon')
     assert map.lat
     assert map.lon
+    assert_equal map.lat, map.power_tag('lat').split(':').first.to_f
+    assert_equal map.lon, map.power_tag('lon').split(':').first.to_f
     assert map.location_tags
   end
 
