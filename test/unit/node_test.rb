@@ -21,7 +21,7 @@ class NodeTest < ActiveSupport::TestCase
     map = nodes(:map)
     assert map.lat
     assert map.lon
-    assert map.location_tagnames
+    assert map.location_tags
   end
 
   test 'emoji conversion' do
