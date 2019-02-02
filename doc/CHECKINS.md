@@ -1,6 +1,6 @@
 # Community Check-ins
 
-One of our community values is openness and diversity in thought. For this reason, we have started weekly check-ins run by our contributors (you!). The check-ins are currently opened as issues on the plots2 repository [issues](https://github.com/publiclab/plots2/issues?utf8=%E2%9C%93&q=) page
+One of our community values is openness and diversity in thought. For this reason, we have started weekly check-ins run by our contributors (you!). The check-ins are currently opened as issues on the plots2 repository [issues](https://github.com/publiclab/plots2/issues) page
  for convenience, but are meant to instigate discussions about any and all repos / topics related to Public Lab. You can always find the most recent check-in pinned at the top of the page.
 
 New contributors are encouraged to get engaged :).
