@@ -770,7 +770,7 @@ en:
     tag_deleted: "Tag deleted."
     tag_doesnt_exist: "Tag doesn't exist."
   wiki_controller:
-    new_wiki_page: "New wiki page"
+    new_wiki_page: New wiki page
     pages_does_not_exist: "That page does not yet exist. You must be logged in to create
       a new wiki page."
     page_moderated_as_spam: "That page has been moderated as spam. Please contact web@publiclab.org
@@ -794,7 +794,7 @@ en:
     invalid_wiki_page: "Invalid wiki page. No Revisions exist for this wiki page."
     revision_not_found: "Revision not found."
     revision_has_been_moderated: "That revision has been moderated. Please see <a href='/wiki/moderation'>the
-      moderation page to learn more</a>".
+      moderation page to learn more</a>."
     lead_image_or_title_change: "<p>Lead image or title change</p>"
     wiki: "Wiki"
     popular_wiki_pages: "Popular wiki pages"
