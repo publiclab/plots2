@@ -504,6 +504,7 @@ class TagController < ApplicationController
     @tags = Tag.where(name: params[:id])
     @tag_notes = @tags.first.contribution_graph_making('note', 52, @time)
     @tag_wikis = @tags.first.contribution_graph_making('page', 52, @time)
+    @tag_maps = @tags.first.contribution_graph_making('map', 52, @time)
   end
 
   private
