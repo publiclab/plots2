@@ -81,23 +81,33 @@ class StatsController < ApplicationController
   end
 
   def notes
-    export_as_json('note')
+    time
+    export_as_json(@start, @end, 'note')
   end
 
   def wikis
-    export_as_json('wiki')
+    time
+    export_as_json(@start, @end, 'page')
   end
 
   def comments
-    data = Comment.where(status: 1).all.to_json
+    time
+    data = Comment.select(%i(status timestamp)).where(status: 1, timestamp: @start.to_i...@end.to_i).all.to_json
     send_data data, :type => 'application/json; header=present', :disposition => "attachment; filename=comment.json"
   end
 
   private
 
-  def export_as_json(type)
-    data = Node.where(type: type, status: 1).all.to_json
+  def export_as_json(starting, ending, type)
+    data = Node.select(%i(status created type))
+      .where(type: type, status: 1, created: starting.to_i..ending.to_i)
+      .all.to_json
     send_data data, :type => 'application/json; header=present', :disposition => "attachment; filename=#{type}.json"
+  end
+
+  def time
+    @start = params[:start] ? Time.parse(params[:start].to_s) : Time.now - 1.month
+    @end = params[:end] ? Time.parse(params[:end].to_s) : Time.now
   end
 
   def to_keyword(param)
