@@ -78,10 +78,10 @@
     </div>
 
     <% if Rails.env == "production" && !params[:spamaway] %>
-      <div class="recaptcha-container">
+      <div class="col-sm-12 recaptcha-container">
         <%= recaptcha_tags %>
+        <p>If you cannot use the ReCaptcha to verify you are not a bot, <a href="/signup?spamaway=true">use this alternative verification</a>.</p>
       </div>
-      <p>If you cannot use the ReCaptcha to verify you are not a bot, <a href="/signup?spamaway=true">use this alternative verification</a>.</p>
     <% else %>
 
     <div class="col-sm-12">
