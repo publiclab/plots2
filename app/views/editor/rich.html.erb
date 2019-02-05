@@ -120,6 +120,19 @@
                         </div>
                       </div>
                     </p>
+                    <br>
+                    <p><button class="btn btn-lg btn-default" onclick="editor.mapModule.blurredLocation.geocodeWithBrowser(true);">
+                      <div id="ldi-geocode-button">          
+                        <i class="fa fa-compass"></i> Use current location
+                      </div>
+                    </button></p>
+
+                     <br>
+                     <label>
+                       <input id="obscureLocation" type="checkbox"  onchange='editor.mapModule.blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);'>
+                        Blur my location
+                     </label>
+                     <a href="https://publiclab.org/location-privacy">Learn more</a>
                 </div>   
             </div>
           </div>
