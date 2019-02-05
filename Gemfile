@@ -85,6 +85,7 @@ gem 'execjs' # See https://github.com/sstephenson/execjs#readme for more support
 gem 'sass-rails', '~> 5.0', '>= 5.0.7'
 gem 'therubyracer'
 gem 'uglifier', '>= 1.0.3'
+gem 'grape-rails-cache'
 
 group :development do
   gem 'byebug', platform: :mri
