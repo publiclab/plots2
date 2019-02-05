@@ -1,18 +1,20 @@
 <br><br>
 <div class="btn-group">
-      <a href="/post" class="btn btn-primary btn-lg requireLogin"><i class="fa fa-plus-circle fa-white"></i> <%= t('dashboard._header.share_work') %></a>
+    <a href="/post" class="btn btn-primary btn-lg requireLogin"><i class="fa fa-plus-circle fa-white"></i> <%= t('dashboard._header.share_work') %></a>
+    <div class="dropdown">
       <a class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <span class="caret"></span>
         <span class="sr-only">Toggle Dropdown</span>
       </a>
-      <ul class="dropdown-menu">
-        <li><a href="/post?n=15322&title=How%20to%20...&tags=activity:new,draft"><%= t('dashboard._header.dropdown.share_activity') %></a></li>
-        <li><a href="/post"><%= t('dashboard._header.dropdown.share_research_note') %></a></li>
-        <li><a href="/post?tags=question:question&template=question&redirect=question"><%= t('dashboard._header.dropdown.ask_question') %></a></li>
-        <li><a href="/post?template=event&tags=event"><%= t('dashboard._header.dropdown.post_event') %></a></li>
-        <li role="separator" class="divider"></li>
-        <li><a href="/post?tags=blog-submission"><%= t('dashboard._header.dropdown.tell_story_blog') %></a></li>
-      </ul>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="/post?n=15322&title=How%20to%20...&tags=activity:new,draft"><%= t('dashboard._header.dropdown.share_activity') %></a>
+        <a class="dropdown-item" href="/post"><%= t('dashboard._header.dropdown.share_research_note') %></a>
+        <a class="dropdown-item" href="/post?tags=question:question&template=question&redirect=question"><%= t('dashboard._header.dropdown.ask_question') %></a>
+        <a class="dropdown-item" href="/post?template=event&tags=event"><%= t('dashboard._header.dropdown.post_event') %></a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="/post?tags=blog-submission"><%= t('dashboard._header.dropdown.tell_story_blog') %></a>
+      </div>
+    </div>
   </div>
 
 <br><br>

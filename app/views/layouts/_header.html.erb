@@ -75,7 +75,7 @@
       <ul class="navbar-nav mr-5">
         <% if current_user %>
           <li class="nav-item d-sm-none d-xl-inline">
-            <a rel="tooltip" title="<%= t('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard">Dashboard</a>
+            <a rel="tooltip" class="nav-link" title="<%= t('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard">Dashboard</a>
           </li>
         <% else %>
         <li class="d-md-none d-xl-inline nav-item"> <!-- signup button -->
