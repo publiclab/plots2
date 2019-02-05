@@ -399,24 +399,19 @@ class Node < ActiveRecord::Base
   end
 
   # returns all tagnames for a given power tag
-  def power_tags(tag)
-    tids = Tag.includes(:node_tag)
-              .references(:community_tags)
-              .where('community_tags.nid = ? AND name LIKE ?', id, tag + ':%')
-              .collect(&:tid)
-    node_tags = NodeTag.where('nid = ? AND tid IN (?)', id, tids)
+  def power_tags(tagname)
     tags = []
-    node_tags.each do |nt|
-      tags << nt.name.gsub(tag + ':', '')
+    power_tag_objects(tagname).each do |nt|
+      tags << nt.name.gsub(tagname + ':', '')
     end
     tags
   end
 
   # returns all power tag results as whole community_tag objects
-  def power_tag_objects(tag)
+  def power_tag_objects(tagname)
     tids = Tag.includes(:node_tag)
               .references(:community_tags)
-              .where('community_tags.nid = ? AND name LIKE ?', id, tag + ':%')
+              .where('community_tags.nid = ? AND name LIKE ?', id, tagname + ':%')
               .collect(&:tid)
     NodeTag.where('nid = ? AND tid IN (?)', id, tids)
   end
@@ -428,6 +423,14 @@ class Node < ActiveRecord::Base
               .where('community_tags.nid = ? AND name LIKE ?', id, '%:%')
               .collect(&:tid)
     NodeTag.where('nid = ? AND tid NOT IN (?)', id, tids)
+  end
+
+  def location_tags
+    if lat && lon
+      power_tag_objects('lat') + power_tag_objects('lon')
+    else
+      []
+    end
   end
 
   # accests a tagname /or/ tagname ending in wildcard such as "tagnam*"
@@ -553,16 +556,6 @@ class Node < ActiveRecord::Base
     else
       false
     end
-  end
-
-  # these should eventually displace the above means of finding locations
-  # ...they may already be redundant after tagged_map_coord migration
-  def tagged_lat
-    power_tags('lat')[0]
-  end
-
-  def tagged_lon
-    power_tags('lon')[0]
   end
 
   def next_by_author

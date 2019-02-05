@@ -10,7 +10,7 @@
   }).addTo(map)
 
   <% @notes.each do |place| %>
-    <% if place.tagged_lat && place.tagged_lon %>L.marker([<%= place.tagged_lat %>, <%= place.tagged_lon %>]).addTo(map).bindPopup("<a href='<%= place.path %>'><%= place.latest.title %></a>");<% end %>
+    <% if place.lat && place.lon %>L.marker([<%= place.lat %>, <%= place.lon %>]).addTo(map).bindPopup("<a href='<%= place.path %>'><%= place.latest.title %></a>");<% end %>
   <% end %>
 </script>
 
