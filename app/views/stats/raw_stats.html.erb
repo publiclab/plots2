@@ -36,16 +36,22 @@
     </button>
     <ul class="dropdown-menu">
         <li>
-            <%= link_to "Notes", stats_notes_path(start: params[:start], end: params[:end]) %>
+            <%= link_to "Notes", stats_notes_path(format: 'json', start: params[:start], end: params[:end]) %>
         </li>
         <li>
-            <%= link_to "Wikis", stats_wikis_path(start: params[:start], end: params[:end]) %>
+            <%= link_to "Wikis", stats_wikis_path(format: 'json', start: params[:start], end: params[:end]) %>
         </li>
         <li>
-            <%= link_to "Comments", stats_comments_path(start: params[:start], end: params[:end]) %>
+            <%= link_to "Comments", stats_comments_path(format: 'json', start: params[:start], end: params[:end]) %>
         </li>
         <li>
-            <%= link_to "Maps", stats_maps_path(start: params[:start], end: params[:end]) %>
+            <%= link_to "Users", stats_users_path(format: 'json', start: params[:start], end: params[:end]) %>
+        </li>
+        <li>
+            <%= link_to "Questions Asked", stats_questions_path(format: 'json', start: params[:start], end: params[:end]) %>
+        </li>
+        <li>
+            <%= link_to "Questions Answered", stats_answers_path(format: 'json', start: params[:start], end: params[:end]) %>
         </li>
     </ul>
 </div>
@@ -57,8 +63,23 @@
         <span class="sr-only">Toggle Dropdown</span>
     </button>
     <ul class="dropdown-menu">
+            <li>
+            <%= link_to "Notes", stats_notes_path(format: 'csv', start: params[:start], end: params[:end]) %>
+        </li>
         <li>
-            <%= link_to "Comments", stats_comments_path(format: "csv", start: params[:start], end: params[:end]) %>
+            <%= link_to "Wikis", stats_wikis_path(format: 'csv', start: params[:start], end: params[:end]) %>
+        </li>
+        <li>
+            <%= link_to "Comments", stats_comments_path(format: 'csv', start: params[:start], end: params[:end]) %>
+        </li>
+        <li>
+            <%= link_to "Users", stats_users_path(format: 'csv', start: params[:start], end: params[:end]) %>
+        </li>
+        <li>
+            <%= link_to "Questions Asked", stats_questions_path(format: 'csv', start: params[:start], end: params[:end]) %>
+        </li>
+        <li>
+            <%= link_to "Questions Answered", stats_answers_path(format: 'csv', start: params[:start], end: params[:end]) %>
         </li>
     </ul>
 </div>

@@ -165,6 +165,15 @@ class Node < ActiveRecord::Base
     save
   end
 
+  def self.to_csv(options = {})
+    CSV.generate(options) do |csv|
+      csv << column_names
+      all.each do |object|
+        csv << object.attributes.values_at(*column_names)
+      end
+    end
+  end
+
   public
 
   is_impressionable counter_cache: true, column_name: :views
