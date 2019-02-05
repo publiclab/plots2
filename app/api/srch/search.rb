@@ -7,6 +7,8 @@ module Srch
     # see /app/api/srch/shared_params.rb
     helpers SharedParams
 
+    include Grape::Rails::Cache
+
     # Endpoint definitions
     # Basic implementation from classic plots2 SearchController
     resource :srch do
@@ -92,19 +94,21 @@ module Srch
       end
       get :profiles do
         search_request = SearchRequest.fromRequest(params)
-        results = Search.execute(:profiles, params)
+        cache(key: "api:profiles:#{params[:query]}:#{params[:limit]}:#{params[:sort_by]}:#{params[:order_direction]}:#{params[:field]}", expires_in: 2.day) do
+          results = Search.execute(:profiles, params)
 
-        if results.present?
-          docs = results.map do |model|
-            DocResult.new(
-              doc_type: 'USERS',
-              doc_url: '/profile/' + model.name,
-              doc_title: model.username
-            )
+          if results.present?
+            docs = results.map do |model|
+              DocResult.new(
+                doc_type: 'USERS',
+                doc_url: '/profile/' + model.name,
+                doc_title: model.username
+              )
+            end
+            DocList.new(docs, search_request)
+          else
+            DocList.new('', search_request)
           end
-          DocList.new(docs, search_request)
-        else
-          DocList.new('', search_request)
         end
       end
 

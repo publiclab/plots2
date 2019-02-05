@@ -71,20 +71,21 @@ gem 'mailman', require: false
 gem 'reverse_markdown'
 
 # run with `bundle install --without production` or `bundle install --without mysql` to exclude this
-group :mysql, :production do
+group :mysql, :production, :test, :development do
   gem 'mysql2', '>= 0.4.4'
   # mysql 0.4.3+ causes a version mismatch, apparently, and demands 'activerecord-mysql2-adapter'
 end
 
-group :sqlite, :development do
-  gem 'sqlite3'
-end
+#group :sqlite, :development do
+#  gem 'sqlite3'
+#end
 
 gem 'coffee-rails', '~> 4.2.2'
 gem 'execjs' # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem 'sass-rails', '~> 5.0', '>= 5.0.7'
 gem 'therubyracer'
 gem 'uglifier', '>= 1.0.3'
+gem 'grape-rails-cache'
 
 group :development do
   gem 'byebug', platform: :mri
