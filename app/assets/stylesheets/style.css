@@ -475,7 +475,6 @@ div.note.moderated h4 {
 
 .is-active{
     cursor: default;
-    opacity: 0.6;
     background-color: #e3f2fd;
 }
 textarea, input {

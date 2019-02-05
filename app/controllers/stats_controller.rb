@@ -71,8 +71,6 @@ class StatsController < ApplicationController
     end
   end
 
-  def raw_stats; end
-
   def notes
     time
     export_as_json(@start, @end, 'note')

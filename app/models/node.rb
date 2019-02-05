@@ -148,6 +148,15 @@ class Node < ActiveRecord::Base
     end
   end
 
+  def self.to_csv(options = {})
+    CSV.generate(options) do |csv|
+      csv << column_names
+      all.each do |object|
+        csv << object.attributes.values_at(*column_names)
+      end
+    end
+  end
+
   private
 
   def set_path_and_slug
@@ -163,15 +172,6 @@ class Node < ActiveRecord::Base
   def setup
     self['created'] = DateTime.now.to_i
     save
-  end
-
-  def self.to_csv(options = {})
-    CSV.generate(options) do |csv|
-      csv << column_names
-      all.each do |object|
-        csv << object.attributes.values_at(*column_names)
-      end
-    end
   end
 
   public

@@ -74,6 +74,72 @@
     </table>
 
     <p><i>Member registration may include spam accounts</i></p>
+ <br>
+
+    <div class="btn-group">
+        <button type="button" class="btn btn-lg btn-info">
+            <i class="fa fa-cloud-download" style="color:blue"> </i>
+            Select to download as Json
+        </button>
+        <button type="button" class="btn btn-lg btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu">
+            <li>
+                <%= link_to "Notes", stats_notes_path(format: 'json', start: params[:start], end: params[:end]) %>
+            </li>
+            <li>
+                <%= link_to "Wikis", stats_wikis_path(format: 'json', start: params[:start], end: params[:end]) %>
+            </li>
+            <li>
+            <%= link_to "Comments", stats_comments_path(format: 'json', start: params[:start], end: params[:end]) %>
+        </li>
+        <li>
+            <%= link_to "Users", stats_users_path(format: 'json', start: params[:start], end: params[:end]) %>
+        </li>
+        <li>
+            <%= link_to "Questions Asked", stats_questions_path(format: 'json', start: params[:start], end: params[:end]) %>
+        </li>
+        <li>
+            <%= link_to "Questions Answered", stats_answers_path(format: 'json', start: params[:start], end: params[:end]) %>
+        </li>
+        </ul>
+    </div>
+    &ensp;
+    <div class="btn-group">
+        <button type="button" class="btn btn-lg btn-info">
+            <i class="fa fa-cloud-download" style="color:purple"> </i>
+            Select to download as Csv
+        </button>
+        <button type="button" class="btn btn-lg btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu">
+            <li>
+                <%= link_to "Notes", stats_notes_path(format: 'csv', start: params[:start], end: params[:end]) %>
+            </li>
+            <li>
+                <%= link_to "Wikis", stats_wikis_path(format: 'csv', start: params[:start], end: params[:end]) %>
+            </li>
+            <li>
+                <%= link_to "Comments", stats_comments_path(format: 'csv', start: params[:start], end: params[:end]) %>
+            </li>
+            <li>
+                <%= link_to "Users", stats_users_path(format: 'csv', start: params[:start], end: params[:end]) %>
+            </li>
+            <li>
+                <%= link_to "Questions Asked", stats_questions_path(format: 'csv', start: params[:start], end: params[:end]) %>
+            </li>
+            <li>
+                <%= link_to "Questions Answered", stats_answers_path(format: 'csv', start: params[:start], end: params[:end]) %>
+            </li>
+        </ul>
+    </div>
+
+   <br><br>
+
     <br>
     <p> Move back or forward using the buttons below </p>
     <div class="btn-group" role="group" aria-label="Basic example">

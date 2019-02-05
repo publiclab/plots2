@@ -257,7 +257,6 @@ Plots2::Application.routes.draw do
   get 'stats/questions/:start/:end' => 'stats#questions'
   get 'stats/answers' => 'stats#answers'
   get 'stats/answers/:start/:end' => 'stats#answers'
-  get 'stats/raw' => 'stats#raw_stats'
   get 'feed' => 'notes#rss'
   get 'rss.xml' => 'legacy#rss'
 
