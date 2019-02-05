@@ -71,18 +71,16 @@ class StatsController < ApplicationController
     end
   end
 
-  def stats_json
-    @hash = {}
-
-    @nodes = Node.where(status: 1).select(:type).uniq
-    @nodes.each do |n|
-      puts @hash[n.type] = Node.where(type: n.type, status: 1).to_json
-    end
-  end
+  def raw_stats; end
 
   def notes
     time
     export_as_json(@start, @end, 'note')
+  end
+
+  def maps
+    time
+    export_as_json(@start, @end, 'map')
   end
 
   def wikis
