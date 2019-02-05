@@ -1,6 +1,6 @@
 <ul class="nav nav-tabs">
   <li class="active"><a href="#comments" data-toggle="tab"><span class="hidden-sm hidden-xs"> All comments</span></a></li>
-  <li><a href="#moderated-comments" id="comments-tab" data-toggle="tab"><span class="hidden-sm hidden-xs">Moderated Comments</span></a></li>
+  <% if current_user &.can_moderate? %><li><a href="#moderated-comments" id="comments-tab" data-toggle="tab"><span class="hidden-sm hidden-xs">Moderated Comments</span></a></li><% end %>
 </ul>
 
 
