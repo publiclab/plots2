@@ -74,6 +74,74 @@
     </table>
 
     <p><i>Member registration may include spam accounts</i></p>
+
+<% if current_user && (current_user.role == "admin") %>
+ <br>
+
+     <div class="btn-group">
+         <button type="button" class="btn btn-lg btn-default">
+             <i class="fa fa-cloud-download" style="color:blue"> </i>
+             Download as json
+         </button>
+         <button type="button" class="btn btn-lg btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             <span class="caret"></span>
+             <span class="sr-only">Toggle Dropdown</span>
+         </button>
+         <ul class="dropdown-menu">
+             <li>
+                 <%= link_to "Notes", stats_notes_path(format: 'json', start: params[:start], end: params[:end]) %>
+             </li>
+             <li>
+                 <%= link_to "Wikis", stats_wikis_path(format: 'json', start: params[:start], end: params[:end]) %>
+             </li>
+             <li>
+                 <%= link_to "Comments", stats_comments_path(format: 'json', start: params[:start], end: params[:end]) %>
+             </li>
+             <li>
+                 <%= link_to "Users", stats_users_path(format: 'json', start: params[:start], end: params[:end]) %>
+             </li>
+             <li>
+                 <%= link_to "Questions Asked", stats_questions_path(format: 'json', start: params[:start], end: params[:end]) %>
+             </li>
+             <li>
+                 <%= link_to "Questions Answered", stats_answers_path(format: 'json', start: params[:start], end: params[:end]) %>
+             </li>
+         </ul>
+     </div>
+     &ensp;
+     <div class="btn-group">
+         <button type="button" class="btn btn-lg btn-default">
+             <i class="fa fa-cloud-download" style="color:purple"> </i>
+             Download as csv
+         </button>
+         <button type="button" class="btn btn-lg btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             <span class="caret"></span>
+             <span class="sr-only">Toggle Dropdown</span>
+         </button>
+         <ul class="dropdown-menu">
+             <li>
+                 <%= link_to "Notes", stats_notes_path(format: 'csv', start: params[:start], end: params[:end]) %>
+             </li>
+             <li>
+                 <%= link_to "Wikis", stats_wikis_path(format: 'csv', start: params[:start], end: params[:end]) %>
+             </li>
+             <li>
+                 <%= link_to "Comments", stats_comments_path(format: 'csv', start: params[:start], end: params[:end]) %>
+             </li>
+             <li>
+                 <%= link_to "Users", stats_users_path(format: 'csv', start: params[:start], end: params[:end]) %>
+             </li>
+             <li>
+                 <%= link_to "Questions Asked", stats_questions_path(format: 'csv', start: params[:start], end: params[:end]) %>
+             </li>
+             <li>
+                 <%= link_to "Questions Answered", stats_answers_path(format: 'csv', start: params[:start], end: params[:end]) %>
+             </li>
+         </ul>
+     </div>
+ <br><br>
+ <% end %>
+
     <br>
     <p> Move back or forward using the buttons below </p>
     <div class="btn-group" role="group" aria-label="Basic example">
