@@ -1,0 +1,31 @@
+<br>
+<div class="row">
+
+    <br>
+    <div class="col-md-6">
+        <%= form_tag request.url, method: :get do %>
+            <h5>Choose a date to show  a graph of statistics an year from that date</h5>
+            <br>
+            <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%d-%m-%Y") %>" data-date-format="dd-mm-yyyy" tabindex="1" class="form-control input-lg" type="text" name="time"  placeholder="&#xf133; Select date">
+            <br>
+            <%= submit_tag "Go", class: 'btn btn-secondary' %>
+        <% end %>
+
+    </div>
+</div>
+
+<br>
+<br>
+<br>
+<div class="graph">
+    <p> <b><%= params[:id].capitalize%></b> graph from <b><%= (@time - 1.year).to_formatted_s(:long)%></b> to <b><%= @time.to_formatted_s(:long)%></b> </p>
+<br>
+    <%= render partial: "tag/graph", locals: { wikis: @tag_wikis, notes: @tag_notes, maps: @tag_maps, questions: @tag_questions  } %>
+<br>
+
+<% if @tags.first.count.nil? %>
+    <i> There are no posts for this tag yet </i>
+<% else %>
+    <b>Total Tag count : <%= @tags.first.count %></b> 
+<% end %>
+</div>
