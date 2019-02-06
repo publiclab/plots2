@@ -43,10 +43,14 @@ class StatsController < ApplicationController
 
     @weekly_notes = Node.past_week.select(:type).where(type: 'note').count(:all)
     @weekly_wikis = Revision.past_week.count
+    @weekly_questions = Node.questions.past_week.count(:all).count
+    @weekly_answers = Answer.past_week.count
     @weekly_members = User.past_week.where(status: 1).count
     @monthly_notes = Node.past_month.select(:type).where(type: 'note').count(:all)
     @monthly_wikis = Revision.past_month.count
     @monthly_members = User.past_month.where(status: 1).count
+    @monthly_questions = Node.questions.past_month.count(:all).count
+    @monthly_answers = Answer.past_month.count
 
     @notes_per_week_past_year = Node.past_year.select(:type).where(type: 'note').count(:all) / 52.0
     @edits_per_week_past_year = Revision.past_year.count / 52.0
