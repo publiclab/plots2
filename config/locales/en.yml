@@ -143,3 +143,9 @@ en:
       comments_posted_52_weeks: "Comments posted for the past 52 weeks:"
       wiki_page_edits: "%{count} wiki page edits have been made, total"
       edits_per_week: "%{count} edits per week over the past year."
+      questions_past_week: |
+          <a href='%{url1}'>%{quiz_count} questions asked </a>
+          and <a href='%{url2}'>%{ans_count} questions answered </a> in the past week.
+      questions_past_month: |
+          <a href='%{url1}'>%{quiz_count} questions asked </a>
+          and <a href='%{url2}'>%{ans_count} questions answered </a> in the past month.
