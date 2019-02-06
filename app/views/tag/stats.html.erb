@@ -20,7 +20,7 @@
 <div class="graph">
     <p> <b><%= params[:id].capitalize%></b> graph from <b><%= (@time - 1.year).to_formatted_s(:long)%></b> to <b><%= @time.to_formatted_s(:long)%></b> </p>
 <br>
-    <%= render partial: "tag/graph", locals: { wikis: @tag_wikis, notes: @tag_notes, maps: @tag_maps  } %>
+    <%= render partial: "tag/graph", locals: { wikis: @tag_wikis, notes: @tag_notes, maps: @tag_maps, questions: @tag_questions  } %>
 <br>
 
 <% if @tags.first.count.nil? %>

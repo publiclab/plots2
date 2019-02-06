@@ -4,11 +4,11 @@
 <script>
 
 var options = {
-    colors: ['#00E396', '#0090FF', '#800080'],
+    colors: ['#00E396', '#0090FF', '#800080', '#fff896'],
     chart: {
         type: "area",
-        height: 500,
-        width: '120%',
+        height: 300,
+        width: '100%',
         foreColor: "#999",
         scroller: {
             enabled: true,
@@ -66,6 +66,9 @@ var options = {
     },{
         name: 'Map tags',
         data: generateSeries(2,52)
+    },{
+        name: 'Question tags',
+        data: generateSeries(3,52)
     } ],
 
         markers: {
@@ -141,7 +144,8 @@ function generateSeries(s, count) {
     var values = [
         <%= notes.values.collect {|ind| ind[1]} %>,
         <%= wikis.values.collect {|ind| ind[1]} %>,
-        <%= maps.values.collect {|ind| ind[1]} %>
+        <%= maps.values.collect {|ind| ind[1]} %>,
+        <%= questions.values.collect {|ind| ind[1]} %>
     ];
 
     var i = 0;
