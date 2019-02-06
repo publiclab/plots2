@@ -77,6 +77,15 @@
   </h4>
 
   <hr />
+  <h4>
+      <%= raw t('notes.stats.questions_past_week', :url1 => "/questions", :quiz_count => @weekly_questions,
+                :url2 => "/questions/answered/", :ans_count => @weekly_answers) %>
+            <hr>
+
+            <%= raw t('notes.stats.questions_past_month', :url1 => "/questions", :quiz_count => @monthly_questions,
+                      :url2 => "/questions/answered/", :ans_count => @monthly_answers) %>
+   </h4>
+   <hr/>
   <br> <br>
 </div>
 

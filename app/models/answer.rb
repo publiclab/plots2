@@ -8,6 +8,9 @@ class Answer < ApplicationRecord
 
   validates :content, presence: true
 
+  scope :past_week, -> { where("created_at > ?", (Time.now - 7.days)) }
+  scope :past_month, -> { where("created_at > ?", (Time.now - 1.months)) }
+
   def body
     finder = content.gsub(Callouts.const_get(:FINDER), Callouts.const_get(:PRETTYLINKMD))
     finder = finder.gsub(Callouts.const_get(:HASHTAGNUMBER), Callouts.const_get(:NODELINKMD))
