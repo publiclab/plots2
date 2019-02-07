@@ -9,7 +9,7 @@
   </div>
 
 <div class="row stats">
-  <h4 class="col-md-8">
+  <h4 class="col-lg-8">
     <% if current_user %>
       <span class="d-none d-lg-inline"><%= t('dashboard._header.welcome') %><span class="d-lg-none d-xl-inline">,<b><a href="/profile/"> <%= current_user.username %></a></b></span>! <%= current_user.new_contributor %></span>
       <a href="/notes/recent"><%= @note_count %> <% if @note_count === 1 %> <%= t('dashboard._header.note') %><% else %> <%= t('dashboard._header.notes') %><% end %></a> <%= t('dashboard._header.and') %> <a href="/wiki"><%= @wiki_count %> <%= t('dashboard._header.wiki_edits') %></a> <%= t('dashboard._header.posted_past_week') %>
