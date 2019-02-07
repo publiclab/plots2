@@ -6,7 +6,7 @@
 <script>
 
 var options = {
-    colors: ['#00E396', '#0090FF', '#800080', '#fff896'],
+    colors: ['#00E396', '#0090FF', '#800080', '#FFFF00', '#FF4500'],
     chart: {
         type: "area",
         height: 300,
@@ -71,6 +71,9 @@ var options = {
     },{
         name: 'Question tags',
         data: generateSeries(3,52)
+    },{
+        name: 'Comment tags',
+        data: generateSeries(4,52)
     } ],
 
         markers: {
@@ -147,7 +150,8 @@ function generateSeries(s, count) {
         <%= notes.values.collect {|ind| ind[1]} %>,
         <%= wikis.values.collect {|ind| ind[1]} %>,
         <%= maps.values.collect {|ind| ind[1]} %>,
-        <%= questions.values.collect {|ind| ind[1]} %>
+        <%= questions.values.collect {|ind| ind[1]} %>,
+        <%= comments.values.collect {|ind| ind[1]} %>
     ];
 
     var i = 0;
