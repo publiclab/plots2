@@ -24,7 +24,7 @@
         </div>
         <% if n.main_image.present? %>
           <div style="padding-bottom: 30px;">
-            <img src="WhatsApp_Image_2019-01-29_at_10.44.10_PM.jpeg" style="width: 90px;height: 90px;border-radius: 5px;margin-left: 14px;">
+            <img src="<%= n.main_image.path(:default) %>" style="width: 90px;height: 90px;border-radius: 5px;margin-left: 14px;">
           </div>
          <% end %>
         <div colspan="2" style="padding-bottom: 32px;">
