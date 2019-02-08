@@ -245,8 +245,7 @@ class Tag < ApplicationRecord
 
       # Now fetching the weekly data of notes or wikis
 
-      current_week = Tag.nodes_for_period(
-        'note',
+      current_week = Tag.all_nodes_for_period(
         quiz_nids,
         (time.to_i - week.weeks.to_i).to_s,
         (time.to_i - (week - 1).weeks.to_i).to_s
