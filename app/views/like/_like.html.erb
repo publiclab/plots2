@@ -24,7 +24,7 @@
       <span id="like-count-<%= node.id %>"><%= node.likers.length %> </span>
     <% end %>
   </li>
-
+  
   <li class="btn btn-default btn-sm" rel="popover" data-placement="left" data-html="true" style="overflow: auto; max-height: 500px" data-title="Tools" data-content="
 <p><b>Users who liked this</b></p>
 <% node.likers.each do |user| %>
@@ -99,6 +99,7 @@
       });
 
       <% if current_user %>
+        setLikeState(<%= node.liked_by(current_user.uid) =%>);
         $('#like-button-<%= node.id %>').on('click',<% if node.liked_by(current_user.uid) %>clickliked<% else %>clicknotliked<% end %>)
       
         if(window.location.href.includes("#like")) {
