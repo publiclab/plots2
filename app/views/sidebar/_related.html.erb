@@ -4,7 +4,7 @@
 
   <div id="sidebar" class="d-none d-lg-block">
 
-  <a style="margin-bottom:6px;white-space: normal;" rel="tooltip" title="<%= t('sidebar._related.share_your_work') %>" data-placement="bottom" href="/post" class="btn btn-primary btn-lg btn-block d-md-none d-lg-inline write-research-note requireLogin"><i class="fa fa-pencil fa fa-white"></i> <%= t('sidebar._related.write_research_note') %> &raquo;</a>
+  <a style="margin-bottom:6px;white-space: normal;" rel="tooltip" title="<%= t('sidebar._related.share_your_work') %>" data-placement="bottom" href="/post" class="btn btn-primary btn-lg btn-block d-lg-none d-xl-block write-research-note requireLogin"><i class="fa fa-pencil fa fa-white"></i> <%= t('sidebar._related.write_research_note') %> &raquo;</a>
   <% tagnames = (@node.normal_tags.collect(&:name) + @node.location_tags).join(',') if @tagnames %>
   <a style="white-space: normal;" rel="tooltip" title="Post <% if @tagnames %>about <%= tagnames %><% else %>research<% end %>" data-placement="bottom" href="/post<%= '?template=question&tags=question:general,'+ tagnames if @tagnames %><% if params[:controller] == 'notes' && params[:action] == 'show' %>,response:<%= @node.id %><% end %>" class="btn btn-primary btn-lg btn-block requireLogin"><i class="fa fa-pencil fa fa-white"></i> <%= t('sidebar._related.ask_a_question') %> &raquo;</a>
 

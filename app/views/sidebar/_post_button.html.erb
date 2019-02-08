@@ -1,18 +1,21 @@
 <a style="margin-bottom:6px;white-space: normal;" rel="tooltip" title="<%= t('sidebar._post_button.share_your_work') %>" data-placement="bottom" href="/post" class="btn btn-primary btn-lg btn-block d-lg-none d-xl-block"><i class="fa fa-pencil fa-white"></i> <%= t('sidebar._post_button.write_research_note') %></a>
 <div class="btn-group d-none d-lg-block d-xl-none" style="margin-bottom:6px;">
   <a rel="tooltip" title="Share your work with others" data-placement="bottom" href="/post" class="btn btn-primary btn-lg"><i class="fa fa-pencil fa fa-white"></i> <%= t('sidebar._post_button.post_research') %></a>
-  <a class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
 
-  <ul class="dropdown-menu">
-    <li><a href="/post"><i class="fa fa-pencil"></i> <b><%= t('sidebar._post_button.post_research_note') %></b></a></li>
-    <li><a href="/wiki/new"><i class="fa fa-book"></i> <%= t('sidebar._post_button.create_wiki_page') %></a></li>
-    <li class="divider"></li>
-    <li><a href="/wiki/about-posting" class="hidden-lg"><i class="fa fa-question-sign"></i> <%= t('sidebar._post_button.about_posting') %></a></li>
-    <% if current_user && (current_user.role == "moderator" || current_user.role == "admin") %>
-      <li><a href="/spam"><i class="fa fa-ban-circle"></i> <%= t('sidebar._post_button.moderate_spam') %></a></li>
-      <li><a href="/useremail"><i class="fa fa-search"></i> <%= t('sidebar._post_button.email_search') %></a></li>
-    <% end %>
-  </ul>
+  <div class="dropdown">
+    <a class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></button>
+
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="/post"><i class="fa fa-pencil"></i> <b><%= t('sidebar._post_button.post_research_note') %></b></a>
+      <a class="dropdown-item" href="/wiki/new"><i class="fa fa-book"></i> <%= t('sidebar._post_button.create_wiki_page') %></a>
+      <div class="dropdown-divider"></div>
+      <a class="dropdown-item" href="/wiki/about-posting" class="hidden-lg"><i class="fa fa-question-sign"></i> <%= t('sidebar._post_button.about_posting') %></a>
+      <% if current_user && (current_user.role == "moderator" || current_user.role == "admin") %>
+        <a class="dropdown-item" href="/spam"><i class="fa fa-ban-circle"></i> <%= t('sidebar._post_button.moderate_spam') %></a>
+        <a class="dropdown-item" href="/useremail"><i class="fa fa-search"></i> <%= t('sidebar._post_button.email_search') %></a>
+      <% end %>
+    </div>
+  </div>
 
 </div>
 

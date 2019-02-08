@@ -28,7 +28,7 @@
 
 <div class="pl-editor">
 
-  <div class="ple-header">
+  <div class="col-6 col-sm-12 ple-header">
     <h1>Share</h1>
     <p>
       <i>Or use the <a target="_blank" href="?<%= request.env['QUERY_STRING'] %>&legacy=true">legacy editor</a></i>
@@ -42,13 +42,13 @@
     <!-- end errors module -->
 
     <!-- title module -->
-    <div class="ple-module-title ple-module container">
+    <div class="ple-module-title ple-module row">
 
-      <div class="ple-module-guide col-md-3">
+      <div class="ple-module-guide col-lg-3">
         <h2>1</h2>
       </div>
 
-      <div class="ple-module-content col-md-9">
+      <div class="ple-module-content col-lg-9">
         <input 
           class="form-control input-lg" 
           type="text" 
@@ -62,18 +62,18 @@
 
 
     <!-- main_image module -->
-    <div class="ple-module-main_image ple-module container">
+    <div class="ple-module-main_image ple-module row">
 
-      <div class="ple-module-guide col-md-3">
+      <div class="ple-module-guide col-lg-3">
         <h2>2</h2>
       </div>
 
-      <div class="ple-module-content col-md-9 container">
-        <div class="ple-drag-drop col-md-6">Drag an image here to upload.</div>
+      <div class="ple-module-content col-lg-9">
+        <div class="ple-drag-drop col-lg-6">Drag an image here to upload.</div>
         <div class="col-md-6 help">
           <div style="display:none;" class="progress">
             <div 
-              class="progress-bar progress-bar-striped active" 
+              class="progress-bar progress-bar-striped progress-bar-animated" 
               role="progressbar" 
               aria-valuenow="0" 
               aria-valuemin="0" 
@@ -99,14 +99,14 @@
     <!-- end main_image module -->
 
    <!-- Map Module start-->
-    <div class="ple-module-map ple-module container">
+    <div class="ple-module-map ple-module row">
 
-      <div class="ple-module-guide col-md-3">
+      <div class="ple-module-guide col-lg-3">
         <h2>3</h2>
       </div>
 
-      <div class="ple-module-content col-md-9">
-        <button id="location_button" class="btn btn-lg btn-default">
+      <div class="ple-module-content col-lg-9">
+        <button id="location_button" class="btn btn-lg btn-outline-secondary">
           <i class="fa fa-map-marker" aria-hidden="true"></i> 
           Add a location
         </button>
@@ -116,7 +116,7 @@
 
         <div id="map_content">    
           <div class="row">
-            <div class="col-md-6"> 
+            <div class="col-lg-6"> 
               <div 
                 id="map" 
                 class="leaflet-map" 
@@ -124,7 +124,7 @@
               </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-lg-6">
               <label>By place name</label>
               <p>
                 <input id="placenameInput" type="text" class="form-control" />
@@ -132,7 +132,7 @@
               <p><label>Or by entering coordinates</label></p>
 
               <div class="row">
-                <div class="col-md-6">
+                <div class="col-lg-6">
                   <p>
                     <label>
                       Latitude
@@ -146,7 +146,7 @@
                   </p>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-lg-6">
                   <p>
                     <label>
                       Longitude
@@ -165,7 +165,7 @@
 
               <p>
                 <button 
-                  class="btn btn-lg btn-default" 
+                  class="btn btn-lg btn-outline-secondary" 
                   onclick="editor.mapModule.blurredLocation.geocodeWithBrowser(true);" 
                 >
                   <div id="ldi-geocode-button">          
@@ -199,13 +199,13 @@
 
 
     <!-- body module -->
-    <div class="ple-module-body ple-module container">
+    <div class="ple-module-body ple-module row">
 
       <div class="ple-module-guide col-md-3">
         <h2>4</h2>
       </div>
 
-      <div class="ple-module-content col-md-9 container">
+      <div class="ple-module-content col-md-9">
         <textarea id="text-input" class="ple-textarea form-control"><% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
       </div>
 
@@ -214,7 +214,7 @@
 
 
     <!-- tags module -->
-    <div class="ple-module-tags ple-module container">
+    <div class="ple-module-tags ple-module row">
 
       <div class="ple-module-guide col-md-3">
         <h2>5</h2>
@@ -277,11 +277,11 @@
       -->
     </div>
 
-    <button class="btn btn-lg btn-default btn-more">...</button>
+    <button class="btn btn-lg btn-outline-secondary btn-more">...</button>
    
-    <span> &nbsp; By publishing, you agree to <a href="https://publiclab.org/licenses">open source your work</a><span class="hidden-xs"> so that others may use it.</span></span>
-    <button class="ple-publish btn btn-lg btn-primary pull-right disabled"><% if controller.action_name == "edit" && @node.status == 3 %>Save<% else %>Publish<% end %></button>
-    <span class="ple-help pull-right">
+    <span> &nbsp; By publishing, you agree to <a href="https://publiclab.org/licenses">open source your work</a><span class="d-none d-md-inline"> so that others may use it.</span></span>
+    <button class="ple-publish btn btn-lg btn-primary float-right disabled"><% if controller.action_name == "edit" && @node.status == 3 %>Save<% else %>Publish<% end %></button>
+    <span class="ple-help float-right">
       <% if controller.action_name != "edit" && !current_user.first_time_poster %>
         <span id="newOpts" style="display: inline-block;">
         <span id="text" style="display: none; color:red;">
@@ -294,7 +294,7 @@
             </label> |
           </span>
           <span class="ple-steps-left">2</span>
-          <span class="hidden-xs"> steps left</span>
+          <span class="d-none d-md-inline"> steps left</span>
         </span>
       <% end %>
     </span>
