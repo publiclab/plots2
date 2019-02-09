@@ -494,3 +494,4 @@ class Comment < ApplicationRecord
     end
     body
   end
+end
