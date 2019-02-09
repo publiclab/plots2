@@ -372,6 +372,21 @@ class UsersController < ApplicationController
     end
   end
 
+  def verify_email
+    decrypted_user_id = User.validate_token(params[:token])
+    action_msg = "Email verification failed"
+    if decrypted_user_id != 0
+      user_obj = User.find(decrypted_user_id)
+      if user_obj.is_verified
+        action_msg = "Email already verified"
+      else
+        user_obj.update_column(:is_verified, true)
+        action_msg = "Successfully verified email"
+      end
+    end
+    redirect_to "/login", flash: { notice: action_msg }
+  end
+
   private
 
   def set_user

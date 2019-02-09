@@ -95,9 +95,9 @@ class SearchService
     raise("If 'from' is not null, must contain date") if period["from"] && !(period["from"].is_a? Date)
     raise("If 'to' is not null, must contain date") if period["to"] && !(period["to"].is_a? Date)
 
-    nodes_scope = NodeTag.joins(:tag)
-      .where('name LIKE ?', 'lat%')
-      .where('REPLACE(name, "lat:", "") BETWEEN ' + coordinates["selat"].to_s + ' AND ' + coordinates["nwlat"].to_s)
+    nodes_scope = Node.select(:nid)
+                      .where('`latitude` >= ? AND `latitude` <= ?', coordinates["selat"], coordinates["nwlat"])
+                      .where(status: 1)
 
     if tag.present?
       nodes_scope = NodeTag.joins(:tag)
@@ -118,8 +118,7 @@ class SearchService
     items = Node.includes(:tag)
       .references(:node, :term_data)
       .where('node.nid IN (?)', nids)
-      .where('term_data.name LIKE ?', 'lon%')
-      .where('REPLACE(term_data.name, "lon:", "") BETWEEN ' + coordinates["nwlng"].to_s + ' AND ' + coordinates["selng"].to_s)
+      .where('`longitude` >= ? AND `longitude` <= ?', coordinates["nwlng"], coordinates["selng"])
       .where('created BETWEEN ' + period["from"].to_s + ' AND ' + period["to"].to_s)
 
     # selects the items whose node_tags don't have the location:blurred tag
@@ -141,7 +140,7 @@ class SearchService
 
   # Search nearby people with respect to given latitude, longitute and tags
   # and package up as a DocResult
-  def tagNearbyPeople(coordinates, tag, period = nil, sort_by = nil, order_direction = nil, limit = 10)
+  def tagNearbyPeople(coordinates, tag, field, period = nil, sort_by = nil, order_direction = nil, limit = 10)
     raise("Must contain all four coordinates") if coordinates["nwlat"].nil?
     raise("Must contain all four coordinates") if coordinates["nwlng"].nil?
     raise("Must contain all four coordinates") if coordinates["selat"].nil?
@@ -162,16 +161,23 @@ class SearchService
                          .distinct
 
     if tag.present?
-      user_locations = User.joins(:user_tags)
-                           .where('user_tags.value LIKE ?', tag)
-                           .where(id: user_locations.select("rusers.id"))
+      if field.present? && field == 'node_tag'
+        tids = Tag.where("term_data.name = ?", tag).collect(&:tid).uniq || []
+        uids = TagSelection.where('tag_selections.tid IN (?)', tids).collect(&:user_id).uniq || []
+      else
+        uids = User.joins(:user_tags)
+                   .where('user_tags.value = ?', tag)
+                   .where(id: user_locations.select("rusers.id"))
+                   .collect(&:id).uniq || []
+      end
+      user_locations = user_locations.where('rusers.id IN (?)', uids).distinct
     end
 
-    ids = user_locations.collect(&:id).uniq || []
+    uids = user_locations.collect(&:id).uniq || []
 
     items = User.where('rusers.status <> 0')
       .joins(:user_tags)
-      .where('rusers.id IN (?)', ids)
+      .where('rusers.id IN (?)', uids)
       .where('user_tags.value LIKE ?', 'lon%')
       .where('REPLACE(user_tags.value, "lon:", "") BETWEEN ' + coordinates["nwlng"].to_s + ' AND ' + coordinates["selng"].to_s)
 
@@ -211,27 +217,7 @@ class SearchService
     end
   end
 
-  # Returns the location of people with most recent contributions.
-  # The method receives as parameter the number of results to be
-  # returned and as optional parameter a user tag. If the user tag
-  # is present, the method returns only the location of people
-  # with that specific user tag.
-  def people_locations(query, user_tag = nil)
-    user_locations = User.where('rusers.status <> 0')
-                         .joins(:user_tags)
-                         .where('value LIKE "lat:%"')
-                         .includes(:revisions)
-                         .order("node_revisions.timestamp DESC")
-                         .distinct
-    if user_tag.present?
-      user_locations = User.joins(:user_tags)
-                           .where('user_tags.value LIKE ?', user_tag)
-                           .where(id: user_locations.select("rusers.id"))
-    end
-    user_locations.limit(query)
-  end
-
- def find_users(query, limit, type = nil)
+  def find_users(query, limit, type = nil)
     users =
       if type == "tag"
         User.where('rusers.status = 1')

@@ -169,6 +169,8 @@ Help improve Public Lab software!
 * Some devs hang out in http://publiclab.org/chat (irc webchat)
 * Join our gitter chat at https://gitter.im/publiclab/publiclab
 * Try out some supportive tasks https://github.com/publiclab/plots2/wiki/Supportive-Tasks
+* Get involved with our weekly community check-ins. For guidelines: [https://github.com/publiclab/plots2/tree/master/doc/CHECKINS.md
+](https://github.com/publiclab/plots2/tree/master/doc/CHECKINS.md)
 
 ## First Time?
 

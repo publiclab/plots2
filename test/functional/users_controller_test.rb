@@ -282,4 +282,18 @@ class UsersControllerTest < ActionController::TestCase
     assert_equal [], UserTag.where(uid: users(:bob).id, value: "notify-comment-indirect:false")
     assert_equal [], UserTag.where(uid: users(:bob).id, value: 'digest:digest')
   end
+
+  test 'upon verification redirection to login takes place' do
+    test_user = users(:admin)
+    email_verification_token = test_user.generate_token
+    get :verify_email, params: { token: email_verification_token }
+    assert_redirected_to "/login"
+  end
+
+  test 'upon verification the is_verified field gets updated appropriately' do
+    test_user = users(:admin)
+    email_verification_token = test_user.generate_token
+    get :verify_email, params: { token: email_verification_token }
+    assert_equal "Successfully verified email", flash[:notice]
+  end
 end

@@ -206,10 +206,9 @@ class Tag < ApplicationRecord
     while week >= 1
       # initialising month variable with the month of the starting day
       # of the week
-      month = (time - (week * 7 - 1).days).strftime('%m')
+      month = (time - (week * 7 - 1).days)
 
       # Now fetching the weekly data of notes or wikis
-      month = month.to_i
 
       current_week = Tag.nodes_for_period(
         type,
@@ -218,7 +217,36 @@ class Tag < ApplicationRecord
         (time.to_i - (week - 1).weeks.to_i).to_s
       ).count(:all)
 
-      weeks[count] = [month, current_week]
+      weeks[count] = [(month.to_f * 1000), current_week]
+      count += 1
+      week -= 1
+    end
+    weeks
+  end
+
+  def question_graph_making(span = 52, time = Time.now)
+    weeks = {}
+    week = span
+    count = 0
+    tids = Tag.where('name IN (?)', [name]).collect(&:tid)
+    nids = NodeTag.where('tid IN (?)', tids).collect(&:nid)
+    quiz_nids = Node.questions.where(nid: nids)
+
+    while week >= 1
+      # initialising month variable with the month of the starting day
+      # of the week
+      month = (time - (week * 7 - 1).days)
+
+      # Now fetching the weekly data of notes or wikis
+
+      current_week = Tag.nodes_for_period(
+        'note',
+        quiz_nids,
+        (time.to_i - week.weeks.to_i).to_s,
+        (time.to_i - (week - 1).weeks.to_i).to_s
+      ).count(:all)
+
+      weeks[count] = [(month.to_f * 1000), current_week]
       count += 1
       week -= 1
     end
@@ -315,8 +343,8 @@ class Tag < ApplicationRecord
         .count
   end
 
-  def self.related(tag_name)
-    Rails.cache.fetch('related-tags/' + tag_name, expires_in: 1.weeks) do
+  def self.related(tag_name, count = 5)
+    Rails.cache.fetch('related-tags/' + tag_name + '/' + count.to_s, expires_in: 1.weeks) do
       nids = NodeTag.joins(:tag)
                      .where(Tag.table_name => { name: tag_name })
                      .select(:nid)
@@ -325,8 +353,8 @@ class Tag < ApplicationRecord
          .where(NodeTag.table_name => { nid: nids })
          .where.not(name: tag_name)
          .group(:tid)
-         .order('COUNT(term_data.tid) DESC')
-         .limit(5)
+         .order(count: :desc)
+         .limit(count)
     end
   end
 
@@ -335,7 +363,11 @@ class Tag < ApplicationRecord
     Rails.cache.fetch("graph-data/#{limit}", expires_in: 1.weeks) do
       data = {}
       data["tags"] = []
-      Tag.order(count: :desc).limit(limit).each do |tag|
+      Tag.joins(:node)
+        .group(:tid)
+        .where('node.status': 1)
+        .order(count: :desc)
+        .limit(limit).each do |tag|
         data["tags"] << {
           "name" => tag.name,
           "count" => tag.count
@@ -343,7 +375,7 @@ class Tag < ApplicationRecord
       end
       data["edges"] = []
       data["tags"].each do |tag|
-        Tag.related(tag["name"]).each do |related_tag|
+        Tag.related(tag["name"], 10).each do |related_tag|
           data["edges"] << { "from" => tag["name"], "to" => related_tag.name }
         end
       end

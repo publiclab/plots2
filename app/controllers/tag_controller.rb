@@ -487,8 +487,25 @@ class TagController < ApplicationController
     render layout: false
   end
 
+  def graph
+    render layout: false
+  end
+
   def graph_data
-    render json: Tag.graph_data(params[:limit])
+    render json: params.key?(:limit) ? Tag.graph_data(params[:limit].to_i) : Tag.graph_data
+  end
+
+  def stats
+    @time = if params[:time]
+              Time.parse(params[:time])
+            else
+              Time.now
+            end
+    @tags = Tag.where(name: params[:id])
+    @tag_notes = @tags.first.contribution_graph_making('note', 52, @time)
+    @tag_wikis = @tags.first.contribution_graph_making('page', 52, @time)
+    @tag_maps = @tags.first.contribution_graph_making('map', 52, @time)
+    @tag_questions = @tags.first.question_graph_making( 52, @time)
   end
 
   private

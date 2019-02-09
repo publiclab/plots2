@@ -50,8 +50,8 @@ gem 'rails_autolink'
 gem 'rb-readline'
 gem 'rdiscount', '~> 2.2', '>= 2.2.0.1'
 gem "recaptcha", require: "recaptcha/rails"
-gem 'responders', '~> 2.0'
-gem 'rubocop', '~> 0.63.0', require: false
+gem 'responders', '~> 2.4'
+gem 'rubocop', '~> 0.63.1', require: false
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
 gem 'sidekiq'
@@ -79,7 +79,7 @@ group :mysql, :production do
 end
 
 group :sqlite, :development do
-  gem 'sqlite3'
+  gem 'sqlite3', '~> 1.3.6'
 end
 
 gem 'coffee-rails', '~> 4.2.2'
@@ -87,6 +87,7 @@ gem 'execjs' # See https://github.com/sstephenson/execjs#readme for more support
 gem 'sass-rails', '~> 5.0', '>= 5.0.7'
 gem 'therubyracer'
 gem 'uglifier', '>= 1.0.3'
+gem 'grape-rails-cache'
 
 group :development do
   gem 'byebug', platform: :mri
@@ -102,7 +103,7 @@ group :test, :development do
   gem 'jasmine-jquery-rails'
   gem 'jasmine-rails'
   gem 'json_expressions'
-  gem 'minitest-reporters', '~> 1.3.5'
+  gem 'minitest-reporters', '~> 1.3.6'
   gem 'openssl', '~> 2.1.2'
   gem 'phantomjs'
   gem 'rails-perftest'

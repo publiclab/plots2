@@ -46,6 +46,10 @@
        <% end %>
        
    }, 3500);
+
+   <% if defined? tag_name != nil and tag_name == false %>
+      <% @tagname_param = nil %>
+   <% end %>
    
    map<%= unique_id %>.on('zoomend' , function () {
        var NWlat = map<%= unique_id %>.getBounds().getNorthWest().lat ;
@@ -54,7 +58,15 @@
        var SElng = map<%= unique_id %>.getBounds().getSouthEast().lng ;
 
        map<%= unique_id %>.spin(true) ;
-       $.getJSON("/api/srch/nearbyPeople?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng + "&tag=<%= @tagname_param %>", function (data) {
+
+      <% if @tagname_param.nil? %>
+        people_url = "/api/srch/nearbyPeople?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng ; 
+       
+      <% else %>
+        people_url = "/api/srch/nearbyPeople?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng + "&tag=<%= @tagname_param %>" ;
+      <% end %>
+
+       $.getJSON(people_url , function (data) {
            var layerGroup = L.layerGroup();
 
            if (!!data.items) {
@@ -87,7 +99,14 @@
        var SElng = map<%= unique_id %>.getBounds().getSouthEast().lng ;
 
        map<%= unique_id %>.spin(true) ;
-       $.getJSON("/api/srch/nearbyPeople?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng + "&tag=<%= @tagname_param %>", function (data) {
+
+       <% if @tagname_param.nil? %>
+        people_url = "/api/srch/nearbyPeople?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng ;   
+      <% else %>
+        people_url = "/api/srch/nearbyPeople?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng + "&tag=<%= @tagname_param %>" ;
+      <% end %>
+
+       $.getJSON(people_url , function (data) {
            var layerGroup = L.layerGroup();
            if (!!data.items) {
                for (i = 0; i < data.items.length; i++) {
@@ -111,9 +130,10 @@
        });
    }) ;
 
-
-   
-//  setupFullScreen(map< = unique_id >  , map_lat , map_lon) ;
-    setupLEL(map<%= unique_id %> , 1) ;
+    <% if defined? url_hash != nil and url_hash == 0 %>
+      setupLEL(map<%= unique_id %> , 0) ;
+    <% else %>
+      setupLEL(map<%= unique_id %> , 1) ;
+    <% end %>
 
   </script>

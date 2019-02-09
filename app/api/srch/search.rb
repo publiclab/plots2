@@ -7,6 +7,8 @@ module Srch
     # see /app/api/srch/shared_params.rb
     helpers SharedParams
 
+    include Grape::Rails::Cache
+
     # Endpoint definitions
     # Basic implementation from classic plots2 SearchController
     resource :srch do
@@ -92,19 +94,21 @@ module Srch
       end
       get :profiles do
         search_request = SearchRequest.fromRequest(params)
-        results = Search.execute(:profiles, params)
+        cache(key: "api:profiles:#{params[:query]}:#{params[:limit]}:#{params[:sort_by]}:#{params[:order_direction]}:#{params[:field]}", expires_in: 2.day) do
+          results = Search.execute(:profiles, params)
 
-        if results.present?
-          docs = results.map do |model|
-            DocResult.new(
-              doc_type: 'USERS',
-              doc_url: '/profile/' + model.name,
-              doc_title: model.username
-            )
+          if results.present?
+            docs = results.map do |model|
+              DocResult.new(
+                doc_type: 'USERS',
+                doc_url: '/profile/' + model.name,
+                doc_title: model.username
+              )
+            end
+            DocList.new(docs, search_request)
+          else
+            DocList.new('', search_request)
           end
-          DocList.new(docs, search_request)
-        else
-          DocList.new('', search_request)
         end
       end
 
@@ -259,7 +263,7 @@ module Srch
                                                                        is_array: false,
                                                                        nickname: 'search_nearby_people'
       params do
-        use :geographical, :additional, :period, :sorting, :ordering
+        use :geographical, :additional, :field, :period, :sorting, :ordering
       end
       get :nearbyPeople do
         search_request = SearchRequest.fromRequest(params)
@@ -277,39 +281,6 @@ module Srch
               blurred: model.blurred?
             )
           end
-          DocList.new(docs, search_request)
-        else
-          DocList.new('', search_request)
-        end
-      end
-
-      # API TO FETCH QRY RECENT CONTRIBUTORS
-      # Request URL should be /api/srch/peoplelocations?query=QRY[&tag=group:partsandcrafts]
-      # QRY should be a number
-      desc 'Perform a search to show x Recent People',  hidden: false,
-                                                        is_array: false,
-                                                        nickname: 'search_people_locations'
-
-      params do
-        use :common, :additional
-      end
-      get :peoplelocations do
-        search_request = SearchRequest.fromRequest(params)
-        results = Search.execute(:peoplelocations, params)
-
-        if results.present?
-          docs = results.map do |model|
-            DocResult.new(
-              doc_id: model.id,
-              doc_type: 'PLACES',
-              doc_url: model.path,
-              doc_title: model.username,
-              latitude: model.lat,
-              longitude: model.lon,
-              blurred: model.blurred?
-            )
-          end
-
           DocList.new(docs, search_request)
         else
           DocList.new('', search_request)

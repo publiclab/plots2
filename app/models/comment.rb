@@ -40,12 +40,12 @@ class Comment < ApplicationRecord
     while week >= 1
       # initialising month variable with the month of the starting day
       # of the week
-      month = (time - (week * 7 - 1).days).strftime('%m')
+      month = time - (week * 7 - 1).days
       # loop for finding the maximum occurence of a month name in that week
       # For eg. If this week has 3 days falling in March and 4 days falling
       # in April, then we would give this week name as April and vice-versa
       [0, 1, 2, 3, 4, 5, 6].each do |i|
-        curr_month = (time - (week * 7 - i).days).strftime('%m')
+        curr_month = time - (week * 7 - i).days
         if month == 0
           month = curr_month
         elsif month != curr_month
@@ -54,12 +54,11 @@ class Comment < ApplicationRecord
           end
         end
       end
-      month = month.to_i
       # Now fetching comments per week
       curr_week = Comment.select(:timestamp)
                       .where(timestamp: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
                       .count
-      weeks[count] = [month, curr_week]
+      weeks[count] = [month.to_f * 1000, curr_week]
       count += 1
       week -= 1
     end
