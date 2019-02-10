@@ -1,1 +1,20 @@
-<%= render partial: 'comments/comments' %>
+<ul class="nav nav-tabs">
+  <li class="active"><a href="#comments" data-toggle="tab"><span class="hidden-sm hidden-xs"> All comments</span></a></li>
+  <% if current_user &.can_moderate? %><li><a href="#moderated-comments" id="comments-tab" data-toggle="tab"><span class="hidden-sm hidden-xs">Moderated Comments</span></a></li><% end %>
+</ul>
+
+
+<div class="tab-content">
+
+  <div class="tab-pane active" id="comments">
+    <%= render :partial => "comments/comments", :locals => { :comments => @normal_comments }  %>
+  </div>
+
+  <% if current_user &.can_moderate? %>
+    <div class="tab-pane" id="moderated-comments">
+      <%= render :partial => "comments/comments", :locals => { :comments => @moderated_comments } %>
+    </div>
+  <% end %>
+
+</div>
+

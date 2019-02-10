@@ -430,7 +430,7 @@ class AdminControllerTest < ActionController::TestCase
     assert_equal 0, comment.status
 
     assert_equal "Comment has been marked as spam and comment author has been banned. You can undo this on the <a href='/spam/comments'>spam moderation page</a>.", flash[:notice]
-    assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
+    assert_response :redirect
 
     email = ActionMailer::Base.deliveries.last
     assert_not_nil email.to
@@ -455,7 +455,7 @@ class AdminControllerTest < ActionController::TestCase
     assert_equal 0, comment.status
 
     assert_equal "Comment has been marked as spam and comment author has been banned. You can undo this on the <a href='/spam/comments'>spam moderation page</a>.", flash[:notice]
-    assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
+    assert_response :redirect
 
     email = ActionMailer::Base.deliveries.last
     assert_not_nil email.to
@@ -481,7 +481,7 @@ class AdminControllerTest < ActionController::TestCase
     comment = assigns(:comment)
     assert_equal 1, comment.status
     assert_equal "Only moderators can moderate comments.", flash[:error]
-    assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
+    assert_response :redirect
   end
 
   test 'should not mark comment as spam if it is already marked as spam' do
@@ -493,7 +493,7 @@ class AdminControllerTest < ActionController::TestCase
     comment = assigns(:comment)
     assert_equal 0, comment.status
     assert_equal "Comment already marked as spam.", flash[:notice]
-    assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
+    assert_response :redirect
   end
 
   test 'should publish comment from spam if admin' do
