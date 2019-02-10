@@ -11,11 +11,33 @@ class CommentControllerTest < ActionController::TestCase
     Timecop.return
   end
 
-  test 'should get index' do
+  test 'should get index with all approved comments if no user' do
     get :index
     assert_response :success
-    assert_not_nil :comments
-    assert assigns(:comments).first.timestamp > assigns(:comments).last.timestamp
+    normal_comments = assigns(:normal_comments)
+    assert_not_nil normal_comments
+    assert_nil assigns(:moderated_comments)
+    assert normal_comments.first.timestamp > normal_comments.last.timestamp
+  end
+
+  test 'should get index with all approved comments if normal user' do
+    UserSession.create(users(:bob))
+    get :index
+    assert_response :success
+    normal_comments = assigns(:normal_comments)
+    assert_not_nil normal_comments
+    assert_nil assigns(:moderated_comments)
+    assert normal_comments.first.timestamp > normal_comments.last.timestamp
+  end
+
+  test 'should get index with both approved and moderated comments if moderator' do
+    UserSession.create(users(:jeff))
+    get :index
+    assert_response :success
+    normal_comments = assigns(:normal_comments)
+    assert_not_nil normal_comments
+    assert_not_nil assigns(:moderated_comments)
+    assert normal_comments.first.timestamp > normal_comments.last.timestamp
   end
 
   test 'should create note comments' do
