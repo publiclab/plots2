@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   before_action :require_no_user, :only => [:new]
   before_action :require_user, :only => %i(edit update save_settings)
   before_action :set_user, only: %i(info followed following followers)
-  
+
   def new
     @user = User.new
     @action = "create" # sets the form url
