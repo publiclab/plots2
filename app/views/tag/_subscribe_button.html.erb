@@ -1,10 +1,10 @@
 <!-- This button is used to display tags in a popover and subscribe to multiple tags using a single button -->
 <% if current_user %>
-  <a id="popover_button" class="btn btn-default btn-xs sub" >Subscribe 
+  <a id="popover_button" class="btn btn-outline-secondary btn-sm sub" >Subscribe 
     <i class="fa fa-plus"></i> 
   </a>
 
-  <div id="mypopcontent" class="hidden">
+  <div id="mypopcontent" class="d-none">
   	<%= render partial: "tag/tags_popover", locals: {tags: tags} %>
   </div>
 
