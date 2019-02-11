@@ -1,4 +1,4 @@
-<div class="col-md-3">
+<div class="col-lg-3">
 
   <p><b><%=raw translation('home.subscriptions.title') %></b> <%=raw translation('home.subscriptions.up_to_date_emails') %></p>
 
@@ -23,7 +23,7 @@
 
 </div>
 
-<div class="col-md-9">
+<div class="col-lg-9">
 
   <h3><%=raw translation('home.subscriptions.manage_subscriptions') %> (<%= current_user.subscriptions.length %>)</h3>
 
@@ -46,9 +46,9 @@
         <a rel="tooltip" title="Once per day" class="btn btn-default btn-xs" href="javascript:void(0)"><i class="fa fa-list"></i> Digest</a>
         -->
         <script> input_<%= subscription.tid %> = '#share-<%= subscription.tid %>'</script>
-        <a class="btn btn-default btn-xs" rel="popover"  data-toggle="popover" data-placement="left" title="<%= t('home.subscriptions.share_subscription_link') %>" data-html="true" data-content="<input id='share-<%= subscription.tid %>' onClick='$(input_<%= subscription.tid %>).select()' type='text' value='https://<%= ActionController::Base.default_url_options[:host] %>/subscribe/tag/<%= subscription.tagname %>'/><div style='margin-top:10px;'><a style='padding-left:3px;' href='https://twitter.com/share' class='twitter-share-button'>Tweet</a></div> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='//platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','twitter-wjs');</script>
+        <a class="btn btn-outline-secondary btn-sm" rel="popover"  data-toggle="popover" data-placement="left" title="<%= t('home.subscriptions.share_subscription_link') %>" data-html="true" data-content="<input id='share-<%= subscription.tid %>' onClick='$(input_<%= subscription.tid %>).select()' type='text' value='https://<%= ActionController::Base.default_url_options[:host] %>/subscribe/tag/<%= subscription.tagname %>'/><div style='margin-top:10px;'><a style='padding-left:3px;' href='https://twitter.com/share' class='twitter-share-button'>Tweet</a></div> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='//platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','twitter-wjs');</script>
         <i class="fa fa-share"></i> <%= t('home.subscriptions.share') %></a>
-        <a class="btn btn-default btn-xs" href="/unsubscribe/tag/<%= subscription.tagname %>" data-method="delete"><i class="fa fa-remove"></i> <%= t('home.subscriptions.unsubscribe') %></a>
+        <a class="btn btn-outline-secondary btn-sm" href="/unsubscribe/tag/<%= subscription.tagname %>" data-method="delete"><i class="fa fa-remove"></i> <%= t('home.subscriptions.unsubscribe') %></a>
       </div>
     </div></td>
   </tr>
