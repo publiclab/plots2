@@ -23,14 +23,14 @@ en:
     new:
       sign_up: "Sign up to join the Public Lab community"
       licensing_agreement: "Licensing Agreement"
-      licensing_detail: "As an open source community, we believe in open licensing
+      licensing_detail: 'As an open source community, we believe in open licensing
         of content so that other members of the community can leverage your work legally
         -- with attribution, of course. By joining the Public Lab site, <b>you agree
         to release the content you post here under a <a href="%{url1}" target="_blank">Creative
         Commons Attribution Sharealike license</a></b>, and the hardware designs you
         post under the <b><a href="%{url2}" target="_blank">CERN Open Hardware License
         1.1</a> (<a href="%{url3}" target="_blank">fulltext</a>)</b>. This has the
-        added benefit that others must share their improvements in turn with you."
+        added benefit that others must share their improvements in turn with you.'
       code_of_conduct_agreement: "Code of Conduct Agreement"
       code_of_conduct_detail: 'By signing up, <b>you agree to the <a href="%{url1}"
         target="_blank">Code of Conduct</a></b>, which applies to all online and in-person
@@ -140,24 +140,24 @@ en:
       edit_profile: "Edit Profile"
   notes:
     index:
-      search_results_for: "Search results for <i style="color:#aaa;">%{params}</i>"
+      search_results_for: "Search results for <i style=\"color:#aaa;\">%{params}</i>"
       advanced_search: "advanced search"
-      notes_tagged_with: "Notes tagged with <i style="color:#aaa;">%{params}</i>"
+      notes_tagged_with: "Notes tagged with <i style=\"color:#aaa;\">%{params}</i>"
       popular_research_notes: "Popular research notes"
       recent_research_notes: "Recent research notes"
-      research_on: "Research on "%{tags}" by <a href='%{url1}'>%{user_name}</a>"
+      research_on: "Research on \"%{tags}\" by <a href='%{url1}'>%{user_name}</a>"
       research_notes_and_wiki_edits_with_time: "%{count} research notes and wiki edits
         starting %{time} ago"
       research_by: "Research by <a href='%{url1}'>%{user_name}</a>"
       research_notes_and_wiki_edits: "%{count1} research notes and %{count2} wiki
         edits"
       starting_time: "starting %{time} ago"
-      research_notes_ideas_and_documentation: "Research notes <small class="hidden-sm">ideas
+      research_notes_ideas_and_documentation: "Research notes <small class=\"hidden-sm\">ideas
         & documentation from contributors like you</small>"
       recent: "Recent"
       popular: "Popular"
       liked: "Liked"
-      wiki_pages: "Wiki<span class="hidden-sm"> pages</span>"
+      wiki_pages: "Wiki<span class=\"hidden-sm\"> pages</span>"
     _notes:
       moderate_first_time_post: 'Moderate first-time post:'
       approve: "Approve"
@@ -389,7 +389,7 @@ en:
       subscriptions: "Your subscriptions"
       sort_by: "Sort By"
     show:
-      notes_tagged: "Notes tagged with <i style="color:#aaa;">%{tag}</i>"
+      notes_tagged: "Notes tagged with <i style=\"color:#aaa;\">%{tag}</i>"
       following: "Following"
       unfollow: "Click to unfollow"
       follow: "Follow"
@@ -399,15 +399,15 @@ en:
       or_subscribe_to_answer: "or <a style='margin-bottom:6px;' class='btn btn-default
         requireLogin' target='_blank' href='%{url1}'>Subscribe to answer questions
         on this topic</a>"
-      research_notes: "<span class="hidden-sm">Research </span>Notes"
+      research_notes: "<span class=\"hidden-sm\">Research </span>Notes"
       questions: "Questions"
-      wiki_pages: "Wiki<span class="hidden-sm"> pages</span>"
+      wiki_pages: "Wiki<span class=\"hidden-sm\"> pages</span>"
       maps: "Maps"
       no_results_found: "No results found; try searching for '<b>%{tag}</b>'"
       try_advanced_search: "Or try an <a href='%{url1}'>advanced search</a>"
       contributors: "Contributors"
     contributors-index:
-      contributors_over_last_week: "Contributors for <i style="color:#aaa;">%{tag_name}</i>
+      contributors_over_last_week: "Contributors for <i style=\"color:#aaa;\">%{tag_name}</i>
         over the past 52 weeks"
       read_more: "Read more"
       notes_and_wiki_contributions: '%{users} people have contributed %{notes} research
@@ -421,7 +421,7 @@ en:
     _tagging:
       enter_tags: "enter tags"
     contributors:
-      contributors_for: "Contributors for <i style="color:#aaa;">%{tag_name}</i>"
+      contributors_for: "Contributors for <i style=\"color:#aaa;\">%{tag_name}</i>"
       contributions_over_past_year: 'Above: contributions over the past year.'
       notes_and_wiki_contributions: '%{users} people have contributed %{notes} research
         notes and %{wikis} wiki pages tagged with "%{tag_name}"'
@@ -474,7 +474,7 @@ en:
       back_to_wiki: "Back to <a href='%{url1}'>%{title}"
       overview: "Overview"
       research: "Research"
-      wiki_pages: "Wiki<span class="hidden-sm"> pages</span>"
+      wiki_pages: "Wiki<span class=\"hidden-sm\"> pages</span>"
       more_research: "More research on \"%{tag}\""
       more_tag_research: "More \"%{tag}\" research"
     _wikis:
@@ -770,7 +770,7 @@ en:
     tag_deleted: "Tag deleted."
     tag_doesnt_exist: "Tag doesn't exist."
   wiki_controller:
-    new_wiki_page: New wiki page
+    new_wiki_page: "New wiki page"
     pages_does_not_exist: "That page does not yet exist. You must be logged in to create
       a new wiki page."
     page_moderated_as_spam: "That page has been moderated as spam. Please contact web@publiclab.org
@@ -972,43 +972,43 @@ en:
   datetime:
     time_ago_in_words:
       about_x_hours:
-        one: about 1 hour ago
-        other: about %{count} hours ago
+        one: "about 1 hour ago"
+        other: "about %{count} hours ago"
       about_x_months:
-        one: about 1 month ago
-        other: about %{count} months ago
+        one: "about 1 month ago"
+        other: "about %{count} months ago"
       about_x_years:
-        one: about 1 year ago
-        other: about %{count} years ago
+        one: "about 1 year ago"
+        other: "about %{count} years ago"
       almost_x_years:
-        one: almost 1 year ago
-        other: almost %{count} years ago
-      half_a_minute: half a minute ago
+        one: "almost 1 year ago"
+        other: "almost %{count} years ago"
+      half_a_minute: "half a minute ago"
       less_than_x_minutes:
-        one: less than a minute ago
-        other: less than %{count} minutes ago
+        one: "less than a minute ago"
+        other: "less than %{count} minutes ago"
       less_than_x_seconds:
-        one: less than 1 second ago
-        other: less than %{count} seconds ago
+        one: "less than 1 second ago"
+        other: "less than %{count} seconds ago"
       over_x_years:
-        one: over 1 year ago
-        other: over %{count} years ago
+        one: "over 1 year ago"
+        other: "over %{count} years ago"
       x_days:
-        one: 1 day ago
+        one: "1 day ago"
         other: "%{count} days ago"
       x_minutes:
-        one: 1 minute ago
+        one: "1 minute ago"
         other: "%{count} minutes ago"
       x_months:
-        one: 1 month ago
+        one: "1 month ago"
         other: "%{count} months ago"
       x_seconds:
-        one: 1 second
+        one: "1 second"
         other: "%{count} seconds ago"
     prompts:
-      day: Day
-      hour: Hour
-      minute: Minute
-      month: Month
-      second: Seconds
-      year: Year
+      day: "Day"
+      hour: "Hour"
+      minute: "Minute"
+      month: "Month"
+      second: "Seconds"
+      year: "Year"
