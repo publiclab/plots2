@@ -325,7 +325,7 @@ class Tag < ApplicationRecord
          .where(NodeTag.table_name => { nid: nids })
          .where.not(name: tag_name)
          .group(:tid)
-         .order('COUNT(term_data.tid) DESC')
+         .order(Arel.sql('COUNT(term_data.tid) DESC'))
          .limit(count)
     end
   end
