@@ -30,7 +30,7 @@
     "bootstrap-tokenfield": "sliptree/bootstrap-tokenfield#~0.12.0",
     "bootstrap-typeahead": "bassjobsen/Bootstrap-3-Typeahead#~4.0.0",
     "chart.js": "chartjs/Chart.js#v2.7.0",
-    "d3": "mbostock-bower/d3-bower#~3.5",
+    "d3": "~5.9",
     "d3-bower": "mbostock-bower/d3-bower#~3.5",
     "d3-plugins": "d3/d3-plugins#*",
     "file-saver": "eligrey/FileSaver.js#*",
