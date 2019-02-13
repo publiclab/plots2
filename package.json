@@ -30,7 +30,7 @@
     "chart.js": "^2.7.0",
     "cytoscape": "^3.3.2",
     "file-saver": "^2.0.0",
-    "flot": "^0.7.0", // only used on https://publiclab.org/contributors now
+    "flot": "^0.7.0",
     "font-awesome": "^4.5.0",
     "horsey": "^3.0.0",
     "i18n-js": "^2.1.2",
