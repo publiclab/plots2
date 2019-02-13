@@ -54,7 +54,7 @@
    "leaflet-environmental-layers": "^1.2.4",
     "leaflet-fullhash": "github:sagarpreet-chadha/leaflet-fullHash",
     "leaflet-spin": "1.1.0",
-    "marked": "chjj/marked#0.3.2",
+    "marked": "chjj/marked#v0.6.0",
     "megamark": "bevacqua/megamark#~3.3.0",
     "moment": "~> 2.19.3",
     "noty": "3.1.4",
