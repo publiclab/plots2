@@ -29,7 +29,6 @@ Sometimes things go wrong. When a situation is uncomfortable, hurtful, exclusion
 __Conduct Committee (ConductCom)__: If at any time you experience something that you are not comfortable with, you may contact the Conduct Committee.
 
 For Barnraising and Crisis Convening July 2018, in person Conduct Committee members are:
-
     Jeff Warren
     Rev James Caldwell
     Melanie Pang
