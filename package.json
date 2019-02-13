@@ -40,7 +40,7 @@
     "horsey": "bevacqua/horsey#3.0.0",
     "i18n-js": "fnando/i18n-js#^2.1.2",
     "ics": "nwcell/ics.js#0.1.3",
-    "ics.js": "nwcell/ics.js#0.1.3",
+    "ics.js": "nwcell/ics.js#0.2.0",
     "image-sequencer": "publiclab/image-sequencer#^2.2.3",
     "inline-markdown-editor": "publiclab/inline-markdown-editor#~0.3.0",
     "jquery": "jquery/jquery-dist#~> 3.0.0",
