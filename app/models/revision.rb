@@ -3,7 +3,7 @@ class Revision < ApplicationRecord
   self.primary_key = 'vid'
 
   belongs_to :node, foreign_key: 'nid', counter_cache: :drupal_node_revisions_count
-  has_one :drupal_users, foreign_key: 'uid'
+  has_one :user, foreign_key: 'uid'
   has_many :node_tag, foreign_key: 'nid'
   has_many :tag, through: :node_tag
 
@@ -18,6 +18,11 @@ class Revision < ApplicationRecord
   before_save :inline_tags
   after_save :inline_hashtags
   before_create :setup
+
+  scope :published, -> { where(status: 1) }
+  scope :past_week, -> { where("timestamp > ?", (Time.now - 7.days).to_i) }
+  scope :past_month, -> { where("timestamp > ?", (Time.now - 1.months).to_i) }
+  scope :past_year, -> { where("timestamp > ?", (Time.now - 1.years).to_i) }
 
   def setup
     self.teaser = ''
@@ -65,7 +70,7 @@ class Revision < ApplicationRecord
   end
 
   def author
-    DrupalUser.find_by(uid: uid)
+    User.find(uid)
   end
 
   def parent

@@ -26,9 +26,9 @@
 
         <p class="meta"><small>
           <% if node.type == 'note' %>
-            by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>"><%= node.author.name %></a> <%= node.author.new_author_contributor %>
+            by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>"><%= node.author.name %></a> <%= node.author.new_contributor %>
 	    <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope:'datetime.time_ago_in_words' }) %>
-            | <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= node.comment_count %></a>
+            | <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= node.comments.count %></a>
           <% else %>
             <%= t('notes._notes.last_edit_by') %> <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.latest.author.name %>"><%= node.latest.author.name %></a>
 	    <%= distance_of_time_in_words(Time.at(node.latest.timestamp), Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>
@@ -37,7 +37,7 @@
           | <i style="<% if node.likes > 0 %>color:#db4;<% else %>color:#888;<% end %>" class="fa fa-star-o"></i> <%= node.likes %>
         </small></p>
 
-        <div class="content">
+        <div class="content" style="margin:auto">
           <% if @compact.nil? %>
             <% if params[:action].to_s.include?("methods") %>
               <p><small>
@@ -48,7 +48,7 @@
             <% end %>
             <p>
               <% if logged_in_as(['admin','moderator']) %><a class="btn btn-default" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> <%= t('notes._notes.spam') %></a><% end %>
-              <a class="btn btn-default" style="float: right; margin-left: 1px;" href="<%= node.path %>"><%= t('notes._notes.read_more') %></a>
+              <a class="btn btn-default" href="<%= node.path %>"><%= t('notes._notes.read_more') %></a>
             </p>
           <% end %>
           <% if params[:mod] %>
@@ -56,18 +56,10 @@
           <% end %>
           <hr style="display:none;" class="bottom" />
         </div>
-	      
-	      
-	      
-	      
-	
-
       </div>
 	    <style>
 		    .content {
     width: 100px;
-    margin-left: auto;
-    margin-bottom: 0;
     margin-bottom: 30%;
 	    </style>
 		 

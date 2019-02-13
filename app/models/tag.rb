@@ -166,6 +166,18 @@ class Tag < ApplicationRecord
         .where(status: [1, 4])
   end
 
+  def self.sort_according_to_followers(raw_tags, order)
+    tags_with_their_followers = []
+    raw_tags.each do |i|
+      tags_with_their_followers << { "number_of_followers" => Tag.follower_count(i.name), "tags" => i }
+    end
+    tags_with_their_followers.sort_by! { |key| key["number_of_followers"] }
+    if order != "asc"
+      tags_with_their_followers.reverse!
+    end
+    tags = tags_with_their_followers.map { |x| x["tags"] }
+  end
+
   # OPTIMIZE: this too!
   def weekly_tallies(type = 'note', span = 52)
     weeks = {}
@@ -194,10 +206,9 @@ class Tag < ApplicationRecord
     while week >= 1
       # initialising month variable with the month of the starting day
       # of the week
-      month = (time - (week * 7 - 1).days).strftime('%m')
+      month = (time - (week * 7 - 1).days)
 
       # Now fetching the weekly data of notes or wikis
-      month = month.to_i
 
       current_week = Tag.nodes_for_period(
         type,
@@ -206,7 +217,36 @@ class Tag < ApplicationRecord
         (time.to_i - (week - 1).weeks.to_i).to_s
       ).count(:all)
 
-      weeks[count] = [month, current_week]
+      weeks[count] = [(month.to_f * 1000), current_week]
+      count += 1
+      week -= 1
+    end
+    weeks
+  end
+
+  def question_graph_making(span = 52, time = Time.now)
+    weeks = {}
+    week = span
+    count = 0
+    tids = Tag.where('name IN (?)', [name]).collect(&:tid)
+    nids = NodeTag.where('tid IN (?)', tids).collect(&:nid)
+    quiz_nids = Node.questions.where(nid: nids)
+
+    while week >= 1
+      # initialising month variable with the month of the starting day
+      # of the week
+      month = (time - (week * 7 - 1).days)
+
+      # Now fetching the weekly data of notes or wikis
+
+      current_week = Tag.nodes_for_period(
+        'note',
+        quiz_nids,
+        (time.to_i - week.weeks.to_i).to_s,
+        (time.to_i - (week - 1).weeks.to_i).to_s
+      ).count(:all)
+
+      weeks[count] = [(month.to_f * 1000), current_week]
       count += 1
       week -= 1
     end
@@ -265,14 +305,14 @@ class Tag < ApplicationRecord
     tag_followers.reject { |user| following_given_tags.include? user }
   end
 
+  # https://github.com/publiclab/plots2/pull/4266
   def self.trending(limit = 5, start_date = DateTime.now - 1.month, end_date = DateTime.now)
-    Tag.joins(:node_tag, :node)
-       .select('node.nid, node.created, node.status, term_data.*, community_tags.*')
+    Tag.select([:name])
+       .joins(:node_tag, :node)
        .where('node.status = ?', 1)
        .where('node.created > ?', start_date.to_i)
        .where('node.created <= ?', end_date.to_i)
        .distinct
-       .group([:name, 'node.nid', 'term_data.tid', 'community_tags.nid', 'community_tags.uid', 'community_tags.date']) # ONLY_FULL_GROUP_BY, issue #3120
        .order('count DESC')
        .limit(limit)
   end
@@ -303,8 +343,8 @@ class Tag < ApplicationRecord
         .count
   end
 
-  def self.related(tag_name)
-    Rails.cache.fetch('related-tags/' + tag_name, expires_in: 1.weeks) do
+  def self.related(tag_name, count = 5)
+    Rails.cache.fetch('related-tags/' + tag_name + '/' + count.to_s, expires_in: 1.weeks) do
       nids = NodeTag.joins(:tag)
                      .where(Tag.table_name => { name: tag_name })
                      .select(:nid)
@@ -313,8 +353,34 @@ class Tag < ApplicationRecord
          .where(NodeTag.table_name => { nid: nids })
          .where.not(name: tag_name)
          .group(:tid)
-         .order('COUNT(term_data.tid) DESC')
-         .limit(5)
+         .order(count: :desc)
+         .limit(count)
     end
   end
+
+  # for Cytoscape.js http://js.cytoscape.org/
+  def self.graph_data(limit = 250)
+    Rails.cache.fetch("graph-data/#{limit}", expires_in: 1.weeks) do
+      data = {}
+      data["tags"] = []
+      Tag.joins(:node)
+        .group(:tid)
+        .where('node.status': 1)
+        .order(count: :desc)
+        .limit(limit).each do |tag|
+        data["tags"] << {
+          "name" => tag.name,
+          "count" => tag.count
+        }
+      end
+      data["edges"] = []
+      data["tags"].each do |tag|
+        Tag.related(tag["name"], 10).each do |related_tag|
+          data["edges"] << { "from" => tag["name"], "to" => related_tag.name }
+        end
+      end
+      data
+    end
+  end
+
 end

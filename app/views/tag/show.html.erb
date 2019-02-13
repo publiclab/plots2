@@ -5,8 +5,11 @@
   
   
   <% if @tags.first && params[:id][-1..-1] != "*" %>
-    <%= render partial: "tag/graph", locals: { tags: @tags } %>
-  <% end %>
+
+      <%= link_to "#{request.path}/stats", id: params[:id] ,title: "Click to view graph" do %>
+          <i class="btn btn-default btn-sm"><i class="fa fa-bar-chart"></i> Stats </i>
+          <% end %>
+      <% end %>
   
   <%= render partial: 'tag/show/contributors' %>
 
@@ -33,6 +36,7 @@
 
   <%= render partial: "tag/show/questions" %>
   <%= render partial: "tag/show/related_tags" %>
+  <p> <%= render partial: 'tag/subscribe_button', locals:{tags: @related_tags } %></p>
   <%= render partial: 'tag/show/nav_tabs' %>
   
   <p style="padding-top:8px;">

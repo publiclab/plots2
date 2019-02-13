@@ -6,7 +6,7 @@
 
   <p>
     <% if current_user.following("everything") %>
-      <a rel="tooltip" title="<%= t('home.subscriptions.click_unfollow') %>" class="btn btn-default active" href="/unsubscribe/tag/everything" data-method="delete"><i class="fa fa-eye"></i> <%= t('home.subscriptions.following') %> <b><%= t('home.subscriptions.research_notes') %></b></a>
+      <a rel="tooltip" title="<%= t('home.subscriptions.click_unfollow') %>" class="btn btn-default active" href="/unsubscribe/tag/everything" data-method="delete"><i class="fa fa-user-plus" aria-hidden="true"></i> <%= t('home.subscriptions.following') %> <b><%= t('home.subscriptions.research_notes') %></b></a>
     <% else %>
       <a href="/subscribe/tag/everything" class="btn btn-default"><i class="fa fa-tag"></i> <%= t('home.subscriptions.subscribe_to') %> <b><%= t('home.subscriptions.all') %></b> <%= t('home.subscriptions.notes') %></a>
     <% end %>
@@ -17,7 +17,9 @@
 
   <hr />
 
-  <p> You can also control which email you want to receive by changing settings using <a href="/settings" class="btn btn-default"><i class="fa fa-envelope"></i> Email Settings </a></p>
+  <a href="/settings" class="btn btn-default" style="margin-bottom: 10px;"><i class="fa fa-envelope"></i> Email Settings </a>
+  
+  <p style="font-style: italic;"> Control which emails you want to receive. </p>
 
 </div>
 
@@ -28,7 +30,7 @@
   <form class="navbar-form" action="/subscribe/tag">
     <div class="form-group">
       <input type="text" name="name" class="form-control" placeholder="<%= t('home.subscriptions.enter_tags') %>" data-provide="typeahead" data-source='["balloon-mapping","thermal-flashlight","spectrometer"]' autocomplete="off">
-      <button type="submit" class="btn btn-primary"><i class="fa fa-plus fa fa-white"></i> <%= t('home.subscriptions.add') %></button>
+      <button type="submit" class="btn btn-primary add-subscriptions"><i class="fa fa-plus fa fa-white"></i> <%= t('home.subscriptions.add') %></button>
     </div>
   </form>
 

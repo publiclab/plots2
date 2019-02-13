@@ -6,17 +6,40 @@
   <% end %>
 
   <p><%= t('tag.index.browse_popular_tags') %></p>
-  
-  <input class="form-control" type="text" id="myInput"  placeholder="Search for tags..">
+  <form id="tagform" class="form-horizontal" method="GET" action="/tag/">
+  <div class="input-group">
+    <input type="search" tabindex="1" autocomplete="off" id="taginput" name="id" type="text" placeholder="Search for tags.." data-provide="typeahead" class="form-control" required="required" />
+    <span class="input-group-btn" >
+      <button type="submit" rel="tooltip" title="View content with the entered title" class="btn btn-primary">Search</button>
+    </span>
+  </div>
+  </form>
   <script>
-    $('#myInput').keypress(function (e) {
-      var key = e.which;
-      if (key == 13) { // enter key
-        var pre = document.getElementById("myInput").value;
-        window.location.href = "<%= tags_path %>"+"/" + pre
-      }
+    jQuery(document).ready(function() {
+
+      $('#taginput').typeahead({
+        items: 8,
+        minLength: 3,
+        source: function (query, process) {
+          var replaced_query = query.replace(' ', /-/g);
+          return $.post('/tag/suggested/' + replaced_query, {}, function (data) {
+            return process(data)
+          })
+        },
+        updater: function(text) {
+          $('#taginput').val(text)
+          window.location = "/tag/" + text;
+        }
+      });
+
+      $('#tagform').submit(function(e) {
+        e.preventDefault();
+        window.location = "/tag/" + ($('#taginput').val()).replace(/\s/g, '-');
+      });
+
     });
   </script>
+ 
   <br/><br/>
 
   <table class="table">
@@ -42,17 +65,18 @@
         <% if current_user %>
           <td>
              <% if current_user.following(tag.name) %>
-                <a rel="tooltip" title="<%= t('tag.show.unfollow') %>" class="btn btn-default btn-sm active" href="/unsubscribe/tag/<%= tag.name %>"><i class="fa fa-eye"></i> <%= t('tag.show.following') %></a>
+                <a rel="tooltip" title="<%= t('tag.show.unfollow') %>" class="btn btn-default btn-sm active" href="/unsubscribe/tag/<%= tag.name %>"><i class="fa fa-user-plus" aria-hidden="true"></i> <%= t('tag.show.following') %></a>
                 <% else %>
-                <a class="btn btn-default btn-sm" href="/subscribe/tag/<%= tag.name %>"><i class="fa fa-eye"></i> <%= t('tag.show.follow') %></a>
+                <a class="btn btn-default btn-sm" href="/subscribe/tag/<%= tag.name %>"><i class="fa fa-user-plus" aria-hidden="true"></i> <%= t('tag.show.follow') %></a>
                 <% end %>
           </td>
         <% end %>
       </tr>
     <% end %>
   </table>
-  <%= will_paginate @tags, :renderer => BootstrapPagination::Rails if @paginated %>
 
   <hr />
 
 </div>
+
+<div class="text-center"> <%= will_paginate @tags, :renderer => BootstrapPagination::Rails if @paginated %></div>

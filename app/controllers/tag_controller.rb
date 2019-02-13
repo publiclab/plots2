@@ -40,13 +40,13 @@ class TagController < ApplicationController
         .order(order_string)
         .paginate(page: params[:page], per_page: 24)
     elsif @toggle == "followers"
-      @tags = Tag.joins(:node_tag, :node)
+      raw_tags = Tag.joins(:node_tag, :node)
         .select('node.nid, node.status, term_data.*, community_tags.*')
         .where('node.status = ?', 1)
         .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
         .group(:name)
-        .order(order_string)
-        .paginate(page: params[:page], per_page: 24)
+      raw_tags = Tag.sort_according_to_followers(raw_tags, params[:order])
+      @tags = raw_tags.paginate(page: params[:page], per_page: 24)
     else
       tags = Tag.joins(:node_tag, :node)
         .select('node.nid, node.status, term_data.*, community_tags.*')
@@ -256,7 +256,7 @@ class TagController < ApplicationController
   end
 
   def author
-    render json: DrupalUser.find_by(name: params[:id]).tag_counts
+    render json: User.find_by(name: params[:id]).tag_counts
   end
 
   def barnstar
@@ -272,7 +272,7 @@ class TagController < ApplicationController
       barnstar_info_link = '<a href="//' + request.host.to_s + '/wiki/barnstars">barnstar</a>'
       node.add_comment(subject: 'barnstar',
                        uid: current_user.uid,
-                       body: "@#{current_user.username} awards a #{barnstar_info_link} to #{node.drupal_user.name} for their awesome contribution!")
+                       body: "@#{current_user.username} awards a #{barnstar_info_link} to #{node.user.name} for their awesome contribution!")
     end
     redirect_to node.path + '?_=' + Time.now.to_i.to_s
   end
@@ -300,7 +300,7 @@ class TagController < ApplicationController
           barnstar_info_link = '<a href="//' + request.host.to_s + '/wiki/barnstars">barnstar</a>'
           node.add_comment(subject: 'barnstar',
                            uid: current_user.uid,
-                           body: "@#{current_user.username} awards a #{barnstar_info_link} to #{node.drupal_user.name} for their awesome contribution!")
+                           body: "@#{current_user.username} awards a #{barnstar_info_link} to #{node.user.name} for their awesome contribution!")
 
         elsif tagname.split(':')[0] == "with"
           user = User.find_by_username_case_insensitive(tagname.split(':')[1])
@@ -341,6 +341,15 @@ class TagController < ApplicationController
     node = Node.where(nid: params[:nid]).first
     # only admins, mods, and tag authors can delete other peoples' tags
     if node_tag.uid == current_user.uid || current_user.role == 'admin' || current_user.role == 'moderator' || node.uid == current_user.uid
+
+      tag = Tag.joins(:node_tag)
+                   .select('term_data.name')
+                   .where(tid: params[:tid])
+                   .first
+
+      if (tag.name.split(':')[0] == "lat") || (tag.name.split(':')[0] == "lon")
+        node.delete_coord_attribute(tag.name)
+      end
 
       node_tag.delete
       respond_with do |format|
@@ -476,6 +485,27 @@ class TagController < ApplicationController
       params[:tagname] = ""
     end
     render layout: false
+  end
+
+  def graph
+    render layout: false
+  end
+
+  def graph_data
+    render json: params.key?(:limit) ? Tag.graph_data(params[:limit].to_i) : Tag.graph_data
+  end
+
+  def stats
+    @time = if params[:time]
+              Time.parse(params[:time])
+            else
+              Time.now
+            end
+    @tags = Tag.where(name: params[:id])
+    @tag_notes = @tags.first.contribution_graph_making('note', 52, @time)
+    @tag_wikis = @tags.first.contribution_graph_making('page', 52, @time)
+    @tag_maps = @tags.first.contribution_graph_making('map', 52, @time)
+    @tag_questions = @tags.first.question_graph_making( 52, @time)
   end
 
   private

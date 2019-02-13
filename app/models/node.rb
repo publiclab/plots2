@@ -71,7 +71,7 @@ class Node < ActiveRecord::Base
     updated_at.strftime('%B %Y')
   end
 
-  has_many :revision, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
+  has_many :revision, foreign_key: 'nid', dependent: :destroy
   # wasn't working to tie it to .vid, manually defining below
   #  has_one :drupal_main_image, :foreign_key => 'vid', :dependent => :destroy
   #  has_many :drupal_content_field_image_gallery, :foreign_key => 'nid'
@@ -89,10 +89,15 @@ class Node < ActiveRecord::Base
   has_many :node_selections, foreign_key: :nid, dependent: :destroy
   has_many :answers, foreign_key: :nid, dependent: :destroy
 
-  belongs_to :drupal_user, foreign_key: 'uid'
+  belongs_to :user, foreign_key: 'uid'
 
   validates :title, presence: :true
   validates_with UniqueUrlValidator, on: :create
+
+  scope :published, -> { where(status: 1) }
+  scope :past_week, -> { published.where("created > ?", (Time.now - 7.days).to_i) }
+  scope :past_month, -> { published.where("created > ?", (Time.now - 1.months).to_i) }
+  scope :past_year, -> { published.where("created > ?", (Time.now - 1.years).to_i) }
 
   # making drupal and rails database conventions play nice;
   # 'changed' is a reserved word in rails
@@ -132,7 +137,7 @@ class Node < ActiveRecord::Base
   # or, we should refactor to us node.created instead of Time.now
   def generate_path
     if type == 'note'
-      username = DrupalUser.find_by(uid: uid).name
+      username = User.find_by(id: uid).name
       "/notes/#{username}/#{Time.now.strftime('%m-%d-%Y')}/#{title.parameterize}"
     elsif type == 'page'
       '/wiki/' + title.parameterize
@@ -140,6 +145,15 @@ class Node < ActiveRecord::Base
       "/map/#{title.parameterize}/#{Time.now.strftime('%m-%d-%Y')}"
     elsif type == 'feature'
       "/feature/#{title.parameterize}"
+    end
+  end
+
+  def self.to_csv(options = {})
+    CSV.generate(options) do |csv|
+      csv << column_names
+      all.each do |object|
+        csv << object.attributes.values_at(*column_names)
+      end
     end
   end
 
@@ -189,16 +203,15 @@ class Node < ActiveRecord::Base
     while week >= 1
       # initialising month variable with the month of the starting day
       # of the week
-      month = (time - (week * 7 - 1).days).strftime('%m')
+      month = time - (week * 7 - 1).days
 
       # Now fetching the weekly data of notes or wikis
-      month = month.to_i
       current_week = Node.select(:created)
-                     .where(type: type,
-                            status: 1,
-                            created: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
-                      .count
-      weeks[count] = [month, current_week]
+                    .where(type: type,
+                    status: 1,
+                    created: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
+                    .count
+      weeks[count] = [(month.to_f * 1000), current_week]
       count += 1
       week -= 1
     end
@@ -240,10 +253,10 @@ class Node < ActiveRecord::Base
   # users who like this node
   def likers
     node_selections
-      .joins(:drupal_user)
-      .references(:users)
+      .joins(:user)
+      .references(:rusers)
       .where(liking: true)
-      .where('users.status = ?', 1)
+      .where('rusers.status': 1)
       .collect(&:user)
   end
 
@@ -259,18 +272,8 @@ class Node < ActiveRecord::Base
       .order(timestamp: :desc)
   end
 
-  def revision_count
-    revision
-      .count
-  end
-
-  def comment_count
-    comments
-      .count
-  end
-
   def author
-    DrupalUser.find_by(uid: uid)
+    User.find(uid)
   end
 
   def coauthors
@@ -405,24 +408,19 @@ class Node < ActiveRecord::Base
   end
 
   # returns all tagnames for a given power tag
-  def power_tags(tag)
-    tids = Tag.includes(:node_tag)
-              .references(:community_tags)
-              .where('community_tags.nid = ? AND name LIKE ?', id, tag + ':%')
-              .collect(&:tid)
-    node_tags = NodeTag.where('nid = ? AND tid IN (?)', id, tids)
+  def power_tags(tagname)
     tags = []
-    node_tags.each do |nt|
-      tags << nt.name.gsub(tag + ':', '')
+    power_tag_objects(tagname).each do |nt|
+      tags << nt.name.gsub(tagname + ':', '')
     end
     tags
   end
 
   # returns all power tag results as whole community_tag objects
-  def power_tag_objects(tag)
+  def power_tag_objects(tagname)
     tids = Tag.includes(:node_tag)
               .references(:community_tags)
-              .where('community_tags.nid = ? AND name LIKE ?', id, tag + ':%')
+              .where('community_tags.nid = ? AND name LIKE ?', id, tagname + ':%')
               .collect(&:tid)
     NodeTag.where('nid = ? AND tid IN (?)', id, tids)
   end
@@ -434,6 +432,14 @@ class Node < ActiveRecord::Base
               .where('community_tags.nid = ? AND name LIKE ?', id, '%:%')
               .collect(&:tid)
     NodeTag.where('nid = ? AND tid NOT IN (?)', id, tids)
+  end
+
+  def location_tags
+    if lat && lon
+      power_tag_objects('lat') + power_tag_objects('lon')
+    else
+      []
+    end
   end
 
   # accests a tagname /or/ tagname ending in wildcard such as "tagnam*"
@@ -561,16 +567,6 @@ class Node < ActiveRecord::Base
     end
   end
 
-  # these should eventually displace the above means of finding locations
-  # ...they may already be redundant after tagged_map_coord migration
-  def tagged_lat
-    power_tags('lat')[0]
-  end
-
-  def tagged_lon
-    power_tags('lon')[0]
-  end
-
   def next_by_author
     Node.where('uid = ? and nid > ? and type = "note"', author.uid, nid)
         .order('nid')
@@ -620,7 +616,7 @@ class Node < ActiveRecord::Base
   # researching simultaneous creation of associated records
   def self.new_note(params)
     saved = false
-    author = DrupalUser.find(params[:uid])
+    author = User.find(params[:uid])
     node = Node.new(uid:     author.uid,
                     title:   params[:title],
                     comment: 2,
@@ -723,7 +719,7 @@ class Node < ActiveRecord::Base
   end
 
   def add_barnstar(tagname, giver)
-    add_tag(tagname, giver.drupal_user)
+    add_tag(tagname, giver)
     CommentMailer.notify_barnstar(giver, self).deliver_now
   end
 
@@ -731,6 +727,7 @@ class Node < ActiveRecord::Base
     tagname = tagname.downcase
     unless has_tag_without_aliasing(tagname)
       saved = false
+      table_updated = false
       tag = Tag.find_by(name: tagname) || Tag.new(vid:         3, # vocabulary id; 1
                                                   name:        tagname,
                                                   description: '',
@@ -750,6 +747,18 @@ class Node < ActiveRecord::Base
                                  uid: user.uid,
                                  date: DateTime.now.to_i,
                                  nid: id)
+
+          # Adding lat/lon values into node table
+          if tag.valid?
+            if tag.name.split(':')[0] == 'lat'
+              tagvalue = tag.name.split(':')[1]
+              table_updated = update_attributes(:latitude => tagvalue, :precision => decimals(tagvalue).to_s)
+            elsif tag.name.split(':')[0] == 'lon'
+              tagvalue = tag.name.split(':')[1]
+              table_updated = update_attributes(:longitude => tagvalue)
+            end
+          end
+
           if node_tag.save
             saved = true
             # send email notification if there are subscribers, status is OK, and less than 1 month old
@@ -762,7 +771,23 @@ class Node < ActiveRecord::Base
           end
         end
       end
-      return [saved, tag]
+      return [saved, tag, table_updated]
+    end
+  end
+
+  def decimals(n)
+    if !n.to_s.include? '.'
+      0
+    else
+      n.to_s.split('.').last.size
+    end
+  end
+
+  def delete_coord_attribute(tagname)
+    if tagname.split(':')[0] == "lat"
+      table_updated = update_attributes(:latitude => nil, :precision => nil)
+    else
+      table_updated = update_attributes(:longitude => nil)
     end
   end
 
@@ -966,5 +991,15 @@ class Node < ActiveRecord::Base
   def draft_url
     @token = slug.split('token:').last
     url = 'https://publiclab.org/notes/show/' + nid.to_s + '/' + @token.to_s
+  end
+
+  def fetch_comments(user)
+    if user&.can_moderate?
+      comments.where('status = 1 OR status = 4')
+    elsif user
+      comments.where('comments.status = 1 OR (comments.status = 4 AND comments.uid = ?)', user.uid)
+    else
+      comments.where(status: 1)
+    end
   end
 end

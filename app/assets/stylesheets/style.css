@@ -366,9 +366,11 @@ div.note .meta {
   height:auto;
   overflow:auto;
 }
-
+/*start of img aspect css that will affect the 
+thumbnails which appears on the user's profile 
+under their notes*/
 #notes .note a.img {
-  height:160px;
+  height: auto;
   display: inline-block;
   overflow: hidden;
   margin-bottom: 10px;
@@ -379,13 +381,17 @@ div.note .meta {
   overflow: hidden;
 }
 .note-image img {
-  width: 100%;
+  width: auto;
 }
 
 .grid-image {
-  width: auto;
-  height: 160px;
+  width: 100% !important;
+  height: auto;
+  display: block; 
+  overflow: hidden;
+  margin-bottom: 10px;
 }
+/*end of img aspect css*/
 
 #notes .note h3 a {
   color: #444;
@@ -441,8 +447,11 @@ div.note.moderated h4 {
   }
 
   .grid-image {
-    width: auto;
-    height: 200px;
+  width: auto;
+  height: auto;
+  display: block; 
+  overflow: hidden;
+  margin-bottom: 10px;
   }
 }
 
@@ -462,4 +471,16 @@ div.note.moderated h4 {
 
   font-size: 60px;
 
+}
+
+.is-active{
+    cursor: default;
+    background-color: #e3f2fd;
+}
+textarea, input {
+    padding:10px;
+    font-family: FontAwesome, "Open Sans", Verdana, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
 }

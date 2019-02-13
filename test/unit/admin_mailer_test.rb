@@ -63,9 +63,29 @@ class AdminMailerTest < ActionMailer::TestCase
     # test the last one
     email = ActionMailer::Base.deliveries.last
     assert_not_nil email.to
-    assert_equal [node.author.mail], email.to
+    assert_equal [node.author.email], email.to
     assert_equal '[Public Lab] Your post was approved!', email.subject
     assert email.body.include?("Hi! Your post was approved by <a href='https://#{request_host}/profile/#{moderator.username}'>#{moderator.username}</a> (a <a href='https://#{request_host}/wiki/moderation'>community moderator</a>) and is now visible in the <a href='https://#{request_host}/dashboard'>Public Lab research feed</a>. Thanks for contributing to open research!")
+  end
+
+  test 'notify_author_of_comment_approval' do
+    comment = comments(:first)
+    moderator = users(:moderator)
+
+    assert_difference 'ActionMailer::Base.deliveries.size', 1 do
+      # send the email
+      AdminMailer.notify_author_of_comment_approval(comment, moderator).deliver_now
+    end
+
+    # test that it got queued
+    assert !ActionMailer::Base.deliveries.empty?
+
+    # test the last one
+    email = ActionMailer::Base.deliveries.last
+    assert_not_nil email.to
+    assert_equal [comment.author.email], email.to
+    assert_equal '[Public Lab] Your comment was approved!', email.subject
+    assert email.body.include?("Hi! Your comment was approved by <a href='https://#{request_host}/profile/#{moderator.username}'>#{moderator.username}</a> (a <a href='https://#{request_host}/wiki/moderation'>community moderator</a>) and is now visible in the <a href='https://#{request_host}/dashboard'>Public Lab research feed</a>. Thanks for contributing to open research!")
   end
 
   test 'notify_moderators_of_approval' do
@@ -91,6 +111,27 @@ class AdminMailerTest < ActionMailer::TestCase
     assert_equal '[New Public Lab poster needs moderation] ' + node.title, email.subject
     time_ago = time_ago_in_words(node.created_at)
     assert email.body.include?("Post was approved by <a href='https://#{request_host}/profile/#{moderator.username}'>#{moderator.username}</a> after entering moderation queue #{time_ago} ago and is now visible in the <a href='https://#{request_host}/dashboard'>Public Lab research feed</a>. Thanks for helping to keep Public Lab a welcoming and spam-free space!")
+  end
+
+  test 'notify_moderators_of_comment_approval' do
+    comment = comments(:comment_status_4)
+    moderator = users(:moderator)
+    moderators = User.where(role: %w[moderator admin])
+    assert !moderators.empty?
+
+    email = AdminMailer.notify_moderators_of_comment_approval(comment, moderator)
+    assert_difference 'ActionMailer::Base.deliveries.size', 1 do
+      email.deliver_now
+    end
+
+    assert !ActionMailer::Base.deliveries.empty?
+    assert_not_nil email.to
+    assert_not_nil email.bcc
+    assert_equal ["comment-moderators@#{request_host}"], ActionMailer::Base.deliveries.last.to
+    assert_equal moderators.collect(&:email), ActionMailer::Base.deliveries.last.bcc
+    assert_equal '[New Public Lab commenter needs moderation]', email.subject
+    time_ago = time_ago_in_words(comment.created_at)
+    assert email.body.include?("Comment was approved by <a href='https://#{request_host}/profile/#{moderator.username}'>#{moderator.username}</a> after entering moderation queue #{time_ago} ago and is now visible in the <a href='https://#{request_host}/dashboard'>Public Lab research feed</a>. Thanks for helping to keep Public Lab a welcoming and spam-free space!")
   end
 
   # Should: prompt moderators to reach out if it's not spam, but a guidelines violation

@@ -52,6 +52,7 @@ Plots2::Application.routes.draw do
   get 'people/:tagname' => 'users#list'
   get 'signup' => 'users#new'
   get 'home' => 'home#front'
+  get 'verify/:token' => 'users#verify_email'
   resources :relationships, only: [:create, :destroy]
 
   get '/wiki/:id/comments', to: 'wiki#comments'
@@ -86,7 +87,10 @@ Plots2::Application.routes.draw do
   get 'subscribe/:type/:name' => 'subscription#add'
   get 'subscriptions' => 'subscription#index'
   get 'subscriptions/digest' => 'subscription#digest'
-
+  get 'subscribe/multiple/:type/:tagnames' => 'subscription#multiple_add'
+  post 'subscribe/multiple/:type/:tagnames' => 'subscription#multiple_add'
+  get 'subscribe/multiple/:type' => 'subscription#multiple_add'
+  post 'subscribe/multiple/:type' => 'subscription#multiple_add'
   get 'wiki/stale' => 'wiki#stale'
   get 'wiki/new' => 'wiki#new'
   get 'wiki/replace/:id' => 'wiki#replace'
@@ -98,6 +102,8 @@ Plots2::Application.routes.draw do
   get 'w/:id' => 'wiki#show'
 
   # these need precedence for tag listings
+  get 'tag/graph.json' => 'tag#graph_data'
+  get 'stats/graph' => 'tag#graph'
   get 'feed/tag/:tagname' => 'tag#rss'
   get ':node_type/tag/:id/author/:author' => 'tag#show_for_author'
   get 'tag/:id/author/:author' => 'tag#show_for_author'
@@ -193,6 +199,7 @@ Plots2::Application.routes.draw do
   put 'tag/remove_tag/:id' => 'tag#remove_tag'
   put 'tag/remove_all_tags' => 'tag#remove_all_tags'
   get 'tag/:id' => 'tag#show'
+  get 'tag/:id/stats' => 'tag#stats'
   get 'locations/form' => 'tag#location'
   get 'locations/modal' => 'tag#location_modal'
   get 'embed/grid/:tagname' => 'tag#gridsEmbed'
@@ -238,6 +245,20 @@ Plots2::Application.routes.draw do
   get 'stats' => 'stats#index'
   get 'stats/range/:start/:end' => 'stats#range'
   get 'stats/subscriptions' => 'stats#subscriptions'
+  get 'stats/notes' => 'stats#notes'
+  get 'stats/notes/:start/:end' => 'stats#notes'
+  get 'stats/wikis' => 'stats#wikis'
+  get 'stats/wikis/:start/:end' => 'stats#wikis'
+  get 'stats/comments' => 'stats#comments'
+  get 'stats/comments/:start/:end' => 'stats#comments'
+  get 'stats/maps' => 'stats#maps'
+  get 'stats/maps/:start/:end' => 'stats#maps'
+  get 'stats/users' => 'stats#users'
+  get 'stats/users/:start/:end' => 'stats#users'
+  get 'stats/questions' => 'stats#questions'
+  get 'stats/questions/:start/:end' => 'stats#questions'
+  get 'stats/answers' => 'stats#answers'
+  get 'stats/answers/:start/:end' => 'stats#answers'
   get 'feed' => 'notes#rss'
   get 'rss.xml' => 'legacy#rss'
 

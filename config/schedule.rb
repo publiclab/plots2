@@ -19,6 +19,12 @@
 
 # Learn more: http://github.com/javan/whenever
 
+# Work around whenever Gem issue (see https://github.com/publiclab/plots2/issues/3404)
+env :PATH, ENV['PATH']
+env :GEM_HOME, ENV['GEM_HOME']
+env :SECRET_KEY_BASE, ENV['SECRET_KEY_BASE']
+env :REDIS_URL, ENV['REDIS_URL']
+
 # Cron Job log file
 set :output, "#{Dir.pwd}/public/cron_log.log"
 

@@ -6,9 +6,6 @@ class UserTag < ApplicationRecord
   validates_uniqueness_of :value, :scope => :uid
   before_save :preprocess
 
-  DIGEST_DAILY = 0
-  DIGEST_WEEKLY = 1
-
   def preprocess
     self.value = value.downcase
   end

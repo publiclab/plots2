@@ -18,6 +18,12 @@ class SearchControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test "search profiles page at /search/profiles/steff?tag=awesome" do
+    get :profiles, params: { query: 'awesome', field: 'tag' }
+    assert_response :success
+    assert_equal users(:steff3).id, assigns(:profiles).first.id
+  end
+
   test "search profiles at /search/profiles/steff1" do
     get :profiles, params: { query: 'steff1' }
     assert_response :success
@@ -55,5 +61,20 @@ class SearchControllerTest < ActionController::TestCase
     get :all_content, params: { query: 'page' }
     assert_response :success
     assert assigns(:nodes).values.flatten.collect(&:type).uniq.length > 1
+  end
+
+  test "search for trawl trawling and trawls yields the same result" do
+    get :all_content, params: { :query => "trawl" }
+    nodes_with_trawl = assigns(:nodes)
+
+    get :all_content, params: { :query => "trawling" }
+    nodes_with_trawling = assigns(:nodes)
+
+    get :all_content, params: { :query => "trawls" }
+    nodes_with_trawls = assigns(:nodes)
+
+    assert_equal nodes_with_trawl, nodes_with_trawling
+    assert_equal nodes_with_trawl, nodes_with_trawls
+    assert_response :success
   end
 end
