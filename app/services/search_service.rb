@@ -97,6 +97,7 @@ class SearchService
 
     nodes_scope = Node.select(:nid)
                       .where('`latitude` >= ? AND `latitude` <= ?', coordinates["selat"], coordinates["nwlat"])
+                      .where(status: 1)
 
     if tag.present?
       nodes_scope = NodeTag.joins(:tag)
@@ -216,27 +217,7 @@ class SearchService
     end
   end
 
-  # Returns the location of people with most recent contributions.
-  # The method receives as parameter the number of results to be
-  # returned and as optional parameter a user tag. If the user tag
-  # is present, the method returns only the location of people
-  # with that specific user tag.
-  def people_locations(query, user_tag = nil)
-    user_locations = User.where('rusers.status <> 0')
-                         .joins(:user_tags)
-                         .where('value LIKE "lat:%"')
-                         .includes(:revisions)
-                         .order("node_revisions.timestamp DESC")
-                         .distinct
-    if user_tag.present?
-      user_locations = User.joins(:user_tags)
-                           .where('user_tags.value LIKE ?', user_tag)
-                           .where(id: user_locations.select("rusers.id"))
-    end
-    user_locations.limit(query)
-  end
-
- def find_users(query, limit, type = nil)
+  def find_users(query, limit, type = nil)
     users =
       if type == "tag"
         User.where('rusers.status = 1')

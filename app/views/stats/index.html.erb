@@ -63,161 +63,198 @@
   <hr />
 
   <h4>
-    <%= raw t('notes.stats.notes_and_wiki_edits_past_week', :url1 => "/research", :note_count => @weekly_notes,
-    :url2 => "/wiki", :wiki_count => @weekly_wikis) %>
-    <%= raw t('notes.stats.people_joined_past_week', :people_count => @weekly_members) %>
+      <%= raw t('notes.stats.notes_and_wiki_edits_past_week', :url1 => "/research", :note_count => @weekly_notes,
+                :url2 => "/wiki", :wiki_count => @weekly_wikis) %>
+            <%= raw t('notes.stats.people_joined_past_week', :people_count => @weekly_members) %>
   </h4>
 
   <hr />
 
   <h4>
-    <%= raw t('notes.stats.notes_and_wiki_edits_past_month', :url1 => "/research", :note_count => @monthly_notes,
-    :url2 => "/wiki", :wiki_count => @monthly_wikis) %>
-    <%= raw t('notes.stats.people_joined_past_month', :people_count => @monthly_members) %>
+      <%= raw t('notes.stats.notes_and_wiki_edits_past_month', :url1 => "/research", :note_count => @monthly_notes,
+                :url2 => "/wiki", :wiki_count => @monthly_wikis) %>
+            <%= raw t('notes.stats.people_joined_past_month', :people_count => @monthly_members) %>
   </h4>
 
   <hr />
-<br> <br>
+  <h4>
+      <%= raw t('notes.stats.questions_past_week', :url1 => "/questions", :quiz_count => @weekly_questions,
+                :url2 => "/questions/answered/", :ans_count => @weekly_answers) %>
+            <hr>
 
-<div class="col-md-4 col-md-offset-2">
-    <i class="fa fa-cloud-download fa-3x" style="color:blue"> </i>
-    Download as Json
-</div>
-<div class="col-md-4 col-md-offset-1">
-    <i class="fa fa-cloud-download fa-3x" style="color:purple"> </i>
-    Download as CSV
-</div>
-
+            <%= raw t('notes.stats.questions_past_month', :url1 => "/questions", :quiz_count => @monthly_questions,
+                      :url2 => "/questions/answered/", :ans_count => @monthly_answers) %>
+   </h4>
+   <hr/>
+  <br> <br>
 </div>
 
 <br> <br>
 
 <div class="container">
-  <h4><%= raw t('notes.stats.total_contributors', :all_contributors_count => @all_time_contributors) %></h4>
-
-  <p><%= raw t('notes.stats.notes_per_week_past_year', :note_count => @notes_per_week_past_year.round(2)) %></p>
-
-  <p><i><%= t('notes.stats.note_posting_52_weeks') %></i></p>
-
-  <div id="notes" style="border:1px solid #E5E5E5"></div>
-
-  <hr />
-
-  <h4><%= raw t('notes.stats.wiki_pages_posted', :count => Node.where(type: 'page', status: 1).count) %></h4>
-
-  <p><i><%= t('notes.stats.wiki_page_posting_52_weeks') %></i></p>
-
-  <div id="wikis" style="border:1px solid #E5E5E5"></div>
-
-  <hr />
-
-  <h4><%= raw t('notes.stats.comments_posted', :count => Comment.count) %></h4>
-
-  <p><i><%= t('notes.stats.comments_posted_52_weeks') %></i></p>
-
-  <div id="comments" style="border:1px solid #E5E5E5"></div>
-
-  <hr />
-
-  <h4><%= raw t('notes.stats.wiki_page_edits', :count => Revision.count(:all)) %></h4>
-  <p><%= raw t('notes.stats.edits_per_week', :count => @edits_per_week_past_year.round(2)) %></p>
 
 </div>
-<script src="https://cdn.jsdelivr.net/npm/frappe-charts@0.0.8/dist/frappe-charts.min.iife.js"></script>
 
-<script type="text/javascript">
-    let divisions = new Array();
-    divisions[0] = <%= @graph_notes %>
-    divisions[1] = <%= @graph_wikis %>
-    divisions[2] = <%= @graph_comments %>
+<h3 align="center"> <u>  Notes, Wikis and Comments Statistics in the past year </u></h3>
+<br>
+    <div id="timeline"></div>
+    <p><b><%= raw t('notes.stats.edits_per_week', :count => @edits_per_week_past_year.round(2)) %><b></p>
+    <p><b><%= raw t('notes.stats.notes_per_week_past_year', :note_count => @notes_per_week_past_year.round(2)) %></b></p>
+    <br>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+var options = {
+    chart: {
+        type: "area",
+        height: 500,
+        foreColor: "#999",
+        scroller: {
+            enabled: true,
+            track: {
+                height: 7,
+                background: '#e0e0e0'
 
-    let months = ["J", "F", "M", "A", "M", "J", "J", "A","S", "O", "N", "D"];
+            },
+            thumb: {
+                height: 10,
+                background: '#94E3FF'
 
-    let parents = new Array();
-    parents[0] = "#notes";
-    parents[1] = "#wikis";
-    parents[2] = "#comments";
+            },
+            scrollButtons: {
+                enabled: true,
+                size: 9,
+                borderWidth: 2,
+                borderColor: '#008FFB',
+                fillColor: '#008FFB'
 
-    let i;
-    let labels = new Array();
-    for(i = 0; i < divisions[0].length; i++)
-        labels[i] = "";
-    let count = 0;
-    let prev = 0;
-    for(i = 0; i < divisions[0].length; i++){
-        if(divisions[0][i][1][0] != prev){
-            if(count < 4){
-                let j;
-                for(j = i - 1; j >= i - count; j--){
-                    labels[j] = "";
-                }
+            },
+            padding: {
+                left: 30,
+                right: 20
+
             }
 
-            else if(count == 4){
-                let j;
-                for(j = i - 1; j >= i - count; j--){
-                    labels[j] = "";
-                }
-                labels[i-2] = months[divisions[0][i - 2][1][0]-1];
-            }
-            else{
-                let j;
-                for(j = i-1; j >= i - count; j--){
-                    labels[j] = "";
-                }
-                labels[i-3] = months[divisions[0][i - 3][1][0]-1];
-            }
-            count = 0;
+        },
+        stacked: true,
+        dropShadow: {
+            enabled: true,
+            enabledSeries: [0],
+            top: -2,
+            left: 2,
+            blur: 5,
+            opacity: 0.06
+
         }
-        prev = divisions[0][i][1][0];
-        count++;
-    }
-    let title = new Array();
-    title[0] = "notes";
-    title[1] = "wikis";
-    title[2] = "comments";
 
-    let values = new Array();
-    for(i = 0; i < 3; i++){
-        let j = 0;
-        values[i] = new Array();
-        for(j = 0; j < divisions[i].length; j++){
-            values[i][j] = divisions[i][j][1][1];
+    },
+    colors: ['#00E396', '#0090FF', '#800080'],
+    stroke: {
+        curve: "smooth",
+        width: 3
+
+    },
+    dataLabels: {
+        enabled: false
+
+    },
+    series: [{
+        name: 'Notes',
+        data: generateDayWiseTimeSeries(0, 52)
+
+    }, {
+        name: 'Wikis',
+        data: generateDayWiseTimeSeries(1, 52)
+    }, {
+        name: 'Comments',
+        data: generateDayWiseTimeSeries(2, 52)
+
+    }],
+        markers: {
+            size: 0,
+            strokeColor: "#fff",
+            strokeWidth: 3,
+            strokeOpacity: 1,
+            fillOpacity: 1,
+            hover: {
+                size: 6
+
+            }
+
+        },
+        xaxis: {
+            type: "datetime",
+            axisBorder: {
+                show: false
+
+            },
+            axisTicks: {
+                show: false
+
+            }
+
+        },
+        yaxis: {
+            tickAmount: 6,
+            min: 0,
+            opposite: true,
+            labels: {
+                offsetX: 24,
+                offsetY: -5
+
+            },
+            tooltip: {
+                enabled: true
+
+            }
+
+        },
+        grid: {
+            padding: {
+                left: -5,
+                right: 5
+
+            }
+
+        },
+        tooltip: {
+            x: {
+                format: "dd MMM yyyy"
+
+            },
+
+        },
+        legend: {
+            position: 'top',
+            horizontalAlign: 'left'
+
+        },
+        fill: {
+            type: "solid",
+            fillOpacity: 0.7
+
         }
-    }
 
-    let datasets = new Array();
-    for(i = 0; i < 3; i++){
-        datasets[i] = new Array();
-        obj = new Object();
-        obj.title = title[i];
-        obj.values = new Array();
-        obj.values = values[i];
-        datasets[i][0] = new Object();
-        datasets[i][0] = obj;
-    }
+};
 
-    let data = new Array();
-    for(i = 0; i < 3; i++){
-        data[i] = new Object();
-        data[i].labels = labels;
-        data[i].datasets = datasets[i];
-    }
+var chart = new ApexCharts(document.querySelector("#timeline"), options);
 
-    for(i = 0; i < 3; i++){
-        let lineGraph = new Chart({
-            parent: parents[i],
-            type: "bar",
-            show_dots: 0,
-            heatline: 1,
-            height: 115,
-            region_fill: 0,
-            data: data[i],
-            x_axis_mode: "tick",
-            y_axis_mode: "span",
-            is_series: 1,
-            colors: ['purple']
-        });
-    }
+chart.render();
+function generateDayWiseTimeSeries(s, count) {
+      var values = [
+       <%= @graph_notes.values.collect {|ind| ind[1]} %>,
+       <%= @graph_wikis.values.collect {|ind| ind[1]} %>,
+       <%= @graph_comments.values.collect {|ind| ind[1]} %>,
+      ];
 
+      var i = 0;
+var months = <%= @graph_notes.values.collect {|ind| ind[0]} %>
+      var series = [];
+      var x = new Date(months[0]).getTime();
+      while (i < count) {
+        series.push([x, values[s][i]]);
+        x += 604800000;
+        i++;
+      }
+      return series;
+    }
 </script>

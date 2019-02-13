@@ -10,7 +10,7 @@
         <% end %>
           <a class="img" href="<%= node.path %>">
             <% if node.main_image %>
-              <img alt="image" class="img-fluid grid-image" src="<%= node.main_image.path(:default) %>">
+              <img alt="image" class="img-fluid grid-image" src="<%= node.main_image.path(:default) %>"  style="width:100%;height:auto;">
             <% end %>
           </a>
           <h4 style="padding: 0px; margin: 10px;"><a href="<%=node.path%>" style="padding-top: 0px"><%=node.title%></a></h4>

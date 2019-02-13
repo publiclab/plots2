@@ -1,15 +1,13 @@
-<!-- required for MapModule -->
-<!-- <script src="https://maps.googleapis.com/maps/api/js?libraries=places&language=en&key=AIzaSyDWgc7p4WWFsO3y0MTe50vF4l4NUPcPuwE"></script> -->
-<link href="/lib/leaflet/dist/leaflet.css" rel="stylesheet">
-<script src="/lib/leaflet/dist/leaflet.js"></script>
-<link href="/lib/leaflet-blurred-location/dist/Leaflet.BlurredLocation.css" rel="stylesheet">
-<script src="/lib/leaflet-blurred-location/dist/Leaflet.BlurredLocation.js"></script>
-    
-
 <link href="/lib/woofmark/dist/woofmark.min.css" rel="stylesheet">
 <link href="/lib/horsey/dist/horsey.min.css" rel="stylesheet">
 <link href="/lib/bootstrap-tokenfield/dist/css/tokenfield-typeahead.min.css" rel="stylesheet">
 <link href="/lib/bootstrap-tokenfield/dist/css/bootstrap-tokenfield.min.css" rel="stylesheet">
+
+<!-- required for MapModule -->
+<link href="/lib/leaflet/dist/leaflet.css" rel="stylesheet">
+<script src="/lib/leaflet/dist/leaflet.js"></script>
+<link href="/lib/leaflet-blurred-location/dist/Leaflet.BlurredLocation.css" rel="stylesheet">
+<script src="/lib/leaflet-blurred-location/dist/Leaflet.BlurredLocation.js"></script>
 
 <!-- required for TagsModule -->
 <script src="/lib/typeahead.js/dist/bloodhound.js"></script>
@@ -98,30 +96,49 @@
       </div>
 
       <div class="ple-module-content col-md-9">
-          <button id="location_button" class="btn btn-lg btn-default"><i class="fa fa-map-marker" aria-hidden="true"></i> Add Location</button>
+          <button id="location_button" class="btn btn-lg btn-default"><i class="fa fa-map-marker" aria-hidden="true"></i> Add a location</button>
           <p class="ple-help"><span class="ple-help-minor">Search location through place-name , latitude and longitude or by panning the map .</span></p>
 
           <div id="map_content">    
             <div class="row">
               <div class="col-md-6"> 
-                <div id="map" class="leaflet-map" style="width: 100% ; height: 300px;"></div>
+                <div id="map" class="leaflet-map" style="width: 100% ; height: 300px; margin-bottom:8px;"></div>
                 </div>
                 <div class="col-md-6">
-                  <h4><b>By place name :</b></h4>
+                  <label>By place name</label>
                     <p>
                       <input id="placenameInput" type="text" class="form-control" />
                     </p>
                      <p>
-                      <h4><b>By entering co-ordinates :</b></h4>
+                      <label>Or by entering coordinates</label>
                       <div class="row">
                         <div class="col-md-6">
-                          <p><input id="lat" type="text" class="form-control" placeholder="Latitude"></p>
+                          <p><label>
+                            Latitude
+                            <input id="lat" type="text" class="form-control" placeholder="Latitude" />
+			  </label></p>
                         </div>
                         <div class="col-md-6">
-                          <p><input id="lng" type="text" class="form-control" placeholder="Longitude"></p>
+                          <p><label>
+                            Longitude
+                            <input id="lng" type="text" class="form-control" placeholder="Longitude" />
+                          </label></p>
                         </div>
                       </div>
                     </p>
+                    <br>
+                    <p><button class="btn btn-lg btn-default" onclick="editor.mapModule.blurredLocation.geocodeWithBrowser(true);">
+                      <div id="ldi-geocode-button">          
+                        <i class="fa fa-compass"></i> Use current location
+                      </div>
+                    </button></p>
+
+                     <br>
+                     <label>
+                       <input id="obscureLocation" type="checkbox"  onchange='editor.mapModule.blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);'>
+                        Blur my location
+                     </label>
+                     <a href="https://publiclab.org/location-privacy">Learn more</a>
                 </div>   
             </div>
           </div>

@@ -9,11 +9,27 @@ class NodeTest < ActiveSupport::TestCase
     assert_equal 'page', node.type
     assert_equal 1, node.status
     assert !node.answered
+    assert_equal [], node.location_tags
   end
 
   test 'basic question attributes' do
     question = nodes(:question)
     assert question.answered
+  end
+
+  test 'basic location attributes' do
+    map = nodes(:map)
+    map.add_tag('lat:123', users(:bob))
+    map.add_tag('lon:34', users(:bob))
+    assert map.has_power_tag('lat')
+    assert map.has_power_tag('lon')
+    assert_not_nil map.power_tag('lat')
+    assert_not_nil map.power_tag('lon')
+    assert map.lat
+    assert map.lon
+    assert_equal map.lat, map.power_tag('lat').split(':').first.to_f
+    assert_equal map.lon, map.power_tag('lon').split(':').first.to_f
+    assert map.location_tags
   end
 
   test 'emoji conversion' do
@@ -207,7 +223,7 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'should have subscribers' do
     node = tag_selections(:awesome).tag.nodes.first
-    assert_equal 6, node.subscribers.length
+    assert_equal 7, node.subscribers.length
   end
 
   test 'should have place node icon according to tagging' do

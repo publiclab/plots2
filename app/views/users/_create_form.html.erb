@@ -1,48 +1,53 @@
 <div style="padding:10px;">
- <%= form_for :user, :as => :user, :url => ("/register?return_to=" if params[:return_to].nil?).to_s + request.fullpath, :html => {:class => "row"} do |f| %>
+ <%= form_for :user, :as => :user, :url => "/register", :html => {:class => "row"} do |f| %>
  <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
 
+  <input type="hidden" name="return_to" class="login-modal-redirect" value="<%= params[:return_to] || request.fullpath %>" />
+
   <div class="col-sm-12">
-      <div class='col-sm-12' style="display:flex; justify-content: center;">
-        <h3> Sign up with </h3>
+
+    <% cache('feature_signup-notice-top', skip_digest: true) do %>
+      <%= feature('signup-notice-top') %>
+    <% end %>
+
+    <div class='col-sm-12' style="display:flex; justify-content: center;">
+      <h3> Sign up with </h3>
+    </div>
+
+    <div class='col-sm-12' style="display:flex; justify-content: center;">
+      <%= render :partial => "layouts/social_icons" %>
+    </div>
+
+    <br style="clear:both;"/>
+    
+      <div class="row col-sm-6">
+     
+        <div class="form-group col-sm-12" id="username_div">
+          <label for="username"><%= t('user_sessions.new.username') %></label>
+          <%= f.text_field :username, { tabindex: 1, placeholder: "Username", class: 'form-control', id: 'username-signup' } %>
+        </div>
+     
+        <div class="form-group col-sm-12">
+          <label for="email"><%= t('users._form.email') %></label>
+          <%= f.text_field :email, { tabindex: 3, placeholder: "you@email.com", class: 'form-control', id: 'email' } %>
+        </div>
+     
       </div>
-
-      <div class='col-sm-12' style="display:flex; justify-content: center;">
-        <%= render :partial => "layouts/social_icons" %>
-      </div>
-
-      <br style="clear:both;"/>
-
-      <div class="row">
-
-    <div class="col-sm-6" style="display:flex; justify-content: center;">
-      <div class="propic">
-        <img src="" class="something_something img-circle" style="width: 120px; height: 115px; margin-top: 10px; margin-bottom: 25px; margin-left: 55px; background:#ccc;">
-        <div class="form-group">
-          <span class="btn btn-outline-primary btn-file">
-            <u>Choose image</u> or Drop one here
-            <%= f.file_field :photo, id:"something_else_unique", onchange:'showFile(this, "something_something");', accept: "image/*", style: 'draggable: true' %>
-          </span>
+     
+      <div class="col-sm-6" style="display:flex; justify-content: center;">
+        <div class="propic">
+          <img class="something_something img-circle" style="width: 120px; height: 115px; margin-top: 10px; margin-bottom: 25px; margin-left: 55px; background:#ccc;" onerror="this.src='https://www.gravatar.com/avatar/1aedb8d9dc4751e229a335e371db8058'">
+          <div class="form-group">
+            <span class="btn btn-outline-primary btn-file">
+              <u>Choose image</u> or drag one here
+              <%= f.file_field :photo, id:"something_else_unique", onchange:'showFile(this, "something_something");', accept: "image/*", style: 'draggable: true' %>
+            </span>
+          </div>
         </div>
       </div>
-    </div>
-    
-    <div class="row col-sm-6">
 
-      <div class="form-group col-sm-12" id="username_div">
-        <label for="username"><%= t('user_sessions.new.username') %></label>
-        <%= f.text_field :username, { tabindex: 1, placeholder: "Username", class: 'form-control', id: 'username-signup' } %>
-      </div>
-
-      <div class="form-group col-sm-12">
-        <label for="email"><%= t('users._form.email') %></label>
-        <%= f.text_field :email, { tabindex: 3, placeholder: "you@email.com", class: 'form-control', id: 'email' } %>
-      </div>
-
-    </div>
-  </div>
-
-      <div class="form-group col-sm-12">
+    <div class="form-group col-sm-12 row">
+      <div class="form-group col-sm-6">
         <label for="password"><%= t('users._form.create_password') %></label>
         <%= f.password_field :password, { placeholder: 'Enter your new password',
                                           tabindex: 4,
@@ -51,8 +56,8 @@
                                           onpaste: 'return false;' }
         %>
       </div>
-
-      <div class="form-group col-sm-12">
+ 
+      <div class="form-group col-sm-6">
         <label for="password_confirmation"><%= t('users._form.confirmation') %></label>
         <%= f.password_field :password_confirmation, { placeholder: I18n.t('users._form.confirm_password'),
                                                        tabindex: 5,
@@ -61,6 +66,7 @@
                                                        onpaste: 'return false;' }
         %>
       </div>
+    </div>
 
     <div class="form-group col-sm-12">
       <label for="user_bio"><%= t('users._form.bio') %></label>
@@ -71,14 +77,16 @@
       %>
     </div>
 
-      <% if Rails.env == "production" && !params[:spamaway] %>
-        <div style="height: 120px">
-          <%= recaptcha_tags %>
-        </div>
+    <% if Rails.env == "production" && !params[:spamaway] %>
+      <div class="col-sm-12 recaptcha-container">
+        <%= recaptcha_tags %>
         <p>If you cannot use the ReCaptcha to verify you are not a bot, <a href="/signup?spamaway=true">use this alternative verification</a>.</p>
-      <% else %>
-        <%= render partial: 'users/spamaway' %>
-      <% end %>
+      </div>
+    <% else %>
+
+    <div class="col-sm-12">
+      <%= render partial: 'users/spamaway' %>
+    </div>
 
       <script>
         (function() {
@@ -88,13 +96,13 @@
         })();
       </script>
 
+    <% end %>
 
 
-    <div class="form-group form-inline" style="clear:both;padding-top:10px;">
+    <div class="col-sm-12 form-group form-inline" style="clear:both;padding-top:10px;">
         <!-- button for creating new users -->
-        <button class="btn btn-lg btn-primary btn-save" type="submit" tabindex="7"><%= t('users._form.sign_up') %></button>
-        <a class="btn btn-lg btn-default" id="toLogin">
-        <!-- <a class="btn btn-lg btn-default" id="toLogin" href="/login"> -->
+        <button style="margin-right:8px;" class="btn btn-lg btn-primary btn-save" type="submit" tabindex="7"><%= t('users._form.sign_up') %></button>
+        or <a id="toLogin" href="/login">
           <%= t('users._form.log_in') %>
         </a>
 
@@ -116,9 +124,10 @@
   <% end %>
 
   <script>
-    $("a.signupToggle").click(function(){ //When a button that toggles the signup is clicked
-      setMode("signup"); //Sets the mode of the modal to signup so it only shows the signup partial
-      $('#loginModal').modal(); //Toggles the modal
+    $("a.signupToggle").click(function(e){ //When a button that toggles the signup is clicked
+      e.preventDefault(); // stop the link from working normally
+      setMode("signup"); // sets the mode of the modal to signup so it only shows the signup partial
+      $('#loginModal').modal(); // toggles the modal
     })
     function showFile(inp, disp){
       if (inp.files && inp.files[0]){

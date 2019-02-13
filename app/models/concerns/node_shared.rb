@@ -295,7 +295,9 @@ module NodeShared
                                   locals:   {
                                     lat: lat,
                                     lon: lon,
-                                    people: true
+                                    people: true,
+                                    url_hash: 0,
+                                    tag_name: false
                                   })
       output
     end
