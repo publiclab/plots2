@@ -1,4 +1,4 @@
-This document was copied from its home at https://publiclab.org/conduct on October 12, 2017. See that page if you would like to submit your concerns in a safe, completely anonymous way, and to learn more about this document. 
+This document was copied from its home at https://publiclab.org/conduct on February 13, 2019. See that page if you would like to submit your concerns in a safe, completely anonymous way, and to learn more about this document. 
 
 ****
 
@@ -26,13 +26,20 @@ Sometimes things go wrong. When a situation is uncomfortable, hurtful, exclusion
 
 ### Two helpful groups
 
-__Conduct Committee (ConductCom)__: If at any time you experience something that you are not comfortable with, you may contact the Conduct Committee. As established during the 2015 Annual Barnraising, the following individuals are on the Conduct Committee: Klie Kliebert, Carla Green, Nick Shapiro, and Shannon Dosemagen, the executive director of the Public Lab nonprofit. 
+__Conduct Committee (ConductCom)__: If at any time you experience something that you are not comfortable with, you may contact the Conduct Committee.
+
+For Barnraising and Crisis Convening July 2018, in person Conduct Committee members are:
+
+    Jeff Warren
+    Rev James Caldwell
+    Melanie Pang
+    Shannon Dosemagen, the executive director of the Public Lab nonprofit.
 
 
-If you would like to have a confidential conversation, connect with ConductCom in person or email via [conduct@publiclab.org](mailto:conduct@publiclab.org). A minimum of two committee members will confer and respond as swiftly as possible. If you would prefer to speak privately with a representative of the nonprofit, please contact the executive director directly either in person or by email: [shannon@publiclab.org.](mailto:conduct@publiclab.org)
+If you would like to have a confidential conversation, connect with ConductCom in person or email via [conduct@publiclab.org](mailto:conduct@publiclab.org), they will be checking emails before, during and after Barnraising and Crisis Convening July 2018. A minimum of two committee members will confer and respond as swiftly as possible. If you would prefer to speak privately with a representative of the nonprofit, please contact the executive director directly either in person or by email: [shannon@publiclab.org.](mailto:conduct@publiclab.org)
 
 
-To submit a report anonymously for review by ConductCom, go online via phone or computer to our anonymous “contact” app, located at [http://bit.ly/PLReport](http://bit.ly/PLReport). This contact app will be monitored daily at 8am CST during in-person events like Barnraisings and weekly at all other times. During multi-day in-person events hosted by the Public Lab non-profit, there will also be a physical suggestion box available. This box will be monitored throughout the event and can also be used to let us know if you need us to check on an anonymous online submission sooner.
+To submit a report anonymously for review by ConductCom, go online via phone or computer to our anonymous "reporting" form, located at [https://bit.ly/2SPXTlO](https://bit.ly/2SPXTlO). This reporting form will be monitored daily at 8am CST during in-person events like Barnraisings and weekly at all other times. During multi-day in-person events hosted by the Public Lab non-profit, there will also be a physical suggestion box available. This box will be monitored throughout the event and can also be used to let us know if you need us to check on an anonymous online submission sooner.
 
 
 __Moderators Group:__ The moderators group is responsible for addressing immediate moderation issues that arise during online violations of the code over email lists and Public Lab community websites, as well as approving first-time posts and generally handling spam. Instructions on how to become a moderator, and, if you’ve been placed in moderation how to begin the process of getting out of moderation can be found at: https://publiclab.org/wiki/moderation. 
