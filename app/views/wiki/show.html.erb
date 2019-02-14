@@ -65,7 +65,7 @@
           <% end %>
         </div>
         <% if params[:raw] == 'true' %>
-          <div style="display:none;" id="content-raw-markdown" class="pl-content wiki"><%= raw insert_extras(@revision.body_raw) %></div>
+          <div style="display:none;" id="content-raw-markdown" class="pl-content wiki"><%= raw @revision.body_raw %></div>
         <% end %>
       <% end %>
     </div>
