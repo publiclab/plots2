@@ -1,13 +1,931 @@
-# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
-
+---
 en:
-  node:
-    only_author_use_powertag: "Error: only the author may use that powertag."
+  users:
+    reset:
+      reset_password: "Reset your password"
+      enter_username_and_password: "Enter your username and a new password"
+      username_placeholder: "username"
+      password_placeholder: "enter a new password"
+      retype_password_placeholder: "retype your password"
+      save: "Save"
+      enter_email_reset_password: "Enter your email address to reset your password"
+      reset: "Reset"
+    _tags_form:
+      skills: "Skills"
+      enter_tags: "Enter tags"
+      gears: "Gears"
+      tools: "Tools"
+      roles: "Roles"
+      location: "Location"
+      type_location: "Type location"
+      map: "Map"
+      location_privacy: "Location privacy"
+    new:
+      sign_up: "Sign up to join the Public Lab community"
+      licensing_agreement: "Licensing Agreement"
+      licensing_detail: 'As an open source community, we believe in open licensing
+        of content so that other members of the community can leverage your work legally
+        -- with attribution, of course. By joining the Public Lab site, <b>you agree
+        to release the content you post here under a <a href="%{url1}" target="_blank">Creative
+        Commons Attribution Sharealike license</a></b>, and the hardware designs you
+        post under the <b><a href="%{url2}" target="_blank">CERN Open Hardware License
+        1.1</a> (<a href="%{url3}" target="_blank">fulltext</a>)</b>. This has the
+        added benefit that others must share their improvements in turn with you.'
+      code_of_conduct_agreement: "Code of Conduct Agreement"
+      code_of_conduct_detail: 'By signing up, <b>you agree to the <a href="%{url1}"
+        target="_blank">Code of Conduct</a></b>, which applies to all online and in-person
+        spaces managed by the Public Lab community and non-profit.'
+      about_public_lab: |
+
+              <h3>What is Public Lab?</h3>
+
+              <p>Public Lab is an open community which develops and applies open-source tools to environmental exploration and investigation. <a href="/about">Read more here</a></p>
+
+              <p>By signing up, you will be joining a diverse group of community researchers and tapping into a lot of grassroots expertise. We're developing new tools to investigate and meet environmental and environmental health challenges, with an emphasis on:</p>
+
+              <ul>
+                <li>low cost</li>
+                <li>data legibility</li>
+                <li>ease of use/low barrier to entry &amp; high public participation</li>
+                <li>high quality, environmentally and socially relevant data</li>
+                <li>creative reuse of consumer technology</li>
+                <li>open source and user modifiable designs</li>
+              </ul>
+    map:
+      search: "Search"
+      location: "Location"
+      skill: "Skill"
+      gear: "Gear"
+      role: "Role"
+      tool: "Tool"
+    likes:
+      wiki_liked_by: "Wiki pages liked by"
+      more: "More"
+      liked_by: "Liked by"
+      updated: "updated"
+    profile:
+      follow: "Follow"
+      migrate_new_site: "Migrate to new site"
+      make_admin: "Make admin"
+      revert_to_basic_user: "Revert to basic user"
+      make_moderator: "Make moderator"
+      unban_user: "Unban user"
+      ban_user: "Ban user"
+      confirm_ban_user: "Are you sure? The user will no longer be able to log in or
+        publish, and their content will be hidden."
+      unmoderate_user: "Unmoderate user"
+      moderate_user: "Moderate user"
+      confirm_moderate_user: "Are you sure? The user will no longer be able to log
+        in or publish."
+      reset_user: "Reset Key"
+      rss_feed_for: "RSS feed for"
+      edit_profile: "Edit profile"
+      preview_profile_tag: "Preview profile tag system"
+      location: "Location"
+      edit_information: "Edit Information"
+      wiki_contributed_to: "Wiki pages recently contributed to"
+      updated: "updated"
+      by: "by"
+      more: "More"
+      notes_and_edits: "<a href='%{url1}'>research notes</a> and wiki edits"
+      moderator: "Moderator"
+      admin: "Admin"
+      banned: "Banned"
+      barnstar_awarded_to_by: "<a href='%{url1}'>%{author}</a> was awarded <a href='%{url2}'>the
+        %{barnstar} Barnstar</a> by <a href='%{url3}'>%{awarder}</a> for their work
+        published in <a href='%{url4}'>%{work}</a>."
+      joined_time_ago: "Joined %{time_ago}"
+      research: "Research"
+      Coauthored: "Coauthored"
+      questions: "Questions"
+      comments: "Comments"
+      liked: "Liked"
+      view_these_maps: "View these maps <a href='%{url1}'>at MapKnitter.org &raquo;</a>"
+      title: "Title"
+      creation_date: "Creation date"
+      image: "Image"
+    info:
+      additonal_information: "Additional Information"
+    _form:
+      username: "Username"
+      email: "Email"
+      create_password: "Create a password"
+      change_password: "Change your password"
+      password: "password"
+      confirmation: "Confirmation"
+      confirm_password: "Retype your password to confirm"
+      bio: "Bio"
+      add_bio: "Add a short bio to appear on your profile page"
+      are_you_human: "Are you human?"
+      spam_filtering: "Sorry: spam filtering! Please select the animals - \U0001F981
+        \ - below to show that you're a real person."
+      dont_write_here: "Don't write anything here if you're a real person."
+      sign_up: "Sign up"
+      log_in: "Log in"
+      save: "Save"
+    list:
+      user_moderation: "User moderation"
+      admins_ban_spam: 'Normal users see only a list of recent users here, but moderators
+        and admins can ban "spam" users and view those who have been banned.'
+      members_last_activity: "Public Lab members <small>by last activity</small>"
+      username: "Username"
+      last_activity: "Last activity"
+      history: "History"
+      joined: "Joined"
+      moderation: "Moderation"
+      notes_and_edits: "research notes and wiki edits"
+      banned: "Banned"
+      are_you_sure: "Are you sure? The user will no longer be able to log in or publish."
+      ban: "Ban"
+    _photo:
+      profile_photo: "Profile photo"
+      drag_and_drop_image: "Drag &amp; drop to add an image, or"
+      choose_image: "choose an image"
+      uploading: "Uploading"
+    edit:
+      edit_profile: "Edit Profile"
+  notes:
+    index:
+      search_results_for: "Search results for <i style=\"color:#aaa;\">%{params}</i>"
+      advanced_search: "advanced search"
+      notes_tagged_with: "Notes tagged with <i style=\"color:#aaa;\">%{params}</i>"
+      popular_research_notes: "Popular research notes"
+      recent_research_notes: "Recent research notes"
+      research_on: "Research on \"%{tags}\" by <a href='%{url1}'>%{user_name}</a>"
+      research_notes_and_wiki_edits_with_time: "%{count} research notes and wiki edits
+        starting %{time} ago"
+      research_by: "Research by <a href='%{url1}'>%{user_name}</a>"
+      research_notes_and_wiki_edits: "%{count1} research notes and %{count2} wiki
+        edits"
+      starting_time: "starting %{time} ago"
+      research_notes_ideas_and_documentation: "Research notes <small class=\"hidden-sm\">ideas
+        & documentation from contributors like you</small>"
+      recent: "Recent"
+      popular: "Popular"
+      liked: "Liked"
+      wiki_pages: "Wiki<span class=\"hidden-sm\"> pages</span>"
+    _notes:
+      moderate_first_time_post: "Moderate first-time post:"
+      approve: "Approve"
+      spam: "Spam"
+      pending_approval: "Pending approval by <a href='%{url1}'>community moderators</a>.
+        Please be patient!"
+      last_edit_by: "last edit by"
+      views: "views"
+      read_more: "Read more"
+    show:
+      note_no_tags: "This note has no tags yet; help connect it to other content by
+        <a href='%{url}'>adding descriptive tags below</a>."
+      replication: "This is an attempt to replicate "
+      series: "This is part of a series on "
+      replication_link: "an activity"
+      build: "This is an attempt to build "
+      build_link: "an upgrade"
+      question: "Question:"
+      author_is_asking_about: |
+        <a href='%{url1}'> %{author} </a>
+        is asking a question about <b>%{tag}</b>:
+      sign_up_to_answer: "Sign up to answer questions on this topic"
+      unpublished: "UNPUBLISHED"
+      views: "views"
+      comments: "comments"
+      shortlink: "shortlink"
+      barnstar_awarded_to_by: "<a href='%{url1}'>%{author}</a> was awarded <a href='%{url2}'>the
+        %{barnstar} Barnstar</a> by <a href='%{url3}'>%{awarder}</a> for their work
+        in this research note."
+      file_table: |
+        <th>Files</th>
+        <th>Size</th>
+        <th>Uploaded</th>
+      event_is_on: "This event is on %{date}"
+      ical: "iCal"
+      login_to: "Please <a href='%{url1}'>log in</a> to"
+      people_will_attend: "%{count} people will attend"
+    _comments:
+      comments: "Comments"
+      post_comment: "Post comment"
+      post_placeholder: "Help the author refine their post, or point them at other
+        helpful information on the site. Mention users by @username to notify them
+        of this thread by email"
+      must_be_logged_in: "You must be <a href='%{url1}'>logged in</a> to comment."
+    tools_places:
+      tools_and_techniques: "Methods"
+      subtitle: "developed by Public Lab contributors"
+      public_lab_chapters: "Public Lab chapters"
+      start_a_chapter: "local groups and gatherings around the world | <a href='%{url1}'>Start
+        a chapter &raquo;</a>"
+      tools: "Tools"
+      places: "Places"
+    _tagged_notes:
+      by_author_time_ago: |
+        by <a href='%{url1}'>%{author}</a>
+        | %{time} ago
+      views: "views"
+      read_more: "Read more"
+      spam: "Spam"
+    _comment:
+      commented: "commented"
+      streak_title: "%{author} is on fire! %{streak_notes} notes, %{streak_wiki} wiki
+        edits, %{streak_comments} comments in the last %{streak_days} days"
+      are_you_sure: "Are you sure?"
+      please_exercise_caution: "Please exercise caution in deleting/moderating others'
+        comments; this cannot be undone."
+      edit_comment: "Edit comment"
+      edit_placeholder: "Help the author refine their post, or point them at other
+        helpful information on the site. Mention users by @username to notify them
+        of this thread by email"
+    _responses:
+      post_response: "Post your response"
+      post_build: "I made this"
+      post_replication: "I did this"
+      responses: "Responses"
+      builds: "People who made this"
+      replications: "People who did this"
+    stats:
+      about_this_page: |
+        <h4>About this page</h4>
+
+        <p>Public Lab is built on the contributions of community members, and this website represents our collective open source work.</p>
+      contributors_statistics: "Contributor Statistics"
+      looking_back: "Looking back from <i>%{time}</i>."
+      try_time_further_back: |
+        Try
+        <a href='%{url1}'>one year</a>,
+        <a href='%{url2}'>one month</a>, or
+        <a href='%{url3}'>one week</a>
+        further back.
+      try_time_further_forward: |
+        Or try
+        <a href='%{url1}'>one year</a>,
+        <a href='%{url2}'>one month</a>, or
+        <a href='%{url3}'>one week</a>
+        further forward.
+      notes_and_wiki_edits_past_week: |
+        <a href='%{url1}'>%{note_count} notes</a>
+        and <a href='%{url2}'>%{wiki_count} wiki edits</a> posted in the past week.
+      people_joined_past_week: "<b>%{people_count} people</b> joined in the past week."
+      notes_and_wiki_edits_past_month: |
+        <a href='%{url1}'>%{note_count} notes</a>
+        and <a href='%{url2}'>%{wiki_count} wiki edits</a> posted in the past month.
+      people_joined_past_month: "<b>%{people_count} people</b> joined in the past
+        month."
+      research_notes_posted_by_contributors: "%{note_count} research notes have been
+        posted by %{contributors_count} contributors since %{time} ago"
+      total_contributors: "%{all_contributors_count} Total Contributors (Tallied weekly)"
+      notes_per_week_past_year: "%{note_count} notes per week over the past year."
+      note_posting_52_weeks: 'Note posting for the past 52 weeks:'
+      wiki_pages_posted: "%{count} wiki pages have been posted, total"
+      wiki_page_posting_52_weeks: 'Wiki page posting for the past 52 weeks:'
+      comments_posted: "%{count} comments have been posted, total"
+      comments_posted_52_weeks: 'Comments posted for the past 52 weeks:'
+      wiki_page_edits: "%{count} wiki page edits have been made, total"
+      edits_per_week: "%{count} edits per week over the past year."
+      questions_past_week: |
+                <a href='%{url1}'>%{quiz_count} questions asked </a>
+                and <a href='%{url2}'>%{ans_count} questions answered </a> in the past week.
+      questions_past_month: |
+                <a href='%{url1}'>%{quiz_count} questions asked </a>
+                and <a href='%{url2}'>%{ans_count} questions answered </a> in the past month.
   dashboard:
+    _node_comment:
+      commented_on: "commented on"
+      comments: "comments"
+    _sidebar:
+      wiki: "Wiki"
+      discussion_list: "Discussion lists"
+      all: "All"
+      public_laboratory: "Public Laboratory"
+      grassroots_mapping: "Grassroots Mapping"
+      spectrometry: "Spectrometry"
+      infrared: 'Infrared'
+      air_quality: "Air Quality"
+      water_quality: "Water Quality"
+      developers: "Developers"
     _activity:
+      activity: "Activity"
+      all_updates: "All updates"
+      dropdown:
+        all: "All"
+        research_notes: "Research notes"
+        questions: "Questions"
+        events: "Events"
+        comments: "Comments"
+        wiki: "Wiki"
+      from_other: "from other"
+      community_scientists: "community scientists"
+      past_week: "in the past week"
+      your_work: "Your work"
       share_work: "Share your work"
+    dashboard:
+      from_blog: "From the <a href='%{url}'>Public Lab Blog</a>"
+      by: "by"
+    _node_question:
+      post_answer: "Post an answer"
+      question: "Question"
+    _node_wiki:
+      new_page_by: "New page by"
+      new_edit_by: "New edit by"
+      changes: "Changes"
+    _header:
+      share_work: "Share your work"
+      dropdown:
+        share_activity: "Share a step-by-step activity"
+        share_research_note: "Share a research note"
+        ask_question: "Ask a question"
+        post_event: "Post an event"
+        tell_story_blog: "Tell your story on the blog"
+      dashboard: "Dashboard"
+      community_research: "Community research"
+      welcome: "Welcome"
+      notes: "notes"
+      and: "and"
+      wiki_edits: "wiki edits"
+      posted_past_week: "posted in the past week."
+      you_shared: "You've shared"
+      research_note: "research note"
+      research_notes: "research notes"
+      this_could_be_dashboard: "This could be your dashboard if you"
+      joined_public_lab: "joined Public Lab"
+    _wiki:
+      shared_knowledge_base: "A <a href='%{url}'>shared knowledge base</a> for community
+        science"
+      search: "Search for..."
+      new_page: "New page"
+      new_page_by: "New page by"
+      new_edit_by: "New edit by"
+      changes: "changes"
+      more: "More"
+    moderate:
+      approve: "Approve"
+      spam: "Spam"
+      pending_approval: "Pending approval by <a href='%{url}'>community moderators</a>.
+        Please be patient!"
+    _node_moderate:
+      first_time_post: "Moderate first-time post:"
+    _comment_moderate:
+      first_time_post: "Moderate first-time comment:"
+  like:
+    index:
+      recent_likes: "Recent Likes"
+      user: "User"
+      liked: "Liked"
+      action: "Action"
+  tag:
+    blog:
+      the_public_lab: "The Public Lab"
+      blog: "Blog"
+      stories_from_community: "stories from the Public Lab community"
+      about_the_blog: "About the blog"
+      research: "Latest updates"
+      methods: "Methods"
+      following: "Following"
+      unfollow: "Click to unfollow"
+      follow: "Follow"
+      no_results: "No results found; try searching for '%{search}'"
+      advanced_search: "Or try an <a href='%{url}'>advanced search</a>"
+      by: "by"
+      views: "views"
+      read_more: "Read more"
+      spam: "Spam"
+    index:
+      popular_tags: "Popular tags"
+      browse_popular_tags: "We use tags to group research by topic -- browse below
+        to see the most popular tags over the past month."
+      tag: "Tag"
+      number_of_uses: "# of uses"
+      number_of_subscriptions: "# of people subscribed"
+      subscriptions: "Your subscriptions"
+      sort_by: "Sort By"
+    show:
+      notes_tagged: "Notes tagged with <i style=\"color:#aaa;\">%{tag}</i>"
+      following: "Following"
+      unfollow: "Click to unfollow"
+      follow: "Follow"
+      none: "None"
+      users_following_tag: "Users following this tag"
+      ask_question: "Ask a question about <b>%{tag}</b>"
+      or_subscribe_to_answer: "or <a style='margin-bottom:6px;' class='btn btn-default
+        requireLogin' target='_blank' href='%{url1}'>Subscribe to answer questions
+        on this topic</a>"
+      research_notes: "<span class=\"hidden-sm\">Research </span>Notes"
+      questions: "Questions"
+      wiki_pages: "Wiki<span class=\"hidden-sm\"> pages</span>"
+      maps: "Maps"
+      no_results_found: "No results found; try searching for '<b>%{tag}</b>'"
+      try_advanced_search: "Or try an <a href='%{url1}'>advanced search</a>"
+      contributors: "Contributors"
+    contributors-index:
+      contributors_over_last_week: "Contributors for <i style=\"color:#aaa;\">%{tag_name}</i>
+        over the past 52 weeks"
+      read_more: "Read more"
+      notes_and_wiki_contributions: '%{users} people have contributed %{notes} research
+        notes and %{wikis} wiki pages tagged with "%{tag_name}"'
+      following: "Following"
+      unfollow: "Click to unfollow"
+      follow: "Follow"
+      people_watching_tag: "%{count} people are watching this tag"
+      no_contributors_listed: "No contributors are listed."
+      write_research_note: "Write a research note"
+    _tagging:
+      enter_tags: "enter tags"
+    contributors:
+      contributors_for: "Contributors for <i style=\"color:#aaa;\">%{tag_name}</i>"
+      contributions_over_past_year: "Above: contributions over the past year."
+      notes_and_wiki_contributions: '%{users} people have contributed %{notes} research
+        notes and %{wikis} wiki pages tagged with "%{tag_name}"'
+      following: "Following"
+      unfollow: "Click to unfollow"
+      follow: "Follow"
+      people_watching_tag: "%{count} people are watching this tag"
+      no_contributors: "No contributors for that tag; try searching for '<b>%{tag}</b>'"
+      wild_card_search_detected: "Wildcard tag search detected. Wildcard tag searches
+        use the * asterisk in their URLs, and will not show contributor listings."
+      contributor: "Contributor"
+      notes: "Notes"
+  wiki:
+    index:
+      wiki_pages_tagged_with: "Wiki pages tagged with <i style='color:#aaa;'>%{tag}</i>"
+      wiki_pages_by: "Wiki pages by <a href='%{url1}'>%{user}</a> <small>%{note_length}
+        research notes and wiki edits starting %{time} ago</small>"
+      highly_liked_wiki_pages: "Highly liked wiki pages"
+      create_wiki_page: "Create a new wiki page"
+      by_recency: "recency"
+      by_popularity: "popularity"
+      by_number_of_likes: "likes"
+      by_alphabetic: "name"
+      sort_by: "sort by:"
+      popular_wiki_pages: "Popular wiki pages"
+      collaborative_documentation: "collaborative documentation by contributors like
+        you"
+      public_lab_wiki: "The Public Lab Wiki"
+      about_collaboration: "At Public Lab, we all collaborate to invent and improve
+        open source environmental science tools."
+      about_wiki_pages: "Wiki pages are web pages that <b>anyone can create or edit</b>
+        -- we use them to collect information, documentation, and instructions on
+        projects."
+    show:
+      page_has_no_tags: "This page has no tags yet; help connect it to other content
+        by <a href='%{url}'>adding descriptive tags below</a>"
+      revision_from: "This is a revision from %{time}."
+      view_all_revisions: "View all revisions"
+      views: "views"
+      last_edited: "Last edited by <a href='%{url1}'>%{author}</a> %{time} ago"
+      shortlink: "shortlink"
+      view: "View"
+      edit: "Edit"
+      delete: "Delete"
+      are_you_sure_delete: "Are you absolutely sure you want to delete '%{path}'? All
+        revisions will be lost, and you cannot undo this action. If this is a spam
+        page, be sure that it did not overwrite valid content before deleting the
+        entire page."
+      talk: "Talk"
+      back_to_wiki: "Back to <a href='%{url1}'>%{title}"
+      overview: "Overview"
+      research: "Research"
+      wiki_pages: "Wiki<span class=\"hidden-sm\"> pages</span>"
+      more_research: "More research on \"%{tag}\""
+      more_tag_research: "More \"%{tag}\" research"
+    _wikis:
+      title: "Title"
+      last_edited: "Last edited"
+      edits: "Edits"
+      page_views: "Page Views"
+      likes: "Likes"
+      by: "by"
+    revisions:
+      revisions_for: "Revisions for <i>%{wiki}</i>"
+      view: "View"
+      edit: "Edit"
+      revisions: "Revisions"
+      moderated: "MODERATED"
+      current: "CURRENT"
+      revert: "Revert"
+      are_you_sure: "Are you sure?"
+      republish: "Republish"
+      comparing_revision: "Comparing revision <span id='older'>%{revision_1}</span>
+        with revision <span id='newer'>%{revision_2}</span>"
+    edit:
+      did_you_mean: "Did you mean"
+      try_searching_for: "Try searching for <a href='%{url1}'>'%{wiki}' &raquo;</a>"
+      whats_a_wiki_page: |
+        <h3><i class="fa fa-book"></i> What's a <br /> wiki page?</h3>
+        <p>At Public Lab, we all collaborate to invent and improve open source environmental science tools. <b>Wiki pages</b> are web pages that anyone can create or edit -- we use them to collect information, documentation, and instructions on projects.</p>
+        <p><b>Wiki pages can be:</b></p>
+        <ul>
+          <li>a <a href="/tag/tutorial">tutorial</a> on how to make something</li>
+          <li>documentation of a project</li>
+          <li>an event planning page</li>
+          <li>a place to collect lists of research notes</li>
+          <li>etc!</li>
+        </ul>
+      more: "More"
+      getting_started: "Getting started with Public Lab"
+      revisions_for_this_page: "Revisions for this page"
+      about_posting_research: "About posting research"
+      advanced_formatting: "Advanced formatting"
+      editing_page: "Editing page"
+      create_page: "Create page"
+      publish: "Publish"
+      preview: "Preview"
+      previewing_text: "Previewing (click to edit)"
+      agree_to_open_source_work: "By publishing, you agree to <a target='_blank' href='%{url1}'>open
+        source your work</a> so that others may use it."
+      last_edited_by: "This page was last edited %{time} ago by <a href='%{url1}'>%{author}</a>"
+  layout:
+    _alerts:
+      request_access: " A website has requested access to your account. "
+      approve_or_deny: "Approve or deny the request "
+    _header:
+      summary: "Public Lab is an open community which collaboratively develops accessible,
+        open source, Do-It-Yourself technologies for investigating local environmental
+        health and justice issues."
+      your_dashboard: "Your dashboard"
+      projects:
+        projects_title: "Projects"
+        research:
+          research_title: "Research"
+          research_notes: "Research notes"
+          publiclab_wiki: "Public Lab Wiki"
+          questions: "Questions"
+          tools: "Tools"
+          places: "Places"
+          kits: "Kits"
+          users_map: "Users map"
+          people: "People"
+          comments: "Recent comments"
+        initiatives:
+          initiatives_title: "Initiatives"
+          open_land: "Open Land"
+          open_water: "Open Water"
+          open_air: "Open Air"
+        fellows: "Fellows"
+        lending_library: "Lending Library"
+      search: "Search on Public Lab"
+      about:
+        about_title: "About us"
+        stories: "Stories"
+        blog: "Blog"
+        about_public_lab: "About Public Lab"
+        team: "Non-profit team"
+        organizers: "Organizers"
+        board: "Non-profit board"
+        fund: "How we're funded"
+        press_and_media: "Press and Media"
+        contact: "Contact the staff"
+      get_involved:
+        get_involved_title: "Get Involved"
+        getting_started: "Getting started"
+        join: "Join the website"
+        discussion_lists: "Join one of our discussion lists"
+        attend_event: "Attend an event"
+        post_event: "Post an event"
+        new_chapters: "Starting new chapters"
+        new_projects: "Starting new projects"
+        organizer: "Become an organizer"
+      data:
+        data_title: "Data"
+        archive: "Public Lab Archive"
+        web_tools:
+          web_tools_title: "Web tools"
+          mapknitter: "MapKnitter"
+          spectral_workbench: "Spectral Workbench"
+          infragram: "Infragram"
+          open_water: "Open Water"
+      donate: "Donate"
+      store: "Store"
+      chatroom:
+        pop_out: "pop out"
+        chatroom_title: "Public Lab chatroom"
+      become_part_community: "Become part of this community"
+      join: "Sign up"
+      dashboard: "Dashboard"
+      profile: "Profile"
+      edit_profile: "Edit Profile"
+      subscriptions: "Subscriptions"
+      notes_liked: "Notes you've liked"
+      logout: "Logout"
+      login:
+        login_title: "Login"
+        username: "Username or Email"
+        password: "Password"
+        remember_me: "Remember me"
+        sign_up: "Sign up"
+        reset_password: "Reset your password"
+      language:
+        language_title: "Language"
+      research_note: "Research note"
+      wiki_doc: "Wiki documentation"
+  questions:
+    index:
+      explanation: "Ask a question to the Public Lab community to help you in your
+        environmental exploration."
+    _comment:
+      promotion: "Promote this comment to an answer"
+  user_sessions:
+    new:
+      log_in: "Log in"
+      sign_up: "sign up"
+      to_join: "to join the Public Lab community"
+      username: "Username"
+      password: "Password"
+      remember_me: "Remember me"
+      reset_by_clicking_here: "Forgotten or lost your password? Reset it by <a href='%{url1}'>clicking here</a>"
+  home:
+    dashboard:
+      welcome: "Welcome!"
+      need_help: "Need help, want to float an idea, or find collaborators?"
+      join_discussion_list: "Join a topical or local Public Lab discussion list"
+      no_research_note: "You haven't posted a research note yet -- consider"
+      sharing_work: "sharing your work and interests"
+      please: "Please"
+      create_password: "create a password for the new PublicLab.org website"
+      older_site_deactive: "the older PublicLaboratory.org will soon be retired."
+      coming_soon: "Coming soon"
+      revised_dashboard: "a revised dashboard!"
+      try_it: "Try it out here"
+      dashboard_main:
+        dashboard_title: "Dashboard"
+        welcome: "Welcome"
+        notes: "notes"
+        and: "and"
+        wiki_edits: "wiki edits"
+        posted_last_week: "were posted in the past week."
+      nav_tabs:
+        recent: "Recent"
+        activity: "Activity"
+        comments: "Comments"
+        liked: "Liked"
+        subscriptions: "Subscriptions"
+        lists: "Lists"
+      read_more_research_notes: "Read more research notes"
+    subscriptions:
+      title: "Subscriptions"
+      up_to_date_emails: "let you keep up to date with topics on Public Lab. You can
+        choose to receive them by email or in digest form."
+      manage_subscriptions: "Manage subscriptions"
+      click_unfollow: "Click to unfollow"
+      following: "Following"
+      research_notes: "all research notes"
+      subscribe_to: "Subscribe to"
+      all: "all"
+      notes: "notes"
+      receive_mails: "Receive emails for all research notes."
+      enter_tags: "enter tags"
+      add: "Add"
+      tag: "Tag"
+      options: "Options"
+      share_subscription_link: "Share this subscription link"
+      share: "Share"
+      unsubscribe: "Unsubscribe"
+    _comments:
+      commented: "commented"
+      read_more: "Read more"
+  comments:
+    _form:
+      uploading: "Uploading..."
+      drag_and_drop: "Drag &amp; drop to add an image or file, or"
+      choose_one: "choose one"
+      upload_image: "Upload image"
+      preview: "Preview"
+      cancel: "Cancel"
+      publish: "Publish"
+      logged_in: "Logged in as <b>%{username}</b>"
+      formatting: "Formatting"
+      notifications: "Notifications"
+      email_notifications: "Author, commenters, and those who've \"liked\" this note will receive email notifications"
+    _edit:
+      uploading: "Uploading..."
+      drag_and_drop: "Drag &amp; drop to add an image or file, or"
+      choose_one: "choose one"
+      upload_image: "Upload image"
+      preview: "Preview"
+      cancel: "Cancel"
+      publish: "Publish"
+      logged_in: "Logged in as <b>%{username}</b>"
+      formatting: "Formatting"
+      notifications: "Notifications"
+      email_notifications: "Author, commenters, and those who've \"liked\" this note will receive email notifications"
+  sidebar:
+    _events:
+      post_event: "Post an event"
+      local_events: "Local events"
+      no_events: "No events"
+    _notes:
+      updated_by: |
+        updated %{time} ago
+        by <a href='%{url1}'>%{author_name}</a>
+      more: "More..."
+    _related:
+      write_research_note: "Write a research note"
+      share_your_work: "Share your work with others"
+      ask_a_question: "Ask a related question"
+      translation: "Translation"
+      response_to: "This is a response to"
+      responses_to_note: "Responses to this note"
+      recent_topic_contributors: "Recent topic contributors"
+      view_all: "View all"
+      contributors: "Contributors"
+      recent_wiki_edits: "Recent wiki edits"
+      recent_wiki_pages: "Recent wiki pages"
+      related_research_notes: "Related research notes"
+      related_maps: "Related maps"
+      contributors_for_this_topic: "Contributors for this topic"
+    _author:
+      recent_tags_for_author: "Recent tags for <a href='%{url1}'>%{author}</a>"
+    _wikis:
+      updated_by: |
+        updated %{time} ago
+        by <a href='%{url1}'>%{author}</a>
+      more: "More..."
+    _post_button:
+      share_your_work: "Share your work with others"
+      write_research_note: "Write a research note"
+      post_research: "Post research"
+      post_research_note: "Post a research note"
+      create_wiki_page: "Create a wiki page"
+      about_posting: "About posting"
+      moderate_spam: "Moderate spam"
+      email_search: "Email address search"
+      tools: "Tools"
+      post_newsletter: "Post a newsletter"
+      browse_wiki: "Browse the Public Lab Wiki"
+    _list:
+      mailing_list: "Join the <a href='%{url1}'<b>%{mailing_list}</b> mailing list</a>"
+      subscribe: "Subscribe"
+      recent_discussion_topics: "Recent discussion topics"
+      all_topics: "All topics"
+    _user:
+      discussion_list: "Discussion lists"
+      work_happens_on_discussion_lists: "Much of our work happens on our regional and
+        topical discussion lists."
+      join_one_today: "Join one today!"
+      recent_wiki_edits: "Recent wiki edits"
+  talk:
+    show:
+      welcome: "Talk page for <a href='%{url1}'>%{page}</a> | This page allows for
+        synchronized editing by multiple people as you type. <a href='%{url2}'>Learn
+        more</a>"
+      try_direct_link: "If this page does not load properly, <a href='%{url1}'>try
+        here</a>"
+  home_controller:
+    science_community: "a DIY environmental science community"
+    environmental_investigation: "a community for DIY environmental investigation"
+    community_research: "Community research"
+  user_tags_controller:
+    tag_already_exists: "Error: tag already exists."
+    cannot_save_value: "Error: Cannot save value. Try Again"
+    value_cannot_be_empty: "Error: value cannot be empty"
+    invalid_value: "Error: Invalid value %{type}"
+    admin_user_manage_tags: "Only admin (or) target user can manage tags"
+    errors_occured: "%{count} errors occured."
+    tag_created: "%{tag_name} tag created successfully"
+    tag_deleted: "Tag deleted."
+    tag_doesnt_exist: "Tag doesn't exist."
+  wiki_controller:
+    new_wiki_page: "New wiki page"
+    pages_does_not_exist: "That page does not yet exist. You must be logged in to create
+      a new wiki page."
+    page_moderated_as_spam: "That page has been moderated as spam. Please contact web@publiclab.org
+      if you believe there is a problem."
+    someone_clicked_edit_5_minutes_ago: "Someone has clicked 'Edit' less than 5 minutes
+      ago; be careful not to overwrite each others' edits!"
+    editing: "Editing '%{title}'"
+    page_does_not_exist_create: "This page does not exist yet, but you can create
+      it now:"
+    wiki_page_created: "Wiki page created."
+    you_have_been_banned: "You have been banned. Please contact <a href='mailto:web@publiclab.org'>web@publiclab.org</a>
+      if you believe this is in error."
+    edit_could_not_be_saved: "Your edit could not be saved."
+    edits_saved: "Edits saved."
+    wiki_page_deleted: "Wiki page deleted."
+    only_admins_delete_pages: "Only admins can delete wiki pages."
+    wiki_page_reverted: "The wiki page was reverted."
+    problem_reverting: "There was a problem reverting."
+    moderators_admin_delete_pages: "Only moderators and admins can delete wiki pages."
+    revisions_for: "Revisions for '%{title}'"
+    invalid_wiki_page: "Invalid wiki page. No Revisions exist for this wiki page."
+    revision_not_found: "Revision not found."
+    revision_has_been_moderated: "That revision has been moderated. Please see <a href='/wiki/moderation'>the
+      moderation page to learn more</a>."
+    lead_image_or_title_change: "<p>Lead image or title change</p>"
+    wiki: "Wiki"
+    popular_wiki_pages: "Popular wiki pages"
+    well_liked_wiki_pages: "Well-liked wiki pages"
   application_controller:
+    must_be_logged_in: "You must be logged in to do that."
+    must_be_logged_in_to_access: "You must be logged in to access this page"
+    must_be_logged_out_to_access: "You must be logged out to access this page"
     author_has_been_banned: "The author of that note has been banned."
+  users_controller:
+    account_migrated_create_new_password: "Your account has been migrated from the
+      old PublicLaboratory.org website; please create a password for the new site."
+    registration_successful: "Registration successful. Welcome to our community!"
+    continue_where_you_left_off: " Click <a href='%{url1}'>here</a> to continue where
+      you left off."
+    spectralworkbench_or_mapknitter: "<i class='icon icon-exclamation-sign'></i> If
+      you registered in order to use <b>SpectralWorkbench.org</b> or <b>MapKnitter.org</b>,
+      <a href='%{url1}'>click here to continue &raquo;</a>"
+    successful_updated_profile: "Successfully updated profile."
+    return_dashboard: "Return to your dashboard"
+    only_user_edit_profile: "Only <b>%{user}</b> can edit their profile."
+    user_has_been_banned: "That user has been banned."
+    user_has_been_moderated: "That user has been placed <a href='/wiki/moderation'>in
+      moderation</a>."
+    no_user_found: "No user by that name found"
+    no_user_found_name: "User '%{username}' not found"
+    password_change_success: "Your password was successfully changed."
+    password_reset_failed: "Password reset failed. Please <a href='/wiki/issues'>contact
+      the web team</a> if you are having trouble."
+    password_change_failed: "Password change failed; key does not correspond to username."
+    password_reset_failed_no_user: "Password reset failed. Please <a href='/wiki/issues'>contact
+      the web team</a> if you are having trouble. (Error: no user with that key)"
+    password_reset_email: "You should receive an email with instructions on how to
+      reset your password. If you do not, please double check that you are using the
+      email you registered with."
+    image_saved: "Image saved."
+    image_not_saved: "The image could not be saved."
+    preference_saved: "Your preference has been saved"
+    something_went_wrong: "Something went wrong, Please try again"
+  user_sessions_controller:
+    log_in: "Log in"
+    create_password_for_new_site: "Your account has been migrated from the old PublicLaboratory.org
+      website; please create a password for the new site."
+    logged_in: "Successfully logged in."
+    sign_up_to_join: "It looks like you're new here! Sign up below to join."
+    user_has_been_banned: "The user '%{username}' has been banned; please contact <a
+      href='mailto:moderators@publiclab.org'>moderators@publiclab.org</a> if you believe
+      this is in error."
+    user_has_been_moderated: "The user '%{username}' has been <a href='/wiki/moderation'>placed
+      in moderation</a>; please contact <a href='mailto:moderators@publiclab.org'>moderators@publiclab.org</a>
+      if you believe this is in error."
+    logged_out: "Successfully logged out."
+  notes_controller:
+    research_notes: "Research notes"
+    thank_you_for_contribution: "Success! Thank you for contributing open research,
+      and thanks for your patience while your post is approved by <a href='/wiki/moderation'>community
+      moderators</a> and we'll email you when it is published. In the meantime, if
+      you have more to contribute, feel free to do so."
+    thank_you_for_question: "Success! Thank you for contributing with a question, and
+      thanks for your patience while your question is approved by <a href='/wiki/moderation'>community
+      moderators</a> and we'll email you when it is published."
+    question_note_published: "Question published. In the meantime, if you have more
+      to contribute, feel free to do so."
+    research_note_published: "Research note published. Get the word out on <a href='/lists'>the
+      discussion lists</a>!"
+    you_have_been_banned: "You have been banned. Please contact <a href='mailto:moderators@publiclab.org'>moderators@publiclab.org</a>
+      if you believe this is in error."
+    author_can_edit_note: "Only the author can edit a research note."
+    author_can_edit_question: "Only the author can edit a question."
+    edits_saved: "Edits saved."
+    edit_not_saved: "Your edit could not be saved."
+    content_deleted: "Content deleted."
+    highly_liked_research_notes: "Highly liked research notes"
+    popular_research_notes: "Popular research notes"
+    recent_research_notes: "Recent research notes"
+    more_than_one_contributor: "You cannot delete a wiki page once someone else has
+      begun to contribute to it"
+    saved_as_draft: "Your contribution has been saved as draft and will be visible
+      to you only"
+  tag_controller:
+    tags: "Tags"
+    tag_already_exists: "Error: that tag already exists."
+    barnstar_not_created: "The barnstar could not be created."
+    barnstar_awarded: "You awarded the <a href='%{url1}'>%{star} barnstar</a> to <a
+      href='%{url2}'>%{awardee}</a>"
+    error_tags: "Error: tags "
+    tags_created_error: "%{tag_count} tags created, %{error_count} errors."
+    tag_deleted: "Tag deleted."
+    must_own_tag_to_delete: "You must own the tag to delete it."
+  js:
+    dashboard:
+      selected_updates: "Selected updates"
+      none: "None"
+      all_updates: "All updates"
+  node:
+    cannot_find_username: "Error: cannot find that username."
+    cannot_add_yourself_coauthor: "Error: you cannot add yourself as coauthor."
+    only_RSVP_for_yourself: "Error: you can only RSVP for yourself."
+    only_admins_can_lock: "Error: only admins can lock pages."
+    page_does_not_exist: "Error: page does not exist."
+    only_author_use_powertag: "Error: only the author may use that powertag."
+  spamaway:
+    human:
+      statement1: '🐑'
+      statement2: '🐹'
+      statement3: '🐼'
+      statement4: '🐔'
+      statement5: '🐧'
+      statement6: '🦊'
+    robot:
+      statement1: '⏰'
+      statement2: '📠'
+      statement3: '🖨'
+      statement4: '📻'
+      statement5: '💾'
+      statement6: '📺'
+    errors:
+      please_read_instructions: "Please read the instructions in the last box carefully."
+      not_a_real_person: "-- It doesn't seem like you are a real person! If you disagree or are having trouble, please see https://publiclab.org/registration-test."
   language: English
   date:
     abbr_day_names:
@@ -65,87 +983,43 @@ en:
   datetime:
     time_ago_in_words:
       about_x_hours:
-        one: about 1 hour ago
-        other: about %{count} hours ago
+        one: "about 1 hour ago"
+        other: "about %{count} hours ago"
       about_x_months:
-        one: about 1 month ago
-        other: about %{count} months ago
+        one: "about 1 month ago"
+        other: "about %{count} months ago"
       about_x_years:
-        one: about 1 year ago
-        other: about %{count} years ago
+        one: "about 1 year ago"
+        other: "about %{count} years ago"
       almost_x_years:
-        one: almost 1 year ago
-        other: almost %{count} years ago
-      half_a_minute: half a minute ago
+        one: "almost 1 year ago"
+        other: "almost %{count} years ago"
+      half_a_minute: "half a minute ago"
       less_than_x_minutes:
-        one: less than a minute ago
-        other: less than %{count} minutes ago
+        one: "less than a minute ago"
+        other: "less than %{count} minutes ago"
       less_than_x_seconds:
-        one: less than 1 second ago
-        other: less than %{count} seconds ago
+        one: "less than 1 second ago"
+        other: "less than %{count} seconds ago"
       over_x_years:
-        one: over 1 year ago
-        other: over %{count} years ago
+        one: "over 1 year ago"
+        other: "over %{count} years ago"
       x_days:
-        one: 1 day ago
+        one: "1 day ago"
         other: "%{count} days ago"
       x_minutes:
-        one: 1 minute ago
+        one: "1 minute ago"
         other: "%{count} minutes ago"
       x_months:
-        one: 1 month ago
+        one: "1 month ago"
         other: "%{count} months ago"
       x_seconds:
-        one: 1 second
+        one: "1 second"
         other: "%{count} seconds ago"
     prompts:
-      day: Day
-      hour: Hour
-      minute: Minute
-      month: Month
-      second: Seconds
-      year: Year
-  notes:
-    stats:
-      about_this_page: |
-        <h4>About this page</h4>
-
-        <p>Public Lab is built on the contributions of community members, and this website represents our collective open source work.</p>
-      contributors_statistics: "Contributor Statistics"
-      looking_back: "Looking back from <i>%{time}</i>."
-      try_time_further_back: |
-        Try
-        <a href='%{url1}'>one year</a>,
-        <a href='%{url2}'>one month</a>, or
-        <a href='%{url3}'>one week</a>
-        further back.
-      try_time_further_forward: |
-        Or try
-        <a href='%{url1}'>one year</a>,
-        <a href='%{url2}'>one month</a>, or
-        <a href='%{url3}'>one week</a>
-        further forward.
-      notes_and_wiki_edits_past_week: |
-        <a href='%{url1}'>%{note_count} notes</a>
-        and <a href='%{url2}'>%{wiki_count} wiki edits</a> posted in the past week.
-      people_joined_past_week: "<b>%{people_count} people</b> joined in the past week."
-      notes_and_wiki_edits_past_month: |
-        <a href='%{url1}'>%{note_count} notes</a>
-        and <a href='%{url2}'>%{wiki_count} wiki edits</a> posted in the past month.
-      people_joined_past_month: "<b>%{people_count} people</b> joined in the past month."
-      research_notes_posted_by_contributors: "%{note_count} research notes have been posted by %{contributors_count} contributors since %{time} ago"
-      total_contributors: "%{all_contributors_count} Total Contributors (Tallied weekly)"
-      notes_per_week_past_year: "%{note_count} notes per week over the past year."
-      note_posting_52_weeks: "Note posting for the past 52 weeks:"
-      wiki_pages_posted: "%{count} wiki pages have been posted, total"
-      wiki_page_posting_52_weeks: "Wiki page posting for the past 52 weeks:"
-      comments_posted: "%{count} comments have been posted, total"
-      comments_posted_52_weeks: "Comments posted for the past 52 weeks:"
-      wiki_page_edits: "%{count} wiki page edits have been made, total"
-      edits_per_week: "%{count} edits per week over the past year."
-      questions_past_week: |
-          <a href='%{url1}'>%{quiz_count} questions asked </a>
-          and <a href='%{url2}'>%{ans_count} questions answered </a> in the past week.
-      questions_past_month: |
-          <a href='%{url1}'>%{quiz_count} questions asked </a>
-          and <a href='%{url2}'>%{ans_count} questions answered </a> in the past month.
+      day: "Day"
+      hour: "Hour"
+      minute: "Minute"
+      month: "Month"
+      second: "Seconds"
+      year: "Year"
