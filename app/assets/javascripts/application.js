@@ -54,4 +54,3 @@
 //= require graph.js
 //= require wikis.js
 //= require header_footer.js
-//= require flash_messages.js
