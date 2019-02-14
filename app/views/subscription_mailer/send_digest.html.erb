@@ -20,8 +20,7 @@
           </div>
           <div style="float: left;">
             <b style="font-weight: 500;"><%= n.author.username.capitalize %></b>
-            <p style="margin: 0;color: #999;font-weight: 500;">Published <%= Time.now.strftime("%m/%d") %>
-</p>
+            <p style="margin: 0;color: #999;font-weight: 500;">Published <% n.created_at .strftime("%m/%d") %> </p>
           </div>
         </td>
       </tr>
