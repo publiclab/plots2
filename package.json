@@ -32,7 +32,7 @@
     "file-saver": "^2.0.0",
     "flot": "^0.8.3",
     "font-awesome": "^4.5.0",
-    "horsey": "^3.0.0",
+    "horsey": "^4.2.2",
     "i18n-js": "^3.2.1",
     "ics": "nwcell/ics.js#^0.2.0",
     "image-sequencer": "^2.2.3",

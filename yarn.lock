@@ -556,6 +556,15 @@ bullseye@1.4.6:
     seleccion "2.0.0"
     sell "^1.0.0"
 
+bullseye@1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/bullseye/-/bullseye-1.5.0.tgz#81a6786581948df47bb1d690bdbf4844cb860b8c"
+  integrity sha1-gaZ4ZYGUjfR7sdaQvb9IRMuGC4w=
+  dependencies:
+    crossvent "^1.3.1"
+    seleccion "2.0.0"
+    sell "^1.0.0"
+
 bureaucracy@1.0.7, "bureaucracy@git://github.com/jywarren/bureaucracy.git#xhrOptions":
   version "1.0.7"
   resolved "git://github.com/jywarren/bureaucracy.git#f2522f42eba0f09444971e7138a56179cd8bffa9"
@@ -1871,6 +1880,11 @@ has@^1.0.0, has@^1.0.1:
   dependencies:
     function-bind "^1.1.1"
 
+hash-sum@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/hash-sum/-/hash-sum-1.0.2.tgz#33b40777754c6432573c120cc3808bbd10d47f04"
+  integrity sha1-M7QHd3VMZDJXPBIMw4CLvRDUfwQ=
+
 hasha@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/hasha/-/hasha-2.2.0.tgz#78d7cbfc1e6d66303fe79837365984517b2f6ee1"
@@ -1949,14 +1963,18 @@ hooker@~0.2.3:
   resolved "https://registry.yarnpkg.com/hooker/-/hooker-0.2.3.tgz#b834f723cc4a242aa65963459df6d984c5d3d959"
   integrity sha1-uDT3I8xKJCqmWWNFnfbZhMXT2Vk=
 
-horsey@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/horsey/-/horsey-3.0.0.tgz#825745fc848680385c546c524ae9c7db919abc55"
-  integrity sha1-gldF/ISGgDhcVGxSSunH25GavFU=
+horsey@^4.2.2:
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/horsey/-/horsey-4.2.2.tgz#46d418937e0571b773eab364bf6c0611bfa70238"
+  integrity sha1-RtQYk34Fcbdz6rNkv2wGEb+nAjg=
   dependencies:
-    bullseye "1.4.6"
-    crossvent "1.5.0"
+    bullseye "1.5.0"
+    contra "1.9.4"
+    crossvent "1.5.4"
     fuzzysearch "1.0.3"
+    hash-sum "1.0.2"
+    lodash "4.13.1"
+    sektor "1.1.4"
     sell "1.0.0"
 
 html-encoding-sniffer@^1.0.1, html-encoding-sniffer@^1.0.2:
@@ -2538,6 +2556,11 @@ lodash.sortby@^4.7.0:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/lodash.sortby/-/lodash.sortby-4.7.0.tgz#edd14c824e2cc9c1e0b0a1b42bb5210516a42438"
   integrity sha1-7dFMgk4sycHgsKG0K7UhBRakJDg=
+
+lodash@4.13.1:
+  version "4.13.1"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.13.1.tgz#83e4b10913f48496d4d16fec4a560af2ee744b68"
+  integrity sha1-g+SxCRP0hJbU0W/sSlYK8u50S2g=
 
 lodash@^3.9.0:
   version "3.10.1"
@@ -3556,6 +3579,11 @@ scope-analyzer@^2.0.1:
     es6-symbol "^3.1.1"
     estree-is-function "^1.0.0"
     get-assigned-identifiers "^1.1.0"
+
+sektor@1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/sektor/-/sektor-1.1.4.tgz#4ccee441ccf2acfe46958c2ce468426ca7c762e6"
+  integrity sha1-TM7kQczyrP5GlYws5GhCbKfHYuY=
 
 sektor@^1.1.2:
   version "1.1.5"
