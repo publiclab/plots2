@@ -2238,10 +2238,10 @@ jpeg-js@^0.3.2:
   resolved "https://registry.yarnpkg.com/jpeg-js/-/jpeg-js-0.3.4.tgz#dc2ba501ee3d58b7bb893c5d1fab47294917e7e7"
   integrity sha512-6IzjQxvnlT8UlklNmDXIJMWxijULjqGrzgqc0OG7YadZdvm7KPQ1j0ehmQQHckgEWOfgpptzcnWgESovxudpTA==
 
-jquery-confirm@^3.3.2:
-  version "3.3.2"
-  resolved "https://registry.yarnpkg.com/jquery-confirm/-/jquery-confirm-3.3.2.tgz#c80a7a1517c738f5e5735993bb168e938d08f582"
-  integrity sha1-yAp6FRfHOPXlc1mTuxaOk40I9YI=
+jquery-confirm@^3.3.4:
+  version "3.3.4"
+  resolved "https://registry.yarnpkg.com/jquery-confirm/-/jquery-confirm-3.3.4.tgz#493e29d33713e86d6eb0c5bd177677a4373310d1"
+  integrity sha512-SF3mX2kWAK9FP/Hut1uLHI30LPZ9DAki3Jq6JId9vg6AlMVugjlh40APtuxPQ/0C44XTkQFSVyRrg57NMbaicA==
   dependencies:
     jquery ">=1.6"
 
