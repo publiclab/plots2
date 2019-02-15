@@ -67,7 +67,7 @@ GEM
       thread_safe (~> 0.3, >= 0.3.1)
     bindex (0.5.0)
     builder (3.2.3)
-    byebug (10.0.2)
+    byebug (11.0.0)
     chronic (0.10.2)
     ci_reporter (2.0.0)
       builder (>= 2.1.2)
