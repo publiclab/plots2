@@ -16,7 +16,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap/dist/js/bootstrap.min.js
-//= require bootstrap-typeahead/bootstrap3-typeahead.min.js
+//= require bootstrap-3-typeahead/bootstrap3-typeahead.min.js
 //= require bootstrap-datepicker/dist/js/bootstrap-datepicker.js
 //= require jquery-file-upload/js/vendor/jquery.ui.widget.js
 //= require jquery-file-upload/js/jquery.fileupload.js
@@ -30,16 +30,20 @@
 //= require ics/ics.min.js
 //= require leaflet/dist/leaflet
 //= require moment/moment.js
-//= require d3/d3
-//= require d3-plugins/hexbin/hexbin
-//= require leaflet-d3/dist/leaflet-d3
 //= require i18n
 //= require i18n/translations
+//= require short-code-forms/dist/short-code-prompts.js
+//= require chart.js/dist/Chart.js
+//= require horsey/dist/horsey.min.js
+//= require noty/lib/noty.js
+//= require noty_notification.js
+//= require jquery-confirm/js/jquery-confirm.js
+//= require jquery.atwho
+//= require jsdiff/diff.js
 //  APPLICATION SCRIPTS:
 //= require setup.js
 //= require editor.js
 //= require like.js
-//= require jsdiff/diff.js
 //= require main_image.js
 //= require restful_typeahead.js
 //= require users.js
@@ -48,13 +52,5 @@
 //= require leaflet_helper
 //= require grids.js
 //= require graph.js
-//= require short-code-forms/dist/short-code-prompts.js
 //= require wikis.js
-//= require chart.js/dist/Chart.js
-//= require horsey/dist/horsey.min.js
 //= require header_footer.js
-//  require turbolinks // Temporarily removed while fixing
-//= require noty/lib/noty.js
-//= require noty_notification.js
-//= require jquery-confirm/js/jquery-confirm.js
-//= require jquery.atwho
