@@ -207,7 +207,7 @@
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
 var values =  <%=  @popular_tags.values %>;
-var data =  <%= raw @popular_tags.keys %>;
+var data =  <%= raw (@popular_tags.keys) %>;
 
 var options = {
     chart: {

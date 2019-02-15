@@ -48,8 +48,8 @@ class Tag < ApplicationRecord
 
   def self.nodes_frequency(starting, ending)
     ids = Node.where(created: starting.to_i..ending.to_i).map(&:node_tags).flatten.map(&:tid)
-    hash = ids.uniq.map{|id| p (Tag.find id).name,  ids.count(id)  }.to_h
-    hash.sort_by {|k,v| v}.reverse.first(10).to_h
+    hash = ids.uniq.map { |id| p (Tag.find id).name, ids.count(id) }.to_h
+    hash.sort_by { |_, v| v }.reverse.first(10).to_h
   end
 
   def belongs_to(current_user, nid)
