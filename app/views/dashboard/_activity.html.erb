@@ -111,7 +111,7 @@
   <br />
 
   <div class="text-center">
-    <%= will_paginate notes, :renderer => BootstrapPagination::Rails if notes %>
+    <%= will_paginate notes, renderer: WillPaginate::ActionView::BootstrapLinkRenderer if notes %>
   </div>
 
 </div>
