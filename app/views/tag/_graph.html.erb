@@ -151,16 +151,16 @@ function generateSeries(s, count) {
     ];
 
     var i = 0;
-    var months = <%= notes.values.collect {|ind| ind[0]} %>
+    var months_dates = <%= notes.values.collect {|ind| ind[0]} %>
+    var months = months_dates.map(x =>  new Date(x).getTime());
     var series = [];
-    var x = new Date(months[0]).getTime();
     while (i < count) {
-        series.push([x, values[s][i]]);
-        x += 604800000;
-        i++;
+        for (var j =0; j < months.length; j++) {
+            series.push([months[j], values[s][i]]);
+            i++;
 
+        }
     }
     return series;
 }
-
 </script>

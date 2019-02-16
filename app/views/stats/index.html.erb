@@ -159,14 +159,14 @@ var options = {
     },
     series: [{
         name: 'Notes',
-        data: generateDayWiseTimeSeries(0, 52)
+        data: generateWeekWiseTimeSeries(0, 52)
 
     }, {
         name: 'Wikis',
-        data: generateDayWiseTimeSeries(1, 52)
+        data: generateWeekWiseTimeSeries(1, 52)
     }, {
         name: 'Comments',
-        data: generateDayWiseTimeSeries(2, 52)
+        data: generateWeekWiseTimeSeries(2, 52)
 
     }],
         markers: {
@@ -239,22 +239,24 @@ var options = {
 var chart = new ApexCharts(document.querySelector("#timeline"), options);
 
 chart.render();
-function generateDayWiseTimeSeries(s, count) {
-      var values = [
-       <%= @graph_notes.values.collect {|ind| ind[1]} %>,
-       <%= @graph_wikis.values.collect {|ind| ind[1]} %>,
-       <%= @graph_comments.values.collect {|ind| ind[1]} %>,
-      ];
+function generateWeekWiseTimeSeries(s, count) {
+    var values = [
+        <%= @graph_notes.values.collect {|ind| ind[1]} %>,
+        <%= @graph_wikis.values.collect {|ind| ind[1]} %>,
+        <%= @graph_comments.values.collect {|ind| ind[1]} %>,
+    ];
 
-      var i = 0;
-var months = <%= @graph_notes.values.collect {|ind| ind[0]} %>
-      var series = [];
-      var x = new Date(months[0]).getTime();
-      while (i < count) {
-        series.push([x, values[s][i]]);
-        x += 604800000;
-        i++;
-      }
-      return series;
+    var i = 0;
+    var months_dates = <%= @graph_notes.values.collect {|ind| ind[0]} %>
+    var months = months_dates.map(x =>  new Date(x).getTime());
+    var series = [];
+    while (i < count) {
+        for (var j =0; j < months.length; j++) {
+            series.push([months[j], values[s][i]]);
+            i++;
+
+        }
     }
+    return series;
+}
 </script>
