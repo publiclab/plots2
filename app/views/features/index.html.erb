@@ -20,4 +20,4 @@
   <% end %>
 </table>
 
-<%= will_paginate @features, :renderer => BootstrapPagination::Rails %>
+<%= will_paginate @features, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>

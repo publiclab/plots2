@@ -66,4 +66,4 @@
     <% end %>
     </div>
 </div>
-<%= will_paginate @likes, :renderer => BootstrapPagination::Rails unless @unpaginated %>
+<%= will_paginate @likes, renderer: WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated %>

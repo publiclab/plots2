@@ -29,7 +29,7 @@
 
   <%= render :partial => "tag/topicCard" %>
   
-<div class="text-center"> <%= will_paginate @tags, :renderer => BootstrapPagination::Rails if @paginated %></div>
+<div class="text-center"> <%= will_paginate @tags, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer if @paginated %></div>
 </div>
 
 <style>
@@ -38,7 +38,7 @@
   }
 </style>
 
-<div class="col-md-6">
+<div class="col-lg-6">
   <br><br>
   <iframe id="myImage" src="stats/graph.html?limit=50" height="500" width="100%" frameborder="0" ></iframe>
   <h6 class="text-right" style="color:#ccc;">Tags most commonly used, linked by how often they are used together.<br>

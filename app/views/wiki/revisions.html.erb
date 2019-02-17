@@ -47,7 +47,7 @@
     </table>
 
    <hr />
-   <%= will_paginate @revisions, :renderer => BootstrapPagination::Rails if @paginated %>
+   <%= will_paginate @revisions, renderer: WillPaginate::ActionView::BootstrapLinkRenderer if @paginated %>
 </div>
   <div class="col-lg-7">
     <div class="btn-group float-right">

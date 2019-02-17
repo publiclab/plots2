@@ -67,4 +67,4 @@
     <% end %>
     </div>
     </div>
-<%= will_paginate notes, :renderer => BootstrapPagination::Rails unless @unpaginated %>
+<%= will_paginate notes, renderer: WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated %>

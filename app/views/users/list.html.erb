@@ -52,5 +52,5 @@
      </tr>
     <% end %>
   </table>
-  <%= will_paginate @users, :renderer => BootstrapPagination::Rails unless @unpaginated %>
+  <%= will_paginate @users, renderer: WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated %>
 </div>

@@ -31,7 +31,7 @@
       </tr>
     <% end %>
   </table>
-  <%= will_paginate @user_tags, :renderer => BootstrapPagination::Rails if @paginated %>
+  <%= will_paginate @user_tags, renderer: WillPaginate::ActionView::BootstrapLinkRenderer if @paginated %>
 
   <hr />
 

@@ -44,7 +44,7 @@
 	<% end %>
 </table>
 
-<%= will_paginate @likes, :renderer => BootstrapPagination::Rails if @paginated %>
+<%= will_paginate @likes, renderer: WillPaginate::ActionView::BootstrapLinkRenderer if @paginated %>
 
 </div>
 
