@@ -31,6 +31,7 @@ class StatsController < ApplicationController
     @questions = Node.published.questions.where(created: @start.to_i..@end.to_i)
       .count
     @contributors = User.contributor_count_for(@start, @end)
+    @popular_tags = Tag.nodes_frequency(@start, @end)
   end
 
   def index
