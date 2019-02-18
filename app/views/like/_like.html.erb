@@ -94,18 +94,22 @@
         cache: false
       });
 
+      // opens model to login before you can like;
       $("#open-login-like").click(function() {
         $("input[name='hash_params']").val($(this).attr("data-hashparams"));
       });
 
+      // triggers liking an unliking
       <% if current_user %>
         $('#like-button-<%= node.id %>').on('click',<% if node.liked_by(current_user.uid) %>clickliked<% else %>clicknotliked<% end %>)
-      
-        if(window.location.href.includes("#like")) {
-          $('#like-button-<%= node.id %>').click();
-        }
-        <% end %>
+       
+       // not useful for comments on notes but maybe useful for something else. 
+        // if(window.location.href.includes("#like")) {
+        //   $('#like-button-<%= node.id %>').click();
+        // }
+      <% end %>
     });
+    
     $('body').on('click', function (e) { // If there's a click event in the body
       $('[rel=popover]').each(function () { // For each popover
         /*
