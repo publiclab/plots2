@@ -36,8 +36,8 @@ class SearchController < ApplicationController
   def all_content
     @nodes = ExecuteSearch.new.by(:all, @search_criteria)
     @additional_search_querys.each do |added_search_criteria|
-      @nodes = ( @nodes << ExecuteSearch.new.by(:all, added_search_criteria) ).flatten 
-    end 
+      @nodes = (@nodes << ExecuteSearch.new.by(:all, added_search_criteria)).flatten 
+    end
     @wikis = @nodes[:wikis].uniq
     @notes = @nodes[:notes].uniq
     @profiles = @nodes[:profiles].uniq
