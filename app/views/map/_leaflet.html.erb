@@ -21,9 +21,7 @@
     var map_lon = <%= lon %> ;
 
      window.setTimeout(function(){
-      
-        // var user_latlng = L.latLng(map_lat, map_lon) ;
-        // map<%= unique_id %>.setView(user_latlng ,  <%= lat.to_s.length.to_i %> + 6) ;
+
         map<%= unique_id %>.setZoom(<%= lat.to_s.length.to_i %> + 6) ; 
     
      }, 3500);
