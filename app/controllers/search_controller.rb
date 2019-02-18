@@ -1,4 +1,5 @@
 class SearchController < ApplicationController
+  include TextSearch
   before_action :set_search_criteria, :except => %i(notes wikis)
 
   def new; end
@@ -34,17 +35,27 @@ class SearchController < ApplicationController
 
   def all_content
     @nodes = ExecuteSearch.new.by(:all, @search_criteria)
-    @wikis = @nodes[:wikis]
-    @notes = @nodes[:notes]
-    @profiles = @nodes[:profiles]
-    @questions = @nodes[:questions]
-    @tags = @nodes[:tags]
+    @additional_search_querys.each do |added_search_criteria|
+      @nodes = ( @nodes << ExecuteSearch.new.by(:all, added_search_criteria) ).flatten 
+    end 
+    @wikis = @nodes[:wikis].uniq
+    @notes = @nodes[:notes].uniq
+    @profiles = @nodes[:profiles].uniq
+    @questions = @nodes[:questions].uniq
+    @tags = @nodes[:tags].uniq
   end
 
   private
 
   def set_search_criteria
     @search_criteria = SearchCriteria.new(params)
+    @additional_search_querys = []
+    if params[:query].include? "-"
+      params[:query] = non_hyphenate_query(@search_criteria.query)
+      @additional_search_querys << SearchCriteria.new(params)
+    end
+    params[:query] = results_with_probable_hyphens(@search_criteria.query)
+    @additional_search_querys << SearchCriteria.new(params)
   end
 
   def search_params
