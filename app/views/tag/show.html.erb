@@ -6,7 +6,7 @@
   
   <% if @tags.first && params[:id][-1..-1] != "*" %>
 
-      <%= link_to "#{request.path}/stats", id: params[:id] ,title: "Click to view graph" do %>
+      <%= link_to tag_stats_path, id: params[:id] ,title: "Click to view graph" do %>
           <i class="btn btn-default btn-sm"><i class="fa fa-bar-chart"></i> Stats </i>
           <% end %>
       <% end %>

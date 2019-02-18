@@ -230,24 +230,18 @@ class Tag < ApplicationRecord
     weeks
   end
 
-  def question_graph_making(span = 52, time = Time.now)
+  def graph_making(model, span = 52, time = Time.now)
     weeks = {}
     week = span
     count = 0
     tids = Tag.where('name IN (?)', [name]).collect(&:tid)
     nids = NodeTag.where('tid IN (?)', tids).collect(&:nid)
-    quiz_nids = Node.questions.where(nid: nids)
+    ids = model.where(nid: nids)
 
     while week >= 1
-      # initialising month variable with the month of the starting day
-      # of the week
       month = (time - (week * 7 - 1).days)
-
-      # Now fetching the weekly data of notes or wikis
-
-      current_week = Tag.nodes_for_period(
-        'note',
-        quiz_nids,
+      current_week = Tag.all_nodes_for_period(
+        ids,
         (time.to_i - week.weeks.to_i).to_s,
         (time.to_i - (week - 1).weeks.to_i).to_s
       ).count(:all)
@@ -268,6 +262,16 @@ class Tag < ApplicationRecord
           start,
           finish
         )
+  end
+
+  def self.all_nodes_for_period(nids, start, finish)
+    Node.select(%i(created status nid))
+      .where(
+        'status = 1 AND nid IN (?) AND created > ? AND created <= ?',
+        nids.uniq,
+        start,
+        finish
+      )
   end
 
   # Given a set of tags, return all users following

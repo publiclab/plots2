@@ -6,11 +6,10 @@
 <script>
 
 var options = {
-    colors: ['#00E396', '#0090FF', '#800080', '#fff896'],
+    colors: ['#00E396', '#0090FF', '#800080', '#FFD700'],
     chart: {
         type: "area",
-        height: 300,
-        width: '100%',
+        height: 400,
         foreColor: "#999",
         scroller: {
             enabled: true,
@@ -46,7 +45,6 @@ var options = {
             left: 2,
             blur: 5,
             opacity: 0.06
-
         }
 
     },
@@ -66,7 +64,7 @@ var options = {
         name: 'Wiki tags',
         data: generateSeries(1,52)
     },{
-        name: 'Map tags',
+        name: 'Comment tags',
         data: generateSeries(2,52)
     },{
         name: 'Question tags',
@@ -146,7 +144,7 @@ function generateSeries(s, count) {
     var values = [
         <%= notes.values.collect {|ind| ind[1]} %>,
         <%= wikis.values.collect {|ind| ind[1]} %>,
-        <%= maps.values.collect {|ind| ind[1]} %>,
+        <%= comments.values.collect {|ind| ind[1]} %>,
         <%= questions.values.collect {|ind| ind[1]} %>
     ];
 
