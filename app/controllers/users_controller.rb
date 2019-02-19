@@ -284,7 +284,7 @@ class UsersController < ApplicationController
                              .order("timestamp DESC")
                              .where(status: 1, uid: params[:id])
                              .paginate(page: params[:page])
-    render partial: 'comments/comments'
+    render partial: 'comments/comments', :locals => { :comments => @comments }
   end
 
   def photo

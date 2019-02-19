@@ -1,43 +1,39 @@
 <header style="text-align: center;color:black">
-	<img src="https://avatars2.githubusercontent.com/u/4621650?s=200&v=4" style="width: 100px;height: 100px">
-	<p style="font-size: 20px">[Public Lab] Your Weekly Digest</p>
+  <img src="https://avatars2.githubusercontent.com/u/4621650?s=200&v=4" style="width: 100px;height: 100px">
+  <p style="font-size: 20px">[Public Lab] Your Weekly Digest</p>
 </header>
 
 <div style="width: 46vw;margin: 0 auto;margin-top: 54px;color: black;">
-	<p style="font-size: 1.2em; font-family: sans-serif;margin-bottom: 0;color: lightgray;">Top picks for you</p>
-	<hr id="first" style="border: none;height: 1px;background-color: #e2e2e2;margin-bottom: 32px;">
+  <p style="font-size: 1.2em; font-family: sans-serif;margin-bottom: 0;color: lightgray;">Top picks for you</p>
+  <hr id="first" style="border: none;height: 1px;background-color: #e2e2e2;margin-bottom: 32px;">
   <table style="font-family: sans-serif;">
     <% @top_picks.each do |n| %>
       <tr>
-        <td>
+        <div style="margin-bottom: 15px">
           <h3 style="font-weight: 500;margin: 0;" style="margin: 0;"><%= n.title %></h3>
-        </td>
-      </tr>
-      <tr>
-        <td style="padding-top: 26px;">
-          <div style="float: left;">
-            <img style="width:40px;margin-right:8px;border: 1px solid lightgrey;height: 40px;border-radius: 50%;" src="https://www.gravatar.com/avatar/1aedb8d9dc4751e229a335e371db8058" />
-          </div>
-          <div style="float: left;">
-            <b style="font-weight: 500;"><%= n.author.username.capitalize %></b>
-            <p style="margin: 0;color: #999;font-weight: 500;">Published Feb 2</p>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td <% unless n.main_image.present? %> colspan="2" <% end %> style="padding-bottom: 30px;">
+        </div>
+        <div style="float: left;">
+          <% if n.author.photo? %>
+            <img style="width:40px;margin-right:8px;border: 1px solid lightgrey;height: 40px;border-radius: 50%;" src="<%= n.author.photo_path(:thumb) %>"/>
+          <% else %>
+            <img style="width:40px;margin-right:8px;border: 1px solid lightgrey;height: 40px;border-radius: 50%;" src="https://www.gravatar.com/avatar/1aedb8d9dc4751e229a335e371db8058"/>
+          <% end %>
+        </div>
+        <div style="margin-top: 20px;">
+          <b style="font-weight: 500;"><%= n.author.username.capitalize %></b>
+          <p style="margin: 0;color: #999;font-weight: 500;">Published Feb 2</p>
+        </div>
+        <div <% unless n.main_image.present? %> colspan="2" <% end %> style="padding-bottom: 10px;">
           <p style="font-size: 1.1em;line-height: 1.5;text-align: justify;font-weight: 300;"><%= n.body.truncate(175) %><a href="https://publiclab.org<%= n.path %>" style="text-decoration: none;">  Read more</a></p>
-        </td>
+        </div>
         <% if n.main_image.present? %>
-          <td style="padding-bottom: 30px;">
+          <div style="padding-bottom: 30px;">
             <img src="<%= n.main_image.path(:default) %>" style="width: 90px;height: 90px;border-radius: 5px;margin-left: 14px;">
-          </td>
-        <% end %>
-      </tr>
-      <tr>
-        <td colspan="2" style="padding-bottom: 32px;">
+          </div>
+         <% end %>
+        <div colspan="2" style="padding-bottom: 32px;">
           <hr style="border: none;height: 1px;background-color: #e2e2e2;width: 140px;">
-        </td>
+        </div>
       </tr>
     <% end %>
   </table>

@@ -5,11 +5,16 @@ class CommentController < ApplicationController
   before_action :require_user, only: %i(create update make_answer delete)
 
   def index
-    status = 1 # status of comments to display
-    status = 0 if current_user && (current_user.role == 'admin' || current_user.role == 'moderator')
-    @comments = Comment.paginate(page: params[:page], per_page: 30)
-      .order('timestamp DESC')
-      .where(status: status)
+    comments = Comment.joins(:node, :user)
+                   .order('timestamp DESC')
+                   .where('node.status = ?', 1)
+                   .paginate(page: params[:page], per_page: 30)
+
+    @normal_comments = comments.where('comments.status = 1')
+    if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+      @moderated_comments = comments.where('comments.status = 4')
+    end
+
     render template: 'comments/index'
   end
 

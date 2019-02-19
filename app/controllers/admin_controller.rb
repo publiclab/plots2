@@ -151,7 +151,7 @@ class AdminController < ApplicationController
     else
       flash[:error] = 'Only moderators can moderate comments.'
     end
-    redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
+    redirect_back(fallback_location: root_path)
   end
 
   def publish_comment
