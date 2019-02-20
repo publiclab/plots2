@@ -21,31 +21,16 @@ class SearchController < ApplicationController
   end
 
   def questions
-    @questions = search_executor.by(:questions, @search_criteria)
-    @added_search_criteria.each do |added_search_criteria|
-      @questions = @questions + search_executor.by(:questions, added_search_criteria)
-    end
-    @questions = @questions.uniq
-    @questions = @questions.paginate(page: params[:page], per_page: 20)
+    @questions = add_extra_results_for_transformed_queries(:questions)
   end
 
   def places
     # it's called nodes because the map/_maps partials expects nodes objects
-    @nodes = search_executor.by(:places, @search_criteria)
-    @additional_search_querys.each do |added_search_criteria|
-      @nodes = @nodes + search_executor.by(:places, added_search_criteria)
-    end
-    @nodes = @nodes.uniq
-    @nodes = @nodes.paginate(page: params[:page], per_page: 20)
+    @places = add_extra_results_for_transformed_queries(:places)
   end
 
   def tags
-    @tags = search_executor.by(:tags, @search_criteria)
-    @added_search_criteria.each do |added_search_criteria|
-      @tags = @tags + search_executor.by(:tags, added_search_criteria)
-    end
-    @tags = @tags.uniq
-    @tags = @tags.paginate(page: params[:page], per_page: 20)
+    @tags = add_extra_results_for_transformed_queries(:tags)
   end
 
   def all_content
@@ -56,11 +41,14 @@ class SearchController < ApplicationController
         @nodes[key] = @nodes[key] + val
       end
     end
-    @wikis = @nodes[:wikis].uniq
-    @notes = @nodes[:notes].uniq
-    @profiles = @nodes[:profiles].uniq
-    @questions = @nodes[:questions].uniq
-    @tags = @nodes[:tags].uniq
+    @nodes.each do |key,val|
+      @nodes[key] = @nodes[key].uniq
+    end
+    @wikis = @nodes[:wikis]
+    @notes = @nodes[:notes]
+    @profiles = @nodes[:profiles]
+    @questions = @nodes[:questions]
+    @tags = @nodes[:tags]
   end
 
   private
@@ -75,6 +63,15 @@ class SearchController < ApplicationController
     params[:query] = results_with_probable_hyphens(@search_criteria.query)
     @additional_search_querys << SearchCriteria.new(params)
     search_executor = ExecuteSearch.new
+  end
+
+  def add_extra_results_for_transformed_queries(type)
+    search_type_object = ExecuteSearch.new.by(type, @search_criteria)
+    @additional_search_querys.each do |added_search_criteria|
+      search_type_object += ExecuteSearch.new.by(type, added_search_criteria)
+    end
+    search_type_object = search_type_object.uniq
+    search_type_object = search_type_object.paginate(page: params[:page], per_page: 20)
   end
 
   def search_params
