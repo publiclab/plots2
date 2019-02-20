@@ -32,8 +32,6 @@ test-container:
 	docker-compose up -d
 	docker-compose exec -T web rake db:setup
 	docker-compose exec -T web rake db:migrate
-	docker-compose exec -T web yarn install
-	docker-compose exec -T web rake assets:precompile
 	docker-compose exec -T web rake test:all
 	docker-compose exec -T web rails test -d
 	docker-compose down
