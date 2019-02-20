@@ -2021,6 +2021,7 @@ iconv-lite@~0.2.11:
 
 ics@nwcell/ics.js#^0.2.0:
   version "0.1.3"
+  uid "4f2e67a79af161af74d986ecc47c3d166a074f11"
   resolved "https://codeload.github.com/nwcell/ics.js/tar.gz/4f2e67a79af161af74d986ecc47c3d166a074f11"
   dependencies:
     bower "~1.2.8"
