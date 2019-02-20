@@ -211,6 +211,11 @@
   margin: 18px 0 2px;
 }
 
+.dashboard .fb-like, 
+.dashboard .fb-like > span{
+  display: inline;
+}
+
 .note-default {
 
 }
