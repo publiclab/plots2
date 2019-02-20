@@ -21,22 +21,40 @@ class SearchController < ApplicationController
   end
 
   def questions
-    @questions = ExecuteSearch.new.by(:questions, @search_criteria).paginate(page: params[:page], per_page: 20)
+    @questions = search_executor.by(:questions, @search_criteria)
+    @added_search_criteria.each do |added_search_criteria|
+      @questions = @questions + search_executor.by(:questions, added_search_criteria)
+    end
+    @questions = @questions.uniq
+    @questions = @questions.paginate(page: params[:page], per_page: 20)
   end
 
   def places
     # it's called nodes because the map/_maps partials expects nodes objects
-    @nodes = ExecuteSearch.new.by(:places, @search_criteria).paginate(page: params[:page], per_page: 20)
+    @nodes = search_executor.by(:places, @search_criteria)
+    @additional_search_querys.each do |added_search_criteria|
+      @nodes = @nodes + search_executor.by(:places, added_search_criteria)
+    end
+    @nodes = @nodes.uniq
+    @nodes = @nodes.paginate(page: params[:page], per_page: 20)
   end
 
   def tags
-    @tags = ExecuteSearch.new.by(:tags, @search_criteria).paginate(page: params[:page], per_page: 20)
+    @tags = search_executor.by(:tags, @search_criteria)
+    @added_search_criteria.each do |added_search_criteria|
+      @tags = @tags + search_executor.by(:tags, added_search_criteria)
+    end
+    @tags = @tags.uniq
+    @tags = @tags.paginate(page: params[:page], per_page: 20)
   end
 
   def all_content
     @nodes = ExecuteSearch.new.by(:all, @search_criteria)
     @additional_search_querys.each do |added_search_criteria|
-      @nodes = (@nodes << ExecuteSearch.new.by(:all, added_search_criteria)).flatten 
+      added_criteria_result = ExecuteSearch.new.by(:all, added_search_criteria)
+      added_criteria_result.each do |key, val|
+        @nodes[key] = @nodes[key] + val
+      end
     end
     @wikis = @nodes[:wikis].uniq
     @notes = @nodes[:notes].uniq
@@ -56,6 +74,7 @@ class SearchController < ApplicationController
     end
     params[:query] = results_with_probable_hyphens(@search_criteria.query)
     @additional_search_querys << SearchCriteria.new(params)
+    search_executor = ExecuteSearch.new
   end
 
   def search_params
