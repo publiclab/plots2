@@ -41,7 +41,7 @@ class SearchController < ApplicationController
         @nodes[key] = @nodes[key] + val
       end
     end
-    @nodes.each do |key,val|
+    @nodes.each_key do |key|
       @nodes[key] = @nodes[key].uniq
     end
     @wikis = @nodes[:wikis]
