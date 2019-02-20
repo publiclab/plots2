@@ -46,7 +46,7 @@ services:
     volumes:
       - ../public/system:/app/public/system
       - ../log:/app/log
-      - ../test:/app/test
+      - ../test/report:/app/test/report
       - /etc/passwd:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     links:
