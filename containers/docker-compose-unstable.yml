@@ -44,7 +44,7 @@ services:
       - WEBSITE_HOST_PATTERN=${WEBSITE_HOST_PATTERN}
       - TWEET_SEARCH=${TWEET_SEARCH}
     volumes:
-      - ..:/app
+      - ../public/system:/app/public/system
       - /etc/passwd:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     links:
@@ -64,7 +64,7 @@ services:
       - db
       - redis
     volumes:
-      - ..:/app
+      - ../public/system:/app/public/system
     environment:
       - RAILS_ENV=${RAILS_ENV}
       - REDIS_URL=redis://redis:6379/0
@@ -79,4 +79,4 @@ services:
       - USERNAME=${USERNAME}
       - EMAIL_PASSWORD=${EMAIL_PASSWORD}
     volumes:
-      - ..:/app
+      - ../public/system:/app/public/system
