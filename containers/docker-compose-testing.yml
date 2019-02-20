@@ -44,5 +44,7 @@ services:
       - redis
     volumes:
       - ../public/system:/app/public/system
+      - ../log:/app/log
+      - ../test:/app/test
     environment:
       - REDIS_URL=redis://redis:6379/0
