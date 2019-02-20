@@ -2448,10 +2448,10 @@ lazy-cache@^1.0.3:
   resolved "https://registry.yarnpkg.com/lazy-cache/-/lazy-cache-1.0.4.tgz#a1d78fc3a50474cb80845d3b3b6e1da49a446e8e"
   integrity sha1-odePw6UEdMuAhF07O24dpJpEbo4=
 
-leaflet-blurred-location@^1.2.5, leaflet-blurred-location@^1.2.6:
-  version "1.2.6"
-  resolved "https://registry.yarnpkg.com/leaflet-blurred-location/-/leaflet-blurred-location-1.2.6.tgz#9d6ef7b509477de950057fa5aaeac118256d7dba"
-  integrity sha512-NsG5Gi6QX+9C4ldccQEzQqpN0qDilxQrAqje8mdn5yuqRvE88q7eZ/z9gLTPV/4ttObimfrdwv93/ckVhAua5g==
+leaflet-blurred-location@^1.2.5, leaflet-blurred-location@^1.2.7:
+  version "1.2.7"
+  resolved "https://registry.yarnpkg.com/leaflet-blurred-location/-/leaflet-blurred-location-1.2.7.tgz#be4a7bbc745fa01985da2aad36e92547ee87de9d"
+  integrity sha512-/eckjqt+o4AAoKzROn+Oo/JjD+4HwyFsH4EVS8QW/JgF6/cMz0IVQ1pv0mAoyPIi0+Wv8dzokyuvuqcZFqjm8g==
   dependencies:
     haversine-distance "^1.1.4"
     jquery "^3.2.1"
