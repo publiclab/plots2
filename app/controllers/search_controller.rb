@@ -56,13 +56,14 @@ class SearchController < ApplicationController
   def set_search_criteria
     @search_criteria = SearchCriteria.new(params)
     @additional_search_querys = []
-    if params[:query].include? "-"
-      params[:query] = non_hyphenate_query(@search_criteria.query)
+    if params[:query].present?
+      if params[:query].include? "-"
+        params[:query] = non_hyphenate_query(@search_criteria.query)
+        @additional_search_querys << SearchCriteria.new(params)
+      end
+      params[:query] = results_with_probable_hyphens(@search_criteria.query)
       @additional_search_querys << SearchCriteria.new(params)
     end
-    params[:query] = results_with_probable_hyphens(@search_criteria.query)
-    @additional_search_querys << SearchCriteria.new(params)
-    search_executor = ExecuteSearch.new
   end
 
   def add_extra_results_for_transformed_queries(type)
