@@ -382,7 +382,7 @@ class WikiController < ApplicationController
     if params[:before] && params[:after]
       # during round trip, strings are getting "\r\n" newlines converted to "\n",
       # so we're ensuring they remain "\r\n"; this may vary based on platform, unfortunately
-      before = params[:before].gsub("\n", "\r\n")
+      before = params[:before] # params[:before].gsub("\n", "\r\n") # actually we're stopping this bc it didn't work...
       after  = params[:after] # .gsub( "\n", "\r\n")
       if output = @node.replace(before, after, current_user)
         flash[:notice] = 'New revision created with your additions.' unless request.xhr?
@@ -393,7 +393,11 @@ class WikiController < ApplicationController
       flash[:error] = "You must specify 'before' and 'after' terms to replace content in a wiki page."
     end
     if request.xhr?
-      render json: output
+      if output === false
+        render json: output, status: 500
+      else
+        render json: output
+      end
     else
       redirect_to @node.path
     end
