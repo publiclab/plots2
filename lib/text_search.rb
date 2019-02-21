@@ -7,7 +7,7 @@ module TextSearch
   end
 
   def non_hyphenate_query(word)
-  	word.gsub('-','')
+    word.gsub('-','')
   end
 
   def results_with_probable_hyphens(word)

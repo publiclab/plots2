@@ -78,7 +78,7 @@ class SearchControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "search for purple-air also includes results for purpleair and vice versa" do
+  test "search for hyphenated searches returns results for non hyphenated searches as well" do
     get :all_content, params: { :query => "purple-air" }
     nodes_with_purple_air = assigns(:nodes)
 
