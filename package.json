@@ -30,7 +30,7 @@
     "chart.js": "^2.7.0",
     "cytoscape": "^3.4.2",
     "file-saver": "^2.0.0",
-    "flot": "^0.8.3",
+    "flot": "^2.1.6",
     "font-awesome": "^4.5.0",
     "i18n-js": "^3.2.1",
     "ics": "nwcell/ics.js#^0.2.0",

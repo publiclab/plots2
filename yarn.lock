@@ -1443,10 +1443,10 @@ fisheyegl@^0.1.2:
   resolved "https://registry.yarnpkg.com/fisheyegl/-/fisheyegl-0.1.2.tgz#4b7ad5705253444ad6030888a81296f5068e4972"
   integrity sha1-S3rVcFJTRErWAwiIqBKW9QaOSXI=
 
-flot@^0.8.3:
-  version "0.8.3"
-  resolved "https://registry.yarnpkg.com/flot/-/flot-0.8.3.tgz#6d9b93c7aa2cfb30dfa1af9c1ec4c94070b1217f"
-  integrity sha512-xg2otcTJDvS+ERK+my4wxG/ASq90QURXtoM4LhacCq0jQW2jbyjdttbRNqU2cPykrpMvJ6b2uSp6SAgYAzj9tQ==
+flot@^2.1.6:
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/flot/-/flot-2.1.6.tgz#ffa0d4960c9b440c3d6f2cfd448cff039e1db850"
+  integrity sha512-W82uI2eoYCOTcFuRX71kYTde1k8BZO/l0ueLcFELCPuB3Vl0GvXMsDCiAeAHhc53pPsNp1GJ5ckwcM7yn+AsZQ==
 
 font-awesome@^4.5.0, font-awesome@~4.7.0:
   version "4.7.0"
@@ -1565,11 +1565,6 @@ function-bind@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/function-bind/-/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
   integrity sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==
-
-fuzzysearch@1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/fuzzysearch/-/fuzzysearch-1.0.3.tgz#dffc80f6d6b04223f2226aa79dd194231096d008"
-  integrity sha1-3/yA9tawQiPyImqnndGUIxCW0Ag=
 
 generate-function@^2.0.0:
   version "2.3.1"
@@ -1948,16 +1943,6 @@ hooker@~0.2.3:
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/hooker/-/hooker-0.2.3.tgz#b834f723cc4a242aa65963459df6d984c5d3d959"
   integrity sha1-uDT3I8xKJCqmWWNFnfbZhMXT2Vk=
-
-horsey@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/horsey/-/horsey-3.0.0.tgz#825745fc848680385c546c524ae9c7db919abc55"
-  integrity sha1-gldF/ISGgDhcVGxSSunH25GavFU=
-  dependencies:
-    bullseye "1.4.6"
-    crossvent "1.5.0"
-    fuzzysearch "1.0.3"
-    sell "1.0.0"
 
 html-encoding-sniffer@^1.0.1, html-encoding-sniffer@^1.0.2:
   version "1.0.2"
@@ -3563,7 +3548,7 @@ seleccion@2.0.0:
   resolved "https://registry.yarnpkg.com/seleccion/-/seleccion-2.0.0.tgz#0984ac1e8df513e38b41a608e65042e8381e0a73"
   integrity sha1-CYSsHo31E+OLQaYI5lBC6DgeCnM=
 
-sell@1.0.0, sell@^1.0.0:
+sell@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/sell/-/sell-1.0.0.tgz#3baca7e51f78ddee9e22eea1ac747a6368bd1630"
   integrity sha1-O6yn5R943e6eIu6hrHR6Y2i9FjA=
