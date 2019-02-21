@@ -34,7 +34,6 @@
 //= require i18n/translations
 //= require short-code-forms/dist/short-code-prompts.js
 //= require chart.js/dist/Chart.js
-//= require horsey/dist/horsey.min.js
 //= require noty/lib/noty.js
 //= require noty_notification.js
 //= require jquery-confirm/js/jquery-confirm.js
