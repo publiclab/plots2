@@ -30,7 +30,11 @@
           <div style="padding-bottom: 30px;">
             <img src="<%= n.main_image.path(:default) %>" style="width: 90px;height: 90px;border-radius: 5px;margin-left: 14px;">
           </div>
-         <% end %>
+        <% elsif n.scraped_image %>
+          <div style="padding-bottom: 30px;">
+            <img src="<%= n.scraped_image %>" style="width: 90px;height: 90px;border-radius: 5px;margin-left: 14px;">
+          </div>
+        <% end %>
         <div colspan="2" style="padding-bottom: 32px;">
           <hr style="border: none;height: 1px;background-color: #e2e2e2;width: 140px;">
         </div>
