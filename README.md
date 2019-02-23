@@ -9,9 +9,9 @@ PublicLab.org
 [![Coverage Status](https://coveralls.io/repos/github/publiclab/plots2/badge.svg?branch=HEAD)](https://coveralls.io/github/publiclab/plots2?branch=HEAD)
 [![View performance data on Skylight](https://badges.skylight.io/typical/GZDPChmcfm1Q.svg)](https://oss.skylight.io/app/applications/GZDPChmcfm1Q)
 
-The content management system for the Public Lab research community, the plots2 web application is a combination of a group research blog of what we call "research notes" and a wiki. Read more about the [data model here](https://github.com/publiclab/plots2/blob/master/doc/DATA_MODEL.md).
+The content management system for the Public Lab research community, the plots2 web application is a combination of a group research blog that we call "research notes" and a wiki. Read more about the [data model here](https://github.com/publiclab/plots2/blob/master/doc/DATA_MODEL.md).
 
-It features a variety of features that help the Public Lab community collaborate on environmental technology design and documentation, as well as community organizing. Originally a Drupal site, it was rewritten in 2012 in Ruby on Rails and has since extended but not entirely replaced the legacy Drupal data model and database design. We ❤️ Open Source and actively participates in various OSS programs such as [Google Summer of Code(GSoC)](https://publiclab.org/wiki/gsoc), Rails Girls Summer of Code (RGSoC), Outreachy and Google Code-In (GCI).
+It presents a variety of features that help the Public Lab community collaborate on environmental technology design and documentation, as well as community organizing. Originally a Drupal site, it was rewritten in 2012 in Ruby on Rails and has since extended but not entirely replaced the legacy Drupal data model and database design. We ❤️ Open Source and actively participates in various OSS programs such as [Google Summer of Code(GSoC)](https://publiclab.org/wiki/gsoc), Rails Girls Summer of Code (RGSoC), Outreachy and Google Code-In (GCI).
 Some key features include:
 
 * a [Question and Answer system](https://publiclab.org/questions) for peer-based problem solving
@@ -54,7 +54,7 @@ From design to system architecture to basic vocabulary and communication pattern
 
 This broad community, and the Public Lab team’s role in facilitating a space where they can discuss, break down, construct, prototype, and critique real-world projects together, have shaped a platform that incorporates familiar pieces, but ultimately looks and feels quite different from anywhere else on the internet. It continues to grow and be refined, but it also reflects a commitment to listening to one another, to mutual respect and support, to an awareness of the barriers and challenges presented by gaps in expertise and knowledge, and a sensitivity to the inequalities and power imbalances perpetuated by many mainstream modes of knowledge production and technological and scientific development.
 
-Our mutual aims of democratizing inexpensive and accessible do-it-yourself techniques and creating a collaborative network of practitioners who actively reimagine the human relationship with the environment is supported and facilitated by a system which questions and even challenges how collaborative work can happen.
+Our mutual aims of democratizing inexpensive and accessible do-it-yourself techniques and creating a collaborative network of practitioners who actively re-imagine the human relationship with the environment is supported and facilitated by a system which questions and challenges how collaborative work can happen.
 
 ## Data Model
 
