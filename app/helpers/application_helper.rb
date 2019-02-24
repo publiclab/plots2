@@ -136,4 +136,15 @@ module ApplicationHelper
   def current_page?(page)
     'is-active' if request.path == page
   end
+
+  def translation(key, options = {})
+    translated_string = t(key, options)
+    if translated_string.length > 3 && current_user &.has_tag('translation-helper')
+      %(<span>#{translated_string} <a href="https://www.transifex.com/publiclab/publiclaborg/translate/#de/$?q=text%3A#{translated_string}">
+          <i data-toggle="tooltip" data-placement="top" title="Needs translation? Click to help translate this text." style="position:relative; right:2px; color:#bbb;" class="fa fa-globe"></i></a>
+       </span>)
+    else
+      translated_string
+    end
+  end
 end
