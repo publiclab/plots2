@@ -1,5 +1,4 @@
 class SearchController < ApplicationController
-  include TextSearch
   before_action :set_search_criteria, :except => %i(notes wikis)
 
   def new; end
@@ -21,29 +20,20 @@ class SearchController < ApplicationController
   end
 
   def questions
-    @questions = add_extra_results_for_transformed_queries(:questions)
+    @questions = ExecuteSearch.new.by(:questions, @search_criteria).paginate(page: params[:page], per_page: 20)
   end
 
   def places
     # it's called nodes because the map/_maps partials expects nodes objects
-    @places = add_extra_results_for_transformed_queries(:places)
+    @nodes = ExecuteSearch.new.by(:places, @search_criteria).paginate(page: params[:page], per_page: 20)
   end
 
   def tags
-    @tags = add_extra_results_for_transformed_queries(:tags)
+    @tags = ExecuteSearch.new.by(:tags, @search_criteria).paginate(page: params[:page], per_page: 20)
   end
 
   def all_content
     @nodes = ExecuteSearch.new.by(:all, @search_criteria)
-    @additional_search_querys.each do |added_search_criteria|
-      added_criteria_result = ExecuteSearch.new.by(:all, added_search_criteria)
-      added_criteria_result.each do |key, val|
-        @nodes[key] = @nodes[key] + val
-      end
-    end
-    @nodes.each_key do |key|
-      @nodes[key] = @nodes[key].uniq
-    end
     @wikis = @nodes[:wikis]
     @notes = @nodes[:notes]
     @profiles = @nodes[:profiles]
@@ -55,24 +45,6 @@ class SearchController < ApplicationController
 
   def set_search_criteria
     @search_criteria = SearchCriteria.new(params)
-    @additional_search_querys = []
-    if params[:query].present?
-      if params[:query].include? "-"
-        params[:query] = non_hyphenate_query(@search_criteria.query)
-        @additional_search_querys << SearchCriteria.new(params)
-      end
-      params[:query] = results_with_probable_hyphens(@search_criteria.query)
-      @additional_search_querys << SearchCriteria.new(params)
-    end
-  end
-
-  def add_extra_results_for_transformed_queries(type)
-    search_type_object = ExecuteSearch.new.by(type, @search_criteria)
-    @additional_search_querys.each do |added_search_criteria|
-      search_type_object += ExecuteSearch.new.by(type, added_search_criteria)
-    end
-    search_type_object = search_type_object.uniq
-    search_type_object = search_type_object.paginate(page: params[:page], per_page: 20)
   end
 
   def search_params

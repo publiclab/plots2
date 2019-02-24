@@ -43,6 +43,14 @@ class SearchCriteria
 
   def transform(query)
     words = query.gsub(/\s+/m, ' ').strip.split(" ")
+    added_results = []
+    words.each do |word|
+      if word.include? "-"
+        added_results << word.gsub('-', '')
+      end
+      added_results << results_with_probable_hyphens(word)
+    end
+    words += added_results
     words.map! { |item| lemmatize(item) }
     words.join(' ')
   end
