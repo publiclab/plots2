@@ -48,7 +48,10 @@ class SearchCriteria
       if word.include? "-"
         added_results << (word.delete '-')
       end
-      added_results << results_with_probable_hyphens(word)
+      hyphenated_word = results_with_probable_hyphens(word)
+      if hyphenated_word != word
+        added_results << hyphenated_word
+      end
     end
     words += added_results
     words.map! { |item| lemmatize(item) }
