@@ -43,6 +43,7 @@ class SearchCriteria
 
   def transform(query)
     words = query.gsub(/\s+/m, ' ').strip.split(" ")
+    words.map! { |item| lemmatize(item) }
     added_results = []
     words.each do |word|
       if word.include? "-"
@@ -54,7 +55,6 @@ class SearchCriteria
       end
     end
     words += added_results
-    words.map! { |item| lemmatize(item) }
     words.join(' ')
   end
 
