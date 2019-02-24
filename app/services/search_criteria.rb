@@ -46,7 +46,7 @@ class SearchCriteria
     added_results = []
     words.each do |word|
       if word.include? "-"
-        added_results << word.gsub('-', '')
+        added_results << ( word.delete '-' )
       end
       added_results << results_with_probable_hyphens(word)
     end
