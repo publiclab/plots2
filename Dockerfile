@@ -35,7 +35,7 @@ RUN bundle install --jobs=4
 
 ADD . /app
 WORKDIR /app
-RUN rake assets:precompile && rake tmp:cache:clear
 
 RUN yarn install && yarn upgrade
 RUN passenger-config compile-nginx-engine --connect-timeout 60 --idle-timeout 60
+RUN rake assets:precompile && rake tmp:cache:clear
