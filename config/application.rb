@@ -54,6 +54,7 @@ module Plots2
 
     # Enable the asset pipeline
     config.assets.enabled = true
+    config.assets.initialize_on_precompile = false
     
     I18n.available_locales = [:en, :de, "zh-CN"]
     config.i18n.default_locale = :en 
