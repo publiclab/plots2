@@ -1,11 +1,11 @@
-<div class="col-md-3">
+<div class="col-md-2">
 
   <%= raw t('notes.stats.about_this_page') %>
   <%= render 'stats_nav' %>
 
 </div>
 
-<div class="col-md-8 col-md-offset-1" style="margin-bottom:20px;">
+<div class="col-md-9 col-md-offset-1" style="margin-bottom:20px;">
 
   <h2><%= raw t('notes.stats.contributors_statistics') %></h2>
   <hr>
@@ -62,6 +62,7 @@
   <br> <br>
   <hr />
 
+<%= render 'range' %>
   <%# <h4> %>
   <%#     <%= raw t('notes.stats.notes_and_wiki_edits_past_week', :url1 => "/research", :note_count => @weekly_notes, %>
   <%#               :url2 => "/wiki", :wiki_count => @weekly_wikis) %1> %>

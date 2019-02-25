@@ -3,7 +3,10 @@
 <%#     <p> There is a lot of content being added to the website everyday. In this page you can select a range to see the statistics of different types of content on the website within that range </p> %>
 <%#     <%= render 'stats_nav' %1> %>
 <%# </div> %>
-<div class="col-md-8 col-md-offset-1">
+    <p>
+    Choose a period i.e week, month or year in the drop-down below to see the activity in the past week,<br>
+    month or year respectively. You can also choose a starting and an ending date in the field further<br> down
+    to see activity during that range
     </p>
     <%= form_tag request.url, method: 'get' do %>
         <div class="row">
@@ -41,7 +44,6 @@
     <%= @questions.count %> questions asked and  <%= @answers %> questions answered during this period
     </h4>
     <hr>
-    <p><i>Member registration may include spam accounts</i></p>
 
     <%# <table class="table"> %>
     <%#     <tr> %>
@@ -142,12 +144,12 @@
 
 
     <br>
-    </div>
-    <div class="col-md-10">
+    <%# <div class="col-md-10"> %>
     <div id="chart">
     </div>
+    <p><i>Member registration may include spam accounts</i></p>
     <br>
-    </div>
+    <%# </div> %>
 
     <%# <p> Move back or forward using the buttons below </p> %>
     <%# <div class="btn-group" role="group" aria-label="Basic example"> %>
@@ -224,7 +226,7 @@ var options = {
     colors: ['#006dcc'],
     plotOptions: {
         bar: {
-            horizontal: true,
+            horizontal: false,
 
         }
 
