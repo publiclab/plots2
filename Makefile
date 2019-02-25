@@ -6,12 +6,8 @@ build:
 
 redeploy-container:
 	docker-compose build --pull
-<<<<<<< HEAD
 	docker-compose run --rm web bash -c "rake db:migrate"
-=======
-	docker-compose run --rm web yarn install
-	docker-compose run --rm web bash -c "rake db:migrate && rake assets:precompile && rake tmp:cache:clear"
->>>>>>> Put yarn before precompile step (#4968)
+	docker-compose run --rm web bash -c "rake db:migrate"
 	docker-compose down --remove-orphans
 	rm -f ./tmp/pids/server.pid
 	docker-compose up -d
@@ -22,12 +18,8 @@ redeploy-container:
 	docker-compose exec -T web service cron start
 
 deploy-container:
-<<<<<<< HEAD
 	docker-compose run --rm web bash -c "sleep 5 && rake db:migrate"
-=======
-	docker-compose run --rm web yarn install
-	docker-compose run --rm web bash -c "sleep 5 && rake db:migrate && rake assets:precompile"
->>>>>>> Put yarn before precompile step (#4968)
+	docker-compose run --rm web bash -c "sleep 5 && rake db:migrate"
 	rm -f ./tmp/pids/server.pid
 	docker-compose up -d
 	docker-compose exec -T web bash -c "echo 172.19.0.1 smtp >> /etc/hosts"
