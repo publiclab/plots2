@@ -67,6 +67,7 @@ services:
       - redis
     volumes:
       - ../public/system:/app/public/system
+      - ../log:/app/log
     environment:
       - RAILS_ENV=${RAILS_ENV}
       - REDIS_URL=redis://redis:6379/0
@@ -82,3 +83,4 @@ services:
       - EMAIL_PASSWORD=${EMAIL_PASSWORD}
     volumes:
       - ../public/system:/app/public/system
+      - ../log:/app/log

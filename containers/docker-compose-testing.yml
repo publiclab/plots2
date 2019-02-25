@@ -32,6 +32,9 @@ services:
       - redis
     volumes:
       - ../public/system:/app/public/system
+      - ../.git:/app/.git
+      - ../log:/app/log
+      - ../test/report:/app/test/report
     restart: unless-stopped
   sidekiq:
     build: ..
