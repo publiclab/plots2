@@ -34,7 +34,7 @@ services:
       - ../public/system:/app/public/system
       - ../.git:/app/.git
       - ../log:/app/log
-      - ../test/report:/app/test/report
+      - ../test/reports:/app/test/reports
     restart: unless-stopped
   sidekiq:
     build: ..
@@ -48,6 +48,6 @@ services:
     volumes:
       - ../public/system:/app/public/system
       - ../log:/app/log
-      - ../test/report:/app/test/report
+      - ../test/reports:/app/test/reports
     environment:
       - REDIS_URL=redis://redis:6379/0
