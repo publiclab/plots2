@@ -94,6 +94,7 @@ Plots2::Application.routes.draw do
   get 'wiki/stale' => 'wiki#stale'
   get 'wiki/new' => 'wiki#new'
   get 'wiki/replace/:id' => 'wiki#replace'
+  post 'wiki/replace/:id' => 'wiki#replace'
   get 'wiki/popular' => 'wiki#popular'
   get 'wiki/liked' => 'wiki#liked'
   post 'wiki/create' => 'wiki#create'
