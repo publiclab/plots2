@@ -142,12 +142,11 @@
     <% end %>
     <br>
 
+    <p><i>Member registration may include spam accounts</i></p>
 
     <br>
     <%# <div class="col-md-10"> %>
-    <div id="chart">
     </div>
-    <p><i>Member registration may include spam accounts</i></p>
     <br>
     <%# </div> %>
 
@@ -212,47 +211,3 @@
     <%# </div> %>
 <%# </div> %>
 
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<script>
-var values =  <%=  @popular_tags.values %>;
-var data =  <%= raw (@popular_tags.keys) %>;
-
-var options = {
-    chart: {
-        height: 400,
-        type: 'bar',
-
-    },
-    colors: ['#006dcc'],
-    plotOptions: {
-        bar: {
-            horizontal: false,
-
-        }
-
-    },
-
-    dataLabels: {
-        enabled: false
-
-    },
-    series: [{
-        name: 'Tag count',
-        data: values
-
-    }],
-    title:{
-        text: "Popular Tags in this period",
-    },
-    xaxis: {
-        categories: data
-
-    }
-
-}
-
-var chart = new ApexCharts(
-        document.querySelector("#chart"), options );
-chart.render();
-
-</script>
