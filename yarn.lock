@@ -2126,10 +2126,10 @@ inherits@2, inherits@^2.0.1, inherits@^2.0.3, inherits@~2.0.0, inherits@~2.0.1, 
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.3.tgz#633c2c83e3da42a502f52466022480f4208261de"
   integrity sha1-Yzwsg+PaQqUC9SRmAiSA9CCCYd4=
 
-inline-markdown-editor@^0.3.4:
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/inline-markdown-editor/-/inline-markdown-editor-0.3.4.tgz#4bec98d66c0bb4fad966b2c90fdc0811f48d6c9b"
-  integrity sha512-DtI1cR+I7MEoPI2QwA+vpyYoQd1LUqgaKrmFFBvkuiuP1yJU8/DvPdBlQ2AxDWjDRAOXu0jiHwPgSlNUkrzj7Q==
+inline-markdown-editor@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/inline-markdown-editor/-/inline-markdown-editor-0.5.0.tgz#b824b2c27a3c58cc8bbebfca111b4e137d8ec94f"
+  integrity sha512-1kfZiqx8zPAlmMRqFuYf2SWiazchu3Cr6m5qBkUrO62u0QURCaBvCm3GzzW7pucgDGXr4+hRrnzG9rjSIRt5aw==
   dependencies:
     bootstrap "~3.4.0"
     font-awesome "~4.7.0"
