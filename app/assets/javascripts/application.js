@@ -21,8 +21,6 @@
 //= require jquery-file-upload/js/vendor/jquery.ui.widget.js
 //= require jquery-file-upload/js/jquery.fileupload.js
 //= require jquery-file-upload/js/jquery.iframe-transport.js
-//= require flot/jquery.flot.js
-//= require flot/jquery.flot.crosshair.js
 //= require jsdiff.js
 //= require marked/lib/marked.js
 //= require megamark/dist/megamark.min.js
