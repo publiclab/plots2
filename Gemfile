@@ -10,7 +10,6 @@ gem 'activerecord-session_store'
 gem "authlogic", "4.4.2"
 gem 'authlogic-oid'
 gem "composite_primary_keys"
-gem 'capybara'
 gem 'figaro'
 gem 'friendly_id'
 gem 'gemoji'
@@ -100,6 +99,7 @@ group :development do
 end
 
 group :test, :development do
+  gem 'capybara'
   gem 'ci_reporter_test_unit'
   gem 'coveralls', require: false
   gem 'jasmine-jquery-rails'
@@ -112,6 +112,7 @@ group :test, :development do
   gem 'rake',  '~> 12.3.2'
   gem 'rest-client'
   gem 'rspec'
+  gem 'selenium-webdriver'
   gem 'test-unit'
   gem 'teaspoon-mocha'
   gem 'timecop'
