@@ -13,14 +13,13 @@ class User < ActiveRecord::Base
   alias_attribute :name, :username
 
   NORMAL = 1 # Usage: User::NORMAL
-  BANNED = 0 # Usage: User::BANNED
+  BANNED = 0 # Usage: User::NORMAL
   MODERATED = 5 # Usage: User::MODERATED
 
   attr_readonly :username
 
   acts_as_authentic do |c|
-    VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
-    c.validates_format_of_email_field_options = { with: VALID_EMAIL_REGEX }
+    c.validates_format_of_email_field_options = { with: URI::MailTo::EMAIL_REGEXP }
     c.crypto_provider = Authlogic::CryptoProviders::Sha512
   end
 
@@ -50,8 +49,8 @@ class User < ActiveRecord::Base
 
   before_save :set_token
 
-  scope :past_week, -> { where("created_at > ?", Time.now - 7.days) }
-  scope :past_month, -> { where("created_at > ?", Time.now - 1.months) }
+  scope :past_week, -> { where("created_at > ?", 7.days.ago) }
+  scope :past_month, -> { where("created_at > ?", 1.month.ago) }
 
   def self.search(query)
     User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', query + '*')
@@ -92,12 +91,10 @@ class User < ActiveRecord::Base
   end
 
   def generate_reset_key
-    # invent a key and save it
-    key = ''
-    20.times do
-      key += [*'a'..'z'].sample
-    end
+    key = [*'a'..'z'].sample(20).join
+
     update_attribute(:reset_key, key)
+
     key
   end
 
@@ -135,7 +132,6 @@ class User < ActiveRecord::Base
   end
 
   def can_moderate?
-    # use instead of "user.role == 'admin' || user.role == 'moderator'"
     admin? || moderator?
   end
 
