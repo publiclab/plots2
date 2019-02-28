@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
   alias_attribute :name, :username
 
   NORMAL = 1 # Usage: User::NORMAL
-  BANNED = 0 # Usage: User::NORMAL
+  BANNED = 0 # Usage: User::BANNED
   MODERATED = 5 # Usage: User::MODERATED
 
   attr_readonly :username
