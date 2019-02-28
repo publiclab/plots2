@@ -1478,11 +1478,6 @@ fisheyegl@^0.1.2:
   resolved "https://registry.yarnpkg.com/fisheyegl/-/fisheyegl-0.1.2.tgz#4b7ad5705253444ad6030888a81296f5068e4972"
   integrity sha1-S3rVcFJTRErWAwiIqBKW9QaOSXI=
 
-flot@^0.8.3:
-  version "0.8.3"
-  resolved "https://registry.yarnpkg.com/flot/-/flot-0.8.3.tgz#6d9b93c7aa2cfb30dfa1af9c1ec4c94070b1217f"
-  integrity sha512-xg2otcTJDvS+ERK+my4wxG/ASq90QURXtoM4LhacCq0jQW2jbyjdttbRNqU2cPykrpMvJ6b2uSp6SAgYAzj9tQ==
-
 font-awesome@^4.5.0, font-awesome@~4.7.0:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/font-awesome/-/font-awesome-4.7.0.tgz#8fa8cf0411a1a31afd07b06d2902bb9fc815a133"
