@@ -34,3 +34,7 @@ script:
   - tail -n +2 -q ./test/reports/TEST*.xml >> output.xml
   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then danger --verbose; fi'
   
+addons:
+  apt:
+    - google-chrome-stable
+    - chromium-chromedriver
