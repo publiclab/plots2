@@ -29,7 +29,7 @@ class StatsControllerTest < ActionController::TestCase
   end
 
   test 'should load stats range query' do
-    get :range
+    get :index
     assert_response :success
     assert_not_nil assigns(:notes)
     assert_not_nil assigns(:wikis)
