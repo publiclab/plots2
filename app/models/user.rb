@@ -265,21 +265,21 @@ class User < ActiveRecord::Base
 
   def moderate
     self.status = 5
-    self.save
+    save
     # user is logged out next time they access current_user in a controller; see application controller
     self
   end
 
   def unmoderate
     self.status = 1
-    self.save
+    save
     self
   end
 
   def ban
     decrease_likes_banned
     self.status = 0
-    self.save
+    save
     # user is logged out next time they access current_user in a controller; see application controller
     self
   end
@@ -287,7 +287,7 @@ class User < ActiveRecord::Base
   def unban
     increase_likes_unbanned
     self.status = 1
-    self.save
+    save
     self
   end
 
@@ -319,8 +319,8 @@ class User < ActiveRecord::Base
   end
 
   def send_digest_email
-    top_picks = content_followed_in_period(Time.now - 1.week, Time.now)
-    if top_picks.count > 0
+    top_picks = content_followed_in_period(1.week.ago, Time.now)
+    if top_picks.count.positive?
       SubscriptionMailer.send_digest(id, top_picks).deliver_now
     end
   end
@@ -362,14 +362,14 @@ class User < ActiveRecord::Base
 
   def decrease_likes_banned
     node_selections.each do |selection|
-      selection.node.cached_likes = selection.node.cached_likes - 1
+      selection.node.cached_likes -= 1
       selection.node.save!
     end
   end
 
   def increase_likes_unbanned
     node_selections.each do |selection|
-      selection.node.cached_likes = selection.node.cached_likes + 1
+      selection.node.cached_likes += 1
       selection.node.save!
     end
   end
@@ -382,7 +382,11 @@ class User < ActiveRecord::Base
   def self.watching_location(nwlat, selat, nwlng, selng)
     raise("Must be a float") unless (nwlat.is_a? Float) && (nwlng.is_a? Float) && (selat.is_a? Float) && (selng.is_a? Float)
 
-    tids = Tag.where("SUBSTRING_INDEX(term_data.name,':',1) = ? AND SUBSTRING_INDEX(SUBSTRING_INDEX(term_data.name, ':', 2),':',-1)+0 <= ? AND SUBSTRING_INDEX(SUBSTRING_INDEX(term_data.name, ':', 3),':',-1)+0 <= ? AND SUBSTRING_INDEX(SUBSTRING_INDEX(term_data.name, ':', 4),':',-1)+0 <= ? AND SUBSTRING_INDEX(term_data.name, ':', -1) <= ?", 'subscribed', nwlat, nwlng, selat, selng).collect(&:tid).uniq || []
+    tids = Tag.where("SUBSTRING_INDEX(term_data.name,':',1) = ? \
+                      AND SUBSTRING_INDEX(SUBSTRING_INDEX(term_data.name, ':', 2),':',-1)+0 <= ? \
+                      AND SUBSTRING_INDEX(SUBSTRING_INDEX(term_data.name, ':', 3),':',-1)+0 <= ? \
+                      AND SUBSTRING_INDEX(SUBSTRING_INDEX(term_data.name, ':', 4),':',-1)+0 <= ? \
+                      AND SUBSTRING_INDEX(term_data.name, ':', -1) <= ?", 'subscribed', nwlat, nwlng, selat, selng).collect(&:tid).uniq || []
     uids = TagSelection.where('tag_selections.tid IN (?)', tids).collect(&:user_id).uniq || []
 
     User.where("id IN (?)", uids).order(:id)
