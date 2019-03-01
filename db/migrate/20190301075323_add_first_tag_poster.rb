@@ -1,4 +1,4 @@
-class AddFirstTagPoster < ActiveRecord::Migration[5.2]
+class AddFirstTagPoster < ActiveRecord::Migration[5.1]
   def find_and_update
     User.joins(:node).where('node.status = ?', 1).each do |user|
       if user.nodes.present?
