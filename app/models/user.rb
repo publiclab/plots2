@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
       NORMAL = 1,   # Usage: Status::NORMAL
       BANNED = 0,   # Usage: Status::BANNED
       MODERATED = 5 # Usage: Status::MODERATED
-    ]
+    ].freeze
   end
 
   attr_readonly :username
@@ -251,7 +251,7 @@ class User < ActiveRecord::Base
     Node.where(nid: node_ids)
       .includes(:revision, :tag)
       .references(:node_revision)
-      .where("node.status = #{ Status::NORMAL }")
+      .where("node.status = #{Status::NORMAL}")
       .where("(created >= #{start_time.to_i} AND created <= #{end_time.to_i}) OR (timestamp >= #{start_time.to_i}  AND timestamp <= #{end_time.to_i})")
       .order('node_revisions.timestamp DESC')
       .distinct
@@ -312,7 +312,7 @@ class User < ActiveRecord::Base
       .where("type = 'note' AND \
               node_selections.liking = ? \
               AND node_selections.user_id = ? \
-              AND node.status = #{ Status::NORMAL }", true, id)
+              AND node.status = #{Status::NORMAL}", true, id)
       .order('node_selections.nid DESC')
   end
 
