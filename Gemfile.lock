@@ -362,6 +362,9 @@ GEM
       netrc (~> 0.8)
     reverse_markdown (1.1.0)
       nokogiri
+    rspec-core (3.8.0)
+      rspec-support (~> 3.8.0)
+    rspec-support (3.8.0)
     rubocop (0.65.0)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
@@ -534,6 +537,7 @@ DEPENDENCIES
   responders (~> 2.4)
   rest-client
   reverse_markdown
+  rspec-core (~> 3.4, >= 3.4.4)
   rubocop (~> 0.65.0)
   ruby-openid
   sanitize

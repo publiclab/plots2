@@ -98,6 +98,7 @@ group :test, :development do
   gem 'teaspoon-mocha'
   gem 'test-unit'
   gem 'timecop'
+  gem 'rspec-core', '~> 3.4', '>= 3.4.4'
 end
 
 group :production do
