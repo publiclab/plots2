@@ -88,7 +88,7 @@ class User < ActiveRecord::Base
 
   def coauthored_notes
     coauthored_tag = "with:" + name.downcase
-    Node.where(status: Status::NORMAL, type: "note")
+    Node.where(status: 1, type: "note")
       .includes(:revision, :tag)
       .references(:term_data, :node_revisions)
       .where('term_data.name = ? OR term_data.parent = ?', coauthored_tag.to_s, coauthored_tag.to_s)
@@ -149,7 +149,7 @@ class User < ActiveRecord::Base
 
   def tagnames(limit = 20, defaults = true)
     tagnames = []
-    Node.order('nid DESC').where(type: 'note', status: Status::NORMAL, uid: id).limit(limit).each do |node|
+    Node.order('nid DESC').where(type: 'note', status: 1, uid: id).limit(limit).each do |node|
       tagnames += node.tags.collect(&:name)
     end
     tagnames += ['balloon-mapping', 'spectrometer', 'near-infrared-camera', 'thermal-photography', 'newsletter'] if tagnames.empty? && defaults
@@ -210,11 +210,11 @@ class User < ActiveRecord::Base
   end
 
   def first_time_poster
-    notes.where(status: Status::NORMAL).count.zero?
+    notes.where(status: 1).count.zero?
   end
 
   def first_time_commenter
-    Comment.where(status: Status::NORMAL, uid: uid).count.zero?
+    Comment.where(status: 1, uid: uid).count.zero?
   end
 
   def follow(other_user)
@@ -238,7 +238,7 @@ class User < ActiveRecord::Base
   end
 
   def questions
-    Node.questions.where(status: Status::NORMAL, uid: id)
+    Node.questions.where(status: 1, uid: id)
   end
 
   def content_followed_in_period(start_time, end_time)
@@ -251,7 +251,7 @@ class User < ActiveRecord::Base
     Node.where(nid: node_ids)
       .includes(:revision, :tag)
       .references(:node_revision)
-      .where("node.status = #{Status::NORMAL}")
+      .where('node.status = 1')
       .where("(created >= #{start_time.to_i} AND created <= #{end_time.to_i}) OR (timestamp >= #{start_time.to_i}  AND timestamp <= #{end_time.to_i})")
       .order('node_revisions.timestamp DESC')
       .distinct
@@ -299,11 +299,11 @@ class User < ActiveRecord::Base
   end
 
   def note_count
-    Node.where(status: Status::NORMAL, uid: uid, type: 'note').count
+    Node.where(status: 1, uid: uid, type: 'note').count
   end
 
   def node_count
-    Node.where(status: Status::NORMAL, uid: uid).count + Revision.where(uid: uid).count
+    Node.where(status: 1, uid: uid).count + Revision.where(uid: uid).count
   end
 
   def liked_notes
@@ -312,7 +312,7 @@ class User < ActiveRecord::Base
       .where("type = 'note' AND \
               node_selections.liking = ? \
               AND node_selections.user_id = ? \
-              AND node.status = #{Status::NORMAL}", true, id)
+              AND node.status = 1", true, id)
       .order('node_selections.nid DESC')
   end
 
@@ -333,7 +333,7 @@ class User < ActiveRecord::Base
 
   def tag_counts
     tags = {}
-    Node.order('nid DESC').where(type: 'note', status: Status::NORMAL, uid: id).limit(20).each do |node|
+    Node.order('nid DESC').where(type: 'note', status: 1, uid: id).limit(20).each do |node|
       node.tags.each do |tag|
         if tags[tag.name]
           tags[tag.name] += 1
@@ -354,7 +354,6 @@ class User < ActiveRecord::Base
     begin
       decrypted_data = User.decrypt(token)
     rescue ActiveSupport::MessageVerifier::InvalidSignature => e
-      puts e.message
       return 0
     end
     if (Time.now - decrypted_data[:timestamp]) / 1.hour > 24.0
@@ -404,11 +403,11 @@ class User < ActiveRecord::Base
 
   # all uses who've posted a node, comment, or answer in the given period
   def self.contributor_count_for(start_time, end_time)
-    notes = Node.where(type: 'note', status: Status::NORMAL, created: start_time.to_i..end_time.to_i).pluck(:uid)
+    notes = Node.where(type: 'note', status: 1, created: start_time.to_i..end_time.to_i).pluck(:uid)
     answers = Answer.where(created_at: start_time..end_time).pluck(:uid)
-    questions = Node.questions.where(status: Status::NORMAL, created: start_time.to_i..end_time.to_i).pluck(:uid)
+    questions = Node.questions.where(status: 1, created: start_time.to_i..end_time.to_i).pluck(:uid)
     comments = Comment.where(timestamp: start_time.to_i..end_time.to_i).pluck(:uid)
-    revisions = Revision.where(status: Status::NORMAL, timestamp: start_time.to_i..end_time.to_i).pluck(:uid)
+    revisions = Revision.where(status: 1, timestamp: start_time.to_i..end_time.to_i).pluck(:uid)
     contributors = (notes + answers + questions + comments + revisions).compact.uniq.length
     contributors
   end
@@ -433,11 +432,11 @@ class User < ActiveRecord::Base
   end
 
   def self.count_all_time_contributor
-    notes = Node.where(type: 'note', status: Status::NORMAL).pluck(:uid)
+    notes = Node.where(type: 'note', status: 1).pluck(:uid)
     answers = Answer.pluck(:uid)
-    questions = Node.questions.where(status: Status::NORMAL).pluck(:uid)
+    questions = Node.questions.where(status: 1).pluck(:uid)
     comments = Comment.pluck(:uid)
-    revisions = Revision.where(status: Status::NORMAL).pluck(:uid)
+    revisions = Revision.where(status: 1).pluck(:uid)
     contributors = (notes + answers + questions + comments + revisions).compact.uniq.length
   end
 end
