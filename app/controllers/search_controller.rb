@@ -34,8 +34,8 @@ class SearchController < ApplicationController
 
   def all_content
     @nodes = ExecuteSearch.new.by(:all, @search_criteria)
-    @wikis = @nodes[:wikis]
-    @notes = @nodes[:notes]
+    @wikis = wikis
+    @notes = notes
     @profiles = @nodes[:profiles]
     @questions = @nodes[:questions]
     @tags = @nodes[:tags]
