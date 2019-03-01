@@ -101,11 +101,7 @@ class Comment < ApplicationRecord
   end
 
   def parent
-    if aid == 0
-      node
-    else
-      return answer.node unless answer.nil?
-    end
+    aid.zero? ? node : answer&.node
   end
 
   def mentioned_users
@@ -370,15 +366,14 @@ class Comment < ApplicationRecord
   end
 
   def parse_quoted_text
-    match = body.match(/(.+)(On .+<.+@.+> wrote:)(.+)/m)
-    if match.nil?
-      false
-    else
+    if match = body.match(/(.+)(On .+<.+@.+> wrote:)(.+)/m)
       {
-        body: match[1], # the new message text
-        boundary: match[2], # quote delimeter, i.e. "On Tuesday, 3 July 2018, 11:20:57 PM IST, RP <rp@email.com> wrote:"
-        quote: match[3] # quoted text from prior email chain
+        body: match[1],     # The new message text
+        boundary: match[2], # Quote delimeter, i.e. "On Tuesday, 3 July 2018, 11:20:57 PM IST, RP <rp@email.com> wrote:"
+        quote: match[3]     # Quoted text from prior email chain
       }
+    else
+      {}
     end
   end
 
@@ -394,7 +389,7 @@ class Comment < ApplicationRecord
     # if it has quoted email text that wasn't caught by the yahoo and gmail filters,
     # manually insert the comment filter delimeter:
     parsed = parse_quoted_text
-    if !trimmed_content? && parsed != false
+    if !trimmed_content? && !parsed.blank?
       body = parsed[:body] + COMMENT_FILTER + parsed[:boundary] + parsed[:quote]
     end
     body

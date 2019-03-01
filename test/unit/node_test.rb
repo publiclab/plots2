@@ -193,7 +193,8 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'latest revision based on timestamp' do
     node = nodes(:spam_targeted_page)
-    assert node.revisions.count > 1
+
+    assert node.revisions.size.positive?
     assert_equal node.revisions.first, node.latest
     assert node.revisions.first.timestamp.to_i > node.revisions.last.timestamp.to_i
     assert_not_equal node.revisions.last, node.latest
@@ -202,9 +203,12 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'latest revision not a moderated revision' do
     node = nodes(:spam_targeted_page)
-    assert node.revisions.count > 1
+
+    assert node.revisions.size.positive?
     assert_equal node.revisions.first, node.latest
+
     node.latest.spam
+
     assert_not_equal node.revisions.first, node.latest
     assert_equal 1, node.latest.status
   end
