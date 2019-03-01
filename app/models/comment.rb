@@ -366,11 +366,11 @@ class Comment < ApplicationRecord
   end
 
   def parse_quoted_text
-    if match = body.match(/(.+)(On .+<.+@.+> wrote:)(.+)/m)
+    if regex_match = body.match(/(.+)(On .+<.+@.+> wrote:)(.+)/m)
       {
-        body: match[1],     # The new message text
-        boundary: match[2], # Quote delimeter, i.e. "On Tuesday, 3 July 2018, 11:20:57 PM IST, RP <rp@email.com> wrote:"
-        quote: match[3]     # Quoted text from prior email chain
+        body: regex_match[1],     # The new message text
+        boundary: regex_match[2], # Quote delimeter, i.e. "On Tuesday, 3 July 2018, 11:20:57 PM IST, RP <rp@email.com> wrote:"
+        quote: regex_match[3]     # Quoted text from prior email chain
       }
     else
       {}
