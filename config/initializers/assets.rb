@@ -48,6 +48,5 @@ Rails.application.config.assets.precompile += [
   'user_tags.css.scss',
   'wiki.css',
   'horsey.js',
-  'atwho_autocomplete.js',
-  'remote_link_handler.js'
+  'atwho_autocomplete.js'
 ]
