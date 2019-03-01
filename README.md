@@ -82,27 +82,30 @@ For information on how to install for use with the cloud environment, please see
 
 ### Standard Installation
 
+## Prerequisite
+Our project uses MariaDB.
+
+For Mac:
+
+[Install MariaDB on Mac](https://mariadb.com/resources/blog/installing-mariadb-10-1-16-on-mac-os-x-with-homebrew/)
+
+To install on Ubuntu:
+1. `apt-get update -y`
+2. `apt-get install mariadb-server`
+
+## Setup
+
 1. Fork our repo from https://github.com/publiclab/plots2.
 2. In the console, download a copy of your forked repo with `git clone https://github.com/your_username/plots2.git` where `your_username` is your GitHub username.
 3. Enter the new **plots2** directory with `cd plots2`.
-4. Install gems with `bundle install --without production mysql` from the rails root folder, to install the gems you'll need, excluding those needed only in production. You may need to first run `bundle update` if you have older gems in your environment from previous Rails work.
-5. Make a copy of `db/schema.rb.example` and place it at `db/schema.rb`.
-6. Make a copy of `config/database.yml.sqlite.example` and place it at `config/database.yml`
-7. Run `rake db:setup` to set up the database
-8. Install static assets (like external javascript libraries, fonts) with `yarn install`
-9. By default, start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser.
+4. Make a copy of `db/schema.rb.example` and place it at `db/schema.rb`.
+5. Make a copy of `config/database.yml.mysql.example` and place it at `config/database.yml`
+6. Run `rake db:setup` to set up the database
+7. Install static assets (like external javascript libraries, fonts) with `yarn install`
+8. By default, start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser.
 (for local SSL work, see [SSL](#ssl+in+development) below)
-10. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
-11. Run `rails test -d` to confirm that your install is working properly.
-
-## SSL in Development
-
-We at public labs use [openssl](https://github.com/ruby/openssl) gem to provide SSL for the secure connection in the development mode. You can run the https connection on the localhost by following following steps:
-1. Use `passenger start --ssl --ssl-certificate config/localhost.crt --ssl-certificate-key config/localhost.key --ssl-port 3001`.
-2. Open up https://localhost:3001.
-3. Add security exceptions from the advance settings of the browser.
-You can also use http (unsecure connection) on the port number 3000 by going to 'http://localhost:3000'. We use port number 3001 for 'https' and port number 3000 for 'http' connection.
-Secure connection is needed for OAuth authentication etc.
+9. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
+10. Run `rails test -d` to confirm that your install is working properly.
 
 ## Testing
 
