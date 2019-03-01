@@ -82,7 +82,6 @@ For information on how to install for use with the cloud environment, please see
 
 ### Standard Installation
 
-## Prerequisite
 Our project uses MariaDB.
 
 For Mac:
