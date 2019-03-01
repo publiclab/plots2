@@ -37,7 +37,7 @@ script:
   
 before_script:
   - export DISPLAY=:99.0
-#  - ln -s /usr/lib/chromium-browser/chromedriver ~/bin/chromedriver
+  - ln -s /usr/lib/chromium-browser/chromedriver ~/bin/chromedriver
 
 addons:
   chrome: stable
