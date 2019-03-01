@@ -92,7 +92,7 @@ To install on Ubuntu:
 1. `apt-get update -y`
 2. `apt-get install mariadb-server`
 
-## Setup
+#### Setup
 
 1. Fork our repo from https://github.com/publiclab/plots2.
 2. In the console, download a copy of your forked repo with `git clone https://github.com/your_username/plots2.git` where `your_username` is your GitHub username.
