@@ -1,100 +1,84 @@
-<div class="col-md-2">
+<%# <div class="col-md-2"> %>
 
-  <%= raw t('notes.stats.about_this_page') %>
-  <%= render 'stats_nav' %>
+<%#   <%= raw t('notes.stats.about_this_page') %1> %>
+<%#   <%= render 'stats_nav' %1> %>
 
-</div>
+<%# </div> %>
 
-<div class="col-md-9 col-md-offset-1" style="margin-bottom:20px;">
+<div class="col-md-12 col-md-offset-2" style="margin-bottom:20px;">
 
   <h2><%= raw t('notes.stats.contributors_statistics') %></h2>
   <hr>
 
+    See also <%= link_to "subscription statistics", stats_subscriptions_path %>
   <h4><b><%= raw t('notes.stats.research_notes_posted_by_contributors', :note_count => @all_notes, :contributors_count => @all_contributors,
                    :time => time_ago_in_words(Node.find_by(type: 'note', status: 1).created_at)) %></b></h4>
   <br>
 
+  <div class="row">
+      <div class=col-md-7>
+          <h5> Statistics from <%= @start.to_formatted_s(:long)%> to <%= @start.to_formatted_s(:long)%> </h5>
+      </div>
+      <div class=col-md-2>
+    <%= form_tag request.url, method: 'get' do %>
+        <%= select_tag :options, options_for_select(["Week", "Month","Year"]), prompt: "Filter period: ",
+            class: " form-control custom-select", onchange: "this.form.submit();" %>
+    <% end %>
+      </div>
+      </div>
+      <%# <br> %>
   &emsp;&emsp;
-  <div class="btn-group" role="group" aria-label="Basic example">
-      <a href="<%= "?time="+(@time-1.year).to_formatted_s(:long) %>">
-          <button type="button" class="btn btn-secondary" title="1 year back">
-              <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
-              <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
-              <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
-          </button>
-      </a>
-      <a href="<%= "?time="+(@time-1.month).to_formatted_s(:long)%>">
-          <button type="button" class="btn btn-secondary" title="1 month back">
-              <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
-              <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
-          </button>
-      </a>
-      <a href="<%= "?time="+(@time-1.week).to_formatted_s(:long) %>">
-          <button type="button" class="btn btn-secondary" title="1 week back">
-              <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
-          </button>
-      </a>
-  </div>
+  <%# <div class="btn-group" role="group" aria-label="Basic example"> %>
+      <%# <a href="<%= "?time="+(@end-1.year).to_formatted_s(:long) %1>"> %>
+  <%#         <button type="button" class="btn btn-secondary" title="1 year back"> %>
+  <%#             <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i> %>
+  <%#             <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i> %>
+  <%#             <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i> %>
+  <%#         </button> %>
+  <%#     </a> %>
+  <%#     <a href="<%= "?time="+(@end-1.month).to_formatted_s(:long)%>
+  <%#         <button type="button" class="btn btn-secondary" title="1 month back"> %>
+  <%#             <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i> %>
+  <%#             <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i> %>
+  <%#         </button> %>
+  <%#     </a> %>
+  <%#     <a href="<%= "?time="+(@end-1.week).to_formatted_s(:long) %1>"> %>
+  <%#         <button type="button" class="btn btn-secondary" title="1 week back"> %>
+  <%#             <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i> %>
+  <%#         </button> %>
+  <%#     </a> %>
+  <%# </div> %>
 
-  &emsp;&emsp;
-  <b><%= @time.to_formatted_s(:long) %></b>
-  &emsp;&emsp;
-  <div class="btn-group" role="group" aria-label="Basic example">
-      <a href="<%= "?time="+(@time+1.week).to_formatted_s(:long) %>">
-          <button type="button" class="btn btn-secondary" title="1 week forward">
-              <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
-          </button>
-      </a>
-      <a href="<%= "?time="+(@time+1.month).to_formatted_s(:long)%>">
-          <button type="button" class="btn btn-secondary" title="1 month forward">
-              <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
-              <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
-          </button>
-      </a>
-      <a href="<%= "?time="+(@time+1.year).to_formatted_s(:long) %>">
-          <button type="button" class="btn btn-secondary" title="1 year forward">
-              <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
-              <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
-              <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
-          </button>
-      </a>
-  </div>
-  <br> <br>
-  <hr />
+  <%# &emsp;&emsp; %>
+  <%# <b><%= @end.to_formatted_s(:long) %1></b> %>
+  <%# &emsp;&emsp; %>
+  <%# <div class="btn-group" role="group" aria-label="Basic example"> %>
+  <%#     <a href="<%= "?time="+(@end+1.week).to_formatted_s(:long) %1>"> %>
+  <%#         <button type="button" class="btn btn-secondary" title="1 week forward"> %>
+  <%#             <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i> %>
+  <%#         </button> %>
+  <%#     </a> %>
+  <%#     <a href="<%= "?time="+(@end+1.month).to_formatted_s(:long)%>
+  <%#         <button type="button" class="btn btn-secondary" title="1 month forward"> %>
+  <%#             <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i> %>
+  <%#             <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i> %>
+  <%#         </button> %>
+  <%#     </a> %>
+  <%#     <a href="<%= "?time="+(@end+1.year).to_formatted_s(:long) %1>"> %>
+  <%#         <button type="button" class="btn btn-secondary" title="1 year forward"> %>
+  <%#             <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i> %>
+  <%#             <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i> %>
+  <%#             <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i> %>
+  <%#         </button> %>
+  <%#     </a> %>
+  <%# </div> %>
+  <%# <br> <br> %>
+  <%# <hr /> %>
 
 <%= render 'range' %>
-  <%# <h4> %>
-  <%#     <%= raw t('notes.stats.notes_and_wiki_edits_past_week', :url1 => "/research", :note_count => @weekly_notes, %>
-  <%#               :url2 => "/wiki", :wiki_count => @weekly_wikis) %1> %>
-  <%#           <%= raw t('notes.stats.people_joined_past_week', :people_count => @weekly_members) %1> %>
-  <%# </h4> %>
-
-  <%# <hr /> %>
-
-  <%# <h4> %>
-  <%#     <%= raw t('notes.stats.notes_and_wiki_edits_past_month', :url1 => "/research", :note_count => @monthly_notes, %>
-  <%#               :url2 => "/wiki", :wiki_count => @monthly_wikis) %1> %>
-  <%#           <%= raw t('notes.stats.people_joined_past_month', :people_count => @monthly_members) %1> %>
-  <%# </h4> %>
-
-  <%# <hr /> %>
-  <%# <h4> %>
-  <%#     <%= raw t('notes.stats.questions_past_week', :url1 => "/questions", :quiz_count => @weekly_questions, %>
-  <%#               :url2 => "/questions/answered/", :ans_count => @weekly_answers) %1> %>
-  <%#           <hr> %>
-
-  <%#           <%= raw t('notes.stats.questions_past_month', :url1 => "/questions", :quiz_count => @monthly_questions, %>
-  <%#                     :url2 => "/questions/answered/", :ans_count => @monthly_answers) %1> %>
-  <%#  </h4> %>
-  <%#  <hr/> %>
-  <%# <br> <br> %>
 </div>
 
-<br> <br>
 
-<div class="container">
-
-</div>
 <div id="chart1"> </div>
 
 <h3 align="center"> <u>  Notes, Wikis and Comments Statistics in the past year </u></h3>
@@ -274,7 +258,6 @@ var options = {
         type: 'bar',
 
     },
-    colors: ['#006dcc'],
     plotOptions: {
         bar: {
             horizontal: true,
