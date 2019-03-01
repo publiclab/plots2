@@ -72,6 +72,7 @@ gem 'unicode-emoji'
 gem 'whenever', require: false
 gem 'will_paginate', '>= 3.0.6'
 gem 'will_paginate-bootstrap', '>= 1.0.1'
+gem 'rspec-core', '~> 3.4', '>= 3.4.4'
 
 group :development do
   gem 'byebug', platform: :mri
@@ -98,7 +99,6 @@ group :test, :development do
   gem 'teaspoon-mocha'
   gem 'test-unit'
   gem 'timecop'
-  gem 'rspec-core', '~> 3.4', '>= 3.4.4'
 end
 
 group :production do
