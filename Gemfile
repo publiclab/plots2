@@ -59,6 +59,7 @@ gem 'rdiscount', '~> 2.2', '>= 2.2.0.1'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'responders', '~> 2.4'
 gem 'reverse_markdown' # To convert html to markdown
+gem 'rspec-core', '~> 3.4', '>= 3.4.4'
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
 gem 'sass-rails', '~> 5.0', '>= 5.0.7'
@@ -72,7 +73,6 @@ gem 'unicode-emoji'
 gem 'whenever', require: false
 gem 'will_paginate', '>= 3.0.6'
 gem 'will_paginate-bootstrap', '>= 1.0.1'
-gem 'rspec-core', '~> 3.4', '>= 3.4.4'
 
 group :development do
   gem 'byebug', platform: :mri
