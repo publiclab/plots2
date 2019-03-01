@@ -60,12 +60,12 @@ class User < ActiveRecord::Base
     User.where('MATCH(username) AGAINST(? IN BOOLEAN MODE)', query + '*')
   end
 
-  def is_new_contributor
-    Node.where(uid: id).length === 1 && Node.where(uid: id).first.created_at > Date.today - 1.month
+  def is_new_contributor?
+    Node.where(uid: id).length === 1 && Node.where(uid: id).first.created_at > 1.month.ago
   end
 
   def new_contributor
-    return "<a href='/tag/first-time-poster' class='label label-success'><i>new contributor</i></a>".html_safe if is_new_contributor
+    return "<a href='/tag/first-time-poster' class='label label-success'><i>new contributor</i></a>".html_safe if is_new_contributor?
   end
 
   def set_token
@@ -135,7 +135,7 @@ class User < ActiveRecord::Base
     admin? || moderator?
   end
 
-  def is_coauthor(node)
+  def is_coauthor?(node)
     id == node.author.id || node.has_tag("with:#{username}")
   end
 
@@ -206,11 +206,11 @@ class User < ActiveRecord::Base
   end
 
   def first_time_poster
-    notes.where(status: 1).count == 0
+    notes.where(status: 1).count.zero?
   end
 
   def first_time_commenter
-    Comment.where(status: 1, uid: uid).count == 0
+    Comment.where(status: 1, uid: uid).count.zero?
   end
 
   def follow(other_user)
@@ -227,7 +227,6 @@ class User < ActiveRecord::Base
 
   def profile_image
     if photo_file_name
-      puts photo_path(:thumb)
       photo_path(:thumb)
     else
       "https://www.gravatar.com/avatar/#{OpenSSL::Digest::MD5.hexdigest(email)}"
