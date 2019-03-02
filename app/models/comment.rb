@@ -389,7 +389,7 @@ class Comment < ApplicationRecord
     # if it has quoted email text that wasn't caught by the yahoo and gmail filters,
     # manually insert the comment filter delimeter:
     parsed = parse_quoted_text
-    if !trimmed_content? && !parsed.blank?
+    if !trimmed_content? && parsed.present?
       body = parsed[:body] + COMMENT_FILTER + parsed[:boundary] + parsed[:quote]
     end
     body
