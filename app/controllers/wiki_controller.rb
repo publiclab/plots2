@@ -188,41 +188,21 @@ class WikiController < ApplicationController
     @revision = @node.new_revision(uid:   current_user.uid,
                                    title: params[:title],
                                    body:  params[:body])
+
     if @node.has_tag('locked') && !current_user.can_moderate?
       flash[:warning] = "This page is <a href='/wiki/power-tags#Locking'>locked</a>, and only <a href='/wiki/moderators'>moderators</a> can update it."
       redirect_to @node.path
 
     elsif @revision.valid?
-      ActiveRecord::Base.transaction do
-        @revision.save
-        @node.vid = @revision.vid
-        # update vid (version id) of main image
-        if @node.drupal_main_image && params[:main_image].nil?
-          i = @node.drupal_main_image
-          i.vid = @revision.vid
-          i.save
-        end
-        @node.title = @revision.title
-        # save main image
-        if params[:main_image] && params[:main_image] != ''
-          begin
-            img = Image.find params[:main_image]
-            unless img.nil?
-              img.nid = @node.id
-              @node.main_image_id = img.id
-              img.save
-            end
-          rescue StandardError
-          end
-        end
-        @node.save
-      end
+      update_node_attributes
+
+      @revision.save
+
       flash[:notice] = I18n.t('wiki_controller.edits_saved')
       redirect_to @node.path
     else
       flash[:error] = I18n.t('wiki_controller.edit_could_not_be_saved')
       render action: :edit
-      # redirect_to "/wiki/edit/"+@node.slug
     end
   end
 
@@ -395,7 +375,7 @@ class WikiController < ApplicationController
       flash[:error] = "You must specify 'before' and 'after' terms to replace content in a wiki page."
     end
     if request.xhr?
-      if output === false
+      if output.blank?
         render json: output, status: 500
       else
         render json: output
@@ -466,5 +446,27 @@ class WikiController < ApplicationController
   def comments
     show
     render :show
+  end
+
+  private
+
+  def update_node_attributes
+    ActiveRecord::Base.transaction do
+      @node.vid = @revision.vid
+      @node.title = @revision.title
+
+      if main_image = @node.drupal_main_image && params[:main_image].blank?
+        main_image.vid = @revision.vid
+        main_image.save
+      end
+
+      if params[:main_image].present? && img = Image.find(params[:main_image])
+        img.nid = @node.id
+        @node.main_image_id = img.id
+        img.save
+      end
+
+      @node.save
+    end
   end
 end
