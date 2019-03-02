@@ -156,13 +156,13 @@ class OpenidController < ApplicationController
 
     # content negotiation failed, so just render the user page
     xrds_url = url_for(controller: 'user', action: params[:username]) + '/xrds'
-    identity_page = <<~EOS
+    identity_page = <<~HTML
       <html><head>
       <meta http-equiv="X-XRDS-Location" content="#{xrds_url}" />
       <link rel="openid.server" href="#{url_for action: 'index'}" />
       </head><body><p>OpenID identity page for #{params[:username]}</p>
       </body></html>
-    EOS
+    HTML
 
     # Also add the Yadis location header, so that they don't have
     # to parse the html unless absolutely necessary.
@@ -255,7 +255,7 @@ class OpenidController < ApplicationController
       type_str += "<Type>#{uri}</Type>\n      "
     end
 
-    yadis = <<~EOS
+    yadis = <<~XML
       <?xml version="1.0" encoding="UTF-8"?>
       <xrds:XRDS
           xmlns:xrds="xri://$xrds"
@@ -267,7 +267,7 @@ class OpenidController < ApplicationController
           </Service>
         </XRD>
       </xrds:XRDS>
-    EOS
+    XML
 
     response.headers['content-type'] = 'application/xrds+xml'
     render plain: yadis

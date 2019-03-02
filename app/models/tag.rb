@@ -287,18 +287,21 @@ class Tag < ApplicationRecord
     all_tag = Tag.find_by(name: 'everything')
     tids += [all_tag.tid] if all_tag
     usertags = TagSelection.where('tid IN (?) AND following = ?', tids, true)
-    d = {}
+
+    usertags_hash = {}
+
     usertags.each do |usertag|
       # For each row of (user,tag), build a user's tag subscriptions
-      if (usertag.tid == all_tag) && usertag.tag.nil?
-        puts 'WARNING: all_tag tid ' + String(all_tag) + ' not found for Tag! Please correct this!'
+      if (usertag.tid == all_tag) && usertag.tag.blank?
+        Rails.logger.warn('WARNING: all_tag tid ' + all_tag.to_s + ' not found for Tag! Please correct this!')
         next
       end
-      d[usertag.user.name] = { user: usertag.user }
-      d[usertag.user.name][:tags] = Set.new if d[usertag.user.name][:tags].nil?
-      d[usertag.user.name][:tags].add(usertag.tag)
+      usertags_hash[usertag.user.name] = { user: usertag.user }
+      usertags_hash[usertag.user.name][:tags] = Set.new if usertags_hash[usertag.user.name][:tags].nil?
+      usertags_hash[usertag.user.name][:tags].add(usertag.tag)
     end
-    d
+
+    usertags_hash
   end
 
   def self.find_research_notes(tagnames, limit = 10)

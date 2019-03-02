@@ -369,7 +369,6 @@ class AdminController < ApplicationController
     s = TCPSocket.new ActionMailer::Base.smtp_settings[:address], ActionMailer::Base.smtp_settings[:port]
 
     while line = s.gets # Read lines from socket
-      puts line
       if line.include? '220'
         s.print "MAIL FROM: <example@publiclab.org>\n"
       end

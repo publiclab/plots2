@@ -53,7 +53,7 @@ class Image < ApplicationRecord
   private
 
   def absolute_uri
-    Rails.env == 'production' ? 'https://publiclab.org' : ''
+    Rails.env.production? ? 'https://publiclab.org' : ''
   end
 
   # all subsequent code from http://trevorturk.com/2008/12/11/easy-upload-via-url-with-paperclip/
@@ -64,18 +64,16 @@ class Image < ApplicationRecord
 
   def download_remote_image
     self.photo = do_download_remote_image
-    puts remote_url
-    puts 'finishes to do_download'
     self.remote_url = remote_url
   end
 
   def do_download_remote_image
-    io = open(URI.parse(remote_url))
-    def io.original_filename
-      base_uri.path.split('/').last
-    end
-    io.original_filename.blank? ? nil : io
-  rescue StandardError # catch url errors with validations instead of exceptions (Errno:ENOENT, OpenURI:HTTPError, etc...)
-    puts 'had to be rescued'
+    io = open(URI.parse(remote_url)).base_uri.path.split('/').last
+
+    io.blank? ? nil : io
+  rescue StandardError
+    # Let's sign up with Rollbar's free service to get insights on
+    # on what errors we get so we can address them accordingly
+    raise
   end
 end

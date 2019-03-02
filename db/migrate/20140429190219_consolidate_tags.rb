@@ -38,7 +38,6 @@ class ConsolidateTags < ActiveRecord::Migration[5.1]
       utags = tags.uniq.length
       summ += "\nDuplicate tags:    "+(tags.length-utags).to_s
       summ += "\n========================================"
-      puts summ
    
       # remove spaces
       Tag.find(:all).each do |tag|
@@ -49,8 +48,7 @@ class ConsolidateTags < ActiveRecord::Migration[5.1]
       # delete all orphaned node_tags
       deleted = []
       ntags = ActiveRecord::Base.connection.execute('select * from term_node;')
-      puts "node_tags:"
-      puts ntags.size
+
       ntags.each do |nt|
         node = Node.find(nt[0])
         if nt[2].nil? || nt[0].nil? || (node && node.status == 0)
@@ -60,16 +58,13 @@ class ConsolidateTags < ActiveRecord::Migration[5.1]
           ActiveRecord::Base.connection.execute("delete from term_node where vid = #{nt[1]};")
         end
       end
-      puts "deleted invalids:"
-      puts deleted.join(',')
  
       # convert all DrupalNodeTag into DrupalNodeCommunityTag with uid = 0
       failed = []
       deleted = []
       dupes = 0
       ntags = ActiveRecord::Base.connection.execute('select * from term_node;')
-      puts "node_tags for active pages:"
-      puts ntags.size
+
       ntags.each do |ntag|
         ctag = DrupalNodeCommunityTag.new({
           :uid => 0, # oh well. Someone can inherit these someday if need be.
@@ -87,14 +82,6 @@ class ConsolidateTags < ActiveRecord::Migration[5.1]
           failed << ctag
         end
       end
-      puts "failed:"
-      puts failed.length
-          puts "tags:"
-          puts failed.collect(&:tag).collect(&:name).join(',')
-      puts "dupes:"
-      puts dupes
-      puts "deleted after migrating:"
-      puts deleted.join(',')
  
       # get rid of Tag duplicates, ensure no new dupes are created
       failed = []
@@ -134,12 +121,6 @@ class ConsolidateTags < ActiveRecord::Migration[5.1]
           end
         end
       end
-      puts "failed:"
-      puts failed.length
-          puts "tags:"
-          puts failed.collect(&:name).join(',')
-      puts "dupes:"
-      puts dupes
 
       # now find all orphaned tags and delete them: 
       deleted = []
@@ -151,12 +132,11 @@ class ConsolidateTags < ActiveRecord::Migration[5.1]
           tag.delete 
         end
       end
-      puts "deleted orphans:"
-      puts deleted.join(',')
+
 
       # do some final tallies to check success:
       # repeat prev. stats:
-      puts summ
+
       # new stats:
       summ =  "\n=======  END TAG CONSOLIDATION  ========"
       drupaltags2 = Tag.count(:all)
@@ -174,7 +154,7 @@ class ConsolidateTags < ActiveRecord::Migration[5.1]
       utags = tags.uniq.length
       summ += "\nDuplicate tags:    "+(tags.length-utags).to_s
       summ += "\n========================================"
-      puts summ
+
     end
 
   end
