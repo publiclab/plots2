@@ -776,11 +776,11 @@ class Node < ActiveRecord::Base
     end
   end
 
-  def decimals(n)
-    if !n.to_s.include? '.'
+  def decimals(number)
+    if !number.to_s.include? '.'
       0
     else
-      n.to_s.split('.').last.size
+      number.to_s.split('.').last.size
     end
   end
 

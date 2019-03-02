@@ -106,7 +106,10 @@ class ApplicationController < ActionController::Base
     if current_user
       store_location
       flash[:notice] = I18n.t('application_controller.must_be_logged_out_to_access')
-      redirect_to home_url + '?return_to=' + CGI.escape(request.env['PATH_INFO'])
+
+      url = URI.parse(home_url + '?return_to=' + CGI.escape(request.env['PATH_INFO'])).to_s
+
+      redirect_to url
       false
     end
   end

@@ -115,8 +115,8 @@ class User < ActiveRecord::Base
   end
 
   # we can revise/improve this for m2m later...
-  def has_role(r)
-    role == r
+  def has_role(some_role)
+    role == some_role
   end
 
   def admin?

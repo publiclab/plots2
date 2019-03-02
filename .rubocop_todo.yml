@@ -7,22 +7,6 @@
 # versions of RuboCop, may require this file to be generated again.
 
 
-# Offense count: 1
-Lint/HandleExceptions:
-  Exclude:
-    # - 'app/controllers/wiki_controller.rb'
-
-# Offense count: 6
-Lint/IneffectiveAccessModifier:
-  Exclude:
-    # - 'app/models/user.rb'
-
-# Offense count: 1
-Lint/UriEscapeUnescape:
-  Exclude:
-    - 'app/controllers/application_controller.rb'
-
-# Offense count: 25
 Lint/UselessAssignment:
   Exclude:
     - 'app/controllers/openid_controller.rb'
@@ -70,13 +54,6 @@ Metrics/ModuleLength:
 Metrics/PerceivedComplexity:
   Max: 33
 
-# Offense count: 2
-# Configuration parameters: Blacklist.
-# Blacklist: (?-mix:(^|\s)(EO[A-Z]{1}|END)(\s|$))
-Naming/HeredocDelimiterNaming:
-  Exclude:
-    - 'app/controllers/openid_controller.rb'
-
 # Offense count: 7
 # Configuration parameters: EnforcedStyle.
 # SupportedStyles: snake_case, camelCase
@@ -104,20 +81,13 @@ Naming/PredicateName:
     - 'app/models/tag.rb'
     - 'app/models/user.rb'
 
-# Offense count: 1
-# Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
-Naming/UncommunicativeBlockParamName:
-  Exclude:
-    - 'app/models/doc_list.rb'
-
 # Offense count: 3
 # Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
 # AllowedNames: io, id, to, by, on, in, at, ip, db
 Naming/UncommunicativeMethodParamName:
   Exclude:
     - 'app/models/doc_list.rb'
-    - 'app/models/node.rb'
-    - 'app/models/user.rb'
+
 
 # Offense count: 9
 # Configuration parameters: EnforcedStyle.
