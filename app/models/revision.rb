@@ -20,9 +20,9 @@ class Revision < ApplicationRecord
   before_create :setup
 
   scope :published, -> { where(status: 1) }
-  scope :past_week, -> { where("timestamp > ?", (Time.now - 7.days).to_i) }
-  scope :past_month, -> { where("timestamp > ?", (Time.now - 1.months).to_i) }
-  scope :past_year, -> { where("timestamp > ?", (Time.now - 1.years).to_i) }
+  scope :past_week, -> { where("timestamp > ?", 7.days.ago) }
+  scope :past_month, -> { where("timestamp > ?", 1.month.ago) }
+  scope :past_year, -> { where("timestamp > ?", 1.year.ago) }
 
   def setup
     self.teaser = ''
