@@ -10,7 +10,7 @@
 # Offense count: 1
 Lint/HandleExceptions:
   Exclude:
-    - 'app/controllers/wiki_controller.rb'
+    # - 'app/controllers/wiki_controller.rb'
 
 # Offense count: 6
 Lint/IneffectiveAccessModifier:

@@ -24,6 +24,7 @@ AllCops:
     - 'test/**/*'
     - 'public/**/*'
     - 'Dangerfile'
+    - 'app/views/**/*'
   TargetRubyVersion: '2.4'
 
 Layout/MultilineMethodCallIndentation:
