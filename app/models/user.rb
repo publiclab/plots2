@@ -12,9 +12,13 @@ class User < ActiveRecord::Base
   self.table_name = 'rusers'
   alias_attribute :name, :username
 
-  NORMAL = 1 # Usage: User::NORMAL
-  BANNED = 0 # Usage: User::BANNED
-  MODERATED = 5 # Usage: User::MODERATED
+  module Status
+    VALUES = [
+      NORMAL = 1,   # Usage: Status::NORMAL
+      BANNED = 0,   # Usage: Status::BANNED
+      MODERATED = 5 # Usage: Status::MODERATED
+    ].freeze
+  end
 
   attr_readonly :username
 
@@ -24,7 +28,7 @@ class User < ActiveRecord::Base
   end
 
   has_attached_file :photo, styles: { thumb: '200x200#', medium: '500x500#', large: '800x800#' },
-  url: '/system/profile/photos/:id/:style/:basename.:extension'
+                            url: '/system/profile/photos/:id/:style/:basename.:extension'
   #:path => ":rails_root/public/system/images/photos/:id/:style/:basename.:extension"
   do_not_validate_attachment_file_type :photo_file_name
   # validates_attachment_content_type :photo_file_name, :content_type => %w(image/jpeg image/jpg image/png)
@@ -52,12 +56,12 @@ class User < ActiveRecord::Base
   scope :past_week, -> { where("created_at > ?", 7.days.ago) }
   scope :past_month, -> { where("created_at > ?", 1.month.ago) }
 
-  def is_new_contributor
-    Node.where(uid: id).length === 1 && Node.where(uid: id).first.created_at > Date.today - 1.month
+  def is_new_contributor?
+    Node.where(uid: id).length === 1 && Node.where(uid: id).first.created_at > 1.month.ago
   end
 
   def new_contributor
-    "<a href='/tag/first-time-poster' class='label label-success'><i>new contributor</i></a>".html_safe if is_new_contributor
+    return "<a href='/tag/first-time-poster' class='label label-success'><i>new contributor</i></a>".html_safe if is_new_contributor?
   end
 
   def set_token
@@ -70,16 +74,16 @@ class User < ActiveRecord::Base
 
   def notes
     Node.where(uid: uid)
-    .where(type: 'note')
-    .order('created DESC')
+      .where(type: 'note')
+      .order('created DESC')
   end
 
   def coauthored_notes
     coauthored_tag = "with:" + name.downcase
     Node.where(status: 1, type: "note")
-    .includes(:revision, :tag)
-    .references(:term_data, :node_revisions)
-    .where('term_data.name = ? OR term_data.parent = ?', coauthored_tag.to_s, coauthored_tag.to_s)
+      .includes(:revision, :tag)
+      .references(:term_data, :node_revisions)
+      .where('term_data.name = ? OR term_data.parent = ?', coauthored_tag.to_s, coauthored_tag.to_s)
   end
 
   def generate_reset_key
@@ -127,7 +131,7 @@ class User < ActiveRecord::Base
     admin? || moderator?
   end
 
-  def is_coauthor(node)
+  def is_coauthor?(node)
     id == node.author.id || node.has_tag("with:#{username}")
   end
 
@@ -172,7 +176,7 @@ class User < ActiveRecord::Base
   def subscriptions(type = :tag)
     if type == :tag
       TagSelection.where(user_id: uid,
-       following: true)
+                         following: true)
     end
   end
 
@@ -189,8 +193,8 @@ class User < ActiveRecord::Base
 
   def barnstars
     NodeTag.includes(:node, :tag)
-    .references(:term_data)
-    .where('type = ? AND term_data.name LIKE ? AND node.uid = ?', 'note', 'barnstar:%', uid)
+      .references(:term_data)
+      .where('type = ? AND term_data.name LIKE ? AND node.uid = ?', 'note', 'barnstar:%', uid)
   end
 
   def photo_path(size = :medium)
@@ -198,11 +202,11 @@ class User < ActiveRecord::Base
   end
 
   def first_time_poster
-    notes.where(status: 1).count == 0
+    notes.where(status: 1).count.zero?
   end
 
   def first_time_commenter
-    Comment.where(status: 1, uid: uid).count == 0
+    Comment.where(status: 1, uid: uid).count.zero?
   end
 
   def follow(other_user)
@@ -237,39 +241,37 @@ class User < ActiveRecord::Base
     end
 
     Node.where(nid: node_ids)
-        .includes(:revision, :tag)
-        .references(:node_revision)
-        .where('node.status = 1')
-        .where("(created >= #{start_time.to_i} AND created <= #{end_time.to_i}) OR (timestamp >= #{start_time.to_i}  AND timestamp <= #{end_time.to_i})")
-        .order('node_revisions.timestamp DESC')
-        .distinct
+      .includes(:revision, :tag)
+      .references(:node_revision)
+      .where('node.status = 1')
+      .where("(created >= #{start_time.to_i} AND created <= #{end_time.to_i}) OR (timestamp >= #{start_time.to_i}  AND timestamp <= #{end_time.to_i})")
+      .order('node_revisions.timestamp DESC')
+      .distinct
   end
 
   def social_link(site)
-    if has_power_tag(site)
-      user_name = get_last_value_of_power_tag(site)
-      link = "https://#{site}.com/#{user_name}"
-      return link
-    end
-    nil
+    return nil unless has_power_tag(site)
+
+    user_name = get_last_value_of_power_tag(site)
+    "https://#{site}.com/#{user_name}"
   end
 
   def moderate
-    self.status = 5
+    self.status = Status::MODERATED
     save
     # user is logged out next time they access current_user in a controller; see application controller
     self
   end
 
   def unmoderate
-    self.status = 1
+    self.status = Status::NORMAL
     save
     self
   end
 
   def ban
     decrease_likes_banned
-    self.status = 0
+    self.status = Status::BANNED
     save
     # user is logged out next time they access current_user in a controller; see application controller
     self
@@ -277,13 +279,13 @@ class User < ActiveRecord::Base
 
   def unban
     increase_likes_unbanned
-    self.status = 1
+    self.status = Status::NORMAL
     save
     self
   end
 
   def banned?
-    status.zero?
+    status == Status::BANNED
   end
 
   def note_count
@@ -296,22 +298,25 @@ class User < ActiveRecord::Base
 
   def liked_notes
     Node.includes(:node_selections)
-    .references(:node_selections)
-    .where("type = 'note' AND node_selections.liking = ? AND node_selections.user_id = ? AND node.status = 1", true, id)
-    .order('node_selections.nid DESC')
+      .references(:node_selections)
+      .where("type = 'note' AND \
+              node_selections.liking = ? \
+              AND node_selections.user_id = ? \
+              AND node.status = 1", true, id)
+      .order('node_selections.nid DESC')
   end
 
   def liked_pages
     nids = NodeSelection.where(user_id: uid, liking: true)
-    .collect(&:nid)
+      .collect(&:nid)
     Node.where(nid: nids)
-    .where(type: 'page')
-    .order('nid DESC')
+      .where(type: 'page')
+      .order('nid DESC')
   end
 
   def send_digest_email
-    top_picks = content_followed_in_period(Time.now - 1.week, Time.now)
-    if top_picks.count > 0
+    top_picks = content_followed_in_period(1.week.ago, Time.now)
+    if top_picks.count.positive?
       SubscriptionMailer.send_digest(id, top_picks).deliver_now
     end
   end
@@ -336,11 +341,18 @@ class User < ActiveRecord::Base
   end
 
   class << self
+    def search(query)
+      User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', query + '*')
+    end
+
+    def search_by_username(query)
+      User.where('MATCH(username) AGAINST(? IN BOOLEAN MODE)', query + '*')
+    end
+
     def validate_token(token)
       begin
         decrypted_data = User.decrypt(token)
       rescue ActiveSupport::MessageVerifier::InvalidSignature => e
-        puts e.message
         return 0
       end
       if (Time.now - decrypted_data[:timestamp]) / 1.hour > 24.0
@@ -348,14 +360,6 @@ class User < ActiveRecord::Base
       else
         return decrypted_data[:id]
       end
-    end
-
-    def search(query)
-      User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', query + '*')
-    end
-
-    def search_by_username(query)
-      User.where('MATCH(username) AGAINST(? IN BOOLEAN MODE)', query + '*')
     end
 
     def find_by_username_case_insensitive(username)
@@ -385,7 +389,7 @@ class User < ActiveRecord::Base
         user.username = email_prefix
         user.email = auth["info"]["email"]
         user.password = s
-        user.status = 1
+        user.status = Status::NORMAL
         user.password_confirmation = s
         user.password_checker = hash[auth["provider"]]
         user.save!
@@ -404,7 +408,11 @@ class User < ActiveRecord::Base
     def watching_location(nwlat, selat, nwlng, selng)
       raise("Must be a float") unless (nwlat.is_a? Float) && (nwlng.is_a? Float) && (selat.is_a? Float) && (selng.is_a? Float)
 
-      tids = Tag.where("SUBSTRING_INDEX(term_data.name,':',1) = ? AND SUBSTRING_INDEX(SUBSTRING_INDEX(term_data.name, ':', 2),':',-1)+0 <= ? AND SUBSTRING_INDEX(SUBSTRING_INDEX(term_data.name, ':', 3),':',-1)+0 <= ? AND SUBSTRING_INDEX(SUBSTRING_INDEX(term_data.name, ':', 4),':',-1)+0 <= ? AND SUBSTRING_INDEX(term_data.name, ':', -1) <= ?", 'subscribed', nwlat, nwlng, selat, selng).collect(&:tid).uniq || []
+      tids = Tag.where("SUBSTRING_INDEX(term_data.name,':',1) = ? \
+                        AND SUBSTRING_INDEX(SUBSTRING_INDEX(term_data.name, ':', 2),':',-1)+0 <= ? \
+                        AND SUBSTRING_INDEX(SUBSTRING_INDEX(term_data.name, ':', 3),':',-1)+0 <= ? \
+                        AND SUBSTRING_INDEX(SUBSTRING_INDEX(term_data.name, ':', 4),':',-1)+0 <= ? \
+                        AND SUBSTRING_INDEX(term_data.name, ':', -1) <= ?", 'subscribed', nwlat, nwlng, selat, selng).collect(&:tid).uniq || []
       uids = TagSelection.where('tag_selections.tid IN (?)', tids).collect(&:user_id).uniq || []
 
       User.where("id IN (?)", uids).order(:id)
@@ -415,14 +423,14 @@ class User < ActiveRecord::Base
 
   def decrease_likes_banned
     node_selections.each do |selection|
-      selection.node.cached_likes = selection.node.cached_likes - 1
+      selection.node.cached_likes -= 1
       selection.node.save!
     end
   end
 
   def increase_likes_unbanned
     node_selections.each do |selection|
-      selection.node.cached_likes = selection.node.cached_likes + 1
+      selection.node.cached_likes += 1
       selection.node.save!
     end
   end

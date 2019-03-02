@@ -133,7 +133,7 @@ class SearchService
               items.order("changed #{order_direction}")
                    .limit(limit)
             else
-              items.order("created #{order_direction}")
+              items.order(Arel.sql("created #{order_direction}"))
                    .limit(limit)
             end
   end
