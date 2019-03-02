@@ -32,7 +32,8 @@ class OpenidController < ApplicationController
         'openid.trust_root',
         'openid.id_select',
         'openid.immediate',
-        'openid.cancel_url').to_h
+        'openid.cancel_url'
+      ).to_h
       if params['openid.mode']
         oidreq = server.decode_request(permitted_params)
       else
@@ -161,7 +162,7 @@ class OpenidController < ApplicationController
       <link rel="openid.server" href="#{url_for action: 'index'}" />
       </head><body><p>OpenID identity page for #{params[:username]}</p>
       </body></html>
-EOS
+    EOS
 
     # Also add the Yadis location header, so that they don't have
     # to parse the html unless absolutely necessary.
@@ -239,6 +240,7 @@ EOS
 
   def approved(trust_root)
     return false if session[:approvals].nil?
+
     session[:approvals].member?(trust_root)
   end
 
@@ -265,7 +267,7 @@ EOS
           </Service>
         </XRD>
       </xrds:XRDS>
-EOS
+    EOS
 
     response.headers['content-type'] = 'application/xrds+xml'
     render plain: yadis
@@ -276,6 +278,7 @@ EOS
     sregreq = OpenID::SReg::Request.from_openid_request(oidreq)
 
     return if sregreq.nil?
+
     # In a real application, this data would be user-specific,
     # and the user should be asked for permission to release
     # it.
@@ -291,6 +294,7 @@ EOS
   def add_pape(oidreq, oidresp)
     papereq = OpenID::PAPE::Request.from_openid_request(oidreq)
     return if papereq.nil?
+
     paperesp = OpenID::PAPE::Response.new
     paperesp.nist_auth_level = 0 # we don't even do auth at all!
     oidresp.add_extension(paperesp)

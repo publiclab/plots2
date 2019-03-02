@@ -8,12 +8,12 @@ class Revision < ApplicationRecord
   has_many :tag, through: :node_tag
 
   validates :title,
-    presence: :true,
+    presence: true,
     length: { minimum: 2 },
     format: { with: /[A-Z][\w\-_]*/i, message: 'can only include letters, numbers, and dashes' }
-  validates :body, presence: :true
-  validates :uid, presence: :true
-  validates :nid, presence: :true
+  validates :body, presence: true
+  validates :uid, presence: true
+  validates :nid, presence: true
 
   before_save :inline_tags
   after_save :inline_hashtags

@@ -388,5 +388,4 @@ class AdminController < ApplicationController
 
     s.close
   end
-
 end

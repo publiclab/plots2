@@ -360,7 +360,7 @@ class Comment < ApplicationRecord
     end
 
     {
-      comment_content:  comment_content,
+      comment_content: comment_content,
       extra_content: extra_content
     }
   end

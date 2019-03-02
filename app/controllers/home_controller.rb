@@ -138,5 +138,4 @@ class HomeController < ApplicationController
     ]
     response
   end
-
 end

@@ -134,31 +134,31 @@ class SubscriptionController < ApplicationController
       # assume tag, for now
       if params[:type] == "tag"
         tag_list.each do |t|
-          if t.length.positive?
-            tag = Tag.find_by(name: t)
-            # t should be not nil consider params[:tagnames] = balloon,,mapping,,kites,oil
-            if tag.nil?
-              # if the tag doesn't exist, we should create it!
-              # this could fail validations; error out if so...
-              tag = Tag.new(
-                :vid => 3, # vocabulary id
-                :name => t,
-                :description => "",
-                :weight => 0
-              )
-              begin
-                tag.save!
-              rescue ActiveRecord::RecordInvalid
-                flash[:error] = tag.errors.full_messages
-                redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
-                return false
-              end
+          next unless t.length.positive?
+
+          tag = Tag.find_by(name: t)
+          # t should be not nil consider params[:tagnames] = balloon,,mapping,,kites,oil
+          if tag.nil?
+            # if the tag doesn't exist, we should create it!
+            # this could fail validations; error out if so...
+            tag = Tag.new(
+              :vid => 3, # vocabulary id
+              :name => t,
+              :description => "",
+              :weight => 0
+            )
+            begin
+              tag.save!
+            rescue ActiveRecord::RecordInvalid
+              flash[:error] = tag.errors.full_messages
+              redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
+              return false
             end
-            # test for uniqueness
-            unless TagSelection.where(following: true, user_id: current_user.uid, tid: tag.tid).length.positive?
-              # Successfully we have added subscription
-              set_following(true, params[:type], tag.tid)
-            end
+          end
+          # test for uniqueness
+          unless TagSelection.where(following: true, user_id: current_user.uid, tid: tag.tid).length.positive?
+            # Successfully we have added subscription
+            set_following(true, params[:type], tag.tid)
           end
         end
         respond_with do |format|

@@ -11,6 +11,7 @@ AllCops:
     - '/config.ru'
   Exclude:
     - 'vendor/*'
+    - 'spec/**/*'
     - 'bin/*'
     - 'doc/*'
     - 'log/*'
@@ -46,10 +47,10 @@ Style/FrozenStringLiteralComment:
 Lint/ParenthesesAsGroupedExpression:
   Enabled: false
 
-Lint/EndAlignment:
+Layout/EndAlignment:
   Enabled: false
 
-Lint/DefEndAlignment:
+Layout/DefEndAlignment:
   Enabled: false
 
 Lint/SafeNavigationChain:
@@ -67,5 +68,3 @@ Metrics/ClassLength:
 Metrics/ParameterLists:
   Enabled: false
 
-Metrics/ModuleLength:
-  Max: 303

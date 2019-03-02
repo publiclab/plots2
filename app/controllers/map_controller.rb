@@ -7,7 +7,7 @@ class MapController < ApplicationController
 
     @map_lat = nil
     @map_lon = nil
-    if current_user && current_user.has_power_tag("lat") && current_user.has_power_tag("lon")
+    if current_user&.has_power_tag("lat") && current_user&.has_power_tag("lon")
       @map_lat = current_user.get_value_of_power_tag("lat").to_f
       @map_lon = current_user.get_value_of_power_tag("lon").to_f
     end

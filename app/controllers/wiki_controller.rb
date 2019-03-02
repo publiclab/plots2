@@ -60,6 +60,7 @@ class WikiController < ApplicationController
     # end
 
     return if check_and_redirect_node(@node)
+
     if !@node.nil? # it's a place page!
       @tags = @node.tags
       @tags += [Tag.find_by(name: params[:id])] if Tag.find_by(name: params[:id])
@@ -259,6 +260,7 @@ class WikiController < ApplicationController
   def root
     @node = Node.find_by(path: "/" + params[:id])
     return if check_and_redirect_node(@node)
+
     if @node
       @revision = @node.latest
       @title = @revision.title
@@ -408,7 +410,7 @@ class WikiController < ApplicationController
   end
 
   def methods
-    @nodes = Node.where(status: 1, type: ['page'])
+    @nodes = Node.where(status: 1, type: %w(page))
       .where('term_data.name = ?', 'method')
       .includes(:revision, :tag)
       .references(:node_revision)
@@ -416,7 +418,7 @@ class WikiController < ApplicationController
     # deprecating the following in favor of javascript implementation in /app/assets/javascripts/methods.js
     if params[:topic]
       nids = @nodes.collect(&:nid) || []
-      @notes = Node.where(status: 1, type: ['page'])
+      @notes = Node.where(status: 1, type: %w(page))
         .where('node.nid IN (?)', nids)
         .where('(type = "note" OR type = "page" OR type = "map") AND node.status = 1 AND (node.title LIKE ? OR node_revisions.title LIKE ? OR node_revisions.body LIKE ? OR term_data.name = ?)',
           '%' + params[:topic] + '%',
@@ -429,7 +431,7 @@ class WikiController < ApplicationController
     end
     if params[:topic]
       nids = @nodes.collect(&:nid) || []
-      @nodes = Node.where(status: 1, type: ['page'])
+      @nodes = Node.where(status: 1, type: %w(page))
         .where('node.nid IN (?)', nids)
         .where('(type = "note" OR type = "page" OR type = "map") AND node.status = 1 AND (node.title LIKE ? OR node_revisions.title LIKE ? OR node_revisions.body LIKE ? OR term_data.name = ?)',
           '%' + params[:topic] + '%',

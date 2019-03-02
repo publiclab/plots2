@@ -91,7 +91,7 @@ class Node < ActiveRecord::Base
 
   belongs_to :user, foreign_key: 'uid'
 
-  validates :title, presence: :true
+  validates :title, presence: true
   validates_with UniqueUrlValidator, on: :create
 
   scope :published, -> { where(status: 1) }
@@ -105,6 +105,7 @@ class Node < ActiveRecord::Base
     def instance_method_already_implemented?(method_name)
       return true if method_name == 'changed'
       return true if method_name == 'changed?'
+
       super
     end
   end
@@ -489,7 +490,7 @@ class Node < ActiveRecord::Base
       RSS::Parser.parse(open('https://groups.google.com/group/' + power_tag('list') + '/feed/rss_v2_0_topics.xml').read, false).items
     end
   rescue StandardError
-    return []
+    []
   end
 
   # End of tag-related methods

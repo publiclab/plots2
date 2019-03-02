@@ -204,15 +204,15 @@ class SearchService
              .order("node_revisions.timestamp #{order_direction}")
              .distinct
       else if sort_by == "content"
-        ids = items.collect(&:id).uniq || []
-        User.select('`rusers`.*, count(`node`.uid) AS ord')
-            .joins(:node)
-            .where('rusers.id IN (?)', ids)
-            .group('`node`.`uid`')
-            .order("ord #{order_direction}")
-      else
-        items.order("created_at #{order_direction}")
-              .limit(limit)
+             ids = items.collect(&:id).uniq || []
+             User.select('`rusers`.*, count(`node`.uid) AS ord')
+                 .joins(:node)
+                 .where('rusers.id IN (?)', ids)
+                 .group('`node`.`uid`')
+                 .order("ord #{order_direction}")
+           else
+             items.order("created_at #{order_direction}")
+                   .limit(limit)
       end
     end
   end
@@ -224,9 +224,9 @@ class SearchService
             .joins(:user_tags)\
             .where('user_tags.value LIKE ?', '%' + query + '%')\
       else if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
-        type == "username" ? User.search_by_username(query).where('rusers.status = ?', 1) : User.search(query).where('rusers.status = ?', 1)
-      else
-        User.where('username LIKE ? AND rusers.status = 1', '%' + query + '%')
+             type == "username" ? User.search_by_username(query).where('rusers.status = ?', 1) : User.search(query).where('rusers.status = ?', 1)
+           else
+             User.where('username LIKE ? AND rusers.status = 1', '%' + query + '%')
       end
     end
 

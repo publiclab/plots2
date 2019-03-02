@@ -24,7 +24,7 @@ class Tag < ApplicationRecord
     end
   end
 
-  validates :name, presence: :true
+  validates :name, presence: true
   validates :name, format: { with: /\A[\w\.:-]*[\w\.!-]*\z/, message: 'can only include letters, numbers, and dashes' }
   # validates :name, :uniqueness => { case_sensitive: false  }
 
@@ -60,6 +60,7 @@ class Tag < ApplicationRecord
   def self.contributors(tagname)
     tag = Tag.includes(:node).where(name: tagname).first
     return [] if tag.nil?
+
     nodes = tag.node.includes(:revision, :comments, :answers).where(status: 1)
     uids = nodes.collect(&:uid)
     nodes.each do |n|
@@ -125,6 +126,7 @@ class Tag < ApplicationRecord
                                        .collect(&:nid)
       tag = Tag.where(name: tagname).last
       next unless tag
+
       parents = Node.where(status: 1, type: type)
                     .includes(:revision, :tag)
                     .references(:term_data)
@@ -392,5 +394,4 @@ class Tag < ApplicationRecord
       data
     end
   end
-
 end
