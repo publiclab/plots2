@@ -189,7 +189,7 @@ class UsersController < ApplicationController
         if @user.has_power_tag("lat") && @user.has_power_tag("lon")
           @map_lat = @user.get_value_of_power_tag("lat").to_f
           @map_lon = @user.get_value_of_power_tag("lon").to_f
-          @map_blurred = @user.has_tag("blurredtrue")
+          @map_blurred = @user.has_tag('blurred:true')
         end
 
         if @user.status == 0

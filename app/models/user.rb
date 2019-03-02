@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
   end
 
   has_attached_file :photo, styles: { thumb: '200x200#', medium: '500x500#', large: '800x800#' },
-                            url: '/system/profile/photos/:id/:style/:basename.:extension'
+  url: '/system/profile/photos/:id/:style/:basename.:extension'
   #:path => ":rails_root/public/system/images/photos/:id/:style/:basename.:extension"
   do_not_validate_attachment_file_type :photo_file_name
   # validates_attachment_content_type :photo_file_name, :content_type => %w(image/jpeg image/jpg image/png)
@@ -52,20 +52,12 @@ class User < ActiveRecord::Base
   scope :past_week, -> { where("created_at > ?", 7.days.ago) }
   scope :past_month, -> { where("created_at > ?", 1.month.ago) }
 
-  def self.search(query)
-    User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', query + '*')
-  end
-
-  def self.search_by_username(query)
-    User.where('MATCH(username) AGAINST(? IN BOOLEAN MODE)', query + '*')
-  end
-
   def is_new_contributor
     Node.where(uid: id).length === 1 && Node.where(uid: id).first.created_at > Date.today - 1.month
   end
 
   def new_contributor
-    return "<a href='/tag/first-time-poster' class='label label-success'><i>new contributor</i></a>".html_safe if is_new_contributor
+    "<a href='/tag/first-time-poster' class='label label-success'><i>new contributor</i></a>".html_safe if is_new_contributor
   end
 
   def set_token
@@ -78,16 +70,16 @@ class User < ActiveRecord::Base
 
   def notes
     Node.where(uid: uid)
-      .where(type: 'note')
-      .order('created DESC')
+    .where(type: 'note')
+    .order('created DESC')
   end
 
   def coauthored_notes
     coauthored_tag = "with:" + name.downcase
     Node.where(status: 1, type: "note")
-      .includes(:revision, :tag)
-      .references(:term_data, :node_revisions)
-      .where('term_data.name = ? OR term_data.parent = ?', coauthored_tag.to_s, coauthored_tag.to_s)
+    .includes(:revision, :tag)
+    .references(:term_data, :node_revisions)
+    .where('term_data.name = ? OR term_data.parent = ?', coauthored_tag.to_s, coauthored_tag.to_s)
   end
 
   def generate_reset_key
@@ -180,7 +172,7 @@ class User < ActiveRecord::Base
   def subscriptions(type = :tag)
     if type == :tag
       TagSelection.where(user_id: uid,
-                         following: true)
+       following: true)
     end
   end
 
@@ -197,8 +189,8 @@ class User < ActiveRecord::Base
 
   def barnstars
     NodeTag.includes(:node, :tag)
-      .references(:term_data)
-      .where('type = ? AND term_data.name LIKE ? AND node.uid = ?', 'note', 'barnstar:%', uid)
+    .references(:term_data)
+    .where('type = ? AND term_data.name LIKE ? AND node.uid = ?', 'note', 'barnstar:%', uid)
   end
 
   def photo_path(size = :medium)
@@ -227,7 +219,6 @@ class User < ActiveRecord::Base
 
   def profile_image
     if photo_file_name
-      puts photo_path(:thumb)
       photo_path(:thumb)
     else
       "https://www.gravatar.com/avatar/#{OpenSSL::Digest::MD5.hexdigest(email)}"
@@ -246,12 +237,12 @@ class User < ActiveRecord::Base
     end
 
     Node.where(nid: node_ids)
-      .includes(:revision, :tag)
-      .references(:node_revision)
-      .where('node.status = 1')
-      .where("(created >= #{start_time.to_i} AND created <= #{end_time.to_i}) OR (timestamp >= #{start_time.to_i}  AND timestamp <= #{end_time.to_i})")
-      .order('node_revisions.timestamp DESC')
-      .distinct
+        .includes(:revision, :tag)
+        .references(:node_revision)
+        .where('node.status = 1')
+        .where("(created >= #{start_time.to_i} AND created <= #{end_time.to_i}) OR (timestamp >= #{start_time.to_i}  AND timestamp <= #{end_time.to_i})")
+        .order('node_revisions.timestamp DESC')
+        .distinct
   end
 
   def social_link(site)
@@ -305,17 +296,17 @@ class User < ActiveRecord::Base
 
   def liked_notes
     Node.includes(:node_selections)
-      .references(:node_selections)
-      .where("type = 'note' AND node_selections.liking = ? AND node_selections.user_id = ? AND node.status = 1", true, id)
-      .order('node_selections.nid DESC')
+    .references(:node_selections)
+    .where("type = 'note' AND node_selections.liking = ? AND node_selections.user_id = ? AND node.status = 1", true, id)
+    .order('node_selections.nid DESC')
   end
 
   def liked_pages
     nids = NodeSelection.where(user_id: uid, liking: true)
-      .collect(&:nid)
+    .collect(&:nid)
     Node.where(nid: nids)
-      .where(type: 'page')
-      .order('nid DESC')
+    .where(type: 'page')
+    .order('nid DESC')
   end
 
   def send_digest_email
@@ -344,17 +335,79 @@ class User < ActiveRecord::Base
     User.encrypt(user_id_and_time)
   end
 
-  def self.validate_token(token)
-    begin
-      decrypted_data = User.decrypt(token)
-    rescue ActiveSupport::MessageVerifier::InvalidSignature => e
-      puts e.message
-      return 0
+  class << self
+    def validate_token(token)
+      begin
+        decrypted_data = User.decrypt(token)
+      rescue ActiveSupport::MessageVerifier::InvalidSignature => e
+        puts e.message
+        return 0
+      end
+      if (Time.now - decrypted_data[:timestamp]) / 1.hour > 24.0
+        return 0
+      else
+        return decrypted_data[:id]
+      end
     end
-    if (Time.now - decrypted_data[:timestamp]) / 1.hour > 24.0
-      return 0
-    else
-      return decrypted_data[:id]
+
+    def search(query)
+      User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', query + '*')
+    end
+
+    def search_by_username(query)
+      User.where('MATCH(username) AGAINST(? IN BOOLEAN MODE)', query + '*')
+    end
+
+    def find_by_username_case_insensitive(username)
+      User.where('lower(username) = ?', username.downcase).first
+    end
+
+    # all uses who've posted a node, comment, or answer in the given period
+    def contributor_count_for(start_time, end_time)
+      notes = Node.where(type: 'note', status: 1, created: start_time.to_i..end_time.to_i).pluck(:uid)
+      answers = Answer.where(created_at: start_time..end_time).pluck(:uid)
+      questions = Node.questions.where(status: 1, created: start_time.to_i..end_time.to_i).pluck(:uid)
+      comments = Comment.where(timestamp: start_time.to_i..end_time.to_i).pluck(:uid)
+      revisions = Revision.where(status: 1, timestamp: start_time.to_i..end_time.to_i).pluck(:uid)
+      contributors = (notes + answers + questions + comments + revisions).compact.uniq.length
+      contributors
+    end
+
+    def create_with_omniauth(auth)
+      # email prefix is part of email before @ with periods replaced with underscores
+      # generate a 2 digit alphanumeric number and append it at the end of email-prefix
+      charset = Array('A'..'Z') + Array('a'..'z') + Array(0..9)
+      email_prefix = auth["info"]["email"].tr('.', '_').split('@')[0]
+      email_prefix = auth["info"]["email"].tr('.', '_').split('@')[0] + Array.new(2) { charset.sample }.join until User.where(username: email_prefix).empty?
+      hash = { "facebook" => 1, "github" => 2, "google_oauth2" => 3, "twitter" => 4 }
+      create! do |user|
+        s = SecureRandom.urlsafe_base64
+        user.username = email_prefix
+        user.email = auth["info"]["email"]
+        user.password = s
+        user.status = 1
+        user.password_confirmation = s
+        user.password_checker = hash[auth["provider"]]
+        user.save!
+      end
+    end
+
+    def count_all_time_contributor
+      notes = Node.where(type: 'note', status: 1).pluck(:uid)
+      answers = Answer.pluck(:uid)
+      questions = Node.questions.where(status: 1).pluck(:uid)
+      comments = Comment.pluck(:uid)
+      revisions = Revision.where(status: 1).pluck(:uid)
+      contributors = (notes + answers + questions + comments + revisions).compact.uniq.length
+    end
+
+    def watching_location(nwlat, selat, nwlng, selng)
+      raise("Must be a float") unless (nwlat.is_a? Float) && (nwlng.is_a? Float) && (selat.is_a? Float) && (selng.is_a? Float)
+
+      tids = Tag.where("SUBSTRING_INDEX(term_data.name,':',1) = ? AND SUBSTRING_INDEX(SUBSTRING_INDEX(term_data.name, ':', 2),':',-1)+0 <= ? AND SUBSTRING_INDEX(SUBSTRING_INDEX(term_data.name, ':', 3),':',-1)+0 <= ? AND SUBSTRING_INDEX(SUBSTRING_INDEX(term_data.name, ':', 4),':',-1)+0 <= ? AND SUBSTRING_INDEX(term_data.name, ':', -1) <= ?", 'subscribed', nwlat, nwlng, selat, selng).collect(&:tid).uniq || []
+      uids = TagSelection.where('tag_selections.tid IN (?)', tids).collect(&:user_id).uniq || []
+
+      User.where("id IN (?)", uids).order(:id)
     end
   end
 
@@ -377,57 +430,5 @@ class User < ActiveRecord::Base
   def map_openid_registration(registration)
     self.email = registration['email'] if email.blank?
     self.username = registration['nickname'] if username.blank?
-  end
-
-  def self.watching_location(nwlat, selat, nwlng, selng)
-    raise("Must be a float") unless (nwlat.is_a? Float) && (nwlng.is_a? Float) && (selat.is_a? Float) && (selng.is_a? Float)
-
-    tids = Tag.where("SUBSTRING_INDEX(term_data.name,':',1) = ? AND SUBSTRING_INDEX(SUBSTRING_INDEX(term_data.name, ':', 2),':',-1)+0 <= ? AND SUBSTRING_INDEX(SUBSTRING_INDEX(term_data.name, ':', 3),':',-1)+0 <= ? AND SUBSTRING_INDEX(SUBSTRING_INDEX(term_data.name, ':', 4),':',-1)+0 <= ? AND SUBSTRING_INDEX(term_data.name, ':', -1) <= ?", 'subscribed', nwlat, nwlng, selat, selng).collect(&:tid).uniq || []
-    uids = TagSelection.where('tag_selections.tid IN (?)', tids).collect(&:user_id).uniq || []
-
-    User.where("id IN (?)", uids).order(:id)
-  end
-
-  def self.find_by_username_case_insensitive(username)
-    User.where('lower(username) = ?', username.downcase).first
-  end
-
-  # all uses who've posted a node, comment, or answer in the given period
-  def self.contributor_count_for(start_time, end_time)
-    notes = Node.where(type: 'note', status: 1, created: start_time.to_i..end_time.to_i).pluck(:uid)
-    answers = Answer.where(created_at: start_time..end_time).pluck(:uid)
-    questions = Node.questions.where(status: 1, created: start_time.to_i..end_time.to_i).pluck(:uid)
-    comments = Comment.where(timestamp: start_time.to_i..end_time.to_i).pluck(:uid)
-    revisions = Revision.where(status: 1, timestamp: start_time.to_i..end_time.to_i).pluck(:uid)
-    contributors = (notes + answers + questions + comments + revisions).compact.uniq.length
-    contributors
-  end
-
-  def self.create_with_omniauth(auth)
-    # email prefix is part of email before @ with periods replaced with underscores
-    # generate a 2 digit alphanumeric number and append it at the end of email-prefix
-    charset = Array('A'..'Z') + Array('a'..'z') + Array(0..9)
-    email_prefix = auth["info"]["email"].tr('.', '_').split('@')[0]
-    email_prefix = auth["info"]["email"].tr('.', '_').split('@')[0] + Array.new(2) { charset.sample }.join until User.where(username: email_prefix).empty?
-    hash = { "facebook" => 1, "github" => 2, "google_oauth2" => 3, "twitter" => 4 }
-    create! do |user|
-      s = SecureRandom.urlsafe_base64
-      user.username = email_prefix
-      user.email = auth["info"]["email"]
-      user.password = s
-      user.status = 1
-      user.password_confirmation = s
-      user.password_checker = hash[auth["provider"]]
-      user.save!
-    end
-  end
-
-  def self.count_all_time_contributor
-    notes = Node.where(type: 'note', status: 1).pluck(:uid)
-    answers = Answer.pluck(:uid)
-    questions = Node.questions.where(status: 1).pluck(:uid)
-    comments = Comment.pluck(:uid)
-    revisions = Revision.where(status: 1).pluck(:uid)
-    contributors = (notes + answers + questions + comments + revisions).compact.uniq.length
   end
 end
