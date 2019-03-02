@@ -11,7 +11,7 @@ env:
 
 before_install:
   - echo -e "repo_token:\n  $COVERALLS_REPO_TOKEN" >> ./.coveralls.yml
-  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+  # - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
 
 install:
   - cp config/database.yml.example config/database.yml
@@ -37,12 +37,12 @@ script:
   - tail -n +2 -q ./test/reports/TEST*.xml >> output.xml
   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then danger --verbose; fi'
   
-before_script:
-  - export DISPLAY=:99.0
-  - ln -s /usr/lib/chromium-browser/chromedriver ~/bin/chromedriver
+# before_script:
+#   - export DISPLAY=:99.0
+#   - ln -s /usr/lib/chromium-browser/chromedriver ~/bin/chromedriver
 
-addons:
-  chrome: stable
-  apt:
-    packages:
-      - chromium-chromedriver
+# addons:
+#   chrome: stable
+#   apt:
+#     packages:
+#       - chromium-chromedriver

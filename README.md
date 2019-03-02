@@ -93,7 +93,7 @@ For information on how to install for use with the cloud environment, please see
 9. By default, start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser.
 (for local SSL work, see [SSL](#ssl+in+development) below)
 10. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
-11. Run `rails test` to confirm that your install is working properly.
+11. Run `rails test` to confirm that your install is working properly. Or `rails test:system` for system tests.
 
 ## SSL in Development
 

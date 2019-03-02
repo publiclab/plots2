@@ -2,7 +2,7 @@ require "application_system_test_case"
 # https://guides.rubyonrails.org/testing.html#implementing-a-system-test
 
 class SearchTest < ApplicationSystemTestCase
-  test 'search autocomplete' do
+  test 'searching an item from the homepage' do
     visit '/'
 
     fill_in("searchform_input", with: "Canon")
