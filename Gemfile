@@ -36,7 +36,6 @@ gem 'omniauth-github', '~> 1.1', '>= 1.1.2'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
 gem "paperclip", "~> 6.1.0"
-gem 'passenger'
 gem "php-serialize", :require => "php_serialize"
 gem 'progress_bar'
 gem 'rack-cors', :require => 'rack/cors'
@@ -70,6 +69,7 @@ gem 'mailman', require: false
 
 # To convert html to markdown
 gem 'reverse_markdown'
+# gem 'mysql2', '>= 0.4.4'
 
 gem 'twitter'
 
@@ -99,6 +99,7 @@ group :development do
 end
 
 group :test, :development do
+  gem 'puma', '~> 3.12'
   gem 'capybara'
   gem 'ci_reporter_test_unit'
   gem 'coveralls', require: false
@@ -121,4 +122,5 @@ end
 
 group :production do
   gem "scrypt", "~> 3"
+  gem 'passenger'
 end
