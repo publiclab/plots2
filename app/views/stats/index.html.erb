@@ -1,48 +1,41 @@
-<%# <div class="col-md-2"> %>
-
-<%#   <%= raw t('notes.stats.about_this_page') %1> %>
-<%#   <%= render 'stats_nav' %1> %>
-
-<%# </div> %>
-
 <div class="col-md-12 col-md-offset-1" style="margin-bottom:20px;">
 
-  <h2><%= raw t('notes.stats.contributors_statistics') %></h2>
-  <hr>
+    <h2><%= raw t('notes.stats.contributors_statistics') %></h2>
+    <hr>
 
-  <h5> See also <%= link_to "subscription statistics", stats_subscriptions_path %> </h5>
-  <h4><b><%= raw t('notes.stats.research_notes_posted_by_contributors', :note_count => @all_notes, :contributors_count => @all_contributors,
-                   :time => time_ago_in_words(Node.find_by(type: 'note', status: 1).created_at)) %></b></h4>
-  <br>
+    <h5> See also <%= link_to "subscription statistics", stats_subscriptions_path %> </h5>
+    <h4><b><%= raw t('notes.stats.research_notes_posted_by_contributors', :note_count => @all_notes, :contributors_count => @all_contributors,
+                     :time => time_ago_in_words(Node.find_by(type: 'note', status: 1).created_at)) %></b></h4>
+    <br>
 
-  <div class="row">
-      <div class=col-md-6>
-          <h5> Statistics from <%= @start.to_formatted_s(:long)%> to <%= @end.to_formatted_s(:long)%> </h5>
-      </div>
-      <div class=col-md-2>
-    <%= form_tag request.url, method: 'get' do %>
-        <%= select_tag :options, options_for_select(["Week", "Month","Year"]), prompt: "Filter period: ",
-            class: " form-control custom-select", onchange: "this.form.submit();" %>
-    <% end %>
-      </div>
-  </div>
+    <div class="row">
+        <div class=col-md-6>
+            <h5> Statistics from <%= @start.to_formatted_s(:long)%> to <%= @end.to_formatted_s(:long)%> </h5>
+        </div>
+        <div class=col-md-2>
+            <%= form_tag request.url, method: 'get' do %>
+                <%= select_tag :options, options_for_select(["Week", "Month","Year"]), prompt: "Filter period: ",
+                    class: " form-control custom-select", onchange: "this.form.submit();" %>
+            <% end %>
+        </div>
+    </div>
 
-<%= render 'range' %>
+    <%= render 'range' %>
 </div>
 
 
 <% if @popular_tags.present? %>
-  <br> <br>
-<div id="chart1"> </div>
+    <br> <br>
+    <div id="chart1"> </div>
 <% end %>
 
 <h4 align="center"> <u>  Notes, Wikis and Comments Statistics between <%= @start.to_date%> to <%= @end.to_date%> </u></h4>
 <br>
-    <div id="timeline"></div>
-    <p><b><%= raw t('notes.stats.edits_per_week', :count => @edits_per_week_past_year.round(2)) %></b></p>
-    <p><b><%= raw t('notes.stats.notes_per_week_past_year', :note_count => @notes_per_week_past_year.round(2)) %></b></p>
-    <br>
-    <i> Member registration may include spam accounts </i>
+<div id="timeline"></div>
+<p><b><%= raw t('notes.stats.edits_per_week', :count => @edits_per_week_past_year.round(2)) %></b></p>
+<p><b><%= raw t('notes.stats.notes_per_week_past_year', :note_count => @notes_per_week_past_year.round(2)) %></b></p>
+<br>
+<i> Member registration may include spam accounts </i>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
 var options = {
