@@ -418,7 +418,7 @@ class User < ActiveRecord::Base
       user.username = email_prefix
       user.email = auth["info"]["email"]
       user.password = generated_password
-      user.status = 1
+      user.status = Status::NORMAL
       user.password_confirmation = generated_password
       user.password_checker = provider[auth["provider"]]
       user.save!
