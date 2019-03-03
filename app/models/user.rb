@@ -412,8 +412,11 @@ class User < ActiveRecord::Base
     contributors
   end
 
-  def self.create_with_omniauth(auth)
-    email_prefix = auth["info"]["email"].tr('.', '_').split('@')[0] + '_pl'
+   def self.create_with_omniauth(auth)
+    random_chars = [*'A'..'Z', *'a'..'z', *0..9].sample(2).join
+
+    email_prefix = auth["info"]["email"].tr('.', '_').split('@')[0]
+    email_prefix = auth["info"]["email"].tr('.', '_').split('@')[0] + random_chars until User.where(username: email_prefix).empty?
 
     provider = { "facebook" => 1, "github" => 2, "google_oauth2" => 3, "twitter" => 4 }
 

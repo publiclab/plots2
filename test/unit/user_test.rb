@@ -43,7 +43,7 @@ class UserTest < ActiveSupport::TestCase
     }
     user = User.create_with_omniauth(auth)
     assert_equal 1, user.status
-    assert_equal 'bobafett_pl', user.username
+    assert_equal 'bobafett', user.username
     assert_equal 2, user.password_checker
   end
 
@@ -231,7 +231,7 @@ class UserTest < ActiveSupport::TestCase
     assert_not_nil sidharth
     assert_equal sidharth.email, "bansal.sidharth2990@gmail.com"
     #as username "bansal_sidharth2990" does not exist in the db, user with username = "bansal_sidharth2990" will be created
-    assert_equal sidharth.username, "bansal_sidharth2990_pl"
+    assert_equal sidharth.username, "bansal_sidharth2990"
   end
 
   test 'create a user with omniauth if email prefix does exist in db' do
