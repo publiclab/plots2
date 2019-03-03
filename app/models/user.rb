@@ -12,15 +12,18 @@ class User < ActiveRecord::Base
   self.table_name = 'rusers'
   alias_attribute :name, :username
 
-  NORMAL = 1 # Usage: User::NORMAL
-  BANNED = 0 # Usage: User::BANNED
-  MODERATED = 5 # Usage: User::MODERATED
+  module Status
+    VALUES = [
+      NORMAL = 1,   # Usage: Status::NORMAL
+      BANNED = 0,   # Usage: Status::BANNED
+      MODERATED = 5 # Usage: Status::MODERATED
+    ].freeze
+  end
 
   attr_readonly :username
 
   acts_as_authentic do |c|
-    VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
-    c.validates_format_of_email_field_options = { with: VALID_EMAIL_REGEX }
+    c.validates_format_of_email_field_options = { with: URI::MailTo::EMAIL_REGEXP }
     c.crypto_provider = Authlogic::CryptoProviders::Sha512
   end
 
@@ -50,8 +53,8 @@ class User < ActiveRecord::Base
 
   before_save :set_token
 
-  scope :past_week, -> { where("created_at > ?", Time.now - 7.days) }
-  scope :past_month, -> { where("created_at > ?", Time.now - 1.months) }
+  scope :past_week, -> { where("created_at > ?", 7.days.ago) }
+  scope :past_month, -> { where("created_at > ?", 1.month.ago) }
 
   def self.search(query)
     User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', query + '*')
@@ -61,12 +64,12 @@ class User < ActiveRecord::Base
     User.where('MATCH(username) AGAINST(? IN BOOLEAN MODE)', query + '*')
   end
 
-  def is_new_contributor
-    Node.where(uid: id).length === 1 && Node.where(uid: id).first.created_at > Date.today - 1.month
+  def is_new_contributor?
+    Node.where(uid: id).length === 1 && Node.where(uid: id).first.created_at > 1.month.ago
   end
 
   def new_contributor
-    return "<a href='/tag/first-time-poster' class='label label-success'><i>new contributor</i></a>".html_safe if is_new_contributor
+    return "<a href='/tag/first-time-poster' class='label label-success'><i>new contributor</i></a>".html_safe if is_new_contributor?
   end
 
   def set_token
@@ -92,12 +95,10 @@ class User < ActiveRecord::Base
   end
 
   def generate_reset_key
-    # invent a key and save it
-    key = ''
-    20.times do
-      key += [*'a'..'z'].sample
-    end
+    key = [*'a'..'z'].sample(20).join
+
     update_attribute(:reset_key, key)
+
     key
   end
 
@@ -135,11 +136,10 @@ class User < ActiveRecord::Base
   end
 
   def can_moderate?
-    # use instead of "user.role == 'admin' || user.role == 'moderator'"
     admin? || moderator?
   end
 
-  def is_coauthor(node)
+  def is_coauthor?(node)
     id == node.author.id || node.has_tag("with:#{username}")
   end
 
@@ -210,11 +210,11 @@ class User < ActiveRecord::Base
   end
 
   def first_time_poster
-    notes.where(status: 1).count == 0
+    notes.where(status: 1).count.zero?
   end
 
   def first_time_commenter
-    Comment.where(status: 1, uid: uid).count == 0
+    Comment.where(status: 1, uid: uid).count.zero?
   end
 
   def follow(other_user)
@@ -231,7 +231,6 @@ class User < ActiveRecord::Base
 
   def profile_image
     if photo_file_name
-      puts photo_path(:thumb)
       photo_path(:thumb)
     else
       "https://www.gravatar.com/avatar/#{OpenSSL::Digest::MD5.hexdigest(email)}"
@@ -268,35 +267,35 @@ class User < ActiveRecord::Base
   end
 
   def moderate
-    self.status = 5
-    self.save
+    self.status = Status::MODERATED
+    save
     # user is logged out next time they access current_user in a controller; see application controller
     self
   end
 
   def unmoderate
-    self.status = 1
-    self.save
+    self.status = Status::NORMAL
+    save
     self
   end
 
   def ban
     decrease_likes_banned
-    self.status = 0
-    self.save
+    self.status = Status::BANNED
+    save
     # user is logged out next time they access current_user in a controller; see application controller
     self
   end
 
   def unban
     increase_likes_unbanned
-    self.status = 1
-    self.save
+    self.status = Status::NORMAL
+    save
     self
   end
 
   def banned?
-    status.zero?
+    status == Status::BANNED
   end
 
   def note_count
@@ -310,7 +309,10 @@ class User < ActiveRecord::Base
   def liked_notes
     Node.includes(:node_selections)
       .references(:node_selections)
-      .where("type = 'note' AND node_selections.liking = ? AND node_selections.user_id = ? AND node.status = 1", true, id)
+      .where("type = 'note' AND \
+              node_selections.liking = ? \
+              AND node_selections.user_id = ? \
+              AND node.status = 1", true, id)
       .order('node_selections.nid DESC')
   end
 
@@ -323,8 +325,8 @@ class User < ActiveRecord::Base
   end
 
   def send_digest_email
-    top_picks = content_followed_in_period(Time.now - 1.week, Time.now)
-    if top_picks.count > 0
+    top_picks = content_followed_in_period(1.week.ago, Time.now)
+    if top_picks.count.positive?
       SubscriptionMailer.send_digest(id, top_picks).deliver_now
     end
   end
@@ -352,7 +354,6 @@ class User < ActiveRecord::Base
     begin
       decrypted_data = User.decrypt(token)
     rescue ActiveSupport::MessageVerifier::InvalidSignature => e
-      puts e.message
       return 0
     end
     if (Time.now - decrypted_data[:timestamp]) / 1.hour > 24.0
@@ -366,14 +367,14 @@ class User < ActiveRecord::Base
 
   def decrease_likes_banned
     node_selections.each do |selection|
-      selection.node.cached_likes = selection.node.cached_likes - 1
+      selection.node.cached_likes -= 1
       selection.node.save!
     end
   end
 
   def increase_likes_unbanned
     node_selections.each do |selection|
-      selection.node.cached_likes = selection.node.cached_likes + 1
+      selection.node.cached_likes += 1
       selection.node.save!
     end
   end
@@ -386,7 +387,11 @@ class User < ActiveRecord::Base
   def self.watching_location(nwlat, selat, nwlng, selng)
     raise("Must be a float") unless (nwlat.is_a? Float) && (nwlng.is_a? Float) && (selat.is_a? Float) && (selng.is_a? Float)
 
-    tids = Tag.where("SUBSTRING_INDEX(term_data.name,':',1) = ? AND SUBSTRING_INDEX(SUBSTRING_INDEX(term_data.name, ':', 2),':',-1)+0 <= ? AND SUBSTRING_INDEX(SUBSTRING_INDEX(term_data.name, ':', 3),':',-1)+0 <= ? AND SUBSTRING_INDEX(SUBSTRING_INDEX(term_data.name, ':', 4),':',-1)+0 <= ? AND SUBSTRING_INDEX(term_data.name, ':', -1) <= ?", 'subscribed', nwlat, nwlng, selat, selng).collect(&:tid).uniq || []
+    tids = Tag.where("SUBSTRING_INDEX(term_data.name,':',1) = ? \
+                      AND SUBSTRING_INDEX(SUBSTRING_INDEX(term_data.name, ':', 2),':',-1)+0 <= ? \
+                      AND SUBSTRING_INDEX(SUBSTRING_INDEX(term_data.name, ':', 3),':',-1)+0 <= ? \
+                      AND SUBSTRING_INDEX(SUBSTRING_INDEX(term_data.name, ':', 4),':',-1)+0 <= ? \
+                      AND SUBSTRING_INDEX(term_data.name, ':', -1) <= ?", 'subscribed', nwlat, nwlng, selat, selng).collect(&:tid).uniq || []
     uids = TagSelection.where('tag_selections.tid IN (?)', tids).collect(&:user_id).uniq || []
 
     User.where("id IN (?)", uids).order(:id)
@@ -432,14 +437,5 @@ class User < ActiveRecord::Base
     comments = Comment.pluck(:uid)
     revisions = Revision.where(status: 1).pluck(:uid)
     contributors = (notes + answers + questions + comments + revisions).compact.uniq.length
-  end
-
-  def self.to_csv(options = {})
-    CSV.generate(options) do |csv|
-      csv << column_names
-      all.each do |object|
-        csv << object.attributes.values_at(*column_names)
-      end
-    end
   end
 end

@@ -33,7 +33,7 @@ GEM
       activemodel (= 5.2.2)
       activesupport (= 5.2.2)
       arel (>= 9.0)
-    activerecord-session_store (1.1.1)
+    activerecord-session_store (1.1.2)
       actionpack (>= 4.0)
       activerecord (>= 4.0)
       multi_json (~> 1.11, >= 1.11.2)
@@ -279,7 +279,7 @@ GEM
     parallel (1.13.0)
     parser (2.6.0.0)
       ast (~> 2.4.0)
-    passenger (6.0.1)
+    passenger (6.0.2)
       rack
       rake (>= 0.8.1)
     phantomjs (2.1.1.0)
@@ -473,7 +473,7 @@ GEM
     whenever (0.10.0)
       chronic (>= 0.6.3)
     will_paginate (3.1.6)
-    will_paginate-bootstrap (1.0.1)
+    will_paginate-bootstrap (1.0.2)
       will_paginate (>= 3.0.3)
 
 PLATFORMS

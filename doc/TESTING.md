@@ -22,8 +22,10 @@ See [plots2 on CodeClimate](https://codeclimate.com/github/publiclab/plots2) for
 
 Client-side tests (for JavaScript functions) are run using [teaspoon-mocha](https://github.com/jejacks0n/teaspoon) tests. You can run tests by navigating to `/teaspoon/` in the browser. Headless, or command-line test running may be possible with:
 
-
 `rake teaspoon`
+
+JavaScript tests can be found here: https://github.com/publiclab/plots2/tree/master/spec/javascripts but they're limited because they are only run against static HTML fixture files, which need to be kept up to date to match what's in the actual site HTML. 
+We're also interested in exploring System Tests, which would run full-stack tests in a headless Chrome environment and allow testing of JavaScript functions on live code; see https://github.com/publiclab/plots2/issues/3683
 
 ****
 
