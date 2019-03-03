@@ -197,26 +197,18 @@ class Node < ActiveRecord::Base
     weeks
   end
 
-  def self.contribution_graph_making(type = 'note', span = 52, time = Time.now)
-    weeks = {}
-    week = span
-    count = 0
-    while week >= 1
-      # initialising month variable with the month of the starting day
-      # of the week
-      month = time - (week * 7 - 1).days
 
-      # Now fetching the weekly data of notes or wikis
-      current_week = Node.select(:created)
+  def self.contribution_graph_making(type = 'note', start_time = Time.now-1.month, end_time = Time.now)
+    date_hash = {}
+    (start_time.to_date..end_time.to_date).each do |date|
+      daily_nodes = Node.select(:created)
                     .where(type: type,
                     status: 1,
-                    created: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
+                    created: (date.beginning_of_week.to_time.to_i)..(date.end_of_week.to_time.to_i))
                     .count
-      weeks[count] = [(month.to_f * 1000), current_week]
-      count += 1
-      week -= 1
+      date_hash[(date.beginning_of_week.to_time.to_i).to_f * 1000] = daily_nodes
     end
-    weeks
+    date_hash
   end
 
   def notify

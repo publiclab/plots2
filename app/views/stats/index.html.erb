@@ -36,7 +36,7 @@
 <div id="chart1"> </div>
 <% end %>
 
-<h3 align="center"> <u>  Notes, Wikis and Comments Statistics in this period </u></h3>
+<h4 align="center"> <u>  Notes, Wikis and Comments Statistics between <%= @start.to_date%> to <%= @end.to_date%> </u></h4>
 <br>
     <div id="timeline"></div>
     <p><b><%= raw t('notes.stats.edits_per_week', :count => @edits_per_week_past_year.round(2)) %></b></p>
@@ -101,14 +101,14 @@ var options = {
     },
     series: [{
         name: 'Notes',
-        data: generateWeekWiseTimeSeries(0, 52)
+        data: generateWeekWiseTimeSeries(0)
 
     }, {
         name: 'Wikis',
-        data: generateWeekWiseTimeSeries(1, 52)
+        data: generateWeekWiseTimeSeries(1)
     }, {
         name: 'Comments',
-        data: generateWeekWiseTimeSeries(2, 52)
+        data: generateWeekWiseTimeSeries(2)
 
     }],
         markers: {
@@ -181,15 +181,16 @@ var options = {
 var chart = new ApexCharts(document.querySelector("#timeline"), options);
 
 chart.render();
-function generateWeekWiseTimeSeries(s, count) {
+function generateWeekWiseTimeSeries(s) {
     var values = [
-        <%= @graph_notes.values.collect {|ind| ind[1]} %>,
-        <%= @graph_wikis.values.collect {|ind| ind[1]} %>,
-        <%= @graph_comments.values.collect {|ind| ind[1]} %>,
+        <%= @graph_notes.values %>,
+        <%= @graph_wikis.values %>,
+        <%= @graph_comments.values %>,
     ];
 
     var i = 0;
-    var months_dates = <%= @graph_notes.values.collect {|ind| ind[0]} %>
+    var months_dates = <%= @graph_notes.keys %>;
+    var count = months_dates.length;
     var months = months_dates.map(x =>  new Date(x).getTime());
     var series = [];
     while (i < count) {

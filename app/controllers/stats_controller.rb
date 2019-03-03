@@ -52,9 +52,9 @@ class StatsController < ApplicationController
     @notes_per_week_past_year = Node.past_year.select(:type).where(type: 'note').count(:all) / 52.0
     @edits_per_week_past_year = Revision.past_year.count / 52.0
 
-    @graph_notes = Node.contribution_graph_making('note', 52, @end)
-    @graph_wikis = Node.contribution_graph_making('page', 52, @end)
-    @graph_comments = Comment.contribution_graph_making(52, @end)
+    @graph_notes = Node.contribution_graph_making('note', @start, @end)
+    @graph_wikis = Node.contribution_graph_making('page', @start, @end)
+    @graph_comments = Comment.contribution_graph_making(@start, @end)
 
     users = []
     nids = []
