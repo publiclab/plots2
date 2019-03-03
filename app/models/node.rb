@@ -197,8 +197,7 @@ class Node < ActiveRecord::Base
     weeks
   end
 
-
-  def self.contribution_graph_making(type = 'note', start_time = Time.now-1.month, end_time = Time.now)
+  def self.contribution_graph_making(type = 'note', start_time = Time.now - 1.month, end_time = Time.now)
     date_hash = {}
     (start_time.to_date..end_time.to_date).each do |date|
       daily_nodes = Node.select(:created)
@@ -206,7 +205,7 @@ class Node < ActiveRecord::Base
                     status: 1,
                     created: (date.beginning_of_week.to_time.to_i)..(date.end_of_week.to_time.to_i))
                     .count
-      date_hash[(date.beginning_of_week.to_time.to_i).to_f * 1000] = daily_nodes
+      date_hash[date.beginning_of_week.to_time.to_i.to_f * 1000] = daily_nodes
     end
     date_hash
   end
