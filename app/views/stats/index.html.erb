@@ -10,7 +10,7 @@
   <h2><%= raw t('notes.stats.contributors_statistics') %></h2>
   <hr>
 
-    See also <%= link_to "subscription statistics", stats_subscriptions_path %>
+  <h5> See also <%= link_to "subscription statistics", stats_subscriptions_path %> </h5>
   <h4><b><%= raw t('notes.stats.research_notes_posted_by_contributors', :note_count => @all_notes, :contributors_count => @all_contributors,
                    :time => time_ago_in_words(Node.find_by(type: 'note', status: 1).created_at)) %></b></h4>
   <br>
@@ -36,12 +36,13 @@
 <div id="chart1"> </div>
 <% end %>
 
-<h3 align="center"> <u>  Notes, Wikis and Comments Statistics in the past year </u></h3>
+<h3 align="center"> <u>  Notes, Wikis and Comments Statistics in this period </u></h3>
 <br>
     <div id="timeline"></div>
-    <p><b><%= raw t('notes.stats.edits_per_week', :count => @edits_per_week_past_year.round(2)) %><b></p>
+    <p><b><%= raw t('notes.stats.edits_per_week', :count => @edits_per_week_past_year.round(2)) %></b></p>
     <p><b><%= raw t('notes.stats.notes_per_week_past_year', :note_count => @notes_per_week_past_year.round(2)) %></b></p>
     <br>
+    <i> Member registration may include spam accounts </i>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
 var options = {
