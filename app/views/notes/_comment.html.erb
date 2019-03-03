@@ -167,8 +167,12 @@
 
 
     <% if comment.reply_to.nil? %>
-      <div id="answer-0-comment" style="margin-top: 30px;">
-        <div id="answer-0-comment-section">
+      <% comment.replied_comments.order("timestamp ASC").each do |replied_comment| %>
+        <%= render :partial => "notes/comment", :locals => {:comment => replied_comment} %>
+      <% end %>
+
+      <div id="comment-<%= comment.cid %>-reply" style="margin-top: 30px;">
+        <div id="comment-<%= comment.cid %>-reply-section">
           <% if current_user %>
             <div class="inline" id="question-comment-form">
               <%= render :partial => "comments/form", :locals => { title: "Reply to this comment", reply_to: comment.cid, comment: false, placeholder: "Help the author refine their post, or point them at other helpful information on the site. Mention users by @username to notify them of this thread by email", type: "question" } %>

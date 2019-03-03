@@ -4,10 +4,12 @@
     <h3><span id="comment-count"><%= comments.length %></span> <%= t('notes._comments.comments') %></h3>
 
     <div style="margin-bottom: 50px;" id="comments-container">
-      <% comments.order('timestamp ASC').each do |comment| %>
+      <% comments.includes(:replied_comments).order('timestamp ASC').each do |comment| %>
         <% if comment.cid == @node.comments.first.cid %><a id="last" name="last"></a><% end %>
 
-        <%= render :partial => "notes/comment", :locals => {:comment => comment} %>
+        <% if comment.reply_to.nil? %>
+          <%= render :partial => "notes/comment", :locals => {:comment => comment} %>
+        <% end %>
 
       <% end %>
     </div>

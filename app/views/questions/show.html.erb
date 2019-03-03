@@ -50,8 +50,10 @@
 
   <% comments = @node.fetch_comments(current_user) %>
   <h3><span id="answer-0-comment-count"><%= comments.length %></span> Comments</h3>
-    <% comments.order("timestamp ASC").each do |comment| %>
-      <%= render :partial => "notes/comment", :locals => {:comment => comment} %>
+    <% comments.includes(:replied_comments).order("timestamp ASC").each do |comment| %>
+      <% if comment.reply_to.nil? %>
+        <%= render :partial => "notes/comment", :locals => {:comment => comment} %>
+      <% end %>
     <% end %>
     <div id="answer-0-comment" style="margin-top: 30px;">
       <div id="answer-0-comment-section">
@@ -60,7 +62,7 @@
             <%= render :partial => "comments/form", :locals => { title: "Post Comment", comment: false, placeholder: "Help the author refine their post, or point them at other helpful information on the site. Mention users by @username to notify them of this thread by email", type: "question" } %>
         </div>
       <% else %>
-        <p><a data-toggle="modal" data-target="#loginModal">Log in</a> to comment</p> 
+        <p><a data-toggle="modal" data-target="#loginModal">Log in</a> to comment</p>
       <% end %>
       </div>
   </div>
