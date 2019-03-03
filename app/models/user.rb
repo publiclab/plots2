@@ -412,7 +412,7 @@ class User < ActiveRecord::Base
     contributors
   end
 
-   def self.create_with_omniauth(auth)
+  def self.create_with_omniauth(auth)
     random_chars = [*'A'..'Z', *'a'..'z', *0..9].sample(2).join
 
     email_prefix = auth["info"]["email"].tr('.', '_').split('@')[0]
@@ -431,7 +431,7 @@ class User < ActiveRecord::Base
       user.password_checker = provider[auth["provider"]]
       user.save!
     end
-  end
+ end
 
   def self.count_all_time_contributor
     notes = Node.where(type: 'note', status: 1).pluck(:uid)
