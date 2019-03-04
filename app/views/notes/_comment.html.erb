@@ -122,11 +122,7 @@
 
     $(function () {
       $('[data-toggle="tooltip"]').tooltip()
-    });
-
-    $("#comment-<%= comment.cid %>-reply-toggle").click(function () {
-        $("#comment-<%= comment.cid %>-reply").toggle();
-    });
+    })
   </script>
 
   <div style="border: 1px solid #e7e7e7;padding: 18px;" id="c<%= comment.cid %>show">
@@ -196,6 +192,12 @@
   <br />
 
 </div>
+
+<script>
+  $("#comment-<%= comment.cid %>-reply-toggle").click(function () {
+    $("#comment-<%= comment.cid %>-reply").toggle();
+  });
+</script>
 
 <style>
   .open>#emoji-dropdown.dropdown-menu {
