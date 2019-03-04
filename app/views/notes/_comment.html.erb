@@ -34,7 +34,7 @@
       <% end %>
     </div>
 
-    <div class="navbar-text navbar-right pull-right" style="padding-right:10px;">
+    <div class="navbar-text navbar-right pull-right" style="padding-right:10px;margin-right: 0;">
       <% if comment.author && comment.author && comment.author.role %>
       <!-- Role icon for admins & moderators
         <% if comment.author.role == 'admin' %>
@@ -44,24 +44,6 @@
         <% end %>
       -->
       <% end %>
-
-        <ul class="btn-group" style="margin-top: 10px;">
-          <% if !current_user %>
-              <li rel="tooltip" title="Helpful? Like it and get updates!" class="btn btn-default btn-sm btn-like">
-                <%= link_to  new_user_session_path( return_to: request.path ), style: "text-decoration: none; color: black;" do %>
-                    <span class="fa fa-star-o"></span>
-                    <span><%= comment.likers.count %></span>
-                <% end %>
-          <% else %>
-            <% str = "/comment/like?comment_id=#{comment.cid}&user_id=#{current_user.uid}" %>
-            <li rel="tooltip" title="Helpful? Like it and get updates!" class="btn btn-default btn-sm btn-like">
-              <%= link_to str, data: { method: "post", remote: true }, style: "text-decoration: none; color: black;" do %>
-                  <span id="comment-like-star-<%= comment.cid %>-<%= current_user.uid %>" class="fa fa-star<% if !comment.liked_by(current_user.uid) %>-o<% end %>"></span>
-                  <span id="comment-like-count-<%= comment.cid %>-<%= current_user.uid %>"><%= comment.likers.count %></span>
-              <% end %>
-          <% end %>
-          </li>
-        </ul>
 
       <% if current_user && comment.uid == current_user.uid %>
         <a class="btn btn-default btn-sm" href="javascript:void(0)" onClick="$('#c<%= comment.cid %>edit').toggle();$('#c<%= comment.cid %>show').toggle();setInit(<%= comment.cid %>);">
@@ -140,7 +122,11 @@
 
     $(function () {
       $('[data-toggle="tooltip"]').tooltip()
-    })
+    });
+
+    $("#comment-<%= comment.cid %>-reply-toggle").click(function () {
+        $("#comment-<%= comment.cid %>-reply").toggle();
+    });
   </script>
 
   <div style="border: 1px solid #e7e7e7;padding: 18px;" id="c<%= comment.cid %>show">
@@ -171,7 +157,8 @@
         <%= render :partial => "notes/comment", :locals => {:comment => replied_comment} %>
       <% end %>
 
-      <div id="comment-<%= comment.cid %>-reply" style="margin-top: 30px;">
+      <p style="color: #006dcc;cursor: pointer;margin-top: 20px;" id="comment-<%= comment.cid %>-reply-toggle">Reply to this comment...</p>
+      <div id="comment-<%= comment.cid %>-reply" style="margin-top: 30px;display: none;">
         <div id="comment-<%= comment.cid %>-reply-section">
           <% if current_user %>
             <div class="inline" id="question-comment-form">

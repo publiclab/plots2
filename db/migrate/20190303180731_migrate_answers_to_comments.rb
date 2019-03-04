@@ -9,7 +9,6 @@ class MigrateAnswersToComments < ActiveRecord::Migration[5.2]
         comment.reply_to = c.cid
         comment.save
       end
-      answer.delete
     end
   end
 end
