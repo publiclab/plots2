@@ -910,19 +910,19 @@ en:
     only_author_use_powertag: "Error: only the author may use that powertag."
   spamaway:
     human:
-      statement1: '🐑'
-      statement2: '🐹'
-      statement3: '🐼'
-      statement4: '🐔'
-      statement5: '🐧'
-      statement6: '🦊'
+      statement1: "\U0001F411"
+      statement2: "\U0001F439"
+      statement3: "\U0001F43C"
+      statement4: "\U0001F414"
+      statement5: "\U0001F427"
+      statement6: "\U0001F98A"
     robot:
-      statement1: '⏰'
-      statement2: '📠'
-      statement3: '🖨'
-      statement4: '📻'
-      statement5: '💾'
-      statement6: '📺'
+      statement1: "\U000023F0"
+      statement2: "\U0001F4E0"
+      statement3: "\U0001F5A8"
+      statement4: "\U0001F4FB"
+      statement5: "\U0001F4BE"
+      statement6: "\U0001F4FA"
     errors:
       please_read_instructions: "Please read the instructions in the last box carefully."
       not_a_real_person: "-- It doesn't seem like you are a real person! If you disagree or are having trouble, please see https://publiclab.org/registration-test."
