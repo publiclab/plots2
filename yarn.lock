@@ -83,9 +83,9 @@ acorn@^6.0.2:
   integrity sha512-VY4i5EKSKkofY2I+6QLTbTTN/UvEQPCo6eiwzzSaSWfpaDhOmStMCMod6wmuPciNq+XS0faCglFu2lHZpdHUtg==
 
 ajv@^6.5.5:
-  version "6.9.1"
-  resolved "https://registry.yarnpkg.com/ajv/-/ajv-6.9.1.tgz#a4d3683d74abc5670e75f0b16520f70a20ea8dc1"
-  integrity sha512-XDN92U311aINL77ieWHmqCcNlwjoP5cHXDxIxbf2MaPYuCXOHS7gHH8jktxeK5omgd52XbSTX6a4Piwd1pQmzA==
+  version "6.10.0"
+  resolved "https://registry.yarnpkg.com/ajv/-/ajv-6.10.0.tgz#90d0d54439da587cd7e843bfb7045f50bd22bdf1"
+  integrity sha512-nffhOpkymDECQyR0mnsUtoCE8RlX38G0rYP+wgLWFyZuUyuuojSSvi/+euOiQBIn63whYwYVIIH1TvE3tu4OEg==
   dependencies:
     fast-deep-equal "^2.0.1"
     fast-json-stable-stringify "^2.0.0"
@@ -1455,11 +1455,6 @@ fd-slicer@~1.0.1:
   dependencies:
     pend "~1.2.0"
 
-file-saver@^1.3.3:
-  version "1.3.8"
-  resolved "https://registry.yarnpkg.com/file-saver/-/file-saver-1.3.8.tgz#e68a30c7cb044e2fb362b428469feb291c2e09d8"
-  integrity sha512-spKHSBQIxxS81N/O21WmuXA2F6wppUCsutpzenOeZzOCCJ5gEfcbqJP983IrpLXzYmXnMUa6J03SubcNPdKrlg==
-
 file-saver@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/file-saver/-/file-saver-2.0.0.tgz#74eef7748159503b60008a15af2f1930fb5df7ab"
@@ -2044,7 +2039,6 @@ ics@nwcell/ics.js#^0.2.0:
   resolved "https://codeload.github.com/nwcell/ics.js/tar.gz/4f2e67a79af161af74d986ecc47c3d166a074f11"
   dependencies:
     bower "~1.2.8"
-    file-saver "^1.3.3"
     grunt "~0.4.2"
     grunt-contrib-concat "~0.3.0"
     grunt-contrib-jshint "~0.7.2"
@@ -3270,9 +3264,9 @@ psl@^1.1.24, psl@^1.1.28:
   integrity sha512-/6pt4+C+T+wZUieKR620OpzN/LlnNKuWjy1iFLQ/UG35JqHlR/89MP1d96dUfkf6Dne3TuLQzOYEYshJ+Hx8mw==
 
 publiclab-editor@^2.0.0:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/publiclab-editor/-/publiclab-editor-2.0.1.tgz#127b49afcb622860cad1213d4ea61febf83d80de"
-  integrity sha512-ldOmtaB34fWPAfPOnJiNiK3z+1hVxEvc4QBgQSnQJ6hL5SHNqKoD3wL5dmOYTmsd8i6uFVsSMZ9/dvDbvXYf5A==
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/publiclab-editor/-/publiclab-editor-2.0.2.tgz#d0017f1337232d776e64e6acda1156a470cf9ce2"
+  integrity sha512-IQrGNqDFsigoSChDzTf3AbWQDFHk6URpWZP7VIbzVFgvUfTsJ6dbTshlyBn0qSR6PVbh6/aFI9S9rYq0/cGxzQ==
   dependencies:
     at.js "^1.5.4"
     backbone "~1.3.3"
