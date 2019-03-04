@@ -41,8 +41,8 @@
   margin-bottom: 0;
   font-size: 14px;
   color: #888;
-}                          
-                           
+}
+
 .dashboard .stats h4 b {
   font-weight: normal;
   color: #333;
@@ -65,7 +65,7 @@
 /* line-on-sides-header example based on https://css-tricks.com/line-on-sides-headers/ */
 .dashboard h3 i {
   display: inline-block;
-  position: relative;  
+  position: relative;
   font-style: normal;
 }
 
@@ -254,7 +254,7 @@
   color: #555;
 }
 
-.note-wiki    .btn-default:hover, 
+.note-wiki    .btn-default:hover,
 .note-comment .btn-default:hover {
   background: #eee;
 }
