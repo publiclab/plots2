@@ -413,23 +413,25 @@ class User < ActiveRecord::Base
   end
 
   def self.create_with_omniauth(auth)
-    # email prefix is part of email before @ with periods replaced with underscores
-    # generate a 2 digit alphanumeric number and append it at the end of email-prefix
-    charset = Array('A'..'Z') + Array('a'..'z') + Array(0..9)
+    random_chars = [*'A'..'Z', *'a'..'z', *0..9].sample(2).join
+
     email_prefix = auth["info"]["email"].tr('.', '_').split('@')[0]
-    email_prefix = auth["info"]["email"].tr('.', '_').split('@')[0] + Array.new(2) { charset.sample }.join until User.where(username: email_prefix).empty?
-    hash = { "facebook" => 1, "github" => 2, "google_oauth2" => 3, "twitter" => 4 }
+    email_prefix = auth["info"]["email"].tr('.', '_').split('@')[0] + random_chars until User.where(username: email_prefix).empty?
+
+    provider = { "facebook" => 1, "github" => 2, "google_oauth2" => 3, "twitter" => 4 }
+
     create! do |user|
-      s = SecureRandom.urlsafe_base64
+      generated_password = SecureRandom.urlsafe_base64
+
       user.username = email_prefix
       user.email = auth["info"]["email"]
-      user.password = s
+      user.password = generated_password
       user.status = Status::NORMAL
-      user.password_confirmation = s
-      user.password_checker = hash[auth["provider"]]
+      user.password_confirmation = generated_password
+      user.password_checker = provider[auth["provider"]]
       user.save!
     end
-  end
+ end
 
   def self.count_all_time_contributor
     notes = Node.where(type: 'note', status: 1).pluck(:uid)
