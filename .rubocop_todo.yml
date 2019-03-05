@@ -9,17 +9,17 @@
 
 Lint/UselessAssignment:
   Exclude:
-    - 'app/controllers/openid_controller.rb'
-    - 'app/controllers/tag_controller.rb'
-    - 'app/controllers/user_sessions_controller.rb'
-    - 'app/models/answer.rb'
-    - 'app/models/comment.rb'
-    - 'app/models/concerns/node_shared.rb'
-    - 'app/models/node.rb'
-    - 'app/models/tag.rb'
-    - 'app/models/user.rb'
-    - 'app/services/execute_search.rb'
-    - 'app/services/search_service.rb'
+    # - 'app/controllers/openid_controller.rb'
+    # - 'app/controllers/tag_controller.rb'
+    # - 'app/controllers/user_sessions_controller.rb'
+    # - 'app/models/answer.rb'
+    # - 'app/models/comment.rb'
+    # - 'app/models/concerns/node_shared.rb'
+    # - 'app/models/node.rb'
+    # - 'app/models/tag.rb'
+    # - 'app/models/user.rb'
+    # - 'app/services/execute_search.rb'
+    # - 'app/services/search_service.rb'
 
 # Offense count: 180
 Metrics/AbcSize:

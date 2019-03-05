@@ -33,6 +33,7 @@ class Node < ActiveRecord::Base
                     { views: :desc }
                   end
 
+    # We can drastically have this simplified using one DB
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       if order == :natural
         query = connection.quote(query.to_s)
@@ -53,14 +54,15 @@ class Node < ActiveRecord::Base
         where(nid: nids, status: 1)
       else
         nids = Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query).collect(&:nid)
-        tnids = Tag.find_nodes_by_type(query, type = %w(note page)).collect(&:nid) # include results by tag
+
+        tnids = Tag.find_nodes_by_type(query, %w(note page)).collect(&:nid) # include results by tag
         where(nid: nids + tnids, status: 1)
           .order(order_param)
           .limit(limit)
           .distinct
       end
     else
-      nodes = Node.limit(limit)
+      Node.limit(limit)
         .where('title LIKE ?', '%' + query + '%')
         .where(status: 1)
         .order(order_param)
@@ -72,15 +74,10 @@ class Node < ActiveRecord::Base
   end
 
   has_many :revision, foreign_key: 'nid', dependent: :destroy
-  # wasn't working to tie it to .vid, manually defining below
-  #  has_one :drupal_main_image, :foreign_key => 'vid', :dependent => :destroy
-  #  has_many :drupal_content_field_image_gallery, :foreign_key => 'nid'
   has_many :drupal_upload, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
   has_many :drupal_files, through: :drupal_upload
   has_many :node_tag, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
   has_many :tag, through: :node_tag
-  # these override the above... have to do it manually:
-  # has_many :tag, :through => :drupal_node_tag
   has_many :comments, foreign_key: 'nid', dependent: :destroy # re-enable in Rails 5
   has_many :drupal_content_type_map, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
   has_many :drupal_content_field_mappers, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
@@ -782,9 +779,9 @@ class Node < ActiveRecord::Base
 
   def delete_coord_attribute(tagname)
     if tagname.split(':')[0] == "lat"
-      table_updated = update_attributes(:latitude => nil, :precision => nil)
+      update_attributes(:latitude => nil, :precision => nil)
     else
-      table_updated = update_attributes(:longitude => nil)
+      update_attributes(:longitude => nil)
     end
   end
 
@@ -811,7 +808,8 @@ class Node < ActiveRecord::Base
                .where('term_data.name LIKE ?', 'question:%')
                .group('node.nid')
                .collect(&:nid)
-    notes = Node.where(type: 'note')
+
+    Node.where(type: 'note')
                 .where('node.nid NOT IN (?)', nids)
   end
 
@@ -836,10 +834,10 @@ class Node < ActiveRecord::Base
 
   # all questions
   def self.questions
-    questions = Node.where(type: 'note')
-                    .joins(:tag)
-                    .where('term_data.name LIKE ?', 'question:%')
-                    .group('node.nid')
+    Node.where(type: 'note')
+        .joins(:tag)
+        .where('term_data.name LIKE ?', 'question:%')
+        .group('node.nid')
   end
 
   # so we can quickly fetch activities corresponding to this node
@@ -987,7 +985,7 @@ class Node < ActiveRecord::Base
 
   def draft_url
     @token = slug.split('token:').last
-    url = 'https://publiclab.org/notes/show/' + nid.to_s + '/' + @token.to_s
+    'https://publiclab.org/notes/show/' + nid.to_s + '/' + @token.to_s
   end
 
   def fetch_comments(user)

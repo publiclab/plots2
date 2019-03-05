@@ -25,7 +25,7 @@ class ExecuteSearch
      when :nearbyPeople
        sservice.tagNearbyPeople(search_criteria.coordinates, search_criteria.tag, search_criteria.field, search_criteria.period, search_criteria.sort_by, search_criteria.order_direction, search_criteria.limit)
      else
-       sresult = []
+       []
      end
   end
 end

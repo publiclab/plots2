@@ -138,12 +138,7 @@ class TagController < ApplicationController
     @wikis ||= []
     @nodes = nodes if @node_type == 'maps'
     @title = params[:id]
-    # the following could be refactored into a Tag.contributor_count method:
-    notes = Node.where(status: 1, type: 'note')
-      .select('node.nid, node.type, node.uid, node.status, term_data.*, community_tags.*')
-      .includes(:tag)
-      .references(:term_data)
-      .where('term_data.name = ?', params[:id])
+
     @length = Tag.contributor_count(params[:id]) || 0
 
     @tagnames = [params[:id]]
@@ -212,11 +207,11 @@ class TagController < ApplicationController
     @nodes = nodes if @node_type == 'maps'
     @title = "'" + @tagname.to_s + "' by " + params[:author]
     # the following could be refactored into a Tag.contributor_count method:
-    notes = Node.where(status: 1, type: 'note')
-      .select('node.nid, node.type, node.uid, node.status, term_data.*, community_tags.*')
-      .includes(:tag)
-      .references(:term_data)
-      .where('term_data.name = ?', params[:id])
+    # notes = Node.where(status: 1, type: 'note')
+    #   .select('node.nid, node.type, node.uid, node.status, term_data.*, community_tags.*')
+    #   .includes(:tag)
+    #   .references(:term_data)
+    #   .where('term_data.name = ?', params[:id])
     @length = Tag.contributor_count(params[:id]) || 0
     respond_with(nodes) do |format|
       format.html { render 'tag/show' }

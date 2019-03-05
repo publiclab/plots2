@@ -308,7 +308,7 @@ class Comment < ApplicationRecord
   end
 
   def self.get_domain(email)
-    domain = email[/(?<=@)[^.]+(?=\.)/, 0]
+    email[/(?<=@)[^.]+(?=\.)/, 0]
   end
 
   def self.yahoo_parsed_mail(mail_doc)

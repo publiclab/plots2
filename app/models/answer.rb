@@ -14,7 +14,7 @@ class Answer < ApplicationRecord
   def body
     finder = content.gsub(Callouts.const_get(:FINDER), Callouts.const_get(:PRETTYLINKMD))
     finder = finder.gsub(Callouts.const_get(:HASHTAGNUMBER), Callouts.const_get(:NODELINKMD))
-    finder = finder.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKMD))
+    finder.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKMD))
   end
 
   def body_markdown

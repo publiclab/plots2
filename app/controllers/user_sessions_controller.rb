@@ -116,7 +116,7 @@ class UserSessionsController < ApplicationController
           @user_session = UserSession.new(username: params[:user_session][:username],
                                           password: params[:user_session][:password],
                                           remember_me: params[:user_session][:remember_me])
-          saved = @user_session.save do |result|
+          @user_session.save do |result|
             if result
               hash_params = ""
 
