@@ -1,8 +1,7 @@
 class Comment < ApplicationRecord
-  include CommentsShared # common methods for comment-like models
+  include CommentsShared
 
   belongs_to :node, foreign_key: 'nid', touch: true, counter_cache: true
-  # dependent: :destroy, counter_cache: true
   belongs_to :user, foreign_key: 'uid'
   belongs_to :answer, foreign_key: 'aid'
   has_many :likes, :as => :likeable
@@ -44,7 +43,7 @@ class Comment < ApplicationRecord
       # loop for finding the maximum occurence of a month name in that week
       # For eg. If this week has 3 days falling in March and 4 days falling
       # in April, then we would give this week name as April and vice-versa
-      [0, 1, 2, 3, 4, 5, 6].each do |i|
+      [*0..6].each do |i|
         curr_month = time - (week * 7 - i).days
         if month == 0
           month = curr_month
