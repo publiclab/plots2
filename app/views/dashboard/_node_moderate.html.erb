@@ -1,7 +1,7 @@
 <% if node.status == 4 %>
   <p class="alert alert-warning moderated">
     <% if logged_in_as(['admin','moderator']) %>
-      <%= t('dashboard._node_moderate.first_time_post') %> <br class="hidden-xs hidden-sm"/>
+      <%= t('dashboard._node_moderate.first_time_post') %>
       <a class="btn btn-default btn-xs" href="/moderate/publish/<%= node.id %>"><%= t('dashboard.moderate.approve') %></a>
       <a class="btn btn-default btn-xs" href="/moderate/spam/<%= node.id %>"><%= t('dashboard.moderate.spam') %></a>
     <% else %>
