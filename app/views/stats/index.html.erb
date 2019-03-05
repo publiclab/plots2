@@ -13,8 +13,8 @@
             <h5> Statistics from <%= @start.to_formatted_s(:long)%> to <%= @end.to_formatted_s(:long)%> </h5>
         </div>
         <div class=col-md-2>
-            <%= form_tag request.url, method: 'get' do %>
-                <%= select_tag :options, options_for_select(["Week", "Month","Year"]), prompt: "Filter period: ",
+            <%= form_tag request.url, method: 'get', enforce_utf8: false do %>
+                <%= select_tag :options, options_for_select(["Past week", "Past month","Past year"], params[:options]), prompt: "Filter period: ",
                     class: " form-control custom-select", onchange: "this.form.submit();" %>
             <% end %>
         </div>

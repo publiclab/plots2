@@ -36,6 +36,9 @@ class StatsController < ApplicationController
 
   def index
     range
+    if @start > @end
+      flash.now[:warning] = "Start date must come before end date"
+    end
     @title = 'Stats'
 
     @weekly_notes = Node.past_week.select(:type).where(type: 'note').count(:all)
@@ -136,6 +139,7 @@ class StatsController < ApplicationController
   end
 
   def to_keyword(param)
-    1.send(param.downcase)
+    str =  param.split.second
+    1.send(str.downcase)
   end
 end

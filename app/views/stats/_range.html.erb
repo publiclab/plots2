@@ -1,13 +1,13 @@
 <h5>Choose a starting and an ending date in the field below to see activity during that range</h5>
-<%= form_tag request.url, method: 'get' do %>
+<%= form_tag request.url, method: 'get', enforce_utf8: false do %>
     <div class="row">
         <div class="col-md-4">
             <label>Starting</label>
-            <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%d-%m-%Y") %>" data-date-format="dd-mm-yyyy" tabindex="1" class="form-control" type="text" name="start" placeholder="Start date">
+            <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%d-%m-%Y") %>" value="<%= @start.strftime("%d-%m-%Y") %>" data-date-format="dd-mm-yyyy" tabindex="1" class="form-control" type="text" name="start">
         </div>
         <div class="col-md-4">
             <label>Ending</label>
-            <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%d-%m-%Y") %>" data-date-format="dd-mm-yyyy" tabindex="1" class="form-control" type="text" name="end" placeholder="End date">
+            <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%d-%m-%Y") %>" value="<%=@end.strftime("%d-%m-%Y") %>" data-date-format="dd-mm-yyyy" tabindex="1" class="form-control" type="text" name="end">
         </div>
         <div class="col-md-1">
             <%= submit_tag "Go" , class: 'btn btn-primary', :style=>'margin-top:2em;'  %>
@@ -106,10 +106,14 @@
             <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
         </button>
     </a>
-    <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
-    <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
-    </button>
-    </a>
+    <a>
+        <a href="<%= "?start="+(@start - 3.months).to_formatted_s(:long) %> <%= "&end="+(@end - 3.months).to_formatted_s(:long)   %>">
+            <button type="button" class="btn btn-secondary" title="3 months back">
+                <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
+                <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
+                <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
+            </button>
+        </a>
     <a href="<%= "?start="+(@start - 1.month).to_formatted_s(:long) %> <%= "&end="+(@end - 1.month).to_formatted_s(:long)   %>">
         <button type="button" class="btn btn-secondary" title="1 month back">
             <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
