@@ -439,4 +439,62 @@ class User < ActiveRecord::Base
     self.email = registration['email'] if email.blank?
     self.username = registration['nickname'] if username.blank?
   end
+
+  def self.watching_location(nwlat, selat, nwlng, selng)
+    raise("Must be a float") unless (nwlat.is_a? Float) && (nwlng.is_a? Float) && (selat.is_a? Float) && (selng.is_a? Float)
+
+    tids = Tag.where("SUBSTRING_INDEX(term_data.name,':',1) = ? \
+                      AND SUBSTRING_INDEX(SUBSTRING_INDEX(term_data.name, ':', 2),':',-1)+0 <= ? \
+                      AND SUBSTRING_INDEX(SUBSTRING_INDEX(term_data.name, ':', 3),':',-1)+0 <= ? \
+                      AND SUBSTRING_INDEX(SUBSTRING_INDEX(term_data.name, ':', 4),':',-1)+0 <= ? \
+                      AND SUBSTRING_INDEX(term_data.name, ':', -1) <= ?", 'subscribed', nwlat, nwlng, selat, selng).collect(&:tid).uniq || []
+    uids = TagSelection.where('tag_selections.tid IN (?)', tids).collect(&:user_id).uniq || []
+
+    User.where("id IN (?)", uids).order(:id)
+  end
+
+  def self.find_by_username_case_insensitive(username)
+    User.where('lower(username) = ?', username.downcase).first
+  end
+
+  # all uses who've posted a node, comment, or answer in the given period
+  def self.contributor_count_for(start_time, end_time)
+    notes = Node.where(type: 'note', status: 1, created: start_time.to_i..end_time.to_i).pluck(:uid)
+    answers = Answer.where(created_at: start_time..end_time).pluck(:uid)
+    questions = Node.questions.where(status: 1, created: start_time.to_i..end_time.to_i).pluck(:uid)
+    comments = Comment.where(timestamp: start_time.to_i..end_time.to_i).pluck(:uid)
+    revisions = Revision.where(status: 1, timestamp: start_time.to_i..end_time.to_i).pluck(:uid)
+    contributors = (notes + answers + questions + comments + revisions).compact.uniq.length
+    contributors
+  end
+
+  def self.create_with_omniauth(auth)
+    random_chars = [*'A'..'Z', *'a'..'z', *0..9].sample(2).join
+
+    email_prefix = auth["info"]["email"].tr('.', '_').split('@')[0]
+    email_prefix = auth["info"]["email"].tr('.', '_').split('@')[0] + random_chars until User.where(username: email_prefix).empty?
+
+    provider = { "facebook" => 1, "github" => 2, "google_oauth2" => 3, "twitter" => 4 }
+
+    create! do |user|
+      generated_password = SecureRandom.urlsafe_base64
+
+      user.username = email_prefix
+      user.email = auth["info"]["email"]
+      user.password = generated_password
+      user.status = Status::NORMAL
+      user.password_confirmation = generated_password
+      user.password_checker = provider[auth["provider"]]
+      user.save!
+    end
+ end
+
+  def self.count_all_time_contributor
+    notes = Node.where(type: 'note', status: 1).pluck(:uid)
+    answers = Answer.pluck(:uid)
+    questions = Node.questions.where(status: 1).pluck(:uid)
+    comments = Comment.pluck(:uid)
+    revisions = Revision.where(status: 1).pluck(:uid)
+    contributors = (notes + answers + questions + comments + revisions).compact.uniq.length
+  end
 end
