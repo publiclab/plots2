@@ -422,6 +422,8 @@ class Comment < ApplicationRecord
                 replied_tweet = Client.status(tweet.id, tweet_mode: "extended")
                 replied_tweet_text = replied_tweet.attrs[:text] || replied_tweet.attrs[:full_text]
               end
+              replied_tweet_text = replied_tweet_text.gsub(/@(\S+)/){|m| "[#{m}](https://twitter.com/#{m})"}
+              replied_tweet_text = replied_tweet_text.gsub('@','')
               comment = node.add_comment(uid: user.uid, body: replied_tweet_text, comment_via: 2, tweet_id: tweet.id)
               comment.notify user
             end
@@ -457,7 +459,7 @@ class Comment < ApplicationRecord
   def self.find_email(twitter_user_name)
     UserTag.all.each do |user_tag|
       data = user_tag["data"]
-      if data["info"]["nickname"].to_s == twitter_user_name
+      if data != nil && data["info"] != nil && data["info"]["nickname"] && data["info"]["nickname"].to_s == twitter_user_name
         return data["info"]["email"]
       end
     end
