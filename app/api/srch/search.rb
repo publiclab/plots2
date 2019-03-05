@@ -20,7 +20,7 @@ module Srch
         use :common
       end
       get :all do
-        search_request = SearchRequest.fromRequest(params)
+        search_request = SearchRequest.from_request(params)
         results = Search.execute(:all, params)
         results_list = []
 
@@ -93,7 +93,7 @@ module Srch
         use :common, :sorting, :ordering, :field
       end
       get :profiles do
-        search_request = SearchRequest.fromRequest(params)
+        search_request = SearchRequest.from_request(params)
         cache(key: "api:profiles:#{params[:query]}:#{params[:limit]}:#{params[:sort_by]}:#{params[:order_direction]}:#{params[:field]}", expires_in: 2.day) do
           results = Search.execute(:profiles, params)
 
@@ -121,7 +121,7 @@ module Srch
         use :common
       end
       get :notes do
-        search_request = SearchRequest.fromRequest(params)
+        search_request = SearchRequest.from_request(params)
         results = Search.execute(:notes, params)
 
         if results.present?
@@ -149,7 +149,7 @@ module Srch
         use :common
       end
       get :wikis do
-        search_request = SearchRequest.fromRequest(params)
+        search_request = SearchRequest.from_request(params)
         results = Search.execute(:wikis, params)
 
         if results.present?
@@ -177,7 +177,7 @@ module Srch
         use :common, :sorting, :ordering
       end
       get :questions do
-        search_request = SearchRequest.fromRequest(params)
+        search_request = SearchRequest.from_request(params)
         results = Search.execute(:questions, params)
 
         if results.present?
@@ -206,7 +206,7 @@ module Srch
         use :common
       end
       get :tags do
-        search_request = SearchRequest.fromRequest(params)
+        search_request = SearchRequest.from_request(params)
         results = Search.execute(:tags, params)
 
         if results.present?
@@ -235,7 +235,7 @@ module Srch
         use :geographical, :additional, :period, :sorting, :ordering
       end
       get :taglocations do
-        search_request = SearchRequest.fromRequest(params)
+        search_request = SearchRequest.from_request(params)
         results = Search.execute(:taglocations, params)
 
         if results.present?
@@ -266,7 +266,7 @@ module Srch
         use :geographical, :additional, :field, :period, :sorting, :ordering
       end
       get :nearbyPeople do
-        search_request = SearchRequest.fromRequest(params)
+        search_request = SearchRequest.from_request(params)
         results = Search.execute(:nearbyPeople, params)
 
         if results.present?
@@ -296,7 +296,7 @@ module Srch
         use :common
       end
       get :places do
-        search_request = SearchRequest.fromRequest(params)
+        search_request = SearchRequest.from_request(params)
         results = Search.execute(:places, params)
 
         if results.present?

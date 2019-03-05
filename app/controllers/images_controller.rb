@@ -30,13 +30,13 @@ class ImagesController < ApplicationController
     @image.nid = Node.find(params[:nid].to_i).nid unless params[:nid].nil? || params[:nid] == 'undefined'
     if @image.save!
       render json: {
-        id:       @image.id,
-        url:      @image.shortlink,
-        full:     'https://' + request.host.to_s + '/' + @image.path(:large),
+        id: @image.id,
+        url: @image.shortlink,
+        full: 'https://' + request.host.to_s + '/' + @image.path(:large),
         filename: @image.photo_file_name,
-        href:     @image.shortlink, # Woofmark/PublicLab.Editor
-        title:    @image.photo_file_name,
-        results:  [{ # Woofmark/PublicLab.Editor
+        href: @image.shortlink, # Woofmark/PublicLab.Editor
+        title: @image.photo_file_name,
+        results: [{ # Woofmark/PublicLab.Editor
           href: @image.shortlink + "." + @image.filetype,
           title: @image.photo_file_name
         }]

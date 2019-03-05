@@ -480,7 +480,7 @@ class TagController < ApplicationController
   end
 
   def gridsEmbed
-    if %w[nodes wikis activities questions upgrades notes].include?(params[:tagname].split(':').first)
+    if %w(nodes wikis activities questions upgrades notes).include?(params[:tagname].split(':').first)
       params[:t] = params[:tagname]
       params[:tagname] = ""
     end

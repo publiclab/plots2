@@ -256,8 +256,8 @@ module NodeShared
       output = a.render_to_string(template: "map/_leaflet",
                                   layout:   false,
                                   locals:   {
-                                    lat:   lat,
-                                    lon:   lon,
+                                    lat: lat,
+                                    lon: lon,
                                     tagname: tagname
                                   })
       output
@@ -273,8 +273,8 @@ module NodeShared
       output = a.render_to_string(template: "map/_leaflet",
                                   layout:   false,
                                   locals:   {
-                                    lat:   lat,
-                                    lon:   lon,
+                                    lat: lat,
+                                    lon: lon,
                                     tagname: tagname.to_s
                                   })
       output

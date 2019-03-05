@@ -60,6 +60,7 @@ class WikiController < ApplicationController
     # end
 
     return if check_and_redirect_node(@node)
+
     if !@node.nil? # it's a place page!
       @tags = @node.tags
       @tags += [Tag.find_by(name: params[:id])] if Tag.find_by(name: params[:id])
@@ -187,41 +188,21 @@ class WikiController < ApplicationController
     @revision = @node.new_revision(uid:   current_user.uid,
                                    title: params[:title],
                                    body:  params[:body])
+
     if @node.has_tag('locked') && !current_user.can_moderate?
       flash[:warning] = "This page is <a href='/wiki/power-tags#Locking'>locked</a>, and only <a href='/wiki/moderators'>moderators</a> can update it."
       redirect_to @node.path
 
     elsif @revision.valid?
-      ActiveRecord::Base.transaction do
-        @revision.save
-        @node.vid = @revision.vid
-        # update vid (version id) of main image
-        if @node.drupal_main_image && params[:main_image].nil?
-          i = @node.drupal_main_image
-          i.vid = @revision.vid
-          i.save
-        end
-        @node.title = @revision.title
-        # save main image
-        if params[:main_image] && params[:main_image] != ''
-          begin
-            img = Image.find params[:main_image]
-            unless img.nil?
-              img.nid = @node.id
-              @node.main_image_id = img.id
-              img.save
-            end
-          rescue StandardError
-          end
-        end
-        @node.save
-      end
+      update_node_attributes
+
+      @revision.save
+
       flash[:notice] = I18n.t('wiki_controller.edits_saved')
       redirect_to @node.path
     else
       flash[:error] = I18n.t('wiki_controller.edit_could_not_be_saved')
       render action: :edit
-      # redirect_to "/wiki/edit/"+@node.slug
     end
   end
 
@@ -259,6 +240,7 @@ class WikiController < ApplicationController
   def root
     @node = Node.find_by(path: "/" + params[:id])
     return if check_and_redirect_node(@node)
+
     if @node
       @revision = @node.latest
       @title = @revision.title
@@ -393,7 +375,7 @@ class WikiController < ApplicationController
       flash[:error] = "You must specify 'before' and 'after' terms to replace content in a wiki page."
     end
     if request.xhr?
-      if output === false
+      if output.blank?
         render json: output, status: 500
       else
         render json: output
@@ -408,7 +390,7 @@ class WikiController < ApplicationController
   end
 
   def methods
-    @nodes = Node.where(status: 1, type: ['page'])
+    @nodes = Node.where(status: 1, type: %w(page))
       .where('term_data.name = ?', 'method')
       .includes(:revision, :tag)
       .references(:node_revision)
@@ -416,7 +398,7 @@ class WikiController < ApplicationController
     # deprecating the following in favor of javascript implementation in /app/assets/javascripts/methods.js
     if params[:topic]
       nids = @nodes.collect(&:nid) || []
-      @notes = Node.where(status: 1, type: ['page'])
+      @notes = Node.where(status: 1, type: %w(page))
         .where('node.nid IN (?)', nids)
         .where('(type = "note" OR type = "page" OR type = "map") AND node.status = 1 AND (node.title LIKE ? OR node_revisions.title LIKE ? OR node_revisions.body LIKE ? OR term_data.name = ?)',
           '%' + params[:topic] + '%',
@@ -429,7 +411,7 @@ class WikiController < ApplicationController
     end
     if params[:topic]
       nids = @nodes.collect(&:nid) || []
-      @nodes = Node.where(status: 1, type: ['page'])
+      @nodes = Node.where(status: 1, type: %w(page))
         .where('node.nid IN (?)', nids)
         .where('(type = "note" OR type = "page" OR type = "map") AND node.status = 1 AND (node.title LIKE ? OR node_revisions.title LIKE ? OR node_revisions.body LIKE ? OR term_data.name = ?)',
           '%' + params[:topic] + '%',
@@ -464,5 +446,27 @@ class WikiController < ApplicationController
   def comments
     show
     render :show
+  end
+
+  private
+
+  def update_node_attributes
+    ActiveRecord::Base.transaction do
+      @node.vid = @revision.vid
+      @node.title = @revision.title
+
+      if main_image = @node.drupal_main_image && params[:main_image].blank?
+        main_image.vid = @revision.vid
+        main_image.save
+      end
+
+      if params[:main_image].present? && img = Image.find(params[:main_image])
+        img.nid = @node.id
+        @node.main_image_id = img.id
+        img.save
+      end
+
+      @node.save
+    end
   end
 end

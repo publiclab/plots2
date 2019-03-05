@@ -56,15 +56,15 @@ class NotesController < ApplicationController
     if @node.status == 3 && !params[:token].nil? && @node.slug.split('token:').last == params[:token]
     else
 
-    if @node.status == 3 && current_user.nil?
-      flash[:warning] = "You need to login to view the page"
-      redirect_to '/login'
-      return
-    elsif @node.status == 3 && @node.author != current_user && !current_user.can_moderate? && !@node.has_tag("with:#{current_user.username}")
-      flash[:notice] = "Only author can access the draft note"
-      redirect_to '/'
-      return
-    end
+      if @node.status == 3 && current_user.nil?
+        flash[:warning] = "You need to login to view the page"
+        redirect_to '/login'
+        return
+      elsif @node.status == 3 && @node.author != current_user && !current_user.can_moderate? && !@node.has_tag("with:#{current_user.username}")
+        flash[:notice] = "Only author can access the draft note"
+        redirect_to '/'
+        return
+      end
   end
 
     if @node.has_power_tag('question')

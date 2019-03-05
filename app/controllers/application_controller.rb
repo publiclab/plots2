@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
 
       @notes = @notes.where('node.nid != (?)', @node.nid) if @node
       @wikis = Tag.find_pages(data, 10)
-      @videos = Tag.find_nodes_by_type_with_all_tags(['video'] + data, 'note', 8) if args[:videos] && data.length > 1
+      @videos = Tag.find_nodes_by_type_with_all_tags(%w(video) + data, 'note', 8) if args[:videos] && data.length > 1
       @maps = Tag.find_nodes_by_type(data, 'map', 20)
     else # type is generic
       # remove "classroom" postings; also switch to an EXCEPT operator in sql, see https://github.com/publiclab/plots2/issues/375
@@ -66,6 +66,7 @@ class ApplicationController < ActionController::Base
 
   def current_user_session
     return @current_user_session if defined?(@current_user_session)
+
     @current_user_session = UserSession.find
   end
 
@@ -105,7 +106,10 @@ class ApplicationController < ActionController::Base
     if current_user
       store_location
       flash[:notice] = I18n.t('application_controller.must_be_logged_out_to_access')
-      redirect_to home_url + '?return_to=' + URI.encode(request.env['PATH_INFO'])
+
+      url = URI.parse(home_url + '?return_to=' + CGI.escape(request.env['PATH_INFO'])).to_s
+
+      redirect_to url
       false
     end
   end
