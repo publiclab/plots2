@@ -423,4 +423,10 @@ class NodeTest < ActiveSupport::TestCase
     node = nodes(:scraped_image)
     assert_equal '/url/to/image.png', node.scraped_image
   end
+
+  test 'contribution graph making' do
+    graph = Node.contribution_graph_making
+    assert_not_nil graph
+    assert graph.class, Hash
+  end
 end

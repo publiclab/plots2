@@ -1,7 +1,8 @@
 class Comment < ApplicationRecord
-  include CommentsShared
+  include CommentsShared # common methods for comment-like models
 
   belongs_to :node, foreign_key: 'nid', touch: true, counter_cache: true
+  # dependent: :destroy, counter_cache: true
   belongs_to :user, foreign_key: 'uid'
   belongs_to :answer, foreign_key: 'aid'
   has_many :likes, :as => :likeable
@@ -32,36 +33,15 @@ class Comment < ApplicationRecord
     weeks
   end
 
-  def self.contribution_graph_making(span = 52, time = Time.now)
-    weeks = {}
-    week = span
-    count = 0
-    while week >= 1
-      # initialising month variable with the month of the starting day
-      # of the week
-      month = time - (week * 7 - 1).days
-      # loop for finding the maximum occurence of a month name in that week
-      # For eg. If this week has 3 days falling in March and 4 days falling
-      # in April, then we would give this week name as April and vice-versa
-      [*0..6].each do |i|
-        curr_month = time - (week * 7 - i).days
-        if month == 0
-          month = curr_month
-        elsif month != curr_month
-          if i <= 4
-            month = curr_month
-          end
-        end
-      end
-      # Now fetching comments per week
-      curr_week = Comment.select(:timestamp)
-                      .where(timestamp: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
-                      .count
-      weeks[count] = [month.to_f * 1000, curr_week]
-      count += 1
-      week -= 1
+  def self.contribution_graph_making(start_time = Time.now - 1.month, end_time = Time.now)
+    date_hash = {}
+    (start_time.to_date..end_time.to_date).each do |date|
+      daily_comments = Comment.select(:timestamp)
+                         .where(timestamp: (date.beginning_of_week.to_time.to_i)..(date.end_of_week.to_time.to_i))
+                         .count
+      date_hash[date.beginning_of_week.to_time.to_i.to_f * 1000] = daily_comments
     end
-    weeks
+    date_hash
   end
 
   def id
@@ -307,7 +287,7 @@ class Comment < ApplicationRecord
   end
 
   def self.get_domain(email)
-    email[/(?<=@)[^.]+(?=\.)/, 0]
+    domain = email[/(?<=@)[^.]+(?=\.)/, 0]
   end
 
   def self.yahoo_parsed_mail(mail_doc)

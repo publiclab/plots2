@@ -286,6 +286,13 @@ en:
       questions_past_month: |
                 <a href='%{url1}'>%{quiz_count} questions asked </a>
                 and <a href='%{url2}'>%{ans_count} questions answered </a> in the past month.
+      notes_wikis_comments: |
+          <b>%{notes_count} notes</b> and <b>%{wikis_count} wiki edits and</b>
+          and <b>%{comments_count} comments </b>  posted in this period.
+      members_and_contributors: |
+          <b>%{member_count}  member registrations</b>
+          and <b>%{people_count}  contributors </b> posted in this period.
+
   dashboard:
     _node_comment:
       commented_on: "commented on"
