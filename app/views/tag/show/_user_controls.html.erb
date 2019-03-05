@@ -1,6 +1,11 @@
 <% if current_user %>
 <!-- AJAXify -->
 <div class="btn-group">
+  <% unless @wildcard %>
+    <%= link_to tag_stats_path, id: params[:id] ,title: "Click to view graph" do %>
+      <i class="btn btn-default btn-sm"><i class="fa fa-bar-chart"></i> Stats </i>
+    <% end %>
+  <% end %>
   <a class="btn btn-default btn-sm" href="/feed/tag/<%= params[:id] %>.rss"><i class="fa fa-rss"></i> RSS</a>
   <% unless @wildcard %>
     <% if current_user.following(params[:id]) %>
