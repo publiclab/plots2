@@ -28,8 +28,9 @@ class User < ActiveRecord::Base
   end
 
   has_attached_file :photo, styles: { thumb: '200x200#', medium: '500x500#', large: '800x800#' },
-  url: '/system/profile/photos/:id/:style/:basename.:extension'
+                                    url: '/system/profile/photos/:id/:style/:basename.:extension'
   #:path => ":rails_root/public/system/images/photos/:id/:style/:basename.:extension"
+
   do_not_validate_attachment_file_type :photo_file_name
   # validates_attachment_content_type :photo_file_name, :content_type => %w(image/jpeg image/jpg image/png)
 

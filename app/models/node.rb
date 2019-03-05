@@ -777,11 +777,7 @@ class Node < ActiveRecord::Base
   end
 
   def decimals(number)
-    if !number.to_s.include? '.'
-      0
-    else
-      number.to_s.split('.').last.size
-    end
+    !number.include?('.') ? 0 : number.split('.').last.size
   end
 
   def delete_coord_attribute(tagname)
