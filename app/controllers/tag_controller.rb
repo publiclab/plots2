@@ -85,15 +85,27 @@ class TagController < ApplicationController
     @node_type = params[:node_type] || default_type
     @start = Time.parse(params[:start]) if params[:start]
     @end = Time.parse(params[:end]) if params[:end]
-    order_by = 'node_revisions.timestamp DESC'
-    order_by = 'node.views DESC' if params[:order] == 'views'
-    order_by = 'node.cached_likes DESC' if params[:order] == 'likes'
 
-    node_type = 'note' if @node_type == 'questions' || @node_type == 'note'
-    node_type = 'page' if @node_type == 'wiki'
-    node_type = 'map' if @node_type == 'maps'
-    node_type = 'contributor' if @node_type == 'contributors'
+    order_by =  if params[:order] == 'views'
+                  'node.views DESC'
+                elsif params[:order] == 'likes'
+                  'node.cached_likes DESC'
+                else
+                  'node_revisions.timestamp DESC'
+                end
+
+    node_type = if %w(questions note).include?(@node_type)
+                  'note'
+                elsif @node_type == 'wiki'
+                  'page'
+                elsif @node_type == 'maps'
+                  'map'
+                elsif @node_type == 'contributors'
+                  'contributor'
+                end
+                    
     qids = Node.questions.where(status: 1).collect(&:nid)
+    
     if params[:id][-1..-1] == '*' # wildcard tags
       @wildcard = true
       @tags = Tag.where('name LIKE (?)', params[:id][0..-2] + '%')
