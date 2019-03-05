@@ -590,7 +590,8 @@ class Node < ActiveRecord::Base
                     thread: thread,
                     timestamp: DateTime.now.to_i,
                     comment_via: comment_via_status,
-                    message_id: params[:message_id])
+                    message_id: params[:message_id],
+                    tweet_id: params[:tweet_id])
     c.save
     c
   end
