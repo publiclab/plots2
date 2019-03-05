@@ -151,7 +151,7 @@ class AdminController < ApplicationController
     else
       flash[:error] = 'Only moderators can moderate comments.'
     end
-    redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
+    redirect_back(fallback_location: root_path)
   end
 
   def publish_comment
@@ -369,7 +369,6 @@ class AdminController < ApplicationController
     s = TCPSocket.new ActionMailer::Base.smtp_settings[:address], ActionMailer::Base.smtp_settings[:port]
 
     while line = s.gets # Read lines from socket
-      puts line
       if line.include? '220'
         s.print "MAIL FROM: <example@publiclab.org>\n"
       end
@@ -388,5 +387,4 @@ class AdminController < ApplicationController
 
     s.close
   end
-
 end

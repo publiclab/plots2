@@ -488,7 +488,7 @@ class WikiControllerTest < ActionController::TestCase
 
     assert_equal 'false', response.body
     assert_equal 'Public Lab', Node.find(node.id).body
-    assert_response :success
+    assert_response 500 # failure
   end
 
   test 'abtest: redirects to another page' do

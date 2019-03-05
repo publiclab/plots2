@@ -31,15 +31,15 @@ class StatsController < ApplicationController
     @questions = Node.published.questions.where(created: @start.to_i..@end.to_i)
       .count
     @contributors = User.contributor_count_for(@start, @end)
+    @popular_tags = Tag.nodes_frequency(@start, @end)
   end
 
   def index
+    range
+    if @start > @end
+      flash.now[:warning] = "Start date must come before end date"
+    end
     @title = 'Stats'
-    @time = if params[:time]
-              Time.parse(params[:time])
-            else
-              Time.now
-            end
 
     @weekly_notes = Node.past_week.select(:type).where(type: 'note').count(:all)
     @weekly_wikis = Revision.past_week.count
@@ -55,9 +55,9 @@ class StatsController < ApplicationController
     @notes_per_week_past_year = Node.past_year.select(:type).where(type: 'note').count(:all) / 52.0
     @edits_per_week_past_year = Revision.past_year.count / 52.0
 
-    @graph_notes = Node.contribution_graph_making('note', 52, @time)
-    @graph_wikis = Node.contribution_graph_making('page', 52, @time)
-    @graph_comments = Comment.contribution_graph_making(52, @time)
+    @graph_notes = Node.contribution_graph_making('note', @start, @end)
+    @graph_wikis = Node.contribution_graph_making('page', @start, @end)
+    @graph_comments = Comment.contribution_graph_making(@start, @end)
 
     users = []
     nids = []
@@ -139,6 +139,7 @@ class StatsController < ApplicationController
   end
 
   def to_keyword(param)
-    1.send(param.downcase)
+    str =  param.split.second
+    1.send(str.downcase)
   end
 end

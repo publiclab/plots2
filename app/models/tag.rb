@@ -24,7 +24,7 @@ class Tag < ApplicationRecord
     end
   end
 
-  validates :name, presence: :true
+  validates :name, presence: true
   validates :name, format: { with: /\A[\w\.:-]*[\w\.!-]*\z/, message: 'can only include letters, numbers, and dashes' }
   # validates :name, :uniqueness => { case_sensitive: false  }
 
@@ -46,6 +46,12 @@ class Tag < ApplicationRecord
     nodes = Node.where(nid: node_tag.collect(&:nid))
   end
 
+  def self.nodes_frequency(starting, ending)
+    ids = Node.where(created: starting.to_i..ending.to_i).map(&:node_tags).flatten.map(&:tid)
+    hash = ids.uniq.map { |id| p (Tag.find id).name, ids.count(id) }.to_h
+    hash.sort_by { |_, v| v }.reverse.first(10).to_h
+  end
+
   def belongs_to(current_user, nid)
     node_tag = node_tag.find_by(nid: nid)
     node_tag && node_tag.uid == current_user.uid || node_tag.node.uid == current_user.uid
@@ -54,6 +60,7 @@ class Tag < ApplicationRecord
   def self.contributors(tagname)
     tag = Tag.includes(:node).where(name: tagname).first
     return [] if tag.nil?
+
     nodes = tag.node.includes(:revision, :comments, :answers).where(status: 1)
     uids = nodes.collect(&:uid)
     nodes.each do |n|
@@ -119,6 +126,7 @@ class Tag < ApplicationRecord
                                        .collect(&:nid)
       tag = Tag.where(name: tagname).last
       next unless tag
+
       parents = Node.where(status: 1, type: type)
                     .includes(:revision, :tag)
                     .references(:term_data)
@@ -224,24 +232,18 @@ class Tag < ApplicationRecord
     weeks
   end
 
-  def question_graph_making(span = 52, time = Time.now)
+  def graph_making(model, span = 52, time = Time.now)
     weeks = {}
     week = span
     count = 0
     tids = Tag.where('name IN (?)', [name]).collect(&:tid)
     nids = NodeTag.where('tid IN (?)', tids).collect(&:nid)
-    quiz_nids = Node.questions.where(nid: nids)
+    ids = model.where(nid: nids)
 
     while week >= 1
-      # initialising month variable with the month of the starting day
-      # of the week
       month = (time - (week * 7 - 1).days)
-
-      # Now fetching the weekly data of notes or wikis
-
-      current_week = Tag.nodes_for_period(
-        'note',
-        quiz_nids,
+      current_week = Tag.all_nodes_for_period(
+        ids,
         (time.to_i - week.weeks.to_i).to_s,
         (time.to_i - (week - 1).weeks.to_i).to_s
       ).count(:all)
@@ -264,6 +266,16 @@ class Tag < ApplicationRecord
         )
   end
 
+  def self.all_nodes_for_period(nids, start, finish)
+    Node.select(%i(created status nid))
+      .where(
+        'status = 1 AND nid IN (?) AND created > ? AND created <= ?',
+        nids.uniq,
+        start,
+        finish
+      )
+  end
+
   # Given a set of tags, return all users following
   # those tags. Return a dictionary of tags indexed by user.
   # Accepts array of Tags, outputs array of users as:
@@ -275,18 +287,21 @@ class Tag < ApplicationRecord
     all_tag = Tag.find_by(name: 'everything')
     tids += [all_tag.tid] if all_tag
     usertags = TagSelection.where('tid IN (?) AND following = ?', tids, true)
-    d = {}
+
+    usertags_hash = {}
+
     usertags.each do |usertag|
       # For each row of (user,tag), build a user's tag subscriptions
-      if (usertag.tid == all_tag) && usertag.tag.nil?
-        puts 'WARNING: all_tag tid ' + String(all_tag) + ' not found for Tag! Please correct this!'
+      if (usertag.tid == all_tag) && usertag.tag.blank?
+        Rails.logger.warn('WARNING: all_tag tid ' + all_tag.to_s + ' not found for Tag! Please correct this!')
         next
       end
-      d[usertag.user.name] = { user: usertag.user }
-      d[usertag.user.name][:tags] = Set.new if d[usertag.user.name][:tags].nil?
-      d[usertag.user.name][:tags].add(usertag.tag)
+      usertags_hash[usertag.user.name] = { user: usertag.user }
+      usertags_hash[usertag.user.name][:tags] = Set.new if usertags_hash[usertag.user.name][:tags].nil?
+      usertags_hash[usertag.user.name][:tags].add(usertag.tag)
     end
-    d
+
+    usertags_hash
   end
 
   def self.find_research_notes(tagnames, limit = 10)
@@ -382,5 +397,4 @@ class Tag < ApplicationRecord
       data
     end
   end
-
 end

@@ -33,36 +33,15 @@ class Comment < ApplicationRecord
     weeks
   end
 
-  def self.contribution_graph_making(span = 52, time = Time.now)
-    weeks = {}
-    week = span
-    count = 0
-    while week >= 1
-      # initialising month variable with the month of the starting day
-      # of the week
-      month = time - (week * 7 - 1).days
-      # loop for finding the maximum occurence of a month name in that week
-      # For eg. If this week has 3 days falling in March and 4 days falling
-      # in April, then we would give this week name as April and vice-versa
-      [0, 1, 2, 3, 4, 5, 6].each do |i|
-        curr_month = time - (week * 7 - i).days
-        if month == 0
-          month = curr_month
-        elsif month != curr_month
-          if i <= 4
-            month = curr_month
-          end
-        end
-      end
-      # Now fetching comments per week
-      curr_week = Comment.select(:timestamp)
-                      .where(timestamp: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
-                      .count
-      weeks[count] = [month.to_f * 1000, curr_week]
-      count += 1
-      week -= 1
+  def self.contribution_graph_making(start_time = Time.now - 1.month, end_time = Time.now)
+    date_hash = {}
+    (start_time.to_date..end_time.to_date).each do |date|
+      daily_comments = Comment.select(:timestamp)
+                         .where(timestamp: (date.beginning_of_week.to_time.to_i)..(date.end_of_week.to_time.to_i))
+                         .count
+      date_hash[date.beginning_of_week.to_time.to_i.to_f * 1000] = daily_comments
     end
-    weeks
+    date_hash
   end
 
   def id
@@ -101,11 +80,7 @@ class Comment < ApplicationRecord
   end
 
   def parent
-    if aid == 0
-      node
-    else
-      return answer.node unless answer.nil?
-    end
+    aid.zero? ? node : answer&.node
   end
 
   def mentioned_users
@@ -360,7 +335,7 @@ class Comment < ApplicationRecord
     end
 
     {
-      comment_content:  comment_content,
+      comment_content: comment_content,
       extra_content: extra_content
     }
   end
@@ -466,15 +441,14 @@ class Comment < ApplicationRecord
   end
 
   def parse_quoted_text
-    match = body.match(/(.+)(On .+<.+@.+> wrote:)(.+)/m)
-    if match.nil?
-      false
-    else
+    if regex_match = body.match(/(.+)(On .+<.+@.+> wrote:)(.+)/m)
       {
-        body: match[1], # the new message text
-        boundary: match[2], # quote delimeter, i.e. "On Tuesday, 3 July 2018, 11:20:57 PM IST, RP <rp@email.com> wrote:"
-        quote: match[3] # quoted text from prior email chain
+        body: regex_match[1],     # The new message text
+        boundary: regex_match[2], # Quote delimeter, i.e. "On Tuesday, 3 July 2018, 11:20:57 PM IST, RP <rp@email.com> wrote:"
+        quote: regex_match[3]     # Quoted text from prior email chain
       }
+    else
+      {}
     end
   end
 
@@ -490,7 +464,7 @@ class Comment < ApplicationRecord
     # if it has quoted email text that wasn't caught by the yahoo and gmail filters,
     # manually insert the comment filter delimeter:
     parsed = parse_quoted_text
-    if !trimmed_content? && parsed != false
+    if !trimmed_content? && parsed.present?
       body = parsed[:body] + COMMENT_FILTER + parsed[:boundary] + parsed[:quote]
     end
     body

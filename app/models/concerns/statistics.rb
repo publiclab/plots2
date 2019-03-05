@@ -52,6 +52,7 @@ module Statistics
                created: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
         .count
       break if days[day] == 0
+
       streak += 1
       note_count += days[day]
     end
@@ -70,6 +71,7 @@ module Statistics
         .where('node.type != ?', 'note')
         .count
       break if days[day] == 0
+
       streak += 1
       wiki_edit_count += days[day]
     end
@@ -87,6 +89,7 @@ module Statistics
           timestamp: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
         .count
       break if days[day] == 0
+
       streak += 1
       comment_count += days[day]
     end

@@ -7,7 +7,7 @@ class SearchRequest
 
   def initialize; end
 
-  def self.fromRequest(rparams)
+  def self.from_request(rparams)
     obj = new
     obj.query = rparams[:query]
     obj.seq = rparams[:seq]

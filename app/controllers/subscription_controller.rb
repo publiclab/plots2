@@ -46,31 +46,39 @@ class SubscriptionController < ApplicationController
           begin
             tag.save!
           rescue ActiveRecord::RecordInvalid
-            flash[:error] = tag.errors.full_messages
-            redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
+            if request.xhr?
+              render :json => { status: "500", message: "error" }
+            else
+              flash[:error] = tags.errors.full_messages
+              redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
+            end
             return false
           end
         end
-
         # test for uniqueness, handle it as a validation error if you like
         if TagSelection.where(following: true, user_id: current_user.uid, tid: tag.tid).length.positive?
-          flash[:error] = "You are already subscribed to '#{params[:name]}'"
-          redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
-        else
-          if set_following(true, params[:type], tag.tid)
-            respond_with do |format|
-              format.html do
-                if request.xhr?
-                  render :json => true
-                else
-                  flash[:notice] = "You are now following '#{params[:name]}'."
-                  redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
-                end
-              end
-            end
+          if request.xhr?
+            status = "412"
+            message = "You already follow this user!"
           else
-            flash[:error] = "Something went wrong!" # silly
+            flash[:error] = "You are already subscribed to '#{params[:name]}'"
+            redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
           end
+        else
+          status = "500"
+          message = "Something went wrong!"
+          if set_following(true, params[:type], tag.tid)
+            if request.xhr?
+              message = "Started following #{params[:name]}!"
+              status = "200"
+            else
+              flash[:notice] = "You are now following '#{params[:name]}'."
+              redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
+            end
+          end
+        end
+        if request.xhr?
+          render :json => { :status => status, :message => message, :tagname => params[:name], :id => tag.tid }
         end
       else
         # user or node subscription
@@ -134,31 +142,31 @@ class SubscriptionController < ApplicationController
       # assume tag, for now
       if params[:type] == "tag"
         tag_list.each do |t|
-          if t.length.positive?
-            tag = Tag.find_by(name: t)
-            # t should be not nil consider params[:tagnames] = balloon,,mapping,,kites,oil
-            if tag.nil?
-              # if the tag doesn't exist, we should create it!
-              # this could fail validations; error out if so...
-              tag = Tag.new(
-                :vid => 3, # vocabulary id
-                :name => t,
-                :description => "",
-                :weight => 0
-              )
-              begin
-                tag.save!
-              rescue ActiveRecord::RecordInvalid
-                flash[:error] = tag.errors.full_messages
-                redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
-                return false
-              end
+          next unless t.length.positive?
+
+          tag = Tag.find_by(name: t)
+          # t should be not nil consider params[:tagnames] = balloon,,mapping,,kites,oil
+          if tag.nil?
+            # if the tag doesn't exist, we should create it!
+            # this could fail validations; error out if so...
+            tag = Tag.new(
+              :vid => 3, # vocabulary id
+              :name => t,
+              :description => "",
+              :weight => 0
+            )
+            begin
+              tag.save!
+            rescue ActiveRecord::RecordInvalid
+              flash[:error] = tag.errors.full_messages
+              redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
+              return false
             end
-            # test for uniqueness
-            unless TagSelection.where(following: true, user_id: current_user.uid, tid: tag.tid).length.positive?
-              # Successfully we have added subscription
-              set_following(true, params[:type], tag.tid)
-            end
+          end
+          # test for uniqueness
+          unless TagSelection.where(following: true, user_id: current_user.uid, tid: tag.tid).length.positive?
+            # Successfully we have added subscription
+            set_following(true, params[:type], tag.tid)
           end
         end
         respond_with do |format|
@@ -207,10 +215,9 @@ class SubscriptionController < ApplicationController
         subscription.save!
         # end
       end
-
       subscription.following
     else
-      flash[:error] = "There was an error."
+      flash.now[:error] = "There was an error."
       false
     end
   end

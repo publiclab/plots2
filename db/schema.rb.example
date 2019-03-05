@@ -11,8 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 
 ActiveRecord::Schema.define(version: 2019_01_04_173959) do
+=======
+ActiveRecord::Schema.define(version: 2019_03_01_075323) do
+>>>>>>> 960dba001799555d6c2a6f225b7e296ce1e03f00
 
 
   create_table "answer_selections", force: true do |t|

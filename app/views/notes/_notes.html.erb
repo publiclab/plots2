@@ -71,4 +71,5 @@
     <% end %>
     </div>
 </div>
-<%= will_paginate notes, :renderer => BootstrapPagination::Rails unless @unpaginated %>
+<% paginated = paginated || false %>
+<%= will_paginate notes, :renderer => BootstrapPagination::Rails unless (@unpaginated || paginated == false) %>
