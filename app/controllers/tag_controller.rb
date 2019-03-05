@@ -71,17 +71,11 @@ class TagController < ApplicationController
   end
 
   def show
-    # try for a matching /wiki/_TAGNAME_ or /_TAGNAME_
     @wiki = Node.where(path: "/wiki/#{params[:id]}").try(:first) || Node.where(path: "/#{params[:id]}").try(:first)
     @wiki = Node.where(slug: @wiki.power_tag('redirect'))&.first if @wiki&.has_power_tag('redirect') # use a redirected wiki page if it exists
 
-    default_type = if params[:id].match?('question:')
-                     'questions'
-                   else
-                     'note'
-                  end
-    # params[:node_type] - this is an optional param
-    # if params[:node_type] is nil - use @default_type
+    default_type = params[:id].match?('question:') ? 'questions' : 'note'
+
     @node_type = params[:node_type] || default_type
     @start = Time.parse(params[:start]) if params[:start]
     @end = Time.parse(params[:end]) if params[:end]
@@ -103,9 +97,9 @@ class TagController < ApplicationController
                 elsif @node_type == 'contributors'
                   'contributor'
                 end
-                    
+
     qids = Node.questions.where(status: 1).collect(&:nid)
-    
+
     if params[:id][-1..-1] == '*' # wildcard tags
       @wildcard = true
       @tags = Tag.where('name LIKE (?)', params[:id][0..-2] + '%')
