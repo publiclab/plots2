@@ -18,14 +18,12 @@
 
     Looking forward to hearing from you soon,
 
-    Please click on the link below to verify your email.
-
-    <% verifaction_link="#{ActionMailer::Base.default_url_options[:host]}/verify/#{@user.generate_token}" %>
-    <%= link_to "#{verifaction_link}", verifaction_link%>
-    
-    In case you are not able to click the link, try copy pasting the link in the browser.
-
     The Public Lab Community
 <% end %>
+
+Please click on the link to verify your email.
+
+<% verification_link="#{ActionMailer::Base.default_url_options[:host]}/verify/#{@user.generate_token}" %>
+<%= link_to "Verification Link", verification_link %>
 
 <%= @footer %>
