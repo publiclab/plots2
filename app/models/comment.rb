@@ -434,7 +434,7 @@ class Comment < ApplicationRecord
   def self.find_email(twitter_user_name)
     UserTag.all.each do |user_tag|
       data = user_tag["data"]
-      if data != nil && data["info"] != nil && data["info"]["nickname"] && data["info"]["nickname"].to_s == twitter_user_name
+      if data != nil && data["info"] != nil && data["info"]["nickname"] != nil && data["info"]["nickname"].to_s == twitter_user_name
         return data["info"]["email"]
       end
     end
