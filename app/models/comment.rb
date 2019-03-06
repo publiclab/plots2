@@ -5,7 +5,7 @@ class Comment < ApplicationRecord
   # dependent: :destroy, counter_cache: true
   belongs_to :user, foreign_key: 'uid'
   belongs_to :answer, foreign_key: 'aid'
-  has_many :likes, :as => :likeable
+  has_many :likes, as: :likeable
 
   validates :comment, presence: true
 

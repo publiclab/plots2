@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_action :require_no_user, :only => [:new]
-  before_action :require_user, :only => %i(edit update save_settings)
+  before_action :require_no_user, only: [:new]
+  before_action :require_user, only: %i(edit update save_settings)
   before_action :set_user, only: %i(info followed following followers)
 
   def new
@@ -25,9 +25,9 @@ class UsersController < ApplicationController
           flash[:warning] = "We tried and failed to send you a welcome email, but your account was created anyhow. Sorry!"
         end
         flash[:notice] = I18n.t('users_controller.registration_successful')
-        flash[:notice] += " " + I18n.t('users_controller.continue_where_you_left_off', :url1 => params[:return_to].to_s) if params[:return_to] && params[:return_to] != "/signup"
+        flash[:notice] += " " + I18n.t('users_controller.continue_where_you_left_off', url1: params[:return_to].to_s) if params[:return_to] && params[:return_to] != "/signup"
         flash[:notice] = flash[:notice].html_safe
-        flash[:warning] = I18n.t('users_controller.spectralworkbench_or_mapknitter', :url1 => "'#{session[:openid_return_to]}'").html_safe if session[:openid_return_to]
+        flash[:warning] = I18n.t('users_controller.spectralworkbench_or_mapknitter', url1: "'#{session[:openid_return_to]}'").html_safe if session[:openid_return_to]
         session[:openid_return_to] = nil
         redirect_to "/dashboard"
       end
@@ -61,7 +61,7 @@ class UsersController < ApplicationController
           return redirect_to "/profile/" + @user.username + "/edit"
         end
       else
-        render :template => 'users/edit'
+        render template: 'users/edit'
       end
     end
   end
@@ -74,9 +74,9 @@ class UsersController < ApplicationController
               current_user
             end
     if current_user && current_user.uid == @user.uid || current_user.role == "admin"
-      render :template => "users/edit"
+      render template: "users/edit"
     else
-      flash[:error] = I18n.t('users_controller.only_user_edit_profile', :user => @user.name).html_safe
+      flash[:error] = I18n.t('users_controller.only_user_edit_profile', user: @user.name).html_safe
       redirect_to "/profile/" + @user.name
     end
   end
@@ -284,7 +284,7 @@ class UsersController < ApplicationController
                              .order("timestamp DESC")
                              .where(status: 1, uid: params[:id])
                              .paginate(page: params[:page])
-    render partial: 'comments/comments', :locals => { :comments => @comments }
+    render partial: 'comments/comments', locals: { comments: @comments }
   end
 
   def photo
@@ -293,7 +293,7 @@ class UsersController < ApplicationController
       @user.photo = params[:photo]
       if @user.save!
         if request.xhr?
-          render :json => { :url => @user.photo_path }
+          render json: { url: @user.photo_path }
         else
           flash[:notice] = I18n.t('users_controller.image_saved')
           redirect_to @node.path

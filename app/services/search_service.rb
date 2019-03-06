@@ -16,12 +16,12 @@ class SearchService
 
     questions = search_questions(search_criteria.query, search_criteria.limit)
 
-    all_results = { :notes => notes,
-                    :wikis => wikis,
-                    :profiles => profiles,
-                    :tags => tags,
-                    :maps => maps,
-                    :questions => questions }
+    all_results = { notes: notes,
+                    wikis: wikis,
+                    profiles: profiles,
+                    tags: tags,
+                    maps: maps,
+                    questions: questions }
   end
 
   # Search profiles for matching text with optional order_by=recent param and

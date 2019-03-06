@@ -753,10 +753,10 @@ class Node < ActiveRecord::Base
           if tag.valid?
             if tag.name.split(':')[0] == 'lat'
               tagvalue = tag.name.split(':')[1]
-              table_updated = update_attributes(:latitude => tagvalue, :precision => decimals(tagvalue).to_s)
+              table_updated = update_attributes(latitude: tagvalue, precision: decimals(tagvalue).to_s)
             elsif tag.name.split(':')[0] == 'lon'
               tagvalue = tag.name.split(':')[1]
-              table_updated = update_attributes(:longitude => tagvalue)
+              table_updated = update_attributes(longitude: tagvalue)
             end
           end
 
@@ -782,9 +782,9 @@ class Node < ActiveRecord::Base
 
   def delete_coord_attribute(tagname)
     table_updated = if tagname.split(':')[0] == "lat"
-                      update_attributes(:latitude => nil, :precision => nil)
+                      update_attributes(latitude: nil, precision: nil)
                     else
-                      update_attributes(:longitude => nil)
+                      update_attributes(longitude: nil)
                     end
   end
 

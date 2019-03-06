@@ -4,11 +4,11 @@
 
 class SubscriptionController < ApplicationController
   respond_to :html, :xml, :json
-  before_action :require_user, :only => %i(create delete index digest)
+  before_action :require_user, only: %i(create delete index digest)
 
   def index
     @title = "Subscriptions"
-    render :template => "home/subscriptions"
+    render template: "home/subscriptions"
   end
 
   # return a count of subscriptions for a given tag
@@ -25,7 +25,7 @@ class SubscriptionController < ApplicationController
              else
                result.following
              end
-    render :json => result
+    render json: result
   end
 
   # for the current user, register as liking the given tag
@@ -38,16 +38,16 @@ class SubscriptionController < ApplicationController
           # if the tag doesn't exist, we should create it!
           # this could fail validations; error out if so...
           tag = Tag.new(
-            :vid => 3, # vocabulary id
-            :name => params[:name],
-            :description => "",
-            :weight => 0
+            vid: 3, # vocabulary id
+            name: params[:name],
+            description: "",
+            weight: 0
           )
           begin
             tag.save!
           rescue ActiveRecord::RecordInvalid
             if request.xhr?
-              render :json => { status: "500", message: "error" }
+              render json: { status: "500", message: "error" }
             else
               flash[:error] = tags.errors.full_messages
               redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
@@ -78,7 +78,7 @@ class SubscriptionController < ApplicationController
           end
         end
         if request.xhr?
-          render :json => { :status => status, :message => message, :tagname => params[:name], :id => tag.tid }
+          render json: { status: status, message: message, tagname: params[:name], id: tag.tid }
         end
       else
         # user or node subscription
@@ -104,7 +104,7 @@ class SubscriptionController < ApplicationController
         respond_with do |format|
           format.html do
             if request.xhr?
-              render :json => true
+              render json: true
             else
               flash[:notice] = "You have stopped following '#{params[:name]}'."
               redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
@@ -123,7 +123,7 @@ class SubscriptionController < ApplicationController
       .paginate(page: params[:page], per_page: 100)
 
     @paginated = true
-    render :template => "subscriptions/digest"
+    render template: "subscriptions/digest"
   end
 
   def multiple_add
@@ -150,10 +150,10 @@ class SubscriptionController < ApplicationController
             # if the tag doesn't exist, we should create it!
             # this could fail validations; error out if so...
             tag = Tag.new(
-              :vid => 3, # vocabulary id
-              :name => t,
-              :description => "",
-              :weight => 0
+              vid: 3, # vocabulary id
+              name: t,
+              description: "",
+              weight: 0
             )
             begin
               tag.save!
@@ -172,7 +172,7 @@ class SubscriptionController < ApplicationController
         respond_with do |format|
           format.html do
             if request.xhr?
-              render :json => true
+              render json: true
             else
               flash[:notice] = "You are now following '#{params[:tagnames]}'."
               redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
@@ -195,8 +195,8 @@ class SubscriptionController < ApplicationController
     if type == 'tag' && Tag.find_by(tid: id)
       # Create the entry if it isn't already created.
       # assume tag, for now:
-      subscription = TagSelection.where(:user_id => current_user.uid,
-                                        :tid => id).first_or_create
+      subscription = TagSelection.where(user_id: current_user.uid,
+                                        tid: id).first_or_create
       subscription.following = value
 
       # Check if the value changed.
