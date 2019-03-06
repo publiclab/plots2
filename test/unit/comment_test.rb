@@ -303,6 +303,9 @@ class CommentTest < ActiveSupport::TestCase
     f.close()
   end
 
-
-
+  test 'contribution graph making' do
+    graph = Comment.contribution_graph_making
+    assert_not_nil graph
+    assert graph.class, Hash
+  end
 end

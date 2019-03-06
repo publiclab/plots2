@@ -91,7 +91,7 @@ class Node < ActiveRecord::Base
 
   belongs_to :user, foreign_key: 'uid'
 
-  validates :title, presence: :true
+  validates :title, presence: true
   validates_with UniqueUrlValidator, on: :create
 
   scope :published, -> { where(status: 1) }
@@ -105,6 +105,7 @@ class Node < ActiveRecord::Base
     def instance_method_already_implemented?(method_name)
       return true if method_name == 'changed'
       return true if method_name == 'changed?'
+
       super
     end
   end
@@ -196,26 +197,17 @@ class Node < ActiveRecord::Base
     weeks
   end
 
-  def self.contribution_graph_making(type = 'note', span = 52, time = Time.now)
-    weeks = {}
-    week = span
-    count = 0
-    while week >= 1
-      # initialising month variable with the month of the starting day
-      # of the week
-      month = time - (week * 7 - 1).days
-
-      # Now fetching the weekly data of notes or wikis
-      current_week = Node.select(:created)
+  def self.contribution_graph_making(type = 'note', start_time = Time.now - 1.month, end_time = Time.now)
+    date_hash = {}
+    (start_time.to_date..end_time.to_date).each do |date|
+      daily_nodes = Node.select(:created)
                     .where(type: type,
                     status: 1,
-                    created: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
+                    created: (date.beginning_of_week.to_time.to_i)..(date.end_of_week.to_time.to_i))
                     .count
-      weeks[count] = [(month.to_f * 1000), current_week]
-      count += 1
-      week -= 1
+      date_hash[date.beginning_of_week.to_time.to_i.to_f * 1000] = daily_nodes
     end
-    weeks
+    date_hash
   end
 
   def notify
@@ -489,7 +481,7 @@ class Node < ActiveRecord::Base
       RSS::Parser.parse(open('https://groups.google.com/group/' + power_tag('list') + '/feed/rss_v2_0_topics.xml').read, false).items
     end
   rescue StandardError
-    return []
+    []
   end
 
   # End of tag-related methods
@@ -598,7 +590,8 @@ class Node < ActiveRecord::Base
                     thread: thread,
                     timestamp: DateTime.now.to_i,
                     comment_via: comment_via_status,
-                    message_id: params[:message_id])
+                    message_id: params[:message_id],
+                    tweet_id: params[:tweet_id])
     c.save
     c
   end
@@ -775,12 +768,8 @@ class Node < ActiveRecord::Base
     end
   end
 
-  def decimals(n)
-    if !n.to_s.include? '.'
-      0
-    else
-      n.to_s.split('.').last.size
-    end
+  def decimals(number)
+    !number.include?('.') ? 0 : number.split('.').last.size
   end
 
   def delete_coord_attribute(tagname)

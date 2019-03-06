@@ -179,3 +179,7 @@ zh-CN:
       long: "%Y年%m月%d日 %H:%M"
       short: "%m月%d日 %H:%M"
     pm: 下午
+  users:
+    _form:
+      spam_filtering: "抱歉：垃圾邮件过滤！ 请选择下面的动物，以表明你是一个真实的人。🦁"
+      dont_write_here: "如果你是一个真人，不要在这里写任何东西。"

@@ -16,11 +16,7 @@ module ApplicationHelper
     if content.present?
       content.to_str.gsub(/:([\w+-]+):(?![^\[]*\])/) do |match|
         if emoji = Emoji.find_by_alias(Regexp.last_match(1))
-          if emoji.raw
-            emoji.raw
-          else
-            %(<img class="emoji" alt="#{Regexp.last_match(1)}" src="#{image_path("emoji/#{emoji.image_filename}")}" style="vertical-align:middle" width="20" height="20" />)
-          end
+          emoji.raw || %(<img class="emoji" alt="#{Regexp.last_match(1)}" src="#{image_path("emoji/#{emoji.image_filename}")}" style="vertical-align:middle" width="20" height="20" />)
         else
           match
         end
@@ -33,6 +29,7 @@ module ApplicationHelper
     image_map = {}
     Emoji.all.each do |e|
       next unless e.raw
+
       val = ":#{e.name}:"
       emojis << { value: val, text: e.name }
       image_map[e.name] = e.raw
@@ -44,12 +41,12 @@ module ApplicationHelper
     emoji_names = ["thumbs-up", "thumbs-down", "laugh",
                    "hooray", "confused", "heart"]
     emoji_image_map = {
-      "thumbs-up" => "https://assets-cdn.github.com/images/icons/emoji/unicode/1f44d.png",
-      "thumbs-down" => "https://assets-cdn.github.com/images/icons/emoji/unicode/1f44e.png",
-      "laugh" => "https://assets-cdn.github.com/images/icons/emoji/unicode/1f604.png",
-      "hooray" => "https://assets-cdn.github.com/images/icons/emoji/unicode/1f389.png",
-      "confused" => "https://assets-cdn.github.com/images/icons/emoji/unicode/1f615.png",
-      "heart" => "https://assets-cdn.github.com/images/icons/emoji/unicode/2764.png"
+      "thumbs-up" => "https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png",
+      "thumbs-down" => "https://github.githubassets.com/images/icons/emoji/unicode/1f44e.png",
+      "laugh" => "https://github.githubassets.com/images/icons/emoji/unicode/1f604.png",
+      "hooray" => "https://github.githubassets.com/images/icons/emoji/unicode/1f389.png",
+      "confused" => "https://github.githubassets.com/images/icons/emoji/unicode/1f615.png",
+      "heart" => "https://github.githubassets.com/images/icons/emoji/unicode/2764.png"
     }
     [emoji_names, emoji_image_map]
   end
@@ -122,6 +119,7 @@ module ApplicationHelper
     if contain_trimmed_body?(comment_body)
       return comment_body.split(Comment::COMMENT_FILTER).first
     end
+
     comment_body
   end
 

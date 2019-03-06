@@ -18,6 +18,7 @@ function setupWiki(node_id, title, raw, logged_in) {
         "fa-question": questionForm
       },
       editorOptions: {
+        mapModule: false,
         history: {
           prefix: "inline-"
         }

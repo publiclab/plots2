@@ -1,12 +1,8 @@
 <%= render :partial => "map/mapDependencies" %>
-<% unique_id = rand(100) %>
+<% unique_id = rand(1000) %>
 
   <style>
   	#map<%= unique_id %> { width:100%; height:300px; margin: 0; position: relative;}
-  	/*.leaflet-top{
-  		overflow: auto ;
-  		background: white ;
-  	}*/
   </style>
 
 <div onmouseover="document.body.style.overflow='hidden';"  onmouseout="document.body.style.overflow='auto';">
@@ -32,7 +28,7 @@
     }).setView([<%= lat %>,<%= lon %>], 2);
    map<%= unique_id %>.options.minZoom = 2 ;
 
-   var markers_hash = new Map() ;
+   var markers_hash<%= unique_id %> = new Map() ;
 
    window.setTimeout(function(){
       
@@ -42,7 +38,7 @@
          var user_latlng = L.latLng(map_lat, map_lon) ;
          map<%= unique_id %>.setView(user_latlng , 3) ;
        <% else %>
-         map<%= unique_id %>.setZoom(2) ;
+         map<%= unique_id %>.setZoom(2) ; 
        <% end %>
        
    }, 3500);
@@ -80,9 +76,9 @@
                        icon: default_markers
                    }) ;
 
-                   if(markers_hash.has(mid) === false){
+                   if(markers_hash<%= unique_id %>.has(mid) === false){
                        m.addTo(map<%= unique_id %>).bindPopup("<a href=" + url + ">" + title + "</a>") ;
-                       markers_hash.set(mid , m) ;
+                       markers_hash<%= unique_id %>.set(mid , m) ;
                    }
 
                }
@@ -119,9 +115,9 @@
                        icon: default_markers
                    }) ;
 
-                   if(markers_hash.has(mid) === false){
+                   if(markers_hash<%= unique_id %>.has(mid) === false){
                        m.addTo(map<%= unique_id %>).bindPopup("<a href=" + url + ">" + title + "</a>") ;
-                       markers_hash.set(mid , m) ;
+                       markers_hash<%= unique_id %>.set(mid , m) ;
                    }
 
                }

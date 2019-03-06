@@ -480,7 +480,7 @@ class TagController < ApplicationController
   end
 
   def gridsEmbed
-    if %w[nodes wikis activities questions upgrades notes].include?(params[:tagname].split(':').first)
+    if %w(nodes wikis activities questions upgrades notes).include?(params[:tagname].split(':').first)
       params[:t] = params[:tagname]
       params[:tagname] = ""
     end
@@ -504,8 +504,8 @@ class TagController < ApplicationController
     @tags = Tag.where(name: params[:id])
     @tag_notes = @tags.first.contribution_graph_making('note', 52, @time)
     @tag_wikis = @tags.first.contribution_graph_making('page', 52, @time)
-    @tag_maps = @tags.first.contribution_graph_making('map', 52, @time)
-    @tag_questions = @tags.first.question_graph_making( 52, @time)
+    @tag_questions = @tags.first.graph_making(Node.questions, 52, @time)
+    @tag_comments = @tags.first.graph_making(Comment, 52, @time)
   end
 
   private
