@@ -97,7 +97,7 @@ For information on how to install for use with the cloud environment, please see
 
 ## SSL in Development
 
-We at public labs use [openssl](https://github.com/ruby/openssl) gem to provide SSL for the secure connection in the development mode. You can run the https connection on the localhost by following following steps:
+We, at Public Lab use [openssl](https://github.com/ruby/openssl) gem to provide SSL for the secure connection in the development mode. You can run the https connection on the localhost by following following steps:
 1. Use `passenger start --ssl --ssl-certificate config/localhost.crt --ssl-certificate-key config/localhost.key --ssl-port 3001`.
 2. Open up https://localhost:3001.
 3. Add security exceptions from the advance settings of the browser.
