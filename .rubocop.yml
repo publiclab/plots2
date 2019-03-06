@@ -69,3 +69,9 @@ Metrics/ClassLength:
 Metrics/ParameterLists:
   Enabled: false
 
+Style/StringLiterals:
+  Enabled: false
+
+Metrics/LineLength:
+  Max: 423
+
