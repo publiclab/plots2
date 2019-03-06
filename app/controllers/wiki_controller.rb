@@ -1,7 +1,7 @@
 require 'rss'
 
 class WikiController < ApplicationController
-  before_action :require_user, only: %i(new create edit update delete replace)
+  before_action :require_user, only: %i(new create edit update delete replace show)
 
   def subdomain
     url = "//#{request.host}/wiki/"

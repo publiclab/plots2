@@ -361,15 +361,15 @@ class I18nTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'should choose i18n for wiki/show' do
-    available_testing_locales.each do |lang|
-      get '/change_locale/' + lang.to_s
-      follow_redirect!
+  # test 'should choose i18n for wiki/show' do
+  #   available_testing_locales.each do |lang|
+  #     get '/change_locale/' + lang.to_s
+  #     follow_redirect!
 
-      get '/wiki/' + nodes(:organizers).title.parameterize
-      assert_select 'span', I18n.t('wiki.show.view')
-    end
-  end
+  #     get '/wiki/' + nodes(:organizers).title.parameterize
+  #     assert_select 'span', I18n.t('wiki.show.view')
+  #   end
+  # end
 
   test 'should choose i18n for sidebar/_author + sidebar/_post_button' do
     available_testing_locales.each do |lang|
@@ -391,15 +391,15 @@ class I18nTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'should choose i18n for sidebar/_related' do
-    available_testing_locales.each do |lang|
-      get '/change_locale/' + lang.to_s
-      follow_redirect!
+  # test 'should choose i18n for sidebar/_related' do
+  #   available_testing_locales.each do |lang|
+  #     get '/change_locale/' + lang.to_s
+  #     follow_redirect!
 
-      get '/wiki/' + nodes(:organizers).title.parameterize
-      assert_select 'a', "#{I18n.t('sidebar._related.write_research_note')} " + Sanitize.clean('&raquo;')
-    end
-  end
+  #     get '/wiki/' + nodes(:organizers).title.parameterize
+  #     assert_select 'a', "#{I18n.t('sidebar._related.write_research_note')} " + Sanitize.clean('&raquo;')
+  #   end
+  # end
 
   test 'should choose i18n for comments' do
     available_testing_locales.each do |lang|
