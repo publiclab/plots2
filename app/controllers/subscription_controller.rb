@@ -20,11 +20,11 @@ class SubscriptionController < ApplicationController
   def followed
     # may be trouble: there can be multiple tags with the same name, no? We can eliminate that possibility in a migration if so.
     result = TagSelection.find_by_user_id_and_tid(current_user.uid, params[:id]) if params[:type] == "tag"
-    if result.nil?
-      result = false
-    else
-      result = result.following
-    end
+    result = if result.nil?
+               false
+             else
+               result.following
+             end
     render :json => result
   end
 
@@ -132,11 +132,11 @@ class SubscriptionController < ApplicationController
       redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
       return
     end
-    if params[:tagnames].is_a? String
-      tag_list = params[:tagnames].split(',')
-    else
-      tag_list = params[:tagnames]
-    end
+    tag_list = if params[:tagnames].is_a? String
+                 params[:tagnames].split(',')
+               else
+                 params[:tagnames]
+               end
     # should be logged in to subscribe
     if current_user
       # assume tag, for now

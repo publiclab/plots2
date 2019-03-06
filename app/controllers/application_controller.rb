@@ -13,11 +13,11 @@ class ApplicationController < ActionController::Base
   def set_sidebar(type = :generic, data = :all, args = {})
     args[:note_count] ||= 8
     if type == :tags # accepts data of array of tag names as strings
-      if params[:controller] == 'questions'
-        @notes ||= Tag.find_nodes_by_type(data, 'note', args[:note_count])
-      else
-        @notes ||= Tag.find_research_notes(data, args[:note_count])
-      end
+      @notes ||= if params[:controller] == 'questions'
+                   Tag.find_nodes_by_type(data, 'note', args[:note_count])
+                 else
+                   Tag.find_research_notes(data, args[:note_count])
+                 end
 
       @notes = @notes.where('node.nid != (?)', @node.nid) if @node
       @wikis = Tag.find_pages(data, 10)
@@ -41,13 +41,13 @@ class ApplicationController < ActionController::Base
       @notes = @notes.where('node.nid != (?)', @node.nid) if @node
       @notes = @notes.where('node_revisions.status = 1 AND node.nid NOT IN (?)', hidden_nids) unless hidden_nids.empty?
 
-      if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
-        @notes = @notes.where('(node.status = 1 OR node.status = 4)')
-      elsif current_user
-        @notes = @notes.where('(node.status = 1 OR (node.status = 4 AND node.uid = ?))', current_user.uid)
-      else
-        @notes = @notes.where('node.status = 1')
-      end
+      @notes = if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+                 @notes.where('(node.status = 1 OR node.status = 4)')
+               elsif current_user
+                 @notes.where('(node.status = 1 OR (node.status = 4 AND node.uid = ?))', current_user.uid)
+               else
+                 @notes.where('node.status = 1')
+               end
 
       @wikis = Node.order('changed DESC')
         .joins(:revision)

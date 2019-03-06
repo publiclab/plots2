@@ -135,17 +135,17 @@ class NotesController < ApplicationController
         if params[:draft] != "true"
           if current_user.first_time_poster
             flash[:first_time_post] = true
-            if @node.has_power_tag('question')
-              flash[:notice] = I18n.t('notes_controller.thank_you_for_question').html_safe
-            else
-              flash[:notice] = I18n.t('notes_controller.thank_you_for_contribution').html_safe
-            end
+            flash[:notice] = if @node.has_power_tag('question')
+                               I18n.t('notes_controller.thank_you_for_question').html_safe
+                             else
+                               I18n.t('notes_controller.thank_you_for_contribution').html_safe
+                             end
           else
-            if @node.has_power_tag('question')
-              flash[:notice] = I18n.t('notes_controller.question_note_published').html_safe
-            else
-              flash[:notice] = I18n.t('notes_controller.research_note_published').html_safe
-            end
+            flash[:notice] = if @node.has_power_tag('question')
+                               I18n.t('notes_controller.question_note_published').html_safe
+                             else
+                               I18n.t('notes_controller.research_note_published').html_safe
+                             end
           end
         else
           flash[:notice] = I18n.t('notes_controller.saved_as_draft').html_safe
@@ -346,15 +346,15 @@ class NotesController < ApplicationController
 
   def rss
     limit = 20
-    if params[:moderators]
-      @notes = Node.limit(limit)
-        .order('nid DESC')
-        .where('type = ? AND status = 4', 'note')
-    else
-      @notes = Node.limit(limit)
-        .order('nid DESC')
-        .where('type = ? AND status = 1', 'note')
-    end
+    @notes = if params[:moderators]
+               Node.limit(limit)
+                 .order('nid DESC')
+                 .where('type = ? AND status = 4', 'note')
+             else
+               Node.limit(limit)
+                 .order('nid DESC')
+                 .where('type = ? AND status = 1', 'note')
+             end
     respond_to do |format|
       format.rss do
         render layout: false

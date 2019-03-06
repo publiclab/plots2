@@ -68,11 +68,11 @@ class UsersController < ApplicationController
 
   def edit
     @action = "update" # sets the form url
-    if params[:id] # admin only
-      @user = User.find_by(username: params[:id])
-    else
-      @user = current_user
-    end
+    @user = if params[:id] # admin only
+              User.find_by(username: params[:id])
+            else
+              current_user
+            end
     if current_user && current_user.uid == @user.uid || current_user.role == "admin"
       render :template => "users/edit"
     else
@@ -85,11 +85,11 @@ class UsersController < ApplicationController
     sort_param = params[:sort]
     @tagname_param = params[:tagname]
 
-    if params[:id]
-      order_string = 'updated_at DESC'
-    else
-      order_string = 'last_updated DESC'
-    end
+    order_string = if params[:id]
+                     'updated_at DESC'
+                   else
+                     'last_updated DESC'
+                   end
 
     if sort_param == 'username'
       order_string = 'username ASC'
@@ -106,25 +106,25 @@ class UsersController < ApplicationController
       @map_lon = current_user.get_value_of_power_tag("lon").to_f
     end
     # allow admins to view recent users
-    if params[:id]
-      @users = User.order(order_string)
-                    .where('rusers.role = ?', params[:id])
-                    .where('rusers.status = 1')
-                    .page(params[:page])
+    @users = if params[:id]
+               User.order(order_string)
+                             .where('rusers.role = ?', params[:id])
+                             .where('rusers.status = 1')
+                             .page(params[:page])
 
-    elsif @tagname_param
-      @users = User.where(id: UserTag.where(value: @tagname_param).collect(&:uid))
-                    .page(params[:page])
+             elsif @tagname_param
+               User.where(id: UserTag.where(value: @tagname_param).collect(&:uid))
+                             .page(params[:page])
 
-    else
-      # recently active
-      @users = User.select('*, rusers.status, MAX(node_revisions.timestamp) AS last_updated')
-                   .joins(:revisions)
-                   .where("node_revisions.status = 1")
-                   .group('rusers.id')
-                   .order(order_string)
-                   .page(params[:page])
-    end
+             else
+               # recently active
+               User.select('*, rusers.status, MAX(node_revisions.timestamp) AS last_updated')
+                            .joins(:revisions)
+                            .where("node_revisions.status = 1")
+                            .group('rusers.id')
+                            .order(order_string)
+                            .page(params[:page])
+             end
 
     @users = @users.where('rusers.status = 1') unless current_user&.can_moderate?
   end
