@@ -95,7 +95,8 @@ class NotesController < ApplicationController
   end
 
   def image
-    params[:size] = params[:size] || :large
+    params[:size] ||= :large
+
     node = Node.find(params[:id])
     if node.main_image
       redirect_to URI.parse(node.main_image.path(params[:size])).path
@@ -105,70 +106,66 @@ class NotesController < ApplicationController
   end
 
   def create
-    if current_user.status == User::NORMAL
-      saved, @node, @revision = Node.new_note(uid: current_user.uid,
-                                              title: params[:title],
-                                              body: params[:body],
-                                              main_image: params[:main_image],
-                                              draft: params[:draft])
+    return show_banned_flash unless User::Status::NORMAL
 
-      if params[:draft] == "true" && current_user.first_time_poster
-        flash[:notice] = "First-time users are not eligible to create a draft."
-        redirect_to '/'
-        return
-      elsif params[:draft] == "true"
-        token = SecureRandom.urlsafe_base64(16, false)
-        @node.slug = @node.slug + " token:" + token
-        @node.save!
+    saved, @node, @revision = new_note
+
+    if params[:draft] == "true" && current_user.first_time_poster
+      flash[:notice] = "First-time users are not eligible to create a draft."
+      redirect_to '/'
+      return
+    elsif params[:draft] == "true"
+      token = SecureRandom.urlsafe_base64(16, false)
+      @node.slug = @node.slug + " token:" + token
+      @node.save!
+    end
+
+    if saved
+      params[:tags]&.tr(' ', ',')&.split(',')&.each do |tagname|
+        @node.add_tag(tagname.strip, current_user)
       end
 
-      if saved
-        params[:tags]&.tr(' ', ',')&.split(',')&.each do |tagname|
-          @node.add_tag(tagname.strip, current_user)
-        end
+      if params[:event] == 'on'
+        @node.add_tag('event', current_user)
+        @node.add_tag('event:rsvp', current_user)
+        @node.add_tag('date:' + params[:date], current_user) if params[:date]
+      end
 
-        if params[:event] == 'on'
-          @node.add_tag('event', current_user)
-          @node.add_tag('event:rsvp', current_user)
-          @node.add_tag('date:' + params[:date], current_user) if params[:date]
-        end
+      @node.add_tag('first-time-poster', current_user) if current_user.first_time_poster
 
-        @node.add_tag('first-time-poster', current_user) if current_user.first_time_poster
+      if not_draft_and_user_is_first_time_poster? && @node.has_power_tag('question')
+        flash[:first_time_post] = true
+        thanks_for_question = I18n.t('notes_controller.thank_you_for_question').html_safe
 
-        if params[:draft] != "true"
-          if current_user.first_time_poster
-            flash[:first_time_post] = true
-            thanks_for_question = I18n.t('notes_controller.thank_you_for_question').html_safe
-            thanks_for_contribution = I18n.t('notes_controller.thank_you_for_contribution').html_safe
+        flash[:notice] = thanks_for_question
 
-            flash[:notice] = @node.has_power_tag('question') ? thanks_for_question : thanks_for_contribution
-          else
-            question_note = I18n.t('notes_controller.question_note_published').html_safe
-            research_note = I18n.t('notes_controller.research_note_published').html_safe
+      elsif not_draft_and_user_is_first_time_poster?
+        thanks_for_contribution = I18n.t('notes_controller.thank_you_for_contribution').html_safe
+        flash[:notice] = thanks_for_contribution
 
-            flash[:notice] = @node.has_power_tag('question') ? question_note : research_note
-          end
-        else
-          flash[:notice] = I18n.t('notes_controller.saved_as_draft').html_safe
-        end
+      elsif params[:draft] != "true"
+        question_note = I18n.t('notes_controller.question_note_published').html_safe
+        research_note = I18n.t('notes_controller.research_note_published').html_safe
 
-        if params[:redirect] && params[:redirect] == 'question'
-          redirect_to @node.path(:question)
-        else
-          request.xhr? ? (render plain: @node.path) : (redirect_to @node.path)
-        end
+        flash[:notice] = @node.has_power_tag('question') ? question_note : research_note
+
       else
-        if request.xhr? # rich editor!
-          errors = @node.errors
-          errors = errors.to_hash.merge(@revision.errors.to_hash) if @revision&.errors
-          render json: errors
-        else
-          render template: 'editor/post'
-        end
+        flash[:notice] = I18n.t('notes_controller.saved_as_draft').html_safe
+      end
+
+      if params[:redirect] && params[:redirect] == 'question'
+        redirect_to @node.path(:question)
+      else
+        request.xhr? ? (render plain: @node.path) : (redirect_to @node.path)
       end
     else
-      flash.keep[:error] = I18n.t('notes_controller.you_have_been_banned').html_safe
-      redirect_to '/logout'
+      if request.xhr? # rich editor!
+        errors = @node.errors
+        errors = errors.to_hash.merge(@revision.errors.to_hash) if @revision&.errors
+        render json: errors
+      else
+        render template: 'editor/post'
+      end
     end
   end
 
@@ -405,5 +402,24 @@ class NotesController < ApplicationController
       flash[:warning] = "You are not author or moderator so you can't publish a draft!"
       redirect_to '/'
     end
+  end
+
+  private
+
+  def new_note
+    Node.new_note(uid: current_user.uid,
+                  title: params[:title],
+                  body: params[:body],
+                  main_image: params[:main_image],
+                  draft: params[:draft])
+  end
+
+  def not_draft_and_user_is_first_time_poster?
+    params[:draft] != "true" && current_user.first_time_poster
+  end
+
+  def show_banned_flash
+    flash.keep[:error] = I18n.t('notes_controller.you_have_been_banned').html_safe
+    redirect_to '/logout'
   end
 end
