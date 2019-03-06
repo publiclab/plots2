@@ -357,3 +357,27 @@ search_trawling:
   type: "note"
   cached_likes: 0
   slug: "could-the-babylegs-diy"
+
+purple_air_without_hyphen:
+  nid: 30
+  uid: 5
+  title: "This is purpleair without hyphen"
+  path: "/notes/admin/02-20-2019/purple-air-without-hyphen"
+  created: <%= DateTime.new(2019,2,20).to_i %>
+  changed: <%= DateTime.new(2019,2,20).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: "purple-air-without-hyphen"
+
+purple_air_with_hyphen:
+  nid: 31
+  uid: 2
+  title: "This is purple-air with hyphen"
+  path: "/notes/admin/02-20-2019/purple-air-with-hyphen"
+  created: <%= DateTime.new(2019,2,20).to_i %>
+  changed: <%= DateTime.new(2019,2,20).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: "purple-air-with-hyphen"
