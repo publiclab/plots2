@@ -2,9 +2,8 @@
 <div class="row">
   <h3> Tag statistics for <%= @tags.first.name %> </h3>
   <hr>
-  <%= link_to " See statistics for all contents", stats_path %>
-    <br>
     <div class="col-md-6">
+        <h5> <%= link_to "See statistics for all contents", stats_path %> </h5>
         <%= form_tag request.url, method: :get do %>
             <h5>Choose a date to show  a graph of statistics an year from that date</h5>
             <br>
@@ -20,7 +19,7 @@
 <br>
 <br>
 <div class="graph">
-    <p> <b><%= params[:id].capitalize%></b> graph from <b><%= (@time - 1.year).to_formatted_s(:long)%></b> to <b><%= @time.to_formatted_s(:long)%></b> </p>
+    <p> <b><%= params[:id].capitalize%></b> graph from <b><%= (@start).to_formatted_s(:long)%></b> to <b><%= @end.to_formatted_s(:long)%></b> </p>
 <br>
     <%= render partial: "tag/graph", locals: { wikis: @tag_wikis, notes: @tag_notes, questions: @tag_questions, comments: @tag_comments  } %>
 <br>
