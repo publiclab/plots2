@@ -105,7 +105,7 @@ class NotesController < ApplicationController
   end
 
   def create
-    if current_user.status == 1
+    if current_user.status == User::NORMAL
       saved, @node, @revision = Node.new_note(uid: current_user.uid,
                                               title: params[:title],
                                               body: params[:body],
@@ -117,8 +117,8 @@ class NotesController < ApplicationController
         redirect_to '/'
         return
       elsif params[:draft] == "true"
-        @token = SecureRandom.urlsafe_base64(16, false)
-        @node.slug = @node.slug + " token:" + @token
+        token = SecureRandom.urlsafe_base64(16, false)
+        @node.slug = @node.slug + " token:" + token
         @node.save!
       end
 
@@ -126,40 +126,36 @@ class NotesController < ApplicationController
         params[:tags]&.tr(' ', ',')&.split(',')&.each do |tagname|
           @node.add_tag(tagname.strip, current_user)
         end
+
         if params[:event] == 'on'
           @node.add_tag('event', current_user)
           @node.add_tag('event:rsvp', current_user)
           @node.add_tag('date:' + params[:date], current_user) if params[:date]
         end
+
         @node.add_tag('first-time-poster', current_user) if current_user.first_time_poster
+
         if params[:draft] != "true"
           if current_user.first_time_poster
             flash[:first_time_post] = true
-            flash[:notice] = if @node.has_power_tag('question')
-                               I18n.t('notes_controller.thank_you_for_question').html_safe
-                             else
-                               I18n.t('notes_controller.thank_you_for_contribution').html_safe
-                             end
+            thanks_for_question = I18n.t('notes_controller.thank_you_for_question').html_safe
+            thanks_for_contribution = I18n.t('notes_controller.thank_you_for_contribution').html_safe
+
+            flash[:notice] = @node.has_power_tag('question') ? thanks_for_question : thanks_for_contribution
           else
-            flash[:notice] = if @node.has_power_tag('question')
-                               I18n.t('notes_controller.question_note_published').html_safe
-                             else
-                               I18n.t('notes_controller.research_note_published').html_safe
-                             end
+            question_note = I18n.t('notes_controller.question_note_published').html_safe
+            research_note = I18n.t('notes_controller.research_note_published').html_safe
+
+            flash[:notice] = @node.has_power_tag('question') ? question_note : research_note
           end
         else
           flash[:notice] = I18n.t('notes_controller.saved_as_draft').html_safe
         end
-        # Notice: Temporary redirect.Remove this condition after questions show page is complete.
-        #         Just keep @node.path(:question)
+
         if params[:redirect] && params[:redirect] == 'question'
           redirect_to @node.path(:question)
         else
-          if request.xhr? # rich editor!
-            render plain: @node.path
-          else
-            redirect_to @node.path
-          end
+          request.xhr? ? (render plain: @node.path) : (redirect_to @node.path)
         end
       else
         if request.xhr? # rich editor!
