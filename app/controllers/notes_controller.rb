@@ -106,7 +106,7 @@ class NotesController < ApplicationController
   end
 
   def create
-    return show_banned_flash unless User::Status::NORMAL
+    return show_banned_flash unless current_user.status == User::Status::NORMAL
 
     saved, @node, @revision = new_note
 
