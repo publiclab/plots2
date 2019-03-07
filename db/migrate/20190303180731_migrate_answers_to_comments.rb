@@ -9,7 +9,6 @@ class MigrateAnswersToComments < ActiveRecord::Migration[5.2]
       end
 
       answer.comments.each do |comment|
-        comment.aid = 0
         comment.nid = c.nid
         comment.reply_to = c.cid
         comment.save

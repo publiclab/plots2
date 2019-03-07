@@ -7,7 +7,7 @@ first:
   # Thus we manually increment it to test the usage of ORDER BY queries
   timestamp: <%= Time.now.to_i + 1 %>
   thread: /01
-  reply_to: ni
+  reply_to: nil
 
 second:
   uid: 2
