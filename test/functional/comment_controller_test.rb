@@ -51,6 +51,18 @@ class CommentControllerTest < ActionController::TestCase
     assert_equal 1, css_select(".comment table").size # test inline grid rendering
   end
 
+  test 'should create a replied comment' do
+    UserSession.create(users(:bob))
+    initial_count = comments(:first).replied_comments.count
+    assert_difference 'Comment.count' do
+      post :create, params: { id: nodes(:one).nid, body: '[notes:awesome]', reply_to: comments(:first) }, xhr: true
+    end
+    assert_response :success
+    assert_not_nil :comment
+    assert_template partial: 'notes/_comment'
+    assert_equal (initial_count+1), comments(:first).replied_comments.count
+  end
+
   test 'should create question comments' do
     UserSession.create(users(:bob))
     assert_difference 'Comment.count' do
