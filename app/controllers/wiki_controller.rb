@@ -448,8 +448,6 @@ class WikiController < ApplicationController
     render :show
   end
 
-  private
-
   def update_node_attributes
     ActiveRecord::Base.transaction do
       @node.vid = @revision.vid
