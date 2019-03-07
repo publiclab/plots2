@@ -21,7 +21,7 @@
         </div>
         <div style="margin-top: 20px;">
           <b style="font-weight: 500;"><%= n.author.username.capitalize %></b>
-          <p style="margin: 0;color: #999;font-weight: 500;">Published Feb 2</p>
+          <p style="margin: 0;color: #999;font-weight: 500;">Published <%= n.created_at %>.strftime("%m/%d")</p>
         </div>
         <div <% unless n.main_image.present? %> colspan="2" <% end %> style="padding-bottom: 10px;">
           <p style="font-size: 1.1em;line-height: 1.5;text-align: justify;font-weight: 300;"><%= n.body.truncate(175) %><a href="https://publiclab.org<%= n.path %>" style="text-decoration: none;">  Read more</a></p>
