@@ -95,5 +95,9 @@ module Plots2
     config.paths.add File.join('app','api'), glob: File.join('**', '*.rb')
     config.autoload_paths += Dir[Rails.root.join('app', 'api', '*')]
 
+    Raven.configure do |config|
+      config.dsn = 'https://0490297edae647b3bd935bdb4658da54:3d1a74cf68744c53b5e70484bece84d1@sentry.io/1410626'
+    end
+
   end
 end

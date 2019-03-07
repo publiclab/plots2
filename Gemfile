@@ -54,6 +54,7 @@ gem 'responders', '~> 2.4'
 gem 'rubocop', '~> 0.65.0', require: false
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
+gem 'sentry-raven'
 gem 'sidekiq'
 gem 'skylight' # performance tracking via skylight.io
 gem 'turbolinks', '~> 5'
