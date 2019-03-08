@@ -316,8 +316,8 @@ class User < ActiveRecord::Base
   end
 
   def send_digest_email
-    top_picks=[]
-    freq=1
+    top_picks = []
+    freq = 1
     if self.has_tag('digest:daily')
       top_picks = content_followed_in_period(1.day.ago)
       freq = 0
