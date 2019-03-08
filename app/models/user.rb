@@ -24,7 +24,8 @@ class User < ActiveRecord::Base
 
   acts_as_authentic do |c|
     c.validates_format_of_email_field_options = { with: URI::MailTo::EMAIL_REGEXP }
-    c.crypto_provider = Authlogic::CryptoProviders::Sha512
+    c.transition_from_crypto_providers = Authlogic::CryptoProviders::Sha512,
+    c.crypto_provider = Authlogic::CryptoProviders::SCrypt
   end
 
   has_attached_file :photo, styles: { thumb: '200x200#', medium: '500x500#', large: '800x800#' },
