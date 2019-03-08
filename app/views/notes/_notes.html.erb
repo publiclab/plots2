@@ -46,11 +46,13 @@
                 <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#Questions"><i class="fa fa-question-circle" style="color:#db3a1e;"></i> <span id="questions-count-<%= node.id %>"><%= node.questions.count %> questions</span></a>
               </small></p>
             <% end %>
-        <p style="display:inline; margin: auto">
-              <% if logged_in_as(['admin','moderator']) %><a style="width: 40%" class="btn btn-default" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> <%= t('notes._notes.spam') %></a><% end %>
-              <a style="width: 50%" class="btn btn-default" href="<%= node.path %>"><%= t('notes._notes.read_more') %></a>
-        </p>
-    
+
+	<div style="display: inline-block">
+            <p>
+              <% if logged_in_as(['admin','moderator']) %><a class="btn btn-default" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> <%= t('notes._notes.spam') %></a><% end %>
+              <a class="btn btn-default" href="<%= node.path %>"><%= t('notes._notes.read_more') %></a>
+            </p>
+	</div>
           <% end %>
           <% if params[:mod] %>
             <a class="btn btn-default" href="#"><i class="fa fa-ban-circle"></i> <%= t('notes._notes.spam') %></a>
