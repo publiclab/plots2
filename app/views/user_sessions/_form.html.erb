@@ -18,12 +18,12 @@
 
   <br style="clear:both;"/>
 
-  <div id="toggle">
+  <div id="toggle" style="padding-left: 30px; padding-right: 30px;">
     <div class="form-group">
       <label for="username"><%= t('user_sessions.new.username') %></label>
-      <%= f.text_field :username, { tabindex: 1, placeholder: "Username", class: 'form-control', id: 'username-login', style: 'width: 85%' } %>
+      <%= f.text_field :username, { tabindex: 1, placeholder: "Username", class: 'form-control', id: 'username-login' } %>
       <label for="password"><%= t('user_sessions.new.password') %></label>
-      <%= f.password_field :password, { tabindex: 2,placeholder: "Password",class: 'form-control', id: 'password-signup', style: 'width: 85%', onpaste: 'return false;' } %>
+      <%= f.password_field :password, { tabindex: 2,placeholder: "Password",class: 'form-control', id: 'password-signup', onpaste: 'return false;' } %>
     </div>
 
     <input type="hidden" name="hash_params" value="" />
