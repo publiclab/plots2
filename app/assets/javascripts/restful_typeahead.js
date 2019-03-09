@@ -4,22 +4,21 @@
   search API and the UI components.
   Documentation here: https://github.com/bassjobsen/Bootstrap-3-Typeahead
 **/
-import { debounce } from './debounce.js';
 
 $(function() {
-  $('input.search-query.typeahead').each(debounce(function(i, el){
+  $('input.search-query.typeahead').each(function(i, el){
     var typeahead = $(el).typeahead({
       items: 10,
       minLength: 3,
       showCategoryHeader: true,
       autoSelect: false,
-      source: function (query, process) {
+      source: debounce(function (query, process) {
         var encoded_query = encodeURIComponent(query);
         var qryType = $(el).attr('qryType');
         return $.getJSON('/api/srch/' + qryType + '?query=' + encoded_query, function (data) {
           return process(data.items);
         },'json');
-      },
+      }, 350),
       highlighter: function (text, item) {
         return item.doc_title;
       },
@@ -46,5 +45,5 @@ $(function() {
                  showAll: true
                }
     });
-  }, 350));
+  });
 });
