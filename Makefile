@@ -6,11 +6,11 @@ build:
 
 redeploy-container:
 	docker-compose build --pull
+	docker-compose run --rm web yarn install
 	docker-compose run --rm web bash -c "rake db:migrate && rake assets:precompile && rake tmp:cache:clear"
 	docker-compose down --remove-orphans
 	rm -f ./tmp/pids/server.pid
 	docker-compose up -d
-	docker-compose exec -T web yarn install
 	docker-compose exec -T web bash -c "echo 172.19.0.1 smtp >> /etc/hosts"
 	docker-compose exec -T mailman bash -c "echo 172.19.0.1 smtp >> /etc/hosts"
 	docker-compose exec -T sidekiq bash -c "echo 172.19.0.1 smtp >> /etc/hosts"
@@ -18,10 +18,10 @@ redeploy-container:
 	docker-compose exec -T web service cron start
 
 deploy-container:
+	docker-compose run --rm web yarn install
 	docker-compose run --rm web bash -c "sleep 5 && rake db:migrate && rake assets:precompile"
 	rm -f ./tmp/pids/server.pid
 	docker-compose up -d
-	docker-compose exec -T web yarn install
 	docker-compose exec -T web bash -c "echo 172.19.0.1 smtp >> /etc/hosts"
 	docker-compose exec -T mailman bash -c "echo 172.19.0.1 smtp >> /etc/hosts"
 	docker-compose exec -T sidekiq bash -c "echo 172.19.0.1 smtp >> /etc/hosts"
@@ -33,6 +33,7 @@ test-container:
 	docker-compose exec -T web rake db:setup
 	docker-compose exec -T web rake db:migrate
 	docker-compose exec -T web yarn install
+	docker-compose exec -T web rake assets:precompile
 	docker-compose exec -T web rake test:all
 	docker-compose exec -T web rails test -d
 	docker-compose down
