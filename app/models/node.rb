@@ -771,9 +771,9 @@ class Node < ActiveRecord::Base
 
   def delete_coord_attribute(tagname)
     if tagname.split(':')[0] == "lat"
-      update_attributes(:latitude => nil, :precision => nil)
+      update_attributes(latitude: nil, precision: nil)
     else
-      update_attributes(:longitude => nil)
+      update_attributes(longitude: nil)
     end
   end
 
