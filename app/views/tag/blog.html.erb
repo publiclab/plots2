@@ -52,7 +52,7 @@
           <p class="meta" style="color:#888;"><small>
             <%=raw translation('tag.blog.by') %> <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a>  <%= node.author.new_contributor %>
 	    | <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>
-            | <a href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= node.comments.count %></a>
+            | <a href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= node.comments.size %></a>
             <% if params[:controller] == "notes" && params[:action] == "popular" %>
             | <%= number_with_delimiter(node.totalviews) %> <%=raw translation('tag.blog.views') %>
             <% else %>

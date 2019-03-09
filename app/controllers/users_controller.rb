@@ -258,8 +258,6 @@ class UsersController < ApplicationController
           else
             flash[:error] = I18n.t('users_controller.password_change_failed')
           end
-        else
-          # Just display page prompting username & pwd
         end
       else
         flash[:error] = I18n.t('users_controller.password_reset_failed_no_user').html_safe

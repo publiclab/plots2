@@ -1,8 +1,7 @@
 class Comment < ApplicationRecord
-  include CommentsShared # common methods for comment-like models
+  include CommentsShared
 
   belongs_to :node, foreign_key: 'nid', touch: true, counter_cache: true
-  # dependent: :destroy, counter_cache: true
   belongs_to :user, foreign_key: 'uid'
   belongs_to :answer, foreign_key: 'aid'
   has_many :likes, :as => :likeable
@@ -23,7 +22,7 @@ class Comment < ApplicationRecord
       .where(status: 1)
   end
 
-  def self.comment_weekly_tallies(span = 52, time = Time.now)
+  def self.comment_weekly_tallies(span = 52, time = Time.current)
     weeks = {}
     (0..span).each do |week|
       weeks[span - week] = Comment.select(:timestamp)
@@ -33,7 +32,7 @@ class Comment < ApplicationRecord
     weeks
   end
 
-  def self.contribution_graph_making(start_time = Time.now - 1.month, end_time = Time.now)
+  def self.contribution_graph_making(start_time = 1.month.ago, end_time = Time.current)
     date_hash = {}
     (start_time.to_date..end_time.to_date).each do |date|
       daily_comments = Comment.select(:timestamp)
@@ -108,7 +107,7 @@ class Comment < ApplicationRecord
   end
 
   def notify_users(uids, current_user)
-    User.where('id IN (?)', uids).each do |user|
+    User.where('id IN (?)', uids).find_each do |user|
       if user.uid != current_user.uid
         CommentMailer.notify(user, self).deliver_now
       end
@@ -243,7 +242,7 @@ class Comment < ApplicationRecord
         comment: comment_content_markdown,
         comment_via: 1,
         message_id: message_id,
-        timestamp: Time.now.to_i)
+        timestamp: Time.current.to_i)
       if comment.save
         comment.answer_comment_notify(user)
       end
@@ -287,7 +286,7 @@ class Comment < ApplicationRecord
   end
 
   def self.get_domain(email)
-    domain = email[/(?<=@)[^.]+(?=\.)/, 0]
+    email[/(?<=@)[^.]+(?=\.)/, 0]
   end
 
   def self.yahoo_parsed_mail(mail_doc)
