@@ -966,10 +966,10 @@ cwise@^1.0.4, cwise@^1.0.7:
     static-module "^1.0.0"
     uglify-js "^2.6.0"
 
-cytoscape@^3.4.2:
-  version "3.4.2"
-  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.4.2.tgz#f35f0d4a8ccb5901e801046230edccf1c3a39806"
-  integrity sha512-+n10uc/MIs+XWsXff8M2zfA681E9O41bLgwAKP9IsBNckqQMWQQP6cRBjeJYUZwm6MigF4GGWdBUlmX4Ef+8WQ==
+cytoscape@^3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.5.0.tgz#b6cc5a9c66b7f29f8d7f6dfbb0c0e31a8af748a1"
+  integrity sha512-00CKGVqp8L1TOPfDv8Xfra0pBcSkMHpk0VmLNKRxQ+isSvDtJafDYfvcTCUO4CrvKW2c7pKli0ZcWPjProBGTw==
   dependencies:
     heap "^0.2.6"
     lodash.debounce "^4.0.8"
@@ -1013,6 +1013,11 @@ dateformat@1.0.2-1.2.3:
   version "1.0.2-1.2.3"
   resolved "https://registry.yarnpkg.com/dateformat/-/dateformat-1.0.2-1.2.3.tgz#b0220c02de98617433b72851cf47de3df2cdbee9"
   integrity sha1-sCIMAt6YYXQztyhRz0fePfLNvuk=
+
+debounce@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/debounce/-/debounce-1.2.0.tgz#44a540abc0ea9943018dc0eaa95cce87f65cd131"
+  integrity sha512-mYtLl1xfZLi1m4RtQYlZgJUNQjl4ZxVnHzIR8nLLgi4q1YT8o/WM+MK/f8yfcc9s5Ir5zRaPZyZU6xs1Syoocg==
 
 debug@0.7.4:
   version "0.7.4"

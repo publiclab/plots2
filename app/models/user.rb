@@ -353,9 +353,10 @@ class User < ActiveRecord::Base
     def validate_token(token)
       begin
         decrypted_data = User.decrypt(token)
-      rescue ActiveSupport::MessageVerifier::InvalidSignature => e
+      rescue ActiveSupport::MessageVerifier::InvalidSignature
         return 0
       end
+
       if (Time.now - decrypted_data[:timestamp]) / 1.hour > 24.0
         return 0
       else
@@ -405,7 +406,8 @@ class User < ActiveRecord::Base
       questions = Node.questions.where(status: 1).pluck(:uid)
       comments = Comment.pluck(:uid)
       revisions = Revision.where(status: 1).pluck(:uid)
-      contributors = (notes + answers + questions + comments + revisions).compact.uniq.length
+
+      (notes + answers + questions + comments + revisions).compact.uniq.length
     end
 
     def watching_location(nwlat, selat, nwlng, selng)

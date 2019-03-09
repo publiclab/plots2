@@ -139,7 +139,7 @@ en:
       ban: "Ban"
     _photo:
       profile_photo: "Profile photo"
-      drag_and_drop_image: "Drag &amp; drop to add an image, or"
+      drag_and_drop_image: "Drag and drop to add an image, or"
       choose_image: "choose an image"
       uploading: "Uploading"
     edit:
@@ -286,6 +286,13 @@ en:
       questions_past_month: |
                 <a href='%{url1}'>%{quiz_count} questions asked </a>
                 and <a href='%{url2}'>%{ans_count} questions answered </a> in the past month.
+      notes_wikis_comments: |
+          <b>%{notes_count} notes</b> and <b>%{wikis_count} wiki edits and</b>
+          and <b>%{comments_count} comments </b>  posted in this period.
+      members_and_contributors: |
+          <b>%{member_count}  member registrations</b>
+          and <b>%{people_count}  contributors </b> posted in this period.
+
   dashboard:
     _node_comment:
       commented_on: "commented on"
@@ -683,7 +690,7 @@ en:
   comments:
     _form:
       uploading: "Uploading..."
-      drag_and_drop: "Drag &amp; drop to add an image or file, or"
+      drag_and_drop: "Drag and drop to add an image or file, or"
       choose_one: "choose one"
       upload_image: "Upload image"
       preview: "Preview"
@@ -695,7 +702,7 @@ en:
       email_notifications: "Author, commenters, and those who've \"liked\" this note will receive email notifications"
     _edit:
       uploading: "Uploading..."
-      drag_and_drop: "Drag &amp; drop to add an image or file, or"
+      drag_and_drop: "Drag and drop to add an image or file, or"
       choose_one: "choose one"
       upload_image: "Upload image"
       preview: "Preview"

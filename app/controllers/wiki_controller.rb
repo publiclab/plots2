@@ -194,9 +194,8 @@ class WikiController < ApplicationController
       redirect_to @node.path
 
     elsif @revision.valid?
-      update_node_attributes
-
       @revision.save
+      update_node_attributes
 
       flash[:notice] = I18n.t('wiki_controller.edits_saved')
       redirect_to @node.path
@@ -447,8 +446,6 @@ class WikiController < ApplicationController
     show
     render :show
   end
-
-  private
 
   def update_node_attributes
     ActiveRecord::Base.transaction do

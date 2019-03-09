@@ -271,7 +271,7 @@ class NodeTest < ActiveSupport::TestCase
     expected = [nodes(:one), nodes(:spam), nodes(:first_timer_note), nodes(:blog),
                 nodes(:moderated_user_note), nodes(:activity), nodes(:upgrade),
                 nodes(:draft), nodes(:post_test1), nodes(:post_test2),
-                nodes(:post_test3), nodes(:post_test4), nodes(:scraped_image), nodes(:search_trawling)]
+                nodes(:post_test3), nodes(:post_test4), nodes(:scraped_image), nodes(:search_trawling), nodes(:purple_air_without_hyphen), nodes(:purple_air_with_hyphen)]
     assert_equal expected, notes
   end
 
@@ -422,5 +422,11 @@ class NodeTest < ActiveSupport::TestCase
   test 'should show scraped image' do
     node = nodes(:scraped_image)
     assert_equal '/url/to/image.png', node.scraped_image
+  end
+
+  test 'contribution graph making' do
+    graph = Node.contribution_graph_making
+    assert_not_nil graph
+    assert graph.class, Hash
   end
 end

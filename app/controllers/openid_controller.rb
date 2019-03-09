@@ -301,7 +301,7 @@ class OpenidController < ApplicationController
   end
 
   def render_response(oidresp)
-    signed_response = server.signatory.sign(oidresp) if oidresp.needs_signing
+    server.signatory.sign(oidresp) if oidresp.needs_signing
     web_response = server.encode_response(oidresp)
     case web_response.code
     when HTTP_OK

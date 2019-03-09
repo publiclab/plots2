@@ -2,15 +2,7 @@
 
 <div class="col-md-12">
   <%= render partial: 'tag/show/header' %>
-  
-  
-  <% if @tags.first && params[:id][-1..-1] != "*" %>
 
-      <%= link_to tag_stats_path, id: params[:id] ,title: "Click to view graph" do %>
-          <i class="btn btn-default btn-sm"><i class="fa fa-bar-chart"></i> Stats </i>
-          <% end %>
-      <% end %>
-  
   <%= render partial: 'tag/show/contributors' %>
 
   <% unless @tags.try(:first).try(:parent).nil? %>

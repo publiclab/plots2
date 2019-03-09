@@ -43,7 +43,7 @@ class Tag < ApplicationRecord
 
   # nodes this tag has been used on; no wildcards
   def nodes
-    nodes = Node.where(nid: node_tag.collect(&:nid))
+    Node.where(nid: node_tag.collect(&:nid))
   end
 
   def self.nodes_frequency(starting, ending)
@@ -176,14 +176,18 @@ class Tag < ApplicationRecord
 
   def self.sort_according_to_followers(raw_tags, order)
     tags_with_their_followers = []
+
     raw_tags.each do |i|
       tags_with_their_followers << { "number_of_followers" => Tag.follower_count(i.name), "tags" => i }
     end
+
     tags_with_their_followers.sort_by! { |key| key["number_of_followers"] }
+
     if order != "asc"
       tags_with_their_followers.reverse!
     end
-    tags = tags_with_their_followers.map { |x| x["tags"] }
+
+    tags_with_their_followers.map { |x| x["tags"] }
   end
 
   # OPTIMIZE: this too!

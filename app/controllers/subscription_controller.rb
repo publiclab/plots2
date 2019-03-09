@@ -68,10 +68,6 @@ class SubscriptionController < ApplicationController
         end
       end
 
-      if request.xhr?
-        render json: { status: status, message: message, tagname: params[:name], id: tag.tid }
-      end
-
     else
       flash[:warning] = "You must be logged in to subscribe for email updates; please <a class='requireLogin'>log in</a> or <a href='/signup'>create an account</a>."
       redirect_to "/tag/" + params[:name]
@@ -162,8 +158,6 @@ class SubscriptionController < ApplicationController
             end
           end
         end
-      else
-        # user or node subscription
       end
     else
       flash[:warning] = "You must be logged in to subscribe for email updates!"

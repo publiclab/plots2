@@ -6,21 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-
-Lint/UselessAssignment:
-  Exclude:
-    - 'app/controllers/openid_controller.rb'
-    - 'app/controllers/tag_controller.rb'
-    - 'app/controllers/user_sessions_controller.rb'
-    - 'app/models/answer.rb'
-    - 'app/models/comment.rb'
-    - 'app/models/concerns/node_shared.rb'
-    - 'app/models/node.rb'
-    - 'app/models/tag.rb'
-    - 'app/models/user.rb'
-    - 'app/services/execute_search.rb'
-    - 'app/services/search_service.rb'
-
 # Offense count: 180
 Metrics/AbcSize:
   Max: 178
@@ -124,15 +109,6 @@ Style/ConditionalAssignment:
 Style/Documentation:
   Enabled: false
 
-# Offense count: 4
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: empty, nil, both
-Style/EmptyElse:
-  Exclude:
-    - 'app/controllers/subscription_controller.rb'
-    - 'app/controllers/users_controller.rb'
-    - 'app/models/concerns/comments_shared.rb'
 
 # Offense count: 26
 # Configuration parameters: MinBodyLength.

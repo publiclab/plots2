@@ -2,25 +2,25 @@
 </div>
 <div class="col-md-8 blog">
   <div class="blog-header">
-    <h1><%= params[:id] == "blog" ? I18n.t('tag.blog.the_public_lab') : params[:id].split('-').join(' ').capitalize %> <%= t('tag.blog.blog') %></h1>
+    <h1><%= params[:id] == "blog" ? I18n.t('tag.blog.the_public_lab') : params[:id].split('-').join(' ').capitalize %> <%=raw translation('tag.blog.blog') %></h1>
 
     <% if params[:id] == "blog" %>
       <br />
-      <p><%= t('tag.blog.stories_from_community') %></p>
+      <p><%=raw translation('tag.blog.stories_from_community') %></p>
       <p>
-        <a href="/wiki/blog"><%= t('tag.blog.about_the_blog') %>  </a> |
-        <a href="/research"><%= t('tag.research') %> </a> |
-        <a href="/tools"><%= t('tag.methods') %></a>
+        <a href="/wiki/blog"><%=raw translation('tag.blog.about_the_blog') %>  </a> |
+        <a href="/research"><%=raw translation('tag.research') %> </a> |
+        <a href="/tools"><%=raw translation('tag.methods') %></a>
       </p>
       <% if current_user %>
         <a class="btn btn-default btn-sm" href="/feed/tag/<%= params[:id] %>.rss"><i class="fa fa-rss"></i> RSS</a>
         <% if current_user.following(params[:id]) %>
-        <a rel="tooltip" title="<%= t('tag.blog.unfollow') %>" class="btn btn-default btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>"><i class="fa fa-user-plus" aria-hidden="true"></i> <%= t('tag.blog.following') %> <b><%= params[:id] %></b></a>
+        <a rel="tooltip" title="<%=raw translation('tag.blog.unfollow') %>" class="btn btn-default btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>"><i class="fa fa-user-plus" aria-hidden="true"></i> <%=raw translation('tag.blog.following') %> <b><%= params[:id] %></b></a>
         <% else %>
         <br><br>
         <div class="alert alert-success" role="alert">
         Want to get updates for new blog posts? <a class="btn btn-default btn-sm" href="/subscribe/tag/<%= params[:id] %>">
-        <b><%= t('Click here to subscribe!') %></b></a>
+        <b><%=raw translation('Click here to subscribe!') %></b></a>
         </div>
         <% end %>
       <% else %>
@@ -50,17 +50,17 @@
           <% end %>
           <h1><a href="<%= node.path %>"><%= node.title %></a></h1>
           <p class="meta" style="color:#888;"><small>
-            <%= t('tag.blog.by') %> <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a>  <%= node.author.new_contributor %>
+            <%=raw translation('tag.blog.by') %> <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a>  <%= node.author.new_contributor %>
 	    | <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>
-            | <a href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= node.comments.count %></a>
+            | <a href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= node.comments.size %></a>
             <% if params[:controller] == "notes" && params[:action] == "popular" %>
-            | <%= number_with_delimiter(node.totalviews) %> <%= t('tag.blog.views') %>
+            | <%= number_with_delimiter(node.totalviews) %> <%=raw translation('tag.blog.views') %>
             <% else %>
             | <i style="color:#888;" class="fa fa-star-o"></i> <%= node.likes %>
             <% end %>
           </small></p>
           <p><%= raw auto_link(insert_extras(node.latest.render_body), :sanitize => false) %></p>
-          <p><a href="<%= node.path %>"><%= t('tag.blog.read_more') %> &raquo;</a><%= render partial: 'tag/subscribe_button', locals:{tags: node.tags} %></p>
+          <p><a href="<%= node.path %>"><%=raw translation('tag.blog.read_more') %> &raquo;</a><%= render partial: 'tag/subscribe_button', locals:{tags: node.tags} %></p>
           <p>
             <%= render :partial => "like/like", :locals => {:node => node, :tagnames => node.tags.collect(&:name) } %>
             <% node.tags[0..3].each do |tag| %>
@@ -68,7 +68,7 @@
             <% end %>
           </p>
           <% if params[:mod] %>
-          <a class="btn btn-default btn-xs" href="#"><i class="fa fa-ban-circle"></i> <%= t('tag.blog.spam') %></a>
+          <a class="btn btn-default btn-xs" href="#"><i class="fa fa-ban-circle"></i> <%=raw translation('tag.blog.spam') %></a>
           <% end %>
         </div>
         <hr />
