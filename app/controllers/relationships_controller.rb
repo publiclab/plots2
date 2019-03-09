@@ -8,17 +8,17 @@ class RelationshipsController < ApplicationController
       current_user.follow(user)
       status = 200
     end
-    render :json => { :status => status }
+    render json: { status: status }
   end
 
   def destroy
-    relation = Relationship.where(:follower_id => current_user.id, :followed_id => params[:id])
+    relation = Relationship.where(follower_id: current_user.id, followed_id: params[:id])
     status = 412
     unless relation.nil?
       current_user.unfollow(User.find_by_id(params[:id]))
       status = 200
     end
-    render :json => { :status => status }
+    render json: { status: status }
   end
 
   private
