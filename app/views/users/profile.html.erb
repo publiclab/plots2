@@ -149,11 +149,11 @@
   <% if current_user && @profile_user %>
     <% unless current_user == @profile_user %>
       <hr />
-      <div id="follow_form" class="col-lg-offset-4">
-        <% if current_user.following?(@profile_user) %>
-          <%= render partial: 'unfollow', locals: { user: @profile_user } %>
+      <div id="follow_form" class="col-md-offset-4">
+        <% if current_user.following?(@user) %>
+          <a id="profile-unfollow-button" class="btn btn-default" data-method="delete" data-remote="true" href="../relationships/<%=@user.id%>">Unfollow</a>
         <% else %>
-          <%= render partial: 'follow', locals: { user: @profile_user } %>
+          <a id="profile-follow-button" class="btn btn-primary" data-method="post" data-remote="true" href="/relationships" data-params="followed_id=<%=@user.id%>">Follow</a>
         <% end %>
       </div>
       <br />
@@ -340,6 +340,25 @@
         profile.value.name = "<%= @profile_user.name %>"
         profile.fetch_maps();
     })();
+
+  $('#follow_form').on('ajax:success', '#profile-follow-button', function(data, status, xhr)
+  {
+    notyNotification('relax', 3000, 'success', 'top', 'You started following <%=@user.username%>');
+    $('#follow_form').html('<a id="profile-unfollow-button" class="btn btn-default" data-method="delete" data-remote="true" href="/relationships/<%=@user.id%>">Unfollow</a>');
+  });
+  $('#follow_form').on('ajax:success', '#profile-unfollow-button', function(data, status, xhr)
+  {
+    notyNotification('relax', 3000, 'success', 'top', 'You unfollowed <%=@user.username%>');
+    $('#follow_form').html('<a id="profile-follow-button" class="btn btn-primary" data-method="post" data-remote="true" href="/relationships" data-params="followed_id=<%=@user.id%>">Follow</a>');
+  });
+  $('#follow_form').on('ajax:error', '#profile-follow-button', function(data, status, xhr)
+  {
+    notyNotification('relax', 3000, 'error', 'top', 'Error in following');
+  });
+  $('#follow_form').on('ajax:error', '#profile-unfollow-button', function(data, status, xhr)
+  {
+    notyNotification('relax', 3000, 'error', 'top', 'Error in following');
+  });
 </script>
 
 <style type="text/css">

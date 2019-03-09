@@ -3,15 +3,22 @@ class RelationshipsController < ApplicationController
 
   def create
     user = User.find(params[:followed_id])
-    current_user.follow(user)
-    flash[:notice] = "You are now following #{user.username} ."
-    redirect_to URI.parse("/profile/#{user.username}").path
+    status = 412
+    unless current_user.following?(@profile_user)
+      current_user.follow(user)
+      status = 200
+    end
+    render :json => { :status => status }
   end
 
   def destroy
-    user = Relationship.find(params[:id]).followed
-    current_user.unfollow(user)
-    redirect_to URI.parse("/profile/#{user.username}").path
+    relation = Relationship.where(:follower_id => current_user.id, :followed_id => params[:id])
+    status = 412
+    unless relation.nil?
+      current_user.unfollow(User.find_by_id(params[:id]))
+      status = 200
+    end
+    render :json => { :status => status }
   end
 
   private

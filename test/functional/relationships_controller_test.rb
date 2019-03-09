@@ -12,8 +12,7 @@ class RelationshipsControllerTest < ActionController::TestCase
     assert_difference 'Relationship.count', 1 do
       post :create, params: { followed_id: followed_user.id }
     end
-    assert_response :redirect
-    assert_redirected_to '/profile/' + followed_user.username
+    assert_not Relationship.where(followed_id: followed_user.id, follower_id: user.id).empty?
   end
 
   test 'destroy will remove follow relationship' do
@@ -23,11 +22,9 @@ class RelationshipsControllerTest < ActionController::TestCase
     post :create, params: { followed_id: followed_user.id }
 
     assert_difference 'Relationship.count', -1 do
-      delete :destroy, params: { id: Relationship.last.id }
+      delete :destroy, params: { id: followed_user.id }
     end
-
-    assert_response :redirect
-    assert_redirected_to '/profile/' + followed_user.username
+    assert Relationship.where(followed_id: followed_user.id, follower_id: user.id).empty?
   end
 
   test 'actions require authorization' do
