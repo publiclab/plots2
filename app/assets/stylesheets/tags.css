@@ -5,6 +5,18 @@
   font-weight: bold;
 }
 
+.popover {
+  color :#000;
+}
+
+.popover a{
+ color: #0000EE;
+}
+
+.popover .button {
+  color: #ffffff;
+}
+
 .popover-content {
   padding: 9px 14px;
 }
