@@ -1,6 +1,8 @@
 <br>
 <div class="row">
-
+  <h3> Tag statistics for <%= @tags.first.name %> </h3>
+  <hr>
+  <%= link_to " See statistics for all contents", stats_path %>
     <br>
     <div class="col-md-6">
         <%= form_tag request.url, method: :get do %>
@@ -26,6 +28,6 @@
 <% if @tags.first.count.nil? %>
     <i> There are no posts for this tag yet </i>
 <% else %>
-    <b>Total Tag count : <%= @tags.first.count %></b> 
+    <b>Total Tag count : <%= @tags.first.count %></b>
 <% end %>
 </div>
