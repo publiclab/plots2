@@ -47,20 +47,25 @@ class SubscriptionController < ApplicationController
 
       case tag_selection_more_than_zero?
       when true
-        if request.xhr?
-          status = "412"
-          message = "You already follow this user!"
-        else
-          flash[:error] = "You are already subscribed to '#{params[:name]}'"
-          redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
+        respond_to do |format|
+          format.html do
+            flash[:error] = "You are already subscribed to '#{params[:name]}'"
+
+            redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
+          end
+
+          format.json do
+            message = "You already follow this user!"
+
+            render json: { status: :precondition_failed, error: message }
+          end
         end
       else
-        status = "500"
-        message = "Something went wrong!"
+
         if set_following(true, params[:type], tag.tid)
           if request.xhr?
-            message = "Started following #{params[:name]}!"
-            status = "200"
+            # message = "Started following #{params[:name]}!"
+            # status = "200"
           else
             flash[:notice] = "You are now following '#{params[:name]}'."
             redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
