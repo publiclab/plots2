@@ -11,8 +11,10 @@
 <div class="row stats">
   <h4 class="col-md-8">
     <% if current_user %>
-      <span class="hidden-xs hidden-sm"><%= t('dashboard._header.welcome') %><span class="hidden-md">,<b><a href="/profile/"> <%= current_user.username %></a></b></span>! <%= current_user.new_contributor %></span>
+      <span class="visible-lg-block visible-md-block hidden-xs hidden-sm"><%= t('dashboard._header.welcome') %><span class="hidden-md">,<b><a href="/profile/"> <%= current_user.username %></a></b></span>! <%= current_user.new_contributor %></span>
+      <br>
       <a href="/notes/recent"><%= @note_count %> <%= t('dashboard._header.notes') %></a> <%= t('dashboard._header.and') %> <a href="/wiki"><%= @wiki_count %> <%= t('dashboard._header.wiki_edits') %></a> <%= t('dashboard._header.posted_past_week') %>
+      <br>
       <%= t('dashboard._header.you_shared') %> <a href="/profile/<%= current_user.username %>"><%= @user_note_count %> <% if @user_note_count <= 1 %><%= t('dashboard._header.research_note') %><% else %><%= t('dashboard._header.research_notes') %><% end %></a>.
     <% else %>
       <span class="hidden-xs hidden-sm"><%= t('dashboard._header.welcome') %>!</span>
