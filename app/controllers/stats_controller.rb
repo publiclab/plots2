@@ -52,8 +52,8 @@ class StatsController < ApplicationController
     @monthly_questions = Node.questions.past_month.count(:all).count
     @monthly_answers = Answer.past_month.count
 
-    @notes_per_week_past_year = Node.past_year.select(:type).where(type: 'note').count(:all) / 52.0
-    @edits_per_week_past_year = Revision.past_year.count / 52.0
+    @notes_per_week_period = Node.frequency('note', @start, @end).round(2)
+    @edits_per_week_period = Revision.frequency(@start, @end).round(2)
 
     @graph_notes = Node.contribution_graph_making('note', @start, @end)
     @graph_wikis = Node.contribution_graph_making('page', @start, @end)

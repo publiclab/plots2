@@ -33,8 +33,8 @@
 <h4 align="center"> <u>  Notes, Wikis and Comments Statistics between <%= @start.to_date%> to <%= @end.to_date%> </u></h4>
 <br>
 <div id="timeline"></div>
-<p><b><%= raw t('notes.stats.edits_per_week', :count => @edits_per_week_past_year.round(2)) %></b></p>
-<p><b><%= raw t('notes.stats.notes_per_week_past_year', :note_count => @notes_per_week_past_year.round(2)) %></b></p>
+<p><b><%= raw t('notes.stats.edits_per_week', :count => @edits_per_week_period) %></b></p>
+<p><b><%= raw t('notes.stats.notes_per_week', :note_count => @notes_per_week_period) %></b></p>
 <br>
 <i> Member registration may include spam accounts </i>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>

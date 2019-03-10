@@ -207,6 +207,13 @@ class Node < ActiveRecord::Base
     date_hash
   end
 
+  def self.frequency(type, starting, ending)
+    weeks = (ending.to_date - starting.to_date).to_i / 7.0
+    Node.published.select(%i(created type))
+      .where(type: type, created: starting.to_i..ending.to_i)
+      .count(:all) / weeks
+  end
+
   def notify
     if status == 4
       AdminMailer.notify_node_moderators(self).deliver_now
