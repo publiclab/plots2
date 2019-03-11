@@ -251,7 +251,6 @@ en:
         posted by %{contributors_count} contributors since %{time} ago"
       total_contributors: "%{all_contributors_count} Total Contributors (Tallied weekly)"
       notes_per_week_past_year: "%{note_count} notes per week over the past year."
-      
       edits_per_week: "%{count} edits per week over the past year."
       
       notes_wikis_comments: |
