@@ -96,7 +96,7 @@
 <% end %>
  <div class="row">
 <h5> Move back or forward using the buttons below </h5>
- <div class="col-md-4 col-md-offset-2">
+ <div class="col-md-4 col-md-offset-1">
 <div class="btn-group" role="group" aria-label="Basic example">
     <a href="<%= "?start="+(@start - 1.year).to_formatted_s(:long) %> <%= "&end="+(@end - 1.year).to_formatted_s(:long)   %>">
         <button type="button" class="btn btn-secondary" title= "1 year back">
@@ -128,6 +128,7 @@
 </div>
 
 </div>
+&emsp;
 <div class="col-md-3">
 <div class="btn-group" role="group" aria-label="Basic example">
     <a href="<%= "?start="+(@start + 1.week).to_formatted_s(:long) %> <%= "&end="+(@end + 1.week).to_formatted_s(:long)   %>">
