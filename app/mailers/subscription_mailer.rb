@@ -54,10 +54,14 @@ class SubscriptionMailer < ActionMailer::Base
     )
    end
 
-  def send_digest(user_id, top_picks)
-    subject = "Your weekly digest"
+  def send_digest(user_id, nodes, freq)
+    if freq == 0
+      @subject = "Your weekly digest"
+    elsif freq == 1
+      @subject = "Your daily digest"
+    end
     @user = User.find(user_id)
-    @top_picks = top_picks
-    mail(to: @user.email, subject: subject)
+    @nodes = nodes
+    mail(to: @user.email, subject: @subject)
   end
 end
