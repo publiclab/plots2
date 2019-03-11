@@ -430,7 +430,7 @@ class Comment < ApplicationRecord
   end
 
   def self.find_email(twitter_user_name)
-    UserTag.all.each do |user_tag|
+    UserTag.where('value LIKE (?)', 'oauth:twitter%').where.not(data: nil).each do |user_tag|
       data = user_tag["data"]
       if !data.nil? && !data["info"].nil? && !data["info"]["nickname"].nil? && data["info"]["nickname"].to_s == twitter_user_name
         return data["info"]["email"]
