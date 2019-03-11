@@ -247,7 +247,6 @@ en:
 
         <p>Public Lab is built on the contributions of community members, and this website represents our collective open source work.</p>
       contributors_statistics: "Contributor Statistics"
-     
       research_notes_posted_by_contributors: "%{note_count} research notes have been
         posted by %{contributors_count} contributors since %{time} ago"
       total_contributors: "%{all_contributors_count} Total Contributors (Tallied weekly)"
