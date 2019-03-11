@@ -1,5 +1,4 @@
 require 'test_helper'
-
 class RelationshipsControllerTest < ActionController::TestCase
   def setup
     activate_authlogic
@@ -13,6 +12,7 @@ class RelationshipsControllerTest < ActionController::TestCase
       post :create, params: { followed_id: followed_user.id }
     end
     assert_not Relationship.where(followed_id: followed_user.id, follower_id: user.id).empty?
+    assert_equal JSON.parse(response.body)["status"], 200
   end
 
   test 'destroy will remove follow relationship' do
@@ -25,6 +25,7 @@ class RelationshipsControllerTest < ActionController::TestCase
       delete :destroy, params: { id: followed_user.id }
     end
     assert Relationship.where(followed_id: followed_user.id, follower_id: user.id).empty?
+    assert_equal JSON.parse(response.body)["status"], 200
   end
 
   test 'actions require authorization' do
