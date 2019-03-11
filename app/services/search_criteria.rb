@@ -14,7 +14,7 @@ class SearchCriteria
     @order_direction = args[:order_direction]
     @field = args[:field]
     @period = { "from" => args[:from], "to" => args[:to] }
-    @limit = args[:limit] || 10
+    @limit = args[:limit] || 5
   end
 
   def valid?
