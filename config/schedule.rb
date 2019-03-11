@@ -36,12 +36,11 @@ set :output, "#{Dir.pwd}/public/cron_log.log"
 
 # To simply print date into the log file for checking if cron job is working properly
 every 1.minutes do
-
   command "date -u" #This will print utc time every 1 min in log/cron_log.log file
 end
 
-every 1.minutes do
-	runner "Comment.receive_tweet"
+every 10.minutes do
+  runner "Comment.receive_tweet"
 end
 
 
