@@ -316,17 +316,17 @@ class User < ActiveRecord::Base
   end
 
   def send_digest_email
-    top_picks = []
+    nodes = []
     freq = 1
     if self.has_tag('digest:daily')
-      top_picks = content_followed_in_period(1.day.ago)
+      nodes = content_followed_in_period(1.day.ago)
       freq = 0
-    elsif self.has_tag('digest:weekly')
-      top_picks = content_followed_in_period(Time.now - 1.week, Time.now)
+    else
+      nodes = content_followed_in_period(Time.now - 1.week, Time.now)
       freq = 1
     end
-    if !top_picks.nil? && top_picks.count > 0
-      SubscriptionMailer.send_digest(id, top_picks, freq).deliver_now
+    if nodes.count > 0
+      SubscriptionMailer.send_digest(id, nodes, freq).deliver_now
     end
   end
 

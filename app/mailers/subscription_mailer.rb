@@ -61,7 +61,7 @@ class SubscriptionMailer < ActionMailer::Base
       @subject = "Your daily digest"
     end
     @user = User.find(user_id)
-    @top_picks = nodes
+    @nodes = nodes
     mail(to: @user.email, subject: @subject)
   end
 end
