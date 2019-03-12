@@ -2,9 +2,6 @@
 engines:
   brakeman:
     enabled: true
-  checks:
-    open_redirect:
-      enabled: false
   bundler-audit:
     enabled: true
   duplication:

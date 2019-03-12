@@ -134,7 +134,8 @@ class ApplicationController < ActionController::Base
     return false unless node.present? && node.type[/^redirect\|/]
 
     node = Node.find(node.type[/\|\d+/][1..-1])
-    redirect_to node.path, status: :moved_permanently
+
+    redirect_to URI.parse(node.path).path, status: :moved_permanently
 
     true
   end
