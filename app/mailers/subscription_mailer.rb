@@ -55,7 +55,7 @@ class SubscriptionMailer < ActionMailer::Base
    end
 
   def send_digest(user_id, nodes, freq)
-    if freq == 0
+    if freq.zero?
       @subject = "Your weekly digest"
     elsif freq == 1
       @subject = "Your daily digest"

@@ -318,7 +318,7 @@ class User < ActiveRecord::Base
   def send_digest_email
     nodes = []
     freq = 1
-    if self.has_tag('digest:daily')
+    if has_tag('digest:daily')
       nodes = content_followed_in_period(1.day.ago)
       freq = 0
     else

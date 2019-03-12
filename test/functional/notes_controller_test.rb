@@ -122,6 +122,8 @@ class NotesControllerTest < ActionController::TestCase
   test 'admins and moderators view redirect-tagged notes with flash warning' do
     note = nodes(:one)
     blog = nodes(:blog)
+    flash_msg = "Only moderators and admins see this page, as it is redirected to #{blog.title}. To remove the redirect, delete the tag beginning with 'redirect:'"
+
     note.add_tag("redirect:#{blog.nid}", users(:jeff))
     assert_equal blog.nid.to_s, note.power_tag('redirect')
     UserSession.find.destroy if UserSession.find
@@ -135,8 +137,7 @@ class NotesControllerTest < ActionController::TestCase
         }
 
     assert_response :success
-    assert_equal "Only moderators and admins see this page, as it is redirected to #{blog.title}.
-        To remove the redirect, delete the tag beginning with 'redirect:'", flash[:warning]
+    assert_equal flash_msg, flash[:warning]
     UserSession.find.destroy
   end
 
@@ -155,6 +156,18 @@ class NotesControllerTest < ActionController::TestCase
     assert_response :success
     assert_select '#other-activities'
     assert_select "a#other-activities[href = '/wiki/spectrometer']", 1
+  end
+
+  test 'return 404 when node is not found' do
+    note = nodes(:one)
+
+    get :show, params: {
+      author: note.author.name,
+      date: Time.at(note.created).strftime('%m-%d-%Y'),
+      id: "doesn't_exist"
+    }
+
+    assert_response :not_found
   end
 
   test "don't show note by spam author" do
@@ -946,7 +959,7 @@ class NotesControllerTest < ActionController::TestCase
              id: node.nid,
              token: @token
          }
-     assert_response :success
+     assert_redirected_to '/login'
    end
 
    test 'no notification email if user posts draft' do

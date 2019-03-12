@@ -1,6 +1,7 @@
 class NotesController < ApplicationController
   respond_to :html
   before_action :require_user, only: %i(create edit update delete rsvp publish_draft)
+  before_action :set_node, only: %i(show)
 
   def index
     @title = I18n.t('notes_controller.research_notes')
@@ -46,16 +47,7 @@ class NotesController < ApplicationController
   end
 
   def show
-    if params[:author] && params[:date]
-      @node = Node.find_notes(params[:author], params[:date], params[:id])
-      @node ||= Node.where(path: "/report/#{params[:id]}").first
-    else
-      @node = Node.find params[:id]
-    end
-
-    if @node.status == 3 && !params[:token].nil? && @node.slug.split('token:').last == params[:token]
-    else
-
+    if @node
       if @node.status == 3 && current_user.nil?
         flash[:warning] = "You need to login to view the page"
         redirect_to '/login'
@@ -65,33 +57,34 @@ class NotesController < ApplicationController
         redirect_to '/'
         return
       end
-  end
 
-    if @node.has_power_tag('question')
-      redirect_to @node.path(:question)
-      return
-    end
-
-    if @node.has_power_tag('redirect')
-      if current_user.nil? || !current_user.can_moderate?
-        redirect_to URI.parse(Node.find(@node.power_tag('redirect')).path).path
+      if @node.has_power_tag('question')
+        redirect_to @node.path(:question)
         return
-      elsif current_user.can_moderate?
-        flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to #{Node.find(@node.power_tag('redirect')).title}.
-        To remove the redirect, delete the tag beginning with 'redirect:'"
       end
+
+      if @node.has_power_tag('redirect')
+        if current_user.nil? || !current_user.can_moderate?
+          redirect_to URI.parse(Node.find(@node.power_tag('redirect')).path).path
+          return
+        elsif current_user.can_moderate?
+          flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to #{Node.find(@node.power_tag('redirect')).title}. To remove the redirect, delete the tag beginning with 'redirect:'"
+        end
+      end
+
+      return if redirect_to_node_path?(@node)
+
+      alert_and_redirect_moderated
+
+      impressionist(@node, 'show', unique: [:ip_address])
+      @title = @node.latest.title
+      @tags = @node.tags
+      @tagnames = @tags.collect(&:name)
+
+      set_sidebar :tags, @tagnames
+    else
+      page_not_found
     end
-
-    return if check_and_redirect_node(@node)
-
-    alert_and_redirect_moderated
-
-    impressionist(@node, 'show', unique: [:ip_address])
-    @title = @node.latest.title
-    @tags = @node.tags
-    @tagnames = @tags.collect(&:name)
-
-    set_sidebar :tags, @tagnames
   end
 
   def image
@@ -408,6 +401,16 @@ class NotesController < ApplicationController
     else
       flash[:warning] = "You are not author or moderator so you can't publish a draft!"
       redirect_to '/'
+    end
+  end
+
+  private
+
+  def set_node
+    if params[:author] && params[:date] && params[:id]
+      @node = Node.find_notes(params[:author], params[:date], params[:id]) || Node.where(path: "/report/#{params[:id]}").first
+    else
+      @node = Node.find(params[:id])
     end
   end
 end
