@@ -1,8 +1,11 @@
 class Comment < ApplicationRecord
-  include CommentsShared # common methods for comment-like models
+  include CommentsShared
 
   belongs_to :node, foreign_key: 'nid', touch: true, counter_cache: true
+<<<<<<< HEAD
   # dependent: :destroy, counter_cache: true
+=======
+>>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
   belongs_to :user, foreign_key: 'uid'
   belongs_to :answer, foreign_key: 'aid'
   has_many :likes, :as => :likeable
@@ -23,7 +26,7 @@ class Comment < ApplicationRecord
       .where(status: 1)
   end
 
-  def self.comment_weekly_tallies(span = 52, time = Time.now)
+  def self.comment_weekly_tallies(span = 52, time = Time.current)
     weeks = {}
     (0..span).each do |week|
       weeks[span - week] = Comment.select(:timestamp)
@@ -33,6 +36,7 @@ class Comment < ApplicationRecord
     weeks
   end
 
+<<<<<<< HEAD
   def self.contribution_graph_making(span = 52, time = Time.now)
     weeks = {}
     week = span
@@ -61,8 +65,17 @@ class Comment < ApplicationRecord
       weeks[count] = [month.to_f * 1000, curr_week]
       count += 1
       week -= 1
+=======
+  def self.contribution_graph_making(start_time = 1.month.ago, end_time = Time.current)
+    date_hash = {}
+    (start_time.to_date..end_time.to_date).each do |date|
+      daily_comments = Comment.select(:timestamp)
+                         .where(timestamp: (date.beginning_of_week.to_time.to_i)..(date.end_of_week.to_time.to_i))
+                         .count
+      date_hash[date.beginning_of_week.to_time.to_i.to_f * 1000] = daily_comments
+>>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
     end
-    weeks
+    date_hash
   end
 
   def id
@@ -101,11 +114,7 @@ class Comment < ApplicationRecord
   end
 
   def parent
-    if aid == 0
-      node
-    else
-      return answer.node unless answer.nil?
-    end
+    aid.zero? ? node : answer&.node
   end
 
   def mentioned_users
@@ -133,7 +142,11 @@ class Comment < ApplicationRecord
   end
 
   def notify_users(uids, current_user)
+<<<<<<< HEAD
     User.where('id IN (?)', uids).each do |user|
+=======
+    User.where('id IN (?)', uids).find_each do |user|
+>>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
       if user.uid != current_user.uid
         CommentMailer.notify(user, self).deliver_now
       end
@@ -268,7 +281,7 @@ class Comment < ApplicationRecord
         comment: comment_content_markdown,
         comment_via: 1,
         message_id: message_id,
-        timestamp: Time.now.to_i)
+        timestamp: Time.current.to_i)
       if comment.save
         comment.answer_comment_notify(user)
       end
@@ -312,7 +325,7 @@ class Comment < ApplicationRecord
   end
 
   def self.get_domain(email)
-    domain = email[/(?<=@)[^.]+(?=\.)/, 0]
+    email[/(?<=@)[^.]+(?=\.)/, 0]
   end
 
   def self.yahoo_parsed_mail(mail_doc)
@@ -360,7 +373,7 @@ class Comment < ApplicationRecord
     end
 
     {
-      comment_content:  comment_content,
+      comment_content: comment_content,
       extra_content: extra_content
     }
   end
@@ -369,16 +382,110 @@ class Comment < ApplicationRecord
     comment.include?(COMMENT_FILTER)
   end
 
-  def parse_quoted_text
-    match = body.match(/(.+)(On .+<.+@.+> wrote:)(.+)/m)
-    if match.nil?
-      false
+  def self.receive_tweet
+    comments = Comment.where.not(tweet_id: nil)
+    if comments.any?
+      receive_tweet_using_since comments
     else
+      receive_tweet_without_using_since
+    end
+  end
+
+  def self.receive_tweet_using_since(comments)
+    comment = comments.last
+    since_id = comment.tweet_id
+    tweets = Client.search(ENV["TWEET_SEARCH"], since_id: since_id).collect do |tweet|
+      tweet
+    end
+    tweets.each do |tweet|
+      puts tweet.text
+    end
+    tweets = tweets.reverse
+    check_and_add_tweets tweets
+  end
+
+  def self.receive_tweet_without_using_since
+    tweets = Client.search(ENV["TWEET_SEARCH"]).collect do |tweet|
+      tweet
+    end
+    tweets = tweets.reverse
+    check_and_add_tweets tweets
+    tweets.each do |tweet|
+      puts tweet.text
+    end
+  end
+
+  def self.check_and_add_tweets(tweets)
+    tweets.each do |tweet|
+      next unless tweet.reply?
+
+      in_reply_to_tweet_id = tweet.in_reply_to_tweet_id
+      next unless in_reply_to_tweet_id.class == Integer
+
+      parent_tweet = Client.status(in_reply_to_tweet_id, tweet_mode: "extended")
+      parent_tweet_full_text = parent_tweet.attrs[:text] || parent_tweet.attrs[:full_text]
+      urls = URI.extract(parent_tweet_full_text)
+      node = get_node_from_urls_present(urls)
+      next if node.nil?
+
+      twitter_user_name = tweet.user.screen_name
+      tweet_email = find_email(twitter_user_name)
+      users = User.where(email: tweet_email)
+      next unless users.any?
+
+      user = users.first
+      replied_tweet_text = tweet.text
+      if tweet.truncated?
+        replied_tweet = Client.status(tweet.id, tweet_mode: "extended")
+        replied_tweet_text = replied_tweet.attrs[:text] || replied_tweet.attrs[:full_text]
+      end
+      replied_tweet_text = replied_tweet_text.gsub(/@(\S+)/) { |m| "[#{m}](https://twitter.com/#{m})" }
+      replied_tweet_text = replied_tweet_text.delete('@')
+      comment = node.add_comment(uid: user.uid, body: replied_tweet_text, comment_via: 2, tweet_id: tweet.id)
+      comment.notify user
+    end
+  end
+
+  def self.get_node_from_urls_present(urls)
+    urls.each do |url|
+      next unless url.include? "https://"
+
+      if url.last == "."
+        url = url[0...url.length - 1]
+      end
+      response = Net::HTTP.get_response(URI(url))
+      redirected_url = response['location']
+      next unless !redirected_url.nil? && redirected_url.include?(ENV["WEBSITE_HOST_PATTERN"])
+
+      node_id = redirected_url.split("/")[-1]
+      next if node_id.nil?
+
+      node = Node.where(nid: node_id.to_i)
+      if node.any?
+        return node.first
+      end
+    end
+    nil
+  end
+
+  def self.find_email(twitter_user_name)
+    UserTag.where('value LIKE (?)', 'oauth:twitter%').where.not(data: nil).each do |user_tag|
+      data = user_tag["data"]
+      if !data.nil? && !data["info"].nil? && !data["info"]["nickname"].nil? && data["info"]["nickname"].to_s == twitter_user_name
+        return data["info"]["email"]
+      end
+    end
+  end
+
+  def parse_quoted_text
+    if regex_match = body.match(/(.+)(On .+<.+@.+> wrote:)(.+)/m)
       {
-        body: match[1], # the new message text
-        boundary: match[2], # quote delimeter, i.e. "On Tuesday, 3 July 2018, 11:20:57 PM IST, RP <rp@email.com> wrote:"
-        quote: match[3] # quoted text from prior email chain
+        body: regex_match[1],     # The new message text
+        boundary: regex_match[2], # Quote delimeter, i.e. "On Tuesday, 3 July 2018, 11:20:57 PM IST, RP <rp@email.com> wrote:"
+        quote: regex_match[3]     # Quoted text from prior email chain
       }
+    else
+      {}
     end
   end
 
@@ -394,7 +501,7 @@ class Comment < ApplicationRecord
     # if it has quoted email text that wasn't caught by the yahoo and gmail filters,
     # manually insert the comment filter delimeter:
     parsed = parse_quoted_text
-    if !trimmed_content? && parsed != false
+    if !trimmed_content? && parsed.present?
       body = parsed[:body] + COMMENT_FILTER + parsed[:boundary] + parsed[:quote]
     end
     body

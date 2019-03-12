@@ -1,6 +1,10 @@
 <%= render :partial => "map/mapDependencies" %>
 
+<<<<<<< HEAD
   <% unique_id = rand(100) %>
+=======
+  <% unique_id = rand(1000) %>
+>>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
   <style>
   #map<%= unique_id %> { width:100%; height:300px; margin: 0; position: relative;}
   </style>
@@ -15,11 +19,24 @@
       maxBoundsViscosity: 0.75
     }).setView([<%= lat %>,<%= lon %>], <%= lat.to_s.length.to_i %> + 6);
 
+<<<<<<< HEAD
     var markers_hash = new Map() ;
+=======
+    var markers_hash<%= unique_id %> = new Map() ;
+>>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
 
     var map_lat = <%= lat %> ;
     var map_lon = <%= lon %> ;
 
+<<<<<<< HEAD
+=======
+     window.setTimeout(function(){
+
+        map<%= unique_id %>.setZoom(<%= lat.to_s.length.to_i %> + 6) ; 
+    
+     }, 3500);
+
+>>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
     setupLEL(map<%= unique_id %> , 0) ;
 
     map<%= unique_id %>.on('zoomend' , function () {
@@ -52,9 +69,15 @@
                    var mid = data.items[i].doc_id ;
                    var m = L.marker([data.items[i].latitude, data.items[i].longitude], {icon: default_url}).addTo(map<%= unique_id %>).bindPopup("<a href=" + url + ">" + title + "</a>") ;
 
+<<<<<<< HEAD
                    if(markers_hash.has(mid) === false){
                        m.addTo(map<%= unique_id %>).bindPopup("<a href=" + url + ">" + title + "</a>") ;
                        markers_hash.set(mid , m) ;
+=======
+                   if(markers_hash<%= unique_id %>.has(mid) === false){
+                       m.addTo(map<%= unique_id %>).bindPopup("<a href=" + url + ">" + title + "</a>") ;
+                       markers_hash<%= unique_id %>.set(mid , m) ;
+>>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
                    }
 
                }
@@ -94,9 +117,15 @@
                    var mid = data.items[i].doc_id ;
                    var m = L.marker([data.items[i].latitude, data.items[i].longitude], {icon: default_url}).addTo(map<%= unique_id %>).bindPopup("<a href=" + url + ">" + title + "</a>") ;
 
+<<<<<<< HEAD
                    if(markers_hash.has(mid) === false){
                        m.addTo(map<%= unique_id %>).bindPopup("<a href=" + url + ">" + title + "</a>") ;
                        markers_hash.set(mid , m) ;
+=======
+                   if(markers_hash<%= unique_id %>.has(mid) === false){
+                       m.addTo(map<%= unique_id %>).bindPopup("<a href=" + url + ">" + title + "</a>") ;
+                       markers_hash<%= unique_id %>.set(mid , m) ;
+>>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
                    }
 
                }

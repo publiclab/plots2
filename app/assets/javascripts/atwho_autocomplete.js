@@ -5,13 +5,13 @@
     at: "@",
     delay: 400,
     callbacks: {
-      remoteFilter: function(query, callback) {
+      remoteFilter: debounce(function(query, callback) {
         $.getJSON("/api/srch/profiles?query=" + query + "&sort_by=recent&field=username", {}, function(data) {
           if (data.hasOwnProperty('items') && data.items.length > 0) {
             callback(data.items.map(function(i) { return i.doc_title }));
           }
          });
-        }
+        }, 200)
       },
       limit: 20
     },
@@ -19,13 +19,13 @@
       at: "#",
       delay: 400,
       callbacks: {
-        remoteFilter: function(query, callback) {
+        remoteFilter: debounce(function(query, callback) {
           if (query != ''){
             $.post('/tag/suggested/' + query, {}, function(response) {
                callback(response.map(function(tagnames){ return tagnames }));
              });
             }
-          }
+          }, 200)
         },
       limit: 20
     },

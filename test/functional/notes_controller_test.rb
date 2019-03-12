@@ -313,7 +313,11 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_response :success
     selector = css_select 'div.note'
+<<<<<<< HEAD
     assert_equal selector.size, 23
+=======
+    assert_equal selector.size, 25
+>>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
     assert_select "div p", 'Pending approval by community moderators. Please be patient!'
   end
 
@@ -342,7 +346,11 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_response :success
     selector = css_select 'div.note'
+<<<<<<< HEAD
     assert_equal selector.size, 23
+=======
+    assert_equal selector.size, 25
+>>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
     assert_select "p", "Moderate first-time post: \n              Approve\n              Spam"
   end
 

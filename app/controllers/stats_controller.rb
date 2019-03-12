@@ -31,15 +31,24 @@ class StatsController < ApplicationController
     @questions = Node.published.questions.where(created: @start.to_i..@end.to_i)
       .count
     @contributors = User.contributor_count_for(@start, @end)
+    @popular_tags = Tag.nodes_frequency(@start, @end)
   end
 
   def index
+<<<<<<< HEAD
     @title = 'Stats'
     @time = if params[:time]
               Time.parse(params[:time])
             else
               Time.now
             end
+=======
+    range
+    if @start > @end
+      flash.now[:warning] = "Start date must come before end date"
+    end
+    @title = 'Stats'
+>>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
 
     @weekly_notes = Node.past_week.select(:type).where(type: 'note').count(:all)
     @weekly_wikis = Revision.past_week.count
@@ -55,9 +64,15 @@ class StatsController < ApplicationController
     @notes_per_week_past_year = Node.past_year.select(:type).where(type: 'note').count(:all) / 52.0
     @edits_per_week_past_year = Revision.past_year.count / 52.0
 
+<<<<<<< HEAD
     @graph_notes = Node.contribution_graph_making('note', 52, @time)
     @graph_wikis = Node.contribution_graph_making('page', 52, @time)
     @graph_comments = Comment.contribution_graph_making(52, @time)
+=======
+    @graph_notes = Node.contribution_graph_making('note', @start, @end)
+    @graph_wikis = Node.contribution_graph_making('page', @start, @end)
+    @graph_comments = Comment.contribution_graph_making(@start, @end)
+>>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
 
     users = []
     nids = []
@@ -139,6 +154,11 @@ class StatsController < ApplicationController
   end
 
   def to_keyword(param)
+<<<<<<< HEAD
     1.send(param.downcase)
+=======
+    str =  param.split.second
+    1.send(str.downcase)
+>>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
   end
 end

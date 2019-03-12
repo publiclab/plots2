@@ -1,5 +1,4 @@
 <link href="/lib/woofmark/dist/woofmark.min.css" rel="stylesheet">
-<link href="/lib/horsey/dist/horsey.min.css" rel="stylesheet">
 <link href="/lib/bootstrap-tokenfield/dist/css/tokenfield-typeahead.min.css" rel="stylesheet">
 <link href="/lib/bootstrap-tokenfield/dist/css/bootstrap-tokenfield.min.css" rel="stylesheet">
 
@@ -39,12 +38,7 @@
   <div class="ple-content">
 
     <!-- errors module -->
-    <div class="ple-module container">
-
-      <div class="col-md-3"></div>
-      <div class="ple-errors col-md-9"></div>
-
-    </div>
+	  <div class="ple-errors"></div>
     <!-- end errors module -->
 
     <!-- title module -->
@@ -316,6 +310,8 @@
         }
       },
 
+      mapModule: true,
+
       mainImageModule: {
         uid: <%= current_user.id %><% if @node && @node.id %>,
 	nid: <%= @node.id %><% end %>,
@@ -332,7 +328,7 @@
 
       titleModule: {
         suggestRelated: true,
-        fetchRelated: function(show) {
+        fetchRelated: debounce(function(show) {
           $.getJSON("/api/srch/notes?query=" + editor.titleModule.value(), function(response) {
             /* API provides:
             {"items":[{
@@ -357,7 +353,7 @@
               show(formatted);
             }
           });
-        }
+        }, 350)
       },
 
       tagsModule: {
@@ -369,6 +365,7 @@
         }
       }
     });
+
   })();
 
   $('.legacy-button').click(function onLegacyClick(event) {

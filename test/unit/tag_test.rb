@@ -197,4 +197,27 @@ class TagTest < ActiveSupport::TestCase
     assert_not_nil data
   end
 
+<<<<<<< HEAD
+=======
+  test 'tag all nodes in a period' do
+    nodes_in_week = Tag.all_nodes_for_period(
+      [nodes(:about).nid],
+      (Time.now.to_i - 1.weeks.to_i).to_s,
+      Time.now.to_i.to_s
+    )
+    assert_not_nil nodes_in_week
+
+    nodes_in_month = Tag.all_nodes_for_period(
+      [nodes(:about).nid],
+      (Time.now.to_i - 1.month.to_i).to_s,
+      Time.now.to_i.to_s
+    )
+    assert_not_nil nodes_in_month
+  end
+
+  test 'graph making' do
+    comment_graphs = tags(:awesome).graph_making(Comment, 52, Time.now)
+    assert_not_nil  comment_graphs
+  end
+>>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
 end

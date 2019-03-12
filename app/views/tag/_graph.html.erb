@@ -6,11 +6,18 @@
 <script>
 
 var options = {
+<<<<<<< HEAD
     colors: ['#00E396', '#0090FF', '#800080', '#fff896'],
     chart: {
         type: "area",
         height: 300,
         width: '100%',
+=======
+    colors: ['#00E396', '#0090FF', '#800080', '#FFD700'],
+    chart: {
+        type: "area",
+        height: 400,
+>>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
         foreColor: "#999",
         scroller: {
             enabled: true,
@@ -46,7 +53,10 @@ var options = {
             left: 2,
             blur: 5,
             opacity: 0.06
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
         }
 
     },
@@ -66,7 +76,11 @@ var options = {
         name: 'Wiki tags',
         data: generateSeries(1,52)
     },{
+<<<<<<< HEAD
         name: 'Map tags',
+=======
+        name: 'Comment tags',
+>>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
         data: generateSeries(2,52)
     },{
         name: 'Question tags',
@@ -146,11 +160,16 @@ function generateSeries(s, count) {
     var values = [
         <%= notes.values.collect {|ind| ind[1]} %>,
         <%= wikis.values.collect {|ind| ind[1]} %>,
+<<<<<<< HEAD
         <%= maps.values.collect {|ind| ind[1]} %>,
+=======
+        <%= comments.values.collect {|ind| ind[1]} %>,
+>>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
         <%= questions.values.collect {|ind| ind[1]} %>
     ];
 
     var i = 0;
+<<<<<<< HEAD
     var months = <%= notes.values.collect {|ind| ind[0]} %>
     var series = [];
     var x = new Date(months[0]).getTime();
@@ -163,4 +182,18 @@ function generateSeries(s, count) {
     return series;
 }
 
+=======
+    var months_dates = <%= notes.values.collect {|ind| ind[0]} %>
+    var months = months_dates.map(x =>  new Date(x).getTime());
+    var series = [];
+    while (i < count) {
+        for (var j =0; j < months.length; j++) {
+            series.push([months[j], values[s][i]]);
+            i++;
+
+        }
+    }
+    return series;
+}
+>>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
 </script>

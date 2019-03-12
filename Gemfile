@@ -19,7 +19,11 @@ gem 'georuby', '2.0'
 gem 'grape'
 gem 'grape-entity'
 gem 'grape-swagger', '~> 0.32.1'
+<<<<<<< HEAD
 gem 'grape-swagger-entity', '0.3.2'
+=======
+gem 'grape-swagger-entity', '0.3.3'
+>>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
 gem 'grape-swagger-rails'
 gem 'grape-swagger-ui'
 gem 'http_accept_language'
@@ -45,15 +49,20 @@ gem "rack-test", "1.1.0"
 gem 'rails', '5.2.2'
 gem 'rails-controller-testing'
 gem 'rails-dom-testing'
-gem 'rails-i18n', '~> 5.1.2'
+gem 'rails-i18n', '~> 5.1.3'
 gem 'rails_autolink'
 gem 'rb-readline'
 gem 'rdiscount', '~> 2.2', '>= 2.2.0.1'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'responders', '~> 2.4'
+<<<<<<< HEAD
 gem 'rubocop', '~> 0.63.1', require: false
+=======
+gem 'rubocop', '~> 0.65.0', require: false
+>>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
+gem 'sentry-raven'
 gem 'sidekiq'
 gem 'skylight' # performance tracking via skylight.io
 gem 'turbolinks', '~> 5'
@@ -63,12 +72,18 @@ gem 'whenever', require: false
 gem 'will_paginate', '>= 3.0.6'
 gem 'will_paginate-bootstrap', '>= 1.0.1'
 gem 'jquery-atwho-rails'
+<<<<<<< HEAD
 gem 'lemmatizer', '~> 0.1.1'
+=======
+gem 'lemmatizer', '~> 0.2.1'
+>>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
 # To implement incoming mail processing microframework
 gem 'mailman', require: false
 
 # To convert html to markdown
 gem 'reverse_markdown'
+
+gem 'twitter'
 
 # run with `bundle install --without production` or `bundle install --without mysql` to exclude this
 group :mysql, :production do

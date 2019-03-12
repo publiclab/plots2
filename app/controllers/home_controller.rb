@@ -138,5 +138,8 @@ class HomeController < ApplicationController
     ]
     response
   end
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
 end

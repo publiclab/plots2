@@ -84,7 +84,7 @@
         </a>
       <% end %>
       <% if current_user && (current_user.role == "admin" || current_user.role == "moderator" || comment.uid == current_user.uid || comment.parent.uid == current_user.uid) %>
-        <a class="btn btn-default btn-sm" id="c<%= comment.cid %>delete-btn">
+        <a rel="tooltip" title="Delete comment" class="btn btn-default btn-sm" id="c<%= comment.cid %>delete-btn">
           <i class='icon fa fa-trash'></i>
         </a>
       <% end %>

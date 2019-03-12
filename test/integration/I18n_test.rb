@@ -430,16 +430,6 @@ class I18nTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'should choose i18n for tag/contributors-index' do
-    available_testing_locales.each do |lang|
-      get '/change_locale/' + lang.to_s
-      follow_redirect!
-
-      get '/contributors'
-      assert_select 'a[href=?]', '/post', I18n.t('tag.contributors-index.write_research_note')
-    end
-  end
-
   test 'should choose i18n for tag/index' do
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s

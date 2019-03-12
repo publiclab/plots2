@@ -33,6 +33,7 @@ class Node < ActiveRecord::Base
                     { views: :desc }
                   end
 
+    # We can drastically have this simplified using one DB
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       if order == :natural
         query = connection.quote(query.to_s)
@@ -53,14 +54,15 @@ class Node < ActiveRecord::Base
         where(nid: nids, status: 1)
       else
         nids = Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query).collect(&:nid)
-        tnids = Tag.find_nodes_by_type(query, type = %w(note page)).collect(&:nid) # include results by tag
+
+        tnids = Tag.find_nodes_by_type(query, %w(note page)).collect(&:nid) # include results by tag
         where(nid: nids + tnids, status: 1)
           .order(order_param)
           .limit(limit)
           .distinct
       end
     else
-      nodes = Node.limit(limit)
+      Node.limit(limit)
         .where('title LIKE ?', '%' + query + '%')
         .where(status: 1)
         .order(order_param)
@@ -72,15 +74,16 @@ class Node < ActiveRecord::Base
   end
 
   has_many :revision, foreign_key: 'nid', dependent: :destroy
+<<<<<<< HEAD
   # wasn't working to tie it to .vid, manually defining below
   #  has_one :drupal_main_image, :foreign_key => 'vid', :dependent => :destroy
   #  has_many :drupal_content_field_image_gallery, :foreign_key => 'nid'
+=======
+>>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
   has_many :drupal_upload, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
   has_many :drupal_files, through: :drupal_upload
   has_many :node_tag, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
   has_many :tag, through: :node_tag
-  # these override the above... have to do it manually:
-  # has_many :tag, :through => :drupal_node_tag
   has_many :comments, foreign_key: 'nid', dependent: :destroy # re-enable in Rails 5
   has_many :drupal_content_type_map, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
   has_many :drupal_content_field_mappers, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
@@ -91,7 +94,7 @@ class Node < ActiveRecord::Base
 
   belongs_to :user, foreign_key: 'uid'
 
-  validates :title, presence: :true
+  validates :title, presence: true
   validates_with UniqueUrlValidator, on: :create
 
   scope :published, -> { where(status: 1) }
@@ -105,6 +108,7 @@ class Node < ActiveRecord::Base
     def instance_method_already_implemented?(method_name)
       return true if method_name == 'changed'
       return true if method_name == 'changed?'
+
       super
     end
   end
@@ -196,6 +200,7 @@ class Node < ActiveRecord::Base
     weeks
   end
 
+<<<<<<< HEAD
   def self.contribution_graph_making(type = 'note', span = 52, time = Time.now)
     weeks = {}
     week = span
@@ -214,8 +219,19 @@ class Node < ActiveRecord::Base
       weeks[count] = [(month.to_f * 1000), current_week]
       count += 1
       week -= 1
+=======
+  def self.contribution_graph_making(type = 'note', start_time = Time.now - 1.month, end_time = Time.now)
+    date_hash = {}
+    (start_time.to_date..end_time.to_date).each do |date|
+      daily_nodes = Node.select(:created)
+                    .where(type: type,
+                    status: 1,
+                    created: (date.beginning_of_week.to_time.to_i)..(date.end_of_week.to_time.to_i))
+                    .count
+      date_hash[date.beginning_of_week.to_time.to_i.to_f * 1000] = daily_nodes
+>>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
     end
-    weeks
+    date_hash
   end
 
   def notify
@@ -489,7 +505,7 @@ class Node < ActiveRecord::Base
       RSS::Parser.parse(open('https://groups.google.com/group/' + power_tag('list') + '/feed/rss_v2_0_topics.xml').read, false).items
     end
   rescue StandardError
-    return []
+    []
   end
 
   # End of tag-related methods
@@ -598,7 +614,8 @@ class Node < ActiveRecord::Base
                     thread: thread,
                     timestamp: DateTime.now.to_i,
                     comment_via: comment_via_status,
-                    message_id: params[:message_id])
+                    message_id: params[:message_id],
+                    tweet_id: params[:tweet_id])
     c.save
     c
   end
@@ -775,19 +792,30 @@ class Node < ActiveRecord::Base
     end
   end
 
+<<<<<<< HEAD
   def decimals(n)
     if !n.to_s.include? '.'
       0
     else
       n.to_s.split('.').last.size
     end
+=======
+  def decimals(number)
+    !number.include?('.') ? 0 : number.split('.').last.size
+>>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
   end
 
   def delete_coord_attribute(tagname)
     if tagname.split(':')[0] == "lat"
+<<<<<<< HEAD
       table_updated = update_attributes(:latitude => nil, :precision => nil)
     else
       table_updated = update_attributes(:longitude => nil)
+=======
+      update_attributes(:latitude => nil, :precision => nil)
+    else
+      update_attributes(:longitude => nil)
+>>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
     end
   end
 
@@ -814,7 +842,8 @@ class Node < ActiveRecord::Base
                .where('term_data.name LIKE ?', 'question:%')
                .group('node.nid')
                .collect(&:nid)
-    notes = Node.where(type: 'note')
+
+    Node.where(type: 'note')
                 .where('node.nid NOT IN (?)', nids)
   end
 
@@ -839,10 +868,10 @@ class Node < ActiveRecord::Base
 
   # all questions
   def self.questions
-    questions = Node.where(type: 'note')
-                    .joins(:tag)
-                    .where('term_data.name LIKE ?', 'question:%')
-                    .group('node.nid')
+    Node.where(type: 'note')
+        .joins(:tag)
+        .where('term_data.name LIKE ?', 'question:%')
+        .group('node.nid')
   end
 
   # so we can quickly fetch activities corresponding to this node
@@ -989,8 +1018,18 @@ class Node < ActiveRecord::Base
   end
 
   def draft_url
-    @token = slug.split('token:').last
-    url = 'https://publiclab.org/notes/show/' + nid.to_s + '/' + @token.to_s
+    token = slug.split('token:').last
+    'https://publiclab.org/notes/show/' + nid.to_s + '/' + token
+  end
+
+  def fetch_comments(user)
+    if user&.can_moderate?
+      comments.where('status = 1 OR status = 4')
+    elsif user
+      comments.where('comments.status = 1 OR (comments.status = 4 AND comments.uid = ?)', user.uid)
+    else
+      comments.where(status: 1)
+    end
   end
 
   def fetch_comments(user)

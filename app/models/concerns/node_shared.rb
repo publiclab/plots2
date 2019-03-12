@@ -256,8 +256,13 @@ module NodeShared
       output = a.render_to_string(template: "map/_leaflet",
                                   layout:   false,
                                   locals:   {
+<<<<<<< HEAD
                                     lat:   lat,
                                     lon:   lon,
+=======
+                                    lat: lat,
+                                    lon: lon,
+>>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
                                     tagname: tagname
                                   })
       output
@@ -273,8 +278,13 @@ module NodeShared
       output = a.render_to_string(template: "map/_leaflet",
                                   layout:   false,
                                   locals:   {
+<<<<<<< HEAD
                                     lat:   lat,
                                     lon:   lon,
+=======
+                                    lat: lat,
+                                    lon: lon,
+>>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
                                     tagname: tagname.to_s
                                   })
       output
@@ -284,10 +294,8 @@ module NodeShared
   # in our interface, "users" are known as "people" because it's more human
   def self.people_map(body, _page = 1)
     body.gsub(/(?<![\>`])(\<p\>)?\[map\:people\:(\S+)\:(\S+)\]/) do |_tagname|
-      tagname = Regexp.last_match(2)
       lat = Regexp.last_match(2)
       lon = Regexp.last_match(3)
-      nids ||= []
 
       a = ActionController::Base.new
       output = a.render_to_string(template: "map/_peopleLeaflet",

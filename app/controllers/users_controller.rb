@@ -21,7 +21,7 @@ class UsersController < ApplicationController
       else
         begin
           WelcomeMailer.notify_newcomer(@user).deliver_now
-        rescue
+        rescue StandardError
           flash[:warning] = "We tried and failed to send you a welcome email, but your account was created anyhow. Sorry!"
         end
         flash[:notice] = I18n.t('users_controller.registration_successful')
@@ -101,7 +101,7 @@ class UsersController < ApplicationController
 
     @map_lat = nil
     @map_lon = nil
-    if current_user && current_user.has_power_tag("lat") && current_user.has_power_tag("lon")
+    if current_user&.has_power_tag("lat") && current_user&.has_power_tag("lon")
       @map_lat = current_user.get_value_of_power_tag("lat").to_f
       @map_lon = current_user.get_value_of_power_tag("lon").to_f
     end
@@ -189,7 +189,11 @@ class UsersController < ApplicationController
         if @user.has_power_tag("lat") && @user.has_power_tag("lon")
           @map_lat = @user.get_value_of_power_tag("lat").to_f
           @map_lon = @user.get_value_of_power_tag("lon").to_f
+<<<<<<< HEAD
           @map_blurred = @user.has_tag("blurred:true")
+=======
+          @map_blurred = @user.has_tag('blurred:true')
+>>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
         end
 
         if @user.status == 0
@@ -258,8 +262,6 @@ class UsersController < ApplicationController
           else
             flash[:error] = I18n.t('users_controller.password_change_failed')
           end
-        else
-          # Just display page prompting username & pwd
         end
       else
         flash[:error] = I18n.t('users_controller.password_reset_failed_no_user').html_safe
@@ -288,7 +290,11 @@ class UsersController < ApplicationController
   end
 
   def photo
+<<<<<<< HEAD
     @user = User.find_by(uid: params[:uid]).user
+=======
+    @user = User.find_by(id: params[:uid]).user
+>>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
     if current_user.uid == @user.uid || current_user.admin?
       @user.photo = params[:photo]
       if @user.save!

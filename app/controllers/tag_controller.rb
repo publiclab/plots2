@@ -71,29 +71,35 @@ class TagController < ApplicationController
   end
 
   def show
-    # try for a matching /wiki/_TAGNAME_ or /_TAGNAME_
     @wiki = Node.where(path: "/wiki/#{params[:id]}").try(:first) || Node.where(path: "/#{params[:id]}").try(:first)
     @wiki = Node.where(slug: @wiki.power_tag('redirect'))&.first if @wiki&.has_power_tag('redirect') # use a redirected wiki page if it exists
 
-    default_type = if params[:id].match?('question:')
-                     'questions'
-                   else
-                     'note'
-                  end
-    # params[:node_type] - this is an optional param
-    # if params[:node_type] is nil - use @default_type
+    default_type = params[:id].match?('question:') ? 'questions' : 'note'
+
     @node_type = params[:node_type] || default_type
     @start = Time.parse(params[:start]) if params[:start]
     @end = Time.parse(params[:end]) if params[:end]
-    order_by = 'node_revisions.timestamp DESC'
-    order_by = 'node.views DESC' if params[:order] == 'views'
-    order_by = 'node.cached_likes DESC' if params[:order] == 'likes'
 
-    node_type = 'note' if @node_type == 'questions' || @node_type == 'note'
-    node_type = 'page' if @node_type == 'wiki'
-    node_type = 'map' if @node_type == 'maps'
-    node_type = 'contributor' if @node_type == 'contributors'
+    order_by =  if params[:order] == 'views'
+                  'node.views DESC'
+                elsif params[:order] == 'likes'
+                  'node.cached_likes DESC'
+                else
+                  'node_revisions.timestamp DESC'
+                end
+
+    node_type = if %w(questions note).include?(@node_type)
+                  'note'
+                elsif @node_type == 'wiki'
+                  'page'
+                elsif @node_type == 'maps'
+                  'map'
+                elsif @node_type == 'contributors'
+                  'contributor'
+                end
+
     qids = Node.questions.where(status: 1).collect(&:nid)
+
     if params[:id][-1..-1] == '*' # wildcard tags
       @wildcard = true
       @tags = Tag.where('name LIKE (?)', params[:id][0..-2] + '%')
@@ -138,12 +144,7 @@ class TagController < ApplicationController
     @wikis ||= []
     @nodes = nodes if @node_type == 'maps'
     @title = params[:id]
-    # the following could be refactored into a Tag.contributor_count method:
-    notes = Node.where(status: 1, type: 'note')
-      .select('node.nid, node.type, node.uid, node.status, term_data.*, community_tags.*')
-      .includes(:tag)
-      .references(:term_data)
-      .where('term_data.name = ?', params[:id])
+
     @length = Tag.contributor_count(params[:id]) || 0
 
     @tagnames = [params[:id]]
@@ -211,12 +212,7 @@ class TagController < ApplicationController
     @wikis = nodes if @node_type == 'wiki'
     @nodes = nodes if @node_type == 'maps'
     @title = "'" + @tagname.to_s + "' by " + params[:author]
-    # the following could be refactored into a Tag.contributor_count method:
-    notes = Node.where(status: 1, type: 'note')
-      .select('node.nid, node.type, node.uid, node.status, term_data.*, community_tags.*')
-      .includes(:tag)
-      .references(:term_data)
-      .where('term_data.name = ?', params[:id])
+
     @length = Tag.contributor_count(params[:id]) || 0
     respond_with(nodes) do |format|
       format.html { render 'tag/show' }
@@ -480,7 +476,7 @@ class TagController < ApplicationController
   end
 
   def gridsEmbed
-    if %w[nodes wikis activities questions upgrades notes].include?(params[:tagname].split(':').first)
+    if %w(nodes wikis activities questions upgrades notes).include?(params[:tagname].split(':').first)
       params[:t] = params[:tagname]
       params[:tagname] = ""
     end
@@ -504,8 +500,13 @@ class TagController < ApplicationController
     @tags = Tag.where(name: params[:id])
     @tag_notes = @tags.first.contribution_graph_making('note', 52, @time)
     @tag_wikis = @tags.first.contribution_graph_making('page', 52, @time)
+<<<<<<< HEAD
     @tag_maps = @tags.first.contribution_graph_making('map', 52, @time)
     @tag_questions = @tags.first.question_graph_making( 52, @time)
+=======
+    @tag_questions = @tags.first.graph_making(Node.questions, 52, @time)
+    @tag_comments = @tags.first.graph_making(Comment, 52, @time)
+>>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
   end
 
   private
