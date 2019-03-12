@@ -140,11 +140,7 @@ GEM
       grape
     grape-swagger (0.32.1)
       grape (>= 0.16.2)
-<<<<<<< HEAD
-    grape-swagger-entity (0.3.2)
-=======
     grape-swagger-entity (0.3.3)
->>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
       grape-entity (>= 0.5.0)
       grape-swagger (>= 0.31.0)
     grape-swagger-rails (0.3.1)
@@ -162,10 +158,7 @@ GEM
       domain_name (~> 0.5)
     http-form_data (2.1.1)
     http_accept_language (2.1.1)
-<<<<<<< HEAD
-=======
     http_parser.rb (0.6.0)
->>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
     i18n (1.5.3)
       concurrent-ruby (~> 1.0)
     i18n-js (3.2.1)
@@ -194,11 +187,7 @@ GEM
     jwt (2.1.0)
     launchy (2.4.3)
       addressable (~> 2.3)
-<<<<<<< HEAD
-    lemmatizer (0.1.1)
-=======
     lemmatizer (0.2.1)
->>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
     less (2.6.0)
       commonjs (~> 0.2.7)
     less-rails (4.0.0)
@@ -257,11 +246,7 @@ GEM
     nio4r (2.3.1)
     nokogiri (1.10.1)
       mini_portile2 (~> 2.4.0)
-<<<<<<< HEAD
-    nokogumbo (2.0.0)
-=======
     nokogumbo (2.0.1)
->>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
       nokogiri (~> 1.8, >= 1.8.4)
     oauth (0.5.4)
     oauth2 (1.4.1)
@@ -299,17 +284,10 @@ GEM
       mime-types
       mimemagic (~> 0.3.0)
       terrapin (~> 0.6.0)
-<<<<<<< HEAD
-    parallel (1.13.0)
-    parser (2.6.0.0)
-      ast (~> 2.4.0)
-    passenger (6.0.1)
-=======
     parallel (1.14.0)
     parser (2.6.0.0)
       ast (~> 2.4.0)
     passenger (6.0.2)
->>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
       rack
       rake (>= 0.8.1)
     phantomjs (2.1.1.0)
@@ -324,10 +302,7 @@ GEM
       method_source (~> 0.9.0)
     pry-rails (0.3.9)
       pry (>= 0.10.4)
-<<<<<<< HEAD
-=======
     psych (3.1.0)
->>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
     public_suffix (3.0.3)
     rack (2.0.6)
     rack-accept (0.4.5)
@@ -409,11 +384,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.8.0)
     rspec-support (3.8.0)
-<<<<<<< HEAD
-    rubocop (0.63.1)
-=======
     rubocop (0.65.0)
->>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
       parser (>= 2.5, != 2.5.1.1)
@@ -442,11 +413,8 @@ GEM
       tilt (>= 1.1, < 3)
     scrypt (3.0.6)
       ffi-compiler (>= 1.0, < 2.0)
-<<<<<<< HEAD
-=======
     sentry-raven (2.9.0)
       faraday (>= 0.7.6, < 1.0)
->>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
     sidekiq (5.2.5)
       connection_pool (~> 2.2, >= 2.2.2)
       rack (>= 1.5.0)
@@ -510,11 +478,7 @@ GEM
       unf_ext
     unf_ext (0.0.7.5)
     unicode-display_width (1.4.1)
-<<<<<<< HEAD
-    unicode-emoji (1.1.0)
-=======
     unicode-emoji (2.0.0)
->>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
     virtus (1.0.5)
       axiom-types (~> 0.1)
       coercible (~> 1.0)
@@ -557,11 +521,7 @@ DEPENDENCIES
   grape-entity
   grape-rails-cache
   grape-swagger (~> 0.32.1)
-<<<<<<< HEAD
-  grape-swagger-entity (= 0.3.2)
-=======
   grape-swagger-entity (= 0.3.3)
->>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
   grape-swagger-rails
   grape-swagger-ui
   http_accept_language
@@ -573,11 +533,7 @@ DEPENDENCIES
   jquery-atwho-rails
   jquery-rails
   json_expressions
-<<<<<<< HEAD
-  lemmatizer (~> 0.1.1)
-=======
   lemmatizer (~> 0.2.1)
->>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
   less-rails (~> 4.0)
   letter_opener
   listen (~> 3.1.5)
@@ -616,11 +572,7 @@ DEPENDENCIES
   rest-client
   reverse_markdown
   rspec
-<<<<<<< HEAD
-  rubocop (~> 0.63.1)
-=======
   rubocop (~> 0.65.0)
->>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
   ruby-openid
   sanitize
   sass-rails (~> 5.0, >= 5.0.7)
