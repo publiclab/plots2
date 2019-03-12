@@ -96,14 +96,14 @@ Security/Open:
 # SupportedStyles: assign_to_condition, assign_inside_condition
 Style/ConditionalAssignment:
   Exclude:
-    - 'app/controllers/admin_controller.rb'
-    - 'app/controllers/application_controller.rb'
-    - 'app/controllers/notes_controller.rb'
-    - 'app/controllers/openid_controller.rb'
-    - 'app/controllers/subscription_controller.rb'
-    - 'app/controllers/tag_controller.rb'
-    - 'app/controllers/users_controller.rb'
-    - 'app/models/node.rb'
+    # - 'app/controllers/admin_controller.rb'
+    # - 'app/controllers/application_controller.rb'
+    # - 'app/controllers/notes_controller.rb'
+    # - 'app/controllers/openid_controller.rb'
+    # - 'app/controllers/subscription_controller.rb'
+    # - 'app/controllers/tag_controller.rb'
+    # - 'app/controllers/users_controller.rb'
+    # - 'app/models/node.rb'
 
 # Offense count: 82
 Style/Documentation:
@@ -135,16 +135,16 @@ Style/GuardClause:
 # SupportedStyles: ruby19, hash_rockets, no_mixed_keys, ruby19_no_mixed_keys
 Style/HashSyntax:
   Exclude:
-    - 'app/controllers/search_controller.rb'
-    - 'app/controllers/stats_controller.rb'
-    - 'app/controllers/subscription_controller.rb'
-    - 'app/controllers/user_sessions_controller.rb'
-    - 'app/controllers/users_controller.rb'
-    - 'app/models/comment.rb'
-    - 'app/models/node.rb'
-    - 'app/models/user.rb'
-    - 'app/models/user_tag.rb'
-    - 'app/services/search_service.rb'
+    # - 'app/controllers/search_controller.rb'
+    # - 'app/controllers/stats_controller.rb'
+    # - 'app/controllers/subscription_controller.rb'
+    # - 'app/controllers/user_sessions_controller.rb'
+    # - 'app/controllers/users_controller.rb'
+    # - 'app/models/comment.rb'
+    # - 'app/models/node.rb'
+    # - 'app/models/user.rb'
+    # - 'app/models/user_tag.rb'
+    # - 'app/services/search_service.rb'
 
 # Offense count: 2
 Style/IdenticalConditionalBranches:
@@ -184,15 +184,5 @@ Style/NumericPredicate:
     - 'app/models/concerns/statistics.rb'
     - 'app/models/user.rb'
 
-# Offense count: 422
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, ConsistentQuotesInMultiline.
-# SupportedStyles: single_quotes, double_quotes
-Style/StringLiterals:
-  Enabled: false
 
-# Offense count: 615
-# Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
-# URISchemes: http, https
-Metrics/LineLength:
-  Max: 423
+

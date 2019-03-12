@@ -37,20 +37,20 @@ class Node < ActiveRecord::Base
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       if order == :natural
         query = connection.quote(query.to_s)
-        if type == :boolean
-          # Query is done as a boolean full-text search. More info here: https://dev.mysql.com/doc/refman/5.5/en/fulltext-boolean.html
-          nids = Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN BOOLEAN MODE) AS score")
-            .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN BOOLEAN MODE)")
-            .limit(limit)
-            .distinct
-            .collect(&:nid)
-        else
-          nids = Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE) AS score")
-            .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE)")
-            .limit(limit)
-            .distinct
-            .collect(&:nid)
-        end
+        nids = if type == :boolean
+                 # Query is done as a boolean full-text search. More info here: https://dev.mysql.com/doc/refman/5.5/en/fulltext-boolean.html
+                 Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN BOOLEAN MODE) AS score")
+                   .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN BOOLEAN MODE)")
+                   .limit(limit)
+                   .distinct
+                   .collect(&:nid)
+               else
+                 Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE) AS score")
+                   .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE)")
+                   .limit(limit)
+                   .distinct
+                   .collect(&:nid)
+               end
         where(nid: nids, status: 1)
       else
         nids = Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query).collect(&:nid)
@@ -742,10 +742,10 @@ class Node < ActiveRecord::Base
           if tag.valid?
             if tag.name.split(':')[0] == 'lat'
               tagvalue = tag.name.split(':')[1]
-              table_updated = update_attributes(:latitude => tagvalue, :precision => decimals(tagvalue).to_s)
+              table_updated = update_attributes(latitude: tagvalue, precision: decimals(tagvalue).to_s)
             elsif tag.name.split(':')[0] == 'lon'
               tagvalue = tag.name.split(':')[1]
-              table_updated = update_attributes(:longitude => tagvalue)
+              table_updated = update_attributes(longitude: tagvalue)
             end
           end
 
@@ -771,9 +771,9 @@ class Node < ActiveRecord::Base
 
   def delete_coord_attribute(tagname)
     if tagname.split(':')[0] == "lat"
-      update_attributes(:latitude => nil, :precision => nil)
+      update_attributes(latitude: nil, precision: nil)
     else
-      update_attributes(:longitude => nil)
+      update_attributes(longitude: nil)
     end
   end
 
@@ -813,11 +813,11 @@ class Node < ActiveRecord::Base
   # with node.questions
   def questions
     # override with a tag like `questions:h2s`
-    if has_power_tag('questions')
-      tagname = power_tag('questions')
-    else
-      tagname = slug_from_path
-    end
+    tagname = if has_power_tag('questions')
+                power_tag('questions')
+              else
+                slug_from_path
+              end
     Node.where(status: 1, type: 'note')
         .includes(:revision, :tag)
         .references(:term_data)
@@ -836,11 +836,11 @@ class Node < ActiveRecord::Base
   # with node.activities
   def activities
     # override with a tag like `activities:h2s`
-    if has_power_tag('activities')
-      tagname = power_tag('activities')
-    else
-      tagname = slug_from_path
-    end
+    tagname = if has_power_tag('activities')
+                power_tag('activities')
+              else
+                slug_from_path
+              end
     Node.activities(tagname)
   end
 
@@ -856,11 +856,11 @@ class Node < ActiveRecord::Base
   # with node.upgrades
   def upgrades
     # override with a tag like `upgrades:h2s`
-    if has_power_tag('upgrades')
-      tagname = node.power_tag('upgrades')
-    else
-      tagname = slug_from_path
-    end
+    tagname = if has_power_tag('upgrades')
+                node.power_tag('upgrades')
+              else
+                slug_from_path
+              end
     Node.upgrades(tagname)
   end
 
@@ -921,11 +921,11 @@ class Node < ActiveRecord::Base
 
   def toggle_like(user)
     nodes = NodeSelection.where(nid: id, liking: true).count
-    if is_liked_by(user)
-      self.cached_likes = nodes - 1
-    else
-      self.cached_likes = nodes + 1
-    end
+    self.cached_likes = if is_liked_by(user)
+                          nodes - 1
+                        else
+                          nodes + 1
+                        end
   end
 
   def self.like(nid, user)
