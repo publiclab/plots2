@@ -1,4 +1,4 @@
-<div class="col-md-6 note-container-note" style="overflow: hidden;">
+<div class="col-lg-6 note-container-note" style="overflow: hidden;">
   <div class="note note-default<% if node.status == 4 || node.status == 3 %> moderated<% end %>">
 
     <%= render partial: 'dashboard/node_moderate', locals: { node: node } %>
@@ -9,7 +9,7 @@
         <a class="img" href="<%= node.path %>"><img src="<%= node.scraped_image %>" style="width:100%;" /></a>
     <% end %>
 
-    <h4><a href="<%= node.path %>"><%= node.title %></a> <% if node.status == 3 %><span style="font-size: small;" class="label label-success">Draft</span><% end %></h4>
+    <h4><a href="<%= node.path %>"><%= node.title %></a> <% if node.status == 3 %><span style="font-size: small;" class="badge badge-success">Draft</span><% end %></h4>
 
     <p class="meta"><%= render partial: "dashboard/node_meta", locals: { node: node } %></p>
 
