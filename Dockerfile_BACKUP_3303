@@ -10,14 +10,9 @@ RUN mkdir -p /app
 ENV HOME /root
 ENV PHANTOMJS_VERSION 2.1.1
 
-RUN echo \
-<<<<<<< HEAD
-   'deb http://ftp.us.debian.org/debian/ stretch main\n \
-    deb http://ftp.us.debian.org/debian/ stretch-updates main\n \
-=======
+RUN echo 
    'deb http://ftp.ca.debian.org/debian/ stretch main\n \
     deb http://ftp.ca.debian.org/debian/ stretch-updates main\n \
->>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
     deb http://security.debian.org stretch/updates main\n' \
     > /etc/apt/sources.list
 
