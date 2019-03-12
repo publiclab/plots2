@@ -178,25 +178,28 @@ class NotesController < ApplicationController
 
   def edit
     @node = Node.find_by(nid: params[:id], type: 'note')
-    if current_user.uid == @node.uid || current_user.admin? || @node.has_tag("with:#{current_user.username}")
-      if params[:legacy]
-        render template: 'editor/post'
-      else
-        if @node.main_image
-          @main_image = @node.main_image.path(:default)
-        elsif params[:main_image] && Image.find_by(id: params[:main_image])
-          @main_image = Image.find_by(id: params[:main_image]).path
-        elsif @image
-          @main_image = @image.path(:default)
+
+    if @node
+      if current_user.uid == @node.uid || current_user.admin? || @node.has_tag("with:#{current_user.username}")
+        if params[:legacy]
+          render template: 'editor/post'
+        else
+          if @node.main_image
+            @main_image = @node.main_image.path(:default)
+          elsif params[:main_image] && Image.find_by(id: params[:main_image])
+            @main_image = Image.find_by(id: params[:main_image]).path
+          elsif @image
+            @main_image = @image.path(:default)
+          end
+          flash.now[:notice] = "This is the new rich editor. For the legacy editor, <a href='/notes/edit/#{@node.id}?#{request.env['QUERY_STRING']}&legacy=true'>click here</a>."
+          render template: 'editor/rich'
         end
-        flash.now[:notice] = "This is the new rich editor. For the legacy editor, <a href='/notes/edit/#{@node.id}?#{request.env['QUERY_STRING']}&legacy=true'>click here</a>."
-        render template: 'editor/rich'
-      end
-    else
-      if @node.has_power_tag('question')
-        prompt_login I18n.t('notes_controller.author_can_edit_question')
       else
-        prompt_login I18n.t('notes_controller.author_can_edit_note')
+        if @node.has_power_tag('question')
+          prompt_login I18n.t('notes_controller.author_can_edit_question')
+        else
+          prompt_login I18n.t('notes_controller.author_can_edit_note')
+        end
       end
     end
   end
