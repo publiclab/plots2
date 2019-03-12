@@ -47,8 +47,9 @@ class NotesController < ApplicationController
   end
 
   def show
+    return if redirect_to_node_path?(@node)
     if @node
-      if @node.status == 3 && current_user.nil?
+      if @node.status == 3 && current_user.blank?
         flash[:warning] = "You need to login to view the page"
         redirect_to '/login'
         return
@@ -64,7 +65,7 @@ class NotesController < ApplicationController
       end
 
       if @node.has_power_tag('redirect')
-        if current_user.nil? || !current_user.can_moderate?
+        if current_user.blank? || !current_user.can_moderate?
           redirect_to URI.parse(Node.find(@node.power_tag('redirect')).path).path
           return
         elsif current_user.can_moderate?
@@ -72,7 +73,7 @@ class NotesController < ApplicationController
         end
       end
 
-      return if redirect_to_node_path?(@node)
+      
 
       alert_and_redirect_moderated
 
