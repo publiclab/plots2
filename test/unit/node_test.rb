@@ -271,7 +271,7 @@ class NodeTest < ActiveSupport::TestCase
     expected = [nodes(:one), nodes(:spam), nodes(:first_timer_note), nodes(:blog),
                 nodes(:moderated_user_note), nodes(:activity), nodes(:upgrade),
                 nodes(:draft), nodes(:post_test1), nodes(:post_test2),
-                nodes(:post_test3), nodes(:post_test4), nodes(:scraped_image), nodes(:search_trawling)]
+                nodes(:post_test3), nodes(:post_test4), nodes(:scraped_image), nodes(:search_trawling), nodes(:purple_air_without_hyphen), nodes(:purple_air_with_hyphen)]
     assert_equal expected, notes
   end
 

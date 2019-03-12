@@ -316,9 +316,17 @@ class User < ActiveRecord::Base
   end
 
   def send_digest_email
-    top_picks = content_followed_in_period(1.week.ago, Time.now)
-    if top_picks.count.positive?
-      SubscriptionMailer.send_digest(id, top_picks).deliver_now
+    nodes = []
+    freq = 1
+    if has_tag('digest:daily')
+      nodes = content_followed_in_period(1.day.ago)
+      freq = 0
+    else
+      nodes = content_followed_in_period(Time.now - 1.week, Time.now)
+      freq = 1
+    end
+    if nodes.count > 0
+      SubscriptionMailer.send_digest(id, nodes, freq).deliver_now
     end
   end
 
@@ -337,7 +345,7 @@ class User < ActiveRecord::Base
   end
 
   def generate_token
-    user_id_and_time = { :id => id, :timestamp => Time.now }
+    user_id_and_time = { id: id, timestamp: Time.now }
     User.encrypt(user_id_and_time)
   end
 
@@ -353,9 +361,10 @@ class User < ActiveRecord::Base
     def validate_token(token)
       begin
         decrypted_data = User.decrypt(token)
-      rescue ActiveSupport::MessageVerifier::InvalidSignature => e
+      rescue ActiveSupport::MessageVerifier::InvalidSignature
         return 0
       end
+
       if (Time.now - decrypted_data[:timestamp]) / 1.hour > 24.0
         return 0
       else
@@ -405,7 +414,8 @@ class User < ActiveRecord::Base
       questions = Node.questions.where(status: 1).pluck(:uid)
       comments = Comment.pluck(:uid)
       revisions = Revision.where(status: 1).pluck(:uid)
-      contributors = (notes + answers + questions + comments + revisions).compact.uniq.length
+
+      (notes + answers + questions + comments + revisions).compact.uniq.length
     end
 
     def watching_location(nwlat, selat, nwlng, selng)

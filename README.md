@@ -11,7 +11,7 @@ PublicLab.org
 
 The content management system for the Public Lab research community, the plots2 web application is a combination of a group research blog of what we call "research notes" and a wiki. Read more about the [data model here](https://github.com/publiclab/plots2/blob/master/doc/DATA_MODEL.md).
 
-It features a variety of features that help the Public Lab community collaborate on environmental technology design and documentation, as well as community organizing. Originally a Drupal site, it was rewritten in 2012 in Ruby on Rails and has since extended but not entirely replaced the legacy Drupal data model and database design. We ❤️ Open Source and actively participates in various OSS programs such as [Google Summer of Code(GSoC)](https://publiclab.org/wiki/gsoc), Rails Girls Summer of Code (RGSoC), Outreachy and Google Code-In (GCI).
+It showcases a variety of features that help the Public Lab community collaborate on environmental technology design and documentation, as well as community organizing. Originally a Drupal site, it was rewritten in 2012 in Ruby on Rails and has since extended but not entirely replaced the legacy Drupal data model and database design. We ❤️ Open Source and actively participate in various OSS programs such as [Google Summer of Code(GSoC)](https://publiclab.org/wiki/gsoc), Rails Girls Summer of Code (RGSoC), Outreachy and Google Code-In (GCI).
 Some key features include:
 
 * a [Question and Answer system](https://publiclab.org/questions) for peer-based problem solving
@@ -97,7 +97,7 @@ For information on how to install for use with the cloud environment, please see
 
 ## SSL in Development
 
-We at public labs use [openssl](https://github.com/ruby/openssl) gem to provide SSL for the secure connection in the development mode. You can run the https connection on the localhost by following following steps:
+We, at Public Lab use [openssl](https://github.com/ruby/openssl) gem to provide SSL for the secure connection in the development mode. You can run the https connection on the localhost by following following steps:
 1. Use `passenger start --ssl --ssl-certificate config/localhost.crt --ssl-certificate-key config/localhost.key --ssl-port 3001`.
 2. Open up https://localhost:3001.
 3. Add security exceptions from the advance settings of the browser.

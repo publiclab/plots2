@@ -1,5 +1,5 @@
 class UserSessionsController < ApplicationController
-  before_action :require_no_user, :only => [:new]
+  before_action :require_no_user, only: [:new]
   def new
     @title = I18n.t('user_sessions_controller.log_in')
   end
@@ -67,7 +67,7 @@ class UserSessionsController < ApplicationController
           @user = user
           # send key to user email
           PasswordResetMailer.reset_notify(user, key).deliver_now unless user.nil? # respond the same to both successes and failures; security
-          redirect_to return_to + hash_params, notice: "You have successfully signed in. Please change your password via a link sent to you via e-mail"
+          redirect_to return_to + hash_params, notice: "You have successfully signed in. Please change your password using the link sent to you via e-mail."
         else # email exists so link the identity with existing user and log in the user
           user = User.where(email: auth["info"]["email"])
           # If no identity was found, create a brand new one here
@@ -116,7 +116,7 @@ class UserSessionsController < ApplicationController
           @user_session = UserSession.new(username: params[:user_session][:username],
                                           password: params[:user_session][:password],
                                           remember_me: params[:user_session][:remember_me])
-          saved = @user_session.save do |result|
+          @user_session.save do |result|
             if result
               hash_params = ""
 
