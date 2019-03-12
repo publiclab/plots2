@@ -51,11 +51,7 @@ gem 'rb-readline'
 gem 'rdiscount', '~> 2.2', '>= 2.2.0.1'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'responders', '~> 2.4'
-<<<<<<< HEAD
-gem 'rubocop', '~> 0.63.1', require: false
-=======
 gem 'rubocop', '~> 0.65.0', require: false
->>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
 gem 'sentry-raven'
@@ -68,11 +64,7 @@ gem 'whenever', require: false
 gem 'will_paginate', '>= 3.0.6'
 gem 'will_paginate-bootstrap', '>= 1.0.1'
 gem 'jquery-atwho-rails'
-<<<<<<< HEAD
-gem 'lemmatizer', '~> 0.1.1'
-=======
 gem 'lemmatizer', '~> 0.2.1'
->>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
 # To implement incoming mail processing microframework
 gem 'mailman', require: false
 
