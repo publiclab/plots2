@@ -48,6 +48,7 @@ class NotesController < ApplicationController
 
   def show
     return if redirect_to_node_path?(@node)
+
     if @node
       if @node.status == 3 && current_user.blank?
         flash[:warning] = "You need to login to view the page"
@@ -72,8 +73,6 @@ class NotesController < ApplicationController
           flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to #{Node.find(@node.power_tag('redirect')).title}. To remove the redirect, delete the tag beginning with 'redirect:'"
         end
       end
-
-      
 
       alert_and_redirect_moderated
 
