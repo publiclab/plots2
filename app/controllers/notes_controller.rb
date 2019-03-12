@@ -65,14 +65,7 @@ class NotesController < ApplicationController
         return
       end
 
-      if @node.has_power_tag('redirect')
-        if current_user.blank? || !current_user.can_moderate?
-          redirect_to URI.parse(Node.find(@node.power_tag('redirect')).path).path
-          return
-        elsif current_user.can_moderate?
-          flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to #{Node.find(@node.power_tag('redirect')).title}. To remove the redirect, delete the tag beginning with 'redirect:'"
-        end
-      end
+      redirect_power_tag_redirect
 
       alert_and_redirect_moderated
 
@@ -408,6 +401,16 @@ class NotesController < ApplicationController
             else
               Node.find(params[:id])
             end
+  end
+
+  def redirect_power_tag_redirect
+    if @node.has_power_tag('redirect')
+      if current_user.blank? || !current_user.can_moderate?
+        redirect_to URI.parse(Node.find(@node.power_tag('redirect')).path).path
+      elsif current_user.can_moderate?
+        flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to #{Node.find(@node.power_tag('redirect')).title}. To remove the redirect, delete the tag beginning with 'redirect:'"
+      end
+    end
   end
 
   def new_note
