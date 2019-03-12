@@ -345,7 +345,7 @@ class User < ActiveRecord::Base
   end
 
   def generate_token
-    user_id_and_time = { :id => id, :timestamp => Time.now }
+    user_id_and_time = { id: id, timestamp: Time.now }
     User.encrypt(user_id_and_time)
   end
 

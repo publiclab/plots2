@@ -3,11 +3,7 @@ class TagController < ApplicationController
   before_action :require_user, only: %i(create delete add_parent)
 
   def index
-    if params[:sort]
-      @toggle = params[:sort]
-    else
-      @toggle = "uses"
-    end
+    @toggle = params[:sort] || "uses"
 
     @title = I18n.t('tag_controller.tags')
     @paginated = true
@@ -113,11 +109,11 @@ class TagController < ApplicationController
       @tags = Tag.where(name: params[:id])
 
       if @node_type == 'questions'
-        if params[:id].include? "question:"
-          other_tag = params[:id].split(':')[1]
-        else
-          other_tag = "question:" + params[:id]
-        end
+        other_tag = if params[:id].include? "question:"
+                      params[:id].split(':')[1]
+                    else
+                      "question:" + params[:id]
+                    end
 
         nodes = Node.where(status: 1, type: node_type)
           .includes(:revision, :tag)
@@ -382,16 +378,16 @@ class TagController < ApplicationController
   end
 
   def rss
-    if params[:tagname][-1..-1] == '*'
-      @notes = Node.where(status: 1, type: 'note')
-        .includes(:revision, :tag)
-        .references(:term_data, :node_revisions)
-        .where('term_data.name LIKE (?)', params[:tagname][0..-2] + '%')
-        .limit(20)
-        .order('node_revisions.timestamp DESC')
-    else
-      @notes = Tag.find_nodes_by_type([params[:tagname]], 'note', 20)
-    end
+    @notes = if params[:tagname][-1..-1] == '*'
+               Node.where(status: 1, type: 'note')
+                 .includes(:revision, :tag)
+                 .references(:term_data, :node_revisions)
+                 .where('term_data.name LIKE (?)', params[:tagname][0..-2] + '%')
+                 .limit(20)
+                 .order('node_revisions.timestamp DESC')
+             else
+               Tag.find_nodes_by_type([params[:tagname]], 'note', 20)
+             end
     respond_to do |format|
       format.rss do
         response.headers['Content-Type'] = 'application/xml; charset=utf-8'

@@ -34,11 +34,11 @@ class OpenidController < ApplicationController
         'openid.immediate',
         'openid.cancel_url'
       ).to_h
-      if params['openid.mode']
-        oidreq = server.decode_request(permitted_params)
-      else
-        oidreq = server.decode_request(Rack::Utils.parse_query(request.env['ORIGINAL_FULLPATH'].split('?')[1]))
-      end
+      oidreq = if params['openid.mode']
+                 server.decode_request(permitted_params)
+               else
+                 server.decode_request(Rack::Utils.parse_query(request.env['ORIGINAL_FULLPATH'].split('?')[1]))
+               end
     rescue ProtocolError => e
       # invalid openid request, so just display a page with an error message
       render plain: e.to_s, status: 500

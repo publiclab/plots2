@@ -90,7 +90,7 @@ class StatsController < ApplicationController
     data = User.where(created_at: @start..@end).where(status: 1)
     respond_to do |format|
       format.csv { send_data data.to_csv }
-      format.json { send_data data.to_json, :type => 'application/json; header=present', :disposition => "attachment; filename=user.json" }
+      format.json { send_data data.to_json, type: 'application/json; header=present', disposition: "attachment; filename=user.json" }
     end
   end
 
@@ -99,7 +99,7 @@ class StatsController < ApplicationController
     data = Node.published.questions.where(created: @start.to_i..@end.to_i).all
     respond_to do |format|
       format.csv { send_data data.to_csv }
-      format.json { send_data data.to_json, :type => 'application/json; header=present', :disposition => "attachment; filename=questions.json" }
+      format.json { send_data data.to_json, type: 'application/json; header=present', disposition: "attachment; filename=questions.json" }
     end
   end
 
@@ -108,7 +108,7 @@ class StatsController < ApplicationController
     data = Answer.where(created_at: @start..@end).all
     respond_to do |format|
       format.csv { send_data data.to_csv }
-      format.json { send_data data.to_json, :type => 'application/json; header=present', :disposition => "attachment; filename=answers.json" }
+      format.json { send_data data.to_json, type: 'application/json; header=present', disposition: "attachment; filename=answers.json" }
     end
   end
 
@@ -117,7 +117,7 @@ class StatsController < ApplicationController
     data = Comment.select(%i(status timestamp)).where(status: 1, timestamp: @start.to_i...@end.to_i).all
     respond_to do |format|
       format.csv { send_data data.to_csv }
-      format.json { send_data data.to_json, :type => 'application/json; header=present', :disposition => "attachment; filename=comment.json" }
+      format.json { send_data data.to_json, type: 'application/json; header=present', disposition: "attachment; filename=comment.json" }
     end
   end
 
@@ -127,7 +127,7 @@ class StatsController < ApplicationController
       .all
     respond_to do |format|
       format.csv { send_data data.to_csv }
-      format.json { send_data data.to_json, :type => 'application/json; header=present', :disposition => "attachment; filename=#{type}.json" }
+      format.json { send_data data.to_json, type: 'application/json; header=present', disposition: "attachment; filename=#{type}.json" }
     end
   end
 
