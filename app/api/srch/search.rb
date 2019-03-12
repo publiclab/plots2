@@ -93,11 +93,7 @@ module Srch
         use :common, :sorting, :ordering, :field
       end
       get :profiles do
-<<<<<<< HEAD
-        search_request = SearchRequest.fromRequest(params)
-=======
         search_request = SearchRequest.from_request(params)
->>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
         cache(key: "api:profiles:#{params[:query]}:#{params[:limit]}:#{params[:sort_by]}:#{params[:order_direction]}:#{params[:field]}", expires_in: 2.day) do
           results = Search.execute(:profiles, params)
 
