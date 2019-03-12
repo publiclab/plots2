@@ -130,17 +130,18 @@ class ApplicationController < ActionController::Base
     session[:return_to] = nil
   end
 
-  def check_and_redirect_node(node)
-    if !node.nil? && node.type[/^redirect\|/]
-      node = Node.find(node.type[/\|\d+/][1..-1])
-      redirect_to node.path, status: 301
-      return true
-    end
-    false
+  def redirect_to_node_path?(node)
+    return false unless node.present? && node.type[/^redirect\|/]
+
+    node = Node.find(node.type[/\|\d+/][1..-1])
+
+    redirect_to URI.parse(node.path).path, status: :moved_permanently
+
+    true
   end
 
   def alert_and_redirect_moderated
-    if @node.author.status == 0 && !(current_user && (current_user.role == 'admin' || current_user.role == 'moderator'))
+    if @node.author.status == User::Status::BANNED && !(current_user && (current_user.role == 'admin' || current_user.role == 'moderator'))
       flash[:error] = I18n.t('application_controller.author_has_been_banned')
       redirect_to '/'
     elsif @node.status == 4 && (current_user && (current_user.role == 'admin' || current_user.role == 'moderator'))
@@ -153,7 +154,7 @@ class ApplicationController < ActionController::Base
       # if it's spam or a draft
       # no notification; don't let people easily fish for existing draft titles; we should try to 404 it
       redirect_to '/'
-    elsif @node.author.status == 5
+    elsif @node.author.status == User::Status::MODERATED
       flash.now[:warning] = "The user '#{@node.author.username}' has been placed <a href='https://#{request.host}/wiki/moderators'>in moderation</a> and will not be able to respond to comments."
     end
   end
@@ -170,21 +171,9 @@ class ApplicationController < ActionController::Base
   end
 
   def comments_node_and_path
-    @node = if @comment.aid == 0
-              # finding node for node comments
-              @comment.node
-            else
-              # finding node for answer comments
-              @comment.answer.node
-    end
+    @node = @comment.aid == 0 ? @comment.node : @comment.answer.node
 
-    @path = if params[:type] && params[:type] == 'question'
-              # questions path
-              @node.path(:question)
-            else
-              # notes path
-              @node.path
-    end
+    @path = params[:type] && params[:type] == 'question' ? @node.path(:question) : @node.path
   end
 
   # used for url redirects for friendly_id
@@ -200,5 +189,9 @@ class ApplicationController < ActionController::Base
 
   def signed_in?
     !current_user.nil?
+  end
+
+  def page_not_found
+    render file: "#{Rails.root}/public/404.html", layout: false, status: :not_found
   end
 end
