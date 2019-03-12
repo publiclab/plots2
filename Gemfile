@@ -19,11 +19,7 @@ gem 'georuby', '2.0'
 gem 'grape'
 gem 'grape-entity'
 gem 'grape-swagger', '~> 0.32.1'
-<<<<<<< HEAD
-gem 'grape-swagger-entity', '0.3.2'
-=======
 gem 'grape-swagger-entity', '0.3.3'
->>>>>>> 1d213449731fbeb492564538213d2938ff7dd7da
 gem 'grape-swagger-rails'
 gem 'grape-swagger-ui'
 gem 'http_accept_language'
