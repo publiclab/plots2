@@ -14,7 +14,7 @@
     <% if current_user %>
       <% current_user.images.reverse[0..3].each do |image| %>
         <tr>
-          <td><%= image_tag image.photo.url(:thumb), :class => "img-rounded" %></td>
+          <td><%= image_tag image.photo.url(:thumb), :class => "rounded-circle" %></td>
           <td><%= image.photo_file_name %></td>
           <td><%= time_ago_in_words(image.created_at) %> ago</td>
           <td><a class="btn" id="img_<%= image.id %>">Use as main</a></td>
