@@ -309,23 +309,23 @@ class User < ActiveRecord::Base
 
   def liked_pages
     nids = NodeSelection.where(user_id: uid, liking: true)
-    .collect(&:nid)
+                        .collect(&:nid)
+
     Node.where(nid: nids)
-    .where(type: 'page')
-    .order('nid DESC')
+        .where(type: 'page')
+        .order('nid DESC')
   end
 
   def send_digest_email
-    nodes = []
-    freq = 1
     if has_tag('digest:daily')
-      nodes = content_followed_in_period(1.day.ago)
+      @nodes = content_followed_in_period(1.day.ago, Time.current)
       freq = 0
     else
-      nodes = content_followed_in_period(Time.now - 1.week, Time.now)
+      @nodes = content_followed_in_period(Time.now - 1.week, Time.current)
       freq = 1
     end
-    if nodes.count > 0
+
+    if @nodes.size.positive?
       SubscriptionMailer.send_digest(id, nodes, freq).deliver_now
     end
   end
