@@ -321,7 +321,7 @@ class User < ActiveRecord::Base
       @nodes = content_followed_in_period(1.day.ago, Time.current)
       @freq = 0
     else
-      @nodes = content_followed_in_period(Time.now - 1.week, Time.current)
+      @nodes = content_followed_in_period(1.week.ago, Time.current)
       @freq = 1
     end
 
