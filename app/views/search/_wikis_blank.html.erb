@@ -4,12 +4,12 @@
     <col width="80">
     <tr>
       <th> </th>
-      <th> Posted by </th>
-      <th> Views</th>
+      <th>Posted by</th>
+      <th>Views</th>
     </tr>
 
-    <% @wikis.each_with_index do |wiki, index| %>
-      <% if index < 9 %>
+    <% @wikis.each_with_index do |wiki, ndx| %>
+      <% if ndx < 9 %>
         <tr>
           <td style="width:40%"><a href=<%= "#{wiki.path}" %>><%= wiki.title %></a></td>
           <td><%= wiki.author.name %></td>
@@ -18,7 +18,7 @@
       <% end %>
     <% end %>
 
-    <% if (@wikis.count > 9) %>
+    <% if @wikis.count > 9 %>
       <tr>
         <td>
           <b><%= link_to "More matching wikis >>", "/search/wikis/#{params[:query]}" %></b>

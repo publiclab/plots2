@@ -1,12 +1,13 @@
 <% unless @profiles.blank? %>
   <table class="table inline-grid">
     <tr>
-      <th><h3>USERS</h3>
+      <th>
+        <h3>USERS</h3>
       </th>
     <tr>
 
-    <% @profiles.each_with_index do |profile, index| %>
-      <% if index < 9 %>
+    <% @profiles.each_with_index do |profile, ndx| %>
+      <% if ndx < 9 %>
         <tr><td style="width:40%"><a href= <%= "/profile/#{profile.username}" %> ><%= profile.username %></a><td></tr>
       <% end %>
     <% end %>
