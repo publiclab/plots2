@@ -319,14 +319,14 @@ class User < ActiveRecord::Base
   def send_digest_email
     if has_tag('digest:daily')
       @nodes = content_followed_in_period(1.day.ago, Time.current)
-      freq = 0
+      @freq = 0
     else
       @nodes = content_followed_in_period(Time.now - 1.week, Time.current)
-      freq = 1
+      @freq = 1
     end
 
     if @nodes.size.positive?
-      SubscriptionMailer.send_digest(id, nodes, freq).deliver_now
+      SubscriptionMailer.send_digest(id, @nodes, @freq).deliver_now
     end
   end
 
