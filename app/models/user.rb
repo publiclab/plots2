@@ -20,6 +20,13 @@ class User < ActiveRecord::Base
     ].freeze
   end
 
+  module Frequency
+    VALUES = [
+      DAILY = 0,
+      WEEKLY = 1
+    ].freeze
+  end
+
   attr_readonly :username
 
   acts_as_authentic do |c|
@@ -319,14 +326,14 @@ class User < ActiveRecord::Base
   def send_digest_email
     if has_tag('digest:daily')
       @nodes = content_followed_in_period(1.day.ago, Time.current)
-      @freq = 0
+      @frequency = Frequency::DAILY
     else
       @nodes = content_followed_in_period(1.week.ago, Time.current)
-      @freq = 1
+      @frequency = Frequency::WEEKLY
     end
 
     if @nodes.size.positive?
-      SubscriptionMailer.send_digest(id, @nodes, @freq).deliver_now
+      SubscriptionMailer.send_digest(id, @nodes, @frequency).deliver_now
     end
   end
 
