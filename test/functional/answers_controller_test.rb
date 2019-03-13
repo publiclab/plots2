@@ -44,7 +44,7 @@ class AnswersControllerTest < ActionController::TestCase
     answer = answers(:one)
     get :update, params: { id: answer.id, body: 'Some changes in answer' }
     assert_redirected_to answer.node.path(:question)
-    assert_equal 'Answer updated', flash[:notice]
+    assert_equal 'Answer updated.', flash[:notice]
   end
 
   test 'should show error if user is not the author of post' do
