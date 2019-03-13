@@ -1,0 +1,28 @@
+<% unless @questions.blank? %>
+  <h3>QUESTIONS</h3>
+  <table class="table inline-grid">
+    <tr>
+      <th></th>
+      <th>Asked by</th>
+      <th>Views</th>
+    </tr>
+
+    <% @questions.each_with_index do |question, ndx| %>
+      <% if ndx < 9 %>
+        <tr>
+          <td style="width:40%"><a href=<%= "#{question.path}" %>><%= question.title %></a></td>
+          <td><%=question.author.name%></td>
+          <td><%= question.views%></td>
+        </tr>
+      <% end %>
+    <% end %>
+
+    <% if @questions.count > 9 %>
+      <tr>
+        <td>
+          <b><%= link_to "More matching questions >>", "/search/questions/#{params[:query]}" %></b>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
