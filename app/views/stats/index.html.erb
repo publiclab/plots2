@@ -26,7 +26,8 @@
 
 <% if @popular_tags.present? %>
     <br> <br>
-    <div id="chart1"> </div>
+
+<div id="chart1"> </div>
 <% end %>
 
 <h4 align="center"> <u>  Notes, Wikis and Comments Statistics between <%= @start.to_date%> to <%= @end.to_date%> </u></h4>
@@ -40,6 +41,7 @@
 <script>
 var options = {
     chart: {
+        
         type: "area",
         height: 500,
         foreColor: "#999",
@@ -199,21 +201,32 @@ function generateWeekWiseTimeSeries(s) {
 
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
+
 var values =  <%=  @popular_tags.values %>;
 var data =  <%= raw (@popular_tags.keys) %>;
+var page;
 
 var options = {
     chart: {
         height: 500,
         type: 'bar',
-
+    
+        active: {
+            allowMultipleDataPointsSelection: true,
+            },
+        
+        events: {
+            dataPointSelection: function(event, chartContext, config) {
+                page = data[config.selectedDataPoints];
+                parent.location='/tag/'+page;
+            }
+        }
     },
+
     plotOptions: {
         bar: {
             horizontal: true,
-
         }
-
     },
 
     dataLabels: {
