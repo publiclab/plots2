@@ -13,10 +13,11 @@
     <div class="tab-pane active" id="notes">
       <% unless @notes.nil? || @notes.length == 0 %>
         <%= render partial: "notes/notes", locals: { paginated: false } %>
-        <p><center><a class="btn btn-default" href="/blog">Read more</a></center></p>
+        <p><center><a class="btn btn-primary btn-lg" style="width:96.226px; height:34px; padding-bottom:6px; padding-right:12px; padding-left: 12px;" href="/blog">Read more</a></center></p>
       <% end %>
     </div>
   <% end %>
 </div>
 
 </div>
+
