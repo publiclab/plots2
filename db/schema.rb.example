@@ -52,7 +52,7 @@ ActiveRecord::Schema.define(version: 2019_03_03_180731) do
     t.integer "comment_via", limit: 4,          default: 0
     t.string  "message_id",  limit: 255
     t.string  "tweet_id"
-
+    t.integer "reply_to"
   end
 
   add_index "comments", ["comment"], name: "index_comments_on_comment", type: :fulltext if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
