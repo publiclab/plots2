@@ -198,7 +198,7 @@ class OpenidController < ApplicationController
     else
       id_to_send = params[:id_to_send]
 
-      identity = oidreq.identity
+      identity = oidreq&.identity
       if oidreq.id_select
         if id_to_send && (id_to_send != '')
           session[:username] = id_to_send
