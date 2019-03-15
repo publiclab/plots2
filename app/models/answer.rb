@@ -1,5 +1,6 @@
 class Answer < ApplicationRecord
-  include NodeShared, CommentsShared # common methods for node-like and comment-like models
+  include CommentsShared
+  include NodeShared
 
   belongs_to :node, foreign_key: 'nid'
   belongs_to :user, foreign_key: 'uid'

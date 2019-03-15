@@ -75,3 +75,6 @@ Style/StringLiterals:
 Metrics/LineLength:
   Max: 423
 
+Style/Documentation:
+  Enabled: false
+

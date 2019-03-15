@@ -11,6 +11,12 @@ class ImagesControllerTest < ActionController::TestCase
     assert_redirected_to Image.last.path(:large)
     get :shortlink, params: { id: Image.last.id, size: 'medium' }
     assert_redirected_to Image.last.path(:medium)
+    get :shortlink, params: { id: Image.last.id, size: 'm' }
+    assert_redirected_to Image.last.path(:medium)
+    get :shortlink, params: { id: Image.last.id, size: 'thumbnail' }
+    assert_redirected_to Image.last.path(:thumb)
+    get :shortlink, params: { id: Image.last.id, s: 'thumbnail' }
+    assert_redirected_to Image.last.path(:thumb)
   end
 
   #  test "normal user should not delete image" do
