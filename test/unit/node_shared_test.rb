@@ -43,7 +43,7 @@ class NodeSharedTest < ActiveSupport::TestCase
     before = "This shouldn't actually produce a table:\n\n<code>[button:Cancel:https://google.com]</code>"
     html = NodeShared.button(before)
     assert_equal 0, html.scan('<a class="btn btn-primary"').length
-    assert_equal 0, html.scan('href').length
+    assert_equal 0, html.scan('href=').length
     assert_equal 0, html.scan('button-grid').length
   end
 
