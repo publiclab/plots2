@@ -188,6 +188,26 @@ class CommentController < ApplicationController
     end
   end
 
+  def rss
+    limit = 20
+    if params[:moderators]
+      @comments = Node.limit(limit)
+        .order('nid DESC')
+        .where('type = ? AND status = 4', 'comment')
+    else
+      @comments = Node.limit(limit)
+        .order('nid DESC')
+        .where('type = ? AND status = 1', 'comment')
+    end
+    respond_to do |format|
+      format.rss do
+        render layout: false
+        response.headers['Content-Type'] = 'application/xml; charset=utf-8'
+        response.headers['Access-Control-Allow-Origin'] = '*'
+      end
+    end
+  end
+
   def like_comment
     @comment_id = params["comment_id"].to_i
     @user_id = params["user_id"].to_i

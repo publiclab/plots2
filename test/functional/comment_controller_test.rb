@@ -135,6 +135,12 @@ class CommentControllerTest < ActionController::TestCase
     assert_equal flash[:notice], 'Comment updated.'
   end
 
+  def test_get_rss_feed
+    get :rss, :format => "rss"
+    assert_response :success
+    assert_equal 'application/xml', @response.content_type
+  end
+
   test 'should update question comment if user is comment author' do
     UserSession.create(users(:bob))
     comment = comments(:question)
