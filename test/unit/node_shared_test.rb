@@ -27,26 +27,26 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert html
     assert_equal 1, html.scan('<table class="table inline-grid notes-grid notes-grid-test notes-grid-test-').length
     assert_equal 1, html.scan('<table').length
-    assert_equal 5, html.scan('notes-grid-test').length
+    assert_equal 5, html.scan('button-grid-test').length
     assert html.scan('<td class="title">').length > 1
   end
-#TODO: do the below but for button and remove the 2 TODO comments
-  test 'that NodeShared does not convert short codes like [notes:foo] into tables which list notes, when inside `` marks' do
-    before = "This shouldn't actually produce a table:\n\n`[notes:tagname]`\n\nOr this:\n\n `[notes:tagname]`"
+
+  test 'that NodeShared does not convert short codes like [button:foo:https://google.com] into tables which list notes, when inside `` marks' do
+    before = "This shouldn't actually produce a table:\n\n`[button:Cancel:https://google.com]`\n\nOr this:\n\n `[button:Cancel:https://google.com]`"
     html = NodeShared.notes_grid(before)
-    assert_equal 0, html.scan('<table class="table inline-grid notes-grid notes-grid').length
+    assert_equal 0, html.scan('<table class="table inline-grid button-grid button-grid').length
     assert_equal 0, html.scan('<table').length
-    assert_equal 0, html.scan('notes-grid').length
+    assert_equal 0, html.scan('button-grid').length
   end
 
-  test 'that NodeShared does not convert short codes like [notes:foo] into tables which list notes, when in code tags' do
-    before = "This shouldn't actually produce a table:\n\n<code>[notes:tagname]</code>"
+  test 'that NodeShared does not convert short codes like [button:foo:https://google.com] into tables which list notes, when in code tags' do
+    before = "This shouldn't actually produce a table:\n\n<code>[button:Cancel:https://google.com]</code>"
     html = NodeShared.notes_grid(before)
-    assert_equal 0, html.scan('<table class="table inline-grid notes-grid notes-grid').length
+    assert_equal 0, html.scan('<table class="table inline-grid button-grid button-grid').length
     assert_equal 0, html.scan('<table').length
-    assert_equal 0, html.scan('notes-grid').length
+    assert_equal 0, html.scan('button-grid').length
   end
-#end of TODO
+
   test 'that NodeShared can be used to convert doubled short codes like [notes:activity:spectrometer] into tables which list notes with the tag `activity:spectrometer`' do
     before = "Here are some notes in a table: \n\n[notes:activity:spectrometer] \n\nThis is how you make it work:\n\n`[notes:activity:spectrometer]`\n\nMake sense?"
     html = NodeShared.notes_grid(before)
