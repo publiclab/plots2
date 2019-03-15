@@ -121,7 +121,11 @@
   <div style="text-align:center;" class="visible-sm visible-xs">
     <img class="img-circle" id="profile-photo" style="width:50%;margin-bottom:20px;" src="<%= @user.photo_path %>" />
   </div>
-  <%= render :partial => "tag/tagging", locals: { url: "/profile/tags/create/#{ @user.id }", parent: :profile } %>
+
+<p><a onClick="$('').toggle();" class="btn btn-default">User tags</a></p>
+	<div class="tags" style="display:none;">
+		<%= render :partial => "tag/tagging", locals: { url: "/profile/tags/create/#{ @user.id }", parent: :profile } %>
+	</div>
 
   <div class="profile_icons" style="text-align: center;">
     <% if @twitter.nil? == false %>
