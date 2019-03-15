@@ -17,7 +17,11 @@ function changeLikeStatus(node_id, method) {
   let msg = method === "/delete" ? "Unliked!" : "Liked!";
   $.getJSON("/likes/node/" + node_id + `${method}`)
     .then(function(resp) {
+<<<<<<< HEAD
       // notyNotification('mint', 3000, 'success', 'topRight', `${msg}`);
+=======
+      notyNotification('mint', 3000, 'success', 'topRight', `${msg}`);
+>>>>>>> 3565617e8d6c473a17d9ea311c96d2c1eb9e56f3
       updateLikeCount(parseInt(resp), node_id);
       renderLikeStar(parseInt(resp), node_id);
     })
