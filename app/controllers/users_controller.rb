@@ -278,11 +278,16 @@ class UsersController < ApplicationController
   end
 
   def comments
-    @comments = Comment.limit(20)
+    comments = Comment.limit(20)
                              .order("timestamp DESC")
-                             .where(status: 1, uid: params[:id])
+                             .where(uid: params[:id])
                              .paginate(page: params[:page])
-    render partial: 'comments/comments', locals: { comments: @comments }
+
+    @normal_comments = comments.where('comments.status = 1')
+    if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+      @moderated_comments = comments.where('comments.status = 4')
+    end
+    render template: 'comments/index'
   end
 
   def photo

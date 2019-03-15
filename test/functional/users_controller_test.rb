@@ -156,8 +156,10 @@ class UsersControllerTest < ActionController::TestCase
     user = users(:jeff)
     get :comments, params: { id: user.id }
     assert_response :success
-    assert_not_nil assigns(:comments)
-    assert_template partial: 'comments/_comments'
+    normal_comments = assigns(:normal_comments)
+    assert_not_nil normal_comments
+    assert_nil assigns(:moderated_comments)
+    assert_template 'comments/index'
   end
 
   test 'creating new account' do
