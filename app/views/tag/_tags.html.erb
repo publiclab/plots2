@@ -17,7 +17,7 @@
 
     <% elsif tag.class == UserTag && (tag.name[0..4] != "oauth" || (current_user && (current_user.uid == tag.uid || current_user.role == "admin"))) %>
 
-        <li style="width: 100%;"><span id="tag_<%= tag.id %>" class="badge <%= label_name %> pop" style="cursor:pointer" data-toggle="popover" data-trigger="manual" data-count=0 data-placement="top" data-content="<a href='/contributors/<%= tag.name %>'><%= Tag.tagged_node_count(tag.name) || 0 %> notes - <%= Tag.contributors(tag.name).count %> people <br></a>" data-html="true" title="<%= tag.name %>">
+        <li style="width: 100%;"><span id="tag_<%= tag.id %>" class="badge <%= badge_name %> pop" style="cursor:pointer" data-toggle="popover" data-trigger="manual" data-count=0 data-placement="top" data-content="<a href='/contributors/<%= tag.name %>'><%= Tag.tagged_node_count(tag.name) || 0 %> notes - <%= Tag.contributors(tag.name).count %> people <br></a>" data-html="true" title="<%= tag.name %>">
           <% if tag.name[0..4] != "oauth" %>
             <%= tag.name %>
           <% else %>

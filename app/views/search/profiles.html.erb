@@ -4,13 +4,13 @@
 <h2> Results for <%= @search_criteria.query %> </h2>
 
 <div class="row" %>
-<div class="col-md-7" >
+<div class="col-lg-7" >
     <h4> <strong> Searched users' profiles by username and bio </strong></h4>
     <br>
     <% if @profiles.present? %>
             <table class="table">
                 <tr>
-                    <th class="visible-sm visible-xs"></th>
+                    <th class="d-lg-none"></th>
 
                     <th style="text-align: center;"><a href = "<%= people_path %>?sort=username"> <%= t('users.list.username') %></a> <i class="fa fa-arrows-v"></i></th>
                     <th><a href = "<%= people_path %>?sort=last_activity"> <%= t('users.list.last_activity') %></a> <i class="fa fa-arrows-v"></i></th>
@@ -19,12 +19,12 @@
                 </tr>
                 <% @profiles.each do |profile| %>
                     <tr>
-                        <td class="visible-sm visible-xs" style="padding-top: 16px;">
-                            <img class="img-circle" id="profile-photo" style="width:40px;margin-right:8px;border: 1px solid lightgrey;" src="<%= profile.profile_image %>" />
+                        <td class="d-lg-none" style="padding-top: 16px;">
+                            <img class="rounded-circle" id="profile-photo" style="width:40px;margin-right:8px;border: 1px solid lightgrey;" src="<%= profile.profile_image %>" />
                         </td>
                         <td style="display: flex; align-items: center;">
-                            <div class="hidden-sm hidden-xs">
-                                <img class="img-circle" id="profile-photo" style="width:40px;margin-right:8px;border: 1px solid lightgrey;" src="<%= profile.profile_image %>" />
+                            <div class="d-lg-none">
+                                <img class="rounded-circle" id="profile-photo" style="width:40px;margin-right:8px;border: 1px solid lightgrey;" src="<%= profile.profile_image %>" />
                             </div>
                             <a style="margin-left: 12px;" href="/profile/<%= profile.username %>"><%= profile.username %></a>
                         </td>
@@ -41,7 +41,7 @@
         </h4>
     <% end %>
 </div>
-<div class="col-md-4 col-md-offset-1" >
+<div class="col-lg-4 col-lg-offset-1" >
     <h4> <strong> Searched users' profiles by usertag </strong> </h4>
     <hr>
     <% if @tag_profiles.present?%>
