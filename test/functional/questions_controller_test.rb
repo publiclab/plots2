@@ -80,16 +80,6 @@ class QuestionsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test 'should show accepted label for accepted answers' do
-    note = nodes(:question)
-    answer = answers(:two)
-
-    get :show, params: { author: note.author.name, date: Time.at(note.created).strftime('%m-%d-%Y'), id: note.title.parameterize }
-  
-    assert_response :success
-    assert_select '#answer-' + answer.id.to_s + '-accept', 1
-  end
-
   test 'should not show answer accept button to users if not logged in' do
     note = nodes(:question)
     answer = answers(:one)
@@ -98,17 +88,6 @@ class QuestionsControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_select '#answer-' + answer.id.to_s + '-accept', 0
-  end
-
-  test 'should show accept answer button to author of the question' do
-    UserSession.create(users(:jeff))
-    note = nodes(:question)
-    answer = answers(:one)
-
-    get :show, params: { author: note.author.name, date: Time.at(note.created).strftime('%m-%d-%Y'), id: note.title.parameterize  }
-  
-    assert_response :success
-    assert_select '#answer-' + answer.id.to_s + '-accept', 1
   end
 
   test 'should not show accept answer button to user who is not the author of the question' do

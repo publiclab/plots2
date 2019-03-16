@@ -110,20 +110,6 @@ class CommentControllerTest < ActionController::TestCase
     assert_equal 'failure', @response.body
   end
 
-  test 'should create answer comments' do
-    UserSession.create(users(:bob))
-    assert_difference 'Comment.count' do
-      post :answer_create,
-          params: {
-          aid: answers(:one).id,
-          body: 'Answers comment'
-          }, xhr: true
-    end
-    assert_response :success
-    assert_not_nil :comment
-    assert_template partial: 'notes/_comment'
-  end
-
   test 'should show error if answer comment not saved' do
     UserSession.create(users(:bob))
     assert_no_difference 'Comment.count' do
