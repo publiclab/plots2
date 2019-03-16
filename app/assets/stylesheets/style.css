@@ -334,14 +334,14 @@ body { padding-top: 70px; }
   border-bottom: 1px solid #ddd;
 }
 
-@media (max-width:400px) {
+.pagination > li:first-child,
+.pagination > li:last-child {
+    display: inline;
+}
+
+@media (max-width:640px) {
   .pagination > li {
     display: none;
-  }
-
-  .pagination > li:first-child,
-  .pagination > li:last-child {
-    display: inline;
   }
 }
 
