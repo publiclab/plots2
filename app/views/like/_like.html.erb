@@ -101,7 +101,8 @@
 
       // triggers liking and unliking
       <% if current_user %>
-        $('#like-button-<%= node.id %>').on('click', debounce(<% if node.liked_by(current_user.uid) %>clickliked<% else %>clicknotliked<% end %>, 200, true));
+        // $('#like-button-<%= node.id %>').on('click', debounce(<% if node.liked_by(current_user.uid) %>clickliked<% else %>clicknotliked<% end %>, 200, true));
+        $('#like-button-<%= node.id %>').on('click', <% if node.liked_by(current_user.uid) %>clickliked<% else %>clicknotliked<% end %> );
       
         // leaving below uncommented for now - will revisit when I start to implement comment like functionality (next).
 
