@@ -1,4 +1,4 @@
-<div class="col-md-12 col-md-offset-1" style="margin-bottom:20px;">
+<div class="col-lg-12 col-lg-offset-1" style="margin-bottom:20px;">
 
     <h2><%= raw t('notes.stats.contributors_statistics') %></h2>
     <hr>
@@ -9,10 +9,10 @@
     <br>
 
     <div class="row">
-        <div class=col-md-6>
+        <div class=col-lg-6>
             <h5> Statistics from <%= @start.to_formatted_s(:long)%> to <%= @end.to_formatted_s(:long)%> </h5>
         </div>
-        <div class=col-md-2>
+        <div class=col-lg-2>
             <%= form_tag request.url, method: 'get', enforce_utf8: false do %>
                 <%= select_tag :options, options_for_select(["Past week", "Past month","Past year"], params[:options]), prompt: "Filter period: ",
                     class: " form-control custom-select", onchange: "this.form.submit();" %>
