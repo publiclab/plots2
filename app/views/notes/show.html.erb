@@ -11,8 +11,8 @@
 
   <% if @node.main_image %>
     <a class="main-image" style="max-width:100%;width:800px;" href="<%= @node.main_image.path(:original) %>">
-      <img style="max-height:600px;max-width:100%;" class="rounded-circle d-none d-lg-inline" src="<%= @node.main_image.path(:large) %>" />
-      <img style="width:100%;" class="rounded-circle d-lg-none" src="<%= @node.main_image.path(:large) %>" />
+      <img style="max-height:600px;max-width:100%;" class="rounded d-none d-lg-inline" src="<%= @node.main_image.path(:large) %>" />
+      <img style="width:100%;" class="rounded d-lg-none" src="<%= @node.main_image.path(:large) %>" />
     </a>
     <!--<div class="expand"><a onClick="$('.main-image').toggleClass('compressed');"><i class="fa fa-angle-down"></i></a></div>-->
   <% end %>

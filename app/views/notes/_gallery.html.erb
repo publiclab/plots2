@@ -1,4 +1,4 @@
 <!-- legacy gallery images -->
 <% @node.gallery.each do |image| %>
-  <a target="_blank" href="<%= image.image.path(:original) %>"><img rel="tooltip" data-title="<%= image.description %>" style="margin-bottom:4px;" class="rounded-circle" src="<%= image.image.path(:thumb) %>" /></a>
+  <a target="_blank" href="<%= image.image.path(:original) %>"><img rel="tooltip" data-title="<%= image.description %>" style="margin-bottom:4px;" class="rounded" src="<%= image.image.path(:thumb) %>" /></a>
 <% end %>
