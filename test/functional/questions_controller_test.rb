@@ -42,20 +42,6 @@ class QuestionsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test 'answer comment markdown and autolinking works' do
-    node = nodes(:question)
-    assert node.answers.first.comments.length.positive?
-    comment = node.answers.first.comments.last
-    comment.comment = 'Test **markdown2** and http://links2.com'
-    comment.save!
-
-    get :show, params: { id: node.id }
-
-    assert_select 'strong', 'markdown2'
-    assert_select 'a', 'http://links2.com'
-    assert_response :success
-  end
-
   test 'should redirect notes other than question to note path' do
     note = nodes(:one)
 

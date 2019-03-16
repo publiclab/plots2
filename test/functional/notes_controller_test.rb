@@ -47,7 +47,7 @@ class NotesControllerTest < ActionController::TestCase
   test 'comment markdown and autolinking works' do
     node = Node.where(type: 'note', status: 1).first
     assert node.comments.length > 0
-    comment = node.comments.last
+    comment = node.comments.last(2).first
     comment.comment = 'Test **markdown** and http://links.com'
     comment.save!
 
