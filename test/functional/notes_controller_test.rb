@@ -45,7 +45,6 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test 'comment markdown and autolinking works' do
-    UserSession.create(users(:bob))
     node = Node.where(type: 'note', status: 1).first
     assert node.comments.length > 0
     comment = node.comments.last
