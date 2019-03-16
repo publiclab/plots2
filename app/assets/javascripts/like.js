@@ -14,8 +14,10 @@ function clicknotliked() {
 
 function changeLikeStatus(node_id, method) {
   $('#like-button-' + node_id).off();
+  // let msg = method === "/delete" ? "Unliked!" : "Liked!";
   $.getJSON("/likes/node/" + node_id + `${method}`)
     .then(function(resp) {
+      // notyNotification('mint', 3000, 'success', 'topRight', `${msg}`);
       updateLikeCount(parseInt(resp), node_id);
       renderLikeStar(parseInt(resp), node_id);
     })
