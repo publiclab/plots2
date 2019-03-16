@@ -1,7 +1,7 @@
 
-<div class="col-md-3">
+<div class="col-lg-3">
 	<div class='row'>
-		<div class='col-md-12'>
+		<div class='col-lg-12'>
 			<p> This page shows a list of all Public Lab contributors and is sorted by those who have posted most recently. Click the profile link to view their posting activity. </p>
 		</div>
 	</div>
@@ -10,12 +10,12 @@
     <p><%= t('users.list.admins_ban_spam') %> </p>
   <% end %>
 </div>
-<div class="col-md-9">
+<div class="col-lg-9">
   <h2><%= raw t('users.list.members_last_activity') %></h2>
   <%= render :partial => "map/peopleLeaflet" , locals: {people: true , lat:23 , lon: 4} %>
   <table class="table">
     <tr>
-      <th class="visible-sm visible-xs"></th>
+      <th class="d-lg-none"></th>
 
       <th style="text-align: center;"><a href = "<%= people_path %>?sort=username"> <%= t('users.list.username') %></a> <i class="fa fa-arrows-v"></i></th>
       <th><a href = "<%= people_path %>?sort=last_activity"> <%= t('users.list.last_activity') %></a> <i class="fa fa-arrows-v"></i></th>
@@ -28,12 +28,12 @@
     </tr>
     <% @users.each do |user| %>
     <tr>
-      <td class="visible-sm visible-xs" style="padding-top: 16px;">
-        <img class="img-circle" id="profile-photo" style="width:40px;margin-right:8px;border: 1px solid lightgrey;" src="<%= user.profile_image %>" />
+      <td class="d-lg-none" style="padding-top: 16px;">
+        <img class="rounded-circle" id="profile-photo" style="width:40px;margin-right:8px;border: 1px solid lightgrey;" src="<%= user.profile_image %>" />
       </td>
       <td style="display: flex; align-items: center;">
-        <div class="hidden-sm hidden-xs">
-          <img class="img-circle" id="profile-photo" style="width:40px;margin-right:8px;border: 1px solid lightgrey;" src="<%= user.profile_image %>" />
+        <div class="d-lg-none">
+          <img class="rounded-circle" id="profile-photo" style="width:40px;margin-right:8px;border: 1px solid lightgrey;" src="<%= user.profile_image %>" />
         </div>
         <a style="margin-left: 12px;" href="/profile/<%= user.username %>"><%= user.username %></a>
       </td>
@@ -45,7 +45,7 @@
         <% if user.status == 0 %>
           <i class='fa fa-ban' style="color:#a00;"></i> <%= t('users.list.banned') %>
         <% elsif user.status == 1 %>
-          <a class="btn btn-default btn-sm" data-confirm="<%= t('users.list.are_you_sure') %>" href="/ban/<%= user.uid %>" ><i class='fa fa-ban'></i> <%= t('users.list.ban') %></a>
+          <a class="btn btn-outline-secondary btn-sm" data-confirm="<%= t('users.list.are_you_sure') %>" href="/ban/<%= user.uid %>" ><i class='fa fa-ban'></i> <%= t('users.list.ban') %></a>
         <% end %>
       </td>
       <% end %>
