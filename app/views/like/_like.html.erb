@@ -103,8 +103,8 @@
       <% if current_user %>
         $('#like-button-<%= node.id %>').on('click', debounce(<% if node.liked_by(current_user.uid) %>clickliked<% else %>clicknotliked<% end %>, 200, true));
       
-        // leaving below uncommented for now - will revisit when I start to implement comment like functionality (next).
-
+        // leaving below uncommented for now - possibility useful for implement comment like functionality?
+        
         // if(window.location.href.includes("#like")) {
         //   $('#like-button-<%= node.id %>').click();
         // }
