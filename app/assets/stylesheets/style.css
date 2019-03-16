@@ -215,6 +215,9 @@ body { padding-top: 70px; }
   padding: 30px;
   border-top: 1px solid #E5E5E5;
   background-color: #f8f8f8;
+  position: absolute;
+  bottom: 0;
+  
 }
 
 .footer ul {
