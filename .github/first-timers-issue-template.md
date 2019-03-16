@@ -47,8 +47,6 @@ If this happens to you, don't sweat it! Grab another open issue.
 
 👥- **If someone seems stuck, offer them some help!** Otherwise, [take a look at some other issues you can help with](https://publiclab.github.io/community-toolbox/#r=all). Thanks!
 
-(This issue was created by [First-Timers-Bot](https://github.com/hoodiehq/first-timers-bot).)
-
 ### 🤔❓ Questions?
 
 Leave a comment below!
