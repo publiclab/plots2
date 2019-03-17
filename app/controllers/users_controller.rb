@@ -286,7 +286,7 @@ class UsersController < ApplicationController
   end
 
   def photo
-    @user = User.find_by(id: params[:uid]).user
+    @user = User.find_by(id: params[:uid])
     if current_user.uid == @user.uid || current_user.admin?
       @user.photo = params[:photo]
       if @user.save!
