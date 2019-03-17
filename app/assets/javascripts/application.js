@@ -18,6 +18,7 @@
 //= require jquery_ujs
 //= require debounce/index.js
 //= require bootstrap/dist/js/bootstrap.bundle.min.js
+//= require bootstrap-3-typeahead/bootstrap3-typeahead.min.js
 //= require bootstrap-datepicker/dist/js/bootstrap-datepicker.js
 //= require jquery-file-upload/js/vendor/jquery.ui.widget.js
 //= require jquery-file-upload/js/jquery.fileupload.js
@@ -43,7 +44,6 @@
 //= require editor.js
 //= require like.js
 //= require main_image.js
-//= require typeahead.js/dist/typeahead.bundle.js
 //= require restful_typeahead.js
 //= require users.js
 //= require searchform.js
