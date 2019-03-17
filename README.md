@@ -14,14 +14,14 @@ The content management system for the Public Lab research community, the plots2 
 It showcases a variety of features that help the Public Lab community collaborate on environmental technology design and documentation, as well as community organizing. Originally a Drupal site, it was rewritten in 2012 in Ruby on Rails and has since extended but not entirely replaced the legacy Drupal data model and database design. We ❤️ Open Source and actively participate in various OSS programs such as [Google Summer of Code(GSoC)](https://publiclab.org/wiki/gsoc), Rails Girls Summer of Code (RGSoC), Outreachy and Google Code-In (GCI).
 Some key features include:
 
-* a [Question and Answer system](https://publiclab.org/questions) for peer-based problem solving
-* a rich text and Markdown research note and wiki [editor](https://github.com/publiclab/PublicLab.Editor)
-* [wiki editing](https://publiclab.org/wiki) and revision tracking
-* tagging and [tag-based content organization](http://publiclab.org/tags)
-* email notification subscriptions for tags and comments
-* a search interface built out of [our growing API](https://github.com/publiclab/plots2/blob/master/doc/API.md)
-* a user dashboard [presenting recent activity](https://publiclab.org/dashboard)
-* a privacy-sensitive, Leaflet-based [location tagging system](https://github.com/publiclab/leaflet-blurred-location/) and [community map](http://publiclab.org/people)
+* A [Question and Answer system](https://publiclab.org/questions) for peer-based problem solving
+* A rich text and Markdown research note and wiki [editor](https://github.com/publiclab/PublicLab.Editor)
+* [Wiki editing](https://publiclab.org/wiki) and revision tracking
+* Tagging and [tag-based content organization](http://publiclab.org/tags)
+* Email notification subscriptions for tags and comments
+* A search interface built out of [our growing API](https://github.com/publiclab/plots2/blob/master/doc/API.md)
+* A user dashboard [presenting recent activity](https://publiclab.org/dashboard)
+* A privacy-sensitive, Leaflet-based [location tagging system](https://github.com/publiclab/leaflet-blurred-location/) and [community map](http://publiclab.org/people)
 
 ## Table of Contents
 1. [What Makes This Project Different](#what-makes-this-project-different)
