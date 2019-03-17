@@ -92,11 +92,9 @@ $E = {
   apply_template: function(template) {
     if($E.textarea.val() == ""){
       $E.textarea.val($E.templates[template])
-    }
-    else if(($E.textarea.val() == $E.templates['event']) || ($E.textarea.val() == $E.templates['default']) || ($E.textarea.val() == $E.templates['support'])){
+    }else if(($E.textarea.val() == $E.templates['event']) || ($E.textarea.val() == $E.templates['default']) || ($E.textarea.val() == $E.templates['support'])){
         $E.textarea.val($E.templates[template])
-    }
-     else{
+    }else{
       $E.textarea.val($E.textarea.val()+'\n\n'+$E.templates[template])
     }
   },
