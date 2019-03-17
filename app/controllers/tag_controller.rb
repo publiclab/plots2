@@ -94,8 +94,6 @@ class TagController < ApplicationController
                   'contributor'
                 end
 
-    qids = Node.questions.where(status: 1).collect(&:nid)
-
     if params[:id][-1..-1] == '*' # wildcard tags
       @wildcard = true
       @tags = Tag.where('name LIKE (?)', params[:id][0..-2] + '%')
@@ -132,8 +130,15 @@ class TagController < ApplicationController
     end
     nodes = nodes.where(created: @start.to_i..@end.to_i) if @start && @end
 
-    @notes = nodes.where('node.nid NOT IN (?)', qids) if @node_type == 'note'
-    @questions = nodes.where('node.nid IN (?)', qids) if @node_type == 'questions'
+    qids = Node.questions.where(status: 1).collect(&:nid)
+    if qids.empty?
+      @notes = nodes
+      @questions = []
+    else
+      @notes = nodes.where('node.nid NOT IN (?)', qids) if @node_type == 'note'
+      @questions = nodes.where('node.nid IN (?)', qids) if @node_type == 'questions'
+    end
+
     @answered_questions = []
     @questions&.each { |question| @answered_questions << question if question.answers.any?(&:accepted) }
     @wikis = nodes if @node_type == 'wiki'
