@@ -86,7 +86,7 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     commonjs (0.2.7)
-    composite_primary_keys (11.1.0)
+    composite_primary_keys (11.2.0)
       activerecord (~> 5.2.1)
     concurrent-ruby (1.1.5)
     connection_pool (2.2.2)
