@@ -18,6 +18,12 @@
   </div>
 <% end %>
 
+<% if @node.main_image && !@presentation %>
+  <a style="margin-bottom:10px;" href="<%= @node.main_image.path(:original) %>">
+    <img style="max-width:100%; width:100%; max-height:500px;margin-bottom:10px;" class="img-rounded" src="<%= @node.main_image.path(:large) %>" />
+  </a>
+<% end %>
+
 <div class="row">
 
 <div class="col-md-9">
