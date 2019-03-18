@@ -3,9 +3,6 @@
   "version": "2.1",
   "description": "PublicLab.org",
   "main": "app/assets/javascripts/application.js",
-  "scripts": {
-    "postinstall": "node -e \"try { require('fs').symlinkSync(require('path').resolve('node_modules/@bower_components'), 'public/lib', 'junction') } catch (e) { }\""
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/publiclab/plots2.git"
