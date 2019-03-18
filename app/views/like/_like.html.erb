@@ -94,18 +94,24 @@
         cache: false
       });
 
+      // opens modal to login before you can like;
       $("#open-login-like").click(function() {
         $("input[name='hash_params']").val($(this).attr("data-hashparams"));
       });
 
+      // triggers liking and unliking
       <% if current_user %>
-        $('#like-button-<%= node.id %>').on('click',<% if node.liked_by(current_user.uid) %>clickliked<% else %>clicknotliked<% end %>)
+        $('#like-button-<%= node.id %>').on('click', debounce(<% if node.liked_by(current_user.uid) %>clickliked<% else %>clicknotliked<% end %>, 200, true));
       
-        if(window.location.href.includes("#like")) {
-          $('#like-button-<%= node.id %>').click();
-        }
-        <% end %>
+        // leaving below uncommented for now - possibility useful for implement comment like functionality?
+        
+        // if(window.location.href.includes("#like")) {
+        //   $('#like-button-<%= node.id %>').click();
+        // }
+
+      <% end %>
     });
+    
     $('body').on('click', function (e) { // If there's a click event in the body
       $('[rel=popover]').each(function () { // For each popover
         /*

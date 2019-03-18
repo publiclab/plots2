@@ -3,9 +3,9 @@
 
     <div class="header-icon">
      <% if node.aid == 0 %>
-      <a href="<% if node.parent.has_power_tag('question') %><%= node.parent.path(:question) %>#anwer-0-comment<% else %><%= node.parent.path %>#comments<% end %>"> <i class="fa fa-comment-o"> <%= node.parent.comments.count %> </i> </a>
+      <a href="<% if node.parent.has_power_tag('question') %><%= node.parent.path(:question) %>#answer-0-comment<% else %><%= node.parent.path %>#comments<% end %>"> <i class="fa fa-comment-o"> <%= node.parent.fetch_comments(current_user).count %></i> </a>
       <% else %>
-      <a href="<%= node.parent.path(:question) %>#answer-<%= node.answer.id %>-comment"> <i class="fa fa-comment-o"> 
+      <a href="<%= node.parent.path(:question) %>#answer-<%= node.answer.id %>-comment"> <i class="fa fa-comment-o"> </i>
       <% end %> 
       </a>
       <a href="/n/<%= node.parent.id %>"><i class="fa fa-link"></i></a>
