@@ -73,13 +73,14 @@
 <hr style='clear:both;' />
 
 <div>
-  <p><a onClick='print_linkless()'><i class='fa fa-print'></i> Print without page links</a></p>
-  <p><a onClick='print_three_column();'><i class='fa fa-print'></i> Print in 3-column layout</a></p>
+  <p><a href='#' onClick='print_linkless()'><i class='fa fa-print'></i> Print without page links</a></p>
+  <p><a href='#' onClick='print_three_column();'><i class='fa fa-print'></i> Print in 3-column layout</a></p>
 </div>
 
 "><span class="caret"></span></li>
   </ul>
   <script>
+ 
     function print_three_column() {
       $('body').css('column-count', 3)
                .css('column-gap', '50px');
@@ -89,6 +90,7 @@
                .css('column-gap', 0);
     }
     jQuery(document).ready(function() {
+      
       // 304 cached response yields no data to insert, which is not useful
       jQuery.ajaxSetup({
         cache: false
