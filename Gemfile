@@ -7,7 +7,6 @@ git_source(:github) do |repo_name|
 end
 
 gem 'activerecord-session_store'
-gem 'activerecord-mysql2-adapter'
 gem "authlogic", "4.4.2"
 gem 'authlogic-oid'
 gem "composite_primary_keys"
