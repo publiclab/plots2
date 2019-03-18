@@ -17,6 +17,12 @@ class TagTest < ActiveSupport::TestCase
     assert followers.include?(tag_selections(:awesome).user)
   end
 
+  test 'related tags' do
+    related = Tag.related(tags(:awesome).name)
+    assert !related.empty?
+    assert related.include?(tags(:test))
+  end
+
   test 'tag subscribers' do
     subscribers = Tag.subscribers([tags(:awesome)])
     assert !subscribers.empty?
