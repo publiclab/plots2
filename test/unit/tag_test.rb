@@ -21,7 +21,6 @@ class TagTest < ActiveSupport::TestCase
     related = Tag.related(tags(:awesome).name)
     assert !related.empty?
     assert related.include?(tags(:test))
-    puts related.to_json
   end
 
   test 'tag subscribers' do
