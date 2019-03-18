@@ -45,7 +45,7 @@
     <div class="tab-pane active" id="research">
       <div class="btn-group text-center" style="margin-bottom:10px;">
         <a href="#notes" class="btn btn-default" data-toggle="tab">Authored <%= "(#{ @notes.count })" %></a>
-        <a href="#coauthored" class="btn btn-default" data-toggle="tab">Coauthored  <%= "(#{ @coauthored.count })" %></a>
+      <a href="#coauthored" class="btn btn-default" data-toggle="tab">Co-authored  <%= "(#{ @coauthored.count })" %></a>
         <% if current_user && current_user.uid == @profile_user.uid %><a href="#draft" class="btn btn-default" data-toggle="tab">Drafts <%= "(#{ @drafts.count })" %></a><% end %>
       </div>
 
