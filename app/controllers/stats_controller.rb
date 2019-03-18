@@ -1,11 +1,11 @@
 class StatsController < ApplicationController
   def subscriptions
-    @tags = {}
+    @tags = {} 
     TagSelection.where(following: true).each do |tag|
       @tags[tag.tagname] = @tags[tag.tagname] || 0
       @tags[tag.tagname] += 1
     end
-    render plain: @tags.inspect, status: 200
+    @tags = @tags.group_by{|k,v| v}.map{|k,v| {k => v.map{|x| x.join("-")}}}
   end
 
   def range

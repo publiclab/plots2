@@ -3,5 +3,30 @@
     <p> People subscribe to tags so that they can be updated when a research is posted with the tag they are subscribed to. This page shows the number of subscriptions and subscription rates on different tags. </p>
 </div>
 <div class="col-md-8 col-md-offset-1">
-    <h2>Subscriptions</h2>
+	<h2>Subscriptions</h2>
+
+	<table>
+		<tr>
+			<thead>
+				<th>Subscriptions</th>
+				<th>Stats</th>
+			</thead>
+		</tr>
+		<% @tags.each do |map| %>
+			<% map.each do |subscriptions,stats| %>
+				<tr>
+					<tbody>
+						<td><%=subscriptions%></td>
+						<td>
+							<%stats.each do |stat| %>
+								<ul>
+									<%=stat%>
+								</ul>
+							<%end%>
+						</td>
+					</tbody>
+				</tr>
+			<% end  %>
+		<% end  %>
+	</table>
 </div>
