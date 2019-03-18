@@ -135,10 +135,11 @@ class UserSessionsController < ApplicationController
                   return_to = session[:openid_return_to]
                   session[:openid_return_to] = nil
                   redirect_to return_to + hash_params
-                elsif session[:return_to] == '/login'
-                  redirect_to '/dashboard'
                 elsif session[:return_to]
                   return_to = session[:return_to]
+                  if return_to == '/login'
+                    return_to = '/dashboard'
+                  end
                   session[:return_to] = nil
                   redirect_to return_to + hash_params
                 elsif params[:return_to]
