@@ -67,8 +67,9 @@ class SearchService
     tlist = Tag.where(name: sterms)
       .joins(:node_tag, :node)
       .where('node.status = 1')
-      .select('DISTINCT node.nid,node.title,node.path')
+      .select('node.nid,node.title,node.path')
       .limit(limit)
+      .distinct
   end
 
   # Search question entries for matching text
