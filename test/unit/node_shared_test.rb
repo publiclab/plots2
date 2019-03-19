@@ -36,7 +36,7 @@ class NodeSharedTest < ActiveSupport::TestCase
     html = NodeShared.button(before)
     assert_equal 0, html.scan('<a class="btn btn-primary"').length
     assert_equal 0, html.scan('href=').length
-    assert_equal 0, html.scan('button-grid').length
+    assert_equal 0, html.scan('button-grid-test').length
   end
 
   test 'that NodeShared does not convert short codes like [button:foo:https://google.com] into tables which list notes, when in code tags' do
