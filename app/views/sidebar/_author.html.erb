@@ -6,9 +6,9 @@
 
   <% if tagnames = @user.tagnames(20,false) %>
   <h4><%= raw t('sidebar._author.recent_tags_for_author', :url1 => "/people/"+@user.name, :author => @user.name) %></h4>
-  <ul class="nav">
+  <ul class="navbar-nav">
     <% tagnames.each do |tagname| %>
-      <li><a href="/tag/<%= tagname %>"><i class="fa fa-tag"></i> <%= tagname %></a></li>
+      <li class="nav-item"><a class="nav-link" href="/tag/<%= tagname %>"><i class="fa fa-tag"></i> <%= tagname %></a></li>
     <% end %>
   </ul>
   <% end %>
