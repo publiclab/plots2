@@ -27,7 +27,7 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert html
     assert_equal 1, html.scan('<a class="btn btn-primary"').length
     assert_equal 1, html.scan('href=').length
-    assert_equal 5, html.scan('button-grid-test').length
+    assert_equal 5, html.scan('inline-button-shortcode').length
     assert html.scan('<td class="title">').length > 1
   end
 
