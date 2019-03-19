@@ -13,7 +13,7 @@ module NodeShared
     body.gsub(/(?<![\>`])(\<p\>)?\[button\:(.+)\:(\S+)\]/) do |_tagname|
       btnText = Regexp.last_match(2)
       btnHref = Regexp.last_match(3)
-      return "<a class='btn btn-primary' href='" + btnHref + "'>" + btnText + "</a>"
+      return "<a class='btn btn-primary' href=" + btnHref + "'>" + btnText + "</a>"
     end
   end
 
