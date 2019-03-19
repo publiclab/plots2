@@ -1,3 +1,5 @@
+<% user = user || @user # allow overriding w/ local variable %>
+
 <!-- This is the sidebar tagging display, also renders Subscribe button for multiple subscription -->
 <div>
   <h1 style="display: inline-block; margin-right: 20px;">Tags</h1>
@@ -17,7 +19,7 @@
   </span>
 <% else %>
   <span id="tags">
-  <%= render partial: 'tag/tags', locals: { power_tag: false, label_name: 'label-primary', tags: @user.user_tags } %>
+  <%= render partial: 'tag/tags', locals: { power_tag: false, label_name: 'label-primary', tags: user.user_tags } %>
   </span>
 <% end %>
 
