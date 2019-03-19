@@ -8,6 +8,14 @@ module NodeShared
   def liked_by(uid)
     likers.collect(&:uid).include?(uid)
   end
+  
+  def self.button(body)
+    body.gsub(/(?<![\>`])(\<p\>)?\[button\:(.+)\:(\S+)\]/) do |_tagname|
+      btnText = Regexp.last_match(1)
+      btnHref = Regexp.last_match(2)
+      return "<a class='btn btn-primary' href='" + btnHref + "'>" + btnText + "</a>"
+    end
+  end
 
   def self.notes_thumbnail_grid(body, _page = 1)
     body.gsub(/(?<![\>`])(\<p\>)?\[notes\:grid\:(\S+)\]/) do |_tagname|
