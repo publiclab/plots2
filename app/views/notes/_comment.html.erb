@@ -22,7 +22,11 @@
         <% else %>
           <div style="vertical-align:middle;display:inline-block;height:32px;width:32px;margin-right:6px;background:#ccc;" class="img-circle"></div>
         <% end %>
-        <a href="/profile/<%= comment.author.name %>"><%= comment.author.name %></a>
+        <% if comment.author.name != "" %>
+          <a href="/profile/<%= comment.author.name %>"><%= comment.author.name %></a>
+        <% else %>
+          <%= comment.name %>
+        <% end %>
       <% end %>
       <span class="hidden-xs"><%= t('notes._comment.commented') %></span>
       <a style="color:#aaa;" href="#c<%= comment.cid %>"><%= distance_of_time_in_words(comment.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></a>
