@@ -47,7 +47,7 @@ class NotesControllerTest < ActionController::TestCase
   test 'comment markdown and autolinking works' do
     node = Node.where(type: 'note', status: 1).first
     assert node.comments.length > 0
-    comment = node.comments.last
+    comment = node.comments.last(2).first
     comment.comment = 'Test **markdown** and http://links.com'
     comment.save!
 
@@ -472,7 +472,7 @@ class NotesControllerTest < ActionController::TestCase
         id: node.title.parameterize
         }
     selector = css_select '.fa-fire'
-    assert_equal selector.size, 3
+    assert_equal 3, selector.size
   end
 
   test 'should redirect to questions show page after creating a new question' do
