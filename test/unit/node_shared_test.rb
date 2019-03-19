@@ -44,7 +44,7 @@ class NodeSharedTest < ActiveSupport::TestCase
     html = NodeShared.button(before)
     assert_equal 0, html.scan('<a class="btn btn-primary"').length
     assert_equal 0, html.scan('href=').length
-    assert_equal 0, html.scan('button-grid-test').length
+    assert_equal 0, html.scan('inline-button-shortcode').length
   end
 
   test 'that NodeShared can be used to convert doubled short codes like [notes:activity:spectrometer] into tables which list notes with the tag `activity:spectrometer`' do
