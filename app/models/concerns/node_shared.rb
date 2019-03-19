@@ -11,8 +11,8 @@ module NodeShared
   
   def self.button(body)
     body.gsub(/(?<![\>`])(\<p\>)?\[button\:(.+)\:(\S+)\]/) do |_tagname|
-      btnText = Regexp.last_match(2)
-      btnHref = Regexp.last_match(1)
+      btnText = Regexp.last_match(1)
+      btnHref = Regexp.last_match(2)
       return "<a class='btn btn-primary' href='" + btnHref + "'>" + btnText + "</a>"
     end
   end
