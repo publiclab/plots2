@@ -1,5 +1,5 @@
 <%= javascript_include_tag('async_tag_subscriptions.js') %>
-<div class="col-md-12">
+<div class="col-md-6">
   <h1 style="font-family:Junction Light;"><%= t('tag.index.popular_tags') %></h1>
 
   <% cache('feature_tags-header', skip_digest: true) do %> 
@@ -10,7 +10,7 @@
   <br/>
   <form id="tagform" class="form-horizontal" method="GET" action="/tag/">
   <div class="input-group">
-    <input type="search" tabindex="1" autocomplete="off" id="taginput" name="id" type="text" placeholder="Search for topics" data-provide="typeahead" class="form-control" required="required" />
+    <input type="search" tabindex="1" autocomplete="off" id="taginput" name="id" type="text" placeholder="Search for topics" data-provide="typeahead" class="form-control" required="required" style="min-width: 270px;" />
     <span class="input-group-btn" >
       <button type="submit" rel="tooltip" title="View content with the entered title" class="btn btn-primary-outline" style="margin-left: -40px;background-color: transparent;"><i class="fa fa-search" style="color: #ccc;"></i></button>
     </span>
@@ -18,11 +18,20 @@
   </form> 
   <br/><br/>
 
+  <p style="width: 100%; text-align: center; border-bottom: 1px solid #ccc; line-height:2px; margin: 10px 0 20px;">
+    <span style="background-color: #fff; padding: 0 10px; color: #808080;">Sort by:
+      <a href = "<%= tags_path %>?sort=name&order=<%= @order_type %>" style="text-decoration: underline; color: #808080;"><%= t('tag.index.tag') %></a><span> | </span>
+      <a href = "<%= tags_path %>?sort=followers&order=<%= @order_type %>" style="text-decoration: underline; color: #808080;"><%= t('tag.index.number_of_subscriptions')%></a><span> | </span>
+      <a href = "<%= tags_path %>?sort=uses&order=<%= @order_type %>" style="text-decoration: underline; color: #808080;"><%= t('tag.index.number_of_uses') %></a>
+    </span>
+  </p>
+  <br/>
+
   <table class="table">
     <tr>
-      <th><a href = "<%= tags_path %>?sort=name&order=<%= @order_type %>"><%= t('tag.index.tag') %></a> <i class="fa fa-arrows-v"></i></th>
-      <th><a href = "<%= tags_path %>?sort=uses&order=<%= @order_type %>"><%= t('tag.index.number_of_uses') %></a> <i class="fa fa-arrows-v"></i></th>
-      <th><a href = "<%= tags_path %>?sort=followers&order=<%= @order_type %>"><%= t('tag.index.number_of_subscriptions')%></a> <i class="fa fa-arrows-v"></i></th>
+      <th><%= t('tag.index.tag') %></th>
+      <th><%= t('tag.index.number_of_uses') %></th>
+      <th><%= t('tag.index.number_of_subscriptions')%></th>
       <% if current_user %>
         <th><a href = "<%= tags_path %>?sort=subscribers"><%= t('tag.index.subscriptions') %></a> <i class="fa fa-sort" aria-hidden="true"></i></th>
       <% end %>
