@@ -1,4 +1,4 @@
-<div class="col-md-9">
+<div class="col-lg-9">
 <h1> <%= t('like.index.recent_likes') %> </h1>
 <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") %>
 	<p>Users marked in <b>red</b> are banned</p>
@@ -33,9 +33,9 @@
 						<b> - </b>
 					<% else %>
 						<% if like.user.status == 1 %> 
-							<a data-confirm="<%= t('users.profile.confirm_ban_user') %>" href="/ban/<%= like.user.id %>" class="btn btn-default"><i class="fa fa-ban"></i> <%= t('users.profile.ban_user') %></a>
+							<a data-confirm="<%= t('users.profile.confirm_ban_user') %>" href="/ban/<%= like.user.id %>" class="btn btn-outline-secondary"><i class="fa fa-ban"></i> <%= t('users.profile.ban_user') %></a>
 			          	<% else %>
-			          		<a href="/unban/<%= like.user.id %>" class="btn btn-default"><i class="fa fa-thumbs-up"></i> <%= t('users.profile.unban_user') %></a>
+			          		<a href="/unban/<%= like.user.id %>" class="btn btn-outline-secondary"><i class="fa fa-thumbs-up"></i> <%= t('users.profile.unban_user') %></a>
 			          	<% end %>
 		          <% end %>
 				</td>
