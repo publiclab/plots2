@@ -5,21 +5,21 @@
 
   <% @answered_questions.each_with_index do |question,i| %>
     <% answers = if user then question&.answers.where(uid: user.uid) else question.answers end %>
-    <div class="col-md-4" style="margin-top:30px;">
+    <div class="col-lg-4" style="margin-top:30px;">
       <div class="note note-pane note-answer">
         <div class="header-icon"><i class="fa fa-question-circle"></i></div>
         <h4><a href="<%= question.path(:question) %>"><%= question.title %></a></h4>
         <% if answers.collect(&:accepted).include?(true) %>
-          <p><span class="label accepted">Accepted</span></p>
+          <p><span class="badge accepted">Accepted</span></p>
         <% end %>
         <p>
           <a href="/profile/<%= question.author.name %>"><%= question.author.name %></a>
           asked about <span style="color:#888;"><%= time_ago_in_words(question.created_at) %> ago</span>
         </p>
-        <div class="text-center"><span id="question-<%= question.nid %>-toggle" class="btn btn-default btn-xs">Answers <%= if user then "by #{user.name}" end %><i class="fa fa-caret-down"></i></span></div>
+        <div class="text-center"><span id="question-<%= question.nid %>-toggle" class="btn btn-outline-secondary btn-sm">Answers <%= if user then "by #{user.name}" end %><i class="fa fa-caret-down"></i></span></div>
         <div id="question-<%= question.nid %>" class="user-answer">
           <% answers.each do |answer| %>
-            <p>answered on <a href="<%= question.path(:question) %>#a<%= answer.id %>" style="color:#888;"><%= answer.created_at.strftime("%b %d, %Y") %></a><span class="pull-right"><% if answer.accepted %><i class="fa fa-check-square" style="color: #1fa67a;"></i> <% end %><i class="fa fa-star" style="color: #FFEB3B;"></i> <%= answer.likers.length %></span></p>
+            <p>answered on <a href="<%= question.path(:question) %>#a<%= answer.id %>" style="color:#888;"><%= answer.created_at.strftime("%b %d, %Y") %></a><span class="float-right"><% if answer.accepted %><i class="fa fa-check-square" style="color: #1fa67a;"></i> <% end %><i class="fa fa-star" style="color: #FFEB3B;"></i> <%= answer.likers.length %></span></p>
           <% end %>
           <a href="<%= question.path(:question) %>#answers">Show all <%= question.answers.count %> answers &raquo;</a>
         </div>
@@ -27,7 +27,7 @@
     </div>
   <% if ((i+1)/3.0).to_i == ((i+1)/3.0) %>
   </div>
-  <hr class="visible-xs visible-sm grid" />
+  <hr class="d-lg-none grid" />
   <div class="row">
   <% end %>
   <script type="text/javascript">
