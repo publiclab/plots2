@@ -1,17 +1,1 @@
 
-Tue Mar 19 05:15:00 UTC 2019
-I, [2019-03-19T10:45:11.089890 #46028]  INFO -- sentry: ** [Raven] Raven 2.9.0 configured not to capture errors: Not configured to send/capture in environment 'development'
-W, [2019-03-19T10:45:11.489559 #46028]  WARN -- Skylight: [SKYLIGHT] [3.1.4] Running Skylight in development mode. No data will be reported until you deploy your app.
-(To disable this message for all local apps, run `skylight disable_dev_warning`.)
-Tue Mar 19 05:16:00 UTC 2019
-I, [2019-03-19T10:46:09.277886 #46180]  INFO -- sentry: ** [Raven] Raven 2.9.0 configured not to capture errors: Not configured to send/capture in environment 'development'
-W, [2019-03-19T10:46:09.663704 #46180]  WARN -- Skylight: [SKYLIGHT] [3.1.4] Running Skylight in development mode. No data will be reported until you deploy your app.
-(To disable this message for all local apps, run `skylight disable_dev_warning`.)
-Tue Mar 19 05:17:00 UTC 2019
-I, [2019-03-19T10:47:10.567722 #46317]  INFO -- sentry: ** [Raven] Raven 2.9.0 configured not to capture errors: Not configured to send/capture in environment 'development'
-W, [2019-03-19T10:47:11.091949 #46317]  WARN -- Skylight: [SKYLIGHT] [3.1.4] Running Skylight in development mode. No data will be reported until you deploy your app.
-(To disable this message for all local apps, run `skylight disable_dev_warning`.)
-Tue Mar 19 05:18:01 UTC 2019
-I, [2019-03-19T10:48:10.182521 #46469]  INFO -- sentry: ** [Raven] Raven 2.9.0 configured not to capture errors: Not configured to send/capture in environment 'development'
-W, [2019-03-19T10:48:10.540333 #46469]  WARN -- Skylight: [SKYLIGHT] [3.1.4] Running Skylight in development mode. No data will be reported until you deploy your app.
-(To disable this message for all local apps, run `skylight disable_dev_warning`.)
