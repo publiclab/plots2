@@ -23,13 +23,17 @@
       <div class="row col-sm-6">
      
         <div class="form-group col-sm-12" id="username_div">
+          
           <label for="username"><%= t('user_sessions.new.username') %></label>
-          <%= f.text_field :username, { tabindex: 1, placeholder: "Username", class: 'form-control', id: 'username-signup' } %>
+          <%= f.text_field :username, { tabindex: 1, placeholder: "Username", class: 'form-control', id: 'username-signup', required:true } %>
+        
         </div>
      
         <div class="form-group col-sm-12">
+          
           <label for="email"><%= t('users._form.email') %></label>
-          <%= f.text_field :email, { tabindex: 3, placeholder: "you@email.com", class: 'form-control', id: 'email' } %>
+          <%= f.text_field :email, { tabindex: 3, placeholder: "you@email.com", class: 'form-control', id: 'email', required: true } %>
+       
         </div>
      
       </div>
@@ -49,21 +53,27 @@
     <div class="form-group col-sm-12 row">
       <div class="form-group col-sm-6">
         <label for="password"><%= t('users._form.create_password') %></label>
-        <%= f.password_field :password, { placeholder: 'Enter your new password',
+        <%= f.password_field :password, { 
+                                          placeholder: 'Enter your new password',
                                           tabindex: 4,
                                           class: 'form-control',
                                           id: 'password',
-                                          onpaste: 'return false;' }
+                                          onpaste: 'return false;',
+                                          required: true 
+                                        }
         %>
       </div>
  
       <div class="form-group col-sm-6">
         <label for="password_confirmation"><%= t('users._form.confirmation') %></label>
-        <%= f.password_field :password_confirmation, { placeholder: I18n.t('users._form.confirm_password'),
+        <%= f.password_field :password_confirmation, { 
+                                                       placeholder: I18n.t('users._form.confirm_password'),
                                                        tabindex: 5,
                                                        class: 'form-control',
                                                        id: 'password-confirmation',
-                                                       onpaste: 'return false;' }
+                                                       onpaste: 'return false;',
+                                                       required: true 
+                                                     }
         %>
       </div>
     </div>
@@ -106,21 +116,15 @@
           <%= t('users._form.log_in') %>
         </a>
 
-      <script>
-        (function() {
-          $('.btn-save').click(function onClick(e) {
-            $(this).addClass("disabled") // disable the button after it is clicked
-                   .html("<i class='fa fa-spinner fa-spin'></i>"); // make a spinner that spins when clicked
-          })
-        })();
-      </script>
     </div>
 
   </div>
+
   <% end %>
   
   <% cache('feature_signup-notice', skip_digest: true) do %>
     <%= feature('signup-notice') %>
+
   <% end %>
 
   <script>
@@ -129,6 +133,7 @@
       setMode("signup"); // sets the mode of the modal to signup so it only shows the signup partial
       $('#loginModal').modal(); // toggles the modal
     })
+
     function showFile(inp, disp){
       if (inp.files && inp.files[0]){
         var reader = new FileReader();
@@ -142,7 +147,9 @@
       }
     }
   </script>
+
 </div>
+
 <style>
   .btn-file {
       position: relative;
