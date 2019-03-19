@@ -152,7 +152,7 @@ class UsersControllerTest < ActionController::TestCase
     assert_equal selector.size, 1
   end
 
-  test 'should get comments' do
+  test 'should get comments and render comments/index template' do
     user = users(:jeff)
     get :comments, params: { id: user.id }
     assert_response :success

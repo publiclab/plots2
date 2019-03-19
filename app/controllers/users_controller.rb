@@ -175,7 +175,17 @@ class UsersController < ApplicationController
                         .limit(20)
         @wikis = wikis.collect(&:parent).uniq
 
-        @comment_count = Comment.where(status: 1, uid: @profile_user.uid).count
+        comments = Comment.limit(20)
+                          .order("timestamp DESC")
+                          .where(uid: @profile_user.uid)
+                          .paginate(page: params[:page], per_page: 24)
+
+        @normal_comments = comments.where('comments.status = 1')
+        @comment_count = @normal_comments.count
+        if current_user &.can_moderate?
+          @all_comments = comments
+          @comment_count = @all_comments.count
+        end
 
         # User's social links
         @github = @profile_user.social_link("github")
@@ -281,7 +291,7 @@ class UsersController < ApplicationController
     comments = Comment.limit(20)
                              .order("timestamp DESC")
                              .where(uid: params[:id])
-                             .paginate(page: params[:page])
+                             .paginate(page: params[:page], per_page: 24)
 
     @normal_comments = comments.where('comments.status = 1')
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')

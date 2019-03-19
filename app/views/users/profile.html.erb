@@ -97,7 +97,7 @@
     </div>
 
     <div class="tab-pane" id="comments">
-      <h2 style="text-align:center;"><i class="fa fa-spinner fa fa-spin"></i></h2>
+      <%= render partial: 'comments/comments', locals: { comments: current_user &.can_moderate? ? @all_comments : @normal_comments } %>
     </div>
 
     <div class="tab-pane" id="likes">
@@ -323,7 +323,6 @@
     (function () {
         var profile = Object.create(Profile);
         profile.value.user_id = "<%= @profile_user.uid %>"
-        profile.display_comments();
 
         <% if @profile_user %>
         var notes = <%= @profile_user.daily_note_tally.to_a.sort %>
