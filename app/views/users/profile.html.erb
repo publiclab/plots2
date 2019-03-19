@@ -281,7 +281,7 @@
       <ul class="nav bullet">
         <% @wikis.each do |wiki| %>
           <% unless (!@node.nil? && wiki.nid == @node.nid) %>
-            <li><a href="<%= wiki.path %>"><i class="fa fa-<%= wiki.icon %>"></i> <%= wiki.latest.title %></a> <small style="color:#888;"><%= t('users.profile.updated') %> <%= distance_of_time_in_words(wiki.updated_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %> <%= t('users.profile.by') %> <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a></small></li>
+            <li><a  href="<%= wiki.path %>"><i style = "margin-right: 1px;" class="fa fa-<%= wiki.icon %>"></i> <%= wiki.latest.title %></a> <small style="color:#888;"><%= t('users.profile.updated') %> <%= distance_of_time_in_words(wiki.updated_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %> <%= t('users.profile.by') %> <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a></small></li>
           <% end %>
         <% end %>
         <% if params[:controller] == "search" %>
@@ -362,6 +362,9 @@
 
   .token{
     font-weight: bold;
+  }
+  .nav>li>a:hover{
+    background-color: transparent;
   }
 </style>
 
