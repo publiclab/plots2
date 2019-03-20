@@ -208,7 +208,7 @@ class Tag < ApplicationRecord
     weeks
   end
 
-  def contribution_graph_making(type = 'note', start = Time.now - 1.year, fin  = Time.now)
+  def contribution_graph_making(type = 'note', start = Time.now - 1.year, fin = Time.now)
     weeks = {}
     span =  start.to_date.step(fin.to_date, 7).count
     week = span
@@ -252,7 +252,6 @@ class Tag < ApplicationRecord
         ids,
         (fin.to_i - week.weeks.to_i).to_s,
         (fin.to_i - (week - 1).weeks.to_i).to_s
-
       ).count(:all)
 
       weeks[(month.to_f * 1000)] = current_week

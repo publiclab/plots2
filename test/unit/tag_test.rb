@@ -219,8 +219,23 @@ class TagTest < ActiveSupport::TestCase
     assert_not_nil nodes_in_month
   end
 
+  test 'contribution_graph_making' do
+    tag = tags(:awesome)
+    comment_graphs = tag.contribution_graph_making('note', Time.now - 1.year, Time.now).values
+    notes = tag.nodes.where( type: 'note', created: (Time.now - 1.year).to_i..Time.now.to_i).size
+
+    assert_equal notes, comment_graphs.sum
+  end
+
+
   test 'graph making' do
-    comment_graphs = tags(:awesome).graph_making(Comment, 52, Time.now)
-    assert_not_nil  comment_graphs
+    tag = tags(:awesome)
+    comment_graphs = tag.graph_making(Comment, Time.now - 1.year, Time.now).values
+    quiz_graphs = tag.graph_making(Node.questions, Time.now - 1.year, Time.now).values
+    comments = Comment.where(node: tag.nodes, timestamp: (Time.now - 1.year).to_i..Time.now.to_i).size
+    quiz = Node.questions.where(nid: tag.nodes(&:nid), created: (Time.now - 1.year).to_i..Time.now.to_i).size
+
+    assert_equal comments, comment_graphs.sum
+    assert_equal quiz.count, quiz_graphs.sum
   end
 end
