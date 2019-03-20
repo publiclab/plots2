@@ -229,11 +229,12 @@ class TagTest < ActiveSupport::TestCase
 
 
   test 'graph making' do
-    tag = tags(:awesome)
+    tag = tags(:test)
     comment_graphs = tag.graph_making(Comment, Time.now - 1.year, Time.now).values
     quiz_graphs = tag.graph_making(Node.questions, Time.now - 1.year, Time.now).values
-    comments = Comment.where(node: tag.nodes, timestamp: (Time.now - 1.year).to_i..Time.now.to_i).size
-    quiz = Node.questions.where(nid: tag.nodes(&:nid), created: (Time.now - 1.year).to_i..Time.now.to_i).size
+    ids = tag.nodes.map{|node| node.nid}
+    comments = Comment.where(nid: ids, timestamp: (Time.now - 1.year).to_i..Time.now.to_i).count
+    quiz = Node.questions.where(nid: ids, created: (Time.now - 1.year).to_i..Time.now.to_i).count
 
     assert_equal comments, comment_graphs.sum
     assert_equal quiz.count, quiz_graphs.sum
