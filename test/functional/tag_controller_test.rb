@@ -36,7 +36,7 @@ class TagControllerTest < ActionController::TestCase
 
   test 'check tag show page' do
     UserSession.create(users(:bob))
-
+    byebug
     get :show,
         params: {
           node_type: 'contributors',

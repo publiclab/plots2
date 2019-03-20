@@ -3,7 +3,11 @@
 <% elsif params[:action] == 'show' %>
   <h3><%= raw t('tag.show.notes_tagged', tag: params[:id]) %></h3>
 <% else %>
-  <h3> Notes on <%= params[:id] %> by <%= link_to(@user.name,"/profile/#{@user.name}") %> </h3>
+  <% if @user %>
+    <h3> Notes on <%= params[:id] %> by <%= link_to(@user.name,"/profile/#{@user.name}") %> </h3>
+  <% else %>
+    <h3> Maps on <%= @title %> </h3>
+  <% end %>
 <% end %>
 <% if @start && @end %>
   <p>From <%= @start.to_formatted_s(:long) %> to <%= @end.to_formatted_s(:long) %></p>

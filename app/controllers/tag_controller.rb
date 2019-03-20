@@ -201,7 +201,7 @@ class TagController < ApplicationController
 
     @notes ||= []
 
-    @notes = nodes.where('node.nid NOT IN (?)', qids) if @node_type == 'note'
+    @notes = qids.count.positive? ? (nodes.where('node.nid NOT IN (?)', qids) if @node_type == 'note') : nodes
     @questions = nodes.where('node.nid IN (?)', qids) if @node_type == 'questions'
     ans_ques = Answer.where(uid: @user.id, accepted: true).includes(:node).map(&:node)
     @answered_questions = ans_ques.paginate(page: params[:page], per_page: 24)

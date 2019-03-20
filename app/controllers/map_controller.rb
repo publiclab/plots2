@@ -210,13 +210,14 @@ class MapController < ApplicationController
     set_sidebar :tags, [params[:id]], note_count: 20
 
     @tagnames = params[:id].split(',')
-    nids = Tag.find_nodes_by_type(params[:id], 'map', 20).collect(&:nid)
-    @notes = Node.paginate(page: params[:page])
+    limit = @user ? 20 : -1
+    nids = Tag.find_nodes_by_type(@tagnames, 'map', limit).collect(&:nid)
+    @nodes = Node.paginate(page: params[:page], per_page: 7)
       .where('nid in (?)', nids)
       .order('nid DESC')
 
     @title = @tagnames.join(', ') if @tagnames
-    @unpaginated = true
+    @unpaginated = true if @user
     render template: 'tag/show'
   end
 end
