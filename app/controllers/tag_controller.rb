@@ -494,8 +494,8 @@ class TagController < ApplicationController
     @tags = Tag.where(name: params[:id])
     @tag_notes = @tags.first.contribution_graph_making('note', @start, @end)
     @tag_wikis = @tags.first.contribution_graph_making('page', @start, @end)
-    @tag_questions = @tags.first.graph_making(Node.questions, @start, @end)
-    @tag_comments = @tags.first.graph_making(Comment, @start, @end)
+    @tag_questions = @tags.first.quiz_graph(@start, @end)
+    @tag_comments = @tags.first.comment_graph(@start, @end)
   end
 
   private

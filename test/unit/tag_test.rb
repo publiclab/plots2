@@ -1,6 +1,10 @@
 require 'test_helper'
 
 class TagTest < ActiveSupport::TestCase
+  def setup
+    @start = (Date.today - 1.year).to_time
+    @fin = Date.today.to_time
+  end
   test 'create a tag' do
     tag = Tag.new(name: 'stick-mapping')
     assert tag.save!
@@ -203,38 +207,22 @@ class TagTest < ActiveSupport::TestCase
     assert_not_nil data
   end
 
-  test 'tag all nodes in a period' do
-    nodes_in_week = Tag.all_nodes_for_period(
-      [nodes(:about).nid],
-      (Time.now.to_i - 1.weeks.to_i).to_s,
-      Time.now.to_i.to_s
-    )
-    assert_not_nil nodes_in_week
-
-    nodes_in_month = Tag.all_nodes_for_period(
-      [nodes(:about).nid],
-      (Time.now.to_i - 1.month.to_i).to_s,
-      Time.now.to_i.to_s
-    )
-    assert_not_nil nodes_in_month
-  end
-
   test 'contribution_graph_making' do
     tag = tags(:awesome)
-    comment_graphs = tag.contribution_graph_making('note', Time.now - 1.year, Time.now).values
-    notes = tag.nodes.where( type: 'note', created: (Time.now - 1.year).to_i..Time.now.to_i).size
+    graph_making = tag.contribution_graph_making('note', @start, @fin).values
+    notes = tag.nodes.where( type: 'note', created: @start.to_i..@fin.to_i).size
 
-    assert_equal notes, comment_graphs.sum
+    assert_equal notes, graph_making.sum
   end
 
 
-  test 'graph making' do
+  test ' comment and quiz graph making' do
     tag = tags(:test)
-    comment_graphs = tag.graph_making(Comment, Time.now - 1.year, Time.now).values
-    quiz_graphs = tag.graph_making(Node.questions, Time.now - 1.year, Time.now).values
-    ids = tag.nodes.map{|node| node.nid}
-    comments = Comment.where(nid: ids, timestamp: (Time.now - 1.year).to_i..Time.now.to_i).count
-    quiz = Node.questions.where(nid: ids, created: (Time.now - 1.year).to_i..Time.now.to_i).count
+    comment_graphs = tag.comment_graph(@start, @fin).values
+    quiz_graphs = tag.quiz_graph(@start, @fin).values
+    nids = tag.nodes.map{|node| node.nid}
+    comments = Comment.where(nid: nids, timestamp: @start.to_i..@fin.to_i).count
+    quiz = Node.questions.where(nid: nids, created: @start.to_i..@fin.to_i).count
 
     assert_equal comments, comment_graphs.sum
     assert_equal quiz.count, quiz_graphs.sum

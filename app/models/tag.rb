@@ -237,22 +237,42 @@ class Tag < ApplicationRecord
     weeks
   end
 
-  def graph_making(model = Comment, start = Time.now - 1.year, fin = Time.now)
+  def quiz_graph(start = Time.now - 1.year, fin = Time.now)
     weeks = {}
     span =  start.to_date.step(fin.to_date, 7).count
     week = span
     count = 0
     tids = Tag.where('name IN (?)', [name]).collect(&:tid)
     nids = NodeTag.where('tid IN (?)', tids).collect(&:nid)
-    ids = model.where(nid: nids)
+    questions = Node.questions.where(nid: nids)
 
     while week >= 1
       month = (fin - (week * 7 - 1).days)
-      current_week = Tag.all_nodes_for_period(
-        ids,
-        (fin.to_i - week.weeks.to_i).to_s,
-        (fin.to_i - (week - 1).weeks.to_i).to_s
-      ).count(:all)
+      current_week = questions.where(status: 1,
+                                     created:        (fin.to_i - week.weeks.to_i).to_s..(fin.to_i - (week - 1).weeks.to_i).to_s
+                                    ).count(:all)
+
+      weeks[(month.to_f * 1000)] = current_week.count
+      count += 1
+      week -= 1
+    end
+    weeks
+  end
+
+  def comment_graph(start = Time.now - 1.year, fin = Time.now)
+    weeks = {}
+    span =  start.to_date.step(fin.to_date, 7).count
+    week = span
+    count = 0
+    tids = Tag.where('name IN (?)', [name]).collect(&:tid)
+    nids = NodeTag.where('tid IN (?)', tids).collect(&:nid)
+    comments = Comment.where(nid: nids)
+
+    while week >= 1
+      month = (fin - (week * 7 - 1).days)
+      current_week = comments.where(status: 1,
+                                    timestamp:  (fin.to_i - week.weeks.to_i).to_s..(fin.to_i - (week - 1).weeks.to_i).to_s
+                                   ).count(:all)
 
       weeks[(month.to_f * 1000)] = current_week
       count += 1
@@ -270,16 +290,6 @@ class Tag < ApplicationRecord
           start,
           finish
         )
-  end
-
-  def self.all_nodes_for_period(nids, start, finish)
-    Node.select(%i(created status nid))
-      .where(
-        'status = 1 AND nid IN (?) AND created > ? AND created <= ?',
-        nids.uniq,
-        start,
-        finish
-      )
   end
 
   # Given a set of tags, return all users following
