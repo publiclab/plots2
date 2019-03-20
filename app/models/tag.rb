@@ -208,37 +208,58 @@ class Tag < ApplicationRecord
     weeks
   end
 
-  def contribution_graph_making(type = 'note', start_time = Time.now - 1.year, end_time = Time.now)
-    date_hash = {}
+  def contribution_graph_making(type = 'note', start = Time.now - 1.year, fin  = Time.now)
+    weeks = {}
+    span =  start.to_date.step(fin.to_date, 7).count
+    week = span
+    count = 0
     tids = Tag.where('name IN (?)', [name]).collect(&:tid)
     nids = NodeTag.where('tid IN (?)', tids).collect(&:nid)
-    (start_time.to_date..end_time.to_date).each do |date|
-      weekly_tags = Tag.nodes_for_period(
+
+    while week >= 1
+      # initialising month variable with the month of the starting day
+      #       # of the week
+      month = (fin - (week * 7 - 1).days)
+
+      # Now fetching the weekly data of notes or wikis
+
+      current_week = Tag.nodes_for_period(
         type,
         nids,
-        date.beginning_of_week.to_time.to_i.to_s,
-        date.end_of_week.to_time.to_i.to_s
+        (fin.to_i - week.weeks.to_i).to_s,
+        (fin.to_i - (week - 1).weeks.to_i).to_s
       ).count(:all)
 
-      date_hash[date.beginning_of_week.to_time.to_i.to_f * 1000] = weekly_tags
+      weeks[(month.to_f * 1000)] = current_week
+      count += 1
+      week -= 1
     end
-    date_hash
+    weeks
   end
 
-  def graph_making(model, start_time = Time.now - 1.year, end_time = Time.now)
-    date_hash = {}
+  def graph_making(model = Comment, start = Time.now - 1.year, fin = Time.now)
+    weeks = {}
+    span =  start.to_date.step(fin.to_date, 7).count
+    week = span
+    count = 0
     tids = Tag.where('name IN (?)', [name]).collect(&:tid)
     nids = NodeTag.where('tid IN (?)', tids).collect(&:nid)
     ids = model.where(nid: nids)
-    (start_time.to_date..end_time.to_date).each do |date|
-      weekly_tags = Tag.all_nodes_for_period(
+
+    while week >= 1
+      month = (fin - (week * 7 - 1).days)
+      current_week = Tag.all_nodes_for_period(
         ids,
-        date.beginning_of_week.to_time.to_i.to_s,
-        date.end_of_week.to_time.to_i.to_s
+        (fin.to_i - week.weeks.to_i).to_s,
+        (fin.to_i - (week - 1).weeks.to_i).to_s
+
       ).count(:all)
-      date_hash[date.beginning_of_week.to_time.to_i.to_f * 1000] = weekly_tags
+
+      weeks[(month.to_f * 1000)] = current_week
+      count += 1
+      week -= 1
     end
-    date_hash
+    weeks
   end
 
   def self.nodes_for_period(type, nids, start, finish)
