@@ -49,7 +49,7 @@ $(".label").on("click", function(e){
 
 <% parent ||= nil %>
 
-<% if current_user && (parent != :profile || (current_user.id == @user.id || current_user.role == "admin")) %>
+<% if current_user && (parent != :profile || (current_user.id == user.id || current_user.role == "admin")) %>
 <% url = url || "/tag/create/" + @node.id.to_s %>
 
 <form id="tagform" class="form" data-remote="true" action="<%= url %>">
