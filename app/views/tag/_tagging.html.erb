@@ -72,7 +72,7 @@ $(".label").on("click", function(e){
           initTagForm("/tag/delete/<%= @node.id %>", '#tagform');
         <% else %>
           // user tags:
-          initTagForm("/profile/tags/delete/<%= @user.id %>", '#tagform');
+          initTagForm("/profile/tags/delete/<%= user.id %>", '#tagform');
         <% end %>
       });
     </script>
