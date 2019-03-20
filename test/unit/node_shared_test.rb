@@ -34,7 +34,7 @@ class NodeSharedTest < ActiveSupport::TestCase
   test 'that NodeShared does not convert short codes like [button:foo:https://google.com] into tables which list notes, when inside `` marks' do
     before = "This shouldn't actually produce a table:\n\n`[button:Cancel:https://google.com]`\n\nOr this:\n\n `[button:Cancel:https://google.com]`"
     html = NodeShared.button(before)
-    assert_equal 0, html.scan('<a class="btn btn-primary"').length
+    assert_equal 0, html.scan('<a class="btn btn-primary').length
     assert_equal 0, html.scan('href=').length
     assert_equal 0, html.scan('inline-button-shortcode').length
   end
@@ -42,7 +42,7 @@ class NodeSharedTest < ActiveSupport::TestCase
   test 'that NodeShared does not convert short codes like [button:foo:https://google.com] into tables which list notes, when in code tags' do
     before = "This shouldn't actually produce a table:\n\n<code>[button:Cancel:https://google.com]</code>"
     html = NodeShared.button(before)
-    assert_equal 0, html.scan('<a class="btn btn-primary"').length
+    assert_equal 0, html.scan('<a class="btn btn-primary').length
     assert_equal 0, html.scan('href=').length
     assert_equal 0, html.scan('inline-button-shortcode').length
   end
