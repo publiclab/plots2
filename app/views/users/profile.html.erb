@@ -151,9 +151,9 @@
       <hr />
       <div id="follow_form" class="col-md-offset-4">
         <% if current_user.following?(@profile_user) %>
-          <%= render 'unfollow', locals: { user: @profile_user } %>
+          <%= render partial: 'unfollow', locals: { user: @profile_user } %>
         <% else %>
-          <%= render 'follow', locals: { user: @profile_user } %>
+          <%= render partial: 'follow', locals: { user: @profile_user } %>
         <% end %>
       </div>
       <br />
