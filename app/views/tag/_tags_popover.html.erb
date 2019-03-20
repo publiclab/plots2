@@ -1,6 +1,7 @@
 <div class="main_div">
   <p class="small_heading"> Follow related tags: </p>
   <%= form_with remote: true, url: '/subscribe/multiple/tag' do |f| %>
+  <% unless tags.nil? %>
     <% tags.each do |tag| %>
     <div>
       <input type="checkbox" id="<%= tag.id %>" name="tagnames[]" value="<%= tag.name %>" <% if current_user.following(tag.name) %> checked <% end %> ><span class="<% if tag.name.include?(':') %> label label-primary <% else %> label label-default <% end %>" style="margin-left: 3px; margin-right: 10px; display: inline-block;"> <%= tag.name %></span>
