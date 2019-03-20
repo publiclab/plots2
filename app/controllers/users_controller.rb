@@ -135,71 +135,71 @@ class UsersController < ApplicationController
     elsif !current_user && params[:id].nil?
       redirect_to "/"
     else
-      @user = User.find_by(username: params[:id])
-      if !@user
+      @profile_user = User.find_by(username: params[:id])
+      if !@profile_user
         flash[:error] = I18n.t('users_controller.no_user_found_name', username: params[:id])
         redirect_to "/"
       else
-        @title = @user.name
+        @title = @profile_user.name
         @notes = Node.research_notes
                      .paginate(page: params[:page], per_page: 24)
                      .order("nid DESC")
-                     .where(status: 1, uid: @user.uid)
+                     .where(status: 1, uid: @profile_user.uid)
 
-        if current_user && current_user.uid == @user.uid
+        if current_user && current_user.uid == @profile_user.uid
           coauthor_nids = Node.joins(:node_tag)
             .joins('LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid')
             .select('node.*, term_data.*, community_tags.*')
             .where(type: 'note', status: 3)
-            .where('term_data.name = (?)', "with:#{@user.username}")
+            .where('term_data.name = (?)', "with:#{@profile_user.username}")
             .collect(&:nid)
-          @drafts = Node.where('(nid IN (?) OR (status = 3 AND uid = ?))', coauthor_nids, @user.uid)
+          @drafts = Node.where('(nid IN (?) OR (status = 3 AND uid = ?))', coauthor_nids, @profile_user.uid)
             .paginate(page: params[:page], per_page: 24)
         end
-        @coauthored = @user.coauthored_notes
+        @coauthored = @profile_user.coauthored_notes
           .paginate(page: params[:page], per_page: 24)
           .order('node_revisions.timestamp DESC')
-        @questions = @user.questions
+        @questions = @profile_user.questions
                           .order('node.nid DESC')
                           .paginate(page: params[:page], per_page: 24)
-        @likes = (@user.liked_notes.includes(%i(tag comments)) + @user.liked_pages)
+        @likes = (@profile_user.liked_notes.includes(%i(tag comments)) + @profile_user.liked_pages)
                        .paginate(page: params[:page], per_page: 24)
         questions = Node.questions
                         .where(status: 1)
                         .order('node.nid DESC')
-        ans_ques = questions.select { |q| q.answers.collect(&:author).include?(@user) }
+        ans_ques = questions.select { |q| q.answers.collect(&:author).include?(@profile_user) }
         @answered_questions = ans_ques.paginate(page: params[:page], per_page: 24)
         wikis = Revision.order("nid DESC")
-                        .where('node.type' => 'page', 'node.status' => 1, uid: @user.uid)
+                        .where('node.type' => 'page', 'node.status' => 1, uid: @profile_user.uid)
                         .joins(:node)
                         .limit(20)
         @wikis = wikis.collect(&:parent).uniq
 
-        @comment_count = Comment.where(status: 1, uid: @user.uid).count
+        @comment_count = Comment.where(status: 1, uid: @profile_user.uid).count
 
         # User's social links
-        @github = @user.social_link("github")
-        @twitter = @user.social_link("twitter")
-        @facebook = @user.social_link("facebook")
-        @instagram = @user.social_link("instagram")
-        @count_activities_posted = Tag.tagged_nodes_by_author("activity:*", @user).count
-        @count_activities_attempted = Tag.tagged_nodes_by_author("replication:*", @user).count
+        @github = @profile_user.social_link("github")
+        @twitter = @profile_user.social_link("twitter")
+        @facebook = @profile_user.social_link("facebook")
+        @instagram = @profile_user.social_link("instagram")
+        @count_activities_posted = Tag.tagged_nodes_by_author("activity:*", @profile_user).count
+        @count_activities_attempted = Tag.tagged_nodes_by_author("replication:*", @profile_user).count
         @map_lat = nil
         @map_lon = nil
-        if @user.has_power_tag("lat") && @user.has_power_tag("lon")
-          @map_lat = @user.get_value_of_power_tag("lat").to_f
-          @map_lon = @user.get_value_of_power_tag("lon").to_f
-          @map_blurred = @user.has_tag('blurred:true')
+        if @profile_user.has_power_tag("lat") && @profile_user.has_power_tag("lon")
+          @map_lat = @profile_user.get_value_of_power_tag("lat").to_f
+          @map_lon = @profile_user.get_value_of_power_tag("lon").to_f
+          @map_blurred = @profile_user.has_tag('blurred:true')
         end
 
-        if @user.status == 0
+        if @profile_user.status == 0
           if current_user&.can_moderate?
             flash.now[:error] = I18n.t('users_controller.user_has_been_banned')
           else
             flash[:error] = I18n.t('users_controller.user_has_been_banned')
             redirect_to "/"
           end
-        elsif @user.status == 5
+        elsif @profile_user.status == 5
           flash.now[:warning] = I18n.t('users_controller.user_has_been_moderated')
         end
       end
