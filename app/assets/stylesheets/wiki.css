@@ -74,3 +74,28 @@ a.navbar-offset {
     margin-top:10px;
   }
 }
+.modal-body{
+  padding: 0 80px;
+}
+.modal-title{
+  text-align: center;
+}
+.modal-sub-title{
+  text-align: center;
+
+}
+
+.modal-header{
+  padding: 10px 0;
+  border-bottom: 0 none;
+}
+.modal-footer{
+  padding-bottom: 10px;
+  text-align:center;
+}
+.borderless{
+    border: none;
+}
+.info{
+  font-size: 10px;
+}

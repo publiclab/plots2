@@ -7,6 +7,7 @@ function setupWiki(node_id, title, raw, logged_in) {
     $('#content-raw-markdown').html(shortCodePrompt($('#content-raw-markdown')[0], {
       submitUrl: '/wiki/replace/' + node_id
     }));
+    
     wiki_title = title;
     inlineMarkdownEditor({
       replaceUrl: '/wiki/replace/' + node_id,

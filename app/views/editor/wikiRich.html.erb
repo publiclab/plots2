@@ -15,6 +15,56 @@
 
 <script src="/lib/publiclab-editor/dist/PublicLab.Editor.js"></script>
 
+<div class="container">
+
+  <!-- Modal -->
+  <div class="modal fade" id="wikiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Looks like this is a new page!</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-sub-title">
+            <h6>Choose a template to begin<button type="button" class="btn btn-link"><u>(learn more)</u></button></h6>
+          </div>
+
+          <table class="borderedless">
+            <thead>
+              <tr>
+                <td scope="col">Post about<br><h4>a method</h4></td>
+                <td scope="col">Post about<br><h4>a project</h4></td>
+                <td scope="col">Post about<br><h4>an area</h4></td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="info">
+                <td>Post about an environmental monitoring technique</td>
+                <td>Collect resources,FAQ & updates about a project people can get involved in.</td>
+                <td>Collect Information about an area where people are wokring together regionally</td>
+              </tr>
+              <tr>
+                <td><button type="button" class="btn btn-link"><u>examples</u></button></td>
+                <td><button type="button" class="btn btn-link"><u>examples</u></button></td>
+                <td><button type="button" class="btn btn-link"><u>examples</u></button></td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-link" data-dismiss="modal"><u>or skip template</u></button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
 <div class="pl-editor">
 
   <div class="ple-header">
@@ -128,6 +178,9 @@
 
 
 <script>
+  $(window).on('load',function(){
+        $('#wikiModal').modal('show');
+    });
   var editor;
   (function() {
     editor = new PL.Editor({

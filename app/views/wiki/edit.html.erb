@@ -72,7 +72,7 @@
 
       <%= render partial: 'editor/editor' %>
 
-      <a id="publish" tabindex="5" class="publish btn btn-primary btn-lg"><%= t('wiki.edit.publish') %></a>
+      <a id="publish" tabindex="5" class="publish btn btn-primary btn-lg" ><%= t('wiki.edit.publish') %></a>
       <a tabindex="6" data-previewing-text="<%= t('wiki.edit.previewing_text') %>" class="btn btn-default btn-lg preview-btn" onClick="$E.toggle_preview()"><%= t('wiki.edit.preview') %></a>
       <a class="btn btn-default btn-lg" href="/wiki/<%= params["id"] %>">Cancel</a>
 
