@@ -25,7 +25,7 @@ class NodeSharedTest < ActiveSupport::TestCase
     before = "Here are some notes in a table: \n\n[button:Press me:/questions] \n\n[button:Cancel:https://google.com]\n\n`[button:Cancel:https://google.com]` This shouldn't get recognized because it's in ` ticks.\n\nMake sense?"
     html = NodeShared.button(before)
     assert html
-    assert_equal 1, html.scan('<a class="btn btn-primary inline-button-shortcode"').length
+    assert_equal 1, html.scan('<a class="btn btn-primary inline-button-shortcode').length
     assert_equal 1, html.scan('href=').length
     assert_equal 5, html.scan('inline-button-shortcode').length
     assert html.scan('<td class="title">').length > 1
