@@ -4,4 +4,28 @@
 </div>
 <div class="col-md-8 col-md-offset-1">
     <h2>Subscriptions</h2>
-</div>
+ 	<table class="table inline-grid">
+		<tr>
+			<thead>
+				<th>Subscriptions</th>
+				<th>Tags</th>
+			</thead>
+		</tr>
+		<% @tags.each do |map| %>
+		<% map.each do |subscriptions,tags| %>
+		<tr>
+			<tbody>
+				<td><%=subscriptions%></td>
+				<td>
+					<select style="width: 50%; height: 50px;">
+						<%tags.each do |tag| %>					      
+							<option><%=tag%></option>
+						<%end%>
+					</select>							      
+				</td>
+			</tbody>
+		</tr>
+		<% end  %>
+		<% end  %>
+	</table>
+</div> 
