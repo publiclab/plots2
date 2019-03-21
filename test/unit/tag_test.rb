@@ -1,6 +1,10 @@
 require 'test_helper'
 
 class TagTest < ActiveSupport::TestCase
+  def setup
+    @start = (Date.today - 1.year).to_time
+    @fin = Date.today.to_time
+  end
   test 'create a tag' do
     tag = Tag.new(name: 'stick-mapping')
     assert tag.save!
@@ -203,24 +207,24 @@ class TagTest < ActiveSupport::TestCase
     assert_not_nil data
   end
 
-  test 'tag all nodes in a period' do
-    nodes_in_week = Tag.all_nodes_for_period(
-      [nodes(:about).nid],
-      (Time.now.to_i - 1.weeks.to_i).to_s,
-      Time.now.to_i.to_s
-    )
-    assert_not_nil nodes_in_week
+  test 'contribution_graph_making' do
+    tag = tags(:awesome)
+    graph_making = tag.contribution_graph_making('note', @start, @fin).values
+    notes = tag.nodes.where( type: 'note', created: @start.to_i..@fin.to_i).size
 
-    nodes_in_month = Tag.all_nodes_for_period(
-      [nodes(:about).nid],
-      (Time.now.to_i - 1.month.to_i).to_s,
-      Time.now.to_i.to_s
-    )
-    assert_not_nil nodes_in_month
+    assert_equal notes, graph_making.sum
   end
 
-  test 'graph making' do
-    comment_graphs = tags(:awesome).graph_making(Comment, 52, Time.now)
-    assert_not_nil  comment_graphs
+
+  test ' comment and quiz graph making' do
+    tag = tags(:test)
+    comment_graphs = tag.comment_graph(@start, @fin).values
+    quiz_graphs = tag.quiz_graph(@start, @fin).values
+    nids = tag.nodes.map{|node| node.nid}
+    comments = Comment.where(nid: nids, timestamp: @start.to_i..@fin.to_i).count
+    quiz = Node.questions.where(nid: nids, created: @start.to_i..@fin.to_i).count
+
+    assert_equal comments, comment_graphs.sum
+    assert_equal quiz.count, quiz_graphs.sum
   end
 end

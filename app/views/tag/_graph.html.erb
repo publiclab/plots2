@@ -59,16 +59,16 @@ var options = {
     },
     series: [{
         name: 'Note tags',
-        data: generateSeries(0,52)
+        data: generateSeries(0)
     },{
         name: 'Wiki tags',
-        data: generateSeries(1,52)
+        data: generateSeries(1)
     },{
         name: 'Comment tags',
-        data: generateSeries(2,52)
+        data: generateSeries(2)
     },{
         name: 'Question tags',
-        data: generateSeries(3,52)
+        data: generateSeries(3)
     } ],
 
         markers: {
@@ -140,16 +140,17 @@ var chart = new ApexCharts(document.querySelector("#chart"), options);
 chart.render();
 
 
-function generateSeries(s, count) {
+function generateSeries(s) {
     var values = [
-        <%= notes.values.collect {|ind| ind[1]} %>,
-        <%= wikis.values.collect {|ind| ind[1]} %>,
-        <%= comments.values.collect {|ind| ind[1]} %>,
-        <%= questions.values.collect {|ind| ind[1]} %>
+        <%= notes.values %>,
+        <%= wikis.values %>,
+        <%= comments.values %>,
+        <%= questions.values %>
     ];
 
     var i = 0;
-    var months_dates = <%= notes.values.collect {|ind| ind[0]} %>
+    var months_dates = <%= notes.keys %>
+    var count = months_dates.length;
     var months = months_dates.map(x =>  new Date(x).getTime());
     var series = [];
     while (i < count) {
