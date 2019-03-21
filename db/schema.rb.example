@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_01_075323) do
+ActiveRecord::Schema.define(version: 2019_03_03_180731) do
 
   create_table "answer_selections", force: true do |t|
     t.integer "user_id"
@@ -52,7 +52,7 @@ ActiveRecord::Schema.define(version: 2019_03_01_075323) do
     t.integer "comment_via", limit: 4,          default: 0
     t.string  "message_id",  limit: 255
     t.string  "tweet_id"
-
+    t.integer "reply_to"
   end
 
   add_index "comments", ["comment"], name: "index_comments_on_comment", type: :fulltext if ActiveRecord::Base.connection.adapter_name == 'Mysql2'

@@ -1,5 +1,5 @@
 <%= javascript_include_tag('async_tag_subscriptions.js') %>
-<div class="col-md-12">
+<div class="col-md-6">
   <h1 style="font-family:Junction Light;"><%= t('tag.index.popular_tags') %></h1>
 
   <% cache('feature_tags-header', skip_digest: true) do %> 
@@ -8,11 +8,11 @@
 
   <p><%= t('tag.index.browse_popular_tags') %></p>
   <br/>
-  <form id="tagform" class="form-horizontal" method="GET" action="/tag/" style="width: 400px;">
+  <form id="tagform" class="form-horizontal" method="GET" action="/tag/">
   <div class="input-group">
-    <input type="search" tabindex="1" autocomplete="off" id="taginput" name="id" type="text" placeholder="Search for tags.." data-provide="typeahead" class="form-control" required="required" />
+    <input type="search" tabindex="1" autocomplete="off" id="taginput" name="id" type="text" placeholder="Search for topics" data-provide="typeahead" class="form-control" required="required" />
     <span class="input-group-btn" >
-      <button type="submit" rel="tooltip" title="View content with the entered title" class="btn btn-primary">Search</button>
+      <button type="submit" rel="tooltip" title="View content with the entered title" class="btn btn-primary-outline" style="margin-left: -40px;background-color: transparent;"><i class="fa fa-search" style="color: #ccc;"></i></button>
     </span>
   </div>
   </form> 
@@ -53,7 +53,10 @@
 
   <hr />
 
+<div class="text-center"> <%= will_paginate @tags, :renderer => BootstrapPagination::Rails if @paginated %></div>
 </div>
 
-<div class="text-center"> <%= will_paginate @tags, :renderer => BootstrapPagination::Rails if @paginated %></div>
-
+<div class="col-md-6">
+<br><br>
+<iframe src="stats/graph.html?limit=50" height="500" width="100%" frameborder="0" ></iframe>
+</div>

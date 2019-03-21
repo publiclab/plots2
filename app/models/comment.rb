@@ -6,6 +6,8 @@ class Comment < ApplicationRecord
   belongs_to :answer, foreign_key: 'aid'
   has_many :likes, as: :likeable
 
+  has_many :replied_comments, class_name: "Comment", foreign_key: 'reply_to'
+
   validates :comment, presence: true
 
   self.table_name = 'comments'
@@ -129,6 +131,7 @@ class Comment < ApplicationRecord
       # notify other commenters, revisers, and likers, but not those already @called out
       already = mentioned_users.collect(&:uid) + [parent.uid]
       uids = uids_to_notify - already
+      uids = uids.select { |i| i != 0 } # remove bad comments (some early ones lack uid)
 
       notify_users(uids, current_user)
       notify_tag_followers(already + uids)
