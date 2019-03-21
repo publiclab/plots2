@@ -1,4 +1,4 @@
-$(document).ready(function() 
+$(document).ready(function()
 {
       $('#taginput').typeahead({
         items: 8,
@@ -24,7 +24,7 @@ $(document).ready(function()
 	    var data_recv = JSON.parse(JSON.stringify(status));
 	    notyNotification('relax', 3000, 'success', 'top', data_recv.message + 'Click <a href="../subscriptions"> here </a> to manage your subscriptions. ');
 	    var html_new = '<a rel="tooltip" title=Following class="btn btn-default btn-sm active" href="/unsubscribe/tag/'+ data_recv.tagname + '"> <i class="fa fa-user-plus" aria-hidden="true"></i>Following</a>';
-	    $('#follow-unfollow-column-'+data_recv.id).html(html_new); 
+	    $('#follow-unfollow-column-'+data_recv.id).html(html_new);
 	  });
       $('.index-follow-buttons').on('ajax:error', function(data, status, xhr){
         var data_recv = JSON.parse(JSON.stringify(status));
@@ -32,3 +32,9 @@ $(document).ready(function()
       });
 });
 
+$(document).ready(function(){
+    $('a').click(function(){
+        $('a').removeClass("active");
+        $(this).addClass("active");
+    });
+  });

@@ -56,14 +56,20 @@
 <div class="text-center"> <%= will_paginate @tags, :renderer => BootstrapPagination::Rails if @paginated %></div>
 </div>
 
+<style>
+  .active{
+    color: red;
+  }
+</style>
+
 <div class="col-md-6">
-<br><br>
-<iframe id="myImage" src="stats/graph.html?limit=50" height="500" width="100%" frameborder="0" ></iframe>
-<h6 class="text-right" style="color:#ccc;">Tags most commonly used, linked by how often they are used together.<br>
-  View <a style="cursor: pointer;" onclick="document.getElementById('myImage').src='stats/graph.html?limit=50'"><u>50</u></a> |
-  <a style="cursor: pointer;" onclick="document.getElementById('myImage').src='stats/graph.html?limit=100'"><u>100</u></a> |
-  <a style="cursor: pointer;" onclick="document.getElementById('myImage').src='stats/graph.html?limit=250'"><u>250</u></a> |
-  <a style="cursor: pointer;" onclick="document.getElementById('myImage').src='stats/graph.html?limit=500'"><u>500</u></a>
-</h6>
+  <br><br>
+  <iframe id="myImage" src="stats/graph.html?limit=50" height="500" width="100%" frameborder="0" ></iframe>
+  <h6 class="text-right" style="color:#ccc;">Tags most commonly used, linked by how often they are used together.<br>
+    View <a style="cursor: pointer; a:active: color: red;" onclick="document.getElementById('myImage').src='stats/graph.html?limit=50'"><u>50</u></a> |
+    <a style="cursor: pointer;" onclick="document.getElementById('myImage').src='stats/graph.html?limit=100'"><u>100</u></a> |
+    <a style="cursor: pointer;" onclick="document.getElementById('myImage').src='stats/graph.html?limit=250'"><u>250</u></a> |
+    <a style="cursor: pointer;" onclick="document.getElementById('myImage').src='stats/graph.html?limit=500'"><u>500</u></a>
+  </h6>
 
 </div>
