@@ -31,7 +31,7 @@
     "font-awesome": "^4.5.0",
     "i18n-js": "^3.2.1",
     "ics": "nwcell/ics.js#^0.2.0",
-    "image-sequencer": "^2.2.3",
+    "image-sequencer": "^3.0.1",
     "inline-markdown-editor": "^0.5.0",
     "jlouvain": "upphiminn/jLouvain#3fb3aa189b8232756c4c3f3e97aaf376debf44a7",
     "jquery": "^3.0.0",
