@@ -5,7 +5,7 @@ class StatsController < ApplicationController
       @tags[tag.tagname] = @tags[tag.tagname] || 0
       @tags[tag.tagname] += 1
     end
-    @tags = @tags.group_by{|k,v| v}.map{|k,v| {k => v.map{|x| x.join("-")}}}
+    @tags = @tags.group_by { |_k, v| v }.map { |k, v| { k => v.map { |x| x.join("-") } } }
   end
 
   def range
