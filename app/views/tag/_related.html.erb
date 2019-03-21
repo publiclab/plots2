@@ -2,7 +2,7 @@
   <ul class= "list-inline col-lg-10">
     <li><strong>Related Tags:</strong></li>
     <% tags.each do |tag| %>
-        <li><a href='/tag/<%= tag.name %>' id="tag_<%= tag.tid %>" class="badge <%= tag.name.include?(":") ? 'badge-primary' : 'badge-default' %>">
+        <li><a href='/tag/<%= tag.name %>' id="tag_<%= tag.tid %>" class="badge <%= tag.name.include?(":") ? 'badge-primary' : 'badge-secondary' %>">
           <%= tag.name %>
         </a></li>
     <% end %>
