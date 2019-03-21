@@ -74,3 +74,5 @@ a.navbar-offset {
     margin-top:10px;
   }
 }
+
+.tooltip-inner { max-width: 500px }
