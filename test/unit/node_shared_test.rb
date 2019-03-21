@@ -28,7 +28,6 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert_equal 1, html.scan('<a class="btn btn-primary inline-button-shortcode').length
     assert_equal 1, html.scan('href=').length
     assert_equal 1, html.scan('inline-button-shortcode').length
-    assert html.scan('<td class="title">').length > 1
   end
 
   test 'that NodeShared does not convert short codes like [button:foo:https://google.com] into tables which list notes, when inside `` marks' do
