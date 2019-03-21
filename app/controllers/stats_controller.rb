@@ -13,7 +13,7 @@ class StatsController < ApplicationController
       params[:start] = Time.now - to_keyword(params[:options])
       params[:end] = Time.now
     end
-    @start = params[:start] ? Time.parse(params[:start].to_s) : Time.now - 1.month
+    @start = params[:start] ? Time.parse(params[:start].to_s) : Time.now - 3.months
     @end = params[:end] ? Time.parse(params[:end].to_s) : Time.now
     @notes = Node.published.select(%i(created type))
       .where(type: 'note', created: @start.to_i..@end.to_i)
