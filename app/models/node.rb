@@ -194,15 +194,20 @@ class Node < ActiveRecord::Base
     weeks
   end
 
-  def self.contribution_graph_making(type = 'note', start_time = Time.now - 1.month, end_time = Time.now)
+  def self.contribution_graph_making(type = 'note', start = Time.now - 1.year, fin = Time.now)
     date_hash = {}
-    (start_time.to_date..end_time.to_date).each do |date|
-      daily_nodes = Node.select(:created)
+    week = start.to_date.step(fin.to_date, 7).count
+
+    while week >= 1
+      month = (fin - (week * 7 - 1).days)
+      range = (fin.to_i - week.weeks.to_i)..(fin.to_i - (week - 1).weeks.to_i)
+
+      weekly_nodes = Node.published.select(:created)
                     .where(type: type,
-                    status: 1,
-                    created: (date.beginning_of_week.to_time.to_i)..(date.end_of_week.to_time.to_i))
+                    created: range)
                     .count
-      date_hash[date.beginning_of_week.to_time.to_i.to_f * 1000] = daily_nodes
+      date_hash[month.to_f * 1000] = weekly_nodes
+      week -= 1
     end
     date_hash
   end
