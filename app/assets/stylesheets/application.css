@@ -21,6 +21,7 @@
  *= require feature
  *= require editor
  *= require blog
+ *= require subscriptions
  *= require search
  *= require map
  *= require search
