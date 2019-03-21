@@ -210,11 +210,7 @@ class Tag < ApplicationRecord
 
   def contribution_graph_making(type = 'note', start = Time.now - 1.year, fin = Time.now)
     weeks = {}
-    span =  start.to_date.step(fin.to_date, 7).count
-    week = span
-    count = 0
-    tids = Tag.where('name IN (?)', [name]).collect(&:tid)
-    nids = NodeTag.where('tid IN (?)', tids).collect(&:nid)
+    week = span(start, fin)
 
     while week >= 1
       # initialising month variable with the month of the starting day
@@ -223,15 +219,15 @@ class Tag < ApplicationRecord
 
       # Now fetching the weekly data of notes or wikis
 
-      current_week = Tag.nodes_for_period(
-        type,
-        nids,
-        (fin.to_i - week.weeks.to_i).to_s,
-        (fin.to_i - (week - 1).weeks.to_i).to_s
-      ).count(:all)
+      current_week =
+        Tag.nodes_for_period(
+          type,
+          nids,
+          (fin.to_i - week.weeks.to_i).to_s,
+          (fin.to_i - (week - 1).weeks.to_i).to_s
+        ).count(:all)
 
       weeks[(month.to_f * 1000)] = current_week
-      count += 1
       week -= 1
     end
     weeks
@@ -239,21 +235,15 @@ class Tag < ApplicationRecord
 
   def quiz_graph(start = Time.now - 1.year, fin = Time.now)
     weeks = {}
-    span =  start.to_date.step(fin.to_date, 7).count
-    week = span
-    count = 0
-    tids = Tag.where('name IN (?)', [name]).collect(&:tid)
-    nids = NodeTag.where('tid IN (?)', tids).collect(&:nid)
-    questions = Node.questions.where(nid: nids)
+    week = span(start, fin)
+    questions = Node.published.questions.where(nid: nids)
 
     while week >= 1
       month = (fin - (week * 7 - 1).days)
-      current_week = questions.where(status: 1,
-                                     created:        (fin.to_i - week.weeks.to_i).to_s..(fin.to_i - (week - 1).weeks.to_i).to_s
-                                    ).count(:all)
+      weekly_quiz = questions.where(created: range(fin, week))
+        .count(:all)
 
-      weeks[(month.to_f * 1000)] = current_week.count
-      count += 1
+      weeks[(month.to_f * 1000)] = weekly_quiz.count
       week -= 1
     end
     weeks
@@ -261,21 +251,15 @@ class Tag < ApplicationRecord
 
   def comment_graph(start = Time.now - 1.year, fin = Time.now)
     weeks = {}
-    span =  start.to_date.step(fin.to_date, 7).count
-    week = span
-    count = 0
-    tids = Tag.where('name IN (?)', [name]).collect(&:tid)
-    nids = NodeTag.where('tid IN (?)', tids).collect(&:nid)
+    week = span(start, fin)
     comments = Comment.where(nid: nids)
 
     while week >= 1
       month = (fin - (week * 7 - 1).days)
-      current_week = comments.where(status: 1,
-                                    timestamp:  (fin.to_i - week.weeks.to_i).to_s..(fin.to_i - (week - 1).weeks.to_i).to_s
-                                   ).count(:all)
+      weekly_comments = comments.where(timestamp: range(fin, week))
+        .count(:all)
 
-      weeks[(month.to_f * 1000)] = current_week
-      count += 1
+      weeks[(month.to_f * 1000)] = weekly_comments
       week -= 1
     end
     weeks
@@ -412,5 +396,23 @@ class Tag < ApplicationRecord
       end
       data
     end
+  end
+
+  private
+
+  def tids
+    Tag.where('name IN (?)', [name]).collect(&:tid)
+  end
+
+  def nids
+    NodeTag.where('tid IN (?)', tids).collect(&:nid)
+  end
+
+  def span(start, fin)
+    start.to_date.step(fin.to_date, 7).count
+  end
+
+  def range(fin, week)
+    (fin.to_i - week.weeks.to_i).to_s..(fin.to_i - (week - 1).weeks.to_i).to_s
   end
 end
