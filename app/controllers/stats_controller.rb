@@ -1,6 +1,6 @@
 class StatsController < ApplicationController
   def subscriptions
-    @tags = {"ktjgjkt" => 7, "tjsdjkjre" => 9}
+    @tags = {}
     TagSelection.where(following: true).each do |tag|
       @tags[tag.tagname] = @tags[tag.tagname] || 0
       @tags[tag.tagname] += 1
