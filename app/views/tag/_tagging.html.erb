@@ -14,7 +14,7 @@
   <%= render partial: 'tag/replication' %>
 
   <span id="tags">
-  <%= render partial: 'tag/tags', locals: { power_tag: true, badge_name: 'badge-default', tags: @node.node_tags } %>
+  <%= render partial: 'tag/tags', locals: { power_tag: true, badge_name: 'badge-secondary', tags: @node.node_tags } %>
   <%= render partial: 'tag/tags', locals: { power_tag: false, badge_name: 'badge-primary', tags: @node.node_tags } %>
   </span>
 <% else %>
