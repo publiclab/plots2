@@ -139,7 +139,7 @@ en:
       ban: "Ban"
     _photo:
       profile_photo: "Profile photo"
-      drag_and_drop_image: "Drag &amp; drop to add an image, or"
+      drag_and_drop_image: "Drag and drop to add an image, or"
       choose_image: "choose an image"
       uploading: "Uploading"
     edit:
@@ -247,45 +247,18 @@ en:
 
         <p>Public Lab is built on the contributions of community members, and this website represents our collective open source work.</p>
       contributors_statistics: "Contributor Statistics"
-      looking_back: "Looking back from <i>%{time}</i>."
-      try_time_further_back: |
-        Try
-        <a href='%{url1}'>one year</a>,
-        <a href='%{url2}'>one month</a>, or
-        <a href='%{url3}'>one week</a>
-        further back.
-      try_time_further_forward: |
-        Or try
-        <a href='%{url1}'>one year</a>,
-        <a href='%{url2}'>one month</a>, or
-        <a href='%{url3}'>one week</a>
-        further forward.
-      notes_and_wiki_edits_past_week: |
-        <a href='%{url1}'>%{note_count} notes</a>
-        and <a href='%{url2}'>%{wiki_count} wiki edits</a> posted in the past week.
-      people_joined_past_week: "<b>%{people_count} people</b> joined in the past week."
-      notes_and_wiki_edits_past_month: |
-        <a href='%{url1}'>%{note_count} notes</a>
-        and <a href='%{url2}'>%{wiki_count} wiki edits</a> posted in the past month.
-      people_joined_past_month: "<b>%{people_count} people</b> joined in the past
-        month."
       research_notes_posted_by_contributors: "%{note_count} research notes have been
         posted by %{contributors_count} contributors since %{time} ago"
       total_contributors: "%{all_contributors_count} Total Contributors (Tallied weekly)"
       notes_per_week_past_year: "%{note_count} notes per week over the past year."
-      note_posting_52_weeks: 'Note posting for the past 52 weeks:'
-      wiki_pages_posted: "%{count} wiki pages have been posted, total"
-      wiki_page_posting_52_weeks: 'Wiki page posting for the past 52 weeks:'
-      comments_posted: "%{count} comments have been posted, total"
-      comments_posted_52_weeks: 'Comments posted for the past 52 weeks:'
-      wiki_page_edits: "%{count} wiki page edits have been made, total"
       edits_per_week: "%{count} edits per week over the past year."
-      questions_past_week: |
-                <a href='%{url1}'>%{quiz_count} questions asked </a>
-                and <a href='%{url2}'>%{ans_count} questions answered </a> in the past week.
-      questions_past_month: |
-                <a href='%{url1}'>%{quiz_count} questions asked </a>
-                and <a href='%{url2}'>%{ans_count} questions answered </a> in the past month.
+      notes_wikis_comments: |
+          <b>%{notes_count} notes</b> and <b>%{wikis_count} wiki edits and</b>
+          and <b>%{comments_count} comments </b>  posted in this period.
+      members_and_contributors: |
+          <b>%{member_count}  member registrations</b>
+          and <b>%{people_count}  contributors </b> posted in this period.
+
   dashboard:
     _node_comment:
       commented_on: "commented on"
@@ -683,7 +656,7 @@ en:
   comments:
     _form:
       uploading: "Uploading..."
-      drag_and_drop: "Drag &amp; drop to add an image or file, or"
+      drag_and_drop: "Drag and drop to add an image or file, or"
       choose_one: "choose one"
       upload_image: "Upload image"
       preview: "Preview"
@@ -695,7 +668,7 @@ en:
       email_notifications: "Author, commenters, and those who've \"liked\" this note will receive email notifications"
     _edit:
       uploading: "Uploading..."
-      drag_and_drop: "Drag &amp; drop to add an image or file, or"
+      drag_and_drop: "Drag and drop to add an image or file, or"
       choose_one: "choose one"
       upload_image: "Upload image"
       preview: "Preview"
@@ -910,19 +883,19 @@ en:
     only_author_use_powertag: "Error: only the author may use that powertag."
   spamaway:
     human:
-      statement1: '🐑'
-      statement2: '🐹'
-      statement3: '🐼'
-      statement4: '🐔'
-      statement5: '🐧'
-      statement6: '🦊'
+      statement1: "\U0001F411"
+      statement2: "\U0001F439"
+      statement3: "\U0001F43C"
+      statement4: "\U0001F414"
+      statement5: "\U0001F427"
+      statement6: "\U0001F98A"
     robot:
-      statement1: '⏰'
-      statement2: '📠'
-      statement3: '🖨'
-      statement4: '📻'
-      statement5: '💾'
-      statement6: '📺'
+      statement1: "\U000023F0"
+      statement2: "\U0001F4E0"
+      statement3: "\U0001F5A8"
+      statement4: "\U0001F4FB"
+      statement5: "\U0001F4BE"
+      statement6: "\U0001F4FA"
     errors:
       please_read_instructions: "Please read the instructions in the last box carefully."
       not_a_real_person: "-- It doesn't seem like you are a real person! If you disagree or are having trouble, please see https://publiclab.org/registration-test."

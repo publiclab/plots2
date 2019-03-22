@@ -13,7 +13,7 @@ class StatsController < ApplicationController
       params[:start] = Time.now - to_keyword(params[:options])
       params[:end] = Time.now
     end
-    @start = params[:start] ? Time.parse(params[:start].to_s) : Time.now - 1.month
+    @start = params[:start] ? Time.parse(params[:start].to_s) : Time.now - 3.months
     @end = params[:end] ? Time.parse(params[:end].to_s) : Time.now
     @notes = Node.published.select(%i(created type))
       .where(type: 'note', created: @start.to_i..@end.to_i)
@@ -35,12 +35,11 @@ class StatsController < ApplicationController
   end
 
   def index
+    range
+    if @start > @end
+      flash.now[:warning] = "Start date must come before end date"
+    end
     @title = 'Stats'
-    @time = if params[:time]
-              Time.parse(params[:time])
-            else
-              Time.now
-            end
 
     @weekly_notes = Node.past_week.select(:type).where(type: 'note').count(:all)
     @weekly_wikis = Revision.past_week.count
@@ -56,9 +55,9 @@ class StatsController < ApplicationController
     @notes_per_week_past_year = Node.past_year.select(:type).where(type: 'note').count(:all) / 52.0
     @edits_per_week_past_year = Revision.past_year.count / 52.0
 
-    @graph_notes = Node.contribution_graph_making('note', 52, @time)
-    @graph_wikis = Node.contribution_graph_making('page', 52, @time)
-    @graph_comments = Comment.contribution_graph_making(52, @time)
+    @graph_notes = Node.contribution_graph_making('note', @start, @end)
+    @graph_wikis = Node.contribution_graph_making('page', @start, @end)
+    @graph_comments = Comment.contribution_graph_making(@start, @end)
 
     users = []
     nids = []
@@ -91,7 +90,7 @@ class StatsController < ApplicationController
     data = User.where(created_at: @start..@end).where(status: 1)
     respond_to do |format|
       format.csv { send_data data.to_csv }
-      format.json { send_data data.to_json, :type => 'application/json; header=present', :disposition => "attachment; filename=user.json" }
+      format.json { send_data data.to_json, type: 'application/json; header=present', disposition: "attachment; filename=user.json" }
     end
   end
 
@@ -100,7 +99,7 @@ class StatsController < ApplicationController
     data = Node.published.questions.where(created: @start.to_i..@end.to_i).all
     respond_to do |format|
       format.csv { send_data data.to_csv }
-      format.json { send_data data.to_json, :type => 'application/json; header=present', :disposition => "attachment; filename=questions.json" }
+      format.json { send_data data.to_json, type: 'application/json; header=present', disposition: "attachment; filename=questions.json" }
     end
   end
 
@@ -109,7 +108,7 @@ class StatsController < ApplicationController
     data = Answer.where(created_at: @start..@end).all
     respond_to do |format|
       format.csv { send_data data.to_csv }
-      format.json { send_data data.to_json, :type => 'application/json; header=present', :disposition => "attachment; filename=answers.json" }
+      format.json { send_data data.to_json, type: 'application/json; header=present', disposition: "attachment; filename=answers.json" }
     end
   end
 
@@ -118,7 +117,7 @@ class StatsController < ApplicationController
     data = Comment.select(%i(status timestamp)).where(status: 1, timestamp: @start.to_i...@end.to_i).all
     respond_to do |format|
       format.csv { send_data data.to_csv }
-      format.json { send_data data.to_json, :type => 'application/json; header=present', :disposition => "attachment; filename=comment.json" }
+      format.json { send_data data.to_json, type: 'application/json; header=present', disposition: "attachment; filename=comment.json" }
     end
   end
 
@@ -128,7 +127,7 @@ class StatsController < ApplicationController
       .all
     respond_to do |format|
       format.csv { send_data data.to_csv }
-      format.json { send_data data.to_json, :type => 'application/json; header=present', :disposition => "attachment; filename=#{type}.json" }
+      format.json { send_data data.to_json, type: 'application/json; header=present', disposition: "attachment; filename=#{type}.json" }
     end
   end
 
@@ -140,6 +139,7 @@ class StatsController < ApplicationController
   end
 
   def to_keyword(param)
-    1.send(param.downcase)
+    str =  param.split.second
+    1.send(str.downcase)
   end
 end

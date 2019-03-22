@@ -16,12 +16,12 @@ class SearchService
 
     questions = search_questions(search_criteria.query, search_criteria.limit)
 
-    all_results = { :notes => notes,
-                    :wikis => wikis,
-                    :profiles => profiles,
-                    :tags => tags,
-                    :maps => maps,
-                    :questions => questions }
+    { notes: notes,
+      wikis: wikis,
+      profiles: profiles,
+      tags: tags,
+      maps: maps,
+      questions: questions }
   end
 
   # Search profiles for matching text with optional order_by=recent param and
@@ -42,7 +42,7 @@ class SearchService
         user_scope.order(id: :desc)
       end
 
-    users = user_scope.limit(search_criteria.limit)
+    user_scope.limit(search_criteria.limit)
   end
 
   def search_notes(input, limit = 25, order = :natural, type = :boolean)
@@ -64,7 +64,7 @@ class SearchService
   # chained to the notes that are tagged with those values
   def search_tags(query, limit = 10)
     sterms = query.split(' ')
-    tlist = Tag.where(name: sterms)
+    Tag.where(name: sterms)
       .joins(:node_tag, :node)
       .where('node.status = 1')
       .select('DISTINCT node.nid,node.title,node.path')
@@ -129,12 +129,12 @@ class SearchService
     end
 
     # sort nodes by recent activities if the sort_by==recent
-    items = if sort_by == "recent"
-              items.order("changed #{order_direction}")
-                   .limit(limit)
-            else
-              items.order("created #{order_direction}")
-                   .limit(limit)
+    if sort_by == "recent"
+      items.order("changed #{order_direction}")
+           .limit(limit)
+    else
+      items.order(Arel.sql("created #{order_direction}"))
+           .limit(limit)
             end
   end
 
@@ -198,38 +198,35 @@ class SearchService
     end
 
     # sort users by their recent activities if the sort_by==recent
-    items =
-      if sort_by == "recent"
-        items.joins(:revisions).where("node_revisions.status = 1")\
-             .order("node_revisions.timestamp #{order_direction}")
-             .distinct
-      else if sort_by == "content"
-        ids = items.collect(&:id).uniq || []
-        User.select('`rusers`.*, count(`node`.uid) AS ord')
-            .joins(:node)
-            .where('rusers.id IN (?)', ids)
-            .group('`node`.`uid`')
-            .order("ord #{order_direction}")
-      else
-        items.order("created_at #{order_direction}")
-              .limit(limit)
-      end
+
+    if sort_by == "recent"
+      items.joins(:revisions).where("node_revisions.status = 1")\
+           .order("node_revisions.timestamp #{order_direction}")
+           .distinct
+    elsif sort_by == "content"
+      ids = items.collect(&:id).uniq || []
+      User.select('`rusers`.*, count(`node`.uid) AS ord')
+          .joins(:node)
+          .where('rusers.id IN (?)', ids)
+          .group('`node`.`uid`')
+          .order("ord #{order_direction}")
+    else
+      items.order("created_at #{order_direction}")
+            .limit(limit)
     end
   end
 
   def find_users(query, limit, type = nil)
-    users =
-      if type == "tag"
-        User.where('rusers.status = 1')
-            .joins(:user_tags)\
-            .where('user_tags.value LIKE ?', '%' + query + '%')\
-      else if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
-        type == "username" ? User.search_by_username(query).where('rusers.status = ?', 1) : User.search(query).where('rusers.status = ?', 1)
-      else
-        User.where('username LIKE ? AND rusers.status = 1', '%' + query + '%')
-      end
-    end
+    users = if type == 'tag'
+              User.where('rusers.status = 1')
+                  .joins(:user_tags)\
+                  .where('user_tags.value LIKE ?', '%' + query + '%')\
+            elsif ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+              type == 'username' ? User.search_by_username(query).where('rusers.status = ?', 1) : User.search(query).where('rusers.status = ?', 1)
+            else
+              User.where('username LIKE ? AND rusers.status = 1', '%' + query + '%')
+            end
 
-    users = users.limit(limit)
+    users.limit(limit)
   end
 end

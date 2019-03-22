@@ -32,12 +32,13 @@ class OpenidController < ApplicationController
         'openid.trust_root',
         'openid.id_select',
         'openid.immediate',
-        'openid.cancel_url').to_h
-      if params['openid.mode']
-        oidreq = server.decode_request(permitted_params)
-      else
-        oidreq = server.decode_request(Rack::Utils.parse_query(request.env['ORIGINAL_FULLPATH'].split('?')[1]))
-      end
+        'openid.cancel_url'
+      ).to_h
+      oidreq = if params['openid.mode']
+                 server.decode_request(permitted_params)
+               else
+                 server.decode_request(Rack::Utils.parse_query(request.env['ORIGINAL_FULLPATH'].split('?')[1]))
+               end
     rescue ProtocolError => e
       # invalid openid request, so just display a page with an error message
       render plain: e.to_s, status: 500
@@ -155,13 +156,13 @@ class OpenidController < ApplicationController
 
     # content negotiation failed, so just render the user page
     xrds_url = url_for(controller: 'user', action: params[:username]) + '/xrds'
-    identity_page = <<~EOS
+    identity_page = <<~HTML
       <html><head>
       <meta http-equiv="X-XRDS-Location" content="#{xrds_url}" />
       <link rel="openid.server" href="#{url_for action: 'index'}" />
       </head><body><p>OpenID identity page for #{params[:username]}</p>
       </body></html>
-EOS
+    HTML
 
     # Also add the Yadis location header, so that they don't have
     # to parse the html unless absolutely necessary.
@@ -197,7 +198,7 @@ EOS
     else
       id_to_send = params[:id_to_send]
 
-      identity = oidreq.identity
+      identity = oidreq&.identity
       if oidreq.id_select
         if id_to_send && (id_to_send != '')
           session[:username] = id_to_send
@@ -239,6 +240,7 @@ EOS
 
   def approved(trust_root)
     return false if session[:approvals].nil?
+
     session[:approvals].member?(trust_root)
   end
 
@@ -253,7 +255,7 @@ EOS
       type_str += "<Type>#{uri}</Type>\n      "
     end
 
-    yadis = <<~EOS
+    yadis = <<~XML
       <?xml version="1.0" encoding="UTF-8"?>
       <xrds:XRDS
           xmlns:xrds="xri://$xrds"
@@ -265,7 +267,7 @@ EOS
           </Service>
         </XRD>
       </xrds:XRDS>
-EOS
+    XML
 
     response.headers['content-type'] = 'application/xrds+xml'
     render plain: yadis
@@ -276,6 +278,7 @@ EOS
     sregreq = OpenID::SReg::Request.from_openid_request(oidreq)
 
     return if sregreq.nil?
+
     # In a real application, this data would be user-specific,
     # and the user should be asked for permission to release
     # it.
@@ -291,13 +294,14 @@ EOS
   def add_pape(oidreq, oidresp)
     papereq = OpenID::PAPE::Request.from_openid_request(oidreq)
     return if papereq.nil?
+
     paperesp = OpenID::PAPE::Response.new
     paperesp.nist_auth_level = 0 # we don't even do auth at all!
     oidresp.add_extension(paperesp)
   end
 
   def render_response(oidresp)
-    signed_response = server.signatory.sign(oidresp) if oidresp.needs_signing
+    server.signatory.sign(oidresp) if oidresp.needs_signing
     web_response = server.encode_response(oidresp)
     case web_response.code
     when HTTP_OK

@@ -1,41 +1,41 @@
 <div class="col-md-3">
 
-  <p><b><%= t('home.subscriptions.title') %></b> <%= t('home.subscriptions.up_to_date_emails') %></p>
+  <p><b><%=raw translation('home.subscriptions.title') %></b> <%=raw translation('home.subscriptions.up_to_date_emails') %></p>
 
   <hr />
 
   <p>
     <% if current_user.following("everything") %>
-      <a rel="tooltip" title="<%= t('home.subscriptions.click_unfollow') %>" class="btn btn-default active" href="/unsubscribe/tag/everything" data-method="delete"><i class="fa fa-user-plus" aria-hidden="true"></i> <%= t('home.subscriptions.following') %> <b><%= t('home.subscriptions.research_notes') %></b></a>
+      <a rel="tooltip" title="<%=raw translation('home.subscriptions.click_unfollow') %>" class="btn btn-default active" href="/unsubscribe/tag/everything" data-method="delete"><i class="fa fa-user-plus" aria-hidden="true"></i> <%=raw translation('home.subscriptions.following') %> <b><%=raw translation('home.subscriptions.research_notes') %></b></a>
     <% else %>
-      <a href="/subscribe/tag/everything" class="btn btn-default"><i class="fa fa-tag"></i> <%= t('home.subscriptions.subscribe_to') %> <b><%= t('home.subscriptions.all') %></b> <%= t('home.subscriptions.notes') %></a>
+      <a href="/subscribe/tag/everything" class="btn btn-default"><i class="fa fa-tag"></i> <%=raw translation('home.subscriptions.subscribe_to') %> <b><%=raw translation('home.subscriptions.all') %></b> <%=raw translation('home.subscriptions.notes') %></a>
     <% end %>
   </p>
   <p>
-    <i><%= t('home.subscriptions.receive_mails') %></i>
+    <i><%=raw translation('home.subscriptions.receive_mails') %></i>
   </p>
 
   <hr />
 
   <a href="/settings" class="btn btn-default" style="margin-bottom: 10px;"><i class="fa fa-envelope"></i> Email Settings </a>
-  
+
   <p style="font-style: italic;"> Control which emails you want to receive. </p>
 
 </div>
 
 <div class="col-md-9">
 
-  <h3><%= t('home.subscriptions.manage_subscriptions') %> (<%= current_user.subscriptions.length %>)</h3>
+  <h3><%=raw translation('home.subscriptions.manage_subscriptions') %> (<%= current_user.subscriptions.length %>)</h3>
 
   <form class="navbar-form" action="/subscribe/tag">
     <div class="form-group">
       <input type="text" name="name" class="form-control" placeholder="<%= t('home.subscriptions.enter_tags') %>" data-provide="typeahead" data-source='["balloon-mapping","thermal-flashlight","spectrometer"]' autocomplete="off">
-      <button type="submit" class="btn btn-primary add-subscriptions"><i class="fa fa-plus fa fa-white"></i> <%= t('home.subscriptions.add') %></button>
+      <button type="submit" class="btn btn-primary add-subscriptions"><i class="fa fa-plus fa fa-white"></i> <%=raw translation('home.subscriptions.add') %></button>
     </div>
   </form>
 
   <table class="table">
-  <tr><th><%= t('home.subscriptions.tag') %></th><th><%= t('home.subscriptions.options') %></th></tr>
+  <tr><th><%=raw translation('home.subscriptions.tag') %></th><th><%=raw translation('home.subscriptions.options') %></th></tr>
   <% current_user.subscriptions(:tag).each do |subscription| %>
   <tr>
     <td><a href="/tag/<%= subscription.tagname %>"><%= subscription.tagname %></a> <i style="color:#aaa;"> +<%= Tag.follower_count(subscription.tagname).to_i-1 %> other people</i></td>
@@ -46,7 +46,7 @@
         <a rel="tooltip" title="Once per day" class="btn btn-default btn-xs" href="javascript:void(0)"><i class="fa fa-list"></i> Digest</a>
         -->
         <script> input_<%= subscription.tid %> = '#share-<%= subscription.tid %>'</script>
-        <a class="btn btn-default btn-xs" rel="popover" data-placement="left" title="<%= t('home.subscriptions.share_subscription_link') %>" data-html="true" data-content="<input id='share-<%= subscription.tid %>' onClick='$(input_<%= subscription.tid %>).select()' type='text' value='https://<%= ActionController::Base.default_url_options[:host] %>/subscribe/tag/<%= subscription.tagname %>'/><div style='margin-top:10px;'><a style='padding-left:3px;' href='https://twitter.com/share' class='twitter-share-button'>Tweet</a></div> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='//platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','twitter-wjs');</script>
+        <a class="btn btn-default btn-xs" rel="popover"  data-toggle="popover" data-placement="left" title="<%= t('home.subscriptions.share_subscription_link') %>" data-html="true" data-content="<input id='share-<%= subscription.tid %>' onClick='$(input_<%= subscription.tid %>).select()' type='text' value='https://<%= ActionController::Base.default_url_options[:host] %>/subscribe/tag/<%= subscription.tagname %>'/><div style='margin-top:10px;'><a style='padding-left:3px;' href='https://twitter.com/share' class='twitter-share-button'>Tweet</a></div> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='//platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','twitter-wjs');</script>
         <i class="fa fa-share"></i> <%= t('home.subscriptions.share') %></a>
         <a class="btn btn-default btn-xs" href="/unsubscribe/tag/<%= subscription.tagname %>" data-method="delete"><i class="fa fa-remove"></i> <%= t('home.subscriptions.unsubscribe') %></a>
       </div>

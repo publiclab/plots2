@@ -13,6 +13,10 @@
     <%= render :partial => "editor/toolbar" %>
   <% end %>
 
+  <% if local_assigns[:reply_to].present? %>
+    <%= hidden_field_tag :reply_to, local_assigns[:reply_to] %>
+  <% end %>
+
   <div class="form-group dropzone">
 
     <%

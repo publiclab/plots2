@@ -1,45 +1,21 @@
-<div class="col-md-12">
+<%= javascript_include_tag('async_tag_subscriptions.js') %>
+<div class="col-md-6">
   <h1 style="font-family:Junction Light;"><%= t('tag.index.popular_tags') %></h1>
 
-  <% cache('feature_tags-header', skip_digest: true) do %> 
+  <% cache('feature_tags-header', skip_digest: true) do %>
     <%= feature('tags-header') %>
   <% end %>
 
   <p><%= t('tag.index.browse_popular_tags') %></p>
+  <br/>
   <form id="tagform" class="form-horizontal" method="GET" action="/tag/">
   <div class="input-group">
-    <input type="search" tabindex="1" autocomplete="off" id="taginput" name="id" type="text" placeholder="Search for tags.." data-provide="typeahead" class="form-control" required="required" />
+    <input type="search" tabindex="1" autocomplete="off" id="taginput" name="id" type="text" placeholder="Search for topics" data-provide="typeahead" class="form-control" required="required" />
     <span class="input-group-btn" >
-      <button type="submit" rel="tooltip" title="View content with the entered title" class="btn btn-primary">Search</button>
+      <button type="submit" rel="tooltip" title="View content with the entered title" class="btn btn-primary-outline" style="margin-left: -40px;background-color: transparent;"><i class="fa fa-search" style="color: #ccc;"></i></button>
     </span>
   </div>
   </form>
-  <script>
-    jQuery(document).ready(function() {
-
-      $('#taginput').typeahead({
-        items: 8,
-        minLength: 3,
-        source: function (query, process) {
-          var replaced_query = query.replace(' ', /-/g);
-          return $.post('/tag/suggested/' + replaced_query, {}, function (data) {
-            return process(data)
-          })
-        },
-        updater: function(text) {
-          $('#taginput').val(text)
-          window.location = "/tag/" + text;
-        }
-      });
-
-      $('#tagform').submit(function(e) {
-        e.preventDefault();
-        window.location = "/tag/" + ($('#taginput').val()).replace(/\s/g, '-');
-      });
-
-    });
-  </script>
- 
   <br/><br/>
 
   <table class="table">
@@ -63,11 +39,11 @@
           });
         </script>
         <% if current_user %>
-          <td>
+          <td id="follow-unfollow-column-<%=tag.tid%>">
              <% if current_user.following(tag.name) %>
                 <a rel="tooltip" title="<%= t('tag.show.unfollow') %>" class="btn btn-default btn-sm active" href="/unsubscribe/tag/<%= tag.name %>"><i class="fa fa-user-plus" aria-hidden="true"></i> <%= t('tag.show.following') %></a>
                 <% else %>
-                <a class="btn btn-default btn-sm" href="/subscribe/tag/<%= tag.name %>"><i class="fa fa-user-plus" aria-hidden="true"></i> <%= t('tag.show.follow') %></a>
+                <a class="btn btn-default btn-sm index-follow-buttons follow-btn-remote" href="/subscribe/tag/<%= tag.name %>" data-remote="true" ><i class="fa fa-user-plus" aria-hidden="true"></i> <%= t('tag.show.follow') %></a>
                 <% end %>
           </td>
         <% end %>
@@ -77,6 +53,23 @@
 
   <hr />
 
+<div class="text-center"> <%= will_paginate @tags, :renderer => BootstrapPagination::Rails if @paginated %></div>
 </div>
 
-<div class="text-center"> <%= will_paginate @tags, :renderer => BootstrapPagination::Rails if @paginated %></div>
+<style>
+  .active{
+    color: red;
+  }
+</style>
+
+<div class="col-md-6">
+  <br><br>
+  <iframe id="myImage" src="stats/graph.html?limit=50" height="500" width="100%" frameborder="0" ></iframe>
+  <h6 class="text-right" style="color:#ccc;">Tags most commonly used, linked by how often they are used together.<br>
+    View <a style="cursor: pointer; a:active: color: red;" onclick="document.getElementById('myImage').src='stats/graph.html?limit=50'"><u>50</u></a> |
+    <a style="cursor: pointer;" onclick="document.getElementById('myImage').src='stats/graph.html?limit=100'"><u>100</u></a> |
+    <a style="cursor: pointer;" onclick="document.getElementById('myImage').src='stats/graph.html?limit=250'"><u>250</u></a> |
+    <a style="cursor: pointer;" onclick="document.getElementById('myImage').src='stats/graph.html?limit=500'"><u>500</u></a>
+  </h6>
+
+</div>

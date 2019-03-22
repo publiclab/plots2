@@ -35,13 +35,19 @@ $DIFF
 
 - [ ] 🏁 **Done** Ask in comments for a review :)
 
+### Please keep us updated
+
+💬⏰ - We encourage contributors to be respectful to the community and provide an update **within a week** of claiming a first-timers-only issue. We're happy to keep it assigned to you as long as you need if you update us with a request for more time or help, but if we don't see any activity a week after you claim it we may reassign it to give someone else a chance. Thank you in advance! 
+
+If this happens to you, don't sweat it! Grab another open issue.
+
+### Is someone else already working on this?
+
+🔗- We encourage contributors to link to the original issue in their pull request so all users can easily see if someone's already started on it. 
+
+👥- **If someone seems stuck, offer them some help!** Otherwise, [take a look at some other issues you can help with](https://publiclab.github.io/community-toolbox/#r=all). Thanks!
 
 ### 🤔❓ Questions?
 
 Leave a comment below!
 
-### Is someone else already working on this?
-
-We encourage you to link to this issue by mentioning the issue # in your pull request, so we can see if someone's already started on it. **If someone seem stuck, offer them some help!** Otherwise, [take a look at some other issues you can help with](https://publiclab.github.io/community-toolbox/#r=all). Thanks!
-
-(This issue was created by [First-Timers-Bot](https://github.com/hoodiehq/first-timers-bot).)

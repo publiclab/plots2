@@ -16,11 +16,7 @@ module ApplicationHelper
     if content.present?
       content.to_str.gsub(/:([\w+-]+):(?![^\[]*\])/) do |match|
         if emoji = Emoji.find_by_alias(Regexp.last_match(1))
-          if emoji.raw
-            emoji.raw
-          else
-            %(<img class="emoji" alt="#{Regexp.last_match(1)}" src="#{image_path("emoji/#{emoji.image_filename}")}" style="vertical-align:middle" width="20" height="20" />)
-          end
+          emoji.raw || %(<img class="emoji" alt="#{Regexp.last_match(1)}" src="#{image_path("emoji/#{emoji.image_filename}")}" style="vertical-align:middle" width="20" height="20" />)
         else
           match
         end
@@ -33,6 +29,7 @@ module ApplicationHelper
     image_map = {}
     Emoji.all.each do |e|
       next unless e.raw
+
       val = ":#{e.name}:"
       emojis << { value: val, text: e.name }
       image_map[e.name] = e.raw
@@ -79,6 +76,7 @@ module ApplicationHelper
   end
 
   def insert_extras(body)
+    body = NodeShared.button(body)
     body = NodeShared.nodes_grid(body)
     body = NodeShared.notes_thumbnail_grid(body)
     body = NodeShared.notes_grid(body)
@@ -122,6 +120,7 @@ module ApplicationHelper
     if contain_trimmed_body?(comment_body)
       return comment_body.split(Comment::COMMENT_FILTER).first
     end
+
     comment_body
   end
 
@@ -135,5 +134,17 @@ module ApplicationHelper
 
   def current_page?(page)
     'is-active' if request.path == page
+  end
+
+  def translation(key, options = {})
+    translated_string = t(key, options)
+
+    if translated_string.length > 3 && current_user &.has_tag('translation-helper') && !translated_string.include?("translation missing")
+      %(<span>#{translated_string} <a href="https://www.transifex.com/publiclab/publiclaborg/translate/#de/$?q=text%3A#{translated_string}">
+          <i data-toggle='tooltip' data-placement='top' title='Needs translation? Click to help translate this text.' style='position:relative; right:2px; color:#bbb; font-size: 15px;' class='fa fa-globe'></i></a>
+       </span>)
+    else
+      translated_string
+    end
   end
 end

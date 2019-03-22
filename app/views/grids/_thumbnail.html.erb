@@ -18,7 +18,7 @@
             <% if node.type == 'note' %>
               by <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a> <%= node.author.new_contributor %>
             <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope:'datetime.time_ago_in_words' }) %>
-            | <a href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= node.comments.count %></a>
+            | <a href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= node.comments.size %></a>
             <% else %>
               <%= t('notes._notes.last_edit_by') %> <a href="/profile/<%= node.latest.author.name %>"><%= node.latest.author.name %></a>
               <%= distance_of_time_in_words(Time.at(node.latest.timestamp), Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>

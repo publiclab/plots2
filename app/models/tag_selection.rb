@@ -3,9 +3,9 @@ class TagSelection < ApplicationRecord
   belongs_to :tag, foreign_key: :tid
   has_many :node_tags, foreign_key: :tid
 
-  validates :user_id, presence: :true
-  validates :tid, presence: :true
-  validates :tag, presence: :true
+  validates :user_id, presence: true
+  validates :tid, presence: true
+  validates :tag, presence: true
 
   def user
     User.find(user_id)

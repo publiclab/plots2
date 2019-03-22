@@ -14,7 +14,7 @@ class SearchCriteria
     @order_direction = args[:order_direction]
     @field = args[:field]
     @period = { "from" => args[:from], "to" => args[:to] }
-    @limit = args[:limit] || 10
+    @limit = args[:limit] || 5 # to avoid navbar search showing only one type
   end
 
   def valid?
@@ -44,6 +44,17 @@ class SearchCriteria
   def transform(query)
     words = query.gsub(/\s+/m, ' ').strip.split(" ")
     words.map! { |item| lemmatize(item) }
+    added_results = []
+    words.each do |word|
+      if word.include? "-"
+        added_results << (word.delete '-')
+      end
+      hyphenated_word = results_with_probable_hyphens(word)
+      if hyphenated_word != word
+        added_results << hyphenated_word
+      end
+    end
+    words += added_results
     words.join(' ')
   end
 

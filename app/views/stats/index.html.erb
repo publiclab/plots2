@@ -1,110 +1,47 @@
-<div class="col-md-3">
+<div class="col-md-12 col-md-offset-1" style="margin-bottom:20px;">
 
-  <%= raw t('notes.stats.about_this_page') %>
-  <%= render 'stats_nav' %>
+    <h2><%= raw t('notes.stats.contributors_statistics') %></h2>
+    <hr>
 
-</div>
-
-<div class="col-md-8 col-md-offset-1" style="margin-bottom:20px;">
-
-  <h2><%= raw t('notes.stats.contributors_statistics') %></h2>
-  <hr>
-
-  <h4><b><%= raw t('notes.stats.research_notes_posted_by_contributors', :note_count => @all_notes, :contributors_count => @all_contributors,
-                   :time => time_ago_in_words(Node.find_by(type: 'note', status: 1).created_at)) %></b></h4>
-  <br>
-
-  &emsp;&emsp;
-  <div class="btn-group" role="group" aria-label="Basic example">
-      <a href="<%= "?time="+(@time-1.year).to_formatted_s(:long) %>">
-          <button type="button" class="btn btn-secondary" title="1 year back">
-              <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
-              <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
-              <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
-          </button>
-      </a>
-      <a href="<%= "?time="+(@time-1.month).to_formatted_s(:long)%>">
-          <button type="button" class="btn btn-secondary" title="1 month back">
-              <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
-              <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
-          </button>
-      </a>
-      <a href="<%= "?time="+(@time-1.week).to_formatted_s(:long) %>">
-          <button type="button" class="btn btn-secondary" title="1 week back">
-              <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
-          </button>
-      </a>
-  </div>
-
-  &emsp;&emsp;
-  <b><%= @time.to_formatted_s(:long) %></b>
-  &emsp;&emsp;
-  <div class="btn-group" role="group" aria-label="Basic example">
-      <a href="<%= "?time="+(@time+1.week).to_formatted_s(:long) %>">
-          <button type="button" class="btn btn-secondary" title="1 week forward">
-              <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
-          </button>
-      </a>
-      <a href="<%= "?time="+(@time+1.month).to_formatted_s(:long)%>">
-          <button type="button" class="btn btn-secondary" title="1 month forward">
-              <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
-              <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
-          </button>
-      </a>
-      <a href="<%= "?time="+(@time+1.year).to_formatted_s(:long) %>">
-          <button type="button" class="btn btn-secondary" title="1 year forward">
-              <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
-              <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
-              <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
-          </button>
-      </a>
-  </div>
-  <br> <br>
-  <hr />
-
-  <h4>
-      <%= raw t('notes.stats.notes_and_wiki_edits_past_week', :url1 => "/research", :note_count => @weekly_notes,
-                :url2 => "/wiki", :wiki_count => @weekly_wikis) %>
-            <%= raw t('notes.stats.people_joined_past_week', :people_count => @weekly_members) %>
-  </h4>
-
-  <hr />
-
-  <h4>
-      <%= raw t('notes.stats.notes_and_wiki_edits_past_month', :url1 => "/research", :note_count => @monthly_notes,
-                :url2 => "/wiki", :wiki_count => @monthly_wikis) %>
-            <%= raw t('notes.stats.people_joined_past_month', :people_count => @monthly_members) %>
-  </h4>
-
-  <hr />
-  <h4>
-      <%= raw t('notes.stats.questions_past_week', :url1 => "/questions", :quiz_count => @weekly_questions,
-                :url2 => "/questions/answered/", :ans_count => @weekly_answers) %>
-            <hr>
-
-            <%= raw t('notes.stats.questions_past_month', :url1 => "/questions", :quiz_count => @monthly_questions,
-                      :url2 => "/questions/answered/", :ans_count => @monthly_answers) %>
-   </h4>
-   <hr/>
-  <br> <br>
-</div>
-
-<br> <br>
-
-<div class="container">
-
-</div>
-
-<h3 align="center"> <u>  Notes, Wikis and Comments Statistics in the past year </u></h3>
-<br>
-    <div id="timeline"></div>
-    <p><b><%= raw t('notes.stats.edits_per_week', :count => @edits_per_week_past_year.round(2)) %><b></p>
-    <p><b><%= raw t('notes.stats.notes_per_week_past_year', :note_count => @notes_per_week_past_year.round(2)) %></b></p>
+    <h5> See also <%= link_to "subscription statistics", stats_subscriptions_path %> </h5>
+    <h4><b><%= raw t('notes.stats.research_notes_posted_by_contributors', :note_count => @all_notes, :contributors_count => @all_contributors,
+                     :time => time_ago_in_words(Node.find_by(type: 'note', status: 1).created_at)) %></b></h4>
     <br>
+
+    <div class="row">
+        <div class=col-md-6>
+            <h5> Statistics from <%= @start.to_formatted_s(:long)%> to <%= @end.to_formatted_s(:long)%> </h5>
+        </div>
+        <div class=col-md-2>
+            <%= form_tag request.url, method: 'get', enforce_utf8: false do %>
+                <%= select_tag :options, options_for_select(["Past week", "Past month","Past year"], params[:options]), prompt: "Filter period: ",
+                    class: " form-control custom-select", onchange: "this.form.submit();" %>
+            <% end %>
+        </div>
+    </div>
+
+    <%= render 'range' %>
+</div>
+
+
+<% if @popular_tags.present? %>
+    <br> <br>
+
+<div id="chart1"> </div>
+<% end %>
+
+<h4 align="center"> <u>  Notes, Wikis and Comments Statistics between <%= @start.to_date%> to <%= @end.to_date%> </u></h4>
+<br>
+<div id="timeline"></div>
+<p><b><%= raw t('notes.stats.edits_per_week', :count => @edits_per_week_past_year.round(2)) %></b></p>
+<p><b><%= raw t('notes.stats.notes_per_week_past_year', :note_count => @notes_per_week_past_year.round(2)) %></b></p>
+<br>
+<i> Member registration may include spam accounts </i>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
 var options = {
     chart: {
+        
         type: "area",
         height: 500,
         foreColor: "#999",
@@ -159,14 +96,14 @@ var options = {
     },
     series: [{
         name: 'Notes',
-        data: generateWeekWiseTimeSeries(0, 52)
+        data: generateWeekWiseTimeSeries(0)
 
     }, {
         name: 'Wikis',
-        data: generateWeekWiseTimeSeries(1, 52)
+        data: generateWeekWiseTimeSeries(1)
     }, {
         name: 'Comments',
-        data: generateWeekWiseTimeSeries(2, 52)
+        data: generateWeekWiseTimeSeries(2)
 
     }],
         markers: {
@@ -239,15 +176,16 @@ var options = {
 var chart = new ApexCharts(document.querySelector("#timeline"), options);
 
 chart.render();
-function generateWeekWiseTimeSeries(s, count) {
+function generateWeekWiseTimeSeries(s) {
     var values = [
-        <%= @graph_notes.values.collect {|ind| ind[1]} %>,
-        <%= @graph_wikis.values.collect {|ind| ind[1]} %>,
-        <%= @graph_comments.values.collect {|ind| ind[1]} %>,
+        <%= @graph_notes.values %>,
+        <%= @graph_wikis.values %>,
+        <%= @graph_comments.values %>,
     ];
 
     var i = 0;
-    var months_dates = <%= @graph_notes.values.collect {|ind| ind[0]} %>
+    var months_dates = <%= @graph_notes.keys %>;
+    var count = months_dates.length;
     var months = months_dates.map(x =>  new Date(x).getTime());
     var series = [];
     while (i < count) {
@@ -259,4 +197,59 @@ function generateWeekWiseTimeSeries(s, count) {
     }
     return series;
 }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+
+var values =  <%=  @popular_tags.values %>;
+var data =  <%= raw (@popular_tags.keys) %>;
+var page;
+
+var options = {
+    chart: {
+        height: 500,
+        type: 'bar',
+    
+        active: {
+            allowMultipleDataPointsSelection: true,
+            },
+        
+        events: {
+            dataPointSelection: function(event, chartContext, config) {
+                page = data[config.selectedDataPoints];
+                parent.location='/tag/'+page;
+            }
+        }
+    },
+
+    plotOptions: {
+        bar: {
+            horizontal: true,
+        }
+    },
+
+    dataLabels: {
+        enabled: false
+
+    },
+    series: [{
+        name: 'Tag count',
+        data: values
+
+    }],
+    title:{
+        text: "Popular Tags in this period",
+    },
+    xaxis: {
+        categories: data
+
+    }
+
+}
+
+var chart1 = new ApexCharts(
+        document.querySelector("#chart1"), options );
+chart1.render();
+
 </script>

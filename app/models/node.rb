@@ -33,34 +33,36 @@ class Node < ActiveRecord::Base
                     { views: :desc }
                   end
 
+    # We can drastically have this simplified using one DB
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       if order == :natural
         query = connection.quote(query.to_s)
-        if type == :boolean
-          # Query is done as a boolean full-text search. More info here: https://dev.mysql.com/doc/refman/5.5/en/fulltext-boolean.html
-          nids = Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN BOOLEAN MODE) AS score")
-            .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN BOOLEAN MODE)")
-            .limit(limit)
-            .distinct
-            .collect(&:nid)
-        else
-          nids = Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE) AS score")
-            .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE)")
-            .limit(limit)
-            .distinct
-            .collect(&:nid)
-        end
+        nids = if type == :boolean
+                 # Query is done as a boolean full-text search. More info here: https://dev.mysql.com/doc/refman/5.5/en/fulltext-boolean.html
+                 Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN BOOLEAN MODE) AS score")
+                   .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN BOOLEAN MODE)")
+                   .limit(limit)
+                   .distinct
+                   .collect(&:nid)
+               else
+                 Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE) AS score")
+                   .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE)")
+                   .limit(limit)
+                   .distinct
+                   .collect(&:nid)
+               end
         where(nid: nids, status: 1)
       else
         nids = Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query).collect(&:nid)
-        tnids = Tag.find_nodes_by_type(query, type = %w(note page)).collect(&:nid) # include results by tag
+
+        tnids = Tag.find_nodes_by_type(query, %w(note page)).collect(&:nid) # include results by tag
         where(nid: nids + tnids, status: 1)
           .order(order_param)
           .limit(limit)
           .distinct
       end
     else
-      nodes = Node.limit(limit)
+      Node.limit(limit)
         .where('title LIKE ?', '%' + query + '%')
         .where(status: 1)
         .order(order_param)
@@ -72,15 +74,10 @@ class Node < ActiveRecord::Base
   end
 
   has_many :revision, foreign_key: 'nid', dependent: :destroy
-  # wasn't working to tie it to .vid, manually defining below
-  #  has_one :drupal_main_image, :foreign_key => 'vid', :dependent => :destroy
-  #  has_many :drupal_content_field_image_gallery, :foreign_key => 'nid'
   has_many :drupal_upload, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
   has_many :drupal_files, through: :drupal_upload
   has_many :node_tag, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
   has_many :tag, through: :node_tag
-  # these override the above... have to do it manually:
-  # has_many :tag, :through => :drupal_node_tag
   has_many :comments, foreign_key: 'nid', dependent: :destroy # re-enable in Rails 5
   has_many :drupal_content_type_map, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
   has_many :drupal_content_field_mappers, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
@@ -91,7 +88,7 @@ class Node < ActiveRecord::Base
 
   belongs_to :user, foreign_key: 'uid'
 
-  validates :title, presence: :true
+  validates :title, presence: true
   validates_with UniqueUrlValidator, on: :create
 
   scope :published, -> { where(status: 1) }
@@ -105,6 +102,7 @@ class Node < ActiveRecord::Base
     def instance_method_already_implemented?(method_name)
       return true if method_name == 'changed'
       return true if method_name == 'changed?'
+
       super
     end
   end
@@ -196,26 +194,22 @@ class Node < ActiveRecord::Base
     weeks
   end
 
-  def self.contribution_graph_making(type = 'note', span = 52, time = Time.now)
-    weeks = {}
-    week = span
-    count = 0
-    while week >= 1
-      # initialising month variable with the month of the starting day
-      # of the week
-      month = time - (week * 7 - 1).days
+  def self.contribution_graph_making(type = 'note', start = Time.now - 1.year, fin = Time.now)
+    date_hash = {}
+    week = start.to_date.step(fin.to_date, 7).count
 
-      # Now fetching the weekly data of notes or wikis
-      current_week = Node.select(:created)
+    while week >= 1
+      month = (fin - (week * 7 - 1).days)
+      range = (fin.to_i - week.weeks.to_i)..(fin.to_i - (week - 1).weeks.to_i)
+
+      weekly_nodes = Node.published.select(:created)
                     .where(type: type,
-                    status: 1,
-                    created: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
+                    created: range)
                     .count
-      weeks[count] = [(month.to_f * 1000), current_week]
-      count += 1
+      date_hash[month.to_f * 1000] = weekly_nodes
       week -= 1
     end
-    weeks
+    date_hash
   end
 
   def notify
@@ -489,7 +483,7 @@ class Node < ActiveRecord::Base
       RSS::Parser.parse(open('https://groups.google.com/group/' + power_tag('list') + '/feed/rss_v2_0_topics.xml').read, false).items
     end
   rescue StandardError
-    return []
+    []
   end
 
   # End of tag-related methods
@@ -598,7 +592,8 @@ class Node < ActiveRecord::Base
                     thread: thread,
                     timestamp: DateTime.now.to_i,
                     comment_via: comment_via_status,
-                    message_id: params[:message_id])
+                    message_id: params[:message_id],
+                    tweet_id: params[:tweet_id])
     c.save
     c
   end
@@ -752,10 +747,10 @@ class Node < ActiveRecord::Base
           if tag.valid?
             if tag.name.split(':')[0] == 'lat'
               tagvalue = tag.name.split(':')[1]
-              table_updated = update_attributes(:latitude => tagvalue, :precision => decimals(tagvalue).to_s)
+              table_updated = update_attributes(latitude: tagvalue, precision: decimals(tagvalue).to_s)
             elsif tag.name.split(':')[0] == 'lon'
               tagvalue = tag.name.split(':')[1]
-              table_updated = update_attributes(:longitude => tagvalue)
+              table_updated = update_attributes(longitude: tagvalue)
             end
           end
 
@@ -775,19 +770,15 @@ class Node < ActiveRecord::Base
     end
   end
 
-  def decimals(n)
-    if !n.to_s.include? '.'
-      0
-    else
-      n.to_s.split('.').last.size
-    end
+  def decimals(number)
+    !number.include?('.') ? 0 : number.split('.').last.size
   end
 
   def delete_coord_attribute(tagname)
     if tagname.split(':')[0] == "lat"
-      table_updated = update_attributes(:latitude => nil, :precision => nil)
+      update_attributes(latitude: nil, precision: nil)
     else
-      table_updated = update_attributes(:longitude => nil)
+      update_attributes(longitude: nil)
     end
   end
 
@@ -814,7 +805,8 @@ class Node < ActiveRecord::Base
                .where('term_data.name LIKE ?', 'question:%')
                .group('node.nid')
                .collect(&:nid)
-    notes = Node.where(type: 'note')
+
+    Node.where(type: 'note')
                 .where('node.nid NOT IN (?)', nids)
   end
 
@@ -826,11 +818,11 @@ class Node < ActiveRecord::Base
   # with node.questions
   def questions
     # override with a tag like `questions:h2s`
-    if has_power_tag('questions')
-      tagname = power_tag('questions')
-    else
-      tagname = slug_from_path
-    end
+    tagname = if has_power_tag('questions')
+                power_tag('questions')
+              else
+                slug_from_path
+              end
     Node.where(status: 1, type: 'note')
         .includes(:revision, :tag)
         .references(:term_data)
@@ -839,21 +831,21 @@ class Node < ActiveRecord::Base
 
   # all questions
   def self.questions
-    questions = Node.where(type: 'note')
-                    .joins(:tag)
-                    .where('term_data.name LIKE ?', 'question:%')
-                    .group('node.nid')
+    Node.where(type: 'note')
+        .joins(:tag)
+        .where('term_data.name LIKE ?', 'question:%')
+        .group('node.nid')
   end
 
   # so we can quickly fetch activities corresponding to this node
   # with node.activities
   def activities
     # override with a tag like `activities:h2s`
-    if has_power_tag('activities')
-      tagname = power_tag('activities')
-    else
-      tagname = slug_from_path
-    end
+    tagname = if has_power_tag('activities')
+                power_tag('activities')
+              else
+                slug_from_path
+              end
     Node.activities(tagname)
   end
 
@@ -869,11 +861,11 @@ class Node < ActiveRecord::Base
   # with node.upgrades
   def upgrades
     # override with a tag like `upgrades:h2s`
-    if has_power_tag('upgrades')
-      tagname = node.power_tag('upgrades')
-    else
-      tagname = slug_from_path
-    end
+    tagname = if has_power_tag('upgrades')
+                node.power_tag('upgrades')
+              else
+                slug_from_path
+              end
     Node.upgrades(tagname)
   end
 
@@ -934,11 +926,11 @@ class Node < ActiveRecord::Base
 
   def toggle_like(user)
     nodes = NodeSelection.where(nid: id, liking: true).count
-    if is_liked_by(user)
-      self.cached_likes = nodes - 1
-    else
-      self.cached_likes = nodes + 1
-    end
+    self.cached_likes = if is_liked_by(user)
+                          nodes - 1
+                        else
+                          nodes + 1
+                        end
   end
 
   def self.like(nid, user)
@@ -989,8 +981,8 @@ class Node < ActiveRecord::Base
   end
 
   def draft_url
-    @token = slug.split('token:').last
-    url = 'https://publiclab.org/notes/show/' + nid.to_s + '/' + @token.to_s
+    token = slug.split('token:').last
+    'https://publiclab.org/notes/show/' + nid.to_s + '/' + token
   end
 
   def fetch_comments(user)

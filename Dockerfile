@@ -11,8 +11,8 @@ ENV HOME /root
 ENV PHANTOMJS_VERSION 2.1.1
 
 RUN echo \
-   'deb http://ftp.us.debian.org/debian/ stretch main\n \
-    deb http://ftp.us.debian.org/debian/ stretch-updates main\n \
+   'deb http://ftp.ca.debian.org/debian/ stretch main\n \
+    deb http://ftp.ca.debian.org/debian/ stretch-updates main\n \
     deb http://security.debian.org stretch/updates main\n' \
     > /etc/apt/sources.list
 
@@ -36,5 +36,5 @@ RUN bundle install --jobs=4
 ADD . /app
 WORKDIR /app
 
-RUN yarn install && yarn postinstall && yarn upgrade
+RUN yarn install && yarn upgrade
 RUN passenger-config compile-nginx-engine --connect-timeout 60 --idle-timeout 60

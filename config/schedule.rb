@@ -26,18 +26,28 @@ env :SECRET_KEY_BASE, ENV['SECRET_KEY_BASE']
 env :REDIS_URL, ENV['REDIS_URL']
 
 # Cron Job log file
+
+set :bundle_command, 'bundle exec'
+job_type :runner,  "cd :path && :bundle_command rails runner -e :environment ':task' :output"
+
+ENV.each { |k, v| env(k, v) }
+
 set :output, "#{Dir.pwd}/public/cron_log.log"
 
 # To simply print date into the log file for checking if cron job is working properly
 every 1.minutes do
-	puts Dir.pwd
-	command "date -u" #This will print utc time every 1 min in log/cron_log.log file
+  command "date -u" #This will print utc time every 1 min in log/cron_log.log file
 end
 
+every 10.minutes do
+  runner "Comment.receive_tweet"
+end
+
+
 every 1.day do
-	runner "DigestMailJob.perform_async(0)"
+  runner "DigestMailJob.perform_async(0)"
 end
 
 every 1.week do
-	runner "DigestMailJob.perform_async(1)"
+  runner "DigestMailJob.perform_async(1)"
 end

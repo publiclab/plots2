@@ -1,4 +1,5 @@
-  // This is a manifest file that'll be compiled into application.js, which will include all the files
+/* eslint-disable no-empty-label */
+// This is a manifest file that'll be compiled into application.js, which will include all the files
 // listed below.
 //
 // Any JavaScript/Coffee file within this directory, lib/assets/javascripts, vendor/assets/javascripts,
@@ -15,14 +16,13 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require debounce/index.js
 //= require bootstrap/dist/js/bootstrap.min.js
 //= require bootstrap-3-typeahead/bootstrap3-typeahead.min.js
 //= require bootstrap-datepicker/dist/js/bootstrap-datepicker.js
 //= require jquery-file-upload/js/vendor/jquery.ui.widget.js
 //= require jquery-file-upload/js/jquery.fileupload.js
 //= require jquery-file-upload/js/jquery.iframe-transport.js
-//= require flot/jquery.flot.js
-//= require flot/jquery.flot.crosshair.js
 //= require jsdiff.js
 //= require marked/lib/marked.js
 //= require megamark/dist/megamark.min.js
