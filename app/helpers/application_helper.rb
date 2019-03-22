@@ -76,6 +76,7 @@ module ApplicationHelper
   end
 
   def insert_extras(body)
+    body = NodeShared.button(body)
     body = NodeShared.nodes_grid(body)
     body = NodeShared.notes_thumbnail_grid(body)
     body = NodeShared.notes_grid(body)

@@ -25,9 +25,12 @@
       
       <label for="username"><%= t('user_sessions.new.username') %></label>
       <%= f.text_field :username, { tabindex: 1, placeholder: "Username", class: 'form-control', id: 'username-login', required: true } %>
-      <label for="password"><%= t('user_sessions.new.password') %></label>
-      <%= f.password_field :password, { tabindex: 2,placeholder: "Password",class: 'form-control', id: 'password-signup', onpaste: 'return false;' , required: true } %>
-  
+      <div class="form-group has-feedback">
+      <label class="control-label" for="password"><%= t('user_sessions.new.password') %></label>
+        <%= f.password_field :password, { tabindex: 2,placeholder: "Password",class: 'form-control', id: 'password-signup', onpaste: 'return false;' , required: true } %>
+  <a id="visibility" class="fa fa-eye form-control-feedback" aria-hidden="true" style="color:#888;pointer-events: auto;line-height: 2.2em;text-decoration: none;"></a>
+</div>
+
   </div>
 
     <input type="hidden" name="hash_params" value="" />
@@ -75,5 +78,16 @@
       // When a button that always toggles the login modal is clicked
       setMode("login"); // Sets the mode of the modal to login, to show only the login partial
       $('#loginModal').modal(); // Open the login modal to allow user to login
-    })
+    });
+
+    $("#visibility").on("click", function(e) {
+      e.preventDefault();
+      $(this).toggleClass("fa-eye-slash");
+      var type = $("#password-signup").attr("type");
+      if (type == "text")
+      { $("#password-signup").attr("type", "password");}
+      else
+      { $("#password-signup").attr("type", "text"); }
+    });
+
   </script>
