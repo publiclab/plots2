@@ -2,6 +2,7 @@
     <h4> About this page </h4>
     <p> People subscribe to tags so that they can be updated when a research is posted with the tag they are subscribed to. This page shows the number of subscriptions and subscription rates on different tags. </p>
 </div>
+
 <div class="col-md-8 col-md-offset-1">
     <h2>Subscriptions</h2>
  	<table class="table inline-grid">
@@ -11,21 +12,15 @@
 				<th>Tags</th>
 			</thead>
 		</tr>
-		<% @tags.each do |map| %>
-		<% map.each do |subscriptions,tags| %>
+		<% @tags.each do |range,tags| %>
 		<tr>
 			<tbody>
-				<td><%=subscriptions%></td>
-				<td>
-					<select style="width: 50%; height: 50px;">
-						<%tags.each do |tag| %>					      
-							<option><%=tag%></option>
-						<%end%>
-					</select>							      
-				</td>
+				<td><%= range * 10 %> - <%= range * 10 + 9 %></td>
+				<% tags.each do |tag| %>
+				<td><%= tag[0]%>:<%=tag[1] %></td>
+				<%end%>
 			</tbody>
 		</tr>
-		<% end  %>
 		<% end  %>
 	</table>
 </div> 
