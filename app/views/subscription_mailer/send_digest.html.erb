@@ -14,7 +14,7 @@
         </div>
         <div style="float: left;">
           <% if n.author.photo? %>
-            <img style="width:40px;margin-right:8px;border: 1px solid lightgrey;height: 40px;border-radius: 50%;" src="<%= n.author.photo_path(:thumb) %>"/>
+           <img style="width:40px;margin-right:8px;border: 1px solid lightgrey;height: 40px;border-radius: 50%;" src="https://<%= Rails.root %><%= n.author.photo_path(:thumb) %>"/>
           <% else %>
             <img style="width:40px;margin-right:8px;border: 1px solid lightgrey;height: 40px;border-radius: 50%;" src="https://www.gravatar.com/avatar/1aedb8d9dc4751e229a335e371db8058"/>
           <% end %>
@@ -24,15 +24,16 @@
           <p style="margin: 0;color: #999;font-weight: 500;">Published <%= n.created_at %>.strftime("%m/%d")</p>
         </div>
         <div <% unless n.main_image.present? %> colspan="2" <% end %> style="padding-bottom: 10px;">
-          <p style="font-size: 1.1em;line-height: 1.5;text-align: justify;font-weight: 300;"><%= n.body.truncate(175) %><a href="https://publiclab.org<%= n.path %>" style="text-decoration: none;">  Read more</a></p>
+          <p style="font-size: 1.1em;line-height: 1.5;text-align: justify;font-weight: 300;"><%= n.body.truncate(175) %><a href="https://<%= Rails.root %><%= n.path %>" style="text-decoration: none;">  Read more</a></p>
         </div>
         <% if n.main_image.present? %>
           <div style="padding-bottom: 30px;">
-            <img src="<%= n.main_image.path(:default) %>" style="width: 90px;height: 90px;border-radius: 5px;margin-left: 14px;">
+             <img src="https://<%= Rails.root %><%= n.main_image.path(:default) %>" style="width: 90px;height: 90px;border-radius: 5px;margin-left: 14px;">
+           </div>
           </div>
         <% elsif n.scraped_image %>
           <div style="padding-bottom: 30px;">
-            <img src="<%= n.scraped_image %>" style="width: 90px;height: 90px;border-radius: 5px;margin-left: 14px;">
+             <img src="https://<%= Rails.root %><%= n.scraped_image %>" style="width: 90px;height: 90px;border-radius: 5px;margin-left: 14px;">
           </div>
         <% end %>
         <div colspan="2" style="padding-bottom: 32px;">
@@ -41,6 +42,8 @@
       </tr>
     <% end %>
   </table>
-  <p>Click <a href="https://publiclab.org/subscriptions">here</a> to choose your followed topics</p>
-  <p>Click <a href="https://publiclab.org/settings">here</a> to change your subscription settings</p>
-</div>
+
+  <p>Click <a href="https://<%= Rails.root %>/subscriptions">here</a> to choose your followed topics</p>
+  <p>Click <a href="https://<%= Rails.root %>/settings">here</a> to change your subscription settings</p>
+  </div>
+
