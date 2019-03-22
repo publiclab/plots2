@@ -7,9 +7,9 @@
          <%= tag.name %>
           <% if current_user && ( current_user.uid ==  @node.uid || current_user.uid == tag.uid  || current_user.role == "admin" || current_user.role == "moderator") %>
             <% if tag.name.include? ':' %>
-              <a data-confirm="This is a power tag (see https://publiclab.org/wiki/power-tags) -- and may drive a specific function on this page. Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/tag/delete/<%= @node.id %>/<%= tag.tid %>" data-tag-id="<%= tag.tid %>" data-method="delete">x</a>
+              <a data-confirm="This is a power tag (see https://publiclab.org/wiki/power-tags) -- and may drive a specific function on this page. Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/tag/delete/<%= @node.id %>/<%= tag.tid %>" data-tag-id="<%= tag.tid %>" data-method="delete" style="color:white;">x</a>
             <% else %>
-              <a data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/tag/delete/<%= @node.id %>/<%= tag.tid %>" data-tag-id="<%= tag.tid %>" data-method="delete">x</a>
+              <a data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/tag/delete/<%= @node.id %>/<%= tag.tid %>" data-tag-id="<%= tag.tid %>" data-method="delete" style="color:white">x</a>
             <% end %>
           <% end %>
         </span></li>
