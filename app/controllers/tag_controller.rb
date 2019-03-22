@@ -243,7 +243,7 @@ class TagController < ApplicationController
   end
 
   def blog
-    nids = Tag.find_nodes_by_type(params[:id], 'note', 20).collect(&:nid)
+    nids = Tag.find_nodes_by_type(params[:id], 'note', nil).collect(&:nid)
     @notes = Node.paginate(page: params[:page], per_page: 6)
       .where('status = 1 AND nid in (?)', nids)
       .order('nid DESC')
