@@ -39,6 +39,7 @@ class SearchController < ApplicationController
     @profiles = @nodes[:profiles]
     @questions = @nodes[:questions]
     @tags = @nodes[:tags]
+    @heading =search_heading
   end
 
   private
@@ -49,5 +50,14 @@ class SearchController < ApplicationController
 
   def search_params
     params.require(:search).permit(:query, :order)
+  end
+
+  def search_heading
+    heading=""
+    a=params[:query].split("+")
+    a.each do |b|
+      heading = heading+b+" "
+    end
+    return heading
   end
 end
