@@ -53,11 +53,11 @@ class SearchController < ApplicationController
   end
 
   def search_heading
-    heading=""
-    a=params[:query].split("+")
+    heading = ""
+    a = params[:query].split("+")
     a.each do |b|
-      heading = heading+b+" "
+      heading = heading + b + " "
     end
-    return heading
+    heading
   end
 end
