@@ -39,7 +39,7 @@ class SearchController < ApplicationController
     @profiles = @nodes[:profiles]
     @questions = @nodes[:questions]
     @tags = @nodes[:tags]
-    @heading =search_heading
+    @heading = search_heading
   end
 
   private
