@@ -122,7 +122,7 @@
     <img class="img-circle" id="profile-photo" style="width:50%;margin-bottom:20px;" src="<%= @user.photo_path %>" />
   </div>
 
-<p><a onClick="$('').toggle();" class="btn btn-default">User tags</a></p>
+    <p><a onClick="$('').toggle();" class="btn btn-default">User tags</a></p>
 	<div class="tags" style="display:none;">
 		<%= render :partial => "tag/tagging", locals: { url: "/profile/tags/create/#{ @user.id }", parent: :profile } %>
 	</div>
