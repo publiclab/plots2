@@ -28,8 +28,8 @@ install:
   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then gem install danger danger-junit; fi'
 
 script:
-  - whereis google-chrome-stable
-  - whereis chromedriver
+  - docker-compose exec web bash -c "whereis google-chrome-stable"
+  - docker-compose exec web bash -c "whereis chromedriver"
   - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true rake test:all"
   - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true rails test -d"
   # Capybara can't work with Passenger on Travis, hence disabling system test on
@@ -43,8 +43,8 @@ script:
 #   - export DISPLAY=:99.0
 #   - ln -s /usr/lib/chromium-browser/chromedriver ~/bin/chromedriver
 
-# addons:
+ addons:
+   apt:
+     packages:
+       - chromium-chromedriver
 #   chrome: stable
-#   apt:
-#     packages:
-#       - chromium-chromedriver
