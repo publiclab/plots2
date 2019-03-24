@@ -1,6 +1,12 @@
 require 'test_helper'
 
 class NodeTest < ActiveSupport::TestCase
+
+  def setup
+    @start = (Date.today - 1.year).to_time
+    @fin = Date.today.to_time
+  end
+
   test 'basic node attributes' do
     node = nodes(:one)
     assert_equal 'note', node.type
@@ -425,8 +431,13 @@ class NodeTest < ActiveSupport::TestCase
   end
 
   test 'contribution graph making' do
-    graph = Node.contribution_graph_making
-    assert_not_nil graph
-    assert graph.class, Hash
+    graph_notes = Node.contribution_graph_making('note', @start, @fin)
+    graph_wiki = Node.contribution_graph_making('page', @start, @fin)
+    notes = Node.where(type: 'note', created: @start.to_i..@fin.to_i).count
+    wiki = Node.where(type: 'page', created: @start.to_i..@fin.to_i).count
+
+    assert graph_notes.class, Hash
+    assert_equal notes, graph_notes.values.sum
+    assert_equal wiki, graph_wiki.values.sum
   end
 end

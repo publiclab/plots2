@@ -91,7 +91,9 @@
           <% unless params[:action] == "register" || params[:action] == "signup" %>
             <% if current_user %>
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+              	<div class="profile-icon">
                  <i class="fa fa-user-circle fa-lg" style="color:white;"></i>
+                </div>
               </a>
               <ul class="dropdown-menu">
                 <div class="dropdown-header">
@@ -174,3 +176,13 @@
 </div>
 
 <%= render partial: "layouts/signupLoginModal" %>
+
+<style>
+  .profile-icon{
+      cursor:pointer;
+  }
+
+  .profile-icon:hover .fa-user-circle:before{
+      opacity:0.5;
+  }
+</style>

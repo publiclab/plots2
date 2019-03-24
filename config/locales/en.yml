@@ -250,8 +250,8 @@ en:
       research_notes_posted_by_contributors: "%{note_count} research notes have been
         posted by %{contributors_count} contributors since %{time} ago"
       total_contributors: "%{all_contributors_count} Total Contributors (Tallied weekly)"
-      notes_per_week_past_year: "%{note_count} notes per week over the past year."
-      edits_per_week: "%{count} edits per week over the past year."
+      notes_per_week: "%{note_count} notes per week over this period."
+      edits_per_week: "%{count} edits per week over this period."
       notes_wikis_comments: |
           <b>%{notes_count} notes</b> and <b>%{wikis_count} wiki edits and</b>
           and <b>%{comments_count} comments </b>  posted in this period.

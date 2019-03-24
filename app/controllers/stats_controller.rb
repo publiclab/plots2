@@ -13,7 +13,7 @@ class StatsController < ApplicationController
       params[:start] = Time.now - to_keyword(params[:options])
       params[:end] = Time.now
     end
-    @start = params[:start] ? Time.parse(params[:start].to_s) : Time.now - 1.month
+    @start = params[:start] ? Time.parse(params[:start].to_s) : Time.now - 3.months
     @end = params[:end] ? Time.parse(params[:end].to_s) : Time.now
     @notes = Node.published.select(%i(created type))
       .where(type: 'note', created: @start.to_i..@end.to_i)
@@ -52,8 +52,8 @@ class StatsController < ApplicationController
     @monthly_questions = Node.questions.past_month.count(:all).count
     @monthly_answers = Answer.past_month.count
 
-    @notes_per_week_past_year = Node.past_year.select(:type).where(type: 'note').count(:all) / 52.0
-    @edits_per_week_past_year = Revision.past_year.count / 52.0
+    @notes_per_week_period = Node.frequency('note', @start, @end).round(2)
+    @edits_per_week_period = Revision.frequency(@start, @end).round(2)
 
     @graph_notes = Node.contribution_graph_making('note', @start, @end)
     @graph_wikis = Node.contribution_graph_making('page', @start, @end)
