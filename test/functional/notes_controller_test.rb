@@ -81,7 +81,7 @@ class NotesControllerTest < ActionController::TestCase
     assert_equal '0.0.0.0', Impression.last.ip_address
     Impression.last.update_attribute('ip_address', '0.0.0.1')
 
-    assert_difference 'note.reload.totalviews', 1 do
+    assert_difference 'note.reload.views', 1 do
       get :show,
           params: {
           author: note.author.name,
@@ -90,10 +90,10 @@ class NotesControllerTest < ActionController::TestCase
           }
     end
 
-    assert_equal 2, note.reload.totalviews
+    assert_equal 2, note.reload.views
 
     # same IP won't add to views twice
-    assert_difference 'note.reload.totalviews', 0 do
+    assert_difference 'note.reload.views', 0 do
       get :show,
           params: {
           author: note.author.name,
