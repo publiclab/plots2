@@ -92,7 +92,11 @@
             <% if current_user %>
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">
               	<div class="profile-icon">
-                 <i class="fa fa-user-circle fa-lg" style="color:white;"></i>
+                  <% if current_user.profile_image == "https://www.gravatar.com/avatar/eb721d116a28f4a4da4ea67340c8ce75" %>
+                    <i class="fa fa-user-circle fa-lg" style="color:white;"></i>
+                  <% else %>
+                    <img class="img-circle" id="profile-photo" style="width:20px; height:20px; margin-right:8px;" src="<%= current_user.profile_image %>" />
+                  <% end %>
                 </div>
               </a>
               <ul class="dropdown-menu">
