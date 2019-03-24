@@ -34,8 +34,10 @@ class CommentController < ApplicationController
 
       respond_to do |format|
         @answer_id = 0
-        format.js { render 'comments/create' }
-        format.html {
+        format.js do
+          render 'comments/create'
+        end
+        format.html do
           if request.xhr?
             render partial: 'notes/comment', locals: { comment: @comment }
           else
@@ -47,7 +49,7 @@ class CommentController < ApplicationController
             flash[:notice] = "Comment posted.#{tagnames}"
             redirect_to @node.path + '#last' # to last comment
           end
-        }
+        end
       end
     rescue CommentError
       flash[:error] = 'The comment could not be saved.'
