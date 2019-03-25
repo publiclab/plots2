@@ -169,7 +169,7 @@ class UserTest < ActiveSupport::TestCase
                     password_confirmation: 'godzillas',
                     email: 'testpubliclab.org')
     assert_not user.save
-    assert_equal 1, user.errors[:email].count
+    assert_not_nil user.errors[:email]
   end
 
   test 'user status changes when banned or unbanned' do

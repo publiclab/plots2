@@ -3,9 +3,6 @@
   "version": "2.1",
   "description": "PublicLab.org",
   "main": "app/assets/javascripts/application.js",
-  "scripts": {
-    "postinstall": "node -e \"try { require('fs').symlinkSync(require('path').resolve('node_modules/@bower_components'), 'public/lib', 'junction') } catch (e) { }\""
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/publiclab/plots2.git"
@@ -27,14 +24,14 @@
     "bootstrap-3-typeahead": "^4.0.0",
     "bootstrap-datepicker": "^1.6.0",
     "bootstrap-tokenfield": "^0.12.0",
-    "chart.js": "^2.7.0",
+    "chart.js": "^2.8.0",
     "cytoscape": "^3.5.0",
-    "debounce": "^1.2.0",
+    "debounce": "jywarren/debounce#patch-1",
     "file-saver": "^2.0.0",
     "font-awesome": "^4.5.0",
     "i18n-js": "^3.2.1",
     "ics": "nwcell/ics.js#^0.2.0",
-    "image-sequencer": "^2.2.3",
+    "image-sequencer": "^3.0.1",
     "inline-markdown-editor": "^0.5.0",
     "jlouvain": "upphiminn/jLouvain#3fb3aa189b8232756c4c3f3e97aaf376debf44a7",
     "jquery": "^3.0.0",

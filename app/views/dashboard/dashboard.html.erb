@@ -37,7 +37,7 @@
             <div class="blog-caption">
        
               <h4>
-                <small class="pull-right hidden-xs hidden-sm"><%= raw t('dashboard.dashboard.from_blog', :url => '/blog') %></small>
+                <small class="pull-right hidden-xs hidden-sm"><%=raw translation('dashboard.dashboard.from_blog', :url => '/blog') %></small>
                 <a class="title" href="/blog"><%= @blog.title %></a> 
                 <small><%= t('dashboard.dashboard.by') %> <a href="/profile/<%= @blog.author.username %>"><%= @blog.author.username %></a></small>
               </h4>

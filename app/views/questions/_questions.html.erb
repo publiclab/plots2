@@ -15,7 +15,7 @@
           <p><span class="label accepted">Answered</span></p>
         <% end %>
 
-        
+
 
         <span id="tags">
         <% node.tags.limit(4).each do |tag| %>
@@ -36,4 +36,4 @@
   <% end %>
   </div>
 </div>
-<div class="text-center"><%= will_paginate questions, :renderer => BootstrapPagination::Rails unless @unpaginated %></div>
+<div class="text-center"><%= will_paginate questions, :renderer => BootstrapPagination::Rails unless @unpaginated || questions.empty? %></div>

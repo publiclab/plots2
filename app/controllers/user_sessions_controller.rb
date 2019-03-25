@@ -1,5 +1,5 @@
 class UserSessionsController < ApplicationController
-  before_action :require_no_user, :only => [:new]
+  before_action :require_no_user, only: [:new]
   def new
     @title = I18n.t('user_sessions_controller.log_in')
   end
@@ -116,7 +116,7 @@ class UserSessionsController < ApplicationController
           @user_session = UserSession.new(username: params[:user_session][:username],
                                           password: params[:user_session][:password],
                                           remember_me: params[:user_session][:remember_me])
-          saved = @user_session.save do |result|
+          @user_session.save do |result|
             if result
               hash_params = ""
 
@@ -137,6 +137,9 @@ class UserSessionsController < ApplicationController
                   redirect_to return_to + hash_params
                 elsif session[:return_to]
                   return_to = session[:return_to]
+                  if return_to == '/login'
+                    return_to = '/dashboard'
+                  end
                   session[:return_to] = nil
                   redirect_to return_to + hash_params
                 elsif params[:return_to]
@@ -170,13 +173,13 @@ class UserSessionsController < ApplicationController
     @user_session.destroy
     flash[:notice] = I18n.t('user_sessions_controller.logged_out')
     prev_uri = URI(request.referer || "").path
-    redirect_to prev_uri + '?_=' + Time.now.to_i.to_s
+    redirect_to prev_uri + '?_=' + Time.current.to_i.to_s
   end
 
   def logout_remotely
-    current_user.reset_persistence_token!
+    current_user&.reset_persistence_token!
     flash[:notice] = I18n.t('user_sessions_controller.logged_out')
     prev_uri = URI(request.referer || "").path
-    redirect_to prev_uri + '?_=' + Time.now.to_i.to_s
+    redirect_to prev_uri + '?_=' + Time.current.to_i.to_s
   end
 end

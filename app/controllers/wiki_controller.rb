@@ -59,7 +59,7 @@ class WikiController < ApplicationController
     #   return redirect_to @node.path, :status => :moved_permanently
     # end
 
-    return if check_and_redirect_node(@node)
+    return if redirect_to_node_path?(@node)
 
     if !@node.nil? # it's a place page!
       @tags = @node.tags
@@ -238,7 +238,7 @@ class WikiController < ApplicationController
   # also just redirect anything else matching /____ to /wiki/____
   def root
     @node = Node.find_by(path: "/" + params[:id])
-    return if check_and_redirect_node(@node)
+    return if redirect_to_node_path?(@node)
 
     if @node
       @revision = @node.latest

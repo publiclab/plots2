@@ -55,7 +55,7 @@ class QuestionsController < ApplicationController
       @node = Node.find params[:id]
     end
 
-    redirect_to @node.path unless @node.has_power_tag('question')
+    redirect_to @node.path unless @node&.has_power_tag('question')
 
     alert_and_redirect_moderated
 
@@ -64,10 +64,8 @@ class QuestionsController < ApplicationController
     @tags = @node.power_tag_objects('question')
     @tagnames = @tags.collect(&:name)
     @users = @node.answers.group(:uid)
-      .order(Arel.sql('count(*) DESC'))
-      .collect(&:author)
-
-    # Arel.sql is used to remove a Deprecation warning while updating to rails 5.2
+                  .order(Arel.sql('count(*) DESC'))
+                  .collect(&:author)
 
     set_sidebar :tags, @tagnames
   end

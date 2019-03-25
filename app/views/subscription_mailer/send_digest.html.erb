@@ -1,13 +1,13 @@
 <header style="text-align: center;color:black">
   <img src="https://avatars2.githubusercontent.com/u/4621650?s=200&v=4" style="width: 100px;height: 100px">
-  <p style="font-size: 20px">[Public Lab] Your Weekly Digest</p>
+  <p style="font-size: 20px">[Public Lab] <%= @subject %></p>
 </header>
 
 <div style="width: 46vw;margin: 0 auto;margin-top: 54px;color: black;">
   <p style="font-size: 1.2em; font-family: sans-serif;margin-bottom: 0;color: lightgray;">Top picks for you</p>
   <hr id="first" style="border: none;height: 1px;background-color: #e2e2e2;margin-bottom: 32px;">
   <table style="font-family: sans-serif;">
-    <% @top_picks.each do |n| %>
+    <% @nodes.each do |n| %>
       <tr>
         <div style="margin-bottom: 15px">
           <h3 style="font-weight: 500;margin: 0;" style="margin: 0;"><%= n.title %></h3>

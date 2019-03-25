@@ -20,12 +20,19 @@ class User < ActiveRecord::Base
     ].freeze
   end
 
+  module Frequency
+    VALUES = [
+      DAILY = 0,
+      WEEKLY = 1
+    ].freeze
+  end
+
   attr_readonly :username
 
   acts_as_authentic do |c|
-    c.validates_format_of_email_field_options = { with: URI::MailTo::EMAIL_REGEXP }
     c.crypto_provider = Authlogic::CryptoProviders::Sha512
   end
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
 
   has_attached_file :photo, styles: { thumb: '200x200#', medium: '500x500#', large: '800x800#' },
                                     url: '/system/profile/photos/:id/:style/:basename.:extension'
@@ -309,16 +316,24 @@ class User < ActiveRecord::Base
 
   def liked_pages
     nids = NodeSelection.where(user_id: uid, liking: true)
-    .collect(&:nid)
+                        .collect(&:nid)
+
     Node.where(nid: nids)
-    .where(type: 'page')
-    .order('nid DESC')
+        .where(type: 'page')
+        .order('nid DESC')
   end
 
   def send_digest_email
-    top_picks = content_followed_in_period(1.week.ago, Time.now)
-    if top_picks.count.positive?
-      SubscriptionMailer.send_digest(id, top_picks).deliver_now
+    if has_tag('digest:daily')
+      @nodes = content_followed_in_period(1.day.ago, Time.current)
+      @frequency = Frequency::DAILY
+    else
+      @nodes = content_followed_in_period(1.week.ago, Time.current)
+      @frequency = Frequency::WEEKLY
+    end
+
+    if @nodes.size.positive?
+      SubscriptionMailer.send_digest(id, @nodes, @frequency).deliver_now
     end
   end
 
@@ -337,7 +352,7 @@ class User < ActiveRecord::Base
   end
 
   def generate_token
-    user_id_and_time = { :id => id, :timestamp => Time.now }
+    user_id_and_time = { id: id, timestamp: Time.now }
     User.encrypt(user_id_and_time)
   end
 
@@ -353,9 +368,10 @@ class User < ActiveRecord::Base
     def validate_token(token)
       begin
         decrypted_data = User.decrypt(token)
-      rescue ActiveSupport::MessageVerifier::InvalidSignature => e
+      rescue ActiveSupport::MessageVerifier::InvalidSignature
         return 0
       end
+
       if (Time.now - decrypted_data[:timestamp]) / 1.hour > 24.0
         return 0
       else
@@ -405,7 +421,8 @@ class User < ActiveRecord::Base
       questions = Node.questions.where(status: 1).pluck(:uid)
       comments = Comment.pluck(:uid)
       revisions = Revision.where(status: 1).pluck(:uid)
-      contributors = (notes + answers + questions + comments + revisions).compact.uniq.length
+
+      (notes + answers + questions + comments + revisions).compact.uniq.length
     end
 
     def watching_location(nwlat, selat, nwlng, selng)

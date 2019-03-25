@@ -1,11 +1,12 @@
 class Comment < ApplicationRecord
-  include CommentsShared # common methods for comment-like models
+  include CommentsShared
 
   belongs_to :node, foreign_key: 'nid', touch: true, counter_cache: true
-  # dependent: :destroy, counter_cache: true
   belongs_to :user, foreign_key: 'uid'
   belongs_to :answer, foreign_key: 'aid'
-  has_many :likes, :as => :likeable
+  has_many :likes, as: :likeable
+
+  has_many :replied_comments, class_name: "Comment", foreign_key: 'reply_to'
 
   validates :comment, presence: true
 
@@ -23,7 +24,7 @@ class Comment < ApplicationRecord
       .where(status: 1)
   end
 
-  def self.comment_weekly_tallies(span = 52, time = Time.now)
+  def self.comment_weekly_tallies(span = 52, time = Time.current)
     weeks = {}
     (0..span).each do |week|
       weeks[span - week] = Comment.select(:timestamp)
@@ -33,13 +34,19 @@ class Comment < ApplicationRecord
     weeks
   end
 
-  def self.contribution_graph_making(start_time = Time.now - 1.month, end_time = Time.now)
+  def self.contribution_graph_making(start = Time.now - 1.year, fin = Time.now)
     date_hash = {}
-    (start_time.to_date..end_time.to_date).each do |date|
-      daily_comments = Comment.select(:timestamp)
-                         .where(timestamp: (date.beginning_of_week.to_time.to_i)..(date.end_of_week.to_time.to_i))
+    week = start.to_date.step(fin.to_date, 7).count
+
+    while week >= 1
+      month = (fin - (week * 7 - 1).days)
+      range = (fin.to_i - week.weeks.to_i)..(fin.to_i - (week - 1).weeks.to_i)
+
+      weekly_comments = Comment.select(:timestamp)
+                         .where(timestamp: range)
                          .count
-      date_hash[date.beginning_of_week.to_time.to_i.to_f * 1000] = daily_comments
+      date_hash[month.to_f * 1000] = weekly_comments
+      week -= 1
     end
     date_hash
   end
@@ -108,7 +115,7 @@ class Comment < ApplicationRecord
   end
 
   def notify_users(uids, current_user)
-    User.where('id IN (?)', uids).each do |user|
+    User.where('id IN (?)', uids).find_each do |user|
       if user.uid != current_user.uid
         CommentMailer.notify(user, self).deliver_now
       end
@@ -130,6 +137,7 @@ class Comment < ApplicationRecord
       # notify other commenters, revisers, and likers, but not those already @called out
       already = mentioned_users.collect(&:uid) + [parent.uid]
       uids = uids_to_notify - already
+      uids = uids.select { |i| i != 0 } # remove bad comments (some early ones lack uid)
 
       notify_users(uids, current_user)
       notify_tag_followers(already + uids)
@@ -243,7 +251,7 @@ class Comment < ApplicationRecord
         comment: comment_content_markdown,
         comment_via: 1,
         message_id: message_id,
-        timestamp: Time.now.to_i)
+        timestamp: Time.current.to_i)
       if comment.save
         comment.answer_comment_notify(user)
       end
@@ -287,7 +295,7 @@ class Comment < ApplicationRecord
   end
 
   def self.get_domain(email)
-    domain = email[/(?<=@)[^.]+(?=\.)/, 0]
+    email[/(?<=@)[^.]+(?=\.)/, 0]
   end
 
   def self.yahoo_parsed_mail(mail_doc)
@@ -431,7 +439,7 @@ class Comment < ApplicationRecord
   end
 
   def self.find_email(twitter_user_name)
-    UserTag.all.each do |user_tag|
+    UserTag.where('value LIKE (?)', 'oauth:twitter%').where.not(data: nil).each do |user_tag|
       data = user_tag["data"]
       if !data.nil? && !data["info"].nil? && !data["info"]["nickname"].nil? && data["info"]["nickname"].to_s == twitter_user_name
         return data["info"]["email"]

@@ -180,7 +180,7 @@
       },
       titleModule: {
         suggestRelated: true,
-        fetchRelated: function(show) {
+        fetchRelated: debounce(function(show) {
           $.getJSON("/api/srch/notes?query=" + editor.titleModule.value(), function(response) {
             /* API provides:
             {"items":[{
@@ -205,7 +205,7 @@
               show(formatted);
             }
           });
-        }
+        }, 1000)
       },
       tagsModule: {
         remote: {

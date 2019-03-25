@@ -34,11 +34,11 @@ class OpenidController < ApplicationController
         'openid.immediate',
         'openid.cancel_url'
       ).to_h
-      if params['openid.mode']
-        oidreq = server.decode_request(permitted_params)
-      else
-        oidreq = server.decode_request(Rack::Utils.parse_query(request.env['ORIGINAL_FULLPATH'].split('?')[1]))
-      end
+      oidreq = if params['openid.mode']
+                 server.decode_request(permitted_params)
+               else
+                 server.decode_request(Rack::Utils.parse_query(request.env['ORIGINAL_FULLPATH'].split('?')[1]))
+               end
     rescue ProtocolError => e
       # invalid openid request, so just display a page with an error message
       render plain: e.to_s, status: 500
@@ -198,7 +198,7 @@ class OpenidController < ApplicationController
     else
       id_to_send = params[:id_to_send]
 
-      identity = oidreq.identity
+      identity = oidreq&.identity
       if oidreq.id_select
         if id_to_send && (id_to_send != '')
           session[:username] = id_to_send
@@ -301,7 +301,7 @@ class OpenidController < ApplicationController
   end
 
   def render_response(oidresp)
-    signed_response = server.signatory.sign(oidresp) if oidresp.needs_signing
+    server.signatory.sign(oidresp) if oidresp.needs_signing
     web_response = server.encode_response(oidresp)
     case web_response.code
     when HTTP_OK

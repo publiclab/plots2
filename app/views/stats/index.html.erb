@@ -26,20 +26,22 @@
 
 <% if @popular_tags.present? %>
     <br> <br>
-    <div id="chart1"> </div>
+
+<div id="chart1"> </div>
 <% end %>
 
 <h4 align="center"> <u>  Notes, Wikis and Comments Statistics between <%= @start.to_date%> to <%= @end.to_date%> </u></h4>
 <br>
 <div id="timeline"></div>
-<p><b><%= raw t('notes.stats.edits_per_week', :count => @edits_per_week_past_year.round(2)) %></b></p>
-<p><b><%= raw t('notes.stats.notes_per_week_past_year', :note_count => @notes_per_week_past_year.round(2)) %></b></p>
+<p><b><%= raw t('notes.stats.edits_per_week', :count => @edits_per_week_period) %></b></p>
+<p><b><%= raw t('notes.stats.notes_per_week', :note_count => @notes_per_week_period) %></b></p>
 <br>
 <i> Member registration may include spam accounts </i>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
 var options = {
     chart: {
+        
         type: "area",
         height: 500,
         foreColor: "#999",
@@ -199,21 +201,32 @@ function generateWeekWiseTimeSeries(s) {
 
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
+
 var values =  <%=  @popular_tags.values %>;
 var data =  <%= raw (@popular_tags.keys) %>;
+var page;
 
 var options = {
     chart: {
         height: 500,
         type: 'bar',
-
+    
+        active: {
+            allowMultipleDataPointsSelection: true,
+            },
+        
+        events: {
+            dataPointSelection: function(event, chartContext, config) {
+                page = data[config.selectedDataPoints];
+                parent.location='/tag/'+page;
+            }
+        }
     },
+
     plotOptions: {
         bar: {
             horizontal: true,
-
         }
-
     },
 
     dataLabels: {
