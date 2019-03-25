@@ -5,7 +5,7 @@ class StatsController < ApplicationController
       @tags[tag.tagname] = @tags[tag.tagname] || 0
       @tags[tag.tagname] += 1
     end
-    render plain: @tags.inspect, status: 200
+    @tags = @tags.group_by { |_k, v| v / 10 }
   end
 
   def range

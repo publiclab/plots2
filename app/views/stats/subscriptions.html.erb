@@ -1,7 +1,33 @@
 <div class="col-md-3">
-    <h4> About this page </h4>
-    <p> People subscribe to tags so that they can be updated when a research is posted with the tag they are subscribed to. This page shows the number of subscriptions and subscription rates on different tags. </p>
+	<h4> About this page </h4>
+	<p> People subscribe to tags so that they can be updated when a research is posted with the tag they are subscribed to. This page shows the number of subscriptions and subscription rates on different tags. </p>
 </div>
 <div class="col-md-8 col-md-offset-1">
-    <h2>Subscriptions</h2>
+	<h2>Subscriptions</h2>
+	<table class="table inline-grid">
+		<tr>
+			<thead>
+				<th>Subscriptions</th>
+				<th>Tags</th>
+			</thead>
+		</tr>
+		<% @tags.each do |range,tags| %>
+		<tr>
+			<tbody>
+				<td>
+					<%= range * 10 %> -
+					<%= range * 10 + 9 %>
+				</td>
+				<td>
+					<% tags.each do |tag| %>
+					<p>
+						<%= tag[0]%>:
+						<%=tag[1] %>
+					</p>
+					<%end%>
+				</td>
+			</tbody>
+		</tr>
+		<% end  %>
+	</table>
 </div>
