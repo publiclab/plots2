@@ -29,6 +29,7 @@ install:
 
 script:
   - docker-compose exec web bash -c "whereis google-chrome-stable"
+  - docker-compose exec web bash -c "apt-get install chromium-chromedriver"
   - docker-compose exec web bash -c "whereis chromedriver"
   - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true rake test:all"
   - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true rails test -d"
@@ -43,8 +44,8 @@ script:
 #   - export DISPLAY=:99.0
 #   - ln -s /usr/lib/chromium-browser/chromedriver ~/bin/chromedriver
 
- addons:
-   apt:
-     packages:
-       - chromium-chromedriver
+# addons:
+#   apt:
+#     packages:
+#       - chromium-chromedriver
 #   chrome: stable
