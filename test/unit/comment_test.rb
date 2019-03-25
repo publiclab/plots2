@@ -316,4 +316,12 @@ class CommentTest < ActiveSupport::TestCase
     assert_equal comments, graph.values.sum
     assert graph.class, Hash
   end
+
+  test 'find email using twitter user name' do
+    require 'yaml'
+    config = YAML.load(File.read('test/fixtures/user_tags.yml'))
+    username = config["twitter3"]["data"]["info"]["nickname"]
+    email = Comment.find_email(username)
+    assert_equal email, "01namangupta@gmail.com"
+  end
 end
