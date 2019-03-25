@@ -36,14 +36,20 @@ module ApplicationHelper
   end
 
   def emoji_info
+<<<<<<< HEAD
     emoji_names = ["thumbs-up", "thumbs-down", "laugh", "hooray", "confused", "heart"]
+=======
+    emoji_names = ["thumbs-up", "thumbs-down", "laugh",
+                   "hooray", "confused", "heart", "accepted"]
+>>>>>>> added accepted emoji for verified comments which are previously accepted answers
     emoji_image_map = {
       "thumbs-up" => "https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png",
       "thumbs-down" => "https://github.githubassets.com/images/icons/emoji/unicode/1f44e.png",
       "laugh" => "https://github.githubassets.com/images/icons/emoji/unicode/1f604.png",
       "hooray" => "https://github.githubassets.com/images/icons/emoji/unicode/1f389.png",
       "confused" => "https://github.githubassets.com/images/icons/emoji/unicode/1f615.png",
-      "heart" => "https://github.githubassets.com/images/icons/emoji/unicode/2764.png"
+      "heart" => "https://github.githubassets.com/images/icons/emoji/unicode/2764.png",
+      "accepted" => "https://github.githubassets.com/images/icons/emoji/unicode/2705.png"
     }
     [emoji_names, emoji_image_map]
   end

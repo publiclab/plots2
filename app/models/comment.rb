@@ -195,11 +195,15 @@ class Comment < ApplicationRecord
     likes_map.each do |reaction, likes|
       users = []
       likes.each do |like|
-        users << like.user.name
+        users << like.user.name if like.user.present?
       end
 
       emoji_type = reaction.underscore.humanize.downcase
-      users_string = (users.length > 1 ? users[0..-2].join(", ") + " and " + users[-1] : users[0]) + " reacted with " + emoji_type + " emoji"
+      if emoji_type == "accepted"
+        users_string = "This is a verified comment"
+      else
+        users_string = (users.length > 1 ? users[0..-2].join(", ") + " and " + users[-1] : users[0]) + " reacted with " + emoji_type + " emoji"
+      end
       user_like_map[reaction] = users_string
     end
     user_like_map
