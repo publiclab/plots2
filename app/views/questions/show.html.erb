@@ -49,12 +49,14 @@
   <hr />
 
   <% comments = @node.fetch_comments(current_user) %>
-  <h3><span id="answer-0-comment-count"><%= comments.length %></span> Comments</h3>
-    <% comments.includes(:replied_comments).order("timestamp ASC").each do |comment| %>
-      <% if comment.reply_to.nil? %>
-        <%= render :partial => "notes/comment", :locals => {:comment => comment} %>
+  <h3><span id="comment-count"><%= comments.length %></span> Comments</h3>
+    <div id="comments-list">
+      <% comments.includes(:replied_comments).order("timestamp ASC").each do |comment| %>
+        <% if comment.reply_to.nil? %>
+          <%= render :partial => "notes/comment", :locals => {:comment => comment} %>
+        <% end %>
       <% end %>
-    <% end %>
+    </div>
     <div id="answer-0-comment" style="margin-top: 30px;">
       <div id="answer-0-comment-section">
       <% if current_user %>

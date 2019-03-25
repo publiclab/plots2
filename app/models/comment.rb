@@ -6,7 +6,7 @@ class Comment < ApplicationRecord
   belongs_to :answer, foreign_key: 'aid'
   has_many :likes, as: :likeable
 
-  has_many :replied_comments, class_name: "Comment", foreign_key: 'reply_to'
+  has_many :replied_comments, class_name: "Comment", foreign_key: 'reply_to', dependent: :destroy
 
   validates :comment, presence: true
 
