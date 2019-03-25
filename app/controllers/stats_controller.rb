@@ -87,7 +87,9 @@ class StatsController < ApplicationController
 
   def users
     time
-    data = User.where(created_at: @start..@end).where(status: 1)
+    data = User.where(created_at: @start..@end)
+      .where(status: 1)
+      .select(:username, :role, :bio, :photo_file_name, :id)
     respond_to do |format|
       format.csv { send_data data.to_csv }
       format.json { send_data data.to_json, type: 'application/json; header=present', disposition: "attachment; filename=user.json" }
