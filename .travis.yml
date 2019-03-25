@@ -42,7 +42,7 @@ script:
   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then danger --verbose; fi'
   
 before_script:
-  - docker-compose exec web bash -c "ln -s /usr/lib/chromium-browser/chromedriver ~/bin/chromedriver"
+  - docker-compose exec web bash -c "ln -s /usr/lib/chromium-browser/chromedriver /usr/bin/chromedriver"
 #   - export DISPLAY=:99.0
 
 addons:
