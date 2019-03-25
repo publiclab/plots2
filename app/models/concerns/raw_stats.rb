@@ -1,5 +1,3 @@
-require 'csv'
-
 module RawStats
   extend ActiveSupport::Concern
 
