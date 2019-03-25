@@ -8,6 +8,8 @@ git:
   
 env:
   - COMPOSE_FILE=./containers/docker-compose-testing.yml
+  global:
+    - CC_TEST_REPORTER_ID=87727c395b58d1b112b6ad1acd238b40e4acf788c75d7f9a5c092b804b29bf7a
 
 before_install:
   - echo -e "repo_token:\n  $COVERALLS_REPO_TOKEN" >> ./.coveralls.yml
@@ -25,6 +27,14 @@ install:
   - docker-compose exec web yarn --ignore-engines --ignore-scripts --modules-folder ./public/lib
   - docker-compose exec web bash -c "rake assets:precompile"
   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then gem install danger danger-junit; fi'
+
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
 script:
   - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true rake test:all"
