@@ -87,10 +87,12 @@ class AdminControllerTest < ActionController::TestCase
     user = users(:bob)
     get :reset_user_password, params: { id: user.id, email: user.email }
 
-	#Testing whether email has been sent or not
- 	email = ActionMailer::Base.deliveries.last
- 	assert_equal 'Reset your password', email.subject
- 	assert_equal [user.email], email.to
+    perform_enqueued_jobs do
+      # Testing whether email has been sent or not
+      email = ActionMailer::Base.deliveries.last
+      assert_equal 'Reset your password', email.subject
+      assert_equal [user.email], email.to
+    end
 
     assert_equal "#{user.name} should receive an email with instructions on how to reset their password. If they do not, please double check that they are using the email they registered with.", flash[:notice]
     assert_redirected_to '/profile/' + user.name
@@ -165,12 +167,14 @@ class AdminControllerTest < ActionController::TestCase
     assert_equal 0, node.author.status
     assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
 
-    email = ActionMailer::Base.deliveries.last
-    assert_not_nil email.to
-    assert_not_nil email.bcc
-    assert_equal ["moderators@#{request_host}"], ActionMailer::Base.deliveries.last.to
-    # title same as initial for email client threading
-    assert_equal '[New Public Lab poster needs moderation] ' + node.title, email.subject
+    perform_enqueued_jobs do
+      email = ActionMailer::Base.deliveries.last
+      assert_not_nil email.to
+      assert_not_nil email.bcc
+      assert_equal ["moderators@#{request_host}"], ActionMailer::Base.deliveries.last.to
+      # title same as initial for email client threading
+      assert_equal '[New Public Lab poster needs moderation] ' + node.title, email.subject
+    end
   end
 
   test 'admin user should be able to mark a node as spam' do
@@ -235,21 +239,24 @@ class AdminControllerTest < ActionController::TestCase
     #    assert_equal 2 + node.subscribers.length, ActionMailer::Base.deliveries.length
 
     # emails are currently in this order, but we should make tests order-independent
+    perform_enqueued_jobs do
 
-    # test the author notification
-    email = ActionMailer::Base.deliveries.first
-    assert_equal '[Public Lab] Your post was approved!', email.subject
-    assert_equal [node.author.email], email.to
+      # test the author notification
+      email = ActionMailer::Base.deliveries.first
+      assert_equal '[Public Lab] Your post was approved!', email.subject
+      assert_equal [node.author.email], email.to
 
-    # test the moderator notification
-    email = ActionMailer::Base.deliveries[1]
-    assert_equal '[New Public Lab poster needs moderation] ' + node.title, email.subject
-    assert_equal ["moderators@#{request_host}"], email.to
+      # test the moderator notification
+      email = ActionMailer::Base.deliveries[1]
+      assert_equal '[New Public Lab poster needs moderation] ' + node.title, email.subject
+      assert_equal ["moderators@#{request_host}"], email.to
 
-    # test general subscription notices
-    # (we test the final one, but there are many)
-    email = ActionMailer::Base.deliveries.last
-    assert_equal "[PublicLab] #{node.title} (##{node.id}) ", email.subject
+      # test general subscription notices
+      # (we test the final one, but there are many)
+      email = ActionMailer::Base.deliveries.last
+      assert_equal "[PublicLab] #{node.title} (##{node.id}) ", email.subject
+
+    end
   end
 
   test "moderator user should not be able to publish a note if it's already published" do
@@ -373,11 +380,13 @@ class AdminControllerTest < ActionController::TestCase
     assert_equal 0, node.author.status
     assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
 
-    # test the moderator notification
-    email = ActionMailer::Base.deliveries.last
-    assert_equal '[New Public Lab poster needs moderation] ' + node.title, email.subject
-    assert_equal ["moderators@#{request_host}"], email.to
-    assert_not_nil email.bcc
+    perform_enqueued_jobs do
+      # test the moderator notification
+      email = ActionMailer::Base.deliveries.last
+      assert_equal '[New Public Lab poster needs moderation] ' + node.title, email.subject
+      assert_equal ["moderators@#{request_host}"], email.to
+      assert_not_nil email.bcc
+    end
   end
 
   test 'should not get /admin/queue if not logged in' do
