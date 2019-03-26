@@ -75,4 +75,4 @@ a.navbar-offset {
   }
 }
 
-.tooltip-inner { max-width: 500px }
+.tooltip-inner { width: 500px; }
