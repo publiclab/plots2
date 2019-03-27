@@ -62,7 +62,7 @@ jQuery(document).ready(function() {
 
         switch (file_type) {
         case 'image':
-          orig_image_url = file_url.replace('large','original') // not really portable, should parse response and look for "original_filename" or something
+          orig_image_url = file_url + '?s=o' // size = original
           $E.wrap('[![', '](' + file_url + ')](' + orig_image_url + ')', {'newline': true, 'fallback': data.result['filename']}) // on its own line; see /app/assets/js/editor.js
           break
         case 'csv':

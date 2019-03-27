@@ -73,13 +73,14 @@
 <hr style='clear:both;' />
 
 <div>
-  <p><a onClick='print_linkless()'><i class='fa fa-print'></i> Print without page links</a></p>
-  <p><a onClick='print_three_column();'><i class='fa fa-print'></i> Print in 3-column layout</a></p>
+  <p><a href='#' onClick='print_linkless()'><i class='fa fa-print'></i> Print without page links</a></p>
+  <p><a href='#' onClick='print_three_column();'><i class='fa fa-print'></i> Print in 3-column layout</a></p>
 </div>
 
 "><span class="caret"></span></li>
   </ul>
   <script>
+ 
     function print_three_column() {
       $('body').css('column-count', 3)
                .css('column-gap', '50px');
@@ -89,23 +90,30 @@
                .css('column-gap', 0);
     }
     jQuery(document).ready(function() {
+      
       // 304 cached response yields no data to insert, which is not useful
       jQuery.ajaxSetup({
         cache: false
       });
 
+      // opens modal to login before you can like;
       $("#open-login-like").click(function() {
         $("input[name='hash_params']").val($(this).attr("data-hashparams"));
       });
 
+      // triggers liking and unliking
       <% if current_user %>
-        $('#like-button-<%= node.id %>').on('click',<% if node.liked_by(current_user.uid) %>clickliked<% else %>clicknotliked<% end %>)
+        $('#like-button-<%= node.id %>').on('click', debounce(<% if node.liked_by(current_user.uid) %>clickliked<% else %>clicknotliked<% end %>, 200, true));
       
-        if(window.location.href.includes("#like")) {
-          $('#like-button-<%= node.id %>').click();
-        }
-        <% end %>
+        // leaving below uncommented for now - possibility useful for implement comment like functionality?
+        
+        // if(window.location.href.includes("#like")) {
+        //   $('#like-button-<%= node.id %>').click();
+        // }
+
+      <% end %>
     });
+    
     $('body').on('click', function (e) { // If there's a click event in the body
       $('[rel=popover]').each(function () { // For each popover
         /*

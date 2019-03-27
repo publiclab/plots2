@@ -34,7 +34,7 @@
 	    <%= distance_of_time_in_words(Time.at(node.latest.timestamp), Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>
           <% end %>
           | <i class="fa fa-eye"></i> <%= number_with_delimiter(node.totalviews) %> <span class="hidden-xs hidden-sm"><%= t('notes._notes.views') %></span>
-          | <i style="<% if node.likes > 0 %>color:#db4;<% else %>color:#888;<% end %>" class="fa fa-star-o"></i> <%= node.likes %>
+          | <i style="<% if node.likers.length > 0 %>color:#db4;<% else %>color:#888;<% end %>" class="fa fa-star-o"></i> <%= node.likers.length %>
         </small></p>
 
         <div class="content" style="margin:auto">
