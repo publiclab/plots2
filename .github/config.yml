@@ -7,7 +7,7 @@ newIssueWelcomeComment: |
   Thanks for opening your first issue! This space is [protected by our Code of Conduct](https://publiclab.org/conduct) - and we're here to help.
   Please follow the issue template to help us help you 👍🎉😄
   If you have screenshots [or a gif](https://publiclab.org/gifs/) to share demonstrating the issue, that's really helpful! 📸
-  Do join our [gitter channel](https://gitter.im/publiclab/publiclab) for some brainstorming discussions. 
+  Do join our [Gitter channel](https://gitter.im/publiclab/publiclab) for some brainstorming discussions. 
 # Configuration for new-pr-welcome - https://github.com/behaviorbot/new-pr-welcome
 
 # Comment to be posted to on PRs from first time contributors in your repository
