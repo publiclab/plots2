@@ -63,7 +63,7 @@ class TagControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
 
     post :create,
-         params: { 
+         params: {
          name: 'my invalid tag $_',
          nid: nodes(:one).nid
          }
@@ -76,7 +76,7 @@ class TagControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
 
     post :create,
-         params: { 
+         params: {
          name: 'with:bob',
          nid: nodes(:one).nid # authored by jeff, not bob
          }
@@ -169,6 +169,25 @@ class TagControllerTest < ActionController::TestCase
 
     # assert_equal assigns['tags'].length, 1
     assert_select '#wiki-content', 1
+  end
+
+  test 'show page for non-existent tag' do
+    get :show, params: { id: 'nonexistent' }
+    assert :success
+  end
+
+  test 'tag show, sort by views DESC' do
+    get :show, params: { id: tags(:latitude).name, order: 'views' }
+    views_array = assigns['notes'].map(&:views)
+    sorted_views_array = views_array.sort.reverse
+    assert_equal sorted_views_array, views_array
+  end
+
+  test 'tag show, sort by likes DESC' do
+    get :show, params: { id: tags(:latitude).name, order: 'likes' }
+    likes_array = assigns['notes'].map(&:cached_likes)
+    sorted_likes_array = likes_array.sort.reverse
+    assert_equal sorted_likes_array, likes_array
   end
 
   test 'tag show range' do
@@ -329,7 +348,7 @@ class TagControllerTest < ActionController::TestCase
 
   test 'tag contributors' do
     get :show,
-        params: { 
+        params: {
           node_type: 'contributors',
           id: Tag.last.name
         }
@@ -525,6 +544,14 @@ class TagControllerTest < ActionController::TestCase
     assert_select 'table' # ensure a table is shown
   end
 
+  test 'shows embeddable grid of tagged content with powertag' do
+    get :gridsEmbed, params: { tagname: 'nodes:awesome' }
+
+    assert_response :success
+    assert_select 'table' # ensure a table is shown
+    assert_equal 3, css_select('tr').length # ensure it has 3 rows
+  end
+
   test 'rss with tagname and authorname' do
     get :rss_for_tagged_with_author, params: { tagname: 'test*', authorname: 'jeff', format: 'rss' }
     assert :success
@@ -605,11 +632,57 @@ class TagControllerTest < ActionController::TestCase
     end
     assert_not ActionMailer::Base.deliveries.collect(&:subject).include?("#{node.title} (#{tagname})")
   end
-  
+
   test 'should render a text/pain when a tag is deleted through post request xhr' do
     user = UserSession.create(users(:jeff))
     node_tag = node_tags(:awesome)
     post :delete, params: { nid: node_tag.nid, tid: node_tag.tid, uid: node_tag.uid}, xhr: true
     assert_equal "#{node_tag.tid}", @response.body
+  end
+
+  test 'add_parent method adds a tag parent' do
+    user = UserSession.create(users(:admin))
+    get :add_parent, params: { name: Tag.last.name, parent: Tag.first.name }
+    assert_response :redirect
+    assert_equal Tag.first.name, Tag.last.parent
+    # flash[:notice] = "Tag parent added."
+    # flash[:error] = "There was an error adding a tag parent."
+    # redirect_to '/tag/' + @tag.name + '?_=' + Time.now.to_i.to_s
+  end
+
+  test 'add_parent method works with non-existent parent' do
+    user = UserSession.create(users(:admin))
+    get :add_parent, params: { name: Tag.last.name, parent: Tag.first.name }
+    assert_response :redirect
+    assert_equal Tag.first.name, Tag.last.parent
+    get :index
+    assert_response :success
+  end
+
+  test 'sort according to followers ascending' do
+    get :index, params: { :sort => "followers", :order => "asc" }
+    tags_array = assigns(:tags)
+    followers_array = []
+    tags_array.each do |i|
+      followers_array << Tag.follower_count(i.name)
+    end
+    sorted_followers_array = followers_array.sort
+    assert_equal sorted_followers_array, followers_array
+  end
+
+  test 'sort according to followers descending' do
+    get :index, params: { :sort => "followers", :order => "desc" }
+    tags_array = assigns(:tags)
+    followers_array = []
+    tags_array.each do |i|
+      followers_array << Tag.follower_count(i.name)
+    end
+    sorted_followers_array = followers_array.sort.reverse
+    assert_equal sorted_followers_array, followers_array
+  end
+
+  test 'graph data for cytoscape' do
+    get :graph
+    assert_response :success
   end
 end

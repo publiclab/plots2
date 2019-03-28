@@ -1,7 +1,8 @@
 module SearchHelper
   def create_nav_links(active_page, query)
     links = [
-      { section: "search-notes", text: "Notes", path: "/search/#{query}" },
+      { section: "search-all", text: "All Content", path: "/search/#{query}" },
+      { section: "search-notes", text: "Notes", path: "/search/notes/#{query}" },
       { section: "search-wikis", text: "Wikis", path: "/search/wikis/#{query}/" },
       { section: "search-profiles", text: "Profiles", path: "/search/profiles/#{query}/" },
       { section: "search-tags", text: "Tags", path: "/search/tags/#{query}/" },

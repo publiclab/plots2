@@ -1,0 +1,29 @@
+<% unless  @wikis.blank? %>
+  <h3>WIKIS</h3>
+  <table class="table inline-grid">
+    <col width="80">
+    <tr>
+      <th> </th>
+      <th>Posted by</th>
+      <th>Views</th>
+    </tr>
+
+    <% @wikis.each_with_index do |wiki, ndx| %>
+      <% if ndx < 9 %>
+        <tr>
+          <td style="width:40%"><a href=<%= "#{wiki.path}" %>><%= wiki.title %></a></td>
+          <td><%= wiki.author.name %></td>
+          <td><%= wiki.views%></td>
+        </tr>
+      <% end %>
+    <% end %>
+
+    <% if @wikis.count > 9 %>
+      <tr>
+        <td>
+          <b><%= link_to "More matching wikis >>", "/search/wikis/#{params[:query]}" %></b>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>

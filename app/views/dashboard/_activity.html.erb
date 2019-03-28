@@ -1,7 +1,6 @@
 <h3 id="activity-header"><i><%= t('dashboard._activity.activity') %></i></h3>
 
 <div class="activity-menu">
-  <a href="/post" class="btn btn-sm btn-default pull-right" type="button"><i class="fa fa-plus-circle"></i><span class="hidden-xs"> <%= t('dashboard._activity.share_work') %></span></a>
   <a style="margin-right:2px;" href="/dashboard" class="btn btn-sm btn-default pull-right" type="button"><i class="fa fa-refresh"></i></a>
 </div>
 
@@ -9,7 +8,7 @@
   <div class="btn-group">
 
     <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <span class="node-type-filter"><%= t('dashboard._activity.all_updates') %></span> 
+      <span class="node-type-filter"><%= t('dashboard._activity.all_updates') %></span>
       <span class="caret"></span>
     </button>
 
@@ -37,10 +36,10 @@
 
     </ul>
 
-  </div> &nbsp; 
-  <span class="hidden-xs"><%= t('dashboard._activity.from_other') %> <a href=""><%= t('dashboard._activity.community_scientists') %></a></span> <%= t('dashboard._activity.past_week') %> 
+  </div> &nbsp;
+  <span class="hidden-xs"><%= t('dashboard._activity.from_other') %> <a href=""><%= t('dashboard._activity.community_scientists') %></a></span> <%= t('dashboard._activity.past_week') %>
   <% if current_user %>
-    <span class="hidden-xs">|<a href="/profile/<%= current_user.username %>"><%= t('dashboard._activity.your_work') %></a></span> 
+    <span class="hidden-xs">|<a href="/profile/<%= current_user.username %>"><%= t('dashboard._activity.your_work') %></a></span>
   <% end %>
   <!-- (2 responses) -->
 </div>
@@ -58,7 +57,7 @@
     <% end %>
 </span>
 </div>
-
+<%= render partial: 'tag/subscribe_button', locals:{tags: Tag.trending} %>
 <div class="activity">
 
   <div class="row">

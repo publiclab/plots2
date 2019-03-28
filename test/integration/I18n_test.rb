@@ -10,7 +10,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       # get '/change_locale/' + lang.to_s
       # follow_redirect!
       # assert_select 'p[class=facebook-summary]', I18n.t('layout._header.summary')
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -42,7 +42,7 @@ class I18nTest < ActionDispatch::IntegrationTest
   test 'should choose i18n for subscriptions' do
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -58,7 +58,7 @@ class I18nTest < ActionDispatch::IntegrationTest
   test 'should choose i18n for dashboard/_activity' do
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -73,7 +73,7 @@ class I18nTest < ActionDispatch::IntegrationTest
   test 'should choose i18n for dashboard/_header' do
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -89,7 +89,7 @@ class I18nTest < ActionDispatch::IntegrationTest
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s
       follow_redirect!
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -106,7 +106,7 @@ class I18nTest < ActionDispatch::IntegrationTest
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s
       follow_redirect!
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -122,7 +122,7 @@ class I18nTest < ActionDispatch::IntegrationTest
            status: 4
           }
       get '/dashboard'
-      assert_select 'a[class=?]', 'btn btn-default btn-xs', I18n.t('dashboard._node_moderate.approve')
+      assert_select 'a[class=?]', 'btn btn-default btn-xs', I18n.t('dashboard.moderate.approve')
     end
   end
 
@@ -130,7 +130,7 @@ class I18nTest < ActionDispatch::IntegrationTest
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s
       follow_redirect!
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -153,7 +153,7 @@ class I18nTest < ActionDispatch::IntegrationTest
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s
       follow_redirect!
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -177,7 +177,7 @@ class I18nTest < ActionDispatch::IntegrationTest
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s
       follow_redirect!
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -206,7 +206,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -226,7 +226,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -267,7 +267,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -286,7 +286,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -317,7 +317,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -337,7 +337,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -376,7 +376,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -406,7 +406,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      post '/user_sessions', 
+      post '/user_sessions',
          params: {
           user_session: {
             username: users(:jeff).username,
@@ -427,16 +427,6 @@ class I18nTest < ActionDispatch::IntegrationTest
 
       get '/blog'
       assert_select 'p', I18n.t('tag.blog.stories_from_community')
-    end
-  end
-
-  test 'should choose i18n for tag/contributors-index' do
-    available_testing_locales.each do |lang|
-      get '/change_locale/' + lang.to_s
-      follow_redirect!
-
-      get '/contributors'
-      assert_select 'a[href=?]', '/post', I18n.t('tag.contributors-index.write_research_note')
     end
   end
 
@@ -485,7 +475,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -524,7 +514,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,

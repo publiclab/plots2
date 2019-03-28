@@ -1,7 +1,7 @@
 <% unless @wildcard %>
 <p style="clear:both;padding-top:8px;">
   <a style="margin-bottom:6px;"
-     class="btn btn-primary"
+     class="btn btn-primary requireLogin"
      href="/post?tags=question:<%= params[:id].gsub('question:', '') %>&template=question&redirect=question">
       <i class="fa fa-white icon-question-circle"></i>
       <%= raw t('tag.show.ask_question', :tag => params[:id].gsub('question:', '')) %>

@@ -1,10 +1,14 @@
 <link href="/lib/woofmark/dist/woofmark.min.css" rel="stylesheet">
-<link href="/lib/horsey/dist/horsey.min.css" rel="stylesheet">
 <link href="/lib/bootstrap-tokenfield/dist/css/tokenfield-typeahead.min.css" rel="stylesheet">
 <link href="/lib/bootstrap-tokenfield/dist/css/bootstrap-tokenfield.min.css" rel="stylesheet">
 
+<!-- required for MapModule -->
+<link href="/lib/leaflet/dist/leaflet.css" rel="stylesheet">
+<script src="/lib/leaflet/dist/leaflet.js"></script>
+<link href="/lib/leaflet-blurred-location/dist/Leaflet.BlurredLocation.css" rel="stylesheet">
+<script src="/lib/leaflet-blurred-location/dist/Leaflet.BlurredLocation.js"></script>
+
 <!-- required for TagsModule -->
-<script src="/lib/typeahead.js/dist/typeahead.jquery.js"></script>
 <script src="/lib/typeahead.js/dist/bloodhound.js"></script>
 <script src="/lib/bootstrap-tokenfield/dist/bootstrap-tokenfield.js"></script>
 
@@ -13,9 +17,14 @@
 <link href="/lib/publiclab-editor/dist/PublicLab.Editor.css" rel="stylesheet">
 <script src="/lib/publiclab-editor/dist/PublicLab.Editor.js"></script>
 
-<link href="/lib/publiclab-editor/dist/PublicLab.Editor.css" rel="stylesheet">
+<%= javascript_include_tag('/lib/leaflet-spin/example/spin/dist/spin.min.js') %>
+<%= javascript_include_tag('/lib/leaflet-spin/example/leaflet.spin.min.js') %>
 
-<script src="/lib/publiclab-editor/dist/PublicLab.Editor.js"></script>
+<style type="text/css">
+  .leaflet-marker-icon {
+    background: url("https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-black.png") ; 
+  }
+</style>
 
 <div class="pl-editor">
 
@@ -29,12 +38,7 @@
   <div class="ple-content">
 
     <!-- errors module -->
-    <div class="ple-module container">
-
-      <div class="col-md-3"></div>
-      <div class="ple-errors col-md-9"></div>
-
-    </div>
+	  <div class="ple-errors"></div>
     <!-- end errors module -->
 
     <!-- title module -->
@@ -78,12 +82,70 @@
     </div>
     <!-- end main_image module -->
 
+   <!-- Map Module start-->
+    <div class="ple-module-map ple-module container">
+
+      <div class="ple-module-guide col-md-3">
+        <h2>3</h2>
+      </div>
+
+      <div class="ple-module-content col-md-9">
+          <button id="location_button" class="btn btn-lg btn-default"><i class="fa fa-map-marker" aria-hidden="true"></i> Add a location</button>
+          <p class="ple-help"><span class="ple-help-minor">Search location through place-name , latitude and longitude or by panning the map .</span></p>
+
+          <div id="map_content">    
+            <div class="row">
+              <div class="col-md-6"> 
+                <div id="map" class="leaflet-map" style="width: 100% ; height: 300px; margin-bottom:8px;"></div>
+                </div>
+                <div class="col-md-6">
+                  <label>By place name</label>
+                    <p>
+                      <input id="placenameInput" type="text" class="form-control" />
+                    </p>
+                     <p>
+                      <label>Or by entering coordinates</label>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <p><label>
+                            Latitude
+                            <input id="lat" type="text" class="form-control" placeholder="Latitude" />
+			  </label></p>
+                        </div>
+                        <div class="col-md-6">
+                          <p><label>
+                            Longitude
+                            <input id="lng" type="text" class="form-control" placeholder="Longitude" />
+                          </label></p>
+                        </div>
+                      </div>
+                    </p>
+                    <br>
+                    <p><button class="btn btn-lg btn-default" onclick="editor.mapModule.blurredLocation.geocodeWithBrowser(true);">
+                      <div id="ldi-geocode-button">          
+                        <i class="fa fa-compass"></i> Use current location
+                      </div>
+                    </button></p>
+
+                     <br>
+                     <label>
+                       <input id="obscureLocation" type="checkbox"  onchange='editor.mapModule.blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);'>
+                        Blur my location
+                     </label>
+                     <a href="https://publiclab.org/location-privacy">Learn more</a>
+                </div>   
+            </div>
+          </div>
+      </div>
+    </div>
+    <!-- Map Module end -->  
+
 
     <!-- body module -->
     <div class="ple-module-body ple-module container">
 
       <div class="ple-module-guide col-md-3">
-        <h2>3</h2>
+        <h2>4</h2>
       </div>
 
       <div class="ple-module-content col-md-9 container">
@@ -98,7 +160,7 @@
     <div class="ple-module-tags ple-module container">
 
       <div class="ple-module-guide col-md-3">
-        <h2>4</h2>
+        <h2>5</h2>
       </div>
 
       <div class="ple-module-content col-md-9">
@@ -169,7 +231,7 @@
         <span id="newOpts" style="display: inline-block;">
         <span id="text" style="display: none; color:red;">
           Others won't see your post yet
-          (<a href="https://publiclab.org/draft-feature" targrt="_blank">?</a>) &nbsp; &nbsp;</span>
+          (<a href="https://publiclab.org/draft-feature" target="_blank">?</a>) &nbsp; &nbsp;</span>
           <span class="checkbox">
             <label>
               <input type="checkbox" id="myCheck" onclick="draftCheck()" />
@@ -187,8 +249,15 @@
 </div>
 <script>
 
-  var editor;
+  $( document ).ready(function() {
+      $("#map_content").hide() ;
+      $("#location_button").click(function(){
+          $("#map_content").toggle() ;
+      }) ;
+  });
 
+  var editor;
+ 
   (function() {
 
     editor = new PL.Editor({
@@ -196,7 +265,10 @@
       data: {
         token: $('meta[name="csrf-token"]').attr('content')
       },
-
+      <% if @lat and @lon %>
+       lat: <%= @lat %> , 
+       lon: <%= @lon %> ,
+      <% end %>
       textarea:    $('.ple-textarea')[0],
 
       <% if @main_image %>
@@ -238,6 +310,8 @@
         }
       },
 
+      mapModule: true,
+
       mainImageModule: {
         uid: <%= current_user.id %><% if @node && @node.id %>,
 	nid: <%= @node.id %><% end %>,
@@ -254,7 +328,7 @@
 
       titleModule: {
         suggestRelated: true,
-        fetchRelated: function(show) {
+        fetchRelated: debounce(function(show) {
           $.getJSON("/api/srch/notes?query=" + editor.titleModule.value(), function(response) {
             /* API provides:
             {"items":[{
@@ -279,7 +353,7 @@
               show(formatted);
             }
           });
-        }
+        }, 1000)
       },
 
       tagsModule: {
@@ -291,6 +365,7 @@
         }
       }
     });
+
   })();
 
   $('.legacy-button').click(function onLegacyClick(event) {

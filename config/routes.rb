@@ -52,6 +52,7 @@ Plots2::Application.routes.draw do
   get 'people/:tagname' => 'users#list'
   get 'signup' => 'users#new'
   get 'home' => 'home#front'
+  get 'verify/:token' => 'users#verify_email'
   resources :relationships, only: [:create, :destroy]
 
   get '/wiki/:id/comments', to: 'wiki#comments'
@@ -86,10 +87,14 @@ Plots2::Application.routes.draw do
   get 'subscribe/:type/:name' => 'subscription#add'
   get 'subscriptions' => 'subscription#index'
   get 'subscriptions/digest' => 'subscription#digest'
-
+  get 'subscribe/multiple/:type/:tagnames' => 'subscription#multiple_add'
+  post 'subscribe/multiple/:type/:tagnames' => 'subscription#multiple_add'
+  get 'subscribe/multiple/:type' => 'subscription#multiple_add'
+  post 'subscribe/multiple/:type' => 'subscription#multiple_add'
   get 'wiki/stale' => 'wiki#stale'
   get 'wiki/new' => 'wiki#new'
   get 'wiki/replace/:id' => 'wiki#replace'
+  post 'wiki/replace/:id' => 'wiki#replace'
   get 'wiki/popular' => 'wiki#popular'
   get 'wiki/liked' => 'wiki#liked'
   post 'wiki/create' => 'wiki#create'
@@ -98,12 +103,13 @@ Plots2::Application.routes.draw do
   get 'w/:id' => 'wiki#show'
 
   # these need precedence for tag listings
+  get 'tag/graph.json' => 'tag#graph_data'
+  get 'stats/graph' => 'tag#graph'
   get 'feed/tag/:tagname' => 'tag#rss'
   get ':node_type/tag/:id/author/:author' => 'tag#show_for_author'
   get 'tag/:id/author/:author' => 'tag#show_for_author'
   get ':node_type/tag(/:id)(/:start)(/:end)' => 'tag#show'
   get 'contributors/:id(/:start)(/:end)' => 'tag#show', node_type: 'contributors'
-  get 'contributors' => 'tag#contributors_index'
   get 'feed/tag/:tagname/author/:authorname' => 'tag#rss_for_tagged_with_author'
   get 'wiki/raw/:id' => 'wiki#raw'
   get 'wiki/revisions/:id' => 'wiki#revisions'
@@ -172,7 +178,8 @@ Plots2::Application.routes.draw do
   get "search/places/:query",      :to => "search#places"
   get "search/tags/:query",        :to => "search#tags"
   get "search/",                   :to => "search#new"
-  get "search/:query",             :to => "search#notes"
+  get "search/notes/:query",       :to => "search#notes"
+  get "search/:query",             :to => "search#all_content"
 
 
   get 'widget/:id' => 'tag#widget'
@@ -181,6 +188,7 @@ Plots2::Application.routes.draw do
   get 'tags' => 'tag#index'
   get 'tags/:search' => 'tag#index'
   post 'tag/suggested/:id' => 'tag#suggested'
+  get 'tag/parent' => 'tag#add_parent'
   get 'tag/author/:id.json' => 'tag#author'
   post 'tag/create/:nid' => 'tag#create'
   get 'tag/create/:nid' => 'tag#create'
@@ -191,6 +199,7 @@ Plots2::Application.routes.draw do
   put 'tag/remove_tag/:id' => 'tag#remove_tag'
   put 'tag/remove_all_tags' => 'tag#remove_all_tags'
   get 'tag/:id' => 'tag#show'
+  get 'tag/:id/stats' => 'tag#stats', :as => :tag_stats
   get 'locations/form' => 'tag#location'
   get 'locations/modal' => 'tag#location_modal'
   get 'embed/grid/:tagname' => 'tag#gridsEmbed'
@@ -236,6 +245,20 @@ Plots2::Application.routes.draw do
   get 'stats' => 'stats#index'
   get 'stats/range/:start/:end' => 'stats#range'
   get 'stats/subscriptions' => 'stats#subscriptions'
+  get 'stats/notes' => 'stats#notes'
+  get 'stats/notes/:start/:end' => 'stats#notes'
+  get 'stats/wikis' => 'stats#wikis'
+  get 'stats/wikis/:start/:end' => 'stats#wikis'
+  get 'stats/comments' => 'stats#comments'
+  get 'stats/comments/:start/:end' => 'stats#comments'
+  get 'stats/maps' => 'stats#maps'
+  get 'stats/maps/:start/:end' => 'stats#maps'
+  get 'stats/users' => 'stats#users'
+  get 'stats/users/:start/:end' => 'stats#users'
+  get 'stats/questions' => 'stats#questions'
+  get 'stats/questions/:start/:end' => 'stats#questions'
+  get 'stats/answers' => 'stats#answers'
+  get 'stats/answers/:start/:end' => 'stats#answers'
   get 'feed' => 'notes#rss'
   get 'rss.xml' => 'legacy#rss'
 
@@ -263,6 +286,7 @@ Plots2::Application.routes.draw do
   get 'admin/unmoderate/:id' => 'admin#unmoderate'
   get 'admin/publish_comment/:id' => 'admin#publish_comment'
   get 'admin/mark_comment_spam/:id' => 'admin#mark_comment_spam'
+  get 'smtp_test' => 'admin#smtp_test'
 
   get 'post' => 'editor#post'
   post 'post' => 'editor#post'
@@ -312,6 +336,7 @@ Plots2::Application.routes.draw do
   post '/comment/like' => 'comment#like_comment'
   get '/comment/create/:id' => 'comment#create'
   post 'comment/create/:id' => 'comment#create'
+
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 

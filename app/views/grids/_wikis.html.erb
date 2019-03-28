@@ -1,7 +1,9 @@
 <table class="table inline-grid <%= type %>-grid <%= className %> <%= className %>-<%= randomSeed %>">
   <tr>
-    <%= raw t('wiki._wikis.table_content') %>
-    <th><i class="fa fa-star-o"></i> <%= t('wiki._wikis.likes') %></th>
+    <th>Title</th>
+    <th>Updated</th>
+    <th>Version</th>
+    <th>Views</th>
   </tr>
   <% nodes.each do |wiki| %>
     <tr>

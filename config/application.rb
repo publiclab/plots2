@@ -55,7 +55,7 @@ module Plots2
     # Enable the asset pipeline
     config.assets.enabled = true
     
-    I18n.available_locales = [:en, :de]
+    I18n.available_locales = [:en, :de, "zh-CN"]
     config.i18n.default_locale = :en 
     
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
@@ -82,13 +82,8 @@ module Plots2
 
     ActiveRecord::SessionStore::Session.table_name = 'rsessions'
 
-    require Rails.root + 'lib/open_id_authentication/open_id_authentication.rb'
-
-    config.middleware.use OpenIdAuthentication
-
     config.after_initialize do
       OpenID::Util.logger = Rails.logger
-      ActionController::Base.send :include, OpenIdAuthentication
     end
 
     config.autoload_paths += %W(
@@ -99,6 +94,12 @@ module Plots2
     # Search API configuration
     config.paths.add File.join('app','api'), glob: File.join('**', '*.rb')
     config.autoload_paths += Dir[Rails.root.join('app', 'api', '*')]
+
+    Raven.configure do |config|
+      # DSN should be an ENV variable!
+      config.dsn = 'https://0490297edae647b3bd935bdb4658da54:3d1a74cf68744c53b5e70484bece84d1@sentry.io/1410626'
+      config.environments = %w(production)
+    end
 
   end
 end

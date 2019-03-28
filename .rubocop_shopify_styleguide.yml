@@ -496,14 +496,14 @@ Style/WordArray:
   MinSize: 0
   WordRegex: !ruby/regexp /\A[\p{Word}\n\t]+\z/
 
-Lint/BlockAlignment:
+Layout/BlockAlignment:
   EnforcedStyleAlignWith: either
   SupportedStylesAlignWith:
   - either
   - start_of_block
   - start_of_line
 
-Lint/DefEndAlignment:
+Layout/DefEndAlignment:
   EnforcedStyleAlignWith: start_of_line
   SupportedStylesAlignWith:
   - start_of_line
@@ -698,7 +698,7 @@ Style/EvenOdd:
 Layout/InitialIndentation:
   Enabled: true
 
-Style/FlipFlop:
+Lint/FlipFlop:
   Enabled: true
 
 Style/IfInsideElse:
@@ -890,7 +890,7 @@ Lint/AmbiguousRegexpLiteral:
 Lint/CircularArgumentReference:
   Enabled: true
 
-Lint/ConditionPosition:
+Layout/ConditionPosition:
   Enabled: true
 
 Lint/Debugger:
