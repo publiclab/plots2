@@ -1,3 +1,4 @@
+/* eslint-disable no-empty-label */
 /*
 
 Jasmine-Ajax - v3.2.0: a set of helpers for testing AJAX requests under the Jasmine

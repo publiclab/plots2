@@ -29,9 +29,11 @@ class QuestionsController < ApplicationController
 
   # a form for new questions, at /questions/new
   def new
-    if params[:n] && !params[:body] # use another node body as a template
-      node = Node.find(params[:n])
-      params[:body] = node.body if node
+    # use another node body as a template
+    node_id = params[:n].to_i
+    if node_id && !params[:body] && Node.exists?(node_id)
+      node = Node.find(node_id)
+      params[:body] = node.body
     end
     if current_user.nil?
       redirect_to new_user_session_path(return_to: request.path)
@@ -53,7 +55,7 @@ class QuestionsController < ApplicationController
       @node = Node.find params[:id]
     end
 
-    redirect_to @node.path unless @node.has_power_tag('question')
+    redirect_to @node.path unless @node&.has_power_tag('question')
 
     alert_and_redirect_moderated
 
@@ -62,10 +64,8 @@ class QuestionsController < ApplicationController
     @tags = @node.power_tag_objects('question')
     @tagnames = @tags.collect(&:name)
     @users = @node.answers.group(:uid)
-      .order(Arel.sql('count(*) DESC'))
-      .collect(&:author)
-
-    # Arel.sql is used to remove a Deprecation warning while updating to rails 5.2
+                  .order(Arel.sql('count(*) DESC'))
+                  .collect(&:author)
 
     set_sidebar :tags, @tagnames
   end

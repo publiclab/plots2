@@ -64,5 +64,9 @@ class RoutesTest < ActionDispatch::IntegrationTest
     test "test post request for updating an answer" do
     	assert_routing({path: '/answers/update/1', method: 'post' }, {controller: 'answers', action: 'update', id: '1' })
     end
+
+    test "test get request for liking an answer" do
+        assert_routing({path: 'questions/:username/:date/:topic/answer_like/likes/:aid', method: 'get'}, {controller: 'answer_like', action: 'likes', username: ":username", date: ":date", topic: ":topic", aid: ":aid"})
+    end
 	
 end

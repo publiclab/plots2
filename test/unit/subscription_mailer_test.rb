@@ -44,7 +44,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     email = ActionMailer::Base.deliveries.last
     assert_equal ["notifications@#{request_host}"], email.from
     assert_equal [node.author.email], email.to
-    assert_equal "[PublicLab] #{user.username} liked your research note", email.subject
+    assert_equal "[PublicLab] #{user.username} liked your research note (##{node.id})", email.subject
     assert email.body.include?("Public Lab contributor #{user.username} (https://#{request_host}/profile/#{user.username}) just liked your research note")
   end
 
@@ -59,7 +59,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     email = ActionMailer::Base.deliveries.last
     assert_equal ["notifications@#{request_host}"], email.from
     assert_equal [node.author.email], email.to
-    assert_equal "[PublicLab] #{user.username} liked your question", email.subject
+    assert_equal "[PublicLab] #{user.username} liked your question (##{node.id})", email.subject
     assert email.body.include?("Public Lab contributor #{user.username} (https://#{request_host}/profile/#{user.username}) just liked your question")
   end
 
@@ -67,7 +67,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     node = nodes(:one)
     node_tags = node.tags
     new_tag = tags(:spam)
-    user = drupal_users(:spammer)
+    user = users(:spammer)
     users_not_following_tags = new_tag.followers_who_dont_follow_tags(node_tags)
     users_to_email = users_not_following_tags.reject { |u| u.uid == user.uid }
     u_e = Tag.followers('everything')
@@ -81,7 +81,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     assert_equal ["notifications@#{request_host}"], email.from
     assert_equal ["notifications@#{request_host}"], email.to
     assert email.bcc.include?(users_to_email.last.email)
-    assert_equal "#{node.title} (#{new_tag.name})", email.subject
+    assert_equal "#{node.title} (##{node.id})", email.subject
     assert email.body.include?("was tagged with")
   end
 end

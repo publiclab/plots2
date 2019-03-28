@@ -19,7 +19,7 @@ services:
     ports:
       - "127.0.0.1:4001:4001"
     build: ..
-    command: /bin/bash -c "sleep 5 && /usr/local/bundle/bin/passenger start --max-pool-size 9 --min-instances 9 -p 4001"
+    command: /bin/bash -c "sleep 5 && /usr/local/bundle/bin/passenger start --max-request-queue-size 200 --max-pool-size 7 --min-instances 7 -p 4001"
     environment:
       - RAILS_ENV=${RAILS_ENV}
       - SECRET_KEY_BASE=${SECRET_KEY_BASE}
@@ -37,6 +37,12 @@ services:
       - OAUTH_FACEBOOK_APP_KEY=${OAUTH_FACEBOOK_APP_KEY}
       - OAUTH_FACEBOOK_APP_SECRET=${OAUTH_FACEBOOK_APP_SECRET}
       - REDIS_URL=redis://redis:6379/0
+      - TWITTER_CONSUMER_KEY=${TWITTER_CONSUMER_KEY}
+      - TWITTER_CONSUMER_SECRET=${TWITTER_CONSUMER_SECRET}
+      - TWITTER_ACCESS_TOKEN=${TWITTER_ACCESS_TOKEN}
+      - TWITTER_ACCESS_TOKEN_SECRET=${TWITTER_ACCESS_TOKEN_SECRET}
+      - WEBSITE_HOST_PATTERN=${WEBSITE_HOST_PATTERN}
+      - TWEET_SEARCH=${TWEET_SEARCH}
     volumes:
       - ..:/app
       - /etc/passwd:/etc/passwd:ro
@@ -47,8 +53,6 @@ services:
     restart: on-failure:5
   redis:
     image: redis:latest
-    ports:
-      - '127.0.0.1:6379:6379'
     command: redis-server
   sidekiq:
     build: ..
@@ -77,3 +81,4 @@ services:
       - EMAIL_PASSWORD=${EMAIL_PASSWORD}
     volumes:
       - ..:/app
+    restart: always

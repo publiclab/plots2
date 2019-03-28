@@ -1,4 +1,6 @@
 <%= javascript_include_tag 'leaflet-blurred-location/dist/Leaflet.BlurredLocation.js' %>
+<%= javascript_include_tag('/lib/leaflet-spin/example/spin/dist/spin.min.js') %>
+<%= javascript_include_tag('/lib/leaflet-spin/example/leaflet.spin.min.js') %>
 
 <div class="container blurred-location">
 
@@ -12,6 +14,17 @@
   <div id="map" class="leaflet-map" style="width: 100%; height: 300px; margin-bottom:10px;"></div>
 
   <p>
+    <h3><strong>Scale</strong></h3>
+    <div class="slidecontainer" style="border-bottom: 2px solid #ccc;">
+      <b><p style="display: inline">Country</p></b>
+      <b><p style="display: inline; float: right">Building</p></b>
+      <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="5" data-slider-max="18" data-slider-step="1" data-slider-value="6" style="width: 100%"/>
+    </div>
+  </p>
+
+  <br>
+
+  <p>   
     <b>Or by co-ordinates</b>
     <div class="row">
       <div class="col-md-6">
@@ -28,7 +41,7 @@
 
   <button data-dismiss="modal" class="btn btn-lg btn-primary" onclick="saveLocation()">Save</button>
 
-  <button id="browserLocation" class="btn btn-default btn-lg" onclick='blurredLocation.geocodeWithBrowser();'>Auto-locate me</button>
+  <button id="ldi-geocode-button" class="btn btn-default btn-lg" onclick='blurredLocation.geocodeWithBrowser(true);'>Auto-locate me</button>
   &nbsp; <label>
     <input id="obscureLocation" type="checkbox" checked onchange='blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);'>
     Blur my location
@@ -54,6 +67,15 @@
     blurredLocation = new BlurredLocation(options);
 
     blurredLocation.panMapToGeocodedLocation("placenameInput");
+
+     var changeZoom = function() {
+        var zoom = slider.getValue();
+        blurredLocation.map.setZoom(zoom);
+      }
+
+      var slider = $('#ex1').slider()
+        .on('slide', changeZoom)
+        .data('slider');
 
   })();
     

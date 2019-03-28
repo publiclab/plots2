@@ -1,172 +1,50 @@
 <script src="/assets/wikis.js" type="text/javascript"></script>
 
 <div class="col-md-12">
-  <% if @wiki %>
-    <div id="wiki-content">
-      <% if @wiki.main_image %>
-        <div class="row">
-          <div class="col-md-6" style="margin-bottom:10px;">
-            <%= image_tag(@wiki.main_image.path, class: "img-responsive") %>
-          </div>
-          <div class="col-md-6">
-            <h1 style="color:#333;"><%= link_to @wiki.latest.title, "/wiki/#{params[:id]}" %></h1>
-            <%= @wiki.latest.render_body.match(/<p>(.+)<\/p>/).to_a.try(:first).to_s.html_safe %>
-            <% if @wiki.latest.render_body.split('</p>').length > 2 %><a class="btn btn-lg btn-default" href="/wiki/<%= params[:id] %>">Learn more on the wiki page</a><% end %>
-          </div>
-        </div>
-      <% else %>
-        <h1><%= @wiki.latest.title %></h1>
-        <p><%= @wiki.latest.render_body.html_safe.match(/<p>(.+)<\/p>/).to_a.try(:first).to_s.html_safe %></p>
-        <p><%= link_to("Learn more on the wiki page", "/wiki/#{params[:id]}") if @wiki.latest.render_body.html_safe.match(/<p>(.+)<\/p>/).to_a.length > 1 %></p>
-      <% end %>
-    </div>
-  <% elsif @wildcard %>
-    <% if @node_type == "questions"%>
-      <p>Here are all asked and answered questions.</p>
-    <% elsif @node_type == "note" && params[:id].match("activity:") %>
-      <p>These are completed activities.</p>
-    <% elsif @node_type == "note" && params[:id].match("replication:") %>
-      <p>These are the attempted activities.</p>
-    <% end %>
-    <p><i>This is a wildcard tag search. Please enter a tag without wildcards to display lead wiki pages.</i></p>
-    <p>Wildcard tag searches use the * asterisk in their URLs</p>
-  <% else %>
-    <p>This topic has no lead wiki page.</p>
-    <p><a class="btn btn-primary" href="/wiki/<%= params[:id] %>?n=14552"><span class="fa fa-plus fa-white"></span> Add one now</a></p>
+  <%= render partial: 'tag/show/header' %>
+
+  <%= render partial: 'tag/show/contributors' %>
+
+  <% unless @tags.try(:first).try(:parent).nil? %>
+    <small>parent: <%= @tags.first.parent %></small>
   <% end %>
 
-  <% if @tags.first && params[:id][-1..-1] != "*" %>
-    <%= render :partial => "tag/graph", locals: { tags: @tags } %>
-  <% end %>
-
-  <% if params[:action] == 'show'&& @node_type=="contributors" %>
-    <h3><%= raw t('tag.contributors.contributors_for', :tag_name => params[:id]) %></h3>
-  <% elsif params[:action] == 'show' %>
-    <h3><%= raw t('tag.show.notes_tagged', tag: params[:id]) %></h3>
-  <% else %>
-    <h3> Notes on <%= params[:id] %> by <%= link_to(@user.name,"/profile/#{@user.name}") %> </h3>
-  <% end %>
-  <% if @start && @end %>
-    <p>From <%= @start.to_formatted_s(:long) %> to <%= @end.to_formatted_s(:long) %></p>
-  <% end %>
-
-  <h3><% unless @tags.try(:first).try(:parent).nil? %><small>parent: <%= @tags.first.parent %></small><% end %></h3>
   <%= render :partial => "notes/format_toggle" if @node_type == "note" %>
+  
+  <%= render :partial => "tag/show/user_controls" %>
 
-  <% if current_user %>
-  <!-- AJAXify -->
-  <div class="btn-group">
-    <a class="btn btn-default btn-sm" href="/feed/tag/<%= params[:id] %>.rss"><i class="fa fa-rss"></i> RSS</a>
-    <% unless @wildcard %>
-      <% if current_user.following(params[:id]) %>
-        <a rel="tooltip" title="<%= t('tag.show.unfollow') %>" class="btn btn-default btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>" data-method="delete"><i class="fa fa-eye"></i> <%= t('tag.show.following') %> <b><%= params[:id] %></b></a>
-      <% else %>
-        <a class="btn btn-default btn-sm" href="/subscribe/tag/<%= params[:id] %>"><i class="fa fa-eye"></i> <%= t('tag.show.follow') %> <b><%= params[:id] %></b></a>
-      <% end %>
-        <a class="btn btn-default btn-sm" rel="popover" data-placement="bottom" data-html="true" data-title="<%= t('tag.show.users_following_tag') %>" data-content="<% Tag.followers(params[:id]).each do |user| %><i class='fa fa-star-o'></i> <a href='/profile/<%= user.username %>'><%= user.username %></a><br /><% end %><% if Tag.follower_count(params[:id]) == 0 %><i><%= t('tag.show.none') %></i><% end %>"><%= Tag.follower_count(params[:id]) %> <i class="fa fa-user"></i> <span class="caret"></span></a>
-    <% end %>
-  </div>
-  <!-- AJAXify -->
-  <% end %>
-
-  <% unless @wildcard %><p style="clear:both;padding-top:8px;"><a style="margin-bottom:6px;" class="btn btn-primary" href="/post?tags=question:<%= params[:id].gsub('question:', '') %>&template=question&redirect=question"><i class="fa fa-white icon-question-circle"></i> <%= raw t('tag.show.ask_question', :tag => params[:id].gsub('question:', '')) %></a> <%= raw t('tag.show.or_subscribe_to_answer', :url1 => "/subscribe/tag/question:"+params[:id].gsub('question:', '')) %></p><% end %>
-
-  <% if @related_tags %>
-    <br/>
-    <%=  render :partial => "tag/related", :locals => {tags: @related_tags } %>
-    <br/>
-  <% end %>
-
-  <ul class="nav nav-tabs" style="margin-top:10px;">
-    <% if params[:action] == "show" %>
-      <% unless params[:id].match("question:") %><li<% if @node_type == "note" %> class="active"<% end %>><a href="/tag/<%= params[:id] %>"><i class="fa fa-file"></i> <%= raw t('tag.show.research_notes') %></a></li><% end %>
-      <li<% if @node_type == "questions" %> class="active"<% end %>><a href="/questions/tag/<%= params[:id] %>"><i class="fa fa-question-circle"></i> <%= t('tag.show.questions') %></a></li>
-      <li<% if @node_type == "wiki" %> class="active"<% end %>><a href="/wiki/tag/<%= params[:id] %>"><i class="fa fa-book"></i> <%= raw t('tag.show.wiki_pages') %></a></li>
-      <li<% if @node_type == "maps" %> class="active"<% end %>><a href="/maps/tag/<%= params[:id] %>"><i class="fa fa-map-marker"></i> <%= t('tag.show.maps') %></a></li>
-      <% if !@wildcard %>
-        <li<% if @node_type == "contributors" %> class="active"<% end %>><a href="/contributors/<%= params[:id] %>"><i class="fa fa-user"></i> <%= raw t('tag.show.contributors') %> <span class="badge"><%=@length %></span></a></li>
-      <% else %>
-        <li class="disabled"<% if @node_type == "contributors" %> class="active"<% end %>><a href="#" rel="tooltip" title="Contributors cannot be listed for wildcard tag searches" ><i class="fa fa-user"></i> <%= raw t('tag.show.contributors') %></a></li>
-      <% end %>
-    <% else %>
-      <% unless params[:id].match("question:") %><li<% if @node_type == "note" %> class="active"<% end %>><a href="/tag/<%= params[:id] %>/author/<%= params[:author] %>"><i class="fa fa-file"></i> <%= raw t('tag.show.research_notes') %></a></li><% end %>
-      <li<% if @node_type == "questions" %> class="active"<% end %>><a href="/questions/tag/<%= params[:id] %>/author/<%= params[:author] %>" ><i class="fa fa-question-circle"></i> <%= t('tag.show.questions') %></a></li>
-      <li<% if @node_type == "wiki" %> class="active"<% end %>><a href="/wiki/tag/<%= params[:id] %>/author/<%= params[:author] %>" ><i class="fa fa-book"></i> <%= raw t('tag.show.wiki_pages') %></a></li>
-      <li<% if @node_type == "maps" %> class="active"<% end %>><a href="/maps/tag/<%= params[:id] %>/author/<%= params[:author] %>" ><i class="fa fa-map-marker"></i> <%= t('tag.show.maps') %></a></li>
-      <li class="disabled"<% if @node_type == "contributors" %> class="active"<% end %>><a href="#" rel="tooltip" title="Contributors can't be listed for tag searches with Authors" ><i class="fa fa-user"></i> <%= raw t('tag.show.contributors') %></a></li>    <% end %>
-  </ul>
-
-  <br />
-
-  <div class="tab-content">
-
-    <% if @node_type == "note" %>
-      <div class="tab-pane active" id="notes">
-        <% if @notes.nil? || @notes.length == 0 %>
-          <p><%= raw t('tag.show.no_results_found', :tag => params[:id]) %>:</p>
-
-          <%= render template: "searches/new" %>
-
-          <p><%= raw t('tag.show.try_advanced_search', :url1 => params[:id]) %></p>
-        <% else %>
-          <%= render :partial => "notes/notes" %>
-        <% end %>
-      </div>
-    <% end %>
-
-    <% if @node_type == "questions" %>
-      <div class="tab-pane active" id="questions">
-        <div class="tab-pane" id="questions-tab">
-          <div class="btn-group text-center">
-            <a href="#asked-tab" class="btn btn-default active" data-toggle="tab">Asked</a>
-            <a href="#answered-tab" class="btn btn-default" data-toggle="tab">Answered</a>
-          </div>
-
-          <div class="tab-content">
-            <div class="tab-pane active" id="asked-tab">
-              <%= render :partial => "questions/questions" %>
-            </div>
-
-            <div class="tab-pane" id="answered-tab">
-              <% if @answered_questions %>
-                <%= render :partial => "users/answered" %>
-              <% end %>
-            </div>
-          </div>
-        </div>
-      </div>
-    <% end %>
-
-    <% if @node_type == "wiki" %>
-      <div class="tab-pane active" id="wikis">
-        <%= render :partial => "wiki/wikis" %>
-      </div>
-    <% end %>
-
-    <% if @node_type == "maps" %>
-      <div class="tab-pane active" id="wikis">
-        <%= render :partial => "map/maps" %>
-      </div>
-    <% end %>
-
-    <% if @node_type == "contributors" %>
-        <div class="tab-pane active" id="contributors">
-          <div class="row">
-            <div class="col-md-9" style="padding-left: 46px">
-              <%= render :partial => "tag/contributors" %>
-            </div>
-          </div>
-        </div>
-    <% end %>
-    <br />
+  <% if current_user && current_user.role == 'admin' %>
     <hr />
+    <p><a class="btn btn-default btn-lg" onClick="$('#add_parent').toggle();">Add tag parent</a> (admin only)</p>
+    <div id="add_parent" style="display:none;">
+      <p><b>Tag parenting</b></p>
+      <form class="form well" action="/tag/parent" method="get">
+        <input type="text" placeholder="parent" name="parent" />
+        <input type="hidden" placeholder="parent" name="name" value="<%= @tags&.first&.name %>" />
+        <input class="btn btn-default btn-lg" type="submit" value="Submit" />
+      </form>
+    </div>
+  <% end %>
 
-  </div>
+  <%= render partial: "tag/show/questions" %>
+  <%= render partial: "tag/show/related_tags" %>
+  <% if @related_tags %>
+    <p> <%= render partial: 'tag/subscribe_button', locals:{tags: @related_tags } %></p>
+  <% end %>
+  <%= render partial: 'tag/show/nav_tabs' %>
+  
+  <p style="padding-top:8px;">
+  <a class="btn btn-sm btn-default" href="?order=views"><i class="fa fa-eye"></i> by views</a>
+  <a class="btn btn-sm btn-default" href="?order=likes"><i class="fa fa-star"></i> by likes</a>
+  </p><br />
+
+  <%= render partial: 'tag/show/tab_content' %>
+
   <script type="text/javascript">
     $('#questions .btn-group .btn').click(function(){
       $(this).addClass('active').siblings().removeClass('active');
     });
   </script>
 </div>
+
 <%= stylesheet_link_tag "dashboard" %>
-<%= javascript_include_tag "dashboard" %>

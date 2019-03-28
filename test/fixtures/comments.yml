@@ -86,6 +86,13 @@ comment_status_1:
   comment: Some comment
   timestamp: <%= Time.now.to_i + 100000 %>
 
+comment_status_4:
+  uid: 19
+  nid: 8
+  status: 4
+  comment: First comment!
+  timestamp: <%= Time.now.to_i + 100000 %>
+
 question_one:
   uid: 2
   nid: 8
@@ -128,3 +135,12 @@ comment_by_test_user:
   comment: Note comment for setting
   timestamp: <%= Time.now.to_i + 3 %>
   thread: /03
+
+replied_comment:
+  uid: 1
+  nid: 1
+  status: 1
+  comment: This is comment is replied to first
+  timestamp: <%= Time.now.to_i + 10 %>
+  thread: /01
+  reply_to: 1

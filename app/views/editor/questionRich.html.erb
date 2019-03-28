@@ -1,12 +1,17 @@
 <link href="/lib/woofmark/dist/woofmark.min.css" rel="stylesheet">
-<link href="/lib/horsey/dist/horsey.min.css" rel="stylesheet">
 <link href="/lib/bootstrap-tokenfield/dist/css/tokenfield-typeahead.min.css" rel="stylesheet">
 <link href="/lib/bootstrap-tokenfield/dist/css/bootstrap-tokenfield.min.css" rel="stylesheet">
 
 <link href="/lib/publiclab-editor/dist/PublicLab.Editor.css" rel="stylesheet">
 
+<!-- required for MapModule -->
+<link href="/lib/leaflet/dist/leaflet.css" rel="stylesheet">
+<script src="/lib/leaflet/dist/leaflet.js"></script>
+<link href="/lib/leaflet-blurred-location/dist/Leaflet.BlurredLocation.css" rel="stylesheet">
+<script src="/lib/leaflet-blurred-location/dist/Leaflet.BlurredLocation.js"></script>
+<div id="map" class="leaflet-map" style="width: 100% ; height: 300px; margin-bottom:8px;display:none;"></div>
+
 <!-- required for TagsModule -->
-<script src="/lib/typeahead.js/dist/typeahead.jquery.js"></script>
 <script src="/lib/typeahead.js/dist/bloodhound.js"></script>
 <script src="/lib/bootstrap-tokenfield/dist/bootstrap-tokenfield.js"></script>
 
@@ -44,11 +49,11 @@
         <br />
         <div>
           <input class="form-control input-lg" type="text" placeholder="What's your question? Be specific." value="<%= if @node then @node.title else params[:title] end %>" />
-        </div>    
+        </div>
 
-      </div>    
+      </div>
 
-    </div>    
+    </div>
     <!-- end title module -->
 
     <!-- body module -->
@@ -108,9 +113,15 @@
       </div>
 
     </div>
-      
+
   </div>
 </div>
+
+<style>
+  .ple-module {
+    border-top: none;
+  }
+</style>
 
 <script>
 
@@ -163,15 +174,14 @@
       },
       titleModule: {
         suggestRelated: true,
-        fetchRelated: function(show) {
-          $.getJSON("/api/srch/notes?srchString=" + editor.titleModule.value(), function(response) {
-            /* API provides: 
+        fetchRelated: debounce(function(show) {
+          $.getJSON("/api/srch/notes?query=" + editor.titleModule.value(), function(response) {
+            /* API provides:
             {"items":[{
-              "docId":14022,
-              "docType":"file",
-              "docUrl":"/notes/liz/03-15-2017/host-a-balloon-mapping-workshop",
-              "docTitle":"Host a balloon mapping workshop",
-              "docSummary":"...",
+              "doc_id":14022,
+              "doc_type":"file",
+              "doc_url":"/notes/liz/03-15-2017/host-a-balloon-mapping-workshop",
+              "doc_title":"Host a balloon mapping workshop",
               "docScore":0}
             ]}
             */
@@ -180,16 +190,16 @@
             if (response['items']) {
               response['items'].forEach(function(item) {
                 var formattedItem = {};
-                formattedItem.id = item.docId;
-                formattedItem.title = item.docTitle;
-                formattedItem.url = item.docUrl;
-                formattedItem.author = item.docUrl.split('/')[2];
+                formattedItem.id = item.doc_id;
+                formattedItem.title = item.doc_title;
+                formattedItem.url = item.doc_url;
+                formattedItem.author = item.doc_url.split('/')[2];
                 formatted.push(formattedItem);
               });
               show(formatted);
             }
           });
-        }
+        }, 1000)
       },
       tagsModule: {
         remote: {

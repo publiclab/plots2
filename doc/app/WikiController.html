@@ -7,7 +7,7 @@
 <title>class WikiController - Rails Application Documentation</title>
 
 <script type="text/javascript">
-  var rdoc_rel_prefix = "./";
+var rdoc_rel_prefix = './';
 </script>
 
 <script src="./js/jquery.js"></script>
@@ -50,68 +50,68 @@
 
   </div>
 
-  
+
 
   <div id="class-metadata">
-    
+
     <div id="parent-class-section" class="nav-section">
   <h3>Parent</h3>
 
-  
+
   <p class="link"><a href="ApplicationController.html">ApplicationController</a>
-  
+
 </div>
 
-    
-    
+
+
     <!-- Method Quickref -->
 <div id="method-list-section" class="nav-section">
   <h3>Methods</h3>
 
   <ul class="link-list" role="directory">
-    
+
     <li ><a href="#method-i-comments">#comments</a>
-    
+
     <li ><a href="#method-i-create">#create</a>
-    
+
     <li ><a href="#method-i-delete">#delete</a>
-    
+
     <li ><a href="#method-i-diff">#diff</a>
-    
+
     <li ><a href="#method-i-edit">#edit</a>
-    
+
     <li ><a href="#method-i-index">#index</a>
-    
+
     <li ><a href="#method-i-liked">#liked</a>
-    
+
     <li ><a href="#method-i-methods">#methods</a>
-    
+
     <li ><a href="#method-i-new">#new</a>
-    
+
     <li ><a href="#method-i-popular">#popular</a>
-    
+
     <li ><a href="#method-i-raw">#raw</a>
-    
+
     <li ><a href="#method-i-replace">#replace</a>
-    
+
     <li ><a href="#method-i-revert">#revert</a>
-    
+
     <li ><a href="#method-i-revision">#revision</a>
-    
+
     <li ><a href="#method-i-revisions">#revisions</a>
-    
+
     <li ><a href="#method-i-root">#root</a>
-    
+
     <li ><a href="#method-i-show">#show</a>
-    
+
     <li ><a href="#method-i-stale">#stale</a>
-    
+
     <li ><a href="#method-i-subdomain">#subdomain</a>
-    
+
     <li ><a href="#method-i-techniques">#techniques</a>
-    
+
     <li ><a href="#method-i-update">#update</a>
-    
+
   </ul>
 </div>
 
@@ -124,46 +124,46 @@
   </h1>
 
   <section class="description">
-    
+
   </section>
 
-  
-  
-  
+
+
+
   <section id="5Buntitled-5D" class="documentation-section">
-    
 
-    
 
-    
 
-    
 
-    
+
+
+
+
+
      <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
        <header>
          <h3>Public Instance Methods</h3>
        </header>
 
-    
+
       <div id="method-i-comments" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">comments</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="comments-source">
             <pre><span class="ruby-comment"># File app/controllers/wiki_controller.rb, line 423</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">comments</span>
@@ -171,37 +171,37 @@
   <span class="ruby-identifier">render</span> <span class="ruby-value">:show</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-create" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">create</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="create-source">
             <pre><span class="ruby-comment"># File app/controllers/wiki_controller.rb, line 133</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">drupal_user</span>.<span class="ruby-identifier">status</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">status</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
     <span class="ruby-comment"># we no longer allow custom urls, just titles which are parameterized automatically into urls</span>
     <span class="ruby-comment"># slug = params[:title].parameterize</span>
     <span class="ruby-comment"># slug = params[:id].parameterize if params[:id] != &quot;&quot; &amp;&amp; !params[:id].nil?</span>
@@ -226,33 +226,33 @@
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-delete" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">delete</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="delete-source">
             <pre><span class="ruby-comment"># File app/controllers/wiki_controller.rb, line 202</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">delete</span>
@@ -267,33 +267,33 @@
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-diff" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">diff</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="diff-source">
             <pre><span class="ruby-comment"># File app/controllers/wiki_controller.rb, line 280</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">diff</span>
@@ -306,33 +306,33 @@
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-edit" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">edit</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="edit-source">
             <pre><span class="ruby-comment"># File app/controllers/wiki_controller.rb, line 90</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">edit</span>
@@ -356,33 +356,33 @@
   <span class="ruby-ivar">@tags</span> = <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">tags</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-index" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">index</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="index-source">
             <pre><span class="ruby-comment"># File app/controllers/wiki_controller.rb, line 290</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
@@ -404,33 +404,33 @@
   <span class="ruby-ivar">@paginated</span> = <span class="ruby-keyword">true</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-liked" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">liked</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="liked-source">
             <pre><span class="ruby-comment"># File app/controllers/wiki_controller.rb, line 334</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">liked</span>
@@ -441,33 +441,33 @@
   <span class="ruby-identifier">render</span> <span class="ruby-identifier">template</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;wiki/index&#39;</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-methods" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">methods</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="methods-source">
             <pre><span class="ruby-comment"># File app/controllers/wiki_controller.rb, line 369</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">methods</span>
@@ -524,33 +524,33 @@
   <span class="ruby-identifier">render</span> <span class="ruby-identifier">template</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;wiki/methods&#39;</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-new" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">new</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="new-source">
             <pre><span class="ruby-comment"># File app/controllers/wiki_controller.rb, line 111</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">new</span>
@@ -575,33 +575,33 @@
   <span class="ruby-identifier">render</span> <span class="ruby-identifier">template</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;wiki/edit&#39;</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-popular" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">popular</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="popular-source">
             <pre><span class="ruby-comment"># File app/controllers/wiki_controller.rb, line 323</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">popular</span>
@@ -615,33 +615,33 @@
   <span class="ruby-identifier">render</span> <span class="ruby-identifier">template</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;wiki/index&#39;</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-raw" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">raw</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          <p>display a revision, raw</p>
-          
-          
 
-          
+          <p>display a revision, raw</p>
+
+
+
+
           <div class="method-source-code" id="raw-source">
             <pre><span class="ruby-comment"># File app/controllers/wiki_controller.rb, line 85</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">raw</span>
@@ -649,33 +649,33 @@
   <span class="ruby-identifier">render</span> <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> <span class="ruby-constant">Revision</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>]).<span class="ruby-identifier">body</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-replace" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">replace</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          <p>replace subsection of wiki body</p>
-          
-          
 
-          
+          <p>replace subsection of wiki body</p>
+
+
+
+
           <div class="method-source-code" id="replace-source">
             <pre><span class="ruby-comment"># File app/controllers/wiki_controller.rb, line 343</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">replace</span>
@@ -700,33 +700,33 @@
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-revert" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">revert</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="revert-source">
             <pre><span class="ruby-comment"># File app/controllers/wiki_controller.rb, line 214</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">revert</span>
@@ -746,33 +746,33 @@
   <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">node</span>.<span class="ruby-identifier">path</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-revision" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">revision</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="revision-source">
             <pre><span class="ruby-comment"># File app/controllers/wiki_controller.rb, line 260</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">revision</span>
@@ -795,33 +795,33 @@
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-revisions" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">revisions</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="revisions-source">
             <pre><span class="ruby-comment"># File app/controllers/wiki_controller.rb, line 248</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">revisions</span>
@@ -836,34 +836,34 @@
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-root" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">root</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
+
           <p>wiki pages which have a root URL, like /about also just redirect anything
 else matching /<em>__</em> to /wiki/<em>__</em></p>
-          
-          
 
-          
+
+
+
           <div class="method-source-code" id="root-source">
             <pre><span class="ruby-comment"># File app/controllers/wiki_controller.rb, line 233</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">root</span>
@@ -881,33 +881,33 @@ else matching /<em>__</em> to /wiki/<em>__</em></p>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-show" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">show</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="show-source">
             <pre><span class="ruby-comment"># File app/controllers/wiki_controller.rb, line 21</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
@@ -973,33 +973,33 @@ else matching /<em>__</em> to /wiki/<em>__</em></p>
   <span class="ruby-ivar">@unpaginated</span> = <span class="ruby-keyword">true</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-stale" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">stale</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="stale-source">
             <pre><span class="ruby-comment"># File app/controllers/wiki_controller.rb, line 309</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">stale</span>
@@ -1011,38 +1011,38 @@ else matching /<em>__</em> to /wiki/<em>__</em></p>
                .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;node_revisions.timestamp ASC&#39;</span>)
                .<span class="ruby-identifier">where</span>(<span class="ruby-string">&quot;node_revisions.status = 1 AND node.status = 1 AND (type = &#39;page&#39; OR type = &#39;tool&#39; OR type = &#39;place&#39;)&quot;</span>)
                .<span class="ruby-identifier">page</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:page</span>])
-               
+
   <span class="ruby-ivar">@paginated</span> = <span class="ruby-keyword">true</span>
   <span class="ruby-identifier">render</span> <span class="ruby-identifier">template</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;wiki/index&#39;</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-subdomain" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">subdomain</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="subdomain-source">
             <pre><span class="ruby-comment"># File app/controllers/wiki_controller.rb, line 6</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">subdomain</span>
@@ -1060,66 +1060,66 @@ else matching /<em>__</em> to /wiki/<em>__</em></p>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-techniques" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">techniques</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="techniques-source">
             <pre><span class="ruby-comment"># File app/controllers/wiki_controller.rb, line 365</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">techniques</span>
   <span class="ruby-identifier">redirect_to</span> <span class="ruby-string">&#39;/methods&#39;</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">302</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-update" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">update</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="update-source">
             <pre><span class="ruby-comment"># File app/controllers/wiki_controller.rb, line 159</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
@@ -1165,17 +1165,17 @@ else matching /<em>__</em> to /wiki/<em>__</em></p>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
     </section>
-  
+
   </section>
 </main>
 
@@ -1185,4 +1185,3 @@ else matching /<em>__</em> to /wiki/<em>__</em></p>
   <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
-

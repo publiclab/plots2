@@ -1,22 +1,27 @@
+<%= render :partial => "map/mapDependencies" %>
+
+  <% user = user || @user # allow overriding w/ local variable %>
+
   <% if haslocation == true %>  
     <style>
       #map_leaflet{  height:300px; width:292px; margin: auto; position: relative;}
     </style>
     <div class="leaflet-map" id="map_leaflet"></div>
     <script>
+  
     var map_lat = <%= @map_lat %> ;
-    var map_lon = <%= @map_lon %>
+    var map_lon = <%= @map_lon %> ; 
     var map = setupLeafletMap() ; 
     var layerGroup = L.layerGroup() ; 
    
-    map.setView([map_lat,map_lon], 2);
-    var mapboxUrl = "//a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png" ;
-    var normal_layer = L.tileLayer(mapboxUrl, {id: 'map'}) ; 
-    normal_layer.addTo(map) ; 
+     map.setView([map_lat,map_lon], 2);
+      
     setupFullScreen(map , map_lat , map_lon) ; 
- 
+    setupLEL(map , 1) ;
+  //  var hash = new L.Hash(map);   
     <% if !(@map_blurred == true) %>
-      L.marker([<%= @map_lat %>, <%= @map_lon %>]).addTo(map).bindPopup("<a href='https://publiclab.org/profile/<%= @profile_user.username  %>'><%= @profile_user.username  %> </a>");
+      var default_Icon =new PLmarker_default() ;
+      L.marker([<%= @map_lat %>, <%= @map_lon %>] , {icon: default_Icon}).addTo(map).bindPopup("<a href='https://publiclab.org/profile/<%= user.username  %>'><%= user.username  %> </a>");
     <% end %>
     </script>
   <% else %>

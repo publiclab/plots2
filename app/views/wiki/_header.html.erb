@@ -9,7 +9,7 @@
 <% end %>
 
 <div style="margin-top:10px;" class="hidden-print">
-  <%= render :partial => "like/like", :locals => {:node => @node, :tagnames => @tagnames } %>
+  <%= render partial: "like/like", locals: {node: @node, tagnames: @tagnames } %>
 </div>
 
 <br class="visible-xs visible-sm" style="clear:both;" />
@@ -64,7 +64,7 @@
             </li>
         <% else %>
             <li>
-              <a rel="tooltip" title="Edit this wiki page." data-placement="top" href="<%= @node.edit_path %>?t=<%= Time.now.to_i %>">
+              <a rel="tooltip" title="Edit this wiki page." data-placement="top" href="<%= @node.edit_path %>?t=<%= Time.now.to_i %>" class="requireLogin">
                 <i class="fa fa-pencil"></i>
                 <span class="hidden-xs hidden-sm hidden-md"></span>
               </a>
@@ -95,7 +95,7 @@
       </li>
 
       <li>
-        <a rel="tooltip" title="=View previous versions of this page." data-placement="top" href="/wiki/revisions/<%= @node.slug_from_path %>">
+        <a rel="tooltip" title="View previous versions of this page." data-placement="top" href="/wiki/revisions/<%= @node.slug_from_path %>">
           <span class="hidden-xs"><%= @node.revisions.length %> </span>
           <i class="fa fa-list"></i>
         </a>
@@ -103,7 +103,7 @@
 
       <li class="<%= 'active' if (controller.action_name == 'comments' )%>">
         <a href="/wiki/<%= @node.slug_from_path %>/comments" rel="tooltip" title="Read Comments regarding this wiki page" data-placement="top">
-          <span class="hidden-xs"> <%= @node.comments.count %></span>
+          <span class="hidden-xs"> <%= @node.comments.size %></span>
           <i class="fa fa-comment"></i>
         </a>
       </li>
@@ -113,6 +113,10 @@
 </div>
 
 <br />
+
+<% if @node.has_power_tag('place') && @node && @node.lat && @node.lon %>
+  <%= render_map(@node.lat, @node.lon) %>
+<% end %>
 
 <% if params[:raw] == 'true' %>
   <div class="alert alert-warning" style="">This is the new (beta) Inline Rich Wikis system. Use the "pencil" buttons after different paragraphs to edit inline, and <a href="/wiki/issues">report problems here</a></div>

@@ -5,19 +5,36 @@ module Srch
     extend Grape::API::Helpers
 
     params :common do
-      requires :srchString, type: String, documentation: { example: 'Spec' }
-      optional :seq, type: Integer, documentation: { example: 995 }
-      optional :showCount, type: Integer, documentation: { example: 3 }
-      optional :pageNum, type: Integer, documentation: { example: 0 }
+      requires :query, type: String, documentation: { example: 'Spec' }
+      optional :limit, type: Integer, documentation: { example: 10 }
+    end
+
+    params :geographical do
+      requires :nwlat, type: Float, documentation: { example: 10.2 }
+      requires :selat, type: Float, documentation: { example: 10.2 }
+      requires :nwlng, type: Float, documentation: { example: 10.2 }
+      requires :selng, type: Float, documentation: { example: 10.2 }
     end
 
     params :additional do
-      optional :tagName, type: String, documentation: { example: 'awesome' }
+      optional :tag, type: String, documentation: { example: 'awesome' }
     end
 
-    params :commontypeahead do
-      requires :srchString, type: String, documentation: { example: 'Spec' }
-      optional :seq, type: Integer, documentation: { example: 995 }
+    params :ordering do
+      optional :order_direction, type: String, documentation: { example: 'DESC' }
+    end
+
+    params :sorting do
+      optional :sort_by, type: String, documentation: { example: 'recent' }
+    end
+
+    params :field do
+      optional :field, type: String, documentation: { example: 'username' }
+    end
+
+    params :period do
+      optional :from, type: Date, documentation: { example: '14-12-1989' }
+      optional :to, type: Date, documentation: { example: '15-01-2019' }
     end
   end
 end

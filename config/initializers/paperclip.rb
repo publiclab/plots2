@@ -6,3 +6,4 @@ Paperclip.options[:content_type_mappings] = {
   stl: 'application/octet-stream',
   dxf: 'application/octet-stream'
 }
+Paperclip::DataUriAdapter.register

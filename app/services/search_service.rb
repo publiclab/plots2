@@ -1,197 +1,232 @@
-# The SearchService class is a utility class whose purpose is to provide detailed responses to queries within
-# different categories (record types, functionality, subsystems, etc).
-# Though similar in operation to the TypeaheadService, the implementation is separate, in that the goal of the response
-# is to provide _detailed_ results at a deep level.  In effect, TypeaheadService provides pointers to
-# better searches, while SearchService provides deep and detailed information.
-#
-# See SrchScope class for more details about the reusable scope
-# that Search and Typeahead services use
 class SearchService
   def initialize; end
 
   # Run a search in any of the associated systems for references that contain the search string
-  # and package up as a DocResult
-  def textSearch_all(srchString)
-    sresult = DocList.new
+  def search_all(search_criteria)
+    notes = search_notes(search_criteria.query)
 
-    # notes
-    noteList = textSearch_notes(srchString)
-    sresult.addAll(noteList.items)
+    wikis = search_wikis(search_criteria.query, search_criteria.limit)
 
-    # Node search
-    Node.limit(5)
-      .order('nid DESC')
-      .where('(type = "page" OR type = "place" OR type = "tool") AND node.status = 1 AND title LIKE ?', '%' + srchString + '%')
-      .select('title,type,nid,path').each do |match|
-      doc = DocResult.fromSearch(match.nid, match.icon, match.path, match.title, '', 0)
-      sresult.addDoc(doc)
-    end
-    # User profiles
-    userList = textSearch_profiles(srchString)
-    sresult.addAll(userList.items)
+    search_criteria.sort_by = "recent"
+    profiles = search_profiles(search_criteria)
 
-    # Tags
-    tagList = textSearch_tags(srchString)
-    sresult.addAll(tagList.items)
-    # maps
-    mapList = textSearch_maps(srchString)
-    sresult.addAll(mapList.items)
-    # questions
-    qList = textSearch_questions(srchString)
-    sresult.addAll(qList.items)
+    tags = search_tags(search_criteria.query, search_criteria.limit)
 
-    sresult
+    maps = search_maps(search_criteria.query, search_criteria.limit)
+
+    questions = search_questions(search_criteria.query, search_criteria.limit)
+
+    { notes: notes,
+      wikis: wikis,
+      profiles: profiles,
+      tags: tags,
+      maps: maps,
+      questions: questions }
   end
 
-  # Search profiles for matching text and package up as a DocResult
-  def textSearch_profiles(srchString)
-    sresult = DocList.new
+  # Search profiles for matching text with optional order_by=recent param and
+  # sorted direction DESC by default
 
-    users = SrchScope.find_users(srchString, limit = 10) # don't return hundreds!!
-    # User profiles
-    users.each do |match|
-      doc = DocResult.fromSearch(0, 'user', '/profile/' + match.name, match.name, '', 0)
-      sresult.addDoc(doc)
-    end
+  # If no sort_by value present, then it returns a list of profiles ordered by id DESC
+  # a recent activity may be a node creation or a node revision
+  def search_profiles(search_criteria)
+    user_scope = find_users(search_criteria.query, search_criteria.limit, search_criteria.field)
 
-    sresult
+    user_scope =
+      if search_criteria.sort_by == "recent"
+        user_scope.joins(:revisions)
+        .where("node_revisions.status = 1")
+        .order("node_revisions.timestamp #{search_criteria.order_direction}")
+        .distinct
+      else
+        user_scope.order(id: :desc)
+      end
+
+    user_scope.limit(search_criteria.limit)
   end
 
-  # Search notes for matching strings and package up as a DocResult
-  def textSearch_notes(srchString)
-    sresult = DocList.new
-
-    notes = SrchScope.find_notes(srchString, 25)
-    notes.each do |match|
-      doc = DocResult.fromSearch(match.nid, 'file', match.path, match.title, match.body.split(/#+.+\n+/, 5)[1], 0)
-      sresult.addDoc(doc)
-    end
-
-    sresult
+  def search_notes(input, limit = 25, order = :natural, type = :boolean)
+    Node.search(query: input, order: order, type: type, limit: limit)
+        .where("`node`.`type` = 'note'")
   end
 
-  # Search maps for matching text and package up as a DocResult
-  def textSearch_maps(srchString)
-    sresult = DocList.new
-
-    maps = SrchScope.find_maps(srchString, 5)
-
-    maps.select('title,type,nid,path').each do |match|
-      doc = DocResult.fromSearch(match.nid, match.icon, match.path, match.title, '', 0)
-      sresult.addDoc(doc)
-    end
-
-    sresult
+  def search_wikis(input, limit = 25, order = :natural, type = :boolean)
+    Node.search(query: input, order: order, type: type, limit: limit)
+        .where("`node`.`type` = 'page' OR `node`.`type` = 'place' OR `node`.`type` = 'tool'")
   end
 
-  # Search documents with matching tag values and package up as a DocResult
+  def search_maps(input, limit = 25, order = :natural, type = :boolean)
+    Node.search(query: input, order: order, type: type, limit: limit)
+        .where("`node`.`type` = 'map'")
+  end
+
   # The search string that is passed in is split into tokens, and the tag names are compared and
   # chained to the notes that are tagged with those values
-  def textSearch_tags(srchString)
-    sresult = DocList.new
-
-    # Tags
-    sterms = srchString.split(' ')
-    tlist = Tag.where(name: sterms)
-      .joins(:node_tag)
-      .joins(:node)
+  def search_tags(query, limit = 10)
+    sterms = query.split(' ')
+    Tag.where(name: sterms)
+      .joins(:node_tag, :node)
       .where('node.status = 1')
       .select('DISTINCT node.nid,node.title,node.path')
-    tlist.each do |match|
-      tagdoc = DocResult.fromSearch(match.nid, 'tag', match.path, match.title, '', 0)
-      sresult.addDoc(tagdoc)
-    end
-
-    sresult
+      .limit(limit)
   end
 
-  # Search question entries for matching text and package up as a DocResult
-  def textSearch_questions(srchString)
-    sresult = DocList.new
-
-    questions = Node.where(
-      'type = "note" AND node.status = 1 AND title LIKE ?',
-      '%' + srchString + '%'
-    )
-      .joins(:tag)
-      .where('term_data.name LIKE ?', 'question:%')
-      .order('node.nid DESC')
-      .limit(25)
-    questions.each do |match|
-      doc = DocResult.fromSearch(match.nid, 'question-circle', match.path(:question), match.title, 0, match.answers.length.to_i)
-      sresult.addDoc(doc)
-    end
-
-    sresult
+  # Search question entries for matching text
+  def search_questions(input, limit = 25, order = :natural, type = :boolean)
+    Node.search(query: input, order: order, type: type, limit: limit)
+        .where("`node`.`type` = 'note'")
+        .joins(:tag)
+        .where('term_data.name LIKE ?', 'question:%')
+        .distinct
   end
 
   # Search nearby nodes with respect to given latitude, longitute and tags
-  # and package up as a DocResult
-  def tagNearbyNodes(srchString, tagName)
-    sresult = DocList.new
+  def tagNearbyNodes(coordinates, tag, period = { "from" => nil, "to" => nil }, sort_by = nil, order_direction = nil, limit = 10)
+    raise("Must contain all four coordinates") if coordinates["nwlat"].nil?
+    raise("Must contain all four coordinates") if coordinates["nwlng"].nil?
+    raise("Must contain all four coordinates") if coordinates["selat"].nil?
+    raise("Must contain all four coordinates") if coordinates["selng"].nil?
 
-    lat, lon =  srchString.split(',')
+    raise("Must be a float") unless coordinates["nwlat"].is_a? Float
+    raise("Must be a float") unless coordinates["nwlng"].is_a? Float
+    raise("Must be a float") unless coordinates["selat"].is_a? Float
+    raise("Must be a float") unless coordinates["selng"].is_a? Float
 
-    nodes_scope = NodeTag.joins(:tag)
-      .where('name LIKE ?', 'lat:' + lat[0..lat.length - 2] + '%')
+    raise("If 'from' is not null, must contain date") if period["from"] && !(period["from"].is_a? Date)
+    raise("If 'to' is not null, must contain date") if period["to"] && !(period["to"].is_a? Date)
 
-    if tagName.present?
+    nodes_scope = Node.select(:nid)
+                      .where('`latitude` >= ? AND `latitude` <= ?', coordinates["selat"], coordinates["nwlat"])
+                      .where(status: 1)
+
+    if tag.present?
       nodes_scope = NodeTag.joins(:tag)
-                           .where('name LIKE ?', tagName)
-                           .where(nid: nodes_scope.select(:nid))
+        .where('name LIKE ?', tag)
+        .where(nid: nodes_scope.select(:nid))
     end
 
     nids = nodes_scope.collect(&:nid).uniq || []
 
+    # If the period["from"] was not specified, we use (1990,01,01)
+    # If the period["to"] was not specified, we use 'now'
+    period["from"] = period["from"].nil? ? Date.new(1990, 01, 01).to_time.to_i : period["from"].to_time.to_i
+    period["to"] = period["to"].nil? ? Time.now.to_i : period["to"].to_time.to_i
+    if period["from"] > period["to"]
+      period["from"], period["to"] = period["to"], period["from"]
+    end
+
     items = Node.includes(:tag)
       .references(:node, :term_data)
-      .where('node.nid IN (?) AND term_data.name LIKE ?', nids, 'lon:' + lon[0..lon.length - 2] + '%')
-      .limit(200)
-      .order('node.nid DESC')
+      .where('node.nid IN (?)', nids)
+      .where('`longitude` >= ? AND `longitude` <= ?', coordinates["nwlng"], coordinates["selng"])
+      .where('created BETWEEN ' + period["from"].to_s + ' AND ' + period["to"].to_s)
 
-    items.each do |match|
-      blurred = false
-
-      match.node_tags.each do |tag|
-        if tag.name == "location:blurred"
-          blurred = true
-          break
-        end
+    # selects the items whose node_tags don't have the location:blurred tag
+    items.select do |item|
+      item.node_tags.none? do |node_tag|
+        node_tag.name == "location:blurred"
       end
-
-      doc = DocResult.fromLocationSearch(match.nid, 'coordinates', match.path(:items), match.title, 0, match.answers.length.to_i, match.lat, match.lon, blurred)
-      sresult.addDoc(doc)
     end
-    sresult
+
+    # sort nodes by recent activities if the sort_by==recent
+    if sort_by == "recent"
+      items.order("changed #{order_direction}")
+           .limit(limit)
+    else
+      items.order(Arel.sql("created #{order_direction}"))
+           .limit(limit)
+            end
   end
 
-  # GET X number of latest people/contributors and package up as a DocResult
-  # X = srchString
-  def recentPeople(srchString, tagName = nil)
-    sresult = DocList.new
+  # Search nearby people with respect to given latitude, longitute and tags
+  # and package up as a DocResult
+  def tagNearbyPeople(coordinates, tag, field, period = nil, sort_by = nil, order_direction = nil, limit = 10)
+    raise("Must contain all four coordinates") if coordinates["nwlat"].nil?
+    raise("Must contain all four coordinates") if coordinates["nwlng"].nil?
+    raise("Must contain all four coordinates") if coordinates["selat"].nil?
+    raise("Must contain all four coordinates") if coordinates["selng"].nil?
 
-    nodes = Node.all.order("changed DESC").limit(srchString).distinct
-    users = []
-    nodes.each do |node|
-      if node.author.status != 0
-        if tagName.blank?
-          users << node.author.user
-        else
-          users << node.author.user if node.author.user.has_tag(tagName)
-        end
+    raise("Must be a float") unless coordinates["nwlat"].is_a? Float
+    raise("Must be a float") unless coordinates["nwlng"].is_a? Float
+    raise("Must be a float") unless coordinates["selat"].is_a? Float
+    raise("Must be a float") unless coordinates["selng"].is_a? Float
+
+    raise("If 'from' is not null, must contain date") if period["from"] && !(period["from"].is_a? Date)
+    raise("If 'to' is not null, must contain date") if period["to"] && !(period["to"].is_a? Date)
+
+    user_locations = User.where('rusers.status <> 0')
+                         .joins(:user_tags)
+                         .where('value LIKE ?', 'lat%')
+                         .where('REPLACE(value, "lat:", "") BETWEEN ' + coordinates["selat"].to_s + ' AND ' + coordinates["nwlat"].to_s)
+                         .distinct
+
+    if tag.present?
+      if field.present? && field == 'node_tag'
+        tids = Tag.where("term_data.name = ?", tag).collect(&:tid).uniq || []
+        uids = TagSelection.where('tag_selections.tid IN (?)', tids).collect(&:user_id).uniq || []
+      else
+        uids = User.joins(:user_tags)
+                   .where('user_tags.value = ?', tag)
+                   .where(id: user_locations.select("rusers.id"))
+                   .collect(&:id).uniq || []
+      end
+      user_locations = user_locations.where('rusers.id IN (?)', uids).distinct
+    end
+
+    uids = user_locations.collect(&:id).uniq || []
+
+    items = User.where('rusers.status <> 0')
+      .joins(:user_tags)
+      .where('rusers.id IN (?)', uids)
+      .where('user_tags.value LIKE ?', 'lon%')
+      .where('REPLACE(user_tags.value, "lon:", "") BETWEEN ' + coordinates["nwlng"].to_s + ' AND ' + coordinates["selng"].to_s)
+
+    # selects the items whose node_tags don't have the location:blurred tag
+    items.select do |item|
+      item.user_tags.none? do |user_tag|
+        user_tag.name == "location:blurred"
       end
     end
-    users = users.uniq
-    users.each do |user|
-      next unless user.has_power_tag("lat") && user.has_power_tag("lon")
-      blurred = false
-      if user.has_power_tag("location")
-        blurred = user.get_value_of_power_tag("location")
-      end
-      doc = DocResult.fromLocationSearch(user.id, 'people_coordinates', user.path, user.username, 0, 0, user.lat, user.lon, blurred)
-      sresult.addDoc(doc)
+
+    # Here we use period["from"] and period["to"] in the query only if they have been specified,
+    # so we avoid to join revision table
+    if !period["from"].nil? || !period["to"].nil?
+      items = items.joins(:revisions).where("node_revisions.status = 1")\
+                   .distinct
+      items = items.where('node_revisions.timestamp > ' + period["from"].to_time.to_i.to_s) unless period["from"].nil?
+      items = items.where('node_revisions.timestamp < ' + period["to"].to_time.to_i.to_s) unless period["to"].nil?
     end
 
-    sresult
+    # sort users by their recent activities if the sort_by==recent
+
+    if sort_by == "recent"
+      items.joins(:revisions).where("node_revisions.status = 1")\
+           .order("node_revisions.timestamp #{order_direction}")
+           .distinct
+    elsif sort_by == "content"
+      ids = items.collect(&:id).uniq || []
+      User.select('`rusers`.*, count(`node`.uid) AS ord')
+          .joins(:node)
+          .where('rusers.id IN (?)', ids)
+          .group('`node`.`uid`')
+          .order("ord #{order_direction}")
+    else
+      items.order("created_at #{order_direction}")
+            .limit(limit)
+    end
+  end
+
+  def find_users(query, limit, type = nil)
+    users = if type == 'tag'
+              User.where('rusers.status = 1')
+                  .joins(:user_tags)\
+                  .where('user_tags.value LIKE ?', '%' + query + '%')\
+            elsif ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+              type == 'username' ? User.search_by_username(query).where('rusers.status = ?', 1) : User.search(query).where('rusers.status = ?', 1)
+            else
+              User.where('username LIKE ? AND rusers.status = 1', '%' + query + '%')
+            end
+
+    users.limit(limit)
   end
 end

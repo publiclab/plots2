@@ -1,14 +1,14 @@
-<%= stylesheet_link_tag "/lib/leaflet/dist/leaflet.css" %>
-<%= stylesheet_link_tag "/lib/leaflet-environmental-layers/dist/LeafletEnvironmentalLayers.css" %>
-<%= javascript_include_tag('/lib/leaflet-environmental-layers/dist/LeafletEnvironmentalLayers.js') %>
-<%= javascript_include_tag('/lib/leaflet-environmental-layers/dist/windRoseLayer.js') %>
-<%= javascript_include_tag('/lib/leaflet-hash/leaflet-hash.js') %>
-
-
-</div>
+<%= render :partial => "map/mapDependencies" %>
 
 <div style="width:100%;margin-left:0;height:300px;" id="map"></div>
-
+<p><i><small>
+  <% if !@map_lat.nil? && !@map_lon.nil? %>
+    Current view based on your shared location. Click <a href='/profile'>here</a> to adjust.
+  <% else %>
+    Share your own location on <a href='/profile'>your profile</a>.
+    Learn about <a href='https://publiclab.org/wiki/location-privacy'>privacy</a>
+  <% end %>
+</small></i></p>
 <script>
    L.Icon.DefaultIcon = L.Icon.extend({
     options: {
@@ -25,7 +25,6 @@
     return new L.Icon.DefaultIcon();
   };
 
-
   var bounds = new L.LatLngBounds(new L.LatLng(84.67351257 , -172.96875) , new L.LatLng(-54.36775852 , 178.59375)) ;
   var map = L.map('map' , {
       maxBounds: bounds , 
@@ -35,7 +34,7 @@
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map) ; 
   map.options.minZoom = 1.5 ;
-  var hash = new L.Hash(map);   
+
   <% @maps.each do |map| %>
     <% 
       lat = false
@@ -48,90 +47,16 @@
      var default_Icon =new L.icon.defaultIcon() ;
     L.marker([<%= lat %>, <%= lon %>] , {icon: default_Icon}).addTo(map).bindPopup("<a href='<%= map.path %>'><%= map.title %></a>");
   <% end %>
-    var PurpleAirMarkerLayer = L.layerGroup.purpleAirMarkerLayer() ;
-    var SkyTruth = L.layerGroup.skyTruthLayer() ;
-    var Fractracker = L.layerGroup.fracTrackerLayer() ;
-    var OdorReport = L.layerGroup.odorReportLayer() ;
-    var MapKnitter = L.layerGroup.mapKnitterLayer() ;
-    var ToxicRelease = L.layerGroup.toxicReleaseLayer() ;
-    var OpenInfraMap_Power = L.tileLayer('https://tiles-{s}.openinframap.org/power/{z}/{x}/{y}.png',{
-        maxZoom: 18,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://www.openinframap.org/about.html">About OpenInfraMap</a>'
-    });
-    var OpenInfraMap_Petroleum = L.tileLayer('https://tiles-{s}.openinframap.org/petroleum/{z}/{x}/{y}.png', {
-      maxZoom: 18,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://www.openinframap.org/about.html">About OpenInfraMap</a>'
-    });
-    var OpenInfraMap_Telecom = L.tileLayer('https://tiles-{s}.openinframap.org/telecoms/{z}/{x}/{y}.png', {
-      maxZoom: 18,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://www.openinframap.org/about.html">About OpenInfraMap</a>'
-    });
-    var OpenInfraMap_Water = L.tileLayer('https://tiles-{s}.openinframap.org/water/{z}/{x}/{y}.png',{
-      maxZoom: 18,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://www.openinframap.org/about.html">About OpenInfraMap</a>'
-    });
-    var Justicemap_income = L.tileLayer.provider('JusticeMap.income') ;
-    var JusticeMap_americanIndian = L.tileLayer.provider('JusticeMap.americanIndian') ;
-    var JusticeMap_asian = L.tileLayer.provider('JusticeMap.asian') ;
-    var JusticeMap_black = L.tileLayer.provider('JusticeMap.black') ;
-    var JusticeMap_multi = L.tileLayer.provider('JusticeMap.multi') ;
-    var JusticeMap_hispanic = L.tileLayer.provider('JusticeMap.hispanic') ;
-    var JusticeMap_nonWhite = L.tileLayer.provider('JusticeMap.nonWhite') ;
-    var JusticeMap_white = L.tileLayer.provider('JusticeMap.white') ;
-    var JusticeMap_plurality = L.tileLayer.provider('JusticeMap.plurality') ;
-    
-    var clouds = L.OWM.clouds({showLegend: true, opacity: 0.5});
-    var cloudscls = L.OWM.cloudsClassic({});
-    var precipitation = L.OWM.precipitation({});
-    var precipitationcls = L.OWM.precipitationClassic({});
-    var rain = L.OWM.rain({});
-    var raincls = L.OWM.rainClassic({});
-    var snow = L.OWM.snow({});
-    var pressure = L.OWM.pressure({});
-    var pressurecntr = L.OWM.pressureContour({});
-    var temp = L.OWM.temperature({});
-    var wind = L.OWM.wind({});
-    var city = L.OWM.current({intervall: 15, minZoom: 3});
-    var windrose = L.OWM.current({intervall: 15, minZoom: 3, markerFunction: myWindroseMarker, popup: false, clusterSize: 50,imageLoadingBgUrl: 'https://openweathermap.org/img/w0/iwind.png' });
-    windrose.on('owmlayeradd', windroseAdded, windrose); 
-    var baseMaps = {
-      "Baselayer1": baselayer
-    };
-    var overlayMaps = {
-      "PurpleAirLayer-Markers": PurpleAirMarkerLayer ,
-      "SkyTruth": SkyTruth , 
-      "Fractracker" : Fractracker ,
-      "ToxicRelease": ToxicRelease ,
-      "OdorReport": OdorReport ,
-      "MapKnitter": MapKnitter ,
-      "OpenInfraMap_Power": OpenInfraMap_Power ,
-      "OpenInfraMap_Telecom": OpenInfraMap_Telecom ,
-      "OpenInfraMap_Petroleum": OpenInfraMap_Petroleum ,
-      "OpenInfraMap_Water": OpenInfraMap_Water ,
-      "Justicemap_income": Justicemap_income,
-      "JusticeMap_americanIndian": JusticeMap_americanIndian ,
-      "JusticeMap_asian": JusticeMap_asian ,
-      "JusticeMap_black": JusticeMap_black,
-      "JusticeMap_multi": JusticeMap_multi ,
-      "JusticeMap_hispanic": JusticeMap_hispanic ,
-      "JusticeMap_nonWhite": JusticeMap_nonWhite,
-      "JusticeMap_white": JusticeMap_white ,
-      "JusticeMap_plurality": JusticeMap_plurality ,
-         "Clouds": clouds ,
-         "clouds (classic)": cloudscls ,
-         "precipitation": precipitation ,
-         "precipitation (classic)": precipitationcls , 
-         "rain": rain , 
-         "rain (classic)": raincls ,
-         "snow": snow , 
-         "pressure": pressure ,
-         "pressure contour (zoom in)": pressurecntr , 
-         "temp": temp , 
-         "wind": wind , 
-         "Cities (zoom in)": city  , 
-         "windrose (zoom in)": windrose
-    };
-    L.control.layers(baseMaps,overlayMaps).addTo(map); 
+
+   <% if !@map_lat.nil? && !@map_lon.nil? %>
+      var map_lat = <%= @map_lat %> ;
+      var map_lon = <%= @map_lon %> ;
+      var user_latlng = L.latLng(map_lat, map_lon) ;
+      map.setView(user_latlng , 3) ;
+   <% end %>
+
+   setupLEL(map , 1) ;
+   setupFullScreen(map , map.getCenter().lat , map.getCenter().lng) ;
 </script>
 
 <br style="clear:both;" />
@@ -141,52 +66,42 @@
 
 <div class="row">
 
-<div class="col-md-3">
+  <div class="col-md-3">
+    <h3 style="margin-top:0;">Do-It-Yourself "satellite" imagery</h3>
+    <p>These maps were largely made by <a href="/tool/balloon-mapping">taking photos from balloons and kites</a>, a technique adopted and refined by Public Lab contributors. <a href="//mapknitter.org">Make one yourself</a> and it can be featured here.</p>
+    <hr />
 
-  <h3 style="margin-top:0;">Do-It-Yourself "satellite" imagery</h3>
+    <h3>Popular tags</h3>
 
-  <p>These maps were largely made by <a href="/tool/balloon-mapping">taking photos from balloons and kites</a>, a technique adopted and refined by Public Lab contributors. <a href="//mapknitter.org">Make one yourself</a> and it can be featured here.</p>
+    <p>
+      <a href="/maps/tag/oil-spill"><i class="fa fa-tag"></i> oil-spill</a>
+      <a href="/maps/tag/wetlands"><i class="fa fa-tag"></i> wetlands</a>
+      <a href="/maps/tag/landfill"><i class="fa fa-tag"></i> landfill</a>
+      <a href="/maps/tag/garden"><i class="fa fa-tag"></i> garden</a>
+      <a href="/maps/tag/ndvi"><i class="fa fa-tag"></i> NDVI</a>
+      <a href="/maps/tag/gowanus"><i class="fa fa-tag"></i> gowanus</a>
+      <a href="/maps/tag/protest"><i class="fa fa-tag"></i> protest</a>
+    </p>
 
-  <hr />
+    <hr />
 
-  <h3>Popular tags</h3>
+    <h3><i style="color:#aaa;" class="fa fa-hdd"></i> A grassroots data archive</h3>
 
-  <p>
-    <a href="/maps/tag/oil-spill"><i class="fa fa-tag"></i> oil-spill</a>
-    <a href="/maps/tag/wetlands"><i class="fa fa-tag"></i> wetlands</a>
-    <a href="/maps/tag/landfill"><i class="fa fa-tag"></i> landfill</a>
-    <a href="/maps/tag/garden"><i class="fa fa-tag"></i> garden</a>
-    <a href="/maps/tag/ndvi"><i class="fa fa-tag"></i> NDVI</a>
-    <a href="/maps/tag/gowanus"><i class="fa fa-tag"></i> gowanus</a>
-    <a href="/maps/tag/protest"><i class="fa fa-tag"></i> protest</a>
-  </p>
+    <p>This archive represents the collective work of our community to provide an alternative source for aerial imagery, and to highlight issues of environmental and social concern with Do-It-Yourself tools. The archive provides:</p>
 
-  <hr />
+    <ul>
+      <li>A permanent, backed up archive</li>
+      <li>A place to advocate around your data</li>
+      <li>A space to discuss and understand the maps</li>
+    </ul>
+    <hr />
+    <h3><i style="color:#aaa;" class="fa fa-globe"></i> How to contribute</h3>
+    <p>Most of the maps in this archive were made in <a href="//mapknitter.org">MapKnitter</a>, a free and open source tool created by Public Lab contributors to turn aerial photos into maps.</p>
+    <p>To add your open source map to the archive, contact <a href="mailto:staff@<%= request.host %>">staff@<%= request.host %></a> and be prepared to provide some background and to tell the story of your map. Creative Commons and Public Domain maps are <a href="/licenses">both accepted</a>.</p> 
+  </div>
 
-  <h3><i style="color:#aaa;" class="fa fa-hdd"></i> A grassroots data archive</h3>
-
-  <p>This archive represents the collective work of our community to provide an alternative source for aerial imagery, and to highlight issues of environmental and social concern with Do-It-Yourself tools. The archive provides:</p>
-
-  <ul>
-    <li>A permanent, backed up archive</li>
-    <li>A place to advocate around your data</li>
-    <li>A space to discuss and understand the maps</li>
-  </ul>
-
-  <hr />
-
-  <h3><i style="color:#aaa;" class="fa fa-globe"></i> How to contribute</h3>
-
-  <p>Most of the maps in this archive were made in <a href="//mapknitter.org">MapKnitter</a>, a free and open source tool created by Public Lab contributors to turn aerial photos into maps.</p>
-
-  <p>To add your open source map to the archive, contact <a href="mailto:staff@<%= request.host %>">staff@<%= request.host %></a> and be prepared to provide some background and to tell the story of your map. Creative Commons and Public Domain maps are <a href="/licenses">both accepted</a>.</p> 
-
-</div>
-
-<div class="col-md-9">
-
-  <%= render :partial => "map/maps" %>
-
-  <hr />
-  
+  <div class="col-md-9">
+    <%= render :partial => "map/maps" %>
+    <hr/>
+  </div>
 </div>

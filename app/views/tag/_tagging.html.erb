@@ -1,5 +1,14 @@
-<h1>Tags</h1>
-<em class="italics">Tags help organize our knowledge base. Click to find more on a topic.</em>
+<% user = user || @user # allow overriding w/ local variable %>
+
+<!-- This is the sidebar tagging display, also renders Subscribe button for multiple subscription -->
+<div>
+  <h1 style="display: inline-block; margin-right: 20px;">Tags</h1>
+  <% if @node && !@node.node_tags.empty? && ((current_user && @node.liked_by(current_user.uid)) || !current_user) %>
+    <%= render partial: 'tag/subscribe_button', locals:{tags: @node.node_tags} %>
+  <% end %>
+</div>
+<em class="italics"><a href="/tags">Tags</a> organize our knowledge base. Click to learn more or subscribe to a topic.</em>
+
 
 <% if @node %>
   <%= render partial: 'tag/replication' %>
@@ -10,7 +19,7 @@
   </span>
 <% else %>
   <span id="tags">
-  <%= render partial: 'tag/tags', locals: { power_tag: false, label_name: 'label-primary', tags: @user.user_tags } %>
+  <%= render partial: 'tag/tags', locals: { power_tag: false, label_name: 'label-primary', tags: user.user_tags, user: user } %>
   </span>
 <% end %>
 
@@ -18,7 +27,7 @@
 $(function () {
   $('#tags [data-toggle="tooltip"]').tooltip()
 })
-
+  
 var pops = $("[data-toggle=popover]");
 $(".label").on("click", function(e){
     if(e.target === this){
@@ -40,7 +49,7 @@ $(".label").on("click", function(e){
 
 <% parent ||= nil %>
 
-<% if parent != :profile || (current_user && (current_user.id == @user.id || current_user.role == "admin")) %>
+<% if current_user && (parent != :profile || (current_user.id == user.id || current_user.role == "admin")) %>
 <% url = url || "/tag/create/" + @node.id.to_s %>
 
 <form id="tagform" class="form" data-remote="true" action="<%= url %>">
@@ -63,7 +72,7 @@ $(".label").on("click", function(e){
           initTagForm("/tag/delete/<%= @node.id %>", '#tagform');
         <% else %>
           // user tags:
-          initTagForm("/profile/tags/delete/<%= @user.id %>", '#tagform');
+          initTagForm("/profile/tags/delete/<%= user.id %>", '#tagform');
         <% end %>
       });
     </script>
