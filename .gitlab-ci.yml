@@ -17,6 +17,8 @@ before_script:
   - docker-compose up -d
   - docker-compose exec -T web rake db:setup
   - docker-compose exec -T web rake db:migrate
+  - docker-compose exec -T web rake assets:precompile
+
 
 job:
   script:
