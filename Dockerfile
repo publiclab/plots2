@@ -34,7 +34,6 @@ COPY Gemfile /tmp/Gemfile
 COPY Gemfile.lock /tmp/Gemfile.lock
 ADD . /app
 RUN mkdir -p /app/public /app/log && touch /app/passenger.4000.pid /app/passenger.4000.pid.lock && chmod a+w /tmp /app/public /app/Gemfile.lock /app/passenger.4000.pid /app/passenger.4000.pid.lock /app/log /app/spec -R
-RUN passenger-config compile-nginx-engine --connect-timeout 60 --idle-timeout 60
 
 # Add unprivileged user
 RUN adduser --disabled-password --gecos '' plots
