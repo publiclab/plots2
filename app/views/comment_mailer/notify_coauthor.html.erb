@@ -1,0 +1,15 @@
+'<a href='https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @author.name %>'><%= @author.name %></a>' has added you as a co-author of '<a href='https://<%= ActionMailer::Base.default_url_options[:host] %><%= @note.path %>'><%= @note.title %></a>'.You can reply to this email or visit this link:
+
+<p>https://<%= ActionMailer::Base.default_url_options[:host] %><%= @note.path %></p>
+
+<hr />
+
+<div style="color:#aaa;">
+
+  <p>Reply at: https://<%= ActionMailer::Base.default_url_options[:host] %><%= @note.path %>#comments</p>
+
+  <p>Report abuse to: moderators@<%= ActionMailer::Base.default_url_options[:host] %></p>
+
+  <%= @footer %>
+
+</div>

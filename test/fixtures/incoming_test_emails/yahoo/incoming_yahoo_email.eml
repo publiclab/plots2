@@ -1,0 +1,79 @@
+Delivered-To: railsprojects2018@gmail.com
+Received: by 2002:a1c:924f:0:0:0:0:0 with SMTP id u76-v6csp1339484wmd;
+        Tue, 3 Jul 2018 11:13:08 -0700 (PDT)
+X-Google-Smtp-Source: ADUXVKLsANtG+QeoJ0mvxwnjZMzn18uVV/0+ihoGm0SwbKz3mS15McYnROOLljNq5EvWMsiTWN5X
+X-Received: by 2002:a17:902:8d91:: with SMTP id v17-v6mr31583874plo.9.1530641588321;
+        Tue, 03 Jul 2018 11:13:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1530641588; cv=none;
+        d=google.com; s=arc-20160816;
+        b=pVnuGBSUMiy//7v2MEBxQhGHS6T3l2DgOl/Y9xn+ls8qBCydLIOf/zEbfKNhLkfRLE
+         kdE3gtaxq2//TDmJWDolfwMd9mDWC7pjB2iP85dY2mRCyzbczwnU9Sc+JJrtEoRkQgwg
+         s95y4loLsR0vZaLu1jsOcvpwhxZ0HCuqOuhrog37SsGklPynusRj3uCFmIuAqUu3tl/Z
+         +LniU4efPNMxMD3oTafkZfziiRwL8TE028oGk8Ch2R7L0+yeHTOqgmNiLccmLtUC8iK3
+         TGyG2WXYDvbwUdoe6BYkWaPvYeLHNEjMdOqR+z3v4lyLeIOGrLzLsnxVI9lseCZ7EsZz
+         Yqyw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=mime-version:subject:references:in-reply-to:message-id:to:from:date
+         :dkim-signature:arc-authentication-results;
+        bh=ddwESwcamoc9p/2wVtdLGmAUUIZeLlBkH/vdAIMLwOo=;
+        b=SQJknL54sS19gHGVMaZF4pr0wWeTpFkWR/tjmvSAL/YeKzNetbgSH9JsNVitbxH64i
+         BCQquotID3KofgmwyYhPQ6NuwKkPtQ3V0xnKHolTbNLRXdgWCSHeSXzBQYDybPWmtGmd
+         Wg4D2UJK6fNm0m1OYYSFxfgYLnsce6QzBuyin59A6Uuq6401HiwgUTrljulR/Y+tGEBn
+         LFeVqoDXd+wS9SbMX6br3PQYbOXOF+joz5c5PyBch7Hyn/LKD/cFhPtzTUmW+TLE6IFV
+         z7gS98gZDOH9De7h5/rwVE0Ya+pipSeg+XvP0LuQmJ9Qdo6qzmjeQ1Xe+knGBPy/u3+T
+         elTQ==
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@yahoo.com header.s=s2048 header.b=b8bBTNjc;
+       spf=pass (google.com: domain of naman18996@yahoo.com designates 106.10.242.168 as permitted sender) smtp.mailfrom=naman18996@yahoo.com;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=yahoo.com
+Return-Path: <naman18996@yahoo.com>
+Received: from sonic302-48.consmr.mail.sg3.yahoo.com (sonic302-48.consmr.mail.sg3.yahoo.com. [106.10.242.168])
+        by mx.google.com with ESMTPS id u3-v6si1498029pgq.354.2018.07.03.11.13.07
+        for <railsprojects2018@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 03 Jul 2018 11:13:08 -0700 (PDT)
+Received-SPF: pass (google.com: domain of naman18996@yahoo.com designates 106.10.242.168 as permitted sender) client-ip=106.10.242.168;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@yahoo.com header.s=s2048 header.b=b8bBTNjc;
+       spf=pass (google.com: domain of naman18996@yahoo.com designates 106.10.242.168 as permitted sender) smtp.mailfrom=naman18996@yahoo.com;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=yahoo.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1530641586; bh=ddwESwcamoc9p/2wVtdLGmAUUIZeLlBkH/vdAIMLwOo=; h=Date:From:To:In-Reply-To:References:Subject:From:Subject; b=b8bBTNjchM7ONQQSFLWWDzAyt44kLP08DvAlZrXRrcH1CSJnu6mmMIsRn3OrlFDBpuu+9ObBggk3r92YEHNKMYuhSzYgJ3KgqS+2kZCmmPRK+vtsZDHps7RITE4ydyoJeL+LIUOUAJR9gQ+m9FpHwQxmrUNLlC/HGkmxCEktITiJNqp8YGCvbsaU4vtIT6Bf3hzxJUgF4NnYhimdShhum+vGuEowZf65rFGaa4eyJjeink84sHLH2+Ul1ML/uvOJZeiQE3mnlMg09lXoe7ofINO43JnKSWNrEQDPlMt+z7eUun/P+M9rS+PA7fqgXqWN/wEMPmqivqUUvdNYXpOiYw==
+X-YMail-OSG: GOoAr_UVM1k156EiiTItEtvXqzQsyP8kmI.62mDQrscGF.JWV45AuZI2McDmxuG KSs8ywZFPJGGNNkM.Nu_Etqy2qQvKoVPCrQAx7aHstRLUTFSrPOLtnhyV_CYZn7HpOzezt3z0Q1Y RI6wDDcvc5mjO8BYhjdJlq0.EvVaytitDgXH_cZZ0EYkE_tA_6Ydk4Eoe2xxBDrYhr_o2XLW5yb2 FmTYxIiR5xuZ5M8_HDSZ29240OL2db2rF.h7UYuNyggeO7OjLHFJM4AINgsPGE0odjUZr.U.L7H1 CduwiyPH6nIXcylh6NB87RMLDTvfZB_QaamOTHd2cwAdaQd4fA.e2Mun5dcG6EMR4MwQzgwO9Ojd gFvt1YTEEVr5oiNdudoIVgsfO913aVtavztJfPwgL7F_jnCH9rUWW2lzfW2OduEvElxE_drWh5Cc GyQsajT1KjpIGq.SoQAh4QDNIAgujUZbsb8kuGbWKA_FHtXC3Tp55GmnRURzmAKBSJ7X0MotksqK kkvt0kvbJ821Uh2cTwaVDNetjJAZcAbdBz8OFQ4dmuEmq.f_7o71PToRZwt738uyCBjo_LzpMmgm oO5lMZS3Vz9sUIZEr2vBB7Mz59AdbEicdHTHzmKReNxcxazXSBSWS067vf.zUOMkO1q8YTbNw_zh 6JEbnr7FhcWjZTMBkJPhGSG0gsVLFMfbSEDnOvkh8ZD9ylb7i7bUpDBsODhn79nDsicn5AohTlcS qv5YXSzlL.N4TMJiDXOfaka_qyqsSZGsmVSxBdslMf_Wa1uAJeQonjUDgXcWup07vn_OSJn2AquR WTXICr2iz3shpdEz1jETDvbT01TgvNWo4hORqsQ.JuMr5qHO76q_E.YrCbYGJ.dUPyLWo3uTD60C bVa1zL.GQw8wAZ57g2qpimibEkAyzcn_ooAcZOBYO4fJt1NIx99hdNms6Dd7iX.eUDB33cJEMwQr X
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic302.consmr.mail.sg3.yahoo.com with HTTP; Tue, 3 Jul 2018 18:13:06 +0000
+Date: Tue, 3 Jul 2018 18:09:05 +0000 (UTC)
+From: Naman Gupta <naman18996@yahoo.com>
+To: Rails Projects <railsprojects2018@gmail.com>
+Message-ID: <268274679.2142643.1530641345720@mail.yahoo.com>
+In-Reply-To: <CAN4wNrmSs_hwaPrj6MK4Rr1NMBLAa4_OitNMdsdv1_pVLymqLQ@mail.gmail.com>
+References: <CAN4wNrmSs_hwaPrj6MK4Rr1NMBLAa4_OitNMdsdv1_pVLymqLQ@mail.gmail.com>
+Subject: Re: New Comment on Note (#21)
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="----=_Part_2142642_1211954234.1530641345718"
+X-Mailer: WebService/1.1.12062 YMailNorrin Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.1.2 Safari/603.3.8
+Content-Length: 1343
+
+------=_Part_2142642_1211954234.1530641345718
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+This is reply by mail comment from yahoooo   On Tuesday, 3 July 2018, 11:20:57 PM IST, Rails Projects <railsprojects2018@gmail.com> wrote:  
+ 
+ This is a comment sent to the user by publiclab.
+  
+------=_Part_2142642_1211954234.1530641345718
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<html><head></head><body><div style="font-family:Helvetica Neue, Helvetica, Arial, sans-serif;font-size:13px;"><div>This is reply by mail comment from yahoooo</div><div id="yahoo_quoted_1573947969" class="yahoo_quoted">
+            <div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:13px;color:#26282a;">
+                
+                <div>
+                    On Tuesday, 3 July 2018, 11:20:57 PM IST, Rails Projects &lt;railsprojects2018@gmail.com&gt; wrote:
+                </div>
+                <div><br></div>
+                <div><br></div>
+                <div><div id="yiv8553838181"><div dir="ltr"><span style="font-size:12.8px;text-decoration-color:initial;float:none;display:inline;">This is a comment sent to the user by publiclab.</span><br></div>
+</div></div>
+            </div>
+        </div></div></body></html>
+------=_Part_2142642_1211954234.1530641345718--

@@ -1,0 +1,40 @@
+<% if params[:action] == "places" %>
+</div>
+
+<div style="width:100%;margin-left:0;height:300px;" id="map"></div>
+
+<script>
+  var map = L.map('map').setView([22,0], 2);
+  L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",{
+    attribution: "<a href='http://openstreetmap.org'>OSM</a> tiles by <a href='http://mapbox.com'>MapBox</a>",
+  }).addTo(map)
+
+  <% @notes.each do |place| %>
+    <% if place.lat && place.lon %>L.marker([<%= place.lat %>, <%= place.lon %>]).addTo(map).bindPopup("<a href='<%= place.path %>'><%= place.latest.title %></a>");<% end %>
+  <% end %>
+</script>
+
+<br />
+<div class="row">
+<% end %>
+
+<div class="col-md-12">
+
+  <%= feature('places') %>
+  <hr />
+  <% if params[:controller] == "notes" && (params[:action] == "popular" || params[:action] == "index" || params[:action] == "liked") %>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <ul class="nav">
+          <li<% if params[:action] == "methods" %> class="active"<% end %>><a href="/methods/"><i class="fa fa-wrench"></i> <%= t('notes.tools_places.tools') %></a></li>
+          <li<% if params[:action] == "places" %> class="active"<% end %>><a href="/places/"><i class="fa fa-flag"></i> <%= t('notes.tools_places.places') %></a></li>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <%= render :partial => "notes/notes" %>
+
+  <hr />
+
+</div>

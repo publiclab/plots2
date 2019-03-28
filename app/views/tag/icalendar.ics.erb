@@ -1,0 +1,21 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//publiclab/events//NONSGML v1.0//EN
+<% @notes.each do |node| %>
+<% if node.power_tag('date') != '' %>
+<% begin %>
+<% date = DateTime.parse(node.power_tag('date')) %>
+BEGIN:VEVENT
+UID:notifications@<%= request.host %>
+DTSTAMP:<%= date.strftime("%Y%m%dT%H%M%S") %>
+DTSTART;VALUE=DATE:<%= date.strftime("%Y%m%d") %>
+DTEND;VALUE=DATE:<%= (date + 1.day).strftime("%Y%m%d") %>
+SUMMARY:<%= node.title %>
+<% if node.has_power_tag('location') %>LOCATION:<%= node.power_tag('location') %><% end %>
+URL:https://<%= request.host %><%= node.path %>
+END:VEVENT
+<% rescue %>
+<% end %>
+<% end %>
+<% end %>
+END:VCALENDAR

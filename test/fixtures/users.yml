@@ -1,0 +1,251 @@
+bob:
+  username: Bob
+  status: 1
+  email: bob@publiclab.org
+  id: 1
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>
+  last_request_at: <%= Time.now %>
+  bio: ''
+  token: abcdefg12345
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+jeff:
+  username: jeff
+  status: 1
+  email: jeff@pxlshp.com
+  id: 2
+  role: admin
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>
+  last_request_at: <%= Time.now %>
+  bio: 'Here is something really interesting about Jeff.'
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+spammer:
+  username: spammer
+  status: 0 #spammer
+  email: spam@spam.com
+  id: 3
+  last_request_at: <%= Time.now %>
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>
+  bio: ''
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+unbanned_spammer:
+  username: unbanned_spammer
+  status: 1
+  email: uspam@spam.com
+  id: 4
+  last_request_at: <%= Time.now %>
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>
+  bio: ''
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+admin:
+  username: palpatine
+  status: 1
+  email: admin@publiclab.org
+  id: 5
+  last_request_at: <%= Time.now %>
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>
+  role: admin
+  bio: ''
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+moderator:
+  username: obiwan
+  status: 1
+  email: obiwan@publiclab.org
+  id: 6
+  last_request_at: <%= Time.now %>
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>
+  role: moderator
+  bio: ''
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+newcomer:
+  username: newcomer
+  status: 1
+  email: newcomer@publiclab.org
+  id: 7
+  last_request_at: <%= Time.now %>
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>
+  role: basic
+  bio: ''
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+lurker:
+  username: lurker
+  status: 1
+  email: lurker@publiclab.org
+  id: 8
+  last_request_at: <%= Time.now %>
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>
+  bio: ''
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+unmoderated_user:
+  username: rob
+  status: 1
+  email: rob@publiclab.org
+  id: 9
+  last_request_at: <%= Time.now %>
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>
+  bio: ''
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+test_user:
+  username: testuser
+  status: 1
+  email: testuser@publiclab.org
+  id: 10
+  last_request_at: <%= Time.now %>
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>
+  bio: 'I love ruby'
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+naman:
+  username: namangupta
+  status: 1
+  email: 01namangupta@gmail.com
+  id: 12
+  last_request_at: <%= Time.now %>
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>
+  bio: ''
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+naman18996:
+  username: naman18996
+  status: 1
+  email: naman18996@yahoo.com
+  id: 13
+  last_request_at: <%= Time.now %>
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>
+  bio: ''
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+jeffrey:
+  username: jeffrey
+  status: 1
+  email: jeff@publiclab.org
+  id: 14
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>
+  last_request_at: <%= Time.now %>
+  bio: 'Here is something really interesting about Jeff.'
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+steff1:
+  username: steff1
+  status: 1
+  email: steff1@pxlshp.com
+  id: 15
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>
+  last_request_at: <%= Time.now %>
+  bio: ''
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+steff2:
+  username: steff2
+  status: 1
+  email: steff2@pxlshp.com
+  id: 16
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>
+  last_request_at: <%= Time.now %>
+  bio: ''
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+steff3:
+  username: steff3
+  status: 1
+  email: steff3@pxlshp.com
+  id: 17
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>
+  last_request_at: <%= Time.now %>
+  bio: ''
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+data:
+  username: data
+  status: 1
+  email: data@pxlshp.com
+  id: 18
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>
+  last_request_at: <%= Time.now %>
+  bio: 'data is a nice cat and he loves steff!'
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+user_first_time_poster:
+  username: user_first_time_poster
+  status: 1
+  email: first_time_poste@pxlshp.com
+  id: 19
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>
+  last_request_at: <%= Time.now %>
+  bio: 'user_first_time_poster'
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+kluo:
+  username: kluo
+  status: 1
+  email: pl.usertest@outlook.com
+  id: 20
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>
+  last_request_at: <%= Time.now %>
+  bio: 'Hi. Am I missing something?'
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>

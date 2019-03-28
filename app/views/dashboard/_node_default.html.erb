@@ -1,0 +1,19 @@
+<div class="col-md-6 note-container-note" style="overflow: hidden;">
+  <div class="note note-default<% if node.status == 4 || node.status == 3 %> moderated<% end %>">
+
+    <%= render partial: 'dashboard/node_moderate', locals: { node: node } %>
+
+    <% if node.main_image %>
+        <a class="img" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" style="width:100%;" /></a>
+    <% elsif node.scraped_image %>
+        <a class="img" href="<%= node.path %>"><img src="<%= node.scraped_image %>" style="width:100%;" /></a>
+    <% end %>
+
+    <h4><a href="<%= node.path %>"><%= node.title %></a> <% if node.status == 3 %><span style="font-size: small;" class="label label-success">Draft</span><% end %></h4>
+
+    <p class="meta"><%= render partial: "dashboard/node_meta", locals: { node: node } %></p>
+
+    <hr style="display:none;" class="bottom" />
+
+  </div>
+</div>

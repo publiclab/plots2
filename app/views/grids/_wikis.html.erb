@@ -1,0 +1,43 @@
+<table class="table inline-grid <%= type %>-grid <%= className %> <%= className %>-<%= randomSeed %>">
+  <tr>
+    <th>Title</th>
+    <th>Updated</th>
+    <th>Version</th>
+    <th>Views</th>
+  </tr>
+  <% nodes.each do |wiki| %>
+    <tr>
+      <td style="width:40%"><i class="fa fa-file"></i> <a href="<%= wiki.path %>"><%= wiki.latest.title %></a></td>
+      <td><%= distance_of_time_in_words(Time.at(wiki.latest.created_at), Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %> <%= raw t('wiki._wikis.by') %> 
+      <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a></td>
+      <td><%= wiki.revisions.length %></td>
+      <td class="hidden-xs"><%= number_with_delimiter(wiki.totalviews) %></td>
+      <td><%= number_with_delimiter(wiki.cached_likes) %></td>
+    </tr>
+  <% end %>
+</table>
+<%= will_paginate @wikis, :renderer => BootstrapPagination::Rails if @paginated %>
+
+<a class="grid-embed grid-embed-<%= randomSeed %>" title="Embed this table on another site."><i class="fa fa-code" style="color:#aaa;"></i></a>
+
+<script>
+(function(){
+  $(".<%= className %>-<%= randomSeed %> .show-all a").click(function() {
+    $(".<%= className %>-<%= randomSeed %> tr.hide").toggleClass("hide");
+  });
+  $(".grid-embed-<%= randomSeed %>").click(function() {
+    prompt('Use this HTML code to embed this table on another site.', '<iframe style="border:none;" width="100%" height="900px" src="//publiclab.org/embed/grid/<% if type != "notes" %><%= type.gsub('questions', 'question').gsub('activities', 'activity') %>:<% end %><%= tagname %>"></iframe>')
+  });
+  setupGridSorters(".<%= className %>-<%= randomSeed %>");
+})()
+</script>
+
+<style>
+  a.grid-embed {
+    float:right;
+    padding:8px;
+  }
+  a.grid-embed:hover {
+    color: #888;
+  }
+</style>

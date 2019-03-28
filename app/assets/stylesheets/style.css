@@ -1,0 +1,486 @@
+/*
+Junction is provided under the OFL and is available at http://www.theleagueofmoveabletype.com/junction or https://github.com/theleagueof/junction
+It was originally created by Caroline Hadilaksono: http://www.hadilaksono.com
+*/
+@font-face {
+  font-family: 'Junction Regular';
+  src: url('/lib/junction/webfonts/junction-regular.eot');
+  src: url('/lib/junction/webfonts/junction-regular.eot?#iefix') format('embedded-opentype'),
+       url('/lib/junction/webfonts/junction-regular.woff') format('woff'),
+       url('/lib/junction/webfonts/junction-regular.ttf') format('truetype'),
+       url('/lib/junction/webfonts/junction-regular.svg#junctionregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Junction Light';
+  src: url('/lib/junction/webfonts/junction-light.eot');
+  src: url('/lib/junction/webfonts/junction-light.eot?#iefix') format('embedded-opentype'),
+       url('/lib/junction/webfonts/junction-light.woff') format('woff'),
+       url('/lib/junction/webfonts/junction-light.ttf') format('truetype'),
+       url('/lib/junction/webfonts/junction-light.svg#junctionlight') format('svg');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+
+h1,h2,h3 {
+  font-family:"Junction Light", lucida grande,lucida sans console,sans-serif;
+  font-weight:normal;
+}
+
+h2 small {
+  font-size: 60%;
+}
+
+h4,h5,h6, h1 small, h3 small {
+  font-family: "Junction Regular", lucida grande,lucida sans console,sans-serif;
+  font-weight: normal;
+  line-height: 1.4em;
+}
+
+.pl-content h1,
+.pl-content h2,
+.pl-content h3 {
+  font-family: "Junction Light",lucida grande,lucida sans console,sans-serif;
+  padding-top: 0.4em;
+}
+
+.pl-content h4 {
+  padding-top:1.2em;
+}
+
+.pl-content img {
+  margin-top:8px;
+}
+
+.pl-content p img,
+#comments p img,
+#answer-0-comment p img,
+.pl-content p iframe {
+  max-width: 100%;
+  border: none;
+}
+
+#profile-fileinput {
+  visibility: hidden;
+}
+
+#image_revision {
+    width: 200px;
+}
+
+/* fontawesome default color */
+a .fa { color:#222; }
+a .fa-white,
+.fa-white {
+    color: white !important;
+}
+
+.label a {
+  color:white;
+}
+
+.label {
+  margin-bottom:3px;
+}
+
+.alert h2 {
+  font-size:1.2em;
+}
+
+.visible-print {
+  display:none;
+}
+
+@media (max-width:400px) {
+  .hidden-tiny {
+    display:none;
+  }
+  .visible-tiny {
+    display:inline;
+  }
+}
+
+@media (min-width:400px) {
+  .hidden-tiny {
+    display:inline;
+  }
+  .visible-tiny {
+    display:none;
+  }
+}
+
+@media (max-width: 768px) {
+    .navbar-header {
+        float: none;
+    }
+    .navbar-left,.navbar-right {
+        float: none !important;
+    }
+    .navbar-toggle {
+        display: block;
+    }
+    .navbar-collapse {
+        border-top: 1px solid transparent;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+    .navbar-fixed-top {
+        top: 0;
+        border-width: 0 0 1px;
+    }
+    .navbar-collapse.collapse {
+        display: none!important;
+    }
+    .navbar-nav {
+        float: none!important;
+        margin-top: 7.5px;
+    }
+    .navbar-nav>li {
+        float: none;
+    }
+    .navbar-nav>li>a {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .collapse.in{
+        display:block !important;
+    }
+    #md-ham {
+        display: none;
+    }
+}
+
+body { padding-top: 70px; }
+
+#header .collapse.in .hidden-xs,
+#header .collapse.in .hidden-sm,
+#header .collapse.in .hidden-md {
+  display: block !important;
+}
+
+.col2 {
+  -webkit-columns:2;
+  -moz-columns:2;
+  columns:2;
+}
+
+#header .navbar-brand {
+  color: white;
+  padding-top: 19px;
+  font-family: "Junction Light", lucida grande,lucida sans console,sans-serif;
+  font-size: 22px;
+}
+
+@media (max-width: 768px) {
+  #header #brand,
+  #header #brand-compact {
+    padding-top: 22px;
+    padding-right: 4px;
+  }
+}
+
+@media (max-width: 340px) {
+  #brand { display:none; }
+  #header .brand-compact { display:inline; }
+}
+
+@media (min-width: 340px) {
+  #brand { display:inline; }
+  #header .brand-compact { display:none; }
+}
+
+.navbar-inverse .navbar-nav > li > a {
+  color: #aaa;
+}
+
+.nav-tabs li {
+  border-color:#eee;
+}
+
+.nav.bullet li {
+  padding-left:20px;
+}
+
+.nav.bullet li i {
+  margin-left:-19px;
+}
+
+.footer {
+  color: #666;
+  clear:both;
+  margin-top: 40px;
+  padding: 30px;
+  border-top: 1px solid #E5E5E5;
+  background-color: #f8f8f8;
+}
+
+.footer ul {
+  margin-bottom: 50px;
+  list-style: none;
+  padding-left: 0;
+  line-height: 2em;
+}
+
+.caption {
+  padding:12px;
+  font-size:10px;
+  font-style:italic;
+}
+
+.caption.left {
+  padding-left:0;
+  width:312px;
+  float:left;
+}
+
+.caption.right {
+  padding-right:0;
+  width:312px;
+  float:right;
+}
+
+.caption img {
+  padding-bottom:4px;
+}
+
+.pl-content h1 i.fa-link,
+.pl-content h2 i.fa-link,
+.pl-content h3 i.fa-link,
+.pl-content h4 i.fa-link,
+.pl-content h5 i.fa-link {
+  color:#aaa;
+}
+.pl-content h1 a:hover i.fa-link,
+.pl-content h2 a:hover i.fa-link,
+.pl-content h3 a:hover i.fa-link,
+.pl-content h4 a:hover i.fa-link,
+.pl-content h5 a:hover i.fa-link {
+  color:#888;
+  text-decoration:none;
+}
+
+.pl-content blockquote p {
+  padding: 8px 4px;
+  margin-top: 8px;
+}
+
+#tags .label {
+  line-height: 2em;
+  font-size: 16px;
+  margin: 0px;
+}
+
+#tags li {
+  margin: 0px;
+  padding: 0px;
+}
+
+/* Styles for specific areas of the site */
+
+.note-show .main-image {
+  margin-bottom: 14px;
+  height: auto;
+  display: block;
+}
+
+.note-show .main-image img {
+  margin-bottom: 10px;
+}
+
+.controls fieldset {
+  padding: 5px;
+  border-left: 2px solid #cccccc;
+}
+
+#comment-form small {
+  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+.chat-popover {
+  width:400px;
+  right:5px;
+  top:45px;
+  position: absolute;
+  z-index: 1010;
+  display: none;
+  padding: 1px;
+  text-align: left;
+  white-space: normal;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding;
+  background-clip: padding-box;
+}
+
+.foldaway {
+  display:none;
+  padding: 0 20px;
+}
+
+.foldaway-link {
+  padding: 12px 0;
+  border-top:    1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+
+.pagination > li:first-child,
+.pagination > li:last-child {
+    display: inline;
+}
+
+@media (max-width:640px) {
+  .pagination > li {
+    display: none;
+  }
+}
+
+.diff .diff-object,
+.diff .diff-object {
+  padding: 3px;
+}
+.diff .diff-added {
+  background: #afa;
+  color: green;
+}
+.diff .diff-removed {
+  color: #900;
+  background: #faa;
+}
+
+div.note .meta {
+  color:#888;
+}
+
+.image-container {
+  height:auto;
+  overflow:auto;
+}
+/*start of img aspect css that will affect the 
+thumbnails which appears on the user's profile 
+under their notes*/
+#notes .note a.img {
+  height: auto;
+  display: inline-block;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.note-image {
+  height: auto;
+  overflow: hidden;
+}
+.note-image img {
+  width: auto;
+}
+
+.grid-image {
+  width: 100% !important;
+  height: auto;
+  display: block; 
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+/*end of img aspect css*/
+
+#notes .note h3 a {
+  color: #444;
+}
+
+div.note-show.moderated .pl-content,
+div.note.moderated .content,
+div.note.moderated .meta,
+div.note.moderated h4 {
+  -moz-opacity: 0.5;
+  opacity:.5;
+  filter:alpha(opacity=50);
+}
+
+.note p.moderated {
+  color: #940;
+  background: #fec;
+  border-color: #eb8;
+  padding: 10px;
+  font-size: smaller;
+}
+
+.note p.moderated .btn {
+  color: #940;
+  border-color: #eb8;
+  background: none;
+  font-size: smaller;
+}
+
+.btn-primary {
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #006dcc;
+  *background-color: #3071a9;
+  background-image: -moz-linear-gradient(top, #0088cc, #3071a9);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#3071a9));
+  background-image: -webkit-linear-gradient(top, #0088cc, #3071a9);
+  background-image: -o-linear-gradient(top, #0088cc, #3071a9);
+  background-image: linear-gradient(to bottom, #0088cc, #3071a9);
+  background-repeat: repeat-x;
+  border-color: #3071a9 #3071a9 #002a80;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff3071a9', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+
+.nav-button-wrapper {
+  padding-top: 7.5px;
+}
+
+@media (max-width:768px) {
+  table {
+    font-size: 90%;
+  }
+
+  .grid-image {
+  width: auto;
+  height: auto;
+  display: block; 
+  overflow: hidden;
+  margin-bottom: 10px;
+  }
+}
+
+@media (max-width:400px) {
+  table {
+    font-size: 80%;
+  }
+}
+
+.back-to-top {
+
+  float: right;
+
+}
+
+.back-to-top i {
+
+  font-size: 60px;
+
+}
+
+.is-active{
+    cursor: default;
+    background-color: #e3f2fd;
+}
+textarea, input {
+    padding:10px;
+    font-family: FontAwesome, "Open Sans", Verdana, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
+}

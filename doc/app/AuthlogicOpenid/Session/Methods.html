@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>module AuthlogicOpenid::Session::Methods - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../";
+</script>
+
+<script src="../../js/jquery.js"></script>
+<script src="../../js/darkfish.js"></script>
+
+<link href="../../css/fonts.css" rel="stylesheet">
+<link href="../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="module">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../table_of_contents.html#pages">Pages</a>
+    <a href="../../table_of_contents.html#classes">Classes</a>
+    <a href="../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-included">::included</a>
+    
+    <li class="calls-super" ><a href="#method-i-credentials-3D">#credentials=</a>
+    
+    <li ><a href="#method-i-openid_identifier-3D">#openid_identifier=</a>
+    
+    <li class="calls-super" ><a href="#method-i-save">#save</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="module-AuthlogicOpenid::Session::Methods">
+  <h1 id="module-AuthlogicOpenid::Session::Methods" class="module">
+    module AuthlogicOpenid::Session::Methods
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-included" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">included</span><span
+            class="method-args">(klass)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="included-source">
+            <pre><span class="ruby-comment"># File lib/authlogic_openid/authlogic_openid/session.rb, line 45</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">included</span>(<span class="ruby-identifier">klass</span>)
+  <span class="ruby-identifier">klass</span>.<span class="ruby-identifier">class_eval</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-identifier">attr_reader</span> <span class="ruby-value">:openid_identifier</span>
+    <span class="ruby-identifier">validate</span> <span class="ruby-value">:validate_openid_error</span>
+    <span class="ruby-identifier">validate</span> <span class="ruby-value">:validate_by_openid</span>, <span class="ruby-value">:if</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:authenticating_with_openid?</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-credentials-3D" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">credentials=</span><span
+            class="method-args">(value)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Hooks into credentials so that you can pass an :openid_identifier key.</p>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+          
+
+          
+          <div class="method-source-code" id="credentials-3D-source">
+            <pre><span class="ruby-comment"># File lib/authlogic_openid/authlogic_openid/session.rb, line 54</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">credentials=</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-keyword">super</span>
+  <span class="ruby-identifier">values</span> = <span class="ruby-identifier">value</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">value</span> <span class="ruby-operator">:</span> [<span class="ruby-identifier">value</span>]
+  <span class="ruby-identifier">hash</span> = <span class="ruby-identifier">values</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">values</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">with_indifferent_access</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">openid_identifier</span> = <span class="ruby-identifier">hash</span>[<span class="ruby-value">:openid_identifier</span>] <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">hash</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">hash</span>.<span class="ruby-identifier">key?</span>(<span class="ruby-value">:openid_identifier</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-openid_identifier-3D" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">openid_identifier=</span><span
+            class="method-args">(value)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="openid_identifier-3D-source">
+            <pre><span class="ruby-comment"># File lib/authlogic_openid/authlogic_openid/session.rb, line 61</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">openid_identifier=</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-ivar">@openid_identifier</span> = <span class="ruby-identifier">value</span>.<span class="ruby-identifier">blank?</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">nil</span> <span class="ruby-operator">:</span> <span class="ruby-constant">OpenID</span>.<span class="ruby-identifier">normalize_url</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-ivar">@openid_error</span> = <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">OpenID</span><span class="ruby-operator">::</span><span class="ruby-constant">DiscoveryFailure</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+  <span class="ruby-ivar">@openid_identifier</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@openid_error</span> = <span class="ruby-identifier">e</span>.<span class="ruby-identifier">message</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-save" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">save</span><span
+            class="method-args">(&block)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Cleaers out the block if we are authenticating with OpenID, so that we can
+redirect without a DoubleRender error.</p>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+          
+
+          
+          <div class="method-source-code" id="save-source">
+            <pre><span class="ruby-comment"># File lib/authlogic_openid/authlogic_openid/session.rb, line 71</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">save</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+  <span class="ruby-identifier">block</span> = <span class="ruby-keyword">nil</span> <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">openid_identifier</span>.<span class="ruby-identifier">blank?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">controller</span>.<span class="ruby-identifier">request</span>.<span class="ruby-identifier">env</span>[<span class="ruby-constant">Rack</span><span class="ruby-operator">::</span><span class="ruby-constant">OpenID</span><span class="ruby-operator">::</span><span class="ruby-constant">RESPONSE</span>].<span class="ruby-identifier">blank?</span>
+  <span class="ruby-keyword">super</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

@@ -1,0 +1,34 @@
+#!/usr/bin/env ruby
+require "rubygems"
+require "bundler/setup"
+require "mailman"
+
+Mailman.config.logger = Logger.new("log/mailman.log")
+
+Mailman.config.ignore_stdin = true #ignore input from STDIN
+
+Mailman.config.poll_interval = 5 # To poll for mails in every 5 seconds
+
+
+# Email Configration for mailman
+Mailman.config.pop3 = {
+  server: ENV['SERVER_ADDRESS'], # example pop.example.com 
+  port: 995, 
+  ssl: true,
+  username: ENV['USERNAME'],
+  password: ENV['EMAIL_PASSWORD']
+}
+
+Mailman::Application.run do
+  # routes are written here
+  # route for mail having node with id in their subject will only be accepted for processing
+  default do
+  	begin
+      Comment.receive_mail(message)
+    rescue Exception => e
+      Mailman.logger.error "Exception occurred while receiving message:\n#{message}"
+      Mailman.logger.error [e, *e.backtrace].join("\n")
+    end
+  end
+
+end

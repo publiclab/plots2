@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class MapController - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="ApplicationController.html">ApplicationController</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-create">#create</a>
+    
+    <li ><a href="#method-i-delete">#delete</a>
+    
+    <li ><a href="#method-i-edit">#edit</a>
+    
+    <li ><a href="#method-i-index">#index</a>
+    
+    <li ><a href="#method-i-new">#new</a>
+    
+    <li ><a href="#method-i-show">#show</a>
+    
+    <li ><a href="#method-i-tag">#tag</a>
+    
+    <li ><a href="#method-i-update">#update</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-MapController">
+  <h1 id="class-MapController" class="class">
+    class MapController
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-create" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>must require min_zoom and lat/lon location, and TMS URL solving this by
+min_zoom default here, but need better solution</p>
+          
+          
+
+          
+          <div class="method-source-code" id="create-source">
+            <pre><span class="ruby-comment"># File app/controllers/map_controller.rb, line 127</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;admin&#39;</span>
+    <span class="ruby-identifier">saved</span>, <span class="ruby-ivar">@node</span>, <span class="ruby-ivar">@revision</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">new_node</span>(<span class="ruby-identifier">uid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">uid</span>,
+                                            <span class="ruby-identifier">title</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:title</span>],
+                                            <span class="ruby-identifier">body</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:body</span>],
+                                            <span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;map&#39;</span>,
+                                            <span class="ruby-identifier">main_image</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:main_image</span>])
+
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">saved</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:tags</span>]
+        <span class="ruby-identifier">params</span>[<span class="ruby-value">:tags</span>].<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;,&#39;</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">tagname</span><span class="ruby-operator">|</span>
+          <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">add_tag</span>(<span class="ruby-identifier">tagname</span>, <span class="ruby-identifier">current_user</span>)
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+
+      <span class="ruby-comment"># save main image</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:main_image</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:main_image</span>] <span class="ruby-operator">!=</span> <span class="ruby-string">&#39;&#39;</span>
+        <span class="ruby-identifier">img</span> = <span class="ruby-constant">Image</span>.<span class="ruby-identifier">find</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:main_image</span>]
+        <span class="ruby-keyword">unless</span> <span class="ruby-identifier">img</span>.<span class="ruby-identifier">nil?</span>
+          <span class="ruby-identifier">img</span>.<span class="ruby-identifier">nid</span> = <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">id</span>
+          <span class="ruby-identifier">img</span>.<span class="ruby-identifier">save</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+
+      <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">add_tag</span>(<span class="ruby-string">&#39;lat:&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:lat</span>], <span class="ruby-identifier">current_user</span>)
+      <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">add_tag</span>(<span class="ruby-string">&#39;lon:&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:lon</span>], <span class="ruby-identifier">current_user</span>)
+
+      <span class="ruby-identifier">map</span> = <span class="ruby-constant">DrupalContentTypeMap</span>.<span class="ruby-identifier">new</span>
+      <span class="ruby-identifier">map</span>.<span class="ruby-identifier">nid</span> = <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">nid</span>
+      <span class="ruby-identifier">map</span>.<span class="ruby-identifier">vid</span> = <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">nid</span>
+
+      <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_publication_date_value</span>    = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_publication_date_value</span>]
+      <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_capture_date_value</span>        = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_capture_date_value</span>]
+      <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_geotiff_url_value</span>         = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_geotiff_url_value</span>]
+      <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_google_maps_url_value</span>     = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_google_maps_url_value</span>]
+      <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_openlayers_url_value</span>      = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_openlayers_url_value</span>]
+      <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_tms_url_value</span>             = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_tms_url_value</span>]
+      <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_jpg_url_value</span>             = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_jpg_url_value</span>]
+      <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_license_value</span>             = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_license_value</span>]
+      <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_raw_images_value</span>          = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_raw_images_value</span>]
+      <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_cartographer_notes_value</span>  = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_cartographer_notes_value</span>]
+      <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_notes_value</span>               = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_notes_value</span>]
+      <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_mbtiles_url_value</span>         = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_mbtiles_url_value</span>]
+      <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_zoom_min_value</span>            = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_zoom_min_value</span>]
+      <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_zoom_min_value</span> <span class="ruby-operator">||=</span> <span class="ruby-value">17</span>
+      <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_ground_resolution_value</span>   = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_ground_resolution_value</span>]
+      <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_geotiff_filesize_value</span>    = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_geotiff_filesize_value</span>]
+      <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_jpg_filesize_value</span>        = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_jpg_filesize_value</span>]
+      <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_raw_images_filesize_value</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_raw_images_filesize_value</span>]
+      <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_tms_tile_type_value</span>       = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_tms_tile_type_value</span>]
+      <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_zoom_max_value</span>            = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_zoom_max_value</span>]
+
+      <span class="ruby-comment"># need to create/delete these. Maybe best just make a new field, no need to store individual records</span>
+      <span class="ruby-comment"># @node.drupal_content_field_map_editor</span>
+      <span class="ruby-comment"># @node.drupal_content_field_mappers.collect(&amp;:field_mappers_value).uniq.join(&#39;, &#39;)</span>
+      <span class="ruby-identifier">map</span>.<span class="ruby-identifier">authorship</span>                      = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:authorship</span>]
+
+      <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">transaction</span> <span class="ruby-keyword">do</span> <span class="ruby-comment"># in case only part of this completes</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">save</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@revision</span>.<span class="ruby-identifier">save</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">map</span>.<span class="ruby-identifier">save</span>
+          <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-string">&#39;Edits saved.&#39;</span>
+          <span class="ruby-identifier">redirect_to</span> <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">path</span>
+        <span class="ruby-keyword">else</span>
+          <span class="ruby-identifier">flash</span>[<span class="ruby-value">:error</span>] = <span class="ruby-string">&#39;Your edit could not be saved.&#39;</span>
+          <span class="ruby-identifier">render</span> <span class="ruby-identifier">action</span><span class="ruby-operator">:</span> <span class="ruby-value">:edit</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">flash</span>[<span class="ruby-value">:error</span>] = <span class="ruby-string">&#39;Your edit could not be saved.&#39;</span>
+      <span class="ruby-identifier">render</span> <span class="ruby-identifier">template</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;map/edit&#39;</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">prompt_login</span> <span class="ruby-string">&#39;Only admins can publish maps at this time.&#39;</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-delete" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">delete</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="delete-source">
+            <pre><span class="ruby-comment"># File app/controllers/map_controller.rb, line 39</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">delete</span>
+  <span class="ruby-ivar">@node</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">uid</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">uid</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;admin&#39;</span>
+    <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">delete</span>
+    <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-string">&#39;Content deleted.&#39;</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-string">&#39;/archive&#39;</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">prompt_login</span> <span class="ruby-string">&#39;Only admins can edit maps at this time.&#39;</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-edit" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">edit</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="edit-source">
+            <pre><span class="ruby-comment"># File app/controllers/map_controller.rb, line 30</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">edit</span>
+  <span class="ruby-ivar">@node</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">uid</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">uid</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;admin&#39;</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-identifier">template</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;map/edit&#39;</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">prompt_login</span> <span class="ruby-string">&#39;Only admins can edit maps at this time.&#39;</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-index" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">index</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="index-source">
+            <pre><span class="ruby-comment"># File app/controllers/map_controller.rb, line 2</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
+  <span class="ruby-ivar">@title</span> = <span class="ruby-string">&#39;Maps&#39;</span>
+  <span class="ruby-ivar">@nodes</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">paginate</span>(<span class="ruby-identifier">page</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:page</span>], <span class="ruby-identifier">per_page</span><span class="ruby-operator">:</span> <span class="ruby-value">32</span>)
+               .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;nid DESC&#39;</span>)
+               .<span class="ruby-identifier">where</span>(<span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;map&#39;</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>)
+
+  <span class="ruby-comment"># I&#39;m not sure if this is actually eager loading the tags...</span>
+  <span class="ruby-ivar">@maps</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-value">:tag</span>)
+              .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;type = &quot;map&quot; AND status = 1 AND (term_data.name LIKE ? OR term_data.name LIKE ?)&#39;</span>, <span class="ruby-string">&#39;lat:%&#39;</span>, <span class="ruby-string">&#39;lon:%&#39;</span>)
+              .<span class="ruby-identifier">uniq</span>
+
+  <span class="ruby-comment"># This is supposed to eager load the url_aliases, and seems to run, but doesn&#39;t actually eager load them...?</span>
+  <span class="ruby-comment"># @maps = Node.select(&quot;node.*,url_alias.dst AS dst&quot;).joins(:tag).where(&#39;type = &quot;map&quot; AND status = 1 AND (term_data.name LIKE ? OR term_data.name LIKE ?)&#39;, &#39;lat:%&#39;, &#39;lon:%&#39;).joins(&quot;INNER JOIN url_alias ON url_alias.src = CONCAT(&#39;node/&#39;,node.nid)&quot;)</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File app/controllers/map_controller.rb, line 116</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">new</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;admin&#39;</span>
+    <span class="ruby-ivar">@node</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;map&#39;</span>)
+    <span class="ruby-identifier">render</span> <span class="ruby-identifier">template</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;map/edit&#39;</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">prompt_login</span> <span class="ruby-string">&#39;Only admins can publish maps at this time.&#39;</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-show" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">show</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="show-source">
+            <pre><span class="ruby-comment"># File app/controllers/map_controller.rb, line 17</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
+  <span class="ruby-ivar">@node</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">find_map</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:name</span>], <span class="ruby-identifier">params</span>[<span class="ruby-value">:date</span>])
+
+  <span class="ruby-comment"># redirect_old_urls</span>
+
+  <span class="ruby-identifier">impressionist</span>(<span class="ruby-ivar">@node</span>)
+  <span class="ruby-ivar">@title</span> = <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">title</span>
+  <span class="ruby-ivar">@tags</span> = <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">tags</span>
+  <span class="ruby-ivar">@tagnames</span> = <span class="ruby-ivar">@tags</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:name</span>)
+
+  <span class="ruby-identifier">set_sidebar</span> <span class="ruby-value">:tags</span>, <span class="ruby-ivar">@tagnames</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-tag" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">tag</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="tag-source">
+            <pre><span class="ruby-comment"># File app/controllers/map_controller.rb, line 202</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">tag</span>
+  <span class="ruby-identifier">set_sidebar</span> <span class="ruby-value">:tags</span>, [<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>]], <span class="ruby-identifier">note_count</span><span class="ruby-operator">:</span> <span class="ruby-value">20</span>
+
+  <span class="ruby-ivar">@tagnames</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>].<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;,&#39;</span>)
+  <span class="ruby-identifier">nids</span> = <span class="ruby-constant">Tag</span>.<span class="ruby-identifier">find_nodes_by_type</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>], <span class="ruby-string">&#39;map&#39;</span>, <span class="ruby-value">20</span>).<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:nid</span>)
+  <span class="ruby-ivar">@notes</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">paginate</span>(<span class="ruby-identifier">page</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:page</span>])
+               .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;nid in (?)&#39;</span>, <span class="ruby-identifier">nids</span>)
+               .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;nid DESC&#39;</span>)
+
+  <span class="ruby-ivar">@title</span> = <span class="ruby-ivar">@tagnames</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&#39;, &#39;</span>) <span class="ruby-keyword">if</span> <span class="ruby-ivar">@tagnames</span>
+  <span class="ruby-ivar">@unpaginated</span> = <span class="ruby-keyword">true</span>
+  <span class="ruby-identifier">render</span> <span class="ruby-identifier">template</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;tag/show&#39;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-update" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">update</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="update-source">
+            <pre><span class="ruby-comment"># File app/controllers/map_controller.rb, line 50</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
+  <span class="ruby-ivar">@node</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">uid</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">uid</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;admin&#39;</span>
+
+    <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">title</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:title</span>]
+    <span class="ruby-ivar">@revision</span> = <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">latest</span>
+    <span class="ruby-ivar">@revision</span>.<span class="ruby-identifier">title</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:title</span>]
+    <span class="ruby-ivar">@revision</span>.<span class="ruby-identifier">body</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:body</span>]
+
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:tags</span>]
+      <span class="ruby-identifier">params</span>[<span class="ruby-value">:tags</span>].<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;,&#39;</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">tagname</span><span class="ruby-operator">|</span>
+        <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">add_tag</span>(<span class="ruby-identifier">tagname</span>, <span class="ruby-identifier">current_user</span>)
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-comment"># save main image</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:main_image</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:main_image</span>] <span class="ruby-operator">!=</span> <span class="ruby-string">&#39;&#39;</span>
+      <span class="ruby-identifier">img</span> = <span class="ruby-constant">Image</span>.<span class="ruby-identifier">find</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:main_image</span>]
+      <span class="ruby-keyword">unless</span> <span class="ruby-identifier">img</span>.<span class="ruby-identifier">nil?</span>
+        <span class="ruby-identifier">img</span>.<span class="ruby-identifier">nid</span> = <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">id</span>
+        <span class="ruby-identifier">img</span>.<span class="ruby-identifier">save</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">add_tag</span>(<span class="ruby-string">&#39;lat:&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:lat</span>], <span class="ruby-identifier">current_user</span>)
+    <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">add_tag</span>(<span class="ruby-string">&#39;lon:&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:lon</span>], <span class="ruby-identifier">current_user</span>)
+
+    <span class="ruby-identifier">map</span> = <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">map</span>
+    <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_publication_date_value</span>    = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_publication_date_value</span>]
+    <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_capture_date_value</span>        = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_capture_date_value</span>]
+    <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_geotiff_url_value</span>         = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_geotiff_url_value</span>]
+    <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_google_maps_url_value</span>     = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_google_maps_url_value</span>]
+    <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_openlayers_url_value</span>      = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_openlayers_url_value</span>]
+    <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_tms_url_value</span>             = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_tms_url_value</span>]
+    <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_jpg_url_value</span>             = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_jpg_url_value</span>]
+    <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_license_value</span>             = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_license_value</span>]
+    <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_raw_images_value</span>          = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_raw_images_value</span>]
+    <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_cartographer_notes_value</span>  = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_cartographer_notes_value</span>]
+    <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_notes_value</span>               = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_notes_value</span>]
+    <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_mbtiles_url_value</span>         = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_mbtiles_url_value</span>]
+    <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_zoom_min_value</span>            = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_zoom_min_value</span>]
+    <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_ground_resolution_value</span>   = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_ground_resolution_value</span>]
+    <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_geotiff_filesize_value</span>    = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_geotiff_filesize_value</span>]
+    <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_jpg_filesize_value</span>        = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_jpg_filesize_value</span>]
+    <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_raw_images_filesize_value</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_raw_images_filesize_value</span>]
+    <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_tms_tile_type_value</span>       = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_tms_tile_type_value</span>]
+    <span class="ruby-identifier">map</span>.<span class="ruby-identifier">field_zoom_max_value</span>            = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:field_zoom_max_value</span>]
+
+    <span class="ruby-comment"># need to create/delete these. Maybe best just make a new field, no need to store individual records</span>
+    <span class="ruby-comment"># @node.drupal_content_field_map_editor</span>
+    <span class="ruby-comment"># @node.drupal_content_field_mappers.collect(&amp;:field_mappers_value).uniq.join(&#39;, &#39;)</span>
+    <span class="ruby-comment"># combined record as string:</span>
+    <span class="ruby-identifier">map</span>.<span class="ruby-identifier">authorship</span>                      = <span class="ruby-identifier">params</span>[<span class="ruby-value">:map</span>][<span class="ruby-value">:authorship</span>]
+
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">save</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@revision</span>.<span class="ruby-identifier">save</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">map</span>.<span class="ruby-identifier">save</span>
+      <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-string">&#39;Edits saved.&#39;</span>
+      <span class="ruby-identifier">redirect_to</span> <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">path</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">flash</span>[<span class="ruby-value">:error</span>] = <span class="ruby-string">&#39;Your edit could not be saved.&#39;</span>
+      <span class="ruby-identifier">render</span> <span class="ruby-identifier">action</span><span class="ruby-operator">:</span> <span class="ruby-value">:edit</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">prompt_login</span> <span class="ruby-string">&#39;Only admins can edit maps at this time.&#39;</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

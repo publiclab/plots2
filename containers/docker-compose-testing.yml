@@ -1,0 +1,48 @@
+version: "2"
+services:
+  db:
+    image: mariadb:10.2
+    network_mode: "service:web"
+    environment:
+      - MYSQL_DATABASE=plots
+      - MYSQL_USER=plots
+      - MYSQL_PASSWORD=plots
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
+    volumes:
+      - ../config/my.cnf:/etc/mysql/my.cnf
+      # for configuration 
+      - ../../mysql:/var/lib/mysql
+      # for persistence
+      - ../../dump:/docker-entrypoint-initdb.d
+      # for importing a dump
+      # if you want to re-import simply put away ../../mysql/*
+  redis:
+    image: redis:latest
+    command: redis-server
+  web:
+    build: ..
+    cap_add:
+      - SYS_PTRACE
+    command: /bin/bash -c "sleep 5 && /usr/local/bundle/bin/passenger start --max-pool-size 9 --min-instances 9 -p 4000"
+    environment:
+      - RAILS_ENV=${RAILS_ENV}
+      - SECRET_KEY_BASE=${SECRET_KEY_BASE}
+      - REDIS_URL=redis://redis:6379/0
+    links:
+      - redis
+    volumes:
+      - ..:/app
+    restart: unless-stopped
+  sidekiq:
+    build: ..
+    command: bundle exec sidekiq
+    depends_on:
+      - db
+      - redis
+    links:
+      - db
+      - redis
+    volumes:
+      - .:/app
+    environment:
+      - REDIS_URL=redis://redis:6379/0

@@ -1,0 +1,5 @@
+<% user = user || @user # allow overriding w/ local variable %>
+<%= form_for(current_user.active_relationships.where(followed_id: user.id).first,
+             html: { method: :delete }) do |f| %>
+  <%= f.submit "Unfollow", class: "btn" %>
+<% end %>

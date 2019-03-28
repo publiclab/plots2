@@ -1,0 +1,29 @@
+<% if @body != "" %>
+  <%= raw auto_link(@body.latest.render_body_email(ActionMailer::Base.default_url_options[:host]), sanitize: false) %>
+<% else %>
+
+    Welcome to Public Lab!
+
+    We're an open community dedicated to making environmental monitoring more accessible to all. In Public Lab, our public questions, ideas, and exploration help to build the resources available for everyone to use.
+
+    There’s a lot you can do in Public Lab: learn how to do environmental investigation in your community, help to build and develop research tools, and work with others to advocate for change.
+
+    Ready to jump in?
+
+    - Join an open call (https://publiclab.org/open-call)
+    - Find an upcoming event (www.publiclab.org/events)
+    - Ask a question (www.publiclab.org/questions)
+    - Follow Public Lab on social media (https://www.facebook.com/PublicLab/)
+    - Help support our work (www.publiclab.org/donate)
+
+    Looking forward to hearing from you soon,
+
+    The Public Lab Community
+<% end %>
+
+Please click on the link to verify your email.
+
+<% verification_link="#{ActionMailer::Base.default_url_options[:host]}/verify/#{@user.generate_token}" %>
+<%= link_to "Verification Link", verification_link %>
+
+<%= @footer %>

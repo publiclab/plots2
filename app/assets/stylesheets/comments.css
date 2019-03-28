@@ -1,0 +1,32 @@
+@media only screen and (max-width: 767px) {
+    #comment-content {
+        width: 50%;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    #comment-content {
+        width: 80%;
+    }
+}
+
+#question-comment-form {
+    width: 100%;
+}
+
+.sey-item b {
+  font-weight: 300;
+  font-size: 20px;
+}
+
+.sey-item span {
+  margin-bottom: 0;
+  margin-left: 4px;
+}
+
+.blockquotestyle > blockquote {
+  font-size: 14px;
+  font-family: "Helvetica Neue";
+  border-left: 5px solid #736f6f;
+  background-color: #f3f1ef;
+}

@@ -1,0 +1,13 @@
+<div class="col-md-3">
+
+  <%= render :partial => "sidebar/post_button" %>
+  
+  <% if params[:controller] != 'questions' %>
+    <%= feature('sidebar-feature') %>
+  <% end %>
+
+  <hr/>
+
+  <%= render partial: 'sidebar/wikis', locals: { wikis: @wikis, title: I18n.t('sidebar._user.recent_wiki_edits'), node: @node } %>
+
+</div>

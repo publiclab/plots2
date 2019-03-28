@@ -1,0 +1,62 @@
+<%= javascript_include_tag "methods" %>
+
+<style>
+  h2 {
+    text-align: center;
+    padding-top: 20px;
+  }
+  #topics {
+    columns: 3;
+    padding-left: 15%;
+    margin-bottom: 30px;
+  }
+</style>
+
+<div class="col-md-12">
+
+  <div style="text-align:center;">
+    <h1 style="font-size:3.4em;margin-top:40px;"><%= raw t('notes.tools_places.tools_and_techniques') %></h1>
+    <h4 style="color:#888;"><%= raw t('notes.tools_places.subtitle') %></h4>
+    <p><i>Public Lab's community collaboratively develops many different DIY environmental monitoring and advocacy methods.</i></p>
+    <p><i>Browse them here and learn how to get involved.</i></p>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <div id="topics">
+        <% @topics.each do |topic| %>
+          <div><a data-topic="<%= topic %>" href="/methods/<%= topic %>"><%= topic %></a></div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3"></div>
+    <form class="topic-search col-md-6 form-inline" style="text-align:center;">
+      <input tabindex="1" class="form-control input-lg" type="text" placeholder="Search for methods by topic" />
+      <button class="btn btn-lg btn-default" type="submit"><i class="fa fa-search"></i></button>
+    </form>
+  </div>
+
+  <p><center>Find methods by topic or choose from the categories above.</center></p>
+
+  <div id="methods">
+    <% if params[:topic] %>
+      <h2>Methods related to "<%= params[:topic] %>"</h2>
+      <%= render partial: "notes/notes", locals: { notes: @nodes } %>
+      <% if @nodes.length == 0 %>
+        <p style="text-align:center;padding:10px;">No methods yet shared for this topic; <a href="">Reach out for help</a> or <a href="">learn how to share a relevant method</a>.</p>
+      <% end %>
+    <% else %>
+      <h2 class="recent">
+        <span class="no-results" style="display:none;text-align:center;">No matches / </span>
+        Recently updated
+      </h2>
+      <h2 class="related" style="display:none;">Related to "<span class="topic-title"></span>"</h2>
+      <%= render partial: "notes/notes", locals: { notes: @nodes } %>
+    <% end %>
+  </div>
+  <hr style="clear:both;" />
+</div>

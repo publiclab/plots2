@@ -1,0 +1,20 @@
+<% unless @tags.blank? %>
+  <h3>TAGS</h3>
+  <table class="table inline-grid">
+    <% @tags.each_with_index do |tag, ndx| %>
+      <% if ndx < 9 %>
+        <tr>
+          <td style="width:40%"><a href=<%= "#{tag.path}" %>><%= tag.title %></a></td>
+        </tr>
+      <% end %>
+    <% end %>
+
+    <% if @tags.count > 9 %>
+      <tr>
+        <td>
+          <b><%= link_to "More matching tags >>", "/search/tags/#{params[:query]}" %></b>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>

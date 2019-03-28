@@ -1,0 +1,36 @@
+class AnswerMailer < ActionMailer::Base
+  helper :application
+  include ApplicationHelper
+  default from: "notifications@#{ActionMailer::Base.default_url_options[:host]}"
+
+  def notify_question_author(user, answer)
+    subject = '[PLab] Question: ' + answer.node.title.truncate(30, omission: '...?') + ' An answer has been posted on Public Lab' + " (#a#{answer.id})"
+    @user = user
+    @answer = answer
+    @footer = feature('email-footer')
+    mail(to: @user.email, subject: subject)
+  end
+
+  def notify_answer_likers_author(user, answer)
+    subject = '[PublicLab] New answer to Question: ' + answer.node.title + " (#a#{answer.id})"
+    @user = user
+    @answer = answer
+    @footer = feature('email-footer')
+    mail(to: @user.email, subject: subject)
+  end
+
+  def notify_answer_accept(user, answer)
+    @user = user
+    @answer = answer
+    @footer = feature('email-footer')
+    mail(to: @user.email, subject: '[PublicLab] Your answer has been accepted')
+  end
+
+  def notify_answer_like(user, answer)
+    subject = "[PublicLab] #{user.username} liked your answer to: " + answer.node.title + " (#a#{answer.id})"
+    @user = user
+    @answer = answer
+    @footer = feature('email-footer')
+    mail(to: @answer.author.email, subject: subject)
+  end
+end

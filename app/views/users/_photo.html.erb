@@ -1,0 +1,91 @@
+<% if current_user %>
+<script>
+  $D = {
+    uid: <%= current_user.uid %>,
+    type: 'note'
+  }
+</script>
+<%= javascript_include_tag "dragdrop" %>
+
+<hr style="clear:both;" class="visible-sm visible-xs" />
+
+<h3><%= t('users._photo.profile_photo') %></h3>
+
+<div class="profile-dropzone" id="profile-dropzone" style="margin-bottom:20px;">
+    <img class="img-rounded" id="profile-photo" style="<% unless @user.photo_file_name %>display:none;<% end %>
+    width:100%;
+    margin-bottom:10px;
+    margin-top:5%;
+    opacity:0.2;
+    filter: alpha(opacity=20);" src="<% if @user.photo %><%= @user.photo_path(:thumb) %><% end %>" />
+
+    <p class="prompt">
+      <span class="hidden-sm hidden-xs"> <%= t('users._photo.drag_and_drop_image') %> </span>
+      <span class="fileinput-button">
+        <a> <i class="fa fa-upload hidden-sm pull-left" style="padding-right:6px;"></i> <%= t('users._photo.choose_image') %></a>
+        
+      </span>
+    </p>
+    <br class="hidden-sm" />
+  </div>
+  <input id="profile-fileinput" type="file" name="image[photo]" >
+
+<div id="profile-progress" style="display:none;" class="progress progress-striped active">
+  <div class="progress-bar" style="width: 0%;"></div>
+</div>
+<p class="profile-uploading" style="display:none;padding-top:4px;color:#aaa;"><%= t('users._photo.uploading') %>...</p>
+
+<script>
+
+  // file field trigger
+  $("#profile-dropzone").click(function(e){
+   $("#profile-fileinput").trigger("click"); 
+  });
+  $('#profile-fileinput').bind('focus',function(e) { $('#profile-dropzone').css('border-color','#4ac') })
+  $('#profile-fileinput').bind('focusout',function(e) { $('#profile-dropzone').css('border-color','#ccc') })
+  $('#profile-dropzone').bind('dragover',function(e) {
+    e.preventDefault();
+    $('#profile-dropzone').addClass('hover');
+  })
+  $('#profile-dropzone').bind('dragout',function(e) {
+    $('#profile-dropzone').removeClass('hover');
+  })
+  $('#profile-dropzone').bind('drop',function(e) {
+    e.preventDefault();
+  })
+  $('#profile-fileinput').fileupload({
+    url: "/profile/photo",
+    paramName: "photo",
+    dropZone: $('#profile-dropzone'),
+    dataType: 'json',
+    formData: {
+      'uid':$D.uid
+    },
+    start: function(e) {
+      $('.profile-dropzone').css('border-color','#ccc')
+      $('.profile-dropzone').css('background','none')
+      $('#profile-progress').show()
+      $('#profile-dropzone').removeClass('hover');
+      $('.profile-uploading').show()
+    },
+    done: function (e, data) {
+      $('#profile-progress').hide()
+      $('#profile-dropzone').show()
+      $('.profile-uploading').hide()
+      $('#profile-photo')[0].src = data.result.url
+      $('#profile-photo').show()
+    },
+    // see callbacks at https://github.com/blueimp/jQuery-File-Upload/wiki/Options
+    fileuploadfail: function(e,data) {
+      
+    },
+    progressall: function (e, data) {
+      var progress = parseInt(data.loaded / data.total * 100, 10);
+      $('#profile-progress .progress-bar').css(
+        'width',
+        progress + '%'
+      );
+    }
+  });
+</script>
+<% end %>

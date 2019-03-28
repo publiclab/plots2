@@ -1,0 +1,386 @@
+one:
+  nid: 1
+  uid: 2
+  title: "Canon A1200 IR conversion at PLOTS Barnraising at LUMCON"
+  path: "/notes/jeff/<%= Time.now.strftime("%m-%d-%Y") %>/canon-a1200-ir-conversion-at-plots-barnraising-at-lumcon"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: jeff-<%= Time.now.strftime("%m-%d-%Y") %>-canon-a1200-ir-conversion-at-plots-barnraising-at-lumcon
+
+about:
+  nid: 2
+  uid: 1
+  title: "about"
+  path: "/about"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "page"
+  cached_likes: 0
+  slug: about
+
+spam:
+  nid: 3
+  uid: 3
+  title: "Hot stuff I'm selling"
+  path: "/notes/spammer/<%= Time.now.strftime("%m-%d-%Y") %>/hot-stuff-i-m-selling"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 0
+  type: "note"
+  cached_likes: 0
+  slug: spammer-<%= Time.now.strftime("%m-%d-%Y") %>-hot-stuff-i-m-selling
+
+spam_targeted_page:
+  nid: 4
+  uid: 1
+  title: "Important work"
+  path: "/wiki/important-work"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "page"
+  cached_likes: 0
+  slug: important-work
+
+organizers:
+  nid: 5
+  uid: 1
+  title: "Organizers"
+  path: "/wiki/organizers"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "page"
+  cached_likes: 0
+  slug: organizers
+
+first_timer_note:
+  nid: 6
+  uid: 7
+  title: "My very first post to Public Lab"
+  path: "/notes/newcomer/<%= Time.now.strftime("%m-%d-%Y") %>/my-very-first-post-to-public-lab"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 4
+  type: "note"
+  cached_likes: 0
+  slug: newcomer-<%= Time.now.strftime("%m-%d-%Y") %>-my-very-first-post-to-public-lab
+
+place:
+  nid: 7
+  uid: 1
+  title: "Chicago"
+  path: "/wiki/chicago"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "page"
+  cached_likes: 0
+  slug: chicago
+
+question:
+  nid: 8
+  uid: 2
+  title: "How to use a Spectrometer"
+  path: "/notes/jeff/<%= Time.now.strftime("%m-%d-%Y") %>/how-to-use-a-spectrometer"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: jeff-<%= Time.now.strftime("%m-%d-%Y") %>-how-to-use-a-spectrometer
+
+question2:
+  nid: 9
+  uid: 2
+  title: "How to ask a question"
+  path: "/notes/jeff/<%= Time.now.strftime("%m-%d-%Y") %>/how-to-ask-a-question"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: jeff-<%= Time.now.strftime("%m-%d-%Y") %>-how-to-ask-a-question
+
+first_timer_question:
+  nid: 10
+  uid: 7
+  title: "A first timer question"
+  path: "/notes/newcomer/<%= Time.now.strftime("%m-%d-%Y") %>/a-first-timer-question"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 4
+  type: "note"
+  cached_likes: 0
+  slug: newcomer-<%= Time.now.strftime("%m-%d-%Y") %>-a-first-timer-question
+
+# this wiki has a differnt title and path
+# this is a gatekeeper to test nodes with differnt title and path
+wiki_page:
+  nid: 11
+  uid: 1
+  title: "Wiki page title"
+  path: "/wiki/wiki-page-path"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "page"
+  cached_likes: 0
+  slug: wiki-page-title
+
+map:
+  nid: 12
+  uid: 1
+  title: "A map page"
+  path: "/map/a-map-page/<%= Time.now.strftime("%m-%d-%Y") %>"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "map"
+  cached_likes: 0
+  latitude: 71.0
+  longitude: 52.0
+  precision: 1
+  slug: a-map-page-<%= Time.now.strftime("%m-%d-%Y") %>
+
+blog:
+  nid: 13
+  uid: 2
+  title: "Blog post"
+  path: "/notes/jeff/<%= Time.now.strftime("%m-%d-%Y") %>/blog-post"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  latitude: 71.0
+  longitude: 52.0
+  precision: 1
+  slug: jeff-<%= Time.now.strftime("%m-%d-%Y") %>-blog-post
+
+redirect:
+  nid: 14
+  uid: 2
+  title: "Blog post alias title"
+  path: "/notes/jeff/<%= Time.now.strftime("%m-%d-%Y") %>/blog-post-alias-title"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "redirect|13"
+  cached_likes: 0
+  slug: jeff-<%= Time.now.strftime("%m-%d-%Y") %>-blog-post-alias-title
+
+question3:
+  nid: 15
+  uid: 9
+  title: "Question by a moderated user"
+  path: "/notes/rob/<%= Time.now.strftime("%m-%d-%Y") %>/question-by-a-moderated-user"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: rob-<%= Time.now.strftime("%m-%d-%Y") %>-question-by-a-moderated-user
+
+moderated_user_note:
+  nid: 16
+  uid: 9
+  title: "Note by a moderated user"
+  path: "/notes/rob/<%= Time.now.strftime("%m-%d-%Y") %>/note-by-a-moderated-user"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: rob-<%= Time.now.strftime("%m-%d-%Y") %>-note-by-a-moderated-user
+
+activity:
+  nid: 17
+  uid: 10
+  title: "Activity note"
+  path: "/notes/test/<%= Time.now.strftime("%m-%d-%Y") %>/activity-note"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: test-<%= Time.now.strftime("%m-%d-%Y") %>-activity-note
+
+upgrade:
+  nid: 18
+  uid: 10
+  title: "Upgrade note"
+  path: "/notes/test/<%= Time.now.strftime("%m-%d-%Y") %>/upgrade-note"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: test-<%= Time.now.strftime("%m-%d-%Y") %>-upgrade-note
+
+feature:
+  nid: 19
+  uid: 1
+  title: "email-footer"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "feature"
+  cached_likes: 0
+
+method:
+  nid: 20
+  uid: 8
+  title: "Method page"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "page"
+  cached_likes: 0
+  path: "/wiki/spectrometer"
+
+draft:
+  nid: 21
+  uid: 2
+  title: "Draft note"
+  path: "/notes/jeff/<%= Time.now.strftime("%m-%d-%Y") %>/draft-note"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 3
+  type: "note"
+  cached_likes: 0
+  slug: test-<%= Time.now.strftime("%m-%d-%Y") %>-draft-note token:briRpnTHzKHepo6-j8-b5w
+
+welcome_feature:
+  nid: 22
+  uid: 1
+  title: "welcome-email-body"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "feature"
+  cached_likes: 0
+
+post_test1:
+  nid: 23
+  uid: 15
+  title: "Post Test 1"
+  path: "/notes/steff1/<%= DateTime.new(2018,8,1).strftime("%m-%d-%Y") %>/post-test1"
+  created: <%= DateTime.new(2018,8,1).to_i %>
+  changed: <%= DateTime.new(2018,8,1).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 8
+  views: 6
+  longitude: 52.0
+  latitude: 160.0
+  precision: 1
+  slug: steff1-<%= DateTime.new(2018,8,1).strftime("%m-%d-%Y") %>-post-test1
+
+post_test2:
+  nid: 24
+  uid: 17
+  title: "Post Test 2"
+  path: "/notes/steff3/<%= DateTime.new(2018,8,8).strftime("%m-%d-%Y") %>/post-test2"
+  created: <%= DateTime.new(2018,8,8).to_i %>
+  changed: <%= DateTime.new(2018,8,8).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 3
+  views: 3
+  longitude: 52.23
+  latitude: 34.57
+  precision: 2
+  slug: steff3-<%= DateTime.new(2018,8,8).strftime("%m-%d-%Y") %>-post-test2
+
+post_test3:
+  nid: 25
+  uid: 16
+  title: "Post Test 3"
+  path: "/notes/steff2/<%= DateTime.new(2018,8,15).strftime("%m-%d-%Y") %>/post-test3"
+  created: <%= DateTime.new(2018,8,15).to_i %>
+  changed: <%= DateTime.new(2018,8,15).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 7
+  views: 9
+  longitude: 52.0
+  latitude: 12.0
+  precision: 1
+  slug: steff2-<%= DateTime.new(2018,8,15).strftime("%m-%d-%Y") %>-post-test3
+
+post_test4:
+  nid: 26
+  uid: 18
+  title: "Post Test 4"
+  path: "/notes/data/<%= DateTime.new(2018,8,20).strftime("%m-%d-%Y") %>/post-test4"
+  created: <%= DateTime.new(2018,8,20).to_i %>
+  changed: <%= DateTime.new(2018,8,20).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: data-<%= DateTime.new(2018,8,20).strftime("%m-%d-%Y") %>-post-test4
+
+scraped_image:
+  nid: 27
+  uid: 2
+  title: "Scraped image node"
+  path: "/notes/bob/<%= DateTime.new(2018,8,20).strftime("%m-%d-%Y") %>/post-test4"
+  created: <%= DateTime.new(2018,8,20).to_i %>
+  changed: <%= DateTime.new(2018,8,20).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: bob-<%= DateTime.new(2018,8,20).strftime("%m-%d-%Y") %>-scraped-image-node
+
+search_trawl:
+  nid: 28
+  uid: 5
+  title: "BabyLegs start a trawl"
+  path: "/wiki/babylegs"
+  created: <%= DateTime.new(2019,1,07).to_i %>
+  changed: <%= DateTime.new(2019,1,07).to_i %>
+  status: 1
+  type: "page"
+  cached_likes: 0
+  slug: "babylegs"
+
+search_trawling:
+  nid: 29
+  uid: 5
+  title: "Could the BabyLegs DIY trawling?"
+  path: "/notes/admin/01-07-2019/could-the-babylegs-diy"
+  created: <%= DateTime.new(2019,1,07).to_i %>
+  changed: <%= DateTime.new(2019,1,07).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: "could-the-babylegs-diy"
+
+purple_air_without_hyphen:
+  nid: 30
+  uid: 5
+  title: "This is purpleair without hyphen"
+  path: "/notes/admin/02-20-2019/purple-air-without-hyphen"
+  created: <%= DateTime.new(2019,2,20).to_i %>
+  changed: <%= DateTime.new(2019,2,20).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: "purple-air-without-hyphen"
+
+purple_air_with_hyphen:
+  nid: 31
+  uid: 2
+  title: "This is purple-air with hyphen"
+  path: "/notes/admin/02-20-2019/purple-air-with-hyphen"
+  created: <%= DateTime.new(2019,2,20).to_i %>
+  changed: <%= DateTime.new(2019,2,20).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: "purple-air-with-hyphen"

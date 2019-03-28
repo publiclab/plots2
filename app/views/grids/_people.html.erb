@@ -1,0 +1,53 @@
+<table class="table inline-grid people-grid <%= className %> <%= className %>-<%= randomSeed %>">
+  <tr>
+      <th><a data-type="username">Username</a></th>
+  </tr>
+<% if users.empty? %>
+  <tr>
+    <td>No matching content.</td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+<% end %>
+<% users.each_with_index do |user, index| %>
+  <% if index > 9 %>
+    <tr class="hide">
+  <% else %>
+    <tr>
+  <% end %>
+    <td class="username"><a href="/profile/<%= user.username %>"><%= user.username %></a> <%=user.new_contributor %></td>
+  </tr>
+  <% if index == 9 %>
+    <tr class="show-all">
+      <td><a>Show <%= users.length - 10 %> more <b class="caret"></b></a></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  <% end %>
+<% end %>
+</table>
+<% if !current_user.nil? %>
+  <p><a class="btn btn-primary" href="/profile/tags/create/<%= current_user.id %>?name=<%= tagname %>">Join this group</a></p>
+<% else %>
+  <p><a class="btn btn-primary disabled" href="">Join this group</a></p>
+  <p><a data-toggle="modal" data-target="#loginModal"> Login/Sign up </a> to join. </p>
+<% end %>
+<script>
+(function(){
+  $(".<%= className %>-<%= randomSeed %> .show-all a").click(function() {
+    $(".<%= className %>-<%= randomSeed %> tr.hide").toggleClass("hide");
+  });
+  setupGridSorters(".<%= className %>-<%= randomSeed %>");
+})()
+</script>
+<style>
+  a.grid-embed {
+    float:right;
+    padding:8px;
+  }
+  a.grid-embed:hover {
+    color: #888;
+  }
+</style>

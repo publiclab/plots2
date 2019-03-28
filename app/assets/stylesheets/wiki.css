@@ -1,0 +1,76 @@
+.inline-edit-btns {
+  margin-left: 5px;
+  font-size: 14px;
+  display: block;
+  font-size: 14px;
+  opacity: 0;
+  /* text-align: center; */
+  margin-top: 0;
+  margin-left: 0;
+  padding-bottom: 10px;
+  color: #aaa;
+}
+.inline-section:hover .inline-edit-btns {
+  opacity: 1;
+}
+.inline-edit-btns .fa {
+  color: #888;
+  border-radius: 18px;
+  background: #efefef;
+  padding: 8px;
+  margin-right: 4px;
+}
+.inline-edit-btns .fa:hover {
+  color: #666;
+  background: #dedede;
+}
+
+.inline-edit-form .wk-wysiwyg {
+  background: white;
+}
+.inline-edit-form .controls {
+  padding-top: 4px;
+  clear: both;
+}
+
+.pl-content .inline-section h1,
+.pl-content .inline-section h2,
+.pl-content .inline-section h3 {
+  padding-top: 0;
+}
+
+.wk-container textarea {
+  margin-bottom: 4px;
+}
+
+@media (min-width: 768px) {
+  .inline-edit-btns {
+    font-size: 11px;
+  }
+  .inline-edit-btns .fa {
+    color: #888;
+    border-radius: 18px;
+    background: #efefef;
+    padding: 6px;
+    margin-right: 4px;
+   }
+}
+
+@media (max-width: 768px) {
+  .inline-edit-btns {
+    opacity: 1;
+  }
+}
+
+a.navbar-offset {
+    display: block;
+    position: relative;
+    top: -100px;
+    visibility: hidden;
+}
+
+@media (max-width: 768px) {
+  .add-subscriptions {
+    margin-top:10px;
+  }
+}

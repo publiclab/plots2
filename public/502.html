@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Public Lab: a DIY environmental science community</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Public Lab is an open community which collaboratively develops accessible, open source, Do-It-Yourself technologies for investigating local environmental health and justice issues.">
+    <meta name="author" content="Public Lab contributors">
+    <link href="//publiclab.org/feed.rss" rel="alternate" type="application/rss+xml" title="Public Lab research" />
+    <link href="/assets/application.css" media="all" rel="stylesheet" type="text/css" />
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" type="text/javascript"></script>
+    <script src="/assets/application.js" type="text/javascript"></script>
+    <link href="/lib/fontawesome/css/font-awesome.min.css" media="all" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+
+
+    <nav id="header" class="navbar navbar-inverse navbar-fixed-top" style="margin-bottom:20px;">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" id="brand" href="/">Public Lab</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+
+      <div class="row">
+
+<!-- ################################################ -->
+
+        <div class="col-md-3">
+
+        </div>
+
+        <div class="col-md-9">
+
+          <h2>This page is taking too long to load.</h2>
+
+          <p>We're sorry! Please try refreshing the page.</p>
+
+          <hr />
+
+          <p>If the problem continues, please help us figure out what happened so we can fix it!</p>
+
+          <p>If possible, please describe:</p>
+
+          <ul>
+            <li>what you did just before the problem occurred</li>
+            <li>any web addresses needed to see the problem (such as the URL of this page)</li>
+            <li>your PublicLab.org username (if you have one)</li>
+          </ul>
+
+          <p><a class="btn btn-primary" href="https://github.com/publiclab/plots2/issues/new">Report a bug on Github</a> or send an email to <a href="mailto:web@publiclab.org">web@publiclab.org</a> with the above information.</p>
+
+          <p>Thank you for helping to improve open source software!.</p>
+
+          <hr />
+
+          <h2>Ask for help in the Public Lab chatroom</h2>
+
+          <p>Community members and staff may be able to help you in real time.</p>
+
+          <script>
+            chatroom = function() {
+              $('#chat-error').append('<iframe width="100%" height="500px" style="border:none;" src="https://chat.publiclab.org"></iframe>').show();
+            }
+          </script>
+
+          <p><a class="btn btn-primary" onClick="chatroom()">Open chatroom</a></p>
+
+          <div id="chat-error"></div>
+
+        </div>
+
+<!-- ################################################ -->
+
+      </div><!--/row-->
+
+    </div><!--/.fluid-container-->
+
+    <footer class="footer">
+
+      <div class="col-md-3 hidden-print">
+        <h4>Getting help</h4>
+        <ul>
+          <li><a href="/wiki/issues">Report a bug or issue</a></li>
+          <li><a href="mailto:web@publiclab.org">Email the Web working group</a></li>
+          <li>PublicLab.org is <a href="https://github.com/publiclab/plots2">open source software</a> - and <a href="/wiki/developers">looking for contributors</a></li>
+        </ul>
+      </div>
+      <div class="col-md-3 hidden-print">
+        <h4>Links</h4>
+        <ul>
+          <li><a href="/about">About</a></li>
+          <li><a href="/wiki/getting-started">Getting Started</a></li>
+          <li><a href="/wiki/licenses">Licenses</a></li>
+          <li><a href="/lists">Discussion lists</a></li>
+          <li><a href="/stats">Site statistics</a></li>
+          <li><a href="/wiki/working-groups">Working groups</a></li>
+          <li><a href="/feed.rss">RSS</a></li>
+        </ul>
+      </div>
+      <div class="col-md-3">
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0;float:left;margin-right:10px;" src="/images/cc-by-sa-88x31.png" /></a>
+        <p>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>. Hardware designs on this site are released under the <a href="http://www.ohwr.org/cernohl">CERN Open Hardware License 1.1</a>. Read more about Public Laboratory's <a href="/licenses">open source licensing here</a>.</p>
+      </div>
+      <div class="col-md-3 hidden-print">
+        <p>Specific works on this site may be released or dedicated under different licenses, but only if such alternatives are clearly indicated by their authors.</p>
+        <p>This site makes extensive use of the open source font <a href="http://www.theleagueofmoveabletype.com/junction">Junction</a>.</p>
+      </div>
+      <br style="clear:both;" />
+    </footer>
+
+    <script>
+      (function() {
+        $("[rel=tooltip]").tooltip()
+        $("[rel=popover]").popover()
+        $('table').addClass('table')
+        $('iframe').css('border','none')
+        $("#content h1, #content h2, #content h3, #content h4").append(function(i,html) {return " <small><a href='#"+this.innerHTML.replace(/ /g,'+')+"'><i class='icon fa fa-link'></i></a></small>"})
+        login = function() {
+          $('#login-dropdown').toggle()
+          $('#login-username-input').focus()
+        }
+      })()
+    </script>
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-180781-33']);
+      _gaq.push(['_setDomainName', 'publiclab.org']);
+      _gaq.push(['_setAllowLinker', true]);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        //ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+  </body>
+</html>

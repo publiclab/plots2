@@ -1,0 +1,34 @@
+<% if @wiki %>
+  <div id="wiki-content">
+    <% if @wiki.main_image %>
+      <div class="row">
+        <div class="col-md-6" style="margin-bottom:10px;">
+          <%= image_tag(@wiki.main_image.path, class: "img-responsive") %>
+        </div>
+        <div class="col-md-6">
+          <h1 style="color:#333;"><%= link_to @wiki.latest.title, "/wiki/#{params[:id]}" %></h1>
+          <%= @wiki.latest.render_body.match(/<p>(.+)<\/p>/).to_a.try(:first).to_s.html_safe %>
+          <% if @wiki.latest.render_body.split('</p>').length > 2 %><a class="btn btn-lg btn-default" href="/wiki/<%= params[:id] %>">Learn more on the wiki page</a><% end %>
+        </div>
+      </div>
+    <% else %>
+      <h1><%= @wiki.latest.title %></h1>
+      <p><%= @wiki.latest.render_body.html_safe.match(/<p>(.+)<\/p>/).to_a.try(:first).to_s.html_safe %></p>
+      <p><%= link_to("Learn more on the wiki page", "/wiki/#{params[:id]}") if @wiki.latest.render_body.html_safe.match(/<p>(.+)<\/p>/).to_a.length > 1 %></p>
+    <% end %>
+  </div>
+<% elsif @wildcard %>
+  <% if @node_type == "questions"%>
+    <p>Here are all asked and answered questions.</p>
+  <% elsif @node_type == "note" && params[:id].match("activity:") %>
+    <p>These are completed activities.</p>
+  <% elsif @node_type == "note" && params[:id].match("replication:") %>
+    <p>These are the attempted activities.</p>
+  <% end %>
+  <p><i>This is a wildcard tag search. Please enter a tag without wildcards to display lead wiki pages.</i></p>
+  <p>Wildcard tag searches use the * asterisk in their URLs</p>
+<% else %>
+  <p>This topic has no lead wiki page.</p>
+
+  <p><a class="btn btn-primary requireLogin" href="/wiki/new?title=<%= params[:id] %>"><span class="fa fa-plus fa-white"></span> Add one now</a></p>
+<% end %>

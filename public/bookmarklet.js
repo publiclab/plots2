@@ -1,0 +1,1 @@
+javascript:(function alpha() { if ((window.location+'').split('publiclaboratory')[0] == 'http://' || (window.location+'').split('publiclaboratory')[0] == 'http://www.') { window.location = 'http://alpha.'+(window.location+'').split('://')[1] } else { window.location = 'http://'+(window.location+'').split('://alpha.')[1] }})()

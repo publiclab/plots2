@@ -1,0 +1,29 @@
+<% if wikis && wikis.length > 0 %>
+  <div class="hidden-sm hidden-xs wiki-list">
+
+    <h4><%= title %></h4>
+
+    <% wikis.each do |wiki| %>
+      <% unless (!node.nil? && wiki.nid == node.nid) %>
+        <p style="margin:14px 0 0;">
+          <i class="fa fa-<%= raw wiki.icon %>"></i> 
+          <a href="<%= wiki.path %>">
+            <b><%= wiki.latest.title %></b>
+          </a> 
+        </p>
+        <p>
+          <small style="color:#888;">
+            <%= raw t('sidebar._wikis.updated_by', :time => time_ago_in_words(wiki.latest.updated_at), :url1 => "/profile/"+wiki.latest.author.name, :author => wiki.latest.author.name) %>
+          </small>
+        </p>
+      <% end %>
+    <% end %>
+
+    <% if params[:controller] == "search" %>
+      <p><a href="/tag/<%= params[:id] %>"><%= t('sidebar._wikis.more') %></a></p>
+    <% else %>
+      <p><a href="/wiki/"><%= t('sidebar._wikis.more') %> &raquo;</a></p>
+    <% end %>
+
+  </div>
+<% end %>

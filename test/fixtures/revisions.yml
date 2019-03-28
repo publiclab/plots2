@@ -1,0 +1,343 @@
+one:
+  nid: 1
+  uid: 1
+  title: Canon A1200 IR conversion at PLOTS Barnraising at LUMCON
+  body: A fine day was had
+
+about:
+  nid: 2
+  uid: 2
+  vid: 1
+  timestamp: <%= (Time.now - 1.day).to_i %>
+  title: About
+  body: All about Public Lab
+
+about_rev_2:
+  nid: 2
+  vid: 2
+  timestamp: <%= (Time.now - 1.day).to_i + 1 %>
+  uid: 2
+  title: About
+  body: All about Public Lab, AGAIN
+
+about_rev_3:
+  nid: 2
+  vid: 3
+  timestamp: <%= (Time.now - 1.day).to_i + 2 %>
+  uid: 1
+  title: About
+  body: All about Public Lab, ONCE AGAIN
+
+about_rev_4:
+  nid: 2
+  vid: 4
+  timestamp: <%= (Time.now - 1.day).to_i + 3 %>
+  uid: 1
+  title: About
+  body: All about Public Lab
+
+three:
+  nid: 3
+  uid: 3
+  title: Hot stuff I'm selling
+  body: Get it while it lasts!
+
+organizers:
+  nid: 5
+  uid: 1
+  title: Organizers
+  body: The organizers group page
+
+prespam_revision:
+  timestamp: <%= (Time.now - 1.week).to_i %>
+  nid: 4
+  uid: 1
+  status: 1
+  title: Important research
+  body: Real research content
+
+second_prespam_revision:
+  timestamp: <%= (Time.now - 1.day).to_i %>
+  nid: 4
+  uid: 2
+  status: 1
+  title: Important research
+  body: Real research content
+
+unmoderated_spam_revision:
+  timestamp: <%= Time.now.to_i %>
+  nid: 4
+  uid: 3
+  status: 1
+  title: Bad spam title
+  body: Lots of stuff for sale
+
+moderated_spam_revision:
+  timestamp: <%= Time.now.to_i - 1 %>
+  nid: 4
+  uid: 3
+  status: 0
+  title: Title moderated spam
+  body: body moderated spam
+
+first_timer_note:
+  timestamp: <%= Time.now.to_i %>
+  nid: 6
+  uid: 5
+  status: 1
+  title: My very first post to Public Lab
+  body: I'm new here -- whoa!
+
+hashtag_one:
+  nid: 1
+  uid: 1
+  title: Hashtag post
+  body: |+
+    #Heading 1
+    Something about hashtag
+    Here is a #hashtag
+
+hashtag_two:
+  nid: 1
+  uid: 1
+  title: Ignore headings as hasgtag
+  body: |+
+    #Heading 1
+    Some text on hashtag
+    #Heading 2
+    There is no hashtag in this post
+
+hashtag_three:
+  nid: 1
+  uid: 1
+  title: Ignores multiple same hashtags
+  body: |+
+    # Heading 1
+    Here is a #hashtag
+    # Heading 2
+    Here is another #hashtag
+
+hashtag_four:
+  nid: 1
+  uid: 1
+  title: Ignores pure numbers
+  body: |+
+    # Heading 1
+    Here is a #1234
+    # Heading 2
+    Here is another #hashtag
+
+hashtag_with_punctuation:
+  nid: 1
+  uid: 1
+  title: Ignores punctuation in hashtags
+  body: |+
+    # Heading 1
+    Here is a #hashtag1, and another #hashtag2!
+    # Heading 2
+    Here is another #hashtag3.
+
+hashtag_in_header:
+  nid: 1
+  uid: 1
+  title: grabs hashtags in headers
+  body: |+
+    # Heading 1 is about #hashtags
+    Here is the message
+
+subheader:
+  nid: 1
+  uid: 1
+  title: ignores subheaders
+  body: |+
+   ##subheader 1
+
+hashtag_in_link:
+  nid: 1
+  uid: 1
+  title: ignores hashtags in links
+  body: |+
+    [#hashtag in links](/)
+
+hashtag_in_url:
+  nid: 1
+  uid: 1
+  title: ignores hashtags in url
+  body: |+
+    [tags in URLs](/mypage#tags)
+
+email:
+  nid: 1
+  uid: 1
+  title: Email links
+  body: >
+    [![admin_tooltip.png](//i.publiclab.org/system/images/photos/000/016/229/large/admin_tooltip.png)]
+    (//i.publiclab.org/system/images/photos/000/016/229/original/admin_tooltip.png)
+
+question:
+  nid: 8
+  uid: 2
+  title: How to use a Spectrometer
+  body: Spectrometer Question
+
+place:
+  nid: 7
+  uid: 1
+  title: Chicago
+  body: Chicago chapter
+
+question2:
+  nid: 9
+  uid: 2
+  title: How to ask a question
+  body: Some sample text
+
+first_timer_question:
+  nid: 10
+  uid: 7
+  title: A first timer question
+  body: First timer question
+
+wiki_page:
+  nid: 11
+  uid: 1
+  title: Wiki page title
+  body: this wiki has a differnt title and path
+
+map:
+  nid: 12
+  uid: 1
+  title: A map page
+  body: This is a map
+
+blog:
+  nid: 13
+  uid: 2
+  title: Blog post
+  body: Introducing the Public Lab Blog!
+
+question3:
+  nid: 15
+  uid: 9
+  title: "Question by a moderated user"
+  body: I have a question but I'm moderated.
+
+moderated_user_note:
+  nid: 16
+  uid: 9
+  title: "Note by a moderated user"
+  body: I have a note to share but I'm moderated.
+
+upgrade:
+  nid: 18
+  uid: 10
+  title: "Note by a test user"
+  body: This is upgrade node.
+
+fixture:
+  nid: 19
+  uid: 1
+  title: "email-footer"
+  body: Test
+  timestamp: <%= (Time.now - 1.week).to_i %>
+
+method:
+  nid: 20
+  uid: 1
+  title: "Method page"
+  body: "[activities:spectrometer]"
+
+draft:
+  nid: 21
+  uid: 2
+  title: "Draft note"
+  body: This is draft note.
+
+checkbox_one:
+  nid: 1
+  uid: 1
+  title: Should render an unchecked checkbox
+  body: |+
+    # Heading 1
+    List of things
+    * [ ]
+
+checkbox_two:
+  nid: 1
+  uid: 1
+  title: Should render a checked checkbox
+  body: |+
+    # Heading 1
+    List of things
+    * [x]
+
+email_body:
+  nid: 22
+  uid: 1
+  title: "welcome-email-body"
+  body: Welcome to Public Lab
+  timestamp: <%= (Time.now - 1.week).to_i %>
+
+post_test1:
+  nid: 23
+  uid: 15
+  title: Post test review 1
+  body: Post test review 1
+  timestamp: <%= DateTime.new(2018,8,1).to_i %>
+
+post_test2:
+  nid: 24
+  uid: 17
+  title: Post test review 2
+  body: Post test review 2
+  timestamp: <%= DateTime.new(2018,8,8).to_i %>
+
+post_test3:
+  nid: 25
+  uid: 16
+  title: Post test review 3
+  body: Post test review 3
+  timestamp: <%= DateTime.new(2018,8,15).to_i %>
+
+post_test4:
+  nid: 26
+  uid: 18
+  title: Post test review 4
+  body: Post test review 4
+  timestamp: <%= DateTime.new(2018,8,20).to_i %>
+
+scraped_image:
+  nid: 27
+  uid: 2
+  title: Post test review 4
+  body: "Lots of text and then an image: ![image preview](/url/to/image.png)"
+  timestamp: <%= DateTime.new(2018,8,20).to_i %>
+
+search_trawl:
+  nid: 28
+  uid: 5
+  title: "BabyLegs start a trawl"
+  body: "BabyLegs is a research trawl."
+  timestamp: <%= DateTime.new(2019,1,07).to_i %>
+
+search_trawling:
+  nid: 29
+  uid: 5
+  title: "Could the BabyLegs DIY trawling?"
+  body: "BabyLegs is a research trawling."
+  timestamp: <%= DateTime.new(2019,1,07).to_i %>
+
+purple_air_without_hyphen:
+  nid: 30
+  uid: 5
+  title: "This is purpleair without hyphen"
+  body: "purpleair is one of the most searched terms on public labs."
+  timestamp: <%= DateTime.new(2019,2,20).to_i %>
+
+purple_air_with_hyphen:
+  nid: 31
+  uid: 2
+  title: "This is purple-air with hyphen"
+  body: "Is Purple-air searched with hyphens or without hyphens?"
+  timestamp: <%= DateTime.new(2019,2,20).to_i %>
+  

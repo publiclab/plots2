@@ -1,0 +1,359 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  id: 1
+  uid: 1
+  value: skill:java
+
+two:
+  id: 2
+  uid: 1
+  value: tool:barometer
+
+three:
+  id: 3
+  uid: 2
+  value: skill:rails
+
+latitude:
+  id: 4
+  uid: 1
+  value: lat:41
+
+longitude:
+  id: 5
+  uid: 1
+  value: lon:-90
+
+google1:
+  id: 6
+  uid: 1
+  value: oauth:google_oauth2:987654321
+
+twitter1:
+  id: 7
+  uid: 1
+  value: oauth:twitter:987654321
+
+facebook1:
+  id: 8
+  uid: 1
+  value: oauth:facebook:987654321
+
+github1:
+  id: 9
+  uid: 1
+  value: oauth:github:987654321
+
+google2:
+  id: 10
+  uid: 2
+  value: oauth:google_oauth2:876543219
+
+twitter2:
+  id: 11
+  uid: 2
+  value: oauth:twitter:876543219
+
+facebook2:
+  id: 12
+  uid: 2
+  value: oauth:facebook:876543219
+
+github2:
+  id: 13
+  uid: 2
+  value: oauth:github:876543219
+
+notify-comment-direct:
+  id: 14
+  uid: 10
+  value: notify-comment-direct:false
+
+notify-likes-direct:
+  id: 15
+  uid: 10
+  value: notify-likes-direct:false
+
+notify-comment-indirect:
+  id: 16
+  uid: 8
+  value: notify-comment-indirect:false
+
+latitude2:
+  id: 17
+  uid: 16
+  value: lat:31.0
+
+longitude2:
+  id: 18
+  uid: 16
+  value: lon:40.0
+
+latitude3:
+  id: 19
+  uid: 17
+  value: lat:31.0
+
+longitude3:
+  id: 20
+  uid: 17
+  value: lon:40.0
+
+awesome:
+  id: 21
+  uid: 17
+  value: awesome
+  
+twitter3:
+  id: 22
+  uid: 11
+  value: oauth:twitter:849503183529545728
+  data:
+    provider: twitter
+    uid: '849503183529545728'
+    info:
+      nickname: itsmenamangupta
+      name: Naman Gupta
+      email: 01namangupta@gmail.com
+      location: ''
+      image: http://pbs.twimg.com/profile_images/950001110378401793/mBAtBXyI_normal.jpg
+      description: GSoC'18 @PublicLab
+      urls:
+        Website: https://t.co/fqLSxIlYFH
+        Twitter: https://twitter.com/itsmenamangupta
+    credentials:
+      token: 849503183529545728-fgqcxtgihvrrKd2icj67QpspT5bKntD
+      secret: ZDTD5HsexliY2Tnrv6aSEVSqPVvbDLY2YDW9S5VeDmmyK
+    extra:
+      access_token: !ruby/object:OAuth::AccessToken
+        token: 849503183529545728-fgqcxtgihvrrKd2icj67QpspT5bKntD
+        secret: ZDTD5HsexliY2Tnrv6aSEVSqPVvbDLY2YDW9S5VeDmmyK
+        consumer: !ruby/object:OAuth::Consumer
+          key: H59J9kJBVQvtZvWhr2SUAht4o
+          secret: GEQOygPITjGj2Imzg5ALJeCqE0GdQU2GAmTYOS9kEPcLVlMxQu
+          options:
+            :signature_method: HMAC-SHA1
+            :request_token_path: "/oauth/request_token"
+            :authorize_path: "/oauth/authenticate"
+            :access_token_path: "/oauth/access_token"
+            :proxy:
+            :scheme: :header
+            :http_method: :post
+            :debug_output:
+            :oauth_version: '1.0'
+            :site: https://api.twitter.com
+          debug_output:
+          http: !ruby/object:Net::HTTP
+            address: api.twitter.com
+            port: 443
+            local_host:
+            local_port:
+            curr_http_version: '1.1'
+            keep_alive_timeout: 2
+            last_communicated:
+            close_on_empty_response: false
+            socket:
+            started: false
+            open_timeout: 30
+            read_timeout: 30
+            continue_timeout:
+            debug_output:
+            proxy_from_env: true
+            proxy_uri:
+            proxy_address:
+            proxy_port:
+            proxy_user:
+            proxy_pass:
+            use_ssl: true
+            ssl_context: !ruby/object:OpenSSL::SSL::SSLContext
+              cert:
+              key:
+              client_ca:
+              ca_file:
+              ca_path:
+              timeout:
+              verify_mode: 0
+              verify_depth:
+              renegotiation_cb:
+              verify_callback:
+              cert_store:
+              extra_chain_cert:
+              client_cert_cb:
+              session_id_context:
+              tmp_dh_callback:
+              session_get_cb:
+              session_new_cb:
+              session_remove_cb:
+              tmp_ecdh_callback:
+              servername_cb:
+              npn_protocols:
+              alpn_protocols:
+              alpn_select_cb:
+              npn_select_cb:
+            ssl_session: !ruby/object:OpenSSL::SSL::Session {}
+            sspi_enabled: false
+            ca_file:
+            ca_path:
+            cert:
+            cert_store:
+            ciphers:
+            key:
+            ssl_timeout:
+            ssl_version:
+            verify_callback:
+            verify_depth:
+            verify_mode: 0
+          http_method: :post
+          uri: !ruby/object:URI::HTTPS
+            scheme: https
+            user:
+            password:
+            host: api.twitter.com
+            port: 443
+            path: ''
+            query:
+            opaque:
+            fragment:
+            parser: !ruby/object:URI::RFC3986_Parser
+              regexp:
+                :SCHEME: !ruby/regexp /\A[A-Za-z][A-Za-z0-9+\-.]*\z/
+                :USERINFO: !ruby/regexp /\A(?:%\h\h|[!$&-.0-;=A-Z_a-z~])*\z/
+                :HOST: !ruby/regexp /\A(?:(?<IP-literal>\[(?:(?<IPv6address>(?:\h{1,4}:){6}(?<ls32>\h{1,4}:\h{1,4}|(?<IPv4address>(?<dec-octet>[1-9]\d|1\d{2}|2[0-4]\d|25[0-5]|\d)\.\g<dec-octet>\.\g<dec-octet>\.\g<dec-octet>))|::(?:\h{1,4}:){5}\g<ls32>|\h{,4}::(?:\h{1,4}:){4}\g<ls32>|(?:(?:\h{1,4}:)?\h{1,4})?::(?:\h{1,4}:){3}\g<ls32>|(?:(?:\h{1,4}:){,2}\h{1,4})?::(?:\h{1,4}:){2}\g<ls32>|(?:(?:\h{1,4}:){,3}\h{1,4})?::\h{1,4}:\g<ls32>|(?:(?:\h{1,4}:){,4}\h{1,4})?::\g<ls32>|(?:(?:\h{1,4}:){,5}\h{1,4})?::\h{1,4}|(?:(?:\h{1,4}:){,6}\h{1,4})?::)|(?<IPvFuture>v\h+\.[!$&-.0-;=A-Z_a-z~]+))\])|\g<IPv4address>|(?<reg-name>(?:%\h\h|[!$&-.0-9;=A-Z_a-z~])*))\z/
+                :ABS_PATH: !ruby/regexp /\A\/(?:%\h\h|[!$&-.0-;=@-Z_a-z~])*(?:\/(?:%\h\h|[!$&-.0-;=@-Z_a-z~])*)*\z/
+                :REL_PATH: !ruby/regexp /\A(?:%\h\h|[!$&-.0-;=@-Z_a-z~])+(?:\/(?:%\h\h|[!$&-.0-;=@-Z_a-z~])*)*\z/
+                :QUERY: !ruby/regexp /\A(?:%\h\h|[!$&-.0-;=@-Z_a-z~\/?])*\z/
+                :FRAGMENT: !ruby/regexp /\A(?:%\h\h|[!$&-.0-;=@-Z_a-z~\/?])*\z/
+                :OPAQUE: !ruby/regexp /\A(?:[^\/].*)?\z/
+                :PORT: !ruby/regexp /\A[\x09\x0a\x0c\x0d ]*\d*[\x09\x0a\x0c\x0d ]*\z/
+        params:
+          :oauth_token: 849503183529545728-fgqcxtgihvrrKd2icj67QpspT5bKntD
+          oauth_token: 849503183529545728-fgqcxtgihvrrKd2icj67QpspT5bKntD
+          :oauth_token_secret: ZDTD5HsexliY2Tnrv6aSEVSqPVvbDLY2YDW9S5VeDmmyK
+          oauth_token_secret: ZDTD5HsexliY2Tnrv6aSEVSqPVvbDLY2YDW9S5VeDmmyK
+          :user_id: '849503183529545728'
+          user_id: '849503183529545728'
+          :screen_name: itsmenamangupta
+          screen_name: itsmenamangupta
+        response: !ruby/object:Net::HTTPOK
+          http_version: '1.1'
+          code: '200'
+          message: OK
+          header:
+            cache-control:
+            - no-cache, no-store, must-revalidate, pre-check=0, post-check=0
+            connection:
+            - close
+            content-disposition:
+            - attachment; filename=json.json
+            content-length:
+            - '665'
+            content-type:
+            - application/json;charset=utf-8
+            date:
+            - Fri, 27 Jul 2018 20:30:19 GMT
+            expires:
+            - Tue, 31 Mar 1981 05:00:00 GMT
+            last-modified:
+            - Fri, 27 Jul 2018 20:30:19 GMT
+            pragma:
+            - no-cache
+            server:
+            - tsa_k
+            set-cookie:
+            - personalization_id="v1_cpB+lhSlbDS6Ss5wJuPCoQ=="; Expires=Sun, 26 Jul 2020
+              20:30:19 GMT; Path=/; Domain=.twitter.com
+            - lang=en; Path=/
+            - guest_id=v1%3A153272341980682846; Expires=Sun, 26 Jul 2020 20:30:19 GMT;
+              Path=/; Domain=.twitter.com
+            status:
+            - 200 OK
+            strict-transport-security:
+            - max-age=631138519
+            x-access-level:
+            - read-write-directmessages
+            x-connection-hash:
+            - 377db0b70adb390452c61736f66bf6db
+            x-content-type-options:
+            - nosniff
+            x-frame-options:
+            - SAMEORIGIN
+            x-rate-limit-limit:
+            - '75'
+            x-rate-limit-remaining:
+            - '74'
+            x-rate-limit-reset:
+            - '1532724319'
+            x-response-time:
+            - '189'
+            x-transaction:
+            - 006fb12900253791
+            x-twitter-response-tags:
+            - BouncerExempt
+            - BouncerCompliant
+            x-xss-protection:
+            - 1; mode=block; report=https://twitter.com/i/xss_report
+          body: '{"id":849503183529545728,"id_str":"849503183529545728","name":"Naman
+            Gupta","screen_name":"itsmenamangupta","location":"","description":"GSoC''18
+            @PublicLab","url":"https:\/\/t.co\/fqLSxIlYFH","entities":{"url":{"urls":[{"url":"https:\/\/t.co\/fqLSxIlYFH","expanded_url":"http:\/\/www.namangupta.me","display_url":"namangupta.me","indices":[0,23]}]},"description":{"urls":[]}},"protected":false,"followers_count":16,"friends_count":32,"listed_count":0,"created_at":"Wed
+            Apr 05 06:05:16 +0000 2017","favourites_count":86,"utc_offset":null,"time_zone":null,"geo_enabled":false,"verified":false,"statuses_count":43,"lang":"en","contributors_enabled":false,"is_translator":false,"is_translation_enabled":false,"profile_background_color":"000000","profile_background_image_url":"http:\/\/abs.twimg.com\/images\/themes\/theme1\/bg.png","profile_background_image_url_https":"https:\/\/abs.twimg.com\/images\/themes\/theme1\/bg.png","profile_background_tile":false,"profile_image_url":"http:\/\/pbs.twimg.com\/profile_images\/950001110378401793\/mBAtBXyI_normal.jpg","profile_image_url_https":"https:\/\/pbs.twimg.com\/profile_images\/950001110378401793\/mBAtBXyI_normal.jpg","profile_link_color":"FFFFFF","profile_sidebar_border_color":"000000","profile_sidebar_fill_color":"000000","profile_text_color":"000000","profile_use_background_image":false,"has_extended_profile":true,"default_profile":false,"default_profile_image":false,"following":false,"follow_request_sent":false,"notifications":false,"translator_type":"none","suspended":false,"needs_phone_verification":false,"email":"01namangupta@gmail.com"}'
+          read: true
+          uri:
+          decode_content: true
+          socket:
+          body_exist: true
+      raw_info:
+        id: 849503183529545728
+        id_str: '849503183529545728'
+        name: Naman Gupta
+        screen_name: itsmenamangupta
+        location: ''
+        description: GSoC'18 @PublicLab
+        url: https://t.co/fqLSxIlYFH
+        entities:
+          url:
+            urls:
+            - url: https://t.co/fqLSxIlYFH
+              expanded_url: http://www.namangupta.me
+              display_url: namangupta.me
+              indices:
+              - 0
+              - 23
+          description:
+            urls: []
+        protected: false
+        followers_count: 16
+        friends_count: 32
+        listed_count: 0
+        created_at: Wed Apr 05 06:05:16 +0000 2017
+        favourites_count: 86
+        utc_offset:
+        time_zone:
+        geo_enabled: false
+        verified: false
+        statuses_count: 43
+        lang: en
+        contributors_enabled: false
+        is_translator: false
+        is_translation_enabled: false
+        profile_background_color: '000000'
+        profile_background_image_url: http://abs.twimg.com/images/themes/theme1/bg.png
+        profile_background_image_url_https: https://abs.twimg.com/images/themes/theme1/bg.png
+        profile_background_tile: false
+        profile_image_url: http://pbs.twimg.com/profile_images/950001110378401793/mBAtBXyI_normal.jpg
+        profile_image_url_https: https://pbs.twimg.com/profile_images/950001110378401793/mBAtBXyI_normal.jpg
+        profile_link_color: FFFFFF
+        profile_sidebar_border_color: '000000'
+        profile_sidebar_fill_color: '000000'
+        profile_text_color: '000000'
+        profile_use_background_image: false
+        has_extended_profile: true
+        default_profile: false
+        default_profile_image: false
+        following: false
+        follow_request_sent: false
+        notifications: false
+        translator_type: none
+        suspended: false
+        needs_phone_verification: false
+        email: 01namangupta@gmail.com

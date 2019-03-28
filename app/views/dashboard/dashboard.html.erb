@@ -1,0 +1,69 @@
+<% if current_user && Time.now - current_user.created_at < 1.week %>
+    <div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">×</button>
+
+        <h2 style="font-weight: 800">Hello, welcome to Public Lab!</h2>
+
+        This is your dashboard, where recent updates from other community members show up. It'll keep you updated with recent progress, news and developments.
+        <br>
+        To get started at Public Lab, try:
+        <br><br>
+      <p>
+      <a class="btn btn-sm btn-default" href="/questions" target="_blank">Asking a question</a>
+
+      <a class="btn btn-sm btn-default" href="https://publiclab.org/methods" target="_blank">Exploring projects</a>
+      </p>
+    </div>
+
+<% end %>
+
+<div class="dashboard container">
+
+  <div class="row">
+
+    <div class="col-md-8">
+ 
+     <%= render partial: "dashboard/header" %>
+
+      <div class="dashboard-blog">
+ 
+        <% if @blog %> 
+
+          <% if @blog.main_image %>
+            <div class="img" style="background-image: url('<%= @blog.main_image.path(:large) %>')">
+          <% elsif @blog.scraped_image %>
+            <div class="img" style="background-image: url('<%= @blog.scraped_image %>')">
+          <% end %>
+
+            <div class="blog-caption">
+       
+              <h4>
+                <small class="pull-right hidden-xs hidden-sm"><%=raw translation('dashboard.dashboard.from_blog', :url => '/blog') %></small>
+                <a class="title" href="/blog"><%= @blog.title %></a> 
+                <small><%= t('dashboard.dashboard.by') %> <a href="/profile/<%= @blog.author.username %>"><%= @blog.author.username %></a></small>
+              </h4>
+       
+            </div>
+       
+          </div>
+        <% end %>
+  
+        <%= render partial: "dashboard/activity", locals: { activity: @activity, notes: @notes } %>
+ 
+      </div>
+
+    </div>
+     
+    <div class="col-md-4">
+
+      <%= feature('dashboard-feature') %>
+
+      <%= render partial: "sidebar/dashboard" %>
+
+    </div>
+
+  </div>
+
+</div>
+
+<%= stylesheet_link_tag "dashboard" %>
+<%= javascript_include_tag "dashboard" %>

@@ -1,0 +1,25 @@
+image: docker
+
+variables:
+  COMPOSE_FILE: ./containers/docker-compose-testing.yml
+  CI: "TRUE"
+  GENERATE_REPORT: "true"
+  RAILS_ENV: "test"
+
+services:
+  - docker:stable-dind
+
+before_script:
+  - cp config/database.yml.example config/database.yml
+  - cp db/schema.rb.example db/schema.rb
+  - apk add --no-cache py-pip && pip install docker-compose
+  - docker-compose build
+  - docker-compose up -d
+  - docker-compose exec -T web rake db:setup
+  - docker-compose exec -T web rake db:migrate
+  - docker-compose exec -T web yarn --ignore-engines --ignore-scripts --modules-folder ./public/lib
+
+job:
+  script:
+    - docker-compose exec -T web rake test:all
+    - docker-compose exec -T web rails test -d

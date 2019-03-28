@@ -1,0 +1,86 @@
+<div class="sidebar-nav col-md-3 col-md-push-9">
+
+  <h3 class="hidden-sm">Main image <i id="main-image-spinner" class="hidden icon-spinner icon-spin"></i></h3>
+
+  <img class="img-rounded" id="leadImage" style="width:100%;<% unless (@node && @node.main_image) || params[:main_image] || params[:i] %>display:none;<% end %>"
+       src="<% if @node && @node.main_image %>
+         <%= @node.main_image.path(:default) %>
+       <% elsif params[:main_image] && Image.find_by(id: params[:main_image]) %>
+         <%= Image.find_by(id: params[:main_image]).path %>
+       <% elsif @image %>
+         <%= @image.path(:default) %>
+       <% end %>" />
+
+  <div class="side-dropzone" id="side-dropzone">
+    <p class="prompt">
+      <span class="hidden-sm">
+        Drag and drop to add an image, or 
+      </span>
+
+      <!-- http://stackoverflow.com/questions/11235206/twitter-bootstrap-form-file-element-upload-button -->
+      <label class="" for="side-fileinput">
+        <input id="side-fileinput" type="file" name="image[photo]" style="display:none;" />
+        <a class="hidden-xs">choose one</a>
+        <span class="visible-xs">
+          <i class="fa fa-upload"></i> 
+          <a>Upload image</a>
+        </span>
+      </label> 
+
+    </p>
+    <br class="hidden-sm" />
+  </div>
+  <div id="side-progress" style="display:none;width:100%;" class="progress progress-striped active">
+    <div class="progress-bar" role="progressbar" style="width: 0%;"></div>
+  </div>
+  <p class="side-uploading" style="display:none;padding-top:4px;color:#aaa;">Uploading...</p>
+  <% if @node && @node.images && @node.images.length > 0 %>
+    <p>Select previous image</p>
+    <p>
+      <select name="image_revision" id="image_revision">
+        <% @node.images.each_with_index do |i,index| %>
+          <option id="<%=i.id%>" value="<%=i.path(:default)%>" <% if i.id == @node.main_image_id %>selected='selected'<% end %> >Image <%=index+1%></option>
+        <% end %>
+      </select>
+    </p>
+  <% end %>
+  <% if params[:newsletter] %>
+
+    <script>
+      (function(){
+        upload_main_img = function (i,author) {
+          $('#main-image-spinner').removeClass('hidden')
+          $.ajax({
+            url: "/images/create?i="+i,
+            dataType: "json",
+            type: 'POST',
+            success: function(response){
+              $('#main-image-spinner').addClass('hidden')
+              $('#text-input').val($('#text-input').val().replace('<!-- Caption for lead image -->','Above image by ['+author+'](/profile/'+author+')<!-- Caption for lead image -->'))
+              $('#leadImage').show()
+              $('#leadImage')[0].src = response.url
+              $('#main_image').val(response.id)
+              $('#has_main_image').val(true)
+            }
+          })
+        }
+      })()
+    </script>
+
+    <h4 style="margin-top:20px;">Choose a main image:</h4>
+
+    <div class="row">
+      <% @all.each do |note| %>
+        <% if note.main_image %>
+          <a class="col-md-6" onClick="upload_main_img('<%= note.main_image.path(:original) %>','<%= note.author.username %>')">
+            <img class="img-rounded" src="<%= note.main_image.path(:default) %>" />
+          </a>
+        <% end %>
+      <% end %>
+    </div>
+
+    <p><i>The last newsletter was published <%= time_ago_in_words(@newsletter.created_at) %> ago.</i></p>
+ 
+  <% end %>
+
+</div>

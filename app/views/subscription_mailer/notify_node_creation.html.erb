@@ -1,0 +1,29 @@
+<p>Public Lab contributor <a href='https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @node.author.name %>'><%= @node.author.name %></a> just <% if @node.has_power_tag('question') %>asked a question<% else %>posted a new research note<% end %> entitled '<b><%= @node.title %></b>':</p>
+
+<% if @node.has_power_tag('question') %>
+<p>Help them by posting an answer here: https://<%= ActionMailer::Base.default_url_options[:host] %><%= @node.path(:question) %></p>
+<% else %>
+<p>Read and respond to the post here: https://<%= ActionMailer::Base.default_url_options[:host] %><%= @node.path %></p>
+<% end %>
+
+<hr />
+
+<% if @node.main_image %><a style="margin-bottom:10px;" href="<%= ActionMailer::Base.default_url_options[:host] %><%= @node.path %>"><img src="<%= ActionMailer::Base.default_url_options[:host] %><%= @node.main_image.path(:default) %>" /></a><% end %>
+
+<%= raw auto_link(@node.latest.render_body_email(ActionMailer::Base.default_url_options[:host]), sanitize: false) %>
+
+<hr />
+
+<div style="color:#aaa;">
+
+<p>You received this email because you are subscribed to some or all of the following tags: <%= @tags %>.</p>
+
+<p>Subscribe to all the tags for this post by visiting https://<%= ActionMailer::Base.default_url_options[:host] %>/subscribe/multiple/tag/<%= @tags %>.</p>
+
+<p>To change your preferences, please visit https://<%= ActionMailer::Base.default_url_options[:host] %>/subscriptions.</p>
+
+<p>Report spam and abuse to: <a href="mailto:moderators@<%= ActionMailer::Base.default_url_options[:host] %>">moderators@<%= ActionMailer::Base.default_url_options[:host] %></a></p>
+
+<%= @footer %>
+
+</div>

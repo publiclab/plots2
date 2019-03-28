@@ -1,0 +1,34 @@
+<div class="btn-toolbar" style="margin-bottom:8px;">
+
+  <div class="btn-group">
+    <a class="btn btn-default btn-sm" onClick="$E.bold()"><i class="fa fa-bold"></i></a>
+    <a class="btn btn-default btn-sm" onClick="$E.italic()"><i class="fa fa-italic"></i></a>
+    <a class="btn btn-default btn-sm" onClick="$E.h2()"><b><span class="hidden-sm">Header</span><span class="visible-sm">H</span></b></a>
+  </div>
+
+  <div class="btn-group">
+    <a rel="tooltip" title="Make a link" class="btn btn-default btn-sm" href="javascript:void(0)" onClick="$E.link()"><i class="fa fa-link"></i></a>
+  </div>
+
+  <div class="btn-group hidden-sm">
+    <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" href="#">
+      Templates
+      <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+      <li><a onClick="$E.apply_template('default')">Default</a></li>
+      <li><a onClick="$E.apply_template('support')">Request help</a></li>
+      <li><a onClick="$E.apply_template('event')">Post an event</a></li>
+    </ul>
+  </div>
+
+  <div class="btn-group">
+    <a onClick="$E.save()" class="btn btn-default btn-sm"><i class="fa fa-save"></i></a>
+    <a onClick="$E.recover()" class="btn btn-default btn-sm">Recover</a>
+  </div>
+
+  <div class="btn-group">
+    <a class="btn btn-default btn-sm" target="_blank" href="/wiki/authoring-help"><i class="fa fa-question-circle"></i></a>
+  </div>
+
+</div>

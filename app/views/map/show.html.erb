@@ -1,0 +1,80 @@
+</div>
+<% if @node.map %>
+<iframe style="width:100%;border:none;background:#ddd;margin-bottom:8px;" height="375" src="https://publiclab.github.io/plots-leaflet-viewer/?tms=<%= @node.map.tms %>&lon=<%= @node.lon %>&lat=<%= @node.lat %>&zoom=<%= @node.map.min_zoom+1 %>"></iframe>
+<% end %>
+
+<div class="row">
+
+<div class="col-md-9">
+
+  <%= render :partial => "like/like", :locals => {:node => @node, :tagnames => @tagnames } %>
+  <% if current_user && (current_user.uid == @node.uid || current_user.role == "admin") %>
+    <div style="padding:0 8px 8px;" class="btn-group pull-right">
+      <a class="btn btn-default btn-sm" href="/map/edit/<%= @node.id %>"><i class="fa fa-pencil"></i> Edit</a>
+      <%= link_to "/map/delete/"+@node.id.to_s, :confirm => 'Are you sure?', :class => "btn btn-default btn-sm" do %>
+        <i class="fa fa-trash"></i> Delete
+      <% end %>
+    </div> 
+  <% end %>
+
+  <h2 style="clear:left;"><%= @node.title %></h2>
+
+  <div class="pull-right"><%= render :partial => "home/social" %></div>
+
+  <div class="btn-toolbar">
+    <div class="btn-group">
+      <a class="btn btn-sm btn-danger" rel="tooltip" title="View the map in a full-screen web viewer" href="https://publiclab.github.io/plots-leaflet-viewer/?tms=<%= @node.map.tms %>&lon=<%= @node.lon %>&lat=<%= @node.lat %>&zoom=17">Web viewer</a>
+      <a class="btn btn-sm btn-success" rel="tooltip" title="" href="<%= @node.map.field_jpg_url_value %>">JPG (<%= @node.map.field_jpg_filesize_value.to_i %> MB)</a>
+      <a class="btn btn-sm btn-info" rel="tooltip" title="" href="<%= @node.map.field_geotiff_url_value %>">GeoTiff (<%= @node.map.field_geotiff_filesize_value.to_i %> MB)</a>
+      <a class="btn btn-sm btn-warning" rel="tooltip" title="Tiled Map Service (for developers)" href="<%= @node.map.field_tms_url_value %>">TMS</a>
+    </div>
+  </div>
+  <div class="map-details">
+    <small>
+      <% if @node.map.authorship %>
+        <p><b>By</b> <%= @node.map.authorship %></p>
+      <% else %>
+        <p><b>Mapped by</b> <%= @node.drupal_content_field_mappers.collect(&:field_mappers_value).uniq.join(', ') %></p> 
+        <p><b>Cartographer:</b> <%= @node.drupal_content_field_map_editor.collect(&:field_map_editor_value).uniq.join(', ') %></p>
+        <p><b>Published by</b> <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a></p>
+      <% end %>
+      <p><a href="https://maps.google.com/maps?t=h&ll=<%= @node.lat %>,<%= @node.lon %>"><%= @node.lat %> N, <%= @node.lon %> E</a></p>
+      <p><%= @node.totalviews %> views</p>
+      <% if @node.map.field_ground_resolution_value %><p><b>Ground resolution: </b><%= @node.map.field_ground_resolution_value %> cm/px</p><% end %>
+      <p><b>Capture date:</b> <%= @node.map.captured_on.to_s %></p> 
+      <p><b>Publication date:</b> <%= @node.map.published_on.to_s %></p> 
+      <p><b>License:</b> <%= raw @node.map.license %></p> 
+    </small>
+  </div>
+  <style>
+    .map-details p { margin:4px 0; }
+  </style>
+
+  <hr />
+
+  <p>
+  <%= raw RDiscount.new(auto_link(@node.body, :sanitize => false)).to_html %>
+  </p>
+
+  <hr />
+
+  <% unless @node.map.notes.nil? %>
+  <h3>Notes</h3>
+  <p><%= raw RDiscount.new(auto_link(@node.map.notes, :sanitize => false)).to_html %></p>
+
+  <hr />
+  <% end %>
+
+  <% unless @node.map.notes.nil? %>
+  <h3>Cartographer notes</h3>
+  <p><%= raw RDiscount.new(auto_link(@node.map.cartographer_notes, :sanitize => false)).to_html %></p>
+  <hr />
+  <% end %>
+
+  <%= render :partial => "home/social" %>
+  <hr />
+
+  <%= render :partial => "notes/comments" %>
+
+</div><!--/span-->
+<%= render partial: "sidebar/related" %>

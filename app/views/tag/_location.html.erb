@@ -1,0 +1,21 @@
+<br />
+<div class="blurred-location-container" style="position:absolute;top:0;left:0;"></div>
+
+<script>
+  jQuery(document).ready(function() {
+    $('.blurred-location-input').click(function createBlurredLocationInput() {
+      $(this).attr("disabled", "disabled");
+      <% if params[:action] == "profile" %>
+        $.ajax('/locations/modal?reload=true')
+      <% else %>
+        $.ajax('/locations/modal')
+      <% end %>
+       .done(function(response) {
+         $('.blurred-location-container').html(response);
+         $('#blurred-location-modal').on('shown.bs.modal', function () { blurredLocation.map.invalidateSize(); });
+         $('#blurred-location-modal').on('hide.bs.modal', function() {$('.blurred-location-input').removeAttr('disabled');});
+         $('#blurred-location-modal').modal();
+       });
+    });
+  });
+</script>

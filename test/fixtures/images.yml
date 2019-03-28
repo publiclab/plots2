@@ -1,0 +1,11 @@
+one:
+  nid: 2
+  photo_file_name: "filename-1.jpg"
+  photo_content_type: "image/jpeg"
+  photo_file_size: "159616"
+
+two:
+  nid: 2
+  photo_file_name: "filename-2.jpg"
+  photo_content_type: "image/jpeg"
+  photo_file_size: "140616"

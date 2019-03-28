@@ -1,0 +1,37 @@
+# Configuration for welcome - https://github.com/behaviorbot/welcome
+
+# Configuration for new-issue-welcome - https://github.com/behaviorbot/new-issue-welcome
+
+# Comment to be posted to on first time issues
+newIssueWelcomeComment: |
+  Thanks for opening your first issue! This space is [protected by our Code of Conduct](https://publiclab.org/conduct) - and we're here to help.
+  Please follow the issue template to help us help you 👍🎉😄
+  If you have screenshots [or a gif](https://publiclab.org/gifs/) to share demonstrating the issue, that's really helpful! 📸
+
+# Configuration for new-pr-welcome - https://github.com/behaviorbot/new-pr-welcome
+
+# Comment to be posted to on PRs from first time contributors in your repository
+newPRWelcomeComment: |
+ Thanks for opening this pull request!  This space is [protected by our Code of Conduct](https://publiclab.org/conduct) - and we're here to help.
+ `Dangerbot` will test out your code and reply in a bit with some pointers and requests.
+ There may be some errors, **but don't worry!** We'll work through them with you! 👍🎉😄
+ Also, can you tell us your Twitter handle so we can thank you properly?
+ 
+# Configuration for first-pr-merge - https://github.com/behaviorbot/first-pr-merge
+
+# Comment to be posted to on pull requests merged by a first time user
+firstPRMergeComment: |
+ Congrats on merging your first pull request! 🙌🎉⚡️
+ Your code will likely be published to PublicLab.org in the next few days, but first it will be published to https://stable.publiclab.org/ (it will take some minutes for this to load, and until then you may see logs from the build process). Please test out your work on this testing server and report back with a comment that all has gone well!
+ Now that you've completed this, you can help someone else take their first step!
+ Reach out to someone else working on theirs on [Public Lab's code welcome page](https://code.publiclab.org#r=all). Thanks!
+ <details>
+ <summary><b>Help others take their first step</b></summary>
+ <p>Now that you've merged your first pull request, you're the perfect person to help someone else out with this challenging first step. 🙌 </p>
+ <p><a href="https://code.publiclab.org#r=all">https://code.publiclab.org</a></p>
+ <p>Try looking at this list of `first-timers-only` issues, and see if someone else is waiting for feedback, or even stuck! 😕 </p>
+ <p>People often get stuck at the same steps, so you might be able to help someone get unstuck, or help lead them to some documentation that'd help. Reach out and be encouraging and friendly! 😄 🎉 </p>
+ <p>Read about <a href="https://github.com/publiclab/plots2/issues/3458">how to help support another newcomer here</a>, or find <a href="https://github.com/publiclab/plots2/labels/support">other ways to offer mutual support here</a>.</p>
+ </details>
+
+# It is recommend to include as many gifs and emojis as possible

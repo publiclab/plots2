@@ -1,0 +1,107 @@
+Delivered-To: railsprojects2018@gmail.com
+Received: by 2002:a1c:924f:0:0:0:0:0 with SMTP id u76-v6csp1316358wmd;
+        Tue, 3 Jul 2018 10:48:13 -0700 (PDT)
+X-Received: by 2002:a50:e615:: with SMTP id y21-v6mr29798400edm.278.1530640093065;
+        Tue, 03 Jul 2018 10:48:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1530640093; cv=none;
+        d=google.com; s=arc-20160816;
+        b=iwlu7+0DRR8CFpRnB6GQ1MSWcjrLdSomGi3xKTijlKdmBbwQrxmMpX6SNnzskE3xVC
+         SiylMtj5yTcxWmWTuKuOKLbprkSobBQ1vu+xRV1J7S28a/1nYOKEipCQKh3bgLl7lIqr
+         vRCnNZqt+afuol0O+97HmZAp3yYBmUSL6ArW+G5mId1Zxc25uV037xJeA/mKyr7FccW9
+         D6W86z9XjMzlBUWB2k3V0vbsVJhBgxXxq22VJWx2ZmK4fTiyNsBqqjfjLyGFGdMVy/e6
+         9jvl66h3XmhJp49kWbWSlFk1RKGTXvDZJ4ZhwnBZ6wqUYtrXmwg85ibmdXxDCvYANvkc
+         JUbw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :dkim-signature:arc-authentication-results;
+        bh=RYGhy7yx79U1IqJDo1X6kis0HCj0a5eCbuu3JzStGEU=;
+        b=a3X4+9aFlZEKknmilS9b18oXGSTJxvMhh/nIqhFIL1fxYIdE7XCXY+TTLwrjTkWIo5
+         XaghwYmv8vCedU2v0KfojMGaN6fkZXqXr+lcsYpRJqSUALoaYhJlAOl/bL54PzXewLZ6
+         5xrraJMyDdo/xBqd6P12Cndza5il6/kpiSHPdoGb/4F/zQOQ15ta0n8veXAGFTk3k4Yk
+         T9MrzB0ogcaFDYlJtPFRCHz4YenzAN3JZ0hmxwLnO7f0DfGvCFi35fAOFpxCCCzd4KzG
+         vhMcuS/LPCQNPUbN8NGRfSHAULgGtFNGL7PmG6FKFY+iPD10AL/zIFOlHoiLsJucgNE+
+         hmpw==
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20161025 header.b=plagx6JT;
+       spf=pass (google.com: domain of 01namangupta@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=01namangupta@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
+Return-Path: <01namangupta@gmail.com>
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
+        by mx.google.com with SMTPS id k17-v6sor1127557edr.39.2018.07.03.10.48.13
+        for <railsprojects2018@gmail.com>
+        (Google Transport Security);
+        Tue, 03 Jul 2018 10:48:13 -0700 (PDT)
+Received-SPF: pass (google.com: domain of 01namangupta@gmail.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20161025 header.b=plagx6JT;
+       spf=pass (google.com: domain of 01namangupta@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=01namangupta@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=RYGhy7yx79U1IqJDo1X6kis0HCj0a5eCbuu3JzStGEU=;
+        b=plagx6JTlgloc5Mt7ji72zSoeeF46aFIv2TCnUbBW/qcTFIMyAiIgebAf1cR8YnkEx
+         8taYLU3XfDwJMpSsqnyWxANkc7QqUQUSguvA9fVWq2HlUvULzPjhagsUyC28i2U+4P/V
+         lCu5YNJJD3skx5yCKQ8SgtVgJTQEYcJYMQII9lfdhOcgvN54NuttBEi8YhiTnFvelhcF
+         TvrQO/S2I8/djSLXVT9SId1UA9gSEdGScTnCS5j1+F7RQVjyE9wHnypAmv+oL4v2HhGD
+         YbCPjieeOnRYH80s9GQuY/S+eRaDp2M+hKoDo3wy7pkxqGgPN1LWm7by5AySjJyVhd0f
+         QtRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=RYGhy7yx79U1IqJDo1X6kis0HCj0a5eCbuu3JzStGEU=;
+        b=pZSQnj3qWHgBs4OCiHQ0VXZ/Iovfx3KJym43xyzq2xi/Mp8GvsLNmR5XV7k3MLll2Z
+         WPb3MlLXHW8K04wESSWvHs5Wg85hjpphaUdGbqicxA61W2/vBZpdRL02p/wbuQ3Pu3HA
+         M8gASdw8PNJIXZNg053R7gxGGKnR3fW3fx1SbZCi88L1bT+Qihtx6gcI3Eq6gs6xSUa5
+         p2V9JOlKI9CldZLH2ktxBSxfZJoMHCeDJBN720VRCkOpGH/Kmf2LRFuyCVSC7y4U9Ly9
+         RmQchyy65WQqZKXZ6U+CCQZQ1FfSWjvjTCt0JfAkt/rJPgDzc6gzLD/vOgQAK3MD5R98
+         W3DA==
+X-Gm-Message-State: APt69E0SpKbIzAW22w+TY0xcx9Frrfnhb5xRiuXK430nqF2cSWvL1qtb vBWot7Yt6WZlROATEbXleNghfNTqUfcasRA12stohoZE
+X-Google-Smtp-Source: AAOMgpf0oHAY3q9Mx0qWa/782HzUaDAgN/Ccf/jg0W9zN87UGy/WmbrLh2TARouOGNHrMLvcRb52bY0k8emcXvSLdBo=
+X-Received: by 2002:a50:9493:: with SMTP id s19-v6mr29606779eda.285.1530640092632; Tue, 03 Jul 2018 10:48:12 -0700 (PDT)
+MIME-Version: 1.0
+References: <CAN4wNrnDfK_P4UXVMa7yp_YGJwOvH3K_vMUq-aQKAGQQkysPZQ@mail.gmail.com> <CAA3L2u4NZL9kKGCag8K8kc8Qr6XCvH=CwejpHshfpDHOzc_OhQ@mail.gmail.com>
+In-Reply-To: <CAA3L2u4NZL9kKGCag8K8kc8Qr6XCvH=CwejpHshfpDHOzc_OhQ@mail.gmail.com>
+From: Naman Gupta <01namangupta@gmail.com>
+Date: Tue, 3 Jul 2018 23:18:01 +0530
+Message-ID: <CAA3L2u5PMJ80Z--xTDo5Bow6xVWy=DU9UzFHffD6tmuk+ynu8w@mail.gmail.com>
+Subject: Re: New Comment on Note (#21)
+To: railsprojects2018@gmail.com
+Content-Type: multipart/alternative; boundary="000000000000001a4f05701beb69"
+
+--000000000000001a4f05701beb69
+Content-Type: text/plain; charset="UTF-8"
+
+This is another reply by email comment
+
+On Tue, Jul 3, 2018 at 11:17 PM Naman Gupta <01namangupta@gmail.com> wrote:
+
+> This is reply by comment
+>
+> On Tue, Jul 3, 2018 at 11:13 PM Rails Projects <
+> railsprojects2018@gmail.com> wrote:
+>
+>> This is a comment sent to the user by publiclab.
+>>
+>
+
+--000000000000001a4f05701beb69
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">This is another reply by email comment</div><br><div class=
+=3D"gmail_quote"><div dir=3D"ltr">On Tue, Jul 3, 2018 at 11:17 PM Naman Gup=
+ta &lt;<a href=3D"mailto:01namangupta@gmail.com">01namangupta@gmail.com</a>=
+&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 =
+0 .8ex;border-left:1px #ccc solid;padding-left:1ex"><div dir=3D"ltr">This i=
+s reply by comment</div><br><div class=3D"gmail_quote"><div dir=3D"ltr">On =
+Tue, Jul 3, 2018 at 11:13 PM Rails Projects &lt;<a href=3D"mailto:railsproj=
+ects2018@gmail.com" target=3D"_blank">railsprojects2018@gmail.com</a>&gt; w=
+rote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex=
+;border-left:1px #ccc solid;padding-left:1ex"><div dir=3D"ltr">This is a co=
+mment sent to the user by publiclab.</div>
+</blockquote></div>
+</blockquote></div>
+
+--000000000000001a4f05701beb69--

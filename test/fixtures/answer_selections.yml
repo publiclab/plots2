@@ -1,0 +1,11 @@
+one:
+  user_id: 1
+  aid: 1
+  liking: true
+  following: false
+
+two:
+  user_id: 2
+  aid: 1
+  liking: false
+  following: false

@@ -1,0 +1,80 @@
+# Start with Spotifys style guide as a base then customize from there
+inherit_from:
+  - .rubocop_shopify_styleguide.yml
+  - .rubocop_todo.yml
+
+# Apply rule to all cops
+AllCops:
+  Include:
+    - '*/**/*.rb'
+    - '/Rakefile'
+    - '/config.ru'
+  Exclude:
+    - 'vendor/*'
+    - 'spec/**/*'
+    - 'bin/*'
+    - 'doc/*'
+    - 'log/*'
+    - 'db/**/*'
+    - 'Gemfile'
+    - 'Rakefile'
+    - 'config/**/*'
+    - 'script/**/*'
+    - 'lib/**/*'
+    - 'test/**/*'
+    - 'public/**/*'
+    - 'Dangerfile'
+    - 'app/views/**/*'
+  TargetRubyVersion: '2.4'
+
+Layout/MultilineMethodCallIndentation:
+  Enabled: false
+
+Style/RegexpLiteral:
+  Enabled: false
+
+Style/IfInsideElse:
+  Enabled: false
+
+Style/DateTime:
+  Enabled: false
+
+Style/CaseEquality:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Lint/ParenthesesAsGroupedExpression:
+  Enabled: false
+
+Layout/EndAlignment:
+  Enabled: false
+
+Layout/DefEndAlignment:
+  Enabled: false
+
+Lint/SafeNavigationChain:
+  Enabled: false
+
+Lint/AssignmentInCondition:
+  Enabled: false
+
+Naming/AccessorMethodName:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/ParameterLists:
+  Enabled: false
+
+Style/StringLiterals:
+  Enabled: false
+
+Metrics/LineLength:
+  Max: 423
+
+Style/Documentation:
+  Enabled: false
+

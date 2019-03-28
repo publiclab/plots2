@@ -1,0 +1,208 @@
+<form name="settingsForm" action="/save_settings" method='post' data-remote="true">
+<div class="emailSettings">
+  <h4><b>Email Notification Settings</b></h4>
+  <hr style="width: 35%;  margin-left: 0;" />
+
+  <div style="display: inline-flex; justify-content: space-between; width: 90%;">
+    <span>Do you want to be notified by email for comments on your posts ? </span>
+    <span>
+    <label class="switch">
+      <input type="checkbox" name="notify-comment-direct:false" <% unless UserTag.exists?(current_user.id, 'notify-comment-direct:false') %>checked<% end %>>
+      <span class="slider round"></span>
+    </label>
+    </span>
+  </div>
+
+  <br />
+  <br />
+
+  <div style="display: inline-flex; justify-content: space-between; width: 90%;">
+    <span>Do you want to be notified by email for likes on your posts ? </span>
+    <span>
+    <label class="switch">
+      <input type="checkbox" name="notify-likes-direct:false" <% unless UserTag.exists?(current_user.id, 'notify-likes-direct:false') %>checked<% end %>>
+      <span class="slider round"></span>
+    </label>
+    </span>
+  </div>
+
+  <br />
+  <br />
+
+  <div style="display: inline-flex; justify-content: space-between; width: 90%;">
+    <span>Do you want to be notified by email for comments on all posts you've commented on ? </span>
+    <span>
+    <label class="switch">
+      <input type="checkbox" name="notify-comment-indirect:false" <% unless UserTag.exists?(current_user.id, 'notify-comment-indirect:false') %>checked<% end %>>
+      <span class="slider round"></span>
+    </label>
+    </span>
+  </div>
+
+  <br />
+  <br />
+
+  <div style="display: inline-flex; justify-content: space-between; width: 90%;">
+    <span>Do you want to receive customized digest weekly ?</span>
+    <span>
+    <label style=" vertical-align: middle;" class="switch">
+      <input type="checkbox" name="digest:weekly" <% if UserTag.exists?(current_user.id, 'digest:weekly') %>checked<% end %>>
+      <span class="slider round"></span>
+    </label>
+    </span>
+  </div>
+
+  <br />
+  <br />
+
+  <div style="display: inline-flex; justify-content: space-between; width: 90%;">
+    <span>Do you want to receive customized digest daily ?</span>
+    <span>
+    <label style=" vertical-align: middle;" class="switch">
+      <input type="checkbox" name="digest:daily" <% if UserTag.exists?(current_user.id, 'digest:daily') %>checked<% end %>>
+      <span class="slider round"></span>
+    </label>
+    </span>
+  </div>
+
+  <br />
+  <br />
+
+
+<!--  <div style="display: inline-flex; justify-content: space-between; width: 90%;">-->
+<!--    <span>Do you want to be notified by email for comments on all posts you have commented on</span>-->
+<!--    <span>-->
+<!--    <label style=" vertical-align: middle;" class="switch">-->
+<!--      <input type="checkbox" checked>-->
+<!--      <span class="slider round"></span>-->
+<!--    </label>-->
+<!--    </span>-->
+<!--  </div>-->
+
+<!--  <br />-->
+<!--  <br />-->
+
+<!--  <div style="display: inline-flex; justify-content: space-between; width: 90%;">-->
+<!--    <span>Do you want to be notified by email for likes on your posts</span>-->
+<!--    <span>-->
+<!--      <label style=" vertical-align: middle;" class="switch">-->
+<!--      <input type="checkbox" checked>-->
+<!--      <span class="slider round"></span>-->
+<!--    </label>-->
+<!--    </span>-->
+<!--  </div>-->
+
+<!--  <br />-->
+<!--  <br />-->
+
+<!--  <div style="display: inline-flex; justify-content: space-between; width: 90%;">-->
+<!--    <span>Do you want to be notified by email for notifications for wiki page edits</span>-->
+<!--    <span>-->
+<!--      <label style=" vertical-align: middle;" class="switch">-->
+<!--        <input type="checkbox">-->
+<!--        <span class="slider round"></span>-->
+<!--      </label>-->
+<!--    </span>-->
+<!--  </div>-->
+
+<!--  <br />-->
+<!--  <br />-->
+
+</div>
+
+
+<br />
+<br />
+
+<div class="page-footer">
+  <button type="submit" class="btn btn-success">Save</button>
+  <a type="button" class="btn btn-default" href="/dashboard">Cancel</a>
+</div>
+
+</form>
+
+<style>
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 30px;
+    height: 17px;
+    margin-left: 90%;
+    vertical-align: middle;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-right: 0;
+
+
+  }
+
+  .switch input {display:none;}
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 13px;
+    width: 13px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+
+  input:checked + .slider {
+    background-color: #2196F3;
+  }
+
+  input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+  }
+
+  input:checked + .slider:before {
+    -webkit-transform: translateX(13px);
+    -ms-transform: translateX(13px);
+    transform: translateX(13px);
+  }
+
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 17px;
+  }
+
+  .slider.round:before {
+    border-radius: 50%;
+  }
+</style>
+
+<script>
+    $(document).ready(function() {
+        $(':input[type="submit"]').prop('disabled', true);
+        $(':input[type="checkbox"]').change(function() {
+            $(':input[type="submit"]').prop('disabled', false);
+        });
+
+        $(':input[name="digest:daily"]').change(function () {
+            if($(':input[name="digest:daily"]').prop('checked') === true){
+                $(':input[name="digest:weekly"]').prop('checked', false);
+            }
+        });
+
+        $(':input[name="digest:weekly"]').change(function () {
+            if($(':input[name="digest:weekly"]').prop('checked') === true){
+                $(':input[name="digest:daily"]').prop('checked', false);
+            }
+        });
+    });
+</script>

@@ -1,0 +1,6 @@
+<% if @answer.liked_by(current_user.uid) %>
+$("#answer-like-star-<%= @answer.id %>")[0].className = "fa fa-star";
+<% else %>
+$("#answer-like-star-<%= @answer.id %>")[0].className = "fa fa-star-o";
+<% end %>
+$("#answer-like-count-<%= @answer.id %>").html('<%= @answer.cached_likes%>')

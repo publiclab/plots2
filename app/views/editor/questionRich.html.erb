@@ -1,0 +1,216 @@
+<link href="/lib/woofmark/dist/woofmark.min.css" rel="stylesheet">
+<link href="/lib/bootstrap-tokenfield/dist/css/tokenfield-typeahead.min.css" rel="stylesheet">
+<link href="/lib/bootstrap-tokenfield/dist/css/bootstrap-tokenfield.min.css" rel="stylesheet">
+
+<link href="/lib/publiclab-editor/dist/PublicLab.Editor.css" rel="stylesheet">
+
+<!-- required for MapModule -->
+<link href="/lib/leaflet/dist/leaflet.css" rel="stylesheet">
+<script src="/lib/leaflet/dist/leaflet.js"></script>
+<link href="/lib/leaflet-blurred-location/dist/Leaflet.BlurredLocation.css" rel="stylesheet">
+<script src="/lib/leaflet-blurred-location/dist/Leaflet.BlurredLocation.js"></script>
+<div id="map" class="leaflet-map" style="width: 100% ; height: 300px; margin-bottom:8px;display:none;"></div>
+
+<!-- required for TagsModule -->
+<script src="/lib/typeahead.js/dist/bloodhound.js"></script>
+<script src="/lib/bootstrap-tokenfield/dist/bootstrap-tokenfield.js"></script>
+
+<!-- required for MainImageModule -->
+<script src="/lib/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
+<script src="/lib/jquery-file-upload/js/jquery.iframe-transport.js"></script>
+<script src="/lib/jquery-file-upload/js/jquery.fileupload.js"></script>
+
+<script src="/lib/publiclab-editor/dist/PublicLab.Editor.js"></script>
+
+<div class="alert alert-success">This is the new rich Questions form. <a href="/questions/new?legacy=true">Click here for the legacy form</a>.</div>
+
+<div class="pl-editor">
+
+  <div class="ple-content">
+
+    <!-- errors module -->
+    <div class="ple-module container" style="border:0;">
+
+      <div class="col-md-3"></div>
+      <div class="ple-errors col-md-9"></div>
+
+    </div>
+    <!-- end errors module -->
+
+    <!-- title module -->
+    <div class="ple-module-title ple-module container">
+
+      <div class="ple-module-guide col-md-3"></div>
+
+      <div class="ple-module-content col-md-9">
+
+        <h2>Ask a question of the PublicLab community</h2>
+
+        <br />
+        <div>
+          <input class="form-control input-lg" type="text" placeholder="What's your question? Be specific." value="<%= if @node then @node.title else params[:title] end %>" />
+        </div>
+
+      </div>
+
+    </div>
+    <!-- end title module -->
+
+    <!-- body module -->
+
+    <div class="ple-module-body ple-module container">
+
+      <div class="col-md-3"></div>
+
+      <div class="ple-module-content col-md-9">
+
+        <div>
+          <textarea id="text-input" class="ple-textarea form-control" placeholder="&nbsp;&nbsp;&nbsp;&nbsp;Share some background information. You may drag in an image to illustrate your question."><% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
+        </div>
+
+        <div style="color:#aaa;">
+          <br />
+          <br />
+          <p>Consider sharing:</p>
+          <ul style="list-style-type:disk ;">
+            <li>Where you are working</li>
+            <li>Why you are interested</li>
+            <li>What resources you need</li>
+          </ul>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- end body module -->
+
+    <!-- tags module -->
+
+    <div class="ple-module-tags ple-module container">
+
+      <div class="ple-module-guide col-md-3"></div>
+
+      <div class="ple-module-content col-md-9">
+        <input class="form-control input-lg" type="text" placeholder="Type some keywords related to your question (i.e. water, lead)" value="<% if params[:tags] || (@node && @node.tagnames) %><%= params[:tags] || @node.tagnames.join(',') %><% end %>" />
+      </div>
+
+    </div>
+
+    <!-- end tags module -->
+
+    <!--button module-->
+
+    <div class="ple-module-submit ple-module container">
+
+      <div class="ple-module-guide col-md-3"></div>
+
+      <div class="ple-module-content col-md-9">
+
+        <button class="ple-publish btn btn-lg btn-primary disabled">Ask</button> &nbsp;&nbsp;
+        <a tabindex="6" href="https://publiclab.org/wiki/questions">Help</a>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<style>
+  .ple-module {
+    border-top: none;
+  }
+</style>
+
+<script>
+
+  var editor;
+
+  (function() {
+
+    editor = new PL.Editor({
+      data: {
+        token: $('meta[name="csrf-token"]').attr('content')
+      },
+      textarea:    $('.ple-textarea')[0],
+      <% if @main_image %>
+        mainImageUrl:   '<%= @main_image %>',
+      <% end %>
+      <% if params[:action] == 'edit' %>
+        destination: '/notes/update/<%= @node.id %>?rich=true',
+      <% else %>
+        destination: '/notes/create?rich=true',
+      <% end %>
+      <% if params[:redirect] == 'question' %>
+        redirect: 'redirect',
+      <% end %>
+      <% if (@node && @node.errors.size > 0) || (@revision && @revision.errors.size > 0) %>
+        errors: <%=raw (@node.errors.to_h.merge(@revision.errors.to_h)).to_json %>,
+      <% end %>
+      format:      'publiclab',
+      publishCallback: function publishCallback(response) {
+        // parse and display errors!
+        if (typeof response == "string") {
+          if (response[0] == '<') $('.ple-errors').html('<div class="alert alert-danger">There was an error posting. Please contact web@publiclab.org for assistance - and note that your draft is saved under the "..." menu at the lower left.</div>');
+          else window.location = response;
+        } else if (response && Object.keys(response).length > 0) {
+          $('.ple-errors').html('<div class="alert alert-danger"></div>');
+          Object.keys(response).forEach(function(key, i) {
+            $('.ple-errors .alert').append('<p><b>' + key + '</b> </p>');
+            $('.ple-errors .alert p:last').append(response[key].join(', '));
+          });
+          window.scroll(0, 0);
+        }
+      },
+      mainImageModule: {
+        uid: <%= current_user.id %><% if @node && @node.id %>,
+        nid: <%= @node.id %><% end %>
+      },
+      richTextModule: {
+        authorsAutocomplete: false,
+        tagsAutocomplete: false,
+        formats: ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt', 'docx', 'bmp', 'obj', 'json', 'jpg', 'jpeg', 'png', 'gif']
+      },
+      titleModule: {
+        suggestRelated: true,
+        fetchRelated: debounce(function(show) {
+          $.getJSON("/api/srch/notes?query=" + editor.titleModule.value(), function(response) {
+            /* API provides:
+            {"items":[{
+              "doc_id":14022,
+              "doc_type":"file",
+              "doc_url":"/notes/liz/03-15-2017/host-a-balloon-mapping-workshop",
+              "doc_title":"Host a balloon mapping workshop",
+              "docScore":0}
+            ]}
+            */
+            // But we need: [{ id: 1, title: 'A related post',       url: '/', author: 'eustatic'}, ... ]
+            var formatted = [];
+            if (response['items']) {
+              response['items'].forEach(function(item) {
+                var formattedItem = {};
+                formattedItem.id = item.doc_id;
+                formattedItem.title = item.doc_title;
+                formattedItem.url = item.doc_url;
+                formattedItem.author = item.doc_url.split('/')[2];
+                formatted.push(formattedItem);
+              });
+              show(formatted);
+            }
+          });
+        }, 1000)
+      },
+      tagsModule: {
+        remote: {
+          url: "/tag/suggested/test",
+          prepare: function prepareRemote(x) {
+            return "/tag/suggested/" + x
+          }
+        }
+      }
+    });
+
+  })();
+
+</script>
