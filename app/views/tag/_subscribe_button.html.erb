@@ -1,14 +1,28 @@
 <!-- This button is used to display tags in a popover and subscribe to multiple tags using a single button -->
 <% if current_user %>
-  <a class="btn btn-default btn-xs sub" rel="popover" data-container="body" data-placement="bottom" data-template='<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-body"><%= render partial: 'tag/tags_popover', locals: {tags: tags} %></div></div>' data-html="true" data-content="sample" > Subscribe <i style="color:#aaa;" class="fa fa-plus"></i> </a>
+  <a id="popover_button" class="btn btn-primary btn-xs sub" > Subscribe <i style="color:#ffffff;" class="fa fa-plus"></i> </a>
+
+  <div id="mypopcontent" class="hidden">
+  	<%= render partial: "tag/tags_popover", locals: {tags: tags} %>
+  </div>
+
 <% else %>
-  <a class="btn btn-default btn-xs sub" data-toggle="modal" data-target="#loginModal" role="button" aria-pressed="true"> Subscribe <i style="color:#aaa;" class="fa fa-plus"></i> </a>
+  <a class="btn btn-primary btn-xs sub" data-toggle="modal" data-target="#loginModal" role="button" aria-pressed="true"> Subscribe <i style="color:#ffffff;" class="fa fa-plus"></i> </a>
 <% end %>
+
 <style>
   .sub{
     border-radius: 5px;
     margin-bottom: 12px;
     padding: 5px;
   }
-
 </style>
+
+<script type="text/javascript">
+  $('#popover_button').popover({
+  	content: $('#mypopcontent').clone().removeClass('hidden'),
+  	placement: 'bottom',
+  	html: true,
+
+  });
+</script>
