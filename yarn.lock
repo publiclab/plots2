@@ -2142,10 +2142,10 @@ image-sequencer-invert@^1.0.0:
   resolved "https://registry.yarnpkg.com/image-sequencer-invert/-/image-sequencer-invert-1.0.0.tgz#bb5c0cc2f50ed9ff4cd8d89a7929188f381a5dd4"
   integrity sha512-LL9jwCnSbUy676q9ULJ6M04mp1TVOxpjlckMGN2SyFOgPE4SGL2/IRcO33BDwafmFiupqDdgs7gUHEbsFcCqgQ==
 
-image-sequencer@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/image-sequencer/-/image-sequencer-3.0.1.tgz#9b980ed04ec727d318f456fec0541aba2a0e7e80"
-  integrity sha512-GratHUzUE+qyfjyk23sFbCeaF6nJLNYlkq79jsSfivrKQVCpvqmLIzuELjiGS8eicQfutxnMwM35HzVyNeXDTA==
+image-sequencer@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/image-sequencer/-/image-sequencer-3.1.1.tgz#8f4a4887f2cc38212c929ab1b6778a7331076f14"
+  integrity sha512-spWmjZuN4kst8OptdyFvl1H50RbX3xqQiE+kjkGlaFw+HG4RovgJXk72tUbYHazWjULpoBSvFJrbNJy1MhaKWA==
   dependencies:
     bootstrap "~3.4.0"
     buffer "~5.2.1"
