@@ -29,7 +29,7 @@ install:
 
 script:
   - docker-compose exec web bash -c "wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
-  - docker-compose exec web bash -c "dpkg -i google-chrome-stable_current_amd64.deb --fix-missing; apt-get -fy install`"
+  - docker-compose exec web bash -c "dpkg -i google-chrome-stable_current_amd64.deb --fix-missing; apt-get -fy install"
 #  - docker-compose exec web bash -c "apt-get install google-chrome-stable chromium-chromedriver"
   - docker-compose exec web bash -c "whereis google-chrome-stable"
   - docker-compose exec web bash -c "curl https://chromedriver.storage.googleapis.com/2.31/chromedriver_linux64.zip"
