@@ -73,12 +73,23 @@
 <hr style='clear:both;' />
 
 <div>
-  <p><a href='#' onClick='print_linkless()'><i class='fa fa-print'></i> Print without page links</a></p>
-  <p><a href='#' onClick='print_three_column();'><i class='fa fa-print'></i> Print in 3-column layout</a></p>
+  <p><a id='print-command-no-links'><i class='fa fa-print'></i> Print without page links</a></p>
+  <p><a id='print-command-3-col'><i class='fa fa-print'></i> Print in 3-column layout</a></p>
 </div>
 
-"><span class="caret"></span></li>
+
+">
+<span class="caret"></span></li>
   </ul>
+
+  <style type="text/css">
+    /*Styling the links to remove underline on hover and setting pointer as cursor*/
+    #print-command-3-col , #print-command-no-links {
+      text-decoration : none;
+      cursor : pointer;
+    }
+  </style>
+
   <script>
  
     function print_three_column() {
@@ -89,6 +100,10 @@
       $('body').css('column-count', 1)
                .css('column-gap', 0);
     }
+    // Event listner on CLICK on links
+    $(document).on("click", "#print-command-3-col",print_three_column);
+    $(document).on("click", "#print-command-no-links",print_linkless);
+
     jQuery(document).ready(function() {
       
       // 304 cached response yields no data to insert, which is not useful

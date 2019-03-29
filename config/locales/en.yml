@@ -800,7 +800,7 @@ en:
       you registered in order to use <b>SpectralWorkbench.org</b> or <b>MapKnitter.org</b>,
       <a href='%{url1}'>click here to continue &raquo;</a>"
     successful_updated_profile: "Successfully updated profile."
-    return_dashboard: "Return to your dashboard"
+    return_profile: "Return to your Profile Page"
     only_user_edit_profile: "Only <b>%{user}</b> can edit their profile."
     user_has_been_banned: "That user has been banned."
     user_has_been_moderated: "That user has been placed <a href='/wiki/moderation'>in
