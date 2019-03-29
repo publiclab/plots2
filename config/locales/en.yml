@@ -4,9 +4,9 @@ en:
     reset:
       reset_password: "Reset your password"
       enter_username_and_password: "Enter your username and a new password"
-      username_placeholder: "Username"
-      password_placeholder: "Enter a new password"
-      retype_password_placeholder: "Retype your password"
+      username_placeholder: "username"
+      password_placeholder: "enter a new password"
+      retype_password_placeholder: "retype your password"
       save: "Save"
       enter_email_reset_password: "Enter your email address to reset your password"
       reset: "Reset"
@@ -84,7 +84,7 @@ en:
       location: "Location"
       edit_information: "Edit Information"
       wiki_contributed_to: "Wiki pages recently contributed to"
-      updated: "Updated"
+      updated: "updated"
       by: "by"
       more: "More"
       notes_and_edits: "<a href='%{url1}'>research notes</a> and wiki edits"
@@ -111,7 +111,7 @@ en:
       email: "Email"
       create_password: "Create a password"
       change_password: "Change your password"
-      password: "Password"
+      password: "password"
       confirmation: "Confirmation"
       confirm_password: "Retype your password to confirm"
       bio: "Bio"
@@ -140,14 +140,14 @@ en:
     _photo:
       profile_photo: "Profile photo"
       drag_and_drop_image: "Drag and drop to add an image, or"
-      choose_image: "Choose an image"
+      choose_image: "choose an image"
       uploading: "Uploading"
     edit:
       edit_profile: "Edit Profile"
   notes:
     index:
-      search_results_for: "Search results for <i style=\"color:#aaa;\">%{params}</i>"
-      advanced_search: "Advanced Search"
+      search_results_for: "search results for <i style=\"color:#aaa;\">%{params}</i>"
+      advanced_search: "advanced Search"
       notes_tagged_with: "Notes tagged with <i style=\"color:#aaa;\">%{params}</i>"
       popular_research_notes: "Popular research notes"
       recent_research_notes: "Recent research notes"
@@ -170,8 +170,8 @@ en:
       spam: "Spam"
       pending_approval: "Pending approval by <a href='%{url1}'>community moderators</a>.
         Please be patient!"
-      last_edit_by: "Last edit by"
-      views: "Views"
+      last_edit_by: "last edit by"
+      views: "views"
       read_more: "Read more"
     show:
       note_no_tags: "This note has no tags yet; help connect it to other content by
@@ -187,9 +187,9 @@ en:
         is asking a question about <b>%{tag}</b>:
       sign_up_to_answer: "Sign up to answer questions on this topic"
       unpublished: "UNPUBLISHED"
-      views: "Views"
-      comments: "Comments"
-      shortlink: "Shortlink"
+      views: "views"
+      comments: "comments"
+      shortlink: "shortlink"
       barnstar_awarded_to_by: "<a href='%{url1}'>%{author}</a> was awarded <a href='%{url2}'>the
         %{barnstar} Barnstar</a> by <a href='%{url3}'>%{awarder}</a> for their work
         in this research note."
@@ -210,7 +210,7 @@ en:
       must_be_logged_in: "You must be <a href='%{url1}'>logged in</a> to comment."
     tools_places:
       tools_and_techniques: "Methods"
-      subtitle: "Developed by Public Lab contributors"
+      subtitle: "developed by Public Lab contributors"
       public_lab_chapters: "Public Lab chapters"
       start_a_chapter: "local groups and gatherings around the world | <a href='%{url1}'>Start
         a chapter &raquo;</a>"
@@ -224,7 +224,7 @@ en:
       read_more: "Read more"
       spam: "Spam"
     _comment:
-      commented: "Commented"
+      commented: "commented"
       streak_title: "%{author} is on fire! %{streak_notes} notes, %{streak_wiki} wiki
         edits, %{streak_comments} comments in the last %{streak_days} days"
       are_you_sure: "Are you sure?"
@@ -261,8 +261,8 @@ en:
 
   dashboard:
     _node_comment:
-      commented_on: "Commented on"
-      comments: "Comments"
+      commented_on: "commented on"
+      comments: "comments"
     _sidebar:
       wiki: "Wiki"
       discussion_list: "Discussion lists"
@@ -308,7 +308,7 @@ en:
         post_event: "Post an event"
         tell_story_blog: "Tell your story on the blog"
       dashboard: "Dashboard"
-      community_research: "Community research"
+      community_research: "community research"
       welcome: "Welcome"
       notes: "notes"
       and: "and"
@@ -347,7 +347,7 @@ en:
     blog:
       the_public_lab: "The Public Lab"
       blog: "Blog"
-      stories_from_community: "Stories from the Public Lab community"
+      stories_from_community: "stories from the Public Lab community"
       about_the_blog: "About the blog"
       research: "Latest updates"
       methods: "Methods"
@@ -400,7 +400,7 @@ en:
       no_contributors_listed: "No contributors are listed."
       write_research_note: "Write a research note"
     _tagging:
-      enter_tags: "Enter tags"
+      enter_tags: "enter tags"
     contributors:
       contributors_for: "Contributors for <i style=\"color:#aaa;\">%{tag_name}</i>"
       contributions_over_past_year: "Above: contributions over the past year."
@@ -422,11 +422,11 @@ en:
         research notes and wiki edits starting %{time} ago</small>"
       highly_liked_wiki_pages: "Highly liked wiki pages"
       create_wiki_page: "Create a new wiki page"
-      by_recency: "Recency"
-      by_popularity: "Popularity"
-      by_number_of_likes: "Likes"
-      by_alphabetic: "Name"
-      sort_by: "Sort by:"
+      by_recency: "recency"
+      by_popularity: "popularity"
+      by_number_of_likes: "likes"
+      by_alphabetic: "name"
+      sort_by: "sort by:"
       popular_wiki_pages: "Popular wiki pages"
       collaborative_documentation: "collaborative documentation by contributors like
         you"
@@ -567,7 +567,7 @@ en:
       donate: "Donate"
       store: "Store"
       chatroom:
-        pop_out: "Pop out"
+        pop_out: "pop out"
         chatroom_title: "Public Lab chatroom"
       become_part_community: "Become part of this community"
       join: "Sign up"
@@ -598,7 +598,7 @@ en:
     new:
       log_in: "Log in"
       sign_up: "sign up"
-      to_join: "To join the Public Lab community"
+      to_join: "to join the Public Lab community"
       username: "Username"
       password: "Password"
       remember_me: "Remember me"
@@ -651,7 +651,7 @@ en:
       share: "Share"
       unsubscribe: "Unsubscribe"
     _comments:
-      commented: "Commented"
+      commented: "commented"
       read_more: "Read more"
   comments:
     _form:
@@ -956,27 +956,27 @@ en:
   datetime:
     time_ago_in_words:
       about_x_hours:
-        one: "About 1 hour ago"
-        other: "About %{count} hours ago"
+        one: "about 1 hour ago"
+        other: "about %{count} hours ago"
       about_x_months:
-        one: "About 1 month ago"
-        other: "About %{count} months ago"
+        one: "about 1 month ago"
+        other: "about %{count} months ago"
       about_x_years:
-        one: "About 1 year ago"
-        other: "About %{count} years ago"
+        one: "about 1 year ago"
+        other: "about %{count} years ago"
       almost_x_years:
-        one: "Almost 1 year ago"
-        other: "Almost %{count} years ago"
+        one: "almost 1 year ago"
+        other: "almost %{count} years ago"
       half_a_minute: "Half a minute ago"
       less_than_x_minutes:
-        one: "Less than a minute ago"
-        other: "Less than %{count} minutes ago"
+        one: "less than a minute ago"
+        other: "less than %{count} minutes ago"
       less_than_x_seconds:
-        one: "Less than 1 second ago"
-        other: "Less than %{count} seconds ago"
+        one: "less than 1 second ago"
+        other: "less than %{count} seconds ago"
       over_x_years:
-        one: "Over 1 year ago"
-        other: "Over %{count} years ago"
+        one: "over 1 year ago"
+        other: "over %{count} years ago"
       x_days:
         one: "1 day ago"
         other: "%{count} days ago"
