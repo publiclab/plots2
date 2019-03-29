@@ -9,6 +9,7 @@ end
 class User < ActiveRecord::Base
   extend Utils
   include Statistics
+  extend RawStats
   self.table_name = 'rusers'
   alias_attribute :name, :username
 
