@@ -44,12 +44,12 @@ en:
               <p>By signing up, you will be joining a diverse group of community researchers and tapping into a lot of grassroots expertise. We're developing new tools to investigate and meet environmental and environmental health challenges, with an emphasis on:</p>
 
               <ul>
-                <li>Low Cost</li>
-                <li>Data Legibility</li>
-                <li>Ease of use/Low barrier to entry &amp; High public participation</li>
-                <li>High quality, Environmentally and Socially relevant data</li>
-                <li>Creative reuse of consumer technology</li>
-                <li>Open Source and User Modifiable designs</li>
+                <li>low Cost</li>
+                <li>data Legibility</li>
+                <li>ease of use/Low barrier to entry &amp; High public participation</li>
+                <li>high quality, Environmentally and Socially relevant data</li>
+                <li>creative reuse of consumer technology</li>
+                <li>open Source and User Modifiable designs</li>
               </ul>
     map:
       search: "Search"
@@ -62,7 +62,7 @@ en:
       wiki_liked_by: "Wiki pages liked by"
       more: "More"
       liked_by: "Liked by"
-      updated: "Updated"
+      updated: "updated"
     profile:
       follow: "Follow"
       migrate_new_site: "Migrate to new site"
@@ -157,7 +157,7 @@ en:
       research_by: "Research by <a href='%{url1}'>%{user_name}</a>"
       research_notes_and_wiki_edits: "%{count1} research notes and %{count2} wiki
         edits"
-      starting_time: "Starting %{time} ago"
+      starting_time: "starting %{time} ago"
       research_notes_ideas_and_documentation: "Research notes <small class=\"hidden-sm\">ideas
         & documentation from contributors like you</small>"
       recent: "Recent"
@@ -326,7 +326,7 @@ en:
       new_page: "New page"
       new_page_by: "New page by"
       new_edit_by: "New edit by"
-      changes: "Changes"
+      changes: "changes"
       more: "More"
     moderate:
       approve: "Approve"
@@ -443,7 +443,7 @@ en:
       view_all_revisions: "View all revisions"
       views: "views"
       last_edited: "Last edited by <a href='%{url1}'>%{author}</a> %{time} ago"
-      shortlink: "Shortlink"
+      shortlink: "shortlink"
       view: "View"
       edit: "Edit"
       delete: "Delete"
