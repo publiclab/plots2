@@ -11,7 +11,6 @@ env:
 
 before_install:
   - echo -e "repo_token:\n  $COVERALLS_REPO_TOKEN" >> ./.coveralls.yml
-  # - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
 
 install:
   - cp config/database.yml.example config/database.yml
@@ -32,28 +31,14 @@ script:
   - docker-compose exec web bash -c "dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install"
   - docker-compose exec web bash -c "nohup Xvfb -ac :9 -screen 0 1280x1024x16 &"
   - docker-compose exec web bash -c "export DISPLAY=:99.0"
-  - docker-compose exec web bash -c "whereis google-chrome-stable"
-  - docker-compose exec web bash -c "google-chrome-stable --headless --disable-gpu --no-sandbox --remote-debugging-port=9222 http://localhost &"
+#  - docker-compose exec web bash -c "google-chrome-stable --headless --disable-gpu --no-sandbox --remote-debugging-port=9222 http://localhost &"
   - docker-compose exec web bash -c "wget https://chromedriver.storage.googleapis.com/73.0.3683.68/chromedriver_linux64.zip"
   - docker-compose exec web bash -c "unzip chromedriver_linux64.zip"
   - docker-compose exec web bash -c "mv chromedriver /usr/local/bin/chromedriver"
   - docker-compose exec web bash -c "chmod +x /usr/local/bin/chromedriver"
-  - docker-compose exec web bash -c "whereis chromedriver"
   - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true rake test:all"
   - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true rails test -d"
-  # Capybara can't work with Passenger on Travis, hence disabling system test on
-  # production until we change over to a Rack server. (jywarren undoing to further test)
   - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true rails test:system"
   - echo -e '<?xml version="1.0" encoding="UTF-8"?>' > output.xml
   - tail -n +2 -q ./test/reports/TEST*.xml >> output.xml
   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then danger --verbose; fi'
-  
-#before_script:
-#  - docker-compose exec web bash -c "ln -s /usr/lib/chromium-browser/chromedriver /usr/bin/chromedriver"
-#   - export DISPLAY=:99.0
-
-# addons:
-#   apt:
-#     packages:
-#       - chromium-chromedriver
-#   chrome: stable
