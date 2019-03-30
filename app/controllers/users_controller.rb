@@ -213,8 +213,8 @@ class UsersController < ApplicationController
         end
       end
     end
-    @count_ans = Answer.where(uid: @profile_user.id).count
-    @count_ques = Node.questions.where(status: 1, uid: @profile_user.id).length
+    @count_ans = Answer.where(uid: @profile_user.uid).count
+    @count_ques = Node.questions.where(status: 1, uid: @profile_user.uid).length
   end
 
   def likes
