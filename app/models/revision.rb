@@ -152,4 +152,11 @@ class Revision < ApplicationRecord
     content = content.gsub('[unfold]', '</div>')
     content
   end
+
+  def self.frequency(starting, ending)
+    weeks = (ending.to_date - starting.to_date).to_i / 7.0
+    Revision.select(:timestamp)
+      .where(timestamp: starting.to_i..ending.to_i)
+      .count / weeks
+  end
 end

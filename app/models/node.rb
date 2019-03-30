@@ -19,6 +19,7 @@ class UniqueUrlValidator < ActiveModel::Validator
 end
 
 class Node < ActiveRecord::Base
+  extend RawStats
   include NodeShared # common methods for node-like models
 
   self.table_name = 'node'
@@ -146,15 +147,6 @@ class Node < ActiveRecord::Base
     end
   end
 
-  def self.to_csv(options = {})
-    CSV.generate(options) do |csv|
-      csv << column_names
-      all.each do |object|
-        csv << object.attributes.values_at(*column_names)
-      end
-    end
-  end
-
   private
 
   def set_path_and_slug
@@ -194,17 +186,29 @@ class Node < ActiveRecord::Base
     weeks
   end
 
-  def self.contribution_graph_making(type = 'note', start_time = Time.now - 1.month, end_time = Time.now)
+  def self.contribution_graph_making(type = 'note', start = Time.now - 1.year, fin = Time.now)
     date_hash = {}
-    (start_time.to_date..end_time.to_date).each do |date|
-      daily_nodes = Node.select(:created)
+    week = start.to_date.step(fin.to_date, 7).count
+
+    while week >= 1
+      month = (fin - (week * 7 - 1).days)
+      range = (fin.to_i - week.weeks.to_i)..(fin.to_i - (week - 1).weeks.to_i)
+
+      weekly_nodes = Node.published.select(:created)
                     .where(type: type,
-                    status: 1,
-                    created: (date.beginning_of_week.to_time.to_i)..(date.end_of_week.to_time.to_i))
+                    created: range)
                     .count
-      date_hash[date.beginning_of_week.to_time.to_i.to_f * 1000] = daily_nodes
+      date_hash[month.to_f * 1000] = weekly_nodes
+      week -= 1
     end
     date_hash
+  end
+
+  def self.frequency(type, starting, ending)
+    weeks = (ending.to_date - starting.to_date).to_i / 7.0
+    Node.published.select(%i(created type))
+      .where(type: type, created: starting.to_i..ending.to_i)
+      .count(:all) / weeks
   end
 
   def notify

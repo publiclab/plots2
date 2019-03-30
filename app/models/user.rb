@@ -9,6 +9,7 @@ end
 class User < ActiveRecord::Base
   extend Utils
   include Statistics
+  extend RawStats
   self.table_name = 'rusers'
   alias_attribute :name, :username
 
@@ -30,9 +31,9 @@ class User < ActiveRecord::Base
   attr_readonly :username
 
   acts_as_authentic do |c|
-    c.validates_format_of_email_field_options = { with: URI::MailTo::EMAIL_REGEXP }
     c.crypto_provider = Authlogic::CryptoProviders::Sha512
   end
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
 
   has_attached_file :photo, styles: { thumb: '200x200#', medium: '500x500#', large: '800x800#' },
                                     url: '/system/profile/photos/:id/:style/:basename.:extension'

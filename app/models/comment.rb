@@ -1,10 +1,13 @@
 class Comment < ApplicationRecord
   include CommentsShared
+  extend RawStats
 
   belongs_to :node, foreign_key: 'nid', touch: true, counter_cache: true
   belongs_to :user, foreign_key: 'uid'
   belongs_to :answer, foreign_key: 'aid'
   has_many :likes, as: :likeable
+
+  has_many :replied_comments, class_name: "Comment", foreign_key: 'reply_to', dependent: :destroy
 
   validates :comment, presence: true
 
@@ -32,13 +35,19 @@ class Comment < ApplicationRecord
     weeks
   end
 
-  def self.contribution_graph_making(start_time = 1.month.ago, end_time = Time.current)
+  def self.contribution_graph_making(start = Time.now - 1.year, fin = Time.now)
     date_hash = {}
-    (start_time.to_date..end_time.to_date).each do |date|
-      daily_comments = Comment.select(:timestamp)
-                         .where(timestamp: (date.beginning_of_week.to_time.to_i)..(date.end_of_week.to_time.to_i))
+    week = start.to_date.step(fin.to_date, 7).count
+
+    while week >= 1
+      month = (fin - (week * 7 - 1).days)
+      range = (fin.to_i - week.weeks.to_i)..(fin.to_i - (week - 1).weeks.to_i)
+
+      weekly_comments = Comment.select(:timestamp)
+                         .where(timestamp: range)
                          .count
-      date_hash[date.beginning_of_week.to_time.to_i.to_f * 1000] = daily_comments
+      date_hash[month.to_f * 1000] = weekly_comments
+      week -= 1
     end
     date_hash
   end
@@ -129,6 +138,7 @@ class Comment < ApplicationRecord
       # notify other commenters, revisers, and likers, but not those already @called out
       already = mentioned_users.collect(&:uid) + [parent.uid]
       uids = uids_to_notify - already
+      uids = uids.select { |i| i != 0 } # remove bad comments (some early ones lack uid)
 
       notify_users(uids, current_user)
       notify_tag_followers(already + uids)

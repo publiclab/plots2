@@ -94,8 +94,6 @@ class TagController < ApplicationController
                   'contributor'
                 end
 
-    qids = Node.questions.where(status: 1).collect(&:nid)
-
     if params[:id][-1..-1] == '*' # wildcard tags
       @wildcard = true
       @tags = Tag.where('name LIKE (?)', params[:id][0..-2] + '%')
@@ -132,8 +130,15 @@ class TagController < ApplicationController
     end
     nodes = nodes.where(created: @start.to_i..@end.to_i) if @start && @end
 
-    @notes = nodes.where('node.nid NOT IN (?)', qids) if @node_type == 'note'
-    @questions = nodes.where('node.nid IN (?)', qids) if @node_type == 'questions'
+    qids = Node.questions.where(status: 1).collect(&:nid)
+    if qids.empty?
+      @notes = nodes
+      @questions = []
+    else
+      @notes = nodes.where('node.nid NOT IN (?)', qids) if @node_type == 'note'
+      @questions = nodes.where('node.nid IN (?)', qids) if @node_type == 'questions'
+    end
+
     @answered_questions = []
     @questions&.each { |question| @answered_questions << question if question.answers.any?(&:accepted) }
     @wikis = nodes if @node_type == 'wiki'
@@ -238,7 +243,7 @@ class TagController < ApplicationController
   end
 
   def blog
-    nids = Tag.find_nodes_by_type(params[:id], 'note', 20).collect(&:nid)
+    nids = Tag.find_nodes_by_type(params[:id], 'note', nil).collect(&:nid)
     @notes = Node.paginate(page: params[:page], per_page: 6)
       .where('status = 1 AND nid in (?)', nids)
       .order('nid DESC')
@@ -488,16 +493,14 @@ class TagController < ApplicationController
   end
 
   def stats
-    @time = if params[:time]
-              Time.parse(params[:time])
-            else
-              Time.now
-            end
+    @start = params[:start] ? Time.parse(params[:start].to_s) : Time.now - 1.year
+    @end = params[:end] ? Time.parse(params[:end].to_s) : Time.now
+
     @tags = Tag.where(name: params[:id])
-    @tag_notes = @tags.first.contribution_graph_making('note', 52, @time)
-    @tag_wikis = @tags.first.contribution_graph_making('page', 52, @time)
-    @tag_questions = @tags.first.graph_making(Node.questions, 52, @time)
-    @tag_comments = @tags.first.graph_making(Comment, 52, @time)
+    @tag_notes = @tags.first.contribution_graph_making('note', @start, @end)
+    @tag_wikis = @tags.first.contribution_graph_making('page', @start, @end)
+    @tag_questions = @tags.first.quiz_graph(@start, @end)
+    @tag_comments = @tags.first.comment_graph(@start, @end)
   end
 
   private

@@ -1,19 +1,9 @@
 .popover-title {
   color: #333;
-  font-size: 14px;
   text-align: center;
-  font-weight: bold;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 .popover-content {
   padding: 9px 14px;
-}
-
-textarea, input {
-    padding:10px;
-    font-family: FontAwesome, "Open Sans", Verdana, sans-serif;
-    font-style: normal;
-    font-weight: normal;
-    text-decoration: inherit;
-
 }
