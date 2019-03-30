@@ -212,9 +212,9 @@ class UsersController < ApplicationController
           flash.now[:warning] = I18n.t('users_controller.user_has_been_moderated')
         end
       end
+      @count_ans = @profile_user.answers.count
+      @count_ques = @profile_user.questions.length
     end
-    @count_ans = @profile_user.answers.count
-    @count_ques = @profile_user.questions.length
   end
 
   def likes
