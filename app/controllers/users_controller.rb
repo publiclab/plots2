@@ -2,9 +2,7 @@ class UsersController < ApplicationController
   before_action :require_no_user, only: [:new]
   before_action :require_user, only: %i(edit update save_settings)
   before_action :set_user, only: %i(info followed following followers)
-  helper_method :count_ans
-  helper_method :count_ques
-
+  
   def new
     @user = User.new
     @action = "create" # sets the form url
@@ -216,13 +214,7 @@ class UsersController < ApplicationController
         end
       end
     end
-  end
-
-  def count_ans
     @count_ans = Answer.where(uid: @profile_user.id).count
-  end
-
-  def count_ques
     @count_ques = Node.questions.where(status: 1, uid: @profile_user.id).length
   end
 
