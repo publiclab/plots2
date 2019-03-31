@@ -57,17 +57,17 @@ begin
     end
   end
 
-  images = []
-  Dir.foreach('/tmp/screenshots') do |item|
-    next if item == '.' or item == '..'
-    dataurl = "data:image/png;base64," + Base64.strict_encode64(File.read(item))
-    images << "<h3>#{item}</h3><p><img src='#{dataurl}' /></p>"
-  end
-
-  screenshots = "<details><summary>Screenshots 📸 (click to expand)</summary>" + images.join + "</details>"
-  markdown(screenshots)
-
 rescue => ex
   fail "There was an error with Danger bot's Junit parsing: #{ex.message}"
   message ex.inspect # view the entire error output in the log
 end
+
+images = []
+Dir.foreach('tmp/screenshots') do |item|
+  next if item == '.' or item == '..'
+  dataurl = "data:image/png;base64," + Base64.strict_encode64(File.read(item))
+  images << "<h3>#{item}</h3><p><img src='#{dataurl}' /></p>"
+end
+
+screenshots = "<details><summary>Screenshots 📸 (click to expand)</summary>" + images.join + "</details>"
+markdown(screenshots)
