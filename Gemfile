@@ -35,8 +35,8 @@ gem 'omniauth-facebook', '~> 5.0'
 gem 'omniauth-github', '~> 1.1', '>= 1.1.2'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
-gem 'passenger'
 gem "paperclip", "~> 6.1.0"
+gem 'passenger'
 gem "php-serialize", :require => "php_serialize"
 gem 'progress_bar'
 gem 'rack-cors', :require => 'rack/cors'
