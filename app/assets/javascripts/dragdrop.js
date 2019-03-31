@@ -42,15 +42,15 @@ jQuery(document).ready(function() {
       },
       start: function(e) {
 
-        $('#create_progress').show()
-        $('#create_uploading').show()
-        $('#create_prompt').hide()
-        $('.dropzone').removeClass('hover');
+        ($D.selected).find('#create_progress').eq(0).show();
+        ($D.selected).find('#create_uploading').eq(0).show();
+        ($D.selected).find('#create_prompt').eq(0).hide();
+        ($D.selected).find('.dropzone').eq(0).removeClass('hover');
       },
       done: function (e, data) {
-        $('#create_progress').hide()
-        $('#create_uploading').hide()
-        $('#create_prompt').show()
+          ($D.selected).find('#create_progress').hide();
+          ($D.selected).find('#create_uploading').hide();
+          ($D.selected).find('#create_prompt').show();
         var extension = data.result['filename'].split('.')[data.result['filename'].split('.').length - 1]
         var file_url = data.result.url.split('?')[0]
 
