@@ -1,5 +1,7 @@
 class Answer < ApplicationRecord
-  include NodeShared, CommentsShared # common methods for node-like and comment-like models
+  include CommentsShared
+  include NodeShared
+  extend RawStats
 
   belongs_to :node, foreign_key: 'nid'
   belongs_to :user, foreign_key: 'uid'
@@ -14,7 +16,7 @@ class Answer < ApplicationRecord
   def body
     finder = content.gsub(Callouts.const_get(:FINDER), Callouts.const_get(:PRETTYLINKMD))
     finder = finder.gsub(Callouts.const_get(:HASHTAGNUMBER), Callouts.const_get(:NODELINKMD))
-    finder = finder.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKMD))
+    finder.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKMD))
   end
 
   def body_markdown

@@ -46,8 +46,9 @@ function insertTitleSuggestionTemplate() {
   var element = $('#text-input');
   var currentText = $('#text-input').val().trim();
   var template = "\n[propose:title]Propose your title here[/propose]";
-  if(currentText.length === 0)
-  template = "[propose:title]Propose your title here[/propose]";
+  if (currentText.length === 0) { 
+    template = "[propose:title]Propose your title here[/propose]";
+  }
   var newText = currentText+template;
   element.val(newText);
 }

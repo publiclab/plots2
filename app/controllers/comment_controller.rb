@@ -26,23 +26,28 @@ class CommentController < ApplicationController
     @user = current_user
     begin
       @comment = create_comment(@node, @user, @body)
-      respond_with do |format|
-        if params[:type] && params[:type] == 'question'
-          @answer_id = 0
-          format.js { render 'comments/create.js.erb' }
-        else
-          format.html do
-            if request.xhr?
-              render partial: 'notes/comment', locals: { comment: @comment }
-            else
-              tagnames = @node.tagnames.map do |tagname|
-                "<a href='/subscribe/tag/#{tagname}'>#{tagname}</a>"
-              end
-              tagnames = tagnames.join(', ')
-              tagnames = " Click to subscribe to updates on these tags or topics: " + tagnames unless tagnames.empty?
-              flash[:notice] = "Comment posted.#{tagnames}"
-              redirect_to @node.path + '#last' # to last comment
+
+      if params[:reply_to].present?
+        @comment.reply_to = params[:reply_to].to_i
+        @comment.save
+      end
+
+      respond_to do |format|
+        @answer_id = 0
+        format.js do
+          render 'comments/create'
+        end
+        format.html do
+          if request.xhr?
+            render partial: 'notes/comment', locals: { comment: @comment }
+          else
+            tagnames = @node.tagnames.map do |tagname|
+              "<a href='/subscribe/tag/#{tagname}'>#{tagname}</a>"
             end
+            tagnames = tagnames.join(', ')
+            tagnames = " Click to subscribe to updates on these tags or topics: " + tagnames unless tagnames.empty?
+            flash[:notice] = "Comment posted.#{tagnames}"
+            redirect_to @node.path + '#last' # to last comment
           end
         end
       end
@@ -131,7 +136,7 @@ class CommentController < ApplicationController
        current_user.role == 'admin' ||
        current_user.role == 'moderator'
 
-      if @comment.delete
+      if @comment.destroy
         respond_with do |format|
           if params[:type] && params[:type] == 'question'
             @answer_id = @comment.aid

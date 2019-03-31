@@ -38,6 +38,7 @@
             <li><a href="/questions">Ask a question</a></li>
             <li><a href="/tags">Find a topic you care about</a></li>
             <li><a href="/post" class="requireLogin">Post your work</a></li>
+            <li><a href="/newsletter">Subscribe to the newsletter</a></li>
             <li><a href="/requests">Respond to a request</a></li>
             <li class="divider"></li>
             <li><a href="/dashboard">Browse recent research</a></li>
@@ -91,7 +92,13 @@
           <% unless params[:action] == "register" || params[:action] == "signup" %>
             <% if current_user %>
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                 Profile 
+              	<div class="profile-icon">
+                  <% if current_user.profile_image == "https://www.gravatar.com/avatar/eb721d116a28f4a4da4ea67340c8ce75" %>
+                    <i class="fa fa-user-circle fa-lg" style="color:white;"></i>
+                  <% else %>
+                    <img class="img-circle" id="profile-photo" style="width:20px; height:20px; margin-right:8px;" src="<%= current_user.profile_image %>" />
+                  <% end %>
+                </div>
               </a>
               <ul class="dropdown-menu">
                 <div class="dropdown-header">
@@ -174,3 +181,13 @@
 </div>
 
 <%= render partial: "layouts/signupLoginModal" %>
+
+<style>
+  .profile-icon{
+      cursor:pointer;
+  }
+
+  .profile-icon:hover .fa-user-circle:before{
+      opacity:0.5;
+  }
+</style>

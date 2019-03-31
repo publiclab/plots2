@@ -11,17 +11,17 @@ PublicLab.org
 
 The content management system for the Public Lab research community, the plots2 web application is a combination of a group research blog of what we call "research notes" and a wiki. Read more about the [data model here](https://github.com/publiclab/plots2/blob/master/doc/DATA_MODEL.md).
 
-It features a variety of features that help the Public Lab community collaborate on environmental technology design and documentation, as well as community organizing. Originally a Drupal site, it was rewritten in 2012 in Ruby on Rails and has since extended but not entirely replaced the legacy Drupal data model and database design. We ❤️ Open Source and actively participates in various OSS programs such as [Google Summer of Code(GSoC)](https://publiclab.org/wiki/gsoc), Rails Girls Summer of Code (RGSoC), Outreachy and Google Code-In (GCI).
+It showcases a variety of features that help the Public Lab community collaborate on environmental technology design and documentation, as well as community organizing. Originally a Drupal site, it was rewritten in 2012 in Ruby on Rails and has since extended but not entirely replaced the legacy Drupal data model and database design. We ❤️ Open Source and actively participate in various OSS programs such as [Google Summer of Code(GSoC)](https://publiclab.org/wiki/gsoc), Rails Girls Summer of Code (RGSoC), Outreachy and Google Code-In (GCI).
 Some key features include:
 
-* a [Question and Answer system](https://publiclab.org/questions) for peer-based problem solving
-* a rich text and Markdown research note and wiki [editor](https://github.com/publiclab/PublicLab.Editor)
-* [wiki editing](https://publiclab.org/wiki) and revision tracking
-* tagging and [tag-based content organization](http://publiclab.org/tags)
-* email notification subscriptions for tags and comments
-* a search interface built out of [our growing API](https://github.com/publiclab/plots2/blob/master/doc/API.md)
-* a user dashboard [presenting recent activity](https://publiclab.org/dashboard)
-* a privacy-sensitive, Leaflet-based [location tagging system](https://github.com/publiclab/leaflet-blurred-location/) and [community map](http://publiclab.org/people)
+* A [Question and Answer system](https://publiclab.org/questions) for peer-based problem solving
+* A rich text and Markdown research note and wiki [editor](https://github.com/publiclab/PublicLab.Editor)
+* [Wiki editing](https://publiclab.org/wiki) and revision tracking
+* Tagging and [tag-based content organization](http://publiclab.org/tags)
+* Email notification subscriptions for tags and comments
+* A search interface built out of [our growing API](https://github.com/publiclab/plots2/blob/master/doc/API.md)
+* A user dashboard [presenting recent activity](https://publiclab.org/dashboard)
+* A privacy-sensitive, Leaflet-based [location tagging system](https://github.com/publiclab/leaflet-blurred-location/) and [community map](http://publiclab.org/people)
 
 ## Table of Contents
 1. [What Makes This Project Different](#what-makes-this-project-different)
@@ -85,7 +85,11 @@ For information on how to install for use with the cloud environment, please see
 1. Fork our repo from https://github.com/publiclab/plots2.
 2. In the console, download a copy of your forked repo with `git clone https://github.com/your_username/plots2.git` where `your_username` is your GitHub username.
 3. Enter the new **plots2** directory with `cd plots2`.
-4. Install gems with `bundle install --without production mysql` from the rails root folder, to install the gems you'll need, excluding those needed only in production. You may need to first run `bundle update` if you have older gems in your environment from previous Rails work.
+4. Steps to install gems:
+    * You may need to first run `bundle install` if you have older gems in your environment from previous Rails work. If you get an error message like `Your Ruby version is 2.x.x, but your Gemfile specified 2.4.4` then you need to install the ruby version 2.4.4 using `rvm` or `rbenv`.
+	    * Using **rvm**: `rvm install 2.4.4` followed by `rvm use 2.4.4`
+	    * Using **rbenv**:  `rbenv install 2.4.4` followed by `rbenv local 2.4.4`
+    * Install gems with `bundle install --without production mysql` from the rails root folder, to install the gems you'll need, excluding those needed only in production.
 5. Make a copy of `db/schema.rb.example` and place it at `db/schema.rb`.
 6. Make a copy of `config/database.yml.sqlite.example` and place it at `config/database.yml`
 7. Run `rake db:setup` to set up the database
@@ -93,7 +97,7 @@ For information on how to install for use with the cloud environment, please see
 9. By default, start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser.
 (for local SSL work, see [SSL](#ssl+in+development) below)
 10. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
-11. Run `rails test -d` to confirm that your install is working properly.
+11. Run `rails test` to confirm that your install is working properly. Or `rails test:system` for system tests.
 
 ## SSL in Development
 
@@ -175,6 +179,8 @@ Help improve Public Lab software!
 ## First Time?
 
 New to open source/free software? Here is a selection of issues we've made **especially for first-timers**. We're here to help, so just ask if one looks interesting : https://code.publiclab.org
+
+[Here](https://publiclab.org/notes/warren/11-22-2017/use-git-and-github-to-contribute-and-improve-public-lab-software) is a link to our Git workflow.
 
 ## Let the code be with you. :heart:
 ### Happy opensourcing. :smile:
