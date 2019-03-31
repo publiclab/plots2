@@ -21,7 +21,7 @@ module Srch
     end
 
     params :ordering do
-      optional :order_direction, type: String, documentation: { example: 'desc' }
+      optional :order_direction, type: String, documentation: { example: 'DESC' }
     end
 
     params :sorting do
@@ -30,6 +30,11 @@ module Srch
 
     params :field do
       optional :field, type: String, documentation: { example: 'username' }
+    end
+
+    params :period do
+      optional :from, type: Date, documentation: { example: '14-12-1989' }
+      optional :to, type: Date, documentation: { example: '15-01-2019' }
     end
   end
 end

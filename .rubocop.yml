@@ -11,6 +11,7 @@ AllCops:
     - '/config.ru'
   Exclude:
     - 'vendor/*'
+    - 'spec/**/*'
     - 'bin/*'
     - 'doc/*'
     - 'log/*'
@@ -23,6 +24,7 @@ AllCops:
     - 'test/**/*'
     - 'public/**/*'
     - 'Dangerfile'
+    - 'app/views/**/*'
   TargetRubyVersion: '2.4'
 
 Layout/MultilineMethodCallIndentation:
@@ -46,10 +48,10 @@ Style/FrozenStringLiteralComment:
 Lint/ParenthesesAsGroupedExpression:
   Enabled: false
 
-Lint/EndAlignment:
+Layout/EndAlignment:
   Enabled: false
 
-Lint/DefEndAlignment:
+Layout/DefEndAlignment:
   Enabled: false
 
 Lint/SafeNavigationChain:
@@ -67,5 +69,12 @@ Metrics/ClassLength:
 Metrics/ParameterLists:
   Enabled: false
 
-Metrics/ModuleLength:
-  Max: 303
+Style/StringLiterals:
+  Enabled: false
+
+Metrics/LineLength:
+  Max: 423
+
+Style/Documentation:
+  Enabled: false
+

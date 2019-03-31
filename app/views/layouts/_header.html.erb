@@ -30,14 +30,15 @@
       <ul class="nav navbar-nav navbar-left">
         <li class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            Get Involved <i class="fa fa-white fa-caret-down"></i>
+            Get Involved
           </a>
           <ul class="dropdown-menu">
             <li><a href="/events">Attend an event</a></li>
             <li><a href="/chat">Chat online</a></li>
             <li><a href="/questions">Ask a question</a></li>
             <li><a href="/tags">Find a topic you care about</a></li>
-            <li><a href="/post">Post your work</a></li>
+            <li><a href="/post" class="requireLogin">Post your work</a></li>
+            <li><a href="/newsletter">Subscribe to the newsletter</a></li>
             <li><a href="/requests">Respond to a request</a></li>
             <li class="divider"></li>
             <li><a href="/dashboard">Browse recent research</a></li>
@@ -49,7 +50,7 @@
 
         <li class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            <%= t('layout._header.about.about_title') %> <i class="fa fa-white fa-caret-down"></i>
+            <%= t('layout._header.about.about_title') %>
           </a>
           <ul class="dropdown-menu">
             <li><a href="/wiki/stories"><%= t('layout._header.about.stories') %></a></li>
@@ -77,11 +78,11 @@
       <ul class="nav navbar-nav navbar-right">
         <% if current_user %>
           <li class="hidden-sm hidden-md">
-            <a rel="tooltip" title="<%= t('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard">Dashboard <i class="fa fa-white fa-home" aria-hidden="true"></i></a>
+            <a rel="tooltip" title="<%= t('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard">Dashboard</a>
           </li>
         <% else %>
         <li class="hidden-sm hidden-md"> <!-- signup button -->
-          <a rel="tooltip" class="signupToggle" title="<%= t('layout._header.become_part_community') %>">
+          <a rel="tooltip" class="signupToggle" title="<%= t('layout._header.become_part_community') %>" href="#">
             <%= t('layout._header.join') %>
           </a>
         </li>
@@ -91,7 +92,13 @@
           <% unless params[:action] == "register" || params[:action] == "signup" %>
             <% if current_user %>
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                 Profile  <i class="fa fa-white fa-user" aria-hidden="true" ></i>
+              	<div class="profile-icon">
+                  <% if current_user.profile_image == "https://www.gravatar.com/avatar/eb721d116a28f4a4da4ea67340c8ce75" %>
+                    <i class="fa fa-user-circle fa-lg" style="color:white;"></i>
+                  <% else %>
+                    <img class="img-circle" id="profile-photo" style="width:20px; height:20px; margin-right:8px;" src="<%= current_user.profile_image %>" />
+                  <% end %>
+                </div>
               </a>
               <ul class="dropdown-menu">
                 <div class="dropdown-header">
@@ -122,7 +129,7 @@
                 <li><a href="/logoutRemotely">Logout from all devices</a></li>
               </ul>
             <% else %> <!-- Login button -->
-              <a class="loginToggle">
+              <a class="loginToggle" href="#" >
                 <%= t('layout._header.login.login_title') %>
               </a>
             <% end %>
@@ -145,11 +152,6 @@
                 <% else %>
                 <li class="hidden-lg">
                   <a rel="tooltip" title="<%= t('layout._header.become_part_community') %>" href="/signup"><%= t('layout._header.join') %></a>
-                </li>
-                <li class="hidden-lg hidden-md">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                     <%= t('layout._header.login.login_title') %>
-                  </a>
                 </li>
                 <% end %>
             </ul>
@@ -175,97 +177,17 @@
             c.hide() ;
       });
   </script>
-  <%= render :partial => "layouts/alerts" %>
+  <%= render partial: "layouts/alerts" %>
 </div>
 
-<!-- Login/Signup Modal -->
-<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <!-- close button -->
-          <span aria-hidden="true">&times;</span>
-        </button>
+<%= render partial: "layouts/signupLoginModal" %>
 
-        <div class="clearfix"> <!-- clearfix class allows the modal to expand to fit the content of this div -->
-          <div id="signupContainer"> <!-- signup partial -->
-            <%= render :partial => "users/create_form" %>
-          </div>
-          <div id="loginContainer"> <!-- login partial -->
-            <%= render :partial => "user_sessions/new" %>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<!-- Modal jquery -->
-<script>
-  var mode =""; //Either "login" or "signup". Used later to load partialis
-  function setMode(modalMode){ //Setter function for mode
-    mode = modalMode;
-  }
-
-  $('#loginModal').on('show.bs.modal', function (event) { //When this modal is toggled, run the following
-    var modal = $(this);
-
-    function showSignup(){
-      modal.find(".modal-dialog").addClass("modal-lg"); //Expands modal to show signup content better
-      modal.find('#signupContainer').show(); //Unhides the signup partial
-      modal.find('#loginContainer').hide(); //Hides the login partial
-    }
-    function showLogin(){
-      modal.find(".modal-dialog").removeClass("modal-lg"); //Minimises the modal size for better aesthetis
-      modal.find('#loginContainer').show(); // Unhides the login partial
-      modal.find('#signupContainer').hide(); //Hides the signup partial
-    }
-
-    if(mode == "signup"){
-      showSignup(); //If the mode that has been set is "signup", show the signup part of the partial
-    } else {
-      showLogin(); //Show the login partial otherwise
-    }
-
-    $("#toLogin").click(function(){ //Function runs when the "login" buttin in the signup modal is clicked
-      var user = $("#signupContainer").find("#username-signup").val(); //Username and password data is transferred to the other partial
-      var pass = $("#signupContainer").find("#password").val();
-      showLogin(); // Modal switches to login view
-      $("#loginContainer").find("#username-signup").val(user);
-      $("#loginContainer").find("#password-signup").val(pass);
-    });
-
-    $("#toSignup").click(function(){ //Function runs when the "sign up to join" link in the login modal is clicked 
-      var user = $("#loginContainer").find("#username-signup").val(); //Username and password data is transferred to the other partial
-      var pass = $("#loginContainer").find("#password-signup").val();
-      showSignup(); // Modal switches to sign up view
-      $("#signupContainer").find("#username-signup:visible").val(user);
-      $("#signupContainer").find("#password").val(pass);
-      ;
-    });
-  });
-
-</script>
-
-<!-- The following css allows the modal to appear in the center of the screen -->
 <style>
-  .modal {
-    text-align: center;
-    padding: 0!important;
+  .profile-icon{
+      cursor:pointer;
   }
 
-  .modal:before {
-    content: '';
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
-    margin-right: -4px;
-  }
-
-  .modal-dialog {
-    display: inline-block;
-    text-align: left;
-    vertical-align: middle;
+  .profile-icon:hover .fa-user-circle:before{
+      opacity:0.5;
   }
 </style>

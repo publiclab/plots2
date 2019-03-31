@@ -10,11 +10,11 @@ RUN mkdir -p /app
 ENV HOME /root
 ENV PHANTOMJS_VERSION 2.1.1
 
-#RUN echo \
-#   'deb ftp://ftp.us.debian.org/debian/ jessie main\n \
-#    deb ftp://ftp.us.debian.org/debian/ jessie-updates main\n \
-#    deb http://security.debian.org jessie/updates main\n' \
-#    > /etc/apt/sources.list
+RUN echo \
+   'deb http://ftp.ca.debian.org/debian/ stretch main\n \
+    deb http://ftp.ca.debian.org/debian/ stretch-updates main\n \
+    deb http://security.debian.org stretch/updates main\n' \
+    > /etc/apt/sources.list
 
 # Install dependencies
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
@@ -36,5 +36,5 @@ RUN bundle install --jobs=4
 ADD . /app
 WORKDIR /app
 
-RUN yarn install && yarn postinstall && yarn upgrade
+RUN yarn install && yarn upgrade
 RUN passenger-config compile-nginx-engine --connect-timeout 60 --idle-timeout 60

@@ -32,6 +32,7 @@ services:
       - redis
     volumes:
       - ..:/app
+      - js_libs:/app/public/lib
     restart: unless-stopped
   sidekiq:
     build: ..
@@ -46,3 +47,5 @@ services:
       - .:/app
     environment:
       - REDIS_URL=redis://redis:6379/0
+volumes:
+    js_libs:

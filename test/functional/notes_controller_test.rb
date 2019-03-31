@@ -47,7 +47,7 @@ class NotesControllerTest < ActionController::TestCase
   test 'comment markdown and autolinking works' do
     node = Node.where(type: 'note', status: 1).first
     assert node.comments.length > 0
-    comment = node.comments.last
+    comment = node.comments.last(2).first
     comment.comment = 'Test **markdown** and http://links.com'
     comment.save!
 
@@ -122,6 +122,8 @@ class NotesControllerTest < ActionController::TestCase
   test 'admins and moderators view redirect-tagged notes with flash warning' do
     note = nodes(:one)
     blog = nodes(:blog)
+    flash_msg = "Only moderators and admins see this page, as it is redirected to #{blog.title}. To remove the redirect, delete the tag beginning with 'redirect:'"
+
     note.add_tag("redirect:#{blog.nid}", users(:jeff))
     assert_equal blog.nid.to_s, note.power_tag('redirect')
     UserSession.find.destroy if UserSession.find
@@ -135,8 +137,7 @@ class NotesControllerTest < ActionController::TestCase
         }
 
     assert_response :success
-    assert_equal "Only moderators and admins see this page, as it is redirected to #{blog.title}.
-        To remove the redirect, delete the tag beginning with 'redirect:'", flash[:warning]
+    assert_equal flash_msg, flash[:warning]
     UserSession.find.destroy
   end
 
@@ -155,6 +156,18 @@ class NotesControllerTest < ActionController::TestCase
     assert_response :success
     assert_select '#other-activities'
     assert_select "a#other-activities[href = '/wiki/spectrometer']", 1
+  end
+
+  test 'return 404 when node is not found' do
+    note = nodes(:one)
+
+    get :show, params: {
+      author: note.author.name,
+      date: Time.at(note.created).strftime('%m-%d-%Y'),
+      id: "doesn't_exist"
+    }
+
+    assert_response :not_found
   end
 
   test "don't show note by spam author" do
@@ -313,7 +326,7 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_response :success
     selector = css_select 'div.note'
-    assert_equal selector.size, 22
+    assert_equal selector.size, 25
     assert_select "div p", 'Pending approval by community moderators. Please be patient!'
   end
 
@@ -342,7 +355,7 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_response :success
     selector = css_select 'div.note'
-    assert_equal selector.size, 22
+    assert_equal selector.size, 25
     assert_select "p", "Moderate first-time post: \n              Approve\n              Spam"
   end
 
@@ -459,7 +472,7 @@ class NotesControllerTest < ActionController::TestCase
         id: node.title.parameterize
         }
     selector = css_select '.fa-fire'
-    assert_equal selector.size, 3
+    assert_equal 3, selector.size
   end
 
   test 'should redirect to questions show page after creating a new question' do
@@ -946,7 +959,7 @@ class NotesControllerTest < ActionController::TestCase
              id: node.nid,
              token: @token
          }
-     assert_response :success
+     assert_redirected_to '/login'
    end
 
    test 'no notification email if user posts draft' do

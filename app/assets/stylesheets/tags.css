@@ -1,8 +1,7 @@
 .popover-title {
   color: #333;
-  font-size: 14px;
   text-align: center;
-  font-weight: bold;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 .popover-content {

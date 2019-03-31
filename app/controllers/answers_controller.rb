@@ -1,5 +1,6 @@
 class AnswersController < ApplicationController
   before_action :require_user
+  before_action :find_answer, except: %i(create)
 
   def create
     @node = Node.find(params[:nid])
@@ -18,24 +19,17 @@ class AnswersController < ApplicationController
   end
 
   def update
-    @answer = Answer.find(params[:id])
     if @answer.uid == current_user.uid
       @answer.content = params[:body]
-      if @answer.save
-        flash[:notice] = 'Answer updated'
-        redirect_to @answer.node.path(:question)
-      else
-        flash[:error] = "Answer couldn't be updated"
-        redirect_to @answer.node.path(:question)
-      end
+      flash[:notice] = @answer.save ?  'Answer updated.' : "Answer couldn't be updated."
     else
       flash[:error] = 'Only the author of the answer can edit it.'
-      redirect_to @answer.node.path(:question)
     end
+
+    redirect_to @answer.node.path(:question)
   end
 
   def delete
-    @answer = Answer.find(params[:id])
     if current_user.uid == @answer.node.uid ||
        @answer.uid == current_user.uid ||
        current_user.role == 'admin' ||
@@ -55,8 +49,6 @@ class AnswersController < ApplicationController
   end
 
   def accept
-    @answer = Answer.find(params[:id])
-
     if current_user.role == "admin" || current_user.role == "moderator" || current_user.uid == @answer.node.uid
       respond_to do |format|
         if @answer.accepted
@@ -74,5 +66,11 @@ class AnswersController < ApplicationController
     else
       render plain: "Answer couldn't be accepted"
     end
+  end
+
+  private
+
+  def find_answer
+    @answer = Answer.find(params[:id])
   end
 end

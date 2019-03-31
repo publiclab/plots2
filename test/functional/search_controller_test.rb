@@ -62,4 +62,34 @@ class SearchControllerTest < ActionController::TestCase
     assert_response :success
     assert assigns(:nodes).values.flatten.collect(&:type).uniq.length > 1
   end
+
+  test "search for trawl trawling and trawls yields the same result" do
+    get :all_content, params: { :query => "trawl" }
+    nodes_with_trawl = assigns(:nodes)
+
+    get :all_content, params: { :query => "trawling" }
+    nodes_with_trawling = assigns(:nodes)
+
+    get :all_content, params: { :query => "trawls" }
+    nodes_with_trawls = assigns(:nodes)
+
+    assert_equal nodes_with_trawl, nodes_with_trawling
+    assert_equal nodes_with_trawl, nodes_with_trawls
+    assert_response :success
+  end
+
+  test "search for hyphenated searches returns results for non hyphenated searches as well" do
+    get :all_content, params: { :query => "purple-air" }
+    nodes_with_purple_air = assigns(:nodes)
+
+    get :all_content, params: { :query => "purpleair" }
+    nodes_with_purpleair = assigns(:nodes)
+    flag = false
+    nodes_with_purpleair.each do |key,val|
+      if nodes_with_purpleair[key].length != nodes_with_purple_air[key].length
+        flag = true
+      end
+    end
+    assert_not flag
+  end
 end

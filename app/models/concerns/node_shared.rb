@@ -8,6 +8,14 @@ module NodeShared
   def liked_by(uid)
     likers.collect(&:uid).include?(uid)
   end
+  
+  def self.button(body)
+    body.gsub(/(?<![\>`])(\<p\>)?\[button\:(.+)\:(\S+)\]/) do |_tagname|
+      btnText = Regexp.last_match(2)
+      btnHref = Regexp.last_match(3)
+      return '<a class="btn btn-primary inline-button-shortcode" href="' + btnHref + '">' + btnText + '</a>'
+    end
+  end
 
   def self.notes_thumbnail_grid(body, _page = 1)
     body.gsub(/(?<![\>`])(\<p\>)?\[notes\:grid\:(\S+)\]/) do |_tagname|
@@ -256,8 +264,8 @@ module NodeShared
       output = a.render_to_string(template: "map/_leaflet",
                                   layout:   false,
                                   locals:   {
-                                    lat:   lat,
-                                    lon:   lon,
+                                    lat: lat,
+                                    lon: lon,
                                     tagname: tagname
                                   })
       output
@@ -273,8 +281,8 @@ module NodeShared
       output = a.render_to_string(template: "map/_leaflet",
                                   layout:   false,
                                   locals:   {
-                                    lat:   lat,
-                                    lon:   lon,
+                                    lat: lat,
+                                    lon: lon,
                                     tagname: tagname.to_s
                                   })
       output
@@ -284,10 +292,8 @@ module NodeShared
   # in our interface, "users" are known as "people" because it's more human
   def self.people_map(body, _page = 1)
     body.gsub(/(?<![\>`])(\<p\>)?\[map\:people\:(\S+)\:(\S+)\]/) do |_tagname|
-      tagname = Regexp.last_match(2)
       lat = Regexp.last_match(2)
       lon = Regexp.last_match(3)
-      nids ||= []
 
       a = ActionController::Base.new
       output = a.render_to_string(template: "map/_peopleLeaflet",
@@ -295,7 +301,9 @@ module NodeShared
                                   locals:   {
                                     lat: lat,
                                     lon: lon,
-                                    people: true
+                                    people: true,
+                                    url_hash: 0,
+                                    tag_name: false
                                   })
       output
     end

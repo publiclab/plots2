@@ -11,9 +11,3 @@ $("<%= str %>").css("display","none");
     $("<%= str %> div").first().html("<%= @likes[capitalized_emoji_name] %>");
   <% end %>
 <% end %>
-
-<% if @is_liked %>
-  notyNotification('mint', 3000, 'success', 'topRight', 'Unreacted!');
-<% else %>
-	notyNotification('mint', 3000, 'success', 'topRight', 'Reacted!');
-<% end %>

@@ -7,21 +7,28 @@ class ApplicationController < ActionController::Base
 
   before_action :set_locale
 
+  before_action :set_raven_context
+
   private
+
+  def set_raven_context
+    Raven.user_context(id: session[:current_user_id]) # or anything else in session
+    Raven.extra_context(params: params.to_unsafe_h, url: request.url)
+  end
 
   # eventually videos could be a power tag
   def set_sidebar(type = :generic, data = :all, args = {})
     args[:note_count] ||= 8
     if type == :tags # accepts data of array of tag names as strings
-      if params[:controller] == 'questions'
-        @notes ||= Tag.find_nodes_by_type(data, 'note', args[:note_count])
-      else
-        @notes ||= Tag.find_research_notes(data, args[:note_count])
-      end
+      @notes ||= if params[:controller] == 'questions'
+                   Tag.find_nodes_by_type(data, 'note', args[:note_count])
+                 else
+                   Tag.find_research_notes(data, args[:note_count])
+                 end
 
       @notes = @notes.where('node.nid != (?)', @node.nid) if @node
       @wikis = Tag.find_pages(data, 10)
-      @videos = Tag.find_nodes_by_type_with_all_tags(['video'] + data, 'note', 8) if args[:videos] && data.length > 1
+      @videos = Tag.find_nodes_by_type_with_all_tags(%w(video) + data, 'note', 8) if args[:videos] && data.length > 1
       @maps = Tag.find_nodes_by_type(data, 'map', 20)
     else # type is generic
       # remove "classroom" postings; also switch to an EXCEPT operator in sql, see https://github.com/publiclab/plots2/issues/375
@@ -41,13 +48,13 @@ class ApplicationController < ActionController::Base
       @notes = @notes.where('node.nid != (?)', @node.nid) if @node
       @notes = @notes.where('node_revisions.status = 1 AND node.nid NOT IN (?)', hidden_nids) unless hidden_nids.empty?
 
-      if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
-        @notes = @notes.where('(node.status = 1 OR node.status = 4)')
-      elsif current_user
-        @notes = @notes.where('(node.status = 1 OR (node.status = 4 AND node.uid = ?))', current_user.uid)
-      else
-        @notes = @notes.where('node.status = 1')
-      end
+      @notes = if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+                 @notes.where('(node.status = 1 OR node.status = 4)')
+               elsif current_user
+                 @notes.where('(node.status = 1 OR (node.status = 4 AND node.uid = ?))', current_user.uid)
+               else
+                 @notes.where('node.status = 1')
+               end
 
       @wikis = Node.order('changed DESC')
         .joins(:revision)
@@ -66,6 +73,7 @@ class ApplicationController < ActionController::Base
 
   def current_user_session
     return @current_user_session if defined?(@current_user_session)
+
     @current_user_session = UserSession.find
   end
 
@@ -105,7 +113,10 @@ class ApplicationController < ActionController::Base
     if current_user
       store_location
       flash[:notice] = I18n.t('application_controller.must_be_logged_out_to_access')
-      redirect_to home_url + '?return_to=' + URI.encode(request.env['PATH_INFO'])
+
+      url = URI.parse(home_url + '?return_to=' + CGI.escape(request.env['PATH_INFO'])).to_s
+
+      redirect_to url
       false
     end
   end
@@ -119,30 +130,31 @@ class ApplicationController < ActionController::Base
     session[:return_to] = nil
   end
 
-  def check_and_redirect_node(node)
-    if !node.nil? && node.type[/^redirect\|/]
-      node = Node.find(node.type[/\|\d+/][1..-1])
-      redirect_to node.path, status: 301
-      return true
-    end
-    false
+  def redirect_to_node_path?(node)
+    return false unless node.present? && node.type[/^redirect\|/]
+
+    node = Node.find(node.type[/\|\d+/][1..-1])
+
+    redirect_to URI.parse(node.path).path, status: :moved_permanently
+
+    true
   end
 
   def alert_and_redirect_moderated
-    if @node.author.status == 0 && !(current_user && (current_user.role == 'admin' || current_user.role == 'moderator'))
+    if @node.author.status == User::Status::BANNED && !(current_user && (current_user.role == 'admin' || current_user.role == 'moderator'))
       flash[:error] = I18n.t('application_controller.author_has_been_banned')
       redirect_to '/'
     elsif @node.status == 4 && (current_user && (current_user.role == 'admin' || current_user.role == 'moderator'))
       flash.now[:warning] = "First-time poster <a href='/profile/#{@node.author.name}'>#{@node.author.name}</a> submitted this #{time_ago_in_words(@node.created_at)} ago and it has not yet been approved by a moderator. <a class='btn btn-default btn-sm' href='/moderate/publish/#{@node.id}'>Approve</a> <a class='btn btn-default btn-sm' href='/moderate/spam/#{@node.id}'>Spam</a>"
     elsif @node.status == 4 && (current_user && current_user.id == @node.author.id) && !flash[:first_time_post]
       flash.now[:warning] = "Thank you for contributing open research, and thanks for your patience while your post is approved by <a href='/wiki/moderation'>community moderators</a> and we'll email you when it is published. In the meantime, if you have more to contribute, feel free to do so."
-    elsif @node.status == 3 && (current_user && (current_user.is_coauthor(@node) || current_user.can_moderate?)) && !flash[:first_time_post]
+    elsif @node.status == 3 && (current_user && (current_user.is_coauthor?(@node) || current_user.can_moderate?)) && !flash[:first_time_post]
       flash.now[:warning] = "This is a draft note. Once you're ready, click <a class='btn btn-success btn-xs' href='/notes/publish_draft/#{@node.id}'>Publish Draft</a> to make it public. You can share it with collaborators using this private link <a href='#{@node.draft_url}'>#{@node.draft_url}</a>"
     elsif @node.status != 1 && @node.status != 3 && !(current_user && (current_user.role == 'admin' || current_user.role == 'moderator'))
       # if it's spam or a draft
       # no notification; don't let people easily fish for existing draft titles; we should try to 404 it
       redirect_to '/'
-    elsif @node.author.status == 5
+    elsif @node.author.status == User::Status::MODERATED
       flash.now[:warning] = "The user '#{@node.author.username}' has been placed <a href='https://#{request.host}/wiki/moderators'>in moderation</a> and will not be able to respond to comments."
     end
   end
@@ -159,21 +171,9 @@ class ApplicationController < ActionController::Base
   end
 
   def comments_node_and_path
-    @node = if @comment.aid == 0
-              # finding node for node comments
-              @comment.node
-            else
-              # finding node for answer comments
-              @comment.answer.node
-    end
+    @node = @comment.aid == 0 ? @comment.node : @comment.answer.node
 
-    @path = if params[:type] && params[:type] == 'question'
-              # questions path
-              @node.path(:question)
-            else
-              # notes path
-              @node.path
-    end
+    @path = params[:type] && params[:type] == 'question' ? @node.path(:question) : @node.path
   end
 
   # used for url redirects for friendly_id
@@ -189,5 +189,9 @@ class ApplicationController < ActionController::Base
 
   def signed_in?
     !current_user.nil?
+  end
+
+  def page_not_found
+    render file: "#{Rails.root}/public/404.html", layout: false, status: :not_found
   end
 end

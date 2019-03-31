@@ -64,7 +64,7 @@
             </li>
         <% else %>
             <li>
-              <a rel="tooltip" title="Edit this wiki page." data-placement="top" href="<%= @node.edit_path %>?t=<%= Time.now.to_i %>">
+              <a rel="tooltip" title="Edit this wiki page." data-placement="top" href="<%= @node.edit_path %>?t=<%= Time.now.to_i %>" class="requireLogin">
                 <i class="fa fa-pencil"></i>
                 <span class="hidden-xs hidden-sm hidden-md"></span>
               </a>
@@ -103,7 +103,7 @@
 
       <li class="<%= 'active' if (controller.action_name == 'comments' )%>">
         <a href="/wiki/<%= @node.slug_from_path %>/comments" rel="tooltip" title="Read Comments regarding this wiki page" data-placement="top">
-          <span class="hidden-xs"> <%= @node.comments.count %></span>
+          <span class="hidden-xs"> <%= @node.comments.size %></span>
           <i class="fa fa-comment"></i>
         </a>
       </li>

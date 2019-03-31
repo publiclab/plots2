@@ -1,5 +1,5 @@
 class SearchController < ApplicationController
-  before_action :set_search_criteria, :except => %i(notes wikis)
+  before_action :set_search_criteria, except: %i(notes wikis)
 
   def new; end
 
@@ -34,8 +34,8 @@ class SearchController < ApplicationController
 
   def all_content
     @nodes = ExecuteSearch.new.by(:all, @search_criteria)
-    @wikis = @nodes[:wikis]
-    @notes = @nodes[:notes]
+    @wikis = wikis
+    @notes = notes
     @profiles = @nodes[:profiles]
     @questions = @nodes[:questions]
     @tags = @nodes[:tags]

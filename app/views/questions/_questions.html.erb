@@ -15,14 +15,13 @@
           <p><span class="label accepted">Answered</span></p>
         <% end %>
 
-        
+
 
         <span id="tags">
         <% node.tags.limit(4).each do |tag| %>
           <span id="tag_<%= tag.id %>" class="label label-primary"><a href="/questions/tag/<%= tag.name %>"><%= tag.name %></a></span>
         <% end %>
         </span>
-        <p style="margin-top:30px;"><% if logged_in_as(['admin','moderator']) %><a class="btn btn-default btn-xs" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> Spam</a><% end %>
         <a href="<%= node.path(:question) %>#post-answer" class="btn btn-default btn-xs">Post an answer</a></p>
         <p class="meta">asked <%= render partial: "dashboard/node_meta", locals: { node: node } %></p>
       </div>
@@ -37,4 +36,4 @@
   <% end %>
   </div>
 </div>
-<div class="text-center"><%= will_paginate questions, :renderer => BootstrapPagination::Rails unless @unpaginated %></div>
+<div class="text-center"><%= will_paginate questions, :renderer => BootstrapPagination::Rails unless @unpaginated || questions.empty? %></div>

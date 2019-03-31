@@ -1,15 +1,6 @@
-<%= stylesheet_link_tag "/lib/leaflet/dist/leaflet.css" %>
-<%= stylesheet_link_tag "/lib/leaflet-environmental-layers/dist/LeafletEnvironmentalLayers.css" %>
-<%= javascript_include_tag('/lib/leaflet-environmental-layers/dist/LeafletEnvironmentalLayers.js') %>
-<%= javascript_include_tag('/lib/leaflet-environmental-layers/dist/windRoseLayer.js') %>
-<%= javascript_include_tag('/lib/leaflet-hash/leaflet-hash.js') %>
+<%= render :partial => "map/mapDependencies" %>
 
-<%= javascript_include_tag('https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js') %>
-<%= stylesheet_link_tag "https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css" %>
-
-<%= javascript_include_tag('/lib/leaflet-spin/example/spin/dist/spin.min.js') %>
-<%= javascript_include_tag('/lib/leaflet-spin/example/leaflet.spin.min.js') %>
-  <% unique_id = rand(100) %>
+  <% unique_id = rand(1000) %>
   <style>
   #map<%= unique_id %> { width:100%; height:300px; margin: 0; position: relative;}
   </style>
@@ -22,48 +13,103 @@
     var map<%= unique_id %> = L.map('map<%= unique_id %>' , {
       maxBounds: bounds ,
       maxBoundsViscosity: 0.75
-    }).on('load', onMapLoad).setView([<%= lat %>,<%= lon %>], <%= lat.to_s.length.to_i %> + 6);
+    }).setView([<%= lat %>,<%= lon %>], <%= lat.to_s.length.to_i %> + 6);
+
+    var markers_hash<%= unique_id %> = new Map() ;
 
     var map_lat = <%= lat %> ;
     var map_lon = <%= lon %> ;
 
-    // setupFullScreen(map<= unique_id >  , map_lat , map_lon) ;
-    setupLEL(map<%= unique_id %> ) ;
+     window.setTimeout(function(){
 
-    function onMapLoad(e){
-      var lat = <%= '%.2f' % lat.to_f %> ; // ensure format 0.00 (two decimal places)
-      var lon = <%= '%.2f' % lon.to_f %> ;
-      var s = lat+","+lon ;
-      var map_tagname ;
+        map<%= unique_id %>.setZoom(<%= lat.to_s.length.to_i %> + 6) ; 
+    
+     }, 3500);
 
-        <% if (defined? tagname != nil and tagname.nil? == false) %>
+    setupLEL(map<%= unique_id %> , 0) ;
+
+    map<%= unique_id %>.on('zoomend' , function () {
+       var NWlat = map<%= unique_id %>.getBounds().getNorthWest().lat ;
+       var NWlng = map<%= unique_id %>.getBounds().getNorthWest().lng ;
+       var SElat = map<%= unique_id %>.getBounds().getSouthEast().lat ;
+       var SElng = map<%= unique_id %>.getBounds().getSouthEast().lng ;
+
+       map<%= unique_id %>.spin(true) ;
+       map_tagname = null ;
+       <% if (defined? tagname != nil and tagname.nil? == false) %>
           map_tagname = "<%= tagname %>" ;
-        <% end %>
+       <% end %>
 
-      if(map_tagname == null) {
-          $.getJSON("/api/srch/taglocations?query=" + s, function (data) {
-              if (!!data.items) {
-                  for (i = 0; i < data.items.length; i++) {
-                      var url = data.items[i].doc_url;
-                      var title = data.items[i].doc_title;
-                      var default_url = PLmarker_default();
-                      L.marker([data.items[i].latitude, data.items[i].longitude], {icon: default_url}).addTo(map<%= unique_id %>).bindPopup("<a href=" + url + ">" + title + "</a>");
-                  }
-              }
-          });
-      }
-      else{
-          $.getJSON("/api/srch/taglocations?query=" + s + "&tag=" + map_tagname, function (data) {
-              if (!!data.items) {
-                  for (i = 0; i < data.items.length; i++) {
-                      var url = data.items[i].doc_url;
-                      var title = data.items[i].doc_title;
-                      var default_url = PLmarker_default();
-                      L.marker([data.items[i].latitude, data.items[i].longitude], {icon: default_url}).addTo(map<%= unique_id %>).bindPopup("<a href=" + url + ">" + title + "</a>");
-                  }
-              }
-          });
-      }
+       if(map_tagname == null) {
+        taglocation_url = "/api/srch/taglocations?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng ; 
+       
+       } else { 
+        taglocation_url = "/api/srch/taglocations?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng + "&tag=" + map_tagname ;
+       }
 
-    }
+       $.getJSON(taglocation_url , function (data) {
+           var layerGroup = L.layerGroup();
+
+           if (!!data.items) {
+               for (i = 0; i < data.items.length; i++) {
+                   var url = data.items[i].doc_url;
+                   var title = data.items[i].doc_title;
+                   var default_url = PLmarker_default();
+                   var mid = data.items[i].doc_id ;
+                   var m = L.marker([data.items[i].latitude, data.items[i].longitude], {icon: default_url}).addTo(map<%= unique_id %>).bindPopup("<a href=" + url + ">" + title + "</a>") ;
+
+                   if(markers_hash<%= unique_id %>.has(mid) === false){
+                       m.addTo(map<%= unique_id %>).bindPopup("<a href=" + url + ">" + title + "</a>") ;
+                       markers_hash<%= unique_id %>.set(mid , m) ;
+                   }
+
+               }
+           }
+           map<%= unique_id %>.spin(false) ;
+       });
+
+   }) ;
+
+   map<%= unique_id %>.on('moveend' , function () {
+       var NWlat = map<%= unique_id %>.getBounds().getNorthWest().lat ;
+       var NWlng = map<%= unique_id %>.getBounds().getNorthWest().lng ;
+       var SElat = map<%= unique_id %>.getBounds().getSouthEast().lat ;
+       var SElng = map<%= unique_id %>.getBounds().getSouthEast().lng ;
+
+       map<%= unique_id %>.spin(true) ;
+       map_tagname = null ;
+       <% if (defined? tagname != nil and tagname.nil? == false) %>
+          map_tagname = "<%= tagname %>" ;
+       <% end %>
+
+        if(map_tagname == null) {
+        taglocation_url = "/api/srch/taglocations?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng ; 
+       
+       } else { 
+        taglocation_url = "/api/srch/taglocations?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng + "&tag=" + map_tagname ;
+       }
+
+         $.getJSON(taglocation_url , function (data) {
+           var layerGroup = L.layerGroup();
+
+           if (!!data.items) {
+               for (i = 0; i < data.items.length; i++) {
+                   var url = data.items[i].doc_url;
+                   var title = data.items[i].doc_title;
+                   var default_url = PLmarker_default();
+                   var mid = data.items[i].doc_id ;
+                   var m = L.marker([data.items[i].latitude, data.items[i].longitude], {icon: default_url}).addTo(map<%= unique_id %>).bindPopup("<a href=" + url + ">" + title + "</a>") ;
+
+                   if(markers_hash<%= unique_id %>.has(mid) === false){
+                       m.addTo(map<%= unique_id %>).bindPopup("<a href=" + url + ">" + title + "</a>") ;
+                       markers_hash<%= unique_id %>.set(mid , m) ;
+                   }
+
+               }
+           }
+           map<%= unique_id %>.spin(false) ;
+       });
+   }) ;
+
+
   </script>
