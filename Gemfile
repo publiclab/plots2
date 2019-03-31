@@ -99,7 +99,6 @@ group :development do
 end
 
 group :test, :development do
-  gem 'puma', '~> 3.12'
   gem 'capybara'
   gem 'ci_reporter_test_unit'
   gem 'coveralls', require: false
@@ -109,6 +108,7 @@ group :test, :development do
   gem 'minitest-reporters', '~> 1.3.6'
   gem 'openssl', '~> 2.1.2'
   gem 'phantomjs'
+  gem 'puma', '~> 3.12'
   gem 'rails-perftest'
   gem 'rake',  '~> 12.3.2'
   gem 'rest-client'
