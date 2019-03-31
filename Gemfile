@@ -70,7 +70,6 @@ gem 'mailman', require: false
 
 # To convert html to markdown
 gem 'reverse_markdown'
-# gem 'mysql2', '>= 0.4.4'
 
 gem 'twitter'
 
