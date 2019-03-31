@@ -85,7 +85,11 @@ For information on how to install for use with the cloud environment, please see
 1. Fork our repo from https://github.com/publiclab/plots2.
 2. In the console, download a copy of your forked repo with `git clone https://github.com/your_username/plots2.git` where `your_username` is your GitHub username.
 3. Enter the new **plots2** directory with `cd plots2`.
-4. Install gems with `bundle install --without production mysql` from the rails root folder, to install the gems you'll need, excluding those needed only in production. You may need to first run `bundle update` if you have older gems in your environment from previous Rails work.
+4. Steps to install gems:
+    * You may need to first run `bundle install` if you have older gems in your environment from previous Rails work. If you get an error message like `Your Ruby version is 2.x.x, but your Gemfile specified 2.4.4` then you need to install the ruby version 2.4.4 using `rvm` or `rbenv`.
+	    * Using **rvm**: `rvm install 2.4.4` followed by `rvm use 2.4.4`
+	    * Using **rbenv**:  `rbenv install 2.4.4` followed by `rbenv local 2.4.4`
+    * Install gems with `bundle install --without production mysql` from the rails root folder, to install the gems you'll need, excluding those needed only in production.
 5. Make a copy of `db/schema.rb.example` and place it at `db/schema.rb`.
 6. Make a copy of `config/database.yml.sqlite.example` and place it at `config/database.yml`
 7. Run `rake db:setup` to set up the database
