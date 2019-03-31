@@ -20,13 +20,13 @@
   <div class="alert alert-warning">
     <a href="/profile/<%= @node.author.name %>"> <%= @node.author.name %> </a>
     is asking a question about <b><%= pt %></b>:
-    <a class="btn btn-default" target="_blank" href="/subscribe/tag/question:<%= pt %>">
+    <a class="btn btn-default requireLogin" target="_blank" href="/subscribe/tag/question:<%= pt %>">
       Subscribe to answer questions on this topic
     </a>
   </div>
   <div class="inline">
-  <% if @node.author.user && @node.author.user.photo_file_name %>
-    <img class="img-circle" src="<%= @node.author.user.photo_path(:thumb) %>" />
+  <% if @node.author && @node.author.photo_file_name %>
+    <img class="img-circle" src="<%= @node.author.photo_path(:thumb) %>" />
    <% else %>
     <div class="img-circle"></div>
   <% end %>
@@ -48,10 +48,15 @@
 
   <hr />
 
-  <h3><span id="answer-0-comment-count"><%= @node.comments.length %></span> Comments</h3>
-    <% @node.comments.order("timestamp ASC").each do |comment| %>
-      <%= render :partial => "notes/comment", :locals => {:comment => comment} %>
-    <% end %>
+  <% comments = @node.fetch_comments(current_user) %>
+  <h3><span id="comment-count"><%= comments.length %></span> Comments</h3>
+    <div id="comments-list">
+      <% comments.includes(:replied_comments).order("timestamp ASC").each do |comment| %>
+        <% if comment.reply_to.nil? %>
+          <%= render :partial => "notes/comment", :locals => {:comment => comment} %>
+        <% end %>
+      <% end %>
+    </div>
     <div id="answer-0-comment" style="margin-top: 30px;">
       <div id="answer-0-comment-section">
       <% if current_user %>
@@ -59,13 +64,10 @@
             <%= render :partial => "comments/form", :locals => { title: "Post Comment", comment: false, placeholder: "Help the author refine their post, or point them at other helpful information on the site. Mention users by @username to notify them of this thread by email", type: "question" } %>
         </div>
       <% else %>
-        <p><%= link_to "Log in", new_user_session_path( return_to: request.path )%> to comment</p>
+        <p><a data-toggle="modal" data-target="#loginModal">Log in</a> to comment</p>
       <% end %>
       </div>
   </div>
-
-  <%= render :partial => "questions/answers" %>
-
 </div>
 
 <%= render :partial => "sidebar/question" %>

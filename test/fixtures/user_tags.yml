@@ -80,11 +80,36 @@ notify-comment-indirect:
   uid: 8
   value: notify-comment-indirect:false
 
-twitter3:
+latitude2:
   id: 17
+  uid: 16
+  value: lat:31.0
+
+longitude2:
+  id: 18
+  uid: 16
+  value: lon:40.0
+
+latitude3:
+  id: 19
+  uid: 17
+  value: lat:31.0
+
+longitude3:
+  id: 20
+  uid: 17
+  value: lon:40.0
+
+awesome:
+  id: 21
+  uid: 17
+  value: awesome
+  
+twitter3:
+  id: 22
   uid: 11
   value: oauth:twitter:849503183529545728
-  data: 
+  data:
     provider: twitter
     uid: '849503183529545728'
     info:
@@ -112,84 +137,84 @@ twitter3:
             :request_token_path: "/oauth/request_token"
             :authorize_path: "/oauth/authenticate"
             :access_token_path: "/oauth/access_token"
-            :proxy: 
+            :proxy:
             :scheme: :header
             :http_method: :post
-            :debug_output: 
+            :debug_output:
             :oauth_version: '1.0'
             :site: https://api.twitter.com
-          debug_output: 
+          debug_output:
           http: !ruby/object:Net::HTTP
             address: api.twitter.com
             port: 443
-            local_host: 
-            local_port: 
+            local_host:
+            local_port:
             curr_http_version: '1.1'
             keep_alive_timeout: 2
-            last_communicated: 
+            last_communicated:
             close_on_empty_response: false
-            socket: 
+            socket:
             started: false
             open_timeout: 30
             read_timeout: 30
-            continue_timeout: 
-            debug_output: 
+            continue_timeout:
+            debug_output:
             proxy_from_env: true
-            proxy_uri: 
-            proxy_address: 
-            proxy_port: 
-            proxy_user: 
-            proxy_pass: 
+            proxy_uri:
+            proxy_address:
+            proxy_port:
+            proxy_user:
+            proxy_pass:
             use_ssl: true
             ssl_context: !ruby/object:OpenSSL::SSL::SSLContext
-              cert: 
-              key: 
-              client_ca: 
-              ca_file: 
-              ca_path: 
-              timeout: 
+              cert:
+              key:
+              client_ca:
+              ca_file:
+              ca_path:
+              timeout:
               verify_mode: 0
-              verify_depth: 
-              renegotiation_cb: 
-              verify_callback: 
-              cert_store: 
-              extra_chain_cert: 
-              client_cert_cb: 
-              session_id_context: 
-              tmp_dh_callback: 
-              session_get_cb: 
-              session_new_cb: 
-              session_remove_cb: 
-              tmp_ecdh_callback: 
-              servername_cb: 
-              npn_protocols: 
-              alpn_protocols: 
-              alpn_select_cb: 
-              npn_select_cb: 
+              verify_depth:
+              renegotiation_cb:
+              verify_callback:
+              cert_store:
+              extra_chain_cert:
+              client_cert_cb:
+              session_id_context:
+              tmp_dh_callback:
+              session_get_cb:
+              session_new_cb:
+              session_remove_cb:
+              tmp_ecdh_callback:
+              servername_cb:
+              npn_protocols:
+              alpn_protocols:
+              alpn_select_cb:
+              npn_select_cb:
             ssl_session: !ruby/object:OpenSSL::SSL::Session {}
             sspi_enabled: false
-            ca_file: 
-            ca_path: 
-            cert: 
-            cert_store: 
-            ciphers: 
-            key: 
-            ssl_timeout: 
-            ssl_version: 
-            verify_callback: 
-            verify_depth: 
+            ca_file:
+            ca_path:
+            cert:
+            cert_store:
+            ciphers:
+            key:
+            ssl_timeout:
+            ssl_version:
+            verify_callback:
+            verify_depth:
             verify_mode: 0
           http_method: :post
           uri: !ruby/object:URI::HTTPS
             scheme: https
-            user: 
-            password: 
+            user:
+            password:
             host: api.twitter.com
             port: 443
             path: ''
-            query: 
-            opaque: 
-            fragment: 
+            query:
+            opaque:
+            fragment:
             parser: !ruby/object:URI::RFC3986_Parser
               regexp:
                 :SCHEME: !ruby/regexp /\A[A-Za-z][A-Za-z0-9+\-.]*\z/
@@ -273,9 +298,9 @@ twitter3:
             @PublicLab","url":"https:\/\/t.co\/fqLSxIlYFH","entities":{"url":{"urls":[{"url":"https:\/\/t.co\/fqLSxIlYFH","expanded_url":"http:\/\/www.namangupta.me","display_url":"namangupta.me","indices":[0,23]}]},"description":{"urls":[]}},"protected":false,"followers_count":16,"friends_count":32,"listed_count":0,"created_at":"Wed
             Apr 05 06:05:16 +0000 2017","favourites_count":86,"utc_offset":null,"time_zone":null,"geo_enabled":false,"verified":false,"statuses_count":43,"lang":"en","contributors_enabled":false,"is_translator":false,"is_translation_enabled":false,"profile_background_color":"000000","profile_background_image_url":"http:\/\/abs.twimg.com\/images\/themes\/theme1\/bg.png","profile_background_image_url_https":"https:\/\/abs.twimg.com\/images\/themes\/theme1\/bg.png","profile_background_tile":false,"profile_image_url":"http:\/\/pbs.twimg.com\/profile_images\/950001110378401793\/mBAtBXyI_normal.jpg","profile_image_url_https":"https:\/\/pbs.twimg.com\/profile_images\/950001110378401793\/mBAtBXyI_normal.jpg","profile_link_color":"FFFFFF","profile_sidebar_border_color":"000000","profile_sidebar_fill_color":"000000","profile_text_color":"000000","profile_use_background_image":false,"has_extended_profile":true,"default_profile":false,"default_profile_image":false,"following":false,"follow_request_sent":false,"notifications":false,"translator_type":"none","suspended":false,"needs_phone_verification":false,"email":"01namangupta@gmail.com"}'
           read: true
-          uri: 
+          uri:
           decode_content: true
-          socket: 
+          socket:
           body_exist: true
       raw_info:
         id: 849503183529545728
@@ -302,8 +327,8 @@ twitter3:
         listed_count: 0
         created_at: Wed Apr 05 06:05:16 +0000 2017
         favourites_count: 86
-        utc_offset: 
-        time_zone: 
+        utc_offset:
+        time_zone:
         geo_enabled: false
         verified: false
         statuses_count: 43
@@ -332,4 +357,3 @@ twitter3:
         suspended: false
         needs_phone_verification: false
         email: 01namangupta@gmail.com
-

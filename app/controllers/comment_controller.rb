@@ -5,8 +5,16 @@ class CommentController < ApplicationController
   before_action :require_user, only: %i(create update make_answer delete)
 
   def index
-    @comments = Comment.paginate(page: params[:page], per_page: 30)
-      .order('timestamp DESC')
+    comments = Comment.joins(:node, :user)
+                   .order('timestamp DESC')
+                   .where('node.status = ?', 1)
+                   .paginate(page: params[:page], per_page: 30)
+
+    @normal_comments = comments.where('comments.status = 1')
+    if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+      @moderated_comments = comments.where('comments.status = 4')
+    end
+
     render template: 'comments/index'
   end
 
@@ -18,23 +26,28 @@ class CommentController < ApplicationController
     @user = current_user
     begin
       @comment = create_comment(@node, @user, @body)
-      respond_with do |format|
-        if params[:type] && params[:type] == 'question'
-          @answer_id = 0
-          format.js
-        else
-          format.html do
-            if request.xhr?
-              render partial: 'notes/comment', locals: { comment: @comment }
-            else
-              tagnames = @node.tagnames.map do |tagname|
-                "<a href='/subscribe/tag/#{tagname}'>#{tagname}</a>"
-              end
-              tagnames = tagnames.join(', ')
-              tagnames = " Click to subscribe to updates on these tags or topics: " + tagnames unless tagnames.empty?
-              flash[:notice] = "Comment posted.#{tagnames}"
-              redirect_to @node.path + '#last' # to last comment
+
+      if params[:reply_to].present?
+        @comment.reply_to = params[:reply_to].to_i
+        @comment.save
+      end
+
+      respond_to do |format|
+        @answer_id = 0
+        format.js do
+          render 'comments/create'
+        end
+        format.html do
+          if request.xhr?
+            render partial: 'notes/comment', locals: { comment: @comment }
+          else
+            tagnames = @node.tagnames.map do |tagname|
+              "<a href='/subscribe/tag/#{tagname}'>#{tagname}</a>"
             end
+            tagnames = tagnames.join(', ')
+            tagnames = " Click to subscribe to updates on these tags or topics: " + tagnames unless tagnames.empty?
+            flash[:notice] = "Comment posted.#{tagnames}"
+            redirect_to @node.path + '#last' # to last comment
           end
         end
       end
@@ -83,8 +96,8 @@ class CommentController < ApplicationController
     if @comment.save
       @comment.answer_comment_notify(current_user)
       respond_to do |format|
-        format.js { render template: 'comment/create' }
-        format.html { render template: 'comment/create.html' }
+        format.js { render template: 'comments/create' }
+        format.html { render template: 'comments/create.html' }
       end
     else
       flash[:error] = 'The comment could not be saved.'
@@ -123,11 +136,11 @@ class CommentController < ApplicationController
        current_user.role == 'admin' ||
        current_user.role == 'moderator'
 
-      if @comment.delete
+      if @comment.destroy
         respond_with do |format|
           if params[:type] && params[:type] == 'question'
             @answer_id = @comment.aid
-            format.js
+            format.js { render 'comments/delete.js.erb' }
           else
             format.html do
               if request.xhr?
@@ -169,7 +182,7 @@ class CommentController < ApplicationController
       if @answer.save && @comment.delete
         @answer_id = @comment.aid
         respond_with do |format|
-          format.js { render template: 'comment/make_answer' }
+          format.js { render template: 'comments/make_answer' }
         end
       else
         flash[:error] = 'The comment could not be promoted to answer.'
@@ -196,7 +209,7 @@ class CommentController < ApplicationController
     @likes = comment.likes.group(:emoji_type).count
     respond_with do |format|
       format.js do
-        render template: 'comment/like_comment'
+        render template: 'comments/like_comment'
       end
     end
   end

@@ -27,6 +27,14 @@
       <% end %>
     </p>
  
+    <div class='activity-comment' id='i-did-this' style='display: none'>
+      <% if current_user %>
+        <%= render :partial => "comments/form", :locals => { title: 'Add feedback, suggestions, or photos
+          ', body: 'I did this!', comment: false, placeholder: '' } %>
+      <% else %>
+        <p><%= raw t('notes._comments.must_be_logged_in', :url1 => new_user_session_path( return_to: request.path )) %></p>
+      <% end %>
+    </div>
     <hr />
  
     <h3><%= t("notes._responses.#{response_type}s") %> (<%= @responses.length %>)</h3>

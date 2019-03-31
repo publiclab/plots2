@@ -1,5 +1,5 @@
 class SearchController < ApplicationController
-  before_action :set_search_criteria, :except => %i(notes wikis)
+  before_action :set_search_criteria, except: %i(notes wikis)
 
   def new; end
 
@@ -16,6 +16,7 @@ class SearchController < ApplicationController
   def profiles
     @search_criteria.sort_by = "recent"
     @profiles = ExecuteSearch.new.by(:profiles, @search_criteria).paginate(page: params[:page], per_page: 20)
+    @tag_profiles = SearchService.new.find_users(params[:query], 15, 'tag').paginate(page: params[:page], per_page: 20)
   end
 
   def questions
@@ -29,6 +30,15 @@ class SearchController < ApplicationController
 
   def tags
     @tags = ExecuteSearch.new.by(:tags, @search_criteria).paginate(page: params[:page], per_page: 20)
+  end
+
+  def all_content
+    @nodes = ExecuteSearch.new.by(:all, @search_criteria)
+    @wikis = wikis
+    @notes = notes
+    @profiles = @nodes[:profiles]
+    @questions = @nodes[:questions]
+    @tags = @nodes[:tags]
   end
 
   private

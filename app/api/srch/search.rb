@@ -7,6 +7,8 @@ module Srch
     # see /app/api/srch/shared_params.rb
     helpers SharedParams
 
+    include Grape::Rails::Cache
+
     # Endpoint definitions
     # Basic implementation from classic plots2 SearchController
     resource :srch do
@@ -18,7 +20,7 @@ module Srch
         use :common
       end
       get :all do
-        search_request = SearchRequest.fromRequest(params)
+        search_request = SearchRequest.from_request(params)
         results = Search.execute(:all, params)
         results_list = []
 
@@ -91,20 +93,22 @@ module Srch
         use :common, :sorting, :ordering, :field
       end
       get :profiles do
-        search_request = SearchRequest.fromRequest(params)
-        results = Search.execute(:profiles, params)
+        search_request = SearchRequest.from_request(params)
+        cache(key: "api:profiles:#{params[:query]}:#{params[:limit]}:#{params[:sort_by]}:#{params[:order_direction]}:#{params[:field]}", expires_in: 2.day) do
+          results = Search.execute(:profiles, params)
 
-        if results.present?
-          docs = results.map do |model|
-            DocResult.new(
-              doc_type: 'USERS',
-              doc_url: '/profile/' + model.name,
-              doc_title: model.username
-            )
+          if results.present?
+            docs = results.map do |model|
+              DocResult.new(
+                doc_type: 'USERS',
+                doc_url: '/profile/' + model.name,
+                doc_title: model.username
+              )
+            end
+            DocList.new(docs, search_request)
+          else
+            DocList.new('', search_request)
           end
-          DocList.new(docs, search_request)
-        else
-          DocList.new('', search_request)
         end
       end
 
@@ -117,7 +121,7 @@ module Srch
         use :common
       end
       get :notes do
-        search_request = SearchRequest.fromRequest(params)
+        search_request = SearchRequest.from_request(params)
         results = Search.execute(:notes, params)
 
         if results.present?
@@ -145,7 +149,7 @@ module Srch
         use :common
       end
       get :wikis do
-        search_request = SearchRequest.fromRequest(params)
+        search_request = SearchRequest.from_request(params)
         results = Search.execute(:wikis, params)
 
         if results.present?
@@ -170,10 +174,10 @@ module Srch
                                                    nickname: 'search_questions'
 
       params do
-        use :common
+        use :common, :sorting, :ordering
       end
       get :questions do
-        search_request = SearchRequest.fromRequest(params)
+        search_request = SearchRequest.from_request(params)
         results = Search.execute(:questions, params)
 
         if results.present?
@@ -202,7 +206,7 @@ module Srch
         use :common
       end
       get :tags do
-        search_request = SearchRequest.fromRequest(params)
+        search_request = SearchRequest.from_request(params)
         results = Search.execute(:tags, params)
 
         if results.present?
@@ -221,17 +225,17 @@ module Srch
         end
       end
 
-      # Request URL should be /api/srch/taglocations?query=QRY[&tag=awesome]
+      # Request URL should be /api/srch/taglocations?nwlat=200.0&selat=0.0&nwlng=0.0&selng=200.0[&tag=awesome]
       # Note: Query(QRY as above) must have latitude and longitude as query=lat,lon
       desc 'Perform a search of documents having nearby latitude and longitude tag values', hidden: false,
                                                                                             is_array: false,
                                                                                             nickname: 'search_tag_locations'
 
       params do
-        use :common, :additional
+        use :geographical, :additional, :period, :sorting, :ordering
       end
       get :taglocations do
-        search_request = SearchRequest.fromRequest(params)
+        search_request = SearchRequest.from_request(params)
         results = Search.execute(:taglocations, params)
 
         if results.present?
@@ -253,19 +257,17 @@ module Srch
         end
       end
 
-      # API TO FETCH QRY RECENT CONTRIBUTORS
-      # Request URL should be /api/srch/peoplelocations?query=QRY[&tag=group:partsandcrafts]
-      # QRY should be a number
-      desc 'Perform a search to show x Recent People',  hidden: false,
-                                                        is_array: false,
-                                                        nickname: 'search_people_locations'
-
+      # Request URL should be /api/srch/nearbyPeople?nwlat=200.0&selat=0.0&nwlng=0.0&selng=200.0[&tag=awesome&sort_by=recent]
+      # Note: Query(QRY as above) must have latitude and longitude as query=lat,lon
+      desc 'Perform a search to show people nearby a given location',  hidden: false,
+                                                                       is_array: false,
+                                                                       nickname: 'search_nearby_people'
       params do
-        use :common, :additional
+        use :geographical, :additional, :field, :period, :sorting, :ordering
       end
-      get :peoplelocations do
-        search_request = SearchRequest.fromRequest(params)
-        results = Search.execute(:peoplelocations, params)
+      get :nearbyPeople do
+        search_request = SearchRequest.from_request(params)
+        results = Search.execute(:nearbyPeople, params)
 
         if results.present?
           docs = results.map do |model|
@@ -279,7 +281,6 @@ module Srch
               blurred: model.blurred?
             )
           end
-
           DocList.new(docs, search_request)
         else
           DocList.new('', search_request)
@@ -295,7 +296,7 @@ module Srch
         use :common
       end
       get :places do
-        search_request = SearchRequest.fromRequest(params)
+        search_request = SearchRequest.from_request(params)
         results = Search.execute(:places, params)
 
         if results.present?
@@ -318,7 +319,7 @@ module Srch
     def self.execute(endpoint, params)
       search_type = endpoint
       search_criteria = SearchCriteria.new(params)
-
+      search_criteria.validate_period_from_to
       if search_criteria.valid?
         ExecuteSearch.new.by(search_type, search_criteria)
       else

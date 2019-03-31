@@ -1,9 +1,9 @@
-.popover{
-	z-index: 1;
-}
 .popover-title {
-    color: #333;
-    font-size: 14px;
-    text-align: center;
-    font-weight: bold;
+  color: #333;
+  text-align: center;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+.popover-content {
+  padding: 9px 14px;
 }

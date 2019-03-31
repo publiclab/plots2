@@ -1,5 +1,5 @@
 <button type="button" class="btn btn-default dropdown-toggle" id="pt-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i></button>
-<ul class="dropdown-menu" id="pt-list">
+<ul class="dropdown-menu pull-right" style="margin-top:5px;" id="pt-list">
   <% if current_user %>
     <li class="dropdown-header">Recently used tags</li>
     <% NodeTag.where(uid: current_user.id).order('date DESC').limit(5).each do |tag| %>
@@ -8,7 +8,7 @@
   <% end %>
   <li role="separator" class="divider"></li>
   <% if @node && @node.type == "page" %>
-    <li><a href="#" data-value="parent:"></a>Link to a "parent" page (wikis only)</li>
+    <li><a href="#" data-value="parent:">Link to a "parent" page (wikis only)</a></li>
     <li><a href="#" data-value="style:">Add style</a></li>
     <li><a href="#" data-value="lang:">Add Translation widget</a></li>
   <% else %>
@@ -16,9 +16,11 @@
     <li><a href="#" data-value="hidden:response">Hide responses from dashboard</a></li>
     <li><a href="#" data-value="with:">Add Coauthor (notes only)</a></li>
     <li><a href="#" data-value="series:">Mark as part of a series</a></li>
+    <li><a href="#" data-value="comment-template:">Add template to the comment form</a></li>
+    <li><a target="_blank" href="/wiki/comment-templates">Write a template for the comment form</a></li>
   <% end %>
   <li role="separator" class="divider"></li>
-  <li><a href="https://publiclab.org/wiki/power-tags" target="_blank">Learn About Powertags</a></li>
+  <li><a href="https://publiclab.org/power-tags" target="_blank">Learn About Powertags</a></li>
 </ul>
 
 <script type="text/javascript">
@@ -26,45 +28,12 @@
   $(document).ready(function(){
 
     $( "#pt-list > li " ).each(function() {
-        $( this ).click(function(event){
-
-          var val = $(event.target).attr('data-value');
-
-          switch(val){
-
-            case "series:":
-              var input = prompt("Enter a unique tag to link your series together, using dashes; it will be displayed with a message like 'This is part of a series on monitoring-landfills'");
-              if (input != null) addTag(val + input);
-              break;
-
-            case "lang:":
-              var input = prompt("Enter the language code; for example, for Spanish, enter 'es'", 'es');
-              if (input != null) addTag(val + input);
-              break;
-
-            case "parent:":
-              var input = prompt("Enter the end of the URL for another wiki page; for example, for '/wiki/stormwater', enter 'stormwater'");
-              if (input != null) addTag(val + input);
-              break;
-
-            case "style:":
-              var input = prompt("What kind of style? (minimal, fancy, presentation, wide, nobanner)", "minimal");
-              if (input != null) addTag(val + input);
-              break;
-
-            case "with:":
-              var input = prompt("Who would you like to add as a coauthor?", "Username");
-              if (input != null) addTag(val + input);
-              break;
-
-            default:
-              addTag(expr);
-              break;
-
-          }
-
-        });
+      $( this ).click(function(event){
+        var val = $(event.target).attr('data-value');
+        promptTag(val);
+      });
     });
+    
   });
-
+  
 </script>

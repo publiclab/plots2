@@ -1,7 +1,9 @@
 <div class="col-md-3">
 
+<% user = user || @user # allow overriding w/ local variable %>
+
 <% if @wikis && @wikis.length > 0 %>
-  <h3 style="margin-top:0;"><%= t('users.likes.wiki_liked_by') %> <a href="/profile/<%= @user.name %>"><%= @user.name %></a></h3>
+  <h3 style="margin-top:0;"><%= t('users.likes.wiki_liked_by') %> <a href="/profile/<%= user.name %>"><%= user.name %></a></h3>
 
   <ul class="nav bullet">
     <% @wikis.each do |wiki| %>
@@ -18,7 +20,7 @@
 </div>
 
 <div class="col-md-9">
-  <h3 style="margin-top:0;"><i class="fa fa-star-o"></i> <%= t('users.likes.liked_by') %> <a href="/profile/<%= @user.name %>"><%= @user.name %></a></h3>
+  <h3 style="margin-top:0;"><i class="fa fa-star-o"></i> <%= t('users.likes.liked_by') %> <a href="/profile/<%= user.name %>"><%= user.name %></a></h3>
 
   <hr />
 

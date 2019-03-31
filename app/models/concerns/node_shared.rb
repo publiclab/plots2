@@ -8,10 +8,56 @@ module NodeShared
   def liked_by(uid)
     likers.collect(&:uid).include?(uid)
   end
+  
+  def self.button(body)
+    body.gsub(/(?<![\>`])(\<p\>)?\[button\:(.+)\:(\S+)\]/) do |_tagname|
+      btnText = Regexp.last_match(2)
+      btnHref = Regexp.last_match(3)
+      return '<a class="btn btn-primary inline-button-shortcode" href="' + btnHref + '">' + btnText + '</a>'
+    end
+  end
+
+  def self.notes_thumbnail_grid(body, _page = 1)
+    body.gsub(/(?<![\>`])(\<p\>)?\[notes\:grid\:(\S+)\]/) do |_tagname|
+      tagname = Regexp.last_match(2)
+      exclude = nil
+      if tagname.include?('!')
+        exclude = tagname.split('!') - [tagname.split('!').first]
+        tagname = tagname.split('!').first
+      end
+
+      nodes = Node.where(status: 1, type: 'note')
+                  .includes(:revision, :tag)
+                  .references(:term_data, :node_revisions)
+                  .where('term_data.name = ?', tagname)
+                  .order('node_revisions.timestamp DESC')
+
+      if exclude.present?
+        exclude = Node.where(status: 1, type: 'note')
+                  .includes(:revision, :tag)
+                  .references(:node_revisions, :term_data)
+                  .where('term_data.name IN (?)', exclude)
+        nodes -= exclude
+      end
+      output = ''
+      output += '<p>' if Regexp.last_match(1) == '<p>'
+      a = ActionController::Base.new
+      output += a.render_to_string(template: "grids/_thumbnail",
+                                   layout:   false,
+                                   locals:   {
+                                     tagname: tagname,
+                                     randomSeed: rand(1000).to_s,
+                                     className: 'notes-grid-thumbnail' + tagname.parameterize,
+                                     nodes: nodes,
+                                     type: "notes"
+                                   })
+      output
+    end
+  end
 
   # rubular regex: http://rubular.com/r/hBEThNL4qd
   def self.graph_grid(body, _page = 1)
-    body.gsub(/[^\>`](\<p\>)?\[graph\:(\S+)\]/) do |_tagname|
+    body.gsub(/(?<![\>`])(\<p\>)?\[graph\:(\S+)\]/) do |_tagname|
       url = Regexp.last_match(2)
       a = ActionController::Base.new
       randomSeed = rand(1000).to_s
@@ -29,7 +75,7 @@ module NodeShared
 
   # rubular regex: http://rubular.com/r/hBEThNL4qd
   def self.notes_grid(body, _page = 1)
-    body.gsub(/[^\>`](\<p\>)?\[notes\:(\S+)\]/) do |_tagname|
+    body.gsub(/(?<![\>`])(\<p\>)?\[notes\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       exclude = nil
       if tagname.include?('!')
@@ -66,9 +112,47 @@ module NodeShared
     end
   end
 
+  def self.nodes_grid(body, _page = 1)
+    body.gsub(/(?<![\>`])(\<p\>)?\[nodes\:(\S+)\]/) do |_tagname|
+      tagname = Regexp.last_match(2)
+      exclude = nil
+      if tagname.include?('!')
+        exclude = tagname.split('!') - [tagname.split('!').first]
+        tagname = tagname.split('!').first
+      end
+
+      nodes = Node.where(status: 1).where("node.type = 'page' OR node.type = 'note'")
+                  .includes(:revision, :tag)
+                  .references(:term_data, :node_revisions)
+                  .where('term_data.name = ?', tagname)
+                  .order('node_revisions.timestamp DESC')
+
+      if exclude.present?
+        exclude = Node.where(status: 1)
+                  .includes(:revision, :tag)
+                  .references(:node_revisions, :term_data)
+                  .where('term_data.name IN (?)', exclude)
+        nodes -= exclude
+      end
+      output = ''
+      output += '<p>' if Regexp.last_match(1) == '<p>'
+      a = ActionController::Base.new
+      output += a.render_to_string(template: "grids/_nodes",
+                                   layout:   false,
+                                   locals:   {
+                                     tagname: tagname,
+                                     randomSeed: rand(1000).to_s,
+                                     className: 'nodes-grid-' + tagname.parameterize,
+                                     nodes: nodes,
+                                     type: "nodes"
+                                   })
+      output
+    end
+  end
+
   # rubular regex: http://rubular.com/r/hBEThNL4qd
   def self.questions_grid(body, _page = 1)
-    body.gsub(/[^\>`](\<p\>)?\[questions\:(\S+)\]/) do |_tagname|
+    body.gsub(/(?<![\>`])(\<p\>)?\[questions\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       exclude = nil
       if tagname.include?('!')
@@ -104,7 +188,7 @@ module NodeShared
   end
 
   def self.activities_grid(body)
-    body.gsub(/[^\>`](\<p\>)?\[activities\:(\S+)\]/) do |_tagname|
+    body.gsub(/(?<![\>`])(\<p\>)?\[activities\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       exclude = nil
       if tagname.include?('!')
@@ -137,7 +221,7 @@ module NodeShared
   end
 
   def self.upgrades_grid(body)
-    body.gsub(/[^\>`](\<p\>)?\[upgrades\:(\S+)\]/) do |_tagname|
+    body.gsub(/(?<![\>`])(\<p\>)?\[upgrades\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       exclude = nil
       if tagname.include?('!')
@@ -172,45 +256,34 @@ module NodeShared
 
   # Blank map loaded only , markers will be loaded using API call .
   def self.notes_map(body)
-    body.gsub(/[^\>`](\<p\>)?\[map\:content\:(\S+)\:(\S+)\]/) do |_tagname|
+    body.gsub(/(?<![\>`])(\<p\>)?\[map\:content\:(\S+)\:(\S+)\]/) do |_tagname|
       lat = Regexp.last_match(2)
       lon = Regexp.last_match(3)
+      tagname = nil
       a = ActionController::Base.new
       output = a.render_to_string(template: "map/_leaflet",
                                   layout:   false,
                                   locals:   {
-                                    lat:   lat,
-                                    lon:   lon
+                                    lat: lat,
+                                    lon: lon,
+                                    tagname: tagname
                                   })
       output
     end
   end
 
   def self.notes_map_by_tag(body)
-    body.gsub(/[^\>`](\<p\>)?\[map\:tag\:(\S+)\:(\S+)\:(\S+)\]/) do |_tagname|
+    body.gsub(/(?<![\>`])(\<p\>)?\[map\:tag\:(\S+)\:(\S+)\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       lat = Regexp.last_match(3)
       lon = Regexp.last_match(4)
-      nids = NodeTag.joins(:tag)
-                                   .where('term_data.name = ?', tagname)
-                                   .collect(&:nid)
-      nids = NodeTag.joins(:tag)
-                                   .where(nid: nids)
-                                   .where('name LIKE ?', 'lat:' + lat[0..lat.length - 2] + '%')
-                                   .collect(&:nid)
-      nids ||= []
-      items = Node.includes(:tag)
-                  .references(:node, :term_data)
-                  .where('node.nid IN (?) AND term_data.name LIKE ?', nids, 'lon:' + lon[0..lon.length - 2] + '%')
-                  .limit(200)
-                  .order('node.nid DESC')
       a = ActionController::Base.new
       output = a.render_to_string(template: "map/_leaflet",
                                   layout:   false,
                                   locals:   {
-                                    lat:   lat,
-                                    lon:   lon,
-                                    items: items
+                                    lat: lat,
+                                    lon: lon,
+                                    tagname: tagname.to_s
                                   })
       output
     end
@@ -218,11 +291,9 @@ module NodeShared
 
   # in our interface, "users" are known as "people" because it's more human
   def self.people_map(body, _page = 1)
-    body.gsub(/[^\>`](\<p\>)?\[map\:people\:(\S+)\:(\S+)\]/) do |_tagname|
-      tagname = Regexp.last_match(2)
+    body.gsub(/(?<![\>`])(\<p\>)?\[map\:people\:(\S+)\:(\S+)\]/) do |_tagname|
       lat = Regexp.last_match(2)
       lon = Regexp.last_match(3)
-      nids ||= []
 
       a = ActionController::Base.new
       output = a.render_to_string(template: "map/_peopleLeaflet",
@@ -230,7 +301,9 @@ module NodeShared
                                   locals:   {
                                     lat: lat,
                                     lon: lon,
-                                    people: true
+                                    people: true,
+                                    url_hash: 0,
+                                    tag_name: false
                                   })
       output
     end
@@ -238,7 +311,7 @@ module NodeShared
 
   # in our interface, "users" are known as "people" because it's more human
   def self.people_grid(body, current_user = nil, _page = 1)
-    body.gsub(/[^\>`](\<p\>)?\[people\:(\S+)\]/) do |_tagname|
+    body.gsub(/(?<![\>`])(\<p\>)?\[people\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       exclude = nil
       if tagname.include?('!')
@@ -276,7 +349,7 @@ module NodeShared
   end
 
   def self.wikis_grid(body, _page = 1)
-    body.gsub(/[^\>`](\<p\>)?\[wikis\:(\S+)\]/) do |_tagname|
+    body.gsub(/(?<![\>`])(\<p\>)?\[wikis\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       exclude = nil
       if tagname.include?('!')

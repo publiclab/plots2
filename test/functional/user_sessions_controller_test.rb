@@ -48,7 +48,7 @@ class UserSessionsControllerTest < ActionController::TestCase
     assert_not_nil request.env['omniauth.auth']
     #Sign Up for a new user
     post :create
-    assert_equal "You have successfully signed in. Please change your password via a link sent to you via e-mail",  flash[:notice]
+    assert_equal "You have successfully signed in. Please change your password using the link sent to you via e-mail.",  flash[:notice]
     #Log Out
     post :destroy
     assert_equal "Successfully logged out.",  flash[:notice]
@@ -105,7 +105,7 @@ class UserSessionsControllerTest < ActionController::TestCase
     assert_not_nil request.env['omniauth.auth']
     #Sign Up for a new user
     post :create
-    assert_equal "You have successfully signed in. Please change your password via a link sent to you via e-mail",  flash[:notice]
+    assert_equal "You have successfully signed in. Please change your password using the link sent to you via e-mail.",  flash[:notice]
     #Log Out
     post :destroy
     assert_equal "Successfully logged out.",  flash[:notice]
@@ -162,7 +162,7 @@ class UserSessionsControllerTest < ActionController::TestCase
       assert_not_nil request.env['omniauth.auth']
       #Sign Up for a new user
       post :create
-      assert_equal "You have successfully signed in. Please change your password via a link sent to you via e-mail",  flash[:notice]
+      assert_equal "You have successfully signed in. Please change your password using the link sent to you via e-mail.",  flash[:notice]
       #Log Out
       post :destroy
       assert_equal "Successfully logged out.",  flash[:notice]
@@ -218,7 +218,7 @@ class UserSessionsControllerTest < ActionController::TestCase
     assert_not_nil request.env['omniauth.auth']
     #Sign Up for a new user
     post :create
-    assert_equal "You have successfully signed in. Please change your password via a link sent to you via e-mail",  flash[:notice]
+    assert_equal "You have successfully signed in. Please change your password using the link sent to you via e-mail.",  flash[:notice]
     #Log Out
     post :destroy
     assert_equal "Successfully logged out.",  flash[:notice]

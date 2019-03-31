@@ -52,6 +52,7 @@ class UserTagsController < ApplicationController
           end
 
           next if exist
+
           user_tag = user.user_tags.build(value: name)
           if tagname.split(':')[1] == "facebook"
             @output[:errors] << "This tag is used for associating a Facebook account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>"

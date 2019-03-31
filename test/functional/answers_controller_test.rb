@@ -13,7 +13,7 @@ class AnswersControllerTest < ActionController::TestCase
     post :create, params: { nid: node.nid, body: 'Sample answer'}, xhr: true
     end
     assert_not_equal initial_mail_count, ActionMailer::Base.deliveries.size
-    assert ActionMailer::Base.deliveries.collect(&:to).include?([node.author.mail])
+    assert ActionMailer::Base.deliveries.collect(&:to).include?([node.author.email])
     # Used ([node.author.mail]) here instead of just (node.author.mail) because .collect(:to) is an array of arrays
     assert_response :success
     assert_not_nil assigns(:answer)
@@ -44,7 +44,7 @@ class AnswersControllerTest < ActionController::TestCase
     answer = answers(:one)
     get :update, params: { id: answer.id, body: 'Some changes in answer' }
     assert_redirected_to answer.node.path(:question)
-    assert_equal 'Answer updated', flash[:notice]
+    assert_equal 'Answer updated.', flash[:notice]
   end
 
   test 'should show error if user is not the author of post' do
