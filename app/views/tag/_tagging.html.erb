@@ -3,7 +3,7 @@
 <!-- This is the sidebar tagging display, also renders Subscribe button for multiple subscription -->
 <div>
   <h1 style="display: inline-block; margin-right: 20px;">Tags</h1>
-  <% if @node && !@node.node_tags.empty? && ((current_user && @node.liked_by(current_user.uid)) || !current_user) %>
+  <% if @node && !@node.node_tags.empty? %>
     <%= render partial: 'tag/subscribe_button', locals:{tags: @node.node_tags} %>
   <% end %>
 </div>
