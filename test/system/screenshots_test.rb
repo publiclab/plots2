@@ -1,7 +1,7 @@
 require "application_system_test_case"
 # https://guides.rubyonrails.org/testing.html#implementing-a-system-test
 
-class SearchTest < ApplicationSystemTestCase
+class ScreenshotsTest < ApplicationSystemTestCase
   test 'front page with navbar search autocomplete' do
     visit '/'
 
