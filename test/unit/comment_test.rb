@@ -323,7 +323,14 @@ class CommentTest < ActiveSupport::TestCase
     comment.comment = "<img src=x onerror=prompt(133)>" # inserting executable javascript into a comment
     assert comment.save
     output = comment.render_body
+    assert_equal [], output.scan('src=x')
     assert_equal [], output.scan('onerror=prompt')
+    # now ensure all the OK attributes are preserved, for a wide range of comment types:
+    comment.comment = "<iframe src='/hello' width='100' height='100' border='0'></iframe><p style='color:red;' class='nice' id='cool' title='sweet'></p>"
+    assert comment.save
+    output = comment.render_body
+    assert_equal [], output.scan("src='/hello' width='100' height='100' border='0'")
+    assert_equal [], output.scan("class='nice' id='cool' title='sweet'")
   end
 
   test 'find email using twitter user name' do
