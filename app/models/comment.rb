@@ -333,9 +333,11 @@ class Comment < ApplicationRecord
   end
 
   def render_body
-    RDiscount.new(
+    body = RDiscount.new(
       title_suggestion(self),
       :autolink
     ).to_html
+    # close improperly nested/closed HTML tags:
+    Nokogiri::HTML::DocumentFragment.parse(body).to_html
   end
 end
