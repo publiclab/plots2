@@ -113,6 +113,46 @@ a .fa-white,
   }
 }
 
+@media (max-width: 768px) {
+    .navbar-header {
+        float: none;
+    }
+    .navbar-left,.navbar-right {
+        float: none !important;
+    }
+    .navbar-toggle {
+        display: block;
+    }
+    .navbar-collapse {
+        border-top: 1px solid transparent;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+    .navbar-fixed-top {
+        top: 0;
+        border-width: 0 0 1px;
+    }
+    .navbar-collapse.collapse {
+        display: none!important;
+    }
+    .navbar-nav {
+        float: none!important;
+        margin-top: 7.5px;
+    }
+    .navbar-nav>li {
+        float: none;
+    }
+    .navbar-nav>li>a {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .collapse.in{
+        display:block !important;
+    }
+    #md-ham {
+        display: none;
+    }
+}
+
 body { padding-top: 70px; }
 
 #header .collapse.in .hidden-xs,
@@ -294,14 +334,14 @@ body { padding-top: 70px; }
   border-bottom: 1px solid #ddd;
 }
 
-@media (max-width:400px) {
+.pagination > li:first-child,
+.pagination > li:last-child {
+    display: inline;
+}
+
+@media (max-width:640px) {
   .pagination > li {
     display: none;
-  }
-
-  .pagination > li:first-child,
-  .pagination > li:last-child {
-    display: inline;
   }
 }
 
@@ -322,13 +362,36 @@ div.note .meta {
   color:#888;
 }
 
+.image-container {
+  height:auto;
+  overflow:auto;
+}
+/*start of img aspect css that will affect the 
+thumbnails which appears on the user's profile 
+under their notes*/
 #notes .note a.img {
-  max-height: 200px;
-  height:160px;
-  display: block;
+  height: auto;
+  display: inline-block;
   overflow: hidden;
   margin-bottom: 10px;
 }
+
+.note-image {
+  height: auto;
+  overflow: hidden;
+}
+.note-image img {
+  width: auto;
+}
+
+.grid-image {
+  width: 100% !important;
+  height: auto;
+  display: block; 
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+/*end of img aspect css*/
 
 #notes .note h3 a {
   color: #444;
@@ -382,6 +445,14 @@ div.note.moderated h4 {
   table {
     font-size: 90%;
   }
+
+  .grid-image {
+  width: auto;
+  height: auto;
+  display: block; 
+  overflow: hidden;
+  margin-bottom: 10px;
+  }
 }
 
 @media (max-width:400px) {
@@ -400,4 +471,16 @@ div.note.moderated h4 {
 
   font-size: 60px;
 
+}
+
+.is-active{
+    cursor: default;
+    background-color: #e3f2fd;
+}
+textarea, input {
+    padding:10px;
+    font-family: FontAwesome, "Open Sans", Verdana, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
 }

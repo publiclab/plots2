@@ -4,7 +4,7 @@
 
   <div id="sidebar" class="hidden-xs hidden-sm">
 
-    <a rel="tooltip" title="Ask question<% if @tagnames %> about <%= (@tagnames.uniq.collect {|x| x.gsub(/[\w-]+:/, '') }).join(',') %><% end %>" data-placement="bottom" href="/post<%= '?tags=' + @tagnames.uniq.join(',') if @tagnames %>&template=question&redirect=question" class="btn btn-primary btn-lg btn-block"><i class="fa fa-question-circle fa-white"></i> Ask related question &raquo;</a>
+    <a rel="tooltip" title="Ask question<% if @tagnames %> about <%= (@tagnames.uniq.collect {|x| x.gsub(/[\w-]+:/, '') }).join(',') %><% end %>" data-placement="bottom" href="/post<%= '?tags=' + @tagnames.uniq.join(',') if @tagnames %>&template=question&redirect=question" class="btn btn-primary btn-lg btn-block requireLogin"><i class="fa fa-question-circle fa-white"></i> Ask related question &raquo;</a>
 
     <br />
     

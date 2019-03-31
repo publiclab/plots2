@@ -1,12 +1,13 @@
 <h2>Search</h2>
 
 <h4>Here you can search for research notes, users, tags and more:</h4>
+<a href="https://dev.mysql.com/doc/refman/5.5/en/fulltext-boolean.html">Info about boolean-searches</a>
 
 </br>
 
 <form id="inline_searchform" class="form" autocomplete="off">
   <div class="form-group form-inline">
-    <input tabindex="1" style="min-width: 350px;" id="inline_searchform_input" type="text" class="search-query typeahead form-control" data-provide="typeahead" value="<%= params[:id] %>">
+    <input tabindex="1" style="min-width: 350px;" id="inline_searchform_input" type="text" class="search-query typeahead form-control" data-provide="typeahead" value="<%= params[:id] %>" required>
     <button type="submit" class="btn btn-primary"><i class="fa fa-search fa fa-white"></i></button>
   </div>
 </form>

@@ -11,42 +11,81 @@ class CommentControllerTest < ActionController::TestCase
     Timecop.return
   end
 
-  test 'should get index' do
+  test 'should get index with all approved comments if no user' do
     get :index
     assert_response :success
-    assert_not_nil :comments
-    assert assigns(:comments).first.timestamp > assigns(:comments).last.timestamp
+    normal_comments = assigns(:normal_comments)
+    assert_not_nil normal_comments
+    assert_nil assigns(:moderated_comments)
+    assert normal_comments.first.timestamp > normal_comments.last.timestamp
+  end
+
+  test 'should get index with all approved comments if normal user' do
+    UserSession.create(users(:bob))
+    get :index
+    assert_response :success
+    normal_comments = assigns(:normal_comments)
+    assert_not_nil normal_comments
+    assert_nil assigns(:moderated_comments)
+    assert normal_comments.first.timestamp > normal_comments.last.timestamp
+  end
+
+  test 'should get index with both approved and moderated comments if moderator' do
+    UserSession.create(users(:jeff))
+    get :index
+    assert_response :success
+    normal_comments = assigns(:normal_comments)
+    assert_not_nil normal_comments
+    assert_not_nil assigns(:moderated_comments)
+    assert normal_comments.first.timestamp > normal_comments.last.timestamp
   end
 
   test 'should create note comments' do
     UserSession.create(users(:bob))
     assert_difference 'Comment.count' do
-      post :create, params: { id: nodes(:one).nid, body: 'Notes comment' }, xhr: true
+      post :create, params: { id: nodes(:one).nid, body: '[notes:awesome]' }, xhr: true
     end
     assert_response :success
     assert_not_nil :comment
     assert_template partial: 'notes/_comment'
+    assert_template partial: 'grids/_notes'
+    # assert_equal 1, css_select(".comment table").size # test inline grid rendering
+  end
+
+  test 'should create a replied comment' do
+    UserSession.create(users(:bob))
+    initial_count = comments(:first).replied_comments.count
+    assert_difference 'Comment.count' do
+      post :create, params: { id: nodes(:one).nid, body: '[notes:awesome]', reply_to: comments(:first) }, xhr: true
+    end
+    assert_response :success
+    assert_not_nil :comment
+    assert_template partial: 'notes/_comment'
+    assert_equal (initial_count+1), comments(:first).replied_comments.count
   end
 
   test 'should create question comments' do
     UserSession.create(users(:bob))
     assert_difference 'Comment.count' do
-      post :create, params: { id: nodes(:question).nid, body: 'Questions comment', type: 'question' }, xhr: true
+      post :create, params: { id: nodes(:question).nid, body: '[notes:awesome]', type: 'question' }, xhr: true
     end
     assert_response :success
     assert_not_nil :comment
     assert_template partial: 'notes/_comment'
+    # assert_equal 1, css_select(".comment table").size # test inline grid rendering # this should pass not sure why it didnt
   end
 
   test 'should create wiki comments' do
     UserSession.create(users(:bob))
     assert_difference 'Comment.count' do
       assert_difference "nodes(:wiki_page).comments.count" do
-        post :create, params: { id: nodes(:wiki_page).nid, body: 'Wiki comment' }, xhr: true
+        post :create, params: { id: nodes(:wiki_page).nid, body: '[notes:awesome]' }, xhr: true
       end
     end
     assert_response :success
     assert_not_nil :comment
+    assert_template partial: 'grids/_notes'
+    # assert_equal 1, css_select(".comment table").size # test inline grid rendering
   end
 
   test 'should show error if wiki comment not saved' do
@@ -71,20 +110,6 @@ class CommentControllerTest < ActionController::TestCase
     end
     assert_equal flash[:error], 'The comment could not be saved.'
     assert_equal 'failure', @response.body
-  end
-
-  test 'should create answer comments' do
-    UserSession.create(users(:bob))
-    assert_difference 'Comment.count' do
-      post :answer_create,
-          params: {
-          aid: answers(:one).id,
-          body: 'Answers comment'
-          }, xhr: true
-    end
-    assert_response :success
-    assert_not_nil :comment
-    assert_template partial: 'notes/_comment'
   end
 
   test 'should show error if answer comment not saved' do
@@ -229,7 +254,31 @@ class CommentControllerTest < ActionController::TestCase
           }, xhr: true
     end
     assert_response :success
-    assert_template 'comment/delete'
+    assert_template 'comments/delete.js.erb'
+  end
+
+  test 'should create a comment with status 4 if user has never created nothing before' do
+    user = users(:user_first_time_poster)
+    UserSession.create(user)
+
+    post :create, params: { id: nodes(:one).nid, body: 'example' }, xhr: true
+
+    comment = Comment.last
+    assert_equal 4, user.id && comment.status, comment.author.id
+  end
+
+  test 'should send mail to moderator if comment has status 4' do
+    UserSession.create(users(:moderator))
+    post :create, params: { id: nodes(:one).nid, body: 'example', status: 4 }, xhr: true
+    assert ActionMailer::Base.deliveries.collect(&:to).include?([users(:moderator).email])
+  end
+
+  test 'should not send mail to moderator if comment has status different than 4' do
+    UserSession.create(users(:bob))
+    post :create, params: { id: nodes(:one).nid, body: 'example' }, xhr: true
+
+    assert_equal 1, Comment.last.status
+    assert_not ActionMailer::Base.deliveries.collect(&:to).include?("comment-moderators@#{ActionMailer::Base.default_url_options[:host]}")
   end
 
   test 'should send mail to tag followers in the comment' do
@@ -256,7 +305,7 @@ class CommentControllerTest < ActionController::TestCase
   test 'should prompt user if comment includes question mark' do
     UserSession.create(users(:jeff))
     post :create, params: { id: nodes(:blog).id, body: 'Test question?' }, xhr: true
-    assert_select 'a[href=?]', '/questions', { :count => 1, :text => 'Questions page' }
+    # assert_select 'a[href=?]', '/questions', { :count => 1, :text => 'Questions page' }
   end
 
   test 'should delete comment while promoting if user is comment author' do
@@ -297,7 +346,7 @@ class CommentControllerTest < ActionController::TestCase
     comment = comments(:first)
     assert_no_difference 'Comment.count' do
       post :make_answer,
-          params: { 
+          params: {
            id: comment.id
           }
     end

@@ -1,4 +1,4 @@
-Hi! There's been a new comment to your answer on '<a href='https://<%= ActionMailer::Base.default_url_options[:host] %><%= @comment.parent.path(:question) %>#a<%= @comment.answer.id %>'><%= @comment.parent.title %></a>'. Do NOT reply to this email; click this link to see the comment:
+Hi! There's been a new comment to your answer on '<a href='https://<%= ActionMailer::Base.default_url_options[:host] %><%= @comment.parent.path(:question) %>#a<%= @comment.answer.id %>'><%= @comment.parent.title %></a>'. You can reply to this email or visit this link:
 
 <p>https://<%= ActionMailer::Base.default_url_options[:host] %><%= @comment.parent.path(:question) %>#answer-<%= @comment.aid %>-comment-<%= @comment.cid %></p>
 

@@ -20,7 +20,7 @@
     <div class="collapse navbar-collapse" id="header-navbar-collapse">
       <form class="navbar-form navbar-left" id="searchform" autocomplete="off">
         <div class="input-group">
-          <input type="text" id="searchform_input" style="min-width: 280px;" class="form-control search-query typeahead" role="search" qryType="all" placeholder="<%= t('layout._header.search') %>" required>
+          <input type="text" id="searchform_input" style="min-width: 220px;" class="form-control search-query typeahead" role="search" qryType="all" placeholder="<%= t('layout._header.search') %>"  value="<%= params[:query] %>" required>
           <span class="input-group-btn">
             <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
           </span>
@@ -35,16 +35,15 @@
           <ul class="dropdown-menu">
             <li><a href="/events">Attend an event</a></li>
             <li><a href="/chat">Chat online</a></li>
-            <li><a href="/search">Search on Public Lab</a></li>
             <li><a href="/questions">Ask a question</a></li>
             <li><a href="/tags">Find a topic you care about</a></li>
-            <li><a href="/post">Post your work</a></li>
+            <li><a href="/post" class="requireLogin">Post your work</a></li>
+            <li><a href="/newsletter">Subscribe to the newsletter</a></li>
             <li><a href="/requests">Respond to a request</a></li>
             <li class="divider"></li>
             <li><a href="/dashboard">Browse recent research</a></li>
             <li><a href="/methods">Discover methods</a></li>
             <li><a href="/kits">Contribute a kit</a></li>
-            <li class="hidden-lg hidden-xl"><a href="/donate">Donate</a></li>
             <li><a href="/wiki/software-outreach">Software Projects</a></li>
           </ul>
         </li>
@@ -65,26 +64,27 @@
             <li class="divider"></li>
             <li><a href="/media"><%= t('layout._header.about.press_and_media') %></a></li>
             <li><a href="/wiki/contact"><%= t('layout._header.about.contact') %></a></li>
-            <li class="hidden-lg hidden-xl"><a href="//store.publiclab.org"><%= t('layout._header.store') %></a></li>
           </ul>
         </li>
 
-        <li>
-          <a href="//store.publiclab.org"><%= t('layout._header.store') %></a>
+        <li class="hidden-sm">
+          <a target="_blank" href="//store.publiclab.org"><%= t('layout._header.store') %></a>
         </li>
-        <li>
+        <li class="hidden-sm">
           <a href="/donate"><%= t('layout._header.donate') %></a>
         </li>
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
         <% if current_user %>
-          <li>
-            <a rel="tooltip" title="<%= t('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard">Dashboard</i></a>
+          <li class="hidden-sm hidden-md">
+            <a rel="tooltip" title="<%= t('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard">Dashboard</a>
           </li>
         <% else %>
-        <li>
-          <a rel="tooltip" title="<%= t('layout._header.become_part_community') %>" href="/signup"><%= t('layout._header.join') %></a>
+        <li class="hidden-sm hidden-md"> <!-- signup button -->
+          <a rel="tooltip" class="signupToggle" title="<%= t('layout._header.become_part_community') %>" href="#">
+            <%= t('layout._header.join') %>
+          </a>
         </li>
         <% end %>
 
@@ -92,7 +92,13 @@
           <% unless params[:action] == "register" || params[:action] == "signup" %>
             <% if current_user %>
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                Profile
+              	<div class="profile-icon">
+                  <% if current_user.profile_image == "https://www.gravatar.com/avatar/eb721d116a28f4a4da4ea67340c8ce75" %>
+                    <i class="fa fa-user-circle fa-lg" style="color:white;"></i>
+                  <% else %>
+                    <img class="img-circle" id="profile-photo" style="width:20px; height:20px; margin-right:8px;" src="<%= current_user.profile_image %>" />
+                  <% end %>
+                </div>
               </a>
               <ul class="dropdown-menu">
                 <div class="dropdown-header">
@@ -103,12 +109,13 @@
                     <% end %>
                   </h5>
                 </div>
-                <li><a href="/dashboard"><%= t('layout._header.dashboard') %></a></li>
+
                 <li><a href="/profile/<%= current_user.username %>"><%= t('layout._header.profile') %></a></li>
                 <li><a href="/profile/edit"><%= t('layout._header.edit_profile') %></a></li>
                 <li><a href="/settings" >Email Settings</a></li>
                 <li class="divider"></li>
                 <li><a href="/subscriptions"><%= t('layout._header.subscriptions') %></a></li>
+                <li><a href="/subscriptions/digest">Your Digest</a></li>
                 <li><a href="/profile/<%= current_user.username %>/likes"><%= t('layout._header.notes_liked') %></a></li>
                 <li class="divider"></li>
         	      <% if current_user.role == 'admin' %>
@@ -121,51 +128,33 @@
                 <li><%= link_to t('layout._header.logout'), logout_path %></li>
                 <li><a href="/logoutRemotely">Logout from all devices</a></li>
               </ul>
-            <% else %>
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                 <%= t('layout._header.login.login_title') %>
+            <% else %> <!-- Login button -->
+              <a class="loginToggle" href="#" >
+                <%= t('layout._header.login.login_title') %>
               </a>
-              <ul id="login-dropdown" class="dropdown-menu" style="width:245px;">
-                <li style="padding:6px;">
-                  <%= form_for :user_session, :as => :user_session, :url => { :controller => "user_sessions", :action => "create" }, :html => {:class => "form"} do |f| %>
-                  <div class="form-group">
-                     <% if Rails.env == "production" %>
-                       <label style="display: block; text-align: center;">Log In with</label>
-                        <div class="loginbutton" style="float:left">
-                           <%= render :partial => "layouts/social_icons" %>
-                        </div>
-                        <br style="clear:both;"/>
-                       <label style="display: block; text-align: center; margin-top:13px;">OR</label>
-                     <% end %>
-                  </div>
-                  <form>
-    		            <div class="form-group">
-                      <label for="username"><%= t('layout._header.login.username') %></label>
-                      <%= f.text_field :username, { tabindex: 1, class: 'form-control', id: 'username-login' } %>
-                     </div>
-                    <div class="form-group">
-                      <label for="password"><%= t('layout._header.login.password') %></label>
-                      <%= f.password_field :password, { tabindex: 2, class: 'form-control', id: 'password-login' } %>
-                    </div>
-                    <input type="hidden" name="return_to" value="<%= params[:return_to] || request.path %>" />
-                    <div class="form-check float-right">
-                      <label>
-                        <%= f.check_box :remember_me %> <%= t('layout._header.login.remember_me') %>
-                      </label>
-                    </div>
-                    <div class="form-group">
-                      <button class="btn btn-primary" type="submit" tabindex="3"><%= t('layout._header.login.login_title') %></button>
-                      <button class="btn btn-default" href="/signup" tabindex="4"><%= t('layout._header.login.sign_up') %></button>
-                    </div>
-                    <div>
-                      <a href="/reset/"><%= t('layout._header.login.reset_password') %></a>
-                    </div>
-                  </form>
-                  <% end %>
-                </li>
-              </ul>
             <% end %>
           <% end %>
+        </li>
+        <li id="md-ham" class="hidden-lg dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-white fa-bars"></a>
+            <ul class="dropdown-menu">
+                <li class="hidden-lg hidden-md">
+                  <a href="//store.publiclab.org"><%= t('layout._header.store') %></a>
+                </li>
+                <li class="hidden-lg hidden-md">
+                  <a href="/donate"><%= t('layout._header.donate') %></a>
+                </li>
+                <!--- These menu items will only appear in the "More" dropdown menu. --->
+                <% if current_user %>
+                  <li class="hidden-lg">
+                    <a rel="tooltip" title="<%= t('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard">Dashboard</i></a>
+                  </li>
+                <% else %>
+                <li class="hidden-lg">
+                  <a rel="tooltip" title="<%= t('layout._header.become_part_community') %>" href="/signup"><%= t('layout._header.join') %></a>
+                </li>
+                <% end %>
+            </ul>
         </li>
       </ul>
     </div>
@@ -188,5 +177,17 @@
             c.hide() ;
       });
   </script>
-  <%= render :partial => "layouts/alerts" %>
+  <%= render partial: "layouts/alerts" %>
 </div>
+
+<%= render partial: "layouts/signupLoginModal" %>
+
+<style>
+  .profile-icon{
+      cursor:pointer;
+  }
+
+  .profile-icon:hover .fa-user-circle:before{
+      opacity:0.5;
+  }
+</style>

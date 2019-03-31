@@ -2,6 +2,9 @@ sudo: required
 
 services:
   - docker
+
+git:
+    depth: false
   
 env:
   - COMPOSE_FILE=./containers/docker-compose-testing.yml
@@ -19,13 +22,19 @@ install:
   - netstat -ltpn
   - docker-compose exec web bash -c "rake db:setup"
   - docker-compose exec web bash -c "rake db:migrate"
-  - docker-compose exec web yarn --ignore-engines --ignore-scripts --modules-folder ./public/lib && yarn postinstall
+  - docker-compose exec web bash -c "rake assets:precompile"
   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then gem install danger danger-junit; fi'
 
 script:
+  - docker-compose exec web bash -c "wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+  - docker-compose exec web bash -c "dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install"
+  - docker-compose exec web bash -c "wget https://chromedriver.storage.googleapis.com/73.0.3683.68/chromedriver_linux64.zip" # https://sites.google.com/a/chromium.org/chromedriver/
+  - docker-compose exec web bash -c "unzip chromedriver_linux64.zip"
+  - docker-compose exec web bash -c "mv chromedriver /usr/local/bin/chromedriver"
+  - docker-compose exec web bash -c "chmod +x /usr/local/bin/chromedriver"
   - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true rake test:all"
   - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true rails test -d"
+  - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true rails test:system"
   - echo -e '<?xml version="1.0" encoding="UTF-8"?>' > output.xml
   - tail -n +2 -q ./test/reports/TEST*.xml >> output.xml
   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then danger --verbose; fi'
-  

@@ -44,6 +44,7 @@ passenger-standalone.json.bkp
 public/pdf.js/
 public/sites/
 public/assets/
+public/cron-log.log
 production.db
 test.db
 solr/*
@@ -54,3 +55,5 @@ node_modules
 .byebug_history
 vendor/bundle
 spec/TEST-Teaspoon-Result.xml
+yarn.lock
+yarn-error.log

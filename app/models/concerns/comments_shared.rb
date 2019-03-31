@@ -15,7 +15,9 @@ module CommentsShared
   end
 
   def author
-    DrupalUser.find_by(uid: uid)
+    return nil if uid.zero?
+
+    User.find(uid)
   end
 
   def parent_commenter_uids

@@ -79,6 +79,12 @@ class WikiControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test 'should redirect root-level requests without a matching wiki page to /tag/____' do
+    get :root, params: { id: 'something' }
+    assert_response :redirect
+    assert_redirected_to '/tag/something'
+  end
+
   test 'post wiki no login' do
     UserSession.find.destroy
 
@@ -273,13 +279,13 @@ class WikiControllerTest < ActionController::TestCase
     UserSession.find.destroy
   end
 
-  test 'should redirect to /wiki/___ for requests that ask for /____' do
+  test 'should redirect to /tag/___ for requests that ask for /____' do
     UserSession.find.destroy
     UserSession.create(users(:admin))
 
     get :root, params: { id: 'madeup' }
 
-    assert_redirected_to '/wiki/madeup'
+    assert_redirected_to '/tag/madeup'
     UserSession.find.destroy
   end
 
@@ -432,12 +438,6 @@ class WikiControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should redirect to tag page if wiki page doesn't exist" do
-    get :show, params: { id: 'A-new-wiki-page' }
-    assert_response :redirect
-    assert_redirected_to '/tag/A-new-wiki-page'
-  end
-
   test 'replacing content in a node with replace action' do
     UserSession.create(users(:jeff))
     node = nodes(:about)
@@ -488,7 +488,7 @@ class WikiControllerTest < ActionController::TestCase
 
     assert_equal 'false', response.body
     assert_equal 'Public Lab', Node.find(node.id).body
-    assert_response :success
+    assert_response 500 # failure
   end
 
   test 'abtest: redirects to another page' do
