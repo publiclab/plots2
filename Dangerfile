@@ -65,7 +65,7 @@ end
 images = []
 Dir.foreach('tmp/screenshots') do |item|
   next if item == '.' or item == '..'
-  dataurl = "data:image/png;base64," + Base64.strict_encode64(File.read(item))
+  dataurl = "data:image/png;base64," + Base64.strict_encode64(File.read('tmp/screenshots/' + item))
   images << "<h3>#{item}</h3><p><img src='#{dataurl}' /></p>"
 end
 
