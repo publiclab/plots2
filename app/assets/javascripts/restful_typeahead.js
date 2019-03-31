@@ -10,16 +10,15 @@ $(function() {
     var typeahead = $(el).typeahead({
       items: 10,
       minLength: 3,
-      delay: 350,
       showCategoryHeader: true,
       autoSelect: false,
-      source: function (query, process) {
+      source: debounce(function (query, process) {
         var encoded_query = encodeURIComponent(query);
         var qryType = $(el).attr('qryType');
         return $.getJSON('/api/srch/' + qryType + '?query=' + encoded_query, function (data) {
           return process(data.items);
         },'json');
-      },
+      }, 350),
       highlighter: function (text, item) {
         return item.doc_title;
       },

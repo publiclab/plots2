@@ -1,6 +1,12 @@
 require 'test_helper'
 
 class NodeTest < ActiveSupport::TestCase
+
+  def setup
+    @start = (Date.today - 1.year).to_time
+    @fin = Date.today.to_time
+  end
+
   test 'basic node attributes' do
     node = nodes(:one)
     assert_equal 'note', node.type
@@ -9,11 +15,27 @@ class NodeTest < ActiveSupport::TestCase
     assert_equal 'page', node.type
     assert_equal 1, node.status
     assert !node.answered
+    assert_equal [], node.location_tags
   end
 
   test 'basic question attributes' do
     question = nodes(:question)
     assert question.answered
+  end
+
+  test 'basic location attributes' do
+    map = nodes(:map)
+    map.add_tag('lat:123', users(:bob))
+    map.add_tag('lon:34', users(:bob))
+    assert map.has_power_tag('lat')
+    assert map.has_power_tag('lon')
+    assert_not_nil map.power_tag('lat')
+    assert_not_nil map.power_tag('lon')
+    assert map.lat
+    assert map.lon
+    assert_equal map.lat, map.power_tag('lat').split(':').first.to_f
+    assert_equal map.lon, map.power_tag('lon').split(':').first.to_f
+    assert map.location_tags
   end
 
   test 'emoji conversion' do
@@ -177,7 +199,8 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'latest revision based on timestamp' do
     node = nodes(:spam_targeted_page)
-    assert node.revisions.count > 1
+
+    assert node.revisions.size > 1
     assert_equal node.revisions.first, node.latest
     assert node.revisions.first.timestamp.to_i > node.revisions.last.timestamp.to_i
     assert_not_equal node.revisions.last, node.latest
@@ -186,9 +209,12 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'latest revision not a moderated revision' do
     node = nodes(:spam_targeted_page)
-    assert node.revisions.count > 1
+
+    assert node.revisions.size > 1
     assert_equal node.revisions.first, node.latest
+
     node.latest.spam
+
     assert_not_equal node.revisions.first, node.latest
     assert_equal 1, node.latest.status
   end
@@ -207,7 +233,7 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'should have subscribers' do
     node = tag_selections(:awesome).tag.nodes.first
-    assert_equal 6, node.subscribers.length
+    assert_equal 7, node.subscribers.length
   end
 
   test 'should have place node icon according to tagging' do
@@ -251,7 +277,7 @@ class NodeTest < ActiveSupport::TestCase
     expected = [nodes(:one), nodes(:spam), nodes(:first_timer_note), nodes(:blog),
                 nodes(:moderated_user_note), nodes(:activity), nodes(:upgrade),
                 nodes(:draft), nodes(:post_test1), nodes(:post_test2),
-                nodes(:post_test3), nodes(:post_test4), nodes(:scraped_image), nodes(:search_trawling)]
+                nodes(:post_test3), nodes(:post_test4), nodes(:scraped_image), nodes(:search_trawling), nodes(:purple_air_without_hyphen), nodes(:purple_air_with_hyphen)]
     assert_equal expected, notes
   end
 
@@ -387,9 +413,9 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'should delete associated comments when a node is deleted' do
     node = nodes(:one)
-    assert_equal node.comments.count, 5
+    assert_equal 6, node.comments.count
     deleted_node = node.destroy
-    assert_equal node.comments.count, 0
+    assert_equal 0, node.comments.count
   end
 
   test 'should delete associated node selections when a node is deleted' do
@@ -402,5 +428,17 @@ class NodeTest < ActiveSupport::TestCase
   test 'should show scraped image' do
     node = nodes(:scraped_image)
     assert_equal '/url/to/image.png', node.scraped_image
+  end
+
+  test 'contribution graph making' do
+    graph_notes = Node.contribution_graph_making('note', @start, @fin)
+    graph_wiki = Node.contribution_graph_making('page', @start, @fin)
+    notes = Node.where(type: 'note', created: @start.to_i..@fin.to_i).count
+    wiki = Node.where(type: 'page', created: @start.to_i..@fin.to_i).count
+
+    assert graph_notes.class, Hash
+    # TODO: figure out issue here and re-enable! No rush :-)
+    # assert_equal notes, graph_notes.values.sum
+    # assert_equal wiki, graph_wiki.values.sum
   end
 end

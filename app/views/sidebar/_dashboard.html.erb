@@ -17,13 +17,13 @@
 
 <br><br>
 <ul class="nav nav-tabs">
-  <li class="active">
+  <li class="active" style="width:49%;">
     <a class="lists-tab" href="#ask-question" data-toggle="tab">
       <span class="visible-xs"><i class="fa fa-comment"></i></span>
       <span class="hidden-xs">Ask a question</span>
     </a>
   </li>
-  <li>
+  <li style="width:49%;">
     <a class="wikis-tab" href="#wiki" data-toggle="tab">
       <span class="visible-xs"><i class="fa fa-book"></i></span>
       <span class="hidden-xs"><%= t('dashboard._sidebar.wiki') %></span>
@@ -39,10 +39,13 @@
     <% cache('feature_dashboard-sidebar', skip_digest: true) do %>
       <%= feature('dashboard-sidebar') %>
     <% end %>
-    <!-- Twitter follow bitton, options can be adjusted here: https://publish.twitter.com/# -->
-    <a href="https://twitter.com/PublicLab?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-size="large" data-show-count="false">Follow @PublicLab</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-    <br>
+    <!-- Twitter follow button, options can be adjusted here: https://publish.twitter.com/# -->
+    <div class="social-media-btn">
+      <a href="https://twitter.com/PublicLab?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-size="large" data-show-count="false">Follow @PublicLab</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    </div>
     <!-- Facebook like button, options can be adjusted here: https://developers.facebook.com/docs/plugins/like-button/  -->
-    <div class="fb-like" data-href="https://www.facebook.com/PublicLab/" data-layout="button_count" data-action="like" data-size="large" data-show-faces="false" data-share="false"></div>
+    <div class="social-media-btn">  
+      <div class="fb-like" data-href="https://www.facebook.com/PublicLab/" data-layout="button_count" data-action="like" data-size="large" data-show-faces="false" data-share="false"></div>
+    </div>
   </div>
 </div>

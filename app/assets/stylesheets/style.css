@@ -334,14 +334,14 @@ body { padding-top: 70px; }
   border-bottom: 1px solid #ddd;
 }
 
-@media (max-width:400px) {
+.pagination > li:first-child,
+.pagination > li:last-child {
+    display: inline;
+}
+
+@media (max-width:640px) {
   .pagination > li {
     display: none;
-  }
-
-  .pagination > li:first-child,
-  .pagination > li:last-child {
-    display: inline;
   }
 }
 
@@ -385,7 +385,7 @@ under their notes*/
 }
 
 .grid-image {
-  width: auto;
+  width: 100% !important;
   height: auto;
   display: block; 
   overflow: hidden;
@@ -471,4 +471,16 @@ div.note.moderated h4 {
 
   font-size: 60px;
 
+}
+
+.is-active{
+    cursor: default;
+    background-color: #e3f2fd;
+}
+textarea, input {
+    padding:10px;
+    font-family: FontAwesome, "Open Sans", Verdana, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
 }

@@ -1,15 +1,11 @@
 <%= render :partial => "map/mapDependencies" %>
-<% unique_id = rand(100) %>
+<% unique_id = rand(1000) %>
 
   <style>
   	#map<%= unique_id %> { width:100%; height:300px; margin: 0; position: relative;}
-  	/*.leaflet-top{
-  		overflow: auto ;
-  		background: white ;
-  	}*/
   </style>
 
-<div onmouseover="document.body.style.overflow='hidden';"  onmouseout="document.body.style.overflow='auto';">
+<div>
    <div class="leaflet-map" id="map<%= unique_id %>"></div>
  </div>
 <% if defined? people %>
@@ -32,7 +28,7 @@
     }).setView([<%= lat %>,<%= lon %>], 2);
    map<%= unique_id %>.options.minZoom = 2 ;
 
-   var markers_hash = new Map() ;
+   var markers_hash<%= unique_id %> = new Map() ;
 
    window.setTimeout(function(){
       
@@ -42,10 +38,14 @@
          var user_latlng = L.latLng(map_lat, map_lon) ;
          map<%= unique_id %>.setView(user_latlng , 3) ;
        <% else %>
-         map<%= unique_id %>.setZoom(2) ;
+         map<%= unique_id %>.setZoom(2) ; 
        <% end %>
        
    }, 3500);
+
+   <% if defined? tag_name != nil and tag_name == false %>
+      <% @tagname_param = nil %>
+   <% end %>
    
    map<%= unique_id %>.on('zoomend' , function () {
        var NWlat = map<%= unique_id %>.getBounds().getNorthWest().lat ;
@@ -54,7 +54,15 @@
        var SElng = map<%= unique_id %>.getBounds().getSouthEast().lng ;
 
        map<%= unique_id %>.spin(true) ;
-       $.getJSON("/api/srch/nearbyPeople?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng + "&tag=<%= @tagname_param %>", function (data) {
+
+      <% if @tagname_param.nil? %>
+        people_url = "/api/srch/nearbyPeople?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng ; 
+       
+      <% else %>
+        people_url = "/api/srch/nearbyPeople?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng + "&tag=<%= @tagname_param %>" ;
+      <% end %>
+
+       $.getJSON(people_url , function (data) {
            var layerGroup = L.layerGroup();
 
            if (!!data.items) {
@@ -68,9 +76,9 @@
                        icon: default_markers
                    }) ;
 
-                   if(markers_hash.has(mid) === false){
+                   if(markers_hash<%= unique_id %>.has(mid) === false){
                        m.addTo(map<%= unique_id %>).bindPopup("<a href=" + url + ">" + title + "</a>") ;
-                       markers_hash.set(mid , m) ;
+                       markers_hash<%= unique_id %>.set(mid , m) ;
                    }
 
                }
@@ -87,7 +95,14 @@
        var SElng = map<%= unique_id %>.getBounds().getSouthEast().lng ;
 
        map<%= unique_id %>.spin(true) ;
-       $.getJSON("/api/srch/nearbyPeople?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng + "&tag=<%= @tagname_param %>", function (data) {
+
+       <% if @tagname_param.nil? %>
+        people_url = "/api/srch/nearbyPeople?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng ;   
+      <% else %>
+        people_url = "/api/srch/nearbyPeople?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng + "&tag=<%= @tagname_param %>" ;
+      <% end %>
+
+       $.getJSON(people_url , function (data) {
            var layerGroup = L.layerGroup();
            if (!!data.items) {
                for (i = 0; i < data.items.length; i++) {
@@ -100,9 +115,9 @@
                        icon: default_markers
                    }) ;
 
-                   if(markers_hash.has(mid) === false){
+                   if(markers_hash<%= unique_id %>.has(mid) === false){
                        m.addTo(map<%= unique_id %>).bindPopup("<a href=" + url + ">" + title + "</a>") ;
-                       markers_hash.set(mid , m) ;
+                       markers_hash<%= unique_id %>.set(mid , m) ;
                    }
 
                }
@@ -111,9 +126,10 @@
        });
    }) ;
 
-
-   
-//  setupFullScreen(map< = unique_id >  , map_lat , map_lon) ;
-    setupLEL(map<%= unique_id %> , 1) ;
+    <% if defined? url_hash != nil and url_hash == 0 %>
+      setupLEL(map<%= unique_id %> , 0) ;
+    <% else %>
+      setupLEL(map<%= unique_id %> , 1) ;
+    <% end %>
 
   </script>

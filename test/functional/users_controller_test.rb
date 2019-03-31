@@ -152,12 +152,14 @@ class UsersControllerTest < ActionController::TestCase
     assert_equal selector.size, 1
   end
 
-  test 'should get comments' do
+  test 'should get comments and render comments/index template' do
     user = users(:jeff)
     get :comments, params: { id: user.id }
     assert_response :success
-    assert_not_nil assigns(:comments)
-    assert_template partial: 'comments/_comments'
+    normal_comments = assigns(:normal_comments)
+    assert_not_nil normal_comments
+    assert_nil assigns(:moderated_comments)
+    assert_template 'comments/index'
   end
 
   test 'creating new account' do
@@ -326,5 +328,19 @@ class UsersControllerTest < ActionController::TestCase
     assert_equal [], UserTag.where(uid: users(:bob).id, value: "notify-likes-direct:false")
     assert_equal [], UserTag.where(uid: users(:bob).id, value: "notify-comment-indirect:false")
     assert_equal [], UserTag.where(uid: users(:bob).id, value: 'digest:digest')
+  end
+
+  test 'upon verification redirection to login takes place' do
+    test_user = users(:admin)
+    email_verification_token = test_user.generate_token
+    get :verify_email, params: { token: email_verification_token }
+    assert_redirected_to "/login"
+  end
+
+  test 'upon verification the is_verified field gets updated appropriately' do
+    test_user = users(:admin)
+    email_verification_token = test_user.generate_token
+    get :verify_email, params: { token: email_verification_token }
+    assert_equal "Successfully verified email", flash[:notice]
   end
 end

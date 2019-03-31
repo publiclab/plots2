@@ -8,21 +8,21 @@ class Revision < ApplicationRecord
   has_many :tag, through: :node_tag
 
   validates :title,
-    presence: :true,
+    presence: true,
     length: { minimum: 2 },
     format: { with: /[A-Z][\w\-_]*/i, message: 'can only include letters, numbers, and dashes' }
-  validates :body, presence: :true
-  validates :uid, presence: :true
-  validates :nid, presence: :true
+  validates :body, presence: true
+  validates :uid, presence: true
+  validates :nid, presence: true
 
   before_save :inline_tags
   after_save :inline_hashtags
   before_create :setup
 
   scope :published, -> { where(status: 1) }
-  scope :past_week, -> { where("timestamp > ?", (Time.now - 7.days).to_i) }
-  scope :past_month, -> { where("timestamp > ?", (Time.now - 1.months).to_i) }
-  scope :past_year, -> { where("timestamp > ?", (Time.now - 1.years).to_i) }
+  scope :past_week, -> { where("timestamp > ?", 7.days.ago) }
+  scope :past_month, -> { where("timestamp > ?", 1.month.ago) }
+  scope :past_year, -> { where("timestamp > ?", 1.year.ago) }
 
   def setup
     self.teaser = ''
@@ -151,5 +151,12 @@ class Revision < ApplicationRecord
     content = content.gsub(/\[fold\:(.+)\]/, '<p class="foldaway-link" data-title="\1"><i style="color:#666;padding-right:3px;" class="fa fa-expand-alt"></i> <a>\1 &raquo;</a></p><div class="foldaway" data-title="\1">')
     content = content.gsub('[unfold]', '</div>')
     content
+  end
+
+  def self.frequency(starting, ending)
+    weeks = (ending.to_date - starting.to_date).to_i / 7.0
+    Revision.select(:timestamp)
+      .where(timestamp: starting.to_i..ending.to_i)
+      .count / weeks
   end
 end

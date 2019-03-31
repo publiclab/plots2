@@ -15,11 +15,9 @@ module CommentsShared
   end
 
   def author
-    if uid != 0
-      User.find(uid)
-    else
-      nil # some comments are anonymous
-    end
+    return nil if uid.zero?
+
+    User.find(uid)
   end
 
   def parent_commenter_uids

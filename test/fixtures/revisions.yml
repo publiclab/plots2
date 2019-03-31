@@ -326,4 +326,18 @@ search_trawling:
   title: "Could the BabyLegs DIY trawling?"
   body: "BabyLegs is a research trawling."
   timestamp: <%= DateTime.new(2019,1,07).to_i %>
+
+purple_air_without_hyphen:
+  nid: 30
+  uid: 5
+  title: "This is purpleair without hyphen"
+  body: "purpleair is one of the most searched terms on public labs."
+  timestamp: <%= DateTime.new(2019,2,20).to_i %>
+
+purple_air_with_hyphen:
+  nid: 31
+  uid: 2
+  title: "This is purple-air with hyphen"
+  body: "Is Purple-air searched with hyphens or without hyphens?"
+  timestamp: <%= DateTime.new(2019,2,20).to_i %>
   

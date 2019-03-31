@@ -1,12 +1,12 @@
 <% wikis = wikis || @wikis #accept local if present, default to instance %>
 <table class="table">
   <tr>
-    <th><a href = "<%= wiki_path %>?sort=title"> <%= t('wiki._wikis.title') %></a> <i class="fa fa-sort" aria-hidden="true"></i></th>
+    <th><a href = "?sort=title"> <%= t('wiki._wikis.title') %></a> <i class="fa fa-sort" aria-hidden="true"></i></th>
     <th>URL</th>
-    <th><a href = "<%= wiki_path %>?sort=last_edited"> <%= t('wiki._wikis.last_edited') %></a> <i class="fa fa-sort" aria-hidden="true"></i></th>
-    <th><a href = "<%= wiki_path %>?sort=edits"> <%= t('wiki._wikis.edits') %></a> <i class="fa fa-sort" aria-hidden="true"></i></th>
-    <th><a href = "<%= wiki_path %>?sort=page_views"> <%= t('wiki._wikis.page_views') %></a> <i class="fa fa-sort" aria-hidden="true"></i></th>
-    <th><a href = "<%= wiki_path %>?sort=likes"> <%= t('wiki._wikis.likes') %></a> <i class="fa fa-sort" aria-hidden="true"></i></th>
+    <th><a href = "?sort=last_edited"> <%= t('wiki._wikis.last_edited') %></a> <i class="fa fa-sort" aria-hidden="true"></i></th>
+    <th><a href = "?sort=edits"> <%= t('wiki._wikis.edits') %></a> <i class="fa fa-sort" aria-hidden="true"></i></th>
+    <th><a href = "?sort=page_views"> <%= t('wiki._wikis.page_views') %></a> <i class="fa fa-sort" aria-hidden="true"></i></th>
+    <th><a href = "?sort=likes"> <%= t('wiki._wikis.likes') %></a> <i class="fa fa-sort" aria-hidden="true"></i></th>
   </tr>
   <% wikis.each do |wiki| %>
     <tr>
@@ -21,4 +21,3 @@
   <% end %>
 </table>
 <div class="text-center"><%= will_paginate wikis, :renderer => BootstrapPagination::Rails if @paginated %></div>
-

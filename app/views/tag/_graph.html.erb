@@ -1,57 +1,165 @@
-<div id="note-graph" style="height:140px;padding-top:10px;"></div>
+<div id="chart"> </div>
+<i> The graphs above are stacked </i>
+<br>
+<br> <br>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
 
-<script src="https://cdn.jsdelivr.net/npm/frappe-charts@0.0.8/dist/frappe-charts.min.iife.js"></script>
+var options = {
+    colors: ['#00E396', '#0090FF', '#800080', '#FFD700'],
+    chart: {
+        type: "area",
+        height: 400,
+        foreColor: "#999",
+        scroller: {
+            enabled: true,
+            track: {
+                height: 7,
+                background: '#e0e0e0'
 
-<script type="text/javascript">
-	var notes = <%= tags.first.contribution_graph_making.to_a.sort.to_json %>
-	let months = ["J", "F", "M", "A", "M", "J", "J", "A","S", "O", "N", "D"];
-	let i;
-	let labels = new Array();
-	for(i = 0; i < notes.length; i++)
-		labels[i] = "";
-	let count = 0;
-	let prev = 0;
-	for(i = 0; i < notes.length; i++){
-		if(notes[i][1][0] != prev){
-			if(count == 4){
-				let j;
-				labels[i - 2] = months[prev - 1];
-			}
-			else{
-				labels[i - 3] = months[prev - 1];
-			}
-			prev = notes[i][1][0];
-			count = 0;
-		}
-		count++;
-	}
-	if(count >= 3){
-		labels[notes.length - 3] = months[prev - 1];
-	}
-	let title = "note";
-	let values = new Array();
-	for (j = 0; j < notes.length; j++){
-		values[j] = notes[j][1][1];
-	}
-	let data = new Object();
-	data.labels = labels;
-	let datasets = new Array();
-	let obj = new Object();
-	obj.title = title;
-	obj.values = new Array();
-	obj.values = values;
-	datasets[0] = new Object();
-	datasets[0] = obj;
-	data.datasets = datasets;
-	let chart = new Chart({
-		parent: "#note-graph",
-		data: data,
-		type: "bar",
-		height: 115,
-		x_axis_mode: "tick",
-		y_axis_mode: "span",
-		is_series: 1,
-		colors: ['purple']
-	});
+            },
+            thumb: {
+                height: 10,
+                background: '#94E3FF'
+
+            },
+            scrollButtons: {
+                enabled: true,
+                size: 9,
+                borderWidth: 2,
+                borderColor: '#008FFB',
+                fillColor: '#008FFB'
+
+            },
+            padding: {
+                left: 30,
+                right: 20
+            }
+
+        },
+        stacked: true,
+        dropShadow: {
+            enabled: true,
+            enabledSeries: [0],
+            top: -2,
+            left: 2,
+            blur: 5,
+            opacity: 0.06
+        }
+
+    },
+
+    stroke: {
+        curve: 'smooth',
+
+    },
+    dataLabels: {
+        enabled: false,
+
+    },
+    series: [{
+        name: 'Note tags',
+        data: generateSeries(0)
+    },{
+        name: 'Wiki tags',
+        data: generateSeries(1)
+    },{
+        name: 'Comment tags',
+        data: generateSeries(2)
+    },{
+        name: 'Question tags',
+        data: generateSeries(3)
+    } ],
+
+        markers: {
+            size: 0,
+            strokeColor: "#fff",
+            strokeWidth: 3,
+            strokeOpacity: 1,
+            fillOpacity: 1,
+            hover: {
+                size: 6
+
+            }
+
+        },
+        xaxis: {
+            type: "datetime",
+            axisBorder: {
+                show: false
+
+            },
+            axisTicks: {
+                show: false
+
+            }
+
+        },
+        yaxis: {
+            tickAmount: 5,
+            opposite: true,
+            labels: {
+                offsetX: 24,
+                offsetY: -5
+
+            },
+            tooltip: {
+                enabled: true
+
+            }
+        },
+        grid: {
+            borderColor: '#000000',
+            padding: {
+                left: -5,
+                right: 5
+
+            }
+
+        },
+        tooltip: {
+            x: {
+                format: "dd MMM yyyy"
+            },
+
+        },
+        legend: {
+            position: 'top',
+            horizontalAlign: 'left'
+
+        },
+        fill: {
+            type: "solid",
+            fillOpacity: 0.7
+
+        }
+};
+
+
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+
+
+function generateSeries(s) {
+    var values = [
+        <%= notes.values %>,
+        <%= wikis.values %>,
+        <%= comments.values %>,
+        <%= questions.values %>
+    ];
+
+    var i = 0;
+    var months_dates = <%= notes.keys %>
+    var count = months_dates.length;
+    var months = months_dates.map(x =>  new Date(x).getTime());
+    var series = [];
+    while (i < count) {
+        for (var j =0; j < months.length; j++) {
+            series.push([months[j], values[s][i]]);
+            i++;
+
+        }
+    }
+    return series;
+}
 </script>
-

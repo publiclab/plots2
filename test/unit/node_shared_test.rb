@@ -20,6 +20,31 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert_equal 5, html.scan('notes-grid-test').length
     assert html.scan('<td class="title">').length > 1
   end
+ 
+  test 'that NodeShared can be used to convert short codes like [button:foo:https://google.com] into tables which list buttons' do
+    before = "Here are some notes in a table: \n\n[button:Press me:/questions] \n\n[button:Cancel:https://google.com]\n\n`[button:Cancel:https://google.com]` This shouldn't get recognized because it's in ` ticks.\n\nMake sense?"
+    html = NodeShared.button(before)
+    assert html
+    assert_equal 1, html.scan('<a class="btn btn-primary inline-button-shortcode').length
+    assert_equal 1, html.scan('href=').length
+    assert_equal 1, html.scan('inline-button-shortcode').length
+  end
+
+  test 'that NodeShared does not convert short codes like [button:foo:https://google.com] into tables which list notes, when inside `` marks' do
+    before = "This shouldn't actually produce a table:\n\n`[button:Cancel:https://google.com]`\n\nOr this:\n\n `[button:Cancel:https://google.com]`"
+    html = NodeShared.button(before)
+    assert_equal 0, html.scan('<a class="btn btn-primary').length
+    assert_equal 0, html.scan('href=').length
+    assert_equal 0, html.scan('inline-button-shortcode').length
+  end
+
+  test 'that NodeShared does not convert short codes like [button:foo:https://google.com] into tables which list notes, when in code tags' do
+    before = "This shouldn't actually produce a table:\n\n<code>[button:Cancel:https://google.com]</code>"
+    html = NodeShared.button(before)
+    assert_equal 0, html.scan('<a class="btn btn-primary').length
+    assert_equal 0, html.scan('href=').length
+    assert_equal 0, html.scan('inline-button-shortcode').length
+  end
 
   test 'that NodeShared can be used to convert doubled short codes like [notes:activity:spectrometer] into tables which list notes with the tag `activity:spectrometer`' do
     before = "Here are some notes in a table: \n\n[notes:activity:spectrometer] \n\nThis is how you make it work:\n\n`[notes:activity:spectrometer]`\n\nMake sense?"

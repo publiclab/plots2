@@ -34,6 +34,32 @@ class UserTest < ActiveSupport::TestCase
     assert_equal user.tagnames, user.tagnames
   end
 
+  test 'user creation with create_with_omniauth' do
+    auth = {
+      'info' => {
+        'email' => 'bobafett@email.com' # there should not already be a username like this
+      },
+      'provider' => 'github'
+    }
+    user = User.create_with_omniauth(auth)
+    assert_equal 1, user.status
+    assert_equal 'bobafett', user.username
+    assert_equal 2, user.password_checker
+  end
+
+  test 'user with duplicate username creation with create_with_omniauth' do
+    auth = {
+      'info' => {
+        'email' => 'bob@email.com' # there should already be a bob user
+      },
+      'provider' => 'facebook'
+    }
+    user = User.create_with_omniauth(auth)
+    assert_equal 1, user.status
+    assert_not_equal 'bob', user.username
+    assert_equal 1, user.password_checker
+  end
+
   test 'user mysql native fulltext search' do
     assert User.count > 0
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
@@ -143,7 +169,7 @@ class UserTest < ActiveSupport::TestCase
                     password_confirmation: 'godzillas',
                     email: 'testpubliclab.org')
     assert_not user.save
-    assert_equal 1, user.errors[:email].count
+    assert_not_nil user.errors[:email]
   end
 
   test 'user status changes when banned or unbanned' do
@@ -254,6 +280,17 @@ class UserTest < ActiveSupport::TestCase
     assert_equal user_obj.is_verified, true
     user_obj.update_column(:is_verified,false)
     assert_equal user_obj.is_verified, false
+  end
+
+  test 'username should not be updated' do
+    user = users(:bob)
+    user.username = 'newval'
+    user.save!
+    user.reload
+    assert_equal user.username, 'Bob'
+    assert_raises ActiveRecord::ActiveRecordError do
+      user.update_attribute(:username, 'new_user')
+    end
   end
 
 end

@@ -24,7 +24,7 @@ class Tag < ApplicationRecord
     end
   end
 
-  validates :name, presence: :true
+  validates :name, presence: true
   validates :name, format: { with: /\A[\w\.:-]*[\w\.!-]*\z/, message: 'can only include letters, numbers, and dashes' }
   # validates :name, :uniqueness => { case_sensitive: false  }
 
@@ -43,7 +43,13 @@ class Tag < ApplicationRecord
 
   # nodes this tag has been used on; no wildcards
   def nodes
-    nodes = Node.where(nid: node_tag.collect(&:nid))
+    Node.where(nid: node_tag.collect(&:nid))
+  end
+
+  def self.nodes_frequency(starting, ending)
+    ids = Node.where(created: starting.to_i..ending.to_i).map(&:node_tags).flatten.map(&:tid)
+    hash = ids.uniq.map { |id| p (Tag.find id).name, ids.count(id) }.to_h
+    hash.sort_by { |_, v| v }.reverse.first(10).to_h
   end
 
   def belongs_to(current_user, nid)
@@ -54,6 +60,7 @@ class Tag < ApplicationRecord
   def self.contributors(tagname)
     tag = Tag.includes(:node).where(name: tagname).first
     return [] if tag.nil?
+
     nodes = tag.node.includes(:revision, :comments, :answers).where(status: 1)
     uids = nodes.collect(&:uid)
     nodes.each do |n|
@@ -119,6 +126,7 @@ class Tag < ApplicationRecord
                                        .collect(&:nid)
       tag = Tag.where(name: tagname).last
       next unless tag
+
       parents = Node.where(status: 1, type: type)
                     .includes(:revision, :tag)
                     .references(:term_data)
@@ -168,14 +176,18 @@ class Tag < ApplicationRecord
 
   def self.sort_according_to_followers(raw_tags, order)
     tags_with_their_followers = []
+
     raw_tags.each do |i|
       tags_with_their_followers << { "number_of_followers" => Tag.follower_count(i.name), "tags" => i }
     end
+
     tags_with_their_followers.sort_by! { |key| key["number_of_followers"] }
+
     if order != "asc"
       tags_with_their_followers.reverse!
     end
-    tags = tags_with_their_followers.map { |x| x["tags"] }
+
+    tags_with_their_followers.map { |x| x["tags"] }
   end
 
   # OPTIMIZE: this too!
@@ -196,30 +208,58 @@ class Tag < ApplicationRecord
     weeks
   end
 
-  def contribution_graph_making(type = 'note', span = 52, time = Time.now)
+  def contribution_graph_making(type = 'note', start = Time.now - 1.year, fin = Time.now)
     weeks = {}
-    week = span
-    count = 0
-    tids = Tag.where('name IN (?)', [name]).collect(&:tid)
-    nids = NodeTag.where('tid IN (?)', tids).collect(&:nid)
+    week = span(start, fin)
 
     while week >= 1
       # initialising month variable with the month of the starting day
-      # of the week
-      month = (time - (week * 7 - 1).days).strftime('%m')
+      #       # of the week
+      month = (fin - (week * 7 - 1).days)
 
       # Now fetching the weekly data of notes or wikis
-      month = month.to_i
 
-      current_week = Tag.nodes_for_period(
-        type,
-        nids,
-        (time.to_i - week.weeks.to_i).to_s,
-        (time.to_i - (week - 1).weeks.to_i).to_s
-      ).count(:all)
+      current_week =
+        Tag.nodes_for_period(
+          type,
+          nids,
+          (fin.to_i - week.weeks.to_i).to_s,
+          (fin.to_i - (week - 1).weeks.to_i).to_s
+        ).count(:all)
 
-      weeks[count] = [month, current_week]
-      count += 1
+      weeks[(month.to_f * 1000)] = current_week
+      week -= 1
+    end
+    weeks
+  end
+
+  def quiz_graph(start = Time.now - 1.year, fin = Time.now)
+    weeks = {}
+    week = span(start, fin)
+    questions = Node.published.questions.where(nid: nids)
+
+    while week >= 1
+      month = (fin - (week * 7 - 1).days)
+      weekly_quiz = questions.where(created: range(fin, week))
+        .count(:all)
+
+      weeks[(month.to_f * 1000)] = weekly_quiz.count
+      week -= 1
+    end
+    weeks
+  end
+
+  def comment_graph(start = Time.now - 1.year, fin = Time.now)
+    weeks = {}
+    week = span(start, fin)
+    comments = Comment.where(nid: nids)
+
+    while week >= 1
+      month = (fin - (week * 7 - 1).days)
+      weekly_comments = comments.where(timestamp: range(fin, week))
+        .count(:all)
+
+      weeks[(month.to_f * 1000)] = weekly_comments
       week -= 1
     end
     weeks
@@ -247,18 +287,21 @@ class Tag < ApplicationRecord
     all_tag = Tag.find_by(name: 'everything')
     tids += [all_tag.tid] if all_tag
     usertags = TagSelection.where('tid IN (?) AND following = ?', tids, true)
-    d = {}
+
+    usertags_hash = {}
+
     usertags.each do |usertag|
       # For each row of (user,tag), build a user's tag subscriptions
-      if (usertag.tid == all_tag) && usertag.tag.nil?
-        puts 'WARNING: all_tag tid ' + String(all_tag) + ' not found for Tag! Please correct this!'
+      if (usertag.tid == all_tag) && usertag.tag.blank?
+        Rails.logger.warn('WARNING: all_tag tid ' + all_tag.to_s + ' not found for Tag! Please correct this!')
         next
       end
-      d[usertag.user.name] = { user: usertag.user }
-      d[usertag.user.name][:tags] = Set.new if d[usertag.user.name][:tags].nil?
-      d[usertag.user.name][:tags].add(usertag.tag)
+      usertags_hash[usertag.user.name] = { user: usertag.user }
+      usertags_hash[usertag.user.name][:tags] = Set.new if usertags_hash[usertag.user.name][:tags].nil?
+      usertags_hash[usertag.user.name][:tags].add(usertag.tag)
     end
-    d
+
+    usertags_hash
   end
 
   def self.find_research_notes(tagnames, limit = 10)
@@ -315,8 +358,8 @@ class Tag < ApplicationRecord
         .count
   end
 
-  def self.related(tag_name)
-    Rails.cache.fetch('related-tags/' + tag_name, expires_in: 1.weeks) do
+  def self.related(tag_name, count = 5)
+    Rails.cache.fetch('related-tags/' + tag_name + '/' + count.to_s, expires_in: 1.weeks) do
       nids = NodeTag.joins(:tag)
                      .where(Tag.table_name => { name: tag_name })
                      .select(:nid)
@@ -325,8 +368,51 @@ class Tag < ApplicationRecord
          .where(NodeTag.table_name => { nid: nids })
          .where.not(name: tag_name)
          .group(:tid)
-         .order('COUNT(term_data.tid) DESC')
-         .limit(5)
+         .order(count: :desc)
+         .limit(count)
     end
+  end
+
+  # for Cytoscape.js http://js.cytoscape.org/
+  def self.graph_data(limit = 250)
+    Rails.cache.fetch("graph-data/#{limit}", expires_in: 1.weeks) do
+      data = {}
+      data["tags"] = []
+      Tag.joins(:node)
+        .group(:tid)
+        .where('node.status': 1)
+        .order(count: :desc)
+        .limit(limit).each do |tag|
+        data["tags"] << {
+          "name" => tag.name,
+          "count" => tag.count
+        }
+      end
+      data["edges"] = []
+      data["tags"].each do |tag|
+        Tag.related(tag["name"], 10).each do |related_tag|
+          data["edges"] << { "from" => tag["name"], "to" => related_tag.name }
+        end
+      end
+      data
+    end
+  end
+
+  private
+
+  def tids
+    Tag.where('name IN (?)', [name]).collect(&:tid)
+  end
+
+  def nids
+    NodeTag.where('tid IN (?)', tids).collect(&:nid)
+  end
+
+  def span(start, fin)
+    start.to_date.step(fin.to_date, 7).count
+  end
+
+  def range(fin, week)
+    (fin.to_i - week.weeks.to_i).to_s..(fin.to_i - (week - 1).weeks.to_i).to_s
   end
 end

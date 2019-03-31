@@ -8,7 +8,7 @@ var Profile = {
   display_comments: function(){
     $('a#comments-tab').on('shown.bs.tab',function (e) {
       $.ajax({
-        url : '/profile/comments/' + Profile.value.user_id,
+        url : `/profile/comments/${Profile.value.user_id}`,
         type: 'GET',
         success: function(response){
           $('#comments').html(response);

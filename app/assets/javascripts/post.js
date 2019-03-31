@@ -28,6 +28,7 @@ jQuery(document).ready(function() {
   $('#taginput').typeahead({
     items: 8,
     minLength: 3,
+    delay: 450,
     source: function (query, process) {
       var term = query.split(',').pop()
       if (term.length > 2) {
