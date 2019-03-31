@@ -35,6 +35,7 @@ gem 'omniauth-facebook', '~> 5.0'
 gem 'omniauth-github', '~> 1.1', '>= 1.1.2'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
+gem 'passenger'
 gem "paperclip", "~> 6.1.0"
 gem "php-serialize", :require => "php_serialize"
 gem 'progress_bar'
@@ -122,5 +123,4 @@ end
 
 group :production do
   gem "scrypt", "~> 3"
-  gem 'passenger'
 end
