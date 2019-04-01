@@ -64,7 +64,7 @@ end
 
 # Store screenshots in Google Cloud
 # https://github.com/googleapis/google-cloud-ruby/blob/master/AUTHENTICATION.md#environment-variables
-#require "google/cloud/storage"
+require "google/cloud/storage"
 
 storage = Google::Cloud::Storage.new project_id: "public-lab"
 bucket  = storage.bucket "plots2-screenshots"
