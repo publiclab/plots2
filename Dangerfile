@@ -62,14 +62,6 @@ rescue => ex
   message ex.inspect # view the entire error output in the log
 end
 
-# Convert screenshots to data-urls
-#images = []
-#Dir.foreach('tmp/screenshots') do |item|
-#  next if item == '.' or item == '..'
-#  dataurl = "data:image/png;base64," + Base64.strict_encode64(File.read('tmp/screenshots/' + item))
-#  images << "<h3>#{item}</h3><p><img src='#{dataurl}' /></p>"
-#end
-
 # Store screenshots in Google Cloud
 # https://github.com/googleapis/google-cloud-ruby/blob/master/AUTHENTICATION.md#environment-variables
 require "google/cloud/storage"
