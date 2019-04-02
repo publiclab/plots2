@@ -12,7 +12,7 @@
     again, can we have a generic list of contributors that is
     calculated in the controller? -->
     <% if !@wildcard %>
-      <li<% if @node_type == "contributors" %> class="active"<% end %>><a href="/contributors/<%= params[:id] %>"><i class="fa fa-user"></i> <span class="hidden-sm hidden-xs"><%= raw t('tag.show.contributors') %></span><span class="badge"><%=@length %></span></a></li>
+      <li<% if @node_type == "contributors" %> class="active"<% end %>><a href="/contributors/<%= params[:id] %>"><i class="fa fa-user"></i> <span class="hidden-sm hidden-xs"><%= raw t('tag.show.people') %></span> <span class="badge"><%=@length %></span></a></li>
     <% else %>
       <li class="disabled"<% if @node_type == "contributors" %> class="active"<% end %>><a href="#" rel="tooltip" title="Contributors cannot be listed for wildcard tag searches" ><i class="fa fa-user"></i> <span class="hidden-sm hidden-xs"><%= raw t('tag.show.contributors') %></span></a></li>
     <% end %>
