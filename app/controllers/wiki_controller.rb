@@ -309,7 +309,7 @@ class WikiController < ApplicationController
     when 'edits'
       order_string = 'drupal_node_revisions_count DESC'
     when 'page_views'
-      order_string = 'drupal_node_revisions_count DESC'
+      order_string = 'node.vid DESC'
     when 'likes'
       order_string = 'cached_likes DESC'
     end
