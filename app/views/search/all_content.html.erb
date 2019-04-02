@@ -3,12 +3,12 @@
 <div class="container">
   <% if  @nodes.all?{|k,v| v.blank?} %>
     <h4>
-      No Content found for <%= url_encode(params[:query]).gsub!('%2B',' ') %> :-(
+      No Content found for <%= CGI.unescape(params[:query]) %> :-(
       </br></br>
       Try searching <a href="/search">for another topic</a>
     </h4>
   <% else %>
-    <h2> Results for <%= url_encode(params[:query]).gsub!('%2B',' ') %></h2>
+    <h2> Results for <%= CGI.unescape(params[:query]) %></h2>
     <% unless @notes.blank? %>
       <h3> NOTES</h3>
       <table class="table inline-grid">
