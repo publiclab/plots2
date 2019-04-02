@@ -303,7 +303,7 @@ class WikiController < ApplicationController
 
     case sort_param
     when 'title' 
-      order_string = 'node_revisions.body ASC'
+      order_string = 'node.slug ASC'
     when 'last_edited'
       order_string = 'node_revisions.timestamp DESC'
     when 'edits'
