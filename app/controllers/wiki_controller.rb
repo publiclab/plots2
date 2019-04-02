@@ -301,15 +301,16 @@ class WikiController < ApplicationController
     sort_param = params[:sort]
     order_string = 'node_revisions.timestamp DESC'
 
-    if sort_param == 'title'
-      order_string = 'node_revisions.title ASC'
-    elsif sort_param == 'last_edited'
+    case sort_param
+    when 'title' 
+      order_string = 'node_revisions.body ASC'
+    when 'last_edited'
       order_string = 'node_revisions.timestamp DESC'
-    elsif sort_param == 'edits'
+    when 'edits'
       order_string = 'drupal_node_revisions_count DESC'
-    elsif sort_param == 'page_views'
-      order_string = 'views DESC'
-    elsif sort_param == 'likes'
+    when 'page_views'
+      order_string = 'drupal_node_revisions_count DESC'
+    when 'likes'
       order_string = 'cached_likes DESC'
     end
 
