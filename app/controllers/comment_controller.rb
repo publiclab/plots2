@@ -207,6 +207,7 @@ class CommentController < ApplicationController
     end
 
     @likes = comment.likes.group(:emoji_type).count
+    @user_reactions_map = comment.user_reactions_map
     respond_with do |format|
       format.js do
         render template: 'comments/like_comment'
