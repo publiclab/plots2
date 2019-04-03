@@ -1,4 +1,4 @@
-Hi, this is a [first-timers-only issue](https://code.publiclab.org/#r=all). This means we've worked to make it more legible to folks who either **haven't contributed to our codebase before, or even folks who haven't contributed to open source before**. 
+Hi, this is a [first-timers-only issue](https://publiclab.github.io/community-toolbox/#r=all). This means we've worked to make it more legible to folks who either **haven't contributed to our codebase before, or even folks who haven't contributed to open source before**. 
 
 If that's you, we're interested in helping you take the first step and can answer questions and help you out as you do. Note that we're especially interested in contributions from people from groups underrepresented in free and open source software!
 
@@ -16,7 +16,7 @@ Nothing. This issue is meant to welcome you to Open Source :) We are happy to wa
 
 - [ ] 📝 **Update** the file [$FILENAME]($BRANCH_URL) in the `$REPO` repository (press the little pen Icon) and edit the line as shown below. 
 
-[See this page](https://code.publiclab.org/#r=all) for some help in taking your first steps!
+[See this page](https://publiclab.github.io/community-toolbox/#r=all) for some help in taking your first steps!
 
 Below is a "diff" showing in red (and a `-`) which lines to remove, and in green (and a `+`) which lines to add:
 
@@ -45,7 +45,7 @@ If this happens to you, don't sweat it! Grab another open issue.
 
 🔗- We encourage contributors to link to the original issue in their pull request so all users can easily see if someone's already started on it. 
 
-👥- **If someone seems stuck, offer them some help!** Otherwise, [take a look at some other issues you can help with](https://code.publiclab.org/#r=all). Thanks!
+👥- **If someone seems stuck, offer them some help!** Otherwise, [take a look at some other issues you can help with](https://publiclab.github.io/community-toolbox/#r=all). Thanks!
 
 ### 🤔❓ Questions?
 
