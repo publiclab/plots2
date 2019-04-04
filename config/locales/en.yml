@@ -415,6 +415,8 @@ en:
         use the * asterisk in their URLs, and will not show contributor listings."
       contributor: "Contributor"
       notes: "Notes"
+      people_who've_posted: "People who've posted"
+      people_who_are_following: "People who are following"
   wiki:
     index:
       wiki_pages_tagged_with: "Wiki pages tagged with <i style='color:#aaa;'>%{tag}</i>"
