@@ -142,6 +142,7 @@ en:
       drag_and_drop_image: "Drag and drop to add an image, or"
       choose_image: "choose an image"
       uploading: "Uploading"
+      are_you_sure_delete: "Are you sure you want to remove your profile picture?"
     edit:
       edit_profile: "Edit Profile"
   notes:

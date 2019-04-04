@@ -321,6 +321,14 @@ class UsersController < ApplicationController
     end
   end
 
+  def delete
+    @user = User.find(params[:id])
+    @user.photo = params[:photo]
+    @user.photo.destroy
+    @user.save!
+    redirect_to "/profile/edit"
+  end
+
   def info; end
 
   # content this person follows

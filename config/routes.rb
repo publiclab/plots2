@@ -214,6 +214,7 @@ Plots2::Application.routes.draw do
   get 'nearby' => 'home#nearby'
   get 'profile/edit' => 'users#edit'
   post 'profile/photo' => 'users#photo'
+  delete 'profile/photo/delete/:id' => 'users#delete'
   get 'profile/info/:id' => 'users#info', as: 'info'
   get 'profile' => 'users#profile'
   get 'profile/:id' => 'users#profile'

@@ -35,6 +35,15 @@
 </div>
 <p class="profile-uploading" style="display:none;padding-top:4px;color:#aaa;"><%= t('users._photo.uploading') %>...</p>
 
+<div style="font-size: 20px; text-align: center; margin-top: -20px;">
+  <% if @user.photo_file_name %>
+  <%= link_to url_for(action: :delete,id: @user.id),method: :delete, data: {confirm: I18n.t('users._photo.are_you_sure_delete', path: @user.path)} do %>
+            <i class="fa fa-trash" ></i>
+            <span class="hidden-xs hidden-sm hidden-md hidden-lg"> <%= t('wiki.show.delete') %></span>
+          <% end %>
+  <% end %>
+</div>
+
 <script>
 
   // file field trigger
