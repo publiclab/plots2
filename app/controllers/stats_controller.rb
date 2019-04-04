@@ -13,8 +13,8 @@ class StatsController < ApplicationController
       params[:start] = Time.now - to_keyword(params[:options])
       params[:end] = Time.now
     end
-    @start = params[:start] ? Time.parse(params[:start].to_s) : Time.now - 3.months
-    @end = params[:end] ? Time.parse(params[:end].to_s) : Time.now
+    @start = start
+    @end = fin
     @notes = Node.published.select(%i(created type))
       .where(type: 'note', created: @start.to_i..@end.to_i)
       .count(:all)
@@ -76,72 +76,61 @@ class StatsController < ApplicationController
   end
 
   def notes
-    time
-    export_as_json(@start, @end, 'note')
+    export_as_json('note')
   end
 
   def wikis
-    time
-    export_as_json(@start, @end, 'page')
+    export_as_json('page')
   end
 
   def users
-    time
-    data = User.where(created_at: @start..@end)
-      .where(status: 1)
-      .select(:username, :role, :bio, :photo_file_name, :id, :created_at)
-    respond_to do |format|
-      format.csv { send_data data.to_csv }
-      format.json { send_data data.to_json, type: 'application/json; header=present', disposition: "attachment; filename=user.json" }
-    end
+    data = User.where(created_at: start..fin)
+          .where(status: 1)
+         .select(:username, :role, :bio, :photo_file_name, :id, :created_at)
+    format(data, 'users')
   end
 
   def questions
-    time
-    data = Node.published.questions.where(created: @start.to_i..@end.to_i).all
-    respond_to do |format|
-      format.csv { send_data data.to_csv }
-      format.json { send_data data.to_json, type: 'application/json; header=present', disposition: "attachment; filename=questions.json" }
-    end
+    data = Node.published.questions.where(created: start.to_i..fin.to_i).all
+    format(data, 'questions')
   end
 
   def answers
-    time
-    data = Answer.where(created_at: @start..@end).all
-    respond_to do |format|
-      format.csv { send_data data.to_csv }
-      format.json { send_data data.to_json, type: 'application/json; header=present', disposition: "attachment; filename=answers.json" }
-    end
+    data = Answer.where(created_at: start..fin).all
+    format(data, 'answers')
   end
 
   def comments
-    time
-    data = Comment.select(%i(status timestamp)).where(status: 1, timestamp: @start.to_i...@end.to_i).all
-    respond_to do |format|
-      format.csv { send_data data.to_csv }
-      format.json { send_data data.to_json, type: 'application/json; header=present', disposition: "attachment; filename=comment.json" }
-    end
+    data = Comment.where(status: 1, timestamp: start.to_i...fin.to_i).all
+    format(data, 'comment')
   end
 
-  def export_as_json(starting, ending, type)
-    data = Node.published.select(%i(created type))
-      .where(type: type, created: starting.to_i..ending.to_i)
+  def export_as_json(type)
+    data = Node.published
+      .where(type: type, created: start.to_i..fin.to_i)
       .all
-    respond_to do |format|
-      format.csv { send_data data.to_csv }
-      format.json { send_data data.to_json, type: 'application/json; header=present', disposition: "attachment; filename=#{type}.json" }
-    end
+    format(data, type)
   end
 
   private
 
-  def time
-    @start = params[:start] ? Time.parse(params[:start].to_s) : Time.now - 1.month
-    @end = params[:end] ? Time.parse(params[:end].to_s) : Time.now
+  def start
+    params[:start] ? Time.parse(params[:start].to_s) : Time.now - 3.months
+  end
+
+  def fin
+    params[:end] ? Time.parse(params[:end].to_s) : Time.now
   end
 
   def to_keyword(param)
-    str =  param.split.second
+    str = param.split.second
     1.send(str.downcase)
+  end
+
+  def format(data, name)
+    respond_to do |format|
+      format.csv { send_data data.to_csv, type: 'text/csv' }
+      format.json { send_data data.to_json, type: 'application/json; header=present', disposition: "attachment; filename=#{name}.json" }
+    end
   end
 end

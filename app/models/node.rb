@@ -19,6 +19,7 @@ class UniqueUrlValidator < ActiveModel::Validator
 end
 
 class Node < ActiveRecord::Base
+  extend RawStats
   include NodeShared # common methods for node-like models
 
   self.table_name = 'node'
@@ -143,15 +144,6 @@ class Node < ActiveRecord::Base
       "/map/#{title.parameterize}/#{Time.now.strftime('%m-%d-%Y')}"
     elsif type == 'feature'
       "/feature/#{title.parameterize}"
-    end
-  end
-
-  def self.to_csv(options = {})
-    CSV.generate(options) do |csv|
-      csv << column_names
-      all.each do |object|
-        csv << object.attributes.values_at(*column_names)
-      end
     end
   end
 

@@ -1,5 +1,6 @@
 class Comment < ApplicationRecord
   include CommentsShared
+  extend RawStats
 
   belongs_to :node, foreign_key: 'nid', touch: true, counter_cache: true
   belongs_to :user, foreign_key: 'uid'
