@@ -213,7 +213,7 @@ class UsersController < ApplicationController
         end
       end
       @count_ans = @profile_user.answers.count
-      @count_ques = @profile_user.questions.length
+      @count_ques = @profile_user.questions.where(status:1).length
     end
   end
 
