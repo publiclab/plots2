@@ -56,7 +56,7 @@ class UsersController < ApplicationController
           session[:openid_return_to] = nil
           redirect_to return_to
         else
-          flash[:notice] = I18n.t('users_controller.successful_updated_profile') + "<a href='/dashboard'>" + I18n.t('users_controller.return_dashboard') + " &raquo;</a>"
+          flash[:notice] = I18n.t('users_controller.successful_updated_profile') + "<a href='/profile'>" + I18n.t('users_controller.return_profile') + " &raquo;</a>"
           return redirect_to "/profile/" + @user.username + "/edit"
         end
       else

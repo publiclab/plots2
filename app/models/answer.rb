@@ -1,6 +1,7 @@
 class Answer < ApplicationRecord
   include CommentsShared
   include NodeShared
+  extend RawStats
 
   belongs_to :node, foreign_key: 'nid'
   belongs_to :user, foreign_key: 'uid'

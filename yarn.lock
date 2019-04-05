@@ -1021,10 +1021,10 @@ cwise@^1.0.4, cwise@^1.0.7:
     static-module "^1.0.0"
     uglify-js "^2.6.0"
 
-cytoscape@^3.5.0:
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.5.0.tgz#b6cc5a9c66b7f29f8d7f6dfbb0c0e31a8af748a1"
-  integrity sha512-00CKGVqp8L1TOPfDv8Xfra0pBcSkMHpk0VmLNKRxQ+isSvDtJafDYfvcTCUO4CrvKW2c7pKli0ZcWPjProBGTw==
+cytoscape@^3.5.2:
+  version "3.5.2"
+  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.5.2.tgz#5955cc76a5a7d57192b4f3835c13eda9771e9bce"
+  integrity sha512-OrcbYp4gu4118m0x45gJeTO0iwSjUolx4G0hWOrIyWbb42kXlrhU++YZahbreutBV6u/PpBEGlMZzZDc2OdVGw==
   dependencies:
     heap "^0.2.6"
     lodash.debounce "^4.0.8"
@@ -2142,10 +2142,10 @@ image-sequencer-invert@^1.0.0:
   resolved "https://registry.yarnpkg.com/image-sequencer-invert/-/image-sequencer-invert-1.0.0.tgz#bb5c0cc2f50ed9ff4cd8d89a7929188f381a5dd4"
   integrity sha512-LL9jwCnSbUy676q9ULJ6M04mp1TVOxpjlckMGN2SyFOgPE4SGL2/IRcO33BDwafmFiupqDdgs7gUHEbsFcCqgQ==
 
-image-sequencer@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/image-sequencer/-/image-sequencer-3.0.1.tgz#9b980ed04ec727d318f456fec0541aba2a0e7e80"
-  integrity sha512-GratHUzUE+qyfjyk23sFbCeaF6nJLNYlkq79jsSfivrKQVCpvqmLIzuELjiGS8eicQfutxnMwM35HzVyNeXDTA==
+image-sequencer@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/image-sequencer/-/image-sequencer-3.1.1.tgz#8f4a4887f2cc38212c929ab1b6778a7331076f14"
+  integrity sha512-spWmjZuN4kst8OptdyFvl1H50RbX3xqQiE+kjkGlaFw+HG4RovgJXk72tUbYHazWjULpoBSvFJrbNJy1MhaKWA==
   dependencies:
     bootstrap "~3.4.0"
     buffer "~5.2.1"
