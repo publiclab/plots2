@@ -136,7 +136,7 @@
           <% end %>
         </li>
         <li id="md-ham" class="hidden-lg dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-white fa-bars"></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-white fa-bars"></span></a>
             <ul class="dropdown-menu">
                 <li class="hidden-lg hidden-md">
                   <a href="//store.publiclab.org"><%= t('layout._header.store') %></a>
@@ -147,7 +147,7 @@
                 <!--- These menu items will only appear in the "More" dropdown menu. --->
                 <% if current_user %>
                   <li class="hidden-lg">
-                    <a rel="tooltip" title="<%= t('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard">Dashboard</i></a>
+                    <a rel="tooltip" title="<%= t('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard">Dashboard</a>
                   </li>
                 <% else %>
                 <li class="hidden-lg">
