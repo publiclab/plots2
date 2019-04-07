@@ -6,7 +6,7 @@ class SearchTest < ApplicationSystemTestCase
     visit '/'
 
     fill_in("searchform_input", with: "Canon")
-    find('button.btn-default').click
+    find('button.btn-light').click
 
     assert_selector('h2', text: 'Results for Canon')
   end
