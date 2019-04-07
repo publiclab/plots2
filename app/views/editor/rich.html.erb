@@ -90,52 +90,58 @@
       </div>
 
       <div class="ple-module-content col-md-9">
-          <button id="location_button" class="btn btn-lg btn-default"><i class="fa fa-map-marker" aria-hidden="true"></i> Add a location</button>
-          <p class="ple-help"><span class="ple-help-minor">Search location through place-name , latitude and longitude or by panning the map .</span></p>
+        <button id="location_button" class="btn btn-lg btn-default"><i class="fa fa-map-marker" aria-hidden="true"></i> Add a location</button>
+        <p class="ple-help"><span class="ple-help-minor">Search the map by entering a location's name or its latitude & longitude coordinates. You can also pan the map directly.</span></p>
 
-          <div id="map_content">    
-            <div class="row">
-              <div class="col-md-6"> 
-                <div id="map" class="leaflet-map" style="width: 100% ; height: 300px; margin-bottom:8px;"></div>
-                </div>
-                <div class="col-md-6">
-                  <label>By place name</label>
-                    <p>
-                      <input id="placenameInput" type="text" class="form-control" />
-                    </p>
-                     <p>
-                      <label>Or by entering coordinates</label>
-                      <div class="row">
-                        <div class="col-md-6">
-                          <p><label>
-                            Latitude
-                            <input id="lat" type="text" class="form-control" placeholder="Latitude" />
-			  </label></p>
-                        </div>
-                        <div class="col-md-6">
-                          <p><label>
-                            Longitude
-                            <input id="lng" type="text" class="form-control" placeholder="Longitude" />
-                          </label></p>
-                        </div>
-                      </div>
-                    </p>
-                    <br>
-                    <p><button class="btn btn-lg btn-default" onclick="editor.mapModule.blurredLocation.geocodeWithBrowser(true);">
-                      <div id="ldi-geocode-button">          
-                        <i class="fa fa-compass"></i> Use current location
-                      </div>
-                    </button></p>
-
-                     <br>
-                     <label>
-                       <input id="obscureLocation" type="checkbox" style="vertical-align:middle;margin:0px" onchange='editor.mapModule.blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);'>
-                        Blur my location
-                     </label>
-                     <a href="https://publiclab.org/location-privacy">Learn more</a>
-                </div>   
+        <div id="map_content">    
+          <div class="row">
+            <div class="col-md-6"> 
+              <div id="map" class="leaflet-map" style="width: 100% ; height: 300px; margin-bottom:8px;"></div>
             </div>
+
+            <div class="col-md-6">
+              <label>By place name</label>
+                <p>
+                  <input id="placenameInput" type="text" class="form-control" />
+                </p>
+                <p>
+                  <label>Or by entering coordinates</label>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <p><label>
+                      Latitude
+                      <input id="lat" type="text" class="form-control" placeholder="Latitude" />
+                      </label></p>
+                    </div>  
+                    <div class="col-md-6">
+                      <p><label>
+                        Longitude
+                        <input id="lng" type="text" class="form-control" placeholder="Longitude" />
+                      </label></p>
+                    </div>
+                  </div>
+                </p>
+
+                <br>
+
+                <p><button class="btn btn-lg btn-default" onclick="editor.mapModule.blurredLocation.geocodeWithBrowser(true);">
+                  <div id="ldi-geocode-button">          
+                    <i class="fa fa-compass"></i> Use current location
+                  </div>
+                </button></p>
+
+                <br>
+                
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input id="obscureLocation" type="checkbox" class="form-check-input" onchange='editor.mapModule.blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);'>
+                    Blur my location
+                  </label>
+                  <a href="https://publiclab.org/location-privacy">Learn more</a>
+                </div>
+            </div>   
           </div>
+        </div>
       </div>
     </div>
     <!-- Map Module end -->  
