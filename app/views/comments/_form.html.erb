@@ -105,58 +105,6 @@
           <%= t('comments._form.email_notifications') %>
         </p>
 
-      </form>
-    </div>
-    <script>
-      jQuery(document).ready(function() {
-        $E.initialize();
-      });
-
-      $D = {
-        uid: <%= current_user.uid if current_user %>,
-        type: 'comment'
-      }
-        $('#input_label').click(function(e){
-          $E.initialize({});
-      });
-
-      function handleClick() {
-          $D.selected = $(event.target.closest('div.comment-form-wrapper'));
-          $E.refresh();
-      }
-    </script>
-
-    <%= javascript_include_tag "dragdrop" %>
-    <script src="/emoji.js" type="text/javascript"></script>
-    <script src="/assets/atwho_autocomplete.js" type="text/javascript"></script>
-    <%= javascript_include_tag "comment.js" %>
-
-    <div class="control-group">
-      <button type="submit" class="btn btn-primary"><%= t('comments._form.publish') %></button>
-      <% if local_assigns[:comment] %>
-        <a class="btn btn-outline-secondary preview-btn" onClick="$('#c<%= comment.cid %>preview').toggle();
-            $('#c<%= comment.cid %>text-input').toggle();
-            $('#c<%= comment.cid %>edit .preview-btn').button('toggle');
-            $E.generate_preview('c<%= comment.cid %>preview',$('#c<%= comment.cid %>text-input').val())">
-          <%= t('comments._form.preview') %>
-        </a>
-        <a class="btn btn-outline-secondary" onClick="$('#c<%= comment.cid %>show').toggle();$('#c<%= comment.cid %>edit').toggle()"><%= t('comments._form.cancel') %></a>
-      <% else %>
-        <a class="btn btn-outline-secondary preview-btn>" id="post_comment" data-previewing-text="Hide Preview" onClick="handleClick();$E.toggle_preview()"><%= t('comments._form.preview') %></a>
-      <% end %>
-
-      <span style="color:#888;"> &nbsp;
-        <br class="d-md-none" /><%= raw t('comments._form.logged_in', :username => current_user.username) %> |
-        <a target="_blank" href="/wiki/authoring-help#Formatting"><%= t('comments._form.formatting') %></a> |
-        <a onClick="$('#who-is-notified-form').toggle()"><%= t('comments._form.notifications') %></a> |
-        <a onClick = "insertTitleSuggestionTemplate()">Propose Title</a>
-      </span>
-    </div>
-
-    <p id="who-is-notified-form" style="display:none;color:#888;">
-      <%= t('comments._form.email_notifications') %>
-    </p>
-
   </form>
 </div>
 </div>
