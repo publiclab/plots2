@@ -1,0 +1,41 @@
+/* 
+https://github.com/twbs/bootstrap/issues/27755 
+The issue arises from Bootstrap V4 positioning checkboxes assuming they're a particular 
+pixel size, but Windows & Mac (and probably other OS's) size them slighlty differently.
+
+Results in checkboxes not appearing vertically aligned to their labels depending 
+on the OS used (incompatibility is system-level) and to varying degrees depending on the browser 
+- see here for ex:https://github.com/publiclab/plots2/pull/5372#pullrequestreview-223542883
+
+Note the issue has been flagged to solve for **Bootstrap V5** release.
+On update: if resolved, can delete this but ensure compatibility first.
+*/
+
+/* 
+- To position checkboxes as hanging controls you should **only indent the labels**
+this is v.4 usage as well. 
+- !important declarations ensure a Bootstrap update wont override these immediately
+*/
+
+div.form-check {
+  position: relative !important;
+  display: block !important;
+  padding-left: 1.75rem !important; /* btsp's default */
+
+  label.form-check-label {
+    margin-bottom: 0 !important; /* Override btsp's default `<label>` bottom margin */
+  }
+
+  input[type=checkbox].form-check-input {
+    margin: 0 !important; /* zero out btsp's margin declaration */
+    margin-top: 0 !important; 
+    position: absolute !important;
+    margin-left: -1.75rem !important; /* btsp's default */
+    top: 50% !important;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%) !important;
+  }
+}
+
