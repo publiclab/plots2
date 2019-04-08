@@ -16,7 +16,7 @@
 
 <h1 style="font-family: 'Junction Light';">
   <i class="fa fa-book"></i> <%= @revision.title %>
-  <a onClick="$('#wiki-toolbar').toggle()" class="btn btn-link"><b class="caret"></b></a>
+  <a rel="tooltip" title="Show or Hide the toolbar." data-placement="right" onClick="$('#wiki-toolbar').toggle()" class="btn btn-link"><b class="caret"></b></a>
 </h1>
 
 <% if @is_revision %>
