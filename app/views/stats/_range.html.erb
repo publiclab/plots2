@@ -84,15 +84,20 @@
                 <%= link_to "Comments", stats_comments_path(format: 'csv', start: params[:start], end: params[:end]) %>
             </li>
             <li>
-                <li>
-                    <%= link_to "Users", stats_users_path(format: 'csv', start: params[:start], end: params[:end]) %>
-                </li>
-                <li>
-                    <%= link_to "Questions Asked", stats_questions_path(format: 'csv', start: params[:start], end: params[:end]) %>
-                </li>
-                <li>
-                    <%= link_to "Questions Answered", stats_answers_path(format: 'csv', start: params[:start], end: params[:end]) %>
-                </li>
+                <%= link_to "Users", stats_users_path(format: 'csv', start: params[:start], end: params[:end]) %>
+            </li>
+            <li>
+                <%= link_to "Questions Asked", stats_questions_path(format: 'csv', start: params[:start], end: params[:end]) %>
+            </li>
+            <li>
+                <%= link_to "Questions Answered", stats_answers_path(format: 'csv', start: params[:start], end: params[:end]) %>
+            </li>
+            <li>
+                <%= link_to "Tags (all)", stats_tags_path(format: 'csv') %>
+            </li>
+            <li>
+                <%= link_to "Node Tags", stats_node_tags_path(format: 'csv'), start: params[:start], end: params[:end] %>
+            </li>
         </ul>
     </div>
     </div>

@@ -100,6 +100,16 @@ class StatsController < ApplicationController
     format(data, 'answers')
   end
 
+  def tag
+    data = Tag.select(:tid, :name, :parent, :count).all
+    format(data, 'tag')
+  end
+
+  def node_tag
+    data = NodeTag.select(:tid, :nid, :uid).where(date: start.to_i...fin.to_i).all
+    format(data, 'node_tag')
+  end
+
   def comments
     data = Comment.where(status: 1, timestamp: start.to_i...fin.to_i).all
     format(data, 'comment')
