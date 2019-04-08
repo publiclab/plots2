@@ -216,16 +216,10 @@
   margin-right: 5px;
 }
 
-/* Issue #5031 (daddyjab):
-   Revised to add border of
-   offsetting color to Twitter buttons */
 .dashboard .social-media-btn #follow-button {
   border: 1px solid #00aced;
 }
 
-/* Issue #5031 (daddyjab):
-  Revised to add border of
-  offsetting color to Facebook buttons */
 .dashboard .social-media-btn #facebook button {
   border: 1px solid #29487d;
 }
