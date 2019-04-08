@@ -18,10 +18,14 @@ class Image < ApplicationRecord
 
   before_validation :download_remote_image, if: :remote_url_provided?
   validates :remote_url, presence: true, if: :remote_url_provided? # , :message => "is invalid or inaccessible" # this message thing is old-style rails 2.3.x
-  before_post_process :is_image?
+  before_post_process :is_image?, :skip_large_gifs
 
   def is_image?
     (filetype == 'jpg' || filetype == 'jpeg' || filetype == 'gif' || filetype == 'png')
+  end
+
+  def skip_large_gifs
+    ! (filetype == 'gif' && photo_file_size > 3.megabytes)
   end
 
   def filetype
