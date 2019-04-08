@@ -51,7 +51,7 @@ gem 'rb-readline'
 gem 'rdiscount', '~> 2.2', '>= 2.2.0.1'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'responders', '~> 2.4'
-gem 'rubocop', '~> 0.67.1', require: false
+gem 'rubocop', '~> 0.67.2', require: false
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
 gem 'sentry-raven'
