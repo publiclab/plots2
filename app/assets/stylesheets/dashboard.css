@@ -220,7 +220,7 @@
   border: 1px solid #00aced;
 }
 
-.dashboard .social-media-btn #facebook button {
+.dashboard .social-media-btn button.inlineBlock {
   border: 1px solid #29487d;
 }
 
