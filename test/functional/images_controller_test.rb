@@ -54,7 +54,7 @@ class ImagesControllerTest < ActionController::TestCase
     post :create,
         params: {
             image: {
-                photo: upload_data,
+                photo: uploaded_data,
                 title: 'Rails image',
             },
         }
