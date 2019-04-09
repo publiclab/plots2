@@ -50,12 +50,11 @@ class ImagesControllerTest < ActionController::TestCase
 
   test 'upload a small gif' do
     user = UserSession.create(users(:jeff))
-    file ||= File.open(File.expand_path(Rails.root + 'test/fixtures/small.gif', __FILE__))
-    uploaded_data = ActionDispatch::Http::UploadedFile.new(tempfile: file, filename: File.basename(file), type: "image/gif")
+    upload_photo = fixture_file_upload('small.gif', 'image/gif')
     post :create,
         params: {
             image: {
-                photo: uploaded_data,
+                photo: upload_photo,
                 title: 'Rails image',
             },
         }
@@ -66,12 +65,11 @@ class ImagesControllerTest < ActionController::TestCase
 # We need to synthesize a fake big gif locally? (it won't be processed anyways)
 #   test 'rejecting upload of a big gif' do
 #     user = UserSession.create(users(:jeff))
-#     file ||= File.open(File.expand_path(Rails.root + 'test/fixtures/big.gif', __FILE__))
-#     uploaded_data = ActionDispatch::Http::UploadedFile.new(tempfile: file, filename: File.basename(file), type: "image/gif")
+#     upload_photo = fixture_file_upload('small.gif', 'image/gif')
 #     post :create,
 #         params: {
 #             image: {
-#                 photo: upload_data,
+#                 photo: upload_photo,
 #                 title: 'Rails image',
 #             },
 #         }
