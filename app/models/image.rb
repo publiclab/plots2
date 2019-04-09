@@ -25,7 +25,7 @@ class Image < ApplicationRecord
   end
 
   def skip_large_gifs
-    ! (filetype == 'gif' && photo_file_size > 3.megabytes)
+    ! (filetype == 'gif' && photo_file_size.to_i > 3.megabytes)
   end
 
   def filetype
