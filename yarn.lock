@@ -1021,10 +1021,10 @@ cwise@^1.0.4, cwise@^1.0.7:
     static-module "^1.0.0"
     uglify-js "^2.6.0"
 
-cytoscape@^3.5.1:
-  version "3.5.1"
-  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.5.1.tgz#c26b7fa3f829126720a835a6a8fc23b6ed1da921"
-  integrity sha512-Ql+76pA061ey3IASg116apVG0MK9fR06PlYJGs29bmI+5vvCtzuZpt4VvETshliMd/z2Eh8LsRmyx66lOyZwTQ==
+cytoscape@^3.5.2:
+  version "3.5.2"
+  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.5.2.tgz#5955cc76a5a7d57192b4f3835c13eda9771e9bce"
+  integrity sha512-OrcbYp4gu4118m0x45gJeTO0iwSjUolx4G0hWOrIyWbb42kXlrhU++YZahbreutBV6u/PpBEGlMZzZDc2OdVGw==
   dependencies:
     heap "^0.2.6"
     lodash.debounce "^4.0.8"
@@ -2765,10 +2765,10 @@ markdown-it@5.1.0:
     mdurl "~1.0.1"
     uc.micro "^1.0.0"
 
-marked@^0.3.2:
-  version "0.3.19"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-0.3.19.tgz#5d47f709c4c9fc3c216b6d46127280f40b39d790"
-  integrity sha512-ea2eGWOqNxPcXv8dyERdSr/6FmzvWwzjMxpfGB/sbMccXoct+xY+YukPD+QTUZwyvK7BZwcr4m21WBOW41pAkg==
+marked@^0.6.2:
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/marked/-/marked-0.6.2.tgz#c574be8b545a8b48641456ca1dbe0e37b6dccc1a"
+  integrity sha512-LqxwVH3P/rqKX4EKGz7+c2G9r98WeM/SW34ybhgNGhUQNKtf1GmmSkJ6cDGJ/t6tiyae49qRkpyTw2B9HOrgUA==
 
 mdurl@~1.0.1:
   version "1.0.1"

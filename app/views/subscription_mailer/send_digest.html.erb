@@ -10,7 +10,7 @@
     <% @nodes.each do |n| %>
       <tr>
         <div style="margin-bottom: 15px">
-          <h3 style="font-weight: 500;margin: 0;" style="margin: 0;"><%= n.title %></h3>
+          <h3 style="font-weight: 500;margin: 0;" style="margin: 0;"><a href="<%= Rails.root + n.path %>"><%= n.title %></a></h3>
         </div>
         <div style="float: left;">
           <% if n.author.photo? %>
@@ -22,10 +22,6 @@
         <div style="margin-top: 20px;">
           <b style="font-weight: 500;"><%= n.author.username.capitalize %></b>
           <p style="margin: 0;color: #999;font-weight: 500;">Published <%= n.created_at %>.strftime("%m/%d")</p>
-        </div>
-        <div <% unless n.main_image.present? %> colspan="2" <% end %> style="padding-bottom: 10px;">
-          <p style="font-size: 1.1em;line-height: 1.5;text-align: justify;font-weight: 300;"><%= n.body.truncate(175) %><a href="https://<%= Rails.root %><%= n.path %>" style="text-decoration: none;">  Read more</a></p>
-     
         </div>
         <% if n.main_image.present? %>
           <div style="padding-bottom: 30px;">
