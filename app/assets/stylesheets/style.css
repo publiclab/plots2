@@ -484,3 +484,7 @@ textarea, input {
     font-weight: normal;
     text-decoration: inherit;
 }
+
+.form-grey {
+  color:#888;
+}
