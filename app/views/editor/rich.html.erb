@@ -31,12 +31,7 @@
   <div class="ple-header">
     <h1>Share</h1>
     <p>
-      <i>
-        Or use the 
-        <a target="_blank" href="?<%= request.env['QUERY_STRING'] %>&legacy=true">
-          legacy editor
-        </a>
-      </i>
+      <i>Or use the <a target="_blank" href="?<%= request.env['QUERY_STRING'] %>&legacy=true">legacy editor</a></i>
     </p>
   </div>
 
@@ -56,7 +51,8 @@
       <div class="ple-module-content col-md-9">
         <input 
           class="form-control input-lg" 
-          type="text" placeholder="Title" 
+          type="text" 
+          placeholder="Title" 
           value="<%= if @node then @node.title else params[:title] end %>" 
         />
       </div>
@@ -94,9 +90,7 @@
             />
           </p>
           <p class="ple-help">
-            <span class="ple-help-minor">
-              Select an optional main image for your post.
-            </span>
+            <span class="ple-help-minor">Select an optional main image for your post.</span>
           </p>
         </div>
       </div>
@@ -117,9 +111,7 @@
           Add a location
         </button>
         <p class="ple-help">
-          <span class="ple-help-minor">
-            Search the map by entering a location's name or its latitude & longitude coordinates. You can also pan the map directly.
-          </span>
+          <span class="ple-help-minor">Search the map by entering a location's name or its latitude & longitude coordinates. You can also pan the map directly.</span>
         </p>
 
         <div id="map_content">    
@@ -288,15 +280,9 @@
     </div>
 
     <button class="btn btn-lg btn-default btn-more">...</button>
-
-    <span> &nbsp; By publishing, you agree to 
-      <a href="https://publiclab.org/licenses">open source your work</a>
-      <span class="hidden-xs"> so that others may use it.</span>
-    </span>
-
-    <button class="ple-publish btn btn-lg btn-primary pull-right disabled">
-      <% if controller.action_name == "edit" && @node.status == 3 %>Save<% else %>Publish<% end %>
-    </button>
+   
+    <span> &nbsp; By publishing, you agree to <a href="https://publiclab.org/licenses">open source your work</a><span class="hidden-xs"> so that others may use it.</span></span>
+    <button class="ple-publish btn btn-lg btn-primary pull-right disabled"><% if controller.action_name == "edit" && @node.status == 3 %>Save<% else %>Publish<% end %></button>
     <span class="ple-help pull-right">
       <% if controller.action_name != "edit" && !current_user.first_time_poster %>
         <span id="newOpts" style="display: inline-block;">
