@@ -18,6 +18,7 @@
  *= require leaflet/dist/leaflet.css
  *= require_self
  *= require style
+ *= require login_modal
  *= require feature
  *= require btsp_checkbox_override
  *= require editor
