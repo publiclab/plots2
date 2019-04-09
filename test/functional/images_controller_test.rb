@@ -47,7 +47,35 @@ class ImagesControllerTest < ActionController::TestCase
         }
     assert_equal 'application/json', @response.content_type
   end
-  
+
+  test 'upload a small gif' do
+    file ||= File.open(File.expand_path(Rails.root + 'test/fixtures/small.gif', __FILE__))
+    uploaded_data = ActionDispatch::Http::UploadedFile.new(tempfile: file, filename: File.basename(file), type: "image/gif")
+    post :create,
+        params: {
+            image: {
+                photo: upload_data,
+                title: 'Rails image',
+            },
+        }
+    assert_response :success
+  end
+
+# We'd like to do this but don't want to have to add a big gif to the repository... 
+# We need to synthesize a fake big gif locally? (it won't be processed anyways)
+#   test 'rejecting upload of a big gif' do
+#     file ||= File.open(File.expand_path(Rails.root + 'test/fixtures/big.gif', __FILE__))
+#     uploaded_data = ActionDispatch::Http::UploadedFile.new(tempfile: file, filename: File.basename(file), type: "image/gif")
+#     post :create,
+#         params: {
+#             image: {
+#                 photo: upload_data,
+#                 title: 'Rails image',
+#             },
+#         }
+#     assert_response :failure
+#   end
+
   test 'creation via daturl' do
     user = UserSession.create(users(:jeff))
     data = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAQABADASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAf/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAABgj/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABykX//Z"
