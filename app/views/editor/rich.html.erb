@@ -29,10 +29,15 @@
 <div class="pl-editor">
 
   <div class="ple-header">
-
     <h1>Share</h1>
-    <p><i>Or use the <a target="_blank" href="?<%= request.env['QUERY_STRING'] %>&legacy=true">legacy editor</a></i></p>
-
+    <p>
+      <i>
+        Or use the 
+        <a target="_blank" href="?<%= request.env['QUERY_STRING'] %>&legacy=true">
+          legacy editor
+        </a>
+      </i>
+    </p>
   </div>
 
   <div class="ple-content">
@@ -49,7 +54,11 @@
       </div>
 
       <div class="ple-module-content col-md-9">
-        <input class="form-control input-lg" type="text" placeholder="Title" value="<%= if @node then @node.title else params[:title] end %>" />
+        <input 
+          class="form-control input-lg" 
+          type="text" placeholder="Title" 
+          value="<%= if @node then @node.title else params[:title] end %>" 
+        />
       </div>
 
     </div>
@@ -64,18 +73,31 @@
       </div>
 
       <div class="ple-module-content col-md-9 container">
-        <div class="ple-drag-drop col-md-6">
-          Drag an image here to upload.
-        </div>
+        <div class="ple-drag-drop col-md-6">Drag an image here to upload.</div>
         <div class="col-md-6 help">
-
           <div style="display:none;" class="progress">
-            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
+            <div 
+              class="progress-bar progress-bar-striped active" 
+              role="progressbar" 
+              aria-valuenow="0" 
+              aria-valuemin="0" 
+              aria-valuemax="100" 
+              style="width: 0%;">
+            </div>
           </div>
-
-          <p><input type="file"  accept=".png, .jpg, .jpeg" name="image[photo]" value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>" /></p>
-          <p class="ple-help"><span class="ple-help-minor">Select an optional main image for your post.</span></p>
-
+          <p>
+            <input 
+              type="file"  
+              accept=".png, .jpg, .jpeg" 
+              name="image[photo]" 
+              value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>" 
+            />
+          </p>
+          <p class="ple-help">
+            <span class="ple-help-minor">
+              Select an optional main image for your post.
+            </span>
+          </p>
         </div>
       </div>
 
@@ -90,56 +112,93 @@
       </div>
 
       <div class="ple-module-content col-md-9">
-        <button id="location_button" class="btn btn-lg btn-default"><i class="fa fa-map-marker" aria-hidden="true"></i> Add a location</button>
-        <p class="ple-help"><span class="ple-help-minor">Search the map by entering a location's name or its latitude & longitude coordinates. You can also pan the map directly.</span></p>
+        <button id="location_button" class="btn btn-lg btn-default">
+          <i class="fa fa-map-marker" aria-hidden="true"></i> 
+          Add a location
+        </button>
+        <p class="ple-help">
+          <span class="ple-help-minor">
+            Search the map by entering a location's name or its latitude & longitude coordinates. You can also pan the map directly.
+          </span>
+        </p>
 
         <div id="map_content">    
           <div class="row">
             <div class="col-md-6"> 
-              <div id="map" class="leaflet-map" style="width: 100% ; height: 300px; margin-bottom:8px;"></div>
+              <div 
+                id="map" 
+                class="leaflet-map" 
+                style="width: 100% ; height: 300px; margin-bottom:8px;">
+              </div>
             </div>
 
             <div class="col-md-6">
               <label>By place name</label>
-                <p>
-                  <input id="placenameInput" type="text" class="form-control" />
-                </p>
-                <p>
-                  <label>Or by entering coordinates</label>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <p><label>
+              <p>
+                <input id="placenameInput" type="text" class="form-control" />
+              </p>
+              <p><label>Or by entering coordinates</label></p>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <p>
+                    <label>
                       Latitude
-                      <input id="lat" type="text" class="form-control" placeholder="Latitude" />
-                      </label></p>
-                    </div>  
-                    <div class="col-md-6">
-                      <p><label>
-                        Longitude
-                        <input id="lng" type="text" class="form-control" placeholder="Longitude" />
-                      </label></p>
-                    </div>
-                  </div>
-                </p>
-
-                <br>
-
-                <p><button class="btn btn-lg btn-default" onclick="editor.mapModule.blurredLocation.geocodeWithBrowser(true);">
-                  <div id="ldi-geocode-button">          
-                    <i class="fa fa-compass"></i> Use current location
-                  </div>
-                </button></p>
-
-                <br>
-                
-                <div class="form-check">
-                  <label class="form-check-label">
-                    <input id="obscureLocation" type="checkbox" class="form-check-input" onchange='editor.mapModule.blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);'>
-                    Blur my location
-                  </label>
-                  <a href="https://publiclab.org/location-privacy">Learn more</a>
+                      <input 
+                        id="lat" 
+                        type="text" 
+                        class="form-control" 
+                        placeholder="Latitude" 
+                      />
+                    </label>
+                  </p>
                 </div>
-            </div>   
+
+                <div class="col-md-6">
+                  <p>
+                    <label>
+                      Longitude
+                      <input 
+                        id="lng" 
+                        type="text" 
+                        class="form-control" 
+                        placeholder="Longitude" 
+                      />
+                    </label>
+                  </p>
+                </div>
+              </div>
+
+              <br>
+
+              <p>
+                <button 
+                  class="btn btn-lg btn-default" 
+                  onclick="editor.mapModule.blurredLocation.geocodeWithBrowser(true);" 
+                >
+                  <div id="ldi-geocode-button">          
+                    <i class="fa fa-compass"></i> 
+                    Use current location
+                  </div>
+                </button>
+              </p>
+
+              <br>
+              
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input 
+                    id="obscureLocation" 
+                    type="checkbox" 
+                    class="form-check-input" 
+                    onchange='editor.mapModule.blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);'
+                  />
+                  Blur my location
+                </label>
+                <a href="https://publiclab.org/location-privacy">Learn more</a>
+              </div>
+
+            </div> 
           </div>
         </div>
       </div>
@@ -155,7 +214,9 @@
       </div>
 
       <div class="ple-module-content col-md-9 container">
-        <textarea id="text-input" class="ple-textarea form-control"><% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
+        <textarea id="text-input" class="ple-textarea form-control">
+          <% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %>
+        </textarea>
       </div>
 
     </div>
@@ -170,7 +231,12 @@
       </div>
 
       <div class="ple-module-content col-md-9">
-        <input class="form-control input-lg" type="text" placeholder="balloon-mapping, water-quality..." value="<% if params[:tags] || (@node && @node.tagnames) %><%= params[:tags] || @node.tagnames.join(',') %><% end %>" />
+        <input 
+          class="form-control input-lg" 
+          type="text" 
+          placeholder="balloon-mapping, water-quality..." 
+          value="<% if params[:tags] || (@node && @node.tagnames) %><%= params[:tags] || @node.tagnames.join(',') %><% end %>" 
+        />
       </div>
 
     </div>
@@ -212,21 +278,25 @@
 
     <div class="ple-menu-more" style="display:none;">
       <b>History</b>
-      <div class="ple-history">
-      </div>
+      <div class="ple-history"></div>
       <hr />
       <!--
       <div class="form-control input-md ple-history">
         <option selected value="">recent edits</option>
       </div>
       -->
-  </div>
+    </div>
 
     <button class="btn btn-lg btn-default btn-more">...</button>
 
-    <span> &nbsp; By publishing, you agree to <a href="https://publiclab.org/licenses">open source your work</a><span class="hidden-xs"> so that others may use it.</span></span>
+    <span> &nbsp; By publishing, you agree to 
+      <a href="https://publiclab.org/licenses">open source your work</a>
+      <span class="hidden-xs"> so that others may use it.</span>
+    </span>
 
-    <button class="ple-publish btn btn-lg btn-primary pull-right disabled"><% if controller.action_name == "edit" && @node.status == 3 %>Save<% else %>Publish<% end %></button>
+    <button class="ple-publish btn btn-lg btn-primary pull-right disabled">
+      <% if controller.action_name == "edit" && @node.status == 3 %>Save<% else %>Publish<% end %>
+    </button>
     <span class="ple-help pull-right">
       <% if controller.action_name != "edit" && !current_user.first_time_poster %>
         <span id="newOpts" style="display: inline-block;">
