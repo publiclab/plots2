@@ -1,0 +1,27 @@
+<div class="card-view">
+  <% @tags.each do |tag| %>
+    <div class="panel panel-default">
+      <div class="panel-heading" style="background-color: inherit; border:none;">
+        <h4 style="display: inline-block; margin-right: 10px;"><%= tag.name %></h3>
+        <p style="display: inline-block; color: #808080;"><a style="text-decoration: underline; color: #808080;" href="/tag/<%= tag.name %>"><%= Tag.follower_count(tag.name) %> people</a> discussing</p>
+      </div>
+      <div class="panel-body">
+
+      </div>  
+      <div class="panel-footer" style="background-color: inherit; border:none; padding-bottom: 22px;">
+        <a style="text-decoration: underline; color: #808080; display: inline-block;" href="/tag/<%= tag.name %>"><%= tag.count %><%= t('tag.index.more_posts') %> <i class="fa fa-angle-double-right"></i></a>
+
+        <a style="float: right;  width: 100px;" rel="tooltip" title="<%= t('sidebar._post_button.share_your_work') %>" data-placement="bottom" href="/post" class="btn btn-primary btn-sm">New post <i class="fa fa-plus fa-white"></i></a>
+        <% if current_user %>
+        <div id="follow-unfollow-column-<%=tag.tid%>" style="float: right; margin-right: 10px;">
+          <% if current_user.following(tag.name) %>
+            <a style=" width: 100px;" rel="tooltip" title="<%= t('tag.show.unfollow') %>" class="btn btn-default btn-sm active" href="/unsubscribe/tag/<%= tag.name %>"></i> <%= t('tag.index.unsubscribe') %></a>
+          <% else %>
+            <a style=" width: 100px;" class="btn btn-default btn-sm index-follow-buttons follow-btn-remote" href="/subscribe/tag/<%= tag.name %>" data-remote="true"><%= t('tag.index.subscribe') %></a>
+          <% end %>
+        </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
