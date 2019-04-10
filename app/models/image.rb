@@ -15,7 +15,7 @@ class Image < ApplicationRecord
   # validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png', 'image/jpg', 'image/gif']
   # validates_attachment_content_type :photo_file_name, :content_type => %w(image/jpeg image/jpg image/png)
   # validates :title, :presence => true, :format => {:with => /\A[a-zA-Z0-9\ -_]+\z/, :message => "Only letters, numbers, and spaces allowed"}, :length => { :maximum => 60 }
-  validates_with AttachmentSizeValidator, attributes: :photo, less_than: 25.megabytes
+  # validates_with AttachmentSizeValidator, attributes: :photo, less_than: 25.megabytes # failed because image size is stored as string for some reason
 
   before_validation :download_remote_image, if: :remote_url_provided?
   validates :remote_url, presence: true, if: :remote_url_provided? # , :message => "is invalid or inaccessible" # this message thing is old-style rails 2.3.x
@@ -25,7 +25,7 @@ class Image < ApplicationRecord
     (filetype == 'jpg' || filetype == 'jpeg' || filetype == 'gif' || filetype == 'png')
   end
 
-  def skip_large_gifs
+  def skip_large_images
     ! photo_file_size.to_i > 5.megabytes
   end
 
