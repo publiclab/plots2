@@ -68,13 +68,13 @@
       <li><a href="#"><a href="#">Post date</a></li>
       <li><a href="#"><a href="#">Recent activity</a></li>
       -->
-      
+
     </ul>
 
   </div> &nbsp;
   <span class="hidden-xs"><%= t('dashboard._activity.from_other') %> <a href=""><%= t('dashboard._activity.community_scientists') %></a></span> <%= t('dashboard._activity.past_week') %>
   <% if current_user %>
-    <span class="hidden-xs">|<a href="/profile/<%= current_user.username %>"><%= t('dashboard._activity.your_work') %></a></span>
+    <span class="hidden-xs">| <a href="/profile/<%= current_user.username %>"><%= t('dashboard._activity.your_work') %></a></span>
   <% end %>
   <!-- (2 responses) -->
 </div>
@@ -83,14 +83,14 @@
 <%= feature('dashboard-activity-feature') %>
 
 <div>
-  <small><a href="/tags" style="color: #888;">Trending topics:</a></small>
-  <span style="font-size: 18px;">
+  <small><a href="/tags" class="form-grey">Trending topics:</a></small>
+  <span class="topics-span">
    <% cache('trending-tags', expires_in: 24.hours, skip_digest: true) do %>
       <% Tag.trending.each do |i| %>
         <span class="label label-primary"><a href="/tag/<%= i.name %>"><%= i.name %></a></span>
       <% end %>
     <% end %>
-</span>
+  </span>
 </div>
 <%= render partial: 'tag/subscribe_button', locals:{tags: Tag.trending} %>
 <div class="activity">
