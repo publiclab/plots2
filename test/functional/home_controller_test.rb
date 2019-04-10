@@ -47,6 +47,23 @@ class HomeControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test 'should count only recently edited published distinct wiki pages' do
+    Node.where('type IN (?, ?, ?, ?)', 'page', 'tool', 'place', 'note').each do |node|
+      node.destroy
+    end
+
+    Node.new_note(uid: users(:bob).uid, title: 'a note', body: 'body')
+    saved, node, revision = Node.new_wiki(uid: users(:bob).uid, title: 'an unpublished wiki page', body: 'body')
+    node.spam
+    saved, node, revision = Node.new_wiki(uid: users(:bob).uid, title: 'a wiki page', body: 'body')
+    node.new_revision(uid: users(:bob).uid, title: 'a new revision for wiki page', body: 'body').save
+
+    UserSession.create(users(:bob))
+    get :dashboard
+
+    assert_select 'a[href=?]', '/wiki', { :count => 1, :text => '1 wiki edits' }
+  end
+
   test 'should show only unmoderated spam' do
     @wikis = Node.where(type: 'page')
     revisions = Revision.joins(:node)

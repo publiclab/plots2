@@ -33,10 +33,17 @@ class HomeController < ApplicationController
       @note_count = Node.select(%i(created type status))
         .where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
         .count(:all)
-      @wiki_count = Revision.select(:timestamp)
+
+      @wiki_count = Revision
+        .includes(:node)
         .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
-        .count
+        .where('node.type IN (?, ?, ?)', 'page', 'tool', 'place')
+        .where('node_revisions.status = 1')
+        .where('node.status = 1')
+        .distinct.count('nid')
+
       @user_note_count = Node.where(type: 'note', status: 1, uid: current_user.uid).count
+
       @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments = activity
       render template: 'dashboard/dashboard'
     else
