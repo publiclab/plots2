@@ -348,6 +348,14 @@ class TagController < ApplicationController
         node.delete_coord_attribute(tag.name)
       end
 
+      if tag.name.split(':')[0] == "with" && tag.name.split(':').length == 2
+        user = User.find_by_username_case_insensitive(tag.name.split(':')[1])
+        CommentMailer.notify_coauthor(user, node)
+        node.add_comment(subject: 'co-author',
+                         uid: current_user.uid,
+                         body: " @#{current_user.username} has removed @#{tag.name.split(':')[1]} as a co-author. ")
+      end
+
       node_tag.delete
       respond_with do |format|
         format.html do
