@@ -1,30 +1,65 @@
 <h3 id="activity-header"><i><%= t('dashboard._activity.activity') %></i></h3>
 
 <div class="activity-menu">
-  <a style="margin-right:2px;" href="/dashboard" class="btn btn-sm btn-default pull-right" type="button"><i class="fa fa-refresh"></i></a>
+  <a id="refreshA" href="/dashboard" class="btn btn-sm btn-default pull-right" type="button">
+    <i class="fa fa-refresh"></i>
+  </a>
 </div>
 
 <div class="meta activity-dropdown">
   <div class="btn-group">
 
-    <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <button 
+      class="btn btn-default btn-sm dropdown-toggle" 
+      type="button" 
+      data-toggle="dropdown" 
+      aria-haspopup="true" 
+      aria-expanded="false"
+    >
       <span class="node-type-filter"><%= t('dashboard._activity.all_updates') %></span>
       <span class="caret"></span>
     </button>
 
     <ul class="dropdown-menu">
-
-      <li><a href="#"><label><input data-type="all"      class="node-type-all"      type="checkbox" checked="checked" /> <%= t('dashboard._activity.dropdown.all') %>           </label></a></li>
+      <li class="form-check"><a href="#">
+        <label class="form-check-label">
+          <input data-type="all" class="node-type-all" type="checkbox" checked="checked" /> 
+          <%= t('dashboard._activity.dropdown.all') %>
+        </label></a>
+      </li>
 
       <li class="divider"></li>
 
-      <li><a href="#"><label><input data-type="note"     class="node-type node-type-note"     type="checkbox" checked="checked" /> <%= t('dashboard._activity.dropdown.research_notes') %></label></a></li>
-      <li><a href="#"><label><input data-type="question" class="node-type node-type-question" type="checkbox" checked="checked" /> <%= t('dashboard._activity.dropdown.question') %>     </label></a></li>
-      <li><a href="#"><label><input data-type="event"    class="node-type node-type-event"    type="checkbox" checked="checked" /> <%= t('dashboard._activity.dropdown.events') %>        </label></a></li>
-      <li><a href="#"><label><input data-type="comment"  class="node-type node-type-comment"  type="checkbox" checked="checked" /> <%= t('dashboard._activity.dropdown.comments') %>      </label></a></li>
+      <li class="form-check"><a href="#">
+        <label class="form-check-label">
+          <input data-type="note" class="node-type node-type-note" type="checkbox" checked="checked" /> 
+          <%= t('dashboard._activity.dropdown.research_notes') %>
+        </label></a>
+      </li>
+      <li class="form-check"><a href="#">
+        <label class="form-check-label">
+          <input data-type="question" class="node-type node-type-question" type="checkbox" checked="checked" /> 
+          <%= t('dashboard._activity.dropdown.question') %>
+        </label></a>
+      </li>
+      <li class="form-check"><a href="#">
+        <label class="form-check-label">
+          <input data-type="event" class="node-type node-type-event" type="checkbox" checked="checked" /> 
+          <%= t('dashboard._activity.dropdown.events') %>
+        </label></a>
+      </li>
+      <li class="form-check"><a href="#">
+        <label class="form-check-label">
+          <input data-type="comment" class="node-type node-type-comment" type="checkbox" checked="checked" /> 
+          <%= t('dashboard._activity.dropdown.comments') %>
+        </label></a>
+      </li>
 
-      <li class="visible-sm visible-xs">
-          <a href="#"><label><input data-type="wiki"     class="node-type node-type-wiki"     type="checkbox" checked="checked" /> <%= t('dashboard._activity.dropdown.wiki') %>          </label></a>
+      <li class="visible-sm visible-xs"><a href="#">
+        <label>
+          <input data-type="wiki" class="node-type node-type-wiki" type="checkbox" checked="checked" /> 
+          <%= t('dashboard._activity.dropdown.wiki') %>
+        </label></a>
       </li>
 
       <!--
@@ -33,7 +68,7 @@
       <li><a href="#"><a href="#">Post date</a></li>
       <li><a href="#"><a href="#">Recent activity</a></li>
       -->
-
+      
     </ul>
 
   </div> &nbsp;

@@ -19,6 +19,7 @@
  *= require_self
  *= require style
  *= require login_modal
+ *= require activity
  *= require feature
  *= require btsp_checkbox_override
  *= require editor
