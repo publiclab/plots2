@@ -109,7 +109,7 @@ class StatsController < ApplicationController
     data = Tag.select(:tid, :name, :parent, :count).all
     format(data, 'tag')
   end
-
+  
   def node_tag
     data = NodeTag.select(:tid, :nid, :uid).where(date: start.to_i...fin.to_i).all
     format(data, 'node_tag')
