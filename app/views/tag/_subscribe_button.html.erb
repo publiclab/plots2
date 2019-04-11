@@ -9,7 +9,7 @@
   </div>
 
 <% else %>
-  <a class="btn btn-primary btn-xs sub" data-toggle="modal" data-target="#loginModal" role="button" aria-pressed="true"> 
+  <a class="btn btn-primary btn-sm sub" data-toggle="modal" data-target="#loginModal" role="button" aria-pressed="true"> 
     Subscribe 
     <i style="color:#ffffff;" class="fa fa-plus"></i> 
   </a>
@@ -25,7 +25,7 @@
 
 <script type="text/javascript">
   $('#popover_button').popover({
-  	content: $('#mypopcontent').clone().removeClass('hidden'),
+  	content: $('#mypopcontent').clone().removeClass('d-none'),
   	placement: 'bottom',
   	html: true,
 
