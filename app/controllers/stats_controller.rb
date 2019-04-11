@@ -111,7 +111,7 @@ class StatsController < ApplicationController
   end
 
   def node_tag
-    data = NodeTag.select(:tid, :nid:, :uid).where(date: start.to_i...fin.to_i).all
+    data = NodeTag.select(:tid, :nid, :uid).where(date: start.to_i...fin.to_i).all
     format(data, 'node_tag')
   end
 
