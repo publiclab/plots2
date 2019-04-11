@@ -32,12 +32,7 @@ class ApplicationController < ActionController::Base
       @maps = Tag.find_nodes_by_type(data, 'map', 20)
     else # type is generic
       # remove "classroom" postings; also switch to an EXCEPT operator in sql, see https://github.com/publiclab/plots2/issues/375
-      hidden_nids = Node.joins(:node_tag)
-        .joins('LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid')
-        .select('node.*, term_data.*, community_tags.*')
-        .where(type: 'note', status: 1)
-        .where('term_data.name = (?)', 'hidden:response')
-        .collect(&:nid)
+      hidden_nids = Node.where(type: :note, status: 1).select{|n| n.has_tag('hidden:response')}.collect(&:nid)
       @notes = if params[:controller] == 'questions'
                  Node.questions
                    .joins(:revision)

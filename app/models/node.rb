@@ -117,6 +117,14 @@ class Node < ActiveRecord::Base
     path.split('/').last
   end
 
+  def has_tag name
+    if self.tags.where(name: name).count > 0
+      return true
+    else
+      return false
+    end
+  end
+
   before_save :set_changed_and_created
   after_create :setup
   before_validation :set_path_and_slug, on: :create
