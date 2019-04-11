@@ -118,10 +118,10 @@ class Node < ActiveRecord::Base
   end
 
   def has_a_tag(name)
-    if self.tags.where(name: name).count.positive?
-      return true;
+    if tags.where(name: name).count.positive?
+      return true
     else
-      return false;
+      return false
     end
   end
 
