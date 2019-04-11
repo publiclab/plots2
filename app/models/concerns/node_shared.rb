@@ -187,6 +187,39 @@ module NodeShared
     end
   end
 
+  def self.activities_thumbnail_grid(body)
+    body.gsub(/(?<![\>`])(\<p\>)?\[activities:grid:(\S+)\]/) do |_tagname|
+      tagname = Regexp.last_match(2)
+      exclude = nil
+      if tagname.include?('!')
+        exclude = tagname.split('!') - [tagname.split('!').first]
+        tagname = tagname.split('!').first
+      end
+      nodes = Node.activities(tagname)
+                  .order('node.cached_likes DESC')
+      if exclude.present?
+        exclude = Node.where(status: 1, type: 'note')
+                  .includes(:revision, :tag)
+                  .references(:node_revisions, :term_data)
+                  .where('term_data.name IN (?)', exclude)
+        nodes -= exclude
+      end
+      output = ''
+      output += '<p>' if Regexp.last_match(1) == '<p>'
+      a = ActionController::Base.new
+      output += a.render_to_string(template: "grids/_notes",
+                                   layout:   false,
+                                   locals:   {
+                                     tagname: tagname,
+                                     randomSeed: rand(1000).to_s,
+                                     className: 'activity-grid-' + tagname.parameterize,
+                                     nodes: nodes,
+                                     type: "activity"
+                                   })
+      output
+    end
+end
+  
   def self.activities_grid(body)
     body.gsub(/(?<![\>`])(\<p\>)?\[activities\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
