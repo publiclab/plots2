@@ -117,11 +117,11 @@ class Node < ActiveRecord::Base
     path.split('/').last
   end
 
-  def has_tag name
-    if self.tags.where(name: name).count > 0
-      return true
+  def has_a_tag(name)
+    if self.tags.where(name: name).count.positive?
+      return true;
     else
-      return false
+      return false;
     end
   end
 
