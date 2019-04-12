@@ -54,3 +54,5 @@
 //= require wikis.js
 //= require header_footer.js
 //= require keybindings.js
+//= require jquery-validation/dist/jquery.validate.js
+//= require validation.js
