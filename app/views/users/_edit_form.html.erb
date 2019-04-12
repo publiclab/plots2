@@ -75,10 +75,12 @@
       <script>
         (function() {
           $('.btn-save').click(function onClick(e) {
-            if(document.form.email.text_field != "" || document.form.email.pattern == '[^@]+@[^@]+\.[a-zA-Z]{2,6}')
-                   {   $(this).addClass("disabled") // disable the button after it is clicked
-                     .html("<i class='fa fa-spinner fa-spin'></i>");} // make a spinner that spins when clicked
-          })
+            if(document.form.email.text_field != "" && document.form.email.pattern == '[^@]+@[^@]+\.[a-zA-Z]{2,6}')
+                   {
+                     $(this).addClass("disabled") // disable the button after it is clicked
+                     .html("<i class='fa fa-spinner fa-spin'></i>"); // make a spinner that spins when clicked
+                   }
+            })
         })();
       </script>
     </div>
