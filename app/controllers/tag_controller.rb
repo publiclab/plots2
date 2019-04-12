@@ -287,25 +287,33 @@ class TagController < ApplicationController
     node = Node.find nid
     tagnames.each do |tagname|
       # this should all be done in the model:
-
+      tagname = tagname.strip
       if Tag.exists?(tagname, nid)
         @output[:errors] << I18n.t('tag_controller.tag_already_exists')
+
+      elsif tagname.include?(":") && tagname.split(':').length < 2 # cant tag empty power tags
+        if tagname.split(':')[0] == "barnstar" || tagname.split(':')[0] == "with"
+          @output[:errors] << I18n.t('tag_controller.cant_be_empty')
+        end
+
       elsif node.can_tag(tagname, current_user) === true || current_user.role == 'admin' # || current_user.role == "moderator"
         saved, tag = node.add_tag(tagname.strip, current_user)
-        if tagname.split(':')[0] == "barnstar"
-          CommentMailer.notify_barnstar(current_user, node)
-          barnstar_info_link = '<a href="//' + request.host.to_s + '/wiki/barnstars">barnstar</a>'
-          node.add_comment(subject: 'barnstar',
-                           uid: current_user.uid,
-                           body: "@#{current_user.username} awards a #{barnstar_info_link} to #{node.user.name} for their awesome contribution!")
+        if tagname.include?(":") && tagname.split(':').length == 2
+          if tagname.split(':')[0] == "barnstar"
+            CommentMailer.notify_barnstar(current_user, node)
+            barnstar_info_link = '<a href="//' + request.host.to_s + '/wiki/barnstars">barnstar</a>'
+            node.add_comment(subject: 'barnstar',
+                             uid: current_user.uid,
+                             body: "@#{current_user.username} awards a #{barnstar_info_link} to #{node.user.name} for their awesome contribution!")
 
-        elsif tagname.split(':')[0] == "with"
-          user = User.find_by_username_case_insensitive(tagname.split(':')[1])
-          CommentMailer.notify_coauthor(user, node)
-          node.add_comment(subject: 'co-author',
-                           uid: current_user.uid,
-                           body: " @#{current_user.username} has marked @#{tagname.split(':')[1]} as a co-author. ")
+          elsif tagname.split(':')[0] == "with"
+            user = User.find_by_username_case_insensitive(tagname.split(':')[1])
+            CommentMailer.notify_coauthor(user, node)
+            node.add_comment(subject: 'co-author',
+                             uid: current_user.uid,
+                             body: " @#{current_user.username} has marked @#{tagname.split(':')[1]} as a co-author. ")
 
+          end
         end
 
         if saved
