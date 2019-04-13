@@ -66,9 +66,16 @@ class UsersControllerTest < ActionController::TestCase
     assert_response 302
   end
 
-  test 'should get profile' do
-    get :profile, params: { id: User.where(status: 1).first.name }
+  test 'should get profile and show pagination' do
+    i = 0
+    25.times do
+      Node.new(uid: users(:bob).id, type: 'note', title: "Node #{i += 1}")
+    end
+
+    get :profile, params: { id: users(:bob).username }
     assert_response :success
+
+    assert_equal css_select('ul.pagination').size, 1
   end
 
   test 'generate user reset key' do
