@@ -16,6 +16,7 @@ class HomeController < ApplicationController
     blog
     @title = I18n.t('home_controller.environmental_investigation')
     render template: 'home/home'
+    @unpaginated = true
   end
 
   # used in front and home methods only
