@@ -32,11 +32,11 @@
 
     if(!$(this).hasClass('bound-keypress')) {
       $(this).addClass('bound-keypress');
-      $(this).find('#text-input').bind('keypress',function(e){
+      $(this).on('keypress', function(e) {
         if (e.ctrlKey && e.keyCode === 10) {
-        $(this).find(".btn-primary").click();
-        }
-      })
+            $(this).find(".btn-primary").click();
+            }
+      });
     }
     
   });
