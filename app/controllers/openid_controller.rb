@@ -107,7 +107,9 @@ class OpenidController < ApplicationController
               oidresp = oidreq.answer(false, server_url)
 
             else
-              show_decision_page(oidreq)
+              session[:last_oidreq] = oidreq
+              @oidreq = oidreq
+              redirect_to :action => 'decision'
               return
             end
 
@@ -133,7 +135,7 @@ class OpenidController < ApplicationController
     end
   end
 
-  def show_decision_page(oidreq, message = 'The site shown below is asking to use your PublicLab.org account to log you in. Do you trust this site?')
+  def show_decision_page(oidreq, message = '')
     session[:last_oidreq] = oidreq
     @oidreq = oidreq
 
