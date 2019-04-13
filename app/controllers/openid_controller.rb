@@ -109,7 +109,7 @@ class OpenidController < ApplicationController
             else
               session[:last_oidreq] = oidreq
               @oidreq = oidreq
-              redirect_to :action => 'decision'
+              redirect_to action: 'decision'
               return
             end
 
