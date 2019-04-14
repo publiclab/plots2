@@ -185,6 +185,8 @@ Plots2::Application.routes.draw do
   get 'widget/:id' => 'tag#widget'
   get 'blog' => 'tag#blog', :id => "blog"
   get 'blog/:id' => 'tag#blog'
+  get 'blog2' => 'tag#blog2', :id => "blog2"
+  get 'blog2/:id' => 'tag#blog2'
   get 'tags' => 'tag#index'
   get 'tags/:search' => 'tag#index'
   post 'tag/suggested/:id' => 'tag#suggested'

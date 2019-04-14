@@ -11,6 +11,11 @@ env:
 
 before_install:
   - echo -e "repo_token:\n  $COVERALLS_REPO_TOKEN" >> ./.coveralls.yml
+  
+branches:
+  only:
+    - master
+    - unstable
 
 install:
   - cp config/database.yml.example config/database.yml
