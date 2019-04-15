@@ -19,9 +19,8 @@
     </div>
 
     <br style="clear:both;"/>
-    
-      <div class="row col-sm-6">
-     
+      <div class="col-sm-6">
+        <div class="row">
         <div class="form-group col-sm-12" id="username_div">
           <label for="username"><%= t('user_sessions.new.username') %></label>
           <%= f.text_field :username, { tabindex: 1, placeholder: "Username", class: 'form-control', id: 'username-signup' } %>
@@ -31,7 +30,7 @@
           <label for="email"><%= t('users._form.email') %></label>
           <%= f.text_field :email, { tabindex: 3, placeholder: "you@email.com", class: 'form-control', id: 'email' } %>
         </div>
-     
+        </div>
       </div>
      
       <div class="col-sm-6" style="display:flex; justify-content: center;">
@@ -46,7 +45,7 @@
         </div>
       </div>
 
-    <div class="form-group col-sm-12 row">
+    <div class="form-group col-sm-12 nopadding">
       <div class="form-group col-sm-6">
         <label for="password"><%= t('users._form.create_password') %></label>
         <%= f.password_field :password, { placeholder: 'Enter your new password',
@@ -170,4 +169,9 @@
       cursor: inherit;
       display: block;
   }
+  .nopadding {
+    padding: 0 !important;
+    margin: 0 !important;
+ }
+
 </style>
