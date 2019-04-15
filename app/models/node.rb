@@ -118,11 +118,7 @@ class Node < ActiveRecord::Base
   end
 
   def has_a_tag(name)
-    if tags.where(name: name).count.positive?
-      return true
-    else
-      return false
-    end
+    return tags.where(name: name).count.positive?
   end
 
   before_save :set_changed_and_created
