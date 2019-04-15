@@ -105,7 +105,7 @@ class StatsController < ApplicationController
     format(data, 'comment')
   end
 
-  def tag
+  def tags
     data = Tag.select(:tid, :name, :parent, :count).all
     format(data, 'tag')
   end
