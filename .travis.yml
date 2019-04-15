@@ -37,4 +37,4 @@ script:
   - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true rails test:system"
   - echo -e '<?xml version="1.0" encoding="UTF-8"?>' > output.xml
   - tail -n +2 -q ./test/reports/TEST*.xml >> output.xml
-  - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then bash -c "docker-compose exec web danger --verbose"; fi'
+  - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then bash -c "docker-compose exec web bundle exec danger --verbose"; fi'
