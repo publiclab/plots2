@@ -41,6 +41,9 @@
             <a
               id="visibility"
               class="fa fa-eye input-group-text"
+              data-toggle="tooltip"
+              data-placement="bottom"
+              title="Show Password"
               aria-hidden="true">
             </a>
           </div>
@@ -99,7 +102,7 @@
 
     $("#visibility").on("click", function(e) {
       e.preventDefault();
-      $(this).toggleClass("fa-eye-slash");
+      $(this).toggleClass("fa-eye fa-eye-slash");
       var type = $("#password-signup").attr("type");
       if (type == "text")
       { $("#password-signup").attr("type", "password");}
