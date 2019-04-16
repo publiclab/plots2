@@ -12,7 +12,7 @@
   <h4 class="col-md-8">
     <% if current_user %>
       <span class="hidden-xs hidden-sm"><%= t('dashboard._header.welcome') %><span class="hidden-md">,<b><a href="/profile/"> <%= current_user.username %></a></b></span>! <%= current_user.new_contributor %></span>
-      <a href="/notes/recent"><%= @note_count === 1 %> <%= t('dashboard._header.notes') %></a> <%= t('dashboard._header.and') %> <a href="/wiki"><%= @wiki_count %> <%= t('dashboard._header.wiki_edits') %></a> <%= t('dashboard._header.posted_past_week') %>
+      <a href="/notes/recent"><%= @note_count %> <% if @note_count === 1 %> <%= t('dashboard._header.note') %><% else %> <%= t('dashboard._header.notes') %><% end %></a> <%= t('dashboard._header.and') %> <a href="/wiki"><%= @wiki_count %> <%= t('dashboard._header.wiki_edits') %></a> <%= t('dashboard._header.posted_past_week') %>
       <%= t('dashboard._header.you_shared') %> <a href="/notes/author/<%= current_user.username %>"><%= @user_note_count %> <% if @user_note_count === 1 %><%= t('dashboard._header.research_note') %><% else %><%= t('dashboard._header.research_notes') %><% end %></a>.
     <% else %>
       <span class="hidden-xs hidden-sm"><%= t('dashboard._header.welcome') %>!</span>
