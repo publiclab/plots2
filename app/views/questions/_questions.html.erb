@@ -11,12 +11,6 @@
 
         <h4><a <% if @widget %>target="_blank"<% end %> href="<%= node.path(:question) %>"><%= node.title %></a></h4>
 
-        <% if node.answers.collect(&:accepted).include?(true) %>
-          <p><span class="label accepted">Answered</span></p>
-        <% end %>
-
-
-
         <span id="tags">
         <% node.tags.limit(4).each do |tag| %>
           <span id="tag_<%= tag.id %>" ><a class="badge badge-primary" href="/questions/tag/<%= tag.name %>"><%= tag.name %></a></span>
