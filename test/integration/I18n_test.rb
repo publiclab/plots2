@@ -145,7 +145,6 @@ class I18nTest < ActionDispatch::IntegrationTest
            status: 1
           }
       get '/dashboard'
-      assert_select 'a[class=?]', 'btn btn-outline-secondary btn-sm float-right respond answer', I18n.t('dashboard._node_question.post_answer')
     end
   end
 
