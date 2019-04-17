@@ -8,13 +8,13 @@
 
   <p><%= t('tag.index.browse_popular_tags') %></p>
   <br/>
-  <form id="tagform" class="form-horizontal" method="GET" action="/tag/">
-  <div class="input-group">
-    <input type="search" tabindex="1" autocomplete="off" id="taginput" name="id" type="text" placeholder="Search for topics" data-provide="typeahead" class="form-control" required="required" />
-  </div>
-  <span class="input-group-btn" >
-    <button type="submit" rel="tooltip" title="View content with the entered title" class="btn btn-default" style="margin-left: 190px; margin-top: -35px; background-color: transparent;"><i class="fa fa-search" style="color: #ccc;"></i></button>
-  </span>
+  <form id="tagform" class="form-horizontal" method="GET" action="/tag/" autocomplete="off" style="width: 250px;">
+    <div class="input-group">
+      <input type="text" tabindex="1" id="taginput" name="id" placeholder="Search for topics" data-provide="typeahead" class="form-control" role="search" required="required" />
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+      </span>
+    </div>
   </form>
   <br/><br/>
 
