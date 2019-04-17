@@ -2,7 +2,7 @@
 # These are some examples.
 labels:
   - first-timers-only
-  - help-wanted
+  - help wanted
   
 #If you would like to add your own template for the issue, add an .md file to your .github folder
 template: .github/first-timers-issue-template.md

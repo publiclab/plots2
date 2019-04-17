@@ -1,4 +1,4 @@
-Hi! There's been a response to a discussion you're involved in. Do NOT reply to this email; click this link to respond:
+Hi! There's been a response to a discussion you're involved in. You can reply to this email or visit this link:
 
 <% if @comment.parent.has_power_tag('question') %>
 <p>https://<%= ActionMailer::Base.default_url_options[:host] %><%= @comment.parent.path(:question) %>#answer-<%= @comment.aid %>-comment-<%= @comment.cid %></p>

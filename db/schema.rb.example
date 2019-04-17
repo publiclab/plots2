@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_04_215454) do
+ActiveRecord::Schema.define(version: 2019_03_30_043340) do
 
   create_table "answer_selections", force: true do |t|
     t.integer "user_id"
@@ -51,6 +51,8 @@ ActiveRecord::Schema.define(version: 2018_08_04_215454) do
     t.integer "aid",                          default: 0,  null: false
     t.integer "comment_via", limit: 4,          default: 0
     t.string  "message_id",  limit: 255
+    t.string  "tweet_id"
+    t.integer "reply_to"
   end
 
   add_index "comments", ["comment"], name: "index_comments_on_comment", type: :fulltext if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
@@ -200,6 +202,7 @@ ActiveRecord::Schema.define(version: 2018_08_04_215454) do
   add_index "impressions", ["impressionable_type", "message", "impressionable_id"], name: "impressionable_type_message_index", length: {"impressionable_type"=>nil, "message"=>255, "impressionable_id"=>nil}, using: :btree
   add_index "impressions", ["impressionable_type"], name: "index_impressions_on_impressionable_type", using: :btree
   add_index "impressions", ["user_id"], name: "index_impressions_on_user_id", using: :btree
+  add_index "impressions", ["ip_address"], name: "index_impressions_on_ip_address", using: :btree
 
   create_table "likes", force: true do |t|
     t.integer  "likeable_id"
@@ -233,6 +236,9 @@ ActiveRecord::Schema.define(version: 2018_08_04_215454) do
     t.string  "slug"
     t.integer "legacy_views",                           default: 0
     t.integer "views",                                  default: 0
+    t.decimal "latitude",                               precision: 20, scale: 17
+    t.decimal "longitude",                              precision: 20, scale: 17
+    t.integer "precision"
   end
 
   add_index "node", ["changed"], name: "node_changed", using: :btree
@@ -283,33 +289,6 @@ ActiveRecord::Schema.define(version: 2018_08_04_215454) do
 
   add_index "node_selections", ["user_id", "nid"], name: "index_node_selections_on_user_id_and_nid", unique: true, using: :btree
 
-  create_table "profile_fields", primary_key: "fid", force: true do |t|
-    t.string  "title"
-    t.string  "name",         limit: 128, default: "", null: false
-    t.text    "explanation"
-    t.string  "category"
-    t.string  "page"
-    t.string  "type",         limit: 128
-    t.integer "weight",       limit: 1,   default: 0,  null: false
-    t.integer "required",     limit: 1,   default: 0,  null: false
-    t.integer "register",     limit: 1,   default: 0,  null: false
-    t.integer "visibility",   limit: 1,   default: 0,  null: false
-    t.integer "autocomplete", limit: 1,   default: 0,  null: false
-    t.text    "options"
-  end
-
-  add_index "profile_fields", ["category"], name: "index_profile_fields_category", using: :btree
-  add_index "profile_fields", ["name"], name: "index_profile_fields_name", using: :btree
-
-  create_table "profile_values", id: false, force: true do |t|
-    t.integer "fid",   default: 0, null: false
-    t.integer "uid",   default: 0, null: false
-    t.text    "value"
-  end
-
-  add_index "profile_values", ["fid"], name: "index_profile_values_fid", using: :btree
-  add_index "profile_values", ["uid"], name: "index_profile_values_on_uid", using: :btree
-
   create_table "relationships", force: true do |t|
     t.integer  "follower_id"
     t.integer  "followed_id"
@@ -356,6 +335,7 @@ ActiveRecord::Schema.define(version: 2018_08_04_215454) do
     t.string   "token"
     t.integer  "status",                                default: 0
     t.integer "password_checker", default: 0
+    t.boolean "is_verified", default: false
   end
 
   add_index "rusers", ["created_at"], name: "index_rusers_created_at", using: :btree
@@ -364,6 +344,7 @@ ActiveRecord::Schema.define(version: 2018_08_04_215454) do
   add_index "rusers", ["status"], name: "index_rusers_on_status", using: :btree
   add_index "rusers", ["username", "bio"], name: "index_rusers_on_username_and_bio", type: :fulltext if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
   add_index "rusers", ["username"], name: "index_rusers_on_username", using: :btree
+  add_index "rusers", ["username"], name: "rusers_username_fulltext_idx", type: :fulltext if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
 
   create_table "tag_selections", id: false, force: true do |t|
     t.integer "user_id"
@@ -423,36 +404,5 @@ ActiveRecord::Schema.define(version: 2018_08_04_215454) do
     t.datetime "updated_at", null: false
     t.text "data"
   end
-
-  create_table "users", primary_key: "uid", force: true do |t|
-    t.string  "name",             limit: 60,                                   default: "",  null: false
-    t.string  "pass",             limit: 32,                                   default: "",  null: false
-    t.string  "mail",             limit: 64,                                   default: ""
-    t.integer "mode",             limit: 1,                                    default: 0,   null: false
-    t.integer "sort",             limit: 1,                                    default: 0
-    t.integer "threshold",        limit: 1,                                    default: 0
-    t.string  "theme",                                                         default: "",  null: false
-    t.string  "signature",                                                     default: "",  null: false
-    t.integer "signature_format", limit: 2,                                    default: 0,   null: false
-    t.integer "created",                                                       default: 0,   null: false
-    t.integer "access",                                                        default: 0,   null: false
-    t.integer "login",                                                         default: 0,   null: false
-    t.integer "status",           limit: 1,                                    default: 0,   null: false
-    t.string  "timezone",         limit: 8
-    t.string  "language",         limit: 12,                                   default: "",  null: false
-    t.string  "picture",                                                       default: "",  null: false
-    t.string  "init",             limit: 64,                                   default: ""
-    t.text    "data",             limit: 2147483647
-    t.integer "timezone_id",                                                   default: 0,   null: false
-    t.string  "timezone_name",    limit: 50,                                   default: "",  null: false
-    t.decimal "lat",                                 precision: 20, scale: 10, default: 0.0
-    t.decimal "lon",                                 precision: 20, scale: 10, default: 0.0
-  end
-
-  add_index "users", ["access"], name: "index_users_access", using: :btree
-  add_index "users", ["created"], name: "index_users_created", using: :btree
-  add_index "users", ["mail"], name: "index_users_mail", using: :btree
-  add_index "users", ["name"], name: "index_users_name", using: :btree
-  add_index "users", ["uid"], name: "index_users_uid", using: :btree
 
 end

@@ -1,3 +1,4 @@
+<div class="inline-grid-container">
 <table class="table inline-grid <%= type %>-grid <%= className %> <%= className %>-<%= randomSeed %>">
   <tr>
     <% if type == "questions" || type == "notes" %>
@@ -21,7 +22,7 @@
   </tr>
 <% if nodes.empty? %>
   <tr>
-    <td>Nothing yet on the topic "<b><a href="/tag/<%= tagname %>"><%= tagname %></a></b>" -- be the first to <a href="/post?tags=<%= tagname %>">post something</a>!</td>
+    <td>Nothing yet on the topic "<b><a href="/tag/<%= tagname %>"><%= tagname %></a></b>" -- be the first to <a href="/post?tags=<%= tagname %>" class="requireLogin">post something</a>!</td>
     <td></td>
     <td></td>
     <td></td>
@@ -29,20 +30,20 @@
 <% end %>
 <% nodes.each_with_index do |node, index| %>
   <% if index > 9 %>
-    <tr class="hide">
+    <tr class="hide extra">
   <% else %>
     <tr>
   <% end %>
     <% if type == "notes" || type == "questions" %>
       <td class="title"><% if node.answered %><% if node.has_accepted_answers %><i class="fa fa-check-square" style="color:#0c8;"></i><% else %><i class="fa fa-check-square" style="color:#808080;"></i><% end %><% end %> <a href="<%= node.path %>"><%= node.title %></a></td>
-      <td class="author"><a href="/profile/<%= node.author.username %>">@<%= node.author.username %> <%=node.author.new_author_contributor %></a></td>
+      <td class="author"><a href="/profile/<%= node.author.username %>">@<%= node.author.username %> <%=node.author.new_contributor %></a></td>
       <td class="updated" data-timestamp="<%= node.latest.timestamp.to_s %>"><%= distance_of_time_in_words(Time.at(node.latest.updated_at), Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></td>
       <td class="likes"><%= node.cached_likes.to_s %></td>
     <% else %>
       <td class="title"><a href="<%= node.path %>"><%= node.title %></a></td>
       <td class="category"><%= node.has_power_tag('category') ? node.power_tag('category') : '-' %></td>
       <td class="status"><%= node.has_power_tag('status') ? node.power_tag('status') : '-' %></td>
-      <td class="author"><a href="/profile/<%= node.author.username %>">@<%= node.author.username %> <%=node.author.new_author_contributor %></a></td>
+      <td class="author"><a href="/profile/<%= node.author.username %>">@<%= node.author.username %> <%=node.author.new_contributor %></a></td>
       <td class="time"><%= node.has_power_tag('time') ? node.power_tag('time') : '-' %></td>
       <td class="difficulty"><%= node.has_power_tag('difficulty') ? node.power_tag('difficulty') : '-' %></td>
       <% if type == "activity" %>
@@ -53,9 +54,9 @@
     <% end %>
   </tr>
 <% end %>
-<% if nodes.count > 9 %>
+<% if nodes.count > 10 %>
     <tfoot>
-      <th class="show-all"><a>Show <%= nodes.length - 10 %> more <b class="caret"></b></a></th>
+      <th class="show-all" id="notes-table-footer" style="min-width: 110px;"><a style="cursor: pointer;">Show more <b class="caret"></b></a></th>
       <th></th>
       <th></th>
       <th></th>
@@ -65,22 +66,33 @@
 
 <a class="grid-embed grid-embed-<%= randomSeed %>" title="Embed this table on another site."><i class="fa fa-code" style="color:#aaa;"></i></a>
 <% if type == "questions" || tagname.include?('question:') %>
-  <p><a href='/post?tags=question:<%= tagname %>,<%= tagname %>&template=question&title=How%20do%20I...&redirect=question' class='btn btn-primary add-activity'>Ask a question</a> &nbsp;or <a href='/subscribe/tag/question:<%= tagname %>'>help answer future questions<span class='hidden-sm hidden-xs'> on this topic</span></a></p>
+  <p><a href='/post?tags=question:<%= tagname %>,<%= tagname %>&template=question&title=How%20do%20I...&redirect=question' class='btn btn-primary add-activity requireLogin'>Ask a question</a> &nbsp;or <a class="requireLogin" href='/subscribe/tag/question:<%= tagname %>'>help answer future questions<span class='hidden-sm hidden-xs'> on this topic</span></a></p>
 <% elsif type == "activity" || tagname.include?('activity:') %>
-  <p><a href='/post?tags=activity:<%= tagname %>,<%= tagname %>,seeks:replications&title=How%20to%20do%20X' class='btn btn-primary add-activity'>Add an activity</a> &nbsp;or <a href='/post?tags=<%= tagname %>,question:<%= tagname %>,request:activity&template=question&title=How%20do%20I...&redirect=question' class='request-activity'>request an activity<span class='hidden-xs hidden-sm'> guide you don't see listed</span></a></p>
+  <p><a href='/post?tags=activity:<%= tagname %>,<%= tagname %>,seeks:replications&title=How%20to%20do%20X' class='btn btn-primary add-activity requireLogin'>Add an activity</a> &nbsp;or <a href='/post?tags=<%= tagname %>,question:<%= tagname %>,request:activity&template=question&title=How%20do%20I...&redirect=question' class='request-activity requireLogin'>request an activity<span class='hidden-xs hidden-sm'> guide you don't see listed</span></a></p>
   <p><i>Activities should include a materials list, costs and a step-by-step guide to construction with photos. Learn what <a href="https://publiclab.org/notes/warren/09-17-2016/what-makes-a-good-activity">makes a good activity here</a>.</i>
   </p>
 <% end %>
 
 <script>
 (function(){
-  $(".<%= className %>-<%= randomSeed %> .show-all a").click(function() {
-    $(".<%= className %>-<%= randomSeed %> tr.hide").toggleClass("hide");
+  $(".<%= className %>-<%= randomSeed %> .show-all a").click(function(event) {
+    var cName = ".<%= className %>-<%= randomSeed %>";
+    var sName = cName + " tr.extra";
+    $(sName).toggleClass("hide");
+    if ($(sName)[0].classList.contains("hide"))
+      var hiding = true;    
+    var myElement = event.target;    
+    if (event.target.classList.contains("caret")) 
+      myElement = event.target.parentElement;
+    if (!hiding) 
+      myElement.innerHTML = 'Show less <b class="caret" style = "transform: rotate(180deg);"></b>';
+    else
+      myElement.innerHTML = 'Show more <b class="caret"></b>';
   });
   $(".grid-embed-<%= randomSeed %>").click(function() {
     prompt('Use this HTML code to embed this table on another site.', '<iframe style="border:none;" width="100%" height="900px" src="//publiclab.org/embed/grid/<% if type != "notes" %><%= type.gsub('questions', 'question').gsub('activities', 'activity') %>:<% end %><%= tagname %>"></iframe>')
   });
-  setupGridSorters(".<%= className %>-<%= randomSeed %>");
+  //setupGridSorters(".<%= className %>-<%= randomSeed %>"); Should order the items by time. Commented out because it reorders the items each time show more/less is clicked
 })()
 </script>
 <style>
@@ -92,3 +104,4 @@
     color: #888;
   }
 </style>
+</div>

@@ -2,7 +2,10 @@
 class DocList
   attr_accessor :items, :srchParams, :pageNum, :pageCount
 
-  def initialize; end
+  def initialize(items, srchParams)
+    @items = items
+    @srchParams = srchParams
+  end
 
   def addDoc(ndoc)
     @items ||= []
@@ -11,11 +14,19 @@ class DocList
 
   def addAll(dlist)
     @items ||= []
-    dlist&.each { |docItem| @items << docItem }
+    dlist&.each { |doc_item| @items << doc_item }
   end
 
   def getDocs
     @items
+  end
+
+  def size
+    @items.length
+  end
+
+  def each(&block)
+    @items.each(&block)
   end
 
   # This subclass is used to auto-generate the RESTful data structure.  It is generally not useful for internal Ruby usage

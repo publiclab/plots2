@@ -1,10 +1,9 @@
 class UsersController < ApplicationController
-  before_action :require_no_user, :only => [:new]
-  before_action :require_user, :only => %i(edit update save_settings)
+  before_action :require_no_user, only: [:new]
+  before_action :require_user, only: %i(edit update save_settings)
   before_action :set_user, only: %i(info followed following followers)
 
   def new
-    @spamaway = Spamaway.new
     @user = User.new
     @action = "create" # sets the form url
   end
@@ -15,14 +14,20 @@ class UsersController < ApplicationController
     using_recaptcha = !params[:spamaway] && Rails.env == "production"
     recaptcha = verify_recaptcha(model: @user) if using_recaptcha
     @spamaway = Spamaway.new(spamaway_params) unless using_recaptcha
-    if ((@spamaway&.valid?) || recaptcha) && @user.save({})
+    if ((@spamaway&.valid?) || recaptcha) && @user.save
       if current_user.crypted_password.nil? # the user has not created a pwd in the new site
         flash[:warning] = I18n.t('users_controller.account_migrated_create_new_password')
         redirect_to "/profile/edit"
       else
-        WelcomeMailer.notify_newcomer(@user).deliver_now
-        flash[:notice] = I18n.t('users_controller.registration_successful').html_safe
-        flash[:warning] = I18n.t('users_controller.spectralworkbench_or_mapknitter', :url1 => "'#{session[:openid_return_to]}'").html_safe if session[:openid_return_to]
+        begin
+          WelcomeMailer.notify_newcomer(@user).deliver_now
+        rescue StandardError
+          flash[:warning] = "We tried and failed to send you a welcome email, but your account was created anyhow. Sorry!"
+        end
+        flash[:notice] = I18n.t('users_controller.registration_successful')
+        flash[:notice] += " " + I18n.t('users_controller.continue_where_you_left_off', url1: params[:return_to].to_s) if params[:return_to] && params[:return_to] != "/signup"
+        flash[:notice] = flash[:notice].html_safe
+        flash[:warning] = I18n.t('users_controller.spectralworkbench_or_mapknitter', url1: "'#{session[:openid_return_to]}'").html_safe if session[:openid_return_to]
         session[:openid_return_to] = nil
         redirect_to "/dashboard"
       end
@@ -43,34 +48,35 @@ class UsersController < ApplicationController
 
   def update
     @user = current_user
+    @user = User.find_by(username: params[:id]) if params[:id] && current_user && current_user.role == "admin"
     @user.attributes = user_params
-    @user.save({}) do |result|
+    @user.save do |result|
       if result
         if session[:openid_return_to] # for openid login, redirects back to openid auth process
           return_to = session[:openid_return_to]
           session[:openid_return_to] = nil
           redirect_to return_to
         else
-          flash[:notice] = I18n.t('users_controller.successful_updated_profile') + "<a href='/dashboard'>" + I18n.t('users_controller.return_dashboard') + " &raquo;</a>"
-          return redirect_to "/profile/" + @user.username
+          flash[:notice] = I18n.t('users_controller.successful_updated_profile') + "<a href='/profile'>" + I18n.t('users_controller.return_profile') + " &raquo;</a>"
+          return redirect_to "/profile/" + @user.username + "/edit"
         end
       else
-        render :template => 'users/edit'
+        render template: 'users/edit'
       end
     end
   end
 
   def edit
     @action = "update" # sets the form url
-    if params[:id] # admin only
-      @user = User.find_by(username: params[:id])
+    @user = if params[:id] # admin only
+              User.find_by(username: params[:id])
+            else
+              current_user
+            end
+    if current_user && current_user.uid == @user.uid || current_user.role == "admin"
+      render template: "users/edit"
     else
-      @user = current_user
-    end
-    if current_user && current_user.uid == @user.uid # || current_user.role == "admin"
-      render :template => "users/edit"
-    else
-      flash[:error] = I18n.t('users_controller.only_user_edit_profile', :user => @user.name).html_safe
+      flash[:error] = I18n.t('users_controller.only_user_edit_profile', user: @user.name).html_safe
       redirect_to "/profile/" + @user.name
     end
   end
@@ -79,40 +85,46 @@ class UsersController < ApplicationController
     sort_param = params[:sort]
     @tagname_param = params[:tagname]
 
-    if params[:id]
-      order_string = 'updated_at DESC'
-    else
-      order_string = 'last_updated DESC'
-    end
+    order_string = if params[:id]
+                     'updated_at DESC'
+                   else
+                     'last_updated DESC'
+                   end
 
     if sort_param == 'username'
-      order_string = 'name ASC'
+      order_string = 'username ASC'
     elsif sort_param == 'last_activity'
       order_string = 'last_updated DESC'
     elsif sort_param == 'joined'
-      order_string = 'created DESC'
+      order_string = 'created_at DESC'
     end
 
+    @map_lat = nil
+    @map_lon = nil
+    if current_user&.has_power_tag("lat") && current_user&.has_power_tag("lon")
+      @map_lat = current_user.get_value_of_power_tag("lat").to_f
+      @map_lon = current_user.get_value_of_power_tag("lon").to_f
+    end
     # allow admins to view recent users
-    if params[:id]
-      @users = User.order(order_string)
-                    .where('rusers.role = ?', params[:id])
-                    .where('rusers.status = 1')
-                    .page(params[:page])
+    @users = if params[:id]
+               User.order(order_string)
+                             .where('rusers.role = ?', params[:id])
+                             .where('rusers.status = 1')
+                             .page(params[:page])
 
-    elsif @tagname_param
-      @users = User.where(id: UserTag.where(value: @tagname_param).collect(&:uid))
-                    .page(params[:page])
+             elsif @tagname_param
+               User.where(id: UserTag.where(value: @tagname_param).collect(&:uid))
+                             .page(params[:page])
 
-    else
-      # recently active
-      @users = User.select('*, rusers.status, MAX(node.changed) AS last_updated')
-                    .joins(:node)
-                    .group('rusers.id')
-                    .where('node.status = 1')
-                    .order(order_string)
-                    .page(params[:page])
-    end
+             else
+               # recently active
+               User.select('*, rusers.status, MAX(node_revisions.timestamp) AS last_updated')
+                            .joins(:revisions)
+                            .where("node_revisions.status = 1")
+                            .group('rusers.id')
+                            .order(order_string)
+                            .page(params[:page])
+             end
 
     @users = @users.where('rusers.status = 1') unless current_user&.can_moderate?
   end
@@ -123,69 +135,89 @@ class UsersController < ApplicationController
     elsif !current_user && params[:id].nil?
       redirect_to "/"
     else
-      @user = DrupalUser.find_by(name: params[:id])
       @profile_user = User.find_by(username: params[:id])
-      @title = @user.name
-      @notes = Node.research_notes
-                   .paginate(page: params[:page], per_page: 24)
-                   .order("nid DESC")
-                   .where(status: 1, uid: @user.uid)
-
-      if current_user && current_user.uid == @profile_user.uid
-        coauthor_nids = Node.joins(:node_tag).joins('LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid').select('node.*, term_data.*, community_tags.*').where(type: 'note', status: 3).where('term_data.name = (?)', "with:#{@profile_user.username}").collect(&:nid)
-        @drafts = Node.where('(nid IN (?) OR (status = 3 AND uid = ?))', coauthor_nids, @profile_user.uid).paginate(page: params[:page], per_page: 24)
-      end
-      @coauthored = @profile_user.coauthored_notes
-                                 .paginate(page: params[:page], per_page: 24)
-                                 .order('node_revisions.timestamp DESC')
-      @questions = @user.user.questions
-                             .order('node.nid DESC')
-                             .paginate(:page => params[:page], :per_page => 24)
-      @likes = (@user.liked_notes.includes(%i(tag comments)) + @user.liked_pages)
+      if !@profile_user
+        flash[:error] = I18n.t('users_controller.no_user_found_name', username: params[:id])
+        redirect_to "/"
+      else
+        @title = @profile_user.name
+        @notes = Node.research_notes
                      .paginate(page: params[:page], per_page: 24)
-      questions = Node.questions
-                            .where(status: 1)
-                            .order('node.nid DESC')
-      ans_ques = questions.select { |q| q.answers.collect(&:author).include?(@user) }
-      @answered_questions = ans_ques.paginate(page: params[:page], per_page: 24)
-      wikis = Revision.order("nid DESC")
-                      .where('node.type' => 'page', 'node.status' => 1, uid: @user.uid)
-                      .joins(:node)
-                      .limit(20)
-      @wikis = wikis.collect(&:parent).uniq
+                     .order("nid DESC")
+                     .where(status: 1, uid: @profile_user.uid)
 
-      @comment_count = Comment.where(status: 1, uid: @user.uid).count
-
-      # User's social links
-      @github = @profile_user.social_link("github")
-      @twitter = @profile_user.social_link("twitter")
-      @facebook = @profile_user.social_link("facebook")
-      @instagram = @profile_user.social_link("instagram")
-      @count_activities_posted = Tag.tagged_nodes_by_author("activity:*", @user).count
-      @count_activities_attempted = Tag.tagged_nodes_by_author("replication:*", @user).count
-      @map_lat = nil
-      @map_lon = nil
-      if @profile_user.has_power_tag("lat") && @profile_user.has_power_tag("lon")
-        @map_lat = @profile_user.get_value_of_power_tag("lat").to_f
-        @map_lon = @profile_user.get_value_of_power_tag("lon").to_f
-        @map_blurred = @profile_user.has_tag("blurred:true")
-      end
-
-      if @user.status == 0
-        if current_user&.can_moderate?
-          flash.now[:error] = I18n.t('users_controller.user_has_been_banned')
-        else
-          flash[:error] = I18n.t('users_controller.user_has_been_banned')
-          redirect_to "/"
+        if current_user && current_user.uid == @profile_user.uid
+          coauthor_nids = Node.joins(:node_tag)
+            .joins('LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid')
+            .select('node.*, term_data.*, community_tags.*')
+            .where(type: 'note', status: 3)
+            .where('term_data.name = (?)', "with:#{@profile_user.username}")
+            .collect(&:nid)
+          @drafts = Node.where('(nid IN (?) OR (status = 3 AND uid = ?))', coauthor_nids, @profile_user.uid)
+            .paginate(page: params[:page], per_page: 24)
         end
-      elsif @user.status == 5
-        flash.now[:warning] = I18n.t('users_controller.user_has_been_moderated')
+        @coauthored = @profile_user.coauthored_notes
+          .paginate(page: params[:page], per_page: 24)
+          .order('node_revisions.timestamp DESC')
+        @questions = @profile_user.questions
+                          .order('node.nid DESC')
+                          .paginate(page: params[:page], per_page: 24)
+        @likes = (@profile_user.liked_notes.includes(%i(tag comments)) + @profile_user.liked_pages)
+                       .paginate(page: params[:page], per_page: 24)
+        questions = Node.questions
+                        .where(status: 1)
+                        .order('node.nid DESC')
+        ans_ques = questions.select { |q| q.answers.collect(&:author).include?(@profile_user) }
+        @answered_questions = ans_ques.paginate(page: params[:page], per_page: 24)
+        wikis = Revision.order("nid DESC")
+                        .where('node.type' => 'page', 'node.status' => 1, uid: @profile_user.uid)
+                        .joins(:node)
+                        .limit(20)
+        @wikis = wikis.collect(&:parent).uniq
+
+        comments = Comment.limit(20)
+                          .order("timestamp DESC")
+                          .where(uid: @profile_user.uid)
+                          .paginate(page: params[:page], per_page: 24)
+
+        @normal_comments = comments.where('comments.status = 1')
+        @comment_count = @normal_comments.count
+        if current_user &.can_moderate?
+          @all_comments = comments
+          @comment_count = @all_comments.count
+        end
+
+        # User's social links
+        @github = @profile_user.social_link("github")
+        @twitter = @profile_user.social_link("twitter")
+        @facebook = @profile_user.social_link("facebook")
+        @instagram = @profile_user.social_link("instagram")
+        @count_activities_posted = Tag.tagged_nodes_by_author("activity:*", @profile_user).count
+        @count_activities_attempted = Tag.tagged_nodes_by_author("replication:*", @profile_user).count
+        @map_lat = nil
+        @map_lon = nil
+        if @profile_user.has_power_tag("lat") && @profile_user.has_power_tag("lon")
+          @map_lat = @profile_user.get_value_of_power_tag("lat").to_f
+          @map_lon = @profile_user.get_value_of_power_tag("lon").to_f
+          @map_blurred = @profile_user.has_tag('blurred:true')
+        end
+
+        if @profile_user.status == 0
+          if current_user&.can_moderate?
+            flash.now[:error] = I18n.t('users_controller.user_has_been_banned')
+          else
+            flash[:error] = I18n.t('users_controller.user_has_been_banned')
+            redirect_to "/"
+          end
+        elsif @profile_user.status == 5
+          flash.now[:warning] = I18n.t('users_controller.user_has_been_moderated')
+        end
       end
     end
   end
 
   def likes
-    @user = DrupalUser.find_by(name: params[:id])
+    @user = User.find_by(username: params[:id])
     @title = "Liked by " + @user.name
     @notes = @user.liked_notes
                   .includes(%i(tag comments))
@@ -197,7 +229,7 @@ class UsersController < ApplicationController
 
   def rss
     if params[:author]
-      @author = DrupalUser.where(name: params[:author], status: 1).first
+      @author = User.where(username: params[:author], status: 1).first
       if @author
         @notes = Node.order("nid DESC")
                            .where(type: 'note', status: 1, uid: @author.uid)
@@ -225,7 +257,7 @@ class UsersController < ApplicationController
             @user.password = params[:user][:password]
             @user.password_confirmation = params[:user][:password]
             @user.reset_key = nil
-            if @user.changed? && @user.save({})
+            if @user.changed? && @user.save
               flash[:notice] = I18n.t('users_controller.password_change_success')
               @user.password_checker = 0
               redirect_to "/dashboard"
@@ -236,8 +268,6 @@ class UsersController < ApplicationController
           else
             flash[:error] = I18n.t('users_controller.password_change_failed')
           end
-        else
-          # Just display page prompting username & pwd
         end
       else
         flash[:error] = I18n.t('users_controller.password_reset_failed_no_user').html_safe
@@ -248,7 +278,7 @@ class UsersController < ApplicationController
       user = User.find_by(email: params[:email])
       if user
         key = user.generate_reset_key
-        user.save({})
+        user.save
         # send key to user email
         PasswordResetMailer.reset_notify(user, key).deliver_now unless user.nil? # respond the same to both successes and failures; security
       end
@@ -258,20 +288,25 @@ class UsersController < ApplicationController
   end
 
   def comments
-    @comments = Comment.limit(20)
+    comments = Comment.limit(20)
                              .order("timestamp DESC")
-                             .where(status: 1, uid: params[:id])
-                             .paginate(page: params[:page])
-    render partial: 'comments/comments'
+                             .where(uid: params[:id])
+                             .paginate(page: params[:page], per_page: 24)
+
+    @normal_comments = comments.where('comments.status = 1')
+    if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+      @moderated_comments = comments.where('comments.status = 4')
+    end
+    render template: 'comments/index'
   end
 
   def photo
-    @user = DrupalUser.find_by(uid: params[:uid]).user
+    @user = User.find_by(id: params[:uid])
     if current_user.uid == @user.uid || current_user.admin?
       @user.photo = params[:photo]
       if @user.save!
         if request.xhr?
-          render :json => { :url => @user.photo_path }
+          render json: { url: @user.photo_path }
         else
           flash[:notice] = I18n.t('users_controller.image_saved')
           redirect_to @node.path
@@ -306,12 +341,16 @@ class UsersController < ApplicationController
   end
 
   def test_digest_email
-    DigestMailJob.perform_async
+    DigestMailJob.perform_async(0)
     redirect_to "/"
   end
 
   def save_settings
-    user_settings = ['notify-comment-direct:false', 'notify-likes-direct:false', 'notify-comment-indirect:false']
+    user_settings = [
+      'notify-comment-direct:false',
+      'notify-likes-direct:false',
+      'notify-comment-indirect:false'
+    ]
 
     user_settings.each do |setting|
       if params[setting] && params[setting] == "on"
@@ -321,18 +360,44 @@ class UsersController < ApplicationController
       end
     end
 
-    if params['digest:weekly'] == "on"
-      digest_val = 1
-    elsif params['digest:daily'] == "on"
-      digest_val = 0
-    else
-      digest_val = 2
+    digest_settings = [
+      'digest:weekly',
+      'digest:daily'
+    ]
+    digest_settings.each do |setting|
+      if params[setting] == "on"
+        UserTag.create_if_absent(current_user.uid, setting)
+      else
+        UserTag.remove_if_exists(current_user.uid, setting)
+      end
     end
-    # Digest settings handled separately
-    current_user.customize_digest(digest_val)
 
     flash[:notice] = "Settings updated successfully!"
     render js: "window.location.reload()"
+  end
+
+  def shortlink
+    @user = User.find_by_username(params[:username])
+    if @user
+      redirect_to @user.path
+    else
+      raise ActiveRecord::RecordNotFound.new(message: "Couldn't find user with username #{params[:id]}")
+    end
+  end
+
+  def verify_email
+    decrypted_user_id = User.validate_token(params[:token])
+    action_msg = "Email verification failed"
+    if decrypted_user_id != 0
+      user_obj = User.find(decrypted_user_id)
+      if user_obj.is_verified
+        action_msg = "Email already verified"
+      else
+        user_obj.update_column(:is_verified, true)
+        action_msg = "Successfully verified email"
+      end
+    end
+    redirect_to "/login", flash: { notice: action_msg }
   end
 
   private

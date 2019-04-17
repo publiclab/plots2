@@ -12,16 +12,16 @@
     <meta name="author" content="Public Lab contributors" />
     <link href="https://<%= request.host %>/feed.rss" rel="alternate" type="application/rss+xml" title="Public Lab research" />
 
-    <link rel="apple-touch-icon" href="/images/pl-255.png">
-    <link rel="apple-touch-icon-precomposed" href="/images/pl-255.png">
-    <link rel="apple-touch-icon-precomposed apple-touch-icon" href="/images/pl-255.png">
-    <link rel="shortcut icon" href="/images/pl-255.png" />
+    <% if Rails.env != "production" %>
+      <script src="https://maps.googleapis.com/maps/api/js?libraries=places&language=en&key=AIzaSyAOLUQngEmJv0_zcG1xkGq-CXIPpLQY8iQ"></script>
+    <% end %>
+
     <script type="text/javascript" async
       src="https://cdn.jsdelivr.net/npm/mathjax@2.7.3/MathJax.js?config=TeX-MML-AM_CHTML">
     </script>
 
     <%= stylesheet_link_tag "application", :media => "all" %>
-    <link href="/lib/fontawesome/css/font-awesome.min.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="/lib/font-awesome/css/font-awesome.min.css" media="all" rel="stylesheet" type="text/css" />
     <% if @node && @node.has_tag('style:fancy') %>
       <%= stylesheet_link_tag "fancy", :media => "all" %>
     <% end %>
@@ -61,9 +61,22 @@
       I18n.defaultLocale = "<%= I18n.default_locale %>";
       I18n.locale = "<%= I18n.locale %>";
       I18n.fallbacks = true;
-    </script>
+      $(function () {
+      $("[data-toggle=popover]").popover({
+          html: true, 
+          content: function() {
+              return $('#popover-content').html();
 
-    <%= render 'layouts/google_analytics' %>
+          }
+
+      });
+})
+      
+    </script>
+    
+    <% cache('feature_header', skip_digest: true) do %>
+      <%= feature("header") %>
+    <% end %>
 
     <%= yield(:head) %>
 
@@ -74,12 +87,20 @@
         max-height: 200px;
         overflow: auto;
     }
+
+    #ex1Slider .slider-selection {
+     background: #BABABA;
+    }
+
   </style>
 
   <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
   <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
   <script src="https://cdn.jsdelivr.net/npm/leaflet-search@2.4.0/dist/leaflet-search.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/leaflet-search@2.4.0/dist/leaflet-search.min.css">
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/bootstrap-slider.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/css/bootstrap-slider.min.css" />
   </head>
 
   <body>
@@ -96,6 +117,10 @@
 
     <%= render :partial => "layouts/footer" %>
 
-    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&language=en&key=AIzaSyDWgc7p4WWFsO3y0MTe50vF4l4NUPcPuwE"></script>
   </body>
+  <script>
+      $(function () {
+          $('[data-toggle="tooltip"]').tooltip()
+      })
+  </script>
 </html>

@@ -1,33 +1,165 @@
-<div id="note-graph" style="height:100px;padding-top:10px;"></div>
+<div id="chart"> </div>
+<i> The graphs above are stacked </i>
+<br>
+<br> <br>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
 
-<script type="text/javascript">
-(function () {
+var options = {
+    colors: ['#00E396', '#0090FF', '#800080', '#FFD700'],
+    chart: {
+        type: "area",
+        height: 400,
+        foreColor: "#999",
+        scroller: {
+            enabled: true,
+            track: {
+                height: 7,
+                background: '#e0e0e0'
 
-  flotoptions_minimal = {
-    yaxis: { show: true },
-    xaxis: { show: true },
-    grid: {
-      borderWidth: 0,
-      //color: "#444",
-      markers: []
+            },
+            thumb: {
+                height: 10,
+                background: '#94E3FF'
+
+            },
+            scrollButtons: {
+                enabled: true,
+                size: 9,
+                borderWidth: 2,
+                borderColor: '#008FFB',
+                fillColor: '#008FFB'
+
+            },
+            padding: {
+                left: 30,
+                right: 20
+            }
+
+        },
+        stacked: true,
+        dropShadow: {
+            enabled: true,
+            enabledSeries: [0],
+            top: -2,
+            left: 2,
+            blur: 5,
+            opacity: 0.06
+        }
+
     },
-    colors: [ "#08f", "#80f" ]
-  }
 
-  var notes = <%=raw tags.first.weekly_tallies.to_a.sort.to_json %>
+    stroke: {
+        curve: 'smooth',
 
-  $.plot($("#note-graph"), [
-    {
-        data: notes,
-        hoverable: true,
-//         label: "Research Notes",
-        bars: { show: true,
-                lineWidth: 0,
-                fillColor: "#08f",
-                barWidth: 0.5
-              }
+    },
+    dataLabels: {
+        enabled: false,
+
+    },
+    series: [{
+        name: 'Note tags',
+        data: generateSeries(0)
+    },{
+        name: 'Wiki tags',
+        data: generateSeries(1)
+    },{
+        name: 'Comment tags',
+        data: generateSeries(2)
+    },{
+        name: 'Question tags',
+        data: generateSeries(3)
+    } ],
+
+        markers: {
+            size: 0,
+            strokeColor: "#fff",
+            strokeWidth: 3,
+            strokeOpacity: 1,
+            fillOpacity: 1,
+            hover: {
+                size: 6
+
+            }
+
+        },
+        xaxis: {
+            type: "datetime",
+            axisBorder: {
+                show: false
+
+            },
+            axisTicks: {
+                show: false
+
+            }
+
+        },
+        yaxis: {
+            tickAmount: 5,
+            opposite: true,
+            labels: {
+                offsetX: 24,
+                offsetY: -5
+
+            },
+            tooltip: {
+                enabled: true
+
+            }
+        },
+        grid: {
+            borderColor: '#000000',
+            padding: {
+                left: -5,
+                right: 5
+
+            }
+
+        },
+        tooltip: {
+            x: {
+                format: "dd MMM yyyy"
+            },
+
+        },
+        legend: {
+            position: 'top',
+            horizontalAlign: 'left'
+
+        },
+        fill: {
+            type: "solid",
+            fillOpacity: 0.7
+
+        }
+};
+
+
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+
+
+function generateSeries(s) {
+    var values = [
+        <%= notes.values %>,
+        <%= wikis.values %>,
+        <%= comments.values %>,
+        <%= questions.values %>
+    ];
+
+    var i = 0;
+    var months_dates = <%= notes.keys %>
+    var count = months_dates.length;
+    var months = months_dates.map(x =>  new Date(x).getTime());
+    var series = [];
+    while (i < count) {
+        for (var j =0; j < months.length; j++) {
+            series.push([months[j], values[s][i]]);
+            i++;
+
+        }
     }
-  ],flotoptions_minimal)
-
-})()
+    return series;
+}
 </script>

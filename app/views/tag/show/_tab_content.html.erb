@@ -1,0 +1,69 @@
+<div class="tab-content">
+  <!-- separate these in partials-->
+  <!-- use controller to determine which partial to render -->
+  <% if @node_type == "note" %>
+    <div class="tab-pane active" id="notes">
+      <% if @notes.nil? || @notes.length == 0 %>
+        <p><%= raw t('tag.show.no_results_found', :tag => params[:id]) %>:</p>
+
+        <%= render template: "search/new" %>
+
+        <p><%= raw t('tag.show.try_advanced_search', :url1 => params[:id]) %></p>
+      <% else %>
+        <%= render :partial => "notes/notes" %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if @node_type == "questions" %>
+    <div class="tab-pane active" id="questions">
+      <div class="tab-pane" id="questions-tab">
+        <div class="btn-group text-center">
+          <a href="#asked-tab" class="btn btn-default active" data-toggle="tab">Asked</a>
+          <a href="#answered-tab" class="btn btn-default" data-toggle="tab">Answered</a>
+        </div>
+
+        <div class="tab-content">
+          <div class="tab-pane active" id="asked-tab">
+            <%= render :partial => "questions/questions" %>
+          </div>
+
+          <div class="tab-pane" id="answered-tab">
+            <% if @answered_questions %>
+              <%= render :partial => "users/answered" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @node_type == "wiki" %>
+    <div class="tab-pane active" id="wikis">
+      <%= render :partial => "wiki/wikis" %>
+    </div>
+  <% end %>
+
+  <% if @node_type == "maps" %>
+    <div class="tab-pane active" id="wikis">
+     <% if @nodes.empty? %>
+        <p><strong>Sorry, no map is tagged with `<%= params[:id] %>` tag. You can view other maps <a href="/maps">here</a>.</strong></p>
+      <% else %>
+        <%= render :partial => "map/maps" %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if @node_type == "contributors" %>
+      <div class="tab-pane active" id="contributors">
+        <div class="row">
+          <div class="col-md-9" style="padding-left: 46px">
+            <%= render :partial => "tag/contributors" %>
+          </div>
+        </div>
+      </div>
+  <% end %>
+  <br />
+  <hr />
+
+</div>

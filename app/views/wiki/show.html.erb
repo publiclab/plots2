@@ -1,7 +1,6 @@
 </div>
 <% if params[:raw] == 'true' %>
 <link href="/lib/woofmark/dist/woofmark.min.css" rel="stylesheet">
-<link href="/lib/horsey/dist/horsey.min.css" rel="stylesheet">
 <link href="/lib/bootstrap-tokenfield/dist/css/tokenfield-typeahead.min.css" rel="stylesheet">
 <link href="/lib/bootstrap-tokenfield/dist/css/bootstrap-tokenfield.min.css" rel="stylesheet">
 
@@ -20,10 +19,6 @@
 <% end %>
 
 <div class="row">
-
-<% if !@node.has_tag('locked') && @node.latest.created_at < Time.now - 6.months %>
-  <div class="alert alert-info" role="alert">This wiki page hasn't been edited for a while. If you see anything that needs updating, please help out!</div>
-<% end %>
 
 <div class="col-md-9">
 
@@ -78,9 +73,7 @@
 
   <hr />
 
-  <div class="hidden-print">
-    <%= render :partial => "home/social" %>
-  </div>
+  
 
 </div>
 

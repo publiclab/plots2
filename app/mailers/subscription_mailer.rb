@@ -18,7 +18,8 @@ class SubscriptionMailer < ActionMailer::Base
 
   def notify_note_liked(node, user)
     subject = "[PublicLab] #{user.username} liked your " +
-              (node.has_power_tag('question') ? 'question' : 'research note')
+              (node.has_power_tag('question') ? 'question' : 'research note') +
+              " (##{node.id})"
     @user = user
     @node = node
     @footer = feature('email-footer')
@@ -49,14 +50,19 @@ class SubscriptionMailer < ActionMailer::Base
     mail(
       to: "notifications@#{ActionMailer::Base.default_url_options[:host]}",
       bcc: recipients,
-      subject: "#{node.title} (#{@tag.name})"
+      subject: "#{node.title} (##{node.id})"
     )
    end
 
-  def send_digest(user_id, top_picks)
-    subject = "Your weekly digest"
+  def send_digest(user_id, nodes, frequency)
+    if frequency == User::Frequency::DAILY
+      @subject = "Your daily digest"
+    elsif frequency == User::Frequency::WEEKLY
+      @subject = "Your weekly digest"
+    end
+
     @user = User.find(user_id)
-    @top_picks = top_picks
-    mail(to: @user.email, subject: subject)
+    @nodes = nodes
+    mail(to: @user.email, subject: @subject)
   end
 end

@@ -3,7 +3,7 @@ Hi! There's been a comment to your question '<a href='https://<%= ActionMailer::
 <% else %>
 Hi! There's been a response to your research note '<a href='https://<%= ActionMailer::Base.default_url_options[:host] %><%= @comment.parent.path %>'><%= @comment.parent.title %></a>'.
 <% end %>
-Do NOT reply to this email; click this link to respond:
+You can reply to this email or visit this link:
 
 <% if @comment.parent.has_power_tag('question') %>
 <p>https://<%= ActionMailer::Base.default_url_options[:host] %><%= @comment.node.path(:question) %>#answer-comment-<%= @comment.cid %></p>
@@ -18,6 +18,15 @@ Do NOT reply to this email; click this link to respond:
 <p><%= raw auto_link(RDiscount.new(@comment.body_email(ActionMailer::Base.default_url_options[:host])).to_html) %></p>
 
 <hr />
+
+<p>Look like spam?
+  <% if @user.role == "admin" || @user.role == "moderator" %>
+    Mark this as <a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/admin/mark_comment_spam/<%= @comment.id %>">Spam</a>
+  <% else %>
+    <a href="mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+comment+that+looks+like+spam+or+needs+to+be+moderated:+https://publiclab.org/<%= @comment.parent.path %>#c<%= @comment.cid %>+by+https://publiclab.org/profile/<% if @comment.author %><%= @comment.author.name %><% end %>+Thanks!" title="Flag as spam" class="btn btn-sm btn-default btn-flag-spam-<%= @comment.id %>" >Flag this</a> for moderators
+  <% end%>
+</p>
+
 
 <div style="color:#aaa;">
 

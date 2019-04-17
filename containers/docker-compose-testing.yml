@@ -18,12 +18,12 @@ services:
       # if you want to re-import simply put away ../../mysql/*
   redis:
     image: redis:latest
-    ports:
-      - '6379:6379'
     command: redis-server
   web:
     build: ..
-    command: /bin/bash -c "sleep 5 && passenger start -p 4000"
+    cap_add:
+      - SYS_PTRACE
+    command: /bin/bash -c "sleep 5 && /usr/local/bundle/bin/passenger start --max-pool-size 9 --min-instances 9 -p 4000"
     environment:
       - RAILS_ENV=${RAILS_ENV}
       - SECRET_KEY_BASE=${SECRET_KEY_BASE}
@@ -32,8 +32,7 @@ services:
       - redis
     volumes:
       - ..:/app
-    ports:
-      - "127.0.0.1:4000:4000"
+      - js_libs:/app/public/lib
     restart: unless-stopped
   sidekiq:
     build: ..
@@ -48,3 +47,5 @@ services:
       - .:/app
     environment:
       - REDIS_URL=redis://redis:6379/0
+volumes:
+    js_libs:

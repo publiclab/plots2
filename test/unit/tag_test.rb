@@ -1,6 +1,10 @@
 require 'test_helper'
 
 class TagTest < ActiveSupport::TestCase
+  def setup
+    @start = (Date.today - 1.year).to_time
+    @fin = Date.today.to_time
+  end
   test 'create a tag' do
     tag = Tag.new(name: 'stick-mapping')
     assert tag.save!
@@ -14,7 +18,13 @@ class TagTest < ActiveSupport::TestCase
   test 'tag followers' do
     followers = Tag.followers(node_tags(:awesome).name)
     assert !followers.empty?
-    assert followers.include?(tag_selections(:awesome).user.user)
+    assert followers.include?(tag_selections(:awesome).user)
+  end
+
+  test 'related tags' do
+    related = Tag.related(tags(:awesome).name)
+    assert !related.empty?
+    assert related.include?(tags(:test))
   end
 
   test 'tag subscribers' do
@@ -28,7 +38,9 @@ class TagTest < ActiveSupport::TestCase
                                                tid: tags(:awesome).tid,
                                                nid: nodes(:one).nid)
     assert node_tag.save!
-    assert_nil node_tag.author
+    assert_raises(ActiveRecord::RecordNotFound) do
+      node_tag.author
+    end
   end
 
   test 'tag weekly tallies' do
@@ -149,13 +161,70 @@ class TagTest < ActiveSupport::TestCase
   test 'contributors with specific tag name' do
     tag = tags(:test)
     contributors = Tag.contributors(tag.name)
-    assert_equal [1,2,5,6],contributors.pluck(:id)
+    assert_equal [1,2,5,6,19],contributors.pluck(:id)
   end
 
   test 'contributor_count with specific tag name' do
     tag = tags(:test)
     contributor_count = Tag.contributor_count(tag.name)
-    assert_equal 4,contributor_count
+    assert_equal 5,contributor_count
   end
 
+  test 'check sort according to followers ascending' do
+    tags = Tag.joins(:node_tag, :node)
+        .select('node.nid, node.status, term_data.*, community_tags.*')
+        .where('node.status = ?', 1)
+        .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
+        .group(:name)
+    tags = Tag.sort_according_to_followers(tags, "asc")
+    followers = []
+    tags.each do |i|
+      followers << Tag.follower_count(i.name)
+    end
+    followers_sorted = followers.sort
+    assert_equal followers_sorted, followers
+  end
+
+  test 'check sort according to followers descending' do
+    tags = Tag.joins(:node_tag, :node)
+        .select('node.nid, node.status, term_data.*, community_tags.*')
+        .where('node.status = ?', 1)
+        .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
+        .group(:name)
+    tags = Tag.sort_according_to_followers(tags, "desc")
+    followers = []
+    tags.each do |i|
+      followers << Tag.follower_count(i.name)
+    end
+    followers_sorted = followers.sort.reverse
+    assert_equal followers_sorted, followers
+  end
+
+  test 'graph data for cytoscape' do
+    data = Tag.graph_data
+    assert_not_nil data
+    data = Tag.graph_data(10)
+    assert_not_nil data
+  end
+
+  test 'contribution_graph_making' do
+    tag = tags(:awesome)
+    graph_making = tag.contribution_graph_making('note', @start, @fin).values
+    notes = tag.nodes.where( type: 'note', created: @start.to_i..@fin.to_i).size
+
+    assert_equal notes, graph_making.sum
+  end
+
+
+  test ' comment and quiz graph making' do
+    tag = tags(:test)
+    comment_graphs = tag.comment_graph(@start, @fin).values
+    quiz_graphs = tag.quiz_graph(@start, @fin).values
+    nids = tag.nodes.map{|node| node.nid}
+    comments = Comment.where(nid: nids, timestamp: @start.to_i..@fin.to_i).count
+    quiz = Node.questions.where(nid: nids, created: @start.to_i..@fin.to_i).count
+
+    assert_equal comments, comment_graphs.sum
+    assert_equal quiz.count, quiz_graphs.sum
+  end
 end

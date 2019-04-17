@@ -8,7 +8,6 @@ module Srch
     format :json
 
     # mount the individual api modules here
-    mount Srch::Typeahead
     mount Srch::Search
 
     # Add the swagger documentation
@@ -19,9 +18,7 @@ module Srch
                               models: [
                                 SearchRequest::Entity,
                                 DocResult::Entity,
-                                TagResult::Entity,
-                                DocList::Entity,
-                                TagList::Entity
+                                DocList::Entity
                               ],
                               info: {
                                 title: 'RESTful API calls for Public Lab site',

@@ -9,8 +9,11 @@
       <p class="meta"><%= t('dashboard._node_wiki.new_edit_by') %> <a href="/profile/<%= node.author.try(:name) %>"><%= node.author.try(:name) %></a></p>
     <% end %>
  
+    <!-- TODO: could be resolved with `node.node.main_image` but applying quick fix here --> 
     <% if false && node.main_image %>
       <a class="img" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" style="width:100%;" /></a>
+    <% elsif false && node.scraped_image %>
+      <a class="img" href="<%= node.path %>"><img src="<%= node.scraped_image %>" style="width:100%;" /></a>
     <% end %>
  
     <h4>

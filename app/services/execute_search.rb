@@ -7,26 +7,25 @@ class ExecuteSearch
 
   def execute(type, search_criteria)
     sservice = SearchService.new
-    sresult = DocList.new
     case type
      when :all
-       sresult = sservice.textSearch_all(search_criteria.query)
+       sservice.search_all(search_criteria)
      when :profiles
-       sresult = sservice.textSearch_profiles(search_criteria.query)
+       sservice.search_profiles(search_criteria)
      when :notes
-       sresult = sservice.textSearch_notes(search_criteria.query)
+       sservice.search_notes(search_criteria.query, search_criteria.limit)
+     when :wikis
+       sservice.search_wikis(search_criteria.query, search_criteria.limit)
      when :questions
-       sresult = sservice.textSearch_questions(search_criteria.query)
+       sservice.search_questions(search_criteria.query, search_criteria.limit, search_criteria.sort_by)
      when :tags
-       sresult = sservice.textSearch_tags(search_criteria.query)
-     when :peoplelocations
-       sresult = sservice.recentPeople(search_criteria.query, search_criteria.tag)
+       sservice.search_tags(search_criteria.query, search_criteria.limit)
      when :taglocations
-       if search_criteria.query.include? ","
-         sresult = sservice.tagNearbyNodes(search_criteria.query, search_criteria.tag)
-       end
+       sservice.tagNearbyNodes(search_criteria.coordinates, search_criteria.tag, search_criteria.period, search_criteria.sort_by, search_criteria.order_direction, search_criteria.limit)
+     when :nearbyPeople
+       sservice.tagNearbyPeople(search_criteria.coordinates, search_criteria.tag, search_criteria.field, search_criteria.period, search_criteria.sort_by, search_criteria.order_direction, search_criteria.limit)
      else
-       sresult = []
+       []
      end
   end
 end

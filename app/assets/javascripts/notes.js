@@ -20,4 +20,17 @@ jQuery(document).ready(function($) {
 
   postProcessContent();
   addDeepLinks($('#content'));
+
+
+
+  $('#replications').find('a.btn').click(function(e) {
+    e.preventDefault();
+    $('.activity-comment#i-did-this').find('textarea').val('I did this!');
+    $('.activity-comment#i-did-this').show();
+    $('.activity-comment#i-did-this').focus();
+  });
+
+  $('.activity-comment#i-did-this').find('button.btn-primary').click(function(e) {
+    $('.activity-comment#i-did-this').hide();
+  });
 });

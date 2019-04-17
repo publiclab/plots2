@@ -1,0 +1,16 @@
+<% str="##{@comment_id}-like-emojis button" %>
+<% emoji_names = ["thumbs-up", "thumbs-down", "laugh",
+                   "hooray", "confused", "heart"] %>
+
+$("<%= str %>").css("display","none");
+<% emoji_names.each do |e| %>
+  <% str="##{@comment_id}-emoji-button-#{e}" %>
+  <% capitalized_emoji_name = e.split("-").map(&:capitalize).join %>
+  <% if @likes.has_key? capitalized_emoji_name %>
+    $("<%= str %>").css("display","flex");
+    $("<%= str %> div").first().html("<%= @likes[capitalized_emoji_name] %>");
+  <% end %>
+  <% if @user_reactions_map.has_key? capitalized_emoji_name %>
+    $("<%= str %>").attr("data-original-title", "<%= @user_reactions_map[capitalized_emoji_name] %>");
+  <% end %>
+<% end %>

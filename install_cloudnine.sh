@@ -1,14 +1,14 @@
 # updated to ruby version in gem file
 
 read -p "Enter your cloud9 username: " un
-rvm install ruby-2.4.1
-source $(rvm 2.4.1 do rvm env --path)
-rvm use 2.4.1
+rvm install ruby-2.4.4
+source $(rvm 2.4.4 do rvm env --path)
+rvm use ruby-2.4.4
 gem install rails -v 5.2.0
 sudo apt-get update
 sudo apt-get -y install imagemagick ruby-rmagick
-npm install -g bower
-bower install
+npm install -g yarn
+yarn install
 gem install bundler
 bundle install --without production mysql
 cp db/schema.rb.example db/schema.rb

@@ -3,12 +3,13 @@ xml.rss :version => '2.0', 'xmlns:atom' => 'http://www.w3.org/2005/Atom' do
     xml.title "Research tagged '#{params[:tagname]}'"
     xml.description "Open source environmental science research at Public Lab"
     xml.link "https://#{request.host}/feed/tag/" + params[:tagname] + ".rss"
+    xml.rel "self"
 
     @notes.each do |node|
       body = node.body
       author = node.author.username
-      if node.author.user.has_power_tag('twitter')
-        author = "@#{node.author.user.get_value_of_power_tag('twitter')}"
+      if node.author.has_power_tag('twitter')
+        author = "@#{node.author.get_value_of_power_tag('twitter')}"
       end
       xml.item do
         xml.title      node.title

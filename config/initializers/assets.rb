@@ -4,9 +4,9 @@ Rails.application.config.assets.precompile += [
   'advanced_search.js',
   'application.js',
   'comment_expand.js',
+  'comment.js',
   'dashboard.js',
   'dragdrop.js',
-  'dynamic_search.js',
   'editor.js',
   'graph.js',
   'grids.js',
@@ -48,5 +48,6 @@ Rails.application.config.assets.precompile += [
   'user_tags.css.scss',
   'wiki.css',
   'horsey.js',
-  'atwho_autocomplete.js'
+  'atwho_autocomplete.js',
+  'async_tag_subscriptions.js'
 ]

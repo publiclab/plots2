@@ -3,8 +3,8 @@
     <div class="navbar navbar-default">
       <div class="navbar-text pull-left">
       <% if answer.author %>
-        <% if answer.author.user && answer.author.user.photo_file_name %>
-        <img style="width:32px;margin-right:6px;" class="img-circle" src="<%= answer.author.user.photo_path(:thumb) %>" />
+        <% if answer.author && answer.author.photo_file_name %>
+        <img style="width:32px;margin-right:6px;" class="img-circle" src="<%= answer.author.photo_path(:thumb) %>" />
         <% else %>
         <div style="vertical-align:middle;display:inline-block;height:32px;width:32px;margin-right:6px;background:#ccc;" class="img-circle"></div>
         <% end %>
@@ -22,12 +22,15 @@
         <% end %>
 
         <% if current_user && (current_user.role == "admin" || current_user.role == "moderator" || answer.uid == current_user.uid || answer.node.uid == current_user.uid) %>
-          <a data-remote="true" data-confirm="Are you sure? <% if current_user && answer.uid != current_user.uid %>Please exercise caution in deleting/moderating others' answer; this cannot be undone.<% end %>" href="/answers/delete/<%= answer.id %>" class="btn btn-default btn-sm" id="a<%= answer.id %>delete-btn" data-method="delete"><i class='icon fa fa-trash'></i></a>
+          <% other_user = (current_user && answer.uid != current_user.uid) ? 'true' : 'false' %>
+          <a class="btn btn-default btn-sm" id="a<%= answer.id %>delete-btn" other_user=<%= other_user %>>
+            <i class='icon fa fa-trash'></i>
+          </a>
         <% end %>
       </div>
     </div>
     <div id="c<%= answer.id %>show" style="padding:0px 20px">
-      <p><%= sanitize insert_extras(answer.body_markdown) %></p>
+      <p><%= raw insert_extras(answer.body_markdown) %></p>
     </div>
     <% if current_user && params[:action]!="make_answer" %>
       <%=  render :partial => "comments/edit", :locals => { title: "Edit answer", comment: answer, placeholder: "Help users by posting an answer to this question" } %>
@@ -56,8 +59,14 @@
         "><span class="caret"></span>
         </div>
     <% end %>
-       <a href="<% if current_user %>'/answer_like/likes/<%= answer.id %>'<% else %>'#'<% end %>" data-remote ="true" tooltip-title="Helpful? Like it" class="btn btn-default btn-sm btn-like" id="answer-like-button-<%= answer.id %>" <% unless current_user %> popover-content="You must be logged in to Like the answer" <% end %> ><span id="answer-like-star-<%= answer.id %>" class="fa fa-star<% if current_user && !answer.liked_by(current_user.uid) %>-o<% end %>"></span> <span id="answer-like-count-<%= answer.id %>"><%= answer.likers.length %></span> Likes</a>
-      <a href="#a<%= answer.id %>" class="btn btn-default btn-sm "><i class="fa fa-share-alt"></i></a> &nbsp;
+       <a href="<% if current_user %>'/answer_like/likes/<%= answer.id %>'<% else %>'#'<% end %>" 
+          data-remote ="true" tooltip-title="Helpful? Like it" class="btn btn-default btn-sm btn-like" 
+          id="answer-like-button-<%= answer.id %>"
+       <% unless current_user %> popover-content="You must be logged in to Like the answer" <% end %> > 
+          <span id="answer-like-star-<%= answer.id %>" class="fa fa-star<% if current_user && !answer.liked_by(current_user.uid) %>-o<% end %>"></span>
+          <span id="answer-like-count-<%= answer.id %>"><%= answer.likers.length %></span> Likes</a>
+     
+      <a href="#a<%= answer.id %>" class="btn btn-default btn-sm "><i class="fa fa-link"></i></a> &nbsp;
       <a id="answer-<%= answer.id %>-comment-button"  style="color: #006dcc;"><span id="answer-<%= answer.id %>-comment-count"><%= answer.comments.length %></span> Comments <i class="fa fa-caret-down"></i></a>
     </div>
 
@@ -68,7 +77,7 @@
       <div id="answer-<%= answer.id %>-comment-section" style="display: flex;background: white;padding: 15px;">
       <% if current_user %>
       <div class="inline" id="question-comment-form">
-        <%= render partial: "comments/form", locals: { aid: answer.id, title: "Post Comment", placeholder: I18n.t('notes._comments.post_placeholder') } %>
+        <%= render partial: "comments/form", locals: { aid: answer.id, title: "Post Comment", placeholder: I18n.t('notes._comments.post_placeholder'), is_new_answer: !local_assigns[:new_answer].blank? } %>
       </div>
       <% else %>
       <p><%= link_to "Log in", new_user_session_path( return_to: request.path )%> to comment</p>
@@ -116,4 +125,32 @@
     $('#answer-<%= answer.id %>-comment-section .inline').last().append('<span class="help-block" style="color: red;">Error: there was a problem.</span>')
   });
 
+  $("#a<%= answer.id %>delete-btn").click(function () {
+    var content = 'Are you sure?'
+    if ($(this).attr('other_user') == 'true') {
+      content += " Please exercise caution in deleting/moderating others' answer; this cannot be undone"
+    }
+    $.confirm({
+      title: 'Confirm!',
+      theme: 'Supervan',
+      content: content,
+      buttons: {
+
+        confirm: function () {
+          $.ajax({
+            url : "/answers/delete/<%= answer.id %>",
+            type: 'GET',
+            success: function(response){
+              notyNotification('sunset', 3000, 'error', 'topRight', 'Answer deleted');
+              $("#a<%= answer.id %>").remove()
+            }
+          });
+        },
+
+        cancel: function () {
+            notyNotification('sunset', 3000, 'info', 'topRight', 'Answer deletion cancelled!');
+        },
+      }
+    });
+  });
 </script>
