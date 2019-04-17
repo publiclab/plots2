@@ -1000,10 +1000,4 @@ class Node < ActiveRecord::Base
       NodeMailer.notify_callout(self, user).deliver_now if user.username != author.username
     end
   end
-
-  def mentioned_users
-    usernames = latest.body.scan(Callouts.const_get(:FINDER))
-    User.where(username: usernames.map { |m| m[1] }).distinct
-  end
-
 end
