@@ -28,6 +28,7 @@ services:
       - RAILS_ENV=${RAILS_ENV}
       - SECRET_KEY_BASE=${SECRET_KEY_BASE}
       - REDIS_URL=redis://redis:6379/0
+      - DANGER_GITHUB_API_TOKEN=${DANGER_GITHUB_API_TOKEN}
     links:
       - redis
     volumes:
