@@ -12,6 +12,8 @@ class SearchTest < ApplicationSystemTestCase
   end
   
   test 'searching using navbar autocomplete' do
+    visit '/'
+
     fill_in("searchform_input", with: "Canon")
 
     assert page.evaluate_script("$('.typeahead.dropdown-menu').is(':visible')")
