@@ -10,4 +10,11 @@ class SearchTest < ApplicationSystemTestCase
 
     assert_selector('h2', text: 'Results for Canon')
   end
+  
+  test 'searching using navbar autocomplete' do
+    fill_in("searchform_input", with: "Canon")
+
+    assert page.evaluate_script("$('.typeahead.dropdown-menu').is(':visible')")
+    assert_equal 1, page.evaluate_script("$('.typeahead.dropdown-menu').find('li').length")
+  end
 end
