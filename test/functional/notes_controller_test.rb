@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'byebug'
 
 class NotesControllerTest < ActionController::TestCase
    include ActionMailer::TestHelper
@@ -275,6 +276,27 @@ class NotesControllerTest < ActionController::TestCase
     assert_equal 4, Node.last.status
     assert_equal title, Node.last.title
     assert_redirected_to '/notes/' + users(:lurker).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
+  end
+
+  test 'Email to the mentioned users in note creation' do
+    UserSession.create(users(:naman))
+    title = 'Note with Mentioned users in body'
+    post :create,
+         params: { title: title,
+                   body: '@naman18996 and @jeffrey are the mentioned users',
+                   tags: 'balloon-mapping,event'
+         }
+    node = Node.last
+    emails = []
+    ActionMailer::Base.deliveries.each do |m|
+      if m.subject == "(##{node.id}) You were mentioned in a note"
+        emails = emails + m.to
+      end
+    end
+    assert_equal ActionMailer::Base.deliveries.count, 3
+    assert_equal 2, emails.count
+    byebug
+    assert_equal ["naman18996@yahoo.com", "jeff@publiclab.org"].to_set, emails.to_set
   end
 
   test 'first-timer moderated note (status=4) hidden to normal users on research note feed' do
