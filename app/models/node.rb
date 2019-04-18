@@ -54,6 +54,7 @@ class Node < ActiveRecord::Base
                end
         where(nid: nids, status: 1)
       elsif order == :natural_titles_only
+        query = connection.quote(query.to_s)
         Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE) AS score")
           .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE)")
           .limit(limit)
