@@ -94,7 +94,11 @@ module ApplicationHelper
 
   # we should move this to the Node model:
   def render_map(lat, lon)
-    render partial: 'map/leaflet', locals: { lat: lat, lon: lon }
+    render partial: 'map/leaflet', locals: { lat: lat, lon: lon, top_map: false }
+  end
+
+  def render_top_map(lat,lon)
+    render partial: 'map/leaflet', locals: { lat: lat, lon: lon, top_map: true }
   end
 
   # we should move this to the Comment model:
