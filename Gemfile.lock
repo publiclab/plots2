@@ -197,7 +197,7 @@ GEM
     jwt (2.1.0)
     launchy (2.4.3)
       addressable (~> 2.3)
-    lemmatizer (0.2.1)
+    lemmatizer (0.2.2)
     less (2.6.0)
       commonjs (~> 0.2.7)
     less-rails (4.0.0)
@@ -550,7 +550,7 @@ DEPENDENCIES
   jquery-atwho-rails
   jquery-rails
   json_expressions
-  lemmatizer (~> 0.2.1)
+  lemmatizer (~> 0.2.2)
   less-rails (~> 4.0)
   letter_opener
   listen (~> 3.1.5)
