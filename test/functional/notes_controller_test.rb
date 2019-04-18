@@ -295,7 +295,6 @@ class NotesControllerTest < ActionController::TestCase
     end
     assert_equal ActionMailer::Base.deliveries.count, 3
     assert_equal 2, emails.count
-    byebug
     assert_equal ["naman18996@yahoo.com", "jeff@publiclab.org"].to_set, emails.to_set
   end
 
