@@ -444,7 +444,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  def get_latest_used_locations
+  def get_all_used_locations
     latest_locations = [] 
     nodes = self.nodes.order('nid DESC').where(status: 1)
     nodes.each_with_index do |node , i|

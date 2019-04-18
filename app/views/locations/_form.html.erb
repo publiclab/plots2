@@ -10,7 +10,7 @@
 
   <!-- Not part of LBL library -->
    <% if current_user %>
-      <% latest_locations = current_user.get_latest_used_locations %>
+      <% latest_locations = current_user.get_all_used_locations %>
       <% if latest_locations.count > 0 %>
         <p><b>Your previous used locations...</b></p>
         <div class="row">
