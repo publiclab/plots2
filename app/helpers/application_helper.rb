@@ -97,7 +97,7 @@ module ApplicationHelper
     render partial: 'map/leaflet', locals: { lat: lat, lon: lon, top_map: false }
   end
 
-  def render_top_map(lat,lon)
+  def render_top_map(lat, lon)
     render partial: 'map/leaflet', locals: { lat: lat, lon: lon, top_map: true }
   end
 
