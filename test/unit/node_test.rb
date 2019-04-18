@@ -48,7 +48,6 @@ class NodeTest < ActiveSupport::TestCase
         emails = emails + m.to
       end
     end
-    assert_equal 3, ActionMailer::Base.deliveries.count
     assert_equal 2, emails.count
     assert_equal ["naman18996@yahoo.com", "jeff@publiclab.org"].to_set, emails.to_set
   end
