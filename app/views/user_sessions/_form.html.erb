@@ -100,14 +100,16 @@
       $('#loginModal').modal(); // Open the login modal to allow user to login
     });
 
+    var toggleState = false;
+
     $("#visibility").on("click", function(e) {
       e.preventDefault();
-      $(this).toggleClass("fa-eye fa-eye-slash");
+      $(this).toggleClass("fa-eye fa-eye-slash").attr("title", toggleState ? "Show Password" : "Hide Password");
+      toggleState = !toggleState;
       var type = $("#password-signup").attr("type");
       if (type == "text")
       { $("#password-signup").attr("type", "password");}
       else
       { $("#password-signup").attr("type", "text"); }
     });
-
   </script>
