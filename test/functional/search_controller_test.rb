@@ -13,6 +13,12 @@ class SearchControllerTest < ActionController::TestCase
     assert_equal nodes(:one).id, assigns(:notes).first.id
   end
 
+  test "search notes at /search/wikis/about?order=natural_titles_only" do
+    get :wikis, params: { query: 'about', order: 'natural_titles_only' }
+    assert_response :success
+    assert_equal nodes(:about).id, assigns(:wikis).first.id
+  end
+
   test "search profiles page at /search/profiles/steff1" do
     get :profiles, params: { query: 'steff1' }
     assert_response :success
