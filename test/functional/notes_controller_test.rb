@@ -1,6 +1,4 @@
 require 'test_helper'
-require 'byebug'
-
 class NotesControllerTest < ActionController::TestCase
    include ActionMailer::TestHelper
   def setup
