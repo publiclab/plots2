@@ -7,6 +7,6 @@ class NodeMailer < ActionMailer::Base
     @user = user
     @node = node
     @footer = feature('email-footer')
-    mail(to: user.email, subject: "You were mentioned. (##{node.id}) ")
+    mail(to: user.email, subject: "(##{node.id}) You were mentioned in a note")
   end
 end
