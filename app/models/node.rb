@@ -173,12 +173,10 @@ class Node < ActiveRecord::Base
 
   public
 
-  is_impressionable counter_cache: true, column_name: :views
+  is_impressionable counter_cache: true, column_name: :views, unique: :ip_address
 
   def totalviews
-    # this doesn't filter out duplicate ip addresses as the line below does:
-    # self.views + self.legacy_views
-    impressionist_count(filter: :ip_address) + legacy_views
+    views + legacy_views
   end
 
   def self.weekly_tallies(type = 'note', span = 52, time = Time.now)
