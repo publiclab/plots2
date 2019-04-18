@@ -1,6 +1,6 @@
 <div class="dropdown">
     <button type="button" class="btn btn-outline-secondary dropdown-toggle" id="pt-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i></button>
-    <div class="dropdown-menu float-right" style="margin-top:5px;" id="pt-list">
+    <div class="dropdown-menu dropdown-menu-right float-right" style="margin-top:5px;" id="pt-list">
       <% if current_user %>
         <h6 class="dropdown-header">Recently used tags</h6>
         <% NodeTag.where(uid: current_user.id).order('date DESC').limit(5).each do |tag| %>
