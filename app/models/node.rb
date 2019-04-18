@@ -53,7 +53,14 @@ class Node < ActiveRecord::Base
                    .collect(&:nid)
                end
         where(nid: nids, status: 1)
-      else
+      elsif order == :natural_titles_only
+        Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE) AS score")
+          .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE)")
+          .limit(limit)
+          .distinct
+          .collect(&:nid)
+        where(nid: nids, status: 1)
+      elsif
         nids = Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query).collect(&:nid)
 
         tnids = Tag.find_nodes_by_type(query, %w(note page)).collect(&:nid) # include results by tag
