@@ -11,7 +11,7 @@
       <i class="fa fa-flag"></i>
     </a>
     <li title="Follow" class="btn btn-default btn-sm requireLogin" data-html="true" rel="popover" data-content="<%= "No tags" if tagnames.nil? || tagnames.length == 0 %><% if tagnames %><% tagnames.each do |tagname| %><p style='margin-bottom:3px;'><a href='/subscribe/tag/<%= tagname %>' class='btn btn-default btn-mini'><%= tagname %></a></p><% end %><% end %><hr /><i class='fa fa-user'></i><% if current_user && !current_user.following?(node.author) %>&nbsp;<a class='btn btn-sm' href='/relationships?followed_id=<%= node.author.id %>' data-method='post' > <%= node.author.name %></a><% else %><%= node.author.name %><% end %>" title="Follow by tag or author" data-placement="left">
-      <i class="fa fa-user-plus" aria-hidden="true"></i> 
+      <i class="fa fa-user-plus" aria-hidden="true"></i>
     </li>
   <li rel="tooltip" title="Helpful? Like it and get updates!" class="btn btn-default btn-sm btn-like" node-id="<%= node.id %>" id="like-button-<%= node.id %>">
     <% if !current_user %>
@@ -91,7 +91,10 @@
   </style>
 
   <script>
- 
+    $('[rel="tooltip"]').on('click', function () {
+    $(this).tooltip('hide')
+    })
+
     function print_three_column() {
       $('body').css('column-count', 3)
                .css('column-gap', '50px');
@@ -105,7 +108,7 @@
     $(document).on("click", "#print-command-no-links",print_linkless);
 
     jQuery(document).ready(function() {
-      
+
       // 304 cached response yields no data to insert, which is not useful
       jQuery.ajaxSetup({
         cache: false
@@ -119,16 +122,16 @@
       // triggers liking and unliking
       <% if current_user %>
         $('#like-button-<%= node.id %>').on('click', debounce(<% if node.liked_by(current_user.uid) %>clickliked<% else %>clicknotliked<% end %>, 200, true));
-      
+
         // leaving below uncommented for now - possibility useful for implement comment like functionality?
-        
+
         // if(window.location.href.includes("#like")) {
         //   $('#like-button-<%= node.id %>').click();
         // }
 
       <% end %>
     });
-    
+
     $('body').on('click', function (e) { // If there's a click event in the body
       $('[rel=popover]').each(function () { // For each popover
         /*
