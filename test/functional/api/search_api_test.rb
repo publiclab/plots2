@@ -98,16 +98,13 @@ class SearchApiTest < ActiveSupport::TestCase
     # Expected search pattern
     pattern = {
       srchParams: {
-        query: 'Blog',
+        query: 'Awesome',
         seq: nil,
       }.ignore_extra_keys!
     }.ignore_extra_keys!
 
     matcher = JsonExpressions::Matcher.new(pattern)
     json = JSON.parse(last_response.body)
-puts '>>>>>>>>>>>>>>>>>>>>'
-puts json
-puts '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
     assert matcher =~ json
   end
 
