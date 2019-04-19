@@ -1,6 +1,6 @@
 <div class="comment-form-wrapper" style="background-color:#f8f8f8; border: 1px solid #e7e7e7;padding: 18px;">
   <div class="card-body">
-    <form class="comment-form" id="comment-form" data-remote="true" <% if !local_assigns[:is_answer].blank? %> action= "/answers/create/<%= @node.nid %>" <% elsif !local_assigns[:aid].blank? %> action= "/comment/answer_create/<%= aid %>" <% else %> action="/comment/create/<%= @node.nid %><%= "?type=question" if local_assigns[:type]=="question" %>" <% end %> <% if local_assigns[:aid].blank? %>method="post"<% end %>>
+    <form class="comment-form" id="comment-form-<%= Time.now.to_s.gsub(" ", "") %><%= rand(10000) %>" data-remote="true" <% if !local_assigns[:is_answer].blank? %> action= "/answers/create/<%= @node.nid %>" <% elsif !local_assigns[:aid].blank? %> action= "/comment/answer_create/<%= aid %>" <% else %> action="/comment/create/<%= @node.nid %><%= "?type=question" if local_assigns[:type]=="question" %>" <% end %> <% if local_assigns[:aid].blank? %>method="post"<% end %>>
 
       <h4 style="margin-top:0;"><%= title %><% if current_user && current_user.id == @node.uid %> <small><a target="_blank" href="https://publiclab.org/comment-templates">Add a response template</a></small><% end %></h4>
 
@@ -46,7 +46,7 @@
 
               <!-- http://stackoverflow.com/questions/11235206/twitter-bootstrap-form-file-element-upload-button -->
               <label id="input_label" class="" for="fileinput">
-                <input id="fileinput" type="file" name="image[photo]" style="display:none;" />
+                <input id="fileinput-<%= Time.now.to_s.gsub(" ", "") %><%= rand(10000) %>" type="file" name="image[photo]" style="display:none;" />
                 <a onClick="handleClick()" class="d-none d-md-inline">choose one</a>
                 <span class="d-md-none">
                   <i class="fa fa-upload"></i>
