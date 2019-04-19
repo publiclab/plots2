@@ -88,7 +88,7 @@ For information on how to install for use with the cloud environment, please see
 3. Enter the new **plots2** directory with `cd plots2`.
 4. Steps to install gems:
     * You may need to first run `bundle install` if you have older gems in your environment from previous Rails work. If you get an error message like `Your Ruby version is 2.x.x, but your Gemfile specified 2.4.4` then you need to install the ruby version 2.4.4 using `rvm` or `rbenv`.
-	    Using **rvm**: `rvm install 2.4.4` followed by `rvm use 2.4.4`
+	    * Using **rvm**: `rvm install 2.4.4` followed by `rvm use 2.4.4`
 	    * Using **rbenv**:  `rbenv install 2.4.4` followed by `rbenv local 2.4.4`
     * Install gems with `bundle install --without production mysql` from the rails root folder, to install the gems you'll need, excluding those needed only in production.
 5. Make a copy of `db/schema.rb.example` and place it at `db/schema.rb`.
