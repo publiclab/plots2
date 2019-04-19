@@ -89,6 +89,7 @@ a .fa-white,
 
 .alert h2 {
   font-size:1.2em;
+  font-weight: 800;
 }
 
 .visible-print {
@@ -483,4 +484,8 @@ textarea, input {
     font-style: normal;
     font-weight: normal;
     text-decoration: inherit;
+}
+
+.form-grey {
+  color:#888;
 }
