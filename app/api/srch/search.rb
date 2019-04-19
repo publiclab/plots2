@@ -154,8 +154,7 @@ module Srch
 
         if results.present?
           docs = results.map do |model|
-            if model
-              DocResult.new(
+            DocResult.new(
               doc_id: model.nid,
               doc_type: 'CONTENT',
               doc_url: model.path,
@@ -183,8 +182,7 @@ module Srch
 
         if results.present?
           docs = results.map do |model|
-            if model
-              DocResult.new(
+            DocResult.new(
               doc_id: model.nid,
               doc_type: 'NODES',
               doc_url: model.path,
