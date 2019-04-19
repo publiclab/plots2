@@ -26,9 +26,9 @@ class SearchService
 
   
   # Run a search in any of the associated systems for references that contain the search string
-  def search_content(search_criteria)
-    nodes = search_nodes(search_criteria.query)
-    tags = search_tags(search_criteria.query, search_criteria.limit)
+  def search_content(query, limit)
+    nodes = search_nodes(query)
+    tags = search_tags(query, limit)
 
     { notes: nodes,
       tags: tags }
