@@ -1,9 +1,9 @@
 <div class="btn-toolbar" style="margin-bottom:8px;">
 
   <div class="btn-group">
-    <a class="btn btn-default btn-sm" onClick="$E.bold()"><i class="fa fa-bold"></i></a>
-    <a class="btn btn-default btn-sm" onClick="$E.italic()"><i class="fa fa-italic"></i></a>
-    <a class="btn btn-default btn-sm" onClick="$E.h2()"><b><span class="hidden-sm">Header</span><span class="visible-sm">H</span></b></a>
+    <a rel="tooltip" title="Bold" class="btn btn-default btn-sm" onClick="$E.bold()"><i class="fa fa-bold"></i></a>
+    <a rel="tooltip" title="Italic" class="btn btn-default btn-sm" onClick="$E.italic()"><i class="fa fa-italic"></i></a>
+    <a rel="tooltip" title="Header" class="btn btn-default btn-sm" onClick="$E.h2()"><b><span class="hidden-sm">Header</span><span class="visible-sm">H</span></b></a>
   </div>
 
   <div class="btn-group">
@@ -23,12 +23,12 @@
   </div>
 
   <div class="btn-group">
-    <a onClick="$E.save()" class="btn btn-default btn-sm"><i class="fa fa-save"></i></a>
-    <a onClick="$E.recover()" class="btn btn-default btn-sm">Recover</a>
+    <a rel="tooltip" title="Save" onClick="$E.save()" class="btn btn-default btn-sm"><i class="fa fa-save"></i></a>
+    <a rel="tooltip" title="Recover" onClick="$E.recover()" class="btn btn-default btn-sm">Recover</a>
   </div>
 
   <div class="btn-group">
-    <a class="btn btn-default btn-sm" target="_blank" href="/wiki/authoring-help"><i class="fa fa-question-circle"></i></a>
+    <a rel="tooltip" title="Help" class="btn btn-default btn-sm" target="_blank" href="/wiki/authoring-help"><i class="fa fa-question-circle"></i></a>
   </div>
 
 </div>
