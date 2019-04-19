@@ -105,7 +105,9 @@ class SearchApiTest < ActiveSupport::TestCase
 
     matcher = JsonExpressions::Matcher.new(pattern)
     json = JSON.parse(last_response.body)
-
+puts '>>>>>>>>>>>>>>>>>>>>'
+puts json
+puts '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
     assert matcher =~ json
   end
 
