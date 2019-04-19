@@ -93,9 +93,6 @@ class UserSessionsController < ApplicationController
     end
     return_to = session[:openid_return_to] || session[:return_to] || params[:return_to] || '/dashboard'
     r = return_to + hash_params
-    if return_to == '/login'
-      return_to = '/dashboard'
-    end
     if u && u.password_checker != 0
       n = u.password_checker
       hash = { 1 => "Facebook", 2 => "Github", 3 => "Google", 4 => "Twitter"  }
@@ -138,6 +135,9 @@ class UserSessionsController < ApplicationController
                   session[:openid_return_to] = nil
                 elsif session[:return_to]
                   session[:return_to] = nil
+                  if return_to == '/login'
+                    return_to = '/dashboard'
+                  end
                 end
                 redirect_to r
                 redirect_to '/dashboard'
