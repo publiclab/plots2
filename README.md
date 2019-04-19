@@ -32,16 +32,17 @@ Some key features include:
     - [Simple Installation with Cloud9](https://github.com/publiclab/plots2/wiki/Simple-Installation-for-Cloud9)
     - [Standard Installation](#standard-installation)
 6. [SSL in Development](#ssl-in-development)
-7. [Testing](#testing)
-8. [API](https://github.com/publiclab/plots2/blob/master/doc/API.md)
-9. [Bundle Exec](#bundle-exec)
-10. [Reply-by-email](#reply-by-email)
-11. [Bugs and Support](#bugs-and-support)
-12. [Recaptcha](#recaptcha)
-13. [Internationalization](#internationalization)
-14. [Security](#security)
-15. [Developers](#developers)
-16. [First Time?](#first-time)
+7. [Login](#login)
+8. [Testing](#testing)
+9. [API](https://github.com/publiclab/plots2/blob/master/doc/API.md)
+10. [Bundle Exec](#bundle-exec)
+11. [Reply-by-email](#reply-by-email)
+12. [Bugs and Support](#bugs-and-support)
+13. [Recaptcha](#recaptcha)
+14. [Internationalization](#internationalization)
+15. [Security](#security)
+16. [Developers](#developers)
+17. [First Time?](#first-time)
 
 
 ****
@@ -87,7 +88,7 @@ For information on how to install for use with the cloud environment, please see
 3. Enter the new **plots2** directory with `cd plots2`.
 4. Steps to install gems:
     * You may need to first run `bundle install` if you have older gems in your environment from previous Rails work. If you get an error message like `Your Ruby version is 2.x.x, but your Gemfile specified 2.4.4` then you need to install the ruby version 2.4.4 using `rvm` or `rbenv`.
-	    * Using **rvm**: `rvm install 2.4.4` followed by `rvm use 2.4.4`
+	    Using **rvm**: `rvm install 2.4.4` followed by `rvm use 2.4.4`
 	    * Using **rbenv**:  `rbenv install 2.4.4` followed by `rbenv local 2.4.4`
     * Install gems with `bundle install --without production mysql` from the rails root folder, to install the gems you'll need, excluding those needed only in production.
 5. Make a copy of `db/schema.rb.example` and place it at `db/schema.rb`.
@@ -107,6 +108,15 @@ We, at Public Lab use [openssl](https://github.com/ruby/openssl) gem to provide 
 3. Add security exceptions from the advance settings of the browser.
 You can also use http (unsecure connection) on the port number 3000 by going to 'http://localhost:3000'. We use port number 3001 for 'https' and port number 3000 for 'http' connection.
 Secure connection is needed for OAuth authentication etc.
+
+## Login
+
+Once you complete the installation, we have 3 accounts available in the local development / testing environment. Each one comes with its own set of permissions, but besides that the experience across them is pretty much the same. Use these to login in to the PL website and gain additional permissions for only logged in users.
+
+**login**: `admin`, `moderator`, or `user` 
+
+**password**: `password`
+
 
 ## Testing
 
