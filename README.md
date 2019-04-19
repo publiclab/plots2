@@ -111,7 +111,7 @@ Secure connection is needed for OAuth authentication etc.
 
 ## Login
 
-Once you complete the installation, we have 3 accounts available in the local development / testing environment. Each one comes with its own set of permissions, but besides that the experience across them is pretty much the same. Use these to login in to the PL website and gain additional permissions for only logged in users.
+Once you complete the installation, we have 3 accounts available in the local development / testing environment. Each one comes with its own set of permissions, but besides that the experience across them is pretty much the same. Use these to login in to the PL website in your local development / testing environment and gain additional permissions for only logged in users.
 
 **login**: `admin`, `moderator`, or `user` 
 
