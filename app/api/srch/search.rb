@@ -140,6 +140,35 @@ module Srch
         end
       end
 
+      # Request URL should be /api/srch/content?query=QRY
+      desc 'Perform a search of nodes and tags', hidden: false,
+                                                 is_array: false,
+                                                 nickname: 'search_content'
+
+      params do
+        use :common
+      end
+      get :nodes do
+        search_request = SearchRequest.from_request(params)
+        results = Search.execute(:nodes, params)
+
+        if results.present?
+          docs = results.map do |model|
+            if model
+              DocResult.new(
+              doc_id: model.nid,
+              doc_type: 'CONTENT',
+              doc_url: model.path,
+              doc_title: model.title
+            )
+          end
+
+          DocList.new(docs, search_request)
+        else
+          DocList.new('', search_request)
+        end
+      end
+
       # Request URL should be /api/srch/wikis?query=QRY
       desc 'Perform a search of wikis pages',    hidden: false,
                                                  is_array: false,
