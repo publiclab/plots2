@@ -85,6 +85,7 @@ a .fa-white,
 
 .label {
   margin-bottom:3px;
+  font-weight: 400;
 }
 
 .alert h2 {
