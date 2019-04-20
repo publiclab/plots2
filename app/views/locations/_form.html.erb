@@ -9,29 +9,29 @@
     </div>
 
   <!-- Not part of LBL library -->
-   <% if current_user %>
-      <% latest_locations = current_user.get_all_used_locations %>
-      <% if latest_locations.count > 0 %>
-        <p><b>Your previous used locations...</b></p>
-        <div class="row">
-         
-            <% latest_locations.each_with_index do |location , index| %>
-              <% if index == 5 %>
-                <% break %>
-              <% end %>
-             <a href="#" onclick="blurredLocation.goTo(<%= location[0].name.split(":")[1] %> , <%= location[1].name.split(":")[1] %>  , 6);"> 
-              <span class="badge badge-info" style="background-color: #337ab7 ; margin-left: 7px ;">
-                  <p><%= location[0].name %> , <%= location[1].name %><br>
-                  <% if location.count == 3 %>
-                    <%= location[2].name %>
-                  <%end%>
-                </p>
-              </span>
-            </a>
-            <% end %>
-         
-        </div>
-     <% end %>
+  <% if current_user %>
+    <% latest_locations = current_user.get_all_used_locations %>
+    <% if latest_locations.count > 0 %>
+      <p><b>Your previous used locations...</b></p>
+      <div class="row">
+        <% latest_locations.each_with_index do |location , index| %>
+          <% if index == 5 %>
+            <% break %>
+          <% end %>
+          <a href="#" onclick="blurredLocation.goTo(<%= location[0].name.split(":")[1] %> , <%= location[1].name.split(":")[1] %>  , 6);"> 
+            <span class="badge badge-info" style="background-color: #337ab7 ; margin-left: 7px ;">
+              <p>
+                <% if location.count == 3 %>
+                  <%= location[2].name.split(":")[1] %>
+                <%end%>
+                <span class="badge" style="background-color: white ; color: #337ab7;"><%= location[0].name.split(":")[1] %></span>
+                <span class="badge" style="background-color: white ; color: #337ab7;"><%= location[1].name.split(":")[1] %></span>
+              </p>
+            </span>
+          </a>
+        <% end %>
+      </div>
+    <% end %>
   <% end %>
 
   <br>
