@@ -104,4 +104,26 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     assert_not_nil request.env['omniauth.auth']
   end
 
+  test 'should subscribe to tags on signup' do
+    get '/signup?return_to=/subscribe/multiple/tag/arduino,games'
+    user = User.new(username: 'chris',
+                    password: 'godzillas',
+                    password_confirmation: 'godzillas',
+                    bio: 'my name is chris.',
+                    email: 'test@publiclab.org')
+    assert user.save
+    assert user.first_time_poster
+    assert_not_nil user.id
+    assert_not_nil user.uid
+    assert_not_nil user.email
+    assert_not_nil user.bio
+    assert_not_nil user.token
+    assert_not_nil user.path
+    assert_not_nil user.title
+    assert_equal 'You are now following arduino,games' ,flash[:notice]
+    assert user.following(:arduino)
+    assert user.following(:games)
+    assert_redirected_to '/dashboard'
+  end
+
 end

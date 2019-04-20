@@ -434,7 +434,7 @@ class UsersController < ApplicationController
         end
         # test for uniqueness
         unless TagSelection.where(following: true, user_id: current_user.uid, tid: tag.tid).length.positive?
-        # Successfully we have added subscription
+          # Successfully we have added subscription
           if Tag.find_by(tid: tag.tid)
             # Create the entry if it isn't already created.
             # assume tag, for now:
