@@ -32,12 +32,17 @@ class UserSessionsController < ApplicationController
         @user = User.find_by(email: username)
         params[:user_session][:username] = @user.username
       end
-      return_to = session[:openid_return_to] || session[:return_to] || params[:return_to] || '/dashboard'
+      return_to = session[:openid_return_to] || session[:return_to] || params[:return_to]
       if @user.nil?
+        hash_params = ""
+        unless params[:hash_params].to_s.empty?
+          hash_params = URI.parse("#" + params[:hash_params]).to_s
+        end
         flash[:warning] = "There is nobody in our system by that name, are you sure you have the right username?"
-        redirect_to return_to
+        redirect_to params[:return_to]
       elsif params[:user_session].nil? || @user&.status == 1
         # an existing Rails user
+        return_to = return_to || '/dashboard'
         if params[:user_session].nil? || @user
           if @user&.crypted_password.nil? # the user has not created a pwd in the new site
             params[:user_session][:openid_identifier] = 'https://old.publiclab.org/people/' + username + '/identity' if username
