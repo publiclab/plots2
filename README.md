@@ -189,4 +189,5 @@ New to open source/free software? Here is a selection of issues we've made **esp
 
 Thank you for your support in our cross-browser testing! 
 
- ![Browserstack-logo](./app/assets/images/Browserstack-logo@2x.png) 
+ [![Browserstack-logo](./app/assets/images/Browserstack-logo@2x.png)](https://www.browserstack.com/
+)
