@@ -46,7 +46,7 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     }
 
     assert_nil flash[:error]
-    assert_response :success
+    assert_response :found
     assert_routing({ path: path, method: :get }, { controller: 'openid', action: 'index' })
 
     ## now same with POST
@@ -65,7 +65,7 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     }
 
     assert_nil flash[:error]
-    assert_response :success
+    assert_response :found
     assert_routing({ path: path, method: :post }, { controller: 'openid', action: 'index' })
 
     # Then, 'openid authentication approval goes to decision page'  -- based on same session
