@@ -159,11 +159,7 @@ class SubscriptionController < ApplicationController
               render json: true
             else
               flash[:notice] = "You are now following '#{params[:tagnames]}'."
-              if params[:return_to] == 'signup?return_to=/subscribe/multiple/tag/arduino,games'
-                 redirect_to "/dashboard"
-              else
-                redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
-              end
+              redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
             end
           end
         end
