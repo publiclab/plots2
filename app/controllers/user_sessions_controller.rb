@@ -20,13 +20,6 @@ class UserSessionsController < ApplicationController
     @identity = UserTag.find_with_omniauth(auth)
     return_to = request.env['omniauth.origin'] || root_url
     return_to += '?_=' + Time.now.to_i.to_s
-
-    hash_params = ""
-
-    unless params[:hash_params].to_s.empty?
-      hash_params = URI.parse("#" + params[:hash_params]).to_s
-    end
-
     if signed_in?
       if @identity.nil?
         # If no identity was found, create a brand new one here
