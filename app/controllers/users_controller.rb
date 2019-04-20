@@ -447,10 +447,10 @@ class UsersController < ApplicationController
             end
           else
             flash.now[:error] = "Sorry! There was an error in tag subscriptions. Please try it again."
-            false
           end
         end
       end
+    end
   end
 
   def set_user
