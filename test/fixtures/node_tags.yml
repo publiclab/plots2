@@ -79,7 +79,7 @@ blog2:
 place:
   tid: 27
   uid: 1
-  nid: 12
+  nid: 13
   date: <%= DateTime.now.to_i %>
 
 question3:
