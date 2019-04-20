@@ -140,7 +140,6 @@ class UserSessionsController < ApplicationController
                   end
                 end
                 redirect_to r
-                redirect_to '/dashboard'
               end
             else
               # Login failed; probably bad password.
