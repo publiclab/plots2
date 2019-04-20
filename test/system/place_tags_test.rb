@@ -7,12 +7,14 @@ class PlaceTagsTest < ApplicationSystemTestCase
     visit nodes(:blog).path
     assert_selector('h1', text: 'Blog post')
     assert_selector('div#top_map')
+    assert_selector('div.leaflet-layer')
   end
 
-  # node map has lat and lon tag but no place tag .
+  # one map has no place tag .
   test "pages not tagged with place gets a side map" do
-    visit nodes(:map).path
-    assert_select "div#top_map" , :count => 0 
+    visit nodes(:one).path
+    assert_selector('h1', text: 'Canon A1200 IR conversion at PLOTS Barnraising at LUMCON')
+    assert_selector('div.leaflet-layer' , count: 0)
   end
 
 end
