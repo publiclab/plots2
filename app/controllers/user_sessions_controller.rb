@@ -24,7 +24,7 @@ class UserSessionsController < ApplicationController
       s = "This account doesn't have a password set. It may be logged in with " + hash[n] + " account, or you can set a new password via Forget password feature"
       flash[:error] = s
       redirect_to '/'
-      else
+    else
       params[:user_session][:username] = params[:openid] if params[:openid] # second runthrough must preserve username
       @user = User.find_by(username: username)
       # try finding by email, if that exists
