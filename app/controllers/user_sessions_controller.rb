@@ -102,10 +102,6 @@ class UserSessionsController < ApplicationController
         params[:user_session][:username] = @user.username
       end
       if @user.nil?
-        hash_params = ""
-        unless params[:hash_params].to_s.empty?
-          hash_params = URI.parse("#" + params[:hash_params]).to_s
-        end
         flash[:warning] = "There is nobody in our system by that name, are you sure you have the right username?"
         redirect_to params[:return_to]
       elsif params[:user_session].nil? || @user&.status == 1
