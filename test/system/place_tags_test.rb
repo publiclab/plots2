@@ -6,7 +6,7 @@ class PlaceTagsTest < ApplicationSystemTestCase
   test "pages tagged with place get a full-width map across the top of the page" do
     visit nodes(:blog).path
     assert_selector('h1', text: 'Blog post')
-    #assert_select "div.leaflet-layer"
+    assert_select "div"
     #assert_select "div#top_map"
   end
 
