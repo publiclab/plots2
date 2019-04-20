@@ -10,7 +10,7 @@
   <center>
     <h2><%= raw t('user_sessions.new.log_in') %></h2>
     <p class="form-grey" id="toSignup">or
-    <%= link_to signup_path( return_to: request.path ) do %>
+    <%= link_to signup_path( return_to: params[:return_to] ) do %>
       <%= raw t('user_sessions.new.sign_up') %></a> <%= raw t('user_sessions.new.to_join') %>
     <% end %></p>
   </center>
