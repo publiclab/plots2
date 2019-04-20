@@ -120,7 +120,6 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     assert_not_nil user.token
     assert_not_nil user.path
     assert_not_nil user.title
-    assert_equal 'You are now following arduino,games' ,flash[:notice]
     assert user.following(:arduino)
     assert user.following(:games)
     assert_redirected_to '/dashboard'
