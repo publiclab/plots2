@@ -184,3 +184,9 @@ New to open source/free software? Here is a selection of issues we've made **esp
 
 ## Let the code be with you. :heart:
 ### Happy opensourcing. :smile:
+
+<hr>
+
+Thank you for your support in our cross-browser testing! 
+
+ ![Browserstack-logo](./app/assets/images/Browserstack-logo@2x.png) 
