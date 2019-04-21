@@ -291,7 +291,7 @@ class TagController < ApplicationController
       if Tag.exists?(tagname, nid)
         @output[:errors] << I18n.t('tag_controller.tag_already_exists')
 
-      elsif tagname.include?(":") && tagname.split(':').length < 2 # cant tag empty power tags
+      elsif tagname.include?(":") && tagname.split(':').length < 2
         if tagname.split(':')[0] == "barnstar" || tagname.split(':')[0] == "with"
           @output[:errors] << I18n.t('tag_controller.cant_be_empty')
         end
