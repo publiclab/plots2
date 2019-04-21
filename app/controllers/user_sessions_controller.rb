@@ -74,6 +74,8 @@ class UserSessionsController < ApplicationController
           elsif params[:return_to] && params[:return_to] != "/signup" && params[:return_to] != "/login"
             flash[:notice] += " " + I18n.t('users_controller.continue_where_you_left_off', url1: params[:return_to].to_s)
             redirect_to return_to + hash_params, notice: "You have successfully signed in. Please change your password using the link sent to you via e-mail."
+          else
+            redirect_to return_to + hash_params, notice: "You have successfully signed in. Please change your password using the link sent to you via e-mail."
           end
         else # email exists so link the identity with existing user and log in the user
           user = User.where(email: auth["info"]["email"])
