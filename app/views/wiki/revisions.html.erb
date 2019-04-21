@@ -31,7 +31,11 @@
 	  | <%= distance_of_time_in_words(revision.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>
           <div style="display:none;" id="body_<%= @node.revisions.length-1-index %>"><%= raw RDiscount.new(revision.body).to_html %></div>
         </td>
-        <td><small><a class="btn btn-xs btn-default" href="/wiki/revert/<%= revision.vid %>" data-confirm="<%= t('wiki.revisions.are_you_sure') %>"><i class="fa fa-arrow-reload"></i> <%= t('wiki.revisions.revert') %></a></small></td>
+        <% if revision.vid == @node.latest.vid %>
+          <td><small><a class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="top" title="Already on Current revision"><i class="fa fa-arrow-reload"></i> <%= t('wiki.revisions.revert') %></a></small></td>
+        <% else %>
+          <td><small><a class="btn btn-xs btn-default" href="/wiki/revert/<%= revision.vid %>" data-confirm="<%= t('wiki.revisions.are_you_sure') %>"><i class="fa fa-arrow-reload"></i> <%= t('wiki.revisions.revert') %></a></small></td>
+        <% end %>
         <% if current_user && (current_user.role == "moderator" || current_user.role == "admin") %>
           <% if revision.status == 1 %>
             <td><small><a class='btn btn-xs btn-default' href='/moderate/revision/spam/<%= revision.vid %>' data-confirm="<%= t('wiki.revisions.are_you_sure') %>"><i class='fa fa-ban'></i></a></small></td>
