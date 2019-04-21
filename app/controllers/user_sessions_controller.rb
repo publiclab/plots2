@@ -136,6 +136,7 @@ class UserSessionsController < ApplicationController
                   session[:openid_return_to] = nil
                   redirect_to return_to + hash_params
                 elsif session[:return_to]
+                  flash[:notice] = "1"
                   return_to = session[:return_to]
                   if return_to == '/login'
                     return_to = '/dashboard'
@@ -143,7 +144,7 @@ class UserSessionsController < ApplicationController
                   session[:return_to] = nil
                   redirect_to return_to + hash_params
                 elsif params[:return_to]
-                  redirect_to params[:return_to]
+                  redirect_to params[:return_to] + hash_params
                 else
                   redirect_to '/dashboard'
                 end
