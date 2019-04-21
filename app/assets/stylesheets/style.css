@@ -471,6 +471,9 @@ div.note.moderated h4 {
 .back-to-top i {
 
   font-size: 60px;
+  position: fixed;
+  bottom: 40px;
+  right: 50px;
 
 }
 
