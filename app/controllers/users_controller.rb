@@ -26,7 +26,7 @@ class UsersController < ApplicationController
         end
         flash[:notice] = I18n.t('users_controller.registration_successful')
         if params[:return_to] && params[:return_to].split('/')[0..3] == ["", "subscribe", "multiple", "tag"]
-          flash[:notice] = "You are now following '#{params[:return_to].split('/')[4]}'."
+          flash[:notice] += "You are now following '#{params[:return_to].split('/')[4]}'."
           subscribe_multiple_tag(params[:return_to].split('/')[4])
         elsif params[:return_to] && params[:return_to] != "/signup" && params[:return_to] != "/login"
           flash[:notice] += " " + I18n.t('users_controller.continue_where_you_left_off', url1: params[:return_to].to_s)
