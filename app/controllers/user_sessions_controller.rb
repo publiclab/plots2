@@ -50,12 +50,6 @@ class UserSessionsController < ApplicationController
         redirect_to return_to + hash_params, notice: "Already linked to another account!"
       end
     else # not signed in
-      if params[:return_to] && params[:return_to].split('/')[0..3] == ["", "subscribe", "multiple", "tag"]
-        flash[:notice] = "You are now following '#{params[:return_to].split('/')[4]}'."
-        subscribe_multiple_tag(params[:return_to].split('/')[4])
-      elsif params[:return_to] && params[:return_to] != "/signup" && params[:return_to] != "/login"
-        flash[:notice] += " " + I18n.t('users_controller.continue_where_you_left_off', url1: params[:return_to].to_s)
-      end
       if @identity&.user.present?
         # The identity we found had a user associated with it so let's
         # just log them in here
@@ -73,7 +67,14 @@ class UserSessionsController < ApplicationController
           @user = user
           # send key to user email
           PasswordResetMailer.reset_notify(user, key).deliver_now unless user.nil? # respond the same to both successes and failures; security
-          redirect_to return_to + hash_params, notice: "You have successfully signed in. Please change your password using the link sent to you via e-mail."
+          if params[:return_to] && params[:return_to].split('/')[0..3] == ["", "subscribe", "multiple", "tag"]
+            flash[:notice] = "You are now following '#{params[:return_to].split('/')[4]}'."
+            subscribe_multiple_tag(params[:return_to].split('/')[4])
+            redirect_to '/dashboard'
+          elsif params[:return_to] && params[:return_to] != "/signup" && params[:return_to] != "/login"
+            flash[:notice] += " " + I18n.t('users_controller.continue_where_you_left_off', url1: params[:return_to].to_s)
+            redirect_to return_to + hash_params, notice: "You have successfully signed in. Please change your password using the link sent to you via e-mail."
+          end
         else # email exists so link the identity with existing user and log in the user
           user = User.where(email: auth["info"]["email"])
           # If no identity was found, create a brand new one here
