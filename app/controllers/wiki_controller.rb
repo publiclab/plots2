@@ -344,7 +344,7 @@ class WikiController < ApplicationController
       .group('node_revisions.nid')
       .order('node_revisions.timestamp DESC')
       .where("node.status = 1 AND node_revisions.status = 1 AND node.nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place')")
-      .sort_by(&:totalviews).reverse
+      .sort_by(&:views).reverse
     render template: 'wiki/index'
   end
 

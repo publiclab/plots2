@@ -284,7 +284,7 @@ en:
         events: "Events"
         comments: "Comments"
         wiki: "Wiki"
-      from_other: "from other"
+      from_other: "From other"
       community_scientists: "community scientists"
       past_week: "in the past week"
       your_work: "Your work"
@@ -311,6 +311,7 @@ en:
       community_research: "Community research"
       welcome: "Welcome"
       notes: "notes"
+      note: "note"
       and: "and"
       wiki_edits: "wiki edits"
       posted_past_week: "posted in the past week."
@@ -364,9 +365,9 @@ en:
       popular_tags: "Popular tags"
       browse_popular_tags: "We use tags to group research by topic -- browse below
         to see the most popular tags over the past month."
-      tag: "Tag"
+      tag: "name"
       number_of_uses: "# of uses"
-      number_of_subscriptions: "# of people subscribed"
+      number_of_subscriptions: "# of people"
       subscriptions: "Your subscriptions"
       sort_by: "Sort By"
     show:
@@ -377,7 +378,7 @@ en:
       none: "None"
       users_following_tag: "Users following this tag"
       ask_question: "Ask a question about <b>%{tag}</b>"
-      or_subscribe_to_answer: "or <a style='margin-bottom:6px;' class='btn btn-default
+      or_subscribe_to_answer: "<a style='margin-bottom:6px;' class='btn btn-primary
         requireLogin' target='_blank' href='%{url1}'>Subscribe to answer questions
         on this topic</a>"
       research_notes: "<span class=\"hidden-sm\">Research </span>Notes"

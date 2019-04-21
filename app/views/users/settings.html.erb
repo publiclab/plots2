@@ -115,7 +115,7 @@
 <br />
 
 <div class="page-footer">
-  <button type="submit" class="btn btn-success">Save</button>
+  <button type="submit" class="btn btn-success" id="save">Save</button>
   <a type="button" class="btn btn-default" href="/dashboard">Cancel</a>
 </div>
 
@@ -188,9 +188,9 @@
 
 <script>
     $(document).ready(function() {
-        $(':input[type="submit"]').prop('disabled', true);
+        $('#save').prop('disabled', true);
         $(':input[type="checkbox"]').change(function() {
-            $(':input[type="submit"]').prop('disabled', false);
+            $('#save').prop('disabled', false);
         });
 
         $(':input[name="digest:daily"]').change(function () {

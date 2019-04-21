@@ -51,7 +51,7 @@ gem 'rb-readline'
 gem 'rdiscount', '~> 2.2', '>= 2.2.0.1'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'responders', '~> 2.4'
-gem 'rubocop', '~> 0.66.0', require: false
+gem 'rubocop', '~> 0.67.2', require: false
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
 gem 'sentry-raven'
@@ -64,7 +64,7 @@ gem 'whenever', require: false
 gem 'will_paginate', '>= 3.0.6'
 gem 'will_paginate-bootstrap', '>= 1.0.1'
 gem 'jquery-atwho-rails'
-gem 'lemmatizer', '~> 0.2.1'
+gem 'lemmatizer', '~> 0.2.2'
 # To implement incoming mail processing microframework
 gem 'mailman', require: false
 
@@ -99,6 +99,7 @@ group :development do
 end
 
 group :test, :development do
+  gem 'capybara'
   gem 'ci_reporter_test_unit'
   gem 'coveralls', require: false
   gem 'jasmine-jquery-rails'
@@ -107,10 +108,12 @@ group :test, :development do
   gem 'minitest-reporters', '~> 1.3.6'
   gem 'openssl', '~> 2.1.2'
   gem 'phantomjs'
+  gem 'puma', '~> 3.12'
   gem 'rails-perftest'
   gem 'rake',  '~> 12.3.2'
   gem 'rest-client'
   gem 'rspec'
+  gem 'selenium-webdriver', '~> 3.141.5926'
   gem 'test-unit'
   gem 'teaspoon-mocha'
   gem 'timecop'

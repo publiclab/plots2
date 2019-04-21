@@ -24,10 +24,15 @@
   background: #ccc;
 }
 
-.dropdown-menu>li>a { 
+.dropdown-menu>li>a {
   overflow: hidden !important; text-overflow: ellipsis;
 }
 
+.dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0;
+ }
+ 
 #questions_searchform .dropdown-menu {
   width: 95%;
 }
@@ -71,7 +76,7 @@ table th a:hover {
   position: relative;
   margin-top: 2px;
   border: 1px solid #ccc;
-  border-radius: 4px; 
+  border-radius: 4px;
   background: #fff;
 }
 .expandingArea > textarea,
@@ -113,7 +118,7 @@ table th a:hover {
   visibility: hidden;
 }
 
-.question-show textarea, 
+.question-show textarea,
 .question-show pre {
   margin: 0;
   padding: 0;

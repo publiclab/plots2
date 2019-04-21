@@ -182,4 +182,8 @@ class UserSessionsController < ApplicationController
     prev_uri = URI(request.referer || "").path
     redirect_to prev_uri + '?_=' + Time.current.to_i.to_s
   end
+
+  def index
+    redirect_to '/dashboard'
+  end
 end
