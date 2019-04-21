@@ -143,7 +143,7 @@ class UserSessionsController < ApplicationController
                   session[:return_to] = nil
                   redirect_to return_to + hash_params
                 elsif params[:return_to]
-                  redirect_to params[:return_to] + hash_params
+                  redirect_to params[:return_to]
                 else
                   redirect_to '/dashboard'
                 end
