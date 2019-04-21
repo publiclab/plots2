@@ -1,3 +1,4 @@
+
 <div class="card-view">
   <% @tags.each do |tag| %>
     <div class="panel panel-default">
@@ -6,7 +7,17 @@
         <p style="display: inline-block; color: #808080;"><a style="text-decoration: underline; color: #808080;" href="/tag/<%= tag.name %>"><%= Tag.follower_count(tag.name) %> people</a> discussing</p>
       </div>
       <div class="panel-body">
-
+        <div style="margin-top: -10px;">
+          <% Tag.find_nodes_by_type(tag.name, type = 'note', limit = 3).each do |node|  %>
+            <% if node.main_image %>
+              <img class="img-circle" id="profile-photo" style="width:20px; height:20px; margin-right:8px; display: inline-block;" src="<%= node.main_image.path(:default) %>" />
+            <% elsif node.scraped_image %>
+              <img class="img-circle" id="profile-photo" style="width:20px; height:20px; margin-right:8px; display: inline-block;" src="<%= node.scraped_image %>" />
+            <% end %>
+            <h6 style="display: inline-block;"><a style="color: inherit;" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= (node.type == 'note') ? node.title : node.latest.title %></a></h6>
+            <p style="display: inline-block; margin-left: 10px;color: #808080;">by <a style="color: #808080;" <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>">@<%= node.author.name %></a></p>
+          <% end %>
+        </div>
       </div>  
       <div class="panel-footer" style="background-color: inherit; border:none; padding-bottom: 22px;">
         <a style="text-decoration: underline; color: #808080; display: inline-block;" href="/tag/<%= tag.name %>"><%= tag.count %><%= t('tag.index.more_posts') %> <i class="fa fa-angle-double-right"></i></a>
