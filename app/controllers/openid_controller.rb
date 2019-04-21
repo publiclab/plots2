@@ -286,7 +286,7 @@ class OpenidController < ApplicationController
     sreg_data = {
       'nickname' => current_user.username, # session[:username],
       'email' => current_user.email,
-      'fullname' => "status=" + current_user.status + ":role=" + current_user.role # fullname contains both status and role
+      'fullname' => "status=" + current_user.status.to_s + ":role=" + current_user.role # fullname contains both status and role
     }
 
     sregresp = OpenID::SReg::Response.extract_response(sregreq, sreg_data)
