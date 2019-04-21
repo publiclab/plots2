@@ -16,8 +16,8 @@
         <div class="btn-group btn-group-justified" role="group">
           <% [0,1].each_with_index do |s, j| %><% statement = turingtest[i][s] %>
             <div class="btn-group" role="group">
-              <button type="button" class="col-xs-5 btn btn-default" style="font-size:3em;text-align:left;<% if i.odd? %> background:#eef;<% end %>" id="spamaway-<%= i.to_s + j.to_s %>">
-                <%= spam.radio_button vars[i], statement %> <%= statement %>
+              <button type="button" class="col-xs-5 btn btn-default" style="font-size:3em;text-align:left;<% if i.odd? %> background:#eef;<% end %>" id="spamaway-<%= caller %>-<%= i.to_s + j.to_s %>">
+              <%= spam.radio_button vars[i], statement, { id: "spamaway_statement_#{caller}_#{i.to_s}#{j.to_s}" } %> <%= statement %>
               </button>
             </div>
           <% end %>
@@ -33,7 +33,8 @@
     <%= spam.text_area :follow_instructions, { class: "form-control col-md-6",
                                              rows: 8,
                                              tabindex: 7,
-                                             placeholder: I18n.t('users._form.dont_write_here') }
+                                             placeholder: I18n.t('users._form.dont_write_here'),
+                                             id: 'spamaway-'+caller }
     %>
 
   </div>

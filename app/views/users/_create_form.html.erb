@@ -85,7 +85,7 @@
     <% else %>
 
     <div class="col-sm-12">
-      <%= render partial: 'users/spamaway' %>
+      <%= render partial: 'users/spamaway', locals: {caller: caller } %>
     </div>
 
       <script>
