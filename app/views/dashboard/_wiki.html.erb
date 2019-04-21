@@ -37,7 +37,7 @@
 	  <%= distance_of_time_in_words(wiki.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>
 
           <% if wiki.is_a?(Revision) && wiki.previous %>
-           - <a class="btn-diff btn-diff-<%= index %>"><%= t('dashboard._wiki.changes') %></a>
+           - <a class="btn-diff btn-diff-<%= index %>" style="cursor:pointer;"><%= t('dashboard._wiki.changes') %></a>
           <% end %>
 
         </small>
