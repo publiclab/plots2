@@ -56,3 +56,4 @@
 //= require keybindings.js
 //= require jquery-validation/dist/jquery.validate.js
 //= require validation.js
+//= require realtime_username_validation.js
