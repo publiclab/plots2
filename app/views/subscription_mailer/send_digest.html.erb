@@ -1,10 +1,12 @@
 <header style="text-align: center;color:black">
   <img src="https://avatars2.githubusercontent.com/u/4621650?s=200&v=4" style="width: 100px;height: 100px">
   <p style="font-size: 20px">[Public Lab] <%= @subject %></p>
+  <p><%= Time.now.strftime("%B %-d %Y") %></p>
 </header>
 
 <div style="width: 46vw;margin: 0 auto;margin-top: 54px;color: black;">
   <p style="font-size: 1.2em; font-family: sans-serif;margin-bottom: 0;color: lightgray;">Top picks for you</p>
+  <p style="font-size: 1.2em; font-family: sans-serif;margin-bottom: 0;color: lightgray;">Based on what you're following at <a href="https://publiclab.org">PublicLab.org</a></p>
   <hr id="first" style="border: none;height: 1px;background-color: #e2e2e2;margin-bottom: 32px;">
   <table style="font-family: sans-serif;">
     <% @nodes.each do |n| %>
@@ -21,7 +23,7 @@
         </div>
         <div style="margin-top: 20px;">
           <b style="font-weight: 500;"><%= n.author.username.capitalize %></b>
-          <p style="margin: 0;color: #999;font-weight: 500;">Published <%= n.created_at %>.strftime("%m/%d")</p>
+          <p style="margin: 0;color: #999;font-weight: 500;">Published <%= n.created_at.strftime("%B %-d %Y") %></p>
         </div>
         <div <% unless n.main_image.present? %> colspan="2" <% end %> style="padding-bottom: 10px;">
           <p style="font-size: 1.1em;line-height: 1.5;text-align: justify;font-weight: 300;"><%= n.body.truncate(175) %><a href="https://publiclab.org<%= n.path %>" style="text-decoration: none;">  Read more</a></p>
