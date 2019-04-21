@@ -143,7 +143,6 @@ class UserSessionsController < ApplicationController
                     return_to = '/' + params[:return_to].split('/')[2..-1].join('/') #== /subscribe/multiple/tag/tag1,tag299
                     redirect_to return_to
                   else
-                    flash[:notice] = "1.2"
                     return_to = session[:return_to]
                     if return_to == '/login'
                       return_to = '/dashboard'
