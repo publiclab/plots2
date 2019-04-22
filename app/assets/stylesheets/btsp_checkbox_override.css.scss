@@ -17,7 +17,7 @@ this is v.4 usage as well.
 - !important declarations ensure a Bootstrap update wont override these immediately
 */
 
-div.form-check {
+div.form-check, li.form-check {
   position: relative !important;
   display: block !important;
   padding-left: 1.75rem !important; /* btsp's default */
@@ -26,7 +26,7 @@ div.form-check {
     margin-bottom: 0 !important; /* Override btsp's default `<label>` bottom margin */
   }
 
-  input[type=checkbox].form-check-input {
+  input[type=checkbox] {
     margin: 0 !important; /* zero out btsp's margin declaration */
     margin-top: 0 !important; 
     position: absolute !important;
@@ -39,3 +39,24 @@ div.form-check {
   }
 }
 
+div.form-check-inline, li.form-check-inline {
+  position: relative !important;
+  display: inline-block;
+  padding-left: 1.75rem !important; /* btsp's default */ 
+
+  label.form-check-label {
+    margin-bottom: 0 !important; /* Override btsp's default `<label>` bottom margin */
+  }
+
+  input[type=checkbox] {
+    margin: 0 !important; /* zero out btsp's margin declaration */
+    margin-top: 0 !important; 
+    position: absolute !important;
+    margin-left: -1.75rem !important; /* btsp's default */
+    top: 50% !important;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%) !important;
+  }
+}

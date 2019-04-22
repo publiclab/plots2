@@ -64,7 +64,7 @@ gem 'whenever', require: false
 gem 'will_paginate', '>= 3.0.6'
 gem 'will_paginate-bootstrap', '>= 1.0.1'
 gem 'jquery-atwho-rails'
-gem 'lemmatizer', '~> 0.2.1'
+gem 'lemmatizer', '~> 0.2.2'
 # To implement incoming mail processing microframework
 gem 'mailman', require: false
 
@@ -113,7 +113,7 @@ group :test, :development do
   gem 'rake',  '~> 12.3.2'
   gem 'rest-client'
   gem 'rspec'
-  gem 'selenium-webdriver', '~> 3.141.0'
+  gem 'selenium-webdriver', '~> 3.141.5926'
   gem 'test-unit'
   gem 'teaspoon-mocha'
   gem 'timecop'

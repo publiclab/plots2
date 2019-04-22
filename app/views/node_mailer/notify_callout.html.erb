@@ -1,0 +1,34 @@
+Hi! You were mentioned by <%= @node.author.name %> in a node on <% if @node.has_power_tag('question') %>the question <% elsif @node.type == 'page' %>the wiki page <% else %>the research note <% end %><b><%= @node.title %></b>.
+Do NOT reply to this email; click this link to respond:
+
+<% if @node.has_power_tag('question') %>
+<p>https://<%= ActionMailer::Base.default_url_options[:host] %><%= @node.path(:question) %>#answer-comment-<%= @comment.cid %></p>
+<% elsif @node.type == 'page' %>
+  <p>https://<%= ActionMailer::Base.default_url_options[:host] %><%= @node.path %></p>
+<% else %>
+<p>https://<%= ActionMailer::Base.default_url_options[:host] %><%= @node.path %>
+<% end %>
+
+<p><b><a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @node.author.name %>"><%= @node.author.name %></a> wrote:</b></p>
+
+<hr /> 
+
+<p><%= raw auto_link(RDiscount.new(@node.latest.render_body_email(ActionMailer::Base.default_url_options[:host])).to_html) %></p>
+
+<hr /> 
+
+<div style="color:#aaa;">
+
+<% if @node.has_power_tag('question') %>
+<p>Reply at: https://<%= ActionMailer::Base.default_url_options[:host] %><%= @node.path(:question) %></p>
+<% elsif @node.type == 'page' %>
+  <p>Reply at: https://<%= ActionMailer::Base.default_url_options[:host] %><%= @node.path %></p>
+<% else %> 
+<p>Reply at: https://<%= ActionMailer::Base.default_url_options[:host] %><%= @node.path %></p>
+<% end %>
+
+<p>Report abuse to: moderators@<%= ActionMailer::Base.default_url_options[:host] %></p>
+
+<%= @footer %>
+
+</div>
