@@ -1,19 +1,22 @@
 <%= form_for :user_session, :as => :user_session, :url => "/user_sessions", :html => {:class => "form user-sessions-form"} do |f| %>
 
-  <input 
-    type="hidden" 
-    name="return_to" 
-    class="login-modal-redirect" 
-    value="<%= request.fullpath %>" 
+  <input
+    type="hidden"
+    name="return_to"
+    class="login-modal-redirect"
+    value="<%= request.fullpath %>"
   />
 
   <center>
     <h2><%= raw t('user_sessions.new.log_in') %></h2>
-    <p class="form-grey" id="toSignup">or <a href="/signup"><%= raw t('user_sessions.new.sign_up') %></a> <%= raw t('user_sessions.new.to_join') %></p>
+    <p class="form-grey" id="toSignup">or
+    <%= link_to signup_path( return_to: params[:return_to] ) do %>
+      <%= raw t('user_sessions.new.sign_up') %></a> <%= raw t('user_sessions.new.to_join') %>
+    <% end %></p>
   </center>
 
   <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
- 
+
   <br style="clear:both;"/>
 
   <div id="socialIcons" class='col-lg-12 col-md-12 col-sm-12'>
@@ -33,12 +36,12 @@
       <div class="form-group has-feedback">
         <label class="control-label" for="password"><%= t('user_sessions.new.password') %></label>
         <%= f.password_field :password, { tabindex: 2,placeholder: "Password",class: 'form-control', id: 'password-signup', onpaste: 'return false;' , required: true } %>
-        <a 
-          id="visibility" 
-          class="fa fa-eye form-control-feedback" 
+        <a
+          id="visibility"
+          class="fa fa-eye form-control-feedback"
           aria-hidden="true">
         </a>
-      </div> 
+      </div>
     </div>
 
     <input type="hidden" name="hash_params" value="" />
@@ -53,14 +56,14 @@
       </div>
 
       <br />
-    
+
       <p class="form-grey"><%= raw t('user_sessions.new.reset_by_clicking_here', :url1 => "/reset/") %></p>
     </div>
-  
+
   </div>
 
   <% end %>
-  
+
   <% if !current_user %>
     <script>
         $(document).ready(function() {
@@ -76,13 +79,13 @@
         function require_login_and_redirect_to(url) {
           // open the login modal to allow user to login:
           $('#loginModal').modal('show');
-          // ensure the original destination of the link is preserved as the return_to parameter, 
+          // ensure the original destination of the link is preserved as the return_to parameter,
           // thus redirecting there once login or signup is completed:
           $('.login-modal-redirect').val(url);
         }
     </script>
   <% end %>
-  
+
   <script>
     $("a.loginToggle").click(function() {
       // When a button that always toggles the login modal is clicked
