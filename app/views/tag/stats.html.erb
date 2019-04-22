@@ -14,15 +14,12 @@
             <div class="col-md-4">
                 <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%d-%m-%Y") %>" data-date-format="dd-mm-yyyy" value="<%= @end.strftime("%d-%m-%Y") %>" tabindex="1" class="form-control input-lg" type="text" name="end"  placeholder="&#xf133; Select end date">
             </div>
+        <%= submit_tag "Go", class: 'btn btn-primary' %>
+        <% end %>
     </div>
 </div>
-<br>
-<div class="col-md-8">
-    <%= submit_tag "Go", class: 'btn btn-secondary' %>
-<% end %>
-</div>
 
-<br><br><br>
+<br><br>
 <div class="graph">
     <p> <b><%= params[:id].capitalize%></b> graph from <b><%= (@start).to_formatted_s(:long)%></b> to <b><%= @end.to_formatted_s(:long)%></b> </p>
     <br>
@@ -35,3 +32,14 @@
         <b>Total Tag count : <%= @tags.first.count %></b>
     <% end %>
 </div>
+
+<style>
+  .btn-primary{
+    height: 44px;
+    width: 60px;
+  }
+
+  .col-md-4{
+    margin-left: -15px;
+  }
+</style>
