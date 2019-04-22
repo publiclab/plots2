@@ -104,4 +104,15 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     assert_not_nil request.env['omniauth.auth']
   end
 
+  test 'redirect to the dashboard when entering wrong password, then correct password on main page.' do
+    get '/'
+    assert_response :success
+    post '/user_sessions', params: {"return_to":"/", "user_session":{username: users(:jeff).username, password: 'wrong', "remember_me":"0"}}
+    assert_response :success
+    assert_equal '/user_sessions', path
+    post '/user_sessions', params: {"return_to":"/user_sessions", "user_session":{username: users(:jeff).username, password: 'secretive', "remember_me":"0"}}
+    follow_redirect!
+    assert_redirected_to '/dashboard'
+  end
+
 end
