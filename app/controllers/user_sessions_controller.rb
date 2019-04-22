@@ -112,7 +112,11 @@ class UserSessionsController < ApplicationController
       end
       if @user.nil?
         flash[:warning] = "There is nobody in our system by that name, are you sure you have the right username?"
-        redirect_to '/login'
+        if params[:return_to]
+          redirect_to params[:return_to]
+        else
+          redirect_to '/login'
+        end
       elsif params[:user_session].nil? || @user&.status == 1
         # an existing Rails user
         if params[:user_session].nil? || @user
