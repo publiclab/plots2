@@ -30,6 +30,30 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     # assert_select "span.moderation-notice", false
   end
 
+  test 'should login and subscribe to multiple tags' do
+    post '/register', params: {
+          user: {
+            username: 'eleven',
+            password: 'demagorgon',
+            password_confirmation: 'demagorgon',
+            email: 'upside@down.today',
+            bio: 'From Hawkins'
+          },
+          spamaway: {
+            statement1: I18n.t('spamaway.human.statement1'),
+            statement2: I18n.t('spamaway.human.statement2'),
+            statement3: I18n.t('spamaway.human.statement3'),
+            statement4: I18n.t('spamaway.human.statement4')
+          },
+          return_to: '/subscribe/multiple/tag/arduino,games'
+        }
+    assert_response :redirect
+    # a success here would mean sent back to form with errors
+    assert_redirected_to '/dashboard'
+    assert_equal 'Registration successful. Welcome to our community!You are now following \'arduino,games\'.',flash[:notice]
+
+  end
+
   test 'should redirect to current page when logging in through the header login' do
     get '/questions'
     assert_response :success
