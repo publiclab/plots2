@@ -1,5 +1,4 @@
 require 'test_helper'
-
 class NodeTest < ActiveSupport::TestCase
 
   def setup
@@ -36,6 +35,21 @@ class NodeTest < ActiveSupport::TestCase
     assert_equal map.lat, map.power_tag('lat').split(':').first.to_f
     assert_equal map.lon, map.power_tag('lon').split(':').first.to_f
     assert map.location_tags
+  end
+
+  test 'notify_callout_users' do
+    saved, node, revision = Node.new_note(uid: users(:naman).id,
+                    title: 'Note with mentioned users',
+                    body: '@naman18996 and @jeffrey are being mentioned in the body')
+    node.notify_callout_users
+    emails = []
+    ActionMailer::Base.deliveries.each do |m|
+      if m.subject == "(##{node.id}) You were mentioned in a note"
+        emails = emails + m.to
+      end
+    end
+    assert_equal 2, emails.count
+    assert_equal ["naman18996@yahoo.com", "jeff@publiclab.org"].to_set, emails.to_set
   end
 
   test 'emoji conversion' do
