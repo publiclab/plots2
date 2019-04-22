@@ -1,37 +1,39 @@
-<br>
-<h3>Tag statistics for <%= @tags.first.name %> </h3>
-<hr>
-<h5> <%= link_to "See statistics for all contents", stats_path %> </h5>
-<h5>Choose a range to show a graph of statistics within that period</h5>
-<%= form_tag request.url, method: :get do %>
-  <div class="row">
-        <br>
-        <div class="col-md-4">
-            <label>Starting</label>
-            <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%d-%m-%Y") %>" data-date-format="dd-mm-yyyy" value="<%= @start.strftime("%d-%m-%Y") %>" tabindex="1" class="form-control input-lg" type="text" name="start"  placeholder="&#xf133; Select start date">
-        </div>
-        <div class="col-md-4">
-            <label>Ending</label>
-            <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%d-%m-%Y") %>" data-date-format="dd-mm-yyyy" value="<%= @end.strftime("%d-%m-%Y") %>" tabindex="1" class="form-control input-lg" type="text" name="end"  placeholder="&#xf133; Select end date">
-        </div>
-        <div class="col-md-1">
-            <%= submit_tag "Go", class: 'btn btn-primary' %>
-        </div>
-    </div>
-<% end %>
+<div class="col-md-8">
+  <br>
+  <h3>Tag statistics for <%= @tags.first.name %> </h3>
+  <hr>
+  <h5> <%= link_to "See statistics for all contents", stats_path %> </h5>
+  <h5>Choose a range to show a graph of statistics within that period</h5>
+  <%= form_tag request.url, method: :get do %>
+    <div class="row">
+          <br>
+          <div class="col-md-4">
+              <label>Starting</label>
+              <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%d-%m-%Y") %>" data-date-format="dd-mm-yyyy" value="<%= @start.strftime("%d-%m-%Y") %>" tabindex="1" class="form-control input-lg" type="text" name="start"  placeholder="&#xf133; Select start date">
+          </div>
+          <div class="col-md-4">
+              <label>Ending</label>
+              <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%d-%m-%Y") %>" data-date-format="dd-mm-yyyy" value="<%= @end.strftime("%d-%m-%Y") %>" tabindex="1" class="form-control input-lg" type="text" name="end"  placeholder="&#xf133; Select end date">
+          </div>
+          <div class="col-md-1">
+              <%= submit_tag "Go", class: 'btn btn-primary' %>
+          </div>
+      </div>
+  <% end %>
 
-<br><br>
-<div class="graph">
-    <p> <b><%= params[:id].capitalize%></b> graph from <b><%= (@start).to_formatted_s(:long)%></b> to <b><%= @end.to_formatted_s(:long)%></b> </p>
-    <br>
-    <%= render partial: "tag/graph", locals: { wikis: @tag_wikis, notes: @tag_notes, questions: @tag_questions, comments: @tag_comments  } %>
-    <br>
+  <br><br>
+  <div class="graph">
+      <p> <b><%= params[:id].capitalize%></b> graph from <b><%= (@start).to_formatted_s(:long)%></b> to <b><%= @end.to_formatted_s(:long)%></b> </p>
+      <br>
+      <%= render partial: "tag/graph", locals: { wikis: @tag_wikis, notes: @tag_notes, questions: @tag_questions, comments: @tag_comments  } %>
+      <br>
 
-    <% if @tags.first.count.nil? %>
-        <i> There are no posts for this tag yet </i>
-    <% else %>
-        <b>Total Tag count : <%= @tags.first.count %></b>
-    <% end %>
+      <% if @tags.first.count.nil? %>
+          <i> There are no posts for this tag yet </i>
+      <% else %>
+          <b>Total Tag count : <%= @tags.first.count %></b>
+      <% end %>
+  </div>
 </div>
 
 <style>
