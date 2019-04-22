@@ -128,6 +128,14 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     assert_not_nil request.env['omniauth.auth']
   end
 
+  test 'redirect to multiple subscription route if user is not logged in and tries to subscribe to multiple tags' do
+    get '/subscribe/multiple/tag/blog,kites,balloon,awesome'
+    assert_redirected_to '/login?return_to=/subscribe/multiple/tag/blog,kites,balloon,awesome'
+    post '/user_sessions', params: { user_session: { username: users(:jeff).username, password: 'secretive' }, return_to: '/subscribe/multiple/tag/blog,kites,balloon,awesome' }
+    assert_equal "Successfully logged in.", flash[:notice]
+    assert_redirected_to '/subscribe/multiple/tag/blog,kites,balloon,awesome'
+  end
+
   test 'redirect to the dashboard when entering wrong password, then correct password on main page.' do
     get '/'
     assert_response :success

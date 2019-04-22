@@ -149,12 +149,20 @@ class UserSessionsController < ApplicationController
                   session[:openid_return_to] = nil
                   redirect_to return_to + hash_params
                 elsif session[:return_to]
-                  return_to = session[:return_to]
-                  if return_to == '/login'
-                    return_to = '/dashboard'
+                  # if url == /login?return_to=/subscribe/multiple/tag/tag1,tag299 then
+                  # session[:return_to] == /subscriptions  + '?_=' + Time.current.to_i.to_s ? true
+                  if params[:return_to]
+                    # params[:return_to] == /login?return_to=/subscribe/multiple/tag/tag1,tag299 ? true
+                    return_to = '/' + params[:return_to].split('/')[2..-1].join('/') #== /subscribe/multiple/tag/tag1,tag299
+                    redirect_to return_to
+                  else
+                    return_to = session[:return_to]
+                    if return_to == '/login'
+                      return_to = '/dashboard'
+                    end
+                    session[:return_to] = nil
+                    redirect_to return_to + hash_params
                   end
-                  session[:return_to] = nil
-                  redirect_to return_to + hash_params
                 elsif params[:return_to]
                   redirect_to params[:return_to] + hash_params
                 else
