@@ -16,6 +16,7 @@ class SearchTest < ApplicationSystemTestCase
 
     fill_in("searchform_input", with: "Canon")
 
+    select 'li', from: 'typeahead.dropdown-menu'
     assert page.evaluate_script("$('.typeahead.dropdown-menu').is(':visible')")
     assert_equal 1, page.evaluate_script("$('.typeahead.dropdown-menu').find('li').length")
   end
