@@ -370,6 +370,9 @@ en:
       number_of_subscriptions: "# of people"
       subscriptions: "Your subscriptions"
       sort_by: "Sort By"
+      more_posts: "more posts"
+      subscribe: "Subscribe"
+      unsubscribe: "Unsubscribe"
     show:
       notes_tagged: "Notes tagged with <i style=\"color:#aaa;\">%{tag}</i>"
       following: "Following"

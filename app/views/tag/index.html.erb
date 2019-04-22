@@ -27,41 +27,8 @@
   </p>
   <br/>
 
-  <table class="table">
-    <tr>
-      <th><%= t('tag.index.tag') %></th>
-      <th><%= t('tag.index.number_of_uses') %></th>
-      <th><%= t('tag.index.number_of_subscriptions')%></th>
-      <% if current_user %>
-        <th><a href = "<%= tags_path %>?sort=subscribers"><%= t('tag.index.subscriptions') %></a> <i class="fa fa-sort" aria-hidden="true"></i></th>
-      <% end %>
-    </tr>
-    <% @tags.each do |tag| %>
-      <tr>
-        <td><i class="fa fa-tag"></i> <a href="/tag/<%= tag.name %>"><%= tag.name %></a></td>
-        <td><%= tag.count %></td>
-        <td><a class="btn btn-default btn-sm" rel="popover" data-placement="right" data-html="true" data-title="<%= t('tag.show.users_following_tag') %>" data-content="<% Tag.followers(tag.name).each do |user| %><i class='fa fa-star-o'></i> <a href='/profile/<%= user.username %>'><%= user.username %></a><br /><% end %><% if Tag.follower_count(tag.name) == 0 %><i><%= t('tag.show.none') %></i><% end %>"><%= Tag.follower_count(tag.name) %> <i class="fa fa-user"></i> <span class="caret"></span></a></td>
-        <script type="text/javascript">
-          //show one popover at a time
-          $('.btn').on('click', function (e) {
-              $('.btn').not(this).popover('hide');
-          });
-        </script>
-        <% if current_user %>
-          <td id="follow-unfollow-column-<%=tag.tid%>">
-             <% if current_user.following(tag.name) %>
-                <a rel="tooltip" title="<%= t('tag.show.unfollow') %>" class="btn btn-default btn-sm active" href="/unsubscribe/tag/<%= tag.name %>"><i class="fa fa-user-plus" aria-hidden="true"></i> <%= t('tag.show.following') %></a>
-                <% else %>
-                <a class="btn btn-default btn-sm index-follow-buttons follow-btn-remote" href="/subscribe/tag/<%= tag.name %>" data-remote="true" ><i class="fa fa-user-plus" aria-hidden="true"></i> <%= t('tag.show.follow') %></a>
-                <% end %>
-          </td>
-        <% end %>
-      </tr>
-    <% end %>
-  </table>
-
-  <hr />
-
+  <%= render :partial => "tag/topicCard" %>
+  
 <div class="text-center"> <%= will_paginate @tags, :renderer => BootstrapPagination::Rails if @paginated %></div>
 </div>
 
