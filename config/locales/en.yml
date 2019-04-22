@@ -370,6 +370,9 @@ en:
       number_of_subscriptions: "# of people"
       subscriptions: "Your subscriptions"
       sort_by: "Sort By"
+      more_posts: "more posts"
+      subscribe: "Subscribe"
+      unsubscribe: "Unsubscribe"
     show:
       notes_tagged: "Notes tagged with <i style=\"color:#aaa;\">%{tag}</i>"
       following: "Following"
@@ -378,7 +381,7 @@ en:
       none: "None"
       users_following_tag: "Users following this tag"
       ask_question: "Ask a question about <b>%{tag}</b>"
-      or_subscribe_to_answer: "<a style='margin-bottom:6px;' class='btn btn-default
+      or_subscribe_to_answer: "<a style='margin-bottom:6px;' class='btn btn-primary
         requireLogin' target='_blank' href='%{url1}'>Subscribe to answer questions
         on this topic</a>"
       research_notes: "<span class=\"hidden-sm\">Research </span>Notes"

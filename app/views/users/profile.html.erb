@@ -7,6 +7,7 @@
       <a href="/p/<%= @profile_user.username %>"><i class="fa fa-link"></i></a>
       <%= @profile_user.note_count %><a href='/notes/author/<%= @profile_user.name %>'> research notes</a> and <%= @profile_user.revisions.count %> wiki edits
       <% if current_user && current_user.role == "admin" %> | <%= @profile_user.email %><% end %>
+      <span style = "font-size:24px;"><small> | <%= raw t('users.profile.joined_time_ago', :time_ago => distance_of_time_in_words(@profile_user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' })) %></small></span>
       <% if @profile_user.role == "moderator" %> | <i class="fa fa-certificate"></i> <%= t('users.profile.moderator') %><% end %>
       <% if @profile_user.role == "admin" %> | <i class="fa fa-certificate"></i> <%= t('users.profile.admin') %><% end %>
       <% if @profile_user.status == 0 %> | <i class="fa fa-ban" style="color:#a00;"></i> <%= t('users.profile.banned') %><% end %>
@@ -17,7 +18,7 @@
 
   <hr />
   <div class="row" id="highlight" style=" text-align: center;">
-    <h3 class="col-md-4 col-xs-12 col-sm-4"><a href = "/tag/question:*/author/<%= params[:id] %>"><%= Node.questions.where(status: 1, uid: @profile_user.id).length %> questions asked </a><br><br> <%= Answer.where(uid: @profile_user.id).count %> answers posted</h3>
+    <h3 class="col-md-4 col-xs-12 col-sm-4"><a href = "/tag/question:*/author/<%= params[:id] %>"><%= @questions.length %> questions asked </a><br><br> <%= @answered_questions.count %> answers posted</h3>
     <h3 class="col-md-4 col-xs-12 col-sm-4"><a href = "/tag/activity:*/author/<%= params[:id] %>"><%= @count_activities_posted %> activities posted </a><br><br> <a href = "/tag/replication:*/author/<%= params[:id] %>"><%= @count_activities_attempted %> activities attempted</a></h3>
     <% if !@map_lat.nil? && !@map_lon.nil? %>
       <%= render :partial => "map/userLeaflet" , locals: { haslocation: true, user: @profile_user } %>
@@ -27,7 +28,6 @@
   </div>
   <hr />
 
-  <span style="float:right;"><small><%= raw t('users.profile.joined_time_ago', :time_ago => distance_of_time_in_words(@profile_user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' })) %></small></span>
   <br>
 
   <ul class="nav nav-tabs">
@@ -70,8 +70,8 @@
 
     <div class="tab-pane" id="questions">
       <div class="btn-group text-center">
-        <a href="#asked" class="btn btn-default" data-toggle="tab">Asked</a>
-        <a href="#answered" class="btn btn-default" data-toggle="tab">Answered</a>
+        <a href="#asked" class="btn btn-default" data-toggle="tab">Asked<%= "(#{@questions.length})"%></a>
+        <a href="#answered" class="btn btn-default" data-toggle="tab">Answered<%= "(#{@answered_questions.count})"%></a>
       </div>
 
       <div class="tab-content">
