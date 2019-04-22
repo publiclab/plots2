@@ -4,14 +4,14 @@
     <p>Public lab logo (size=65x65)</p>
     <h3><b>The Public Lab Blog</b></h3>
     <hr>
-    <p style="word-spacing : 40px;">
+    <p>
       <a href="/wiki/blog">ABOUT</a>
       <a href="/research">RESEARCH</a>
       <a href="/tools">METHODS</a>
       <% if current_user %>
-        <a href="/feed/tag/<%= params[:id] %>.rss"><i style="color:#696969;"class="fa fa-rss"></i>RSS</a>
+        <a href="/feed/tag/<%= params[:id] %>.rss">RSS <i style="color:#696969;"class="fa fa-rss"></i></a>
         <% if current_user.following(params[:id]) %>
-        <a rel="tooltip" title="Click to unfollow" href="/unsubscribe/tag/<%= params[:id] %>"><i style="color:#696969;" class="fa fa-user-plus" aria-hidden="true"></i>Following</a>
+        <a rel="tooltip" title="Click to unfollow" href="/unsubscribe/tag/<%= params[:id] %>">Following <i style="color:#696969;" class="fa fa-user-plus" aria-hidden="true"></i></a>
         <% end %>
       <% end %>
     </p>
@@ -97,7 +97,9 @@
 }
 p a{
     color:#696969;
+    margin-left:3em;
   }
+
 
 .blog-content {
   margin-right:1em;
