@@ -54,7 +54,7 @@ class OpenidController < ApplicationController
     if current_user.nil? && params['openid.mode'] != 'check_authentication'
       session[:openid_return_to] = request.env['ORIGINAL_FULLPATH']
       flash[:warning] = 'Please log in first.'
-      redirect_to '/login'
+      redirect_to '/auth/github'
       return
     else
 
