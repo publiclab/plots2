@@ -1,6 +1,12 @@
 <div class="pop_content">
   <p class="small_heading"> Follow related tags: </p>
   <%= form_with remote: true, url: '/subscribe/multiple/tag' do |f| %>
+  <input
+    type="hidden"
+    name="return_to"
+    class="subscription-popover-redirect"
+    value="<%= request.fullpath %>"
+  />
     <% tags.each do |tag| %>
     <div class="form-check">
       <label class="form-check-label">
@@ -16,4 +22,4 @@
   font-style: italic;
   color: #004d80;
   }
-</style> 
+</style>
