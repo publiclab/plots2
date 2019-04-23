@@ -41,7 +41,7 @@ class SubscriptionControllerTest < ActionController::TestCase
     assert users(:bob).following(:awesome)
     get :multiple_add, params: { type: 'tag', tagnames: '' }
     assert_response :redirect
-    assert_equal "Please enter tags for subscription in the url.", flash[:notice]
+    assert_equal "Please enter tags for subscription.", flash[:notice]
   end
 
   test 'user is not logged in and tries to subscribe multiple tags' do
