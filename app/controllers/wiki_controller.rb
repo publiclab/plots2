@@ -55,10 +55,6 @@ class WikiController < ApplicationController
       end
     end
 
-    # if request.path != @node.path && request.path != '/wiki/' + @node.nid.to_s
-    #   return redirect_to @node.path, :status => :moved_permanently
-    # end
-
     return if redirect_to_node_path?(@node)
 
     if !@node.nil? # it's a place page!
@@ -145,7 +141,10 @@ class WikiController < ApplicationController
     if params[:rich]
       render template: 'editor/wikiRich'
     else
-      render template: 'wiki/edit'
+      respond_to do |format|
+        format.html { render 'wiki/edit' }
+        format.all { head :ok }
+      end
     end
   end
 
