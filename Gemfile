@@ -64,7 +64,7 @@ gem 'whenever', require: false
 gem 'will_paginate', '>= 3.0.6'
 gem 'will_paginate-bootstrap', '>= 1.0.1'
 gem 'jquery-atwho-rails'
-gem 'lemmatizer', '~> 0.2.1'
+gem 'lemmatizer', '~> 0.2.2'
 # To implement incoming mail processing microframework
 gem 'mailman', require: false
 
@@ -85,7 +85,7 @@ end
 
 gem 'coffee-rails', '~> 4.2.2'
 gem 'execjs' # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-gem 'sass-rails', '~> 5.0', '>= 5.0.7'
+gem 'sassc-rails'
 gem 'therubyracer'
 gem 'uglifier', '>= 1.0.3'
 gem 'grape-rails-cache'
@@ -113,7 +113,7 @@ group :test, :development do
   gem 'rake',  '~> 12.3.2'
   gem 'rest-client'
   gem 'rspec'
-  gem 'selenium-webdriver', '~> 3.141.0'
+  gem 'selenium-webdriver', '~> 3.141.5926'
   gem 'test-unit'
   gem 'teaspoon-mocha'
   gem 'timecop'

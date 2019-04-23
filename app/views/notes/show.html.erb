@@ -40,7 +40,7 @@
       </span>
       <a class="hidden-md hidden-lg hidden-xl collapse-btn" data-toggle="collapse" href="#collapse-info" role="button" aria-expanded="false" aria-controls="collapse-info" id="collapse-button">...</a>
       <span class="collapse collapse-info" id="collapse-info">
-        | <%= number_with_delimiter(@node.totalviews) %> <%= t('notes.show.views') %>
+        | <%= number_with_delimiter(@node.views) %> <%= t('notes.show.views') %>
         <% if @node.comments %>
           | <i class="fa fa-comment"></i>
           <a href="#comments"> <%= @node.comments.length %> <%= t('notes.show.comments') %> </a>
@@ -48,7 +48,7 @@
           | <a href="/n/<%= @node.id %>"><i class="fa fa-link"></i></a> <span class="hidden-xs hidden-sm hidden-md"><a href="/n/<%= @node.id %>">#<%= @node.id %></a></span>
       </span>
       <span class="hidden-xs hidden-sm hidden-print">
-        | <%= number_with_delimiter(@node.totalviews) %> <%= t('notes.show.views') %>
+        | <%= number_with_delimiter(@node.views) %> <%= t('notes.show.views') %>
         <% if @node.comments %>
           | <i class="fa fa-comment"></i>
           <a href="#comments"> <%= @node.comments.length %> <%= t('notes.show.comments') %> </a>

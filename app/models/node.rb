@@ -53,7 +53,14 @@ class Node < ActiveRecord::Base
                    .collect(&:nid)
                end
         where(nid: nids, status: 1)
-      else
+      elsif order == :natural_titles_only
+        Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE) AS score")
+          .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE)")
+          .limit(limit)
+          .distinct
+          .collect(&:nid)
+        where(nid: nids, status: 1)
+      elsif
         nids = Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query).collect(&:nid)
 
         tnids = Tag.find_nodes_by_type(query, %w(note page)).collect(&:nid) # include results by tag
@@ -166,13 +173,7 @@ class Node < ActiveRecord::Base
 
   public
 
-  is_impressionable counter_cache: true, column_name: :views
-
-  def totalviews
-    # this doesn't filter out duplicate ip addresses as the line below does:
-    # self.views + self.legacy_views
-    impressionist_count(filter: :ip_address) + legacy_views
-  end
+  is_impressionable counter_cache: true, column_name: :views, unique: :ip_address
 
   def self.weekly_tallies(type = 'note', span = 52, time = Time.now)
     weeks = {}
@@ -991,6 +992,13 @@ class Node < ActiveRecord::Base
       comments.where('comments.status = 1 OR (comments.status = 4 AND comments.uid = ?)', user.uid)
     else
       comments.where(status: 1)
+    end
+  end
+
+  def notify_callout_users
+    # notify mentioned users
+    mentioned_users.each do |user|
+      NodeMailer.notify_callout(self, user).deliver_now if user.username != author.username
     end
   end
 end
