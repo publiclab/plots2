@@ -104,13 +104,6 @@ Style/CommandLiteral:
   - mixed
   AllowInnerBackticks: false
 
-# Style/ConditionalAssignment:
-#   EnforcedStyle: assign_to_condition
-#   SupportedStyles:
-#   - assign_to_condition
-#   - assign_inside_condition
-#   SingleLineConditionsOnly: true
-
 Layout/DotPosition:
   EnforcedStyle: leading
   SupportedStyles:
