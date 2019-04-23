@@ -116,9 +116,10 @@ class SubscriptionController < ApplicationController
   end
 
   def multiple_add
+    r = params[:return_to] || "/subscriptions" + "?_=" + Time.now.to_i.to_s
     if !params[:tagnames] || params[:tagnames] == ''
       flash[:notice] = "Please enter tags for subscription."
-      redirect_to params[:return_to]
+      redirect_to r
       return
     end
     tag_list = if params[:tagnames].is_a? String
@@ -143,7 +144,7 @@ class SubscriptionController < ApplicationController
               tag.save!
             rescue ActiveRecord::RecordInvalid
               flash[:error] = tag.errors.full_messages
-              redirect_to params[:return_to]
+              redirect_to r
               return false
             end
           end
@@ -159,7 +160,7 @@ class SubscriptionController < ApplicationController
               render json: true
             else
               flash[:notice] = "You are now following '#{params[:tagnames]}'."
-              redirect_to params[:return_to]
+              redirect_to r
             end
           end
         end
