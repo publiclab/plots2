@@ -25,7 +25,12 @@ class UsersController < ApplicationController
           flash[:warning] = "We tried and failed to send you a welcome email, but your account was created anyhow. Sorry!"
         end
         flash[:notice] = I18n.t('users_controller.registration_successful')
-        flash[:notice] += " " + I18n.t('users_controller.continue_where_you_left_off', url1: params[:return_to].to_s) if params[:return_to] && params[:return_to] != "/signup"
+        if params[:return_to] && params[:return_to].split('/')[0..3] == ["", "subscribe", "multiple", "tag"]
+          flash[:notice] += "You are now following '#{params[:return_to].split('/')[4]}'."
+          subscribe_multiple_tag(params[:return_to].split('/')[4])
+        elsif params[:return_to] && params[:return_to] != "/signup" && params[:return_to] != "/login"
+          flash[:notice] += " " + I18n.t('users_controller.continue_where_you_left_off', url1: params[:return_to].to_s)
+        end
         flash[:notice] = flash[:notice].html_safe
         flash[:warning] = I18n.t('users_controller.spectralworkbench_or_mapknitter', url1: "'#{session[:openid_return_to]}'").html_safe if session[:openid_return_to]
         session[:openid_return_to] = nil
@@ -401,6 +406,52 @@ class UsersController < ApplicationController
   end
 
   private
+
+  def subscribe_multiple_tag(tag_list)
+    if !tag_list || tag_list == ''
+      flash[:notice] = "Please enter tags for subscription in the url."
+    else
+      if tag_list.is_a? String
+        tag_list = tag_list.split(',')
+      end
+      tag_list.each do |t|
+        next unless t.length.positive?
+        tag = Tag.find_by(name: t)
+        unless tag.present?
+          tag = Tag.new(
+            vid: 3, # vocabulary id
+            name: t,
+            description: "",
+            weight: 0
+          )
+          begin
+            tag.save!
+            rescue ActiveRecord::RecordInvalid
+            flash[:error] = tag.errors.full_messages
+            redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
+            return false
+          end
+        end
+        # test for uniqueness
+        unless TagSelection.where(following: true, user_id: current_user.uid, tid: tag.tid).length.positive?
+          # Successfully we have added subscription
+          if Tag.find_by(tid: tag.tid)
+            # Create the entry if it isn't already created.
+            # assume tag, for now:
+            subscription = TagSelection.where(user_id: current_user.uid,
+                                              tid: tag.tid).first_or_create
+            subscription.following = true
+            # Check if the value changed.
+            if subscription.following_changed?
+              subscription.save!
+            end
+          else
+            flash.now[:error] = "Sorry! There was an error in tag subscriptions. Please try it again."
+          end
+        end
+      end
+    end
+  end
 
   def set_user
     @user = User.find_by(username: params[:id])
