@@ -22,7 +22,7 @@
         </div>
       </div>  
       <div class="panel-footer" style="background-color: inherit; border:none; padding-bottom: 22px;">
-        <a style="text-decoration: underline; color: #808080; display: inline-block;" href="/tag/<%= tag.name %>"><%= tag.count %><%= t('tag.index.more_posts') %> <i class="fa fa-angle-double-right"></i></a>
+        <a style="text-decoration: underline; color: #808080; display: inline-block;" href="/tag/<%= tag.name %>"><%= tag.count %> <%= t('tag.index.more_posts') %> <i class="fa fa-angle-double-right"></i></a>
 
         <a style="float: right;  width: 100px;" rel="tooltip" title="<%= t('sidebar._post_button.share_your_work') %>" data-placement="bottom" href="/post?tags=<%= tag.name %>" class="btn btn-primary btn-sm">New post <i class="fa fa-plus fa-white"></i></a>
         <% if current_user %>
