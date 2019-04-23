@@ -153,13 +153,14 @@ $E = {
 
 function urlTransformer(url) {
   return "https://publiclab.org/dashboard";
-};
+}
+
 function classIdTransformer(name) {
   return;
-};
+}
 
 function sanitize(input_val) {
   var sanitized = html_sanitize(input_val, urlTransformer, classIdTransformer);
   console.log("This is sanitized to " + sanitized);
   return sanitized;
-};
+}
