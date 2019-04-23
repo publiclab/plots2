@@ -24,10 +24,26 @@
 </style>
 
 <script type="text/javascript">
+  
   $('#popover_button').popover({
   	content: $('#mypopcontent').clone().removeClass('hidden'),
   	placement: 'bottom',
   	html: true,
 
+  }).parent().on('click', '#mypopcontent', function(event) {
+        event.stopPropagation();
+  });
+
+  $('#popover_button').popover({
+  	content: $('#mypopcontent').clone().removeClass('hidden'),
+  	placement: 'bottom',
+  	html: true,
+
+  }).click(function(e) {
+    e.stopPropagation();
+  });
+
+  $(document).click(function(e){
+    $('#popover_button').popover('hide');
   });
 </script>
