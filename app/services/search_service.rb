@@ -224,9 +224,8 @@ class SearchService
             elsif ActiveRecord::Base.connection.adapter_name == 'Mysql2'
               type == 'username' ? User.search_by_username(query).where('rusers.status = ?', 1) : User.search(query).where('rusers.status = ?', 1)
             else
-              User.where('username LIKE ? AND rusers.status = 1', '%' + query + '%')
+              User.where('username LIKE ? OR username = ? AND rusers.status = 1', '%' + query + '%', query)
             end
-
     users.limit(limit)
   end
 end

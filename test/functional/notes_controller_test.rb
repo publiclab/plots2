@@ -1,5 +1,4 @@
 require 'test_helper'
-
 class NotesControllerTest < ActionController::TestCase
    include ActionMailer::TestHelper
   def setup
@@ -81,7 +80,7 @@ class NotesControllerTest < ActionController::TestCase
     assert_equal '0.0.0.0', Impression.last.ip_address
     Impression.last.update_attribute('ip_address', '0.0.0.1')
 
-    assert_difference 'note.totalviews', 1 do
+    assert_difference 'note.reload.views', 1 do
       get :show,
           params: {
           author: note.author.name,
@@ -90,10 +89,10 @@ class NotesControllerTest < ActionController::TestCase
           }
     end
 
-    assert_equal 2, note.totalviews
+    assert_equal 2, note.reload.views
 
     # same IP won't add to views twice
-    assert_difference 'note.totalviews', 0 do
+    assert_difference 'note.reload.views', 0 do
       get :show,
           params: {
           author: note.author.name,
@@ -275,6 +274,25 @@ class NotesControllerTest < ActionController::TestCase
     assert_equal 4, Node.last.status
     assert_equal title, Node.last.title
     assert_redirected_to '/notes/' + users(:lurker).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
+  end
+
+  test 'Email to the mentioned users in note creation' do
+    UserSession.create(users(:naman))
+    title = 'Note with Mentioned users in body'
+    post :create,
+         params: { title: title,
+                   body: '@naman18996 and @jeffrey are the mentioned users',
+                   tags: 'balloon-mapping,event'
+         }
+    node = Node.last
+    emails = []
+    ActionMailer::Base.deliveries.each do |m|
+      if m.subject == "(##{node.id}) You were mentioned in a note"
+        emails = emails + m.to
+      end
+    end
+    assert_equal 2, emails.count
+    assert_equal ["naman18996@yahoo.com", "jeff@publiclab.org"].to_set, emails.to_set
   end
 
   test 'first-timer moderated note (status=4) hidden to normal users on research note feed' do

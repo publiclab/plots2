@@ -11,6 +11,11 @@ env:
 
 before_install:
   - echo -e "repo_token:\n  $COVERALLS_REPO_TOKEN" >> ./.coveralls.yml
+  
+branches:
+  only:
+    - master
+    - unstable
 
 install:
   - cp config/database.yml.example config/database.yml
@@ -33,8 +38,7 @@ script:
   - docker-compose exec web bash -c "mv chromedriver /usr/local/bin/chromedriver"
   - docker-compose exec web bash -c "chmod +x /usr/local/bin/chromedriver"
   - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true rake test:all"
-  - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true rails test -d"
-  - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true rails test:system"
+  - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true rails test:system test"
   - echo -e '<?xml version="1.0" encoding="UTF-8"?>' > output.xml
   - tail -n +2 -q ./test/reports/TEST*.xml >> output.xml
   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then danger --verbose; fi'

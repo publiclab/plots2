@@ -1,0 +1,121 @@
+<div>
+  <div style="text-align:center;">
+  <div class="jumbotron">
+    <h2> Blog 2 is here <h2>
+  </div>
+  </div>
+  <div class="row">
+    <div class="blog-main col-md-8 jumbotron">
+     <h3>
+     This is basic html layout
+     </h3>
+     <hr>
+    <p class="more">
+    Here is the lorem ipsum content
+    <br>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim 
+      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex 
+      ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+      velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+      cupidatat non proident, sunt in culpa qui officia deserunt mollit anim 
+      id est laborum.
+    </p>
+    </div>
+    <div class="col-md-3">
+      <div class="row"> 
+        <div clas="col-md-12">
+          <div class="jumbotron" id="blog-post">
+            <div class="recent-heading">
+            <h4>Recent Post</h3>
+            </div>
+            <hr>
+            <div class="recent-content">
+              <ul>
+              <li>Dummy Text 1 </li>
+              <li>Dummy Text 2 </li>
+              <li>Dummy Text 3 </li>
+              <li>Dummy Text 4 </li>
+              <li>Dummy Text 5 </li>
+              <li>Dummy Text 6 </li>      
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div clas="col-md-12">
+          <div class="jumbotron" id="blog-category">
+            <div class="recent-heading">
+            <h4>Categories</h3>
+            </div>
+            <hr>
+            <div class="recent-content">
+              <ul>
+              <li>Dummy Text 1 </li>
+              <li>Dummy Text 2 </li>
+              <li>Dummy Text 3 </li>
+              <li>Dummy Text 4 </li>
+              <li>Dummy Text 5 </li>
+              <li>Dummy Text 6 </li>      
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.blog-main {
+  margin-left: 2em;
+  margin-right: 2em;
+}
+.blog-content {
+  margin-right:1em;
+  margin-left:1em;
+}
+.blog-category{
+  margin-right:1em;
+  margin-left:1em;
+}
+.more-content span {
+    display: none;
+}
+.more-link {
+    width: 150px;
+}
+.more-button{
+  text-align: center;
+  margin: 20px;
+}
+</style>
+<script>
+  $(document).ready(function() {
+    var showChar = 300;  // How many characters are shown by default
+    var moretext = "Read more";
+    var lesstext = "Read less";
+    $('.more').each(function() {
+        var content = $(this).html();
+        if(content.length > showChar) {
+            var c = content.substr(0, showChar);
+            var h = content.substr(showChar, content.length - showChar);
+            var html = c + '<span class="moreellipses">' + '</span><span class="more-content"><span>' + h + '</span>&nbsp;&nbsp;<div class="more-button"><a class="btn btn-default more-link">' + moretext + '</a></div></span>';
+            $(this).html(html);
+        }
+    });
+    $(".more-link").click(function(){
+        if($(this).hasClass("less")) {
+            $(this).removeClass("less");
+            $(this).html(moretext);
+        } else {
+            $(this).addClass("less");
+            $(this).html(lesstext);
+        }
+        $(this).parent().prev().toggle();
+        $(this).prev().toggle();
+        return false;
+    });
+});
+</script>

@@ -16,11 +16,19 @@
 
       <br style="clear:both;"/>
 
-    <div class="form-group">
-      <label for="username"><%= t('users._form.username') %></label>
-      <%= f.text_field :username, { readonly: true, tabindex: 1, placeholder: "Username", class: 'form-control', id: 'username' , title: 'Username field cannot be changed'} %>
-      <input type="hidden" name="id" value="<%= @user.username %>" />
-    </div>
+    <div class="row">
+
+      <div class="form-group col-sm-6">
+        <label for="username"><%= t('users._form.username') %></label>
+        <%= f.text_field :username, { readonly: true, tabindex: 1, placeholder: "Username", class: 'form-control', id: 'username' , title: 'Username field cannot be changed', disabled: true} %>
+        <input type="hidden" name="id" value="<%= @user.username %>" />
+      </div>
+
+      <div class="form-group col-sm-6">
+
+        <label for="email"><%= t('users._form.email') %></label>
+        <%= f.text_field :email, { tabindex: 3, required: true, pattern: '[^@]+@[^@]+\.[a-zA-Z]{2,6}', placeholder: "you@email.com", class: 'form-control', id: 'email' } %>
+      </div>
 
     <div class="form-group">
       <label for="current_password"><%= t('users._form.current_password') %></label>
@@ -77,16 +85,19 @@
       <script>
         (function() {
           $('.btn-save').click(function onClick(e) {
-            $(this).addClass("disabled") // disable the button after it is clicked
-                   .html("<i class='fa fa-spinner fa-spin'></i>"); // make a spinner that spins when clicked
-          })
+            if(document.form.email.text_field != "" && document.form.email.pattern == '[^@]+@[^@]+\.[a-zA-Z]{2,6}')
+                   {
+                     $(this).addClass("disabled") // disable the button after it is clicked
+                     .html("<i class='fa fa-spinner fa-spin'></i>"); // make a spinner that spins when clicked
+                   }
+            })
         })();
       </script>
     </div>
 
   </div>
 
-  <div class="col-md-2">
+  <div class="col-sm-2">
     <%= render :partial => 'users/photo' %>
   </div>
 
