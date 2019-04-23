@@ -15,7 +15,7 @@
               <% elsif node.scraped_image %>
                 <img class="img-circle" id="profile-photo" style="width:20px; height:20px; margin-right:8px; display: inline-block;" src="<%= node.scraped_image %>" />
               <% end %>
-              <h6 style="display: inline-block;"><a style="color: inherit;" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= (node.type == 'note') ? node.title : node.latest.title %></a></h6>
+              <p style="display: inline-block;"><a style="color: inherit;" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= (node.type == 'note') ? node.title : node.latest.title %></a></p>
               <p style="display: inline-block; margin-left: 10px;color: #808080;">by <a style="color: #808080;" <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>">@<%= node.author.name %></a></p>
             </div>
           <% end %>
