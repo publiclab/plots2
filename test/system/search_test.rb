@@ -16,9 +16,8 @@ class SearchTest < ApplicationSystemTestCase
 
     fill_in("searchform_input", with: "Canon")
 
-    assert_select '.typeahead' do
-      assert_select 'li', 'Canon A1200 IR conversion at PLOTS Barnraising at LUMCON'
-    end
+    assert_selector ".typeahead li", text: "Canon A1200 IR conversion at PLOTS Barnraising at LUMCON"
+
     assert page.evaluate_script("$('.typeahead.dropdown-menu').is(':visible')")
     assert_equal 1, page.evaluate_script("$('.typeahead.dropdown-menu').find('li').length")
   end
