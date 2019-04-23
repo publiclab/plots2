@@ -8,7 +8,7 @@ module NodeShared
   def liked_by(uid)
     likers.collect(&:uid).include?(uid)
   end
-  
+
   def self.button(body)
     body.gsub(/(?<![\>`])(\<p\>)?\[button\:(.+)\:(\S+)\]/) do |_tagname|
       btnText = Regexp.last_match(2)
@@ -73,7 +73,6 @@ module NodeShared
     end
   end
 
-  # rubular regex: http://rubular.com/r/hBEThNL4qd
   def self.notes_grid(body, _page = 1)
     body.gsub(/(?<![\>`])(\<p\>)?\[notes\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
@@ -150,7 +149,6 @@ module NodeShared
     end
   end
 
-  # rubular regex: http://rubular.com/r/hBEThNL4qd
   def self.questions_grid(body, _page = 1)
     body.gsub(/(?<![\>`])(\<p\>)?\[questions\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
@@ -171,10 +169,8 @@ module NodeShared
                   .where('term_data.name IN (?)', exclude)
         nodes -= exclude
       end
-      output = ''
-      output += '<p>' if Regexp.last_match(1) == '<p>'
-      a = ActionController::Base.new
-      output += a.render_to_string(template: "grids/_notes",
+      output = '<p>' if Regexp.last_match(1) == '<p>'
+      output + ActionController::Base.new.render_to_string(template: "grids/_notes",
                                    layout:   false,
                                    locals:   {
                                      tagname: tagname,
@@ -183,7 +179,6 @@ module NodeShared
                                      nodes: nodes,
                                      type: "questions"
                                    })
-      output
     end
   end
 
@@ -195,8 +190,8 @@ module NodeShared
         exclude = tagname.split('!') - [tagname.split('!').first]
         tagname = tagname.split('!').first
       end
-      nodes = Node.activities(tagname)
-                  .order('node.cached_likes DESC')
+      nodes = Node.activities(tagname).order('node.cached_likes DESC')
+
       if exclude.present?
         exclude = Node.where(status: 1, type: 'note')
                   .includes(:revision, :tag)
@@ -289,14 +284,13 @@ module NodeShared
     end
   end
 
-  # in our interface, "users" are known as "people" because it's more human
+  # people = users
   def self.people_map(body, _page = 1)
     body.gsub(/(?<![\>`])(\<p\>)?\[map\:people\:(\S+)\:(\S+)\]/) do |_tagname|
       lat = Regexp.last_match(2)
       lon = Regexp.last_match(3)
 
-      a = ActionController::Base.new
-      output = a.render_to_string(template: "map/_peopleLeaflet",
+      output = ActionController::Base.new.render_to_string(template: "map/_peopleLeaflet",
                                   layout:   false,
                                   locals:   {
                                     lat: lat,
@@ -309,7 +303,6 @@ module NodeShared
     end
   end
 
-  # in our interface, "users" are known as "people" because it's more human
   def self.people_grid(body, current_user = nil, _page = 1)
     body.gsub(/(?<![\>`])(\<p\>)?\[people\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)

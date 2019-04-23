@@ -7,11 +7,11 @@ class ImagesController < ApplicationController
   def shortlink
     params[:size] = params[:size] || params[:s]
     params[:size] = params[:size] || :large
-    params[:size] = :thumb if (params[:size].to_s == "t")
-    params[:size] = :thumb if (params[:size].to_s == "thumbnail")
-    params[:size] = :medium if (params[:size].to_s == "m")
-    params[:size] = :large if (params[:size].to_s == "l")
-    params[:size] = :original if (params[:size].to_s == "o")
+    params[:size] = :thumb if params[:size].to_s == 't'
+    params[:size] = :thumb if params[:size].to_s == 'thumbnail'
+    params[:size] = :medium if params[:size].to_s == 'm'
+    params[:size] = :large if params[:size].to_s == 'l'
+    params[:size] = :original if params[:size].to_s == 'o'
     image = Image.find(params[:id])
     redirect_to URI.parse(image.path(params[:size])).path
   end

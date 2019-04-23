@@ -107,11 +107,7 @@ class TagController < ApplicationController
       @tags = Tag.where(name: params[:id])
 
       if @node_type == 'questions'
-        other_tag = if params[:id].include? "question:"
-                      params[:id].split(':')[1]
-                    else
-                      "question:" + params[:id]
-                    end
+        other_tag = params[:id].include?("question:") ? params[:id].split(':')[1] : "question:" + params[:id]
 
         nodes = Node.where(status: 1, type: node_type)
           .includes(:revision, :tag)

@@ -131,18 +131,9 @@ class UserSessionsController < ApplicationController
                 redirect_to '/profile/edit'
               else
                 flash[:notice] = I18n.t('user_sessions_controller.logged_in')
-                if session[:openid_return_to] # for openid login, redirects back to openid auth process
-                  return_to = session[:openid_return_to]
-                  session[:openid_return_to] = nil
-                  redirect_to return_to + hash_params
-                elsif session[:return_to]
-                  return_to = session[:return_to]
-                  if return_to == '/login'
-                    return_to = '/dashboard'
-                  end
-                  session[:return_to] = nil
-                  redirect_to return_to + hash_params
-                elsif params[:return_to]
+                where_to_return
+
+                if params[:return_to]
                   redirect_to params[:return_to] + hash_params
                 else
                   redirect_to '/dashboard'
@@ -185,5 +176,16 @@ class UserSessionsController < ApplicationController
 
   def index
     redirect_to '/dashboard'
+  end
+
+  private
+
+  def where_to_return
+    if return_to = session[:openid_return_to]
+      redirect_to return_to + hash_params
+    elsif return_to = session[:return_to] == '/login' ? '/dashboard' : session[:return_to]
+      redirect_to return_to + hash_params
+    end
+    session[:return_to] = nil
   end
 end

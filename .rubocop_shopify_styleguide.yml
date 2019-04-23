@@ -104,12 +104,12 @@ Style/CommandLiteral:
   - mixed
   AllowInnerBackticks: false
 
-Style/ConditionalAssignment:
-  EnforcedStyle: assign_to_condition
-  SupportedStyles:
-  - assign_to_condition
-  - assign_inside_condition
-  SingleLineConditionsOnly: true
+# Style/ConditionalAssignment:
+#   EnforcedStyle: assign_to_condition
+#   SupportedStyles:
+#   - assign_to_condition
+#   - assign_inside_condition
+#   SingleLineConditionsOnly: true
 
 Layout/DotPosition:
   EnforcedStyle: leading
@@ -1036,7 +1036,7 @@ Performance/FixedSize:
 Performance/FlatMap:
   EnabledForFlattenWithoutParams: false
 
-Performance/LstripRstrip:
+Style/Strip:
   Enabled: true
 
 Performance/RangeInclude:
@@ -1048,13 +1048,13 @@ Performance/RedundantBlockCall:
 Performance/RedundantMatch:
   Enabled: true
 
-Performance/RedundantSortBy:
+Style/RedundantSortBy:
   Enabled: true
 
 Performance/ReverseEach:
   Enabled: true
 
-Performance/Sample:
+Style/Sample:
   Enabled: true
 
 Performance/Size:
