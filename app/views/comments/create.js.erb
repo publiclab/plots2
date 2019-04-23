@@ -6,3 +6,5 @@
 $('#answer-<%= @answer_id %>-comment-section .help-block').remove();
 $('textarea').val("");
 notyNotification('mint', 3000, 'success', 'topRight', 'Comment Added!');
+$('#comment-count')[0].innerHTML = parseInt($('#comment-count')[0].innerHTML, 10)+1;
+
