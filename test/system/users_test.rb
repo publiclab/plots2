@@ -6,4 +6,9 @@ class UsersTest < ApplicationSystemTestCase
   #
   #   assert_selector "h1", text: "Users"
   # end
+  test "preserve return_to while switching from login to signup" do
+    visit '/login?return_to=/subscribe/multiple/tag/tag1,tag2'
+    click_on "sign up"
+    assert_redirected_to '/signup?return_to=/subscribe/multiple/tag/tag1,tag2'
+  end
 end
