@@ -136,8 +136,9 @@ $E = {
       preview_btn = $('.preview-btn')
       dropzone = $('.dropzone')
     }
-
-    $E.preview[0].innerHTML = marked($E.textarea.val())
+    
+    const sanitized_input = sanitize($E.textarea.val())
+    $E.preview[0].innerHTML = marked(sanitized_input)
     $E.preview.toggle()
     dropzone.toggle()
 
@@ -147,3 +148,18 @@ $E = {
     else preview_btn.button('reset');
   }
 }
+
+
+
+function urlTransformer(url) {
+  return "https://publiclab.org/dashboard";
+};
+function classIdTransformer(name) {
+  return;
+};
+
+function sanitize(input_val) {
+  var sanitized = html_sanitize(input_val, urlTransformer, classIdTransformer);
+  console.log("This is sanitized to " + sanitized);
+  return sanitized;
+};
