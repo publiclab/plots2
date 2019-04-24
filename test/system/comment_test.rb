@@ -9,7 +9,7 @@ class SearchTest < ApplicationSystemTestCase
 
     # we could see if an image gets created:
     # assert_no_difference 'Image.count' do
-      attach_file('Image', '/public/images/pl.png')
+      attach_file('Image', 'public/images/pl.png')
     # end
 
     assert_selector('.comment-form textarea#textinput', text: '![](/some/imageid.png)')
