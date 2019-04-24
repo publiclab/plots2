@@ -33,7 +33,11 @@ class LegacyController < ApplicationController
   end
 
   def openid_username
-    redirect_to URI.parse('/openid/' + params[:username]).path, status: 301
+    if params[:provider]
+      redirect_to URI.parse('/openid/' + params[:username] + '/' + params[:provider] ).path, status: 301
+    else
+      redirect_to URI.parse('/openid/' + params[:username]).path, status: 301
+    end
   end
 
   def file

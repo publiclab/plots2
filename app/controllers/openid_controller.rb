@@ -52,28 +52,42 @@ class OpenidController < ApplicationController
       return
     end
 
+    requested_credentials = ''
+    requested_username = ''
+    provider = ''
+
+    if request.env['ORIGINAL_FULLPATH']&.split('?')[1]
+      request.env['ORIGINAL_FULLPATH'].split('?')[1].split('&').each do |param|
+        requested_credentials = param.split('=')[1].split('%2F') if param.split('=')[0] == 'openid.claimed_id'
+      end
+    end
+
+    if requested_credentials && requested_credentials[-3] == 'openid'
+      requested_username = requested_credentials[-2]
+      provider = requested_credentials[-1]
+    elsif requested_credentials && requested_credentials[-2] == 'openid'
+      provider = nil
+      requested_username = requested_credentials[-1]
+    end
+
     if current_user.nil? && params['openid.mode'] != 'check_authentication'
       session[:openid_return_to] = request.env['ORIGINAL_FULLPATH']
       flash[:warning] = 'Please log in first.'
-      redirect_to '/auth/github'
+      if provider != nil
+        redirect_to '/auth/' + provider
+      else
+        redirect_to '/login'
+      end
       return
     else
 
       if oidreq
-
-        requested_username = ''
-        if request.env['ORIGINAL_FULLPATH']&.split('?')[1]
-          request.env['ORIGINAL_FULLPATH'].split('?')[1].split('&').each do |param|
-            requested_username = param.split('=')[1].split('%2F').last if param.split('=')[0] == 'openid.claimed_id'
-          end
-        end
 
         if current_user && !requested_username.casecmp(current_user.username.downcase).zero?
           flash[:error] = "You are requesting access to an account that's not yours. Please <a href='/logout'>log out</a> and use the correct account, or <a href='" + oidreq.trust_root + "'>try to login with the correct username</a>"
           redirect_to '/dashboard'
         else
           oidresp = nil
-
           if oidreq.is_a?(CheckIDRequest)
 
             identity = oidreq.identity
@@ -85,7 +99,11 @@ class OpenidController < ApplicationController
                 # The user hasn't logged in.
                 # show_decision_page(oidreq) # this doesnt make sense... it was in the example though
                 session[:openid_return_to] = request.env['ORIGINAL_FULLPATH']
-                redirect_to '/auth/github'
+                if provider != nil
+                  redirect_to '/auth/' + provider
+                else
+                  redirect_to '/login'
+                end
               else
                 # Else, set the identity to the one the user is using.
                 identity = url_for_user
@@ -122,7 +140,11 @@ class OpenidController < ApplicationController
         end
       else
         session[:openid_return_to] = request.env['ORIGINAL_FULLPATH']
-        redirect_to '/auth/github'
+        if provider
+          redirect_to '/auth/' + provider
+        else
+          redirect_to '/login'
+        end
       end
     end
   end
