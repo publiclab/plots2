@@ -151,17 +151,25 @@ module Srch
       get :content do
         search_request = SearchRequest.from_request(params)
         results = Search.execute(:content, params)
+        results_list = []
 
         if results.present?
-          docs = results.map do |model|
+          results_list << results[:tags].map do |model|
             DocResult.new(
               doc_id: model.nid,
-              doc_type: 'CONTENT',
+              doc_type: 'TAGS',
               doc_url: model.path,
               doc_title: model.title
             )
           end
-
+          results_list << results[:notes].map do |model|
+            DocResult.new(
+              doc_id: model.nid,
+              doc_type: 'NOTES',
+              doc_url: model.path,
+              doc_title: model.title
+            )
+          end
           DocList.new(docs, search_request)
         else
           DocList.new('', search_request)
