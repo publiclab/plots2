@@ -8,10 +8,10 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
   test 'incorrect openid authentication request shows error' do
 
     # log in
-    post '/user_sessions', params: { user_session: { username: users(:jeff).username, password: 'secretive' } } 
+    post '/user_sessions', params: { user_session: { username: users(:jeff).username, password: 'secretive' } }
     follow_redirect!
 
-    get '/openid', params: { 
+    get '/openid', params: {
       'openid.claimed_id': 'https://spectralworkbench.org/openid/warren',
       'openid.identity': 'https://spectralworkbench.org/openid/warren',
       'openid.mode': 'checkid_setup',
@@ -28,13 +28,13 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
 
   end
 
-  test 'openid authentication request goes to index page' do
+  test 'openid authentication request does not go to index page' do
 
     # log in
-    post '/user_sessions', params: { user_session: { username: users(:jeff).username, password: 'secretive' } } 
+    post '/user_sessions', params: { user_session: { username: users(:jeff).username, password: 'secretive' } }
     follow_redirect!
 
-    get '/openid', params: { 
+    get '/openid', params: {
       'openid.claimed_id': "https://spectralworkbench.org/openid/#{users(:jeff).username}",
       'openid.identity': "https://spectralworkbench.org/openid/#{users(:jeff).username}",
       'openid.mode': 'checkid_setup',
@@ -46,16 +46,14 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     }
 
     assert_nil flash[:error]
-    assert_equal 'The site shown below is asking to use your PublicLab.org account to log you in. Do you trust this site?', flash[:notice]
-
-    assert_response :success
+    assert_response :found
     assert_routing({ path: path, method: :get }, { controller: 'openid', action: 'index' })
 
     ## now same with POST
 
     # More complete parameters:
     # {"authenticity_token"=>"RcLcGH3lzSTCC24UpPnNm56sllNaMrHg5/SrQzNxB+4=", "back_to"=>"/", "open_id"=>"warren", "openid.assoc_handle"=>"{HMAC-SHA1}{5b1d5a10}{bGMKfQ==}", "openid.claimed_id"=>"http://localhost:3000/openid/warren", "openid.identity"=>"http://localhost:3000/openid/warren", "openid.mode"=>"check_authentication", "openid.ns"=>"http://specs.openid.net/auth/2.0", "openid.ns.sreg"=>"http://openid.net/extensions/sreg/1.1", "openid.op_endpoint"=>"http://localhost:3000/openid", "openid.response_nonce"=>"2018-06-10T17:04:16ZSTb7YI", "openid.return_to"=>"http://localhost:3001/session/new?authenticity_token=RcLcGH3lzSTCC24UpPnNm56sllNaMrHg5%2FSrQzNxB%2B4%3D&back_to=%2F&open_id=warren&return_to=%2F", "openid.sig"=>"cElPJYRTb7IDCsZe3eLx639cchg=", "openid.signed"=>"assoc_handle,claimed_id,identity,mode,ns,ns.sreg,op_endpoint,response_nonce,return_to,signed,sreg.email,sreg.nickname", "openid.sreg.email"=>"jeff@unterbahn.com", "openid.sreg.nickname"=>"warren", "return_to"=>"/"}
-    post '/openid?openid.claimed_id=' + users(:jeff).username, params: { 
+    post '/openid?openid.claimed_id=' + users(:jeff).username, params: {
       'openid.claimed_id': "https://spectralworkbench.org/openid/#{users(:jeff).username}",
       'openid.identity': "https://spectralworkbench.org/openid/#{users(:jeff).username}",
       'openid.mode': 'checkid_setup',
@@ -67,18 +65,16 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     }
 
     assert_nil flash[:error]
-    assert_equal 'The site shown below is asking to use your PublicLab.org account to log you in. Do you trust this site?', flash[:notice]
-
-    assert_response :success
+    assert_response :found
     assert_routing({ path: path, method: :post }, { controller: 'openid', action: 'index' })
 
     # Then, 'openid authentication approval goes to decision page'  -- based on same session
 
     # log in
-    post '/user_sessions', params: { user_session: { username: users(:jeff).username, password: 'secretive' } } 
+    post '/user_sessions', params: { user_session: { username: users(:jeff).username, password: 'secretive' } }
     follow_redirect!
 
-    post '/openid/decision', params: { 
+    post '/openid/decision', params: {
       "authenticity_token": "RcLcGH3lzSTCC24UpPnNm56sllNaMrHg5%2FSrQzNxB%2B4%3D",
       "yes": "Yes"
     }

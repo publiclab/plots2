@@ -185,6 +185,8 @@ Plots2::Application.routes.draw do
   get 'widget/:id' => 'tag#widget'
   get 'blog' => 'tag#blog', :id => "blog"
   get 'blog/:id' => 'tag#blog'
+  get 'blog2' => 'tag#blog2', :id => "blog2"
+  get 'blog2/:id' => 'tag#blog2'
   get 'tags' => 'tag#index'
   get 'tags/:search' => 'tag#index'
   post 'tag/suggested/:id' => 'tag#suggested'
@@ -259,6 +261,9 @@ Plots2::Application.routes.draw do
   get 'stats/questions/:start/:end' => 'stats#questions'
   get 'stats/answers' => 'stats#answers'
   get 'stats/answers/:start/:end' => 'stats#answers'
+  get 'stats/tags' => 'stats#tags'
+  get 'stats/node_tags' => 'stats#node_tags'
+  get 'stats/node_tags/:start/:end' => 'stats#node_tags'
   get 'feed' => 'notes#rss'
   get 'rss.xml' => 'legacy#rss'
 

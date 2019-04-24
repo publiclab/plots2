@@ -1,8 +1,11 @@
-$(document).ready(function () {
-    $(window).on('keypress', function (e) {
-        if (e.which === 47) {
-            $('#searchform_input').focus();
-            e.preventDefault();
-        }
-    });
+$(document).ready(function() {
+    $('input[type="text"], textarea, input[type="password"], .wk-wysiwyg').css('cursor','text');
+  $(window).on('keypress', function(e) {
+    if (e.target.style.cursor !== 'text') {
+      if (e.which === 47) {
+        $("#searchform_input").focus();
+        e.preventDefault();
+      }
+    }
+  });
 });

@@ -11,7 +11,7 @@ class CommentController < ApplicationController
                    .paginate(page: params[:page], per_page: 30)
 
     @normal_comments = comments.where('comments.status = 1')
-    if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+    if logged_in_as(%w(admin moderator))
       @moderated_comments = comments.where('comments.status = 4')
     end
 
@@ -133,8 +133,7 @@ class CommentController < ApplicationController
 
     if current_user.uid == @node.uid ||
        @comment.uid == current_user.uid ||
-       current_user.role == 'admin' ||
-       current_user.role == 'moderator'
+       logged_in_as(%w(admin moderator))
 
       if @comment.destroy
         respond_with do |format|
@@ -165,10 +164,7 @@ class CommentController < ApplicationController
     @comment = Comment.find params[:id]
     comments_node_and_path
 
-    if @comment.uid == current_user.uid ||
-       current_user.role == 'admin' ||
-       current_user.role == 'moderator'
-
+    if @comment.uid == current_user.uid || logged_in_as(%w(admin moderator))
       node_id = @comment.nid.zero? ? @comment.answer.nid : @comment.nid
 
       @answer = Answer.new(
@@ -207,6 +203,7 @@ class CommentController < ApplicationController
     end
 
     @likes = comment.likes.group(:emoji_type).count
+    @user_reactions_map = comment.user_reactions_map
     respond_with do |format|
       format.js do
         render template: 'comments/like_comment'

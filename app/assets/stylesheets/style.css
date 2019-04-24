@@ -89,6 +89,7 @@ a .fa-white,
 
 .alert h2 {
   font-size:1.2em;
+  font-weight: 800;
 }
 
 .visible-print {
@@ -470,6 +471,9 @@ div.note.moderated h4 {
 .back-to-top i {
 
   font-size: 60px;
+  position: fixed;
+  bottom: 40px;
+  right: 50px;
 
 }
 
@@ -483,4 +487,8 @@ textarea, input {
     font-style: normal;
     font-weight: normal;
     text-decoration: inherit;
+}
+
+.form-grey {
+  color:#888;
 }
