@@ -85,7 +85,7 @@ class OpenidController < ApplicationController
                 # The user hasn't logged in.
                 # show_decision_page(oidreq) # this doesnt make sense... it was in the example though
                 session[:openid_return_to] = request.env['ORIGINAL_FULLPATH']
-                redirect_to '/login'
+                redirect_to '/auth/github'
               else
                 # Else, set the identity to the one the user is using.
                 identity = url_for_user
@@ -122,7 +122,7 @@ class OpenidController < ApplicationController
         end
       else
         session[:openid_return_to] = request.env['ORIGINAL_FULLPATH']
-        redirect_to '/login'
+        redirect_to '/auth/github'
       end
     end
   end
