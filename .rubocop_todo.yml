@@ -18,8 +18,9 @@ Metrics/BlockLength:
 
 # Offense count: 24
 # Configuration parameters: CountBlocks.
+# Reduce nesting after refactoring
 Metrics/BlockNesting:
-  Max: 6
+  Max: 8
 
 # Offense count: 50
 Metrics/CyclomaticComplexity:
@@ -28,16 +29,16 @@ Metrics/CyclomaticComplexity:
 # Offense count: 171
 # Configuration parameters: CountComments, ExcludedMethods.
 Metrics/MethodLength:
-  Max: 86
+  Max: 90
 
 # Offense count: 2
 # Configuration parameters: CountComments.
 Metrics/ModuleLength:
-  Max: 347
+  Max: 350
 
 # Offense count: 60
 Metrics/PerceivedComplexity:
-  Max: 33
+  Max: 35
 
 # Offense count: 7
 # Configuration parameters: EnforcedStyle.

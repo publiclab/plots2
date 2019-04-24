@@ -8,7 +8,7 @@ module NodeShared
   def liked_by(uid)
     likers.collect(&:uid).include?(uid)
   end
-  
+
   def self.button(body)
     body.gsub(/(?<![\>`])(\<p\>)?\[button\:(.+)\:(\S+)\]/) do |_tagname|
       btnText = Regexp.last_match(2)
@@ -17,10 +17,9 @@ module NodeShared
     end
   end
 
-  def self.notes_thumbnail_grid(body, _page = 1)
-    body.gsub(/(?<![\>`])(\<p\>)?\[notes\:grid\:(\S+)\]/) do |_tagname|
+  def self.notes_grid(body, regex = %r{(?<![\>`])(\<p\>)?\[notes\:(\S+)\]})
+    body.gsub(regex) do |_tagname|
       tagname = Regexp.last_match(2)
-      exclude = nil
       if tagname.include?('!')
         exclude = tagname.split('!') - [tagname.split('!').first]
         tagname = tagname.split('!').first
@@ -41,65 +40,7 @@ module NodeShared
       end
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
-      a = ActionController::Base.new
-      output += a.render_to_string(template: "grids/_thumbnail",
-                                   layout:   false,
-                                   locals:   {
-                                     tagname: tagname,
-                                     randomSeed: rand(1000).to_s,
-                                     className: 'notes-grid-thumbnail' + tagname.parameterize,
-                                     nodes: nodes,
-                                     type: "notes"
-                                   })
-      output
-    end
-  end
-
-  # rubular regex: http://rubular.com/r/hBEThNL4qd
-  def self.graph_grid(body, _page = 1)
-    body.gsub(/(?<![\>`])(\<p\>)?\[graph\:(\S+)\]/) do |_tagname|
-      url = Regexp.last_match(2)
-      a = ActionController::Base.new
-      randomSeed = rand(1000).to_s
-      output = a.render_to_string(template: "grids/_graph",
-                                  layout:   false,
-                                  locals:   {
-                                    url: url,
-                                    randomSeed: randomSeed,
-                                    idName: 'graph-grid-' + randomSeed,
-                                    type: "graph"
-                                  })
-      output
-    end
-  end
-
-  # rubular regex: http://rubular.com/r/hBEThNL4qd
-  def self.notes_grid(body, _page = 1)
-    body.gsub(/(?<![\>`])(\<p\>)?\[notes\:(\S+)\]/) do |_tagname|
-      tagname = Regexp.last_match(2)
-      exclude = nil
-      if tagname.include?('!')
-        exclude = tagname.split('!') - [tagname.split('!').first]
-        tagname = tagname.split('!').first
-      end
-
-      nodes = Node.where(status: 1, type: 'note')
-                  .includes(:revision, :tag)
-                  .references(:term_data, :node_revisions)
-                  .where('term_data.name = ?', tagname)
-                  .order('node_revisions.timestamp DESC')
-
-      if exclude.present?
-        exclude = Node.where(status: 1, type: 'note')
-                  .includes(:revision, :tag)
-                  .references(:node_revisions, :term_data)
-                  .where('term_data.name IN (?)', exclude)
-        nodes -= exclude
-      end
-      output = ''
-      output += '<p>' if Regexp.last_match(1) == '<p>'
-      a = ActionController::Base.new
-      output += a.render_to_string(template: "grids/_notes",
+      output += ActionController::Base.new.render_to_string(template: "grids/_notes",
                                    layout:   false,
                                    locals:   {
                                      tagname: tagname,
@@ -112,10 +53,26 @@ module NodeShared
     end
   end
 
+  # rubular regex: http://rubular.com/r/hBEThNL4qd
+  def self.graph_grid(body, _page = 1)
+    body.gsub(/(?<![\>`])(\<p\>)?\[graph\:(\S+)\]/) do |_tagname|
+      url = Regexp.last_match(2)
+      randomSeed = rand(1000).to_s
+      output = ActionController::Base.new.render_to_string(template: "grids/_graph",
+                                  layout:   false,
+                                  locals:   {
+                                    url: url,
+                                    randomSeed: randomSeed,
+                                    idName: 'graph-grid-' + randomSeed,
+                                    type: "graph"
+                                  })
+      output
+    end
+  end
+
   def self.nodes_grid(body, _page = 1)
     body.gsub(/(?<![\>`])(\<p\>)?\[nodes\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
-      exclude = nil
       if tagname.include?('!')
         exclude = tagname.split('!') - [tagname.split('!').first]
         tagname = tagname.split('!').first
@@ -150,11 +107,9 @@ module NodeShared
     end
   end
 
-  # rubular regex: http://rubular.com/r/hBEThNL4qd
   def self.questions_grid(body, _page = 1)
     body.gsub(/(?<![\>`])(\<p\>)?\[questions\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
-      exclude = nil
       if tagname.include?('!')
         exclude = tagname.split('!') - [tagname.split('!').first]
         tagname = tagname.split('!').first
@@ -190,7 +145,6 @@ module NodeShared
   def self.activities_grid(body)
     body.gsub(/(?<![\>`])(\<p\>)?\[activities\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
-      exclude = nil
       if tagname.include?('!')
         exclude = tagname.split('!') - [tagname.split('!').first]
         tagname = tagname.split('!').first
@@ -223,7 +177,6 @@ module NodeShared
   def self.upgrades_grid(body)
     body.gsub(/(?<![\>`])(\<p\>)?\[upgrades\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
-      exclude = nil
       if tagname.include?('!')
         exclude = tagname.split('!') - [tagname.split('!').first]
         tagname = tagname.split('!').first
@@ -256,12 +209,10 @@ module NodeShared
 
   # Blank map loaded only , markers will be loaded using API call .
   def self.notes_map(body)
-    body.gsub(/(?<![\>`])(\<p\>)?\[map\:content\:(\S+)\:(\S+)\]/) do |_tagname|
+    body.gsub(/(?<![\>`])(\<p\>)?\[map\:content\:(\S+)\:(\S+)\]/) do |tagname|
       lat = Regexp.last_match(2)
       lon = Regexp.last_match(3)
-      tagname = nil
-      a = ActionController::Base.new
-      output = a.render_to_string(template: "map/_leaflet",
+      output = ActionController::Base.new.render_to_string(template: "map/_leaflet",
                                   layout:   false,
                                   locals:   {
                                     lat: lat,
@@ -290,13 +241,12 @@ module NodeShared
   end
 
   # in our interface, "users" are known as "people" because it's more human
-  def self.people_map(body, _page = 1)
+  def self.people_map(body)
     body.gsub(/(?<![\>`])(\<p\>)?\[map\:people\:(\S+)\:(\S+)\]/) do |_tagname|
       lat = Regexp.last_match(2)
       lon = Regexp.last_match(3)
 
-      a = ActionController::Base.new
-      output = a.render_to_string(template: "map/_peopleLeaflet",
+      output = ActionController::Base.new.render_to_string(template: "map/_peopleLeaflet",
                                   layout:   false,
                                   locals:   {
                                     lat: lat,
@@ -309,11 +259,10 @@ module NodeShared
     end
   end
 
-  # in our interface, "users" are known as "people" because it's more human
   def self.people_grid(body, current_user = nil, _page = 1)
     body.gsub(/(?<![\>`])(\<p\>)?\[people\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
-      exclude = nil
+
       if tagname.include?('!')
         exclude = tagname.split('!') - [tagname.split('!').first]
         tagname = tagname.split('!').first
@@ -334,8 +283,7 @@ module NodeShared
 
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
-      a = ActionController::Base.new
-      output += a.render_to_string(template: "grids/_people",
+      output += ActionController::Base.new.render_to_string(template: "grids/_people",
                                    layout:   false,
                                    locals:   {
                                      tagname: tagname,
@@ -351,7 +299,6 @@ module NodeShared
   def self.wikis_grid(body, _page = 1)
     body.gsub(/(?<![\>`])(\<p\>)?\[wikis\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
-      exclude = nil
       if tagname.include?('!')
         exclude = tagname.split('!') - [tagname.split('!').first]
         tagname = tagname.split('!').first
@@ -370,11 +317,10 @@ module NodeShared
                   .where('term_data.name IN (?)', exclude)
         nodes -= exclude
       end
-
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
-      a = ActionController::Base.new
-      output += a.render_to_string(template: "grids/_wikis",
+
+      output += ActionController::Base.new.render_to_string(template: "grids/_wikis",
                                    layout:   false,
                                    locals:   {
                                      tagname: tagname,
