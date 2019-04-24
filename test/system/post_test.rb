@@ -4,6 +4,8 @@ require "application_system_test_case"
 class PostTest < ApplicationSystemTestCase
 
   test 'posting from the editor' do
+    UserSession.create(users(:bob)) # log in
+
     visit '/post'
 
     fill_in(".ple-module-title input", with: "My new post")
