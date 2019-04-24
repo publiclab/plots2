@@ -22,7 +22,7 @@ This page is dedicated to enumerating the various organizations that have provid
 
 <div style="width:150px">
 
-[![Github-logo](../app/assets/images/logos/Github.png)](https://github.com/)
+[![Github-logo](../app/assets/images/logos/github.png)](https://github.com/)
 
 </div>
 </div>
