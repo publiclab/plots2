@@ -114,7 +114,7 @@ Click [here](https://github.com/publiclab/plots2/blob/master/doc/TESTING.md) for
 
 ## How to start and modify cron jobs
 
-1. We are using whenever gem to schedule cron jobs. [Whenever](https://github.com/javan/whenever)
+1. We are using [Whenever](https://github.com/javan/whenever) gem to schedule cron jobs.
 2. All the cron jobs are written in easy ruby syntax using this gem and can be found in config/schedule.rb.
 2. Go to the config/schedule.rb file to create and modify the cron jobs.
 3. [Click here](https://github.com/javan/whenever) to know about how to write cron jobs.

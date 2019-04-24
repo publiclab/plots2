@@ -11,8 +11,8 @@
   <form id="tagform" class="form-horizontal" method="GET" action="/tag/" autocomplete="off" style="width: 250px;">
     <div class="input-group">
       <input type="text" tabindex="1" id="taginput" name="id" placeholder="Search for topics" data-provide="typeahead" class="form-control" role="search" required="required" />
-      <span class="input-group-btn">
-        <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+      <span class="input-group-append">
+        <button class="btn btn-outline-secondary" type="submit"><i class="fa fa-search"></i></button>
       </span>
     </div>
   </form>
@@ -29,7 +29,7 @@
 
   <%= render :partial => "tag/topicCard" %>
   
-<div class="text-center"> <%= will_paginate @tags, :renderer => BootstrapPagination::Rails if @paginated %></div>
+<div class="text-center"> <%= will_paginate @tags, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer if @paginated %></div>
 </div>
 
 <style>
@@ -38,7 +38,7 @@
   }
 </style>
 
-<div class="col-md-6">
+<div class="col-lg-6">
   <br><br>
   <iframe id="myImage" src="stats/graph.html?limit=50" height="500" width="100%" frameborder="0" ></iframe>
   <h6 class="text-right" style="color:#ccc;">Tags most commonly used, linked by how often they are used together.<br>

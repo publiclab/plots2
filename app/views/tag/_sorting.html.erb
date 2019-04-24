@@ -5,12 +5,12 @@ line up nicely if the user is asked to login on the questions/index page -->
   <hr style="visibility:hidden;" />
 <% end %>
 
-<form id="tagform" class="form-horizontal" method="GET" action="/questions/tag/">
+<form id="tagform" method="GET" action="/questions/tag/">
   <div class="input-group">
     <input type="search" tabindex="1" autocomplete="off" id="taginput" name="id" type="text" placeholder="type your topic" data-provide="typeahead" class="form-control" required="required" />
-    <span class="input-group-btn" >
+    <div class="input-group-append" >
       <button type="submit" rel="tooltip" title="View questions with the entered title" class="btn btn-primary">Search</button>
-    </span>
+    </div>
   </div>
 </form>
   <script>
