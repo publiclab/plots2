@@ -9,7 +9,7 @@ class PostTest < ApplicationSystemTestCase
     visit '/post'
 
     fill_in("input#title-input", with: "My new post")
-    fill_in("textarea#body-textarea", with: "All about this interesting stuff")
+    fill_in("textarea#text-input", with: "All about this interesting stuff")
 
     find('.ple-publish').click
 
