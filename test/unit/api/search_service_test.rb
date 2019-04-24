@@ -43,7 +43,7 @@ class SearchServiceTest < ActiveSupport::TestCase
     result = SearchService.new.search_content(search_criteria.query, 10) # limit
 
     assert_not_nil result
-    assert_equal result.size, 1
+    assert_equal 2, result.size
   end
 
   test 'running search nodes' do
