@@ -2,6 +2,11 @@ require "application_system_test_case"
 # https://guides.rubyonrails.org/testing.html#implementing-a-system-test
 
 class SearchTest < ApplicationSystemTestCase
+
+  def setup
+    activate_authlogic
+  end
+
   test 'adding an image into a comment box' do
     UserSession.create(users(:bob)) # log in
 
