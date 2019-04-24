@@ -3,6 +3,10 @@ require "application_system_test_case"
 
 class PostTest < ApplicationSystemTestCase
 
+  def setup
+    activate_authlogic
+  end
+
   test 'posting from the editor' do
     UserSession.create(users(:bob)) # log in
 
