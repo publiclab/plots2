@@ -32,7 +32,7 @@ This page is dedicated to enumerating the various organizations that have provid
 <center>
 
   <big>2. Crash reporting</big>
-
+  
 </center>
 <a href="https://sentry.io/welcome/"><img alt="sentry-logo" src="../app/assets/images/logos/sentry.png"></a>
 
@@ -113,7 +113,7 @@ This page is dedicated to enumerating the various organizations that have provid
 
 <br>
 
-[![Codeclimate-logo](../app/assets/images/logos/codeclimate.svg)](https://codeclimate.com/)
+[![Codeclimate-logo](../app/assets/images/logos/codeclimate.png)](https://codeclimate.com/)
 
 </div>
 
@@ -127,7 +127,7 @@ This page is dedicated to enumerating the various organizations that have provid
 
   <div style="width:140px; margin-left: 100px">
 
-  [![Zenhub-logo](../app/assets/images/logos/zenhub.svg)](https://www.zenhub.com/)
+  [![Zenhub-logo](../app/assets/images/logos/zenhub.png)](https://www.zenhub.com/)
   
   </div>
 </div>
