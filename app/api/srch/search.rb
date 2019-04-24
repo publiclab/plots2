@@ -170,7 +170,7 @@ module Srch
               doc_title: model.title
             )
           end
-          DocList.new(docs, search_request)
+          DocList.new(results_list.flatten, search_request)
         else
           DocList.new('', search_request)
         end
