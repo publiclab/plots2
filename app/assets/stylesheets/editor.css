@@ -9,7 +9,9 @@
   margin-bottom:10px;
   background:white;
 }
-
+.cursor-dropzone{
+  cursor: pointer;
+}
 .side-dropzone, .profile-dropzone {
   border:4px dashed #ccc;
   color: #aaa;

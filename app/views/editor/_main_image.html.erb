@@ -11,14 +11,14 @@
          <%= @image.path(:default) %>
        <% end %>" />
 
-  <div class="side-dropzone" id="side-dropzone">
+  <div class="side-dropzone cursor-dropzone" id="side-dropzone">
     <p class="prompt">
       <span class="hidden-sm">
         Drag and drop to add an image, or 
       </span>
 
       <!-- http://stackoverflow.com/questions/11235206/twitter-bootstrap-form-file-element-upload-button -->
-      <label class="" for="side-fileinput">
+      <label class="cursor-dropzone" for="side-fileinput">
         <input id="side-fileinput" type="file" name="image[photo]" style="display:none;" />
         <a class="hidden-xs">choose one</a>
         <span class="visible-xs">
