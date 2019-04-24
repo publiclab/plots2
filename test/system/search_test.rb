@@ -19,6 +19,6 @@ class SearchTest < ApplicationSystemTestCase
     assert_selector ".typeahead li", text: "Canon A1200 IR conversion at PLOTS Barnraising at LUMCON", wait: 10
 
     assert page.evaluate_script("$('.typeahead.dropdown-menu').is(':visible')")
-    assert_equal 1, page.evaluate_script("$('.typeahead.dropdown-menu').find('li').length")
+    assert_equal 4, page.evaluate_script("$('.typeahead.dropdown-menu').find('li').length")
   end
 end
