@@ -52,7 +52,7 @@ This page is dedicated to enumerating the various organizations that have provid
 
 <br>
 
-[![Browserstack-logo](../app/assets/images/logos/Browserstack-logo@2x.png)](https://www.browserstack.com/)
+[![Browserstack-logo](../app/assets/images/logos/browserstack.png)](https://www.browserstack.com/)
 
 </center>
 
