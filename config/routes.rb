@@ -71,7 +71,7 @@ Plots2::Application.routes.draw do
   get 'openid/resume' => 'openid#resume'
   get 'openid/:username' => 'openid#user_page'
   get 'openid/:username/xrds' => 'openid#user_xrds'
-  get '/people/:username/identity' => 'legacy#openid_username'
+  get '/people/:username/identity(/:provider)' => 'legacy#openid_username'
   get '/user/:id/identity' => 'legacy#openid'
   post '/user/register' => 'legacy#register'
 
