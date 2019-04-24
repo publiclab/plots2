@@ -83,9 +83,9 @@ group :sqlite, :development do
   gem 'sqlite3', '~> 1.3.6'
 end
 
-gem 'coffee-rails', '~> 4.2.2'
+gem 'coffee-rails', '~> 5.0.0'
 gem 'execjs' # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-gem 'sass-rails', '~> 5.0', '>= 5.0.7'
+gem 'sassc-rails'
 gem 'therubyracer'
 gem 'uglifier', '>= 1.0.3'
 gem 'grape-rails-cache'

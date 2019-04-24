@@ -23,6 +23,7 @@ class OpenidController < ApplicationController
         'openid.response_nonce',
         'openid.sig', 'openid.signed',
         'openid.sreg.email',
+        'openid.sreg.fullname', # fullname contains both status and role
         'openid.sreg.nickname',
         'return_to', 'openid.claimed_id',
         'openid.identity', 'openid.mode',
@@ -107,7 +108,9 @@ class OpenidController < ApplicationController
               oidresp = oidreq.answer(false, server_url)
 
             else
-              show_decision_page(oidreq)
+              session[:last_oidreq] = oidreq
+              @oidreq = oidreq
+              redirect_to action: 'decision'
               return
             end
 
@@ -133,7 +136,7 @@ class OpenidController < ApplicationController
     end
   end
 
-  def show_decision_page(oidreq, message = 'The site shown below is asking to use your PublicLab.org account to log you in. Do you trust this site?')
+  def show_decision_page(oidreq, message = '')
     session[:last_oidreq] = oidreq
     @oidreq = oidreq
 
@@ -191,39 +194,32 @@ class OpenidController < ApplicationController
   def decision
     oidreq = session[:last_oidreq]
     session[:last_oidreq] = nil
-
-    if params[:yes].nil?
-      redirect_to oidreq.cancel_url
-      return
+    id_to_send = params[:id_to_send]
+    identity = oidreq&.identity
+    if oidreq.id_select
+      if id_to_send && (id_to_send != '')
+        session[:username] = id_to_send
+        session[:approvals] = []
+        identity = url_for_user
+      else
+        msg = 'You must enter a username to in order to send ' \
+              'an identifier to the Relying Party.'
+        show_decision_page(oidreq, msg)
+        return
+      end
     else
-      id_to_send = params[:id_to_send]
-
-      identity = oidreq&.identity
-      if oidreq.id_select
-        if id_to_send && (id_to_send != '')
-          session[:username] = id_to_send
-          session[:approvals] = []
-          identity = url_for_user
-        else
-          msg = 'You must enter a username to in order to send ' \
-                'an identifier to the Relying Party.'
-          show_decision_page(oidreq, msg)
-          return
-        end
-      else
-        session[:username] = current_user.username
-      end
-
-      if session[:approvals]
-        session[:approvals] << oidreq.trust_root
-      else
-        session[:approvals] = [oidreq.trust_root]
-      end
-      oidresp = oidreq.answer(true, nil, identity)
-      add_sreg(oidreq, oidresp)
-      add_pape(oidreq, oidresp)
-      return render_response(oidresp)
+      session[:username] = current_user.username
     end
+
+    if session[:approvals]
+      session[:approvals] << oidreq.trust_root
+    else
+      session[:approvals] = [oidreq.trust_root]
+    end
+    oidresp = oidreq.answer(true, nil, identity)
+    add_sreg(oidreq, oidresp)
+    add_pape(oidreq, oidresp)
+    return render_response(oidresp)
   end
 
   protected
@@ -284,7 +280,8 @@ class OpenidController < ApplicationController
     # it.
     sreg_data = {
       'nickname' => current_user.username, # session[:username],
-      'email' => current_user.email
+      'email' => current_user.email,
+      'fullname' => "status=" + current_user.status.to_s + ":role=" + current_user.role # fullname contains both status and role
     }
 
     sregresp = OpenID::SReg::Response.extract_response(sregreq, sreg_data)

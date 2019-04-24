@@ -24,6 +24,16 @@ class SearchService
       questions: questions }
   end
 
+  
+  # Run a search in any of the associated systems for references that contain the search string
+  def search_content(query, limit)
+    nodes = search_nodes(query)
+    tags = search_tags(query, limit)
+
+    { notes: nodes,
+      tags: tags }
+  end
+
   # Search profiles for matching text with optional order_by=recent param and
   # sorted direction DESC by default
 
@@ -43,6 +53,10 @@ class SearchService
       end
 
     user_scope.limit(search_criteria.limit)
+  end
+
+  def search_nodes(input, limit = 25, order = :natural, type = :boolean)
+    Node.search(query: input, order: order, type: type, limit: limit)
   end
 
   def search_notes(input, limit = 25, order = :natural, type = :boolean)
