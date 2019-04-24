@@ -34,8 +34,10 @@ class LegacyController < ApplicationController
 
   def openid_username
     if params[:provider]
-      redirect_to URI.parse('/openid/' + params[:username] + '/' + params[:provider] ).path, status: 301
+      # if with the open id through provider
+      redirect_to URI.parse('/openid/' + params[:username] + '/' + params[:provider]).path, status: 301
     else
+      # login without provider with openid
       redirect_to URI.parse('/openid/' + params[:username]).path, status: 301
     end
   end

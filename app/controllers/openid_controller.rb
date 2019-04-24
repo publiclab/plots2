@@ -54,7 +54,7 @@ class OpenidController < ApplicationController
 
     requested_credentials = ''
     requested_username = ''
-    provider = ''
+    provider = nil
 
     if request.env['ORIGINAL_FULLPATH']&.split('?')[1]
       request.env['ORIGINAL_FULLPATH'].split('?')[1].split('&').each do |param|
@@ -73,7 +73,7 @@ class OpenidController < ApplicationController
     if current_user.nil? && params['openid.mode'] != 'check_authentication'
       session[:openid_return_to] = request.env['ORIGINAL_FULLPATH']
       flash[:warning] = 'Please log in first.'
-      if provider != nil
+      if provider
         redirect_to '/auth/' + provider
       else
         redirect_to '/login'
@@ -99,7 +99,7 @@ class OpenidController < ApplicationController
                 # The user hasn't logged in.
                 # show_decision_page(oidreq) # this doesnt make sense... it was in the example though
                 session[:openid_return_to] = request.env['ORIGINAL_FULLPATH']
-                if provider != nil
+                if provider
                   redirect_to '/auth/' + provider
                 else
                   redirect_to '/login'
