@@ -182,12 +182,13 @@ New to open source/free software? Here is a selection of issues we've made **esp
 
 [Here](https://publiclab.org/notes/warren/11-22-2017/use-git-and-github-to-contribute-and-improve-public-lab-software) is a link to our Git workflow.
 
-## Let the code be with you. :heart:
+## Let the code be with you. 
 ### Happy opensourcing. :smile:
 
 <hr>
 
-Thank you for your support in our cross-browser testing! 
+<center>
 
- [![Browserstack-logo](./app/assets/images/Browserstack-logo@2x.png)](https://www.browserstack.com/
-)
+#### [Platforms that :heart: OSS](./doc/SUPPORTERS.md)
+
+</center>
