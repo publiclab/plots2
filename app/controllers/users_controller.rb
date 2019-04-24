@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   before_action :require_no_user, only: [:new]
   before_action :require_user, only: %i(edit update save_settings)
    before_action :set_user, only: %i(info followed following followers)
-  
+
   def new
     @user = User.new
     @action = "create" # sets the form url
@@ -26,8 +26,8 @@ class UsersController < ApplicationController
         end
         flash[:notice] = I18n.t('users_controller.registration_successful')
         if params[:return_to] && params[:return_to].split('/')[0..3] == ["", "subscribe", "multiple", "tag"]
-          flash[:notice] += "You are now following '#{params[:return_to].split('/')[4]}'."
-          subscribe_multiple_tag(params[:return_to].split('/')[4])
+          flash[:notice] += " You are now following '#{params[:return_to].split('/')[4].to_s}'."
+          subscribe_multiple_tag(params[:return_to].split('/')[4].to_s)
         elsif params[:return_to] && params[:return_to] != "/signup" && params[:return_to] != "/login"
           flash[:notice] += " " + I18n.t('users_controller.continue_where_you_left_off', url1: params[:return_to].to_s)
         end
