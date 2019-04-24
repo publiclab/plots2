@@ -1033,10 +1033,10 @@ cwise@^1.0.4, cwise@^1.0.7:
     static-module "^1.0.0"
     uglify-js "^2.6.0"
 
-cytoscape@^3.5.3:
-  version "3.5.3"
-  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.5.3.tgz#1caaab5aeba06f6abdc66a81976efcf57133108f"
-  integrity sha512-xRgzTHs6Qi2Ui1SKbuZjEMNEOJp05s/3yQLoSShx6UjkwonRNa96f7Y+XNvMTh5fHHHdKkb+XidTZmp6NtX0Kw==
+cytoscape@^3.5.4:
+  version "3.5.4"
+  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.5.4.tgz#58cd9682c37d6a472615030081f458dace844c8f"
+  integrity sha512-cNOlKO/cdniAy1e6yIH5J7OIpuVHhWPqdWVvIdHpFXLcMFcg5n/Oq2hYwbXAUQuqQ88c1XuvE8gpwQ2m6FTJVg==
   dependencies:
     heap "^0.2.6"
     lodash.debounce "^4.0.8"
