@@ -40,7 +40,7 @@ class SearchServiceTest < ActiveSupport::TestCase
     params = {query: 'Blog' }
     search_criteria = SearchCriteria.new(params)
 
-    result = SearchService.new.search_content(search_criteria.query)
+    result = SearchService.new.search_content(search_criteria.query, 10) # limit
 
     assert_not_nil result
     assert_equal result.size, 1
