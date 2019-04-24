@@ -62,6 +62,9 @@ class OpenidController < ApplicationController
       end
     end
 
+    # ORIGINAL_FULLPATH will be like https://publiclab.org/openid/:username(/:provider)
+    # so we need to get the username for sure and the provider if it exists
+    # requested_credentials contains array of the ORIGINAL_FULLPATH striped with '/' symbol
     if requested_credentials && requested_credentials[-3] == 'openid'
       requested_username = requested_credentials[-2]
       provider = requested_credentials[-1]
@@ -74,8 +77,10 @@ class OpenidController < ApplicationController
       session[:openid_return_to] = request.env['ORIGINAL_FULLPATH']
       flash[:warning] = 'Please log in first.'
       if provider
+        # authentication through the provider
         redirect_to '/auth/' + provider
       else
+        # form based authentication
         redirect_to '/login'
       end
       return
@@ -100,8 +105,10 @@ class OpenidController < ApplicationController
                 # show_decision_page(oidreq) # this doesnt make sense... it was in the example though
                 session[:openid_return_to] = request.env['ORIGINAL_FULLPATH']
                 if provider
+                  # provider based authentication
                   redirect_to '/auth/' + provider
                 else
+                  # form based authentication
                   redirect_to '/login'
                 end
               else
@@ -141,8 +148,10 @@ class OpenidController < ApplicationController
       else
         session[:openid_return_to] = request.env['ORIGINAL_FULLPATH']
         if provider
+          # provider based authentication
           redirect_to '/auth/' + provider
         else
+          # form based authentication
           redirect_to '/login'
         end
       end
