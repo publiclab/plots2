@@ -59,7 +59,7 @@ This page is dedicated to enumerating the various organizations that have provid
 </div>
 </div>
 
-<br><br>
+<br>
 
 <div style="width:350px; float: left">
 
@@ -101,7 +101,7 @@ This page is dedicated to enumerating the various organizations that have provid
 </div>
 </center>
 
-<br><br>
+<br>
 
 <div style="width:350px; float: left">
 
@@ -127,7 +127,7 @@ This page is dedicated to enumerating the various organizations that have provid
 
   <div style="width:140px; margin-left: 100px">
 
-  [![Zenhub-logo](../app/assets/images/logos/zenhub.png)](https://www.zenhub.com/)
+  [![zenhub-logo](../app/assets/images/logos/zenhub.png)](https://www.zenhub.com/)
   
   </div>
 </div>
