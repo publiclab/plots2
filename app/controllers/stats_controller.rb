@@ -105,6 +105,16 @@ class StatsController < ApplicationController
     format(data, 'comment')
   end
 
+  def tags
+    data = Tag.select(:tid, :name, :parent, :count).all
+    format(data, 'tag')
+  end
+
+  def node_tags
+    data = NodeTag.select(:tid, :nid, :uid).where(date: start.to_i...fin.to_i).all
+    format(data, 'node_tag')
+  end
+
   def export_as_json(type)
     data = Node.published
       .where(type: type, created: start.to_i..fin.to_i)
