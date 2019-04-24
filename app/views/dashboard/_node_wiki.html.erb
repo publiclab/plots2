@@ -1,4 +1,4 @@
-<div class="col-md-6 note-container-wiki">
+<div class="col-lg-6 note-container-wiki">
   <div class="note note-pane note-wiki" data-index="<%= index %>">
 
     <% if node.is_a?(Node) %>
@@ -27,13 +27,16 @@
     </h4>
 
     <% if node.is_a?(Revision) && node.previous %>
-      <a class="btn btn-default btn-xs pull-right btn-diff btn-diff-<%= index %>"><%= t('dashboard._node_wiki.changes') %> &raquo;</a>
+      <a class="btn btn-outline-secondary btn-sm float-right btn-diff btn-diff-<%= index %>"><%= t('dashboard._node_wiki.changes') %> &raquo;</a>
     <% end %>
  
     <p class="meta"><%= render partial: "dashboard/node_meta", locals: { node: node } %></p>
 
     <% if node.is_a?(Revision) && node.previous %>
-      <div data-diff-a="<%= node.previous.vid %>" data-diff-b="<%= node.vid %>" class="well wiki-diff wiki-diff-<%= index %>" style="display:none;"><i class="fa fa-circle-o-notch fa-spin"></i></div>
+      
+      <div class="card bg-light">
+        <div data-diff-a="<%= node.previous.vid %>" data-diff-b="<%= node.vid %>" class="card-body wiki-diff wiki-diff-<%= index %>" style="display:none;"><i class="fa fa-circle-o-notch fa-spin"></i></div>
+      </div>
     <% end %>
 
   </div>
