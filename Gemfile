@@ -62,7 +62,7 @@ gem 'tzinfo-data', platforms: %i(mingw mswin x64_mingw jruby)
 gem 'unicode-emoji'
 gem 'whenever', require: false
 gem 'will_paginate', '>= 3.0.6'
-gem 'will_paginate-bootstrap', '>= 1.0.1'
+gem 'will_paginate-bootstrap4'
 gem 'jquery-atwho-rails'
 gem 'lemmatizer', '~> 0.2.2'
 # To implement incoming mail processing microframework
@@ -83,7 +83,7 @@ group :sqlite, :development do
   gem 'sqlite3', '~> 1.3.6'
 end
 
-gem 'coffee-rails', '~> 4.2.2'
+gem 'coffee-rails', '~> 5.0.0'
 gem 'execjs' # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem 'sassc-rails'
 gem 'therubyracer'
@@ -113,7 +113,7 @@ group :test, :development do
   gem 'rake',  '~> 12.3.2'
   gem 'rest-client'
   gem 'rspec'
-  gem 'selenium-webdriver', '~> 3.141.5926'
+  gem 'selenium-webdriver', '~> 3.142.0'
   gem 'test-unit'
   gem 'teaspoon-mocha'
   gem 'timecop'

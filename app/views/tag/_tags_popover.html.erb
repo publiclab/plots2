@@ -10,7 +10,7 @@
     <% tags.each do |tag| %>
     <div class="form-check">
       <label class="form-check-label">
-        <input type="checkbox" id="<%= tag.id %>" name="tagnames[]" value="<%= tag.name %>" <% if current_user.following(tag.name) %> checked <% end %> ><span class="<% if tag.name.include?(':') %> label label-primary <% else %> label label-default <% end %>" style="margin-left: 3px; margin-right: 10px; display: inline-block;"> <%= tag.name %></span>
+        <input type="checkbox" id="<%= tag.id %>" name="tagnames[]" value="<%= tag.name %>" <% if current_user.following(tag.name) %> checked <% end %> ><span class="<% if tag.name.include?(':') %> badge badge-primary <% else %> badge badge-secondary <% end %>" style="margin-left: 3px; margin-right: 10px; display: inline-block;"> <%= tag.name %></span>
       </label>
     </div>
     <% end %>

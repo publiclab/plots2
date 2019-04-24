@@ -7,12 +7,12 @@
 </script>
 <%= javascript_include_tag "dragdrop" %>
 
-<hr style="clear:both;" class="visible-sm visible-xs" />
+<hr style="clear:both;" class="d-lg-none" />
 
 <h3><%= t('users._photo.profile_photo') %></h3>
 
 <div class="profile-dropzone" id="profile-dropzone" style="margin-bottom:20px;">
-    <img class="img-rounded" id="profile-photo" style="<% unless @user.photo_file_name %>display:none;<% end %>
+    <img class="rounded" id="profile-photo" style="<% unless @user.photo_file_name %>display:none;<% end %>
     width:100%;
     margin-bottom:10px;
     margin-top:5%;
@@ -20,18 +20,18 @@
     filter: alpha(opacity=20);" src="<% if @user.photo %><%= @user.photo_path(:thumb) %><% end %>" />
 
     <p class="prompt">
-      <span class="hidden-sm hidden-xs"> <%= t('users._photo.drag_and_drop_image') %> </span>
+      <span class="d-none d-lg-inline"> <%= t('users._photo.drag_and_drop_image') %> </span>
       <span class="fileinput-button">
-        <a> <i class="fa fa-upload hidden-sm pull-left" style="padding-right:6px;"></i> <%= t('users._photo.choose_image') %></a>
+        <a> <i class="fa fa-upload d-md-none d-lg-inline float-left" style="padding-right:6px;"></i> <%= t('users._photo.choose_image') %></a>
         
       </span>
     </p>
-    <br class="hidden-sm" />
+    <br class="d-md-none d-lg-inline" />
   </div>
   <input id="profile-fileinput" type="file" name="image[photo]" >
 
-<div id="profile-progress" style="display:none;" class="progress progress-striped active">
-  <div class="progress-bar" style="width: 0%;"></div>
+<div id="profile-progress" style="display:none;" class="progress">
+  <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%;"></div>
 </div>
 <p class="profile-uploading" style="display:none;padding-top:4px;color:#aaa;"><%= t('users._photo.uploading') %>...</p>
 

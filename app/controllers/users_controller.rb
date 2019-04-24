@@ -52,11 +52,13 @@ class UsersController < ApplicationController
   end
 
   def update
+    @password_verification = user_verification_params
     @user = current_user
     @user = User.find_by(username: params[:id]) if params[:id] && current_user && current_user.role == "admin"
-    @user.attributes = user_params
-    @user.save do |result|
-      if result
+    if @user.valid_password?(user_verification_params["current_password"]) || user_verification_params["ui_update"].nil?
+      # correct password
+      @user.attributes = user_params
+      if @user.save
         if session[:openid_return_to] # for openid login, redirects back to openid auth process
           return_to = session[:openid_return_to]
           session[:openid_return_to] = nil
@@ -68,6 +70,10 @@ class UsersController < ApplicationController
       else
         render template: 'users/edit'
       end
+    else
+      # incorrect password
+      flash[:error] = "Current Password is incorrect!"
+      return redirect_to "/profile/" + @user.username + "/edit"
     end
   end
 
@@ -459,6 +465,10 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :bio, :status)
+  end
+
+  def user_verification_params
+    params.require(:user).permit(:ui_update, :current_password)
   end
 
   def spamaway_params
