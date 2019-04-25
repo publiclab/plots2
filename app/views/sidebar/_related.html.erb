@@ -44,7 +44,9 @@
   <% if @node && @node.has_power_tag('response') %>
     <%= render partial: 'sidebar/notes', locals: { notes: @node.responses, title: I18n.t('sidebar._related.responses_to_note'), node: @node } %>
   <% end %>
-  <% if @node && !@node.has_power_tag('place') && @node.lat && @node.lon %>
+  <% if @node  && @node.has_tag("place") && @node.lat && @node.lon %>
+    <%= render_top_map(@node.lat, @node.lon) %>
+  <% elsif @node && @node.lat && @node.lon %>
     <%= render_map(@node.lat, @node.lon) %>
   <% elsif @node&.has_power_tag('place') && !@node.lat && !@node.lon %>
     <div id="map_template" style="position: relative; display: inline-block;">
