@@ -133,7 +133,6 @@ ru:
   errors:
     format: "%{attribute} %{message}"
     messages:
-      accepted: нужно подтвердить
       blank: не может быть пустым
       confirmation: не совпадает со значением поля %{attribute}
       empty: не может быть пустым
