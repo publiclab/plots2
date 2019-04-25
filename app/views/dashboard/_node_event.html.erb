@@ -1,4 +1,4 @@
-<div class="col-md-6 note-container-event">
+<div class="col-lg-6 note-container-event">
   <div class="note note-pane note-event<% if node.status == 4 %> moderated<% end %>">
 
     <div class="header-icon"><i class="fa fa-calendar"></i> <a href="/n/<%= node.id %>"><i class="fa fa-link"></i></a></div>
@@ -15,7 +15,7 @@
      
       <h4><a href="<%= node.path %>"><%= node.title %></a></h4>
      
-      <a class="btn btn-default btn-xs pull-right respond rsvp">RSVP</a>
+      <a class="btn btn-outline-secondary btn-sm float-right respond rsvp">RSVP</a>
      
       <p class="meta">Event <%= render partial: "dashboard/node_meta", locals: { node: node } %></p>
 

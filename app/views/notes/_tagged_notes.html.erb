@@ -1,6 +1,6 @@
   <div class="row">
   <% nodes.each_with_index do |node,i| %>
-    <div class="col-md-3 clearfix" style="overflow:hidden;">
+    <div class="col-lg-3 clearfix" style="overflow:hidden;">
       <% if node.main_image %>
         <a class="img-thumbnail" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
       <% end %>
@@ -11,22 +11,22 @@
         | <%= number_with_delimiter(node.views) %> <%= t('notes._tagged_notes.views') %>
         | <i style="color:#888;" class="fa fa-star-o"></i> <%= node.likes %>
       </small></p>
-      <p class="hidden-lg"><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(150) %></p>
-      <p class="visible-lg"><small><%= raw (strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(150)) %></small></p>
+      <p class="d-xl-none"><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(150) %></p>
+      <p class="d-none d-xl-inline"><small><%= raw (strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(150)) %></small></p>
       <p><a href="<%= node.path %>"><%= t('notes._tagged_notes.read_more') %> &raquo;</a></p>
       <p>
         <% node.tags[0..3].each do |tag| %>
-          <a class="label label-primary" href="/tag/<%= tag.name %>"><%= tag.name %></a> 
+          <a  href="/tag/<%= tag.name %>" class="badge badge-primary"><%= tag.name %></a> 
         <% end %>
       </p>
       <% if params[:mod] %>
-      <a class="btn btn-mini" href="#"><i class="fa fa-ban-circle"></i> <%= t('notes._tagged_notes.spam') %></a>
+      <a class="btn btn-sm" href="#"><i class="fa fa-ban-circle"></i> <%= t('notes._tagged_notes.spam') %></a>
       <% end %>
     </div>
-    <hr class="visible-sm" />
+    <hr class="d-none d-md-inline" />
   <% if ((i+1)/4.0).to_i == ((i+1)/4.0) %>
   </div>
-  <hr class="visible-sm" />
+  <hr class="d-none d-md-inline" />
   <div class="row">
   <% end %>
   <% end %>

@@ -869,6 +869,7 @@ en:
   tag_controller:
     tags: "Tags"
     tag_already_exists: "Error: that tag already exists."
+    cant_be_empty: "Error: Power Tag can't be empty."
     barnstar_not_created: "The barnstar could not be created."
     barnstar_awarded: "You awarded the <a href='%{url1}'>%{star} barnstar</a> to <a
       href='%{url2}'>%{awardee}</a>"
