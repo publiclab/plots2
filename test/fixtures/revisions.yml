@@ -145,6 +145,14 @@ hashtag_in_header:
     # Heading 1 is about #hashtags
     Here is the message
 
+hashtag_with_hyphens:
+  nid: 1
+  uid: 1
+  title: Hashtag post with hypen
+  body: |+
+    Something about hashtag
+    Here is a hashtag with hyphen #purple-air-ok
+
 subheader:
   nid: 1
   uid: 1
