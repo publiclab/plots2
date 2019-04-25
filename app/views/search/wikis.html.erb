@@ -6,19 +6,19 @@
      <div class="list-group">
        <ul class="nav nav-pills">
          <li class="nav-item">
-           <%= link_to "Most liked", url_for(:order => :likes), :class => "list-group-item list-group-item-action #{params[:order].to_s.to_sym == :likes ? "active" : ""}"%>
+           <%= link_to "Most liked", url_for(:order => :likes), :class => "nav-link list-group-item list-group-item-action #{params[:order].to_s.to_sym == :likes ? "active" : ""}"%>
          </li>
           <li class="nav-item">
-            <%= link_to "Most viewed", url_for(:order => :views), :class => "list-group-item list-group-item-action #{params[:order].to_s.to_sym == :views ? "active" : ""}"%>
+            <%= link_to "Most viewed", url_for(:order => :views), :class => "nav-link list-group-item list-group-item-action #{params[:order].to_s.to_sym == :views ? "active" : ""}"%>
           </li>
           <li class="nav-item">
-            <%= link_to "Most recent", url_for(:order => :default), :class => "list-group-item list-group-item-action #{params[:order].to_s.to_sym == :default ? "active" : ""}"%>
+            <%= link_to "Most recent", url_for(:order => :default), :class => "nav-link list-group-item list-group-item-action #{params[:order].to_s.to_sym == :default ? "active" : ""}"%>
           </li>
           <li class="nav-item">
-            <%= link_to "Boolean search", url_for(:order => :natural, :type => :boolean), :class => "list-group-item list-group-item-action #{params[:order].to_s.to_sym == :natural && params[:type].to_s.to_sym == :boolean ? "active" : ""}"%>
+            <%= link_to "Boolean search", url_for(:order => :natural, :type => :boolean), :class => "nav-link list-group-item list-group-item-action #{params[:order].to_s.to_sym == :natural && params[:type].to_s.to_sym == :boolean ? "active" : ""}"%>
           </li>
           <li class="nav-item">
-            <%= link_to "Natural search", url_for(:order => :natural, :type => :natural), :class => "list-group-item list-group-item-action #{params[:order].to_s.to_sym == :natural && params[:type].to_s.to_sym == :natural ? "active" : ""}"%>
+            <%= link_to "Natural search", url_for(:order => :natural, :type => :natural), :class => "nav-link list-group-item list-group-item-action #{params[:order].to_s.to_sym == :natural && params[:type].to_s.to_sym == :natural ? "active" : ""}"%>
           </li>
        </ul>
      </div>

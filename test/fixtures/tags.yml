@@ -103,3 +103,7 @@ SubLatitudeLongitude2:
 balloon:
   tid: 26
   name: balloon
+
+place:
+  tid: 27
+  name: place

@@ -23,4 +23,4 @@
   <% end %>
 </div>
 <div class="text-center">
-  <%= will_paginate @tags, :renderer => BootstrapPagination::Rails unless @unpaginated %></div>
+  <%= will_paginate @tags, renderer: WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated %></div>
