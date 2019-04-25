@@ -181,7 +181,7 @@ ru:
     submit:
       create: Создать %{model}
       submit: Сохранить %{model}
-      update: Сохранить %{model}
+      update: Обновить %{model}
   number:
     currency:
       format:
