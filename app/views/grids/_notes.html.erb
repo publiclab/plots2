@@ -66,9 +66,9 @@
 
 <a class="grid-embed grid-embed-<%= randomSeed %>" title="Embed this table on another site."><i class="fa fa-code" style="color:#aaa;"></i></a>
 <% if type == "questions" || tagname.include?('question:') %>
-  <p><a href='/post?tags=question:<%= tagname %>,<%= tagname %>&template=question&title=How%20do%20I...&redirect=question' class='btn btn-primary add-activity requireLogin'>Ask a question</a> &nbsp;or <a class="requireLogin" href='/subscribe/tag/question:<%= tagname %>'>help answer future questions<span class='hidden-sm hidden-xs'> on this topic</span></a></p>
+  <p><a href='/post?tags=question:<%= tagname %>,<%= tagname %>&template=question&title=How%20do%20I...&redirect=question' class='btn btn-primary add-activity requireLogin'>Ask a question</a> &nbsp;or <a class="requireLogin" href='/subscribe/tag/question:<%= tagname %>'>help answer future questions<span class='d-none d-lg-inline'> on this topic</span></a></p>
 <% elsif type == "activity" || tagname.include?('activity:') %>
-  <p><a href='/post?tags=activity:<%= tagname %>,<%= tagname %>,seeks:replications&title=How%20to%20do%20X' class='btn btn-primary add-activity requireLogin'>Add an activity</a> &nbsp;or <a href='/post?tags=<%= tagname %>,question:<%= tagname %>,request:activity&template=question&title=How%20do%20I...&redirect=question' class='request-activity requireLogin'>request an activity<span class='hidden-xs hidden-sm'> guide you don't see listed</span></a></p>
+  <p><a href='/post?tags=activity:<%= tagname %>,<%= tagname %>,seeks:replications&title=How%20to%20do%20X' class='btn btn-primary add-activity requireLogin'>Add an activity</a> &nbsp;or <a href='/post?tags=<%= tagname %>,question:<%= tagname %>,request:activity&template=question&title=How%20do%20I...&redirect=question' class='request-activity requireLogin'>request an activity<span class='d-none d-lg-inline'> guide you don't see listed</span></a></p>
   <p><i>Activities should include a materials list, costs and a step-by-step guide to construction with photos. Learn what <a href="https://publiclab.org/notes/warren/09-17-2016/what-makes-a-good-activity">makes a good activity here</a>.</i>
   </p>
 <% end %>

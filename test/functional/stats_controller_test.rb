@@ -5,7 +5,7 @@ class StatsControllerTest < ActionController::TestCase
   def setup
     @start = 1.month.ago.to_time
     @end = Date.today.to_time
-    @stats =  [:notes, :comments, :users, :wikis, :questions, :answers]
+    @stats =  [:notes, :comments, :users, :wikis, :questions, :answers, :tags, :node_tags]
   end
 
   test 'should assign correct value to graph_notes on GET stats' do

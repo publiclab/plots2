@@ -1,8 +1,8 @@
-<div class="col-md-3 hidden-print">
+<div class="col-lg-3 d-print-none">
   
-  <a style="margin-top:-16px;margin-bottom:0;" class="btn btn-mini btn-block btn-link visible-xs visible-sm" href="javascript:void()" onClick="toggle_sidebar()"><i class="fa fa-chevron-down"></i></a>
+  <a style="margin-top:-16px;margin-bottom:0;" class="btn btn-sm btn-block btn-link d-lg-none" href="javascript:void()" onClick="toggle_sidebar()"><i class="fa fa-chevron-down"></i></a>
 
-  <div id="sidebar" class="hidden-xs hidden-sm">
+  <div id="sidebar" class="d-lg-inline">
 
     <a rel="tooltip" title="Ask question<% if @tagnames %> about <%= (@tagnames.uniq.collect {|x| x.gsub(/[\w-]+:/, '') }).join(',') %><% end %>" data-placement="bottom" href="/post<%= '?tags=' + @tagnames.uniq.join(',') if @tagnames %>&template=question&redirect=question" class="btn btn-primary btn-lg btn-block requireLogin"><i class="fa fa-question-circle fa-white"></i> Ask related question &raquo;</a>
 

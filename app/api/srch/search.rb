@@ -140,6 +140,70 @@ module Srch
         end
       end
 
+      # Request URL should be /api/srch/content?query=QRY
+      desc 'Perform a search of nodes and tags', hidden: false,
+                                                 is_array: false,
+                                                 nickname: 'search_content'
+
+      params do
+        use :common
+      end
+      get :content do
+        search_request = SearchRequest.from_request(params)
+        results = Search.execute(:content, params)
+        results_list = []
+
+        if results.present?
+          results_list << results[:tags].map do |model|
+            DocResult.new(
+              doc_id: model.nid,
+              doc_type: 'TAGS',
+              doc_url: model.path,
+              doc_title: model.title
+            )
+          end
+          results_list << results[:notes].map do |model|
+            DocResult.new(
+              doc_id: model.nid,
+              doc_type: 'NOTES',
+              doc_url: model.path,
+              doc_title: model.title
+            )
+          end
+          DocList.new(results_list.flatten, search_request)
+        else
+          DocList.new('', search_request)
+        end
+      end
+        
+      # Request URL should be /api/srch/content?query=QRY
+      desc 'Perform a search of nodes', hidden: false,
+                                                 is_array: false,
+                                                 nickname: 'search_content'
+
+      params do
+        use :common
+      end
+      get :nodes do
+        search_request = SearchRequest.from_request(params)
+        results = Search.execute(:nodes, params)
+
+        if results.present?
+          docs = results.map do |model|
+            DocResult.new(
+              doc_id: model.nid,
+              doc_type: 'NODES',
+              doc_url: model.path,
+              doc_title: model.title
+            )
+          end
+
+          DocList.new(docs, search_request)
+        else
+          DocList.new('', search_request)
+        end
+      end
+
       # Request URL should be /api/srch/wikis?query=QRY
       desc 'Perform a search of wikis pages',    hidden: false,
                                                  is_array: false,

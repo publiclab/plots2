@@ -1,0 +1,14 @@
+/* 
+================================================================
+We can start using this file to document and fix all cross-browser inconsistencies 
+we find in one place 
+================================================================
+*/
+
+
+/* Firefox ignores line-height for input[type="file"] but Chrome doesn't and the result
+with Bootstrap styling is it gets misaligned in Chrome. This fix is confirmed to create 
+compatible alignment in Chrome, Safari, and Firefox in MacOS */ 
+input[type="file"] {
+  line-height: 0 !important;
+}

@@ -43,9 +43,9 @@ function initTagForm(deletion_path, selector) {
     $.each(response['saved'], function(i,tag) {
       var tag_name = tag[0];
       var tag_id = tag[1];
-      $('#tags ul:first').append("<li><span id='tag_"+tag_id+"' class='label label-primary'> \
-        <a href='/tag/"+tag_name+"'>"+tag_name+"</a> <a class='tag-delete' \
-        data-remote='true' href='"+deletion_path+"/"+tag_id+"' data-tag-id='"+tag_id+"' \
+      $('#tags ul:first').append("<li><span id='tag_"+tag_id+"' class='badge badge-primary'> \
+        <a style='color:white;' href='/tag/"+tag_name+"'>"+tag_name+"</a> <a class='tag-delete' \
+        data-remote='true' href='"+deletion_path+"/"+tag_id+"' style='color:white' data-tag-id='"+tag_id+"' \
         data-method='delete'>x</a></span></li> ")
       el.find('.tag-input').val("")
       el.find('.control-group').removeClass('has-error')

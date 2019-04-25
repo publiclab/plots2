@@ -1,5 +1,5 @@
 <div class="row">
-  <div id="comments" class="col-md-10 comments">
+  <div id="comments" class="col-lg-10 comments">
     <% comments = @node.fetch_comments(current_user) %>
     <h3><span id="comment-count"><%= comments.length %></span> <%= t('notes._comments.comments') %></h3>
 

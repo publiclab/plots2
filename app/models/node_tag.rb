@@ -1,4 +1,5 @@
 class NodeTag < ApplicationRecord
+  extend RawStats
   self.table_name = 'community_tags'
   self.primary_keys = :tid, :nid
   belongs_to :node, foreign_key: 'nid'
