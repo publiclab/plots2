@@ -11,8 +11,8 @@ class PostTest < ApplicationSystemTestCase
     visit '/'
 
     click_on 'Login'
-    fill_in("#username-login", with: "Bob")
-    fill_in("#-signup", with: "secretive")
+    fill_in("Username", with: "Bob")
+    fill_in("Password", with: "secretive")
     click_on "Log in"
 
     follow_redirect!
