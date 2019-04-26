@@ -11,16 +11,16 @@ class PostTest < ApplicationSystemTestCase
     visit '/'
 
     click_on 'Login'
-    fill_in("Username", with: "Bob")
-    fill_in("Password", with: "secretive")
+    fill_in("username-login", with: "Bob")
+    fill_in("password-signup", with: "secretive")
     click_on "Log in"
 
     follow_redirect!
 
     visit '/post'
 
-    fill_in("input#title-input", with: "My new post")
-    fill_in("textarea#text-input", with: "All about this interesting stuff")
+    fill_in("Title", with: "My new post")
+    fill_in("text-input", with: "All about this interesting stuff")
 
     find('.ple-publish').click
 
