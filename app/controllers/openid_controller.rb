@@ -68,7 +68,7 @@ class OpenidController < ApplicationController
     if requested_credentials && requested_credentials[-3] == 'openid'
       requested_username = requested_credentials[-2]
       provider = requested_credentials[-1]
-    elsif requested_credentials && requested_credentials[-2] == 'openid'
+    else
       provider = nil
       requested_username = requested_credentials[-1]
     end
