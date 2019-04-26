@@ -8,9 +8,11 @@ class PostTest < ApplicationSystemTestCase
   end
 
   test 'posting from the editor' do
-    click_on 'Login'
+    visit '/'
+
+    click_on '#loginToggle'
     fill_in("#username-login", with: "Bob")
-    fill_in("#password-signup", with: "secretive")
+    fill_in("#-signup", with: "secretive")
     click_on "Log in"
 
     follow_redirect!
