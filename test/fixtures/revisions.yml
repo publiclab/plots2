@@ -127,6 +127,14 @@ hashtag_four:
     # Heading 2
     Here is another #hashtag
 
+hashtag_with_hyphens:
+  nid: 1
+  uid: 1
+  title: Hashtag post with hypen
+  body: |+
+    Something about hashtag
+    Here is a hashtag with hyphen #purple-air-ok
+
 hashtag_with_punctuation:
   nid: 1
   uid: 1
