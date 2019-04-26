@@ -10,7 +10,7 @@ class PostTest < ApplicationSystemTestCase
   test 'posting from the editor' do
     visit '/'
 
-    click_on '#loginToggle'
+    click_on 'Login'
     fill_in("#username-login", with: "Bob")
     fill_in("#-signup", with: "secretive")
     click_on "Log in"
