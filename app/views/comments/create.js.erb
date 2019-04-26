@@ -4,5 +4,4 @@
   $('#comment-<%= @comment.reply_to %>-reply').before('<%= escape_javascript(render :partial => "notes/comment", :locals => {comment: @comment, answer_id: @answer_id}) %>')
 <% end %>
 $('#answer-<%= @answer_id %>-comment-section .help-block').remove();
-$('textarea').val("");
 notyNotification('mint', 3000, 'success', 'topRight', 'Comment Added!');
