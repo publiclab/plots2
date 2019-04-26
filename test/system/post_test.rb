@@ -8,7 +8,7 @@ class PostTest < ApplicationSystemTestCase
   end
 
   test 'posting from the editor' do
-    click_on 'Log in'
+    click_on 'Login'
     fill_in("#username-login", with: "Bob")
     fill_in("#password-signup", with: "secretive")
     click_on "Log in"
