@@ -15,8 +15,6 @@ class PostTest < ApplicationSystemTestCase
     fill_in("password-signup", with: "secretive")
     click_on "Log in"
 
-    follow_redirect!
-
     visit '/post'
 
     fill_in("Title", with: "My new post")
