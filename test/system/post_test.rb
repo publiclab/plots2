@@ -8,7 +8,12 @@ class PostTest < ApplicationSystemTestCase
   end
 
   test 'posting from the editor' do
-    UserSession.create(users(:bob)) # log in
+    click_on 'Log in'
+    fill_in("#username-login", with: "Bob")
+    fill_in("#password-signup", with: "secretive")
+    click_on "Log in"
+
+    follow_redirect!
 
     visit '/post'
 
