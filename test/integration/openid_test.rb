@@ -64,7 +64,7 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
       'openid.sreg.required': 'nickname,email,fullname'
     }
 
-    #assert_nil flash[:error]
+    assert_nil flash[:error]
     assert_response :found
     assert_routing({ path: path, method: :post }, { controller: 'openid', action: 'index' })
 
