@@ -11,9 +11,6 @@
     </ul>
 
     <table class="table">
-      <tr>
-        <%= raw t('wiki.revisions.table_content') %>
-      </tr>
     <% @revisions.each_with_index do |revision, index| %>
       <tr id="row<%= @node.revisions.length-1-index %>"<% if index < 2 %> class="warning"<% end %><% if revision.status == 0 %> style="background:#fcc;"<% end %>>
 
