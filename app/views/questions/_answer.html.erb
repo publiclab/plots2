@@ -1,29 +1,29 @@
 <div class="answers-container" style="margin-bottom:30px;">
   <div id="a<%= answer.id %>" style="border: 1px solid #337ab7; border-radius:5px;">
-    <div class="navbar navbar-default">
-      <div class="navbar-text pull-left">
+    <div class="navbar navbar-light bg-light">
+      <div class="navbar-text float-left">
       <% if answer.author %>
         <% if answer.author && answer.author.photo_file_name %>
-        <img style="width:32px;margin-right:6px;" class="img-circle" src="<%= answer.author.photo_path(:thumb) %>" />
+        <img style="width:32px;margin-right:6px;" class="rounded-circle" src="<%= answer.author.photo_path(:thumb) %>" />
         <% else %>
-        <div style="vertical-align:middle;display:inline-block;height:32px;width:32px;margin-right:6px;background:#ccc;" class="img-circle"></div>
+        <div style="vertical-align:middle;display:inline-block;height:32px;width:32px;margin-right:6px;background:#ccc;" class="rounded-circle"></div>
         <% end %>
         <a href="/profile/<%= answer.author.name %>"><%= answer.author.name %></a>
       <% end %>
-        <span class="hidden-xs">answered</span>
+        <span class="d-none d-md-inline">answered</span>
         <a style="color:#aaa;" href="#a<%= answer.id %>"><%= time_ago_in_words(answer.created_at) %> ago</a>
       </div>
-      <div class="navbar-text pull-right">
-        <a rel="tooltip" title="Flag as spam" class="btn btn-sm btn-default btn-flag-spam-<%= answer.id %>" href="mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+comment+that+looks+like+spam+or+needs+to+be+moderated:+https://publiclab.org/<%= answer.node.path %>#a<%= answer.id %>+by+https://publiclab.org/profile/<%= answer.author.username %>+Thanks!">
+      <div class="navbar-text float-right">
+        <a rel="tooltip" title="Flag as spam" class="btn btn-sm btn-outline-secondary btn-flag-spam-<%= answer.id %>" href="mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+comment+that+looks+like+spam+or+needs+to+be+moderated:+https://publiclab.org/<%= answer.node.path %>#a<%= answer.id %>+by+https://publiclab.org/profile/<%= answer.author.username %>+Thanks!">
           <i class="fa fa-flag"></i>
         </a>
         <% if current_user && answer.uid == current_user.uid %>
-        <a class="btn btn-default btn-sm" href="javascript:void(0)" onClick="$('#c<%= answer.id %>edit').toggle();$('#c<%= answer.id %>show').toggle();setInit(<%= answer.id %>);"><i class="fa fa-pencil"></i></a>
+        <a class="btn btn-outline-secondary btn-sm" href="javascript:void(0)" onClick="$('#c<%= answer.id %>edit').toggle();$('#c<%= answer.id %>show').toggle();setInit(<%= answer.id %>);"><i class="fa fa-pencil"></i></a>
         <% end %>
 
         <% if current_user && (current_user.role == "admin" || current_user.role == "moderator" || answer.uid == current_user.uid || answer.node.uid == current_user.uid) %>
           <% other_user = (current_user && answer.uid != current_user.uid) ? 'true' : 'false' %>
-          <a class="btn btn-default btn-sm" id="a<%= answer.id %>delete-btn" other_user=<%= other_user %>>
+          <a class="btn btn-outline-secondary btn-sm" id="a<%= answer.id %>delete-btn" other_user=<%= other_user %>>
             <i class='icon fa fa-trash'></i>
           </a>
         <% end %>
@@ -48,11 +48,11 @@
         <a <% if current_user && current_user.uid == answer.node.uid %> href="/answers/accept/<%= answer.id %>" <% end %> data-remote="true" id="answer-<%= answer.id %>-accept" class="answer-accept btn btn-sm btn-success">Accepted</a>
       <% else %>
         <% if current_user && (current_user.role == "admin" || current_user.role == "moderator" || current_user.uid == answer.node.uid) %>
-          <a href="/answers/accept/<%= answer.id %>" data-remote="true" id="answer-<%= answer.id %>-accept" class="answer-accept btn btn-sm btn-default">Accept this answer</a>
+          <a href="/answers/accept/<%= answer.id %>" data-remote="true" id="answer-<%= answer.id %>-accept" class="answer-accept btn btn-sm btn-outline-secondary">Accept this answer</a>
         <% end %>
       <% end %>
     <% if answer.likers.length != 0 %>
-        <div class="btn btn-default btn-sm" rel="popover" data-placement="left" data-html="true" data-title="Users who like this" style="overflow: auto; max-height: 450px" data-content="
+        <div class="btn btn-outline-secondary btn-sm" rel="popover" data-placement="left" data-html="true" data-title="Users who like this" style="overflow: auto; max-height: 450px" data-content="
             <% answer.likers.each do |user| %>
                 <i class='fa fa-star-o'></i> <a href='/profile/<%= user.username %>/likes'><%= user.username %></a></br>
             <% end %>
@@ -60,13 +60,13 @@
         </div>
     <% end %>
        <a href="<% if current_user %>'/answer_like/likes/<%= answer.id %>'<% else %>'#'<% end %>" 
-          data-remote ="true" tooltip-title="Helpful? Like it" class="btn btn-default btn-sm btn-like" 
+          data-remote ="true" tooltip-title="Helpful? Like it" class="btn btn-outline-secondary btn-sm btn-like" 
           id="answer-like-button-<%= answer.id %>"
        <% unless current_user %> popover-content="You must be logged in to Like the answer" <% end %> > 
           <span id="answer-like-star-<%= answer.id %>" class="fa fa-star<% if current_user && !answer.liked_by(current_user.uid) %>-o<% end %>"></span>
           <span id="answer-like-count-<%= answer.id %>"><%= answer.likers.length %></span> Likes</a>
      
-      <a href="#a<%= answer.id %>" class="btn btn-default btn-sm "><i class="fa fa-link"></i></a> &nbsp;
+      <a href="#a<%= answer.id %>" class="btn btn-outline-secondary btn-sm "><i class="fa fa-link"></i></a> &nbsp;
       <a id="answer-<%= answer.id %>-comment-button"  style="color: #006dcc;"><span id="answer-<%= answer.id %>-comment-count"><%= answer.comments.length %></span> Comments <i class="fa fa-caret-down"></i></a>
     </div>
 

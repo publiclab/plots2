@@ -12,7 +12,7 @@
   }
 </style>
 
-<div class="col-md-12">
+<div class="col-lg-12">
 
   <div style="text-align:center;">
     <h1 style="font-size:3.4em;margin-top:40px;"><%= raw t('notes.tools_places.tools_and_techniques') %></h1>
@@ -22,8 +22,8 @@
   </div>
 
   <div class="row">
-    <div class="col-md-3"></div>
-    <div class="col-md-6">
+    <div class="col-lg-3"></div>
+    <div class="col-lg-6">
       <div id="topics">
         <% @topics.each do |topic| %>
           <div><a data-topic="<%= topic %>" href="/methods/<%= topic %>"><%= topic %></a></div>
@@ -33,11 +33,11 @@
   </div>
 
   <div class="row">
-    <div class="col-md-3"></div>
-    <form class="topic-search col-md-6 form-inline input-group" style="text-align:center; margin-left: 20px; margin-right: 20px;">
+    <div class="col-lg-3"></div>
+    <form class="topic-search col-lg-6 form-inline input-group" style="text-align:center; margin-left: 20px; margin-right: 20px;">
       <input tabindex="1" class="form-control input-lg" type="text" placeholder="Search for methods by topic" />
       <span class="input-group-btn" >
-      <button class="btn btn-lg btn-default" type="submit"><i class="fa fa-search"></i></button>
+      <button class="btn btn-lg btn-outline-secondary" type="submit"><i class="fa fa-search"></i></button>
       </span>
     </form>
   </div>

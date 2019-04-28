@@ -20,4 +20,4 @@
     </tr>
   <% end %>
 </table>
-<div class="text-center"><%= will_paginate wikis, :renderer => BootstrapPagination::Rails if @paginated %></div>
+<div class="text-center"><%= will_paginate wikis, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer if @paginated %></div>
