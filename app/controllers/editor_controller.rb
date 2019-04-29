@@ -5,6 +5,7 @@ class EditorController < ApplicationController
   def legacy
     # /post/?i=http://myurl.com/image.jpg
     flash.now[:notice] = "This is the legacy editor. For the new rich editor, <a href='/editor'>click here</a>."
+    flash.now[:warning] = "Deprecation notice: Legacy editor will be discontinued soon, please use rich/markdown editor."
     image if params[:i]
     template if params[:n] && !params[:body] # use another node body as a template
     if params[:tags]&.include?('question:')
