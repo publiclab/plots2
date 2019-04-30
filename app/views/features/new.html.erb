@@ -2,7 +2,7 @@
 
 <% url = { :controller => "features", :action => "create", :id => params[:id] } %>
 
-<%= form_for :revision, :as => :revision, :url => url, :html => {:class => "form well"} do |f| %>
+<%= form_for :revision, :as => :revision, :url => url, :html => {:class => "form card bg-light card-body"} do |f| %>
 
   <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages :header_message => "Your note couldn't be saved." %></div><% end %>
 

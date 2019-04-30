@@ -122,7 +122,7 @@ class I18nTest < ActionDispatch::IntegrationTest
            status: 4
           }
       get '/dashboard'
-      assert_select 'a[class=?]', 'btn btn-default btn-xs', I18n.t('dashboard.moderate.approve')
+      assert_select 'a[class=?]', 'btn btn-outline-secondary btn-sm', I18n.t('dashboard.moderate.approve')
     end
   end
 
@@ -145,7 +145,7 @@ class I18nTest < ActionDispatch::IntegrationTest
            status: 1
           }
       get '/dashboard'
-      assert_select 'a[class=?]', 'btn btn-default btn-xs pull-right respond answer', I18n.t('dashboard._node_question.post_answer')
+      assert_select 'a[class=?]', 'btn btn-outline-secondary btn-sm float-right respond answer', I18n.t('dashboard._node_question.post_answer')
     end
   end
 

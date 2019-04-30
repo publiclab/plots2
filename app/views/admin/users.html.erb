@@ -1,4 +1,4 @@
-<div class="col-md-3">
+<div class="col-lg-3">
 
   <h3>User moderation:</h3> 
 
@@ -8,7 +8,7 @@
 
 </div>
 
-<div class="col-md-9">
+<div class="col-lg-9">
 
   <h3>Moderate users</h3>
 
@@ -23,9 +23,9 @@
     <td><div class="btn-toolbar" style="margin:0;">
       <div class="btn-group">
         <% if user.status == 0 %>
-          <a class="btn btn-default btn-lg btn-success unban" data-remote="true" href="/unban/<%= user.id %>"><i class="fa fa-ok-circle fa fa-white"></i> Unban</a>
+          <a class="btn btn-outline-secondary btn-lg btn-success unban" data-remote="true" href="/unban/<%= user.id %>"><i class="fa fa-ok-circle fa fa-white"></i> Unban</a>
         <% else %>
-          <%= link_to "/ban/"+user.id.to_s, :confirm => 'Are you sure?', :remote => true, :class => "btn btn-lg btn-error ban" do %>
+          <%= link_to "/ban/"+user.id.to_s, :confirm => 'Are you sure?', :remote => true, :class => "btn btn-lg btn-danger ban" do %>
             <i class="fa fa-circle-ban"></i> Ban
           <% end %>
         <% end %>

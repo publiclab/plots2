@@ -6,7 +6,6 @@
         $(this).find('#text-input').prop('disabled',false);
         $(this).find('#text-input').val('');
         $('#comments-container').append(xhr.responseText);
-        $('#comment-count')[0].innerHTML = parseInt($('#comment-count')[0].innerHTML, 10)+1;
         $(this).find(".btn-primary").button('reset');
         $(this).find('#preview').hide();
         $(this).find('#text-input').show();

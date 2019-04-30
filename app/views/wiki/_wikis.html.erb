@@ -24,7 +24,8 @@
         <td><%= number_with_delimiter(wiki.views) %></td>
         <td><%= number_with_delimiter(wiki.cached_likes) %></td>
       </tr>
-    <% end %>
-  </table>
+  <% end %>
+</table>
 <% end %>
-<div class="text-center"><%= will_paginate wikis, :renderer => BootstrapPagination::Rails if @paginated %></div>
+<div class="text-center"><%= will_paginate wikis, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer if @paginated %></div>
+
