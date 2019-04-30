@@ -101,11 +101,17 @@
     });
 
     var toggleState = false;
+    var title = "Show Password";
 
     $("#visibility").on("click", function(e) {
       e.preventDefault();
-      $(this).toggleClass("fa-eye fa-eye-slash").attr("title", toggleState ? "Show Password" : "Hide Password");
+      $(this).toggleClass("fa-eye-slash");
+
+      title = toggleState ? "Show Password" : "Hide Password";
       toggleState = !toggleState;
+      $(this).tooltip('hide')
+      .attr('data-original-title', title);
+
       var type = $("#password-signup").attr("type");
       if (type == "text")
       { $("#password-signup").attr("type", "password");}
