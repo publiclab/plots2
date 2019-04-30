@@ -34,13 +34,13 @@
         <td><small><a class="btn btn-sm btn-outline-secondary" href="/wiki/revert/<%= revision.vid %>" data-confirm="<%= t('wiki.revisions.are_you_sure') %>"><i class="fa fa-arrow-reload"></i> <%= t('wiki.revisions.revert') %></a></small></td>
         <% if current_user && (current_user.role == "moderator" || current_user.role == "admin") %>
           <% if revision.status == 1 %>
-            <td><small><a class='btn btn-sm btn-outline-secondary' href='/moderate/revision/spam/<%= revision.vid %>' data-confirm="<%= t('wiki.revisions.are_you_sure') %>"><i class='fa fa-ban'></i></a></small></td>
+            <td><small><a class='btn btn-sm btn-outline-secondary' data-toggle="tooltip" title="Mark as Spam" data-placement="top" href='/moderate/revision/spam/<%= revision.vid %>' data-confirm="<%= t('wiki.revisions.are_you_sure') %>"><i class='fa fa-ban'></i></a></small></td>
           <% elsif revision.status == 0 %>
             <td><small><a class='btn btn-sm btn-outline-secondary' href='/moderate/revision/publish/<%= revision.vid %>'><i class='fa fa-plus-circle'></i> <%= t('wiki.revisions.republish') %></a></small></td>
           <% end %>
         <% end %>
 
-        <td><small><a class="btn btn-sm btn-outline-secondary" href="/wiki/raw/<%= revision.vid %>"><i class="fa fa-code"></i></a></small></td>
+        <td><small><a class="btn btn-sm btn-outline-secondary" data-toggle="tooltip" title="Raw Content" data-placement="top" href="/wiki/raw/<%= revision.vid %>"><i class="fa fa-code"></i></a></small></td>
 
       </tr>
     <% end %>
@@ -51,8 +51,8 @@
 </div>
   <div class="col-lg-7">
     <div class="btn-group float-right">
-      <a class="btn btn-link" href="javascript:void(0)" onClick="prev()">&laquo;</a>
-      <a class="btn btn-link" href="javascript:void(0)" onClick="next()">&raquo;</a>
+      <a class="btn btn-link" data-toggle="tooltip" title="Previous" data-placement="left" href="javascript:void(0)" onClick="prev()">&laquo;</a>
+      <a class="btn btn-link" data-toggle="tooltip" title="Next" data-placement="right" href="javascript:void(0)" onClick="next()">&raquo;</a>
     </div>
     <h3 style="margin-top:0;"><%= raw t('wiki.revisions.comparing_revision', :revision_1 => @node.revisions.length-1, :revision_2 => @node.revisions.length-2) %></h3>
     <div class="card bg-light">
