@@ -18,14 +18,18 @@ class PostTest < ApplicationSystemTestCase
     visit '/post'
 
     fill_in("Title", with: "My new post")
-    fill_in("text-input", with: "All about this interesting stuff")
+    
+    el = find(".wk-wysiwyg") # rich text input
+    el.set("All about this interesting stuff")
 
     find('.ple-publish').click
+    # find('.ple-publish').click # may have to do it twice if it prompts for an image
 
     assert_response :redirect
     follow_redirect!
 
     assert_selector('h1', text: 'My new post')
+    assert_selector('#content', text: "All about this interesting stuff")
     assert_selector('#notice', 'User was successfully created.')
   end
   
