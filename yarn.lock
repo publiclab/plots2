@@ -908,9 +908,9 @@ cwise@^1.0.4, cwise@^1.0.7:
     static-module "^1.0.0"
     uglify-js "^2.6.0"
 
-cytoscape@^3.5.4:
-  version "3.5.4"
-  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.5.4.tgz#58cd9682c37d6a472615030081f458dace844c8f"
+cytoscape@^3.5.5:
+  version "3.5.5"
+  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.5.5.tgz#810aa13447a3add6e69f892c00737538595db730"
   dependencies:
     heap "^0.2.6"
     lodash.debounce "^4.0.8"
