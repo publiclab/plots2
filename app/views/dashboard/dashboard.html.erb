@@ -10,7 +10,7 @@
     To get started at Public Lab, try:
     <br><br>
     <p>
-      <a class="btn btn-sm btn-default" href="/questions" target="_blank">
+      <a class="btn btn-sm btn-outline-secondary" href="/questions" target="_blank">
         Asking a question
       </a>
 
@@ -26,7 +26,7 @@
 
   <div class="row">
 
-    <div class="col-md-8">
+    <div class="col-lg-8">
  
      <%= render partial: "dashboard/header" %>
 
@@ -43,14 +43,17 @@
             <div class="blog-caption">
        
               <h4>
-                <small class="pull-right hidden-xs hidden-sm"><%=raw translation('dashboard.dashboard.from_blog', :url => '/blog') %></small>
+                <small class="float-right d-none d-lg-inline"><%=raw translation('dashboard.dashboard.from_blog', :url => '/blog') %></small>
                 <a class="title" href="/blog"><%= @blog.title %></a> 
                 <small><%= t('dashboard.dashboard.by') %> <a href="/profile/<%= @blog.author.username %>"><%= @blog.author.username %></a></small>
               </h4>
        
             </div>
+
+          <% if @blog.main_image || @blog.scraped_image %>
+            </div>
+          <% end %>
        
-          </div>
         <% end %>
   
         <%= render partial: "dashboard/activity", locals: { activity: @activity, notes: @notes } %>
@@ -59,7 +62,7 @@
 
     </div>
      
-    <div class="col-md-4">
+    <div class="col-lg-4">
 
       <%= feature('dashboard-feature') %>
 

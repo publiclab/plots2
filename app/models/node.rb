@@ -436,7 +436,7 @@ class Node < ActiveRecord::Base
     end
   end
 
-  # accests a tagname /or/ tagname ending in wildcard such as "tagnam*"
+  # access a tagname /or/ tagname ending in wildcard such as "tagnam*"
   # also searches for other tags whose parent field matches given tagname,
   # but not tags matching given tag's parent field
   def has_tag(tagname)

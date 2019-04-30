@@ -55,6 +55,10 @@ class UserSessionsController < ApplicationController
         # just log them in here
         @user = @identity.user
         @user_session = UserSession.create(@identity.user)
+        if session[:openid_return_to] # for openid login, redirects back to openid auth process
+          return_to = session[:openid_return_to]
+          session[:openid_return_to] = nil
+        end
         redirect_to return_to + hash_params, notice: "Signed in!"
       else # identity does not exist so we need to either create a user with identity OR link identity to existing user
         if User.where(email: auth["info"]["email"]).empty?
@@ -67,7 +71,20 @@ class UserSessionsController < ApplicationController
           @user = user
           # send key to user email
           PasswordResetMailer.reset_notify(user, key).deliver_now unless user.nil? # respond the same to both successes and failures; security
-          redirect_to return_to + hash_params, notice: "You have successfully signed in. Please change your password using the link sent to you via e-mail."
+          if session[:openid_return_to] # for openid login, redirects back to openid auth process
+            return_to = session[:openid_return_to]
+            session[:openid_return_to] = nil
+            redirect_to return_to + hash_params
+          elsif params[:return_to] && params[:return_to].split('/')[0..3] == ["", "subscribe", "multiple", "tag"]
+            flash[:notice] = "You are now following '#{params[:return_to].split('/')[4]}'."
+            subscribe_multiple_tag(params[:return_to].split('/')[4])
+            redirect_to '/dashboard', notice: "You have successfully signed in. Please change your password using the link sent to you via e-mail."
+          elsif params[:return_to] && params[:return_to] != "/signup" && params[:return_to] != "/login"
+            flash[:notice] += " " + I18n.t('users_controller.continue_where_you_left_off', url1: params[:return_to].to_s)
+            redirect_to return_to + hash_params, notice: "You have successfully signed in. Please change your password using the link sent to you via e-mail."
+          else
+            redirect_to return_to + hash_params, notice: "You have successfully signed in. Please change your password using the link sent to you via e-mail."
+          end
         else # email exists so link the identity with existing user and log in the user
           user = User.where(email: auth["info"]["email"])
           # If no identity was found, create a brand new one here
@@ -78,7 +95,13 @@ class UserSessionsController < ApplicationController
           @user = user
           # log in them
           @user_session = UserSession.create(@identity.user)
-          redirect_to return_to + hash_params, notice: "Successfully linked to your account!"
+          if session[:openid_return_to] # for openid login, redirects back to openid auth process
+            return_to = session[:openid_return_to]
+            session[:openid_return_to] = nil
+            redirect_to return_to + hash_params
+          else
+            redirect_to return_to + hash_params, notice: "Successfully linked to your account!"
+          end
         end
       end
     end
@@ -103,7 +126,7 @@ class UserSessionsController < ApplicationController
       end
       if @user.nil?
         flash[:warning] = "There is nobody in our system by that name, are you sure you have the right username?"
-        redirect_to '/login'
+        redirect_to params[:return_to] || '/login'
       elsif params[:user_session].nil? || @user&.status == 1
         # an existing Rails user
         if params[:user_session].nil? || @user
@@ -136,12 +159,20 @@ class UserSessionsController < ApplicationController
                   session[:openid_return_to] = nil
                   redirect_to return_to + hash_params
                 elsif session[:return_to]
-                  return_to = session[:return_to]
-                  if return_to == '/login'
-                    return_to = '/dashboard'
+                  # if url == /login?return_to=/subscribe/multiple/tag/tag1,tag299 then
+                  # session[:return_to] == /subscriptions  + '?_=' + Time.current.to_i.to_s ? true
+                  if params[:return_to]
+                    # params[:return_to] == /login?return_to=/subscribe/multiple/tag/tag1,tag299 ? true
+                    return_to = '/' + params[:return_to].split('/')[2..-1].join('/') #== /subscribe/multiple/tag/tag1,tag299
+                    redirect_to return_to
+                  else
+                    return_to = session[:return_to]
+                    if return_to == '/login'
+                      return_to = '/dashboard'
+                    end
+                    session[:return_to] = nil
+                    redirect_to return_to + hash_params
                   end
-                  session[:return_to] = nil
-                  redirect_to return_to + hash_params
                 elsif params[:return_to]
                   redirect_to params[:return_to] + hash_params
                 else
@@ -185,5 +216,53 @@ class UserSessionsController < ApplicationController
 
   def index
     redirect_to '/dashboard'
+  end
+
+  private
+
+  def subscribe_multiple_tag(tag_list)
+    if !tag_list || tag_list == ''
+      flash[:notice] = "Please enter tags for subscription in the url."
+    else
+      if tag_list.is_a? String
+        tag_list = tag_list.split(',')
+      end
+      tag_list.each do |t|
+        next unless t.length.positive?
+        tag = Tag.find_by(name: t)
+        unless tag.present?
+          tag = Tag.new(
+            vid: 3, # vocabulary id
+            name: t,
+            description: "",
+            weight: 0
+          )
+          begin
+            tag.save!
+            rescue ActiveRecord::RecordInvalid
+            flash[:error] = tag.errors.full_messages
+            redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
+            return false
+          end
+        end
+        # test for uniqueness
+        unless TagSelection.where(following: true, user_id: current_user.uid, tid: tag.tid).length.positive?
+        # Successfully we have added subscription
+          if Tag.find_by(tid: tag.tid)
+            # Create the entry if it isn't already created.
+            # assume tag, for now:
+            subscription = TagSelection.where(user_id: current_user.uid,
+                                              tid: tag.tid).first_or_create
+            subscription.following = true
+            # Check if the value changed.
+            if subscription.following_changed?
+              subscription.save!
+            end
+          else
+            flash.now[:error] = "Sorry! There was an error in tag subscriptions. Please try it again."
+          end
+        end
+      end
+    end
   end
 end

@@ -1,6 +1,6 @@
 <script src="/assets/wikis.js" type="text/javascript"></script>
 
-<div class="col-md-12">
+<div class="col-lg-12">
   <%= render partial: 'tag/show/header' %>
 
   <%= render partial: 'tag/show/contributors' %>
@@ -15,14 +15,18 @@
 
   <% if current_user && current_user.role == 'admin' %>
     <hr />
-    <p><a class="btn btn-default btn-lg" onClick="$('#add_parent').toggle();">Add tag parent</a> (admin only)</p>
+    <p><a class="btn btn-outline-secondary btn-lg" onClick="$('#add_parent').toggle();">Add tag parent</a> (admin only)</p>
     <div id="add_parent" style="display:none;">
       <p><b>Tag parenting</b></p>
-      <form class="form well" action="/tag/parent" method="get">
-        <input type="text" placeholder="parent" name="parent" />
-        <input type="hidden" placeholder="parent" name="name" value="<%= @tags&.first&.name %>" />
-        <input class="btn btn-default btn-lg" type="submit" value="Submit" />
-      </form>
+      <div class="card bg-light">
+        <div class="card-body">
+          <form class="form" action="/tag/parent" method="get">
+            <input type="text" placeholder="parent" name="parent" />
+            <input type="hidden" placeholder="parent" name="name" value="<%= @tags&.first&.name %>" />
+            <input class="btn btn-outline-secondary btn-lg" type="submit" value="Submit" />
+          </form>
+        </div>
+      </div>
     </div>
   <% end %>
 
@@ -34,8 +38,8 @@
   <%= render partial: 'tag/show/nav_tabs' %>
   
   <p style="padding-top:8px;">
-  <a class="btn btn-sm btn-default" href="?order=views"><i class="fa fa-eye"></i> by views</a>
-  <a class="btn btn-sm btn-default" href="?order=likes"><i class="fa fa-star"></i> by likes</a>
+  <a class="btn btn-sm btn-outline-secondary" href="?order=views"><i class="fa fa-eye"></i> by views</a>
+  <a class="btn btn-sm btn-outline-secondary" href="?order=likes"><i class="fa fa-star"></i> by likes</a>
   </p><br />
 
   <%= render partial: 'tag/show/tab_content' %>
