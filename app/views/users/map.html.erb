@@ -3,10 +3,10 @@
 <div class="container">
   <form method="GET" action="/users/map" id="search">
     <div class="row">
-      <div class="col-md-1">
+      <div class="col-lg-1">
         <label for="search"><%= t('users.map.search') %></label>
       </div>
-      <div class="form-group col-md-1">
+      <div class="form-group col-lg-1">
         <select name="tag" id="tag_type" class="form-control" value="<%= params[:tag] %>">
           <option></option>
           <option><%= t('users.map.skill') %></option>
@@ -15,22 +15,22 @@
           <option><%= t('users.map.tool') %></option>
         </select>
       </div>
-      <div class="form-group col-md-2">
+      <div class="form-group col-lg-2">
         <input id="tag_value" type="text" name="value" class="form-control" value="<%= params[:value] %>">
       </div>
     </div>
 
     <div class="row">
-      <div class="col-md-1">
+      <div class="col-lg-1">
         <label for="search location"><%= t('users.map.location') %></label>
       </div>
-      <div class="form-group col-md-3">
+      <div class="form-group col-lg-3">
         <input type="text" name="country" class="form-control" id="country" value="<%= params[:country] %>">
       </div>
     </div>
     
     <div class="row">
-      <div class="col-md-offset-1">
+      <div class="col-lg-offset-1">
         <input type="submit" id="submit" value="Search" class="btn btn-primary">
       </div>
     </div>
@@ -46,7 +46,7 @@
     $("#tag_type").val("<%= params[:tag] %>");
 
     <% if @location_tags %>
-      $("#users_map").html("<div id='map' class='col-md-12' style='height:500px;'></div>");
+      $("#users_map").html("<div id='map' class='col-lg-12' style='height:500px;'></div>");
 
       var user_map = L.map('map').setView([15,0], 2);
       L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",{
@@ -66,7 +66,7 @@
 
       <% end %>
     <% elsif @users %>
-      $('#users_map').html("<div id='map' class='col-md-12' style='height:500px;'></div>");
+      $('#users_map').html("<div id='map' class='col-lg-12' style='height:500px;'></div>");
 
       <% if !@country.nil? and !@country.empty? %>
         <%  geo_location = Geocoder.search("#{@country}").first || "" %>

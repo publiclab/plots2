@@ -1,4 +1,4 @@
-<% cache('feature_anniversary-banner', skip_digest: true) do %>
+    <% cache('feature_anniversary-banner', skip_digest: true) do %>
   <%= feature('anniversary-banner') %>
 <% end %>
 
@@ -7,91 +7,88 @@
   <%= stylesheet_link_tag "I18n" %>
 <% end %>
 
-<nav id="header" class="navbar navbar-inverse navbar-fixed-top">
-  <div class="container">
+<nav id="header" class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
     <!-- ||| menu, displayed for mobile: -->
-    <div class="navbar-header">
-      <a class="navbar-brand" id="brand" href="<%= root_path %>">Public Lab</a>
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-navbar-collapse">
-        <span class="fa fa-white fa-bars"></span>
-      </button>
-    </div>
+  <a class="navbar-brand ml-lg-5" id="brand" href="<%= root_path %>">Public Lab</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#header-navbar-collapse">
+    <span class="fa fa-white fa-bars"></span>
+  </button>
 
     <div class="collapse navbar-collapse" id="header-navbar-collapse">
-      <form class="navbar-form navbar-left" id="searchform" autocomplete="off">
+      <form class="form-inline mr-3" id="searchform" autocomplete="off">
         <div class="input-group">
           <input type="text" id="searchform_input" style="min-width: 220px;" class="form-control search-query typeahead" role="search" qryType="content" placeholder="<%= t('layout._header.search') %>"  value="<%= params[:query] %>" required>
-          <span class="input-group-btn">
-            <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
-          </span>
+          <div class="input-group-append">
+            <button class="btn btn-light" type="submit"><i class="fa fa-search"></i></button>
+          </div>
         </div>
       </form>
 
-      <ul class="nav navbar-nav navbar-left">
-        <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropdown" style="min-width: 105px;">
+          <a class="nav-link" data-toggle="dropdown" href="#">
             Get Involved
           </a>
-          <ul class="dropdown-menu">
-            <li><a href="/events">Attend an event</a></li>
-            <li><a href="/chat">Chat online</a></li>
-            <li><a href="/questions">Ask a question</a></li>
-            <li><a href="/tags">Find a topic you care about</a></li>
-            <li><a href="/post" class="requireLogin">Post your work</a></li>
-            <li><a href="/newsletter">Subscribe to the newsletter</a></li>
-            <li><a href="/requests">Respond to a request</a></li>
-            <li class="divider"></li>
-            <li><a href="/dashboard">Browse recent research</a></li>
-            <li><a href="/methods">Discover methods</a></li>
-            <li><a href="/kits">Contribute a kit</a></li>
-            <li><a href="/wiki/software-outreach">Software Projects</a></li>
-          </ul>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="/events">Attend an event</a>
+            <a class="dropdown-item" href="/chat">Chat online</a>
+            <a class="dropdown-item" href="/questions">Ask a question</a>
+            <a class="dropdown-item" href="/tags">Find a topic you care about</a>
+            <a class="dropdown-item requireLogin" href="/post">Post your work</a>
+            <a class="dropdown-item" href="/newsletter">Subscribe to the newsletter</a>
+            <a class="dropdown-item" href="/requests">Respond to a request</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/dashboard">Browse recent research</a>
+            <a class="dropdown-item" href="/methods">Discover methods</a>
+            <a class="dropdown-item" href="/kits">Contribute a kit</a>
+            <a class="dropdown-item" href="/wiki/software-outreach">Software Projects</a>
+          </div>
         </li>
 
-        <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+        <li class="nav-item dropdown" style="min-width:80px;">
+          <a class="nav-link" data-toggle="dropdown" href="#">
             <%= t('layout._header.about.about_title') %>
           </a>
-          <ul class="dropdown-menu">
-            <li><a href="/wiki/stories"><%= t('layout._header.about.stories') %></a></li>
-            <li><a href="/blog"><%= t('layout._header.about.blog') %></a></li>
-            <li><a href="/about"><%= t('layout._header.about.about_public_lab') %></a></li>
-            <li class="divider"></li>
-            <li><a href="/wiki/plots-staff"><%= t('layout._header.about.team') %></a></li>
-            <li><a href="/wiki/organizers"><%= t('layout._header.about.organizers') %></a></li>
-            <li><a href="/wiki/board"><%= t('layout._header.about.board') %></a></li>
-            <li><a href="/wiki/how-we-are-funded"><%= t('layout._header.about.fund') %></a></li>
-            <li class="divider"></li>
-            <li><a href="/media"><%= t('layout._header.about.press_and_media') %></a></li>
-            <li><a href="/wiki/contact"><%= t('layout._header.about.contact') %></a></li>
-          </ul>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="/wiki/stories"><%= t('layout._header.about.stories') %></a>
+            <a class="dropdown-item" href="/blog"><%= t('layout._header.about.blog') %></a>
+            <a class="dropdown-item" href="/about"><%= t('layout._header.about.about_public_lab') %></a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/wiki/plots-staff"><%= t('layout._header.about.team') %></a>
+            <a class="dropdown-item" href="/wiki/organizers"><%= t('layout._header.about.organizers') %></a>
+            <a class="dropdown-item" href="/wiki/board"><%= t('layout._header.about.board') %></a>
+            <a class="dropdown-item" href="/wiki/how-we-are-funded"><%= t('layout._header.about.fund') %></a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/media"><%= t('layout._header.about.press_and_media') %></a>
+            <a class="dropdown-item" href="/wiki/contact"><%= t('layout._header.about.contact') %></a>
+          </div>
         </li>
 
-        <li class="hidden-sm">
-          <a target="_blank" href="//store.publiclab.org"><%= t('layout._header.store') %></a>
+        <li class="nav-item d-sm-none d-lg-inline">
+          <a class="nav-link" target="_blank" href="//store.publiclab.org"><%= t('layout._header.store') %></a>
         </li>
-        <li class="hidden-sm">
-          <a href="/donate"><%= t('layout._header.donate') %></a>
+        <li class="nav-item d-sm-none d-lg-inline">
+          <a class="nav-link" href="/donate"><%= t('layout._header.donate') %></a>
         </li>
       </ul>
 
-      <ul class="nav navbar-nav navbar-right">
+      <ul class="navbar-nav mr-lg-5">
         <% if current_user %>
-          <li class="hidden-sm hidden-md">
-            <a rel="tooltip" title="<%= t('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard">Dashboard</a>
+          <li class="nav-item d-sm-none d-xl-inline">
+            <a rel="tooltip" class="nav-link" title="<%= t('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard">Dashboard</a>
           </li>
         <% else %>
-        <li class="hidden-sm hidden-md"> <!-- signup button -->
-          <a rel="tooltip" class="signupToggle" title="<%= t('layout._header.become_part_community') %>" href="#">
+        <li class="d-md-none d-xl-inline nav-item"> <!-- signup button -->
+          <a rel="tooltip" class="nav-link signupToggle" title="<%= t('layout._header.become_part_community') %>" href="#">
             <%= t('layout._header.join') %>
           </a>
         </li>
         <% end %>
 
-        <li class="dropdown">
-          <% unless params[:action] == "register" || params[:action] == "signup" %>
+        <% unless params[:action] == "register" || params[:action] == "signup" %>
             <% if current_user %>
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            <li class="nav-item dropdown">
+              <a class="nav-link" data-toggle="dropdown" href="#">
               	<div class="profile-icon">
                   <% if current_user.profile_image == "https://www.gravatar.com/avatar/eb721d116a28f4a4da4ea67340c8ce75" %>
                     <i class="fa fa-user-circle fa-lg" style="color:white;"></i>
@@ -100,65 +97,63 @@
                   <% end %>
                 </div>
               </a>
-              <ul class="dropdown-menu">
-                <div class="dropdown-header">
-                  <h5>
+              <div class="dropdown-menu dropdown-menu-right">
+                  <h5 class="dropdown-header">
                     <%= current_user.username %>
                     <% if current_user.role === 'moderator' || current_user.role === 'admin'%>
-                       - logged as <%= current_user.role %>
+                       - logged in as <%= current_user.role %>
                     <% end %>
                   </h5>
-                </div>
 
-                <li><a href="/profile/<%= current_user.username %>"><%= t('layout._header.profile') %></a></li>
-                <li><a href="/profile/edit"><%= t('layout._header.edit_profile') %></a></li>
-                <li><a href="/settings" >Email Settings</a></li>
-                <li class="divider"></li>
-                <li><a href="/subscriptions"><%= t('layout._header.subscriptions') %></a></li>
-                <li><a href="/subscriptions/digest">Your Digest</a></li>
-                <li><a href="/profile/<%= current_user.username %>/likes"><%= t('layout._header.notes_liked') %></a></li>
-                <li class="divider"></li>
-        	      <% if current_user.role == 'admin' %>
-                  <li><a href="/useremail">Email search</a></li>
-                  <li><a href="/wiki/locked">Locked pages</a></li>
-                  <li><a href="/spam">Spam moderation</a></li>
-                  <li><a href="/people">Contributors</a></li>
-        	        <li class="divider"></li>
-        	      <% end %>
-                <li><%= link_to t('layout._header.logout'), logout_path %></li>
-                <li><a href="/logoutRemotely">Logout from all devices</a></li>
-              </ul>
+                    <a class="dropdown-item" href="/profile/<%= current_user.username %>"><%= t('layout._header.profile') %></a>
+                    <a class="dropdown-item" href="/profile/edit"><%= t('layout._header.edit_profile') %></a>
+                    <a class="dropdown-item" href="/settings" >Email Settings</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/subscriptions"><%= t('layout._header.subscriptions') %></a>
+                    <a class="dropdown-item" href="/subscriptions/digest">Your Digest</a>
+                    <a class="dropdown-item" href="/profile/<%= current_user.username %>/likes"><%= t('layout._header.notes_liked') %></a>
+                    <div class="dropdown-divider"></div>
+                      <% if current_user.role == 'admin' %>
+                      <a class="dropdown-item" href="/useremail">Email search</a>
+                      <a class="dropdown-item" href="/wiki/locked">Locked pages</a>
+                      <a class="dropdown-item" href="/spam">Spam moderation</a>
+                      <a class="dropdown-item" href="/people">Contributors</a>
+                      <div class="dropdown-divider"></div>
+                      <% end %>
+                      <%= link_to t('layout._header.logout'), logout_path, class: "dropdown-item" %>
+                    <a class="dropdown-item" href="/logoutRemotely">Logout from all devices</a>
+                  </div>
+              </li>
             <% else %> <!-- Login button -->
-              <a class="loginToggle" href="#" >
-                <%= t('layout._header.login.login_title') %>
-              </a>
+                <li class="nav-item">
+                    <a class="nav-link loginToggle" href="#">
+                    <%= t('layout._header.login.login_title') %>
+                    </a>
+                </li>
             <% end %>
           <% end %>
         </li>
-        <li id="md-ham" class="hidden-lg dropdown">
+        <li id="md-ham" class="d-xl-none dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-white fa-bars"></span></a>
             <ul class="dropdown-menu">
-                <li class="hidden-lg hidden-md">
+                <li class="d-lg-none">
                   <a href="//store.publiclab.org"><%= t('layout._header.store') %></a>
                 </li>
-                <li class="hidden-lg hidden-md">
+                <li class="d-lg-none">
                   <a href="/donate"><%= t('layout._header.donate') %></a>
                 </li>
-                <!--- These menu items will only appear in the "More" dropdown menu. --->
+                <!--These menu items will only appear in the "More" dropdown menu. -->
                 <% if current_user %>
-                  <li class="hidden-lg">
+                  <li class="d-xl-none">
                     <a rel="tooltip" title="<%= t('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard">Dashboard</a>
                   </li>
                 <% else %>
-                <li class="hidden-lg">
-                  <a rel="tooltip" title="<%= t('layout._header.become_part_community') %>" href="/signup"><%= t('layout._header.join') %></a>
-                </li>
+                  <a class="dropdown-item d-xl-none" rel="tooltip" title="<%= t('layout._header.become_part_community') %>" href="/signup"><%= t('layout._header.join') %></a>
                 <% end %>
-            </ul>
+            </div>
         </li>
       </ul>
     </div>
-  </div>
 </nav>
 
 <div class="body-container container">

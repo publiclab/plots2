@@ -1,19 +1,19 @@
-<div class="hidden-print btn-toolbar pull-right" style="margin-left:10px;margin-top:0;">
+<div class="d-print-none btn-toolbar float-right" style="margin-left:10px;margin-top:0;">
   <ul class="btn-group">
         <% if current_user && (current_user.uid == node.uid || current_user.role == "moderator" || current_user.role == "admin" || node.has_tag("with:#{current_user.username}")) %>
              <% if node.type == 'note' %>
-                <a <% if current_user && current_user.uid != node.uid %>data-confirm='Please be aware that you are editing a post by another contributor, a privilege you have only because you are a moderator or admin or co-author.' <% end %> class='btn btn-default btn-sm' href='/notes/edit/<%= node.id %>?t=<%= Time.now.to_i %><% if params[:controller] == "questions" %>&redirect=question&template=question<% end %>'>
-                <i class='fa fa-pencil'></i><span class='hidden-xs hidden-sm'> Edit</span>
+                <a <% if current_user && current_user.uid != node.uid %>data-confirm='Please be aware that you are editing a post by another contributor, a privilege you have only because you are a moderator or admin or co-author.' <% end %> class='btn btn-outline-secondary btn-sm' href='/notes/edit/<%= node.id %>?t=<%= Time.now.to_i %><% if params[:controller] == "questions" %>&redirect=question&template=question<% end %>'>
+                <i class='fa fa-pencil'></i><span class='d-none d-lg-inline'> Edit</span>
                 </a>
             <% end %>
         <% end %>
-    <a rel="tooltip" title="Flag as spam" class="btn btn-sm btn-default btn-flag-spam-<%= node.id %>" href="mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+item+that+looks+like+spam+or+needs+to+be+moderated:+<%= node.title.gsub(/ /,'+') %>+https://publiclab.org/n/<%= node.id %>+by+https://publiclab.org/profile/<%= node.author.username %>+Thanks!">
+    <a rel="tooltip" title="Flag as spam" class="btn btn-sm btn-outline-secondary btn-flag-spam-<%= node.id %>" href="mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+item+that+looks+like+spam+or+needs+to+be+moderated:+<%= node.title.gsub(/ /,'+') %>+https://publiclab.org/n/<%= node.id %>+by+https://publiclab.org/profile/<%= node.author.username %>+Thanks!">
       <i class="fa fa-flag"></i>
     </a>
-    <li title="Follow" class="btn btn-default btn-sm requireLogin" data-html="true" rel="popover" data-content="<%= "No tags" if tagnames.nil? || tagnames.length == 0 %><% if tagnames %><% tagnames.each do |tagname| %><p style='margin-bottom:3px;'><a href='/subscribe/tag/<%= tagname %>' class='btn btn-default btn-mini'><%= tagname %></a></p><% end %><% end %><hr /><i class='fa fa-user'></i><% if current_user && !current_user.following?(node.author) %>&nbsp;<a class='btn btn-sm' href='/relationships?followed_id=<%= node.author.id %>' data-method='post' > <%= node.author.name %></a><% else %><%= node.author.name %><% end %>" title="Follow by tag or author" data-placement="left">
+    <li title="Follow" class="btn btn-outline-secondary btn-sm requireLogin" data-html="true" rel="popover" data-content="<%= "No tags" if tagnames.nil? || tagnames.length == 0 %><% if tagnames %><% tagnames.each do |tagname| %><p style='margin-bottom:3px;'><a href='/subscribe/tag/<%= tagname %>' class='btn btn-outline-secondary btn-sm'><%= tagname %></a></p><% end %><% end %><hr /><i class='fa fa-user'></i><% if current_user && !current_user.following?(node.author) %>&nbsp;<a class='btn btn-sm' href='/relationships?followed_id=<%= node.author.id %>' data-method='post' > <%= node.author.name %></a><% else %><%= node.author.name %><% end %>" title="Follow by tag or author" data-placement="left">
       <i class="fa fa-user-plus" aria-hidden="true"></i>
     </li>
-  <li rel="tooltip" title="Helpful? Like it and get updates!" class="btn btn-default btn-sm btn-like" node-id="<%= node.id %>" id="like-button-<%= node.id %>">
+  <li rel="tooltip" title="Helpful? Like it and get updates!" class="btn btn-outline-secondary btn-sm btn-like" node-id="<%= node.id %>" id="like-button-<%= node.id %>">
     <% if !current_user %>
       <a id="open-login-like" data-hashparams="like" data-toggle="modal" data-target="#loginModal">
         <span id="like-star-<%= node.id %>" class="fa fa-star"></span>
@@ -25,7 +25,7 @@
     <% end %>
   </li>
 
-  <li class="btn btn-default btn-sm" rel="popover" data-placement="left" data-html="true" style="overflow: auto; max-height: 500px" data-title="Tools" data-content="
+  <li class="btn btn-outline-secondary btn-sm" rel="popover" data-placement="left" data-html="true" style="overflow: auto; max-height: 500px" data-title="Tools" data-content="
 <p><b>Users who liked this</b></p>
 <% node.likers.each do |user| %>
   <i class='fa fa-star-o'></i> <a href='/profile/<%= user.username %>/'><%= user.username %></a><br />
@@ -53,17 +53,17 @@
   <hr />
 
   <div class='btn-group'>
-     <a href='/notes/delete/<%= node.id %>' class='btn btn-default btn-sm' data-confirm='Are you sure?'>
-      <i class='fa fa-trash'></i><span class='hidden-xs hidden-sm'> Delete</span>
+     <a href='/notes/delete/<%= node.id %>' class='btn btn-outline-secondary btn-sm' data-confirm='Are you sure?'>
+      <i class='fa fa-trash'></i><span class='d-none d-lg-inline'> Delete</span>
     </a>
-    <a href='/notes/raw/<%= node.id %>' class='btn btn-default btn-sm'>
-      <i class='fa fa-code'></i><span class='hidden-xs hidden-sm'> Raw</span>
+    <a href='/notes/raw/<%= node.id %>' class='btn btn-outline-secondary btn-sm'>
+      <i class='fa fa-code'></i><span class='d-none d-lg-inline'> Raw</span>
     </a>
     <% if current_user.role == "moderator" || current_user.role == "admin" %>
       <% if node.type == 'note' %>
-        <a class='btn btn-default btn-sm' href='/moderate/spam/<%= node.id %>'><i class='fa fa-ban-circle'></i> Spam</a>
+        <a class='btn btn-outline-secondary btn-sm' href='/moderate/spam/<%= node.id %>'><i class='fa fa-ban-circle'></i> Spam</a>
       <% elsif node.type == 'page' %>
-        <a class='btn btn-default btn-sm' href='/moderate/revision/spam/<%= @revision.vid %>'><i class='fa fa-ban-circle'></i> Spam revision</a>
+        <a class='btn btn-outline-secondary btn-sm' href='/moderate/revision/spam/<%= @revision.vid %>'><i class='fa fa-ban-circle'></i> Spam revision</a>
       <% end %>
     <% end %>
   </div>
@@ -79,7 +79,7 @@
 
 
 ">
-<span class="caret"></span></li>
+<span class="fa fa-caret-down"></span></li>
   </ul>
 
   <style type="text/css">

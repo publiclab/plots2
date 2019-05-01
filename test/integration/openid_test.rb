@@ -60,8 +60,8 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     assert_match /https:\/\/spectralworkbench.org\/session\/new/, @response.redirect_url
   end
 
-  test 'openid authentication request for Google ' do
-        # test using Google  button on MK or SWB
+  test 'openid authentication request for Google Provider' do
+        # test using Google Provider button on MK or SWB
         # log in
         post '/user_sessions', params: { user_session: { username: users(:jeff).username, password: 'secretive' } }
         follow_redirect!
@@ -115,8 +115,8 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
         assert_match /https:\/\/spectralworkbench.org\/session\/new/, @response.redirect_url
   end
 
-  test 'openid authentication request for Github ' do
-        # test using Github  button on MK or SWB
+  test 'openid authentication request for Github Provider' do
+        # test using Github Provider button on MK or SWB
         # log in
         post '/user_sessions', params: { user_session: { username: users(:jeff).username, password: 'secretive' } }
         follow_redirect!
@@ -170,8 +170,8 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
         assert_match /https:\/\/spectralworkbench.org\/session\/new/, @response.redirect_url
   end
 
-  test 'openid authentication request for Twitter ' do
-        # test using Twitter  button on MK or SWB
+  test 'openid authentication request for Twitter Provider' do
+        # test using Twitter Provider button on MK or SWB
         # log in
         post '/user_sessions', params: { user_session: { username: users(:jeff).username, password: 'secretive' } }
         follow_redirect!
@@ -225,8 +225,8 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
         assert_match /https:\/\/spectralworkbench.org\/session\/new/, @response.redirect_url
   end
 
-  test 'openid authentication request for Facebook ' do
-        # test using Facebook  button on MK or SWB
+  test 'openid authentication request for Facebook Provider' do
+        # test using Facebook Provider button on MK or SWB
         # log in
         post '/user_sessions', params: { user_session: { username: users(:jeff).username, password: 'secretive' } }
         follow_redirect!

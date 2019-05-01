@@ -126,7 +126,7 @@ GEM
       thor (~> 0.14)
     friendly_id (5.2.5)
       activerecord (>= 4.0.0)
-    gemoji (3.0.0)
+    gemoji (3.0.1)
     geocoder (1.5.1)
     geokit (1.13.1)
     geokit-rails (2.3.1)
@@ -507,8 +507,8 @@ GEM
     whenever (0.11.0)
       chronic (>= 0.6.3)
     will_paginate (3.1.7)
-    will_paginate-bootstrap (1.0.2)
-      will_paginate (>= 3.0.3)
+    will_paginate-bootstrap4 (0.2.2)
+      will_paginate (~> 3.0, >= 3.0.0)
     xpath (3.2.0)
       nokogiri (~> 1.8)
 
@@ -610,7 +610,7 @@ DEPENDENCIES
   web-console (>= 3.3.0)
   whenever
   will_paginate (>= 3.0.6)
-  will_paginate-bootstrap (>= 1.0.1)
+  will_paginate-bootstrap4
 
 RUBY VERSION
    ruby 2.4.4p296

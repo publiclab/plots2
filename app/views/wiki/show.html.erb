@@ -13,14 +13,14 @@
 <% if @presentation && @node.main_image%>
   <div id="main-image-presentation" style="margin-bottom:8px;">
     <a href="<%= @node.main_image.path(:original) %>">
-      <img style="width:100%;" class="img-rounded" src="<%= @node.main_image.path(:original) %>" />
+      <img style="width:100%;" class="rounded" src="<%= @node.main_image.path(:original) %>" />
     </a>
   </div>
 <% end %>
 
 <div class="row">
 
-<div class="col-md-9">
+<div class="col-lg-9">
 
   <%= render :partial => "wiki/header" %>
 
@@ -73,7 +73,6 @@
 
   <hr />
 
-  
 
 </div>
 

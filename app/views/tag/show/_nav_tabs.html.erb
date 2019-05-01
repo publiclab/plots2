@@ -1,43 +1,43 @@
 <ul class="nav nav-tabs" style="margin-top:10px;">
   <!-- when will it not be show...? -->
   <% if params[:action] == "show" %>
-    <% unless params[:id].match("question:") %><li<% if @node_type == "note" %> class="active"<% end %>><a href="/tag/<%= params[:id] %>"><i class="fa fa-file"></i> <span class="hidden-sm hidden-xs"><%= raw t('tag.show.research_notes') %></span></a></li><% end %>
+      <% unless params[:id].match("question:") %><li class="nav-item"><a class="nav-link <% if @node_type == "note" %> active<% end %>" href="/tag/<%= params[:id] %>"><i class="fa fa-file"></i> <span class="d-none d-lg-inline"><%= raw t('tag.show.research_notes') %></span></a></li><% end %>
     <!-- can we create a generic node type hash, and give it href and class and content classes? -->
     <!-- this should be an if/else, because @node_type should only be one value -->
-    <li<% if @node_type == "questions" %> class="active"<% end %>><a href="/questions/tag/<%= params[:id] %>"><i class="fa fa-question-circle"></i> <span class="hidden-sm hidden-xs"><%= t('tag.show.questions') %></span></a></li>
-    <li<% if @node_type == "wiki" %> class="active"<% end %>><a href="/wiki/tag/<%= params[:id] %>"><i class="fa fa-book"></i> <span class="hidden-sm hidden-xs"><%= raw t('tag.show.wiki_pages') %></span></a></li>
-    <li<% if @node_type == "maps" %> class="active"<% end %>><a href="/maps/tag/<%= params[:id] %>"><i class="fa fa-map-marker"></i> <span class="hidden-sm hidden-xs"><%= t('tag.show.maps') %></span></a></li>
+    <li class="nav-item"><a class="nav-link <% if @node_type == "questions" %> active<% end %>" href="/questions/tag/<%= params[:id] %>"><i class="fa fa-question-circle"></i> <span class="d-none d-lg-inline"><%= t('tag.show.questions') %></span></a></li>
+    <li class="nav-item"><a class="nav-link <% if @node_type=="wiki" %> active <% end %>" href="/wiki/tag/<%= params[:id] %>"><i class="fa fa-book"></i> <span class="d-none d-lg-inline"><%= raw t('tag.show.wiki_pages') %></span></a></li>
+    <li class="nav-item"><a class="nav-link <% if @node_type == "maps" %> active <% end %>" href="/maps/tag/<%= params[:id] %>"><i class="fa fa-map-marker"></i> <span class="d-none d-lg-inline"><%= t('tag.show.maps') %></span></a></li>
 
     <!-- show if we can see the list of contributors
     again, can we have a generic list of contributors that is
     calculated in the controller? -->
     <% if !@wildcard %>
-      <li<% if @node_type == "contributors" %> class="active"<% end %>><a href="/contributors/<%= params[:id] %>"><i class="fa fa-user"></i> <span class="hidden-sm hidden-xs"><%= raw t('tag.show.contributors') %></span><span class="badge"><%=@length %></span></a></li>
+        <li class="nav-item"><a class="nav-link <% if @node_type == "contributors" %> active <% end %>" href="/contributors/<%= params[:id] %>"><i class="fa fa-user"></i> <span class="d-none d-lg-inline"><%= raw t('tag.show.contributors') %></span><span class="badge"><%=@length %></span></a></li>
     <% else %>
-      <li class="disabled"<% if @node_type == "contributors" %> class="active"<% end %>><a href="#" rel="tooltip" title="Contributors cannot be listed for wildcard tag searches" ><i class="fa fa-user"></i> <span class="hidden-sm hidden-xs"><%= raw t('tag.show.contributors') %></span></a></li>
+        <li class="nav-item"><a class="disabled" class="nav-item<% if @node_type == "contributors" %> active <% end %>" href="#" rel="tooltip" title="Contributors cannot be listed for wildcard tag searches" ><i class="fa fa-user"></i> <span class="d-none d-lg-inline"><%= raw t('tag.show.contributors') %></span></a></li>
     <% end %>
 
   <% else %>
     <!-- calculate whatever this should be in the controller -->
-    <% unless params[:id].match("question:") %><li<% if @node_type == "note" %> class="active"<% end %>><a href="/tag/<%= params[:id] %>/author/<%= params[:author] %>"><i class="fa fa-file"></i> <span class="hidden-sm hidden-xs"><%= raw t('tag.show.research_notes') %></span></a></li><% end %>
-    <li<% if @node_type == "questions" %> class="active"<% end %>>
-      <a href="/questions/tag/<%= params[:id] %>/author/<%= params[:author] %>" >
-        <i class="fa fa-question-circle"></i> <span class="hidden-sm hidden-xs"><%= t('tag.show.questions') %></span>
+    <% unless params[:id].match("question:") %><li class="nav-item" ><a class="nav-link" <% if @node_type == "note" %> class="active"<% end %> href="/tag/<%= params[:id] %>/author/<%= params[:author] %>"><i class="fa fa-file"></i> <span class="d-none d-lg-inline"><%= raw t('tag.show.research_notes') %></span></a></li><% end %>
+    <li class="nav-item">
+      <a class="nav-link" <% if @node_type == "questions" %> class="active"<% end %> href="/questions/tag/<%= params[:id] %>/author/<%= params[:author] %>" >
+        <i class="fa fa-question-circle"></i> <span class="d-none d-lg-inline"><%= t('tag.show.questions') %></span>
       </a>
     </li>
-    <li<% if @node_type == "wiki" %> class="active"<% end %>>
-      <a href="/wiki/tag/<%= params[:id] %>/author/<%= params[:author] %>" >
-        <i class="fa fa-book"></i> <span class="hidden-sm hidden-xs"><%= raw t('tag.show.wiki_pages') %></span>
+    <li class="nav-item">
+      <a class="nav-link" <% if @node_type == "wiki" %> class="active"<% end %> href="/wiki/tag/<%= params[:id] %>/author/<%= params[:author] %>" >
+        <i class="fa fa-book"></i> <span class="d-none d-lg-inline"><%= raw t('tag.show.wiki_pages') %></span>
       </a>
     </li>
-    <li<% if @node_type == "maps" %> class="active"<% end %>>
-      <a href="/maps/tag/<%= params[:id] %>/author/<%= params[:author] %>" >
-        <i class="fa fa-map-marker"></i> <span class="hidden-sm hidden-xs"><%= t('tag.show.maps') %></span>
+    <li class="nav-item">
+      <a class="nav-link" <% if @node_type == "maps" %> class="active"<% end %> href="/maps/tag/<%= params[:id] %>/author/<%= params[:author] %>" >
+        <i class="fa fa-map-marker"></i> <span class="d-none d-lg-inline"><%= t('tag.show.maps') %></span>
       </a>
     </li>
-    <li class="disabled"<% if @node_type == "contributors" %> class="active"<% end %>>
-      <a href="#" rel="tooltip" title="Contributors can't be listed for tag searches with Authors" >
-        <i class="fa fa-user"></i> <span class="hidden-sm hidden-xs"><%= raw t('tag.show.contributors') %></span>
+    <li class="nav-item">
+      <a class="disabled nav-link"<% if @node_type == "contributors" %> class="active"<% end %> href="#" rel="tooltip" title="Contributors can't be listed for tag searches with Authors" >
+        <i class="fa fa-user"></i> <span class="d-none d-lg-inline"><%= raw t('tag.show.contributors') %></span>
       </a>
     </li>
   <% end %>

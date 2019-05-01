@@ -1,4 +1,4 @@
-<div class="col-md-9">
+<div class="col-lg-9">
   <% if params[:controller] == "search" %>
     <h3><%= raw t('notes.index.search_results_for', :params => params[:id]) %> <small>(<a href="/search/advanced/<%= params[:id] %>"><%= t('notes.index.advanced_search') %></a>)</h3>
     
@@ -18,21 +18,21 @@
   <% if params[:controller] == "notes" && (params[:action] == "popular" || params[:action] == "index" || params[:action] == "liked" || params[:action] == "recent") %>
 
     <%= render :partial => "notes/format_toggle" %>
-    <% if params[:action] == "liked" %><a style="margin-right:4px;" class="pull-right btn btn-default btn-sm" href="/feed/liked.rss"><i class="fa fa-rss"></i></a><% end %>
+    <% if params[:action] == "liked" %><a style="margin-right:4px;" class="float-right btn btn-outline-secondary btn-sm" href="/feed/liked.rss"><i class="fa fa-rss"></i></a><% end %>
 
     <ul class="nav nav-tabs" id="tab-bar">
-        <li<% if params[:action] == "recent" %> class="active"<% end %>>
-          <a href="/notes/recent"> <i class="fa fa-clock-o"></i><span class="hidden-sm hidden-xs"> <%= t('notes.index.recent') %></span></a>
+      <li class="nav-item">
+        <a class="nav-link <% if params[:action] == "recent" %> active <% end %>" href="/notes/recent"> <i class="fa fa-clock-o"></i><span class="hidden-sm hidden-xs"> <%= t('notes.index.recent') %></span></a>
         </li>
-        <li<% if params[:action] == "popular" %> class="active"<% end %>>
-          <a href="/notes/popular/"> <i class="fa fa-bolt"></i><span class="hidden-sm hidden-xs"> <%= t('notes.index.popular') %></span></a>
-          </li>
-        <li<% if params[:action] == "liked" %> class="active"<% end %>>
-          <a href="/notes/liked/"> <i class="fa fa-star-o"></i><span class="hidden-sm hidden-xs"> <%= t('notes.index.liked') %></span></a>
-        </li>
-        <li>
-          <a href="/wiki/"> <i class="fa fa-book"></i><span class="hidden-sm hidden-xs"> <%= raw t('notes.index.wiki_pages') %></span></a>
-        </li>
+      <li class="nav-item">
+        <a class="nav-link <% if params[:action] == "popular" %> active <% end %> " href="/notes/popular/"> <i class="fa fa-bolt"></i><span class="hidden-sm hidden-xs"> <%= t('notes.index.popular') %></span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link <% if params[:action] == "liked" %> active <% end %> " href="/notes/liked/"> <i class="fa fa-star-o"></i><span class="hidden-sm hidden-xs"> <%= t('notes.index.liked') %></span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/wiki/"> <i class="fa fa-book"></i><span class="hidden-sm hidden-xs"> <%= raw t('notes.index.wiki_pages') %></span></a>
+      </li>
     </ul>
 
   <% end %>
