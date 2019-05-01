@@ -20,10 +20,11 @@ class SearchTest < ApplicationSystemTestCase
 
     # we could see if an image gets created:
     # assert_no_difference 'Image.count' do
-    within('comment-form') do
       attach_file('image[photo]', 'public/images/pl.png')
-    end
     # end
+
+    #within('comment-form') do
+    #end
 
     assert_selector('.comment-form textarea#textinput', text: '![](/some/imageid.png)')
 
