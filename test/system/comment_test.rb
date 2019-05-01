@@ -8,7 +8,13 @@ class SearchTest < ApplicationSystemTestCase
   end
 
   test 'adding an image into a comment box' do
-    UserSession.create(users(:bob)) # log in
+
+    # log in
+    visit '/'
+    click_on 'Login'
+    fill_in("username-login", with: "Bob")
+    fill_in("password-signup", with: "secretive")
+    click_on "Log in"
 
     visit nodes(:blog).path
 
