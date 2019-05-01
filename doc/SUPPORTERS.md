@@ -96,8 +96,8 @@ This page is dedicated to enumerating the various organizations that have provid
 
 <br>
 
-[![Coveralls](../app/assets/images/logos/coveralls.png)](https://coveralls.io/)
-
+<!-- [![Coveralls](../app/assets/images/logos/coveralls.png)](https://coveralls.io/)
+ -->
 </div>
 </center>
 
