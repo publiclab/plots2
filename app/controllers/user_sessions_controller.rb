@@ -55,6 +55,10 @@ class UserSessionsController < ApplicationController
         # just log them in here
         @user = @identity.user
         @user_session = UserSession.create(@identity.user)
+        if session[:openid_return_to] # for openid login, redirects back to openid auth process
+          return_to = session[:openid_return_to]
+          session[:openid_return_to] = nil
+        end
         redirect_to return_to + hash_params, notice: "Signed in!"
       else # identity does not exist so we need to either create a user with identity OR link identity to existing user
         if User.where(email: auth["info"]["email"]).empty?
@@ -67,7 +71,11 @@ class UserSessionsController < ApplicationController
           @user = user
           # send key to user email
           PasswordResetMailer.reset_notify(user, key).deliver_now unless user.nil? # respond the same to both successes and failures; security
-          if params[:return_to] && params[:return_to].split('/')[0..3] == ["", "subscribe", "multiple", "tag"]
+          if session[:openid_return_to] # for openid login, redirects back to openid auth process
+            return_to = session[:openid_return_to]
+            session[:openid_return_to] = nil
+            redirect_to return_to + hash_params
+          elsif params[:return_to] && params[:return_to].split('/')[0..3] == ["", "subscribe", "multiple", "tag"]
             flash[:notice] = "You are now following '#{params[:return_to].split('/')[4]}'."
             subscribe_multiple_tag(params[:return_to].split('/')[4])
             redirect_to '/dashboard', notice: "You have successfully signed in. Please change your password using the link sent to you via e-mail."
@@ -87,7 +95,13 @@ class UserSessionsController < ApplicationController
           @user = user
           # log in them
           @user_session = UserSession.create(@identity.user)
-          redirect_to return_to + hash_params, notice: "Successfully linked to your account!"
+          if session[:openid_return_to] # for openid login, redirects back to openid auth process
+            return_to = session[:openid_return_to]
+            session[:openid_return_to] = nil
+            redirect_to return_to + hash_params
+          else
+            redirect_to return_to + hash_params, notice: "Successfully linked to your account!"
+          end
         end
       end
     end
@@ -112,11 +126,7 @@ class UserSessionsController < ApplicationController
       end
       if @user.nil?
         flash[:warning] = "There is nobody in our system by that name, are you sure you have the right username?"
-        if params[:return_to]
-          redirect_to params[:return_to]
-        else
-          redirect_to '/login'
-        end
+        redirect_to params[:return_to] || '/login'
       elsif params[:user_session].nil? || @user&.status == 1
         # an existing Rails user
         if params[:user_session].nil? || @user
