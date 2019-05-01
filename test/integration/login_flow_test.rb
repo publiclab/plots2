@@ -50,8 +50,7 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     assert_response :redirect
     # a success here would mean sent back to form with errors
     assert_redirected_to '/dashboard'
-    assert_equal 'Registration successful. Welcome to our community!You are now following \'arduino,games\'.',flash[:notice]
-
+    assert_equal 'Registration successful. Welcome to our community! You are now following \'arduino,games\'.', flash[:notice]
   end
 
   test 'should redirect to current page when logging in through the header login' do
