@@ -23,14 +23,13 @@ class PostTest < ApplicationSystemTestCase
     el.set("All about this interesting stuff")
 
     find('.ple-publish').click
-    # find('.ple-publish').click # may have to do it twice if it prompts for an image
 
     assert_page_reloads do
 
       assert_selector('h1', text: 'My new post')
       assert_selector('#content', text: "All about this interesting stuff")
-      assert_selector('#notice', 'User was successfully created.')
-  
+      assert_selector('.alert-success', 'Research note published. Get the word out on the discussion lists!')
+
     end
 
   end
