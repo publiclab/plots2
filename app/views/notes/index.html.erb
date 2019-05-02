@@ -30,9 +30,6 @@
       <li class="nav-item">
         <a class="nav-link <% if params[:action] == "liked" %> active <% end %> " href="/notes/liked/"> <i class="fa fa-star-o"></i><span class="hidden-sm hidden-xs"> <%= t('notes.index.liked') %></span></a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/wiki/"> <i class="fa fa-book"></i><span class="hidden-sm hidden-xs"> <%= raw t('notes.index.wiki_pages') %></span></a>
-      </li>
     </ul>
 
   <% end %>
