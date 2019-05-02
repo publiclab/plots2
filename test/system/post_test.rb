@@ -26,9 +26,9 @@ class PostTest < ApplicationSystemTestCase
 
     assert_page_reloads do
 
-      assert_selector('h1', text: 'My new post')
+      assert_selector('h1', text: "My new post")
       assert_selector('#content', text: "All about this interesting stuff")
-      assert_selector('.alert-success', 'Research note published. Get the word out on the discussion lists!')
+      assert_selector('.alert-success', text: "Research note published. Get the word out on the discussion lists!")
 
     end
 
