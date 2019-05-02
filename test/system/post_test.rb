@@ -22,10 +22,9 @@ class PostTest < ApplicationSystemTestCase
     el = find(".wk-wysiwyg") # rich text input
     el.set("All about this interesting stuff")
 
-    find('.ple-publish').click
-
     assert_page_reloads do
 
+      find('.ple-publish').click
       assert_selector('h1', text: "My new post")
       assert_selector('#content', text: "All about this interesting stuff")
       assert_selector('.alert-success', text: "Research note published. Get the word out on the discussion lists!")
