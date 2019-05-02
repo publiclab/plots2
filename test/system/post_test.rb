@@ -25,12 +25,34 @@ class PostTest < ApplicationSystemTestCase
     find('.ple-publish').click
     # find('.ple-publish').click # may have to do it twice if it prompts for an image
 
-    assert_response :redirect
-    follow_redirect!
+    assert_page_reloads do
 
-    assert_selector('h1', text: 'My new post')
-    assert_selector('#content', text: "All about this interesting stuff")
-    assert_selector('#notice', 'User was successfully created.')
+      assert_selector('h1', text: 'My new post')
+      assert_selector('#content', text: "All about this interesting stuff")
+      assert_selector('#notice', 'User was successfully created.')
+  
+    end
+
+  end
+
+  # Utility methods:
+  
+  def assert_page_reloads(message = "page should reload")
+    page.evaluate_script "document.body.classList.add('not-reloaded')"
+    yield
+    if has_selector? "body.not-reloaded"
+      assert false, message
+    end
+  end
+
+  def assert_page_does_not_reload(message = "page should not reload")
+    page.evaluate_script "document.body.classList.add('not-reloaded')"
+    yield
+    unless has_selector? "body.not-reloaded"
+      assert false, message
+    end
+    page.evaluate_script "document.body.classList.remove('not-reloaded')"
   end
   
 end
+
