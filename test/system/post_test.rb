@@ -27,8 +27,8 @@ class PostTest < ApplicationSystemTestCase
       find('.ple-publish').click
       assert_selector('h1', text: "My new post")
       assert_selector('#content', text: "All about this interesting stuff")
-      assert_selector('.alert-success', text: "Research note published. Get the word out on the discussion lists!")
-
+      assert_selector('.alert-success', text: "×\nSuccess! Thank you for contributing open research, and thanks for your patience while your post is approved by community moderators and we'll email you when it is published. In the meantime, if you have more to contribute, feel free to do so.")
+      
     end
 
   end
