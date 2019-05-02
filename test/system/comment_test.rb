@@ -15,12 +15,14 @@ class SearchTest < ApplicationSystemTestCase
     fill_in("username-login", with: "Bob")
     fill_in("password-signup", with: "secretive")
     click_on "Log in"
+    assert_selector ('h1', text: "Dashboard")
 
     visit nodes(:blog).path
 
     # we could see if an image gets created:
     # assert_no_difference 'Image.count' do
-      attach_file('image[photo]', 'public/images/pl.png')
+      attach_file('#fileinput', 'public/images/pl.png')
+      #attach_file('image[photo]', 'public/images/pl.png')
     # end
 
     #within('comment-form') do
