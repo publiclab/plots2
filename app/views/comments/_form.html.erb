@@ -52,7 +52,9 @@
                   <i class="fa fa-upload"></i>
                   <a><%= t('comments._form.upload_image') %></a>
                 </span>
-              </p>
+              </label>
+            </span>
+          </p>
 
             </div>
           </div>
@@ -66,8 +68,15 @@
             $D = {
               uid: <%= current_user.uid if current_user %>,
               type: 'comment'
+            };
+
+            function handleClick() {
+                $D.selected = $(event.target.closest('div.comment-form-wrapper'));
+                console.log($D.selected);
+                $E.refresh();
             }
-              $('#input_label').click(function(e){
+
+            $('#input_label').click(function(e){
                 $E.initialize({});
             });
           </script>
@@ -88,7 +97,7 @@
               </a>
               <a class="btn btn-outline-secondary" onClick="$('#c<%= comment.cid %>show').toggle();$('#c<%= comment.cid %>edit').toggle()"><%= t('comments._form.cancel') %></a>
             <% else %>
-              <a class="btn btn-outline-secondary preview-btn>" id="post_comment" data-previewing-text="Hide Preview" onClick="$E.toggle_preview('post_comment')"><%= t('comments._form.preview') %></a>
+              <a class="btn btn-outline-secondary preview-btn>" id="post_comment" data-previewing-text="Hide Preview" onClick="handleClick();$E.toggle_preview()"><%= t('comments._form.preview') %></a>
             <% end %>
 
             <span style="color:#888;"> &nbsp;
