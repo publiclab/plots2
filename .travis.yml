@@ -33,6 +33,7 @@ script:
   - docker-compose exec web bash -c "mv chromedriver /usr/local/bin/chromedriver"
   - docker-compose exec web bash -c "chmod +x /usr/local/bin/chromedriver"
   - docker-compose exec web bash -c 'echo "$GOOGLE_APPLICATION_CREDENTIALS_JSON" > /tmp/credentials.json' # needs to be a path to a json file, so we shuffle...
+  - docker-compose exec web bash -c 'echo $JSON_TEST'
   - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true rake test:all"
   - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true rails test -d"
   - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true rails test:system"
