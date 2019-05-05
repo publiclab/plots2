@@ -23,7 +23,7 @@ install:
   - docker-compose exec web bash -c "rake db:setup"
   - docker-compose exec web bash -c "rake db:migrate"
   - docker-compose exec web bash -c "rake assets:precompile"
-  - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then bash -c "docker-compose exec web gem install danger danger-junit"; fi'
+  - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then bash -c "docker-compose exec web gem install danger danger-junit google-cloud-storage"; fi'
 
 script:
   - docker-compose exec web bash -c "wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
