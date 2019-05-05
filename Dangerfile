@@ -63,11 +63,7 @@ rescue => ex
 end
 
 # Store screenshots in Google Cloud
-# https://github.com/googleapis/google-cloud-ruby/blob/master/AUTHENTICATION.md#environment-variables
-#system("gem install google-cloud-storage") # this doesn't seem to work
-#system("bundle install") # on suggestion from https://github.com/googleapis/google-cloud-ruby/issues/3117
 require "google/cloud/storage"
-
 storage = Google::Cloud::Storage.new project_id: "public-lab"
 bucket  = storage.bucket "plots2-screenshots"
 
