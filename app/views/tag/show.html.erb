@@ -10,10 +10,10 @@
   <% end %>
 
   <%= render :partial => "notes/format_toggle" if @node_type == "note" %>
-  
+
   <%= render :partial => "tag/show/user_controls" %>
 
-  <% if current_user && current_user.role == 'admin' %>
+  <% if logged_in_as(['admin']) %>
     <hr />
     <p><a class="btn btn-outline-secondary btn-lg" onClick="$('#add_parent').toggle();">Add tag parent</a> (admin only)</p>
     <div id="add_parent" style="display:none;">
@@ -36,7 +36,7 @@
     <p> <%= render partial: 'tag/subscribe_button', locals:{tags: @related_tags } %></p>
   <% end %>
   <%= render partial: 'tag/show/nav_tabs' %>
-  
+
   <p style="padding-top:8px;">
   <a class="btn btn-sm btn-outline-secondary" href="?order=views"><i class="fa fa-eye"></i> by views</a>
   <a class="btn btn-sm btn-outline-secondary" href="?order=likes"><i class="fa fa-star"></i> by likes</a>

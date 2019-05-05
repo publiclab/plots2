@@ -48,7 +48,7 @@ class ApplicationController < ActionController::Base
       @notes = @notes.where('node.nid != (?)', @node.nid) if @node
       @notes = @notes.where('node_revisions.status = 1 AND node.nid NOT IN (?)', hidden_nids) unless hidden_nids.empty?
 
-      @notes = if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+      @notes = if logged_in_as(['admin', 'moderator'])
                  @notes.where('(node.status = 1 OR node.status = 4)')
                elsif current_user
                  @notes.where('(node.status = 1 OR (node.status = 4 AND node.uid = ?))', current_user.uid)
@@ -141,16 +141,16 @@ class ApplicationController < ActionController::Base
   end
 
   def alert_and_redirect_moderated
-    if @node.author.status == User::Status::BANNED && !(current_user && (current_user.role == 'admin' || current_user.role == 'moderator'))
+    if @node.author.status == User::Status::BANNED && !(logged_in_as(['admin', 'moderator']))
       flash[:error] = I18n.t('application_controller.author_has_been_banned')
       redirect_to '/'
-    elsif @node.status == 4 && (current_user && (current_user.role == 'admin' || current_user.role == 'moderator'))
+    elsif @node.status == 4 && (logged_in_as(['admin', 'moderator']))
       flash.now[:warning] = "First-time poster <a href='/profile/#{@node.author.name}'>#{@node.author.name}</a> submitted this #{time_ago_in_words(@node.created_at)} ago and it has not yet been approved by a moderator. <a class='btn btn-default btn-sm' href='/moderate/publish/#{@node.id}'>Approve</a> <a class='btn btn-default btn-sm' href='/moderate/spam/#{@node.id}'>Spam</a>"
     elsif @node.status == 4 && (current_user && current_user.id == @node.author.id) && !flash[:first_time_post]
       flash.now[:warning] = "Thank you for contributing open research, and thanks for your patience while your post is approved by <a href='/wiki/moderation'>community moderators</a> and we'll email you when it is published. In the meantime, if you have more to contribute, feel free to do so."
     elsif @node.status == 3 && (current_user && (current_user.is_coauthor?(@node) || current_user.can_moderate?)) && !flash[:first_time_post]
       flash.now[:warning] = "This is a draft note. Once you're ready, click <a class='btn btn-success btn-xs' href='/notes/publish_draft/#{@node.id}'>Publish Draft</a> to make it public. You can share it with collaborators using this private link <a href='#{@node.draft_url}'>#{@node.draft_url}</a>"
-    elsif @node.status != 1 && @node.status != 3 && !(current_user && (current_user.role == 'admin' || current_user.role == 'moderator'))
+    elsif @node.status != 1 && @node.status != 3 && !(logged_in_as(['admin', 'moderator']))
       # if it's spam or a draft
       # no notification; don't let people easily fish for existing draft titles; we should try to 404 it
       redirect_to '/'

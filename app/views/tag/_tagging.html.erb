@@ -27,7 +27,7 @@
 $(function () {
   $('#tags [data-toggle="tooltip"]').tooltip()
 })
-  
+
 var pops = $("[data-toggle=popover]");
 $(".label").on("click", function(e){
     if(e.target === this){
@@ -49,7 +49,7 @@ $(".label").on("click", function(e){
 
 <% parent ||= nil %>
 
-<% if current_user && (parent != :profile || (current_user.id == user.id || current_user.role == "admin")) %>
+<% if current_user && (parent != :profile || (current_user.id == user.id || logged_in_as(['admin']))) %>
 <% url = url || "/tag/create/" + @node.id.to_s %>
 
 <form id="tagform" class="form" data-remote="true" action="<%= url %>">

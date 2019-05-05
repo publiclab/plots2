@@ -5,7 +5,7 @@
       <th><%= t('users.list.comment') %></th>
       <th><%= t('users.list.last_activity') %></th>
 
-      <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") %>
+      <% if logged_in_as(['admin', 'moderator']) %>
       <th><%= t('users.list.moderation') %></th>
       <% else %>
       <th><%= t('users.list.moderation') %></th>
@@ -15,7 +15,7 @@
   <% comments.each do |comment| %>
    <tr id="c<% comment.cid %>">
      <td>
-      "<%= raw strip_tags(sanitize(RDiscount.new(comment.comment).to_html)).truncate(150) %>" | 
+      "<%= raw strip_tags(sanitize(RDiscount.new(comment.comment).to_html)).truncate(150) %>" |
       <% if comment.parent %>
         <a href="<%= comment.parent.path %>#c<%= comment.cid %>"><%= t('home._comments.read_more') %> &raquo;</a>
       <% end %>

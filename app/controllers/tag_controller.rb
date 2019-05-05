@@ -296,7 +296,7 @@ class TagController < ApplicationController
           @output[:errors] << I18n.t('tag_controller.cant_be_empty')
         end
 
-      elsif node.can_tag(tagname, current_user) === true || current_user.role == 'admin' # || current_user.role == "moderator"
+      elsif node.can_tag(tagname, current_user) === true || logged_in_as(['admin'])
         saved, tag = node.add_tag(tagname.strip, current_user)
         if tagname.include?(":") && tagname.split(':').length == 2
           if tagname.split(':')[0] == "barnstar"
@@ -345,7 +345,7 @@ class TagController < ApplicationController
     node_tag = NodeTag.where(nid: params[:nid], tid: params[:tid]).first
     node = Node.where(nid: params[:nid]).first
     # only admins, mods, and tag authors can delete other peoples' tags
-    if node_tag.uid == current_user.uid || current_user.role == 'admin' || current_user.role == 'moderator' || node.uid == current_user.uid
+    if node_tag.uid == current_user.uid || logged_in_as(['admin', 'moderator']) || node.uid == current_user.uid
 
       tag = Tag.joins(:node_tag)
                    .select('term_data.name')
@@ -462,7 +462,7 @@ class TagController < ApplicationController
   end
 
   def add_parent
-    if current_user.role == 'admin'
+    if logged_in_as(['admin'])
       @tag = Tag.find_by(name: params[:name])
       @tag.update_attribute('parent', params[:parent])
       if @tag.save

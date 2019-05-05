@@ -77,7 +77,7 @@
         <% end %>
       <% end %>
 
-      <% if current_user && current_user.role == "admin" %>
+      <% if logged_in_as(['admin']) %>
         <li class="nav-item" rel="tooltip" title="Delete this wiki page." data-placement="top">
           <%= link_to url_for(action: :delete,id: @node.id),method: :delete, data: {confirm: I18n.t('wiki.show.are_you_sure_delete', path: @node.path)}, class: "nav-link" do %>
             <i class="fa fa-trash"></i>
