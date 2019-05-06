@@ -25,6 +25,9 @@ It was originally created by Caroline Hadilaksono: http://www.hadilaksono.com
 
 }
 
+body{
+    padding-top: 80px;
+}
 
 h1,h2,h3 {
   font-family:"Junction Light", lucida grande,lucida sans console,sans-serif;
@@ -59,7 +62,7 @@ h4,h5,h6, h1 small, h3 small {
 .pl-content p img,
 #comments p img,
 #answer-0-comment p img,
-.pl-content p iframe {
+.pl-content p {
   max-width: 100%;
   border: none;
 }
@@ -96,12 +99,26 @@ a .fa-white,
   display:none;
 }
 
+#pl_pad {
+    width:300%;
+}
+
+@media (max-width:992px) {
+    #pl_pad {
+        width:250%;
+    }
+}
+
 @media (max-width:400px) {
   .hidden-tiny {
     display:none;
   }
   .visible-tiny {
     display:inline;
+  }
+
+  #pl_pad {
+      width: 75%;
   }
 }
 
@@ -112,12 +129,10 @@ a .fa-white,
   .visible-tiny {
     display:none;
   }
+
 }
 
 @media (max-width: 768px) {
-    .navbar-header {
-        float: none;
-    }
     .navbar-left,.navbar-right {
         float: none !important;
     }
@@ -132,9 +147,9 @@ a .fa-white,
         top: 0;
         border-width: 0 0 1px;
     }
-    .navbar-collapse.collapse {
+    /*.navbar-collapse.collapse {
         display: none!important;
-    }
+    }*/
     .navbar-nav {
         float: none!important;
         margin-top: 7.5px;
@@ -152,9 +167,11 @@ a .fa-white,
     #md-ham {
         display: none;
     }
+    #pl_pad {
+        width:150%;
+    }
 }
 
-body { padding-top: 70px; }
 
 #header .collapse.in .hidden-xs,
 #header .collapse.in .hidden-sm,
@@ -170,7 +187,7 @@ body { padding-top: 70px; }
 
 #header .navbar-brand {
   color: white;
-  padding-top: 19px;
+  /*padding-top: 19px;*/
   font-family: "Junction Light", lucida grande,lucida sans console,sans-serif;
   font-size: 22px;
 }
@@ -186,6 +203,9 @@ body { padding-top: 70px; }
 @media (max-width: 340px) {
   #brand { display:none; }
   #header .brand-compact { display:inline; }
+  #pl_pad {
+      width: 75%;
+  }
 }
 
 @media (min-width: 340px) {
@@ -193,7 +213,7 @@ body { padding-top: 70px; }
   #header .brand-compact { display:none; }
 }
 
-.navbar-inverse .navbar-nav > li > a {
+.navbar-nav > li > a {
   color: #aaa;
 }
 
@@ -471,6 +491,9 @@ div.note.moderated h4 {
 .back-to-top i {
 
   font-size: 60px;
+  position: fixed;
+  bottom: 40px;
+  right: 50px;
 
 }
 

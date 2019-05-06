@@ -22,12 +22,12 @@
         </td>
         <td><div class="btn-toolbar" style="margin:0;">
           <div class="btn-group">
-            <a class="btn btn-default btn-lg <% if comment.status == 0 %>btn-success<% else %>disabled<% end %> publish" href="/admin/publish_comment/<%= comment.id %>"><i class="fa fa-ok-circle fa fa-white"></i> Publish</a>
+            <a class="btn btn-outline-secondary btn-lg <% if comment.status == 0 %>btn-success<% else %>disabled<% end %> publish" href="/admin/publish_comment/<%= comment.id %>"><i class="fa fa-ok-circle fa fa-white"></i> Publish</a>
 
             <% if comment.author.status == 0 %>
-                <a class="btn btn-default btn-lg ban a<%= comment.author.id %>" href="/ban/<%= comment.author.id %>">Ban</a>
+                <a class="btn btn-outline-secondary btn-lg ban a<%= comment.author.id %>" href="/ban/<%= comment.author.id %>">Ban</a>
             <% elsif comment.author.status == 1 %>
-                <a class="btn btn-default btn-lg unban a-unban<%= comment.author.id %>" href="/unban/<%= comment.author.id %>">Unban</a>
+                <a class="btn btn-outline-seconday btn-lg unban a-unban<%= comment.author.id %>" href="/unban/<%= comment.author.id %>">Unban</a>
             <% end %>
           </div>
         </div></td>

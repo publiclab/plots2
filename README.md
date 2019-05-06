@@ -32,16 +32,17 @@ Some key features include:
     - [Simple Installation with Cloud9](https://github.com/publiclab/plots2/wiki/Simple-Installation-for-Cloud9)
     - [Standard Installation](#standard-installation)
 6. [SSL in Development](#ssl-in-development)
-7. [Testing](#testing)
-8. [API](https://github.com/publiclab/plots2/blob/master/doc/API.md)
-9. [Bundle Exec](#bundle-exec)
-10. [Reply-by-email](#reply-by-email)
-11. [Bugs and Support](#bugs-and-support)
-12. [Recaptcha](#recaptcha)
-13. [Internationalization](#internationalization)
-14. [Security](#security)
-15. [Developers](#developers)
-16. [First Time?](#first-time)
+7. [Login](#login)
+8. [Testing](#testing)
+9. [API](https://github.com/publiclab/plots2/blob/master/doc/API.md)
+10. [Bundle Exec](#bundle-exec)
+11. [Reply-by-email](#reply-by-email)
+12. [Bugs and Support](#bugs-and-support)
+13. [Recaptcha](#recaptcha)
+14. [Internationalization](#internationalization)
+15. [Security](#security)
+16. [Developers](#developers)
+17. [First Time?](#first-time)
 
 
 ****
@@ -108,13 +109,22 @@ We, at Public Lab use [openssl](https://github.com/ruby/openssl) gem to provide 
 You can also use http (unsecure connection) on the port number 3000 by going to 'http://localhost:3000'. We use port number 3001 for 'https' and port number 3000 for 'http' connection.
 Secure connection is needed for OAuth authentication etc.
 
+## Login
+
+Once you complete the installation, use any of these credentials to login in to the PL website in your local development / testing environment to gain additional permissions for only logged in users. Each one comes with its own set of permissions, but besides that the experience across them is pretty much the same.
+
+**username**: `admin`, `moderator`, or `user` 
+
+**password**: `password`
+
+
 ## Testing
 
 Click [here](https://github.com/publiclab/plots2/blob/master/doc/TESTING.md) for a comprehensive description of testing.
 
 ## How to start and modify cron jobs
 
-1. We are using whenever gem to schedule cron jobs. [Whenever](https://github.com/javan/whenever)
+1. We are using [Whenever](https://github.com/javan/whenever) gem to schedule cron jobs.
 2. All the cron jobs are written in easy ruby syntax using this gem and can be found in config/schedule.rb.
 2. Go to the config/schedule.rb file to create and modify the cron jobs.
 3. [Click here](https://github.com/javan/whenever) to know about how to write cron jobs.
@@ -182,5 +192,13 @@ New to open source/free software? Here is a selection of issues we've made **esp
 
 [Here](https://publiclab.org/notes/warren/11-22-2017/use-git-and-github-to-contribute-and-improve-public-lab-software) is a link to our Git workflow.
 
-## Let the code be with you. :heart:
+## Let the code be with you. 
 ### Happy opensourcing. :smile:
+
+<hr>
+
+<center>
+
+#### [Platforms that :heart: OSS](./doc/SUPPORTERS.md)
+
+</center>

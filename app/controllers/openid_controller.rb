@@ -23,6 +23,7 @@ class OpenidController < ApplicationController
         'openid.response_nonce',
         'openid.sig', 'openid.signed',
         'openid.sreg.email',
+        'openid.sreg.fullname', # fullname contains both status and role
         'openid.sreg.nickname',
         'return_to', 'openid.claimed_id',
         'openid.identity', 'openid.mode',
@@ -51,28 +52,47 @@ class OpenidController < ApplicationController
       return
     end
 
+    requested_credentials = ''
+    requested_username = ''
+    provider = nil
+
+    if request.env['ORIGINAL_FULLPATH']&.split('?')[1]
+      request.env['ORIGINAL_FULLPATH'].split('?')[1].split('&').each do |param|
+        requested_credentials = param.split('=')[1].split('%2F') if param.split('=')[0] == 'openid.claimed_id'
+      end
+    end
+
+    # ORIGINAL_FULLPATH will be like https://publiclab.org/openid/:username(/:provider)
+    # so we need to get the username for sure and the provider if it exists
+    # requested_credentials contains array of the ORIGINAL_FULLPATH striped with '/' symbol
+    if requested_credentials && requested_credentials[-3] == 'openid'
+      requested_username = requested_credentials[-2]
+      provider = requested_credentials[-1]
+    else
+      provider = nil
+      requested_username = requested_credentials[-1]
+    end
+
     if current_user.nil? && params['openid.mode'] != 'check_authentication'
       session[:openid_return_to] = request.env['ORIGINAL_FULLPATH']
       flash[:warning] = 'Please log in first.'
-      redirect_to '/login'
+      if provider
+        # authentication through the provider
+        redirect_to '/auth/' + provider
+      else
+        # form based authentication
+        redirect_to '/login'
+      end
       return
     else
 
       if oidreq
-
-        requested_username = ''
-        if request.env['ORIGINAL_FULLPATH']&.split('?')[1]
-          request.env['ORIGINAL_FULLPATH'].split('?')[1].split('&').each do |param|
-            requested_username = param.split('=')[1].split('%2F').last if param.split('=')[0] == 'openid.claimed_id'
-          end
-        end
 
         if current_user && !requested_username.casecmp(current_user.username.downcase).zero?
           flash[:error] = "You are requesting access to an account that's not yours. Please <a href='/logout'>log out</a> and use the correct account, or <a href='" + oidreq.trust_root + "'>try to login with the correct username</a>"
           redirect_to '/dashboard'
         else
           oidresp = nil
-
           if oidreq.is_a?(CheckIDRequest)
 
             identity = oidreq.identity
@@ -84,7 +104,13 @@ class OpenidController < ApplicationController
                 # The user hasn't logged in.
                 # show_decision_page(oidreq) # this doesnt make sense... it was in the example though
                 session[:openid_return_to] = request.env['ORIGINAL_FULLPATH']
-                redirect_to '/login'
+                if provider
+                  # provider based authentication
+                  redirect_to '/auth/' + provider
+                else
+                  # form based authentication
+                  redirect_to '/login'
+                end
               else
                 # Else, set the identity to the one the user is using.
                 identity = url_for_user
@@ -107,7 +133,9 @@ class OpenidController < ApplicationController
               oidresp = oidreq.answer(false, server_url)
 
             else
-              show_decision_page(oidreq)
+              session[:last_oidreq] = oidreq
+              @oidreq = oidreq
+              redirect_to action: 'decision'
               return
             end
 
@@ -119,7 +147,13 @@ class OpenidController < ApplicationController
         end
       else
         session[:openid_return_to] = request.env['ORIGINAL_FULLPATH']
-        redirect_to '/login'
+        if provider
+          # provider based authentication
+          redirect_to '/auth/' + provider
+        else
+          # form based authentication
+          redirect_to '/login'
+        end
       end
     end
   end
@@ -133,7 +167,7 @@ class OpenidController < ApplicationController
     end
   end
 
-  def show_decision_page(oidreq, message = 'The site shown below is asking to use your PublicLab.org account to log you in. Do you trust this site?')
+  def show_decision_page(oidreq, message = '')
     session[:last_oidreq] = oidreq
     @oidreq = oidreq
 
@@ -191,39 +225,32 @@ class OpenidController < ApplicationController
   def decision
     oidreq = session[:last_oidreq]
     session[:last_oidreq] = nil
-
-    if params[:yes].nil?
-      redirect_to oidreq.cancel_url
-      return
+    id_to_send = params[:id_to_send]
+    identity = oidreq&.identity
+    if oidreq.id_select
+      if id_to_send && (id_to_send != '')
+        session[:username] = id_to_send
+        session[:approvals] = []
+        identity = url_for_user
+      else
+        msg = 'You must enter a username to in order to send ' \
+              'an identifier to the Relying Party.'
+        show_decision_page(oidreq, msg)
+        return
+      end
     else
-      id_to_send = params[:id_to_send]
-
-      identity = oidreq&.identity
-      if oidreq.id_select
-        if id_to_send && (id_to_send != '')
-          session[:username] = id_to_send
-          session[:approvals] = []
-          identity = url_for_user
-        else
-          msg = 'You must enter a username to in order to send ' \
-                'an identifier to the Relying Party.'
-          show_decision_page(oidreq, msg)
-          return
-        end
-      else
-        session[:username] = current_user.username
-      end
-
-      if session[:approvals]
-        session[:approvals] << oidreq.trust_root
-      else
-        session[:approvals] = [oidreq.trust_root]
-      end
-      oidresp = oidreq.answer(true, nil, identity)
-      add_sreg(oidreq, oidresp)
-      add_pape(oidreq, oidresp)
-      return render_response(oidresp)
+      session[:username] = current_user.username
     end
+
+    if session[:approvals]
+      session[:approvals] << oidreq.trust_root
+    else
+      session[:approvals] = [oidreq.trust_root]
+    end
+    oidresp = oidreq.answer(true, nil, identity)
+    add_sreg(oidreq, oidresp)
+    add_pape(oidreq, oidresp)
+    return render_response(oidresp)
   end
 
   protected
@@ -284,7 +311,8 @@ class OpenidController < ApplicationController
     # it.
     sreg_data = {
       'nickname' => current_user.username, # session[:username],
-      'email' => current_user.email
+      'email' => current_user.email,
+      'fullname' => "status=" + current_user.status.to_s + ":role=" + current_user.role # fullname contains both status and role
     }
 
     sregresp = OpenID::SReg::Response.extract_response(sregreq, sreg_data)

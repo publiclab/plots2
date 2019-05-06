@@ -1,7 +1,30 @@
 <div>
   <div style="text-align:center;">
-  <div class="jumbotron">
-    <h2> Blog 2 is here <h2>
+  <div class="blog2-header"  style="margin-top: 10px;">
+    <p>Public lab logo (size=65x65)</p>
+    <h3><b>The Public Lab Blog</b></h3>
+    <hr>
+    <p>
+      <a href="/wiki/blog">ABOUT</a>
+      <a href="/research">RESEARCH</a>
+      <a href="/tools">METHODS</a>
+      <% if current_user %>
+        <a href="/feed/tag/<%= params[:id] %>.rss">RSS <i style="color:#696969;"class="fa fa-rss"></i></a>
+        <% if current_user.following(params[:id]) %>
+        <a rel="tooltip" title="Click to unfollow" href="/unsubscribe/tag/<%= params[:id] %>">Following <i style="color:#696969;" class="fa fa-user-plus" aria-hidden="true"></i></a>
+        <% end %>
+      <% end %>
+    </p>
+    <br>
+    <% if current_user %>
+      <% if !current_user.following(params[:id]) %>
+      <div class="alert alert-success" role="alert">
+      Want to get updates for new blog posts? <a class="btn btn-default btn-sm" href="/subscribe/tag/<%= params[:id] %>">
+      <b>Click here to subscribe!</a>
+      </div>
+      <br>
+      <% end %>
+    <% end %>
   </div>
   </div>
   <div class="row">
@@ -10,20 +33,20 @@
      This is basic html layout
      </h3>
      <hr>
-    <p>
+    <p class="more">
     Here is the lorem ipsum content
     <br>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim 
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex 
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
       ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
       velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-      cupidatat non proident, sunt in culpa qui officia deserunt mollit anim 
+      cupidatat non proident, sunt in culpa qui officia deserunt mollit anim
       id est laborum.
     </p>
     </div>
     <div class="col-md-3">
-      <div class="row"> 
+      <div class="row">
         <div clas="col-md-12">
           <div class="jumbotron" id="blog-post">
             <div class="recent-heading">
@@ -37,7 +60,7 @@
               <li>Dummy Text 3 </li>
               <li>Dummy Text 4 </li>
               <li>Dummy Text 5 </li>
-              <li>Dummy Text 6 </li>      
+              <li>Dummy Text 6 </li>
               </ul>
             </div>
           </div>
@@ -56,7 +79,7 @@
               <li>Dummy Text 3 </li>
               <li>Dummy Text 4 </li>
               <li>Dummy Text 5 </li>
-              <li>Dummy Text 6 </li>      
+              <li>Dummy Text 6 </li>
               </ul>
             </div>
           </div>
@@ -72,6 +95,12 @@
   margin-left: 2em;
   margin-right: 2em;
 }
+p a{
+    color:#696969;
+    margin-left:3em;
+  }
+
+
 .blog-content {
   margin-right:1em;
   margin-left:1em;
@@ -80,4 +109,42 @@
   margin-right:1em;
   margin-left:1em;
 }
+.more-content span {
+    display: none;
+}
+.more-link {
+    width: 150px;
+}
+.more-button{
+  text-align: center;
+  margin: 20px;
+}
 </style>
+<script>
+  $(document).ready(function() {
+    var showChar = 300;  // How many characters are shown by default
+    var moretext = "Read more";
+    var lesstext = "Read less";
+    $('.more').each(function() {
+        var content = $(this).html();
+        if(content.length > showChar) {
+            var c = content.substr(0, showChar);
+            var h = content.substr(showChar, content.length - showChar);
+            var html = c + '<span class="moreellipses">' + '</span><span class="more-content"><span>' + h + '</span>&nbsp;&nbsp;<div class="more-button"><a class="btn btn-default more-link">' + moretext + '</a></div></span>';
+            $(this).html(html);
+        }
+    });
+    $(".more-link").click(function(){
+        if($(this).hasClass("less")) {
+            $(this).removeClass("less");
+            $(this).html(moretext);
+        } else {
+            $(this).addClass("less");
+            $(this).html(lesstext);
+        }
+        $(this).parent().prev().toggle();
+        $(this).prev().toggle();
+        return false;
+    });
+});
+</script>

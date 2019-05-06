@@ -25,4 +25,4 @@
 <% end %>
 <% end %>
 </div>
-<div class="text-center"><%= will_paginate @nodes, :renderer => BootstrapPagination::Rails unless @unpaginated %></div>
+<div class="text-center"><%= will_paginate @nodes, renderer: WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated %></div>
