@@ -62,6 +62,10 @@ rescue => ex
   message ex.inspect # view the entire error output in the log
 end
 
+# testing...
+include "json"
+message JSON.parse(ENV['JSON_TEST'])
+
 # Store screenshots in Google Cloud
 require "google/cloud/storage"
 storage = Google::Cloud::Storage.new project_id: "public-lab"
