@@ -57,7 +57,7 @@
       <% if comment.comment_via == 1 %>
         <a href="#" onclick="return false;" class="btn btn-outline-secondary btn-sm"><i class="fa fa-envelope"></i></a>
       <% end %>
-      <% if params[:controller] == "questions" && current_user && (current_user.role == "admin" || current_user.role == "moderator" || comment.uid == current_user.uid) %>
+      <% if params[:controller] == "questions" && logged_in_as(['admin', 'moderator']) || (current_user && (comment.uid == current_user.uid)) %>
         <a class="btn btn-outline-secondary btn-sm" id="comment-<%= comment.id %>-reorder-btn" data-remote="true" data-confirm="Are you sure? <% if current_user && comment.uid != current_user.uid %>Please exercise caution in promoting others' comments; this cannot be undone.<% end %>" rel="tooltip" title="<%= t('questions._comment.promotion') %>" data-placement="left" href="/comment/make_answer/<%= comment.id %>"><i class="fa fa-plus"></i></a>
       <% end %>
       <% if current_user &. can_moderate? %>
@@ -69,7 +69,7 @@
           <i class="fa fa-flag"></i>
         </a>
       <% end %>
-      <% if current_user && (current_user.role == "admin" || current_user.role == "moderator" || comment.uid == current_user.uid || comment.parent.uid == current_user.uid) %>
+      <% if logged_in_as(['admin', 'moderator']) || (current_user && (comment.uid == current_user.uid || comment.parent.uid == current_user.uid)) %>
         <a rel="tooltip" title="Delete comment" class="btn btn-outline-secondary btn-sm" id="c<%= comment.cid %>delete-btn">
           <i class='icon fa fa-trash'></i>
         </a>

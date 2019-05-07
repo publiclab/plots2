@@ -6,7 +6,7 @@
     <small>
       <a href="/p/<%= @profile_user.username %>"><i class="fa fa-link"></i></a>
       <%= @profile_user.note_count %><a href='/notes/author/<%= @profile_user.name %>'> research notes</a> and <%= @profile_user.revisions.count %> wiki edits
-      <% if current_user && current_user.role == "admin" %> | <%= @profile_user.email %><% end %>
+      <% if logged_in_as(['admin']) %> | <%= @profile_user.email %><% end %>
       <span style = "font-size:24px;"><small> | <%= raw t('users.profile.joined_time_ago', :time_ago => distance_of_time_in_words(@profile_user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' })) %></small></span>
       <% if @profile_user.role == "moderator" %> | <i class="fa fa-certificate"></i> <%= t('users.profile.moderator') %><% end %>
       <% if @profile_user.role == "admin" %> | <i class="fa fa-certificate"></i> <%= t('users.profile.admin') %><% end %>
@@ -160,35 +160,35 @@
     <% end %>
   <% end %>
 
-  <% if @profile_user && current_user && current_user.role == "admin" && @profile_user.role != "admin" %>
+  <% if @profile_user && logged_in_as(['admin']) && @profile_user.role != "admin" %>
     <a href="/admin/promote/admin/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-certificate"></i> <%= t('users.profile.make_admin') %></a>
   <% end %>
 
-  <% if @profile_user && current_user && current_user.role == "admin" && @profile_user.role == "moderator" %>
+  <% if @profile_user && logged_in_as(['admin']) && @profile_user.role == "moderator" %>
     <a href="/admin/demote/basic/<%= @profile_user.id %>" class="btn btn-default btn-block"><i class="fa fa-ban"></i> <%= t('users.profile.revert_to_basic_user') %></a>
   <% end %>
 
-  <% if @profile_user && current_user && (current_user.role == "admin" || current_user.role == "moderator") && @profile_user.role == "basic" %>
+  <% if @profile_user && logged_in_as(['admin', 'moderator']) && @profile_user.role == "basic" %>
     <a href="/admin/promote/moderator/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-certificate"></i> <%= t('users.profile.make_moderator') %></a>
   <% end %>
 
-  <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") && @profile_user.status == 0 %>
+  <% if logged_in_as(['admin', 'moderator']) && @profile_user.status == 0 %>
     <a href="/unban/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-thumbs-up"></i> <%= t('users.profile.unban_user') %></a>
-  <% elsif current_user && (current_user.role == "admin" || current_user.role == "moderator") && @profile_user.status == 1 %>
+  <% elsif logged_in_as(['admin', 'moderator']) && @profile_user.status == 1 %>
     <a data-confirm="<%= t('users.profile.confirm_ban_user') %>" href="/ban/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-ban"></i> <%= t('users.profile.ban_user') %></a>
   <% end %>
 
-  <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") && @profile_user.status == 5 %>
+  <% if logged_in_as(['admin', 'moderator']) && @profile_user.status == 5 %>
     <a href="/admin/unmoderate/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-thumbs-up"></i> <%= t('users.profile.unmoderate_user') %></a>
-  <% elsif current_user && (current_user.role == "admin" || current_user.role == "moderator") && @profile_user.status == 1 %>
+  <% elsif logged_in_as(['admin', 'moderator']) && @profile_user.status == 1 %>
     <a rel="tooltip" title="Prevent author from logging in, without hiding their work or profile." data-confirm="<%= t('users.profile.confirm_moderate_user') %>" href="/admin/moderate/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-ban"></i> <%= t('users.profile.moderate_user') %></a>
   <% end %>
 
-  <% if @profile_user && !@profile_user.reset_key.nil? && current_user && current_user.role == "admin" %>
+  <% if @profile_user && !@profile_user.reset_key.nil? && logged_in_as(['admin']) %>
     <a id="user-reset-key" href="/reset/key/<%= @profile_user.reset_key %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-info-sign"></i> <%= t('users.profile.reset_user') %>: <%= @profile_user.reset_key %></a>
   <% end %>
 
-  <% if @profile_user && @profile_user.reset_key.nil? && current_user && (current_user.role == "admin" || current_user.role == "moderator") && (@profile_user.role == "basic" || @profile_user.role == "moderator") %>
+  <% if @profile_user && @profile_user.reset_key.nil? && logged_in_as(['admin', 'moderator']) && (@profile_user.role == "basic" || @profile_user.role == "moderator") %>
     <a href="/admin/force/reset/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block">Reset User Password</a>
   <% end %>
 

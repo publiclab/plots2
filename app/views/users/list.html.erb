@@ -5,7 +5,7 @@
 			<p> This page shows a list of all Public Lab contributors and is sorted by those who have posted most recently. Click the profile link to view their posting activity. </p>
 		</div>
 	</div>
-  <% if current_user && (current_user.role == "admin" || current_user.role == "moderator")%>
+  <% if logged_in_as(['admin', 'moderator']) %>
     <h2><%= t('users.list.user_moderation') %></h2>
     <p><%= t('users.list.admins_ban_spam') %> </p>
   <% end %>
@@ -22,7 +22,7 @@
       <th><%= t('users.list.history') %></th>
       <th><a href = "<%= people_path %>?sort=joined"> <%= t('users.list.joined') %></a> <i class="fa fa-arrows-v"></i></th>
 
-      <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") %>
+      <% if logged_in_as(['admin', 'moderator']) %>
         <th><%= t('users.list.moderation') %></th>
       <% end %>
     </tr>
@@ -40,7 +40,7 @@
       <td style="padding-top:16px;"><%= t = user.revisions.order(timestamp: :desc).first.try(:created_at);time_ago_in_words(t) if (t) %></td>
       <td style="padding-top:16px;"><%= user.nodes.count %> <%= t('users.list.notes_and_edits') %></td>
       <td style="padding-top:16px;"><%= distance_of_time_in_words(user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></td>
-      <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") %>
+      <% if logged_in_as(['admin', 'moderator']) %>
       <td style="padding-top:16px;">
         <% if user.status == 0 %>
           <i class='fa fa-ban' style="color:#a00;"></i> <%= t('users.list.banned') %>

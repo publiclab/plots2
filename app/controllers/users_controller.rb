@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   before_action :require_no_user, only: [:new]
   before_action :require_user, only: %i(edit update save_settings)
    before_action :set_user, only: %i(info followed following followers)
-  
+
   def new
     @user = User.new
     @action = "create" # sets the form url
@@ -54,7 +54,7 @@ class UsersController < ApplicationController
   def update
     @password_verification = user_verification_params
     @user = current_user
-    @user = User.find_by(username: params[:id]) if params[:id] && current_user && current_user.role == "admin"
+    @user = User.find_by(username: params[:id]) if params[:id] && logged_in_as(['admin'])
     if @user.valid_password?(user_verification_params["current_password"]) || user_verification_params["ui_update"].nil?
       # correct password
       @user.attributes = user_params
@@ -84,7 +84,7 @@ class UsersController < ApplicationController
             else
               current_user
             end
-    if current_user && current_user.uid == @user.uid || current_user.role == "admin"
+    if current_user && current_user.uid == @user.uid || logged_in_as(['admin'])
       render template: "users/edit"
     else
       flash[:error] = I18n.t('users_controller.only_user_edit_profile', user: @user.name).html_safe
@@ -305,7 +305,7 @@ class UsersController < ApplicationController
                              .paginate(page: params[:page], per_page: 24)
 
     @normal_comments = comments.where('comments.status = 1')
-    if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+    if logged_in_as(['admin', 'moderator'])
       @moderated_comments = comments.where('comments.status = 4')
     end
     render template: 'comments/index'

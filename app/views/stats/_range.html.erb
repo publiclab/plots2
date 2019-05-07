@@ -27,7 +27,7 @@
     <div id="chart2"> </div>
 <% end %>
 
-<% if current_user && (current_user.role == "admin") %>
+<% if logged_in_as(['admin']) %>
 
   <div class="row">
  <div class="col-md-4 col-md-offset-1">
@@ -245,4 +245,3 @@ var chart2 = new ApexCharts(document.querySelector("#chart2"),options);
 chart2.render();
 
 </script>
-

@@ -8,13 +8,13 @@
 <div class="col-md-9">
 
   <%= render :partial => "like/like", :locals => {:node => @node, :tagnames => @tagnames } %>
-  <% if current_user && (current_user.uid == @node.uid || current_user.role == "admin") %>
+  <% if logged_in_as(['admin']) || (current_user && current_user.uid == @node.uid) %>
     <div style="padding:0 8px 8px;" class="btn-group pull-right">
       <a class="btn btn-default btn-sm" href="/map/edit/<%= @node.id %>"><i class="fa fa-pencil"></i> Edit</a>
       <%= link_to "/map/delete/"+@node.id.to_s, :confirm => 'Are you sure?', :class => "btn btn-default btn-sm" do %>
         <i class="fa fa-trash"></i> Delete
       <% end %>
-    </div> 
+    </div>
   <% end %>
 
   <h2 style="clear:left;"><%= @node.title %></h2>
@@ -34,16 +34,16 @@
       <% if @node.map.authorship %>
         <p><b>By</b> <%= @node.map.authorship %></p>
       <% else %>
-        <p><b>Mapped by</b> <%= @node.drupal_content_field_mappers.collect(&:field_mappers_value).uniq.join(', ') %></p> 
+        <p><b>Mapped by</b> <%= @node.drupal_content_field_mappers.collect(&:field_mappers_value).uniq.join(', ') %></p>
         <p><b>Cartographer:</b> <%= @node.drupal_content_field_map_editor.collect(&:field_map_editor_value).uniq.join(', ') %></p>
         <p><b>Published by</b> <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a></p>
       <% end %>
       <p><a href="https://maps.google.com/maps?t=h&ll=<%= @node.lat %>,<%= @node.lon %>"><%= @node.lat %> N, <%= @node.lon %> E</a></p>
       <p><%= @node.views %> views</p>
       <% if @node.map.field_ground_resolution_value %><p><b>Ground resolution: </b><%= @node.map.field_ground_resolution_value %> cm/px</p><% end %>
-      <p><b>Capture date:</b> <%= @node.map.captured_on.to_s %></p> 
-      <p><b>Publication date:</b> <%= @node.map.published_on.to_s %></p> 
-      <p><b>License:</b> <%= raw @node.map.license %></p> 
+      <p><b>Capture date:</b> <%= @node.map.captured_on.to_s %></p>
+      <p><b>Publication date:</b> <%= @node.map.published_on.to_s %></p>
+      <p><b>License:</b> <%= raw @node.map.license %></p>
     </small>
   </div>
   <style>
