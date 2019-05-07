@@ -43,6 +43,7 @@ class User < ActiveRecord::Base
   # validates_attachment_content_type :photo_file_name, :content_type => %w(image/jpeg image/jpg image/png)
 
   has_many :images, foreign_key: :uid
+  has_many :csvfiles, foreign_key: :uid
   has_many :node, foreign_key: 'uid'
   has_many :node_selections, foreign_key: :user_id
   has_many :revision, foreign_key: 'uid'
