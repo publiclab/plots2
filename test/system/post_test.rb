@@ -17,7 +17,7 @@ class PostTest < ApplicationSystemTestCase
 
     visit '/post'
 
-    fill_in("Title", with: "My new post")
+    fill_in("Title", with: "My new post", wait: 4)
     
     el = find(".wk-wysiwyg") # rich text input
     el.set("All about this interesting stuff")

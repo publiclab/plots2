@@ -194,4 +194,15 @@ class ApplicationController < ActionController::Base
   def page_not_found
     render file: "#{Rails.root}/public/404.html", layout: false, status: :not_found
   end
+
+  # TODO: make less redundant with https://github.com/publiclab/plots2/blob/master/app/helpers/application_helper.rb#L3
+  def logged_in_as(roles)
+    return false unless current_user
+
+    has_valid_role = false
+    roles.each do |role|
+      has_valid_role = true if current_user.role == role
+    end
+    has_valid_role
+  end
 end
