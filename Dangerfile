@@ -62,8 +62,7 @@ rescue => ex
   message ex.inspect # view the entire error output in the log
 end
 
-# testing...
-include "json"
+# testing to see if we can pass JSON in an env variable at all?
 message JSON.parse(ENV['JSON_TEST'])
 
 # Store screenshots in Google Cloud
