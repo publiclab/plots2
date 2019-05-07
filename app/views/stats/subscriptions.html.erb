@@ -11,7 +11,7 @@
     <th>Tags</th>
     </thead>
   </tr>
-  <% @tags.each do |range,tags| %>
+  <% @tags.reverse_each do |range,tags| %>
   <tr>
     <td>
       <%= range * 10 %> - <%= range * 10 + 9 %>
