@@ -21,8 +21,13 @@ class SearchTest < ApplicationSystemTestCase
 
     # we could see if an image gets created:
     # assert_no_difference 'Image.count' do
-      attach_file('#fileinput', 'public/images/pl.png')
-      #attach_file('image[photo]', 'public/images/pl.png')
+
+      # could try this too:
+      #within('comment-form') do
+      #  click_link('choose one')
+      #end
+      attach_file('image[photo]', 'public/images/pl.png')
+
     # end
 
     #within('comment-form') do
