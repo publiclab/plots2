@@ -397,7 +397,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       get '/wiki/' + nodes(:organizers).title.parameterize
-      assert_select 'a', "#{I18n.t('sidebar._related.write_research_note')} " + Sanitize.clean('&raquo;')
+      assert_select 'a', I18n.t('sidebar._related.write_research_note')
     end
   end
 
