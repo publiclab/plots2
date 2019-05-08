@@ -26,7 +26,9 @@ class SearchTest < ApplicationSystemTestCase
       #within('comment-form') do
       #  click_link('choose one')
       #end
-      attach_file('image[photo]', 'public/images/pl.png')
+
+      # note this would be more complex with more than one comment bc of "reply" form
+      attach_file('fileinput', 'public/images/pl.png', visible: false)
 
     # end
 
