@@ -2,6 +2,7 @@ require "application_system_test_case"
 # https://guides.rubyonrails.org/testing.html#implementing-a-system-test
 
 class SearchTest < ApplicationSystemTestCase
+  Capybara.default_max_wait_time = 5
 
   def setup
     activate_authlogic
@@ -28,7 +29,7 @@ class SearchTest < ApplicationSystemTestCase
       #end
 
       # note this would be more complex with more than one comment bc of "reply" form
-      attach_file('fileinput', 'public/images/pl.png', visible: false)
+      attach_file('fileinput', "#{Rails.root.to_s}/public/images/pl.png", visible: false)
 
     # end
 
