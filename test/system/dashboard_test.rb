@@ -17,8 +17,6 @@ class DashboardTest < ApplicationSystemTestCase
 
     assert_selector('.row.header > h1', text: "Dashboard")
     assert_selector('#activity-header > i', text: "Activity")
-    assert_selector('.page-item.active > .page-link', text: "1")
-    assert_selector('.page-item:nth-child(2) > .page-link', text: "2")
 
     take_screenshot
 
