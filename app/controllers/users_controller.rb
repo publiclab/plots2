@@ -32,7 +32,7 @@ class UsersController < ApplicationController
           flash[:notice] += " " + I18n.t('users_controller.continue_where_you_left_off', url1: params[:return_to].to_s)
         end
         flash[:notice] = flash[:notice].html_safe
-        flash[:warning] = I18n.t('users_controller.spectralworkbench_or_mapknitter', url1: "'#{session[:openid_return_to]}'").html_safe if session[:openid_return_to]
+        flash[:warning] = I18n.t('users_controller.spectralworkbench_or_mapknitter', url1: "#{session[:openid_return_to]}'").html_safe if session[:openid_return_to]
         session[:openid_return_to] = nil
         redirect_to "/dashboard"
       end
