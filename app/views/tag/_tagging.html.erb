@@ -2,13 +2,12 @@
 
 <!-- This is the sidebar tagging display, also renders Subscribe button for multiple subscription -->
 <div>
-  <h1 style="display: inline-block; margin-right: 20px;">Tags</h1>
+  <h2 style="display: inline-block; margin-right: 20px;">Tags</h2>
   <% if @node && !@node.node_tags.empty? %>
     <%= render partial: 'tag/subscribe_button', locals:{tags: @node.node_tags} %>
   <% end %>
 </div>
-<em class="italics"><a href="/tags">Tags</a> organize our knowledge base. Click to learn more or subscribe to a topic.</em>
-
+<p style="font-style:italic;color:#aaa;"><small><a href="/tags">Tags</a> organize our knowledge base. Click one to learn more or subscribe to a topic.</small></p>
 
 <% if @node %>
   <%= render partial: 'tag/replication' %>
