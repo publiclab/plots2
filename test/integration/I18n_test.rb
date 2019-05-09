@@ -242,16 +242,6 @@ class I18nTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'should choose i18n for user/list' do
-    available_testing_locales.each do |lang|
-      get '/change_locale/' + lang.to_s
-      follow_redirect!
-
-      get '/people'
-      assert_select 'th', I18n.t('users.list.username')
-    end
-  end
-
   test 'should choose i18n for user/map' do
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s
