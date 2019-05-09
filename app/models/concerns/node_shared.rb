@@ -131,7 +131,7 @@ module NodeShared
                   .includes(:revision, :tag)
                   .references(:term_data, :node_revisions)
                   .where('term_data.name = ?', tagname)
-                  .not.where(nid: pinned.collect(&:nid)) # don't include pinned items twice
+                  .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
                   .order('node_revisions.timestamp DESC')
 
       if exclude.present?
