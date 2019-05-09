@@ -36,7 +36,7 @@ class SearchTest < ApplicationSystemTestCase
     #within('comment-form') do
     #end
 
-    assert_selector('.comment-form textarea#textinput', text: '![](/some/imageid.png)')
+    assert_selector('textarea#textinput', text: '![](/some/imageid.png)', wait: 12)
 
     # click_button 'Preview'
     # assert_equal 1, page.evaluate_script("$('.comment-form div#preview').is(':visible')")
