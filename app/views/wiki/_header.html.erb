@@ -101,8 +101,8 @@
         </a>
       </li>
 
-      <li class="<%= 'active' if (controller.action_name == 'comments' )%>">
-        <a href="/wiki/<%= @node.slug_from_path %>/comments" rel="tooltip" title="Read Comments regarding this wiki page" data-placement="top">
+      <li class="nav-item" >
+        <a class="nav-link <%= 'active' if (controller.action_name == 'comments' )%>"href="/wiki/<%= @node.slug_from_path %>/comments" rel="tooltip" title="Read Comments regarding this wiki page" data-placement="top">
           <span class="d-none d-md-inline"> <%= @node.comments.size %></span>
           <i class="fa fa-comment"></i>
         </a>
@@ -130,13 +130,13 @@
 <% end %>
 
 <% if @node.has_power_tag('tabbed') %>
-<div class="navbar navbar-light">
+<nav class="navbar navbar-light bg-light navbar-expand">
   <ul class="navbar-nav">
-    <li class="nav-item"><a data-toggle="tab" href="#tab-overview"><%= t('wiki.show.overview') %></a></li>
-    <% if @node.power_tags('tabbed').include?("notes") %><li><a class="nav-link active" data-toggle="tab" href="#tab-notes"><%= t('wiki.show.research') %></a></li><% end %>
-    <% if @node.power_tags('tabbed').include?("wikis") %><li><a class="nav-link active" data-toggle="tab" href="#tab-wikis"><%= raw t('wiki.show.wiki_pages') %></a></li><% end %>
+    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab-overview"><%= t('wiki.show.overview') %></a></li>
+    <% if @node.power_tags('tabbed').include?("notes") %><li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#tab-notes"><%= t('wiki.show.research') %></a></li><% end %>
+    <% if @node.power_tags('tabbed').include?("wikis") %><li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#tab-wikis"><%= raw t('wiki.show.wiki_pages') %></a></li><% end %>
   </ul>
-</div>
+</nav>
 <% end %>
 
 <br />
