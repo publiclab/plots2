@@ -6,7 +6,7 @@
   <%= render partial: 'tag/show/contributors' %>
 
   <% unless @tags.try(:first).try(:parent).nil? %>
-    <small>parent: <%= @tags.first.parent %></small>
+    <small>Alias of: <%= @tags.first.parent %></small>
   <% end %>
 
   <%= render :partial => "notes/format_toggle" if @node_type == "note" %>
