@@ -5,29 +5,6 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
   test 'attempt to openid authenticate (like from MapKnitter) without being logged in' do
   end
 
-  test 'incorrect openid authentication request shows error' do
-
-    # log in
-    post '/user_sessions', params: { user_session: { username: users(:jeff).username, password: 'secretive' } }
-    follow_redirect!
-
-    get '/openid', params: {
-      'openid.claimed_id': 'https://spectralworkbench.org/openid/warren',
-      'openid.identity': 'https://spectralworkbench.org/openid/warren',
-      'openid.mode': 'checkid_setup',
-      'openid.ns': 'http://specs.openid.net/auth/2.0',
-      'openid.ns.sreg': 'http://openid.net/extensions/sreg/1.1',
-      'openid.realm': 'https://spectralworkbench.org/',
-      'openid.return_to': 'https://spectralworkbench.org/session/new?authenticity_token=RcLcGH3lzSTCC24UpPnNm56sllNaMrHg5%2FSrQzNxB%2B4%3D&back_to=&open_id=warren&return_to=',
-      'openid.sreg.required': 'nickname,email'
-    }
-
-    assert_equal "You are requesting access to an account that's not yours. Please <a href='/logout'>log out</a> and use the correct account, or <a href='https://spectralworkbench.org/'>try to login with the correct username</a>", flash[:error]
-
-    assert_response :redirect
-
-  end
-
   test 'openid authentication request does not go to index page' do
     # test using basic login button on MK or SWB
     # log in

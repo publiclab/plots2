@@ -88,12 +88,9 @@ class OpenidController < ApplicationController
 
       if oidreq
 
-        if current_user && !requested_username.casecmp(current_user.username.downcase).zero?
-          flash[:error] = "You are requesting access to an account that's not yours. Please <a href='/logout'>log out</a> and use the correct account, or <a href='" + oidreq.trust_root + "'>try to login with the correct username</a>"
-          redirect_to '/dashboard'
-        else
-          oidresp = nil
-          if oidreq.is_a?(CheckIDRequest)
+
+        oidresp = nil
+        if oidreq.is_a?(CheckIDRequest)
 
             identity = oidreq.identity
 
@@ -139,12 +136,11 @@ class OpenidController < ApplicationController
               return
             end
 
-          else
+        else
             oidresp = server.handle_request(oidreq)
           end
 
-          render_response(oidresp)
-        end
+        render_response(oidresp)
       else
         session[:openid_return_to] = request.env['ORIGINAL_FULLPATH']
         if provider
