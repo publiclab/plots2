@@ -1,5 +1,5 @@
 <div style="padding:10px;">
- <%= form_for :user, :as => :user, :url => "/register", :html => {:class => "row"} do |f| %>
+ <%= form_for :user, :as => :user, :url => "/register", :html => {:class => "container"} do |f| %>
  <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
 
   <input type="hidden" name="return_to" class="login-modal-redirect" value="<%= params[:return_to] || request.fullpath %>" />
@@ -67,13 +67,15 @@
       </div>
     </div>
 
-    <div class="form-group">
-      <label for="user_bio"><%= t('users._form.bio') %></label>
-      <%= f.text_area :bio, { placeholder: I18n.t('users._form.add_bio'),
-                                          rows: 8,
-                                          class: 'form-control',
-                                          tabindex: 6 }
-      %>
+    <div class="form-group row">
+      <div class="col-md-12">
+        <label for="user_bio"><%= t('users._form.bio') %></label>
+        <%= f.text_area :bio, { placeholder: I18n.t('users._form.add_bio'),
+                                            rows: 8,
+                                            class: 'form-control',
+                                            tabindex: 6 }
+        %>
+      </div>
     </div>
 
     <% if Rails.env == "production" && !params[:spamaway] %>
