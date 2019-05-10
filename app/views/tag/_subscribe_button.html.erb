@@ -4,7 +4,7 @@
     <i class="fa fa-plus"></i> 
   </a>
 
-  <div id="mypopcontent" class="d-none">
+  <div id="mypopcontent" class="d-none" onmouseleave="show(this)">
   	<%= render partial: "tag/tags_popover", locals: {tags: tags} %>
   </div>
 
@@ -27,10 +27,9 @@
   $('#popover_button').popover({
   	content: $('#mypopcontent').clone().removeClass('d-none'),
   	placement: 'bottom',
-    html: true,
-    trigger: 'hover'
+  	html: true,
   });
   function show(elem){
-    elem.style.display ="none"
+  $('#popover_button').popover("hide") 
   }
 </script>
