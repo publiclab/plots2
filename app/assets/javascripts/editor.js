@@ -39,7 +39,8 @@ $E = {
 
   // wraps currently selected text in textarea with strings a and b
   wrap: function(a,b,args) {
-    this.refresh();
+    var isWiki = (window.location + '').includes('wiki');
+    if (!isWiki) this.refresh();
     var len = $E.textarea.val().length;
     var start = $E.textarea[0].selectionStart;
     var end = $E.textarea[0].selectionEnd;
