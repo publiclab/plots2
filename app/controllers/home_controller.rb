@@ -66,12 +66,7 @@ class HomeController < ApplicationController
   def activity
     blog = Tag.find_nodes_by_type('blog', 'note', 1).first
     # remove "classroom" postings; also switch to an EXCEPT operator in sql, see https://github.com/publiclab/plots2/issues/375
-    hidden_nids = Node.joins(:node_tag)
-      .joins('LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid')
-      .select('node.*, term_data.*, community_tags.*')
-      .where(type: 'note', status: 1)
-      .where('term_data.name = (?)', 'hidden:response')
-      .collect(&:nid)
+    hidden_nids = Node.where(type: :note, status: 1).select { |n| n.has_a_tag('hidden:response') }.collect(&:nid)
     notes = Node.where(type: 'note')
       .where('node.nid NOT IN (?)', hidden_nids + [0]) # in case hidden_nids is empty
       .order('nid DESC')
@@ -85,11 +80,11 @@ class HomeController < ApplicationController
                    .page(params[:page])
                    .group(['title', 'comments.cid']) # ONLY_FULL_GROUP_BY, issue #3120
 
-    if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+    if logged_in_as(['admin', 'moderator'])
       notes = notes.where('(node.status = 1 OR node.status = 4 OR node.status = 3)')
       comments = comments.where('comments.status = 1 OR comments.status = 4')
     elsif current_user
-      coauthor_nids = Node.joins(:node_tag).joins('LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid').select('node.*, term_data.*, community_tags.*').where(type: 'note', status: 3).where('term_data.name = (?)', "with:#{current_user.username}").collect(&:nid)
+      coauthor_nids = Node.where(type: :note, status: 3).select { |n| n.has_a_tag("with:#{current_user.username}") }.collect(&:nid)
       notes = notes.where('(node.nid IN (?) OR node.status = 1 OR ((node.status = 3 OR node.status = 4) AND node.uid = ?))', coauthor_nids, current_user.uid)
       comments = comments.where('comments.status = 1 OR (comments.status = 4 AND comments.uid = ?)', current_user.uid)
     else

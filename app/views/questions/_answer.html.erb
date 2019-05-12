@@ -21,7 +21,7 @@
         <a class="btn btn-outline-secondary btn-sm" href="javascript:void(0)" onClick="$('#c<%= answer.id %>edit').toggle();$('#c<%= answer.id %>show').toggle();setInit(<%= answer.id %>);"><i class="fa fa-pencil"></i></a>
         <% end %>
 
-        <% if current_user && (current_user.role == "admin" || current_user.role == "moderator" || answer.uid == current_user.uid || answer.node.uid == current_user.uid) %>
+        <% if logged_in_as(['admin', 'moderator']) || (current_user && (answer.uid == current_user.uid || answer.node.uid == current_user.uid)) %>
           <% other_user = (current_user && answer.uid != current_user.uid) ? 'true' : 'false' %>
           <a class="btn btn-outline-secondary btn-sm" id="a<%= answer.id %>delete-btn" other_user=<%= other_user %>>
             <i class='icon fa fa-trash'></i>
@@ -47,7 +47,7 @@
       <% if answer.accepted %>
         <a <% if current_user && current_user.uid == answer.node.uid %> href="/answers/accept/<%= answer.id %>" <% end %> data-remote="true" id="answer-<%= answer.id %>-accept" class="answer-accept btn btn-sm btn-success">Accepted</a>
       <% else %>
-        <% if current_user && (current_user.role == "admin" || current_user.role == "moderator" || current_user.uid == answer.node.uid) %>
+        <% if logged_in_as(['admin', 'moderator']) || (current_user && (current_user.uid == answer.node.uid)) %>
           <a href="/answers/accept/<%= answer.id %>" data-remote="true" id="answer-<%= answer.id %>-accept" class="answer-accept btn btn-sm btn-outline-secondary">Accept this answer</a>
         <% end %>
       <% end %>
@@ -59,13 +59,13 @@
         "><span class="caret"></span>
         </div>
     <% end %>
-       <a href="<% if current_user %>'/answer_like/likes/<%= answer.id %>'<% else %>'#'<% end %>" 
-          data-remote ="true" tooltip-title="Helpful? Like it" class="btn btn-outline-secondary btn-sm btn-like" 
+       <a href="<% if current_user %>'/answer_like/likes/<%= answer.id %>'<% else %>'#'<% end %>"
+          data-remote ="true" tooltip-title="Helpful? Like it" class="btn btn-outline-secondary btn-sm btn-like"
           id="answer-like-button-<%= answer.id %>"
-       <% unless current_user %> popover-content="You must be logged in to Like the answer" <% end %> > 
+       <% unless current_user %> popover-content="You must be logged in to Like the answer" <% end %> >
           <span id="answer-like-star-<%= answer.id %>" class="fa fa-star<% if current_user && !answer.liked_by(current_user.uid) %>-o<% end %>"></span>
           <span id="answer-like-count-<%= answer.id %>"><%= answer.likers.length %></span> Likes</a>
-     
+
       <a href="#a<%= answer.id %>" class="btn btn-outline-secondary btn-sm "><i class="fa fa-link"></i></a> &nbsp;
       <a id="answer-<%= answer.id %>-comment-button"  style="color: #006dcc;"><span id="answer-<%= answer.id %>-comment-count"><%= answer.comments.length %></span> Comments <i class="fa fa-caret-down"></i></a>
     </div>

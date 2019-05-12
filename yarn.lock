@@ -908,9 +908,9 @@ cwise@^1.0.4, cwise@^1.0.7:
     static-module "^1.0.0"
     uglify-js "^2.6.0"
 
-cytoscape@^3.5.4:
-  version "3.5.4"
-  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.5.4.tgz#58cd9682c37d6a472615030081f458dace844c8f"
+cytoscape@^3.6.0:
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.6.0.tgz#396f364fa952a0d63dec63fdf876137b7609c7fe"
   dependencies:
     heap "^0.2.6"
     lodash.debounce "^4.0.8"
@@ -1894,9 +1894,9 @@ humanize@^0.0.9:
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/humanize/-/humanize-0.0.9.tgz#1994ffaecdfe9c441ed2bdac7452b7bb4c9e41a4"
 
-i18n-js@^3.2.1:
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/i18n-js/-/i18n-js-3.2.1.tgz#26cea8e327207bebccf1030baa761c5245ceb63b"
+i18n-js@^3.2.2:
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/i18n-js/-/i18n-js-3.2.2.tgz#9f7f552320c0e4cc6b35c50a790cc50465c7dc90"
 
 ianstormtaylor-css@^0.3.1:
   version "0.3.1"
@@ -2170,17 +2170,13 @@ jquery.ui.widget@>=1.9:
   version "1.10.3"
   resolved "https://registry.yarnpkg.com/jquery.ui.widget/-/jquery.ui.widget-1.10.3.tgz#2ceecfc64995412643eeb9508d2197ea93c02fb3"
 
-jquery@>=1.6, jquery@>=1.7, "jquery@>=1.7.1 <4.0.0", jquery@^3.2.1, jquery@^3.3.1, jquery@~3:
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
+jquery@>=1.6, jquery@>=1.7, "jquery@>=1.7.1 <4.0.0", jquery@^3.2.1, jquery@^3.3.1, jquery@^3.4.1, jquery@~3:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.4.1.tgz#714f1f8d9dde4bdfa55764ba37ef214630d80ef2"
 
 jquery@^2.1.0:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-2.2.4.tgz#2c89d6889b5eac522a7eea32c14521559c6cbf02"
-
-jquery@^3.4.0:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.4.0.tgz#8de513fa0fa4b2c7d2e48a530e26f0596936efdf"
 
 js-yaml@3.x:
   version "3.13.1"
@@ -3100,9 +3096,9 @@ pngjs@^3.3.3:
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/pngjs/-/pngjs-3.3.3.tgz#85173703bde3edac8998757b96e5821d0966a21b"
 
-popper.js@^1.4.0:
-  version "1.14.7"
-  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.14.7.tgz#e31ec06cfac6a97a53280c3e55e4e0c860e7738e"
+popper.js@^1.15.0:
+  version "1.15.0"
+  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.15.0.tgz#5560b99bbad7647e9faa475c6b8056621f5a4ff2"
 
 prelude-ls@~1.1.2:
   version "1.1.2"

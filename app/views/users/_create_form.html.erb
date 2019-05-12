@@ -1,27 +1,26 @@
 <div style="padding:10px;">
- <%= form_for :user, :as => :user, :url => "/register", :html => {:class => "row"} do |f| %>
+ <%= form_for :user, :as => :user, :url => "/register", :html => {:class => "container"} do |f| %>
  <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
 
   <input type="hidden" name="return_to" class="login-modal-redirect" value="<%= params[:return_to] || request.fullpath %>" />
 
-  <div class="container">
 
     <% cache('feature_signup-notice-top', skip_digest: true) do %>
       <%= feature('signup-notice-top') %>
     <% end %>
 
-    <div class='col-md-12' style="display:flex; justify-content: center;">
+    <div style="display:flex; justify-content: center;" class="col-12">
       <h3> Sign up with </h3>
     </div>
 
-    <div class='col-md-12' style="display:flex; justify-content: center;">
+    <div style="display:flex; justify-content: center;" class="col-12">
       <%= render :partial => "layouts/social_icons" %>
     </div>
 
     <br style="clear:both;"/>
+    <div class="row">
       <div class="col-md-6">
-        <div class="row">
-        <div class="form-group col-md-12" id="username_div">
+        <div class="form-group" id="username_div">
           <label for="username"><%= t('user_sessions.new.username') %></label>
           <%= f.text_field :username, { tabindex: 1, placeholder: "Username", class: 'form-control', id: 'username-signup' } %>
           <label class="username-check"></label>
@@ -30,7 +29,6 @@
         <div class="form-group">
           <label for="email"><%= t('users._form.email') %></label>
           <%= f.text_field :email, { tabindex: 3, placeholder: "you@email.com", class: 'form-control', id: 'email' } %>
-        </div>
         </div>
       </div>
      
@@ -47,7 +45,7 @@
       </div>
     </div>
 
-    <div class="form-group col-md-12 nopadding">
+    <div class="form-group row">
       <div class="form-group col-md-6">
         <label for="password"><%= t('users._form.create_password') %></label>
         <%= f.password_field :password, { placeholder: 'Enter your new password',
@@ -69,23 +67,25 @@
       </div>
     </div>
 
-    <div class="form-group col-md-12">
-      <label for="user_bio"><%= t('users._form.bio') %></label>
-      <%= f.text_area :bio, { placeholder: I18n.t('users._form.add_bio'),
-                                          rows: 8,
-                                          class: 'form-control',
-                                          tabindex: 6 }
-      %>
+    <div class="form-group row">
+      <div class="col-md-12">
+        <label for="user_bio"><%= t('users._form.bio') %></label>
+        <%= f.text_area :bio, { placeholder: I18n.t('users._form.add_bio'),
+                                            rows: 8,
+                                            class: 'form-control',
+                                            tabindex: 6 }
+        %>
+      </div>
     </div>
 
     <% if Rails.env == "production" && !params[:spamaway] %>
-      <div class="col-md-12 recaptcha-container">
+      <div class="recaptcha-container">
         <%= recaptcha_tags %>
         <p>If you cannot use the ReCaptcha to verify you are not a bot, <a href="/signup?spamaway=true">use this alternative verification</a>.</p>
       </div>
     <% else %>
 
-    <div class="col-md-12">
+    <div>
       <%= render partial: 'users/spamaway', locals: {caller: caller } %>
     </div>
 
@@ -118,7 +118,6 @@
       </script>
     </div>
 
-  </div>
   <% end %>
   
   <% cache('feature_signup-notice', skip_digest: true) do %>

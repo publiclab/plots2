@@ -441,7 +441,7 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'should show scraped image' do
     node = nodes(:scraped_image)
-    assert_equal '/url/to/image.png', node.scraped_image
+    assert_equal '/images/pl.png', node.scraped_image
   end
 
   test 'contribution graph making' do
