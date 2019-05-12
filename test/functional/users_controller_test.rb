@@ -66,9 +66,16 @@ class UsersControllerTest < ActionController::TestCase
     assert_response 302
   end
 
-  test 'should get profile' do
-    get :profile, params: { id: User.where(status: 1).first.name }
+  test 'should get profile and show pagination' do
+    i = 0
+    25.times do
+      Node.new(uid: users(:bob).id, type: 'note', title: "Node #{i += 1}").save
+    end
+
+    get :profile, params: { id: users(:bob).username }
     assert_response :success
+
+    assert_equal 1, css_select('ul.pagination').size
   end
 
   test 'generate user reset key' do
@@ -201,6 +208,51 @@ class UsersControllerTest < ActionController::TestCase
     post :update, params: { user: { bio: 'Hello, there!' } }
     assert_response :redirect
     assert_equal User.find(user.id).bio, 'Hello, there!'
+  end
+
+  test 'reject update with wrong password when ui_update is true' do
+    user = users(:bob)
+    bio = users(:bob).bio
+    UserSession.create(user)
+    post :update, params: {
+      user: {
+        bio: 'Bio updated by hacker',
+        current_password: 'wrong password',
+        ui_update: 'true'
+      }
+    }
+    assert_response :redirect
+    assert_equal User.find(user.id).bio, bio
+  end
+
+  test 'update profile with correct password when ui_update is true' do
+    user = users(:bob)
+    bio = users(:bob).bio
+    UserSession.create(user)
+    post :update, params: {
+      user: {
+        bio: 'Bio updated by user',
+        current_password: 'secretive',
+        ui_update: 'true'
+      }
+    }
+    assert_response :redirect
+    assert_equal User.find(user.id).bio, 'Bio updated by user'
+  end
+
+  test 'rejecting update profile with wrong password when ui_update is nil' do
+    user = users(:bob)
+    bio = users(:bob).bio
+    UserSession.create(user)
+    post :update, params: {
+      user: {
+        bio: 'Bio updated by user but with wrong password',
+        current_password: 'wrongpassword',
+        ui_update: nil
+      }
+    }
+    assert_response :redirect
+    assert_not_equal User.find(user.id).bio, 'Bio updated by user but with wrong password'
   end
 
   test 'should redirect edit when not logged in' do

@@ -58,7 +58,7 @@ class ImagesController < ApplicationController
 
   def delete
     @image = Image.find params[:id]
-    if @image.uid == current_user.uid # or current_user.role == "admin"
+    if @image.uid == current_user.uid
       if @image.delete
         flash[:notice] = 'Image deleted.'
       else

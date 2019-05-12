@@ -34,7 +34,26 @@ class SearchServiceTest < ActiveSupport::TestCase
 
     assert_not_nil result
     assert_equal result.size, 1
+  end
 
+  test 'running search content' do
+    params = {query: 'Blog' }
+    search_criteria = SearchCriteria.new(params)
+
+    result = SearchService.new.search_content(search_criteria.query, 10) # limit
+
+    assert_not_nil result
+    assert_equal 2, result.size
+  end
+
+  test 'running search nodes' do
+    params = {query: 'Blog' }
+    search_criteria = SearchCriteria.new(params)
+
+    result = SearchService.new.search_nodes(search_criteria.query)
+
+    assert_not_nil result
+    assert_equal result.size, 1
   end
 
   test 'running search tags' do

@@ -1,15 +1,13 @@
 module ApplicationHelper
   # returns true if user is logged in and has any of the roles given, as ['admin','moderator']
   def logged_in_as(roles)
-    if current_user
-      has_valid_role = false
-      roles.each do |role|
-        has_valid_role = true if current_user.role == role
-      end
-      has_valid_role
-    else
-      false
+    return false unless current_user
+
+    has_valid_role = false
+    roles.each do |role|
+      has_valid_role = true if current_user.role == role
     end
+    has_valid_role
   end
 
   def emojify(content)
@@ -94,7 +92,11 @@ module ApplicationHelper
 
   # we should move this to the Node model:
   def render_map(lat, lon)
-    render partial: 'map/leaflet', locals: { lat: lat, lon: lon }
+    render partial: 'map/leaflet', locals: { lat: lat, lon: lon, top_map: false }
+  end
+
+  def render_top_map(lat, lon)
+    render partial: 'map/leaflet', locals: { lat: lat, lon: lon, top_map: true }
   end
 
   # we should move this to the Comment model:

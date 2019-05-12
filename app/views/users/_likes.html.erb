@@ -1,7 +1,7 @@
 <div id="notes">
     <div class="row">
     <% @likes.each_with_index do |like,i| %>
-      <div class="<% if @widget %>col-xs-3 col-sm-3 <% end %><%= like.tagnames_as_classes %> col-md-3 clearfix like note like-nid-<%= like.id %> note-nid-<%= like.id %><% if like.status == 4 %> moderated<% end %>" style="overflow:hidden; text-align:center">
+      <div class="<% if @widget %>col-xs-3 col-sm-3 col-md-3 <% end %><%= like.tagnames_as_classes %> col-lg-3 clearfix like note like-nid-<%= like.id %> note-nid-<%= like.id %><% if like.status == 4 %> moderated<% end %>" style="overflow:hidden; text-align:center">
 
         <% if like.main_image %>
           <a class="img" <% if @widget %>target="_blank"<% end %> href="<%= like.path %>"><img src="<%= like.main_image.path(:default) %>" style="width:100%;" /></a>
@@ -10,9 +10,9 @@
         <% if like.status == 4 %>
           <p class="alert alert-warning moderated">
             <% if logged_in_as(['admin','moderator']) %>
-              <%= t('notes._notes.moderate_first_time_post') %> <br class="hidden-xs hidden-sm"/>
-              <a class="btn btn-default btn-xs" href="/moderate/publish/<%= like.id %>"><%= t('notes._notes.approve') %></a>
-              <a class="btn btn-default btn-xs" href="/moderate/spam/<%= like.id %>"><%= t('notes._notes.spam') %></a>
+              <%= t('notes._notes.moderate_first_time_post') %> <br class="d-none d-lg-inline"/>
+              <a class="btn btn-outline-secondary btn-sm" href="/moderate/publish/<%= like.id %>"><%= t('notes._notes.approve') %></a>
+              <a class="btn btn-outline-secondary btn-sm" href="/moderate/spam/<%= like.id %>"><%= t('notes._notes.spam') %></a>
             <% else %>
               <%= raw t('notes._notes.pending_approval', :url1 => '/wiki/moderation') %>
             <% end %>
@@ -30,7 +30,7 @@
             <%= t('notes._notes.last_edit_by') %> <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= like.latest.author.name %>"><%= like.latest.author.name %></a>
 	    <%= distance_of_time_in_words(Time.at(like.latest.timestamp), Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>
           <% end %>
-          | <i class="fa fa-eye"></i> <%= number_with_delimiter(like.totalviews) %> <span class="hidden-xs hidden-sm"><%= t('notes._notes.views') %></span>
+          | <i class="fa fa-eye"></i> <%= number_with_delimiter(like.views) %> <span class="d-none d-lg-inline"><%= t('notes._notes.views') %></span>
           | <i style="<% if like.likes > 0 %>color:#db4;<% else %>color:#888;<% end %>" class="fa fa-star-o"></i> <%= like.likes %>
         </small></p>
 
@@ -46,24 +46,24 @@
               <p><%= raw strip_tags(sanitize(RDiscount.new(like.body_preview).to_html)) if like.body %></p>
             <% end %>
             <p>
-              <% if logged_in_as(['admin','moderator']) %><a class="btn btn-default" href="/moderate/spam/<%= like.id %>"><i class="fa fa-ban"></i> <%= t('notes._notes.spam') %></a><% end %>
-              <a class="btn btn-default" style="float: right; margin-left: 1px;" href="<%= like.path %>"><%= t('notes._notes.read_more') %></a>
+              <% if logged_in_as(['admin','moderator']) %><a class="btn btn-outline-secondary" href="/moderate/spam/<%= like.id %>"><i class="fa fa-ban"></i> <%= t('notes._notes.spam') %></a><% end %>
+              <a class="btn btn-outline-secondary" style="float: right; margin-left: 1px;" href="<%= like.path %>"><%= t('notes._notes.read_more') %></a>
             </p>
           <% end %>
           <% if params[:mod] %>
-            <a class="btn btn-default" href="#"><i class="fa fa-ban-circle"></i> <%= t('notes._notes.spam') %></a>
+            <a class="btn btn-outline-secondary" href="#"><i class="fa fa-ban-circle"></i> <%= t('notes._notes.spam') %></a>
           <% end %>
           <hr style="display:none;" class="bottom" />
         </div>
 
       </div>
-      <% unless @widget %><hr class="visible-xs visible-sm" /><% end %>
+      <% unless @widget %><hr class="d-lg-none" /><% end %>
     <% if ((i+1)/4.0).to_i == ((i+1)/4.0) %>
     </div>
-    <% unless @widget %><hr class="visible-xs visible-sm grid" /><% end %>
+    <% unless @widget %><hr class="d-lg-none grid" /><% end %>
     <div class="row">
     <% end %>
     <% end %>
     </div>
 </div>
-<%= will_paginate @likes, :renderer => BootstrapPagination::Rails unless @unpaginated %>
+<%= will_paginate @likes, renderer: WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated %>

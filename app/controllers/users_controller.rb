@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :require_no_user, only: [:new]
   before_action :require_user, only: %i(edit update save_settings)
-  before_action :set_user, only: %i(info followed following followers)
+   before_action :set_user, only: %i(info followed following followers)
 
   def new
     @user = User.new
@@ -25,9 +25,14 @@ class UsersController < ApplicationController
           flash[:warning] = "We tried and failed to send you a welcome email, but your account was created anyhow. Sorry!"
         end
         flash[:notice] = I18n.t('users_controller.registration_successful')
-        flash[:notice] += " " + I18n.t('users_controller.continue_where_you_left_off', url1: params[:return_to].to_s) if params[:return_to] && params[:return_to] != "/signup"
+        if params[:return_to] && params[:return_to].split('/')[0..3] == ["", "subscribe", "multiple", "tag"]
+          flash[:notice] += "You are now following '#{params[:return_to].split('/')[4]}'."
+          subscribe_multiple_tag(params[:return_to].split('/')[4])
+        elsif params[:return_to] && params[:return_to] != "/signup" && params[:return_to] != "/login"
+          flash[:notice] += " " + I18n.t('users_controller.continue_where_you_left_off', url1: params[:return_to].to_s)
+        end
         flash[:notice] = flash[:notice].html_safe
-        flash[:warning] = I18n.t('users_controller.spectralworkbench_or_mapknitter', url1: "'#{session[:openid_return_to]}'").html_safe if session[:openid_return_to]
+        flash[:warning] = I18n.t('users_controller.spectralworkbench_or_mapknitter', url1: "#{session[:openid_return_to]}'").html_safe if session[:openid_return_to]
         session[:openid_return_to] = nil
         redirect_to "/dashboard"
       end
@@ -47,11 +52,13 @@ class UsersController < ApplicationController
   end
 
   def update
+    @password_verification = user_verification_params
     @user = current_user
-    @user = User.find_by(username: params[:id]) if params[:id] && current_user && current_user.role == "admin"
-    @user.attributes = user_params
-    @user.save do |result|
-      if result
+    @user = User.find_by(username: params[:id]) if params[:id] && logged_in_as(['admin'])
+    if @user.valid_password?(user_verification_params["current_password"]) || user_verification_params["ui_update"].nil?
+      # correct password
+      @user.attributes = user_params
+      if @user.save
         if session[:openid_return_to] # for openid login, redirects back to openid auth process
           return_to = session[:openid_return_to]
           session[:openid_return_to] = nil
@@ -63,6 +70,10 @@ class UsersController < ApplicationController
       else
         render template: 'users/edit'
       end
+    else
+      # incorrect password
+      flash[:error] = "Current Password is incorrect!"
+      return redirect_to "/profile/" + @user.username + "/edit"
     end
   end
 
@@ -73,7 +84,7 @@ class UsersController < ApplicationController
             else
               current_user
             end
-    if current_user && current_user.uid == @user.uid || current_user.role == "admin"
+    if current_user && current_user.uid == @user.uid || logged_in_as(['admin'])
       render template: "users/edit"
     else
       flash[:error] = I18n.t('users_controller.only_user_edit_profile', user: @user.name).html_safe
@@ -294,7 +305,7 @@ class UsersController < ApplicationController
                              .paginate(page: params[:page], per_page: 24)
 
     @normal_comments = comments.where('comments.status = 1')
-    if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+    if logged_in_as(['admin', 'moderator'])
       @moderated_comments = comments.where('comments.status = 4')
     end
     render template: 'comments/index'
@@ -402,12 +413,62 @@ class UsersController < ApplicationController
 
   private
 
+  def subscribe_multiple_tag(tag_list)
+    if !tag_list || tag_list == ''
+      flash[:notice] = "Please enter tags for subscription in the url."
+    else
+      if tag_list.is_a? String
+        tag_list = tag_list.split(',')
+      end
+      tag_list.each do |t|
+        next unless t.length.positive?
+        tag = Tag.find_by(name: t)
+        unless tag.present?
+          tag = Tag.new(
+            vid: 3, # vocabulary id
+            name: t,
+            description: "",
+            weight: 0
+          )
+          begin
+            tag.save!
+            rescue ActiveRecord::RecordInvalid
+            flash[:error] = tag.errors.full_messages
+            redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
+            return false
+          end
+        end
+        # test for uniqueness
+        unless TagSelection.where(following: true, user_id: current_user.uid, tid: tag.tid).length.positive?
+          # Successfully we have added subscription
+          if Tag.find_by(tid: tag.tid)
+            # Create the entry if it isn't already created.
+            # assume tag, for now:
+            subscription = TagSelection.where(user_id: current_user.uid,
+                                              tid: tag.tid).first_or_create
+            subscription.following = true
+            # Check if the value changed.
+            if subscription.following_changed?
+              subscription.save!
+            end
+          else
+            flash.now[:error] = "Sorry! There was an error in tag subscriptions. Please try it again."
+          end
+        end
+      end
+    end
+  end
+
   def set_user
     @user = User.find_by(username: params[:id])
   end
 
   def user_params
     params.require(:user).permit(:username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :bio, :status)
+  end
+
+  def user_verification_params
+    params.require(:user).permit(:ui_update, :current_password)
   end
 
   def spamaway_params

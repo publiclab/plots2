@@ -73,8 +73,26 @@ class SearchApiTest < ActiveSupport::TestCase
      assert matcher =~ json
   end
 
-  test 'search tags functionality' do
-    get '/api/srch/tags?query=Awesome'
+  test 'search content functionality' do
+    get '/api/srch/content?query=Blog'
+    assert last_response.ok?
+
+    # Expected search pattern
+    pattern = {
+      srchParams: {
+        query: 'Blog',
+        seq: nil,
+      }.ignore_extra_keys!
+    }.ignore_extra_keys!
+
+    matcher = JsonExpressions::Matcher.new(pattern)
+    json = JSON.parse(last_response.body)
+
+    assert matcher =~ json
+  end
+
+  test 'search nodes functionality' do
+    get '/api/srch/nodes?query=Awesome'
     assert last_response.ok?
 
     # Expected search pattern
@@ -87,7 +105,6 @@ class SearchApiTest < ActiveSupport::TestCase
 
     matcher = JsonExpressions::Matcher.new(pattern)
     json = JSON.parse(last_response.body)
-
     assert matcher =~ json
   end
 

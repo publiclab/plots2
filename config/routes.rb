@@ -69,9 +69,9 @@ Plots2::Application.routes.draw do
   get 'openid/decision' => 'openid#decision'
   post 'openid/decision' => 'openid#decision'
   get 'openid/resume' => 'openid#resume'
-  get 'openid/:username' => 'openid#user_page'
+  get 'openid/:username(/:provider)' => 'openid#user_page' # optional provider for logging through provider at MK or SWB
   get 'openid/:username/xrds' => 'openid#user_xrds'
-  get '/people/:username/identity' => 'legacy#openid_username'
+  get '/people/:username/identity(/:provider)' => 'legacy#openid_username' # optional provider for logging through provider at MK or SWB
   get '/user/:id/identity' => 'legacy#openid'
   post '/user/register' => 'legacy#register'
 
@@ -261,6 +261,9 @@ Plots2::Application.routes.draw do
   get 'stats/questions/:start/:end' => 'stats#questions'
   get 'stats/answers' => 'stats#answers'
   get 'stats/answers/:start/:end' => 'stats#answers'
+  get 'stats/tags' => 'stats#tags'
+  get 'stats/node_tags' => 'stats#node_tags'
+  get 'stats/node_tags/:start/:end' => 'stats#node_tags'
   get 'feed' => 'notes#rss'
   get 'rss.xml' => 'legacy#rss'
 

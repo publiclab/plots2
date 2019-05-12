@@ -107,6 +107,7 @@ class NotesController < ApplicationController
     end
 
     if saved
+      @node.notify_callout_users
       params[:tags]&.tr(' ', ',')&.split(',')&.each do |tagname|
         @node.add_tag(tagname.strip, current_user)
       end

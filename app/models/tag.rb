@@ -1,4 +1,5 @@
 class Tag < ApplicationRecord
+  extend RawStats
   self.table_name = 'term_data'
   self.primary_key = 'tid'
 

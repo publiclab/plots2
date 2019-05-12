@@ -1,4 +1,4 @@
 <div><p class="help-text" style="margin-top: 10px;clear:left;">
   <%= raw t('talk.show.welcome', :page => @node.latest.title, :url1 => @node.path, :url2 => '/wiki/talk-pages') %> | for help, <a href="/chat">visit our chatroom</a>
 </p></div>
-<div><iframe src="https://pad.publiclab.org/p/<%= @node.slug_from_path[0,50] %>" style="width: 100%; height:800px;"><p><%= t('talk.show.try_direct_link', :url1 => 'https://pad.publiclab.org/p/'+@node.slug_from_path[0,50]) %></p></iframe></div>
+<div><iframe id="pl_pad" src="https://pad.publiclab.org/p/<%= @node.slug_from_path[0,50] %>" style="height:800px;"><p><%= t('talk.show.try_direct_link', :url1 => 'https://pad.publiclab.org/p/'+@node.slug_from_path[0,50]) %></p></iframe></div>

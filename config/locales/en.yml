@@ -284,7 +284,7 @@ en:
         events: "Events"
         comments: "Comments"
         wiki: "Wiki"
-      from_other: "from other"
+      from_other: "From other"
       community_scientists: "community scientists"
       past_week: "in the past week"
       your_work: "Your work"
@@ -311,6 +311,7 @@ en:
       community_research: "Community research"
       welcome: "Welcome"
       notes: "notes"
+      note: "note"
       and: "and"
       wiki_edits: "wiki edits"
       posted_past_week: "posted in the past week."
@@ -369,6 +370,9 @@ en:
       number_of_subscriptions: "# of people"
       subscriptions: "Your subscriptions"
       sort_by: "Sort By"
+      more_posts: "more posts"
+      subscribe: "Subscribe"
+      unsubscribe: "Unsubscribe"
     show:
       notes_tagged: "Notes tagged with <i style=\"color:#aaa;\">%{tag}</i>"
       following: "Following"
@@ -377,7 +381,7 @@ en:
       none: "None"
       users_following_tag: "Users following this tag"
       ask_question: "Ask a question about <b>%{tag}</b>"
-      or_subscribe_to_answer: "or <a style='margin-bottom:6px;' class='btn btn-default
+      or_subscribe_to_answer: "<a style='margin-bottom:6px;' class='btn btn-primary
         requireLogin' target='_blank' href='%{url1}'>Subscribe to answer questions
         on this topic</a>"
       research_notes: "<span class=\"hidden-sm\">Research </span>Notes"
@@ -386,6 +390,7 @@ en:
       maps: "Maps"
       no_results_found: "No results found; try searching for '<b>%{tag}</b>'"
       try_advanced_search: "Or try an <a href='%{url1}'>advanced search</a>"
+      no_map_results_found: "Sorry, no map is tagged with <i>%{tag}</i>"
       contributors: "Contributors"
     contributors-index:
       contributors_over_last_week: "Contributors for <i style=\"color:#aaa;\">%{tag_name}</i>
@@ -689,9 +694,9 @@ en:
         by <a href='%{url1}'>%{author_name}</a>
       more: "More..."
     _related:
-      write_research_note: "Write a research note"
+      write_research_note: "Write a post"
       share_your_work: "Share your work with others"
-      ask_a_question: "Ask a related question"
+      ask_a_question: "Ask a question"
       translation: "Translation"
       response_to: "This is a response to"
       responses_to_note: "Responses to this note"
@@ -862,6 +867,7 @@ en:
   tag_controller:
     tags: "Tags"
     tag_already_exists: "Error: that tag already exists."
+    cant_be_empty: "Error: Power Tag can't be empty."
     barnstar_not_created: "The barnstar could not be created."
     barnstar_awarded: "You awarded the <a href='%{url1}'>%{star} barnstar</a> to <a
       href='%{url2}'>%{awardee}</a>"

@@ -1,4 +1,4 @@
-<div class="col-md-9">
+<div class="col-lg-9">
 
   <div id = "note-graph" style = "overflow: auto; text-align:center; border: 1px solid #E5E5E5; margin-bottom: 10px;"></div>
 
@@ -6,7 +6,8 @@
     <small>
       <a href="/p/<%= @profile_user.username %>"><i class="fa fa-link"></i></a>
       <%= @profile_user.note_count %><a href='/notes/author/<%= @profile_user.name %>'> research notes</a> and <%= @profile_user.revisions.count %> wiki edits
-      <% if current_user && current_user.role == "admin" %> | <%= @profile_user.email %><% end %>
+      <% if logged_in_as(['admin']) %> | <%= @profile_user.email %><% end %>
+      <span style = "font-size:24px;"><small> | <%= raw t('users.profile.joined_time_ago', :time_ago => distance_of_time_in_words(@profile_user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' })) %></small></span>
       <% if @profile_user.role == "moderator" %> | <i class="fa fa-certificate"></i> <%= t('users.profile.moderator') %><% end %>
       <% if @profile_user.role == "admin" %> | <i class="fa fa-certificate"></i> <%= t('users.profile.admin') %><% end %>
       <% if @profile_user.status == 0 %> | <i class="fa fa-ban" style="color:#a00;"></i> <%= t('users.profile.banned') %><% end %>
@@ -17,8 +18,8 @@
 
   <hr />
   <div class="row" id="highlight" style=" text-align: center;">
-    <h3 class="col-md-4 col-xs-12 col-sm-4"><a href = "/tag/question:*/author/<%= params[:id] %>"><%= Node.questions.where(status: 1, uid: @profile_user.id).length %> questions asked </a><br><br> <%= Answer.where(uid: @profile_user.id).count %> answers posted</h3>
-    <h3 class="col-md-4 col-xs-12 col-sm-4"><a href = "/tag/activity:*/author/<%= params[:id] %>"><%= @count_activities_posted %> activities posted </a><br><br> <a href = "/tag/replication:*/author/<%= params[:id] %>"><%= @count_activities_attempted %> activities attempted</a></h3>
+    <h3 class="col-12 col-sm-12 col-md-4"><a href = "/tag/question:*/author/<%= params[:id] %>"><%= @questions.length %> questions asked </a><br><br> <%= @answered_questions.count %> answers posted</h3>
+    <h3 class="col-12 col-sm-12 col-md-4"><a href = "/tag/activity:*/author/<%= params[:id] %>"><%= @count_activities_posted %> activities posted </a><br><br> <a href = "/tag/replication:*/author/<%= params[:id] %>"><%= @count_activities_attempted %> activities attempted</a></h3>
     <% if !@map_lat.nil? && !@map_lon.nil? %>
       <%= render :partial => "map/userLeaflet" , locals: { haslocation: true, user: @profile_user } %>
     <% elsif !current_user.nil? && current_user.id == @profile_user.id %>
@@ -27,15 +28,14 @@
   </div>
   <hr />
 
-  <span style="float:right;"><small><%= raw t('users.profile.joined_time_ago', :time_ago => distance_of_time_in_words(@profile_user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' })) %></small></span>
   <br>
 
   <ul class="nav nav-tabs">
-    <li class="active"><a href="#research" data-toggle="tab"><i class="fa fa-file"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.research') %></span><% if current_user && current_user.uid == @profile_user.uid %> <%= "(#{@notes.count + @coauthored.count + @drafts.count })" %><% else %><%= "(#{ @notes.count + @coauthored.count })" %><% end %></a></li>
-    <li><a href="#questions" data-toggle="tab"><i class="fa fa-question-circle"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.questions') %></span> (<%= Node.questions.where(status: 1, uid: @profile_user.id).length %>)</a></li>
-    <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="fa fa-comment"></i><span class="hidden-sm hidden-xs"> Comments</span> (<%= @comment_count %>)</a></li>
-    <li><a href="#likes" data-toggle="tab"><i class="fa fa-star"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.liked') %></span> (<%= @likes.count %>)</a></li>
-    <li><a href="#barnstars" data-toggle="tab"><i class="fa fa-certificate"></i><span class="hidden-sm hidden-xs"> Barnstars</span> (<%= @profile_user.try(:barnstars).try(:length) %>)</a></li>
+    <li class="nav-item"><a class="nav-link active" href="#research" data-toggle="tab"><i class="fa fa-file"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.research') %></span><% if current_user && current_user.uid == @profile_user.uid %> <%= "(#{@notes.count + @coauthored.count + @drafts.count })" %><% else %><%= "(#{ @notes.count + @coauthored.count })" %><% end %></a></li>
+    <li class="nav-item"><a class="nav-link" href="#questions" data-toggle="tab"><i class="fa fa-question-circle"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.questions') %></span> (<%= Node.questions.where(status: 1, uid: @profile_user.id).length %>)</a></li>
+    <li class="nav-item"><a class="nav-link" href="#comments" id="comments-tab" data-toggle="tab"><i class="fa fa-comment"></i><span class="hidden-sm hidden-xs"> Comments</span> (<%= @comment_count %>)</a></li>
+    <li class="nav-item"><a class="nav-link" href="#likes" data-toggle="tab"><i class="fa fa-star"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.liked') %></span> (<%= @likes.count %>)</a></li>
+    <li class="nav-item"><a class="nav-link" href="#barnstars" data-toggle="tab"><i class="fa fa-certificate"></i><span class="hidden-sm hidden-xs"> Barnstars</span> (<%= @profile_user.try(:barnstars).try(:length) %>)</a></li>
   </ul>
 
   <br />
@@ -44,9 +44,9 @@
 
     <div class="tab-pane active" id="research">
       <div class="btn-group text-center" style="margin-bottom:10px;">
-        <a href="#notes" class="btn btn-default" data-toggle="tab">Authored <%= "(#{ @notes.count })" %></a>
-        <a href="#coauthored" class="btn btn-default" data-toggle="tab">Coauthored  <%= "(#{ @coauthored.count })" %></a>
-        <% if current_user && current_user.uid == @profile_user.uid %><a href="#draft" class="btn btn-default" data-toggle="tab">Drafts <%= "(#{ @drafts.count })" %></a><% end %>
+        <a href="#notes" class="btn btn-outline-secondary" data-toggle="tab">Authored <%= "(#{ @notes.count })" %></a>
+        <a href="#coauthored" class="btn btn-outline-secondary" data-toggle="tab">Coauthored  <%= "(#{ @coauthored.count })" %></a>
+        <% if current_user && current_user.uid == @profile_user.uid %><a href="#draft" class="btn btn-outline-secondary" data-toggle="tab">Drafts <%= "(#{ @drafts.count })" %></a><% end %>
       </div>
 
       <br />
@@ -70,8 +70,8 @@
 
     <div class="tab-pane" id="questions">
       <div class="btn-group text-center">
-        <a href="#asked" class="btn btn-default" data-toggle="tab">Asked</a>
-        <a href="#answered" class="btn btn-default" data-toggle="tab">Answered</a>
+        <a href="#asked" class="btn btn-outline-secondary" data-toggle="tab">Asked<%= "(#{@questions.length})"%></a>
+        <a href="#answered" class="btn btn-outline-secondary" data-toggle="tab">Answered<%= "(#{@answered_questions.count})"%></a>
       </div>
 
       <div class="tab-content">
@@ -116,10 +116,10 @@
 
 </div>
 
-<div class="col-md-3">
-  <img class="hidden-xs hidden-sm img-rounded" id="profile-photo" style="width:100%;margin-bottom:10px;" src="<%= @profile_user.profile_image %>" />
-  <div style="text-align:center;" class="visible-sm visible-xs">
-    <img class="img-circle" id="profile-photo" style="width:50%;margin-bottom:20px;" src="<%= @profile_user.photo_path %>" />
+<div class="col-lg-3">
+  <img class="d-none d-lg-inline rounded" id="profile-photo" style="width:100%;margin-bottom:10px;" src="<%= @profile_user.profile_image %>" />
+  <div style="text-align:center;" class="d-lg-none">
+    <img class="rounded-circle" id="profile-photo" style="width:50%;margin-bottom:20px;" src="<%= @profile_user.photo_path %>" />
   </div>
   <%= render :partial => "tag/tagging", locals: { url: "/profile/tags/create/#{ @profile_user.id }", parent: :profile, user: @profile_user } %>
 
@@ -149,7 +149,7 @@
   <% if current_user && @profile_user %>
     <% unless current_user == @profile_user %>
       <hr />
-      <div id="follow_form" class="col-md-offset-4">
+      <div id="follow_form" class="col-lg-offset-4">
         <% if current_user.following?(@profile_user) %>
           <%= render partial: 'unfollow', locals: { user: @profile_user } %>
         <% else %>
@@ -160,63 +160,63 @@
     <% end %>
   <% end %>
 
-  <% if @profile_user && current_user && current_user.role == "admin" && @profile_user.role != "admin" %>
-    <a href="/admin/promote/admin/<%= @profile_user.id %>" class="btn btn-default btn-block"><i class="fa fa-certificate"></i> <%= t('users.profile.make_admin') %></a>
+  <% if @profile_user && logged_in_as(['admin']) && @profile_user.role != "admin" %>
+    <a href="/admin/promote/admin/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-certificate"></i> <%= t('users.profile.make_admin') %></a>
   <% end %>
 
-  <% if @profile_user && current_user && current_user.role == "admin" && @profile_user.role == "moderator" %>
+  <% if @profile_user && logged_in_as(['admin']) && @profile_user.role == "moderator" %>
     <a href="/admin/demote/basic/<%= @profile_user.id %>" class="btn btn-default btn-block"><i class="fa fa-ban"></i> <%= t('users.profile.revert_to_basic_user') %></a>
   <% end %>
 
-  <% if @profile_user && current_user && (current_user.role == "admin" || current_user.role == "moderator") && @profile_user.role == "basic" %>
-    <a href="/admin/promote/moderator/<%= @profile_user.id %>" class="btn btn-default btn-block"><i class="fa fa-certificate"></i> <%= t('users.profile.make_moderator') %></a>
+  <% if @profile_user && logged_in_as(['admin', 'moderator']) && @profile_user.role == "basic" %>
+    <a href="/admin/promote/moderator/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-certificate"></i> <%= t('users.profile.make_moderator') %></a>
   <% end %>
 
-  <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") && @profile_user.status == 0 %>
-    <a href="/unban/<%= @profile_user.id %>" class="btn btn-default btn-block"><i class="fa fa-thumbs-up"></i> <%= t('users.profile.unban_user') %></a>
-  <% elsif current_user && (current_user.role == "admin" || current_user.role == "moderator") && @profile_user.status == 1 %>
-    <a data-confirm="<%= t('users.profile.confirm_ban_user') %>" href="/ban/<%= @profile_user.id %>" class="btn btn-default btn-block"><i class="fa fa-ban"></i> <%= t('users.profile.ban_user') %></a>
+  <% if logged_in_as(['admin', 'moderator']) && @profile_user.status == 0 %>
+    <a href="/unban/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-thumbs-up"></i> <%= t('users.profile.unban_user') %></a>
+  <% elsif logged_in_as(['admin', 'moderator']) && @profile_user.status == 1 %>
+    <a data-confirm="<%= t('users.profile.confirm_ban_user') %>" href="/ban/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-ban"></i> <%= t('users.profile.ban_user') %></a>
   <% end %>
 
-  <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") && @profile_user.status == 5 %>
-    <a href="/admin/unmoderate/<%= @profile_user.id %>" class="btn btn-default btn-block"><i class="fa fa-thumbs-up"></i> <%= t('users.profile.unmoderate_user') %></a>
-  <% elsif current_user && (current_user.role == "admin" || current_user.role == "moderator") && @profile_user.status == 1 %>
-    <a rel="tooltip" title="Prevent author from logging in, without hiding their work or profile." data-confirm="<%= t('users.profile.confirm_moderate_user') %>" href="/admin/moderate/<%= @profile_user.id %>" class="btn btn-default btn-block"><i class="fa fa-ban"></i> <%= t('users.profile.moderate_user') %></a>
+  <% if logged_in_as(['admin', 'moderator']) && @profile_user.status == 5 %>
+    <a href="/admin/unmoderate/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-thumbs-up"></i> <%= t('users.profile.unmoderate_user') %></a>
+  <% elsif logged_in_as(['admin', 'moderator']) && @profile_user.status == 1 %>
+    <a rel="tooltip" title="Prevent author from logging in, without hiding their work or profile." data-confirm="<%= t('users.profile.confirm_moderate_user') %>" href="/admin/moderate/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-ban"></i> <%= t('users.profile.moderate_user') %></a>
   <% end %>
 
-  <% if @profile_user && !@profile_user.reset_key.nil? && current_user && current_user.role == "admin" %>
-    <a id="user-reset-key" href="/reset/key/<%= @profile_user.reset_key %>" class="btn btn-default btn-block"><i class="fa fa-info-sign"></i> <%= t('users.profile.reset_user') %>: <%= @profile_user.reset_key %></a>
+  <% if @profile_user && !@profile_user.reset_key.nil? && logged_in_as(['admin']) %>
+    <a id="user-reset-key" href="/reset/key/<%= @profile_user.reset_key %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-info-sign"></i> <%= t('users.profile.reset_user') %>: <%= @profile_user.reset_key %></a>
   <% end %>
 
-  <% if @profile_user && @profile_user.reset_key.nil? && current_user && (current_user.role == "admin" || current_user.role == "moderator") && (@profile_user.role == "basic" || @profile_user.role == "moderator") %>
-    <a href="/admin/force/reset/<%= @profile_user.id %>" class="btn btn-default btn-block">Reset User Password</a>
+  <% if @profile_user && @profile_user.reset_key.nil? && logged_in_as(['admin', 'moderator']) && (@profile_user.role == "basic" || @profile_user.role == "moderator") %>
+    <a href="/admin/force/reset/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block">Reset User Password</a>
   <% end %>
 
   <hr />
 
   <p>
-    <a class="btn btn-default btn-block" href="/feed/<%= @profile_user.name %>.rss"><i class="fa fa-rss" style="color:orange;"></i> <%= t('users.profile.rss_feed_for') %> <%= @profile_user.name %></a>
+    <a class="btn btn-outline-secondary btn-block" href="/feed/<%= @profile_user.name %>.rss"><i class="fa fa-rss" style="color:orange;"></i> <%= t('users.profile.rss_feed_for') %> <%= @profile_user.name %></a>
     <% if current_user && current_user.uid == @profile_user.uid %>
-      <a href="/profile/<%= @profile_user.name %>/edit" class="btn btn-default btn-block"><i class="fa fa-pencil"></i> <%= t('users.profile.edit_profile') %></a>
+      <a href="/profile/<%= @profile_user.name %>/edit" class="btn btn-outline-secondary btn-block"><i class="fa fa-pencil"></i> <%= t('users.profile.edit_profile') %></a>
     <% end %>
   </p>
 
   <% if @profile_user && current_user && @profile_user == current_user %>
     <button id="accessTokenButton" data-toggle="modal" data-target="#btn-token" class="btn btn-default btn-block">My Access Token</button>
-    <button data-toggle="modal" data-target="#socialModal" class="btn btn-default btn-block">Link Social Media</button>
+    <button data-toggle="modal" data-target="#socialModal" class="btn btn-outline-secondary btn-block">Link Social Media</button>
 
     <div class="modal fade" id="btn-token" tabindex="-1" role="dialog" aria-labelledby="accessModal" aria-hidden="true">
       <div class="modal-dialog" role="document" id="token-popup">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" id="close-btn" data-dismiss="modal">x</button>
             <h5 class="modal-title" id="accessModal">My Access Token</h5>
+            <button type="button" class="close" id="close-btn" data-dismiss="modal">x</button>
           </div>
           <div class="modal-body">
             <p id="accessTokenForm" type="text" class="token form-control text-center"><%= @profile_user.token %></p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" id="copy-btn">Copy</button>
+            <button type="button" class="btn btn-outline-secondary" id="copy-btn">Copy</button>
           </div>
         </div>
       </div>
@@ -256,18 +256,18 @@
     <hr />
 
     <div class="row">
-      <div class="col-md-3 col-md-offset-1">
+      <div class="col-lg-3 col-lg-offset-1">
         <h4>Followers</h4>
       </div>
-      <div class="col-md-3 col-md-offset-2">
+      <div class="col-lg-3 col-lg-offset-2">
         <h4>Following</h4>
       </div>
 
       <br />
-      <div class="col-md-3 col-md-offset-2">
+      <div class="col-lg-3 col-lg-offset-2">
         <h5><b><%= link_to @profile_user.followers.count, followers_path(id: @profile_user.username) %></b></h5>
       </div>
-      <div class="col-md-3 col-md-offset-2">
+      <div class="col-lg-3 col-lg-offset-2">
         <h5><b><%= link_to @profile_user.following_users.count, following_path(id: @profile_user.username) %></b></h5>
       </div>
     </div>
@@ -275,7 +275,7 @@
 
   <% end %>
 
-  <div class="hidden-xs">
+  <div class="d-none d-md-inline">
     <% if @wikis && @wikis.length > 0 %>
       <h4><%= t('users.profile.wiki_contributed_to') %></h4>
       <ul class="nav bullet">
