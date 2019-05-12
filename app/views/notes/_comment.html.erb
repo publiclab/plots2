@@ -76,7 +76,7 @@
               <i class='icon fa fa-smile-o'></i>
               <sup style="font-size: 12px;">+</sup>
             </button>
-            <div id="emoji-dropdown" style="background: #f8f8f8" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <div id="emoji-dropdown" style="background: #f8f8f8; position: relative; left: 50px;" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <% emoji_names, emoji_image_map = emoji_info %>
               <% emoji_names.each do |e| %>
               <% capitalized_emoji_name = e.split("-").map(&:capitalize).join %>
