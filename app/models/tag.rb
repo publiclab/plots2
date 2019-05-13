@@ -367,7 +367,8 @@ class Tag < ApplicationRecord
 
       # sort them by how often they co-occur:
       nids = nids.group_by{ |v| v }.map{ |k, v| [k, v.size] }
-      nids = nids.collect(&:first)[0..4] # take top 5
+      nids = nids.collect(&:first)[0..4]
+                 .collect(&:nid) # take top 5
 
       Tag.joins(:node_tag)
          .where(NodeTag.table_name => { nid: nids })
