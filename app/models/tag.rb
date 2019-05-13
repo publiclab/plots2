@@ -365,6 +365,10 @@ class Tag < ApplicationRecord
                      .where(Tag.table_name => { name: tag_name })
                      .select(:nid)
 
+      # sort them by how often they co-occur:
+      nids = nids.group_by{ |v| v }.map{ |k, v| [k, v.size] }
+      nids = nids.collect(&:first)[0..4] # take top 5
+
       Tag.joins(:node_tag)
          .where(NodeTag.table_name => { nid: nids })
          .where.not(name: tag_name)
