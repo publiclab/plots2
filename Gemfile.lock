@@ -394,13 +394,13 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.8.0)
     rspec-support (3.8.0)
-    rubocop (0.68.1)
+    rubocop (0.69.0)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
-      parser (>= 2.5, != 2.5.1.1)
+      parser (>= 2.6)
       rainbow (>= 2.2.2, < 4.0)
       ruby-progressbar (~> 1.7)
-      unicode-display_width (>= 1.4.0, < 1.6)
+      unicode-display_width (>= 1.4.0, < 1.7)
     ruby-openid (2.7.0)
     ruby-progressbar (1.10.0)
     ruby_dep (1.5.0)
@@ -487,7 +487,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.5)
-    unicode-display_width (1.5.0)
+    unicode-display_width (1.6.0)
     unicode-emoji (2.1.0)
     virtus (1.0.5)
       axiom-types (~> 0.1)
@@ -586,7 +586,7 @@ DEPENDENCIES
   rest-client
   reverse_markdown
   rspec
-  rubocop (~> 0.68.1)
+  rubocop (~> 0.69.0)
   ruby-openid
   sanitize
   sassc-rails
