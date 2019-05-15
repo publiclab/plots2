@@ -202,7 +202,7 @@ class Node < ActiveRecord::Base
       weekly_nodes = Node.published.select(:created)
                     .where(type: type,
                     created: range)
-                    .count
+                    .size
       date_hash[month.to_f * 1000] = weekly_nodes
       week -= 1
     end
