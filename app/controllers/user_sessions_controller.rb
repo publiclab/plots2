@@ -58,8 +58,10 @@ class UserSessionsController < ApplicationController
         if session[:openid_return_to] # for openid login, redirects back to openid auth process
           return_to = session[:openid_return_to]
           session[:openid_return_to] = nil
+          redirect_to return_to + hash_params
+        else
+          redirect_to return_to + hash_params, notice: "Signed in!"
         end
-        redirect_to return_to + hash_params, notice: "Signed in!"
       else # identity does not exist so we need to either create a user with identity OR link identity to existing user
         if User.where(email: auth["info"]["email"]).empty?
           # Create a new user as email provided is not present in PL database
