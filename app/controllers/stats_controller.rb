@@ -17,19 +17,19 @@ class StatsController < ApplicationController
     @end = fin
     @notes = Node.published.select(%i(created type))
       .where(type: 'note', created: @start.to_i..@end.to_i)
-      .count(:all)
-    @wikis = Revision.select(:timestamp)
+      .size
+    @wikis = Revision.published.select(:timestamp)
       .where(timestamp: @start.to_i..@end.to_i)
-      .count - @notes # because notes each have one revision
+      .size - @notes # because notes each have one revision
     @people = User.where(created_at: @start..@end).where(status: 1)
-      .count
+      .size
     @answers = Answer.where(created_at: @start..@end)
-      .count
-    @comments = Comment.select(:timestamp)
-      .where(timestamp: @start.to_i..@end.to_i)
-      .count
+      .size
+    @comments = Comment.select(:status, :timestamp)
+      .where(status: 1, timestamp: @start.to_i..@end.to_i)
+      .size
     @questions = Node.published.questions.where(created: @start.to_i..@end.to_i)
-      .count
+      .size
     @contributors = User.contributor_count_for(@start, @end)
     @popular_tags = Tag.nodes_frequency(@start, @end)
   end
@@ -41,16 +41,16 @@ class StatsController < ApplicationController
     end
     @title = 'Stats'
 
-    @weekly_notes = Node.past_week.select(:type).where(type: 'note').count(:all)
-    @weekly_wikis = Revision.past_week.count
-    @weekly_questions = Node.questions.past_week.count(:all).count
-    @weekly_answers = Answer.past_week.count
-    @weekly_members = User.past_week.where(status: 1).count
-    @monthly_notes = Node.past_month.select(:type).where(type: 'note').count(:all)
-    @monthly_wikis = Revision.past_month.count
-    @monthly_members = User.past_month.where(status: 1).count
-    @monthly_questions = Node.questions.past_month.count(:all).count
-    @monthly_answers = Answer.past_month.count
+    @weekly_notes = Node.past_week.select(:type).where(type: 'note').size
+    @weekly_wikis = Revision.past_week.size
+    @weekly_questions = Node.questions.past_week.size
+    @weekly_answers = Answer.past_week.size
+    @weekly_members = User.past_week.where(status: 1).size
+    @monthly_notes = Node.past_month.select(:type).where(type: 'note').size
+    @monthly_wikis = Revision.past_month.size
+    @monthly_members = User.past_month.where(status: 1).size
+    @monthly_questions = Node.questions.past_month.size
+    @monthly_answers = Answer.past_month.size
 
     @notes_per_week_period = Node.frequency('note', @start, @end).round(2)
     @edits_per_week_period = Revision.frequency(@start, @end).round(2)
