@@ -140,10 +140,25 @@ module ApplicationHelper
     'is-active' if request.path == page
   end
 
-  def translation(key, options = {})
-    translated_string = t(key, options)
+    def flatten_hash(hash)
+      hash.each_with_object({}) do |(k, v), h|
 
-    if translated_string.length > 3 && current_user &.has_tag('translation-helper') && !translated_string.include?("translation missing")
+      if v.is_a? Hash
+        flatten_hash(v).map do |h_k, h_v|
+          h["#{k}.#{h_k}".to_sym] = h_v
+        end
+      else
+        h[k] = v
+      end
+      end
+      end
+
+  def translation(key, options = {})
+    translated_string = t(key, options) // default
+    options[:fallback] = false
+    translated_string2 = t(key, options) // russian or error
+
+    if current_user &.has_tag('translation-helper') && translated_string2.include?("translation missing")
       %(<span>#{translated_string} <a href="https://www.transifex.com/publiclab/publiclaborg/translate/#de/$?q=text%3A#{translated_string}">
           <i data-toggle='tooltip' data-placement='top' title='Needs translation? Click to help translate this text.' style='position:relative; right:2px; color:#bbb; font-size: 15px;' class='fa fa-globe'></i></a>
        </span>)

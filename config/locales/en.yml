@@ -1,8 +1,6 @@
 ---
 en:
-  users:
-    reset:
-      reset_password: "Reset your password"
+  t(users.reset.reset_password)---  "Reset your password"
       enter_username_and_password: "Enter your username and a new password"
       username_placeholder: "username"
       password_placeholder: "enter a new password"
