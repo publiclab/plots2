@@ -31,15 +31,14 @@ module ApplicationHelper
       next unless e.raw
 
       val = ":#{e.name}:"
-      emojis << {value: val, text: e.name}
+      emojis << { value: val, text: e.name }
       image_map[e.name] = e.raw
     end
-    {emojis: emojis, image_map: image_map}
+    { emojis: emojis, image_map: image_map }
   end
 
   def emoji_info
-    emoji_names = ["thumbs-up", "thumbs-down", "laugh",
-                   "hooray", "confused", "heart"]
+    emoji_names = ["thumbs-up", "thumbs-down", "laugh", "hooray", "confused", "heart"]
     emoji_image_map = {
         "thumbs-up" => "https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png",
         "thumbs-down" => "https://github.githubassets.com/images/icons/emoji/unicode/1f44e.png",
@@ -94,11 +93,11 @@ module ApplicationHelper
 
   # we should move this to the Node model:
   def render_map(lat, lon)
-    render partial: 'map/leaflet', locals: {lat: lat, lon: lon, top_map: false}
+    render partial: 'map/leaflet', locals: { lat: lat, lon: lon, top_map: false }
   end
 
   def render_top_map(lat, lon)
-    render partial: 'map/leaflet', locals: {lat: lat, lon: lon, top_map: true}
+    render partial: 'map/leaflet', locals: { lat: lat, lon: lon, top_map: true }
   end
 
   # we should move this to the Comment model:
@@ -111,10 +110,10 @@ module ApplicationHelper
       output = a.render_to_string(template: "notes/_title_suggestion",
                                   layout: false,
                                   locals: {
-                                      user: comment.user.name,
-                                      nid: comment.nid,
-                                      title: title,
-                                      is_creator: is_creator
+                                    user: comment.user.name,
+                                    nid: comment.nid,
+                                    title: title,
+                                    is_creator: is_creator
                                   })
       output
     end
