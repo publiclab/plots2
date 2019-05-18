@@ -145,7 +145,7 @@ module ApplicationHelper
     options[:fallback] = false
     translated_string2 = t(key, options)
 
-    if current_user&.has_tag('translation-helper') && translated_string2.include?("translation missing")
+    if current_user&.has_tag('translation-helper') && translated_string2.include?("translation missing") && !translated_string.include?("<")
       %(<span>#{translated_string} <a href="https://www.transifex.com/publiclab/publiclaborg/translate/#de/$?q=text%3A#{translated_string}">
           <i data-toggle='tooltip' data-placement='top' title='Needs translation? Click to help translate this text.' style='position:relative; right:2px; color:#bbb; font-size: 15px;' class='fa fa-globe'></i></a>
        </span>)
