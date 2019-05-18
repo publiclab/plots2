@@ -31,7 +31,6 @@ RUN bundle install --jobs=4
 ADD . /app
 WORKDIR /app
 
-RUN npm config set strict-ssl false && npm install -g yarn \
-    && yarn install && yarn upgrade
+RUN npm config set strict-ssl false && npm install -g yarn && yarn && yarn upgrade
 
 # RUN passenger-config compile-nginx-engine --connect-timeout 60 --idle-timeout 60
