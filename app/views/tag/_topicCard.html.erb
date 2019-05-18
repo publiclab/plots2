@@ -11,9 +11,9 @@
           <% Tag.find_nodes_by_type(tag.name, type = 'note', limit = 3).each do |node|  %>
             <div>
               <% if node.main_image %>
-                <img class="img-circle" id="profile-photo" style="width:20px; height:20px; margin-right:8px; display: inline-block;" src="<%= node.main_image.path(:default) %>" />
+                <img class="rounded-circle" id="profile-photo" style="width:20px; height:20px; margin-right:8px; display: inline-block;" src="<%= node.main_image.path(:default) %>" />
               <% elsif node.scraped_image %>
-                <img class="img-circle" id="profile-photo" style="width:20px; height:20px; margin-right:8px; display: inline-block;" src="<%= node.scraped_image %>" />
+                <img class="rounded-circle" id="profile-photo" style="width:20px; height:20px; margin-right:8px; display: inline-block;" src="<%= node.scraped_image %>" />
               <% end %>
               <p style="display: inline-block;"><a style="color: inherit;" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= (node.type == 'note') ? node.title : node.latest.title %></a></p>
               <p style="display: inline-block; margin-left: 10px;color: #808080;">by <a style="color: #808080;" <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>">@<%= node.author.name %></a></p>
