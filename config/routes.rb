@@ -392,4 +392,7 @@ Plots2::Application.routes.draw do
   match '/auth/:provider/callback', to: 'user_sessions#create', via: [:get, :post]
   get 'auth/failure', to: redirect('/')
 
+  # Serve websocket cable requests in-process
+  mount ActionCable.server => '/cable'
+
 end
