@@ -1,6 +1,6 @@
 class RoomChannel < ApplicationCable::Channel
   def subscribed
-    # stream_from "some_channel"
+    stream_from "room_channel"
   end
 
   def unsubscribed
@@ -8,5 +8,6 @@ class RoomChannel < ApplicationCable::Channel
   end
 
   def speak
+    ActionCable.server.broadcast 'room_channel', 'Channel Response'
   end
 end
