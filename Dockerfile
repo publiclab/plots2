@@ -28,9 +28,10 @@ ADD Gemfile /tmp/Gemfile
 ADD Gemfile.lock /tmp/Gemfile.lock
 RUN bundle install --jobs=4
 
-ADD . /app
 WORKDIR /app
 
-RUN npm config set strict-ssl false && npm install -g yarn && yarn && yarn upgrade
+COPY Gemfile /app/Gemfile
+COPY Gemfile.lock /app/Gemfile.lock
+COPY start.sh /app/start.sh
 
-# RUN passenger-config compile-nginx-engine --connect-timeout 60 --idle-timeout 60
+CMD [ "bash", "-l", "start.sh" ]
