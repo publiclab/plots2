@@ -6,9 +6,8 @@ App.room = App.cable.subscriptions.create "RoomChannel",
     # Called when the subscription has been terminated by the server
 
   received: (data) ->
-      console.log("Here comes the data");
-      console.log(data);
+      console.log("Response" + data["message"]);
     # Called when there's incoming data on the websocket for this channel
 
-  speak: (message)->
-    @perform 'speak', message
+  speak: (message) ->
+    @perform 'speak', message: message
