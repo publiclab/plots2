@@ -29,12 +29,10 @@ def drop_in_dropzone(file_path, visible = false)
     JS
     # Attach the file to the fake input selector with Capybara
     attach_file("fakeFileInput", file_path, visible: visible)
-    # Add the file to a fileList array
-    page.execute_script("var fileList = [fakeFileInput.get(0).files[0]]")
-    # Trigger the fake drop event
     page.execute_script <<-JS
+      var fileList = [fakeFileInput.get(0).files[0]] // Add the file to a fileList array
       var e = jQuery.Event('drop', { dataTransfer : { files : fileList } });
-      $('.dropzone')[0].dropzone.listeners[0].events.drop(e);
+      $('.dropzone')[0].dropzone.listeners[0].events.drop(e); // Trigger the fake drop event
     JS
   end
   
