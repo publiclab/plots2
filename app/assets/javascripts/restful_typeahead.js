@@ -15,7 +15,12 @@ $(function() {
       source: debounce(function (query, process) {
         var encoded_query = encodeURIComponent(query);
         var qryType = $(el).attr('qryType');
-        return $.getJSON('/api/srch/' + qryType + '?query=' + encoded_query, function (data) {
+        var queryUrl = 'api/srch/' + qryType + '?query=' + encoded_query;
+        if (window.hasOwnProperty('ga')) {
+          tracker = ga.getAll()[0];
+          tracker.send("pageview", queryUrl);
+        }
+        return $.getJSON('/' + queryUrl, function (data) {
           return process(data.items);
         },'json');
       }, 350),
