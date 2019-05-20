@@ -12,7 +12,7 @@ class CommentUploadTest < ApplicationSystemTestCase
     click_on "Log in"
 
     visit Node.last.path
-    drop_in_dropzone ("#{Rails.root.to_s}/public/images/pl.png", false)
+    drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", false)
     click_button 'Publish'
     expect(page.find('#comments .comment image')['src']).to match('test.png')
   end
