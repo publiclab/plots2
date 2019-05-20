@@ -1,6 +1,7 @@
 require "application_system_test_case"
 
 class CommentUploadTest < ApplicationSystemTestCase
+  Capybara.default_max_wait_time = 60
 
   test "uploading by dragging" do
     # log in
@@ -11,7 +12,7 @@ class CommentUploadTest < ApplicationSystemTestCase
     click_on "Log in"
 
     visit Node.last.path
-    drop_in_dropzone 'public/images/pl.png'
+    drop_in_dropzone ("#{Rails.root.to_s}/public/images/pl.png", false)
     click_button 'Publish'
     expect(page.find('#comments .comment image')['src']).to match('test.png')
   end
@@ -19,7 +20,7 @@ class CommentUploadTest < ApplicationSystemTestCase
   # Utility methods:
 
 # https://web.archive.org/web/20170730200309/http://blog.paulrugelhiatt.com/rails/testing/capybara/dropzonejs/2014/12/29/test-dropzonejs-file-uploads-with-capybara.html
-def drop_in_dropzone(file_path)
+def drop_in_dropzone(file_path, visible = false)
     # Generate a fake input selector
     page.execute_script <<-JS
       fakeFileInput = window.$('<input/>').attr(
@@ -27,7 +28,7 @@ def drop_in_dropzone(file_path)
       ).appendTo('body');
     JS
     # Attach the file to the fake input selector with Capybara
-    attach_file("fakeFileInput", file_path)
+    attach_file("fakeFileInput", file_path, visible: visible)
     # Add the file to a fileList array
     page.execute_script("var fileList = [fakeFileInput.get(0).files[0]]")
     # Trigger the fake drop event
