@@ -11,6 +11,19 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert html.scan('<td class="author">').length > 1
   end
 
+  test 'that pinned notes with "pinned:foo" tags appear at the top of [nodes:foo] inline tables' do
+    before = "Here are some nodes in a table: \n\n[nodes:test] \n\nThis is how you make it work:\n\n`[nodes:tagname]`\n\n `[nodes:tagname]`\n\nMake sense?"
+    nodes(:one).add_tag('pinned:test', User.first)
+    nodes(:one).add_tag('test', User.first) # ensure it would appear anyways (although we aren't yet asserting order below, we should)
+    html = NodeShared.nodes_grid(before)
+    assert html
+    assert_equal 1, html.scan('<table class="table inline-grid nodes-grid nodes-grid-test nodes-grid-test-').length
+    assert_equal 1, html.scan('<table').length
+    assert_equal 5, html.scan('nodes-grid-test').length
+    assert html.scan('<td class="author">').length > 2 # but not 3 because it shouldn't appear twice
+    assert_equal 1, html.scan(nodes(:one).title).length
+  end
+
   test 'that NodeShared can be used to convert short codes like [notes:foo] into tables which list notes' do
     before = "Here are some notes in a table: \n\n[notes:test] \n\nThis is how you make it work:\n\n`[notes:tagname]`\n\n `[notes:tagname]`\n\nMake sense?"
     html = NodeShared.notes_grid(before)
