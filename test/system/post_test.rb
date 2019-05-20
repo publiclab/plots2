@@ -2,7 +2,7 @@ require "application_system_test_case"
 # https://guides.rubyonrails.org/testing.html#implementing-a-system-test
 
 class PostTest < ApplicationSystemTestCase
-  Capybara.default_max_wait_time = 8
+  Capybara.default_max_wait_time = 60
 
   test 'posting from the editor' do
     visit '/'
@@ -14,7 +14,7 @@ class PostTest < ApplicationSystemTestCase
 
     visit '/post'
 
-    fill_in("Title", with: "My new post", wait: 4)
+    fill_in("Title", with: "My new post")
     
     el = find(".wk-wysiwyg") # rich text input
     el.set("All about this interesting stuff")
@@ -22,7 +22,7 @@ class PostTest < ApplicationSystemTestCase
     assert_page_reloads do
 
       find('.ple-publish').click
-      assert_selector('h1', text: "My new post", wait: 4)
+      assert_selector('h1', text: "My new post")
       assert_selector('#content', text: "All about this interesting stuff")
       assert_selector('.alert-success', text: "×\nSuccess! Thank you for contributing open research, and thanks for your patience while your post is approved by community moderators and we'll email you when it is published. In the meantime, if you have more to contribute, feel free to do so.")
       
