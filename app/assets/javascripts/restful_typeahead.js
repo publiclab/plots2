@@ -18,7 +18,7 @@ $(function() {
         var queryUrl = 'api/srch/' + qryType + '?query=' + encoded_query;
         if (window.hasOwnProperty('ga')) {
           tracker = ga.getAll()[0];
-          tracker.send("pageview", queryUrl);
+          tracker.send("pageview", queryUrl + '&typeahead=true');
         }
         return $.getJSON('/' + queryUrl, function (data) {
           return process(data.items);
