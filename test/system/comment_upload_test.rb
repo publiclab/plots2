@@ -12,6 +12,8 @@ class CommentUploadTest < ApplicationSystemTestCase
     click_on "Log in"
 
     visit Node.last.path
+
+    assert_selector('h1', text: Node.last.title) # this should also wait for everything to load
     drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", false)
     click_button 'Publish'
     expect(page.find('#comments .comment image')['src']).to match('test.png')
