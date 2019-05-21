@@ -1,4 +1,4 @@
-<div class="col-md-6" style="font-family:Junction Regular;">
+<div class="col-md-6">
 <% if current_user && (current_user.role == "admin" || current_user.role == "moderator")%>
 <h3><%= t('users.list.user_moderation') %></h3>
 <p><%= t('users.list.admins_ban_spam') %> </p>
@@ -76,6 +76,10 @@
 
 h5 {
   color: #666;
+}
+
+h3, h2, h5, .card-info a {
+  font-family: Junction Regular;
 }
 .card {
   background-color: #fff;
