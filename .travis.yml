@@ -23,7 +23,7 @@ install:
   - docker-compose build
   - docker-compose up -d
   - docker-compose exec web sleep 5
-  - docker-compose logs db
+  - docker-compose logs
   - netstat -ltpn
   - docker-compose exec web bash -c "rake db:setup"
   - docker-compose exec web bash -c "rake db:migrate"
@@ -31,6 +31,7 @@ install:
   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then gem install danger danger-junit; fi'
 
 script:
+  - docker-compose exec web bash -c "apt install -y phantomjs"
   - docker-compose exec web bash -c "wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
   - docker-compose exec web bash -c "dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install"
   - docker-compose exec web bash -c "wget https://chromedriver.storage.googleapis.com/74.0.3729.6/chromedriver_linux64.zip" # https://sites.google.com/a/chromium.org/chromedriver/
