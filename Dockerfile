@@ -20,7 +20,8 @@ ADD nodesource.gpg.key /tmp/nodesource.gpg.key
 RUN apt-key add /tmp/nodesource.gpg.key && apt-get update -qq \
     && apt-get install --no-install-recommends -y build-essential libmariadbclient-dev \
                 wget curl procps cron make nodejs \
-                apt-transport-https libfreeimage3
+                apt-transport-https libfreeimage3 \
+    && npm install -g yarn
 
 # Install bundle of gems
 WORKDIR /tmp
