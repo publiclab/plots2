@@ -29,7 +29,7 @@ body{
     padding-top: 80px;
 }
 
-h1,h2,h3 {
+h1,h2,h3,h4 {
   font-family:"Junction Light", lucida grande,lucida sans console,sans-serif;
   font-weight:normal;
 }
@@ -38,7 +38,7 @@ h2 small {
   font-size: 60%;
 }
 
-h4,h5,h6, h1 small, h3 small {
+h5,h6, h1 small, h3 small {
   font-family: "Junction Regular", lucida grande,lucida sans console,sans-serif;
   font-weight: normal;
   line-height: 1.4em;
