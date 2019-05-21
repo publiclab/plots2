@@ -23,7 +23,7 @@ install:
   - docker-compose build
   - docker-compose up -d
   - docker-compose exec web sleep 5
-  - docker-compose logs db
+  - docker-compose logs
   - netstat -ltpn
   - docker-compose exec web bash -c "rake db:setup"
   - docker-compose exec web bash -c "rake db:migrate"

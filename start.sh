@@ -3,7 +3,7 @@
 pidfile=/app/tmp/pids/server.pid
 
 bundle check || bundle install
-bower install --allow-root
+yarn
 
 if [ -f $pidfile ] ; then
   >&2 echo 'Server PID file already exists. Removing it...';
