@@ -10,4 +10,4 @@ if [ -f $pidfile ] ; then
   rm $pidfile;
 fi
 
-bundle exec passenger start
+bundle exec passenger start --max-pool-size 9 --min-instances 9 -p 4000
