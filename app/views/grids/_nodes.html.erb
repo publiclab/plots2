@@ -10,7 +10,7 @@
   <% nodes.each do |node| %>
     <tr>
       <td style="width:40%">
-        <% if node.has_tag("pinned:#{tagname}") %><i class="fa fa-thumb-tack"></i> <% end %>
+        <% if node.has_tag("pin:#{tagname}") %><i rel="tooltip" title="This item was pinned with the tag 'pin:<%= tagname %>'." class="fa fa-thumb-tack"></i> <% end %>
         <a href="<%= node.path %>"><%= node.latest.title %></a>
       </td>
       <td class="author"><a href="/profile/<%= node.author.username %>">@<%= node.author.username %> <%=node.author.new_contributor %></a></td>
@@ -23,7 +23,7 @@
 </table>
 <%= will_paginate @nodes, :renderer => BootstrapPagination::Rails if @paginated %>
 
-<a class="grid-embed grid-embed-<%= randomSeed %>" title="Embed this table on another site."><i class="fa fa-code" style="color:#aaa;"></i></a>
+<a class="grid-embed grid-embed-<%= randomSeed %>" rel="tooltip" title="Embed this table on another site."><i class="fa fa-code" style="color:#aaa;"></i></a>
 
 <script>
 (function(){
