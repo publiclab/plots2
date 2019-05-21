@@ -3,8 +3,15 @@
 <h3><%= t('users.list.user_moderation') %></h3>
 <p><%= t('users.list.admins_ban_spam') %> </p>
 <% end %>
-  <h2><%= raw t('People') %></h2>
-  <h5><%= t('Recently active on Publiclab') =%></h5>
+  <div class="row">
+    <div class ="col-md-8">
+      <h2><%= raw t('People') %></h2>
+      <h5><%= t('Recently active on Publiclab') =%></h5>
+    </div>
+    <div class ="col-md-4">
+      <a class="btn btn-outline-secondary blurred-location-input" style="color:#666;" onmouseover="this.style.background='white';"><i class="fa fa-map-marker"></i> Add your location</a>
+    </div>
+  </div>
     <div>
     <br>
       <p style="width: 100%; font-size:14px; text-align: center; border-bottom: 1px solid #ccc; line-height:2px; margin: 10px 0 20px;">
@@ -38,7 +45,7 @@
               </div>
             </div>
             <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") %>
-              <div class="col-md-12">  
+              <div class="col-md-12">
                 <div style="padding-top:16px; text-align:center;">
                   <% if user.status == 0 %>
                     <i class='fa fa-ban' style="color:#a00;font-size:1em"></i> <%= t('users.list.banned') %>
@@ -120,4 +127,13 @@ h5 {
    padding: 0 !important;
    margin: 0 !important;
 }
+
+.blurred-location-input{
+  border-color: #D3D3D3;
+}
+
+.blurred-location-input i{
+  color: #666;
+}
 </style>
+<%= render partial: 'tag/location' %>
