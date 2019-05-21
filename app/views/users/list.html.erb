@@ -63,10 +63,10 @@
   </div>
   <%= will_paginate @users, renderer: WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated %>
 </div>
-<div class="col-md-6 d-none d-md-block">
+<div class="col-md-6 order-2 d-none d-md-block">
 <%= render :partial => "map/peopleLeaflet" , locals: {people: true , lat:23 , lon: 4} %>
 </div>
-<div class="col-md-6 d-md-none">
+<div class="col-md-6 order-sm-1 d-md-none">
 <%= render :partial => "map/peopleLeaflet" , locals: {people: true , lat:23 , lon: 4} %>
 </div>
 <style>
