@@ -121,10 +121,17 @@ module NodeShared
         tagname = tagname.split('!').first
       end
 
-      nodes = Node.where(status: 1).where("node.type = 'page' OR node.type = 'note'")
+      pinned = Node.where(status: 1)
+                  .where("node.type = 'page' OR node.type = 'note'")
+                  .includes(:revision, :tag)
+                  .references(:term_data, :node_revisions)
+                  .where('term_data.name = ?', "pin:#{tagname}")
+      nodes = pinned + Node.where(status: 1)
+                  .where("node.type = 'page' OR node.type = 'note'")
                   .includes(:revision, :tag)
                   .references(:term_data, :node_revisions)
                   .where('term_data.name = ?', tagname)
+                  .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
                   .order('node_revisions.timestamp DESC')
 
       if exclude.present?
