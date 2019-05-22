@@ -412,7 +412,7 @@ module NodeShared
     end
   end
 
-  def pinned_nodes(tagname)
+  def self.pinned_nodes(tagname)
     Node.where(status: 1)
         .includes(:revision, :tag)
         .references(:term_data, :node_revisions)
