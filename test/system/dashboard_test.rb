@@ -1,7 +1,7 @@
 require "application_system_test_case"
 
 class DashboardTest < ApplicationSystemTestCase
-  Capybara.default_max_wait_time = 5
+  Capybara.default_max_wait_time = 60
 
   test 'viewing the dashboard' do
     visit '/'
