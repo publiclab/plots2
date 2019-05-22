@@ -377,7 +377,8 @@ class TagController < ApplicationController
     if !params[:id].empty? && params[:id].length > 2
       @suggestions = []
       # filtering out tag spam by requiring tags attached to a published node
-      Tag.where('name LIKE ?', '%' + params[:id] + '%')
+      # also, we search for both "balloon mapping" and "balloon-mapping":
+      Tag.where('name LIKE ? OR name LIKE ?', '%' + params[:id] + '%', '%' + params[:id].gsub(' ', '-') + '%')
         .includes(:node)
         .references(:node)
         .where('node.status = 1')
