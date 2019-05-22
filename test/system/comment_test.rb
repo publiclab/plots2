@@ -36,14 +36,14 @@ class SearchTest < ApplicationSystemTestCase
     #within('comment-form') do
     #end
 
-    assert_selector('textarea#textinput', text: '![](/some/imageid.png)')
+    assert_selector('textarea#text-input', text: '![](/some/imageid.png)')
 
     # click_button 'Preview'
     # assert_equal 1, page.evaluate_script("$('.comment-form div#preview').is(':visible')")
 
     click_button 'Publish'
 
-    assert_selector('.comment-form textarea#textinput', text: '')
+    assert_selector('.comment-form textarea#text-input', text: '')
 
     # assert some javascript:
     # assert_equal 1, page.evaluate_script("$('.typeahead.dropdown-menu').find('li').length")
