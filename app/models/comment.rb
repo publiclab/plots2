@@ -43,9 +43,9 @@ class Comment < ApplicationRecord
       month = (fin - (week * 7 - 1).days)
       range = (fin.to_i - week.weeks.to_i)..(fin.to_i - (week - 1).weeks.to_i)
 
-      weekly_comments = Comment.select(:timestamp)
-                         .where(timestamp: range)
-                         .count
+      weekly_comments = Comment.select(:status, :timestamp)
+                         .where(status: 1, timestamp: range)
+                         .size
       date_hash[month.to_f * 1000] = weekly_comments
       week -= 1
     end

@@ -390,6 +390,7 @@ en:
       maps: "Maps"
       no_results_found: "No results found; try searching for '<b>%{tag}</b>'"
       try_advanced_search: "Or try an <a href='%{url1}'>advanced search</a>"
+      no_map_results_found: "Sorry, no map is tagged with <i>%{tag}</i>"
       contributors: "Contributors"
     contributors-index:
       contributors_over_last_week: "Contributors for <i style=\"color:#aaa;\">%{tag_name}</i>
@@ -693,9 +694,9 @@ en:
         by <a href='%{url1}'>%{author_name}</a>
       more: "More..."
     _related:
-      write_research_note: "Write a research note"
+      write_research_note: "Write a post"
       share_your_work: "Share your work with others"
-      ask_a_question: "Ask a related question"
+      ask_a_question: "Ask a question"
       translation: "Translation"
       response_to: "This is a response to"
       responses_to_note: "Responses to this note"

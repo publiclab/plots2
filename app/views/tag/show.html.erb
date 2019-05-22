@@ -6,7 +6,7 @@
   <%= render partial: 'tag/show/contributors' %>
 
   <% unless @tags.try(:first).try(:parent).nil? %>
-    <small>parent: <%= @tags.first.parent %></small>
+    <small>Alias of: <%= @tags.first.parent %></small>
   <% end %>
 
   <%= render :partial => "notes/format_toggle" if @node_type == "note" %>
@@ -33,7 +33,7 @@
   <%= render partial: "tag/show/questions" %>
   <%= render partial: "tag/show/related_tags" %>
   <% if @related_tags %>
-    <p> <%= render partial: 'tag/subscribe_button', locals:{tags: @related_tags } %></p>
+    <%= render partial: 'tag/subscribe_button', locals: {tags: @related_tags } %>
   <% end %>
   <%= render partial: 'tag/show/nav_tabs' %>
 
