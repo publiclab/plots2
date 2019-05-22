@@ -103,7 +103,10 @@ module Srch
               DocResult.new(
                 doc_type: 'USERS',
                 doc_url: '/profile/' + model.name,
-                doc_title: model.username
+                doc_title: model.username,
+                latitude: model.lat,
+                longitude: model.lon,
+                blurred: model.blurred?
               )
             end
             DocList.new(docs, search_request)
