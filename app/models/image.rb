@@ -25,7 +25,11 @@ class Image < ApplicationRecord
   end
 
   def skip_large_gifs
-    ! (filetype == 'gif' && photo_file_size.to_i > 3.megabytes)
+    ! is_big_gif
+  end
+  
+  def is_big_gif
+    (filetype == 'gif' && photo_file_size.to_i > 3.megabytes)
   end
 
   def filetype
@@ -38,6 +42,7 @@ class Image < ApplicationRecord
   end
 
   def path(size = :medium)
+    size = :original if is_big_gif
     if is_image?
       size = :medium if size == :default
     else
