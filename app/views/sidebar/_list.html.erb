@@ -1,27 +1,28 @@
 <% if @node.has_mailing_list? %>
-<div class='well'>
-  <% mailing_list = @node.power_tag("list") %>
+<div class="card bg-light">
+  <div class='card-body'>
+    <% mailing_list = @node.power_tag("list") %>
 
-  <form action="https://groups.google.com/group/<%= mailing_list %>/boxsubscribe">
-    <label><%= raw t('sidebar._list.mailing_list', :mailing_list => mailing_list, :url1 =>"https://groups.google.com/group/"+mailing_list ) %>:</label>
-    <div class="input-group">
-      <span class="input-group-addon"><i class="fa fa-envelope"></i></span><input name="email" class="col-md-11 form-control" type="text" placeholder="you@email.com" />
-    </div>
-    <br />
-    <button name="sub" type="submit" class="btn btn-primary"><%= t('sidebar._list.subscribe') %></button>
-  </form>
+    <form action="https://groups.google.com/group/<%= mailing_list %>/boxsubscribe">
+      <label><%= raw t('sidebar._list.mailing_list', :mailing_list => mailing_list, :url1 =>"https://groups.google.com/group/"+mailing_list ) %>:</label>
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-envelope"></i></span><input name="email" class="col-md-11 form-control" type="text" placeholder="you@email.com" />
+      </div>
+      <br />
+      <button name="sub" type="submit" class="btn btn-primary"><%= t('sidebar._list.subscribe') %></button>
+    </form>
 
-  <hr />
-  <h4><%= t('sidebar._list.recent_discussion_topics') %></h4>
+    <hr />
+    <h4><%= t('sidebar._list.recent_discussion_topics') %></h4>
 
-  <ul class="nav bullet">
-  <% @node.mailing_list[0..4].each do |item| %>
-    <li>
-      <a href="<%= item.link %>"><i class="fa fa-comment"></i> <%= item.title.gsub('Re: ','').gsub('['+mailing_list+']','') %></a>
-      <p><small><i><%= distance_of_time_in_words(item.pubDate, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></i></small></p>
-    </li>
-  <% end %>
-  </ul>
-  <p><a href="https://groups.google.com/group/<%= mailing_list %>"><%= t('sidebar._list.all_topics') %> &raquo;</a></p>
-</div>
+    <ul class="nav bullet">
+    <% @node.mailing_list[0..4].each do |item| %>
+      <li>
+        <a href="<%= item.link %>"><i class="fa fa-comment"></i> <%= item.title.gsub('Re: ','').gsub('['+mailing_list+']','') %></a>
+        <p><small><i><%= distance_of_time_in_words(item.pubDate, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></i></small></p>
+      </li>
+    <% end %>
+    </ul>
+    <p><a href="https://groups.google.com/group/<%= mailing_list %>"><%= t('sidebar._list.all_topics') %> &raquo;</a></p>
+  </div>
 <% end %>

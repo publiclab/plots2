@@ -1,10 +1,10 @@
 <div class="row">
-  <div class="col-md-3">
+  <div class="col-lg-3">
     <label class="" for="<%= type %>"><%= type.capitalize.pluralize %></label>
   </div>
-  <div class="col-md-9">
+  <div class="col-lg-9">
     <% data.each do |tag| %>
-      <span id="tag_<%= tag.id %>" class="label label-primary" style="font-size:13px;margin-right: 4px;">
+      <span id="tag_<%= tag.id %>" class="badge badge-primary" style="font-size:13px;margin-right: 4px;">
         <%= tag.value.split(":")[1] %>
       </span>
     <% end %>

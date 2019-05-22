@@ -1,4 +1,4 @@
-<div class="col-md-3">
+<div class="col-lg-3">
 
   <h3>Spam moderation:</h3>
 
@@ -8,16 +8,16 @@
 
 </div>
 
-<div class="col-md-9">
+<div class="col-lg-9">
 
   <h3>Moderate potential spam</h3>
 
   <ul class="nav nav-tabs">
-    <li <% unless params[:type] && params[:action] == "spam_revisions" %>class="active"<% end %>><a href="/spam">Filtered</a></li>
-    <li <% if params[:type] == "wiki" %>class="active"<% end %>><a href="/spam/wiki"><i class="fa fa-book"></i><span class="hidden-sm"> Wiki</span></a></li>
-    <li <% if params[:action] == "spam_revisions" %>class="active"<% end %>><a href="/spam/revisions"><i class="fa fa-list"></i><span class="hidden-sm"> Revisions</span></a></li>
-    <li <% if params[:action] == "spam_comments" %>class="active"<% end %>><a href="/spam/comments"><i class="fa fa-comment"></i><span class="hidden-sm"> Comments</span></a></li>
-    <li <a href="/people"><i class="fa fa-user"></i><span class="hidden-sm"> Active Users</span></a></li>
+    <li class="nav-item"><a class="nav-link <% unless params[:type] && params[:action] == "spam_revisions" %> active <% end %>" href="/spam">Filtered</a></li>
+    <li class="nav-item"><a class="nav-link <% if params[:type] == "wiki" %> active <% end %>" href="/spam/wiki"><i class="fa fa-book"></i><span class="d-xs-inline d-md-none d-lg-inline"> Wiki</span></a></li>
+    <li class="nav-item"><a class="nav-link <% if params[:action] == "spam_revisions" %> active <% end %>" href="/spam/revisions"><i class="fa fa-list"></i><span class="d-xs-inline d-md-none d-lg-inline"> Revisions</span></a></li>
+    <li class="nav-item"><a class="nav-link <% if params[:action] == "spam_comments" %> active <% end %>" href="/spam/comments"><i class="fa fa-comment"></i><span class="d-xs-inline d-md-none d-lg-inline"> Comments</span></a></li>
+    <li class="nav-item"><a class="nav-link" href="/people"><i class="fa fa-user"></i><span class="d-xs-inline d-md-none d-lg-inline"> Active Users</span></a></li>
   </ul>
 
   <br />
@@ -25,7 +25,7 @@
   <% if params[:action] != "spam_revisions" && params[:action] != "spam_comments" %>
   <div class="btn-toolbar">
     <div class="btn-group">
-      <a class="btn btn-default" id="batch-delete" href="javascript:void();"><i class="fa fa-ban-circle"></i> Spam all checked and ban authors</a>
+      <a class="btn btn-outline-secondary" id="batch-delete" href="javascript:void();"><i class="fa fa-ban-circle"></i> Spam all checked and ban authors</a>
     </div>
   </div>
   <br />

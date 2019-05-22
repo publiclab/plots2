@@ -96,4 +96,12 @@ class PublicPagesTest < ActionDispatch::IntegrationTest
     get '/assets'
     assert_response :success
   end
+
+  test 'browse people page' do
+    get '/people'
+    assert_response :success
+  end
+
 end
+
+

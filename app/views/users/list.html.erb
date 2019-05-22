@@ -1,56 +1,143 @@
+<div class="col-md-6">
+<% if current_user && (current_user.role == "admin" || current_user.role == "moderator")%>
+<h3><%= t('users.list.user_moderation') %></h3>
+<p><%= t('users.list.admins_ban_spam') %> </p>
+<% end %>
+  <div class="row">
+    <div class ="col-md-8">
+      <h2><%= raw t('People') %></h2>
+      <h5><%= t('Recently active on Publiclab') =%></h5>
+    </div>
+    <div class ="col-md-4">
+      <a class="btn btn-outline-secondary blurred-location-input" style="color:#666;" onmouseover="this.style.background='white';"><i class="fa fa-map-marker"></i> Add your location</a>
+    </div>
+  </div>
+    <div>
+    <br>
+      <p style="width: 100%; font-size:14px; text-align: center; border-bottom: 1px solid #ccc; line-height:2px; margin: 10px 0 20px;">
+      <span style="background-color: #fff; padding: 0 10px; color: #808080;">Sort by:
+      <a href = "<%= people_path %>?sort=username" style="text-decoration: underline; color: #808080;"> <%= t('users.list.username') %></a><span> | </span>
+      <a href = "<%= people_path %>?sort=last_activity"style="text-decoration: underline; color: #808080;"> <%= t('users.list.last_activity') %></a><span> | </span>
+      <a href = "<%= people_path %>?sort=joined" style="text-decoration: underline; color: #808080;"><%= t('users.list.joined') %></a><span> | </span>
+      </span>
+      </p>
+      <br/>
+    </div>
+  <div class="row" id="user_cards">
 
-<div class="col-md-3">
-	<div class='row'>
-		<div class='col-md-12'>
-			<p> This page shows a list of all Public Lab contributors and is sorted by those who have posted most recently. Click the profile link to view their posting activity. </p>
-		</div>
-	</div>
-  <% if current_user && (current_user.role == "admin" || current_user.role == "moderator")%>
-    <h2><%= t('users.list.user_moderation') %></h2>
-    <p><%= t('users.list.admins_ban_spam') %> </p>
-  <% end %>
-</div>
-<div class="col-md-9">
-  <h2><%= raw t('users.list.members_last_activity') %></h2>
-  <%= render :partial => "map/peopleLeaflet" , locals: {people: true , lat:23 , lon: 4} %>
-  <table class="table">
-    <tr>
-      <th class="visible-sm visible-xs"></th>
-
-      <th style="text-align: center;"><a href = "<%= people_path %>?sort=username"> <%= t('users.list.username') %></a> <i class="fa fa-arrows-v"></i></th>
-      <th><a href = "<%= people_path %>?sort=last_activity"> <%= t('users.list.last_activity') %></a> <i class="fa fa-arrows-v"></i></th>
-      <th><%= t('users.list.history') %></th>
-      <th><a href = "<%= people_path %>?sort=joined"> <%= t('users.list.joined') %></a> <i class="fa fa-arrows-v"></i></th>
-
-      <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") %>
-        <th><%= t('users.list.moderation') %></th>
-      <% end %>
-    </tr>
     <% @users.each do |user| %>
-    <tr>
-      <td class="visible-sm visible-xs" style="padding-top: 16px;">
-        <img class="img-circle" id="profile-photo" style="width:40px;margin-right:8px;border: 1px solid lightgrey;" src="<%= user.profile_image %>" />
-      </td>
-      <td style="display: flex; align-items: center;">
-        <div class="hidden-sm hidden-xs">
-          <img class="img-circle" id="profile-photo" style="width:40px;margin-right:8px;border: 1px solid lightgrey;" src="<%= user.profile_image %>" />
+      <div class ="col-md-6" id="user">
+        <div class="card">
+           <div class="row card-body">
+            <div class="col-md-5 nopadding">
+              <div class="profile-image text-center">
+                  <img class="rounded-circle img-fluid" id="profile-photo" src="<%= user.profile_image %>" />
+              </div>
+            </div>
+            <div class="col-md-7 nopadding">
+              <div class="card-info">
+                <a href="/profile/<%= user.username %>"><%= user.username %></a>
+                  <div class="sub-info">
+                    <div>Last Activity : <%= t = user.revisions.order(timestamp: :desc).first.try(:created_at);time_ago_in_words(t) if (t) %></div>
+                    <div>History : <%= user.nodes.count %> <%= t('users.list.notes_and_edits') %></div>
+                    <div> Joined : <%= distance_of_time_in_words(user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></div>
+                  </div>
+              </div>
+            </div>
+            <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") %>
+              <div class="col-md-12">
+                <div style="padding-top:16px; text-align:center;">
+                  <% if user.status == 0 %>
+                    <i class='fa fa-ban' style="color:#a00;font-size:1em"></i> <%= t('users.list.banned') %>
+                  <% elsif user.status == 1 %>
+                    <a class="btn btn-outline-secondary btn-sm" style="font-size:1em;" data-confirm="<%= t('users.list.are_you_sure') %>" href="/ban/<%= user.uid %>" ><i class='fa fa-ban'></i> <%= t('users.list.ban') %></a>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+
+          </div>
         </div>
-        <a style="margin-left: 12px;" href="/profile/<%= user.username %>"><%= user.username %></a>
-      </td>
-      <td style="padding-top:16px;"><%= t = user.revisions.order(timestamp: :desc).first.try(:created_at);time_ago_in_words(t) if (t) %></td>
-      <td style="padding-top:16px;"><%= user.nodes.count %> <%= t('users.list.notes_and_edits') %></td>
-      <td style="padding-top:16px;"><%= distance_of_time_in_words(user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></td>
-      <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") %>
-      <td style="padding-top:16px;">
-        <% if user.status == 0 %>
-          <i class='fa fa-ban' style="color:#a00;"></i> <%= t('users.list.banned') %>
-        <% elsif user.status == 1 %>
-          <a class="btn btn-default btn-sm" data-confirm="<%= t('users.list.are_you_sure') %>" href="/ban/<%= user.uid %>" ><i class='fa fa-ban'></i> <%= t('users.list.ban') %></a>
-        <% end %>
-      </td>
-      <% end %>
-     </tr>
+      </div>
     <% end %>
-  </table>
-  <%= will_paginate @users, :renderer => BootstrapPagination::Rails unless @unpaginated %>
+  </div>
+  <%= will_paginate @users, renderer: WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated %>
 </div>
+<div class="col-md-6 order-2 d-none d-md-block">
+<%= render :partial => "map/peopleLeaflet" , locals: {people: true , lat:23 , lon: 4} %>
+</div>
+<div class="col-md-6 order-sm-1 d-md-none">
+<%= render :partial => "map/peopleLeaflet" , locals: {people: true , lat:23 , lon: 4} %>
+</div>
+<style>
+#user {
+  padding:10px 8px 10px 8px
+}
+
+h5 {
+  color: #666;
+}
+
+h3, h2, h5, .card-info a {
+  font-family: Junction Regular;
+}
+.card {
+  background-color: #fff;
+  border: 1px solid;
+  border-color: #D3D3D3;
+  border-radius: 6px;
+}
+
+.card-body {
+  margin-bottom:0.3em;
+  margin-right: 0.1em;
+  margin-left: 0.3em;
+  padding: 0.8em;
+}
+
+.profile-image {
+  margin-top: 0.5em;
+}
+
+#profile-photo {
+  width: 6.5em;
+  border-color:#555;
+  border: 1px solid lightgrey;
+}
+
+.card-info {
+  padding-left: 1em;
+  padding-right:1em;
+}
+
+.card-info a{
+  font-size:1.2em;
+  margin-bttom:1em;
+  color:#222;
+}
+
+.sub-info {
+  color:#666;
+  font-size:0.8em;
+}
+
+.affix {
+    top:50px;
+    right:0;
+    position:fixed;
+}
+
+.nopadding {
+   padding: 0 !important;
+   margin: 0 !important;
+}
+
+.blurred-location-input{
+  border-color: #D3D3D3;
+}
+
+.blurred-location-input i{
+  color: #666;
+}
+</style>
+<%= render partial: 'tag/location' %>

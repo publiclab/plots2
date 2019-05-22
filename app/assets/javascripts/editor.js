@@ -28,8 +28,19 @@ $E = {
   is_editing: function() {
     return ($E.textarea[0].selectionStart == 0 && $E.textarea[0].selectionEnd == 0)
   },
+
+  refresh: function() {
+      if($D.selected) {
+          $E.textarea = ($D.selected).find('textarea').eq(0);
+          $E.preview = ($D.selected).find('#preview').eq(0);
+          $E.textarea.bind('input propertychange',$E.save);
+      }
+  },
+
   // wraps currently selected text in textarea with strings a and b
   wrap: function(a,b,args) {
+    var isWiki = (window.location + '').includes('wiki');
+    if (!isWiki) this.refresh();
     var len = $E.textarea.val().length;
     var start = $E.textarea[0].selectionStart;
     var end = $E.textarea[0].selectionEnd;

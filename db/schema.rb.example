@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_30_043340) do
+ActiveRecord::Schema.define(version: 2019_04_18_230000) do
 
   create_table "answer_selections", force: true do |t|
     t.integer "user_id"
@@ -234,7 +234,6 @@ ActiveRecord::Schema.define(version: 2019_03_30_043340) do
     t.string  "path"
     t.integer "main_image_id"
     t.string  "slug"
-    t.integer "legacy_views",                           default: 0
     t.integer "views",                                  default: 0
     t.decimal "latitude",                               precision: 20, scale: 17
     t.decimal "longitude",                              precision: 20, scale: 17

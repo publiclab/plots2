@@ -28,11 +28,11 @@
   </td>
   <td><div class="btn-toolbar" style="margin:0;">
     <div class="btn-group">
-      <a class="btn btn-default btn-lg <% if node.status == 0 %>btn-success<% else %>disabled<% end %> publish" data-remote="true" href="/moderate/publish/<%= node.id %>"><i class="fa fa-ok-circle fa fa-white"></i> Publish</a>
+      <a class="btn btn-outline-secondary btn-lg <% if node.status == 0 %>btn-success<% else %>disabled<% end %> publish" data-remote="true" href="/moderate/publish/<%= node.id %>"><i class="fa fa-ok-circle fa fa-white"></i> Publish</a>
 
-      <a class="btn btn-default btn-lg ban a<%= node.author.id %>" <% if node.author.status == 0 %>style="display:none;"<% end %> data-remote="true" href="/ban/<%= node.author.id %>">Ban</a>
-      <a class="btn btn-default btn-lg unban a-unban<%= node.author.id %>" <% if node.author.status == 1 %>style="display:none;"<% end %> data-remote="true" href="/unban/<%= node.author.id %>">Unban</a>
-      <%= link_to "/notes/delete/"+node.id.to_s, data: { confirm: 'Are you sure you want to delete "'+node.path+'"?' }, :remote => true, :class => "btn btn-default btn-lg delete" do %>
+      <a class="btn btn-outline-secondary btn-lg ban a<%= node.author.id %>" <% if node.author.status == 0 %>style="display:none;"<% end %> data-remote="true" href="/ban/<%= node.author.id %>">Ban</a>
+      <a class="btn btn-outline-secondary btn-lg unban a-unban<%= node.author.id %>" <% if node.author.status == 1 %>style="display:none;"<% end %> data-remote="true" href="/unban/<%= node.author.id %>">Unban</a>
+      <%= link_to "/notes/delete/"+node.id.to_s, data: { confirm: 'Are you sure you want to delete "'+node.path+'"?' }, :remote => true, :class => "btn btn-outline-secondary btn-lg delete" do %>
         <i class="fa fa-trash"></i>
       <% end %>
     </div>

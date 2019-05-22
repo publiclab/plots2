@@ -1,14 +1,16 @@
 <% if @wiki %>
   <div id="wiki-content">
     <% if @wiki.main_image %>
-      <div class="row">
-        <div class="col-md-6" style="margin-bottom:10px;">
-          <%= image_tag(@wiki.main_image.path, class: "img-responsive") %>
-        </div>
-        <div class="col-md-6">
-          <h1 style="color:#333;"><%= link_to @wiki.latest.title, "/wiki/#{params[:id]}" %></h1>
-          <%= @wiki.latest.render_body.match(/<p>(.+)<\/p>/).to_a.try(:first).to_s.html_safe %>
-          <% if @wiki.latest.render_body.split('</p>').length > 2 %><a class="btn btn-lg btn-default" href="/wiki/<%= params[:id] %>">Learn more on the wiki page</a><% end %>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-6" style="margin-bottom:10px;">
+            <%= image_tag(@wiki.main_image.path, class: "img-responsive") %>
+          </div>
+          <div class="col-lg-6">
+            <h1 style="color:#333;"><%= link_to @wiki.latest.title, "/wiki/#{params[:id]}" %></h1>
+            <%= @wiki.latest.render_body.match(/<p>(.+)<\/p>/).to_a.try(:first).to_s.html_safe %>
+            <% if @wiki.latest.render_body.split('</p>').length > 2 %><a class="btn btn-lg btn-outline-secondary" href="/wiki/<%= params[:id] %>">Learn more on the wiki page</a><% end %>
+          </div>
         </div>
       </div>
     <% else %>
