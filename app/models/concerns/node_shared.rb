@@ -169,7 +169,7 @@ module NodeShared
         exclude = tagname.split('!') - [tagname.split('!').first]
         tagname = tagname.split('!').first
       end
-      pinned = pinned_nodes(tagname)
+      pinned = pinned_nodes("question:" + tagname)
         .where("node.type = 'note'")
       nodes = pinned + Node.where(status: 1, type: 'note')
                   .includes(:revision, :tag)
@@ -209,7 +209,7 @@ module NodeShared
         exclude = tagname.split('!') - [tagname.split('!').first]
         tagname = tagname.split('!').first
       end
-      pinned = pinned_nodes(tagname)
+      pinned = pinned_nodes("activity:" + tagname)
         .where("node.type = 'note'")
       nodes = pinned + Node.activities(tagname)
                   .order('node.cached_likes DESC')
@@ -246,7 +246,7 @@ module NodeShared
         exclude = tagname.split('!') - [tagname.split('!').first]
         tagname = tagname.split('!').first
       end
-      pinned = pinned_nodes(tagname)
+      pinned = pinned_nodes("upgrade:" + tagname)
         .where("node.type = 'note'")
       nodes = pinned + Node.upgrades(tagname)
                   .order('node.cached_likes DESC')
