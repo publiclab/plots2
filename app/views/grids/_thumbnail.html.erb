@@ -25,7 +25,8 @@
             <% end %>
             | <i class="fa fa-eye"></i> <%= number_with_delimiter(node.views) %> <span class="d-none d-md-inline"><%= t('notes._notes.views') %></span>
             | <i style="<% if node.likes > 0 %>color:#db4;<% else %>color:#888;<% end %>" class="fa fa-star-o"></i> <%= node.likes %>
-          </small></p>
+            | <% if node.has_tag("pin:#{tagname}") %><i rel="tooltip" title="This item was pinned with the tag 'pin:<%= tagname %>'." class="fa fa-thumb-tack"></i> <% end %>
+            </small></p>
         </div>
     <% end %>
   </div>

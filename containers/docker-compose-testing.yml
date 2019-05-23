@@ -23,7 +23,6 @@ services:
     build: ..
     cap_add:
       - SYS_PTRACE
-    command: /bin/bash -c "sleep 5 && /usr/local/bundle/bin/passenger start --max-pool-size 9 --min-instances 9 -p 4000"
     environment:
       - RAILS_ENV=${RAILS_ENV}
       - SECRET_KEY_BASE=${SECRET_KEY_BASE}
@@ -32,7 +31,6 @@ services:
       - redis
     volumes:
       - ..:/app
-      - js_libs:/app/public/lib
     restart: unless-stopped
   sidekiq:
     build: ..
@@ -47,5 +45,4 @@ services:
       - .:/app
     environment:
       - REDIS_URL=redis://redis:6379/0
-volumes:
-    js_libs:
+

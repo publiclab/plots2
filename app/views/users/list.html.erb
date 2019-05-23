@@ -1,12 +1,17 @@
-<div class="container">
-<div class="row">
-<div class="col-md-6" style="font-family:Junction Regular;">
+<div class="col-md-6">
 <% if current_user && (current_user.role == "admin" || current_user.role == "moderator")%>
 <h3><%= t('users.list.user_moderation') %></h3>
 <p><%= t('users.list.admins_ban_spam') %> </p>
 <% end %>
-  <h2><%= raw t('People') %></h2>
-  <h5><%= t('Recently active on Publiclab') =%></h5>
+  <div class="row">
+    <div class ="col-md-8">
+      <h2><%= raw t('People') %></h2>
+      <h5><%= t('Recently active on Publiclab') =%></h5>
+    </div>
+    <div class ="col-md-4">
+      <a class="btn btn-outline-secondary blurred-location-input" style="color:#666;" onmouseover="this.style.background='white';"><i class="fa fa-map-marker"></i> Add your location</a>
+    </div>
+  </div>
     <div>
     <br>
       <p style="width: 100%; font-size:14px; text-align: center; border-bottom: 1px solid #ccc; line-height:2px; margin: 10px 0 20px;">
@@ -23,19 +28,24 @@
     <% @users.each do |user| %>
       <div class ="col-md-6" id="user">
         <div class="card">
-           <div class="card-body">
-            <div class="profile-image text-center">
-                <img class="rounded-circle img-fluid" id="profile-photo" src="<%= user.profile_image %>" />
-            </div>
-            <br>
-            <div class="card-info">
-            <a href="/profile/<%= user.username %>"><%= user.username %></a>
-              <div class="sub-info">
-                <div>Last Activity : <%= t = user.revisions.order(timestamp: :desc).first.try(:created_at);time_ago_in_words(t) if (t) %></div>
-                <div>History : <%= user.nodes.count %> <%= t('users.list.notes_and_edits') %></div>
-                <div> Joined : <%= distance_of_time_in_words(user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></div>
+           <div class="row card-body">
+            <div class="col-md-5 nopadding">
+              <div class="profile-image text-center">
+                  <img class="rounded-circle img-fluid" id="profile-photo" src="<%= user.profile_image %>" />
               </div>
-              <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") %>
+            </div>
+            <div class="col-md-7 nopadding">
+              <div class="card-info">
+                <a href="/profile/<%= user.username %>"><%= user.username %></a>
+                  <div class="sub-info">
+                    <div>Last Activity : <%= t = user.revisions.order(timestamp: :desc).first.try(:created_at);time_ago_in_words(t) if (t) %></div>
+                    <div>History : <%= user.nodes.count %> <%= t('users.list.notes_and_edits') %></div>
+                    <div> Joined : <%= distance_of_time_in_words(user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></div>
+                  </div>
+              </div>
+            </div>
+            <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") %>
+              <div class="col-md-12">
                 <div style="padding-top:16px; text-align:center;">
                   <% if user.status == 0 %>
                     <i class='fa fa-ban' style="color:#a00;font-size:1em"></i> <%= t('users.list.banned') %>
@@ -43,22 +53,21 @@
                     <a class="btn btn-outline-secondary btn-sm" style="font-size:1em;" data-confirm="<%= t('users.list.are_you_sure') %>" href="/ban/<%= user.uid %>" ><i class='fa fa-ban'></i> <%= t('users.list.ban') %></a>
                   <% end %>
                 </div>
-               <% end %>
-            </div>
-            </div>
+              </div>
+            <% end %>
+
           </div>
         </div>
-      <% end %>
+      </div>
+    <% end %>
   </div>
   <%= will_paginate @users, renderer: WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated %>
 </div>
-<div class="col-md-6 d-none d-md-block" style="margin-top:2em;">
+<div class="col-md-6 order-2 d-none d-md-block">
 <%= render :partial => "map/peopleLeaflet" , locals: {people: true , lat:23 , lon: 4} %>
 </div>
-<div class="col-md-6 d-md-none" style="margin-top:2em;">
+<div class="col-md-6 order-sm-1 d-md-none">
 <%= render :partial => "map/peopleLeaflet" , locals: {people: true , lat:23 , lon: 4} %>
-</div>
-</div>
 </div>
 <style>
 #user {
@@ -67,6 +76,10 @@
 
 h5 {
   color: #666;
+}
+
+h3, h2, h5, .card-info a {
+  font-family: Junction Regular;
 }
 .card {
   background-color: #fff;
@@ -77,6 +90,9 @@ h5 {
 
 .card-body {
   margin-bottom:0.3em;
+  margin-right: 0.1em;
+  margin-left: 0.3em;
+  padding: 0.8em;
 }
 
 .profile-image {
@@ -110,4 +126,18 @@ h5 {
     right:0;
     position:fixed;
 }
+
+.nopadding {
+   padding: 0 !important;
+   margin: 0 !important;
+}
+
+.blurred-location-input{
+  border-color: #D3D3D3;
+}
+
+.blurred-location-input i{
+  color: #666;
+}
 </style>
+<%= render partial: 'tag/location' %>

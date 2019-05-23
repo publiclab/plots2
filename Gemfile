@@ -25,7 +25,7 @@ gem 'grape-swagger-ui'
 gem 'http_accept_language'
 gem "i18n-js", ">= 3.0.0.rc11"
 gem 'impressionist'
-gem 'jbuilder', '~> 2.8'
+gem 'jbuilder', '~> 2.9'
 gem 'jquery-rails'
 gem 'less-rails', '~> 4.0'
 gem 'mocha', '~> 1.8'
@@ -51,7 +51,7 @@ gem 'rb-readline'
 gem 'rdiscount', '~> 2.2', '>= 2.2.0.1'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'responders', '~> 2.4'
-gem 'rubocop', '~> 0.68.1', require: false
+gem 'rubocop', '~> 0.69.0', require: false
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
 gem 'sentry-raven'
@@ -113,7 +113,7 @@ group :test, :development do
   gem 'rake',  '~> 12.3.2'
   gem 'rest-client'
   gem 'rspec'
-  gem 'selenium-webdriver', '~> 3.142.1'
+  gem 'selenium-webdriver', '~> 3.142.3'
   gem 'test-unit'
   gem 'teaspoon-mocha'
   gem 'timecop'
