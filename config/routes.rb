@@ -306,6 +306,7 @@ Plots2::Application.routes.draw do
 
   get 'questions/new' => 'questions#new'
   get 'questions' => 'questions#index'
+  get 'questions_shadow' => 'questions#index_shadow'
   get 'question' => 'questions#index'
   get 'questions/:author/:date/:id' => 'questions#show'
   get 'questions/show/:id' => 'questions#show'
