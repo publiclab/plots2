@@ -37,7 +37,6 @@ install:
 
 script:
   - docker-compose exec web bash -c 'echo "$GOOGLE_APPLICATION_CREDENTIALS_JSON" > /tmp/credentials.json' # needs to be a path to a json file, so we shuffle...
-  - docker-compose exec web bash -c 'echo $JSON_TEST'
   - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true $TASK"
   - if [ $TASK != "rake test:all" ]; then
       echo -e '<?xml version="1.0" encoding="UTF-8"?>' > output.xml;
