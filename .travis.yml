@@ -44,5 +44,5 @@ script:
       tail -n +2 -q ./test/reports/TEST*.xml >> output.xml;
     fi
   - if [ $TRAVIS_PULL_REQUEST != "false" ]; then
-      danger --verbose;
+      docker-compose exec web danger --verbose;
     fi
