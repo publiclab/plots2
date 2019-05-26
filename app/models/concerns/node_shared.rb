@@ -8,7 +8,7 @@ module NodeShared
   def liked_by(uid)
     likers.collect(&:uid).include?(uid)
   end
-  
+
   def self.button(body)
     body.gsub(/(?<![\>`])(\<p\>)?\[button\:(.+)\:(\S+)\]/) do |_tagname|
       btnText = Regexp.last_match(2)
@@ -36,10 +36,7 @@ module NodeShared
                   .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
 
       if exclude.present?
-        exclude = Node.where(status: 1, type: 'note')
-                  .includes(:revision, :tag)
-                  .references(:node_revisions, :term_data)
-                  .where('term_data.name IN (?)', exclude)
+        exclude = excluded_nodes(exclude, 'note')
         nodes -= exclude
       end
       output = ''
@@ -96,10 +93,7 @@ module NodeShared
                   .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
 
       if exclude.present?
-        exclude = Node.where(status: 1, type: 'note')
-                  .includes(:revision, :tag)
-                  .references(:node_revisions, :term_data)
-                  .where('term_data.name IN (?)', exclude)
+        exclude = excluded_nodes(exclude, 'note')
         nodes -= exclude
       end
       output = ''
@@ -138,10 +132,7 @@ module NodeShared
                   .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
 
       if exclude.present?
-        exclude = Node.where(status: 1)
-                  .includes(:revision, :tag)
-                  .references(:node_revisions, :term_data)
-                  .where('term_data.name IN (?)', exclude)
+        exclude = excluded_nodes(exclude)
         nodes -= exclude
       end
       output = ''
@@ -179,10 +170,7 @@ module NodeShared
                   .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
 
       if exclude.present?
-        exclude = Node.where(status: 1, type: 'note')
-                  .includes(:revision, :tag)
-                  .references(:node_revisions, :term_data)
-                  .where('term_data.name IN (?)', exclude)
+        exclude = excluded_nodes(exclude, 'note')
         nodes -= exclude
       end
       output = ''
@@ -216,10 +204,7 @@ module NodeShared
                   .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
 
       if exclude.present?
-        exclude = Node.where(status: 1, type: 'note')
-                  .includes(:revision, :tag)
-                  .references(:node_revisions, :term_data)
-                  .where('term_data.name IN (?)', exclude)
+        exclude = excluded_nodes(exclude, 'note')
         nodes -= exclude
       end
       output = ''
@@ -253,10 +238,7 @@ module NodeShared
                   .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
 
       if exclude.present?
-        exclude = Node.where(status: 1, type: 'note')
-                  .includes(:revision, :tag)
-                  .references(:node_revisions, :term_data)
-                  .where('term_data.name IN (?)', exclude)
+        exclude = excluded_nodes(exclude, 'note')
         nodes -= exclude
       end
 
@@ -389,10 +371,7 @@ module NodeShared
                   .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
 
       if exclude.present?
-        exclude = Node.where(status: 1, type: 'page')
-                  .includes(:revision, :tag)
-                  .references(:node_revisions, :term_data)
-                  .where('term_data.name IN (?)', exclude)
+        exclude = excluded_nodes(exclude, 'page')
         nodes -= exclude
       end
 
@@ -417,5 +396,19 @@ module NodeShared
         .includes(:revision, :tag)
         .references(:term_data, :node_revisions)
         .where('term_data.name = ?', "pin:#{tagname}")
+  end
+
+  def self.excluded_nodes(exclude, type=nil)
+    if type
+      Node.where(status: 1, type: type)
+      .includes(:revision, :tag)
+      .references(:node_revisions, :term_data)
+      .where('term_data.name IN (?)', exclude)
+    else
+      Node.where(status: 1)
+      .includes(:revision, :tag)
+      .references(:node_revisions, :term_data)
+      .where('term_data.name IN (?)', exclude)
+    end
   end
 end
