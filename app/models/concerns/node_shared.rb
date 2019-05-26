@@ -39,17 +39,7 @@ module NodeShared
 
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
-      a = ActionController::Base.new
-      output += a.render_to_string(template: "grids/_thumbnail",
-                                   layout:   false,
-                                   locals:   {
-                                     tagname: tagname,
-                                     randomSeed: rand(1000).to_s,
-                                     className: 'notes-grid-thumbnail' + tagname.parameterize,
-                                     nodes: nodes,
-                                     type: "notes"
-                                   })
-      output
+      output += data_string('thumbnail', tagname, nodes, 'notes')
     end
   end
 
@@ -94,17 +84,7 @@ module NodeShared
 
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
-      a = ActionController::Base.new
-      output += a.render_to_string(template: "grids/_notes",
-                                   layout:   false,
-                                   locals:   {
-                                     tagname: tagname,
-                                     randomSeed: rand(1000).to_s,
-                                     className: 'notes-grid-' + tagname.parameterize,
-                                     nodes: nodes,
-                                     type: "notes"
-                                   })
-      output
+      output += data_string('notes', tagname, nodes, 'notes')
     end
   end
 
@@ -131,17 +111,7 @@ module NodeShared
 
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
-      a = ActionController::Base.new
-      output += a.render_to_string(template: "grids/_nodes",
-                                   layout:   false,
-                                   locals:   {
-                                     tagname: tagname,
-                                     randomSeed: rand(1000).to_s,
-                                     className: 'nodes-grid-' + tagname.parameterize,
-                                     nodes: nodes,
-                                     type: "nodes"
-                                   })
-      output
+      output += data_string('nodes', tagname, nodes, 'nodes')
     end
   end
 
@@ -167,17 +137,7 @@ module NodeShared
 
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
-      a = ActionController::Base.new
-      output += a.render_to_string(template: "grids/_notes",
-                                   layout:   false,
-                                   locals:   {
-                                     tagname: tagname,
-                                     randomSeed: rand(1000).to_s,
-                                     className: 'questions-grid-' + tagname.parameterize,
-                                     nodes: nodes,
-                                     type: "questions"
-                                   })
-      output
+      output += data_string('notes', tagname, nodes, 'questions')
     end
   end
 
@@ -199,17 +159,7 @@ module NodeShared
 
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
-      a = ActionController::Base.new
-      output += a.render_to_string(template: "grids/_notes",
-                                   layout:   false,
-                                   locals:   {
-                                     tagname: tagname,
-                                     randomSeed: rand(1000).to_s,
-                                     className: 'activity-grid-' + tagname.parameterize,
-                                     nodes: nodes,
-                                     type: "activity"
-                                   })
-      output
+      output += data_string('notes', tagname, nodes, 'activity')
     end
   end
 
@@ -231,17 +181,7 @@ module NodeShared
 
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
-      a = ActionController::Base.new
-      output += a.render_to_string(template: "grids/_notes",
-                                   layout:   false,
-                                   locals:   {
-                                     tagname: tagname,
-                                     randomSeed: rand(1000).to_s,
-                                     className: 'upgrades-grid-' + tagname.parameterize,
-                                     nodes: nodes,
-                                     type: "upgrades"
-                                   })
-      output
+      output += data_string('notes', tagname, nodes, 'upgrades')
     end
   end
 
@@ -361,17 +301,7 @@ module NodeShared
 
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
-      a = ActionController::Base.new
-      output += a.render_to_string(template: "grids/_wikis",
-                                   layout:   false,
-                                   locals:   {
-                                     tagname: tagname,
-                                     randomSeed: rand(1000).to_s,
-                                     className: 'wikis-grid-' + tagname.parameterize,
-                                     nodes: nodes,
-                                     type: "wikis"
-                                   })
-      output
+      output += data_string('wikis', tagname, nodes, 'wikis')
     end
   end
 
@@ -394,5 +324,25 @@ module NodeShared
       .references(:node_revisions, :term_data)
       .where('term_data.name IN (?)', exclude)
     end
+  end
+
+  def self.data_string(view, tagname, nodes, type)
+    a = ActionController::Base.new
+
+    class_str = if view == 'thumbnail'
+                  "#{type}-grid-thumbnail"
+                else
+                  "#{type}-grid-"
+                end
+
+    a.render_to_string(template: "grids/_#{view}",
+                       layout:   false,
+                       locals:   {
+                         tagname: tagname,
+                         randomSeed: rand(1000).to_s,
+                         className: "#{class_str}#{tagname.parameterize}",
+                         nodes: nodes,
+                         type: type
+                       })
   end
 end
