@@ -35,10 +35,8 @@ module NodeShared
                   .order('node_revisions.timestamp DESC')
                   .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
 
-      if exclude.present?
-        exclude = excluded_nodes(exclude, 'note')
-        nodes -= exclude
-      end
+      nodes -= excluded_nodes(exclude, 'note') if exclude.present?
+
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
       a = ActionController::Base.new
@@ -92,10 +90,8 @@ module NodeShared
                   .order('node_revisions.timestamp DESC')
                   .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
 
-      if exclude.present?
-        exclude = excluded_nodes(exclude, 'note')
-        nodes -= exclude
-      end
+      nodes -= excluded_nodes(exclude, 'note') if exclude.present?
+
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
       a = ActionController::Base.new
@@ -131,10 +127,8 @@ module NodeShared
                   .order('node_revisions.timestamp DESC')
                   .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
 
-      if exclude.present?
-        exclude = excluded_nodes(exclude)
-        nodes -= exclude
-      end
+      nodes -= excluded_nodes(exclude) if exclude.present?
+
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
       a = ActionController::Base.new
@@ -169,10 +163,8 @@ module NodeShared
                   .order('node_revisions.timestamp DESC')
                   .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
 
-      if exclude.present?
-        exclude = excluded_nodes(exclude, 'note')
-        nodes -= exclude
-      end
+      nodes -= excluded_nodes(exclude, 'note') if exclude.present?
+
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
       a = ActionController::Base.new
@@ -203,10 +195,8 @@ module NodeShared
                   .order('node.cached_likes DESC')
                   .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
 
-      if exclude.present?
-        exclude = excluded_nodes(exclude, 'note')
-        nodes -= exclude
-      end
+      nodes -= excluded_nodes(exclude, 'note') if exclude.present?
+
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
       a = ActionController::Base.new
@@ -237,10 +227,7 @@ module NodeShared
                   .order('node.cached_likes DESC')
                   .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
 
-      if exclude.present?
-        exclude = excluded_nodes(exclude, 'note')
-        nodes -= exclude
-      end
+      nodes -= excluded_nodes(exclude, 'note') if exclude.present?
 
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
@@ -370,10 +357,7 @@ module NodeShared
                   .order('node_revisions.timestamp DESC')
                   .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
 
-      if exclude.present?
-        exclude = excluded_nodes(exclude, 'page')
-        nodes -= exclude
-      end
+      nodes -= excluded_nodes(exclude, 'page') if exclude.present?
 
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
