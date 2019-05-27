@@ -37,8 +37,7 @@ module NodeShared
 
       nodes -= excluded_nodes(exclude, 'note') if exclude.present?
 
-      output = ''
-      output += '<p>' if Regexp.last_match(1) == '<p>'
+      output = initial_output_str(Regexp.last_match(1))
       output += data_string('thumbnail', tagname, nodes, 'notes')
     end
   end
@@ -82,8 +81,7 @@ module NodeShared
 
       nodes -= excluded_nodes(exclude, 'note') if exclude.present?
 
-      output = ''
-      output += '<p>' if Regexp.last_match(1) == '<p>'
+      output = initial_output_str(Regexp.last_match(1))
       output += data_string('notes', tagname, nodes, 'notes')
     end
   end
@@ -109,8 +107,7 @@ module NodeShared
 
       nodes -= excluded_nodes(exclude) if exclude.present?
 
-      output = ''
-      output += '<p>' if Regexp.last_match(1) == '<p>'
+      output = initial_output_str(Regexp.last_match(1))
       output += data_string('nodes', tagname, nodes, 'nodes')
     end
   end
@@ -135,8 +132,7 @@ module NodeShared
 
       nodes -= excluded_nodes(exclude, 'note') if exclude.present?
 
-      output = ''
-      output += '<p>' if Regexp.last_match(1) == '<p>'
+      output = initial_output_str(Regexp.last_match(1))
       output += data_string('notes', tagname, nodes, 'questions')
     end
   end
@@ -157,8 +153,7 @@ module NodeShared
 
       nodes -= excluded_nodes(exclude, 'note') if exclude.present?
 
-      output = ''
-      output += '<p>' if Regexp.last_match(1) == '<p>'
+      output = initial_output_str(Regexp.last_match(1))
       output += data_string('notes', tagname, nodes, 'activity')
     end
   end
@@ -179,8 +174,7 @@ module NodeShared
 
       nodes -= excluded_nodes(exclude, 'note') if exclude.present?
 
-      output = ''
-      output += '<p>' if Regexp.last_match(1) == '<p>'
+      output = initial_output_str(Regexp.last_match(1))
       output += data_string('notes', tagname, nodes, 'upgrades')
     end
   end
@@ -263,8 +257,7 @@ module NodeShared
         users -= exclude
       end
 
-      output = ''
-      output += '<p>' if Regexp.last_match(1) == '<p>'
+      output = initial_output_str(Regexp.last_match(1))
       a = ActionController::Base.new
       output += a.render_to_string(template: "grids/_people",
                                    layout:   false,
@@ -299,8 +292,7 @@ module NodeShared
 
       nodes -= excluded_nodes(exclude, 'page') if exclude.present?
 
-      output = ''
-      output += '<p>' if Regexp.last_match(1) == '<p>'
+      output = initial_output_str(Regexp.last_match(1))
       output += data_string('wikis', tagname, nodes, 'wikis')
     end
   end
@@ -323,6 +315,14 @@ module NodeShared
       .includes(:revision, :tag)
       .references(:node_revisions, :term_data)
       .where('term_data.name IN (?)', exclude)
+    end
+  end
+
+  def self.initial_output_str(last_match)
+    if last_match == '<p>'
+      '<p>'
+    else
+      ''
     end
   end
 
