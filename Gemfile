@@ -52,6 +52,7 @@ gem 'rdiscount', '~> 2.2', '>= 2.2.0.1'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'responders', '~> 2.4'
 gem 'rubocop', '~> 0.69.0', require: false
+gem 'rubocop-performance'
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
 gem 'sentry-raven'

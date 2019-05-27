@@ -1,3 +1,5 @@
+require: rubocop-performance
+
 # Start with Spotifys style guide as a base then customize from there
 inherit_from:
   - .rubocop_shopify_styleguide.yml
