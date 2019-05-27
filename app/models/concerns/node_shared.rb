@@ -27,7 +27,7 @@ module NodeShared
       end
 
       pinned = pinned_nodes(tagname)
-        .where("node.type = 'note'")
+               .where("node.type = 'note'")
       nodes = pinned + Node.where(status: 1, type: 'note')
                   .includes(:revision, :tag)
                   .references(:term_data, :node_revisions)
@@ -96,7 +96,7 @@ module NodeShared
       end
 
       pinned = pinned_nodes(tagname)
-        .where("node.type = 'page' OR node.type = 'note'")
+               .where("node.type = 'page' OR node.type = 'note'")
       nodes = pinned + Node.where(status: 1)
                   .where("node.type = 'page' OR node.type = 'note'")
                   .includes(:revision, :tag)
@@ -122,7 +122,7 @@ module NodeShared
         tagname = tagname.split('!').first
       end
       pinned = pinned_nodes("question:" + tagname)
-        .where("node.type = 'note'")
+              .where("node.type = 'note'")
       nodes = pinned + Node.where(status: 1, type: 'note')
                   .includes(:revision, :tag)
                   .references(:node_revisions, :term_data)
@@ -146,7 +146,7 @@ module NodeShared
         tagname = tagname.split('!').first
       end
       pinned = pinned_nodes("activity:" + tagname)
-        .where("node.type = 'note'")
+              .where("node.type = 'note'")
       nodes = pinned + Node.activities(tagname)
                   .order('node.cached_likes DESC')
                   .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
@@ -167,7 +167,7 @@ module NodeShared
         tagname = tagname.split('!').first
       end
       pinned = pinned_nodes("upgrade:" + tagname)
-        .where("node.type = 'note'")
+               .where("node.type = 'note'")
       nodes = pinned + Node.upgrades(tagname)
                   .order('node.cached_likes DESC')
                   .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
@@ -244,18 +244,8 @@ module NodeShared
         tagname = tagname.split('!').first
       end
 
-      users = User.where(status: 1)
-                  .includes(:user_tags)
-                  .references(:user_tags)
-                  .where('user_tags.value = ?', tagname)
-
-      if exclude.present?
-        exclude = User.where(status: 1)
-                  .includes(:user_tags)
-                  .references(:user_tags)
-                  .where('user_tags.value IN (?)', exclude)
-        users -= exclude
-      end
+      users = users_by_tagname(tagname)
+      users -= excluded_users(exclude) if exclude.present?
 
       output = initial_output_str(Regexp.last_match(1))
       a = ActionController::Base.new
@@ -282,7 +272,7 @@ module NodeShared
       end
 
       pinned = pinned_nodes(tagname)
-        .where("node.type = 'page'")
+               .where("node.type = 'page'")
       nodes = pinned + Node.where(status: 1, type: 'page')
                   .includes(:revision, :tag)
                   .references(:term_data, :node_revisions)
@@ -307,14 +297,14 @@ module NodeShared
   def self.excluded_nodes(exclude, type=nil)
     if type
       Node.where(status: 1, type: type)
-      .includes(:revision, :tag)
-      .references(:node_revisions, :term_data)
-      .where('term_data.name IN (?)', exclude)
+          .includes(:revision, :tag)
+          .references(:node_revisions, :term_data)
+          .where('term_data.name IN (?)', exclude)
     else
       Node.where(status: 1)
-      .includes(:revision, :tag)
-      .references(:node_revisions, :term_data)
-      .where('term_data.name IN (?)', exclude)
+          .includes(:revision, :tag)
+          .references(:node_revisions, :term_data)
+          .where('term_data.name IN (?)', exclude)
     end
   end
 
@@ -344,5 +334,19 @@ module NodeShared
                          nodes: nodes,
                          type: type
                        })
+  end
+
+  def self.users_by_tagname(tagname)
+    User.where(status: 1)
+        .includes(:user_tags)
+        .references(:user_tags)
+        .where('user_tags.value = ?', tagname)
+  end
+
+  def self.excluded_users(exclude)
+    User.where(status: 1)
+        .includes(:user_tags)
+        .references(:user_tags)
+        .where('user_tags.value IN (?)', exclude)
   end
 end
