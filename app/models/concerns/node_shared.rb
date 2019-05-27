@@ -26,15 +26,7 @@ module NodeShared
         tagname = tagname.split('!').first
       end
 
-      pinned = pinned_nodes(tagname)
-               .where("node.type = 'note'")
-      nodes = pinned + Node.where(status: 1, type: 'note')
-                  .includes(:revision, :tag)
-                  .references(:term_data, :node_revisions)
-                  .where('term_data.name = ?', tagname)
-                  .order('node_revisions.timestamp DESC')
-                  .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
-
+      nodes = nodes_by_tagname(tagname, 'note')
       nodes -= excluded_nodes(exclude, 'note') if exclude.present?
 
       output = initial_output_str(Regexp.last_match(1))
@@ -70,15 +62,7 @@ module NodeShared
         tagname = tagname.split('!').first
       end
 
-      pinned = pinned_nodes(tagname)
-        .where("node.type = 'note'")
-      nodes = pinned + Node.where(status: 1, type: 'note')
-                  .includes(:revision, :tag)
-                  .references(:term_data, :node_revisions)
-                  .where('term_data.name = ?', tagname)
-                  .order('node_revisions.timestamp DESC')
-                  .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
-
+      nodes = nodes_by_tagname(tagname, 'note')
       nodes -= excluded_nodes(exclude, 'note') if exclude.present?
 
       output = initial_output_str(Regexp.last_match(1))
@@ -348,5 +332,18 @@ module NodeShared
         .includes(:user_tags)
         .references(:user_tags)
         .where('user_tags.value IN (?)', exclude)
+  end
+
+  def self.nodes_by_tagname(tagname, type)
+    pinned = pinned_nodes(tagname)
+             .where("node.type = 'note'")
+
+    pinned + Node.where(status: 1)
+                 .where("node.type = '#{type}'")
+                 .includes(:revision, :tag)
+                 .references(:term_data, :node_revisions)
+                 .where('term_data.name = ?', tagname)
+                 .order('node_revisions.timestamp DESC')
+                 .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
   end
 end
