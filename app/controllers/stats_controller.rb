@@ -9,29 +9,32 @@ class StatsController < ApplicationController
   end
 
   def range
+    flash.now[:notice] = "Data is cached and recalculated daily"
     if params[:options].present?
       params[:start] = Time.now - to_keyword(params[:options])
       params[:end] = Time.now
     end
     @start = start
     @end = fin
-    @notes = Node.published.select(%i(created type))
-      .where(type: 'note', created: @start.to_i..@end.to_i)
-      .size
-    @wikis = Revision.published.select(:timestamp)
-      .where(timestamp: @start.to_i..@end.to_i)
-      .size - @notes # because notes each have one revision
-    @people = User.where(created_at: @start..@end).where(status: 1)
-      .size
-    @answers = Answer.where(created_at: @start..@end)
-      .size
-    @comments = Comment.select(:status, :timestamp)
-      .where(status: 1, timestamp: @start.to_i..@end.to_i)
-      .size
-    @questions = Node.published.questions.where(created: @start.to_i..@end.to_i)
-      .size
-    @contributors = User.contributor_count_for(@start, @end)
-    @popular_tags = Tag.nodes_frequency(@start, @end)
+    Rails.cache.fetch("range-#{@start.to_i}-#{@end.to_i}", expires_in: 1.day) do
+      @notes = Node.published.select(%i(created type))
+        .where(type: 'note', created: @start.to_i..@end.to_i)
+        .size
+      @wikis = Revision.published.select(:timestamp)
+        .where(timestamp: @start.to_i..@end.to_i)
+        .size - @notes # because notes each have one revision
+      @people = User.where(created_at: @start..@end).where(status: 1)
+        .size
+      @answers = Answer.where(created_at: @start..@end)
+        .size
+      @comments = Comment.select(:status, :timestamp)
+        .where(status: 1, timestamp: @start.to_i..@end.to_i)
+        .size
+      @questions = Node.published.questions.where(created: @start.to_i..@end.to_i)
+        .size
+      @contributors = User.contributor_count_for(@start, @end)
+      @popular_tags = Tag.nodes_frequency(@start, @end)
+    end
   end
 
   def index
@@ -41,35 +44,38 @@ class StatsController < ApplicationController
     end
     @title = 'Stats'
 
-    @weekly_notes = Node.past_week.select(:type).where(type: 'note').size
-    @weekly_wikis = Revision.past_week.size
-    @weekly_questions = Node.questions.past_week.size
-    @weekly_answers = Answer.past_week.size
-    @weekly_members = User.past_week.where(status: 1).size
-    @monthly_notes = Node.past_month.select(:type).where(type: 'note').size
-    @monthly_wikis = Revision.past_month.size
-    @monthly_members = User.past_month.where(status: 1).size
-    @monthly_questions = Node.questions.past_month.size
-    @monthly_answers = Answer.past_month.size
+    flash.now[:notice] = "Data is cached and recalculated daily"
+    Rails.cache.fetch("stats-index-#{@start.to_i}-#{@end.to_i}", expires_in: 1.day) do
+      @weekly_notes = Node.past_week.select(:type).where(type: 'note').size
+      @weekly_wikis = Revision.past_week.size
+      @weekly_questions = Node.questions.past_week.size
+      @weekly_answers = Answer.past_week.size
+      @weekly_members = User.past_week.where(status: 1).size
+      @monthly_notes = Node.past_month.select(:type).where(type: 'note').size
+      @monthly_wikis = Revision.past_month.size
+      @monthly_members = User.past_month.where(status: 1).size
+      @monthly_questions = Node.questions.past_month.size
+      @monthly_answers = Answer.past_month.size
 
-    @notes_per_week_period = Node.frequency('note', @start, @end).round(2)
-    @edits_per_week_period = Revision.frequency(@start, @end).round(2)
+      @notes_per_week_period = Node.frequency('note', @start, @end).round(2)
+      @edits_per_week_period = Revision.frequency(@start, @end).round(2)
 
-    @graph_notes = Node.contribution_graph_making('note', @start, @end)
-    @graph_wikis = Node.contribution_graph_making('page', @start, @end)
-    @graph_comments = Comment.contribution_graph_making(@start, @end)
+      @graph_notes = Node.contribution_graph_making('note', @start, @end)
+      @graph_wikis = Node.contribution_graph_making('page', @start, @end)
+      @graph_comments = Comment.contribution_graph_making(@start, @end)
 
-    users = []
-    nids = []
-    Node.published.where(type: 'note').each do |note|
-      unless note.uid == 674 || note.uid == 671
-        users << note.uid
-        nids << note.nid
+      users = []
+      nids = []
+      Node.published.where(type: 'note').each do |note|
+        unless note.uid == 674 || note.uid == 671
+          users << note.uid
+          nids << note.nid
+        end
       end
-    end
 
-    @all_notes = nids.uniq.length
-    @all_contributors = users.uniq.length
+      @all_notes = nids.uniq.length
+      @all_contributors = users.uniq.length
+    end
     Rails.cache.fetch("total-contributors-all-time", expires_in: 1.weeks) do
       @all_time_contributors = User.count_all_time_contributor
     end
