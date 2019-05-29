@@ -115,7 +115,7 @@
  <div class="col-lg-4 col-lg-offset-1">
 <div class="btn-group" role="group" aria-label="Basic example">
     <a href="<%= "?start="+(@start - 1.year).to_formatted_s(:long) %> <%= "&end="+(@end - 1.year).to_formatted_s(:long)   %>">
-        <button type="button" class="btn btn-secondary" title= "1 year back">
+        <button type="button" class="btn btn-default" title= "1 year back">
             <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
             <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
             <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
@@ -124,20 +124,20 @@
     </a>
     <a>
         <a href="<%= "?start="+(@start - 3.months).to_formatted_s(:long) %> <%= "&end="+(@end - 3.months).to_formatted_s(:long)   %>">
-            <button type="button" class="btn btn-secondary" title="3 months back">
+            <button type="button" class="btn btn-default" title="3 months back">
                 <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
                 <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
                 <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
             </button>
         </a>
     <a href="<%= "?start="+(@start - 1.month).to_formatted_s(:long) %> <%= "&end="+(@end - 1.month).to_formatted_s(:long)   %>">
-        <button type="button" class="btn btn-secondary" title="1 month back">
+        <button type="button" class="btn btn-default" title="1 month back">
             <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
             <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
         </button>
     </a>
     <a href="<%= "?start="+(@start - 1.week).to_formatted_s(:long) %> <%= "&end="+(@end - 1.week).to_formatted_s(:long)   %>">
-        <button type="button" class="btn btn-secondary" title="1 week back">
+        <button type="button" class="btn btn-default" title="1 week back">
             <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
         </button>
     </a>
@@ -148,7 +148,7 @@
 <div class="col-lg-3">
 <div class="btn-group" role="group" aria-label="Basic example">
     <a href="<%= "?start="+(@start + 1.week).to_formatted_s(:long) %> <%= "&end="+(@end + 1.week).to_formatted_s(:long)   %>">
-        <button type="button" class="btn btn-secondary" title="1 week forward">
+        <button type="button" class="btn btn-default" title="1 week forward">
             <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
         </button>
     </a>
@@ -159,7 +159,7 @@
         </button>
     </a>
     <a href="<%= "?start="+(@start + 3.months).to_formatted_s(:long) %> <%= "&end="+(@end + 3.months).to_formatted_s(:long)   %>">
-        <button type="button" class="btn btn-secondary" title="3 months forward">
+        <button type="button" class="btn btn-default" title="3 months forward">
             <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
             <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
             <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
@@ -167,7 +167,7 @@
     </a>
     <%# <a href="/stats/range/<%= (@start + 1.year).to_formatted_s(:long)   %1>/<%= (@end + 1.year).to_formatted_s(:long)   %1>"> %>
         <a href="<%= "?start="+(@start + 1.year).to_formatted_s(:long) %> <%= "&end="+(@end + 1.year).to_formatted_s(:long)   %>">
-            <button type="button" class="btn btn-secondary" title="1 year forward">
+            <button type="button" class="btn btn-default" title="1 year forward">
                 <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
                 <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
                 <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
