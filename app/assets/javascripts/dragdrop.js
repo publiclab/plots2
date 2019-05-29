@@ -9,6 +9,14 @@ jQuery(document).ready(function() {
  * #side-dropzone, is for the main image of research notes, in /app/views/editor/post.html.erb
 */
 
+    function progressAll(elem, data) {
+        var progress = parseInt(data.loaded / data.total * 100, 10);
+        $(elem).css(
+            'width',
+            progress + '%'
+        );
+    }
+
     $('.dropzone').bind('dragover',function(e) {
       e.preventDefault();
       $('.dropzone').addClass('hover');
@@ -91,11 +99,7 @@ jQuery(document).ready(function() {
 
             },
             progressall: function (e, data) {
-                var progress = parseInt(data.loaded / data.total * 100, 10);
-                $('#create_progress-bar').css(
-                    'width',
-                    progress + '%'
-                );
+                return progressAll('#create_progress-bar', data);
             }
         });
     });
@@ -215,11 +219,7 @@ jQuery(document).ready(function() {
       fileuploadfail: function(e,data) {
       },
       progressall: function (e, data) {
-        var progress = parseInt(data.loaded / data.total * 100, 10);
-          $('#side-progress .progress-bar').css(
-          'width',
-          progress + '%'
-        );
+          return progressAll('#side-progress .progress-bar', data);
       }
     });
 });
