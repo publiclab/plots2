@@ -26,11 +26,11 @@
 
 <% if @popular_tags.present? %>
     <br> <br>
-
-<div id="chart1"> </div>
+<h4 align="center">Popular Tags</h4>
+<div id="popularTags"> </div>
 <% end %>
 
-<h4 align="center"> <u>  Notes, Wikis and Comments Statistics between <%= @start.to_date%> to <%= @end.to_date%> </u></h4>
+<h4 align="center">Notes, Wikis and Comments Statistics between <%= @start.to_date%> to <%= @end.to_date%></h4>
 <br>
 <div id="timeline"></div>
 <p><b><%= raw t('notes.stats.edits_per_week', :count => @edits_per_week_period) %></b></p>
@@ -117,7 +117,7 @@ var options = {
 
             }
 
-        },
+        }, 
         xaxis: {
             type: "datetime",
             axisBorder: {
@@ -210,7 +210,7 @@ var options = {
     chart: {
         height: 500,
         type: 'bar',
-    
+        fontFamily: 'Junction Light',    
         active: {
             allowMultipleDataPointsSelection: true,
             },
@@ -238,9 +238,17 @@ var options = {
         data: values
 
     }],
-    title:{
+/*
+        title:{
         text: "Popular Tags in this period",
+        align: 'center',
+        style: {
+         
+          fontSize: '24px',
+          color: '#212529'
+        }
     },
+*/
     xaxis: {
         categories: data
 
@@ -249,7 +257,7 @@ var options = {
 }
 
 var chart1 = new ApexCharts(
-        document.querySelector("#chart1"), options );
+        document.querySelector("#popularTags"), options );
 chart1.render();
 
 </script>
