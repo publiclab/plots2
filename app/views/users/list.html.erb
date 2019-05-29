@@ -1,4 +1,4 @@
-<div class="col-md-6">
+<div class="col-md-6 order-1 order-sm-2">
 <% if current_user && (current_user.role == "admin" || current_user.role == "moderator")%>
 <h3><%= t('users.list.user_moderation') %></h3>
 <p><%= t('users.list.admins_ban_spam') %> </p>
@@ -38,9 +38,12 @@
               <div class="card-info">
                 <a href="/profile/<%= user.username %>"><%= user.username %></a>
                   <div class="sub-info">
-                    <div>Last Activity : <%= t = user.revisions.order(timestamp: :desc).first.try(:created_at);time_ago_in_words(t) if (t) %></div>
-                    <div>History : <%= user.nodes.count %> <%= t('users.list.notes_and_edits') %></div>
-                    <div> Joined : <%= distance_of_time_in_words(user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></div>
+                  <span id="tags">
+                  <% tags = Tag.sort_according_to_followers(user.tags,"desc") %>
+                  <% tags[0..2].each do |tag| %>
+                      <span id="tag_<%= tag.id %>" style=""><a class="badge badge-primary mb-1" style="color: white;" href="/tag/<%= tag.name %>"><%= tag.name %></a></span>
+                  <% end %>
+                  </span>
                   </div>
               </div>
             </div>
@@ -78,7 +81,7 @@ h5 {
   color: #666;
 }
 
-h3, h2, h5, .card-info a {
+h3, h2, h5 {
   font-family: Junction Regular;
 }
 .card {
