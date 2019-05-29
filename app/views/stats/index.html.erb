@@ -3,14 +3,14 @@
     <h2><%= raw t('notes.stats.contributors_statistics') %></h2>
     <hr>
 
-    <h5> See also <%= link_to "subscription statistics", stats_subscriptions_path %> </h5>
-    <h4><b><%= raw t('notes.stats.research_notes_posted_by_contributors', :note_count => @all_notes, :contributors_count => @all_contributors,
-                     :time => time_ago_in_words(Node.find_by(type: 'note', status: 1).created_at)) %></b></h4>
+    <h6> See also <%= link_to "subscription statistics", stats_subscriptions_path %> </h6>
+    <h5><b><%= raw t('notes.stats.research_notes_posted_by_contributors', :note_count => @all_notes, :contributors_count => @all_contributors,
+                     :time => time_ago_in_words(Node.find_by(type: 'note', status: 1).created_at)) %></b></h5>
     <br>
 
     <div class="row">
         <div class=col-lg-6>
-            <h5> Statistics from <%= @start.to_formatted_s(:long)%> to <%= @end.to_formatted_s(:long)%> </h5>
+            <h6> Statistics from <%= @start.to_formatted_s(:long)%> to <%= @end.to_formatted_s(:long)%> </h6>
         </div>
         <div class=col-lg-2>
             <%= form_tag request.url, method: 'get', enforce_utf8: false do %>
