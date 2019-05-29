@@ -194,21 +194,21 @@ jQuery(document).ready(function() {
         'nid':$D.nid
       },
       start: function(e) {
-        ($D.selected).find('.side-dropzone').eq(0).css('border-color','#ccc');
-        ($D.selected).find('.side-dropzone').eq(0).css('background','none');
-        ($D.selected).find('#side-progress').eq(0).show();
-        ($D.selected).find('#side-dropzone').eq(0).removeClass('hover');
-        ($D.selected).find('.side-uploading').eq(0).show();
+          $('.side-dropzone').css('border-color','#ccc');
+          $('.side-dropzone').css('background','none');
+          $('#side-progress').show();
+          $('#side-dropzone').removeClass('hover');
+          $('.side-uploading').show();
       },
       done: function (e, data) {
-          ($D.selected).find('#side-progress').eq(0).hide();
-          ($D.selected).find('#side-dropzone').eq(0).show();
-          ($D.selected).find('.side-uploading').eq(0).hide();
-          ($D.selected).find('#leadImage')[0].src = data.result.url;
-          ($D.selected).find('#leadImage').eq(0).show();
+          $('#side-progress').hide();
+          $('#side-dropzone').show();
+          $('.side-uploading').hide();
+          $('#leadImage')[0].src = data.result.url;
+          $('#leadImage').show();
         // here append the image id to the note as the lead image
-          ($D.selected).find('#main_image').eq(0).val(data.result.id);
-          ($D.selected).find("#image_revision").append('<option selected="selected" id="'+data.result.id+'" value="'+data.result.url+'">Temp Image '+data.result.id+'</option>');
+          $('#main_image').val(data.result.id);
+          $("#image_revision").append('<option selected="selected" id="'+data.result.id+'" value="'+data.result.url+'">Temp Image '+data.result.id+'</option>');
       },
 
       // see callbacks at https://github.com/blueimp/jQuery-File-Upload/wiki/Options
@@ -216,7 +216,7 @@ jQuery(document).ready(function() {
       },
       progressall: function (e, data) {
         var progress = parseInt(data.loaded / data.total * 100, 10);
-        ($D.selected).find('#side-progress .progress-bar').eq(0).css(
+          $('#side-progress .progress-bar').css(
           'width',
           progress + '%'
         );
