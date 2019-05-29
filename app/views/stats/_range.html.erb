@@ -1,4 +1,4 @@
-<h5>Choose a starting and an ending date in the field below to see activity during that range</h5>
+<h6>Choose a starting and an ending date in the field below to see activity during that range</h6>
 <%= form_tag request.url, method: 'get', enforce_utf8: false do %>
     <div class="row">
         <div class="col-lg-4">
@@ -15,13 +15,13 @@
     </div>
 <% end %>
 <hr />
-<h4>
+<h5>
     <%= raw t('notes.stats.notes_wikis_comments', :notes_count => @notes, :wikis_count => @wikis, :comments_count => @comments) %>
-</h4>
+</h5>
 <hr>
-<h4>
+<h5>
     <%= raw t('notes.stats.members_and_contributors', :member_count => @people, :people_count => @contributors) %>
-</h4>
+</h5>
 <hr>
 <%if @questions.present? %>
     <div id="chart2"> </div>
@@ -111,7 +111,7 @@
     <br><br> <br>
 <% end %>
  <div class="row">
-<h5> Move back or forward using the buttons below </h5>
+<h6> Move back or forward using the buttons below </h6>
  <div class="col-lg-4 col-lg-offset-1">
 <div class="btn-group" role="group" aria-label="Basic example">
     <a href="<%= "?start="+(@start - 1.year).to_formatted_s(:long) %> <%= "&end="+(@end - 1.year).to_formatted_s(:long)   %>">
