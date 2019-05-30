@@ -315,21 +315,29 @@ module NodeShared
   end
 
   def self.nodes_by_tagname(tagname, type)
-    type_string = if type.is_a? Array
-                    "node.type = '#{type[0]}' OR node.type = '#{type[1]}'"
-                  else
-                    "node.type = '#{type}'"
-                  end
+    if type.is_a? Array
+      type1, type2 = type.first, type.last
+      pinned = pinned_nodes(tagname)
+               .where('node.type = ? OR node.type = ?', type1, type2)
 
-    pinned = pinned_nodes(tagname)
-             .where(type_string)
+     pinned + Node.where(status: 1)
+                  .where('node.type = ? OR node.type = ?', type1, type2)
+                  .includes(:revision, :tag)
+                  .references(:term_data, :node_revisions)
+                  .where('term_data.name = ?', tagname)
+                  .order('node_revisions.timestamp DESC')
+                  .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
+    else
+      pinned = pinned_nodes(tagname)
+               .where('node.type = ?', type)
 
-    pinned + Node.where(status: 1)
-                 .where(type_string)
-                 .includes(:revision, :tag)
-                 .references(:term_data, :node_revisions)
-                 .where('term_data.name = ?', tagname)
-                 .order('node_revisions.timestamp DESC')
-                 .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
+      pinned + Node.where(status: 1)
+                   .where('node.type = ?', type)
+                   .includes(:revision, :tag)
+                   .references(:term_data, :node_revisions)
+                   .where('term_data.name = ?', tagname)
+                   .order('node_revisions.timestamp DESC')
+                   .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
+    end
   end
 end
