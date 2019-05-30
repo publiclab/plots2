@@ -24,7 +24,7 @@ module NodeShared
 
       if tagname.include?('!')
         exclude = excluded_tagnames(tagname)
-        tagname = tagname.split('!').first
+        tagname = featured_tagname(tagname)
       end
 
       nodes = nodes_by_tagname(tagname, 'note')
@@ -61,7 +61,7 @@ module NodeShared
 
       if tagname.include?('!')
         exclude = excluded_tagnames(tagname)
-        tagname = tagname.split('!').first
+        tagname = featured_tagname(tagname)
       end
 
       nodes = nodes_by_tagname(tagname, 'note')
@@ -79,7 +79,7 @@ module NodeShared
 
       if tagname.include?('!')
         exclude = excluded_tagnames(tagname)
-        tagname = tagname.split('!').first
+        tagname = featured_tagname(tagname)
       end
 
       nodes = nodes_by_tagname(tagname, ['page', 'note'])
@@ -98,7 +98,7 @@ module NodeShared
 
       if tagname.include?('!')
         exclude = excluded_tagnames(tagname)
-        tagname = tagname.split('!').first
+        tagname = featured_tagname(tagname)
       end
 
       nodes = nodes_by_tagname("question:#{tagname}", 'note')
@@ -116,7 +116,7 @@ module NodeShared
 
       if tagname.include?('!')
         exclude = excluded_tagnames(tagname)
-        tagname = tagname.split('!').first
+        tagname = featured_tagname(tagname)
       end
 
       pinned = pinned_nodes("activity:" + tagname)
@@ -138,7 +138,7 @@ module NodeShared
 
       if tagname.include?('!')
         exclude = excluded_tagnames(tagname)
-        tagname = tagname.split('!').first
+        tagname = featured_tagname(tagname)
       end
 
       pinned = pinned_nodes("upgrade:" + tagname)
@@ -216,7 +216,7 @@ module NodeShared
 
       if tagname.include?('!')
         exclude = excluded_tagnames(tagname)
-        tagname = tagname.split('!').first
+        tagname = featured_tagname(tagname)
       end
 
       users = users_by_tagname(tagname)
@@ -244,7 +244,7 @@ module NodeShared
 
       if tagname.include?('!')
         exclude = excluded_tagnames(tagname)
-        tagname = tagname.split('!').first
+        tagname = featured_tagname(tagname)
       end
 
       nodes = nodes_by_tagname(tagname, 'page')
@@ -264,6 +264,10 @@ module NodeShared
 
   def self.excluded_tagnames(tagname)
     tagname.split('!') - [tagname.split('!').first]
+  end
+
+  def self.featured_tagname(tagname)
+    tagname.split('!').first
   end
 
   def self.excluded_nodes(exclude, type=nil)
