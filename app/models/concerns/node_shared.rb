@@ -271,19 +271,14 @@ module NodeShared
 
   def self.data_string(view, tagname, nodes, type)
     a = ActionController::Base.new
-
-    class_str = if view == 'thumbnail'
-                  "#{type}-grid-thumbnail"
-                else
-                  "#{type}-grid-"
-                end
+    grid = (view == 'thumbnail' ? "#{type}-grid-thumbnail" : "#{type}-grid-")
 
     a.render_to_string(template: "grids/_#{view}",
                        layout:   false,
                        locals:   {
                          tagname: tagname,
                          randomSeed: rand(1000).to_s,
-                         className: "#{class_str}#{tagname.parameterize}",
+                         className: "#{grid}#{tagname.parameterize}",
                          nodes: nodes,
                          type: type
                        })
@@ -324,6 +319,7 @@ module NodeShared
                   else
                     "node.type = '#{type}'"
                   end
+
     pinned = pinned_nodes(tagname)
              .where(type_string)
 
