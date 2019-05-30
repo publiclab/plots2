@@ -68,7 +68,7 @@ module NodeShared
       nodes -= excluded_nodes(exclude, 'note') if exclude.present?
 
       output = initial_output_str(Regexp.last_match(1))
-      output += data_string('notes', tagname, nodes, 'notes')
+      output + data_string('notes', tagname, nodes, 'notes')
     end
   end
 
