@@ -316,7 +316,8 @@ module NodeShared
 
   def self.nodes_by_tagname(tagname, type)
     if type.is_a? Array
-      type1, type2 = type.first, type.last
+      type1 = type.first
+      type2 = type.last
       pinned = pinned_nodes(tagname)
                .where('node.type = ? OR node.type = ?', type1, type2)
 
