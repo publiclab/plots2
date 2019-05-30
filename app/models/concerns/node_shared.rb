@@ -31,7 +31,7 @@ module NodeShared
       nodes -= excluded_nodes(exclude, 'note') if exclude.present?
 
       output = initial_output_str(Regexp.last_match(1))
-      output += data_string('thumbnail', tagname, nodes, 'notes')
+      output + data_string('thumbnail', tagname, nodes, 'notes')
     end
   end
 
@@ -82,11 +82,11 @@ module NodeShared
         tagname = featured_tagname(tagname)
       end
 
-      nodes = nodes_by_tagname(tagname, ['page', 'note'])
+      nodes = nodes_by_tagname(tagname, %w(page note))
       nodes -= excluded_nodes(exclude) if exclude.present?
 
       output = initial_output_str(Regexp.last_match(1))
-      output += data_string('nodes', tagname, nodes, 'nodes')
+      output + data_string('nodes', tagname, nodes, 'nodes')
     end
   end
 
@@ -105,7 +105,7 @@ module NodeShared
       nodes -= excluded_nodes(exclude, 'note') if exclude.present?
 
       output = initial_output_str(Regexp.last_match(1))
-      output += data_string('notes', tagname, nodes, 'questions')
+      output + data_string('notes', tagname, nodes, 'questions')
     end
   end
 
@@ -127,7 +127,7 @@ module NodeShared
       nodes -= excluded_nodes(exclude, 'note') if exclude.present?
 
       output = initial_output_str(Regexp.last_match(1))
-      output += data_string('notes', tagname, nodes, 'activity')
+      output + data_string('notes', tagname, nodes, 'activity')
     end
   end
 
@@ -149,7 +149,7 @@ module NodeShared
       nodes -= excluded_nodes(exclude, 'note') if exclude.present?
 
       output = initial_output_str(Regexp.last_match(1))
-      output += data_string('notes', tagname, nodes, 'upgrades')
+      output + data_string('notes', tagname, nodes, 'upgrades')
     end
   end
 
@@ -160,7 +160,7 @@ module NodeShared
       lon = Regexp.last_match(3)
       tagname = nil
 
-      output = map_data_string(lat, lon, tagname, "leaflet")
+      map_data_string(lat, lon, tagname, "leaflet")
     end
   end
 
@@ -170,7 +170,7 @@ module NodeShared
       lat = Regexp.last_match(3)
       lon = Regexp.last_match(4)
 
-      output = map_data_string(lat, lon, tagname, "leaflet")
+      map_data_string(lat, lon, tagname, "leaflet")
     end
   end
 
@@ -181,7 +181,7 @@ module NodeShared
       lon = Regexp.last_match(3)
       tagname = nil
 
-      output = map_data_string(lat, lon, tagname, "peopleLeaflet")
+      map_data_string(lat, lon, tagname, "peopleLeaflet")
     end
   end
 
@@ -228,7 +228,7 @@ module NodeShared
       nodes -= excluded_nodes(exclude, 'page') if exclude.present?
 
       output = initial_output_str(Regexp.last_match(1))
-      output += data_string('wikis', tagname, nodes, 'wikis')
+      output + data_string('wikis', tagname, nodes, 'wikis')
     end
   end
 
@@ -247,7 +247,7 @@ module NodeShared
     tagname.split('!').first
   end
 
-  def self.excluded_nodes(exclude, type=nil)
+  def self.excluded_nodes(exclude, type = nil)
     if type
       Node.where(status: 1, type: type)
           .includes(:revision, :tag)
@@ -297,6 +297,7 @@ module NodeShared
     output = a.render_to_string(template: "map/_#{template}",
                                 layout: false,
                                 locals: locals_data)
+    output
   end
 
   def self.users_by_tagname(tagname)
