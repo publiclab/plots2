@@ -21,6 +21,7 @@ module NodeShared
     body.gsub(/(?<![\>`])(\<p\>)?\[notes\:grid\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       exclude = nil
+
       if tagname.include?('!')
         exclude = tagname.split('!') - [tagname.split('!').first]
         tagname = tagname.split('!').first
@@ -57,6 +58,7 @@ module NodeShared
     body.gsub(/(?<![\>`])(\<p\>)?\[notes\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       exclude = nil
+
       if tagname.include?('!')
         exclude = tagname.split('!') - [tagname.split('!').first]
         tagname = tagname.split('!').first
@@ -74,21 +76,13 @@ module NodeShared
     body.gsub(/(?<![\>`])(\<p\>)?\[nodes\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       exclude = nil
+
       if tagname.include?('!')
         exclude = tagname.split('!') - [tagname.split('!').first]
         tagname = tagname.split('!').first
       end
 
-      pinned = pinned_nodes(tagname)
-               .where("node.type = 'page' OR node.type = 'note'")
-      nodes = pinned + Node.where(status: 1)
-                  .where("node.type = 'page' OR node.type = 'note'")
-                  .includes(:revision, :tag)
-                  .references(:term_data, :node_revisions)
-                  .where('term_data.name = ?', tagname)
-                  .order('node_revisions.timestamp DESC')
-                  .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
-
+      nodes = nodes_by_tagname(tagname, ['page', 'note'])
       nodes -= excluded_nodes(exclude) if exclude.present?
 
       output = initial_output_str(Regexp.last_match(1))
@@ -101,19 +95,13 @@ module NodeShared
     body.gsub(/(?<![\>`])(\<p\>)?\[questions\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       exclude = nil
+
       if tagname.include?('!')
         exclude = tagname.split('!') - [tagname.split('!').first]
         tagname = tagname.split('!').first
       end
-      pinned = pinned_nodes("question:" + tagname)
-              .where("node.type = 'note'")
-      nodes = pinned + Node.where(status: 1, type: 'note')
-                  .includes(:revision, :tag)
-                  .references(:node_revisions, :term_data)
-                  .where('term_data.name = ?', "question:#{tagname}")
-                  .order('node_revisions.timestamp DESC')
-                  .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
 
+      nodes = nodes_by_tagname("question:#{tagname}", 'note')
       nodes -= excluded_nodes(exclude, 'note') if exclude.present?
 
       output = initial_output_str(Regexp.last_match(1))
@@ -125,16 +113,17 @@ module NodeShared
     body.gsub(/(?<![\>`])(\<p\>)?\[activities\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       exclude = nil
+
       if tagname.include?('!')
         exclude = tagname.split('!') - [tagname.split('!').first]
         tagname = tagname.split('!').first
       end
+
       pinned = pinned_nodes("activity:" + tagname)
               .where("node.type = 'note'")
       nodes = pinned + Node.activities(tagname)
-                  .order('node.cached_likes DESC')
-                  .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
-
+                           .order('node.cached_likes DESC')
+                           .where.not(nid: pinned.collect(&:nid)) # don't include pinned twice
       nodes -= excluded_nodes(exclude, 'note') if exclude.present?
 
       output = initial_output_str(Regexp.last_match(1))
@@ -146,16 +135,17 @@ module NodeShared
     body.gsub(/(?<![\>`])(\<p\>)?\[upgrades\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       exclude = nil
+
       if tagname.include?('!')
         exclude = tagname.split('!') - [tagname.split('!').first]
         tagname = tagname.split('!').first
       end
+
       pinned = pinned_nodes("upgrade:" + tagname)
                .where("node.type = 'note'")
       nodes = pinned + Node.upgrades(tagname)
-                  .order('node.cached_likes DESC')
-                  .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
-
+                           .order('node.cached_likes DESC')
+                           .where.not(nid: pinned.collect(&:nid)) # don't include pinned twice
       nodes -= excluded_nodes(exclude, 'note') if exclude.present?
 
       output = initial_output_str(Regexp.last_match(1))
@@ -223,6 +213,7 @@ module NodeShared
     body.gsub(/(?<![\>`])(\<p\>)?\[people\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       exclude = nil
+
       if tagname.include?('!')
         exclude = tagname.split('!') - [tagname.split('!').first]
         tagname = tagname.split('!').first
@@ -250,20 +241,13 @@ module NodeShared
     body.gsub(/(?<![\>`])(\<p\>)?\[wikis\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       exclude = nil
+
       if tagname.include?('!')
         exclude = tagname.split('!') - [tagname.split('!').first]
         tagname = tagname.split('!').first
       end
 
-      pinned = pinned_nodes(tagname)
-               .where("node.type = 'page'")
-      nodes = pinned + Node.where(status: 1, type: 'page')
-                  .includes(:revision, :tag)
-                  .references(:term_data, :node_revisions)
-                  .where('term_data.name = ?', tagname)
-                  .order('node_revisions.timestamp DESC')
-                  .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
-
+      nodes = nodes_by_tagname(tagname, 'page')
       nodes -= excluded_nodes(exclude, 'page') if exclude.present?
 
       output = initial_output_str(Regexp.last_match(1))
@@ -335,11 +319,16 @@ module NodeShared
   end
 
   def self.nodes_by_tagname(tagname, type)
+    type_string = if type.is_a? Array
+                    "node.type = '#{type[0]}' OR node.type = '#{type[1]}'"
+                  else
+                    "node.type = '#{type}'"
+                  end
     pinned = pinned_nodes(tagname)
-             .where("node.type = 'note'")
+             .where(type_string)
 
     pinned + Node.where(status: 1)
-                 .where("node.type = '#{type}'")
+                 .where(type_string)
                  .includes(:revision, :tag)
                  .references(:term_data, :node_revisions)
                  .where('term_data.name = ?', tagname)
