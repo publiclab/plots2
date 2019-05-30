@@ -23,7 +23,7 @@ module NodeShared
       exclude = nil
 
       if tagname.include?('!')
-        exclude = tagname.split('!') - [tagname.split('!').first]
+        exclude = excluded_tagnames(tagname)
         tagname = tagname.split('!').first
       end
 
@@ -60,7 +60,7 @@ module NodeShared
       exclude = nil
 
       if tagname.include?('!')
-        exclude = tagname.split('!') - [tagname.split('!').first]
+        exclude = excluded_tagnames(tagname)
         tagname = tagname.split('!').first
       end
 
@@ -78,7 +78,7 @@ module NodeShared
       exclude = nil
 
       if tagname.include?('!')
-        exclude = tagname.split('!') - [tagname.split('!').first]
+        exclude = excluded_tagnames(tagname)
         tagname = tagname.split('!').first
       end
 
@@ -97,7 +97,7 @@ module NodeShared
       exclude = nil
 
       if tagname.include?('!')
-        exclude = tagname.split('!') - [tagname.split('!').first]
+        exclude = excluded_tagnames(tagname)
         tagname = tagname.split('!').first
       end
 
@@ -115,7 +115,7 @@ module NodeShared
       exclude = nil
 
       if tagname.include?('!')
-        exclude = tagname.split('!') - [tagname.split('!').first]
+        exclude = excluded_tagnames(tagname)
         tagname = tagname.split('!').first
       end
 
@@ -137,7 +137,7 @@ module NodeShared
       exclude = nil
 
       if tagname.include?('!')
-        exclude = tagname.split('!') - [tagname.split('!').first]
+        exclude = excluded_tagnames(tagname)
         tagname = tagname.split('!').first
       end
 
@@ -215,7 +215,7 @@ module NodeShared
       exclude = nil
 
       if tagname.include?('!')
-        exclude = tagname.split('!') - [tagname.split('!').first]
+        exclude = excluded_tagnames(tagname)
         tagname = tagname.split('!').first
       end
 
@@ -243,7 +243,7 @@ module NodeShared
       exclude = nil
 
       if tagname.include?('!')
-        exclude = tagname.split('!') - [tagname.split('!').first]
+        exclude = excluded_tagnames(tagname)
         tagname = tagname.split('!').first
       end
 
@@ -260,6 +260,10 @@ module NodeShared
         .includes(:revision, :tag)
         .references(:term_data, :node_revisions)
         .where('term_data.name = ?', "pin:#{tagname}")
+  end
+
+  def self.excluded_tagnames(tagname)
+    tagname.split('!') - [tagname.split('!').first]
   end
 
   def self.excluded_nodes(exclude, type=nil)
