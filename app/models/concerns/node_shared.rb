@@ -321,13 +321,13 @@ module NodeShared
       pinned = pinned_nodes(tagname)
                .where('node.type = ? OR node.type = ?', type1, type2)
 
-     pinned + Node.where(status: 1)
-                  .where('node.type = ? OR node.type = ?', type1, type2)
-                  .includes(:revision, :tag)
-                  .references(:term_data, :node_revisions)
-                  .where('term_data.name = ?', tagname)
-                  .order('node_revisions.timestamp DESC')
-                  .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
+      pinned + Node.where(status: 1)
+                   .where('node.type = ? OR node.type = ?', type1, type2)
+                   .includes(:revision, :tag)
+                   .references(:term_data, :node_revisions)
+                   .where('term_data.name = ?', tagname)
+                   .order('node_revisions.timestamp DESC')
+                   .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
     else
       pinned = pinned_nodes(tagname)
                .where('node.type = ?', type)
