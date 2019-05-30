@@ -159,15 +159,8 @@ module NodeShared
       lat = Regexp.last_match(2)
       lon = Regexp.last_match(3)
       tagname = nil
-      a = ActionController::Base.new
-      output = a.render_to_string(template: "map/_leaflet",
-                                  layout:   false,
-                                  locals:   {
-                                    lat: lat,
-                                    lon: lon,
-                                    tagname: tagname
-                                  })
-      output
+
+      output = map_data_string(lat, lon, tagname, "leaflet")
     end
   end
 
@@ -176,15 +169,8 @@ module NodeShared
       tagname = Regexp.last_match(2)
       lat = Regexp.last_match(3)
       lon = Regexp.last_match(4)
-      a = ActionController::Base.new
-      output = a.render_to_string(template: "map/_leaflet",
-                                  layout:   false,
-                                  locals:   {
-                                    lat: lat,
-                                    lon: lon,
-                                    tagname: tagname.to_s
-                                  })
-      output
+
+      output = map_data_string(lat, lon, tagname, "leaflet")
     end
   end
 
@@ -193,18 +179,9 @@ module NodeShared
     body.gsub(/(?<![\>`])(\<p\>)?\[map\:people\:(\S+)\:(\S+)\]/) do |_tagname|
       lat = Regexp.last_match(2)
       lon = Regexp.last_match(3)
+      tagname = nil
 
-      a = ActionController::Base.new
-      output = a.render_to_string(template: "map/_peopleLeaflet",
-                                  layout:   false,
-                                  locals:   {
-                                    lat: lat,
-                                    lon: lon,
-                                    people: true,
-                                    url_hash: 0,
-                                    tag_name: false
-                                  })
-      output
+      output = map_data_string(lat, lon, tagname, "peopleLeaflet")
     end
   end
 
@@ -310,6 +287,21 @@ module NodeShared
                          nodes: nodes,
                          type: type
                        })
+  end
+
+  def self.map_data_string(lat, lon, tagname, template)
+    a = ActionController::Base.new
+
+    locals_data = if template == "leaflet"
+                    { lat: lat, lon: lon, tagname: tagname.to_s }
+                  else
+                    { lat: lat, lon: lon, people: true,
+                      url_hash: 0, tag_name: false }
+                  end
+
+    output = a.render_to_string(template: "map/_#{template}",
+                                layout: false,
+                                locals: locals_data)
   end
 
   def self.users_by_tagname(tagname)
