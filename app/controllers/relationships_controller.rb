@@ -6,17 +6,14 @@ class RelationshipsController < ApplicationController
     respond_to do |format|
       if !current_user.following?(user)
         current_user.follow(user)
-        format.html {
-          flash[:notice] = "You have started following " + user.username
-          redirect_to request.referrer
-        }
-        format.js {render "create", :locals => {:following => true, :profile_user => user}}
+        format.html { redirect_to request.referrer, notice: "You have started following " + user.username }
+        format.js { render "create", locals: { following: true, profile_user: user } }
       else
         format.html {
           flash[:error] = "Error in following user"
           redirect_to request.referrer
         }
-        format.js {render "create", :locals => {:following => false, :profile_user => user}}
+        format.js { render "create", locals: { following: false, profile_user: user } }
       end
     end
   end
@@ -27,17 +24,14 @@ class RelationshipsController < ApplicationController
     respond_to do |format|
       if !relation.nil?
         current_user.unfollow(user)
-        format.html {
-          flash[:notice] = "You have unfollowed " + user.username
-          redirect_to request.referrer
-        }
-        format.js {render "destroy", :locals => {:unfollowing => true, :profile_user => user}}
+        format.html { redirect_to request.referrer, notice: "You have unfollowed " + user.username }
+        format.js { render "destroy", locals: { unfollowing: true, profile_user: user } }
       else
         format.html {
           flash[:error] = "Error in unfollowing user"
           redirect_to request.referrer
         }
-        format.js {render "destroy", :locals => {:unfollowing => false, :profile_user => user}}
+        format.js { render "destroy", locals: { unfollowing: false, profile_user: user } }
       end
     end
   end
