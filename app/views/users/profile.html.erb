@@ -151,7 +151,7 @@
       <hr />
       <div id="follow_form" class="col-md-offset-4">
         <% if current_user.following?(@profile_user) %>
-          <a id="profile-unfollow-button" class="btn btn-default" data-method="delete" data-remote="true" href="../relationships/<%= @profile_user.id %>">Unfollow</a>
+          <a id="profile-unfollow-button" class="btn btn-primary" data-method="delete" data-remote="true" href="../relationships/<%= @profile_user.id %>">Unfollow</a>
         <% else %>
           <a id="profile-follow-button" class="btn btn-primary" data-method="post" data-remote="true" href="/relationships" data-params="followed_id=<%= @profile_user.id %>">Follow</a>
         <% end %>
@@ -343,21 +343,21 @@
 
   $('#follow_form').on('ajax:success', '#profile-follow-button', function(data, status, xhr)
   {
-    notyNotification('relax', 3000, 'success', 'top', 'You started following <%= @profile_user.username %>');
-    $('#follow_form').html('<a id="profile-unfollow-button" class="btn btn-default" data-method="delete" data-remote="true" href="/relationships/<%= @profile_user.id %>">Unfollow</a>');
+    notyNotification('relax', 3000, 'success', 'top', 'You have started following <%= @profile_user.username %>');
+    $('#follow_form').html('<a id="profile-unfollow-button" class="btn btn-primary" data-method="delete" data-remote="true" href="/relationships/<%= @profile_user.id %>">Unfollow</a>');
   });
   $('#follow_form').on('ajax:success', '#profile-unfollow-button', function(data, status, xhr)
   {
-    notyNotification('relax', 3000, 'success', 'top', 'You unfollowed <%= @profile_user.username %>');
+    notyNotification('relax', 3000, 'success', 'top', 'You are no longer following <%= @profile_user.username %>');
     $('#follow_form').html('<a id="profile-follow-button" class="btn btn-primary" data-method="post" data-remote="true" href="/relationships" data-params="followed_id=<%= @profile_user.id %>">Follow</a>');
   });
   $('#follow_form').on('ajax:error', '#profile-follow-button', function(data, status, xhr)
   {
-    notyNotification('relax', 3000, 'error', 'top', 'Error in following');
+    notyNotification('relax', 3000, 'error', 'top', 'Error in following the user');
   });
   $('#follow_form').on('ajax:error', '#profile-unfollow-button', function(data, status, xhr)
   {
-    notyNotification('relax', 3000, 'error', 'top', 'Error in Unfollowing');
+    notyNotification('relax', 3000, 'error', 'top', 'Error in unfollowing the user');
   });
 </script>
 
