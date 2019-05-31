@@ -10,13 +10,13 @@ class RelationshipsController < ApplicationController
           flash[:notice] = "You have started following " + user.username
           redirect_to request.referrer
         }
-        format.js {render "like/create", :locals => {:following => true, :profile_user => user}}
+        format.js {render "create", :locals => {:following => true, :profile_user => user}}
       else
         format.html {
-          flash[:error] = "Invalid request!"
+          flash[:error] = "Error in following user"
           redirect_to request.referrer
         }
-        format.js {render "like/create", :locals => {:following => false, :profile_user => user}}
+        format.js {render "create", :locals => {:following => false, :profile_user => user}}
       end
     end
   end
@@ -31,13 +31,13 @@ class RelationshipsController < ApplicationController
           flash[:notice] = "You have unfollowed " + user.username
           redirect_to request.referrer
         }
-        format.js {render "like/destroy", :locals => {:unfollowing => true, :profile_user => user}}
+        format.js {render "destroy", :locals => {:unfollowing => true, :profile_user => user}}
       else
         format.html {
-          flash[:error] = "Invalid request!"
+          flash[:error] = "Error in unfollowing user"
           redirect_to request.referrer
         }
-        format.js {render "like/destroy", :locals => {:unfollowing => false, :profile_user => user}}
+        format.js {render "destroy", :locals => {:unfollowing => false, :profile_user => user}}
       end
     end
   end
