@@ -3,22 +3,43 @@ class RelationshipsController < ApplicationController
 
   def create
     user = User.find(params[:followed_id])
-    status = 412
-    unless current_user.following?(@profile_user)
-      current_user.follow(user)
-      status = 200
+    respond_to do |format|
+      if !current_user.following?(user)
+        current_user.follow(user)
+        format.html {
+          flash[:notice] = "You have started following " + user.username
+          redirect_to request.referrer
+        }
+        format.js {render "like/create", :locals => {:following => true, :profile_user => user}}
+      else
+        format.html {
+          flash[:error] = "Invalid request!"
+          redirect_to request.referrer
+        }
+        format.js {render "like/create", :locals => {:following => false, :profile_user => user}}
+      end
     end
-    render json: { status: status }
   end
 
   def destroy
+    user = User.find_by_id(params[:id])
     relation = Relationship.where(follower_id: current_user.id, followed_id: params[:id])
-    status = 412
-    unless relation.nil?
-      current_user.unfollow(User.find_by_id(params[:id]))
-      status = 200
+    respond_to do |format|
+      if !relation.nil?
+        current_user.unfollow(user)
+        format.html {
+          flash[:notice] = "You have unfollowed " + user.username
+          redirect_to request.referrer
+        }
+        format.js {render "like/destroy", :locals => {:unfollowing => true, :profile_user => user}}
+      else
+        format.html {
+          flash[:error] = "Invalid request!"
+          redirect_to request.referrer
+        }
+        format.js {render "like/destroy", :locals => {:unfollowing => false, :profile_user => user}}
+      end
     end
-    render json: { status: status }
   end
 
   private
