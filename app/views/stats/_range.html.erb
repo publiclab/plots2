@@ -23,10 +23,6 @@
     <%= raw t('notes.stats.members_and_contributors', :member_count => @people, :people_count => @contributors) %>
 </h5>
 <hr>
-<%if @questions.present? %>
-    <div id="chart2"> </div>
-<% end %>
-
 <% if logged_in_as(['admin']) %>
 
   <div class="row">

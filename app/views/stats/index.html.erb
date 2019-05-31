@@ -23,6 +23,11 @@
     <%= render 'range' %>
 </div>
 
+<% if @questions.present? %>
+<br><br>
+<h4 align="center">Questions Asked vs. Answered</h4>
+    <div align="right" id="questAns"> </div>
+<% end %>
 
 <% if @popular_tags.present? %>
     <br> <br>
@@ -37,6 +42,7 @@
 <p><b><%= raw t('notes.stats.notes_per_week', :note_count => @notes_per_week_period) %></b></p>
 <br>
 <i> Member registration may include spam accounts </i>
+
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
 var options = {
@@ -238,26 +244,83 @@ var options = {
         data: values
 
     }],
-/*
-        title:{
-        text: "Popular Tags in this period",
-        align: 'center',
-        style: {
-         
-          fontSize: '24px',
-          color: '#212529'
-        }
-    },
-*/
+
     xaxis: {
         categories: data
 
     }
 
-}
+};
 
 var chart1 = new ApexCharts(
         document.querySelector("#popularTags"), options );
 chart1.render();
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+var questions = [<%= @questions.count %>];
+var answers = [<%= @answers %>];
+
+var options = {
+    chart: {
+        type: 'bar',
+        height: 120,
+        stacked: true,
+        stackType: '100%',
+        width: '91%',
+    },
+    plotOptions: {
+        bar: {
+            horizontal: true,
+        },
+    },
+    stroke: {
+        width: 1,
+        colors: ['#fff']
+    },
+    series: [{
+        name: 'Questions asked',
+        data: questions
+    },{
+        name: 'Questions answered',
+        data: answers
+    }],
+        fill: {
+            opacity: 1
+        },
+        
+
+        legend: {
+            show: false,
+        },
+        grid: {
+            show: false,
+        },
+        
+        xaxis: {
+            
+           labels: {
+                show: false,
+            },
+            axisBorder: {
+                show: false,
+            },
+            lines: {
+                show: true,
+            }
+            
+        },
+        yaxis: {
+            labels: {
+                show: false,
+            },
+        }
+
+};
+
+var chart2 = new ApexCharts(document.querySelector("#questAns"),options);
+chart2.render();
 
 </script>
