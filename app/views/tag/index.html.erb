@@ -1,58 +1,51 @@
 <%= javascript_include_tag('async_tag_subscriptions.js') %>
-<div class="col-md-12">
+<div class="col-md-6">
   <h1 style="font-family:Junction Light;"><%= t('tag.index.popular_tags') %></h1>
 
-  <% cache('feature_tags-header', skip_digest: true) do %> 
+  <% cache('feature_tags-header', skip_digest: true) do %>
     <%= feature('tags-header') %>
   <% end %>
 
   <p><%= t('tag.index.browse_popular_tags') %></p>
-  <form id="tagform" class="form-horizontal" method="GET" action="/tag/">
-  <div class="input-group">
-    <input type="search" tabindex="1" autocomplete="off" id="taginput" name="id" type="text" placeholder="Search for tags.." data-provide="typeahead" class="form-control" required="required" />
-    <span class="input-group-btn" >
-      <button type="submit" rel="tooltip" title="View content with the entered title" class="btn btn-primary">Search</button>
-    </span>
-  </div>
-  </form> 
+  <br/>
+  <form id="tagform" class="form-horizontal" method="GET" action="/tag/" autocomplete="off" style="width: 250px;">
+    <div class="input-group">
+      <input type="text" tabindex="1" id="taginput" name="id" placeholder="Search for topics" data-provide="typeahead" class="form-control" role="search" required="required" />
+      <span class="input-group-append">
+        <button class="btn btn-outline-secondary" type="submit"><i class="fa fa-search"></i></button>
+      </span>
+    </div>
+  </form>
   <br/><br/>
 
-  <table class="table">
-    <tr>
-      <th><a href = "<%= tags_path %>?sort=name&order=<%= @order_type %>"><%= t('tag.index.tag') %></a> <i class="fa fa-arrows-v"></i></th>
-      <th><a href = "<%= tags_path %>?sort=uses&order=<%= @order_type %>"><%= t('tag.index.number_of_uses') %></a> <i class="fa fa-arrows-v"></i></th>
-      <th><a href = "<%= tags_path %>?sort=followers&order=<%= @order_type %>"><%= t('tag.index.number_of_subscriptions')%></a> <i class="fa fa-arrows-v"></i></th>
-      <% if current_user %>
-        <th><a href = "<%= tags_path %>?sort=subscribers"><%= t('tag.index.subscriptions') %></a> <i class="fa fa-sort" aria-hidden="true"></i></th>
-      <% end %>
-    </tr>
-    <% @tags.each do |tag| %>
-      <tr>
-        <td><i class="fa fa-tag"></i> <a href="/tag/<%= tag.name %>"><%= tag.name %></a></td>
-        <td><%= tag.count %></td>
-        <td><a class="btn btn-default btn-sm" rel="popover" data-placement="right" data-html="true" data-title="<%= t('tag.show.users_following_tag') %>" data-content="<% Tag.followers(tag.name).each do |user| %><i class='fa fa-star-o'></i> <a href='/profile/<%= user.username %>'><%= user.username %></a><br /><% end %><% if Tag.follower_count(tag.name) == 0 %><i><%= t('tag.show.none') %></i><% end %>"><%= Tag.follower_count(tag.name) %> <i class="fa fa-user"></i> <span class="caret"></span></a></td>
-        <script type="text/javascript">
-          //show one popover at a time
-          $('.btn').on('click', function (e) {
-              $('.btn').not(this).popover('hide');
-          });
-        </script>
-        <% if current_user %>
-          <td id="follow-unfollow-column-<%=tag.tid%>">
-             <% if current_user.following(tag.name) %>
-                <a rel="tooltip" title="<%= t('tag.show.unfollow') %>" class="btn btn-default btn-sm active" href="/unsubscribe/tag/<%= tag.name %>"><i class="fa fa-user-plus" aria-hidden="true"></i> <%= t('tag.show.following') %></a>
-                <% else %>
-                <a class="btn btn-default btn-sm index-follow-buttons follow-btn-remote" href="/subscribe/tag/<%= tag.name %>" data-remote="true" ><i class="fa fa-user-plus" aria-hidden="true"></i> <%= t('tag.show.follow') %></a>
-                <% end %>
-          </td>
-        <% end %>
-      </tr>
-    <% end %>
-  </table>
+   <p style="width: 100%; text-align: center; border-bottom: 1px solid #ccc; line-height:2px; margin: 10px 0 20px;">
+    <span style="background-color: #fff; padding: 0 10px; color: #808080;">Sort by:
+      <a href = "<%= tags_path %>?sort=name&order=<%= @order_type %>" style="text-decoration: underline; color: #808080;"><%= t('tag.index.tag') %></a><span> | </span>
+      <a href = "<%= tags_path %>?sort=followers&order=<%= @order_type %>" style="text-decoration: underline; color: #808080;"><%= t('tag.index.number_of_subscriptions')%></a><span> | </span>
+      <a href = "<%= tags_path %>?sort=uses&order=<%= @order_type %>" style="text-decoration: underline; color: #808080;"><%= t('tag.index.number_of_uses') %></a>
+    </span>
+  </p>
+  <br/>
 
-  <hr />
-
+  <%= render :partial => "tag/topicCard" %>
+  
+<div class="text-center"> <%= will_paginate @tags, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer if @paginated %></div>
 </div>
 
-<div class="text-center"> <%= will_paginate @tags, :renderer => BootstrapPagination::Rails if @paginated %></div>
+<style>
+  .active{
+    color: red;
+  }
+</style>
 
+<div class="col-lg-6">
+  <br><br>
+  <iframe id="myImage" src="stats/graph.html?limit=50" height="500" width="100%" frameborder="0" ></iframe>
+  <p class="text-right" style="color:#ccc;">Tags most commonly used, linked by how often they are used together.<br>
+    View <a style="cursor: pointer; a:active: color: red;" onclick="document.getElementById('myImage').src='stats/graph.html?limit=50'"><u>50</u></a> |
+    <a style="cursor: pointer;" onclick="document.getElementById('myImage').src='stats/graph.html?limit=100'"><u>100</u></a> |
+    <a style="cursor: pointer;" onclick="document.getElementById('myImage').src='stats/graph.html?limit=250'"><u>250</u></a> |
+    <a style="cursor: pointer;" onclick="document.getElementById('myImage').src='stats/graph.html?limit=500'"><u>500</u></a>
+  </p>
+
+</div>

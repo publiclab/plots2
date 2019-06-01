@@ -42,20 +42,6 @@ class QuestionsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test 'answer comment markdown and autolinking works' do
-    node = nodes(:question)
-    assert node.answers.first.comments.length.positive?
-    comment = node.answers.first.comments.last
-    comment.comment = 'Test **markdown2** and http://links2.com'
-    comment.save!
-
-    get :show, params: { id: node.id }
-
-    assert_select 'strong', 'markdown2'
-    assert_select 'a', 'http://links2.com'
-    assert_response :success
-  end
-
   test 'should redirect notes other than question to note path' do
     note = nodes(:one)
 
@@ -80,16 +66,6 @@ class QuestionsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test 'should show accepted label for accepted answers' do
-    note = nodes(:question)
-    answer = answers(:two)
-
-    get :show, params: { author: note.author.name, date: Time.at(note.created).strftime('%m-%d-%Y'), id: note.title.parameterize }
-  
-    assert_response :success
-    assert_select '#answer-' + answer.id.to_s + '-accept', 1
-  end
-
   test 'should not show answer accept button to users if not logged in' do
     note = nodes(:question)
     answer = answers(:one)
@@ -98,17 +74,6 @@ class QuestionsControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_select '#answer-' + answer.id.to_s + '-accept', 0
-  end
-
-  test 'should show accept answer button to author of the question' do
-    UserSession.create(users(:jeff))
-    note = nodes(:question)
-    answer = answers(:one)
-
-    get :show, params: { author: note.author.name, date: Time.at(note.created).strftime('%m-%d-%Y'), id: note.title.parameterize  }
-  
-    assert_response :success
-    assert_select '#answer-' + answer.id.to_s + '-accept', 1
   end
 
   test 'should not show accept answer button to user who is not the author of the question' do
@@ -125,7 +90,7 @@ class QuestionsControllerTest < ActionController::TestCase
   test 'should get answered' do
     get :answered
     assert_response :success
-    assert_equal assigns(:title), 'Recently answered'
+    assert_equal assigns(:title), 'Recently Commented'
     assert_not_nil assigns(:questions)
     assert_template :index
   end

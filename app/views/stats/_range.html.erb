@@ -1,15 +1,15 @@
 <h5>Choose a starting and an ending date in the field below to see activity during that range</h5>
 <%= form_tag request.url, method: 'get', enforce_utf8: false do %>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-lg-4">
             <label>Starting</label>
             <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%d-%m-%Y") %>" value="<%= @start.strftime("%d-%m-%Y") %>" data-date-format="dd-mm-yyyy" tabindex="1" class="form-control" type="text" name="start">
         </div>
-        <div class="col-md-4">
+        <div class="col-lg-4">
             <label>Ending</label>
             <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%d-%m-%Y") %>" value="<%=@end.strftime("%d-%m-%Y") %>" data-date-format="dd-mm-yyyy" tabindex="1" class="form-control" type="text" name="end">
         </div>
-        <div class="col-md-1">
+        <div class="col-lg-1">
             <%= submit_tag "Go" , class: 'btn btn-primary', :style=>'margin-top:2em;'  %>
         </div>
     </div>
@@ -27,16 +27,16 @@
     <div id="chart2"> </div>
 <% end %>
 
-<% if current_user && (current_user.role == "admin") %>
+<% if logged_in_as(['admin']) %>
 
-    &emsp;&emsp;
-    &emsp;&emsp;
+  <div class="row">
+ <div class="col-md-4 col-md-offset-1">
     <div class="btn-group">
-        <button type="button" class="btn btn-lg btn-default">
+        <button type="button" class="btn btn-lg btn-outline-secondary">
             <i class="fa fa-cloud-download" style="color:blue"> </i>
             Download as json
         </button>
-        <button type="button" class="btn btn-lg btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button type="button" class="btn btn-lg btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="caret"></span>
             <span class="sr-only">Toggle Dropdown</span>
         </button>
@@ -59,17 +59,23 @@
             <li>
                 <%= link_to "Questions Answered", stats_answers_path(format: 'json', start: params[:start], end: params[:end]) %>
             </li>
+            <li>
+                <%= link_to "List of Tags", stats_tags_path(format: 'json') %>
+            </li>
+            <li>
+                <%= link_to "Tag Usage", stats_node_tags_path(format: 'json', start: params[:start], end: params[:end])%>
+            </li>
         </ul>
     </div>
-    &emsp;&emsp;
-    &emsp;&emsp;
-    &emsp;&emsp;
+</div>
+&emsp;
+<div class="col-md-3">
     <div class="btn-group">
-        <button type="button" class="btn btn-lg btn-default">
+        <button type="button" class="btn btn-lg btn-outline-secondary">
             <i class="fa fa-cloud-download" style="color:purple"> </i>
             Download as csv
         </button>
-        <button type="button" class="btn btn-lg btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button type="button" class="btn btn-lg btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="caret"></span>
             <span class="sr-only">Toggle Dropdown</span>
         </button>
@@ -81,6 +87,8 @@
                 <%= link_to "Wikis", stats_wikis_path(format: 'csv', start: params[:start], end: params[:end]) %>
             </li>
             <li>
+                <%= link_to "Comments", stats_comments_path(format: 'csv', start: params[:start], end: params[:end]) %>
+            </li>
                 <li>
                     <%= link_to "Users", stats_users_path(format: 'csv', start: params[:start], end: params[:end]) %>
                 </li>
@@ -90,13 +98,21 @@
                 <li>
                     <%= link_to "Questions Answered", stats_answers_path(format: 'csv', start: params[:start], end: params[:end]) %>
                 </li>
+                <li>
+                    <%= link_to "List of Tags", stats_tags_path(format: 'csv') %>
+                </li>
+                <li>
+                    <%= link_to "Tag Usage", stats_node_tags_path(format: 'csv', start: params[:start], end: params[:end])%>
+                </li>
         </ul>
     </div>
+    </div>
+</div>
     <br><br> <br>
 <% end %>
  <div class="row">
 <h5> Move back or forward using the buttons below </h5>
- <div class="col-md-4 col-md-offset-1">
+ <div class="col-lg-4 col-lg-offset-1">
 <div class="btn-group" role="group" aria-label="Basic example">
     <a href="<%= "?start="+(@start - 1.year).to_formatted_s(:long) %> <%= "&end="+(@end - 1.year).to_formatted_s(:long)   %>">
         <button type="button" class="btn btn-secondary" title= "1 year back">
@@ -129,7 +145,7 @@
 
 </div>
 &emsp;
-<div class="col-md-3">
+<div class="col-lg-3">
 <div class="btn-group" role="group" aria-label="Basic example">
     <a href="<%= "?start="+(@start + 1.week).to_formatted_s(:long) %> <%= "&end="+(@end + 1.week).to_formatted_s(:long)   %>">
         <button type="button" class="btn btn-secondary" title="1 week forward">
@@ -229,4 +245,3 @@ var chart2 = new ApexCharts(document.querySelector("#chart2"),options);
 chart2.render();
 
 </script>
-

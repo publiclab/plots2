@@ -19,8 +19,8 @@
     <div class="tab-pane active" id="questions">
       <div class="tab-pane" id="questions-tab">
         <div class="btn-group text-center">
-          <a href="#asked-tab" class="btn btn-default active" data-toggle="tab">Asked</a>
-          <a href="#answered-tab" class="btn btn-default" data-toggle="tab">Answered</a>
+          <a href="#asked-tab" class="btn btn-outline-secondary active" data-toggle="tab">Asked</a>
+          <a href="#answered-tab" class="btn btn-outline-secondary" data-toggle="tab">Answered</a>
         </div>
 
         <div class="tab-content">
@@ -47,7 +47,7 @@
   <% if @node_type == "maps" %>
     <div class="tab-pane active" id="wikis">
      <% if @nodes.empty? %>
-        <p><strong>Sorry, no map is tagged with `<%= params[:id] %>` tag. You can view other maps <a href="/maps">here</a>.</strong></p>
+        <p><%= raw t('tag.show.no_map_results_found', :tag => params[:id]) %>. You can view other maps <a href="/maps">here</a>.</p>
       <% else %>
         <%= render :partial => "map/maps" %>
       <% end %>

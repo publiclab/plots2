@@ -1,9 +1,11 @@
 require 'test_helper'
+require 'csv'
 
 class StatsControllerTest < ActionController::TestCase
   def setup
     @start = 1.month.ago.to_time
     @end = Date.today.to_time
+    @stats =  [:notes, :comments, :users, :wikis, :questions, :answers, :tags, :node_tags]
   end
 
   test 'should assign correct value to graph_notes on GET stats' do
@@ -45,4 +47,25 @@ class StatsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  def csv_stats_download
+    @stats.each do |action|
+      test "should download #{action} as csv" do
+        get action, params: { format: 'csv' }
+        assert_response :success
+        assert_equal "text/csv", response.content_type
+        assert_equal "attachment", response['Content-Disposition']
+      end
+    end
+  end
+
+  def json_stats_downloads
+    @stats.each do |action|
+      test "should download #{action} as json" do
+        get action, params: { format: 'json' }
+        assert_response :success
+        assert_equal "application/json", response.content_type
+        assert_equal "attachment", response['Content-Disposition']
+      end
+    end
+  end
 end

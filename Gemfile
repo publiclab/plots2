@@ -25,7 +25,7 @@ gem 'grape-swagger-ui'
 gem 'http_accept_language'
 gem "i18n-js", ">= 3.0.0.rc11"
 gem 'impressionist'
-gem 'jbuilder', '~> 2.8'
+gem 'jbuilder', '~> 2.9'
 gem 'jquery-rails'
 gem 'less-rails', '~> 4.0'
 gem 'mocha', '~> 1.8'
@@ -51,7 +51,7 @@ gem 'rb-readline'
 gem 'rdiscount', '~> 2.2', '>= 2.2.0.1'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'responders', '~> 2.4'
-gem 'rubocop', '~> 0.65.0', require: false
+gem 'rubocop', '~> 0.69.0', require: false
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
 gem 'sentry-raven'
@@ -62,9 +62,9 @@ gem 'tzinfo-data', platforms: %i(mingw mswin x64_mingw jruby)
 gem 'unicode-emoji'
 gem 'whenever', require: false
 gem 'will_paginate', '>= 3.0.6'
-gem 'will_paginate-bootstrap', '>= 1.0.1'
+gem 'will_paginate-bootstrap4'
 gem 'jquery-atwho-rails'
-gem 'lemmatizer', '~> 0.2.1'
+gem 'lemmatizer', '~> 0.2.2'
 # To implement incoming mail processing microframework
 gem 'mailman', require: false
 
@@ -83,9 +83,9 @@ group :sqlite, :development do
   gem 'sqlite3', '~> 1.3.6'
 end
 
-gem 'coffee-rails', '~> 4.2.2'
+gem 'coffee-rails', '~> 5.0.0'
 gem 'execjs' # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-gem 'sass-rails', '~> 5.0', '>= 5.0.7'
+gem 'sassc-rails'
 gem 'therubyracer'
 gem 'uglifier', '>= 1.0.3'
 gem 'grape-rails-cache'
@@ -99,6 +99,7 @@ group :development do
 end
 
 group :test, :development do
+  gem 'capybara'
   gem 'ci_reporter_test_unit'
   gem 'coveralls', require: false
   gem 'jasmine-jquery-rails'
@@ -107,10 +108,12 @@ group :test, :development do
   gem 'minitest-reporters', '~> 1.3.6'
   gem 'openssl', '~> 2.1.2'
   gem 'phantomjs'
+  gem 'puma', '~> 3.12'
   gem 'rails-perftest'
   gem 'rake',  '~> 12.3.2'
   gem 'rest-client'
   gem 'rspec'
+  gem 'selenium-webdriver', '~> 3.142.3'
   gem 'test-unit'
   gem 'teaspoon-mocha'
   gem 'timecop'

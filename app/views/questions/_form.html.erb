@@ -1,13 +1,13 @@
 <input type="hidden" name="type" value="question">
 <div class="form-group"> 
-  <div class="col-xs-9 col-sm-10">
+  <div class="col-xs-9  col-sm-9 col-md-10">
     <div class="expandingArea">
       <pre><span></span><br/></pre>
       <% comment = comment || nil # messy, but fixes #797 %>
       <textarea name="body" placeholder="Leave a comment"><%= comment.try(:comment) %></textarea>
     </div>  
   </div>
-  <div class="col-xs-3 col-sm-2">
-    <button type="submit" id="submit-comment-button" class="btn btn-primary"><i class="fa fa-spinner fa-spin hidden" id="loading-spinner"></i><i class="fa fa-reply visible-xs" id="reply-comment"></i><span id="submit-comment" class="hidden-xs"> Submit</span></button>
+  <div class="col-xs-3 col-sm-3 col-md-2">
+    <button type="submit" id="submit-comment-button" class="btn btn-primary"><i class="fa fa-spinner fa-spin hidden" id="loading-spinner"></i><i class="fa fa-reply d-md-none" id="reply-comment"></i><span id="submit-comment" class="d-none d-md-inline"> Submit</span></button>
   </div>
 </div>

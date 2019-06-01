@@ -9,6 +9,7 @@ end
 class User < ActiveRecord::Base
   extend Utils
   include Statistics
+  extend RawStats
   self.table_name = 'rusers'
   alias_attribute :name, :username
 
@@ -30,9 +31,9 @@ class User < ActiveRecord::Base
   attr_readonly :username
 
   acts_as_authentic do |c|
-    c.validates_format_of_email_field_options = { with: URI::MailTo::EMAIL_REGEXP }
     c.crypto_provider = Authlogic::CryptoProviders::Sha512
   end
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
 
   has_attached_file :photo, styles: { thumb: '200x200#', medium: '500x500#', large: '800x800#' },
                                     url: '/system/profile/photos/:id/:style/:basename.:extension'
@@ -241,7 +242,7 @@ class User < ActiveRecord::Base
     Node.questions.where(status: 1, uid: id)
   end
 
-  def content_followed_in_period(start_time, end_time)
+  def content_followed_in_period(start_time, end_time, node_type = 'note')
     tagnames = TagSelection.where(following: true, user_id: uid)
     node_ids = []
     tagnames.each do |tagname|
@@ -252,6 +253,7 @@ class User < ActiveRecord::Base
     .includes(:revision, :tag)
     .references(:node_revision)
     .where('node.status = 1')
+    .where(type: node_type)
     .where("(created >= #{start_time.to_i} AND created <= #{end_time.to_i}) OR (timestamp >= #{start_time.to_i}  AND timestamp <= #{end_time.to_i})")
     .order('node_revisions.timestamp DESC')
     .distinct

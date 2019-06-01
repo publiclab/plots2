@@ -10,10 +10,7 @@ $("<%= str %>").css("display","none");
     $("<%= str %>").css("display","flex");
     $("<%= str %> div").first().html("<%= @likes[capitalized_emoji_name] %>");
   <% end %>
-<% end %>
-
-<% if @is_liked %>
-  notyNotification('mint', 3000, 'success', 'topRight', 'Unreacted!');
-<% else %>
-	notyNotification('mint', 3000, 'success', 'topRight', 'Reacted!');
+  <% if @user_reactions_map.has_key? capitalized_emoji_name %>
+    $("<%= str %>").attr("data-original-title", "<%= @user_reactions_map[capitalized_emoji_name] %>");
+  <% end %>
 <% end %>

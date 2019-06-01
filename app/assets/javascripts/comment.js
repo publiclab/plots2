@@ -6,7 +6,6 @@
         $(this).find('#text-input').prop('disabled',false);
         $(this).find('#text-input').val('');
         $('#comments-container').append(xhr.responseText);
-        $('#comment-count')[0].innerHTML = parseInt($('#comment-count')[0].innerHTML, 10)+1;
         $(this).find(".btn-primary").button('reset');
         $(this).find('#preview').hide();
         $(this).find('#text-input').show();
@@ -46,8 +45,9 @@ function insertTitleSuggestionTemplate() {
   var element = $('#text-input');
   var currentText = $('#text-input').val().trim();
   var template = "\n[propose:title]Propose your title here[/propose]";
-  if(currentText.length === 0)
-  template = "[propose:title]Propose your title here[/propose]";
+  if (currentText.length === 0) { 
+    template = "[propose:title]Propose your title here[/propose]";
+  }
   var newText = currentText+template;
   element.val(newText);
 }

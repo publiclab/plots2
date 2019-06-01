@@ -122,7 +122,7 @@ class I18nTest < ActionDispatch::IntegrationTest
            status: 4
           }
       get '/dashboard'
-      assert_select 'a[class=?]', 'btn btn-default btn-xs', I18n.t('dashboard.moderate.approve')
+      assert_select 'a[class=?]', 'btn btn-outline-secondary btn-sm', I18n.t('dashboard.moderate.approve')
     end
   end
 
@@ -145,7 +145,6 @@ class I18nTest < ActionDispatch::IntegrationTest
            status: 1
           }
       get '/dashboard'
-      assert_select 'a[class=?]', 'btn btn-default btn-xs pull-right respond answer', I18n.t('dashboard._node_question.post_answer')
     end
   end
 
@@ -239,16 +238,6 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/profile/' + username + '/likes'
       assert_template 'users/likes'
       assert_select 'h3', I18n.t('users.likes.liked_by') + ' ' + username
-    end
-  end
-
-  test 'should choose i18n for user/list' do
-    available_testing_locales.each do |lang|
-      get '/change_locale/' + lang.to_s
-      follow_redirect!
-
-      get '/people'
-      assert_select 'th', I18n.t('users.list.username')
     end
   end
 
@@ -397,7 +386,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       get '/wiki/' + nodes(:organizers).title.parameterize
-      assert_select 'a', "#{I18n.t('sidebar._related.write_research_note')} " + Sanitize.clean('&raquo;')
+      assert_select 'a', I18n.t('sidebar._related.write_research_note')
     end
   end
 
