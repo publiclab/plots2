@@ -41,8 +41,10 @@
             <a
               id="visibility"
               class="fa fa-eye input-group-text"
-              aria-hidden="true"
-              style="cursor: pointer;">
+              data-toggle="tooltip"
+              data-placement="bottom"
+              title="Show Password"
+              aria-hidden="true">
             </a>
           </div>
         </div>
@@ -98,14 +100,22 @@
       $('#loginModal').modal(); // Open the login modal to allow user to login
     });
 
+    var toggleState = false;
+    var title = "Show Password";
+
     $("#visibility").on("click", function(e) {
       e.preventDefault();
       $(this).toggleClass("fa-eye-slash");
+
+      title = toggleState ? "Show Password" : "Hide Password";
+      toggleState = !toggleState;
+      $(this).tooltip('hide')
+      .attr('data-original-title', title);
+
       var type = $("#password-signup").attr("type");
       if (type == "text")
       { $("#password-signup").attr("type", "password");}
       else
       { $("#password-signup").attr("type", "text"); }
     });
-
   </script>
