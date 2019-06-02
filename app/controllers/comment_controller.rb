@@ -11,7 +11,7 @@ class CommentController < ApplicationController
                    .paginate(page: params[:page], per_page: 30)
 
     @normal_comments = comments.where('comments.status = 1')
-    if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+    if logged_in_as(%w(admin moderator))
       @moderated_comments = comments.where('comments.status = 4')
     end
 
@@ -32,23 +32,22 @@ class CommentController < ApplicationController
         @comment.save
       end
 
-      respond_with do |format|
-        if params[:type] && params[:type] == 'question'
-          @answer_id = 0
-          format.js { render 'comments/create.js.erb' }
-        else
-          format.html do
-            if request.xhr?
-              render partial: 'notes/comment', locals: { comment: @comment }
-            else
-              tagnames = @node.tagnames.map do |tagname|
-                "<a href='/subscribe/tag/#{tagname}'>#{tagname}</a>"
-              end
-              tagnames = tagnames.join(', ')
-              tagnames = " Click to subscribe to updates on these tags or topics: " + tagnames unless tagnames.empty?
-              flash[:notice] = "Comment posted.#{tagnames}"
-              redirect_to @node.path + '#last' # to last comment
+      respond_to do |format|
+        @answer_id = 0
+        format.js do
+          render 'comments/create'
+        end
+        format.html do
+          if request.xhr?
+            render partial: 'notes/comment', locals: { comment: @comment }
+          else
+            tagnames = @node.tagnames.map do |tagname|
+              "<a href='/subscribe/tag/#{tagname}'>#{tagname}</a>"
             end
+            tagnames = tagnames.join(', ')
+            tagnames = " Click to subscribe to updates on these tags or topics: " + tagnames unless tagnames.empty?
+            flash[:notice] = "Comment posted.#{tagnames}"
+            redirect_to @node.path + '#last' # to last comment
           end
         end
       end
@@ -134,10 +133,9 @@ class CommentController < ApplicationController
 
     if current_user.uid == @node.uid ||
        @comment.uid == current_user.uid ||
-       current_user.role == 'admin' ||
-       current_user.role == 'moderator'
+       logged_in_as(%w(admin moderator))
 
-      if @comment.delete
+      if @comment.destroy
         respond_with do |format|
           if params[:type] && params[:type] == 'question'
             @answer_id = @comment.aid
@@ -166,10 +164,7 @@ class CommentController < ApplicationController
     @comment = Comment.find params[:id]
     comments_node_and_path
 
-    if @comment.uid == current_user.uid ||
-       current_user.role == 'admin' ||
-       current_user.role == 'moderator'
-
+    if @comment.uid == current_user.uid || logged_in_as(%w(admin moderator))
       node_id = @comment.nid.zero? ? @comment.answer.nid : @comment.nid
 
       @answer = Answer.new(
@@ -208,6 +203,7 @@ class CommentController < ApplicationController
     end
 
     @likes = comment.likes.group(:emoji_type).count
+    @user_reactions_map = comment.user_reactions_map
     respond_with do |format|
       format.js do
         render template: 'comments/like_comment'

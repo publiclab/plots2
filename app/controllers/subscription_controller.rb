@@ -45,7 +45,7 @@ class SubscriptionController < ApplicationController
         end
       end
 
-      case tag_selection_more_than_zero?
+      case tag_selection_more_than_zero?(params[:tid])
       when true
         respond_to do |format|
           format.html do
@@ -172,8 +172,8 @@ class SubscriptionController < ApplicationController
 
   private
 
-  def tag_selection_more_than_zero?
-    TagSelection.where(following: true, user_id: current_user.uid, tid: tag.tid).length.positive?
+  def tag_selection_more_than_zero?(tag_id)
+    TagSelection.where(following: true, user_id: current_user.uid, tid: tag_id).length.positive?
   end
 
   def set_following(value, type, id)

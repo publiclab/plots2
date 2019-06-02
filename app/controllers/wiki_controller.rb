@@ -55,10 +55,6 @@ class WikiController < ApplicationController
       end
     end
 
-    # if request.path != @node.path && request.path != '/wiki/' + @node.nid.to_s
-    #   return redirect_to @node.path, :status => :moved_permanently
-    # end
-
     return if redirect_to_node_path?(@node)
 
     if !@node.nil? # it's a place page!
@@ -145,7 +141,10 @@ class WikiController < ApplicationController
     if params[:rich]
       render template: 'editor/wikiRich'
     else
-      render template: 'wiki/edit'
+      respond_to do |format|
+        format.html { render 'wiki/edit' }
+        format.all { head :ok }
+      end
     end
   end
 
@@ -344,7 +343,7 @@ class WikiController < ApplicationController
       .group('node_revisions.nid')
       .order('node_revisions.timestamp DESC')
       .where("node.status = 1 AND node_revisions.status = 1 AND node.nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place')")
-      .sort_by(&:totalviews).reverse
+      .sort_by(&:views).reverse
     render template: 'wiki/index'
   end
 

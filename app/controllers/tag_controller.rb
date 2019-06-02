@@ -94,8 +94,6 @@ class TagController < ApplicationController
                   'contributor'
                 end
 
-    qids = Node.questions.where(status: 1).collect(&:nid)
-
     if params[:id][-1..-1] == '*' # wildcard tags
       @wildcard = true
       @tags = Tag.where('name LIKE (?)', params[:id][0..-2] + '%')
@@ -132,8 +130,15 @@ class TagController < ApplicationController
     end
     nodes = nodes.where(created: @start.to_i..@end.to_i) if @start && @end
 
-    @notes = nodes.where('node.nid NOT IN (?)', qids) if @node_type == 'note'
-    @questions = nodes.where('node.nid IN (?)', qids) if @node_type == 'questions'
+    qids = Node.questions.where(status: 1).collect(&:nid)
+    if qids.empty?
+      @notes = nodes
+      @questions = []
+    else
+      @notes = nodes.where('node.nid NOT IN (?)', qids) if @node_type == 'note'
+      @questions = nodes.where('node.nid IN (?)', qids) if @node_type == 'questions'
+    end
+
     @answered_questions = []
     @questions&.each { |question| @answered_questions << question if question.answers.any?(&:accepted) }
     @wikis = nodes if @node_type == 'wiki'
@@ -238,7 +243,7 @@ class TagController < ApplicationController
   end
 
   def blog
-    nids = Tag.find_nodes_by_type(params[:id], 'note', 20).collect(&:nid)
+    nids = Tag.find_nodes_by_type(params[:id], 'note', nil).collect(&:nid)
     @notes = Node.paginate(page: params[:page], per_page: 6)
       .where('status = 1 AND nid in (?)', nids)
       .order('nid DESC')
@@ -282,25 +287,33 @@ class TagController < ApplicationController
     node = Node.find nid
     tagnames.each do |tagname|
       # this should all be done in the model:
-
+      tagname = tagname.strip
       if Tag.exists?(tagname, nid)
         @output[:errors] << I18n.t('tag_controller.tag_already_exists')
-      elsif node.can_tag(tagname, current_user) === true || current_user.role == 'admin' # || current_user.role == "moderator"
+
+      elsif tagname.include?(":") && tagname.split(':').length < 2
+        if tagname.split(':')[0] == "barnstar" || tagname.split(':')[0] == "with"
+          @output[:errors] << I18n.t('tag_controller.cant_be_empty')
+        end
+
+      elsif node.can_tag(tagname, current_user) === true || logged_in_as(['admin'])
         saved, tag = node.add_tag(tagname.strip, current_user)
-        if tagname.split(':')[0] == "barnstar"
-          CommentMailer.notify_barnstar(current_user, node)
-          barnstar_info_link = '<a href="//' + request.host.to_s + '/wiki/barnstars">barnstar</a>'
-          node.add_comment(subject: 'barnstar',
-                           uid: current_user.uid,
-                           body: "@#{current_user.username} awards a #{barnstar_info_link} to #{node.user.name} for their awesome contribution!")
+        if tagname.include?(":") && tagname.split(':').length == 2
+          if tagname.split(':')[0] == "barnstar"
+            CommentMailer.notify_barnstar(current_user, node)
+            barnstar_info_link = '<a href="//' + request.host.to_s + '/wiki/barnstars">barnstar</a>'
+            node.add_comment(subject: 'barnstar',
+                             uid: current_user.uid,
+                             body: "@#{current_user.username} awards a #{barnstar_info_link} to #{node.user.name} for their awesome contribution!")
 
-        elsif tagname.split(':')[0] == "with"
-          user = User.find_by_username_case_insensitive(tagname.split(':')[1])
-          CommentMailer.notify_coauthor(user, node)
-          node.add_comment(subject: 'co-author',
-                           uid: current_user.uid,
-                           body: " @#{current_user.username} has marked @#{tagname.split(':')[1]} as a co-author. ")
+          elsif tagname.split(':')[0] == "with"
+            user = User.find_by_username_case_insensitive(tagname.split(':')[1])
+            CommentMailer.notify_coauthor(user, node)
+            node.add_comment(subject: 'co-author',
+                             uid: current_user.uid,
+                             body: " @#{current_user.username} has marked @#{tagname.split(':')[1]} as a co-author. ")
 
+          end
         end
 
         if saved
@@ -332,7 +345,7 @@ class TagController < ApplicationController
     node_tag = NodeTag.where(nid: params[:nid], tid: params[:tid]).first
     node = Node.where(nid: params[:nid]).first
     # only admins, mods, and tag authors can delete other peoples' tags
-    if node_tag.uid == current_user.uid || current_user.role == 'admin' || current_user.role == 'moderator' || node.uid == current_user.uid
+    if node_tag.uid == current_user.uid || logged_in_as(['admin', 'moderator']) || node.uid == current_user.uid
 
       tag = Tag.joins(:node_tag)
                    .select('term_data.name')
@@ -364,7 +377,8 @@ class TagController < ApplicationController
     if !params[:id].empty? && params[:id].length > 2
       @suggestions = []
       # filtering out tag spam by requiring tags attached to a published node
-      Tag.where('name LIKE ?', '%' + params[:id] + '%')
+      # also, we search for both "balloon mapping" and "balloon-mapping":
+      Tag.where('name LIKE ? OR name LIKE ?', '%' + params[:id] + '%', '%' + params[:id].gsub(' ', '-') + '%')
         .includes(:node)
         .references(:node)
         .where('node.status = 1')
@@ -449,7 +463,7 @@ class TagController < ApplicationController
   end
 
   def add_parent
-    if current_user.role == 'admin'
+    if logged_in_as(['admin'])
       @tag = Tag.find_by(name: params[:name])
       @tag.update_attribute('parent', params[:parent])
       if @tag.save
@@ -488,16 +502,14 @@ class TagController < ApplicationController
   end
 
   def stats
-    @time = if params[:time]
-              Time.parse(params[:time])
-            else
-              Time.now
-            end
+    @start = params[:start] ? Time.parse(params[:start].to_s) : Time.now - 1.year
+    @end = params[:end] ? Time.parse(params[:end].to_s) : Time.now
+
     @tags = Tag.where(name: params[:id])
-    @tag_notes = @tags.first.contribution_graph_making('note', 52, @time)
-    @tag_wikis = @tags.first.contribution_graph_making('page', 52, @time)
-    @tag_questions = @tags.first.graph_making(Node.questions, 52, @time)
-    @tag_comments = @tags.first.graph_making(Comment, 52, @time)
+    @tag_notes = @tags.first.contribution_graph_making('note', @start, @end)
+    @tag_wikis = @tags.first.contribution_graph_making('page', @start, @end)
+    @tag_questions = @tags.first.quiz_graph(@start, @end)
+    @tag_comments = @tags.first.comment_graph(@start, @end)
   end
 
   private

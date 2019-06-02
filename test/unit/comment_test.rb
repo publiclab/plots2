@@ -1,5 +1,11 @@
 require 'test_helper'
 class CommentTest < ActiveSupport::TestCase
+
+  def setup
+    @start = (Date.today - 1.year).to_time
+    @fin = Date.today.to_time
+  end
+
   test 'should save comment' do
     comment = Comment.new
     comment.comment = "My first thought is\n\nthat this is pretty good. **markdown** and http://link.com"
@@ -304,8 +310,18 @@ class CommentTest < ActiveSupport::TestCase
   end
 
   test 'contribution graph making' do
-    graph = Comment.contribution_graph_making
-    assert_not_nil graph
+    graph = Comment.contribution_graph_making(@start, @fin)
+    comments = Comment.where(timestamp: @start.to_i..@fin.to_i).count
+
+    assert_equal comments, graph.values.sum
     assert graph.class, Hash
+  end
+
+  test 'find email using twitter user name' do
+    require 'yaml'
+    config = YAML.load(File.read('test/fixtures/user_tags.yml'))
+    username = config["twitter3"]["data"]["info"]["nickname"]
+    email = Comment.find_email(username)
+    assert_equal email, "01namangupta@gmail.com"
   end
 end

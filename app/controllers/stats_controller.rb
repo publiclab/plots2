@@ -5,33 +5,36 @@ class StatsController < ApplicationController
       @tags[tag.tagname] = @tags[tag.tagname] || 0
       @tags[tag.tagname] += 1
     end
-    render plain: @tags.inspect, status: 200
+    @tags = @tags.group_by { |_k, v| v / 10 }
   end
 
   def range
+    flash.now[:notice] = "Data is cached and recalculated daily"
     if params[:options].present?
       params[:start] = Time.now - to_keyword(params[:options])
       params[:end] = Time.now
     end
-    @start = params[:start] ? Time.parse(params[:start].to_s) : Time.now - 1.month
-    @end = params[:end] ? Time.parse(params[:end].to_s) : Time.now
-    @notes = Node.published.select(%i(created type))
-      .where(type: 'note', created: @start.to_i..@end.to_i)
-      .count(:all)
-    @wikis = Revision.select(:timestamp)
-      .where(timestamp: @start.to_i..@end.to_i)
-      .count - @notes # because notes each have one revision
-    @people = User.where(created_at: @start..@end).where(status: 1)
-      .count
-    @answers = Answer.where(created_at: @start..@end)
-      .count
-    @comments = Comment.select(:timestamp)
-      .where(timestamp: @start.to_i..@end.to_i)
-      .count
-    @questions = Node.published.questions.where(created: @start.to_i..@end.to_i)
-      .count
-    @contributors = User.contributor_count_for(@start, @end)
-    @popular_tags = Tag.nodes_frequency(@start, @end)
+    @start = start
+    @end = fin
+    Rails.cache.fetch("range-#{@start.to_i}-#{@end.to_i}", expires_in: 1.day) do
+      @notes = Node.published.select(%i(created type))
+        .where(type: 'note', created: @start.to_i..@end.to_i)
+        .size
+      @wikis = Revision.published.select(:timestamp)
+        .where(timestamp: @start.to_i..@end.to_i)
+        .size - @notes # because notes each have one revision
+      @people = User.where(created_at: @start..@end).where(status: 1)
+        .size
+      @answers = Answer.where(created_at: @start..@end)
+        .size
+      @comments = Comment.select(:status, :timestamp)
+        .where(status: 1, timestamp: @start.to_i..@end.to_i)
+        .size
+      @questions = Node.published.questions.where(created: @start.to_i..@end.to_i)
+        .size
+      @contributors = User.contributor_count_for(@start, @end)
+      @popular_tags = Tag.nodes_frequency(@start, @end)
+    end
   end
 
   def index
@@ -41,105 +44,109 @@ class StatsController < ApplicationController
     end
     @title = 'Stats'
 
-    @weekly_notes = Node.past_week.select(:type).where(type: 'note').count(:all)
-    @weekly_wikis = Revision.past_week.count
-    @weekly_questions = Node.questions.past_week.count(:all).count
-    @weekly_answers = Answer.past_week.count
-    @weekly_members = User.past_week.where(status: 1).count
-    @monthly_notes = Node.past_month.select(:type).where(type: 'note').count(:all)
-    @monthly_wikis = Revision.past_month.count
-    @monthly_members = User.past_month.where(status: 1).count
-    @monthly_questions = Node.questions.past_month.count(:all).count
-    @monthly_answers = Answer.past_month.count
+    flash.now[:notice] = "Data is cached and recalculated daily"
+    Rails.cache.fetch("stats-index-#{@start.to_i}-#{@end.to_i}", expires_in: 1.day) do
+      @weekly_notes = Node.past_week.select(:type).where(type: 'note').size
+      @weekly_wikis = Revision.past_week.size
+      @weekly_questions = Node.questions.past_week.size
+      @weekly_answers = Answer.past_week.size
+      @weekly_members = User.past_week.where(status: 1).size
+      @monthly_notes = Node.past_month.select(:type).where(type: 'note').size
+      @monthly_wikis = Revision.past_month.size
+      @monthly_members = User.past_month.where(status: 1).size
+      @monthly_questions = Node.questions.past_month.size
+      @monthly_answers = Answer.past_month.size
 
-    @notes_per_week_past_year = Node.past_year.select(:type).where(type: 'note').count(:all) / 52.0
-    @edits_per_week_past_year = Revision.past_year.count / 52.0
+      @notes_per_week_period = Node.frequency('note', @start, @end).round(2)
+      @edits_per_week_period = Revision.frequency(@start, @end).round(2)
 
-    @graph_notes = Node.contribution_graph_making('note', @start, @end)
-    @graph_wikis = Node.contribution_graph_making('page', @start, @end)
-    @graph_comments = Comment.contribution_graph_making(@start, @end)
+      @graph_notes = Node.contribution_graph_making('note', @start, @end)
+      @graph_wikis = Node.contribution_graph_making('page', @start, @end)
+      @graph_comments = Comment.contribution_graph_making(@start, @end)
 
-    users = []
-    nids = []
-    Node.published.where(type: 'note').each do |note|
-      unless note.uid == 674 || note.uid == 671
-        users << note.uid
-        nids << note.nid
+      users = []
+      nids = []
+      Node.published.where(type: 'note').each do |note|
+        unless note.uid == 674 || note.uid == 671
+          users << note.uid
+          nids << note.nid
+        end
       end
-    end
 
-    @all_notes = nids.uniq.length
-    @all_contributors = users.uniq.length
+      @all_notes = nids.uniq.length
+      @all_contributors = users.uniq.length
+    end
     Rails.cache.fetch("total-contributors-all-time", expires_in: 1.weeks) do
       @all_time_contributors = User.count_all_time_contributor
     end
   end
 
   def notes
-    time
-    export_as_json(@start, @end, 'note')
+    export_as_json('note')
   end
 
   def wikis
-    time
-    export_as_json(@start, @end, 'page')
+    export_as_json('page')
   end
 
   def users
-    time
-    data = User.where(created_at: @start..@end).where(status: 1)
-    respond_to do |format|
-      format.csv { send_data data.to_csv }
-      format.json { send_data data.to_json, type: 'application/json; header=present', disposition: "attachment; filename=user.json" }
-    end
+    data = User.where(created_at: start..fin)
+          .where(status: 1)
+         .select(:username, :role, :bio, :photo_file_name, :id, :created_at)
+    format(data, 'users')
   end
 
   def questions
-    time
-    data = Node.published.questions.where(created: @start.to_i..@end.to_i).all
-    respond_to do |format|
-      format.csv { send_data data.to_csv }
-      format.json { send_data data.to_json, type: 'application/json; header=present', disposition: "attachment; filename=questions.json" }
-    end
+    data = Node.published.questions.where(created: start.to_i..fin.to_i).all
+    format(data, 'questions')
   end
 
   def answers
-    time
-    data = Answer.where(created_at: @start..@end).all
-    respond_to do |format|
-      format.csv { send_data data.to_csv }
-      format.json { send_data data.to_json, type: 'application/json; header=present', disposition: "attachment; filename=answers.json" }
-    end
+    data = Answer.where(created_at: start..fin).all
+    format(data, 'answers')
   end
 
   def comments
-    time
-    data = Comment.select(%i(status timestamp)).where(status: 1, timestamp: @start.to_i...@end.to_i).all
-    respond_to do |format|
-      format.csv { send_data data.to_csv }
-      format.json { send_data data.to_json, type: 'application/json; header=present', disposition: "attachment; filename=comment.json" }
-    end
+    data = Comment.where(status: 1, timestamp: start.to_i...fin.to_i).all
+    format(data, 'comment')
   end
 
-  def export_as_json(starting, ending, type)
-    data = Node.published.select(%i(created type))
-      .where(type: type, created: starting.to_i..ending.to_i)
+  def tags
+    data = Tag.select(:tid, :name, :parent, :count).all
+    format(data, 'tag')
+  end
+
+  def node_tags
+    data = NodeTag.select(:tid, :nid, :uid).where(date: start.to_i...fin.to_i).all
+    format(data, 'node_tag')
+  end
+
+  def export_as_json(type)
+    data = Node.published
+      .where(type: type, created: start.to_i..fin.to_i)
       .all
-    respond_to do |format|
-      format.csv { send_data data.to_csv }
-      format.json { send_data data.to_json, type: 'application/json; header=present', disposition: "attachment; filename=#{type}.json" }
-    end
+    format(data, type)
   end
 
   private
 
-  def time
-    @start = params[:start] ? Time.parse(params[:start].to_s) : Time.now - 1.month
-    @end = params[:end] ? Time.parse(params[:end].to_s) : Time.now
+  def start
+    params[:start] ? Time.parse(params[:start].to_s) : Time.now - 3.months
+  end
+
+  def fin
+    params[:end] ? Time.parse(params[:end].to_s) : Time.now
   end
 
   def to_keyword(param)
-    str =  param.split.second
+    str = param.split.second
     1.send(str.downcase)
+  end
+
+  def format(data, name)
+    respond_to do |format|
+      format.csv { send_data data.to_csv, type: 'text/csv' }
+      format.json { send_data data.to_json, type: 'application/json; header=present', disposition: "attachment; filename=#{name}.json" }
+    end
   end
 end

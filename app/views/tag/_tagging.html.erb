@@ -3,7 +3,7 @@
 <!-- This is the sidebar tagging display, also renders Subscribe button for multiple subscription -->
 <div>
   <h1 style="display: inline-block; margin-right: 20px;">Tags</h1>
-  <% if @node && !@node.node_tags.empty? && ((current_user && @node.liked_by(current_user.uid)) || !current_user) %>
+  <% if @node && !@node.node_tags.empty? %>
     <%= render partial: 'tag/subscribe_button', locals:{tags: @node.node_tags} %>
   <% end %>
 </div>
@@ -14,12 +14,12 @@
   <%= render partial: 'tag/replication' %>
 
   <span id="tags">
-  <%= render partial: 'tag/tags', locals: { power_tag: true, label_name: 'label-default', tags: @node.node_tags } %>
-  <%= render partial: 'tag/tags', locals: { power_tag: false, label_name: 'label-primary', tags: @node.node_tags } %>
+  <%= render partial: 'tag/tags', locals: { power_tag: true, badge_name: 'badge-secondary', tags: @node.node_tags } %>
+  <%= render partial: 'tag/tags', locals: { power_tag: false, badge_name: 'badge-primary', tags: @node.node_tags } %>
   </span>
 <% else %>
   <span id="tags">
-  <%= render partial: 'tag/tags', locals: { power_tag: false, label_name: 'label-primary', tags: user.user_tags, user: user } %>
+  <%= render partial: 'tag/tags', locals: { power_tag: false, badge_name: 'badge-primary', tags: user.user_tags, user: user } %>
   </span>
 <% end %>
 
@@ -27,7 +27,7 @@
 $(function () {
   $('#tags [data-toggle="tooltip"]').tooltip()
 })
-  
+
 var pops = $("[data-toggle=popover]");
 $(".label").on("click", function(e){
     if(e.target === this){
@@ -49,17 +49,19 @@ $(".label").on("click", function(e){
 
 <% parent ||= nil %>
 
-<% if current_user && (parent != :profile || (current_user.id == user.id || current_user.role == "admin")) %>
+<% if current_user && (parent != :profile || (current_user.id == user.id || logged_in_as(['admin']))) %>
 <% url = url || "/tag/create/" + @node.id.to_s %>
 
 <form id="tagform" class="form" data-remote="true" action="<%= url %>">
   <div class="control-group">
-    <input name="remote" type="hidden" value="true" />
+    <input class="form-control" name="remote" type="hidden" value="true" />
     <div class="input-group">
-      <span class="input-group-addon"><i class="fa fa-tags"></i></span>
+        <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fa fa-tags"></i></span>
+        </div>
       <input autocomplete="off" class="tag-input form-control" name="name" type="text" placeholder="<%= t('tag._tagging.enter_tags') %>" data-provide="typeahead" />
-      <div class="input-group-btn">
-        <a class="btn btn-default blurred-location-input" rel="tooltip" title="Link with a location">
+      <div class="input-group-append">
+        <a class="btn btn-outline-secondary blurred-location-input" rel="tooltip" title="Link with a location">
           <i class="fa fa-map-marker"></i>
         </a>
         <%= render partial: 'tag/advanced_tagging' %>

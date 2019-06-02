@@ -8,6 +8,14 @@ module NodeShared
   def liked_by(uid)
     likers.collect(&:uid).include?(uid)
   end
+  
+  def self.button(body)
+    body.gsub(/(?<![\>`])(\<p\>)?\[button\:(.+)\:(\S+)\]/) do |_tagname|
+      btnText = Regexp.last_match(2)
+      btnHref = Regexp.last_match(3)
+      return '<a class="btn btn-primary inline-button-shortcode" href="' + btnHref + '">' + btnText + '</a>'
+    end
+  end
 
   def self.notes_thumbnail_grid(body, _page = 1)
     body.gsub(/(?<![\>`])(\<p\>)?\[notes\:grid\:(\S+)\]/) do |_tagname|
@@ -18,11 +26,14 @@ module NodeShared
         tagname = tagname.split('!').first
       end
 
-      nodes = Node.where(status: 1, type: 'note')
+      pinned = pinned_nodes(tagname)
+        .where("node.type = 'note'")
+      nodes = pinned + Node.where(status: 1, type: 'note')
                   .includes(:revision, :tag)
                   .references(:term_data, :node_revisions)
                   .where('term_data.name = ?', tagname)
                   .order('node_revisions.timestamp DESC')
+                  .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
 
       if exclude.present?
         exclude = Node.where(status: 1, type: 'note')
@@ -75,11 +86,14 @@ module NodeShared
         tagname = tagname.split('!').first
       end
 
-      nodes = Node.where(status: 1, type: 'note')
+      pinned = pinned_nodes(tagname)
+        .where("node.type = 'note'")
+      nodes = pinned + Node.where(status: 1, type: 'note')
                   .includes(:revision, :tag)
                   .references(:term_data, :node_revisions)
                   .where('term_data.name = ?', tagname)
                   .order('node_revisions.timestamp DESC')
+                  .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
 
       if exclude.present?
         exclude = Node.where(status: 1, type: 'note')
@@ -113,11 +127,15 @@ module NodeShared
         tagname = tagname.split('!').first
       end
 
-      nodes = Node.where(status: 1).where("node.type = 'page' OR node.type = 'note'")
+      pinned = pinned_nodes(tagname)
+        .where("node.type = 'page' OR node.type = 'note'")
+      nodes = pinned + Node.where(status: 1)
+                  .where("node.type = 'page' OR node.type = 'note'")
                   .includes(:revision, :tag)
                   .references(:term_data, :node_revisions)
                   .where('term_data.name = ?', tagname)
                   .order('node_revisions.timestamp DESC')
+                  .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
 
       if exclude.present?
         exclude = Node.where(status: 1)
@@ -151,11 +169,15 @@ module NodeShared
         exclude = tagname.split('!') - [tagname.split('!').first]
         tagname = tagname.split('!').first
       end
-      nodes = Node.where(status: 1, type: 'note')
+      pinned = pinned_nodes("question:" + tagname)
+        .where("node.type = 'note'")
+      nodes = pinned + Node.where(status: 1, type: 'note')
                   .includes(:revision, :tag)
                   .references(:node_revisions, :term_data)
                   .where('term_data.name = ?', "question:#{tagname}")
                   .order('node_revisions.timestamp DESC')
+                  .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
+
       if exclude.present?
         exclude = Node.where(status: 1, type: 'note')
                   .includes(:revision, :tag)
@@ -187,8 +209,12 @@ module NodeShared
         exclude = tagname.split('!') - [tagname.split('!').first]
         tagname = tagname.split('!').first
       end
-      nodes = Node.activities(tagname)
+      pinned = pinned_nodes("activity:" + tagname)
+        .where("node.type = 'note'")
+      nodes = pinned + Node.activities(tagname)
                   .order('node.cached_likes DESC')
+                  .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
+
       if exclude.present?
         exclude = Node.where(status: 1, type: 'note')
                   .includes(:revision, :tag)
@@ -220,8 +246,12 @@ module NodeShared
         exclude = tagname.split('!') - [tagname.split('!').first]
         tagname = tagname.split('!').first
       end
-      nodes = Node.upgrades(tagname)
+      pinned = pinned_nodes("upgrade:" + tagname)
+        .where("node.type = 'note'")
+      nodes = pinned + Node.upgrades(tagname)
                   .order('node.cached_likes DESC')
+                  .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
+
       if exclude.present?
         exclude = Node.where(status: 1, type: 'note')
                   .includes(:revision, :tag)
@@ -349,11 +379,14 @@ module NodeShared
         tagname = tagname.split('!').first
       end
 
-      nodes = Node.where(status: 1, type: 'page')
+      pinned = pinned_nodes(tagname)
+        .where("node.type = 'page'")
+      nodes = pinned + Node.where(status: 1, type: 'page')
                   .includes(:revision, :tag)
                   .references(:term_data, :node_revisions)
                   .where('term_data.name = ?', tagname)
                   .order('node_revisions.timestamp DESC')
+                  .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
 
       if exclude.present?
         exclude = Node.where(status: 1, type: 'page')
@@ -377,5 +410,12 @@ module NodeShared
                                    })
       output
     end
-   end
+  end
+
+  def self.pinned_nodes(tagname)
+    Node.where(status: 1)
+        .includes(:revision, :tag)
+        .references(:term_data, :node_revisions)
+        .where('term_data.name = ?', "pin:#{tagname}")
+  end
 end

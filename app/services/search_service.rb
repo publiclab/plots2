@@ -24,6 +24,16 @@ class SearchService
       questions: questions }
   end
 
+  
+  # Run a search in any of the associated systems for references that contain the search string
+  def search_content(query, limit)
+    nodes = search_nodes(query)
+    tags = search_tags(query, limit)
+
+    { notes: nodes,
+      tags: tags }
+  end
+
   # Search profiles for matching text with optional order_by=recent param and
   # sorted direction DESC by default
 
@@ -43,6 +53,10 @@ class SearchService
       end
 
     user_scope.limit(search_criteria.limit)
+  end
+
+  def search_nodes(input, limit = 25, order = :natural, type = :boolean)
+    Node.search(query: input, order: order, type: type, limit: limit)
   end
 
   def search_notes(input, limit = 25, order = :natural, type = :boolean)
@@ -224,9 +238,8 @@ class SearchService
             elsif ActiveRecord::Base.connection.adapter_name == 'Mysql2'
               type == 'username' ? User.search_by_username(query).where('rusers.status = ?', 1) : User.search(query).where('rusers.status = ?', 1)
             else
-              User.where('username LIKE ? AND rusers.status = 1', '%' + query + '%')
+              User.where('username LIKE ? OR username = ? AND rusers.status = 1', '%' + query + '%', query)
             end
-
     users.limit(limit)
   end
 end

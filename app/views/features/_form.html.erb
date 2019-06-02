@@ -2,9 +2,9 @@
 
 <div class="form-group">
 <% if @node %>
-  <input tabindex="1" name="title" type="text" class="col-md-9 form-control" id="title" value="<%= @node.title %>">
+  <input tabindex="1" name="title" type="text" class="col-lg-9 form-control" id="title" value="<%= @node.title %>">
 <% else %>
-  <input tabindex="1" name="title" type="text" class="col-md-9 form-control" id="title" value="<%= params[:id] %>" placeholder="Title">
+  <input tabindex="1" name="title" type="text" class="col-lg-9 form-control" id="title" value="<%= params[:id] %>" placeholder="Title">
 <% end %>
 </div>
 
@@ -23,5 +23,5 @@
 
 <div>
   <input type="submit" id="publish" tabindex="5" class="publish btn btn-primary btn-lg" value="Save" />
-  <a tabindex="6" data-previewing-text="Previewing (click to edit)" class="btn btn-default btn-lg preview-btn" onClick="$E.toggle_preview()">Preview</a>
+  <a tabindex="6" data-previewing-text="Previewing (click to edit)" class="btn btn-outline-secondary btn-lg preview-btn" onClick="$E.toggle_preview()">Preview</a>
 </div>

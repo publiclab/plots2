@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_03_180731) do
+ActiveRecord::Schema.define(version: 2019_04_18_230000) do
 
   create_table "answer_selections", force: true do |t|
     t.integer "user_id"
@@ -234,7 +234,6 @@ ActiveRecord::Schema.define(version: 2019_03_03_180731) do
     t.string  "path"
     t.integer "main_image_id"
     t.string  "slug"
-    t.integer "legacy_views",                           default: 0
     t.integer "views",                                  default: 0
     t.decimal "latitude",                               precision: 20, scale: 17
     t.decimal "longitude",                              precision: 20, scale: 17
@@ -404,36 +403,5 @@ ActiveRecord::Schema.define(version: 2019_03_03_180731) do
     t.datetime "updated_at", null: false
     t.text "data"
   end
-
-  create_table "users", primary_key: "uid", force: true do |t|
-    t.string  "name",             limit: 60,                                   default: "",  null: false
-    t.string  "pass",             limit: 32,                                   default: "",  null: false
-    t.string  "mail",             limit: 64,                                   default: ""
-    t.integer "mode",             limit: 1,                                    default: 0,   null: false
-    t.integer "sort",             limit: 1,                                    default: 0
-    t.integer "threshold",        limit: 1,                                    default: 0
-    t.string  "theme",                                                         default: "",  null: false
-    t.string  "signature",                                                     default: "",  null: false
-    t.integer "signature_format", limit: 2,                                    default: 0,   null: false
-    t.integer "created",                                                       default: 0,   null: false
-    t.integer "access",                                                        default: 0,   null: false
-    t.integer "login",                                                         default: 0,   null: false
-    t.integer "status",           limit: 1,                                    default: 0,   null: false
-    t.string  "timezone",         limit: 8
-    t.string  "language",         limit: 12,                                   default: "",  null: false
-    t.string  "picture",                                                       default: "",  null: false
-    t.string  "init",             limit: 64,                                   default: ""
-    t.text    "data",             limit: 2147483647
-    t.integer "timezone_id",                                                   default: 0,   null: false
-    t.string  "timezone_name",    limit: 50,                                   default: "",  null: false
-    t.decimal "lat",                                 precision: 20, scale: 10, default: 0.0
-    t.decimal "lon",                                 precision: 20, scale: 10, default: 0.0
-  end
-
-  add_index "users", ["access"], name: "index_users_access", using: :btree
-  add_index "users", ["created"], name: "index_users_created", using: :btree
-  add_index "users", ["mail"], name: "index_users_mail", using: :btree
-  add_index "users", ["name"], name: "index_users_name", using: :btree
-  add_index "users", ["uid"], name: "index_users_uid", using: :btree
 
 end
