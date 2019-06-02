@@ -21,7 +21,7 @@
 <script src="/lib/jquery-file-upload/js/jquery.fileupload.js"></script>
 
 <script src="/lib/publiclab-editor/dist/PublicLab.Editor.js"></script>
-<div align="center">
+
 <div class="alert alert-success">This is the new rich Questions form. <a href="/questions/new?legacy=true">Click here for the legacy form</a>.</div>
 
 <div class="pl-editor">
@@ -116,7 +116,7 @@
     </div>
   </div>
 </div>
-</div>
+
 <style>
   .ple-module {
     border-top: none;
@@ -173,16 +173,7 @@
         suggestRelated: true,
         fetchRelated: debounce(function(show) {
           $.getJSON("/api/srch/notes?query=" + editor.titleModule.value(), function(response) {
-            /* API provides:
-            {"items":[{
-              "doc_id":14022,
-              "doc_type":"file",
-              "doc_url":"/notes/liz/03-15-2017/host-a-balloon-mapping-workshop",
-              "doc_title":"Host a balloon mapping workshop",
-              "docScore":0}
-            ]}
-            */
-            // But we need: [{ id: 1, title: 'A related post',       url: '/', author: 'eustatic'}, ... ]
+            
             var formatted = [];
             if (response['items']) {
               response['items'].forEach(function(item) {
