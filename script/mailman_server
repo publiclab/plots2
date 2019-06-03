@@ -23,8 +23,10 @@ Mailman::Application.run do
   # routes are written here
   # route for mail having node with id in their subject will only be accepted for processing
   default do
-  	begin
+    begin
       retries ||= 0
+      # do something with the database that does not fetch mails yet (let's try to ensure we have a MySQL connection first)
+      puts Comment.last.inspect
       Comment.receive_mail(message)
     rescue Exception => e
       Mailman.logger.error "Exception occurred while receiving message:\n#{message}"
