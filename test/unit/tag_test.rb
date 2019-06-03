@@ -8,6 +8,10 @@ class TagTest < ActiveSupport::TestCase
   test 'create a tag' do
     tag = Tag.new(name: 'stick-mapping')
     assert tag.save!
+    assert tag.nid
+    assert tag.id
+    assert_equal "/stick-mapping", tag.path
+    assert_equal "stick-mapping", tag.title
   end
 
   test 'tag nodes' do
