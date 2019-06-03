@@ -66,8 +66,8 @@ class Tag < ApplicationRecord
     hash.sort_by { |_, v| v }.reverse.first(10).to_h
   end
 
-  def belongs_to(current_user, _nid)
-    node_tag = node_tag.find_by(nid: _nid)
+  def belongs_to(current_user, node_id)
+    node_tag = node_tag.find_by(nid: node_id)
     node_tag && node_tag.uid == current_user.uid || node_tag.node.uid == current_user.uid
   end
 
