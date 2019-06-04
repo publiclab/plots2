@@ -981,9 +981,9 @@ cwise-compiler@^1.0.0, cwise-compiler@^1.1.2:
   dependencies:
     uniq "^1.0.0"
 
-cytoscape@^3.6.2:
-  version "3.6.2"
-  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.6.2.tgz#bd57944bd2eaccd870e017bf82d2163a73112db5"
+cytoscape@^3.7.0:
+  version "3.7.0"
+  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.7.0.tgz#f8000ca28dcc0f515b4ad691197cf3968f92bd2e"
   dependencies:
     heap "^0.2.6"
     lodash.debounce "^4.0.8"
