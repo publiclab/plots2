@@ -40,8 +40,9 @@
                 <a class="ellipsis" data-toggle="dropdown">&nbsp<i class="fa fa-ellipsis-v" style="color : #666; font-size:15px;"></i></a>
                 <div class="dropdown-menu" style = "font-size:10px; ">
                     <a class="dropdown-item">Joined <%= distance_of_time_in_words(user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></a>
-                    <a class="dropdown-item"><%= user.note_count %> Research Notes</a>
+                    <a class="dropdown-item" href='/notes/author/<%= user.name %>'><%= user.note_count %> Research Notes</a>
                     <a class="dropdown-item"><%= user.nodes.count %> Wiki Edits</a>
+                    <a class="dropdown-item" href="/profile/<%= user.username %>" style="border-style: ridge;">Read More...</a>
                     <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") %>
                       <% if user.status == 0 %>
                         <i class='fa fa-ban' style="color:#a00;font-size:10px"></i> <%= t('users.list.banned') %>
@@ -52,8 +53,8 @@
                     <% end %>
                   </div>
                 <div class="sub-info">
-                  <div>Active <%= t = user.revisions.order(timestamp: :desc).first.try(:created_at);time_ago_in_words(t) if (t) %> ago</div>
-                  <span id="tags">
+                  <div style="padding-bottom:6px;">Active <%= t = user.revisions.order(timestamp: :desc).first.try(:created_at);time_ago_in_words(t) if (t) %> ago</div>
+                  <span id="tags" style="font-size:11px;">
                   <% tags = Tag.sort_according_to_followers(user.tags,"desc") %>
                   <% tags[0..2].each do |tag| %>
                       <span id="tag_<%= tag.id %>" style=""><a class="badge badge-primary mb-1" style="color: white;" href="/tag/<%= tag.name %>"><%= tag.name %></a></span>
@@ -98,7 +99,7 @@ h3, h2, h5 {
   margin-bottom:0.1em;
   margin-right: 0.1em;
   margin-left: 0.1em;
-  padding: 0.8em;
+  padding: 0.5em;
 }
 
 .profile-image {
