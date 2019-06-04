@@ -686,22 +686,11 @@ class TagControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test 'index should not have powertags for non admin' do
-    # Moderator
-    UserSession.create(users(:moderator))
+  test 'index should have powertags only if specified' do
     get :index
     assert_equal 0, assigns(:tags).where("name LIKE ?", "%:%").length
 
-    # Basic
-    UserSession.create(users(:bob))
-    get :index
-    assert_equal 0, assigns(:tags).where("name LIKE ?", "%:%").length
-  end
-
-  test 'index should have powertags for admin' do
-    UserSession.create(users(:admin))
-
-    get :index
+    get :index, params: { :powertags => 'true' }
     assert_not_equal 0, assigns(:tags).where("name LIKE ?", "%:%").length
   end
 end
