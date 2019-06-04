@@ -86,6 +86,7 @@ class SearchService
       .where('node.status = 1')
       .limit(limit).each do |tag|
       suggestions << tag.name.downcase
+    end
     suggestions
   end
 
