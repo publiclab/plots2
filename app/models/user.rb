@@ -58,7 +58,8 @@ class User < ActiveRecord::Base
   has_many :comments, foreign_key: :uid
 
   validates_with UniqueUsernameValidator, on: :create
-  validates_format_of :username, with: /\A[A-Za-z\d_\-]+\z/
+  validates_format_of :username, with: /\A[A-Za-z\d_\-]+\z/,
+                      :message "can only consist of alphabets, numbers, underscore '_', and hyphen '-'."
 
   before_save :set_token
 
