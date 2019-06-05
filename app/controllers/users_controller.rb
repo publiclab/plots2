@@ -326,6 +326,7 @@ class UsersController < ApplicationController
     @user.photo = params[:photo]
     @user.photo.destroy
     @user.save!
+    flash[:notice] = "Profile picture deleted!"
     redirect_to "/profile/edit"
   end
 

@@ -203,6 +203,13 @@ class UsersControllerTest < ActionController::TestCase
     assert_equal User.find(user.id).bio, 'Hello, there!'
   end
 
+  test 'deleting profile picture' do
+    user = users(:bob)
+    UserSession.create(user)
+    delete :delete, params: {photo: user.photo }
+    assert_equal "Profile picture deleted!"
+  end
+
   test 'should redirect edit when not logged in' do
     user = users(:bob)
     get :edit, params: { id: user.name }
