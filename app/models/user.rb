@@ -59,7 +59,7 @@ class User < ActiveRecord::Base
 
   validates_with UniqueUsernameValidator, on: :create
   validates_format_of :username, with: /\A[A-Za-z\d_\-]+\z/,
-                      :message => "can only consist of alphabets, numbers, underscore '_', and hyphen '-'."
+                      message: "can only consist of alphabets, numbers, underscore '_', and hyphen '-'."
 
   before_save :set_token
 
