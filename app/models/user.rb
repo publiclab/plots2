@@ -360,11 +360,11 @@ class User < ActiveRecord::Base
 
   class << self
     def search(query)
-      User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', query + '*')
+      User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', query + '*').or(User.where(username: query))
     end
 
     def search_by_username(query)
-      User.where('MATCH(username) AGAINST(? IN BOOLEAN MODE)', query + '*')
+      User.where('MATCH(username) AGAINST(? IN BOOLEAN MODE)', query + '*').or(User.where(username: query))
     end
 
     def validate_token(token)
