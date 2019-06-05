@@ -152,3 +152,23 @@ Take a look at this test [search_service_full_text_search_test.rb](https://githu
 
 This way we don't have errors either using SQLite3 or MySQL on development and tests
 environments.
+
+## Testing your work with Unstable
+
+### What is _unstable_? 
+
+_unstable_ is one test server, which can be used by any contributor with special permission for testing their work(PRs). One needs to push their commits to _unstable_ [branch](https://github.com/publiclab/plots2/tree/unstable) and they will be deployed at https://unstable.publiclab.org/ after building. 
+
+**Environment:** Test environment
+**Database:** MySQL
+**Data:** Data present at https://unstable.publiclab.org is updated occasionally using the Production database, so it has good amount of data for testing. 
+**Email testing:** _unstable_ server can't send emails so Email related features can't be tested.  
+
+### Pushing on `unstable`
+
+1. Push using: `git push -f https://github.com/publiclab/plots2.git HEAD:unstable`.<br><br>**Note:** If you get this message - `remote: Permission to publiclab/plots2.git denied to <username>` then you don't have permission to push to _unstable_ branch.
+But, don't worry, feel free to ask in https://gitter.im/publiclab/publiclab and someone else with push permission to unstable will push your work(PR/branch) for you.  
+2. See build Progress at https://jenkins.laboratoriopublico.org/job/Plots-Unstable/. It takes 8-15 mins for build to complete. 
+3. Test website: https://unstable.publiclab.org/. 
+
+Also, if your PR is merged into plots2/master, then your changes will get deployed to https://stable.publiclab.org, so feel free to test your work there if your PR is merged.
