@@ -1,6 +1,8 @@
+<div class="col-md-2">
 <%= render :partial => "search/nav", locals: { section: "search-all" } %>
-
-<div class="container">
+</div> 
+<div class="col-md-10">
+  <div class="container">
   <% if  @nodes.all?{|k,v| v.blank?} %>
     <h4>
       No Content found for <%= params[:query] %> :-(
@@ -17,7 +19,6 @@
             <th> Posted by </th>
             <th> Views</th>
         </tr>
-
         <% @notes.each_with_index do |note, index| %>
           <% if index < 9 %>
             <tr>
@@ -27,7 +28,6 @@
             </tr>
           <% end %>
         <% end %>
-
         <% if (@notes.count > 9) %>
           <tr>
             <td>
@@ -35,13 +35,13 @@
             </td>
           </tr>
         <% end %>
-
       </table>
     <% end %>
   <% end %><br>
-  
+        
   <%= render partial: 'wikis_blank' %><br>
   <%= render partial: 'questions_blank' %><br>
   <%= render partial: 'profiles_blank' %><br>
   <%= render partial: 'tags_blank' %>
+  </div>
 </div>

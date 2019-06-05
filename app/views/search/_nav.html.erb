@@ -1,5 +1,11 @@
 <div class="list-group">
-  <ul class="nav nav-pills">
+  <ul class="nav nav-pills flex-column">
     <%= create_nav_links(section, url_encode(params[:query])) %>
   </ul>
 </div>
+<style>
+.nav-pills li {
+    margin: 5px;
+    max-width: 100%; 
+} 
+</style>
