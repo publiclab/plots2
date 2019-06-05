@@ -88,6 +88,28 @@ class CommentControllerTest < ActionController::TestCase
     # assert_equal 1, css_select(".comment table").size # test inline grid rendering
   end
 
+  test 'should create a replied comment on a wiki page' do
+    UserSession.create(users(:bob))
+    initial_count = comments(:wiki_comment).replied_comments.count
+    assert_difference 'Comment.count' do
+      post :create, params: { id: nodes(:wiki_page).nid, body: '[notes:awesome]', reply_to: comments(:wiki_comment) }, xhr: true
+    end
+    assert_response :success
+    assert_not_nil :comment
+    assert_equal (initial_count+1), comments(:wiki_comment).replied_comments.count
+  end
+
+  test 'should create a replied comment on a question page' do
+    UserSession.create(users(:bob))
+    initial_count = comments(:question).replied_comments.count
+    assert_difference 'Comment.count' do
+      post :create, params: { id: nodes(:question).nid, body: '[notes:awesome]', reply_to: comments(:question) }, xhr: true
+    end
+    assert_response :success
+    assert_not_nil :comment
+    assert_equal (initial_count+1), comments(:question).replied_comments.count
+  end
+
   test 'should show error if wiki comment not saved' do
     UserSession.create(users(:bob))
     assert_no_difference 'Comment.count' do
