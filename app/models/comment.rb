@@ -259,9 +259,13 @@ class Comment < ApplicationRecord
     end
   end
 
+  def self.is_autoreply(mail)
+    mail.headers["Auto-Submitted"] != "no" || mail.headers["X-Autoreply"] || mail.headers["X-Autorespond"] || mail.headers["Precedence"] == "auto_reply"
+  end
+
   def self.add_comment(mail, node_id, user)
     node = Node.where(nid: node_id).first
-    if node && mail&.html_part
+    if node && mail&.html_part && !is_autoreply(mail)
       mail_doc = Nokogiri::HTML(mail&.html_part&.body&.decoded) # To parse the mail to extract comment content and reply content
       domain = get_domain mail.from.first
       content = if domain == "gmail"
