@@ -166,9 +166,10 @@ _unstable_ is one test server, which can be used by any contributor with special
 
 ### Pushing on `unstable`
 
-1. Push using: `git push -f https://github.com/publiclab/plots2.git HEAD:unstable`.<br><br>**Note:** If you get this message - `remote: Permission to publiclab/plots2.git denied to <username>` then you don't have permission to push to _unstable_ branch.
+1. Drop a message in the [chatroom](https://gitter.im/publiclab/publiclab) that you are pushing to _unstable_, as other members also use it for testing their work so you don't want to shock them by pushing your work over their. After dropping the message, wait for 5 mins, and if no one mention that they are using the branch, then go to step 2.
+2. Push using: `git push -f https://github.com/publiclab/plots2.git HEAD:unstable`.<br><br>**Note:** If you get this message - `remote: Permission to publiclab/plots2.git denied to <username>` then you don't have permission to push to _unstable_ branch.
 But, don't worry, feel free to ask in https://gitter.im/publiclab/publiclab and someone else with push permission to unstable will push your work(PR/branch) for you.  
-2. See build Progress at https://jenkins.laboratoriopublico.org/job/Plots-Unstable/. It takes 8-15 mins for build to complete. 
-3. Test website: https://unstable.publiclab.org/. 
+3. See build Progress at https://jenkins.laboratoriopublico.org/job/Plots-Unstable/. It takes 8-15 mins for build to complete. 
+4. Test website: https://unstable.publiclab.org/. 
 
 Also, if your PR is merged into plots2/master, then your changes will get deployed to https://stable.publiclab.org, so feel free to test your work there if your PR is merged.
