@@ -11,7 +11,6 @@ class AnswersController < ApplicationController
     )
     respond_to do |format|
       if current_user && @answer.save
-        @answer.answer_notify(current_user)
         format.html { redirect_to @node.path(:question), notice: 'Answer successfully posted' }
         format.js {}
       end
@@ -57,7 +56,6 @@ class AnswersController < ApplicationController
           @answer.accepted = true
           @answer.save
           @answer.node.add_tag('answered', @answer.author)
-          AnswerMailer.notify_answer_accept(@answer.author, @answer).deliver_later
         end
         @answer.reload
         format.js
