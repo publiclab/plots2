@@ -44,14 +44,14 @@
 
     <div class="tab-pane active" id="research">
       <div class="btn-group text-center" style="margin-bottom:10px;">
-        <ul class="nav nav-tabs">
+       <ul class="nav nav-tabs">
           <li class="nav-item" style="list-style-type:none;">
-            <a href="#notes" class="nav-link active" data-toggle="tab">Authored <%= "(#{ @notes.count })" %></a>
+            <a href="#notes" class="btn btn-outline-secondary" data-toggle="tab">Authored <%= "(#{ @notes.count })" %></a>
           <li class="nav-item" style="list-style-type:none;">
-            <a href="#coauthored" class="nav-link" data-toggle="tab">Coauthored  <%= "(#{ @coauthored.count })" %></a>
+            <a href="#coauthored" class="btn btn-outline-secondary" data-toggle="tab">Coauthored  <%= "(#{ @coauthored.count })" %></a>
           <li class="nav-item" style="list-style-type:none;">  
             <% if current_user && current_user.uid == @profile_user.uid %>
-              <a href="#draft" class="nav-link" data-toggle="tab">Drafts <%= "(#{ @drafts.count })" %></a><% end %>
+              <a href="#draft" class="btn btn-outline-secondary" data-toggle="tab">Drafts <%= "(#{ @drafts.count })" %></a><% end %>
         </ul>
       </div>
 
