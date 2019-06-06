@@ -158,6 +158,9 @@ environments.
 ### What is _unstable_? 
 It is a staging server that includes a copy of the production database and is intended for experimenting or debugging purposes. Those with [write permissions](https://help.github.com/en/articles/repository-permission-levels-for-an-organization) can push to the plots2 `unstable` branch on Github, which will initiate a build and deploy to https://unstable.publiclab.org.
 
+Use it when you need database records that are too difficult or time-consuming to reproduce locally, or to debug a problem on the production site that you can't reproduce locally.
+See summary and usage instructions below.
+
 **Environment:** Test environment
 **Database:** MySQL
 **Data:** Data present at https://unstable.publiclab.org is updated occasionally using the Production database, so it has good amount of data for testing. 
