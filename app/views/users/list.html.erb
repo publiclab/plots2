@@ -37,21 +37,20 @@
             <div class="col-md-7 nopadding">
               <div class="card-info">
                 <a href="/profile/<%= user.username %>"><%= user.username %></a>
-                <a class="ellipsis" data-toggle="dropdown">&nbsp<i class="fa fa-ellipsis-v" style="color : #666; font-size:15px;"></i></a>
-                <div class="dropdown-menu" style = "font-size:10px; ">
-                    <a class="dropdown-item">Joined <%= distance_of_time_in_words(user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></a>
-                    <a class="dropdown-item" href='/notes/author/<%= user.name %>'><%= user.note_count %> Research Notes</a>
-                    <a class="dropdown-item"><%= user.nodes.count %> Wiki Edits</a>
-                    <a class="dropdown-item" href="/profile/<%= user.username %>" style="border-style: ridge;">Read More...</a>
+                <a class="ellipsis" data-toggle="dropdown">&nbsp<i class="fa fa-ellipsis-h" style="color : #666; font-size:15px; float:right;"></i></a>
+                <ul class="dropdown-menu" style = "font-size:10px;">
+                    <li><a style="color: #808080; cursor: no-drop;">Joined <%= distance_of_time_in_words(user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></a></li>
+                    <li><a href='/notes/author/<%= user.name %>'><%= user.note_count %> Research Notes</a></li>
+                    <li><a style="color: #808080; cursor: no-drop;"><%= user.nodes.count %> Wiki Edits</a></li>
+                    <li><a href="/profile/<%= user.username %>">See Full Profile</a></li>
                     <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") %>
                       <% if user.status == 0 %>
-                        <i class='fa fa-ban' style="color:#a00;font-size:10px"></i> <%= t('users.list.banned') %>
+                        <i class='fa fa-ban' style="color:#a00;"></i> <%= t('users.list.banned') %>
                         <% elsif user.status == 1 %>
-                          <div class="dropdown-divider"></div>
-                          <a class = "dropdown-item" style="font-size:10px;" data-confirm="<%= t('users.list.are_you_sure') %>" href="/ban/<%= user.uid %>" ><i class='fa fa-ban'></i> <%= t('users.list.ban') %></a>
+                          <li><a data-confirm="<%= t('users.list.are_you_sure') %>" href="/ban/<%= user.uid %>" ><i class='fa fa-ban'></i> <%= t('users.list.ban') %></a></li>
                       <% end %>
                     <% end %>
-                  </div>
+                  </ul>
                 <div class="sub-info">
                   <div style="padding-bottom:6px;">Active <%= t = user.revisions.order(timestamp: :desc).first.try(:created_at);time_ago_in_words(t) if (t) %> ago</div>
                   <span id="tags" style="font-size:11px;">
@@ -97,7 +96,7 @@ h3, h2, h5 {
 
 .card-body {
   margin-bottom:0.1em;
-  margin-right: 0.1em;
+  margin-right: -0.7em;
   margin-left: 0.1em;
   padding: 0.5em;
 }
@@ -149,6 +148,12 @@ h3, h2, h5 {
 
 .ellipsis{
   cursor: pointer;
+}
+
+.dropdown-menu li a{
+  display: inline-block;
+  padding-bottom: 5px;
+  padding-left: 14px;
 }
 </style>
 <%= render partial: 'tag/location' %>
