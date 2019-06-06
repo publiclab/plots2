@@ -156,8 +156,7 @@ environments.
 ## Testing your work with Unstable
 
 ### What is _unstable_? 
-
-_unstable_ is one test server, which can be used by any contributor with special permission for testing their work(PRs). One needs to push their commits to _unstable_ [branch](https://github.com/publiclab/plots2/tree/unstable) and they will be deployed at https://unstable.publiclab.org/ after building. 
+It is a staging server that includes a copy of the production database and is intended for experimenting or debugging purposes. Those with [write permissions](https://help.github.com/en/articles/repository-permission-levels-for-an-organization) can push to the plots2 `unstable` branch on Github, which will initiate a build and deploy to https://unstable.publiclab.org.
 
 **Environment:** Test environment
 **Database:** MySQL
