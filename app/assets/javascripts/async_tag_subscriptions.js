@@ -4,7 +4,7 @@ $(document).ready(function()
         items: 8,
         minLength: 3,
         source: function (query, process) {
-          var replaced_query = query.replace(' ', /-/g);
+          var replaced_query = query.replace(' ', '-');
           return $.post('/tag/suggested/' + replaced_query, {}, function (data) {
             return process(data)
           })

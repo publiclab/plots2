@@ -72,11 +72,11 @@
         </a>
       <% end %>
       <% if current_user %>
-            <button style="border: 1px solid;padding: 4px 6px;" class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button style="border: 1px solid;padding: 4px 6px;" class="btn btn-outline-secondary dropdown" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <i class='icon fa fa-smile-o'></i>
               <sup style="font-size: 12px;">+</sup>
             </button>
-            <div id="emoji-dropdown" style="background: #f8f8f8" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <div id="emoji-dropdown" style="background: #f8f8f8;" class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
               <% emoji_names, emoji_image_map = emoji_info %>
               <% emoji_names.each do |e| %>
               <% capitalized_emoji_name = e.split("-").map(&:capitalize).join %>

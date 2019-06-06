@@ -11,8 +11,6 @@ class AnswerLikeController < ApplicationController
       AnswerSelection.set_likes(current_user.uid, @answer.id, false)
     else
       AnswerSelection.set_likes(current_user.uid, @answer.id, true)
-      user = User.find(current_user.uid)
-      AnswerMailer.notify_answer_like(user, @answer).deliver_later
     end
     @answer.reload
     respond_to do |format|

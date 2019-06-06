@@ -71,12 +71,12 @@ class QuestionsController < ApplicationController
   end
 
   def answered
-    @title = 'Recently answered'
+    @title = 'Recently Commented'
     @questions = Node.questions
       .where(status: 1)
     @questions = filter_questions_by_tag(@questions, params[:tagnames])
-      .joins(:answers)
-      .order('answers.created_at DESC')
+      .joins(:comments)
+      .order('comments.timestamp DESC')
       .group('node.nid')
       .paginate(page: params[:page], per_page: 24)
     @wikis = Node.limit(10)

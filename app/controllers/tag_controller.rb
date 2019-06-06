@@ -8,6 +8,7 @@ class TagController < ApplicationController
     @title = I18n.t('tag_controller.tags')
     @paginated = true
     @order_type = params[:order] == "desc" ? "asc" : "desc"
+    powertag_clause = params[:powertags] == 'true' ? '' : ['name NOT LIKE ?', '%:%']
 
     if params[:search]
       keyword = params[:search]
@@ -16,6 +17,7 @@ class TagController < ApplicationController
         .where('node.status = ?', 1)
         .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
         .where("name LIKE :keyword", keyword: "%#{keyword}%")
+        .where(powertag_clause)
         .group(:name)
         .order(order_string)
         .paginate(page: params[:page], per_page: 24)
@@ -24,6 +26,7 @@ class TagController < ApplicationController
         .select('node.nid, node.status, term_data.*, community_tags.*')
         .where('node.status = ?', 1)
         .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
+        .where(powertag_clause)
         .group(:name)
         .order(order_string)
         .paginate(page: params[:page], per_page: 24)
@@ -32,6 +35,7 @@ class TagController < ApplicationController
         .select('node.nid, node.status, term_data.*, community_tags.*')
         .where('node.status = ?', 1)
         .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
+        .where(powertag_clause)
         .group(:name)
         .order(order_string)
         .paginate(page: params[:page], per_page: 24)
@@ -40,6 +44,7 @@ class TagController < ApplicationController
         .select('node.nid, node.status, term_data.*, community_tags.*')
         .where('node.status = ?', 1)
         .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
+        .where(powertag_clause)
         .group(:name)
       raw_tags = Tag.sort_according_to_followers(raw_tags, params[:order])
       @tags = raw_tags.paginate(page: params[:page], per_page: 24)
@@ -48,6 +53,7 @@ class TagController < ApplicationController
         .select('node.nid, node.status, term_data.*, community_tags.*')
         .where('node.status = ?', 1)
         .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
+        .where(powertag_clause)
         .group(:name)
         .order(order_string)
 
