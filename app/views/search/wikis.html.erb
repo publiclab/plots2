@@ -1,5 +1,8 @@
- <%= render :partial => "search/nav", :locals => { :section => "search-wikis" } %>
+<div class="col-md-2">
+  <%= render :partial => "search/nav", :locals => { :section => "search-wikis" } %>
+</div>
 
+<div class="col-md-10">
  <div class="container">
    <% if @wikis.present? %>
      <h2> Results for <%= params[:query] %></h2>
@@ -32,3 +35,4 @@
      </h4>
    <% end %>
  </div>
+</div>
