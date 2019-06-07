@@ -1,17 +1,22 @@
-<%= render :partial => "search/nav", :locals => { :section => "search-questions" } %>
+<div class="col-md-2">
+  <%= render :partial => "search/nav", :locals => { :section => "search-questions" } %>
+</div>
 
-<div class="container">
-  <% if @questions.present? %>
-    <div class="container">
-      <h2> Results for <%= @search_criteria.query %></h2>
-      <hr>
-    </div>
-    <%= render partial: "questions/questions", locals: { questions: @questions } %>
-  <% else %>
-    <h4>
-      No results found for <%= params[:query] %> :-(
-      </br>
-      Try searching <a href="/search">for another topic</a> or looking for our items tagged with <a href="/tag/<%= params[:query] %>"><%= params[:query] %></a>
-    </h4>
-  <% end %>
+<div class="col-md-10">
+  
+  <div class="container">
+    <% if @questions.present? %>
+      <div class="container">
+        <h2> Results for <%= @search_criteria.query %></h2>
+        <hr>
+      </div>
+      <%= render partial: "questions/questions", locals: { questions: @questions } %>
+    <% else %>
+      <h4>
+        No results found for <%= params[:query] %> :-(
+        </br>
+        Try searching <a href="/search">for another topic</a> or looking for our items tagged with <a href="/tag/<%= params[:query] %>"><%= params[:query] %></a>
+      </h4>
+    <% end %>
+  </div>
 </div>

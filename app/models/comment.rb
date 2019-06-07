@@ -261,8 +261,8 @@ class Comment < ApplicationRecord
 
   def self.add_comment(mail, node_id, user)
     node = Node.where(nid: node_id).first
-    if node
-      mail_doc = Nokogiri::HTML(mail.html_part.body.decoded) # To parse the mail to extract comment content and reply content
+    if node && mail&.html_part
+      mail_doc = Nokogiri::HTML(mail&.html_part&.body&.decoded) # To parse the mail to extract comment content and reply content
       domain = get_domain mail.from.first
       content = if domain == "gmail"
                   gmail_parsed_mail mail_doc

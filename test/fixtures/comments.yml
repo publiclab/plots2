@@ -64,6 +64,14 @@ answer_comment_two:
   comment: Answer comment two
   timestamp: <%= Time.now.to_i + 8 %>
 
+wiki_comment:
+  uid: 1
+  nid: 11
+  status: 1
+  comment: Wiki Comment
+  timestamp: <%= Time.now.to_i + 12 %>
+  thread: /01
+
 question:
   uid: 1
   nid: 8
