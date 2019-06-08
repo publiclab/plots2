@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_18_230000) do
+ActiveRecord::Schema.define(version: 2019_06_08_135458) do
 
   create_table "answer_selections", force: true do |t|
     t.integer "user_id"
@@ -345,10 +345,12 @@ ActiveRecord::Schema.define(version: 2019_04_18_230000) do
   add_index "rusers", ["username"], name: "index_rusers_on_username", using: :btree
   add_index "rusers", ["username"], name: "rusers_username_fulltext_idx", type: :fulltext if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
 
-  create_table "tag_selections", id: false, force: true do |t|
+ create_table "tag_selections", id: false, force: :cascade do |t|
     t.integer "user_id"
     t.integer "tid"
     t.boolean "following", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_index "tag_selections", ["user_id", "tid"], name: "index_tag_selections_on_user_id_and_tid", unique: true, using: :btree
