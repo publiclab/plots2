@@ -69,6 +69,7 @@ bucket  = storage.bucket "plots2-screenshots"
 
 images = []
 Dir.foreach('tmp/screenshots') do |item|
+  next if item == '.' or item == '..'
   file = bucket.create_file 'tmp/screenshots/' + item, github.pr_json["number"]
   file.acl.public!
   puts "Uploaded #{file.inspect}"
