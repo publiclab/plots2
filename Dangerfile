@@ -68,9 +68,8 @@ storage = Google::Cloud::Storage.new project_id: "public-lab"
 bucket  = storage.bucket "plots2-screenshots"
 
 images = []
-Dir.foreach('tmp/screenshots') do |item|
-  next if item == '.' or item == '..'
-  file = bucket.create_file 'tmp/screenshots/' + item, github.pr_json["number"]
+Dir.glob('tmp/screenshots/*') do |item|
+  file = bucket.create_file item, github.pr_json["number"]
   file.acl.public!
   puts "Uploaded #{file.inspect}"
   images << "<h3>#{file.name}</h3><p><img src='#{file.public_url}' /></p>"
