@@ -71,13 +71,9 @@ images = []
 Dir.glob('tmp/screenshots/*') do |item|
   file = bucket.create_file item, github.pr_json["number"].to_s + ".png"
   file.acl.public!
-  message "Uploaded #{file.name}"
-  images << "<h3>#{file.name}</h3>" # without link, to test
-  puts ">>>>>>>>>>>>"
-  puts file.public_url
-  #message "Uploaded #{file.name} at #{file.public_url}"
-  #images << "<h3>#{file.name}</h3><p><img src='#{file.public_url}' /></p>"
+  message "Uploaded #{file.name} at #{file.public_url}"
+  images << "<h3>#{file.name}</h3><p><img src='#{file.public_url}' /></p>"
 end
 
-screenshots = "<details><summary>Screenshots 📸 (click to expand)</summary>" + images.join + "</details>"
+screenshots = "<details><summary>Screenshots :camera_flash: (click to expand)</summary>" + images.join + "</details>"
 markdown(screenshots)
