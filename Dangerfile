@@ -66,6 +66,7 @@ end
 require "google/cloud/storage"
 storage = Google::Cloud::Storage.new project_id: "public-lab"
 bucket  = storage.bucket "plots2-screenshots"
+Encoding.default_external = 'UTF-8'
 
 images = []
 Dir.glob('tmp/screenshots/*') do |item|
