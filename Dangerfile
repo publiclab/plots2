@@ -69,7 +69,7 @@ bucket  = storage.bucket "plots2-screenshots"
 
 images = []
 Dir.glob('tmp/screenshots/*') do |item|
-  file = bucket.create_file item, github.pr_json["number"].to_s + ".png"
+  file = bucket.create_file item, github.pr_json["number"].to_s + "-" + images.length.to_s + ".png"
   file.acl.public!
   message "Uploaded #{file.name} at #{file.public_url}"
   images << "<h3>#{file.name}</h3><p><img src='#{file.public_url}' /></p>"
