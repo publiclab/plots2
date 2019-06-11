@@ -23,6 +23,10 @@ Some key features include:
 * A user dashboard [presenting recent activity](https://publiclab.org/dashboard)
 * A privacy-sensitive, Leaflet-based [location tagging system](https://github.com/publiclab/leaflet-blurred-location/) and [community map](http://publiclab.org/people)
 
+## Roadmap
+
+We are developing a draft Roadmap for `plots2` and our broader Public Lab code projects; [read more and comment here](https://publiclab.org/notes/warren/05-22-2019/draft-of-a-public-lab-software-roadmap-comments-welcome).
+
 ## Table of Contents
 1. [What Makes This Project Different](#what-makes-this-project-different)
 2. [Data model](#data-model)
