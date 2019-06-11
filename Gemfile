@@ -16,6 +16,7 @@ gem 'gemoji'
 gem 'geocoder'
 gem 'geokit-rails'
 gem 'georuby', '2.0'
+gem "google-cloud-storage"
 gem 'grape'
 gem 'grape-entity'
 gem 'grape-swagger', '~> 0.32.1'
