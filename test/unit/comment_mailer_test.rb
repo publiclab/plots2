@@ -61,21 +61,6 @@ class CommentMailerTest < ActionMailer::TestCase
     assert email.body.include?("Hi! A tag you follow was mentioned by #{comment.author.name} in a comment on the question <b>#{comment.parent.title}</b>")
   end
 
-  test 'notify answer author' do
-    user = users(:bob)
-    comment = comments(:answer_comment_one)
-    assert_difference 'ActionMailer::Base.deliveries.size', 1 do
-      CommentMailer.notify_answer_author(user, comment).deliver_now
-    end
-    assert !ActionMailer::Base.deliveries.empty?
-
-    email = ActionMailer::Base.deliveries.last
-    assert_equal ["notifications@#{request_host}"], email.from
-    assert_equal [user.email], email.to
-    assert_equal "New comment on your answer on #{comment.parent.title} (#a#{comment.parent.id}) ", email.subject
-    assert email.body.include?("Hi! There's been a new comment to your answer on '<a href='https://#{request_host}#{comment.parent.path(:question)}#a#{comment.answer.id}'>#{comment.parent.title}</a>'")
-  end
-
  
   test 'notify barnstar' do
     user = users(:bob)
