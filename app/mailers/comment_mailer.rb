@@ -40,13 +40,6 @@ class CommentMailer < ActionMailer::Base
     mail(to: user.email, subject: "A tag you follow was mentioned in a comment. (##{comment.node.id}) ")
   end
 
-  def notify_answer_author(user, comment)
-    @user = user
-    @comment = comment
-    @footer = feature('email-footer')
-    mail(to: user.email, subject: "New comment on your answer on #{comment.parent.title} (#a#{comment.parent.id}) ")
-  end
-
   def notify_coauthor(user, note)
     @user = user
     @note = note
