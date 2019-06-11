@@ -145,26 +145,6 @@ class Comment < ApplicationRecord
     end
   end
 
-  def answer_comment_notify(current_user)
-    # notify answer author
-    if answer.uid != current_user.uid
-      CommentMailer.notify_answer_author(answer.author, self).deliver_now
-    end
-
-    notify_callout_users
-
-    already = mentioned_users.collect(&:uid) + [answer.uid]
-    uids = []
-    # notify other answer commenter and users who liked the answer
-    # except mentioned users and answer author
-    (answer.comments.collect(&:uid) + answer.likers.collect(&:uid)).uniq.each do |u|
-      uids << u unless already.include?(u)
-    end
-
-    notify_users(uids, current_user)
-    notify_tag_followers(already + uids)
-  end
-
   def spam
     self.status = 0
     save
