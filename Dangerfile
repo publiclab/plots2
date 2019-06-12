@@ -58,7 +58,7 @@ begin
   end
 
 rescue => ex
-  fail "There was an error with Danger bot's Junit parsing: #{ex.message}"
+  warn "There was an error with Danger bot's Junit parsing: #{ex.message}"
   message ex.inspect # view the entire error output in the log
 end
 
