@@ -84,3 +84,15 @@ end
 tagnames = ['one', 'two', 'three', 'four', 'five', 'six']
 80.times { try { Node.find(rand(Node.count-2)+1).add_tag(tagnames[rand(tagnames.length-1)],User.first) } }
 
+#create 20 unique users
+20.times do
+  uniqueNum = (Time.now.to_i + rand(100)).to_s
+  user = User.create! "username" => "user#{uniqueNum}",
+    "email" => "user#{uniqueNum}@example.com",
+    "status" => 1,
+    "openid_identifier" => nil,
+    "password" => "password",
+    "password_confirmation" => "password"
+    user.role = "basic"
+  user.save()
+end
