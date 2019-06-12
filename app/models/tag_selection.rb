@@ -34,4 +34,8 @@ class TagSelection < ApplicationRecord
     end
     date_hash
   end
+
+  def self.start_tracking
+    TagSelection.first.created_at.to_date.to_formatted_s(:long_ordinal)
+  end
 end
