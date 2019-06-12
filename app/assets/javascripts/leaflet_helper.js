@@ -82,6 +82,7 @@
     var Fractracker = L.layerGroup.fracTrackerLayer() ;
     var OdorReport = L.layerGroup.odorReportLayer() ;
     var MapKnitter = L.layerGroup.mapKnitterLayer() ;
+    var PLpeople = L.layerGroup.pLpeopleLayer() ;
     var ToxicRelease = L.layerGroup.toxicReleaseLayer() ;
 
     var OpenInfraMap_Power = L.tileLayer('https://tiles-{s}.openinframap.org/power/{z}/{x}/{y}.png',{
@@ -127,16 +128,17 @@
     var wind = L.OWM.wind({});
 
     var city = L.OWM.current({intervall: 15, minZoom: 3});
-    var windrose = L.OWM.current({intervall: 15, minZoom: 3, markerFunction: myWindroseMarker, popup: false, clusterSize: 50,imageLoadingBgUrl: 'https://openweathermap.org/img/w0/iwind.png' });
-    windrose.on('owmlayeradd', windroseAdded, windrose); 
+    // var windrose = L.OWM.current({intervall: 15, minZoom: 3, markerFunction: myWindroseMarker, popup: false, clusterSize: 50,imageLoadingBgUrl: 'https://openweathermap.org/img/w0/iwind.png' });
+    // windrose.on('owmlayeradd', windroseAdded, windrose); 
 
     var baseMaps = {
       "Baselayer1": baselayer
     };
     var overlayMaps = {
      // "PurpleAirLayer-HeatMap": PurpleLayer ,
-        "Wisconsin Non-Metal" : Wisconsin_NM ,
-        "FracTracker_mobile" : FracTracker_mobile ,
+      "PLpeople": PLpeople,
+      "Wisconsin Non-Metal" : Wisconsin_NM ,
+      "FracTracker_mobile" : FracTracker_mobile ,
       "PurpleAirLayer-Markers": PurpleAirMarkerLayer ,
       "SkyTruth": SkyTruth , 
       "Fractracker" : Fractracker ,
@@ -168,7 +170,7 @@
          "temp": temp , 
          "wind": wind , 
          "Cities (zoom in)": city  , 
-         "windrose (zoom in)": windrose
+         //"windrose (zoom in)": windrose
     };
     
     if(sethash === 1) {
@@ -208,11 +210,15 @@
         "temp": temp,
         "wind": wind,
         "Cities": city,
-        "windrose": windrose
+       // "windrose": windrose
       };
 
       var hash = new L.Hash(map, allMapLayers);	   
           
     }   
     L.control.layers(baseMaps,overlayMaps).addTo(map);
+   
+      return {
+        PLpeople: PLpeople
+      } ;
    }
