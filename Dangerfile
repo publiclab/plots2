@@ -64,7 +64,7 @@ end
 
 # Store screenshots in Google Cloud
 require "google/cloud/storage"
-storage = Google::Cloud::Storage.new project_id: "public-lab"
+storage = Google::Cloud::Storage.anonymous # don't rely on a key credential
 bucket  = storage.bucket "plots2-screenshots"
 Encoding.default_external = 'UTF-8'
 
