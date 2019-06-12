@@ -29,4 +29,14 @@ class ScreenshotsTest < ApplicationSystemTestCase
     visit '/people'
     take_screenshot
   end
+
+  test 'wiki page with inline grids' do
+    node = nodes(:place) # /wiki/chicago page
+    revision = node.latest
+    revision.body = "Inline grids:\n\n## Thumbnails\n\n[notes:grid:test]\n\n## Nodes\n\n[nodes:test]\n\n## Notes\n\n[notes:test]\n\n## Wikis\n\n[wikis:test]\n\n## Questions\n\n[questions:test]\n\n## Activities\n\n[activities:test]\n\n## Thumbnails\n\n[notes:grid:test]\n\nThis should not render:\n\n`[nodes:tagname]`"
+    revision.save
+    visit '/wiki'
+    take_screenshot
+  end
+
 end
