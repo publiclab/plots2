@@ -33,16 +33,15 @@ install:
   - docker-compose exec web bash -c "rake db:setup"
   - docker-compose exec web bash -c "rake db:migrate"
   - docker-compose exec web bash -c "rake assets:precompile"
-  - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then gem install danger danger-junit; fi'
+  - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then bash -c "docker-compose exec web gem install danger danger-junit google-cloud-storage"; fi'
 
 script:
+  - docker-compose exec web bash -c 'echo "$GOOGLE_APPLICATION_CREDENTIALS_JSON" > /tmp/credentials.json' # needs to be a path to a json file, so we shuffle...
   - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true $TASK"
-  - | 
-    if [ $TASK != "rake test:all" ]; then
+  - if [ $TASK != "rake test:all" ]; then
       echo -e '<?xml version="1.0" encoding="UTF-8"?>' > output.xml;
       tail -n +2 -q ./test/reports/TEST*.xml >> output.xml;
     fi
-  - |
-    if [ $TRAVIS_PULL_REQUEST != "false"; then
-      danger --verbose;
+  - if [ $TRAVIS_PULL_REQUEST != "false" ]; then
+      docker-compose exec web danger --verbose;
     fi
