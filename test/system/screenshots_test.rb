@@ -15,8 +15,28 @@ class ScreenshotsTest < ApplicationSystemTestCase
     take_screenshot
   end
 
+  test 'signup' do
+    visit '/signup'
+    take_screenshot
+  end
+
+  test 'login' do
+    visit '/login'
+    take_screenshot
+  end
+
   test 'tags' do
     visit '/tags'
+    take_screenshot
+  end
+
+  test 'tag/test' do
+    visit '/tag/test'
+    take_screenshot
+  end
+
+  test 'stats' do
+    visit '/stats'
     take_screenshot
   end
 
