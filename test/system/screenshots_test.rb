@@ -30,7 +30,7 @@ class ScreenshotsTest < ApplicationSystemTestCase
     take_screenshot
   end
 
-  test 'tag/test' do
+  test 'tag page' do
     visit '/tag/test'
     take_screenshot
   end
