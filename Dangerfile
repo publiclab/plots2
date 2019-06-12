@@ -75,4 +75,5 @@ Dir.glob('tmp/screenshots/*') do |item|
 end
 
 screenshots = "<details><summary>Screenshots :camera_flash: (click to expand)</summary>" + images.join + "</details>"
+screenshots += "<p><a href='https://github.com/publiclab/plots2/issues/5316'>Learn about automated screenshots</a></p>"
 markdown(screenshots)
