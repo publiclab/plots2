@@ -33,6 +33,19 @@ class Tag < ApplicationRecord
     tid
   end
 
+  # alias
+  def nid
+    id
+  end
+
+  def title
+    name
+  end
+
+  def path
+    "/#{name}"
+  end
+
   def run_count
     self.count = NodeTag.where(tid: tid).count
     save
@@ -53,8 +66,8 @@ class Tag < ApplicationRecord
     hash.sort_by { |_, v| v }.reverse.first(10).to_h
   end
 
-  def belongs_to(current_user, nid)
-    node_tag = node_tag.find_by(nid: nid)
+  def belongs_to(current_user, node_id)
+    node_tag = node_tag.find_by(nid: node_id)
     node_tag && node_tag.uid == current_user.uid || node_tag.node.uid == current_user.uid
   end
 
