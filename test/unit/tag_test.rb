@@ -231,4 +231,16 @@ class TagTest < ActiveSupport::TestCase
     assert_equal comments, comment_graphs.sum
     assert_equal quiz.count, quiz_graphs.sum
   end
+
+  test 'subscribtions graph' do
+    tag = tags(:test)
+    last_week_subscriptions = tag.subscriptions
+      .where(created_at: (Time.now - 1.week)..Time.now)
+      .count
+
+    graph = tag.subscription_graph(Time.now - 1.week, Time.now)
+
+    assert_equal last_week_subscriptions, graph.values.sum
+    assert_equal Hash, graph.class
+  end
 end
