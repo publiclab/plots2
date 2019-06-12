@@ -23,13 +23,12 @@ align_stats_page
   <% end %>
 
 <br>
-<div class="row">
     <div class="col-lg-8">
-    <h3>Tag statistics for <%= @tags.first.name %> </h3>
+    <h4>Tag statistics for <%= @tags.first.name %> </h4>
     <hr>
-        <h5> <%= link_to "See statistics for all contents", stats_path %> </h5>
+        <h6> <%= link_to "See statistics for all contents", stats_path %> </h6>
         <%= form_tag request.url, method: :get do %>
-            <h5>Choose a range to show a graph of statistics within that period</h5>
+            <h6>Choose a range to show a graph of statistics within that period</h6>
             <br>
             <div class="col-md-4">
                 <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%d-%m-%Y") %>" data-date-format="dd-mm-yyyy" value="<%= @start.strftime("%d-%m-%Y") %>" tabindex="1" class="form-control input-lg" type="text" name="start"  placeholder="&#xf133; Select start date">
@@ -42,7 +41,7 @@ align_stats_page
 </div>
 <br>
 <div class="col-lg-8">
-    <%= submit_tag "Go", class: 'btn btn-secondary' %>
+    <%= submit_tag "Go", class: 'btn btn-default' %>
 <% end %>
 </div>
 master
