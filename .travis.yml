@@ -13,7 +13,9 @@ env:
     - COMPOSE_FILE=./containers/docker-compose-testing.yml
   matrix:
     - TASK="rake test:all"
-    - TASK="rails test"
+    - TASK="rails test test/unit"
+    - TASK="rails test test/functional"
+    - TASK="rails test test/integration"
     - TASK="rails test:system"
 
 before_install:
