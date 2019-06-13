@@ -190,7 +190,9 @@ class Comment < ApplicationRecord
     if user
       node_id = mail.subject[/#([\d]+)/, 1] # This tooks out the node ID from the subject line
       if node_id.present?
-        add_comment(mail, node_id, user)
+        if !Comment.where(message_id: mail.message_id).any?
+          add_comment(mail, node_id, user)
+        end
       end
     end
   end
