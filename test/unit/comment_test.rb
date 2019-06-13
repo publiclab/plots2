@@ -10,7 +10,7 @@ class CommentTest < ActiveSupport::TestCase
     comment = Comment.new
     comment.comment = "My first thought is\n\nthat this is pretty good. **markdown** and http://link.com"
     assert comment.save
-    assert comment.body_markdown.match('<a href="http://lunk.com">http://link.com</a>')
+    assert comment.body_markdown.match('<a href="http://link.com">http://link.com</a>')
     assert comment.body_markdown.match('<strong>markdown</strong>')
   end
 
