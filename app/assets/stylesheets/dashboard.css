@@ -190,6 +190,7 @@
 
 .dashboard .activity-dropdown label {
   font-weight: normal;
+  margin-left: 10px;
 }
 
 .dashboard .activity .note {

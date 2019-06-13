@@ -20,54 +20,54 @@
       <span class="caret"></span>
     </button>
 
-    <div class="dropdown-menu">
-      <a class="form-check dropdown-item" href="#">
+    <ul class="dropdown-menu">
+      <li class="form-check dropdown-item">
         <label class="form-check-label">
-          <input data-type="all" class="node-type-all" type="checkbox" checked="checked" /> 
+          <input data-type="all" class="node-type-all form-check-input" type="checkbox" checked="checked" /> 
           <%= t('dashboard._activity.dropdown.all') %>
         </label>
-      </a>
+      </li>
 
       <div class="dropdown-divider"></div>
 
-      <a class="form-check dropdown-item" href="#">
+      <li class="form-check dropdown-item">
         <label class="form-check-label">
-          <input data-type="note" class="node-type node-type-note" type="checkbox" checked="checked" /> 
+          <input data-type="note" class="node-type node-type-note form-check-input" type="checkbox" checked="checked" /> 
           <%= t('dashboard._activity.dropdown.research_notes') %>
         </label>
-      </a>
-      <a class="form-check dropdown-item" href="#">
+      </li>
+      <li class="form-check dropdown-item">
         <label class="form-check-label">
-          <input data-type="question" class="node-type node-type-question" type="checkbox" checked="checked" /> 
+          <input data-type="question" class="node-type node-type-question form-check-input" type="checkbox" checked="checked" /> 
           <%= t('dashboard._activity.dropdown.question') %>
         </label>
-      </a>
-      <a class="form-check dropdown-item" href="#">
+      </li>
+      <li class="form-check dropdown-item">
         <label class="form-check-label">
-          <input data-type="event" class="node-type node-type-event" type="checkbox" checked="checked" /> 
+          <input data-type="event" class="node-type node-type-event form-check-input" type="checkbox" checked="checked" /> 
           <%= t('dashboard._activity.dropdown.events') %>
         </label>
-      </a>
-      <a class="form-check dropdown-item" href="#">
+      </li>
+      <li class="form-check dropdown-item">
         <label class="form-check-label">
-          <input data-type="comment" class="node-type node-type-comment" type="checkbox" checked="checked" /> 
+          <input data-type="comment" class="node-type node-type-comment form-check-input" type="checkbox" checked="checked" /> 
           <%= t('dashboard._activity.dropdown.comments') %>
         </label>
-      </a>
+      </li>
 
-      <a class="d-lg-none dropdown-item" href="#">
-        <label>
-          <input data-type="wiki" class="node-type node-type-wiki" type="checkbox" checked="checked" /> 
+      <li class="d-lg-none dropdown-item">
+        <label class="form-check-label">
+          <input data-type="wiki" class="node-type node-type-wiki form-check-input" type="checkbox" checked="checked" /> 
           <%= t('dashboard._activity.dropdown.wiki') %>
         </label>
-      </a>
+      </li>
       <!--
       <li class="divider"></li>
       <li class="dropdown-header">Sort by</li>
       <li><a href="#"><a href="#">Post date</a></li>
       <li><a href="#"><a href="#">Recent activity</a></li>
       -->
-    </div>
+    </ul>
   </div> &nbsp;
   <span class="d-none d-md-inline"><%= t('dashboard._activity.from_other') %> <a href=""><%= t('dashboard._activity.community_scientists') %></a></span> <%= t('dashboard._activity.past_week') %>
   <% if current_user %>
