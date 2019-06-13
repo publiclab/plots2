@@ -158,12 +158,12 @@ module Srch
         results_list = []
 
         if results.present?
-          results_list << results[:tags].map do |model|
+          results_list << results[:tags].map do |tagname|
             DocResult.new(
-              doc_id: model.nid,
+              doc_id: tagname,
               doc_type: 'TAGS',
-              doc_url: model.path,
-              doc_title: model.title
+              doc_url: "/tag/#{tagname}",
+              doc_title: tagname
             )
           end
           results_list << results[:notes].map do |model|
@@ -180,7 +180,7 @@ module Srch
         end
       end
         
-      # Request URL should be /api/srch/content?query=QRY
+      # Request URL should be /api/srch/nodes?query=QRY
       desc 'Perform a search of nodes', hidden: false,
                                                  is_array: false,
                                                  nickname: 'search_content'
