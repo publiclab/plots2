@@ -52,6 +52,9 @@ class ScreenshotsTest < ApplicationSystemTestCase
 
   test 'wiki page with inline grids' do
     node = nodes(:place) # /wiki/chicago page
+    node.add_tag('place', users(:bob)) # lets get a map on this page! 
+    node.add_tag('lon:-71.4', users(:bob))
+    node.add_tag('lat:41.7', users(:bob))
     revision = node.latest
     revision.body = "Inline grids:\n\n## Thumbnails\n\n[notes:grid:test]\n\n## Nodes\n\n[nodes:test]\n\n## Notes\n\n[notes:test]\n\n## Wikis\n\n[wikis:test]\n\n## Questions\n\n[questions:test]\n\n## Activities\n\n[activities:test]\n\n## Thumbnails\n\n[notes:grid:test]\n\nThis should not render:\n\n`[nodes:tagname]`"
     revision.save
