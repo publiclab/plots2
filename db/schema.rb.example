@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_08_135458) do
+ActiveRecord::Schema.define(version: 2019_06_13_193708) do
 
   create_table "answer_selections", force: true do |t|
     t.integer "user_id"
@@ -65,6 +65,8 @@ ActiveRecord::Schema.define(version: 2019_06_08_135458) do
     t.integer "nid",  default: 0, null: false
     t.integer "uid",  default: 0, null: false
     t.integer "date", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_index "community_tags", ["nid"], name: "index_community_tags_nid", using: :btree
