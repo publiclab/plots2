@@ -328,17 +328,12 @@ Plots2::Application.routes.draw do
   get 'answers/accept/:id' => 'answers#accept'
   put 'answers/accept/:id' => 'answers#accept'
 
-  get 'answer_like/show/:id' => 'answer_like#show'
-  get 'answer_like/likes/:aid' => 'answer_like#likes'
   get 'questions/:username/:date/:topic/answer_like/likes/:aid' => 'answer_like#likes'
 
 
-  get 'comment/answer_create/:aid' => 'comment#answer_create'
   get 'comment/delete/:id' => 'comment#delete'
   get 'comment/update/:id' => 'comment#update'
   post 'comment/update/:id' => 'comment#update'
-  get 'comment/make_answer/:id' => 'comment#make_answer'
-  post 'comment/make_answer/:id' => 'comment#make_answer'
   post '/comment/like' => 'comment#like_comment'
   get '/comment/create/:id' => 'comment#create'
   post 'comment/create/:id' => 'comment#create'
