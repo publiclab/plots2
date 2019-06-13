@@ -134,18 +134,6 @@ class CommentControllerTest < ActionController::TestCase
     assert_equal 'failure', @response.body
   end
 
-  test 'should show error if answer comment not saved' do
-    UserSession.create(users(:bob))
-    assert_no_difference 'Comment.count' do
-      post :answer_create,
-          params: {
-          aid: answers(:one).id
-          }, xhr: true
-    end
-    assert_equal flash[:error], 'The comment could not be saved.'
-    assert_equal 'failure', @response.body
-  end
-
   test 'should update note comment if user is comment author' do
     UserSession.create(users(:bob))
     comment = comments(:first)

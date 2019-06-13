@@ -84,27 +84,6 @@ class CommentController < ApplicationController
     end
   end
 
-  # create answer comments
-  def answer_create
-    @answer_id = params[:aid]
-    @comment = Comment.new(
-      uid: current_user.uid,
-      aid: params[:aid],
-      comment: params[:body],
-      timestamp: Time.now.to_i
-    )
-    if @comment.save
-      @comment.answer_comment_notify(current_user)
-      respond_to do |format|
-        format.js { render template: 'comments/create' }
-        format.html { render template: 'comments/create.html' }
-      end
-    else
-      flash[:error] = 'The comment could not be saved.'
-      render plain: 'failure'
-    end
-  end
-
   def update
     @comment = Comment.find params[:id]
 
