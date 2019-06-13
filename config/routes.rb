@@ -309,7 +309,7 @@ Plots2::Application.routes.draw do
   get 'questions_shadow' => 'questions#index_shadow'
   get 'question' => 'questions#index'
   get 'question_shadow' => 'questions#index_shadow'
-  get 'questions/:author/:date/:id' => 'questions#show' 
+  get 'questions/:author/:date/:id' => 'questions#show'
   get 'questions/show/:id' => 'questions#show'
   get 'q/:id' => 'questions#shortlink'
   get 'questions/answered(/:tagnames)' => 'questions#answered'
