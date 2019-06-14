@@ -1,6 +1,6 @@
 require "application_system_test_case"
 
-class ScreenshotsTest < ApplicationSystemTestCase
+class ScreenshotsMobileTest < ApplicationSystemTestCase
   Capybara.default_max_wait_time = 60
 
   # iphone 6 screen width in points: https://www.paintcodeapp.com/news/ultimate-guide-to-iphone-resolutions
@@ -8,54 +8,54 @@ class ScreenshotsTest < ApplicationSystemTestCase
   caps = Selenium::WebDriver::Remote::Capabilities.chrome("chromeOptions" => {"args" => chromeOptions})
   driven_by :selenium, using: :chrome, screen_size: [375, 1400], options: { desired_capabilities: caps }
 
-  test 'front page with navbar search autocomplete' do
+  test 'front page with navbar search autocomplete mobile' do
     visit '/'
     fill_in("searchform_input", with: "Canon")
     assert_selector ".typeahead li", text: "Canon A1200 IR conversion at PLOTS Barnraising at LUMCON"
     take_screenshot
   end
 
-  test 'wiki' do
+  test 'wiki mobile' do
     visit '/wiki'
     take_screenshot
   end
 
-  test 'signup' do
+  test 'signup mobile' do
     visit '/signup'
     take_screenshot
   end
 
-  test 'login' do
+  test 'login mobile' do
     visit '/login'
     take_screenshot
   end
 
-  test 'tags' do
+  test 'tags mobile' do
     visit '/tags'
     take_screenshot
   end
 
-  test 'tag page' do
+  test 'tag page mobile' do
     visit '/tag/test'
     take_screenshot
   end
 
-  test 'stats' do
+  test 'stats mobile' do
     visit '/stats'
     take_screenshot
   end
 
-  test 'blog' do
+  test 'blog mobile' do
     visit '/blog'
     take_screenshot
   end
 
-  test 'people' do
+  test 'people mobile' do
     visit '/people'
     take_screenshot
   end
 
-  test 'wiki page with inline grids' do
+  test 'wiki page with inline grids mobile' do
     node = nodes(:place) # /wiki/chicago page
     node.add_tag('place', users(:bob)) # lets get a map on this page! 
     node.add_tag('lon:-71.4', users(:bob))
