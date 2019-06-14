@@ -2,88 +2,124 @@ awesome:
   user_id: 1
   tid: 2
   following: true
+  created_at: <%= 1.week.ago %>
+  updated_at: <%= Time.now %>
 
 two:
   user_id: 6
   tid: 2
   following: true
+  created_at: <%= 2.weeks.ago %>
+  updated_at: <%= Time.now %>
 
 everything:
   user_id: 6
   tid: 4
   following: true
+  created_at: <%= 3.weeks.ago %>
+  updated_at: <%= Time.now %>
 
 question:
   user_id: 1
   tid: 6
   following: true
+  created_at: <%= 4.weeks.ago %>
+  updated_at: <%= Time.now %>
 
 selection_one:
   user_id: 1
   tid: 1
   following: true
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
 
 selection_two:
   user_id: 4
   tid: 1
   following: true
+  created_at: <%= 4.days.ago %>
+  updated_at: <%= Time.now %>
 
 selection_three:
   user_id: 5
   tid: 1
   following: true
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= Time.now %>
 
 selection_four:
   user_id: 4
   tid: 2
   following: true
+  created_at: <%= 1.month.ago %>
+  updated_at: <%= Time.now %>
 
 selection_five:
   user_id: 3
   tid: 3
   following: true
+  created_at: <%= 2.months.ago %>
+  updated_at: <%= Time.now %>
 
 selection_six:
   user_id: 7
   tid: 3
   following: true
+  created_at: <%= 10.months.ago %>
+  updated_at: <%= Time.now %>
 
 selection_seven:
   user_id: 3
   tid: 5
   following: true
+  created_at: <%= 2.months.ago %>
+  updated_at: <%= Time.now %>
 
 selection_eight:
   user_id: 7
   tid: 5
   following: true
+  created_at: <%= 3.months.ago %>
+  updated_at: <%= Time.now %>
 
 selection_nine:
   user_id: 4
   tid: 3
   following: false
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
 
 selection_ten:
   user_id: 2
   tid: 1
   following: false
+  created_at: <%= 3.days.ago %>
+  updated_at: <%= Time.now %>
 
 selection_eleven:
   user_id: 10
   tid: 20
   following: true
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
 
 SubLatitudeLongitude:
   user_id: 16
   tid: 22
   following: true
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
 
 SubLatitudeLongitude2:
   user_id: 17
   tid: 25
   following: true
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
 
 selection_spectrometer:
   user_id: 17
   tid: 12
   following: true
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
