@@ -17,7 +17,8 @@
    <div class= "question-header">
      <h5>What's your question?</h5>
      <% if !current_user %>
-       <p>To ask a question, please <a href="/login?return_to=/questions">log in</a> or <a href="/signup?return_to=/questions">sign up</a> first.</p>
+     <p>To ask a question, please <a class="loginToggle" href="#"><%= t('layout._header.login.login_title') %></a> or
+       <a class="signupToggle" href="#"><%= t('layout._header.join') %></a> first.</p>
      <% end %>
    </div>
    <div class= "question-form">
@@ -34,6 +35,7 @@
      </form>
  </div>
  </div>
+ <%= render partial: "layouts/signupLoginModal" %>
  <style>
   .question-area{
     margin:auto;
