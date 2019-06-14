@@ -9,10 +9,13 @@
 <br>
 <br> <br>
 
-<h5><u> We've started tracking Subscriptions from <%= TagSelection.start_tracking %></u> </h5>
-<br> <br>
-
-<div id="subscriptions"> </div>
+<h5> We've started tracking Subscriptions from <%= TagSelection.start_tracking %> </h5>
+<hr>
+<% if @subscriptions.values.sum == 0 && @all_subscriptions.values.sum == 0 %>
+    <i> No subscribers tracked during this period </i>
+<%else %>
+    <div id="subscriptions"> </div>
+<% end %>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
 
