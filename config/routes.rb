@@ -328,10 +328,6 @@ Plots2::Application.routes.draw do
   delete 'answers/delete/:id' => 'answers#delete'
   get 'answers/accept/:id' => 'answers#accept'
   put 'answers/accept/:id' => 'answers#accept'
-
-  get 'questions/:username/:date/:topic/answer_like/likes/:aid' => 'answer_like#likes'
-
-
   get 'comment/delete/:id' => 'comment#delete'
   get 'comment/update/:id' => 'comment#update'
   post 'comment/update/:id' => 'comment#update'
