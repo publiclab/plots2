@@ -129,4 +129,10 @@ class UserTagsControllerTest < ActionController::TestCase
    assert_template 'user_tags/index'
  end
 
+  test 'should report error if delete tag non existing' do
+    UserSession.create(users(:bob))
+    delete :delete, xhr: true, params: { id: users(:bob).id , name: "N/A" }
+    assert response.body.include? 'errors'
+  end
+
 end
