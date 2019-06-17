@@ -319,19 +319,6 @@ Plots2::Application.routes.draw do
 
   post 'users/test_digest_email' => 'users#test_digest_email'
 
-  post 'answers/create/:nid' => 'answers#create'
-  get 'answers/create/:nid' => 'answers#create'
-  get 'answers/update/:id' => 'answers#update'
-  post 'answers/update/:id' => 'answers#update'
-  put 'answers/update/:id' => 'answers#update'
-  get 'answers/delete/:id' => 'answers#delete'
-  delete 'answers/delete/:id' => 'answers#delete'
-  get 'answers/accept/:id' => 'answers#accept'
-  put 'answers/accept/:id' => 'answers#accept'
-
-  get 'questions/:username/:date/:topic/answer_like/likes/:aid' => 'answer_like#likes'
-
-
   get 'comment/delete/:id' => 'comment#delete'
   get 'comment/update/:id' => 'comment#update'
   post 'comment/update/:id' => 'comment#update'
