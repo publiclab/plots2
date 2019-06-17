@@ -14,7 +14,7 @@
         </div>
         <div class=col-lg-2>
             <%= form_tag request.url, method: 'get', enforce_utf8: false do %>
-                <%= select_tag :options, options_for_select(["Past week", "Past month","Past year"], params[:options]), prompt: "Filter period: ",
+                <%= select_tag :options, options_for_select(["Past week", "Past month","Past year", "For all time"], params[:options]), prompt: "Filter period: ",
                     class: " form-control custom-select", onchange: "this.form.submit();" %>
             <% end %>
         </div>

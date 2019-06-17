@@ -10,9 +10,11 @@ class StatsController < ApplicationController
 
   def range
     flash.now[:notice] = "Data is cached and recalculated daily"
-    if params[:options].present?
+    if params[:options].present? && params[:options] != 'For all time'
       params[:start] = Time.now - to_keyword(params[:options])
       params[:end] = Time.now
+    elsif params[:options] == 'For all time'
+      all_time_stats
     end
     @start = start
     @end = fin
@@ -35,6 +37,11 @@ class StatsController < ApplicationController
       @contributors = User.contributor_count_for(@start, @end)
       @popular_tags = Tag.nodes_frequency(@start, @end)
     end
+  end
+
+  def all_time_stats
+      params[:start] = Date.new(2012,9,27).to_time
+      params[:end] = Time.now
   end
 
   def index
