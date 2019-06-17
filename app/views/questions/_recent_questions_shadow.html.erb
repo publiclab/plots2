@@ -1,0 +1,49 @@
+<div class = "recent-card">
+  <% @questions.limit(3).each_with_index do |node,i| %>
+  <div class="row">
+      <div class="image">
+        <img src="<%= node.author.profile_image %>" width="25" height="25"/>
+      </div>
+      <div class= "recent-questions">
+        <h5><a class = "questions"<% if @widget %>target="_blank"<% end %> href="<%= node.path(:question) %>"><%= node.title %></a></h5>
+      </div>
+      <div class="by-author">
+        by <a href="/profile/<%= node.author.name %>">@<%= node.author.name %></a>
+      </div>
+  </div>
+  <% end %>
+</div>
+<style>
+  .recent-card{
+      background-color: #fff;
+      border: 1px solid;
+      border-color: #D3D3D3;
+      border-radius: 6px;
+      width : 70%;
+      margin-left: 10em;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .questions{
+      font-size: 15px;
+      color: black;
+      margin-left: 6px;
+    }
+
+    .image{
+      border-radius: 50%;
+      margin-left: 10px;
+    }
+
+    .by-author{
+      color: #A9A9A9;
+      font-size: 13px;
+      margin-left: 6px;
+      margin-top: 4px;
+    }
+
+    .by-author a{
+      color: #A9A9A9;
+    }
+</style>
