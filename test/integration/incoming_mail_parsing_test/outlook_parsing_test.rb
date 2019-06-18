@@ -4,7 +4,7 @@ class OutlookParsingTest < ActionDispatch::IntegrationTest
     require 'mail'
     mail = Mail.read('test/fixtures/incoming_test_emails/outlook/incoming_outlook_email.eml')
     comment = comments(:first)
-    mail.subject = "Re: (##{comment.id})"
+    mail.subject = "Re: (##{comment.nid})"
     Comment.receive_mail(mail)
     f = File.open('test/fixtures/incoming_test_emails/outlook/final_parsed_comment.txt', 'r')
     reply = Comment.last
