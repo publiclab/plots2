@@ -1,3 +1,4 @@
+<br>
 <h6>Choose a starting and an ending date in the field below to see activity during that range</h6>
 <%= form_tag request.url, method: 'get', enforce_utf8: false do %>
     <div class="row">
@@ -9,13 +10,8 @@
             <label>Ending</label>
             <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%d-%m-%Y") %>" value="<%=@end.strftime("%d-%m-%Y") %>" data-date-format="dd-mm-yyyy" tabindex="1" class="form-control" type="text" name="end">
         </div>
-align_stats_page
-        <div class="col-md-1">
-            <%= submit_tag "Go" , class: 'btn btn-primary', :style=>'margin-top:1.8em;'  %>
-          
         <div class="col-lg-1">
             <%= submit_tag "Go" , class: 'btn btn-primary', :style=>'margin-top:2em;'  %>
-master
         </div>
     </div>
 <% end %>
