@@ -13,6 +13,7 @@ class OutlookParsingTest < ActionDispatch::IntegrationTest
     assert_equal reply.comment, f.read
     assert_equal reply.message_id, mail.message_id
     assert_equal reply.comment_via, 1
+    assert_equal reply.reply_to, comment.id
     assert_equal User.find(reply.uid).email, user_email
     f.close()
   end
