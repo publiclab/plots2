@@ -1,19 +1,19 @@
 require 'test_helper'
+require 'mail'
+
 class OutlookParsingTest < ActionDispatch::IntegrationTest
-  test 'should parse incoming mail from outlook service correctly and add answer comment' do
-    require 'mail'
+  test 'should parse incoming mail from outlook service correctly and add comment reply' do
     mail = Mail.read('test/fixtures/incoming_test_emails/outlook/incoming_outlook_email.eml')
-    answer = Answer.last
-    mail.subject = "Re: (#a#{answer.id})"
+    comment = comments(:first)
+    mail.subject = "Re: (##{comment.nid})"
     Comment.receive_mail(mail)
     f = File.open('test/fixtures/incoming_test_emails/outlook/final_parsed_comment.txt', 'r')
-    comment = Comment.last
+    reply = Comment.last
     user_email = mail.from.first
-    assert_equal comment.comment, f.read
-    assert_equal comment.aid, answer.id
-    assert_equal comment.message_id, mail.message_id
-    assert_equal comment.comment_via, 1
-    assert_equal User.find(comment.uid).email, user_email
+    assert_equal reply.comment, f.read
+    assert_equal reply.message_id, mail.message_id
+    assert_equal reply.comment_via, 1
+    assert_equal User.find(reply.uid).email, user_email
     f.close()
   end
 end

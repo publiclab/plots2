@@ -5,7 +5,7 @@
 
     <div style="margin-bottom: 50px;" id="comments-list">
       <% comments.includes(:replied_comments).order('timestamp ASC').each do |comment| %>
-        <% if comment.cid == @node.comments.first.cid %><a id="last" name="last"></a><% end %>
+        <% if comment.cid == @node.comments&.first&.cid %><a id="last" name="last"></a><% end %>
 
         <% if comment.reply_to.nil? %>
           <%= render :partial => "notes/comment", :locals => {:comment => comment} %>
