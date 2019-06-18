@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $('input[type="text"], textarea, input[type="password"], .wk-wysiwyg').css('cursor','text');
+  $('input[type="text"], textarea, input[type="password"], .wk-wysiwyg, .wk-prompt').css('cursor','text');
   $(window).on('keypress', function(e) {
     if (e.target.style.cursor !== 'text') {
       if (e.which === 47) {
