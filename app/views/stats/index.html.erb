@@ -10,7 +10,7 @@
 
     <div class="row">
         <div class=col-lg-6>
-            <h6> Statistics from <%= @start.to_formatted_s(:long)%> to <%= @end.to_formatted_s(:long)%> </h6>
+            <h6> Statistics from <b><%= @start.to_formatted_s(:long)%></b> to <b><%= @end.to_formatted_s(:long)%></b> </h6>
         </div>
         <div class=col-lg-2>
             <%= form_tag request.url, method: 'get', enforce_utf8: false do %>
