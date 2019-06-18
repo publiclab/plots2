@@ -201,7 +201,7 @@ class Comment < ApplicationRecord
     end
   end
 
-  def self.add_comment(mail, node_id, user, reply_to=[false, nil])
+  def self.add_comment(mail, node_id, user, reply_to = [false, nil])
     node = Node.where(nid: node_id).first
     if node && mail&.html_part
       mail_doc = Nokogiri::HTML(mail&.html_part&.body&.decoded) # To parse the mail to extract comment content and reply content
@@ -229,7 +229,7 @@ class Comment < ApplicationRecord
       end
       message_id = mail.message_id
       comment = node.add_comment(uid: user.uid, body: comment_content_markdown, comment_via: 1, message_id: message_id)
-      if(reply_to[0])
+      if (reply_to[0])
         comment.reply_to = reply_to[1]
         comment.save
       end
