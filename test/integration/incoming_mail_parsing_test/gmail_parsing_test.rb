@@ -1,6 +1,6 @@
 require 'test_helper'
 class GmailParsingTest < ActionDispatch::IntegrationTest
-  test 'should parse incoming mail from gmail service correctly and add answer comment' do
+  test 'should parse incoming mail from gmail service correctly and add comment' do
     require 'mail'
     mail = Mail.read('test/fixtures/incoming_test_emails/gmail/incoming_gmail_email.eml')
     node = Node.find(21) # this is the nid used in the .eml fixture
