@@ -54,7 +54,7 @@ class SearchControllerTest < ActionController::TestCase
   test "search tags at /search/tags/awesome" do
     get :tags, params: { query: 'awesome' }
     assert_response :success
-    assert_equal node_tags(:awesome).nid, assigns(:tags).first.nid
+    assert_equal node_tags(:awesome).name, assigns(:tags).first
   end
 
   test "all_content at /search/page" do
