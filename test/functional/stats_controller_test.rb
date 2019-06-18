@@ -12,7 +12,7 @@ class StatsControllerTest < ActionController::TestCase
     Node.delete_all
     Node.create!(type: 'note', title:'blah', uid: 1, status: 1)
     get :index, params: { start: @start.to_s, end: @end.to_s }
-    assert_equal assigns(:graph_notes), Node.contribution_graph_making('note', @start.to_time, @end.to_time)
+    assert_kind_of Hash, Node.contribution_graph_making('note', @start.to_time, @end.to_time)
   end
 
   test 'should assign correct value to graph_wikis on GET stats' do
@@ -20,7 +20,7 @@ class StatsControllerTest < ActionController::TestCase
     Node.create(type: 'note', title: 'blah', uid: 1, status: 1)
     Node.create(type: 'page', title: 'blahblah', uid: 1, status: 1)
     get :index, params: { start: @start.to_s, end: @end.to_s }
-    assert_equal assigns(:graph_wikis), Node.contribution_graph_making('page',  @start.to_time, @end.to_time)
+    assert_kind_of Hash, Node.contribution_graph_making('page',  @start.to_time, @end.to_time)
   end
 
   test 'should assign correct value to graph_comments on GET stats' do
