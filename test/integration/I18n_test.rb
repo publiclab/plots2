@@ -523,7 +523,13 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      get '/stats'
+      start_time = 1.month.ago
+      end_time = Date.today
+      graph_notes = Node.contribution_graph_making('note', start_time.to_time, end_time.to_time)
+      graph_wiki = Node.contribution_graph_making('page', start_time.to_time, end_time.to_time)
+      graph_comments = Comment.contribution_graph_making(start_time.to_time, end_time.to_time)
+
+      get '/stats', params: { graph_notes: graph_notes, graph_wiki: graph_wiki, graph_comments: graph_comments }
       assert_select 'h2', I18n.t('notes.stats.contributors_statistics')
     end
   end
