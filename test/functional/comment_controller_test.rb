@@ -309,7 +309,7 @@ class CommentControllerTest < ActionController::TestCase
   test 'should send notification email upon a new wiki comment' do
     UserSession.create(users(:jeff))
     post :create, params: { id: nodes(:wiki_page).nid, body: 'A comment by Jeff on a wiki page of author bob', type: 'page' }, xhr: true
-    assert ActionMailer::Base.deliveries.collect(&:subject).include?("New comment on Wiki page title (#11) ")
+    assert ActionMailer::Base.deliveries.collect(&:subject).include?("New comment on Wiki page title (#11) - #c#{Comment.last.id}")
   end
 
   test 'should prompt user if comment includes question mark' do
@@ -373,7 +373,7 @@ class CommentControllerTest < ActionController::TestCase
         body: 'A comment by test user on note of author bob'
     }, xhr: true
 
-    assert ActionMailer::Base.deliveries.collect(&:subject).include?("New comment on #{nodes(:about).title} (##{nodes(:about).nid}) ")
+    assert ActionMailer::Base.deliveries.collect(&:subject).include?("New comment on #{nodes(:about).title} (##{nodes(:about).nid}) - #c#{Comment.last.id} ")
     assert ActionMailer::Base.deliveries.collect(&:to).include?([users(:jeff).email]) # notifying normal commenter
     assert_not ActionMailer::Base.deliveries.collect(&:to).include?([users(:lurker).email]) # not notifying commenter with tag as setting turned off
   end

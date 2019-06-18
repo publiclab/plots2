@@ -12,8 +12,7 @@ class CommentMailerTest < ActionMailer::TestCase
     email = ActionMailer::Base.deliveries.last
     assert_equal ["notifications@#{request_host}"], email.from
     assert_equal [user.email], email.to
-    assert_equal "New comment on #{comment.parent.title} (##{comment.parent.id}) ", email.subject
-    assert email.body.include?("<p>https://#{request_host}#{comment.parent.path(:question)}#answer-#{comment.aid}-comment-#{comment.cid}</p>")
+    assert_equal "New comment on #{comment.parent.title} (##{comment.parent.id}) - #c#{comment.id} ", email.subject
   end
 
   test 'notify note author' do
@@ -27,7 +26,7 @@ class CommentMailerTest < ActionMailer::TestCase
     email = ActionMailer::Base.deliveries.last
     assert_equal ["notifications@#{request_host}"], email.from
     assert_equal [user.email], email.to
-    assert_equal "New comment on #{comment.parent.title} (##{comment.parent.id}) ", email.subject
+    assert_equal "New comment on #{comment.parent.title} (##{comment.parent.id}) - #c#{comment.id}", email.subject
     assert email.body.include?("Hi! There's been a comment to your question '<a href='https://#{request_host}#{comment.parent.path(:question)}'>#{comment.parent.title}</a>'")
   end
 
@@ -42,7 +41,7 @@ class CommentMailerTest < ActionMailer::TestCase
     email = ActionMailer::Base.deliveries.last
     assert_equal ["notifications@#{request_host}"], email.from
     assert_equal [user.email], email.to
-    assert_equal "You were mentioned in a comment. (##{comment.parent.id}) ", email.subject
+    assert_equal "You were mentioned in a comment. (##{comment.parent.id}) - #c#{comment.id} ", email.subject
     assert email.body.include?("Hi! You were mentioned by #{comment.author.name} in a comment on the question <b>#{comment.parent.title}</b>")
   end
 
@@ -57,7 +56,7 @@ class CommentMailerTest < ActionMailer::TestCase
     email = ActionMailer::Base.deliveries.last
     assert_equal ["notifications@#{request_host}"], email.from
     assert_equal [user.email], email.to
-    assert_equal "A tag you follow was mentioned in a comment. (##{comment.parent.id}) ", email.subject
+    assert_equal "A tag you follow was mentioned in a comment. (##{comment.parent.id}) - #c#{comment.id} ", email.subject
     assert email.body.include?("Hi! A tag you follow was mentioned by #{comment.author.name} in a comment on the question <b>#{comment.parent.title}</b>")
   end
 
