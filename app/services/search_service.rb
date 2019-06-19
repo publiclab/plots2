@@ -85,7 +85,7 @@ class SearchService
       .references(:node)
       .where('node.status = 1')
       .limit(limit).each do |tag|
-      suggestions << tag.name.downcase
+      suggestions << tag
     end
     suggestions
   end
