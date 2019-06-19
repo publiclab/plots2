@@ -386,7 +386,7 @@ class TagController < ApplicationController
   def suggested
     if !params[:id].empty? && params[:id].length > 2
       @suggestions = SearchService.new.search_tags(params[:id])
-      render json: @suggestions.uniq
+      render json: @suggestions.collect { |tag| tag.name }.uniq
     else
       render json: []
     end
