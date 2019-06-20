@@ -178,8 +178,8 @@ class UsersController < ApplicationController
         questions = Node.questions
                         .where(status: 1)
                         .order('node.nid DESC')
-        ans_ques = questions.select { |q| q.answers.collect(&:author).include?(@profile_user) }
-        @answered_questions = ans_ques.paginate(page: params[:page], per_page: 24)
+        ans_ques = questions.select { |q| q.comments.collect(&:uid).include?(@profile_user.id) }
+        @commented_questions = ans_ques.paginate(page: params[:page], per_page: 24)
         wikis = Revision.order("nid DESC")
                         .where('node.type' => 'page', 'node.status' => 1, uid: @profile_user.uid)
                         .joins(:node)
