@@ -14,11 +14,11 @@ class SearchTest < ApplicationSystemTestCase
   test 'searching using navbar autocomplete' do
     visit '/'
 
-    fill_in("searchform_input", with: "Canon")
+    fill_in("searchform_input", with: "Kite")
 
-    assert_selector ".typeahead li", text: "Canon A1200 IR conversion at PLOTS Barnraising at LUMCON", wait: 10
+    assert_selector ".typeahead li", text: "kites", wait: 10
 
     assert page.evaluate_script("$('.typeahead.dropdown-menu').is(':visible')")
-    assert_equal 4, page.evaluate_script("$('.typeahead.dropdown-menu').find('li').length")
+    assert_equal 2, page.evaluate_script("$('.typeahead.dropdown-menu').find('li').length")
   end
 end
