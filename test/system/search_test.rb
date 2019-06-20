@@ -23,6 +23,6 @@ class SearchTest < ApplicationSystemTestCase
     take_screenshot
 
     assert page.evaluate_script("$('.typeahead.dropdown-menu').is(':visible')")
-    assert_equal 4, page.evaluate_script("$('.typeahead.dropdown-menu').find('li').length")
+    assert_equal 6, page.evaluate_script("$('.typeahead.dropdown-menu').find('li').length")
   end
 end
