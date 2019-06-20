@@ -12,11 +12,11 @@ env:
   global:
     - COMPOSE_FILE=./containers/docker-compose-testing.yml
   matrix:
-    - TASK="rake test:all"
-    - TASK="rails test test/unit"
-    - TASK="rails test test/functional"
-    - TASK="rails test test/integration"
-    - TASK="rails test:system"
+    - TASK="TEST_TYPE=mocha rake test:all"
+    - TASK="TEST_TYPE=unit rails test test/unit"
+    - TASK="TEST_TYPE=functional rails test test/functional"
+    - TASK="TEST_TYPE=integration rails test test/integration"
+    - TASK="TEST_TYPE=system rails test:system"
 
 before_install:
   - echo -e "repo_token:\n  $COVERALLS_REPO_TOKEN" >> ./.coveralls.yml
