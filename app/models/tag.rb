@@ -43,7 +43,7 @@ class Tag < ApplicationRecord
   end
 
   def path
-    "/#{name}"
+    "/tag/#{name}"
   end
 
   def run_count
