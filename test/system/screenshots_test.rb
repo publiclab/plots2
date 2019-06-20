@@ -6,9 +6,9 @@ class ScreenshotsTest < ApplicationSystemTestCase
   test 'front page with navbar search autocomplete' do
     visit '/'
 
-    fill_in("searchform_input", with: "Canon")
+    fill_in("searchform_input", with: "test")
     
-    assert_selector ".typeahead li", text: "Canon A1200 IR conversion at PLOTS Barnraising at LUMCON", wait: 10
+    assert_selector ".typeahead li", text: "test"
 
     take_screenshot
   end
