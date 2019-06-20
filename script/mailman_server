@@ -7,7 +7,7 @@ Mailman.config.logger = Logger.new("log/mailman.log")
 
 Mailman.config.ignore_stdin = true #ignore input from STDIN
 
-Mailman.config.poll_interval = 5 # To poll for mails in every 5 seconds
+Mailman.config.poll_interval = 20 # To poll for mails in every 5 seconds
 
 
 # Email Configration for mailman
@@ -23,14 +23,19 @@ Mailman::Application.run do
   # routes are written here
   # route for mail having node with id in their subject will only be accepted for processing
   default do
-  	begin
-      retries ||= 0
+# REMOVING ENTIRE 'begin/rescue' loop to try to address mailmain issues
+#     begin
+#       retries ||= 0
+      # do something with the database that does not fetch mails yet (let's try to ensure we have a MySQL connection first)
+      puts Comment.last.inspect
       Comment.receive_mail(message)
-    rescue Exception => e
-      Mailman.logger.error "Exception occurred while receiving message:\n#{message}"
-      Mailman.logger.error [e, *e.backtrace].join("\n")
-      retry if (retries += 1) < 3
-    end
+#     rescue Exception => e
+#       Mailman.logger.error "Exception occurred while receiving message:\n#{message}"
+#       Mailman.logger.error [e, *e.backtrace].join("\n")
+      # Seeing major site slowdowns; commenting out for now; 
+      # https://github.com/publiclab/plots2/issues/5817
+      # retry if (retries += 1) < 3
+#     end
   end
 
 end

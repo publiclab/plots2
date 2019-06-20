@@ -1,4 +1,5 @@
 <div class="inline-grid-container">
+<div style="max-height:800px;overflow:scroll;">
 <table class="table inline-grid <%= type %>-grid <%= className %> <%= className %>-<%= randomSeed %>">
   <tr>
     <% if type == "questions" || type == "notes" %>
@@ -53,7 +54,9 @@
       <td class="likes"><%= node.cached_likes.to_s %></td>
     <% else %>
       <td class="title">
-        <% if node.has_tag("pin:#{tagname}") %><i rel="tooltip" title="This item was pinned with the tag 'pin:<%= tagname %>'." class="fa fa-thumb-tack"></i> <% end %>
+        <% if node.has_tag("pin:#{tagname}") %><i rel="tooltip" title="This item was pinned with the tag 'pin:<%= tagname %>'." class="fa fa-thumb-tack"></i> 
+        <% elsif node.has_tag("pin:activity:#{tagname}") %><i rel="tooltip" title="This item was pinned with the tag 'pin:activity:<%= tagname %>'." class="fa fa-thumb-tack"></i> 
+        <% end %>
         <a href="<%= node.path %>"><%= node.latest.title %></a>
       </td>
       <td class="category"><%= node.has_power_tag('category') ? node.power_tag('category') : '-' %></td>
@@ -78,6 +81,7 @@
     </tfoot>
 <% end %>
 </table>
+</div>
 
 <a class="grid-embed grid-embed-<%= randomSeed %>" title="Embed this table on another site."><i class="fa fa-code" style="color:#aaa;"></i></a>
 <% if type == "questions" || tagname.include?('question:') %>

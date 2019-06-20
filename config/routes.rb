@@ -306,8 +306,10 @@ Plots2::Application.routes.draw do
 
   get 'questions/new' => 'questions#new'
   get 'questions' => 'questions#index'
+  get 'questions_shadow' => 'questions#index_shadow'
   get 'question' => 'questions#index'
-  get 'questions/:author/:date/:id' => 'questions#show'
+  get 'question_shadow' => 'questions#index_shadow'
+  get 'questions/:author/:date/:id' => 'questions#show' 
   get 'questions/show/:id' => 'questions#show'
   get 'q/:id' => 'questions#shortlink'
   get 'questions/answered(/:tagnames)' => 'questions#answered'
@@ -317,27 +319,9 @@ Plots2::Application.routes.draw do
 
   post 'users/test_digest_email' => 'users#test_digest_email'
 
-  post 'answers/create/:nid' => 'answers#create'
-  get 'answers/create/:nid' => 'answers#create'
-  get 'answers/update/:id' => 'answers#update'
-  post 'answers/update/:id' => 'answers#update'
-  put 'answers/update/:id' => 'answers#update'
-  get 'answers/delete/:id' => 'answers#delete'
-  delete 'answers/delete/:id' => 'answers#delete'
-  get 'answers/accept/:id' => 'answers#accept'
-  put 'answers/accept/:id' => 'answers#accept'
-
-  get 'answer_like/show/:id' => 'answer_like#show'
-  get 'answer_like/likes/:aid' => 'answer_like#likes'
-  get 'questions/:username/:date/:topic/answer_like/likes/:aid' => 'answer_like#likes'
-
-
-  get 'comment/answer_create/:aid' => 'comment#answer_create'
   get 'comment/delete/:id' => 'comment#delete'
   get 'comment/update/:id' => 'comment#update'
   post 'comment/update/:id' => 'comment#update'
-  get 'comment/make_answer/:id' => 'comment#make_answer'
-  post 'comment/make_answer/:id' => 'comment#make_answer'
   post '/comment/like' => 'comment#like_comment'
   get '/comment/create/:id' => 'comment#create'
   post 'comment/create/:id' => 'comment#create'

@@ -16,6 +16,7 @@ gem 'gemoji'
 gem 'geocoder'
 gem 'geokit-rails'
 gem 'georuby', '2.0'
+gem "google-cloud-storage"
 gem 'grape'
 gem 'grape-entity'
 gem 'grape-swagger', '~> 0.32.1'
@@ -51,7 +52,7 @@ gem 'rb-readline'
 gem 'rdiscount', '~> 2.2', '>= 2.2.0.1'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'responders', '~> 2.4'
-gem 'rubocop', '~> 0.69.0', require: false
+gem 'rubocop', '~> 0.71.0', require: false
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
 gem 'sentry-raven'

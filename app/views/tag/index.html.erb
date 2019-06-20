@@ -18,11 +18,12 @@
   </form>
   <br/><br/>
 
+   <% powertags = '&powertags=' + params[:powertags] if params[:powertags] %>
    <p style="width: 100%; text-align: center; border-bottom: 1px solid #ccc; line-height:2px; margin: 10px 0 20px;">
     <span style="background-color: #fff; padding: 0 10px; color: #808080;">Sort by:
-      <a href = "<%= tags_path %>?sort=name&order=<%= @order_type %>" style="text-decoration: underline; color: #808080;"><%= t('tag.index.tag') %></a><span> | </span>
-      <a href = "<%= tags_path %>?sort=followers&order=<%= @order_type %>" style="text-decoration: underline; color: #808080;"><%= t('tag.index.number_of_subscriptions')%></a><span> | </span>
-      <a href = "<%= tags_path %>?sort=uses&order=<%= @order_type %>" style="text-decoration: underline; color: #808080;"><%= t('tag.index.number_of_uses') %></a>
+      <a href = "<%= tags_path %>?sort=name&order=<%= @order_type %><%= powertags %>" style="text-decoration: underline; color: #808080;"><%= t('tag.index.tag') %></a><span> | </span>
+      <a href = "<%= tags_path %>?sort=followers&order=<%= @order_type %><%= powertags %>" style="text-decoration: underline; color: #808080;"><%= t('tag.index.number_of_subscriptions')%></a><span> | </span>
+      <a href = "<%= tags_path %>?sort=uses&order=<%= @order_type %><%= powertags %>" style="text-decoration: underline; color: #808080;"><%= t('tag.index.number_of_uses') %></a>
     </span>
   </p>
   <br/>
@@ -41,11 +42,11 @@
 <div class="col-lg-6">
   <br><br>
   <iframe id="myImage" src="stats/graph.html?limit=50" height="500" width="100%" frameborder="0" ></iframe>
-  <h6 class="text-right" style="color:#ccc;">Tags most commonly used, linked by how often they are used together.<br>
+  <p class="text-right" style="color:#ccc;">Tags most commonly used, linked by how often they are used together.<br>
     View <a style="cursor: pointer; a:active: color: red;" onclick="document.getElementById('myImage').src='stats/graph.html?limit=50'"><u>50</u></a> |
     <a style="cursor: pointer;" onclick="document.getElementById('myImage').src='stats/graph.html?limit=100'"><u>100</u></a> |
     <a style="cursor: pointer;" onclick="document.getElementById('myImage').src='stats/graph.html?limit=250'"><u>250</u></a> |
     <a style="cursor: pointer;" onclick="document.getElementById('myImage').src='stats/graph.html?limit=500'"><u>500</u></a>
-  </h6>
+  </p>
 
 </div>
