@@ -3,13 +3,8 @@ require "application_system_test_case"
 class ScreenshotsTest < ApplicationSystemTestCase
   Capybara.default_max_wait_time = 60
 
-  test 'front page with navbar search autocomplete' do
+  test 'front' do
     visit '/'
-
-    fill_in("searchform_input", with: "test")
-    
-    assert_selector ".typeahead li", text: "test"
-
     take_screenshot
   end
 
