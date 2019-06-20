@@ -1,7 +1,7 @@
 <div class="pop_content subscribe-btn">
   <p class="small_heading"> Follow related tags: </p>
   <%= form_with remote: true, url: '/subscribe/multiple/tag' do |f| %>
-    <% tags.each_with_index do |tag, i| %>
+    <% tags&.each_with_index do |tag, i| %>
     <div class="form-check">
       <label class="form-check-label">
         <input type="checkbox" id="<%= tag.id %>" name="tagnames[]" value="<%= tag.name %>" <% if i == 0 || current_user&.following(tag.name) %> checked <% end %> ><span class="<% if tag.name.include?(':') %> badge badge-primary <% else %> badge badge-secondary <% end %>" style="margin-left: 3px; margin-right: 10px; display: inline-block;"> <%= tag.name %></span>
