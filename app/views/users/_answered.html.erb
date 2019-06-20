@@ -3,7 +3,7 @@
 
   <% user = user || @user # allow overriding w/ local variable %>
 
-  <% @answered_questions.each_with_index do |question,i| %>
+  <% @answered_questions&.each_with_index do |question,i| %>
     <% answers = if user then question&.answers.where(uid: user.uid) else question.answers end %>
     <div class="col-lg-4" style="margin-top:30px;">
       <div class="note note-pane note-answer">
