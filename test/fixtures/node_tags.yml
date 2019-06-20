@@ -154,6 +154,12 @@ co-author:
   nid: 21
   date: <%= DateTime.now.to_i %>
 
+kites:
+  tid: 21
+  uid: 2
+  nid: 21
+  date: <%= DateTime.now.to_i %>
+
 test1_lat:
   tid: 23
   uid: 15
