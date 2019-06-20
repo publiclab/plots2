@@ -25,11 +25,11 @@
     <% else %>
 
     <div class="im d-none d-md-block" id="wiki-empty1">
-      <h5 class="line">This topic's wiki page doesn't have image. </h5>
+      <h5 class="line">This topic's wiki page doesn't have an image. </h5>
       <div class="bottom-right"><%= Tag.follower_count(params[:id]) %> people discusssing</div>
     </div>
     <div class="im d-sm-none" id="wiki-empty2">
-      <h5 style="margin: 5px;">This topic's wiki page doesn't have image. </h5>
+      <h5 style="margin: 5px; color: #777;">This topic's wiki page doesn't have an image. </h5>
       <div class="bottom-right"><%= Tag.follower_count(params[:id]) %> people discusssing</div>
     </div>
 
@@ -56,7 +56,7 @@
     <div class="bottom-right"><%= Tag.follower_count(params[:id]) %> people discusssing</div>
 </div>
 <div class="im d-sm-none" id="wiki-empty2">
-    <h5 style="margin: 5px;">This topic has no lead wiki page. </h5>
+    <h5 style="margin: 5px; color: #777;">This topic has no lead wiki page. </h5>
     <div class="bottom-right"><%= Tag.follower_count(params[:id]) %> people discusssing</div>
 </div>
 
@@ -100,6 +100,7 @@
   position: absolute;
   top: 50%;
   left: 50%;
+  color: #777;
   transform: translate(-50%, -50%);
 }
 
