@@ -2,6 +2,8 @@ require "application_system_test_case"
 # https://guides.rubyonrails.org/testing.html#implementing-a-system-test
 
 class SearchTest < ApplicationSystemTestCase
+  Capybara.default_max_wait_time = 60
+
   test 'searching an item from the homepage' do
     visit '/'
 
@@ -10,15 +12,17 @@ class SearchTest < ApplicationSystemTestCase
 
     assert_selector('h2', text: 'Results for Canon')
   end
-  
-  test 'searching using navbar autocomplete' do
+
+  test 'front page with navbar search autocomplete' do
     visit '/'
 
-    fill_in("searchform_input", with: "Canon")
+    fill_in("searchform_input", with: "test")
+    
+    assert_selector ".typeahead li", text: "test"
 
-    assert_selector ".typeahead li", text: "Canon A1200 IR conversion at PLOTS Barnraising at LUMCON", wait: 10
+    take_screenshot
 
     assert page.evaluate_script("$('.typeahead.dropdown-menu').is(':visible')")
-    assert_equal 4, page.evaluate_script("$('.typeahead.dropdown-menu').find('li').length")
+    assert_equal 6, page.evaluate_script("$('.typeahead.dropdown-menu').find('li').length")
   end
 end
