@@ -7,3 +7,7 @@ Disallow: /wiki/revert/*
 Disallow: /stats/*
 Disallow: /api/*
 Host: publiclab.org
+
+# limit to 1 per day
+User-agent: AhrefsBot 
+Crawl-Delay: 86400
