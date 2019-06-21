@@ -108,6 +108,25 @@ class SearchApiTest < ActiveSupport::TestCase
     assert matcher =~ json
   end
 
+  test 'search tags functionality' do
+    get '/api/srch/tags?query=Test'
+    assert last_response.ok?
+
+    # Expected search pattern
+    pattern = {
+      srchParams: {
+        query: 'Test',
+        seq: nil,
+      }.ignore_extra_keys!
+    }.ignore_extra_keys!
+
+    matcher = JsonExpressions::Matcher.new(pattern)
+    json = JSON.parse(last_response.body)
+    
+    assert_equal "/tag/test",     json['items'][0]['doc_url']
+    assert matcher =~ json
+  end
+
   test 'search Tag Nearby Nodes functionality with a valid query' do
     get '/api/srch/taglocations?nwlat=180.0&selat=0.0&nwlng=0.0&selng=176.5'
     assert last_response.ok?
