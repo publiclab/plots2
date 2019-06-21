@@ -1,3 +1,6 @@
+# debug... remove this
+message ENV.inspect
+
 # run only on system tests? This will break interactions with junit test reports but fix automated screenshot posting 
 if ENV['TEST_TYPE'] == "system"
   message "@#{github.pr_author} Thank you for your pull request! I'm here to help with some tips and recommendations. Please take a look at the list provided and help us review and accept your contribution! And **don't be discouraged if you see errors** -- we're here to help."
