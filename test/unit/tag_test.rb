@@ -10,7 +10,7 @@ class TagTest < ActiveSupport::TestCase
     assert tag.save!
     assert tag.nid
     assert tag.id
-    assert_equal "/stick-mapping", tag.path
+    assert_equal "/tag/stick-mapping", tag.path
     assert_equal "stick-mapping", tag.title
   end
 
