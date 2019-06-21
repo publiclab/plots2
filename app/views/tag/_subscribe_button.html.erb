@@ -1,18 +1,11 @@
 <!-- This button is used to display tags in a popover and subscribe to multiple tags using a single button -->
-<% if current_user %>
-  <a id="popover_button" class="btn btn-outline-secondary btn-sm sub" >Subscribe 
-    <i class="fa fa-plus"></i> 
-  </a>
+<a id="popover_button" class="btn btn-outline-secondary btn-sm sub" >Subscribe 
+  <i class="fa fa-plus"></i> 
+</a>
 
-  <div id="mypopcontent" class="d-none" onmouseleave="show(this)">
-  	<%= render partial: "tag/tags_popover", locals: {tags: tags} %>
-  </div>
-
-<% else %>
-  <a class="btn btn-default btn-sm sub" data-toggle="modal" data-target="#loginModal" role="button" aria-pressed="true"> 
-    Subscribe <i class="fa fa-plus"></i> 
-  </a>
-<% end %>
+<div id="mypopcontent" class="d-none" onmouseleave="show(this)">
+  <%= render partial: "tag/tags_popover", locals: {tags: tags} %>
+</div>
 
 <style>
   .sub{
@@ -24,9 +17,9 @@
 
 <script type="text/javascript">
   $('#popover_button').popover({
-  	content: $('#mypopcontent').clone().removeClass('d-none'),
-  	placement: 'bottom',
-  	html: true,
+    content: $('#mypopcontent').clone().removeClass('d-none'),
+    placement: 'bottom',
+    html: true,
   });
   function show(elem){
   $('#popover_button').popover("hide") 
