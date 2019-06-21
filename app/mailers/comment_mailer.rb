@@ -8,14 +8,14 @@ class CommentMailer < ActionMailer::Base
     @user = user
     @comment = comment
     @footer = feature('email-footer')
-    mail(to: user.email, subject: "New comment on #{comment.parent.title} (##{comment.parent.id}) ")
+    mail(to: user.email, subject: "New comment on #{comment.parent.title} (##{comment.parent.id}) - #c#{comment.id} ")
   end
 
   def notify_note_author(user, comment)
     @user = user
     @comment = comment
     @footer = feature('email-footer')
-    mail(to: user.email, subject: "New comment on #{comment.node.title} (##{comment.node.id}) ")
+    mail(to: user.email, subject: "New comment on #{comment.node.title} (##{comment.node.id}) - #c#{comment.id}")
   end
 
   # user is awarder, not awardee
@@ -30,14 +30,14 @@ class CommentMailer < ActionMailer::Base
     @user = user
     @comment = comment
     @footer = feature('email-footer')
-    mail(to: user.email, subject: "You were mentioned in a comment. (##{comment.node.id}) ")
+    mail(to: user.email, subject: "You were mentioned in a comment. (##{comment.node.id}) - #c#{comment.id} ")
   end
 
   def notify_tag_followers(comment, user)
     @user = user
     @comment = comment
     @footer = feature('email-footer')
-    mail(to: user.email, subject: "A tag you follow was mentioned in a comment. (##{comment.node.id}) ")
+    mail(to: user.email, subject: "A tag you follow was mentioned in a comment. (##{comment.node.id}) - #c#{comment.id} ")
   end
 
   def notify_coauthor(user, note)

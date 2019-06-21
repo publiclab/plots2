@@ -10,7 +10,7 @@
 
     <div class="row">
         <div class=col-lg-6>
-            <h6> Statistics from <%= @start.to_formatted_s(:long)%> to <%= @end.to_formatted_s(:long)%> </h6>
+            <h6> Statistics from <b><%= @start.to_formatted_s(:long)%></b> to <b><%= @end.to_formatted_s(:long)%></b> </h6>
         </div>
         <div class=col-lg-2>
             <%= form_tag request.url, method: 'get', enforce_utf8: false do %>
@@ -184,13 +184,13 @@ var chart = new ApexCharts(document.querySelector("#timeline"), options);
 chart.render();
 function generateWeekWiseTimeSeries(s) {
     var values = [
-        <%= @graph_notes.values %>,
-        <%= @graph_wikis.values %>,
-        <%= @graph_comments.values %>,
+        <%= @graph_notes.values if @graph_notes.present? %>,
+        <%= @graph_wikis.values if @graph_wikis.present? %>,
+        <%= @graph_comments.values if @graph_comments.present? %>,
     ];
 
     var i = 0;
-    var months_dates = <%= @graph_notes.keys %>;
+    var months_dates = <%= @graph_notes.keys if @graph_notes.present? %>;
     var count = months_dates.length;
     var months = months_dates.map(x =>  new Date(x).getTime());
     var series = [];
@@ -208,8 +208,8 @@ function generateWeekWiseTimeSeries(s) {
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
 
-var values =  <%=  @popular_tags.values %>;
-var data =  <%= raw (@popular_tags.keys) %>;
+var values =  <%=  @popular_tags.values if @popular_tags.present? %>;
+var data =  <%= raw (@popular_tags.keys) if @popular_tags.present? %>;
 var page;
 
 var options = {
@@ -260,7 +260,7 @@ chart1.render();
 
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
-var questions = [<%= @questions.count %>];
+var questions = [<%= @questions.present? ? @questions.count : 0 %>];
 var answers = [<%= @answers %>];
 
 var options = {

@@ -43,7 +43,7 @@ class Tag < ApplicationRecord
   end
 
   def path
-    "/#{name}"
+    "/tag/#{name}"
   end
 
   def run_count
@@ -415,6 +415,21 @@ class Tag < ApplicationRecord
       end
       data
     end
+  end
+
+  def subscription_graph(start = DateTime.now - 1.year, fin = DateTime.now)
+    date_hash = {}
+    week = start.to_date.step(fin.to_date, 7).count
+
+    while week >= 1
+      month = (fin - (week * 7 - 1).days)
+      range = (fin - week.weeks)..(fin - (week - 1).weeks)
+      weekly_subs = subscriptions.where(created_at: range)
+                                 .size
+      date_hash[month.to_f * 1000] = weekly_subs
+      week -= 1
+    end
+    date_hash
   end
 
   private

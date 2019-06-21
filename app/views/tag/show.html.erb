@@ -58,6 +58,63 @@
       <%= render partial: "tag/show/related_tags" %>
     </div>
   </div>
+
+<div class="col-lg-12">
+  <%= render partial: 'tag/show/header' %>
+  <div class="box">
+    <%= render partial: 'tag/show/contributors' %>
+
+    <% unless @tags.try(:first).try(:parent).nil? %>
+      <small>Alias of: <%= @tags.first.parent %></small>
+    <% end %>
+
+    <%= render :partial => "notes/format_toggle" if @node_type == "note" %>
+
+    <%= render :partial => "tag/show/user_controls" %>
+
+    <% if logged_in_as(['admin']) %>
+      <hr />
+      <p><a class="btn btn-outline-secondary btn-lg" onClick="$('#add_parent').toggle();">Add tag parent</a> (admin only)</p>
+      <div id="add_parent" style="display:none;">
+        <p><b>Tag parenting</b></p>
+        <div class="card bg-light">
+          <div class="card-body">
+            <form class="form" action="/tag/parent" method="get">
+              <input type="text" placeholder="parent" name="parent" />
+              <input type="hidden" placeholder="parent" name="name" value="<%= @tags&.first&.name %>" />
+              <input class="btn btn-outline-secondary btn-lg" type="submit" value="Submit" />
+            </form>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <%= render partial: "tag/show/questions" %>
+    <%= render partial: "tag/show/related_tags" %>
+    <% if @related_tags %>
+      <%= render partial: 'tag/subscribe_button', locals: {tags: @related_tags } %>
+    <% end %>
+    <%= render partial: 'tag/show/nav_tabs' %>
+
+    <p style="padding-top:8px;">
+    <a class="btn btn-sm btn-outline-secondary" href="?order=views"><i class="fa fa-eye"></i> by views</a>
+    <a class="btn btn-sm btn-outline-secondary" href="?order=likes"><i class="fa fa-star"></i> by likes</a>
+    </p><br />
+
+    <%= render partial: 'tag/show/tab_content' %>
+  <div>
+    <script type="text/javascript">
+      $('#questions .btn-group .btn').click(function(){
+        $(this).addClass('active').siblings().removeClass('active');
+      });
+    </script>
 </div>
 
 <%= stylesheet_link_tag "dashboard" %>
+
+<style>
+ .box {
+   padding: 2%;
+   margin: 2%;
+ }
+</style>

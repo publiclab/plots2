@@ -1,6 +1,6 @@
 <div class="comment-form-wrapper" style="background-color:#f8f8f8; border: 1px solid #e7e7e7;padding: 18px;">
   <div class="card-body">
-    <form class="comment-form" id="comment-form" data-remote="true" <% if !local_assigns[:is_answer].blank? %> action= "/answers/create/<%= @node.nid %>" <% elsif !local_assigns[:aid].blank? %> action= "/comment/answer_create/<%= aid %>" <% else %> action="/comment/create/<%= @node.nid %><%= "?type=question" if local_assigns[:type]=="question" %>" <% end %> <% if local_assigns[:aid].blank? %>method="post"<% end %>>
+    <form class="comment-form" id="comment-form" data-remote="true" action="/comment/create/<%= @node.nid %><%= "?type=question" if local_assigns[:type]=="question" %>" <% if local_assigns[:aid].blank? %>method="post"<% end %>>
 
       <h4 style="margin-top:0;"><%= title %><% if current_user && current_user.id == @node.uid %> <small><a target="_blank" href="https://publiclab.org/comment-templates">Add a response template</a></small><% end %></h4>
 
@@ -27,7 +27,7 @@
             body = Node.find_by(slug: @node.power_tag('comment-template')).try(:body)
           end
         %>
-        <textarea style="border: 1px solid #bbb;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-bottom: 0;padding: 10px;" onFocus="editing=true" name="body" class="form-control" id="text-input" rows="6" cols="40" placeholder="<%= placeholder %>"><% if local_assigns[:is_new_answer].blank? %> <%= body %><% end %></textarea>
+        <textarea style="border: 1px solid #bbb;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-bottom: 0;padding: 10px;" onFocus="editing=true" name="body" class="form-control" id="text-input" rows="6" cols="40" placeholder="<%= placeholder %>"><%= body %></textarea>
         <div id="imagebar">
 
           <div id="create_progress" style="display:none;" class="progress float-right">
