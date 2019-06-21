@@ -41,7 +41,7 @@ services:
       - GITHUB_EVENT_PATH=${GITHUB_EVENT_PATH}
       - GITHUB_EVENT_NAME=${GITHUB_EVENT_NAME}
       - QT_QPA_PLATFORM=${QT_QPA_PLATFORM}
-      - TEST_TYPE=${TEST_TYPE}
+      - TASK=${TASK}
     links:
       - redis
     volumes:
