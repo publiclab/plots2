@@ -71,7 +71,7 @@ Plots2::Application.configure do
   # Enable threaded mode
   # config.threadsafe!
 
-  config.action_cable.url = [/ws:\/\/*/, /wss:\/\/*/]
+  config.action_cable.url = "ws://localhost:5001/cable"
   config.action_cable.allowed_request_origins = [/http:\/\/*/, /https:\/\/*/]
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
