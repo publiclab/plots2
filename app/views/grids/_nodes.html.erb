@@ -1,3 +1,5 @@
+<div class="inline-node-container">
+<div style="max-height:800px;overflow:scroll;">
 <table class="table inline-grid <%= type %>-grid <%= className %> <%= className %>-<%= randomSeed %>">
   <tr>
     <th><a data-type="title">Title</a></th>
@@ -21,6 +23,7 @@
     </tr>
   <% end %>
 </table>
+</div>
 <%= will_paginate @nodes, :renderer => BootstrapPagination::Rails if @paginated %>
 
 <a class="grid-embed grid-embed-<%= randomSeed %>" rel="tooltip" title="Embed this table on another site."><i class="fa fa-code" style="color:#aaa;"></i></a>
@@ -46,3 +49,4 @@
     color: #888;
   }
 </style>
+</div>

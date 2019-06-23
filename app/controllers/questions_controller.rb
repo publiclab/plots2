@@ -27,6 +27,27 @@ class QuestionsController < ApplicationController
       .paginate(page: params[:page], per_page: 24)
   end
 
+  def index_shadow
+    @title = 'Questions and Answers'
+    @questions = Node.questions
+      .where(status: 1)
+      .order('node.nid DESC')
+      .paginate(page: params[:page], per_page: 24)
+    
+    @populartitle = 'Popular Questions'
+    @popularquestions = Node.questions
+      .where(status: 1)
+    @popularquestions = filter_questions_by_tag(@questions, params[:tagnames])
+      .order('views DESC')
+      .limit(20)
+
+    @popularwikis = Node.limit(10)
+      .where(type: 'page', status: 1)
+      .order('nid DESC')
+    @unpaginated = true
+
+  end
+
   # a form for new questions, at /questions/new
   def new
     # use another node body as a template

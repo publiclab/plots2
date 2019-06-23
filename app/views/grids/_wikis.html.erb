@@ -1,3 +1,5 @@
+<div class="inline-wiki-container">
+<div style="max-height:500px;overflow:scroll;">
 <table class="table inline-grid <%= type %>-grid <%= className %> <%= className %>-<%= randomSeed %>">
   <tr>
     <th>Title</th>
@@ -21,6 +23,7 @@
     </tr>
   <% end %>
 </table>
+</div>
 <%= will_paginate @wikis, :renderer => BootstrapPagination::Rails if @paginated %>
 
 <a class="grid-embed grid-embed-<%= randomSeed %>" title="Embed this table on another site."><i class="fa fa-code" style="color:#aaa;"></i></a>
@@ -46,3 +49,4 @@
     color: #888;
   }
 </style>
+</div>
