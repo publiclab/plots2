@@ -420,6 +420,12 @@ bootstrap-3-typeahead@^4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/bootstrap-3-typeahead/-/bootstrap-3-typeahead-4.0.2.tgz#cb1c969044856862096fc8c71cc21b3acbb50412"
 
+bootstrap-colorpicker@^2.5.3:
+  version "2.5.3"
+  resolved "https://registry.yarnpkg.com/bootstrap-colorpicker/-/bootstrap-colorpicker-2.5.3.tgz#b50aff8590fbaa6b5aa63a5624e4213f1659a49d"
+  dependencies:
+    jquery ">=1.10"
+
 bootstrap-datepicker@^1.6.0, bootstrap-datepicker@~1.8.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/bootstrap-datepicker/-/bootstrap-datepicker-1.8.0.tgz#c63513931e6f09f16ae9f11b62f32d950df3958e"
@@ -2186,12 +2192,13 @@ image-sequencer-invert@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/image-sequencer-invert/-/image-sequencer-invert-1.0.0.tgz#bb5c0cc2f50ed9ff4cd8d89a7929188f381a5dd4"
 
-image-sequencer@^3.4.5:
-  version "3.4.5"
-  resolved "https://registry.yarnpkg.com/image-sequencer/-/image-sequencer-3.4.5.tgz#4acc3fc5bb813c4f09770893b43f7a4a4adf43af"
+image-sequencer@^3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/image-sequencer/-/image-sequencer-3.5.0.tgz#eda8412816c5bc76688e0d0d1c08e124f2c11002"
   dependencies:
     base64-img "^1.0.4"
     bootstrap "~3.4.0"
+    bootstrap-colorpicker "^2.5.3"
     buffer "~5.2.1"
     commander "^2.11.0"
     data-uri-to-buffer "^2.0.0"
@@ -2472,7 +2479,7 @@ jquery.ui.widget@>=1.9:
   version "1.10.3"
   resolved "https://registry.yarnpkg.com/jquery.ui.widget/-/jquery.ui.widget-1.10.3.tgz#2ceecfc64995412643eeb9508d2197ea93c02fb3"
 
-jquery@>=1.6, jquery@>=1.7, "jquery@>=1.7.1 <4.0.0", jquery@^3.2.1, jquery@^3.3.1, jquery@^3.4.1, jquery@~3:
+jquery@>=1.10, jquery@>=1.6, jquery@>=1.7, "jquery@>=1.7.1 <4.0.0", jquery@^3.2.1, jquery@^3.3.1, jquery@^3.4.1, jquery@~3:
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.4.1.tgz#714f1f8d9dde4bdfa55764ba37ef214630d80ef2"
 
