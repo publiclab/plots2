@@ -96,7 +96,7 @@ class ApplicationController < ActionController::Base
 
     cookies.signed["user_token"] = nil
     if @current_user
-      cookies.signed["user_token"] = @current_user.role
+      cookies.signed["user_token"] = @current_user.persistence_token
     end
     @current_user
   end
