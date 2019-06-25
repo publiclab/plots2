@@ -152,3 +152,26 @@ Take a look at this test [search_service_full_text_search_test.rb](https://githu
 
 This way we don't have errors either using SQLite3 or MySQL on development and tests
 environments.
+
+## Testing your work with Unstable
+
+### What is _unstable_? 
+It is a staging server that includes a copy of the production database and is intended for experimenting or debugging purposes. Those with [write permissions](https://help.github.com/en/articles/repository-permission-levels-for-an-organization) can push to the plots2 `unstable` branch on Github, which will initiate a build and deploy to https://unstable.publiclab.org.
+
+Use it when you need database records that are too difficult or time-consuming to reproduce locally, or to debug a problem on the production site that you can't reproduce locally.
+See summary and usage instructions below.
+
+**Environment:** Test environment
+**Database:** MySQL
+**Data:** Data present at https://unstable.publiclab.org is updated occasionally using the Production database, so it has good amount of data for testing. 
+**Email testing:** _unstable_ server can't send emails so Email related features can't be tested.  
+
+### Pushing on `unstable`
+
+1. Drop a message in the [Gitter chatroom](https://gitter.im/publiclab/publiclab) that you are pushing to _unstable_, as other members also use it for testing their work so you don't want to shock them by pushing your work over theirs. After dropping the message, wait for 5 mins, and if no one mention that they are using the branch, then go to step 2.
+2. Push using: `git push -f https://github.com/publiclab/plots2.git HEAD:unstable`.<br><br>**Note:** If you get this message - `remote: Permission to publiclab/plots2.git denied to <username>` then you don't have permission to push to _unstable_ branch.
+But, don't worry, feel free to ping @publiclab/maintainers on your open PR to request access or ask in the chatroom and someone else with write access will push your work (PR/branch) for you.  
+3. See build Progress at https://jenkins.laboratoriopublico.org/job/Plots-Unstable/. It takes 8-15 mins for build to complete. 
+4. Test website: https://unstable.publiclab.org/. 
+
+Once your PR is merged into plots2/master, code is only deployed to the live site [publiclab.org](publiclab.org) after some time by our maintainers. (They often send a message in our chatroom to notify contributors of this update). Fortunately, you can see your changes implemented immediately at https://stable.publiclab.org, which builds from the master branch. This is useful for testing your work again after a merge.
