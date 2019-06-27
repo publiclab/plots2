@@ -69,4 +69,13 @@ class ScreenshotsTest < ApplicationSystemTestCase
     visit node.path
     take_screenshot
   end
+  
+  test 'blog page with location modal' do
+    visit nodes(:blog).path
+    find('a.blurred-location-input').click
+    # click_on(class: 'blurred-location-input') # alternative
+    fill_in("placenameInput", with: "Pusan")
+    take_screenshot
+  end
+
 end
