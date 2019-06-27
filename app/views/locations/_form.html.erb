@@ -19,8 +19,8 @@
             <% break %>
           <% end %>
           <a href="#" onclick="blurredLocation.goTo(<%= location[0].name.split(":")[1] %> , <%= location[1].name.split(":")[1] %>  , 6);"> 
-            <span class="badge badge-info" style="background-color: #337ab7 ; margin-left: 7px ;">
-              <p>
+            <span class="badge badge-info" style="background-color: #337ab7 ; margin-left: 7px ;margin-top: 2px; ">
+              <p style="padding-top: 10px;">
                 <% if location.count == 3 %>
                   <%= location[2].name.split(":")[1] %>
                 <%end%>
