@@ -18,7 +18,7 @@
 
   <hr />
   <div class="row" id="highlight" style=" text-align: center;">
-    <h3 class="col-12 col-sm-12 col-md-4"><a href = "/tag/question:*/author/<%= params[:id] %>"><%= @questions.length %> questions asked </a><br><br> <%= @answered_questions.count %> answers posted</h3>
+    <h3 class="col-12 col-sm-12 col-md-4"><a href = "/tag/question:*/author/<%= params[:id] %>"><%= Node.questions.where(status: 1, uid: @profile_user.id).length %> questions asked </a><br><br> <%= Comment.where(uid: @profile_user.id).count %> comments posted</h3>
     <h3 class="col-12 col-sm-12 col-md-4"><a href = "/tag/activity:*/author/<%= params[:id] %>"><%= @count_activities_posted %> activities posted </a><br><br> <a href = "/tag/replication:*/author/<%= params[:id] %>"><%= @count_activities_attempted %> activities attempted</a></h3>
     <% if !@map_lat.nil? && !@map_lon.nil? %>
       <%= render :partial => "map/userLeaflet" , locals: { haslocation: true, user: @profile_user } %>
@@ -44,9 +44,15 @@
 
     <div class="tab-pane active" id="research">
       <div class="btn-group text-center" style="margin-bottom:10px;">
-        <a href="#notes" class="btn btn-outline-secondary" data-toggle="tab">Authored <%= "(#{ @notes.count })" %></a>
-        <a href="#coauthored" class="btn btn-outline-secondary" data-toggle="tab">Coauthored  <%= "(#{ @coauthored.count })" %></a>
-        <% if current_user && current_user.uid == @profile_user.uid %><a href="#draft" class="btn btn-outline-secondary" data-toggle="tab">Drafts <%= "(#{ @drafts.count })" %></a><% end %>
+       <ul class="nav nav-tabs">
+          <li class="nav-item" style="list-style-type:none;">
+            <a href="#notes" class="btn btn-outline-secondary" data-toggle="tab">Authored <%= "(#{ @notes.count })" %></a>
+          <li class="nav-item" style="list-style-type:none;">
+            <a href="#coauthored" class="btn btn-outline-secondary" data-toggle="tab">Coauthored  <%= "(#{ @coauthored.count })" %></a>
+          <li class="nav-item" style="list-style-type:none;">  
+            <% if current_user && current_user.uid == @profile_user.uid %>
+              <a href="#draft" class="btn btn-outline-secondary" data-toggle="tab">Drafts <%= "(#{ @drafts.count })" %></a><% end %>
+        </ul>
       </div>
 
       <br />
@@ -70,8 +76,8 @@
 
     <div class="tab-pane" id="questions">
       <div class="btn-group text-center">
-        <a href="#asked" class="btn btn-outline-secondary" data-toggle="tab">Asked<%= "(#{@questions.length})"%></a>
-        <a href="#answered" class="btn btn-outline-secondary" data-toggle="tab">Answered<%= "(#{@answered_questions.count})"%></a>
+        <a href="#asked" class="btn btn-outline-secondary" data-toggle="tab">Asked</a>
+        <a href="#answered" class="btn btn-outline-secondary" data-toggle="tab">Commented</a>
       </div>
 
       <div class="tab-content">
@@ -278,10 +284,10 @@
   <div class="d-none d-md-inline">
     <% if @wikis && @wikis.length > 0 %>
       <h4><%= t('users.profile.wiki_contributed_to') %></h4>
-      <ul class="nav bullet">
+      <ul class="nav">
         <% @wikis.each do |wiki| %>
           <% unless (!@node.nil? && wiki.nid == @node.nid) %>
-            <li><a href="<%= wiki.path %>"><i class="fa fa-<%= wiki.icon %>"></i> <%= wiki.latest.title %></a> <small style="color:#888;"><%= t('users.profile.updated') %> <%= distance_of_time_in_words(wiki.updated_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %> <%= t('users.profile.by') %> <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a></small></li>
+            <li><a href="<%= wiki.path %>"><i style="margin-left: -12px;" class="fa fa-<%= wiki.icon %>"></i> <%= wiki.latest.title %></a> <small style="color:#888;"><%= t('users.profile.updated') %> <%= distance_of_time_in_words(wiki.updated_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %> <%= t('users.profile.by') %> <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a></small></li>
           <% end %>
         <% end %>
         <% if params[:controller] == "search" %>

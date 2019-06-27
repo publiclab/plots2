@@ -61,7 +61,7 @@ class SearchServiceTest < ActiveSupport::TestCase
     result = SearchService.new.search_tags('awesome')
 
     assert_not_nil result
-    assert_equal result.size, 4
+    assert_equal result.size, 1
   end
 
   test 'running search questions' do
