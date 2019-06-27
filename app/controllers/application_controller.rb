@@ -91,6 +91,12 @@ class ApplicationController < ActionController::Base
       # Ensures no code will use old @current_user info. Treat the user
       # as anonymous (until the login process sets @current_user again):
       @current_user = nil
+
+    end
+
+    cookies.signed["user_token"] = nil
+    if @current_user
+      cookies.signed["user_token"] = @current_user.persistence_token
     end
     @current_user
   end
@@ -102,6 +108,7 @@ class ApplicationController < ActionController::Base
       redirect_to login_url
       false
     end
+    return current_user
   end
 
   def require_no_user
