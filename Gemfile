@@ -102,7 +102,8 @@ end
 group :test, :development do
   gem 'capybara'
   gem 'ci_reporter_test_unit'
-  gem 'coveralls', require: false
+  gem 'simplecov', require: false
+  gem 'codecov', require: false
   gem 'jasmine-jquery-rails'
   gem 'jasmine-rails'
   gem 'json_expressions'
