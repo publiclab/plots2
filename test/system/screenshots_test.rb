@@ -69,4 +69,10 @@ class ScreenshotsTest < ApplicationSystemTestCase
     visit node.path
     take_screenshot
   end
+
+  test 'LBLD grid on people page'
+    visit '/people'
+    assert_selector('div.leaflet-layer')
+    take_screenshot
+  end
 end
