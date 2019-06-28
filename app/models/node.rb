@@ -433,7 +433,9 @@ class Node < ActiveRecord::Base
   end
 
   def location_tags
-    if lat && lon
+    if lat && lon && place
+      power_tag_objects('lat') + power_tag_objects('lon') + power_tag_objects('place')
+    elsif lat && lon
       power_tag_objects('lat') + power_tag_objects('lon')
     else
       []
@@ -560,6 +562,14 @@ class Node < ActiveRecord::Base
   def lon
     if has_power_tag('lon')
       power_tag('lon').to_f
+    else
+      false
+    end
+  end
+
+  def place
+    if has_power_tag('place')
+      power_tag('place')
     else
       false
     end
