@@ -73,7 +73,7 @@ class ScreenshotsTest < ApplicationSystemTestCase
   test 'blog page with location modal' do
     visit '/'
     click_on 'Login'
-    fill_in("username-login", with: "Bob")
+    fill_in("username-login", with: "steff1")
     fill_in("password-signup", with: "secretive")
     click_on "Log in"
     visit nodes(:blog).path
