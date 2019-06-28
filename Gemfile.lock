@@ -407,9 +407,9 @@ GEM
       uber (< 0.2.0)
     request_store (1.4.1)
       rack (>= 1.4)
-    responders (2.4.1)
-      actionpack (>= 4.2.0, < 6.0)
-      railties (>= 4.2.0, < 6.0)
+    responders (3.0.0)
+      actionpack (>= 5.0)
+      railties (>= 5.0)
     rest-client (2.0.2)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
@@ -625,7 +625,7 @@ DEPENDENCIES
   rb-readline
   rdiscount (~> 2.2, >= 2.2.0.1)
   recaptcha
-  responders (~> 2.4)
+  responders (~> 3.0)
   rest-client
   reverse_markdown
   rspec
