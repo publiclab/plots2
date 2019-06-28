@@ -19,7 +19,7 @@ gem 'georuby', '2.0'
 gem "google-cloud-storage"
 gem 'grape'
 gem 'grape-entity'
-gem 'grape-swagger', '~> 0.32.1'
+gem 'grape-swagger', '~> 0.33.0'
 gem 'grape-swagger-entity', '0.3.3'
 gem 'grape-swagger-rails'
 gem 'grape-swagger-ui'
