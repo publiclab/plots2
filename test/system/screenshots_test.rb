@@ -69,10 +69,18 @@ class ScreenshotsTest < ApplicationSystemTestCase
     visit node.path
     take_screenshot
   end
-
-  test 'LBLD grid on people page'
-    visit '/people'
-    assert_selector('div.leaflet-layer')
+  
+  test 'blog page with location modal' do
+    visit '/'
+    click_on 'Login'
+    fill_in("username-login", with: "steff1")
+    fill_in("password-signup", with: "secretive")
+    click_on "Log in"
+    visit nodes(:blog).path
+    find('a.blurred-location-input').click
+    # click_on(class: 'blurred-location-input') # alternative
+    fill_in("placenameInput", with: "Pusan")
     take_screenshot
   end
+
 end
