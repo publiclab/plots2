@@ -1,7 +1,7 @@
 require "application_system_test_case"
 
 class PeoplepageTest < ApplicationSystemTestCase
-  Capybara.default_max_wait_time = 60
+  Capybara.default_max_wait_time = 180
 
   test 'LBLD grid is loaded on people map' do
     visit '/'
@@ -17,9 +17,9 @@ class PeoplepageTest < ApplicationSystemTestCase
     visit '/people'
 
     # presence of markers
-    page.should have_selector(".leaflet-marker-icon")
+    assert page.has_selector?(".leaflet-marker-icon")
     # presence of grid
-    page.should have_selector(".leaflet-interactive")
+    assert page.has_selector?(".leaflet-interactive")
 
     take_screenshot
 
