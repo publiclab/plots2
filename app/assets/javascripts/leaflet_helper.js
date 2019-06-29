@@ -128,8 +128,8 @@ function setupLeafletMap() {
     var wind = L.OWM.wind({});
 
     var city = L.OWM.current({intervall: 15, minZoom: 3});
-    // var windrose = L.OWM.current({intervall: 15, minZoom: 3, markerFunction: myWindroseMarker, popup: false, clusterSize: 50,imageLoadingBgUrl: 'https://openweathermap.org/img/w0/iwind.png' });
-    // windrose.on('owmlayeradd', windroseAdded, windrose); 
+    var windrose = L.OWM.current({intervall: 15, minZoom: 3, markerFunction: myWindroseMarker, popup: false, clusterSize: 50,imageLoadingBgUrl: 'https://openweathermap.org/img/w0/iwind.png' });
+    windrose.on('owmlayeradd', windroseAdded, windrose); 
 
     var baseMaps = {
       "Baselayer1": baselayer
@@ -169,7 +169,7 @@ function setupLeafletMap() {
          "temp": temp , 
          "wind": wind , 
          "Cities (zoom in)": city  , 
-        // "windrose (zoom in)": windrose
+         "windrose (zoom in)": windrose
     };
     
     if(sethash === 1) {
@@ -209,7 +209,7 @@ function setupLeafletMap() {
         "temp": temp,
         "wind": wind,
         "Cities": city,
-        //"windrose": windrose
+        "windrose": windrose
       };
 
       var hash = new L.Hash(map, allMapLayers);    
