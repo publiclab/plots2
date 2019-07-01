@@ -44,7 +44,7 @@
     "leaflet-environmental-layers": "^1.2.4",
     "leaflet-fullhash": "github:sagarpreet-chadha/leaflet-fullHash",
     "leaflet-spin": "1.1.0",
-    "marked": "^0.6.2",
+    "marked": "^0.6.3",
     "megamark": "~3.3.0",
     "moment": "~> 2.24.0",
     "noty": "3.1.4",
