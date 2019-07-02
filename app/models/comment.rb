@@ -135,6 +135,9 @@ class Comment < ApplicationRecord
 
       notify_callout_users
 
+      # Send Browser Notification Using Action Cable
+      send_browser_notification
+
       # notify other commenters, revisers, and likers, but not those already @called out
       already = mentioned_users.collect(&:uid) + [parent.uid]
       uids = uids_to_notify - already
@@ -142,6 +145,20 @@ class Comment < ApplicationRecord
 
       notify_users(uids, current_user)
       notify_tag_followers(already + uids)
+    end
+  end
+
+  def send_browser_notification
+    notification = Hash.new
+    notification[:title] = "New Comment on #{parent.title}"
+    notification[:path] = parent.path
+    option = {
+      body: comment,
+      icon: "https://publiclab.org/logo.png"
+    }
+    notification[:option] = option
+    uids_to_notify.each do |uid|
+      ActionCable.server.broadcast "users:notification:#{uid}", notification: notification
     end
   end
 
