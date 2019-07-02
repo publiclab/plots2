@@ -2,6 +2,7 @@
 <table class="table">
     <tr>
       <th class="d-lg-none"></th>
+      <th><i data-toggle="tooltip" title="Commenting method" class="fa fa-envelope"></i></th>
       <th><%= t('users.list.comment') %></th>
       <th><%= t('users.list.last_activity') %></th>
 
@@ -14,6 +15,11 @@
 
   <% comments.each do |comment| %>
    <tr id="c<% comment.cid %>">
+     <td>
+       <% if comment.comment_via == 1 %>
+         <i data-toggle="tooltip" title="This comment was posted by email." class="fa fa-envelope"></i>
+       <% end %>
+     </td>
      <td>
       "<%= raw strip_tags(sanitize(RDiscount.new(comment.comment).to_html)).truncate(150) %>" |
       <% if comment.parent %>
