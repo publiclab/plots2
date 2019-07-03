@@ -58,6 +58,21 @@ class ScreenshotsTest < ApplicationSystemTestCase
     take_screenshot
   end
 
+  test 'question page' do
+    visit nodes(:question).path
+    take_screenshot
+  end
+
+  test 'methods' do
+    visit '/methods'
+    take_screenshot
+  end
+
+  test 'comments' do
+    visit '/comments'
+    take_screenshot
+  end
+
   test 'wiki page with inline grids' do
     node = nodes(:place) # /wiki/chicago page
     node.add_tag('place', users(:bob)) # lets get a map on this page! 
