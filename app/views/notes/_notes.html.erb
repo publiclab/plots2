@@ -20,7 +20,7 @@
               <% if logged_in_as(['admin','moderator']) %>
                 <%= t('notes._notes.moderate_first_time_post') %> <br class="d-none d-lg-inline"/>
                 <a class="btn btn-outline-secondary btn-sm" href="/moderate/publish/<%= node.id %>"><%= t('notes._notes.approve') %></a>
-                <a class="btn btn-outline-secondary btn-sm" href="/moderate/spam/<%= node.id %>"><%= t('notes._notes.spam') %></a>
+                <a class="btn btn-outline-secondary btn-sm" data-test="spam" href="/moderate/spam/<%= node.id %>"><%= t('notes._notes.spam') %></a>
               <% else %>
                 <%= raw t('notes._notes.pending_approval', :url1 => '/wiki/moderation') %>
               <% end %>
