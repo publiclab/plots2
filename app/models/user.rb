@@ -444,6 +444,35 @@ class User < ActiveRecord::Base
     end
   end
 
+  def get_all_used_locations
+    latest_locations = []
+    nodes = self.nodes.order('nid DESC').where(status: 1)
+    nodes.each do |node|
+      location_tags = node.location_tags
+      if location_tags.count > 0
+        latest_locations << location_tags
+      end
+    end
+    latest_locations
+  end
+
+  def get_latest_used_location
+    latest_location = []
+    nodes = self.nodes.order('nid DESC').where(status: 1)
+    nodes.each do |node|
+      location_tags = node.location_tags
+      if location_tags.count > 0
+        latest_location << location_tags
+        break
+      end
+    end
+    if latest_location.count > 0
+      latest_location[0][0] = latest_location[0][0].name.split(":")[1].to_f
+      latest_location[0][1] = latest_location[0][1].name.split(":")[1].to_f
+    end
+    latest_location
+  end
+
   private
 
   def decrease_likes_banned

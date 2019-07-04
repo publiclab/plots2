@@ -58,6 +58,21 @@ class ScreenshotsTest < ApplicationSystemTestCase
     take_screenshot
   end
 
+  test 'question page' do
+    visit nodes(:question).path
+    take_screenshot
+  end
+
+  test 'methods' do
+    visit '/methods'
+    take_screenshot
+  end
+
+  test 'comments' do
+    visit '/comments'
+    take_screenshot
+  end
+
   test 'wiki page with inline grids' do
     node = nodes(:place) # /wiki/chicago page
     node.add_tag('place', users(:bob)) # lets get a map on this page! 
@@ -69,4 +84,18 @@ class ScreenshotsTest < ApplicationSystemTestCase
     visit node.path
     take_screenshot
   end
+  
+  test 'blog page with location modal' do
+    visit '/'
+    click_on 'Login'
+    fill_in("username-login", with: "steff1")
+    fill_in("password-signup", with: "secretive")
+    click_on "Log in"
+    visit nodes(:blog).path
+    find('a.blurred-location-input').click
+    # click_on(class: 'blurred-location-input') # alternative
+    fill_in("placenameInput", with: "Pusan")
+    take_screenshot
+  end
+
 end
