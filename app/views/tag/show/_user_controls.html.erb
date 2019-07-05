@@ -5,20 +5,21 @@
     <li>
     <% unless @wildcard %>
       <%= link_to tag_stats_path, id: params[:id] ,title: "Click to view graph" do %>
-        <i class=""><i class="fa fa-bar-chart"></i> Stats </i>
+        <i><i class="fa fa-bar-chart"></i> Stats </i>
       <% end %>
     <% end %>
     </li>
-    <li><a class="" href="/feed/tag/<%= params[:id] %>.rss"><i class="fa fa-rss"></i> RSS</a></li>
+    <li><a href="/feed/tag/<%= params[:id] %>.rss"><i class="fa fa-rss"></i> RSS</a></li>
     <% unless @wildcard %>
       <% if current_user.following(params[:id]) %>
         <li><a rel="tooltip" title="<%= t('tag.show.unfollow') %>" class="active" href="/unsubscribe/tag/<%= params[:id] %>" data-method="delete"><i class="fa fa-user-plus" aria-hidden="true"></i> <%= t('tag.show.following') %> <b><%= params[:id] %></b></a> </li>
       <% else %>
-        <li><a class="" href="/subscribe/tag/<%= params[:id] %>"><i class="fa fa-user-plus" aria-hidden="true"></i> <%= t('tag.show.follow') %> <b><%= params[:id] %></b></a> </li>
+        <li><a href="/subscribe/tag/<%= params[:id] %>"><i class="fa fa-user-plus" aria-hidden="true"></i> <%= t('tag.show.follow') %> <b><%= params[:id] %></b></a> </li>
       <% end %>
-        <li><a class="" rel="popover" data-placement="bottom" data-html="true" data-title="<%= t('tag.show.users_following_tag') %>" data-content="<% Tag.followers(params[:id]).each do |user| %><i class='fa fa-star-o'></i> <a href='/profile/<%= user.username %>'><%= user.username %></a><br /><% end %><% if Tag.follower_count(params[:id]) == 0 %><i><%= t('tag.show.none') %></i><% end %>"><%= Tag.follower_count(params[:id]) %> <i class="fa fa-user"></i> <span class="caret"></span></a></li>
+        <li><a rel="popover" data-placement="bottom" data-html="true" data-title="<%= t('tag.show.users_following_tag') %>" data-content="<% Tag.followers(params[:id]).each do |user| %><i class='fa fa-star-o'></i> <a href='/profile/<%= user.username %>'><%= user.username %></a><br /><% end %><% if Tag.follower_count(params[:id]) == 0 %><i><%= t('tag.show.none') %></i><% end %>"><%= Tag.follower_count(params[:id]) %> <i class="fa fa-user"></i> <span class="caret"></span></a></li>
+        <li><a href="/tag-pages">How to edit this card</a></li>
     <% end %>
-  </ul>
+</ul>
 
 <!-- AJAXify -->
 <% end %>
