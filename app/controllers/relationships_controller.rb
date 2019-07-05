@@ -11,7 +11,7 @@ class RelationshipsController < ApplicationController
       else
         format.html {
           flash[:error] = "Error in following user"
-          URI(request.referer || "").path
+          redirect_to URI(request.referer || "").path
         }
         format.js { render "create", locals: { following: false, profile_user: user } }
       end
