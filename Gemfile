@@ -43,7 +43,7 @@ gem 'progress_bar'
 gem 'rack-cors', :require => 'rack/cors'
 gem "rack-openid"
 gem "rack-test", "1.1.0"
-gem 'rails', '5.2.2.1'
+gem 'rails', '5.2.3'
 gem 'rails-controller-testing'
 gem 'rails-dom-testing'
 gem 'rails-i18n', '~> 5.1.3'
