@@ -1,26 +1,20 @@
 <% if @wiki %>
   <div id="wiki-content">
     <% if @wiki.main_image %>
-          
+
           <div class="im">
             <div class="img-out1 d-none d-md-block" style="margin-bottom:10px;">
-              <%= image_tag(@wiki.main_image.path, 
+              <%= image_tag(@wiki.main_image.path,
                             class: "img-fluid d-none d-md-block",
                             id: "tag-wiki-header-image1") %>
             </div>
             <div class="img-out2" style="margin-bottom:10px;">
-            <%= image_tag(@wiki.main_image.path, 
+            <%= image_tag(@wiki.main_image.path,
                           class: "img-fluid d-sm-none",
                           id: "tag-wiki-header-image2") %>
             </div>
             <div class="bottom-right"><%= Tag.follower_count(params[:id]) %> people discusssing</div>
           </div>
-
-          <!-- <div class="col-lg-6">
-          <h1><%= @wiki.latest.title%></h1>
-          <p><%= @wiki.latest.render_body.html_safe.match(/<p>(.+)<\/p>/).to_a.try(:first).to_s.html_safe %></p>
-          <p><%= link_to("Learn more on the wiki page>>", "/wiki/#{params[:id]}") if @wiki.latest.render_body.html_safe.match(/<p>(.+)<\/p>/).to_a.length > 1 %></p>
-          </div> -->
 
     <% else %>
 
@@ -52,15 +46,13 @@
 <% else %>
 
 <div class="im d-none d-md-block" id="wiki-empty1">
-    <h5 class="line">This topic has no lead wiki page. </h5>
+    <!-- <h5 class="line">This topic has no lead wiki page. </h5> -->
     <div class="bottom-right"><%= Tag.follower_count(params[:id]) %> people discusssing</div>
 </div>
 <div class="im d-sm-none" id="wiki-empty2">
-    <h5 style="margin: 5px; color: #777;">This topic has no lead wiki page. </h5>
+    <!-- <h5 style="margin: 5px; color: #777;">This topic has no lead wiki page. </h5> -->
     <div class="bottom-right"><%= Tag.follower_count(params[:id]) %> people discusssing</div>
 </div>
-
-<p><a class="btn btn-primary requireLogin ml-5" href="/wiki/new?title=<%= params[:id] %>"><span class="fa fa-plus fa-white"></span> Add one now</a></p>
 <% end %>
 
 <style>
@@ -78,7 +70,7 @@
   width:auto;
   z-index: 0;
   background-size:cover;
-  height: 350px; 
+  height: 350px;
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -140,7 +132,7 @@
   margin-bottom:10px;
   display: flex;
   justify-content: center;
-  align-items: center; 
+  align-items: center;
   margin-top: -20px;
 }
 
