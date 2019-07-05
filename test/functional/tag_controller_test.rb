@@ -431,27 +431,6 @@ class TagControllerTest < ActionController::TestCase
     assert (notes & expected).present?
   end
 
-  test 'should have active Research tab for notes' do
-    tag = tags(:test)
-
-    get :show, params: { id: tag.name }
-
-    selector = css_select "ul>li>a[href = '/tag/test']"
-    assert_equal selector.size, 1
-    selector = css_select '#notes.active'
-    assert_equal selector.size, 1
-  end
-
-  test 'should have active question tab for question' do
-    tag = tags(:question)
-
-    get :show, params: { id: tag.name }
-    selector = css_select "ul>li>a[href = '/questions/tag/question:spectrometer']"
-    assert_equal selector.size, 1
-    selector = css_select '#questions.active'
-    assert_equal selector.size, 1
-  end
-
   test 'can create tag instance (community_tag) using a parent tag' do
     UserSession.create(users(:bob))
 
@@ -562,7 +541,7 @@ class TagControllerTest < ActionController::TestCase
   test 'should have active question tab for question for show_for_author' do
     tag = tags(:question)
     get :show_for_author, params: { id: tag.name, author: 'jeff' }
-    selector = css_select "ul>li>a[href = '/questions/tag/question:spectrometer/author/jeff']"
+    selector = css_select "a[href = '/questions/tag/question:spectrometer/author/jeff']"
     assert_equal selector.size, 1
     selector = css_select '#questions.active'
     assert_equal selector.size, 1
