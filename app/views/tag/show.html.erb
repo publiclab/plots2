@@ -6,7 +6,7 @@
     <div class= "tag_card">
       <div class="row">
         <div class="col-md-10">
-          <h1 style="text-align:left;"><b><%= @title %></b></h1>
+          <h1 style="margin-top:6px;text-align:left;"><%= @title %></h1>
         </div>
         <div class="col-md-2">
           <%= render :partial => "tag/show/user_controls" %>
@@ -19,12 +19,12 @@
       <% end %>
       <div class = "tag-buttons">
         <% if @related_tags %>
-          <a><%= render partial: 'tag/subscribe_button', locals: {tags: @related_tags } %></a>
+          <a><%= render partial: 'tag/subscribe_button', locals: { tags: @related_tags, buttonStyle: "btn-primary btn-lg" } %></a>
         <% end %>
         <% if @wiki %>
-          <a><%= link_to("Learn more &raquo;".html_safe, "/wiki/#{params[:id]}", :class=> "btn btn-outline-secondary btn-sm sub")%></a>
+          <a><%= link_to("Learn more &raquo;".html_safe, "/wiki/#{params[:id]}", :class=> "btn btn-outline-secondary btn-lg")%></a>
         <% else %>
-          <a class="btn btn-outline-secondary btn-sm sub" href="/wiki/new?title=<%= params[:id] %>">Add a wiki page <span class="fa fa-plus"></span></a>
+          <a class="btn btn-outline-secondary btn-lg" href="/wiki/new?title=<%= params[:id] %>">Add a wiki page <span class="fa fa-plus"></span></a>
         <% end %>
       </div>
   </div>
@@ -127,13 +127,6 @@
 
   .tag-buttons{
     padding-top: 30px;
-  }
-
-  .sub{
-    border-radius: 5px;
-    margin-bottom: 12px;
-    padding: 5px;
-    color:black;
   }
 
   .container{
