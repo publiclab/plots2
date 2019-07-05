@@ -19,7 +19,7 @@
       <% end %>
       <div class = "tag-buttons">
         <% if @related_tags %>
-          <a><%= render partial: 'tag/subscribe_button', locals: { tags: @related_tags, buttonStyle: "btn-primary btn-lg" } %></a>
+          <a><%= render partial: 'tag/subscribe_button', locals: { tags: @related_tags, buttonStyle: "btn-primary btn-lg", buttonColor: "white" } %></a>
         <% end %>
         <% if @wiki %>
           <a><%= link_to("Learn more &raquo;".html_safe, "/wiki/#{params[:id]}", :class=> "btn btn-outline-secondary btn-lg")%></a>
