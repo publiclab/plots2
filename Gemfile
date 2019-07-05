@@ -119,6 +119,7 @@ group :test, :development do
   gem 'teaspoon-mocha'
   gem 'timecop'
   gem 'pry-rails'
+  gem 'action-cable-testing'
 end
 
 group :production do
