@@ -3,6 +3,9 @@
 </div>
 
 <div class="col-md-10">
+
+  <div id="google" id="gcse-searchresults-only" resultsUrl="https://publiclab.org/wiki/search" ></div>
+
   <div class="container">
     <% if  @nodes.all?{|k,v| v.blank?} %>
       <h4>
@@ -49,3 +52,29 @@
     <%= render partial: 'tags_blank' %>
   </div>
 </div>
+
+<script>
+
+var url_name = window.location.pathname;
+query_data = url_name.split('/')[2];
+
+
+var search, onSearchReady = function() {
+  if (!search) search = google.search.cse.element.render({div:'google'});
+  console.log(search)
+}
+
+window.__gcse = {
+  //parsetags: 'explicit',
+  callback: onSearchReady
+};
+
+(function() {
+  var cx = '008366342703784425914:_p25pf-gy_w';
+  var gcse = document.createElement('script'); gcse.type = 'text/javascript';
+  gcse.async = true;
+  gcse.src = '//cse.google.com/cse.js?cx=' + cx;
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gcse, s);
+})();
+
+</script>
