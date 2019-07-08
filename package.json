@@ -52,6 +52,7 @@
     "popper.js": "^1.15.0",
     "publiclab-editor": "~2.0.0",
     "short-code-forms": "jywarren/short-code-forms#~0.0.1",
+    "simple-data-grapher": "^1.2.2",
     "typeahead.js": "^0.11.1",
     "typeahead.js-browserify": "Javier-Rotelli/typeahead.js-browserify#~1.0.7",
     "woofmark": "~4.2.0"
