@@ -44,6 +44,7 @@ class User < ActiveRecord::Base
 
   has_many :images, foreign_key: :uid
   has_many :node, foreign_key: 'uid'
+  has_many :csvfiles, foreign_key: :uid
   has_many :node_selections, foreign_key: :user_id
   has_many :revision, foreign_key: 'uid'
   has_many :user_tags, foreign_key: 'uid', dependent: :destroy
