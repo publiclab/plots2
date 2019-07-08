@@ -123,6 +123,13 @@ Plots2::Application.routes.draw do
   get 'wiki/edit/:lang/:id' => 'wiki#edit'
   get 'wiki' => 'wiki#index'
 
+  #routes for simple-data-grapher
+  get 'simple-data-grapher' => 'csvfiles#new'
+  post 'simple-data-grapher/object' => 'csvfiles#setter'
+  get 'simple-data-grapher/prev_file' => 'csvfiles#prev_files'
+  get 'simple-data-grapher/data/:id' => 'csvfiles#user_files'
+  get 'simple-data-grapher/file/:uid/:id' => 'csvfiles#delete'
+
   get 'place/:id/feed' => 'place#feed'
   get 'n/:id' => 'notes#shortlink'
   get 'i/:id' => 'images#shortlink'
