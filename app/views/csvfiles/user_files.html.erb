@@ -1,0 +1,70 @@
+<div class="blah">
+    <div class="heading_container_data">
+        <h2 class="main_heading_data"> Your Data</h2>
+        <p class="sub_heading_data">View, download and delete CSV files and Research Noted on charts</p>
+    </div>
+</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">S.No</th>
+      <th scope="col">File Title</th>
+      <th scope="col">Download</th>
+      <th scope="col">Delete</th>
+      <th scope="col">Description</th>
+    </tr>
+  </thead>
+    <% count=1 %>
+    <% @user_files.each do |file,index| %>
+        <tr>
+            <th scope="row"><%= count %></th>
+            <td> 
+                <% if file.filetitle!="" %>
+                    <%= file.filetitle %>
+                <% else %>
+                    <%= file.filename %>
+                <% end %>
+            </td>
+            <% download_link = file.filetitle+".csv"%>
+            <% if file.filetitle=="" %>
+                <% download_link = file.filename+".csv" %>
+            <% end %>
+            <td><a href="<%= file.filestring %>" download="<%= download_link %>"><i class="fa fa-download" aria-hidden="true"></i></a></td>
+            <td><a href="/simple-data-grapher/file/<%= file.uid %>/<%= file.id %>"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+            <td>
+                <% if file.filedescription!="" %>
+                    <%= file.filedescription %>
+                <% else %>
+                    <p> No Description </p>
+                <% end %>
+            </td>
+            <% count+=1 %>
+        </tr>
+    <% end %>
+</table>
+
+<style>
+.main_heading_data{
+    font-family: 'Ubuntu Condensed';
+    text-align: center;
+    color: #001a66;
+    font-size: 40px;
+    align-items: center;
+  justify-content: center;
+    
+}
+.sub_heading_data{
+    font-family: 'Ubuntu Condensed';
+    text-align: center;
+    color: #525357;
+    font-size: 18px;
+    padding-top: 5px;
+    align-items: center;
+  justify-content: center;
+}
+.blah{
+    display: flex;
+    flex-direction: column;
+    margin-left: 300px;
+}
+</style>
