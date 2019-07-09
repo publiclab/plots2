@@ -15,13 +15,13 @@ class CsvfilesController < ApplicationController
       filestring: params[:filestring]
     )
     if @csvfile.save
-      render {:json => @csvfile}
+      render :json => @csvfile
     end
   end
 
   def prev_files
     @allfile = Csvfile.where(uid: params[:uid])
-    render {:json => @allfile}
+    render :json => @allfile
   end
 
   def user_files
