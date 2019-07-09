@@ -155,11 +155,11 @@
   <% if current_user && @profile_user %>
     <% unless current_user == @profile_user %>
       <hr />
-      <div id="follow_form" class="col-lg-offset-4">
+      <div id="follow_form" class="col-md-offset-4">
         <% if current_user.following?(@profile_user) %>
-          <%= render partial: 'unfollow', locals: { user: @profile_user } %>
+          <a id="profile-unfollow-button" class="btn btn-primary" data-method="delete" data-remote="true" href="../relationships/<%= @profile_user.id %>">Unfollow</a>
         <% else %>
-          <%= render partial: 'follow', locals: { user: @profile_user } %>
+          <a id="profile-follow-button" class="btn btn-primary" data-method="post" data-remote="true" href="/relationships" data-params="followed_id=<%= @profile_user.id %>">Follow</a>
         <% end %>
       </div>
       <br />
