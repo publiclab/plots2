@@ -1,0 +1,6 @@
+<% if unfollowing %>
+  notyNotification('sunset', 3000, 'info', 'topRight', 'You have unfollowed <%= profile_user.username %>');
+  $('#follow_form').html('<a id="profile-follow-button" class="btn btn-primary" data-method="post" data-remote="true" href="/relationships" data-params="followed_id=<%= profile_user.id %>">Follow</a>');
+<% else %>
+  notyNotification('sunset', 3000, 'error', 'topRight', 'Error in unfollowing user');
+<% end %>

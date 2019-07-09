@@ -7,6 +7,7 @@
                 </a>
             <% end %>
         <% end %>
+
   <li data-toggle="tooltip" data-placement="top" rel="tooltip" title="Helpful? Like it and get updates!" class="btn btn-outline-secondary btn-sm btn-like" node-id="<%= node.id %>" id="like-button-<%= node.id %>">
     <% if !current_user %>
       <a id="open-login-like" data-hashparams="like" data-toggle="modal" data-target="#loginModal">
@@ -20,6 +21,7 @@
   </li>
 
   <li data-toggle="tooltip" data-placement="top" title="Print and more tools" class="btn btn-outline-secondary btn-sm" rel="popover" data-placement="left" data-html="true" style="overflow: auto; max-height: 500px" data-content="
+
 <p><b>Users who liked this</b></p>
 <% node.likers.each do |user| %>
   <i class='fa fa-star-o'></i> <a href='/profile/<%= user.username %>/'><%= user.username %></a><br />
@@ -80,7 +82,7 @@
 
 
 ">
-<span class="fa fa-caret-down"></span></li>
+      <span class="fa fa-caret-down"></span></li>
   </ul>
 
   <style type="text/css">
@@ -95,7 +97,6 @@
     $('[rel="tooltip"]').on('click', function () {
         $(this).tooltip('hide')
     })
-
     function print_three_column() {
       $('body').css('column-count', 3)
                .css('column-gap', '50px');
@@ -107,32 +108,24 @@
     // Event listner on CLICK on links
     $(document).on("click", "#print-command-3-col",print_three_column);
     $(document).on("click", "#print-command-no-links",print_linkless);
-
     jQuery(document).ready(function() {
-
       // 304 cached response yields no data to insert, which is not useful
       jQuery.ajaxSetup({
         cache: false
       });
-
       // opens modal to login before you can like;
       $("#open-login-like").click(function() {
         $("input[name='hash_params']").val($(this).attr("data-hashparams"));
       });
-
       // triggers liking and unliking
       <% if current_user %>
         $('#like-button-<%= node.id %>').on('click', debounce(<% if node.liked_by(current_user.uid) %>clickliked<% else %>clicknotliked<% end %>, 200, true));
-
         // leaving below uncommented for now - possibility useful for implement comment like functionality?
-
         // if(window.location.href.includes("#like")) {
         //   $('#like-button-<%= node.id %>').click();
         // }
-
       <% end %>
     });
-
     $('body').on('click', '.nestedPopover', function() {
       $(this).popover({
         container: 'body',
@@ -141,7 +134,6 @@
       $(this).popover('show');
       $(this).removeClass("nestedPopover");
     });
-
     $('body').on('click', function (e) { // If there's a click event in the body
       $('[rel=popover]').each(function () { // For each popover
         /*
