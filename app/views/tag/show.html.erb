@@ -1,6 +1,5 @@
 <script src="/assets/wikis.js" type="text/javascript"></script>
 
-<div class="col-lg-12">
   <div class="container">
   <%= render partial: 'tag/show/header' %>
     <div class= "tag_card">
@@ -29,52 +28,67 @@
       </div>
   </div>
 </div>
+
+<div class="container">
   <div class="box">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-9">
 
-    <%= render partial: 'tag/show/contributors' %>
+            <%= render partial: 'tag/show/contributors' %>
 
-    <% unless @tags.try(:first).try(:parent).nil? %>
-      <small>Alias of: <%= @tags.first.parent %></small>
-    <% end %>
+            <% unless @tags.try(:first).try(:parent).nil? %>
+              <small>Alias of: <%= @tags.first.parent %></small>
+            <% end %>
 
-    <%= render :partial => "notes/format_toggle" if @node_type == "note" %>
+            <% if logged_in_as(['admin']) %>
+              <br />
+              <p><a class="btn btn-outline-secondary btn-lg" onClick="$('#add_parent').toggle();">Add tag parent</a> (admin only)</p>
+              <div id="add_parent" style="display:none;">
+                <p><b>Tag parenting</b></p>
+                <div class="card bg-light">
+                  <div class="card-body">
+                    <form class="form" action="/tag/parent" method="get">
+                      <input type="text" placeholder="parent" name="parent" />
+                      <input type="hidden" placeholder="parent" name="name" value="<%= @tags&.first&.name %>" />
+                      <input class="btn btn-outline-secondary btn-lg" type="submit" value="Submit" />
+                    </form>
+                  </div>
+                </div>
+              </div>
+            <% end %>
 
-    <% if logged_in_as(['admin']) %>
-      <hr />
-      <p><a class="btn btn-outline-secondary btn-lg" onClick="$('#add_parent').toggle();">Add tag parent</a> (admin only)</p>
-      <div id="add_parent" style="display:none;">
-        <p><b>Tag parenting</b></p>
-        <div class="card bg-light">
-          <div class="card-body">
-            <form class="form" action="/tag/parent" method="get">
-              <input type="text" placeholder="parent" name="parent" />
-              <input type="hidden" placeholder="parent" name="name" value="<%= @tags&.first&.name %>" />
-              <input class="btn btn-outline-secondary btn-lg" type="submit" value="Submit" />
-            </form>
+            <%= render partial: "tag/show/questions" %>
+
+            <%= render partial: 'tag/show/nav_tabs' %>
+
+            <p style="padding-top:8px;">
+            <a class="btn btn-sm btn-outline-secondary" href="?order=views"><i class="fa fa-eye"></i> by views</a>
+            <a class="btn btn-sm btn-outline-secondary" href="?order=likes"><i class="fa fa-star"></i> by likes</a>
+            </p><br />
+
+            <%= render partial: 'tag/show/tab_content' %>
+            <div>
+              <script type="text/javascript">
+                $('#questions .btn-group .btn').click(function(){
+                  $(this).addClass('active').siblings().removeClass('active');
+                });
+              </script>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="people-map">
+              <%= render :partial => "map/peopleLeaflet" , locals: {people: true , lat:23 , lon: 4} %>
+            </div>
+            <a href="/people" style="color:#666;"><u>See more people near here</u></a><br>
+            <%= render partial: "tag/show/related_tags" %>
           </div>
         </div>
       </div>
-    <% end %>
-
-    <%= render partial: "tag/show/questions" %>
-    <%= render partial: "tag/show/related_tags" %>
-    <%= render partial: 'tag/show/nav_tabs' %>
-
-    <p style="padding-top:8px;">
-    <a class="btn btn-sm btn-outline-secondary" href="?order=views"><i class="fa fa-eye"></i> by views</a>
-    <a class="btn btn-sm btn-outline-secondary" href="?order=likes"><i class="fa fa-star"></i> by likes</a>
-    </p><br />
-
-    <%= render partial: 'tag/show/tab_content' %>
-  <div>
-    <script type="text/javascript">
-      $('#questions .btn-group .btn').click(function(){
-        $(this).addClass('active').siblings().removeClass('active');
-      });
-    </script>
+    </div>
   </div>
 </div>
-
 <%= stylesheet_link_tag "dashboard" %>
 
 <style>
@@ -82,6 +96,10 @@
    padding: 2%;
    margin: 2%;
  }
+
+ /* .people-map{
+   height: 200px;
+ } */
 
  .tag_card{
     width : 25em;
