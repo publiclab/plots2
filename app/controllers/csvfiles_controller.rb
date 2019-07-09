@@ -1,8 +1,8 @@
 class CsvfilesController < ApplicationController
   before_action :require_user, only: %i(delete user_files)
-  
+
   def new
-    #to render the index page of simple-data-grapher
+    # to render the index page of simple-data-grapher
   end
 
   def setter
@@ -14,14 +14,12 @@ class CsvfilesController < ApplicationController
       filename: "file" + Time.now.to_i.to_s,
       filestring: params[:filestring]
     )
-    if @csvfile.save
-      render :json => @csvfile
-    end
+    render json: @csvfile if @csvfile.save
   end
 
   def prev_files
     @allfile = Csvfile.where(uid: params[:uid])
-    render :json => @allfile
+    render json: @allfile
   end
 
   def user_files
@@ -29,14 +27,13 @@ class CsvfilesController < ApplicationController
   end
 
   def delete
-    if params[:id] && params[:uid].to_i == current_user.uid
-      file = Csvfile.where(id: params[:id].to_i)
-      if file.destroy(params[:id].to_i)
-        flash[:notice] = "Deleted the file"
-      else
-        flash[:error] = "Could not delete the file"
-      end
-      redirect_to '/simple-data-grapher/data/' + params[:uid]
+    return unless params[:id] && params[:uid].to_i == current_user.uid
+    file = Csvfile.where(id: params[:id].to_i)
+    if file.destroy(params[:id].to_i)
+      flash[:notice] = "Deleted the file"
+    else
+      flash[:error] = "Could not delete the file"
     end
+    redirect_to "simple-data-grapher/data/#{params[:uid]}"
   end
 end
