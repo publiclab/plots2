@@ -33,7 +33,7 @@ class ScreenshotsTest < ApplicationSystemTestCase
     take_screenshot
   end
 
-  def 'tag by author page' do
+  test 'tag by author page' do
     visit '/tag/spectrometer/author/bob'
     take_screenshot
   end
