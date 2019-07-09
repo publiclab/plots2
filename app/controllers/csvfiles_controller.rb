@@ -2,26 +2,26 @@ class CsvfilesController < ApplicationController
   before_action :require_user, only: %i(delete user_files)
   
   def new
+    #to render the index page of simple-data-grapher
   end
 
   def setter
     @csvfile = Csvfile.new(
-                uid: params[:uid],
-                filetitle: params[:filetitle],
-                filedescription: params[:filedescription],
-                filepath: params[:object],
-                filename: "file" + Time.now.to_i.to_s,
-                filestring: params[:filestring]
+      uid: params[:uid],
+      filetitle: params[:filetitle],
+      filedescription: params[:filedescription],
+      filepath: params[:object],
+      filename: "file" + Time.now.to_i.to_s,
+      filestring: params[:filestring]
     )
     if @csvfile.save
-        flash[:notice] = "Saved!!"
-        render :json => @csvfile
+      render {:json => @csvfile}
     end
   end
 
   def prev_files
     @allfile = Csvfile.where(uid: params[:uid])
-    render :json => @allfile
+    render {:json => @allfile}
   end
 
   def user_files
