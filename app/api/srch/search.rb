@@ -3,6 +3,8 @@ require 'grape-entity'
 
 module Srch
   class Search < Grape::API
+    include Skylight::Helpers
+
     # we are using a group of reusable parameters using a shared params helper
     # see /app/api/srch/shared_params.rb
     helpers SharedParams
@@ -274,22 +276,24 @@ module Srch
         use :common
       end
       get :tags do
-        search_request = SearchRequest.from_request(params)
-        results = Search.execute(:tags, params)
+        Skylight.instrument title: "Tags search" do
+          search_request = SearchRequest.from_request(params)
+          results = Search.execute(:tags, params)
 
-        if results.present?
-          docs = results.map do |model|
-            DocResult.new(
-              doc_id: model.nid,
-              doc_type: 'TAGS',
-              doc_url: model.path,
-              doc_title: model.title
-            )
+          if results.present?
+            docs = results.map do |model|
+              DocResult.new(
+                doc_id: model.nid,
+                doc_type: 'TAGS',
+                doc_url: model.path,
+                doc_title: model.title
+              )
+            end
+
+            DocList.new(docs, search_request)
+          else
+            DocList.new('', search_request)
           end
-
-          DocList.new(docs, search_request)
-        else
-          DocList.new('', search_request)
         end
       end
 
