@@ -56,10 +56,3 @@
 //= require keybindings.js
 //= require realtime_username_validation.js
 //= require cable.js
-
-Notification.requestPermission().then(function (permission) {
-    // If the user accepts, let's create a notification
-    if (permission === "granted") {
-        console.log("Permission Granted");
-    }
-});
