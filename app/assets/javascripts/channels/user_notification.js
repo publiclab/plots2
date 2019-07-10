@@ -4,7 +4,6 @@ App.room = App.cable.subscriptions.create('UserNotificationChannel',{
     disconnected: function(){
     },
     received: function(data) {
-        console.log(data);
         // Called when there's incoming data on the websocket for this channel
         // Let's check if the browser supports notifications
         if (!("Notification" in window)) {
