@@ -7,5 +7,5 @@ omment:
   branches: null          # branch names that can post comment
 coverage:
   status:
-    project: on
+    project: off
     patch: on
