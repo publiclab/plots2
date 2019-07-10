@@ -26,6 +26,5 @@ namespace :test do
     end
     puts "Running teaspoon tests headlessly"
     Rake::Task["teaspoon"].execute
-    Rake::Task["coveralls:push"].execute
   end
 end
