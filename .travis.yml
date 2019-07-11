@@ -25,6 +25,7 @@ branches:
     - unstable
 
 install:
+  - rm -rf test/reports
   - cp config/database.yml.example config/database.yml
   - cp db/schema.rb.example db/schema.rb
   - docker-compose build
