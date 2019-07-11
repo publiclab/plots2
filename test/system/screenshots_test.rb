@@ -33,6 +33,11 @@ class ScreenshotsTest < ApplicationSystemTestCase
     take_screenshot
   end
 
+  test 'tag by author page' do
+    visit '/tag/spectrometer/author/bob'
+    take_screenshot
+  end
+
   test 'stats' do
     visit '/stats'
     take_screenshot

@@ -29,7 +29,7 @@ gem 'impressionist'
 gem 'jbuilder', '~> 2.9'
 gem 'jquery-rails'
 gem 'less-rails', '~> 4.0'
-gem 'mocha', '~> 1.8'
+gem 'mocha', '~> 1.9'
 gem 'mustermann' , '1.0.3'
 gem 'omniauth', '~> 1.9'
 gem 'omniauth-facebook', '~> 5.0'
@@ -119,6 +119,7 @@ group :test, :development do
   gem 'teaspoon-mocha'
   gem 'timecop'
   gem 'pry-rails'
+  gem 'action-cable-testing'
 end
 
 group :production do

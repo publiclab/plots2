@@ -11,3 +11,11 @@
   App.cable = ActionCable.createConsumer();
 
 }).call(this);
+
+// To get notification permission
+Notification.requestPermission().then(function (permission) {
+    // If the user accepts, let's create a notification
+    if (permission === "granted") {
+        console.log("Permission Granted");
+    }
+});
