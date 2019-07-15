@@ -37,6 +37,10 @@
     <%= csrf_meta_tags %>
     <meta name="google-translate-customization" content="4ce4c7c384354172-5179499fc244f592-g2b333d0d29f59663-d" />
 
+    <% if current_user %>
+        <%= javascript_include_tag "cable" %>
+    <% end %>
+
     <% if @node && @node.body %>
       <meta property="og:title" content="<%= @title %>" />
       <meta property="og:site_name" content="Public Lab" />

@@ -55,4 +55,3 @@
 //= require header_footer.js
 //= require keybindings.js
 //= require realtime_username_validation.js
-//= require cable.js
