@@ -2,7 +2,7 @@
 <div id="notes">
     <div class="row">
       <% notes.each_with_index do |node,i| %>
-        <div class="<% if @widget %>col-3 <% end %><%= node.tagnames_as_classes %> col-lg-3 clearfix node note node-nid-<%= node.id %> note-nid-<%= node.id %><% if node.status == 4 %> moderated<% end %>">
+        <div class="<% if @widget %>col-4 <% end %><%= node.tagnames_as_classes %> col-lg-4 clearfix node note node-nid-<%= node.id %> note-nid-<%= node.id %><% if node.status == 4 %> moderated<% end %>">
           <div class="card">
           <% if node.main_image %>
             <a class="card-img-top img" style="overflow: hidden; height:10em;"<% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" style="width:100%;"/></a>
@@ -83,11 +83,6 @@
         </div>
         
         <% unless @widget %><hr class="d-md-none" /><% end %>
-      <% if ((i+1)/4.0).to_i == ((i+1)/4.0) %>
-    </div>
-
-    <div class="row">
-    <% end %>
     <% end %>
     </div>
 </div>
