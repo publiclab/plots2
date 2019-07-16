@@ -140,7 +140,7 @@ class Comment < ApplicationRecord
       uids = uids_to_notify - already
 
       # Send Browser Notification Using Action Cable
-      send_browser_notification (uids_to_notify != already)
+      send_browser_notification (uids_to_notify |= already)
 
       uids = uids.select { |i| i != 0 } # remove bad comments (some early ones lack uid)
 
