@@ -142,7 +142,7 @@ class Comment < ApplicationRecord
       # Send Browser Notification Using Action Cable
       notify_user_ids = uids_to_notify + already
       notify_user_ids.uniq
-      send_browser_notification (notify_user_ids)
+      send_browser_notification notify_user_ids
 
       uids = uids.select { |i| i != 0 } # remove bad comments (some early ones lack uid)
 
@@ -151,7 +151,7 @@ class Comment < ApplicationRecord
     end
   end
 
-  def send_browser_notification users_ids
+  def send_browser_notification(users_ids)
     notification = Hash.new
     notification[:title] = "New Comment on #{parent.title}"
     notification[:path] = parent.path
