@@ -135,12 +135,15 @@ class Comment < ApplicationRecord
 
       notify_callout_users
 
-      # Send Browser Notification Using Action Cable
-      send_browser_notification
-
       # notify other commenters, revisers, and likers, but not those already @called out
       already = mentioned_users.collect(&:uid) + [parent.uid]
       uids = uids_to_notify - already
+
+      # Send Browser Notification Using Action Cable
+      notify_user_ids = uids_to_notify + already
+      notify_user_ids.uniq
+      send_browser_notification notify_user_ids
+
       uids = uids.select { |i| i != 0 } # remove bad comments (some early ones lack uid)
 
       notify_users(uids, current_user)
@@ -148,7 +151,7 @@ class Comment < ApplicationRecord
     end
   end
 
-  def send_browser_notification
+  def send_browser_notification(users_ids)
     notification = Hash.new
     notification[:title] = "New Comment on #{parent.title}"
     notification[:path] = parent.path
@@ -157,7 +160,7 @@ class Comment < ApplicationRecord
       icon: "https://publiclab.org/logo.png"
     }
     notification[:option] = option
-    uids_to_notify.each do |uid|
+    users_ids.each do |uid|
       if UserTag.where(value: 'notifications:all', uid: uid).any?
         ActionCable.server.broadcast "users:notification:#{uid}", notification: notification
       end
