@@ -253,7 +253,7 @@ en:
       notes_per_week: "%{note_count} notes per week over this period."
       edits_per_week: "%{count} edits per week over this period."
       notes_wikis_comments: |
-          <b>%{notes_count} notes</b> and <b>%{wikis_count} wiki edits and</b>
+          <b>%{notes_count} notes</b> and <b>%{wikis_count} wiki edits</b>
           and <b>%{comments_count} comments </b>  posted in this period.
       members_and_contributors: |
           <b>%{member_count}  member registrations</b>
