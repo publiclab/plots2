@@ -7,12 +7,7 @@
                 </a>
             <% end %>
         <% end %>
-    <a rel="tooltip" title="Flag as spam" class="btn btn-sm btn-outline-secondary btn-flag-spam-<%= node.id %>" href="mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+item+that+looks+like+spam+or+needs+to+be+moderated:+<%= node.title.gsub(/ /,'+') %>+https://publiclab.org/n/<%= node.id %>+by+https://publiclab.org/profile/<%= node.author.username %>+Thanks!">
-      <i class="fa fa-flag"></i>
-    </a>
-    <li data-toggle="tooltip" data-placement="top" title="Follow by tag or author" class="btn btn-outline-secondary btn-sm requireLogin" data-html="true" rel="popover" data-placement="left" data-content="    <%= "No tags" if tagnames.nil? || tagnames.length == 0 %>    <% if tagnames %><% tagnames.each do |tagname| %><p style='margin-bottom:3px; overflow: hidden; text-overflow: ellipsis;'><a href='/subscribe/tag/<%= tagname %>' class='btn btn-outline-secondary btn-sm'><%= tagname %></a></p><% end %><% end %><hr /><i class='fa fa-user'></i><% if current_user && !current_user.following?(node.author) %>&nbsp;<a class='btn btn-sm' href='/relationships?followed_id=<%= node.author.id %>' data-method='post' > <%= node.author.name %></a><% else %>  &nbsp;<%= node.author.name %><% end %>">
-      <i class="fa fa-user-plus" aria-hidden="true"></i>
-    </li>
+
   <li data-toggle="tooltip" data-placement="top" rel="tooltip" title="Helpful? Like it and get updates!" class="btn btn-outline-secondary btn-sm btn-like" node-id="<%= node.id %>" id="like-button-<%= node.id %>">
     <% if !current_user %>
       <a id="open-login-like" data-hashparams="like" data-toggle="modal" data-target="#loginModal">
@@ -26,6 +21,7 @@
   </li>
 
   <li data-toggle="tooltip" data-placement="top" title="Print and more tools" class="btn btn-outline-secondary btn-sm" rel="popover" data-placement="left" data-html="true" style="overflow: auto; max-height: 500px" data-content="
+
 <p><b>Users who liked this</b></p>
 <% node.likers.each do |user| %>
   <i class='fa fa-star-o'></i> <a href='/profile/<%= user.username %>/'><%= user.username %></a><br />
@@ -53,6 +49,13 @@
   <hr />
 
   <div class='btn-group'>
+    <a rel='tooltip' title='Flag as spam' class='btn btn-sm btn-outline-secondary btn-flag-spam-<%= node.id %>' href='mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+item+that+looks+like+spam+or+needs+to+be+moderated:+<%= node.title.gsub(/ /,'+') %>+https://publiclab.org/n/<%= node.id %>+by+https://publiclab.org/profile/<%= node.author.username %>+Thanks!'>
+      <i class='fa fa-flag'></i>
+    </a>
+    <li data-toggle='tooltip' data-placement='top' title='Follow by tag or author' class='btn btn-outline-secondary btn-sm requireLogin nestedPopover' data-html='true' rel='popover' data-placement='left' data-content=&quot;    <%= "No tags" if tagnames.nil? || tagnames.length == 0 %>    <% if tagnames %><% tagnames.each do |tagname| %><p style='margin-bottom:3px; overflow: hidden; text-overflow: ellipsis;'><a href='/subscribe/tag/<%= tagname %>' class='btn btn-outline-secondary btn-sm'><%= tagname %></a></p><% end %><% end %><hr /><i class='fa fa-user'></i><% if current_user && !current_user.following?(node.author) %>&nbsp;<a class='btn btn-sm' href='/relationships?followed_id=<%= node.author.id %>' data-method='post' > <%= node.author.name %></a><% else %>  &nbsp;<%= node.author.name %><% end %>&quot;>
+      <i class='fa fa-user-plus' aria-hidden='true'></i>
+    </li>
+
      <a href='/notes/delete/<%= node.id %>' class='btn btn-outline-secondary btn-sm' data-confirm='Are you sure?'>
       <i class='fa fa-trash'></i><span class='d-none d-lg-inline'> Delete</span>
     </a>
@@ -79,7 +82,7 @@
 
 
 ">
-<span class="fa fa-caret-down"></span></li>
+      <span class="fa fa-caret-down"></span></li>
   </ul>
 
   <style type="text/css">
@@ -94,7 +97,6 @@
     $('[rel="tooltip"]').on('click', function () {
         $(this).tooltip('hide')
     })
-
     function print_three_column() {
       $('body').css('column-count', 3)
                .css('column-gap', '50px');
@@ -106,32 +108,32 @@
     // Event listner on CLICK on links
     $(document).on("click", "#print-command-3-col",print_three_column);
     $(document).on("click", "#print-command-no-links",print_linkless);
-
     jQuery(document).ready(function() {
-
       // 304 cached response yields no data to insert, which is not useful
       jQuery.ajaxSetup({
         cache: false
       });
-
       // opens modal to login before you can like;
       $("#open-login-like").click(function() {
         $("input[name='hash_params']").val($(this).attr("data-hashparams"));
       });
-
       // triggers liking and unliking
       <% if current_user %>
         $('#like-button-<%= node.id %>').on('click', debounce(<% if node.liked_by(current_user.uid) %>clickliked<% else %>clicknotliked<% end %>, 200, true));
-
         // leaving below uncommented for now - possibility useful for implement comment like functionality?
-
         // if(window.location.href.includes("#like")) {
         //   $('#like-button-<%= node.id %>').click();
         // }
-
       <% end %>
     });
-
+    $('body').on('click', '.nestedPopover', function() {
+      $(this).popover({
+        container: 'body',
+        trigger: 'focus click'
+      });
+      $(this).popover('show');
+      $(this).removeClass("nestedPopover");
+    });
     $('body').on('click', function (e) { // If there's a click event in the body
       $('[rel=popover]').each(function () { // For each popover
         /*

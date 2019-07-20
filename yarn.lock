@@ -420,6 +420,12 @@ bootstrap-3-typeahead@^4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/bootstrap-3-typeahead/-/bootstrap-3-typeahead-4.0.2.tgz#cb1c969044856862096fc8c71cc21b3acbb50412"
 
+bootstrap-colorpicker@^2.5.3:
+  version "2.5.3"
+  resolved "https://registry.yarnpkg.com/bootstrap-colorpicker/-/bootstrap-colorpicker-2.5.3.tgz#b50aff8590fbaa6b5aa63a5624e4213f1659a49d"
+  dependencies:
+    jquery ">=1.10"
+
 bootstrap-datepicker@^1.6.0, bootstrap-datepicker@~1.8.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/bootstrap-datepicker/-/bootstrap-datepicker-1.8.0.tgz#c63513931e6f09f16ae9f11b62f32d950df3958e"
@@ -981,9 +987,9 @@ cwise-compiler@^1.0.0, cwise-compiler@^1.1.2:
   dependencies:
     uniq "^1.0.0"
 
-cytoscape@^3.6.2:
-  version "3.6.2"
-  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.6.2.tgz#bd57944bd2eaccd870e017bf82d2163a73112db5"
+cytoscape@^3.8.1:
+  version "3.8.1"
+  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.8.1.tgz#0b87f646054ea3e86f347e9c53a2fc64df1be31b"
   dependencies:
     heap "^0.2.6"
     lodash.debounce "^4.0.8"
@@ -2141,9 +2147,9 @@ humanize@^0.0.9:
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/humanize/-/humanize-0.0.9.tgz#1994ffaecdfe9c441ed2bdac7452b7bb4c9e41a4"
 
-i18n-js@^3.2.2:
-  version "3.2.2"
-  resolved "https://registry.yarnpkg.com/i18n-js/-/i18n-js-3.2.2.tgz#9f7f552320c0e4cc6b35c50a790cc50465c7dc90"
+i18n-js@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/i18n-js/-/i18n-js-3.3.0.tgz#05512f7184b5117c087ab597be649720a834c068"
 
 ianstormtaylor-css@^0.3.1:
   version "0.3.1"
@@ -2186,12 +2192,13 @@ image-sequencer-invert@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/image-sequencer-invert/-/image-sequencer-invert-1.0.0.tgz#bb5c0cc2f50ed9ff4cd8d89a7929188f381a5dd4"
 
-image-sequencer@^3.3.5:
-  version "3.3.5"
-  resolved "https://registry.yarnpkg.com/image-sequencer/-/image-sequencer-3.3.5.tgz#0fe846b87c271ea73a504b6541d03fe9f832619b"
+image-sequencer@^3.5.1:
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/image-sequencer/-/image-sequencer-3.5.1.tgz#2f7bb57921635b071dfb3b3b6c2dab23f3664a2b"
   dependencies:
     base64-img "^1.0.4"
     bootstrap "~3.4.0"
+    bootstrap-colorpicker "^2.5.3"
     buffer "~5.2.1"
     commander "^2.11.0"
     data-uri-to-buffer "^2.0.0"
@@ -2208,6 +2215,7 @@ image-sequencer@^3.3.5:
     imagejs "0.0.9"
     imgareaselect "git://github.com/jywarren/imgareaselect.git#v1.0.0-rc.2"
     istanbul "^0.4.5"
+    jasmine "^3.4.0"
     jquery "^3.3.1"
     jsdom "^15.0.0"
     jsqr "^1.1.1"
@@ -2424,6 +2432,17 @@ jade@0.26.3:
     commander "0.6.1"
     mkdirp "0.3.0"
 
+jasmine-core@~3.4.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/jasmine-core/-/jasmine-core-3.4.0.tgz#2a74618e966026530c3518f03e9f845d26473ce3"
+
+jasmine@^3.4.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/jasmine/-/jasmine-3.4.0.tgz#0fa68903ff0c9697459cd044b44f4dcef5ec8bdc"
+  dependencies:
+    glob "^7.1.3"
+    jasmine-core "~3.4.0"
+
 jlouvain@upphiminn/jLouvain#3fb3aa189b8232756c4c3f3e97aaf376debf44a7:
   version "0.0.0"
   resolved "https://codeload.github.com/upphiminn/jLouvain/tar.gz/3fb3aa189b8232756c4c3f3e97aaf376debf44a7"
@@ -2460,7 +2479,7 @@ jquery.ui.widget@>=1.9:
   version "1.10.3"
   resolved "https://registry.yarnpkg.com/jquery.ui.widget/-/jquery.ui.widget-1.10.3.tgz#2ceecfc64995412643eeb9508d2197ea93c02fb3"
 
-jquery@>=1.6, jquery@>=1.7, "jquery@>=1.7.1 <4.0.0", jquery@^3.2.1, jquery@^3.3.1, jquery@^3.4.1, jquery@~3:
+jquery@>=1.10, jquery@>=1.6, jquery@>=1.7, "jquery@>=1.7.1 <4.0.0", jquery@^3.2.1, jquery@^3.3.1, jquery@^3.4.1, jquery@~3:
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.4.1.tgz#714f1f8d9dde4bdfa55764ba37ef214630d80ef2"
 

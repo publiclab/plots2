@@ -138,6 +138,12 @@ class Comment < ApplicationRecord
       # notify other commenters, revisers, and likers, but not those already @called out
       already = mentioned_users.collect(&:uid) + [parent.uid]
       uids = uids_to_notify - already
+
+      # Send Browser Notification Using Action Cable
+      notify_user_ids = uids_to_notify + already
+      notify_user_ids.uniq
+      send_browser_notification notify_user_ids
+
       uids = uids.select { |i| i != 0 } # remove bad comments (some early ones lack uid)
 
       notify_users(uids, current_user)
@@ -145,24 +151,20 @@ class Comment < ApplicationRecord
     end
   end
 
-  def answer_comment_notify(current_user)
-    # notify answer author
-    if answer.uid != current_user.uid
-      CommentMailer.notify_answer_author(answer.author, self).deliver_now
+  def send_browser_notification(users_ids)
+    notification = Hash.new
+    notification[:title] = "New Comment on #{parent.title}"
+    notification[:path] = parent.path
+    option = {
+      body: comment,
+      icon: "https://publiclab.org/logo.png"
+    }
+    notification[:option] = option
+    users_ids.each do |uid|
+      if UserTag.where(value: 'notifications:all', uid: uid).any?
+        ActionCable.server.broadcast "users:notification:#{uid}", notification: notification
+      end
     end
-
-    notify_callout_users
-
-    already = mentioned_users.collect(&:uid) + [answer.uid]
-    uids = []
-    # notify other answer commenter and users who liked the answer
-    # except mentioned users and answer author
-    (answer.comments.collect(&:uid) + answer.likers.collect(&:uid)).uniq.each do |u|
-      uids << u unless already.include?(u)
-    end
-
-    notify_users(uids, current_user)
-    notify_tag_followers(already + uids)
   end
 
   def spam
@@ -209,57 +211,19 @@ class Comment < ApplicationRecord
     user = User.where(email: mail.from.first).first
     if user
       node_id = mail.subject[/#([\d]+)/, 1] # This tooks out the node ID from the subject line
-      if node_id.nil?
-        answer_id = mail.subject[/#a([\d]+)/, 1] # This tooks out the answer ID from the subject line
-        unless answer_id.nil?
-          add_answer_comment(mail, answer_id, user)
+      comment_id = mail.subject[/#c([\d]+)/, 1] # This tooks out the comment ID from the subject line if it exists
+      unless Comment.where(message_id: mail.message_id).any?
+        if node_id.present? && !comment_id.present?
+          add_comment(mail, node_id, user)
+        elsif comment_id.present?
+          comment = Comment.find comment_id
+          add_comment(mail, comment.nid, user, [true, comment.id])
         end
-      else
-        add_comment(mail, node_id, user)
       end
     end
   end
 
-  def self.add_answer_comment(mail, answer_id, user)
-    answer = Answer.where(id: answer_id).first
-    if answer
-      mail_doc = Nokogiri::HTML(mail.html_part.body.decoded) # To parse the mail to extract comment content and reply content
-      domain = get_domain mail.from.first
-      content = if domain == "gmail"
-                  gmail_parsed_mail mail_doc
-                elsif domain == "yahoo"
-                  yahoo_parsed_mail mail_doc
-                elsif domain == "outlook"
-                  outlook_parsed_mail mail_doc
-                elsif gmail_quote_present?(mail_doc)
-                  gmail_parsed_mail mail_doc
-                else
-                  {
-                    comment_content: mail_doc,
-                    extra_content: nil
-                  }
-                end
-      if content[:extra_content].nil?
-        comment_content_markdown = ReverseMarkdown.convert content[:comment_content]
-      else
-        extra_content_markdown = ReverseMarkdown.convert content[:extra_content]
-        comment_content_markdown = ReverseMarkdown.convert content[:comment_content]
-        comment_content_markdown = comment_content_markdown + COMMENT_FILTER + extra_content_markdown
-      end
-      message_id = mail.message_id
-      comment = Comment.new(uid: user.uid,
-        aid: answer_id,
-        comment: comment_content_markdown,
-        comment_via: 1,
-        message_id: message_id,
-        timestamp: Time.current.to_i)
-      if comment.save
-        comment.answer_comment_notify(user)
-      end
-    end
-  end
-
-  def self.add_comment(mail, node_id, user)
+  def self.add_comment(mail, node_id, user, reply_to = [false, nil])
     node = Node.where(nid: node_id).first
     if node && mail&.html_part
       mail_doc = Nokogiri::HTML(mail&.html_part&.body&.decoded) # To parse the mail to extract comment content and reply content
@@ -287,6 +251,10 @@ class Comment < ApplicationRecord
       end
       message_id = mail.message_id
       comment = node.add_comment(uid: user.uid, body: comment_content_markdown, comment_via: 1, message_id: message_id)
+      if reply_to[0]
+        comment.reply_to = reply_to[1]
+        comment.save
+      end
       comment.notify user
     end
   end

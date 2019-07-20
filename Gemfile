@@ -16,9 +16,10 @@ gem 'gemoji'
 gem 'geocoder'
 gem 'geokit-rails'
 gem 'georuby', '2.0'
+gem "google-cloud-storage"
 gem 'grape'
 gem 'grape-entity'
-gem 'grape-swagger', '~> 0.32.1'
+gem 'grape-swagger', '~> 0.33.0'
 gem 'grape-swagger-entity', '0.3.3'
 gem 'grape-swagger-rails'
 gem 'grape-swagger-ui'
@@ -28,7 +29,7 @@ gem 'impressionist'
 gem 'jbuilder', '~> 2.9'
 gem 'jquery-rails'
 gem 'less-rails', '~> 4.0'
-gem 'mocha', '~> 1.8'
+gem 'mocha', '~> 1.9'
 gem 'mustermann' , '1.0.3'
 gem 'omniauth', '~> 1.9'
 gem 'omniauth-facebook', '~> 5.0'
@@ -42,7 +43,7 @@ gem 'progress_bar'
 gem 'rack-cors', :require => 'rack/cors'
 gem "rack-openid"
 gem "rack-test", "1.1.0"
-gem 'rails', '5.2.2.1'
+gem 'rails', '5.2.3'
 gem 'rails-controller-testing'
 gem 'rails-dom-testing'
 gem 'rails-i18n', '~> 5.1.3'
@@ -50,8 +51,8 @@ gem 'rails_autolink'
 gem 'rb-readline'
 gem 'rdiscount', '~> 2.2', '>= 2.2.0.1'
 gem "recaptcha", require: "recaptcha/rails"
-gem 'responders', '~> 2.4'
-gem 'rubocop', '~> 0.71.0', require: false
+gem 'responders', '~> 3.0'
+gem 'rubocop', '~> 0.73.0', require: false
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
 gem 'sentry-raven'
@@ -108,7 +109,7 @@ group :test, :development do
   gem 'minitest-reporters', '~> 1.3.6'
   gem 'openssl', '~> 2.1.2'
   gem 'phantomjs'
-  gem 'puma', '~> 3.12'
+  gem 'puma', '~> 4.0'
   gem 'rails-perftest'
   gem 'rake',  '~> 12.3.2'
   gem 'rest-client'
@@ -118,6 +119,7 @@ group :test, :development do
   gem 'teaspoon-mocha'
   gem 'timecop'
   gem 'pry-rails'
+  gem 'action-cable-testing'
 end
 
 group :production do

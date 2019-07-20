@@ -1,4 +1,5 @@
 <div class="inline-grid-container">
+<div style="max-height:800px;overflow:scroll;">
 <table class="table inline-grid <%= type %>-grid <%= className %> <%= className %>-<%= randomSeed %>">
   <tr>
     <% if type == "questions" || type == "notes" %>
@@ -80,6 +81,7 @@
     </tfoot>
 <% end %>
 </table>
+</div>
 
 <a class="grid-embed grid-embed-<%= randomSeed %>" title="Embed this table on another site."><i class="fa fa-code" style="color:#aaa;"></i></a>
 <% if type == "questions" || tagname.include?('question:') %>
