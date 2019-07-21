@@ -16,7 +16,7 @@
       <% else %>
         <li><a href="/subscribe/tag/<%= params[:id] %>"><i class="fa fa-user-plus" aria-hidden="true"></i> <%= t('tag.show.follow') %> <b><%= params[:id] %></b></a> </li>
       <% end %>
-        <li><a rel="popover" data-placement="bottom" data-html="true" data-title="<%= t('tag.show.users_following_tag') %>" data-content="<% Tag.followers(params[:id]).each do |user| %><i class='fa fa-star-o'></i> <a href='/profile/<%= user.username %>'><%= user.username %></a><br /><% end %><% if Tag.follower_count(params[:id]) == 0 %><i><%= t('tag.show.none') %></i><% end %>"><%= Tag.follower_count(params[:id]) %> <i class="fa fa-user"></i> <span class="caret"></span></a></li>
+        <li><a tabindex="0" data-toggle="popover" data-trigger = "" data-placement="bottom" data-html="true" data-title="<%= t('tag.show.users_following_tag') %>" data-content="<% Tag.followers(params[:id]).each do |user| %><i class='fa fa-star-o'></i> <a href='/profile/<%= user.username %>'><%= user.username %></a><br /><% end %><% if Tag.follower_count(params[:id]) == 0 %><i><%= t('tag.show.none') %></i><% end %>"><%= Tag.follower_count(params[:id]) %> <i class="fa fa-user"></i> <span class="caret"></span></a></li>
         <li><a href="/tag-pages">How to edit this card</a></li>
     <% end %>
 </ul>
@@ -38,3 +38,15 @@
   float:right;
 }
 </style>
+<script>
+$(function() {
+  $(document).popover({
+      selector: '[data-toggle=popover]',
+      trigger: 'focus'
+  });
+});
+
+$('.dropdown-menu').on('click', function(e) {
+  e.stopPropagation();
+});
+</script>
