@@ -9,7 +9,7 @@
   <% elsif params[:action] == 'liked' %>
   <h2>Liked Questions <small class="d-md-none d-lg-inline">Most liked questions</small></h2>
   <% else %>
-  <div class="text-center" style="color: blue;">
+  <div class="text-center">
     <% cache('feature_questions-header', skip_digest: true) do %>
       <%= feature('questions-header') %>
     <% end %>
