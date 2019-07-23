@@ -147,17 +147,6 @@ class UsersControllerTest < ActionController::TestCase
     end
   end
 
-  test 'should list notes and questions in user profile' do
-    user = users(:jeff)
-    get :profile, params: { id: user.username }
-    assert_not_nil assigns(:notes)
-    assert_not_nil assigns(:questions)
-    selector = css_select '#asked .note-question'
-    assert_equal selector.size, 2
-    selector = css_select '#answered .note-answer'
-    assert_equal selector.size, 1
-  end
-
   test 'should get comments and render comments/index template' do
     user = users(:jeff)
     get :comments, params: { id: user.id }
