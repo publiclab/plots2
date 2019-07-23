@@ -40,8 +40,8 @@ class StatsController < ApplicationController
   end
 
   def all_time_stats
-      params[:start] = Date.new(2012,9,27).to_time
-      params[:end] = Time.now
+    params[:start] = Date.new(2014, 01, 01).to_time
+    params[:end] = Time.now
   end
 
   def index
