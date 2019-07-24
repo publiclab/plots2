@@ -50,8 +50,6 @@
       <meta property="fb:app_id" content="644692375883090" />
       <% if @node.main_image %>
         <meta property="og:image" content="<%= @node.main_image.path(:default) %>" />
-      <% elsif @wiki && @wiki.main_image %>
-        <meta property="og:image" content="<%= @wiki.main_image.path(:default) %>" />
       <% end %>
       <p class="facebook-summary" style="display:none;">
         <%= raw strip_tags(sanitize(RDiscount.new(@node.body).to_html)).truncate(100) %>
