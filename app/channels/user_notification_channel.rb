@@ -2,6 +2,8 @@ class UserNotificationChannel < ApplicationCable::Channel
   def subscribed
     if current_user != nil
       stream_from "users:notification:#{current_user.id}"
+    else
+      reject
     end
   end
 

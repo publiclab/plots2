@@ -11,7 +11,7 @@ class RoomChannel < ApplicationCable::Channel
 
   def speak(message)
     if current_user && current_user.role == "admin"
-      ActionCable.server.broadcast 'room_channel', message
+      ActionCable.server.broadcast 'room_channel', message: message["message"]
     end
   end
 end
