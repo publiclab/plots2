@@ -20,10 +20,6 @@
     <!--<div class="expand"><a onClick="$('.main-image').toggleClass('compressed');"><i class="fa fa-angle-down"></i></a></div>-->
   <% end %>
 
-  <div style="margin-top:10px;" class="d-print-none">
-    <%= render :partial => "like/like", :locals => {:node => @node, :tagnames => @tagnames } %>
-  </div>
-
   <h1 style="margin-top: 40px;"><%= @node.title %></h1>
 
   <div>
