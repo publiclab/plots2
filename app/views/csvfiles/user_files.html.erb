@@ -25,9 +25,9 @@
                     <%= file.filename %>
                 <% end %>
             </td>
-            <% download_link = file.filetitle+".csv"%>
+            <% download_link = file.filetitle + ".csv"%>
             <% if file.filetitle=="" %>
-                <% download_link = file.filename+".csv" %>
+                <% download_link = file.filename + ".csv" %>
             <% end %>
             <td><a href="<%= file.filestring %>" download="<%= download_link %>"><i class="fa fa-download" aria-hidden="true"></i></a></td>
             <td><a href="/simple-data-grapher/file/<%= file.uid %>/<%= file.id %>"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
@@ -38,7 +38,7 @@
                     <p> No Description </p>
                 <% end %>
             </td>
-            <% count+=1 %>
+            <% count += 1 %>
         </tr>
     <% end %>
 </table>

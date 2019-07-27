@@ -18,13 +18,13 @@
 <script>
     var headerContainer = document.getElementsByClassName("body-container")[0];
     SimpleDataGrapherObject = new SimpleDataGrapher("first");
-    var value='<%= current_user %>';
+    var value = '<%= current_user %>';
     <% if current_user %>
         SimpleDataGrapherObject.view.createButtons("yes");
         var saveButton = SimpleDataGrapherObject.view.elementId+"_save_CSV";
         var prevFile = SimpleDataGrapherObject.view.elementId+"_prev_file";
         var saveFlag = false;
-        $("#"+saveButton).click(function(){
+        $("#" + saveButton).click(function(){
             let divAlert = document.createElement('div');
             divAlert.classList.add("alert");
             divAlert.classList.add("alert-success");
@@ -32,16 +32,16 @@
             headerContainer.appendChild(divAlert);
             saveFlag = true;
         });
-        $("#"+SimpleDataGrapherObject.view.plotGraphId).click(function(){
+        $("#" + SimpleDataGrapherObject.view.plotGraphId).click(function(){
             if (saveFlag){
-                var arr={};
+                var arr = {};
                 arr["completeCsvMatrix"] = SimpleDataGrapherObject.view.csvParser.completeCsvMatrix;
                 arr["csvHeaders"] = SimpleDataGrapherObject.view.csvParser.csvHeaders;
                 arr["csvSampleData"] = SimpleDataGrapherObject.view.csvParser.csvSampleData;
                 arr["csvValidForYAxis"] = SimpleDataGrapherObject.view.csvParser.csvValidForYAxis;
                 arr["completeCsvMatrixTranspose"] = SimpleDataGrapherObject.view.csvParser.completeCsvMatrixTranspose;
                 let csvStringMatrix=SimpleDataGrapherObject.view.csvParser.completeCsvMatrixTranspose;
-                let csvStringForDownload=encodeURI("data:text/csv;charset=utf-8," + csvStringMatrix.map(e => e.join(",")).join("\n"));
+                let csvStringForDownload = encodeURI("data:text/csv;charset=utf-8," + csvStringMatrix.map(e => e.join(",")).join("\n"));
                 $.ajax({
                     url: '/simple-data-grapher/object',
                     type: 'post',
