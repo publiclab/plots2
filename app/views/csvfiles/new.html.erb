@@ -21,8 +21,8 @@
     var value = '<%= current_user %>';
     <% if current_user %>
         SimpleDataGrapherObject.view.createButtons("yes");
-        var saveButton = SimpleDataGrapherObject.view.elementId+"_save_CSV";
-        var prevFile = SimpleDataGrapherObject.view.elementId+"_prev_file";
+        var saveButton = SimpleDataGrapherObject.view.elementId + "_save_CSV";
+        var prevFile = SimpleDataGrapherObject.view.elementId + "_prev_file";
         var saveFlag = false;
         $("#" + saveButton).click(function(){
             saveFlag = true;
@@ -35,7 +35,7 @@
                 arr["csvSampleData"] = SimpleDataGrapherObject.view.csvParser.csvSampleData;
                 arr["csvValidForYAxis"] = SimpleDataGrapherObject.view.csvParser.csvValidForYAxis;
                 arr["completeCsvMatrixTranspose"] = SimpleDataGrapherObject.view.csvParser.completeCsvMatrixTranspose;
-                let csvStringMatrix=SimpleDataGrapherObject.view.csvParser.completeCsvMatrixTranspose;
+                let csvStringMatrix = SimpleDataGrapherObject.view.csvParser.completeCsvMatrixTranspose;
                 let csvStringForDownload = encodeURI("data:text/csv;charset=utf-8," + csvStringMatrix.map(e => e.join(",")).join("\n"));
                 $.ajax({
                     url: '/simple-data-grapher/object',
@@ -64,7 +64,7 @@
             }
         });
 
-        $("#"+prevFile).click(function(){
+        $("#" + prevFile).click(function(){
             $.ajax({
                 url: '/simple-data-grapher/prev_file',
                 type: 'get',
@@ -91,7 +91,7 @@
                 let radio = document.createElement('input');
                 radio.type = 'radio';
                 radio.value = i;
-                radio.name = data[0]["csvfile"]["uid"]+"user_id";
+                radio.name = data[0]["csvfile"]["uid"] + "user_id";
                 td.appendChild(radio);
                 td.appendChild(document.createTextNode(data[i]["csvfile"]["filetitle"]));
                 tr.appendChild(td);
@@ -102,8 +102,8 @@
             selectFile(data);
         }
         function selectFile(data){
-            $("#"+SimpleDataGrapherObject.view.uploadButtonId).click(function(){
-                let name = data[0]["csvfile"]["uid"]+"user_id";
+            $("#" + SimpleDataGrapherObject.view.uploadButtonId).click(function(){
+                let name = data[0]["csvfile"]["uid"] + "user_id";
                 let index = $('input[name='+ name +']:checked').val();
                 let allfiles = JSON.parse(data[index]["csvfile"]["filepath"]);
                 SimpleDataGrapherObject.view.usingPreviouslyUploadedFile();
