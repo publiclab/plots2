@@ -90,6 +90,7 @@ class UserTagsController < ApplicationController
   def delete
     output = {
       status: false,
+      tid: 0,
       errors: []
     }
     message = ''
@@ -118,20 +119,16 @@ class UserTagsController < ApplicationController
     end
 
     output[:errors] << message
-    respond_with do |format|
-      format.js
-      format.html do
-        if request.xhr?
-          render json: output
-        else
-          if output[:status]
-            flash[:notice] = message
-          else
-            flash[:error] = message
-          end
-          redirect_to info_path
-        end
+    output[:tid] = @user_tag&.id
+    if request.xhr?
+      render json: output
+    else
+      if output[:status]
+        flash[:notice] = message
+      else
+        flash[:error] = message
       end
+      redirect_to info_path
     end
   end
 
