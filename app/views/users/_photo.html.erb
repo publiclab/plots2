@@ -5,6 +5,11 @@
     type: 'note'
   }
 </script>
+<div class="alert alert-success" id="success-upload" style="display:none">
+    <button type="button" class="close" data-dismiss="alert">×</button>
+
+    <h2>Profile photo was uploaded successfully!</h2>
+  </div>
 <%= javascript_include_tag "dragdrop" %>
 
 <hr style="clear:both;" class="d-lg-none" />
@@ -22,7 +27,7 @@
     <p class="prompt">
       <span class="d-none d-lg-inline"> <%= t('users._photo.drag_and_drop_image') %> </span>
       <span class="fileinput-button">
-        <a> <i class="fa fa-upload d-md-none d-lg-inline float-left" style="padding-right:6px;"></i> <%= t('users._photo.choose_image') %></a>
+        <a style="cursor:pointer"> <i class="fa fa-upload d-md-none d-lg-inline float-left" style="padding-right:6px;"></i> <%= t('users._photo.choose_image') %></a>
         
       </span>
     </p>
@@ -74,6 +79,7 @@
       $('.profile-uploading').hide()
       $('#profile-photo')[0].src = data.result.url
       $('#profile-photo').show()
+      $('#success-upload').css("display","block")
     },
     // see callbacks at https://github.com/blueimp/jQuery-File-Upload/wiki/Options
     fileuploadfail: function(e,data) {
