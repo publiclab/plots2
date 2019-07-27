@@ -25,11 +25,6 @@
         var prevFile = SimpleDataGrapherObject.view.elementId+"_prev_file";
         var saveFlag = false;
         $("#" + saveButton).click(function(){
-            let divAlert = document.createElement('div');
-            divAlert.classList.add("alert");
-            divAlert.classList.add("alert-success");
-            divAlert.innerHTML = "File save successfully!";
-            headerContainer.appendChild(divAlert);
             saveFlag = true;
         });
         $("#" + SimpleDataGrapherObject.view.plotGraphId).click(function(){
@@ -51,6 +46,11 @@
                             filedescription: SimpleDataGrapherObject.view.fileDescription, 
                             filestring: csvStringForDownload},
                     success: function(data){
+                        let divAlert = document.createElement('div');
+                        divAlert.classList.add("alert");
+                        divAlert.classList.add("alert-success");
+                        divAlert.innerHTML = "File save successfully!";
+                        headerContainer.appendChild(divAlert);
                     },
                     error: function(XMLHttpRequest, textStatus, errorThrown){
                         console.log(errorThrown);
