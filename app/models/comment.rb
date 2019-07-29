@@ -374,7 +374,7 @@ class Comment < ApplicationRecord
       puts "=========================================================="
       puts "in tweet loop"
       puts tweet
-      puts tweet.reply
+      puts tweet.reply?
       puts "=========================================================="
       next unless tweet.reply?
 
