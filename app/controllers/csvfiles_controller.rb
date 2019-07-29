@@ -26,6 +26,20 @@ class CsvfilesController < ApplicationController
     @user_files = Csvfile.where(uid: params[:id])
   end
 
+  def add_graphobject
+    @newfile = Csvfile.new(
+        uid: params[:uid],
+        filetitle: params[:filetitle],
+        filedescription: params[:filedescription],
+        filepath: params[:object],
+        filename: "file" + Time.now.to_i.to_s,
+        filestring: params[:filestring],
+        graphobject: params[:graphobject]
+    )
+    @newfile.save
+    render json: @newfile
+  end
+
   def delete
     return unless params[:id] && params[:uid].to_i == current_user.uid
     file = Csvfile.where(id: params[:id].to_i)

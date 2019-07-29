@@ -115,6 +115,38 @@
                 SimpleDataGrapherObject.view.continueViewManipulation("prevfile");
             }); 
         }
+        $("#" + SimpleDataGrapherObject.view.elementId + "_publish").click(function(){
+            console.log(SimpleDataGrapherObject.view.plotlyjsPlotter.dataHash);
+            console.log(SimpleDataGrapherObject.view.plotlyjsPlotter.graphType);
+            var arr = {};
+            arr["completeCsvMatrix"] = SimpleDataGrapherObject.view.csvParser.completeCsvMatrix;
+            arr["csvHeaders"] = SimpleDataGrapherObject.view.csvParser.csvHeaders;
+            arr["csvSampleData"] = SimpleDataGrapherObject.view.csvParser.csvSampleData;
+            arr["csvValidForYAxis"] = SimpleDataGrapherObject.view.csvParser.csvValidForYAxis;
+            arr["completeCsvMatrixTranspose"] = SimpleDataGrapherObject.view.csvParser.completeCsvMatrixTranspose;
+            let csvStringMatrix = SimpleDataGrapherObject.view.csvParser.completeCsvMatrixTranspose;
+            let csvStringForDownload = encodeURI("data:text/csv;charset=utf-8," + csvStringMatrix.map(e => e.join(",")).join("\n"));
+            var dataObject = {};
+            dataObject["hash"] = SimpleDataGrapherObject.view.plotlyjsPlotter.dataHash;
+            dataObject["graphType"] = SimpleDataGrapherObject.view.plotlyjsPlotter.graphType;
+            dataObject["length"] = SimpleDataGrapherObject.view.plotlyjsPlotter.length;
+            $.ajax({
+                url: '/simple-data-grapher/note/graphobject',
+                type: 'post',
+                data: {object: JSON.stringify(arr), 
+                        uid: <%= current_user.id %>, 
+                        filetitle: SimpleDataGrapherObject.view.fileTitle, 
+                        filedescription: SimpleDataGrapherObject.view.fileDescription, 
+                        filestring: csvStringForDownload,
+                        graphobject: JSON.stringify(dataObject)},
+                success: function(data){
+                    console.log("saved",data);
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown){
+                    console.log("error");
+                }
+            });
+        });
 
     <% end %>
     setTimeout("$('.alert-success .alert-danger').fadeOut('slow')", 7000)

@@ -126,6 +126,7 @@ Plots2::Application.routes.draw do
   #routes for simple-data-grapher
   get 'simple-data-grapher' => 'csvfiles#new'
   post 'simple-data-grapher/object' => 'csvfiles#setter'
+  post 'simple-data-grapher/note/graphobject' => 'csvfiles#add_graphobject'
   get 'simple-data-grapher/prev_file' => 'csvfiles#prev_files'
   get 'simple-data-grapher/data/:id' => 'csvfiles#user_files'
   get 'simple-data-grapher/file/:uid/:id' => 'csvfiles#delete'

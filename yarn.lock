@@ -2621,6 +2621,11 @@ ieee754@^1.1.4:
   version "1.1.12"
   resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.1.12.tgz#50bf24e5b9c8bb98af4964c941cdb0918da7b60b"
 
+iframe-phone@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/iframe-phone/-/iframe-phone-1.2.0.tgz#e913fbf4f7964eeecccb7bb9acbaad55621e1c64"
+  integrity sha1-6RP79PeWTu7My3u5rLqtVWIeHGQ=
+
 ignore@^4.0.6:
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-4.0.6.tgz#750e3db5862087b4737ebac8207ffd1ef27b25fc"
@@ -3531,9 +3536,9 @@ mocha@^1.21.5:
     mkdirp "0.5.0"
 
 mocha@^6.1.4:
-  version "6.1.4"
-  resolved "https://registry.yarnpkg.com/mocha/-/mocha-6.1.4.tgz#e35fada242d5434a7e163d555c705f6875951640"
-  integrity sha512-PN8CIy4RXsIoxoFJzS4QNnCH4psUCPWc4/rPrst/ecSJJbLBkubMiyGCP2Kj/9YnWbotFqAoeXyXMucj7gwCFg==
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/mocha/-/mocha-6.2.0.tgz#f896b642843445d1bb8bca60eabd9206b8916e56"
+  integrity sha512-qwfFgY+7EKAAUAdv7VYMZQknI7YJSGesxHyhn6qD52DV8UcSZs5XwCifcZGMVIE4a5fbmhvbotxC0DLQ0oKohQ==
   dependencies:
     ansi-colors "3.2.3"
     browser-stdout "1.3.1"
@@ -4090,9 +4095,9 @@ popper.js@^1.15.0:
   resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.15.0.tgz#5560b99bbad7647e9faa475c6b8056621f5a4ff2"
 
 portfinder@^1.0.13:
-  version "1.0.20"
-  resolved "https://registry.yarnpkg.com/portfinder/-/portfinder-1.0.20.tgz#bea68632e54b2e13ab7b0c4775e9b41bf270e44a"
-  integrity sha512-Yxe4mTyDzTd59PZJY4ojZR8F+E5e97iq2ZOHPz3HDgSvYC5siNad2tLooQ5y5QHyQhc3xVqvyk/eNA3wuoa7Sw==
+  version "1.0.21"
+  resolved "https://registry.yarnpkg.com/portfinder/-/portfinder-1.0.21.tgz#60e1397b95ac170749db70034ece306b9a27e324"
+  integrity sha512-ESabpDCzmBS3ekHbmpAIiESq3udRsCBGiBZLsC+HgBKv2ezb0R4oG+7RnYEVZ/ZCfhel5Tx3UzdNWA0Lox2QCA==
   dependencies:
     async "^1.5.2"
     debug "^2.2.0"
@@ -4245,6 +4250,20 @@ punycode@^2.1.0, punycode@^2.1.1:
 puppeteer@^1.14.0:
   version "1.14.0"
   resolved "https://registry.yarnpkg.com/puppeteer/-/puppeteer-1.14.0.tgz#828c1926b307200d5fc8289b99df4e13e962d339"
+  dependencies:
+    debug "^4.1.0"
+    extract-zip "^1.6.6"
+    https-proxy-agent "^2.2.1"
+    mime "^2.0.3"
+    progress "^2.0.1"
+    proxy-from-env "^1.0.0"
+    rimraf "^2.6.1"
+    ws "^6.1.0"
+
+puppeteer@^1.19.0:
+  version "1.19.0"
+  resolved "https://registry.yarnpkg.com/puppeteer/-/puppeteer-1.19.0.tgz#e3b7b448c2c97933517078d7a2c53687361bebea"
+  integrity sha512-2S6E6ygpoqcECaagDbBopoSOPDv0pAZvTbnBgUY+6hq0/XDFDOLEMNlHF/SKJlzcaZ9ckiKjKDuueWI3FN/WXw==
   dependencies:
     debug "^4.1.0"
     extract-zip "^1.6.6"
@@ -4739,10 +4758,10 @@ simple-concat@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/simple-concat/-/simple-concat-1.0.0.tgz#7344cbb8b6e26fb27d66b2fc86f9f6d5997521c6"
 
-simple-data-grapher@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/simple-data-grapher/-/simple-data-grapher-1.2.2.tgz#245ce1c5076a23691ea4b46dbd767f95aca4d4ef"
-  integrity sha512-UhdtJZGm91+Bbjs2BPL8uFYAKBanxhXWj4hxveva3ExMzoGf30xUXSpPStOS7TdO/uMpIoeRxSGojRUPgNM7GA==
+simple-data-grapher@^1.3.2:
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/simple-data-grapher/-/simple-data-grapher-1.3.2.tgz#5c28b7cb2b698fa46377180991a8db5e3e89c270"
+  integrity sha512-1dEtIOREmTec9t+p5VPtu5i1jKLi8xVu5RD0a3yxHXeXuNohToofQIjM9TZldxdHWi4LBlslOX037DDeK1bVjA==
   dependencies:
     chai "^4.2.0"
     chartjs "^0.3.24"
@@ -4750,9 +4769,11 @@ simple-data-grapher@^1.2.2:
     file-system "^2.2.2"
     googleapis "^39.2.0"
     http-server "^0.11.1"
+    iframe-phone "^1.2.0"
     jquery "^3.4.1"
     mocha "^6.1.4"
     papaparse "^4.6.3"
+    puppeteer "^1.19.0"
     readline "^1.3.0"
 
 simple-get@^2.7.0:
