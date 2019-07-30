@@ -448,7 +448,7 @@ class TagControllerTest < ActionController::TestCase
     get :show, params: { id: tag.name }
     selector = css_select "ul>li>a[href = '/questions/tag/question:spectrometer']"
     assert_equal selector.size, 1
-    selector = css_select '#questions.active'
+    selector = css_select '#questions-tab.active'
     assert_equal selector.size, 1
   end
 
@@ -564,7 +564,7 @@ class TagControllerTest < ActionController::TestCase
     get :show_for_author, params: { id: tag.name, author: 'jeff' }
     selector = css_select "ul>li>a[href = '/questions/tag/question:spectrometer/author/jeff']"
     assert_equal selector.size, 1
-    selector = css_select '#questions.active'
+    selector = css_select '#questions-tab.active'
     assert_equal selector.size, 1
   end
 
