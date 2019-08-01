@@ -36,18 +36,18 @@ Ruby dependencies, or Gems, are managed with Bundler.
 `gem install bundler` - if it's not already installed, but it should be in a basic RVM ruby. 
 
 
-### YARN 
+### Assets with Yarn 
 
 You'll also need **yarn** to get your JavaScript dependencies.
 
 [The official installation section](https://yarnpkg.com/lang/en/docs/install/#debian-stable) for yarn has installation details for many systems.
 
-The yarn install step replaces the previously used bower install step.
+The `yarn install` step replaces the previously used `bower install` step.
 
 Use `yarn --version` to verify whether the installation is up and running!
 
 **Note**: In case the options described above do not work for you, you can also install yarn using npm,though it is generally not recommended. As a prerequisite, you will have to [install Node.js](https://nodejs.org/en/download/) if not already installed.
-To install yarn using npm, use `npm install --global yarn` and then continue with path setup similar to the usual installation.
+To install yarn using npm, use `npm install --global yarn` and continue with path setup similar to the usual installation.
 
 
 ### phantomjs for javascript tests (optional)
