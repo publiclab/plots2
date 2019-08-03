@@ -7,10 +7,9 @@
   <%= render :partial => "map/userLeaflet" , locals: { haslocation: false, user: @profile_user } %>
   <% end %>
 
-  <h3 class="mt-3"><%= @profile_user.name %> <%= @profile_user.new_contributor %>
+  <h3>
     <small>
-      <a href="/p/<%= @profile_user.username %>"><i class="fa fa-link"></i></a>
-      <% if logged_in_as(['admin']) %> | <%= @profile_user.email %><% end %>
+      <% if logged_in_as(['admin']) %><%= @profile_user.email %><% end %>
       <span style = "font-size:24px;"><small> | <%= raw t('users.profile.joined_time_ago', :time_ago => distance_of_time_in_words(@profile_user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' })) %></small></span>
       <% if @profile_user.role == "moderator" %> | <i class="fa fa-certificate"></i> <%= t('users.profile.moderator') %><% end %>
       <% if @profile_user.role == "admin" %> | <i class="fa fa-certificate"></i> <%= t('users.profile.admin') %><% end %>
@@ -40,9 +39,11 @@
 <div class="col-lg-4">
   <div class="text-center">
   <img class="d-none d-lg-inline rounded-circle" id="profile-photo" style="width:50%;margin-bottom:10px;" src="<%= @profile_user.profile_image %>" />
+  <h4 class="mt-3"><strong>@<%= @profile_user.name %> <%= @profile_user.new_contributor %></strong></h4>
   </div>
   <div style="text-align:center;" class="d-lg-none">
     <img class="rounded-circle" id="profile-photo" style="width:50%;margin-bottom:20px;" src="<%= @profile_user.photo_path %>" />
+  <h4 class="mt-3"><strong>@<%= @profile_user.name %> <%= @profile_user.new_contributor %></strong></h4>
   </div>
 
   <%= render :partial => "tag/tagging", locals: { url: "/profile/tags/create/#{ @profile_user.id }", parent: :profile, user: @profile_user } %>
