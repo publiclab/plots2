@@ -150,6 +150,7 @@ ActiveRecord::Schema.define(version: 2019_07_08_141804) do
     t.datetime "updated_at", null: false
     t.string "filestring"
     t.string "string"
+    t.string "graphobject"
   end
   
   create_table "files", primary_key: "fid", force: true do |t|
