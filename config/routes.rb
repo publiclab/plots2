@@ -130,6 +130,7 @@ Plots2::Application.routes.draw do
   get 'simple-data-grapher/prev_file' => 'csvfiles#prev_files'
   get 'simple-data-grapher/data/:id' => 'csvfiles#user_files'
   get 'simple-data-grapher/file/:uid/:id' => 'csvfiles#delete'
+  get 'simple-data-grapher/fetch_graphobject' => 'csvfiles#fetch_graphobject'
 
   get 'place/:id/feed' => 'place#feed'
   get 'n/:id' => 'notes#shortlink'
@@ -301,14 +302,15 @@ Plots2::Application.routes.draw do
   get 'admin/mark_comment_spam/:id' => 'admin#mark_comment_spam'
   get 'smtp_test' => 'admin#smtp_test'
 
-  get 'post' => 'editor#post'
-  post 'post' => 'editor#post'
+  get 'post' => 'editor#post', :as => :editor_post
+  post 'post' => 'editor#post', :as => :editor_path
   get 'legacy' => 'editor#legacy'
   get 'editor' => 'editor#editor'
   get 'editor/rich/(:n)' => 'editor#rich'
   post 'images/create' => 'images#create'
   put 'note/add' => 'legacy#note_add'
   put 'page/add' => 'legacy#page_add'
+  get 'sdg' => 'editor#tempfunc'
 
   get 'talk/:id' => 'talk#show'
 

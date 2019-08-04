@@ -37,7 +37,7 @@ class CsvfilesController < ApplicationController
         graphobject: params[:graphobject]
     )
     @newfile.save
-    render json: @newfile
+    render json: {uid: params[:uid], id: @newfile.id}
   end
 
   def delete
@@ -49,5 +49,10 @@ class CsvfilesController < ApplicationController
       flash[:error] = "Could not delete the file"
     end
     redirect_to "simple-data-grapher/data/#{params[:uid]}"
+  end
+
+  def fetch_graphobject
+    @graphobject = Csvfile.where(id: params[:id].to_i, uid: params[:uid].to_i)
+    render json: {sdgobject: @graphobject[0].graphobject}
   end
 end

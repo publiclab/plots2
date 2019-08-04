@@ -141,6 +141,7 @@
                         graphobject: JSON.stringify(dataObject)},
                 success: function(data){
                     console.log("saved",data);
+                    window.location = '/post?uid='+data["uid"]+'&id='+data["id"];
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown){
                     console.log("error");
