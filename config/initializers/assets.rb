@@ -49,5 +49,6 @@ Rails.application.config.assets.precompile += [
   'wiki.css',
   'horsey.js',
   'atwho_autocomplete.js',
-  'async_tag_subscriptions.js'
+  'async_tag_subscriptions.js',
+  'cable.js'
 ]

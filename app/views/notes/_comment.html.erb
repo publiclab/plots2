@@ -49,16 +49,13 @@
       -->
       <% end %>
 
+      <% if comment.comment_via == 1 %>
+        <i data-toggle="tooltip" title="This comment was posted by email." class="fa fa-envelope"></i>
+      <% end %>
       <% if current_user && comment.uid == current_user.uid %>
         <a class="btn btn-outline-secondary btn-sm" href="javascript:void(0)" onClick="$('#c<%= comment.cid %>edit').toggle();$('#c<%= comment.cid %>show').toggle();setInit(<%= comment.cid %>);">
           <i class="fa fa-pencil"></i>
         </a>
-      <% end %>
-      <% if comment.comment_via == 1 %>
-        <a href="#" onclick="return false;" class="btn btn-outline-secondary btn-sm"><i class="fa fa-envelope"></i></a>
-      <% end %>
-      <% if params[:controller] == "questions" && current_user && (current_user.role == "admin" || current_user.role == "moderator" || comment.uid == current_user.uid) %>
-        <a class="btn btn-outline-secondary btn-sm" id="comment-<%= comment.id %>-reorder-btn" data-remote="true" data-confirm="Are you sure? <% if current_user && comment.uid != current_user.uid %>Please exercise caution in promoting others' comments; this cannot be undone.<% end %>" rel="tooltip" title="<%= t('questions._comment.promotion') %>" data-placement="left" href="/comment/make_answer/<%= comment.id %>"><i class="fa fa-plus"></i></a>
       <% end %>
       <% if current_user &. can_moderate? %>
         <a rel="tooltip" title="Mark as spam" class="btn btn-sm btn-outline-secondary btn-flag-spam-<%= comment.id %>" data-confirm="Are you sure? The user will no longer be able to log in or publish, and their content will be hidden except comments." href="/admin/mark_comment_spam/<%= comment.id %>">
@@ -69,17 +66,17 @@
           <i class="fa fa-flag"></i>
         </a>
       <% end %>
-      <% if current_user && (current_user.role == "admin" || current_user.role == "moderator" || comment.uid == current_user.uid || comment.parent.uid == current_user.uid) %>
+      <% if logged_in_as(['admin', 'moderator']) || (current_user && (comment.uid == current_user.uid || comment.parent.uid == current_user.uid)) %>
         <a rel="tooltip" title="Delete comment" class="btn btn-outline-secondary btn-sm" id="c<%= comment.cid %>delete-btn">
           <i class='icon fa fa-trash'></i>
         </a>
       <% end %>
       <% if current_user %>
-            <button style="border: 1px solid;padding: 4px 6px;" class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button style="border: 1px solid;padding: 4px 6px;" class="btn btn-outline-secondary dropdown" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <i class='icon fa fa-smile-o'></i>
               <sup style="font-size: 12px;">+</sup>
             </button>
-            <div id="emoji-dropdown" style="background: #f8f8f8" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <div id="emoji-dropdown" style="background: #f8f8f8;" class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
               <% emoji_names, emoji_image_map = emoji_info %>
               <% emoji_names.each do |e| %>
               <% capitalized_emoji_name = e.split("-").map(&:capitalize).join %>

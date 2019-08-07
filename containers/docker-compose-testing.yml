@@ -23,16 +23,29 @@ services:
     build: ..
     cap_add:
       - SYS_PTRACE
-    command: /bin/bash -c "sleep 5 && /usr/local/bundle/bin/passenger start --max-pool-size 9 --min-instances 9 -p 4000"
     environment:
       - RAILS_ENV=${RAILS_ENV}
       - SECRET_KEY_BASE=${SECRET_KEY_BASE}
       - REDIS_URL=redis://redis:6379/0
+      - DANGER_GITHUB_API_TOKEN=${DANGER_GITHUB_API_TOKEN}
+      - TRAVIS_PULL_REQUEST=${TRAVIS_PULL_REQUEST}
+      - TRAVIS_REPO_SLUG=${TRAVIS_REPO_SLUG}
+      - CI=${CI}
+      - TRAVIS=${TRAVIS}
+      - CONTINUOUS_INTEGRATION=${CONTINUOUS_INTEGRATION}
+      # used to tell if we are in a Travis environment:
+      - HAS_JOSH_K_SEAL_OF_APPROVAL=${HAS_JOSH_K_SEAL_OF_APPROVAL}
+      - GITHUB_ACTION=${GITHUB_ACTION}
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - GITHUB_REPOSITORY=${GITHUB_REPOSITORY}
+      - GITHUB_EVENT_PATH=${GITHUB_EVENT_PATH}
+      - GITHUB_EVENT_NAME=${GITHUB_EVENT_NAME}
+      - QT_QPA_PLATFORM=${QT_QPA_PLATFORM}
+      - TASK=${TASK}
     links:
       - redis
     volumes:
       - ..:/app
-      - js_libs:/app/public/lib
     restart: unless-stopped
   sidekiq:
     build: ..
@@ -47,5 +60,4 @@ services:
       - .:/app
     environment:
       - REDIS_URL=redis://redis:6379/0
-volumes:
-    js_libs:
+

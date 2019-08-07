@@ -68,6 +68,10 @@ A custom JavaScript class named 'requireLogin' is inserted at the locations wher
 
 For example, it can be implemented in a button with the button class as `btn btn-default requireLogin`.
 
+There is also a JavaScript function called `require_login_and_redirect_to(url)` which will do exactly that, if you pass it a URL. The url can include GET parameters so it can be used to login and then redirect to, for example, a prepopulated post form at `/post?title=My Title&body=Hello`.
+
+See more [on this line](https://github.com/publiclab/plots2/blob/e190eae1ce7bf215b99b6efe7f828e17deb3213e/app/views/user_sessions/_form.html.erb#L83)
+
 ## Variables used
 
 * OAUTH_GOOGLE_APP_KEY: It contains app_id of the google developer's app created

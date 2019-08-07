@@ -23,6 +23,10 @@ Some key features include:
 * A user dashboard [presenting recent activity](https://publiclab.org/dashboard)
 * A privacy-sensitive, Leaflet-based [location tagging system](https://github.com/publiclab/leaflet-blurred-location/) and [community map](http://publiclab.org/people)
 
+## Roadmap
+
+We are developing a draft Roadmap for `plots2` and our broader Public Lab code projects; [read more and comment here](https://publiclab.org/notes/warren/05-22-2019/draft-of-a-public-lab-software-roadmap-comments-welcome).
+
 ## Table of Contents
 1. [What Makes This Project Different](#what-makes-this-project-different)
 2. [Data model](#data-model)
@@ -117,6 +121,7 @@ Once you complete the installation, use any of these credentials to login in to 
 
 **password**: `password`
 
+For more on the login systems, see [this page](https://github.com/publiclab/plots2/blob/b1c57446d016f8cd0ec149a75298711270e1643e/doc/LOGIN_SYSTEMS.md#how-to-setup-login-modal-on-various-locations)
 
 ## Testing
 

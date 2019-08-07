@@ -8,10 +8,6 @@
   </a>
 <% end %>
 
-<div style="margin-top:10px;" class="d-print-none">
-  <%= render partial: "like/like", locals: {node: @node, tagnames: @tagnames } %>
-</div>
-
 <br class="d-lg-none" style="clear:both;" />
 
 <h1 style="font-family: 'Junction Light';">
@@ -77,7 +73,7 @@
         <% end %>
       <% end %>
 
-      <% if current_user && current_user.role == "admin" %>
+      <% if logged_in_as(['admin']) %>
         <li class="nav-item" rel="tooltip" title="Delete this wiki page." data-placement="top">
           <%= link_to url_for(action: :delete,id: @node.id),method: :delete, data: {confirm: I18n.t('wiki.show.are_you_sure_delete', path: @node.path)}, class: "nav-link" do %>
             <i class="fa fa-trash"></i>
@@ -101,8 +97,8 @@
         </a>
       </li>
 
-      <li class="<%= 'active' if (controller.action_name == 'comments' )%>">
-        <a href="/wiki/<%= @node.slug_from_path %>/comments" rel="tooltip" title="Read Comments regarding this wiki page" data-placement="top">
+      <li class="nav-item" >
+        <a class="nav-link <%= 'active' if (controller.action_name == 'comments' )%>"href="/wiki/<%= @node.slug_from_path %>/comments" rel="tooltip" title="Read Comments regarding this wiki page" data-placement="top">
           <span class="d-none d-md-inline"> <%= @node.comments.size %></span>
           <i class="fa fa-comment"></i>
         </a>
@@ -130,13 +126,13 @@
 <% end %>
 
 <% if @node.has_power_tag('tabbed') %>
-<div class="navbar navbar-light">
+<nav class="navbar navbar-light bg-light navbar-expand">
   <ul class="navbar-nav">
-    <li class="nav-item"><a data-toggle="tab" href="#tab-overview"><%= t('wiki.show.overview') %></a></li>
-    <% if @node.power_tags('tabbed').include?("notes") %><li><a class="nav-link active" data-toggle="tab" href="#tab-notes"><%= t('wiki.show.research') %></a></li><% end %>
-    <% if @node.power_tags('tabbed').include?("wikis") %><li><a class="nav-link active" data-toggle="tab" href="#tab-wikis"><%= raw t('wiki.show.wiki_pages') %></a></li><% end %>
+    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab-overview"><%= t('wiki.show.overview') %></a></li>
+    <% if @node.power_tags('tabbed').include?("notes") %><li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#tab-notes"><%= t('wiki.show.research') %></a></li><% end %>
+    <% if @node.power_tags('tabbed').include?("wikis") %><li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#tab-wikis"><%= raw t('wiki.show.wiki_pages') %></a></li><% end %>
   </ul>
-</div>
+</nav>
 <% end %>
 
 <br />

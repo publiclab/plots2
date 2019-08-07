@@ -10,7 +10,7 @@
       <a class="dropdown-item" href="/wiki/new"><i class="fa fa-book"></i> <%= t('sidebar._post_button.create_wiki_page') %></a>
       <div class="dropdown-divider"></div>
       <a class="dropdown-item" href="/wiki/about-posting" class="hidden-lg"><i class="fa fa-question-sign"></i> <%= t('sidebar._post_button.about_posting') %></a>
-      <% if current_user && (current_user.role == "moderator" || current_user.role == "admin") %>
+      <% if logged_in_as(['admin', 'moderator']) %>
         <a class="dropdown-item" href="/spam"><i class="fa fa-ban-circle"></i> <%= t('sidebar._post_button.moderate_spam') %></a>
         <a class="dropdown-item" href="/useremail"><i class="fa fa-search"></i> <%= t('sidebar._post_button.email_search') %></a>
       <% end %>
@@ -19,14 +19,14 @@
 
 </div>
 
-<% if current_user && (current_user.role == "moderator" || current_user.role == "admin") %>
+<% if logged_in_as(['admin', 'moderator']) %>
 <div class="btn-group" style="margin-left:0;margin-top:6px;">
   <a href="#" data-toggle="dropdown" class="btn btn-default dropdown-toggle"><i class="fa fa-wrench"></i> <%= t('sidebar._post_button.tools') %> <span class="caret"></span></a>
   <ul class="dropdown-menu">
-    <% if current_user && (current_user.role == "moderator" || current_user.role == "admin") %>
+    <% if logged_in_as(['admin', 'moderator']) %>
       <li><a href="/spam"><i class="fa fa-ban-circle"></i> <%= t('sidebar._post_button.moderate_spam') %></a></li>
       <li><a href="/useremail"><i class="fa fa-search"></i> <%= t('sidebar._post_button.email_search') %></a></li>
-    <% elsif current_user && (current_user.role == "admin") %>
+    <% elsif logged_in_as(['admin']) %>
       <li><a href="/post?newsletter=true"><i class="fa fa-bullhorn"></i> <%= t('sidebar._post_button.post_newsletter') %></a></li>
     <% end %>
   </ul>

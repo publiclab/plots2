@@ -5,21 +5,22 @@
 
     <h2>Hello, welcome to Public Lab!</h2>
 
-    This is your dashboard, where recent updates from other community members show up. It'll keep you updated with recent progress, news and developments.
+    This is your dashboard, where recent updates from other community members show up. It'll keep you updated with
+    recent progress, news and developments.
     <br>
     To get started at Public Lab, try:
     <br><br>
     <p>
-      <a class="btn btn-sm btn-outline-secondary" href="/questions" target="_blank">
+      <a class="btn btn-sm btn-light" href="/questions" target="_blank">
         Asking a question
       </a>
 
-      <a class="btn btn-sm btn-default" href="https://publiclab.org/methods" target="_blank">
+      <a class="btn btn-sm btn-light" href="/methods" target="_blank">
         Exploring projects
       </a>
     </p>
   </div>
-  
+
 <% end %>
 
 <div class="dashboard container">
@@ -27,12 +28,12 @@
   <div class="row">
 
     <div class="col-lg-8">
- 
-     <%= render partial: "dashboard/header" %>
+
+      <%= render partial: "dashboard/header" %>
 
       <div class="dashboard-blog">
- 
-        <% if @blog %> 
+
+        <% if @blog %>
 
           <% if @blog.main_image %>
             <div class="img" style="background-image: url('<%= @blog.main_image.path(:large) %>')">
@@ -40,39 +41,40 @@
             <div class="img" style="background-image: url('<%= @blog.scraped_image %>')">
           <% end %>
 
-            <div class="blog-caption">
-       
-              <h4>
-                <small class="float-right d-none d-lg-inline"><%=raw translation('dashboard.dashboard.from_blog', :url => '/blog') %></small>
-                <a class="title" href="/blog"><%= @blog.title %></a> 
-                <small><%= t('dashboard.dashboard.by') %> <a href="/profile/<%= @blog.author.username %>"><%= @blog.author.username %></a></small>
-              </h4>
-       
-            </div>
+          <div class="blog-caption">
+
+            <h4>
+              <small class="float-right d-none d-lg-inline"><%= raw translation('dashboard.dashboard.from_blog', :url => '/blog') %></small>
+              <a class="title" href="/blog"><%= @blog.title %></a>
+              <small><%= t('dashboard.dashboard.by') %>
+                <a href="/profile/<%= @blog.author.username %>"><%= @blog.author.username %></a></small>
+            </h4>
+
+          </div>
 
           <% if @blog.main_image || @blog.scraped_image %>
             </div>
           <% end %>
-       
+
         <% end %>
-  
-        <%= render partial: "dashboard/activity", locals: { activity: @activity, notes: @notes } %>
- 
+
+        <%= render partial: "dashboard/activity", locals: {activity: @activity, notes: @notes} %>
+
+        </div>
+
       </div>
 
-    </div>
-     
-    <div class="col-lg-4">
+      <div class="col-lg-4">
 
-      <%= feature('dashboard-feature') %>
+        <%= feature('dashboard-feature') %>
 
-      <%= render partial: "sidebar/dashboard" %>
+        <%= render partial: "sidebar/dashboard" %>
+
+      </div>
 
     </div>
 
   </div>
-
 </div>
-
 <%= stylesheet_link_tag "dashboard" %>
 <%= javascript_include_tag "dashboard" %>

@@ -77,12 +77,17 @@ class SearchService
   # The search string that is passed in is split into tokens, and the tag names are compared and
   # chained to the notes that are tagged with those values
   def search_tags(query, limit = 10)
-    sterms = query.split(' ')
-    Tag.where(name: sterms)
-      .joins(:node_tag, :node)
+    suggestions = []
+    # filtering out tag spam by requiring tags attached to a published node
+    # also, we search for both "balloon mapping" and "balloon-mapping":
+    Tag.where('name LIKE ? OR name LIKE ?', '%' + query + '%', '%' + query.gsub(' ', '-') + '%')
+      .includes(:node)
+      .references(:node)
       .where('node.status = 1')
-      .select('DISTINCT node.nid,node.title,node.path')
-      .limit(limit)
+      .limit(limit).each do |tag|
+      suggestions << tag
+    end
+    suggestions
   end
 
   # Search question entries for matching text

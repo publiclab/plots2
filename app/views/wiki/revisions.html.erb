@@ -1,6 +1,6 @@
 <div class="col-lg-5">
   <% if !@node.nil? %>
-    
+
     <h3 id="wiki-title" style="margin-top:0;"><%= raw t('wiki.revisions.revisions_for', :wiki => @node.title) %></h3>
 
     <ul class="nav nav-tabs">
@@ -11,9 +11,6 @@
     </ul>
 
     <table class="table">
-      <tr>
-        <%= raw t('wiki.revisions.table_content') %>
-      </tr>
     <% @revisions.each_with_index do |revision, index| %>
       <tr id="row<%= @node.revisions.length-1-index %>"<% if index < 2 %> class="warning"<% end %><% if revision.status == 0 %> style="background:#fcc;"<% end %>>
 
@@ -26,13 +23,13 @@
         <% if revision.author %><td><a href="/profile/<%= revision.author.name %>"><%= revision.author.name %></a></td><% end %>
 
         <td>
-          <a href="/wiki/revisions/<%= params[:id] %>/<%= revision.vid %>"><%= revision.created_at.to_s(:long) %></a> 
+          <a href="/wiki/revisions/<%= params[:id] %>/<%= revision.vid %>"><%= revision.created_at.to_s(:long) %></a>
           <i class="fa fa-external-link"></i>
 	  | <%= distance_of_time_in_words(revision.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>
           <div style="display:none;" id="body_<%= @node.revisions.length-1-index %>"><%= raw RDiscount.new(revision.body).to_html %></div>
         </td>
         <td><small><a class="btn btn-sm btn-outline-secondary" href="/wiki/revert/<%= revision.vid %>" data-confirm="<%= t('wiki.revisions.are_you_sure') %>"><i class="fa fa-arrow-reload"></i> <%= t('wiki.revisions.revert') %></a></small></td>
-        <% if current_user && (current_user.role == "moderator" || current_user.role == "admin") %>
+        <% if logged_in_as(['admin', 'moderator']) %>
           <% if revision.status == 1 %>
             <td><small><a class='btn btn-sm btn-outline-secondary' data-toggle="tooltip" title="Mark as Spam" data-placement="top" href='/moderate/revision/spam/<%= revision.vid %>' data-confirm="<%= t('wiki.revisions.are_you_sure') %>"><i class='fa fa-ban'></i></a></small></td>
           <% elsif revision.status == 0 %>
@@ -78,7 +75,7 @@
         }
         console.log('prev', newer, older);
       }
-      
+
       function next() {
         if (newer < <%= @node.revisions.length-1 %>) {
           older += 1;
@@ -87,7 +84,7 @@
         }
         console.log('next', newer, older);
       }
-      
+
       function goto(newer, older) {
 
         $('#newer').html(newer);
@@ -115,7 +112,7 @@
           )
         );
 
-        $(document).keydown(function(e){ 
+        $(document).keydown(function(e){
           if (e.keyCode == 39) next();
           if (e.keyCode == 37) prev();
         })
@@ -126,4 +123,3 @@
 
   <% end %>
 </div>
-

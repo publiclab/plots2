@@ -29,7 +29,7 @@ body{
     padding-top: 80px;
 }
 
-h1,h2,h3 {
+h1,h2,h3,h4 {
   font-family:"Junction Light", lucida grande,lucida sans console,sans-serif;
   font-weight:normal;
 }
@@ -38,7 +38,7 @@ h2 small {
   font-size: 60%;
 }
 
-h4,h5,h6, h1 small, h3 small {
+h5,h6, h1 small, h3 small {
   font-family: "Junction Regular", lucida grande,lucida sans console,sans-serif;
   font-weight: normal;
   line-height: 1.4em;
@@ -83,7 +83,7 @@ a .fa-white,
 }
 
 .label a {
-  color:white;
+  color:#007bff;
 }
 
 .label {
@@ -286,6 +286,10 @@ a .fa-white,
 .pl-content blockquote p {
   padding: 8px 4px;
   margin-top: 8px;
+  font-size: 14px;
+  font-family: "Helvetica Neue";
+  border-left: 5px solid #736f6f;
+  background-color: #f3f1ef;
 }
 
 #tags .label {
@@ -387,8 +391,8 @@ div.note .meta {
   height:auto;
   overflow:auto;
 }
-/*start of img aspect css that will affect the 
-thumbnails which appears on the user's profile 
+/*start of img aspect css that will affect the
+thumbnails which appears on the user's profile
 under their notes*/
 #notes .note a.img {
   height: auto;
@@ -408,7 +412,7 @@ under their notes*/
 .grid-image {
   width: 100% !important;
   height: auto;
-  display: block; 
+  display: block;
   overflow: hidden;
   margin-bottom: 10px;
 }
@@ -470,7 +474,7 @@ div.note.moderated h4 {
   .grid-image {
   width: auto;
   height: auto;
-  display: block; 
+  display: block;
   overflow: hidden;
   margin-bottom: 10px;
   }

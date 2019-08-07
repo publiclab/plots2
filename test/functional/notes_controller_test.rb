@@ -374,7 +374,7 @@ class NotesControllerTest < ActionController::TestCase
     assert_response :success
     selector = css_select 'div.note'
     assert_equal selector.size, 25
-    assert_select "p", "Moderate first-time post: \n              Approve\n              Spam"
+    assert_select 'a[data-test="spam"]','Spam'
   end
 
   test 'post_note_error_no_title' do

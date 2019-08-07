@@ -2,10 +2,7 @@ require "application_system_test_case"
 # https://guides.rubyonrails.org/testing.html#implementing-a-system-test
 
 class PostTest < ApplicationSystemTestCase
-
-  def setup
-    activate_authlogic
-  end
+  Capybara.default_max_wait_time = 60
 
   test 'posting from the editor' do
     visit '/'
@@ -17,7 +14,7 @@ class PostTest < ApplicationSystemTestCase
 
     visit '/post'
 
-    fill_in("Title", with: "My new post")
+    fill_in("title-input", with: "My new post")
     
     el = find(".wk-wysiwyg") # rich text input
     el.set("All about this interesting stuff")
