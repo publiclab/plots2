@@ -20,11 +20,7 @@ class EditorController < ApplicationController
   end
 
   def post
-    @graphobject = ""
-    if params[:id] && params[:uid]
-      @graphobject = [params[:id],params[:uid]]
-    end
-    # byebug
+    @graphobject = [params[:id],params[:uid]] if params[:id] && params[:uid]
     if params[:tags]&.include?('question:')
       redirect_to "/questions/new?#{request.env['QUERY_STRING']}"
     elsif params[:legacy] || params[:template] == 'event'

@@ -206,14 +206,14 @@
         <h2>4</h2>
         
       </div>
-      <% if @graphobject=="" %>
+      <% if @graphobject %>
         <div class="ple-module-content col-lg-9">
-          <textarea id="text-input" class="ple-textarea form-control"><% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
+          <% x = "Power Tag: simple-data-grapher:i/" + @graphobject[0] + "/" + @graphobject[1] %>
+          <textarea id="text-input" class="ple-textarea form-control"><div class="powertags"><%= x %></div><% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
         </div>
       <% else %>
         <div class="ple-module-content col-lg-9">
-          <% x = "Power Tag: simple-data-grapher: i/" + @graphobject[0] + "/" + @graphobject[1] %>
-          <textarea id="text-input" class="ple-textarea form-control"><div class="powertags"><%= x %></div><% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
+          <textarea id="text-input" class="ple-textarea form-control"><% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
         </div>
       <% end %>
       

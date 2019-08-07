@@ -54,19 +54,20 @@ module NodeShared
   end
 
   def self.simple_data_grapher(body, _page=1)
-    start = "Power Tag: simple-data-grapher: "
-    ending = "]</p>"
-    ids = body[/#{start}(.*?)#{ending}/m, 1].split("/")
-    a = ActionController::Base.new
-    randomSeed = rand(1000).to_s
-    output = a.render_to_string(template: "grids/_simple-data-grapher",
-                                layout:   false,
-                                locals: {
-                                  uid: ids[2],
-                                  id: ids[1],
-                                  idName: 'sdg-graph-' + randomSeed
-                                })
-    output
+    body.gsub(/(?<![\>`])(\<p\>)?\[Power\ Tag\:\ simple-data-grapher\:(\S+)\]/) do |_tagname|
+      ids = Regexp.last_match(2)
+      a = ActionController::Base.new
+      randomSeed = rand(1000).to_s
+      output = a.render_to_string(template: "grids/_simple-data-grapher",
+                                  layout:   false,
+                                  locals: {
+                                    ids: ids,
+                                    randomSeed: randomSeed,
+                                    idName: 'sdg-graph-' + randomSeed,
+                                    type: "graph"
+                                  })
+      output
+    end
   end
 
   # rubular regex: http://rubular.com/r/hBEThNL4qd

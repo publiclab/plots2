@@ -29,10 +29,5 @@ class CsvfilesControllerTest < ActionController::TestCase
 		get :delete, params: {id: 60, uid: 2}
 		assert_redirected_to '/login'
 	end
-
-	test 'should fetch graph object' do
-		get :fetch_graphobject, params: {id: 60, uid: 2}
-		assert_response :success
-	end
     
 end

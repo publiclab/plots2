@@ -1,6 +1,5 @@
 class CsvfilesController < ApplicationController
   before_action :require_user, only: %i(delete user_files)
-  before_action :add_graphobject, only: %i(fetch_graphobject)
   
   def new
     # to render the index page of simple-data-grapher
