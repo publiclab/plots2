@@ -5,10 +5,15 @@
     type: 'note'
   }
 </script>
-<div class="alert alert-success" id="success-upload" style="display: none">
+<div class="alert alert-success " id="success-upload" style="display: none ">
     <button type="button" class="close" data-dismiss="alert">×</button>
 
     <h2>Profile photo was uploaded successfully!</h2>
+  </div>
+  <div class="alert alert-danger " id="fail-upload" style="display: none ">
+    <button type="button" class="close" data-dismiss="alert">×</button>
+  
+    <h2>Error in uploading profile photo. Try again later!</h2>
   </div>
 <%= javascript_include_tag "dragdrop" %>
 
@@ -80,9 +85,11 @@
       $('#profile-photo')[0].src = data.result.url
       $('#profile-photo').show()
       $('#success-upload').css("display","block")
+      
     },
     // see callbacks at https://github.com/blueimp/jQuery-File-Upload/wiki/Options
     fileuploadfail: function(e,data) {
+      $('#fail-upload').css("display", "block")
       
     },
     progressall: function (e, data) {
