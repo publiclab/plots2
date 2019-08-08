@@ -18,31 +18,30 @@
           <h4 class="modal-title" style="color: #666;">Choose a template</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
-        <br />
-        <br />
+        <br/>
         <!-- Modal body -->
         <div class="modal-body">
 
-          <span style="">
+          <div class="post-con" style="text-align:center;">
           <a class = "requireLogin" style="color:#666;"
             href="/post?tags=question:<%= params[:id].gsub('question:', '') %>&template=question&redirect=question">
-              Ask a question</a>
-            <i class="fa fa-question-circle-o" aria-hidden="true" style=""></i>
-          </span>
+              Ask a question</a><br/>
+            <i class="fa fa-question-circle-o fa-3x" aria-hidden="true" style="margin-top:15px;"></i>
+          </div>
 
-          <span style="margin-left:35px;">
+          <div class="post-con" style="margin-left:25px; text-align:center;">
           <a class="requireLogin" style="color:#666;"
              href="/post?tags=<%= params[:id].gsub('blog-submission:', '') %>">
-              Share a story or project</a>
-            <i class="fa fa-asterisk" aria-hidden="true"></i>
-          </span>
+              Share a story/project</a><br/>
+            <i class="fa fa-asterisk fa-3x" aria-hidden="true" style="margin-top:15px;"></i>
+          </div>
 
-          <span style="margin-left:35px;">
+          <div class="post-con" style="margin-left:25px; text-align:center;">
           <a class="requireLogin" style="color:#666;"
              href="/post?tags=issue-brief:<%= params[:id].gsub('issue-brief:', '') %>">
-              Describe an issue</a>
-            <i class="fa fa-building" aria-hidden="true"></i>
-          </span>
+              Describe an issue</a><br/>
+            <i class="fa fa-building fa-3x" aria-hidden="true" style="margin-top:15px;"></i>
+          </div>
 
         </div>
       </div>
@@ -59,16 +58,19 @@
   }
 
   .modal-content{
-    height: 250px;
+    height: 300px;
     padding: 10px;
   }
 
-  span{
+  .post-con{
     color: #666;
     border : 1px solid #666;
     border-radius: 4px;
     font-size: 20px;
     padding: 20px;
+    width: 230px;
+    height: 140px;
+    float: left;
   }
 
 </style>
