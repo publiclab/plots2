@@ -12,7 +12,10 @@ class SettingsTest < ApplicationSystemTestCase
     fill_in("password-signup", with: "secretive")
     click_on "Log in"
 
+    visit '/settings'
+
     take_screenshot
   end
 
 end
+
