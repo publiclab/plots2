@@ -3,8 +3,21 @@
   <% tags.each do |tag| %>
     <% if tag.class == NodeTag %>
       <% if power_tag ^ tag.name.include?(':') # XOR operator??? %>
-        <li style="width: 100%;"><span id="tag_<%= tag.tid %>" class="badge <%= badge_name %> pop" style="cursor:pointer" data-toggle="popover" data-trigger="focus" data-count=0 data-placement="top" data-content="<p style='text-align:center;'><a href='/tag/<%= tag.name %>'><%= Tag.tagged_node_count(tag.name) || 0 %> notes</a> - <a href='/contributors/<%= tag.name %>'><%= Tag.contributors(tag.name).count %> people <br></a></p> <p style='text-align:center;font-size:12px;'><%if tag.description %><%= tag.description %> |<% end %> created by <a href='/profile/<%= tag.try(:author).try(:username) %>'><%= tag.try(:author).try(:username) %></a> <%= time_ago_in_words(Time.at(tag.date)) %> ago </p><div style='text-align:center;' class='text-center'><a href='/subscribe/tag/<%= tag.name %>' class='btn btn-primary'>Follow</a></div>" data-html="true" title="<%= tag.name %>">
-         <%= tag.name %>
+        <!-- <li style="width: 100%;"><span id="tag_<%= tag.tid %>" class="badge <%= badge_name %> pop" style="cursor:pointer" data-toggle="popover" data-trigger="focus" data-count=0 data-placement="top" data-content="<p style='text-align:center;'><a href='/tag/<%= tag.name %>'><%= Tag.tagged_node_count(tag.name) || 0 %> notes</a> - <a href='/contributors/<%= tag.name %>'><%= Tag.contributors(tag.name).count %> people <br></a></p> <p style='text-align:center;font-size:12px;'><%if tag.description %><%= tag.description %> |<% end %> created by <a href='/profile/<%= tag.try(:author).try(:username) %>'><%= tag.try(:author).try(:username) %></a> <%= time_ago_in_words(Time.at(tag.date)) %> ago </p><div style='text-align:center;' class='text-center'><a href='/subscribe/tag/<%= tag.name %>' class='btn btn-primary'>Follow</a></div>" data-html="true" title="<%= tag.name %>">
+         <%= tag.name %> -->
+         <div class = "tags_card">
+           <a href="/tag/<%= tag.name%>"><h5 style="display: inline-block; text-decoration: underline; color:black;"><%= tag.name %></h5></a>
+           <p style="display: inline-block; color: #808080; font-size:15px;"><a style="color: #808080;" href="/tag/<%= tag.name %>"> <%= Tag.follower_count(tag.name) %> people</a></p>
+           <a class="ellipsis" data-toggle="dropdown">&nbsp<i class="fa fa-ellipsis-h" style="color : #666; font-size:15px; float:right; margin-right:15px;"></i></a>
+           <ul class="dropdown-menu pull-right" style = "font-size:15px; padding:10px;">
+             <li><a href='/tag/<%= tag.name %>' style="color:black; text-decoration: underline;"><%= Tag.tagged_node_count(tag.name) || 0 %> notes</a></li>
+             <li>created by <a href='/profile/<%= tag.try(:author).try(:username) %>' style="color:black; text-decoration: underline;"><%= tag.try(:author).try(:username) %></a> </li>
+             <li>created <%= time_ago_in_words(Time.at(tag.date)) %> ago</li>
+           </ul>
+           <div style="margin-left:130px; margin-top:-3px;">
+             <a href='/subscribe/tag/<%= tag.name %>' class='btn btn-primary'>Subscribe</a>
+           </div>
+         </div>
           <% if logged_in_as(['admin', 'moderator']) || (current_user && ( current_user.uid ==  @node.uid || current_user.uid == tag.uid)) %>
             <% if tag.name.include? ':' %>
               <a data-confirm="This is a power tag (see https://publiclab.org/wiki/power-tags) -- and may drive a specific function on this page. Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/tag/delete/<%= @node.id %>/<%= tag.tid %>" data-tag-id="<%= tag.tid %>" data-method="delete" style="color:white;">x</a>
@@ -67,3 +80,20 @@ $('.tag-delete').click(
 );
 
 </script>
+
+<style>
+  .tags_card{
+    width: 250px;
+    height:100px;
+    border: 1px solid #666;
+    border-radius: 12px;
+    margin-top: 10px;
+    padding-left: 12px;
+    padding-top: 14px;
+  }
+
+  .ellipsis{
+    cursor: pointer;
+  }
+
+</style>
