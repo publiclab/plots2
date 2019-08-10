@@ -84,12 +84,14 @@
       $('.profile-uploading').hide()
       $('#profile-photo')[0].src = data.result.url
       $('#profile-photo').show()
-      $('#success-upload').css("display","block")
+      localStorage.setItem("Status", "Done")
+      window.location.reload();
       
     },
     // see callbacks at https://github.com/blueimp/jQuery-File-Upload/wiki/Options
     fileuploadfail: function(e,data) {
-      $('#fail-upload').css("display","block")
+      localStorage.setItem("Status", "Error")
+      
       
     },
     progressall: function (e, data) {
@@ -100,5 +102,18 @@
       );
     }
   });
+  $(document).ready(function () {
+      //get it if Status key found
+      if (localStorage.getItem("Status")=="Done") {
+        $('#success-upload').css("display", "block")
+
+        localStorage.clear();
+      }
+      else if(localStorage.getItem("Status") == "Error")
+      {
+        $('#fail-upload').css("display", "block")
+        localStorage.clear();
+      }
+    });
 </script>
 <% end %>
