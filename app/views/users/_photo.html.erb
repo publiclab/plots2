@@ -22,7 +22,7 @@
 <h3><%= t('users._photo.profile_photo') %></h3>
 
 <div class="profile-dropzone" id="profile-dropzone" style="margin-bottom:20px;">
-    <img class="rounded" id="profile-photo" style="<% unless @user.photo_file_name %>display:none;<% end %>
+    <img class="rounded" id="profile-pic" style="<% unless @user.photo_file_name %>display:none;<% end %>
     width:100%;
     margin-bottom:10px;
     margin-top:5%;
@@ -80,17 +80,16 @@
     },
     done: function (e, data) {
       $('#profile-progress').hide()
-      $('#profile-dropzone').show()
       $('.profile-uploading').hide()
       $('#profile-photo')[0].src = data.result.url
-      $('#profile-photo').show()
-      localStorage.setItem("Status", "Done")
-      window.location.reload();
+      $('#profile-pic')[0].src = data.result.url
+      notyNotification('sunset', 3000, 'success', 'topRight', 'Success: Profile photo was uploaded!');
+
       
     },
     // see callbacks at https://github.com/blueimp/jQuery-File-Upload/wiki/Options
     fileuploadfail: function(e,data) {
-      localStorage.setItem("Status", "Error")
+      notyNotification('sunset', 3000, 'error', 'topRight', 'Error in uploading profile photo. Try again later!');
       
       
     },
@@ -102,18 +101,7 @@
       );
     }
   });
-  $(document).ready(function () {
-      //get it if Status key found
-      if (localStorage.getItem("Status")=="Done") {
-        $('#success-upload').css("display", "block")
+  
 
-        localStorage.clear();
-      }
-      else if(localStorage.getItem("Status") == "Error")
-      {
-        $('#fail-upload').css("display", "block")
-        localStorage.clear();
-      }
-    });
 </script>
 <% end %>
