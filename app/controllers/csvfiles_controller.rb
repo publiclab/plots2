@@ -1,6 +1,6 @@
 class CsvfilesController < ApplicationController
   before_action :require_user, only: %i(delete user_files)
-  
+
   def new
     # to render the index page of simple-data-grapher
   end
@@ -28,16 +28,16 @@ class CsvfilesController < ApplicationController
 
   def add_graphobject
     @newfile = Csvfile.new(
-        uid: params[:uid],
-        filetitle: params[:filetitle],
-        filedescription: params[:filedescription],
-        filepath: params[:object],
-        filename: "file" + Time.now.to_i.to_s,
-        filestring: params[:filestring],
-        graphobject: params[:graphobject]
+      uid: params[:uid],
+      filetitle: params[:filetitle],
+      filedescription: params[:filedescription],
+      filepath: params[:object],
+      filename: "file" + Time.now.to_i.to_s,
+      filestring: params[:filestring],
+      graphobject: params[:graphobject]
     )
     @newfile.save
-    render json: {uid: params[:uid], id: @newfile.id}
+    render json: { uid: params[:uid], id: @newfile.id }
   end
 
   def delete
@@ -53,6 +53,6 @@ class CsvfilesController < ApplicationController
 
   def fetch_graphobject
     @graphobject = Csvfile.where(id: params[:id].to_i, uid: params[:uid].to_i)
-    render json: {sdgobject: @graphobject[0].graphobject}
+    render json: { sdgobject: @graphobject[0].graphobject }
   end
 end

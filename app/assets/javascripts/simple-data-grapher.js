@@ -1,17 +1,17 @@
 function determineType2(graphType){
-    if (graphType=="Horizontal" || graphType=="Vertical"){
+    if (graphType==="Horizontal" || graphType==="Vertical"){
         return "bar";
     } 
-    else if (graphType=="Pie" || graphType=="Doughnut" || graphType=="Radar" ){
+    else if (graphType==="Pie" || graphType==="Doughnut" || graphType==="Radar" ){
         return "pie";
     }
-    else if (graphType=="Basic" || graphType=="Stepped" || graphType=="Point"){
+    else if (graphType==="Basic" || graphType==="Stepped" || graphType==="Point"){
         return "scatter";
     }
 }
 function layoutMaker(graphType){
     var layout={};
-    if (graphType=="Horizontal" || graphType=="Vertical"){
+    if (graphType==="Horizontal" || graphType==="Vertical"){
         layout["barmode"]="group";
     }
     return layout;
@@ -19,19 +19,19 @@ function layoutMaker(graphType){
 function traceMaker(graphType){
     var trace={};
     trace["type"]=determineType2(graphType);
-    if (graphType=="Horizontal"){
+    if (graphType==="Horizontal"){
         trace["orientation"]="h";
     }
-    else if (graphType=="Doughnut"){
+    else if (graphType==="Doughnut"){
         trace["hole"]=0.5;
     }
-    else if (graphType=="Basic"){
+    else if (graphType==="Basic"){
         trace["mode"]="lines";
     }
-    else if(graphType=="Point"){
+    else if(graphType==="Point"){
         trace["mode"]="markers";
     }
-    else if(graphType=="Stepped"){
+    else if(graphType==="Stepped"){
         trace["mode"]="lines+markers";
         trace["line"]={"shape": 'hv'};
     }
@@ -39,11 +39,11 @@ function traceMaker(graphType){
 }
 function keyDeterminer(graphType){
     var keys=["x","y"];
-    if (graphType=="Pie" || graphType=="Doughnut"){
+    if (graphType==="Pie" || graphType==="Doughnut"){
         keys[1]="values";
         keys[0]="labels";
     }
-    else if (graphType=="Horizontal"){
+    else if (graphType==="Horizontal"){
         keys[0]="y";
         keys[1]="x";
     }

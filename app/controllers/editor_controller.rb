@@ -20,7 +20,7 @@ class EditorController < ApplicationController
   end
 
   def post
-    @graphobject = [params[:id],params[:uid]] if params[:id] && params[:uid]
+    @graphobject = [params[:id], params[:uid]] if params[:id] && params[:uid]
     if params[:tags]&.include?('question:')
       redirect_to "/questions/new?#{request.env['QUERY_STRING']}"
     elsif params[:legacy] || params[:template] == 'event'
@@ -39,10 +39,6 @@ class EditorController < ApplicationController
     image if params[:i]
   end
 
-  # def tempfunc
-  #   redirect_to editor_path(f: params[:graphobject])
-  # end
-
   private
 
   def image
@@ -55,5 +51,4 @@ class EditorController < ApplicationController
     node = Node.find(params[:n])
     params[:body] = node.body if node
   end
-
 end
