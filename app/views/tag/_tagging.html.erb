@@ -9,12 +9,18 @@
   <%= render partial: 'tag/replication' %>
 
   <span id="tags">
-  <%= render partial: 'tag/tags', locals: { power_tag: true, badge_name: 'badge-secondary', tags: @node.node_tags } %>
-  <%= render partial: 'tag/tags', locals: { power_tag: false, badge_name: 'badge-primary', tags: @node.node_tags } %>
+    <%= render partial: 'tag/tags', locals: { power_tag: true, badge_name: 'badge-secondary', tags: @node.node_tags } %>
+    <%= render partial: 'tag/tags', locals: { power_tag: false, badge_name: 'badge-primary', tags: @node.node_tags } %>
+    <% if @tags.count > 2 %>
+      <a href=""><p style="float:left; margin-top:-10px; color:#666;"><%= @tags.count-2 %> more &nbsp </p></a>
+    <% end %>
   </span>
 <% else %>
   <span id="tags">
-  <%= render partial: 'tag/tags', locals: { power_tag: false, badge_name: 'badge-primary', tags: user.user_tags, user: user } %>
+      <%= render partial: 'tag/tags', locals: { power_tag: false, badge_name: 'badge-primary', tags: user.user_tags, user: user } %>
+      <% if @tags.count > 2 %>
+        <a href=""><p style="float:left; margin-top:-10px; color:#666;"><%= @tags.count-2 %> more &nbsp </p></a>
+      <% end %>
   </span>
 <% end %>
 
@@ -47,7 +53,7 @@ $(".label").on("click", function(e){
 <% if current_user && (parent != :profile || (current_user.id == user.id || logged_in_as(['admin']))) %>
 <% url = url || "/tag/create/" + @node.id.to_s %>
 
-<a id="tags-open" style="cursor: pointer;"><i class="fa fa-plus-circle fa-2x " style="color:#808080;" aria-hidden="true"></i></a>
+<a id="tags-open" style="cursor: pointer;"><i class="fa fa-plus-circle fa-2x " style="color:#808080; margin-top:-10px; float:left;" aria-hidden="true"></i></a>
 
 <form id="tagform" class="form" data-remote="true" action="<%= url %>">
   <div class="control-group">
@@ -89,6 +95,15 @@ $(".label").on("click", function(e){
   #tagform{
     display:none;
   }
+</style>
+
+<style>
+
+.list-inline {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 </style>
 
 <%= render partial: 'tag/location' %>
