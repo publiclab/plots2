@@ -1,0 +1,81 @@
+Kaylin SpruceDelivered-To: testing-bee@gmail.com
+Received: by 2002:ac9:6015:0:0:0:0:0 with SMTP id y21csp8114059ocj;
+        Wed, 7 Aug 2019 23:10:07 -0700 (PDT)
+X-Received: by 2002:a50:eac6:: with SMTP id u6mr13963928edp.83.1565244607285;
+        Wed, 07 Aug 2019 23:10:07 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1565244607; cv=none;
+        d=google.com; s=arc-20160816;
+        b=0DRjBF7YNKK++8fIFtLqsDzS0Yda7W9fBjWZaE7uPJpyJSa5kzTqeJYzBaqhSWXMIe
+         mShV0wmpXvfehjSYxiAw5dvjiBzZpnYMLPPZFNasJxYdRS02nLSZwDDyM4S1TqTv961Z
+         Nnw5f/+gHdmR76Pd8sIIu5syfm8w6qR3pNRQhcTzyQmwx+dkxIHnLKAqWFJdGx1pJiaX
+         nSIjlRotq+cGwHiWiyqgbM6YXVldbrVEgN+qksgSXj3i9Fu09bk5bcJeoeMgEQXCkfQF
+         YP2qX3Ur4K8h+BkzHORzuoaod/tb9CZPud5ap8DArsA1wraZ8HIOOMKjKQQHiWlgZ7Re
+         jbFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=auto-submitted:precedence:content-disposition
+         :content-transfer-encoding:mime-version:subject:message-id:date:from
+         :to:dkim-signature;
+        bh=LdMlVMc5bsCqPK0WeVIKb8+DF9SmqUMZJlF0h9yVmiU=;
+        b=i6lSzeKhngJvVlUk5WPfH4xMdVUMQX8Zur48dbQxqGUBDmykSgThPaYcFRFCgEDcP+
+         9/6LzQpIb+bJOaHTLZBIRWEPGJstB+VF95XOckEk9o4PXHg0/s+nQTxpGhitPBA27G+L
+         G1vEhmICFwU3YKMT1jZSg/jjlxiL1stZK6SE7sAbB2b9PkSmldqVCpNmoKZhoKIbEAmB
+         8DROj6J70+pYcckwE8t06tKMq+x63+zoVycB0VYQSEZPiY/KZHKf+x3DnilfzLNXjLIr
+         jufHHWTedtrxL2JCHVGy92khgDBo7hI8L5c/5+xhjOMAs7CSU8mNnHWPHygIKlutA3Va
+         4lEw==
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20161025 header.b=dvRPc7A9;
+       spf=pass (google.com: domain of cool-sauce@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=cool-sauce@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
+Return-Path: <cool-sauce@gmail.com>
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
+        by mx.google.com with SMTPS id m9sor32203676ejj.20.2019.08.07.23.10.07
+        for <testing-bee@gmail.com>
+        (Google Transport Security);
+        Wed, 07 Aug 2019 23:10:07 -0700 (PDT)
+Received-SPF: pass (google.com: domain of cool-sauce@gmail.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20161025 header.b=dvRPc7A9;
+       spf=pass (google.com: domain of cool-sauce@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=cool-sauce@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=to:from:date:message-id:subject:mime-version
+         :content-transfer-encoding:content-disposition:precedence
+         :auto-submitted;
+        bh=LdMlVMc5bsCqPK0WeVIKb8+DF9SmqUMZJlF0h9yVmiU=;
+        b=dvRPc7A9QN8zbHf1P0Agemihy0MY3dxbjDd/lX9HoWX8PHXAEYylmls/WOAO8f+UA/
+         xdCN+3udn/r69vXuW45ABZfxualm6IZ9yU3P6RPWzMVFi4XNdzzK998oiI8SECebu2Ua
+         Tq69DuTM2WK4d1tis/2n/o8l2LGP3GMJeFKBNixP8wXinEFt2kEeQVLtrBc0VnUhR461
+         XwbZ2EFXtDo0BuxQWuZqqKwDydiH7eTm9C9L+Sjf2aoSGTJ82uSBI+5D36kOSXIyUsY4
+         RPpmtByoG8SsCOfOM1M9NiDj3LC+S+oaRTjR8n2Q4iuVX8/C5bCamF0DwRU9fq4y4RB1
+         6H9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:to:from:date:message-id:subject:mime-version
+         :content-transfer-encoding:content-disposition:precedence
+         :auto-submitted;
+        bh=LdMlVMc5bsCqPK0WeVIKb8+DF9SmqUMZJlF0h9yVmiU=;
+        b=TLAOsS3xnawnBEs6gLJTzN45TiTtfo9gg4lNxSxT8VeCTmHuV9gy0zlhPITtRH2lcF
+         oImqWc6ETSxIjPw9a7+n0Obuzh4z/EwYkDNaJW6istGXWEVTS+WjnbACQQBX4cz2NMQg
+         gzNbHWmhRvIvQ55aWEV559reI9CElveonA161Q+PddKIJzr2x9azayWSxUtU2EtE3KYZ
+         ANn9CQiiBbq7vT9YqSO4bgBaIfKFRHfyx3dpsMf1stixKWKUS5q38YoN16XR3bH7uCxM
+         WMes8EqYh84LSRyrdNfpq46jgugkhOHC3HkTGNtksCIjCF0ROEHL/qd4bKNzGi0uGHBL
+         MBbw==
+X-Gm-Message-State: APjAAAVJNDPUHdZNh1WEgy7cxAR8Fgl6N4+ydkyRgSGVadW8N8lB8j0j U3HXFwwkaeXwfdX6Mj0TQtNqrgxwHuxjLrtG9nV46mIDjjtRGq/hBzJutkY=
+X-Google-Smtp-Source: APXvYqwtArMXHbjW2JRo1ZCQJ0fQLdv4vrRJGKSllcyN5jjgWxNCfS5E6ubUjMTGK8nfV5byvT11Kb16AmfuyKJG1IvMIDppHI581liWBUMY
+X-Received: by 2002:a17:906:f91:: with SMTP id q17mr11898000ejj.297.1565244606964;
+        Wed, 07 Aug 2019 23:10:06 -0700 (PDT)
+To: testing-bee@gmail.com
+From: Kaylin Spruce <cool-sauce@gmail.com>
+Date: Wed, 7 Aug 2019 23:10:06 -0700
+Message-ID: <CADh7UzEUJcgK3NRwZTsQfaRTE6_5gyQnYUgD8EiAAuoZCddZrA@mail.gmail.com>
+Subject: Auto Reply Re: Hola
+MIME-Version: 1.0
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+Precedence: bulk
+X-Autoreply: yes
+Auto-Submitted: auto-replied
+
+PGRpdiBkaXI9Imx0ciI+PGJyPkhpISBUaGlzIGlzIGFuIGF1dG8gcmVwbHkhwqA8L2Rpdj4NCg==

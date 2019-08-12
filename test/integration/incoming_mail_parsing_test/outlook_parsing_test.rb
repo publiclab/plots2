@@ -17,4 +17,9 @@ class OutlookParsingTest < ActionDispatch::IntegrationTest
     assert_equal User.find(reply.uid).email, user_email
     f.close()
   end
+
+  test 'to parse autoreply mail from outlook service correctly and add comment reply' do
+    mail = Mail.read('test/integration/incoming_mail_parsing_test/outlook_parsing_test.rb')
+    assert_equal true, Comment.is_autoreply(mail)
+  end
 end

@@ -18,4 +18,9 @@ class YahooParsingTest < ActionDispatch::IntegrationTest
     assert_equal User.find(comment.uid).email, user_email
     f.close()
   end
+
+  test 'to parse autoreply mail from yahoo service correctly and add comment reply' do
+    mail = Mail.read('test/fixtures/incoming_test_emails/gmail/autoreply_incoming_gmail_email.eml')
+    assert_equal true, Comment.is_autoreply(mail)
+  end
 end
