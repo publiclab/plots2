@@ -41,7 +41,9 @@
     </small>
   </h4>
 
-    <p><%= raw auto_link(RDiscount.new(@profile_user.bio || '').to_html, :sanitize => false) %></p>
+  <div id="user-bio">
+    <%= @profile_user.bio %></br>
+  </div>
 
   <div class="mt-3">
 
@@ -56,7 +58,7 @@
   </div>
 
   <hr>
-  
+
   <div id="tags-hide">
     <%= render :partial => "tag/tagging", locals: { url: "/profile/tags/create/#{ @profile_user.id }", parent: :profile, user: @profile_user } %>
   </div>
@@ -296,6 +298,48 @@
       $("#social-links").toggle();
   });
 
+  $(document).ready(function() {
+    function splitText(text) {
+        var textBreak = textLimit;
+        var first = text.substring(0, textBreak);
+        var second = text.substring(textBreak);
+        var aux = second.substring(0, second.indexOf(" "));
+        var spaceIndex = second.indexOf(" ");
+        second = " " + second.substring(spaceIndex + 1);
+        first = first.substring(0, textBreak) + aux;
+        var bothTextes = [first, second];
+        return bothTextes;
+    }
+
+
+
+    var textLimit = 150;
+    var text = $("#user-bio").html();
+
+
+    if (text.length > textLimit) {
+        var textArray = splitText(text);
+        $("#user-bio").text(textArray[0]);
+        $("#user-bio").append("<span onclick=\"expandText()\" class='show-more'>...<span class=\"red\">show more</span></span>");
+        $("#user-bio").append("<span style=\"display: none\" class='rest-of-description'>" + textArray[1] + "</span>");
+        $("#user-bio").append("<span onclick=\"collapseText()\" style=\"display: none\" class='red show-less'> show less </span>");
+    } else {
+        $("#user-bio").text(text);
+    }
+});
+
+    function expandText() {
+        $(".rest-of-description").show();
+        $(".show-less").show();
+        $(".show-more").hide();
+    }
+
+    function collapseText() {
+        $(".rest-of-description").hide();
+        $(".show-less").hide();
+        $(".show-more").show();
+    }
+
 </script>
 
 <style type="text/css">
@@ -326,7 +370,7 @@
     display:none;
   }
 
-  .info a { color: inherit; } 
+  .info a { color: inherit; }
 
   li {
     list-style-type: none;
@@ -334,6 +378,11 @@
 
   .token{
     font-weight: bold;
+  }
+
+  .show-more, .show-less{
+    font-weight: bold;
+    cursor: pointer;
   }
 </style>
 
