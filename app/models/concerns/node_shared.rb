@@ -38,36 +38,29 @@ module NodeShared
   # rubular regex: http://rubular.com/r/hBEThNL4qd
   def self.graph_grid(body, _page = 1)
     body.gsub(/(?<![\>`])(\<p\>)?\[graph\:(\S+)\]/) do |_tagname|
-      url = Regexp.last_match(2)
-      a = ActionController::Base.new
-      randomSeed = rand(1000).to_s
-      output = a.render_to_string(template: "grids/_graph",
-                                  layout:   false,
-                                  locals:   {
-                                    url: url,
-                                    randomSeed: randomSeed,
-                                    idName: 'graph-grid-' + randomSeed,
-                                    type: "graph"
-                                  })
-      output
+      graph_details('grids/_graph', 'graph-grid-')
     end
   end
 
   def self.simple_data_grapher(body, _page = 1)
     body.gsub(/(?<![\>`])(\<p\>)?\[Power\ Tag\:\ simple-data-grapher\:(\S+)\]/) do |_tagname|
-      ids = Regexp.last_match(2)
-      a = ActionController::Base.new
-      randomSeed = rand(1000).to_s
-      output = a.render_to_string(template: "grids/_simple-data-grapher",
-                                  layout:   false,
+      graph_details('grids/_simple-data-grapher', 'sdg-graph-')
+    end
+  end
+
+  def self.graph_details(template, id_name)
+    url = Regexp.last_match(2)
+    a = ActionController::Base.new
+    randomSeed = rand(1000).to_s
+    output = a.render_to_string(template: template,
+                                layout:   false,
                                   locals: {
-                                    ids: ids,
+                                    url: url,
                                     randomSeed: randomSeed,
-                                    idName: 'sdg-graph-' + randomSeed,
+                                    idName: id_name + randomSeed,
                                     type: "graph"
                                   })
-      output
-    end
+    output
   end
 
   # rubular regex: http://rubular.com/r/hBEThNL4qd
