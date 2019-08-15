@@ -383,6 +383,20 @@ class UsersController < ApplicationController
       end
     end
 
+    notification_settings = [
+      'notification:all',
+      'notification:mentioned',
+      'notification:like'
+    ]
+
+    notification_settings.each do |setting|
+      if params[setting] == "on"
+        UserTag.create_if_absent(current_user.uid, setting)
+      else
+        UserTag.remove_if_exists(current_user.uid, setting)
+      end
+    end
+
     flash[:notice] = "Settings updated successfully!"
     render js: "window.location.reload()"
   end

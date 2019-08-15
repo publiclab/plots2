@@ -68,6 +68,45 @@
   <br />
   <br />
 
+  <div style="display: inline-flex; justify-content: space-between; width: 90%;">
+    <span>Do you want to receive browser notification when you are mentioned ?</span>
+    <span>
+    <label style=" vertical-align: middle;" class="switch">
+      <input type="checkbox" name="notification:mentioned" <% if UserTag.exists?(current_user.id, 'notification:mentioned') %>checked<% end %>>
+      <span class="slider round"></span>
+    </label>
+    </span>
+  </div>
+
+  <br />
+  <br />
+
+  <div style="display: inline-flex; justify-content: space-between; width: 90%;">
+    <span>Do you want to receive browser notification for all ?</span>
+    <span>
+    <label style=" vertical-align: middle;" class="switch">
+      <input type="checkbox" name="notification:all" <% if UserTag.exists?(current_user.id, 'notification:all') %>checked<% end %>>
+      <span class="slider round"></span>
+    </label>
+    </span>
+  </div>
+
+  <br />
+  <br />
+
+  <div style="display: inline-flex; justify-content: space-between; width: 90%;">
+    <span>Do you want to receive browser notification when someone likes your work ?</span>
+    <span>
+    <label style=" vertical-align: middle;" class="switch">
+      <input type="checkbox" name="notification:like" <% if UserTag.exists?(current_user.id, 'notification:like') %>checked<% end %>>
+      <span class="slider round"></span>
+    </label>
+    </span>
+  </div>
+
+  <br />
+  <br />
+
 
 <!--  <div style="display: inline-flex; justify-content: space-between; width: 90%;">-->
 <!--    <span>Do you want to be notified by email for comments on all posts you have commented on</span>-->
