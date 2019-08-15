@@ -20,7 +20,7 @@ class YahooParsingTest < ActionDispatch::IntegrationTest
   end
 
   test 'to parse autoreply mail from yahoo service correctly and add comment reply' do
-    mail = Mail.read('test/fixtures/incoming_test_emails/gmail/autoreply_incoming_gmail_email.eml')
+    mail = Mail.read('test/fixtures/incoming_test_emails/yahoo/autoreply_incoming_outlook_email')
     assert_equal true, Comment.is_autoreply(mail)
   end
 end
