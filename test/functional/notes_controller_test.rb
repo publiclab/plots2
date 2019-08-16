@@ -977,7 +977,7 @@ class NotesControllerTest < ActionController::TestCase
              id: node.nid,
              token: @token
          }
-     assert_redirected_to '/login'
+     assert_response :success
    end
 
    test 'no notification email if user posts draft' do
