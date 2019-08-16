@@ -50,13 +50,12 @@ class NotesController < ApplicationController
     return if redirect_to_node_path?(@node)
 
     if @node
-      alert_and_redirect_moderated
-
       if @node.has_power_tag('question') && @node.status == 1
         redirect_to @node.path(:question)
         return
       end
-
+      
+      alert_and_redirect_moderated
       redirect_power_tag_redirect
 
       impressionist(@node, 'show', unique: [:ip_address])
