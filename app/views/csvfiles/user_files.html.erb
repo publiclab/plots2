@@ -30,7 +30,7 @@
                 <% download_link = file.filename + ".csv" %>
             <% end %>
             <td><a href="<%= file.filestring %>" download="<%= download_link %>"><i class="fa fa-download" aria-hidden="true"></i></a></td>
-            <td><a href="/simple-data-grapher/file/<%= file.uid %>/<%= file.id %>"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+            <td><a href="/graph/file/<%= file.uid %>/<%= file.id %>"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
             <td>
                 <% if file.filedescription!="" %>
                     <%= file.filedescription %>

@@ -124,13 +124,13 @@ Plots2::Application.routes.draw do
   get 'wiki' => 'wiki#index'
 
   #routes for simple-data-grapher
-  get 'simple-data-grapher/fetch_graphobject' => 'csvfiles#fetch_graphobject'
+  get 'graph/fetch_graphobject' => 'csvfiles#fetch_graphobject'
   get 'simple-data-grapher' => 'csvfiles#new'
-  post 'simple-data-grapher/object' => 'csvfiles#setter'
-  post 'simple-data-grapher/note/graphobject' => 'csvfiles#add_graphobject'
-  get 'simple-data-grapher/prev_file' => 'csvfiles#prev_files'
+  post 'graph/object' => 'csvfiles#setter'
+  post 'graph/note/graphobject' => 'csvfiles#add_graphobject'
+  get 'graph/prev_file' => 'csvfiles#prev_files'
   get 'simple-data-grapher/data/:id' => 'csvfiles#user_files'
-  get 'simple-data-grapher/file/:uid/:id' => 'csvfiles#delete'
+  get 'graph/file/:uid/:id' => 'csvfiles#delete'
 
   get 'place/:id/feed' => 'place#feed'
   get 'n/:id' => 'notes#shortlink'

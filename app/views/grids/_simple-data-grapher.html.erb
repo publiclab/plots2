@@ -14,9 +14,9 @@
         var idString = "<%= ids %>";
         var idList = idString.split("/");
         $.ajax({
-            url: '/simple-data-grapher/fetch_graphobject',
+            url: '/graph/fetch_graphobject',
             type: 'get',
-            data: {uid: idList[2], id: idList[1]},
+            data: {uid: idList[1], id: idList[2]},
             success: function(data){
                 plotter(data);
             },

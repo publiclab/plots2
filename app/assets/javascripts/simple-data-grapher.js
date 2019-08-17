@@ -60,17 +60,14 @@ function plotGraph2(dataHash,length,graphType,divId){
         new_trace["name"]=dataHash['labels'][1][i];
         data.push(new_trace);
     }
-    console.log(data);
     Plotly.newPlot(divId,data,layout);
     
 }
 function graphMaker(data,divId){
     var obj = data["sdgobject"];
-    var string = "hash = " + obj + ";";
-    var actualHash = eval(string);
+    var actualHash = JSON.parse(obj);
     var dataHash = actualHash["hash"];
     var length = actualHash["length"];
     var graphType = actualHash["graphType"];
-    console.log(data,dataHash,length,graphType);
     plotGraph2(dataHash,length,graphType,divId);
 }

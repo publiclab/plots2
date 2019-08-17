@@ -38,7 +38,7 @@
                 let csvStringMatrix = SimpleDataGrapherObject.view.csvParser.completeCsvMatrixTranspose;
                 let csvStringForDownload = encodeURI("data:text/csv;charset=utf-8," + csvStringMatrix.map(e => e.join(",")).join("\n"));
                 $.ajax({
-                    url: '/simple-data-grapher/object',
+                    url: '/graph/object',
                     type: 'post',
                     data:   {object: JSON.stringify(arr), 
                             uid: <%= current_user.id %>, 
@@ -66,7 +66,7 @@
 
         $("#" + prevFile).click(function(){
             $.ajax({
-                url: '/simple-data-grapher/prev_file',
+                url: '/graph/prev_file',
                 type: 'get',
                 data: {uid: <%= current_user.id %>},
                 success: function(data){
@@ -131,7 +131,7 @@
             dataObject["graphType"] = SimpleDataGrapherObject.view.plotlyjsPlotter.graphType;
             dataObject["length"] = SimpleDataGrapherObject.view.plotlyjsPlotter.length;
             $.ajax({
-                url: '/simple-data-grapher/note/graphobject',
+                url: '/graph/note/graphobject',
                 type: 'post',
                 data: {object: JSON.stringify(arr), 
                         uid: <%= current_user.id %>, 
@@ -141,7 +141,7 @@
                         graphobject: JSON.stringify(dataObject)},
                 success: function(data){
                     console.log("saved",data);
-                    window.location = '/post?uid='+data["uid"]+'&id='+data["id"];
+                    window.location = '/post?body=%5Bsimple-data-grapher:i/'+data["uid"]+'/'+data["id"]+'%5D';
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown){
                     console.log("error");
