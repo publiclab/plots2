@@ -140,8 +140,8 @@
                         filestring: csvStringForDownload,
                         graphobject: JSON.stringify(dataObject) },
                 success: function(data){
-                    console.log('saved',data);
-                    window.location = '/post?body=%5Bsimple-data-grapher:i/'+data['uid']+'/'+data['id']+'%5D';
+                    console.log('saved', data);
+                    window.location = '/post?body=%5Bsimple-data-grapher:i/' + data['uid']+'/' + data['id'] + '%5D';
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown){
                     console.log('error');
