@@ -1,10 +1,6 @@
 class CsvfilesController < ApplicationController
   before_action :require_user, only: %i(delete user_files)
 
-  def new
-    # to render the index page of simple-data-grapher
-  end
-
   def setter
     @csvfile = Csvfile.new(
       uid: params[:uid],
