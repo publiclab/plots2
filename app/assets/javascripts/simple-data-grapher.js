@@ -32,7 +32,7 @@ function traceMaker(graphType){
         trace["mode"] = "markers";
     }
     else if (graphType === "Stepped"){
-        trace["mode"] = "lines + markers";
+        trace["mode"] = "lines+markers";
         trace["line"] = { "shape": 'hv' };
     }
     return trace;
@@ -53,7 +53,7 @@ function plotGraph2(dataHash, length, graphType,  divId){
     let layout = layoutMaker(graphType);
     let data = [];
     let keySet = keyDeterminer(graphType);
-    for (let i = 0;i< length;i++){
+    for (let i = 0;i < length;i++){
         let new_trace = traceMaker(graphType);
         new_trace[keySet[0]] = dataHash['x_axis_labels'];
         new_trace[keySet[1]] = dataHash['y_axis_values' + i];
