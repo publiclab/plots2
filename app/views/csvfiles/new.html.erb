@@ -104,7 +104,7 @@
         function selectFile(data){
             $('#' + SimpleDataGrapherObject.view.uploadButtonId).click(function(){
                 let name = data[0]['csvfile']['uid'] + 'user_id';
-                let index = $('input[name='+ name +']:checked').val();
+                let index = $('input[name=' + name + ']:checked').val();
                 let allfiles = JSON.parse(data[index]['csvfile']['filepath']);
                 SimpleDataGrapherObject.view.usingPreviouslyUploadedFile();
                 SimpleDataGrapherObject.view.csvParser.completeCsvMatrix = allfiles['completeCsvMatrix'];
@@ -116,8 +116,6 @@
             }); 
         }
         $('#' + SimpleDataGrapherObject.view.elementId + '_publish').click(function(){
-            console.log(SimpleDataGrapherObject.view.plotlyjsPlotter.dataHash);
-            console.log(SimpleDataGrapherObject.view.plotlyjsPlotter.graphType);
             var arr = {};
             arr['completeCsvMatrix'] = SimpleDataGrapherObject.view.csvParser.completeCsvMatrix;
             arr['csvHeaders'] = SimpleDataGrapherObject.view.csvParser.csvHeaders;
@@ -140,11 +138,10 @@
                         filestring: csvStringForDownload,
                         graphobject: JSON.stringify(dataObject) },
                 success: function(data){
-                    console.log('saved', data);
                     window.location = '/post?body=%5Bsimple-data-grapher:i/' + data['uid'] + '/' + data['id'] + '%5D';
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown){
-                    console.log('error');
+                    console.log(errorThrown);
                 }
             });
         });
