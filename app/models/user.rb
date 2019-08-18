@@ -297,6 +297,14 @@ class User < ActiveRecord::Base
     self
   end
 
+  def self.send_browser_notification(users_ids, notification)
+    users_ids.each do |uid|
+      if UserTag.where(value: 'notifications:all', uid: uid).any?
+        ActionCable.server.broadcast "users:notification:#{uid}", notification: notification
+      end
+    end
+  end
+
   def banned?
     status == Status::BANNED
   end
