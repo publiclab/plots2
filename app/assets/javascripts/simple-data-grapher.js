@@ -8,6 +8,9 @@ function determineType2(graphType){
     else if (graphType==="Basic" || graphType==="Stepped" || graphType==="Point"){
         return "scatter";
     }
+    else{
+        return "";
+    }
 }
 function layoutMaker(graphType){
     var layout={};
