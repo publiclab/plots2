@@ -5,11 +5,8 @@ function determineType2(graphType){
     else if (graphType==="Pie" || graphType==="Doughnut" || graphType==="Radar" ){
         return "pie";
     }
-    else if (graphType==="Basic" || graphType==="Stepped" || graphType==="Point"){
+    else {
         return "scatter";
-    }
-    else{
-        return "";
     }
 }
 function layoutMaker(graphType){
