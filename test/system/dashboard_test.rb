@@ -16,7 +16,7 @@ class DashboardTest < ApplicationSystemTestCase
 
     visit '/dashboard'
 
-    assert_selector('.row.header > h1', text: "Dashboard")
+    assert_selector('.row .header h1', text: "Dashboard")
     assert_selector('#activity-header > i', text: "Activity")
 
     take_screenshot

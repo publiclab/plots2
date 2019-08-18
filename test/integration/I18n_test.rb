@@ -384,9 +384,6 @@ class I18nTest < ActionDispatch::IntegrationTest
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s
       follow_redirect!
-
-      get '/wiki/' + nodes(:organizers).title.parameterize
-      assert_select 'a', I18n.t('sidebar._related.write_research_note')
     end
   end
 
