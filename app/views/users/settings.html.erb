@@ -72,7 +72,7 @@
     <span>Do you want to receive browser notification when you are mentioned ?</span>
     <span>
     <label style=" vertical-align: middle;" class="switch">
-      <input type="checkbox" name="notification:mentioned" <% if UserTag.exists?(current_user.id, 'notification:mentioned') %>checked<% end %>>
+      <input type="checkbox" name="notifications:mentioned" <% if UserTag.exists?(current_user.id, 'notifications:mentioned') %>checked<% end %>>
       <span class="slider round"></span>
     </label>
     </span>
@@ -85,7 +85,7 @@
     <span>Do you want to receive browser notification for all ?</span>
     <span>
     <label style=" vertical-align: middle;" class="switch">
-      <input type="checkbox" name="notification:all" <% if UserTag.exists?(current_user.id, 'notification:all') %>checked<% end %>>
+      <input type="checkbox" name="notifications:all" <% if UserTag.exists?(current_user.id, 'notifications:all') %>checked<% end %>>
       <span class="slider round"></span>
     </label>
     </span>
@@ -98,7 +98,7 @@
     <span>Do you want to receive browser notification when someone likes your work ?</span>
     <span>
     <label style=" vertical-align: middle;" class="switch">
-      <input type="checkbox" name="notification:like" <% if UserTag.exists?(current_user.id, 'notification:like') %>checked<% end %>>
+      <input type="checkbox" name="notifications:like" <% if UserTag.exists?(current_user.id, 'notifications:like') %>checked<% end %>>
       <span class="slider round"></span>
     </label>
     </span>
