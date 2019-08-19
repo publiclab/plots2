@@ -7,7 +7,23 @@
   <%= render :partial => "map/userLeaflet" , locals: { haslocation: false, user: @profile_user } %>
   <% end %>
 
-  <hr />
+  <br />
+
+  <p style="width: 100%; text-align: center; border-bottom: 1px solid #ccc; line-height:2px; margin: 10px 0 20px;">
+    <span style="background-color: #fff; padding: 0 10px; color: #808080;">
+      <h7>Most Common Tags</h7>
+    </span>
+  </p>
+
+  <div style="text-align: center;">
+    <span id="tags">
+      <% tags = Tag.sort_according_to_followers(@profile_user.tags,"desc") %>
+      <% tags.each do |tag| %>
+          <span id="tag_<%= tag.id %>" style=""><a class="badge badge-primary mb-1" style="color: white;" href="/tag/<%= tag.name %>"><%= tag.name %></a></span>
+      <% end %>
+    </span>
+  </div>
+
   <br />
 
   <%= render :partial => "tag/profileCard" %>
