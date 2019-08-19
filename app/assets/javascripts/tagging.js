@@ -77,6 +77,7 @@ function initTagForm(deletion_path, selector) {
         return process(data);
       })
     },
+    item: '<li class="dropdown-item"><a class="dropdown-item" href="#" role="option"></a></li>',
     updater: function(text) { 
       el.find('.tag-input').val(text);
       el.submit();

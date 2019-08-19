@@ -11,6 +11,7 @@ $(function() {
       items: 10,
       minLength: 3,
       showCategoryHeader: true,
+      item: '<li class="dropdown-item"><a class="dropdown-item" href="#" role="option"></a></li>',
       autoSelect: false,
       source: debounce(function (query, process) {
         var encoded_query = encodeURIComponent(query);
