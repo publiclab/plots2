@@ -13,8 +13,6 @@
     </a>
   <% end %>
 
-  <%= render :partial => "like/like", :locals => {:node => @node, :tagnames => @tagnames } %>
-
   <h1 style="margin-top: 20px;"><span class="question">Question: </span><a href="<%= @node.path(:question) %>"><%= @node.title %></a></h1>
   <% pt = @node.power_tag('question') %>
   <div class="alert alert-warning">
