@@ -14,10 +14,9 @@
       <th scope="col">Description</th>
     </tr>
   </thead>
-    <% count=1 %>
-    <% @user_files.each do |file,index| %>
+    <% @user_files.each.with_index(1) do |file,index| %>
         <tr>
-            <th scope="row"><%= count %></th>
+            <th scope="row"><%= index %></th>
             <td> 
                 <% if file.filetitle!="" %>
                     <%= file.filetitle %>
@@ -38,7 +37,6 @@
                     <p> No Description </p>
                 <% end %>
             </td>
-            <% count += 1 %>
         </tr>
     <% end %>
 </table>
