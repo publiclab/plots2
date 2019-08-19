@@ -154,8 +154,8 @@ class Comment < ApplicationRecord
   def send_browser_notification(users_ids)
     notification = Hash.new
     notification[:title] = "New Comment on #{parent.title}"
-    notification[:path] = parent.path
     option = {
+      data: parent.path,
       body: comment,
       icon: "https://publiclab.org/logo.png"
     }
