@@ -509,7 +509,7 @@ class Comment < ApplicationRecord
       puts "tweeter data -> #{data}"
       puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
       if !data.nil? && !data["info"].nil? && !data["info"]["nickname"].nil? && data["info"]["nickname"].to_s == twitter_user_name
-        return data["info"]["email"]
+        return user_tag.user.email
       end
     end
     puts "laaast step 2"
