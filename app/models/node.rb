@@ -1008,9 +1008,9 @@ class Node < ActiveRecord::Base
     self
   end
 
-  def draft_url
+  def draft_url(base_url)
     token = slug.split('token:').last
-    'https://publiclab.org/notes/show/' + nid.to_s + '/' + token
+    base_url + '/notes/show/' + nid.to_s + '/' + token
   end
 
   def fetch_comments(user)
