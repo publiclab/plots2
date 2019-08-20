@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_13_193708) do
+ActiveRecord::Schema.define(version: 2019_07_28_135035) do
 
   create_table "answer_selections", force: true do |t|
     t.integer "user_id"
@@ -140,6 +140,19 @@ ActiveRecord::Schema.define(version: 2019_06_13_193708) do
 
   add_index "content_type_map", ["nid"], name: "index_content_type_map_nid", using: :btree
 
+  create_table "csvfiles", force: :cascade do |t|
+    t.integer "uid"
+    t.string "filename"
+    t.string "filepath"
+    t.string "filetitle"
+    t.text "filedescription"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "filestring"
+    t.string "string"
+    t.string "graphobject"
+  end
+  
   create_table "files", primary_key: "fid", force: true do |t|
     t.integer "uid",       default: 0,  null: false
     t.string  "filename",  default: "", null: false
@@ -327,6 +340,7 @@ ActiveRecord::Schema.define(version: 2019_06_13_193708) do
     t.datetime "created_at",                                              null: false
     t.datetime "updated_at",                                              null: false
     t.string   "openid_identifier"
+    t.string   "csvfile"
     t.string   "role",                                  default: "basic"
     t.string   "reset_key"
     t.string   "photo_file_name"

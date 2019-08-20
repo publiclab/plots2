@@ -86,6 +86,7 @@ module ApplicationHelper
     body = NodeShared.people_grid(body, @current_user || nil) # <= to allow testing of insert_extras
     body = NodeShared.graph_grid(body)
     body = NodeShared.wikis_grid(body)
+    body = NodeShared.simple_data_grapher(body)
     body
   end
 

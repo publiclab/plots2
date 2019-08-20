@@ -123,6 +123,15 @@ Plots2::Application.routes.draw do
   get 'wiki/edit/:lang/:id' => 'wiki#edit'
   get 'wiki' => 'wiki#index'
 
+  #routes for simple-data-grapher
+  get 'graph/fetch_graphobject' => 'csvfiles#fetch_graphobject'
+  get 'graph' => 'csvfiles#new'
+  post 'graph/object' => 'csvfiles#setter'
+  post 'graph/note/graphobject' => 'csvfiles#add_graphobject'
+  get 'graph/prev_file' => 'csvfiles#prev_files'
+  get 'graph/data/:id' => 'csvfiles#user_files'
+  get 'graph/file/:uid/:id' => 'csvfiles#delete'
+
   get 'place/:id/feed' => 'place#feed'
   get 'n/:id' => 'notes#shortlink'
   get 'i/:id' => 'images#shortlink'
@@ -293,14 +302,15 @@ Plots2::Application.routes.draw do
   get 'admin/mark_comment_spam/:id' => 'admin#mark_comment_spam'
   get 'smtp_test' => 'admin#smtp_test'
 
-  get 'post' => 'editor#post'
-  post 'post' => 'editor#post'
+  get 'post' => 'editor#post', :as => :editor_post
+  post 'post' => 'editor#post', :as => :editor_path
   get 'legacy' => 'editor#legacy'
   get 'editor' => 'editor#editor'
   get 'editor/rich/(:n)' => 'editor#rich'
   post 'images/create' => 'images#create'
   put 'note/add' => 'legacy#note_add'
   put 'page/add' => 'legacy#page_add'
+  get 'sdg' => 'editor#tempfunc'
 
   get 'talk/:id' => 'talk#show'
 
