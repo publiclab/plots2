@@ -134,7 +134,6 @@ GEM
     gemoji (3.0.1)
     geocoder (1.5.1)
     geokit (1.13.1)
-    geokit-rails (2.3.1)
       geokit (~> 1.5)
       rails (>= 3.0)
     georuby (2.0.0)
@@ -574,7 +573,6 @@ DEPENDENCIES
   friendly_id
   gemoji
   geocoder
-  geokit-rails
   georuby (= 2.0)
   google-cloud-storage
   grape
