@@ -247,7 +247,7 @@
 
   <div class="info float:left">
     <ul>
-      <li class="mt-3"><h5>@<%= @profile_user.name %> <%= @profile_user.new_contributor %> asked</h5></li>
+      <li class="mt-3"><h5>@<%= @profile_user.name %> has</h5></li>
       <li><h5><%= @profile_user.note_count %><a href='/notes/author/<%= @profile_user.name %>'> research notes</a></h5></li>
       <li><h5><%= @profile_user.revisions.count %> wiki edits</h5></li>
       <li><h5><a href = "/tag/question:*/author/<%= params[:id] %>"><%= Node.questions.where(status: 1, uid: @profile_user.id).length %> questions </a></h5></li>
