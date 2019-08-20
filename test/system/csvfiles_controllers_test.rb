@@ -12,6 +12,6 @@ class CsvfilesControllersTest < ApplicationSystemTestCase
   test 'visit simple-data-grapher' do
     visit '/graph'
 
-    assert_selector("h2", text: " Simple Data Grapher")
+    assert_selector("h2", text: "Simple Data Grapher")
   end
 end
