@@ -17,11 +17,13 @@ class ScreenshotsTest < ApplicationSystemTestCase
   test 'login modal' do
     visit '/'
     click_on 'Login'
+    assert_selector('.loginContainer')
     take_screenshot
   end
 
   test 'signup' do
     visit '/signup'
+    assert_selector('.signupContainer')
     take_screenshot
   end
 
