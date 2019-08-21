@@ -20,9 +20,10 @@ module SearchHelper
 
   def create_nav_links_for_by_type(active_page, query)
     links = [
-      { section: "search-questions", text: "Questions", path: "/search/questions/#{query}/" },
+      { section: "search-all", text: "All content types", path: "/search/content/#{query}" },
+      { section: "search-questions", text: "Questions", path: "/search/questions/#{query}" },
       { section: "search-notes", text: "Notes", path: "/search/notes/#{query}" },
-      { section: "search-wikis", text: "Wikis", path: "/search/wikis/#{query}/" }
+      { section: "search-wikis", text: "Wikis", path: "/search/wikis/#{query}" }
     ]
 
     result = ""
