@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_28_135035) do
+ActiveRecord::Schema.define(version: 2019_08_21_192432) do
 
   create_table "answer_selections", force: true do |t|
     t.integer "user_id"
@@ -143,14 +143,14 @@ ActiveRecord::Schema.define(version: 2019_07_28_135035) do
   create_table "csvfiles", force: :cascade do |t|
     t.integer "uid"
     t.string "filename"
-    t.string "filepath"
+    t.text "filepath"
     t.string "filetitle"
     t.text "filedescription"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "filestring"
+    t.text "filestring"
     t.string "string"
-    t.string "graphobject"
+    t.text "graphobject"
   end
   
   create_table "files", primary_key: "fid", force: true do |t|
