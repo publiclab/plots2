@@ -4,14 +4,17 @@
 
 <div class="col-md-10">
   <div class="container">
+
+    <h2>Search all content types</h2>
+
+    <%= render partial: "search/form", locals: { searchType: "content/" } %>
+
     <% if  @nodes.all?{|k,v| v.blank?} %>
-      <% if params[:query].empty? %>
-        <h4>No Content found for <%= params[:query] %> :-(</h4>
-      <% else %>
-        <h4>No Content found for <%= params[:query] %> :-(</h4>
-      <% end %>
+      <p>No results found for "<b><%= params[:query] %></b>" :-(</p>
     <% else %>
-      <h2> Results for <%= params[:query] %></h2>
+
+      <h4>Results for "<b><%= params[:query] %></b>":</h4>
+
       <% unless @notes.blank? %>
         <h3> NOTES</h3>
         <table class="table inline-grid">
