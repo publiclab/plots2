@@ -9,11 +9,13 @@ class ScreenshotsTest < ApplicationSystemTestCase
   end
 
   test 'signup modal' do
+    visit '/'
     click_on 'Sign up'
     take_screenshot
   end
 
   test 'login modal' do
+    visit '/'
     click_on 'Login'
     take_screenshot
   end
