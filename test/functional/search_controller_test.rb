@@ -2,6 +2,11 @@ require 'test_helper'
 
 class SearchControllerTest < ActionController::TestCase
 
+  test "/search/_____ redirects to /search?q=_____" do
+    get :google_redirect, params: { query: 'test' }
+    assert_redirected_to '/search?q=test'
+  end
+
   test "new search page at /search" do
     get :new
     assert_response :success
@@ -11,6 +16,11 @@ class SearchControllerTest < ActionController::TestCase
     get :notes, params: { query: 'Canon' }
     assert_response :success
     assert_equal nodes(:one).id, assigns(:notes).first.id
+  end
+
+  test "blank profile search page at /search/profiles" do
+    get :profiles
+    assert_response :success
   end
 
   test "search profiles page at /search/profiles/steff1" do

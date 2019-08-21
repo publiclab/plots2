@@ -239,11 +239,11 @@ class SearchService
     users = if type == 'tag'
               User.where('rusers.status = 1')
                   .joins(:user_tags)\
-                  .where('user_tags.value LIKE ?', '%' + query + '%')\
+                  .where('user_tags.value LIKE ?', "%#{query}%")\
             elsif ActiveRecord::Base.connection.adapter_name == 'Mysql2'
               type == 'username' ? User.search_by_username(query).where('rusers.status = ?', 1) : User.search(query).where('rusers.status = ?', 1)
             else
-              User.where('username LIKE ? OR username = ? AND rusers.status = 1', '%' + query + '%', query)
+              User.where('username LIKE ? OR username = ? AND rusers.status = 1', "%#{query}%", query)
             end
     users.limit(limit)
   end

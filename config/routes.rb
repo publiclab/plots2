@@ -182,13 +182,14 @@ Plots2::Application.routes.draw do
   get 'likes/node/:id/delete' => 'like#delete',  :as => :drop_like
 
   get "search/wikis/:query",       :to => "search#wikis"
-  get "search/profiles/:query",    :to => "search#profiles"
-  get "search/questions/:query",   :to => "search#questions"
-  get "search/places/:query",      :to => "search#places"
-  get "search/tags/:query",        :to => "search#tags"
-  get "search/",                   :to => "search#new"
-  get "search/notes/:query",       :to => "search#notes"
-  get "search/:query",             :to => "search#all_content"
+  get "search/profiles/(:query)",  :to => "search#profiles"
+  get "search/questions/(:query)", :to => "search#questions"
+  get "search/places/(:query)",    :to => "search#places"
+  get "search/tags/(:query)",      :to => "search#tags"
+  get "search/notes/(:query)",     :to => "search#notes"
+  get "search/",                   :to => "search#google"
+  get "search/content/",           :to => "search#new"
+  get "search/:query",             :to => "search#google_redirect"
 
 
   get 'widget/:id' => 'tag#widget'

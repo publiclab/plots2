@@ -2,7 +2,7 @@ module SearchHelper
   def create_nav_links(active_page, query)
     links = [
       { section: "search-all", text: "Content", path: "/search/#{query}" },
-      { section: "search-profiles", text: "People", path: "/search/profiles/#{query}/" }
+      { section: "search-profiles", text: "People", path: "/search/profiles/#{query}" }
     ]
 
     result = ""

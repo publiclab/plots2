@@ -3,6 +3,11 @@ class SearchController < ApplicationController
 
   def new; end
 
+  # a route to convert /search/_____ to /search?q=______ style search queries
+  def google_redirect
+    redirect_to '/search?q=' + params[:query]
+  end
+
   def notes
     @notes = SearchService.new.search_notes(params[:query], 15, params[:order].to_s.to_sym, params[:type].to_s.to_sym)
                               .paginate(page: params[:page], per_page: 24)
@@ -15,7 +20,12 @@ class SearchController < ApplicationController
 
   def profiles
     @search_criteria.sort_by = "recent"
-    @profiles = ExecuteSearch.new.by(:profiles, @search_criteria).paginate(page: params[:page], per_page: 20)
+    if params[:query]
+      @profiles = ExecuteSearch.new.by(:profiles, @search_criteria).paginate(page: params[:page], per_page: 20)
+    else
+      @profiles = []
+      @unpaginated = true
+    end
     @tag_profiles = SearchService.new.find_users(params[:query], 15, 'tag').paginate(page: params[:page], per_page: 20)
   end
 
