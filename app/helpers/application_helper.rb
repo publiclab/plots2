@@ -36,7 +36,7 @@ module ApplicationHelper
   end
 
   def emoji_info
-    emoji_names = %w[thumbs-up thumbs-down laugh hooray confused heart]
+    emoji_names = %w(thumbs-up thumbs-down laugh hooray confused heart)
     prefix = "https://github.githubassets.com/images/icons/emoji/unicode/"
     emoji_image_map = {
       "thumbs-up"   => "#{prefix}1f44d.png",
