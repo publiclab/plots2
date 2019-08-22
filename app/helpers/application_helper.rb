@@ -3,11 +3,7 @@ module ApplicationHelper
   def logged_in_as(roles)
     return false unless current_user
 
-    has_valid_role = false
-    roles.each do |role|
-      has_valid_role = true if current_user.role == role
-    end
-    has_valid_role
+    roles.include? current_user.role
   end
 
   def emojify(content)
