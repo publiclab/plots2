@@ -418,7 +418,7 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     retriable (3.1.2)
-    reverse_markdown (1.1.0)
+    reverse_markdown (1.2.0)
       nokogiri
     rspec (3.8.0)
       rspec-core (~> 3.8.0)
