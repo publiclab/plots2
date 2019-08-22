@@ -67,7 +67,7 @@ class SearchControllerTest < ActionController::TestCase
     assert_equal node_tags(:awesome).tag, assigns(:tags).first
   end
 
-  test "all_content at /search/page" do
+  test "all_content at /search/all/page" do
     get :all_content, params: { query: 'page' }
     assert_response :success
     assert assigns(:nodes).values.flatten.collect(&:type).uniq.length > 1

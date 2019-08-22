@@ -6,49 +6,56 @@
   <div class="container">
 
     <h2>Search all content types</h2>
+ 
+    <p>This page uses our internal search system, in case the <a href="/search/">Google-powered search</a> doesn't work.</p>
 
     <%= render partial: "search/form", locals: { searchType: "content/" } %>
 
-    <% if  @nodes.all?{|k,v| v.blank?} %>
-      <p>No results found for "<b><%= params[:query] %></b>" :-(</p>
-    <% else %>
-
-      <h4>Results for "<b><%= params[:query] %></b>":</h4>
-
-      <% unless @notes.blank? %>
-        <h3> NOTES</h3>
-        <table class="table inline-grid">
-          <tr>
-              <th>Title</th>
-              <th> Posted by </th>
-              <th> Views</th>
-          </tr>
-
-          <% @notes.each_with_index do |note, index| %>
-            <% if index < 9 %>
+    <% if params[:query] %>
+      <% if @nodes.blank? %>
+        <p>No results found for "<b><%= params[:query] %></b>" :-(</p>
+      <% else %>
+ 
+        <br />
+        <h4>Results for "<b><%= params[:query] %></b>":</h4>
+ 
+        <hr />
+ 
+        <% unless @notes.blank? %>
+          <h3> NOTES</h3>
+          <table class="table inline-grid">
+            <tr>
+                <th>Title</th>
+                <th> Posted by </th>
+                <th> Views</th>
+            </tr>
+ 
+            <% @notes.each_with_index do |note, index| %>
+              <% if index < 9 %>
+                <tr>
+                  <td style="width:40%"><a href=<%= "#{note.path}" %>><%= note.title %></td>
+                  <td><%=note.author.name%></td>
+                  <td><%= note.views%></td>
+                </tr>
+              <% end %>
+            <% end %>
+ 
+            <% if (@notes.count > 9) %>
               <tr>
-                <td style="width:40%"><a href=<%= "#{note.path}" %>><%= note.title %></td>
-                <td><%=note.author.name%></td>
-                <td><%= note.views%></td>
+                <td>
+                  <b><%= link_to "More matching notes >>", "/search/notes/#{params[:query]}" %></b>
+                </td>
               </tr>
             <% end %>
-          <% end %>
-
-          <% if (@notes.count > 9) %>
-            <tr>
-              <td>
-                <b><%= link_to "More matching notes >>", "/search/notes/#{params[:query]}" %></b>
-              </td>
-            </tr>
-          <% end %>
-
-        </table>
+ 
+          </table>
+        <% end %><br>
+            
+        <%= render partial: 'wikis_blank' %><br>
+        <%= render partial: 'questions_blank' %><br>
+        <%= render partial: 'profiles_blank' %><br>
+        <%= render partial: 'tags_blank' %>
       <% end %>
-    <% end %><br>
-          
-    <%= render partial: 'wikis_blank' %><br>
-    <%= render partial: 'questions_blank' %><br>
-    <%= render partial: 'profiles_blank' %><br>
-    <%= render partial: 'tags_blank' %>
+    <% end %>
   </div>
 </div>

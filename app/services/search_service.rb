@@ -80,7 +80,7 @@ class SearchService
     suggestions = []
     # filtering out tag spam by requiring tags attached to a published node
     # also, we search for both "balloon mapping" and "balloon-mapping":
-    Tag.where('name LIKE ? OR name LIKE ?', '%' + query + '%', '%' + query.gsub(' ', '-') + '%')
+    Tag.where('name LIKE ? OR name LIKE ?', "%#{query}%", "%#{query.to_s.gsub(' ', '-')}%")
       .includes(:node)
       .references(:node)
       .where('node.status = 1')

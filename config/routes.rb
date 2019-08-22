@@ -187,8 +187,9 @@ Plots2::Application.routes.draw do
   get "search/places/(:query)",    :to => "search#places"
   get "search/tags/(:query)",      :to => "search#tags"
   get "search/notes/(:query)",     :to => "search#notes"
+  get "search/content/(:query)",   :to => "search#new"
+  get "search/all/(:query)",       :to => "search#all_content"
   get "search/",                   :to => "search#google"
-  get "search/content/",           :to => "search#new"
   get "search/:query",             :to => "search#google_redirect"
 
 
