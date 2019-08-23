@@ -91,8 +91,8 @@ class ScreenshotsTest < ApplicationSystemTestCase
   end
   
   test 'wiki revisions' do
-    visit "/wiki/revisions/#{nodes(:place).slug}"
-    click_on '0'
+    visit "/wiki/revisions/#{nodes(:about).slug}"
+    click_on '1'
     take_screenshot
   end
 
