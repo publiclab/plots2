@@ -5708,3 +5708,4 @@ yauzl@2.4.1:
 zlib-browserify@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/zlib-browserify/-/zlib-browserify-0.0.1.tgz#4fa6a45d00dbc15f318a4afa1d9afc0258e176cc"
+  integrity sha1-T6akXQDbwV8xikr6HZr8Aljhdsw=
