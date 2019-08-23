@@ -138,6 +138,8 @@ class Comment < ApplicationRecord
       # notify other commenters, revisers, and likers, but not those already @called out
       already = mentioned_users.collect(&:uid) + [parent.uid]
       uids = uids_to_notify - already
+      uids+= current_user.followers.collect(&:uid)
+      uids.uniq!
 
       # Send Browser Notification Using Action Cable
       notify_user_ids = uids_to_notify + already
