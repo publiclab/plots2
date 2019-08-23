@@ -1,0 +1,11 @@
+development:
+  adapter: redis
+  url: <%= "redis://localhost:6379/0" %>
+  channel_prefix: plots_development
+test:
+  adapter: async
+
+production:
+  adapter: redis
+  url: <%= ENV['REDIS_URL'] %>
+  channel_prefix: plots_production

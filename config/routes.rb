@@ -69,9 +69,9 @@ Plots2::Application.routes.draw do
   get 'openid/decision' => 'openid#decision'
   post 'openid/decision' => 'openid#decision'
   get 'openid/resume' => 'openid#resume'
-  get 'openid/:username' => 'openid#user_page'
+  get 'openid/:username(/:provider)' => 'openid#user_page' # optional provider for logging through provider at MK or SWB
   get 'openid/:username/xrds' => 'openid#user_xrds'
-  get '/people/:username/identity' => 'legacy#openid_username'
+  get '/people/:username/identity(/:provider)' => 'legacy#openid_username' # optional provider for logging through provider at MK or SWB
   get '/user/:id/identity' => 'legacy#openid'
   post '/user/register' => 'legacy#register'
 
@@ -123,6 +123,15 @@ Plots2::Application.routes.draw do
   get 'wiki/edit/:lang/:id' => 'wiki#edit'
   get 'wiki' => 'wiki#index'
 
+  #routes for simple-data-grapher
+  get 'graph/fetch_graphobject' => 'csvfiles#fetch_graphobject'
+  get 'graph' => 'csvfiles#new'
+  post 'graph/object' => 'csvfiles#setter'
+  post 'graph/note/graphobject' => 'csvfiles#add_graphobject'
+  get 'graph/prev_file' => 'csvfiles#prev_files'
+  get 'graph/data/:id' => 'csvfiles#user_files'
+  get 'graph/file/:uid/:id' => 'csvfiles#delete'
+
   get 'place/:id/feed' => 'place#feed'
   get 'n/:id' => 'notes#shortlink'
   get 'i/:id' => 'images#shortlink'
@@ -173,18 +182,22 @@ Plots2::Application.routes.draw do
   get 'likes/node/:id/delete' => 'like#delete',  :as => :drop_like
 
   get "search/wikis/:query",       :to => "search#wikis"
-  get "search/profiles/:query",    :to => "search#profiles"
-  get "search/questions/:query",   :to => "search#questions"
-  get "search/places/:query",      :to => "search#places"
-  get "search/tags/:query",        :to => "search#tags"
-  get "search/",                   :to => "search#new"
-  get "search/notes/:query",       :to => "search#notes"
-  get "search/:query",             :to => "search#all_content"
+  get "search/profiles/(:query)",  :to => "search#profiles"
+  get "search/questions/(:query)", :to => "search#questions"
+  get "search/places/(:query)",    :to => "search#places"
+  get "search/tags/(:query)",      :to => "search#tags"
+  get "search/notes/(:query)",     :to => "search#notes"
+  get "search/content/(:query)",   :to => "search#new"
+  get "search/all/(:query)",       :to => "search#all_content"
+  get "search/",                   :to => "search#google"
+  get "search/:query",             :to => "search#google_redirect"
 
 
   get 'widget/:id' => 'tag#widget'
   get 'blog' => 'tag#blog', :id => "blog"
   get 'blog/:id' => 'tag#blog'
+  get 'blog2' => 'tag#blog2', :id => "blog2"
+  get 'blog2/:id' => 'tag#blog2'
   get 'tags' => 'tag#index'
   get 'tags/:search' => 'tag#index'
   post 'tag/suggested/:id' => 'tag#suggested'
@@ -259,6 +272,9 @@ Plots2::Application.routes.draw do
   get 'stats/questions/:start/:end' => 'stats#questions'
   get 'stats/answers' => 'stats#answers'
   get 'stats/answers/:start/:end' => 'stats#answers'
+  get 'stats/tags' => 'stats#tags'
+  get 'stats/node_tags' => 'stats#node_tags'
+  get 'stats/node_tags/:start/:end' => 'stats#node_tags'
   get 'feed' => 'notes#rss'
   get 'rss.xml' => 'legacy#rss'
 
@@ -288,21 +304,24 @@ Plots2::Application.routes.draw do
   get 'admin/mark_comment_spam/:id' => 'admin#mark_comment_spam'
   get 'smtp_test' => 'admin#smtp_test'
 
-  get 'post' => 'editor#post'
-  post 'post' => 'editor#post'
+  get 'post' => 'editor#post', :as => :editor_post
+  post 'post' => 'editor#post', :as => :editor_path
   get 'legacy' => 'editor#legacy'
   get 'editor' => 'editor#editor'
   get 'editor/rich/(:n)' => 'editor#rich'
   post 'images/create' => 'images#create'
   put 'note/add' => 'legacy#note_add'
   put 'page/add' => 'legacy#page_add'
+  get 'sdg' => 'editor#tempfunc'
 
   get 'talk/:id' => 'talk#show'
 
   get 'questions/new' => 'questions#new'
   get 'questions' => 'questions#index'
+  get 'questions_shadow' => 'questions#index_shadow'
   get 'question' => 'questions#index'
-  get 'questions/:author/:date/:id' => 'questions#show'
+  get 'question_shadow' => 'questions#index_shadow'
+  get 'questions/:author/:date/:id' => 'questions#show' 
   get 'questions/show/:id' => 'questions#show'
   get 'q/:id' => 'questions#shortlink'
   get 'questions/answered(/:tagnames)' => 'questions#answered'
@@ -312,27 +331,9 @@ Plots2::Application.routes.draw do
 
   post 'users/test_digest_email' => 'users#test_digest_email'
 
-  post 'answers/create/:nid' => 'answers#create'
-  get 'answers/create/:nid' => 'answers#create'
-  get 'answers/update/:id' => 'answers#update'
-  post 'answers/update/:id' => 'answers#update'
-  put 'answers/update/:id' => 'answers#update'
-  get 'answers/delete/:id' => 'answers#delete'
-  delete 'answers/delete/:id' => 'answers#delete'
-  get 'answers/accept/:id' => 'answers#accept'
-  put 'answers/accept/:id' => 'answers#accept'
-
-  get 'answer_like/show/:id' => 'answer_like#show'
-  get 'answer_like/likes/:aid' => 'answer_like#likes'
-  get 'questions/:username/:date/:topic/answer_like/likes/:aid' => 'answer_like#likes'
-
-
-  get 'comment/answer_create/:aid' => 'comment#answer_create'
   get 'comment/delete/:id' => 'comment#delete'
   get 'comment/update/:id' => 'comment#update'
   post 'comment/update/:id' => 'comment#update'
-  get 'comment/make_answer/:id' => 'comment#make_answer'
-  post 'comment/make_answer/:id' => 'comment#make_answer'
   post '/comment/like' => 'comment#like_comment'
   get '/comment/create/:id' => 'comment#create'
   post 'comment/create/:id' => 'comment#create'
@@ -386,5 +387,8 @@ Plots2::Application.routes.draw do
   #handling omniauth callbacks
   match '/auth/:provider/callback', to: 'user_sessions#create', via: [:get, :post]
   get 'auth/failure', to: redirect('/')
+
+  # Serve websocket cable requests in-process
+  mount ActionCable.server => '/cable'
 
 end

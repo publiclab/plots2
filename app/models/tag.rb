@@ -1,4 +1,5 @@
 class Tag < ApplicationRecord
+  extend RawStats
   self.table_name = 'term_data'
   self.primary_key = 'tid'
 
@@ -32,6 +33,19 @@ class Tag < ApplicationRecord
     tid
   end
 
+  # alias
+  def nid
+    id
+  end
+
+  def title
+    name
+  end
+
+  def path
+    "/tag/#{name}"
+  end
+
   def run_count
     self.count = NodeTag.where(tid: tid).count
     save
@@ -52,8 +66,8 @@ class Tag < ApplicationRecord
     hash.sort_by { |_, v| v }.reverse.first(10).to_h
   end
 
-  def belongs_to(current_user, nid)
-    node_tag = node_tag.find_by(nid: nid)
+  def belongs_to(current_user, node_id)
+    node_tag = node_tag.find_by(nid: node_id)
     node_tag && node_tag.uid == current_user.uid || node_tag.node.uid == current_user.uid
   end
 
@@ -208,52 +222,58 @@ class Tag < ApplicationRecord
     weeks
   end
 
-  def contribution_graph_making(type = 'note', span = 52, time = Time.now)
+  def contribution_graph_making(type = 'note', start = Time.now - 1.year, fin = Time.now)
     weeks = {}
-    week = span
-    count = 0
-    tids = Tag.where('name IN (?)', [name]).collect(&:tid)
-    nids = NodeTag.where('tid IN (?)', tids).collect(&:nid)
+    week = span(start, fin)
 
     while week >= 1
       # initialising month variable with the month of the starting day
-      # of the week
-      month = (time - (week * 7 - 1).days)
+      #       # of the week
+      month = (fin - (week * 7 - 1).days)
 
       # Now fetching the weekly data of notes or wikis
 
-      current_week = Tag.nodes_for_period(
-        type,
-        nids,
-        (time.to_i - week.weeks.to_i).to_s,
-        (time.to_i - (week - 1).weeks.to_i).to_s
-      ).count(:all)
+      current_week =
+        Tag.nodes_for_period(
+          type,
+          nids,
+          (fin.to_i - week.weeks.to_i).to_s,
+          (fin.to_i - (week - 1).weeks.to_i).to_s
+        ).count(:all)
 
-      weeks[count] = [(month.to_f * 1000), current_week]
-      count += 1
+      weeks[(month.to_f * 1000)] = current_week
       week -= 1
     end
     weeks
   end
 
-  def graph_making(model, span = 52, time = Time.now)
+  def quiz_graph(start = Time.now - 1.year, fin = Time.now)
     weeks = {}
-    week = span
-    count = 0
-    tids = Tag.where('name IN (?)', [name]).collect(&:tid)
-    nids = NodeTag.where('tid IN (?)', tids).collect(&:nid)
-    ids = model.where(nid: nids)
+    week = span(start, fin)
+    questions = Node.published.questions.where(nid: nids)
 
     while week >= 1
-      month = (time - (week * 7 - 1).days)
-      current_week = Tag.all_nodes_for_period(
-        ids,
-        (time.to_i - week.weeks.to_i).to_s,
-        (time.to_i - (week - 1).weeks.to_i).to_s
-      ).count(:all)
+      month = (fin - (week * 7 - 1).days)
+      weekly_quiz = questions.where(created: range(fin, week))
+        .count(:all)
 
-      weeks[count] = [(month.to_f * 1000), current_week]
-      count += 1
+      weeks[(month.to_f * 1000)] = weekly_quiz.count
+      week -= 1
+    end
+    weeks
+  end
+
+  def comment_graph(start = Time.now - 1.year, fin = Time.now)
+    weeks = {}
+    week = span(start, fin)
+    comments = Comment.where(nid: nids)
+
+    while week >= 1
+      month = (fin - (week * 7 - 1).days)
+      weekly_comments = comments.where(timestamp: range(fin, week))
+        .count(:all)
+
+      weeks[(month.to_f * 1000)] = weekly_comments
       week -= 1
     end
     weeks
@@ -268,16 +288,6 @@ class Tag < ApplicationRecord
           start,
           finish
         )
-  end
-
-  def self.all_nodes_for_period(nids, start, finish)
-    Node.select(%i(created status nid))
-      .where(
-        'status = 1 AND nid IN (?) AND created > ? AND created <= ?',
-        nids.uniq,
-        start,
-        finish
-      )
   end
 
   # Given a set of tags, return all users following
@@ -368,6 +378,11 @@ class Tag < ApplicationRecord
                      .where(Tag.table_name => { name: tag_name })
                      .select(:nid)
 
+      # sort them by how often they co-occur:
+      nids = nids.group_by{ |v| v }.map{ |k, v| [k, v.size] }
+      nids = nids.collect(&:first)[0..4]
+                 .collect(&:nid) # take top 5
+
       Tag.joins(:node_tag)
          .where(NodeTag.table_name => { nid: nids })
          .where.not(name: tag_name)
@@ -400,5 +415,38 @@ class Tag < ApplicationRecord
       end
       data
     end
+  end
+
+  def subscription_graph(start = DateTime.now - 1.year, fin = DateTime.now)
+    date_hash = {}
+    week = start.to_date.step(fin.to_date, 7).count
+
+    while week >= 1
+      month = (fin - (week * 7 - 1).days)
+      range = (fin - week.weeks)..(fin - (week - 1).weeks)
+      weekly_subs = subscriptions.where(created_at: range)
+                                 .size
+      date_hash[month.to_f * 1000] = weekly_subs
+      week -= 1
+    end
+    date_hash
+  end
+
+  private
+
+  def tids
+    Tag.where('name IN (?)', [name]).collect(&:tid)
+  end
+
+  def nids
+    NodeTag.where('tid IN (?)', tids).collect(&:nid)
+  end
+
+  def span(start, fin)
+    start.to_date.step(fin.to_date, 7).count
+  end
+
+  def range(fin, week)
+    (fin.to_i - week.weeks.to_i).to_s..(fin.to_i - (week - 1).weeks.to_i).to_s
   end
 end

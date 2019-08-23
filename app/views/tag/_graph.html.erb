@@ -1,7 +1,21 @@
 <div id="chart"> </div>
 <i> The graphs above are stacked </i>
+    <br>
+ <% if @tags.first.count.nil? %>
+        <i> There are no posts for this tag yet </i>
+    <% else %>
+        <b>Total Tag count : <%= @tags.first.count %></b>
+    <% end %>
 <br>
 <br> <br>
+
+<h5> We've started tracking Subscriptions from <%= TagSelection.start_tracking %> </h5>
+<hr>
+<% if @subscriptions.values.sum == 0 && @all_subscriptions.values.sum == 0 %>
+    <i> No subscribers tracked during this period </i>
+<%else %>
+    <div id="subscriptions"> </div>
+<% end %>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
 
@@ -59,16 +73,16 @@ var options = {
     },
     series: [{
         name: 'Note tags',
-        data: generateSeries(0,52)
+        data: generateSeries(0)
     },{
         name: 'Wiki tags',
-        data: generateSeries(1,52)
+        data: generateSeries(1)
     },{
         name: 'Comment tags',
-        data: generateSeries(2,52)
+        data: generateSeries(2)
     },{
         name: 'Question tags',
-        data: generateSeries(3,52)
+        data: generateSeries(3)
     } ],
 
         markers: {
@@ -87,7 +101,6 @@ var options = {
             type: "datetime",
             axisBorder: {
                 show: false
-
             },
             axisTicks: {
                 show: false
@@ -140,16 +153,17 @@ var chart = new ApexCharts(document.querySelector("#chart"), options);
 chart.render();
 
 
-function generateSeries(s, count) {
+function generateSeries(s) {
     var values = [
-        <%= notes.values.collect {|ind| ind[1]} %>,
-        <%= wikis.values.collect {|ind| ind[1]} %>,
-        <%= comments.values.collect {|ind| ind[1]} %>,
-        <%= questions.values.collect {|ind| ind[1]} %>
+        <%= notes.values %>,
+        <%= wikis.values %>,
+        <%= comments.values %>,
+        <%= questions.values %>
     ];
 
     var i = 0;
-    var months_dates = <%= notes.values.collect {|ind| ind[0]} %>
+    var months_dates = <%= notes.keys %>
+    var count = months_dates.length;
     var months = months_dates.map(x =>  new Date(x).getTime());
     var series = [];
     while (i < count) {
@@ -161,4 +175,91 @@ function generateSeries(s, count) {
     }
     return series;
 }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+var data = <%= @all_subscriptions.keys %>;
+var months = data.map(x =>  new Date(x).getTime());
+
+   var options = {
+      chart: {
+        height: 400,
+        type: 'line',
+        stacked: false,
+      },
+      stroke: {
+        width: [0, 2, 5],
+        curve: 'smooth'
+      },
+      plotOptions: {
+        bar: {
+          columnWidth: '50%'
+        }
+      },
+      series: [{
+        name: 'Tag Subscriptions',
+        type: 'column',
+        data: <%= @subscriptions.values %>
+      }, {
+        name: 'All Subscriptions',
+        type: 'area',
+        data: <%= @all_subscriptions.values %>
+      }],
+      fill: {
+        opacity: [0.85,0.25,1],
+          gradient: {
+              inverseColors: false,
+              shade: 'light',
+              type: "vertical",
+              opacityFrom: 0.85,
+              opacityTo: 0.55,
+              stops: [0, 100, 100, 100]
+          }
+      },
+      markers: {
+        size: 0
+      },
+      xaxis: {
+      categories: months,
+        type:'datetime'
+      },
+      yaxis: {
+        title: {
+          text: 'Number of Subscribers',
+        },
+      },
+      legend: {
+            position: 'top',
+            horizontalAlign: 'left'
+      },
+      tooltip: {
+        shared: true,
+        intersect: false,
+        y: [{
+          formatter: function (y) {
+            if(typeof y !== "undefined") {
+              return  y.toFixed(0) + " subscribers for this tag" ;
+            }
+            return y;
+          }
+        }, {
+          formatter: function (y) {
+            if(typeof y !== "undefined") {
+              return  y + " total subscribers for all tags";
+            }
+            return y;
+          }
+        }]
+      }
+
+    }
+
+    var chart2 = new ApexCharts(
+      document.querySelector("#subscriptions"),
+      options
+    );
+
+    chart2.render();
+
 </script>

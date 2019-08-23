@@ -1,0 +1,90 @@
+<div class="row col-md-12" style="padding:2em;">
+   <div class="col-md-5">
+     <div class="profile-image text-center">
+       <img class="rounded-circle img-fluid"  style= "width:40%;" id="profile-photo" src="https://avatars2.githubusercontent.com/u/4621650?s=200&v=4" />
+     </div>
+     <h6 class="mt-2 text-center"><strong>@publiclab</strong><h6>
+   </div>
+   <div class="col-md-7" style="text-align: left;">
+     <h5>Get help with your Questions</h5>
+     <h2>Ask the community</h2>
+     <p style="color: #666">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+       eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+     <a href="https://publiclab.org/wiki/public-lab-q-and-a" style="text-decoration: underline;">Learn More >></a>
+   </div>
+</div>
+<div class="question-area col-md-12">
+  <div class= "question-header">
+   <h5>What's your question?</h5>
+   <% if !current_user %>
+     <p>To ask a question, please <a href="/login?return_to=/questions">log in</a> or <a href="/signup?return_to=/questions">sign up</a> first.</p>
+   <% end %>
+  </div>
+ <div class= "question-form">
+    <form id="questions_searchform" role="search" autocomplete="off" action="/post">
+      <div class="input-group">
+        <textarea tabindex="1" id="questions_searchform_input" type="text" name="title" class="<%= "disabled " if !current_user %>form-control search-query typeahead" qryType="questions" placeholder="type your question"></textarea>
+        <input type="hidden" name="tags" value="question:general">
+        <input type="hidden" name="template" value="question">
+        <input type="hidden" name="redirect" value="question">
+      </div>
+      <div class="input-group-append"  style="padding-bottom:15px;">
+        <button id="question_search" type="submit" rel="tooltip" title="Ask a question with the entered title" class="btn btn-primary">Continue</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="FeaturedQuestions col-md-12">
+
+    <span class="d-none d-lg-inline"><h2>Featured questions </h2></span>
+    <span><h6>see some of the great questions people have asked, and get a feel for how it works
+    </h6></span>
+</div>
+
+<%= render partial: "questions/questions_shadow" %>
+
+<div class="RecentQuestions col-md-12">
+    <span class="d-none d-lg-inline"><h2>Recent questions </h2></span>
+</div>
+
+<%= render partial: "questions/recent_questions_shadow" %>
+
+ <style>
+  .question-area{
+    margin:auto;
+    width:70%;
+    background-color: #F5F5F5;
+    height: 300px;
+    border-radius: 10px;
+  }
+
+  .question-header, .question-form{
+    margin:auto;
+    width:90%;
+    text-align: center;
+  }
+
+  .question-header{
+    padding-top: 20px;
+  }
+
+  .input-group{
+    padding-bottom: 20px;
+    padding-bottom: 15px;
+  }
+
+  .input-group-append{
+    float: right;
+  }
+
+  textarea {
+    resize: none;
+    height: 170px;
+  }
+
+  .FeaturedQuestions, .RecentQuestions{
+    text-align: center;
+    margin-top: 3em;
+  }
+ </style>

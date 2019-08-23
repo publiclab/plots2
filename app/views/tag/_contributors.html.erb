@@ -7,9 +7,9 @@
     <% end %>
  
     <div class="row" id="highlight" style=" text-align: center;">
-      <h3 class="col-md-4 col-xs-12 col-sm-4"><%= @users.length || 0 %> contributors</h3>
-      <h3 class="col-md-4 col-xs-12 col-sm-4"><%= @note_count %> research notes</h3>
-      <h3 class="col-md-4 col-xs-12 col-sm-4"><%= @wikis.length %> wiki pages</h3>
+      <h3 class="col-lg-4 col-xs-12 col-sm-12 col-md-4"><%= @users.length || 0 %> contributors</h3>
+      <h3 class="col-lg-4 col-xs-12 col-sm-12 col-md-4"><%= @note_count %> research notes</h3>
+      <h3 class="col-lg-4 col-xs-12 col-sm-12 col-md-4"><%= @wikis.length %> wiki pages</h3>
     </div>
  
     <% if params["action"] == "contributors"%>
@@ -21,13 +21,13 @@
   <% if current_user && params["action"] == "contributors" %>
     <!-- AJAXify -->
     <div class="btn-group">
-      <a class="btn btn-default btn-sm" href="/feed/tag/<%= params[:id] %>.rss"><i class="fa fa-rss"></i> RSS</a>
+      <a class="btn btn-outline-secondary btn-sm" href="/feed/tag/<%= params[:id] %>.rss"><i class="fa fa-rss"></i> RSS</a>
       <% if current_user.following(params[:id]) %>
-        <a rel="tooltip" title="<%= t('tag.contributors.unfollow') %>" class="btn btn-default btn-sm" href="/unsubscribe/tag/<%= params[:id] %>"><i class="fa fa-user-plus" aria-hidden="true"></i> <%= t('tag.contributors.following') %> <b><%= params[:id] %></b></a>
+        <a rel="tooltip" title="<%= t('tag.contributors.unfollow') %>" class="btn btn-outline-secondary btn-sm" href="/unsubscribe/tag/<%= params[:id] %>"><i class="fa fa-user-plus" aria-hidden="true"></i> <%= t('tag.contributors.following') %> <b><%= params[:id] %></b></a>
       <% else %>
-        <a class="btn btn-default btn-sm" href="/subscribe/tag/<%= params[:id] %>"><i class="fa fa-user-plus" aria-hidden="true"></i> <%= t('tag.contributors.follow') %> <b><%= params[:id] %></b></a>
+        <a class="btn btn-outline-secondary btn-sm" href="/subscribe/tag/<%= params[:id] %>"><i class="fa fa-user-plus" aria-hidden="true"></i> <%= t('tag.contributors.follow') %> <b><%= params[:id] %></b></a>
       <% end %>
-      <a class="btn btn-default btn-sm" rel="popover" data-placement="bottom" data-html="true" data-title="<%= t('tag.show.users_following_tag') %>" data-content="<% Tag.followers(params[:id]).each do |user| %><i class='fa fa-star-o'></i> <a href='/profile/<%= user.username %>'><%= user.username %></a><br /><% end %><% if Tag.follower_count(params[:id]) == 0 %><i><%= t('tag.show.none') %></i><% end %>"><%= Tag.follower_count(params[:id]) %> <i class="fa fa-user"></i> <span class="caret"></span></a>
+      <a class="btn btn-outline-secondary btn-sm" rel="popover" data-placement="bottom" data-html="true" data-title="<%= t('tag.show.users_following_tag') %>" data-content="<% Tag.followers(params[:id]).each do |user| %><i class='fa fa-star-o'></i> <a href='/profile/<%= user.username %>'><%= user.username %></a><br /><% end %><% if Tag.follower_count(params[:id]) == 0 %><i><%= t('tag.show.none') %></i><% end %>"><%= Tag.follower_count(params[:id]) %> <i class="fa fa-user"></i> <span class="caret"></span></a>
     </div>
     <br /><br />
     <!-- AJAXify -->

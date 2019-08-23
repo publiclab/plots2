@@ -1,9 +1,17 @@
 require 'test_helper'
 
 class TagTest < ActiveSupport::TestCase
+  def setup
+    @start = (Date.today - 1.year).to_time
+    @fin = Date.today.to_time
+  end
   test 'create a tag' do
     tag = Tag.new(name: 'stick-mapping')
     assert tag.save!
+    assert tag.nid
+    assert tag.id
+    assert_equal "/tag/stick-mapping", tag.path
+    assert_equal "stick-mapping", tag.title
   end
 
   test 'tag nodes' do
@@ -15,6 +23,12 @@ class TagTest < ActiveSupport::TestCase
     followers = Tag.followers(node_tags(:awesome).name)
     assert !followers.empty?
     assert followers.include?(tag_selections(:awesome).user)
+  end
+
+  test 'related tags' do
+    related = Tag.related(tags(:awesome).name)
+    assert !related.empty?
+    assert related.include?(tags(:test))
   end
 
   test 'tag subscribers' do
@@ -197,24 +211,36 @@ class TagTest < ActiveSupport::TestCase
     assert_not_nil data
   end
 
-  test 'tag all nodes in a period' do
-    nodes_in_week = Tag.all_nodes_for_period(
-      [nodes(:about).nid],
-      (Time.now.to_i - 1.weeks.to_i).to_s,
-      Time.now.to_i.to_s
-    )
-    assert_not_nil nodes_in_week
+  test 'contribution_graph_making' do
+    tag = tags(:awesome)
+    graph_making = tag.contribution_graph_making('note', @start, @fin).values
+    notes = tag.nodes.where( type: 'note', created: @start.to_i..@fin.to_i).size
 
-    nodes_in_month = Tag.all_nodes_for_period(
-      [nodes(:about).nid],
-      (Time.now.to_i - 1.month.to_i).to_s,
-      Time.now.to_i.to_s
-    )
-    assert_not_nil nodes_in_month
+    assert_equal notes, graph_making.sum
   end
 
-  test 'graph making' do
-    comment_graphs = tags(:awesome).graph_making(Comment, 52, Time.now)
-    assert_not_nil  comment_graphs
+
+  test ' comment and quiz graph making' do
+    tag = tags(:test)
+    comment_graphs = tag.comment_graph(@start, @fin).values
+    quiz_graphs = tag.quiz_graph(@start, @fin).values
+    nids = tag.nodes.map{|node| node.nid}
+    comments = Comment.where(nid: nids, timestamp: @start.to_i..@fin.to_i).count
+    quiz = Node.questions.where(nid: nids, created: @start.to_i..@fin.to_i).count
+
+    assert_equal comments, comment_graphs.sum
+    assert_equal quiz.count, quiz_graphs.sum
+  end
+
+  test 'subscribtions graph' do
+    tag = tags(:test)
+    last_week_subscriptions = tag.subscriptions
+      .where(created_at: (Time.now - 1.week)..Time.now)
+      .count
+
+    graph = tag.subscription_graph(Time.now - 1.week, Time.now)
+
+    assert_equal last_week_subscriptions, graph.values.sum
+    assert_equal Hash, graph.class
   end
 end

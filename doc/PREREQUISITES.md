@@ -24,9 +24,9 @@ Install rvm for Ruby management (http://rvm.io)
 
 **Ubuntu users:** You may need to enable `Run command as a login shell` in Ubuntu's Terminal, under `Edit > Profile Preferences > Title and Command`. Then close the terminal and reopen it. You may also want to run `source ~/.rvm/scripts/rvm` to load RVM.
 
-Then, use RVM to install version 2.3 of Ruby. (v1.9.3+ should also work):
+Then, use RVM to install version 2.4.4 of Ruby. (v1.9.3+ should also work):
 
-`rvm install 2.3`
+`rvm install 2.4.4`
 
 
 ### Gems with Bundler
@@ -36,19 +36,16 @@ Ruby dependencies, or Gems, are managed with Bundler.
 `gem install bundler` - if it's not already installed, but it should be in a basic RVM ruby. 
 
 
-### Assets with Bower
+### Assets with Yarn
 
-You'll also need **bower** which is available through `npm`, part of `node.js`.
+You'll also need **yarn** to get your JavaScript dependencies.
 
-[This wiki page from the nodejs repository](https://github.com/nodejs/node/wiki) has comprehensive and up to date installation guides for many systems. 
- 
-Once NPM is installed, you should be able to run:
+[The official installation section](https://yarnpkg.com/lang/en/docs/install/#debian-stable) for yarn has installation details for many systems.
 
-`npm install -g bower`
-
-**NOTE:** If you're having permission issues, please see https://docs.npmjs.com/getting-started/fixing-npm-permissions
-
-**WARNING:** Please refrain from using `sudo npm` as it's not only a bad practice, but may also put your security at a risk. For more on this, read https://pawelgrzybek.com/fix-priviliges-and-never-again-use-sudo-with-npm/
+Use `yarn --version` to verify whether the installation is up and running!
+	
+**Note:** In case the options described above do not work for you, you can also install yarn using npm,though it is generally not recommended. As a prerequisite, you will have to [install Node.js](https://nodejs.org/en/download/) if not already installed.
+To install yarn using npm, use `npm install --global yarn` and continue with path setup similar to the usual installation.	
 
 ### phantomjs for javascript tests (optional)
 

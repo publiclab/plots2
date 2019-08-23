@@ -48,7 +48,20 @@ class CommentControllerTest < ActionController::TestCase
     assert_response :success
     assert_not_nil :comment
     assert_template partial: 'notes/_comment'
-    assert_equal 1, css_select(".comment table").size # test inline grid rendering
+    assert_template partial: 'grids/_notes'
+    # assert_equal 1, css_select(".comment table").size # test inline grid rendering
+  end
+
+  test 'should create a replied comment' do
+    UserSession.create(users(:bob))
+    initial_count = comments(:first).replied_comments.count
+    assert_difference 'Comment.count' do
+      post :create, params: { id: nodes(:one).nid, body: '[notes:awesome]', reply_to: comments(:first) }, xhr: true
+    end
+    assert_response :success
+    assert_not_nil :comment
+    assert_template partial: 'notes/_comment'
+    assert_equal (initial_count+1), comments(:first).replied_comments.count
   end
 
   test 'should create question comments' do
@@ -71,7 +84,30 @@ class CommentControllerTest < ActionController::TestCase
     end
     assert_response :success
     assert_not_nil :comment
-    assert_equal 1, css_select(".comment table").size # test inline grid rendering
+    assert_template partial: 'grids/_notes'
+    # assert_equal 1, css_select(".comment table").size # test inline grid rendering
+  end
+
+  test 'should create a replied comment on a wiki page' do
+    UserSession.create(users(:bob))
+    initial_count = comments(:wiki_comment).replied_comments.count
+    assert_difference 'Comment.count' do
+      post :create, params: { id: nodes(:wiki_page).nid, body: '[notes:awesome]', reply_to: comments(:wiki_comment) }, xhr: true
+    end
+    assert_response :success
+    assert_not_nil :comment
+    assert_equal (initial_count+1), comments(:wiki_comment).replied_comments.count
+  end
+
+  test 'should create a replied comment on a question page' do
+    UserSession.create(users(:bob))
+    initial_count = comments(:question).replied_comments.count
+    assert_difference 'Comment.count' do
+      post :create, params: { id: nodes(:question).nid, body: '[notes:awesome]', reply_to: comments(:question) }, xhr: true
+    end
+    assert_response :success
+    assert_not_nil :comment
+    assert_equal (initial_count+1), comments(:question).replied_comments.count
   end
 
   test 'should show error if wiki comment not saved' do
@@ -92,32 +128,6 @@ class CommentControllerTest < ActionController::TestCase
       post :create,
           params: {
           id: nodes(:one).nid
-          }, xhr: true
-    end
-    assert_equal flash[:error], 'The comment could not be saved.'
-    assert_equal 'failure', @response.body
-  end
-
-  test 'should create answer comments' do
-    UserSession.create(users(:bob))
-    assert_difference 'Comment.count' do
-      post :answer_create,
-          params: {
-          aid: answers(:one).id,
-          body: 'Answers comment'
-          }, xhr: true
-    end
-    assert_response :success
-    assert_not_nil :comment
-    assert_template partial: 'notes/_comment'
-  end
-
-  test 'should show error if answer comment not saved' do
-    UserSession.create(users(:bob))
-    assert_no_difference 'Comment.count' do
-      post :answer_create,
-          params: {
-          aid: answers(:one).id
           }, xhr: true
     end
     assert_equal flash[:error], 'The comment could not be saved.'
@@ -299,101 +309,13 @@ class CommentControllerTest < ActionController::TestCase
   test 'should send notification email upon a new wiki comment' do
     UserSession.create(users(:jeff))
     post :create, params: { id: nodes(:wiki_page).nid, body: 'A comment by Jeff on a wiki page of author bob', type: 'page' }, xhr: true
-    assert ActionMailer::Base.deliveries.collect(&:subject).include?("New comment on Wiki page title (#11) ")
+    assert ActionMailer::Base.deliveries.collect(&:subject).include?("New comment on Wiki page title (#11) - #c#{Comment.last.id}")
   end
 
   test 'should prompt user if comment includes question mark' do
     UserSession.create(users(:jeff))
     post :create, params: { id: nodes(:blog).id, body: 'Test question?' }, xhr: true
-    assert_select 'a[href=?]', '/questions', { :count => 1, :text => 'Questions page' }
-  end
-
-  test 'should delete comment while promoting if user is comment author' do
-    UserSession.create(users(:bob))
-    comment = comments(:first)
-    assert_difference 'Comment.count', -1 do
-      post :make_answer,
-          params: {
-          id: comment.id
-          }, xhr: true
-    end
-  end
-
-  test 'should delete comment while promoting if user is moderator' do
-    UserSession.create(users(:moderator))
-    comment = comments(:first)
-    assert_difference 'Comment.count', -1 do
-      post :make_answer,
-          params: {
-          id: comment.id
-          }, xhr: true
-    end
-  end
-
-  test 'should delete comment while promoting if user is admin' do
-    UserSession.create(users(:admin))
-    comment = comments(:first)
-    assert_difference 'Comment.count', -1 do
-      post :make_answer,
-          params: {
-          id: comment.id
-         }, xhr: true
-    end
-  end
-
-  test 'should redirect to login if user is neither of above and trying to promote' do
-    UserSession.create(users(:newcomer))
-    comment = comments(:first)
-    assert_no_difference 'Comment.count' do
-      post :make_answer,
-          params: {
-           id: comment.id
-          }
-    end
-    assert_redirected_to '/login'
-    assert_equal flash[:warning], 'Only the comment author can promote this comment to answer'
-  end
-
-  test 'should create answer while promoting comment if user is comment author' do
-    UserSession.create(users(:bob))
-    comment = comments(:first)
-    initial_mail_count = ActionMailer::Base.deliveries.size
-    assert_difference 'Answer.count', +1 do
-      post :make_answer,
-          params: {
-          id: comment.id
-      }, xhr: true
-    end
-    assert_not_nil :answer
-    assert_equal initial_mail_count, ActionMailer::Base.deliveries.size  # check for ensuring that no Email is sent
-  end
-
-  test 'should create answer while promoting comment if user is moderator' do
-    UserSession.create(users(:moderator))
-    comment = comments(:first)
-    initial_mail_count = ActionMailer::Base.deliveries.size
-    assert_difference 'Answer.count', +1 do
-      post :make_answer,
-          params: {
-          id: comment.id
-          }, xhr: true
-    end
-    assert_not_nil :answer
-    assert_equal initial_mail_count, ActionMailer::Base.deliveries.size  # check for ensuring that no Email is sent
-  end
-
-  test 'should create answer while promoting comment if user is admin' do
-    UserSession.create(users(:admin))
-    comment = comments(:first)
-    initial_mail_count = ActionMailer::Base.deliveries.size
-    assert_difference 'Answer.count', +1 do
-      post :make_answer,
-          params: {
-          id: comment.id
-          }, xhr: true
-    end
-    assert_not_nil :answer
-    assert_equal initial_mail_count, ActionMailer::Base.deliveries.size  # check for ensuring that no Email is sent
+    # assert_select 'a[href=?]', '/questions', { :count => 1, :text => 'Questions page' }
   end
 
   test 'render propose title template when author is logged in' do
@@ -451,7 +373,7 @@ class CommentControllerTest < ActionController::TestCase
         body: 'A comment by test user on note of author bob'
     }, xhr: true
 
-    assert ActionMailer::Base.deliveries.collect(&:subject).include?("New comment on #{nodes(:about).title} (##{nodes(:about).nid}) ")
+    assert ActionMailer::Base.deliveries.collect(&:subject).include?("New comment on #{nodes(:about).title} (##{nodes(:about).nid}) - #c#{Comment.last.id} ")
     assert ActionMailer::Base.deliveries.collect(&:to).include?([users(:jeff).email]) # notifying normal commenter
     assert_not ActionMailer::Base.deliveries.collect(&:to).include?([users(:lurker).email]) # not notifying commenter with tag as setting turned off
   end

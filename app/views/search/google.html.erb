@@ -1,0 +1,39 @@
+<div class="col-md-2">
+  <%= render :partial => "search/nav", locals: { section: "search-all" } %>
+</div>
+
+<div class="col-md-10">
+  <div class="container">
+    <h2>Search</h2>
+
+    <script>
+
+var search, onSearchReady = function() {
+  if (!search) search = google.search.cse.element.render({div:'google'});
+  console.log(search)
+}
+
+window.__gcse = {
+  //parsetags: 'explicit',
+  callback: onSearchReady
+};
+
+(function() {
+  var cx = '008366342703784425914:_p25pf-gy_w';
+  var gcse = document.createElement('script');
+  gcse.type = 'text/javascript';
+  gcse.async = true;
+  gcse.src = '//cse.google.com/cse.js?cx=' + cx;
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gcse, s);
+})();
+
+    </script>
+
+    <div id="google" gname="searchBox" resultsUrl="https://publiclab.org/search"></div>
+
+    <p id="loadingSearch">
+      <small style="color:#888;"><a href="/search/content">Click here</a> if Google is not available in your region</small>
+    </p>
+
+  </div>
+</div>

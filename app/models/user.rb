@@ -9,6 +9,7 @@ end
 class User < ActiveRecord::Base
   extend Utils
   include Statistics
+  extend RawStats
   self.table_name = 'rusers'
   alias_attribute :name, :username
 
@@ -30,9 +31,9 @@ class User < ActiveRecord::Base
   attr_readonly :username
 
   acts_as_authentic do |c|
-    c.validates_format_of_email_field_options = { with: URI::MailTo::EMAIL_REGEXP }
     c.crypto_provider = Authlogic::CryptoProviders::Sha512
   end
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
 
   has_attached_file :photo, styles: { thumb: '200x200#', medium: '500x500#', large: '800x800#' },
                                     url: '/system/profile/photos/:id/:style/:basename.:extension'
@@ -43,6 +44,7 @@ class User < ActiveRecord::Base
 
   has_many :images, foreign_key: :uid
   has_many :node, foreign_key: 'uid'
+  has_many :csvfiles, foreign_key: :uid
   has_many :node_selections, foreign_key: :user_id
   has_many :revision, foreign_key: 'uid'
   has_many :user_tags, foreign_key: 'uid', dependent: :destroy
@@ -241,18 +243,22 @@ class User < ActiveRecord::Base
     Node.questions.where(status: 1, uid: id)
   end
 
-  def content_followed_in_period(start_time, end_time)
+  def content_followed_in_period(start_time, end_time, node_type = 'note', include_revisions = false)
     tagnames = TagSelection.where(following: true, user_id: uid)
     node_ids = []
     tagnames.each do |tagname|
       node_ids += NodeTag.where(tid: tagname.tid).collect(&:nid)
     end
 
+    range = "(created >= #{start_time.to_i} AND created <= #{end_time.to_i})"
+    range += " OR (timestamp >= #{start_time.to_i}  AND timestamp <= #{end_time.to_i})" if include_revisions
+
     Node.where(nid: node_ids)
     .includes(:revision, :tag)
     .references(:node_revision)
     .where('node.status = 1')
-    .where("(created >= #{start_time.to_i} AND created <= #{end_time.to_i}) OR (timestamp >= #{start_time.to_i}  AND timestamp <= #{end_time.to_i})")
+    .where(type: node_type)
+    .where(range)
     .order('node_revisions.timestamp DESC')
     .distinct
   end
@@ -290,6 +296,14 @@ class User < ActiveRecord::Base
     self.status = Status::NORMAL
     save
     self
+  end
+
+  def self.send_browser_notification(users_ids, notification)
+    users_ids.each do |uid|
+      if UserTag.where(value: 'notifications:all', uid: uid).any?
+        ActionCable.server.broadcast "users:notification:#{uid}", notification: notification
+      end
+    end
   end
 
   def banned?
@@ -358,11 +372,11 @@ class User < ActiveRecord::Base
 
   class << self
     def search(query)
-      User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', query + '*')
+      User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', "#{query}*")
     end
 
     def search_by_username(query)
-      User.where('MATCH(username) AGAINST(? IN BOOLEAN MODE)', query + '*')
+      User.where('MATCH(username) AGAINST(? IN BOOLEAN MODE)', "#{query}*")
     end
 
     def validate_token(token)
@@ -437,6 +451,35 @@ class User < ActiveRecord::Base
 
       User.where("id IN (?)", uids).order(:id)
     end
+  end
+
+  def get_all_used_locations
+    latest_locations = []
+    nodes = self.nodes.order('nid DESC').where(status: 1)
+    nodes.each do |node|
+      location_tags = node.location_tags
+      if location_tags.count > 0
+        latest_locations << location_tags
+      end
+    end
+    latest_locations
+  end
+
+  def get_latest_used_location
+    latest_location = []
+    nodes = self.nodes.order('nid DESC').where(status: 1)
+    nodes.each do |node|
+      location_tags = node.location_tags
+      if location_tags.count > 0
+        latest_location << location_tags
+        break
+      end
+    end
+    if latest_location.count > 0
+      latest_location[0][0] = latest_location[0][0].name.split(":")[1].to_f
+      latest_location[0][1] = latest_location[0][1].name.split(":")[1].to_f
+    end
+    latest_location
   end
 
   private

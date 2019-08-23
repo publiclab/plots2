@@ -21,8 +21,15 @@ function setupTagDelete(el) {
   el.click(function(e) {
       $(this).css('opacity', 0.5)
     })
-    .bind('ajax:success', function(e, tid){
-      $('#tag_' + tid).remove();
+    .bind('ajax:success', function(e, response){
+      if (typeof response == "string") response = JSON.parse(response)
+      if (response['status'] == true) { 
+        $('#tag_' + response['tid']).remove() 
+      } else {
+        $('.control-group').addClass('has-error')
+        $('.control-group .help-block').remove()
+        $('.control-group').append('<span class="help-block">' + response['errors'] + '</span>')
+      }
     });
   return el;
 
@@ -43,9 +50,9 @@ function initTagForm(deletion_path, selector) {
     $.each(response['saved'], function(i,tag) {
       var tag_name = tag[0];
       var tag_id = tag[1];
-      $('#tags ul:first').append("<li><span id='tag_"+tag_id+"' class='label label-primary'> \
-        <a href='/tag/"+tag_name+"'>"+tag_name+"</a> <a class='tag-delete' \
-        data-remote='true' href='"+deletion_path+"/"+tag_id+"' data-tag-id='"+tag_id+"' \
+      $('#tags ul:first').append("<li><span id='tag_"+tag_id+"' class='badge badge-primary'> \
+        <a style='color:white;' href='/tag/"+tag_name+"'>"+tag_name+"</a> <a class='tag-delete' \
+        data-remote='true' href='"+deletion_path+"/"+tag_id+"' style='color:white' data-tag-id='"+tag_id+"' \
         data-method='delete'>x</a></span></li> ")
       el.find('.tag-input').val("")
       el.find('.control-group').removeClass('has-error')
@@ -77,6 +84,7 @@ function initTagForm(deletion_path, selector) {
         return process(data);
       })
     },
+    item: '<li class="dropdown-item"><a class="dropdown-item" href="#" role="option"></a></li>',
     updater: function(text) { 
       el.find('.tag-input').val(text);
       el.submit();

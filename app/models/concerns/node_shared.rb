@@ -9,41 +9,29 @@ module NodeShared
     likers.collect(&:uid).include?(uid)
   end
 
+  def self.button(body)
+    body.gsub(/(?<![\>`])(\<p\>)?\[button\:(.+)\:(\S+)\]/) do |_tagname|
+      btnText = Regexp.last_match(2)
+      btnHref = Regexp.last_match(3)
+      return '<a class="btn btn-primary inline-button-shortcode" href="' + btnHref + '">' + btnText + '</a>'
+    end
+  end
+
   def self.notes_thumbnail_grid(body, _page = 1)
     body.gsub(/(?<![\>`])(\<p\>)?\[notes\:grid\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       exclude = nil
+
       if tagname.include?('!')
-        exclude = tagname.split('!') - [tagname.split('!').first]
-        tagname = tagname.split('!').first
+        exclude = excluded_tagnames(tagname)
+        tagname = featured_tagname(tagname)
       end
 
-      nodes = Node.where(status: 1, type: 'note')
-                  .includes(:revision, :tag)
-                  .references(:term_data, :node_revisions)
-                  .where('term_data.name = ?', tagname)
-                  .order('node_revisions.timestamp DESC')
+      nodes = nodes_by_tagname(tagname, 'note')
+      nodes -= excluded_nodes(exclude, 'note') if exclude.present?
 
-      if exclude.present?
-        exclude = Node.where(status: 1, type: 'note')
-                  .includes(:revision, :tag)
-                  .references(:node_revisions, :term_data)
-                  .where('term_data.name IN (?)', exclude)
-        nodes -= exclude
-      end
-      output = ''
-      output += '<p>' if Regexp.last_match(1) == '<p>'
-      a = ActionController::Base.new
-      output += a.render_to_string(template: "grids/_thumbnail",
-                                   layout:   false,
-                                   locals:   {
-                                     tagname: tagname,
-                                     randomSeed: rand(1000).to_s,
-                                     className: 'notes-grid-thumbnail' + tagname.parameterize,
-                                     nodes: nodes,
-                                     type: "notes"
-                                   })
-      output
+      output = initial_output_str(Regexp.last_match(1))
+      output + data_string('thumbnail', tagname, nodes, 'notes')
     end
   end
 
@@ -65,42 +53,39 @@ module NodeShared
     end
   end
 
+  def self.simple_data_grapher(body, _page = 1)
+    body.gsub(/(?<![\>`])(\<p\>)?\[simple-data-grapher\:(\S+)\]/) do |_tagname|
+      ids = Regexp.last_match(2)
+      a = ActionController::Base.new
+      randomSeed = rand(1000).to_s
+      output = a.render_to_string(template: "grids/_simple-data-grapher",
+                                  layout:   false,
+                                  locals: {
+                                    ids: ids,
+                                    randomSeed: randomSeed,
+                                    idName: 'sdg-graph-' + randomSeed,
+                                    type: "graph"
+                                  })
+      output
+    end
+  end
+
   # rubular regex: http://rubular.com/r/hBEThNL4qd
   def self.notes_grid(body, _page = 1)
     body.gsub(/(?<![\>`])(\<p\>)?\[notes\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       exclude = nil
+
       if tagname.include?('!')
-        exclude = tagname.split('!') - [tagname.split('!').first]
-        tagname = tagname.split('!').first
+        exclude = excluded_tagnames(tagname)
+        tagname = featured_tagname(tagname)
       end
 
-      nodes = Node.where(status: 1, type: 'note')
-                  .includes(:revision, :tag)
-                  .references(:term_data, :node_revisions)
-                  .where('term_data.name = ?', tagname)
-                  .order('node_revisions.timestamp DESC')
+      nodes = nodes_by_tagname(tagname, 'note')
+      nodes -= excluded_nodes(exclude, 'note') if exclude.present?
 
-      if exclude.present?
-        exclude = Node.where(status: 1, type: 'note')
-                  .includes(:revision, :tag)
-                  .references(:node_revisions, :term_data)
-                  .where('term_data.name IN (?)', exclude)
-        nodes -= exclude
-      end
-      output = ''
-      output += '<p>' if Regexp.last_match(1) == '<p>'
-      a = ActionController::Base.new
-      output += a.render_to_string(template: "grids/_notes",
-                                   layout:   false,
-                                   locals:   {
-                                     tagname: tagname,
-                                     randomSeed: rand(1000).to_s,
-                                     className: 'notes-grid-' + tagname.parameterize,
-                                     nodes: nodes,
-                                     type: "notes"
-                                   })
-      output
+      output = initial_output_str(Regexp.last_match(1))
+      output + data_string('notes', tagname, nodes, 'notes')
     end
   end
 
@@ -108,37 +93,17 @@ module NodeShared
     body.gsub(/(?<![\>`])(\<p\>)?\[nodes\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       exclude = nil
+
       if tagname.include?('!')
-        exclude = tagname.split('!') - [tagname.split('!').first]
-        tagname = tagname.split('!').first
+        exclude = excluded_tagnames(tagname)
+        tagname = featured_tagname(tagname)
       end
 
-      nodes = Node.where(status: 1).where("node.type = 'page' OR node.type = 'note'")
-                  .includes(:revision, :tag)
-                  .references(:term_data, :node_revisions)
-                  .where('term_data.name = ?', tagname)
-                  .order('node_revisions.timestamp DESC')
+      nodes = nodes_by_tagname(tagname, %w(page note))
+      nodes -= excluded_nodes(exclude) if exclude.present?
 
-      if exclude.present?
-        exclude = Node.where(status: 1)
-                  .includes(:revision, :tag)
-                  .references(:node_revisions, :term_data)
-                  .where('term_data.name IN (?)', exclude)
-        nodes -= exclude
-      end
-      output = ''
-      output += '<p>' if Regexp.last_match(1) == '<p>'
-      a = ActionController::Base.new
-      output += a.render_to_string(template: "grids/_nodes",
-                                   layout:   false,
-                                   locals:   {
-                                     tagname: tagname,
-                                     randomSeed: rand(1000).to_s,
-                                     className: 'nodes-grid-' + tagname.parameterize,
-                                     nodes: nodes,
-                                     type: "nodes"
-                                   })
-      output
+      output = initial_output_str(Regexp.last_match(1))
+      output + data_string('nodes', tagname, nodes, 'nodes')
     end
   end
 
@@ -147,35 +112,17 @@ module NodeShared
     body.gsub(/(?<![\>`])(\<p\>)?\[questions\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       exclude = nil
+
       if tagname.include?('!')
-        exclude = tagname.split('!') - [tagname.split('!').first]
-        tagname = tagname.split('!').first
+        exclude = excluded_tagnames(tagname)
+        tagname = featured_tagname(tagname)
       end
-      nodes = Node.where(status: 1, type: 'note')
-                  .includes(:revision, :tag)
-                  .references(:node_revisions, :term_data)
-                  .where('term_data.name = ?', "question:#{tagname}")
-                  .order('node_revisions.timestamp DESC')
-      if exclude.present?
-        exclude = Node.where(status: 1, type: 'note')
-                  .includes(:revision, :tag)
-                  .references(:node_revisions, :term_data)
-                  .where('term_data.name IN (?)', exclude)
-        nodes -= exclude
-      end
-      output = ''
-      output += '<p>' if Regexp.last_match(1) == '<p>'
-      a = ActionController::Base.new
-      output += a.render_to_string(template: "grids/_notes",
-                                   layout:   false,
-                                   locals:   {
-                                     tagname: tagname,
-                                     randomSeed: rand(1000).to_s,
-                                     className: 'questions-grid-' + tagname.parameterize,
-                                     nodes: nodes,
-                                     type: "questions"
-                                   })
-      output
+
+      nodes = nodes_by_tagname("question:#{tagname}", 'note')
+      nodes -= excluded_nodes(exclude, 'note') if exclude.present?
+
+      output = initial_output_str(Regexp.last_match(1))
+      output + data_string('notes', tagname, nodes, 'questions')
     end
   end
 
@@ -183,32 +130,21 @@ module NodeShared
     body.gsub(/(?<![\>`])(\<p\>)?\[activities\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       exclude = nil
+
       if tagname.include?('!')
-        exclude = tagname.split('!') - [tagname.split('!').first]
-        tagname = tagname.split('!').first
+        exclude = excluded_tagnames(tagname)
+        tagname = featured_tagname(tagname)
       end
-      nodes = Node.activities(tagname)
-                  .order('node.cached_likes DESC')
-      if exclude.present?
-        exclude = Node.where(status: 1, type: 'note')
-                  .includes(:revision, :tag)
-                  .references(:node_revisions, :term_data)
-                  .where('term_data.name IN (?)', exclude)
-        nodes -= exclude
-      end
-      output = ''
-      output += '<p>' if Regexp.last_match(1) == '<p>'
-      a = ActionController::Base.new
-      output += a.render_to_string(template: "grids/_notes",
-                                   layout:   false,
-                                   locals:   {
-                                     tagname: tagname,
-                                     randomSeed: rand(1000).to_s,
-                                     className: 'activity-grid-' + tagname.parameterize,
-                                     nodes: nodes,
-                                     type: "activity"
-                                   })
-      output
+
+      pinned = pinned_nodes("activity:" + tagname)
+              .where("node.type = 'note'")
+      nodes = pinned + Node.activities(tagname)
+                           .order('node.cached_likes DESC')
+                           .where.not(nid: pinned.collect(&:nid)) # don't include pinned twice
+      nodes -= excluded_nodes(exclude, 'note') if exclude.present?
+
+      output = initial_output_str(Regexp.last_match(1))
+      output + data_string('notes', tagname, nodes, 'activity')
     end
   end
 
@@ -216,33 +152,21 @@ module NodeShared
     body.gsub(/(?<![\>`])(\<p\>)?\[upgrades\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       exclude = nil
+
       if tagname.include?('!')
-        exclude = tagname.split('!') - [tagname.split('!').first]
-        tagname = tagname.split('!').first
-      end
-      nodes = Node.upgrades(tagname)
-                  .order('node.cached_likes DESC')
-      if exclude.present?
-        exclude = Node.where(status: 1, type: 'note')
-                  .includes(:revision, :tag)
-                  .references(:node_revisions, :term_data)
-                  .where('term_data.name IN (?)', exclude)
-        nodes -= exclude
+        exclude = excluded_tagnames(tagname)
+        tagname = featured_tagname(tagname)
       end
 
-      output = ''
-      output += '<p>' if Regexp.last_match(1) == '<p>'
-      a = ActionController::Base.new
-      output += a.render_to_string(template: "grids/_notes",
-                                   layout:   false,
-                                   locals:   {
-                                     tagname: tagname,
-                                     randomSeed: rand(1000).to_s,
-                                     className: 'upgrades-grid-' + tagname.parameterize,
-                                     nodes: nodes,
-                                     type: "upgrades"
-                                   })
-      output
+      pinned = pinned_nodes("upgrade:" + tagname)
+               .where("node.type = 'note'")
+      nodes = pinned + Node.upgrades(tagname)
+                           .order('node.cached_likes DESC')
+                           .where.not(nid: pinned.collect(&:nid)) # don't include pinned twice
+      nodes -= excluded_nodes(exclude, 'note') if exclude.present?
+
+      output = initial_output_str(Regexp.last_match(1))
+      output + data_string('notes', tagname, nodes, 'upgrades')
     end
   end
 
@@ -252,15 +176,8 @@ module NodeShared
       lat = Regexp.last_match(2)
       lon = Regexp.last_match(3)
       tagname = nil
-      a = ActionController::Base.new
-      output = a.render_to_string(template: "map/_leaflet",
-                                  layout:   false,
-                                  locals:   {
-                                    lat: lat,
-                                    lon: lon,
-                                    tagname: tagname
-                                  })
-      output
+
+      map_data_string(lat, lon, tagname, "leaflet")
     end
   end
 
@@ -269,15 +186,8 @@ module NodeShared
       tagname = Regexp.last_match(2)
       lat = Regexp.last_match(3)
       lon = Regexp.last_match(4)
-      a = ActionController::Base.new
-      output = a.render_to_string(template: "map/_leaflet",
-                                  layout:   false,
-                                  locals:   {
-                                    lat: lat,
-                                    lon: lon,
-                                    tagname: tagname.to_s
-                                  })
-      output
+
+      map_data_string(lat, lon, tagname, "leaflet")
     end
   end
 
@@ -286,18 +196,9 @@ module NodeShared
     body.gsub(/(?<![\>`])(\<p\>)?\[map\:people\:(\S+)\:(\S+)\]/) do |_tagname|
       lat = Regexp.last_match(2)
       lon = Regexp.last_match(3)
+      tagname = nil
 
-      a = ActionController::Base.new
-      output = a.render_to_string(template: "map/_peopleLeaflet",
-                                  layout:   false,
-                                  locals:   {
-                                    lat: lat,
-                                    lon: lon,
-                                    people: true,
-                                    url_hash: 0,
-                                    tag_name: false
-                                  })
-      output
+      map_data_string(lat, lon, tagname, "peopleLeaflet")
     end
   end
 
@@ -306,26 +207,16 @@ module NodeShared
     body.gsub(/(?<![\>`])(\<p\>)?\[people\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       exclude = nil
+
       if tagname.include?('!')
-        exclude = tagname.split('!') - [tagname.split('!').first]
-        tagname = tagname.split('!').first
+        exclude = excluded_tagnames(tagname)
+        tagname = featured_tagname(tagname)
       end
 
-      users = User.where(status: 1)
-                  .includes(:user_tags)
-                  .references(:user_tags)
-                  .where('user_tags.value = ?', tagname)
+      users = users_by_tagname(tagname)
+      users -= excluded_users(exclude) if exclude.present?
 
-      if exclude.present?
-        exclude = User.where(status: 1)
-                  .includes(:user_tags)
-                  .references(:user_tags)
-                  .where('user_tags.value IN (?)', exclude)
-        users -= exclude
-      end
-
-      output = ''
-      output += '<p>' if Regexp.last_match(1) == '<p>'
+      output = initial_output_str(Regexp.last_match(1))
       a = ActionController::Base.new
       output += a.render_to_string(template: "grids/_people",
                                    layout:   false,
@@ -344,38 +235,127 @@ module NodeShared
     body.gsub(/(?<![\>`])(\<p\>)?\[wikis\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       exclude = nil
+
       if tagname.include?('!')
-        exclude = tagname.split('!') - [tagname.split('!').first]
-        tagname = tagname.split('!').first
+        exclude = excluded_tagnames(tagname)
+        tagname = featured_tagname(tagname)
       end
 
-      nodes = Node.where(status: 1, type: 'page')
-                  .includes(:revision, :tag)
-                  .references(:term_data, :node_revisions)
-                  .where('term_data.name = ?', tagname)
-                  .order('node_revisions.timestamp DESC')
+      nodes = nodes_by_tagname(tagname, 'page')
+      nodes -= excluded_nodes(exclude, 'page') if exclude.present?
 
-      if exclude.present?
-        exclude = Node.where(status: 1, type: 'page')
-                  .includes(:revision, :tag)
-                  .references(:node_revisions, :term_data)
-                  .where('term_data.name IN (?)', exclude)
-        nodes -= exclude
-      end
-
-      output = ''
-      output += '<p>' if Regexp.last_match(1) == '<p>'
-      a = ActionController::Base.new
-      output += a.render_to_string(template: "grids/_wikis",
-                                   layout:   false,
-                                   locals:   {
-                                     tagname: tagname,
-                                     randomSeed: rand(1000).to_s,
-                                     className: 'wikis-grid-' + tagname.parameterize,
-                                     nodes: nodes,
-                                     type: "wikis"
-                                   })
-      output
+      output = initial_output_str(Regexp.last_match(1))
+      output + data_string('wikis', tagname, nodes, 'wikis')
     end
-   end
+  end
+
+  def self.pinned_nodes(tagname)
+    Node.where(status: 1)
+        .includes(:revision, :tag)
+        .references(:term_data, :node_revisions)
+        .where('term_data.name = ?', "pin:#{tagname}")
+  end
+
+  def self.excluded_tagnames(tagname)
+    tagname.split('!') - [tagname.split('!').first]
+  end
+
+  def self.featured_tagname(tagname)
+    tagname.split('!').first
+  end
+
+  def self.excluded_nodes(exclude, type = nil)
+    if type
+      Node.where(status: 1, type: type)
+          .includes(:revision, :tag)
+          .references(:node_revisions, :term_data)
+          .where('term_data.name IN (?)', exclude)
+    else
+      Node.where(status: 1)
+          .includes(:revision, :tag)
+          .references(:node_revisions, :term_data)
+          .where('term_data.name IN (?)', exclude)
+    end
+  end
+
+  def self.initial_output_str(last_match)
+    if last_match == '<p>'
+      '<p>'
+    else
+      ''
+    end
+  end
+
+  def self.data_string(view, tagname, nodes, type)
+    a = ActionController::Base.new
+    grid = (view == 'thumbnail' ? "#{type}-grid-thumbnail" : "#{type}-grid-")
+
+    a.render_to_string(template: "grids/_#{view}",
+                       layout:   false,
+                       locals:   {
+                         tagname: tagname,
+                         randomSeed: rand(1000).to_s,
+                         className: "#{grid}#{tagname.parameterize}",
+                         nodes: nodes,
+                         type: type
+                       })
+  end
+
+  def self.map_data_string(lat, lon, tagname, template)
+    a = ActionController::Base.new
+
+    locals_data = if template == "leaflet"
+                    { lat: lat, lon: lon, tagname: tagname.to_s }
+                  else
+                    { lat: lat, lon: lon, people: true,
+                      url_hash: 0, tag_name: false }
+                  end
+
+    output = a.render_to_string(template: "map/_#{template}",
+                                layout: false,
+                                locals: locals_data)
+    output
+  end
+
+  def self.users_by_tagname(tagname)
+    User.where(status: 1)
+        .includes(:user_tags)
+        .references(:user_tags)
+        .where('user_tags.value = ?', tagname)
+  end
+
+  def self.excluded_users(exclude)
+    User.where(status: 1)
+        .includes(:user_tags)
+        .references(:user_tags)
+        .where('user_tags.value IN (?)', exclude)
+  end
+
+  def self.nodes_by_tagname(tagname, type)
+    if type.is_a? Array
+      type1 = type.first
+      type2 = type.last
+      pinned = pinned_nodes(tagname)
+               .where('node.type = ? OR node.type = ?', type1, type2)
+
+      pinned + Node.where(status: 1)
+                   .where('node.type = ? OR node.type = ?', type1, type2)
+                   .includes(:revision, :tag)
+                   .references(:term_data, :node_revisions)
+                   .where('term_data.name = ?', tagname)
+                   .order('node_revisions.timestamp DESC')
+                   .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
+    else
+      pinned = pinned_nodes(tagname)
+               .where('node.type = ?', type)
+
+      pinned + Node.where(status: 1)
+                   .where('node.type = ?', type)
+                   .includes(:revision, :tag)
+                   .references(:term_data, :node_revisions)
+                   .where('term_data.name = ?', tagname)
+                   .order('node_revisions.timestamp DESC')
+                   .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
+    end
+  end
 end

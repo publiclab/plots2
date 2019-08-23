@@ -1,0 +1,42 @@
+
+<div class="card-view">
+<% @profile_user.tags.each do |tag| %>
+  <div class="card shadow-sm p-2 mb-3 bg-white rounded" >
+    <div class="card-header mt-2" style=" padding:0.8em; background-color: inherit; border:none;">
+      <h4 style="display: inline-block;"><%= tag.name %></h3>
+      <p style="display: inline-block; color: #808080;"><a style="text-decoration: underline; color: #808080;" href="/tag/<%= tag.name %>"><%= Tag.follower_count(tag.name) %> people</a> discussing</p>
+    </div>
+    <div class="card-body" style="padding:0.8em;">
+      <div>
+        <% Tag.find_nodes_by_type(tag.name, type = 'note', limit = 3).each do |node|  %>
+          <div>
+            <% if node.author.name == @profile_user.name %>
+              <% if node.main_image %>
+                <img class="rounded-circle" id="profile-photo" style="width:20px; height:20px; margin-right:8px; display: inline-block;" src="<%= node.main_image.path(:default) %>" />
+              <% elsif node.scraped_image %>
+                <img class="rounded-circle" id="profile-photo" style="width:20px; height:20px; margin-right:8px; display: inline-block;" src="<%= node.scraped_image %>" />
+              <% end %>
+              <p style="display: inline-block;"><a style="color: inherit;" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= (node.type == 'note') ? node.title : node.latest.title %></a></p>
+              <p style="display: inline-block; margin-left: 10px;color: #808080;">by <a style="color: #808080;" <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>">@<%= node.author.name %></a></p>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>  
+    <div class="card-footer" style="background-color: inherit; border:none;">
+      <a style="text-decoration: underline; color: #808080; display: inline-block;" href="/tag/<%= tag.name %>"><%= tag.count %> <%= t('tag.index.more_posts') %> <i class="fa fa-angle-double-right"></i></a>
+
+      <a style="float: right;  width: 100px;" rel="tooltip" title="<%= t('sidebar._post_button.share_your_work') %>" data-placement="bottom" href="/post?tags=<%= tag.name %>" class="btn btn-primary btn-sm">New post <i class="fa fa-plus fa-white"></i></a>
+      <% if current_user %>
+      <div id="follow-unfollow-column-<%=tag.tid%>" style="float: right; margin-right: 10px;">
+        <% if current_user.following(tag.name) %>
+          <a style="width: 100px;" rel="tooltip" title="<%= t('tag.show.unfollow') %>" class="btn btn-light btn-sm active" href="/unsubscribe/tag/<%= tag.name %>"></i> <%= t('tag.index.unsubscribe') %></a>
+        <% else %>
+          <a style="width: 100px;" class="btn btn-outline-secondary btn-sm index-follow-buttons follow-btn-remote" href="/subscribe/tag/<%= tag.name %>" data-remote="true"><%= t('tag.index.subscribe') %></a>
+        <% end %>
+      </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+</div>

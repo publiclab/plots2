@@ -1,36 +1,45 @@
-<%= render :partial => "search/nav", :locals => { :section => "search-notes" } %>
+<div class="col-md-2">
+  <%= render :partial => "search/nav", :locals => { :section => "search-notes" } %>
+</div>
 
-<div class="container">
-  <% if @notes.present? %>
-    <h2> Results for <%= params[:query] %></h2>
-    <div class="list-group">
+<div class="col-md-10">
+  <div class="container">
 
-      <ul class="nav nav-pills">
-        <li class="nav-item">
-          <%= link_to "Most liked", url_for(:order => :likes), :class => "list-group-item list-group-item-action #{params[:order].to_s.to_sym == :likes ? "active" : ""}"%>
-        </li>
-         <li class="nav-item">
-           <%= link_to "Most viewed", url_for(:order => :views), :class => "list-group-item list-group-item-action #{params[:order].to_s.to_sym == :views ? "active" : ""}"%>
-         </li>
-         <li class="nav-item">
-           <%= link_to "Most recent", url_for(:order => :default), :class => "list-group-item list-group-item-action #{params[:order].to_s.to_sym == :default ? "active" : ""}"%>
-         </li>
-         <li class="nav-item">
-           <%= link_to "Boolean search", url_for(:order => :natural, :type => :boolean), :class => "list-group-item list-group-item-action #{params[:order].to_s.to_sym == :natural && params[:type].to_s.to_sym == :boolean ? "active" : ""}"%>
-         </li>
-         <li class="nav-item">
-           <%= link_to "Natural search", url_for(:order => :natural, :type => :natural), :class => "list-group-item list-group-item-action #{params[:order].to_s.to_sym == :natural && params[:type].to_s.to_sym == :natural ? "active" : ""}"%>
-         </li>
-      </ul>
-    </div>
-    <hr>
-    <%= render partial: "notes/notes", locals: { notes: @notes } %>
-  <% else %>
-    <h4>
-      No results found for <%= params[:query] %> :-(
-      </br>
-      Try searching <a href="/search">for another topic</a> or looking for our items tagged with <a href="/tag/<%= params[:query] %>"><%= params[:query] %></a>
-    </h4>
-  <% end %>
-  <a href="https://dev.mysql.com/doc/refman/5.5/en/fulltext-boolean.html">Info about boolean-searches</a>
+    <h2>Search notes</h2>
+
+    <%= render partial: "search/form", locals: { searchType: "notes/" } %>
+
+    <% if @notes.present? %>
+      <h4>Results for "<b><%= params[:query] %></b>":</h4>
+
+      <div class="list-group">
+
+        <ul class="nav nav-pills">
+          <li class="nav-item">
+            <%= link_to "Most liked", url_for(:order => :likes), :class => "nav-link list-group-item list-group-item-action #{params[:order].to_s.to_sym == :likes ? "active" : ""}"%>
+          </li>
+           <li class="nav-item">
+             <%= link_to "Most viewed", url_for(:order => :views), :class => "nav-link list-group-item list-group-item-action #{params[:order].to_s.to_sym == :views ? "active" : ""}"%>
+           </li>
+           <li class="nav-item">
+             <%= link_to "Most recent", url_for(:order => :default), :class => "nav-link list-group-item list-group-item-action #{params[:order].to_s.to_sym == :default ? "active" : ""}"%>
+           </li>
+           <li class="nav-item">
+             <%= link_to "Boolean search", url_for(:order => :natural, :type => :boolean), :class => "nav-link list-group-item list-group-item-action #{params[:order].to_s.to_sym == :natural && params[:type].to_s.to_sym == :boolean ? "active" : ""}"%>
+           </li>
+           <li class="nav-item">
+             <%= link_to "Natural search", url_for(:order => :natural, :type => :natural), :class => "nav-link list-group-item list-group-item-action #{params[:order].to_s.to_sym == :natural && params[:type].to_s.to_sym == :natural ? "active" : ""}"%>
+           </li>
+           <li class="nav-item">
+             <a class="nav-link list-group-item list-group-item-action" href="/search-help"><i class="fa fa-question"></i></a>
+           </li>
+        </ul>
+      </div>
+      <hr>
+      <%= render partial: "notes/notes", locals: { notes: @notes } %>
+    <% elsif !params[:query].nil? %>
+      <p>No results found for "<b><%= params[:query] %></b>" :-(</p>
+      <p>Try searching <a href="/search/content/<%= params[:query] %>">all content</a></p>
+    <% end %>
+  </div>
 </div>

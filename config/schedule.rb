@@ -32,7 +32,7 @@ job_type :runner,  "cd :path && :bundle_command rails runner -e :environment ':t
 
 ENV.each { |k, v| env(k, v) }
 
-set :output, "#{Dir.pwd}/public/cron_log.log"
+set :output, "#{Dir.pwd}/public/cron_log1.log"
 
 # To simply print date into the log file for checking if cron job is working properly
 every 1.minutes do

@@ -19,6 +19,7 @@ class UniqueUrlValidator < ActiveModel::Validator
 end
 
 class Node < ActiveRecord::Base
+  extend RawStats
   include NodeShared # common methods for node-like models
 
   self.table_name = 'node'
@@ -52,7 +53,14 @@ class Node < ActiveRecord::Base
                    .collect(&:nid)
                end
         where(nid: nids, status: 1)
-      else
+      elsif order == :natural_titles_only
+        Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE) AS score")
+          .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE)")
+          .limit(limit)
+          .distinct
+          .collect(&:nid)
+        where(nid: nids, status: 1)
+      elsif
         nids = Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query).collect(&:nid)
 
         tnids = Tag.find_nodes_by_type(query, %w(note page)).collect(&:nid) # include results by tag
@@ -117,6 +125,10 @@ class Node < ActiveRecord::Base
     path.split('/').last
   end
 
+  def has_a_tag(name)
+    return tags.where(name: name).count.positive?
+  end
+
   before_save :set_changed_and_created
   after_create :setup
   before_validation :set_path_and_slug, on: :create
@@ -146,15 +158,6 @@ class Node < ActiveRecord::Base
     end
   end
 
-  def self.to_csv(options = {})
-    CSV.generate(options) do |csv|
-      csv << column_names
-      all.each do |object|
-        csv << object.attributes.values_at(*column_names)
-      end
-    end
-  end
-
   private
 
   def set_path_and_slug
@@ -174,13 +177,7 @@ class Node < ActiveRecord::Base
 
   public
 
-  is_impressionable counter_cache: true, column_name: :views
-
-  def totalviews
-    # this doesn't filter out duplicate ip addresses as the line below does:
-    # self.views + self.legacy_views
-    impressionist_count(filter: :ip_address) + legacy_views
-  end
+  is_impressionable counter_cache: true, column_name: :views, unique: :ip_address
 
   def self.weekly_tallies(type = 'note', span = 52, time = Time.now)
     weeks = {}
@@ -194,17 +191,29 @@ class Node < ActiveRecord::Base
     weeks
   end
 
-  def self.contribution_graph_making(type = 'note', start_time = Time.now - 1.month, end_time = Time.now)
+  def self.contribution_graph_making(type = 'note', start = Time.now - 1.year, fin = Time.now)
     date_hash = {}
-    (start_time.to_date..end_time.to_date).each do |date|
-      daily_nodes = Node.select(:created)
+    week = start.to_date.step(fin.to_date, 7).count
+
+    while week >= 1
+      month = (fin - (week * 7 - 1).days)
+      range = (fin.to_i - week.weeks.to_i)..(fin.to_i - (week - 1).weeks.to_i)
+
+      weekly_nodes = Node.published.select(:created)
                     .where(type: type,
-                    status: 1,
-                    created: (date.beginning_of_week.to_time.to_i)..(date.end_of_week.to_time.to_i))
-                    .count
-      date_hash[date.beginning_of_week.to_time.to_i.to_f * 1000] = daily_nodes
+                    created: range)
+                    .size
+      date_hash[month.to_f * 1000] = weekly_nodes
+      week -= 1
     end
     date_hash
+  end
+
+  def self.frequency(type, starting, ending)
+    weeks = (ending.to_date - starting.to_date).to_i / 7.0
+    Node.published.select(%i(created type))
+      .where(type: type, created: starting.to_i..ending.to_i)
+      .count(:all) / weeks
   end
 
   def notify
@@ -424,14 +433,16 @@ class Node < ActiveRecord::Base
   end
 
   def location_tags
-    if lat && lon
+    if lat && lon && place
+      power_tag_objects('lat') + power_tag_objects('lon') + power_tag_objects('place')
+    elsif lat && lon
       power_tag_objects('lat') + power_tag_objects('lon')
     else
       []
     end
   end
 
-  # accests a tagname /or/ tagname ending in wildcard such as "tagnam*"
+  # access a tagname /or/ tagname ending in wildcard such as "tagnam*"
   # also searches for other tags whose parent field matches given tagname,
   # but not tags matching given tag's parent field
   def has_tag(tagname)
@@ -551,6 +562,14 @@ class Node < ActiveRecord::Base
   def lon
     if has_power_tag('lon')
       power_tag('lon').to_f
+    else
+      false
+    end
+  end
+
+  def place
+    if has_power_tag('place')
+      power_tag('place')
     else
       false
     end
@@ -751,6 +770,7 @@ class Node < ActiveRecord::Base
 
           if node_tag.save
             saved = true
+            tag.run_count # update count of tag usage
             # send email notification if there are subscribers, status is OK, and less than 1 month old
             unless tag.subscriptions.empty? || status == 3 || status == 4 || created < (DateTime.now - 1.month).to_i
               SubscriptionMailer.notify_tag_added(self, tag, user).deliver_now
@@ -942,6 +962,17 @@ class Node < ActiveRecord::Base
       if node.type == 'note' && !UserTag.exists?(node.uid, 'notify-likes-direct:false')
         SubscriptionMailer.notify_note_liked(node, like.user).deliver_now
       end
+      if node.uid != user.id && UserTag.where(uid: user.id, value: ['notifications:all', 'notifications:like']).any?
+        notification = Hash.new
+        notification[:title] = "New Like on your research note"
+        notification[:path] = node.path
+        option = {
+          body: "#{user.name} just liked your note #{node.title}",
+          icon: "https://publiclab.org/logo.png"
+        }
+        notification[:option] = option
+        User.send_browser_notification [user.id], notification
+      end
       count = 1
       node.toggle_like(like.user)
       # Save the changes.
@@ -950,6 +981,8 @@ class Node < ActiveRecord::Base
     end
     count
   end
+
+
 
   def self.unlike(nid, user)
     like = nil
@@ -975,9 +1008,9 @@ class Node < ActiveRecord::Base
     self
   end
 
-  def draft_url
+  def draft_url(base_url)
     token = slug.split('token:').last
-    'https://publiclab.org/notes/show/' + nid.to_s + '/' + token
+    base_url + '/notes/show/' + nid.to_s + '/' + token
   end
 
   def fetch_comments(user)
@@ -987,6 +1020,13 @@ class Node < ActiveRecord::Base
       comments.where('comments.status = 1 OR (comments.status = 4 AND comments.uid = ?)', user.uid)
     else
       comments.where(status: 1)
+    end
+  end
+
+  def notify_callout_users
+    # notify mentioned users
+    mentioned_users.each do |user|
+      NodeMailer.notify_callout(self, user).deliver_now if user.username != author.username
     end
   end
 end

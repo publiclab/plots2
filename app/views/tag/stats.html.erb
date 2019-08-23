@@ -1,33 +1,32 @@
 <br>
-<div class="row">
-  <h3> Tag statistics for <%= @tags.first.name %> </h3>
-  <hr>
-  <%= link_to " See statistics for all contents", stats_path %>
-    <br>
-    <div class="col-md-6">
-        <%= form_tag request.url, method: :get do %>
-            <h5>Choose a date to show  a graph of statistics an year from that date</h5>
-            <br>
-            <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%d-%m-%Y") %>" data-date-format="dd-mm-yyyy" tabindex="1" class="form-control input-lg" type="text" name="time"  placeholder="&#xf133; Select date">
-            <br>
-            <%= submit_tag "Go", class: 'btn btn-secondary' %>
-        <% end %>
-
-    </div>
+<div class="col-lg-8">
+    <h4>Tag statistics for <%= @tags.first.name %> </h4>
+    <hr>
+    <h6> <%= link_to "See statistics for all contents", stats_path %> </h6>
+    <%= form_tag request.url, method: :get do %>
+        <h6>Choose a range to show a graph of statistics within that period</h6>
+        <br>
+        <div class="col-md-6">
+            <label>Starting</label>
+            <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%d-%m-%Y") %>" data-date-format="dd-mm-yyyy" value="<%= @start.strftime("%d-%m-%Y") %>" tabindex="1" class="form-control input-lg" type="text" name="start"  placeholder="&#xf133; Select start date">
+        </div>
+        &emsp;
+        <div class="col-md-6">
+            <label>Ending</label>
+            <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%d-%m-%Y") %>" data-date-format="dd-mm-yyyy" value="<%= @end.strftime("%d-%m-%Y") %>" tabindex="1" class="form-control input-lg" type="text" name="end"  placeholder="&#xf133; Select end date">
+        </div>
+</div>
+</div>
+<br>
+<div class="col-lg-8">
+    <%= submit_tag "Go", class: 'btn btn-default' %>
+<% end %>
 </div>
 
-<br>
-<br>
-<br>
+<br><br><br>
 <div class="graph">
-    <p> <b><%= params[:id].capitalize%></b> graph from <b><%= (@time - 1.year).to_formatted_s(:long)%></b> to <b><%= @time.to_formatted_s(:long)%></b> </p>
-<br>
+    <p> <b><%= params[:id].capitalize%></b> graph from <b><%= (@start).to_formatted_s(:long)%></b> to <b><%= @end.to_formatted_s(:long)%></b> </p>
+    <br>
     <%= render partial: "tag/graph", locals: { wikis: @tag_wikis, notes: @tag_notes, questions: @tag_questions, comments: @tag_comments  } %>
-<br>
-
-<% if @tags.first.count.nil? %>
-    <i> There are no posts for this tag yet </i>
-<% else %>
-    <b>Total Tag count : <%= @tags.first.count %></b>
-<% end %>
+    <br>
 </div>

@@ -24,6 +24,16 @@ class SearchService
       questions: questions }
   end
 
+  
+  # Run a search in any of the associated systems for references that contain the search string
+  def search_content(query, limit)
+    nodes = search_nodes(query)
+    tags = search_tags(query, limit)
+
+    { notes: nodes,
+      tags: tags }
+  end
+
   # Search profiles for matching text with optional order_by=recent param and
   # sorted direction DESC by default
 
@@ -45,6 +55,10 @@ class SearchService
     user_scope.limit(search_criteria.limit)
   end
 
+  def search_nodes(input, limit = 25, order = :natural, type = :boolean)
+    Node.search(query: input, order: order, type: type, limit: limit)
+  end
+
   def search_notes(input, limit = 25, order = :natural, type = :boolean)
     Node.search(query: input, order: order, type: type, limit: limit)
         .where("`node`.`type` = 'note'")
@@ -63,12 +77,17 @@ class SearchService
   # The search string that is passed in is split into tokens, and the tag names are compared and
   # chained to the notes that are tagged with those values
   def search_tags(query, limit = 10)
-    sterms = query.split(' ')
-    Tag.where(name: sterms)
-      .joins(:node_tag, :node)
+    suggestions = []
+    # filtering out tag spam by requiring tags attached to a published node
+    # also, we search for both "balloon mapping" and "balloon-mapping":
+    Tag.where('name LIKE ? OR name LIKE ?', "%#{query}%", "%#{query.to_s.gsub(' ', '-')}%")
+      .includes(:node)
+      .references(:node)
       .where('node.status = 1')
-      .select('DISTINCT node.nid,node.title,node.path')
-      .limit(limit)
+      .limit(limit).each do |tag|
+      suggestions << tag
+    end
+    suggestions
   end
 
   # Search question entries for matching text
@@ -220,13 +239,12 @@ class SearchService
     users = if type == 'tag'
               User.where('rusers.status = 1')
                   .joins(:user_tags)\
-                  .where('user_tags.value LIKE ?', '%' + query + '%')\
+                  .where('user_tags.value LIKE ?', "%#{query}%")\
             elsif ActiveRecord::Base.connection.adapter_name == 'Mysql2'
               type == 'username' ? User.search_by_username(query).where('rusers.status = ?', 1) : User.search(query).where('rusers.status = ?', 1)
             else
-              User.where('username LIKE ? AND rusers.status = 1', '%' + query + '%')
+              User.where('username LIKE ? OR username = ? AND rusers.status = 1', "%#{query}%", query)
             end
-
     users.limit(limit)
   end
 end

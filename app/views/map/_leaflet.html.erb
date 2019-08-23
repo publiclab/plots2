@@ -1,22 +1,35 @@
 <%= render :partial => "map/mapDependencies" %>
+<% top_map = top_map || false %>
+<% unique_id = rand(1000) %>
 
-  <% unique_id = rand(1000) %>
+<% if top_map == true %>
+  <style>
+  #top_map { width:100%; height:300px; margin: 0 ; margin-top: -21px ; margin-bottom: 15px ; position: relative;}
+  </style>
+<% else %>
   <style>
   #map<%= unique_id %> { width:100%; height:300px; margin: 0; position: relative;}
   </style>
   <div class="leaflet-map" id="map<%= unique_id %>"></div>
   <% if defined? people %><p><i><small>Share your own location on <a href='/profile'>your profile</a>.</small></i></p><% end %>
-  <script>
+<% end %>  
 
+  <script>
     var bounds = new L.LatLngBounds(new L.LatLng(84.67351257 , -172.96875) , new L.LatLng(-54.36775852 , 178.59375)) ;
 
-    var map<%= unique_id %> = L.map('map<%= unique_id %>' , {
-      maxBounds: bounds ,
-      maxBoundsViscosity: 0.75
-    }).setView([<%= lat %>,<%= lon %>], <%= lat.to_s.length.to_i %> + 6);
+    <% if top_map == true %>
+      var map<%= unique_id %> = L.map('top_map' , {
+        maxBounds: bounds ,
+        maxBoundsViscosity: 0.75
+      }).setView([<%= lat %>,<%= lon %>], <%= lat.to_s.length.to_i %> + 6);
+    <% else %>
+      var map<%= unique_id %> = L.map('map<%= unique_id %>' , {
+        maxBounds: bounds ,
+        maxBoundsViscosity: 0.75
+      }).setView([<%= lat %>,<%= lon %>], <%= lat.to_s.length.to_i %> + 6);
+    <% end %>
 
     var markers_hash<%= unique_id %> = new Map() ;
-
     var map_lat = <%= lat %> ;
     var map_lon = <%= lon %> ;
 
@@ -110,6 +123,5 @@
            map<%= unique_id %>.spin(false) ;
        });
    }) ;
-
-
+   
   </script>

@@ -12,7 +12,7 @@ xml.rss :version => '2.0', 'xmlns:atom' => 'http://www.w3.org/2005/Atom' do
       end
 
       xml.item do
-        xml.title      node.title
+        xml.title      node.title + " (##{node.id})"
         xml.author     author
         xml.pubDate     node.created_at.to_s(:rfc822)
         xml.link        "https://" + request.host.to_s + node.path

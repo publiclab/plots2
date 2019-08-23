@@ -1,9 +1,10 @@
 <%= render :partial => "map/mapDependencies" %>
 
+  <% user = user || @user # allow overriding w/ local variable %>
 
   <% if haslocation == true %>  
     <style>
-      #map_leaflet{  height:300px; width:292px; margin: auto; position: relative;}
+      #map_leaflet{  height:300px; width:100%; margin: auto; position: relative;}
     </style>
     <div class="leaflet-map" id="map_leaflet"></div>
     <script>
@@ -20,12 +21,12 @@
   //  var hash = new L.Hash(map);   
     <% if !(@map_blurred == true) %>
       var default_Icon =new PLmarker_default() ;
-      L.marker([<%= @map_lat %>, <%= @map_lon %>] , {icon: default_Icon}).addTo(map).bindPopup("<a href='https://publiclab.org/profile/<%= @user.username  %>'><%= @user.username  %> </a>");
+      L.marker([<%= @map_lat %>, <%= @map_lon %>] , {icon: default_Icon}).addTo(map).bindPopup("<a href='https://publiclab.org/profile/<%= user.username  %>'><%= user.username  %> </a>");
     <% end %>
     </script>
   <% else %>
-    <div id="map_template" style="position: relative; display: inline-block;">
-      <img src="https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/0/0/0.png" style="height:300px; margin: 0; position: relative; margin-right: -10px;">  
+    <div id="map_template" style="position: relative; width: 100%; display: inline-block;">
+      <img src="https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/0/0/0.png" style="height:300px; width: 100%; margin: 0; position: relative; margin-right: -10px;">  
       <button type='button' class='btn btn-default btn-lg' onclick='addLocation()' style="position: absolute;    position: absolute;top: 41% ; left: 15% ;"> <strong> Share your Location </strong> </button>
       <p><i><small>Learn about <a href='https://publiclab.org/wiki/location-privacy'>privacy</a> </small></i></p>
     </div> 

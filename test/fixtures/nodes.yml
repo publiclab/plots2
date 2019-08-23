@@ -274,7 +274,8 @@ post_test1:
   changed: <%= DateTime.new(2018,8,1).to_i %>
   status: 1
   type: "note"
-  cached_likes: 0
+  cached_likes: 8
+  views: 6
   longitude: 52.0
   latitude: 160.0
   precision: 1
@@ -289,7 +290,8 @@ post_test2:
   changed: <%= DateTime.new(2018,8,8).to_i %>
   status: 1
   type: "note"
-  cached_likes: 0
+  cached_likes: 3
+  views: 3
   longitude: 52.23
   latitude: 34.57
   precision: 2
@@ -304,7 +306,8 @@ post_test3:
   changed: <%= DateTime.new(2018,8,15).to_i %>
   status: 1
   type: "note"
-  cached_likes: 0
+  cached_likes: 7
+  views: 9
   longitude: 52.0
   latitude: 12.0
   precision: 1

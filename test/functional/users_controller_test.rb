@@ -67,8 +67,14 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test 'should get profile' do
-    get :profile, params: { id: User.where(status: 1).first.name }
+    i = 0
+    25.times do
+      Node.new(uid: users(:bob).id, type: 'note', title: "Node #{i += 1}").save
+    end
+
+    get :profile, params: { id: users(:bob).username }
     assert_response :success
+
   end
 
   test 'generate user reset key' do
@@ -140,24 +146,14 @@ class UsersControllerTest < ActionController::TestCase
     end
   end
 
-  test 'should list notes and questions in user profile' do
-    user = users(:jeff)
-    get :profile, params: { id: user.username }
-    assert_not_nil assigns(:notes)
-    assert_not_nil assigns(:questions)
-    assert_not_nil assigns(:answered_questions)
-    selector = css_select '#asked .note-question'
-    assert_equal selector.size, 2
-    selector = css_select '#answered .note-answer'
-    assert_equal selector.size, 1
-  end
-
-  test 'should get comments' do
+  test 'should get comments and render comments/index template' do
     user = users(:jeff)
     get :comments, params: { id: user.id }
     assert_response :success
-    assert_not_nil assigns(:comments)
-    assert_template partial: 'comments/_comments'
+    normal_comments = assigns(:normal_comments)
+    assert_not_nil normal_comments
+    assert_nil assigns(:moderated_comments)
+    assert_template 'comments/index'
   end
 
   test 'creating new account' do
@@ -199,6 +195,51 @@ class UsersControllerTest < ActionController::TestCase
     post :update, params: { user: { bio: 'Hello, there!' } }
     assert_response :redirect
     assert_equal User.find(user.id).bio, 'Hello, there!'
+  end
+
+  test 'reject update with wrong password when ui_update is true' do
+    user = users(:bob)
+    bio = users(:bob).bio
+    UserSession.create(user)
+    post :update, params: {
+      user: {
+        bio: 'Bio updated by hacker',
+        current_password: 'wrong password',
+        ui_update: 'true'
+      }
+    }
+    assert_response :redirect
+    assert_equal User.find(user.id).bio, bio
+  end
+
+  test 'update profile with correct password when ui_update is true' do
+    user = users(:bob)
+    bio = users(:bob).bio
+    UserSession.create(user)
+    post :update, params: {
+      user: {
+        bio: 'Bio updated by user',
+        current_password: 'secretive',
+        ui_update: 'true'
+      }
+    }
+    assert_response :redirect
+    assert_equal User.find(user.id).bio, 'Bio updated by user'
+  end
+
+  test 'rejecting update profile with wrong password when ui_update is nil' do
+    user = users(:bob)
+    bio = users(:bob).bio
+    UserSession.create(user)
+    post :update, params: {
+      user: {
+        bio: 'Bio updated by user but with wrong password',
+        current_password: 'wrongpassword',
+        ui_update: nil
+      }
+    }
+    assert_response :redirect
+    assert_not_equal User.find(user.id).bio, 'Bio updated by user but with wrong password'
   end
 
   test 'should redirect edit when not logged in' do

@@ -1,5 +1,38 @@
 <div class="list-group">
-  <ul class="nav nav-pills">
-    <%= create_nav_links(section, CGI.escape(params[:query])) %>
+  <ul class="nav nav-pills flex-column" id="navpill">
+    <%= create_nav_links(section, url_encode(params[:query])) %>
   </ul>
+  <div class="btn-group">
+  <button type="button" id="by_type" class="btn btn-outline-secondary mt-2 mb-3 dropdown-toggle" data-toggle="dropdown">
+  By Type
+  </button>
+  <div class="dropdown-menu mt-2">
+    <%= create_nav_links_for_by_type(section, url_encode(params[:query])) %>
+  </div>
 </div>
+  
+</div>
+
+
+<style>
+
+#by_type {
+  height: 3em;
+  width: 9.2em;
+  margin-left: 0.45em;
+  border-color: rgba(0, 0, 0, 0.125);
+  text-align: center;
+
+}
+.nav-pills li {
+    margin: 5px;
+} 
+
+#navpill {
+  text-align: center;
+}
+
+.dropdown-menu {
+  min-width: 9.2em;
+}
+</style>

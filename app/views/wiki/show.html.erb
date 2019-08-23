@@ -13,48 +13,26 @@
 <% if @presentation && @node.main_image%>
   <div id="main-image-presentation" style="margin-bottom:8px;">
     <a href="<%= @node.main_image.path(:original) %>">
-      <img style="width:100%;" class="img-rounded" src="<%= @node.main_image.path(:original) %>" />
+      <img style="width:100%;" class="rounded" src="<%= @node.main_image.path(:original) %>" />
     </a>
   </div>
 <% end %>
 
 <div class="row">
 
-<div class="col-md-9">
+<div class="col-lg-9">
 
-  <%= render :partial => "wiki/header" %>
+  <%= render partial: "wiki/header" %>
 
   <div class="tab-content">
 
-    <% if @node.has_power_tag('tabbed') %>
-      <% if @node.power_tags('tabbed').include?("notes") %>
-        <div class="tab-pane" id="tab-notes">
-          <%= render :partial => "notes/notes" %>
-          <p><a href="/tag/<%= @node.slug_from_path %>"><%= raw t('wiki.show.more_research', :tag => @node.slug_from_path) %> &raquo;</a></p>
-          <br />
-        </div>
-      <% end %>
-      <% if @node.power_tags('tabbed').include?("wikis") %>
-        <div class="tab-pane" id="tab-wikis">
-          <%= render :partial => "wiki/wikis" %>
-        </div>
-      <% end %>
-    <% end %>
-
-    <% if @node.has_power_tag('notes') %>
-      <% tagname = @node.power_tag('notes') %>
-      <% @nodes =  Tag.find_popular_notes(tagname,20,4) %>
-      <% if @nodes.length > 0 %>
-        <%= render :partial => "notes/tagged_notes", :locals => {:nodes => @nodes} %>
-        <p><a href="/tag/<%= tagname %>">More "<%= tagname %>" research &raquo;</a></p>
-        <%= raw t('wiki.show.more_tag_research', :tag => tagname) %>
-        <hr />
-      <% end %>
+    <% if @node.has_power_tag('alert') && feature("alert-#{@node.power_tag('alert')}") != "" %>
+      <%= feature("alert-#{@node.power_tag('alert')}") %>
     <% end %>
 
     <div class="tab-pane active" id="tab-overview">
       <% if controller.action_name == 'comments' %>
-          <%= render :partial => "notes/comments", :locals => {:nodes => @nodes} %>
+          <%= render partial: "notes/comments", :locals => {:nodes => @nodes} %>
       <% else %>
         <div <% unless @node.has_tag('style:wide') %>style="max-width:800px;"<% end %> id="content" class="pl-content wiki">
           <% if @node.has_tag('format:raw') %>
@@ -73,19 +51,16 @@
 
   <hr />
 
-  <div class="hidden-print">
-    <%= render :partial => "home/social" %>
-  </div>
 
 </div>
 
 <% if @node.has_tag('sidebar:none') %>
-  <%= render :partial => "sidebar/none" %>
+  <%= render partial: "sidebar/none" %>
 <% else %>
   <% if (@wikis.nil? && @notes.nil?) || @node.has_tag('sidebar:featured') %>
-    <%= render :partial => "sidebar/featured" %>
+    <%= render partial: "sidebar/featured" %>
   <% else %>
-    <%= render :partial => "sidebar/related" %>
+    <%= render partial: "sidebar/related" %>
   <% end %>
 <% end %>
 

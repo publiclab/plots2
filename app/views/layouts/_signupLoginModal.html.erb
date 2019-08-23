@@ -1,6 +1,6 @@
 <!-- Login/Signup Modal -->
 <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog container" role="document">
+  <div class="modal-dialog container" id="loginSignupContainer" role="document">
     <div class="modal-content">
       <div class="modal-body">
 
@@ -12,7 +12,7 @@
         <div class="clearfix"> <!-- clearfix class allows the modal to expand to fit the content of this div -->
           <div id="signupContainer">
             <!-- signup partial -->
-            <%= render partial: "users/create_form" %>
+            <%= render partial: "users/create_form" , locals: {caller: "modal"} %>
           </div>
 
           <div id="loginContainer">

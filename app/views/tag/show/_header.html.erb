@@ -1,23 +1,46 @@
 <% if @wiki %>
   <div id="wiki-content">
     <% if @wiki.main_image %>
-      <div class="row">
-        <div class="col-md-6" style="margin-bottom:10px;">
-          <%= image_tag(@wiki.main_image.path, class: "img-responsive") %>
-        </div>
-        <div class="col-md-6">
-          <h1 style="color:#333;"><%= link_to @wiki.latest.title, "/wiki/#{params[:id]}" %></h1>
-          <%= @wiki.latest.render_body.match(/<p>(.+)<\/p>/).to_a.try(:first).to_s.html_safe %>
-          <% if @wiki.latest.render_body.split('</p>').length > 2 %><a class="btn btn-lg btn-default" href="/wiki/<%= params[:id] %>">Learn more on the wiki page</a><% end %>
-        </div>
-      </div>
+
+          <div class="im">
+            <div class="img-out1 d-none d-md-block" style="margin-bottom:10px;">
+              <%= image_tag(@wiki.main_image.path,
+                            class: "img-fluid d-none d-md-block",
+                            id: "tag-wiki-header-image1") %>
+            </div>
+            <div class="img-out2" style="margin-bottom:10px;">
+            <%= image_tag(@wiki.main_image.path,
+                          class: "img-fluid d-sm-none",
+                          id: "tag-wiki-header-image2") %>
+            </div>
+            <div class="bottom-right">
+              <a href="/contributors/<%= params[:id] %>">
+                <%= Tag.follower_count(params[:id]) %> people discussing
+              </a>
+            </div>
+          </div>
+
     <% else %>
-      <h1><%= @wiki.latest.title %></h1>
-      <p><%= @wiki.latest.render_body.html_safe.match(/<p>(.+)<\/p>/).to_a.try(:first).to_s.html_safe %></p>
-      <p><%= link_to("Learn more on the wiki page", "/wiki/#{params[:id]}") if @wiki.latest.render_body.html_safe.match(/<p>(.+)<\/p>/).to_a.length > 1 %></p>
+
+    <div class="im d-none d-md-block" id="wiki-empty1">
+      <h5 class="line">This topic's wiki page doesn't have an image. </h5>
+      <div class="bottom-right">
+        <a href="/contributors/<%= params[:id] %>">
+          <%= Tag.follower_count(params[:id]) %> people discussing
+        </a>
+      </div>
+    </div>
+    <div class="im d-sm-none" id="wiki-empty2">
+      <h5 style="margin: 5px; color: #777;">This topic's wiki page doesn't have an image. </h5>
+      <div class="bottom-right"><%= Tag.follower_count(params[:id]) %> people discussing</div>
+    </div>
+
     <% end %>
+
   </div>
+
 <% elsif @wildcard %>
+
   <% if @node_type == "questions"%>
     <p>Here are all asked and answered questions.</p>
   <% elsif @node_type == "note" && params[:id].match("activity:") %>
@@ -27,8 +50,108 @@
   <% end %>
   <p><i>This is a wildcard tag search. Please enter a tag without wildcards to display lead wiki pages.</i></p>
   <p>Wildcard tag searches use the * asterisk in their URLs</p>
-<% else %>
-  <p>This topic has no lead wiki page.</p>
 
-  <p><a class="btn btn-primary requireLogin" href="/wiki/new?title=<%= params[:id] %>"><span class="fa fa-plus fa-white"></span> Add one now</a></p>
+<% else %>
+
+<div class="im d-none d-md-block" id="wiki-empty1">
+    <!-- <h5 class="line">This topic has no lead wiki page. </h5> -->
+    <div class="bottom-right"><%= Tag.follower_count(params[:id]) %> people discussing</div>
+</div>
+<div class="im d-sm-none" id="wiki-empty2">
+    <!-- <h5 style="margin: 5px; color: #777;">This topic has no lead wiki page. </h5> -->
+    <div class="bottom-right"><%= Tag.follower_count(params[:id]) %> people discussing</div>
+</div>
 <% end %>
+
+<style>
+
+.container:not(#loginSignupContainer) {
+  min-width: 100%;
+  margin-top: -21px;
+  width: 100%;
+  float: left;
+}
+
+#tag-wiki-header-image1 {
+  width:auto;
+  z-index: 0;
+  background-size:cover;
+  height: 350px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
+#tag-wiki-header-image2 {
+  width: 100%;
+  background-size:cover;
+  height: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: -20px;
+}
+
+.line {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: #777;
+  transform: translate(-50%, -50%);
+}
+
+.im {
+  position: relative;
+  padding: 0px !important;
+}
+
+.img-out2 {
+  width: 100%;
+  height: auto;
+  background-color: #333;
+}
+
+.img-out1 {
+  width: 100%;
+  height: 350px;
+  background-color: #333;
+}
+
+#wiki-empty1 {
+  width: 100%;
+  height: 350px;
+  background-color: #eee;
+  margin-bottom:10px;
+}
+
+#wiki-content {
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
+#wiki-empty2 {
+  width: 100%;
+  height: 200px;
+  background-color: #eee;
+  margin-bottom:10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -20px;
+}
+
+.bottom-right {
+  position: absolute;
+  bottom: 10px;
+  right: 40px;
+  color: #fff;
+  overflow-x: hidden;
+  text-shadow: 0.5px 0.5px #333;
+  /* text-decoration: underline; */
+}
+.bottom-right a {
+  color: #fff;
+}
+</style>
