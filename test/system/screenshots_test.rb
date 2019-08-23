@@ -89,6 +89,12 @@ class ScreenshotsTest < ApplicationSystemTestCase
     visit '/comments'
     take_screenshot
   end
+  
+  test 'wiki revisions' do
+    visit "/wiki/revisions/#{nodes(:about).slug}"
+    click_on '1'
+    take_screenshot
+  end
 
   test 'wiki page with inline grids' do
     node = nodes(:place) # /wiki/chicago page
