@@ -962,6 +962,17 @@ class Node < ActiveRecord::Base
       if node.type == 'note' && !UserTag.exists?(node.uid, 'notify-likes-direct:false')
         SubscriptionMailer.notify_note_liked(node, like.user).deliver_now
       end
+      if node.uid != user.id && UserTag.where(uid: user.id, value: ['notifications:all', 'notifications:like']).any?
+        notification = Hash.new
+        notification[:title] = "New Like on your research note"
+        notification[:path] = node.path
+        option = {
+          body: "#{user.name} just liked your note #{node.title}",
+          icon: "https://publiclab.org/logo.png"
+        }
+        notification[:option] = option
+        User.send_browser_notification [user.id], notification
+      end
       count = 1
       node.toggle_like(like.user)
       # Save the changes.
@@ -970,6 +981,8 @@ class Node < ActiveRecord::Base
     end
     count
   end
+
+
 
   def self.unlike(nid, user)
     like = nil
@@ -995,9 +1008,9 @@ class Node < ActiveRecord::Base
     self
   end
 
-  def draft_url
+  def draft_url(base_url)
     token = slug.split('token:').last
-    'https://publiclab.org/notes/show/' + nid.to_s + '/' + token
+    base_url + '/notes/show/' + nid.to_s + '/' + token
   end
 
   def fetch_comments(user)

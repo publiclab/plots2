@@ -1,23 +1,15 @@
-<h2>Search</h2>
+<div class="col-md-2">
+  <%= render :partial => "search/nav", locals: { section: "search-all" } %>
+</div>
 
-<h4>Here you can search for research notes, users, tags and more:</h4>
-<a href="https://dev.mysql.com/doc/refman/5.5/en/fulltext-boolean.html">Info about boolean-searches</a>
+<div class="col-md-10">
+  <div class="container">
 
-</br>
+    <h2>Search</h2>
+ 
+    <p>This page uses our internal search system, in case the <a href="/search/">Google-powered search</a> doesn't work.</p>
+ 
+    <%= render partial: "search/form", locals: { searchType: "all/" } %>
 
-<form id="inline_searchform" class="form" autocomplete="off">
-  <div class="form-group form-inline">
-    <input tabindex="1" style="min-width: 350px;" id="inline_searchform_input" type="text" class="search-query typeahead form-control" data-provide="typeahead" value="<%= params[:id] %>" required>
-    <button type="submit" class="btn btn-primary"><i class="fa fa-search fa fa-white"></i></button>
   </div>
-</form>
-
-
-<script type="text/javascript">
-  //Set up the _header search form submission
-  $('#inline_searchform').submit(function(e){
-    e.preventDefault();
-    var encoded_query = encodeURIComponent($('#inline_searchform_input').val());
-    window.location = "/search/" + encoded_query;
-  });
-</script>
+</div>

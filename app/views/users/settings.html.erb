@@ -1,10 +1,10 @@
 <form name="settingsForm" action="/save_settings" method='post' data-remote="true">
 <div class="emailSettings">
-  <h4><b>Email Notification Settings</b></h4>
+  <h4><b>Notification Settings</b></h4>
   <hr style="width: 35%;  margin-left: 0;" />
 
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-    <span>Do you want to be notified by email for comments on your posts ? </span>
+    <span>Do you want to be notified by email for comments on your posts? </span>
     <span>
     <label class="switch">
       <input type="checkbox" name="notify-comment-direct:false" <% unless UserTag.exists?(current_user.id, 'notify-comment-direct:false') %>checked<% end %>>
@@ -17,7 +17,7 @@
   <br />
 
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-    <span>Do you want to be notified by email for likes on your posts ? </span>
+    <span>Do you want to be notified by email for likes on your posts? </span>
     <span>
     <label class="switch">
       <input type="checkbox" name="notify-likes-direct:false" <% unless UserTag.exists?(current_user.id, 'notify-likes-direct:false') %>checked<% end %>>
@@ -30,7 +30,7 @@
   <br />
 
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-    <span>Do you want to be notified by email for comments on all posts you've commented on ? </span>
+    <span>Do you want to be notified by email for comments on all posts you've commented on? </span>
     <span>
     <label class="switch">
       <input type="checkbox" name="notify-comment-indirect:false" <% unless UserTag.exists?(current_user.id, 'notify-comment-indirect:false') %>checked<% end %>>
@@ -43,7 +43,7 @@
   <br />
 
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-    <span>Do you want to receive customized digest weekly ?</span>
+    <span>Do you want to receive customized digest weekly?</span>
     <span>
     <label style=" vertical-align: middle;" class="switch">
       <input type="checkbox" name="digest:weekly" <% if UserTag.exists?(current_user.id, 'digest:weekly') %>checked<% end %>>
@@ -56,7 +56,7 @@
   <br />
 
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-    <span>Do you want to receive customized digest daily ?</span>
+    <span>Do you want to receive customized digest daily?</span>
     <span>
     <label style=" vertical-align: middle;" class="switch">
       <input type="checkbox" name="digest:daily" <% if UserTag.exists?(current_user.id, 'digest:daily') %>checked<% end %>>
@@ -69,10 +69,10 @@
   <br />
 
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-    <span>Do you want to receive browser notification when you are mentioned ?</span>
+    <span>Do you want to receive browser notification when you are mentioned?</span>
     <span>
     <label style=" vertical-align: middle;" class="switch">
-      <input type="checkbox" name="notification:mentioned" <% if UserTag.exists?(current_user.id, 'notification:mentioned') %>checked<% end %>>
+      <input type="checkbox" name="notifications:mentioned" <% if UserTag.exists?(current_user.id, 'notifications:mentioned') %>checked<% end %>>
       <span class="slider round"></span>
     </label>
     </span>
@@ -85,7 +85,7 @@
     <span>Do you want to receive browser notification for all ?</span>
     <span>
     <label style=" vertical-align: middle;" class="switch">
-      <input type="checkbox" name="notification:all" <% if UserTag.exists?(current_user.id, 'notification:all') %>checked<% end %>>
+      <input type="checkbox" name="notifications:all" <% if UserTag.exists?(current_user.id, 'notifications:all') %>checked<% end %>>
       <span class="slider round"></span>
     </label>
     </span>
@@ -95,10 +95,10 @@
   <br />
 
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-    <span>Do you want to receive browser notification when someone likes your work ?</span>
+    <span>Do you want to receive browser notification when someone likes your work?</span>
     <span>
     <label style=" vertical-align: middle;" class="switch">
-      <input type="checkbox" name="notification:like" <% if UserTag.exists?(current_user.id, 'notification:like') %>checked<% end %>>
+      <input type="checkbox" name="notifications:like" <% if UserTag.exists?(current_user.id, 'notifications:like') %>checked<% end %>>
       <span class="slider round"></span>
     </label>
     </span>

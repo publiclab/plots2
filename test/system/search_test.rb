@@ -10,7 +10,7 @@ class SearchTest < ApplicationSystemTestCase
     fill_in("searchform_input", with: "Canon")
     find('button.btn-light').click
 
-    assert_selector('h2', text: 'Results for Canon')
+    assert_selector('h2', text: 'Search')
   end
 
   test 'front page with navbar search autocomplete' do

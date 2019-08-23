@@ -107,7 +107,7 @@ awesome:
   
 twitter3:
   id: 22
-  uid: 11
+  uid: 12
   value: oauth:twitter:849503183529545728
   data:
     provider: twitter

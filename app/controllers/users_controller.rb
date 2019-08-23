@@ -384,9 +384,9 @@ class UsersController < ApplicationController
     end
 
     notification_settings = [
-      'notification:all',
-      'notification:mentioned',
-      'notification:like'
+      'notifications:all',
+      'notifications:mentioned',
+      'notifications:like'
     ]
 
     notification_settings.each do |setting|

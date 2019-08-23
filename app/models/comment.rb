@@ -141,7 +141,7 @@ class Comment < ApplicationRecord
 
       # Send Browser Notification Using Action Cable
       notify_user_ids = uids_to_notify + already
-      notify_user_ids.uniq
+      notify_user_ids = notify_user_ids.uniq
       send_browser_notification notify_user_ids
 
       uids = uids.select { |i| i != 0 } # remove bad comments (some early ones lack uid)
@@ -154,8 +154,8 @@ class Comment < ApplicationRecord
   def send_browser_notification(users_ids)
     notification = Hash.new
     notification[:title] = "New Comment on #{parent.title}"
-    notification[:path] = parent.path
     option = {
+      data: parent.path,
       body: comment,
       icon: "https://publiclab.org/logo.png"
     }
@@ -323,10 +323,6 @@ class Comment < ApplicationRecord
 
   def self.receive_tweet
     comments = Comment.where.not(tweet_id: nil)
-    puts "==============================================================================="
-    puts "output 1"
-    puts comments.count
-    puts "==============================================================================="
     if comments.any?
       receive_tweet_using_since comments
     else
@@ -351,146 +347,61 @@ class Comment < ApplicationRecord
     tweets = Client.search(ENV["TWEET_SEARCH"]).collect do |tweet|
       tweet
     end
-    puts "=================================================================="
-    puts "output 2"
-    puts tweets
-    puts "=================================================================="
     tweets = tweets.reverse
     check_and_add_tweets tweets
     tweets.each do |tweet|
-      puts "=========================================================="
-      puts "tweet text ->"
-      puts tweet.text
-      puts "=========================================================="
     end
   end
 
   def self.check_and_add_tweets(tweets)
-    puts "============================================================"
-    puts "in check_and_add_tweets"
-    puts tweets
-    puts "============================================================"
     tweets.each do |tweet|
-      puts "=========================================================="
-      puts "in tweet loop"
-      puts tweet
-      puts tweet.reply?
-      puts "=========================================================="
       next unless tweet.reply?
 
       in_reply_to_tweet_id = tweet.in_reply_to_tweet_id
-      puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-      puts "in reply to id"
-      puts in_reply_to_tweet_id
-      puts in_reply_to_tweet_id.class
-      puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
       next unless in_reply_to_tweet_id.class == Integer
 
       parent_tweet = Client.status(in_reply_to_tweet_id, tweet_mode: "extended")
       parent_tweet_full_text = parent_tweet.attrs[:text] || parent_tweet.attrs[:full_text]
       urls = URI.extract(parent_tweet_full_text)
       node = get_node_from_urls_present(urls)
-      puts "=============================================================="
-      puts "parent tweet #{parent_tweet}"
-      puts "parent tweet full text -> #{parent_tweet_full_text}"
-      puts "urls => #{urls}"
-      puts "node => #{node}"
-      puts "node.nil? => #{node.nil?}"
-      puts "=============================================================="
       next if node.nil?
 
       twitter_user_name = tweet.user.screen_name
       tweet_email = find_email(twitter_user_name)
       users = User.where(email: tweet_email)
-      puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-      puts "twitter_user_name -> #{twitter_user_name}"
-      puts "tweet_email -> #{tweet_email}"
-      puts "users.any? -> #{users.any?}"
-      puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
       next unless users.any?
 
       user = users.first
       replied_tweet_text = tweet.text
 
-      puts "======================================================================================="
-      puts "username -> #{user.username}"
-      puts "replied_tweet_text -> #{replied_tweet_text}"
-      puts "tweet.truncated? -> #{tweet.truncated?}"
-      puts "======================================================================================="
       if tweet.truncated?
         replied_tweet = Client.status(tweet.id, tweet_mode: "extended")
         replied_tweet_text = replied_tweet.attrs[:text] || replied_tweet.attrs[:full_text]
-        puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-        puts "replied_tweet -> #{replied_tweet}"
-        puts "replied_tweet_text -> #{replied_tweet_text}"
-        puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
       end
       replied_tweet_text = replied_tweet_text.gsub(/@(\S+)/) { |m| "[#{m}](https://twitter.com/#{m})" }
-      puts "=========================================================================================="
-      puts "replied_tweet_text -> #{replied_tweet_text}"
-      puts "=========================================================================================="
       replied_tweet_text = replied_tweet_text.delete('@')
-      puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-      puts "replied_tweet_text -> #{replied_tweet_text}"
-      puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
       comment = node.add_comment(uid: user.uid, body: replied_tweet_text, comment_via: 2, tweet_id: tweet.id)
       comment.notify user
     end
   end
 
   def self.get_node_from_urls_present(urls)
-    puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-    puts "all urls ->"
-    puts urls
-    puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
     urls.each do |url|
-      puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-      puts "url.include? https:// -> #{url.include? "https://"}"
-      puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
       next unless url.include? "https://"
 
       if url.last == "."
         url = url[0...url.length - 1]
       end
-
-      puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-      puts "final url -> #{url}"
-      puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-
       response = Net::HTTP.get_response(URI(url))
-
-      puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-      puts "url response -> #{response}"
-      puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-
       redirected_url = response['location']
-
-      puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-      puts "url response location -> #{redirected_url}"
-      puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-
-      puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-      puts "environment variables -> #{ENV["WEBSITE_HOST_PATTERN"]}"
-      puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-
-      puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-      puts "condition -> #{!redirected_url.nil? && redirected_url.include?(ENV["WEBSITE_HOST_PATTERN"])}"
-      puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
 
       next unless !redirected_url.nil? && redirected_url.include?(ENV["WEBSITE_HOST_PATTERN"])
 
       node_id = redirected_url.split("/")[-1]
 
-      puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-      puts "final node id -> #{node_id}"
-      puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-
       next if node_id.nil?
 
       node = Node.where(nid: node_id.to_i)
-      puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-      puts " node present -> #{node.count}"
-      puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
       if node.any?
         return node.first
       end
@@ -499,20 +410,12 @@ class Comment < ApplicationRecord
   end
 
   def self.find_email(twitter_user_name)
-    puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-    puts "tweeter user name -> #{twitter_user_name}"
-    puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-    puts "laaast step 1"
     UserTag.where('value LIKE (?)', 'oauth:twitter%').where.not(data: nil).each do |user_tag|
       data = user_tag["data"]
-      puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-      puts "tweeter data -> #{data}"
-      puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
       if !data.nil? && !data["info"].nil? && !data["info"]["nickname"].nil? && data["info"]["nickname"].to_s == twitter_user_name
-        return data["info"]["email"]
+        return user_tag.user.email
       end
     end
-    puts "laaast step 2"
   end
 
   def parse_quoted_text
