@@ -490,7 +490,7 @@ class NotesControllerTest < ActionController::TestCase
         id: node.title.parameterize
         }
     selector = css_select '.fa-fire'
-    assert_equal 3, selector.size
+    assert_equal 4, selector.size
   end
 
   test 'should redirect to questions show page after creating a new question' do
