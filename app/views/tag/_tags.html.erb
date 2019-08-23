@@ -9,8 +9,9 @@
                <a href="/tag/<%= tag.name%>"><h5 style="display: inline-block; text-decoration: underline; color:black;"><%= tag.name %></h5></a>
                <p style="display: inline-block; color: #808080; font-size:15px;"><a style="color: #808080;" href="/tag/<%= tag.name %>"> <%= Tag.follower_count(tag.name) %> people</a></p>
              </div>
-             <a class="ellipsis" data-toggle="dropdown">&nbsp<i class="fa fa-ellipsis-h" style="color : #666; font-size:15px; float:right; margin-right:15px;"></i></a>
-             <ul class="dropdown-menu pull-right" style = "font-size:15px; padding:10px;">
+             <div class="col-md-2">
+             <a class="ellipsis dropleft" data-toggle="dropdown">&nbsp<i class="fa fa-ellipsis-h" style="color : #666; font-size:15px; float:right; margin-right:15px;"></i></a>
+             <ul class="dropdown-menu" style = "font-size:15px; padding:10px;">
                <li><a href='/tag/<%= tag.name %>' style="color:black; text-decoration: underline;"><%= Tag.tagged_node_count(tag.name) || 0 %> notes</a></li>
                <li>created by <a href='/profile/<%= tag.try(:author).try(:username) %>' style="color:black; text-decoration: underline;"><%= tag.try(:author).try(:username) %></a> </li>
                <li>created <%= time_ago_in_words(Time.at(tag.date)) %> ago</li>
@@ -22,6 +23,7 @@
                  <% end %>
                <% end %>
              </ul>
+           </div>
          </div>
            <div style="margin-left:130px; margin-top:-3px;">
              <a href='/subscribe/tag/<%= tag.name %>' class='btn btn-primary'>Subscribe</a>
