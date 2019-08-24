@@ -12,7 +12,7 @@
     <%= render partial: 'tag/tags', locals: { power_tag: true, badge_name: 'badge-secondary', tags: @node.node_tags } %>
     <%= render partial: 'tag/tags', locals: { power_tag: false, badge_name: 'badge-primary', tags: @node.node_tags } %>
     <% if @tags.count > 2 %>
-      <a href=""><p style="float:left; margin-top:-10px; color:#666;"><%= @tags.count-2 %> more &nbsp </p></a>
+      <a href=""><p style="float:left; color:#666; margin-top:15px; margin-left:5px;"><u><%= @tags.count-2 %> more</u> &nbsp </p></a>
     <% end %>
   </span>
 <% else %>
@@ -53,7 +53,7 @@ $(".label").on("click", function(e){
 <% if current_user && (parent != :profile || (current_user.id == user.id || logged_in_as(['admin']))) %>
 <% url = url || "/tag/create/" + @node.id.to_s %>
 
-<a id="tags-open" style="cursor: pointer;"><i class="fa fa-plus-circle fa-2x " style="color:#808080; margin-top:-10px; float:left;" aria-hidden="true"></i></a>
+<a id="tags-open" style="cursor: pointer;"><i class="fa fa-plus-circle fa-2x " style="color:#808080; float:left; margin-top:13px; margin-left:5px;" aria-hidden="true"></i></a>
 
 <form id="tagform" class="form" data-remote="true" action="<%= url %>">
   <div class="control-group">
