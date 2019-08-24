@@ -210,7 +210,7 @@ module NodeShared
       primaryLayer =  Regexp.last_match(3).to_s
       secondoryLayers = Regexp.last_match(4).to_s
       unless secondoryLayers.nil?
-        primaryLayer +=  secondoryLayers
+        primaryLayer += secondoryLayers
       end
 
       map_data_string(lat, lon, primaryLayer, "inlineLeaflet")
