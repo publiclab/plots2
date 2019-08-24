@@ -10,15 +10,15 @@
 
   <!-- The Modal -->
   <div class="modal fade" id="myModal">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
 
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title" style="color: #666;">Choose a template</h4>
+          <h4 class="modal-title" style="color: #666;">Choose a template</h4>&nbsp &nbsp
+          <a href="/templates" style="margin-top:5px; color:#808080;"><u>learn more +</u></a>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
-        <br/>
         <!-- Modal body -->
         <div class="modal-body">
 
@@ -26,23 +26,26 @@
           <a class = "requireLogin" style="color:#666;"
             href="/post?tags=question:<%= params[:id].gsub('question:', '') %>&template=question&redirect=question">
               Ask a question</a><br/>
-            <i class="fa fa-question-circle-o fa-3x" aria-hidden="true" style="margin-top:15px;"></i>
+            <i class="fa fa-question-circle-o fa-3x" aria-hidden="true" style="margin-top:15px; color:#808080;"></i>
           </div>
 
           <div class="post-con" style="margin-left:25px; text-align:center;">
           <a class="requireLogin" style="color:#666;"
              href="/post?tags=<%= params[:id].gsub('blog-submission:', '') %>">
               Share a story/project</a><br/>
-            <i class="fa fa-asterisk fa-3x" aria-hidden="true" style="margin-top:15px;"></i>
+            <i class="fa fa-clipboard fa-3x" aria-hidden="true" style="margin-top:15px; color:#808080;"></i>
           </div>
 
           <div class="post-con" style="margin-left:25px; text-align:center;">
           <a class="requireLogin" style="color:#666;"
              href="/post?tags=issue-brief:<%= params[:id].gsub('issue-brief:', '') %>">
               Describe an issue</a><br/>
-            <i class="fa fa-building fa-3x" aria-hidden="true" style="margin-top:15px;"></i>
+            <i class="fa fa-building fa-3x" aria-hidden="true" style="margin-top:15px; color:#808080;"></i>
           </div>
-
+        </br>
+          <div class="skip-temp">
+            <a href="/post" style="color:#666;"><u>Or skip template&raquo</u></a>
+          </div>
         </div>
       </div>
     </div>
@@ -58,7 +61,7 @@
   }
 
   .modal-content{
-    height: 300px;
+    height: auto;
     padding: 10px;
   }
 
@@ -69,8 +72,14 @@
     font-size: 20px;
     padding: 20px;
     width: 230px;
-    height: 140px;
+    height: 150px;
     float: left;
+  }
+
+  .skip-temp{
+    margin-left: 41%;
+    display: inline-block;
+    margin-top: 15px;
   }
 
 </style>
