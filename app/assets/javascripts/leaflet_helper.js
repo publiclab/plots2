@@ -47,9 +47,7 @@
         shadowSize: [41, 41]
       }
    });
-  
     return new L.Icon.PLmarker();
-
   }
 
   function onMapLoad(e){
@@ -100,11 +98,9 @@
        var layers3 = ["wisconsin","fracTrackerMobile"];
        var layers4 = ["income","americanIndian","asian","black","multi","hispanic","nonWhite","white","plurality"];
        var layers5 = ["clouds","cloudsClassic","precipitation","precipitationClassic","rain","rainClassic","snow","pressure","pressureContour","temperature","wind","city"];
-
        var baseMaps = {
            "Baselayer1": baselayer
        };
-
        var overlayMaps = {};
 
        for(let layer of layers){
@@ -133,16 +129,13 @@
            }
            overlayMaps[layer].addTo(map)
        }
-
        L.control.layers(baseMaps,overlayMaps).addTo(map);
    }
 
-   function setupLEL(map , sethash){ 
-
+   function setupLEL(map , sethash){
     var baselayer = L.tileLayer('https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map) ; 
-   // var PurpleLayer = L.layerGroup.purpleLayer() ;
     var PurpleAirMarkerLayer = L.layerGroup.purpleAirMarkerLayer() ;
     var SkyTruth = L.layerGroup.skyTruthLayer() ;
     var Fractracker = L.layerGroup.fracTrackerLayer() ;
@@ -180,7 +173,6 @@
     var JusticeMap_white = L.tileLayer.provider('JusticeMap.white') ;
     var JusticeMap_plurality = L.tileLayer.provider('JusticeMap.plurality') ;
 
-
     var clouds = L.OWM.clouds({showLegend: true, opacity: 0.5});
     var cloudscls = L.OWM.cloudsClassic({});
     var precipitation = L.OWM.precipitation({});
@@ -201,7 +193,6 @@
       "Baselayer1": baselayer
     };
     var overlayMaps = {
-     // "PurpleAirLayer-HeatMap": PurpleLayer ,
         "Wisconsin Non-Metal" : Wisconsin_NM ,
         "FracTracker_mobile" : FracTracker_mobile ,
       "PurpleAirLayer-Markers": PurpleAirMarkerLayer ,
@@ -277,7 +268,6 @@
         "Cities": city,
         "windrose": windrose
       };
-
       var hash = new L.Hash(map, allMapLayers);	   
           
     }   
