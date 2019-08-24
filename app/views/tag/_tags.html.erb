@@ -1,34 +1,34 @@
 <% user = user || @user # allow overriding w/ local variable %>
-<ul class= "list-inline">
+<div class= "container">
   <% tags.limit(2).each do |tag| %>
     <% if tag.class == NodeTag %>
       <% if power_tag ^ tag.name.include?(':') # XOR operator??? %>
-         <div class = "tags_card">
+         <div class = "card">
            <div class="row">
-             <div class="col-md-10">
+             <div class="col-md-9">
                <a href="/tag/<%= tag.name%>"><h5 style="display: inline-block; text-decoration: underline; color:black;"><%= tag.name %></h5></a>
                <p style="display: inline-block; color: #808080; font-size:15px;"><a style="color: #808080;" href="/tag/<%= tag.name %>"> <%= Tag.follower_count(tag.name) %> people</a></p>
              </div>
-             <div class="col-md-2">
-             <a class="ellipsis dropleft" data-toggle="dropdown">&nbsp<i class="fa fa-ellipsis-h" style="color : #666; font-size:15px; float:right; margin-right:15px;"></i></a>
-             <ul class="dropdown-menu" style = "font-size:15px; padding:10px;">
-               <li><a href='/tag/<%= tag.name %>' style="color:black; text-decoration: underline;"><%= Tag.tagged_node_count(tag.name) || 0 %> notes</a></li>
-               <li>created by <a href='/profile/<%= tag.try(:author).try(:username) %>' style="color:black; text-decoration: underline;"><%= tag.try(:author).try(:username) %></a> </li>
-               <li>created <%= time_ago_in_words(Time.at(tag.date)) %> ago</li>
-               <% if logged_in_as(['admin', 'moderator']) || (current_user && ( current_user.uid ==  @node.uid || current_user.uid == tag.uid)) %>
-                 <% if tag.name.include? ':' %>
-                   <li><a data-confirm="This is a power tag (see https://publiclab.org/wiki/power-tags) -- and may drive a specific function on this page. Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/tag/delete/<%= @node.id %>/<%= tag.tid %>" data-tag-id="<%= tag.tid %>" data-method="delete" style="color:black; text-decoration: underline;">delete tag</a></li>
-                 <% else %>
-                   <li><a data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/tag/delete/<%= @node.id %>/<%= tag.tid %>" data-tag-id="<%= tag.tid %>" data-method="delete" style="color:black; text-decoration: underline;">delete tag</a></li>
+             <div class="col-md-3">
+               <a class="ellipsis" data-toggle="dropdown">&nbsp<i class="fa fa-ellipsis-h" style="color : #666; font-size:15px; margin-right:20px;"></i></a>
+               <ul class="dropdown-menu" style = "font-size:13px;">
+                 <li><a href='/tag/<%= tag.name %>' style="color:black; text-decoration: underline;"><%= Tag.tagged_node_count(tag.name) || 0 %> notes</a></li>
+                 <li>created by <a href='/profile/<%= tag.try(:author).try(:username) %>' style="color:black; text-decoration: underline;"><%= tag.try(:author).try(:username) %></a> </li>
+                 <li>created <%= time_ago_in_words(Time.at(tag.date)) %> ago</li>
+                 <% if logged_in_as(['admin', 'moderator']) || (current_user && ( current_user.uid ==  @node.uid || current_user.uid == tag.uid)) %>
+                   <% if tag.name.include? ':' %>
+                     <li><a data-confirm="This is a power tag (see https://publiclab.org/wiki/power-tags) -- and may drive a specific function on this page. Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/tag/delete/<%= @node.id %>/<%= tag.tid %>" data-tag-id="<%= tag.tid %>" data-method="delete" style="color:black; text-decoration: underline;">delete tag</a></li>
+                   <% else %>
+                     <li><a data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/tag/delete/<%= @node.id %>/<%= tag.tid %>" data-tag-id="<%= tag.tid %>" data-method="delete" style="color:black; text-decoration: underline;">delete tag</a></li>
+                   <% end %>
                  <% end %>
-               <% end %>
-             </ul>
-           </div>
-         </div>
-           <div style="margin-left:130px; margin-top:-3px;">
+               </ul>
+             </div>
+           <div style="margin-left:140px; margin-top:-3px;">
              <a href='/subscribe/tag/<%= tag.name %>' class='btn btn-primary'>Subscribe</a>
            </div>
          </div>
+       </div>
       <% end %>
 
 
@@ -47,8 +47,7 @@
 
     <% end %>
   <% end %>
-</ul>
-
+</div>
 <script type="text/javascript">
 
 $(".pop").popover({ trigger: "manual" , html: true, animation:false})
@@ -76,12 +75,11 @@ $('.tag-delete').click(
 </script>
 
 <style>
-  .tags_card{
-    width: 250px;
-    height:auto;
-    border: 1px solid #ccc;
+  .card{
+    width: 16em;
     border-radius: 12px;
     margin-top: 10px;
+    margin-left: -12px;
     padding-left: 12px;
     padding-top: 14px;
     padding-bottom: 10px;
@@ -89,6 +87,11 @@ $('.tag-delete').click(
 
   .ellipsis{
     cursor: pointer;
+  }
+
+  .dropdown-menu{
+    padding-bottom: 5px;
+    padding-left: 14px;
   }
 
 </style>
