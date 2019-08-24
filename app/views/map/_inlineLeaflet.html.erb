@@ -1,0 +1,28 @@
+<%= render :partial => "map/mapDependencies" %>
+
+<% unique_id = rand(1000) %>
+
+
+  <style>
+    #map<%= unique_id %> { width:100%; height:300px; margin: 0; position: relative;}
+  </style>
+  <div class="leaflet-map" id="map<%= unique_id %>"></div>
+
+
+<script>
+    var bounds = new L.LatLngBounds(new L.LatLng(84.67351257 , -172.96875) , new L.LatLng(-54.36775852 , 178.59375)) ;
+
+
+    var map<%= unique_id %> = L.map('map<%= unique_id %>' , {
+        maxBounds: bounds ,
+        maxBoundsViscosity: 0.75
+    }).setView([<%= lat %>,<%= lon %>], <%= lat.to_s.length.to_i %> + 6);
+
+    var map_lat = <%= lat %> ;
+    var map_lon = <%= lon %> ;
+    var primary_layers = "<%= layers.to_s %>";
+
+
+    setupInlineLEL(map<%= unique_id %> , primary_layers) ;
+
+</script>

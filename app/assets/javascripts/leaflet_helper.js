@@ -71,6 +71,72 @@
      });
    }
 
+   function setupInlineLEL(map , layers) {
+       layers = layers.split(',');
+       console.log(layers);
+       var baselayer = L.tileLayer('https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png', {
+           attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+       }).addTo(map) ;
+
+       var OpenInfraMap_Power = L.tileLayer('https://tiles-{s}.openinframap.org/power/{z}/{x}/{y}.png',{
+           maxZoom: 18,
+           attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://www.openinframap.org/about.html">About OpenInfraMap</a>'
+       });
+       var OpenInfraMap_Petroleum = L.tileLayer('https://tiles-{s}.openinframap.org/petroleum/{z}/{x}/{y}.png', {
+           maxZoom: 18,
+           attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://www.openinframap.org/about.html">About OpenInfraMap</a>'
+       });
+       var OpenInfraMap_Telecom = L.tileLayer('https://tiles-{s}.openinframap.org/telecoms/{z}/{x}/{y}.png', {
+           maxZoom: 18,
+           attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://www.openinframap.org/about.html">About OpenInfraMap</a>'
+       });
+       var OpenInfraMap_Water = L.tileLayer('https://tiles-{s}.openinframap.org/water/{z}/{x}/{y}.png',{
+           maxZoom: 18,
+           attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://www.openinframap.org/about.html">About OpenInfraMap</a>'
+       });
+
+       var layers1 = ["purpleAirMarker","skyTruth","fracTracker","odorReport","mapKnitter","toxicRelease"];
+       var layers2 = ["Power","Petroleum","Telecom","Water"];
+       var layers3 = ["wisconsin","fracTrackerMobile"];
+       var layers4 = ["income","americanIndian","asian","black","multi","hispanic","nonWhite","white","plurality"];
+       var layers5 = ["clouds","cloudsClassic","precipitation","precipitationClassic","rain","rainClassic","snow","pressure","pressureContour","temperature","wind","city"];
+
+       var baseMaps = {
+           "Baselayer1": baselayer
+       };
+
+       var overlayMaps = {};
+
+       for(let layer of layers){
+           if(layers1.includes(layer)) {
+               overlayMaps[layer] = window["L"]["layerGroup"][layer + "Layer"]();
+           }
+           else if(layers2.includes(layer)){
+               overlayMaps[layer] = window["OpenInfraMap_" + layer];
+           }
+           else if(layers3.includes(layer)){
+               overlayMaps[layer] =  window[layer + "Layer"](map);
+           }
+           else if(layers4.includes(layer)){
+               overlayMaps[layer] = window["L"]["tileLayer"]["provider"]('JusticeMap.'+layer);
+           }
+           else if(layers5.includes(layer)){
+               let obj = {};
+               if(layer === "clouds"){
+                   obj = {showLegend: true, opacity: 0.5};
+               }
+               if(layer === "city"){
+                   layer = "current";
+                   obj = {intervall: 15, minZoom: 3};
+               }
+               overlayMaps[layer] = window["L"]["OWM"][layer](obj);
+           }
+           overlayMaps[layer].addTo(map)
+       }
+
+       L.control.layers(baseMaps,overlayMaps).addTo(map);
+   }
+
    function setupLEL(map , sethash){ 
 
     var baselayer = L.tileLayer('https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png', {
@@ -113,7 +179,8 @@
     var JusticeMap_nonWhite = L.tileLayer.provider('JusticeMap.nonWhite') ;
     var JusticeMap_white = L.tileLayer.provider('JusticeMap.white') ;
     var JusticeMap_plurality = L.tileLayer.provider('JusticeMap.plurality') ;
-    
+
+
     var clouds = L.OWM.clouds({showLegend: true, opacity: 0.5});
     var cloudscls = L.OWM.cloudsClassic({});
     var precipitation = L.OWM.precipitation({});

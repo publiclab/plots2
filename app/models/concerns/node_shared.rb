@@ -202,6 +202,21 @@ module NodeShared
     end
   end
 
+  # [map:layers:_latitude_:_longitude:SkyTruth,MapKnitter]
+  def self.layers_map(body, _page = 1)
+    body.gsub(/\[map\:layers\:(\S+)\:(\S+)\:(\w+)((\,\w+)*)]/) do |_tagname|
+      lat = Regexp.last_match(1)
+      lon = Regexp.last_match(2)
+      primaryLayer =  Regexp.last_match(3).to_s
+      secondoryLayers = Regexp.last_match(4).to_s
+      if !secondoryLayers.nil?
+        primaryLayer = primaryLayer + secondoryLayers
+      end
+
+      map_data_string(lat, lon, primaryLayer, "inlineLeaflet")
+    end
+  end
+
   # in our interface, "users" are known as "people" because it's more human
   def self.people_grid(body, current_user = nil, _page = 1)
     body.gsub(/(?<![\>`])(\<p\>)?\[people\:(\S+)\]/) do |_tagname|
@@ -306,6 +321,8 @@ module NodeShared
 
     locals_data = if template == "leaflet"
                     { lat: lat, lon: lon, tagname: tagname.to_s }
+                  elsif template == "inlineLeaflet"
+                    { lat: lat, lon: lon, layers: tagname.to_s }
                   else
                     { lat: lat, lon: lon, people: true,
                       url_hash: 0, tag_name: false }
