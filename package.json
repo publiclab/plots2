@@ -40,7 +40,7 @@
     "jsdiff": "components/jsdiff#~3.4.0",
     "junction": "theleagueof/junction#*",
     "leaflet": "^0.7.3",
-    "leaflet-blurred-location": "^1.2.7",
+    "leaflet-blurred-location": "^1.3.0",
     "leaflet-environmental-layers": "^1.2.4",
     "leaflet-fullhash": "github:sagarpreet-chadha/leaflet-fullHash",
     "leaflet-spin": "1.1.0",

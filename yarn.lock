@@ -3169,17 +3169,10 @@ lcid@^2.0.0:
   dependencies:
     invert-kv "^2.0.0"
 
-leaflet-blurred-location@^1.2.5:
-  version "1.2.5"
-  resolved "https://registry.yarnpkg.com/leaflet-blurred-location/-/leaflet-blurred-location-1.2.5.tgz#07098bef5b1dada0876fa2081ff443a2bda4d84d"
-  dependencies:
-    haversine-distance "^1.1.4"
-    jquery "^3.2.1"
-    leaflet "^1.3.3"
-
-leaflet-blurred-location@^1.2.7:
-  version "1.2.7"
-  resolved "https://registry.yarnpkg.com/leaflet-blurred-location/-/leaflet-blurred-location-1.2.7.tgz#be4a7bbc745fa01985da2aad36e92547ee87de9d"
+leaflet-blurred-location@^1.2.5, leaflet-blurred-location@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/leaflet-blurred-location/-/leaflet-blurred-location-1.3.0.tgz#513035da5a9c072cbdf314a56d41a9715dfd5376"
+  integrity sha512-w9Q3PUwZH/0kdPn7WPVrgMejH9U0s/RzM1XIR59rDChB3GOoZIZFQd2ThEOUpEko59YaZW5x2CZjkV0usppPCQ==
   dependencies:
     haversine-distance "^1.1.4"
     jquery "^3.2.1"
@@ -3217,17 +3210,13 @@ leaflet-spin@1.1.0:
   dependencies:
     spin.js "^2.3.1"
 
-leaflet@*, leaflet@^1.3.1:
-  version "1.3.4"
-  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.3.4.tgz#7f006ea5832603b53d7269ef5c595fd773060a40"
+leaflet@*, leaflet@^1.3.1, leaflet@^1.3.3:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.4.0.tgz#d5f56eeb2aa32787c24011e8be4c77e362ae171b"
 
 leaflet@^0.7.3:
   version "0.7.7"
   resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-0.7.7.tgz#1e352ba54e63d076451fa363c900890cb2cf75ee"
-
-leaflet@^1.3.3:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.4.0.tgz#d5f56eeb2aa32787c24011e8be4c77e362ae171b"
 
 levn@^0.3.0, levn@~0.3.0:
   version "0.3.0"
