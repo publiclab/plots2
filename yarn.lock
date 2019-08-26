@@ -3004,9 +3004,10 @@ jsbn@~0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/jsbn/-/jsbn-0.1.1.tgz#a5e654c2e5a2deb5f201d96cefbca80c0ef2f513"
 
-jsdiff@components/jsdiff#~1.2.2:
+jsdiff@components/jsdiff#~3.4.0:
   version "0.0.0"
-  resolved "https://codeload.github.com/components/jsdiff/tar.gz/877639f99ab2ebbd0f8cd3f0c3b96c4c6fb7a528"
+  uid "7e83f72e95b818cf26bb80f1c752b7eb7a79ce0d"
+  resolved "https://codeload.github.com/components/jsdiff/tar.gz/7e83f72e95b818cf26bb80f1c752b7eb7a79ce0d"
 
 jsdom@9.9.1:
   version "9.9.1"
