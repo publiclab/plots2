@@ -8,17 +8,32 @@
 
     <script>
 
-var search, onSearchReady = function() {
-  if (!search) search = google.search.cse.element.render({div:'google'});
-  console.log(search)
+var resultsRenderedCallback = function(response) {
+  var searchQuery = google.search.cse.element.getElement('customSearch').getInputQuery();
+  $.ajax('/tags/related?id=' + searchQuery).done(function fetchedRelatedTags(response) {
+    $('.related-tags-container').html(response);
+  });
 }
 
 window.__gcse = {
   //parsetags: 'explicit',
-  callback: onSearchReady
+  callback: onSearchReady,
+  searchCallbacks: {
+    image: {
+      //starting: searchStartingCallback,
+      //ready: resultsReadyCallback,
+      rendered: resultsRenderedCallback,
+    },
+    web: {
+      //starting: searchStartingCallback,
+      //ready: resultsReadyCallback,
+      rendered: resultsRenderedCallback,
+    },
+  }
 };
 
 (function() {
+
   var cx = '008366342703784425914:_p25pf-gy_w';
   var gcse = document.createElement('script');
   gcse.type = 'text/javascript';
@@ -29,7 +44,13 @@ window.__gcse = {
 
     </script>
 
-    <div id="google" gname="searchBox" resultsUrl="https://publiclab.org/search"></div>
+    <div class="gcse-searchbox" style="width:100%" id="google" data-gname="customSearch" resultsUrl="https://publiclab.org/search"></div>
+
+    <div class="related-tags-container">
+      <%= render partial: 'tag/related', locals: { tags: Tag.related(params[:query] || params[:q]) } if params[:query] || params[:q] %>
+    </div>
+
+    <div class="gcse-searchresults" style="width:100%" data-gname="customSearch"></div>
 
     <p id="loadingSearch">
       <small style="color:#888;"><a href="/search/content">Click here</a> if Google is not available in your region</small>

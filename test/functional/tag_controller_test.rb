@@ -135,6 +135,16 @@ class TagControllerTest < ActionController::TestCase
     assert_redirected_to('/login')
   end
 
+  test 'related tags' do
+    get :related,
+        params: {
+        id: 'test'
+        }
+
+    assert :success
+    assert_not_nil :tags
+  end
+
   test 'tag index' do
     get :index
 

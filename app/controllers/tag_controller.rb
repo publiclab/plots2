@@ -244,6 +244,11 @@ class TagController < ApplicationController
     end
   end
 
+  def related
+    @tags = Tag.related(params[:id])
+    render partial: 'tag/related', layout: false, locals: { tags: @tags }
+  end
+
   def widget
     num = params[:n] || 4
     nids = Tag.find_nodes_by_type(params[:id], 'note', num).collect(&:nid)
