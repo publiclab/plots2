@@ -11,6 +11,7 @@ class SearchTest < ApplicationSystemTestCase
     find('button.btn-light').click
 
     assert_selector('h2', text: 'Search')
+    take_screenshot
   end
 
   test 'front page with navbar search autocomplete' do
