@@ -307,15 +307,11 @@
         var spaceIndex = second.indexOf(" ");
         second = " " + second.substring(spaceIndex + 1);
         first = first.substring(0, textBreak) + aux;
-        var bothTextes = [first, second];
-        return bothTextes;
+        return [first,second];
     }
-
-
 
     var textLimit = 150;
     var text = $("#user-bio").html();
-
 
     if (text.length > textLimit) {
         var textArray = splitText(text);
