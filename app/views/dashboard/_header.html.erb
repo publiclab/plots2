@@ -1,14 +1,15 @@
   <div class="row header">
 
     <% if current_user %>
-      <h1><%= t('dashboard._header.dashboard') %></h1>
+      <h4><%= t('dashboard._header.dashboard') %></h4>&nbsp&nbsp
+      <p style="color:#808080; margin-top:2px;">Updates from community members on <a href="/subscriptions" style="color:#808080;"><u> topics you follow </u></a></p>
     <% else %>
-      <h1><%= t('dashboard._header.community_research') %></h1>
+      <h4><%= t('dashboard._header.community_research') %></h4>
     <% end %>
 
   </div>
 
-<div class="row stats">
+<!-- <div class="row stats">
   <h4 class="col-lg-8">
     <% if current_user %>
       <span class="d-none d-lg-inline"><%= t('dashboard._header.welcome') %><span class="d-lg-none d-xl-inline">,<b><a href="/profile/"> <%= current_user.username %></a></b></span>! <%= current_user.new_contributor %></span>
@@ -19,4 +20,4 @@
       <%= t('dashboard._header.this_could_be_dashboard') %> <a data-toggle="modal" data-target="#loginModal"><%= t('dashboard._header.joined_public_lab') %></a>
     <% end %>
   </h4>
-</div>
+</div> -->

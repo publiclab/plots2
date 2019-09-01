@@ -27,54 +27,36 @@
 
   <div class="row">
 
-    <div class="col-lg-8">
+    <div class="col-lg-7">
 
       <%= render partial: "dashboard/header" %>
+      <%= render partial: "dashboard/user_topics" %><br/>
 
-      <div class="dashboard-blog">
+      <p style="width: 100%; text-align: center; border-bottom: 1px solid #ccc; line-height:2px; margin: 10px 0 20px; margin-left:-13px;">
+       <span style="background-color: #fff; padding: 0 10px; color: #808080;">Click to start following topics that interests you</span>
+      </p>
+      <br/>
 
-        <% if @blog %>
-
-          <% if @blog.main_image %>
-            <div class="img" style="background-image: url('<%= @blog.main_image.path(:large) %>')">
-          <% elsif @blog.scraped_image %>
-            <div class="img" style="background-image: url('<%= @blog.scraped_image %>')">
+      <div>
+        <small><a href="/tags" class="form-grey" style="margin-left:-13px;">Trending topics:</a></small>
+        <span class="topics-span">
+         <% cache('trending-tags', expires_in: 24.hours, skip_digest: true) do %>
+            <% Tag.trending.each do |i| %>
+                <a href="/tag/<%= i.name %>" class="badge badge-primary"><%= i.name %></a>
+            <% end %>
           <% end %>
-
-          <div class="blog-caption">
-
-            <h4>
-              <small class="float-right d-none d-lg-inline"><%= raw translation('dashboard.dashboard.from_blog', :url => '/blog') %></small>
-              <a class="title" href="/blog"><%= @blog.title %></a>
-              <small><%= t('dashboard.dashboard.by') %>
-                <a href="/profile/<%= @blog.author.username %>"><%= @blog.author.username %></a></small>
-            </h4>
-
-          </div>
-
-          <% if @blog.main_image || @blog.scraped_image %>
-            </div>
-          <% end %>
-
-        <% end %>
-
-        <%= render partial: "dashboard/activity", locals: {activity: @activity, notes: @notes} %>
-
-        </div>
-
-      </div>
-
-      <div class="col-lg-4">
-
-        <%= feature('dashboard-feature') %>
-
-        <%= render partial: "sidebar/dashboard" %>
-
+        </span>
       </div>
 
     </div>
 
+    <div class="col-lg-5">
+      <%= render :partial => "map/peopleLeaflet" , locals: {people: true , lat:23 , lon: 4} %>
+
+    </div>
+
+    </div>
+
   </div>
-</div>
 <%= stylesheet_link_tag "dashboard" %>
 <%= javascript_include_tag "dashboard" %>
