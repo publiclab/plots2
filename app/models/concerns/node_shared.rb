@@ -206,7 +206,7 @@ module NodeShared
   # [map:layers::_latitude_:_longitude:skyTruth,sapKnitter]
   def self.layers_map(body, _page = 1)
     body.gsub(/(?<![\>`])(\<p\>)?\[map\:layers\:(\w*)\:(\S+)\:(\S+)\:(\w+)((\,\w+)*)]/) do |_tagname|
-      mainLayer =  Regexp.last_match(2)
+      mainLayer = Regexp.last_match(2)
       lat = Regexp.last_match(3)
       lon = Regexp.last_match(4)
       primaryLayer =  Regexp.last_match(5).to_s
@@ -222,7 +222,7 @@ module NodeShared
   # [map:layers:tag:infragram:23:77:skyTruth,mapKnitter]
   def self.tag_layers_map(body, _page = 1)
     body.gsub(/(?<![\>`])(\<p\>)?\[map\:layers\:tag\:(\w+)\:(\S+)\:(\S+)\:(\w+)((\,\w+)*)\]/) do |_tagname|
-      tagname =  Regexp.last_match(2)
+      tagname = Regexp.last_match(2)
       lat = Regexp.last_match(3)
       lon = Regexp.last_match(4)
       primaryLayer =  Regexp.last_match(5).to_s
@@ -334,13 +334,13 @@ module NodeShared
                        })
   end
 
-  def self.map_data_string(lat, lon, tagname, template, mainLayer=nil)
+  def self.map_data_string(lat, lon, tagname, template, mainLayer = nil)
     a = ActionController::Base.new
 
     locals_data = if template == "leaflet"
                     { lat: lat, lon: lon, tagname: tagname.to_s }
                   elsif template == "inlineLeaflet"
-                    { lat: lat, lon: lon, layers: tagname.to_s, mainLayer: mainLayer}
+                    { lat: lat, lon: lon, layers: tagname.to_s, mainLayer: mainLayer }
                   else
                     { lat: lat, lon: lon, people: true,
                       url_hash: 0, tag_name: false }
