@@ -114,7 +114,7 @@ group :test, :development do
   gem 'rake', '~> 12.3.3'
   gem 'rest-client'
   gem 'rspec'
-  gem 'selenium-webdriver', '~> 3.142.3'
+  gem 'selenium-webdriver', '~> 3.142.4'
   gem 'test-unit'
   gem 'teaspoon-mocha'
   gem 'timecop'
