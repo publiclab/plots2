@@ -69,9 +69,79 @@
      });
    }
 
-   function setupInlineLEL(map , layers) {
+   function peopleLayerParser(map, markers_hash) {
+       var NWlat = map.getBounds().getNorthWest().lat ;
+       var NWlng = map.getBounds().getNorthWest().lng ;
+       var SElat = map.getBounds().getSouthEast().lat ;
+       var SElng = map.getBounds().getSouthEast().lng ;
+
+       map.spin(true) ;
+
+       let people_url = "/api/srch/nearbyPeople?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng;
+
+       $.getJSON(people_url , function (data) {
+           var layerGroup = L.layerGroup();
+
+           if (!!data.items) {
+               for (i = 0; i < data.items.length; i++) {
+                   var default_markers = PLmarker_default();
+                   var mid = data.items[i].doc_id ;
+                   var url = data.items[i].doc_url;
+                   var title = data.items[i].doc_title;
+                   var m = L.marker([data.items[i].latitude, data.items[i].longitude], {
+                       title: title,
+                       icon: default_markers
+                   }) ;
+
+                   if(markers_hash.has(mid) === false){
+                       m.addTo(map).bindPopup("<a href=" + url + ">" + title + "</a>") ;
+                       markers_hash.set(mid , m) ;
+                   }
+
+               }
+           }
+           map.spin(false) ;
+       });
+   }
+
+   function contentLayerParser(map,markers_hash, map_tagname) {
+       var NWlat = map.getBounds().getNorthWest().lat ;
+       var NWlng = map.getBounds().getNorthWest().lng ;
+       var SElat = map.getBounds().getSouthEast().lat ;
+       var SElng = map.getBounds().getSouthEast().lng ;
+
+       map.spin(true) ;
+       if(map_tagname === null && (typeof map_tagname === "undefined")) {
+           taglocation_url = "/api/srch/taglocations?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng ;
+
+       } else {
+           taglocation_url = "/api/srch/taglocations?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng + "&tag=" + map_tagname ;
+       }
+
+       $.getJSON(taglocation_url , function (data) {
+
+           if (!!data.items) {
+               for (i = 0; i < data.items.length; i++) {
+                   var url = data.items[i].doc_url;
+                   var title = data.items[i].doc_title;
+                   var default_url = PLmarker_default();
+                   var mid = data.items[i].doc_id ;
+                   var m = L.marker([data.items[i].latitude, data.items[i].longitude], {icon: default_url}).addTo(map).bindPopup("<a href=" + url + ">" + title + "</a>") ;
+
+                   if(markers_hash.has(mid) === false){
+                       m.addTo(map).bindPopup("<a href=" + url + ">" + title + "</a>") ;
+                       markers_hash.set(mid , m) ;
+                   }
+
+               }
+           }
+           map.spin(false) ;
+       });
+   }
+
+   function setupInlineLEL(map , layers, mainLayer) {
        layers = layers.split(',');
-       console.log(layers);
+
        var baselayer = L.tileLayer('https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png', {
            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
        }).addTo(map) ;
@@ -130,6 +200,40 @@
            overlayMaps[layer].addTo(map)
        }
        L.control.layers(baseMaps,overlayMaps).addTo(map);
+
+       if(typeof mainLayer != "undefined" && mainLayer != ""){
+           if(mainLayer === "people"){
+               let markers_hash1 = new Map() ;
+               map.on('zoomend' , function () {
+                  peopleLayerParser(map, markers_hash1);
+               }) ;
+
+               map.on('moveend' , function () {
+                   peopleLayerParser(map,markers_hash1);
+               }) ;
+           }
+           else if(mainLayer === "content"){
+               let markers_hash2 = new Map() ;
+               map.on('zoomend' , function () {
+                   contentLayerParser(map,markers_hash2);
+               }) ;
+
+               map.on('moveend' , function () {
+                   contentLayerParser(map,markers_hash2);
+               }) ;
+           }
+           else { // it is a tagname
+               let markers_hash3 = new Map() ;
+               map.on('zoomend' , function () {
+                   contentLayerParser(map,markers_hash3, mainLayer);
+               }) ;
+
+               map.on('moveend' , function () {
+                   contentLayerParser(map,markers_hash3, mainLayer);
+               }) ;
+           }
+       }
+
    }
 
    function setupLEL(map , sethash){

@@ -79,6 +79,7 @@ module ApplicationHelper
     body = NodeShared.notes_map(body)
     body = NodeShared.notes_map_by_tag(body)
     body = NodeShared.people_map(body)
+    body = NodeShared.tag_layers_map(body)
     body = NodeShared.layers_map(body)
     body = NodeShared.people_grid(body, @current_user || nil) # <= to allow testing of insert_extras
     body = NodeShared.graph_grid(body)

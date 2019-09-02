@@ -21,8 +21,8 @@
     var map_lat = <%= lat %> ;
     var map_lon = <%= lon %> ;
     var primary_layers = "<%= layers.to_s %>";
+    var main_layer = "<%= mainLayer.to_s %>"
 
-
-    setupInlineLEL(map<%= unique_id %> , primary_layers) ;
+    setupInlineLEL(map<%= unique_id %> , primary_layers, main_layer) ;
 
 </script>
