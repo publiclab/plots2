@@ -47,7 +47,7 @@
   <h4>
     <small>
       <% if logged_in_as(['admin']) %><%= @profile_user.email %><% end %>
-      <span style = "font-size:24px;"><small> | <%= raw t('users.profile.joined_time_ago', :time_ago => distance_of_time_in_words(@profile_user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' })) %></small></span>
+      <span style = "font-size:24px;"><small> <%= raw t('users.profile.joined_time_ago', :time_ago => distance_of_time_in_words(@profile_user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' })) %></small></span>
       <% if @profile_user.role == "moderator" %> | <i class="fa fa-certificate"></i> <%= t('users.profile.moderator') %><% end %>
       <% if @profile_user.role == "admin" %> | <i class="fa fa-certificate"></i> <%= t('users.profile.admin') %><% end %>
       <% if @profile_user.status == 0 %> | <i class="fa fa-ban" style="color:#a00;"></i> <%= t('users.profile.banned') %><% end %>
@@ -348,6 +348,13 @@
   .token{
     font-weight: bold;
   }
+
+  h5 a:hover {
+    color: blue !important;
+    text-decoration: underline;
+    font-weight:bold;
+}
+
 </style>
 
 <%= stylesheet_link_tag "dashboard" %>
