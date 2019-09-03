@@ -41,8 +41,8 @@
         <small><a href="/tags" class="form-grey" style="margin-left:-13px;">Trending topics:</a></small>
         <span class="topics-span">
          <% cache('trending-tags', expires_in: 24.hours, skip_digest: true) do %>
-            <% Tag.trending.each do |i| %>
-                <a href="/tag/<%= i.name %>" class="badge badge-primary"><%= i.name %></a>
+            <% Tag.trending.each do |tag| %>
+                <a href="/tag/<%= tag.name %>" class="badge badge-primary"><%= tag.name %></a>
             <% end %>
           <% end %>
         </span>
