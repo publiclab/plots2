@@ -94,13 +94,21 @@
 
             $(document).ready(function () {
                 $('#text-input').keypress(function (e) {
-                    if(e.keyCode==30)
+                    if ((e.ctrlKey || e.metaKey) && (e.keyCode === 13 || e.keyCode === 10))
                     {
                         e.preventDefault();
                         $("#publish").click()
                     }
                 });
             });
+            
+            // $("#preview").click(function () {
+            //     $("#preview").toggle(function (){
+            //         $(this).text("Edit")
+            //     }, function(){
+            //         $(this).text("Preview")
+            //     });
+            // })
           </script>
 
           <%= javascript_include_tag "dragdrop" %>
@@ -111,11 +119,11 @@
           <div class="control-group">
             <button type="submit" class="btn btn-primary" id="publish"><%= t('comments._form.publish') %></button>
             <% if local_assigns[:comment] %>
-              <a class="btn btn-outline-secondary preview-btn" id="post_comment" onClick="$('#c<%= comment.cid %>preview').toggle();
+              <a class="btn btn-outline-secondary preview-btn" id="preview" onClick="$('#c<%= comment.cid %>preview').toggle();
                   $('#c<%= comment.cid %>text-input').toggle();
                   $('#c<%= comment.cid %>edit .preview-btn').button('toggle');
                   $E.generate_preview('c<%= comment.cid %>preview',$('#c<%= comment.cid %>text-input').val());
-                  handlePreview();
+
               ">
                 <%= t('comments._form.preview') %>
               </a>
