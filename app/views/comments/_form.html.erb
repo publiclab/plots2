@@ -79,6 +79,20 @@
             $('#input_label').click(function(e){
                 $E.initialize({});
             });
+            function handlePreview() {
+                var x=document.getElementById("post_comment")
+                if(x.innerHTML=== "Preview")
+                {
+                    x.innerHTML="Edit";
+                }
+                else
+                {
+                    x.innerHTML="Preview"
+                }
+            }
+
+            
+
           </script>
 
           <%= javascript_include_tag "dragdrop" %>
@@ -87,17 +101,19 @@
           <%= javascript_include_tag "comment.js" %>
 
           <div class="control-group">
-            <button type="submit" class="btn btn-primary"><%= t('comments._form.publish') %></button>
+            <button type="submit" class="btn btn-primary" ><%= t('comments._form.publish') %></button>
             <% if local_assigns[:comment] %>
-              <a class="btn btn-outline-secondary preview-btn" onClick="$('#c<%= comment.cid %>preview').toggle();
+              <a class="btn btn-outline-secondary preview-btn" id="post_comment" onClick="$('#c<%= comment.cid %>preview').toggle();
                   $('#c<%= comment.cid %>text-input').toggle();
                   $('#c<%= comment.cid %>edit .preview-btn').button('toggle');
-                  $E.generate_preview('c<%= comment.cid %>preview',$('#c<%= comment.cid %>text-input').val())">
+                  $E.generate_preview('c<%= comment.cid %>preview',$('#c<%= comment.cid %>text-input').val());
+                  handlePreview();
+              ">
                 <%= t('comments._form.preview') %>
               </a>
               <a class="btn btn-outline-secondary" onClick="$('#c<%= comment.cid %>show').toggle();$('#c<%= comment.cid %>edit').toggle()"><%= t('comments._form.cancel') %></a>
             <% else %>
-              <a class="btn btn-outline-secondary preview-btn>" id="post_comment" data-previewing-text="Hide Preview" onClick="handleClick();$E.toggle_preview()"><%= t('comments._form.preview') %></a>
+              <a class="btn btn-outline-secondary preview-btn>" id="post_comment" data-previewing-text="Hide Preview" onClick="handleClick();$E.toggle_preview();handlePreview()"><%= t('comments._form.preview') %></a>
             <% end %>
 
             <span style="color:#888;"> &nbsp;
