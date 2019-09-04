@@ -123,6 +123,15 @@ Plots2::Application.routes.draw do
   get 'wiki/edit/:lang/:id' => 'wiki#edit'
   get 'wiki' => 'wiki#index'
 
+  #routes for simple-data-grapher
+  get 'graph/fetch_graphobject' => 'csvfiles#fetch_graphobject'
+  get 'graph' => 'csvfiles#new'
+  post 'graph/object' => 'csvfiles#setter'
+  post 'graph/note/graphobject' => 'csvfiles#add_graphobject'
+  get 'graph/prev_file' => 'csvfiles#prev_files'
+  get 'graph/data/:id' => 'csvfiles#user_files'
+  get 'graph/file/:uid/:id' => 'csvfiles#delete'
+
   get 'place/:id/feed' => 'place#feed'
   get 'n/:id' => 'notes#shortlink'
   get 'i/:id' => 'images#shortlink'
@@ -173,13 +182,15 @@ Plots2::Application.routes.draw do
   get 'likes/node/:id/delete' => 'like#delete',  :as => :drop_like
 
   get "search/wikis/:query",       :to => "search#wikis"
-  get "search/profiles/:query",    :to => "search#profiles"
-  get "search/questions/:query",   :to => "search#questions"
-  get "search/places/:query",      :to => "search#places"
-  get "search/tags/:query",        :to => "search#tags"
-  get "search/",                   :to => "search#new"
-  get "search/notes/:query",       :to => "search#notes"
-  get "search/:query",             :to => "search#all_content"
+  get "search/profiles/(:query)",  :to => "search#profiles"
+  get "search/questions/(:query)", :to => "search#questions"
+  get "search/places/(:query)",    :to => "search#places"
+  get "search/tags/(:query)",      :to => "search#tags"
+  get "search/notes/(:query)",     :to => "search#notes"
+  get "search/content/(:query)",   :to => "search#new"
+  get "search/all/(:query)",       :to => "search#all_content"
+  get "search/",                   :to => "search#google"
+  get "search/:query",             :to => "search#google_redirect"
 
 
   get 'widget/:id' => 'tag#widget'
@@ -188,6 +199,7 @@ Plots2::Application.routes.draw do
   get 'blog2' => 'tag#blog2', :id => "blog2"
   get 'blog2/:id' => 'tag#blog2'
   get 'tags' => 'tag#index'
+  get 'tags/related(/:id)' => 'tag#related'
   get 'tags/:search' => 'tag#index'
   post 'tag/suggested/:id' => 'tag#suggested'
   get 'tag/parent' => 'tag#add_parent'
@@ -293,14 +305,15 @@ Plots2::Application.routes.draw do
   get 'admin/mark_comment_spam/:id' => 'admin#mark_comment_spam'
   get 'smtp_test' => 'admin#smtp_test'
 
-  get 'post' => 'editor#post'
-  post 'post' => 'editor#post'
+  get 'post' => 'editor#post', :as => :editor_post
+  post 'post' => 'editor#post', :as => :editor_path
   get 'legacy' => 'editor#legacy'
   get 'editor' => 'editor#editor'
   get 'editor/rich/(:n)' => 'editor#rich'
   post 'images/create' => 'images#create'
   put 'note/add' => 'legacy#note_add'
   put 'page/add' => 'legacy#page_add'
+  get 'sdg' => 'editor#tempfunc'
 
   get 'talk/:id' => 'talk#show'
 

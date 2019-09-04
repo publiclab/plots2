@@ -284,12 +284,14 @@ a .fa-white,
 }
 
 .pl-content blockquote p {
-  padding: 8px 4px;
+  padding: 14px;
+  font-style: italic;
   margin-top: 8px;
-  font-size: 14px;
+  font-size: 16px;
   font-family: "Helvetica Neue";
   border-left: 5px solid #736f6f;
-  background-color: #f3f1ef;
+  background-color: #f8f8f8;
+  color: #555;
 }
 
 #tags .label {

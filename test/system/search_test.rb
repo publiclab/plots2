@@ -7,10 +7,11 @@ class SearchTest < ApplicationSystemTestCase
   test 'searching an item from the homepage' do
     visit '/'
 
-    fill_in("searchform_input", with: "Canon")
+    fill_in("searchform_input", with: "test")
     find('button.btn-light').click
 
-    assert_selector('h2', text: 'Results for Canon')
+    assert_selector('h2', text: 'Search')
+    take_screenshot
   end
 
   test 'front page with navbar search autocomplete' do

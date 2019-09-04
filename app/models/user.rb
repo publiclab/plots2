@@ -44,6 +44,7 @@ class User < ActiveRecord::Base
 
   has_many :images, foreign_key: :uid
   has_many :node, foreign_key: 'uid'
+  has_many :csvfiles, foreign_key: :uid
   has_many :node_selections, foreign_key: :user_id
   has_many :revision, foreign_key: 'uid'
   has_many :user_tags, foreign_key: 'uid', dependent: :destroy
@@ -297,6 +298,14 @@ class User < ActiveRecord::Base
     self
   end
 
+  def self.send_browser_notification(users_ids, notification)
+    users_ids.each do |uid|
+      if UserTag.where(value: 'notifications:all', uid: uid).any?
+        ActionCable.server.broadcast "users:notification:#{uid}", notification: notification
+      end
+    end
+  end
+
   def banned?
     status == Status::BANNED
   end
@@ -363,11 +372,11 @@ class User < ActiveRecord::Base
 
   class << self
     def search(query)
-      User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', query + '*')
+      User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', "#{query}*")
     end
 
     def search_by_username(query)
-      User.where('MATCH(username) AGAINST(? IN BOOLEAN MODE)', query + '*')
+      User.where('MATCH(username) AGAINST(? IN BOOLEAN MODE)', "#{query}*")
     end
 
     def validate_token(token)

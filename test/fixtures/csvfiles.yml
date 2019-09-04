@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  uid: 1
+  filetitle: MyString
+  filedescription: MyText
+  filepath: MyString
+  filename: MyString
+  filestring: MyString
+
+two:
+  uid: 1
+  filetitle: MyString
+  filedescription: MyText
+  filepath: MyString
+  filename: MyString
+  filestring: MyString

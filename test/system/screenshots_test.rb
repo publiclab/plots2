@@ -8,8 +8,15 @@ class ScreenshotsTest < ApplicationSystemTestCase
     take_screenshot
   end
 
-  test 'wiki' do
-    visit '/wiki'
+  test 'signup modal' do
+    visit '/'
+    click_on 'Sign up'
+    take_screenshot
+  end
+
+  test 'login modal' do
+    visit '/'
+    click_on 'Login'
     take_screenshot
   end
 
@@ -35,6 +42,11 @@ class ScreenshotsTest < ApplicationSystemTestCase
 
   test 'tag by author page' do
     visit '/tag/spectrometer/author/bob'
+    take_screenshot
+  end
+
+  test 'wiki' do
+    visit '/wiki'
     take_screenshot
   end
 
@@ -75,6 +87,12 @@ class ScreenshotsTest < ApplicationSystemTestCase
 
   test 'comments' do
     visit '/comments'
+    take_screenshot
+  end
+  
+  test 'wiki revisions' do
+    visit "/wiki/revisions/#{nodes(:about).slug}"
+    click_on '1'
     take_screenshot
   end
 

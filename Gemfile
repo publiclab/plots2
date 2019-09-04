@@ -52,7 +52,7 @@ gem 'rb-readline'
 gem 'rdiscount', '~> 2.2', '>= 2.2.0.1'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'responders', '~> 3.0'
-gem 'rubocop', '~> 0.73.0', require: false
+gem 'rubocop', '~> 0.74.0', require: false
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
 gem 'sentry-raven'
@@ -106,7 +106,7 @@ group :test, :development do
   gem 'jasmine-jquery-rails'
   gem 'jasmine-rails'
   gem 'json_expressions'
-  gem 'minitest-reporters', '~> 1.3.6'
+  gem 'minitest-reporters', '~> 1.3.8'
   gem 'openssl', '~> 2.1.2'
   gem 'phantomjs'
   gem 'puma', '~> 4.1'

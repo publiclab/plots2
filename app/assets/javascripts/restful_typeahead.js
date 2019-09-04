@@ -11,6 +11,7 @@ $(function() {
       items: 10,
       minLength: 3,
       showCategoryHeader: true,
+      item: '<li class="dropdown-item"><a class="dropdown-item" href="#" role="option"></a></li>',
       autoSelect: false,
       source: debounce(function (query, process) {
         var encoded_query = encodeURIComponent(query);
@@ -36,7 +37,7 @@ $(function() {
       updater: function(item) {
         if (item.hasOwnProperty('showAll') && item.showAll) {
           var query = this.value;
-          window.location = window.location.origin + "/search/" + query;
+          window.location = window.location.origin + "/search/?q=" + query;
         }
         else if (item.hasOwnProperty('doc_url') && item.doc_url) {
           window.location = window.location.origin + item.doc_url;
@@ -46,7 +47,7 @@ $(function() {
         item = item.doc_title;
         return item;
       },
-      addItem: { doc_title: 'View all',
+      addItem: { doc_title: 'Search all content',
                  showAll: true
                }
     });

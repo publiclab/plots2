@@ -50,24 +50,13 @@ class NotesController < ApplicationController
     return if redirect_to_node_path?(@node)
 
     if @node
-      if @node.status == 3 && current_user.blank?
-        flash[:warning] = "You need to login to view the page"
-        redirect_to '/login'
-        return
-      elsif @node.status == 3 && @node.author != current_user && !current_user.can_moderate? && !@node.has_tag("with:#{current_user.username}")
-        flash[:notice] = "Only author can access the draft note"
-        redirect_to '/'
-        return
-      end
-
-      if @node.has_power_tag('question')
+      if @node.has_power_tag('question') && @node.status == 1
         redirect_to @node.path(:question)
         return
       end
-
-      redirect_power_tag_redirect
-
+      
       alert_and_redirect_moderated
+      redirect_power_tag_redirect
 
       impressionist(@node, 'show', unique: [:ip_address])
       @title = @node.latest.title
@@ -405,7 +394,7 @@ class NotesController < ApplicationController
   end
 
   def redirect_power_tag_redirect
-    if @node.has_power_tag('redirect')
+    if @node.has_power_tag('redirect') && @node.status == 1
       if current_user.blank? || !current_user.can_moderate?
         redirect_to URI.parse(Node.find(@node.power_tag('redirect')).path).path
       elsif current_user.can_moderate?

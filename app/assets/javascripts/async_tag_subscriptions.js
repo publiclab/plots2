@@ -3,6 +3,7 @@ $(document).ready(function()
       $('#taginput').typeahead({
         items: 8,
         minLength: 3,
+        item: '<li class="dropdown-item"><a class="dropdown-item" href="#" role="option"></a></li>',
         source: function (query, process) {
           var replaced_query = query.replace(' ', '-');
           return $.post('/tag/suggested/' + replaced_query, {}, function (data) {

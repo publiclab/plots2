@@ -9,6 +9,7 @@ Rails.application.config.assets.precompile += [
   'dragdrop.js',
   'editor.js',
   'graph.js',
+  'simple-data-grapher.js',
   'grids.js',
   'header_footer.js',
   'ics.deps.min.js',

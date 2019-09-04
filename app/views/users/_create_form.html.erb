@@ -99,6 +99,9 @@
 
     <% end %>
 
+    <% cache('feature_signup-notice', skip_digest: true) do %>
+      <%= feature('signup-notice') %>
+    <% end %>
 
     <div class="col-md-12 form-group form-inline" style="clear:both;padding-top:10px;">
         <!-- button for creating new users -->
@@ -120,9 +123,7 @@
 
   <% end %>
   
-  <% cache('feature_signup-notice', skip_digest: true) do %>
-    <%= feature('signup-notice') %>
-  <% end %>
+
 
   <script>
     $("a.signupToggle").click(function(e){ //When a button that toggles the signup is clicked

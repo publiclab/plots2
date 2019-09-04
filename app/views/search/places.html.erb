@@ -6,6 +6,10 @@
     <% if @nodes.present? %>
       <div class="container">
         <h2> Results for <%= @search_criteria.query %></h2>
+        <div class="related-tags-container">
+          <%= render partial: 'tag/related', locals: { tags: Tag.related(params[:query]) } if params[:query] %>
+        </div>
+
         <hr>
       </div>
       <%= render partial: 'map/maps', locals: { nodes: @nodes } %>
