@@ -1112,10 +1112,10 @@ cwise-compiler@^1.0.0, cwise-compiler@^1.1.2:
   dependencies:
     uniq "^1.0.0"
 
-cytoscape@^3.9.1:
-  version "3.9.1"
-  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.9.1.tgz#b5520de3d7af9bf1d178d646d32557278d979f3c"
-  integrity sha512-NdmRylOdIelOXskUwK4Ayg+BRWsKzxj0moZbhffuwvNGfwylK8dTkIOkfeYkXd3CHtB4gtw11PTpTZStc7DWtQ==
+cytoscape@^3.10.0:
+  version "3.10.0"
+  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.10.0.tgz#3b462e0d35121ecd2d2702f470915fd6dae01777"
+  integrity sha512-lWOnG4HJQD0cy+tCiBmbV/QRknInuZ8HvjcUifQZ7E4LWmKMvl6d5eP0LaaRLfBJAplXWcJfwc17ZJ/nwPeaYg==
   dependencies:
     heap "^0.2.6"
     lodash.debounce "^4.0.8"
