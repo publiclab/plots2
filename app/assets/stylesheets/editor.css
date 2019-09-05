@@ -110,3 +110,7 @@
   margin:3px 10px 10px;
   width:30%;
 }
+
+div.wk-commands.btn-group {
+  position: relative !important;
+}

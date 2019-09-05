@@ -3006,7 +3006,6 @@ jsbn@~0.1.0:
 
 jsdiff@components/jsdiff#~3.4.0:
   version "0.0.0"
-  uid "7e83f72e95b818cf26bb80f1c752b7eb7a79ce0d"
   resolved "https://codeload.github.com/components/jsdiff/tar.gz/7e83f72e95b818cf26bb80f1c752b7eb7a79ce0d"
 
 jsdom@9.9.1:
@@ -4196,9 +4195,10 @@ publiclab-editor@^2.0.0:
     woofmark "git://github.com/jywarren/woofmark.git#xhrOptionsAltBureaucracy"
     xhr "~2.5.0"
 
-publiclab-editor@~2.0.0:
+publiclab-editor@~2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/publiclab-editor/-/publiclab-editor-2.0.2.tgz#d0017f1337232d776e64e6acda1156a470cf9ce2"
+  integrity sha512-IQrGNqDFsigoSChDzTf3AbWQDFHk6URpWZP7VIbzVFgvUfTsJ6dbTshlyBn0qSR6PVbh6/aFI9S9rYq0/cGxzQ==
   dependencies:
     at.js "^1.5.4"
     backbone "~1.3.3"
