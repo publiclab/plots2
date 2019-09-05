@@ -48,27 +48,6 @@
 
             <%= render partial: 'tag/show/contributors' %>
 
-            <% unless @tags.try(:first).try(:parent).nil? %>
-              <small>Alias of: <%= @tags.first.parent %></small>
-            <% end %>
-
-            <% if logged_in_as(['admin']) %>
-              <br />
-              <p><a class="btn btn-outline-secondary btn-lg" onClick="$('#add_parent').toggle();">Add tag parent</a> (admin only)</p>
-              <div id="add_parent" style="display:none;">
-                <p><b>Tag parenting</b></p>
-                <div class="card bg-light">
-                  <div class="card-body">
-                    <form class="form" action="/tag/parent" method="get">
-                      <input type="text" placeholder="parent" name="parent" />
-                      <input type="hidden" placeholder="parent" name="name" value="<%= @tags&.first&.name %>" />
-                      <input class="btn btn-outline-secondary btn-lg" type="submit" value="Submit" />
-                    </form>
-                  </div>
-                </div>
-              </div>
-            <% end %>
-
             <%= render partial: 'tag/show/nav_tabs' %>
 
             <p style="padding-top:8px;">
