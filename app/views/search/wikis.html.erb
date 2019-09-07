@@ -13,6 +13,10 @@
 
      <h4>Results for "<b><%= params[:query] %></b>":</h4>
 
+     <div class="related-tags-container">
+       <%= render partial: 'tag/related', locals: { tags: Tag.related(params[:query]) } if params[:query] %>
+     </div>
+
      <div class="list-group">
        <ul class="nav nav-pills">
          <li class="nav-item">

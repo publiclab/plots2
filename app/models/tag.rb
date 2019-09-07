@@ -373,7 +373,7 @@ class Tag < ApplicationRecord
   end
 
   def self.related(tag_name, count = 5)
-    Rails.cache.fetch('related-tags/' + tag_name + '/' + count.to_s, expires_in: 1.weeks) do
+    Rails.cache.fetch("related-tags/#{tag_name}/#{count}", expires_in: 1.weeks) do
       nids = NodeTag.joins(:tag)
                      .where(Tag.table_name => { name: tag_name })
                      .select(:nid)
