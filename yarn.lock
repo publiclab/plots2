@@ -5704,7 +5704,7 @@ yargs@~3.5.4:
     camelcase "^1.0.2"
     decamelize "^1.0.0"
     window-size "0.1.0"
-    wordwrap "0.0.2"
+    wordwrap "0.0.2"layer
 
 yauzl@2.4.1:
   version "2.4.1"
