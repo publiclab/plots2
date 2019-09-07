@@ -1,70 +1,62 @@
-<%= render :partial => "search/nav", :locals => { :section => "search-profiles" } %>
-
-<div class="container">
-<h2> Results for <%= @search_criteria.query %> </h2>
-
-<div class="row" %>
-<div class="col-lg-7" >
-    <h4> <strong> Searched users' profiles by username and bio </strong></h4>
-    <br>
-    <% if @profiles.present? %>
-            <table class="table">
-                <tr>
-                    <th class="d-lg-none"></th>
-
-                    <th style="text-align: center;"><a href = "<%= people_path %>?sort=username"> <%= t('users.list.username') %></a> <i class="fa fa-arrows-v"></i></th>
-                    <th><a href = "<%= people_path %>?sort=last_activity"> <%= t('users.list.last_activity') %></a> <i class="fa fa-arrows-v"></i></th>
-                    <th><%= t('users.list.history') %></th>
-                    <th><a href = "<%= people_path %>?sort=joined"> <%= t('users.list.joined') %></a> <i class="fa fa-arrows-v"></i></th>
-                </tr>
-                <% @profiles.each do |profile| %>
-                    <tr>
-                        <td class="d-lg-none" style="padding-top: 16px;">
-                            <img class="rounded-circle" id="profile-photo" style="width:40px;margin-right:8px;border: 1px solid lightgrey;" src="<%= profile.profile_image %>" />
-                        </td>
-                        <td style="display: flex; align-items: center;">
-                            <div class="d-lg-none">
-                                <img class="rounded-circle" id="profile-photo" style="width:40px;margin-right:8px;border: 1px solid lightgrey;" src="<%= profile.profile_image %>" />
-                            </div>
-                            <a style="margin-left: 12px;" href="/profile/<%= profile.username %>"><%= profile.username %></a>
-                        </td>
-                        <td style="padding-top:16px;"><%= time_ago_in_words(Time.at(profile.updated_at)) if profile %></td>
-                        <td style="padding-top:16px;"><%= profile.node_count %> <%= t('profile.list.notes_and_edits') %></td>
-                        <td style="padding-top:16px;"><%= distance_of_time_in_words(profile.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></td>
-                    </tr>
-                <% end %>
-            </table>
-    <% else %>
-        <h4>
-            No results found :-(
-            </br>
-        </h4>
-    <% end %>
+<div class="col-md-2">
+    <%= render :partial => "search/nav", :locals => { :section => "search-profiles" } %>
 </div>
-<div class="col-lg-4 col-lg-offset-1" >
-    <h4> <strong> Searched users' profiles by usertag </strong> </h4>
-    <hr>
-    <% if @tag_profiles.present?%>
-        <p> <b>Usernames </b></p>
-        <% @tag_profiles.each do |profile| %>
-            <tr><td style="width:40%"><h4><a href= <%= "/profile/#{profile.username}" %> ><%= profile.username %></a><td></h4></tr>
+
+<div class="col-md-10">
+    <div class="container">
+
+      <h2>Search profiles</h2>
+
+      <%= render partial: "search/form", locals: { searchType: "profiles/" } %>
+
+      <div class="row">
+        <div class="col-lg-7">
+        <% if @profiles.present? %>
+
+          <h4>Results for "<b><%= params[:query] %></b>":</h4>
+          <p>Searched profiles by <i>username</i> and <i>bio</i></p>
+          <table class="table">
+            <tr>
+              <th class="d-lg-none"></th>
+              <th><a href = "/search/profiles/<%= params[:query] %>?sort=username"> <%= t('users.list.username') %></a> <i class="fa fa-arrows-v"></i></th>
+              <th><a href="/search/profiles/<%= params[:query] %>?sort=last_activity"> <%= t('users.list.last_activity') %></a> <i class="fa fa-arrows-v"></i></th>
+              <th><a href="/search/profiles/<%= params[:query] %>?sort=joined"> <%= t('users.list.joined') %></a> <i class="fa fa-arrows-v"></i></th>
+            </tr>
+            <% @profiles.each do |profile| %>
+              <tr>
+                <td class="d-lg-none" style="padding-top: 16px;">
+                  <img class="rounded-circle" id="profile-photo" style="width:40px;margin-right:8px;border: 1px solid lightgrey;" src="<%= profile.profile_image %>" />
+                </td>
+                <td style="display: flex; align-items: center;">
+                  <div class="d-lg-none">
+                    <img class="rounded-circle" id="profile-photo" style="width:40px;margin-right:8px;border: 1px solid lightgrey;" src="<%= profile.profile_image %>" />
+                  </div>
+                  <a style="margin-left: 12px;" href="/profile/<%= profile.username %>"><%= profile.username %></a>
+                </td>
+                <td style="padding-top:16px;"><%= time_ago_in_words(Time.at(profile.updated_at)) if profile %></td>
+                <td style="padding-top:16px;"><%= distance_of_time_in_words(profile.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></td>
+              </tr>
+            <% end %>
+          </table>
+        <% else %>
+          <p>No results found for "<b><%= params[:query] %></b>" by <i>username</i> or <i>bio</i> :-(</p>
+          <p>Try searching <a href="/search/content/<%= params[:query] %>">all content</a></p>
         <% end %>
-    <% else %>
-        <h4>
-            No results found :-(
-            </br>
-        </h4>
-    <% end %>
-</div>
-</div>
-<br>
-<div>
-    <% if @profiles.blank? && @tag_profiles.blank? %>
-        <h4>
-            Try searching <a href="/search">for another topic</a> or looking for our items tagged with <a href="/tag/<%= params[:query] %>"><%= params[:query] %></a>
-        </h4>
-    <% end %>
-</div>
-</div>
+    </div>
+    <div class="col-lg-4 col-lg-offset-1" >
+      <% if @tag_profiles.present?%>
+        <h4>Results for "<b><%= params[:query] %></b>":</h4>
+        <p>Searched profiles by <i>profile tags</i></p>
+        <% @tag_profiles.each do |profile| %>
+          <tr><td style="width:40%"><h4><a href= <%= "/profile/#{profile.username}" %> ><%= profile.username %></a><td></h4></tr>
+        <% end %>
+      <% else %>
+        <p>No results found for "<b><%= params[:query] %></b>" by <i>profile tags</i> :-(</p>
+        <p>Try searching <a href="/search/content/<%= params[:query] %>">all content</a></p>
+      <% end %>
+    </div>
+    </div>
+  </div>
 
-<%= will_paginate @profiles, renderer: WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated %>
+  <%= will_paginate @profiles, renderer: WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated %>
+</div>

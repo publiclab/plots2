@@ -66,7 +66,7 @@ class UsersControllerTest < ActionController::TestCase
     assert_response 302
   end
 
-  test 'should get profile and show pagination' do
+  test 'should get profile' do
     i = 0
     25.times do
       Node.new(uid: users(:bob).id, type: 'note', title: "Node #{i += 1}").save
@@ -75,7 +75,6 @@ class UsersControllerTest < ActionController::TestCase
     get :profile, params: { id: users(:bob).username }
     assert_response :success
 
-    assert_equal 1, css_select('ul.pagination').size
   end
 
   test 'generate user reset key' do
@@ -145,18 +144,6 @@ class UsersControllerTest < ActionController::TestCase
 
       @controller = old_controller
     end
-  end
-
-  test 'should list notes and questions in user profile' do
-    user = users(:jeff)
-    get :profile, params: { id: user.username }
-    assert_not_nil assigns(:notes)
-    assert_not_nil assigns(:questions)
-    assert_not_nil assigns(:answered_questions)
-    selector = css_select '#asked .note-question'
-    assert_equal selector.size, 2
-    selector = css_select '#answered .note-answer'
-    assert_equal selector.size, 1
   end
 
   test 'should get comments and render comments/index template' do

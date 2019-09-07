@@ -21,8 +21,15 @@ function setupTagDelete(el) {
   el.click(function(e) {
       $(this).css('opacity', 0.5)
     })
-    .bind('ajax:success', function(e, tid){
-      $('#tag_' + tid).remove();
+    .bind('ajax:success', function(e, response){
+      if (typeof response == "string") response = JSON.parse(response)
+      if (response['status'] == true) { 
+        $('#tag_' + response['tid']).remove() 
+      } else {
+        $('.control-group').addClass('has-error')
+        $('.control-group .help-block').remove()
+        $('.control-group').append('<span class="help-block">' + response['errors'] + '</span>')
+      }
     });
   return el;
 
@@ -77,6 +84,7 @@ function initTagForm(deletion_path, selector) {
         return process(data);
       })
     },
+    item: '<li class="dropdown-item"><a class="dropdown-item" href="#" role="option"></a></li>',
     updater: function(text) { 
       el.find('.tag-input').val(text);
       el.submit();

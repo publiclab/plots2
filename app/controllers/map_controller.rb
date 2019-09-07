@@ -35,7 +35,7 @@ class MapController < ApplicationController
 
   def edit
     @node = Node.find_by(id: params[:id])
-    if current_user.uid == @node.uid || current_user.role == 'admin'
+    if current_user.uid == @node.uid || logged_in_as(['admin'])
       render template: 'map/edit'
     else
       prompt_login 'Only admins can edit maps at this time.'
@@ -44,7 +44,7 @@ class MapController < ApplicationController
 
   def delete
     @node = Node.find_by(id: params[:id])
-    if current_user.uid == @node.uid || current_user.role == 'admin'
+    if current_user.uid == @node.uid || logged_in_as(['admin'])
       @node.delete
       flash[:notice] = 'Content deleted.'
       redirect_to '/archive'
@@ -55,7 +55,7 @@ class MapController < ApplicationController
 
   def update
     @node = Node.find(params[:id])
-    if current_user.uid == @node.uid || current_user.role == 'admin'
+    if current_user.uid == @node.uid || logged_in_as(['admin'])
 
       @node.title = params[:title]
       @revision = @node.latest
@@ -123,7 +123,7 @@ class MapController < ApplicationController
   end
 
   def new
-    if current_user && current_user.role == 'admin'
+    if logged_in_as(['admin'])
       @node = Node.new(type: 'map')
       render template: 'map/edit'
     else
@@ -134,7 +134,7 @@ class MapController < ApplicationController
   # must require min_zoom and lat/lon location, and TMS URL
   # solving this by min_zoom default here, but need better solution
   def create
-    if current_user && current_user.role == 'admin'
+    if logged_in_as(['admin'])
       saved, @node, @revision = Node.new_node(uid: current_user.uid,
                                               title: params[:title],
                                               body: params[:body],

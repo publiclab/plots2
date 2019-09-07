@@ -85,11 +85,16 @@ class HomeController < ApplicationController
                    .page(params[:page])
                    .group(['title', 'comments.cid']) # ONLY_FULL_GROUP_BY, issue #3120
 
-    if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+    if logged_in_as(['admin', 'moderator'])
       notes = notes.where('(node.status = 1 OR node.status = 4 OR node.status = 3)')
       comments = comments.where('comments.status = 1 OR comments.status = 4')
     elsif current_user
-      coauthor_nids = Node.joins(:node_tag).joins('LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid').select('node.*, term_data.*, community_tags.*').where(type: 'note', status: 3).where('term_data.name = (?)', "with:#{current_user.username}").collect(&:nid)
+      coauthor_nids = Node.joins(:node_tag)
+        .joins('LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid')
+        .select('node.*, term_data.*, community_tags.*')
+        .where(type: 'note', status: 3)
+        .where('term_data.name = (?)', "with:#{current_user.username}")
+        .collect(&:nid)
       notes = notes.where('(node.nid IN (?) OR node.status = 1 OR ((node.status = 3 OR node.status = 4) AND node.uid = ?))', coauthor_nids, current_user.uid)
       comments = comments.where('comments.status = 1 OR (comments.status = 4 AND comments.uid = ?)', current_user.uid)
     else

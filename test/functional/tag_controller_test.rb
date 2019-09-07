@@ -135,6 +135,16 @@ class TagControllerTest < ActionController::TestCase
     assert_redirected_to('/login')
   end
 
+  test 'related tags' do
+    get :related,
+        params: {
+        id: 'test'
+        }
+
+    assert :success
+    assert_not_nil :tags
+  end
+
   test 'tag index' do
     get :index
 
@@ -431,27 +441,6 @@ class TagControllerTest < ActionController::TestCase
     assert (notes & expected).present?
   end
 
-  test 'should have active Research tab for notes' do
-    tag = tags(:test)
-
-    get :show, params: { id: tag.name }
-
-    selector = css_select "ul>li>a[href = '/tag/test']"
-    assert_equal selector.size, 1
-    selector = css_select '#notes.active'
-    assert_equal selector.size, 1
-  end
-
-  test 'should have active question tab for question' do
-    tag = tags(:question)
-
-    get :show, params: { id: tag.name }
-    selector = css_select "ul>li>a[href = '/questions/tag/question:spectrometer']"
-    assert_equal selector.size, 1
-    selector = css_select '#questions.active'
-    assert_equal selector.size, 1
-  end
-
   test 'can create tag instance (community_tag) using a parent tag' do
     UserSession.create(users(:bob))
 
@@ -562,7 +551,7 @@ class TagControllerTest < ActionController::TestCase
   test 'should have active question tab for question for show_for_author' do
     tag = tags(:question)
     get :show_for_author, params: { id: tag.name, author: 'jeff' }
-    selector = css_select "ul>li>a[href = '/questions/tag/question:spectrometer/author/jeff']"
+    selector = css_select "a[href = '/questions/tag/question:spectrometer/author/jeff']"
     assert_equal selector.size, 1
     selector = css_select '#questions.active'
     assert_equal selector.size, 1
@@ -684,5 +673,13 @@ class TagControllerTest < ActionController::TestCase
   test 'graph data for cytoscape' do
     get :graph
     assert_response :success
+  end
+
+  test 'index should have powertags only if specified' do
+    get :index
+    assert_equal 0, assigns(:tags).where("name LIKE ?", "%:%").length
+
+    get :index, params: { :powertags => 'true' }
+    assert_not_equal 0, assigns(:tags).where("name LIKE ?", "%:%").length
   end
 end

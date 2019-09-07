@@ -1,15 +1,9 @@
 module ApplicationHelper
   # returns true if user is logged in and has any of the roles given, as ['admin','moderator']
   def logged_in_as(roles)
-    if current_user
-      has_valid_role = false
-      roles.each do |role|
-        has_valid_role = true if current_user.role == role
-      end
-      has_valid_role
-    else
-      false
-    end
+    return false unless current_user
+
+    roles.include? current_user.role
   end
 
   def emojify(content)
@@ -38,8 +32,7 @@ module ApplicationHelper
   end
 
   def emoji_info
-    emoji_names = ["thumbs-up", "thumbs-down", "laugh",
-                   "hooray", "confused", "heart"]
+    emoji_names = ["thumbs-up", "thumbs-down", "laugh", "hooray", "confused", "heart"]
     emoji_image_map = {
       "thumbs-up" => "https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png",
       "thumbs-down" => "https://github.githubassets.com/images/icons/emoji/unicode/1f44e.png",
@@ -89,6 +82,7 @@ module ApplicationHelper
     body = NodeShared.people_grid(body, @current_user || nil) # <= to allow testing of insert_extras
     body = NodeShared.graph_grid(body)
     body = NodeShared.wikis_grid(body)
+    body = NodeShared.simple_data_grapher(body)
     body
   end
 
@@ -109,8 +103,8 @@ module ApplicationHelper
       is_creator = ((defined? current_user) && current_user == Node.find(comment.nid).author) == true
       title = Regexp.last_match(1)
       output = a.render_to_string(template: "notes/_title_suggestion",
-                                  layout:   false,
-                                  locals:   {
+                                  layout: false,
+                                  locals: {
                                     user: comment.user.name,
                                     nid: comment.nid,
                                     title: title,
@@ -142,8 +136,10 @@ module ApplicationHelper
 
   def translation(key, options = {})
     translated_string = t(key, options)
+    options[:fallback] = false
+    translated_string2 = t(key, options)
 
-    if translated_string.length > 3 && current_user &.has_tag('translation-helper') && !translated_string.include?("translation missing")
+    if current_user&.has_tag('translation-helper') && translated_string2.include?("translation missing") && !translated_string.include?("<")
       %(<span>#{translated_string} <a href="https://www.transifex.com/publiclab/publiclaborg/translate/#de/$?q=text%3A#{translated_string}">
           <i data-toggle='tooltip' data-placement='top' title='Needs translation? Click to help translate this text.' style='position:relative; right:2px; color:#bbb; font-size: 15px;' class='fa fa-globe'></i></a>
        </span>)

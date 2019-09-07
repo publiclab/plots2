@@ -90,7 +90,7 @@ class QuestionsControllerTest < ActionController::TestCase
   test 'should get answered' do
     get :answered
     assert_response :success
-    assert_equal assigns(:title), 'Recently answered'
+    assert_equal assigns(:title), 'Recently Commented'
     assert_not_nil assigns(:questions)
     assert_template :index
   end

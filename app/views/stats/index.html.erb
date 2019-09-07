@@ -1,16 +1,16 @@
-<div class="col-lg-12 col-lg-offset-1" style="margin-bottom:20px; margin-left:25px;">
+<div class="col-lg-12 offset-lg-1" style="margin-bottom:20px; margin-left:25px;">
 
     <h2><%= raw t('notes.stats.contributors_statistics') %></h2>
     <hr>
 
-    <h5> See also <%= link_to "subscription statistics", stats_subscriptions_path %> </h5>
-    <h4><b><%= raw t('notes.stats.research_notes_posted_by_contributors', :note_count => @all_notes, :contributors_count => @all_contributors,
-                     :time => time_ago_in_words(Node.find_by(type: 'note', status: 1).created_at)) %></b></h4>
+    <h6> See also <%= link_to "subscription statistics", stats_subscriptions_path %> </h6>
+    <h5><b><%= raw t('notes.stats.research_notes_posted_by_contributors', :note_count => @all_notes, :contributors_count => @all_contributors,
+                     :time => time_ago_in_words(Node.find_by(type: 'note', status: 1).created_at)) %></b></h5>
     <br>
 
     <div class="row">
         <div class=col-lg-6>
-            <h5> Statistics from <%= @start.to_formatted_s(:long)%> to <%= @end.to_formatted_s(:long)%> </h5>
+            <h6> Statistics from <b><%= @start.to_formatted_s(:long)%></b> to <b><%= @end.to_formatted_s(:long)%></b> </h6>
         </div>
         <div class=col-lg-2>
             <%= form_tag request.url, method: 'get', enforce_utf8: false do %>
@@ -23,20 +23,26 @@
     <%= render 'range' %>
 </div>
 
+<% if @questions.present? %>
+<br><br>
+<h4 align="center">Questions Asked vs. Answered</h4>
+    <div align="right" id="questAns"> </div>
+<% end %>
 
 <% if @popular_tags.present? %>
     <br> <br>
-
-<div id="chart1"> </div>
+<h4 align="center">Popular Tags</h4>
+<div id="popularTags"> </div>
 <% end %>
 
-<h4 align="center"> <u>  Notes, Wikis and Comments Statistics between <%= @start.to_date%> to <%= @end.to_date%> </u></h4>
+<h4 align="center">Notes, Wikis and Comments Statistics between <%= @start.to_date%> to <%= @end.to_date%></h4>
 <br>
 <div id="timeline"></div>
 <p><b><%= raw t('notes.stats.edits_per_week', :count => @edits_per_week_period) %></b></p>
 <p><b><%= raw t('notes.stats.notes_per_week', :note_count => @notes_per_week_period) %></b></p>
 <br>
 <i> Member registration may include spam accounts </i>
+
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
 var options = {
@@ -117,7 +123,7 @@ var options = {
 
             }
 
-        },
+        }, 
         xaxis: {
             type: "datetime",
             axisBorder: {
@@ -178,13 +184,13 @@ var chart = new ApexCharts(document.querySelector("#timeline"), options);
 chart.render();
 function generateWeekWiseTimeSeries(s) {
     var values = [
-        <%= @graph_notes.values %>,
-        <%= @graph_wikis.values %>,
-        <%= @graph_comments.values %>,
+        <%= @graph_notes.values if @graph_notes.present? %>,
+        <%= @graph_wikis.values if @graph_wikis.present? %>,
+        <%= @graph_comments.values if @graph_comments.present? %>,
     ];
 
     var i = 0;
-    var months_dates = <%= @graph_notes.keys %>;
+    var months_dates = <%= @graph_notes.keys if @graph_notes.present? %>;
     var count = months_dates.length;
     var months = months_dates.map(x =>  new Date(x).getTime());
     var series = [];
@@ -202,15 +208,15 @@ function generateWeekWiseTimeSeries(s) {
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
 
-var values =  <%=  @popular_tags.values %>;
-var data =  <%= raw (@popular_tags.keys) %>;
+var values =  <%=  @popular_tags.values if @popular_tags.present? %>;
+var data =  <%= raw (@popular_tags.keys) if @popular_tags.present? %>;
 var page;
 
 var options = {
     chart: {
         height: 500,
         type: 'bar',
-    
+        fontFamily: 'Junction Light',    
         active: {
             allowMultipleDataPointsSelection: true,
             },
@@ -238,18 +244,83 @@ var options = {
         data: values
 
     }],
-    title:{
-        text: "Popular Tags in this period",
-    },
+
     xaxis: {
         categories: data
 
     }
 
-}
+};
 
 var chart1 = new ApexCharts(
-        document.querySelector("#chart1"), options );
+        document.querySelector("#popularTags"), options );
 chart1.render();
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+var questions = [<%= @questions.present? ? @questions.count : 0 %>];
+var answers = [<%= @answers %>];
+
+var options = {
+    chart: {
+        type: 'bar',
+        height: 120,
+        stacked: true,
+        stackType: '100%',
+        width: '91%',
+    },
+    plotOptions: {
+        bar: {
+            horizontal: true,
+        },
+    },
+    stroke: {
+        width: 1,
+        colors: ['#fff']
+    },
+    series: [{
+        name: 'Questions asked',
+        data: questions
+    },{
+        name: 'Questions answered',
+        data: answers
+    }],
+        fill: {
+            opacity: 1
+        },
+        
+
+        legend: {
+            show: false,
+        },
+        grid: {
+            show: false,
+        },
+        
+        xaxis: {
+            
+           labels: {
+                show: false,
+            },
+            axisBorder: {
+                show: false,
+            },
+            lines: {
+                show: true,
+            }
+            
+        },
+        yaxis: {
+            labels: {
+                show: false,
+            },
+        }
+
+};
+
+var chart2 = new ApexCharts(document.querySelector("#questAns"),options);
+chart2.render();
 
 </script>

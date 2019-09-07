@@ -32,19 +32,4 @@ class Answer < ApplicationRecord
       .where('rusers.status': 1)
       .collect(&:user)
   end
-
-  def answer_notify(current_user)
-    # notify question author
-    if current_user.uid != node.author.uid
-      AnswerMailer.notify_question_author(node.author, self).deliver_now
-    end
-    users_with_everything_tag = Tag.followers('everything')
-    uids = (node.answers.collect(&:uid) + node.likers.collect(&:uid) + users_with_everything_tag.collect(&:uid)).uniq
-    # notify other answer authors and users who liked the question
-    User.where(id: uids).each do |user|
-      if (user.uid != current_user.uid) && (user.uid != node.author.uid)
-        AnswerMailer.notify_answer_likers_author(user, self).deliver_now
-      end
-    end
-  end
 end

@@ -1,20 +1,76 @@
 <% if current_user %>
 <!-- AJAXify -->
-<div class="btn-group">
-  <% unless @wildcard %>
-    <%= link_to tag_stats_path, id: params[:id] ,title: "Click to view graph" do %>
-      <i class="btn btn-outline-secondary btn-sm"><i class="fa fa-bar-chart"></i> Stats </i>
+  <a class="ellipsis" data-toggle="dropdown">&nbsp<i class="fa fa-ellipsis-h" style="color : #666; font-size:15px; float:right;"></i></a>
+  <div class="dropdown-menu">
+    <% unless @wildcard %>
+      <div class="dropdown-item">
+        <%= link_to tag_stats_path, id: params[:id] ,title: "Click to view graph" do %>
+          <i><i class="fa fa-bar-chart"></i> Stats </i>
+        <% end %>
+      </div>
     <% end %>
-  <% end %>
-  <a class="btn btn-outline-secondary btn-sm" href="/feed/tag/<%= params[:id] %>.rss"><i class="fa fa-rss"></i> RSS</a>
-  <% unless @wildcard %>
-    <% if current_user.following(params[:id]) %>
-      <a rel="tooltip" title="<%= t('tag.show.unfollow') %>" class="btn btn-outline-secondary btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>" data-method="delete"><i class="fa fa-user-plus" aria-hidden="true"></i> <%= t('tag.show.following') %> <b><%= params[:id] %></b></a>
-    <% else %>
-      <a class="btn btn-outline-secondary btn-sm" href="/subscribe/tag/<%= params[:id] %>"><i class="fa fa-user-plus" aria-hidden="true"></i> <%= t('tag.show.follow') %> <b><%= params[:id] %></b></a>
+    <div class="dropdown-item">
+      <a href="/feed/tag/<%= params[:id] %>.rss"><i class="fa fa-rss"></i> RSS</a>
+    </div>
+    <% unless @wildcard %>
+      <% if current_user.following(params[:id]) %>
+        <div class="dropdown-item">
+          <a style="width: 100px;" rel="tooltip" title="<%= t('tag.show.unfollow') %>" class="btn btn-light btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>"> <%= t('tag.index.unsubscribe') %></a>
+        </div>
+      <% else %>
+        <div class="dropdown-item">
+          <a style="width: 100px;" class="btn btn-outline-secondary btn-sm" href="/subscribe/tag/<%= params[:id] %>" data-remote="true">
+            <%= t('tag.index.subscribe') %>
+          </a>
+        </div>
+      <% end %>
+      <div class="dropdown-item">
+        <a tabindex="0" data-toggle="popover" data-trigger = "" data-placement="bottom" data-html="true" data-title="<%= t('tag.show.users_following_tag') %>" data-content="<% Tag.followers(params[:id]).each do |user| %><i class='fa fa-star-o'></i> <a href='/profile/<%= user.username %>'><%= user.username %></a><br /><% end %><% if Tag.follower_count(params[:id]) == 0 %><i><%= t('tag.show.none') %></i><% end %>"><%= Tag.follower_count(params[:id]) %> <i class="fa fa-user"></i> <span class="caret"></span></a></li>
+      </div>
+      <div class="dropdown-item">
+        <a href="/tag-pages">How to edit this card</a>
+      </div>
+
+      <div class="dropdown-divider"></div>
+      <% unless @tags.try(:first).try(:parent).nil? %>
+        <small>Alias of: <%= @tags.first.parent %></small>
+      <% end %>
+
+      <% if logged_in_as(['admin']) %>
+        <div class="dropdown-item">
+          <div id="add_parent">
+            <p><b>Add a tag parent (admin only)</b></p>
+            <div class="card bg-light">
+              <div class="card-body">
+                <form class="form" action="/tag/parent" method="get">
+                  <input type="text" placeholder="parent" name="parent" />
+                  <input type="hidden" placeholder="parent" name="name" value="<%= @tags&.first&.name %>" />
+                  <input class="btn btn-outline-secondary btn-lg" type="submit" value="Submit" />
+                </form>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
     <% end %>
-      <a class="btn btn-outline-secondary btn-sm" rel="popover" data-placement="bottom" data-html="true" data-title="<%= t('tag.show.users_following_tag') %>" data-content="<% Tag.followers(params[:id]).each do |user| %><i class='fa fa-star-o'></i> <a href='/profile/<%= user.username %>'><%= user.username %></a><br /><% end %><% if Tag.follower_count(params[:id]) == 0 %><i><%= t('tag.show.none') %></i><% end %>"><%= Tag.follower_count(params[:id]) %> <i class="fa fa-user"></i> <span class="caret"></span></a>
-  <% end %>
 </div>
+
 <!-- AJAXify -->
 <% end %>
+<style>
+.ellipsis{
+  cursor: pointer;
+}
+</style>
+<script>
+$(function() {
+  $(document).popover({
+      selector: '[data-toggle=popover]',
+      trigger: 'focus'
+  });
+});
+
+$('.dropdown-menu').on('click', function(e) {
+  e.stopPropagation();
+});
+</script>

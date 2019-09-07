@@ -8,6 +8,7 @@ PublicLab.org
 [![Code Climate](https://codeclimate.com/github/publiclab/plots2/badges/gpa.svg)](https://codeclimate.com/github/publiclab/plots2)
 [![Coverage Status](https://coveralls.io/repos/github/publiclab/plots2/badge.svg?branch=HEAD)](https://coveralls.io/github/publiclab/plots2?branch=HEAD)
 [![View performance data on Skylight](https://badges.skylight.io/typical/GZDPChmcfm1Q.svg)](https://oss.skylight.io/app/applications/GZDPChmcfm1Q)
+[![Newcomers welcome](https://img.shields.io/badge/newcomers-welcome-pink.svg)](https://code.publiclab.org)
 
 The content management system for the Public Lab research community, the plots2 web application is a combination of a group research blog of what we call "research notes" and a wiki. Read more about the [data model here](https://github.com/publiclab/plots2/blob/master/doc/DATA_MODEL.md).
 
@@ -23,6 +24,10 @@ Some key features include:
 * A user dashboard [presenting recent activity](https://publiclab.org/dashboard)
 * A privacy-sensitive, Leaflet-based [location tagging system](https://github.com/publiclab/leaflet-blurred-location/) and [community map](http://publiclab.org/people)
 
+## Roadmap
+
+We are developing a draft Roadmap for `plots2` and our broader Public Lab code projects; [read more and comment here](https://publiclab.org/notes/warren/05-22-2019/draft-of-a-public-lab-software-roadmap-comments-welcome).
+
 ## Table of Contents
 1. [What Makes This Project Different](#what-makes-this-project-different)
 2. [Data model](#data-model)
@@ -32,16 +37,17 @@ Some key features include:
     - [Simple Installation with Cloud9](https://github.com/publiclab/plots2/wiki/Simple-Installation-for-Cloud9)
     - [Standard Installation](#standard-installation)
 6. [SSL in Development](#ssl-in-development)
-7. [Testing](#testing)
-8. [API](https://github.com/publiclab/plots2/blob/master/doc/API.md)
-9. [Bundle Exec](#bundle-exec)
-10. [Reply-by-email](#reply-by-email)
-11. [Bugs and Support](#bugs-and-support)
-12. [Recaptcha](#recaptcha)
-13. [Internationalization](#internationalization)
-14. [Security](#security)
-15. [Developers](#developers)
-16. [First Time?](#first-time)
+7. [Login](#login)
+8. [Testing](#testing)
+9. [API](https://github.com/publiclab/plots2/blob/master/doc/API.md)
+10. [Bundle Exec](#bundle-exec)
+11. [Reply-by-email](#reply-by-email)
+12. [Bugs and Support](#bugs-and-support)
+13. [Recaptcha](#recaptcha)
+14. [Internationalization](#internationalization)
+15. [Security](#security)
+16. [Developers](#developers)
+17. [First Time?](#first-time)
 
 
 ****
@@ -107,6 +113,16 @@ We, at Public Lab use [openssl](https://github.com/ruby/openssl) gem to provide 
 3. Add security exceptions from the advance settings of the browser.
 You can also use http (unsecure connection) on the port number 3000 by going to 'http://localhost:3000'. We use port number 3001 for 'https' and port number 3000 for 'http' connection.
 Secure connection is needed for OAuth authentication etc.
+
+## Login
+
+Once you complete the installation, use any of these credentials to login in to the PL website in your local development / testing environment to gain additional permissions for only logged in users. Each one comes with its own set of permissions, but besides that the experience across them is pretty much the same.
+
+**username**: `admin`, `moderator`, or `user` 
+
+**password**: `password`
+
+For more on the login systems, see [this page](https://github.com/publiclab/plots2/blob/b1c57446d016f8cd0ec149a75298711270e1643e/doc/LOGIN_SYSTEMS.md#how-to-setup-login-modal-on-various-locations)
 
 ## Testing
 

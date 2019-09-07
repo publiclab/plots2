@@ -41,7 +41,7 @@ class UserTagsController < ApplicationController
 
     user = User.find(params[:id])
 
-    if current_user && (current_user.role == 'admin' || current_user == user)
+    if current_user && current_user == user || logged_in_as(['admin'])
       if params[:name]
         tagnames = params[:name].split(',')
         tagnames.each do |tagname|
@@ -90,48 +90,34 @@ class UserTagsController < ApplicationController
   def delete
     output = {
       status: false,
+      tid: 0,
       errors: []
     }
-    message = ''
 
-    begin
-      @user_tag = UserTag.where(uid: params[:id], value: params[:name])
-      unless @user_tag.nil?
-        @user_tag = @user_tag.first
-      end
+    @user_tag = UserTag.where(uid: params[:id], value: params[:name]).first
 
-      if current_user.role == 'admin' || params[:id].to_i == current_user.id
-        if (!@user_tag.nil? && @user_tag.user == current_user) || (!@user_tag.nil? && current_user.role == 'admin')
-          UserTag.where(uid: params[:id], value: params[:name]).destroy_all
-          message = I18n.t('user_tags_controller.tag_deleted')
-          output[:status] = true
-        else
-          output[:status] = false
-          message = I18n.t('user_tags_controller.tag_doesnt_exist')
-        end
+    if !@user_tag.nil?
+      if logged_in_as(['admin']) || @user_tag.user == current_user
+        UserTag.where(uid: params[:id], value: params[:name]).destroy_all
+        output[:errors] = I18n.t('user_tags_controller.tag_deleted')
+        output[:status] = true
       else
-        message = I18n.t('user_tags_controller.admin_user_manage_tags')
+        output[:errors] = I18n.t('user_tags_controller.admin_user_manage_tags')
       end
-    rescue ActiveRecord::RecordNotFound
-      output[:status] = false
-      message = I18n.t('user_tags_controller.tag_doesnt_exist')
+    else
+      output[:errors] = I18n.t('user_tags_controller.tag_doesnt_exist')
     end
 
-    output[:errors] << message
-    respond_with do |format|
-      format.js
-      format.html do
-        if request.xhr?
-          render json: output
-        else
-          if output[:status]
-            flash[:notice] = message
-          else
-            flash[:error] = message
-          end
-          redirect_to info_path
-        end
+    output[:tid] = @user_tag&.id
+    if request.xhr?
+      render json: output
+    else
+      if output[:status]
+        flash[:notice] = output[:errors]
+      else
+        flash[:error] = output[:errors]
       end
+      redirect_to info_path
     end
   end
 

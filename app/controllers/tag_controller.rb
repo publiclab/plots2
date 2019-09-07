@@ -8,6 +8,7 @@ class TagController < ApplicationController
     @title = I18n.t('tag_controller.tags')
     @paginated = true
     @order_type = params[:order] == "desc" ? "asc" : "desc"
+    powertag_clause = params[:powertags] == 'true' ? '' : ['name NOT LIKE ?', '%:%']
 
     if params[:search]
       keyword = params[:search]
@@ -16,6 +17,7 @@ class TagController < ApplicationController
         .where('node.status = ?', 1)
         .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
         .where("name LIKE :keyword", keyword: "%#{keyword}%")
+        .where(powertag_clause)
         .group(:name)
         .order(order_string)
         .paginate(page: params[:page], per_page: 24)
@@ -24,6 +26,7 @@ class TagController < ApplicationController
         .select('node.nid, node.status, term_data.*, community_tags.*')
         .where('node.status = ?', 1)
         .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
+        .where(powertag_clause)
         .group(:name)
         .order(order_string)
         .paginate(page: params[:page], per_page: 24)
@@ -32,6 +35,7 @@ class TagController < ApplicationController
         .select('node.nid, node.status, term_data.*, community_tags.*')
         .where('node.status = ?', 1)
         .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
+        .where(powertag_clause)
         .group(:name)
         .order(order_string)
         .paginate(page: params[:page], per_page: 24)
@@ -40,6 +44,7 @@ class TagController < ApplicationController
         .select('node.nid, node.status, term_data.*, community_tags.*')
         .where('node.status = ?', 1)
         .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
+        .where(powertag_clause)
         .group(:name)
       raw_tags = Tag.sort_according_to_followers(raw_tags, params[:order])
       @tags = raw_tags.paginate(page: params[:page], per_page: 24)
@@ -48,6 +53,7 @@ class TagController < ApplicationController
         .select('node.nid, node.status, term_data.*, community_tags.*')
         .where('node.status = ?', 1)
         .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
+        .where(powertag_clause)
         .group(:name)
         .order(order_string)
 
@@ -67,8 +73,13 @@ class TagController < ApplicationController
   end
 
   def show
-    @wiki = Node.where(path: "/wiki/#{params[:id]}").try(:first) || Node.where(path: "/#{params[:id]}").try(:first)
-    @wiki = Node.where(slug: @wiki.power_tag('redirect'))&.first if @wiki&.has_power_tag('redirect') # use a redirected wiki page if it exists
+    if params[:id].is_a? Integer
+      @wiki = Node.find(params[:id])&.first
+    else
+      @wiki = Node.where(path: "/wiki/#{params[:id]}").try(:first) || Node.where(path: "/#{params[:id]}").try(:first)
+      @wiki = Node.where(slug: @wiki.power_tag('redirect'))&.first if @wiki&.has_power_tag('redirect') # use a redirected wiki page if it exists
+    end
+    @node = @wiki # expose the wiki node in the @node variable so we get open graph meta tags in the layout
 
     default_type = params[:id].match?('question:') ? 'questions' : 'note'
 
@@ -233,6 +244,11 @@ class TagController < ApplicationController
     end
   end
 
+  def related
+    @tags = Tag.related(params[:id])
+    render partial: 'tag/related', layout: false, locals: { tags: @tags }
+  end
+
   def widget
     num = params[:n] || 4
     nids = Tag.find_nodes_by_type(params[:id], 'note', num).collect(&:nid)
@@ -296,7 +312,7 @@ class TagController < ApplicationController
           @output[:errors] << I18n.t('tag_controller.cant_be_empty')
         end
 
-      elsif node.can_tag(tagname, current_user) === true || current_user.role == 'admin' # || current_user.role == "moderator"
+      elsif node.can_tag(tagname, current_user) === true || logged_in_as(['admin'])
         saved, tag = node.add_tag(tagname.strip, current_user)
         if tagname.include?(":") && tagname.split(':').length == 2
           if tagname.split(':')[0] == "barnstar"
@@ -345,7 +361,7 @@ class TagController < ApplicationController
     node_tag = NodeTag.where(nid: params[:nid], tid: params[:tid]).first
     node = Node.where(nid: params[:nid]).first
     # only admins, mods, and tag authors can delete other peoples' tags
-    if node_tag.uid == current_user.uid || current_user.role == 'admin' || current_user.role == 'moderator' || node.uid == current_user.uid
+    if node_tag.uid == current_user.uid || logged_in_as(['admin', 'moderator']) || node.uid == current_user.uid
 
       tag = Tag.joins(:node_tag)
                    .select('term_data.name')
@@ -375,16 +391,8 @@ class TagController < ApplicationController
 
   def suggested
     if !params[:id].empty? && params[:id].length > 2
-      @suggestions = []
-      # filtering out tag spam by requiring tags attached to a published node
-      Tag.where('name LIKE ?', '%' + params[:id] + '%')
-        .includes(:node)
-        .references(:node)
-        .where('node.status = 1')
-        .limit(10).each do |tag|
-        @suggestions << tag.name.downcase
-      end
-      render json: @suggestions.uniq
+      @suggestions = SearchService.new.search_tags(params[:id])
+      render json: @suggestions.collect { |tag| tag.name }.uniq
     else
       render json: []
     end
@@ -462,7 +470,7 @@ class TagController < ApplicationController
   end
 
   def add_parent
-    if current_user.role == 'admin'
+    if logged_in_as(['admin'])
       @tag = Tag.find_by(name: params[:name])
       @tag.update_attribute('parent', params[:parent])
       if @tag.save
@@ -509,6 +517,8 @@ class TagController < ApplicationController
     @tag_wikis = @tags.first.contribution_graph_making('page', @start, @end)
     @tag_questions = @tags.first.quiz_graph(@start, @end)
     @tag_comments = @tags.first.comment_graph(@start, @end)
+    @subscriptions = @tags.first.subscription_graph(@start, @end)
+    @all_subscriptions = TagSelection.graph(@start, @end)
   end
 
   private

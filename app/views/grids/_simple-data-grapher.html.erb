@@ -1,0 +1,28 @@
+<div class="sdg-graph" id="<%= idName %>"></div>
+<style>
+    .sdg-graph{
+        height: 500px;
+        width: 500px;
+    }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/1.33.1/plotly-basic.min.js"></script>
+<script>
+    function plotter(data){
+        graphMaker(data,"<%= idName %>");
+    }
+    (function grapher() {
+        var idString = "<%= ids %>";
+        var idList = idString.split("/");
+        $.ajax({
+            url: '/graph/fetch_graphobject',
+            type: 'get',
+            data: {uid: idList[1], id: idList[2]},
+            success: function(data){
+                plotter(data);
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown){
+                console.log(errorThrown);
+            }
+        });
+    })()
+</script>

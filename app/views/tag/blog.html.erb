@@ -15,13 +15,13 @@
       <% if current_user %>
         <a class="btn btn-outline-secondary btn-sm" href="/feed/tag/<%= params[:id] %>.rss"><i class="fa fa-rss"></i> RSS</a>
         <% if current_user.following(params[:id]) %>
-        <a rel="tooltip" title="<%=raw translation('tag.blog.unfollow') %>" class="btn btn-outline-secondary btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>"><i class="fa fa-user-plus" aria-hidden="true"></i> <%=raw translation('tag.blog.following') %> <b><%= params[:id] %></b></a>
+          <a rel="tooltip" title="<%= t('tag.blog.unfollow') %>" class="btn btn-outline-secondary btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>"><i class="fa fa-user-plus" aria-hidden="true"></i> <%= t('tag.blog.following') %> <b><%= params[:id] %></b></a>
         <% else %>
-        <br><br>
-        <div class="alert alert-success" role="alert">
-        Want to get updates for new blog posts? <a class="btn btn-outline-secondary btn-sm" href="/subscribe/tag/<%= params[:id] %>">
-        <b><%=raw translation('Click here to subscribe!') %></b></a>
-        </div>
+          <br><br>
+          <div class="alert alert-success" role="alert">
+            Want to get updates for new blog posts? <a class="btn btn-outline-secondary btn-sm" href="/subscribe/tag/<%= params[:id] %>">
+            <b><%=raw translation('Click here to subscribe!') %></b></a>
+          </div>
         <% end %>
       <% else %>
         <div class="alert alert-info" role="alert">

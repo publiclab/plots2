@@ -52,6 +52,7 @@
         <input 
           class="form-control input-lg" 
           type="text" 
+          id="title-input"
           placeholder="Title" 
           value="<%= if @node then @node.title else params[:title] end %>" 
         />
@@ -68,7 +69,7 @@
         <h2>2</h2>
       </div>
 
-      <div class="ple-module-content col-lg-9">
+      <div class="ple-module-content row col-lg-9">
         <div class="ple-drag-drop col-lg-6">Drag an image here to upload.</div>
         <div class="col-lg-6 help">
           <div style="display:none;" class="progress">

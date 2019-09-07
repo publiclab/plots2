@@ -9,6 +9,7 @@ Rails.application.config.assets.precompile += [
   'dragdrop.js',
   'editor.js',
   'graph.js',
+  'simple-data-grapher.js',
   'grids.js',
   'header_footer.js',
   'ics.deps.min.js',
@@ -49,5 +50,6 @@ Rails.application.config.assets.precompile += [
   'wiki.css',
   'horsey.js',
   'atwho_autocomplete.js',
-  'async_tag_subscriptions.js'
+  'async_tag_subscriptions.js',
+  'cable.js'
 ]
