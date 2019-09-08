@@ -55,9 +55,10 @@ GEM
     ansi (1.5.0)
     arel (9.0.0)
     ast (2.4.0)
-    authlogic (4.4.2)
-      activerecord (>= 4.2, < 5.3)
-      activesupport (>= 4.2, < 5.3)
+    authlogic (5.0.3)
+      activemodel (>= 5.2, < 6.1)
+      activerecord (>= 5.2, < 6.1)
+      activesupport (>= 5.2, < 6.1)
       request_store (~> 1.0)
       scrypt (>= 1.2, < 4.0)
     authlogic-oid (1.0.4)
@@ -563,7 +564,7 @@ PLATFORMS
 DEPENDENCIES
   action-cable-testing
   activerecord-session_store
-  authlogic (= 4.4.2)
+  authlogic (= 5.0.3)
   authlogic-oid
   byebug
   capybara
