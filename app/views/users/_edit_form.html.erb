@@ -1,5 +1,5 @@
 <div style="padding:10px;">
-<%= form_for @user, :url => {:controller => 'users', :action => 'update'}, :html => {:class => "row"} do |f| %>
+<%= form_for @user, :url => {:controller => 'users', :action => 'update'}, :html => {:class => "row",:id => 'edit-form' } do |f| %>
   <%= hidden_field_tag "user[ui_update]", "true" %>
   <div class="col-md-10">
     <% if f.error_messages != "" %>
@@ -20,14 +20,14 @@
 
       <div class="form-group col-md-6">
         <label for="username"><%= t('users._form.username') %></label>
-        <%= f.text_field :username, { readonly: true, tabindex: 1, placeholder: "Username", class: 'form-control', id: 'username' , title: 'Username field cannot be changed', disabled: true} %>
+        <%= f.text_field :username, { readonly: true, tabindex: 1, placeholder: "Username", class: 'form-control', id: 'username' , title: 'Username field cannot be changed', disabled: true, name: 'username'} %>
         <input type="hidden" name="id" value="<%= @user.username %>" />
       </div>
 
       <div class="form-group col-md-6">
 
         <label for="email"><%= t('users._form.email') %></label>
-        <%= f.text_field :email, { tabindex: 3, required: true, pattern: '[^@]+@[^@]+\.[a-zA-Z]{2,6}', placeholder: "you@email.com", class: 'form-control', id: 'email' } %>
+        <%= f.text_field :email, { tabindex: 3, required: true, placeholder: "you@email.com", class: 'form-control', id: 'email' ,name: 'email'} %>
       </div>
 
     </div>
@@ -46,7 +46,8 @@
       <%= f.password_field :password, { placeholder: "Enter your new password",
                                         tabindex: 4,
                                         class: 'form-control',
-                                        id: 'password',
+                                        id: 'password1',
+                                        name: 'password1',
                                         onpaste: 'return false;' }
       %>
     </div>
@@ -66,6 +67,7 @@
                                                        tabindex: 5,
                                                        class: 'form-control',
                                                        id: 'password-confirmation',
+                                                       name: 'password2',
                                                        onpaste: 'return false;' }
         %>
       </div>
@@ -105,3 +107,9 @@
 
 <% end %>
 </div>
+
+<style>
+.error {
+    color: #D34836;
+  }
+</style> 
