@@ -95,22 +95,25 @@ class NodeTest < ActiveSupport::TestCase
     end
   end
 
-  test 'create a node' do
-    # in testing, uid and id should be matched, although this is not yet true in production db
-    node = Node.new(uid: users(:bob).id,
-                    type: 'note',
-                    title: 'My new node for node creation testing')
-    assert node.save
-  end
-
   test 'create a feature' do
     node = Node.new(uid: users(:admin).id,
                     type: 'feature',
                     title: 'header-feature')
     assert node.save!
-    username = users(:bob).username
-    assert_equal "/feature/#{node.title.parameterize}", node.path
     assert_equal 'feature', node.type
+    assert_equal "/feature/#{node.title.parameterize}", node.path
+  end
+
+  test 'create a map' do
+    node = Node.new(uid: users(:bob).id,
+                    type: 'map',
+                    title: 'My map')
+    assert node.save!
+    assert_equal 'map', node.type
+    username = users(:bob).username
+    time = Time.now.strftime('%m-%d-%Y')
+    title = node.title.parameterize
+    assert_equal "/map/#{title}/#{time}", node.path
   end
 
   test 'create a research note' do
@@ -118,11 +121,14 @@ class NodeTest < ActiveSupport::TestCase
                     type: 'note',
                     title: 'My research note')
     assert node.save!
-    username = users(:bob).username
-    assert_equal "/notes/#{username}/#{Time.now.strftime('%m-%d-%Y')}/#{node.title.parameterize}", node.path
-    assert_equal "/questions/#{username}/#{Time.now.strftime('%m-%d-%Y')}/#{node.title.parameterize}", node.path(:question)
     assert_equal 'note', node.type
-  end
+    username = users(:bob).username
+    time = Time.now.strftime('%m-%d-%Y')
+    title = node.title.parameterize
+    assert_equal "/notes/#{username}/#{time}/#{title}", node.path
+    assert_equal "/questions/#{username}/#{time}/#{title}",
+                 node.path(:question)
+  end 
 
   test 'edit a research note and check path' do
     original_title = 'My research note'
@@ -132,8 +138,11 @@ class NodeTest < ActiveSupport::TestCase
     assert node.save!
     node.title = 'I changed my mind'
     username = users(:bob).username
-    assert_not_equal "/notes/#{username}/#{Time.now.strftime('%m-%d-%Y')}/#{node.title.parameterize}", node.path
-    assert_equal "/notes/#{username}/#{Time.now.strftime('%m-%d-%Y')}/#{original_title.parameterize}", node.path
+    time = Time.now.strftime('%m-%d-%Y')
+    title = node.title.parameterize
+    new_title = original_title.parameterize
+    assert_not_equal "/notes/#{username}/#{time}/#{title}", node.path
+    assert_equal "/notes/#{username}/#{time}/#{new_title}", node.path
   end
 
   # new_note also generates a revision
@@ -175,6 +184,7 @@ class NodeTest < ActiveSupport::TestCase
                     title: 'My wiki page')
     assert node.save!
     assert_equal 'page', node.type
+    assert_equal "/wiki/#{node.title.parameterize}", node.path
   end
 
   test 'create a wiki page with new as title' do
