@@ -31,7 +31,6 @@
        </div>
       <% end %>
 
-
     <% elsif tag.class == UserTag && (tag.name[0..4] != "oauth" || (logged_in_as(['admin', 'moderator']) || (current_user && current_user.uid == tag.uid))) %>
 
         <li style="width: 100%;"><span id="tag_<%= tag.id %>" class="badge <%= badge_name %> pop" style="cursor:pointer" data-toggle="popover" data-trigger="manual" data-count=0 data-placement="top" data-content="<a href='/contributors/<%= tag.name %>'><%= Tag.tagged_node_count(tag.name) || 0 %> notes - <%= Tag.contributors(tag.name).count %> people <br></a>" data-html="true" title="<%= tag.name %>">
@@ -73,25 +72,3 @@ $('.tag-delete').click(
 );
 
 </script>
-
-<style>
-  .card{
-    width: 16em;
-    border-radius: 12px;
-    margin-top: 10px;
-    margin-left: -12px;
-    padding-left: 12px;
-    padding-top: 14px;
-    padding-bottom: 10px;
-  }
-
-  .ellipsis{
-    cursor: pointer;
-  }
-
-  .dropdown-menu{
-    padding-bottom: 5px;
-    padding-left: 14px;
-  }
-
-</style>
