@@ -11,14 +11,14 @@ class ScreenshotsTest < ApplicationSystemTestCase
   test 'signup modal' do
     visit '/'
     click_on 'Sign up'
-    assert_selector('.signupContainer', visible: true)
+    assert_selector('#signupContainer', visible: true)
     take_screenshot
   end
 
   test 'login modal' do
     visit '/'
     click_on 'Login'
-    assert_selector('.loginContainer', visible: true)
+    assert_selector('#loginContainer', visible: true)
     take_screenshot
   end
 
