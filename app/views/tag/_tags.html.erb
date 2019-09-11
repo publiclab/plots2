@@ -4,7 +4,7 @@
     <% if tag.class == NodeTag %>
       <% if power_tag ^ tag.name.include?(':') # XOR operator??? %>
          <div class = "card">
-           <div class="row">
+           <div class="row card-body">
              <div class="col-md-9">
                <a href="/tag/<%= tag.name%>"><h5 style="display: inline-block; text-decoration: underline; color:black;"><%= tag.name %></h5></a>
                <p style="display: inline-block; color: #808080; font-size:15px;"><a style="color: #808080;" href="/tag/<%= tag.name %>"> <%= Tag.follower_count(tag.name) %> people</a></p>
