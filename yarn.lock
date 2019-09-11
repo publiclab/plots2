@@ -2963,6 +2963,11 @@ jquery-file-upload@blueimp/jQuery-File-Upload#~8.1.0:
     jquery ">=1.6"
     jquery.ui.widget ">=1.9"
 
+jquery-validation@^1.19.1:
+  version "1.19.1"
+  resolved "https://registry.yarnpkg.com/jquery-validation/-/jquery-validation-1.19.1.tgz#a85043467dc2b70d9fff05778646d150e747742f"
+  integrity sha512-QNnrZBqSltWUEJx+shOY5WtfrIb0gWmDjFfQP8rZKqMMSfpRSwEkSqhfHPvDfkObD8Hnv5KHSYI8yg73sVFdqA==
+
 jquery.ui.widget@>=1.9:
   version "1.10.3"
   resolved "https://registry.yarnpkg.com/jquery.ui.widget/-/jquery.ui.widget-1.10.3.tgz#2ceecfc64995412643eeb9508d2197ea93c02fb3"
@@ -3006,7 +3011,6 @@ jsbn@~0.1.0:
 
 jsdiff@components/jsdiff#~3.4.0:
   version "0.0.0"
-  uid "7e83f72e95b818cf26bb80f1c752b7eb7a79ce0d"
   resolved "https://codeload.github.com/components/jsdiff/tar.gz/7e83f72e95b818cf26bb80f1c752b7eb7a79ce0d"
 
 jsdom@9.9.1:
