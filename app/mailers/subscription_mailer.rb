@@ -24,6 +24,7 @@ class SubscriptionMailer < ActionMailer::Base
               " (##{node.id})"
     @user = user
     @node = node
+    @tags = node.tags.collect(&:name).join(',')
     @footer = feature('email-footer')
     mail(to: node.author.email, subject: subject)
   end
@@ -31,6 +32,7 @@ class SubscriptionMailer < ActionMailer::Base
   def notify_tag_added(node, tag, tagging_user)
     @tag = tag
     @node = node
+    @tags = node.tags.collect(&:name).join(',')
     @tagging_user = tagging_user
     given_tags = node.tags.reject { |t| t == tag }
     users_to_email = tag.followers_who_dont_follow_tags(given_tags)
@@ -62,7 +64,6 @@ class SubscriptionMailer < ActionMailer::Base
     elsif frequency == User::Frequency::WEEKLY
       @subject = "Your weekly digest"
     end
-
     @user = User.find(user_id)
     @nodes = nodes
     mail(to: @user.email, subject: @subject)
