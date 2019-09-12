@@ -4,6 +4,9 @@ require 'test_helper'
 class SubscriptionMailerTest < ActionMailer::TestCase
   test 'notify subscribers on creation of a research note' do
     node = nodes(:one)
+    node_author = User.where(id: node.uid).first
+    user = users(:newcomer)
+    user.follow node_author
     subscribers = Tag.subscribers(node.tags)
     assert_difference 'ActionMailer::Base.deliveries.size' do
       SubscriptionMailer.notify_node_creation(node).deliver_now
@@ -13,6 +16,8 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     email = ActionMailer::Base.deliveries.last
     assert_equal ["notifications@#{request_host}"], email.from
     assert_equal ["notifications@#{request_host}"], email.to
+    assert_includes email.bcc, user.email
+    assert_not_includes subscribers, user
     assert_equal '[PublicLab] ' + node.title + ' (#' + node.id.to_s + ') ', email.subject
     assert email.body.include?("Public Lab contributor <a href='https://#{request_host}/profile/#{node.author.name}'>#{node.author.name}</a> just posted a new research note")
   end
