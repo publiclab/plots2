@@ -451,7 +451,7 @@ class WikiController < ApplicationController
       @node.vid = @revision.vid
       @node.title = @revision.title
 
-      elsif main_image = @node.drupal_main_image && params[:main_image].blank?
+      if main_image = @node.drupal_main_image && params[:main_image].blank?
         main_image.vid = @revision.vid
         main_image.save
       end
