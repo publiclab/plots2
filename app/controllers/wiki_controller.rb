@@ -451,12 +451,14 @@ class WikiController < ApplicationController
       @node.vid = @revision.vid
       @node.title = @revision.title
 
-      if main_image = @node.drupal_main_image && params[:main_image].blank?
+      elsif main_image = @node.drupal_main_image && params[:main_image].blank?
         main_image.vid = @revision.vid
         main_image.save
       end
 
-      if params[:main_image].present? && img = Image.find(params[:main_image])
+      if params[:main_image].to_i == 0
+        @node.main_image_id = nil
+      elsif params[:main_image].present? && img = Image.find(params[:main_image])
         img.nid = @node.id
         @node.main_image_id = img.id
         img.save
