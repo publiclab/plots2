@@ -18,8 +18,13 @@ class OutlookParsingTest < ActionDispatch::IntegrationTest
     f.close()
   end
 
-  test 'to parse autoreply mail from outlook service correctly and add comment reply' do
-    mail = Mail.read('test/integration/incoming_mail_parsing_test/outlook_parsing_test.rb')
+  test 'recognizing autoreply mail from outlook service' do
+    mail = Mail.read('test/fixtures/incoming_test_emails/outlook/autoreply_incoming_outlook_email.eml')
     assert_equal true, Comment.is_autoreply(mail)
+  end
+
+  test 'recognizing non-autoreply mail from outlook service' do
+    mail = Mail.read('test/fixtures/incoming_test_emails/outlook/incoming_outlook_email.eml')
+    assert_equal false, Comment.is_autoreply(mail)
   end
 end
