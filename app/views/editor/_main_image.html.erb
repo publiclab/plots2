@@ -42,8 +42,8 @@
       <select name="image_revision" id="image_revision">
         <% @node.images.each_with_index do |i,index| %>
           <option id="<%=i.id%>" value="<%=i.path(:default)%>" <% if i.id == @node.main_image_id %>selected='selected'<% end %> ><%= index + 1 %>: <%= i.filename %></option>
-          <option id="0" value="none" <% if i.id == @node.main_image_id == 0 %>selected='selected'<% end %> >None</option>
         <% end %>
+        <option id="0" value="none" <% if @node.main_image_id == 0 %>selected='selected'<% end %> >None</option>
       </select>
     </p>
   <% end %>
