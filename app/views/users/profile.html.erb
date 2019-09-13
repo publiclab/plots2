@@ -254,7 +254,7 @@
       <li><h5><%= @profile_user.revisions.count %> wiki edits</h5></li>
       <li><h5><a href = "/tag/question:*/author/<%= params[:id] %>"><%= Node.questions.where(status: 1, uid: @profile_user.id).length %> questions </a></h5></li>
       <li><h5><%= Comment.where(uid: @profile_user.id).count %> comments</h5></li>
-      <li><h5><a href = "/tag/activity:*/author/<%= params[:id] %>"><%= @count_activities_posted %> activities posted </a></h5></kli>
+      <li><h5><a href = "/tag/activity:*/author/<%= params[:id] %>"><%= @count_activities_posted %> activities posted </a></h5></li>
       <li><h5><a href = "/tag/replication:*/author/<%= params[:id] %>"><%= @count_activities_attempted %> activities attempted</a> </h5></li>
     </ul>
   </div>

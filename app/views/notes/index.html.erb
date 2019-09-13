@@ -1,7 +1,6 @@
 <div class="col-lg-9">
   <% if params[:controller] == "search" %>
-    <h3><%= raw t('notes.index.search_results_for', :params => params[:id]) %> <small>(<a href="/search/advanced/<%= params[:id] %>"><%= t('notes.index.advanced_search') %></a>)</h3>
-    
+    <h3><%= raw t('notes.index.search_results_for', :params => params[:id]) %> <small>(<a href="/search/advanced/<%= params[:id] %>"><%= t('notes.index.advanced_search') %></a>)</small></h3>
   <% elsif params[:controller] == "tag" %>
     <h3><%= raw t('notes.index.notes_tagged_with', :params => params[:id]) %></h3>
   <% elsif params[:action] == "popular" %>
