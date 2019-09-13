@@ -17,8 +17,14 @@ class GmailParsingTest < ActionDispatch::IntegrationTest
     f.close()
   end
 
-  test 'to parse autoreply mail from gmail service correctly and add comment reply' do
+  test 'recognizing autoreply mail from gmail service' do
     mail = Mail.read('test/fixtures/incoming_test_emails/gmail/autoreply_incoming_gmail_email.eml')
     assert_equal true, Comment.is_autoreply(mail)
   end
+
+  test 'recognizing non-autoreply mail from gmail service' do
+    mail = Mail.read('test/fixtures/incoming_test_emails/gmail/incoming_gmail_email.eml')
+    assert_equal false, Comment.is_autoreply(mail)
+  end
+
 end
