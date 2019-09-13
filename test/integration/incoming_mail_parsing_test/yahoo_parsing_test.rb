@@ -19,8 +19,14 @@ class YahooParsingTest < ActionDispatch::IntegrationTest
     f.close()
   end
 
-  test 'to parse autoreply mail from yahoo service correctly and add comment reply' do
-    mail = Mail.read('test/fixtures/incoming_test_emails/yahoo/autoreply_incoming_outlook_email')
+  test 'recognizing autoreply mail from yahoo service' do
+    mail = Mail.read('test/fixtures/incoming_test_emails/yahoo/autoreply_incoming_outlook_email.eml')
     assert_equal true, Comment.is_autoreply(mail)
   end
+
+  test 'recognizing non-autoreply mail from yahoo service' do
+    mail = Mail.read('test/fixtures/incoming_test_emails/yahoo/incoming_yahoo_email.eml')
+    assert_equal false, Comment.is_autoreply(mail)
+  end
+
 end
