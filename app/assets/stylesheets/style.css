@@ -284,6 +284,7 @@ a .fa-white,
 }
 
 .pl-content blockquote p {
+  padding: 14px;
   font-style: italic;
   margin-top: 8px;
   font-size: 16px;
