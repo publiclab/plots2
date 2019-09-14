@@ -3,7 +3,6 @@
 .dashboard .header h1 {
   font-size: 3em;
   margin-bottom: 0;
-  padding-left: 10px;
 }
 
 @media (max-width:992px) {
