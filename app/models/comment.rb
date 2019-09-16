@@ -284,6 +284,7 @@ class Comment < ApplicationRecord
     autoreply = true if mail.header.collect(&:name).join(',').downcase.include?('auto-replied')
     autoreply = true if mail.header.collect(&:name).join(',').downcase.include?('auto-reply')
     autoreply = true if mail.header.collect(&:name).join(',').downcase.include?('auto-generated')
+    autoreply
   end
 
   def self.gmail_quote_present?(mail_doc)
