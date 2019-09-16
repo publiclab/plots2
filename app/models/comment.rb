@@ -225,6 +225,7 @@ class Comment < ApplicationRecord
     end
   end
 
+  # parse mail and add comments based on emailed replies
   def self.add_comment(mail, node_id, user, reply_to = [false, nil])
     node = Node.where(nid: node_id).first
     if node && mail&.html_part
@@ -252,13 +253,38 @@ class Comment < ApplicationRecord
         comment_content_markdown = comment_content_markdown + COMMENT_FILTER + extra_content_markdown
       end
       message_id = mail.message_id
-      comment = node.add_comment(uid: user.uid, body: comment_content_markdown, comment_via: 1, message_id: message_id)
-      if reply_to[0]
-        comment.reply_to = reply_to[1]
-        comment.save
+
+      # only process the email if it passese our auto-reply filters; no out-of-office responses!
+      unless is_autoreply(mail)
+        comment = node.add_comment(uid: user.uid, body: comment_content_markdown, comment_via: 1, message_id: message_id)
+        if reply_to[0]
+          comment.reply_to = reply_to[1]
+          comment.save
+        end
+        comment.notify user
       end
-      comment.notify user
     end
+  end
+
+  # parses emails to detect whether they are "autoreplies" or "out of office" messages
+  def self.is_autoreply(mail)
+    autoreply = false
+    autoreply = true if mail.header['Precedence'] && mail.header['Precedence'].value == "list"
+    autoreply = true if mail.header['Precedence'] && mail.header['Precedence'].value == "junk"
+    autoreply = true if mail.header['Precedence'] && mail.header['Precedence'].value == "bulk"
+    autoreply = true if mail.header['Precedence'] && mail.header['Precedence'].value == "auto_reply"
+    autoreply = true if mail.from.join(',').include?('mailer-daemon')
+    autoreply = true if mail.from.join(',').include?('postmaster')
+    autoreply = true if mail.from.join(',').include?('noreply')
+    autoreply = true if mail.header.collect(&:value).join(',').downcase.include?('auto-submitted')
+    autoreply = true if mail.header.collect(&:value).join(',').downcase.include?('auto-replied')
+    autoreply = true if mail.header.collect(&:value).join(',').downcase.include?('auto-reply')
+    autoreply = true if mail.header.collect(&:value).join(',').downcase.include?('auto-generated')
+    autoreply = true if mail.header.collect(&:name).join(',').downcase.include?('auto-submitted')
+    autoreply = true if mail.header.collect(&:name).join(',').downcase.include?('auto-replied')
+    autoreply = true if mail.header.collect(&:name).join(',').downcase.include?('auto-reply')
+    autoreply = true if mail.header.collect(&:name).join(',').downcase.include?('auto-generated')
+    autoreply
   end
 
   def self.gmail_quote_present?(mail_doc)
