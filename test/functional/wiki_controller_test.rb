@@ -224,13 +224,16 @@ class WikiControllerTest < ActionController::TestCase
 
   test 'update wiki selecting no image' do
     node = nodes(:about)
+    node.main_image_id = 1
+    node.save
+    assert_equal 1, node.main_image_id
 
     post :update, params: { id: node.nid, uid: users(:bob).id, title: 'New Title', body: 'Editing about Page', main_image: 0 }
 
     node.reload
     assert_redirected_to node.path
     assert_equal flash[:notice], 'Edits saved.'
-    assert_equal 0, node.main_image_id
+    assert_equal nil, node.main_image_id
   end
 
   test 'normal user should not delete wiki page' do
