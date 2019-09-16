@@ -2,7 +2,7 @@
 
   <h3 class="d-md-none d-lg-block">Main image <i id="main-image-spinner" class="hidden icon-spinner icon-spin"></i></h3>
 
-  <% if @node.main_image_id != 0 %>
+  <% if @node && @node.main_image_id != 0 %>
   <img class="rounded" id="leadImage" style="width:100%;<% unless (@node && @node.main_image) || params[:main_image] || params[:i] %>display:none;<% end %>"
        src="<% if @node && @node.main_image %>
          <%= @node.main_image.path(:default) %>
