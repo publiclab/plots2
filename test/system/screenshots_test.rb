@@ -47,6 +47,16 @@ class ScreenshotsTest < ApplicationSystemTestCase
     take_screenshot
   end
 
+  test 'tag wildcard' do
+    visit '/tag/spect*'
+    take_screenshot
+  end
+
+  test 'tag contributors page' do
+    visit '/contributors/spectrometer'
+    take_screenshot
+  end
+
   test 'wiki' do
     visit '/wiki'
     take_screenshot
