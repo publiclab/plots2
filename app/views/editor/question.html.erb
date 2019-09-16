@@ -86,7 +86,6 @@
             <input id="title" tabindex="1" name="title" class="form-control" placeholder="<% if params[:template] == "question" %>Ask a question as specifically as possible<% else %>Title your post descriptively<% end %>" value="<%= if @node then @node.title else params[:title] end %>"/>
           </div>
 
-          <input class="form-control" id="has_main_image" type="hidden" name="has_main_image" value="<% if @node && @node.main_image %>true<% end %>" />
           <input class="form-control" id="main_image" type="hidden" name="main_image" value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>" />
           <input class="form-control" id="node_images" type="hidden" name="node_images" value="" />
 
