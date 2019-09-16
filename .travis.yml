@@ -31,7 +31,7 @@ install:
   - cp db/schema.rb.example db/schema.rb
   - docker-compose build
   - docker-compose up -d
-  - docker-compose exec web sleep 5
+  - docker-compose exec web sleep 15  # Need to wait for MySQL
   - netstat -ltpn
   - docker-compose exec web bash -c "rake db:setup"
   - docker-compose exec web bash -c "rake db:migrate"
