@@ -27,7 +27,7 @@
 
     <% @users.each do |user| %>
       <div class ="col-md-6" id="user">
-        <div class="card">
+        <div class="card"<% if user.status == 0 %> style="background-color: #ffc;"<% end %>>
            <div class="row card-body">
             <div class="col-md-5 nopadding">
               <div class="profile-image text-center">
@@ -52,7 +52,12 @@
                     <% end %>
                   </ul>
                 <div class="sub-info">
-                  <div style="padding-bottom:6px;">Active <%= t = user.revisions.order(timestamp: :desc).first.try(:created_at);time_ago_in_words(t) if (t) %> ago</div>
+                  <div style="padding-bottom:6px;">
+                    <% if user.status == 0 %>
+                      <i class='fa fa-ban' style="color:#a00;"></i> <%= t('users.list.banned') %> | 
+                    <% end %>
+                    Active <%= t = user.revisions.order(timestamp: :desc).first.try(:created_at);time_ago_in_words(t) if (t) %> ago
+                  </div>
                   <span id="tags" style="font-size:11px;">
                   <% tags = Tag.sort_according_to_followers(user.tags,"desc") %>
                   <% tags[0..2].each do |tag| %>
