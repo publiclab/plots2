@@ -255,7 +255,7 @@ class Comment < ApplicationRecord
       message_id = mail.message_id
 
       # only process the email if it passese our auto-reply filters; no out-of-office responses!
-      if is_autoreply(mail)
+      unless is_autoreply(mail)
         comment = node.add_comment(uid: user.uid, body: comment_content_markdown, comment_via: 1, message_id: message_id)
         if reply_to[0]
           comment.reply_to = reply_to[1]
