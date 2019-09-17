@@ -1775,11 +1775,6 @@ file-match@^1.0.1:
   dependencies:
     utils-extend "^1.0.6"
 
-file-saver@^1.3.3:
-  version "1.3.8"
-  resolved "https://registry.yarnpkg.com/file-saver/-/file-saver-1.3.8.tgz#e68a30c7cb044e2fb362b428469feb291c2e09d8"
-  integrity sha512-spKHSBQIxxS81N/O21WmuXA2F6wppUCsutpzenOeZzOCCJ5gEfcbqJP983IrpLXzYmXnMUa6J03SubcNPdKrlg==
-
 file-saver@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/file-saver/-/file-saver-2.0.0.tgz#74eef7748159503b60008a15af2f1930fb5df7ab"
@@ -3181,6 +3176,15 @@ leaflet-blurred-location@^1.2.5, leaflet-blurred-location@^1.3.0:
     jquery "^3.2.1"
     leaflet "^1.3.3"
 
+"leaflet-blurred-location@git://github.com/publiclab/leaflet-blurred-location#main":
+  version "1.3.0"
+  uid "1bff37cb96518bd87192277b14c290cba3c138ba"
+  resolved "git://github.com/publiclab/leaflet-blurred-location#1bff37cb96518bd87192277b14c290cba3c138ba"
+  dependencies:
+    haversine-distance "^1.1.4"
+    jquery "^3.2.1"
+    leaflet "^1.3.3"
+
 "leaflet-blurred-location@git://github.com/publiclab/leaflet-blurred-location.git#main":
   version "1.3.0"
   resolved "git://github.com/publiclab/leaflet-blurred-location.git#1bff37cb96518bd87192277b14c290cba3c138ba"
@@ -3189,14 +3193,14 @@ leaflet-blurred-location@^1.2.5, leaflet-blurred-location@^1.3.0:
     jquery "^3.2.1"
     leaflet "^1.3.3"
 
-leaflet-environmental-layers@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/leaflet-environmental-layers/-/leaflet-environmental-layers-2.0.0.tgz#2477012ffc2ad7af3152e73d82544f38eb3984c8"
-  integrity sha512-h2W95fMOijgS04I7W86qIQnlrWKaWSYOnaDAFFu9btR4HFIlUjFWtdYmMiDHlYNRFlEzrZYd6GqVoHFSs7dyiQ==
+leaflet-environmental-layers@2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/leaflet-environmental-layers/-/leaflet-environmental-layers-2.0.1.tgz#8d8e1acbf15c527eaf7ba7377334b08dec31515f"
+  integrity sha512-lGAJB1tOw7vsqHnuoVSDnO63AORSUIp4XKaUyIY8Qyzyyp9iki/IAL3XmKSadctzZo/wa3As2gUs8ffe8ZJZdg==
   dependencies:
     jquery "^3.3.1"
     leaflet "^1.3.1"
-    leaflet-blurred-location "git://github.com/publiclab/leaflet-blurred-location#main"
+    leaflet-blurred-location "git://github.com/publiclab/leaflet-blurred-location.git#main"
     leaflet-fullhash "github:sagarpreet-chadha/leaflet-fullHash"
     leaflet-heatmap "1.0.0"
     leaflet-providers "^1.1.17"
