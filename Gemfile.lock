@@ -512,7 +512,7 @@ GEM
     tilt (2.0.9)
     timecop (0.9.1)
     tins (1.20.2)
-    turbolinks (5.2.0)
+    turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
     twitter (6.2.0)
