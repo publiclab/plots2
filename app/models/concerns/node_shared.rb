@@ -35,6 +35,25 @@ module NodeShared
     end
   end
 
+  def self.nodes_thumbnail_grid(body, _page = 1)
+    body.gsub(/(?<![\>`])(\<p\>)?\[nodes\:grid\:(\S+)\]/) do |_tagname|
+      tagname = Regexp.last_match(2)
+      exclude = nil
+
+      if tagname.include?('!')
+        exclude = excluded_tagnames(tagname)
+        tagname = featured_tagname(tagname)
+      end
+
+      nodes = nodes_by_tagname(tagname, ['note','page'])
+      nodes -= excluded_nodes(exclude, 'page') if exclude.present?
+      nodes -= excluded_nodes(exclude, 'note') if exclude.present?
+
+      output = initial_output_str(Regexp.last_match(1))
+      output + data_string('thumbnail', tagname, nodes, 'nodes')
+    end
+  end
+
   # rubular regex: http://rubular.com/r/hBEThNL4qd
   def self.graph_grid(body, _page = 1)
     body.gsub(/(?<![\>`])(\<p\>)?\[graph\:(\S+)\]/) do |_tagname|
