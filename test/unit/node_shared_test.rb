@@ -7,7 +7,7 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert html
     assert_equal 1, html.scan('<table class="table inline-grid nodes-grid nodes-grid-test nodes-grid-test-').length
     assert_equal 1, html.scan('<table').length
-    assert_equal 4, html.scan('nodes-grid-test').length
+    assert_equal 5, html.scan('nodes-grid-test').length
     assert html.scan('<td class="author">').length > 1
   end
 
@@ -29,7 +29,7 @@ class NodeSharedTest < ActiveSupport::TestCase
     html = NodeShared.nodes_thumbnail_grid(before)
     assert html
     assert_equal 1, html.scan('<div class="thumbnail-grid image-container row">').length
-    assert_equal 5, html.scan('h4').length
+    assert_equal 4, html.scan('h4').length
   end
   
   test 'that NodeShared can be used to convert short codes like [notes:foo] into tables which list notes' do
