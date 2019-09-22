@@ -371,8 +371,8 @@ en:
       subscriptions: "Your subscriptions"
       sort_by: "Sort By"
       more_posts: "more posts"
-      subscribe: "Subscribe"
-      unsubscribe: "Unsubscribe"
+      follow: "Follow"
+      unfollow: "Unfollow"
     show:
       notes_tagged: "Notes tagged with <i style=\"color:#aaa;\">%{tag}</i>"
       following: "Following"
@@ -647,7 +647,7 @@ en:
       click_unfollow: "Click to unfollow"
       following: "Following"
       research_notes: "all research notes"
-      subscribe_to: "Subscribe to"
+      subscribe_to: "Follow"
       all: "all"
       notes: "notes"
       receive_mails: "Receive emails for all research notes."
@@ -657,7 +657,7 @@ en:
       options: "Options"
       share_subscription_link: "Share this subscription link"
       share: "Share"
-      unsubscribe: "Unsubscribe"
+      unsubscribe: "Unfollow"
     _comments:
       commented: "commented"
       read_more: "Read more"
@@ -732,7 +732,7 @@ en:
       browse_wiki: "Browse the Public Lab Wiki"
     _list:
       mailing_list: "Join the <a href='%{url1}'<b>%{mailing_list}</b> mailing list</a>"
-      subscribe: "Subscribe"
+      subscribe: "Follow"
       recent_discussion_topics: "Recent discussion topics"
       all_topics: "All topics"
     _user:
