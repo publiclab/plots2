@@ -1,37 +1,37 @@
 <% user = user || @user # allow overriding w/ local variable %>
-<% tags.limit(2).each do |tag| %>
+<div class="tags-list">
+<% tags.each_with_index do |tag, i| %>
   <% if tag.class == NodeTag %>
 
-    <% if power_tag ^ tag.name.include?(':') # XOR operator??? %>
-     <div class="card">
-       <div class="card-body">
+    <% if !power_tag && i < 2 # just the first 2 get special display, power tags excluded %>
+      <%= render partial: 'tag/miniCard', locals: { tag: tag } %>
+    <% else %>
 
-         <a class="ellipsis pull-right" data-toggle="dropdown">&nbsp<i class="fa fa-ellipsis-h" style="color : #666; font-size:15px; margin-right:20px;"></i></a>
-         <div class="dropdown-menu" style = "font-size:13px;">
-           <div class="dropdown-item"><a href='/tag/<%= tag.name %>' style="color:black; text-decoration: underline;"><%= Tag.tagged_node_count(tag.name) || 0 %> notes</a></div>
-           <div class="dropdown-item">created by <a href='/profile/<%= tag.try(:author).try(:username) %>' style="color:black; text-decoration: underline;"><%= tag.try(:author).try(:username) %></a></div>
-           <div class="dropdown-item">created <%= time_ago_in_words(Time.at(tag.date)) %> ago</div>
-           <% if logged_in_as(['admin', 'moderator']) || (current_user && ( current_user.uid ==  @node.uid || current_user.uid == tag.uid)) %>
-             <% if tag.name.include? ':' %>
-               <div class="dropdown-item"><a data-confirm="This is a power tag (see https://publiclab.org/wiki/power-tags) -- and may drive a specific function on this page. Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/tag/delete/<%= @node.id %>/<%= tag.tid %>" data-tag-id="<%= tag.tid %>" data-method="delete" style="color:black; text-decoration: underline;">delete tag</a></div>
-             <% else %>
-               <div class="dropdown-item"><a data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/tag/delete/<%= @node.id %>/<%= tag.tid %>" data-tag-id="<%= tag.tid %>" data-method="delete" style="color:black; text-decoration: underline;">delete tag</a></div>
-             <% end %>
-           <% end %>
-         </div>
+      <% if i == 2 && !power_tag %>
+        <a class="show-more-tags" href="javascript:void(0);"><p style="float:left; color:#666; margin-top:15px; margin-left:5px;"><u><%= tags.length - 2 %> more</u> &nbsp </p></a>
+      <% end %>
 
-         <a href="/tag/<%= tag.name%>">
-           <h5 style="text-decoration:underline;color:black;"><%= tag.name %></h5>
-         </a>
-         <p style="font-size:15px;">
-           <a style="color:#808080;" href="/tag/<%= tag.name %>"><%= Tag.follower_count(tag.name) %> people</a>
-         </p>
+      <p class="badge <%= badge_name %> pop more-tags" style="display:none;cursor:pointer;margin-bottom:3px;" id="tag_<%= tag.tid %>" data-toggle="popover" data-trigger="focus" data-count=0 data-placement="top" data-content="<p style='text-align:center;'><a href='/tag/<%= tag.name %>'><%= Tag.tagged_node_count(tag.name) || 0 %> notes</a> - <a href='/contributors/<%= tag.name %>'><%= Tag.contributors(tag.name).count %> people <br></a></p> <p style='text-align:center;font-size:12px;'><%if tag.description %><%= tag.description %> |<% end %> created by <a href='/profile/<%= tag.try(:author).try(:username) %>'><%= tag.try(:author).try(:username) %></a> <%= time_ago_in_words(Time.at(tag.date)) %> ago </p><div style='text-align:center;' class='text-center'><a href='/subscribe/tag/<%= tag.name %>' class='btn btn-primary'>Follow</a></div>" data-html="true" title="<%= tag.name %>">
+       <%= tag.name %>
+        <% if logged_in_as(['admin', 'moderator']) || (current_user && ( current_user.uid ==  @node.uid || current_user.uid == tag.uid)) %>
+          <% if tag.name.include? ':' %>
+            <a data-confirm="This is a power tag (see https://publiclab.org/wiki/power-tags) -- and may drive a specific function on this page. Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/tag/delete/<%= @node.id %>/<%= tag.tid %>" data-tag-id="<%= tag.tid %>" data-method="delete" style="color:white;">x</a>
+          <% else %>
+            <a data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/tag/delete/<%= @node.id %>/<%= tag.tid %>" data-tag-id="<%= tag.tid %>" data-method="delete" style="color:white">x</a>
+          <% end %>
+        <% end %>
+      </p>
 
-         <a class="pull-right btn btn-primary" href='/subscribe/tag/<%= tag.name %>'>Subscribe</a>
-       </div>
-     </div>
-     <br />
     <% end %>
+
+    <script>
+      (function() {
+        $('.show-more-tags').click(function showMoreTags() {
+          $('.more-tags').show();
+          $('.show-more-tags').hide();
+        });
+      })();
+    </script>
 
   <% elsif tag.class == UserTag && (tag.name[0..4] != "oauth" || (logged_in_as(['admin', 'moderator']) || (current_user && current_user.uid == tag.uid))) %>
 
@@ -73,3 +73,4 @@ $('.tag-delete').click(
 );
 
 </script>
+</div>
