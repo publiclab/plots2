@@ -5,7 +5,7 @@
   <%= render partial: 'tag/replication' %>
   <!-- This is the sidebar tagging display, also renders Subscribe button for multiple subscription -->
   <p style="font-size:0.9em;color:#666;margin-top:5px;">
-    <% if @node.tags.count > 0 %> 
+    <% if @node.normal_tags.count > 0 %> 
       This is part of:
     <% end %>
   </p>
