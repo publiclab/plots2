@@ -44,6 +44,7 @@ function dataToDatasets(data) {
       label: "Dataset " + i,
       backgroundColor: colors[colorNames[i]],
       borderColor: colors[colorNames[i]],
+      legendPosition: 'right',
       data: data,
       fill: false,
     });
