@@ -430,11 +430,9 @@ class Node < ActiveRecord::Base
 
   # return whole community_tag objects but no powertags or "event"
   def normal_tags
-    tids = Tag.includes(:node_tag)
-              .references(:community_tags)
-              .where('community_tags.nid = ? AND name LIKE ?', id, '%:%')
-              .collect(&:tid)
-    NodeTag.where('nid = ? AND tid NOT IN (?)', id, tids)
+    all_tags = tags.select { |tag| !tag.name.include?(':') }
+    tids = all_tags.collect(&:tid)
+    NodeTag.where('nid = ? AND tid IN (?)', id, tids)
   end
 
   def location_tags

@@ -1,6 +1,3 @@
-# def delete
-# def contributors_index
-
 require 'test_helper'
 
 class TagControllerTest < ActionController::TestCase
@@ -622,11 +619,12 @@ class TagControllerTest < ActionController::TestCase
     assert_not ActionMailer::Base.deliveries.collect(&:subject).include?("#{node.title} (#{tagname})")
   end
 
-  test 'should render a text/pain when a tag is deleted through post request xhr' do
+  test 'should render a text/plain when a tag is deleted through post request xhr' do
     user = UserSession.create(users(:jeff))
     node_tag = node_tags(:awesome)
     post :delete, params: { nid: node_tag.nid, tid: node_tag.tid, uid: node_tag.uid}, xhr: true
-    assert_equal "#{node_tag.tid}", @response.body
+    assert_equal node_tag.tid, JSON.parse(@response.body)['tid']
+    assert_equal true, JSON.parse(@response.body)['status']
   end
 
   test 'add_parent method adds a tag parent' do
