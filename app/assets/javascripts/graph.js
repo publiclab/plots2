@@ -1,5 +1,4 @@
 function graphUrl(url, el) {
-console.log('graphUrl');
   $.get(url, function onGetGraphData(response) {
     graphCsv(response, el);
   });
@@ -44,7 +43,6 @@ function dataToDatasets(data) {
       label: "Dataset " + i,
       backgroundColor: colors[colorNames[i]],
       borderColor: colors[colorNames[i]],
-      legendPosition: 'right',
       data: data,
       fill: false,
     });
@@ -67,35 +65,38 @@ function graph(data, el) {
           datasets: datasets
       },
       options: {
-          responsive: true,
-          title:{
-              display: false,
-              // text:'Chart.js Line Chart'
-          },
-          tooltips: {
-              mode: 'index',
-              intersect: false,
-          },
-          hover: {
-              mode: 'nearest',
-              intersect: true
-          },
-          scales: {
-              xAxes: [{
-                  display: true,
-                  scaleLabel: {
-                      display: true,
-                      labelString: 'Time'
-                  }
-              }],
-              yAxes: [{
-                  display: true,
-                  scaleLabel: {
-                      display: true,
-                      labelString: 'Value'
-                  }
-              }]
-          }
+        responsive: true,
+        title:{
+          display: false,
+          // text:'Chart.js Line Chart'
+        },
+        tooltips: {
+          mode: 'index',
+          intersect: false,
+        },
+        hover: {
+          mode: 'nearest',
+          intersect: true
+        },
+        legend: {
+          position: 'right',
+        },
+        scales: {
+          xAxes: [{
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'Time'
+            }
+          }],
+          yAxes: [{
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'Value'
+            }
+          }]
+        }
       }
   };
 
@@ -109,8 +110,17 @@ function graph(data, el) {
 
   var ctx = document.getElementById(el).getContext("2d");
 
-  return new Chart(ctx, config);
+  var chart = new Chart(ctx, config);
 
+  // work towards adaptive height to accommodate tons of datasets
+  // without the labels squishing the graph:
+
+  // var height = 300 + (datasets.length * 40);
+  // $(el).height(height);
+  // ctx.height = height;
+  // console.log(datasets.length, height);
+
+  return chart;
 }
 
 function isTimeColumn(col) {
