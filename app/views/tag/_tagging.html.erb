@@ -1,10 +1,14 @@
 <% user = user || @user # allow overriding w/ local variable %>
 
 <% if @node %>
-  <!-- This is the sidebar tagging display, also renders Subscribe button for multiple subscription -->
-  <p style="display: inline-block; margin-right: 20px; color:#666;">This page is part of:</p>
   <!-- listing of posts in response to this one -->
   <%= render partial: 'tag/replication' %>
+  <!-- This is the sidebar tagging display, also renders Subscribe button for multiple subscription -->
+  <p style="font-size:0.9em;color:#666;margin-top:5px;">
+    <% if @node.normal_tags.count > 0 %> 
+      This is part of:
+    <% end %>
+  </p>
   <div id="tags" class="node-tags">
     <%= render partial: 'tag/tags', locals: { power_tag: false, badge_name: 'badge-secondary', tags: @node.normal_tags } %>
     <%= render partial: 'tag/tags', locals: { power_tag: true, badge_name: 'badge-primary', tags: @node.power_tag_objects } %>
@@ -43,7 +47,10 @@ $(function () {
 
 <% if current_user && (parent != :profile || (current_user.id == user.id || logged_in_as(['admin']))) %>
 
-<a id="tags-open" class="btn btn-circle btn-circle-sm" style="float:left;"><i class="fa fa-plus" style="color:#808080;margin-left:3px;" aria-hidden="true"></i></a>
+<a id="tags-open" class="btn btn-circle btn-circle-sm" style="float:left;"><i class="fa fa-plus" style="color:#808080;margin-left:3px;"></i></a>
+<% if @node && @node.tags.count == 0 %>
+  <span style="float:left;color:#666;margin-top:14px;margin-left:5px;">Add tags</a> 
+<% end %>
 
 <%= render partial: 'tag/form', locals: { node: @node ||= nil, user: user ||= nil } %>
 
@@ -51,8 +58,9 @@ $(function () {
 
 <script>
   $("#tags-open").click(function(){
-      $("#tagform").show();
-      $("#tags-open").hide();
+    $("#tagform").show();
+    $("#tags-open").hide();
+    $(".tag-input").focus();
   });
 </script>
 

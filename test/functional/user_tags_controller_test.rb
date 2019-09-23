@@ -38,6 +38,13 @@ class UserTagsControllerTest < ActionController::TestCase
     assert_redirected_to info_path
   end
 
+  test 'should render a text/plain when a tag is deleted through post request xhr' do
+    UserSession.create(users(:bob))
+    user_tag = user_tags(:two)
+    delete :delete , params: { id: users(:bob).id , name: user_tag.name }, xhr: true
+    assert_equal user_tag.id, JSON.parse(@response.body)['tid']
+  end
+
   test 'cannot delete non-existent tag' do
     UserSession.create(users(:bob))
     delete :delete, params: { id: users(:bob).id , name: "temp tag" }
