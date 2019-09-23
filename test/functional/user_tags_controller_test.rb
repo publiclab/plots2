@@ -42,7 +42,7 @@ class UserTagsControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
     user_tag = user_tags(:two)
     delete :delete , params: { id: users(:bob).id , name: user_tag.name }, xhr: true
-    assert_equal user_tag.tid, JSON.parse(@response.body).tid
+    assert_equal user_tag.tid, JSON.parse(@response.body)['tid']
   end
 
   test 'cannot delete non-existent tag' do
