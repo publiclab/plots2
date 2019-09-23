@@ -144,17 +144,20 @@ class Node < ActiveRecord::Base
   end
 
   # should only be run at actual creation time --
-  # or, we should refactor to us node.created instead of Time.now
+  # or, we should refactor to use node.created instead of Time.now
   def generate_path
-    if type == 'note'
-      username = User.find_by(id: uid).name
-      "/notes/#{username}/#{Time.now.strftime('%m-%d-%Y')}/#{title.parameterize}"
-    elsif type == 'page'
-      '/wiki/' + title.parameterize
-    elsif type == 'map'
-      "/map/#{title.parameterize}/#{Time.now.strftime('%m-%d-%Y')}"
-    elsif type == 'feature'
+    time = Time.now.strftime('%m-%d-%Y')
+
+    case type
+    when "note"
+      username = User.find_by(id: uid).name # name? or username?
+      "/notes/#{username}/#{time}/#{title.parameterize}"
+    when "map"
+      "/map/#{title.parameterize}/#{time}"
+    when "feature"
       "/feature/#{title.parameterize}"
+    when "page"
+      "/wiki/#{title.parameterize}"
     end
   end
 
