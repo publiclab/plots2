@@ -415,11 +415,16 @@ class Node < ActiveRecord::Base
   end
 
   # returns all power tag results as whole community_tag objects
-  def power_tag_objects(tagname)
-    tids = Tag.includes(:node_tag)
+  def power_tag_objects(tagname = nil)
+    tags = Tag.includes(:node_tag)
               .references(:community_tags)
-              .where('community_tags.nid = ? AND name LIKE ?', id, tagname + ':%')
-              .collect(&:tid)
+              .where('community_tags.nid = ?', id)
+    if tagname
+      tags = tags.where('name LIKE ?', tagname + ':%')
+    else
+      tags = tags.where('name LIKE ?', '%:%') # any powertag 
+    end
+    tids = tags.collect(&:tid)
     NodeTag.where('nid = ? AND tid IN (?)', id, tids)
   end
 
