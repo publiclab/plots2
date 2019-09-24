@@ -1,36 +1,40 @@
 <script src="/assets/wikis.js" type="text/javascript"></script>
 
-  <div class="container">
+<div class="container">
   <%= render partial: 'tag/show/header' %>
-    <div class= "tag_card">
-      <div class="row">
-        <div class="col-md-10">
-          <h1 style="margin-top:6px;text-align:left;"><%= @title %></h1>
-        </div>
-        <div class="col-md-2">
-          <%= render :partial => "tag/show/user_controls" %>
-        </div>
+  <div class= "tag_card">
+    <div class="row">
+      <div class="col-md-10">
+        <h1 style="margin-top:6px;text-align:left;"><%= @title %></h1>
       </div>
-      <% if @wiki %>
-        <p class = "wiki-sub"><%= @wiki.latest.body %></p>
-      <% end %>
-      <div class = "tag-buttons">
-        <div class="btn-group" role="group">
-          <% if current_user && current_user.following(@title) %>
-            <a style="float: right;  width: 100px;" rel="tooltip" title="<%= t('sidebar._post_button.share_your_work') %>" data-placement="bottom" href="/post?tags=<%= tag.name %>" class="btn btn-primary requireLogin">New post <i class="fa fa-plus fa-white"></i></a>
+      <div class="col-md-2">
+        <%= render :partial => "tag/show/user_controls" %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <% if @wiki %>
+          <p class = "wiki-sub"><%= @wiki.latest.body %></p>
+        <% end %>
+        <div class = "tag-buttons">
+          <div class="btn-group" role="group">
+            <% if current_user && current_user.following(@title) %>
+              <a style="float: right;  width: 100px;" rel="tooltip" title="<%= t('sidebar._post_button.share_your_work') %>" data-placement="bottom" href="/post?tags=<%= tag.name %>" class="btn btn-primary requireLogin">New post <i class="fa fa-plus fa-white"></i></a>
+            <% else %>
+              <a class="btn btn-primary requireLogin" target="_blank" href="/subscribe/tag/<%= @title %>"> Follow</a>
+                <% if @related_tags %>
+                  <a><%= render partial: 'tag/dropdown_subscribe', locals: { tags: @related_tags, buttonStyle: "btn-primary"} %></a>
+                <% end %>
+            <% end %>
+          </div>
+          <% if @wiki %>
+            <a><%= link_to("Learn more &raquo;".html_safe, "/wiki/#{params[:id]}", :class=> "btn btn-outline-secondary")%></a>
           <% else %>
-            <a class="btn btn-primary requireLogin" target="_blank" href="/subscribe/tag/<%= @title %>"> Follow</a>
-              <% if @related_tags %>
-                <a><%= render partial: 'tag/dropdown_subscribe', locals: { tags: @related_tags, buttonStyle: "btn-primary"} %></a>
-              <% end %>
+            <a class="btn btn-outline-secondary" href="/wiki/new?title=<%= params[:id] %>">Add a description <span class="fa fa-plus"></span></a>
           <% end %>
         </div>
-        <% if @wiki %>
-          <a><%= link_to("Learn more &raquo;".html_safe, "/wiki/#{params[:id]}", :class=> "btn btn-outline-secondary")%></a>
-        <% else %>
-           <a class="btn btn-outline-secondary" href="/wiki/new?title=<%= params[:id] %>">Add a description <span class="fa fa-plus"></span></a>
-        <% end %>
       </div>
+    </div>
   </div>
 </div>
 
@@ -82,7 +86,7 @@
     padding: 20px;
     /* padding-left: 20px; */
     position: absolute;
-    top: 22%;
+    top: 70px;
     left: 5%;
     background-color: white;
   }
@@ -94,7 +98,7 @@
     border-radius: 5px;
     padding: 20px;
     position: absolute;
-    top:100%;
+    top:30px;
     }
 
     .box{
