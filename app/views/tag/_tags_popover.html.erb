@@ -1,5 +1,5 @@
 <div class="pop_content subscribe-btn">
-  <p class="small_heading"> Follow related tags: </p>
+  <p> Follow related tags: </p>
   <%= form_with remote: true, url: '/subscribe/multiple/tag' do |f| %>
     <% tags&.each_with_index do |tag, i| %>
     <div class="form-check">
@@ -11,7 +11,7 @@
     <% if current_user %>
     <%= f.submit 'Subscribe', id: "subscribe", class: "btn btn-primary btn-sm" %>
     <% else %>
-      <a class="btn btn-primary btn-sm" onClick="require_login_and_redirect_to('/subscribe/multiple/tag/' + getCheckedTags())">Subscribe</a>
+      <a class="btn btn-primary btn-sm btn-white" onClick="require_login_and_redirect_to('/subscribe/multiple/tag/' + getCheckedTags())">Subscribe</a>
     <% end %>
   <% end %>
 </div>
