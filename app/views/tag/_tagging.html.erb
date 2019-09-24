@@ -10,7 +10,7 @@
     <% end %>
   </p>
   <div id="tags" class="node-tags">
-    <%= render partial: 'tag/tags', locals: { power_tag: false, badge_name: 'badge-secondary', tags: @node.normal_tags } %>
+    <%= render partial: 'tag/tags', locals: { power_tag: false, badge_name: 'badge-secondary', tags: @node.normal_tags(:followers) } %>
     <%= render partial: 'tag/tags', locals: { power_tag: true, badge_name: 'badge-primary', tags: @node.power_tag_objects } %>
   </div>
 <% else %>
