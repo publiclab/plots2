@@ -2,7 +2,11 @@
   <div class="card-body">
     <form class="comment-form" id="comment-form" data-remote="true" action="/comment/create/<%= @node.nid %><%= "?type=question" if local_assigns[:type]=="question" %>" <% if local_assigns[:aid].blank? %>method="post"<% end %>>
 
-      <h4 style="margin-top:0;"><%= title %><% if current_user && current_user.id == @node.uid %> <small><a target="_blank" href="https://publiclab.org/comment-templates">Add a response template</a></small><% end %></h4>
+      <% if current_user && current_user.id == @node.uid %>
+        <span class="pull-right" style="color:#ccc;"><a target="_blank" href="https://publiclab.org/comment-templates">Add a template</a></span>
+      <% end %>
+
+      <h4 style="margin-top:0;"><%= title %></h4>
 
       <style>
         #imagebar {
@@ -101,10 +105,9 @@
             <% end %>
 
             <span style="color:#888;"> &nbsp;
-              <br class="d-md-none" /><%= raw t('comments._form.logged_in', :username => current_user.username) %> |
-              <a target="_blank" href="/wiki/authoring-help#Formatting"><%= t('comments._form.formatting') %></a> |
-              <a onClick="$('#who-is-notified-form').toggle()"><%= t('comments._form.notifications') %></a> |
-              <a onClick = "insertTitleSuggestionTemplate()">Propose Title</a>
+              <br class="d-md-none" /><%= raw t('comments._form.logged_in', :username => current_user.username) %> &nbsp;
+              <a target="_blank" href="/wiki/authoring-help#Formatting"><i class="fa fa-question-circle"></i></a> &nbsp;
+              <a onClick="$('#who-is-notified-form').toggle()"><i class="fa fa-bell-o"></i></a> 
             </span>
           </div>
 

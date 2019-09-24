@@ -432,10 +432,18 @@ class Node < ActiveRecord::Base
   end
 
   # return whole community_tag objects but no powertags or "event"
-  def normal_tags
+  def normal_tags(order = :none)
     all_tags = tags.select { |tag| !tag.name.include?(':') }
     tids = all_tags.collect(&:tid)
-    NodeTag.where('nid = ? AND tid IN (?)', id, tids)
+    if order == :followers
+      tags = NodeTag.where('nid = ? AND community_tags.tid IN (?)', id, tids)
+                    .left_outer_joins(:tag, :tag_selections)
+                    .order(Arel.sql('count(tag_selections.user_id) DESC'))
+                    .group(:tid)
+    else
+      tags = NodeTag.where('nid = ? AND tid IN (?)', id, tids)
+    end
+    tags
   end
 
   def location_tags
