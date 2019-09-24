@@ -3,7 +3,7 @@
     <div class="card shadow-sm p-2 mb-3 bg-white rounded" >
       <div class="card-header mt-2" style=" padding:0.8em; background-color: inherit; border:none;">
         <h4 style="display: inline-block;"><%= tag.name %></h4>
-        <p style="display: inline-block; color: #808080;"><a style="text-decoration: underline; color: #808080;" href="/tag/<%= tag.name %>"><%= Tag.follower_count(tag.name) %> people</a> discussing</p>
+        <p style="display: inline-block; color: #808080;"><a style="text-decoration: underline; color: #808080;" href="/tag/<%= tag.name %>"><%= Tag.follower_count(tag.name) %> following</a></p>
       </div>
       <div class="card-body" style="padding:0.8em;">
         <div class="node-list">
@@ -16,14 +16,16 @@
               <% else %>
                 <div class="circle"></div>
               <% end %>
-              <p style="display: inline-block; margin-left: 10px;"><a style="color: inherit;" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= (node.type == 'note') ? node.title : node.latest.title %></a></p>
-              <p style="display: inline-block; margin-left: 10px;color: #808080;">by <a style="color: #808080;" <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>">@<%= node.author.name %></a></p>
+              <p style="margin-left: 10px;">
+                <a style="color: inherit;" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= (node.type == 'note') ? node.title : node.latest.title %></a>
+                <span style="color: #808080;">by <a style="color: #808080;" <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>">@<%= node.author.name %></a>
+              </p>
             </div>
           <% end %>
         </div>
       </div>
       <div class="card-footer" style="background-color: inherit; border:none;">
-        <a style="text-decoration: underline; color: #808080; display: inline-block;" href="/tag/<%= tag.name %>"><%= tag.count %> <%= t('tag.index.more_posts') %> <i class="fa fa-angle-double-right"></i></a>
+        <a style="text-decoration: underline; color: #808080; display: inline-block;" href="/tag/<%= tag.name %>"><%= tag.count %> <%= t('tag.index.more_posts') %> &raquo;</a>
 
         <a style="float: right;  width: 100px;" rel="tooltip" title="<%= t('sidebar._post_button.share_your_work') %>" data-placement="bottom" href="/post?tags=<%= tag.name %>" class="btn btn-primary btn-sm">New post <i class="fa fa-plus fa-white"></i></a>
         <% if current_user %>
@@ -46,12 +48,11 @@
     display: grid;
   }
 
-  .node-body {
-    display: flex;
-  }
-
   .circle {
     background-color: gray;
+    display: block;
+    margin-right: 8px;
+    float: left;
     height: 20px;
     width: 20px;
     border-radius: 100%;
