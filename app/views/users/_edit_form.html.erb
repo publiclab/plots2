@@ -20,14 +20,14 @@
 
       <div class="form-group col-md-6">
         <label for="username"><%= t('users._form.username') %></label>
-        <%= f.text_field :username, { readonly: true, tabindex: 1, placeholder: "Username", class: 'form-control', id: 'username' , title: 'Username field cannot be changed', disabled: true, name: 'username'} %>
+        <%= f.text_field :username, { readonly: true, tabindex: 1, placeholder: "Username", class: 'form-control', id: 'username' , title: 'Username field cannot be changed', disabled: true} %>
         <input type="hidden" name="id" value="<%= @user.username %>" />
       </div>
 
       <div class="form-group col-md-6">
 
         <label for="email"><%= t('users._form.email') %></label>
-        <%= f.text_field :email, { tabindex: 3, required: true, placeholder: "you@email.com", class: 'form-control', id: 'email' ,name: 'email'} %>
+        <%= f.text_field :email, { tabindex: 3, required: true, placeholder: "you@email.com", class: 'form-control', id: 'email'} %>
       </div>
 
     </div>
