@@ -2,13 +2,6 @@
 <!-- AJAXify -->
   <a class="ellipsis" data-toggle="dropdown">&nbsp<i class="fa fa-ellipsis-h" style="color : #666; font-size:15px; float:right;"></i></a>
   <div class="dropdown-menu">
-    <% unless @wildcard %>
-      <div class="dropdown-item">
-        <%= link_to tag_stats_path, id: params[:id] ,title: "Click to view graph" do %>
-          <i><i class="fa fa-bar-chart"></i> Stats </i>
-        <% end %>
-      </div>
-    <% end %>
     <div class="dropdown-item">
       <a href="/feed/tag/<%= params[:id] %>.rss"><i class="fa fa-rss"></i> RSS</a>
     </div>
@@ -25,7 +18,9 @@
         </div>
       <% end %>
       <div class="dropdown-item">
-        <a tabindex="0" data-toggle="popover" data-trigger = "" data-placement="bottom" data-html="true" data-title="<%= t('tag.show.users_following_tag') %>" data-content="<% Tag.followers(params[:id]).each do |user| %><i class='fa fa-star-o'></i> <a href='/profile/<%= user.username %>'><%= user.username %></a><br /><% end %><% if Tag.follower_count(params[:id]) == 0 %><i><%= t('tag.show.none') %></i><% end %>"><%= Tag.follower_count(params[:id]) %> <i class="fa fa-user"></i> <span class="caret"></span></a></li>
+        <%= link_to tag_stats_path, id: params[:id] ,title: "Click to view graph" do %>
+          <i class="fa fa-bar-chart"></i> Topic statistics
+        <% end %>
       </div>
       <div class="dropdown-item">
         <a href="/tag-pages">How to edit this card</a>
@@ -40,17 +35,20 @@
         <div class="dropdown-item">
           <div id="add_parent">
             <p><b>Add a tag parent (admin only)</b></p>
-            <div class="card bg-light">
-              <div class="card-body">
-                <form class="form" action="/tag/parent" method="get">
-                  <input type="text" placeholder="parent" name="parent" />
+            <form class="form" action="/tag/parent" method="get">
+              <div class="control-group">
+                <div class="input-group">
+                  <input class="form-control" type="text" placeholder="parent" name="parent" />
                   <input type="hidden" placeholder="parent" name="name" value="<%= @tags&.first&.name %>" />
-                  <input class="btn btn-outline-secondary btn-lg" type="submit" value="Submit" />
-                </form>
+                  <div class="input-group-append">
+                    <input class="btn btn-outline-secondary" type="submit" value="Submit" />
+                  </div>
+                </div>
               </div>
-            </div>
+            </form>
           </div>
-        <% end %>
+        </div>
+      <% end %>
 
     <% end %>
 </div>
