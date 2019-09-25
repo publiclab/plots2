@@ -4,10 +4,10 @@
   <%= render partial: 'tag/show/header' %>
   <div class= "card tag-card">
     <div class="card-body">
-      <span class="pull-right"><%= render :partial => "tag/show/user_controls" %></span>
+      <div class="pull-right"><%= render :partial => "tag/show/user_controls" %></div>
       <h1 style="margin-top:6px;"><%= @title %></h1>
       <% if @wiki %>
-        <p class = "wiki-sub"><%= @wiki.latest.body %></p>
+        <p class = "wiki-sub"><%= @wiki.latest.body.split('\n').first %></p>
       <% end %>
       <div class="tag-buttons">
         <div class="btn-group" role="group">
