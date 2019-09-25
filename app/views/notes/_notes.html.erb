@@ -32,7 +32,7 @@
           <p class="meta">
           <small>
             <% if node.type == 'note' %>
-              <div style="font-size: 1.3em;">Activity by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>">@<%= node.author.name %></a> <%= node.author.new_contributor %></div>
+              <div style="font-size: 1.3em;">Post by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>">@<%= node.author.name %></a> <%= node.author.new_contributor %></div>
                 <a class="ellipsis bottom-right" data-toggle="dropdown">&nbsp<i class="fa fa-ellipsis-h" style="color : #666; font-size:15px; float:right;"></i></a>
                   <ul class="dropdown-menu" style = "width: 150px; font-size:10px;">
                     <li>
@@ -87,8 +87,9 @@
     </div>
 </div>
 <%= will_paginate notes, renderer: WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated %>
+
 <style>
-.card {
+#notes .card {
   background-color: #fff;
   border: 1px solid;
   border-color: #D3D3D3;
@@ -96,45 +97,45 @@
   margin:1em 0em 1em 0em;
   padding: 0px !important;
 }
- .card-body {
+#notes .card-body {
   margin-right: 1em;
   margin-left: 1em;
   padding: 0.8em;
   text-align: left;
 }
 
-.btn {
+#notes .btn {
   font-size: 15px;
 }
 
-.buttons {
+#notes .buttons {
   text-align: center;
 }
 
-.imgg {
+#notes .imgg {
   background: #aaa;
   display: flex;
   align-items: center;
 }
 
-.note-not {
+#notes .note-not {
   margin-left:auto;
   margin-right: auto;
   color: #fff;
 }
 
-.ellipsis{
+#notes .ellipsis {
   cursor: pointer;
 }
 
-.dropdown-menu li a{
+#notes .dropdown-menu li a{
   display: inline-block;
   padding-bottom: 5px;
   padding-left: 14px;
   font-size: 13px;
 }
 
-.bottom-right {
+#notes .bottom-right {
   position: absolute;
   bottom: 10px;
   right: 16px;
