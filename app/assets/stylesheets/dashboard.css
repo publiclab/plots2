@@ -254,6 +254,10 @@
   color: #555;
 }
 
+.note-comment .body {
+  overflow-wrap : break-word;
+}
+
 .note-wiki    .btn-default:hover,
 .note-comment .btn-default:hover {
   background: #eee;
