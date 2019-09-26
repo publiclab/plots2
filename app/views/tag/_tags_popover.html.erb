@@ -2,16 +2,19 @@
   <p> Follow related tags: </p>
   <%= form_with remote: true, url: '/subscribe/multiple/tag' do |f| %>
     <% tags&.each_with_index do |tag, i| %>
-    <div class="form-check">
-      <label class="form-check-label">
-        <input type="checkbox" id="<%= tag.id %>" name="tagnames[]" value="<%= tag.name %>" <% if i == 0 || current_user&.following(tag.name) %> checked <% end %> ><span class="<% if tag.name.include?(':') %> badge badge-primary <% else %> badge badge-secondary <% end %>" style="margin-left: 3px; margin-right: 10px; display: inline-block;"> <%= tag.name %></span>
-      </label>
-    </div>
-    <% end %>
+      <div class="form-check">
+        <label class="form-check-label">
+          <input type="checkbox" id="<%= tag.id %>" name="tagnames[]" value="<%= tag.name %>" <% if i == 0 || current_user&.following(tag.name) %> checked <% end %> />
+          <span class="<% if tag.name.include?(':') %> badge badge-primary <% else %> badge badge-secondary <% end %>" style="margin-left: 3px; margin-right: 10px; display: inline-block;"> 
+            <%= tag.name %>
+          </span>
+        </label>
+      </div>
+      <% end %>
     <% if current_user %>
-    <%= f.submit 'Subscribe', id: "subscribe", class: "btn btn-primary btn-sm" %>
+      <p><%= f.submit 'Follow', id: "subscribe", class: "btn btn-primary btn-sm" %></p>
     <% else %>
-      <a class="btn btn-primary btn-sm btn-white" onClick="require_login_and_redirect_to('/subscribe/multiple/tag/' + getCheckedTags())">Subscribe</a>
+      <p><a class="btn btn-primary btn-sm btn-white" onClick="require_login_and_redirect_to('/subscribe/multiple/tag/' + getCheckedTags())">Follow</a></p>
     <% end %>
   <% end %>
 </div>
@@ -24,8 +27,8 @@ function getCheckedTags() {
 }
 </script>
 <style>
-  .small_heading{
+.small_heading {
   font-style: italic;
   color: #004d80;
-  }
+}
 </style> 
