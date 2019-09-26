@@ -109,7 +109,7 @@ group :test, :development do
   gem 'minitest-reporters', '~> 1.3.8'
   gem 'openssl', '~> 2.1.2'
   gem 'phantomjs'
-  gem 'puma', '~> 4.1'
+  gem 'puma', '~> 4.2'
   gem 'rails-perftest'
   gem 'rake', '~> 12.3.3'
   gem 'rest-client'
