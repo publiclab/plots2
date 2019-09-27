@@ -120,6 +120,11 @@ class ScreenshotsTest < ApplicationSystemTestCase
     take_screenshot
   end
   
+  test 'embeddable grids' do
+    visit '/embed/grid/test'
+    take_screenshot
+  end
+  
   test 'blog page with location modal' do
     visit '/'
     click_on 'Login'
