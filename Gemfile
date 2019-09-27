@@ -111,7 +111,7 @@ group :test, :development do
   gem 'phantomjs'
   gem 'puma', '~> 4.2'
   gem 'rails-perftest'
-  gem 'rake', '~> 12.3.3'
+  gem 'rake', '~> 13.0.0'
   gem 'rest-client'
   gem 'rspec'
   gem 'selenium-webdriver', '~> 3.142.4'
