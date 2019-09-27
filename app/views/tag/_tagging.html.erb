@@ -52,7 +52,7 @@ $(function () {
   <span style="float:left;color:#666;margin-top:14px;margin-left:5px;">Add tags</a> 
 <% end %>
 
-<%= render partial: 'tag/form', locals: { node: @node ||= nil, user: user ||= nil } %>
+<%= render partial: 'tag/form', locals: { node: @node ||= nil, user: user ||= nil, url: url ||= nil } %>
 
 <% end %>
 
