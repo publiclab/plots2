@@ -35,8 +35,10 @@
             <% if !current_user.following(tag.name) %>
               <a style="width: 100px;" class="btn btn-outline-secondary btn-sm index-follow-buttons follow-btn-remote" href="/subscribe/tag/<%= tag.name %>" data-remote="true"><%= t('tag.index.follow') %></a>
             <% end %>
+            <a rel="tooltip" title="<%= t('sidebar._post_button.share_your_work') %>" data-placement="bottom" href="/post?tags=<%= tag.name %>" class="btn btn-primary btn-sm requireLogin">New post <i class="fa fa-plus fa-white"></i></a>
+          <% else %>
+            <a class="btn btn-primary btn-sm index-follow-buttons follow-btn-remote requireLogin" href="/subscribe/tag/<%= tag.name %>" data-remote="true"><%= t('tag.index.follow') %></a>
           <% end %>
-          <a rel="tooltip" title="<%= t('sidebar._post_button.share_your_work') %>" data-placement="bottom" href="/post?tags=<%= tag.name %>" class="btn btn-primary btn-sm requireLogin">New post <i class="fa fa-plus fa-white"></i></a>
         </div>
       </div>
     </div>
