@@ -15,11 +15,11 @@ class ProfileTest < ApplicationSystemTestCase
     find_link('tags-section', href: nil).click
     find_link('tags-open', href: nil).click
     find('.tag-input').set("test_user_tag\n")
-    assert_selector('span', text: 'test_user_tag')
 
-    accept_alert('Are you sure you want to delete it?') do
-      find_link('x', href: /name=test_user_tag\z/).click
+    within('div#tags.profile-tags') do
+      assert_selector('a', text: 'test_user_tag')
+      find('p:last-of-type a', text: 'x').click
+      assert_no_selector('a', text: 'test_user_tag')
     end
-    assert_no_selector('span', text: 'test_user_tag')
   end
 end
