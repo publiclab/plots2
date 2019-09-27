@@ -239,7 +239,7 @@ Plots2::Application.routes.draw do
 
   post 'profile/tags/create/:id' => 'user_tags#create'
   get 'profile/tags/create/:id' => 'user_tags#create'
-  delete 'profile/tags/delete/:id' => 'user_tags#delete'
+  delete 'profile/tags/delete/:uid/:id' => 'user_tags#delete'
   get 'user_tags' => 'user_tags#index'
   get 'user_tags/:search' => 'user_tags#index'
   get 'groups' => 'user_tags#index'

@@ -94,11 +94,11 @@ class UserTagsController < ApplicationController
       errors: []
     }
 
-    @user_tag = UserTag.where(uid: params[:id], value: params[:name]).first
+    @user_tag = UserTag.where(id: params[:id], uid: params[:uid]).first
 
     if !@user_tag.nil?
       if logged_in_as(['admin']) || @user_tag.user == current_user
-        UserTag.where(uid: params[:id], value: params[:name]).destroy_all
+        UserTag.where(id: params[:id], uid: params[:uid]).destroy_all
         output[:errors] = I18n.t('user_tags_controller.tag_deleted')
         output[:status] = true
       else
