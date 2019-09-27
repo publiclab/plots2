@@ -230,9 +230,9 @@ class User < ActiveRecord::Base
     following_users.include?(other_user)
   end
 
-  def profile_image
+  def profile_image(size = :thumb)
     if photo_file_name
-      photo_path(:thumb)
+      photo_path(size)
     else
       "https://www.gravatar.com/avatar/#{OpenSSL::Digest::MD5.hexdigest(email)}"
     end
