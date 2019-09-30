@@ -507,6 +507,15 @@ div.note.moderated h4 {
   }
 }
 
+@media (min-width:400px) {
+  .back-to-top i {
+    font-size: 40px;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+  }
+}
+
 .back-to-top {
 
   float: right;
