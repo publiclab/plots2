@@ -139,4 +139,14 @@ class ScreenshotsTest < ApplicationSystemTestCase
     take_screenshot
   end
 
+  test 'mobile displays' do
+    node = nodes(:place) # /wiki/chicago page
+    revision = node.latest
+    revision.body = '<iframe width="360px" height="1300px" src="/post"></iframe> '
+    revision.body += '<iframe width="360px" height="1300px" src="/tag/babylegs"></iframe>'
+    revision.save
+    visit node.path
+    take_screenshot
+  end
+  
 end
