@@ -135,7 +135,12 @@ a .fa-white,
   .visible-tiny {
     display:inline;
   }
-
+  .back-to-top i {
+    font-size: 40px;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+  }
   #pl_pad {
       width: 75%;
   }
@@ -504,15 +509,6 @@ div.note.moderated h4 {
 @media (max-width:400px) {
   table {
     font-size: 80%;
-  }
-}
-
-@media (min-width:400px) {
-  .back-to-top i {
-    font-size: 40px;
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
   }
 }
 
