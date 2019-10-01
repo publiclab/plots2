@@ -5,10 +5,8 @@ class UniqueUrlValidator < ActiveModel::Validator
       # otherwise the below title uniqueness check fails, as title presence validation doesn't run until after
     elsif record.type == 'page'
       array = %w(create edit update delete new)
-      array.each do |x|
-        if record.title == x
-          record.errors[:base] << "You may not use the title '" + x + "'"
-        end
+      if array.include? record.title.downcase
+        record.errors[:base] << "You may not use the title '#{record.title}'"
       end
     else
       if !Node.where(path: record.generate_path).first.nil? && record.type == 'note'
