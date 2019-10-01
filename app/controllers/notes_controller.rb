@@ -54,7 +54,7 @@ class NotesController < ApplicationController
         redirect_to @node.path(:question)
         return
       end
-      
+
       alert_and_redirect_moderated
       redirect_power_tag_redirect
 
@@ -375,7 +375,7 @@ class NotesController < ApplicationController
       @node.slug = @node.slug.split('token').first
       @node.publish
       SubscriptionMailer.notify_node_creation(@node).deliver_now
-      flash[:notice] = "Thanks for your contribution. Research note published! Now, it's visible publically."
+      flash[:notice] = "Thanks for your contribution. Research note published! Now, it's visible publicly."
       redirect_to @node.path
     else
       flash[:warning] = "You are not author or moderator so you can't publish a draft!"
