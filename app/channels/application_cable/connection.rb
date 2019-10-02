@@ -6,13 +6,14 @@ module ApplicationCable
     end
 
     def find_verified_user
-      if cookies.signed['user_token'] unless nil
-        user = User.where(persistence_token: cookies.signed['user_token'])
-        if user.any?
-          return user.first
-        else
-          return nil
-        end
+      return nil if cookies.signed['user_token'].nil
+
+      user = User.where(persistence_token: cookies.signed['user_token'])
+      if user.any?
+        return user.first
+      else
+        return nil
+      end
     end
   end
 end
