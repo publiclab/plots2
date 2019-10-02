@@ -129,16 +129,12 @@ a .fa-white,
 }
 
 @media (max-width:400px) {
-  .hidden-tiny {
-    display:none;
-  }
-  .visible-tiny {
-    display:inline;
-  }
-
-  #pl_pad {
-      width: 75%;
-  }
+.back-to-top i {
+font-size: 40px;
+position: fixed;
+bottom: 20px;
+right: 20px;
+}
 }
 
 @media (min-width:400px) {
