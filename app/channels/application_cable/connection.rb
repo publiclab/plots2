@@ -4,7 +4,7 @@ module ApplicationCable
     def connect
       self.current_user = find_verified_user
     end
-    
+
     def find_verified_user
       if cookies.signed['user_token'] != nil
         user = User.where(persistence_token: cookies.signed['user_token'])
