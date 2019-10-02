@@ -10,18 +10,16 @@
           <a href="<%= note.path %>">
             <b><%= note.title %></b>
           </a> 
-        </p>
-        <p>
-          <small style="color:#888;">
+          <small style="color:#222;font-size:8px">
             <%= raw t('sidebar._notes.updated_by', :time => time_ago_in_words(note.created_at), :url1 => "/profile/"+note.author.name, :author_name => note.author.name) %>
           </small>
         </p>
       <% end %>
     <% end %>
-
     <% if params[:controller] == "search" %>
       <p><a href="/tag/<%= params[:id] %>"><%= t('sidebar._notes.more') %></a></p>
     <% end %>
-
+    <i class="fa fa-comment-o"></i>
+    <%= node.comments.size %><% end %>
   </div>
 <% end %>
