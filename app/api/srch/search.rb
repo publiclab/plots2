@@ -181,7 +181,7 @@ module Srch
           DocList.new('', search_request)
         end
       end
-        
+
       # Request URL should be /api/srch/nodes?query=QRY
       desc 'Perform a search of nodes', hidden: false,
                                                  is_array: false,
