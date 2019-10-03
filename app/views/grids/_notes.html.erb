@@ -7,6 +7,7 @@
       <th><a data-type="author">Author</a></th>
       <th><a data-type="updated">Updated</a></th>
       <th><a data-type="likes">Likes</a></th>
+      <th><a data-type="comments">Comments</a></th>
     <% elsif type == "activity" || type == "upgrades" %>
       <th><a data-type="title">Purpose</a></th>
       <th><a data-type="category">Category</a></th>
@@ -52,6 +53,7 @@
       <td class="author"><a href="/profile/<%= node.author.username %>">@<%= node.author.username %> <%=node.author.new_contributor %></a></td>
       <td class="updated" data-timestamp="<%= node.latest.timestamp.to_s %>"><%= distance_of_time_in_words(Time.at(node.latest.updated_at), Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></td>
       <td class="likes"><%= node.cached_likes.to_s %></td>
+      <td><%= node.comments_count.to_s %></td>
     <% else %>
       <td class="title">
         <% if node.has_tag("pin:#{tagname}") %><i rel="tooltip" title="This item was pinned with the tag 'pin:<%= tagname %>'." class="fa fa-thumb-tack"></i> 
