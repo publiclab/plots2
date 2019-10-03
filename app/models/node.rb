@@ -144,17 +144,20 @@ class Node < ActiveRecord::Base
   end
 
   # should only be run at actual creation time --
-  # or, we should refactor to us node.created instead of Time.now
+  # or, we should refactor to use node.created instead of Time.now
   def generate_path
-    if type == 'note'
-      username = User.find_by(id: uid).name
-      "/notes/#{username}/#{Time.now.strftime('%m-%d-%Y')}/#{title.parameterize}"
-    elsif type == 'page'
-      '/wiki/' + title.parameterize
-    elsif type == 'map'
-      "/map/#{title.parameterize}/#{Time.now.strftime('%m-%d-%Y')}"
-    elsif type == 'feature'
+    time = Time.now.strftime('%m-%d-%Y')
+
+    case type
+    when "note"
+      username = User.find_by(id: uid).name # name? or username?
+      "/notes/#{username}/#{time}/#{title.parameterize}"
+    when "map"
+      "/map/#{title.parameterize}/#{time}"
+    when "feature"
       "/feature/#{title.parameterize}"
+    when "page"
+      "/wiki/#{title.parameterize}"
     end
   end
 
@@ -415,21 +418,32 @@ class Node < ActiveRecord::Base
   end
 
   # returns all power tag results as whole community_tag objects
-  def power_tag_objects(tagname)
-    tids = Tag.includes(:node_tag)
+  def power_tag_objects(tagname = nil)
+    tags = Tag.includes(:node_tag)
               .references(:community_tags)
-              .where('community_tags.nid = ? AND name LIKE ?', id, tagname + ':%')
-              .collect(&:tid)
+              .where('community_tags.nid = ?', id)
+    if tagname
+      tags = tags.where('name LIKE ?', tagname + ':%')
+    else
+      tags = tags.where('name LIKE ?', '%:%') # any powertag 
+    end
+    tids = tags.collect(&:tid)
     NodeTag.where('nid = ? AND tid IN (?)', id, tids)
   end
 
   # return whole community_tag objects but no powertags or "event"
-  def normal_tags
-    tids = Tag.includes(:node_tag)
-              .references(:community_tags)
-              .where('community_tags.nid = ? AND name LIKE ?', id, '%:%')
-              .collect(&:tid)
-    NodeTag.where('nid = ? AND tid NOT IN (?)', id, tids)
+  def normal_tags(order = :none)
+    all_tags = tags.select { |tag| !tag.name.include?(':') }
+    tids = all_tags.collect(&:tid)
+    if order == :followers
+      tags = NodeTag.where('nid = ? AND community_tags.tid IN (?)', id, tids)
+                    .left_outer_joins(:tag, :tag_selections)
+                    .order(Arel.sql('count(tag_selections.user_id) DESC'))
+                    .group(:tid)
+    else
+      tags = NodeTag.where('nid = ? AND tid IN (?)', id, tids)
+    end
+    tags
   end
 
   def location_tags

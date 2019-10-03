@@ -373,10 +373,14 @@ class TagController < ApplicationController
       end
 
       node_tag.delete
+      output = {
+        status: true,
+        tid: node_tag.tid
+      }
       respond_with do |format|
         format.html do
           if request.xhr?
-            render plain: node_tag.tid
+            render json: output
           else
             flash[:notice] = I18n.t('tag_controller.tag_deleted')
             redirect_to node_tag.node.path

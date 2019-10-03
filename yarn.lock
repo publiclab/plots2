@@ -3185,14 +3185,14 @@ leaflet-blurred-location@^1.2.5, leaflet-blurred-location@^1.3.0:
     jquery "^3.2.1"
     leaflet "^1.3.3"
 
-leaflet-environmental-layers@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/leaflet-environmental-layers/-/leaflet-environmental-layers-2.0.0.tgz#2477012ffc2ad7af3152e73d82544f38eb3984c8"
-  integrity sha512-h2W95fMOijgS04I7W86qIQnlrWKaWSYOnaDAFFu9btR4HFIlUjFWtdYmMiDHlYNRFlEzrZYd6GqVoHFSs7dyiQ==
+leaflet-environmental-layers@2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/leaflet-environmental-layers/-/leaflet-environmental-layers-2.0.1.tgz#8d8e1acbf15c527eaf7ba7377334b08dec31515f"
+  integrity sha512-lGAJB1tOw7vsqHnuoVSDnO63AORSUIp4XKaUyIY8Qyzyyp9iki/IAL3XmKSadctzZo/wa3As2gUs8ffe8ZJZdg==
   dependencies:
     jquery "^3.3.1"
     leaflet "^1.3.1"
-    leaflet-blurred-location "git://github.com/publiclab/leaflet-blurred-location#main"
+    leaflet-blurred-location "git://github.com/publiclab/leaflet-blurred-location.git#main"
     leaflet-fullhash "github:sagarpreet-chadha/leaflet-fullHash"
     leaflet-heatmap "1.0.0"
     leaflet-providers "^1.1.17"

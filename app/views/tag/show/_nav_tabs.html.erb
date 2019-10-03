@@ -16,7 +16,7 @@
       
       calculated in the controller? -->
       <% if !@wildcard %>
-      <a class="dropdown-item <% if @node_type == "contributors" %> active <% end %>" href="/contributors/<%= params[:id] %>"><i class="fa fa-user"></i> <span class="d-none d-lg-inline"><%= raw t('tag.show.contributors') %></span><span class="badge"><%=@length %></span></a>
+      <a class="dropdown-item <% if @node_type == "contributors" %> active <% end %>" href="/contributors/<%= params[:id] %>"><i class="fa fa-user"></i> <span class="d-none d-lg-inline"><%= raw t('tag.show.people') %></span><span class="badge"><%=@length %></span></a>
       <% else %>
     <a class="disabled" class="dropdown-item<% if @node_type == "contributors" %> active <% end %>" href="#" rel="tooltip" title="Contributors cannot be listed for wildcard tag searches" ><i class="fa fa-user"></i> <span class="d-none d-lg-inline"><%= raw t('tag.show.contributors') %></span></a>
       <% end %>

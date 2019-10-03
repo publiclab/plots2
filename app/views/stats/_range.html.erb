@@ -11,7 +11,7 @@
             <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%d-%m-%Y") %>" value="<%=@end.strftime("%d-%m-%Y") %>" data-date-format="dd-mm-yyyy" tabindex="1" class="form-control" type="text" name="end">
         </div>
         <div class="col-lg-1">
-            <%= submit_tag "Go" , class: 'btn btn-primary', :style=>'margin-top:2em;'  %>
+            <%= submit_tag "Go", name: nil, class: 'btn btn-primary', :style=>'margin-top:2em;'  %>
         </div>
     </div>
 <% end %>

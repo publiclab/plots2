@@ -26,7 +26,7 @@ It was originally created by Caroline Hadilaksono: http://www.hadilaksono.com
 }
 
 body{
-    padding-top: 80px;
+  padding-top: 80px;
 }
 
 h1,h2,h3,h4 {
@@ -65,6 +65,25 @@ h5,h6, h1 small, h3 small {
 .pl-content p {
   max-width: 100%;
   border: none;
+}
+
+.btn-circle {
+  height: 45px;
+  width: 45px;
+  border-radius: 50%;
+  display: block;
+  padding: 8px 8px 0;
+  margin-right: 3px;
+  border-color: #ccc;
+  font-size: 18px;
+}
+
+.btn-circle-sm {
+  height: 25px;
+  width: 25px;
+  margin: 13px 5px;
+  padding: 5px 3px 0px 1px;
+  font-size: 11px;
 }
 
 #profile-fileinput {
@@ -290,8 +309,8 @@ a .fa-white,
   font-size: 16px;
   font-family: "Helvetica Neue";
   border-left: 5px solid #736f6f;
-  background-color: #f8f8f8;
   color: #555;
+  background-color: #f3f1ef;
 }
 
 #tags .label {
@@ -452,7 +471,7 @@ div.note.moderated h4 {
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
   background-color: #006dcc;
   *background-color: #3071a9;
-  background-image: -moz-linear-gradient(top, #0088cc, #3071a9);
+  background-image: -moz-linear-gradient(top, #0077dd, #4451a9);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#3071a9));
   background-image: -webkit-linear-gradient(top, #0088cc, #3071a9);
   background-image: -o-linear-gradient(top, #0088cc, #3071a9);

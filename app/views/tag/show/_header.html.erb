@@ -2,37 +2,35 @@
   <div id="wiki-content">
     <% if @wiki.main_image %>
 
-          <div class="im">
-            <div class="img-out1 d-none d-md-block" style="margin-bottom:10px;">
-              <%= image_tag(@wiki.main_image.path,
-                            class: "img-fluid d-none d-md-block",
-                            id: "tag-wiki-header-image1") %>
-            </div>
-            <div class="img-out2" style="margin-bottom:10px;">
-            <%= image_tag(@wiki.main_image.path,
-                          class: "img-fluid d-sm-none",
-                          id: "tag-wiki-header-image2") %>
-            </div>
-            <div class="bottom-right">
-              <a href="/contributors/<%= params[:id] %>">
-                <%= Tag.follower_count(params[:id]) %> people discussing
-              </a>
-            </div>
-          </div>
+      <div class="im">
+        <div class="img-out1 d-none d-md-block" style="margin-bottom:10px;">
+          <%= image_tag(@wiki.main_image.path,
+                        class: "img-fluid d-none d-md-block",
+                        id: "tag-wiki-header-image1") %>
+        </div>
+        <div class="img-out2" style="margin-bottom:10px;">
+        <%= image_tag(@wiki.main_image.path,
+                      class: "img-fluid d-sm-none",
+                      id: "tag-wiki-header-image2") %>
+        </div>
+        <div class="bottom-right">
+          <a href="/contributors/<%= params[:id] %>">
+            <%= Tag.follower_count(params[:id]) %> following
+          </a>
+        </div>
+      </div>
 
     <% else %>
 
     <div class="im d-none d-md-block" id="wiki-empty1">
-      <h5 class="line">This topic's wiki page doesn't have an image. </h5>
       <div class="bottom-right">
         <a href="/contributors/<%= params[:id] %>">
-          <%= Tag.follower_count(params[:id]) %> people discussing
+          <%= Tag.follower_count(params[:id]) %> following 
         </a>
       </div>
     </div>
     <div class="im d-sm-none" id="wiki-empty2">
-      <h5 style="margin: 5px; color: #777;">This topic's wiki page doesn't have an image. </h5>
-      <div class="bottom-right"><%= Tag.follower_count(params[:id]) %> people discussing</div>
+      <div class="bottom-right"><%= Tag.follower_count(params[:id]) %> following</div>
     </div>
 
     <% end %>
@@ -41,24 +39,12 @@
 
 <% elsif @wildcard %>
 
-  <% if @node_type == "questions"%>
-    <p>Here are all asked and answered questions.</p>
-  <% elsif @node_type == "note" && params[:id].match("activity:") %>
-    <p>These are completed activities.</p>
-  <% elsif @node_type == "note" && params[:id].match("replication:") %>
-    <p>These are the attempted activities.</p>
-  <% end %>
-  <p><i>This is a wildcard tag search. Please enter a tag without wildcards to display lead wiki pages.</i></p>
-  <p>Wildcard tag searches use the * asterisk in their URLs</p>
-
 <% else %>
 
 <div class="im d-none d-md-block" id="wiki-empty1">
-    <!-- <h5 class="line">This topic has no lead wiki page. </h5> -->
     <div class="bottom-right"><%= Tag.follower_count(params[:id]) %> people discussing</div>
 </div>
 <div class="im d-sm-none" id="wiki-empty2">
-    <!-- <h5 style="margin: 5px; color: #777;">This topic has no lead wiki page. </h5> -->
     <div class="bottom-right"><%= Tag.follower_count(params[:id]) %> people discussing</div>
 </div>
 <% end %>
@@ -128,12 +114,12 @@
 
 #wiki-content {
   padding: 0px !important;
-  margin: 0px !important;
+  margin: -15px !important;
 }
 
 #wiki-empty2 {
   width: 100%;
-  height: 200px;
+  height: 390px;
   background-color: #eee;
   margin-bottom:10px;
   display: flex;

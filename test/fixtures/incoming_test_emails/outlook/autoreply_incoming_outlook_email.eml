@@ -1,0 +1,113 @@
+Delivered-To: foobar@gmail.com
+Received: by 2002:ac9:6015:0:0:0:0:0 with SMTP id y21csp12962622ocj;
+        Sun, 11 Aug 2019 19:14:48 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqwToBRpV/nUEq/POX1gp5rdfC1fn8tnyv0uv0TRl4AME0zI2n69OT5fc2pDHFVPdJOCddtO
+X-Received: by 2002:a17:90a:9f0b:: with SMTP id n11mr20807443pjp.98.1565576088365;
+        Sun, 11 Aug 2019 19:14:48 -0700 (PDT)
+ARC-Seal: i=2; a=rsa-sha256; t=1565576088; cv=pass;
+        d=google.com; s=arc-20160816;
+        b=uNc8Z5+0MrA8Q3lGl7qMsbQKNHGbnnbqB6ujfu3kJi5EgIPRUGDZOODnLgIELev6vy
+         oN1Z9C2jixda8xFSLJ4ZRGZtJxgzIoVJTNE+mR25neZhnc7+V9jWL9hB4U52WYxLcE1c
+         S+gkpgMV13wJ17ad9dyflWyoovoQH/Dldug2fkRXSweFLlRSmPmk9tq8c0I5BdlO8BR7
+         aCoIYYn9r90uDrQ1B6cqRMtugGeBDcXHFQhM2JvCxazYOW01LqqEWaJqvjXDvyZbbvf1
+         3RbLGXQ7FUNddjsln9e8IMIfYXEkxzVPO9I/1w9ibMOKBPouyuwrCo7hFYSt5S1uC0wh
+         Dn7A==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=mime-version:auto-submitted:in-reply-to:references:message-id:date
+         :thread-index:thread-topic:subject:to:from:dkim-signature
+         :dkim-signature;
+        bh=SH9zooEeDxo/fwjmIySfqsoWxEhKMkRbngdyL2btr9c=;
+        b=SEeO/j8AflSNfoo0xjMrXq5XAdLVRu9YUzFIF9lx7sKRHACgLfpNayuO0wVIkXFHZd
+         Y2W86rIahSzbh4aw/DYj0Hy/tzE7MCsInj7Nul9wFVO2w253kFs1Y5opqH00l/9OTPbn
+         n4Qpvp+TGbdzh/mgsLK2W7Gt6gqIZVxv0Zk+lsD6+ND3HXZGrtu89gkKiXcsl4mD3Alt
+         bmI45KIGFFm7qL4y/FhELKVJkB33QgnGK+DKjPF9tosy5Og7K/SAD5NAJf/vsOUXHn1h
+         5T1X6KelbWriVPd4WGexx3imsbEMPq24PAj2xsAOKBsQjzA/dTnbPBbhrhNhZ61bomAr
+         AB3w==
+Return-Path: <>
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com. [67.231.145.42])
+        by mx.google.com with ESMTPS id w18si55108253pll.132.2019.08.11.19.14.48
+        for <foobar@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 11 Aug 2019 19:14:48 -0700 (PDT)
+Received-SPF: pass (google.com: best guess record for domain of postmaster@mx0a-00082601.pphosted.com designates 67.231.145.42 as permitted sender) client-ip=67.231.145.42;
+Received: from pps.filterd (m0109334.ppops.net [127.0.0.1]) by mx0a-00082601.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x7C2DqGr010630 for <foobar@gmail.com>; Sun, 11 Aug 2019 19:14:47 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com; h=from : to : subject : date : message-id : references : in-reply-to : content-type : mime-version; s=facebook; bh=SH9zooEeDxo/fwjmIySfqsoWxEhKMkRbngdyL2btr9c=; b=c8vMRMCoBCE81fHklgQREUQAN28ktxC6Iv6GowLW/DDXPpoyBRyBtyLC+mldfAtBPYSP hZck2VqBhw0pLFAFNThI4j2uB4nSadytfjGieBqTMsIYGUW6e5973Phd9losrErE8Rw7 9ZbhYuZ2wdnR6B0QHZmuACDV7d3oUGPLnUk=
+Received: from mail.thefacebook.com (mailout.thefacebook.com [199.201.64.23]) by mx0a-00082601.pphosted.com with ESMTP id 2u9w7jcwuy-1 (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT) for <foobar@gmail.com>; Sun, 11 Aug 2019 19:14:47 -0700
+Received: from prn-mbx03.TheFacebook.com (2620:10d:c081:6::17) by prn-hub05.TheFacebook.com (2620:10d:c081:35::129) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.1.1713.5; Sun, 11 Aug 2019 19:14:47 -0700
+Received: from prn-hub06.TheFacebook.com (2620:10d:c081:35::130) by prn-mbx03.TheFacebook.com (2620:10d:c081:6::17) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.1.1713.5; Sun, 11 Aug 2019 19:14:46 -0700
+Received: from NAM01-BY2-obe.outbound.protection.outlook.com (192.168.54.28) by o365-in.thefacebook.com (192.168.16.30) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.1.1713.5 via Frontend Transport; Sun, 11 Aug 2019 19:14:46 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none; b=oLB17hDapG9Gj/rMCH+olExparnPszjld5cHEd2AJ2PW+Rm2zt/hVQHfUoTg5gNrF5FedsxIN6I7Pq/cBbWqwT4Cy0lIfFn1Y9J7zmzKPjyJsul9TAC5S/SiLSBzZxH0SwzoVQ8oRu1m1dgorGYhTZwej2BbhO4HzNq8XETp79aMPMSAz4daLRgAoybSwjop6VsO23eWHFQx2jJ8NqBvC7GpnCq4bGZYfO1BZc7aHwrVwl0bgSLoR+ELYGV14CXivvKXP0/O9jz0LffKZZg3u6wp6KRohrwGkWJDpYGd+EWAzOJFNBuIgMgCJfRUM7pr4TD6hGN+9RRyd1VHFCU3fw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; s=arcselector9901; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck; bh=SH9zooEeDxo/fwjmIySfqsoWxEhKMkRbngdyL2btr9c=; b=Hujt+2Trw69hr5XWbrrMYbr32ajQFxRdvMXmhWWGyaXhHsdkoBfFAmgOWjSpJT+mZgiI2Y22uLf7jsRWdncBg+VhMzWAY/nxsyyOsrJj+mukqY146MfxInQqJmC+7YyyJXA7whPYWMv+EAIv4Fsn7z+nRN2Q+CbHw2wVmC5HAgymV9zDQrawTQuH+gN22EYJMW6tNsAazB282sUAgUt7DlCg34kyAUE9UOA9/yBKbDGnEUu6xq9NxUwrFtFkxGPLYla0ngT65TnA1hEh+rnwaGQhrq5rsR7Rbun3uH6yNJ900hGA2luDwHR3oPgoLmZ9j0XTwFmF8bL0AzQyYtq6ig==
+Received: from DM6PR15MB2777.namprd15.prod.outlook.com (20.179.163.146) by DM6PR15MB2540.namprd15.prod.outlook.com (20.179.160.85) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2157.21; Mon, 12 Aug 2019 02:14:45 +0000
+Received: from DM6PR15MB2777.namprd15.prod.outlook.com ([::1]) by DM6PR15MB2777.namprd15.prod.outlook.com ([fe80::5cfa:3237:cb0d:b85a%4]) with Microsoft SMTP Server id 15.20.2157.020; Mon, 12 Aug 2019 02:14:45 +0000
+From: Rando <rando@outlook.com>
+To: Foo Bar <foobar@gmail.com>
+Subject: Automatic reply: Woop woop
+Thread-Topic: Woop woop
+Thread-Index: AQHVULO11tG5TR7yjU2q+EmQ+iKZV6b2xgNQ
+Date: Mon, 12 Aug 2019 02:14:45 +0000
+Message-ID: <39f7c248425c45799bff54c1aa54bc6a@DM6PR15MB2777.namprd15.prod.outlook.com>
+References: <CAD0mb+beEqvZVGzEDQLqAJ1Jrkvvp3LZCeTMy+e5HONJ8CypiQ@mail.gmail.com>
+In-Reply-To: <CAD0mb+beEqvZVGzEDQLqAJ1Jrkvvp3LZCeTMy+e5HONJ8CypiQ@mail.gmail.com>
+X-MS-Has-Attach:
+X-Auto-Response-Suppress: All
+X-MS-Exchange-Inbox-Rules-Loop: rando@outlook.com
+X-MS-TNEF-Correlator:
+x-ms-exchange-parent-message-id: <CAD0mb+beEqvZVGzEDQLqAJ1Jrkvvp3LZCeTMy+e5HONJ8CypiQ@mail.gmail.com>
+auto-submitted: auto-generated
+x-ms-exchange-generated-message-source: Mailbox Rules Agent
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: aebddc9b-c77e-4b93-10cb-08d71ecad810
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600148)(711020)(4605104)(1401327)(4534185)(4627221)(201703031133081)(8559020)(8990200)(2017052603328);SRVR:DM6PR15MB2540;
+x-ms-traffictypediagnostic: DM6PR15MB2540:
+x-ms-exchange-purlcount: 1
+x-microsoft-antispam-prvs: <DM6PR15MB254046A7BDB8F229E41B0E39B8D30@DM6PR15MB2540.namprd15.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:1751;
+x-forefront-prvs: 012792EC17
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(50650200002)(376002)(396003)(346002)(366004)(39860400002)(136003)(189003)(199004)(6916009)(498600001)(1411001)(53096004)(4270600006)(316002)(99286004)(55016002)(6436002)(9686003)(8936002)(486006)(476003)(11346002)(446003)(64756008)(66946007)(66476007)(66556008)(7696005)(108616005)(76176011)(24736004)(66446008)(54896002)(6306002)(6506007)(26005)(102836004)(88996005)(42882007)(256004)(5660300002)(71190400001)(81166006)(74316002)(71200400001)(78352004)(8676002)(81156014)(53936002)(25786009)(558084003)(2906002)(111220200004)(46342002)(80100003);DIR:OUT;SFP:1501;SCL:1;SRVR:DM6PR15MB2540;H:DM6PR15MB2777.namprd15.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:0;A:0;
+received-spf: None (protection.outlook.com: DM6PR15MB2777.namprd15.prod.outlook.com does not designate permitted sender hosts)
+x-ms-exchange-senderadcheck: 1vEDhyTRED81bvNZE+LwclY419LhNDfO8LPTen6oG8800Leip3A/srpHk=
+x-ms-exchange-transport-forked: True
+Content-Type: multipart/alternative; boundary="_000_39f7c248425c45799bff54c1aa54bc6aDM6PR15MB2777namprd15pr_"
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-Network-Message-Id: aebddc9b-c77e-4b93-10cb-08d71ecad810
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Aug 2019 02:14:45.3013 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 8ae927fe-1255-47a7-a2af-5f3a069daaa2
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR15MB2540
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-08-11_12:,, signatures=0
+
+
+--_000_39f7c248425c45799bff54c1aa54bc6aDM6PR15MB2777namprd15pr_
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+Testing auto reply stuff for a minute
+
+--_000_39f7c248425c45799bff54c1aa54bc6aDM6PR15MB2777namprd15pr_
+Content-Type: text/html; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/htm=
+l4/strict.dtd">
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-ascii"=
+>
+<meta http-equiv=3D"Content-Style-Type" content=3D"text/css">
+<title></title>
+<meta name=3D"Generator" content=3D"Cocoa HTML Writer">
+<meta name=3D"CocoaVersion" content=3D"1671.6">
+<style type=3D"text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 16.0px; font: 13.3px Ta=
+homa; color: #000000; -webkit-text-stroke: #000000}
+span.s1 {font-kerning: none}
+</style>
+</head>
+<body>
+<p class=3D"p1"><span class=3D"s1">Testing auto reply stuff for a minute</s=
+pan></p>
+</body>
+</html>
+
+--_000_39f7c248425c45799bff54c1aa54bc6aDM6PR15MB2777namprd15pr_--

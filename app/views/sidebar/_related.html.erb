@@ -1,20 +1,17 @@
 <div class="col-lg-3 d-print-none">
 
-  <a style="margin-top:-16px;margin-bottom:0;" class="btn btn-sm btn-block btn-link d-lg-none" href="javascript:void()" onClick="toggle_sidebar()"><i class="fa fa-chevron-down"></i></a>
-
-  <div id="sidebar" class="d-none d-lg-block">
+  <div id="sidebar">
 
   <% cache('related_sidebar-feature', skip_digest: true) do %>
     <%= feature('sidebar') %>
   <% end %>
 
   <div class="d-print-none">
-  <%= render :partial => "like/like", :locals => {:node => @node, :tagnames => @tagnames } %>
+    <%= render :partial => "like/like", :locals => {:node => @node, :tagnames => @tagnames } %>
   </div>
 
   <% if @node %>
-    <br />
-    <%= render :partial => "sidebar/events" %>
+    <%= render partial: "sidebar/events" %>
   <% end %>
 
   <% if @node && (@node.has_power_tag('iso') || @node.has_power_tag('lang')) %>
@@ -61,7 +58,7 @@
   </div>
 
   <% if @node %>
-    <div id=sidebar-tags>
+    <div id="sidebar-tags">
       <%= render partial: 'tag/tagging' %>
     </div>
   <% end %>

@@ -10,9 +10,11 @@
 
 <br class="d-lg-none" style="clear:both;" />
 
-<h1 style="font-family: 'Junction Light';">
-  <i class="fa fa-book"></i> <%= @revision.title %>
-  <a onClick="$('#wiki-toolbar').toggle()" class="btn btn-link"><b><i class="fa fa-caret-down"></i></b></a>
+<h1 style="font-size:3em;margin-top:20px;text-align:center;font-family:'Junction Light';">
+  <%= @revision.title %>
+  <% if @presentation || @node.has_tag('style:minimal') %>
+    <a onClick="$('#wiki-toolbar').toggle()" class="btn btn-link"><b><i class="fa fa-caret-down"></i></b></a>
+  <% end %>
 </h1>
 
 <% if @is_revision %>
