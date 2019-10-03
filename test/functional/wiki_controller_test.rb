@@ -25,10 +25,10 @@ class WikiControllerTest < ActionController::TestCase
   end
 
   test 'should get wiki index in alphabetical order' do
-    get :index, params: { order: 'alphabetic' }
+    get :index, params: { sort: 'title' }
 
     assert_response :success
-    assert_not_nil :wikis
+    assert assigns(:wikis).each_cons(2).all?{|i,j| j.name >= i.name}
   end
 
   test 'should get wiki stale pages' do
