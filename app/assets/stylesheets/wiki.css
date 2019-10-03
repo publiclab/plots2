@@ -75,6 +75,10 @@ a.navbar-offset {
   }
 }
 
+.tooltip-inner { 
+  max-width: 500px 
+}
+
 .wk-wysiwyg {
   background: white;
 }
