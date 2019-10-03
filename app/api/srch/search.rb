@@ -109,7 +109,7 @@ module Srch
                 latitude: model.lat,
                 longitude: model.lon,
                 blurred: model.blurred?
-              )
+                )
             end
             DocList.new(docs, search_request)
           else
