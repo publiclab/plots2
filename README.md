@@ -120,7 +120,7 @@ Once you complete the installation, use any of these credentials to login in to 
 
 **username**: `admin`, `moderator`, or `user` 
 
-**password**: `password`
+**password**: `password` , `password123` 
 
 For more on the login systems, see [this page](https://github.com/publiclab/plots2/blob/b1c57446d016f8cd0ec149a75298711270e1643e/doc/LOGIN_SYSTEMS.md#how-to-setup-login-modal-on-various-locations)
 
