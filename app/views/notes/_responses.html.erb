@@ -12,7 +12,7 @@
         tags += ",#{(@tagnames.uniq.delete_if{|x| x.match(":") }).join(',')}" if @tagnames && @tagnames.length > 0
         tags += '&n=17223' if response_type == 'photo'
       %>
-      <a class='btn btn-primary btn-lg' href="/post?tags=<%= tags %>">
+      <a class='btn btn-primary btn-lg requireLogin' href="/post?tags=<%= tags %>">
         <%= t('notes._responses.post_' + response_type) %>
       </a>
 
