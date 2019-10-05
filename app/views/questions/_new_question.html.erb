@@ -96,8 +96,10 @@
         </div>
       </div>
 
-      <% unless @widget %>
-        <hr class="d-lg-none" />
+      <% unless @widget %><hr class="d-lg-none" /><% end %>
+
+      <% if ((i+1)/3.0).to_i == ((i+1)/3.0) %>
+        <% unless @widget %><hr class="d-lg-none grid" /><% end %>
       <% end %>
 
     <% end %>
