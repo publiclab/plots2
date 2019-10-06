@@ -220,6 +220,16 @@ class NodeTest < ActiveSupport::TestCase
     end
   end
 
+  test 'research note with empty/blank title should not be created' do
+    node = Node.new(uid: users(:bob).id,
+                    type: 'note')
+    titles = [ '', ' ' * 5 ]
+    titles.each do |t|
+      node.title = t
+      assert_not node.valid?
+    end
+  end
+
   test 'research note with duplicate title should not be created' do
     node = Node.new(uid: users(:bob).id,
                     type: 'note',
@@ -229,6 +239,12 @@ class NodeTest < ActiveSupport::TestCase
     assert_not dup_node.save
   end
 
+  test 'title should not be too short' do
+    node = Node.new(uid: users(:bob).id,
+                    type: 'note',
+                    title: 'ok')
+    assert_not node.valid?
+  end
   test 'create a node_revision' do
     # in testing, uid and id should be matched, although this is not yet true in production db
     revision_count = nodes(:one).revisions.length

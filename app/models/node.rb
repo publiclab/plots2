@@ -1,7 +1,7 @@
 class UniqueUrlValidator < ActiveModel::Validator
   def validate(record)
-    if record.title == '' || record.title.nil?
-      # record.errors[:base] << "You must provide a title."
+    if record.title.blank?
+      record.errors[:base] << "You must provide a title."
       # otherwise the below title uniqueness check fails, as title presence validation doesn't run until after
     elsif record.type == 'page'
       array = %w(create edit update delete new)
@@ -94,7 +94,7 @@ class Node < ActiveRecord::Base
 
   belongs_to :user, foreign_key: 'uid'
 
-  validates :title, presence: true
+  validates :title, presence: true, length: { minimum: 3 }
   validates_with UniqueUrlValidator, on: :create
 
   scope :published, -> { where(status: 1) }
