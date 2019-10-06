@@ -3,7 +3,7 @@ $(document).ready(function()
       $('#taginput').typeahead({
         items: 8,
         minLength: 3,
-        item: '<li class="dropdown-item"><a class="dropdown-item" href="#" role="option"></a></li>',
+        item: '<li class="dropdown-item active"><a role="option" href="#"></a<span class="pull-right btn btn-sm btn-secondary" href="/subscribe/tag/balloon">Follow</span></li>',
         source: function (query, process) {
           var replaced_query = query.replace(' ', '-');
           return $.post('/tag/suggested/' + replaced_query, {}, function (data) {
@@ -14,7 +14,12 @@ $(document).ready(function()
           $('#taginput').val(text)
           window.location = "/tag/" + text;
         }
+
       });
+
+
+     
+     
 
       $('#tagform').submit(function(e) {
         e.preventDefault();
@@ -35,7 +40,7 @@ $(document).ready(function()
 
 $(document).ready(function(){
     $('a').click(function(){
-        $('a').removeClass("active");
+      $('a').removeClass("active");
         $(this).addClass("active");
     });
   });
