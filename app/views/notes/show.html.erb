@@ -59,10 +59,6 @@
       </span>
       </span>
 
-    <p>
-      Read more: <%= request.host %>/n/<%= @node.id %>
-    </p>
-
   </div>
 
   <hr style="margin-top:10px;" />
@@ -96,6 +92,12 @@
   <div class="d-print-none">
     <hr />
 
+    <% if @node.has_power_tag('prompt') && feature("prompt-#{@node.power_tag('prompt')}") != "" %>
+      <% if current_user && (current_user.id == @node.uid || current_user.admin? || current_user.moderator? || current_user.is_coauthor?(@node)) %>
+        <%= feature("prompt-#{@node.power_tag('prompt')}") %>
+      <% end %>
+    <% end %>
+
     <% if @node.has_tag('event:rsvp') %>
       <p><b><% if @node.has_power_tag('date') %>
         <script>
@@ -115,11 +117,10 @@
       <hr />
     <% end %>
 
-    <%= render :partial => "notes/responses" %>
+    <%= render partial: "notes/responses" %>
 
-    <div>
-      <%= render :partial => "notes/comments" %>
-    </div>
+    <div><%= render partial: "notes/comments" %></div>
+
   </div>
 
 </div><!--/span-->
