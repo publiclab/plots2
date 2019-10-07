@@ -119,12 +119,17 @@ class ScreenshotsTest < ApplicationSystemTestCase
     visit node.path
     take_screenshot
   end
-  
+
   test 'embeddable grids' do
     visit '/embed/grid/test'
     take_screenshot
   end
-  
+
+  test 'embeddable thumbnail grids' do
+    visit '/embed/grid/grid:test'
+    take_screenshot
+  end
+
   test 'blog page with location modal' do
     visit '/'
     click_on 'Login'
