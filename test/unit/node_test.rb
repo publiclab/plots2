@@ -44,7 +44,7 @@ class NodeTest < ActiveSupport::TestCase
     end
     assert node.has_tag('kites')
     assert_difference 'node.tags.length', 2 do
-      node.add_tag('pm', users(:bob)
+      node.add_tag('pm', users(:bob))
     end
     assert node.has_tag('particulate-matter')
   end
