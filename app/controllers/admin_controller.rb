@@ -119,7 +119,8 @@ class AdminController < ApplicationController
       if @node.status == 1 || @node.status == 4
         @node.spam
         @node.author.ban
-        AdminMailer.notify_moderators_of_spam(@node, current_user).deliver_later
+        # No longer notifying other moderators as of https://github.com/publiclab/plots2/issues/6246
+        # AdminMailer.notify_moderators_of_spam(@node, current_user).deliver_later
         flash[:notice] = "Item marked as spam and author banned. You can undo this on the <a href='/spam'>spam moderation page</a>."
         redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
       else
@@ -143,7 +144,8 @@ class AdminController < ApplicationController
         @comment.spam
         user = @comment.author
         user.ban
-        AdminMailer.notify_moderators_of_comment_spam(@comment, current_user).deliver_later
+        # No longer notifying other moderators as of https://github.com/publiclab/plots2/issues/6246
+        # AdminMailer.notify_moderators_of_comment_spam(@comment, current_user).deliver_later
         flash[:notice] = "Comment has been marked as spam and comment author has been banned. You can undo this on the <a href='/spam/comments'>spam moderation page</a>."
       else
         flash[:notice] = "Comment already marked as spam."
@@ -167,7 +169,8 @@ class AdminController < ApplicationController
         end
         if first_timer_comment
           AdminMailer.notify_author_of_comment_approval(@comment, current_user).deliver_later
-          AdminMailer.notify_moderators_of_comment_approval(@comment, current_user).deliver_later
+          # No longer notifying other moderators as of https://github.com/publiclab/plots2/issues/6246
+          # AdminMailer.notify_moderators_of_comment_approval(@comment, current_user).deliver_later
         else
           flash[:notice] = 'Comment published.'
         end
@@ -191,7 +194,8 @@ class AdminController < ApplicationController
         @node.author.unban
         if first_timer_post
           AdminMailer.notify_author_of_approval(@node, current_user).deliver_later
-          AdminMailer.notify_moderators_of_approval(@node, current_user).deliver_later
+          # No longer notifying other moderators as of https://github.com/publiclab/plots2/issues/6246
+          # AdminMailer.notify_moderators_of_approval(@node, current_user).deliver_later
           SubscriptionMailer.notify_node_creation(@node).deliver_now
           flash[:notice] = if @node.has_power_tag('question')
                              "Question approved and published after #{time_ago_in_words(@node.created_at)} in moderation. Now reach out to the new community member; thank them, just say hello, or help them revise/format their post in the comments."
