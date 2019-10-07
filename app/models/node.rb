@@ -758,9 +758,22 @@ class Node < ActiveRecord::Base
 
       ActiveRecord::Base.transaction do
         if tag.valid?
-          if tag.name.split(':')[0] == 'date'
+          key = tag.split(':')[0]
+          value = tag.split(':')[1]
+          # add base tags:
+          if ['question', 'upgrade', 'activity'].include?(key)
+            add_tag(key, user)
+          end
+          # add sub-tags:
+          subtags = {}
+          subtags['pm'] = 'particulate-matter'
+          if subtags.include?(key)
+            add_tag(subtags[key], user)
+          end
+          # parse date tags:
+          if key == 'date'
             begin
-              DateTime.strptime(tag.name.split(':')[1], '%m-%d-%Y').to_date.to_s(:long)
+              DateTime.strptime(value, '%m-%d-%Y').to_date.to_s(:long)
             rescue StandardError
               return [false, tag.destroy]
             end
@@ -772,14 +785,12 @@ class Node < ActiveRecord::Base
                                  nid: id)
 
           # Adding lat/lon values into node table
-          if tag.valid?
-            if tag.name.split(':')[0] == 'lat'
-              tagvalue = tag.name.split(':')[1]
-              table_updated = update_attributes(latitude: tagvalue, precision: decimals(tagvalue).to_s)
-            elsif tag.name.split(':')[0] == 'lon'
-              tagvalue = tag.name.split(':')[1]
-              table_updated = update_attributes(longitude: tagvalue)
-            end
+          if key == 'lat'
+            tagvalue = value
+            table_updated = update_attributes(latitude: tagvalue, precision: decimals(tagvalue).to_s)
+          elsif key == 'lon'
+            tagvalue = value
+            table_updated = update_attributes(longitude: tagvalue)
           end
 
           if node_tag.save
