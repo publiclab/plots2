@@ -762,7 +762,7 @@ class Node < ActiveRecord::Base
           value = tag.name.split(':')[1]
           # add base tags:
           if ['question', 'upgrade', 'activity'].include?(key)
-            add_tag(key, user)
+            add_tag(value, user)
           end
           # add sub-tags:
           subtags = {}
