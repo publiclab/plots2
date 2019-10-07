@@ -1,5 +1,7 @@
 <div class="card-view">
-  <% @tags.each do |tag| %>
+  <% tags ||= @tags # allow overriding with local variable %>
+  <% shown_nids = [] %>
+  <% tags.each do |tag| %>
     <div class="card shadow-sm p-2 mb-3 bg-white rounded" >
       <div class="card-header mt-2" style=" padding:0.8em; background-color: inherit; border:none;">
         <% if current_user && current_user.following(tag.name) %>
@@ -10,7 +12,8 @@
       </div>
       <div class="card-body" style="padding:0.8em;">
         <div class="node-list">
-          <% Tag.find_nodes_by_type(tag.name, type = 'note', limit = 3).each do |node|  %>
+          <% Tag.find_nodes_by_type(tag.name, type = 'note', limit = 3).where.not(nid: shown_nids).each do |node|  %>
+            <% shown_nids << node.id %>
             <div class="node-body">
               <% if node.main_image %>
                 <img class="rounded-circle pull-left" id="profile-photo" style="width:20px; height:20px; margin-right:8px; display: inline-block;" src="<%= node.main_image.path(:default) %>" />
