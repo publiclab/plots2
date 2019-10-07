@@ -1,50 +1,77 @@
-sudo: required
+language: ruby
 
-language: generic
+rvm:
+  - 2.4.4
+
+  dist: precise
 
 services:
   - docker
 
+addons:
+  mariadb: '10.2'
+
 git:
     depth: false
-  
-env:
-  global:
-    - COMPOSE_FILE=./containers/docker-compose-testing.yml
-  matrix:
-    - TASK="rake test:all"
-    - TASK="rails test test/unit"
-    - TASK="rails test test/functional"
-    - TASK="rails test test/integration"
-    - TASK="rails test:system"
+
+cache:
+  directories:
+   - $PWD/vendor/.bundle/
 
 before_install:
   - echo -e "repo_token:\n  $COVERALLS_REPO_TOKEN" >> ./.coveralls.yml
-  
+
+install:
+  - cp config/database.yml.travis.example config/database.yml
+  - cp db/schema.rb.example db/schema.rb
+  - bundle check --path vendor/.bundle/ || bundle install --path vendor/.bundle/
+  - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
+      gem install danger danger-junit google-cloud-storage;
+    fi
+  - if [ $RAILS_ENV == 'production' ]; then
+      mysql -e "CREATE DATABASE publiclab_test;";
+      mysql -e "CREATE USER 'plots'@'%' IDENTIFIED BY 'plots';";
+      mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'plots'@'%';";
+      bundle exec rails db:schema:load;
+    else
+      bundle exec rails db:setup || bundle exec rails db:migrate;
+    fi
+
+env:
+  global:
+    - RAILS_ENV=test
+    - GENERATE_REPORT=true
+    - CI=true
+
+jobs:
+  include:
+    - name: "Models Tests"
+      script: bundle exec rails test:models
+    - name: "Integration Tests"
+      script: bundle exec rails test:integration
+    - name: "Controllers Tests"
+      script: bundle exec rails test:controllers
+    - name: "System Tests"
+      script: bundle exec rails test:system
+    - name: "Rubocop Linter"
+      script: bundle exec rubocop
+    - name: "Docker Builds"
+      script: docker build -t mapknitter .
+    - name: "Asset Precompilation"
+      env:
+        - RAILS_ENV=production
+      script:
+        - bundle exec rails assets:precompile
+
 branches:
   only:
     - master
     - unstable
 
-install:
-  - cp config/database.yml.example config/database.yml
-  - cp db/schema.rb.example db/schema.rb
-  - docker-compose build
-  - docker-compose up -d
-  - docker-compose exec web sleep 15 # wait until mysql is up
-  - netstat -ltpn
-  - docker-compose exec web bash -c "rake db:setup"
-  - docker-compose exec web bash -c "rake db:migrate"
-  - docker-compose exec web bash -c "rake assets:precompile"
-  - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then bash -c "docker-compose exec web gem install danger danger-junit google-cloud-storage"; fi'
-
-script:
-  - docker-compose exec web bash -c 'echo "$GOOGLE_APPLICATION_CREDENTIALS_JSON" > /tmp/credentials.json' # needs to be a path to a json file, so we shuffle...
-  - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true $TASK"
-  - if [ $TASK != "rake test:all" ]; then
-      echo -e '<?xml version="1.0" encoding="UTF-8"?>' > output.xml;
-      tail -n +2 -q ./test/reports/TEST*.xml >> output.xml;
-    fi
+after_script:
+  - echo "$GOOGLE_APPLICATION_CREDENTIALS_JSON" > /tmp/credentials.json # needs to be a path to a json file, so we shuffle...
+  - echo -e '<?xml version="1.0" encoding="UTF-8"?>' > output.xml
+  - tail -n +2 -q ./test/reports/TEST*.xml >> output.xml
   - if [ $TRAVIS_PULL_REQUEST != "false" ]; then
-      docker-compose exec web danger --verbose;
+      danger --verbose;
     fi

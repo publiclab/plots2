@@ -1,0 +1,8 @@
+
+test:
+  encoding: utf8
+  adapter: mysql2
+  host: 127.0.0.1
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: travis
+  database: publiclab_test
