@@ -758,8 +758,8 @@ class Node < ActiveRecord::Base
 
       ActiveRecord::Base.transaction do
         if tag.valid?
-          key = tag.split(':')[0]
-          value = tag.split(':')[1]
+          key = tag.name.split(':')[0]
+          value = tag.name.split(':')[1]
           # add base tags:
           if ['question', 'upgrade', 'activity'].include?(key)
             add_tag(key, user)
