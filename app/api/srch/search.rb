@@ -103,7 +103,7 @@ module Srch
           if results.present?
             docs = results.map do |model|
               DocResult.new(
-                  doc_type: 'USERS',
+                doc_type: 'USERS',
                 doc_url: '/profile/' + model.name,
                 doc_title: model.username,
                 latitude: model.lat,
@@ -181,7 +181,7 @@ module Srch
           DocList.new('', search_request)
         end
       end
-        
+
       # Request URL should be /api/srch/nodes?query=QRY
       desc 'Perform a search of nodes', hidden: false,
                                                  is_array: false,
