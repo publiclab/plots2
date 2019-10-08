@@ -42,6 +42,11 @@ class ScreenshotsTest < ApplicationSystemTestCase
     take_screenshot
   end
 
+  test 'profile page' do
+    visit '/profile/bob'
+    take_screenshot
+  end
+
   test 'tag by author page' do
     visit '/tag/spectrometer/author/bob'
     take_screenshot
