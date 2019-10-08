@@ -3,6 +3,8 @@ require 'test_helper'
 include ActionView::Helpers::DateHelper # required for time_ago_in_words()
 
 class AdminMailerTest < ActionMailer::TestCase
+  include ActiveJob::TestHelper
+
   test 'notify_node_moderators' do
     node = nodes(:one)
     moderators = User.where(role: %w[moderator admin])
