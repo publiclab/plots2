@@ -54,7 +54,9 @@
 
             <%= render partial: 'tag/show/nav_tabs' %>
 
-            
+            <p><%= Tag.find_nodes_by_type(tag.name, 'note', false).count %> posts by <%= Tag.contributors(tag.name) %> contributors | <%= Tag.follower_count(tag.name) %> followers
+              <a href="https://publiclab.org/wiki/contributors"><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>
+            </p>
 
             <%= render partial: 'tag/show/tab_content' %>
             <div>
