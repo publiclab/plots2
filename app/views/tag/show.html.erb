@@ -7,7 +7,7 @@
       <div class="pull-right"><%= render :partial => "tag/show/user_controls" %></div>
       <h1 style="margin-top:6px;"><%= @title %></h1>
       <% if @wildcard %>
-      
+
         <% if @node_type == "questions"%>
           <p><i>Showing <b>questions</b></i></p>
         <% elsif @node_type == "note" && params[:id].match("activity:") %>
@@ -54,10 +54,7 @@
 
             <%= render partial: 'tag/show/nav_tabs' %>
 
-            <p style="padding-top:8px;margin-bottom:0;">
-            <a class="btn btn-sm btn-outline-secondary" href="?order=views"><i class="fa fa-eye"></i> by views</a>
-            <a class="btn btn-sm btn-outline-secondary" href="?order=likes"><i class="fa fa-star"></i> by likes</a>
-            </p><br />
+            
 
             <%= render partial: 'tag/show/tab_content' %>
             <div>
