@@ -1,3 +1,6 @@
+
+// Taking the prompt+value retrieved in promptTag() and populating the form field before submitting it
+// Instead we want to take the prompt+value and directly submit it with AJAX
 function addTag(tagname, selector) {
   selector = selector || '#tagform';
   if (tagname.slice(0,5).toLowerCase() === "place") {
@@ -6,9 +9,14 @@ function addTag(tagname, selector) {
     geo = geocodeStringAndPan(place);
   }
   else {
-    var el = $(selector);
-    el.find('.tag-input').val(tagname);
-    el.submit();
+    $.ajax({
+      async: false,
+      type: 'POST',
+      url: $('#tagform').attr('action'),
+        // need some way to get the correct node ID
+        // or grab the URL from the form itself
+      data: "name+" + tagname
+    })
   }
 }
 
@@ -112,6 +120,7 @@ function geocodeStringAndPan(string, onComplete) {
 }
 
 function promptTag(val) {
+  alert('promptTag');
   var input;
   switch(val) {
 
