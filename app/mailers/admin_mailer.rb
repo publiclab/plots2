@@ -26,7 +26,7 @@ class AdminMailer < ActionMailer::Base
     @user = comment.author
     @footer = feature('email-footer')
     moderators = User.where(role: %w(moderator admin)).collect(&:email)
-    if node.status == 4 # only if it remains unmoderated
+    if comment.status == 4 # only if it remains unmoderated
       mail(
         to: "comment-moderators@#{ActionMailer::Base.default_url_options[:host]}",
         bcc: moderators,
