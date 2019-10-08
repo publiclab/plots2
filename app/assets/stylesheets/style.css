@@ -119,7 +119,7 @@ a .fa-white,
 }
 
 .text-underline {
-  text-decoration: underline;
+  text-decoration: underline !important;
 }
 
 #pl_pad {
