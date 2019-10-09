@@ -1,6 +1,6 @@
 
-// Taking the prompt+value retrieved in promptTag() and populating the form field before submitting it
-// Instead we want to take the prompt+value and directly submit it with AJAX
+// Taking the prompt+value retrieved in promptTag() or the links in the drop-down menu and populating the form field before submitting it
+// Instead we want to take the tag value and directly submit it with AJAX
 function addTag(tagname, selector) {
   selector = selector || '#tagform';
   if (tagname.slice(0,5).toLowerCase() === "place") {
@@ -10,13 +10,12 @@ function addTag(tagname, selector) {
   }
   else {
     $.ajax({
-      async: false,
-      type: 'POST',
-      url: $('#tagform').attr('action'),
-        // need some way to get the correct node ID
-        // or grab the URL from the form itself
-      data: "name+" + tagname
-    })
+      url: $(selector).attr('action'), // grab the URL from the form itself
+      data: { name: tagname },
+      success: (event, success) => {
+        $(selector).trigger('ajax:success', event);
+      }
+    });
   }
 }
 
@@ -35,6 +34,10 @@ function setupTagDelete(el) {
       }
     });
   return el;
+}
+
+function addTagToPage() {
+  
 }
 
 function initTagForm(deletion_path, selector) {
