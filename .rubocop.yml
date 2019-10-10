@@ -3,6 +3,8 @@ inherit_from:
   - .rubocop_shopify_styleguide.yml
   - .rubocop_todo.yml
 
+require: rubocop-performance
+
 # Apply rule to all cops
 AllCops:
   Include:
@@ -77,4 +79,3 @@ Metrics/LineLength:
 
 Style/Documentation:
   Enabled: false
-
