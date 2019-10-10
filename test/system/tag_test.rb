@@ -5,7 +5,7 @@ require "application_system_test_case"
 class TagTest < ApplicationSystemTestCase
   Capybara.default_max_wait_time = 60
 
-  test 'adding a tag with javascript' do
+  test 'adding a tag via javascript' do
     visit '/'
 
     click_on 'Login'
@@ -16,15 +16,11 @@ class TagTest < ApplicationSystemTestCase
 
     visit "/wiki/wiki-page-path"
 
-    find('#tags-open').click
-    
-    #fill_in("searchform_input", with: "test")
-    #find('button.btn-light').click
-
-    assert page.evaluate_script("addTag('bluebell')")
+    # run the javascript function
+    page.evaluate_script("addTag('bluebell')")
 
     # check that the tag showed up on the page
-    #assert_selector('#sidebar-tags.badge', text: 'bluebell')
+    assert_selector('.tags-list .tag-name', text: 'bluebell')
 
   end
 
