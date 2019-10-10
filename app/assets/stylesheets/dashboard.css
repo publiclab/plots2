@@ -337,8 +337,16 @@
 
 /* end event node styles */
 
+.note .meta a i {
+transition: color .15s ease-in-out,
+background-color .15s ease-in-out,
+border-color .15s ease-in-out,
+box-shadow .15s ease-in-out;
+}
+
 .note .meta a:hover i {
-  color: #666;
+color: #FFF2CC;
+background: #666;
 }
 
 .note .btn-default {
