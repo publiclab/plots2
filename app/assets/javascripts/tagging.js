@@ -119,7 +119,6 @@ function geocodeStringAndPan(string, onComplete) {
 }
 
 function promptTag(val) {
-  alert('promptTag');
   var input;
   switch(val) {
 
