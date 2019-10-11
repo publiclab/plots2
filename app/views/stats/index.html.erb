@@ -1,4 +1,4 @@
-<div class="col-lg-12 offset-lg-1" style="margin-bottom:20px; margin-left:25px;">
+<div class="col-lg-12 offset-lg-1" style="margin-bottom:20px; margin-left:100px;">
 
     <h2><%= raw t('notes.stats.contributors_statistics') %></h2>
     <hr>
@@ -47,7 +47,7 @@
 <script>
 var options = {
     chart: {
-        
+
         type: "area",
         height: 500,
         foreColor: "#999",
@@ -123,7 +123,7 @@ var options = {
 
             }
 
-        }, 
+        },
         xaxis: {
             type: "datetime",
             axisBorder: {
@@ -216,11 +216,11 @@ var options = {
     chart: {
         height: 500,
         type: 'bar',
-        fontFamily: 'Junction Light',    
+        fontFamily: 'Junction Light',
         active: {
             allowMultipleDataPointsSelection: true,
             },
-        
+
         events: {
             dataPointSelection: function(event, chartContext, config) {
                 page = data[config.selectedDataPoints];
@@ -290,7 +290,7 @@ var options = {
         fill: {
             opacity: 1
         },
-        
+
 
         legend: {
             show: false,
@@ -298,9 +298,9 @@ var options = {
         grid: {
             show: false,
         },
-        
+
         xaxis: {
-            
+
            labels: {
                 show: false,
             },
@@ -310,7 +310,7 @@ var options = {
             lines: {
                 show: true,
             }
-            
+
         },
         yaxis: {
             labels: {
