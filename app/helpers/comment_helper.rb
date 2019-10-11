@@ -8,6 +8,7 @@ module CommentHelper
     @comment = node.add_comment(uid: user.uid, body: body)
     raise CommentError unless user && @comment.save
 
+    @comment.notify user
     @comment
   end
 end
