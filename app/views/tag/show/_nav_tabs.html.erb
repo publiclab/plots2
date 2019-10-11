@@ -1,6 +1,7 @@
 <div class="dropdown" style="margin-top:10px; float:right;">
-  <button class="btn btn-outline-secondary dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">By Type</button>
-  
+
+  <button class="btn btn-outline-secondary dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">by type</button>
+
   <!-- when will it not be show...? -->
   <div class="dropdown-menu dropdown-menu-right mt-1" aria-labelledby="dropdownMenuButton">
     <% if params[:action] == "show" %>
@@ -10,24 +11,24 @@
       <a class="dropdown-item <% if @node_type == "questions" %> active<% end %>" href="/questions/tag/<%= params[:id] %>"><i class="fa fa-question-circle"></i> <span class="d-none d-lg-inline"><%= t('tag.show.questions') %></span></a>
       <a class="dropdown-item <% if @node_type=="wiki" %> active <% end %>" href="/wiki/tag/<%= params[:id] %>"><i class="fa fa-book"></i> <span class="d-none d-lg-inline"><%= raw t('tag.show.wiki_pages') %></span></a>
       <a class="dropdown-item <% if @node_type == "maps" %> active <% end %>" href="/maps/tag/<%= params[:id] %>"><i class="fa fa-map-marker"></i> <span class="d-none d-lg-inline"><%= t('tag.show.maps') %></span></a>
-  
+
       <!-- show if we can see the list of contributors
       again, can we have a generic list of contributors that is
-      
+
       calculated in the controller? -->
       <% if !@wildcard %>
       <a class="dropdown-item <% if @node_type == "contributors" %> active <% end %>" href="/contributors/<%= params[:id] %>"><i class="fa fa-user"></i> <span class="d-none d-lg-inline"><%= raw t('tag.show.people') %></span><span class="badge"><%=@length %></span></a>
       <% else %>
     <a class="disabled" class="dropdown-item<% if @node_type == "contributors" %> active <% end %>" href="#" rel="tooltip" title="Contributors cannot be listed for wildcard tag searches" ><i class="fa fa-user"></i> <span class="d-none d-lg-inline"><%= raw t('tag.show.contributors') %></span></a>
       <% end %>
-  
+
     <% else %>
       <!-- calculate whatever this should be in the controller -->
       <% unless params[:id].match("question:") %>
         <a class="dropdown-item" <% if @node_type == "note" %> class="active"<% end %> href="/tag/<%= params[:id] %>/author/<%= params[:author] %>"><i class="fa fa-file"></i> <span class="d-none d-lg-inline"><%= raw t('tag.show.research_notes') %></span>
         </a>
       <% end %>
-  
+
       <a class="dropdown-item" <% if @node_type == "questions" %> class="active"<% end %> href="/questions/tag/<%= params[:id] %>/author/<%= params[:author] %>" >
         <i class="fa fa-question-circle"></i> <span class="d-none d-lg-inline"><%= t('tag.show.questions') %></span>
       </a>
@@ -42,4 +43,8 @@
       </a>
     <% end %>
   </div>
+</div>
+<div style="margin-top: 10px; float: right">
+  <a class="btn btn-outline-secondary" href="?order=views"><i class="fa fa-eye"></i> by views</a>
+  <a class="btn btn-outline-secondary" style="margin-right: 5px" href="?order=likes"><i class="fa fa-star"></i> by likes</a>
 </div>
