@@ -651,7 +651,7 @@ en:
       all: "all"
       notes: "notes"
       receive_mails: "Receive emails for all research notes."
-      enter_tags: "enter tags"
+      enter_tags: "Enter tags"
       add: "Add"
       tag: "Tag"
       options: "Options"
