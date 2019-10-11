@@ -1,18 +1,121 @@
-<div class="container">
+<div class="section-header text-center">
+  <h2 class="section-title">How it works</h2>
+</div>
+
+<div class="container-fluid text-center activities">
+  <div class="row">
+    <div class="col-md-3">
+      <p><a href="https://publiclab.org/balloon-mapping"><img src="https://publiclab.org/system/images/photos/000/020/851/original/stormwater.jpg" /></a></p>
+      <h4 class="section-title">Take aerial photos</h4>
+      <p>Use a kite, balloon, or pole to take aerial photos - using a camera on a timer.  Or take photos out the window of an airplane.</p>
+    </div>
+
+    <div class="col-md-3">
+      <p><a href="https://publiclab.org/notes/warren/04-06-2017/stitching-images-into-maps-with-mapknitter"><img src="https://raw.githubusercontent.com/publiclab/mapknitter/master/public/demo.gif" /></a></p>
+      <h4 class="section-title">Combine them into a map</h4>
+      <p>Upload images and stretch them to create a mosaic of aerial photos, then save them as a map. See the Activities below for more!</p>
+    </div>
+
+    <div class="col-md-3">
+      <p><a href="https://publiclab.org/notes/warren/04-06-2017/stitching-images-into-maps-with-mapknitter"><img src="https://raw.githubusercontent.com/publiclab/mapknitter/master/public/demo.gif" /></a></p>
+      <h4 class="section-title">Combine them into a map</h4>
+      <p>Upload images and stretch them to create a mosaic of aerial photos, then save them as a map. See the Activities below for more!</p>
+    </div>
+
+    <div class="col-md-3">
+      <p><a href="https://publiclab.org/notes/warren/04-06-2017/stitching-images-into-maps-with-mapknitter"><img src="https://raw.githubusercontent.com/publiclab/mapknitter/master/public/demo.gif" /></a></p>
+      <h4 class="section-title">Combine them into a map</h4>
+      <p>Upload images and stretch them to create a mosaic of aerial photos, then save them as a map. See the Activities below for more!</p>
+    </div>
+  </div>
+</div>
+
 
 <% cache('feature_home-intro', skip_digest: true) do %>
   <%= feature("home-intro") %>
 <% end %>
 
-<div class="dashboard">
+<div class="container">
+
+<div class="projects">
   <% cache('home-blog', expires_in: 60.minutes, skip_digest: true) do %>
-    <div class="tab-pane active" id="notes">
-      <% unless @notes.nil? || @notes.length == 0 %>
-        <%= render partial: "notes/notes", locals: { paginated: false } %>
-        <p><center><a class="btn btn-outline-secondary" href="/blog">Read more</a></center></p>
+    <% unless @projects.nil? || @projects.length == 0 %>
+
+      <% @projects.each_with_index do |project, index| %>
+
+        <div class="row">
+          <div class="col-6 project-image<% if index.odd? %> pull-right<% end %>">
+
+            <a href="<%= project.path %>"><img src="<%= project.main_image %>" /</a>
+
+          </div>
+          <div class="col-6">
+
+            <h3><a href="<%= project.path %>"><%= project.title %></a></h3>
+
+            <p><%= project.body.split('/n')&.first %></p>
+
+            <p><a href="<%= project.path %>">Read more &raquo;</a></p>
+
+            <div class="people">
+              <!-- people most associated with it? editors? pinnable? -->
+
+              <% project.authors[0..2].each do |author| %>
+                <a class="person" href="/profile/<%= author.username %>"><img class="img-circle" src="<%= author.image %>" /></a>
+              <% end %>
+
+              <% if project.authors.length > 2 %>
+                <span class="person img-circle"><%= project.authors.length - 2 %> more</span>
+              <% end %>
+
+            </div>
+
+          </div>
+        </div>
+
       <% end %>
-    </div>
+
+      <p><center><a class="btn btn-outline-secondary" href="/projects">More projects</a></center></p>
+
+    <% end %>
   <% end %>
 </div>
 
 </div>
+
+<style>
+
+.projects {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  background: #ffdfb8; 
+  padding: 40px 20px;
+}
+.projects .row {
+  padding: 40px 20px;
+}
+.projects .row .project-image img {
+  background: #ccc; 
+}
+.projects .row h3 {
+  color: #333;
+  padding-bottom: 10px;
+}
+.projects .row h3 a {
+  color: #333;
+  text-decoration: none;
+}
+.projects .row a {
+  color: #333;
+  text-decoration: underline;
+}
+.projects .person {
+  color: #ccc;
+}
+</style>
+
+<% cache('feature_home-footer', skip_digest: true) do %>
+  <%= feature("home-footer") %>
+<% end %>
+
