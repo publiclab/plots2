@@ -37,6 +37,18 @@ class NodeTest < ActiveSupport::TestCase
     assert map.location_tags
   end
 
+  test 'adding a question:FOO style tag adds FOO tag as well; also for subtags' do
+    node = nodes(:one)
+    assert_difference 'node.tags.count', 2 do
+      node.add_tag('question:kites', users(:bob))
+    end
+    assert node.has_tag('kites')
+    assert_difference 'node.tags.count', 2 do
+      node.add_tag('pm', users(:bob))
+    end
+    assert node.has_tag('particulate-matter')
+  end
+
   test 'notify_callout_users' do
     saved, node, revision = Node.new_note(uid: users(:naman).id,
                     title: 'Note with mentioned users',

@@ -13,6 +13,10 @@ $(document).ready(function()
         updater: function(text) {
           $('#taginput').val(text)
           window.location = "/tag/" + text;
+        }, 
+        matcher: function(search_result_item) {
+          var hyphenated_search_string = this.query.replace(/ /g, '-');
+          return search_result_item.includes(hyphenated_search_string);
         }
       });
 
