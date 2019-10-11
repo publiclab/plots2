@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ApplicationHelper
   # returns true if user is logged in and has any of the roles given, as ['admin','moderator']
   def logged_in_as(roles)
@@ -7,13 +9,13 @@ module ApplicationHelper
   end
 
   def emojify(content)
-    if content.present?
-      content.to_str.gsub(/:([\w+-]+):(?![^\[]*\])/) do |match|
-        if emoji = Emoji.find_by_alias(Regexp.last_match(1))
-          emoji.raw || %(<img class="emoji" alt="#{Regexp.last_match(1)}" src="#{image_path("emoji/#{emoji.image_filename}")}" style="vertical-align:middle" width="20" height="20" />)
-        else
-          match
-        end
+    return unless content.present?
+
+    content.to_str.gsub(/:([\w+-]+):(?![^\[]*\])/) do |match|
+      if (emoji = Emoji.find_by_alias(Regexp.last_match(1)))
+        emoji.raw || %(<img class="emoji" alt="#{Regexp.last_match(1)}" src="#{image_path("emoji/#{emoji.image_filename}")}" style="vertical-align:middle" width="20" height="20" />)
+      else
+        match
       end
     end
   end
@@ -32,34 +34,30 @@ module ApplicationHelper
   end
 
   def emoji_info
-    emoji_names = ["thumbs-up", "thumbs-down", "laugh", "hooray", "confused", "heart"]
+    emoji_names = %w[thumbs-up thumbs-down laugh hooray confused heart]
     emoji_image_map = {
-      "thumbs-up" => "https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png",
-      "thumbs-down" => "https://github.githubassets.com/images/icons/emoji/unicode/1f44e.png",
-      "laugh" => "https://github.githubassets.com/images/icons/emoji/unicode/1f604.png",
-      "hooray" => "https://github.githubassets.com/images/icons/emoji/unicode/1f389.png",
-      "confused" => "https://github.githubassets.com/images/icons/emoji/unicode/1f615.png",
-      "heart" => "https://github.githubassets.com/images/icons/emoji/unicode/2764.png"
+      'thumbs-up' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png',
+      'thumbs-down' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f44e.png',
+      'laugh' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f604.png',
+      'hooray' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f389.png',
+      'confused' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f615.png',
+      'heart' => 'https://github.githubassets.com/images/icons/emoji/unicode/2764.png'
     }
     [emoji_names, emoji_image_map]
   end
 
   def feature(title)
     features = Node.where(type: 'feature', title: title)
-    if !features.empty?
-      return features.last.body.to_s.html_safe
-    else
-      ''
-    end
+    return features.last.body.to_s.html_safe unless features.empty?
+
+    ''
   end
 
   def feature_node(title)
     features = Node.where(type: 'feature', title: title)
-    if !features.empty?
-      return features.last
-    else
-      ''
-    end
+    return features.last unless features.empty?
+
+    ''
   end
 
   def locale_name_pairs
@@ -101,11 +99,11 @@ module ApplicationHelper
   # we should move this to the Comment model:
   # replaces inline title suggestion(e.g: {New Title}) with the required link to change the title
   def title_suggestion(comment)
-    comment.body.gsub(/\[propose:title\](.*?)\[\/propose\]/) do
+    comment.body.gsub(%r{\[propose:title\](.*?)\[/propose\]}) do
       a = ActionController::Base.new
       is_creator = ((defined? current_user) && current_user == Node.find(comment.nid).author) == true
       title = Regexp.last_match(1)
-      output = a.render_to_string(template: "notes/_title_suggestion",
+      output = a.render_to_string(template: 'notes/_title_suggestion',
                                   layout: false,
                                   locals: {
                                     user: comment.user.name,
@@ -118,9 +116,7 @@ module ApplicationHelper
   end
 
   def filtered_comment_body(comment_body)
-    if contain_trimmed_body?(comment_body)
-      return comment_body.split(Comment::COMMENT_FILTER).first
-    end
+    return comment_body.split(Comment::COMMENT_FILTER).first if contain_trimmed_body?(comment_body)
 
     comment_body
   end
@@ -142,7 +138,7 @@ module ApplicationHelper
     options[:fallback] = false
     translated_string2 = t(key, options)
 
-    if current_user&.has_tag('translation-helper') && translated_string2.include?("translation missing") && !translated_string.include?("<")
+    if current_user&.has_tag('translation-helper') && translated_string2.include?('translation missing') && !translated_string.include?('<')
       %(<span>#{translated_string} <a href="https://www.transifex.com/publiclab/publiclaborg/translate/#de/$?q=text%3A#{translated_string}">
           <i data-toggle='tooltip' data-placement='top' title='Needs translation? Click to help translate this text.' style='position:relative; right:2px; color:#bbb; font-size: 15px;' class='fa fa-globe'></i></a>
        </span>)
