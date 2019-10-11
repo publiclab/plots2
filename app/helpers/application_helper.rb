@@ -34,7 +34,7 @@ module ApplicationHelper
   end
 
   def emoji_info
-    emoji_names = %w[thumbs-up thumbs-down laugh hooray confused heart]
+    emoji_names = %w(thumbs-up thumbs-down laugh hooray confused heart)
     emoji_image_map = {
       'thumbs-up' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png',
       'thumbs-down' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f44e.png',
