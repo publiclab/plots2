@@ -73,6 +73,16 @@ class TagController < ApplicationController
   end
 
   def show
+
+    # Enhancement #6306 - Add counts to `by type` dropdown on tag pages 
+    @counts = {:posts => 0, :questions => 0, :wiki => 0 }
+    @counts[:posts] = Tag.find_nodes_by_type([params[:id]], 'note', false).count
+    @counts[:questions] = Tag.find_nodes_by_type("question:#{params[:id]}", 'note', false).count
+    @counts[:wiki] = Tag.find_nodes_by_type([params[:id]], 'page', false).count
+    params[:counts] = @counts
+    # end Enhancement #6306 ============================================
+
+  
     if params[:id].is_a? Integer
       @wiki = Node.find(params[:id])&.first
     else
@@ -269,6 +279,7 @@ class TagController < ApplicationController
   end
 
   def author
+    author
     render json: User.find_by(name: params[:id]).tag_counts
   end
 

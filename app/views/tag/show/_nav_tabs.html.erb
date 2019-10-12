@@ -1,14 +1,20 @@
+
+<p>-----------<%= params.inspect %>----------</p>
+
 <div class="dropdown" style="margin-top:10px; float:right;">
   <button class="btn btn-outline-secondary dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">By Type</button>
   
   <!-- when will it not be show...? -->
   <div class="dropdown-menu dropdown-menu-right mt-1" aria-labelledby="dropdownMenuButton">
     <% if params[:action] == "show" %>
-        <% unless params[:id].match("question:") %><a class="dropdown-item <% if @node_type == "note" %> active<% end %>" href="/tag/<%= params[:id] %>"><i class="fa fa-file"></i> <span class="d-none d-lg-inline"><%= raw t('tag.show.research_notes') %></span></a><% end %>
+      <!-- #Enhancement #6306 - Add counts to `by type` dropdown on tag pages  -->
+        <% unless params[:id].match("question:") %><a class="dropdown-item <% if @node_type == "note" %> active<% end %>" href="/tag/<%= params[:id] %>"><i class="fa fa-file"></i> <span class="d-none d-lg-inline"><%= raw t('tag.show.research_notes') %> <span class="badge badge-primary"><%= params[:counts][:posts] %></span></span></a><% end %>
       <!-- can we create a generic node type hash, and give it href and class and content classes? -->
       <!-- this should be an if/else, because @node_type should only be one value -->
-      <a class="dropdown-item <% if @node_type == "questions" %> active<% end %>" href="/questions/tag/<%= params[:id] %>"><i class="fa fa-question-circle"></i> <span class="d-none d-lg-inline"><%= t('tag.show.questions') %></span></a>
-      <a class="dropdown-item <% if @node_type=="wiki" %> active <% end %>" href="/wiki/tag/<%= params[:id] %>"><i class="fa fa-book"></i> <span class="d-none d-lg-inline"><%= raw t('tag.show.wiki_pages') %></span></a>
+      <a class="dropdown-item <% if @node_type == "questions" %> active<% end %>" href="/questions/tag/<%= params[:id] %>"><i class="fa fa-question-circle"></i> <span class="d-none d-lg-inline"><%= t('tag.show.questions') %> <span class="badge badge-primary"><%= params[:counts][:questions] %></span></span></a>
+      <a class="dropdown-item <% if @node_type=="wiki" %> active <% end %>" href="/wiki/tag/<%= params[:id] %>"><i class="fa fa-book"></i> <span class="d-none d-lg-inline"><%= raw t('tag.show.wiki_pages') %> <span class="badge badge-primary"><%= params[:counts][:wiki] %></span></span></a>
+      <!-- END #Enhancement #6306 - Add counts to `by type` dropdown on tag pages  -->
+
       <a class="dropdown-item <% if @node_type == "maps" %> active <% end %>" href="/maps/tag/<%= params[:id] %>"><i class="fa fa-map-marker"></i> <span class="d-none d-lg-inline"><%= t('tag.show.maps') %></span></a>
   
       <!-- show if we can see the list of contributors
@@ -16,7 +22,7 @@
       
       calculated in the controller? -->
       <% if !@wildcard %>
-      <a class="dropdown-item <% if @node_type == "contributors" %> active <% end %>" href="/contributors/<%= params[:id] %>"><i class="fa fa-user"></i> <span class="d-none d-lg-inline"><%= raw t('tag.show.people') %></span><span class="badge"><%=@length %></span></a>
+      <a class="dropdown-item <% if @node_type == "contributors" %> active <% end %>" href="/contributors/<%= params[:id] %>"><i class="fa fa-user"></i> <span class="d-none d-lg-inline"><%= raw t('tag.show.people') %> </span><span class="badge badge-primary"><%=@length %></span></a>
       <% else %>
     <a class="disabled" class="dropdown-item<% if @node_type == "contributors" %> active <% end %>" href="#" rel="tooltip" title="Contributors cannot be listed for wildcard tag searches" ><i class="fa fa-user"></i> <span class="d-none d-lg-inline"><%= raw t('tag.show.contributors') %></span></a>
       <% end %>
