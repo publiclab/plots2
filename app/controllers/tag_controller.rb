@@ -278,7 +278,6 @@ class TagController < ApplicationController
   end
 
   def author
-    author
     render json: User.find_by(name: params[:id]).tag_counts
   end
 
