@@ -79,7 +79,6 @@ class TagController < ApplicationController
     @counts[:posts] = Tag.find_nodes_by_type([params[:id]], 'note', false).count
     @counts[:questions] = Tag.find_nodes_by_type("question:#{params[:id]}", 'note', false).count
     @counts[:wiki] = Tag.find_nodes_by_type([params[:id]], 'page', false).count
-    params[:counts] = @counts
     # end Enhancement #6306 ============================================
   
     if params[:id].is_a? Integer

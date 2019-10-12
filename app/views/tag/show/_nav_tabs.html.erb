@@ -1,4 +1,3 @@
-
 <div class="dropdown" style="margin-top:10px; float:right;">
   <button class="btn btn-outline-secondary dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">By Type</button>
   
@@ -6,11 +5,11 @@
   <div class="dropdown-menu dropdown-menu-right mt-1" aria-labelledby="dropdownMenuButton">
     <% if params[:action] == "show" %>
       <!-- #Enhancement #6306 - Add counts to `by type` dropdown on tag pages  -->
-        <% unless params[:id].match("question:") %><a class="dropdown-item <% if @node_type == "note" %> active<% end %>" href="/tag/<%= params[:id] %>"><i class="fa fa-file"></i> <span class="d-none d-lg-inline"><%= raw t('tag.show.research_notes') %> <span class="badge badge-primary"><%= params[:counts][:posts] %></span></span></a><% end %>
+        <% unless params[:id].match("question:") %><a class="dropdown-item <% if @node_type == "note" %> active<% end %>" href="/tag/<%= params[:id] %>"><i class="fa fa-file"></i> <span class="d-none d-lg-inline"><%= raw t('tag.show.research_notes') %> <span class="badge badge-primary"><%= @counts[:posts] %></span></span></a><% end %>
       <!-- can we create a generic node type hash, and give it href and class and content classes? -->
       <!-- this should be an if/else, because @node_type should only be one value -->
-      <a class="dropdown-item <% if @node_type == "questions" %> active<% end %>" href="/questions/tag/<%= params[:id] %>"><i class="fa fa-question-circle"></i> <span class="d-none d-lg-inline"><%= t('tag.show.questions') %> <span class="badge badge-primary"><%= params[:counts][:questions] %></span></span></a>
-      <a class="dropdown-item <% if @node_type=="wiki" %> active <% end %>" href="/wiki/tag/<%= params[:id] %>"><i class="fa fa-book"></i> <span class="d-none d-lg-inline"><%= raw t('tag.show.wiki_pages') %> <span class="badge badge-primary"><%= params[:counts][:wiki] %></span></span></a>
+      <a class="dropdown-item <% if @node_type == "questions" %> active<% end %>" href="/questions/tag/<%= params[:id] %>"><i class="fa fa-question-circle"></i> <span class="d-none d-lg-inline"><%= t('tag.show.questions') %> <span class="badge badge-primary"><%= @counts[:questions] %></span></span></a>
+      <a class="dropdown-item <% if @node_type=="wiki" %> active <% end %>" href="/wiki/tag/<%= params[:id] %>"><i class="fa fa-book"></i> <span class="d-none d-lg-inline"><%= raw t('tag.show.wiki_pages') %> <span class="badge badge-primary"><%= @counts[:wiki] %></span></span></a>
       <!-- END #Enhancement #6306 - Add counts to `by type` dropdown on tag pages  -->
 
       <a class="dropdown-item <% if @node_type == "maps" %> active <% end %>" href="/maps/tag/<%= params[:id] %>"><i class="fa fa-map-marker"></i> <span class="d-none d-lg-inline"><%= t('tag.show.maps') %></span></a>
