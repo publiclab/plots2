@@ -81,7 +81,6 @@ class TagController < ApplicationController
     @counts[:wiki] = Tag.find_nodes_by_type([params[:id]], 'page', false).count
     params[:counts] = @counts
     # end Enhancement #6306 ============================================
-
   
     if params[:id].is_a? Integer
       @wiki = Node.find(params[:id])&.first
