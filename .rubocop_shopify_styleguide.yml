@@ -1,5 +1,12 @@
-# http://shopify.github.io/ruby-style-guide/rubocop.yml
-#
+AllCops:
+  Exclude:
+  - 'db/schema.rb'
+  DisabledByDefault: true
+  StyleGuideBaseURL: https://shopify.github.io/ruby-style-guide/
+
+Lint/AssignmentInCondition:
+  Enabled: true
+
 Layout/AccessModifierIndentation:
   EnforcedStyle: indent
   SupportedStyles:
@@ -97,12 +104,20 @@ Style/ClassCheck:
   - kind_of?
 
 Style/CommandLiteral:
-  EnforcedStyle: backticks
+  EnforcedStyle: percent_x
   SupportedStyles:
   - backticks
   - percent_x
   - mixed
   AllowInnerBackticks: false
+
+Style/CommentAnnotation:
+  Keywords:
+  - TODO
+  - FIXME
+  - OPTIMIZE
+  - HACK
+  - REVIEW
 
 Style/ConditionalAssignment:
   EnforcedStyle: assign_to_condition
@@ -178,6 +193,19 @@ Style/FormatString:
   - sprintf
   - percent
 
+Style/FrozenStringLiteralComment:
+  Details: >-
+    Add `# frozen_string_literal: true` to the top of the file. Frozen string
+    literals will become the default in a future Ruby version, and we want to
+    make sure we're ready.
+  EnforcedStyle: always
+  SupportedStyles:
+    - always
+    - never
+
+Style/GlobalVars:
+  AllowedVariables: []
+
 Style/HashSyntax:
   EnforcedStyle: ruby19
   SupportedStyles:
@@ -231,6 +259,19 @@ Style/Next:
 
 Style/NonNilCheck:
   IncludeSemanticChanges: false
+
+Style/MethodCallWithArgsParentheses:
+  Enabled: true
+  IgnoreMacros: true
+  IgnoredMethods:
+  - require
+  - require_relative
+  - require_dependency
+  - yield
+  - raise
+  - puts
+  Exclude:
+  - Gemfile
 
 Style/MethodDefParentheses:
   EnforcedStyle: require_parentheses
@@ -290,18 +331,6 @@ Style/NumericLiteralPrefix:
 Style/ParenthesesAroundCondition:
   AllowSafeAssignment: true
 
-Style/PercentLiteralDelimiters:
-  PreferredDelimiters:
-    '%': '()'
-    '%i': '()'
-    '%q': '()'
-    '%Q': '()'
-    '%r': '{}'
-    '%s': '()'
-    '%w': '()'
-    '%W': '()'
-    '%x': '()'
-
 Style/PercentQLiterals:
   EnforcedStyle: lower_case_q
   SupportedStyles:
@@ -334,7 +363,7 @@ Style/RedundantReturn:
   AllowMultipleReturnValues: false
 
 Style/RegexpLiteral:
-  EnforcedStyle: slashes
+  EnforcedStyle: mixed
   SupportedStyles:
   - slashes
   - percent_r
@@ -477,19 +506,36 @@ Naming/VariableName:
 Style/WhileUntilModifier:
   Enabled: true
 
-Style/WordArray:
-  EnforcedStyle: percent
-  SupportedStyles:
-  - percent
-  - brackets
-  MinSize: 0
-  WordRegex: !ruby/regexp /\A[\p{Word}\n\t]+\z/
+Metrics/BlockNesting:
+  Max: 3
+
+Metrics/LineLength:
+  Max: 120
+  AllowHeredoc: true
+  AllowURI: true
+  URISchemes:
+  - http
+  - https
+  IgnoreCopDirectives: false
+  IgnoredPatterns:
+  - '\A\s*(remote_)?test(_\w+)?\s.*(do|->)(\s|\Z)'
+
+Metrics/ParameterLists:
+  Max: 5
+  CountKeywordArgs: false
 
 Layout/BlockAlignment:
   EnforcedStyleAlignWith: either
   SupportedStylesAlignWith:
   - either
   - start_of_block
+  - start_of_line
+
+Layout/EndAlignment:
+  EnforcedStyleAlignWith: variable
+  SupportedStylesAlignWith:
+  - keyword
+  - variable
   - start_of_line
 
 Layout/DefEndAlignment:
@@ -511,91 +557,6 @@ Lint/UnusedBlockArgument:
 Lint/UnusedMethodArgument:
   AllowUnusedKeywordArguments: false
   IgnoreEmptyMethods: true
-
-Performance/RedundantMerge:
-  MaxKeyValuePairs: 2
-
-Rails/ActionFilter:
-  EnforcedStyle: action
-  SupportedStyles:
-  - action
-  - filter
-  Include:
-  - app/controllers/**/*.rb
-
-Rails/Date:
-  EnforcedStyle: flexible
-  SupportedStyles:
-  - strict
-  - flexible
-
-Rails/DynamicFindBy:
-  Whitelist:
-  - find_by_sql
-
-Rails/Exit:
-  Include:
-  - app/**/*.rb
-  - config/**/*.rb
-  - lib/**/*.rb
-  Exclude:
-  - 'lib/**/*.rake'
-
-Rails/FindBy:
-  Include:
-  - app/models/**/*.rb
-
-Rails/FindEach:
-  Include:
-  - app/models/**/*.rb
-
-Rails/HasAndBelongsToMany:
-  Include:
-  - app/models/**/*.rb
-
-Rails/NotNullColumn:
-  Include:
-  - db/migrate/*.rb
-
-Rails/Output:
-  Include:
-  - app/**/*.rb
-  - config/**/*.rb
-  - db/**/*.rb
-  - lib/**/*.rb
-
-Rails/ReadWriteAttribute:
-  Include:
-  - app/models/**/*.rb
-
-Rails/RequestReferer:
-  EnforcedStyle: referer
-  SupportedStyles:
-  - referer
-  - referrer
-
-Rails/SafeNavigation:
-  ConvertTry: false
-
-Rails/ScopeArgs:
-  Include:
-  - app/models/**/*.rb
-
-Rails/TimeZone:
-  EnforcedStyle: flexible
-  SupportedStyles:
-  - strict
-  - flexible
-
-Rails/UniqBeforePluck:
-  EnforcedStyle: conservative
-  SupportedStyles:
-  - conservative
-  - aggressive
-
-Rails/Validation:
-  Include:
-  - app/models/**/*.rb
 
 Naming/AccessorMethodName:
   Enabled: true
@@ -646,6 +607,9 @@ Layout/CommentIndentation:
   Enabled: true
 
 Naming/ConstantName:
+  Enabled: true
+
+Style/DateTime:
   Enabled: true
 
 Style/DefWithParentheses:
@@ -714,7 +678,10 @@ Style/LineEndConcatenation:
 Style/MethodCallWithoutArgsParentheses:
   Enabled: true
 
-Style/MultilineBlockChain:
+Style/MethodMissingSuper:
+  Enabled: true
+
+Style/MissingRespondToMissing:
   Enabled: true
 
 Layout/MultilineBlockLayout:
@@ -783,10 +750,16 @@ Style/RedundantParentheses:
 Style/RedundantSelf:
   Enabled: true
 
+Style/RedundantSortBy:
+  Enabled: true
+
 Layout/RescueEnsureAlignment:
   Enabled: true
 
 Style/RescueModifier:
+  Enabled: true
+
+Style/Sample:
   Enabled: true
 
 Style/SelfAssignment:
@@ -919,7 +892,7 @@ Lint/FormatParameterMismatch:
   Enabled: true
 
 Lint/HandleExceptions:
-  Enabled: true
+  AllowComments: true
 
 Lint/ImplicitStringConcatenation:
   Description: Checks for adjacent string literals on the same line, which could
@@ -983,6 +956,12 @@ Lint/UnderscorePrefixedVariableName:
 Lint/UnifiedInteger:
   Enabled: true
 
+Lint/UnneededCopDisableDirective:
+  Enabled: true
+
+Lint/UnneededCopEnableDirective:
+  Enabled: true
+
 Lint/UnneededSplatExpansion:
   Enabled: true
 
@@ -991,6 +970,9 @@ Lint/UnreachableCode:
 
 Lint/UselessAccessModifier:
   ContextCreatingMethods: []
+
+Lint/UselessAssignment:
+  Enabled: true
 
 Lint/UselessComparison:
   Enabled: true
@@ -1004,79 +986,42 @@ Lint/UselessSetterCall:
 Lint/Void:
   Enabled: true
 
-Performance/CaseWhenSplat:
-  Enabled: true
-
-Performance/Count:
-  SafeMode: true
-
-Performance/Detect:
-  SafeMode: true
-
-Performance/DoubleStartEndWith:
-  Enabled: true
-
-Performance/EndWith:
-  Enabled: true
-
-Performance/FixedSize:
-  Enabled: true
-
-Performance/FlatMap:
-  EnabledForFlattenWithoutParams: false
-
-Performance/LstripRstrip:
-  Enabled: true
-
-Performance/RangeInclude:
-  Enabled: true
-
-Performance/RedundantBlockCall:
-  Enabled: true
-
-Performance/RedundantMatch:
-  Enabled: true
-
-Style/RedundantSortBy:
-  Enabled: true
-
-Performance/ReverseEach:
-  Enabled: true
-
-Style/Sample:
-  Enabled: true
-
-Performance/Size:
-  Enabled: true
-
-Performance/CompareWithBlock:
-  Enabled: true
-
-Performance/StartWith:
-  Enabled: true
-
-Performance/StringReplacement:
-  Enabled: true
-
-Rails/DelegateAllowBlank:
-  Enabled: true
-
-Rails/HttpPositionalArguments:
-  Include:
-  - spec/**/*
-  - test/**/*
-
-Rails/OutputSafety:
-  Enabled: true
-
-Rails/PluralizationGrammar:
-  Enabled: true
-
 Security/Eval:
   Enabled: true
 
 Security/JSONLoad:
   Enabled: true
 
+Security/Open:
+  Enabled: true
+
+Lint/BigDecimalNew:
+  Enabled: true
+
+Style/Strip:
+  Enabled: true
+
+Style/TrailingBodyOnClass:
+  Enabled: true
+
+Style/TrailingBodyOnModule:
+  Enabled: true
+
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: comma
+  Enabled: true
+
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: comma
+  Enabled: true
+
+Layout/SpaceInsideReferenceBrackets:
+  EnforcedStyle: no_space
+  EnforcedStyleForEmptyBrackets: no_space
+  Enabled: true
+
 Style/ModuleFunction:
   EnforcedStyle: extend_self
+
+Lint/OrderedMagicComments:
+  Enabled: true

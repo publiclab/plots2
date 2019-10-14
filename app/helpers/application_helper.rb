@@ -3,7 +3,7 @@ module ApplicationHelper
   def logged_in_as(roles)
     return false unless current_user
 
-    roles.include? current_user.role
+    roles.include?(current_user.role)
   end
 
   def emojify(content)
@@ -39,7 +39,7 @@ module ApplicationHelper
       "laugh" => "https://github.githubassets.com/images/icons/emoji/unicode/1f604.png",
       "hooray" => "https://github.githubassets.com/images/icons/emoji/unicode/1f389.png",
       "confused" => "https://github.githubassets.com/images/icons/emoji/unicode/1f615.png",
-      "heart" => "https://github.githubassets.com/images/icons/emoji/unicode/2764.png"
+      "heart" => "https://github.githubassets.com/images/icons/emoji/unicode/2764.png",
     }
     [emoji_names, emoji_image_map]
   end
@@ -91,11 +91,11 @@ module ApplicationHelper
 
   # we should move this to the Node model:
   def render_map(lat, lon)
-    render partial: 'map/leaflet', locals: { lat: lat, lon: lon, top_map: false }
+    render(partial: 'map/leaflet', locals: { lat: lat, lon: lon, top_map: false })
   end
 
   def render_top_map(lat, lon)
-    render partial: 'map/leaflet', locals: { lat: lat, lon: lon, top_map: true }
+    render(partial: 'map/leaflet', locals: { lat: lat, lon: lon, top_map: true })
   end
 
   # we should move this to the Comment model:
@@ -111,7 +111,7 @@ module ApplicationHelper
                                     user: comment.user.name,
                                     nid: comment.nid,
                                     title: title,
-                                    is_creator: is_creator
+                                    is_creator: is_creator,
                                   })
       output
     end
