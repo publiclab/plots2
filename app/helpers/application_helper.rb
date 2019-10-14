@@ -7,13 +7,13 @@ module ApplicationHelper
   end
 
   def emojify(content)
-    if content.present?
-      content.to_str.gsub(/:([\w+-]+):(?![^\[]*\])/) do |match|
-        if emoji = Emoji.find_by_alias(Regexp.last_match(1))
-          emoji.raw || %(<img class="emoji" alt="#{Regexp.last_match(1)}" src="#{image_path("emoji/#{emoji.image_filename}")}" style="vertical-align:middle" width="20" height="20" />)
-        else
-          match
-        end
+    return unless content.present?
+
+    content.to_str.gsub(/:([\w+-]+):(?![^\[]*\])/) do |match|
+      if (emoji = Emoji.find_by_alias(Regexp.last_match(1)))
+        emoji.raw || %(<img class="emoji" alt="#{Regexp.last_match(1)}" src="#{image_path("emoji/#{emoji.image_filename}")}" style="vertical-align:middle" width="20" height="20" />)
+      else
+        match
       end
     end
   end
@@ -32,7 +32,7 @@ module ApplicationHelper
   end
 
   def emoji_info
-    emoji_names = ["thumbs-up", "thumbs-down", "laugh", "hooray", "confused", "heart"]
+    emoji_names = %w[thumbs-up thumbs-down laugh hooray confused heart]
     emoji_image_map = {
       "thumbs-up" => "https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png",
       "thumbs-down" => "https://github.githubassets.com/images/icons/emoji/unicode/1f44e.png",
@@ -46,20 +46,12 @@ module ApplicationHelper
 
   def feature(title)
     features = Node.where(type: 'feature', title: title)
-    if !features.empty?
-      return features.last.body.to_s.html_safe
-    else
-      ''
-    end
+    features.empty? ? '' : features.last.body.to_s.html_safe
   end
 
   def feature_node(title)
     features = Node.where(type: 'feature', title: title)
-    if !features.empty?
-      return features.last
-    else
-      ''
-    end
+    features.present? ? features.last : ''
   end
 
   def locale_name_pairs
@@ -101,11 +93,11 @@ module ApplicationHelper
   # we should move this to the Comment model:
   # replaces inline title suggestion(e.g: {New Title}) with the required link to change the title
   def title_suggestion(comment)
-    comment.body.gsub(/\[propose:title\](.*?)\[\/propose\]/) do
+    comment.body.gsub(%r{\[propose:title\](.*?)\[/propose\]}) do
       a = ActionController::Base.new
       is_creator = ((defined? current_user) && current_user == Node.find(comment.nid).author) == true
       title = Regexp.last_match(1)
-      output = a.render_to_string(template: "notes/_title_suggestion",
+      output = a.render_to_string(template: 'notes/_title_suggestion',
                                   layout: false,
                                   locals: {
                                     user: comment.user.name,
@@ -118,9 +110,7 @@ module ApplicationHelper
   end
 
   def filtered_comment_body(comment_body)
-    if contain_trimmed_body?(comment_body)
-      return comment_body.split(Comment::COMMENT_FILTER).first
-    end
+    return comment_body.split(Comment::COMMENT_FILTER).first if contain_trimmed_body?(comment_body)
 
     comment_body
   end
