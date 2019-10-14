@@ -1,5 +1,5 @@
 module SearchHelper
-  def create_nav_links(active_page, query) 
+  def create_nav_links(active_page, query)
     base_class = "list-group-item list-group-item-action"
     result = nav_links(query).map do |link|
       "<li><a href='#{link[:path]}' class='#{generate_class(active_page, base_class, link[:section])}'>#{link[:text]}</a> </li>"
