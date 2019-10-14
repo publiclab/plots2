@@ -3,7 +3,7 @@ module SearchHelper
     links = nav_links(query)
     base_class = "list-group-item list-group-item-action"
     result = links.map do |link|
-      active_link = active_page == link[:section] ? "#{base_class} active" : base_class
+      active_link = (active_page == link[:section] ? "#{base_class} active" : base_class)
       "<li><a href='#{link[:path]}' class='#{active_link}'>#{link[:text]}</a> </li>"
     end
     result.join(" ").html_safe
@@ -13,10 +13,10 @@ module SearchHelper
     links = nav_links_for_by_type(query)
     base_class = "dropdown-item"
     result = links.map do |link|
-      active_link = active_page == link[:section] ? "#{base_class} active" : base_class
+      active_link = (active_page == link[:section] ? "#{base_class} active" : base_class)
       "<a href='#{link[:path]}' class='#{active_link}'>#{link[:text]}</a>"
     end
-    result.html_safe
+    result.join(" ").html_safe
   end
 
   private
