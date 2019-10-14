@@ -1,20 +1,16 @@
 module SearchHelper
-  def create_nav_links(active_page, query)
-    links = nav_links(query)
+  def create_nav_links(active_page, query) 
     base_class = "list-group-item list-group-item-action"
-    result = links.map do |link|
-      active_link = (active_page == link[:section] ? "#{base_class} active" : base_class)
-      "<li><a href='#{link[:path]}' class='#{active_link}'>#{link[:text]}</a> </li>"
+    result = nav_links(query).map do |link|
+      "<li><a href='#{link[:path]}' class='#{generate_class(active_page, base_class, link[:section])}'>#{link[:text]}</a> </li>"
     end
     result.join(" ").html_safe
   end
 
   def create_nav_links_for_by_type(active_page, query)
-    links = nav_links_for_by_type(query)
     base_class = "dropdown-item"
-    result = links.map do |link|
-      active_link = (active_page == link[:section] ? "#{base_class} active" : base_class)
-      "<a href='#{link[:path]}' class='#{active_link}'>#{link[:text]}</a>"
+    result = nav_links_for_by_type(query).map do |link|
+      "<a href='#{link[:path]}' class='#{generate_class(active_page, base_class, link[:section])}'>#{link[:text]}</a>"
     end
     result.join(" ").html_safe
   end
@@ -35,5 +31,9 @@ module SearchHelper
       { section: "search-all", text: "Content", path: "/search/#{query}" },
       { section: "search-profiles", text: "People", path: "/search/profiles/#{query}" }
     ]
+  end
+
+  def generate_class(active_page, base_class, section)
+    (active_page == section ? "#{base_class} active" : base_class)
   end
 end
