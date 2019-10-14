@@ -1,34 +1,40 @@
-<div class="section-header text-center">
-  <h2 class="section-title">How it works</h2>
+<div class="col-12">
+  <h2 class="text-center">How it works</h2>
 </div>
 
-<div class="container-fluid text-center activities">
+<div class="container-fluid text-center panels">
   <div class="row">
     <div class="col-md-3">
-      <p><a href="https://publiclab.org/balloon-mapping"><img src="https://publiclab.org/system/images/photos/000/020/851/original/stormwater.jpg" /></a></p>
+      <p><i class="fa fa-image"></i></p>
       <h4 class="section-title">Take aerial photos</h4>
-      <p>Use a kite, balloon, or pole to take aerial photos - using a camera on a timer.  Or take photos out the window of an airplane.</p>
+      <p>Use a kite, balloon, or pole to take aerial photos - using a camera on a timer.</p>
     </div>
 
     <div class="col-md-3">
-      <p><a href="https://publiclab.org/notes/warren/04-06-2017/stitching-images-into-maps-with-mapknitter"><img src="https://raw.githubusercontent.com/publiclab/mapknitter/master/public/demo.gif" /></a></p>
+      <p><i class="fa fa-image"></i></p>
       <h4 class="section-title">Combine them into a map</h4>
-      <p>Upload images and stretch them to create a mosaic of aerial photos, then save them as a map. See the Activities below for more!</p>
+      <p>Upload images and stretch them to create a mosaic of aerial photos, then save them as a map!</p>
     </div>
 
     <div class="col-md-3">
-      <p><a href="https://publiclab.org/notes/warren/04-06-2017/stitching-images-into-maps-with-mapknitter"><img src="https://raw.githubusercontent.com/publiclab/mapknitter/master/public/demo.gif" /></a></p>
+      <p><i class="fa fa-image"></i></p>
       <h4 class="section-title">Combine them into a map</h4>
-      <p>Upload images and stretch them to create a mosaic of aerial photos, then save them as a map. See the Activities below for more!</p>
+      <p>Upload images and stretch them to create a mosaic of aerial photos, then save them as a map.</p>
     </div>
 
     <div class="col-md-3">
-      <p><a href="https://publiclab.org/notes/warren/04-06-2017/stitching-images-into-maps-with-mapknitter"><img src="https://raw.githubusercontent.com/publiclab/mapknitter/master/public/demo.gif" /></a></p>
+      <p><i class="fa fa-image"></i></p>
       <h4 class="section-title">Combine them into a map</h4>
-      <p>Upload images and stretch them to create a mosaic of aerial photos, then save them as a map. See the Activities below for more!</p>
+      <p>Upload images and stretch them to create a mosaic of aerial photos, then save them as a map.</p>
     </div>
   </div>
 </div>
+
+<style>
+.panels {
+  padding: 30px 10px;
+}
+</style>
 
 
 <% cache('feature_home-intro', skip_digest: true) do %>
@@ -38,18 +44,18 @@
 <div class="container">
 
 <div class="projects">
-  <% cache('home-blog', expires_in: 60.minutes, skip_digest: true) do %>
+  <% #cache('home-blog', expires_in: 60.minutes, skip_digest: true) do %>
     <% unless @projects.nil? || @projects.length == 0 %>
 
       <% @projects.each_with_index do |project, index| %>
 
         <div class="row">
-          <div class="col-6 project-image<% if index.odd? %> pull-right<% end %>">
+          <div class="col-6 col-xs-12 project-image<% if index.odd? %> pull-right<% end %>">
 
             <a href="<%= project.path %>"><img src="<%= project.main_image %>" /</a>
 
           </div>
-          <div class="col-6">
+          <div class="col-6 col-xs-12">
 
             <h3><a href="<%= project.path %>"><%= project.title %></a></h3>
 
@@ -60,12 +66,19 @@
             <div class="people">
               <!-- people most associated with it? editors? pinnable? -->
 
+              <!-- replace authors with 'featured people' or something? -->
               <% project.authors[0..2].each do |author| %>
-                <a class="person" href="/profile/<%= author.username %>"><img class="img-circle" src="<%= author.image %>" /></a>
+                <% if author.photo %>
+                  <a class="person" href="/profile/<%= author.username %>">
+                    <img class="person-image" src="<%= author.photo %>" />
+                  </a>
+                <% end %>
               <% end %>
 
-              <% if project.authors.length > 2 %>
-                <span class="person img-circle"><%= project.authors.length - 2 %> more</span>
+              <% if true || project.authors.length > 2 %>
+                <span class="person">
+                  <span class="text"><%= project.authors.length - 2 %> more</span>
+                </span>
               <% end %>
 
             </div>
@@ -78,7 +91,7 @@
       <p><center><a class="btn btn-outline-secondary" href="/projects">More projects</a></center></p>
 
     <% end %>
-  <% end %>
+  <% # end %>
 </div>
 
 </div>
@@ -94,6 +107,7 @@
 }
 .projects .row {
   padding: 40px 20px;
+  color: #222;
 }
 .projects .row .project-image img {
   background: #ccc; 
@@ -111,8 +125,25 @@
   text-decoration: underline;
 }
 .projects .person {
-  color: #ccc;
+  background: #efb977;
+  float: left;
+  display: inline-block;
+  border-radius: 15px;
+  min-width: 30px;
+  height: 30px;
+  margin-right: 5px;
 }
+.projects .person-image {
+  border-radius: 15px;
+  height: 30px;
+  width: 30px;
+}
+.projects .person .text {
+  color: #884d05;
+  padding: 3px 8px;
+  display: inline-block;
+}
+
 </style>
 
 <% cache('feature_home-footer', skip_digest: true) do %>

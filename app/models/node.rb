@@ -277,6 +277,10 @@ class Node < ActiveRecord::Base
     User.find(uid)
   end
 
+  def authors
+    revisions.collect(&:author).uniq
+  end
+
   def coauthors
     User.where(username: power_tags('with')) if has_power_tag('with')
   end

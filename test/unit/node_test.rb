@@ -477,4 +477,11 @@ class NodeTest < ActiveSupport::TestCase
     # assert_equal notes, graph_notes.values.sum
     # assert_equal wiki, graph_wiki.values.sum
   end
+
+  # node.authors should be anyone who's written a revision for this node (a wiki, presumably)
+  test 'authors' do
+    authors = Node.last.authors
+    assert authors
+    assert_equal 1, authors.length
+  end
 end
