@@ -206,15 +206,17 @@ a .fa-white,
 
 #header .navbar-brand {
   color: white;
-  /*padding-top: 19px;*/
   font-family: "Junction Light", lucida grande,lucida sans console,sans-serif;
   font-size: 22px;
+  line-height: 22px;
+  padding-top: .5rem;
+  padding-bottom: .2rem;
 }
 
 @media (max-width: 768px) {
   #header #brand,
   #header #brand-compact {
-    padding-top: 22px;
+    /* padding-top: 22px; */
     padding-right: 4px;
   }
 }
