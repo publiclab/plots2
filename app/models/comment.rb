@@ -478,10 +478,10 @@ class Comment < ApplicationRecord
 
   def self.find_by_tag_and_author(tagname, userid)
     Comment.where(uid: userid)
-      .where(node: Node.where(status:1)
+      .where(node: Node.where(status: 1)
         .includes(:node_tag, :tag)
         .references(:node, :term_data)
-        .where('term_data.name = ?', tagname)
-      ).order('timestamp DESC')
+        .where('term_data.name = ?', tagname))
+      .order('timestamp DESC')
   end
 end
