@@ -877,6 +877,34 @@ class Node < ActiveRecord::Base
         .group('node.nid')
   end
 
+  # finds nodes by tag name, user id, and optional node type
+  def self.find_by_tag_and_author(tagname, user_id, type = 'note')
+    order = 'node_revisions.timestamp DESC'
+    order = 'created DESC' if type == 'note'
+    if type == 'question'
+      Node.where(nid: Node.where(status: 1, type: 'note')
+          .includes(:node_tag, :tag)
+          .references(:term_data)
+          .where('term_data.name LIKE ?', 'question:%')
+          .select(:nid)
+        )
+        .where(nid: Node.where(status: 1, type: 'note')
+          .includes(:node_tag, :tag)
+          .references(:term_data)
+          .where('term_data.name = ?', tagname)
+        )
+        .where('node.uid = ?', user_id)
+        .order(order)
+    else
+      Node.where(status: 1, type: type)
+        .includes(:node_tag, :tag)
+        .references(:term_data)
+        .where('term_data.name = ?', tagname)
+        .where('node.uid = ?', user_id)
+        .order(order)
+    end
+  end
+
   # so we can quickly fetch activities corresponding to this node
   # with node.activities
   def activities

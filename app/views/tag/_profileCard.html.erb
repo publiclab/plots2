@@ -22,9 +22,12 @@
           </div>
         <% end %>
       </div>
-    </div>  
+    </div>
     <div class="card-footer" style="background-color: inherit; border:none;">
-      <a style="text-decoration: underline; color: #808080; display: inline-block;" href="/tag/<%= tag.name %>"><%= tag.count %> <%= t('tag.index.more_posts') %> <i class="fa fa-angle-double-right"></i></a>
+      <span style="color: #808080;">@<%= @profile_user.name %> posted:</span>
+      <a style="text-decoration: underline; color: #808080; display: inline-block; margin-left: 6px;" href="/note/tag/<%= tag.name %>/author/<%= @profile_user.name %>"><%= Node.find_by_tag_and_author(tag.name, @profile_user.id, 'note').count %> <%= t('tag.index.notes') %></a>
+      <a style="text-decoration: underline; color: #808080; display: inline-block; margin-left: 6px;" href="/questions/tag/<%= tag.name %>/author/<%= @profile_user.name %>"><%= Node.find_by_tag_and_author(tag.name, @profile_user.id, 'question').count %> <%= t('tag.index.questions') %></a>
+      <a style="text-decoration: underline; color: #808080; display: inline-block; margin-left: 6px;" href=""><%= Comment.find_by_tag_and_author(tag.name, @profile_user.id).count %> <%= t('tag.index.comments') %></a>
 
       <a style="float: right;  width: 100px;" rel="tooltip" title="<%= t('sidebar._post_button.share_your_work') %>" data-placement="bottom" href="/post?tags=<%= tag.name %>" class="btn btn-primary btn-sm">New post <i class="fa fa-plus fa-white"></i></a>
       <% if current_user %>
