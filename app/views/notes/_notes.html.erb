@@ -27,21 +27,20 @@
             </p>
           <% end %>
 
-          <h5 style="margin-bottom: 0px;"><a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= (node.type == 'note') ? node.title : node.latest.title %></a></h5>
+          <h5 style="margin-bottom: 0px;"><a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>" style="color: black"><%= (node.type == 'note') ? node.title : node.latest.title %></a></h5>
 
-          <p class="meta">
           <small>
             <% if node.type == 'note' %>
-              <div style="font-size: 1.3em;">Post by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>">@<%= node.author.name %></a> <%= node.author.new_contributor %></div>
-                <a class="ellipsis bottom-right" data-toggle="dropdown">&nbsp<i class="fa fa-ellipsis-h" style="color : #666; font-size:15px; float:right;"></i></a>
-                  <ul class="dropdown-menu" style = "width: 150px; font-size:10px;">
-                    <li>
-                      <a> Made: <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope:'datetime.time_ago_in_words' }) %> </a>
-                    </li>
-                    <li>
-                      <a<% if @widget %>target="_blank"<% end %> href="<%= node.path %>#comments">Comments: <%= node.comments.size %></a>
-                    </li>
-                 
+              <div style="font-size: 1.0em; color: darkgray">Post by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>" style="color: #303030">@<%= node.author.name %></a> <%= node.author.new_contributor %></div><br>
+              <span style="color: darkgray">   <i class="fa fa-comment-o"></i> <%= node.comments.size %> &nbsp; | &nbsp; <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope:'datetime.time_ago_in_words' }).gsub('about ','') %></span>
+              <a class="ellipsis bottom-right" data-toggle="dropdown">&nbsp;<i class="fa fa-ellipsis-h" style="color : #666; font-size:15px; float:right;"></i></a>
+              <ul class="dropdown-menu" style = "width: 150px; font-size:10px;">
+                <li>
+                  <a> Made: <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope:'datetime.time_ago_in_words' }) %> </a>
+                </li>
+                <li>
+                  <a<% if @widget %>target="_blank"<% end %> href="<%= node.path %>#comments">Comments: <%= node.comments.size %></a>
+                </li>
             <% else %>
                     <li>
                       <a>Last Edited: <%= t('notes._notes.last_edit_by') %> <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.latest.author.name %>"><%= node.latest.author.name %></a></a>
@@ -76,7 +75,7 @@
                     <hr style="display:none;" class="bottom" />
           </div>
                   </ul>
-                  </small></p>
+                  </small>
 
           </div>
         </div>
