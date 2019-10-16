@@ -19,19 +19,28 @@
     <a href="/profile/<%= @node.author.name %>"> <%= @node.author.name %> </a>
     is asking a question about <b><%= pt %></b>:
     <a class="btn btn-outline-secondary requireLogin" target="_blank" href="/subscribe/tag/question:<%= pt %>">
-      Subscribe to answer questions on this topic
+      Follow this topic
     </a>
   </div>
-  <div class="d-inline">
+  <div class="pull-left">
   <% if @node.author && @node.author.photo_file_name %>
-    <img class="rounded-circle" src="<%= @node.author.photo_path(:thumb) %>" />
+    <img class="rounded-circle" src="<%= @node.author.photo_path(:thumb) %>" style="width:50px;margin-right:10px;" />
    <% else %>
     <div class="rounded-circle"></div>
   <% end %>
   </div>
   <div class="inline">
-  	<p><a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> asked on <%= @node.created_at.to_s(:long) %> <% if @node.status == 0 || @node.status == 4 %>| <span class="badge badge-danger">UNPUBLISHED</span><% end %> <br />
-    <small><i class="fa fa-eye"></i> <%= number_with_delimiter(@node.views) %> <span class="d-none d-lg-inline d-print-none ">views</span> | <i class="fa fa-comments"></i> <a href="#answers"><span id="short-comment-count"><%= @node.answers.length %></span> answers</a> | <a href="/q/<%= @node.id %>"><i class="fa fa-link"></i></a> <a href="/q/<%= @node.id %>">#<%= @node.id %></a></small></p>
+  	<p>
+    <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> 
+    asked on <%= @node.created_at.to_s(:long) %> 
+    <% if @node.status == 0 || @node.status == 4 %>| 
+      <span class="badge badge-danger">UNPUBLISHED</span>
+    <% end %> 
+    <br />
+    <small>
+      <i class="fa fa-eye"></i> <%= number_with_delimiter(@node.views) %> <span class="d-none d-lg-inline d-print-none ">views</span> | 
+      <a href="/q/<%= @node.id %>"><i class="fa fa-link"></i></a> <a href="/q/<%= @node.id %>">#<%= @node.id %></a>
+    </small></p>
   </div>
 
   <hr style="margin-top:10px;" />
