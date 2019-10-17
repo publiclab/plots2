@@ -1,4 +1,4 @@
-#) frozen_string_literal: true
+# frozen_string_literal: true
 
 class EditorController < ApplicationController
   before_action :require_user, only: %i(post rich legacy editor)
