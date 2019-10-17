@@ -19,7 +19,7 @@ class StatsController < ApplicationController
     @start = start
     @end = fin
     Rails.cache.fetch("range-#{@start.to_i}-#{@end.to_i}", expires_in: 1.day) do
-      @notes = Node.published.select(%i[created type])
+      @notes = Node.published.select(%i(created type))
                    .where(type: 'note', created: @start.to_i..@end.to_i)
                    .size
       @wikis = Revision.published.select(:timestamp)

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class CsvfilesController < ApplicationController
-  before_action :require_user, only: %i[delete user_files]
+  before_action :require_user, only: %i(delete user_files)
 
   def setter
     @csvfile = Csvfile.new(

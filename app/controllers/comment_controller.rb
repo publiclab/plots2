@@ -3,7 +3,7 @@
 class CommentController < ApplicationController
   include CommentHelper
   respond_to :html, :xml, :json
-  before_action :require_user, only: %i[create update delete]
+  before_action :require_user, only: %i(create update delete)
 
   def index
     comments = Comment.joins(:node, :user)
@@ -12,7 +12,7 @@ class CommentController < ApplicationController
                       .paginate(page: params[:page], per_page: 30)
 
     @normal_comments = comments.where('comments.status = 1')
-    if logged_in_as(%w[admin moderator])
+    if logged_in_as(%w(admin moderator))
       @moderated_comments = comments.where('comments.status = 4')
     end
 
@@ -113,7 +113,7 @@ class CommentController < ApplicationController
 
     if current_user.uid == @node.uid ||
        @comment.uid == current_user.uid ||
-       logged_in_as(%w[admin moderator])
+       logged_in_as(%w(admin moderator))
 
       if @comment.destroy
         respond_with do |format|

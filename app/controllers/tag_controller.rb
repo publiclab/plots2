@@ -2,7 +2,7 @@
 
 class TagController < ApplicationController
   respond_to :html, :xml, :json, :ics
-  before_action :require_user, only: %i[create delete add_parent]
+  before_action :require_user, only: %i(create delete add_parent)
 
   def index
     @toggle = params[:sort] || 'uses'
@@ -105,7 +105,7 @@ class TagController < ApplicationController
                   'node_revisions.timestamp DESC'
                 end
 
-    node_type = if %w[questions note].include?(@node_type)
+    node_type = if %w(questions note).include?(@node_type)
                   'note'
                 elsif @node_type == 'wiki'
                   'page'
@@ -181,7 +181,7 @@ class TagController < ApplicationController
       format.json do
         json = []
         nodes.each do |node|
-          json << node.as_json(except: %i[path tags])
+          json << node.as_json(except: %i(path tags))
           json.last['path'] = 'https://' + request.host.to_s + node.path
           json.last['preview'] = node.body_preview(500)
           json.last['image'] = node.main_image.path(:large) if node.main_image
@@ -242,7 +242,7 @@ class TagController < ApplicationController
       format.json do
         json = []
         nodes.each do |node|
-          json << node.as_json(except: %i[path tags])
+          json << node.as_json(except: %i(path tags))
           json.last['path'] = 'https://' + request.host
                                                   .to_s + node.path
           json.last['preview'] = node.body_preview(500)
@@ -371,7 +371,7 @@ class TagController < ApplicationController
     node_tag = NodeTag.where(nid: params[:nid], tid: params[:tid]).first
     node = Node.where(nid: params[:nid]).first
     # only admins, mods, and tag authors can delete other peoples' tags
-    if node_tag.uid == current_user.uid || logged_in_as(%w[admin moderator]) || node.uid == current_user.uid
+    if node_tag.uid == current_user.uid || logged_in_as(%w(admin moderator)) || node.uid == current_user.uid
 
       tag = Tag.joins(:node_tag)
                .select('term_data.name')
@@ -466,7 +466,7 @@ class TagController < ApplicationController
 
   # /contributors
   def contributors_index
-    @tagnames = %w[balloon-mapping spectrometer infragram air-quality water-quality]
+    @tagnames = %w(balloon-mapping spectrometer infragram air-quality water-quality)
     @tagdata = {}
     @tags = []
 
@@ -507,7 +507,7 @@ class TagController < ApplicationController
   end
 
   def gridsEmbed
-    if %w[nodes wikis activities questions upgrades notes].include?(params[:tagname].split(':').first)
+    if %w(nodes wikis activities questions upgrades notes).include?(params[:tagname].split(':').first)
       params[:t] = params[:tagname]
       params[:tagname] = ''
     end

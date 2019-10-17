@@ -4,7 +4,7 @@ require 'open-uri'
 
 class ImagesController < ApplicationController
   respond_to :html, :xml, :json
-  before_action :require_user, only: %i[create new update delete]
+  before_action :require_user, only: %i(create new update delete)
 
   def shortlink
     params[:size] = params[:size] || params[:s]

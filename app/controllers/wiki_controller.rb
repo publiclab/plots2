@@ -3,7 +3,7 @@
 require 'rss'
 
 class WikiController < ApplicationController
-  before_action :require_user, only: %i[new create edit update delete replace]
+  before_action :require_user, only: %i(new create edit update delete replace)
 
   def subdomain
     url = "//#{request.host}/wiki/"
@@ -390,7 +390,7 @@ class WikiController < ApplicationController
   end
 
   def methods
-    @nodes = Node.where(status: 1, type: %w[page])
+    @nodes = Node.where(status: 1, type: %w(page))
                  .where('term_data.name = ?', 'method')
                  .includes(:revision, :tag)
                  .references(:node_revision)
@@ -398,7 +398,7 @@ class WikiController < ApplicationController
     # deprecating the following in favor of javascript implementation in /app/assets/javascripts/methods.js
     if params[:topic]
       nids = @nodes.collect(&:nid) || []
-      @notes = Node.where(status: 1, type: %w[page])
+      @notes = Node.where(status: 1, type: %w(page))
                    .where('node.nid IN (?)', nids)
                    .where('(type = "note" OR type = "page" OR type = "map") AND node.status = 1 AND (node.title LIKE ? OR node_revisions.title LIKE ? OR node_revisions.body LIKE ? OR term_data.name = ?)',
                           '%' + params[:topic] + '%',
@@ -411,7 +411,7 @@ class WikiController < ApplicationController
     end
     if params[:topic]
       nids = @nodes.collect(&:nid) || []
-      @nodes = Node.where(status: 1, type: %w[page])
+      @nodes = Node.where(status: 1, type: %w(page))
                    .where('node.nid IN (?)', nids)
                    .where('(type = "note" OR type = "page" OR type = "map") AND node.status = 1 AND (node.title LIKE ? OR node_revisions.title LIKE ? OR node_revisions.body LIKE ? OR term_data.name = ?)',
                           '%' + params[:topic] + '%',
@@ -424,7 +424,7 @@ class WikiController < ApplicationController
     end
 
     @unpaginated = true
-    @topics = %w[
+    @topics = %w(
       agriculture
       drinking-water
       fracking
@@ -439,7 +439,7 @@ class WikiController < ApplicationController
       urban-planning
       sensors
       community-organizing
-    ]
+    )
     render template: 'wiki/methods'
   end
 

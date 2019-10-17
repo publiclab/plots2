@@ -2,8 +2,8 @@
 
 class NotesController < ApplicationController
   respond_to :html
-  before_action :require_user, only: %i[create edit update delete rsvp publish_draft]
-  before_action :set_node, only: %i[show]
+  before_action :require_user, only: %i(create edit update delete rsvp publish_draft)
+  before_action :set_node, only: %i(show)
 
   def index
     @title = I18n.t('notes_controller.research_notes')
@@ -20,7 +20,7 @@ class NotesController < ApplicationController
                          LEFT OUTER JOIN community_tags ON community_tags.nid = node.nid
                          LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid')
                  .select('*, max(node_revisions.timestamp)')
-                 .where(status: 1, type: %w[page place])
+                 .where(status: 1, type: %w(page place))
                  .includes(:revision, :tag)
                  .references(:term_data)
                  .where('term_data.name = ?', 'chapter')

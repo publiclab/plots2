@@ -2,8 +2,8 @@
 
 class UsersController < ApplicationController
   before_action :require_no_user, only: [:new]
-  before_action :require_user, only: %i[edit update save_settings]
-  before_action :set_user, only: %i[info followed following followers]
+  before_action :require_user, only: %i(edit update save_settings)
+  before_action :set_user, only: %i(info followed following followers)
 
   def new
     @user = User.new
@@ -175,7 +175,7 @@ class UsersController < ApplicationController
         @questions = @profile_user.questions
                                   .order('node.nid DESC')
                                   .paginate(page: params[:page], per_page: 24)
-        @likes = (@profile_user.liked_notes.includes(%i[tag comments]) + @profile_user.liked_pages)
+        @likes = (@profile_user.liked_notes.includes(%i(tag comments)) + @profile_user.liked_pages)
                  .paginate(page: params[:page], per_page: 24)
         questions = Node.questions
                         .where(status: 1)
@@ -233,7 +233,7 @@ class UsersController < ApplicationController
     @user = User.find_by(username: params[:id])
     @title = 'Liked by ' + @user.name
     @notes = @user.liked_notes
-                  .includes(%i[tag comments])
+                  .includes(%i(tag comments))
                   .paginate(page: params[:page], per_page: 24)
     @wikis = @user.liked_pages
     @tagnames = []
@@ -307,7 +307,7 @@ class UsersController < ApplicationController
                       .paginate(page: params[:page], per_page: 24)
 
     @normal_comments = comments.where('comments.status = 1')
-    if logged_in_as(%w[admin moderator])
+    if logged_in_as(%w(admin moderator))
       @moderated_comments = comments.where('comments.status = 4')
     end
     render template: 'comments/index'

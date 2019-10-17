@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class HomeController < ApplicationController
-  before_action :require_user, only: %i[subscriptions nearby]
+  before_action :require_user, only: %i(subscriptions nearby)
 
   def home
     if current_user
@@ -33,7 +33,7 @@ class HomeController < ApplicationController
 
   def dashboard
     if current_user
-      @note_count = Node.select(%i[created type status])
+      @note_count = Node.select(%i(created type status))
                         .where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
                         .count(:all)
       @wiki_count = Revision.select(:timestamp)
@@ -51,7 +51,7 @@ class HomeController < ApplicationController
     if current_user
       redirect_to '/dashboard'
     else
-      @note_count = Node.select(%i[created type status])
+      @note_count = Node.select(%i(created type status))
                         .where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
                         .count(:all)
       @wiki_count = Revision.select(:timestamp)
@@ -87,7 +87,7 @@ class HomeController < ApplicationController
                       .page(params[:page])
                       .group(['title', 'comments.cid']) # ONLY_FULL_GROUP_BY, issue #3120
 
-    if logged_in_as(%w[admin moderator])
+    if logged_in_as(%w(admin moderator))
       notes = notes.where('(node.status = 1 OR node.status = 4 OR node.status = 3)')
       comments = comments.where('comments.status = 1 OR comments.status = 4')
     elsif current_user

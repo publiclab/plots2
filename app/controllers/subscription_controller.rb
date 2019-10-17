@@ -2,7 +2,7 @@
 
 class SubscriptionController < ApplicationController
   respond_to :html, :xml, :json
-  before_action :require_user, only: %i[create delete index digest]
+  before_action :require_user, only: %i(create delete index digest)
 
   def index
     @title = 'Subscriptions'

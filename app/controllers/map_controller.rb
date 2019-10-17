@@ -77,7 +77,7 @@ class MapController < ApplicationController
         end
       end
 
-      %i[lat lon].each do |coordinate|
+      %i(lat lon]).each do |coordinate|
         if coordinate_name = coordinate.to_s + ':' + @node.power_tag(coordinate.to_s)
           existing_coordinate_node_tag = NodeTag.where(nid: @node.id).joins(:tag).where('name = ?', coordinate_name).first
           existing_coordinate_node_tag.delete
