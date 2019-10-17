@@ -271,26 +271,29 @@ class UsersController < ApplicationController
 
   def reset_by_key
     @user = User.find_by(reset_key: params[:key])
-    if @user
-      if params[:user] && params[:user][:password]
-        if @user.username.casecmp(params[:user][:username].downcase).zero?
-          @user.password = params[:user][:password]
-          @user.password_confirmation = params[:user][:password]
-          @user.reset_key = nil
-          if @user.changed? && @user.save
-            flash[:notice] = I18n.t('users_controller.password_change_success')
-            @user.password_checker = 0
-            redirect_to '/dashboard'
-          else
-            flash[:error] = I18n.t('users_controller.password_reset_failed').html_safe
-            redirect_to '/'
-          end
-        else
-          flash[:error] = I18n.t('users_controller.password_change_failed')
-        end
-      end
-    else
+
+    unless @user
       flash[:error] = I18n.t('users_controller.password_reset_failed_no_user').html_safe
+      redirect_to '/'
+      return
+    end
+
+    return unless params[:user] && params[:user][:password]
+
+    unless @user.username.casecmp(params[:user][:username].downcase).zero?
+      flash[:error] = I18n.t('users_controller.password_change_failed')
+      return
+    end
+
+    @user.password = params[:user][:password]
+    @user.password_confirmation = params[:user][:password]
+    @user.reset_key = nil
+    if @user.changed? && @user.save
+      flash[:notice] = I18n.t('users_controller.password_change_success')
+      @user.password_checker = 0
+      redirect_to '/dashboard'
+    else
+      flash[:error] = I18n.t('users_controller.password_reset_failed').html_safe
       redirect_to '/'
     end
   end
