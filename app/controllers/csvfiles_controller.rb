@@ -38,6 +38,7 @@ class CsvfilesController < ApplicationController
 
   def delete
     return unless params[:id] && params[:uid].to_i == current_user.uid
+
     file = Csvfile.where(id: params[:id].to_i)
     if file.destroy(params[:id].to_i)
       flash[:notice] = "Deleted the file"

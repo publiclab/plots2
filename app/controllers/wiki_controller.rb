@@ -9,7 +9,7 @@ class WikiController < ApplicationController
     when 'new-york-city',
          'gulf-coast',
          'boston',
-         'espana' then
+         'espana'
       redirect_to url + request.subdomain
     when 'nyc'
       redirect_to url + 'new-york-city'
@@ -399,10 +399,10 @@ class WikiController < ApplicationController
       @notes = Node.where(status: 1, type: %w(page))
         .where('node.nid IN (?)', nids)
         .where('(type = "note" OR type = "page" OR type = "map") AND node.status = 1 AND (node.title LIKE ? OR node_revisions.title LIKE ? OR node_revisions.body LIKE ? OR term_data.name = ?)',
-          '%' + params[:topic] + '%',
-          '%' + params[:topic] + '%',
-          '%' + params[:topic] + '%',
-          params[:topic])
+               '%' + params[:topic] + '%',
+               '%' + params[:topic] + '%',
+               '%' + params[:topic] + '%',
+               params[:topic])
         .includes(:revision, :tag)
         .references(:node_revision, :term_data)
         .order('node_revisions.timestamp DESC')
@@ -412,10 +412,10 @@ class WikiController < ApplicationController
       @nodes = Node.where(status: 1, type: %w(page))
         .where('node.nid IN (?)', nids)
         .where('(type = "note" OR type = "page" OR type = "map") AND node.status = 1 AND (node.title LIKE ? OR node_revisions.title LIKE ? OR node_revisions.body LIKE ? OR term_data.name = ?)',
-          '%' + params[:topic] + '%',
-          '%' + params[:topic] + '%',
-          '%' + params[:topic] + '%',
-          params[:topic])
+               '%' + params[:topic] + '%',
+               '%' + params[:topic] + '%',
+               '%' + params[:topic] + '%',
+               params[:topic])
         .includes(:revision, :tag)
         .references(:node_revision, :term_data)
         .order('node_revisions.timestamp DESC')

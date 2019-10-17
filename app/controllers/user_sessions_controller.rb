@@ -231,6 +231,7 @@ class UserSessionsController < ApplicationController
       end
       tag_list.each do |t|
         next unless t.length.positive?
+
         tag = Tag.find_by(name: t)
         unless tag.present?
           tag = Tag.new(
@@ -241,7 +242,7 @@ class UserSessionsController < ApplicationController
           )
           begin
             tag.save!
-            rescue ActiveRecord::RecordInvalid
+          rescue ActiveRecord::RecordInvalid
             flash[:error] = tag.errors.full_messages
             redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
             return false
@@ -249,7 +250,7 @@ class UserSessionsController < ApplicationController
         end
         # test for uniqueness
         unless TagSelection.where(following: true, user_id: current_user.uid, tid: tag.tid).length.positive?
-        # Successfully we have added subscription
+          # Successfully we have added subscription
           if Tag.find_by(tid: tag.tid)
             # Create the entry if it isn't already created.
             # assume tag, for now:

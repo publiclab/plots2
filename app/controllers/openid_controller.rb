@@ -88,56 +88,55 @@ class OpenidController < ApplicationController
 
       if oidreq
 
-
         oidresp = nil
         if oidreq.is_a?(CheckIDRequest)
 
-            identity = oidreq.identity
+          identity = oidreq.identity
 
-            if oidreq.id_select
-              if oidreq.immediate
-                oidresp = oidreq.answer(false)
-              elsif session[:username]
-                # The user hasn't logged in.
-                # show_decision_page(oidreq) # this doesnt make sense... it was in the example though
-                session[:openid_return_to] = request.env['ORIGINAL_FULLPATH']
-                if provider
-                  # provider based authentication
-                  redirect_to '/auth/' + provider
-                else
-                  # form based authentication
-                  redirect_to '/login'
-                end
+          if oidreq.id_select
+            if oidreq.immediate
+              oidresp = oidreq.answer(false)
+            elsif session[:username]
+              # The user hasn't logged in.
+              # show_decision_page(oidreq) # this doesnt make sense... it was in the example though
+              session[:openid_return_to] = request.env['ORIGINAL_FULLPATH']
+              if provider
+                # provider based authentication
+                redirect_to '/auth/' + provider
               else
-                # Else, set the identity to the one the user is using.
-                identity = url_for_user
+                # form based authentication
+                redirect_to '/login'
               end
-
-            end
-
-            if oidresp
-              nil
-            elsif is_authorized(identity, oidreq.trust_root)
-              oidresp = oidreq.answer(true, nil, identity)
-
-              # add the sreg response if requested
-              add_sreg(oidreq, oidresp)
-              # ditto pape
-              add_pape(oidreq, oidresp)
-
-            elsif oidreq.immediate
-              server_url = url_for action: 'index'
-              oidresp = oidreq.answer(false, server_url)
-
             else
-              session[:last_oidreq] = oidreq
-              @oidreq = oidreq
-              redirect_to action: 'decision'
-              return
+              # Else, set the identity to the one the user is using.
+              identity = url_for_user
             end
+
+          end
+
+          if oidresp
+            nil
+          elsif is_authorized(identity, oidreq.trust_root)
+            oidresp = oidreq.answer(true, nil, identity)
+
+            # add the sreg response if requested
+            add_sreg(oidreq, oidresp)
+            # ditto pape
+            add_pape(oidreq, oidresp)
+
+          elsif oidreq.immediate
+            server_url = url_for action: 'index'
+            oidresp = oidreq.answer(false, server_url)
+
+          else
+            session[:last_oidreq] = oidreq
+            @oidreq = oidreq
+            redirect_to action: 'decision'
+            return
+          end
 
         else
-            oidresp = server.handle_request(oidreq)
+          oidresp = server.handle_request(oidreq)
           end
 
         render_response(oidresp)
@@ -246,7 +245,7 @@ class OpenidController < ApplicationController
     oidresp = oidreq.answer(true, nil, identity)
     add_sreg(oidreq, oidresp)
     add_pape(oidreq, oidresp)
-    return render_response(oidresp)
+    render_response(oidresp)
   end
 
   protected

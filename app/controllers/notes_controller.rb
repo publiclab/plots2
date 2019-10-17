@@ -54,7 +54,7 @@ class NotesController < ApplicationController
         redirect_to @node.path(:question)
         return
       end
-      
+
       alert_and_redirect_moderated
       redirect_power_tag_redirect
 

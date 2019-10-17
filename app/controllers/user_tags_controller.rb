@@ -41,7 +41,7 @@ class UserTagsController < ApplicationController
 
     user = User.find(params[:id])
 
-    if current_user && current_user == user || logged_in_as(['admin'])
+    if current_user && current_user == user || logged_in_as(%w(admin))
       if params[:name]
         tagnames = params[:name].split(',')
         tagnames.each do |tagname|
@@ -97,7 +97,7 @@ class UserTagsController < ApplicationController
     @user_tag = UserTag.where(uid: params[:id], value: params[:name]).first
 
     if !@user_tag.nil?
-      if logged_in_as(['admin']) || @user_tag.user == current_user
+      if logged_in_as(%w(admin)) || @user_tag.user == current_user
         UserTag.where(uid: params[:id], value: params[:name]).destroy_all
         output[:errors] = I18n.t('user_tags_controller.tag_deleted')
         output[:status] = true

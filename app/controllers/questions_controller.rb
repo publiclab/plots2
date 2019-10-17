@@ -33,7 +33,7 @@ class QuestionsController < ApplicationController
       .where(status: 1)
       .order('node.nid DESC')
       .paginate(page: params[:page], per_page: 24)
-    
+
     @populartitle = 'Popular Questions'
     @popularquestions = Node.questions
       .where(status: 1)
@@ -45,7 +45,6 @@ class QuestionsController < ApplicationController
       .where(type: 'page', status: 1)
       .order('nid DESC')
     @unpaginated = true
-
   end
 
   # a form for new questions, at /questions/new

@@ -9,10 +9,10 @@ class RelationshipsController < ApplicationController
         format.html { redirect_to URI.parse(request.referer || "/").path, notice: "You have started following " + user.username }
         format.js { render "create", locals: { following: true, profile_user: user } }
       else
-        format.html {
+        format.html do
           flash[:error] = "Error in following user"
           redirect_to URI.parse(request.referer || "/").path
-        }
+        end
         format.js { render "create", locals: { following: false, profile_user: user } }
       end
     end
@@ -27,10 +27,10 @@ class RelationshipsController < ApplicationController
         format.html { redirect_to URI.parse(request.referer || "/").path, notice: "You have unfollowed " + user.username }
         format.js { render "destroy", locals: { unfollowing: true, profile_user: user } }
       else
-        format.html {
+        format.html do
           flash[:error] = "Error in unfollowing user"
           redirect_to URI.parse(request.referer || "/").path
-        }
+        end
         format.js { render "destroy", locals: { unfollowing: false, profile_user: user } }
       end
     end

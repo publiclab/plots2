@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :require_no_user, only: [:new]
   before_action :require_user, only: %i(edit update save_settings)
-   before_action :set_user, only: %i(info followed following followers)
+  before_action :set_user, only: %i(info followed following followers)
 
   def new
     @user = User.new
@@ -54,7 +54,7 @@ class UsersController < ApplicationController
   def update
     @password_verification = user_verification_params
     @user = current_user
-    @user = User.find_by(username: params[:id]) if params[:id] && logged_in_as(['admin'])
+    @user = User.find_by(username: params[:id]) if params[:id] && logged_in_as(%w(admin))
     if @user.valid_password?(user_verification_params["current_password"]) || user_verification_params["ui_update"].nil?
       # correct password
       @user.attributes = user_params
@@ -84,7 +84,7 @@ class UsersController < ApplicationController
             else
               current_user
             end
-    if current_user && current_user.uid == @user.uid || logged_in_as(['admin'])
+    if current_user && current_user.uid == @user.uid || logged_in_as(%w(admin))
       render template: "users/edit"
     else
       flash[:error] = I18n.t('users_controller.only_user_edit_profile', user: @user.name).html_safe
@@ -305,7 +305,7 @@ class UsersController < ApplicationController
                              .paginate(page: params[:page], per_page: 24)
 
     @normal_comments = comments.where('comments.status = 1')
-    if logged_in_as(['admin', 'moderator'])
+    if logged_in_as(%w(admin moderator))
       @moderated_comments = comments.where('comments.status = 4')
     end
     render template: 'comments/index'
@@ -436,6 +436,7 @@ class UsersController < ApplicationController
       end
       tag_list.each do |t|
         next unless t.length.positive?
+
         tag = Tag.find_by(name: t)
         unless tag.present?
           tag = Tag.new(
@@ -446,7 +447,7 @@ class UsersController < ApplicationController
           )
           begin
             tag.save!
-            rescue ActiveRecord::RecordInvalid
+          rescue ActiveRecord::RecordInvalid
             flash[:error] = tag.errors.full_messages
             redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
             return false

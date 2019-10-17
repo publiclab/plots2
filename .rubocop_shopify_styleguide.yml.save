@@ -234,7 +234,8 @@ Style/NonNilCheck:
 
 Style/MethodDefParentheses:
   EnforcedStyle: require_parentheses
-  SupportedStyles:
+  SupportedStyles:Wall
+
   - require_parentheses
   - require_no_parentheses
   - require_no_parentheses_except_multiline

@@ -73,15 +73,14 @@ class TagController < ApplicationController
   end
 
   def show
-
-    # Enhancement #6306 - Add counts to `by type` dropdown on tag pages 
-    @counts = {:posts => 0, :questions => 0, :wiki => 0 }
+    # Enhancement #6306 - Add counts to `by type` dropdown on tag pages
+    @counts = { 'posts' => 0, 'questions' => 0, 'wiki' => 0 }
     @counts[:posts] = Tag.find_nodes_by_type([params[:id]], 'note', false).count
     @counts[:questions] = Tag.find_nodes_by_type("question:#{params[:id]}", 'note', false).count
     @counts[:wiki] = Tag.find_nodes_by_type([params[:id]], 'page', false).count
     params[:counts] = @counts
     # end Enhancement #6306 ============================================
-  
+
     if params[:id].is_a? Integer
       @wiki = Node.find(params[:id])&.first
     else
@@ -321,7 +320,7 @@ class TagController < ApplicationController
           @output[:errors] << I18n.t('tag_controller.cant_be_empty')
         end
 
-      elsif node.can_tag(tagname, current_user) === true || logged_in_as(['admin'])
+      elsif node.can_tag(tagname, current_user) === true || logged_in_as(%w(admin))
         saved, tag = node.add_tag(tagname.strip, current_user)
         if tagname.include?(":") && tagname.split(':').length == 2
           if tagname.split(':')[0] == "barnstar"
@@ -357,8 +356,8 @@ class TagController < ApplicationController
           render json: @output
         else
           flash[:notice] = I18n.t('tag_controller.tags_created_error',
-            tag_count: @output[:saved].length,
-            error_count: @output[:errors].length).html_safe
+                                  tag_count: @output[:saved].length,
+                                  error_count: @output[:errors].length).html_safe
           redirect_to node.path
         end
       end
@@ -370,7 +369,7 @@ class TagController < ApplicationController
     node_tag = NodeTag.where(nid: params[:nid], tid: params[:tid]).first
     node = Node.where(nid: params[:nid]).first
     # only admins, mods, and tag authors can delete other peoples' tags
-    if node_tag.uid == current_user.uid || logged_in_as(['admin', 'moderator']) || node.uid == current_user.uid
+    if node_tag.uid == current_user.uid || logged_in_as(%w(admin moderator)) || node.uid == current_user.uid
 
       tag = Tag.joins(:node_tag)
                    .select('term_data.name')
@@ -483,7 +482,7 @@ class TagController < ApplicationController
   end
 
   def add_parent
-    if logged_in_as(['admin'])
+    if logged_in_as(%w(admin))
       @tag = Tag.find_by(name: params[:name])
       @tag.update_attribute('parent', params[:parent])
       if @tag.save
