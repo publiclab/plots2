@@ -28,7 +28,7 @@ class WikiControllerTest < ActionController::TestCase
     get :index, params: { sort: 'title' }
 
     assert_response :success
-    assert assigns(:wikis).each_cons(2).all?{|i,j| j.name >= i.name}
+    assert assigns(:wikis).each_cons(2).all?{|i,j| "j.node_revisions.title" >= "i.node_revisions.title" }
   end
 
   test 'should get wiki stale pages' do
