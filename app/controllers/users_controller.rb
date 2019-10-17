@@ -27,7 +27,7 @@ class UsersController < ApplicationController
           flash[:warning] = 'We tried and failed to send you a welcome email, but your account was created anyhow. Sorry!'
         end
         flash[:notice] = I18n.t('users_controller.registration_successful')
-        if params&.send(:[],:return_to)&.split('/')[0..3] == ['', 'subscribe', 'multiple', 'tag']
+        if params&.send(:[], :return_to)&.split('/')[0..3] == ['', 'subscribe', 'multiple', 'tag']
           flash[:notice] += "You are now following '#{params[:return_to].split('/')[4]}'."
           subscribe_multiple_tag(params[:return_to].split('/')[4])
         elsif params[:return_to] && params[:return_to] != '/signup' && params[:return_to] != '/login'
