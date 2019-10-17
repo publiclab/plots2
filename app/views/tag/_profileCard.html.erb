@@ -25,7 +25,7 @@
     </div>
     <div class="card-footer" style="background-color: inherit; border:none;">
       <span style="color: #808080;">@<%= @profile_user.name %> posted:</span>
-      <a style="text-decoration: underline; color: #808080; display: inline-block; margin-left: 6px;" href="/note/tag/<%= tag.name %>/author/<%= @profile_user.name %>"><%= Node.find_by_tag_and_author(tag.name, @profile_user.id, 'note').count %> <%= t('tag.index.notes') %></a>
+      <a style="text-decoration: underline; color: #808080; display: inline-block; margin-left: 6px;" href="/note/tag/<%= tag.name %>/author/<%= @profile_user.name %>"><%= Node.find_by_tag_and_author(tag.name, @profile_user.id, 'research').count %> <%= t('tag.index.notes') %></a>
       <a style="text-decoration: underline; color: #808080; display: inline-block; margin-left: 6px;" href="/questions/tag/<%= tag.name %>/author/<%= @profile_user.name %>"><%= Node.find_by_tag_and_author(tag.name, @profile_user.id, 'question').count %> <%= t('tag.index.questions') %></a>
       <a style="text-decoration: underline; color: #808080; display: inline-block; margin-left: 6px;" href=""><%= Comment.find_by_tag_and_author(tag.name, @profile_user.id).count %> <%= t('tag.index.comments') %></a>
 

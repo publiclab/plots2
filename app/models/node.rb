@@ -881,7 +881,7 @@ class Node < ActiveRecord::Base
   def self.find_by_tag_and_author(tagname, user_id, type = 'note')
     order = 'node_revisions.timestamp DESC'
     order = 'created DESC' if type == 'note'
-    if type == 'question'
+    if type == 'question' # search for notes that have a question tag
       Node.where(nid: Node.where(status: 1, type: 'note')
           .includes(:node_tag, :tag)
           .references(:term_data)
@@ -891,7 +891,17 @@ class Node < ActiveRecord::Base
           .includes(:node_tag, :tag)
           .references(:term_data)
           .where('term_data.name = ?', tagname))
-        .where('node.uid = ?', user_id)
+        .order(order)
+    elsif type == 'research'  # search for notes that do not have a question tag
+      Node.where.not(nid: Node.where(status: 1, type: 'note')
+          .includes(:node_tag, :tag)
+          .references(:term_data)
+          .where('term_data.name LIKE ?', 'question:%')
+          .select(:nid))
+        .where(nid: Node.where(status: 1, type: 'note')
+          .includes(:node_tag, :tag)
+          .references(:term_data)
+          .where('term_data.name = ?', tagname))
         .order(order)
     else
       Node.where(status: 1, type: type)
