@@ -301,7 +301,7 @@ class UsersController < ApplicationController
   def comments
     comments = Comment.limit(20)
                              .order("timestamp DESC")
-                             .where(uid: params[:id])
+                             .where(uid: User.where(username: params[:id], status: 1).first)
                              .paginate(page: params[:page], per_page: 24)
 
     @normal_comments = comments.where('comments.status = 1')
