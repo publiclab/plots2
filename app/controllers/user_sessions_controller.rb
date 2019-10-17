@@ -79,7 +79,7 @@ class UserSessionsController < ApplicationController
             return_to = session[:openid_return_to]
             session[:openid_return_to] = nil
             redirect_to return_to + hash_params
-          elsif params&.send(:[], :return_to)&.split('/')[0..3] == ['', 'subscribe', 'multiple', 'tag']
+          elsif params&.send(:[], :return_to)&.split('/')&.send(:[], 0..3) == ['', 'subscribe', 'multiple', 'tag']
             flash[:notice] = "You are now following '#{params[:return_to].split('/')[4]}'."
             subscribe_multiple_tag(params[:return_to].split('/')[4])
             redirect_to '/dashboard', notice: 'You have successfully signed in. Please change your password using the link sent to you via e-mail.'
