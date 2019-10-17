@@ -358,8 +358,9 @@ class TagController < ApplicationController
           render json: @output
         else
           flash[:notice] = I18n.t('tag_controller.tags_created_error',
-                                  tag_count: @output[:saved].length,
-                                  error_count: @output[:errors].length).html_safe
+            tag_count: @output[:saved].length,
+            error_count: @output[:errors].length
+           ).html_safe
           redirect_to node.path
         end
       end
