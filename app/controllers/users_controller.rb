@@ -263,41 +263,48 @@ class UsersController < ApplicationController
 
   def reset
     if params[:key] && !params[:key].nil?
-      @user = User.find_by(reset_key: params[:key])
-      if @user
-        if params[:user] && params[:user][:password]
-          if @user.username.casecmp(params[:user][:username].downcase).zero?
-            @user.password = params[:user][:password]
-            @user.password_confirmation = params[:user][:password]
-            @user.reset_key = nil
-            if @user.changed? && @user.save
-              flash[:notice] = I18n.t('users_controller.password_change_success')
-              @user.password_checker = 0
-              redirect_to '/dashboard'
-            else
-              flash[:error] = I18n.t('users_controller.password_reset_failed').html_safe
-              redirect_to '/'
-            end
-          else
-            flash[:error] = I18n.t('users_controller.password_change_failed')
-          end
-        end
-      else
-        flash[:error] = I18n.t('users_controller.password_reset_failed_no_user').html_safe
-        redirect_to '/'
-      end
-
+      reset_by_key
     elsif params[:email]
-      user = User.find_by(email: params[:email])
-      if user
-        key = user.generate_reset_key
-        user.save
-        # send key to user email
-        PasswordResetMailer.reset_notify(user, key).deliver_now unless user.nil? # respond the same to both successes and failures; security
-      end
-      flash[:notice] = I18n.t('users_controller.password_reset_email')
-      redirect_to '/login'
+      reset_by_email
     end
+  end
+
+  def reset_by_key
+    @user = User.find_by(reset_key: params[:key])
+    if @user
+      if params[:user] && params[:user][:password]
+        if @user.username.casecmp(params[:user][:username].downcase).zero?
+          @user.password = params[:user][:password]
+          @user.password_confirmation = params[:user][:password]
+          @user.reset_key = nil
+          if @user.changed? && @user.save
+            flash[:notice] = I18n.t('users_controller.password_change_success')
+            @user.password_checker = 0
+            redirect_to '/dashboard'
+          else
+            flash[:error] = I18n.t('users_controller.password_reset_failed').html_safe
+            redirect_to '/'
+          end
+        else
+          flash[:error] = I18n.t('users_controller.password_change_failed')
+        end
+      end
+    else
+      flash[:error] = I18n.t('users_controller.password_reset_failed_no_user').html_safe
+      redirect_to '/'
+    end
+  end
+
+  def reset_by_email
+    user = User.find_by(email: params[:email])
+    if user
+      key = user.generate_reset_key
+      user.save
+      # send key to user email
+      PasswordResetMailer.reset_notify(user, key).deliver_now unless user.nil? # respond the same to both successes and failures; security
+    end
+    flash[:notice] = I18n.t('users_controller.password_reset_email')
+    redirect_to '/login'
   end
 
   def comments
