@@ -311,6 +311,23 @@ class UsersController < ApplicationController
     render template: 'comments/index'
   end
 
+  def comments_by_tagname
+    comments = Comment.limit(20)
+                             .order("timestamp DESC")
+                             .where(uid: User.where(username: params[:id], status: 1).first)
+                             .where(nid: Node.where(status: 1)
+                              .includes(:node_tag, :tag)
+                              .references(:term_data)
+                              .where('term_data.name = ?', params[:tagname]))
+                             .paginate(page: params[:page], per_page: 24)
+
+    @normal_comments = comments.where('comments.status = 1')
+    if logged_in_as(['admin', 'moderator'])
+      @moderated_comments = comments.where('comments.status = 4')
+    end
+    render template: 'comments/index'
+  end
+
   def photo
     @user = User.find_by(id: params[:uid])
     if current_user.uid == @user.uid || current_user.admin?
