@@ -145,10 +145,11 @@ class UserSessionsController < ApplicationController
                                           remember_me: params[:user_session][:remember_me])
           @user_session.save do |result|
             if result
-              hash_params = ( params[:hash_params].to_s.empty? ?
-                '' :
-                URI.parse('#' + params[:hash_params]).to_s
-              )
+              hash_params = ''
+
+              unless params[:hash_params].to_s.empty?
+                hash_params = URI.parse('#' + params[:hash_params]).to_s
+              end
 
               # replace this with temporarily saving pwd in session,
               # and automatically saving it in the user record after login is completed
