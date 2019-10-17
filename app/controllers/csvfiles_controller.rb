@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class CsvfilesController < ApplicationController
-  before_action :require_user, only: %i(delete user_files)
+  before_action :require_user, only: %i[delete user_files]
 
   def setter
     @csvfile = Csvfile.new(
@@ -7,7 +9,7 @@ class CsvfilesController < ApplicationController
       filetitle: params[:filetitle],
       filedescription: params[:filedescription],
       filepath: params[:object],
-      filename: "file" + Time.now.to_i.to_s,
+      filename: 'file' + Time.now.to_i.to_s,
       filestring: params[:filestring]
     )
     render json: @csvfile if @csvfile.save
@@ -28,7 +30,7 @@ class CsvfilesController < ApplicationController
       filetitle: params[:filetitle],
       filedescription: params[:filedescription],
       filepath: params[:object],
-      filename: "file" + Time.now.to_i.to_s,
+      filename: 'file' + Time.now.to_i.to_s,
       filestring: params[:filestring],
       graphobject: params[:graphobject]
     )
@@ -38,11 +40,12 @@ class CsvfilesController < ApplicationController
 
   def delete
     return unless params[:id] && params[:uid].to_i == current_user.uid
+
     file = Csvfile.where(id: params[:id].to_i)
     if file.destroy(params[:id].to_i)
-      flash[:notice] = "Deleted the file"
+      flash[:notice] = 'Deleted the file'
     else
-      flash[:error] = "Could not delete the file"
+      flash[:error] = 'Could not delete the file'
     end
     redirect_to "simple-data-grapher/data/#{params[:uid]}"
   end

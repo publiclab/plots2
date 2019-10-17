@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SettingsController < ApplicationController
   # Check the locale was passed and if it is a valid one, set the locale in cookies
   def change_locale

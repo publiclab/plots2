@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class SearchController < ApplicationController
-  before_action :set_search_criteria, except: %i(notes wikis)
+  before_action :set_search_criteria, except: %i[notes wikis]
 
   def new; end
 
   def google
-    @title = "Search"
+    @title = 'Search'
   end
 
   # a route to convert /search/_____ to /search?q=______ style search queries
@@ -13,20 +15,20 @@ class SearchController < ApplicationController
   end
 
   def notes
-    @title = "Search notes"
+    @title = 'Search notes'
     @notes = SearchService.new.search_notes(params[:query], 15, params[:order].to_s.to_sym, params[:type].to_s.to_sym)
-                              .paginate(page: params[:page], per_page: 24)
+                          .paginate(page: params[:page], per_page: 24)
   end
 
   def wikis
-    @title = "Search wikis"
+    @title = 'Search wikis'
     @wikis = SearchService.new.search_wikis(params[:query], 15, params[:order].to_s.to_sym, params[:type].to_s.to_sym)
-                              .paginate(page: params[:page], per_page: 24)
+                          .paginate(page: params[:page], per_page: 24)
   end
 
   def profiles
-    @title = "Search profiles"
-    @search_criteria.sort_by = "recent"
+    @title = 'Search profiles'
+    @search_criteria.sort_by = 'recent'
     if params[:query]
       @profiles = ExecuteSearch.new.by(:profiles, @search_criteria).paginate(page: params[:page], per_page: 20)
     else
@@ -37,23 +39,23 @@ class SearchController < ApplicationController
   end
 
   def questions
-    @title = "Search questions"
+    @title = 'Search questions'
     @questions = ExecuteSearch.new.by(:questions, @search_criteria).paginate(page: params[:page], per_page: 20)
   end
 
   def places
-    @title = "Search maps"
+    @title = 'Search maps'
     # it's called nodes because the map/_maps partials expects nodes objects
     @nodes = ExecuteSearch.new.by(:places, @search_criteria).paginate(page: params[:page], per_page: 20)
   end
 
   def tags
-    @title = "Search tags"
+    @title = 'Search tags'
     @tags = ExecuteSearch.new.by(:tags, @search_criteria).paginate(page: params[:page], per_page: 20)
   end
 
   def all_content
-    @title = "Search all content"
+    @title = 'Search all content'
     @nodes = ExecuteSearch.new.by(:all, @search_criteria)
     @wikis = wikis
     @notes = notes

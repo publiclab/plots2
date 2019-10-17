@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 include ActionView::Helpers::DateHelper # required for time_ago_in_words()
 class ApplicationController < ActionController::Base
   protect_from_forgery
@@ -28,14 +30,14 @@ class ApplicationController < ActionController::Base
 
       @notes = @notes.where('node.nid != (?)', @node.nid) if @node
       @wikis = Tag.find_pages(data, 10)
-      @videos = Tag.find_nodes_by_type_with_all_tags(%w(video) + data, 'note', 8) if args[:videos] && data.length > 1
+      @videos = Tag.find_nodes_by_type_with_all_tags(%w[video] + data, 'note', 8) if args[:videos] && data.length > 1
       @maps = Tag.find_nodes_by_type(data, 'map', 20)
     else # type is generic
       # remove "classroom" postings; also switch to an EXCEPT operator in sql, see https://github.com/publiclab/plots2/issues/375
       hidden_nids = Node.where(type: :note, status: 1).select { |n| n.has_a_tag('hidden:response') }.collect(&:nid)
       @notes = if params[:controller] == 'questions'
                  Node.questions
-                   .joins(:revision)
+                     .joins(:revision)
                else
                  Node.research_notes.joins(:revision).order('node.nid DESC').paginate(page: params[:page])
       end
@@ -43,7 +45,7 @@ class ApplicationController < ActionController::Base
       @notes = @notes.where('node.nid != (?)', @node.nid) if @node
       @notes = @notes.where('node_revisions.status = 1 AND node.nid NOT IN (?)', hidden_nids) unless hidden_nids.empty?
 
-      @notes = if logged_in_as(['admin', 'moderator'])
+      @notes = if logged_in_as(%w[admin moderator])
                  @notes.where('(node.status = 1 OR node.status = 4)')
                elsif current_user
                  @notes.where('(node.status = 1 OR (node.status = 4 AND node.uid = ?))', current_user.uid)
@@ -52,11 +54,11 @@ class ApplicationController < ActionController::Base
                end
 
       @wikis = Node.order('changed DESC')
-        .joins(:revision)
-        .where('node_revisions.status = 1 AND node.status = 1 AND type = "page"')
-        .limit(10)
-        .group('node_revisions.nid')
-        .order('node_revisions.timestamp DESC')
+                   .joins(:revision)
+                   .where('node_revisions.status = 1 AND node.status = 1 AND type = "page"')
+                   .limit(10)
+                   .group('node_revisions.nid')
+                   .order('node_revisions.timestamp DESC')
     end
   end
 
@@ -94,9 +96,9 @@ class ApplicationController < ActionController::Base
 
     end
 
-    cookies.signed["user_token"] = nil
+    cookies.signed['user_token'] = nil
     if @current_user
-      cookies.signed["user_token"] = @current_user.persistence_token
+      cookies.signed['user_token'] = @current_user.persistence_token
     end
     @current_user
   end
@@ -108,7 +110,7 @@ class ApplicationController < ActionController::Base
       redirect_to login_url
       false
     end
-    return current_user
+    current_user
   end
 
   def require_no_user
@@ -142,10 +144,10 @@ class ApplicationController < ActionController::Base
   end
 
   def alert_and_redirect_moderated
-    if @node.author.status == User::Status::BANNED && !(logged_in_as(['admin', 'moderator']))
+    if @node.author.status == User::Status::BANNED && !logged_in_as(%w[admin moderator])
       flash[:error] = I18n.t('application_controller.author_has_been_banned')
       redirect_to '/'
-    elsif @node.status == 4 && (logged_in_as(['admin', 'moderator']))
+    elsif @node.status == 4 && logged_in_as(%w[admin moderator])
       flash.now[:warning] = "First-time poster <a href='/profile/#{@node.author.name}'>#{@node.author.name}</a> submitted this #{time_ago_in_words(@node.created_at)} ago and it has not yet been approved by a moderator. <a class='btn btn-default btn-sm' href='/moderate/publish/#{@node.id}'>Approve</a> <a class='btn btn-default btn-sm' href='/moderate/spam/#{@node.id}'>Spam</a>"
     elsif @node.status == 4 && current_user&.id == @node.author.id && !flash[:first_time_post]
       flash.now[:warning] = "Thank you for contributing open research, and thanks for your patience while your post is approved by <a href='/wiki/moderation'>community moderators</a> and we'll email you when it is published. In the meantime, if you have more to contribute, feel free to do so."
@@ -153,7 +155,7 @@ class ApplicationController < ActionController::Base
       flash.now[:warning] = "This is a draft note. Once you're ready, click <a class='btn btn-success btn-xs' href='/notes/publish_draft/#{@node.id}'>Publish Draft</a> to make it public. You can share it with collaborators using this private link <a href='#{@node.draft_url(request.base_url)}'>#{@node.draft_url(request.base_url)}</a>"
     elsif @node.status == 3 && (params[:token].nil? || (params[:token].present? && @node.slug.split('token:').last != params[:token]))
       page_not_found
-    elsif @node.status != 1 && @node.status != 3 && !(logged_in_as(['admin', 'moderator']))
+    elsif @node.status != 1 && @node.status != 3 && !logged_in_as(%w[admin moderator])
       # if it's spam or a draft
       # no notification; don't let people easily fish for existing draft titles; we should try to 404 it
       redirect_to '/'

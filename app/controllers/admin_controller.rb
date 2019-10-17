@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class AdminController < ApplicationController
-  before_action :require_user, only: %i(spam spam_revisions mark_comment_spam publish_comment spam_comments)
+  before_action :require_user, only: %i[spam spam_revisions mark_comment_spam publish_comment spam_comments]
 
   # intended to provide integration tests for assets
   def assets; end
@@ -21,7 +23,7 @@ class AdminController < ApplicationController
   def promote_moderator
     @user = User.find params[:id]
     unless @user.nil?
-      if logged_in_as(['admin', 'moderator'])
+      if logged_in_as(%w[admin moderator])
         @user.role = 'moderator'
         @user.save
         flash[:notice] = "User '<a href='/profile/" + @user.username + "'>" + @user.username + "</a>' is now a moderator."
@@ -35,7 +37,7 @@ class AdminController < ApplicationController
   def demote_basic
     @user = User.find params[:id]
     unless @user.nil?
-      if logged_in_as(['admin', 'moderator'])
+      if logged_in_as(%w[admin moderator])
         @user.role = 'basic'
         @user.save
         flash[:notice] = "User '<a href='/profile/" + @user.username + "'>" + @user.username + "</a>' is no longer a moderator."
@@ -56,17 +58,17 @@ class AdminController < ApplicationController
         PasswordResetMailer.reset_notify(user, key).deliver_later unless user.nil? # respond the same to both successes and failures; security
       end
       flash[:notice] = "#{user.name} should receive an email with instructions on how to reset their password. If they do not, please double check that they are using the email they registered with."
-      redirect_to URI.parse("/profile/" + user.name).path
+      redirect_to URI.parse('/profile/' + user.name).path
     end
   end
 
   def useremail
-    if logged_in_as(['admin', 'moderator'])
+    if logged_in_as(%w[admin moderator])
       if params[:address]
         # address was submitted. find the username(s) and return.
         @address = params[:address]
         @users = User.where(email: params[:address])
-                 .where(status: [1, 4])
+                     .where(status: [1, 4])
       end
     else
       # unauthorized. instead of return ugly 403, just send somewhere else
@@ -75,7 +77,7 @@ class AdminController < ApplicationController
   end
 
   def spam
-    if logged_in_as(['admin', 'moderator'])
+    if logged_in_as(%w[admin moderator])
       @nodes = Node.paginate(page: params[:page])
                    .order('nid DESC')
       @nodes = if params[:type] == 'wiki'
@@ -90,7 +92,7 @@ class AdminController < ApplicationController
   end
 
   def spam_revisions
-    if logged_in_as(['admin', 'moderator'])
+    if logged_in_as(%w[admin moderator])
       @revisions = Revision.paginate(page: params[:page])
                            .order('timestamp DESC')
                            .where(status: 0)
@@ -104,8 +106,8 @@ class AdminController < ApplicationController
   def spam_comments
     if current_user &. can_moderate?
       @comments = Comment.paginate(page: params[:page])
-                       .order('timestamp DESC')
-                       .where(status: 0)
+                         .order('timestamp DESC')
+                         .where(status: 0)
       render template: 'admin/spam'
     else
       flash[:error] = 'Only moderators can moderate comments.'
@@ -115,7 +117,7 @@ class AdminController < ApplicationController
 
   def mark_spam
     @node = Node.find params[:id]
-    if logged_in_as(['admin', 'moderator'])
+    if logged_in_as(%w[admin moderator])
       if @node.status == 1 || @node.status == 4
         @node.spam
         @node.author.ban
@@ -138,7 +140,7 @@ class AdminController < ApplicationController
 
   def mark_comment_spam
     @comment = Comment.find params[:id]
-    if logged_in_as(['admin', 'moderator'])
+    if logged_in_as(%w[admin moderator])
       if @comment.status == 1 || @comment.status == 4
         @comment.spam
         user = @comment.author
@@ -146,7 +148,7 @@ class AdminController < ApplicationController
         AdminMailer.notify_moderators_of_comment_spam(@comment, current_user).deliver_later
         flash[:notice] = "Comment has been marked as spam and comment author has been banned. You can undo this on the <a href='/spam/comments'>spam moderation page</a>."
       else
-        flash[:notice] = "Comment already marked as spam."
+        flash[:notice] = 'Comment already marked as spam.'
       end
     else
       flash[:error] = 'Only moderators can moderate comments.'
@@ -155,7 +157,7 @@ class AdminController < ApplicationController
   end
 
   def publish_comment
-    if logged_in_as(['admin', 'moderator'])
+    if logged_in_as(%w[admin moderator])
       @comment = Comment.find params[:id]
       if @comment.status == 1
         flash[:notice] = 'Comment already published.'
@@ -181,7 +183,7 @@ class AdminController < ApplicationController
   end
 
   def publish
-    if logged_in_as(['admin', 'moderator'])
+    if logged_in_as(%w[admin moderator])
       @node = Node.find params[:id]
       if @node.status == 1
         flash[:notice] = 'Item already published.'
@@ -223,7 +225,7 @@ class AdminController < ApplicationController
       return
     end
 
-    if logged_in_as(['admin', 'moderator'])
+    if logged_in_as(%w[admin moderator])
       if @revision.status == 1
         @revision.spam
         @revision.author.ban
@@ -244,7 +246,7 @@ class AdminController < ApplicationController
   end
 
   def publish_revision
-    if logged_in_as(['admin', 'moderator'])
+    if logged_in_as(%w[admin moderator])
       @revision = Revision.find params[:vid]
       @revision.publish
       @revision.author.unban
@@ -262,7 +264,7 @@ class AdminController < ApplicationController
 
   def moderate
     user = User.find params[:id]
-    if logged_in_as(['admin', 'moderator'])
+    if logged_in_as(%w[admin moderator])
       user.moderate
       flash[:notice] = 'The user has been moderated.'
     else
@@ -273,7 +275,7 @@ class AdminController < ApplicationController
 
   def unmoderate
     user = User.find params[:id]
-    if logged_in_as(['admin', 'moderator'])
+    if logged_in_as(%w[admin moderator])
       user.unmoderate
       flash[:notice] = 'The user has been unmoderated.'
     else
@@ -284,7 +286,7 @@ class AdminController < ApplicationController
 
   def ban
     user = User.find params[:id]
-    if logged_in_as(['admin', 'moderator'])
+    if logged_in_as(%w[admin moderator])
       user.ban
       flash[:notice] = 'The user has been banned.'
     else
@@ -295,7 +297,7 @@ class AdminController < ApplicationController
 
   def unban
     user = User.find params[:id]
-    if logged_in_as(['admin', 'moderator'])
+    if logged_in_as(%w[admin moderator])
       user.unban
       flash[:notice] = 'The user has been unbanned.'
     else
@@ -305,7 +307,7 @@ class AdminController < ApplicationController
   end
 
   def users
-    if logged_in_as(['admin', 'moderator'])
+    if logged_in_as(%w[admin moderator])
       @users = User.order('uid DESC').limit(200)
     else
       flash[:error] = 'Only moderators can moderate other users.'
@@ -314,7 +316,7 @@ class AdminController < ApplicationController
   end
 
   def batch
-    if logged_in_as(['admin', 'moderator'])
+    if logged_in_as(%w[admin moderator])
       nodes = 0
       users = []
       params[:ids].split(',').uniq.each do |nid|
@@ -352,7 +354,7 @@ class AdminController < ApplicationController
   end
 
   def queue
-    if logged_in_as(['admin', 'moderator'])
+    if logged_in_as(%w[admin moderator])
       @notes = Node.where(status: 4)
                    .paginate(page: params[:page])
       flash[:warning] = "These are notes requiring moderation. <a href='/wiki/moderation'>Community moderators</a> may approve or reject them."
@@ -376,10 +378,10 @@ class AdminController < ApplicationController
         s.print "RCPT TO: <example@publiclab.org>\n"
       end
       if line.include? '250 Accepted'
-        render plain: "Email gateway OK"
+        render plain: 'Email gateway OK'
         s.close_write
       elsif line.include? '550'
-        render plain: "Email gateway NOT OK"
+        render plain: 'Email gateway NOT OK'
         render status: 500
         s.close_write
       end

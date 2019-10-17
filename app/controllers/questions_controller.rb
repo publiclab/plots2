@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class QuestionsController < ApplicationController
   private
 
@@ -6,9 +8,9 @@ class QuestionsController < ApplicationController
     tagnames = tagnames.split(',')
     nids = questions.collect(&:nid)
     questions = Node.where(status: 1, type: 'note')
-      .joins(:tag)
-      .where('node.nid IN (?)', nids)
-      .group('node.nid')
+                    .joins(:tag)
+                    .where('node.nid IN (?)', nids)
+                    .group('node.nid')
     if !tagnames.empty?
       questions.where('term_data.name IN (?)', tagnames)
     else
@@ -22,30 +24,29 @@ class QuestionsController < ApplicationController
     @title = 'Questions and Answers'
     set_sidebar
     @questions = Node.questions
-      .where(status: 1)
-      .order('node.nid DESC')
-      .paginate(page: params[:page], per_page: 24)
+                     .where(status: 1)
+                     .order('node.nid DESC')
+                     .paginate(page: params[:page], per_page: 24)
   end
 
   def index_shadow
     @title = 'Questions and Answers'
     @questions = Node.questions
-      .where(status: 1)
-      .order('node.nid DESC')
-      .paginate(page: params[:page], per_page: 24)
-    
+                     .where(status: 1)
+                     .order('node.nid DESC')
+                     .paginate(page: params[:page], per_page: 24)
+
     @populartitle = 'Popular Questions'
     @popularquestions = Node.questions
-      .where(status: 1)
+                            .where(status: 1)
     @popularquestions = filter_questions_by_tag(@questions, params[:tagnames])
-      .order('views DESC')
-      .limit(20)
+                        .order('views DESC')
+                        .limit(20)
 
     @popularwikis = Node.limit(10)
-      .where(type: 'page', status: 1)
-      .order('nid DESC')
+                        .where(type: 'page', status: 1)
+                        .order('nid DESC')
     @unpaginated = true
-
   end
 
   # a form for new questions, at /questions/new
@@ -58,7 +59,7 @@ class QuestionsController < ApplicationController
     end
     if current_user.nil?
       redirect_to new_user_session_path(return_to: request.path)
-      flash[:notice] = "Your question is important and we want to hear from you! Please log in or sign up to post a question"
+      flash[:notice] = 'Your question is important and we want to hear from you! Please log in or sign up to post a question'
     else
       if params[:legacy]
         render 'editor/question'
@@ -94,28 +95,28 @@ class QuestionsController < ApplicationController
   def answered
     @title = 'Recently Commented'
     @questions = Node.questions
-      .where(status: 1)
+                     .where(status: 1)
     @questions = filter_questions_by_tag(@questions, params[:tagnames])
-      .joins(:comments)
-      .order('comments.timestamp DESC')
-      .group('node.nid')
-      .paginate(page: params[:page], per_page: 24)
+                 .joins(:comments)
+                 .order('comments.timestamp DESC')
+                 .group('node.nid')
+                 .paginate(page: params[:page], per_page: 24)
     @wikis = Node.limit(10)
-      .where(type: 'page', status: 1)
-      .order('nid DESC')
+                 .where(type: 'page', status: 1)
+                 .order('nid DESC')
     render template: 'questions/index'
   end
 
   def unanswered
     @title = 'Unanswered questions'
     @questions = Node.questions
-      .where(status: 1)
-      .includes(:answers)
-      .references(:answers)
-      .where(answers: { id: nil })
-      .order('node.nid DESC')
-      .group('node.nid')
-      .paginate(page: params[:page], per_page: 24)
+                     .where(status: 1)
+                     .includes(:answers)
+                     .references(:answers)
+                     .where(answers: { id: nil })
+                     .order('node.nid DESC')
+                     .group('node.nid')
+                     .paginate(page: params[:page], per_page: 24)
     render template: 'questions/index'
   end
 
@@ -131,14 +132,14 @@ class QuestionsController < ApplicationController
   def popular
     @title = 'Popular Questions'
     @questions = Node.questions
-      .where(status: 1)
+                     .where(status: 1)
     @questions = filter_questions_by_tag(@questions, params[:tagnames])
-      .order('views DESC')
-      .limit(20)
+                 .order('views DESC')
+                 .limit(20)
 
     @wikis = Node.limit(10)
-      .where(type: 'page', status: 1)
-      .order('nid DESC')
+                 .where(type: 'page', status: 1)
+                 .order('nid DESC')
     @unpaginated = true
     render template: 'questions/index'
   end
@@ -147,12 +148,12 @@ class QuestionsController < ApplicationController
     @title = 'Highly liked Questions'
     @questions = Node.questions.where(status: 1)
     @questions = filter_questions_by_tag(@questions, params[:tagnames])
-      .order('cached_likes DESC')
-      .limit(20)
+                 .order('cached_likes DESC')
+                 .limit(20)
 
     @wikis = Node.limit(10)
-      .where(type: 'page', status: 1)
-      .order('nid DESC')
+                 .where(type: 'page', status: 1)
+                 .order('nid DESC')
     @unpaginated = true
     render template: 'questions/index'
   end

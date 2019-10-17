@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LegacyController < ApplicationController
   def notes
     if params[:id]

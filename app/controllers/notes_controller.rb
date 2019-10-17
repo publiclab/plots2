@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class NotesController < ApplicationController
   respond_to :html
-  before_action :require_user, only: %i(create edit update delete rsvp publish_draft)
-  before_action :set_node, only: %i(show)
+  before_action :require_user, only: %i[create edit update delete rsvp publish_draft]
+  before_action :set_node, only: %i[show]
 
   def index
     @title = I18n.t('notes_controller.research_notes')
@@ -17,14 +19,14 @@ class NotesController < ApplicationController
     @notes = Node.joins('LEFT OUTER JOIN node_revisions ON node_revisions.nid = node.nid
                          LEFT OUTER JOIN community_tags ON community_tags.nid = node.nid
                          LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid')
-      .select('*, max(node_revisions.timestamp)')
-      .where(status: 1, type: %w(page place))
-      .includes(:revision, :tag)
-      .references(:term_data)
-      .where('term_data.name = ?', 'chapter')
-      .group('node.nid')
-      .order(Arel.sql('max(node_revisions.timestamp) DESC, node.nid'))
-      .paginate(page: params[:page], per_page: 24)
+                 .select('*, max(node_revisions.timestamp)')
+                 .where(status: 1, type: %w[page place])
+                 .includes(:revision, :tag)
+                 .references(:term_data)
+                 .where('term_data.name = ?', 'chapter')
+                 .group('node.nid')
+                 .order(Arel.sql('max(node_revisions.timestamp) DESC, node.nid'))
+                 .paginate(page: params[:page], per_page: 24)
 
     # Arel.sql is used to remove a Deprecation warning while updating to rails 5.2.
 
@@ -54,7 +56,7 @@ class NotesController < ApplicationController
         redirect_to @node.path(:question)
         return
       end
-      
+
       alert_and_redirect_moderated
       redirect_power_tag_redirect
 
@@ -85,13 +87,13 @@ class NotesController < ApplicationController
 
     saved, @node, @revision = new_note
 
-    if params[:draft] == "true" && current_user.first_time_poster
-      flash[:notice] = "First-time users are not eligible to create a draft."
+    if params[:draft] == 'true' && current_user.first_time_poster
+      flash[:notice] = 'First-time users are not eligible to create a draft.'
       redirect_to '/'
       return
-    elsif params[:draft] == "true"
+    elsif params[:draft] == 'true'
       token = SecureRandom.urlsafe_base64(16, false)
-      @node.slug = @node.slug + " token:" + token
+      @node.slug = @node.slug + ' token:' + token
       @node.save!
     end
 
@@ -119,7 +121,7 @@ class NotesController < ApplicationController
         thanks_for_contribution = I18n.t('notes_controller.thank_you_for_contribution').html_safe
         flash[:notice] = thanks_for_contribution
 
-      elsif params[:draft] != "true"
+      elsif params[:draft] != 'true'
         question_note = I18n.t('notes_controller.question_note_published').html_safe
         research_note = I18n.t('notes_controller.research_note_published').html_safe
 
@@ -262,8 +264,8 @@ class NotesController < ApplicationController
     @user = User.find_by(name: params[:id])
     @title = @user.name
     @notes = Node.paginate(page: params[:page], per_page: 24)
-      .order('nid DESC')
-      .where(type: 'note', status: 1, uid: @user.uid)
+                 .order('nid DESC')
+                 .where(type: 'note', status: 1, uid: @user.uid)
     render template: 'notes/index'
   end
 
@@ -281,13 +283,13 @@ class NotesController < ApplicationController
   def liked
     @title = I18n.t('notes_controller.highly_liked_research_notes')
     @wikis = Node.limit(10)
-      .where(type: 'page', status: 1)
-      .order('nid DESC')
+                 .where(type: 'page', status: 1)
+                 .order('nid DESC')
 
     @notes = Node.research_notes
-      .where(status: 1)
-      .limit(20)
-      .order('nid DESC')
+                 .where(status: 1)
+                 .limit(20)
+                 .order('nid DESC')
     @unpaginated = true
     render template: 'notes/index'
   end
@@ -295,8 +297,8 @@ class NotesController < ApplicationController
   def recent
     @title = I18n.t('notes_controller.recent_research_notes')
     @wikis = Node.limit(10)
-      .where(type: 'page', status: 1)
-      .order('nid DESC')
+                 .where(type: 'page', status: 1)
+                 .order('nid DESC')
     @notes = Node.where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
     @unpaginated = true
     render template: 'notes/index'
@@ -306,12 +308,12 @@ class NotesController < ApplicationController
   def popular
     @title = I18n.t('notes_controller.popular_research_notes')
     @wikis = Node.limit(10)
-      .where(type: 'page', status: 1)
-      .order('nid DESC')
+                 .where(type: 'page', status: 1)
+                 .order('nid DESC')
     @notes = Node.research_notes
-      .limit(20)
-      .where(status: 1)
-      .order('views DESC')
+                 .limit(20)
+                 .where(status: 1)
+                 .order('views DESC')
     @unpaginated = true
     render template: 'notes/index'
   end
@@ -320,12 +322,12 @@ class NotesController < ApplicationController
     limit = 20
     @notes = if params[:moderators]
                Node.limit(limit)
-                 .order('nid DESC')
-                 .where('type = ? AND status = 4', 'note')
+                   .order('nid DESC')
+                   .where('type = ? AND status = 4', 'note')
              else
                Node.limit(limit)
-                 .order('nid DESC')
-                 .where('type = ? AND status = 1', 'note')
+                   .order('nid DESC')
+                   .where('type = ? AND status = 1', 'note')
              end
     respond_to do |format|
       format.rss do
@@ -338,8 +340,8 @@ class NotesController < ApplicationController
 
   def liked_rss
     @notes = Node.limit(20)
-      .order('created DESC')
-      .where('type = ? AND status = 1 AND cached_likes > 0', 'note')
+                 .order('created DESC')
+                 .where('type = ? AND status = 1 AND cached_likes > 0', 'note')
     respond_to do |format|
       format.rss do
         render layout: false, template: 'notes/rss'
@@ -362,10 +364,10 @@ class NotesController < ApplicationController
     node = Node.find params[:id].to_i
     unless current_user && current_user == node.author
       flash.keep[:error] = I18n.t('notes_controller.author_can_edit_note')
-      return redirect_to URI.parse(node.path).path + "#comments"
+      return redirect_to URI.parse(node.path).path + '#comments'
     end
     node.update(title: params[:title])
-    redirect_to URI.parse(node.path).path + "#comments"
+    redirect_to URI.parse(node.path).path + '#comments'
   end
 
   def publish_draft
@@ -412,7 +414,7 @@ class NotesController < ApplicationController
   end
 
   def not_draft_and_user_is_first_time_poster?
-    params[:draft] != "true" && current_user.first_time_poster
+    params[:draft] != 'true' && current_user.first_time_poster
   end
 
   def show_banned_flash

@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class FeaturesController < ApplicationController
   before_action :require_user, except: [:embed]
 
   def index
-    @title = "Features"
+    @title = 'Features'
     @features = Node.where(type: 'feature')
-      .paginate(page: params[:page])
+                    .paginate(page: params[:page])
   end
 
   def embed
@@ -33,17 +35,17 @@ class FeaturesController < ApplicationController
       flash[:warning] = 'Only admins may edit features.'
       redirect_to '/features?_=' + Time.now.to_i.to_s
     else
-      @node = Node.new(uid:   current_user.id,
+      @node = Node.new(uid: current_user.id,
                        title: params[:title],
-                       type:  'feature')
+                       type: 'feature')
       if @node.valid?
         saved = true
         @revision = false
         ActiveRecord::Base.transaction do
           @node.save!
-          @revision = @node.new_revision(uid:   current_user.id,
+          @revision = @node.new_revision(uid: current_user.id,
                                          title: params[:title],
-                                         body:  params[:body])
+                                         body: params[:body])
           if @revision.valid?
             @revision.save!
             @node.vid = @revision.vid

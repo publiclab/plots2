@@ -1,16 +1,18 @@
+# frozen_string_literal: true
+
 class CommentController < ApplicationController
   include CommentHelper
   respond_to :html, :xml, :json
-  before_action :require_user, only: %i(create update delete)
+  before_action :require_user, only: %i[create update delete]
 
   def index
     comments = Comment.joins(:node, :user)
-                   .order('timestamp DESC')
-                   .where('node.status = ?', 1)
-                   .paginate(page: params[:page], per_page: 30)
+                      .order('timestamp DESC')
+                      .where('node.status = ?', 1)
+                      .paginate(page: params[:page], per_page: 30)
 
     @normal_comments = comments.where('comments.status = 1')
-    if logged_in_as(%w(admin moderator))
+    if logged_in_as(%w[admin moderator])
       @moderated_comments = comments.where('comments.status = 4')
     end
 
@@ -44,7 +46,7 @@ class CommentController < ApplicationController
               "<a href='/subscribe/tag/#{tagname}'>#{tagname}</a>"
             end
             tagnames = tagnames.join(', ')
-            tagnames = " Click to subscribe to updates on these tags or topics: " + tagnames unless tagnames.empty?
+            tagnames = ' Click to subscribe to updates on these tags or topics: ' + tagnames unless tagnames.empty?
             flash[:notice] = "Comment posted.#{tagnames}"
             redirect_to @node.path + '#last' # to last comment
           end
@@ -60,7 +62,7 @@ class CommentController < ApplicationController
     @node = Node.find params[:id]
     @user = User.find_by(username: params[:username])
     @body = params[:body]
-    @token = request.headers["HTTP_TOKEN"]
+    @token = request.headers['HTTP_TOKEN']
 
     if @user && @user.token == @token
       begin
@@ -111,7 +113,7 @@ class CommentController < ApplicationController
 
     if current_user.uid == @node.uid ||
        @comment.uid == current_user.uid ||
-       logged_in_as(%w(admin moderator))
+       logged_in_as(%w[admin moderator])
 
       if @comment.destroy
         respond_with do |format|
@@ -139,9 +141,9 @@ class CommentController < ApplicationController
   end
 
   def like_comment
-    @comment_id = params["comment_id"].to_i
-    @user_id = params["user_id"].to_i
-    @emoji_type = params["emoji_type"]
+    @comment_id = params['comment_id'].to_i
+    @user_id = params['user_id'].to_i
+    @emoji_type = params['emoji_type']
     comment = Comment.where(cid: @comment_id).first
     like = comment.likes.where(user_id: @user_id, emoji_type: @emoji_type)
     @is_liked = like.count.positive?

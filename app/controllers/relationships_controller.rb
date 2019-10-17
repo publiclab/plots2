@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RelationshipsController < ApplicationController
   before_action :require_user
 
@@ -6,14 +8,14 @@ class RelationshipsController < ApplicationController
     respond_to do |format|
       if !current_user.following?(user)
         current_user.follow(user)
-        format.html { redirect_to URI.parse(request.referer || "/").path, notice: "You have started following " + user.username }
-        format.js { render "create", locals: { following: true, profile_user: user } }
+        format.html { redirect_to URI.parse(request.referer || '/').path, notice: 'You have started following ' + user.username }
+        format.js { render 'create', locals: { following: true, profile_user: user } }
       else
-        format.html {
-          flash[:error] = "Error in following user"
-          redirect_to URI.parse(request.referer || "/").path
-        }
-        format.js { render "create", locals: { following: false, profile_user: user } }
+        format.html do
+          flash[:error] = 'Error in following user'
+          redirect_to URI.parse(request.referer || '/').path
+        end
+        format.js { render 'create', locals: { following: false, profile_user: user } }
       end
     end
   end
@@ -24,14 +26,14 @@ class RelationshipsController < ApplicationController
     respond_to do |format|
       if !relation.nil?
         current_user.unfollow(user)
-        format.html { redirect_to URI.parse(request.referer || "/").path, notice: "You have unfollowed " + user.username }
-        format.js { render "destroy", locals: { unfollowing: true, profile_user: user } }
+        format.html { redirect_to URI.parse(request.referer || '/').path, notice: 'You have unfollowed ' + user.username }
+        format.js { render 'destroy', locals: { unfollowing: true, profile_user: user } }
       else
-        format.html {
-          flash[:error] = "Error in unfollowing user"
-          redirect_to URI.parse(request.referer || "/").path
-        }
-        format.js { render "destroy", locals: { unfollowing: false, profile_user: user } }
+        format.html do
+          flash[:error] = 'Error in unfollowing user'
+          redirect_to URI.parse(request.referer || '/').path
+        end
+        format.js { render 'destroy', locals: { unfollowing: false, profile_user: user } }
       end
     end
   end

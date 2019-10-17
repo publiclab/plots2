@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class SubscriptionController < ApplicationController
   respond_to :html, :xml, :json
-  before_action :require_user, only: %i(create delete index digest)
+  before_action :require_user, only: %i[create delete index digest]
 
   def index
-    @title = "Subscriptions"
-    render template: "home/subscriptions"
+    @title = 'Subscriptions'
+    render template: 'home/subscriptions'
   end
 
   # return a count of subscriptions for a given tag
@@ -15,7 +17,7 @@ class SubscriptionController < ApplicationController
   # for the current user, return whether is presently liked or not
   def followed
     # may be trouble: there can be multiple tags with the same name, no? We can eliminate that possibility in a migration if so.
-    result = TagSelection.find_by_user_id_and_tid(current_user.uid, params[:id]) if params[:type] == "tag"
+    result = TagSelection.find_by_user_id_and_tid(current_user.uid, params[:id]) if params[:type] == 'tag'
     result = if result.nil?
                false
              else
@@ -26,7 +28,7 @@ class SubscriptionController < ApplicationController
 
   # for the current user, register as liking the given tag
   def add
-    if current_user && params[:type] == "tag"
+    if current_user && params[:type] == 'tag'
 
       tag = Tag.find_by(name: params[:name])
 
@@ -34,7 +36,7 @@ class SubscriptionController < ApplicationController
         tag = Tag.new(
           vid: 3,
           name: params[:name],
-          description: "",
+          description: '',
           weight: 0
         )
 
@@ -51,11 +53,11 @@ class SubscriptionController < ApplicationController
           format.html do
             flash[:error] = "You are already subscribed to '#{params[:name]}'"
 
-            redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
+            redirect_to '/subscriptions' + '?_=' + Time.now.to_i.to_s
           end
 
           format.json do
-            message = "You already follow this user!"
+            message = 'You already follow this user!'
 
             render json: { status: :precondition_failed, error: message }
           end
@@ -68,26 +70,26 @@ class SubscriptionController < ApplicationController
             # status = "200"
           else
             flash[:notice] = "You are now following '#{params[:name]}'."
-            redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
+            redirect_to '/subscriptions' + '?_=' + Time.now.to_i.to_s
           end
         end
       end
 
     else
       flash[:warning] = "You must be logged in to subscribe for email updates; please <a class='requireLogin'>log in</a> or <a href='/signup'>create an account</a>."
-      redirect_to "/tag/" + params[:name]
+      redirect_to '/tag/' + params[:name]
     end
   end
 
   # for the current user, remove the like from the given tag
   def delete
     # assume tag, for now
-    if params[:type] == "tag"
+    if params[:type] == 'tag'
       id = Tag.find_by(name: params[:name]).tid
     end
     if id.nil?
       flash[:error] = "You are not subscribed to '#{params[:name]}'"
-      redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
+      redirect_to '/subscriptions' + '?_=' + Time.now.to_i.to_s
     else
       if !set_following(false, params[:type], id) # should return false if result is that following == false
         respond_with do |format|
@@ -96,29 +98,29 @@ class SubscriptionController < ApplicationController
               render json: true
             else
               flash[:notice] = "You have stopped following '#{params[:name]}'."
-              redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
+              redirect_to '/subscriptions' + '?_=' + Time.now.to_i.to_s
             end
           end
         end
       else
-        flash[:error] = "Something went wrong!" # silly
-        redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
+        flash[:error] = 'Something went wrong!' # silly
+        redirect_to '/subscriptions' + '?_=' + Time.now.to_i.to_s
       end
     end
   end
 
   def digest
     @wikis = current_user.content_followed_in_period(1.week.ago, Time.now)
-      .paginate(page: params[:page], per_page: 100)
+                         .paginate(page: params[:page], per_page: 100)
 
     @paginated = true
-    render template: "subscriptions/digest"
+    render template: 'subscriptions/digest'
   end
 
   def multiple_add
     if !params[:tagnames] || params[:tagnames] == ''
-      flash[:notice] = "Please enter tags for subscription in the url."
-      redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
+      flash[:notice] = 'Please enter tags for subscription in the url.'
+      redirect_to '/subscriptions' + '?_=' + Time.now.to_i.to_s
       return
     end
     tag_list = if params[:tagnames].is_a? String
@@ -127,7 +129,7 @@ class SubscriptionController < ApplicationController
                  params[:tagnames]
                end
     if current_user
-      if params[:type] == "tag"
+      if params[:type] == 'tag'
         tag_list.each do |t|
           next unless t.length.positive?
 
@@ -136,14 +138,14 @@ class SubscriptionController < ApplicationController
             tag = Tag.new(
               vid: 3, # vocabulary id
               name: t,
-              description: "",
+              description: '',
               weight: 0
             )
             begin
               tag.save!
             rescue ActiveRecord::RecordInvalid
               flash[:error] = tag.errors.full_messages
-              redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
+              redirect_to '/subscriptions' + '?_=' + Time.now.to_i.to_s
               return false
             end
           end
@@ -159,14 +161,14 @@ class SubscriptionController < ApplicationController
               render json: true
             else
               flash[:notice] = "You are now following '#{params[:tagnames]}'."
-              redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
+              redirect_to '/subscriptions' + '?_=' + Time.now.to_i.to_s
             end
           end
         end
       end
     else
-      flash[:warning] = "You must be logged in to subscribe for email updates!"
-      redirect_to "/login?return_to=" + request.fullpath
+      flash[:warning] = 'You must be logged in to subscribe for email updates!'
+      redirect_to '/login?return_to=' + request.fullpath
     end
   end
 
@@ -203,7 +205,7 @@ class SubscriptionController < ApplicationController
       end
       subscription.following
     else
-      flash.now[:error] = "There was an error."
+      flash.now[:error] = 'There was an error.'
       false
     end
   end

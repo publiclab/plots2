@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StatsController < ApplicationController
   def subscriptions
     @tags = {}
@@ -9,7 +11,7 @@ class StatsController < ApplicationController
   end
 
   def range
-    flash.now[:notice] = "Data is cached and recalculated daily"
+    flash.now[:notice] = 'Data is cached and recalculated daily'
     if params[:options].present?
       params[:start] = Time.now - to_keyword(params[:options])
       params[:end] = Time.now
@@ -17,21 +19,21 @@ class StatsController < ApplicationController
     @start = start
     @end = fin
     Rails.cache.fetch("range-#{@start.to_i}-#{@end.to_i}", expires_in: 1.day) do
-      @notes = Node.published.select(%i(created type))
-        .where(type: 'note', created: @start.to_i..@end.to_i)
-        .size
+      @notes = Node.published.select(%i[created type])
+                   .where(type: 'note', created: @start.to_i..@end.to_i)
+                   .size
       @wikis = Revision.published.select(:timestamp)
-        .where(timestamp: @start.to_i..@end.to_i)
-        .size - @notes # because notes each have one revision
+                       .where(timestamp: @start.to_i..@end.to_i)
+                       .size - @notes # because notes each have one revision
       @people = User.where(created_at: @start..@end).where(status: 1)
-        .size
+                    .size
       @answers = Answer.where(created_at: @start..@end)
-        .size
+                       .size
       @comments = Comment.select(:status, :timestamp)
-        .where(status: 1, timestamp: @start.to_i..@end.to_i)
-        .size
+                         .where(status: 1, timestamp: @start.to_i..@end.to_i)
+                         .size
       @questions = Node.published.questions.where(created: @start.to_i..@end.to_i)
-        .size
+                       .size
       @contributors = User.contributor_count_for(@start, @end)
       @popular_tags = Tag.nodes_frequency(@start, @end)
     end
@@ -40,11 +42,11 @@ class StatsController < ApplicationController
   def index
     range
     if @start > @end
-      flash.now[:warning] = "Start date must come before end date"
+      flash.now[:warning] = 'Start date must come before end date'
     end
     @title = 'Stats'
 
-    flash.now[:notice] = "Data is cached and recalculated daily"
+    flash.now[:notice] = 'Data is cached and recalculated daily'
     Rails.cache.fetch("stats-index-#{@start.to_i}-#{@end.to_i}", expires_in: 1.day) do
       @weekly_notes = Node.past_week.select(:type).where(type: 'note').size
       @weekly_wikis = Revision.past_week.size
@@ -76,7 +78,7 @@ class StatsController < ApplicationController
       @all_notes = nids.uniq.length
       @all_contributors = users.uniq.length
     end
-    Rails.cache.fetch("total-contributors-all-time", expires_in: 1.weeks) do
+    Rails.cache.fetch('total-contributors-all-time', expires_in: 1.weeks) do
       @all_time_contributors = User.count_all_time_contributor
     end
   end
@@ -91,8 +93,8 @@ class StatsController < ApplicationController
 
   def users
     data = User.where(created_at: start..fin)
-          .where(status: 1)
-         .select(:username, :role, :bio, :photo_file_name, :id, :created_at)
+               .where(status: 1)
+               .select(:username, :role, :bio, :photo_file_name, :id, :created_at)
     format(data, 'users')
   end
 
@@ -123,8 +125,8 @@ class StatsController < ApplicationController
 
   def export_as_json(type)
     data = Node.published
-      .where(type: type, created: start.to_i..fin.to_i)
-      .all
+               .where(type: type, created: start.to_i..fin.to_i)
+               .all
     format(data, type)
   end
 

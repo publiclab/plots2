@@ -1,17 +1,19 @@
+# frozen_string_literal: true
+
 require 'open-uri'
 
 class ImagesController < ApplicationController
   respond_to :html, :xml, :json
-  before_action :require_user, only: %i(create new update delete)
+  before_action :require_user, only: %i[create new update delete]
 
   def shortlink
     params[:size] = params[:size] || params[:s]
     params[:size] = params[:size] || :large
-    params[:size] = :thumb if (params[:size].to_s == "t")
-    params[:size] = :thumb if (params[:size].to_s == "thumbnail")
-    params[:size] = :medium if (params[:size].to_s == "m")
-    params[:size] = :large if (params[:size].to_s == "l")
-    params[:size] = :original if (params[:size].to_s == "o")
+    params[:size] = :thumb if params[:size].to_s == 't'
+    params[:size] = :thumb if params[:size].to_s == 'thumbnail'
+    params[:size] = :medium if params[:size].to_s == 'm'
+    params[:size] = :large if params[:size].to_s == 'l'
+    params[:size] = :original if params[:size].to_s == 'o'
     image = Image.find(params[:id])
     redirect_to URI.parse(image.path(params[:size])).path
   end
@@ -43,7 +45,7 @@ class ImagesController < ApplicationController
         href: @image.shortlink, # Woofmark/PublicLab.Editor
         title: @image.photo_file_name,
         results: [{ # Woofmark/PublicLab.Editor
-          href: @image.shortlink + "." + @image.filetype,
+          href: @image.shortlink + '.' + @image.filetype,
           title: @image.photo_file_name
         }]
       }
