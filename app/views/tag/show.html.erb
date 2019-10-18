@@ -52,11 +52,16 @@
 
             <%= render partial: 'tag/show/contributors' %>
 
-            <%= render partial: 'tag/show/nav_tabs' %>
-
-            <p style="color: #aaa"><%= Tag.find_nodes_by_type(tag.name, 'note', false).count %> posts by <%= Tag.contributor_count(tag.name) %> contributors | <%= Tag.follower_count(tag.name) %> followers
-              <a href="https://publiclab.org/wiki/contributors"><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>
-            </p>
+            <div class="row">
+              <div class="col-lg-6">
+                <p style="color: #aaa"><%= Tag.find_nodes_by_type(tag.name, 'note', false).count %> posts by <%= Tag.contributor_count(tag.name) %> contributors | <%= Tag.follower_count(tag.name) %> followers
+                  <a href="https://publiclab.org/wiki/contributors"><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>
+                </p>
+              </div>
+              <div class="col-lg-6 d-flex justify-content-lg-end">
+                <%= render partial: 'tag/show/nav_tabs' %>
+              </div>
+            </div>
 
             <%= render partial: 'tag/show/tab_content' %>
             <div>
