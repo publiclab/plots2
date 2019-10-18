@@ -102,7 +102,7 @@ For information on how to install for use with the cloud environment, please see
 7. Run `rake db:setup` to set up the database
 8. Install static assets (like external javascript libraries, fonts) with `yarn install`
 9. By default, start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser.
-(for local SSL work, see [SSL](#ssl+in+development) below)
+(for local SSL work, see [SSL](#ssl-in-development) below)
 10. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
 11. Run `rails test` to confirm that your install is working properly. Or `rails test:system` for system tests.
 
@@ -115,7 +115,7 @@ on as they will get into development further, a linux or mac based OS would be b
 
 ## SSL in Development
 
-We, at Public Lab use [openssl](https://github.com/ruby/openssl) gem to provide SSL for the secure connection in the development mode. You can run the https connection on the localhost by following following steps:
+We, at Public Lab use [openssl](https://github.com/ruby/openssl) gem to provide SSL (Secure Sockets Layer) for the secure connection in the development mode. You can run the https connection on the localhost by following  the following steps:
 1. Use `passenger start --ssl --ssl-certificate config/localhost.crt --ssl-certificate-key config/localhost.key --ssl-port 3001`.
 2. Open up https://localhost:3001.
 3. Add security exceptions from the advance settings of the browser.
