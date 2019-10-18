@@ -278,14 +278,12 @@ class UsersController < ApplicationController
       return
     end
 
-    return unless params[:user]
+    return unless params[:user] && params[:user][:password]
 
     unless @user.username.casecmp(params[:user][:username].downcase).zero?
       flash[:error] = I18n.t('users_controller.password_change_failed')
       return
     end
-
-    return unless params[:user][:password]
 
     @user.password = params[:user][:password]
     @user.password_confirmation = params[:user][:password]
@@ -294,6 +292,7 @@ class UsersController < ApplicationController
     unless @user.changed? && @user.save
       flash[:error] = I18n.t('users_controller.password_reset_failed').html_safe
       redirect_to '/'
+      return
     end
 
     flash[:notice] = I18n.t('users_controller.password_change_success')
