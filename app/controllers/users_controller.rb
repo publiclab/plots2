@@ -278,26 +278,27 @@ class UsersController < ApplicationController
       return
     end
 
-    return unless params[:user] && params[:user][:password]
+    return unless params[:user]
 
     unless @user.username.casecmp(params[:user][:username].downcase).zero?
       flash[:error] = I18n.t('users_controller.password_change_failed')
       return
     end
 
+    return unless params[:user][:password]
+
     @user.password = params[:user][:password]
     @user.password_confirmation = params[:user][:password]
     @user.reset_key = nil
 
-    if @user.changed? && @user.save
-      flash[:notice] = I18n.t('users_controller.password_change_success')
-      @user.password_checker = 0
-      redirect_to '/dashboard'
-      return
+    unless @user.changed? && @user.save
+      flash[:error] = I18n.t('users_controller.password_reset_failed').html_safe
+      redirect_to '/'
     end
 
-    flash[:error] = I18n.t('users_controller.password_reset_failed').html_safe
-    redirect_to '/'
+    flash[:notice] = I18n.t('users_controller.password_change_success')
+    @user.password_checker = 0
+    redirect_to '/dashboard'
   end
 
   def reset_by_email
