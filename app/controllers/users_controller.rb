@@ -288,14 +288,16 @@ class UsersController < ApplicationController
     @user.password = params[:user][:password]
     @user.password_confirmation = params[:user][:password]
     @user.reset_key = nil
+
     if @user.changed? && @user.save
       flash[:notice] = I18n.t('users_controller.password_change_success')
       @user.password_checker = 0
       redirect_to '/dashboard'
-    else
-      flash[:error] = I18n.t('users_controller.password_reset_failed').html_safe
-      redirect_to '/'
+      return
     end
+
+    flash[:error] = I18n.t('users_controller.password_reset_failed').html_safe
+    redirect_to '/'
   end
 
   def reset_by_email
