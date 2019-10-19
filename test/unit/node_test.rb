@@ -15,6 +15,8 @@ class NodeTest < ActiveSupport::TestCase
     assert_equal 1, node.status
     assert !node.answered
     assert_equal [], node.location_tags
+    assert node.body
+    assert node.summary
   end
 
   test 'basic question attributes' do

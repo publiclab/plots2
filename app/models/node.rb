@@ -285,11 +285,6 @@ class Node < ActiveRecord::Base
     User.where(username: power_tags('with')) if has_power_tag('with')
   end
 
-  # for wikis:
-  def authors
-    revisions.collect(&:author).uniq
-  end
-
   # tag- and node-based followers
   def subscribers(conditions = false)
     users = TagSelection.where(tid: tags.collect(&:tid))
@@ -316,6 +311,10 @@ class Node < ActiveRecord::Base
 
   def body
     latest&.body
+  end
+
+  def summary
+    body.split('\n').&first
   end
 
   # was unable to set up this relationship properly with ActiveRecord associations
