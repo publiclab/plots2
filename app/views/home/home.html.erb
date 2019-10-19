@@ -49,8 +49,8 @@
 
       <% @projects.each_with_index do |project, index| %>
 
-        <div class="row">
-          <div class="col-6 col-xs-12 project-image<% if index.odd? %> pull-right<% end %>">
+        <div class="row<%= " justify-content-end" if index.odd? %>">
+          <div class="col-6 col-xs-12 project-image">
 
             <a href="<%= project.path %>"><img src="<%= project.main_image %>" /</a>
 
