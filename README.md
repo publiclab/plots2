@@ -108,8 +108,7 @@ For information on how to install for use with the cloud environment, please see
 
 ### Windows Installation
 
-We recommend you either work in a virtual environment, or on a dual booted system to avoid dependencies issues and also Unix system works smoother with Ruby and Rails. This will not only benefit you now for plots2, but in future working on other Ruby projects
-on as they will get into development further, a linux or mac based OS would be better. 
+We recommend you either work in a virtual environment, or on a dual booted system to avoid dependencies issues and also Unix system works smoother with Ruby and Rails. This will not only benefit you now for plots2, but also in future while working on other Ruby projects, a Linux or Mac based OS will make your development so much smoother. 
 1. [Dual Booting](https://www.tecmint.com/install-ubuntu-alongside-with-windows-dual-boot/amp/), [option2](https://askubuntu.com/questions/1031993/how-to-install-ubuntu-18-04-alongside-windows-10), [video guide](https://www.youtube.com/watch?v=qNeJvujdB-0&fbclid=IwAR0APhs89jlNR_ENKbSwrp6TI6P-wxlx-a0My9XBvPNAfwtADZaAXqcKtP4)
 2. [Setting up a linux virtual env](https://itsfoss.com/install-linux-in-virtualbox/)
 
