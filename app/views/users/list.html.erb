@@ -36,21 +36,27 @@
             </div>
             <div class="col-md-7 nopadding">
               <div class="card-info">
-                <a href="/profile/<%= user.username %>"><%= user.username %></a>
-                <a class="ellipsis" data-toggle="dropdown">&nbsp<i class="fa fa-ellipsis-h" style="color : #666; font-size:15px; float:right;"></i></a>
-                <ul class="dropdown-menu" style = "font-size:10px;">
-                    <li><a style="color: #808080; cursor: no-drop;">Joined <%= distance_of_time_in_words(user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></a></li>
-                    <li><a href='/notes/author/<%= user.name %>'><%= user.note_count %> Research Notes</a></li>
-                    <li><a style="color: #808080; cursor: no-drop;"><%= user.nodes.count %> Wiki Edits</a></li>
-                    <li><a href="/profile/<%= user.username %>">See Full Profile</a></li>
-                    <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") %>
-                      <% if user.status == 0 %>
-                        <i class='fa fa-ban' style="color:#a00;"></i> <%= t('users.list.banned') %>
-                        <% elsif user.status == 1 %>
-                          <li><a data-confirm="<%= t('users.list.are_you_sure') %>" href="/ban/<%= user.uid %>" ><i class='fa fa-ban'></i> <%= t('users.list.ban') %></a></li>
-                      <% end %>
-                    <% end %>
-                  </ul>
+                <div class="d-flex justify-content-between">
+                 <div>
+                    <a href="/profile/<%= user.username %>"><%= user.username %></a>
+                   </div>
+                   <div>
+                      <a class="ellipsis" data-toggle="dropdown">&nbsp<i class="fa fa-ellipsis-h" style="color: #666; font-size:15px;"></i></a>
+                      <ul class="dropdown-menu dropdown-menu-right" style="font-size:10px;">
+                      <li><a style="color: #808080; cursor: no-drop;">Joined <%= distance_of_time_in_words(user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></a></li>
+                      <li><a href='/notes/author/<%= user.name %>'><%= user.note_count %> Research Notes</a></li>
+                      <li><a style="color: #808080; cursor: no-drop;"><%= user.nodes.count %> Wiki Edits</a></li>
+                      <li><a href="/profile/<%= user.username %>">See Full Profile</a></li>
+                      <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") %>
+                         <% if user.status == 0 %>
+                           <i class='fa fa-ban' style="color:#a00;"></i> <%= t('users.list.banned') %>
+                           <% elsif user.status == 1 %>
+                             <li><a data-confirm="<%= t('users.list.are_you_sure') %>" href="/ban/<%= user.uid %>" ><i class='fa fa-ban'></i> <%= t('users.list.ban') %></a></li>
+                         <% end %>
+                       <% end %>
+                     </ul>
+                   </div>
+                 </div>
                 <div class="sub-info">
                   <div style="padding-bottom:6px;">
                     <% if user.status == 0 %>
