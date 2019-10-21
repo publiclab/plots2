@@ -32,14 +32,17 @@
 
 <style>
 .panels {
-  padding: 30px 10px;
+  padding: 30px 10px 50px;
 }
 </style>
-
 
 <% cache('feature_home-intro', skip_digest: true) do %>
   <%= feature("home-intro") %>
 <% end %>
+
+<div class="col-12">
+  <h2 class="text-center">Community Projects</h2>
+</div>
 
 <div class="container">
 
@@ -49,13 +52,13 @@
 
       <% @projects.each_with_index do |project, index| %>
 
-        <div class="row px-lg-5<%= " odd" if index.odd? %>">
-          <div class="px-lg-5 col-6 col-xs-12 project-image <%= " odd order-2" if index.odd? %>">
+        <div class="row px-lg-5">
+          <div class="col-6 col-xs-12 project-image <%= index.odd? ? " odd pr-lg-5 order-2" : " pl-lg-5" %>">
 
             <a href="<%= project.path %>"><img src="<%= project.main_image %>" /</a>
 
           </div>
-          <div class="px-lg-5 col-6 col-xs-12">
+          <div class="col-6 col-xs-12<%= index.odd? ? " pl-lg-5" : " pr-lg-5" %>">
 
             <h3><a href="<%= project.path %>"><%= project.title %></a></h3>
 
@@ -75,9 +78,9 @@
                 <% end %>
               <% end %>
 
-              <% if true || project.authors.length > 2 %>
+              <% if project.authors.length > 2 %>
                 <span class="person person-text">
-                  <span class="text"><%= project.authors.length - 2 %> more</span>
+                  <span class="text"><%= [project.authors.length - 2, 1].max %> more</span>
                 </span>
               <% end %>
 
