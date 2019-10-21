@@ -35,10 +35,6 @@
     text-decoration: none;
     color: #505050;
 }
-.profile-card .card-footer a {
-    margin-right: 6px;
-}
-
 .profile-card a.post-title {
     text-decoration: none;
     color: #212529;

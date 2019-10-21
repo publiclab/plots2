@@ -373,6 +373,15 @@ en:
       more_posts: "more posts"
       follow: "Follow"
       unfollow: "Unfollow"
+      notes:
+        one: "1 note"
+        other: "%{count} notes"
+      questions:
+        one: "1 question"
+        other: "%{count} questions"
+      comments:
+        one: "1 comment"
+        other: "%{count} comments"
     show:
       notes_tagged: "Notes tagged with <i style=\"color:#aaa;\">%{tag}</i>"
       following: "Following"
