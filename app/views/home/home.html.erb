@@ -52,7 +52,7 @@
 
       <% @projects.each_with_index do |project, index| %>
 
-        <div class="row px-lg-5">
+        <div class="row px-lg-5<%= " odd" if index.odd? %>">
           <div class="col-6 col-xs-12 project-image <%= index.odd? ? " odd pr-lg-5 order-2" : " pl-lg-5" %>">
 
             <a href="<%= project.path %>"><img src="<%= project.main_image %>" /</a>
