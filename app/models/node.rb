@@ -878,39 +878,25 @@ class Node < ActiveRecord::Base
   end
 
   # finds nodes by tag name, user id, and optional node type
-  def self.find_by_tag_and_author(tagname, user_id, type = 'note')
+  def self.find_by_tag_and_author(tagname, user_id, type = 'notes')
+
+    node_type = 'note' if type == 'notes' || 'questions'
+    node_type = 'page' if type == 'wiki'
+    node_type = 'map' if type == 'maps'
+
     order = 'node_revisions.timestamp DESC'
-    order = 'created DESC' if type == 'note'
-    if type == 'question' # search for notes that have a question tag
-      Node.where(nid: Node.where(status: 1, type: 'note')
-          .includes(:node_tag, :tag)
-          .references(:term_data)
-          .where('term_data.name LIKE ?', 'question:%')
-          .select(:nid))
-        .where(nid: Node.where(status: 1, type: 'note')
-          .includes(:node_tag, :tag)
-          .references(:term_data)
-          .where('term_data.name = ?', tagname))
-        .order(order)
-    elsif type == 'research'  # search for notes that do not have a question tag
-      Node.where.not(nid: Node.where(status: 1, type: 'note')
-          .includes(:node_tag, :tag)
-          .references(:term_data)
-          .where('term_data.name LIKE ?', 'question:%')
-          .select(:nid))
-        .where(nid: Node.where(status: 1, type: 'note')
-          .includes(:node_tag, :tag)
-          .references(:term_data)
-          .where('term_data.name = ?', tagname))
-        .order(order)
-    else
-      Node.where(status: 1, type: type)
-        .includes(:node_tag, :tag)
-        .references(:term_data)
-        .where('term_data.name = ?', tagname)
-        .where('node.uid = ?', user_id)
-        .order(order)
-    end
+    order = 'created DESC' if node_type == 'note'
+
+    qids = Node.questions.where(status: 1).collect(&:nid)
+
+    nodes = Tag.tagged_nodes_by_author(tagname, user_id)
+      .where(status: 1, type: node_type)
+      .order(order)
+
+    nodes = nodes.where('node.nid NOT IN (?)', qids) if type == 'notes'
+    nodes = nodes.where('node.nid IN (?)', qids) if type == 'questions'
+
+    nodes
   end
 
   # so we can quickly fetch activities corresponding to this node
