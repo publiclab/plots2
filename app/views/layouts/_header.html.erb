@@ -25,25 +25,44 @@
       </form>
 
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item dropdown" style="min-width: 105px;">
-          <a class="nav-link" data-toggle="dropdown" href="#">
-            Get Involved
+
+        <li class="nav-item">
+          <a class="nav-link" onclick="$('.topics').toggle();" href="#">
+            Topics
           </a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="/events">Attend an event</a>
-            <a class="dropdown-item" href="/chat">Chat online</a>
-            <a class="dropdown-item" href="/questions">Ask a question</a>
-            <a class="dropdown-item" href="/tags">Find a topic you care about</a>
-            <a class="dropdown-item requireLogin" href="/post">Post your work</a>
-            <a class="dropdown-item" href="/newsletter">Subscribe to the newsletter</a>
-            <a class="dropdown-item" href="/requests">Respond to a request</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="/dashboard">Browse recent research</a>
-            <a class="dropdown-item" href="/methods">Discover methods</a>
-            <a class="dropdown-item" href="/kits">Contribute a kit</a>
-            <a class="dropdown-item" href="/wiki/software-outreach">Software Projects</a>
+          <div class="topics" style="display:none;">
+            <h3>Topics</h3>
+            <div>
+              <a href="/events">Attend an event</a>
+            </div>
+            <div class="navbar-topics-footer">
+              <center><a href="/tags">All topics &raquo;</a></center>
+            </div>
           </div>
         </li>
+
+<style>
+.topics {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  margin-top: 10px;
+  background: #e8e8e8;
+  padding: 20px;
+}
+.topics h3 {
+  clear: both;
+  text-align: center;
+  padding: 20px;
+}
+.topics a {
+  text-decoration: underline;
+  color: #888;
+}
+.topics .navbar-topics-footer {
+  padding: 20px;
+}
+</style>
 
         <li class="nav-item dropdown" style="min-width:80px;">
           <a class="nav-link" data-toggle="dropdown" href="#">
@@ -65,7 +84,7 @@
         </li>
 
         <li class="nav-item d-sm-none d-lg-inline">
-          <a class="nav-link" target="_blank" href="//store.publiclab.org"><%= t('layout._header.store') %></a>
+          <a class="nav-link btn" target="_blank" href="//store.publiclab.org"><%= t('layout._header.store') %></a>
         </li>
         <li class="nav-item d-sm-none d-lg-inline">
           <a class="nav-link" href="/donate"><%= t('layout._header.donate') %></a>
