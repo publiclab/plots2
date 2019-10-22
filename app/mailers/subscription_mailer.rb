@@ -9,7 +9,7 @@ class SubscriptionMailer < ActionMailer::Base
     @tags = node.tags.collect(&:name).join(',')
     @footer = feature('email-footer')
     recipients = Tag.subscribers(node.tags).values.map { |obj| obj[:user] }.collect(&:email)
-    recipients+= node.author.followers.collect(&:email)
+    recipients += node.author.followers.collect(&:email)
     recipients.uniq!
     mail(
       to: "notifications@#{ActionMailer::Base.default_url_options[:host]}",
