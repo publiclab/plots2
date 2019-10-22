@@ -890,6 +890,8 @@ class Node < ActiveRecord::Base
     qids = Node.questions.where(status: 1).collect(&:nid)
 
     nodes = Tag.tagged_nodes_by_author(tagname, user_id)
+      .includes(:revision)
+      .references(:node_revisions)
       .where(status: 1, type: node_type)
       .order(order)
 

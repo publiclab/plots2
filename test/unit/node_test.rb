@@ -477,4 +477,9 @@ class NodeTest < ActiveSupport::TestCase
     # assert_equal notes, graph_notes.values.sum
     # assert_equal wiki, graph_wiki.values.sum
   end
+
+  test 'find by tagname and user id' do
+    assert_equal 'Chicago', Node.find_by_tag_and_author('chapter', 1, 'wiki').first.title
+    assert_equal 'Canon A1200 IR conversion at PLOTS Barnraising at LUMCON', Node.find_by_tag_and_author('awesome', 2, 'notes').first.title
+  end
 end
