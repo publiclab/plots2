@@ -483,6 +483,10 @@ div.note.moderated h4 {
   filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
 
+a.btn-outline-secondary .fa {
+  color: inherit;
+}
+
 .nav-button-wrapper {
   padding-top: 7.5px;
 }
