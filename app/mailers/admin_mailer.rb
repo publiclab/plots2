@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AdminMailer < ActionMailer::Base
   helper :application
   include ApplicationHelper
@@ -8,7 +10,7 @@ class AdminMailer < ActionMailer::Base
     @node = node
     @user = node.author
     @footer = feature('email-footer')
-    moderators = User.where(role: %w(moderator admin)).collect(&:email)
+    moderators = User.where(role: %w[(moderator admin)]).collect(&:email)
     mail(
       to: "moderators@#{ActionMailer::Base.default_url_options[:host]}",
       bcc: moderators,
@@ -21,7 +23,7 @@ class AdminMailer < ActionMailer::Base
     @comment = comment
     @user = comment.author
     @footer = feature('email-footer')
-    moderators = User.where(role: %w(moderator admin)).collect(&:email)
+    moderators = User.where(role: %w[(moderator admin)]).collect(&:email)
     mail(
       to: "comment-moderators@#{ActionMailer::Base.default_url_options[:host]}",
       bcc: moderators,
@@ -50,7 +52,8 @@ class AdminMailer < ActionMailer::Base
   # Will this further bait spammers? If we don't,
   # will non-spammers whose posts were moderated get confused?
   # Should: show explanation/appeal process to authors who visit again
-  # Should: prompt moderators to reach out if it's not spam, but a guidelines violation
+  # Should: prompt moderators to reach out if it's not spam, but a guidelines
+  # violation
   # def notify_author_of_spam(node)
   # end
 
@@ -60,7 +63,7 @@ class AdminMailer < ActionMailer::Base
     @moderator = moderator
     @comment = comment
     @footer = feature('email-footer')
-    moderators = User.where(role: %w(moderator admin)).collect(&:email)
+    moderators = User.where(role: %w[(moderator admin)]).collect(&:email)
     mail(
       to: "comment-moderators@#{ActionMailer::Base.default_url_options[:host]}",
       bcc: moderators,
@@ -74,7 +77,7 @@ class AdminMailer < ActionMailer::Base
     @moderator = moderator
     @node = node
     @footer = feature('email-footer')
-    moderators = User.where(role: %w(moderator admin)).collect(&:email)
+    moderators = User.where(role: %w[(moderator admin)]).collect(&:email)
     mail(
       to: "moderators@#{ActionMailer::Base.default_url_options[:host]}",
       bcc: moderators,
@@ -88,7 +91,7 @@ class AdminMailer < ActionMailer::Base
     @moderator = moderator
     @comment = comment
     @footer = feature('email-footer')
-    moderators = User.where(role: %w(moderator admin)).collect(&:email)
+    moderators = User.where(role: %w[(moderator admin)]).collect(&:email)
     mail(
       to: "comment-moderators@#{ActionMailer::Base.default_url_options[:host]}",
       bcc: moderators,
@@ -102,7 +105,7 @@ class AdminMailer < ActionMailer::Base
     @moderator = moderator
     @node = node
     @footer = feature('email-footer')
-    moderators = User.where(role: %w(moderator admin)).collect(&:email)
+    moderators = User.where(role: %w[(moderator admin)]).collect(&:email)
     mail(
       to: "moderators@#{ActionMailer::Base.default_url_options[:host]}",
       bcc: moderators,
