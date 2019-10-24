@@ -882,7 +882,7 @@ class Node < ActiveRecord::Base
 
     node_type = 'note' if type == 'notes' || 'questions'
     node_type = 'page' if type == 'wiki'
-    node_type = 'map' if type == 'maps'
+    # node_type = 'map' if type == 'maps'  # Tag.tagged_nodes_by_author does not seem to work with maps, more testing required
 
     order = 'node_revisions.timestamp DESC'
     order = 'created DESC' if node_type == 'note'
