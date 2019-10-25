@@ -22,20 +22,20 @@
 
         <p>
           <span id="c<%= comment.id%>uploading" class="uploading" style="display:none;">
-            <%= t('comments._edit.uploading') %>
+            <%= translations('comments._edit.uploading') %>
           </span>
           <span id="c<%= comment.id%>prompt" class="prompt">
 
             <span style="padding-right:4px;float:left;" class="hidden-xs">
-              <%= raw t('comments._edit.drag_and_drop') %>
+              <%= raw translations('comments._edit.drag_and_drop') %>
             </span>
 
               <label id="c<%= comment.id%>input_label" for="c<%= comment.id%>input">
               <input id="c<%= comment.id%>input" type="file" name="image[photo]" style="display:none;" />
-              <a class="hidden-xs"><%= t('comments._edit.choose_one') %></a>
+              <a class="hidden-xs"><%= translations('comments._edit.choose_one') %></a>
               <span class="visible-xs">
                 <i class="fa fa-upload"></i>
-                <a><%= t('comments._edit.upload_image') %></a>
+                <a><%= translations('comments._edit.upload_image') %></a>
               </span>
             </label>
 
