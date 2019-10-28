@@ -44,13 +44,14 @@
     <% if @node && @node.body %>
       <meta property="og:title" content="<%= @title %>" />
       <meta property="og:site_name" content="Public Lab" />
-      <meta property="og:url" content="<%= request.host %>/n/<%= @node.id %>" />
+      <meta property="og:url" content="https://<%= request.host %>/n/<%= @node.id %>" />
       <meta property="og:description" content="<%= raw strip_tags(sanitize(RDiscount.new(@node.body).to_html)).truncate(100) %>" />
       <meta property="og:type" content="article" />
       <meta property="fb:app_id" content="644692375883090" />
-      <% if @node.main_image %>
-        <meta property="og:image" content="<%= @node.main_image.path(:default) %>" />
-      <% end %>
+    <% if @node.main_image %>
+        <meta property="og:image" content="https://<%= request.host %><%= @node.main_image.path(:default) %>" />
+        <meta name="twitter:image" content="https://<%= request.host %><%= @node.main_image.path(:default) %>">
+    <% end %>
       <p class="facebook-summary" style="display:none;">
         <%= raw strip_tags(sanitize(RDiscount.new(@node.body).to_html)).truncate(100) %>
       </p>
