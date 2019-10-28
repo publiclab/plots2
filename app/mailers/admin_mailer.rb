@@ -10,7 +10,7 @@ class AdminMailer < ActionMailer::Base
     @node = node
     @user = node.author
     @footer = feature('email-footer')
-    moderators = User.where(role: %w[moderator admin]).collect(&:email)
+    moderators = User.where(role: %w(moderator admin)).collect(&:email)
     mail(
       to: "moderators@#{ActionMailer::Base.default_url_options[:host]}",
       bcc: moderators,
@@ -23,7 +23,7 @@ class AdminMailer < ActionMailer::Base
     @comment = comment
     @user = comment.author
     @footer = feature('email-footer')
-    moderators = User.where(role: %w[moderator admin]).collect(&:email)
+    moderators = User.where(role: %w(moderator admin)).collect(&:email)
     mail(
       to: "comment-moderators@#{ActionMailer::Base.default_url_options[:host]}",
       bcc: moderators,
@@ -63,7 +63,7 @@ class AdminMailer < ActionMailer::Base
     @moderator = moderator
     @comment = comment
     @footer = feature('email-footer')
-    moderators = User.where(role: %w[moderator admin]).collect(&:email)
+    moderators = User.where(role: %w(moderator admin)).collect(&:email)
     mail(
       to: "comment-moderators@#{ActionMailer::Base.default_url_options[:host]}",
       bcc: moderators,
@@ -77,7 +77,7 @@ class AdminMailer < ActionMailer::Base
     @moderator = moderator
     @node = node
     @footer = feature('email-footer')
-    moderators = User.where(role: %w[moderator admin]).collect(&:email)
+    moderators = User.where(role: %w(moderator admin)).collect(&:email)
     mail(
       to: "moderators@#{ActionMailer::Base.default_url_options[:host]}",
       bcc: moderators,
@@ -91,7 +91,7 @@ class AdminMailer < ActionMailer::Base
     @moderator = moderator
     @comment = comment
     @footer = feature('email-footer')
-    moderators = User.where(role: %w[moderator admin]).collect(&:email)
+    moderators = User.where(role: %w(moderator admin)).collect(&:email)
     mail(
       to: "comment-moderators@#{ActionMailer::Base.default_url_options[:host]}",
       bcc: moderators,
@@ -105,7 +105,7 @@ class AdminMailer < ActionMailer::Base
     @moderator = moderator
     @node = node
     @footer = feature('email-footer')
-    moderators = User.where(role: %w[moderator admin]).collect(&:email)
+    moderators = User.where(role: %w(moderator admin)).collect(&:email)
     mail(
       to: "moderators@#{ActionMailer::Base.default_url_options[:host]}",
       bcc: moderators,
