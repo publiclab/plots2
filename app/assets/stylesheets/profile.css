@@ -25,6 +25,9 @@
     color: #808080;
     font-size: 0.9rem;
     border: 0;
+    background-color: #fff;
+    margin: 0;
+    padding: 0.8em 0 0.8em 0;
 }
 .profile-card .posted-by-links a {
     text-decoration: underline;
