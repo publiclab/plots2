@@ -877,6 +877,30 @@ class Node < ActiveRecord::Base
         .group('node.nid')
   end
 
+  # finds nodes by tag name, user id, and optional node type
+  def self.find_by_tag_and_author(tagname, user_id, type = 'notes')
+
+    node_type = 'note' if type == 'notes' || 'questions'
+    node_type = 'page' if type == 'wiki'
+    # node_type = 'map' if type == 'maps'  # Tag.tagged_nodes_by_author does not seem to work with maps, more testing required
+
+    order = 'node_revisions.timestamp DESC'
+    order = 'created DESC' if node_type == 'note'
+
+    qids = Node.questions.where(status: 1).collect(&:nid)
+
+    nodes = Tag.tagged_nodes_by_author(tagname, user_id)
+      .includes(:revision)
+      .references(:node_revisions)
+      .where(status: 1, type: node_type)
+      .order(order)
+
+    nodes = nodes.where('node.nid NOT IN (?)', qids) if type == 'notes'
+    nodes = nodes.where('node.nid IN (?)', qids) if type == 'questions'
+
+    nodes
+  end
+
   # so we can quickly fetch activities corresponding to this node
   # with node.activities
   def activities

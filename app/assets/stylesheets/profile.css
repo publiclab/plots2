@@ -1,0 +1,52 @@
+.profile-card .card-header {
+    padding: 0.8em 0.8em 0 0.8em;
+    background-color: inherit;
+    border:none;
+}
+.profile-card .card-header p {
+    display: inline-block;
+    color: #808080;
+    font-size: 0.9rem;
+    margin-left: 6px;
+}
+
+.profile-card .card-body {
+    font-family: Arial, sans-serif;
+    color: #808080;
+    font-size: 0.9rem;
+    padding: 0 0.8em 0 0.8em;
+}
+.profile-card .card-body>div {
+    padding: 0.4em 0 0.4em 0;
+}
+
+.profile-card .card-footer {
+    font-family: Arial, sans-serif;
+    color: #808080;
+    font-size: 0.9rem;
+    border: 0;
+    background-color: #fff;
+    margin: 0;
+    padding: 0.8em 0 0.8em 0;
+}
+.profile-card .posted-by-links a {
+    text-decoration: underline;
+    color: #808080;
+    display: inline-block;
+}
+.profile-card .posted-by-links a:hover {
+    text-decoration: none;
+    color: #505050;
+}
+.profile-card a.post-title {
+    text-decoration: none;
+    color: #212529;
+    font-family: "Junction Light", lucida grande,lucida sans console,sans-serif;
+    font-size: 1.1rem;
+    display: inline-block;
+    margin-left: 6px;
+}
+.profile-card a:hover.post-title {
+    text-decoration: underline;
+    color: #212529;
+}
