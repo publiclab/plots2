@@ -1,7 +1,7 @@
 <% if comment.status == 4 %>
   <p class="alert alert-warning moderated">
     <% if logged_in_as(['admin','moderator']) %>
-      <%= t('dashboard._comment_moderate.first_time_post') %>
+      <%= translations('dashboard._comment_moderate.first_time_post') %>
       <a class="btn btn-outline-secondary btn-sm" href="/admin/publish_comment/<%= comment.id %>"><%= t('dashboard.moderate.approve') %></a>
       <a class="btn btn-outline-secondary btn-sm" href="/admin/mark_comment_spam/<%= comment.id %>"><%= t('dashboard.moderate.spam') %></a>
     <% else %>
