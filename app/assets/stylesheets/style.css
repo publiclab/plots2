@@ -408,10 +408,6 @@ div.note .meta {
   color:#888;
 }
 
-.image-container {
-  height:auto;
-  overflow:auto;
-}
 /*start of img aspect css that will affect the
 thumbnails which appears on the user's profile
 under their notes*/
