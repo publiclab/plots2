@@ -3,13 +3,13 @@
     <tr>
       <th class="d-lg-none"></th>
       <th><i data-toggle="tooltip" title="Commenting method" class="fa fa-envelope"></i></th>
-      <th><%= t('users.list.comment') %></th>
-      <th><%= t('users.list.last_activity') %></th>
+      <th><%= translation('users.list.comment') %></th>
+      <th><%= translation('users.list.last_activity') %></th>
 
       <% if logged_in_as(['admin', 'moderator']) %>
-      <th><%= t('users.list.moderation') %></th>
+      <th><%= translation('users.list.moderation') %></th>
       <% else %>
-      <th><%= t('users.list.moderation') %></th>
+      <th><%= translation('users.list.moderation') %></th>
       <% end %>
     </tr>
 
