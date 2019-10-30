@@ -28,8 +28,8 @@ class NodeSharedTest < ActiveSupport::TestCase
     before = "Here are some notes in a table: \n\n[nodes:grid:test] \n\nThis is how you make it work:\n\n`[nodes:grid:tagname]`\n\n `[nodes:grid:tagname]`\n\nMake sense?"
     html = NodeShared.nodes_thumbnail_grid(before)
     assert html
-    assert_equal 1, html.scan('<div class="thumbnail-grid image-container row">').length
-    assert_equal 4, html.scan('h4').length
+    assert_equal 1, html.scan('<div class="thumbnail-grid">').length
+    assert_equal 4, html.scan('h5').length
   end
   
   test 'that NodeShared can be used to convert short codes like [notes:foo] into tables which list notes' do
