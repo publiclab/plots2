@@ -59,7 +59,7 @@
               </li>
               <div class="content" style="width: 100%" >
                 <% if @compact.nil? %>
-                  <% if !params.nil? && params[:action].to_s.include?("methods") %>
+                  <% if request.parameters[:action].to_s.include?("methods") %>
                     <p><small>
                       <li><a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#Activities"><i class="fa fa-flask" style="color:#3da56a;"></i> <%= node.activities.count %> activities</a> &nbsp;</li>
                       <!-- <p><i class="fa fa-users" style="color:blue"></i> contributors</p> -->
