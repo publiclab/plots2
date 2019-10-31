@@ -71,7 +71,7 @@ class User < ActiveRecord::Base
   end
 
   def new_contributor
-    return "<a href='/tag/first-time-poster' class='label label-success'><i>new contributor</i></a>".html_safe if is_new_contributor?
+    return "<a href='/tag/first-time-poster' class='label label-success font-italic'>new contributor</a>".html_safe if is_new_contributor?
   end
 
   def set_token
