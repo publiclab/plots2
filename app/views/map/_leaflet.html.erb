@@ -69,7 +69,7 @@
                    var title = data.items[i].doc_title;
                    var default_url = PLmarker_default();
                    var mid = data.items[i].doc_id ;
-                   var m = L.marker([data.items[i].latitude, data.items[i].longitude], {icon: default_url}).addTo(map<%= unique_id %>).bindPopup("<a href=" + url + ">" + title + "</a>") ;
+                   var m = L.marker([data.items[i].latitude, data.items[i].longitude], {icon: default_url}).bindPopup("<a href=" + url + ">" + title + "</a>") ;
 
                    if(markers_hash<%= unique_id %>.has(mid) === false){
                        m.addTo(map<%= unique_id %>).bindPopup("<a href=" + url + ">" + title + "</a>") ;
@@ -111,7 +111,7 @@
                    var title = data.items[i].doc_title;
                    var default_url = PLmarker_default();
                    var mid = data.items[i].doc_id ;
-                   var m = L.marker([data.items[i].latitude, data.items[i].longitude], {icon: default_url}).addTo(map<%= unique_id %>).bindPopup("<a href=" + url + ">" + title + "</a>") ;
+                   var m = L.marker([data.items[i].latitude, data.items[i].longitude], {icon: default_url}).bindPopup("<a href=" + url + ">" + title + "</a>") ;
 
                    if(markers_hash<%= unique_id %>.has(mid) === false){
                        m.addTo(map<%= unique_id %>).bindPopup("<a href=" + url + ">" + title + "</a>") ;

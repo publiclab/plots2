@@ -71,7 +71,7 @@
        var SElat = map.getBounds().getSouthEast().lat ;
        var SElng = map.getBounds().getSouthEast().lng ;
        map.spin(true) ;
-       if(map_tagname === null && (typeof map_tagname === "undefined")) {
+       if(map_tagname === null || (typeof map_tagname === "undefined")) {
            taglocation_url = "/api/srch/taglocations?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng ;
 
        } else {
@@ -84,9 +84,10 @@
                    var title = data.items[i].doc_title;
                    var default_url = PLmarker_default();
                    var mid = data.items[i].doc_id ;
-                   var m = L.marker([data.items[i].latitude, data.items[i].longitude], {icon: default_url}).addTo(map).bindPopup("<a href=" + url + ">" + title + "</a>") ;
-
+                   var m = L.marker([data.items[i].latitude, data.items[i].longitude], {icon: default_url}).bindPopup("<a href=" + url + ">" + title + "</a>") ;
+                   
                    if(markers_hash.has(mid) === false){
+
                        m.addTo(map).bindPopup("<a href=" + url + ">" + title + "</a>") ;
                        markers_hash.set(mid , m) ;
                    }
@@ -96,7 +97,10 @@
        });
    }
 
-   function setupInlineLEL(map , layers, mainLayer) {
+   
+
+   function setupInlineLEL(map , layers, mainLayer, markers_hash) {
+
        layers = layers.split(',');
 
        L.tileLayer('https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png', {
@@ -109,33 +113,33 @@
 
        if(typeof mainLayer !== "undefined" && mainLayer !== ""){
            if(mainLayer === "people"){
-               let markers_hash1 = new Map() ;
+               
                map.on('zoomend' , function () {
-                  peopleLayerParser(map, markers_hash1);
+                  peopleLayerParser(map, markers_hash);
                }) ;
 
                map.on('moveend' , function () {
-                   peopleLayerParser(map,markers_hash1);
+                   peopleLayerParser(map, markers_hash);
                }) ;
            }
            else if(mainLayer === "content"){
-               let markers_hash2 = new Map() ;
+               
                map.on('zoomend' , function () {
-                   contentLayerParser(map,markers_hash2);
+                   contentLayerParser(map, markers_hash);
                }) ;
 
                map.on('moveend' , function () {
-                   contentLayerParser(map,markers_hash2);
+                   contentLayerParser(map, markers_hash);
                }) ;
            }
            else { // it is a tagname
-               let markers_hash3 = new Map() ;
+
                map.on('zoomend' , function () {
-                   contentLayerParser(map,markers_hash3, mainLayer);
+                   contentLayerParser(map, markers_hash, mainLayer);
                }) ;
 
                map.on('moveend' , function () {
-                   contentLayerParser(map,markers_hash3, mainLayer);
+                   contentLayerParser(map, markers_hash, mainLayer);
                }) ;
            }
        }

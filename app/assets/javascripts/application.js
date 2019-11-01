@@ -28,7 +28,7 @@
 //= require megamark/dist/megamark.min.js
 //= require ics/ics.deps.min.js
 //= require ics/ics.min.js
-//= require leaflet/dist/leaflet
+//= require leaflet/dist/leaflet-src
 //= require moment/moment.js
 //= require i18n
 //= require i18n/translations

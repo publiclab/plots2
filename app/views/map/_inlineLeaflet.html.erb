@@ -18,11 +18,13 @@
         maxBoundsViscosity: 0.75
     }).setView([<%= lat %>,<%= lon %>], <%= lat.to_s.length.to_i %> + 6);
 
+    var markers_hash<%= unique_id %> = new Map() ;
+
     var map_lat = <%= lat %> ;
     var map_lon = <%= lon %> ;
     var primary_layers = "<%= layers.to_s %>";
     var main_layer = "<%= mainLayer.to_s %>"
 
-    setupInlineLEL(map<%= unique_id %> , primary_layers, main_layer) ;
+    setupInlineLEL(map<%= unique_id %> , primary_layers, main_layer, markers_hash<%= unique_id %>) ;
 
 </script>
