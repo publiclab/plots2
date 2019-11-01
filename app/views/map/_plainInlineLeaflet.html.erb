@@ -4,12 +4,17 @@
 
   <style>
   #map<%= unique_id %> { width:100%; height:300px; margin: 0; position: relative;}
+  #postOnMap<%= unique_id %> {
+    font-size: 12px;
+    margin-top: 5px;
+    border-radius: 10px;
+  }
   </style>
   <div class="leaflet-map" id="map<%= unique_id %>"></div>
   
-  <p><i><small>
-    Add a <button id="postOnMap<%= unique_id %>" class="btn btn-primary">post</button> that'll appear in this map.
-  </small></i></p>
+    <p><i><small>
+      <button id="postOnMap<%= unique_id %>" class="btn btn-primary">Add a post that'll appear in this map.</button>
+    </small></i></p>
   
   <script>
     var bounds = new L.LatLngBounds(new L.LatLng(84.67351257 , -172.96875) , new L.LatLng(-54.36775852 , 178.59375)) ;
