@@ -6,8 +6,12 @@
   <style>
     #map<%= unique_id %> { width:100%; height:300px; margin: 0; position: relative;}
   </style>
-  <div class="leaflet-map" id="map<%= unique_id %>"></div>
 
+  <div class="leaflet-map" id="map<%= unique_id %>"></div>
+  
+   <p><i><small>
+    Add a <button id="postOnMap<%= unique_id %>" class="btn btn-primary">post</button> that'll appear in this map.
+  </small></i></p>
 
 <script>
     var bounds = new L.LatLngBounds(new L.LatLng(84.67351257 , -172.96875) , new L.LatLng(-54.36775852 , 178.59375)) ;
@@ -17,6 +21,14 @@
         maxBounds: bounds ,
         maxBoundsViscosity: 0.75
     }).setView([<%= lat %>,<%= lon %>], <%= lat.to_s.length.to_i %> + 6);
+
+    var button<%= unique_id %> = document.getElementById('postOnMap<%= unique_id %>');
+
+    button<%= unique_id %>.addEventListener('click', function(event) {
+      var center_lat = map<%= unique_id %>.getCenter().lat;
+      var center_lng = map<%= unique_id %>.getCenter().lng;
+      window.location.href='/post?tags=lat:' + center_lat + ',lon:' + center_lng + '&title=This post will apppear on maps';
+    });
 
     var markers_hash<%= unique_id %> = new Map() ;
 
