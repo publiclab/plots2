@@ -40,7 +40,7 @@
     "jquery-validation": "^1.19.1",
     "jsdiff": "components/jsdiff#~3.4.0",
     "junction": "theleagueof/junction#*",
-    "leaflet": "github:sagarpreet-chadha/leaflet",
+    "leaflet": "^0.7.3",
     "leaflet-environmental-layers": "git://github.com/publiclab/leaflet-environmental-layers#fkl",
     "leaflet-blurred-location": "^1.3.0",
     "leaflet-fullhash": "github:sagarpreet-chadha/leaflet-fullHash",
