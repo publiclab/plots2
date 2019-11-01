@@ -3184,10 +3184,9 @@ leaflet-blurred-location@^1.2.5, leaflet-blurred-location@^1.3.0:
     jquery "^3.2.1"
     leaflet "^1.3.3"
 
-leaflet-environmental-layers@2.0.1:
+"leaflet-environmental-layers@git://github.com/publiclab/leaflet-environmental-layers#fkl":
   version "2.0.1"
-  resolved "https://registry.yarnpkg.com/leaflet-environmental-layers/-/leaflet-environmental-layers-2.0.1.tgz#8d8e1acbf15c527eaf7ba7377334b08dec31515f"
-  integrity sha512-lGAJB1tOw7vsqHnuoVSDnO63AORSUIp4XKaUyIY8Qyzyyp9iki/IAL3XmKSadctzZo/wa3As2gUs8ffe8ZJZdg==
+  resolved "git://github.com/publiclab/leaflet-environmental-layers#8c0a2082ddbfa7104352d69b8b614c9b4b246005"
   dependencies:
     jquery "^3.3.1"
     leaflet "^1.3.1"
