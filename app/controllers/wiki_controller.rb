@@ -61,18 +61,18 @@ class WikiController < ApplicationController
       @tags = @node.tags
       @tags += [Tag.find_by(name: params[:id])] if Tag.find_by(name: params[:id])
     else # it's a new wiki page!
-      @title = I18n.t('wiki_controller.new_wiki_page')
+      @title = I18n.translation('wiki_controller.new_wiki_page')
       if current_user
         new
       else
-        flash[:warning] = I18n.t('wiki_controller.pages_does_not_exist')
+        flash[:warning] = I18n.translation('wiki_controller.pages_does_not_exist')
         redirect_to '/login'
       end
     end
 
     unless @title # the page exists
       if @node.status == 0
-        flash[:warning] = I18n.t('wiki_controller.page_moderated_as_spam')
+        flash[:warning] = I18n.translation('wiki_controller.page_moderated_as_spam')
         redirect_to '/wiki'
       end
       @tagnames = @tags.collect(&:name)
@@ -104,12 +104,12 @@ class WikiController < ApplicationController
       redirect_to @node.path
     end
     if ((Time.now.to_i - @node.latest.timestamp) < 5.minutes.to_i) && @node.latest.author.uid != current_user.uid
-      flash.now[:warning] = I18n.t('wiki_controller.someone_clicked_edit_5_minutes_ago')
+      flash.now[:warning] = I18n.translation('wiki_controller.someone_clicked_edit_5_minutes_ago')
     end
     # we could do this...
     # @node.locked = true
     # @node.save
-    @title = I18n.t('wiki_controller.editing', title: @node.title).html_safe
+    @title = I18n.translation('wiki_controller.editing', title: @node.title).html_safe
 
     @tags = @node.tags
   end
@@ -127,7 +127,7 @@ class WikiController < ApplicationController
     end
     @tags = []
     if params[:id]
-      flash.now[:notice] = I18n.t('wiki_controller.page_does_not_exist_create')
+      flash.now[:notice] = I18n.translation('wiki_controller.page_does_not_exist_create')
       title = params[:id].tr('-', ' ')
       @related = Node.limit(10)
         .order('node.nid DESC')
@@ -158,7 +158,7 @@ class WikiController < ApplicationController
                                               title: params[:title],
                                               body:  params[:body])
       if saved
-        flash[:notice] = I18n.t('wiki_controller.wiki_page_created')
+        flash[:notice] = I18n.translation('wiki_controller.wiki_page_created')
         if params[:main_image] && params[:main_image] != ''
           img = Image.find params[:main_image]
           img.nid = @node.id
@@ -177,7 +177,7 @@ class WikiController < ApplicationController
         render template: 'editor/wikiRich'
       end
     else
-      flash.keep[:error] = I18n.t('wiki_controller.you_have_been_banned').html_safe
+      flash.keep[:error] = I18n.translation('wiki_controller.you_have_been_banned').html_safe
       redirect_to '/logout'
     end
   end
@@ -196,10 +196,10 @@ class WikiController < ApplicationController
       @revision.save
       update_node_attributes
 
-      flash[:notice] = I18n.t('wiki_controller.edits_saved')
+      flash[:notice] = I18n.translation('wiki_controller.edits_saved')
       redirect_to @node.path
     else
-      flash[:error] = I18n.t('wiki_controller.edit_could_not_be_saved')
+      flash[:error] = I18n.translation('wiki_controller.edit_could_not_be_saved')
       render action: :edit
     end
   end
@@ -208,10 +208,10 @@ class WikiController < ApplicationController
     @node = Node.find(params[:id])
     if current_user&.admin?
       @node.destroy
-      flash[:notice] = I18n.t('wiki_controller.wiki_page_deleted')
+      flash[:notice] = I18n.translation('wiki_controller.wiki_page_deleted')
       redirect_to '/dashboard'
     else
-      flash[:error] = I18n.t('wiki_controller.only_admins_delete_pages')
+      flash[:error] = I18n.translation('wiki_controller.only_admins_delete_pages')
       redirect_to @node.path
     end
   end
@@ -223,12 +223,12 @@ class WikiController < ApplicationController
       new_rev = revision.dup
       new_rev.timestamp = DateTime.now.to_i
       if new_rev.save!
-        flash[:notice] = I18n.t('wiki_controller.wiki_page_reverted')
+        flash[:notice] = I18n.translation('wiki_controller.wiki_page_reverted')
       else
-        flash[:error] = I18n.t('wiki_controller.problem_reverting')
+        flash[:error] = I18n.translation('wiki_controller.problem_reverting')
       end
     else
-      flash[:error] = I18n.t('wiki_controller.moderators_admin_delete_pages')
+      flash[:error] = I18n.translation('wiki_controller.moderators_admin_delete_pages')
     end
     redirect_to node.path
   end
@@ -257,11 +257,11 @@ class WikiController < ApplicationController
     if @node
       @revisions = @node.revisions
       @revisions = @revisions.where(status: 1).page(params[:page]).per_page(20) unless current_user&.can_moderate?
-      @title = I18n.t('wiki_controller.revisions_for', title: @node.title).html_safe
+      @title = I18n.translation('wiki_controller.revisions_for', title: @node.title).html_safe
       @tags = @node.tags
       @paginated = true unless current_user&.can_moderate?
     else
-      flash[:error] = I18n.t('wiki_controller.invalid_wiki_page')
+      flash[:error] = I18n.translation('wiki_controller.invalid_wiki_page')
     end
   end
 
@@ -274,13 +274,13 @@ class WikiController < ApplicationController
     set_sidebar :tags, @tagnames, videos: true
     @revision = Revision.find_by_nid_and_vid(@node.id, params[:vid])
     if @revision.nil?
-      flash[:error] = I18n.t('wiki_controller.revision_not_found')
+      flash[:error] = I18n.translation('wiki_controller.revision_not_found')
       redirect_to action: 'revisions'
     elsif @revision.status == 1 || current_user&.can_moderate?
-      @title = I18n.t('wiki_controller.revisions_for', title: @revision.title).html_safe
+      @title = I18n.translation('wiki_controller.revisions_for', title: @revision.title).html_safe
       render template: 'wiki/show'
     else
-      flash[:error] = I18n.t('wiki_controller.revision_has_been_moderated').html_safe
+      flash[:error] = I18n.translation('wiki_controller.revision_has_been_moderated').html_safe
       redirect_to @node.path
     end
   end
@@ -289,14 +289,14 @@ class WikiController < ApplicationController
     @a = Revision.find_by(vid: params[:a])
     @b = Revision.find_by(vid: params[:b])
     if @a.body == @b.body
-      render plain: I18n.t('wiki_controller.lead_image_or_title_change').html_safe
+      render plain: I18n.translation('wiki_controller.lead_image_or_title_change').html_safe
     else
       render partial: 'wiki/diff'
     end
   end
 
   def index
-    @title = I18n.t('wiki_controller.wiki')
+    @title = I18n.translation('wiki_controller.wiki')
     sort_param = params[:sort]
     order_string = 'node_revisions.timestamp DESC'
 
@@ -323,7 +323,7 @@ class WikiController < ApplicationController
   end
 
   def stale
-    @title = I18n.t('wiki_controller.wiki')
+    @title = I18n.translation('wiki_controller.wiki')
 
     @wikis = Node.includes(:revision)
       .references(:node_revisions)
@@ -337,7 +337,7 @@ class WikiController < ApplicationController
   end
 
   def popular
-    @title = I18n.t('wiki_controller.popular_wiki_pages')
+    @title = I18n.translation('wiki_controller.popular_wiki_pages')
     @wikis = Node.limit(40)
       .joins(:revision)
       .group('node_revisions.nid')
@@ -348,7 +348,7 @@ class WikiController < ApplicationController
   end
 
   def liked
-    @title = I18n.t('wiki_controller.well_liked_wiki_pages')
+    @title = I18n.translation('wiki_controller.well_liked_wiki_pages')
     @wikis = Node.limit(40)
       .order('node.cached_likes DESC')
       .where("status = 1 AND nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place') AND cached_likes >= 0")
@@ -456,9 +456,7 @@ class WikiController < ApplicationController
         main_image.save
       end
 
-      if params[:main_image].to_i == 0
-        @node.main_image_id = nil
-      elsif params[:main_image].present? && img = Image.find(params[:main_image])
+      if params[:main_image].present? && img = Image.find(params[:main_image])
         img.nid = @node.id
         @node.main_image_id = img.id
         img.save
