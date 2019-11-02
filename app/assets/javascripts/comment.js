@@ -51,3 +51,15 @@ function insertTitleSuggestionTemplate() {
   var newText = currentText+template;
   element.val(newText);
 }
+
+// JS API for submitting comments
+function addComment(comment, selector) {
+  selector = selector || '.comment-form'; // class instead of id because of the bound function on line 3
+  $.ajax({
+    url: $(selector).attr('action'), // grab the URL from the form itself
+    data: { body: comment },
+    success: (event, success) => {
+      $(selector).trigger('ajax:success', event);
+    }
+  });
+}
