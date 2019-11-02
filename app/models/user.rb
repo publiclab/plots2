@@ -396,7 +396,7 @@ class User < ActiveRecord::Base
       User.where('lower(username) = ?', username.downcase).first
     end
 
-    # all uses who've posted a node, comment, or answer in the given period
+    # all users who've posted a node, comment, or answer in the given period
     def contributor_count_for(start_time, end_time)
       notes = Node.where(type: 'note', status: 1, created: start_time.to_i..end_time.to_i).pluck(:uid)
       answers = Answer.where(created_at: start_time..end_time).pluck(:uid)
