@@ -126,7 +126,7 @@
     </div>
 
     <div class="control-group">
-      <button type="submit" class="btn btn-primary"><%= t('comments._edit.publish') %></button>
+      <button type="submit" class="btn btn-primary"><%= translation('comments._edit.publish') %></button>
         <a class="btn btn-default preview-btn"  data-previewing-text="Hide Preview"
             onClick="$('#c<%= comment.id %>preview').toggle();
             $('#c<%= comment.id %>text').toggle();
@@ -141,14 +141,14 @@
         </a>
 
       <span class="form-grey"> &nbsp;
-        <br class="visible-xs" /><%= raw t('comments._edit.logged_in', :username => current_user.username) %> |
-        <a target="_blank" href="/wiki/authoring-help#Formatting"><%= t('comments._edit.formatting') %></a> |
-        <a onClick="$('#who-is-notified').toggle()"><%= t('comments._edit.notifications') %></a>
+        <br class="visible-xs" /><%= raw translation('comments._edit.logged_in', :username => current_user.username) %> |
+        <a target="_blank" href="/wiki/authoring-help#Formatting"><%= translation('comments._edit.formatting') %></a> |
+        <a onClick="$('#who-is-notified').toggle()"><%= translation('comments._edit.notifications') %></a>
       </span>
     </div>
 
     <p id="who-is-notified" style="display:none;color:#888;">
-      <%= t('comments._edit.email_notifications') %>
+      <%= translation('comments._edit.email_notifications') %>
     </p>
   </form>
 </div>
