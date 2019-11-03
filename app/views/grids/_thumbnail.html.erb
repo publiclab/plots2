@@ -20,10 +20,10 @@
             <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope:'datetime.time_ago_in_words' }) %>
             | <a href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= node.comments.size %></a>
             <% else %>
-              <%= t('notes._notes.last_edit_by') %> <a href="/profile/<%= node.latest.author.name %>"><%= node.latest.author.name %></a>
+              <%= translation('notes._notes.last_edit_by') %> <a href="/profile/<%= node.latest.author.name %>"><%= node.latest.author.name %></a>
               <%= distance_of_time_in_words(Time.at(node.latest.timestamp), Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>
             <% end %>
-            | <i class="fa fa-eye"></i> <%= number_with_delimiter(node.views) %> <span class="d-none d-md-inline"><%= t('notes._notes.views') %></span>
+            | <i class="fa fa-eye"></i> <%= number_with_delimiter(node.views) %> <span class="d-none d-md-inline"><%= translation('notes._notes.views') %></span>
             | <i style="<% if node.likes > 0 %>color:#db4;<% else %>color:#888;<% end %>" class="fa fa-star-o"></i> <%= node.likes %>
             | <% if node.has_tag("pin:#{tagname}") %><i rel="tooltip" title="This item was pinned with the tag 'pin:<%= tagname %>'." class="fa fa-thumb-tack"></i> <% end %>
             </small></p>
