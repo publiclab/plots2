@@ -1,7 +1,7 @@
 <div class="row">
   <div id="comments" class="col-lg-10 comments">
     <% comments = @node.fetch_comments(current_user) %>
-    <h3><span id="comment-count"><%= comments.length %></span> <%= t('notes._comments.comments') %></h3>
+    <h3><span id="comment-count"><%= comments.length %></span> <%= translation('notes._comments.comments') %></h3>
 
     <div style="margin-bottom: 50px;" id="comments-list">
       <% comments.includes(:replied_comments).order('timestamp ASC').each do |comment| %>
@@ -18,7 +18,7 @@
       <%= render :partial => "comments/form", :locals => { title: I18n.t('notes._comments.post_comment'), comment: false, placeholder: I18n.t('notes._comments.post_placeholder') } %>
     <% else %>
     <p><a data-toggle="modal" data-target="#loginModal">
-                <%= t('layout._header.login.login_title') %> </a> to comment.
+                <%= translation('layout._header.login.login_title') %> </a> to comment.
             </p>
     <% end %>
 
