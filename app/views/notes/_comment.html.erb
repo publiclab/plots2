@@ -4,11 +4,11 @@
     <% if comment.status == 4 %>
       <p class="alert alert-warning moderated">
         <% if logged_in_as(['admin','moderator']) %>
-          <%= t('dashboard._comment_moderate.first_time_post') %>
-          <a class="btn btn-outline-secondary btn-sm" href="/admin/publish_comment/<%= comment.id %>"><%= t('dashboard.moderate.approve') %></a>
-          <a class="btn btn-outline-sedondary btn-sm" href="/admin/mark_comment_spam/<%= comment.id %>"><%= t('dashboard.moderate.spam') %></a>
+          <%= translation('dashboard._comment_moderate.first_time_post') %>
+          <a class="btn btn-outline-secondary btn-sm" href="/admin/publish_comment/<%= comment.id %>"><%= translation('dashboard.moderate.approve') %></a>
+          <a class="btn btn-outline-sedondary btn-sm" href="/admin/mark_comment_spam/<%= comment.id %>"><%= translation('dashboard.moderate.spam') %></a>
         <% else %>
-          <%= raw t('dashboard.moderate.pending_approval', :url => '/wiki/moderation') %>
+          <%= raw translation('dashboard.moderate.pending_approval', :url => '/wiki/moderation') %>
         <% end %>
       </p>
     <% end %>
@@ -28,12 +28,12 @@
           <%= comment.name %>
         <% end %>
       <% end %>
-      <span class="d-none d-md-inline"><%= t('notes._comment.commented') %></span>
+      <span class="d-none d-md-inline"><%= translation('notes._comment.commented') %></span>
       <a style="color:#aaa;" href="#c<%= comment.cid %>"><%= distance_of_time_in_words(comment.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></a>
       <% if comment.author %>
         <% streak = comment.author.streak %>
         <% if streak[0] > 7 %>
-          <a href="/wiki/streaks"><i class="fa fa-fire" style="padding-left:4px; font-size:16px; color:#f63;" data-toggle="tooltip" data-placement="top" title="<%= raw t('notes._comment.streak_title', :author => comment.author.name, :streak_notes => streak[1][0], :streak_wiki => streak[1][1], :streak_comments => streak[1][2], :streak_days => streak[0]) %>"></i></a>
+          <a href="/wiki/streaks"><i class="fa fa-fire" style="padding-left:4px; font-size:16px; color:#f63;" data-toggle="tooltip" data-placement="top" title="<%= raw translation('notes._comment.streak_title', :author => comment.author.name, :streak_notes => streak[1][0], :streak_wiki => streak[1][1], :streak_comments => streak[1][2], :streak_days => streak[0]) %>"></i></a>
         <% end %>
       <% end %>
     </div>
@@ -184,7 +184,7 @@
   </div>
 
   <% if current_user %>
-    <% h = { title: I18n.t('notes._comment.edit_comment'), comment: comment, placeholder: I18n.t('notes._comment.edit_placeholder') } %>
+    <% h = { title: I18n.translation('notes._comment.edit_comment'), comment: comment, placeholder: I18n.translation('notes._comment.edit_placeholder') } %>
     <% h[:is_answer] = true if local_assigns[:is_answer] %>
     <%=  render :partial => "comments/edit", :locals => h %>
   <% end %>
