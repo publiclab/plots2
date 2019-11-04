@@ -169,7 +169,6 @@ class TagController < ApplicationController
     @length = Tag.contributor_count(params[:id]) || 0
 
     @tagnames = [params[:id]]
-    @tag = Tag.find_by(name: params[:id])
     @note_count = Tag.tagged_node_count(params[:id]) || 0
     @users = Tag.contributors(@tagnames[0])
     @related_tags = Tag.related(@tagnames[0])
