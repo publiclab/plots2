@@ -18,9 +18,9 @@
           <table class="table">
             <tr>
               <th class="d-lg-none"></th>
-              <th><a href = "/search/profiles/<%= params[:query] %>?sort=username"> <%= t('users.list.username') %></a> <i class="fa fa-arrows-v"></i></th>
-              <th><a href="/search/profiles/<%= params[:query] %>?sort=last_activity"> <%= t('users.list.last_activity') %></a> <i class="fa fa-arrows-v"></i></th>
-              <th><a href="/search/profiles/<%= params[:query] %>?sort=joined"> <%= t('users.list.joined') %></a> <i class="fa fa-arrows-v"></i></th>
+              <th><a href = "/search/profiles/<%= params[:query] %>?sort=username"> <%= translation('users.list.username') %></a> <i class="fa fa-arrows-v"></i></th>
+              <th><a href="/search/profiles/<%= params[:query] %>?sort=last_activity"> <%= translation('users.list.last_activity') %></a> <i class="fa fa-arrows-v"></i></th>
+              <th><a href="/search/profiles/<%= params[:query] %>?sort=joined"> <%= translation('users.list.joined') %></a> <i class="fa fa-arrows-v"></i></th>
             </tr>
             <% @profiles.each do |profile| %>
               <tr>
