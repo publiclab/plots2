@@ -1,9 +1,9 @@
   <div class="row header" style="padding-left:10px;" >
 
     <% if current_user %>
-      <h1><%= t('dashboard._header.dashboard') %></h1>
+      <h1><%= translation('dashboard._header.dashboard') %></h1>
     <% else %>
-      <h1><%= t('dashboard._header.community_research') %></h1>
+      <h1><%= translation('dashboard._header.community_research') %></h1>
     <% end %>
 
   </div>
@@ -11,12 +11,12 @@
 <div class="row stats">
   <h4 class="col-lg-8">
     <% if current_user %>
-      <span class="d-none d-lg-inline"><%= t('dashboard._header.welcome') %><span class="d-lg-none d-xl-inline">,<b><a href="/profile/"> <%= current_user.username %></a></b></span>! <%= current_user.new_contributor %></span>
-      <a href="/notes/recent"><%= @note_count %> <% if @note_count === 1 %> <%= t('dashboard._header.note') %><% else %> <%= t('dashboard._header.notes') %><% end %></a> <%= t('dashboard._header.and') %> <a href="/wiki"><%= @wiki_count %> <%= t('dashboard._header.wiki_edits') %></a> <%= t('dashboard._header.posted_past_week') %>
-      <%= t('dashboard._header.you_shared') %> <a href="/notes/author/<%= current_user.username %>"><%= @user_note_count %> <% if @user_note_count === 1 %><%= t('dashboard._header.research_note') %><% else %><%= t('dashboard._header.research_notes') %><% end %></a>.
+      <span class="d-none d-lg-inline"><%= translation('dashboard._header.welcome') %><span class="d-lg-none d-xl-inline">,<b><a href="/profile/"> <%= current_user.username %></a></b></span>! <%= current_user.new_contributor %></span>
+      <a href="/notes/recent"><%= @note_count %> <% if @note_count === 1 %> <%= translation('dashboard._header.note') %><% else %> <%= translation('dashboard._header.notes') %><% end %></a> <%= translation('dashboard._header.and') %> <a href="/wiki"><%= @wiki_count %> <%= translation('dashboard._header.wiki_edits') %></a> <%= translation('dashboard._header.posted_past_week') %>
+      <%= translation('dashboard._header.you_shared') %> <a href="/notes/author/<%= current_user.username %>"><%= @user_note_count %> <% if @user_note_count === 1 %><%= translation('dashboard._header.research_note') %><% else %><%= translation('dashboard._header.research_notes') %><% end %></a>.
     <% else %>
-      <span class="d-none d-lg-inline"><%= t('dashboard._header.welcome') %>!</span>
-      <%= t('dashboard._header.this_could_be_dashboard') %> <a data-toggle="modal" data-target="#loginModal"><%= t('dashboard._header.joined_public_lab') %></a>
+      <span class="d-none d-lg-inline"><%= translation('dashboard._header.welcome') %>!</span>
+      <%= translation('dashboard._header.this_could_be_dashboard') %> <a data-toggle="modal" data-target="#loginModal"><%= translation('dashboard._header.joined_public_lab') %></a>
     <% end %>
   </h4>
 </div>
