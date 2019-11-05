@@ -26,6 +26,7 @@
 <br><br><br>
 <div class="graph">
     <p> <b><%= params[:id].capitalize%></b> graph from <b><%= (@start).to_formatted_s(:long)%></b> to <b><%= @end.to_formatted_s(:long)%></b> </p>
+    <p><i>This graph shows the number of followers who began subscribing within a given time period; this is not a cumulative graph of subscriptions. Note also: if someone 'unfollows,' the record is deleted, and we can't see it anymore, so we cannot currently measure a decline in followers over time.</i></p>
     <br>
     <%= render partial: "tag/graph", locals: { wikis: @tag_wikis, notes: @tag_notes, questions: @tag_questions, comments: @tag_comments  } %>
     <br>
