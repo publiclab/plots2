@@ -50,7 +50,7 @@
        });
    }
 
-   function contentLayerParser(map,markers_hash, map_tagname) {
+   function contentLayerParser(map, markers_hash, map_tagname) {
        var NWlat = map.getBounds().getNorthWest().lat ;
        var NWlng = map.getBounds().getNorthWest().lng ;
        var SElat = map.getBounds().getSouthEast().lat ;
@@ -64,6 +64,7 @@
        }
        $.getJSON(taglocation_url , function (data) {
            if (!!data.items) {
+            console.log(data.items);
                for (i = 0; i < data.items.length; i++) {
                    var url = data.items[i].doc_url;
                    var title = data.items[i].doc_title;

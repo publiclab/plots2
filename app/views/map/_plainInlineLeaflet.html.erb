@@ -45,87 +45,16 @@
 
     setupLEL(map<%= unique_id %> , 0) ;
 
-    map<%= unique_id %>.on('zoomend' , function () {
-       var NWlat = map<%= unique_id %>.getBounds().getNorthWest().lat ;
-       var NWlng = map<%= unique_id %>.getBounds().getNorthWest().lng ;
-       var SElat = map<%= unique_id %>.getBounds().getSouthEast().lat ;
-       var SElng = map<%= unique_id %>.getBounds().getSouthEast().lng ;
-
-       map<%= unique_id %>.spin(true) ;
-       map_tagname = null ;
-       <% if (defined? tagname != nil and tagname.nil? == false) %>
+     <% if (defined? tagname != nil and tagname.nil? == false) %>
           map_tagname = "<%= tagname %>" ;
-       <% end %>
+     <% end %>
 
-       if(map_tagname == null) {
-        taglocation_url = "/api/srch/taglocations?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng ; 
-       
-       } else { 
-        taglocation_url = "/api/srch/taglocations?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng + "&tag=" + map_tagname ;
-       }
+     map<%= unique_id %>.on('zoomend' , function () {
+        contentLayerParser(map<%= unique_id %>, markers_hash<%= unique_id %>, map_tagname);
+    }) ;
 
-       $.getJSON(taglocation_url , function (data) {
-           var layerGroup = L.layerGroup();
-
-           if (!!data.items) {
-               for (i = 0; i < data.items.length; i++) {
-                   var url = data.items[i].doc_url;
-                   var title = data.items[i].doc_title;
-                   var default_url = PLmarker_default();
-                   var mid = data.items[i].doc_id ;
-                   var m = L.marker([data.items[i].latitude, data.items[i].longitude], {icon: default_url}).bindPopup("<a href=" + url + ">" + title + "</a>") ;
-
-                   if(markers_hash<%= unique_id %>.has(mid) === false){
-                       m.addTo(map<%= unique_id %>).bindPopup("<a href=" + url + ">" + title + "</a>") ;
-                       markers_hash<%= unique_id %>.set(mid , m) ;
-                   }
-
-               }
-           }
-           map<%= unique_id %>.spin(false) ;
-       });
-
-   }) ;
-
-   map<%= unique_id %>.on('moveend' , function () {
-       var NWlat = map<%= unique_id %>.getBounds().getNorthWest().lat ;
-       var NWlng = map<%= unique_id %>.getBounds().getNorthWest().lng ;
-       var SElat = map<%= unique_id %>.getBounds().getSouthEast().lat ;
-       var SElng = map<%= unique_id %>.getBounds().getSouthEast().lng ;
-
-       map<%= unique_id %>.spin(true) ;
-       map_tagname = null ;
-       <% if (defined? tagname != nil and tagname.nil? == false) %>
-          map_tagname = "<%= tagname %>" ;
-       <% end %>
-
-        if(map_tagname == null) {
-        taglocation_url = "/api/srch/taglocations?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng ; 
-       
-       } else { 
-        taglocation_url = "/api/srch/taglocations?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng + "&tag=" + map_tagname ;
-       }
-
-         $.getJSON(taglocation_url , function (data) {
-           var layerGroup = L.layerGroup();
-
-           if (!!data.items) {
-               for (i = 0; i < data.items.length; i++) {
-                   var url = data.items[i].doc_url;
-                   var title = data.items[i].doc_title;
-                   var default_url = PLmarker_default();
-                   var mid = data.items[i].doc_id ;
-                   var m = L.marker([data.items[i].latitude, data.items[i].longitude], {icon: default_url}).bindPopup("<a href=" + url + ">" + title + "</a>") ;
-
-                   if(markers_hash<%= unique_id %>.has(mid) === false){
-                       m.addTo(map<%= unique_id %>).bindPopup("<a href=" + url + ">" + title + "</a>") ;
-                       markers_hash<%= unique_id %>.set(mid , m) ;
-                   }
-
-               }
-           }
-           map<%= unique_id %>.spin(false) ;
-       });
-   }) ;
+    map<%= unique_id %>.on('moveend' , function () {
+        contentLayerParser(map<%= unique_id %>, markers_hash<%= unique_id %>, map_tagname);
+    }) ;
    
   </script>
