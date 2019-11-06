@@ -59,11 +59,10 @@
               </li>
               <div class="content" style="width: 100%" >
                 <% if @compact.nil? %>
-                  <% if request.parameters[:action].to_s.include?("methods") %>
+                  <% if node.has_tag("method") %>
                     <p><small>
-                      <li><a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#Activities"><i class="fa fa-flask" style="color:#3da56a;"></i> <%= node.activities.count %> activities</a> &nbsp;</li>
-                      <!-- <p><i class="fa fa-users" style="color:blue"></i> contributors</p> -->
-                      <li><a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#Questions"><i class="fa fa-question-circle" style="color:#db3a1e;"></i> <span id="questions-count-<%= node.id %>"><%= node.questions.count %> questions</span></a></li>
+                      <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#Activities"><i class="fa fa-flask" style="color:#3da56a;"></i> <%= node.activities.count %> activities</a>
+                      <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#Questions"><i class="fa fa-question-circle" style="color:#db3a1e;"></i> <span id="questions-count-<%= node.id %>"><%= node.questions.count %> questions</span></a>
                     </small></p>
                   <% end %>
                   <li class="buttons mb-2"><% if logged_in_as(['admin','moderator']) %><a style="width: 90px" class="btn btn-outline-secondary" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> <%= t('notes._notes.spam') %></a><% end %></li>
