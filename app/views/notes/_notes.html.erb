@@ -17,7 +17,7 @@
           <div class="card-body">
             <% if node.status == 4 %>
               <p class="alert alert-warning moderated">
-                <% if logged_in_as(['admin','moderator']) %>
+                <% if ApplicationController.helpers.logged_in_as(['admin','moderator']) %>
                   <%= t('notes._notes.moderate_first_time_post') %> <br class="d-none d-lg-inline"/>
                   <a class="btn btn-outline-secondary btn-sm" href="/moderate/publish/<%= node.id %>"><%= t('notes._notes.approve') %></a>
                   <a class="btn btn-outline-secondary btn-sm" data-test="spam" href="/moderate/spam/<%= node.id %>"><%= t('notes._notes.spam') %></a>
