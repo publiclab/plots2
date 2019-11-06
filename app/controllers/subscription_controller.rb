@@ -66,9 +66,7 @@ class SubscriptionController < ApplicationController
           if request.xhr?
             message = "Started following #{params[:name]}!"
             status = "200"
-            if current_user
-              render json: { status: status, message: message, id: tag.tid, tagname: params[:name], url: "/tags" + "?_=" + Time.now.to_i.to_s }
-            end
+            render json: { status: status, message: message, id: tag.tid, tagname: params[:name], url: "/tags" + "?_=" + Time.now.to_i.to_s } if current_user
           else
             flash[:notice] = "You are now following '#{params[:name]}'."
             redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
