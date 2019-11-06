@@ -8,21 +8,6 @@
     return map ;
   }
 
-
-  function setupFullScreen(map , lat , lon) {
-    map.addControl(new L.Control.Fullscreen()); // to go full-screen
-    map.on('fullscreenchange', function () {
-      if (map.isFullscreen()) {
-        map.options.minZoom = 3 ;
-       } 
-      else {
-        map.options.minZoom = 1 ;
-        map.panTo(new L.LatLng(lat,lon));
-      }
-    });
-  }
-
-
   function PLmarker_default(){
      L.Icon.PLmarker = L.Icon.extend({
       options: {
