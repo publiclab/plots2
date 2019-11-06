@@ -64,7 +64,6 @@
        }
        $.getJSON(taglocation_url , function (data) {
            if (!!data.items) {
-            console.log(data.items);
                for (i = 0; i < data.items.length; i++) {
                    var url = data.items[i].doc_url;
                    var title = data.items[i].doc_title;
