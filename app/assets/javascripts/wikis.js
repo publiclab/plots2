@@ -26,9 +26,9 @@ function setupWiki(node_id, title, raw, logged_in) {
     });
     $('#content').hide();
   } else {
-    $('#content').html(shortCodePrompt($('#content')[0], {
-      submitUrl: '/wiki/replace/' + node_id
-    }));
+    // $('#content').html(shortCodePrompt($('#content')[0], {
+    //   submitUrl: '/wiki/replace/' + node_id
+    // }));
     postProcessContent();
     addDeepLinks($('#content'));
   }
