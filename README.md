@@ -91,7 +91,7 @@ For information on how to install for use with the cloud environment, please see
 
 1. Fork our repo from https://github.com/publiclab/plots2.
 2. In the console, download a copy of your forked repo with `git clone https://github.com/your_username/plots2.git` where `your_username` is your GitHub username.
-3. Enter the new **plots2** directory with `cd plots2`.
+3. Enter the new **plots2** directory with `cd plots2` and then enter `git remote add upstream https://github.com/publiclab/plots2.git` in the command line.
 4. Steps to install gems:
     * You may need to first run `bundle install` if you have older gems in your environment from previous Rails work. If you get an error message like `Your Ruby version is 2.x.x, but your Gemfile specified 2.4.4` then you need to install the ruby version 2.4.4 using `rvm` or `rbenv`.
 	    * Using **rvm**: `rvm install 2.4.4` followed by `rvm use 2.4.4`
