@@ -118,6 +118,10 @@ a .fa-white,
   display:none;
 }
 
+.text-underline {
+  text-decoration: underline !important;
+}
+
 #pl_pad {
     width:300%;
 }
