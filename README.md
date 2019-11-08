@@ -112,6 +112,16 @@ We recommend you either work in a virtual environment, or on a dual booted syste
 1. [Dual Booting](https://www.tecmint.com/install-ubuntu-alongside-with-windows-dual-boot/amp/), [option2](https://askubuntu.com/questions/1031993/how-to-install-ubuntu-18-04-alongside-windows-10), [video guide](https://www.youtube.com/watch?v=qNeJvujdB-0&fbclid=IwAR0APhs89jlNR_ENKbSwrp6TI6P-wxlx-a0My9XBvPNAfwtADZaAXqcKtP4)
 2. [Setting up a linux virtual env](https://itsfoss.com/install-linux-in-virtualbox/)
 
+## Redis Installation
+
+Public Lab uses Redis and may be required for some functionality when running the application locally.
+1. Install Redis if you haven't already:
+  * Using **MacOS**: `brew install redis`
+2. Run Redis server:
+  * Using **MacOS**: `brew services start redis`
+3. Run SideKiq: `bundle exec sidekiq`
+4. If SideKiq started correctly Redis is now configured and working!
+
 ## SSL in Development
 
 We, at Public Lab use [openssl](https://github.com/ruby/openssl) gem to provide SSL (Secure Sockets Layer) for the secure connection in the development mode. You can run the https connection on the localhost by following  the following steps:
