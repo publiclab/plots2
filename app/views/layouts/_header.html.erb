@@ -26,6 +26,10 @@
 
       <ul class="navbar-nav mr-auto">
 
+        <% cache('feature_navbar', skip_digest: true) do %>
+          <%= feature('navbar') %>
+        <% end %>
+
         <li class="nav-item">
           <a class="nav-link" onclick="$('.topics').toggle();" href="#">
             Topics
@@ -89,6 +93,9 @@
         <li class="nav-item d-sm-none d-lg-inline">
           <a class="nav-link" href="/donate"><%= t('layout._header.donate') %></a>
         </li>
+
+        <!-- end navbar feature -->
+
       </ul>
 
       <ul class="navbar-nav mr-lg-5">
