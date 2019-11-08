@@ -14,7 +14,7 @@
     <% if current_user %>
       <p><%= f.submit 'Follow', id: "subscribe", class: "btn btn-primary btn-sm" %></p>
     <% else %>
-      <p><a class="btn btn-primary btn-sm btn-white" onClick="require_login_and_redirect_to('/subscribe/multiple/tag/' + getCheckedTags())">Follow</a></p>
+      <p><a class="btn btn-primary btn-sm btn-white" style="color: white;" onClick="require_login_and_redirect_to('/subscribe/multiple/tag/' + getCheckedTags())">Follow</a></p>
     <% end %>
   <% end %>
 </div>
