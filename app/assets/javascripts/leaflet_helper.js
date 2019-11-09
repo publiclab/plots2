@@ -67,13 +67,19 @@
                for (i = 0; i < data.items.length; i++) {
                    var url = data.items[i].doc_url;
                    var title = data.items[i].doc_title;
+                   var author = data.items[i].doc_author;
+                   var image_url = data.items[i].doc_image_url;
                    var default_url = PLmarker_default();
                    var mid = data.items[i].doc_id ;
                    var m = L.marker([data.items[i].latitude, data.items[i].longitude], {icon: default_url}).bindPopup("<a href=" + url + ">" + title + "</a>") ;
                    
                    if(markers_hash.has(mid) === false){
 
-                       m.addTo(map).bindPopup("<a href=" + url + ">" + title + "</a>") ;
+                       if(image_url) {
+                           m.addTo(map).bindPopup("<div><img src=" + image_url+ " height='140px' /><br>" + "<b>Title:</b> " + title  + "<br><b>Author:</b>   <a href=" + 'https://publiclab.org/profile/' + author + ">" + author + "</a><br>" + "<a href=" + url + ">" + "Read more..." + "</a></div>" ) ;
+                       } else {
+                           m.addTo(map).bindPopup("<span><b>Title:</b>     " + title  + "</span><br><span><b>Author:</b>    <a href=" + 'https://publiclab.org/profile/' + author + ">" + author + "</a></span><br>" + "<a href=" + url + ">" + "<br>Read more..." + "</a>" ) ;
+                       }
                        markers_hash.set(mid , m) ;
                    }
                }
