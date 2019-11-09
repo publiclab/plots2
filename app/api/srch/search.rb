@@ -317,7 +317,7 @@ module Srch
               doc_url: model.path(:items),
               doc_title: model.title,
               doc_author: model.user.username,
-              doc_image_url: model.images,
+              doc_image_url: !model.images.empty? ? model.images.first.path : [],
               score: model.answers.length,
               latitude: model.lat,
               longitude: model.lon,
