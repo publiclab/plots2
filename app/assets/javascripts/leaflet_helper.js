@@ -90,8 +90,14 @@
 
        L.tileLayer('https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png').addTo(map) ;
 
+       var oms = omsUtil(map, {
+          keepSpiderfied: true,
+          circleSpiralSwitchover: 0
+       });
+
        L.LayerGroup.EnvironmentalLayers({
            include: layers,
+           embed: true,
        }).addTo(map);
 
        if(typeof mainLayer !== "undefined" && mainLayer !== ""){
@@ -132,6 +138,11 @@
       L.tileLayer('https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map) ;
+
+      var oms = omsUtil(map, {
+        keepSpiderfied: true,
+        circleSpiralSwitchover: 0
+      });
 
       L.LayerGroup.EnvironmentalLayers({
           hash: !!sethash,
