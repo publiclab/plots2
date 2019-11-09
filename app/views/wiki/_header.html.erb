@@ -29,84 +29,13 @@
 <div <% if @presentation || @node.has_tag('style:minimal') %>style="display:none" <% end %>id="wiki-toolbar">
   <div class="d-print-none">
 
-    <div class="float-right" style="padding-top:8px;">
+    <div style="padding-top:8px;text-align:center">
       <span class="d-none d-lg-inline">
-        <%= number_with_delimiter(@node.views) %> <%= t('wiki.show.views') %> |
-        <%= raw t('wiki.show.last_edited', url1: "/profile/" + @revision.author.name, author: @revision.author.name, time: time_ago_in_words(@revision.created_at)) %>
-        | <a href="/n/<%= @node.id %>"><i class="fa fa-link"></i></a>
-        <span class="d-none d-xl-inline">
-          <a href="/n/<%= @node.id %>">#<%= @node.id %></a>
-        </span>
+        <%= number_with_delimiter(@node.authors.length)  %> Authors |
+        <a rel="tooltip" title="View all revisions for this page." data-placement="top" href="/wiki/revisions/<%= @node.slug_from_path %>"><%= @node.revisions.length %> <%= t('wiki.revisions.revisions') %></a> |
+        <a href="/talk/<%= @node.slug_from_path %>" rel="tooltip" title="Practice in a realtime doc." data-placement="top"><%= t('wiki.show.talk') %></a>
       </span>
     </div>
-
-    <ul class="nav nav-tabs">
-      <li class="nav-item" >
-        <a class="<%= 'active' unless (controller.action_name == 'comments' or params.key?(:raw)) %> nav-link" href="<%= @node.path %>">
-          <span class="d-none d-md-inline"><%= t('wiki.show.view') %></span>
-          <span class="d-md-none"><i class="fa fa-file-o"></i></span>
-        </a>
-      </li>
-
-      <% if @node.has_tag('locked') && (current_user ? (current_user.role != "moderator" && current_user.role != "admin") : true) %>
-        <li class="nav-item">
-          <a class="nav-link" href="/wiki/locked"><i class="fa fa-lock"></i></a>
-        </li>
-      <% else %>
-      <% if current_user && current_user.first_time_poster %>
-            <li class="nav-item">
-              <a class="nav-link" rel="tooltip" title="Please post a question or other content before editing the wiki. Click to learn why." data-placement="top" href="https://publiclab.org/notes/tester/04-23-2016/new-moderation-system-for-first-time-posters">
-                <i class="fa fa-lock"></i>
-                <span class="d-none d-xl-inline"></span>
-              </a>
-            </li>
-        <% else %>
-            <li class="nav-item">
-                <a rel="tooltip" title="Edit this wiki page." data-placement="top" href="<%= @node.edit_path %>?t=<%= Time.now.to_i %>" class="requireLogin nav-link">
-                <i class="fa fa-pencil"></i>
-                <span class="d-none d-xl-inline"></span>
-              </a>
-            </li>
-            <li class="<%= 'active' if params[:raw] == 'true' %> nav-item">
-              <a class="nav-link" rel="tooltip" title="Try the beta inline Rich Wiki editor." data-placement="top" href="<%= @node.path %>?raw=true">
-                <i style="color:#0c8;" class="fa fa-pencil"></i>
-              </a>
-            </li>
-        <% end %>
-      <% end %>
-
-      <% if logged_in_as(['admin']) %>
-        <li class="nav-item" rel="tooltip" title="Delete this wiki page." data-placement="top">
-          <%= link_to url_for(action: :delete,id: @node.id),method: :delete, data: {confirm: I18n.t('wiki.show.are_you_sure_delete', path: @node.path)}, class: "nav-link" do %>
-            <i class="fa fa-trash"></i>
-            <span class="d-none"> <%= t('wiki.show.delete') %></span>
-          </a>
-          <% end %>
-        </li>
-      <% end %>
-
-      <li class="nav-item">
-        <a class="nav-link" rel="tooltip" title="Practice in a realtime doc." data-placement="top" href="/talk/<%= @node.slug_from_path %>">
-          <i class="fa fa-comments-o"></i>
-          <span class="d-none d-xl-inline"> <%= t('wiki.show.talk') %></span>
-        </a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link" rel="tooltip" title="View previous versions of this page." data-placement="top" href="/wiki/revisions/<%= @node.slug_from_path %>">
-          <span class="d-none d-md-inline"><%= @node.revisions.length %> </span>
-          <i class="fa fa-list"></i>
-        </a>
-      </li>
-
-      <li class="nav-item" >
-        <a class="nav-link <%= 'active' if (controller.action_name == 'comments' )%>"href="/wiki/<%= @node.slug_from_path %>/comments" rel="tooltip" title="Read Comments regarding this wiki page" data-placement="top">
-          <span class="d-none d-md-inline"> <%= @node.comments.size %></span>
-          <i class="fa fa-comment"></i>
-        </a>
-      </li>
-
-    </ul>
   </div>
 </div>
 
@@ -136,5 +65,3 @@
   </ul>
 </nav>
 <% end %>
-
-<br />
