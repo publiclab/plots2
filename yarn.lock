@@ -782,9 +782,10 @@ charm@~0.1.0:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/charm/-/charm-0.1.2.tgz#06c21eed1a1b06aeb67553cdc53e23274bac2296"
 
-chart.js@^2.8.0:
-  version "2.8.0"
-  resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-2.8.0.tgz#b703b10d0f4ec5079eaefdcd6ca32dc8f826e0e9"
+chart.js@^2.9.1:
+  version "2.9.1"
+  resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-2.9.1.tgz#e98893a810d40d1c0a016e6872a13fa5faedcdf8"
+  integrity sha512-DA5dFt0Bz79oz56ezmrwmZqj0hXGs+i9VbCFOcHqbwrHIGv7RI4YqninJKNIAC0qa29WBI9qYTN7LzULlOeunA==
   dependencies:
     chartjs-color "^2.1.0"
     moment "^2.10.2"
@@ -1112,10 +1113,10 @@ cwise-compiler@^1.0.0, cwise-compiler@^1.1.2:
   dependencies:
     uniq "^1.0.0"
 
-cytoscape@^3.10.0:
-  version "3.10.0"
-  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.10.0.tgz#3b462e0d35121ecd2d2702f470915fd6dae01777"
-  integrity sha512-lWOnG4HJQD0cy+tCiBmbV/QRknInuZ8HvjcUifQZ7E4LWmKMvl6d5eP0LaaRLfBJAplXWcJfwc17ZJ/nwPeaYg==
+cytoscape@^3.11.0:
+  version "3.11.0"
+  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.11.0.tgz#c5fca7c8b3a01ba24b4d7b8f3eddb1e99d395ed3"
+  integrity sha512-xA9S5UiTjwFwZjxZCTIJjDU5ef2XSqw+/gk+bLcqdOZ496EoPSfnbozGRnKZhxKIVT++NNyWtT7fW1eLU7denQ==
   dependencies:
     heap "^0.2.6"
     lodash.debounce "^4.0.8"
@@ -3178,29 +3179,19 @@ leaflet-blurred-location@^1.2.5, leaflet-blurred-location@^1.3.0:
 
 "leaflet-blurred-location@git://github.com/publiclab/leaflet-blurred-location#main":
   version "1.3.0"
-  uid "1bff37cb96518bd87192277b14c290cba3c138ba"
   resolved "git://github.com/publiclab/leaflet-blurred-location#1bff37cb96518bd87192277b14c290cba3c138ba"
   dependencies:
     haversine-distance "^1.1.4"
     jquery "^3.2.1"
     leaflet "^1.3.3"
 
-"leaflet-blurred-location@git://github.com/publiclab/leaflet-blurred-location.git#main":
-  version "1.3.0"
-  resolved "git://github.com/publiclab/leaflet-blurred-location.git#1bff37cb96518bd87192277b14c290cba3c138ba"
-  dependencies:
-    haversine-distance "^1.1.4"
-    jquery "^3.2.1"
-    leaflet "^1.3.3"
-
-leaflet-environmental-layers@2.0.1:
+"leaflet-environmental-layers@git://github.com/publiclab/leaflet-environmental-layers#fkl":
   version "2.0.1"
-  resolved "https://registry.yarnpkg.com/leaflet-environmental-layers/-/leaflet-environmental-layers-2.0.1.tgz#8d8e1acbf15c527eaf7ba7377334b08dec31515f"
-  integrity sha512-lGAJB1tOw7vsqHnuoVSDnO63AORSUIp4XKaUyIY8Qyzyyp9iki/IAL3XmKSadctzZo/wa3As2gUs8ffe8ZJZdg==
+  resolved "git://github.com/publiclab/leaflet-environmental-layers#c4126395692a9b6e6e532b349cf240728afa7994"
   dependencies:
     jquery "^3.3.1"
     leaflet "^1.3.1"
-    leaflet-blurred-location "git://github.com/publiclab/leaflet-blurred-location.git#main"
+    leaflet-blurred-location "git://github.com/publiclab/leaflet-blurred-location#main"
     leaflet-fullhash "github:sagarpreet-chadha/leaflet-fullHash"
     leaflet-heatmap "1.0.0"
     leaflet-providers "^1.1.17"
@@ -3243,6 +3234,7 @@ leaflet@*, leaflet@^1.3.1, leaflet@^1.3.3:
 leaflet@^0.7.3:
   version "0.7.7"
   resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-0.7.7.tgz#1e352ba54e63d076451fa363c900890cb2cf75ee"
+  integrity sha1-HjUrpU5j0HZFH6NjyQCJDLLPde4=
 
 levn@^0.3.0, levn@~0.3.0:
   version "0.3.0"
@@ -4118,9 +4110,10 @@ pngjs@^3.3.3:
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/pngjs/-/pngjs-3.3.3.tgz#85173703bde3edac8998757b96e5821d0966a21b"
 
-popper.js@^1.15.0:
-  version "1.15.0"
-  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.15.0.tgz#5560b99bbad7647e9faa475c6b8056621f5a4ff2"
+popper.js@^1.16.0:
+  version "1.16.0"
+  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.16.0.tgz#2e1816bcbbaa518ea6c2e15a466f4cb9c6e2fbb3"
+  integrity sha512-+G+EkOPoE5S/zChTpmBSSDYmhXJ5PsW8eMhH8cP/CQHMFPBG/kC9Y5IIw6qNYgdJ+/COf0ddY2li28iHaZRSjw==
 
 portfinder@^1.0.13:
   version "1.0.22"

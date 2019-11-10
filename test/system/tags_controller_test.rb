@@ -8,7 +8,7 @@ class TagTest < ApplicationSystemTestCase
 
     take_screenshot
 
-    click_on "By Type"
+    click_on "by type"
 
     take_screenshot
 

@@ -1,5 +1,5 @@
 <% unless node.is_a?(Comment) || node.is_a?(Revision) || node.type == 'page' %>
-  <%= t('dashboard.dashboard.by') %> <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a> <%= node.author.new_contributor %>
+  <%= translation('dashboard.dashboard.by') %> <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a> <%= node.author.new_contributor %>
   <% if node.has_power_tag('with') %>
     with
     <% node.coauthors.each_with_index do |coauthor,i| %>

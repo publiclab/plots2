@@ -160,6 +160,18 @@ class TagControllerTest < ActionController::TestCase
     assert_template 'tag/index'
   end
 
+  test 'tags in asc order' do
+    get :index, params: {sort: 'name', order: 'asc' }
+    assert :success
+    assert assigns(:tags).each_cons(2).all?{|i,j| j.name >= i.name}
+  end
+
+  test 'tags in desc order' do
+    get :index, params: {sort: 'name', order: 'desc' }
+    assert :success
+    assert assigns(:tags).each_cons(2).all?{|i,j| j.name <= i.name}
+  end
+
   test 'tag show' do
     get :show, params: { id: tags(:spectrometer).name }
 

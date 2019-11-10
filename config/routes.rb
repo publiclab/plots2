@@ -225,6 +225,7 @@ Plots2::Application.routes.draw do
   get 'dashboard' => 'home#dashboard'
   get 'comments' => 'comment#index'
   get 'profile/comments/:id' => 'users#comments'
+  get 'profile/comments/:id/tag/:tagname' => 'users#comments_by_tagname'
   get 'nearby' => 'home#nearby'
   get 'profile/edit' => 'users#edit'
   post 'profile/photo' => 'users#photo'

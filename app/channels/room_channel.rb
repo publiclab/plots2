@@ -1,6 +1,5 @@
 # This is a general channel connected to all active session
 class RoomChannel < ApplicationCable::Channel
-
   def subscribed
     stream_from "room_channel"
   end
@@ -10,8 +9,8 @@ class RoomChannel < ApplicationCable::Channel
   end
 
   def speak(message)
-    if current_user && current_user.role == "admin"
-      ActionCable.server.broadcast 'room_channel', message: message["message"]
-    end
+    return unless current_user && current_user.role == "admin"
+
+    ActionCable.server.broadcast 'room_channel', message: message["message"]
   end
 end
