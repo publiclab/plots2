@@ -117,8 +117,10 @@ We recommend you either work in a virtual environment, or on a dual booted syste
 Public Lab uses Redis and may be required for some functionality when running the application locally.
 1. Install Redis if you haven't already:
   * Using **MacOS**: `brew install redis`
+  * Using **Linux**: `sudo yum -y install redis`
 2. Run Redis server:
   * Using **MacOS**: `brew services start redis`
+  * Using **Linux**: `redis-server`
 3. Run SideKiq: `bundle exec sidekiq`
 4. If SideKiq started correctly Redis is now configured and working!
 
