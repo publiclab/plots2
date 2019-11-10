@@ -96,7 +96,7 @@ class Node < ActiveRecord::Base
 
   belongs_to :user, foreign_key: 'uid'
 
-  validates :title, presence: true
+  validates :title, presence: true, length: { minimum: 3, maximum: 50 }
   validates_with UniqueUrlValidator, on: :create
 
   scope :published, -> { where(status: 1) }
