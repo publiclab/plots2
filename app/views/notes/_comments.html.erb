@@ -15,7 +15,7 @@
     </div>
 
     <% if current_user %>
-      <%= render :partial => "comments/form", :locals => { title: I18n.translation('notes._comments.post_comment'), comment: false, placeholder: I18n.translation('notes._comments.post_placeholder') } %>
+      <%= render :partial => "comments/form", :locals => { title: I18n.t('notes._comments.post_comment'), comment: false, placeholder: I18n.t('notes._comments.post_placeholder') } %>
     <% else %>
     <p><a data-toggle="modal" data-target="#loginModal">
                 <%= translation('layout._header.login.login_title') %> </a> to comment.
