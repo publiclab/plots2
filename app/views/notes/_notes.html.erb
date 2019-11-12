@@ -65,7 +65,7 @@
                       <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#Questions"><i class="fa fa-question-circle" style="color:#db3a1e;"></i> <span id="questions-count-<%= node.id %>"><%= node.questions.count %> questions</span></a>
                     </small></p>
                   <% end %>
-                  <li class="buttons mb-2"><% if logged_in_as(['admin','moderator']) %><a style="width: 90px" class="btn btn-outline-secondary" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> <%= t('notes._notes.spam') %></a><% end %></li>
+                  <li class="buttons mb-2"><% if ApplicationController.helpers.logged_in_as(['admin','moderator']) %><a style="width: 90px" class="btn btn-outline-secondary" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> <%= t('notes._notes.spam') %></a><% end %></li>
                   <li class="buttons"><a style="width: 90px;" class="btn btn-outline-secondary" href="<%= node.path %>"><%= t('notes._notes.read_more') %></a></li>
                 <% end %>
                 <% if params[:mod] %>
