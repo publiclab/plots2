@@ -1,14 +1,12 @@
 class UniqueUrlValidator < ActiveModel::Validator
   def validate(record)
-    if record.title == '' || record.title.nil?
-      # record.errors[:base] << "You must provide a title."
+    if record.title.blank?
+      record.errors[:base] << "You must provide a title."
       # otherwise the below title uniqueness check fails, as title presence validation doesn't run until after
     elsif record.type == 'page'
       array = %w(create edit update delete new)
-      array.each do |x|
-        if record.title == x
-          record.errors[:base] << "You may not use the title '" + x + "'"
-        end
+      if array.include? record.title.downcase
+        record.errors[:base] << "You may not use the title '#{record.title}'"
       end
     else
       if !Node.where(path: record.generate_path).first.nil? && record.type == 'note'
@@ -96,7 +94,7 @@ class Node < ActiveRecord::Base
 
   belongs_to :user, foreign_key: 'uid'
 
-  validates :title, presence: true
+  validates :title, presence: true, length: { minimum: 3 }
   validates_with UniqueUrlValidator, on: :create
 
   scope :published, -> { where(status: 1) }
@@ -878,6 +876,30 @@ class Node < ActiveRecord::Base
         .joins(:tag)
         .where('term_data.name LIKE ?', 'question:%')
         .group('node.nid')
+  end
+
+  # finds nodes by tag name, user id, and optional node type
+  def self.find_by_tag_and_author(tagname, user_id, type = 'notes')
+
+    node_type = 'note' if type == 'notes' || 'questions'
+    node_type = 'page' if type == 'wiki'
+    # node_type = 'map' if type == 'maps'  # Tag.tagged_nodes_by_author does not seem to work with maps, more testing required
+
+    order = 'node_revisions.timestamp DESC'
+    order = 'created DESC' if node_type == 'note'
+
+    qids = Node.questions.where(status: 1).collect(&:nid)
+
+    nodes = Tag.tagged_nodes_by_author(tagname, user_id)
+      .includes(:revision)
+      .references(:node_revisions)
+      .where(status: 1, type: node_type)
+      .order(order)
+
+    nodes = nodes.where('node.nid NOT IN (?)', qids) if type == 'notes'
+    nodes = nodes.where('node.nid IN (?)', qids) if type == 'questions'
+
+    nodes
   end
 
   # so we can quickly fetch activities corresponding to this node

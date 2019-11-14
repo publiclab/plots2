@@ -118,6 +118,10 @@ a .fa-white,
   display:none;
 }
 
+.text-underline {
+  text-decoration: underline !important;
+}
+
 #pl_pad {
     width:300%;
 }
@@ -481,6 +485,10 @@ div.note.moderated h4 {
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff3071a9', GradientType=0);
   filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+
+a.btn-outline-secondary .fa {
+  color: inherit;
 }
 
 .nav-button-wrapper {

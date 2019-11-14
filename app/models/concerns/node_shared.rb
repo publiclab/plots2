@@ -196,7 +196,7 @@ module NodeShared
       lon = Regexp.last_match(3)
       tagname = nil
 
-      map_data_string(lat, lon, tagname, "leaflet")
+      map_data_string(lat, lon, tagname, "plainInlineLeaflet")
     end
   end
 
@@ -206,7 +206,7 @@ module NodeShared
       lat = Regexp.last_match(3)
       lon = Regexp.last_match(4)
 
-      map_data_string(lat, lon, tagname, "leaflet")
+      map_data_string(lat, lon, tagname, "plainInlineLeaflet")
     end
   end
 
@@ -221,8 +221,8 @@ module NodeShared
     end
   end
 
-  # [map:layers:other_inline_layer:_latitude_:_longitude:skyTruth,mapKnitter]
-  # [map:layers::_latitude_:_longitude:skyTruth,sapKnitter]
+  # [map:layers:other_inline_layer:_latitude_:_longitude:skytruth,mapknitter]
+  # [map:layers::_latitude_:_longitude:skytruth,mapknitter]
   def self.layers_map(body, _page = 1)
     body.gsub(/(?<![\>`])(\<p\>)?\[map\:layers\:(\w*)\:(\S+)\:(\S+)\:(\w+)((\,\w+)*)]/) do |_tagname|
       mainLayer = Regexp.last_match(2)
@@ -356,7 +356,7 @@ module NodeShared
   def self.map_data_string(lat, lon, tagname, template, mainLayer = nil)
     a = ActionController::Base.new
 
-    locals_data = if template == "leaflet"
+    locals_data = if template == "plainInlineLeaflet"
                     { lat: lat, lon: lon, tagname: tagname.to_s }
                   elsif template == "inlineLeaflet"
                     { lat: lat, lon: lon, layers: tagname.to_s, mainLayer: mainLayer }

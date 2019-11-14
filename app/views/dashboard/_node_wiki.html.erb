@@ -3,10 +3,10 @@
 
     <% if node.is_a?(Node) %>
       <div class="header-icon"><i class="fa fa-book"></i></div>
-      <p class="meta"><span><%= t('dashboard._node_wiki.new_page_by') %></span> <a href="/profile/<%= node.latest.author.name %>"><%= node.latest.author.name %></a></p>
+      <p class="meta"><span><%= translation('dashboard._node_wiki.new_page_by') %></span> <a href="/profile/<%= node.latest.author.name %>"><%= node.latest.author.name %></a></p>
     <% else %>
       <div class="header-icon"><i class="fa fa-pencil"></i></div>
-      <p class="meta"><%= t('dashboard._node_wiki.new_edit_by') %> <a href="/profile/<%= node.author.try(:name) %>"><%= node.author.try(:name) %></a></p>
+      <p class="meta"><%= translation('dashboard._node_wiki.new_edit_by') %> <a href="/profile/<%= node.author.try(:name) %>"><%= node.author.try(:name) %></a></p>
     <% end %>
  
     <!-- TODO: could be resolved with `node.node.main_image` but applying quick fix here --> 
@@ -27,7 +27,7 @@
     </h4>
 
     <% if node.is_a?(Revision) && node.previous %>
-      <a class="btn btn-outline-secondary btn-sm float-right btn-diff btn-diff-<%= index %>"><%= t('dashboard._node_wiki.changes') %> &raquo;</a>
+      <a class="btn btn-outline-secondary btn-sm float-right btn-diff btn-diff-<%= index %>"><%= translation('dashboard._node_wiki.changes') %> &raquo;</a>
     <% end %>
  
     <p class="meta"><%= render partial: "dashboard/node_meta", locals: { node: node } %></p>
