@@ -40,9 +40,6 @@
                 <li>
                   <a> Made: <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope:'datetime.time_ago_in_words' }) %> </a>
                 </li>
-                <li>
-                  <a<% if @widget %>target="_blank"<% end %> href="<%= node.path %>#comments">Comments: <%= node.comments.size %></a>
-                </li>
               <% else %>
                 <li>
                   <a>Last Edited: <%= t('notes._notes.last_edit_by') %> <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.latest.author.name %>"><%= node.latest.author.name %></a></a>

@@ -2,24 +2,22 @@
 
 <% unique_id = rand(1000) %>
 
-
   <style>
-    #map<%= unique_id %> { width:100%; height:300px; margin: 0; position: relative;}
-    #postOnMap<%= unique_id %> {
-      margin-top: 5px;
-    }
-    .leaflet-popup-content {
-      width: auto !important;
-    }
+  #map<%= unique_id %> { width:100%; height:300px; margin: 0; position: relative;}
+  #postOnMap<%= unique_id %> {
+    margin-top: 5px;
+  }
+  .leaflet-popup-content {
+    width: auto !important;
+  }
   </style>
-
   <div class="leaflet-map" id="map<%= unique_id %>"></div>
   
-  <p><i><small>
-    <button id="postOnMap<%= unique_id %>" class="btn btn-primary">Add a story +</button>
-  </small></i></p>
-
-<script>
+    <p><i><small>
+      <button id="postOnMap<%= unique_id %>" class="btn btn-primary">Add a story +</button>
+    </small></i></p>
+  
+  <script>
     var bounds = new L.LatLngBounds(new L.LatLng(84.67351257 , -172.96875) , new L.LatLng(-54.36775852 , 178.59375)) ;
 
     var map<%= unique_id %> = L.map('map<%= unique_id %>', {
@@ -39,12 +37,27 @@
     });
 
     var markers_hash<%= unique_id %> = new Map() ;
-
     var map_lat = <%= lat %> ;
     var map_lon = <%= lon %> ;
-    var primary_layers = "<%= layers.to_s %>";
-    var main_layer = "<%= mainLayer.to_s %>";
 
-    setupInlineLEL(map<%= unique_id %> , primary_layers, main_layer, markers_hash<%= unique_id %>) ;
+     window.setTimeout(function(){
 
-</script>
+        map<%= unique_id %>.setZoom(<%= lat.to_s.length.to_i %> + 6) ; 
+    
+     }, 3500);
+
+    setupLEL(map<%= unique_id %> , 0) ;
+
+     <% if (defined? tagname != nil and tagname.nil? == false) %>
+          map_tagname = "<%= tagname %>" ;
+     <% end %>
+
+     map<%= unique_id %>.on('zoomend' , function () {
+        contentLayerParser(map<%= unique_id %>, markers_hash<%= unique_id %>, map_tagname);
+    }) ;
+
+    map<%= unique_id %>.on('moveend' , function () {
+        contentLayerParser(map<%= unique_id %>, markers_hash<%= unique_id %>, map_tagname);
+    }) ;
+   
+  </script>
