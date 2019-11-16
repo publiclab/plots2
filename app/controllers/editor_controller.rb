@@ -36,13 +36,12 @@ class EditorController < ApplicationController
     end
 
     if params[:tags].include? "lat:" and params[:tags].include? "lon:"
-        tags = params[:tags].split(',')
-        tags.each do |x| 
-          x.include? "lat:" and (@lat = x.split(':')[1])
-          x.include? "lon:" and (@lon = x.split(':')[1])
-        end
+      tags = params[:tags].split(',')
+      tags.each do |x|
+        x.include? "lat:" and (@lat = x.split(':')[1])
+        x.include? "lon:" and (@lon = x.split(':')[1])
+      end
     end
-    
     template if params[:n] && !params[:body] # use another node body as a template
     image if params[:i]
   end
