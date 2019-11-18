@@ -56,6 +56,7 @@
        var SElat = map.getBounds().getSouthEast().lat ;
        var SElng = map.getBounds().getSouthEast().lng ;
        map.spin(true) ;
+
        if(map_tagname === null || (typeof map_tagname === "undefined")) {
            taglocation_url = "/api/srch/taglocations?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng ;
 
