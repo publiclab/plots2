@@ -10,7 +10,7 @@
   <br />
 
   <div style="text-align: center;">
-  <h5><a href='/notes/author/<%= @profile_user.name %>'><%= @profile_user.note_count %> research notes</a>
+  <h5><a href='/notes/author/<%= @profile_user.name %>'><%= @profile_user.note_count %><%= @profile_user.note_count == 1 ? ' research note' : ' research notes' %></a>
   <a class="ml-2" href = "/tag/question:*/author/<%= params[:id] %>"><%= Node.questions.where(status: 1, uid: @profile_user.id).length %> questions </a></h5>
   </div>
 
