@@ -1,6 +1,6 @@
 <% notes = notes || @notes # accept local if present, default to instance %>
 <div id="notes">
-    <div class="row" style="height:320px;overflow:scroll;">
+    <div class="row">
       <% notes.each_with_index do |node,i| %>
         <div class="<% if @widget %>col-4 <% end %><%= node.tagnames_as_classes %> col-lg-4 clearfix node note node-nid-<%= node.id %> note-nid-<%= node.id %><% if node.status == 4 %> moderated<% end %>">
           <div class="card">
