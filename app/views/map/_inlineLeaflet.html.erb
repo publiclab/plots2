@@ -42,9 +42,9 @@
 
     var map_lat = <%= lat %> ;
     var map_lon = <%= lon %> ;
-    var primary_layers = "<%= layers.to_s %>";
-    var main_layer = "<%= mainLayer.to_s %>";
+    var primary_layers<%= unique_id %> = "<%= layers.to_s %>";
+    var main_layer<%= unique_id %> = "<%= mainLayer.to_s %>";
 
-    setupInlineLEL(map<%= unique_id %> , primary_layers, main_layer, markers_hash<%= unique_id %>) ;
+    setupInlineLEL(map<%= unique_id %> , primary_layers<%= unique_id %>, main_layer<%= unique_id %>, markers_hash<%= unique_id %>) ;
 
 </script>

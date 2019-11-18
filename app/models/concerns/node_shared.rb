@@ -195,7 +195,7 @@ module NodeShared
       lat = Regexp.last_match(2)
       lon = Regexp.last_match(3)
       tagname = nil
-
+      
       map_data_string(lat, lon, tagname, "plainInlineLeaflet")
     end
   end
