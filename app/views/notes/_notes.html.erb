@@ -1,6 +1,6 @@
 <% notes = notes || @notes # accept local if present, default to instance %>
 <div id="notes">
-    <div class="row">
+    <div class="row" style="height:320px;overflow:scroll;">
       <% notes.each_with_index do |node,i| %>
         <div class="<% if @widget %>col-4 <% end %><%= node.tagnames_as_classes %> col-lg-4 clearfix node note node-nid-<%= node.id %> note-nid-<%= node.id %><% if node.status == 4 %> moderated<% end %>">
           <div class="card">
@@ -65,7 +65,7 @@
                   <li class="buttons mb-2"><% if @current_user && ['admin','moderator'].include?(@current_user.role) %><a style="width: 90px" class="btn btn-outline-secondary" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> <%= t('notes._notes.spam') %></a><% end %></li>
                   <li class="buttons"><a style="width: 90px;" class="btn btn-outline-secondary" href="<%= node.path %>"><%= t('notes._notes.read_more') %></a></li>
                 <% end %>
-                <% if params[:mod] %>
+                <% if @current_user && params[:mod] %>
                   <a class="btn btn-outline-secondary" href="#"><i class="fa fa-ban-circle"></i> <%= t('notes._notes.spam') %></a>
                 <% end %>
                 <hr style="display:none;" class="bottom" />
@@ -80,7 +80,7 @@
   <% end %>
   </div>
 </div>
-<%= will_paginate notes, renderer: WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated %>
+<%= will_paginate notes, renderer: WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || (unpaginated ||= false) %>
 
 <style>
 #notes .card {
