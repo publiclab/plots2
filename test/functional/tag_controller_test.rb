@@ -42,8 +42,9 @@ class TagControllerTest < ActionController::TestCase
         }
 
     assert_template :show
-    assert assigns[:notes].first.has_tag('pin:blog')
+    assert assigns[:notes]
     assert assigns[:pinned_nodes]
+    assert assigns[:pinned_nodes].first.has_tag('pin:blog')
     assert_response :success
   end
 
