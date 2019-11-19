@@ -38,6 +38,7 @@ class ScreenshotsTest < ApplicationSystemTestCase
   end
 
   test 'tag page' do
+    nodes(:activity).add_tag('pin:test', users(:bob)) # ensure a pinned note appears
     visit '/tag/test'
     take_screenshot
   end
