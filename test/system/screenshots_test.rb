@@ -38,7 +38,9 @@ class ScreenshotsTest < ApplicationSystemTestCase
   end
 
   test 'tag page' do
+    nodes(:activity).add_tag('pin:test', users(:bob)) # ensure a pinned note appears
     visit '/tag/test'
+    assert_selector('i.fa-thumb-tack', visible: true) # check for pin icon
     take_screenshot
   end
 
