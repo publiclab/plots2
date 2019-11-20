@@ -5,7 +5,7 @@ class HomeController < ApplicationController
     if current_user
       redirect_to '/dashboard'
     else
-      @projects = Tag.find_nodes_by_type('project', 'page')
+      @projects = Tag.find_nodes_by_type('project:featured', 'page')
         .order('created DESC')
         .paginate(page: params[:page], per_page: 3)
       @title = I18n.t('home_controller.science_community')
@@ -15,7 +15,7 @@ class HomeController < ApplicationController
 
   # route for seeing the front page even if you are logged in
   def front
-    @projects = Tag.find_nodes_by_type('project', 'page')
+    @projects = Tag.find_nodes_by_type('project:featured', 'page')
       .order('created DESC')
       .paginate(page: params[:page], per_page: 3)
     @title = I18n.t('home_controller.environmental_investigation')
