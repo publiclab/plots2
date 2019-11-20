@@ -25,15 +25,16 @@ class StatsController < ApplicationController
         .size - @notes # because notes each have one revision
       @people = User.where(created_at: @start..@end).where(status: 1)
         .size
-      @answers = Answer.where(created_at: @start..@end)
-        .size
       @comments = Comment.select(:status, :timestamp)
         .where(status: 1, timestamp: @start.to_i..@end.to_i)
         .size
-      @questions = Node.published.questions.where(created: @start.to_i..@end.to_i)
-        .size.count
       @contributors = User.contributor_count_for(@start, @end)
       @popular_tags = Tag.nodes_frequency(@start, @end)
+
+      total_questions = Node.published.questions
+        .where(created: @start.to_i..@end.to_i)
+      @answers = total_questions.joins(:comments).size.count
+      @questions = total_questions.size.count
     end
   end
 

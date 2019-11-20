@@ -1,7 +1,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
-var questions = [<%= @questions ? @questions : 0 %>];
+var questions = [<%= @questions.present? ? @questions : 0 %>];
 var answers = [<%= @answers %>];
 var unanswered = [ questions[0] - answers[0] ];
 var barwidth = "100%";

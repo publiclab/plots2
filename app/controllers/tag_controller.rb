@@ -537,10 +537,8 @@ class TagController < ApplicationController
     total_questions = Node.published.questions
       .where(created: @start.to_i..@end.to_i)
       .where(nid: Node.find_by_tag(tagname))
-    answered = total_questions.joins(:comments)
-
+    @answers = total_questions.joins(:comments).size.count
     @questions = total_questions.size.count
-    @answers = answered.size.count
   end
 
   private

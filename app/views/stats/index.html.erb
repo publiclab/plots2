@@ -23,7 +23,7 @@
     <%= render 'range' %>
 </div>
 
-<% if @questions > 0 %>
+<% if @questions.present? and @questions.nonzero? %>
     <br><br>
     <h4 align="center">Questions Asked vs. Answered</h4>
     <div align="right" id="questAns" data-width="91%"> </div>
