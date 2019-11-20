@@ -534,13 +534,13 @@ class TagController < ApplicationController
     @subscriptions = @tags.first.subscription_graph(@start, @end)
     @all_subscriptions = TagSelection.graph(@start, @end)
 
-    @answers = Answer.where(created_at: @start..@end)
-      .where(nid: Node.find_by_tag(tagname))
-      .count
-    @questions = Node.published.questions
+    total_questions = Node.published.questions
       .where(created: @start.to_i..@end.to_i)
       .where(nid: Node.find_by_tag(tagname))
-      .size.count
+    answered = total_questions.joins(:comments)
+
+    @questions = total_questions.size.count
+    @answers = answered.size.count
   end
 
   private

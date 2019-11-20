@@ -3,6 +3,7 @@
 <script>
 var questions = [<%= @questions ? @questions : 0 %>];
 var answers = [<%= @answers %>];
+var unanswered = [ questions[0] - answers[0] ];
 var barwidth = "100%";
 if(document.querySelector("#questAns").hasAttribute('data-width')) {
     barwidth = document.querySelector("#questAns").getAttribute('data-width');
@@ -26,10 +27,10 @@ var options = {
         colors: ['#fff']
     },
     series: [{
-        name: 'Questions asked',
-        data: questions
+        name: 'Unanswered questions',
+        data: unanswered
     },{
-        name: 'Questions answered',
+        name: 'Answered questions',
         data: answers
     }],
         fill: {
