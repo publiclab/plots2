@@ -30,43 +30,7 @@
           <%= feature('navbar') %>
         <% end %>
 
-        <li class="nav-item">
-          <a class="nav-link" onclick="$('.topics').toggle();" href="#">
-            Topics
-          </a>
-          <div class="topics" style="display:none;">
-            <h3>Topics</h3>
-            <div>
-              <a href="/events">Attend an event</a>
-            </div>
-            <div class="navbar-topics-footer">
-              <center><a href="/tags">All topics &raquo;</a></center>
-            </div>
-          </div>
-        </li>
-
-<style>
-.topics {
-  width: 100%;
-  position: absolute;
-  left: 0;
-  margin-top: 10px;
-  background: #e8e8e8;
-  padding: 20px;
-}
-.topics h3 {
-  clear: both;
-  text-align: center;
-  padding: 20px;
-}
-.topics a {
-  text-decoration: underline;
-  color: #888;
-}
-.topics .navbar-topics-footer {
-  padding: 20px;
-}
-</style>
+        <!-- work out JS translations, then move the following into navbar feature -->
 
         <li class="nav-item dropdown" style="min-width:80px;">
           <a class="nav-link" data-toggle="dropdown" href="#">
@@ -87,11 +51,11 @@
           </div>
         </li>
 
-        <li class="nav-item d-sm-none d-lg-inline">
-          <a class="nav-link btn" target="_blank" href="//store.publiclab.org"><%= t('layout._header.store') %></a>
+        <li class="nav-item d-sm-none d-lg-inline" style="padding:0 10px;">
+          <a class="nav-link btn btn-outline-secondary" target="_blank" href="//store.publiclab.org"><%= t('layout._header.store') %></a>
         </li>
-        <li class="nav-item d-sm-none d-lg-inline">
-          <a class="nav-link" href="/donate"><%= t('layout._header.donate') %></a>
+        <li class="nav-item d-sm-none d-lg-inline" style="padding:0 10px;">
+          <a class="nav-link btn btn-outline-secondary" href="/donate"><%= t('layout._header.donate') %></a>
         </li>
 
         <!-- end navbar feature -->
@@ -160,22 +124,16 @@
           <% end %>
         </li>
         <li id="md-ham" class="d-xl-none dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-white fa-bars"></span></a>
-            <ul class="dropdown-menu">
-                <li class="d-lg-none">
-                  <a href="//store.publiclab.org"><%= t('layout._header.store') %></a>
-                </li>
-                <li class="d-lg-none">
-                  <a href="/donate"><%= t('layout._header.donate') %></a>
-                </li>
-                <!--These menu items will only appear in the "More" dropdown menu. -->
-                <% if current_user %>
-                  <li class="d-xl-none">
-                    <a rel="tooltip" title="<%= t('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard">Dashboard</a>
-                  </li>
-                <% else %>
-                  <a class="dropdown-item d-xl-none" rel="tooltip" title="<%= t('layout._header.become_part_community') %>" href="/signup"><%= t('layout._header.join') %></a>
-                <% end %>
+          <a href="#" class="btn btn-dark" data-toggle="dropdown"><span class="fa fa-white fa-bars"></span></a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item d-lg-none" href="//store.publiclab.org"><%= t('layout._header.store') %></a>
+              <a class="dropdown-item d-lg-none"  href="/donate"><%= t('layout._header.donate') %></a>
+              <!--These menu items will only appear in the "More" dropdown menu. -->
+              <% if current_user %>
+                <a class="dropdown-item d-xl-none" rel="tooltip" title="<%= t('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard">Dashboard</a>
+              <% else %>
+                <a class="dropdown-item d-xl-none" rel="tooltip" title="<%= t('layout._header.become_part_community') %>" href="/signup"><%= t('layout._header.join') %></a>
+              <% end %>
             </div>
         </li>
     </div>
