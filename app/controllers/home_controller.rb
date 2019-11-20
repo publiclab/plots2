@@ -6,8 +6,7 @@ class HomeController < ApplicationController
       redirect_to '/dashboard'
     else
       @projects = Tag.find_nodes_by_type('project:featured', 'page')
-        .order('created DESC')
-        .paginate(page: params[:page], per_page: 3)
+        .sample(3) # random sampling
       @title = I18n.t('home_controller.science_community')
       render template: 'home/home'
     end
@@ -16,8 +15,7 @@ class HomeController < ApplicationController
   # route for seeing the front page even if you are logged in
   def front
     @projects = Tag.find_nodes_by_type('project:featured', 'page')
-      .order('created DESC')
-      .paginate(page: params[:page], per_page: 3)
+        .sample(3) # random sampling
     @title = I18n.t('home_controller.environmental_investigation')
     render template: 'home/home'
     @unpaginated = true
