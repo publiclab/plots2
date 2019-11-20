@@ -31,7 +31,7 @@ class StatsController < ApplicationController
         .where(status: 1, timestamp: @start.to_i..@end.to_i)
         .size
       @questions = Node.published.questions.where(created: @start.to_i..@end.to_i)
-        .size
+        .size.count
       @contributors = User.contributor_count_for(@start, @end)
       @popular_tags = Tag.nodes_frequency(@start, @end)
     end

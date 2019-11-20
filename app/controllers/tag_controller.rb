@@ -524,6 +524,7 @@ class TagController < ApplicationController
   def stats
     @start = params[:start] ? Time.parse(params[:start].to_s) : Time.now - 1.year
     @end = params[:end] ? Time.parse(params[:end].to_s) : Time.now
+    tagname = params[:id]
 
     @tags = Tag.where(name: params[:id])
     @tag_notes = @tags.first.contribution_graph_making('note', @start, @end)
@@ -532,6 +533,14 @@ class TagController < ApplicationController
     @tag_comments = @tags.first.comment_graph(@start, @end)
     @subscriptions = @tags.first.subscription_graph(@start, @end)
     @all_subscriptions = TagSelection.graph(@start, @end)
+
+    @answers = Answer.where(created_at: @start..@end)
+      .where(nid: Node.find_by_tag(tagname))
+      .count
+    @questions = Node.published.questions
+      .where(created: @start.to_i..@end.to_i)
+      .where(nid: Node.find_by_tag(tagname))
+      .size.count
   end
 
   private

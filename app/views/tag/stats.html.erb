@@ -23,6 +23,17 @@
 <% end %>
 </div>
 
+
+<%= @questions %> Questions and <%= @answers %> Answers<br>
+<% if @questions > 0 %>
+<br><br>
+<h4 align="center">Questions Asked vs. Answered</h4>
+    <div align="right" id="questAns"> </div>
+<% end %>
+
+<%= render 'stats/barchart' %>
+
+
 <br><br><br>
 <div class="graph">
     <p> <b><%= params[:id].capitalize%></b> graph from <b><%= (@start).to_formatted_s(:long)%></b> to <b><%= @end.to_formatted_s(:long)%></b> </p>
