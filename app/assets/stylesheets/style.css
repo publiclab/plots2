@@ -256,7 +256,7 @@ a .fa-white,
   color: #666;
   clear:both;
   margin-top: 40px;
-  padding: 30px;
+  padding: 30px !important;
   border-top: 1px solid #E5E5E5;
   background-color: #f8f8f8;
 }
