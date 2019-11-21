@@ -31,7 +31,6 @@ class EditorController < ApplicationController
   end
 
   def simple
-      render '/editor/simple'
   end
 
   def rich

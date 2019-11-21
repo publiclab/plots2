@@ -31,7 +31,7 @@
     <div class="col-6 col-sm-12 ple-header">
         <h1>Share your Story</h1>
         <p>
-        <i>Or use the <a target="_blank" href="?<%= request.env['QUERY_STRING'] %>&legacy=true">legacy editor</a></i>
+        <%# <i>Or use the <a target="_blank" href="?<%= request.env['QUERY_STRING'] %1>&legacy=true">legacy editor</a></i> %>
         </p>
     </div>
 
@@ -146,12 +146,15 @@
         <h2>2</h2>
       </div>
 
-      <div class="ple-module-content col-lg-9">
+      <div class="col-lg-9">
+          <h5>Share your story</h5>
+      <div class="ple-module-content">
           <textarea id="text-input" class="ple-textarea form-control"> #### Your story
               <% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %>
           </textarea>
       </div>
 
+    </div>
     </div>
     <!-- end body module -->
 
@@ -192,28 +195,6 @@
     </div>
     <!-- end main_image module -->
 
-
-
-    <!-- tags module -->
-    <div class="ple-module-tags ple-module row">
-
-      <div class="ple-module-guide col-lg-3">
-        <h2>5</h2>
-      </div>
-
-      <div class="ple-module-content col-lg-9">
-        <input 
-          class="form-control input-lg"
-          type="text" 
-          placeholder="balloon-mapping, water-quality..."
-          value="<% if params[:tags] || (@node && @node.tagnames) %><%= params[:tags] || @node.tagnames.join(',') %><% end %>" 
-        />
-      </div>
-
-    </div>
-    <!-- end tags module -->
-
-
 <!-- title module -->
     <div class="ple-module-title ple-module row">
 
@@ -222,6 +203,7 @@
       </div>
 
       <div class="ple-module-content col-lg-9">
+          <h5>Give your post a title</h5>
         <input 
           class="form-control input-lg"
           type="text"
@@ -233,6 +215,10 @@
 
     </div>
     <!-- end title module -->
+    <div class="text-center">
+        <%= link_to "Help", "", class: 'btn btn-lg btn-secondary' %>
+        <button class="ple-publish btn btn-lg btn-primary  disabled"><% if controller.action_name == "edit" && @node.status == 3 %>Save<% else %>Post<% end %></button>
+    </div>
 
 
   </div>
@@ -243,17 +229,11 @@
       <b>History</b>
       <div class="ple-history"></div>
       <hr />
-      <!--
-      <div class="form-control input-md ple-history">
-        <option selected value="">recent edits</option>
-      </div>
-      -->
     </div>
 
     <button class="btn btn-lg btn-outline-secondary btn-more">...</button>
    
     <span> &nbsp; By publishing, you agree to <a href="https://publiclab.org/licenses">open source your work</a><span class="d-none d-md-inline"> so that others may use it.</span></span>
-    <button class="ple-publish btn btn-lg btn-primary float-right disabled"><% if controller.action_name == "edit" && @node.status == 3 %>Save<% else %>Publish<% end %></button>
     <span class="ple-help float-right">
       <% if controller.action_name != "edit" && !current_user.first_time_poster %>
         <span id="newOpts" style="display: inline-block;">
