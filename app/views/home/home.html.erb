@@ -13,10 +13,10 @@
         <div class="row px-lg-5<%= " odd" if index.odd? %>">
           <div class="col-6 col-xs-12 project-image <%= index.odd? ? " odd pr-lg-5 order-2" : " pl-lg-5" %>">
 
-            <% if node.main_image %>
+            <% if project.main_image %>
               <a href="<%= project.path %>"><img src="<%= project.main_image.path(:default) %>" style="max-width:100%;" /></a>
-            <% elsif node.scraped_image %>
-              <a href="<%= project.path %>"><img src="<%= node.scraped_image %>" style="max-width:100%;" /></a>
+            <% elsif project.scraped_image %>
+              <a href="<%= project.path %>"><img src="<%= project.scraped_image %>" style="max-width:100%;" /></a>
             <% end %>
 
           </div>
