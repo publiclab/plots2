@@ -888,7 +888,7 @@ class Node < ActiveRecord::Base
   # finds nodes by tag name, user id, and optional node type
   def self.find_by_tag_and_author(tagname, user_id, type = 'notes')
 
-    node_type = 'note' if type == 'notes' || 'questions'
+    node_type = 'note' if type == ('notes' || 'questions')
     node_type = 'page' if type == 'wiki'
     # node_type = 'map' if type == 'maps'  # Tag.tagged_nodes_by_author does not seem to work with maps, more testing required
 
