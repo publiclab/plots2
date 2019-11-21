@@ -27,42 +27,47 @@ var options = {
         colors: ['#fff']
     },
     series: [{
-        name: 'Unanswered questions',
-        data: unanswered
-    },{
-        name: 'Answered questions',
+        name: 'Answered Questions',
         data: answers
+    },{
+        name: 'Unanswered Questions',
+        data: unanswered
     }],
-        fill: {
-            opacity: 1
-        },
-        
+    fill: {
+        opacity: 1
+    },
+    colors: ['#00E396', '#008FFB'],
 
-        legend: {
+    legend: {
+        show: false,
+    },
+    grid: {
+        show: false,
+    },
+    tooltip: {
+        x: {
             show: false,
-        },
-        grid: {
-            show: false,
-        },
-        
-        xaxis: {
-            
-           labels: {
-                show: false,
-            },
-            axisBorder: {
-                show: false,
-            },
-            lines: {
-                show: true,
-            }
-            
-        },
-        yaxis: {
-            labels: {
-                show: false,
-            },
         }
+    },
+
+    xaxis: {
+        
+        labels: {
+            show: false,
+        },
+        axisBorder: {
+            show: false,
+        },
+        lines: {
+            show: true,
+        }
+        
+    },
+    yaxis: {
+        labels: {
+            show: false,
+        },
+    }
 
 };
 

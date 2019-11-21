@@ -24,10 +24,9 @@
 </div>
 
 
-<%= @questions %> Total Questions, <%= @answers %> Answered Questions<br>
 <% if @questions.nonzero? %>
-<br><br>
-<h4 align="center">Questions Asked vs. Answered</h4>
+    <br><br>
+    <h4 align="center">Questions Answered vs. Unanswered</h4>
     <div align="right" id="questAns"> </div>
 <% end %>
 
