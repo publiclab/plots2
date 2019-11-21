@@ -878,6 +878,13 @@ class Node < ActiveRecord::Base
         .group('node.nid')
   end
 
+  # all nodes with tagname
+  def self.find_by_tag(tagname)
+    Node.includes(:node_tag, :tag)
+      .where('term_data.name = ? OR term_data.parent = ?', tagname, tagname)
+      .references(:term_data, :node_tag)
+  end
+
   # finds nodes by tag name, user id, and optional node type
   def self.find_by_tag_and_author(tagname, user_id, type = 'notes')
 
