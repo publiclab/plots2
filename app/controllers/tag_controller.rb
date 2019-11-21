@@ -73,6 +73,15 @@ class TagController < ApplicationController
   end
 
   def show
+
+    # Enhancement #6306 - Add counts to `by type` dropdown on tag pages 
+    @counts = {:posts => 0, :questions => 0, :wiki => 0 }
+    @counts[:posts] = Tag.find_nodes_by_type([params[:id]], 'note', false).count
+    @counts[:questions] = Tag.find_nodes_by_type("question:#{params[:id]}", 'note', false).count
+    @counts[:wiki] = Tag.find_nodes_by_type([params[:id]], 'page', false).count
+    params[:counts] = @counts
+    # end Enhancement #6306 ============================================
+  
     if params[:id].is_a? Integer
       @wiki = Node.find(params[:id])&.first
     else
@@ -139,9 +148,18 @@ class TagController < ApplicationController
           .order(order_by)
       end
     end
-    nodes = nodes.where(created: @start.to_i..@end.to_i) if @start && @end
 
-    qids = Node.questions.where(status: 1).collect(&:nid)
+    if @start && @end
+      nodes = nodes.where(created: @start.to_i..@end.to_i)
+    else
+      @pinned_nodes = NodeShared.pinned_nodes(params[:id])
+      if @pinned_nodes.length > 0 && params[:page].nil? # i.e. first page
+        nodes = nodes.where.not(nid: @pinned_nodes.collect(&:id))
+      end
+    end
+
+    qids = Node.questions.where(status: 1)
+               .collect(&:nid)
     if qids.empty?
       @notes = nodes
       @questions = []

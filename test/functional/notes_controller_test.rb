@@ -418,7 +418,7 @@ class NotesControllerTest < ActionController::TestCase
     assert_response :success
     assert_not_nil @response.body
     json = JSON.parse(@response.body)
-    assert_equal ["can't be blank"], json['title']
+    assert_equal ["can't be blank", "is too short (minimum is 3 characters)"], json['title']
     assert !json['title'].empty?
   end
 
@@ -786,7 +786,7 @@ class NotesControllerTest < ActionController::TestCase
     get :publish_draft, params: { id: node.id }
 
     assert_response :redirect
-    assert_equal "Thanks for your contribution. Research note published! Now, it's visible publically.", flash[:notice]
+    assert_equal "Thanks for your contribution. Research note published! Now, it's visible publicly.", flash[:notice]
     node = assigns(:node)
     assert_equal 1, node.status
     assert_equal 1, node.author.status
@@ -805,7 +805,7 @@ class NotesControllerTest < ActionController::TestCase
      get :publish_draft, params: { id: node.id }
 
      assert_response :redirect
-     assert_equal "Thanks for your contribution. Research note published! Now, it's visible publically.", flash[:notice]
+     assert_equal "Thanks for your contribution. Research note published! Now, it's visible publicly.", flash[:notice]
      node = assigns(:node)
      assert_equal 1, node.status
      assert_equal 1, node.author.status
@@ -824,7 +824,7 @@ class NotesControllerTest < ActionController::TestCase
      get :publish_draft, params: { id: node.id }
 
      assert_response :redirect
-     assert_equal "Thanks for your contribution. Research note published! Now, it's visible publically.", flash[:notice]
+     assert_equal "Thanks for your contribution. Research note published! Now, it's visible publicly.", flash[:notice]
      node = assigns(:node)
      assert_equal 1, node.status
      assert_equal 1, node.author.status

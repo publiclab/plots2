@@ -10,8 +10,8 @@
     $('#batch-delete').bind('click',function(e) {
       vals = []
       alert_error('The mass spam button is disabled pending resolution of <a href="https://github.com/jywarren/plots2/issues/184">ticket #184</a>.')
-      //$('.batch-checkbox').each(function(i,a) { if (a.checked) vals.push(a.value) })
-      //window.location = "/spam/batch/"+vals.join(',')
+      $('.batch-checkbox').each(function(i,a) { if (a.checked) vals.push(a.value) })
+      window.location = "/spam/batch/" + vals.join(',')
     })
   })()
 </script>

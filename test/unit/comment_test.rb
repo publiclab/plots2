@@ -22,6 +22,7 @@ class CommentTest < ActiveSupport::TestCase
       assert comments.length > 0
     end
   end
+
   test 'should have gmail quote' do
     require 'mail'
     require 'nokogiri'
@@ -30,6 +31,7 @@ class CommentTest < ActiveSupport::TestCase
     gmail_quote = Comment.gmail_quote_present?(mail_doc)
     assert_equal gmail_quote, true
   end
+
   test 'should not save comment without body' do
     comment = Comment.new
     assert !comment.save, 'Saved the comment without body text'
@@ -306,5 +308,9 @@ class CommentTest < ActiveSupport::TestCase
     username = config["twitter3"]["data"]["info"]["nickname"]
     email = Comment.find_email(username)
     assert_equal email, "01namangupta@gmail.com"
+  end
+
+  test 'find comments using tagname and user id' do
+    assert_equal('Admin comment', Comment.find_by_tag_and_author("awesome", 5).first.comment)
   end
 end
