@@ -23,6 +23,16 @@
 <% end %>
 </div>
 
+
+<% if @questions.nonzero? %>
+    <br><br>
+    <h4 align="center">Questions Answered vs. Unanswered</h4>
+    <div align="right" id="questAns"> </div>
+<% end %>
+
+<%= render 'stats/barchart' %>
+
+
 <br><br><br>
 <div class="graph">
     <p> <b><%= params[:id].capitalize%></b> graph from <b><%= (@start).to_formatted_s(:long)%></b> to <b><%= @end.to_formatted_s(:long)%></b> </p>
