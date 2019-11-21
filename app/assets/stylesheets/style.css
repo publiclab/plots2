@@ -118,6 +118,10 @@ a .fa-white,
   display:none;
 }
 
+.text-underline {
+  text-decoration: underline !important;
+}
+
 #pl_pad {
     width:300%;
 }
@@ -252,7 +256,7 @@ a .fa-white,
   color: #666;
   clear:both;
   margin-top: 40px;
-  padding: 30px;
+  padding: 30px !important;
   border-top: 1px solid #E5E5E5;
   background-color: #f8f8f8;
 }
@@ -408,10 +412,6 @@ div.note .meta {
   color:#888;
 }
 
-.image-container {
-  height:auto;
-  overflow:auto;
-}
 /*start of img aspect css that will affect the
 thumbnails which appears on the user's profile
 under their notes*/
@@ -481,6 +481,10 @@ div.note.moderated h4 {
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff3071a9', GradientType=0);
   filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+
+a.btn-outline-secondary .fa {
+  color: inherit;
 }
 
 .nav-button-wrapper {

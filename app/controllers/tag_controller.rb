@@ -148,9 +148,18 @@ class TagController < ApplicationController
           .order(order_by)
       end
     end
-    nodes = nodes.where(created: @start.to_i..@end.to_i) if @start && @end
 
-    qids = Node.questions.where(status: 1).collect(&:nid)
+    if @start && @end
+      nodes = nodes.where(created: @start.to_i..@end.to_i)
+    else
+      @pinned_nodes = NodeShared.pinned_nodes(params[:id])
+      if @pinned_nodes.length > 0 && params[:page].nil? # i.e. first page
+        nodes = nodes.where.not(nid: @pinned_nodes.collect(&:id))
+      end
+    end
+
+    qids = Node.questions.where(status: 1)
+               .collect(&:nid)
     if qids.empty?
       @notes = nodes
       @questions = []

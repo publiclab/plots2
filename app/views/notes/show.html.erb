@@ -42,7 +42,7 @@
         | <%= number_with_delimiter(@node.views) %> <%= t('notes.show.views') %>
         <% if @node.comments %>
           | <i class="fa fa-comment"></i>
-          <a href="#comments"> <%= @node.comments.length %> <%= t('notes.show.comments') %> </a>
+          <a href="#comments"> <%= @node.fetch_comments(current_user).length %> <%= t('notes.show.comments') %> </a>
         <% end %>
           | <a href="/n/<%= @node.id %>"><i class="fa fa-link"></i></a> <span class="d-none d-xl-inline"><a href="/n/<%= @node.id %>">#<%= @node.id %></a></span>
       </span>
@@ -50,7 +50,7 @@
         | <%= number_with_delimiter(@node.views) %> <%= t('notes.show.views') %>
         <% if @node.comments %>
           | <i class="fa fa-comment"></i>
-          <a href="#comments"> <%= @node.comments.length %> <%= t('notes.show.comments') %> </a>
+          <a href="#comments"> <%= @node.fetch_comments(current_user).length %> <%= t('notes.show.comments') %> </a>
         <% end %>
           | <a href="/n/<%= @node.id %>"><i class="fa fa-link"></i></a> <span class="d-none d-xl-inline"><a href="/n/<%= @node.id %>">#<%= @node.id %></a></span>
       </span>

@@ -22,20 +22,20 @@
 
         <p>
           <span id="c<%= comment.id%>uploading" class="uploading" style="display:none;">
-            <%= t('comments._edit.uploading') %>
+            <%= translation('comments._edit.uploading') %>
           </span>
           <span id="c<%= comment.id%>prompt" class="prompt">
 
             <span style="padding-right:4px;float:left;" class="hidden-xs">
-              <%= raw t('comments._edit.drag_and_drop') %>
+              <%= raw translation('comments._edit.drag_and_drop') %>
             </span>
 
               <label id="c<%= comment.id%>input_label" for="c<%= comment.id%>input">
               <input id="c<%= comment.id%>input" type="file" name="image[photo]" style="display:none;" />
-              <a class="hidden-xs"><%= t('comments._edit.choose_one') %></a>
+              <a class="hidden-xs"><%= translation('comments._edit.choose_one') %></a>
               <span class="visible-xs">
                 <i class="fa fa-upload"></i>
-                <a><%= t('comments._edit.upload_image') %></a>
+                <a><%= translation('comments._edit.upload_image') %></a>
               </span>
             </label>
 
@@ -126,7 +126,7 @@
     </div>
 
     <div class="control-group">
-      <button type="submit" class="btn btn-primary"><%= t('comments._edit.publish') %></button>
+      <button type="submit" class="btn btn-primary"><%= translation('comments._edit.publish') %></button>
         <a class="btn btn-default preview-btn"  data-previewing-text="Hide Preview"
             onClick="$('#c<%= comment.id %>preview').toggle();
             $('#c<%= comment.id %>text').toggle();
@@ -141,14 +141,14 @@
         </a>
 
       <span class="form-grey"> &nbsp;
-        <br class="visible-xs" /><%= raw t('comments._edit.logged_in', :username => current_user.username) %> |
-        <a target="_blank" href="/wiki/authoring-help#Formatting"><%= t('comments._edit.formatting') %></a> |
-        <a onClick="$('#who-is-notified').toggle()"><%= t('comments._edit.notifications') %></a>
+        <br class="visible-xs" /><%= raw translation('comments._edit.logged_in', :username => current_user.username) %> |
+        <a target="_blank" href="/wiki/authoring-help#Formatting"><%= translation('comments._edit.formatting') %></a> |
+        <a onClick="$('#who-is-notified').toggle()"><%= translation('comments._edit.notifications') %></a>
       </span>
     </div>
 
     <p id="who-is-notified" style="display:none;color:#888;">
-      <%= t('comments._edit.email_notifications') %>
+      <%= translation('comments._edit.email_notifications') %>
     </p>
   </form>
 </div>
