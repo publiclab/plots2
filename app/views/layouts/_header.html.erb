@@ -1,4 +1,4 @@
-    <% cache('feature_anniversary-banner', skip_digest: true) do %>
+<% cache('feature_anniversary-banner', skip_digest: true) do %>
   <%= feature('anniversary-banner') %>
 <% end %>
 
@@ -32,19 +32,44 @@
 
         <li class="nav-item dropdown" style="min-width:80px;">
           <a class="nav-link" data-toggle="dropdown" href="#">
+            <%= translate('Community') %>
+          </a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="/getting-started"><b><%= translate('Get started') %> &raquo;</b></a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/people"><%= translate('People') %></a>
+            <a class="dropdown-item" href="/projects"><%= translate('Projects') %></a>
+            <a class="dropdown-item" href="/events"><%= translate('Events') %></a>
+            <a class="dropdown-item" href="/questions"><%= translate('Questions') %></a>
+            <a class="dropdown-item" href="/chat"><%= translate('Chat') %></a>
+          </div>
+        </li>
+
+        <li class="nav-item dropdown" style="min-width:80px;">
+          <a class="nav-link" data-toggle="dropdown" href="#">
+            <%= translate('Tools') %>
+          </a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="/methods"><%= translate('Methods') %></a>
+            <h6 class="dropdown-header">Kits</h6>
+            <a class="dropdown-item" href="/kits"><%= translate('Kits initiative') %></a>
+            <a class="dropdown-item" href="//store.publiclab.org"><%= translate('Store') %></a>
+            <h6 class="dropdown-header">Software</h6>
+            <a class="dropdown-item" href="https://mapknitter.org"><%= translate('MapKnitter') %></a>
+            <a class="dropdown-item" href="https://infragram.org"><%= translate('Infragram') %></a>
+            <a class="dropdown-item" href="https://spectralworkbench.org"><%= translate('Spectral Workbench') %></a>
+            <a class="dropdown-item" href="https://code.publiclab.org#r=all"><%= translate('Code community') %></a>
+          </div>
+        </li>
+
+        <li class="nav-item dropdown" style="min-width:80px;">
+          <a class="nav-link" data-toggle="dropdown" href="#">
             <%= t('layout._header.about.about_title') %>
           </a>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="/wiki/stories"><%= t('layout._header.about.stories') %></a>
-            <a class="dropdown-item" href="/blog"><%= t('layout._header.about.blog') %></a>
             <a class="dropdown-item" href="/about"><%= t('layout._header.about.about_public_lab') %></a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="/wiki/plots-staff"><%= t('layout._header.about.team') %></a>
-            <a class="dropdown-item" href="/wiki/organizers"><%= t('layout._header.about.organizers') %></a>
-            <a class="dropdown-item" href="/wiki/board"><%= t('layout._header.about.board') %></a>
-            <a class="dropdown-item" href="/wiki/how-we-are-funded"><%= t('layout._header.about.fund') %></a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="/media"><%= t('layout._header.about.press_and_media') %></a>
+            <a class="dropdown-item" href="/blog"><%= t('layout._header.about.blog') %></a>
+            <a class="dropdown-item" href="/newsletter"><%= t('Newsletter') %></a>
             <a class="dropdown-item" href="/wiki/contact"><%= t('layout._header.about.contact') %></a>
           </div>
         </li>
