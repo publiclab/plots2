@@ -312,7 +312,7 @@ class Node < ActiveRecord::Base
   end
 
   def summary
-    body.split('\n')&.first
+    body.lines.first
   end
 
   # was unable to set up this relationship properly with ActiveRecord associations
