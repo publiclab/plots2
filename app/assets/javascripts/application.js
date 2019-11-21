@@ -58,3 +58,4 @@
 //= require realtime_username_validation.js
 //= require jquery-validation/dist/jquery.validate.js
 //= require validation.js
+//= require ajax.js

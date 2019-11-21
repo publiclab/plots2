@@ -9,13 +9,8 @@ function addTag(tagname, selector) {
     geo = geocodeStringAndPan(place);
   }
   else {
-    $.ajax({
-      url: $(selector).attr('action'), // grab the URL from the form itself
-      data: { name: tagname },
-      success: (event, success) => {
-        $(selector).trigger('ajax:success', event);
-      }
-    });
+    let data = { name: tagname };
+    sendFormSubmissionAjax(data, selector);
   }
 }
 

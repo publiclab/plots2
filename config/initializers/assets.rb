@@ -2,6 +2,7 @@ Rails.application.config.assets.precompile += [
   'leaflet-blurred-location/dist/Leaflet.BlurredLocation.js',
 
   'advanced_search.js',
+  'ajax.js',
   'application.js',
   'comment_expand.js',
   'comment.js',
