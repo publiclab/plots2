@@ -275,13 +275,12 @@ class Node < ActiveRecord::Base
     User.find(uid)
   end
 
-  def coauthors
-    User.where(username: power_tags('with')) if has_power_tag('with')
-  end
-
-  # for wikis:
   def authors
     revisions.collect(&:author).uniq
+  end
+
+  def coauthors
+    User.where(username: power_tags('with')) if has_power_tag('with')
   end
 
   # tag- and node-based followers
@@ -310,6 +309,10 @@ class Node < ActiveRecord::Base
 
   def body
     latest&.body
+  end
+
+  def summary
+    body.lines.first
   end
 
   # was unable to set up this relationship properly with ActiveRecord associations

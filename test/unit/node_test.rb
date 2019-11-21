@@ -15,6 +15,8 @@ class NodeTest < ActiveSupport::TestCase
     assert_equal 1, node.status
     assert !node.answered
     assert_equal [], node.location_tags
+    assert node.body
+    assert node.summary
   end
 
   test 'basic question attributes' do
@@ -511,6 +513,13 @@ class NodeTest < ActiveSupport::TestCase
     # TODO: figure out issue here and re-enable! No rush :-)
     # assert_equal notes, graph_notes.values.sum
     # assert_equal wiki, graph_wiki.values.sum
+  end
+
+  # node.authors should be anyone who's written a revision for this node (a wiki, presumably)
+  test 'authors' do
+    authors = Node.last.authors
+    assert authors
+    assert_equal 1, authors.length
   end
 
   test 'find by tagname and user id' do
