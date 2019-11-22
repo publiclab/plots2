@@ -68,7 +68,7 @@
           
                 <% end %>
                   <li>
-                  <a href="<%= node.path %>#comments">Total Comments: <%= node.fetch_comments(current_user).length %></a>
+                  <a href="<%= node.path %>#comments">Total Comments: <%= node.comments_to_be_read(current_user).length %></a>
                   </li>
                   <li>
                   <a href="/n/<%= node.id %>">Read More</a>
