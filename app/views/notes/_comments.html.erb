@@ -1,6 +1,6 @@
 <div class="row">
   <div id="comments" class="col-lg-10 comments">
-    <% comments = @node.fetch_comments(current_user) %>
+    <% comments = @node.comments_to_be_read(current_user) %>
     <h3><span id="comment-count"><%= comments.length %></span> <%= translation('notes._comments.comments') %></h3>
 
     <div style="margin-bottom: 50px;" id="comments-list">
