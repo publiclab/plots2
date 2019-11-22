@@ -1,52 +1,58 @@
-.profile-card .card-header {
-    padding: 0.8em 0.8em 0 0.8em;
+.card-view {
+    font-family: Arial, sans-serif;
+}
+.card-view .card-header {
+    padding: 1.2rem 1.0rem 0 1.0rem;
     background-color: inherit;
     border:none;
 }
-.profile-card .card-header p {
+.card-view .card-header p {
     display: inline-block;
     color: #808080;
     font-size: 0.9rem;
     margin-left: 6px;
 }
-
-.profile-card .card-body {
-    font-family: Arial, sans-serif;
+.card-view .card-body {
     color: #808080;
     font-size: 0.9rem;
-    padding: 0 0.8em 0 0.8em;
+    padding: 0 1rem 0 1rem;
 }
-.profile-card .card-body>div {
-    padding: 0.4em 0 0.4em 0;
-}
-
-.profile-card .card-footer {
+.card-view .card-footer {
     font-family: Arial, sans-serif;
     color: #808080;
     font-size: 0.9rem;
     border: 0;
     background-color: #fff;
+    padding: 0 1rem 0.6rem 1rem;
     margin: 0;
-    padding: 0.8em 0 0.8em 0;
 }
-.profile-card .posted-by-links a {
+.card-view .posted-by-links a {
     text-decoration: underline;
     color: #808080;
     display: inline-block;
 }
-.profile-card .posted-by-links a:hover {
+.card-view .posted-by-links a:hover {
     text-decoration: none;
     color: #505050;
 }
-.profile-card a.post-title {
+.card-view p,
+.card-view h4 {
+    margin: 0;
+}
+.card-view h4 a {
     text-decoration: none;
     color: #212529;
-    font-family: "Junction Light", lucida grande,lucida sans console,sans-serif;
-    font-size: 1.1rem;
     display: inline-block;
-    margin-left: 6px;
 }
-.profile-card a:hover.post-title {
+.card-view h4 a:hover {
     text-decoration: underline;
     color: #212529;
+}
+
+/* Specific to Profile Page */
+.card-view.profile-card .card-body>div {
+    padding: 0.4em 0 0.4em 0;
+}
+.card-view.profile-card .card-footer {
+    padding: 0.8em 0 0.8em 0;
 }
