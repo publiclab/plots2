@@ -35,7 +35,8 @@
     button<%= unique_id %>.addEventListener('click', function(event) {
       var center_lat = map<%= unique_id %>.getCenter().lat;
       var center_lng = map<%= unique_id %>.getCenter().lng;
-      window.location.href='/post?tags=lat:' + center_lat + ',lon:' + center_lng + '&title=This post will apppear on maps';
+      var center_zoom = map<%= unique_id %>.getZoom();
+      window.location.href='/post?tags=lat:' + center_lat + ',lon:' + center_lng + ',zoom:' + center_zoom + '&title=This post will apppear on maps';
     });
 
     var markers_hash<%= unique_id %> = new Map() ;
