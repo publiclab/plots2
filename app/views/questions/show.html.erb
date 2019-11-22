@@ -55,7 +55,7 @@
 
   <hr />
 
-  <% comments = @node.fetch_comments(current_user) %>
+  <% comments = @node.comments_to_be_read(current_user) %>
   <h3><span id="comment-count"><%= comments.length %></span> Comments</h3>
     <div id="comments-list">
       <% comments.includes(:replied_comments).order("timestamp ASC").each do |comment| %>
