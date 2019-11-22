@@ -1070,7 +1070,7 @@ class Node < ActiveRecord::Base
     base_url + '/notes/show/' + nid.to_s + '/' + token
   end
 
-  def fetch_comments(user)
+  def comments_to_be_read(user)
     if user&.can_moderate?
       comments.where('status = 1 OR status = 4')
     elsif user
