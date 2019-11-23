@@ -112,6 +112,18 @@ We recommend you either work in a virtual environment, or on a dual booted syste
 1. [Dual Booting](https://www.tecmint.com/install-ubuntu-alongside-with-windows-dual-boot/amp/), [option2](https://askubuntu.com/questions/1031993/how-to-install-ubuntu-18-04-alongside-windows-10), [video guide](https://www.youtube.com/watch?v=qNeJvujdB-0&fbclid=IwAR0APhs89jlNR_ENKbSwrp6TI6P-wxlx-a0My9XBvPNAfwtADZaAXqcKtP4)
 2. [Setting up a linux virtual env](https://itsfoss.com/install-linux-in-virtualbox/)
 
+## Redis Installation
+
+Public Lab uses Redis and may be required for some functionality when running the application locally.
+1. Install Redis if you haven't already:
+  * Using **MacOS**: `brew install redis`
+  * Using **Linux**: `sudo yum -y install redis`
+2. Run Redis server:
+  * Using **MacOS**: `brew services start redis`
+  * Using **Linux**: `redis-server`
+3. Run SideKiq: `bundle exec sidekiq`
+4. If SideKiq started correctly Redis is now configured and working!
+
 ## SSL in Development
 
 We, at Public Lab use [openssl](https://github.com/ruby/openssl) gem to provide SSL (Secure Sockets Layer) for the secure connection in the development mode. You can run the https connection on the localhost by following  the following steps:
@@ -198,6 +210,7 @@ Help improve Public Lab software!
 * Try out some supportive tasks https://github.com/publiclab/plots2/wiki/Supportive-Tasks
 * Get involved with our weekly community check-ins. For guidelines: [https://github.com/publiclab/plots2/tree/master/doc/CHECKINS.md
 ](https://github.com/publiclab/plots2/tree/master/doc/CHECKINS.md)
+* You can help us by opening first timers issues or fto. The template for opening an issue can be found https://docs.google.com/document/d/1dO-CAgModEGM5cOaMmcnBh2pEON0hv_rH3P2ou2r1eE/edit 
 
 ## First Time?
 

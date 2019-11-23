@@ -199,6 +199,7 @@ class UsersController < ApplicationController
         end
 
         # User's social links
+        @content_approved = !(Node.where(status: 1, uid: @profile_user.id).empty?) or !(Comment.where(status: 1, uid: @profile_user.id).empty?)
         @github = @profile_user.social_link("github")
         @twitter = @profile_user.social_link("twitter")
         @facebook = @profile_user.social_link("facebook")

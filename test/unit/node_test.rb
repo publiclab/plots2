@@ -15,6 +15,8 @@ class NodeTest < ActiveSupport::TestCase
     assert_equal 1, node.status
     assert !node.answered
     assert_equal [], node.location_tags
+    assert node.body
+    assert node.summary
   end
 
   test 'basic question attributes' do
@@ -222,6 +224,41 @@ class NodeTest < ActiveSupport::TestCase
     assert_equal 'Wiki page content/body', node.body
   end
 
+  test 'wikipage with wrong title should not be created' do
+    node = Node.new(uid: users(:bob).id,
+                    type: 'page')
+    words = %w(create update delete new edit)
+    words.each do |word|
+      node.title = word.capitalize
+      assert_not node.save
+    end
+  end
+
+  test 'research note with empty/blank title should not be created' do
+    node = Node.new(uid: users(:bob).id,
+                    type: 'note')
+    titles = [ '', ' ' * 5 ]
+    titles.each do |t|
+      node.title = t
+      assert_not node.valid?
+    end
+  end
+
+  test 'research note with duplicate title should not be created' do
+    node = Node.new(uid: users(:bob).id,
+                    type: 'note',
+                    title: 'My research note')
+    dup_node = node.dup
+    node.save
+    assert_not dup_node.save
+  end
+
+  test 'title should not be too short' do
+    node = Node.new(uid: users(:bob).id,
+                    type: 'note',
+                    title: 'ok')
+    assert_not node.valid?
+  end
   test 'create a node_revision' do
     # in testing, uid and id should be matched, although this is not yet true in production db
     revision_count = nodes(:one).revisions.length
@@ -476,6 +513,13 @@ class NodeTest < ActiveSupport::TestCase
     # TODO: figure out issue here and re-enable! No rush :-)
     # assert_equal notes, graph_notes.values.sum
     # assert_equal wiki, graph_wiki.values.sum
+  end
+
+  # node.authors should be anyone who's written a revision for this node (a wiki, presumably)
+  test 'authors' do
+    authors = Node.last.authors
+    assert authors
+    assert_equal 1, authors.length
   end
 
   test 'find by tagname and user id' do

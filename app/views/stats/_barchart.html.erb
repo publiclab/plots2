@@ -1,0 +1,77 @@
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+var questions = [<%= @questions.present? ? @questions : 0 %>];
+var answers = [<%= @answers %>];
+var unanswered = [ questions[0] - answers[0] ];
+var barwidth = "100%";
+if(document.querySelector("#questAns").hasAttribute('data-width')) {
+    barwidth = document.querySelector("#questAns").getAttribute('data-width');
+}
+
+var options = {
+    chart: {
+        type: 'bar',
+        height: 120,
+        stacked: true,
+        stackType: '100%',
+        width: barwidth,
+    },
+    plotOptions: {
+        bar: {
+            horizontal: true,
+        },
+    },
+    stroke: {
+        width: 1,
+        colors: ['#fff']
+    },
+    series: [{
+        name: 'Answered Questions',
+        data: answers
+    },{
+        name: 'Unanswered Questions',
+        data: unanswered
+    }],
+    fill: {
+        opacity: 1
+    },
+    colors: ['#00E396', '#008FFB'],
+
+    legend: {
+        show: false,
+    },
+    grid: {
+        show: false,
+    },
+    tooltip: {
+        x: {
+            show: false,
+        }
+    },
+
+    xaxis: {
+        
+        labels: {
+            show: false,
+        },
+        axisBorder: {
+            show: false,
+        },
+        lines: {
+            show: true,
+        }
+        
+    },
+    yaxis: {
+        labels: {
+            show: false,
+        },
+    }
+
+};
+
+var chart2 = new ApexCharts(document.querySelector("#questAns"),options);
+chart2.render();
+
+</script>

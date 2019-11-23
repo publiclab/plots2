@@ -1,14 +1,12 @@
 class UniqueUrlValidator < ActiveModel::Validator
   def validate(record)
-    if record.title == '' || record.title.nil?
-      # record.errors[:base] << "You must provide a title."
+    if record.title.blank?
+      record.errors[:base] << "You must provide a title."
       # otherwise the below title uniqueness check fails, as title presence validation doesn't run until after
     elsif record.type == 'page'
       array = %w(create edit update delete new)
-      array.each do |x|
-        if record.title == x
-          record.errors[:base] << "You may not use the title '" + x + "'"
-        end
+      if array.include? record.title.downcase
+        record.errors[:base] << "You may not use the title '#{record.title}'"
       end
     else
       if !Node.where(path: record.generate_path).first.nil? && record.type == 'note'
@@ -96,7 +94,7 @@ class Node < ActiveRecord::Base
 
   belongs_to :user, foreign_key: 'uid'
 
-  validates :title, presence: true
+  validates :title, presence: true, length: { minimum: 3 }
   validates_with UniqueUrlValidator, on: :create
 
   scope :published, -> { where(status: 1) }
@@ -277,13 +275,12 @@ class Node < ActiveRecord::Base
     User.find(uid)
   end
 
-  def coauthors
-    User.where(username: power_tags('with')) if has_power_tag('with')
-  end
-
-  # for wikis:
   def authors
     revisions.collect(&:author).uniq
+  end
+
+  def coauthors
+    User.where(username: power_tags('with')) if has_power_tag('with')
   end
 
   # tag- and node-based followers
@@ -312,6 +309,10 @@ class Node < ActiveRecord::Base
 
   def body
     latest&.body
+  end
+
+  def summary
+    body.lines.first
   end
 
   # was unable to set up this relationship properly with ActiveRecord associations
@@ -875,6 +876,13 @@ class Node < ActiveRecord::Base
         .joins(:tag)
         .where('term_data.name LIKE ?', 'question:%')
         .group('node.nid')
+  end
+
+  # all nodes with tagname
+  def self.find_by_tag(tagname)
+    Node.includes(:node_tag, :tag)
+      .where('term_data.name = ? OR term_data.parent = ?', tagname, tagname)
+      .references(:term_data, :node_tag)
   end
 
   # finds nodes by tag name, user id, and optional node type

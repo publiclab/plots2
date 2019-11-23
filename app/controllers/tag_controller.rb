@@ -148,9 +148,18 @@ class TagController < ApplicationController
           .order(order_by)
       end
     end
-    nodes = nodes.where(created: @start.to_i..@end.to_i) if @start && @end
 
-    qids = Node.questions.where(status: 1).collect(&:nid)
+    if @start && @end
+      nodes = nodes.where(created: @start.to_i..@end.to_i)
+    else
+      @pinned_nodes = NodeShared.pinned_nodes(params[:id])
+      if @pinned_nodes.length > 0 && params[:page].nil? # i.e. first page
+        nodes = nodes.where.not(nid: @pinned_nodes.collect(&:id))
+      end
+    end
+
+    qids = Node.questions.where(status: 1)
+               .collect(&:nid)
     if qids.empty?
       @notes = nodes
       @questions = []
@@ -524,6 +533,7 @@ class TagController < ApplicationController
   def stats
     @start = params[:start] ? Time.parse(params[:start].to_s) : Time.now - 1.year
     @end = params[:end] ? Time.parse(params[:end].to_s) : Time.now
+    tagname = params[:id]
 
     @tags = Tag.where(name: params[:id])
     @tag_notes = @tags.first.contribution_graph_making('note', @start, @end)
@@ -532,6 +542,12 @@ class TagController < ApplicationController
     @tag_comments = @tags.first.comment_graph(@start, @end)
     @subscriptions = @tags.first.subscription_graph(@start, @end)
     @all_subscriptions = TagSelection.graph(@start, @end)
+
+    total_questions = Node.published.questions
+      .where(created: @start.to_i..@end.to_i)
+      .where(nid: Node.find_by_tag(tagname))
+    @answers = total_questions.joins(:comments).size.count
+    @questions = total_questions.size.count
   end
 
   private

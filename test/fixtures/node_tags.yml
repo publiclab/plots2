@@ -189,3 +189,13 @@ test3_lon:
   uid: 16
   nid: 25
   date: <%= DateTime.now.to_i %>
+
+project:
+  tid: 28
+  uid: 1
+  nid: 13
+
+project2:
+  tid: 28
+  uid: 1
+  nid: 7
