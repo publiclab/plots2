@@ -17,18 +17,4 @@ class SimplePostTest < ApplicationSystemTestCase
     take_screenshot
 
   end
-
-  test 'posting a wiki from simple editor' do
-    #fill in and psot
-     # visit '/'
-
-    # click_on 'Login'
-
-    # fill_in("username-login", with: "Bob")
-    # fill_in("password-signup", with: "secretive")
-    # click_on "Log in"
-
-    # visit '/post/simple'
-
-  end
 end
