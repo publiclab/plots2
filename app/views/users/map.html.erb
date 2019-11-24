@@ -50,7 +50,7 @@
 
       var user_map = L.map('map').setView([15,0], 2);
       L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",{
-          attribution: "<a href='https://openstreetmap.org'>OSM</a> tiles by <a href='http://mapbox.com'>MapBox</a>"
+          attribution: "<a href='https://openstreetmap.org'>OSM</a> tiles by <a href='https://mapbox.com'>MapBox</a>"
         }).addTo(user_map);
 
       <% @location_tags.each do |location_tag, user_tag| %>
@@ -76,7 +76,7 @@
       <% end %>
       
       L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",{
-          attribution: "<a href='http://openstreetmap.org'>OSM</a> tiles by <a href='http://mapbox.com'>MapBox</a>"
+          attribution: "<a href='https://openstreetmap.org'>OSM</a> tiles by <a href='https://mapbox.com'>MapBox</a>"
         }).addTo(user_map);
 
       <% @users.each do |user| %>
