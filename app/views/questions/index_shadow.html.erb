@@ -1,23 +1,12 @@
-<div class="row col-md-12" style="padding:2em;">
-   <div class="col-md-5">
-     <div class="profile-image text-center">
-       <img class="rounded-circle img-fluid"  style= "width:40%;" id="profile-photo" src="https://avatars2.githubusercontent.com/u/4621650?s=200&v=4" />
-     </div>
-     <h6 class="mt-2 text-center"><strong>@publiclab</strong><h6>
-   </div>
-   <div class="col-md-7" style="text-align: left;">
-     <h5>Get help with your Questions</h5>
-     <h2>Ask the community</h2>
-     <p style="color: #666">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-       eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-     <a href="https://publiclab.org/wiki/public-lab-q-and-a" style="text-decoration: underline;">Learn More >></a>
-   </div>
-</div>
+<% cache('feature_questions-header', skip_digest: true) do %>
+  <%= feature('questions-header') %>
+<% end %>
+
 <div class="question-area col-md-12">
   <div class= "question-header">
    <h5>What's your question?</h5>
    <% if !current_user %>
-     <p>To ask a question, please <a href="/login?return_to=/questions">log in</a> or <a href="/signup?return_to=/questions">sign up</a> first.</p>
+     <p>To ask a question, please <a class="requireLogin" href="/questions">log in</a> or <a class="requireLogin" href="/questions">sign up</a> first.</p>
    <% end %>
   </div>
  <div class= "question-form">
@@ -36,7 +25,6 @@
 </div>
 
 <div class="FeaturedQuestions col-md-12">
-
     <span class="d-none d-lg-inline"><h2>Featured questions </h2></span>
     <span><h6>see some of the great questions people have asked, and get a feel for how it works
     </h6></span>
