@@ -17,4 +17,14 @@ class OutlookParsingTest < ActionDispatch::IntegrationTest
     assert_equal User.find(reply.uid).email, user_email
     f.close()
   end
+
+  test 'recognizing autoreply mail from outlook service' do
+    mail = Mail.read('test/fixtures/incoming_test_emails/outlook/autoreply_incoming_outlook_email.eml')
+    assert_equal true, Comment.is_autoreply(mail)
+  end
+
+  test 'recognizing non-autoreply mail from outlook service' do
+    mail = Mail.read('test/fixtures/incoming_test_emails/outlook/incoming_outlook_email.eml')
+    assert_equal false, Comment.is_autoreply(mail)
+  end
 end

@@ -44,6 +44,7 @@ class User < ActiveRecord::Base
 
   has_many :images, foreign_key: :uid
   has_many :node, foreign_key: 'uid'
+  has_many :csvfiles, foreign_key: :uid
   has_many :node_selections, foreign_key: :user_id
   has_many :revision, foreign_key: 'uid'
   has_many :user_tags, foreign_key: 'uid', dependent: :destroy
@@ -70,7 +71,7 @@ class User < ActiveRecord::Base
   end
 
   def new_contributor
-    return "<a href='/tag/first-time-poster' class='label label-success'><i>new contributor</i></a>".html_safe if is_new_contributor?
+    return "<a href='/tag/first-time-poster' class='label label-success font-italic'>new contributor</a>".html_safe if is_new_contributor?
   end
 
   def set_token
@@ -153,7 +154,6 @@ class User < ActiveRecord::Base
     Node.order('nid DESC').where(type: 'note', status: 1, uid: id).limit(limit).each do |node|
       tagnames += node.tags.collect(&:name)
     end
-    tagnames += ['balloon-mapping', 'spectrometer', 'near-infrared-camera', 'thermal-photography', 'newsletter'] if tagnames.empty? && defaults
     tagnames.uniq
   end
 
@@ -230,9 +230,9 @@ class User < ActiveRecord::Base
     following_users.include?(other_user)
   end
 
-  def profile_image
+  def profile_image(size = :thumb)
     if photo_file_name
-      photo_path(:thumb)
+      photo_path(size)
     else
       "https://www.gravatar.com/avatar/#{OpenSSL::Digest::MD5.hexdigest(email)}"
     end
@@ -295,6 +295,14 @@ class User < ActiveRecord::Base
     self.status = Status::NORMAL
     save
     self
+  end
+
+  def self.send_browser_notification(users_ids, notification)
+    users_ids.each do |uid|
+      if UserTag.where(value: 'notifications:all', uid: uid).any?
+        ActionCable.server.broadcast "users:notification:#{uid}", notification: notification
+      end
+    end
   end
 
   def banned?
@@ -363,11 +371,11 @@ class User < ActiveRecord::Base
 
   class << self
     def search(query)
-      User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', query + '*')
+      User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', "#{query}*")
     end
 
     def search_by_username(query)
-      User.where('MATCH(username) AGAINST(? IN BOOLEAN MODE)', query + '*')
+      User.where('MATCH(username) AGAINST(? IN BOOLEAN MODE)', "#{query}*")
     end
 
     def validate_token(token)
@@ -388,7 +396,7 @@ class User < ActiveRecord::Base
       User.where('lower(username) = ?', username.downcase).first
     end
 
-    # all uses who've posted a node, comment, or answer in the given period
+    # all users who've posted a node, comment, or answer in the given period
     def contributor_count_for(start_time, end_time)
       notes = Node.where(type: 'note', status: 1, created: start_time.to_i..end_time.to_i).pluck(:uid)
       answers = Answer.where(created_at: start_time..end_time).pluck(:uid)

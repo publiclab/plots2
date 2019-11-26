@@ -199,6 +199,7 @@ class UsersController < ApplicationController
         end
 
         # User's social links
+        @content_approved = !(Node.where(status: 1, uid: @profile_user.id).empty?) or !(Comment.where(status: 1, uid: @profile_user.id).empty?)
         @github = @profile_user.social_link("github")
         @twitter = @profile_user.social_link("twitter")
         @facebook = @profile_user.social_link("facebook")
@@ -301,7 +302,24 @@ class UsersController < ApplicationController
   def comments
     comments = Comment.limit(20)
                              .order("timestamp DESC")
-                             .where(uid: params[:id])
+                             .where(uid: User.where(username: params[:id], status: 1).first)
+                             .paginate(page: params[:page], per_page: 24)
+
+    @normal_comments = comments.where('comments.status = 1')
+    if logged_in_as(['admin', 'moderator'])
+      @moderated_comments = comments.where('comments.status = 4')
+    end
+    render template: 'comments/index'
+  end
+
+  def comments_by_tagname
+    comments = Comment.limit(20)
+                             .order("timestamp DESC")
+                             .where(uid: User.where(username: params[:id], status: 1).first)
+                             .where(nid: Node.where(status: 1)
+                              .includes(:node_tag, :tag)
+                              .references(:term_data)
+                              .where('term_data.name = ?', params[:tagname]))
                              .paginate(page: params[:page], per_page: 24)
 
     @normal_comments = comments.where('comments.status = 1')
@@ -376,6 +394,20 @@ class UsersController < ApplicationController
       'digest:daily'
     ]
     digest_settings.each do |setting|
+      if params[setting] == "on"
+        UserTag.create_if_absent(current_user.uid, setting)
+      else
+        UserTag.remove_if_exists(current_user.uid, setting)
+      end
+    end
+
+    notification_settings = [
+      'notifications:all',
+      'notifications:mentioned',
+      'notifications:like'
+    ]
+
+    notification_settings.each do |setting|
       if params[setting] == "on"
         UserTag.create_if_absent(current_user.uid, setting)
       else

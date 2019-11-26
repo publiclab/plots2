@@ -1,4 +1,4 @@
-    <% cache('feature_anniversary-banner', skip_digest: true) do %>
+<% cache('feature_anniversary-banner', skip_digest: true) do %>
   <%= feature('anniversary-banner') %>
 <% end %>
 
@@ -25,23 +25,40 @@
       </form>
 
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item dropdown" style="min-width: 105px;">
+
+        <% cache('feature_navbar', skip_digest: true) do %>
+          <%= feature('navbar') %>
+        <% end %>
+
+        <li class="nav-item dropdown" style="min-width:80px;">
           <a class="nav-link" data-toggle="dropdown" href="#">
-            Get Involved
+            <%= translate('Community') %>
           </a>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="/events">Attend an event</a>
-            <a class="dropdown-item" href="/chat">Chat online</a>
-            <a class="dropdown-item" href="/questions">Ask a question</a>
-            <a class="dropdown-item" href="/tags">Find a topic you care about</a>
-            <a class="dropdown-item requireLogin" href="/post">Post your work</a>
-            <a class="dropdown-item" href="/newsletter">Subscribe to the newsletter</a>
-            <a class="dropdown-item" href="/requests">Respond to a request</a>
+            <a class="dropdown-item" href="/getting-started"><b><%= translate('Get started') %> &raquo;</b></a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="/dashboard">Browse recent research</a>
-            <a class="dropdown-item" href="/methods">Discover methods</a>
-            <a class="dropdown-item" href="/kits">Contribute a kit</a>
-            <a class="dropdown-item" href="/wiki/software-outreach">Software Projects</a>
+            <a class="dropdown-item" href="/people"><%= translate('People') %></a>
+            <a class="dropdown-item" href="/projects"><%= translate('Projects') %></a>
+            <a class="dropdown-item" href="/events"><%= translate('Events') %></a>
+            <a class="dropdown-item" href="/questions"><%= translate('Questions') %></a>
+            <a class="dropdown-item" href="/chat"><%= translate('Chat') %></a>
+          </div>
+        </li>
+
+        <li class="nav-item dropdown" style="min-width:80px;">
+          <a class="nav-link" data-toggle="dropdown" href="#">
+            <%= translate('Tools') %>
+          </a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="/methods"><%= translate('Methods') %></a>
+            <h6 class="dropdown-header">Kits</h6>
+            <a class="dropdown-item" href="/kits"><%= translate('Kits initiative') %></a>
+            <a class="dropdown-item" href="//store.publiclab.org"><%= translate('Store') %></a>
+            <h6 class="dropdown-header">Software</h6>
+            <a class="dropdown-item" href="https://mapknitter.org"><%= translate('MapKnitter') %></a>
+            <a class="dropdown-item" href="https://infragram.org"><%= translate('Infragram') %></a>
+            <a class="dropdown-item" href="https://spectralworkbench.org"><%= translate('Spectral Workbench') %></a>
+            <a class="dropdown-item" href="https://code.publiclab.org#r=all"><%= translate('Code community') %></a>
           </div>
         </li>
 
@@ -50,26 +67,22 @@
             <%= t('layout._header.about.about_title') %>
           </a>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="/wiki/stories"><%= t('layout._header.about.stories') %></a>
-            <a class="dropdown-item" href="/blog"><%= t('layout._header.about.blog') %></a>
             <a class="dropdown-item" href="/about"><%= t('layout._header.about.about_public_lab') %></a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="/wiki/plots-staff"><%= t('layout._header.about.team') %></a>
-            <a class="dropdown-item" href="/wiki/organizers"><%= t('layout._header.about.organizers') %></a>
-            <a class="dropdown-item" href="/wiki/board"><%= t('layout._header.about.board') %></a>
-            <a class="dropdown-item" href="/wiki/how-we-are-funded"><%= t('layout._header.about.fund') %></a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="/media"><%= t('layout._header.about.press_and_media') %></a>
+            <a class="dropdown-item" href="/blog"><%= t('layout._header.about.blog') %></a>
+            <a class="dropdown-item" href="/newsletter"><%= t('Newsletter') %></a>
             <a class="dropdown-item" href="/wiki/contact"><%= t('layout._header.about.contact') %></a>
           </div>
         </li>
 
-        <li class="nav-item d-sm-none d-lg-inline">
-          <a class="nav-link" target="_blank" href="//store.publiclab.org"><%= t('layout._header.store') %></a>
+        <li class="nav-item d-sm-none d-lg-inline" style="padding:0 10px;">
+          <a class="nav-link btn btn-outline-secondary" target="_blank" href="//store.publiclab.org"><%= t('layout._header.store') %></a>
         </li>
-        <li class="nav-item d-sm-none d-lg-inline">
-          <a class="nav-link" href="/donate"><%= t('layout._header.donate') %></a>
+        <li class="nav-item d-sm-none d-lg-inline" style="padding:0 10px;">
+          <a class="nav-link btn btn-outline-secondary" href="/donate"><%= t('layout._header.donate') %></a>
         </li>
+
+        <!-- end navbar feature -->
+
       </ul>
 
       <ul class="navbar-nav mr-lg-5">
@@ -107,10 +120,10 @@
 
                     <a class="dropdown-item" href="/profile/<%= current_user.username %>"><%= t('layout._header.profile') %></a>
                     <a class="dropdown-item" href="/profile/edit"><%= t('layout._header.edit_profile') %></a>
-                    <a class="dropdown-item" href="/settings" >Email Settings</a>
+                    <a class="dropdown-item" href="/settings" >Notifications</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="/subscriptions"><%= t('layout._header.subscriptions') %></a>
-                    <a class="dropdown-item" href="/subscriptions/digest">Your Digest</a>
+                    <a class="dropdown-item" href="/subscriptions/digest">Your digest</a>
                     <a class="dropdown-item" href="/profile/<%= current_user.username %>/likes"><%= t('layout._header.notes_liked') %></a>
                     <div class="dropdown-divider"></div>
                       <% if logged_in_as(['admin']) %>
@@ -134,23 +147,17 @@
           <% end %>
         </li>
         <li id="md-ham" class="d-xl-none dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-white fa-bars"></span></a>
-            <ul class="dropdown-menu">
-                <li class="d-lg-none">
-                  <a href="//store.publiclab.org"><%= t('layout._header.store') %></a>
-                </li>
-                <li class="d-lg-none">
-                  <a href="/donate"><%= t('layout._header.donate') %></a>
-                </li>
-                <!--These menu items will only appear in the "More" dropdown menu. -->
-                <% if current_user %>
-                  <li class="d-xl-none">
-                    <a rel="tooltip" title="<%= t('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard">Dashboard</a>
-                  </li>
-                <% else %>
-                  <a class="dropdown-item d-xl-none" rel="tooltip" title="<%= t('layout._header.become_part_community') %>" href="/signup"><%= t('layout._header.join') %></a>
-                <% end %>
-            </div>
+          <a href="#" class="btn btn-dark" data-toggle="dropdown"><span class="fa fa-white fa-bars"></span></a>
+          <div class="dropdown-menu dropdown-menu-right">
+            <a class="dropdown-item d-lg-none" href="//store.publiclab.org"><%= t('layout._header.store') %></a>
+            <a class="dropdown-item d-lg-none"  href="/donate"><%= t('layout._header.donate') %></a>
+            <!--These menu items will only appear in the "More" dropdown menu. -->
+            <% if current_user %>
+              <a class="dropdown-item d-xl-none" rel="tooltip" title="<%= t('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard">Dashboard</a>
+            <% else %>
+              <a class="dropdown-item d-xl-none" rel="tooltip" title="<%= t('layout._header.become_part_community') %>" href="/signup"><%= t('layout._header.join') %></a>
+            <% end %>
+          </div>
         </li>
     </div>
 </nav>
@@ -175,6 +182,9 @@
 </div>
 
 <%= render partial: "layouts/signupLoginModal" %>
+
+  <script type="text/javascript" src="/lib/leaflet-environmental-layers/example/lib/glify.js"></script>
+
 
 <style>
   .profile-icon{

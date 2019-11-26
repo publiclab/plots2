@@ -20,10 +20,6 @@
     <!--<div class="expand"><a onClick="$('.main-image').toggleClass('compressed');"><i class="fa fa-angle-down"></i></a></div>-->
   <% end %>
 
-  <div style="margin-top:10px;" class="d-print-none">
-    <%= render :partial => "like/like", :locals => {:node => @node, :tagnames => @tagnames } %>
-  </div>
-
   <h1 style="margin-top: 40px;"><%= @node.title %></h1>
 
   <div>
@@ -46,7 +42,7 @@
         | <%= number_with_delimiter(@node.views) %> <%= t('notes.show.views') %>
         <% if @node.comments %>
           | <i class="fa fa-comment"></i>
-          <a href="#comments"> <%= @node.comments.length %> <%= t('notes.show.comments') %> </a>
+          <a href="#comments"> <%= @node.fetch_comments(current_user).length %> <%= t('notes.show.comments') %> </a>
         <% end %>
           | <a href="/n/<%= @node.id %>"><i class="fa fa-link"></i></a> <span class="d-none d-xl-inline"><a href="/n/<%= @node.id %>">#<%= @node.id %></a></span>
       </span>
@@ -54,7 +50,7 @@
         | <%= number_with_delimiter(@node.views) %> <%= t('notes.show.views') %>
         <% if @node.comments %>
           | <i class="fa fa-comment"></i>
-          <a href="#comments"> <%= @node.comments.length %> <%= t('notes.show.comments') %> </a>
+          <a href="#comments"> <%= @node.fetch_comments(current_user).length %> <%= t('notes.show.comments') %> </a>
         <% end %>
           | <a href="/n/<%= @node.id %>"><i class="fa fa-link"></i></a> <span class="d-none d-xl-inline"><a href="/n/<%= @node.id %>">#<%= @node.id %></a></span>
       </span>
@@ -62,10 +58,6 @@
         <%= @node.created_at.to_s(:short) %>
       </span>
       </span>
-
-    <p>
-      Read more: <%= request.host %>/n/<%= @node.id %>
-    </p>
 
   </div>
 
@@ -100,6 +92,12 @@
   <div class="d-print-none">
     <hr />
 
+    <% if @node.has_power_tag('prompt') && feature("prompt-#{@node.power_tag('prompt')}") != "" %>
+      <% if current_user && (current_user.id == @node.uid || current_user.admin? || current_user.moderator? || current_user.is_coauthor?(@node)) %>
+        <%= feature("prompt-#{@node.power_tag('prompt')}") %>
+      <% end %>
+    <% end %>
+
     <% if @node.has_tag('event:rsvp') %>
       <p><b><% if @node.has_power_tag('date') %>
         <script>
@@ -119,11 +117,10 @@
       <hr />
     <% end %>
 
-    <%= render :partial => "notes/responses" %>
+    <%= render partial: "notes/responses" %>
 
-    <div>
-      <%= render :partial => "notes/comments" %>
-    </div>
+    <div><%= render partial: "notes/comments" %></div>
+
   </div>
 
 </div><!--/span-->

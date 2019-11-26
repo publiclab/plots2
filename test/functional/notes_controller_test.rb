@@ -418,7 +418,7 @@ class NotesControllerTest < ActionController::TestCase
     assert_response :success
     assert_not_nil @response.body
     json = JSON.parse(@response.body)
-    assert_equal ["can't be blank"], json['title']
+    assert_equal ["can't be blank", "is too short (minimum is 3 characters)"], json['title']
     assert !json['title'].empty?
   end
 
@@ -490,7 +490,7 @@ class NotesControllerTest < ActionController::TestCase
         id: node.title.parameterize
         }
     selector = css_select '.fa-fire'
-    assert_equal 3, selector.size
+    assert_equal 4, selector.size
   end
 
   test 'should redirect to questions show page after creating a new question' do
@@ -749,17 +749,15 @@ class NotesControllerTest < ActionController::TestCase
 
   test 'draft should not be shown when no user' do
     node = nodes(:draft)
-    post :show, params: { id: '21',title: 'Draft note' }
-    assert_redirected_to '/login'
-    assert_equal "You need to login to view the page", flash[:warning]
+    get :show, params: { id: '21',title: 'Draft note' }
+    assert_response :missing
   end
 
   test 'draft should not be shown when user is not author' do
     node = nodes(:draft)
     UserSession.create(users(:bob))
-    post :show, params: { id: '21',title: 'Draft note' }
-    assert_redirected_to '/'
-    assert_equal "Only author can access the draft note", flash[:notice]
+    get :show, params: { id: '21',title: 'Draft note' }
+    assert_response :missing
   end
 
   test 'question deletion should delete all its answers' do
@@ -788,7 +786,7 @@ class NotesControllerTest < ActionController::TestCase
     get :publish_draft, params: { id: node.id }
 
     assert_response :redirect
-    assert_equal "Thanks for your contribution. Research note published! Now, it's visible publically.", flash[:notice]
+    assert_equal "Thanks for your contribution. Research note published! Now, it's visible publicly.", flash[:notice]
     node = assigns(:node)
     assert_equal 1, node.status
     assert_equal 1, node.author.status
@@ -807,7 +805,7 @@ class NotesControllerTest < ActionController::TestCase
      get :publish_draft, params: { id: node.id }
 
      assert_response :redirect
-     assert_equal "Thanks for your contribution. Research note published! Now, it's visible publically.", flash[:notice]
+     assert_equal "Thanks for your contribution. Research note published! Now, it's visible publicly.", flash[:notice]
      node = assigns(:node)
      assert_equal 1, node.status
      assert_equal 1, node.author.status
@@ -826,7 +824,7 @@ class NotesControllerTest < ActionController::TestCase
      get :publish_draft, params: { id: node.id }
 
      assert_response :redirect
-     assert_equal "Thanks for your contribution. Research note published! Now, it's visible publically.", flash[:notice]
+     assert_equal "Thanks for your contribution. Research note published! Now, it's visible publicly.", flash[:notice]
      node = assigns(:node)
      assert_equal 1, node.status
      assert_equal 1, node.author.status
@@ -932,7 +930,7 @@ class NotesControllerTest < ActionController::TestCase
         }
 
      assert_response :success
-     assert_equal "This is a draft note. Once you're ready, click <a class='btn btn-success btn-xs' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> to make it public. You can share it with collaborators using this private link <a href='#{node.draft_url}'>#{node.draft_url}</a>", flash[:warning]
+     assert_equal "This is a draft note. Once you're ready, click <a class='btn btn-success btn-xs' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> to make it public. You can share it with collaborators using this private link <a href='#{node.draft_url(request.base_url)}'>#{node.draft_url(request.base_url)}</a>", flash[:warning]
    end
 
    test 'draft note (status=3) shown to moderator in full view with notice' do
@@ -948,7 +946,7 @@ class NotesControllerTest < ActionController::TestCase
         }
 
      assert_response :success
-     assert_equal "This is a draft note. Once you're ready, click <a class='btn btn-success btn-xs' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> to make it public. You can share it with collaborators using this private link <a href='#{node.draft_url}'>#{node.draft_url}</a>", flash[:warning]
+     assert_equal "This is a draft note. Once you're ready, click <a class='btn btn-success btn-xs' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> to make it public. You can share it with collaborators using this private link <a href='#{node.draft_url(request.base_url)}'>#{node.draft_url(request.base_url)}</a>", flash[:warning]
    end
 
    test 'draft note (status=3) shown to co-author in full view with notice' do
@@ -964,7 +962,7 @@ class NotesControllerTest < ActionController::TestCase
         }
 
      assert_response :success
-     assert_equal "This is a draft note. Once you're ready, click <a class='btn btn-success btn-xs' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> to make it public. You can share it with collaborators using this private link <a href='#{node.draft_url}'>#{node.draft_url}</a>", flash[:warning]
+     assert_equal "This is a draft note. Once you're ready, click <a class='btn btn-success btn-xs' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> to make it public. You can share it with collaborators using this private link <a href='#{node.draft_url(request.base_url)}'>#{node.draft_url(request.base_url)}</a>", flash[:warning]
    end
 
    test 'draft note (status=3) shown to user with secret link' do
@@ -977,7 +975,7 @@ class NotesControllerTest < ActionController::TestCase
              id: node.nid,
              token: @token
          }
-     assert_redirected_to '/login'
+     assert_response :success
    end
 
    test 'no notification email if user posts draft' do

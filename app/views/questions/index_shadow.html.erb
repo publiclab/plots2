@@ -66,15 +66,24 @@
     <span class="d-none d-lg-inline"><h2>Featured questions </h2></span>
     <span><h6>see some of the great questions people have asked, and get a feel for how it works
     </h6></span>
-</div> 
+</div>
 
 <%= render partial: "questions/questions_shadow" %>
+
+<div class="RecentQuestions col-md-12">
+    <span class="d-none d-lg-inline"><h2>Recent questions </h2></span>
+</div>
+
+<div class="col-md-12">
+  <%= render partial: "questions/recent_questions_shadow" %>
+</div>
 
  <style>
   .question-area{
     margin:auto;
     width:70%;
     background-color: #F5F5F5;
+    height: auto;
     border-radius: 10px;
   }
 
@@ -102,7 +111,7 @@
     height: 170px;
   }
 
-  .FeaturedQuestions {
+  .FeaturedQuestions, .RecentQuestions{
     text-align: center;
     margin-top: 3em;
   }

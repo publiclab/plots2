@@ -3,11 +3,7 @@ module ApplicationHelper
   def logged_in_as(roles)
     return false unless current_user
 
-    has_valid_role = false
-    roles.each do |role|
-      has_valid_role = true if current_user.role == role
-    end
-    has_valid_role
+    roles.include? current_user.role
   end
 
   def emojify(content)
@@ -73,9 +69,10 @@ module ApplicationHelper
   end
 
   def insert_extras(body)
+    body = NodeShared.notes_thumbnail_grid(body)
+    body = NodeShared.nodes_thumbnail_grid(body)
     body = NodeShared.button(body)
     body = NodeShared.nodes_grid(body)
-    body = NodeShared.notes_thumbnail_grid(body)
     body = NodeShared.notes_grid(body)
     body = NodeShared.questions_grid(body)
     body = NodeShared.activities_grid(body)
@@ -83,9 +80,12 @@ module ApplicationHelper
     body = NodeShared.notes_map(body)
     body = NodeShared.notes_map_by_tag(body)
     body = NodeShared.people_map(body)
+    body = NodeShared.tag_layers_map(body)
+    body = NodeShared.layers_map(body)
     body = NodeShared.people_grid(body, @current_user || nil) # <= to allow testing of insert_extras
     body = NodeShared.graph_grid(body)
     body = NodeShared.wikis_grid(body)
+    body = NodeShared.simple_data_grapher(body)
     body
   end
 
@@ -143,11 +143,11 @@ module ApplicationHelper
     translated_string2 = t(key, options)
 
     if current_user&.has_tag('translation-helper') && translated_string2.include?("translation missing") && !translated_string.include?("<")
-      %(<span>#{translated_string} <a href="https://www.transifex.com/publiclab/publiclaborg/translate/#de/$?q=text%3A#{translated_string}">
+      raw(%(<span>#{translated_string} <a href="https://www.transifex.com/publiclab/publiclaborg/translate/#de/$?q=text%3A#{translated_string}">
           <i data-toggle='tooltip' data-placement='top' title='Needs translation? Click to help translate this text.' style='position:relative; right:2px; color:#bbb; font-size: 15px;' class='fa fa-globe'></i></a>
-       </span>)
+       </span>))
     else
-      translated_string
+      raw(translated_string)
     end
   end
 end

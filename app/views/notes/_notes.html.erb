@@ -1,145 +1,73 @@
 <% notes = notes || @notes # accept local if present, default to instance %>
+<% pinned_nodes = pinned_nodes || @pinned_nodes || [] # accept local if present, default to instance %>
+<% tagname = tagname || false %>
 <div id="notes">
-    <div class="row">
-      <% notes.each_with_index do |node,i| %>
-        <div class="<% if @widget %>col-4 <% end %><%= node.tagnames_as_classes %> col-lg-4 clearfix node note node-nid-<%= node.id %> note-nid-<%= node.id %><% if node.status == 4 %> moderated<% end %>">
-          <div class="card">
-          <% if node.main_image %>
-            <a class="card-img-top img" style="overflow: hidden; height:10em;"<% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" style="width:100%;"/></a>
-          <% elsif node.scraped_image %>
-            <a class="card-img-top img" style="overflow: hidden; height:10em;" href="<%= node.path %>"><img src="<%= node.scraped_image %>" style="width:100%;" /></a>
-          <%  else %>
-            <a class="imgg" style="height:10em; margin-bottom: 10px;">
-            <i class="fa fa-picture-o note-not aria-hidden="true" style="color: #ccc; font-size: 6em;"></i>
-            </a>
-          <% end %>
+  <div class="row">
+    <% (pinned_nodes + notes).each_with_index do |node,i| %>
+      <div class="<% if @widget %>col-4 <% end %><%= node.tagnames_as_classes %> col-lg-4 clearfix node note node-nid-<%= node.id %> note-nid-<%= node.id %><% if node.status == 4 %> moderated<% end %>">
 
-          <div class="card-body">
-          <% if node.status == 4 %>
-            <p class="alert alert-warning moderated">
-              <% if logged_in_as(['admin','moderator']) %>
-                <%= t('notes._notes.moderate_first_time_post') %> <br class="d-none d-lg-inline"/>
-                <a class="btn btn-outline-secondary btn-sm" href="/moderate/publish/<%= node.id %>"><%= t('notes._notes.approve') %></a>
-                <a class="btn btn-outline-secondary btn-sm" data-test="spam" href="/moderate/spam/<%= node.id %>"><%= t('notes._notes.spam') %></a>
-              <% else %>
-                <%= raw t('notes._notes.pending_approval', :url1 => '/wiki/moderation') %>
-              <% end %>
-            </p>
-          <% end %>
+        <%= render partial: 'notes/card', locals: { node: node, i: i, tagname: tagname } %>
 
-          <h5 style="margin-bottom: 0px;"><a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= (node.type == 'note') ? node.title : node.latest.title %></a></h5>
+      </div>
 
-          <p class="meta">
-          <small>
-            <% if node.type == 'note' %>
-              <div style="font-size: 1.3em;">Activity by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>">@<%= node.author.name %></a> <%= node.author.new_contributor %></div>
-                <a class="ellipsis bottom-right" data-toggle="dropdown">&nbsp<i class="fa fa-ellipsis-h" style="color : #666; font-size:15px; float:right;"></i></a>
-                  <ul class="dropdown-menu" style = "width: 150px; font-size:10px;">
-                    <li>
-                      <a> Made: <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope:'datetime.time_ago_in_words' }) %> </a>
-                    </li>
-                    <li>
-                      <a<% if @widget %>target="_blank"<% end %> href="<%= node.path %>#comments">Comments: <%= node.comments.size %></a>
-                    </li>
-                 
-            <% else %>
-                    <li>
-                      <a>Last Edited: <%= t('notes._notes.last_edit_by') %> <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.latest.author.name %>"><%= node.latest.author.name %></a></a>
-                    </li>
-                    <li>
-                      <a><%= distance_of_time_in_words(Time.at(node.latest.timestamp), Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></a>
-                    </li>
-            <% end %>
-                    <li>
-                      <a>Total Views: </i> <%= number_with_delimiter(node.views) %> <span class="d-none d-lg-inline"><%= t('notes._notes.views') %></span></a>
-                    </li>
-
-                    <li>
-                      <a> Total Likes: <%= node.likers.length %></a>
-                    </li>
-
-                    <div class="content" style="width: 100%" >
-                      <% if @compact.nil? %>
-                        <% if params[:action].to_s.include?("methods") %>
-                          <p><small>
-                            <li><a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#Activities"><i class="fa fa-flask" style="color:#3da56a;"></i> <%= node.activities.count %> activities</a> &nbsp;</li>
-                            <!-- <p><i class="fa fa-users" style="color:blue"></i> contributors</p> -->
-                            <li><a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#Questions"><i class="fa fa-question-circle" style="color:#db3a1e;"></i> <span id="questions-count-<%= node.id %>"><%= node.questions.count %> questions</span></a></li>
-                        </small></p>
-                        <% end %>
-                        <li class="buttons mb-2"><% if logged_in_as(['admin','moderator']) %><a style="width: 90px" class="btn btn-outline-secondary" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> <%= t('notes._notes.spam') %></a><% end %></li>
-                        <li class="buttons"><a style="width: 90px;" class="btn btn-outline-secondary" href="<%= node.path %>"><%= t('notes._notes.read_more') %></a></li>
-                      <% end %>
-                    <% if params[:mod] %>
-                      <a class="btn btn-outline-secondary" href="#"><i class="fa fa-ban-circle"></i> <%= t('notes._notes.spam') %></a>
-                    <% end %>
-                    <hr style="display:none;" class="bottom" />
-          </div>
-                  </ul>
-                  </small></p>
-
-          </div>
-        </div>
-        </div>
-        
-        <% unless @widget %><hr class="d-md-none" /><% end %>
+      <% unless @widget %><hr class="d-md-none" /><% end %>
     <% end %>
-    </div>
+  </div>
 </div>
-<%= will_paginate notes, renderer: WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated %>
+<%= will_paginate notes, renderer: WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || (unpaginated ||= false) %>
+
 <style>
-.card {
+/* TODO: Let's move this to a real stylesheet */
+#notes .card {
   background-color: #fff;
   border: 1px solid;
   border-color: #D3D3D3;
   border-radius: 6px;
   margin:1em 0em 1em 0em;
-  padding: 0px; !important
+  padding: 0px !important;
 }
- .card-body {
+#notes .card-body {
   margin-right: 1em;
   margin-left: 1em;
   padding: 0.8em;
   text-align: left;
 }
 
-.btn {
+#notes .btn {
   font-size: 15px;
 }
 
-.buttons {
+#notes .buttons {
   text-align: center;
 }
 
-.imgg {
+#notes .imgg {
   background: #aaa;
   display: flex;
   align-items: center;
 }
 
-.note-not {
+#notes .note-not {
   margin-left:auto;
   margin-right: auto;
   color: #fff;
 }
 
-.ellipsis{
+#notes .ellipsis {
   cursor: pointer;
 }
 
-.dropdown-menu li a{
+#notes .dropdown-menu li a{
   display: inline-block;
   padding-bottom: 5px;
   padding-left: 14px;
   font-size: 13px;
 }
 
-.bottom-right {
+#notes .bottom-right {
   position: absolute;
   bottom: 10px;
   right: 16px;
-  color: #fff;
-  text-shadow: 0.5px 0.5px #333;
   text-decoration: underline;
  }
 

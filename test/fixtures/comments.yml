@@ -152,3 +152,11 @@ replied_comment:
   timestamp: <%= Time.now.to_i + 10 %>
   thread: /01
   reply_to: 1
+
+comment_by_first_time_user:
+  uid: 12
+  nid: 1
+  status: 1
+  comment: This is comment is replied to first
+  timestamp: <%= Time.now.to_i + 10 %>
+  thread: /01

@@ -253,7 +253,7 @@ en:
       notes_per_week: "%{note_count} notes per week over this period."
       edits_per_week: "%{count} edits per week over this period."
       notes_wikis_comments: |
-          <b>%{notes_count} notes</b> and <b>%{wikis_count} wiki edits and</b>
+          <b>%{notes_count} notes</b>, <b>%{wikis_count} wiki edits</b>
           and <b>%{comments_count} comments </b>  posted in this period.
       members_and_contributors: |
           <b>%{member_count}  member registrations</b>
@@ -371,8 +371,17 @@ en:
       subscriptions: "Your subscriptions"
       sort_by: "Sort By"
       more_posts: "more posts"
-      subscribe: "Subscribe"
-      unsubscribe: "Unsubscribe"
+      follow: "Follow"
+      unfollow: "Unfollow"
+      notes:
+        one: "1 note"
+        other: "%{count} notes"
+      questions:
+        one: "1 question"
+        other: "%{count} questions"
+      comments:
+        one: "1 comment"
+        other: "%{count} comments"
     show:
       notes_tagged: "Notes tagged with <i style=\"color:#aaa;\">%{tag}</i>"
       following: "Following"
@@ -390,6 +399,7 @@ en:
       maps: "Maps"
       no_results_found: "No results found; try searching for '<b>%{tag}</b>'"
       try_advanced_search: "Or try an <a href='%{url1}'>advanced search</a>"
+      people: "People"
       no_map_results_found: "Sorry, no map is tagged with <i>%{tag}</i>"
       contributors: "Contributors"
     contributors-index:
@@ -420,6 +430,8 @@ en:
         use the * asterisk in their URLs, and will not show contributor listings."
       contributor: "Contributor"
       notes: "Notes"
+      people_who've_posted: "People who've posted"
+      people_who_are_following: "People who are following"
   wiki:
     index:
       wiki_pages_tagged_with: "Wiki pages tagged with <i style='color:#aaa;'>%{tag}</i>"
@@ -549,7 +561,7 @@ en:
         board: "Non-profit board"
         fund: "How we're funded"
         press_and_media: "Press and Media"
-        contact: "Contact the staff"
+        contact: "Contact"
       get_involved:
         get_involved_title: "Get Involved"
         getting_started: "Getting started"
@@ -607,7 +619,7 @@ en:
       username: "Username"
       password: "Password"
       remember_me: "Remember me"
-      reset_by_clicking_here: "Forgotten or lost your password? Reset it by <a href='%{url1}'>clicking here</a>"
+      reset_by_clicking_here: "Forgot your password? Reset it <a href='%{url1}'>here</a>"
   home:
     dashboard:
       welcome: "Welcome!"
@@ -644,7 +656,7 @@ en:
       click_unfollow: "Click to unfollow"
       following: "Following"
       research_notes: "all research notes"
-      subscribe_to: "Subscribe to"
+      subscribe_to: "Follow"
       all: "all"
       notes: "notes"
       receive_mails: "Receive emails for all research notes."
@@ -654,7 +666,7 @@ en:
       options: "Options"
       share_subscription_link: "Share this subscription link"
       share: "Share"
-      unsubscribe: "Unsubscribe"
+      unsubscribe: "Unfollow"
     _comments:
       commented: "commented"
       read_more: "Read more"
@@ -729,7 +741,7 @@ en:
       browse_wiki: "Browse the Public Lab Wiki"
     _list:
       mailing_list: "Join the <a href='%{url1}'<b>%{mailing_list}</b> mailing list</a>"
-      subscribe: "Subscribe"
+      subscribe: "Follow"
       recent_discussion_topics: "Recent discussion topics"
       all_topics: "All topics"
     _user:
