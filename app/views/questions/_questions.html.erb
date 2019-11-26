@@ -7,15 +7,8 @@
           <%= render partial: 'dashboard/node_moderate', locals: { node: node } %>
           <h4><a <% if @widget %>target="_blank"<% end %> href="<%= node.path(:question) %>"><%= node.title %></a></h4>
         </div>
-        <div class="card-body">
-          <span id="tags">
-            <% node.tags.limit(4).each do |tag| %>
-              <span id="tag_<%= tag.id %>" ><a class="badge badge-primary" href="/questions/tag/<%= tag.name %>"><%= tag.name %></a></span>
-            <% end %>
-          </span>
-        </div>
         <div class="card-footer">
-          <p class="meta">asked <%= render partial: "dashboard/node_meta", locals: { node: node } %></p>
+          <p class="meta"><%= render partial: "dashboard/node_meta", locals: { node: node } %></p>
         </div>
       </div>
     </div>

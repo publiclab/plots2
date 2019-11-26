@@ -1,16 +1,28 @@
-<% unless node.is_a?(Comment) || node.is_a?(Revision) || node.type == 'page' %>
-  <%= translation('dashboard.dashboard.by') %> <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a> <%= node.author.new_contributor %>
-  <% if node.has_power_tag('with') %>
-    with
-    <% node.coauthors.each_with_index do |coauthor,i| %>
-      <a href="/profile/<%= coauthor.username %>">
-        <%= coauthor.username%> <%= coauthor.new_contributor %></a>
-      <%= ',' if i < node.coauthors.length-1 %>
+<div class="card-meta-author">
+  <% unless node.is_a?(Comment) || node.is_a?(Revision) || node.type == 'page' %>
+    <%= translation('dashboard.dashboard.by') %> <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a> <%= node.author.new_contributor %>
+    <% if node.has_power_tag('with') %>
+      with
+      <% node.coauthors.each_with_index do |coauthor,i| %>
+        <a href="/profile/<%= coauthor.username %>">
+          <%= coauthor.username%> <%= coauthor.new_contributor %></a>
+        <%= ',' if i < node.coauthors.length-1 %>
+      <% end %>
     <% end %>
   <% end %>
-<% end %>
-<%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>
-<% node = node.parent if node.is_a?(Revision) %>
+  <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>
+  <% node = node.parent if node.is_a?(Revision) %>
+</div>
+
+<div class="card-meta-tags">
+  <span id="tags">
+    <% if node.type == 'note' %>
+      <% node.tags.limit(4).each do |tag| %>
+        <span id="tag_<%= tag.id %>" ><a class="badge badge-primary" href="/questions/tag/<%= tag.name %>"><%= tag.name %></a></span>
+      <% end %>
+    <% end %>
+  </span>
+</div>
 
 <div class="card-meta-links">
     <a href="<%= node.path %>#comments"><i class="fa fa-comment-o"></i> <%= node.fetch_comments(current_user).length %></a>
@@ -19,9 +31,8 @@
     | <span><i style="<% if node.likes > 0 %>color:#db4;<% end %>" class="fa fa-star-o"></i> <%= node.likes %></span>
   <% if params[:mod] %>| <a href="#"><i class="fa fa-ban"></i></a><% end %>
   <% if current_user %>
-    <a class="btn btn-outline-secondary btn-sm" rel="popover" data-container="body" data-placement="top" data-template='<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-body"><%= render partial:'dashboard/flag_list', locals: { node: node } %></div></div>' data-html="true" data-content="sample" > <i class="fa fa-flag"> </i> </a>
-    </a>
+    | <a class="" rel="popover" data-container="body" data-placement="top" data-template='<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-body"><%= render partial:'dashboard/flag_list', locals: { node: node } %></div></div>' data-html="true" data-content="sample" ><i class="fa fa-flag"></i></a>
   <% else %>
-    <a data-toggle="modal" data-target="#loginModal" class="btn btn-outline-secondary btn-sm" role="button" aria-pressed="true"> <i class="fa fa-flag"> </i> </a>
+    | <a data-toggle="modal" data-target="#loginModal" role="button" aria-pressed="true"><i class="fa fa-flag"></i></a>
   <% end %>
 </div>
