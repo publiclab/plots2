@@ -11,7 +11,7 @@
       <% @projects.each_with_index do |project, index| %>
 
         <div class="row px-lg-5<%= " odd" if index.odd? %>">
-          <div class="col-6 col-xs-12 project-image <%= index.odd? ? " odd pr-lg-5 order-2" : " pl-lg-5" %>">
+          <div class="col-12 col-sm-6 project-image <%= index.odd? ? " odd pr-lg-5 order-2" : " pl-lg-5" %>">
 
             <% if project.main_image %>
               <a href="<%= project.path %>"><img src="<%= project.main_image.path(:default) %>" style="max-width:100%;" /></a>
@@ -20,7 +20,7 @@
             <% end %>
 
           </div>
-          <div class="col-6 col-xs-12<%= index.odd? ? " pl-lg-5" : " pr-lg-5" %>">
+          <div class="col-12 col-sm-6<%= index.odd? ? " pl-lg-5" : " pr-lg-5" %>">
 
             <h3><a href="<%= project.path %>"><%= project.title %></a></h3>
 
@@ -64,10 +64,9 @@
 <style>
 
 .projects {
-  width: 100%;
-  position: absolute;
-  left: 0;
-  padding: 40px 20px;
+  width: 100vw;
+  margin: 0 calc((100% / 2) - 50vw);
+  padding: 40px 15px;
 }
 .projects .row {
   padding: 50px 20px;
