@@ -12,7 +12,7 @@ function sendFormSubmissionAjax(dataObj, submitTo) {
     url: url,
     data: dataObj,
     success: (event, success) => {
-      if (url != submitTo) {
+      if (url !== submitTo) {
         $(submitTo).trigger('ajax:success', event);
       }
     }
