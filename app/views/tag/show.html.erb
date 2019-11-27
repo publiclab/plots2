@@ -43,7 +43,7 @@
   </div>
 </div>
 
-<% cache("tag-show-#{tag.name}-page-#{params[:page]}", expires_in: 5.minutes, skip_digest: true) do %>
+<% cache("tag-show-#{request.fullpath}", expires_in: 5.minutes, skip_digest: true) do %>
 <div class="container">
   <div class="box">
     <div class="row">
