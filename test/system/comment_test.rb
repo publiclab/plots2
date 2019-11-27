@@ -5,7 +5,7 @@ require "application_system_test_case"
 class CommentTest < ApplicationSystemTestCase
   Capybara.default_max_wait_time = 60
 
-  test 'adding a tag via javascript' do
+  test 'adding a comment via javascript' do
     visit '/'
 
     click_on 'Login'
@@ -23,4 +23,22 @@ class CommentTest < ApplicationSystemTestCase
     assert_selector('#comments-list .comment-body p', text: 'fantastic four')
   end
 
+  test 'adding a comment via javascript with url only' do
+    visit '/'
+
+    click_on 'Login'
+
+    fill_in("username-login", with: "jeff")
+    fill_in("password-signup", with: "secretive")
+    click_on "Log in"
+
+    visit "/wiki/wiki-page-path/comments"
+
+    # run the javascript function
+    page.evaluate_script("addComment('superhero', '/comment/create/11')")
+
+    # check that the tag showed up on the page
+    assert_selector('#comments-list .comment-body p', text: 'superhero')
+  end
+ 
 end

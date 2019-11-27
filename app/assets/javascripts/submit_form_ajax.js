@@ -3,7 +3,7 @@
 // Allows data to be submitted from anywhere on the page using Javascript without using the form itself
 function sendFormSubmissionAjax(dataObj, submitTo) {
   let url = '';
-  if(submitTo.slice(0,5) === "http:") {
+  if(submitTo.slice(0,1) === "/") {
     url = submitTo;
   } else {
     url = $(submitTo).attr('action');

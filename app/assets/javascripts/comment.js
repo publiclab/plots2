@@ -53,8 +53,8 @@ function insertTitleSuggestionTemplate() {
 }
 
 // JS API for submitting comments
-function addComment(comment, selector) {
-  selector = selector || '.comment-form'; // class instead of id because of the bound function on line 3
+function addComment(comment, submitTo) {
+  submitTo = submitTo || '.comment-form'; // class instead of id because of the bound function on line 3
   let data = { body: comment };
-  sendFormSubmissionAjax(data, selector);
+  sendFormSubmissionAjax(data, submitTo);
 }

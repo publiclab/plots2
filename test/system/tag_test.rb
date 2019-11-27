@@ -24,4 +24,23 @@ class TagTest < ApplicationSystemTestCase
 
   end
 
+  test 'adding a tag via javascript with url only' do
+    visit '/'
+
+    click_on 'Login'
+
+    fill_in("username-login", with: "jeff")
+    fill_in("password-signup", with: "secretive")
+    click_on "Log in"
+
+    # run the javascript function
+    page.evaluate_script("addTag('roses', '/tag/create/11')")
+
+    visit "/wiki/wiki-page-path"
+
+    # check that the tag showed up on the page
+    assert_selector('.tags-list .card-body h5', text: 'roses')
+
+  end
+
 end
