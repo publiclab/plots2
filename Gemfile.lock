@@ -280,7 +280,7 @@ GEM
     mustermann (1.0.3)
     mustermann-grape (1.0.0)
       mustermann (~> 1.0.0)
-    mysql2 (0.5.2)
+    mysql2 (0.5.3)
     naught (1.1.0)
     netrc (0.11.0)
     nifty-generators (0.4.6)
