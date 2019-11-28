@@ -33,10 +33,12 @@ class TagTest < ApplicationSystemTestCase
     fill_in("password-signup", with: "secretive")
     click_on "Log in"
 
+    visit "/wiki/wiki-page-path"
+
     # run the javascript function
     page.evaluate_script("addTag('roses', '/tag/create/11')")
 
-    visit "/wiki/wiki-page-path"
+    visit "/wiki/wiki-page-path" # refresh page
 
     # check that the tag showed up on the page
     assert_selector('.tags-list .card-body h5', text: 'roses')
