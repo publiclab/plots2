@@ -2,7 +2,6 @@
 
 <% unique_id = rand(1000) %>
 
-
   <style>
     #map<%= unique_id %> { width:100%; height:300px; margin: 0; position: relative;}
     #postOnMap<%= unique_id %> {
@@ -49,14 +48,11 @@
     });
 
     var markers_hash<%= unique_id %> = new Map() ;
-
     var map_lat = <%= lat %> ;
     var map_lon = <%= lon %> ;
     var primary_layers<%= unique_id %> = "<%= layers.to_s %>";
     
     var main_layer<%= unique_id %> = "<%= mainLayer.to_s %>";
-    console.log('primary_layers<%= unique_id %> ', primary_layers<%= unique_id %> );
-    
 
     $("#iframeID<%= unique_id %>").click(function() {
       prompt('Use this HTML code to embed this map on another site.', '<iframe style="border:none;" width="100%" height="900px" src="' + "//publiclab.org/fullscreenMap/" + primary_layers<%= unique_id %> + "/" + "<%= lat %>" + "/" +  "<%= lon %>" +"/" + "<%= lat.to_s.length.to_i + 6 %>" +'"></iframe>')
