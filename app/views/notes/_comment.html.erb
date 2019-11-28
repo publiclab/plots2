@@ -127,7 +127,9 @@
   <div style="border: 1px solid #e7e7e7;padding: 18px;" id="c<%= comment.cid %>show">
 
     <% comment_body = comment.render_body %>
-    <p class="comment-body" id="comment-body-<%= comment.cid %>"><%= raw insert_extras(filtered_comment_body(comment_body)) %></p>
+    <div class="comment-body" id="comment-body-<%= comment.cid %>">
+      <%= raw insert_extras(filtered_comment_body(comment_body)) %>
+    </div>
 
     <% if contain_trimmed_body?(comment_body) %>
       <span style="background-color: #DCDCDC;  border-radius: 7px; cursor: pointer;" ><a class="email-toggle" data-toggle="collapse" data-target="#comment-<%= comment.cid %>-extra-content" style='text-decoration: none;'>&nbsp;&ensp;&#x2022&#x2022&#x2022&nbsp;&ensp;</a></span>

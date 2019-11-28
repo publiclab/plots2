@@ -1,14 +1,16 @@
-function addTag(tagname, selector) {
-  selector = selector || '#tagform';
+
+// Taking the prompt+value retrieved in promptTag() or the links in the drop-down menu and populating the form field before submitting it
+// Instead we want to take the tag value and directly submit it with AJAX
+function addTag(tagname, submitTo) {
+  submitTo = submitTo || '#tagform';
   if (tagname.slice(0,5).toLowerCase() === "place") {
     place = tagname.split(":")[1];
     place.replace("-", " ");
     geo = geocodeStringAndPan(place);
   }
   else {
-    var el = $(selector);
-    el.find('.tag-input').val(tagname);
-    el.submit();
+    let data = { name: tagname };
+    sendFormSubmissionAjax(data, submitTo);
   }
 }
 
@@ -44,7 +46,7 @@ function initTagForm(deletion_path, selector) {
       var tag_name = tag[0];
       var tag_id = tag[1];
       $('.tags-list:first').append("<p id='tag_"+tag_id+"' class='badge badge-primary'> \
-        <a style='color:white;' href='/tag/"+tag_name+"'>"+tag_name+"</a> <a class='tag-delete' \
+        <a class='tag-name' style='color:white;' href='/tag/"+tag_name+"'>"+tag_name+"</a> <a class='tag-delete' \
         data-remote='true' href='"+deletion_path+"/"+tag_id+"' style='color:white' data-tag-id='"+tag_id+"' \
         data-method='delete'><i class='fa fa-times-circle fa-white blue pl-1' aria-hidden='true' ></i></a></p> ")
       el.find('.tag-input').val("")
