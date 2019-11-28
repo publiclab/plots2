@@ -5424,6 +5424,11 @@ url-template@^2.0.8:
   resolved "https://registry.yarnpkg.com/url-template/-/url-template-2.0.8.tgz#fc565a3cccbff7730c775f5641f9555791439f21"
   integrity sha1-/FZaPMy/93MMd19WQflVV5FDnyE=
 
+urlhash@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/urlhash/-/urlhash-0.1.3.tgz#4aaa8c681f9aa0bc8dd19680b5f494ce61aa8112"
+  integrity sha1-SqqMaB+aoLyN0ZaAtfSUzmGqgRI=
+
 user-home@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/user-home/-/user-home-1.1.1.tgz#2b5be23a32b63a7c9deb8d0f28d485724a3df190"
