@@ -247,6 +247,7 @@ Plots2::Application.routes.draw do
   get 'groups/:search' => 'user_tags#index'
 
 
+  get 'fullscreenMap/:layersname/:lat/:lon/:zoom/' => 'map#fullscreenMap', constraints: { lat: /.*/, lon: /.*/, zoom: /.*/  }
   get 'maps' => 'map#index'
   get 'users/map' => 'users#map'
   get 'map' => 'search#map'

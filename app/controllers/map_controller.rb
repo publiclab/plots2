@@ -20,6 +20,13 @@ class MapController < ApplicationController
     # @maps = Node.select("node.*,url_alias.dst AS dst").joins(:tag).where('type = "map" AND status = 1 AND (term_data.name LIKE ? OR term_data.name LIKE ?)', 'lat:%', 'lon:%').joins("INNER JOIN url_alias ON url_alias.src = CONCAT('node/',node.nid)")
   end
 
+  def fullscreenMap
+    @layersname = params[:layersname]
+    @lat = params[:lat]
+    @lon = params[:lon]
+    @zoom = params[:zoom]
+  end
+
   def show
     @node = Node.find_map(params[:name], params[:date])
 
