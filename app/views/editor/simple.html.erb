@@ -149,7 +149,7 @@
       <div class="col-lg-9">
           <h5>Share your story</h5>
       <div class="ple-module-content">
-          <textarea id="text-input" class="ple-textarea form-control"> #### Your story
+          <textarea id="text-input" class="ple-textarea form-control" placeholder="Your story">
               <% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %>
           </textarea>
       </div>
