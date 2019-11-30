@@ -68,7 +68,15 @@
           
                 <% end %>
                   <li>
-                  <a href="<%= node.path %>#comments">Total Comments: <%= node.fetch_comments(current_user).length %></a>
+                  self.status = 3
+    			save
+    			self
+  			end
+
+  		def draft_url(base_url)
+    			token = slug.split('token:').last
+    			base_url + '/notes/show/' + nid.to_s + '/' + token
+  			end
                   </li>
                   <li>
                   <a href="/n/<%= node.id %>">Read More</a>
