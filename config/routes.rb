@@ -247,6 +247,7 @@ Plots2::Application.routes.draw do
   get 'groups/:search' => 'user_tags#index'
 
 
+  get 'map/:layersname' => 'map#map'
   get 'maps' => 'map#index'
   get 'users/map' => 'users#map'
   get 'map' => 'search#map'
