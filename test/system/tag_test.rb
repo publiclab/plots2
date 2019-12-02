@@ -45,4 +45,29 @@ class TagTest < ApplicationSystemTestCase
 
   end
 
+  test 'adding a tag to a user profile' do
+    visit '/'
+
+    click_on 'Login'
+
+    fill_in("username-login", with: "jeff")
+    fill_in("password-signup", with: "secretive")
+    click_on "Log in"
+
+    visit "/profile/jeff"
+
+    # run the javascript function
+    page.evaluate_script("addTag('specialgroup', '/profile/tags/create/2')")
+
+    visit "/profile/jeff" # refresh page
+
+    find('#tags-section').click
+
+    # check that the tag showed up on the page - check last tag in list
+    within('.tags-list') do
+      assert_equal('specialgroup', all('span').last.text.chomp(' x'))
+    end
+
+  end
+
 end
