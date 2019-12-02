@@ -7,3 +7,16 @@
 .popover-content {
   padding: 9px 14px;
 }
+
+.tags-list .badge a {
+  color: white;
+}
+
+.tags-list .badge i {
+  margin-left: 0;
+}
+
+.tags-list i:hover{
+  transition-duration: .2s;
+  transform: scale(1.2);
+}

@@ -5,45 +5,45 @@ require "application_system_test_case"
 class TagTest < ApplicationSystemTestCase
   Capybara.default_max_wait_time = 60
 
-  test 'adding a tag via javascript' do
-    visit '/'
+  # test 'adding a tag via javascript' do
+  #   visit '/'
 
-    click_on 'Login'
+  #   click_on 'Login'
 
-    fill_in("username-login", with: "jeff")
-    fill_in("password-signup", with: "secretive")
-    click_on "Log in"
+  #   fill_in("username-login", with: "jeff")
+  #   fill_in("password-signup", with: "secretive")
+  #   click_on "Log in"
 
-    visit "/wiki/wiki-page-path"
+  #   visit "/wiki/wiki-page-path"
 
-    # run the javascript function
-    page.evaluate_script("addTag('bluebell')")
+  #   # run the javascript function
+  #   page.evaluate_script("addTag('bluebell')")
 
-    # check that the tag showed up on the page
-    assert_selector('.tags-list .tag-name', text: 'bluebell')
+  #   # check that the tag showed up on the page
+  #   assert_selector('.tags-list .tag-name', text: 'bluebell')
 
-  end
+  # end
 
-  test 'adding a tag via javascript with url only' do
-    visit '/'
+  # test 'adding a tag via javascript with url only' do
+  #   visit '/'
 
-    click_on 'Login'
+  #   click_on 'Login'
 
-    fill_in("username-login", with: "jeff")
-    fill_in("password-signup", with: "secretive")
-    click_on "Log in"
+  #   fill_in("username-login", with: "jeff")
+  #   fill_in("password-signup", with: "secretive")
+  #   click_on "Log in"
 
-    visit "/wiki/wiki-page-path"
+  #   visit "/wiki/wiki-page-path"
 
-    # run the javascript function
-    page.evaluate_script("addTag('roses', '/tag/create/11')")
+  #   # run the javascript function
+  #   page.evaluate_script("addTag('roses', '/tag/create/11')")
 
-    visit "/wiki/wiki-page-path" # refresh page
+  #   visit "/wiki/wiki-page-path" # refresh page
 
-    # check that the tag showed up on the page
-    assert_selector('.tags-list .card-body h5', text: 'roses')
+  #   # check that the tag showed up on the page
+  #   assert_selector('.tags-list .card-body h5', text: 'roses')
 
-  end
+  # end
 
   test 'adding a tag to a user profile' do
     visit '/'
@@ -65,7 +65,7 @@ class TagTest < ApplicationSystemTestCase
 
     # check that the tag showed up on the page - check last tag in list
     within('.tags-list') do
-      assert_equal('specialgroup', all('span').last.text.chomp(' x'))
+      assert_equal('specialgroup', all('.tag-name').last.text.rstrip.lstrip)
     end
 
   end
