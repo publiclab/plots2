@@ -1,7 +1,8 @@
 <br>
 <div class="col-lg-8">
     <% if @tags.size == 0 %>
-      <h4><%= @tag_name %> not found</h4>
+      <h4>Uh oh, your search for <%= @tag_name %> returned no results</h4>
+      <h6> <%= link_to "See statistics for all contents", stats_path %> </h6>
     <% else %>
     <h4>Tag statistics for <%= @tag_name %> </h4>
     <hr>
