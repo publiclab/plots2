@@ -9,7 +9,7 @@ $(function() {
   $('input.search-query.typeahead').each(function(i, el){
 
     var typeahead = $(el).typeahead({
-      items: 10,
+      items: "all",
       minLength: 3,
       showCategoryHeader: true,
       item: '<li class="dropdown-item"><a class="dropdown-item" href="#" role="option"></a></li>',
