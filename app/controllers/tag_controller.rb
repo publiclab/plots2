@@ -538,13 +538,13 @@ class TagController < ApplicationController
     @tag_name = params[:id]
     @tags = Tag.where(name: params[:id])
 
-    unless @tags.empty? 
-      @tag_notes = @tags.first.contribution_graph_making('note', @start, @end)
-      @tag_wikis = @tags.first.contribution_graph_making('page', @start, @end)
-      @tag_questions = @tags.first.quiz_graph(@start, @end)
-      @tag_comments = @tags.first.comment_graph(@start, @end)
-      @subscriptions = @tags.first.subscription_graph(@start, @end)
-    end
+    return if @tags.empty?
+
+    @tag_notes = @tags.first.contribution_graph_making('note', @start, @end)
+    @tag_wikis = @tags.first.contribution_graph_making('page', @start, @end)
+    @tag_questions = @tags.first.quiz_graph(@start, @end)
+    @tag_comments = @tags.first.comment_graph(@start, @end)
+    @subscriptions = @tags.first.subscription_graph(@start, @end)
 
     @all_subscriptions = TagSelection.graph(@start, @end)
 
