@@ -548,9 +548,15 @@ textarea, input {
   margin:0 calc((100% / 2) - 50vw) !important;
   z-index:0 !important;
 }
+
 @media (min-width: 992px) {
   .inline-fullwidth-content {
-    margin:0 calc((133% / 2) - 50vw) !important;
+    margin: 0 calc((133% / 2) - 49.4vw) !important;
+  }
+}
+@media (min-width: 1200px) {
+  .inline-fullwidth-content {
+    margin: 0 calc((133% / 2) - 48.3vw) !important;
   }
 }
 
