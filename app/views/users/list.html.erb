@@ -8,7 +8,7 @@
       <h2><%= raw t('People') %></h2>
       <h5><%= t('Recently active on Publiclab') =%></h5>
     </div>
-    <% if @map_lat.blank? || @map_lon.blank? %>
+    <% if current_user && (@map_lat.blank? || @map_lon.blank?) %>
       <div class="col-md-4">
         <a class="btn btn-outline-secondary blurred-location-input" style="color:#666;" onmouseover="this.style.background='white';" submit_to="/profile/tags/create/<%= current_user.uid %>"><i class="fa fa-map-marker"></i> Add your location</a>
       </div>
