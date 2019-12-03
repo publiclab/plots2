@@ -5,6 +5,11 @@
                 <i class='ml-1 ff fa fa-pencil'></i>
             </a>
         <% end %>
+        <% if node.type == 'page' %>
+            <a <% if current_user && current_user.uid != node.uid %>data-confirm='Please be aware that you are editing a post by another contributor, a privilege you have only because you are an admin or co-author.' <% end %> class='btn btn-outline-secondary btn-circle btn-sm' href='<%= @node.edit_path %>?t=<%= Time.now.to_i %>'>
+                <i class='ml-1 ff fa fa-pencil'></i>
+            </a>
+        <% end %>
     <% end %>
 
     <span data-toggle="tooltip" data-placement="top" rel="tooltip" title="Liked by <%= node.likers.length %> people" class="btn btn-outline-secondary btn-circle btn-like" node-id="<%= node.id %>" id="like-button-<%= node.id %>">
@@ -81,7 +86,26 @@
     
         <br />
         <hr style='clear:both;' />
-    
+        <div>
+            <span>
+                <% if node.type == 'note' %>
+                    <%= number_with_delimiter(node.views) %> <%= t('notes.show.views') %>
+                    <% if node.comments %>
+                        | <a href='#comments'><%= node.comments.length %> <%= t('notes.show.comments') %></a>
+                    <% end %>
+                <% end %>
+
+                <% if node.type == 'page' %>
+                    <%= number_with_delimiter(node.views) %> <%= t('wiki.show.views') %>
+                    <% if node.comments %>
+                        | <a href='#comments'><%= node.comments.length %> Comments</a>
+                    <% end %>
+                    | <%= raw t('wiki.show.last_edited', url1: "/profile/" + @revision.author.name, author: @revision.author.name, time: time_ago_in_words(@revision.created_at)) %>
+                <% end %>
+            </span>
+        </div>
+        <br />
+        <hr style='clear:both;' />
         <div>
             <p><a id='print-command-no-links'><i class='fa fa-print'></i> Print without page links</a></p>
             <p><a id='print-command-3-col'><i class='fa fa-print'></i> Print in 3-column layout</a></p>
