@@ -1,5 +1,5 @@
 <div class="col-lg-3 d-print-none">
-
+  <div class="sidebar-panel">
   <div id="sidebar">
 
   <% cache('related_sidebar-feature', skip_digest: true) do %>
@@ -70,6 +70,7 @@
       <%= feature('sidebar-welcome') %>
     <% end %>
   <% end %>
+  </div>
 </div>
 <%= javascript_include_tag 'sidebar' %>
 
