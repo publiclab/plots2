@@ -544,11 +544,11 @@ textarea, input {
 
 /* breaks out of #content div and presents edge-to-edge content without absolute positioning */
 .inline-fullwidth-content {
-  width:100vw;
-  margin:0 calc((100% / 2) - 50vw);
+  width:100vw !important;
+  margin:0 calc((100% / 2) - 50vw) !important;
 }
 @media (min-width: 992px) {
   .inline-fullwidth-content {
-    margin:0 calc((133% / 2) - 50vw);
+    margin:0 calc((133% / 2) - 50vw) !important;
   }
 }
