@@ -534,13 +534,18 @@ class TagController < ApplicationController
     @start = params[:start] ? Time.parse(params[:start].to_s) : Time.now - 1.year
     @end = params[:end] ? Time.parse(params[:end].to_s) : Time.now
     tagname = params[:id]
-
+    
+    @tag_name = params[:id]
     @tags = Tag.where(name: params[:id])
-    @tag_notes = @tags.first.contribution_graph_making('note', @start, @end)
-    @tag_wikis = @tags.first.contribution_graph_making('page', @start, @end)
-    @tag_questions = @tags.first.quiz_graph(@start, @end)
-    @tag_comments = @tags.first.comment_graph(@start, @end)
-    @subscriptions = @tags.first.subscription_graph(@start, @end)
+
+    if @tags.size != 0 
+      @tag_notes = @tags.first.contribution_graph_making('note', @start, @end)
+      @tag_wikis = @tags.first.contribution_graph_making('page', @start, @end)
+      @tag_questions = @tags.first.quiz_graph(@start, @end)
+      @tag_comments = @tags.first.comment_graph(@start, @end)
+      @subscriptions = @tags.first.subscription_graph(@start, @end)
+    end
+
     @all_subscriptions = TagSelection.graph(@start, @end)
 
     total_questions = Node.published.questions
