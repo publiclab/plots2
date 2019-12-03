@@ -7,11 +7,11 @@
       $(this).attr("disabled", "disabled");
       let modalUrl = '/locations/modal';
       let firstVar = true;
-      // <% if (params[:action] == "list") || (params[:action] == "profile") %>
-      //   modalUrl += firstVar ? '?' : '&';
-      //   modalUrl += 'reload=true';
-      //   firstVar = false;
-      // <% end %>
+      <% if (params[:action] == "list") || (params[:action] == "profile") %>
+        modalUrl += firstVar ? '?' : '&';
+        modalUrl += 'reload=true';
+        firstVar = false;
+      <% end %>
       if( $(this).attr("submit_to") ) {
         modalUrl += firstVar ? '?' : '&';
         modalUrl += 'url=' + encodeURIComponent($(this).attr("submit_to"));

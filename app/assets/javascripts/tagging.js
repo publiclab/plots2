@@ -2,7 +2,6 @@
 // Taking the prompt+value retrieved in promptTag() or the links in the drop-down menu and populating the form field before submitting it
 // Instead we want to take the tag value and directly submit it with AJAX
 function addTag(tagname, submitTo) {
-  alert(tagname + ' ' + submitTo);
   submitTo = submitTo || '#tagform';
   if (tagname.slice(0,5).toLowerCase() === "place") {
     place = tagname.split(":")[1];
