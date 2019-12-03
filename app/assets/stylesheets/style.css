@@ -552,3 +552,10 @@ textarea, input {
     margin:0 calc((133% / 2) - 50vw) !important;
   }
 }
+
+.sidebar-panel {
+  background: rgba(255,255,255,0.8);
+  z-index: 9999;
+  border-radius: 4px;
+  padding: 10px; 
+}
