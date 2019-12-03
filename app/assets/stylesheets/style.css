@@ -236,6 +236,11 @@ a .fa-white,
   #header .brand-compact { display:none; }
 }
 
+#brand:hover {
+  color: #ccc;
+  transition-duration: 250ms;
+}
+
 .navbar-nav > li > a {
   color: #aaa;
 }
