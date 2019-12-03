@@ -538,7 +538,7 @@ class TagController < ApplicationController
     @tag_name = params[:id]
     @tags = Tag.where(name: params[:id])
 
-    if @tags.size != 0 
+    if !@tags.empty? 
       @tag_notes = @tags.first.contribution_graph_making('note', @start, @end)
       @tag_wikis = @tags.first.contribution_graph_making('page', @start, @end)
       @tag_questions = @tags.first.quiz_graph(@start, @end)

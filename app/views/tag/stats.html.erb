@@ -1,6 +1,6 @@
 <br>
 <div class="col-lg-8">
-    <% if @tags.size == 0 %>
+    <% if @tags.empty? %>
       <h4>Uh oh, your search for <%= @tag_name %> returned no results</h4>
       <h6> <%= link_to "See statistics for all contents", stats_path %> </h6>
     <% else %>
