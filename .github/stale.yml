@@ -1,0 +1,100 @@
+# Configuration for probot-stale - https://github.com/probot/stale
+
+# General Configuration
+# Label to use when marking as stale
+staleLabel: stale
+
+# Pull Request specific configuration
+pulls:
+  # Number of days of inactivity before an Issue or Pull Request becomes stale
+  daysUntilStale: 30
+
+  # Number of days of inactivity before an Issue or Pull Request with the stale label is closed.
+  # Set to false to disable. If disabled, issues still need to be closed manually, but will remain marked as stale.
+  daysUntilClose: 10
+
+  # Only issues or pull requests with all of these labels are check if stale. Defaults to `[]` (disabled)
+  onlyLabels: []
+
+  # Issues or Pull Requests with these labels will never be considered stale. Set to `[]` to disable
+  exemptLabels:
+    - pinned
+    - security
+    - important
+    - Epic
+
+  # Set to true to ignore issues in a project (defaults to false)
+  exemptProjects: false
+
+  # Set to true to ignore issues in a milestone (defaults to false)
+  exemptMilestones: false
+
+  # Set to true to ignore issues with an assignee (defaults to false)
+  exemptAssignees: false
+
+  # Comment to post when marking as stale. Set to `false` to disable
+  markComment: >
+    This Pull Request has been automatically marked as stale because it has not had
+    recent activity. It will be closed in 10 days if no further activity occurs. Thank you
+    for your contributions.
+
+  # Comment to post when removing the stale label.
+  unmarkComment: >
+    Hey, does something happened? We're glad to see activity on this Pull Request and will appreciate your help
+    in pushing this PR to completion. Thanks for contributing.
+
+  # Comment to post when closing a stale Issue or Pull Request.
+  closeComment: >
+    We really appreciate your work and help on this PR, but unfortunately, we have to close it due to no activity for long duration.
+    If you still want to work on it, feel free to open it. Thank you again for your contributions.
+
+  # Limit the number of actions per hour, from 1-30. Default is 30
+  limitPerRun: 30
+
+# Issue specific configuration
+issues:
+  # Number of days of inactivity before an Issue or Pull Request becomes stale
+  daysUntilStale: 90
+
+  # Number of days of inactivity before an Issue or Pull Request with the stale label is closed.
+  # Set to false to disable. If disabled, issues still need to be closed manually, but will remain marked as stale.
+  daysUntilClose: 15
+
+  # Only issues or pull requests with all of these labels are check if stale. Defaults to `[]` (disabled)
+  onlyLabels: []
+
+  # Issues or Pull Requests with these labels will never be considered stale. Set to `[]` to disable
+  exemptLabels:
+    - pinned
+    - security
+    - planning
+    - Epic
+    - project
+
+  # Set to true to ignore issues in a project (defaults to false)
+  exemptProjects: false
+
+  # Set to true to ignore issues in a milestone (defaults to false)
+  exemptMilestones: false
+
+  # Set to true to ignore issues with an assignee (defaults to false)
+  exemptAssignees: false
+
+  # Comment to post when marking as stale. Set to `false` to disable
+  markComment: >
+    This issue has been automatically marked as stale because it has not had
+    recent activity. It will be closed in 15 days if no further activity occurs. Thank you
+    for your contributions.
+
+  # Comment to post when removing the stale label.
+  unmarkComment: >
+    Hey, does something happened? We're glad to see activity on this issue and will appreciate your help
+    in updating this issue or closing it if it's already solved. Thanks for contributing.
+
+    # Comment to post when closing a stale Issue or Pull Request.
+  closeComment: >
+    We really appreciate all the help on this issue, but unfortunately, we have to close it due to no activity for long duration.
+    If you still want to work on it, feel free to open it. Thank you again for your contributions.
+
+  # Limit the number of actions per hour, from 1-30. Default is 30
+  limitPerRun: 30
