@@ -89,16 +89,16 @@
         <div>
             <span>
                 <% if node.type == 'note' %>
-                    <%= number_with_delimiter(@node.views) %> <%= t('notes.show.views') %>
-                    <% if @node.comments %>
-                        | <a href='#comments'><%= @node.comments.length %> <%= t('notes.show.comments') %></a>
+                    <%= number_with_delimiter(node.views) %> <%= t('notes.show.views') %>
+                    <% if node.comments %>
+                        | <a href='#comments'><%= node.comments.length %> <%= t('notes.show.comments') %></a>
                     <% end %>
                 <% end %>
 
                 <% if node.type == 'page' %>
-                    <%= number_with_delimiter(@node.views) %> <%= t('wiki.show.views') %>
-                    <% if @node.comments %>
-                        | <a href='#comments'><%= @node.comments.length %> Comments</a>
+                    <%= number_with_delimiter(node.views) %> <%= t('wiki.show.views') %>
+                    <% if node.comments %>
+                        | <a href='#comments'><%= node.comments.length %> Comments</a>
                     <% end %>
                     | <%= raw t('wiki.show.last_edited', url1: "/profile/" + @revision.author.name, author: @revision.author.name, time: time_ago_in_words(@revision.created_at)) %>
                 <% end %>
