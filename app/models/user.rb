@@ -463,11 +463,6 @@ class User < ActiveRecord::Base
 
   def latest_location
     recent_locations.last
-    if latest_location.count > 0
-      latest_location[0][0] = latest_location[0][0].name.split(":")[1].to_f
-      latest_location[0][1] = latest_location[0][1].name.split(":")[1].to_f
-    end
-    latest_location
   end
 
   private
