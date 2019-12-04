@@ -3,20 +3,25 @@ class SearchService
 
   # Run a search in any of the associated systems for references that contain the search string
   def search_all(search_criteria)
-    results = { notes: nil,
-      wikis: nil,
-      profiles: nil,
-      tags: nil,
-      maps: nil,
-      questions: nil}
-    results.each do |key, value|
-      if key == 'notes' 
-        value = search_notes(search_criteria.query)
-      else
-        search_criteria.sort_by = "recent" unless key = "wikis"
-        value = key == 'profiles' ? search_profiles(search_criteria) : send("search_#{key}", search_criteria.query, search_criteria.limit)
-      end
-    end
+    notes = search_notes(search_criteria.query)
+
+    wikis = search_wikis(search_criteria.query, search_criteria.limit)
+
+    search_criteria.sort_by = "recent"
+    profiles = search_profiles(search_criteria)
+
+    tags = search_tags(search_criteria.query, search_criteria.limit)
+
+    maps = search_maps(search_criteria.query, search_criteria.limit)
+
+    questions = search_questions(search_criteria.query, search_criteria.limit)
+
+    { notes: notes,
+      wikis: wikis,
+      profiles: profiles,
+      tags: tags,
+      maps: maps,
+      questions: questions }
   end
 
   
@@ -24,6 +29,7 @@ class SearchService
   def search_content(query, limit)
     nodes = search_nodes(query)
     tags = search_tags(query, limit)
+
     { notes: nodes,
       tags: tags }
   end
@@ -35,6 +41,7 @@ class SearchService
   # a recent activity may be a node creation or a node revision
   def search_profiles(search_criteria)
     user_scope = find_users(search_criteria.query, search_criteria.limit, search_criteria.field)
+
     user_scope =
       if search_criteria.sort_by == "recent"
         user_scope.joins(:revisions)
@@ -44,60 +51,27 @@ class SearchService
       else
         user_scope.order(id: :desc)
       end
+
     user_scope.limit(search_criteria.limit)
   end
-  # search for notes or wikis or nodes or maps
-  def search_for(elem, input, limit = 25, order = :natural, type = :boolean)
-    if elem != "profiles" && elem != "tags" && elem != "questions"
-      search_condition = elem == "wiki" ? "`node`.`type` = 'page' OR `node`.`type` = 'place' OR `node`.`type` = 'tool'" : "`node`.`type` = '#{elem}'"
-      Node.search(query: input, order: order, type: type, limit: limit)
-        .where(search_condition)
-    elsif elem == "profiles"
-      user_scope = find_users(search_criteria.query, search_criteria.limit, search_criteria.field)
-      user_scope =
-        if search_criteria.sort_by == "recent"
-          user_scope.joins(:revisions)
-          .where("node_revisions.status = 1")
-          .order("node_revisions.timestamp #{search_criteria.order_direction}")
-          .distinct
-        else
-          user_scope.order(id: :desc)
-        end
-      user_scope.limit(search_criteria.limit)
-    elsif elem = "tags"
-      suggestions = []
-      # filtering out tag spam by requiring tags attached to a published node
-      # also, we search for both "balloon mapping" and "balloon-mapping":
-      Tag.where('name LIKE ? OR name LIKE ?', "%#{query}%", "%#{query.to_s.gsub(' ', '-')}%")
-        .includes(:node)
-        .references(:node)
-        .where('node.status = 1')
-        .limit(limit).each do |tag|
-        suggestions << tag
-      end
-      suggestions
-    elsif elem = "questions"
-      Node.search(query: input, order: order, type: type, limit: limit)
-      .where("`node`.`type` = 'note'")
-      .joins(:tag)
-      .where('term_data.name LIKE ?', 'question:%')
-      .distinct
-    end
-  end
+
   def search_nodes(input, limit = 25, order = :natural, type = :boolean)
-    search_for("node", input, limit, order, type)
+    Node.search(query: input, order: order, type: type, limit: limit)
   end
 
   def search_notes(input, limit = 25, order = :natural, type = :boolean)
-    search_for("note", input, limit, order, type)
+    Node.search(query: input, order: order, type: type, limit: limit)
+        .where("`node`.`type` = 'note'")
   end
 
   def search_wikis(input, limit = 25, order = :natural, type = :boolean)
-    search_for("wiki", input, limit, order, type)
+    Node.search(query: input, order: order, type: type, limit: limit)
+        .where("`node`.`type` = 'page' OR `node`.`type` = 'place' OR `node`.`type` = 'tool'")
   end
 
   def search_maps(input, limit = 25, order = :natural, type = :boolean)
-    search_for("map", input, limit, order, type)
+    Node.search(query: input, order: order, type: type, limit: limit)
+        .where("`node`.`type` = 'map'")
   end
 
   # The search string that is passed in is split into tokens, and the tag names are compared and
@@ -127,10 +101,16 @@ class SearchService
 
   # Search nearby nodes with respect to given latitude, longitute and tags
   def tagNearbyNodes(coordinates, tag, period = { "from" => nil, "to" => nil }, sort_by = nil, order_direction = nil, limit = 10)
-    coordinates.each_value do |value|
-      raise("Must contain all four coordinates") if value.nil?
-      raise("Must be a float") unless value.is_a? Float
-    end
+    raise("Must contain all four coordinates") if coordinates["nwlat"].nil?
+    raise("Must contain all four coordinates") if coordinates["nwlng"].nil?
+    raise("Must contain all four coordinates") if coordinates["selat"].nil?
+    raise("Must contain all four coordinates") if coordinates["selng"].nil?
+
+    raise("Must be a float") unless coordinates["nwlat"].is_a? Float
+    raise("Must be a float") unless coordinates["nwlng"].is_a? Float
+    raise("Must be a float") unless coordinates["selat"].is_a? Float
+    raise("Must be a float") unless coordinates["selng"].is_a? Float
+
     raise("If 'from' is not null, must contain date") if period["from"] && !(period["from"].is_a? Date)
     raise("If 'to' is not null, must contain date") if period["to"] && !(period["to"].is_a? Date)
 
@@ -180,12 +160,19 @@ class SearchService
   # Search nearby people with respect to given latitude, longitute and tags
   # and package up as a DocResult
   def tagNearbyPeople(coordinates, tag, field, period = nil, sort_by = nil, order_direction = nil, limit = 10)
-    coordinates.each_value do |value|
-      raise("Must contain all four coordinates") if value.nil?
-      raise("Must be a float") unless value.is_a? Float
-    end
+    raise("Must contain all four coordinates") if coordinates["nwlat"].nil?
+    raise("Must contain all four coordinates") if coordinates["nwlng"].nil?
+    raise("Must contain all four coordinates") if coordinates["selat"].nil?
+    raise("Must contain all four coordinates") if coordinates["selng"].nil?
+
+    raise("Must be a float") unless coordinates["nwlat"].is_a? Float
+    raise("Must be a float") unless coordinates["nwlng"].is_a? Float
+    raise("Must be a float") unless coordinates["selat"].is_a? Float
+    raise("Must be a float") unless coordinates["selng"].is_a? Float
+
     raise("If 'from' is not null, must contain date") if period["from"] && !(period["from"].is_a? Date)
     raise("If 'to' is not null, must contain date") if period["to"] && !(period["to"].is_a? Date)
+
     user_locations = User.where('rusers.status <> 0')
                          .joins(:user_tags)
                          .where('value LIKE ?', 'lat%')
@@ -215,12 +202,14 @@ class SearchService
 
     # selects the items whose node_tags don't have the location:blurred tag
     items.select do |item|
-      item.user_tags.none? {|user_tag| user_tag.name == "location:blurred"}
+      item.user_tags.none? do |user_tag|
+        user_tag.name == "location:blurred"
+      end
     end
 
     # Here we use period["from"] and period["to"] in the query only if they have been specified,
     # so we avoid to join revision table
-    if !(period["from"].nil? && period["to"].nil?)
+    if !period["from"].nil? || !period["to"].nil?
       items = items.joins(:revisions).where("node_revisions.status = 1")\
                    .distinct
       items = items.where('node_revisions.timestamp > ' + period["from"].to_time.to_i.to_s) unless period["from"].nil?
@@ -228,6 +217,7 @@ class SearchService
     end
 
     # sort users by their recent activities if the sort_by==recent
+
     if sort_by == "recent"
       items.joins(:revisions).where("node_revisions.status = 1")\
            .order("node_revisions.timestamp #{order_direction}")
