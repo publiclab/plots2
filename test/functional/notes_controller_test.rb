@@ -799,6 +799,8 @@ class NotesControllerTest < ActionController::TestCase
    test 'draft author can publish the draft' do
      UserSession.create(users(:jeff))
      node = nodes(:draft)
+     old_created = node.created
+     old_changed = node.changed
      assert_equal 3, node.status
      ActionMailer::Base.deliveries.clear
 
@@ -808,6 +810,8 @@ class NotesControllerTest < ActionController::TestCase
      assert_equal "Thanks for your contribution. Research note published! Now, it's visible publicly.", flash[:notice]
      node = assigns(:node)
      assert_equal 1, node.status
+     assert_not_equal old_changed, node.changed # these should have been forward dated!
+     assert_not_equal old_created, node.created
      assert_equal 1, node.author.status
      assert_redirected_to '/notes/' + users(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + node.title.parameterize
 
