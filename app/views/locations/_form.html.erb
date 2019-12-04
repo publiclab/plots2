@@ -90,7 +90,7 @@
     
     <% if current_user %>
       <%  latest_location = current_user.latest_location %>
-      <% if !latest_location.empty? %>
+      <% unless latest_location.nil? %>
         options.location.lat = <%= latest_location.first.lat %> ;
         options.location.lon = <%= latest_location.first.lon %> ;
       <% end %>
