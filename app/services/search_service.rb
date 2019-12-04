@@ -188,9 +188,7 @@ class SearchService
 
     # selects the items whose node_tags don't have the location:blurred tag
     items.select do |item|
-      item.user_tags.none? do |user_tag|
-        user_tag.name == "location:blurred"
-      end
+      true if item.user_tags.none? {|user_tag| user_tag.name == "location:blurred"}
     end
 
     # Here we use period["from"] and period["to"] in the query only if they have been specified,
