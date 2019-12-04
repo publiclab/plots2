@@ -40,6 +40,8 @@ Rails.application.configure do
     host: 'www.example.com'
   }
 
+  config.active_job.queue_adapter = :inline
+
   OmniAuth.config.test_mode = true
   #OAuth hash for different providers for testing purpose
   #Google Provider

@@ -33,11 +33,11 @@ All the endpoints have the optional parameter `limit` (10 by default) where you 
 
   **Required:**
 
-  `query=[string]`: search the profiles (users) that have the query on their `username` and `bio` profile info.
+  `query=[string]`: Search the profiles (users) that have the query on their `username` and `bio` profile info.
 
   **Optional:**
 
-  `sort_by=[string]`: sort the profiles by the most recent activity. If no value
+  `sort_by=[string]`: Sort the profiles by the most recent activity. If no value
    provided, the results are then sorted by user id (desc).
 
   `order_direction=[string]`: It accepts `ASC` or `DESC` (the latter is the default).
@@ -52,7 +52,7 @@ All the endpoints have the optional parameter `limit` (10 by default) where you 
 
  **Required:**
 
- `query=[string]`: search for notes that have the passed string on their content.
+ `query=[string]`: Search for notes that have the passed string on their content.
 
 ### Wikis
 
@@ -61,7 +61,7 @@ All the endpoints have the optional parameter `limit` (10 by default) where you 
 
   **Required:**
 
-  `query=[string]`: search for wikis that have the passed string on their content.
+  `query=[string]`: Search for wikis that have the passed string on their content.
 
 ### Questions
 
@@ -70,7 +70,7 @@ All the endpoints have the optional parameter `limit` (10 by default) where you 
 
   **Required:**
 
-  `query=[string]`: search for notes that have the `question:query` on their tags list.
+  `query=[string]`: Search for notes that have the `question:query` on their tags list.
 
 ### Tags
 
@@ -79,48 +79,52 @@ All the endpoints have the optional parameter `limit` (10 by default) where you 
 
   **Required:**
 
-  `query=[string]`: search the notes that have the query on their tags list.
+  `query=[string]`: Search the notes that have the query on their tags list.
 
 ### TagLocations:
 
-* **URL**:  `https://publiclab.org/api/srch/taglocations?query=18.00,-66.00`
+* **URL**:  `https://publiclab.org/api/srch/taglocations?nwlat=200.0&selat=0.0&nwlng=0.0&selng=200.0`
 * **URL Params** :
 
   **Required:**
 
-  `query=[coordinates]`: search notes from users located near the query separated by `,`
-  and with at least one digit after the '.'. Taking a lat value as example, `lat:18.0`
-  or `lat:18.00` are valid but `lat:18` is not.
+  `nwlat=[northwest latitude],selat=[southeast latitude],nwlng=[northwest longitude],selng=[southeast longitude]`: Search notes within the rectangle boundary made by these diagonally opposite coordinates.
 
   **Optional:**
 
-  `tag=[string]`: the search can be refined by passing a tag field.
+  `tag=[string]`: The search can be refined by passing a tag field.
+
+  `order_direction=[string]`: It accepts `ASC` or `DESC` (the latter is the default).
+
+  `sort_by=[string]`: It accepts `recent`. It sorts the nodes by the most recent activity. If no value
+     provided, the results are then sorted by node creation (desc).
+
+   `from=[date]`: It accepts a date, if not specified (1990,01,01). It searches for nodes created from the date.
+
+   `to=[date]`: Accepts a date, if not specified uses `now`. It searches for nodes created by the specified date.
 
 ### NearbyPeople:
 
-* **URL**:  `https://publiclab.org/api/srch/nearbyPeople?query=18,-66`
+* **URL**:  `https://publiclab.org/api/srch/nearbyPeople?nwlat=200.0&selat=0.0&nwlng=0.0&selng=200.0`
 * **URL Params** :
 
   **Required:**
 
-  `query=[coordinates]`: search users located near the query separated by `,`.
+  `nwlat=[northwest latitude],selat=[southeast latitude],nwlng=[northwest longitude],selng=[southeast longitude]`: Search users within the rectangle boundary made by these diagonally opposite coordinates.
 
   **Optional:**
 
-  `tag=[string]`: the search can be refined by passing a tag field.
+  `tag=[string]`: The search can be refined by passing a user tag field.
 
-### PeopleLocations
+  `field=[string]`: Accepts the value `node_tag` for searching users following the node tag (topic). When the endpoint receives a `tag` as parameter by default it searches users with the specified user tag, this parameter switches the use of the tag parameter to link node tags instead.
 
-* **URL**:  `https://publiclab.org/api/srch/peoplelocations?query=10`
-* **URL Params** :
+  `order_direction=[string]`: It accepts `ASC` or `DESC` (the latter is the default).
 
-  **Required:**
+  `sort_by=[string]`: It accepts `recent` and `content`. Sort the profiles by the most recent activity or most nodes created. If no value provided, the results are then sorted by signup date (desc).
 
-  `query=[integer]`: search the the users with most recent activity that have coordinates(lat and lon values) on their user tags.
+  `from=[date]`: It accepts a date. It searches for users with some activity from the specified date.
 
-  **Optional:**
-
-  `tag=[string]`: the search can be refined by passing a tag field.
+  `to=[date]`: Accepts a date. It searches for users with some activity by the specified date.
 
 ## API code
 

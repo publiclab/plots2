@@ -1,5 +1,11 @@
 require 'test_helper'
 class CommentTest < ActiveSupport::TestCase
+
+  def setup
+    @start = (Date.today - 1.year).to_time
+    @fin = Date.today.to_time
+  end
+
   test 'should save comment' do
     comment = Comment.new
     comment.comment = "My first thought is\n\nthat this is pretty good. **markdown** and http://link.com"
@@ -16,14 +22,16 @@ class CommentTest < ActiveSupport::TestCase
       assert comments.length > 0
     end
   end
+
   test 'should have gmail quote' do
     require 'mail'
     require 'nokogiri'
-    mail = Mail.read('test/fixtures/incoming_test_emails/gmail/incoming_gmail_email.eml') 
-    mail_doc = Nokogiri::HTML(mail.html_part.body.decoded) # To parse the mail to extract comment content and reply content 
+    mail = Mail.read('test/fixtures/incoming_test_emails/gmail/incoming_gmail_email.eml')
+    mail_doc = Nokogiri::HTML(mail.html_part.body.decoded) # To parse the mail to extract comment content and reply content
     gmail_quote = Comment.gmail_quote_present?(mail_doc)
     assert_equal gmail_quote, true
   end
+
   test 'should not save comment without body' do
     comment = Comment.new
     assert !comment.save, 'Saved the comment without body text'
@@ -158,9 +166,9 @@ class CommentTest < ActiveSupport::TestCase
 
   test 'should relate answer comments to user and answer but not node' do
     answer = answers(:one)
-    user = drupal_users(:bob)
+    user = users(:bob)
     comment = Comment.new(comment: 'Test comment')
-    comment.drupal_user = user
+    comment.user = user
     comment.answer = answer
 
     assert comment.save
@@ -286,23 +294,23 @@ class CommentTest < ActiveSupport::TestCase
     assert_equal false, comment.trimmed_content?
   end
 
-  test 'should parse incoming mail from other domain who use gmail service correctly and add answer comment' do
-    require 'mail'
-    mail = Mail.read('test/fixtures/incoming_test_emails/gmail/incoming_gmail_email.eml')
-    answer = Answer.last
-    mail.subject = "Re: (#a#{answer.id})"
-    mail.from = ["jeff@publiclab.org"]
-    Comment.receive_mail(mail)
-    f = File.open('test/fixtures/incoming_test_emails/gmail/final_parsed_comment.txt', 'r')
-    comment = Comment.last
-    assert_equal comment.comment, f.read
-    assert_equal comment.aid, answer.id
-    assert_equal comment.message_id, mail.message_id
-    assert_equal comment.comment_via, 1
-    assert_equal User.find(comment.uid).email, "jeff@publiclab.org"
-    f.close()
+  test 'contribution graph making' do
+    graph = Comment.contribution_graph_making(@start, @fin)
+    comments = Comment.where(timestamp: @start.to_i..@fin.to_i).count
+
+    assert_equal comments, graph.values.sum
+    assert graph.class, Hash
   end
 
+  test 'find email using twitter user name' do
+    require 'yaml'
+    config = YAML.load(File.read('test/fixtures/user_tags.yml'))
+    username = config["twitter3"]["data"]["info"]["nickname"]
+    email = Comment.find_email(username)
+    assert_equal email, "01namangupta@gmail.com"
+  end
 
-
+  test 'find comments using tagname and user id' do
+    assert_equal('Admin comment', Comment.find_by_tag_and_author("awesome", 5).first.comment)
+  end
 end

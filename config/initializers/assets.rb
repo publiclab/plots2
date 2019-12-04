@@ -2,6 +2,7 @@ Rails.application.config.assets.precompile += [
   'leaflet-blurred-location/dist/Leaflet.BlurredLocation.js',
 
   'advanced_search.js',
+  'submit_form_ajax.js',
   'application.js',
   'comment_expand.js',
   'comment.js',
@@ -9,6 +10,7 @@ Rails.application.config.assets.precompile += [
   'dragdrop.js',
   'editor.js',
   'graph.js',
+  'simple-data-grapher.js',
   'grids.js',
   'header_footer.js',
   'ics.deps.min.js',
@@ -48,5 +50,7 @@ Rails.application.config.assets.precompile += [
   'user_tags.css.scss',
   'wiki.css',
   'horsey.js',
-  'atwho_autocomplete.js'
+  'atwho_autocomplete.js',
+  'async_tag_subscriptions.js',
+  'cable.js'
 ]

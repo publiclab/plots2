@@ -25,8 +25,11 @@ It was originally created by Caroline Hadilaksono: http://www.hadilaksono.com
 
 }
 
+body{
+  padding-top: 80px;
+}
 
-h1,h2,h3 {
+h1,h2,h3,h4 {
   font-family:"Junction Light", lucida grande,lucida sans console,sans-serif;
   font-weight:normal;
 }
@@ -35,7 +38,7 @@ h2 small {
   font-size: 60%;
 }
 
-h4,h5,h6, h1 small, h3 small {
+h5,h6, h1 small, h3 small {
   font-family: "Junction Regular", lucida grande,lucida sans console,sans-serif;
   font-weight: normal;
   line-height: 1.4em;
@@ -59,9 +62,28 @@ h4,h5,h6, h1 small, h3 small {
 .pl-content p img,
 #comments p img,
 #answer-0-comment p img,
-.pl-content p iframe {
+.pl-content p {
   max-width: 100%;
   border: none;
+}
+
+.btn-circle {
+  height: 45px;
+  width: 45px;
+  border-radius: 50%;
+  display: block;
+  padding: 8px 8px 0;
+  margin-right: 3px;
+  border-color: #ccc;
+  font-size: 18px;
+}
+
+.btn-circle-sm {
+  height: 25px;
+  width: 25px;
+  margin: 13px 5px;
+  padding: 5px 3px 0px 1px;
+  font-size: 11px;
 }
 
 #profile-fileinput {
@@ -80,7 +102,7 @@ a .fa-white,
 }
 
 .label a {
-  color:white;
+  color:#007bff;
 }
 
 .label {
@@ -89,10 +111,25 @@ a .fa-white,
 
 .alert h2 {
   font-size:1.2em;
+  font-weight: 800;
 }
 
 .visible-print {
   display:none;
+}
+
+.text-underline {
+  text-decoration: underline !important;
+}
+
+#pl_pad {
+    width:300%;
+}
+
+@media (max-width:992px) {
+    #pl_pad {
+        width:250%;
+    }
 }
 
 @media (max-width:400px) {
@@ -101,6 +138,10 @@ a .fa-white,
   }
   .visible-tiny {
     display:inline;
+  }
+
+  #pl_pad {
+      width: 75%;
   }
 }
 
@@ -111,12 +152,10 @@ a .fa-white,
   .visible-tiny {
     display:none;
   }
+
 }
 
 @media (max-width: 768px) {
-    .navbar-header {
-        float: none;
-    }
     .navbar-left,.navbar-right {
         float: none !important;
     }
@@ -131,9 +170,9 @@ a .fa-white,
         top: 0;
         border-width: 0 0 1px;
     }
-    .navbar-collapse.collapse {
+    /*.navbar-collapse.collapse {
         display: none!important;
-    }
+    }*/
     .navbar-nav {
         float: none!important;
         margin-top: 7.5px;
@@ -151,9 +190,11 @@ a .fa-white,
     #md-ham {
         display: none;
     }
+    #pl_pad {
+        width:150%;
+    }
 }
 
-body { padding-top: 70px; }
 
 #header .collapse.in .hidden-xs,
 #header .collapse.in .hidden-sm,
@@ -169,7 +210,7 @@ body { padding-top: 70px; }
 
 #header .navbar-brand {
   color: white;
-  padding-top: 19px;
+  /*padding-top: 19px;*/
   font-family: "Junction Light", lucida grande,lucida sans console,sans-serif;
   font-size: 22px;
 }
@@ -185,6 +226,9 @@ body { padding-top: 70px; }
 @media (max-width: 340px) {
   #brand { display:none; }
   #header .brand-compact { display:inline; }
+  #pl_pad {
+      width: 75%;
+  }
 }
 
 @media (min-width: 340px) {
@@ -192,7 +236,7 @@ body { padding-top: 70px; }
   #header .brand-compact { display:none; }
 }
 
-.navbar-inverse .navbar-nav > li > a {
+.navbar-nav > li > a {
   color: #aaa;
 }
 
@@ -212,7 +256,7 @@ body { padding-top: 70px; }
   color: #666;
   clear:both;
   margin-top: 40px;
-  padding: 30px;
+  padding: 30px !important;
   border-top: 1px solid #E5E5E5;
   background-color: #f8f8f8;
 }
@@ -263,8 +307,14 @@ body { padding-top: 70px; }
 }
 
 .pl-content blockquote p {
-  padding: 8px 4px;
+  padding: 14px;
+  font-style: italic;
   margin-top: 8px;
+  font-size: 16px;
+  font-family: "Helvetica Neue";
+  border-left: 5px solid #736f6f;
+  color: #555;
+  background-color: #f3f1ef;
 }
 
 #tags .label {
@@ -334,14 +384,14 @@ body { padding-top: 70px; }
   border-bottom: 1px solid #ddd;
 }
 
-@media (max-width:400px) {
+.pagination > li:first-child,
+.pagination > li:last-child {
+    display: inline;
+}
+
+@media (max-width:640px) {
   .pagination > li {
     display: none;
-  }
-
-  .pagination > li:first-child,
-  .pagination > li:last-child {
-    display: inline;
   }
 }
 
@@ -362,13 +412,11 @@ div.note .meta {
   color:#888;
 }
 
-.image-container {
-  height:auto;
-  overflow:auto;
-}
-
+/*start of img aspect css that will affect the
+thumbnails which appears on the user's profile
+under their notes*/
 #notes .note a.img {
-  height:160px;
+  height: auto;
   display: inline-block;
   overflow: hidden;
   margin-bottom: 10px;
@@ -379,13 +427,17 @@ div.note .meta {
   overflow: hidden;
 }
 .note-image img {
-  width: 100%;
+  width: auto;
 }
 
 .grid-image {
-  width: auto;
-  height: 160px;
+  width: 100% !important;
+  height: auto;
+  display: block;
+  overflow: hidden;
+  margin-bottom: 10px;
 }
+/*end of img aspect css*/
 
 #notes .note h3 a {
   color: #444;
@@ -419,7 +471,7 @@ div.note.moderated h4 {
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
   background-color: #006dcc;
   *background-color: #3071a9;
-  background-image: -moz-linear-gradient(top, #0088cc, #3071a9);
+  background-image: -moz-linear-gradient(top, #0077dd, #4451a9);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#3071a9));
   background-image: -webkit-linear-gradient(top, #0088cc, #3071a9);
   background-image: -o-linear-gradient(top, #0088cc, #3071a9);
@@ -429,6 +481,10 @@ div.note.moderated h4 {
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff3071a9', GradientType=0);
   filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+
+a.btn-outline-secondary .fa {
+  color: inherit;
 }
 
 .nav-button-wrapper {
@@ -441,8 +497,11 @@ div.note.moderated h4 {
   }
 
   .grid-image {
-    width: auto;
-    height: 200px;
+  width: auto;
+  height: auto;
+  display: block;
+  overflow: hidden;
+  margin-bottom: 10px;
   }
 }
 
@@ -461,5 +520,49 @@ div.note.moderated h4 {
 .back-to-top i {
 
   font-size: 60px;
+  position: fixed;
+  bottom: 40px;
+  right: 50px;
 
+}
+
+.is-active{
+    cursor: default;
+    background-color: #e3f2fd;
+}
+textarea, input {
+    padding:10px;
+    font-family: FontAwesome, "Open Sans", Verdana, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
+}
+
+.form-grey {
+  color:#888;
+}
+
+/* breaks out of #content div and presents edge-to-edge content without absolute positioning */
+.inline-fullwidth-content {
+  width:100vw !important;
+  margin:0 calc((100% / 2) - 50vw) !important;
+  z-index:0 !important;
+}
+
+@media (min-width: 992px) {
+  .inline-fullwidth-content {
+    margin: 0 calc((133% / 2) - 49.4vw) !important;
+  }
+}
+@media (min-width: 1200px) {
+  .inline-fullwidth-content {
+    margin: 0 calc((133% / 2) - 48.3vw) !important;
+  }
+}
+
+.sidebar-panel {
+  background: rgba(255,255,255,0.8);
+  z-index: 9999;
+  border-radius: 4px;
+  padding: 10px; 
 }

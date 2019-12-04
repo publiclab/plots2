@@ -5,6 +5,7 @@ class EditorController < ApplicationController
   def legacy
     # /post/?i=http://myurl.com/image.jpg
     flash.now[:notice] = "This is the legacy editor. For the new rich editor, <a href='/editor'>click here</a>."
+    flash.now[:warning] = "Deprecation notice: Legacy editor will be discontinued soon, please use rich/markdown editor."
     image if params[:i]
     template if params[:n] && !params[:body] # use another node body as a template
     if params[:tags]&.include?('question:')
@@ -32,6 +33,14 @@ class EditorController < ApplicationController
   def rich
     if params[:main_image] && Image.find_by(id: params[:main_image])
       @main_image = Image.find_by(id: params[:main_image]).path
+    end
+
+    if params[:tags]&.include? "lat:" and params[:tags]&.include? "lon:"
+      tags = params[:tags].split(',')
+      tags.each do |x|
+        x.include? "lat:" and (@lat = x.split(':')[1])
+        x.include? "lon:" and (@lon = x.split(':')[1])
+      end
     end
     template if params[:n] && !params[:body] # use another node body as a template
     image if params[:i]

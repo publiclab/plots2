@@ -6,15 +6,12 @@ class AddPathToDrupalNode < ActiveRecord::Migration[5.1]
     # used to first delete url_alias records that do not correspond to any node
     # or are replaced by a route + controller
     @first_filter = ActiveRecord::Base.connection.execute('select pid, src, dst from url_alias where src not like "users/%" and src not like "people/%" and src not like "user/%" and src not like "taxonomy/%" and src not like "blog/%" and src not like "%/feed" and src not like "%/add%";')
-    puts "Size after first filter: #{@first_filter.size}"
-    puts "Should be #{Node.count}"
 
-    puts "Quick break to set up Node redirects:"
     # url_a[1] is the node id in the form of 'node/123'
     # url_a[2] is the actual url
     duplicate_node_ids = (@first_filter.to_a - @first_filter.to_a.uniq { |url_a| url_a[1] })
     cleaned_node_ids = duplicate_node_ids.uniq { |url_a| url_a[2] }
-    puts "There were #{cleaned_node_ids.size} duplicate node ids in url_alias"
+
     cleaned_node_ids.each do |redirect_node|
       path = redirect_node[2]
       Node.transaction do
@@ -50,7 +47,6 @@ class AddPathToDrupalNode < ActiveRecord::Migration[5.1]
     if fourth_filter.size > 0
       ActiveRecord::Base.connection.execute("delete from url_alias where pid not in (#{fourth_filter.map { |i| i[0].to_i }.join(',')});")
       no_of_aliases = ActiveRecord::Base.connection.execute('select count(pid) from url_alias;')
-      puts no_of_aliases.to_a
     end
 
     dsts = ActiveRecord::Base.connection.execute('select dst, src from url_alias;')
@@ -66,8 +62,6 @@ class AddPathToDrupalNode < ActiveRecord::Migration[5.1]
         end
       end
     end
-    
-
 
     drop_table :url_alias
   end

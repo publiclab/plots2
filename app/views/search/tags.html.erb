@@ -9,7 +9,7 @@
 
       <div class="row">
         <% @tags.each do |tag| %>
-          <p><a href=<%= "#{tag.path}" %>><%= tag.title %></a></p>
+          <p><a href=<%= "#{tag}" %>><%= tag %></a></p>
         <% end %>
       </div>
     </div>
@@ -23,4 +23,4 @@
   <% end %>
 </div>
 <div class="text-center">
-  <%= will_paginate @tags, :renderer => BootstrapPagination::Rails unless @unpaginated %></div>
+  <%= will_paginate @tags, renderer: WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated %></div>

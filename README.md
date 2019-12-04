@@ -1,27 +1,32 @@
 PublicLab.org
 ======
 
+[![Code of Conduct](https://img.shields.io/badge/code-of%20conduct-green.svg)](https://publiclab.org/conduct)
 [![Build Status](https://travis-ci.org/publiclab/plots2.svg)](https://travis-ci.org/publiclab/plots2)
-[![first-timers-only-friendly](http://img.shields.io/badge/first--timers--only-friendly-blue.svg?style=flat-square)](https://publiclab.github.io/community-toolbox/)
-[![Join the chat at https://gitter.im/publiclab/publiclab](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/publiclab/publiclab)
+[![first-timers-only-friendly](http://img.shields.io/badge/first--timers--only-friendly-blue.svg?style=flat-square)](https://code.publiclab.org#r=all)
+[![Join the chat at https://publiclab.org/chat](https://img.shields.io/badge/chat-in%20different%20ways-blue.svg)](https://publiclab.org/chat)
 [![Code Climate](https://codeclimate.com/github/publiclab/plots2/badges/gpa.svg)](https://codeclimate.com/github/publiclab/plots2)
 [![Coverage Status](https://coveralls.io/repos/github/publiclab/plots2/badge.svg?branch=HEAD)](https://coveralls.io/github/publiclab/plots2?branch=HEAD)
 [![View performance data on Skylight](https://badges.skylight.io/typical/GZDPChmcfm1Q.svg)](https://oss.skylight.io/app/applications/GZDPChmcfm1Q)
+[![Newcomers welcome](https://img.shields.io/badge/newcomers-welcome-pink.svg)](https://code.publiclab.org)
 
-The content management system for the Public Lab research community, the plots2 web application is a combination of a group research blog of what we call "research notes" and a wiki. Read more about the [data model here](https://github.com/publiclab/plots2/blob/master/doc/DATA_MODEL.md).
+The content management system for the Public Lab research community, the `plots2` web application is a combination of a group research blog of what we call "research notes" and a wiki. Read more about the [data model here](https://github.com/publiclab/plots2/blob/master/doc/DATA_MODEL.md).
 
-It features a variety of features that help the Public Lab community collaborate on environmental technology design and documentation, as well as community organizing. Originally a Drupal site, it was rewritten in 2012 in Ruby on Rails and has since extended but not entirely replaced the legacy Drupal data model and database design. We ❤️ Open Source and actively participates in various OSS programs such as [Google Summer of Code(GSoC)](https://publiclab.org/wiki/gsoc), Rails Girls Summer of Code (RGSoC), Outreachy and [Google Code-In (GCI)](https://github.com/publiclab/plots2/wiki/Google-Code-In-Tasks).
-
+It showcases a variety of features that help the Public Lab community collaborate on environmental technology design and documentation, as well as community organizing. Originally a Drupal site, it was rewritten in 2012 in Ruby on Rails and has since extended but [not yet entirely replaced](https://github.com/publiclab/plots2/issues/956) the legacy Drupal data model and database design. We ❤️ Open Source and actively participate in various OSS programs such as [Google Summer of Code(GSoC)](https://publiclab.org/wiki/gsoc), Rails Girls Summer of Code (RGSoC), Outreachy and Google Code-In (GCI).
 Some key features include:
 
-* a [Question and Answer system](https://publiclab.org/questions) for peer-based problem solving
-* a rich text and Markdown research note and wiki [editor](https://github.com/publiclab/PublicLab.Editor)
-* [wiki editing](https://publiclab.org/wiki) and revision tracking
-* tagging and [tag-based content organization](http://publiclab.org/tags)
-* email notification subscriptions for tags and comments
-* a search interface built out of [our growing API](https://github.com/publiclab/plots2/blob/master/doc/API.md)
-* a user dashboard [presenting recent activity](https://publiclab.org/dashboard)
-* a privacy-sensitive, Leaflet-based [location tagging system](https://github.com/publiclab/leaflet-blurred-location/) and [community map](http://publiclab.org/people)
+* A [Q&A portal](https://publiclab.org/questions) for peer-based problem solving
+* A rich text and Markdown [editor](https://github.com/publiclab/PublicLab.Editor)
+* [Wiki editing](https://publiclab.org/wiki) and revision tracking
+* Tagging and [topically-based groups and content organization](http://publiclab.org/tags)
+* Email notification subscriptions for topics and comments
+* A search interface built out of [our growing API](https://github.com/publiclab/plots2/blob/master/doc/API.md)
+* A user dashboard [presenting recent activity](https://publiclab.org/dashboard)
+* A privacy-sensitive, Leaflet-based [location tagging system](https://github.com/publiclab/leaflet-blurred-location/) and [community map](http://publiclab.org/people)
+
+## Roadmap
+
+We are developing a draft Roadmap for `plots2` and our broader Public Lab code projects; [read more and comment here](https://publiclab.org/notes/warren/05-22-2019/draft-of-a-public-lab-software-roadmap-comments-welcome).
 
 ## Table of Contents
 1. [What Makes This Project Different](#what-makes-this-project-different)
@@ -31,34 +36,36 @@ Some key features include:
 5. [Installation](#installation)
     - [Simple Installation with Cloud9](https://github.com/publiclab/plots2/wiki/Simple-Installation-for-Cloud9)
     - [Standard Installation](#standard-installation)
+    - [Windows Installation](#windows-installation)
 6. [SSL in Development](#ssl-in-development)
-7. [Testing](#testing)
-8. [API](#API)
-9. [Bundle Exec](#bundle-exec)
-10. [Reply-by-email](#reply-by-email)
-11. [Bugs and Support](#bugs-and-support)
-12. [Recaptcha](#recaptcha)
-13. [Internationalization](#internationalization)
-14. [Security](#security)
-15. [Developers](#developers)
-16. [First Time?](#first-time)
+7. [Login](#login)
+8. [Testing](#testing)
+9. [API](https://github.com/publiclab/plots2/blob/master/doc/API.md)
+10. [Bundle Exec](#bundle-exec)
+11. [Reply-by-email](#reply-by-email)
+12. [Bugs and Support](#bugs-and-support)
+13. [Recaptcha](#recaptcha)
+14. [Internationalization](#internationalization)
+15. [Security](#security)
+16. [Developers](#developers)
+17. [First Time?](#first-time)
 
 
 ****
 
 ## What makes this project different
 
-The people who create our platform often make very different design and technology decisions from other projects, and this stems from our deep belief that, to see change in the world, we must build and maintain systems that **reflect our values and principles.**
+The people who create our platform make very different design and technology decisions from other projects, and this stems from our deep belief that, to see a change in the world, we must build and maintain systems that **reflect our values and principles.**
 
-From design to system architecture to basic vocabulary and communication patterns, our systems have grown organically since 2010 to support a powerful, diverse, and cooperative network of people capable of taking on environmental problems that affect communities around the world. The platform we have built together speaks to this shared history in many ways, big and small. It reflects input from people facing serious health issues and on-the-ground organizers, policy specialists and hardware hackers, educators and civil servants.
+From design to system architecture to basic vocabulary and communication patterns, our systems have grown organically since 2010 to support a powerful, diverse, and cooperative network of people capable of taking on environmental problems that affect communities around the world. The platform we have built together speaks to this shared history in many ways, big and small. It reflects input from people facing serious health issues, on-the-ground organizers, policy specialists, hardware hackers, educators, and civil servants.
 
-This broad community, and the Public Lab team’s role in facilitating a space where they can discuss, break down, construct, prototype, and critique real-world projects together, have shaped a platform that incorporates familiar pieces, but ultimately looks and feels quite different from anywhere else on the internet. It continues to grow and be refined, but it also reflects a commitment to listening to one another, to mutual respect and support, to an awareness of the barriers and challenges presented by gaps in expertise and knowledge, and a sensitivity to the inequalities and power imbalances perpetuated by many mainstream modes of knowledge production and technological and scientific development.
+This broad community, and the Public Lab team have facilitated a space where we can discuss, break down, construct, prototype, and critique real-world projects. Together we have shaped a platform that incorporates familiar pieces, but ultimately looks and feels quite different from anywhere else on the internet. Our platform continues to grow and be refined, but it also reflects a commitment to listening to one another, to mutual respect and support, to an awareness of the barriers and challenges presented by gaps in expertise and knowledge, and a sensitivity to the inequalities and power imbalances perpetuated by many mainstream modes of knowledge production and technological and scientific development.
 
-Our mutual aims of democratizing inexpensive and accessible do-it-yourself techniques and creating a collaborative network of practitioners who actively reimagine the human relationship with the environment is supported and facilitated by a system which questions and even challenges how collaborative work can happen.
+Our mutual aims of democratizing inexpensive and accessible do-it-yourself techniques has allowed us to create a collaborative network of practitioners who actively re-imagine the human relationship with the environment. Our goals are supported and facilitated by a system which questions and even challenges how collaborative work can happen.
 
 ## Data Model
 
-![Diagram](https://publiclab.org/system/images/photos/000/021/061/original/diagram.png)
+![Diagram](https://user-images.githubusercontent.com/24359/50705765-d84ae000-1029-11e9-9e4c-f166a0c0d5d1.png)
 
 _(Above: draft of our [Data model](https://github.com/publiclab/plots2/blob/master/doc/DATA_MODEL.md))_
 
@@ -85,24 +92,56 @@ For information on how to install for use with the cloud environment, please see
 1. Fork our repo from https://github.com/publiclab/plots2.
 2. In the console, download a copy of your forked repo with `git clone https://github.com/your_username/plots2.git` where `your_username` is your GitHub username.
 3. Enter the new **plots2** directory with `cd plots2`.
-4. Install gems with `bundle install --without production mysql` from the rails root folder, to install the gems you'll need, excluding those needed only in production. You may need to first run `bundle update` if you have older gems in your environment from previous Rails work.
+4. Steps to install gems:
+    * You may need to first run `bundle install` if you have older gems in your environment from previous Rails work. If you get an error message like `Your Ruby version is 2.x.x, but your Gemfile specified 2.4.4` then you need to install the ruby version 2.4.4 using `rvm` or `rbenv`.
+	    * Using **rvm**: `rvm install 2.4.4` followed by `rvm use 2.4.4`
+	    * Using **rbenv**:  `rbenv install 2.4.4` followed by `rbenv local 2.4.4`
+    * Install gems with `bundle install --without production mysql` from the rails root folder, to install the gems you'll need, excluding those needed only in production.
 5. Make a copy of `db/schema.rb.example` and place it at `db/schema.rb`.
 6. Make a copy of `config/database.yml.sqlite.example` and place it at `config/database.yml`
 7. Run `rake db:setup` to set up the database
 8. Install static assets (like external javascript libraries, fonts) with `yarn install`
 9. By default, start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser.
-(for local SSL work, see [SSL](#ssl+in+development) below)
+(for local SSL work, see [SSL](#ssl-in-development) below)
 10. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
-11. Run `rails test -d` to confirm that your install is working properly.
+11. Run `rails test` to confirm that your install is working properly. Or `rails test:system` for system tests.
+
+### Windows Installation
+
+We recommend you either work in a virtual environment, or on a dual booted system to avoid dependencies issues and also Unix system works smoother with Ruby and Rails. This will not only benefit you now for plots2, but also in future while working on other Ruby projects, a Linux or Mac based OS will make your development so much smoother. 
+1. [Dual Booting](https://www.tecmint.com/install-ubuntu-alongside-with-windows-dual-boot/amp/), [option2](https://askubuntu.com/questions/1031993/how-to-install-ubuntu-18-04-alongside-windows-10), [video guide](https://www.youtube.com/watch?v=qNeJvujdB-0&fbclid=IwAR0APhs89jlNR_ENKbSwrp6TI6P-wxlx-a0My9XBvPNAfwtADZaAXqcKtP4)
+2. [Setting up a linux virtual env](https://itsfoss.com/install-linux-in-virtualbox/)
+
+## Redis Installation
+
+Public Lab uses Redis and may be required for some functionality when running the application locally.
+1. Install Redis if you haven't already:
+  * Using **MacOS**: `brew install redis`
+  * Using **Linux**: `sudo yum -y install redis`
+2. Run Redis server:
+  * Using **MacOS**: `brew services start redis`
+  * Using **Linux**: `redis-server`
+3. Run SideKiq: `bundle exec sidekiq`
+4. If SideKiq started correctly Redis is now configured and working!
 
 ## SSL in Development
 
-We at public labs use [openssl](https://github.com/ruby/openssl) gem to provide SSL for the secure connection in the development mode. You can run the https connection on the localhost by following following steps:
+We, at Public Lab use [openssl](https://github.com/ruby/openssl) gem to provide SSL (Secure Sockets Layer) for the secure connection in the development mode. You can run the https connection on the localhost by following  the following steps:
 1. Use `passenger start --ssl --ssl-certificate config/localhost.crt --ssl-certificate-key config/localhost.key --ssl-port 3001`.
 2. Open up https://localhost:3001.
 3. Add security exceptions from the advance settings of the browser.
 You can also use http (unsecure connection) on the port number 3000 by going to 'http://localhost:3000'. We use port number 3001 for 'https' and port number 3000 for 'http' connection.
 Secure connection is needed for OAuth authentication etc.
+
+## Login
+
+Once you complete the installation, use any of these credentials to login in to the PL website in your local development / testing environment to gain additional permissions for only logged in users. Each one comes with its own set of permissions, but besides that the experience across them is pretty much the same.
+
+**username**: `admin`, `moderator`, or `user` 
+
+**password**: `password`
+
+For more on the login systems, see [this page](https://github.com/publiclab/plots2/blob/b1c57446d016f8cd0ec149a75298711270e1643e/doc/LOGIN_SYSTEMS.md#how-to-setup-login-modal-on-various-locations)
 
 ## Testing
 
@@ -110,7 +149,7 @@ Click [here](https://github.com/publiclab/plots2/blob/master/doc/TESTING.md) for
 
 ## How to start and modify cron jobs
 
-1. We are using whenever gem to schedule cron jobs. [Whenever](https://github.com/javan/whenever)
+1. We are using [Whenever](https://github.com/javan/whenever) gem to schedule cron jobs.
 2. All the cron jobs are written in easy ruby syntax using this gem and can be found in config/schedule.rb.
 2. Go to the config/schedule.rb file to create and modify the cron jobs.
 3. [Click here](https://github.com/javan/whenever) to know about how to write cron jobs.
@@ -161,17 +200,31 @@ To report security vulnerabilities or for questions about security, please conta
 
 Help improve Public Lab software!
 
-* Join the 'plots-dev@googlegroups.com' discussion list to get involved
+* Join the plots-dev@googlegroups.com discussion list to get involved
 * Look for open issues at https://github.com/publiclab/plots2/labels/help-wanted
 * We're specifically asking for help with issues labelled with [help-wanted](https://github.com/publiclab/plots2/labels/help-wanted) tag
 * Find lots of info on contributing at http://publiclab.org/wiki/developers
 * Review specific contributor guidelines at http://publiclab.org/wiki/contributing-to-public-lab-software
 * Some devs hang out in http://publiclab.org/chat (irc webchat)
 * Join our gitter chat at https://gitter.im/publiclab/publiclab
+* Try out some supportive tasks https://github.com/publiclab/plots2/wiki/Supportive-Tasks
+* Get involved with our weekly community check-ins. For guidelines: [https://github.com/publiclab/plots2/tree/master/doc/CHECKINS.md
+](https://github.com/publiclab/plots2/tree/master/doc/CHECKINS.md)
+* You can help us by opening first timers issues or fto. The template for opening an issue can be found https://docs.google.com/document/d/1dO-CAgModEGM5cOaMmcnBh2pEON0hv_rH3P2ou2r1eE/edit 
 
 ## First Time?
 
 New to open source/free software? Here is a selection of issues we've made **especially for first-timers**. We're here to help, so just ask if one looks interesting : https://code.publiclab.org
 
-## Let the code be with you. :heart:
+[Here](https://publiclab.org/notes/warren/11-22-2017/use-git-and-github-to-contribute-and-improve-public-lab-software) is a link to our Git workflow.
+
+## Let the code be with you. 
 ### Happy opensourcing. :smile:
+
+<hr>
+
+<center>
+
+#### [Platforms that :heart: OSS](./doc/SUPPORTERS.md)
+
+</center>

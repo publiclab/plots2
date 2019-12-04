@@ -1,0 +1,19 @@
+<form id="inline_searchform" class="form" autocomplete="off">
+  <div class="form-group form-inline">
+  <div class="input-group">
+    <input placeholder="search term" tabindex="1" style="min-width: 350px;" id="inline_searchform_input" type="text" class="search-query typeahead form-control" data-provide="typeahead" value="<%= params[:query] %>" required>
+    <div class="input-group-append">
+      <button type="submit" class="btn btn-primary"><i class="fa fa-search fa fa-white"></i></button>
+    </div>
+  </div>
+  </div>
+</form>
+
+<script type="text/javascript">
+  //Set up the _header search form submission
+  $('#inline_searchform').submit(function(e){
+    e.preventDefault();
+    var encoded_query = encodeURIComponent($('#inline_searchform_input').val());
+    window.location = "/search/<%= searchType %>" + encoded_query;
+  });
+</script>

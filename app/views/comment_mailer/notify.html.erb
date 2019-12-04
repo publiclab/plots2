@@ -1,10 +1,6 @@
 Hi! There's been a response to a discussion you're involved in. You can reply to this email or visit this link:
 
-<% if @comment.parent.has_power_tag('question') %>
-<p>https://<%= ActionMailer::Base.default_url_options[:host] %><%= @comment.parent.path(:question) %>#answer-<%= @comment.aid %>-comment-<%= @comment.cid %></p>
-<% else %>
 <p>https://<%= ActionMailer::Base.default_url_options[:host] %><%= @comment.node.path %>#c<%= @comment.cid %></p>
-<% end %>
 
 <p><b><a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @comment.author.name %>"><%= @comment.author.name %></a> wrote:</b></p>
 
@@ -23,11 +19,7 @@ Hi! There's been a response to a discussion you're involved in. You can reply to
 </p>
 <div style="color:#aaa;">
 
-<% if @comment.parent.has_power_tag('question') %>
-<p>Reply at: https://<%= ActionMailer::Base.default_url_options[:host] %><%= @comment.parent.path(:question) %>#answer-<%= @comment.aid %>-comment</p>
-<% else %> 
 <p>Reply at: https://<%= ActionMailer::Base.default_url_options[:host] %><%= @comment.node.path %>#comments</p>
-<% end %>
 
 <p>Report abuse to: moderators@<%= ActionMailer::Base.default_url_options[:host] %></p>
 

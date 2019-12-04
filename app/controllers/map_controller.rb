@@ -7,7 +7,7 @@ class MapController < ApplicationController
 
     @map_lat = nil
     @map_lon = nil
-    if current_user && current_user.has_power_tag("lat") && current_user.has_power_tag("lon")
+    if current_user&.has_power_tag("lat") && current_user&.has_power_tag("lon")
       @map_lat = current_user.get_value_of_power_tag("lat").to_f
       @map_lon = current_user.get_value_of_power_tag("lon").to_f
     end
@@ -18,6 +18,10 @@ class MapController < ApplicationController
 
     # This is supposed to eager load the url_aliases, and seems to run, but doesn't actually eager load them...?
     # @maps = Node.select("node.*,url_alias.dst AS dst").joins(:tag).where('type = "map" AND status = 1 AND (term_data.name LIKE ? OR term_data.name LIKE ?)', 'lat:%', 'lon:%').joins("INNER JOIN url_alias ON url_alias.src = CONCAT('node/',node.nid)")
+  end
+
+  def map
+    @layersname = params[:layersname]
   end
 
   def show
@@ -35,7 +39,7 @@ class MapController < ApplicationController
 
   def edit
     @node = Node.find_by(id: params[:id])
-    if current_user.uid == @node.uid || current_user.role == 'admin'
+    if current_user.uid == @node.uid || logged_in_as(['admin'])
       render template: 'map/edit'
     else
       prompt_login 'Only admins can edit maps at this time.'
@@ -44,7 +48,7 @@ class MapController < ApplicationController
 
   def delete
     @node = Node.find_by(id: params[:id])
-    if current_user.uid == @node.uid || current_user.role == 'admin'
+    if current_user.uid == @node.uid || logged_in_as(['admin'])
       @node.delete
       flash[:notice] = 'Content deleted.'
       redirect_to '/archive'
@@ -55,7 +59,7 @@ class MapController < ApplicationController
 
   def update
     @node = Node.find(params[:id])
-    if current_user.uid == @node.uid || current_user.role == 'admin'
+    if current_user.uid == @node.uid || logged_in_as(['admin'])
 
       @node.title = params[:title]
       @revision = @node.latest
@@ -123,7 +127,7 @@ class MapController < ApplicationController
   end
 
   def new
-    if current_user && current_user.role == 'admin'
+    if logged_in_as(['admin'])
       @node = Node.new(type: 'map')
       render template: 'map/edit'
     else
@@ -134,7 +138,7 @@ class MapController < ApplicationController
   # must require min_zoom and lat/lon location, and TMS URL
   # solving this by min_zoom default here, but need better solution
   def create
-    if current_user && current_user.role == 'admin'
+    if logged_in_as(['admin'])
       saved, @node, @revision = Node.new_node(uid: current_user.uid,
                                               title: params[:title],
                                               body: params[:body],

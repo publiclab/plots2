@@ -2,7 +2,7 @@
 
 <p>If you feel this was an error, you can republish this post at <a href='https://<%= ActionMailer::Base.default_url_options[:host] %>/spam'>Public Lab research feed</a>. To discuss spam/abuse with other moderators, forward this to <a href="mailto:moderators@<%= ActionMailer::Base.default_url_options[:host] %>">moderators@<%= ActionMailer::Base.default_url_options[:host] %></a></p>
 
-<p>If this moderation was due to failure to follow <a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/wiki/moderation">community content guidelines</a>, and not advertising spam, consider reaching out to the poster to explain why you decided to moderate their content. Their email address is: <%= @node.author.mail %></p>
+<p>If this moderation was due to failure to follow <a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/wiki/moderation">community content guidelines</a>, and not advertising spam, consider reaching out to the poster to explain why you decided to moderate their content. Their email address is: <%= @node.author.email %></p>
 
 <p>Thanks for helping to keep Public Lab a welcoming and spam-free space!</p>
 

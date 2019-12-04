@@ -25,10 +25,10 @@ class WikiControllerTest < ActionController::TestCase
   end
 
   test 'should get wiki index in alphabetical order' do
-    get :index, params: { order: 'alphabetic' }
+    get :index, params: { sort: 'title' }
 
     assert_response :success
-    assert_not_nil :wikis
+    assert assigns(:wikis).each_cons(2).all?{|i,j| "j.node_revisions.title" >= "i.node_revisions.title" }
   end
 
   test 'should get wiki stale pages' do
@@ -214,11 +214,26 @@ class WikiControllerTest < ActionController::TestCase
     node = nodes(:about)
     image = node.images.where(photo_file_name: 'filename-1.jpg').last
 
-    post :update, params: { id: node.nid, uid: users(:bob).id, title: 'New Title', body: 'Editing about Page', image_revision: image.path(:default) }
+    post :update, params: { id: node.nid, uid: users(:bob).id, title: 'New Title', body: 'Editing about Page', main_image: image.id }
 
     node.reload
     assert_redirected_to node.path
     assert_equal flash[:notice], 'Edits saved.'
+    assert_equal node.main_image_id, image.id
+  end
+
+  test 'update wiki selecting no image' do
+    node = nodes(:about)
+    node.main_image_id = 1
+    node.save
+    assert_equal 1, node.main_image_id
+
+    post :update, params: { id: node.nid, uid: users(:bob).id, title: 'New Title', body: 'Editing about Page', main_image: 0 }
+
+    node.reload
+    assert_redirected_to node.path
+    assert_equal flash[:notice], 'Edits saved.'
+    assert_equal nil, node.main_image_id
   end
 
   test 'normal user should not delete wiki page' do
@@ -488,7 +503,7 @@ class WikiControllerTest < ActionController::TestCase
 
     assert_equal 'false', response.body
     assert_equal 'Public Lab', Node.find(node.id).body
-    assert_response :success
+    assert_response 500 # failure
   end
 
   test 'abtest: redirects to another page' do

@@ -1,0 +1,80 @@
+<% cache('feature_questions-header', skip_digest: true) do %>
+  <%= feature('questions-header') %>
+<% end %>
+
+<div class="question-area col-md-12">
+  <div class= "question-header">
+   <h5>What's your question?</h5>
+   <% if !current_user %>
+     <p>To ask a question, please <a class="requireLogin" href="/questions">log in</a> or <a class="requireLogin" href="/questions">sign up</a> first.</p>
+   <% end %>
+  </div>
+ <div class= "question-form">
+    <form id="questions_searchform" role="search" autocomplete="off" action="/post">
+      <div class="input-group">
+        <textarea tabindex="1" id="questions_searchform_input" type="text" name="title" class="<%= "disabled " if !current_user %>form-control search-query typeahead" qryType="questions" placeholder="type your question"></textarea>
+        <input type="hidden" name="tags" value="question:general">
+        <input type="hidden" name="template" value="question">
+        <input type="hidden" name="redirect" value="question">
+      </div>
+      <div class="input-group-append"  style="padding-bottom:15px;">
+        <button id="question_search" type="submit" rel="tooltip" title="Ask a question with the entered title" class="btn btn-primary">Continue</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="FeaturedQuestions col-md-12">
+    <span class="d-none d-lg-inline"><h2>Featured questions </h2></span>
+    <span><h6>see some of the great questions people have asked, and get a feel for how it works
+    </h6></span>
+</div>
+
+<%= render partial: "questions/questions_shadow" %>
+
+<div class="RecentQuestions col-md-12">
+    <span class="d-none d-lg-inline"><h2>Recent questions </h2></span>
+</div>
+
+<div class="col-md-12">
+  <%= render partial: "questions/recent_questions_shadow" %>
+</div>
+
+ <style>
+  .question-area{
+    margin:auto;
+    width:70%;
+    background-color: #F5F5F5;
+    height: auto;
+    border-radius: 10px;
+  }
+
+  .question-header, .question-form{
+    margin:auto;
+    width:90%;
+    text-align: center;
+  }
+
+  .question-header{
+    padding-top: 20px;
+  }
+
+  .input-group{
+    padding-bottom: 20px;
+    padding-bottom: 15px;
+  }
+
+  .input-group-append{
+    float: right;
+  }
+
+  textarea {
+    resize: none;
+    height: 170px;
+  }
+
+  .FeaturedQuestions, .RecentQuestions{
+    text-align: center;
+    margin-top: 3em;
+  }
+ </style>

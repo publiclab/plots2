@@ -10,19 +10,28 @@
 everything_tag = Tag.create! "name"=>"everything", "description"=>"", "weight"=>0
 
 # set up 3 basic users: admin, mod, and user
-admin = User.create! "username"=>"admin", "email"=>"admin@example.com",
-  "openid_identifier"=>nil, "password"=>"password",
-  "password_confirmation"=>"password"
+admin = User.create! "username" => "admin",
+  "email" => "admin@example.com",
+  "status" => 1,
+  "openid_identifier" => nil,
+  "password" => "password",
+  "password_confirmation" => "password"
 admin.role = "admin"
-admin.save({})
+admin.save()
 
-mod = User.create! "username"=>"moderator", "email"=>"moderator@example.com",
-  "password"=>"password", "password_confirmation"=>"password"
+mod = User.create! "username" => "moderator",
+  "email" => "moderator@example.com",
+  "status" => 1,
+  "password" => "password",
+  "password_confirmation" => "password"
 mod.role = "moderator"
 mod.save({})
 
-basic_user = User.create! "username"=>"user", "email"=>"user@example.com",
-  "password"=>"password", "password_confirmation"=>"password"
+basic_user = User.create! "username" => "user",
+  "email" => "user@example.com",
+  "status" => 1,
+  "password" => "password",
+  "password_confirmation" => "password"
 basic_user.role = "basic"
 basic_user.save({})
 
@@ -56,10 +65,10 @@ blog_post_comment = Comment.create! "nid"=>blog_post.id, "uid"=>admin.id,
     "status"=>1
   map_node_revision =  Revision.create! "nid" => map_node.nid, "vid" => map_node.nid,
     "uid"=>1, "title"=>"Test Map #{t}", "body"=>"Body of revision #{t}" 
-  tag_lat = Tag.create! name: "lat:#{rand * 80}", description: "Desc #{t}", weight: 5
-  tag_lon = Tag.create! name: "lon:#{rand * 80}", description: "Desc #{t}", weight: 5
-  drupal_comm_tag_lat = NodeTag.create! nid: map_node.nid, tid: tag_lat.tid, uid: 1
-  drupal_comm_tag_lon = NodeTag.create! nid: map_node.nid, tid: tag_lon.tid, uid: 1
+  tag_lat = Tag.create! name: "lat:#{rand(80)}", description: "Desc #{t}", weight: 5
+  tag_lon = Tag.create! name: "lon:#{rand(80)}", description: "Desc #{t}", weight: 5
+  comm_tag_lat = NodeTag.create! nid: map_node.nid, tid: tag_lat.tid, uid: 1
+  comm_tag_lon = NodeTag.create! nid: map_node.nid, tid: tag_lon.tid, uid: 1
   content_type_mape = DrupalContentTypeMap.create! "vid"=>map_node.nid,
     "nid"=>map_node.nid, "field_publication_date_value"=>Time.now.to_s(:short),
     "field_capture_date_value"=>Time.now.to_s(:short),
@@ -70,3 +79,8 @@ blog_post_comment = Comment.create! "nid"=>blog_post.id, "uid"=>admin.id,
     "field_notes_value"=>"No note value",  "field_zoom_min_value"=>1,
     "field_zoom_max_value"=>14, "authorship"=>"Admin"
 end
+
+# create a bunch of random tags
+tagnames = ['one', 'two', 'three', 'four', 'five', 'six']
+80.times { try { Node.find(rand(Node.count-2)+1).add_tag(tagnames[rand(tagnames.length-1)],User.first) } }
+

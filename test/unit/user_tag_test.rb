@@ -147,4 +147,18 @@ class UserTagTest < ActiveSupport::TestCase
     assert_not_nil identity
   end
 
+  test 'exists, remove_if_exists, create_if_absent' do
+    uid = 1
+    value = 'test'
+    assert_not UserTag.exists?(uid, value)
+    UserTag.create(uid: uid, value: value)
+    assert UserTag.exists?(uid, value)
+    UserTag.create_if_absent(uid, value)
+    assert_equal 1, UserTag.where(uid: uid, value: value).length
+    UserTag.remove_if_exists(uid, value)
+    assert_not UserTag.exists?(1, 'test')
+    UserTag.create_if_absent(uid, value)
+    assert UserTag.exists?(uid, value)
+  end
+
 end

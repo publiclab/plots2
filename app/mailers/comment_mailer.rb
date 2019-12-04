@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CommentMailer < ActionMailer::Base
   helper :application
   include ApplicationHelper
@@ -8,19 +10,21 @@ class CommentMailer < ActionMailer::Base
     @user = user
     @comment = comment
     @footer = feature('email-footer')
-    mail(to: user.email, subject: "New comment on #{comment.parent.title} (##{comment.parent.id}) ")
+    mail(to: user.email, subject: "New comment on #{comment.parent.title}" \
+                                  " (##{comment.parent.id}) - #c#{comment.id} ")
   end
 
   def notify_note_author(user, comment)
     @user = user
     @comment = comment
     @footer = feature('email-footer')
-    mail(to: user.email, subject: "New comment on #{comment.node.title} (##{comment.node.id}) ")
+    mail(to: user.email, subject: "New comment on #{comment.node.title}" \
+                                  " (##{comment.node.id}) - #c#{comment.id}")
   end
 
   # user is awarder, not awardee
   def notify_barnstar(user, note)
-    @giver = user.drupal_user
+    @giver = user
     @note = note
     @footer = feature('email-footer')
     mail(to: note.author.email, subject: 'You were awarded a Barnstar!')
@@ -30,21 +34,17 @@ class CommentMailer < ActionMailer::Base
     @user = user
     @comment = comment
     @footer = feature('email-footer')
-    mail(to: user.email, subject: "You were mentioned in a comment. (##{comment.node.id}) ")
+    mail(to: user.email, subject: 'You were mentioned in a comment.' \
+                                  " (##{comment.node.id}) - #c#{comment.id} ")
   end
 
   def notify_tag_followers(comment, user)
     @user = user
     @comment = comment
     @footer = feature('email-footer')
-    mail(to: user.email, subject: "A tag you follow was mentioned in a comment. (##{comment.node.id}) ")
-  end
-
-  def notify_answer_author(user, comment)
-    @user = user
-    @comment = comment
-    @footer = feature('email-footer')
-    mail(to: user.email, subject: "New comment on your answer on #{comment.parent.title} (#a#{comment.parent.id}) ")
+    mail(to: user.email, subject: 'A tag you follow was mentioned in ' \
+                                  'a comment.' \
+                                  " (##{comment.node.id}) - #c#{comment.id} ")
   end
 
   def notify_coauthor(user, note)

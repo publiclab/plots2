@@ -12,7 +12,7 @@ class NodeInsertExtrasTest < ActionDispatch::IntegrationTest
       assert_response :success
     end
 
-    assert_difference 'nodes(:about).totalviews', 0 do
+    assert_difference 'nodes(:about).reload.views', 0 do
       assert_difference 'Impression.count', 0 do
         get "/wiki/#{nodes(:about).slug}"
         assert_response :success
@@ -22,7 +22,7 @@ class NodeInsertExtrasTest < ActionDispatch::IntegrationTest
     assert_equal '127.0.0.1', Impression.last.ip_address
     assert Impression.last.update_attributes(ip_address: '0.0.0.0')
 
-    assert_difference 'nodes(:about).totalviews', 1 do
+    assert_difference 'nodes(:about).reload.views', 1 do
       assert_difference 'Impression.count', 1 do
         get "/wiki/#{nodes(:about).slug}"
         assert_response :success

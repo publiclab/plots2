@@ -30,6 +30,30 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     # assert_select "span.moderation-notice", false
   end
 
+  test 'should login and subscribe to multiple tags' do
+    post '/register', params: {
+          user: {
+            username: 'eleven',
+            password: 'demagorgon',
+            password_confirmation: 'demagorgon',
+            email: 'upside@down.today',
+            bio: 'From Hawkins'
+          },
+          spamaway: {
+            statement1: I18n.t('spamaway.human.statement1'),
+            statement2: I18n.t('spamaway.human.statement2'),
+            statement3: I18n.t('spamaway.human.statement3'),
+            statement4: I18n.t('spamaway.human.statement4')
+          },
+          return_to: '/subscribe/multiple/tag/arduino,games'
+        }
+    assert_response :redirect
+    # a success here would mean sent back to form with errors
+    assert_redirected_to '/dashboard'
+    assert_equal 'Registration successful. Welcome to our community!You are now following \'arduino,games\'.',flash[:notice]
+
+  end
+
   test 'should redirect to current page when logging in through the header login' do
     get '/questions'
     assert_response :success
@@ -102,6 +126,25 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     assert_not_nil OmniAuth.config.mock_auth[:facebook2]
     request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:facebook2]
     assert_not_nil request.env['omniauth.auth']
+  end
+
+  test 'redirect to multiple subscription route if user is not logged in and tries to subscribe to multiple tags' do
+    get '/subscribe/multiple/tag/blog,kites,balloon,awesome'
+    assert_redirected_to '/login?return_to=/subscribe/multiple/tag/blog,kites,balloon,awesome'
+    post '/user_sessions', params: { user_session: { username: users(:jeff).username, password: 'secretive' }, return_to: '/subscribe/multiple/tag/blog,kites,balloon,awesome' }
+    assert_equal "Successfully logged in.", flash[:notice]
+    assert_redirected_to '/subscribe/multiple/tag/blog,kites,balloon,awesome'
+  end
+
+  test 'redirect to the dashboard when entering wrong password, then correct password on main page.' do
+    get '/'
+    assert_response :success
+    post '/user_sessions', params: {"return_to":"/", "user_session":{username: users(:jeff).username, password: 'wrong', "remember_me":"0"}}
+    assert_response :success
+    assert_equal '/user_sessions', path
+    post '/user_sessions', params: {"return_to":"/user_sessions", "user_session":{username: users(:jeff).username, password: 'secretive', "remember_me":"0"}}
+    follow_redirect!
+    assert_redirected_to '/dashboard'
   end
 
 end

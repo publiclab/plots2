@@ -27,6 +27,27 @@ class QuestionsController < ApplicationController
       .paginate(page: params[:page], per_page: 24)
   end
 
+  def index_shadow
+    @title = 'Questions and Answers'
+    @questions = Node.questions
+      .where(status: 1)
+      .order('node.nid DESC')
+      .paginate(page: params[:page], per_page: 24)
+    
+    @populartitle = 'Popular Questions'
+    @popularquestions = Node.questions
+      .where(status: 1)
+    @popularquestions = filter_questions_by_tag(@questions, params[:tagnames])
+      .order('views DESC')
+      .limit(20)
+
+    @popularwikis = Node.limit(10)
+      .where(type: 'page', status: 1)
+      .order('nid DESC')
+    @unpaginated = true
+
+  end
+
   # a form for new questions, at /questions/new
   def new
     # use another node body as a template
@@ -55,7 +76,7 @@ class QuestionsController < ApplicationController
       @node = Node.find params[:id]
     end
 
-    redirect_to @node.path unless @node.has_power_tag('question')
+    redirect_to @node.path unless @node&.has_power_tag('question')
 
     alert_and_redirect_moderated
 
@@ -64,21 +85,19 @@ class QuestionsController < ApplicationController
     @tags = @node.power_tag_objects('question')
     @tagnames = @tags.collect(&:name)
     @users = @node.answers.group(:uid)
-      .order(Arel.sql('count(*) DESC'))
-      .collect(&:author)
-
-    # Arel.sql is used to remove a Deprecation warning while updating to rails 5.2
+                  .order(Arel.sql('count(*) DESC'))
+                  .collect(&:author)
 
     set_sidebar :tags, @tagnames
   end
 
   def answered
-    @title = 'Recently answered'
+    @title = 'Recently Commented'
     @questions = Node.questions
       .where(status: 1)
     @questions = filter_questions_by_tag(@questions, params[:tagnames])
-      .joins(:answers)
-      .order('answers.created_at DESC')
+      .joins(:comments)
+      .order('comments.timestamp DESC')
       .group('node.nid')
       .paginate(page: params[:page], per_page: 24)
     @wikis = Node.limit(10)

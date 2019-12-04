@@ -67,8 +67,14 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test 'should get profile' do
-    get :profile, params: { id: DrupalUser.where(status: 1).first.name }
+    i = 0
+    25.times do
+      Node.new(uid: users(:bob).id, type: 'note', title: "Node #{i += 1}").save
+    end
+
+    get :profile, params: { id: users(:bob).username }
     assert_response :success
+
   end
 
   test 'generate user reset key' do
@@ -88,7 +94,7 @@ class UsersControllerTest < ActionController::TestCase
     user = users(:jeff)
     crypted_password = user.crypted_password
     key = user.generate_reset_key
-    user.save({})
+    user.save
 
     user_attributes = user.attributes
     user_attributes[:password] = 'newpassword'
@@ -109,7 +115,7 @@ class UsersControllerTest < ActionController::TestCase
     user = users(:jeff)
     assert_nil user.reset_key
     user.generate_reset_key
-    user.save({})
+    user.save
     assert_not_nil User.find(user.id).reset_key
 
     get :profile, params: { id: user.username }
@@ -124,7 +130,7 @@ class UsersControllerTest < ActionController::TestCase
     UserSession.create(users(:admin))
     user = users(:jeff)
     user.generate_reset_key
-    user.save({})
+    user.save
     assert_not_nil User.find(user.id).reset_key
     get :profile, params: { uid: user.username }
   end
@@ -140,30 +146,14 @@ class UsersControllerTest < ActionController::TestCase
     end
   end
 
-  test 'should list notes and questions in user profile' do
-    user = drupal_users(:jeff)
-    get :profile, params: { id: user.name }
-    assert_not_nil assigns(:notes)
-    assert_not_nil assigns(:questions)
-    assert_not_nil assigns(:answered_questions)
-    selector = css_select '#asked .note-question'
-    assert_equal selector.size, 2
-    selector = css_select '#answered .note-answer'
-    assert_equal selector.size, 1
-  end
-
-  test 'should get comments' do
-    user = drupal_users(:jeff)
+  test 'should get comments and render comments/index template' do
+    user = users(:jeff)
     get :comments, params: { id: user.id }
     assert_response :success
-    assert_not_nil assigns(:comments)
-    assert_template partial: 'comments/_comments'
-  end
-
-  # this isn't testing anything?
-  test 'profiles for legacy users' do
-    user = drupal_users(:legacy_user)
-    assert_response :success
+    normal_comments = assigns(:normal_comments)
+    assert_not_nil normal_comments
+    assert_nil assigns(:moderated_comments)
+    assert_template 'comments/index'
   end
 
   test 'creating new account' do
@@ -207,8 +197,53 @@ class UsersControllerTest < ActionController::TestCase
     assert_equal User.find(user.id).bio, 'Hello, there!'
   end
 
+  test 'reject update with wrong password when ui_update is true' do
+    user = users(:bob)
+    bio = users(:bob).bio
+    UserSession.create(user)
+    post :update, params: {
+      user: {
+        bio: 'Bio updated by hacker',
+        current_password: 'wrong password',
+        ui_update: 'true'
+      }
+    }
+    assert_response :redirect
+    assert_equal User.find(user.id).bio, bio
+  end
+
+  test 'update profile with correct password when ui_update is true' do
+    user = users(:bob)
+    bio = users(:bob).bio
+    UserSession.create(user)
+    post :update, params: {
+      user: {
+        bio: 'Bio updated by user',
+        current_password: 'secretive',
+        ui_update: 'true'
+      }
+    }
+    assert_response :redirect
+    assert_equal User.find(user.id).bio, 'Bio updated by user'
+  end
+
+  test 'rejecting update profile with wrong password when ui_update is nil' do
+    user = users(:bob)
+    bio = users(:bob).bio
+    UserSession.create(user)
+    post :update, params: {
+      user: {
+        bio: 'Bio updated by user but with wrong password',
+        current_password: 'wrongpassword',
+        ui_update: nil
+      }
+    }
+    assert_response :redirect
+    assert_not_equal User.find(user.id).bio, 'Bio updated by user but with wrong password'
+  end
+
   test 'should redirect edit when not logged in' do
-    user = drupal_users(:bob)
+    user = users(:bob)
     get :edit, params: { id: user.name }
     assert_not flash.empty?
     assert_redirected_to '/login'
@@ -224,7 +259,7 @@ class UsersControllerTest < ActionController::TestCase
   test 'should redirect edit when logged in as another user' do
     user = users(:bob)
     UserSession.create(user)
-    new_user = drupal_users(:newcomer).user
+    new_user = users(:newcomer)
     get :edit, params: { id: new_user.name }
     assert_not flash.empty?
     assert_redirected_to '/profile/' + new_user.name
@@ -240,7 +275,7 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test 'rss feed when username is valid' do
-    user = drupal_users(:jeff)
+    user = users(:jeff)
     get :rss, params: { author: user.name, format: 'rss' }
     assert_response :success
     assert_equal 'application/xml', @response.content_type
@@ -271,5 +306,35 @@ class UsersControllerTest < ActionController::TestCase
     assert_raises(ActiveRecord::RecordNotFound) do
       get :shortlink, params: { username: invalid_username }
     end
+  end
+
+  test 'changing user settings' do
+    UserSession.create(users(:bob))
+    post :save_settings, params: {
+      "notify-comment-direct:false": "on",
+      "notify-likes-direct:false": "on",
+      "notify-comment-indirect:false": "on",
+      "digest:weekly": "on"
+    }
+    assert_response :success
+    assert_not_nil UserTag.where(uid: users(:bob).id, value: 'digest:weekly').last
+    assert_equal [], UserTag.where(uid: users(:bob).id, value: "notify-comment-direct:false")
+    assert_equal [], UserTag.where(uid: users(:bob).id, value: "notify-likes-direct:false")
+    assert_equal [], UserTag.where(uid: users(:bob).id, value: "notify-comment-indirect:false")
+    assert_equal [], UserTag.where(uid: users(:bob).id, value: 'digest:digest')
+  end
+
+  test 'upon verification redirection to login takes place' do
+    test_user = users(:admin)
+    email_verification_token = test_user.generate_token
+    get :verify_email, params: { token: email_verification_token }
+    assert_redirected_to "/login"
+  end
+
+  test 'upon verification the is_verified field gets updated appropriately' do
+    test_user = users(:admin)
+    email_verification_token = test_user.generate_token
+    get :verify_email, params: { token: email_verification_token }
+    assert_equal "Successfully verified email", flash[:notice]
   end
 end

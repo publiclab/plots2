@@ -8,7 +8,7 @@ gem install rails -v 5.2.0
 sudo apt-get update
 sudo apt-get -y install imagemagick ruby-rmagick
 npm install -g yarn
-yarn install && yarn postinstall
+yarn install
 gem install bundler
 bundle install --without production mysql
 cp db/schema.rb.example db/schema.rb

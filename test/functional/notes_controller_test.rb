@@ -1,5 +1,4 @@
 require 'test_helper'
-
 class NotesControllerTest < ActionController::TestCase
    include ActionMailer::TestHelper
   def setup
@@ -47,7 +46,7 @@ class NotesControllerTest < ActionController::TestCase
   test 'comment markdown and autolinking works' do
     node = Node.where(type: 'note', status: 1).first
     assert node.comments.length > 0
-    comment = node.comments.last
+    comment = node.comments.last(2).first
     comment.comment = 'Test **markdown** and http://links.com'
     comment.save!
 
@@ -81,7 +80,7 @@ class NotesControllerTest < ActionController::TestCase
     assert_equal '0.0.0.0', Impression.last.ip_address
     Impression.last.update_attribute('ip_address', '0.0.0.1')
 
-    assert_difference 'note.totalviews', 1 do
+    assert_difference 'note.reload.views', 1 do
       get :show,
           params: {
           author: note.author.name,
@@ -90,10 +89,10 @@ class NotesControllerTest < ActionController::TestCase
           }
     end
 
-    assert_equal 2, note.totalviews
+    assert_equal 2, note.reload.views
 
     # same IP won't add to views twice
-    assert_difference 'note.totalviews', 0 do
+    assert_difference 'note.reload.views', 0 do
       get :show,
           params: {
           author: note.author.name,
@@ -122,6 +121,8 @@ class NotesControllerTest < ActionController::TestCase
   test 'admins and moderators view redirect-tagged notes with flash warning' do
     note = nodes(:one)
     blog = nodes(:blog)
+    flash_msg = "Only moderators and admins see this page, as it is redirected to #{blog.title}. To remove the redirect, delete the tag beginning with 'redirect:'"
+
     note.add_tag("redirect:#{blog.nid}", users(:jeff))
     assert_equal blog.nid.to_s, note.power_tag('redirect')
     UserSession.find.destroy if UserSession.find
@@ -135,8 +136,7 @@ class NotesControllerTest < ActionController::TestCase
         }
 
     assert_response :success
-    assert_equal "Only moderators and admins see this page, as it is redirected to #{blog.title}.
-        To remove the redirect, delete the tag beginning with 'redirect:'", flash[:warning]
+    assert_equal flash_msg, flash[:warning]
     UserSession.find.destroy
   end
 
@@ -155,6 +155,18 @@ class NotesControllerTest < ActionController::TestCase
     assert_response :success
     assert_select '#other-activities'
     assert_select "a#other-activities[href = '/wiki/spectrometer']", 1
+  end
+
+  test 'return 404 when node is not found' do
+    note = nodes(:one)
+
+    get :show, params: {
+      author: note.author.name,
+      date: Time.at(note.created).strftime('%m-%d-%Y'),
+      id: "doesn't_exist"
+    }
+
+    assert_response :not_found
   end
 
   test "don't show note by spam author" do
@@ -264,6 +276,25 @@ class NotesControllerTest < ActionController::TestCase
     assert_redirected_to '/notes/' + users(:lurker).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
   end
 
+  test 'Email to the mentioned users in note creation' do
+    UserSession.create(users(:naman))
+    title = 'Note with Mentioned users in body'
+    post :create,
+         params: { title: title,
+                   body: '@naman18996 and @jeffrey are the mentioned users',
+                   tags: 'balloon-mapping,event'
+         }
+    node = Node.last
+    emails = []
+    ActionMailer::Base.deliveries.each do |m|
+      if m.subject == "(##{node.id}) You were mentioned in a note"
+        emails = emails + m.to
+      end
+    end
+    assert_equal 2, emails.count
+    assert_equal ["naman18996@yahoo.com", "jeff@publiclab.org"].to_set, emails.to_set
+  end
+
   test 'first-timer moderated note (status=4) hidden to normal users on research note feed' do
     node = nodes(:first_timer_note)
     assert_equal 4, node.status
@@ -290,7 +321,7 @@ class NotesControllerTest < ActionController::TestCase
 
   test 'first-timer moderated note (status=4) shown to author in full view with notice' do
     node = nodes(:first_timer_note)
-    UserSession.create(node.author.user)
+    UserSession.create(node.author)
     assert_equal 4, node.status
 
     get :show,
@@ -306,14 +337,14 @@ class NotesControllerTest < ActionController::TestCase
 
   test 'first-timer moderated note (status=4) shown to author in list view with notice' do
     node = nodes(:first_timer_note)
-    UserSession.create(node.author.user)
+    UserSession.create(node.author)
     assert_equal 4, node.status
 
     get :index
 
     assert_response :success
     selector = css_select 'div.note'
-    assert_equal selector.size, 22
+    assert_equal selector.size, 25
     assert_select "div p", 'Pending approval by community moderators. Please be patient!'
   end
 
@@ -342,8 +373,8 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_response :success
     selector = css_select 'div.note'
-    assert_equal selector.size, 22
-    assert_select "p", "Moderate first-time post: \n              Approve\n              Spam"
+    assert_equal selector.size, 25
+    assert_select 'a[data-test="spam"]','Spam'
   end
 
   test 'post_note_error_no_title' do
@@ -387,7 +418,7 @@ class NotesControllerTest < ActionController::TestCase
     assert_response :success
     assert_not_nil @response.body
     json = JSON.parse(@response.body)
-    assert_equal ["can't be blank"], json['title']
+    assert_equal ["can't be blank", "is too short (minimum is 3 characters)"], json['title']
     assert !json['title'].empty?
   end
 
@@ -459,7 +490,7 @@ class NotesControllerTest < ActionController::TestCase
         id: node.title.parameterize
         }
     selector = css_select '.fa-fire'
-    assert_equal selector.size, 3
+    assert_equal 4, selector.size
   end
 
   test 'should redirect to questions show page after creating a new question' do
@@ -718,17 +749,15 @@ class NotesControllerTest < ActionController::TestCase
 
   test 'draft should not be shown when no user' do
     node = nodes(:draft)
-    post :show, params: { id: '21',title: 'Draft note' }
-    assert_redirected_to '/login'
-    assert_equal "You need to login to view the page", flash[:warning]
+    get :show, params: { id: '21',title: 'Draft note' }
+    assert_response :missing
   end
 
   test 'draft should not be shown when user is not author' do
     node = nodes(:draft)
     UserSession.create(users(:bob))
-    post :show, params: { id: '21',title: 'Draft note' }
-    assert_redirected_to '/'
-    assert_equal "Only author can access the draft note", flash[:notice]
+    get :show, params: { id: '21',title: 'Draft note' }
+    assert_response :missing
   end
 
   test 'question deletion should delete all its answers' do
@@ -757,7 +786,7 @@ class NotesControllerTest < ActionController::TestCase
     get :publish_draft, params: { id: node.id }
 
     assert_response :redirect
-    assert_equal "Thanks for your contribution. Research note published! Now, it's visible publically.", flash[:notice]
+    assert_equal "Thanks for your contribution. Research note published! Now, it's visible publicly.", flash[:notice]
     node = assigns(:node)
     assert_equal 1, node.status
     assert_equal 1, node.author.status
@@ -776,7 +805,7 @@ class NotesControllerTest < ActionController::TestCase
      get :publish_draft, params: { id: node.id }
 
      assert_response :redirect
-     assert_equal "Thanks for your contribution. Research note published! Now, it's visible publically.", flash[:notice]
+     assert_equal "Thanks for your contribution. Research note published! Now, it's visible publicly.", flash[:notice]
      node = assigns(:node)
      assert_equal 1, node.status
      assert_equal 1, node.author.status
@@ -795,7 +824,7 @@ class NotesControllerTest < ActionController::TestCase
      get :publish_draft, params: { id: node.id }
 
      assert_response :redirect
-     assert_equal "Thanks for your contribution. Research note published! Now, it's visible publically.", flash[:notice]
+     assert_equal "Thanks for your contribution. Research note published! Now, it's visible publicly.", flash[:notice]
      node = assigns(:node)
      assert_equal 1, node.status
      assert_equal 1, node.author.status
@@ -890,7 +919,7 @@ class NotesControllerTest < ActionController::TestCase
 
    test 'draft note (status=3) shown to author in full view with notice' do
      node = nodes(:draft)
-     UserSession.create(node.author.user)
+     UserSession.create(node.author)
      assert_equal 3, node.status
 
      get :show,
@@ -901,7 +930,7 @@ class NotesControllerTest < ActionController::TestCase
         }
 
      assert_response :success
-     assert_equal "This is a draft note. Once you're ready, click <a class='btn btn-success btn-xs' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> to make it public. You can share it with collaborators using this private link <a href='#{node.draft_url}'>#{node.draft_url}</a>", flash[:warning]
+     assert_equal "This is a draft note. Once you're ready, click <a class='btn btn-success btn-xs' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> to make it public. You can share it with collaborators using this private link <a href='#{node.draft_url(request.base_url)}'>#{node.draft_url(request.base_url)}</a>", flash[:warning]
    end
 
    test 'draft note (status=3) shown to moderator in full view with notice' do
@@ -917,7 +946,7 @@ class NotesControllerTest < ActionController::TestCase
         }
 
      assert_response :success
-     assert_equal "This is a draft note. Once you're ready, click <a class='btn btn-success btn-xs' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> to make it public. You can share it with collaborators using this private link <a href='#{node.draft_url}'>#{node.draft_url}</a>", flash[:warning]
+     assert_equal "This is a draft note. Once you're ready, click <a class='btn btn-success btn-xs' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> to make it public. You can share it with collaborators using this private link <a href='#{node.draft_url(request.base_url)}'>#{node.draft_url(request.base_url)}</a>", flash[:warning]
    end
 
    test 'draft note (status=3) shown to co-author in full view with notice' do
@@ -933,7 +962,7 @@ class NotesControllerTest < ActionController::TestCase
         }
 
      assert_response :success
-     assert_equal "This is a draft note. Once you're ready, click <a class='btn btn-success btn-xs' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> to make it public. You can share it with collaborators using this private link <a href='#{node.draft_url}'>#{node.draft_url}</a>", flash[:warning]
+     assert_equal "This is a draft note. Once you're ready, click <a class='btn btn-success btn-xs' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> to make it public. You can share it with collaborators using this private link <a href='#{node.draft_url(request.base_url)}'>#{node.draft_url(request.base_url)}</a>", flash[:warning]
    end
 
    test 'draft note (status=3) shown to user with secret link' do

@@ -44,11 +44,13 @@ passenger-standalone.json.bkp
 public/pdf.js/
 public/sites/
 public/assets/
+public/cron-log.log
 production.db
 test.db
 solr/*
 test/reports/
 !config/application.yml
+test.sqlite-journal
 # Ignore NPM
 node_modules
 .byebug_history
