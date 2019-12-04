@@ -45,7 +45,7 @@
     <%= render_top_map(@node.lat, @node.lon) %>
   <% elsif @node && @node.lat && @node.lon %>
     <%= render_map(@node.lat, @node.lon) %>
-  <% elsif @node&.has_power_tag('place') && !@node.lat && !@node.lon %>
+  <% elsif !@node.lat && !@node.lon %>
     <div id="map_template" style="position: relative; display: inline-block;">
       <img src="https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/0/0/0.png" style="height:69px; width: 263px; position: relative; margin-right: -10px;">
       <button class="btn btn-outline-secondary btn-lg" id="add_location" style="position: absolute; position: absolute;top: 19% ; left: 24% ;" type="button" name="button"><strong>Add location</strong></button>
