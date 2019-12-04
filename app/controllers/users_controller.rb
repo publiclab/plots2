@@ -14,7 +14,9 @@ class UsersController < ApplicationController
     using_recaptcha = !params[:spamaway] && Rails.env == "production"
     recaptcha = verify_recaptcha(model: @user) if using_recaptcha
     @spamaway = Spamaway.new(spamaway_params) unless using_recaptcha
-    if ((@spamaway&.valid?) || recaptcha) && @user.save
+
+    saved = @user.save
+    if ((@spamaway&.valid?) || recaptcha) && saved
       if current_user.crypted_password.nil? # the user has not created a pwd in the new site
         flash[:warning] = I18n.t('users_controller.account_migrated_create_new_password')
         redirect_to "/profile/edit"
@@ -47,6 +49,19 @@ class UsersController < ApplicationController
       end
       # send all errors to the page so the user can try again
       @action = "create"
+puts "LSL"
+      email_errs = @user.errors.messages[:email]
+      username_errs = @user.errors.messages[:username]
+      
+      if email_errs.size > 1
+        email_errs.clear
+        email_errs.push("is invalid")
+      end
+
+      if username_errs.size > 1
+        username_errs.delete("is invalid")
+      end
+
       render action: 'new'
     end
   end
