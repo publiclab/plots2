@@ -1,10 +1,14 @@
 #socialIcons {
-  display:flex; 
+  display: flex;
   justify-content: center;
 }
 
 .login-form {
-  padding: 0 30px; 
+  padding: 0 30px;
+
+  a#visibility{
+    line-height: 0;
+  }
 }
 
 #visibility {
