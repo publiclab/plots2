@@ -42,7 +42,7 @@
     "junction": "theleagueof/junction#*",
     "urlhash": "^0.1.3",
     "leaflet": "^1.5.1",
-    "leaflet-environmental-layers": "^2.0.5",
+    "leaflet-environmental-layers": "^2.0.6",
     "leaflet-blurred-location": "^1.3.0",
     "leaflet-hash": "^0.2.1",
     "leaflet-spin": "1.1.0",
