@@ -101,18 +101,11 @@ class SearchService
 
   # Search nearby nodes with respect to given latitude, longitute and tags
   def tagNearbyNodes(coordinates, tag, period = { "from" => nil, "to" => nil }, sort_by = nil, order_direction = nil, limit = 10)
-    raise("Must contain all four coordinates") if coordinates["nwlat"].nil?
-    raise("Must contain all four coordinates") if coordinates["nwlng"].nil?
-    raise("Must contain all four coordinates") if coordinates["selat"].nil?
-    raise("Must contain all four coordinates") if coordinates["selng"].nil?
-
-    raise("Must be a float") unless coordinates["nwlat"].is_a? Float
-    raise("Must be a float") unless coordinates["nwlng"].is_a? Float
-    raise("Must be a float") unless coordinates["selat"].is_a? Float
-    raise("Must be a float") unless coordinates["selng"].is_a? Float
-
-    raise("If 'from' is not null, must contain date") if period["from"] && !(period["from"].is_a? Date)
-    raise("If 'to' is not null, must contain date") if period["to"] && !(period["to"].is_a? Date)
+    coordinates.each_value do |value|
+      raise("Must contain all four coordinates") if value.nil?
+      raise("Must be a float") unless value.is_a? Float
+    end
+    period.each {|key, value| raise("If #{key.inspect} is not null, must contain date") if period[key] && !(period[key].is_a? Date)}
 
     nodes_scope = Node.select(:nid)
                       .where('`latitude` >= ? AND `latitude` <= ?', coordinates["selat"], coordinates["nwlat"])
@@ -142,9 +135,7 @@ class SearchService
 
     # selects the items whose node_tags don't have the location:blurred tag
     items.select do |item|
-      item.node_tags.none? do |node_tag|
-        node_tag.name == "location:blurred"
-      end
+      true if item.user_tags.none? {|user_tag| user_tag.name == "location:blurred"}
     end
 
     # sort nodes by recent activities if the sort_by==recent
@@ -160,18 +151,11 @@ class SearchService
   # Search nearby people with respect to given latitude, longitute and tags
   # and package up as a DocResult
   def tagNearbyPeople(coordinates, tag, field, period = nil, sort_by = nil, order_direction = nil, limit = 10)
-    raise("Must contain all four coordinates") if coordinates["nwlat"].nil?
-    raise("Must contain all four coordinates") if coordinates["nwlng"].nil?
-    raise("Must contain all four coordinates") if coordinates["selat"].nil?
-    raise("Must contain all four coordinates") if coordinates["selng"].nil?
-
-    raise("Must be a float") unless coordinates["nwlat"].is_a? Float
-    raise("Must be a float") unless coordinates["nwlng"].is_a? Float
-    raise("Must be a float") unless coordinates["selat"].is_a? Float
-    raise("Must be a float") unless coordinates["selng"].is_a? Float
-
-    raise("If 'from' is not null, must contain date") if period["from"] && !(period["from"].is_a? Date)
-    raise("If 'to' is not null, must contain date") if period["to"] && !(period["to"].is_a? Date)
+    coordinates.each_value do |value|
+      raise("Must contain all four coordinates") if value.nil?
+      raise("Must be a float") unless value.is_a? Float
+    end
+    period.each {|key, value| raise("If #{key.inspect} is not null, must contain date") if period[key] && !(period[key].is_a? Date)}
 
     user_locations = User.where('rusers.status <> 0')
                          .joins(:user_tags)
@@ -202,9 +186,7 @@ class SearchService
 
     # selects the items whose node_tags don't have the location:blurred tag
     items.select do |item|
-      item.user_tags.none? do |user_tag|
-        user_tag.name == "location:blurred"
-      end
+      true if item.user_tags.none? {|user_tag| user_tag.name == "location:blurred"}
     end
 
     # Here we use period["from"] and period["to"] in the query only if they have been specified,
