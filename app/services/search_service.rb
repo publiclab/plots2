@@ -105,7 +105,7 @@ class SearchService
       raise("Must contain all four coordinates") if value.nil?
       raise("Must be a float") unless value.is_a? Float
     end
-    period.each {|key, value| raise("If #{key.inspect} is not null, must contain date") if period[key] && !(period[key].is_a? Date)}
+    period.each { |key, value| raise("If #{key.inspect} is not null, must contain date") if value && !(value.is_a? Date) }
 
     nodes_scope = Node.select(:nid)
                       .where('`latitude` >= ? AND `latitude` <= ?', coordinates["selat"], coordinates["nwlat"])
@@ -135,7 +135,7 @@ class SearchService
 
     # selects the items whose node_tags don't have the location:blurred tag
     items.select do |item|
-      true if item.user_tags.none? {|user_tag| user_tag.name == "location:blurred"}
+      true if item.user_tags.none? { |user_tag| user_tag.name == "location:blurred" }
     end
 
     # sort nodes by recent activities if the sort_by==recent
@@ -155,7 +155,7 @@ class SearchService
       raise("Must contain all four coordinates") if value.nil?
       raise("Must be a float") unless value.is_a? Float
     end
-    period.each {|key, value| raise("If #{key.inspect} is not null, must contain date") if period[key] && !(period[key].is_a? Date)}
+    period.each { |key, value| raise("If #{key.inspect} is not null, must contain date") if value && !(value.is_a? Date) }
 
     user_locations = User.where('rusers.status <> 0')
                          .joins(:user_tags)
@@ -186,7 +186,7 @@ class SearchService
 
     # selects the items whose node_tags don't have the location:blurred tag
     items.select do |item|
-      true if item.user_tags.none? {|user_tag| user_tag.name == "location:blurred"}
+      true if item.user_tags.none? { |user_tag| user_tag.name == "location:blurred" }
     end
 
     # Here we use period["from"] and period["to"] in the query only if they have been specified,
