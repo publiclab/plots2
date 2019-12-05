@@ -105,7 +105,7 @@ class SearchService
       raise("Must contain all four coordinates") if value.nil?
       raise("Must be a float") unless value.is_a? Float
     end
-    period.each { |key, value| raise("If #{key.inspect} is not null, must contain date") if value && !(value.is_a? Date) }
+    period.each { |key, value| raise("If '#{key}' is not null, must contain date") if value && !(value.is_a? Date) }
 
     nodes_scope = Node.select(:nid)
                       .where('`latitude` >= ? AND `latitude` <= ?', coordinates["selat"], coordinates["nwlat"])
@@ -155,7 +155,7 @@ class SearchService
       raise("Must contain all four coordinates") if value.nil?
       raise("Must be a float") unless value.is_a? Float
     end
-    period.each { |key, value| raise("If #{key.inspect} is not null, must contain date") if value && !(value.is_a? Date) }
+    period.each { |key, value| raise("If '#{key}' is not null, must contain date") if value && !(value.is_a? Date) }
 
     user_locations = User.where('rusers.status <> 0')
                          .joins(:user_tags)
