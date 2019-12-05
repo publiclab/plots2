@@ -284,7 +284,7 @@ GEM
     naught (1.1.0)
     netrc (0.11.0)
     nifty-generators (0.4.6)
-    nio4r (2.5.1)
+    nio4r (2.5.2)
     nokogiri (1.10.5)
       mini_portile2 (~> 2.4.0)
     nokogumbo (2.0.1)
@@ -344,7 +344,7 @@ GEM
     pry-rails (0.3.9)
       pry (>= 0.10.4)
     public_suffix (4.0.1)
-    puma (4.2.0)
+    puma (4.3.1)
       nio4r (~> 2.0)
     rack (2.0.7)
     rack-accept (0.4.5)
@@ -614,7 +614,7 @@ DEPENDENCIES
   php-serialize
   progress_bar
   pry-rails
-  puma (~> 4.2)
+  puma (~> 4.3)
   rack-cors
   rack-openid
   rack-test (= 1.1.0)
