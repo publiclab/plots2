@@ -18,7 +18,7 @@ class SignUpTest < ActionDispatch::IntegrationTest
       }
     }
     
-    assert response.body.include? 'Email is invalid'
+    assert response.body.include? 'Email should look like an email address.'
     assert response.body.include? 'Username is too short'
     assert response.body.include? 'Password is too short'
   end
