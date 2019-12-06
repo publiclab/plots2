@@ -814,7 +814,7 @@ class NotesControllerTest < ActionController::TestCase
         assert_not_equal old_changed, node['changed'] # these should have been forward dated!
         assert_not_equal old_created, node['created']
         assert_equal 1, node.author.status
-        assert_redirected_to '/notes/' + users(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + node.title.parameterize
+        assert_redirected_to '/notes/' + users(:jeff).username + '/' + (Time.now + 1.day).strftime('%m-%d-%Y') + '/' + node.title.parameterize
 
         email = ActionMailer::Base.deliveries.last
         assert_equal '[PublicLab] ' + node.title + " (##{node.id}) ", email.subject
