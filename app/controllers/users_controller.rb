@@ -16,7 +16,7 @@ class UsersController < ApplicationController
     @spamaway = Spamaway.new(spamaway_params) unless using_recaptcha
 
     saved = @user.save
-    if ((@spamaway&.valid?) || recaptcha) && saved
+    if saved && ((@spamaway&.valid?) || recaptcha)
       if current_user.crypted_password.nil? # the user has not created a pwd in the new site
         flash[:warning] = I18n.t('users_controller.account_migrated_create_new_password')
         redirect_to "/profile/edit"
