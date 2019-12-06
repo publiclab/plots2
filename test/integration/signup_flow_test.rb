@@ -40,8 +40,8 @@ class SignUpTest < ActionDispatch::IntegrationTest
       }
     }
 
-    assert response.body.include? 'Email is invalid'
-    assert !(response.body.include? 'Email should look like an email address.')
+    assert !(response.body.include? 'Email is invalid')
+    assert response.body.include? 'Email should look like an email address.'
   end
 
 end

@@ -53,8 +53,7 @@ class UsersController < ApplicationController
       username_errs = @user.errors.messages[:username]
       
       if email_errs.size > 1
-        email_errs.clear
-        email_errs.push("is invalid")
+        email_errs.delete("is invalid")
       end
 
       if username_errs.size > 1
