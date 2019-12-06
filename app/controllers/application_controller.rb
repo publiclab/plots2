@@ -1,6 +1,6 @@
 include ActionView::Helpers::DateHelper # required for time_ago_in_words()
 class ApplicationController < ActionController::Base
-  protect_from_forgery unless: -> { hostname_excepted }
+  protect_from_forgery unless: -> { is_dataurl_post }
   layout 'application'
 
   helper_method :current_user_session, :current_user, :prompt_login, :sidebar
@@ -11,19 +11,9 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def hostname_excepted
-    hostnames = ['publiclab.org',
-        'sequencer.publiclab.org',
-        'mapknitter.org',
-        'mapknitter.org',
-        'spectralworkbench.org',
-        'unstable.publiclab.org',
-        'stable.publiclab.org',
-        'publiclab.github.io',
-        'mapknitter-unstable.laboratoriopublico.org',
-        'mapknitter-stable.laboratoriopublico.org']
-    hostnames << 'localhost' if Rails.env == "development"
-    hostnames.include?(request.host)
+  # allow limited CSRF from external apps submitting params[:dataurl_main_image] data
+  def is_dataurl_post
+    params[:controller] == "editor" && params[:action] == "post" && !params[:datauri_main_image].nil?
   end
 
   def set_raven_context
