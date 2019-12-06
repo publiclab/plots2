@@ -49,7 +49,6 @@ class UsersController < ApplicationController
       end
       # send all errors to the page so the user can try again
       @action = "create"
-puts "LSL"
       email_errs = @user.errors.messages[:email]
       username_errs = @user.errors.messages[:username]
       
