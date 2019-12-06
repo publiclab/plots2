@@ -804,17 +804,18 @@ class NotesControllerTest < ActionController::TestCase
      assert_equal 3, node.status
      ActionMailer::Base.deliveries.clear
 
-     get :publish_draft, params: { id: node.id }
-
-     assert_response :redirect
      Timecop.freeze(Date.today + 1) do
+        get :publish_draft, params: { id: node.id }
+
+        assert_response :redirect
+
         assert_equal "Thanks for your contribution. Research note published! Now, it's visible publicly.", flash[:notice]
         node = assigns(:node)
         assert_equal 1, node.status
         assert_not_equal old_changed, node['changed'] # these should have been forward dated!
         assert_not_equal old_created, node['created']
         assert_equal 1, node.author.status
-        assert_redirected_to '/notes/' + users(:jeff).username + '/' + (Time.now + 1.day).strftime('%m-%d-%Y') + '/' + node.title.parameterize
+        assert_redirected_to '/notes/' + users(:jeff).username + '/' + (Time.now).strftime('%m-%d-%Y') + '/' + node.title.parameterize
 
         email = ActionMailer::Base.deliveries.last
         assert_equal '[PublicLab] ' + node.title + " (##{node.id}) ", email.subject
