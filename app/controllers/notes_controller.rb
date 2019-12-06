@@ -373,6 +373,8 @@ class NotesController < ApplicationController
     if current_user && current_user.uid == @node.uid || current_user.can_moderate? || @node.has_tag("with:#{current_user.username}")
       @node.path = @node.generate_path
       @node.slug = @node.slug.split('token').first
+      @node['created'] = DateTime.now.to_i # odd assignment needed due to legacy Drupal column types
+      @node['changed'] = DateTime.now.to_i
       @node.publish
       SubscriptionMailer.notify_node_creation(@node).deliver_now
       flash[:notice] = "Thanks for your contribution. Research note published! Now, it's visible publicly."
