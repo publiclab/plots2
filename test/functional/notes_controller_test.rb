@@ -673,7 +673,25 @@ class NotesControllerTest < ActionController::TestCase
     assert (notes & expected).present?
     assert !(notes & questions).present?
   end
-
+  
+    test 'first note in /liked endpoint should be highest liked' do
+    get :liked
+    notes = assigns(:notes)
+    # gets highest liked note's number of likes
+    expected = Node.research_notes.where(status: 1).maximum("cached_likes")
+    # gets first note of /notes/liked endpoint
+    actual = notes.first
+    # both should be equal
+    assert expected == actual.cached_likes
+  end
+  test 'first note in /recent endpoint should be most recent' do
+    get :recent
+    notes = assigns(:notes)
+    expected = Node.where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
+                   .maximum("created")
+    actual = notes.first
+    assert expected == actual.created
+  end
   test 'should choose I18n for notes controller' do
     available_testing_locales.each do |lang|
       old_controller = @controller
