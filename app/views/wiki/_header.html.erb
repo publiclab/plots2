@@ -31,7 +31,15 @@
 
     <div style="padding-top:8px;text-align:center">
       <span class="d-none d-lg-inline">
-        <%= number_with_delimiter(@node.authors.length)  %> Authors |
+        <span rel="tooltip" data-placement="top" data-html="true" data-title="
+          <ul>
+            <% @node.authors.each do |author| %>
+              <li><a href='/profile/<%= author.username %>'>@<%= author.username %></a></li>
+            <% end %>
+          </ul>
+        ">
+          <%= number_with_delimiter(@node.authors.length) %> Authors
+        </span> |
         <a rel="tooltip" title="View all revisions for this page." data-placement="top" href="/wiki/revisions/<%= @node.slug_from_path %>"><%= @node.revisions.length %> <%= t('wiki.revisions.revisions') %></a> |
         <a href="/talk/<%= @node.slug_from_path %>" rel="tooltip" title="Practice in a realtime doc." data-placement="top"><%= t('wiki.show.talk') %></a>
       </span>
