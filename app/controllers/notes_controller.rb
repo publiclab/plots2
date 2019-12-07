@@ -298,6 +298,7 @@ class NotesController < ApplicationController
       .where(type: 'page', status: 1)
       .order('nid DESC')
     @notes = Node.where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
+                 .order('created DESC')
     @unpaginated = true
     render template: 'notes/index'
   end
