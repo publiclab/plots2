@@ -24,7 +24,7 @@ class SignUpTest < ActionDispatch::IntegrationTest
   test 'username character error messages' do
     post '/register', params: { 
       user: {
-        username: '', 
+        username: '^', 
         email: 'validemail@gmail.com',
         password: 'validpassword',
         password_confirmation: 'validpassword',
@@ -119,6 +119,26 @@ class SignUpTest < ActionDispatch::IntegrationTest
     }
 
     assert response.body.include? 'Email cannot be blank'
+  end
+
+  test 'custom blank username error messages' do
+    post '/register', params: { 
+      user: {
+        username: '', 
+        email: 'validemail@gmail.com',
+        password: 'validpassword',
+        password_confirmation: 'validpassword',
+      },
+      spamaway: {
+        follow_instructions: '',
+        statement1: '',
+        statement2: '',
+        statement3: '',
+        statement4: ''
+      }
+    }
+
+    assert response.body.include? 'Username cannot be blank'
   end
 
   test 'no redundant username error messages' do
