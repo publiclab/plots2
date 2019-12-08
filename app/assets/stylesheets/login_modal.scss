@@ -8,17 +8,21 @@
   padding: 0 30px;
 
   a#visibility {
-    line-height: 1.5em;
-    color: #888;
-    pointer-events: auto;
-    text-decoration: none;
+    line-height: 0;
+  }
+
+  div.form-group {
+    margin-top: 1rem;
+  }
+
+  p.form-grey {
+    margin-top: 1rem;
   }
 }
 
-div.form-group {
-  margin-top: 1rem;
-}
-
-p.form-grey {
-  margin-top: 1rem;
+#visibility {
+  color: #888;
+  pointer-events: auto;
+  line-height: 2.2em;
+  text-decoration: none;
 }
