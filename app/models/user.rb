@@ -3,6 +3,11 @@ class UniqueUsernameValidator < ActiveModel::Validator
     if User.find_by(username: record.username) && record.openid_identifier.nil?
       record.errors[:base] << 'That username is already taken. If this is your username, you can simply log in to this site.'
     end
+
+    if record.username.blank?
+      record.errors[:username].clear
+      record.errors[:username] << 'cannot be blank'
+    end
   end
 end
 
@@ -59,7 +64,7 @@ class User < ActiveRecord::Base
   has_many :comments, foreign_key: :uid
 
   validates_with UniqueUsernameValidator, on: :create
-  validates_format_of :username, with: /\A[A-Za-z\d_\-]+\z/
+  validates_format_of :username, with: /\A[A-Za-z\d_\-]*\z/
 
   before_save :set_token
 
