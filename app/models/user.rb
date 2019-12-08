@@ -8,7 +8,7 @@ class UniqueUsernameValidator < ActiveModel::Validator
       record.errors[:username].clear
       record.errors[:username] << 'cannot be blank'
     end
-    
+
     if record.email.blank?
       record.errors[:email].clear
       record.errors[:email] << 'cannot be blank'
