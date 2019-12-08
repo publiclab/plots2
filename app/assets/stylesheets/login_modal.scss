@@ -7,8 +7,11 @@
 .login-form {
   padding: 0 30px;
 
-  a#visibility {
+  #visibility {
     line-height: 0;
+    color: #888;
+    pointer-events: auto;
+    text-decoration: none;
   }
 
   div.form-group {
@@ -18,11 +21,4 @@
   p.form-grey {
     margin-top: 1rem;
   }
-}
-
-#visibility {
-  color: #888;
-  pointer-events: auto;
-  line-height: 2.2em;
-  text-decoration: none;
 }
