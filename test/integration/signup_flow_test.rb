@@ -87,6 +87,26 @@ class SignUpTest < ActionDispatch::IntegrationTest
       user: {
         username: 'validusername', 
         email: 'validemail@gmail.com',
+        password: 'aaaaaaaa',
+        password_confirmation: 'bbbbbbbb',
+      },
+      spamaway: {
+        follow_instructions: '',
+        statement1: '',
+        statement2: '',
+        statement3: '',
+        statement4: ''
+      }
+    }
+    
+    assert response.body.include? 'Password confirmation doesn&#39;t match Password'
+  end
+
+  test 'password confirmation and length error messages' do
+    post '/register', params: { 
+      user: {
+        username: 'validusername', 
+        email: 'validemail@gmail.com',
         password: 'a',
         password_confirmation: 'b',
       },
@@ -100,6 +120,7 @@ class SignUpTest < ActionDispatch::IntegrationTest
     }
     
     assert response.body.include? 'Password confirmation doesn&#39;t match Password'
+    assert response.body.include? 'Password confirmation is too short (minimum is 8 characters)'
   end
 
   test 'email error messages' do
@@ -120,6 +141,26 @@ class SignUpTest < ActionDispatch::IntegrationTest
     }
     
     assert response.body.include? 'Email should look like an email address.'
+  end
+  
+  test 'recaptcha error messages' do
+    post '/register', params: { 
+      user: {
+        username: 'validusername', 
+        email: 'validemail@gmail.com',
+        password: 'validpassword',
+        password_confirmation: 'validpassword',
+      },
+      spamaway: {
+        follow_instructions: '',
+        statement1: '',
+        statement2: '',
+        statement3: '',
+        statement4: ''
+      }
+    }
+    
+    assert response.body.include? 'Spam detection -- It doesn&#39;t seem like you are a real person! If you disagree or are having trouble, please see https://publiclab.org/registration-test.'
   end
 
   test 'custom blank email error messages' do
