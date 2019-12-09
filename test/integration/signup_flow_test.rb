@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class SignUpTest < ActionDispatch::IntegrationTest
-  test 'username length error messages' do
+  test 'username min length error messages' do
     post '/register', params: { 
       user: {
         username: 'a', 
@@ -20,7 +20,27 @@ class SignUpTest < ActionDispatch::IntegrationTest
     
     assert response.body.include? 'Username is too short (minimum is 3 characters)'
   end
-  
+
+  test 'username max length error messages' do
+    post '/register', params: { 
+      user: {
+        username: 'a' * 101, 
+        email: 'validemail@gmail.com',
+        password: 'validpassword',
+        password_confirmation: 'validpassword',
+      },
+      spamaway: {
+        follow_instructions: '',
+        statement1: '',
+        statement2: '',
+        statement3: '',
+        statement4: ''
+      }
+    }
+    
+    assert response.body.include? 'Username is too long (maximum is 100 characters)'
+  end
+
   test 'username character error messages' do
     post '/register', params: { 
       user: {
@@ -143,6 +163,26 @@ class SignUpTest < ActionDispatch::IntegrationTest
     assert response.body.include? 'Email should look like an email address.'
   end
   
+  test 'email max length error messages' do
+    post '/register', params: { 
+      user: {
+        username: 'validusername', 
+        email: 'a' * 100 + '@gmail.com',
+        password: 'validpassword',
+        password_confirmation: 'validpassword',
+      },
+      spamaway: {
+        follow_instructions: '',
+        statement1: '',
+        statement2: '',
+        statement3: '',
+        statement4: ''
+      }
+    }
+    
+    assert response.body.include? 'Email is too long (maximum is 100 characters)'
+  end
+
   test 'recaptcha error messages' do
     post '/register', params: { 
       user: {
