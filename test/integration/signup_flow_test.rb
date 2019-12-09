@@ -24,6 +24,26 @@ class SignUpTest < ActionDispatch::IntegrationTest
   test 'username character error messages' do
     post '/register', params: { 
       user: {
+        username: 'xzd^', 
+        email: 'validemail@gmail.com',
+        password: 'validpassword',
+        password_confirmation: 'validpassword',
+      },
+      spamaway: {
+        follow_instructions: '',
+        statement1: '',
+        statement2: '',
+        statement3: '',
+        statement4: ''
+      }
+    }
+    
+    assert response.body.include? 'Username should use only letters, numbers, spaces, and .-_@+ please.'
+  end
+
+  test 'username character and length error messages' do
+    post '/register', params: { 
+      user: {
         username: '^', 
         email: 'validemail@gmail.com',
         password: 'validpassword',
@@ -39,6 +59,7 @@ class SignUpTest < ActionDispatch::IntegrationTest
     }
     
     assert response.body.include? 'Username should use only letters, numbers, spaces, and .-_@+ please.'
+    assert response.body.include? 'Username is too short (minimum is 3 characters)'
   end
 
   test 'password length error messages' do
