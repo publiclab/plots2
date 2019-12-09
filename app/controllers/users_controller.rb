@@ -49,16 +49,6 @@ class UsersController < ApplicationController
       end
       # send all errors to the page so the user can try again
       @action = "create"
-      email_errors = @user.errors.messages[:email]
-      username_errors = @user.errors.messages[:username]
-
-      if email_errors.size > 1
-        email_errors.delete("is invalid")
-      end
-
-      if username_errors.size > 1
-        username_errors.delete("is invalid")
-      end
 
       render action: 'new'
     end
