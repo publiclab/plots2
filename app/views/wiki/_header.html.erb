@@ -31,7 +31,7 @@
 
     <div style="padding-top:8px;text-align:center">
       <span class="d-none d-lg-inline">
-        <span rel="tooltip" data-placement="top" data-html="true" data-title="
+        <span rel="tooltip" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" data-html="true" data-content="
           <ul>
             <% @node.authors.each do |author| %>
               <li><a href='/profile/<%= author.username %>'>@<%= author.username %></a></li>
