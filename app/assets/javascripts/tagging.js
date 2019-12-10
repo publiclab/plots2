@@ -42,17 +42,11 @@ function initTagForm(deletion_path, selector) {
 
   el.bind('ajax:success', function(e, response){
     if (typeof response == "string") response = JSON.parse(response)
-    $.each(response['saved'], function(i,tag) {
-      var tag_name = tag[0];
-      var tag_id = tag[1];
-      $('.tags-list:first').append("<p id='tag_"+tag_id+"' class='badge badge-primary'> \
-        <a class='tag-name' style='color:white;' href='/tag/"+tag_name+"'>"+tag_name+"</a> <a class='tag-delete' \
-        data-remote='true' href='"+deletion_path+"/"+tag_id+"' data-tag-id='"+tag_id+"' \
-        data-method='delete'><i class='fa fa-times-circle fa-white blue pl-1' aria-hidden='true' ></i></a></p> ")
+    $.each(response['saved'], function(i, tag) {
+      displayNewTag(deletion_path, tag[0], tag[1]);
       el.find('.tag-input').val("")
       el.find('.control-group').removeClass('has-error')
       el.find('.control-group .help-block').remove()
-      setupTagDelete($('#tag_' + tag_id + ' .tag-delete'));
     })
     if (response['errors'].length > 0) {
       el.find('.control-group').addClass('has-error')
@@ -90,6 +84,17 @@ function initTagForm(deletion_path, selector) {
   return el;
 
 }
+
+
+
+function displayNewTag(deletion_path, tag_name, tag_id) {
+  $('.tags-list:first').append("<p id='tag_"+tag_id+"' class='badge badge-primary'> \
+    <a class='tag-name' style='color:white;' href='/tag/"+tag_name+"'>"+tag_name+"</a> <a class='tag-delete' \
+    data-remote='true' href='"+deletion_path+"/"+tag_id+"' data-tag-id='"+tag_id+"' \
+    data-method='delete'><i class='fa fa-times-circle fa-white blue pl-1' aria-hidden='true' ></i></a></p> ")
+  setupTagDelete($('#tag_' + tag_id + ' .tag-delete'));
+}
+
 
 function geocodeStringAndPan(string, onComplete) {
   var url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + string.split(" ").join("+");
