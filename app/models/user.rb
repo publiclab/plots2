@@ -16,6 +16,10 @@ class UniqueUsernameValidator < ActiveModel::Validator
   end
 end
 
+# Fixes authlogic's broken regex. 
+# See https://github.com/publiclab/plots2/pull/6932#issuecomment-563878155
+Authlogic::Regex::LOGIN = /\A[A-Za-z\d_\-]*\z/
+
 class User < ActiveRecord::Base
   extend Utils
   include Statistics

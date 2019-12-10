@@ -19,6 +19,7 @@ class SignUpTest < ActionDispatch::IntegrationTest
     }
     
     assert response.body.include? 'Username is too short (minimum is 3 characters)'
+    assert !(response.body.include? 'Username should use only letters, numbers, spaces, and .-_@+ please.')
   end
 
   test 'username max length error messages' do
@@ -242,45 +243,4 @@ class SignUpTest < ActionDispatch::IntegrationTest
 
     assert response.body.include? 'Username cannot be blank'
   end
-
-  test 'no redundant username error messages' do
-    post '/register', params: { 
-      user: {
-        username: '^', 
-        email: '',
-        password: '',
-        password_confirmation: '',
-      },
-      spamaway: {
-        follow_instructions: '',
-        statement1: '',
-        statement2: '',
-        statement3: '',
-        statement4: ''
-      }
-    }
-
-    assert !(response.body.include? 'Username is invalid')
-  end
-
-  test 'no redundant email error messages' do
-    post '/register', params: { 
-      user: {
-        username: 'validusername', 
-        email: 'notanemail',
-        password: '',
-        password_confirmation: '',
-      },
-      spamaway: {
-        follow_instructions: '',
-        statement1: '',
-        statement2: '',
-        statement3: '',
-        statement4: ''
-      }
-    }
-
-    assert !(response.body.include? 'Email is invalid')
-  end
-
 end
