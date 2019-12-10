@@ -356,7 +356,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       get '/wiki/' + nodes(:organizers).title.parameterize
-      assert_select 'a' , I18n.t('wiki.show.talk')
+      assert_select 'a[rel=tooltip] i.fa.fa-comment'
     end
   end
 
