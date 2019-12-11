@@ -1,8 +1,15 @@
-
 // Taking the prompt+value retrieved in promptTag() or the links in the drop-down menu and populating the form field before submitting it
 // Instead we want to take the tag value and directly submit it with AJAX
-function addTag(tagname, submitTo) {
+// responseEl is the page element that we want the messages being appended to
+function addTag(tagname, submitTo, responseEl = "") {
   submitTo = submitTo || '#tagform';
+  if (responseEl == "") {
+    if(submitTo.slice(0,1) === "/") {
+      responseEl = '#tagform';
+    } else {
+      responseEl = submitTo;
+    }
+  }
   if (tagname.slice(0,5).toLowerCase() === "place") {
     place = tagname.split(":")[1];
     place.replace("-", " ");
@@ -10,7 +17,7 @@ function addTag(tagname, submitTo) {
   }
   else {
     let data = { name: tagname };
-    sendFormSubmissionAjax(data, submitTo);
+    sendFormSubmissionAjax(data, submitTo, responseEl);
   }
 }
 
@@ -40,28 +47,8 @@ function initTagForm(deletion_path, selector) {
     el.find(".tag-input").prop('disabled', true)
   });
 
-  el.bind('ajax:success', function(e, response){
-    if (typeof response == "string") response = JSON.parse(response)
-    $.each(response['saved'], function(i, tag) {
-      displayNewTag(deletion_path, tag[0], tag[1]);
-      el.find('.tag-input').val("")
-      el.find('.control-group').removeClass('has-error')
-      el.find('.control-group .help-block').remove()
-    })
-    if (response['errors'].length > 0) {
-      el.find('.control-group').addClass('has-error')
-      el.find('.control-group .help-block').remove()
-      el.find('.control-group').append('<span class="help-block">' + response['errors'] + '</span>')
-    }
-    el.find('.tag-input').prop('disabled',false)
-    el.find('.tag-input').focus()
-  });
-
-  el.bind('ajax:error', function(e, response){
-    el.find('.control-group').addClass('has-error')
-    el.find('.tag-input').prop('disabled', false)
-    el.find('.control-group .help-block').remove();
-    el.find('.control-group').append('<span class="help-block">' + response.responseText + '</span>')
+  el.bind('ajax:success', function(e, response) {
+    addNewTagsSuccess(response, deletion_path, el);
   });
 
   setupTagDelete($('.tag-delete'));
@@ -85,16 +72,37 @@ function initTagForm(deletion_path, selector) {
 
 }
 
+function addNewTagsSuccess(response, deletion_path, el = "#tagform"){
+  if (typeof response == "string") response = JSON.parse(response)
+  $.each(response['saved'], function(i, tag) {
+    // only display tag if it was added to the note we're currently viewing
+    if (tag[2] == getDeletionPathId(deletion_path)) {
+      displayNewTag(tag[0], tag[1], deletion_path);
+    }
+    el.find('.tag-input').val("")
+    el.find('.control-group').removeClass('has-error')
+    el.find('.control-group .help-block').remove()
+  })
+  if (response['errors'].length > 0) {
+    el.find('.control-group').addClass('has-error')
+    el.find('.control-group .help-block').remove()
+    el.find('.control-group').append('<span class="help-block">' + response['errors'] + '</span>')
+  }
+  el.find('.tag-input').prop('disabled',false)
+  el.find('.tag-input').focus()
+}
 
-
-function displayNewTag(deletion_path, tag_name, tag_id) {
-  $('.tags-list:first').append("<p id='tag_"+tag_id+"' class='badge badge-primary'> \
+function displayNewTag(tag_name, tag_id, deletion_path) {
+  $('.tags-list:first').append("<p id='tag_"+tag_id+"' class='badge badge-primary m-0'> \
     <a class='tag-name' style='color:white;' href='/tag/"+tag_name+"'>"+tag_name+"</a> <a class='tag-delete' \
     data-remote='true' href='"+deletion_path+"/"+tag_id+"' data-tag-id='"+tag_id+"' \
     data-method='delete'><i class='fa fa-times-circle fa-white blue pl-1' aria-hidden='true' ></i></a></p> ")
   setupTagDelete($('#tag_' + tag_id + ' .tag-delete'));
 }
 
+function getDeletionPathId(deletion_path) {
+  return deletion_path.split("/").pop();
+}
 
 function geocodeStringAndPan(string, onComplete) {
   var url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + string.split(" ").join("+");
