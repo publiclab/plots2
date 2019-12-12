@@ -566,3 +566,14 @@ textarea, input {
   border-radius: 4px;
   padding: 10px; 
 }
+
+.blackcolor
+{
+    color:#222; !important;
+}
+
+.fabutton:hover
+{
+    color: #f1f1f1 !important;
+}
+
