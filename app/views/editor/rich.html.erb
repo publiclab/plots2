@@ -431,6 +431,8 @@
       $('#coord_input').toggle();
     });
     $("#coord_input").hide();
+    
+    editor.mapModule.blurredLocation.setZoomByPrecision(getPrecisionFromNum("<%= @lat %>"));
 
     $(function() {
       var target = document.querySelector('#map_content');
@@ -444,10 +446,8 @@
 
     function setLocationButtonText() {
       if ($('#map_content').is(':hidden')) {
-        console.log('hidden');
         $('#location_button').html('<i class="fa fa-map-marker" aria-hidden="true"></i> Add a location');
       } else {
-        console.log('visible');
         $('#location_button').html('<i class="fa fa-minus-circle"></i> Remove location');
       }
     }
@@ -500,5 +500,27 @@
       console.log("Draft:", editor.data.draft);
   }
 
+<<<<<<< HEAD
+=======
+  function getPrecisionFromNum(lat) {
+    let numArr = lat.toString().split('.');
+    let precision = 0;
+
+    if(numArr.length === 1) {
+      if(Math.floor(lat/100) == lat/100) {
+        precision = -2;
+      } else if (Math.floor(lat/10) == lat/10) {
+        precision = -1;
+      } else {
+        precision = 0;
+      }
+    } else {
+      precision = (numArr[1].length >= 3) ? 3 : numArr[1].length;
+    }
+
+    return precision;
+  }
+
+>>>>>>> keep default lat/lon zoom level by calculating precision
 </script>
 
