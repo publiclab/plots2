@@ -11,10 +11,10 @@ class SimplePostTest < ApplicationSystemTestCase
     click_on 'Log in'
     visit(simple_editor_path)
 
-    find('button#location_button').click
     take_screenshot
 
     fill_in('title-input', with: 'My story')
+    fill_in('textarea', with: 'This is my story')
     find('button.ple-publish').click
 
     assert_selector('h1', text: "My story")

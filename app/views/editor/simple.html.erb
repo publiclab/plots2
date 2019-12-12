@@ -37,29 +37,29 @@
         <!-- Map Module start-->
         <div class="ple-module-map ple-module row">
 
-            <div class="ple-module-guide col-lg-3">
-                <h2>1</h2>
-            </div>
+            <%# <div class="ple-module-guide col-lg-3"> %>
+            <%#     <h2>1</h2> %>
+            <%# </div> %>
 
-            <div class="ple-module-content col-lg-9">
-                <button id="location_button" class="btn btn-lg btn-outline-secondary">
-                    <i class="fa fa-map-marker" aria-hidden="true"></i>
-                    Add a location
-                </button>
-                <p class="ple-help">
-                <span class="ple-help-minor">Search the map by entering a location's name or its latitude & longitude coordinates. You can also pan the map directly.</span>
-                </p>
+  <div class="ple-module-content col-lg-11 col-lg-offset-1">
+            <%#     <button id="location_button" class="btn btn-lg btn-outline-secondary"> %>
+            <%#         <i class="fa fa-map-marker" aria-hidden="true"></i> %>
+            <%#         Add a location %>
+            <%#     </button> %>
+            <%#     <p class="ple-help"> %>
+            <%#     <span class="ple-help-minor">Search the map by entering a location's name or its latitude & longitude coordinates. You can also pan the map directly.</span> %>
+            <%#     </p> %>
 
                 <div id="map_content">
-                    <div class="row">
-                        <div class="col-lg-12">
+                    <%# <div class="row"> %>
+                        <%# <div class="col-lg-12"> %>
                             <div
                              id="map"
                              class="leaflet-map"
                              style="width: 100% ; height: 300px; margin-bottom:8px;">
                             </div>
-                        </div>
-                        </div>
+                        <%# </div> %>
+                        <%# </div> %>
 
                     <div class="row">
                         <div class="col-lg-6">
@@ -135,55 +135,54 @@
     <!-- body module -->
     <div class="ple-module-body ple-module row">
 
-      <div class="ple-module-guide col-lg-3">
-        <h2>2</h2>
-      </div>
+        <%# <div class="ple-module-guide col-lg-3"> %>
+            <%# <h2>2</h2> %>
+            <%# </div> %>
 
-      <div class="col-lg-9">
-          <h5>Share your story</h5>
-      <div class="ple-module-content">
-          <textarea id="text-input" class="ple-textarea form-control" placeholder="Your story">
-              <% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %>
-          </textarea>
-      </div>
+        <div class="ple-module-content col-lg-11 col-lg-offset-1">
+            <h5>Share your story</h5>
+            <div class="ple-module-content">
+                <textarea id="text-input" class="ple-textarea form-control" placeholder="Your story">
+                    <% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %>
+                </textarea>
+            </div>
 
-    </div>
+        </div>
     </div>
     <!-- end body module -->
 
-  <!-- main_image module -->
+    <!-- main_image module -->
     <div class="ple-module-main_image ple-module row">
 
-      <div class="ple-module-guide col-lg-3">
-        <h2>3</h2>
-      </div>
-
-      <div class="ple-module-content row col-lg-9">
-        <div class="ple-drag-drop col-lg-6">Add a photo</div>
-        <div class="col-lg-6 help">
-          <div style="display:none;" class="progress">
-            <div 
-              class="progress-bar progress-bar-striped progress-bar-animated"
-              role="progressbar"
-              aria-valuenow="0"
-              aria-valuemin="0"
-              aria-valuemax="100"
-              style="width: 0%;">
-            </div>
-          </div>
-          <p>
-            <input
-              type="file"
-              accept=".png, .jpg, .jpeg"
-              name="image[photo]"
-              value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>"
-            />
-          </p>
-          <p class="ple-help">
-            <span class="ple-help-minor">Select an optional main image for your post.</span>
-          </p>
+        <div class="ple-module-guide col-lg-3">
         </div>
-      </div>
+
+        <div class="ple-module-content row col-lg-9">
+            <div class="ple-drag-drop col-lg-6">Add a photo</div>
+            <div class="col-lg-6 help">
+                <div style="display:none;" class="progress">
+                    <div 
+                                           class="progress-bar progress-bar-striped progress-bar-animated"
+                                           role="progressbar"
+                                           aria-valuenow="0"
+                                           aria-valuemin="0"
+                                           aria-valuemax="100"
+                                           style="width: 0%;">
+                    </div>
+                </div>
+                <p>
+                <input
+                                           type="file"
+                                           accept=".png, .jpg, .jpeg"
+                                           name="image[photo]"
+                                           value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>"
+                                           />
+                </p>
+                <p class="ple-help">
+                <span class="ple-help-minor">Select an optional main image for your post.</span>
+                </p>
+            </div>
+        </div>
 
     </div>
     <!-- end main_image module -->
@@ -192,10 +191,14 @@
     <div class="ple-module-tags ple-module row">
 
       <div class="ple-module-guide col-lg-3">
-        <h2>4</h2>
+          <p class="muted">
+          Add tags to connect your story to other related stories
+          </p>
+
       </div>
 
       <div class="ple-module-content col-lg-9">
+  <%# <div class="ple-module-content col-lg-11 col-lg-offset-1"> %>
         <input
           class="form-control input-lg"
           type="text"
@@ -210,11 +213,11 @@
 <!-- title module -->
     <div class="ple-module-title ple-module row">
 
-      <div class="ple-module-guide col-lg-3">
-        <h2>5</h2>
-      </div>
+      <%# <div class="ple-module-guide col-lg-3"> %>
+        <%# <h2>5</h2> %>
+      <%# </div> %>
 
-      <div class="ple-module-content col-lg-6">
+  <div class="ple-module-content col-lg-11 col-lg-offset-1">
           <h5>Give your post a title</h5>
         <input
           class="form-control input-lg"
@@ -267,6 +270,11 @@
   </div>
 
 </div>
+    <script>
+$(document).ready(function() {
+    $("#map_content").show();
+});
+    </script>
 <script>
   var editor;
 
