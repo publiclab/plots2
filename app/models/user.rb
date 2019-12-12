@@ -3,11 +3,6 @@ class UniqueUsernameValidator < ActiveModel::Validator
     if User.find_by(username: record.username) && record.openid_identifier.nil?
       record.errors[:base] << 'That username is already taken. If this is your username, you can simply log in to this site.'
     end
-
-    if record.username.blank?
-      record.errors[:username].clear
-      record.errors[:username] << 'cannot be blank'
-    end
   end
 end
 
