@@ -567,13 +567,14 @@ textarea, input {
   padding: 10px; 
 }
 
-.blackcolor
+.btn-toolbar .btn-outline-secondary
 {
     color:#222;
 }
 
-.fabutton:hover
+.btn-toolbar .btn-outline-secondary:hover
 {
     color: #f1f1f1 !important;
 }
+
 
