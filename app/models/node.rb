@@ -582,6 +582,14 @@ class Node < ActiveRecord::Base
     end
   end
 
+  def zoom
+    if has_power_tag('zoom')
+      power_tag('zoom').to_f
+    else
+      false
+    end
+  end
+
   def place
     if has_power_tag('place')
       power_tag('place')

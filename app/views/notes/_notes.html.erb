@@ -4,7 +4,7 @@
 <div id="notes">
   <div class="row">
     <% (pinned_nodes + notes).each_with_index do |node,i| %>
-      <div class="<% if @widget %>col-4 <% end %><%= node.tagnames_as_classes %> col-lg-4 clearfix node note node-nid-<%= node.id %> note-nid-<%= node.id %><% if node.status == 4 %> moderated<% end %>">
+      <div class="<% if @widget %>col-4 <% end %><%= node.tagnames_as_classes %> col-lg-4 col-md-6 clearfix node note node-nid-<%= node.id %> note-nid-<%= node.id %><% if node.status == 4 %> moderated<% end %>">
 
         <%= render partial: 'notes/card', locals: { node: node, i: i, tagname: tagname } %>
 

@@ -71,7 +71,7 @@ class User < ActiveRecord::Base
   end
 
   def new_contributor
-    return "<a href='/tag/first-time-poster' class='label label-success font-italic'>new contributor</a>".html_safe if is_new_contributor?
+    return "<a href='/tag/first-time-poster' class='badge badge-success font-italic'>new contributor</a>".html_safe if is_new_contributor?
   end
 
   def set_token
@@ -452,33 +452,17 @@ class User < ActiveRecord::Base
     end
   end
 
-  def get_all_used_locations
-    latest_locations = []
-    nodes = self.nodes.order('nid DESC').where(status: 1)
-    nodes.each do |node|
-      location_tags = node.location_tags
-      if location_tags.count > 0
-        latest_locations << location_tags
-      end
-    end
-    latest_locations
+  def recent_locations(limit = 5)
+    recent_nodes = self.nodes.includes(:tag)
+      .references(:term_data)
+      .where('term_data.name LIKE ?', 'lat:%')
+      .joins("INNER JOIN term_data AS lon_tag ON lon_tag.name LIKE 'lat:%'")
+      .order(created: :desc)
+      .limit(5)
   end
 
-  def get_latest_used_location
-    latest_location = []
-    nodes = self.nodes.order('nid DESC').where(status: 1)
-    nodes.each do |node|
-      location_tags = node.location_tags
-      if location_tags.count > 0
-        latest_location << location_tags
-        break
-      end
-    end
-    if latest_location.count > 0
-      latest_location[0][0] = latest_location[0][0].name.split(":")[1].to_f
-      latest_location[0][1] = latest_location[0][1].name.split(":")[1].to_f
-    end
-    latest_location
+  def latest_location
+    recent_locations.last
   end
 
   private

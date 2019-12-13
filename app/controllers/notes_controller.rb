@@ -287,7 +287,7 @@ class NotesController < ApplicationController
     @notes = Node.research_notes
       .where(status: 1)
       .limit(20)
-      .order('nid DESC')
+      .order('cached_likes DESC')
     @unpaginated = true
     render template: 'notes/index'
   end
@@ -298,6 +298,7 @@ class NotesController < ApplicationController
       .where(type: 'page', status: 1)
       .order('nid DESC')
     @notes = Node.where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
+                 .order('created DESC')
     @unpaginated = true
     render template: 'notes/index'
   end
@@ -373,6 +374,8 @@ class NotesController < ApplicationController
     if current_user && current_user.uid == @node.uid || current_user.can_moderate? || @node.has_tag("with:#{current_user.username}")
       @node.path = @node.generate_path
       @node.slug = @node.slug.split('token').first
+      @node['created'] = DateTime.now.to_i # odd assignment needed due to legacy Drupal column types
+      @node['changed'] = DateTime.now.to_i
       @node.publish
       SubscriptionMailer.notify_node_creation(@node).deliver_now
       flash[:notice] = "Thanks for your contribution. Research note published! Now, it's visible publicly."

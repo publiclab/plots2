@@ -280,7 +280,7 @@ class TagController < ApplicationController
     nids = Tag.find_nodes_by_type(params[:id], 'note', nil).collect(&:nid)
     @notes = Node.paginate(page: params[:page], per_page: 6)
       .where('status = 1 AND nid in (?)', nids)
-      .order('nid DESC')
+      .order('created DESC')
     @tags = Tag.where(name: params[:id])
     @tagnames = @tags.collect(&:name).uniq! || []
     @title = @tagnames.join(',') + ' Blog' if @tagnames
@@ -534,13 +534,18 @@ class TagController < ApplicationController
     @start = params[:start] ? Time.parse(params[:start].to_s) : Time.now - 1.year
     @end = params[:end] ? Time.parse(params[:end].to_s) : Time.now
     tagname = params[:id]
-
+    
+    @tag_name = params[:id]
     @tags = Tag.where(name: params[:id])
+
+    return if @tags.empty?
+
     @tag_notes = @tags.first.contribution_graph_making('note', @start, @end)
     @tag_wikis = @tags.first.contribution_graph_making('page', @start, @end)
     @tag_questions = @tags.first.quiz_graph(@start, @end)
     @tag_comments = @tags.first.comment_graph(@start, @end)
     @subscriptions = @tags.first.subscription_graph(@start, @end)
+
     @all_subscriptions = TagSelection.graph(@start, @end)
 
     total_questions = Node.published.questions

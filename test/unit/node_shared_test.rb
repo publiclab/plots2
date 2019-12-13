@@ -170,7 +170,7 @@ class NodeSharedTest < ActiveSupport::TestCase
   test 'that NodeShared can be used to convert short codes like [map:layers:23:77:mapKnitter,odorReport,wisconsin,asian,clouds] into maps which display LEL layers' do
     before = "Here are some people in a map: [map:layers::23:77:mapKnitter,odorReport,wisconsin,asian,clouds]"
     html = NodeShared.layers_map(before)
-    assert_equal 1, html.scan('<div class="leaflet-map"').length
+    assert_equal 1, html.scan('<div class="leaflet-map').length
   end
 
   test 'that NodeShared can be used to convert short codes like [people:organizer] into maps which display notes, but only those tagged with "organizer"' do

@@ -36,6 +36,12 @@
     text-decoration: none;
     color: #505050;
 }
+.card-view a.btn {
+    text-decoration: none;
+}
+.card-view a.btn-primary {
+    color: white;
+}
 .card-view .card-meta-author {
     font-size: 0.9em;
     margin-bottom: 0.5rem;
