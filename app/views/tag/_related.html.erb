@@ -1,8 +1,8 @@
-<div class="row">
-  <ul class= "list-inline col-md-10">
-    <li><strong>Related Tags:</strong></li>
+<div class="row related-tags">
+  <ul class= "list-inline col-lg-10">
+    <li class="list-inline-item"><strong>Related Topics:</strong></li>
     <% tags.each do |tag| %>
-        <li><a href='/tag/<%= tag.name %>' id="tag_<%= tag.tid %>" class="label <%= tag.name.include?(":") ? 'label-primary' : 'label-default' %>">
+        <li class="list-inline-item"><a href='/tag/<%= tag.name %>' id="tag_<%= tag.tid %>" class="badge <%= tag.name.include?(":") ? 'badge-primary' : 'badge-secondary' %>">
           <%= tag.name %>
         </a></li>
     <% end %>

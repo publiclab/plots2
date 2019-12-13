@@ -30,3 +30,7 @@
   border-left: 5px solid #736f6f;
   background-color: #f3f1ef;
 }
+
+#comments-list .comment p img {
+  max-width: 100%;
+}

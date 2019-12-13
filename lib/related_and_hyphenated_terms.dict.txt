@@ -1,0 +1,21 @@
+noun purpleair purple-air
+voc volatile-organic-compund
+discussion-list mailing-list
+mailing-list discussion-list
+listserv mailing-list
+dust pm
+pm dust
+particulates dust
+tds total-dissolved-solids
+datalogger data-logging
+data-logging datalogging
+event meetup
+formaldehyde HCHO
+formaldehyde CH2O
+ag agriculture
+agriculture farming
+cafo factory-farm
+cafo feedlot
+sewage wastewater
+salinity conductivity
+valverde val-verde

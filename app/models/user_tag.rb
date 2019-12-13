@@ -1,13 +1,10 @@
 class UserTag < ApplicationRecord
   serialize :data
   belongs_to :user, foreign_key: :uid
-  validates :value, presence: :true
+  validates :value, presence: true
   validates :value, format: { with: /\A[\w\.:-]*\z/, message: 'can only include letters, numbers, and dashes' }
-  validates_uniqueness_of :value, :scope => :uid
+  validates_uniqueness_of :value, scope: :uid
   before_save :preprocess
-
-  DIGEST_DAILY = 0
-  DIGEST_WEEKLY = 1
 
   def preprocess
     self.value = value.downcase

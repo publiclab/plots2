@@ -1,0 +1,21 @@
+<!-- This button is used to display tags in a popover and subscribe to multiple tags using a single button -->
+<% buttonStyle ||= 'btn-outline-secondary btn-md' %>
+<% buttonColor ||= 'black' %>
+<a id="popover_button" class="btn <%= buttonStyle %>" style="color:<%= buttonColor %>;">Follow
+  <i class="fa fa-plus" style="color:<%= buttonColor %>;"></i>
+</a>
+
+<div id="mypopcontent" class="d-none" onmouseleave="show(this)">
+  <%= render partial: "tag/tags_popover", locals: {tags: tags} %>
+</div>
+
+<script type="text/javascript">
+  $('#popover_button').popover({
+    content: $('#mypopcontent').clone().removeClass('d-none'),
+    placement: 'bottom',
+    html: true,
+  });
+  function show(elem){
+  $('#popover_button').popover("hide")
+  }
+</script>

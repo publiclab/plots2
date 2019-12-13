@@ -45,7 +45,6 @@ class HomeControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
     get :dashboard
     assert_response :success
-    assert_select 'a[href=?]', "mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+item+that+looks+like+spam+or+needs+to+be+moderated:+Canon+A1200+IR+conversion+at+PLOTS+Barnraising+at+LUMCON+https://publiclab.org/n/1+by+https://publiclab.org/profile/jeff+Thanks!"
   end
 
   test 'should show only unmoderated spam' do
@@ -60,7 +59,7 @@ class HomeControllerTest < ActionController::TestCase
     @wikis.each do |obj|
       if obj.class == Revision && obj.status == 1
         selections = css_select '.wiki'
-        assert_equal selections.length, 6
+        assert_equal selections.length, 7
       elsif obj.class == Revision && obj.status != 1
         selections = css_select '.wiki'
         assert_equal selections.length, 0

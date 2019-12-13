@@ -1,4 +1,4 @@
-Hi, this is a [first-timers-only issue](https://publiclab.github.io/community-toolbox/#r=all). This means we've worked to make it more legible to folks who either **haven't contributed to our codebase before, or even folks who haven't contributed to open source before**. 
+Hi, this is a [first-timers-only issue](https://code.publiclab.org/#r=all). This means we've worked to make it more legible to folks who either **haven't contributed to our codebase before, or even folks who haven't contributed to open source before**. 
 
 If that's you, we're interested in helping you take the first step and can answer questions and help you out as you do. Note that we're especially interested in contributions from people from groups underrepresented in free and open source software!
 
@@ -16,7 +16,7 @@ Nothing. This issue is meant to welcome you to Open Source :) We are happy to wa
 
 - [ ] 📝 **Update** the file [$FILENAME]($BRANCH_URL) in the `$REPO` repository (press the little pen Icon) and edit the line as shown below. 
 
-[See this page](https://publiclab.github.io/community-toolbox/#r=all) for some help in taking your first steps!
+[See this page](https://code.publiclab.org/#r=all) for some help in taking your first steps!
 
 Below is a "diff" showing in red (and a `-`) which lines to remove, and in green (and a `+`) which lines to add:
 
@@ -35,13 +35,19 @@ $DIFF
 
 - [ ] 🏁 **Done** Ask in comments for a review :)
 
+### Please keep us updated
+
+💬⏰ - We encourage contributors to be respectful to the community and provide an update **within a week** of claiming a first-timers-only issue. We're happy to keep it assigned to you as long as you need if you update us with a request for more time or help, but if we don't see any activity a week after you claim it we may reassign it to give someone else a chance. Thank you in advance! 
+
+If this happens to you, don't sweat it! Grab another open issue.
+
+### Is someone else already working on this?
+
+🔗- We encourage contributors to link to the original issue in their pull request so all users can easily see if someone's already started on it. 
+
+👥- **If someone seems stuck, offer them some help!** Otherwise, [take a look at some other issues you can help with](https://code.publiclab.org/#r=all). Thanks!
 
 ### 🤔❓ Questions?
 
 Leave a comment below!
 
-### Is someone else already working on this?
-
-We encourage you to link to this issue by mentioning the issue # in your pull request, so we can see if someone's already started on it. **If someone seem stuck, offer them some help!** Otherwise, [take a look at some other issues you can help with](https://publiclab.github.io/community-toolbox/#r=all). Thanks!
-
-(This issue was created by [First-Timers-Bot](https://github.com/hoodiehq/first-timers-bot).)

@@ -41,8 +41,8 @@
   margin-bottom: 0;
   font-size: 14px;
   color: #888;
-}                          
-                           
+}
+
 .dashboard .stats h4 b {
   font-weight: normal;
   color: #333;
@@ -65,7 +65,7 @@
 /* line-on-sides-header example based on https://css-tricks.com/line-on-sides-headers/ */
 .dashboard h3 i {
   display: inline-block;
-  position: relative;  
+  position: relative;
   font-style: normal;
 }
 
@@ -211,9 +211,12 @@
   margin: 18px 0 2px;
 }
 
-.note-default {
-
+.dashboard .social-media-btn {
+  float: left;
+  margin-right: 5px;
 }
+
+
 
 .note .header-icon {
   text-align: center;
@@ -249,7 +252,11 @@
   color: #555;
 }
 
-.note-wiki    .btn-default:hover, 
+.note-comment .body {
+  overflow-wrap : break-word;
+}
+
+.note-wiki    .btn-default:hover,
 .note-comment .btn-default:hover {
   background: #eee;
 }
@@ -327,9 +334,16 @@
 }
 
 /* end event node styles */
+.note .meta a i {
+  transition: color .15s ease-in-out,
+  background-color .15s ease-in-out,
+  border-color .15s ease-in-out,
+  box-shadow .15s ease-in-out;
+  }
 
 .note .meta a:hover i {
-  color: #666;
+  color: #FFF2CC;
+  background: #666;
 }
 
 .note .btn-default {
@@ -380,4 +394,16 @@
   {
     margin-top:10px;
   }
+}
+
+#refreshA {
+  margin-right: 2px;
+}
+
+.topics-span {
+  font-size: 18px;
+}
+
+#subscribe {
+  margin-top: 10px;
 }

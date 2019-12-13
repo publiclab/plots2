@@ -1,0 +1,71 @@
+<%= javascript_include_tag('/lib/urlhash/urlHash.js') %>
+<%= render :partial => "map/mapDependencies" %>
+  
+  <style>
+  #map{ 
+    position:fixed;
+    padding:0;
+    margin:0;
+
+    top:50px;
+    left:0;
+
+    width: 100%;
+    height: 100%;
+    background:rgba(255,255,255,0.5);
+  }
+  </style>
+
+<div id="map"></div>
+
+   <script>
+
+      var urlHash = urlHash();
+      const params = urlHash.getUrlHashParameters();
+     
+      const bounds = new L.LatLngBounds(
+        new L.LatLng(84.67351257, -172.96875),
+        new L.LatLng(-54.36775852, 178.59375)
+      );
+
+      var lat = parseFloat(params.lat)|| 23;
+      var lon = parseFloat(params.lon) || 77;
+      var zoom = parseFloat(params.zoom) || 4;
+
+      var map = L.map("map", {
+        maxBounds: bounds,
+        maxBoundsViscosity: 0.75
+      }).setView([lat, lon], zoom);
+
+      map.options.minZoom = 3;
+
+      map.on('moveend', function() {
+        const center = map.getCenter();
+        urlHash.setUrlHashParameter('lat', center.lat + "");
+        urlHash.setUrlHashParameter('lon', center.lng + "");
+      })
+
+      map.on('zoomend', function() {
+        const zoom = map.getZoom();
+        urlHash.setUrlHashParameter('zoom', zoom + "");
+      })
+
+      var layersname = "<%= @layersname %>";
+      layersname = layersname.split(',');
+
+      L.tileLayer(
+        "https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",
+        {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }
+      ).addTo(map);
+
+
+      L.LayerGroup.EnvironmentalLayers({
+        include: layersname  || ['odorreport', 'asian', 'clouds', 'eonetFiresLayer', 'Unearthing'],
+        hash: false,
+        embed: true,
+      }).addTo(map);
+
+
+    </script>

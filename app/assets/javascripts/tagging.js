@@ -1,37 +1,39 @@
-function addTag(tagname, selector) {
 
-  selector = selector || '#tagform';
+// Taking the prompt+value retrieved in promptTag() or the links in the drop-down menu and populating the form field before submitting it
+// Instead we want to take the tag value and directly submit it with AJAX
+function addTag(tagname, submitTo) {
+  submitTo = submitTo || '#tagform';
   if (tagname.slice(0,5).toLowerCase() === "place") {
     place = tagname.split(":")[1];
     place.replace("-", " ");
     geo = geocodeStringAndPan(place);
   }
   else {
-    var el = $(selector);
-
-    el.find('.tag-input').val(tagname);
-
-    el.submit();
+    let data = { name: tagname };
+    sendFormSubmissionAjax(data, submitTo);
   }
-
 }
 
 function setupTagDelete(el) {
-
   el.click(function(e) {
       $(this).css('opacity', 0.5)
     })
-    .bind('ajax:success', function(e, tid){
-      $('#tag_' + tid).remove();
+    .bind('ajax:success', function(e, response){
+      if (typeof response == "string") response = JSON.parse(response)
+      if (response['status'] == true) { 
+        $('#tag_' + response['tid']).remove() 
+      } else {
+        $('.control-group').addClass('has-error')
+        $('.control-group .help-block').remove()
+        $('.control-group').append('<span class="help-block">' + response['errors'] + '</span>')
+      }
     });
   return el;
-
 }
 
 function initTagForm(deletion_path, selector) {
 
   selector = selector || '#tagform';
-
   var el = $(selector);
 
   el.bind('ajax:beforeSend', function(){
@@ -43,10 +45,10 @@ function initTagForm(deletion_path, selector) {
     $.each(response['saved'], function(i,tag) {
       var tag_name = tag[0];
       var tag_id = tag[1];
-      $('#tags ul:first').append("<li><span id='tag_"+tag_id+"' class='label label-primary'> \
-        <a href='/tag/"+tag_name+"'>"+tag_name+"</a> <a class='tag-delete' \
+      $('.tags-list:first').append("<p id='tag_"+tag_id+"' class='badge badge-primary'> \
+        <a class='tag-name' style='color:white;' href='/tag/"+tag_name+"'>"+tag_name+"</a> <a class='tag-delete' \
         data-remote='true' href='"+deletion_path+"/"+tag_id+"' data-tag-id='"+tag_id+"' \
-        data-method='delete'>x</a></span></li> ")
+        data-method='delete'><i class='fa fa-times-circle fa-white blue pl-1' aria-hidden='true' ></i></a></p> ")
       el.find('.tag-input').val("")
       el.find('.control-group').removeClass('has-error')
       el.find('.control-group .help-block').remove()
@@ -58,6 +60,7 @@ function initTagForm(deletion_path, selector) {
       el.find('.control-group').append('<span class="help-block">' + response['errors'] + '</span>')
     }
     el.find('.tag-input').prop('disabled',false)
+    el.find('.tag-input').focus()
   });
 
   el.bind('ajax:error', function(e, response){
@@ -77,6 +80,7 @@ function initTagForm(deletion_path, selector) {
         return process(data);
       })
     },
+    item: '<li class="dropdown-item"><a class="dropdown-item" href="#" role="option"></a></li>',
     updater: function(text) { 
       el.find('.tag-input').val(text);
       el.submit();
@@ -101,12 +105,51 @@ function geocodeStringAndPan(string, onComplete) {
 
         if (geo.length > 0) {
           var r = confirm("This looks like a location. Is this full description of the location accurate?");
-          console.log(geo[0]);
-          console.log(geo[1]);
           if(r) { 
             addTag("lat:" + geo[0].toString() + ",lng:" + geo[1].toString()+",place:"+string);
           }    
         }
       },
   });
+}
+
+function promptTag(val) {
+  var input;
+  switch(val) {
+
+    case "series:":
+      input = prompt("Enter a unique tag to link your series together, using dashes; it will be displayed with a message like 'This is part of a series on monitoring-landfills'");
+      if (input !== null) addTag(val + input);
+      break;
+
+    case "lang:":
+      input = prompt("Enter the language code; for example, for Spanish, enter 'es'", 'es');
+      if (input !== null) addTag(val + input);
+      break;
+
+    case "parent:":
+      input = prompt("Enter the end of the URL for another wiki page; for example, for '/wiki/stormwater', enter 'stormwater'");
+      if (input !== null) addTag(val + input);
+      break;
+
+    case "style:":
+      input = prompt("What kind of style? (minimal, fancy, presentation, wide, nobanner)", "minimal");
+      if (input !== null) addTag(val + input);
+      break;
+
+    case "with:":
+      input = prompt("Who would you like to add as a coauthor?", "Username");
+      if (input !== null) addTag(val + input);
+      break;
+
+    case "comment-template:":
+      var input = prompt("Add a template for the comment field to guide responses; enter the name (i.e. 'survey-template' for /wiki/survey-template) of a wiki page to use as the template:", "wiki-template-name");
+      if (input !== null) addTag(val + input);
+      break;
+
+    default:
+      addTag(expr);
+      break;
+
+  }
 }

@@ -7,12 +7,12 @@ xml.rss :version => '2.0', 'xmlns:atom' => 'http://www.w3.org/2005/Atom' do
 
     @notes.each do |node|
       author = node.author.username
-      if node.author.user.has_power_tag('twitter')
-        author = "@#{node.author.user.get_value_of_power_tag('twitter')}"
+      if node.author.has_power_tag('twitter')
+        author = "@#{node.author.get_value_of_power_tag('twitter')}"
       end
 
       xml.item do
-        xml.title      node.title
+        xml.title      node.title + " (##{node.id})"
         xml.author     author
         xml.pubDate     node.created_at.to_s(:rfc822)
         xml.link        "https://" + request.host.to_s + node.path

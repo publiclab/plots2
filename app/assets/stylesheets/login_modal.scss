@@ -1,0 +1,24 @@
+#socialIcons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: -2.8rem;
+}
+
+.login-form {
+  padding: 0 30px;
+
+  #visibility {
+    line-height: 0;
+    color: #888;
+    pointer-events: auto;
+    text-decoration: none;
+  }
+
+  div.form-group {
+    margin-top: 1rem;
+  }
+
+  p.form-grey {
+    margin-top: 1rem;
+  }
+}

@@ -2,7 +2,7 @@
 
 <p>Features allow admins to edit/update text and images displayed around the site, for example banners, sidebar content, and alerts or notices.</p>
 
-<p><a class="btn btn-default" href="/features/new">New feature</a></p>
+<p><a class="btn btn-outline-secondary" href="/features/new">New feature</a></p>
 
 <table class="table">
   <tr>
@@ -20,4 +20,4 @@
   <% end %>
 </table>
 
-<%= will_paginate @features, :renderer => BootstrapPagination::Rails %>
+<%= will_paginate @features, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
