@@ -352,7 +352,7 @@ class TagController < ApplicationController
 
         if saved
           @tags << tag
-          @output[:saved] << [tag.name, tag.id]
+          @output[:saved] << [tag.name, tag.id, nid]
         else
           @output[:errors] << I18n.t('tag_controller.error_tags') + tag.errors[:name].first
         end
