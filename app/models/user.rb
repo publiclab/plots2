@@ -58,7 +58,6 @@ class User < ActiveRecord::Base
   has_many :comments, foreign_key: :uid
 
   validates_with UniqueUsernameValidator, on: :create
-  validates_format_of :username, with: /\A[A-Za-z\d_\-]+\z/
 
   before_save :set_token
 

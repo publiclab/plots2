@@ -63,7 +63,7 @@ class UserTagsController < ApplicationController
           elsif  tagname.split(':')[1] == "twitter"
             @output[:errors] << "This tag is used for associating a Twitter account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>"
           elsif user_tag.save
-            @output[:saved] << [name, user_tag.id]
+            @output[:saved] << [name, user_tag.id, params[:id]]
           else
             @output[:errors] << I18n.t('user_tags_controller.cannot_save_value')
           end

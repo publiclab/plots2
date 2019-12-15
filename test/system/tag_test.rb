@@ -38,10 +38,8 @@ class TagTest < ApplicationSystemTestCase
     # run the javascript function
     page.evaluate_script("addTag('roses', '/tag/create/11')")
 
-    visit "/wiki/wiki-page-path" # refresh page
-
     # check that the tag showed up on the page
-    assert_selector('.tags-list .card-body h5', text: 'roses')
+    assert_selector('.tags-list .tag-name', text: 'roses')
 
   end
 
@@ -58,8 +56,6 @@ class TagTest < ApplicationSystemTestCase
 
     # run the javascript function
     page.evaluate_script("addTag('specialgroup', '/profile/tags/create/2')")
-
-    visit "/profile/jeff" # refresh page
 
     find('#tags-section').click
 
