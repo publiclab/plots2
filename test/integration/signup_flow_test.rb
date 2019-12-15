@@ -10,7 +10,7 @@ class SignUpTest < ActionDispatch::IntegrationTest
     }
   end
 
-  test 'username minimum length error messages' do
+  test 'display username minimum length error messages' do
     post '/register', params: { 
       user: {
         username: 'a', 
@@ -30,7 +30,7 @@ class SignUpTest < ActionDispatch::IntegrationTest
     assert response.body.include? 'Username is too short (minimum is 3 characters)'
   end
 
-  test 'username maximum length error messages' do
+  test 'display username maximum length error messages' do
     post '/register', params: { 
       user: {
         username: 'a' * 101, 
@@ -50,7 +50,7 @@ class SignUpTest < ActionDispatch::IntegrationTest
     assert response.body.include? 'Username is too long (maximum is 100 characters)'
   end
 
-  test 'username special characters error messages' do
+  test 'display username special characters error messages' do
     test_username_regex 'asdf^'
     test_username_regex 'asdf>'
     test_username_regex 'asdf.'
@@ -58,7 +58,7 @@ class SignUpTest < ActionDispatch::IntegrationTest
   end
 
 
-  test 'username character and length error messages' do
+  test 'display username character and length error messages' do
     post '/register', params: { 
       user: {
         username: '^', 
