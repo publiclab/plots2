@@ -312,9 +312,11 @@
         token: $('meta[name="csrf-token"]').attr('content')
       },
       <% if @lat and @lon %>
-       lat: <%= @lat %> , 
-       lon: <%= @lon %> ,
-       zoom: <%= @zoom %>
+        lat: <%= @lat %> , 
+        lon: <%= @lon %> ,
+        <% if @zoom %>
+          zoom: <%= @zoom %>,
+        <% end %>
       <% end %>
       textarea:    $('.ple-textarea')[0],
       <% if @main_image %>
