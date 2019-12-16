@@ -40,6 +40,7 @@ class EditorController < ApplicationController
       tags.each do |x|
         x.include? "lat:" and (@lat = x.split(':')[1])
         x.include? "lon:" and (@lon = x.split(':')[1])
+        x.include? "zoom:" and (@zoom = x.split(':')[1])
       end
     end
     template if params[:n] && !params[:body] # use another node body as a template
