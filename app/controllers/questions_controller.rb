@@ -111,7 +111,7 @@ class QuestionsController < ApplicationController
     @questions = Node.questions
       .where(status: 1)
       .left_outer_joins(:comments)
-      .where(comments: {cid: nil})
+      .where(comments: { cid: nil })
       .order('node.nid DESC')
       .group('node.nid')
       .paginate(page: params[:page], per_page: 24)
