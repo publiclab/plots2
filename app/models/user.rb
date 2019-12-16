@@ -6,6 +6,9 @@ class UniqueUsernameValidator < ActiveModel::Validator
   end
 end
 
+# Overwrites authlogic username regex to allow one character usernames
+Authlogic::Regex::LOGIN = /\A[A-Za-z\d_\-]*\z/
+
 class User < ActiveRecord::Base
   extend Utils
   include Statistics
