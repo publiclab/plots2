@@ -532,7 +532,7 @@ GEM
       unf_ext
     unf_ext (0.0.7.6)
     unicode-display_width (1.6.0)
-    unicode-emoji (2.1.0)
+    unicode-emoji (2.3.1)
     virtus (1.0.5)
       axiom-types (~> 0.1)
       coercible (~> 1.0)
