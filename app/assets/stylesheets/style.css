@@ -566,3 +566,15 @@ textarea, input {
   border-radius: 4px;
   padding: 10px; 
 }
+
+.btn-toolbar .btn-outline-secondary
+{
+    color:#222;
+}
+
+.btn-toolbar .btn-outline-secondary:hover
+{
+    color: #f1f1f1 !important;
+}
+
+
