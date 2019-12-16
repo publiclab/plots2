@@ -14,9 +14,11 @@ class SimplePostTest < ApplicationSystemTestCase
     take_screenshot
 
     fill_in('title-input', with: 'My story')
-    fill_in('textarea', with: 'This is my story')
+    body = find(".wk-wysiwyg")
+    body.set("This is my story")
     find('button.ple-publish').click
 
     assert_selector('h1', text: "My story")
+    assert_selector('#content', text: "This is my story")
   end
 end
