@@ -51,3 +51,13 @@ function insertTitleSuggestionTemplate() {
   var newText = currentText+template;
   element.val(newText);
 }
+
+// JS API for submitting comments
+function addComment(comment, submitTo, parentID = 0) {
+  submitTo = submitTo || '.comment-form'; // class instead of id because of the bound function on line 3
+  let data = { body: comment };
+  if (parentID)  {
+    data.reply_to = parentID;
+  }
+  sendFormSubmissionAjax(data, submitTo);
+}

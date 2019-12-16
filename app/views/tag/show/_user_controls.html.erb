@@ -30,26 +30,6 @@
       <% unless @tags.try(:first).try(:parent).nil? %>
         <small>Alias of: <%= @tags.first.parent %></small>
       <% end %>
-
-      <% if logged_in_as(['admin']) %>
-        <div class="dropdown-item">
-          <div id="add_parent">
-            <p><b>Add a tag parent (admin only)</b></p>
-            <form class="form" action="/tag/parent" method="get">
-              <div class="control-group">
-                <div class="input-group">
-                  <input class="form-control" type="text" placeholder="parent" name="parent" />
-                  <input type="hidden" placeholder="parent" name="name" value="<%= @tags&.first&.name %>" />
-                  <div class="input-group-append">
-                    <input class="btn btn-outline-secondary" type="submit" value="Submit" />
-                  </div>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      <% end %>
-
     <% end %>
 </div>
 

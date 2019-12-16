@@ -14,7 +14,9 @@ class UsersController < ApplicationController
     using_recaptcha = !params[:spamaway] && Rails.env == "production"
     recaptcha = verify_recaptcha(model: @user) if using_recaptcha
     @spamaway = Spamaway.new(spamaway_params) unless using_recaptcha
-    if ((@spamaway&.valid?) || recaptcha) && @user.save
+
+    saved_user = @user.save
+    if ((@spamaway&.valid?) || recaptcha) && saved_user
       if current_user.crypted_password.nil? # the user has not created a pwd in the new site
         flash[:warning] = I18n.t('users_controller.account_migrated_create_new_password')
         redirect_to "/profile/edit"
@@ -199,6 +201,7 @@ class UsersController < ApplicationController
         end
 
         # User's social links
+        @content_approved = !(Node.where(status: 1, uid: @profile_user.id).empty?) or !(Comment.where(status: 1, uid: @profile_user.id).empty?)
         @github = @profile_user.social_link("github")
         @twitter = @profile_user.social_link("twitter")
         @facebook = @profile_user.social_link("facebook")

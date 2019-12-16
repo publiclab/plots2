@@ -275,13 +275,12 @@ class Node < ActiveRecord::Base
     User.find(uid)
   end
 
-  def coauthors
-    User.where(username: power_tags('with')) if has_power_tag('with')
-  end
-
-  # for wikis:
   def authors
     revisions.collect(&:author).uniq
+  end
+
+  def coauthors
+    User.where(username: power_tags('with')) if has_power_tag('with')
   end
 
   # tag- and node-based followers
@@ -310,6 +309,10 @@ class Node < ActiveRecord::Base
 
   def body
     latest&.body
+  end
+
+  def summary
+    body.lines.first
   end
 
   # was unable to set up this relationship properly with ActiveRecord associations
@@ -574,6 +577,14 @@ class Node < ActiveRecord::Base
   def lon
     if has_power_tag('lon')
       power_tag('lon').to_f
+    else
+      false
+    end
+  end
+
+  def zoom
+    if has_power_tag('zoom')
+      power_tag('zoom').to_f
     else
       false
     end
@@ -873,6 +884,13 @@ class Node < ActiveRecord::Base
         .joins(:tag)
         .where('term_data.name LIKE ?', 'question:%')
         .group('node.nid')
+  end
+
+  # all nodes with tagname
+  def self.find_by_tag(tagname)
+    Node.includes(:node_tag, :tag)
+      .where('term_data.name = ? OR term_data.parent = ?', tagname, tagname)
+      .references(:term_data, :node_tag)
   end
 
   # finds nodes by tag name, user id, and optional node type

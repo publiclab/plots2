@@ -18,7 +18,7 @@ class UserTagsControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
     post :create, params: { id: users(:bob).id, name: 'environment' }, xhr: true
     assert_response :success
-    assert_equal [['environment', UserTag.where(value:'environment').first.id]], JSON.parse(response.body)['saved']
+    assert_equal [['environment', UserTag.where(value:'environment').first.id, users(:bob).id.to_s]], JSON.parse(response.body)['saved']
   end
 
   test 'should create two new tags from "one,two"' do
@@ -27,7 +27,7 @@ class UserTagsControllerTest < ActionController::TestCase
       post :create, params: { name: 'one,two', nid: nodes(:one).nid, id: users(:bob).id }, xhr: true
     end
     assert_response :success
-    assert_equal [['one', UserTag.where(value: 'one').first.id], ['two', UserTag.where(value: 'two').first.id]], JSON.parse(response.body)['saved']
+    assert_equal [['one', UserTag.where(value: 'one').first.id, users(:bob).id.to_s], ['two', UserTag.where(value: 'two').first.id, users(:bob).id.to_s]], JSON.parse(response.body)['saved']
   end
 
   test 'should delete existing tag' do

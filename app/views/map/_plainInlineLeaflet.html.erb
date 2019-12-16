@@ -11,7 +11,10 @@
     width: auto !important;
   }
   </style>
-  <div class="leaflet-map" id="map<%= unique_id %>"></div>
+  <div class="inline-fullwidth-content">
+      <div class="leaflet-map" id="map<%= unique_id %>"></div>
+  </div>
+
   
     <p><i><small>
       <button id="postOnMap<%= unique_id %>" class="btn btn-primary">Add a story +</button>
@@ -47,17 +50,17 @@
      }, 3500);
 
     setupLEL(map<%= unique_id %> , 0) ;
-
+    var map_tagname<%= unique_id %> = null;
      <% if (defined? tagname != nil and tagname.nil? == false) %>
-          map_tagname = "<%= tagname %>" ;
+           map_tagname<%= unique_id %> = "<%= tagname %>" ;
      <% end %>
 
      map<%= unique_id %>.on('zoomend' , function () {
-        contentLayerParser(map<%= unique_id %>, markers_hash<%= unique_id %>, map_tagname);
+        contentLayerParser(map<%= unique_id %>, markers_hash<%= unique_id %>, map_tagname<%= unique_id %>);
     }) ;
 
     map<%= unique_id %>.on('moveend' , function () {
-        contentLayerParser(map<%= unique_id %>, markers_hash<%= unique_id %>, map_tagname);
+        contentLayerParser(map<%= unique_id %>, markers_hash<%= unique_id %>, map_tagname<%= unique_id %>);
     }) ;
    
   </script>

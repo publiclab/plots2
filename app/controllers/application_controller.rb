@@ -1,6 +1,6 @@
 include ActionView::Helpers::DateHelper # required for time_ago_in_words()
 class ApplicationController < ActionController::Base
-  protect_from_forgery
+  protect_from_forgery unless: -> { is_dataurl_post }
   layout 'application'
 
   helper_method :current_user_session, :current_user, :prompt_login, :sidebar
@@ -10,6 +10,11 @@ class ApplicationController < ActionController::Base
   before_action :set_raven_context
 
   private
+
+  # allow limited CSRF from external apps submitting params[:dataurl_main_image] data
+  def is_dataurl_post
+    params[:controller] == "editor" && params[:action] == "post" && !params[:datauri_main_image].nil?
+  end
 
   def set_raven_context
     Raven.user_context(id: session[:current_user_id]) # or anything else in session

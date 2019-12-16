@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AdminMailer < ActionMailer::Base
   helper :application
   include ApplicationHelper
@@ -50,7 +52,8 @@ class AdminMailer < ActionMailer::Base
   # Will this further bait spammers? If we don't,
   # will non-spammers whose posts were moderated get confused?
   # Should: show explanation/appeal process to authors who visit again
-  # Should: prompt moderators to reach out if it's not spam, but a guidelines violation
+  # Should: prompt moderators to reach out if it's not spam, but a guidelines
+  # violation
   # def notify_author_of_spam(node)
   # end
 

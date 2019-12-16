@@ -256,7 +256,7 @@ a .fa-white,
   color: #666;
   clear:both;
   margin-top: 40px;
-  padding: 30px;
+  padding: 30px !important;
   border-top: 1px solid #E5E5E5;
   background-color: #f8f8f8;
 }
@@ -412,10 +412,6 @@ div.note .meta {
   color:#888;
 }
 
-.image-container {
-  height:auto;
-  overflow:auto;
-}
 /*start of img aspect css that will affect the
 thumbnails which appears on the user's profile
 under their notes*/
@@ -544,4 +540,29 @@ textarea, input {
 
 .form-grey {
   color:#888;
+}
+
+/* breaks out of #content div and presents edge-to-edge content without absolute positioning */
+.inline-fullwidth-content {
+  width:100vw !important;
+  margin:0 calc((100% / 2) - 50vw) !important;
+  z-index:0 !important;
+}
+
+@media (min-width: 992px) {
+  .inline-fullwidth-content {
+    margin: 0 calc((133% / 2) - 49.4vw) !important;
+  }
+}
+@media (min-width: 1200px) {
+  .inline-fullwidth-content {
+    margin: 0 calc((133% / 2) - 48.3vw) !important;
+  }
+}
+
+.sidebar-panel {
+  background: rgba(255,255,255,0.8);
+  z-index: 9999;
+  border-radius: 4px;
+  padding: 10px; 
 }

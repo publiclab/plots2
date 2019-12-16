@@ -28,19 +28,23 @@ class TagControllerTest < ActionController::TestCase
     post :create, params: { name: 'myfourthtag,myfifthtag', nid: nodes(:one).nid, uid: users(:bob).id }, xhr: true
 
     assert_response :success
-    assert_equal [['myfourthtag', Tag.find_by_name('myfourthtag').tid], ['myfifthtag', Tag.find_by_name('myfifthtag').tid]], JSON.parse(response.body)['saved']
+    assert_equal [['myfourthtag', Tag.find_by_name('myfourthtag').tid, nodes(:one).nid.to_s], ['myfifthtag', Tag.find_by_name('myfifthtag').tid, nodes(:one).nid.to_s]], JSON.parse(response.body)['saved']
   end
 
-  test 'check tag show page' do
+  test 'check tag show page and confirm pinned post' do
     UserSession.create(users(:bob))
 
+    # add a "pin" tag so this post should appear first
+    nodes(:activity).add_tag('pin:blog', users(:bob))
     get :show,
         params: {
-          node_type: 'contributors',
           id: 'blog'
         }
 
     assert_template :show
+    assert assigns[:notes]
+    assert assigns[:pinned_nodes]
+    assert assigns[:pinned_nodes].first.has_tag('pin:blog')
     assert_response :success
   end
 
