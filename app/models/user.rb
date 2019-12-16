@@ -36,7 +36,6 @@ class User < ActiveRecord::Base
   acts_as_authentic do |c|
     c.crypto_provider = Authlogic::CryptoProviders::Sha512
   end
-  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
 
   has_attached_file :photo, styles: { thumb: '200x200#', medium: '500x500#', large: '800x800#' },
                                     url: '/system/profile/photos/:id/:style/:basename.:extension'
