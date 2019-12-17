@@ -8,6 +8,10 @@ class SignUpTest < ActionDispatch::IntegrationTest
       :email => "newuser@gmail.com",
       :password => "validpassword"
     }
+   @spamaway = { statement1: I18n.t('spamaway.human.statement1'),
+                 statement2: I18n.t('spamaway.human.statement1'),
+                 statement3: I18n.t('spamaway.human.statement1'),
+                 statement4: I18n.t('spamaway.human.statement1') }
   end
 
   test 'display username minimum length error messages' do
@@ -18,12 +22,7 @@ class SignUpTest < ActionDispatch::IntegrationTest
         password: @new_user[:password],
         password_confirmation: @new_user[:password],
       },
-      spamaway: {
-        statement1: I18n.t('spamaway.human.statement1'),
-        statement2: I18n.t('spamaway.human.statement1'),
-        statement3: I18n.t('spamaway.human.statement1'),
-        statement4: I18n.t('spamaway.human.statement1')
-      }
+      spamaway: @spamaway
     }
 
     assert response.body.include? '1 error prohibited this user from being saved'
@@ -38,14 +37,8 @@ class SignUpTest < ActionDispatch::IntegrationTest
         password: @new_user[:password],
         password_confirmation: @new_user[:password],
       },
-      spamaway: {
-        statement1: I18n.t('spamaway.human.statement1'),
-        statement2: I18n.t('spamaway.human.statement1'),
-        statement3: I18n.t('spamaway.human.statement1'),
-        statement4: I18n.t('spamaway.human.statement1')
-      }
-    }
-    
+      spamaway: @spamaway
+  }
     assert response.body.include? '1 error prohibited this user from being saved'
     assert response.body.include? 'Username is too long (maximum is 100 characters)'
   end
@@ -57,7 +50,6 @@ class SignUpTest < ActionDispatch::IntegrationTest
     test_username_regex 'asdf,'
   end
 
-
   test 'display username character and length error messages' do
     post '/register', params: {
       user: {
@@ -66,12 +58,7 @@ class SignUpTest < ActionDispatch::IntegrationTest
         password: @new_user[:password],
         password_confirmation: @new_user[:password],
       },
-      spamaway: {
-        statement1: I18n.t('spamaway.human.statement1'),
-        statement2: I18n.t('spamaway.human.statement1'),
-        statement3: I18n.t('spamaway.human.statement1'),
-        statement4: I18n.t('spamaway.human.statement1')
-      }
+      spamaway: @spamaway
     }
 
     assert response.body.include? '2 errors prohibited this user from being saved'
@@ -80,7 +67,6 @@ class SignUpTest < ActionDispatch::IntegrationTest
   end
 
   test 'email error messages' do
-
     post '/register', params: {
       user: {
         username: 'newuser',
@@ -88,12 +74,7 @@ class SignUpTest < ActionDispatch::IntegrationTest
         password: 'validpassword',
         password_confirmation: 'valid:password',
       },
-      spamaway: {
-        statement1: I18n.t('spamaway.human.statement1'),
-        statement2: I18n.t('spamaway.human.statement1'),
-        statement3: I18n.t('spamaway.human.statement1'),
-        statement4: I18n.t('spamaway.human.statement1')
-      }
+      spamaway: @spamaway
     }
 
     assert response.body.include? 'errors prohibited this user from being saved'
@@ -110,12 +91,7 @@ class SignUpTest < ActionDispatch::IntegrationTest
           password: @new_user[:password],
           password_confirmation: @new_user[:password],
         },
-        spamaway: {
-          statement1: I18n.t('spamaway.human.statement1'),
-          statement2: I18n.t('spamaway.human.statement1'),
-          statement3: I18n.t('spamaway.human.statement1'),
-          statement4: I18n.t('spamaway.human.statement1')
-        }
+        spamaway: @spamaway
       }
 
       assert response.body.include? '1 error prohibited this user from being saved'
