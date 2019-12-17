@@ -60,16 +60,27 @@
                             </div>
                         <%# </div> %>
                         <%# </div> %>
+                    <p>
+                    Posting Near ------
+                    <a data-toggle="collapse" href="#location" role="button" aria-expanded="false" aria-controls="location">
+                        Edit
+                    </a>
+                    </p>
+  <%# <div class="collapse" id="collapseExample"> %>
+  <%# <div class="card card-body"> %>
+  <%#   Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. %>
+  <%# </div> %>
+  <%# </div> %>
 
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <label>By place name</label>
-                            <p>
-                            <input id="placenameInput" type="text" class="form-control" />
-              </p>
-              <p><label>Or by entering coordinates</label></p>
+<%#                     <div class="row"> %>
+<%#                         <div class="col-lg-6"> %>
+<%#                             <label>By place name</label> %>
+<%#                             <p> %>
+<%#                             <input id="placenameInput" type="text" class="form-control" /> %>
+<%#               </p> %>
+<%#               <p><label>Or by entering coordinates</label></p> %>
 
-              <div class="row">
+              <div class="row collapse" id="location">
                 <div class="col-lg-6">
                   <p>
                     <label>
@@ -99,36 +110,34 @@
                 </div>
               </div>
 
-              <br>
 
-              <p>
-                <button class="btn btn-lg btn-outline-secondary" onclick="editor.mapModule.blurredLocation.geocodeWithBrowser(true);">
-                  <div id="ldi-geocode-button">
-                    <i class="fa fa-compass"></i>
-                    Use current location
-                  </div>
-                </button>
-              </p>
+              <%# <p> %>
+              <%#   <button class="btn btn-lg btn-outline-secondary" onclick="editor.mapModule.blurredLocation.geocodeWithBrowser(true);"> %>
+              <%#     <div id="ldi-geocode-button"> %>
+              <%#       <i class="fa fa-compass"></i> %>
+              <%#       Use current location %>
+              <%#     </div> %>
+              <%#   </button> %>
+              <%# </p> %>
 
-              <br>
-              <div class="form-check">
-                <label class="form-check-label">
-                  <input 
-                    id="obscureLocation"
-                    type="checkbox"
-                    class="form-check-input"
-                    onchange='editor.mapModule.blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);'
-                  />
-                  Blur my location
-                </label>
-                <a href="https://publiclab.org/location-privacy">Learn more</a>
-              </div>
+              <%# <div class="form-check"> %>
+              <%#   <label class="form-check-label"> %>
+              <%#     <input %>
+              <%#       id="obscureLocation" %>
+              <%#       type="checkbox" %>
+              <%#       class="form-check-input" %>
+              <%#       onchange='editor.mapModule.blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);' %>
+              <%#     /> %>
+              <%#     Blur my location %>
+              <%#   </label> %>
+              <%#   <a href="https://publiclab.org/location-privacy">Learn more</a> %>
+              <%# </div> %>
 
             </div>
           </div>
         </div>
       </div>
-    </div>
+    <%# </div> %>
     <!-- Map Module end -->
 
 
