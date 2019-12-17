@@ -163,35 +163,47 @@
     <!-- main_image module -->
     <div class="ple-module-main_image ple-module row">
 
-        <div class="ple-module-guide col-lg-3">
-        </div>
-
-        <div class="ple-module-content row col-lg-9">
-            <div class="ple-drag-drop col-lg-6">Add a photo</div>
-            <div class="col-lg-6 help">
-                <div style="display:none;" class="progress">
-                    <div 
-                                           class="progress-bar progress-bar-striped progress-bar-animated"
-                                           role="progressbar"
-                                           aria-valuenow="0"
-                                           aria-valuemin="0"
-                                           aria-valuemax="100"
-                                           style="width: 0%;">
-                    </div>
-                </div>
-                <p>
-                <input
-                                           type="file"
-                                           accept=".png, .jpg, .jpeg"
-                                           name="image[photo]"
-                                           value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>"
-                                           />
-                </p>
-                <p class="ple-help">
-                <span class="ple-help-minor">Select an optional main image for your post.</span>
-                </p>
+        <div class="input-group mb-2">
+            <div class="input-group-prepend">
+                <span class="input-group-text"></span>
+            </div>
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="inputGroupFile01"
+                                                             accept=".png, .jpg, .jpeg"
+                                                             name="image[photo]"
+                                                             value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>"
+                                                             >
+                                                             <label class="custom-file-label" for="inputGroupFile01"> <i class="fa fa-camera" aria-hidden="true"></i></label>
             </div>
         </div>
+
+
+        <%# <div class="ple-module-content row col-lg-9"> %>
+            <%# <div class="ple-drag-drop col-lg-6">Add a photo</div> %>
+            <%# <div class="col-lg-6 help"> %>
+            <%#     <div style="display:none;" class="progress"> %>
+            <%#         <div %> 
+            <%#                                class="progress-bar progress-bar-striped progress-bar-animated" %>
+            <%#                                role="progressbar" %>
+            <%#                                aria-valuenow="0" %>
+            <%#                                aria-valuemin="0" %>
+            <%#                                aria-valuemax="100" %>
+            <%#                                style="width: 0%;"> %>
+            <%#         </div> %>
+            <%#     </div> %>
+                <%# <p> %>
+                <%# <input %>
+                <%#                            type="file" %>
+                <%#                            accept=".png, .jpg, .jpeg" %>
+                <%#                            name="image[photo]" %>
+                <%#                            value="<% if @node && @node.main_image(:rails) %1><%= @node.main_image(:rails).id %1><% else %1><%= params[:main_image] %1><% end %1>" %>
+                <%#                            ></input> %>
+                <%# </p> %>
+                <%# <p class="ple-help"> %>
+                <%# <span class="ple-help-minor">Select an optional main image for your post.</span> %>
+                <%# </p> %>
+            <%# </div> %>
+        <%# </div> %>
 
     </div>
     <!-- end main_image module -->
