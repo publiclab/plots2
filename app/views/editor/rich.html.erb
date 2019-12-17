@@ -143,10 +143,10 @@
               </div>
 
               <div class="form-group">
-                <p><label>Or by entering coordinates</label></p>
+                <a href="" id="coord_button">Or by entering coordinates</a>
 
-                <div class="row">
-                  <div class="col-lg-6">
+                <div id="coord_input" class="row">
+                  <div class="col-sm-6">
                     <label>Latitude</label>
                     <p>
                       <input 
@@ -158,7 +158,7 @@
                     </p>
                   </div>
 
-                  <div class="col-lg-6">
+                  <div class="col-sm-6">
                     <label>Longitude</label>
                     <p>
                       <input 
@@ -410,6 +410,12 @@
       }
     });
 
+    $('#coord_button').click((event) => {
+      event.preventDefault();
+      $('#coord_input').toggle();
+    });
+    $("#coord_input").hide();
+
     // upload via posting "posted_main_image"
     function dataURItoBlob(dataURI) {
       // convert base64 to raw binary data held in a string
@@ -454,4 +460,5 @@
       }
       console.log("Draft:", editor.data.draft);
   }
+
 </script>
