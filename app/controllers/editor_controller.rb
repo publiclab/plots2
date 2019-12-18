@@ -49,6 +49,9 @@ class EditorController < ApplicationController
       @lat = current_user.get_value_of_power_tag("lat").to_f
       @lon = current_user.get_value_of_power_tag("lon").to_f
       @map_blurred = current_user.has_tag('location:blurred')
+      if (@zoom.nil? && current_user&.has_power_tag("zoom"))
+        @zoom = current_user.get_value_of_power_tag("zoom")
+      end
     end
 
     template if params[:n] && !params[:body] # use another node body as a template

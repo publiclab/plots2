@@ -209,10 +209,6 @@
       </div>
     </div>
     <!-- Map Module end -->
-<<<<<<< HEAD
-
-=======
->>>>>>> add default location to post form
 
     <!-- body module -->
     <div class="ple-module-body ple-module row">
@@ -420,11 +416,24 @@
       }
     });
 
+<<<<<<< HEAD
     var bounds = new L.LatLngBounds(
       new L.LatLng(90, -180),
       new L.LatLng(-90, 180)
     );
     editor.mapModule.blurredLocation.map.setMaxBounds(bounds);
+=======
+    <% if @lat and @lon %>
+      <% if @zoom %>
+        editor.mapModule.blurredLocation.setZoom(<%= @zoom %>);
+      <% else %>
+        let zoom = 10;
+        // let zoom = editor.mapModule.blurredLocation.getZoomFromCoordinates(<%= @lat %>, <%= @lon %>);
+        addTag('zoom:'+zoom, '/profile/tags/create/<%= current_user.uid %>');
+        editor.mapModule.blurredLocation.setZoom(zoom);
+      <% end %>
+    <% end %>
+>>>>>>> display zoom or calculate and save zoom
 
     $('#coord_button').click((event) => {
       event.preventDefault();
@@ -432,8 +441,6 @@
     });
     $("#coord_input").hide();
     
-    editor.mapModule.blurredLocation.setZoomByPrecision(getPrecisionFromNum("<%= @lat %>"));
-
     $(function() {
       var target = document.querySelector('#map_content');
       var observer = new MutationObserver(function(mutations) {
@@ -500,8 +507,6 @@
       console.log("Draft:", editor.data.draft);
   }
 
-<<<<<<< HEAD
-=======
   function getPrecisionFromNum(lat) {
     let numArr = lat.toString().split('.');
     let precision = 0;
@@ -521,6 +526,5 @@
     return precision;
   }
 
->>>>>>> keep default lat/lon zoom level by calculating precision
 </script>
 
