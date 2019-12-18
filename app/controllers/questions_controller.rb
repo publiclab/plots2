@@ -33,7 +33,7 @@ class QuestionsController < ApplicationController
       .where(status: 1)
       .order('node.nid DESC')
       .paginate(page: params[:page], per_page: 24)
-    
+
     @populartitle = 'Popular Questions'
     @popularquestions = Node.questions
       .where(status: 1)
@@ -110,9 +110,8 @@ class QuestionsController < ApplicationController
     @title = 'Unanswered questions'
     @questions = Node.questions
       .where(status: 1)
-      .includes(:answers)
-      .references(:answers)
-      .where(answers: { id: nil })
+      .left_outer_joins(:comments)
+      .where(comments: { cid: nil })
       .order('node.nid DESC')
       .group('node.nid')
       .paginate(page: params[:page], per_page: 24)
