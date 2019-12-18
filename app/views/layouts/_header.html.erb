@@ -17,7 +17,7 @@
     <div class="collapse navbar-collapse" id="header-navbar-collapse">
       <form class="form-inline mr-3" id="searchform" autocomplete="off">
         <div class="input-group">
-          <input type="text" id="searchform_input" style="min-width: 220px;" class="form-control search-query typeahead" role="search" qryType="tags" placeholder="<%= t('layout._header.search') %>"  value="<%= params[:query] %>" required>
+          <input type="text" id="searchform_input" class="form-control search-query typeahead" role="search" qryType="tags" placeholder="<%= t('layout._header.search') %>"  value="<%= params[:query] %>" required>
           <div class="input-group-append">
             <button class="btn btn-light" type="submit"><i class="fa fa-search"></i></button>
           </div>
@@ -146,7 +146,7 @@
             <% end %>
           <% end %>
         </li>
-        <li id="md-ham" class="d-xl-none dropdown">
+        <li id="md-ham" class="d-lg-none dropdown">
           <a href="#" class="btn btn-dark" data-toggle="dropdown"><span class="fa fa-white fa-bars"></span></a>
           <div class="dropdown-menu dropdown-menu-right">
             <a class="dropdown-item d-lg-none" href="//store.publiclab.org"><%= t('layout._header.store') %></a>
