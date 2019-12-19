@@ -126,6 +126,15 @@ a .fa-white,
     width:300%;
 }
 
+#header .navbar .input-group {
+  flex-wrap: nowrap;
+}
+
+#header .navbar #searchform_input {
+  cursor: text;
+  min-width: 190px;
+}
+
 @media (max-width:992px) {
     #pl_pad {
         width:250%;
@@ -218,7 +227,8 @@ a .fa-white,
 @media (max-width: 768px) {
   #header #brand,
   #header #brand-compact {
-    padding-top: 22px;
+    margin-top: 0.3125rem;
+    padding-bottom: 0;
     padding-right: 4px;
   }
 }
@@ -566,3 +576,15 @@ textarea, input {
   border-radius: 4px;
   padding: 10px; 
 }
+
+.btn-toolbar .btn-outline-secondary
+{
+    color:#222;
+}
+
+.btn-toolbar .btn-outline-secondary:hover
+{
+    color: #f1f1f1 !important;
+}
+
+

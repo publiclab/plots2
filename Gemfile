@@ -52,7 +52,7 @@ gem 'rb-readline'
 gem 'rdiscount', '~> 2.2', '>= 2.2.0.1'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'responders', '~> 3.0'
-gem 'rubocop', '~> 0.74.0', require: false
+gem 'rubocop', '~> 0.77.0', require: false
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
 gem 'sentry-raven'
@@ -114,7 +114,7 @@ group :test, :development do
   gem 'rake', '~> 13.0.1'
   gem 'rest-client'
   gem 'rspec'
-  gem 'selenium-webdriver', '~> 3.142.4'
+  gem 'selenium-webdriver', '~> 3.142.6'
   gem 'test-unit'
   gem 'teaspoon-mocha'
   gem 'timecop'

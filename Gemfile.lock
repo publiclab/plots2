@@ -78,7 +78,7 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (~> 1.5)
       xpath (~> 3.2)
-    childprocess (1.0.0)
+    childprocess (3.0.0)
     chronic (0.10.2)
     ci_reporter (2.0.0)
       builder (>= 2.1.2)
@@ -208,7 +208,7 @@ GEM
     ice_nine (0.11.2)
     impressionist (1.6.1)
       nokogiri (~> 1)
-    jaro_winkler (1.5.3)
+    jaro_winkler (1.5.4)
     jasmine-core (3.4.0)
     jasmine-jquery-rails (2.0.3)
     jasmine-rails (0.15.0)
@@ -326,15 +326,15 @@ GEM
       mime-types
       mimemagic (~> 0.3.0)
       terrapin (~> 0.6.0)
-    parallel (1.17.0)
-    parser (2.6.3.0)
+    parallel (1.19.1)
+    parser (2.6.5.0)
       ast (~> 2.4.0)
     passenger (6.0.4)
       rack
       rake (>= 0.8.1)
     phantomjs (2.1.1.0)
     php-serialize (1.2.0)
-    power_assert (1.1.4)
+    power_assert (1.1.5)
     progress_bar (1.3.0)
       highline (>= 1.6, < 3)
       options (~> 2.3.0)
@@ -434,7 +434,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.8.0)
     rspec-support (3.8.0)
-    rubocop (0.74.0)
+    rubocop (0.77.0)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
       parser (>= 2.6)
@@ -443,7 +443,7 @@ GEM
       unicode-display_width (>= 1.4.0, < 1.7)
     ruby-openid (2.8.0)
     ruby-progressbar (1.10.1)
-    rubyzip (1.2.3)
+    rubyzip (2.0.0)
     sanitize (5.1.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.8.0)
@@ -458,9 +458,9 @@ GEM
       tilt
     scrypt (3.0.6)
       ffi-compiler (>= 1.0, < 2.0)
-    selenium-webdriver (3.142.4)
-      childprocess (>= 0.5, < 3.0)
-      rubyzip (~> 1.2, >= 1.2.2)
+    selenium-webdriver (3.142.6)
+      childprocess (>= 0.5, < 4.0)
+      rubyzip (>= 1.2.2)
     sentry-raven (2.12.0)
       faraday (>= 0.7.6, < 1.0)
     sidekiq (5.2.7)
@@ -479,9 +479,9 @@ GEM
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.2)
-    skylight (4.1.2)
-      skylight-core (= 4.1.2)
-    skylight-core (4.1.2)
+    skylight (4.2.0)
+      skylight-core (= 4.2.0)
+    skylight-core (4.2.0)
       activesupport (>= 4.2.0)
     sprockets (3.7.2)
       concurrent-ruby (~> 1.0)
@@ -499,7 +499,7 @@ GEM
       tins (~> 1.0)
     terrapin (0.6.0)
       climate_control (>= 0.0.3, < 1.0)
-    test-unit (3.3.3)
+    test-unit (3.3.4)
       power_assert
     therubyracer (0.12.3)
       libv8 (~> 3.16.14.15)
@@ -532,7 +532,7 @@ GEM
       unf_ext
     unf_ext (0.0.7.6)
     unicode-display_width (1.6.0)
-    unicode-emoji (2.1.0)
+    unicode-emoji (2.3.1)
     virtus (1.0.5)
       axiom-types (~> 0.1)
       coercible (~> 1.0)
@@ -632,12 +632,12 @@ DEPENDENCIES
   rest-client
   reverse_markdown
   rspec
-  rubocop (~> 0.74.0)
+  rubocop (~> 0.77.0)
   ruby-openid
   sanitize
   sassc-rails
   scrypt (~> 3)
-  selenium-webdriver (~> 3.142.4)
+  selenium-webdriver (~> 3.142.6)
   sentry-raven
   sidekiq
   skylight
