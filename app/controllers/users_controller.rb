@@ -10,12 +10,15 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    @user.status = 1
-    using_recaptcha = !params[:spamaway] && Rails.env == "production"
-    recaptcha = verify_recaptcha(model: @user) if using_recaptcha
-    @spamaway = Spamaway.new(spamaway_params) unless using_recaptcha
+    user_name = @user.username
+    if (/^[a-z][-a-z0-9]*$/ =~ user_name) != nil
+      @user.status = 1
+      using_recaptcha = !params[:spamaway] && Rails.env == "production"
+      recaptcha = verify_recaptcha(model: @user) if using_recaptcha
+      @spamaway = Spamaway.new(spamaway_params) unless using_recaptcha
 
-    saved_user = @user.save
+      saved_user = @user.save
+    end
     if ((@spamaway&.valid?) || recaptcha) && saved_user
       if current_user.crypted_password.nil? # the user has not created a pwd in the new site
         flash[:warning] = I18n.t('users_controller.account_migrated_create_new_password')
