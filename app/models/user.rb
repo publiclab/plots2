@@ -67,6 +67,10 @@ class User < ActiveRecord::Base
   scope :past_week, -> { where("created_at > ?", 7.days.ago) }
   scope :past_month, -> { where("created_at > ?", 1.month.ago) }
 
+  VALID_USERNAME_REGEX = /^[a-z][_a-z0-9]*$/
+
+  validates :username, format: { with: VALID_USERNAME_REGEX, multiline: true, message: 'must be formatted correctly' }
+
   def is_new_contributor?
     Node.where(uid: id).length === 1 && Node.where(uid: id).first.created_at > 1.month.ago
   end
