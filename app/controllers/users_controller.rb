@@ -11,7 +11,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     user_name = @user.username
-    unless (/^[a-z][-a-z0-9]*$/ =~ user_name).nil?
+    unless (/^[a-z][_a-z0-9]*$/ =~ user_name).nil?
       @user.status = 1
       using_recaptcha = !params[:spamaway] && Rails.env == "production"
       recaptcha = verify_recaptcha(model: @user) if using_recaptcha
