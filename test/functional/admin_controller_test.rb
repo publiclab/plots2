@@ -69,6 +69,32 @@ class AdminControllerTest < ActionController::TestCase
     assert_redirected_to '/profile/' + user.username + '?_=' + Time.now.to_i.to_s
   end
 
+    test 'batch spamming users should ban correct number of users and correct number of nodes' do
+    UserSession.create(users(:admin))
+    spam_nodes = [nodes(:spam_targeted_page), nodes(:spam)]
+    authors = spam_nodes.collect { |node| node.author }
+    get :batch, params: { ids: spam_nodes.collect { |node| node["nid"] }.join(",") }
+    assert_equal spam_nodes.length.to_s + ' nodes spammed and ' + authors.uniq.length.to_s + ' users banned.', flash[:notice]
+    assert_redirected_to "/spam/wiki"
+  end
+
+  test 'normal user should not be allowed to batch spam' do
+    UserSession.create(users(:bob))
+    spam_nodes = [nodes(:spam_targeted_page), nodes(:spam)]
+    get :batch, params: { ids: spam_nodes.collect { |node| node["nid"] }.join(",") }
+    assert_equal "Only admins can batch moderate.", flash[:error]
+    assert_redirected_to "/dashboard"
+  end
+
+  test 'users that have been batch-spammed are banned' do
+    UserSession.create(users(:admin))
+    spam_nodes = [nodes(:spam_targeted_page), nodes(:question)]
+    get :batch, params: { ids: spam_nodes.collect { |node| node["nid"] }.join(",") }
+    # call author data from database
+    authors = spam_nodes.collect { |node| User.find(node.author.id) }
+    assert authors.all? { |spammer| spammer.status == 0 }
+  end
+  
   test 'admin should be able to force reset user password' do
     perform_enqueued_jobs do
       UserSession.create(users(:admin))
