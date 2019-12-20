@@ -73,7 +73,7 @@ class AdminControllerTest < ActionController::TestCase
     UserSession.create(users(:admin))
     spam_nodes = [nodes(:spam_targeted_page), nodes(:question)]
     get :batch, params: { ids: spam_nodes.collect { |node| node["nid"] }.join(",") }
-    assert_redirected_to "spam/wiki"
+    assert_redirected_to "/spam/wiki"
     # call authors data from database
     authors = spam_nodes.collect { |node| User.find(node.author.id) }
     assert authors.all? { |spammer| spammer.status == 0 }
