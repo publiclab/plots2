@@ -60,7 +60,7 @@ class AdminControllerTest < ActionController::TestCase
     assert_equal "User '<a href='/profile/#{user.username}'>#{user.username}</a>' is no longer a moderator.", flash[:notice]
     assert_redirected_to '/profile/' + user.username + '?_=' + Time.now.to_i.to_s
   end
-
+  
   test 'user should not demote other moderator role to basic' do
     UserSession.create(users(:bob))
     user = users(:moderator)
@@ -68,7 +68,47 @@ class AdminControllerTest < ActionController::TestCase
     assert_equal 'Only admins and moderators can demote other users.', flash[:error]
     assert_redirected_to '/profile/' + user.username + '?_=' + Time.now.to_i.to_s
   end
+  
+  test 'users that have been batch-spammed are banned' do
+    UserSession.create(users(:admin))
+    spam_nodes = [nodes(:spam_targeted_page), nodes(:question)]
+    get :batch, params: { ids: spam_nodes.collect { |node| node["nid"] }.join(",") }
+    assert_redirected_to "/spam/wiki"
+    # call authors data from database
+    authors = spam_nodes.collect { |node| User.find(node.author.id) }
+    assert authors.all? { |spammer| spammer.status == 0 }
+  end
 
+  test "batch-spammed note should be spammed and should not be presented as potential spam after redirect to /spam/wiki" do
+    UserSession.create(users(:admin))
+    spam_node = nodes(:about) 
+    get :spam, params: { type: "wiki" }
+    # node should be present on spam suggestions because it is not yet spammed
+    assert_select "#n#{spam_node.nid}", 1
+    get :batch, params: { ids: spam_node.nid }
+    # node is no longer on /spam/wiki because it is now already spammed
+    assert_select "#n#{spam_node.nid}", 0
+    # call the node from database to check if spammed
+    assert_equal 0, Node.find(spam_node.id).status
+  end
+
+  test 'batch spamming users should ban correct number of users and correct number of nodes' do
+    UserSession.create(users(:admin))
+    spam_nodes = [nodes(:spam_targeted_page), nodes(:spam)]
+    authors = spam_nodes.collect { |node| node.author }
+    get :batch, params: { ids: spam_nodes.collect { |node| node["nid"] }.join(",") }
+    assert_redirected_to "/spam/wiki"
+    assert_equal spam_nodes.length.to_s + ' nodes spammed and ' + authors.uniq.length.to_s + ' users banned.', flash[:notice]
+  end
+  
+  test 'normal user should not be allowed to batch spam' do
+    UserSession.create(users(:bob))
+    spam_nodes = [nodes(:spam_targeted_page), nodes(:spam)]
+    get :batch, params: { ids: spam_nodes.collect { |node| node["nid"] }.join(",") }
+    assert_equal "Only admins can batch moderate.", flash[:error]
+    assert_redirected_to "/dashboard"
+  end
+  
   test 'admin should be able to force reset user password' do
     perform_enqueued_jobs do
       UserSession.create(users(:admin))
