@@ -112,7 +112,7 @@
   })();
     
   function saveLocation() {
-    var tags = 'lat:' + blurredLocation.getLat() + ',lon:' + blurredLocation.getLon();
+    var tags = 'lat:' + blurredLocation.getLat() + ',lon:' + blurredLocation.getLon() + ',zoom:' + blurredLocation.getZoom();
     if (blurredLocation.isBlurred()) tags = tags + ',' + 'location:blurred'
     if ($('#placenameDisplay').val() != 'Location unavailable') tags = tags + ',' + 'place:' + parameterize($('#placenameDisplay').val());
     <% if params[:url] %>
