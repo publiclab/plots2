@@ -277,6 +277,21 @@ a .fa-white,
   padding-left: 0;
   line-height: 2em;
 }
+footer-topics .row {
+    justify-content: space-around;
+}
+
+.footer-topics .row .col-md-3 {
+    flex-basis: 50%;
+    max-width: fit-content;
+}
+
+@media(max-width: 768px) {
+    .footer-topics .row .col-md-3 {
+        max-width: none;
+        text-align: center;
+    }
+}
 
 .caption {
   padding:12px;
