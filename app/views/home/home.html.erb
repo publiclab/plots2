@@ -114,6 +114,13 @@
   display: inline-block;
 }
 
+@media(max-width: 575px){
+  .projects .project-image:nth-of-type(1),
+  .projects .project-image:nth-of-type(3) {
+    margin-bottom: 1.7rem;
+  }
+}
+
 </style>
 
 <% cache('feature_home-footer', skip_digest: true) do %>
