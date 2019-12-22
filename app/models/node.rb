@@ -1,14 +1,12 @@
 class UniqueUrlValidator < ActiveModel::Validator
   def validate(record)
-    if record.title == '' || record.title.nil?
-      # record.errors[:base] << "You must provide a title."
+    if record.title.blank?
+      record.errors[:base] << "You must provide a title."
       # otherwise the below title uniqueness check fails, as title presence validation doesn't run until after
     elsif record.type == 'page'
       array = %w(create edit update delete new)
-      array.each do |x|
-        if record.title == x
-          record.errors[:base] << "You may not use the title '" + x + "'"
-        end
+      if array.include? record.title.downcase
+        record.errors[:base] << "You may not use the title '#{record.title}'"
       end
     else
       if !Node.where(path: record.generate_path).first.nil? && record.type == 'note'
@@ -96,7 +94,7 @@ class Node < ActiveRecord::Base
 
   belongs_to :user, foreign_key: 'uid'
 
-  validates :title, presence: true
+  validates :title, presence: true, length: { minimum: 3 }
   validates_with UniqueUrlValidator, on: :create
 
   scope :published, -> { where(status: 1) }
@@ -277,13 +275,12 @@ class Node < ActiveRecord::Base
     User.find(uid)
   end
 
-  def coauthors
-    User.where(username: power_tags('with')) if has_power_tag('with')
-  end
-
-  # for wikis:
   def authors
     revisions.collect(&:author).uniq
+  end
+
+  def coauthors
+    User.where(username: power_tags('with')) if has_power_tag('with')
   end
 
   # tag- and node-based followers
@@ -312,6 +309,10 @@ class Node < ActiveRecord::Base
 
   def body
     latest&.body
+  end
+
+  def summary
+    body.lines.first
   end
 
   # was unable to set up this relationship properly with ActiveRecord associations
@@ -581,6 +582,14 @@ class Node < ActiveRecord::Base
     end
   end
 
+  def zoom
+    if has_power_tag('zoom')
+      power_tag('zoom').to_f
+    else
+      false
+    end
+  end
+
   def place
     if has_power_tag('place')
       power_tag('place')
@@ -758,9 +767,22 @@ class Node < ActiveRecord::Base
 
       ActiveRecord::Base.transaction do
         if tag.valid?
-          if tag.name.split(':')[0] == 'date'
+          key = tag.name.split(':')[0]
+          value = tag.name.split(':')[1]
+          # add base tags:
+          if ['question', 'upgrade', 'activity'].include?(key)
+            add_tag(value, user)
+          end
+          # add sub-tags:
+          subtags = {}
+          subtags['pm'] = 'particulate-matter'
+          if subtags.include?(key)
+            add_tag(subtags[key], user)
+          end
+          # parse date tags:
+          if key == 'date'
             begin
-              DateTime.strptime(tag.name.split(':')[1], '%m-%d-%Y').to_date.to_s(:long)
+              DateTime.strptime(value, '%m-%d-%Y').to_date.to_s(:long)
             rescue StandardError
               return [false, tag.destroy]
             end
@@ -772,14 +794,12 @@ class Node < ActiveRecord::Base
                                  nid: id)
 
           # Adding lat/lon values into node table
-          if tag.valid?
-            if tag.name.split(':')[0] == 'lat'
-              tagvalue = tag.name.split(':')[1]
-              table_updated = update_attributes(latitude: tagvalue, precision: decimals(tagvalue).to_s)
-            elsif tag.name.split(':')[0] == 'lon'
-              tagvalue = tag.name.split(':')[1]
-              table_updated = update_attributes(longitude: tagvalue)
-            end
+          if key == 'lat'
+            tagvalue = value
+            table_updated = update_attributes(latitude: tagvalue, precision: decimals(tagvalue).to_s)
+          elsif key == 'lon'
+            tagvalue = value
+            table_updated = update_attributes(longitude: tagvalue)
           end
 
           if node_tag.save
@@ -864,6 +884,37 @@ class Node < ActiveRecord::Base
         .joins(:tag)
         .where('term_data.name LIKE ?', 'question:%')
         .group('node.nid')
+  end
+
+  # all nodes with tagname
+  def self.find_by_tag(tagname)
+    Node.includes(:node_tag, :tag)
+      .where('term_data.name = ? OR term_data.parent = ?', tagname, tagname)
+      .references(:term_data, :node_tag)
+  end
+
+  # finds nodes by tag name, user id, and optional node type
+  def self.find_by_tag_and_author(tagname, user_id, type = 'notes')
+
+    node_type = 'note' if type == 'notes' || 'questions'
+    node_type = 'page' if type == 'wiki'
+    # node_type = 'map' if type == 'maps'  # Tag.tagged_nodes_by_author does not seem to work with maps, more testing required
+
+    order = 'node_revisions.timestamp DESC'
+    order = 'created DESC' if node_type == 'note'
+
+    qids = Node.questions.where(status: 1).collect(&:nid)
+
+    nodes = Tag.tagged_nodes_by_author(tagname, user_id)
+      .includes(:revision)
+      .references(:node_revisions)
+      .where(status: 1, type: node_type)
+      .order(order)
+
+    nodes = nodes.where('node.nid NOT IN (?)', qids) if type == 'notes'
+    nodes = nodes.where('node.nid IN (?)', qids) if type == 'questions'
+
+    nodes
   end
 
   # so we can quickly fetch activities corresponding to this node

@@ -105,9 +105,10 @@ acorn@^6.0.7:
   version "6.1.1"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-6.1.1.tgz#7d25ae05bb8ad1f9b699108e1094ecd7884adc1f"
 
-agent-base@^4.1.0:
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/agent-base/-/agent-base-4.2.1.tgz#d89e5999f797875674c07d87f260fc41e83e8ca9"
+agent-base@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/agent-base/-/agent-base-4.3.0.tgz#8165f01c436009bccad0b1d122f05ed770efc6ee"
+  integrity sha512-salcGninV0nPrwpGNn4VTXBb1SOuXQBiqbrNXoeizJsHrsL6ERFM2Ne3JUSBWRE6aeNJI2ROP/WEEIDUiDe3cg==
   dependencies:
     es6-promisify "^5.0.0"
 
@@ -482,9 +483,10 @@ bootstrap-colorpicker@^2.5.3:
   dependencies:
     jquery ">=1.10"
 
-bootstrap-datepicker@^1.6.0, bootstrap-datepicker@~1.8.0:
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/bootstrap-datepicker/-/bootstrap-datepicker-1.8.0.tgz#c63513931e6f09f16ae9f11b62f32d950df3958e"
+bootstrap-datepicker@^1.6.0, bootstrap-datepicker@~1.9.0:
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/bootstrap-datepicker/-/bootstrap-datepicker-1.9.0.tgz#e4bfce3fcce1967876b21dc6833ec5994aaed090"
+  integrity sha512-9rYYbaVOheGYxjOr/+bJCmRPihfy+LkLSg4fIFMT9Od8WwWB/MB50w0JO1eBgKUMbb7PFHQD5uAfI3ArAxZRXA==
   dependencies:
     jquery ">=1.7.1 <4.0.0"
 
@@ -782,9 +784,10 @@ charm@~0.1.0:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/charm/-/charm-0.1.2.tgz#06c21eed1a1b06aeb67553cdc53e23274bac2296"
 
-chart.js@^2.8.0:
-  version "2.8.0"
-  resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-2.8.0.tgz#b703b10d0f4ec5079eaefdcd6ca32dc8f826e0e9"
+chart.js@^2.9.3:
+  version "2.9.3"
+  resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-2.9.3.tgz#ae3884114dafd381bc600f5b35a189138aac1ef7"
+  integrity sha512-+2jlOobSk52c1VU6fzkh3UwqHMdSlgH1xFv9FKMqHiNCpXsGPQa/+81AFa+i3jZ253Mq9aAycPwDjnn1XbRNNw==
   dependencies:
     chartjs-color "^2.1.0"
     moment "^2.10.2"
@@ -1112,10 +1115,10 @@ cwise-compiler@^1.0.0, cwise-compiler@^1.1.2:
   dependencies:
     uniq "^1.0.0"
 
-cytoscape@^3.11.0:
-  version "3.11.0"
-  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.11.0.tgz#c5fca7c8b3a01ba24b4d7b8f3eddb1e99d395ed3"
-  integrity sha512-xA9S5UiTjwFwZjxZCTIJjDU5ef2XSqw+/gk+bLcqdOZ496EoPSfnbozGRnKZhxKIVT++NNyWtT7fW1eLU7denQ==
+cytoscape@^3.12.1:
+  version "3.12.1"
+  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.12.1.tgz#48fe85481ba7ba4c3b77396426b6b9cc27fe2bb4"
+  integrity sha512-/TIrNXcWZdjTgB2BK2oJfroO8IAM6XSu9lCGEe3boJ68KHqH0fbSrc0tIOfibkzkMfUhFLNed9tcaoYdjxOnTQ==
   dependencies:
     heap "^0.2.6"
     lodash.debounce "^4.0.8"
@@ -1177,6 +1180,7 @@ debug@2.6.9, debug@^2.2.0:
 debug@3.2.6, debug@^3.1.0, debug@^3.2.6:
   version "3.2.6"
   resolved "https://registry.yarnpkg.com/debug/-/debug-3.2.6.tgz#e83d17de16d8a7efb7717edbe5fb10135eee629b"
+  integrity sha512-mel+jf7nrtEl5Pn1Qx46zARXKDpBbvzezse7p7LqINmdoIk8PYP5SySaxEmYv6TZ0JyEKA1hsCId6DIhgITtWQ==
   dependencies:
     ms "^2.1.1"
 
@@ -1312,6 +1316,11 @@ duplexer2@~0.1.4:
   dependencies:
     readable-stream "^2.0.2"
 
+earcut@^2.1.3:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/earcut/-/earcut-2.2.1.tgz#3bae0b1b6fec41853b56b126f03a42a34b28f1d5"
+  integrity sha512-5jIMi2RB3HtGPHcYd9Yyl0cczo84y+48lgKPxMijliNQaKAHEZJbdzLmKmdxG/mCdS/YD9DQ1gihL8mxzR0F9w==
+
 ecc-jsbn@~0.1.1:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/ecc-jsbn/-/ecc-jsbn-0.1.2.tgz#3a83a904e54353287874c564b7549386849a98c9"
@@ -1413,12 +1422,14 @@ es6-map@^0.1.5:
     event-emitter "~0.3.5"
 
 es6-promise@^4.0.3:
-  version "4.2.5"
-  resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-4.2.5.tgz#da6d0d5692efb461e082c14817fe2427d8f5d054"
+  version "4.2.8"
+  resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-4.2.8.tgz#4eb21594c972bc40553d276e510539143db53e0a"
+  integrity sha512-HJDGx5daxeIvxdBxvG2cb9g4tEvwIk3i8+nhX0yGrYmZUzbkdg8QbDevheDB8gd0//uPj4c1EQua8Q+MViT0/w==
 
 es6-promisify@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/es6-promisify/-/es6-promisify-5.0.0.tgz#5109d62f3e56ea967c4b63505aef08291c8a5203"
+  integrity sha1-UQnWLz5W6pZ8S2NQWu8IKRyKUgM=
   dependencies:
     es6-promise "^4.0.3"
 
@@ -2580,19 +2591,21 @@ http-signature@~1.2.0:
     sshpk "^1.7.0"
 
 https-proxy-agent@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/https-proxy-agent/-/https-proxy-agent-2.2.1.tgz#51552970fa04d723e04c56d04178c3f92592bbc0"
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/https-proxy-agent/-/https-proxy-agent-2.2.4.tgz#4ee7a737abd92678a293d9b34a1af4d0d08c787b"
+  integrity sha512-OmvfoQ53WLjtA9HeYP9RNrWMJzzAz1JGaSFr1nijg0PVR1JaD/xbJq1mdEIIlxGpXp9eSe/O2LgU9DJmTPd0Eg==
   dependencies:
-    agent-base "^4.1.0"
+    agent-base "^4.3.0"
     debug "^3.1.0"
 
 humanize@^0.0.9:
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/humanize/-/humanize-0.0.9.tgz#1994ffaecdfe9c441ed2bdac7452b7bb4c9e41a4"
 
-i18n-js@^3.3.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/i18n-js/-/i18n-js-3.3.0.tgz#05512f7184b5117c087ab597be649720a834c068"
+i18n-js@^3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/i18n-js/-/i18n-js-3.5.0.tgz#e2c41e1f90405d691d33ddce260f3dff9743215e"
+  integrity sha512-XosH7plfEisWo5XEYxkdlwONsDVQ3sYI3ZoKXcjXdyq+9eVNIJg2h2oPsgadfqcXxpPHMVMNBgmiyW3aEJXg1g==
 
 ianstormtaylor-css@^0.3.1:
   version "0.3.1"
@@ -3167,10 +3180,10 @@ lcid@^2.0.0:
   dependencies:
     invert-kv "^2.0.0"
 
-leaflet-blurred-location@^1.2.5, leaflet-blurred-location@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/leaflet-blurred-location/-/leaflet-blurred-location-1.3.0.tgz#513035da5a9c072cbdf314a56d41a9715dfd5376"
-  integrity sha512-w9Q3PUwZH/0kdPn7WPVrgMejH9U0s/RzM1XIR59rDChB3GOoZIZFQd2ThEOUpEko59YaZW5x2CZjkV0usppPCQ==
+leaflet-blurred-location@^1.2.5, leaflet-blurred-location@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/leaflet-blurred-location/-/leaflet-blurred-location-1.4.1.tgz#b3cabbe33141df4430ce83432b8971d8acca94ef"
+  integrity sha512-YUw1K5s5ZeBbv48uCtf9qUFVhEfZg5tKM0ZrCBBO0k//BcFANXnYdSTyrBxD23TPy/Y5XcZrODaqZGavaaRZ0Q==
   dependencies:
     haversine-distance "^1.1.4"
     jquery "^3.2.1"
@@ -3178,7 +3191,6 @@ leaflet-blurred-location@^1.2.5, leaflet-blurred-location@^1.3.0:
 
 "leaflet-blurred-location@git://github.com/publiclab/leaflet-blurred-location#main":
   version "1.3.0"
-  uid "1bff37cb96518bd87192277b14c290cba3c138ba"
   resolved "git://github.com/publiclab/leaflet-blurred-location#1bff37cb96518bd87192277b14c290cba3c138ba"
   dependencies:
     haversine-distance "^1.1.4"
@@ -3187,16 +3199,17 @@ leaflet-blurred-location@^1.2.5, leaflet-blurred-location@^1.3.0:
 
 "leaflet-blurred-location@git://github.com/publiclab/leaflet-blurred-location.git#main":
   version "1.3.0"
+  uid "1bff37cb96518bd87192277b14c290cba3c138ba"
   resolved "git://github.com/publiclab/leaflet-blurred-location.git#1bff37cb96518bd87192277b14c290cba3c138ba"
   dependencies:
     haversine-distance "^1.1.4"
     jquery "^3.2.1"
     leaflet "^1.3.3"
 
-leaflet-environmental-layers@2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/leaflet-environmental-layers/-/leaflet-environmental-layers-2.0.1.tgz#8d8e1acbf15c527eaf7ba7377334b08dec31515f"
-  integrity sha512-lGAJB1tOw7vsqHnuoVSDnO63AORSUIp4XKaUyIY8Qyzyyp9iki/IAL3XmKSadctzZo/wa3As2gUs8ffe8ZJZdg==
+leaflet-environmental-layers@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/leaflet-environmental-layers/-/leaflet-environmental-layers-2.0.6.tgz#51c96cc7f6927e9826c14fa6fa0614965676c1bc"
+  integrity sha512-grNaIVqyG/8X4QN5XhILs1ra+8Md0Pk2UezsaaCHDbl+9UsEvGJ96mSg50UgXRd2mbzTzUYB/5KXHlFHBPcvwg==
   dependencies:
     jquery "^3.3.1"
     leaflet "^1.3.1"
@@ -3206,10 +3219,16 @@ leaflet-environmental-layers@2.0.1:
     leaflet-providers "^1.1.17"
     leaflet-spin "1.1.0"
     leaflet.blurred-location-display "^1.1.0"
+    leaflet.glify "github:robertleeplummerjr/Leaflet.glify#aa2b356"
 
 "leaflet-fullhash@github:sagarpreet-chadha/leaflet-fullHash":
   version "1.0.0"
   resolved "https://codeload.github.com/sagarpreet-chadha/leaflet-fullHash/tar.gz/6c547255ef7842281c6af3d6b879a2e994e1c54d"
+
+leaflet-hash@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/leaflet-hash/-/leaflet-hash-0.2.1.tgz#c36c718347c5243033b57cb4baea26119d82c701"
+  integrity sha1-w2xxg0fFJDAztXy0uuomEZ2CxwE=
 
 leaflet-heatmap@1.0.0:
   version "1.0.0"
@@ -3236,13 +3255,25 @@ leaflet.blurred-location-display@^1.1.0:
     jquery "^3.3.1"
     leaflet-blurred-location "git://github.com/publiclab/leaflet-blurred-location#main"
 
-leaflet@*, leaflet@^1.3.1, leaflet@^1.3.3:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.4.0.tgz#d5f56eeb2aa32787c24011e8be4c77e362ae171b"
+leaflet.fullscreen@1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/leaflet.fullscreen/-/leaflet.fullscreen-1.6.0.tgz#daad9a6e07c8bdbca8e5af7e3d50272d31b0226a"
+  integrity sha512-Mr6STMeyKSfJ1CsKFcPZOm425LOe0c/6EHh0AK93GiTvteTAMFmO/oFDNe+0p1mk4+8yeGLcYgaXTSzPveEGhA==
 
-leaflet@^0.7.3:
-  version "0.7.7"
-  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-0.7.7.tgz#1e352ba54e63d076451fa363c900890cb2cf75ee"
+"leaflet.glify@github:robertleeplummerjr/Leaflet.glify#aa2b356":
+  version "2.1.0"
+  resolved "https://codeload.github.com/robertleeplummerjr/Leaflet.glify/tar.gz/aa2b356eccd4f120f713abd5f24800e06fb3fbf7"
+  dependencies:
+    earcut "^2.1.3"
+    leaflet "^1.3.4"
+    point-in-polygon "^1.0.1"
+    polygon-lookup "^2.4.0"
+    rbush "^2.0.2"
+
+leaflet@*, leaflet@^1.3.1, leaflet@^1.3.3, leaflet@^1.3.4, leaflet@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.6.0.tgz#aecbb044b949ec29469eeb31c77a88e2f448f308"
+  integrity sha512-CPkhyqWUKZKFJ6K8umN5/D2wrJ2+/8UIpXppY7QDnUZW5bZL5+SEI2J7GBpwh4LIupOKqbNSQXgqmrEJopHVNQ==
 
 levn@^0.3.0, levn@~0.3.0:
   version "0.3.0"
@@ -3289,6 +3320,11 @@ lodash@^3.9.0:
 lodash@^4.13.1, lodash@^4.17.10, lodash@^4.17.11:
   version "4.17.11"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
+
+lodash@^4.14.2:
+  version "4.17.15"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
+  integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
 
 lodash@~0.9.2:
   version "0.9.2"
@@ -3616,9 +3652,14 @@ ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
 
-ms@2.1.1, ms@^2.1.1:
+ms@2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.1.tgz#30a5864eb3ebb0a66f2ebe6d727af06a09d86e0a"
+
+ms@^2.1.1:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.2.tgz#d09d1f357b443f493382a8eb3ccd183872ae6009"
+  integrity sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==
 
 mute-stream@0.0.3:
   version "0.0.3"
@@ -4118,9 +4159,24 @@ pngjs@^3.3.3:
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/pngjs/-/pngjs-3.3.3.tgz#85173703bde3edac8998757b96e5821d0966a21b"
 
-popper.js@^1.15.0:
-  version "1.15.0"
-  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.15.0.tgz#5560b99bbad7647e9faa475c6b8056621f5a4ff2"
+point-in-polygon@1.0.1, point-in-polygon@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/point-in-polygon/-/point-in-polygon-1.0.1.tgz#d59b64e8fee41c49458aac82b56718c5957b2af7"
+  integrity sha1-1Ztk6P7kHElFiqyCtWcYxZV7Kvc=
+
+polygon-lookup@^2.4.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/polygon-lookup/-/polygon-lookup-2.5.0.tgz#4f545dd4d8af99c44ca7ffe3b5c46bf99845507b"
+  integrity sha512-0Xs8Cvudz7M7jXGZrxAJ7tO+N4K+ZyibgvcJBy9nr9kGfa7Nbk3iZViZWPuB4T/IrsxLzl9xOt4+mZlnioye6g==
+  dependencies:
+    lodash "^4.14.2"
+    point-in-polygon "1.0.1"
+    rbush "^2.0.2"
+
+popper.js@^1.16.0:
+  version "1.16.0"
+  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.16.0.tgz#2e1816bcbbaa518ea6c2e15a466f4cb9c6e2fbb3"
+  integrity sha512-+G+EkOPoE5S/zChTpmBSSDYmhXJ5PsW8eMhH8cP/CQHMFPBG/kC9Y5IIw6qNYgdJ+/COf0ddY2li28iHaZRSjw==
 
 portfinder@^1.0.13:
   version "1.0.22"
@@ -4198,39 +4254,16 @@ psl@^1.1.24, psl@^1.1.28:
   version "1.1.29"
   resolved "https://registry.yarnpkg.com/psl/-/psl-1.1.29.tgz#60f580d360170bb722a797cc704411e6da850c67"
 
-publiclab-editor@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/publiclab-editor/-/publiclab-editor-2.0.0.tgz#ceb94a5a0ccac0c0579d74b60ded378b243b0566"
+publiclab-editor@^2.0.0, publiclab-editor@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/publiclab-editor/-/publiclab-editor-2.0.4.tgz#aa355fe0fafdb46444e2bee2b1beaf2399e0ae81"
+  integrity sha512-MPNK8rewaxT14iPkkcC1rRvm6XhXJiyCttoQVbNngB48YTODGbYuEiMxdpxCIiC8ClGZdap+vZpLTgSfC7ARUQ==
   dependencies:
     at.js "^1.5.4"
     backbone "~1.3.3"
     blueimp-file-upload "^9.28.0"
     bootstrap "~3.4.0"
-    bootstrap-datepicker "~1.8.0"
-    bootstrap-tokenfield "~0.12.0"
-    crossvent "1.5.5"
-    domador "2.4.4"
-    font-awesome "~4.7.0"
-    grow-textarea "git://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669"
-    jquery "~3"
-    leaflet "^1.3.3"
-    leaflet-blurred-location "^1.2.5"
-    megamark "3.3.0"
-    moment "~2.24.0"
-    resig-class "~1.0.0"
-    typeahead.js-browserify "~1.0.7"
-    woofmark "git://github.com/jywarren/woofmark.git#xhrOptionsAltBureaucracy"
-    xhr "~2.5.0"
-
-publiclab-editor@~2.0.0:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/publiclab-editor/-/publiclab-editor-2.0.2.tgz#d0017f1337232d776e64e6acda1156a470cf9ce2"
-  dependencies:
-    at.js "^1.5.4"
-    backbone "~1.3.3"
-    blueimp-file-upload "^9.28.0"
-    bootstrap "~3.4.0"
-    bootstrap-datepicker "~1.8.0"
+    bootstrap-datepicker "~1.9.0"
     bootstrap-tokenfield "~0.12.0"
     crossvent "1.5.5"
     domador "2.4.4"
@@ -4347,6 +4380,11 @@ qs@~6.5.2:
   version "6.5.2"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
 
+quickselect@^1.0.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/quickselect/-/quickselect-1.1.1.tgz#852e412ce418f237ad5b660d70cffac647ae94c2"
+  integrity sha512-qN0Gqdw4c4KGPsBOQafj6yj/PA6c/L63f6CaZ/DCF/xF4Esu3jVmKLUDYxghFx8Kb/O7y9tI7x2RjTSXwdK1iQ==
+
 quote-stream@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/quote-stream/-/quote-stream-1.0.2.tgz#84963f8c9c26b942e153feeb53aae74652b7e0b2"
@@ -4369,6 +4407,13 @@ raw-body@2.4.0:
     http-errors "1.7.2"
     iconv-lite "0.4.24"
     unpipe "1.0.0"
+
+rbush@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/rbush/-/rbush-2.0.2.tgz#bb6005c2731b7ba1d5a9a035772927d16a614605"
+  integrity sha512-XBOuALcTm+O/H8G90b6pzu6nX6v2zCKiFG4BJho8a+bY6AER6t8uQUZdi5bomQc0AprCWhEGa7ncAbbRap0bRA==
+  dependencies:
+    quickselect "^1.0.1"
 
 rc@^1.2.7:
   version "1.2.8"
@@ -5387,6 +5432,11 @@ url-template@^2.0.8:
   version "2.0.8"
   resolved "https://registry.yarnpkg.com/url-template/-/url-template-2.0.8.tgz#fc565a3cccbff7730c775f5641f9555791439f21"
   integrity sha1-/FZaPMy/93MMd19WQflVV5FDnyE=
+
+urlhash@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/urlhash/-/urlhash-0.1.3.tgz#4aaa8c681f9aa0bc8dd19680b5f494ce61aa8112"
+  integrity sha1-SqqMaB+aoLyN0ZaAtfSUzmGqgRI=
 
 user-home@^1.0.0:
   version "1.1.1"

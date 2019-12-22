@@ -15,6 +15,8 @@ class NodeTest < ActiveSupport::TestCase
     assert_equal 1, node.status
     assert !node.answered
     assert_equal [], node.location_tags
+    assert node.body
+    assert node.summary
   end
 
   test 'basic question attributes' do
@@ -35,6 +37,18 @@ class NodeTest < ActiveSupport::TestCase
     assert_equal map.lat, map.power_tag('lat').split(':').first.to_f
     assert_equal map.lon, map.power_tag('lon').split(':').first.to_f
     assert map.location_tags
+  end
+
+  test 'adding a question:FOO style tag adds FOO tag as well; also for subtags' do
+    node = nodes(:one)
+    assert_difference 'node.tags.count', 2 do
+      node.add_tag('question:kites', users(:bob))
+    end
+    assert node.has_tag('kites')
+    assert_difference 'node.tags.count', 2 do
+      node.add_tag('pm', users(:bob))
+    end
+    assert node.has_tag('particulate-matter')
   end
 
   test 'notify_callout_users' do
@@ -210,6 +224,41 @@ class NodeTest < ActiveSupport::TestCase
     assert_equal 'Wiki page content/body', node.body
   end
 
+  test 'wikipage with wrong title should not be created' do
+    node = Node.new(uid: users(:bob).id,
+                    type: 'page')
+    words = %w(create update delete new edit)
+    words.each do |word|
+      node.title = word.capitalize
+      assert_not node.save
+    end
+  end
+
+  test 'research note with empty/blank title should not be created' do
+    node = Node.new(uid: users(:bob).id,
+                    type: 'note')
+    titles = [ '', ' ' * 5 ]
+    titles.each do |t|
+      node.title = t
+      assert_not node.valid?
+    end
+  end
+
+  test 'research note with duplicate title should not be created' do
+    node = Node.new(uid: users(:bob).id,
+                    type: 'note',
+                    title: 'My research note')
+    dup_node = node.dup
+    node.save
+    assert_not dup_node.save
+  end
+
+  test 'title should not be too short' do
+    node = Node.new(uid: users(:bob).id,
+                    type: 'note',
+                    title: 'ok')
+    assert_not node.valid?
+  end
   test 'create a node_revision' do
     # in testing, uid and id should be matched, although this is not yet true in production db
     revision_count = nodes(:one).revisions.length
@@ -464,5 +513,19 @@ class NodeTest < ActiveSupport::TestCase
     # TODO: figure out issue here and re-enable! No rush :-)
     # assert_equal notes, graph_notes.values.sum
     # assert_equal wiki, graph_wiki.values.sum
+  end
+
+  # node.authors should be anyone who's written a revision for this node (a wiki, presumably)
+  test 'authors' do
+    authors = Node.last.authors
+    assert authors
+    assert_equal 1, authors.length
+  end
+
+  test 'find by tagname and user id' do
+    # Should test for each type of node: wiki, notes, questions
+    assert_equal 'Chicago', Node.find_by_tag_and_author('chapter', 1, 'wiki').first.title
+    assert_equal 'Canon A1200 IR conversion at PLOTS Barnraising at LUMCON', Node.find_by_tag_and_author('awesome', 2, 'notes').first.title
+    assert_equal 'Question by a moderated user', Node.find_by_tag_and_author('question:spectrometer', 9, 'questions').first.title
   end
 end

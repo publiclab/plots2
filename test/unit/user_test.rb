@@ -32,6 +32,8 @@ class UserTest < ActiveSupport::TestCase
     assert_not_nil user.tagnames
     assert_not_nil user.tagnames
     assert_equal user.tagnames, user.tagnames
+    assert_not_nil user.recent_locations
+    assert_not_nil user.latest_location
   end
 
   test 'user creation with create_with_omniauth' do

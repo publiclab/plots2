@@ -21,8 +21,21 @@
 <%= javascript_include_tag('/lib/leaflet-spin/example/leaflet.spin.min.js') %>
 
 <style type="text/css">
-  .leaflet-marker-icon {
-    background: url("https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-black.png") ; 
+  /* Fix a background-color error on this page. */
+  body {
+    background-color: white;
+  }
+
+  .pl-editor {
+    max-width: 100%;
+  }
+
+  .ple-module-main_image .col-lg-9 {
+    margin: 0 auto;
+  }
+
+  #coord_button {
+    text-decoration: underline;
   }
 </style>
 
@@ -126,45 +139,44 @@
             </div>
 
             <div class="col-lg-6">
-              <label>By place name</label>
-              <p>
-                <input id="placenameInput" type="text" class="form-control" />
-              </p>
-              <p><label>Or by entering coordinates</label></p>
+              <div class="form-group">
+                <label>By place name</label>
+                <p>
+                  <input id="placenameInput" type="text" class="form-control" />
+                </p>
+              </div>
 
-              <div class="row">
-                <div class="col-lg-6">
-                  <p>
-                    <label>
-                      Latitude
+              <div class="form-group">
+                Or <a href="#" id="coord_button">by entering coordinates</a>
+
+                <div id="coord_input" class="row">
+                  <div class="col-sm-6">
+                    <label>Latitude</label>
+                    <p>
                       <input 
                         id="lat" 
                         type="text" 
                         class="form-control" 
                         placeholder="Latitude" 
                       />
-                    </label>
-                  </p>
-                </div>
+                    </p>
+                  </div>
 
-                <div class="col-lg-6">
-                  <p>
-                    <label>
-                      Longitude
+                  <div class="col-sm-6">
+                    <label>Longitude</label>
+                    <p>
                       <input 
                         id="lng" 
                         type="text" 
                         class="form-control" 
                         placeholder="Longitude" 
                       />
-                    </label>
-                  </p>
+                    </p>
+                  </div>
                 </div>
               </div>
 
-              <br>
-
-              <p>
+              <div class="form-group">
                 <button 
                   class="btn btn-lg btn-outline-secondary" 
                   onclick="editor.mapModule.blurredLocation.geocodeWithBrowser(true);" 
@@ -174,10 +186,8 @@
                     Use current location
                   </div>
                 </button>
-              </p>
+              </div>
 
-              <br>
-              
               <div class="form-check">
                 <label class="form-check-label">
                   <input 
@@ -188,7 +198,7 @@
                   />
                   Blur my location
                 </label>
-                <a href="https://publiclab.org/location-privacy">Learn more</a>
+                <a href="https://publiclab.org/location-privacy" target="_blank">Learn more »</a>
               </div>
 
             </div> 
@@ -304,22 +314,19 @@
 
 </div>
 <script>
-  $( document ).ready(function() {
-      $("#map_content").hide() ;
-      $("#location_button").click(function(){
-          $("#map_content").toggle() ;
-      }) ;
-  });
   var editor;
- 
+
   (function() {
     editor = new PL.Editor({
       data: {
         token: $('meta[name="csrf-token"]').attr('content')
       },
       <% if @lat and @lon %>
-       lat: <%= @lat %> , 
-       lon: <%= @lon %> ,
+        lat: <%= @lat %> , 
+        lon: <%= @lon %> ,
+        <% if @zoom %>
+          zoom: <%= @zoom %>,
+        <% end %>
       <% end %>
       textarea:    $('.ple-textarea')[0],
       <% if @main_image %>
@@ -406,6 +413,37 @@
         }
       }
     });
+
+    $('#coord_button').click((event) => {
+      event.preventDefault();
+      $('#coord_input').toggle();
+    });
+    $("#coord_input").hide();
+
+    // upload via posting "posted_main_image"
+    function dataURItoBlob(dataURI) {
+      // convert base64 to raw binary data held in a string
+      // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+      var byteString = atob(dataURI.split(',')[1]);
+      // separate out the mime component
+      var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+      // write the bytes of the string to an ArrayBuffer
+      var ab = new ArrayBuffer(byteString.length);
+      // create a view into the buffer
+      var ia = new Uint8Array(ab);
+      // set the bytes of the buffer to the correct values
+      for (var i = 0; i < byteString.length; i++) {
+          ia[i] = byteString.charCodeAt(i);
+      }
+      // write the ArrayBuffer to a blob, and you're done
+      var blob = new Blob([ab], {type: mimeString});
+      return blob;
+  }
+  <% if true || params[:datauri_main_image] %>
+    $('.ple-module-main_image input').fileupload('add', {'files': [ dataURItoBlob('<%= params[:datauri_main_image] %>') ]});
+  <% end %>
+
+
   })();
   $('.legacy-button').click(function onLegacyClick(event) {
       event.preventDefault();
@@ -426,4 +464,5 @@
       }
       console.log("Draft:", editor.data.draft);
   }
+
 </script>

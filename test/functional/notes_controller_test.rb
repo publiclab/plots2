@@ -418,7 +418,7 @@ class NotesControllerTest < ActionController::TestCase
     assert_response :success
     assert_not_nil @response.body
     json = JSON.parse(@response.body)
-    assert_equal ["can't be blank"], json['title']
+    assert_equal ["can't be blank", "is too short (minimum is 3 characters)"], json['title']
     assert !json['title'].empty?
   end
 
@@ -673,7 +673,34 @@ class NotesControllerTest < ActionController::TestCase
     assert (notes & expected).present?
     assert !(notes & questions).present?
   end
-
+  
+    test 'first note in /liked endpoint should be highest liked' do
+    get :liked
+    notes = assigns(:notes)
+    # gets highest liked note's number of likes
+    expected = Node.research_notes.where(status: 1).maximum("cached_likes")
+    # gets first note of /notes/liked endpoint
+    actual = notes.first
+    # both should be equal
+    assert expected == actual.cached_likes
+  end
+  test 'first note in /recent endpoint should be most recent' do
+    get :recent
+    notes = assigns(:notes)
+    expected = Node.where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
+                   .maximum("created")
+    actual = notes.first
+    assert expected == actual.created
+  end
+     
+  test 'first three posts in /liked should be sorted by likes' do
+    get :liked
+    # gets first notes
+    notes = assigns(:notes)[0...3]
+     # sort_by is from lowest to highest so it needs to be reversed
+    assert notes.sort_by { |note| note.cached_likes }.reverse ==  notes
+  end
+   
   test 'should choose I18n for notes controller' do
     available_testing_locales.each do |lang|
       old_controller = @controller
@@ -799,20 +826,27 @@ class NotesControllerTest < ActionController::TestCase
    test 'draft author can publish the draft' do
      UserSession.create(users(:jeff))
      node = nodes(:draft)
+     old_created = node['created']
+     old_changed = node['changed']
      assert_equal 3, node.status
      ActionMailer::Base.deliveries.clear
 
-     get :publish_draft, params: { id: node.id }
+     Timecop.freeze(Date.today + 1) do
+        get :publish_draft, params: { id: node.id }
 
-     assert_response :redirect
-     assert_equal "Thanks for your contribution. Research note published! Now, it's visible publicly.", flash[:notice]
-     node = assigns(:node)
-     assert_equal 1, node.status
-     assert_equal 1, node.author.status
-     assert_redirected_to '/notes/' + users(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + node.title.parameterize
+        assert_response :redirect
 
-     email = ActionMailer::Base.deliveries.last
-     assert_equal '[PublicLab] ' + node.title + " (##{node.id}) ", email.subject
+        assert_equal "Thanks for your contribution. Research note published! Now, it's visible publicly.", flash[:notice]
+        node = assigns(:node)
+        assert_equal 1, node.status
+        assert_not_equal old_changed, node['changed'] # these should have been forward dated!
+        assert_not_equal old_created, node['created']
+        assert_equal 1, node.author.status
+        assert_redirected_to '/notes/' + users(:jeff).username + '/' + (Time.now).strftime('%m-%d-%Y') + '/' + node.title.parameterize
+
+        email = ActionMailer::Base.deliveries.last
+        assert_equal '[PublicLab] ' + node.title + " (##{node.id}) ", email.subject
+     end
    end
 
    test 'co-author can publish the draft' do
