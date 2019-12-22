@@ -3,7 +3,6 @@
 <%= javascript_include_tag('textbox_expand') %>
 <script> var comments_length = <%= @node.comments.length %>; </script>
 <%= javascript_include_tag('question') %>
-
 <div class="col-lg-9 note-show question-show">
 
    <% if @node.main_image %>
@@ -24,7 +23,7 @@
   </div>
   <div class="pull-left">
   <% if @node.author && @node.author.photo_file_name %>
-    <img class="rounded-circle" src="<%= @node.author.photo_path(:thumb) %>" style="width:50px;margin-right:10px;" />
+    <img class="rounded-circle" src="<%= @node.author.photo_path(:thumb) %>" style="width:150px;margin-right:10px;" />
    <% else %>
     <div class="rounded-circle"></div>
   <% end %>
@@ -38,14 +37,13 @@
     <% end %> 
     <br />
     <small>
-      <i class="fa fa-eye"></i> <%= number_with_delimiter(@node.views) %> <span class="d-none d-lg-inline d-print-none ">views</span> | 
+      <i class="fa fa-eye"></i><span> <%= number_with_delimiter(@node.views) %> <span class="d-none d-lg-inline d-print-none ">views</span> |
+      <i class="fa fa-comments-o"></i> <%= @node.comments_count %> answers |
       <a href="/q/<%= @node.id %>"><i class="fa fa-link"></i></a> <a href="/q/<%= @node.id %>">#<%= @node.id %></a>
     </small></p>
   </div>
-
-  <hr style="margin-top:10px;" />
-
-  <div style="overflow:hidden;" id="content" class="pl-content question">
+  <div style="overflow:hidden; width: 100%" id="content" class="pl-content question">
+    <hr style="margin-top:10px;" />
     <%= raw auto_link(insert_extras(@node.latest.render_body), :sanitize => false) %>
   </div>
 
