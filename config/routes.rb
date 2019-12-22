@@ -338,7 +338,7 @@ Plots2::Application.routes.draw do
   get 'post' => 'editor#post', :as => :editor_post
   post 'post' => 'editor#post', :as => :editor_path
   get 'post/choose' => 'editor#choose'
-  get '/simple_post' => 'editor#simple', :as => :simple_editor
+  get 'simple_post' => 'editor#simple', :as => :simple_editor
   get 'legacy' => 'editor#legacy'
   get 'editor' => 'editor#editor'
   get 'editor/rich/(:n)' => 'editor#rich'
