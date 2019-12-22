@@ -8,6 +8,7 @@
 
 .question-show .inline {
   display: inline-block;
+  margin: 50px 0px;
 }
 
 .question-show .inline img.img-circle {
@@ -124,4 +125,8 @@ table th a:hover {
   padding: 0;
   outline: 0;
   border: 0;
+}
+
+@media screen and (max-width: 500px) {
+  .question-show .inline { margin: 0px }
 }
