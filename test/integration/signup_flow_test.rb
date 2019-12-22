@@ -75,7 +75,7 @@ class SignUpTest < ActionDispatch::IntegrationTest
     }
     
     assert response.body.include? '2 errors prohibited this user from being saved'
-    assert response.body.include? 'Username should use only letters, numbers, spaces, and .-_@+ please.'
+    assert response.body.include? 'Username should use only lowercase letters numbers and _ and should start with a letter.'
     assert response.body.include? 'Username is too short (minimum is 3 characters)'
   end
 

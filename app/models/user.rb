@@ -69,7 +69,7 @@ class User < ActiveRecord::Base
 
   VALID_USERNAME_REGEX = /\A[a-z][_a-z0-9]*\z/
 
-  validates :username, format: { with: VALID_USERNAME_REGEX, multiline: true, message: 'must be formatted correctly' }
+  validates :username, format: { with: VALID_USERNAME_REGEX, multiline: true, message: 'should use only lowercase letters numbers and _ and should start with a letter.' }
 
   def is_new_contributor?
     Node.where(uid: id).length === 1 && Node.where(uid: id).first.created_at > 1.month.ago
