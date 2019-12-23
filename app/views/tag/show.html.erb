@@ -7,7 +7,7 @@
       <div class="pull-right"><%= render :partial => "tag/show/user_controls" %></div>
       <h1 style="margin-top:6px;"><%= @title %></h1>
       <% if @wildcard %>
-      
+
         <% if @node_type == "questions"%>
           <p><i>Showing <b>questions</b></i></p>
         <% elsif @node_type == "note" && params[:id].match("activity:") %>
@@ -24,10 +24,10 @@
       <% end %>
       <div class="tag-buttons">
         <div class="btn-group" role="group">
-          <% if current_user && current_user.following(@title) %>
-            <a rel="tooltip" title="<%= t('sidebar._post_button.share_your_work') %>" data-placement="bottom" href="/post?tags=<%= tag.name %>" class="btn btn-primary requireLogin">New post <i class="fa fa-plus fa-white"></i></a>
+          <% if current_user && current_user.following(params[:id]) %>
+            <a rel="tooltip" title="<%= t('sidebar._post_button.share_your_work') %>" data-placement="bottom" href="/post?tags=<%= params[:id] %>" class="btn btn-primary requireLogin">New post <i class="fa fa-plus fa-white"></i></a>
           <% else %>
-            <a class="btn btn-primary requireLogin" target="_blank" href="/subscribe/tag/<%= @title %>"> Follow</a>
+            <a class="btn btn-primary requireLogin" target="_blank" href="/subscribe/tag/<%= params[:id] %>"> Follow</a>
               <% if @related_tags %>
                 <a><%= render partial: 'tag/dropdown_subscribe', locals: { tags: @related_tags, buttonStyle: "btn-primary"} %></a>
               <% end %>
@@ -43,6 +43,7 @@
   </div>
 </div>
 
+<% cache("tag-show-#{request.fullpath}", expires_in: 5.minutes, skip_digest: true) do %>
 <div class="container">
   <div class="box">
     <div class="row">
@@ -52,12 +53,18 @@
 
             <%= render partial: 'tag/show/contributors' %>
 
-            <%= render partial: 'tag/show/nav_tabs' %>
-
-            <p style="padding-top:8px;margin-bottom:0;">
-            <a class="btn btn-sm btn-outline-secondary" href="?order=views"><i class="fa fa-eye"></i> by views</a>
-            <a class="btn btn-sm btn-outline-secondary" href="?order=likes"><i class="fa fa-star"></i> by likes</a>
-            </p><br />
+            <div class="row">
+              <div class="col-lg-6">
+                <p class="contributor-info"><%= Tag.find_nodes_by_type(params[:id], 'note', false).count %> posts by 
+                  <a href="/contributors/<%= params[:id] %>"><%= Tag.contributor_count(params[:id]) %> contributors</a> | 
+                  <a href="/contributors/<%= params[:id] %>"><%= Tag.follower_count(params[:id]) %> followers</a>
+                  <a href="https://publiclab.org/wiki/contributors"><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>
+                </p>
+              </div>
+              <div class="col-lg-6 d-flex justify-content-lg-end">
+                <%= render partial: 'tag/show/nav_tabs' %>
+              </div>
+            </div>
 
             <%= render partial: 'tag/show/tab_content' %>
             <div>
@@ -76,6 +83,7 @@
     </div>
   </div>
 </div>
+<% end %>
 <%= stylesheet_link_tag "dashboard" %>
 
 <style>
@@ -109,5 +117,24 @@
   }
   .tag-buttons .btn {
     margin-top: 10px;
+  }
+
+  .contributor-info,
+  .contributor-info a i,
+  .contributor-info a:link i,
+  .contributor-info a:active i,
+  .contributor-info a:visited i {
+    color: #aaa;
+  }
+  .contributor-info a,
+  .contributor-info a:link,
+  .contributor-info a:active,
+  .contributor-info a:visited  {
+    color: currentColor;
+    text-decoration: underline;
+  }
+  .contributor-info a:hover,
+  .contributor-info a:hover i {
+    color: #666;
   }
 </style>

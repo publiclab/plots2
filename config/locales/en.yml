@@ -155,8 +155,7 @@ en:
       research_notes_and_wiki_edits_with_time: "%{count} research notes and wiki edits
         starting %{time} ago"
       research_by: "Research by <a href='%{url1}'>%{user_name}</a>"
-      research_notes_and_wiki_edits: "%{count1} research notes and %{count2} wiki
-        edits"
+      research_notes_and_wiki_edits: "%{count1} research %{word1} and %{count2} wiki %{word2}"
       starting_time: "starting %{time} ago"
       research_notes_ideas_and_documentation: "Research notes <small class=\"hidden-sm\">ideas
         & documentation from contributors like you</small>"
@@ -373,6 +372,15 @@ en:
       more_posts: "more posts"
       follow: "Follow"
       unfollow: "Unfollow"
+      notes:
+        one: "1 note"
+        other: "%{count} notes"
+      questions:
+        one: "1 question"
+        other: "%{count} questions"
+      comments:
+        one: "1 comment"
+        other: "%{count} comments"
     show:
       notes_tagged: "Notes tagged with <i style=\"color:#aaa;\">%{tag}</i>"
       following: "Following"
@@ -552,7 +560,7 @@ en:
         board: "Non-profit board"
         fund: "How we're funded"
         press_and_media: "Press and Media"
-        contact: "Contact the staff"
+        contact: "Contact"
       get_involved:
         get_involved_title: "Get Involved"
         getting_started: "Getting started"
@@ -610,7 +618,7 @@ en:
       username: "Username"
       password: "Password"
       remember_me: "Remember me"
-      reset_by_clicking_here: "Forgotten or lost your password? Reset it by <a href='%{url1}'>clicking here</a>"
+      reset_by_clicking_here: "Forgot your password? Reset it <a href='%{url1}'>here</a>"
   home:
     dashboard:
       welcome: "Welcome!"

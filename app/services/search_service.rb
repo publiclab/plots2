@@ -154,7 +154,7 @@ class SearchService
     else
       items.order(Arel.sql("created #{order_direction}"))
            .limit(limit)
-            end
+    end
   end
 
   # Search nearby people with respect to given latitude, longitute and tags

@@ -38,7 +38,14 @@ class ScreenshotsTest < ApplicationSystemTestCase
   end
 
   test 'tag page' do
+    nodes(:activity).add_tag('pin:test', users(:bob)) # ensure a pinned note appears
     visit '/tag/test'
+    assert_selector('i.fa-thumb-tack', visible: true) # check for pin icon
+    take_screenshot
+  end
+
+  test 'profile page' do
+    visit '/profile/bob'
     take_screenshot
   end
 
@@ -119,7 +126,17 @@ class ScreenshotsTest < ApplicationSystemTestCase
     visit node.path
     take_screenshot
   end
-  
+
+  test 'embeddable grids' do
+    visit '/embed/grid/test'
+    take_screenshot
+  end
+
+  test 'embeddable thumbnail grids' do
+    visit '/embed/grid/grid:test'
+    take_screenshot
+  end
+
   test 'blog page with location modal' do
     visit '/'
     click_on 'Login'
@@ -134,4 +151,14 @@ class ScreenshotsTest < ApplicationSystemTestCase
     take_screenshot
   end
 
+  test 'mobile displays' do
+    node = nodes(:place) # /wiki/chicago page
+    revision = node.latest
+    revision.body = '<iframe width="360px" height="1300px" src="/post"></iframe> '
+    revision.body += '<iframe width="360px" height="1300px" src="/tag/babylegs"></iframe>'
+    revision.save
+    visit node.path
+    take_screenshot
+  end
+  
 end
