@@ -24,7 +24,7 @@ class MapController < ApplicationController
     @layersname = params[:layersname]
 
     return if current_user&.has_power_tag("lat").blank? || current_user&.has_power_tag("lon").blank?
-    
+
     @user_lat = current_user.get_value_of_power_tag("lat").to_f
     @user_lon = current_user.get_value_of_power_tag("lon").to_f
   end
