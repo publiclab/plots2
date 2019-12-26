@@ -28,9 +28,20 @@
         new L.LatLng(-54.36775852, 178.59375)
       );
 
-      var lat = parseFloat(params.lat)|| 23;
-      var lon = parseFloat(params.lon) || 77;
-      var zoom = parseFloat(params.zoom) || 4;
+      <% if @map_lat && @map_lon %>
+        var user_lat = <%= @map_lat %>;
+        var user_lon = <%= @map_lon %>;
+        var default_profile_zoom = 4;
+      <% end %>
+
+      // check if lat and lon exist. If not, then check user lat and lon. Then assign default.
+      var lat = parseFloat(params.lat) || user_lat || 23;
+      var lon = parseFloat(params.lon) || user_lon || 77;
+      var zoom = parseFloat(params.zoom) || default_profile_zoom || 3;
+        console.log("Params: " + lat + "  " + lon);
+      if(user_lat) {
+        console.log("User: " + user_lat + "  " + user_lon);
+      }
 
       var map = L.map("map", {
         maxBounds: bounds,
@@ -50,8 +61,12 @@
         urlHash.setUrlHashParameter('zoom', zoom + "");
       })
 
-      var layersname = "<%= @layersname %>";
-      layersname = layersname.split(',');
+      <% if @layersname.nil? %>
+        var layersname = ['odorreport', 'asian', 'clouds', 'eonetFiresLayer', 'Unearthing'];
+      <% else %>
+        var layersname = "<%= @layersname %>";
+        layersname = layersname.split(',')
+      <% end %>
 
       L.tileLayer(
         "https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",
@@ -62,7 +77,7 @@
 
 
       L.LayerGroup.EnvironmentalLayers({
-        include: layersname  || ['odorreport', 'asian', 'clouds', 'eonetFiresLayer', 'Unearthing'],
+        include: layersname,
         hash: false,
         embed: true,
       }).addTo(map);

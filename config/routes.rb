@@ -247,10 +247,10 @@ Plots2::Application.routes.draw do
   get 'groups/:search' => 'user_tags#index'
 
 
+  get 'map' => 'map#map'
   get 'map/:layersname' => 'map#map'
   get 'maps' => 'map#index'
   get 'users/map' => 'users#map'
-  get 'map' => 'search#map'
   get 'maps/:id' => 'map#tag'
   get 'map/edit/:id' => 'map#edit'
   put 'map/update/:id' => 'map#update'

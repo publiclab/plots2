@@ -22,6 +22,11 @@ class MapController < ApplicationController
 
   def map
     @layersname = params[:layersname]
+
+    if current_user&.has_power_tag("lat") && current_user&.has_power_tag("lon")
+      @map_lat = current_user.get_value_of_power_tag("lat").to_f
+      @map_lon = current_user.get_value_of_power_tag("lon").to_f
+    end
   end
 
   def show
