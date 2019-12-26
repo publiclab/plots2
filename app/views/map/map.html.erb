@@ -31,9 +31,9 @@
       var user_lat = null;
       var user_lon = null;
       var profile_zoom = null;
-      <% if @map_lat && @map_lon %>
-        user_lat = <%= @map_lat %>;
-        user_lon = <%= @map_lon %>;
+      <% if @user_lat && @user_lon %>
+        user_lat = <%= @user_lat %>;
+        user_lon = <%= @user_lon %>;
         profile_zoom = 7;
       <% end %>
 
