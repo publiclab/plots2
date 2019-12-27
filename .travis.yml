@@ -19,11 +19,6 @@ env:
     - TASK="rails test test/integration"
     - TASK="rails test:system"
 
-branches:
-  only:
-    - master
-    - unstable
-
 install:
   - rm -rf test/reports
   - cp config/database.yml.example config/database.yml
