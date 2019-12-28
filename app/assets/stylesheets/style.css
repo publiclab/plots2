@@ -498,16 +498,16 @@ a.btn-outline-secondary .fa {
 }
 
  a.btn-outline-secondary:not([href]):not([tabindex]) {
-      color: #6c757d;
-    }
-    
-    .container .btn-outline-secondary:hover {
-      color: white !important;
-    }
-    
-    .container .btn-outline-secondary:hover .fa {
-      color: white !important;
-    }
+  color: #6c757d;
+}
+
+.container .btn-outline-secondary:hover {
+  color: white !important;
+}
+
+.container .btn-outline-secondary:hover .fa {
+  color: white !important;
+}
 .nav-button-wrapper {
   padding-top: 7.5px;
 }
