@@ -23,6 +23,7 @@ branches:
   only:
     - master
     - unstable
+    - codecov
 
 install:
   - rm -rf test/reports
