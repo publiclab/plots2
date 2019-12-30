@@ -314,6 +314,7 @@
 
 </div>
 <script>
+
   var editor;
 
   (function() {
@@ -414,6 +415,12 @@
       }
     });
 
+    var bounds = new L.LatLngBounds(
+      new L.LatLng(90, -180),
+      new L.LatLng(-90, 180)
+    );
+    editor.mapModule.blurredLocation.map.setMaxBounds(bounds);
+
     $('#coord_button').click((event) => {
       event.preventDefault();
       $('#coord_input').toggle();
@@ -438,11 +445,10 @@
       // write the ArrayBuffer to a blob, and you're done
       var blob = new Blob([ab], {type: mimeString});
       return blob;
-  }
-  <% if true || params[:datauri_main_image] %>
-    $('.ple-module-main_image input').fileupload('add', {'files': [ dataURItoBlob('<%= params[:datauri_main_image] %>') ]});
-  <% end %>
-
+    }
+    <% if true || params[:datauri_main_image] %>
+      $('.ple-module-main_image input').fileupload('add', {'files': [ dataURItoBlob('<%= params[:datauri_main_image] %>') ]});
+    <% end %>
 
   })();
   $('.legacy-button').click(function onLegacyClick(event) {
