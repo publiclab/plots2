@@ -26,8 +26,6 @@
   }
   </style>
 
-<% if flash[:alert] %><div class="alert alert-warning"><button type="button" class="close" data-dismiss="alert">×</button><%= raw flash[:alert] %></div><% end %>
-
 <div id="map"></div>
 
    <script>
@@ -43,9 +41,6 @@
             <% if @zoom %>
               urlHash.setUrlHashParameter('zoom', <%= @zoom %> + "");
             <% end %>
-          <% else %>
-            // Display error message, this page has no location
-            console.log("This wiki has no location.");
           <% end %>
         }
       <% end %>

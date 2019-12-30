@@ -33,13 +33,19 @@ class MapController < ApplicationController
     @node = Node.find_wiki(params[:id])
 
     if @node.blank?
-      redirect_to :controller=>'map', :action=>'map' and return
+      flash[:warning] = "Wiki page not found."
+      redirect_to :controller=>'map', :action=>'map'
+      return
     end
 
-      @lat = @node.power_tag("lat").to_f if @node.has_power_tag("lat")
-      @lon = @node.power_tag("lon").to_f if @node.has_power_tag("lon")
+    if @node.has_power_tag("lat").blank? && @node.has_power_tag("lon").blank?
+      flash[:warning] = "No location found for this wiki page."
+    else
+      @lat = @node.power_tag("lat").to_f
+      @lon = @node.power_tag("lon").to_f
       @zoom = @node.power_tag("zoom").to_f if @node.has_power_tag("zoom")
-    
+    end
+  
     render :map
   end
 
