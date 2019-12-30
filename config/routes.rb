@@ -248,6 +248,7 @@ Plots2::Application.routes.draw do
 
 
   get 'map' => 'map#map'
+  get 'map/wiki/:id' => 'map#wiki'
   get 'map/:layersname' => 'map#map'
   get 'maps' => 'map#index'
   get 'users/map' => 'users#map'

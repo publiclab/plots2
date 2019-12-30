@@ -21,13 +21,35 @@
     height: 80vh;
     background:rgba(255,255,255,0.5);
   }
+  .alert {
+    z-index: 600;
+  }
   </style>
 
-  <div id="map"></div>
+<% if flash[:alert] %><div class="alert alert-warning"><button type="button" class="close" data-dismiss="alert">×</button><%= raw flash[:alert] %></div><% end %>
+
+<div id="map"></div>
 
    <script>
 
       var urlHash = urlHash();
+
+      <% if @node %>
+        // if there are location params in URL let them override
+        if (!urlHash.getUrlHashParameter('lat') || !urlHash.getUrlHashParameter('lon')) {
+          <% if @lat && @lon %>
+            urlHash.setUrlHashParameter('lat', <%= @lat %> + "");
+            urlHash.setUrlHashParameter('lon', <%= @lon %> + "");
+            <% if @zoom %>
+              urlHash.setUrlHashParameter('zoom', <%= @zoom %> + "");
+            <% end %>
+          <% else %>
+            // Display error message, this page has no location
+            console.log("This wiki has no location.");
+          <% end %>
+        }
+      <% end %>
+
       const params = urlHash.getUrlHashParameters();
      
       const bounds = new L.LatLngBounds(

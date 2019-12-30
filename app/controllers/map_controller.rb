@@ -29,6 +29,20 @@ class MapController < ApplicationController
     @user_lon = current_user.get_value_of_power_tag("lon").to_f
   end
 
+  def wiki
+    @node = Node.find_wiki(params[:id])
+
+    if @node.blank?
+      redirect_to :controller=>'map', :action=>'map' and return
+    end
+
+      @lat = @node.power_tag("lat").to_f if @node.has_power_tag("lat")
+      @lon = @node.power_tag("lon").to_f if @node.has_power_tag("lon")
+      @zoom = @node.power_tag("zoom").to_f if @node.has_power_tag("zoom")
+    
+    render :map
+  end
+
   def show
     @node = Node.find_map(params[:name], params[:date])
 
