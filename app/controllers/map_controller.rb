@@ -34,7 +34,7 @@ class MapController < ApplicationController
 
     if @node.blank?
       flash[:warning] = "Wiki page not found."
-      redirect_to :controller=>'map', :action=>'map'
+      redirect_to controller: 'map', action: 'map'
       return
     end
 
@@ -45,7 +45,7 @@ class MapController < ApplicationController
       @lon = @node.power_tag("lon").to_f
       @zoom = @node.power_tag("zoom").to_f if @node.has_power_tag("zoom")
     end
-  
+
     render :map
   end
 
