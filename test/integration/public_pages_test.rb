@@ -17,8 +17,8 @@ class PublicPagesTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'browse /maps' do
-    get '/maps'
+  test 'browse /map' do
+    get '/map'
     assert_response :success
   end
 
