@@ -73,18 +73,25 @@
         maxBoundsViscosity: 0.75
       }).setView([lat, lon], zoom);
 
+      updateLocationHash();
+      updateZoomHash();
+
       map.options.minZoom = 3;
 
-      map.on('moveend', function() {
+      map.on('moveend', updateLocationHash);
+
+      map.on('zoomend', updateZoomHash);
+
+      function updateLocationHash() {
         const center = map.getCenter();
         urlHash.setUrlHashParameter('lat', center.lat + "");
         urlHash.setUrlHashParameter('lon', center.lng + "");
-      })
+      }
 
-      map.on('zoomend', function() {
+      function updateZoomHash() {
         const zoom = map.getZoom();
         urlHash.setUrlHashParameter('zoom', zoom + "");
-      })
+      }
 
       <% if @layersname.nil? %>
         var layersname = ['odorreport', 'asian', 'clouds', 'eonetFiresLayer', 'Unearthing'];
@@ -106,6 +113,5 @@
         hash: false,
         embed: true,
       }).addTo(map);
-
 
     </script>
