@@ -54,7 +54,7 @@ class UserSessionsController < ApplicationController
         # The identity we found had a user associated with it so let's
         # just log them in here
         @user = @identity.user
-        if @user.status == 0
+        if @user.status.zero?
           flash[:error] = "You have been banned!"
           redirect_to root_url
         elsif @user.status == 5
