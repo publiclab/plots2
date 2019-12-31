@@ -57,6 +57,9 @@ class UserSessionsController < ApplicationController
         if @user.status == 0
           flash[:error] = "You have been banned!"
           redirect_to root_url
+        elsif @user.status == 5
+          flash[:error] = I18n.t('user_sessions_controller.user_has_been_moderated', username: @user.username).html_safe
+          redirect_to '/'
         else
           @user_session = UserSession.create(@identity.user)
           if session[:openid_return_to] # for openid login, redirects back to openid auth process
