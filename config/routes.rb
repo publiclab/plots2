@@ -250,7 +250,7 @@ Plots2::Application.routes.draw do
   get 'map' => 'map#map'
   get 'map/wiki/:id' => 'map#wiki'
   get 'map/:layersname' => 'map#map'
-  get 'maps' => 'map#index'
+  get 'maps' => redirect('/map/')
   get 'users/map' => 'users#map'
   get 'maps/:id' => 'map#tag'
   get 'map/edit/:id' => 'map#edit'
