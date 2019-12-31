@@ -286,7 +286,6 @@ class AdminController < ApplicationController
     user = User.find params[:id]
     if logged_in_as(['admin', 'moderator'])
       user.ban
-      flash[:notice] = 'The user has been banned.'
     else
       flash[:error] = 'Only moderators can ban other users.'
     end
