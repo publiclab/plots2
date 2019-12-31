@@ -1,4 +1,3 @@
-<%= javascript_include_tag('/lib/urlhash/urlHash.js') %>
 <%= render :partial => "map/mapDependencies" %>
   
   <style>
@@ -30,7 +29,7 @@
 
    <script>
 
-      var urlHash = urlHash();
+      var urlHash = urlMapHash();
 
       <% if @node %>
         // if there are location params in URL let them override
