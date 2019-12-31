@@ -17,7 +17,7 @@ function urlMapHash() {
     var items = sPageURL.split('/');
     var object = {};
     items.forEach(function(item, i) {
-      if ((item != '') && (paramArray[i])) object[paramArray[i]] = item;
+      if ((item !== '') && (paramArray[i])) object[paramArray[i]] = item;
     });
     return object;
   }
