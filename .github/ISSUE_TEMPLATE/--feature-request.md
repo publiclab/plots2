@@ -23,7 +23,7 @@ Feel free to include any applicable: code, screenshots, or gifs.
 <!-- End. -->
 
 <!--
-Thank you! Your help makes Public Lab better. We *deeply* appreciate your helping refine and improve Leaflet.DistortableImage.
+Thank you! Your help makes Public Lab better. We *deeply* appreciate your helping refine and improve plots2.
 
 To learn how to write really great issues, which increases the chances they'll be resolved, see:
 https://publiclab.org/wiki/developers#Contributing+for+non-coders
