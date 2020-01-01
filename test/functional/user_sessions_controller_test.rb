@@ -54,7 +54,7 @@ class UserSessionsControllerTest < ActionController::TestCase
     assert_equal "Successfully logged out.",  flash[:notice]
     #auth hash is present so login via a provider
     post :create
-    assert_equal "Signed in!",  flash[:notice]
+    assert_equal "Successfully logged in.",  flash[:notice]
   end
 
   test 'sign up and login via provider alternative flow for google' do
@@ -70,7 +70,7 @@ class UserSessionsControllerTest < ActionController::TestCase
     assert_equal "Successfully logged out.",  flash[:notice]
     #auth hash is present so login via a provider
     post :create
-    assert_equal "Signed in!",  flash[:notice]
+    assert_equal "Successfully logged in.",  flash[:notice]
   end
 
 
@@ -111,7 +111,7 @@ class UserSessionsControllerTest < ActionController::TestCase
     assert_equal "Successfully logged out.",  flash[:notice]
     #auth hash is present so login via a provider
     post :create
-    assert_equal "Signed in!",  flash[:notice]
+    assert_equal "Successfully logged in.",  flash[:notice]
   end
 
   test 'sign up and login via provider alternative flow for github' do
@@ -127,7 +127,7 @@ class UserSessionsControllerTest < ActionController::TestCase
     assert_equal "Successfully logged out.",  flash[:notice]
     #auth hash is present so login via a provider
     post :create
-    assert_equal "Signed in!",  flash[:notice]
+    assert_equal "Successfully logged in.",  flash[:notice]
   end
 
   test 'login user with an email and then connect github provider' do
@@ -168,7 +168,7 @@ class UserSessionsControllerTest < ActionController::TestCase
       assert_equal "Successfully logged out.",  flash[:notice]
       #auth hash is present so login via a provider
       post :create
-      assert_equal "Signed in!",  flash[:notice]
+      assert_equal "Successfully logged in.",  flash[:notice]
     end
 
     test 'sign up and login via provider alternative flow for twitter' do
@@ -184,7 +184,7 @@ class UserSessionsControllerTest < ActionController::TestCase
       assert_equal "Successfully logged out.",  flash[:notice]
       #auth hash is present so login via a provider
       post :create
-      assert_equal "Signed in!",  flash[:notice]
+      assert_equal "Successfully logged in.",  flash[:notice]
     end
 
     test 'login user with an email and then contwitter provider' do
@@ -224,7 +224,7 @@ class UserSessionsControllerTest < ActionController::TestCase
     assert_equal "Successfully logged out.",  flash[:notice]
     #auth hash is present so login via a provider
     post :create
-    assert_equal "Signed in!",  flash[:notice]
+    assert_equal "Successfully logged in.",  flash[:notice]
   end
 
   test 'sign up and login via provider alternative flow for facebook' do
@@ -240,7 +240,7 @@ class UserSessionsControllerTest < ActionController::TestCase
     assert_equal "Successfully logged out.",  flash[:notice]
     #auth hash is present so login via a provider
     post :create
-    assert_equal "Signed in!",  flash[:notice]
+    assert_equal "Successfully logged in.",  flash[:notice]
   end
 
   test 'login user with an email and then connect facebook provider' do
