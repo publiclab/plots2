@@ -1,0 +1,16 @@
+.leaflet-marker-icon {
+  background: url("https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-black.png") ; 
+}
+
+#map_content p {
+  margin: 0;
+}
+#map_content label {
+  margin-bottom: .2rem;
+}
+#map_content .form-group {
+  margin-bottom: 1.4rem;
+}
+#map_content .form-group .btn {
+  margin-top: .4rem;
+}

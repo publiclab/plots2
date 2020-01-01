@@ -71,7 +71,8 @@ class PublicPagesTest < ActionDispatch::IntegrationTest
 
   test 'browse /search/*' do
     get '/search/foo'
-    assert_response :success
+    assert_response :redirect
+    assert_redirected_to '/search?q=foo'
   end
 
   test 'browse /stats' do

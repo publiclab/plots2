@@ -456,7 +456,9 @@ class WikiController < ApplicationController
         main_image.save
       end
 
-      if params[:main_image].present? && img = Image.find(params[:main_image])
+      if params[:main_image].to_i == 0
+        @node.main_image_id = nil
+      elsif params[:main_image].present? && img = Image.find(params[:main_image])
         img.nid = @node.id
         @node.main_image_id = img.id
         img.save

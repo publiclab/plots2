@@ -3,13 +3,34 @@
 <%= javascript_include_tag('/lib/leaflet-spin/example/leaflet.spin.min.js') %>
 
 <div class="container blurred-location">
-    <div class="form-group">
-      <label for="placenameInput"><b>Search by place name</b></label>
-      <input id="placenameInput" type="text" class="form-control" />
-    </div>
+  <div class="form-group">
+    <label for="placenameInput"><b>Search by place name</b></label>
+    <input id="placenameInput" type="text" class="form-control" />
+  </div>
 
+  <!-- Not part of LBL library -->
+  <% if current_user %>
+    <% latest_locations = current_user.recent_locations %>
+    <% if latest_locations.count > 0 %>
+      <p><b>Your recently used locations:</b></p>
+      <div class="row">
+        <% latest_locations.each_with_index do |location, index| %>
+          <a href="#" onclick="blurredLocation.goTo(<%= location.lat %>, <%= location.lon %>, 6);"> 
+            <span class="badge badge-info" style="background-color: #337ab7 ; margin-left: 7px ;margin-top: 2px; ">
+              <% if location.place %>
+                <%= location.place %>
+              <% end %>
+              <span class="badge" style="background-color: white; color: #337ab7;"><%= location.lat %></span>
+              <span class="badge" style="background-color: white; color: #337ab7;"><%= location.lon %></span>
+            </span>
+          </a>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <br>
   <p><b>By dragging the map</b></p>
-
   <div id="map" class="leaflet-map" style="width: 100%; height: 300px; margin-bottom:10px;"></div>
   <p>
     <h3><strong>Scale</strong></h3>
@@ -54,8 +75,12 @@
     InterfaceOptions: {
       latId: 'lat',
       lngId: 'lng'
+    },
+    location: {
+      lat: 23 ,
+      lon: 77 
     }
-  }
+  } ;
 
   var blurredLocation;
 
@@ -63,6 +88,14 @@
 
     L.Icon.Default.imagePath = '/lib/leaflet/dist/images/';
     
+    <% if current_user %>
+      <%  latest_location = current_user.latest_location %>
+      <% unless latest_location.nil? %>
+        options.location.lat = <%= latest_location.lat %> ;
+        options.location.lon = <%= latest_location.lon %> ;
+      <% end %>
+    <% end %>
+
     blurredLocation = new BlurredLocation(options);
 
     blurredLocation.panMapToGeocodedLocation("placenameInput");
@@ -79,10 +112,14 @@
   })();
     
   function saveLocation() {
-    var tags = 'lat:' + blurredLocation.getLat() + ',lon:' + blurredLocation.getLon();
+    var tags = 'lat:' + blurredLocation.getLat() + ',lon:' + blurredLocation.getLon() + ',zoom:' + blurredLocation.getZoom();
     if (blurredLocation.isBlurred()) tags = tags + ',' + 'location:blurred'
     if ($('#placenameDisplay').val() != 'Location unavailable') tags = tags + ',' + 'place:' + parameterize($('#placenameDisplay').val());
-    addTag(tags);
+    <% if params[:url] %>
+      addTag(tags, '<%= params[:url] %>');
+    <% else %>
+      addTag(tags);
+    <% end %>
     
     <% if params[:reload] %>setTimeout(function() { location.reload(); }, 3000);<% end %>
   }

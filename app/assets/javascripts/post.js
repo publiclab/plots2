@@ -7,7 +7,7 @@ jQuery(document).ready(function() {
   $('#side-fileinput').bind('focus',function(e) { $('#side-dropzone').css('border-color','#4ac') })
   $('#side-fileinput').bind('focusout',function(e) { $('#side-dropzone').css('border-color','#ccc') })
   publish = function(e) {
-    if ($('#main_image').val() == "" && $('#has_main_image').val() != "true" && !$D.warn_image) {
+    if ($('#main_image').val() == "" && !$D.warn_image) {
       // prompt to choose a lead image
       $D.warn_image = true;
       $('.side-dropzone').css('border-color','#d99')

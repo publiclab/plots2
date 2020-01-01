@@ -73,12 +73,22 @@ class TagController < ApplicationController
   end
 
   def show
+
+    # Enhancement #6306 - Add counts to `by type` dropdown on tag pages 
+    @counts = {:posts => 0, :questions => 0, :wiki => 0 }
+    @counts[:posts] = Tag.find_nodes_by_type([params[:id]], 'note', false).count
+    @counts[:questions] = Tag.find_nodes_by_type("question:#{params[:id]}", 'note', false).count
+    @counts[:wiki] = Tag.find_nodes_by_type([params[:id]], 'page', false).count
+    params[:counts] = @counts
+    # end Enhancement #6306 ============================================
+  
     if params[:id].is_a? Integer
       @wiki = Node.find(params[:id])&.first
     else
       @wiki = Node.where(path: "/wiki/#{params[:id]}").try(:first) || Node.where(path: "/#{params[:id]}").try(:first)
       @wiki = Node.where(slug: @wiki.power_tag('redirect'))&.first if @wiki&.has_power_tag('redirect') # use a redirected wiki page if it exists
     end
+    @node = @wiki # expose the wiki node in the @node variable so we get open graph meta tags in the layout
 
     default_type = params[:id].match?('question:') ? 'questions' : 'note'
 
@@ -138,9 +148,18 @@ class TagController < ApplicationController
           .order(order_by)
       end
     end
-    nodes = nodes.where(created: @start.to_i..@end.to_i) if @start && @end
 
-    qids = Node.questions.where(status: 1).collect(&:nid)
+    if @start && @end
+      nodes = nodes.where(created: @start.to_i..@end.to_i)
+    else
+      @pinned_nodes = NodeShared.pinned_nodes(params[:id])
+      if @pinned_nodes.length > 0 && params[:page].nil? # i.e. first page
+        nodes = nodes.where.not(nid: @pinned_nodes.collect(&:id))
+      end
+    end
+
+    qids = Node.questions.where(status: 1)
+               .collect(&:nid)
     if qids.empty?
       @notes = nodes
       @questions = []
@@ -243,6 +262,11 @@ class TagController < ApplicationController
     end
   end
 
+  def related
+    @tags = Tag.related(params[:id])
+    render partial: 'tag/related', layout: false, locals: { tags: @tags }
+  end
+
   def widget
     num = params[:n] || 4
     nids = Tag.find_nodes_by_type(params[:id], 'note', num).collect(&:nid)
@@ -256,7 +280,7 @@ class TagController < ApplicationController
     nids = Tag.find_nodes_by_type(params[:id], 'note', nil).collect(&:nid)
     @notes = Node.paginate(page: params[:page], per_page: 6)
       .where('status = 1 AND nid in (?)', nids)
-      .order('nid DESC')
+      .order('created DESC')
     @tags = Tag.where(name: params[:id])
     @tagnames = @tags.collect(&:name).uniq! || []
     @title = @tagnames.join(',') + ' Blog' if @tagnames
@@ -328,7 +352,7 @@ class TagController < ApplicationController
 
         if saved
           @tags << tag
-          @output[:saved] << [tag.name, tag.id]
+          @output[:saved] << [tag.name, tag.id, nid]
         else
           @output[:errors] << I18n.t('tag_controller.error_tags') + tag.errors[:name].first
         end
@@ -367,10 +391,14 @@ class TagController < ApplicationController
       end
 
       node_tag.delete
+      output = {
+        status: true,
+        tid: node_tag.tid
+      }
       respond_with do |format|
         format.html do
           if request.xhr?
-            render plain: node_tag.tid
+            render json: output
           else
             flash[:notice] = I18n.t('tag_controller.tag_deleted')
             redirect_to node_tag.node.path
@@ -505,14 +533,26 @@ class TagController < ApplicationController
   def stats
     @start = params[:start] ? Time.parse(params[:start].to_s) : Time.now - 1.year
     @end = params[:end] ? Time.parse(params[:end].to_s) : Time.now
-
+    tagname = params[:id]
+    
+    @tag_name = params[:id]
     @tags = Tag.where(name: params[:id])
+
+    return if @tags.empty?
+
     @tag_notes = @tags.first.contribution_graph_making('note', @start, @end)
     @tag_wikis = @tags.first.contribution_graph_making('page', @start, @end)
     @tag_questions = @tags.first.quiz_graph(@start, @end)
     @tag_comments = @tags.first.comment_graph(@start, @end)
     @subscriptions = @tags.first.subscription_graph(@start, @end)
+
     @all_subscriptions = TagSelection.graph(@start, @end)
+
+    total_questions = Node.published.questions
+      .where(created: @start.to_i..@end.to_i)
+      .where(nid: Node.find_by_tag(tagname))
+    @answers = total_questions.joins(:comments).size.count
+    @questions = total_questions.size.count
   end
 
   private

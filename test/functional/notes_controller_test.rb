@@ -374,7 +374,7 @@ class NotesControllerTest < ActionController::TestCase
     assert_response :success
     selector = css_select 'div.note'
     assert_equal selector.size, 25
-    assert_select "p", "Moderate first-time post: \n              Approve\n              Spam"
+    assert_select 'a[data-test="spam"]','Spam'
   end
 
   test 'post_note_error_no_title' do
@@ -418,7 +418,7 @@ class NotesControllerTest < ActionController::TestCase
     assert_response :success
     assert_not_nil @response.body
     json = JSON.parse(@response.body)
-    assert_equal ["can't be blank"], json['title']
+    assert_equal ["can't be blank", "is too short (minimum is 3 characters)"], json['title']
     assert !json['title'].empty?
   end
 
@@ -490,7 +490,7 @@ class NotesControllerTest < ActionController::TestCase
         id: node.title.parameterize
         }
     selector = css_select '.fa-fire'
-    assert_equal 3, selector.size
+    assert_equal 4, selector.size
   end
 
   test 'should redirect to questions show page after creating a new question' do
@@ -673,7 +673,34 @@ class NotesControllerTest < ActionController::TestCase
     assert (notes & expected).present?
     assert !(notes & questions).present?
   end
-
+  
+    test 'first note in /liked endpoint should be highest liked' do
+    get :liked
+    notes = assigns(:notes)
+    # gets highest liked note's number of likes
+    expected = Node.research_notes.where(status: 1).maximum("cached_likes")
+    # gets first note of /notes/liked endpoint
+    actual = notes.first
+    # both should be equal
+    assert expected == actual.cached_likes
+  end
+  test 'first note in /recent endpoint should be most recent' do
+    get :recent
+    notes = assigns(:notes)
+    expected = Node.where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
+                   .maximum("created")
+    actual = notes.first
+    assert expected == actual.created
+  end
+     
+  test 'first three posts in /liked should be sorted by likes' do
+    get :liked
+    # gets first notes
+    notes = assigns(:notes)[0...3]
+     # sort_by is from lowest to highest so it needs to be reversed
+    assert notes.sort_by { |note| note.cached_likes }.reverse ==  notes
+  end
+   
   test 'should choose I18n for notes controller' do
     available_testing_locales.each do |lang|
       old_controller = @controller
@@ -749,17 +776,15 @@ class NotesControllerTest < ActionController::TestCase
 
   test 'draft should not be shown when no user' do
     node = nodes(:draft)
-    post :show, params: { id: '21',title: 'Draft note' }
-    assert_redirected_to '/login'
-    assert_equal "You need to login to view the page", flash[:warning]
+    get :show, params: { id: '21',title: 'Draft note' }
+    assert_response :missing
   end
 
   test 'draft should not be shown when user is not author' do
     node = nodes(:draft)
     UserSession.create(users(:bob))
-    post :show, params: { id: '21',title: 'Draft note' }
-    assert_redirected_to '/'
-    assert_equal "Only author can access the draft note", flash[:notice]
+    get :show, params: { id: '21',title: 'Draft note' }
+    assert_response :missing
   end
 
   test 'question deletion should delete all its answers' do
@@ -788,7 +813,7 @@ class NotesControllerTest < ActionController::TestCase
     get :publish_draft, params: { id: node.id }
 
     assert_response :redirect
-    assert_equal "Thanks for your contribution. Research note published! Now, it's visible publically.", flash[:notice]
+    assert_equal "Thanks for your contribution. Research note published! Now, it's visible publicly.", flash[:notice]
     node = assigns(:node)
     assert_equal 1, node.status
     assert_equal 1, node.author.status
@@ -801,20 +826,27 @@ class NotesControllerTest < ActionController::TestCase
    test 'draft author can publish the draft' do
      UserSession.create(users(:jeff))
      node = nodes(:draft)
+     old_created = node['created']
+     old_changed = node['changed']
      assert_equal 3, node.status
      ActionMailer::Base.deliveries.clear
 
-     get :publish_draft, params: { id: node.id }
+     Timecop.freeze(Date.today + 1) do
+        get :publish_draft, params: { id: node.id }
 
-     assert_response :redirect
-     assert_equal "Thanks for your contribution. Research note published! Now, it's visible publically.", flash[:notice]
-     node = assigns(:node)
-     assert_equal 1, node.status
-     assert_equal 1, node.author.status
-     assert_redirected_to '/notes/' + users(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + node.title.parameterize
+        assert_response :redirect
 
-     email = ActionMailer::Base.deliveries.last
-     assert_equal '[PublicLab] ' + node.title + " (##{node.id}) ", email.subject
+        assert_equal "Thanks for your contribution. Research note published! Now, it's visible publicly.", flash[:notice]
+        node = assigns(:node)
+        assert_equal 1, node.status
+        assert_not_equal old_changed, node['changed'] # these should have been forward dated!
+        assert_not_equal old_created, node['created']
+        assert_equal 1, node.author.status
+        assert_redirected_to '/notes/' + users(:jeff).username + '/' + (Time.now).strftime('%m-%d-%Y') + '/' + node.title.parameterize
+
+        email = ActionMailer::Base.deliveries.last
+        assert_equal '[PublicLab] ' + node.title + " (##{node.id}) ", email.subject
+     end
    end
 
    test 'co-author can publish the draft' do
@@ -826,7 +858,7 @@ class NotesControllerTest < ActionController::TestCase
      get :publish_draft, params: { id: node.id }
 
      assert_response :redirect
-     assert_equal "Thanks for your contribution. Research note published! Now, it's visible publically.", flash[:notice]
+     assert_equal "Thanks for your contribution. Research note published! Now, it's visible publicly.", flash[:notice]
      node = assigns(:node)
      assert_equal 1, node.status
      assert_equal 1, node.author.status
@@ -932,7 +964,7 @@ class NotesControllerTest < ActionController::TestCase
         }
 
      assert_response :success
-     assert_equal "This is a draft note. Once you're ready, click <a class='btn btn-success btn-xs' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> to make it public. You can share it with collaborators using this private link <a href='#{node.draft_url}'>#{node.draft_url}</a>", flash[:warning]
+     assert_equal "This is a draft note. Once you're ready, click <a class='btn btn-success btn-xs' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> to make it public. You can share it with collaborators using this private link <a href='#{node.draft_url(request.base_url)}'>#{node.draft_url(request.base_url)}</a>", flash[:warning]
    end
 
    test 'draft note (status=3) shown to moderator in full view with notice' do
@@ -948,7 +980,7 @@ class NotesControllerTest < ActionController::TestCase
         }
 
      assert_response :success
-     assert_equal "This is a draft note. Once you're ready, click <a class='btn btn-success btn-xs' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> to make it public. You can share it with collaborators using this private link <a href='#{node.draft_url}'>#{node.draft_url}</a>", flash[:warning]
+     assert_equal "This is a draft note. Once you're ready, click <a class='btn btn-success btn-xs' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> to make it public. You can share it with collaborators using this private link <a href='#{node.draft_url(request.base_url)}'>#{node.draft_url(request.base_url)}</a>", flash[:warning]
    end
 
    test 'draft note (status=3) shown to co-author in full view with notice' do
@@ -964,7 +996,7 @@ class NotesControllerTest < ActionController::TestCase
         }
 
      assert_response :success
-     assert_equal "This is a draft note. Once you're ready, click <a class='btn btn-success btn-xs' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> to make it public. You can share it with collaborators using this private link <a href='#{node.draft_url}'>#{node.draft_url}</a>", flash[:warning]
+     assert_equal "This is a draft note. Once you're ready, click <a class='btn btn-success btn-xs' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> to make it public. You can share it with collaborators using this private link <a href='#{node.draft_url(request.base_url)}'>#{node.draft_url(request.base_url)}</a>", flash[:warning]
    end
 
    test 'draft note (status=3) shown to user with secret link' do
@@ -977,7 +1009,7 @@ class NotesControllerTest < ActionController::TestCase
              id: node.nid,
              token: @token
          }
-     assert_redirected_to '/login'
+     assert_response :success
    end
 
    test 'no notification email if user posts draft' do

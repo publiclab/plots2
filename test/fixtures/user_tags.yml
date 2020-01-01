@@ -107,7 +107,7 @@ awesome:
   
 twitter3:
   id: 22
-  uid: 11
+  uid: 12
   value: oauth:twitter:849503183529545728
   data:
     provider: twitter
@@ -357,3 +357,13 @@ twitter3:
         suspended: false
         needs_phone_verification: false
         email: 01namangupta@gmail.com
+
+notification_tag1:
+  id: 23
+  uid: 13
+  value: notifications:all
+
+notification_tag2:
+  id: 24
+  uid: 14
+  value: notifications:all

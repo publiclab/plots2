@@ -1,17 +1,22 @@
-<ul class="nav nav-tabs">
-  <li class="nav-item"><a class="nav-link active" href="#comments" data-toggle="tab"><span class="d-none d-lg-inline"> All comments</span></a></li>
-  <% if current_user &.can_moderate? %><li><a href="#moderated-comments" id="comments-tab" data-toggle="tab"><span class="d-none d-lg-inline">Moderated Comments</span></a></li><% end %>
-</ul>
+<div class="nav flex-column nav-pills col-lg-3 col-md-3 col-sm-12 mb-4" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+  <a class="nav-link active" href="#comments" data-toggle="pill">
+    <span class="d-lg-inline">All comments</span>
+  </a>
+  <% if current_user &.can_moderate? %>
+    <a class="nav-link" href="#moderated-comments" id="comments-tab" data-toggle="pill">
+      <span class="d-lg-inline">Moderated Comments</span>
+    </a>
+  <% end %>
+</div>
 
+<div class="tab-content col-lg-9 col-md-9 col-sm-12">
 
-<div class="tab-content">
-
-  <div class="tab-pane active" id="comments">
+  <div class="tab-pane fade show active" id="comments" role="tabpanel">
     <%= render :partial => "comments/comments", :locals => { :comments => @normal_comments }  %>
   </div>
 
   <% if current_user &.can_moderate? %>
-    <div class="tab-pane" id="moderated-comments">
+    <div class="tab-pane fade" id="moderated-comments" role="tabpanel">
       <%= render :partial => "comments/comments", :locals => { :comments => @moderated_comments } %>
     </div>
   <% end %>
