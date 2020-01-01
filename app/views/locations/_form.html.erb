@@ -107,14 +107,19 @@
 
     blurredLocation.map.setMaxBounds(bounds);
 
-     var changeZoom = function() {
-        var zoom = slider.getValue();
-        blurredLocation.map.setZoom(zoom);
-      }
+    var changeZoom = function() {
+      var zoom = slider.getValue();
+      blurredLocation.map.setZoom(zoom);
+    }
 
-      var slider = $('#ex1').slider()
-        .on('slide', changeZoom)
-        .data('slider');
+    var slider = $('#ex1').slider()
+      .on('slide', changeZoom)
+      .data('slider');
+
+    blurredLocation.map.on('zoomend', function() {
+      let zoom = blurredLocation.map.getZoom();
+      $('#ex1').slider('setValue', zoom);
+    })
 
   })();
     
