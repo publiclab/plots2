@@ -31,8 +31,7 @@
 
       var urlHash = urlMapHash();
 
-      <% if @node %>
-        // if there are location params in URL let them override
+        // if there are location params in URL let them override, otherwise save lat/lon/zoom from controller
         if (!urlHash.getUrlHashParameter('lat') || !urlHash.getUrlHashParameter('lon')) {
           <% if @lat && @lon %>
             urlHash.setUrlHashParameter('lat', <%= @lat %> + "");
@@ -42,30 +41,17 @@
             <% end %>
           <% end %>
         }
-      <% end %>
 
       const params = urlHash.getUrlHashParameters();
      
+      var lat = parseFloat(params.lat);
+      var lon = parseFloat(params.lon);
+      var zoom = parseFloat(params.zoom);
+
       const bounds = new L.LatLngBounds(
         new L.LatLng(84.67351257, -172.96875),
         new L.LatLng(-54.36775852, 178.59375)
       );
-
-      var user_lat = null;
-      var user_lon = null;
-      var profile_zoom = null;
-      <% if @user_lat && @user_lon %>
-        user_lat = "<%= @user_lat %>";
-        user_lon = "<%= @user_lon %>";
-        profile_zoom = 7;
-      <% end %>
-
-      var lat = params.lat || user_lat || 23;
-      var lon = params.lon || user_lon || 77;
-      var zoom = parseFloat(params.zoom) || profile_zoom || 3;
-      // These must be parsed after evaluating above or else 0 will not be displayed
-      lat = parseFloat(lat);
-      lon = parseFloat(lon);
 
       var map = L.map("map", {
         maxBounds: bounds,
