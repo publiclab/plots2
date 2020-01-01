@@ -54,13 +54,22 @@ class UserSessionsController < ApplicationController
         # The identity we found had a user associated with it so let's
         # just log them in here
         @user = @identity.user
-        @user_session = UserSession.create(@identity.user)
-        if session[:openid_return_to] # for openid login, redirects back to openid auth process
-          return_to = session[:openid_return_to]
-          session[:openid_return_to] = nil
-          redirect_to return_to + hash_params
+        if @user.status.zero?
+          flash[:error] = "You have been banned!"
+          redirect_to root_url
+        elsif @user.status == 5
+          flash[:error] = I18n.t('user_sessions_controller.user_has_been_moderated', username: @user.username).html_safe
+          redirect_to '/'
         else
-          redirect_to return_to + hash_params, notice: "Signed in!"
+          @user_session = UserSession.create(@identity.user)
+          if session[:openid_return_to] # for openid login, redirects back to openid auth process
+            return_to = session[:openid_return_to]
+            session[:openid_return_to] = nil
+            redirect_to return_to + hash_params
+            redirect_to return_to + hash_params, notice: "Signed in!"
+          else
+            redirect_to return_to + hash_params, notice: I18n.t('user_sessions_controller.logged_in')
+          end
         end
       else # identity does not exist so we need to either create a user with identity OR link identity to existing user
         if User.where(email: auth["info"]["email"]).empty?
