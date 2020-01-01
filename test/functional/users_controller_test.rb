@@ -77,6 +77,17 @@ class UsersControllerTest < ActionController::TestCase
 
   end
 
+  test "banning user should display correct flash message" do
+    UserSession.create(users(:admin))
+    banned = User.find(2)
+    banned.ban
+    get :profile, params: { id: banned.username }
+    # checks flash
+    assert_equal flash[:error], I18n.t('users_controller.user_has_been_banned')
+    # checks duplicated flash is not present
+    assert_equal flash[:notice], nil
+  end
+  
   test 'generate user reset key' do
     user = users(:jeff)
     assert_nil user.reset_key
