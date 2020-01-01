@@ -55,7 +55,7 @@ class UserSessionsController < ApplicationController
         # just log them in here
         @user = @identity.user
         if @user.status.zero?
-          flash[:error] = "You have been banned!"
+          flash[:error] = I18n.t('user_sessions_controller.user_has_been_banned', username: @user.username).html_safe
           redirect_to root_url
         elsif @user.status == 5
           flash[:error] = I18n.t('user_sessions_controller.user_has_been_moderated', username: @user.username).html_safe
