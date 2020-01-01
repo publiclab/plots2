@@ -60,7 +60,7 @@ class UserSessionsController < ApplicationController
           session[:openid_return_to] = nil
           redirect_to return_to + hash_params
         else
-          redirect_to return_to + hash_params, notice: "Signed in!"
+          redirect_to return_to + hash_params, notice: I18n.t('user_sessions_controller.logged_in')
         end
       else # identity does not exist so we need to either create a user with identity OR link identity to existing user
         if User.where(email: auth["info"]["email"]).empty?
