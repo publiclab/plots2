@@ -120,7 +120,7 @@ GEM
     execjs (2.7.0)
     faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
-    ffi (1.11.2)
+    ffi (1.11.3)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
@@ -452,7 +452,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    scrypt (3.0.6)
+    scrypt (3.0.7)
       ffi-compiler (>= 1.0, < 2.0)
     selenium-webdriver (3.142.6)
       childprocess (>= 0.5, < 4.0)
