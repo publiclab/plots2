@@ -34,7 +34,7 @@ $(document).ready(function() {
   });
 });
 
-$(document).ready(function() {
+$(document).ready(function () {
   var signUpForm = document.querySelector('#create-form');
 
   if (!signUpForm) return;
@@ -50,6 +50,7 @@ $(document).ready(function() {
 
   isFormValid();
 
+  // Every time user types something, it triggers corresponding event listener
   usernameElement.addEventListener('input', validateUsername);
   emailElement.addEventListener('input', validateEmail);
   passwordElement.addEventListener('input', validatePassword);
@@ -88,7 +89,10 @@ $(document).ready(function() {
   function validatePassword(e) {
     var password = e.target.value;
 
-    if (!isPasswordValid(this, password)) return;
+    if (!isPasswordValid(password)) {
+      updateUI(this, false, 'Minimum 8 characters including 1 number');
+      return;
+    }
 
     if (password === confirmPasswordElement.value) {
       updateUI(confirmPasswordElement, true);
@@ -101,7 +105,10 @@ $(document).ready(function() {
     var password = passwordElement.value;
     var confirmPassword = e.target.value;
 
-    if (!isPasswordValid(this, confirmPassword)) return;
+    if (!isPasswordValid(confirmPassword)) {
+      updateUI(this, false, 'Minimum 8 characters including 1 number');
+      return;
+    }
 
     if (confirmPassword !== password) {
       updateUI(confirmPasswordElement, false, 'Passwords must be equal');
@@ -111,18 +118,17 @@ $(document).ready(function() {
     updateUI(confirmPasswordElement, true);
   }
 
-  // Password is valid if it is a least 8 characaters long and contains at least 1 number
+  // Password is valid if it is at least 8 characaters long and contains a number
+  // This is password's validation logic, no UI
   function isPasswordValid(element, password) {
     var doesContainNum = /\d+/g.test(password);
     var isValid = password.length >= 8 && doesContainNum;
 
-    if (!isValid) {
-      updateUI(element, isValid, 'Minimum 8 characters including 1 number');
-    }
-
     return isValid;
   }
 
+  // Every time user types something in the form, it triggers this function
+  // It will update UI depending on the value of <valid> parameter
   function updateUI(element, valid, errorMsg) {
     var elementName = element.getAttribute('name');
 
@@ -142,6 +148,7 @@ $(document).ready(function() {
   function renderErrorMsg(element, message) {
     if (!message) return;
 
+    // Error messages are rendered inside of a <small> HTML element
     var errorMsgElement = element.nextElementSibling;
     errorMsgElement.textContent = message;
     errorMsgElement.style.color = 'red';
@@ -158,6 +165,7 @@ $(document).ready(function() {
     element.classList.remove('form-element-invalid');
   }
 
+  // Makes input element red/green
   function styleElement(element, classToRemove, classToAdd) {
     if (element.classList.contains(classToRemove)) {
       element.classList.remove(classToRemove);
@@ -175,6 +183,7 @@ $(document).ready(function() {
   }
 
   function isFormValid() {
+    // Form is valid if all elements have passsed validation successffully
     var isValid = Object.values(validationTracker).filter(Boolean).length === 4;
 
     if (isValid) enableSubmitBtn();
