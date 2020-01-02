@@ -339,6 +339,25 @@ a .fa-white,
 }
 
 /* Styles for specific areas of the site */
+/* Remove blue background on Chrome autocomplete */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active  {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
+.form-element-valid {
+  background-color: white !important;
+  box-shadow: none !important;
+  border: green 2px solid !important;
+}
+
+.form-element-invalid {
+  background-color: white !important;
+  box-shadow: none !important;
+  border: red 2px solid !important;
+}
 
 .note-show .main-image {
   margin-bottom: 14px;
@@ -585,7 +604,7 @@ textarea, input {
   background: rgba(255,255,255,0.8);
   z-index: 9999;
   border-radius: 4px;
-  padding: 10px; 
+  padding: 10px;
 }
 
 .btn-toolbar .btn-outline-secondary
@@ -597,5 +616,3 @@ textarea, input {
 {
     color: #f1f1f1 !important;
 }
-
-
