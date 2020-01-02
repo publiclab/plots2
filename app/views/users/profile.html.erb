@@ -2,7 +2,7 @@
 <div class="col-md-7 order-last order-md-first">
 
   <% if !@map_lat.nil? && !@map_lon.nil? %>
-  <%= render :partial => "map/userLeaflet" , locals: { haslocation: true, user: @profile_user } %>
+  <%= render :partial => "map/userLeaflet" , locals: { lat: @map_lat, lon: @map_lon, zoom: @map_zoom, haslocation: true, user: @profile_user } %>
   <% elsif !current_user.nil? && current_user.id == @profile_user.id %>
   <%= render :partial => "map/userLeaflet" , locals: { haslocation: false, user: @profile_user } %>
   <% end %>

@@ -2,29 +2,39 @@
 
   <% user = user || @user # allow overriding w/ local variable %>
 
-  <% if haslocation == true %>  
+  <% if haslocation == true %>
+
     <style>
       #map_leaflet{  height:300px; width:100%; margin: auto; position: relative;}
     </style>
     <div class="leaflet-map" id="map_leaflet"></div>
     <script>
+
+    var bounds = new L.LatLngBounds(new L.LatLng(84.67351257, -172.96875), new L.LatLng(-54.36775852, 178.59375));
   
-    var map_lat = <%= @map_lat %> ;
-    var map_lon = <%= @map_lon %> ; 
-    var map = setupLeafletMap() ; 
-    var layerGroup = L.layerGroup() ; 
+    var map_lat = <%= lat %>;
+    var map_lon = <%= lon %>;
+    var zoom = <%= zoom || lat.to_s.length.to_i + 6 %>;
    
-     map.setView([map_lat,map_lon], 2);
-      
-    setupFullScreen(map , map_lat , map_lon) ; 
-    setupLEL(map , 1) ;
-  //  var hash = new L.Hash(map);   
+    var map = L.map('map_leaflet', {
+        maxBounds: bounds,
+        maxBoundsViscosity: 0.75
+      }).setView([<%= lat %>, <%= lon %>], zoom);
+
+    setupLEL(map, 0);
+
+    var markers_hash = new Map();
+    var layerGroup = L.layerGroup();
+    var hash = new L.Hash(map);
+
     <% if !(@map_blurred == true) %>
-      var default_Icon =new PLmarker_default() ;
-      L.marker([<%= @map_lat %>, <%= @map_lon %>] , {icon: default_Icon}).addTo(map).bindPopup("<a href='https://publiclab.org/profile/<%= user.username  %>'><%= user.username  %> </a>");
+      var default_Icon =new PLmarker_default();
+      L.marker([<%= lat %>, <%= lon %>] , {icon: default_Icon}).addTo(map).bindPopup("<a href='https://publiclab.org/profile/<%= user.username %>'><%= user.username %></a>");
     <% end %>
     </script>
+
   <% else %>
+
     <div id="map_template" style="position: relative; width: 100%; display: inline-block;">
       <img src="https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/0/0/0.png" style="height:300px; width: 100%; margin: 0; position: relative; margin-right: -10px;">  
       <button type='button' class='btn btn-default btn-lg' onclick='addLocation()' style="position: absolute;    position: absolute;top: 41% ; left: 15% ;"> <strong> Share your Location </strong> </button>
@@ -35,4 +45,5 @@
         $('.blurred-location-input').click() ;
       }
     </script>
+
   <% end %>
