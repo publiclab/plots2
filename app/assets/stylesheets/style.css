@@ -101,6 +101,13 @@ a .fa-white,
     color: white !important;
 }
 
+.fa-facebook,
+.fa-twitter,
+.fa-github,
+.fa-google {
+   vertical-align: middle;
+}
+
 .label a {
   color:#007bff;
 }
