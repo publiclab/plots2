@@ -68,7 +68,7 @@ class UserSessionsController < ApplicationController
             redirect_to return_to + hash_params
             redirect_to return_to + hash_params
           else
-            redirect_to return_to + hash_params, notice: "Signed in!"
+            redirect_to return_to + hash_params, notice: I18n.t('user_sessions_controller.logged_in')
           end
         end
       else # identity does not exist so we need to either create a user with identity OR link identity to existing user
