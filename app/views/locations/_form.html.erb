@@ -70,7 +70,12 @@
 </div>
 
 <script>
-  
+
+  var bounds = new L.LatLngBounds(
+    new L.LatLng(90, -180),
+    new L.LatLng(-90, 180)
+  );
+
   var options = {
     InterfaceOptions: {
       latId: 'lat',
@@ -99,6 +104,8 @@
     blurredLocation = new BlurredLocation(options);
 
     blurredLocation.panMapToGeocodedLocation("placenameInput");
+
+    blurredLocation.map.setMaxBounds(bounds);
 
      var changeZoom = function() {
         var zoom = slider.getValue();
