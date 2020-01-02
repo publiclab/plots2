@@ -15,14 +15,13 @@
     var map_lat = <%= lat %>;
     var map_lon = <%= lon %>;
     var zoom = <%= zoom || lat.to_s.length.to_i + 6 %>;
-    console.log("zoom:" + zoom);
    
     var map = L.map('map_leaflet', {
         maxBounds: bounds,
         maxBoundsViscosity: 0.75
       }).setView([<%= lat %>, <%= lon %>], zoom);
-      
-    setupLEL(map, 1);
+
+    setupLEL(map, 0);
 
     var markers_hash = new Map();
     var layerGroup = L.layerGroup();
