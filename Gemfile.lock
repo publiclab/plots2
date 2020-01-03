@@ -323,7 +323,7 @@ GEM
       mimemagic (~> 0.3.0)
       terrapin (~> 0.6.0)
     parallel (1.19.1)
-    parser (2.6.5.0)
+    parser (2.7.0.1)
       ast (~> 2.4.0)
     passenger (6.0.4)
       rack
@@ -430,7 +430,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.9.0)
     rspec-support (3.9.0)
-    rubocop (0.77.0)
+    rubocop (0.78.0)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
       parser (>= 2.6)
@@ -626,7 +626,7 @@ DEPENDENCIES
   rest-client
   reverse_markdown
   rspec
-  rubocop (~> 0.77.0)
+  rubocop (~> 0.78.0)
   ruby-openid
   sanitize
   sassc-rails
