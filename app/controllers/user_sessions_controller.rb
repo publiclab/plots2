@@ -27,10 +27,10 @@ class UserSessionsController < ApplicationController
       hash_params = URI.parse("#" + params[:hash_params]).to_s
     end
     @user = User.where(email: auth["info"]["email"]) ? User.find_by(email: auth["info"]["email"]) : User.find(@identity.user.id)
-    if @user && @user.status.zero?
+    if @user&.status&.zero?
       flash[:error] = I18n.t('user_sessions_controller.user_has_been_banned', username: @user.username).html_safe
       redirect_to root_url
-    elsif @user && @user.status == 5
+    elsif @user&.status == 5
       flash[:error] = I18n.t('user_sessions_controller.user_has_been_moderated', username: @user.name).html_safe
       redirect_to root_url
     elsif signed_in?
