@@ -100,7 +100,9 @@ a .fa-white,
 .fa-white {
     color: white !important;
 }
-
+.fa-bars {
+  vertical-align: middle;
+}
 .label a {
   color:#007bff;
 }
