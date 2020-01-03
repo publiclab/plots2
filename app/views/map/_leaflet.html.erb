@@ -2,6 +2,8 @@
 <% top_map = top_map || false %>
 <% zoom = zoom || lat.to_s.length.to_i + 6 %>
 <% unique_id = rand(1000) %>
+<% user = user || @user # allow overriding w/ local variable %>
+<% blurred = blurred || false %>
 
 <% if top_map == true %>
   <style>
@@ -117,4 +119,9 @@
        });
    }) ;
    
+    <% if user && !blurred %>
+      var default_Icon =new PLmarker_default();
+      L.marker([<%= lat %>, <%= lon %>] , {icon: default_Icon}).addTo(map<%= unique_id %>).bindPopup("<a href='https://publiclab.org/profile/<%= user.username %>'><%= user.username %></a>");
+    <% end %>
+
   </script>
