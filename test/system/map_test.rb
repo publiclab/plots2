@@ -29,7 +29,7 @@ class MapTest < ApplicationSystemTestCase
 
     # check that the map is correctly centered - should show user's location
     assert_equal(59, page.evaluate_script("Math.round(map.getCenter().lat)"))
-    assert_equal(18, page.evaluate_script("Math.round(map.getCenter().lng)"))
+    assert_equal(0, page.evaluate_script("Math.round(map.getCenter().lng)"))
     assert_equal(10, page.evaluate_script("map.getZoom()"))
 
   end
