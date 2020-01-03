@@ -31,7 +31,7 @@ class UserSessionsController < ApplicationController
       flash[:error] = I18n.t('user_sessions_controller.user_has_been_banned', username: @user.username).html_safe
       redirect_to root_url
     elsif @user&.status == 5
-      flash[:error] = I18n.t('user_sessions_controller.user_has_been_moderated', username: @user.name).html_safe
+      flash[:error] = I18n.t('user_sessions_controller.user_has_been_moderated', username: @user.username).html_safe
       redirect_to root_url
     elsif signed_in?
       if @identity.nil?
