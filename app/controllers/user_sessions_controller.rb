@@ -27,16 +27,13 @@ class UserSessionsController < ApplicationController
       hash_params = URI.parse("#" + params[:hash_params]).to_s
     end
     @user = User.where(email: auth["info"]["email"]) ? User.find_by(email: auth["info"]["email"]) : User.find(@identity.user.id)
-    if defined? @user.status
-      if @user.status.zero?
-        flash[:error] = I18n.t('user_sessions_controller.user_has_been_banned', username: @user.username).html_safe
-        redirect_to root_url
-      elsif @user.status == 5
-        flash[:error] = I18n.t('user_sessions_controller.user_has_been_moderated', username: @user.name).html_safe
-        redirect_to '/'
-      end
-    end
-    if signed_in?
+    if @user && @user.status == 0
+      flash[:error] = I18n.t('user_sessions_controller.user_has_been_banned', username: @user.username).html_safe
+      redirect_to root_url
+    elsif @user && @user.status == 5
+      flash[:error] = I18n.t('user_sessions_controller.user_has_been_moderated', username: @user.name).html_safe
+      redirect_to root_url
+    elsif signed_in?
       if @identity.nil?
         # If no identity was found, create a brand new one here
         @identity = UserTag.create_with_omniauth(auth, current_user.id)
