@@ -26,7 +26,7 @@ class UserSessionsController < ApplicationController
     unless params[:hash_params].to_s.empty?
       hash_params = URI.parse("#" + params[:hash_params]).to_s
     end
-    @user = User.where(email: auth["info"]["email"]) ? User.find_by(email: auth["info"]["email"]) : User.find(@identity.user.id)
+    @user = User.find_by(email: auth["info"]["email"]) || User.find(@identity.user.id)
     if @user&.status&.zero?
       flash[:error] = I18n.t('user_sessions_controller.user_has_been_banned', username: @user.username).html_safe
       redirect_to return_to + hash_params
