@@ -604,7 +604,7 @@ textarea, input {
   background: rgba(255,255,255,0.8);
   z-index: 9999;
   border-radius: 4px;
-  padding: 10px;
+  padding: 10px; 
 }
 
 .btn-toolbar .btn-outline-secondary
@@ -616,3 +616,5 @@ textarea, input {
 {
     color: #f1f1f1 !important;
 }
+
+
