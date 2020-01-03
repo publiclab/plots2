@@ -28,7 +28,7 @@ class UserSessionsController < ApplicationController
     end
     @user = User.where(email: auth["info"]["email"]) ? User.find_by(email: auth["info"]["email"]) : User.find(@identity.user.id)
     if defined? @user.status
-      if @user.status == 0
+      if @user.status.zero?
         flash[:error] = I18n.t('user_sessions_controller.user_has_been_banned', username: @user.username).html_safe
         redirect_to root_url
       elsif @user.status == 5
