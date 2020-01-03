@@ -26,7 +26,16 @@ class UserSessionsController < ApplicationController
     unless params[:hash_params].to_s.empty?
       hash_params = URI.parse("#" + params[:hash_params]).to_s
     end
-
+    @user = User.where(email: auth["info"]["email"]) ? User.find_by(email: auth["info"]["email"]) : User.find(@identity.user.id)
+    if defined? @user.status
+      if @user.status == 0
+        flash[:error] = I18n.t('user_sessions_controller.user_has_been_banned', username: @user.username).html_safe
+        redirect_to root_url
+      elsif @user.status == 5
+        flash[:error] = I18n.t('user_sessions_controller.user_has_been_moderated', username: @user.name).html_safe
+        redirect_to '/'
+      end
+    end
     if signed_in?
       if @identity.nil?
         # If no identity was found, create a brand new one here
@@ -54,14 +63,12 @@ class UserSessionsController < ApplicationController
         # The identity we found had a user associated with it so let's
         # just log them in here
         @user = @identity.user
-        if @user.status.zero?
-          flash[:error] = I18n.t('user_sessions_controller.user_has_been_banned', username: @user.username).html_safe
-          redirect_to root_url
-        elsif @user.status == 5
-          flash[:error] = I18n.t('user_sessions_controller.user_has_been_moderated', username: @user.username).html_safe
-          redirect_to '/'
+        @user_session = UserSession.create(@identity.user)
+        if session[:openid_return_to] # for openid login, redirects back to openid auth process
+          return_to = session[:openid_return_to]
+          session[:openid_return_to] = nil
+          redirect_to return_to + hash_params
         else
-          @user_session = UserSession.create(@identity.user)
           if session[:openid_return_to] # for openid login, redirects back to openid auth process
             return_to = session[:openid_return_to]
             session[:openid_return_to] = nil
