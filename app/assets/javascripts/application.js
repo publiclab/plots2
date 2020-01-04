@@ -55,7 +55,6 @@
 //= require wikis.js
 //= require header_footer.js
 //= require keybindings.js
-//= require realtime_username_validation.js
 //= require jquery-validation/dist/jquery.validate.js
 //= require validation.js
 //= require submit_form_ajax.js
