@@ -269,7 +269,7 @@ GEM
       builder
       minitest (>= 5.0)
       ruby-progressbar
-    mocha (1.11.1)
+    mocha (1.11.2)
     multi_json (1.14.1)
     multi_xml (0.6.0)
     multipart-post (2.1.1)
