@@ -11,3 +11,6 @@ coverage:
       default:
         threshold: 1%
     patch: on
+
+ignore:
+  - app/assets/stylesheets/
