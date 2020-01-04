@@ -22,21 +22,22 @@
     </a>
   </div>
   <div class="inline">
-    <p>
-    <% if @node.status == 0 || @node.status == 4 %><span class="badge badge-danger">UNPUBLISHED</span> | <% end %>
-    <% if @node.status == 3 %><span class="badge badge-success">Draft</span> | <% end %>
-    By <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> 
-    <span class="d-none d-lg-inline">
-      <%= @node.created_at.to_s(:long) %> |
-    </span>
-    <span class="d-none d-lg-inline d-print-none">
-      <i class="fa fa-eye"></i><span> <%= number_with_delimiter(@node.views) %> <span class="d-none d-lg-inline d-print-none ">views</span>
-      <% if @node.comments %>
-          | <i class="fa fa-comment"></i>
-          <a href="#comments"> <%= @node.fetch_comments(current_user).length %> <%= t('notes.show.comments') %> </a>
+        <p>
+      <% if @node.status == 0 || @node.status == 4 %><span class="badge badge-danger">UNPUBLISHED</span> | <% end %>
+      <% if @node.status == 3 %><span class="badge badge-success">Draft</span> | <% end %>
+      by <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> | 
+      <% if @node.has_power_tag('with') %>with <% @node.coauthors.each_with_index do |coauthor,i| %>
+        <a href="/profile/<%= coauthor.username %>">
+        <%= coauthor.username%></a> <%= coauthor.new_contributor %>
+        <%= ',' if i < @node.coauthors.length-1 %><% end %>
       <% end %>
-      | <a href="/n/<%= @node.id %>"><i class="fa fa-link"></i></a> <span class="d-none d-xl-inline"><a href="/n/<%= @node.id %>">#<%= @node.id %></a></span>
+      <span class="d-none d-lg-inline">
+        <%= @node.created_at.to_s(:long) %> |
       </span>
+      <span>
+        <a href="/n/<%= @node.id %>"><i class="fa fa-link"></i></a> <span class="d-none d-xl-inline"><a href="/n/<%= @node.id %>">#<%= @node.id %></a>
+      </span>
+    </p>
   </div>
   <hr style="margin-top:10px;" />
   <div style="overflow:hidden;" id="content" class="pl-content question">
