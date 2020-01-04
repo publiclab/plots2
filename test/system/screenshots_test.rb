@@ -31,7 +31,7 @@ class ScreenshotsTest < ApplicationSystemTestCase
 
     assert_equal( username_error_msg, "Username already exists" )
     assert_equal( email_error_msg, "Invalid email" )
-    assert_equal( password_error_msg, "Please make sure password is atleast 8 characters long with minimum one numeric value" )
+    assert_equal( password_error_msg, "Please make sure password is at least 8 characters long with minimum one numeric value" )
     assert_equal( confirm_password_error_msg, "Passwords must be equal" )
 
     take_screenshot
