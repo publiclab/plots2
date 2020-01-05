@@ -7,22 +7,22 @@ class EditorControllerTest < ActionController::TestCase
 
   test 'should not get legacy form if not logged in' do
     get :legacy
-    assert_redirected_to '/login'
+    assert_redirected_to '/login?return_to=/legacy'
   end
 
   test 'should not get post form if not logged in' do
     get :post
-    assert_redirected_to '/login'
+    assert_redirected_to '/login?return_to=/post'
   end
 
   test 'should not get editor form if not logged in' do
     get :editor
-    assert_redirected_to '/login'
+    assert_redirected_to '/login?return_to=/editor'
   end
 
   test 'should not get rich form if not logged in' do
     get :rich
-    assert_redirected_to '/login'
+    assert_redirected_to '/login?return_to=/rich'
   end
 
   test 'should get legacy form' do
@@ -100,7 +100,7 @@ class EditorControllerTest < ActionController::TestCase
         template: 'question',
         redirect: 'question'
         }
-    assert_redirected_to '/login'
+    assert_redirected_to '/login?return_to=/legacy?redirect=question&tags=question%3Aquestion&template=question'
     # uses ASCII format instead of utf-8
     assert_equal '/legacy?redirect=question&tags=question%3Aquestion&template=question', session[:return_to]
   end
