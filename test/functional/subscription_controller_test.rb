@@ -15,7 +15,7 @@ class SubscriptionControllerTest < ActionController::TestCase
   test 'should redirect to login if user is not logged in and trying to access digest' do
       get :digest
 
-      assert_redirected_to '/login'
+      assert_redirected_to '/login?return_to=/subscriptions/digest'
   end
 
   test 'should show digest if user logged in' do
