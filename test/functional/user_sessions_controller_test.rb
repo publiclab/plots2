@@ -266,4 +266,12 @@ class UserSessionsControllerTest < ActionController::TestCase
     post :destroy
     assert_equal "Successfully logged out.",  flash[:notice]
   end
+  
+  test "redirects to same page on oauth" do
+    request.env['omniauth.origin'] = "/notes/liked"
+    request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:github1]
+    # sign in
+    post :create
+    assert_redirected_to "/notes/liked?_=#{Time.now.to_i.to_s}"
+  end
 end
