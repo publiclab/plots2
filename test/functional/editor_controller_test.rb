@@ -22,7 +22,7 @@ class EditorControllerTest < ActionController::TestCase
 
   test 'should not get rich form if not logged in' do
     get :rich
-    assert_redirected_to '/login?return_to=/rich'
+    assert_redirected_to '/login?return_to=/editor/rich'
   end
 
   test 'should get legacy form' do
