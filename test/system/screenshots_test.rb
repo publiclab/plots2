@@ -37,6 +37,23 @@ class ScreenshotsTest < ApplicationSystemTestCase
     take_screenshot
   end
 
+  test 'signup modal disabled submit button on empty username' do
+    visit '/'
+    click_on 'Sign up'
+
+    fill_in 'user[username]', with: 'Bob'
+    fill_in 'user[email]', with: 'valid@email.com'
+    fill_in 'user[password]', with: 'password1'
+    fill_in 'user[password_confirmation]', with: 'password1'
+
+    fill_in 'user[username]', with: ''
+
+    submitFormButton = find('#create-form button.btn-save')
+
+    assert_equal submitFormButton.disabled?, true
+    take_screenshot
+  end
+
   test 'login modal' do
     visit '/'
     click_on 'Login'
