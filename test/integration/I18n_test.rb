@@ -122,7 +122,7 @@ class I18nTest < ActionDispatch::IntegrationTest
            status: 4
           }
       get '/dashboard'
-      assert_select 'a[class=?]', 'btn btn-outline-secondary btn-sm', I18n.t('dashboard.moderate.approve')
+      assert_select 'a[class=?]', 'btn btn-outline-secondary btn-sm float-right', I18n.t('dashboard.moderate.approve')
     end
   end
 
