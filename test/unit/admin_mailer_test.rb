@@ -18,7 +18,7 @@ class AdminMailerTest < ActionMailer::TestCase
 
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       node.status = 4 # notify if status == 4
-      AdminMailer.notify_comment_moderators(node).deliver_now
+      AdminMailer.notify_node_moderators(node).deliver_now
     end
 
     # test that it got queued

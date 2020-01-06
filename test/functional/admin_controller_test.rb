@@ -3,6 +3,7 @@ include ActionView::Helpers::DateHelper # required for time_ago_in_words()
 
 class AdminControllerTest < ActionController::TestCase
   include ActionMailer::TestHelper
+  include ActiveJob::TestHelper
   def setup
     activate_authlogic
     Timecop.freeze # account for timestamp change
@@ -202,13 +203,15 @@ class AdminControllerTest < ActionController::TestCase
 
       # shouldn't have sent notification yet per policy, but 
       assert_difference 'ActionMailer::Base.deliveries.size', 1 do
-        Timecop.travel(Time.now + 2.days) # should be delivered after 24 hours
-        email = ActionMailer::Base.deliveries.last
-        assert_not_nil email.to
-        assert_not_nil email.bcc
-        assert_equal ["moderators@#{request_host}"], ActionMailer::Base.deliveries.last.to
-        # title same as initial for email client threading
-        assert_equal '[New Public Lab poster needs moderation] ' + node.title, email.subject
+        perform_enqueued_jobs do
+          Timecop.travel(Time.now + 2.days) # should be delivered after 24 hours
+          email = ActionMailer::Base.deliveries.last
+          assert_not_nil email.to
+          assert_not_nil email.bcc
+          assert_equal ["moderators@#{request_host}"], ActionMailer::Base.deliveries.last.to
+          # title same as initial for email client threading
+          assert_equal '[New Public Lab poster needs moderation] ' + node.title, email.subject
+        end
       end
     end
   end
@@ -420,10 +423,6 @@ class AdminControllerTest < ActionController::TestCase
         assert_equal 0, node.status
         assert_equal 0, node.author.status
         assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
- 
-        # test the moderator notification
-        email = ActionMailer::Base.deliveries.last
-        assert_not_equal '[New Public Lab poster needs moderation] ' + node.title, email.subject
       end
 
       assert_difference 'ActionMailer::Base.deliveries.size', 1 do

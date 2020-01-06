@@ -102,29 +102,30 @@ class I18nTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'should choose i18n for dashboard/_node_moderate' do
-    available_testing_locales.each do |lang|
-      get '/change_locale/' + lang.to_s
-      follow_redirect!
-      post '/user_sessions',
-        params: {
-          user_session: {
-            username: users(:jeff).username,
-            password: 'secretive'
-          }
-        }
-      follow_redirect!
-      post '/notes/create',
-          params: {
-           title: 'Some post',
-           body: 'Some post body',
-           tags: 'Some-tag',
-           status: 4
-          }
-      get '/dashboard'
-      assert_select 'a[class=?]', 'btn btn-outline-secondary btn-sm float-right', I18n.t('dashboard.moderate.approve')
-    end
-  end
+  # turning this off due to policy change in https://github.com/publiclab/plots2/issues/6246
+  #test 'should choose i18n for dashboard/_node_moderate' do
+  #  available_testing_locales.each do |lang|
+  #    get '/change_locale/' + lang.to_s
+  #    follow_redirect!
+  #    post '/user_sessions',
+  #      params: {
+  #        user_session: {
+  #          username: users(:jeff).username,
+  #          password: 'secretive'
+  #        }
+  #      }
+  #    follow_redirect!
+  #    post '/notes/create',
+  #        params: {
+  #         title: 'Some post',
+  #         body: 'Some post body',
+  #         tags: 'Some-tag',
+  #         status: 4
+  #        }
+  #    get '/dashboard'
+  #    assert_select 'a[class=?]', 'btn btn-outline-secondary btn-sm float-right', I18n.t('dashboard.moderate.approve')
+  #  end
+  #end
 
   test 'should choose i18n for dashboard/_node_question' do
     available_testing_locales.each do |lang|
