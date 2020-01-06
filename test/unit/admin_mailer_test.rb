@@ -10,9 +10,12 @@ class AdminMailerTest < ActionMailer::TestCase
     moderators = User.where(role: %w[moderator admin])
     assert !moderators.empty?
 
-    assert_difference 'ActionMailer::Base.deliveries.size', 1 do
+    assert_difference 'ActionMailer::Base.deliveries.size', 0 do
       # send the email
       AdminMailer.notify_node_moderators(node).deliver_now
+    end
+    assert_difference 'ActionMailer::Base.deliveries.size', 1 do
+      Timecop.travel(Time.now + 2.days) # should be delivered after 24 hours
     end
 
     # test that it got queued
@@ -33,8 +36,11 @@ class AdminMailerTest < ActionMailer::TestCase
     moderators = User.where(role: %w[moderator admin])
     assert !moderators.empty?
 
-    assert_difference 'ActionMailer::Base.deliveries.size', 1 do
+    assert_difference 'ActionMailer::Base.deliveries.size', 0 do
       AdminMailer.notify_comment_moderators(comment).deliver_now
+    end
+    assert_difference 'ActionMailer::Base.deliveries.size', 1 do
+      Timecop.travel(Time.now + 2.days) # should be delivered after 24 hours
     end
 
     # # test that it got queued
