@@ -3,7 +3,7 @@ require "application_system_test_case"
 # https://guides.rubyonrails.org/testing.html#implementing-a-system-test
 
 class MapTest < ApplicationSystemTestCase
-  Capybara.default_max_wait_time = 10
+  Capybara.default_max_wait_time = 60
 
   test 'show map for wiki with location' do
 
