@@ -17,6 +17,7 @@ class AdminMailerTest < ActionMailer::TestCase
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       Timecop.travel(Time.now + 2.days) # should be delivered after 24 hours
     end
+    Timecop.return
 
     # test that it got queued
     assert !ActionMailer::Base.deliveries.empty?
@@ -36,11 +37,9 @@ class AdminMailerTest < ActionMailer::TestCase
     moderators = User.where(role: %w[moderator admin])
     assert !moderators.empty?
 
-    assert_difference 'ActionMailer::Base.deliveries.size', 0 do
-      AdminMailer.notify_comment_moderators(comment).deliver_now
-    end
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
-      Timecop.travel(Time.now + 2.days) # should be delivered after 24 hours
+      # this is no longer used as of https://github.com/publiclab/plots2/issues/6246
+      AdminMailer.notify_comment_moderators(comment).deliver_now
     end
 
     # # test that it got queued

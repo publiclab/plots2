@@ -513,6 +513,7 @@ class NotesControllerTest < ActionController::TestCase
     assert_emails 1 do
       Timecop.travel(Time.now + 2.days) # should be delivered after 24 hours
     end
+    Timecop.return
 
     assert_redirected_to '/questions/' + users(:bob).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
     assert_equal "Success! Thank you for contributing with a question, and thanks for your patience while your question is approved by <a href='/wiki/moderation'>community moderators</a> and we'll email you when it is published.", flash[:notice]
