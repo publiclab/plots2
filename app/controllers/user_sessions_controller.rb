@@ -53,10 +53,10 @@ class UserSessionsController < ApplicationController
       @user = User.where(email: auth["info"]["email"]) ? User.find_by(email: auth["info"]["email"]) : @identity.user
       if @user&.status&.zero?
         flash[:error] = I18n.t('user_sessions_controller.user_has_been_banned', username: @user.username).html_safe
-        redirect_to root_url
+        redirect_to return_to + hash_params
       elsif @user&.status == 5
         flash[:error] = I18n.t('user_sessions_controller.user_has_been_moderated', username: @user.username).html_safe
-        redirect_to root_url
+        redirect_to return_to + hash_params
       elsif @identity&.user.present?
         # The identity we found had a user associated with it so let's
         # just log them in here
