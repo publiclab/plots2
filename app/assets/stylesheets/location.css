@@ -10,7 +10,49 @@
 #map_content .form-group .btn {
   margin-top: .4rem;
 }
+#map_content .form-group.recent-locations {
+  /* margin-bottom: 1.2rem; */
+}
+#map_content .recent-locations label {
+  margin-bottom: 0;
+}
+#map_content .slide-container label {
+  margin: 0;
+}
+#map_content .slide-description {
+  display: inline;
+  font-size: 0.9rem;
+  color: #808080;
+}
 
+.modal-header {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+.modal-header .close {
+  padding-bottom: 0.5rem;
+}
+#placenameDisplay {
+  padding: 0;
+  border: 0;
+  color: #212529;
+  font-weight: bold;
+}
+
+.modal-content .badge-group {
+  margin-left: -6px;
+}
+.modal-content .badge.badge-info {
+  background-color: #337ab7;
+  margin-left: 7px;
+  margin-bottom: 2px;
+  padding: 3px;
+}
+.modal-content .badge {
+  background-color: white;
+  color: #337ab7;
+  margin: 0;
+}
 a:not([href]):not([tabindex]).btn-location,
 .btn-location {
   position: inline;
