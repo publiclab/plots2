@@ -133,6 +133,8 @@ function validateUsername(obj) {
 
   if (username.length < 3) {
     restoreOriginalStyle(this);
+    obj.disableSubmitBtn();
+    removeErrorMsg(self);
   } else {
     $.get("/api/srch/profiles?query=" + username, function(data) {
       if (data.items) {
@@ -165,7 +167,7 @@ function validatePassword(confirmPasswordElement, obj) {
     obj.updateUI(
       this,
       false,
-      "Please make sure password is atleast 8 characters long with minimum one numeric value"
+      "Please make sure password is at least 8 characters long with minimum one numeric value"
     );
     return;
   }

@@ -31,9 +31,26 @@ class ScreenshotsTest < ApplicationSystemTestCase
 
     assert_equal( username_error_msg, "Username already exists" )
     assert_equal( email_error_msg, "Invalid email" )
-    assert_equal( password_error_msg, "Please make sure password is atleast 8 characters long with minimum one numeric value" )
+    assert_equal( password_error_msg, "Please make sure password is at least 8 characters long with minimum one numeric value" )
     assert_equal( confirm_password_error_msg, "Passwords must be equal" )
 
+    take_screenshot
+  end
+
+  test 'signup modal disabled submit button on empty username' do
+    visit '/'
+    click_on 'Sign up'
+
+    fill_in 'user[username]', with: 'Bob'
+    fill_in 'user[email]', with: 'valid@email.com'
+    fill_in 'user[password]', with: 'password1'
+    fill_in 'user[password_confirmation]', with: 'password1'
+
+    fill_in 'user[username]', with: ''
+
+    submitFormButton = find('#create-form button.btn-save')
+
+    assert_equal submitFormButton.disabled?, true
     take_screenshot
   end
 
