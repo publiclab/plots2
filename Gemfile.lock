@@ -236,7 +236,7 @@ GEM
     letter_opener (1.7.0)
       launchy (~> 2.2)
     libv8 (3.16.14.19)
-    listen (3.2.0)
+    listen (3.2.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     loofah (2.3.1)
@@ -391,7 +391,7 @@ GEM
     rainbow (3.0.0)
     rake (13.0.1)
     rb-fsevent (0.10.3)
-    rb-inotify (0.10.0)
+    rb-inotify (0.10.1)
       ffi (~> 1.0)
     rb-readline (0.5.5)
     rdiscount (2.2.0.1)
@@ -589,7 +589,7 @@ DEPENDENCIES
   lemmatizer (~> 0.2.2)
   less-rails (~> 4.0)
   letter_opener
-  listen (~> 3.2.0)
+  listen (~> 3.2.1)
   mailman
   minitest-reporters (~> 1.4.2)
   mocha (~> 1.11)
