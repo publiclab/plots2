@@ -454,7 +454,7 @@ GEM
       tilt
     scrypt (3.0.7)
       ffi-compiler (>= 1.0, < 2.0)
-    selenium-webdriver (3.142.6)
+    selenium-webdriver (3.142.7)
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
     sentry-raven (2.13.0)
@@ -631,7 +631,7 @@ DEPENDENCIES
   sanitize
   sassc-rails
   scrypt (~> 3)
-  selenium-webdriver (~> 3.142.6)
+  selenium-webdriver (~> 3.142.7)
   sentry-raven
   sidekiq
   simplecov
