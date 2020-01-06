@@ -203,8 +203,8 @@ class AdminControllerTest < ActionController::TestCase
 
       # shouldn't have sent notification yet per policy, but 
       assert_difference 'ActionMailer::Base.deliveries.size', 1 do
+        Timecop.travel(Time.now + 2.days) # should be delivered after 24 hours
         perform_enqueued_jobs do
-          Timecop.travel(Time.now + 2.days) # should be delivered after 24 hours
           email = ActionMailer::Base.deliveries.last
           assert_not_nil email.to
           assert_not_nil email.bcc
@@ -427,10 +427,12 @@ class AdminControllerTest < ActionController::TestCase
 
       assert_difference 'ActionMailer::Base.deliveries.size', 1 do
         Timecop.travel(Time.now + 2.days) # should be delivered after 24 hours
-        email = ActionMailer::Base.deliveries.last
-        assert_equal '[New Public Lab poster needs moderation] ' + node.title, email.subject
-        assert_equal ["moderators@#{request_host}"], email.to
-        assert_not_nil email.bcc
+        perform_enqueued_jobs do
+          email = ActionMailer::Base.deliveries.last
+          assert_equal '[New Public Lab poster needs moderation] ' + node.title, email.subject
+          assert_equal ["moderators@#{request_host}"], email.to
+          assert_not_nil email.bcc
+        end
       end
     end
   end
@@ -506,10 +508,11 @@ class AdminControllerTest < ActionController::TestCase
       comment = assigns(:comment)
       user = users(:moderator)
 
-      email = AdminMailer.notify_moderators_of_comment_spam(comment, user)
-      assert_emails 1 do
-          email.deliver_now
-      end
+      # these notifications were turned off in https://github.com/publiclab/plots2/issues/6246
+      #email = AdminMailer.notify_moderators_of_comment_spam(comment, user)
+      #assert_emails 1 do
+      #  email.deliver_now
+      #end
       assert_equal 0, comment.status
 
       assert_equal "Comment has been marked as spam and comment author has been banned. You can undo this on the <a href='/spam/comments'>spam moderation page</a>.", flash[:notice]
