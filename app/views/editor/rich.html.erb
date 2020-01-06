@@ -423,13 +423,12 @@
       }
     });
 
-<<<<<<< HEAD
     var bounds = new L.LatLngBounds(
       new L.LatLng(90, -180),
       new L.LatLng(-90, 180)
     );
     editor.mapModule.blurredLocation.map.setMaxBounds(bounds);
-=======
+    
     <% if @lat and @lon %>
       <% if @zoom %>
         editor.mapModule.blurredLocation.setZoom(<%= @zoom %>);
@@ -439,7 +438,6 @@
         editor.mapModule.blurredLocation.setZoom(zoom);
       <% end %>
     <% end %>
->>>>>>> display zoom or calculate and save zoom
 
     $('#coord_button').click((event) => {
       event.preventDefault();
