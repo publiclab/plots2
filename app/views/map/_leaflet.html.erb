@@ -1,9 +1,9 @@
 <%= render :partial => "map/mapDependencies" %>
-<% top_map = top_map || false %>
-<% zoom = zoom || lat.to_s.length.to_i + 6 %>
+<% top_map ||= false %>
+<% zoom ||= lat.to_s.length.to_i + 6 %>
 <% unique_id = rand(1000) %>
-<% user = user || @user # allow overriding w/ local variable %>
-<% blurred = blurred || false %>
+<% user ||= @user # allow overriding w/ local variable %>
+<% blurred ||= false %>
 
 <% if top_map == true %>
   <style>
