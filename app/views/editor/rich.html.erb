@@ -37,6 +37,13 @@
   #coord_button {
     text-decoration: underline;
   }
+
+  button i.fa-map-marker {
+    color: #c40;
+  }
+  button:hover i.fa-map-marker {
+    color: inherit;
+  }
 </style>
 
 <div class="pl-editor">
@@ -136,6 +143,8 @@
                 class="leaflet-map"
                 style="width: 100% ; height: 300px; margin-bottom:8px;">
               </div>
+
+
             </div>
 
             <div class="col-lg-6">
@@ -207,7 +216,6 @@
       </div>
     </div>
     <!-- Map Module end -->
-
 
     <!-- body module -->
     <div class="ple-module-body ple-module row">
@@ -420,12 +428,44 @@
       new L.LatLng(-90, 180)
     );
     editor.mapModule.blurredLocation.map.setMaxBounds(bounds);
+    
+    <% if @lat and @lon %>
+      <% if @zoom %>
+        editor.mapModule.blurredLocation.setZoom(<%= @zoom %>);
+      <% else %>
+        let zoom = editor.mapModule.blurredLocation.getZoomFromCoordinates(<%= @lat %>, <%= @lon %>);
+        addTag('zoom:'+zoom, '/profile/tags/create/<%= current_user.uid %>');
+        editor.mapModule.blurredLocation.setZoom(zoom);
+      <% end %>
+    <% end %>
 
     $('#coord_button').click((event) => {
       event.preventDefault();
       $('#coord_input').toggle();
     });
     $("#coord_input").hide();
+    
+    $(function() {
+      var target = document.querySelector('#map_content');
+      var observer = new MutationObserver(function(mutations) {
+        setLocationButtonText();
+      });
+      observer.observe(target, {
+        attributes: true
+      });
+    });
+
+    function setLocationButtonText() {
+      if ($('#map_content').is(':hidden')) {
+        $('#location_button').html('<i class="fa fa-map-marker" aria-hidden="true"></i> Add a location');
+      } else {
+        $('#location_button').html('<i class="fa fa-trash"></i> Remove location');
+      }
+    }
+    setLocationButtonText();
+    
+    $("#obscureLocation").prop('checked', <%= @map_blurred %>);
+    editor.mapModule.blurredLocation.setBlurred(<%= @map_blurred %>);
 
     // upload via posting "posted_main_image"
     function dataURItoBlob(dataURI) {
@@ -472,3 +512,4 @@
   }
 
 </script>
+
