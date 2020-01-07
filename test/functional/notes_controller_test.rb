@@ -244,20 +244,21 @@ class NotesControllerTest < ActionController::TestCase
     title = 'My new post about balloon mapping'
     assert !users(:jeff).first_time_poster
     assert User.where(role: 'moderator').count > 0
+    perform_enqueued_jobs do
+      assert_difference 'ActionMailer::Base.deliveries.size', User.where(role: 'moderator').count do
+        post :create,
+             params: { title: title,
+             body:  'This is a fascinating post about a balloon mapping event.',
+             tags:  'balloon-mapping,event'
+             }
+        # , main_image: "/images/testimage.jpg"
+      end
 
-    assert_difference 'ActionMailer::Base.deliveries.size', User.where(role: 'moderator').count do
-      post :create,
-           params: { title: title,
-           body:  'This is a fascinating post about a balloon mapping event.',
-           tags:  'balloon-mapping,event'
-           }
-      # , main_image: "/images/testimage.jpg"
+      email = ActionMailer::Base.deliveries.last
+      assert_equal '[PublicLab] ' + title + ' (#' + Node.last.id.to_s + ') ', email.subject
+      assert_equal 1, Node.last.status
+      assert_redirected_to '/notes/' + users(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
     end
-
-    email = ActionMailer::Base.deliveries.last
-    assert_equal '[PublicLab] ' + title + ' (#' + Node.last.id.to_s + ') ', email.subject
-    assert_equal 1, Node.last.status
-    assert_redirected_to '/notes/' + users(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
   end
 
   test 'first-timer posts note' do
