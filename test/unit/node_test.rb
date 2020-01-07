@@ -1,5 +1,6 @@
 require 'test_helper'
 class NodeTest < ActiveSupport::TestCase
+  include ActiveJob::TestHelper
 
   def setup
     @start = (Date.today - 1.year).to_time
