@@ -116,7 +116,7 @@
               </a>
               <a class="btn btn-outline-secondary" onClick="$('#c<%= comment.cid %>show').toggle();$('#c<%= comment.cid %>edit').toggle()"><%= translation('comments._form.cancel') %></a>
             <% else %>
-              <a class="btn btn-outline-secondary preview-btn>" id="post_comment" data-previewing-text="Hide Preview" onClick="handleClick();$E.toggle_preview()"><%= translation('comments._form.preview') %></a>
+              <a class="btn btn-outline-secondary preview-btn>" id="post_comment" data-previewing-text="Hide Preview" onClick="handleClick();$E.toggle_preview(preview_btn=this)"><%= translation('comments._form.preview') %></a>
             <% end %>
 
             <span style="color:#888;"> &nbsp;
