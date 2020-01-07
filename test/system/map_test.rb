@@ -5,24 +5,24 @@ require "application_system_test_case"
 class MapTest < ApplicationSystemTestCase
   Capybara.default_max_wait_time = 60
 
-  # test 'correct url hash for wiki map' do
-  #   visit '/map/chicago'
+  test 'correct url hash for wiki map' do
+    visit '/map/chicago'
 
-  #   # check that the url hash is correct
-  #   assert_equal("#13/41.87/-87.64", page.evaluate_script("window.location.hash"))
+    # check that the url hash is correct
+    assert_equal("#13/41.87/-87.64", page.evaluate_script("window.location.hash"))
     
-  # end
-
-  test 'show map by hash location' do
-    visit '/map#9/-25/-13'
-
-    lat = page.evaluate_script("Math.round(map.getCenter().lat)")
-    assert_equal(-25, lat)
-    # assert_equal(-25, page.evaluate_script("Math.round(map.getCenter().lat)"))
-    # assert_equal(-13, page.evaluate_script("Math.round(map.getCenter().lng)"))
-    # assert_equal(9, page.evaluate_script("map.getZoom()"))
-
   end
+
+  # test 'show map by hash location' do
+  #   visit '/map#9/-25/-13'
+
+  #   lat = page.evaluate_script("Math.round(map.getCenter().lat)")
+  #   assert_equal(-25, lat)
+  #   assert_equal(-25, page.evaluate_script("Math.round(map.getCenter().lat)"))
+  #   assert_equal(-13, page.evaluate_script("Math.round(map.getCenter().lng)"))
+  #   assert_equal(9, page.evaluate_script("map.getZoom()"))
+
+  # end
 
   # test 'url hash updates when map panned' do
   #   visit '/map'
