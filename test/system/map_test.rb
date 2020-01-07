@@ -13,14 +13,16 @@ class MapTest < ApplicationSystemTestCase
     
   # end
 
-  # test 'show map by hash location' do
-  #   visit '/map#9/-25/-13'
+  test 'show map by hash location' do
+    visit '/map#9/-25/-13'
 
-  #   assert_equal(-25, page.evaluate_script("Math.round(map.getCenter().lat)"))
-  #   assert_equal(-13, page.evaluate_script("Math.round(map.getCenter().lng)"))
-  #   assert_equal(9, page.evaluate_script("map.getZoom()"))
+    lat = page.evaluate_script("Math.round(map.getCenter().lat)")
+    assert_equal(-25, lat)
+    # assert_equal(-25, page.evaluate_script("Math.round(map.getCenter().lat)"))
+    # assert_equal(-13, page.evaluate_script("Math.round(map.getCenter().lng)"))
+    # assert_equal(9, page.evaluate_script("map.getZoom()"))
 
-  # end
+  end
 
   # test 'url hash updates when map panned' do
   #   visit '/map'
