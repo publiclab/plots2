@@ -496,10 +496,10 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test 'should redirect to questions show page after creating a new question' do
+    title = 'How to use Spectrometer'
     perform_enqueued_jobs do
       assert_emails 1 do
         user = UserSession.create(users(:bob))
-        title = 'How to use Spectrometer'
         post :create,
              params: {
              title: title,
