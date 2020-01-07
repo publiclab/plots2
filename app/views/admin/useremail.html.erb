@@ -1,27 +1,24 @@
 <div class="col-lg-3">&nbsp;</div>
 <div class="col-lg-9">
 
-  <h3>User lookup by email:</h3> 
+   <h3>User lookup by email:</h3> 
 
-  <p>Moderators and admins have the ability to search for usernames associated with a given email address. This ability is meant to assist in answering requests submitted by email where the user forgets to specify their username; clearly the email address of the sender is known.</p>
-  <%= form_tag do %>
-    <%= text_field_tag(:address, value = @address) %>
-    <%= button_tag(:search, type: 'submit', class: "btn btn-primary") do %>
-      <i class="fa fa-search fa fa-white"></i>
-    <% end %>
-</button>
-  <% end %>
+   <p>Moderators and admins have the ability to search for usernames associated with a given email address. This ability is meant to assist in answering requests submitted by email where the user forgets to specify their username; clearly the email address of the sender is known.</p>
+   <label>
+      <input type="checkbox" id="myCheck" name="include_banned" />
+      Include banned accounts after 2015 (careful: can result in server slowness for all users)
+   </label>
 
-<% if @address %>
-  <h3>Searched for <%= @address %></h3> 
-  <% if @users.length > 0 %>
-  <ul>
-    <% @users.each do |user| %>
-    <li><a href="/profile/<%= user.username %>"><%= user.username %></a></li>
-    <% end %>
-  </ul>
-  <% else %>
-  <p>No users found with that email address!</p>
+   <% if @address %>
+   <h3>Searched for <%= @address %></h3> 
+   <% if @users.length > 0 %>
+   <ul>
+      <% @users.each do |user| %>
+      <li><a href="/profile/<%= user.username %>"><%= user.username %></a></li>
+      <% end %>
+   </ul>
+   <% else %>
+   <p>No users found with that email address!</p>
+   <% end %>
   <% end %>
-<% end %>
 </div>
