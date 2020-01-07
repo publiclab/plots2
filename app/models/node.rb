@@ -219,9 +219,9 @@ class Node < ActiveRecord::Base
 
   def notify
     if status == 4
-      AdminMailer.notify_node_moderators(self).deliver_now
+      AdminMailer.notify_node_moderators(self).deliver_later!(wait_until: 24.hours.from_now)
     else
-      SubscriptionMailer.notify_node_creation(self).deliver_now
+      SubscriptionMailer.notify_node_creation(self).deliver_later!
     end
   end
 

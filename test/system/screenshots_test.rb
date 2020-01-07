@@ -176,6 +176,17 @@ class ScreenshotsTest < ApplicationSystemTestCase
     take_screenshot
   end
 
+  test 'spam moderation page' do
+    visit '/'
+    click_on 'Login'
+    fill_in("username-login", with: "obiwan") # moderator
+    fill_in("password-signup", with: "secretive")
+    click_on "Log in"
+    visit '/spam'
+    assert_selector('#batch-delete', visible: true)
+    take_screenshot
+  end
+
   test 'blog page with location modal' do
     visit '/'
     click_on 'Login'

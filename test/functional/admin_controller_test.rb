@@ -3,6 +3,7 @@ include ActionView::Helpers::DateHelper # required for time_ago_in_words()
 
 class AdminControllerTest < ActionController::TestCase
   include ActionMailer::TestHelper
+  include ActiveJob::TestHelper
   def setup
     activate_authlogic
     Timecop.freeze # account for timestamp change
@@ -187,20 +188,15 @@ class AdminControllerTest < ActionController::TestCase
       UserSession.create(users(:moderator))
       node = nodes(:spam).publish
 
-      get :mark_spam, params: { id: node.id }
-
-      assert_equal "Item marked as spam and author banned. You can undo this on the <a href='/spam'>spam moderation page</a>.", flash[:notice]
-      node = assigns(:node)
-      assert_equal 0, node.status
-      assert_equal 0, node.author.status
-      assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
-
-      email = ActionMailer::Base.deliveries.last
-      assert_not_nil email.to
-      assert_not_nil email.bcc
-      assert_equal ["moderators@#{request_host}"], ActionMailer::Base.deliveries.last.to
-      # title same as initial for email client threading
-      assert_equal '[New Public Lab poster needs moderation] ' + node.title, email.subject
+      assert_difference 'ActionMailer::Base.deliveries.size', 0 do
+        get :mark_spam, params: { id: node.id }
+       
+        assert_equal "Item marked as spam and author banned. You can undo this on the <a href='/spam'>spam moderation page</a>.", flash[:notice]
+        node = assigns(:node)
+        assert_equal 0, node.status
+        assert_equal 0, node.author.status
+        assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
+      end
     end
   end
 
@@ -275,10 +271,11 @@ class AdminControllerTest < ActionController::TestCase
       assert_equal '[Public Lab] Your post was approved!', email.subject
       assert_equal [node.author.email], email.to
 
+      # these notifications were turned off in https://github.com/publiclab/plots2/issues/6246
       # test the moderator notification
-      email = ActionMailer::Base.deliveries[1]
-      assert_equal '[New Public Lab poster needs moderation] ' + node.title, email.subject
-      assert_equal ["moderators@#{request_host}"], email.to
+      #email = ActionMailer::Base.deliveries[1]
+      #assert_equal '[New Public Lab poster needs moderation] ' + node.title, email.subject
+      #assert_equal ["moderators@#{request_host}"], email.to
 
       # test general subscription notices
       # (we test the final one, but there are many)
@@ -395,26 +392,24 @@ class AdminControllerTest < ActionController::TestCase
     assert_redirected_to revision.parent.path
   end
 
-  test 'first-timer moderated note (status=4) can be spammed by moderator with notice and emails' do
+  test 'first-timer moderated note (status=4) can be spammed by moderator with notice and delayed emails' do
     perform_enqueued_jobs do
       UserSession.create(users(:admin))
       node = nodes(:first_timer_note)
       ActionMailer::Base.deliveries.clear
 
-      get :mark_spam, params: { id: node.id }
-
-      assert_equal "Item marked as spam and author banned. You can undo this on the <a href='/spam'>spam moderation page</a>.", flash[:notice]
-
-      node = assigns(:node)
-      assert_equal 0, node.status
-      assert_equal 0, node.author.status
-      assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
-
-      # test the moderator notification
-      email = ActionMailer::Base.deliveries.last
-      assert_equal '[New Public Lab poster needs moderation] ' + node.title, email.subject
-      assert_equal ["moderators@#{request_host}"], email.to
-      assert_not_nil email.bcc
+      assert_difference 'ActionMailer::Base.deliveries.size', 0 do
+        perform_enqueued_jobs do
+          get :mark_spam, params: { id: node.id }
+ 
+          assert_equal "Item marked as spam and author banned. You can undo this on the <a href='/spam'>spam moderation page</a>.", flash[:notice]
+   
+          node = assigns(:node)
+          assert_equal 0, node.status
+          assert_equal 0, node.author.status
+          assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
+        end
+      end
     end
   end
 
@@ -489,20 +484,22 @@ class AdminControllerTest < ActionController::TestCase
       comment = assigns(:comment)
       user = users(:moderator)
 
-      email = AdminMailer.notify_moderators_of_comment_spam(comment, user)
-      assert_emails 1 do
-          email.deliver_now
-      end
+      # these notifications were turned off in https://github.com/publiclab/plots2/issues/6246
+      #email = AdminMailer.notify_moderators_of_comment_spam(comment, user)
+      #assert_emails 1 do
+      #  email.deliver_now
+      #end
       assert_equal 0, comment.status
 
       assert_equal "Comment has been marked as spam and comment author has been banned. You can undo this on the <a href='/spam/comments'>spam moderation page</a>.", flash[:notice]
       assert_response :redirect
 
-      email = ActionMailer::Base.deliveries.last
-      assert_not_nil email.to
-      assert_not_nil email.bcc
-      assert_equal ["comment-moderators@#{request_host}"], ActionMailer::Base.deliveries.last.to
-      assert_equal '[New Public Lab comment needs moderation]', email.subject
+      # these notifications were turned off in https://github.com/publiclab/plots2/issues/6246
+      #email = ActionMailer::Base.deliveries.last
+      #assert_not_nil email.to
+      #assert_not_nil email.bcc
+      #assert_equal ["comment-moderators@#{request_host}"], ActionMailer::Base.deliveries.last.to
+      #assert_equal '[New Public Lab comment needs moderation]', email.subject
     end
   end
 
