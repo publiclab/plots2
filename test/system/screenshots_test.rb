@@ -179,7 +179,7 @@ class ScreenshotsTest < ApplicationSystemTestCase
   test 'spam moderation page' do
     visit '/'
     click_on 'Login'
-    fill_in("username-login", with: "moderator")
+    fill_in("username-login", with: "obiwan") # moderator
     fill_in("password-signup", with: "secretive")
     click_on "Log in"
     visit '/spam'
