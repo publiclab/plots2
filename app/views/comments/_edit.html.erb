@@ -127,12 +127,12 @@
 
     <div class="control-group">
       <button type="submit" class="btn btn-primary"><%= translation('comments._edit.publish') %></button>
-        <a class="btn btn-default preview-btn"  data-previewing-text="Hide Preview"
+        <a class="btn btn-outline-secondary preview-btn"  data-previewing-text="Hide Preview"
             onClick="$('#c<%= comment.id %>preview').toggle();
             $('#c<%= comment.id %>text').toggle();
             $('#c<%= comment.id %>text').next('#imagebar').toggle();
             this.previewing = !this.previewing;
-            $('#c<%= comment.id %>edit .preview-btn').button(this.previewing ? 'previewing' : 'reset');
+            $('#c<%= comment.id %>edit .preview-btn').html(this.previewing ? 'Edit' : 'Preview');
             $E.generate_preview('c<%= comment.id %>preview',$('#c<%= comment.id %>text').val())">
           Preview
         </a>
