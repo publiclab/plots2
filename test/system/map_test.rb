@@ -5,34 +5,33 @@ require "application_system_test_case"
 class MapTest < ApplicationSystemTestCase
   Capybara.default_max_wait_time = 60
 
-  test 'show map for wiki with location' do
+  # test 'show map for wiki with location' do
 
-    visit "/map/chicago"
+  #   visit "/map/chicago"
 
-    # check that the map is correctly centered
-    assert_equal("41.87", page.evaluate_script("map.getCenter().lat.toFixed(2)"))
-    assert_equal("-87.64", page.evaluate_script("map.getCenter().lng.toFixed(2)"))
-    assert_equal(13, page.evaluate_script("map.getZoom()"))
+  #   assert_equal("41.87", page.evaluate_script("map.getCenter().lat.toFixed(2)"))
+  #   assert_equal("-87.64", page.evaluate_script("map.getCenter().lng.toFixed(2)"))
+  #   assert_equal(13, page.evaluate_script("map.getZoom()"))
 
-  end
+  # end
 
-  test 'show map for wiki without location' do
-    visit '/'
+  # test 'show map for wiki without location' do
+  #   visit '/'
 
-    click_on 'Login'
+  #   click_on 'Login'
 
-    fill_in("username-login", with: "jeff")
-    fill_in("password-signup", with: "secretive")
-    click_on "Log in"
+  #   fill_in("username-login", with: "jeff")
+  #   fill_in("password-signup", with: "secretive")
+  #   click_on "Log in"
 
-    visit "/map/organizers"
+  #   visit "/map/organizers"
 
-    # check that the map is correctly centered - should show user's location
-    assert_equal(59, page.evaluate_script("Math.round(map.getCenter().lat)"))
-    assert_equal(0, page.evaluate_script("Math.round(map.getCenter().lng)"))
-    assert_equal(10, page.evaluate_script("map.getZoom()"))
+  #   # check that the map is correctly centered - should show user's location
+  #   assert_equal(59, page.evaluate_script("Math.round(map.getCenter().lat)"))
+  #   assert_equal(0, page.evaluate_script("Math.round(map.getCenter().lng)"))
+  #   assert_equal(10, page.evaluate_script("map.getZoom()"))
 
-  end
+  # end
 
   test 'correct url hash for wiki map' do
     visit '/map/chicago'
@@ -49,8 +48,6 @@ class MapTest < ApplicationSystemTestCase
     assert_equal(-13, page.evaluate_script("Math.round(map.getCenter().lng)"))
     assert_equal(9, page.evaluate_script("map.getZoom()"))
 
-    take_screenshot
-
   end
 
   test 'url hash updates when map panned' do
@@ -62,6 +59,5 @@ class MapTest < ApplicationSystemTestCase
     assert_equal("#15/13/60", page.evaluate_script("window.location.hash"))
     
   end
-
 
 end
