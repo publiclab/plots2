@@ -72,11 +72,11 @@ class AdminController < ApplicationController
           @users = User.where(email: params[:address]) 
           .where(status: [1, 4]) 
         end
-      else
+        else
         # unauthorized. instead of return ugly 403, just send somewhere else
         redirect_to '/dashboard'
+        end
       end
-    end
   end
 
 
