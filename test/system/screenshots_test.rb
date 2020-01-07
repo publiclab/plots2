@@ -211,9 +211,9 @@ class ScreenshotsTest < ApplicationSystemTestCase
     take_screenshot
   end
   
-  test 'maps' do
-    visit '/map/chicago'
-    take_screenshot
-  end
+  # test 'maps' do
+  #   visit '/map/chicago'
+  #   take_screenshot
+  # end
 
 end
