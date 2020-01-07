@@ -415,19 +415,19 @@ class AdminControllerTest < ActionController::TestCase
       assert_difference 'ActionMailer::Base.deliveries.size', 1 do
         perform_enqueued_jobs do
           get :mark_spam, params: { id: node.id }
+ 
+          assert_equal "Item marked as spam and author banned. You can undo this on the <a href='/spam'>spam moderation page</a>.", flash[:notice]
+   
+          node = assigns(:node)
+          assert_equal 0, node.status
+          assert_equal 0, node.author.status
+          assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
+  
+          email = ActionMailer::Base.deliveries.last
+          assert_equal '[New Public Lab poster needs moderation] ' + node.title, email.subject
+          assert_equal ["moderators@#{request_host}"], email.to
+          assert_not_nil email.bcc
         end
- 
-        assert_equal "Item marked as spam and author banned. You can undo this on the <a href='/spam'>spam moderation page</a>.", flash[:notice]
- 
-        node = assigns(:node)
-        assert_equal 0, node.status
-        assert_equal 0, node.author.status
-        assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
-
-        email = ActionMailer::Base.deliveries.last
-        assert_equal '[New Public Lab poster needs moderation] ' + node.title, email.subject
-        assert_equal ["moderators@#{request_host}"], email.to
-        assert_not_nil email.bcc
       end
     end
   end
