@@ -201,17 +201,6 @@ class AdminControllerTest < ActionController::TestCase
         assert_not_equal '[New Public Lab poster needs moderation] ' + node.title, email.subject
       end
     end
-
-    # shouldn't have sent notification yet per policy, but 
-    assert_difference 'ActionMailer::Base.deliveries.size', 1 do
-      Timecop.travel(Time.now + 2.days) # should be delivered after 24 hours
-      email = ActionMailer::Base.deliveries.last
-      assert_not_nil email.to
-      assert_not_nil email.bcc
-      assert_equal ["moderators@#{request_host}"], ActionMailer::Base.deliveries.last.to
-      # title same as initial for email client threading
-      assert_equal '[New Public Lab poster needs moderation] ' + node.title, email.subject
-    end
   end
 
   test 'admin user should be able to mark a node as spam' do
@@ -412,7 +401,7 @@ class AdminControllerTest < ActionController::TestCase
       node = nodes(:first_timer_note)
       ActionMailer::Base.deliveries.clear
 
-      assert_difference 'ActionMailer::Base.deliveries.size', 1 do
+      assert_difference 'ActionMailer::Base.deliveries.size', 0 do
         perform_enqueued_jobs do
           get :mark_spam, params: { id: node.id }
  
@@ -422,11 +411,6 @@ class AdminControllerTest < ActionController::TestCase
           assert_equal 0, node.status
           assert_equal 0, node.author.status
           assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
-  
-          email = ActionMailer::Base.deliveries.last
-          assert_equal '[New Public Lab poster needs moderation] ' + node.title, email.subject
-          assert_equal ["moderators@#{request_host}"], email.to
-          assert_not_nil email.bcc
         end
       end
     end
