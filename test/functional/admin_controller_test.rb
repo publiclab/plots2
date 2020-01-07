@@ -204,14 +204,13 @@ class AdminControllerTest < ActionController::TestCase
       # shouldn't have sent notification yet per policy, but 
       assert_difference 'ActionMailer::Base.deliveries.size', 1 do
         Timecop.travel(Time.now + 2.days) # should be delivered after 24 hours
-        perform_enqueued_jobs do
-          email = ActionMailer::Base.deliveries.last
-          assert_not_nil email.to
-          assert_not_nil email.bcc
-          assert_equal ["moderators@#{request_host}"], ActionMailer::Base.deliveries.last.to
-          # title same as initial for email client threading
-          assert_equal '[New Public Lab poster needs moderation] ' + node.title, email.subject
-        end
+        perform_enqueued_jobs
+        email = ActionMailer::Base.deliveries.last
+        assert_not_nil email.to
+        assert_not_nil email.bcc
+        assert_equal ["moderators@#{request_host}"], ActionMailer::Base.deliveries.last.to
+        # title same as initial for email client threading
+        assert_equal '[New Public Lab poster needs moderation] ' + node.title, email.subject
       end
     end
   end
@@ -427,12 +426,11 @@ class AdminControllerTest < ActionController::TestCase
 
       assert_difference 'ActionMailer::Base.deliveries.size', 1 do
         Timecop.travel(Time.now + 2.days) # should be delivered after 24 hours
-        perform_enqueued_jobs do
-          email = ActionMailer::Base.deliveries.last
-          assert_equal '[New Public Lab poster needs moderation] ' + node.title, email.subject
-          assert_equal ["moderators@#{request_host}"], email.to
-          assert_not_nil email.bcc
-        end
+        perform_enqueued_jobs
+        email = ActionMailer::Base.deliveries.last
+        assert_equal '[New Public Lab poster needs moderation] ' + node.title, email.subject
+        assert_equal ["moderators@#{request_host}"], email.to
+        assert_not_nil email.bcc
       end
     end
   end

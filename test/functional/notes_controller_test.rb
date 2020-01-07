@@ -510,6 +510,7 @@ class NotesControllerTest < ActionController::TestCase
     assert_emails 0 do
       email.deliver_now # shouldn't deliver immediately
     end
+    perform_enqueued_jobs
     assert_emails 1 do
       Timecop.travel(Time.now + 2.days) # should be delivered after 24 hours
     end
