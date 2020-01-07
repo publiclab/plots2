@@ -506,13 +506,14 @@ class NotesControllerTest < ActionController::TestCase
          redirect: 'question'
          }
     node = nodes(:blog)
-    email = AdminMailer.notify_node_moderators(node)
-    assert_emails 0 do
-      email.deliver_now # shouldn't deliver immediately
-    end
-    perform_enqueued_jobs
-    assert_emails 1 do
-      Timecop.travel(Time.now + 2.days) # should be delivered after 24 hours
+    perform_enqueued_jobs do
+      email = AdminMailer.notify_node_moderators(node)
+      assert_emails 0 do
+        email.deliver_now # shouldn't deliver immediately
+      end
+      assert_emails 1 do
+        Timecop.travel(Time.now + 2.days) # should be delivered after 24 hours
+      end
     end
     Timecop.return
 
