@@ -267,13 +267,15 @@ class UserSessionsControllerTest < ActionController::TestCase
     assert_equal "Successfully logged out.",  flash[:notice]
   end
   
-  test "logging in with banned user through oauth should fail" do
+  test "logging in with banned user through oauth should fail and redirect correctly" do
+    request.env['omniauth.origin'] = "/notes/liked"
     request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:github1]
     post :create
     post :destroy
-    # beginning of email of mock user is its name
+    # name of omniauth user
     User.find_by(name: "bansal_sidharth309").ban
     post :create
+    assert_redirected_to "/notes/liked?_=#{Time.now.to_i.to_s}"
     assert_equal flash[:error], I18n.t('user_sessions_controller.user_has_been_banned', username: "bansal_sidharth309").html_safe
   end
 end
