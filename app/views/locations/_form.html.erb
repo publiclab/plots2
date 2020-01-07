@@ -26,19 +26,16 @@
         <% latest_locations = current_user.recent_locations %>
         <% if latest_locations.count > 0 %>
           <label>Your recently used locations:</label>
-          <div class="badge-group">
-            <% latest_locations.each_with_index do |location, index| %>
-              <a href="#" onclick="blurredLocation.goTo(<%= location.lat %>, <%= location.lon %>, 6);"> 
-                <span class="badge badge-info" style=" ">
+          <select id="recent_locations" name="recent_locations" class="custom-select custom-select-sm">
+            <% latest_locations.reverse.each_with_index do |location, index| %>
+              <option value='{ "lat": <%= location.lat %>, "lon": <%= location.lon %> }' >
+                  <%= location.lat %>, <%= location.lon %>
                   <% if location.place %>
-                    <%= location.place %>
+                    : <%= location.place %>
                   <% end %>
-                  <span class="badge"><%= location.lat %></span>
-                  <span class="badge"><%= location.lon %></span>
-                </span>
-              </a>
+              </option>
             <% end %>
-          </div>
+          </select>
         <% end %>
       </div>
     <% end %>
@@ -151,6 +148,11 @@
       $('#coord_input').toggle();
     });
     $("#coord_input").hide();
+
+    $('#recent_locations').change((event) => {
+      let location = JSON.parse($('#recent_locations').val());
+      blurredLocation.map.setView([location.lat, location.lon], blurredLocation.getZoomFromCoordinates(location.lat, location.lon));
+    });
 
   })();
     
