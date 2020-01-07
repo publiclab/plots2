@@ -81,7 +81,7 @@ class AdminController < ApplicationController
       @nodes = if params[:type] == 'wiki'
                  @nodes.where(type: 'page', status: 1)
                else
-                 @nodes.where(status: 0)
+                 @nodes.where(status: [0, 4]) # spam OR as-yet-unmoderated posts
       end
     else
       flash[:error] = 'Only moderators can moderate posts.'
