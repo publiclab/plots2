@@ -196,9 +196,6 @@ class AdminControllerTest < ActionController::TestCase
         assert_equal 0, node.status
         assert_equal 0, node.author.status
         assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
-       
-        email = ActionMailer::Base.deliveries.last
-        assert_not_equal '[New Public Lab poster needs moderation] ' + node.title, email.subject
       end
     end
   end
