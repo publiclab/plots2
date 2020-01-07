@@ -3,7 +3,9 @@ require "application_system_test_case"
 # https://guides.rubyonrails.org/testing.html#implementing-a-system-test
 
 class MapTest < ApplicationSystemTestCase
-  Capybara.default_max_wait_time = 60
+  def setup
+    Capybara.default_max_wait_time = 60
+  end
 
   test 'correct url hash for wiki map' do
     visit '/map/chicago'
