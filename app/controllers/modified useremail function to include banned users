@@ -76,7 +76,8 @@ class AdminController < ApplicationController
    else 
      # unauthorized. instead of return ugly 403, just send somewhere else 
      redirect_to '/dashboard' 
-   end 
+   end
+  end
 
 
   def spam
