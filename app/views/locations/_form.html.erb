@@ -2,93 +2,106 @@
 <%= javascript_include_tag('/lib/leaflet-spin/example/spin/dist/spin.min.js') %>
 <%= javascript_include_tag('/lib/leaflet-spin/example/leaflet.spin.min.js') %>
 
+<div id="map_content" class="modal-body text-left">
+  <div class="row">
 
-<div class="row">
+    <div class="col-lg-7">
 
-  <div class="col-lg-7">
-
-    <div id="map" class="leaflet-map" style="width: 100%; height: 300px; margin-bottom:10px;"></div>
-    <div class="slide-container">
-      <label>Scale</label>
-      <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="1" data-slider-max="18" data-slider-step="1" data-slider-value="6" style="width: 100%"/>
-      <p class="slide-description">World</p>
-      <p class="slide-description" style="float: right">Building</p>
-    </div>
-
-  </div>
-
-
-  <div class="col-lg-5">
-
-    <!-- Not part of LBL library -->
-    <% if current_user %>
-      <div class="form-group recent-locations">
-        <% latest_locations = current_user.recent_locations %>
-        <% if latest_locations.count > 0 %>
-          <label>Your recently used locations:</label>
-          <select id="recent_locations" name="recent_locations" class="custom-select custom-select-sm">
-            <% latest_locations.reverse.each_with_index do |location, index| %>
-              <option value='{ "lat": <%= location.lat %>, "lon": <%= location.lon %> }' >
-                  <%= location.lat %>, <%= location.lon %>
-                  <% if location.place %>
-                    : <%= location.place %>
-                  <% end %>
-              </option>
-            <% end %>
-          </select>
-        <% end %>
+      <div id="map" class="leaflet-map" style="width: 100%; height: 300px; margin-bottom:10px;"></div>
+      <div class="slide-container">
+        <label>Scale</label>
+        <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="1" data-slider-max="18" data-slider-step="1" data-slider-value="6" style="width: 100%"/>
+        <p class="small-description d-inline">World</p>
+        <p class="small-description d-inline" style="float: right">Building</p>
       </div>
-    <% end %>
 
-    <div class="form-group">
-      <label for="placenameInput">Search by place name</label>
-      <input id="placenameInput" type="text" class="form-control" />
     </div>
 
-    <div class="form-group">
-      Or <a href="#" id="coord_button">by entering coordinates</a>
 
-      <div id="coord_input" class="row">
-        <div class="col-sm-6">
-          <label>Latitude</label>
-          <input id="lat" type="text" class="form-control" placeholder="Latitude" />
-        </div>
+    <div class="col-lg-5">
 
-        <div class="col-sm-6">
-          <label>Longitude</label>
-          <input id="lng" type="text" class="form-control" placeholder="Longitude" />
+      <div class="form-group">
+        <label for="placenameInput">Search by place name</label>
+        <input id="placenameInput" type="text" class="form-control" />
+      </div>
+
+      <div class="form-group">
+        Or <a href="#" id="coord_button">by entering coordinates</a>
+
+        <div id="coord_input" class="row">
+          <div class="col-sm-6">
+            <label class="small-description">Latitude</label>
+            <input id="lat" type="text" class="form-control" placeholder="Latitude" />
+          </div>
+
+          <div class="col-sm-6">
+            <label class="small-description">Longitude</label>
+            <input id="lng" type="text" class="form-control" placeholder="Longitude" />
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="form-group">
-      <button class="btn btn-lg btn-outline-secondary" onclick="blurredLocation.geocodeWithBrowser(true);">
-        <div id="ldi-geocode-button">
-          <i class="fa fa-compass"></i>
-          Use current location
+      <!-- Not part of LBL library -->
+      <% if current_user %>
+        <div class="form-group recent-locations">
+          <% latest_locations = current_user.recent_locations %>
+          <% if latest_locations.count > 0 %>
+            <label>Your recently used locations:</label>
+            <select id="recent_locations" name="recent_locations" class="custom-select custom-select-sm">
+              <% latest_locations.reverse.each_with_index do |location, index| %>
+                <option value='{ "lat": <%= location.lat %>, "lon": <%= location.lon %> }' >
+                    <% if location.place %>
+                      <%= location.place %>:
+                    <% end %>
+                    (<%= location.lat %>, <%= location.lon %>)
+                </option>
+              <% end %>
+            </select>
+          <% end %>
         </div>
-      </button>
+      <% end %>
+
+      <div class="form-group">
+        <button class="btn btn-lg btn-outline-secondary" onclick="blurredLocation.geocodeWithBrowser(true);">
+          <div id="ldi-geocode-button">
+            <i class="fa fa-compass"></i>
+            Use current location
+          </div>
+        </button>
+      </div>
+
+      <div class="form-check">
+        <label class="form-check-label">
+          <input id="obscureLocation" type="checkbox" checked class="form-check-input" onchange='blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);' />
+          Blur my location
+        </label>
+        <span class="small-description"><a href="https://publiclab.org/location-privacy" target="_blank">Learn more »</a></span>
+      </div>
+
     </div>
 
-    <div class="form-check">
-      <label class="form-check-label">
-        <input id="obscureLocation" type="checkbox" checked class="form-check-input" onchange='blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);' />
-        Blur my location
-      </label>
-      <a href="https://publiclab.org/location-privacy" target="_blank">Learn more »</a>
+    <!--
+    <div class="col-12 mt-2 text-center">
+      <label for="placenameDisplay">This location will be saved as:</label>
+      <input id="placenameDisplay" type="text" readonly />
     </div>
+    -->
+  
+  </div>
+</div>
 
+<div class="modal-footer bg-light">
+
+  <div class="text-left">
+    <label for="placenameDisplay">Save as a place:</label>
+    <input id="placenameDisplay" type="text" class="form-control" placeholder="place name" />
   </div>
 
-  <div class="col-12 mt-2 text-center">
-    <label for="placenameDisplay">This location will be saved as:</label>
-    <input id="placenameDisplay" type="text" readonly />
-  </div>
- 
-  <div class="col-12 mt-2 text-center">
+  <div>
+    <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
     <button data-dismiss="modal" class="btn btn-lg btn-primary" onclick="saveLocation()">Save</button>
   </div>
- 
+
 </div>
 
 <script>
@@ -159,7 +172,7 @@
   function saveLocation() {
     var tags = 'lat:' + blurredLocation.getLat() + ',lon:' + blurredLocation.getLon() + ',zoom:' + blurredLocation.getZoom();
     if (blurredLocation.isBlurred()) tags = tags + ',' + 'location:blurred'
-    if ($('#placenameDisplay').val() != 'Location unavailable') tags = tags + ',' + 'place:' + parameterize($('#placenameDisplay').val());
+    if ($('#placenameDisplay').val() != ('Location unavailable' || '')) tags = tags + ',' + 'place:' + parameterize($('#placenameDisplay').val());
     <% if params[:url] %>
       addTag(tags, '<%= params[:url] %>');
     <% else %>
