@@ -32,7 +32,7 @@ class ScreenshotsTest < ApplicationSystemTestCase
     assert_equal( username_error_msg, "Username already exists" )
     assert_equal( email_error_msg, "Invalid email" )
     assert_equal( password_error_msg, "Please make sure password is at least 8 characters long with minimum one numeric value" )
-    assert_equal( confirm_password_error_msg, "Passwords must be equal" )
+    assert_equal( confirm_password_error_msg, "Please make sure password is at least 8 characters long with minimum one numeric value" )
 
     take_screenshot
   end
@@ -80,7 +80,7 @@ class ScreenshotsTest < ApplicationSystemTestCase
     visit "/tag/#{node_tags(:awesome).name}/stats"
     take_screenshot
   end
-  
+
   test 'tag page' do
     nodes(:activity).add_tag('pin:test', users(:bob)) # ensure a pinned note appears
     visit '/tag/test'
@@ -215,7 +215,7 @@ class ScreenshotsTest < ApplicationSystemTestCase
     visit node.path
     take_screenshot
   end
-  
+
   # test 'maps' do
   #   visit '/map/chicago'
   #   take_screenshot

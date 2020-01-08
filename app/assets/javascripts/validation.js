@@ -47,27 +47,7 @@ $(document).ready(function() {
     signUpForms[1].classList.add("signup-register-form");
     SignUpFormValidator(".signup-register-form");
   }
-
-  LoginFormValidator(".login-form");
 });
-
-// Login Form validation function
-function LoginFormValidator(formClass) {
-  var formValidator = new FormValidator(formClass, 2);
-  formValidator.isLoginForm = true;
-
-  var usernameElement = document.querySelector(formClass + " #username-login");
-  var passwordElement = document.querySelector(formClass + " #password-signup");
-
-  usernameElement.addEventListener(
-    "input",
-    formValidator.validateUsername.bind(usernameElement, formValidator)
-  );
-  passwordElement.addEventListener(
-    "input",
-    formValidator.validatePassword.bind(passwordElement, {}, formValidator)
-  );
-}
 
 // Sign Up Form validation function
 function SignUpFormValidator(formClass) {
@@ -174,12 +154,10 @@ FormValidator.prototype.validateUsername = function(formValidator) {
     $.get("/api/srch/profiles?query=" + username, function(data) {
       if (data.items) {
         $.map(data.items, function(userData) {
-          if (formValidator.isLoginForm) {
-            // Login form username validation
-            formValidator.validateLoginUsername(userData, username, self);
+          if (userData.doc_title === username) {
+            formValidator.updateUI(usernameElement, false, "Username already exists");
           } else {
-            // Sign up form username validation
-            formValidator.validateSignUpUsername(userData, username, self);
+            formValidator.updateUI(self, true);
           }
         });
       } else {
@@ -203,8 +181,7 @@ FormValidator.prototype.validateSignUpUsername = function(
   username,
   usernameElement
 ) {
-  if (userData.doc_title === username)
-    this.updateUI(usernameElement, false, "Username already exists");
+
   else this.updateUI(usernameElement, true);
 };
 
