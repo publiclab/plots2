@@ -11,14 +11,15 @@ function addTag(tagname, submitTo, responseEl = "") {
     }
   }
   if (tagname.slice(0,5).toLowerCase() === "place") {
-    place = tagname.split(":")[1];
-    place.replace("-", " ");
-    geo = geocodeStringAndPan(place);
+    tagArray = tagname.split(":");
+    place = tagArray[1];
+    tagname = tagArray[0] + ":" + place.replace(" ", "-");
+  //   geo = geocodeStringAndPan(place);
   }
-  else {
+  // else {
     let data = { name: tagname };
     sendFormSubmissionAjax(data, submitTo, responseEl);
-  }
+  // }
 }
 
 function setupTagDelete(el) {
