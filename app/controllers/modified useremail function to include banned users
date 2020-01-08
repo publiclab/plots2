@@ -78,7 +78,7 @@ class AdminController < ApplicationController
      redirect_to '/dashboard' 
    end
   end
-
+  end
 
   def spam
     if logged_in_as(['admin', 'moderator'])
