@@ -105,22 +105,28 @@ function getDeletionPathId(deletion_path) {
 }
 
 function geocodeStringAndPan(string, onComplete) {
+  console.log("geocodeStringAndPan");
   var url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + string.split(" ").join("+");
   var Blurred = $.ajax({
       async: false,
       url: url,
       complete: function(data) {
-        geometry = data.responseJSON.results[0].geometry.location;
-        lat = geometry.lat;
-        lng = geometry.lng;
-        
-        var geo = [lat, lng];
+        results = data.responseJSON;
+        if(results.status === "OK") {
+          geometry = results[0].geometry.location;
+          lat = geometry.lat;
+          lng = geometry.lng;
+          
+          var geo = [lat, lng];
 
-        if (geo.length > 0) {
-          var r = confirm("This looks like a location. Is this full description of the location accurate?");
-          if(r) { 
-            addTag("lat:" + geo[0].toString() + ",lng:" + geo[1].toString()+",place:"+string);
-          }    
+          if (geo.length > 0) {
+            var r = confirm("This looks like a location. Is this full description of the location accurate?");
+            if(r) { 
+              addTag("lat:" + geo[0].toString() + ",lng:" + geo[1].toString()+",place:"+string);
+            }    
+          }
+        } else {
+          console.log("Error retrieving location: " + results.error_message);
         }
       },
   });
