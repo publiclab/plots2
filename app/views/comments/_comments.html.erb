@@ -3,6 +3,7 @@
   <table class="table">
       <tr>
         <th class="d-lg-none"></th>
+        <th><%= translation('users.list.Author') %></th>
         <th><i data-toggle="tooltip" title="Commenting method" class="fa fa-envelope"></i></th>
         <th><%= translation('users.list.comment') %></th>
         <th><%= translation('users.list.last_activity') %></th>
@@ -16,6 +17,9 @@
 
     <% comments.each do |comment| %>
      <tr id="c<% comment.cid %>">
+        <td>
+       <a href="/profile/<%= comment.author.username %>"> <%=raw strip_tags(sanitize(RDiscount.new(comment.author.username).to_html)).truncate(150) %></a>
+        </td>
        <td>
          <% if comment.comment_via == 1 %>
            <i data-toggle="tooltip" title="This comment was posted by email." class="fa fa-envelope"></i>
