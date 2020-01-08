@@ -34,31 +34,44 @@ $(document).ready(function() {
   });
 });
 
-$(document).ready(function () {
+$(document).ready(function() {
   // The two forms have same ID
-  var forms = document.querySelectorAll("#create-form");
+  var signUpForms = document.querySelectorAll("#create-form");
 
   // Sign up modal form
-  forms[0].classList.add("signup-modal-form");
-  var signUpModalForm = new SignUpFormValidator(".signup-modal-form");
+  signUpForms[0].classList.add("signup-modal-form");
+  SignUpFormValidator(".signup-modal-form");
 
   // publiclab.org/register form
-  if (forms[1]) {
-    forms[1].classList.add("signup-register-form");
-    var signUpRegisterForm = new SignUpFormValidator(".signup-register-form");
+  if (signUpForms[1]) {
+    signUpForms[1].classList.add("signup-register-form");
+    SignUpFormValidator(".signup-register-form");
   }
+
+  LoginFormValidator(".login-form");
 });
 
-// Form validation class
+// Login Form validation function
+function LoginFormValidator(formClass) {
+  var formValidator = new FormValidator(formClass, 2);
+  formValidator.isLoginForm = true;
+
+  var usernameElement = document.querySelector(formClass + " #username-login");
+  var passwordElement = document.querySelector(formClass + " #password-signup");
+
+  usernameElement.addEventListener(
+    "input",
+    formValidator.validateUsername.bind(usernameElement, formValidator)
+  );
+  passwordElement.addEventListener(
+    "input",
+    formValidator.validatePassword.bind(passwordElement, {}, formValidator)
+  );
+}
+
+// Sign Up Form validation function
 function SignUpFormValidator(formClass) {
-  var signUpForm = document.querySelector(formClass);
-
-  if (!signUpForm) return;
-
-  this.validationTracker = {};
-  this.submitBtn = document.querySelector(formClass + ' [type="submit"');
-
-  this.isFormValid();
+  var formValidator = new FormValidator(formClass, 4);
 
   var usernameElement = document.querySelector(
     formClass + " [name='user[username]']"
@@ -76,95 +89,141 @@ function SignUpFormValidator(formClass) {
   // Every time user types something, corresponding event listener are triggered
   usernameElement.addEventListener(
     "input",
-    validateUsername.bind(usernameElement, this)
+    formValidator.validateUsername.bind(usernameElement, formValidator)
   );
   emailElement.addEventListener(
     "input",
-    validateEmail.bind(emailElement, this)
+    formValidator.validateEmail.bind(emailElement, formValidator)
   );
   passwordElement.addEventListener(
     "input",
-    validatePassword.bind(passwordElement, confirmPasswordElement, this)
+    formValidator.validatePassword.bind(
+      passwordElement,
+      confirmPasswordElement,
+      formValidator
+    )
   );
   confirmPasswordElement.addEventListener(
     "input",
-    validateConfirmPassword.bind(confirmPasswordElement, passwordElement, this)
+    formValidator.validateConfirmPassword.bind(
+      confirmPasswordElement,
+      passwordElement,
+      formValidator
+    )
   );
+}
+
+// Universal form validation class
+function FormValidator(formClass, elementsToValidate) {
+  var form = document.querySelector(formClass);
+
+  if (!form) return;
+
+  this.validationTracker = {};
+  this.elementsToValidate = elementsToValidate;
+  this.submitBtn = document.querySelector(formClass + ' [type="submit"');
+
+  this.isFormValid();
 }
 
 // Typing the form triggers the function
 // Updates UI depending on the value of <valid> parameter
-SignUpFormValidator.prototype.updateUI = function(element, valid, errorMsg) {
+FormValidator.prototype.updateUI = function(element, valid, errorMsg) {
   var elementName = element.getAttribute("name");
 
   if (valid) {
     this.validationTracker[elementName] = true;
-    styleElement(element, "form-element-invalid", "form-element-valid");
-    removeErrorMsg(element);
+    this.styleElement(element, "form-element-invalid", "form-element-valid");
+    this.removeErrorMsg(element);
   } else {
     this.validationTracker[elementName] = false;
-    styleElement(element, "form-element-valid", "form-element-invalid");
-    renderErrorMsg(element, errorMsg);
+    this.styleElement(element, "form-element-valid", "form-element-invalid");
+    this.renderErrorMsg(element, errorMsg);
   }
 
   this.isFormValid();
 };
 
-SignUpFormValidator.prototype.disableSubmitBtn = function() {
+FormValidator.prototype.disableSubmitBtn = function() {
   this.submitBtn.setAttribute("disabled", "");
 };
 
-SignUpFormValidator.prototype.enableSubmitBtn = function() {
+FormValidator.prototype.enableSubmitBtn = function() {
   this.submitBtn.removeAttribute("disabled");
 };
 
-SignUpFormValidator.prototype.isFormValid = function() {
+FormValidator.prototype.isFormValid = function() {
   // Form is valid if all elements have passsed validation successfully
   var isValidForm =
-    Object.values(this.validationTracker).filter(Boolean).length === 4;
+    Object.values(this.validationTracker).filter(Boolean).length ===
+    this.elementsToValidate;
 
   if (isValidForm) this.enableSubmitBtn();
   else this.disableSubmitBtn();
 };
 
-function validateUsername(obj) {
+FormValidator.prototype.validateUsername = function(formValidator) {
   var username = this.value;
   var self = this;
 
   if (username.length < 3) {
-    restoreOriginalStyle(this);
-    obj.disableSubmitBtn();
-    removeErrorMsg(self);
+    formValidator.restoreOriginalStyle(this);
+    formValidator.disableSubmitBtn();
+    formValidator.removeErrorMsg(self);
   } else {
     $.get("/api/srch/profiles?query=" + username, function(data) {
       if (data.items) {
         $.map(data.items, function(userData) {
-          if (userData.doc_title === username) {
-            obj.updateUI(self, false, "Username already exists");
+          if (formValidator.isLoginForm) {
+            // Login form username validation
+            formValidator.validateLoginUsername(userData, username, self);
           } else {
-            obj.updateUI(self, true);
+            // Sign up form username validation
+            formValidator.validateSignUpUsername(userData, username, self);
           }
         });
       } else {
-        obj.updateUI(self, true);
+        formValidator.updateUI(self, true);
       }
     });
   }
-}
+};
 
-function validateEmail(obj) {
+FormValidator.prototype.validateLoginUsername = function(
+  userData,
+  username,
+  usernameElement
+) {
+  if (userData.doc_title === username) this.updateUI(usernameElement, true);
+  else this.updateUI(usernameElement, false, "Username doesn't exist");
+};
+
+FormValidator.prototype.validateSignUpUsername = function(
+  userData,
+  username,
+  usernameElement
+) {
+  if (userData.doc_title === username)
+    this.updateUI(usernameElement, false, "Username already exists");
+  else this.updateUI(usernameElement, true);
+};
+
+FormValidator.prototype.validateEmail = function(formValidator) {
   var email = this.value;
   var emailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   var isValidEmail = emailRegExp.test(email);
 
-  obj.updateUI(this, isValidEmail, "Invalid email");
-}
+  formValidator.updateUI(this, isValidEmail, "Invalid email");
+};
 
-function validatePassword(confirmPasswordElement, obj) {
+FormValidator.prototype.validatePassword = function(
+  confirmPasswordElement,
+  formValidator
+) {
   var password = this.value;
 
-  if (!isPasswordValid(password)) {
-    obj.updateUI(
+  if (!formValidator.isPasswordValid(password)) {
+    formValidator.updateUI(
       this,
       false,
       "Please make sure password is at least 8 characters long with minimum one numeric value"
@@ -173,67 +232,76 @@ function validatePassword(confirmPasswordElement, obj) {
   }
 
   if (password === confirmPasswordElement.value) {
-    obj.updateUI(confirmPasswordElement, true);
+    formValidator.updateUI(confirmPasswordElement, true);
   }
 
-  obj.updateUI(this, true);
-}
+  formValidator.updateUI(this, true);
+};
 
-function validateConfirmPassword(passwordElement, obj) {
+FormValidator.prototype.validateConfirmPassword = function(
+  passwordElement,
+  formValidator
+) {
   var confirmPassword = this.value;
   var password = passwordElement.value;
 
-  if (confirmPassword !== password) {
-    obj.updateUI(this, false, "Passwords must be equal");
+  if (!formValidator.isPasswordValid(confirmPassword)) {
+    formValidator.updateUI(
+      this,
+      false,
+      "Please make sure password is at least 8 characters long with minimum one numeric value"
+    );
     return;
   }
 
-  obj.updateUI(this, true);
-}
+  if (confirmPassword !== password) {
+    formValidator.updateUI(this, false, "Passwords must be equal");
+    return;
+  }
+
+  formValidator.updateUI(this, true);
+};
 
 // Password is valid if it is at least 8 characaters long and contains a number
 // Password's validation logic, no UI updates
-function isPasswordValid(password) {
+FormValidator.prototype.isPasswordValid = function(password) {
   var doesContainNumber = /\d+/g.test(password);
   var isValidPassword = password.length >= 8 && doesContainNumber;
 
   return isValidPassword;
-}
+};
 
-function renderErrorMsg(element, message) {
+FormValidator.prototype.renderErrorMsg = function(element, message) {
   if (!message) return;
 
-  // Error messages are rendered inside of a <small> HTML element
-  var errorMsgElement = element.nextElementSibling;
-  if (!errorMsgElement) {
-    // On publiclab.org/register invalid elements are wrapped in a div.
-    errorMsgElement = element.parentElement.nextElementSibling;
-  }
+  var errorMsgElement = document.querySelector("#" + element.id + "~ small");
 
   errorMsgElement.textContent = message;
   errorMsgElement.style.color = "red";
   errorMsgElement.classList.remove("invisible");
-}
+};
 
-function removeErrorMsg(element) {
-  var errorMsgElement = element.nextElementSibling;
-  if (!errorMsgElement) {
-    errorMsgElement = element.parentElement.nextElementSibling;
-  }
+FormValidator.prototype.removeErrorMsg = function(element) {
+  var errorMsgElement = document.querySelector("#" + element.id + "~ small");
+  if (!errorMsgElement) return;
 
   errorMsgElement.classList.add("invisible");
-}
+};
 
-function restoreOriginalStyle(element) {
+FormValidator.prototype.restoreOriginalStyle = function(element) {
   element.classList.remove("form-element-valid");
   element.classList.remove("form-element-invalid");
-}
+};
 
 // Makes input element red or green
-function styleElement(element, classToRemove, classToAdd) {
+FormValidator.prototype.styleElement = function(
+  element,
+  classToRemove,
+  classToAdd
+) {
   if (element.classList.contains(classToRemove)) {
     element.classList.remove(classToRemove);
   }
 
   element.classList.add(classToAdd);
-}
+};

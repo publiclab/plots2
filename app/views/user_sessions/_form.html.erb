@@ -27,11 +27,12 @@
 
   <br style="clear:both;"/>
 
-  <div id="toggle" class="login-form">
+  <div id="toggle" class="login-form" style="max-width: 370px">
 
     <div class="form-group">
       <label for="username"><%= t('user_sessions.new.username') %></label>
       <%= f.text_field :username, { tabindex: 1, placeholder: "Username", class: 'form-control', id: 'username-login', required: true } %>
+      <small class="invisible">Placeholder</small>
 
       <div class="form-group has-feedback">
         <label class="control-label" for="password"><%= t('user_sessions.new.password') %></label>
@@ -44,6 +45,7 @@
               aria-hidden="true">
             </a>
           </div>
+          <small class="invisible" style="flex-basis: 100%;">Placeholder</small>
         </div>
       </div>
     </div>
