@@ -80,21 +80,16 @@
 
     </div>
 
-    <!--
-    <div class="col-12 mt-2 text-center">
-      <label for="placenameDisplay">This location will be saved as:</label>
-      <input id="placenameDisplay" type="text" readonly />
-    </div>
-    -->
-  
   </div>
 </div>
 
 <div class="modal-footer bg-light">
 
   <div class="text-left">
-    <label for="placenameDisplay">Save as a place:</label>
-    <input id="placenameDisplay" type="text" class="form-control" placeholder="place name" />
+    <div id="place_name">
+      <label for="placenameDisplay" class="d-inline">Save as a place:</label>
+      <input id="placenameDisplay" type="text" class="form-control d-inline" placeholder="place name" />
+    </div>
   </div>
 
   <div>
@@ -142,6 +137,12 @@
 
     blurredLocation.map.setMaxBounds(bounds);
 
+    let location_type = "<%= params[:url] %>" || $('#tagform').attr('action');
+    if(location_type.split('/')[1] === "profile") {
+      $('#place_name').addClass('d-none');
+      console.log("hidden");
+    }
+
     var changeZoom = function() {
       var zoom = slider.getValue();
       blurredLocation.map.setZoom(zoom);
@@ -156,6 +157,13 @@
       $('#ex1').slider('setValue', zoom);
     })
     
+    blurredLocation.map.on('moveend', function() {
+      if($('#placenameDisplay').val() === 'Location unavailable') {
+        console.log('replace');
+        $('#placenameDisplay').val('');
+      }
+    });
+
     $('#coord_button').click((event) => {
       event.preventDefault();
       $('#coord_input').toggle();
