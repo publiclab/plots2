@@ -15,6 +15,21 @@ class RevisionsTest < ActiveSupport::TestCase
     assert_not_equal 0, node_revision.timestamp
     assert_not_nil node_revision.timestamp
   end
+  
+  test 'create a bad revision' do
+    node = Node.new(uid: users(:bob).id,
+                    type: 'page')
+    node.title = 'My new node for revision testing'
+    assert node.save!
+    # in testing, uid and id should be matched, although this is not yet true in production db
+    node_revision = Revision.new(title: 'My new node',
+                                 body: '',
+                                 uid: users(:bob).id,
+                                 nid: nodes(:one).nid)
+    assert node_revision.save!
+    assert_not_equal 0, node_revision.timestamp
+    assert_not_nil node_revision.timestamp
+  end
 
   test "create a feature's node_revision" do
     node = Node.new(uid: users(:admin).id,
