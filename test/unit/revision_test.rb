@@ -23,7 +23,7 @@ class RevisionsTest < ActiveSupport::TestCase
     assert node.save!
     # in testing, uid and id should be matched, although this is not yet true in production db
     node_revision = Revision.new(title: 'My new node',
-                                 body: '',
+                                 body: 'I hope this test works -- by which I mean fails! 😅',
                                  uid: users(:bob).id,
                                  nid: nodes(:one).nid)
     assert node_revision.save!
