@@ -233,7 +233,7 @@ class WikiControllerTest < ActionController::TestCase
     node.reload
     assert_redirected_to node.path
     assert_equal flash[:notice], 'Edits saved.'
-    assert_equal nil, node.main_image_id
+    assert_nil node.main_image_id
   end
 
   test 'normal user should not delete wiki page' do

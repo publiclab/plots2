@@ -88,8 +88,8 @@ class HomeController < ApplicationController
                    .group(['title', 'comments.cid']) # ONLY_FULL_GROUP_BY, issue #3120
 
     if logged_in_as(['admin', 'moderator'])
-      notes = notes.where('(node.status = 1 OR node.status = 4 OR node.status = 3)')
-      comments = comments.where('comments.status = 1 OR comments.status = 4')
+      notes = notes.where('(node.status = 1 OR node.status = 3)')
+      comments = comments.where('comments.status = 1')
     elsif current_user
       coauthor_nids = Node.joins(:node_tag)
         .joins('LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid')
