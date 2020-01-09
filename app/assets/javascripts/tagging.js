@@ -11,15 +11,10 @@ function addTag(tagname, submitTo, responseEl = "") {
     }
   }
   if (tagname.slice(0,5).toLowerCase() === "place") {
-    tagArray = tagname.split(":");
-    place = tagArray[1];
-    tagname = tagArray[0] + ":" + place.replace(" ", "-");
-  //   geo = geocodeStringAndPan(place);
+    tagname = tagname.replace(/ /g, '-');
   }
-  // else {
-    let data = { name: tagname };
-    sendFormSubmissionAjax(data, submitTo, responseEl);
-  // }
+  let data = { name: tagname };
+  sendFormSubmissionAjax(data, submitTo, responseEl);
 }
 
 function setupTagDelete(el) {
@@ -103,34 +98,6 @@ function displayNewTag(tag_name, tag_id, deletion_path) {
 
 function getDeletionPathId(deletion_path) {
   return deletion_path.split("/").pop();
-}
-
-function geocodeStringAndPan(string, onComplete) {
-  console.log("geocodeStringAndPan");
-  var url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + string.split(" ").join("+");
-  var Blurred = $.ajax({
-      async: false,
-      url: url,
-      complete: function(data) {
-        results = data.responseJSON;
-        if(results.status === "OK") {
-          geometry = results[0].geometry.location;
-          lat = geometry.lat;
-          lng = geometry.lng;
-          
-          var geo = [lat, lng];
-
-          if (geo.length > 0) {
-            var r = confirm("This looks like a location. Is this full description of the location accurate?");
-            if(r) { 
-              addTag("lat:" + geo[0].toString() + ",lng:" + geo[1].toString()+",place:"+string);
-            }    
-          }
-        } else {
-          console.log("Error retrieving location: " + results.error_message);
-        }
-      },
-  });
 }
 
 function promptTag(val) {
