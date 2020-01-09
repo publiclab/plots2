@@ -478,7 +478,7 @@ div.note.moderated h4 {
 }
 
 .note p.moderated .btn:hover {
-  background-color: rgba(238, 187, 136, 0.5)
+  background-color: rgba(238, 187, 136, 0.5);
 }
 
 .btn-primary {
