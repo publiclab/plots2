@@ -237,4 +237,14 @@ class ScreenshotsTest < ApplicationSystemTestCase
   #   take_screenshot
   # end
 
+  test 'simple editor post' do
+    visit '/'
+    click_on 'Login'
+    fill_in("username-login", with: "steff1")
+    fill_in("password-signup", with: "secretive")
+    click_on "Log in"
+    visit '/post/simple'
+    find('button#location_button').click
+    take_screenshot
+  end
 end
