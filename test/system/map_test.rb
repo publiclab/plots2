@@ -1,6 +1,7 @@
 require "application_system_test_case"
 
 class MapTest < ApplicationSystemTestCase
+  include ActiveJob::TestHelper
   Capybara.default_max_wait_time = 60
 
   test 'correct url hash for wiki map' do
