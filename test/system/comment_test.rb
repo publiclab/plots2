@@ -122,5 +122,23 @@ class CommentTest < ApplicationSystemTestCase
     # Make sure that image has been uploaded
     page.assert_selector('#preview img', count: 1)
   end
+ 
+  test 'the text change on preview button click' do
+    visit '/'
 
+    click_on 'Login'
+
+    fill_in("username-login", with: "jeff")
+    fill_in("password-signup", with: "secretive")
+    click_on "Log in"
+
+    visit "/wiki/wiki-page-path/comments"
+
+    click_on 'Preview'
+    assert_selector('.preview-btn', text: "Edit")
+
+
+    click_on 'Edit'
+    assert_selector('.preview-btn', text: "Preview")
+  end
 end
