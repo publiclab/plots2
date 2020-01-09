@@ -154,6 +154,7 @@ Plots2::Application.routes.draw do
   get 'methods' => 'wiki#methods'
   get 'methods/:topic' => 'wiki#methods'
   get 'techniques' => 'wiki#techniques'
+  get "/wikis/author/:id" => "wiki#author"
 
   get 'report/:id' => 'legacy#report'
   get 'node/:id' => 'legacy#node'
