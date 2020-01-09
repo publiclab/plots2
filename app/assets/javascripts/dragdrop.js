@@ -51,15 +51,14 @@ jQuery(document).ready(function() {
                 'nid':$D.nid
             },
             start: function(e) {
-                elem = $(this).closest('div.comment-form-wrapper').eq(0);
+                elem = $($D.selected).closest('div.comment-form-wrapper').eq(0);
                 elem.find('#create_progress').eq(0).show();
                 elem.find('#create_uploading').eq(0).show();
                 elem.find('#create_prompt').eq(0).hide();
                 elem.find('.dropzone').eq(0).removeClass('hover');
             },
             done: function (e, data) {
-                elem = $(e.target.closest('div.comment-form-wrapper')).eq(0);
-                // $D.selected = elem;
+                elem = $($D.selected).closest('div.comment-form-wrapper').eq(0);
                 elem.find('#create_progress').hide();
                 elem.find('#create_uploading').hide();
                 elem.find('#create_prompt').show();
@@ -99,7 +98,8 @@ jQuery(document).ready(function() {
 
             },
             progressall: function (e, data) {
-                return progressAll('#create_progress-bar', data);
+                var progressElement = $($D.selected).find('#create_progress-bar');
+                return progressAll(progressElement, data);
             }
         });
     });
