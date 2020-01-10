@@ -1,4 +1,4 @@
-<% wikis = wikis || @wikis #accept local if present, default to instance %>
+<% wikis ||= @wikis #accept local if present, default to instance %>
 <% if local_assigns[:digest] and wikis.length == 0 %>
   <div class="alert alert-warning" role="alert">
     You haven't subscribed to any topic yet. Visit <a href="https://publiclab.org/subscriptions">https://publiclab.org/subscriptions</a> to subscribe to more topics.
