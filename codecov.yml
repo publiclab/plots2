@@ -10,7 +10,9 @@ coverage:
     project: 
       default:
         threshold: 1%
-    patch: on
+    patch:
+      default:
+        threshold: 50%
 
 ignore:
   - app/assets/stylesheets/
