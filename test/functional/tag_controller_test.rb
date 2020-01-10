@@ -373,7 +373,7 @@ class TagControllerTest < ActionController::TestCase
     get :show,
         params: {
           node_type: 'contributors',
-          id: Tag.last.name
+          id: 'blog'
         }
 
     assert :success
