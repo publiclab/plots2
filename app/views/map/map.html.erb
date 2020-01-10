@@ -30,7 +30,11 @@
    <script>
 
       // set the map just under the navbar
-      $('.body-container').css('padding-top', $('#header').css('height'));
+      setTopPadding();
+      $(window).resize(setTopPadding);
+      function setTopPadding() {
+        $('.body-container').css('padding-top', $('#header').css('height'));
+      }
 
       var urlHash = urlMapHash();
 
