@@ -10,7 +10,11 @@ class AdminMailer < ActionMailer::Base
     @node = node
     @user = node.author
     @footer = feature('email-footer')
-    moderators = User.where(role: %w(moderator admin)).collect(&:email)
+    all_moderators = User.where(role: %w(moderator admin)).collect(&:email)
+    moderators = []
+    all_moderators.each do |mod_user|
+      moderators << mod_user unless .has_tag('no-moderation-emails')
+    end
     if node.status == 4 # only if it remains unmoderated
       mail(
         to: "moderators@#{ActionMailer::Base.default_url_options[:host]}",
