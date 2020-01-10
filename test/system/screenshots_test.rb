@@ -218,5 +218,10 @@ class ScreenshotsTest < ApplicationSystemTestCase
     visit node.path
     take_screenshot
   end
+  
+  # test 'maps' do
+  #   visit '/map/chicago'
+  #   take_screenshot
+  # end
 
 end
