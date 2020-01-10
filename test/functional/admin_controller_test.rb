@@ -662,4 +662,21 @@ class AdminControllerTest < ActionController::TestCase
     assert_response :success
     assert_not_nil assigns(:comments)
   end
+
+  test 'admin user should be able to view page to search users by email' do
+    UserSession.create(users(:admin))
+
+    get :useremail
+
+    assert_response :success
+  end
+
+  test 'admin user should be able to search users by email' do
+    UserSession.create(users(:admin))
+
+    get :useremail, params: { address: 'bob@publiclab.org', include_banned: 'true' }
+
+    assert_response :success
+    assert_not_nil assigns(:users)
+  end
 end
