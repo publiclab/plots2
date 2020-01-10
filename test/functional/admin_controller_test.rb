@@ -457,10 +457,6 @@ class AdminControllerTest < ActionController::TestCase
       comment = assigns(:comment)
       user = users(:moderator)
 
-      email = AdminMailer.notify_moderators_of_comment_spam(comment, user)
-      assert_emails 1 do
-          email.deliver_now
-      end
       assert_equal 0, comment.status
 
       assert_equal "Comment has been marked as spam and comment author has been banned. You can undo this on the <a href='/spam/comments'>spam moderation page</a>.", flash[:notice]
@@ -484,22 +480,17 @@ class AdminControllerTest < ActionController::TestCase
       comment = assigns(:comment)
       user = users(:moderator)
 
-      # these notifications were turned off in https://github.com/publiclab/plots2/issues/6246
-      #email = AdminMailer.notify_moderators_of_comment_spam(comment, user)
-      #assert_emails 1 do
-      #  email.deliver_now
-      #end
       assert_equal 0, comment.status
 
       assert_equal "Comment has been marked as spam and comment author has been banned. You can undo this on the <a href='/spam/comments'>spam moderation page</a>.", flash[:notice]
       assert_response :redirect
 
-      # these notifications were turned off in https://github.com/publiclab/plots2/issues/6246
-      #email = ActionMailer::Base.deliveries.last
-      #assert_not_nil email.to
-      #assert_not_nil email.bcc
-      #assert_equal ["comment-moderators@#{request_host}"], ActionMailer::Base.deliveries.last.to
-      #assert_equal '[New Public Lab comment needs moderation]', email.subject
+      # this should arrive 24 hours later but inside 'perform_enqueued_jobs' it's immediate
+      email = ActionMailer::Base.deliveries.last
+      assert_not_nil email.to
+      assert_not_nil email.bcc
+      assert_equal ["comment-moderators@#{request_host}"], ActionMailer::Base.deliveries.last.to
+      assert_equal '[New Public Lab comment needs moderation]', email.subject
     end
   end
 
@@ -574,22 +565,6 @@ class AdminControllerTest < ActionController::TestCase
     comment = assigns(:comment)
     assert_equal 1, comment.status
     assert_equal "Comment published.", flash[:notice]
-    assert_redirected_to node.path
-  end
-
-  test 'should send email to moderators when a comment is approved' do
-    user = users(:moderator)
-    UserSession.create(user)
-    comment = comments(:comment_status_4)
-    node = comment.node
-    post :publish_comment, params: { id: comment.id }
-    comment = assigns(:comment)
-
-    assert_emails 1 do
-        AdminMailer.notify_moderators_of_comment_approval(comment, user).deliver_now
-    end
-    #after approved
-    assert_equal 1, comment.status
     assert_redirected_to node.path
   end
 
