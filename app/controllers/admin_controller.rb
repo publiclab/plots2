@@ -60,19 +60,25 @@ class AdminController < ApplicationController
     end
   end
 
-  def useremail
-    if logged_in_as(['admin', 'moderator'])
-      if params[:address]
-        # address was submitted. find the username(s) and return.
-        @address = params[:address]
-        @users = User.where(email: params[:address])
-                 .where(status: [1, 4])
-      end
-    else
-      # unauthorized. instead of return ugly 403, just send somewhere else
-      redirect_to '/dashboard'
-    end
+  def useremail 
+   if logged_in_as(['admin', 'moderator']) 
+     if params[:address] 
+       # address was submitted. find the username(s) and return. 
+       @address = params[:address] 
+       if params[:include_banned]
+         @users = User.where(email: params[:address]) 
+           .where('created_at > (?)', DateTime.new(2015)) # since 2015, whether banned or not
+       else
+         @users = User.where(email: params[:address]) 
+           .where(status: [1, 4]) 
+       end
+     end 
+   else 
+     # unauthorized. instead of return ugly 403, just send somewhere else 
+     redirect_to '/dashboard' 
+   end
   end
+
 
   def spam
     if logged_in_as(['admin', 'moderator'])
