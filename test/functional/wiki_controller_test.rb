@@ -635,4 +635,15 @@ class WikiControllerTest < ActionController::TestCase
       assert_equal 'text/html', @response.content_type
   end
 
+  test "should get author wikis of which none are banned" do
+    user = users(:jeff)
+    get :author, params: { id: user.name }
+    wikis = assigns(:wikis)
+    # check they are not banned
+    assert wikis.all? { |wiki| wiki.status == 1 }
+    # test their type
+    assert wikis.none? { |wiki| wiki.type == "question" || wiki.status == "note"}
+    # check correct author
+    assert wikis.all? { |wiki| wiki.uid == user.uid }
+  end
 end
