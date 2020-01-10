@@ -97,14 +97,19 @@
       $('#loginModal').modal(); // Open the login modal to allow user to login
     });
 
-    $("#visibility").on("click", function(e) {
+    $("#visibility").on("click",function(e){
       e.preventDefault();
-      $(this).toggleClass("fa-eye-slash");
-      var type = $("#password-signup").attr("type");
-      if (type == "text")
-      { $("#password-signup").attr("type", "password");}
-      else
-      { $("#password-signup").attr("type", "text"); }
+      var id = setInterval(frame, 1500);
+      //changes type from password to text along with the eye icon
+      $("#visibility").toggleClass("fa-eye-slash");
+      $("#password-signup").attr("type","text");   
+      function frame() {
+         //changes type from text again to password after 1.5 seconds along with eye-slash icon
+         clearInterval(id);
+         $("#password-signup").attr("type","password"); 
+         $("#visibility").toggleClass("fa-eye-slash"); 
+       
+      }
     });
 
   </script>
