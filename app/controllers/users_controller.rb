@@ -382,7 +382,8 @@ class UsersController < ApplicationController
     user_settings = [
       'notify-comment-direct:false',
       'notify-likes-direct:false',
-      'notify-comment-indirect:false'
+      'notify-comment-indirect:false',
+      'no-moderation-emails'
     ]
 
     user_settings.each do |setting|
