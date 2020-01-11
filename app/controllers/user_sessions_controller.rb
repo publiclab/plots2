@@ -76,7 +76,7 @@ class UserSessionsController < ApplicationController
           if session[:openid_return_to] # for openid login, redirects back to openid auth process
             return_to = session[:openid_return_to]
             session[:openid_return_to] = nil
-            redirect_to "/dashboard"
+            redirect_to return_to + hash_params
           else
             redirect_to "/dashboard", notice: "You have successfully signed in. Please change your password using the link sent to you via e-mail."
           end
