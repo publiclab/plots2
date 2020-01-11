@@ -15,8 +15,8 @@ Above command will start the server and then the mailman server will do polling 
 Users can modify **Email Settings** by visiting [https://publiclab.org/settings](https://publiclab.org/settings). Settings for each user are saved by using UserTags on their profiles. 
 For each setting, there is an associated tag with it. Below is the table showing associated tags with setting. 
 
-We consider absence of **tag** as true and presence of **tag** as false for setting, so whenever a user turns **off** a setting, a corresponding user-tag is generated and turning setting **on** again will delete the tag.  
-So, while notifying a user **UserTag** is checked in different files and _user_ is notified depending on the presence or absence of the tag.
+We consider the absence of a tag as true and the presence of a tag as false for setting, so whenever a user turns **off** a setting, a corresponding user-tag is generated and turning setting **on** again will delete the tag.  
+So, while notifying a user **UserTag** is checked in different files and the user is notified depending on the presence or absence of the tag.
 
 | Email Settings | Default | User tag to override default (for turning OFF) | File where tag is used |
 | ------------- | ------------- | ----------- | ----------- |
