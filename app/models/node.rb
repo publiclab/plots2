@@ -756,6 +756,7 @@ class Node < ActiveRecord::Base
   end
 
   def add_tag(tagname, user)
+   if user.status == 1
     tagname = tagname.downcase
     unless has_tag_without_aliasing(tagname)
       saved = false
@@ -816,6 +817,7 @@ class Node < ActiveRecord::Base
         end
       end
       return [saved, tag, table_updated]
+    end
     end
   end
 
