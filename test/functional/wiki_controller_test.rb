@@ -593,7 +593,7 @@ class WikiControllerTest < ActionController::TestCase
     @user = UserSession.create(users(:jeff))
     @node = nodes(:wiki_page)
     slug = @node.path.gsub('/wiki/', '')
-    @node.add_tag('date:bad', @user)
+    @node.add_tag('date:bad', users(:jeff))
 
     assert_equal false, @node.has_power_tag('date')
     # assert_equal "anything goes", DateTime.strptime(@node.power_tag('date'),'%m- %d-%Y').to_date.to_s(:long)
