@@ -782,11 +782,7 @@ class Node < ActiveRecord::Base
             end
             # parse date tags:
             if key == 'date'
-              begin
-                DateTime.strptime(value, '%m-%d-%Y').to_date.to_s(:long)
-              rescue StandardError
-                return [false, tag.destroy]
-              end
+              DateTime.strptime(value, '%m-%d-%Y').to_date.to_s(:long) rescue return [false, tag.destroy]
             end
             tag.save!
             node_tag = NodeTag.new(tid: tag.id,
@@ -807,9 +803,8 @@ class Node < ActiveRecord::Base
               saved = true
               tag.run_count # update count of tag usage
               # send email notification if there are subscribers, status is OK, and less than 1 month old
-              unless tag.subscriptions.empty? || status == 3 || status == 4 || created < (DateTime.now - 1.month).to_i
-                SubscriptionMailer.notify_tag_added(self, tag, user).deliver_now
-              end
+              send_tag = !(tag.subscriptions.empty? || status == 3 || status == 4 || created < (DateTime.now - 1.month).to_i)
+              SubscriptionMailer.notify_tag_added(self, tag, user).deliver_now if send_tag
             else
               saved = false
               tag.destroy
