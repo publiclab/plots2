@@ -84,6 +84,11 @@ class ScreenshotsTest < ApplicationSystemTestCase
     take_screenshot
   end
 
+  test "tag stats" do
+    visit "/tag/#{node_tags(:awesome).name}/stats"
+    take_screenshot
+  end
+  
   test 'tag page' do
     nodes(:activity).add_tag('pin:test', users(:bob)) # ensure a pinned note appears
     visit '/tag/test'
