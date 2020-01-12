@@ -100,11 +100,12 @@
     $("#visibility").on("click",function(e){
       e.preventDefault();
       var id = setInterval(frame, 1500);
-      //changes type from password to text along with the eye icon
+      // changes type from password to text along with the eye icon
       $("#visibility").toggleClass("fa-eye-slash");
-      $("#password-signup").attr("type","text"); 
+      $("#password-signup").attr("type","text");
+      
       function frame() {
-         //changes type from text again to password after 1.5 seconds along with eye-slash icon
+         // changes type from text again to password after 1.5 seconds along with eye-slash icon
          clearInterval(id);
          $("#password-signup").attr("type","password"); 
          $("#visibility").toggleClass("fa-eye-slash"); 
