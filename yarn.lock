@@ -454,7 +454,7 @@ blueimp-canvas-to-blob@>=2.0.5:
   resolved "https://registry.yarnpkg.com/blueimp-canvas-to-blob/-/blueimp-canvas-to-blob-3.17.0.tgz#d796e72aa1fd37f9471e0396e64d323956564a23"
   integrity sha512-LcuVZZtKtE4yUrLb0IQA7ndMm19gooDTrzvjjkvmQ1MhkFlSzTw+8Ftp+/ckfGeP2UDQvDsPyy8mIT69itAqbg==
 
-blueimp-file-upload@^9.28.0, blueimp-file-upload@blueimp/jQuery-File-Upload#^9.22.1:
+blueimp-file-upload@^9.34.0, blueimp-file-upload@blueimp/jQuery-File-Upload#^9.22.1:
   version "9.34.0"
   resolved "https://codeload.github.com/blueimp/jQuery-File-Upload/tar.gz/bb52d3493d725175fcf5554da034a317aaaea0e2"
   optionalDependencies:
@@ -3513,7 +3513,7 @@ klaw@^1.0.0:
   optionalDependencies:
     graceful-fs "^4.1.9"
 
-leaflet-blurred-location@^1.2.5, leaflet-blurred-location@^1.5.1:
+leaflet-blurred-location@^1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/leaflet-blurred-location/-/leaflet-blurred-location-1.5.1.tgz#3839e6322b838959726167061633f821930d4ee7"
   integrity sha512-gR/O+Getlxn6D8dVrp/zuqj71uT72+Punbino3rEG1rCf6d65AjqYYINSqeG+gC3RtXeSi3iHZTKQj+t9jl5pQ==
@@ -4648,14 +4648,14 @@ psl@^1.1.24, psl@^1.1.28:
   resolved "https://registry.yarnpkg.com/psl/-/psl-1.7.0.tgz#f1c4c47a8ef97167dea5d6bbf4816d736e884a3c"
   integrity sha512-5NsSEDv8zY70ScRnOTn7bK7eanl2MvFrOrS/R6x+dBt5g1ghnj9Zv90kO8GwT8gxcu2ANyFprnFYB85IogIJOQ==
 
-publiclab-editor@^2.0.0, publiclab-editor@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/publiclab-editor/-/publiclab-editor-2.0.4.tgz#aa355fe0fafdb46444e2bee2b1beaf2399e0ae81"
-  integrity sha512-MPNK8rewaxT14iPkkcC1rRvm6XhXJiyCttoQVbNngB48YTODGbYuEiMxdpxCIiC8ClGZdap+vZpLTgSfC7ARUQ==
+publiclab-editor@^2.0.0, publiclab-editor@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/publiclab-editor/-/publiclab-editor-2.0.5.tgz#0f9faa4f94850e9fe8957c8f424d43743ebed5fd"
+  integrity sha512-ICsYp37679HePsV3mEEifFt6s2ls1jeZrRfl/WDNBpiP7UYMq0AF4Szpdm/ZHKX/72uwerPx3d0lBRleb8ov8Q==
   dependencies:
     at.js "^1.5.4"
     backbone "~1.3.3"
-    blueimp-file-upload "^9.28.0"
+    blueimp-file-upload "^9.34.0"
     bootstrap "~3.4.0"
     bootstrap-datepicker "~1.9.0"
     bootstrap-tokenfield "~0.12.0"
@@ -4664,8 +4664,8 @@ publiclab-editor@^2.0.0, publiclab-editor@^2.0.4:
     font-awesome "~4.7.0"
     grow-textarea "git://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669"
     jquery "~3"
-    leaflet "^1.3.3"
-    leaflet-blurred-location "^1.2.5"
+    leaflet "^1.6.0"
+    leaflet-blurred-location "^1.5.1"
     megamark "3.3.0"
     moment "~2.24.0"
     resig-class "~1.0.0"
