@@ -277,7 +277,8 @@ class UserSessionsControllerTest < ActionController::TestCase
     post :create
     assert_redirected_to "/notes/liked?_=#{Time.now.to_i.to_s}"
     assert_equal flash[:error], I18n.t('user_sessions_controller.user_has_been_banned', username: "bansal_sidharth309").html_safe
-    
+  end
+  
   test "redirects to previous page when logging in through oauth" do
     request.env['omniauth.origin'] = "/notes/liked"
     request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:github1]
