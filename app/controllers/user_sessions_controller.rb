@@ -50,8 +50,8 @@ class UserSessionsController < ApplicationController
         redirect_to return_to + hash_params, notice: "Already linked to another account!"
       end
     else # not signed in
-      # if user has the same email for his oauth login and his publiclab website, we can get him using
-      # User.find_by(...). Otherwise, we use the identity that is linked to his account when it was created.
+      # User U has Provider P linked to U. U has email E1 while P has email E2. So, User table can't find E2 provided
+      # from auth hash, hence U is found by the user of identity having E2 as email
       @user = User.find_by(email: auth["info"]["email"]) || @identity.user
       if @user&.status&.zero?
         flash[:error] = I18n.t('user_sessions_controller.user_has_been_banned', username: @user.username).html_safe
