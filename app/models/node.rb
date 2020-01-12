@@ -808,7 +808,7 @@ class Node < ActiveRecord::Base
               tag.run_count # update count of tag usage
               # send email notification if there are subscribers, status is OK, and less than 1 month old
               isStatusValid = status == 3 || status == 4
-              isMonthOld == created < (DateTime.now - 1.month).to_i
+              isMonthOld = created < (DateTime.now - 1.month).to_i
               unless tag.subscriptions.empty? || isStatusValid || !isMonthOld
                 SubscriptionMailer.notify_tag_added(self, tag, user).deliver_now
               end
