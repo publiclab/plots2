@@ -34,7 +34,7 @@ $(document).ready(function() {
   });
 });
 
-$(document).ready(function () {
+$(document).ready(function() {
   // The two forms have same ID
   var forms = document.querySelectorAll("#create-form");
 
@@ -128,7 +128,7 @@ SignUpFormValidator.prototype.isFormValid = function() {
 };
 
 function validateUsername(obj) {
-  var username = this.value;
+  var username = this.value.trim();
   var self = this;
 
   if (username.length < 3) {
@@ -151,10 +151,10 @@ function validateUsername(obj) {
 }
 
 function validateEmail(obj) {
-  var email = this.value;
+  var email = this.value.trim();
 
-  if (email === "") {
-    obj.updateUI(this, false, "This field can't be empty");
+  if (email.length === 0) {
+    obj.updateUI(this, false, "The email cannot be empty.");
     return;
   }
 
@@ -165,10 +165,10 @@ function validateEmail(obj) {
 }
 
 function validatePassword(confirmPasswordElement, obj) {
-  var password = this.value;
+  var password = this.value.trim();
 
-  if (password === "") {
-    obj.updateUI(this, false, "This field can't be empty");
+  if (password.length === 0) {
+    obj.updateUI(this, false, "The password cannot be empty.");
     return;
   }
 
@@ -189,16 +189,20 @@ function validatePassword(confirmPasswordElement, obj) {
 }
 
 function validateConfirmPassword(passwordElement, obj) {
-  var confirmPassword = this.value;
+  var confirmPassword = this.value.trim();
   var password = passwordElement.value;
 
-  if (confirmPassword === "") {
-    obj.updateUI(this, false, "This field can't be empty");
+  if (confirmPassword.length === 0) {
+    obj.updateUI(this, false, "The password confirmation cannot be empty");
     return;
   }
 
   if (confirmPassword !== password || !isPasswordValid(password)) {
-    obj.updateUI(this, false, "Passwords must be equal");
+    obj.updateUI(
+      this,
+      false,
+      "Password and Password Confirmation should be the same."
+    );
     return;
   }
 
