@@ -90,7 +90,7 @@ class ApplicationController < ActionController::Base
       @current_user = nil
     elsif @current_user.try(:status) == 5
       # Tell the user they are banned. Fails b/c redirect to require below.
-      flash[:warning] = "The user '#{@current_user.username}' has been placed in moderation; please see <a href='https://#{request.host}/wiki/moderators'>our moderation policy</a> and contact <a href='mailto:moderators@#{request.host}'>moderators@#{request.host}</a> if you believe this is in error."
+      flash[:warning] = "The user '#{@current_user.username}' has been placed in moderation; please see <a href='https://#{request.host}/wiki/moderators'>our moderation policy</a> and contact <a href='mailto:moderators@#{request.host}?body=Please make sure to include your username and the email address you used to sign up for the site.'>moderators@#{request.host}</a> if you believe this is in error."
       # Same effect as if the user clicked logout:
       current_user_session.destroy
       # Ensures no code will use old @current_user info. Treat the user
@@ -110,7 +110,7 @@ class ApplicationController < ActionController::Base
     unless current_user
       store_location
       flash[:warning] ||= I18n.t('application_controller.must_be_logged_in_to_access')
-      redirect_to login_url
+      redirect_to "/login?return_to=" + request.fullpath
       false
     end
     return current_user

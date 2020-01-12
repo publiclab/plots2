@@ -7,5 +7,12 @@ comment:
   branches: null          # branch names that can post comment
 coverage:
   status:
-    project: on
-    patch: on
+    project: 
+      default:
+        threshold: 1%
+    patch:
+      default:
+        threshold: 50%
+
+ignore:
+  - app/assets/stylesheets/
