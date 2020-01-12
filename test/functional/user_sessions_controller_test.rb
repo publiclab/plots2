@@ -267,7 +267,7 @@ class UserSessionsControllerTest < ActionController::TestCase
     assert_equal "Successfully logged out.",  flash[:notice]
   end
   
-  test "redirects tto previous page when logging in through oauth" do
+  test "redirects to previous page when logging in through oauth" do
     request.env['omniauth.origin'] = "/notes/liked"
     request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:github1]
     # sign up
