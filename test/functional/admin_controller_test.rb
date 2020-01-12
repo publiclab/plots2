@@ -130,7 +130,7 @@ class AdminControllerTest < ActionController::TestCase
     get :spam
 
     assert_equal 'You must be logged in to access this page', flash[:warning]
-    assert_redirected_to '/login'
+    assert_redirected_to '/login?return_to=/spam'
   end
 
   test 'normal user should not be able to see spam page' do
@@ -330,7 +330,7 @@ class AdminControllerTest < ActionController::TestCase
     get :spam_revisions
 
     assert_equal 'You must be logged in to access this page', flash[:warning]
-    assert_redirected_to '/login'
+    assert_redirected_to '/login?return_to=/spam/revisions'
   end
 
   test 'normal user should not be able to see spam_revisions page' do
@@ -508,7 +508,7 @@ class AdminControllerTest < ActionController::TestCase
 
     post :mark_comment_spam, params: { id: comment.id }
 
-    assert_redirected_to '/login'
+    assert_redirected_to '/login?return_to=/admin/mark_comment_spam/309456473'
   end
 
   test 'should not mark comment as spam if normal user' do
@@ -599,7 +599,7 @@ class AdminControllerTest < ActionController::TestCase
     post :publish_comment, params: { id: comment.id }
 
     assert_equal 0, comment.status
-    assert_redirected_to '/login'
+    assert_redirected_to '/login?return_to=/admin/publish_comment/3449440'
   end
 
   test 'should not publish comment from spam if any other user' do
@@ -633,7 +633,7 @@ class AdminControllerTest < ActionController::TestCase
     get :spam_comments
 
     assert_equal 'You must be logged in to access this page', flash[:warning]
-    assert_redirected_to '/login'
+    assert_redirected_to '/login?return_to=/spam/comments'
   end
 
   test 'normal user should not be able to see spam_comments page' do
