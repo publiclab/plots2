@@ -153,7 +153,7 @@ class AdminController < ApplicationController
     else
       flash[:error] = 'Only moderators can moderate comments.'
     end
-    redirect_back(fallback_location: root_path)
+    redirect_to @comment.node.path + '?_=' + Time.now.to_i.to_s
   end
 
   def publish_comment
@@ -176,7 +176,7 @@ class AdminController < ApplicationController
         end
       end
       @node = @comment.node
-      redirect_to @node.path
+      redirect_to @node.path + '?_=' + Time.now.to_i.to_s
     else
       flash[:error] = 'Only moderators can publish comments.'
       redirect_to '/dashboard'
