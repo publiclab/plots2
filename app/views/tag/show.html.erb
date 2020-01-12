@@ -24,10 +24,10 @@
       <% end %>
       <div class="tag-buttons">
         <div class="btn-group" role="group">
-          <% if current_user && current_user.following(@title) %>
-            <a rel="tooltip" title="<%= t('sidebar._post_button.share_your_work') %>" data-placement="bottom" href="/post?tags=<%= tag.name %>" class="btn btn-primary requireLogin">New post <i class="fa fa-plus fa-white"></i></a>
+          <% if current_user && current_user.following(params[:id]) %>
+            <a rel="tooltip" title="<%= t('sidebar._post_button.share_your_work') %>" data-placement="bottom" href="/post?tags=<%= params[:id] %>" class="btn btn-primary requireLogin">New post <i class="fa fa-plus fa-white"></i></a>
           <% else %>
-            <a class="btn btn-primary requireLogin" target="_blank" href="/subscribe/tag/<%= @title %>"> Follow</a>
+            <a class="btn btn-primary requireLogin" target="_blank" href="/subscribe/tag/<%= params[:id] %>"> Follow</a>
               <% if @related_tags %>
                 <a><%= render partial: 'tag/dropdown_subscribe', locals: { tags: @related_tags, buttonStyle: "btn-primary"} %></a>
               <% end %>
@@ -55,9 +55,9 @@
 
             <div class="row">
               <div class="col-lg-6">
-                <p class="contributor-info"><%= Tag.find_nodes_by_type(tag.name, 'note', false).count %> posts by 
-                  <a href="/contributors/<%= params[:id] %>"><%= Tag.contributor_count(tag.name) %> contributors</a> | 
-                  <a href="/contributors/<%= params[:id] %>"><%= Tag.follower_count(tag.name) %> followers</a>
+                <p class="contributor-info"><%= Tag.find_nodes_by_type(params[:id], 'note', false).count %> posts by 
+                  <a href="/contributors/<%= params[:id] %>"><%= Tag.contributor_count(params[:id]) %> contributors</a> | 
+                  <a href="/contributors/<%= params[:id] %>"><%= Tag.follower_count(params[:id]) %> followers</a>
                   <a href="https://publiclab.org/wiki/contributors"><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>
                 </p>
               </div>

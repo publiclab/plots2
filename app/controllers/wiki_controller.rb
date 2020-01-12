@@ -467,4 +467,13 @@ class WikiController < ApplicationController
       @node.save
     end
   end
+
+  def author
+    @user = User.find_by(name: params[:id])
+    @title = @user.name
+    @wikis = Node.paginate(page: params[:page], per_page: 24)
+      .order('nid DESC')
+      .where("uid = ? AND type = 'page' OR type = 'place' OR type = 'tool' AND status = 1", @user.uid)
+    render template: 'wiki/index'
+  end
 end

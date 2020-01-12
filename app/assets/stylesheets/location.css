@@ -14,3 +14,19 @@
 #map_content .form-group .btn {
   margin-top: .4rem;
 }
+
+a:not([href]):not([tabindex]).btn-location,
+.btn-location {
+  position: inline;
+  color:#666;
+}
+a:not([href]):not([tabindex]).btn-outline-secondary.btn-location .fa,
+a.btn-outline-secondary.btn-location .fa {
+  color: #c40;
+}
+a:not([href]):not([tabindex]).btn-outline-secondary.btn-location:hover,
+a:not([href]):not([tabindex]).btn-outline-secondary.btn-location:hover i,
+.btn-outline-secondary.btn-location:hover,
+.btn-outline-secondary.btn-location:hover i {
+  color: white;
+}

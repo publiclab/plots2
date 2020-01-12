@@ -16,7 +16,7 @@ The tests take between 6-12 minutes to run (we're working on shortening this!) s
 
 ## Coverage
 
-See [plots2 on CodeClimate](https://codeclimate.com/github/publiclab/plots2) for how well covered our code is with tests; we are extremely interested in building our out test suite, so please consider helping us write tests!
+See [plots2 on CodeClimate](https://codeclimate.com/github/publiclab/plots2) for how well covered our code is with tests; we are extremely interested in building out our test suite, so please consider helping us write tests!
 
 ## Client-side tests
 
@@ -64,7 +64,7 @@ Mail will be same as actual mail we will get in production.
 
 ## Testing branches
 
-We have three principle branches: a master, where all tested new features are live,
+We have three principal branches: a master, where all tested new features are live,
 a stable and an unstable. Those last two are used to test new code before sending
 them to production.
 If you need to use the stable or the unstable branch,
@@ -168,10 +168,10 @@ See summary and usage instructions below.
 
 ### Pushing on `unstable`
 
-1. Drop a message in the [Gitter chatroom](https://gitter.im/publiclab/publiclab) that you are pushing to _unstable_, as other members also use it for testing their work so you don't want to shock them by pushing your work over theirs. After dropping the message, wait for 5 mins, and if no one mention that they are using the branch, then go to step 2.
+1. Drop a message in the [Gitter chatroom](https://gitter.im/publiclab/publiclab) that you are pushing to _unstable_, as other members also use it for testing their work so you don't want to shock them by pushing your work over theirs. After dropping the message, wait for 5 mins, and if no one mentions that they are using the branch, then go to step 2.
 2. Push using: `git push -f https://github.com/publiclab/plots2.git HEAD:unstable`.<br><br>**Note:** If you get this message - `remote: Permission to publiclab/plots2.git denied to <username>` then you don't have permission to push to _unstable_ branch.
 But, don't worry, feel free to ping @publiclab/maintainers on your open PR to request access or ask in the chatroom and someone else with write access will push your work (PR/branch) for you.  
-3. See build Progress at https://jenkins.laboratoriopublico.org/job/Plots-Unstable/. It takes 8-15 mins for build to complete. 
+3. See build progress at https://jenkins.laboratoriopublico.org/job/Plots-Unstable/. It takes 8-15 mins for build to complete. 
 4. Test website: https://unstable.publiclab.org/. 
 
 Once your PR is merged into plots2/master, code is only deployed to the live site [publiclab.org](publiclab.org) after some time by our maintainers. (They often send a message in our chatroom to notify contributors of this update). Fortunately, you can see your changes implemented immediately at https://stable.publiclab.org, which builds from the master branch. This is useful for testing your work again after a merge.

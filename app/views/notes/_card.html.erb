@@ -23,6 +23,12 @@
   <% end %>
 
   <h5 style="margin-bottom: 0px;"><a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>" style="color: black"><%= (node.type == 'note') ? node.title : node.latest.title %></a></h5>
+  <% if node.has_tag("method") %>
+  <p style="margin-bottom: 0px;"><small>
+    <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#Activities"><i class="fa fa-flask" style="color:#3da56a;"></i> <%= node.activities.count %> activities</a>
+    <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#Questions"><i class="fa fa-question-circle" style="color:#db3a1e;"></i> <span id="questions-count-<%= node.id %>"><%= node.questions.count %> questions</span></a>
+  </small></p>
+<% end %>
 
   <small>
     <% if node.type == 'note' %>
@@ -47,12 +53,7 @@
         <li><a>Total Likes: <%= node.likers.length %></a></li>
         <div class="content" style="width: 100%" >
           <% if @compact.nil? %>
-            <% if node.has_tag("method") %>
-              <p><small>
-                <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#Activities"><i class="fa fa-flask" style="color:#3da56a;"></i> <%= node.activities.count %> activities</a>
-                <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#Questions"><i class="fa fa-question-circle" style="color:#db3a1e;"></i> <span id="questions-count-<%= node.id %>"><%= node.questions.count %> questions</span></a>
-              </small></p>
-            <% end %>
+           
             <li class="buttons mb-2"><% if @current_user && ['admin','moderator'].include?(@current_user.role) %><a style="width: 90px" class="btn btn-outline-secondary" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> <%= t('notes._notes.spam') %></a><% end %></li>
             <li class="buttons"><a style="width: 90px;" class="btn btn-outline-secondary" href="<%= node.path %>"><%= t('notes._notes.read_more') %></a></li>
           <% end %>

@@ -111,3 +111,15 @@ place:
 project:
   tid: 28
   name: project
+
+test4_lat:
+  tid: 29
+  name: lat:41.87
+
+test4_lon:
+  tid: 30
+  name: lon:-87.64
+
+test4_zoom:
+  tid: 31
+  name: zoom:13

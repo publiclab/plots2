@@ -70,7 +70,12 @@
 </div>
 
 <script>
-  
+
+  var bounds = new L.LatLngBounds(
+    new L.LatLng(90, -180),
+    new L.LatLng(-90, 180)
+  );
+
   var options = {
     InterfaceOptions: {
       latId: 'lat',
@@ -100,19 +105,26 @@
 
     blurredLocation.panMapToGeocodedLocation("placenameInput");
 
-     var changeZoom = function() {
-        var zoom = slider.getValue();
-        blurredLocation.map.setZoom(zoom);
-      }
+    blurredLocation.map.setMaxBounds(bounds);
 
-      var slider = $('#ex1').slider()
-        .on('slide', changeZoom)
-        .data('slider');
+    var changeZoom = function() {
+      var zoom = slider.getValue();
+      blurredLocation.map.setZoom(zoom);
+    }
+
+    var slider = $('#ex1').slider()
+      .on('slide', changeZoom)
+      .data('slider');
+
+    blurredLocation.map.on('zoomend', function() {
+      let zoom = blurredLocation.map.getZoom();
+      $('#ex1').slider('setValue', zoom);
+    })
 
   })();
     
   function saveLocation() {
-    var tags = 'lat:' + blurredLocation.getLat() + ',lon:' + blurredLocation.getLon();
+    var tags = 'lat:' + blurredLocation.getLat() + ',lon:' + blurredLocation.getLon() + ',zoom:' + blurredLocation.getZoom();
     if (blurredLocation.isBlurred()) tags = tags + ',' + 'location:blurred'
     if ($('#placenameDisplay').val() != 'Location unavailable') tags = tags + ',' + 'place:' + parameterize($('#placenameDisplay').val());
     <% if params[:url] %>

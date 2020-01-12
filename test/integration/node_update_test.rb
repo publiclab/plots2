@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class NodeUpdateTest < ActionDispatch::IntegrationTest
+  include ActiveJob::TestHelper
   test 'edit note after creating a new note' do
     post '/user_sessions', params: { user_session: { username: users(:bob).username, password: 'secretive' } }
 

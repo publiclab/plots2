@@ -11,11 +11,13 @@ class AdminMailer < ActionMailer::Base
     @user = node.author
     @footer = feature('email-footer')
     moderators = User.where(role: %w(moderator admin)).collect(&:email)
-    mail(
-      to: "moderators@#{ActionMailer::Base.default_url_options[:host]}",
-      bcc: moderators,
-      subject: subject
-    )
+    if node.status == 4 # only if it remains unmoderated
+      mail(
+        to: "moderators@#{ActionMailer::Base.default_url_options[:host]}",
+        bcc: moderators,
+        subject: subject
+      )
+    end
   end
 
   def notify_comment_moderators(comment)
@@ -24,11 +26,13 @@ class AdminMailer < ActionMailer::Base
     @user = comment.author
     @footer = feature('email-footer')
     moderators = User.where(role: %w(moderator admin)).collect(&:email)
-    mail(
-      to: "comment-moderators@#{ActionMailer::Base.default_url_options[:host]}",
-      bcc: moderators,
-      subject: subject
-    )
+    if comment.status == 4 # only if it remains unmoderated
+      mail(
+        to: "comment-moderators@#{ActionMailer::Base.default_url_options[:host]}",
+        bcc: moderators,
+        subject: subject
+      )
+    end
   end
 
   def notify_author_of_approval(node, moderator)
