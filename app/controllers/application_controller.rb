@@ -110,7 +110,7 @@ class ApplicationController < ActionController::Base
     unless current_user
       store_location
       flash[:warning] ||= I18n.t('application_controller.must_be_logged_in_to_access')
-      redirect_to login_url
+      redirect_to "/login?return_to=" + request.fullpath
       false
     end
     return current_user

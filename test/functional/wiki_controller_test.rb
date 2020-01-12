@@ -96,7 +96,7 @@ class WikiControllerTest < ActionController::TestCase
          tags:  'balloon-mapping,event'
         }
 
-    assert_redirected_to('/login')
+    assert_redirected_to('/login?return_to=/wiki/create')
   end
 
   test 'post wiki' do

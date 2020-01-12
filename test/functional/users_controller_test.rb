@@ -257,14 +257,14 @@ class UsersControllerTest < ActionController::TestCase
     user = users(:bob)
     get :edit, params: { id: user.name }
     assert_not flash.empty?
-    assert_redirected_to '/login'
+    assert_redirected_to '/login?return_to=/profile/Bob/edit'
   end
 
   test 'should redirect update when not logged in' do
     user = users(:bob)
     post :update, params: { user: { bio: 'Hello, there!' } }
     assert_not flash.empty?
-    assert_redirected_to '/login'
+    assert_redirected_to '/login?return_to=/users/update'
   end
 
   test 'should redirect edit when logged in as another user' do
