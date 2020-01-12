@@ -1206,10 +1206,10 @@ cssstyle@^2.0.0:
   dependencies:
     cssom "~0.3.6"
 
-csv-parse@^2.0.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/csv-parse/-/csv-parse-2.5.0.tgz#65748997ecc3719c594622db1b9ea0e2eb7d56bb"
-  integrity sha512-4OcjOJQByI0YDU5COYw9HAqjo8/MOLLmT9EKyMCXUzgvh30vS1SlMK+Ho84IH5exN44cSnrYecw/7Zpu2m4lkA==
+csv-parse@^4.6.5:
+  version "4.8.3"
+  resolved "https://registry.yarnpkg.com/csv-parse/-/csv-parse-4.8.3.tgz#9f9b66c3e7e30409dba3d08ecd89eaa04b320659"
+  integrity sha512-0GPxubzYzSn08lhNTWDCkcDKn8krmw0WuscqB2RrW6sugGGskbwaaEz7PCFFwbQ0phNGTTieiyfzzu3S/jZZ7Q==
 
 ctype@0.5.3:
   version "0.5.3"
@@ -1234,9 +1234,9 @@ cwise-compiler@^1.0.0, cwise-compiler@^1.1.2:
     uniq "^1.0.0"
 
 cytoscape@^3.12.1:
-  version "3.12.1"
-  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.12.1.tgz#48fe85481ba7ba4c3b77396426b6b9cc27fe2bb4"
-  integrity sha512-/TIrNXcWZdjTgB2BK2oJfroO8IAM6XSu9lCGEe3boJ68KHqH0fbSrc0tIOfibkzkMfUhFLNed9tcaoYdjxOnTQ==
+  version "3.13.0"
+  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.13.0.tgz#490d06c237cf4ecefb7f86acb6d9a489a23156c4"
+  integrity sha512-1pKd6DUyprUmz/ADPI3aKFbZceqeKoVwYBr3zBplzHOaffF311z6Zo5qWqXK12t4JRdTOvFA4kwt8T/QVIrU1Q==
   dependencies:
     heap "^0.2.6"
     lodash.debounce "^4.0.8"
@@ -2464,9 +2464,9 @@ gpu-mock.js@^1.1.1:
   integrity sha512-BmoRk9nbMaxkrwzTJp4M0iuwIbzNEXt6tlBZ5+ZYzaGH9VWu5Nhn1Q1CBusCam3d8u3FfVEFf3Ueo8DocUCbUw==
 
 gpu.js@^2.0.0-rc.12:
-  version "2.4.6"
-  resolved "https://registry.yarnpkg.com/gpu.js/-/gpu.js-2.4.6.tgz#a625d2d24e79ad5be81dd99dff28880edad65882"
-  integrity sha512-nX2buxg6WTZPBeme6nzeWNq/wK4j3YtmkKkMcD2CmiBnRc9yWQunHk177HKSi3e7mLhJHMGjZIYprsn3xS3u4Q==
+  version "2.4.8"
+  resolved "https://registry.yarnpkg.com/gpu.js/-/gpu.js-2.4.8.tgz#59e980edfdb622b8e5f85ace012214b7d0525911"
+  integrity sha512-V4CAZIR+kV6enLVPGoeZdb4lK4FGGuolDDYNBMAlNzrfDN7OJjl2V9we6bKDTKhV/gwsYmivs0x22qo/Q0zHzA==
   dependencies:
     acorn "^7.1.0"
     gl "^4.4.0"
@@ -2629,9 +2629,9 @@ gtoken@^2.3.2:
     pify "^4.0.0"
 
 handlebars@^4.0.1:
-  version "4.5.3"
-  resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.5.3.tgz#5cf75bd8714f7605713511a56be7c349becb0482"
-  integrity sha512-3yPecJoJHK/4c6aZhSvxOyG4vJKDshV36VHp0iVCDVh7o9w2vwi3NSnL2MMPj3YdduqaBcu7cGbggJQM0br9xA==
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.6.0.tgz#33af6c3eda930d7a924f5d8f1c6d8edc3180512e"
+  integrity sha512-i1ZUP7Qp2JdkMaFon2a+b0m5geE8Z4ZTLaGkgrObkEd+OkUKyRbRWw4KxuFCoHfdETSY1yf9/574eVoNSiK7pw==
   dependencies:
     neo-async "^2.6.0"
     optimist "^0.6.1"
@@ -3524,16 +3524,7 @@ leaflet-blurred-location@^1.2.5, leaflet-blurred-location@^1.5.1:
 
 "leaflet-blurred-location@git://github.com/publiclab/leaflet-blurred-location#main":
   version "1.5.1"
-  uid "550b8ac78144b32e0e01a0dba242a09009f155c8"
   resolved "git://github.com/publiclab/leaflet-blurred-location#550b8ac78144b32e0e01a0dba242a09009f155c8"
-  dependencies:
-    haversine-distance "^1.1.4"
-    jquery "^3.2.1"
-    leaflet "^1.3.3"
-
-"leaflet-blurred-location@git://github.com/publiclab/leaflet-blurred-location.git#main":
-  version "1.5.1"
-  resolved "git://github.com/publiclab/leaflet-blurred-location.git#550b8ac78144b32e0e01a0dba242a09009f155c8"
   dependencies:
     haversine-distance "^1.1.4"
     jquery "^3.2.1"
@@ -3546,7 +3537,7 @@ leaflet-environmental-layers@^2.1.7:
   dependencies:
     jquery "^3.3.1"
     leaflet "^1.3.1"
-    leaflet-blurred-location "git://github.com/publiclab/leaflet-blurred-location.git#main"
+    leaflet-blurred-location "git://github.com/publiclab/leaflet-blurred-location#main"
     leaflet-fullhash "github:sagarpreet-chadha/leaflet-fullHash"
     leaflet-google-places-autocomplete "0.0.8"
     leaflet-heatmap "1.0.0"
@@ -5041,9 +5032,9 @@ resolve@1.1.x:
   integrity sha1-IDEU2CrSxe2ejgQRs5ModeiJ6Xs=
 
 resolve@^1.1.7:
-  version "1.14.1"
-  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.14.1.tgz#9e018c540fcf0c427d678b9931cbf45e984bcaff"
-  integrity sha512-fn5Wobh4cxbLzuHaE+nphztHy43/b++4M6SsGFC2gB8uYwf0C8LcarfCz1un7UTW8OFQg9iNjZ4xpcFVGebDPg==
+  version "1.14.2"
+  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.14.2.tgz#dbf31d0fa98b1f29aa5169783b9c290cb865fea2"
+  integrity sha512-EjlOBLBO1kxsUxsKjLt7TAECyKW6fOh1VRkykQkKGzcBbjjPIxBqGh0jf7GJ3k/f5mxMqW3htMD3WdTUVtW8HQ==
   dependencies:
     path-parse "^1.0.6"
 
@@ -5259,13 +5250,13 @@ short-code-forms@jywarren/short-code-forms#~0.0.1:
   resolved "https://codeload.github.com/jywarren/short-code-forms/tar.gz/cb7a07452fce13b0ff780c1991bfe8e1eddf39e3"
 
 sifter@^0.5.1:
-  version "0.5.3"
-  resolved "https://registry.yarnpkg.com/sifter/-/sifter-0.5.3.tgz#5e6507fe8c114b2b28d90b6bf4e5b636e611e48b"
-  integrity sha1-XmUH/owRSyso2Qtr9OW2NuYR5Is=
+  version "0.5.4"
+  resolved "https://registry.yarnpkg.com/sifter/-/sifter-0.5.4.tgz#3cb9e514889edfc887d8d87a355841b01ebdd1ab"
+  integrity sha512-t2yxTi/MM/ESup7XH5oMu8PUcttlekt269RqxARgnvS+7D/oP6RyA1x3M/5w8dG9OgkOyQ8hNRWelQ8Rj4TAQQ==
   dependencies:
     async "^2.6.0"
     cardinal "^1.0.0"
-    csv-parse "^2.0.0"
+    csv-parse "^4.6.5"
     humanize "^0.0.9"
     optimist "^0.6.1"
 
@@ -5856,9 +5847,9 @@ uc.micro@~0.1.0:
   integrity sha1-7aESHR/blhVO1v3oJHu724MzCMo=
 
 uglify-js@^3.1.4:
-  version "3.7.3"
-  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.7.3.tgz#f918fce9182f466d5140f24bb0ff35c2d32dcc6a"
-  integrity sha512-7tINm46/3puUA4hCkKYo4Xdts+JDaVC9ZPRcG8Xw9R4nhO/gZgUM3TENq8IF4Vatk8qCig4MzP/c8G4u2BkVQg==
+  version "3.7.4"
+  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.7.4.tgz#e6d83a1aa32ff448bd1679359ab13d8db0fe0743"
+  integrity sha512-tinYWE8X1QfCHxS1lBS8yiDekyhSXOO6R66yNOCdUJeojxxw+PX2BHAz/BWyW7PQ7pkiWVxJfIEbiDxyLWvUGg==
   dependencies:
     commander "~2.20.3"
     source-map "~0.6.1"
@@ -5908,9 +5899,9 @@ underscore@1.4.4, underscore@1.4.x:
   integrity sha1-YaajIBBiKvoHljvzJSA88SI51gQ=
 
 underscore@>=1.8.3:
-  version "1.9.1"
-  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.9.1.tgz#06dce34a0e68a7babc29b365b8e74b8925203961"
-  integrity sha512-5/4etnCkd9c8gwgowi5/om/mYO5ajCaOgdzj/oW+0eQV9WxKBDZw5+ycmKmeaTXjInS/W0BzpGLo2xR2aBwZdg==
+  version "1.9.2"
+  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.9.2.tgz#0c8d6f536d6f378a5af264a72f7bec50feb7cf2f"
+  integrity sha512-D39qtimx0c1fI3ya1Lnhk3E9nONswSKhnffBI0gME9C99fYOkNi04xs8K6pePLhvl1frbDemkaBQ5ikWllR2HQ==
 
 underscore@~1.7.0:
   version "1.7.0"

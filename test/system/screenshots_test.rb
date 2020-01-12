@@ -71,19 +71,16 @@ class ScreenshotsTest < ApplicationSystemTestCase
     take_screenshot
   end
 
-  test 'return_to query parameter preserved while switching from /login to /signup' do
-    visit '/login?return_to=page'
-    click_on 'sign up'
-
-    path = URI.parse(current_url).request_uri
-    assert_equal path, '/signup?return_to=page'
-  end
-
   test 'tags' do
     visit '/tags'
     take_screenshot
   end
 
+  test "tag stats" do
+    visit "/tag/#{node_tags(:awesome).name}/stats"
+    take_screenshot
+  end
+  
   test 'tag page' do
     nodes(:activity).add_tag('pin:test', users(:bob)) # ensure a pinned note appears
     visit '/tag/test'
@@ -218,5 +215,10 @@ class ScreenshotsTest < ApplicationSystemTestCase
     visit node.path
     take_screenshot
   end
+  
+  # test 'maps' do
+  #   visit '/map/chicago'
+  #   take_screenshot
+  # end
 
 end

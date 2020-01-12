@@ -544,7 +544,7 @@ class AdminControllerTest < ActionController::TestCase
     comment = assigns(:comment)
     assert_equal 1, comment.status
     assert_equal "Comment published.", flash[:notice]
-    assert_redirected_to node.path
+    assert_redirected_to node.path + '?_=' + Time.now.to_i.to_s
   end
 
   test 'should send email to comment author when it is approved (first time commenter)' do
@@ -562,7 +562,7 @@ class AdminControllerTest < ActionController::TestCase
     assert email.body.include?("Hi! Your comment was approved by <a href='https://#{request_host}/profile/#{user.username}'>#{user.username}</a> (a <a href='https://#{request_host}/wiki/moderation'>community moderator</a>) and is now visible in the <a href='https://#{request_host}/dashboard'>Public Lab research feed</a>. Thanks for contributing to open research!")
     comment = assigns(:comment)
     assert_equal 1, comment.status
-    assert_redirected_to node.path
+    assert_redirected_to node.path + '?_=' + Time.now.to_i.to_s
   end
 
   test 'should publish comment from spam if moderator' do
@@ -574,7 +574,7 @@ class AdminControllerTest < ActionController::TestCase
     comment = assigns(:comment)
     assert_equal 1, comment.status
     assert_equal "Comment published.", flash[:notice]
-    assert_redirected_to node.path
+    assert_redirected_to node.path + '?_=' + Time.now.to_i.to_s
   end
 
   test 'should send email to moderators when a comment is approved' do
@@ -590,7 +590,7 @@ class AdminControllerTest < ActionController::TestCase
     end
     #after approved
     assert_equal 1, comment.status
-    assert_redirected_to node.path
+    assert_redirected_to node.path + '?_=' + Time.now.to_i.to_s
   end
 
   test 'should login if want to publish comment from spam' do
@@ -623,7 +623,7 @@ class AdminControllerTest < ActionController::TestCase
 
     assert_equal 1, comment.status
     assert_equal "Comment already published.", flash[:notice]
-    assert_redirected_to node.path
+    assert_redirected_to node.path + '?_=' + Time.now.to_i.to_s
   end
 
   test 'non-registered user should not be able to see spam_comments page' do
@@ -661,5 +661,22 @@ class AdminControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_not_nil assigns(:comments)
+  end
+
+  test 'admin user should be able to view page to search users by email' do
+    UserSession.create(users(:admin))
+
+    get :useremail
+
+    assert_response :success
+  end
+
+  test 'admin user should be able to search users by email' do
+    UserSession.create(users(:admin))
+
+    get :useremail, params: { address: 'bob@publiclab.org', include_banned: 'true' }
+
+    assert_response :success
+    assert_not_nil assigns(:users)
   end
 end
