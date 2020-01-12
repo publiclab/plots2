@@ -50,7 +50,9 @@ class UserSessionsController < ApplicationController
         redirect_to return_to + hash_params, notice: "Already linked to another account!"
       end
     else # not signed in
-      @user = User.where(email: auth["info"]["email"]) ? User.find_by(email: auth["info"]["email"]) : @identity.user
+      # if user has the same email for his oauth login and his publiclab website, we can get him using
+      # User.find_by(...). Otherwise, we use the identity that is linked to his account when it was created.
+      @user = User.find_by(email: auth["info"]["email"]) || @identity.user
       if @user&.status&.zero?
         flash[:error] = I18n.t('user_sessions_controller.user_has_been_banned', username: @user.username).html_safe
         redirect_to return_to + hash_params
