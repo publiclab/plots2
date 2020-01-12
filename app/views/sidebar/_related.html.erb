@@ -47,8 +47,7 @@
     <%= render_map(@node.lat, @node.lon, @node.zoom) %>
   <% elsif !@node.lat && !@node.lon %>
     <div id="map_template" style="position: relative; display: inline-block;">
-      <img src="https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/0/0/0.png" style="height:69px; width: 263px; position: relative; margin-right: -10px;">
-      <button class="btn btn-outline-secondary btn-lg" id="add_location" style="position: absolute; position: absolute;top: 19% ; left: 24% ;" type="button" name="button"><strong>Add location</strong></button>
+      <button class="btn btn-outline-secondary btn-lg" id="add_location" style="height:69px; width: 263px; position: relative; margin-right: -10px;" type="button" name="button"><i class="fa fa-map-marker" style="color:#c40;"></i>  <strong>Add a location</strong></button>
     </div>
     <center><span>Learn about location <a href="https://publiclab.org/location-privacy">privacy</a></span></center>
   <% end %>
