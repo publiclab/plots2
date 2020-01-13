@@ -8,12 +8,13 @@
 
     <h3 style="margin-top:0;"><%= raw t('wiki.index.wiki_pages_by', :url1 => "/people/"+@user.name, :user => @user.name, :note_length => @user.notes.length, :time => time_ago_in_words(@user.notes.first.created_at)) %></h3>
 
-  <% end %>
+  <% else %>
 
-  <h2 style="font-family:Junction Light;"><%= t('wiki.index.public_lab_wiki') %>
-    <small><%= t('wiki.index.collaborative_documentation') %></small>
-  </h2>
-  <p><%= t('wiki.index.about_collaboration') %> <%= raw t('wiki.index.about_wiki_pages') %></p>
+    <h2 style="font-family:Junction Light;"><%= t('wiki.index.public_lab_wiki') %>
+      <small><%= t('wiki.index.collaborative_documentation') %></small>
+    </h2>
+    <p><%= t('wiki.index.about_collaboration') %> <%= raw t('wiki.index.about_wiki_pages') %></p>
+  <% end %>
   <hr style="margin-bottom:10px;" />
 
   <p>&nbsp;
@@ -27,4 +28,3 @@
   <hr />
 
 </div>
-
