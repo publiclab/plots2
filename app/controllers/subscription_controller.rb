@@ -123,10 +123,10 @@ class SubscriptionController < ApplicationController
       redirect_to return_to
     else
       tag_list = if params[:tagnames].is_a? String
-                    params[:tagnames].split(',')
-                  else
-                    params[:tagnames]
-                  end
+                   params[:tagnames].split(',')
+                 else
+                   params[:tagnames]
+                 end
       if current_user
         if params[:type] == "tag"
           tag_list.each do |t|
