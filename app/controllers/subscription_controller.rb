@@ -1,6 +1,6 @@
 class SubscriptionController < ApplicationController
   respond_to :html, :xml, :json
-  before_action :require_user, only: %i(create delete index digest)
+  before_action :require_user, only: %i(create delete index digest multiple_add)
 
   def index
     @title = "Subscriptions"
@@ -116,7 +116,7 @@ class SubscriptionController < ApplicationController
     render template: "subscriptions/digest"
   end
 
-def multiple_add
+  def multiple_add
     return_to = params[:return_to] || "/subscriptions?_=" + Time.now.to_i.to_s
     if params[:tagnames].blank?
       flash[:notice] = "Please enter tags for subscriptions"
@@ -165,13 +165,9 @@ def multiple_add
             end
           end
         end
-      else
-        flash[:warning] = "You must be logged in to subscribe for email updates!"
-        redirect_to "/login?return_to=" + request.fullpath
       end
     end
   end
-
 
   private
 
