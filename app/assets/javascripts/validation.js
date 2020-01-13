@@ -69,7 +69,7 @@ function LoginFormValidator(formSelector) {
 }
 
 function handleLoginFormValidation(e) {
-  var formSelector = this.classList.value.split(" ").join('.');
+  var formSelector = this.classList.value.split(" ").join(".");
   e.preventDefault();
 
   var usernameElement = document.querySelector(
@@ -82,7 +82,7 @@ function handleLoginFormValidation(e) {
   var username = usernameElement.value.trim();
   var password = passwordElement.value.trim();
 
-  var isUsernameValid = username.length > 3;
+  var isUsernameValid = username.length >= 3;
 
   if (isUsernameValid && isPasswordValid(password)) {
     removeLoginFormError(formSelector);
@@ -253,7 +253,7 @@ function validatePassword(confirmPasswordElement, obj) {
     obj.updateUI(
       this,
       false,
-      "Please make sure password is at least 8 characters long with minimum one numeric value"
+      "Please make sure password is at least 8 characters long"
     );
     return;
   }
@@ -278,7 +278,7 @@ function validateConfirmPassword(passwordElement, obj) {
     obj.updateUI(
       this,
       false,
-      "Password and Password Confirmation should be the same."
+      "Password and Password Confirmation should be the same"
     );
     return;
   }
@@ -289,8 +289,7 @@ function validateConfirmPassword(passwordElement, obj) {
 // Password is valid if it is at least 8 characaters long and contains a number
 // Password's validation logic, no UI updates
 function isPasswordValid(password) {
-  var doesContainNumber = /\d+/g.test(password);
-  var isValidPassword = password.length >= 8 && doesContainNumber;
+  var isValidPassword = password.length >= 8;
 
   return isValidPassword;
 }
