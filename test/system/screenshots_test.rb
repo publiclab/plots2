@@ -61,6 +61,23 @@ class ScreenshotsTest < ApplicationSystemTestCase
     take_screenshot
   end
 
+  test 'login modal form validation' do
+    visit '/'
+    click_on 'Login'
+
+    fill_in 'user_session[username]', with: 'Bob'
+    # The length of a password should be minimum 8 characters
+    fill_in 'user_session[password]', with: 'invalid'
+
+    click_on 'Log in'
+
+    # Get the error message (remove '×' that closes the modal and remaining whitespaces)
+    error_msg = find('.error-msg-container').text.gsub('×', '').strip()
+
+    assert_equal( error_msg, 'Invalid username or password' )
+    take_screenshot
+  end
+
   test 'signup' do
     visit '/signup'
     take_screenshot
