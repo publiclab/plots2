@@ -35,21 +35,98 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
-  // The two forms have same ID
-  var forms = document.querySelectorAll("#create-form");
+  // The two forms have the same ID
+  var signUpForms = document.querySelectorAll("#create-form");
 
   // Sign up modal form
-  forms[0].classList.add("signup-modal-form");
+  signUpForms[0].classList.add("signup-modal-form");
   var signUpModalForm = new SignUpFormValidator(".signup-modal-form");
 
   // publiclab.org/register form
-  if (forms[1]) {
-    forms[1].classList.add("signup-register-form");
+  if (signUpForms[1]) {
+    signUpForms[1].classList.add("signup-register-form");
     var signUpRegisterForm = new SignUpFormValidator(".signup-register-form");
+  }
+
+  // The same goes for login forms
+  var loginForms = document.querySelectorAll(".user-sessions-form");
+
+  loginForms[0].classList.add("login-modal-form");
+  LoginFormValidator(".login-modal-form");
+
+  // publiclab.org/login form
+  if (loginForms[1]) {
+    loginForms[1].classList.add("login-page-form");
+    LoginFormValidator(".login-page-form");
   }
 });
 
-// Form validation class
+// The main login form validation function
+function LoginFormValidator(formSelector) {
+  var loginForm = document.querySelector(formSelector);
+
+  loginForm.addEventListener("submit", handleLoginFormValidation);
+}
+
+function handleLoginFormValidation(e) {
+  var formSelector = this.classList.value.split(" ").join(".");
+  e.preventDefault();
+
+  var usernameElement = document.querySelector(
+    formSelector + " #username-login"
+  );
+  var passwordElement = document.querySelector(
+    formSelector + " #password-signup"
+  );
+
+  var username = usernameElement.value.trim();
+  var password = passwordElement.value.trim();
+
+  var isUsernameValid = username.length >= 3;
+
+  if (isUsernameValid && isPasswordValid(password)) {
+    removeLoginFormError(formSelector);
+    renderSubmitBtnSpinner(formSelector);
+    this.submit();
+  } else {
+    renderLoginFormError(formSelector);
+  }
+}
+
+function renderSubmitBtnSpinner(formSelector) {
+  var submitFormBtn = document.querySelector(formSelector + " #login-button");
+
+  submitFormBtn.classList.add("disabled");
+  submitFormBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+}
+
+function renderLoginFormError(formSelector) {
+  removeLoginFormError(formSelector);
+
+  var loginFormWrapper = document.querySelector(formSelector + " .login-form");
+
+  var errorMessageHTML =
+    '<div class="alert alert-danger error-msg-container" style="margin: 0 18px;">\
+      <button type="button" class="close" data-dismiss="alert">\
+        ×\
+      </button>\
+      Invalid username or password\
+      </div>';
+
+  loginFormWrapper.insertAdjacentHTML("beforeBegin", errorMessageHTML);
+}
+
+function removeLoginFormError(formSelector) {
+  var loginFormErrorElement = document.querySelector(
+    formSelector + " .error-msg-container"
+  );
+
+  if (loginFormErrorElement) {
+    loginFormErrorElement.remove();
+  }
+}
+
+// Sign Up form validation class
 function SignUpFormValidator(formClass) {
   var signUpForm = document.querySelector(formClass);
 
@@ -176,7 +253,7 @@ function validatePassword(confirmPasswordElement, obj) {
     obj.updateUI(
       this,
       false,
-      "Please make sure password is at least 8 characters long with minimum one numeric value"
+      "Please make sure password is at least 8 characters long"
     );
     return;
   }
@@ -201,7 +278,7 @@ function validateConfirmPassword(passwordElement, obj) {
     obj.updateUI(
       this,
       false,
-      "Password and Password Confirmation should be the same."
+      "Password and Password Confirmation should be the same"
     );
     return;
   }
@@ -212,8 +289,7 @@ function validateConfirmPassword(passwordElement, obj) {
 // Password is valid if it is at least 8 characaters long and contains a number
 // Password's validation logic, no UI updates
 function isPasswordValid(password) {
-  var doesContainNumber = /\d+/g.test(password);
-  var isValidPassword = password.length >= 8 && doesContainNumber;
+  var isValidPassword = password.length >= 8;
 
   return isValidPassword;
 }

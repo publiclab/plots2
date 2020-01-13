@@ -21,7 +21,7 @@ class ScreenshotsTest < ApplicationSystemTestCase
 
     fill_in 'user[username]', with: 'Bob'
     fill_in 'user[email]', with: 'Invalid@email'
-    fill_in 'user[password]', with: 'tooshort'
+    fill_in 'user[password]', with: 'short'
     fill_in 'user[password_confirmation]', with: 'password'
 
     username_error_msg = find("#username-signup ~ small").text
@@ -31,8 +31,8 @@ class ScreenshotsTest < ApplicationSystemTestCase
 
     assert_equal( username_error_msg, "Username already exists" )
     assert_equal( email_error_msg, "Invalid email" )
-    assert_equal( password_error_msg, "Please make sure password is at least 8 characters long with minimum one numeric value" )
-    assert_equal( confirm_password_error_msg, "Password and Password Confirmation should be the same." )
+    assert_equal( password_error_msg, "Please make sure password is at least 8 characters long" )
+    assert_equal( confirm_password_error_msg, "Password and Password Confirmation should be the same" )
 
     take_screenshot
   end
