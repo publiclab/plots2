@@ -26,7 +26,6 @@ class UserSessionsController < ApplicationController
     unless params[:hash_params].to_s.empty?
       hash_params = URI.parse("#" + params[:hash_params]).to_s
     end
-
     if signed_in?
       if @identity.nil?
         # If no identity was found, create a brand new one here
@@ -35,6 +34,7 @@ class UserSessionsController < ApplicationController
         # associate the identity
         @identity.user = current_user
         @identity.save
+
         redirect_to return_to + hash_params, notice: "Successfully linked to your account!"
       elsif @identity.user == current_user
         # User is signed in so they are trying to link an identity with their
@@ -50,7 +50,16 @@ class UserSessionsController < ApplicationController
         redirect_to return_to + hash_params, notice: "Already linked to another account!"
       end
     else # not signed in
-      if @identity&.user.present?
+      # User U has Provider P linked to U. U has email E1 while P has email E2. So, User table can't find E2 provided
+      # from auth hash, hence U is found by the user of identity having E2 as email
+      @user = User.where(email: auth["info"]["email"]) ? User.find_by(email: auth["info"]["email"]) : @identity.user
+      if @user&.status&.zero?
+        flash[:error] = I18n.t('user_sessions_controller.user_has_been_banned', username: @user.username).html_safe
+        redirect_to return_to + hash_params
+      elsif @user&.status == 5
+        flash[:error] = I18n.t('user_sessions_controller.user_has_been_moderated', username: @user.username).html_safe
+        redirect_to return_to + hash_params
+      elsif @identity&.user.present?
         # The identity we found had a user associated with it so let's
         # just log them in here
         @user = @identity.user
