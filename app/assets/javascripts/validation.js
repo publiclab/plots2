@@ -34,7 +34,7 @@ $(document).ready(function() {
   });
 });
 
-$(document).ready(function () {
+$(document).ready(function() {
   // The two forms have same ID
   var forms = document.querySelectorAll("#create-form");
 
@@ -128,13 +128,11 @@ SignUpFormValidator.prototype.isFormValid = function() {
 };
 
 function validateUsername(obj) {
-  var username = this.value;
+  var username = this.value.trim();
   var self = this;
 
   if (username.length < 3) {
-    restoreOriginalStyle(this);
-    obj.disableSubmitBtn();
-    removeErrorMsg(self);
+    obj.updateUI(this, false, "Username has to be at least 3 characters long");
   } else {
     $.get("/api/srch/profiles?query=" + username, function(data) {
       if (data.items) {
@@ -153,7 +151,13 @@ function validateUsername(obj) {
 }
 
 function validateEmail(obj) {
-  var email = this.value;
+  var email = this.value.trim();
+
+  if (email.length === 0) {
+    obj.updateUI(this, false, "The email cannot be empty.");
+    return;
+  }
+
   var emailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   var isValidEmail = emailRegExp.test(email);
 
@@ -161,7 +165,12 @@ function validateEmail(obj) {
 }
 
 function validatePassword(confirmPasswordElement, obj) {
-  var password = this.value;
+  var password = this.value.trim();
+
+  if (password.length === 0) {
+    obj.updateUI(this, false, "The password cannot be empty.");
+    return;
+  }
 
   if (!isPasswordValid(password)) {
     obj.updateUI(
@@ -180,11 +189,20 @@ function validatePassword(confirmPasswordElement, obj) {
 }
 
 function validateConfirmPassword(passwordElement, obj) {
-  var confirmPassword = this.value;
+  var confirmPassword = this.value.trim();
   var password = passwordElement.value;
 
-  if (confirmPassword !== password) {
-    obj.updateUI(this, false, "Passwords must be equal");
+  if (confirmPassword.length === 0) {
+    obj.updateUI(this, false, "The password confirmation cannot be empty");
+    return;
+  }
+
+  if (confirmPassword !== password || !isPasswordValid(password)) {
+    obj.updateUI(
+      this,
+      false,
+      "Password and Password Confirmation should be the same."
+    );
     return;
   }
 

@@ -85,7 +85,7 @@ class UsersControllerTest < ActionController::TestCase
     # checks flash
     assert_equal flash[:error], I18n.t('users_controller.user_has_been_banned')
     # checks duplicated flash is not present
-    assert_equal flash[:notice], nil
+    assert_nil flash[:notice]
   end
   
   test 'generate user reset key' do
