@@ -10,10 +10,10 @@ class AdminMailer < ActionMailer::Base
     @node = node
     @user = node.author
     @footer = feature('email-footer')
-    all_moderators = User.where(role: %w(moderator admin)).collect(&:email)
+    all_moderators = User.where(role: %w(moderator admin))
     moderators = []
     all_moderators.each do |mod_user|
-      moderators << mod_user unless mod_user.has_tag('no-moderation-emails')
+      moderators << mod_user.email unless mod_user.has_tag('no-moderation-emails')
     end
     if node.status == 4 # only if it remains unmoderated
       mail(
