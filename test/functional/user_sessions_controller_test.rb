@@ -296,4 +296,31 @@ class UserSessionsControllerTest < ActionController::TestCase
     post :create
     assert_redirected_to "/notes/liked?_=#{Time.now.to_i.to_s}"
   end
+  
+  test "logging in through omniauth and then through normal login should display error and redirect" do
+    request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:github1]
+    # login through omniauth 
+    post :create
+    # logout
+    post :destroy
+    request.env['omniauth.auth'] = nil
+    post :create, params: { user_session: { username: "bansal_sidharth309", password: "random"} }
+    assert_equal flash[:error], "This account doesn't have a password set. It may be logged in with Github account, or you can set a new password via Forget password feature"
+  end
+  
+  test "logging in with banned user through normal login should fail" do
+    user = users(:bob)
+    user.ban
+    post :create, params: { user_session: { username: user.username, password: 'secretive' } }
+    assert_redirected_to root_url
+    assert_equal flash[:error], I18n.t('user_sessions_controller.user_has_been_banned', username: user.username).html_safe
+  end
+  
+  test "logging in with moderated user through normal login should fail" do
+    user = users(:bob)
+    user.moderate
+    post :create, params: { user_session: { username: user.username, password: 'secretive' } }
+    assert_redirected_to root_url
+    assert_equal flash[:error], I18n.t('user_sessions_controller.user_has_been_moderated', username: user.username).html_safe
+  end
 end
