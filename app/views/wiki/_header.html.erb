@@ -42,10 +42,6 @@
 
 <br />
 
-<% if @node.has_power_tag('place') && @node && @node.lat && @node.lon %>
-  <%= render_map(@node.lat, @node.lon) %>
-<% end %>
-
 <% if params[:raw] == 'true' %>
   <div class="alert alert-warning" style="">This is the new (beta) Inline Rich Wikis system. Use the "pencil" buttons after different paragraphs to edit inline, and <a href="/wiki/issues">report problems here</a></div>
 <% end %>
