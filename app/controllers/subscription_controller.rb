@@ -119,7 +119,7 @@ class SubscriptionController < ApplicationController
   def multiple_add
     return_to = params[:return_to] || "/subscriptions?_=" + Time.now.to_i.to_s
     if params[:tagnames].blank?
-      flash[:notice] = "Please enter tags for subscriptions in the url"
+      flash[:notice] = "Please enter tags for subscriptions in the url."
       redirect_to return_to
     else
       tag_list = if params[:tagnames].is_a? String
