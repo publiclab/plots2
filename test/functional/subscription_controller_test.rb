@@ -47,7 +47,7 @@ class SubscriptionControllerTest < ActionController::TestCase
   test 'user is not logged in and tries to subscribe multiple tags' do
     get :multiple_add, params: { type: 'tag', tagnames: 'kites,balloon' }
     assert_redirected_to '/login?return_to=/subscribe/multiple/tag/kites,balloon'
-    assert_equal "You must be logged in to access this page", flash[:warning]
+    assert_equal "You must be logged in to subscribe for email updates!", flash[:warning]
   end
 
   test 'user should be able to follow a tag with a xhr request' do
