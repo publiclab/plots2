@@ -19,7 +19,8 @@
 #map_content .slide-container label {
   margin: 0;
 }
-#map_content .small-description {
+
+#blurred-location-modal .small-description {
   font-size: 0.9rem;
   color: #808080;
 }
@@ -49,9 +50,57 @@
 }
 #blurred-location-modal .modal-footer {
   justify-content: space-between;
+  flex-wrap: wrap;
+}
+#blurred-location-modal #place_name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+#blurred-location-modal .modal-footer .location-box {
+  flex: 0 1 100%;
+}
+#blurred-location-modal #placenameDisplay {
+  flex: 0 1 100%;
 }
 #blurred-location-modal .modal-footer label {
-  margin-bottom: .1rem;
+  flex: 0 1 100%;
+  margin: 0;
+}
+#blurred-location-modal .modal-footer .button-box {
+  flex: 0 1 100%;
+  display: flex;
+  justify-content: center;
+  margin: 0.5rem 0 0 0;
+}
+
+@media (min-width: 576px) {
+  #blurred-location-modal .modal-footer {
+    justify-content: space-between;
+    flex-wrap: nowrap;
+  }
+  #blurred-location-modal .modal-footer .button-box {
+    flex: 0 0 10%;
+    display: inline;
+    margin: 0 0 0 3rem;
+  }
+}
+
+@media (min-width: 992px) {
+  #blurred-location-modal #place_name {
+    flex-wrap: nowrap;
+  }
+  #blurred-location-modal .modal-footer .location-box {
+    flex: 1 1 50%;
+  }
+  #blurred-location-modal #placenameDisplay {
+    flex: 1 1 60%;
+  }
+  #blurred-location-modal .modal-footer label {
+    flex: 1 1 40%;
+    margin: 0;
+    padding-left: 0.5rem;
+  }
 }
 
 a:not([href]):not([tabindex]).btn-location,
