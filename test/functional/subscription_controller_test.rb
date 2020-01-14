@@ -55,4 +55,12 @@ class SubscriptionControllerTest < ActionController::TestCase
     get :add, params: { type: 'tag', name: 'blog' }, xhr: true
     assert users(:bob).following(:blog)
   end
+  
+  test "should redirect properly when subscribing to multiple tags" do
+    UserSession.create((users(:bob)))
+    tagnames = 'blog,kites,,balloon,awesome'
+    get :multiple_add, params: { type: "tag", tagnames: tagnames, return_to: "/dashboard" }
+    assert_redirected_to "/dashboard"
+    assert_equal flash[:notice], "You are now following '#{tagnames}'."
+  end
 end
