@@ -426,7 +426,7 @@ class Node < ActiveRecord::Base
     if tagname
       tags = tags.where('name LIKE ?', tagname + ':%')
     else
-      tags = tags.where('name LIKE ?', '%:%') # any powertag 
+      tags = tags.where('name LIKE ?', '%:%') # any powertag
     end
     tids = tags.collect(&:tid)
     NodeTag.where('nid = ? AND tid IN (?)', id, tids)
@@ -1082,7 +1082,7 @@ class Node < ActiveRecord::Base
     base_url + '/notes/show/' + nid.to_s + '/' + token
   end
 
-  def fetch_comments(user)
+  def comments_viewable_by(user)
     if user&.can_moderate?
       comments.where('status = 1 OR status = 4')
     elsif user
