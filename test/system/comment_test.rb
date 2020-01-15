@@ -60,5 +60,25 @@ class CommentTest < ApplicationSystemTestCase
     # check that the tag showed up on the page
     assert_selector("#{parentid} .comment .comment-body p", text: 'batman')
   end
- 
+  
+  test "adding a comment manually" do
+    visit "/"
+    click_on 'Login'
+    fill_in("username-login", with: "jeff")
+    fill_in("password-signup", with: "secretive")
+    click_on "Log in"
+    
+    # visit note
+    visit nodes(:one).path
+    fill_in("body", with: "Awesome comment! :)")
+
+    # preview comment
+    find("#post_comment").click
+    find("p", text: "Awesome comment! :)")
+
+    # publish comment
+    click_on "Publish"
+    find("p", text: "Awesome post! :)")
+    assert find("p", text: "Comment Added!")
+  end
 end
