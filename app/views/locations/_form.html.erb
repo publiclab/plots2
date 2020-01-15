@@ -87,8 +87,8 @@
 
   <div class="location-box text-left">
     <div id="place_name">
-      <input id="placenameDisplay" type="text" class="form-control" />
-      <label for="placenameDisplay" class="small-description">How your location will be saved</label>
+      <input id="placenameDisplay" type="text" class="form-control" data-preventOverwrite="false" />
+      <label for="placenameDisplay" class="small-description">How this location will be saved</label>
     </div>
   </div>
 
@@ -109,13 +109,14 @@
   var options = {
     InterfaceOptions: {
       latId: 'lat',
-      lngId: 'lng'
+      lngId: 'lng',
+      placenameDisplayOnError: ''
     },
     location: {
-      lat: 23 ,
+      lat: 23,
       lon: 77 
     }
-  } ;
+  };
 
   var blurredLocation;
 
@@ -157,13 +158,6 @@
       $('#ex1').slider('setValue', zoom);
     })
     
-    blurredLocation.map.on('moveend', function() {
-      if($('#placenameDisplay').val() === 'Location unavailable') {
-        console.log('replace');
-        $('#placenameDisplay').val('');
-      }
-    });
-
     $('#coord_button').click((event) => {
       event.preventDefault();
       $('#coord_input').toggle();
@@ -175,12 +169,26 @@
       blurredLocation.map.setView([location.lat, location.lon], blurredLocation.getZoomFromCoordinates(location.lat, location.lon));
     });
 
+    var initialPlacename = '';
+    $('#placenameDisplay').on('focusin', function() {
+      initialPlacename = $('#placenameDisplay').val();
+    });
+    $('#placenameDisplay').on('focusout', function() {
+      if($('#placenameDisplay').val() === '') {
+        $('#placenameDisplay').attr('data-preventOverwrite', 'false');
+      } else if ($('#placenameDisplay').val() !== initialPlacename) {
+        $('#placenameDisplay').attr('data-preventOverwrite', 'true');
+      }
+    });
+
   })();
-    
+  
   function saveLocation() {
     var tags = 'lat:' + blurredLocation.getLat() + ',lon:' + blurredLocation.getLon() + ',zoom:' + blurredLocation.getZoom();
     if (blurredLocation.isBlurred()) tags = tags + ',' + 'location:blurred'
-    if ($('#placenameDisplay').val() != ('Location unavailable' || '')) tags = tags + ',' + 'place:' + parameterize($('#placenameDisplay').val());
+    if ($('#placenameDisplay').val() !== ('Location unavailable' || '')) {
+      tags = tags + ',' + 'place:' + parameterize($('#placenameDisplay').val());
+    }
     <% if params[:url] %>
       addTag(tags, '<%= params[:url] %>');
     <% else %>
