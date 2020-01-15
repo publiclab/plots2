@@ -3513,10 +3513,10 @@ klaw@^1.0.0:
   optionalDependencies:
     graceful-fs "^4.1.9"
 
-leaflet-blurred-location@^1.5.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/leaflet-blurred-location/-/leaflet-blurred-location-1.5.1.tgz#3839e6322b838959726167061633f821930d4ee7"
-  integrity sha512-gR/O+Getlxn6D8dVrp/zuqj71uT72+Punbino3rEG1rCf6d65AjqYYINSqeG+gC3RtXeSi3iHZTKQj+t9jl5pQ==
+leaflet-blurred-location@^1.5.1, leaflet-blurred-location@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/leaflet-blurred-location/-/leaflet-blurred-location-1.6.0.tgz#4e597b1cb074d4eb0b9fecbd17dc26fa58b7136a"
+  integrity sha512-yT5BK1kd2wReEbTRdR3Lj4ZLzrKD/QJyxj1PgIbLxMU3RlERkyfw73cWDukRpw7gRZwySZ2iENLmAyognTu83w==
   dependencies:
     haversine-distance "^1.1.4"
     jquery "^3.2.1"
