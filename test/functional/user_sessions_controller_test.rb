@@ -329,6 +329,29 @@ class UserSessionsControllerTest < ActionController::TestCase
     assert_redirected_to root_url
     assert_equal flash[:error], I18n.t('user_sessions_controller.user_has_been_moderated', username: user.username).html_safe
   end
+  
+    test "logging in with banned user through normal login should fail" do
+    user = users(:bob)
+    user.ban
+    post :create, params: { user_session: { username: user.username, password: 'secretive' } }
+    assert_redirected_to root_url
+    assert_equal flash[:error], I18n.t('user_sessions_controller.user_has_been_banned', username: user.username).html_safe
+  end
+  
+  test "redirects dashboard on signup with oauth and redirects to previous page when logging in" do
+    request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:github1]
+    # sign in
+    post :create
+    assert_equal "You have successfully signed in. Please change your password using the link sent to you via e-mail.", flash[:notice]
+    assert_redirected_to "/dashboard"
+    post :destroy
+    assert_equal I18n.t('user_sessions_controller.logged_out'), flash[:notice]
+    request.env['omniauth.origin'] = "/notes/liked"
+    post :create
+    assert_equal I18n.t('user_sessions_controller.logged_in'), flash[:notice]
+    assert_redirected_to "/notes/liked?_=#{Time.now.to_i.to_s}"
+  end
+  
   test "user that links provider to existing account should not be redirected to dashboard on oauth signup for Github provider" do
     request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:github4]
     request.env['omniauth.origin'] = "/notes/liked"
