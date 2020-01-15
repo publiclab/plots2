@@ -1,7 +1,3 @@
-.leaflet-marker-icon {
-  background: url("https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-black.png") ; 
-}
-
 #map_content p {
   margin: 0;
 }
