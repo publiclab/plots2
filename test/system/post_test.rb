@@ -31,6 +31,25 @@ class PostTest < ApplicationSystemTestCase
 
   end
 
+  test 'adding tags to the post' do
+    visit '/wiki/wiki-page-path/comments'
+
+    find('a[data-target="#loginModal"]', text: 'Login').click()
+
+    fill_in 'user_session[username]', with: 'jeff'
+    fill_in 'user_session[password]', with: 'secretive'
+
+    click_on 'Log in'
+
+    find('a#tags-open').click()
+
+    find('.tag-input').set('nature').native.send_keys(:return)
+    find('.tag-input').set('mountains').native.send_keys(:return)
+
+    # Make sure that the 2 tags are added
+    page.assert_selector('.tags-list p.badge', :count => 2)
+  end
+
   # Utility methods:
   
   def assert_page_reloads(message = "page should reload")
