@@ -219,7 +219,7 @@ class ScreenshotsTest < ApplicationSystemTestCase
     find('a#tags-open').click # open the tagging form
     find('a.blurred-location-input').click
     # click_on(class: 'blurred-location-input') # alternative
-    fill_in("placenameInput", with: "Pusan")
+    # fill_in("placenameInput", with: "Pusan")
     take_screenshot
   end
 
