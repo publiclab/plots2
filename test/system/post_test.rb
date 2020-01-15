@@ -50,5 +50,24 @@ class PostTest < ApplicationSystemTestCase
     page.evaluate_script "document.body.classList.remove('not-reloaded')"
   end
   
+  test "edit wiki" do
+    visit '/wiki/wiki-page-path/'
+    click_on "Login"
+
+    fill_in 'user_session[username]', with: 'jeff'
+    fill_in 'user_session[password]', with: 'secretive'
+    click_on "Log in"
+    find("a[data-original-title='Edit this wiki page.'").click()
+    fill_in("body", with: "Test for editing wikis!")
+
+    # preview edits
+    find("a.preview-btn").click()
+    assert find("p", text: "Test for editing wikis!")
+  
+    # publish edits
+    find("#publish").click()
+    assert find("p", text: "Test for editing wikis!")
+    assert find("div.alert-success", text: "Edits saved.")
+  end
 end
 
