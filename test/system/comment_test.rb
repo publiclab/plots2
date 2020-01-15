@@ -4,16 +4,14 @@ require "application_system_test_case"
 
 class CommentTest < ApplicationSystemTestCase
   Capybara.default_max_wait_time = 60
-
-  test 'adding a comment via javascript' do
+  def setup
     visit '/'
-
     click_on 'Login'
-
     fill_in("username-login", with: "jeff")
     fill_in("password-signup", with: "secretive")
     click_on "Log in"
-
+  end
+  test 'adding a comment via javascript' do
     visit "/wiki/wiki-page-path/comments"
 
     # run the javascript function
@@ -24,14 +22,6 @@ class CommentTest < ApplicationSystemTestCase
   end
 
   test 'adding a comment via javascript with url only' do
-    visit '/'
-
-    click_on 'Login'
-
-    fill_in("username-login", with: "jeff")
-    fill_in("password-signup", with: "secretive")
-    click_on "Log in"
-
     visit "/wiki/wiki-page-path/comments"
 
     # run the javascript function
@@ -42,14 +32,6 @@ class CommentTest < ApplicationSystemTestCase
   end
  
   test 'adding a reply comment via javascript with url only' do
-    visit '/'
-
-    click_on 'Login'
-
-    fill_in("username-login", with: "jeff")
-    fill_in("password-signup", with: "secretive")
-    click_on "Log in"
-
     visit "/wiki/wiki-page-path/comments"
 
     # run the javascript function
@@ -61,15 +43,9 @@ class CommentTest < ApplicationSystemTestCase
     assert_selector("#{parentid} .comment .comment-body p", text: 'batman')
   end
   
-  test "adding a comment manually" do
-    visit "/"
-    click_on 'Login'
-    fill_in("username-login", with: "jeff")
-    fill_in("password-signup", with: "secretive")
-    click_on "Log in"
-    
-    # visit note
+  test "add a comment manually" do
     visit nodes(:one).path
+
     fill_in("body", with: "Awesome comment! :)")
 
     # preview comment
@@ -78,7 +54,7 @@ class CommentTest < ApplicationSystemTestCase
 
     # publish comment
     click_on "Publish"
-    find("p", text: "Awesome post! :)")
-    assert find("p", text: "Comment Added!")
+    find(".noty_body", text: "Comment Added!")
+    find("p", text: "Awesome comment! :)")
   end
 end
