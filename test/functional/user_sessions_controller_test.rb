@@ -329,12 +329,33 @@ class UserSessionsControllerTest < ActionController::TestCase
     assert_redirected_to root_url
     assert_equal flash[:error], I18n.t('user_sessions_controller.user_has_been_moderated', username: user.username).html_safe
   end
-
-  test "user that links provider to existing account should not be redirected to dashboard on oauth signup" do
-    # this omniauth config user has the same email as a user in the database
+  test "user that links provider to existing account should not be redirected to dashboard on oauth signup for Github provider" do
     request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:github4]
     request.env['omniauth.origin'] = "/notes/liked"
-    # the controller notices this link between the emails and links the accounts
+    post :create
+    assert_redirected_to "/notes/liked?_=#{Time.now.to_i.to_s}"
+    assert_equal "Successfully linked to your account!", flash[:notice]
+  end
+
+  test "user that links provider to existing account should not be redirected to dashboard on oauth signup for Google provider" do
+    request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:google_oauth2_4]
+    request.env['omniauth.origin'] = "/notes/liked"
+    post :create
+    assert_redirected_to "/notes/liked?_=#{Time.now.to_i.to_s}"
+    assert_equal "Successfully linked to your account!", flash[:notice]
+  end
+
+  test "user that links provider to existing account should not be redirected to dashboard on oauth signup for Facebook provider" do
+    request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:facebook4]
+    request.env['omniauth.origin'] = "/notes/liked"
+    post :create
+    assert_redirected_to "/notes/liked?_=#{Time.now.to_i.to_s}"
+    assert_equal "Successfully linked to your account!", flash[:notice]
+  end
+
+  test "user that links provider to existing account should not be redirected to dashboard on oauth signup for Twitter provider" do
+    request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:twitter4]
+    request.env['omniauth.origin'] = "/notes/liked"
     post :create
     assert_redirected_to "/notes/liked?_=#{Time.now.to_i.to_s}"
     assert_equal "Successfully linked to your account!", flash[:notice]
