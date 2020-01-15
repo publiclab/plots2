@@ -90,6 +90,16 @@ Rails.application.configure do
       }
     })
 
+  # This config is has the same email as one of the fixture users. When it is used to login, instead of signing up a new user
+  # it should link this oauth config to the fixture user.
+  OmniAuth.config.mock_auth[:github4] = OmniAuth::AuthHash.new({
+      'provider' => 'github',
+      'uid' => '135799134741',
+      'info' => {
+        'name' => 'Bob',
+        'email' => 'bob@publiclab.org'
+      }
+    }) 
     #facebook Provider
     OmniAuth.config.mock_auth[:facebook1] = OmniAuth::AuthHash.new({
         'provider' => 'facebook',
