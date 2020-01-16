@@ -91,7 +91,7 @@ class QuestionsController < ApplicationController
     set_sidebar :tags, @tagnames
   end
 
-  def answered
+  def recently_commented
     @title = 'Recently Commented'
     @questions = Node.questions
       .where(status: 1)
