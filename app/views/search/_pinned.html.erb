@@ -1,0 +1,8 @@
+<% @pinned_nodes = NodeShared.pinned_nodes(query) %>
+<% if @pinned_nodes.length > 0 %>
+  <div class="alert alert-secondary pinned-nodes">
+    <i class="fa fa-thumb-tack" rel="tooltip" title="This item was pinned with the tag 'pin:<%= query %>'."></i> 
+    <a style="color:inherit;" href="<%= @pinned_nodes.first.path %>"><b><%= @pinned_nodes.first.title %></b></a> 
+    <i class="pull-right"><small>featured result</i></small>
+  </div>
+<% end %>

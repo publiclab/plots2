@@ -2,6 +2,7 @@ require "application_system_test_case"
 # https://guides.rubyonrails.org/testing.html#implementing-a-system-test
 
 class PostTest < ApplicationSystemTestCase
+  include ActiveJob::TestHelper
   Capybara.default_max_wait_time = 60
 
   test 'posting from the editor' do
@@ -28,6 +29,47 @@ class PostTest < ApplicationSystemTestCase
       
     end
 
+  end
+
+  test 'adding tags to the post' do
+    visit '/wiki/wiki-page-path/comments'
+
+    find('a[data-target="#loginModal"]', text: 'Login').click()
+
+    fill_in 'user_session[username]', with: 'jeff'
+    fill_in 'user_session[password]', with: 'secretive'
+
+    click_on 'Log in'
+
+    find('a#tags-open').click()
+
+    find('.tag-input').set('nature').native.send_keys(:return)
+    find('.tag-input').set('mountains').native.send_keys(:return)
+
+    # Make sure that the 2 tags are added
+    page.assert_selector('.tags-list p.badge', :count => 2)
+  end
+
+  test 'removing tags from the post' do
+    visit '/wiki/wiki-page-path/comments'
+
+    find('a[data-target="#loginModal"]', text: 'Login').click()
+
+    fill_in 'user_session[username]', with: 'jeff'
+    fill_in 'user_session[password]', with: 'secretive'
+
+    click_on 'Log in'
+
+    find('a#tags-open').click()
+
+    find('.tag-input').set('nature').native.send_keys(:return)
+    find('.tag-input').set('mountains').native.send_keys(:return)
+
+    find('.tags-list p.badge .tag-delete').click()
+    find('.tags-list p.badge .tag-delete').click()
+
+    # Make sure that the 2 tags are removed
+    page.assert_selector('.tags-list p.badge', :count => 0)
   end
 
   # Utility methods:

@@ -54,7 +54,7 @@ class UserSessionsControllerTest < ActionController::TestCase
     assert_equal "Successfully logged out.",  flash[:notice]
     #auth hash is present so login via a provider
     post :create
-    assert_equal "Signed in!",  flash[:notice]
+    assert_equal "Successfully logged in.",  flash[:notice]
   end
 
   test 'sign up and login via provider alternative flow for google' do
@@ -70,7 +70,7 @@ class UserSessionsControllerTest < ActionController::TestCase
     assert_equal "Successfully logged out.",  flash[:notice]
     #auth hash is present so login via a provider
     post :create
-    assert_equal "Signed in!",  flash[:notice]
+    assert_equal "Successfully logged in.",  flash[:notice]
   end
 
 
@@ -111,7 +111,7 @@ class UserSessionsControllerTest < ActionController::TestCase
     assert_equal "Successfully logged out.",  flash[:notice]
     #auth hash is present so login via a provider
     post :create
-    assert_equal "Signed in!",  flash[:notice]
+    assert_equal "Successfully logged in.",  flash[:notice]
   end
 
   test 'sign up and login via provider alternative flow for github' do
@@ -127,7 +127,7 @@ class UserSessionsControllerTest < ActionController::TestCase
     assert_equal "Successfully logged out.",  flash[:notice]
     #auth hash is present so login via a provider
     post :create
-    assert_equal "Signed in!",  flash[:notice]
+    assert_equal "Successfully logged in.",  flash[:notice]
   end
 
   test 'login user with an email and then connect github provider' do
@@ -168,7 +168,7 @@ class UserSessionsControllerTest < ActionController::TestCase
       assert_equal "Successfully logged out.",  flash[:notice]
       #auth hash is present so login via a provider
       post :create
-      assert_equal "Signed in!",  flash[:notice]
+      assert_equal "Successfully logged in.",  flash[:notice]
     end
 
     test 'sign up and login via provider alternative flow for twitter' do
@@ -184,7 +184,7 @@ class UserSessionsControllerTest < ActionController::TestCase
       assert_equal "Successfully logged out.",  flash[:notice]
       #auth hash is present so login via a provider
       post :create
-      assert_equal "Signed in!",  flash[:notice]
+      assert_equal "Successfully logged in.",  flash[:notice]
     end
 
     test 'login user with an email and then contwitter provider' do
@@ -224,7 +224,7 @@ class UserSessionsControllerTest < ActionController::TestCase
     assert_equal "Successfully logged out.",  flash[:notice]
     #auth hash is present so login via a provider
     post :create
-    assert_equal "Signed in!",  flash[:notice]
+    assert_equal "Successfully logged in.",  flash[:notice]
   end
 
   test 'sign up and login via provider alternative flow for facebook' do
@@ -240,7 +240,7 @@ class UserSessionsControllerTest < ActionController::TestCase
     assert_equal "Successfully logged out.",  flash[:notice]
     #auth hash is present so login via a provider
     post :create
-    assert_equal "Signed in!",  flash[:notice]
+    assert_equal "Successfully logged in.",  flash[:notice]
   end
 
   test 'login user with an email and then connect facebook provider' do
@@ -265,5 +265,99 @@ class UserSessionsControllerTest < ActionController::TestCase
     #Log Out
     post :destroy
     assert_equal "Successfully logged out.",  flash[:notice]
+  end
+  
+  test "logging in with banned user through oauth should fail and redirect correctly" do
+    request.env['omniauth.origin'] = "/notes/liked"
+    request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:github1]
+    post :create
+    post :destroy
+    # name of omniauth user
+    User.find_by(name: "bansal_sidharth309").ban
+    post :create
+    assert_redirected_to "/notes/liked?_=#{Time.now.to_i.to_s}"
+    assert_equal flash[:error], I18n.t('user_sessions_controller.user_has_been_banned', username: "bansal_sidharth309").html_safe
+  end
+  
+  test "logging in with moderated user through oauth should fail and redirect correctly" do
+    request.env['omniauth.origin'] = "/notes/liked"
+    request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:github1]
+    post :create
+    post :destroy
+    User.find_by(name: "bansal_sidharth309").moderate
+    post :create
+    assert_redirected_to "/notes/liked?_=#{Time.now.to_i.to_s}"
+    assert_equal flash[:error], I18n.t('user_sessions_controller.user_has_been_moderated', username: "bansal_sidharth309").html_safe
+  end
+  
+  test "redirects dashboard on signup with oauth and redirects to previous page when logging in" do
+    request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:github1]
+    post :create
+    assert_equal "You have successfully signed in. Please change your password using the link sent to you via e-mail.", flash[:notice]
+    assert_redirected_to "/dashboard"
+    post :destroy
+    assert_equal I18n.t('user_sessions_controller.logged_out'), flash[:notice]
+    request.env['omniauth.origin'] = "/notes/liked"
+    post :create
+    assert_equal I18n.t('user_sessions_controller.logged_in'), flash[:notice]
+    assert_redirected_to "/notes/liked?_=#{Time.now.to_i.to_s}"
+  end
+  
+  test "logging in through omniauth and then through normal login should display error and redirect" do
+    request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:github1]
+    # login through omniauth 
+    post :create
+    # logout
+    post :destroy
+    request.env['omniauth.auth'] = nil
+    post :create, params: { user_session: { username: "bansal_sidharth309", password: "random"} }
+    assert_equal flash[:error], "This account doesn't have a password set. It may be logged in with Github account, or you can set a new password via Forget password feature"
+  end
+  
+  test "logging in with banned user through normal login should fail" do
+    user = users(:bob)
+    user.ban
+    post :create, params: { user_session: { username: user.username, password: 'secretive' } }
+    assert_redirected_to root_url
+    assert_equal flash[:error], I18n.t('user_sessions_controller.user_has_been_banned', username: user.username).html_safe
+  end
+  
+  test "logging in with moderated user through normal login should fail" do
+    user = users(:bob)
+    user.moderate
+    post :create, params: { user_session: { username: user.username, password: 'secretive' } }
+    assert_redirected_to root_url
+    assert_equal flash[:error], I18n.t('user_sessions_controller.user_has_been_moderated', username: user.username).html_safe
+  end
+  test "user that links provider to existing account should not be redirected to dashboard on oauth signup for Github provider" do
+    request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:github4]
+    request.env['omniauth.origin'] = "/notes/liked"
+    post :create
+    assert_redirected_to "/notes/liked?_=#{Time.now.to_i.to_s}"
+    assert_equal "Successfully linked to your account!", flash[:notice]
+  end
+
+  test "user that links provider to existing account should not be redirected to dashboard on oauth signup for Google provider" do
+    request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:google_oauth2_4]
+    request.env['omniauth.origin'] = "/notes/liked"
+    post :create
+    assert_redirected_to "/notes/liked?_=#{Time.now.to_i.to_s}"
+    assert_equal "Successfully linked to your account!", flash[:notice]
+  end
+
+  test "user that links provider to existing account should not be redirected to dashboard on oauth signup for Facebook provider" do
+    request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:facebook4]
+    request.env['omniauth.origin'] = "/notes/liked"
+    post :create
+    assert_redirected_to "/notes/liked?_=#{Time.now.to_i.to_s}"
+    assert_equal "Successfully linked to your account!", flash[:notice]
+  end
+
+  test "user that links provider to existing account should not be redirected to dashboard on oauth signup for Twitter provider" do
+    request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:twitter4]
+    request.env['omniauth.origin'] = "/notes/liked"
+    post :create
+    assert_redirected_to "/notes/liked?_=#{Time.now.to_i.to_s}"
+    assert_equal "Successfully linked to your account!", flash[:notice]
   end
 end

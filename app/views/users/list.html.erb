@@ -8,9 +8,11 @@
       <h2><%= raw t('People') %></h2>
       <h5><%= t('Recently active on Publiclab') =%></h5>
     </div>
-    <div class ="col-md-4">
-      <a class="btn btn-outline-secondary blurred-location-input" style="color:#666;" onmouseover="this.style.background='white';"><i class="fa fa-map-marker"></i> Add your location</a>
-    </div>
+    <% if current_user && (@map_lat.blank? || @map_lon.blank?) %>
+      <div class="col-md-4">
+        <a class="btn btn-outline-secondary blurred-location-input" style="color:#666;" onmouseover="this.style.background='white';" submit_to="/profile/tags/create/<%= current_user.uid %>"><i class="fa fa-map-marker" style="color:#c40;"></i> Add your location</a>
+      </div>
+    <% end %>
   </div>
     <div>
     <br>
@@ -27,7 +29,7 @@
 
     <% @users.each do |user| %>
       <div class ="col-md-6" id="user">
-        <div class="card">
+        <div class="card"<% if user.status == 0 %> style="background-color: #ffc;"<% end %>>
            <div class="row card-body">
             <div class="col-md-5 nopadding">
               <div class="profile-image text-center">
@@ -36,23 +38,34 @@
             </div>
             <div class="col-md-7 nopadding">
               <div class="card-info">
-                <a href="/profile/<%= user.username %>"><%= user.username %></a>
-                <a class="ellipsis" data-toggle="dropdown">&nbsp<i class="fa fa-ellipsis-h" style="color : #666; font-size:15px; float:right;"></i></a>
-                <ul class="dropdown-menu" style = "font-size:10px;">
-                    <li><a style="color: #808080; cursor: no-drop;">Joined <%= distance_of_time_in_words(user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></a></li>
-                    <li><a href='/notes/author/<%= user.name %>'><%= user.note_count %> Research Notes</a></li>
-                    <li><a style="color: #808080; cursor: no-drop;"><%= user.nodes.count %> Wiki Edits</a></li>
-                    <li><a href="/profile/<%= user.username %>">See Full Profile</a></li>
-                    <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") %>
-                      <% if user.status == 0 %>
-                        <i class='fa fa-ban' style="color:#a00;"></i> <%= t('users.list.banned') %>
-                        <% elsif user.status == 1 %>
-                          <li><a data-confirm="<%= t('users.list.are_you_sure') %>" href="/ban/<%= user.uid %>" ><i class='fa fa-ban'></i> <%= t('users.list.ban') %></a></li>
-                      <% end %>
-                    <% end %>
-                  </ul>
+                <div class="d-flex justify-content-between">
+                 <div>
+                    <a href="/profile/<%= user.username %>"><%= user.username %></a>
+                   </div>
+                   <div>
+                      <a class="ellipsis" data-toggle="dropdown">&nbsp<i class="fa fa-ellipsis-h" style="color: #666; font-size:15px;"></i></a>
+                      <ul class="dropdown-menu dropdown-menu-right" style="font-size:10px;">
+                      <li><a style="color: #808080; cursor: no-drop;">Joined <%= distance_of_time_in_words(user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></a></li>
+                      <li><a href='/notes/author/<%= user.name %>'><%= user.note_count %> Research Notes</a></li>
+                      <li><a style="color: #808080; cursor: no-drop;"><%= user.nodes.count %> Wiki Edits</a></li>
+                      <li><a href="/profile/<%= user.username %>">See Full Profile</a></li>
+                      <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") %>
+                         <% if user.status == 0 %>
+                           <i class='fa fa-ban' style="color:#a00;"></i> <%= t('users.list.banned') %>
+                           <% elsif user.status == 1 %>
+                             <li><a data-confirm="<%= t('users.list.are_you_sure') %>" href="/ban/<%= user.uid %>" ><i class='fa fa-ban'></i> <%= t('users.list.ban') %></a></li>
+                         <% end %>
+                       <% end %>
+                     </ul>
+                   </div>
+                 </div>
                 <div class="sub-info">
-                  <div style="padding-bottom:6px;">Active <%= t = user.revisions.order(timestamp: :desc).first.try(:created_at);time_ago_in_words(t) if (t) %> ago</div>
+                  <div style="padding-bottom:6px;">
+                    <% if user.status == 0 %>
+                      <i class='fa fa-ban' style="color:#a00;"></i> <%= t('users.list.banned') %> | 
+                    <% end %>
+                    Active <%= t = user.revisions.order(timestamp: :desc).first.try(:created_at);time_ago_in_words(t) if (t) %> ago
+                  </div>
                   <span id="tags" style="font-size:11px;">
                   <% tags = Tag.sort_according_to_followers(user.tags,"desc") %>
                   <% tags[0..2].each do |tag| %>

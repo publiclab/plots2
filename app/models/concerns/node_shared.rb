@@ -35,6 +35,25 @@ module NodeShared
     end
   end
 
+  def self.nodes_thumbnail_grid(body, _page = 1)
+    body.gsub(/(?<![\>`])(\<p\>)?\[nodes\:grid\:(\S+)\]/) do |_tagname|
+      tagname = Regexp.last_match(2)
+      exclude = nil
+
+      if tagname.include?('!')
+        exclude = excluded_tagnames(tagname)
+        tagname = featured_tagname(tagname)
+      end
+
+      nodes = nodes_by_tagname(tagname, ['note','page'])
+      nodes -= excluded_nodes(exclude, 'page') if exclude.present?
+      nodes -= excluded_nodes(exclude, 'note') if exclude.present?
+
+      output = initial_output_str(Regexp.last_match(1))
+      output + data_string('thumbnail', tagname, nodes, 'nodes')
+    end
+  end
+
   # rubular regex: http://rubular.com/r/hBEThNL4qd
   def self.graph_grid(body, _page = 1)
     body.gsub(/(?<![\>`])(\<p\>)?\[graph\:(\S+)\]/) do |_tagname|
@@ -47,6 +66,23 @@ module NodeShared
                                     url: url,
                                     randomSeed: randomSeed,
                                     idName: 'graph-grid-' + randomSeed,
+                                    type: "graph"
+                                  })
+      output
+    end
+  end
+
+  def self.simple_data_grapher(body, _page = 1)
+    body.gsub(/(?<![\>`])(\<p\>)?\[simple-data-grapher\:(\S+)\]/) do |_tagname|
+      ids = Regexp.last_match(2)
+      a = ActionController::Base.new
+      randomSeed = rand(1000).to_s
+      output = a.render_to_string(template: "grids/_simple-data-grapher",
+                                  layout:   false,
+                                  locals: {
+                                    ids: ids,
+                                    randomSeed: randomSeed,
+                                    idName: 'sdg-graph-' + randomSeed,
                                     type: "graph"
                                   })
       output
@@ -159,8 +195,8 @@ module NodeShared
       lat = Regexp.last_match(2)
       lon = Regexp.last_match(3)
       tagname = nil
-
-      map_data_string(lat, lon, tagname, "leaflet")
+      
+      map_data_string(lat, lon, tagname, "plainInlineLeaflet")
     end
   end
 
@@ -170,7 +206,7 @@ module NodeShared
       lat = Regexp.last_match(3)
       lon = Regexp.last_match(4)
 
-      map_data_string(lat, lon, tagname, "leaflet")
+      map_data_string(lat, lon, tagname, "plainInlineLeaflet")
     end
   end
 
@@ -182,6 +218,39 @@ module NodeShared
       tagname = nil
 
       map_data_string(lat, lon, tagname, "peopleLeaflet")
+    end
+  end
+
+  # [map:layers:other_inline_layer:_latitude_:_longitude:skytruth,mapknitter]
+  # [map:layers::_latitude_:_longitude:skytruth,mapknitter]
+  def self.layers_map(body, _page = 1)
+    body.gsub(/(?<![\>`])(\<p\>)?\[map\:layers\:(\w*)\:(\S+)\:(\S+)\:(\w+)((\,\w+)*)\]/) do |_tagname|
+      mainLayer = Regexp.last_match(2)
+      lat = Regexp.last_match(3)
+      lon = Regexp.last_match(4)
+      primaryLayer =  Regexp.last_match(5).to_s
+      secondaryLayers = Regexp.last_match(6).to_s
+      unless secondaryLayers.nil?
+        primaryLayer += secondaryLayers
+      end
+
+      map_data_string(lat, lon, primaryLayer, "inlineLeaflet", mainLayer)
+    end
+  end
+
+  # [map:layers:tag:infragram:23:77:skyTruth,mapKnitter]
+  def self.tag_layers_map(body, _page = 1)
+    body.gsub(/(?<![\>`])(\<p\>)?\[map\:layers\:tag\:(\w+)\:(\S+)\:(\S+)\:(\w+)((\,\w+)*)\]/) do |_tagname|
+      tagname = Regexp.last_match(2)
+      lat = Regexp.last_match(3)
+      lon = Regexp.last_match(4)
+      primaryLayer =  Regexp.last_match(5).to_s
+      secondaryLayers = Regexp.last_match(6).to_s
+      unless secondaryLayers.nil?
+        primaryLayer += secondaryLayers
+      end
+
+      map_data_string(lat, lon, primaryLayer, "inlineLeaflet", tagname)
     end
   end
 
@@ -284,11 +353,13 @@ module NodeShared
                        })
   end
 
-  def self.map_data_string(lat, lon, tagname, template)
+  def self.map_data_string(lat, lon, tagname, template, mainLayer = nil)
     a = ActionController::Base.new
 
-    locals_data = if template == "leaflet"
+    locals_data = if template == "plainInlineLeaflet"
                     { lat: lat, lon: lon, tagname: tagname.to_s }
+                  elsif template == "inlineLeaflet"
+                    { lat: lat, lon: lon, layers: tagname.to_s, mainLayer: mainLayer }
                   else
                     { lat: lat, lon: lon, people: true,
                       url_hash: 0, tag_name: false }

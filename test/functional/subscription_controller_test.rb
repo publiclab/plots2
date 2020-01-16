@@ -15,7 +15,7 @@ class SubscriptionControllerTest < ActionController::TestCase
   test 'should redirect to login if user is not logged in and trying to access digest' do
       get :digest
 
-      assert_redirected_to '/login'
+      assert_redirected_to '/login?return_to=/subscriptions/digest'
   end
 
   test 'should show digest if user logged in' do
@@ -54,5 +54,13 @@ class SubscriptionControllerTest < ActionController::TestCase
     UserSession.create((users(:bob)))
     get :add, params: { type: 'tag', name: 'blog' }, xhr: true
     assert users(:bob).following(:blog)
+  end
+  
+  test "should redirect properly when subscribing to multiple tags" do
+    UserSession.create((users(:bob)))
+    tagnames = 'blog,kites,,balloon,awesome'
+    get :multiple_add, params: { type: "tag", tagnames: tagnames, return_to: "/dashboard" }
+    assert_redirected_to "/dashboard"
+    assert_equal flash[:notice], "You are now following '#{tagnames}'."
   end
 end

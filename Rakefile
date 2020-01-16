@@ -20,14 +20,11 @@ namespace :test do
 
   desc "Run rails and teaspoon tests"
   task :all => :environment do
-    require 'coveralls/rake/task'
-    Coveralls::RakeTask.new
     if ENV['GENERATE_REPORT'] == 'true'
       require 'ci/reporter/rake/test_unit'
       Rake::Task["ci:setup:testunit"].execute
     end
     puts "Running teaspoon tests headlessly"
     Rake::Task["teaspoon"].execute
-    Rake::Task["coveralls:push"].execute
   end
 end

@@ -25,10 +25,10 @@ class WikiControllerTest < ActionController::TestCase
   end
 
   test 'should get wiki index in alphabetical order' do
-    get :index, params: { order: 'alphabetic' }
+    get :index, params: { sort: 'title' }
 
     assert_response :success
-    assert_not_nil :wikis
+    assert assigns(:wikis).each_cons(2).all?{|i,j| "j.node_revisions.title" >= "i.node_revisions.title" }
   end
 
   test 'should get wiki stale pages' do
@@ -96,7 +96,7 @@ class WikiControllerTest < ActionController::TestCase
          tags:  'balloon-mapping,event'
         }
 
-    assert_redirected_to('/login')
+    assert_redirected_to('/login?return_to=/wiki/create')
   end
 
   test 'post wiki' do
@@ -214,11 +214,26 @@ class WikiControllerTest < ActionController::TestCase
     node = nodes(:about)
     image = node.images.where(photo_file_name: 'filename-1.jpg').last
 
-    post :update, params: { id: node.nid, uid: users(:bob).id, title: 'New Title', body: 'Editing about Page', image_revision: image.path(:default) }
+    post :update, params: { id: node.nid, uid: users(:bob).id, title: 'New Title', body: 'Editing about Page', main_image: image.id }
 
     node.reload
     assert_redirected_to node.path
     assert_equal flash[:notice], 'Edits saved.'
+    assert_equal node.main_image_id, image.id
+  end
+
+  test 'update wiki selecting no image' do
+    node = nodes(:about)
+    node.main_image_id = 1
+    node.save
+    assert_equal 1, node.main_image_id
+
+    post :update, params: { id: node.nid, uid: users(:bob).id, title: 'New Title', body: 'Editing about Page', main_image: 0 }
+
+    node.reload
+    assert_redirected_to node.path
+    assert_equal flash[:notice], 'Edits saved.'
+    assert_nil node.main_image_id
   end
 
   test 'normal user should not delete wiki page' do
@@ -578,7 +593,7 @@ class WikiControllerTest < ActionController::TestCase
     @user = UserSession.create(users(:jeff))
     @node = nodes(:wiki_page)
     slug = @node.path.gsub('/wiki/', '')
-    @node.add_tag('date:bad', @user)
+    @node.add_tag('date:bad', users(:jeff))
 
     assert_equal false, @node.has_power_tag('date')
     # assert_equal "anything goes", DateTime.strptime(@node.power_tag('date'),'%m- %d-%Y').to_date.to_s(:long)
@@ -620,4 +635,15 @@ class WikiControllerTest < ActionController::TestCase
       assert_equal 'text/html', @response.content_type
   end
 
+  test "should get author wikis of which none are banned" do
+    user = users(:jeff)
+    get :author, params: { id: user.name }
+    wikis = assigns(:wikis)
+    # check they are not banned
+    assert wikis.all? { |wiki| wiki.status == 1 }
+    # test their type
+    assert wikis.none? { |wiki| wiki.type == "question" || wiki.status == "note"}
+    # check correct author
+    assert wikis.all? { |wiki| wiki.uid == user.uid }
+  end
 end

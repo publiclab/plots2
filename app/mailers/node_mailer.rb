@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NodeMailer < ActionMailer::Base
   helper :application
   include ApplicationHelper
