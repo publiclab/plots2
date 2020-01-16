@@ -38,15 +38,6 @@ class ModerationTest < ApplicationSystemTestCase
     assert find("div.alert", text: "The user has been unmoderated.")
   end
 
-  test "test spamming wikis" do
-    # nodes on spam page are sorted by id descendent
-    banned_node = Node.last
-    visit "/spam/wiki"
-    first("a[href='/ban/#{banned_node.author.id}'").click()
-    assert_nil find("a[href='/ban/#{banned_node.author.id}'")
-    page.assert_selector("a[href='/unban/#{banned_node.author.id}'")
-  end
-
   test "batch-spamming users" do
     banned_page = nodes(:spam_targeted_page)
     banned_page2 = nodes(:wiki_page)
