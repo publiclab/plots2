@@ -130,7 +130,7 @@ class AdminControllerTest < ActionController::TestCase
     get :spam
 
     assert_equal 'You must be logged in to access this page', flash[:warning]
-    assert_redirected_to '/login'
+    assert_redirected_to '/login?return_to=/spam'
   end
 
   test 'normal user should not be able to see spam page' do
@@ -330,7 +330,7 @@ class AdminControllerTest < ActionController::TestCase
     get :spam_revisions
 
     assert_equal 'You must be logged in to access this page', flash[:warning]
-    assert_redirected_to '/login'
+    assert_redirected_to '/login?return_to=/spam/revisions'
   end
 
   test 'normal user should not be able to see spam_revisions page' do
@@ -499,7 +499,7 @@ class AdminControllerTest < ActionController::TestCase
 
     post :mark_comment_spam, params: { id: comment.id }
 
-    assert_redirected_to '/login'
+    assert_redirected_to '/login?return_to=/admin/mark_comment_spam/309456473'
   end
 
   test 'should not mark comment as spam if normal user' do
@@ -535,7 +535,7 @@ class AdminControllerTest < ActionController::TestCase
     comment = assigns(:comment)
     assert_equal 1, comment.status
     assert_equal "Comment published.", flash[:notice]
-    assert_redirected_to node.path
+    assert_redirected_to node.path + '?_=' + Time.now.to_i.to_s
   end
 
   test 'should send email to comment author when it is approved (first time commenter)' do
@@ -553,7 +553,7 @@ class AdminControllerTest < ActionController::TestCase
     assert email.body.include?("Hi! Your comment was approved by <a href='https://#{request_host}/profile/#{user.username}'>#{user.username}</a> (a <a href='https://#{request_host}/wiki/moderation'>community moderator</a>) and is now visible in the <a href='https://#{request_host}/dashboard'>Public Lab research feed</a>. Thanks for contributing to open research!")
     comment = assigns(:comment)
     assert_equal 1, comment.status
-    assert_redirected_to node.path
+    assert_redirected_to node.path + '?_=' + Time.now.to_i.to_s
   end
 
   test 'should publish comment from spam if moderator' do
@@ -565,7 +565,7 @@ class AdminControllerTest < ActionController::TestCase
     comment = assigns(:comment)
     assert_equal 1, comment.status
     assert_equal "Comment published.", flash[:notice]
-    assert_redirected_to node.path
+    assert_redirected_to node.path + '?_=' + Time.now.to_i.to_s
   end
 
   test 'should login if want to publish comment from spam' do
@@ -574,7 +574,7 @@ class AdminControllerTest < ActionController::TestCase
     post :publish_comment, params: { id: comment.id }
 
     assert_equal 0, comment.status
-    assert_redirected_to '/login'
+    assert_redirected_to '/login?return_to=/admin/publish_comment/3449440'
   end
 
   test 'should not publish comment from spam if any other user' do
@@ -598,7 +598,7 @@ class AdminControllerTest < ActionController::TestCase
 
     assert_equal 1, comment.status
     assert_equal "Comment already published.", flash[:notice]
-    assert_redirected_to node.path
+    assert_redirected_to node.path + '?_=' + Time.now.to_i.to_s
   end
 
   test 'non-registered user should not be able to see spam_comments page' do
@@ -608,7 +608,7 @@ class AdminControllerTest < ActionController::TestCase
     get :spam_comments
 
     assert_equal 'You must be logged in to access this page', flash[:warning]
-    assert_redirected_to '/login'
+    assert_redirected_to '/login?return_to=/spam/comments'
   end
 
   test 'normal user should not be able to see spam_comments page' do
@@ -636,5 +636,22 @@ class AdminControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_not_nil assigns(:comments)
+  end
+
+  test 'admin user should be able to view page to search users by email' do
+    UserSession.create(users(:admin))
+
+    get :useremail
+
+    assert_response :success
+  end
+
+  test 'admin user should be able to search users by email' do
+    UserSession.create(users(:admin))
+
+    get :useremail, params: { address: 'bob@publiclab.org', include_banned: 'true' }
+
+    assert_response :success
+    assert_not_nil assigns(:users)
   end
 end

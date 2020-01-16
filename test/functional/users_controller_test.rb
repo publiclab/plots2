@@ -85,7 +85,7 @@ class UsersControllerTest < ActionController::TestCase
     # checks flash
     assert_equal flash[:error], I18n.t('users_controller.user_has_been_banned')
     # checks duplicated flash is not present
-    assert_equal flash[:notice], nil
+    assert_nil flash[:notice]
   end
   
   test 'generate user reset key' do
@@ -257,14 +257,14 @@ class UsersControllerTest < ActionController::TestCase
     user = users(:bob)
     get :edit, params: { id: user.name }
     assert_not flash.empty?
-    assert_redirected_to '/login'
+    assert_redirected_to '/login?return_to=/profile/Bob/edit'
   end
 
   test 'should redirect update when not logged in' do
     user = users(:bob)
     post :update, params: { user: { bio: 'Hello, there!' } }
     assert_not flash.empty?
-    assert_redirected_to '/login'
+    assert_redirected_to '/login?return_to=/users/update'
   end
 
   test 'should redirect edit when logged in as another user' do

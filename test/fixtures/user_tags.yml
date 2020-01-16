@@ -367,3 +367,28 @@ notification_tag2:
   id: 24
   uid: 14
   value: notifications:all
+
+zoom:
+  id: 25
+  uid: 1
+  value: zoom:10
+
+blurred:
+  id: 26
+  uid: 1
+  value: blurred:true
+
+lat2:
+  id: 27
+  uid: 2
+  value: lat:59
+
+lon2:
+  id: 28
+  uid: 2
+  value: lon:15
+
+zoom2:
+  id: 29
+  uid: 2
+  value: zoom:10
