@@ -74,4 +74,40 @@ class CommentTest < ApplicationSystemTestCase
     assert_equal( comment_preview_button.text, "Preview" )
   end
 
+  test 'comment image upload' do
+    Capybara.ignore_hidden_elements = false
+    visit "/wiki/wiki-page-path/comments"
+
+    find("p", text: "Reply to this comment...").click()
+
+    reply_preview_button = page.all('#post_comment')[0]
+    fileinput_element = page.all('#fileinput')[0]
+
+    # Upload the image
+    fileinput_element.set("#{Rails.root.to_s}/public/images/pl.png")
+
+    # Wait for image upload to finish
+    wait_for_ajax
+    Capybara.ignore_hidden_elements = true
+
+    # Toggle preview
+    reply_preview_button.click()
+
+    # Make sure that image has been uploaded
+    page.assert_selector('#preview img', count: 1)
+  end
+
+  # https://stackoverflow.com/questions/36536111/waiting-for-ajax-with-capybara-poltergeist
+  def wait_for_ajax
+    Timeout.timeout(Capybara.default_max_wait_time) do
+      loop until finished_all_ajax_requests?
+    end
+  end
+
+  def finished_all_ajax_requests?
+      request_count = page.evaluate_script("$.active").to_i
+      request_count && request_count.zero?
+    rescue Timeout::Error
+  end
+
 end
