@@ -118,3 +118,7 @@ a:not([href]):not([tabindex]).btn-outline-secondary.btn-location:hover i,
 .btn-outline-secondary.btn-location:hover i {
   color: white;
 }
+
+#coord_button {
+  text-decoration: underline;
+}
