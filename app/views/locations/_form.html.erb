@@ -138,12 +138,6 @@
 
     blurredLocation.map.setMaxBounds(bounds);
 
-    let location_type = "<%= params[:url] %>" || $('#tagform').attr('action');
-    if(location_type.split('/')[1] === "profile") {
-      $('#place_name').addClass('d-none');
-      console.log("hidden");
-    }
-
     var changeZoom = function() {
       var zoom = slider.getValue();
       blurredLocation.map.setZoom(zoom);
