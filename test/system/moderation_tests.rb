@@ -27,13 +27,13 @@ class ModerationTest < ApplicationSystemTestCase
   test "moderating and unmoderating a user" do
     visit "/profile/#{users(:bob).username}"
 
-    find("a#info-ellipsis").click
+    find("a#info-ellipsis").click()
     accept_confirm "Are you sure? The user will no longer be able to log in or publish." do
       find("a[href='/admin/moderate/#{users(:bob).id}'").click()
     end
     assert find("div.alert", text: "That user has been placed in moderation.")
   
-    find("a#info-ellipsis").click
+    find("a#info-ellipsis").click()
     find("a[href='/admin/unmoderate/#{users(:bob).id}'").click()
     assert find("div.alert", text: "The user has been unmoderated.")
   end
@@ -42,7 +42,7 @@ class ModerationTest < ApplicationSystemTestCase
     # nodes on spam page are sorted by id descendent
     banned_node = Node.last
     visit "/spam/wiki"
-    first("a[href='/ban/#{banned_node.author.id}'").click
+    first("a[href='/ban/#{banned_node.author.id}'").click()
     assert_nil find("a[href='/ban/#{banned_node.author.id}'")
     page.assert_selector("a[href='/unban/#{banned_node.author.id}'")
   end
@@ -64,12 +64,12 @@ class ModerationTest < ApplicationSystemTestCase
     visit "/"
     visit "/profile/#{banned_page.author.username}"
     assert find("div.alert", text: "That user has been banned.")
-    find("a#info-ellipsis").click
+    find("a#info-ellipsis").click()
     page.assert_selector "a[href='/unban/#{banned_page.author.id}'"
 
     visit "/profile/#{banned_page2.author.username}"
     assert find("div.alert", text: "That user has been banned.")
-    find("a#info-ellipsis").click
+    find("a#info-ellipsis").click()
     page.assert_selector "a[href='/unban/#{banned_page2.author.id}'"
   end
 end
