@@ -57,7 +57,7 @@ class PostTest < ApplicationSystemTestCase
     fill_in 'user_session[username]', with: 'jeff'
     fill_in 'user_session[password]', with: 'secretive'
     click_on "Log in"
-    find("a[data-original-title='Edit this wiki page.'").click()
+    find('a.btn-circle:first-of-type .fa-pencil').click()
     fill_in("body", with: "Test for editing wikis!")
 
     # preview edits
