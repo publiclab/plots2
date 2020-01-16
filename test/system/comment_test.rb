@@ -97,6 +97,73 @@ class CommentTest < ApplicationSystemTestCase
     page.assert_selector('#preview img', count: 1)
   end
 
+  test 'comment image drag and drop upload' do
+    Capybara.ignore_hidden_elements = false
+    visit "/wiki/wiki-page-path/comments"
+
+    find("p", text: "Reply to this comment...").click()
+
+    reply_preview_button = page.all('#post_comment')[0]
+
+    # Upload the image
+    drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png")
+
+    # Wait for image upload to finish
+    wait_for_ajax
+    Capybara.ignore_hidden_elements = true
+
+    # Toggle preview
+    reply_preview_button.click()
+
+    # Make sure that image has been uploaded
+    page.assert_selector('#preview img', count: 1)
+  end
+
+
+  # https://web.archive.org/web/20170730200309/http://blog.paulrugelhiatt.com/rails/testing/capybara/dropzonejs/2014/12/29/test-dropzonejs-file-uploads-with-capybara.html
+  def drop_in_dropzone(file_path)
+    # Generate a fake input element
+    page.execute_script <<-JS
+      fakeFileInput = window.$('<input/>').attr(
+        {id: 'fakeFileInput', type:'file'}
+      ).appendTo('body');
+    JS
+
+    # Attach the file to the fake input element
+    attach_file("fakeFileInput", file_path)
+
+    page.execute_script <<-JS
+      var dataTransfer = new DataTransfer()
+      dataTransfer.items.add(fakeFileInput.get(0).files[0])
+
+      var fakeDropEvent = new DragEvent('drop')
+      var fileToDrop = fakeFileInput.get(0).files[0]
+
+      // Generate the fake "drop" event
+      Object.defineProperty(fakeDropEvent, 'dataTransfer', {
+        value: new FakeDataTransferObject(fileToDrop)
+      });
+
+      var dropzoneArea = document.querySelector('.dropzone');
+      // Transfer the image to the dropzone area
+      dropzoneArea.files = dataTransfer.files;
+      // Emit the fake "drop" event
+      dropzoneArea.dispatchEvent(fakeDropEvent);
+
+      // Generate fake data transfer object
+      function FakeDataTransferObject(file) {
+        this.dropEffect = 'all';
+        this.effectAllowed = 'all';
+        this.items = [];
+        this.types = ['Files'];
+        this.getData = function() {
+          return file;
+        };
+        this.files = [file];
+      };
+    JS
+  end
+
   # https://stackoverflow.com/questions/36536111/waiting-for-ajax-with-capybara-poltergeist
   def wait_for_ajax
     Timeout.timeout(Capybara.default_max_wait_time) do
