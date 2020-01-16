@@ -4,6 +4,7 @@ include ActionView::Helpers::DateHelper # required for time_ago_in_words()
 class AdminControllerTest < ActionController::TestCase
   include ActionMailer::TestHelper
   include ActiveJob::TestHelper
+
   def setup
     activate_authlogic
     Timecop.freeze # account for timestamp change
