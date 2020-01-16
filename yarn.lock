@@ -444,7 +444,7 @@ bluebird@*:
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.7.2.tgz#9f229c15be272454ffa973ace0dbee79a1b0c36f"
   integrity sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==
 
-blueimp-canvas-to-blob@3, blueimp-canvas-to-blob@>=2.0.5:
+blueimp-canvas-to-blob@3:
   version "3.17.0"
   resolved "https://registry.yarnpkg.com/blueimp-canvas-to-blob/-/blueimp-canvas-to-blob-3.17.0.tgz#d796e72aa1fd37f9471e0396e64d323956564a23"
   integrity sha512-LcuVZZtKtE4yUrLb0IQA7ndMm19gooDTrzvjjkvmQ1MhkFlSzTw+8Ftp+/ckfGeP2UDQvDsPyy8mIT69itAqbg==
@@ -462,7 +462,7 @@ blueimp-file-upload@^9.34.0:
     blueimp-load-image "2.12.2"
     blueimp-tmpl "3.6.0"
 
-blueimp-file-upload@blueimp/jQuery-File-Upload#^10.7.0:
+blueimp-file-upload@blueimp/jQuery-File-Upload#^10.7.0, jquery-file-upload@blueimp/jQuery-File-Upload#~10.7.0:
   version "10.7.0"
   uid faad01e7073b0ed1088efc285b16c7504d813674
   resolved "https://codeload.github.com/blueimp/jQuery-File-Upload/tar.gz/faad01e7073b0ed1088efc285b16c7504d813674"
@@ -471,7 +471,7 @@ blueimp-file-upload@blueimp/jQuery-File-Upload#^10.7.0:
     blueimp-load-image "2"
     blueimp-tmpl "3"
 
-blueimp-load-image@2, blueimp-load-image@>=1.5.0:
+blueimp-load-image@2:
   version "2.26.0"
   resolved "https://registry.yarnpkg.com/blueimp-load-image/-/blueimp-load-image-2.26.0.tgz#4cd3115f115d5ef9386b2ee15a504668987dfd05"
   integrity sha512-pL7SYdK9ZxBFmFiEoh91PIYccU9IzytQ8goIUgc+5RW6vYVyvpGRUltefceeoNyLARbF8QXiYimHp6kgjZ/IBg==
@@ -481,7 +481,7 @@ blueimp-load-image@2.12.2:
   resolved "https://registry.yarnpkg.com/blueimp-load-image/-/blueimp-load-image-2.12.2.tgz#6a17598aab858d4fbf01543e0631141b51057c87"
   integrity sha1-ahdZiquFjU+/AVQ+BjEUG1EFfIc=
 
-blueimp-tmpl@3, blueimp-tmpl@>=2.1.0:
+blueimp-tmpl@3:
   version "3.13.0"
   resolved "https://registry.yarnpkg.com/blueimp-tmpl/-/blueimp-tmpl-3.13.0.tgz#910c337d5742a8a17e3237139389853ebc9ced56"
   integrity sha512-TC5eLXhPGGgBJG1gGxKRORB5DMxSVSTS/GsqsQuJ+shv0Ez5wc9bjoXVhPqtdbzVZAzFvveasAMrjqEYY/18Og==
@@ -3293,25 +3293,10 @@ jquery-confirm@^3.3.4:
   dependencies:
     jquery ">=1.6"
 
-jquery-file-upload@blueimp/jQuery-File-Upload#~8.1.0:
-  version "8.1.0"
-  resolved "https://codeload.github.com/blueimp/jQuery-File-Upload/tar.gz/442027a0fe8d483687596ee72da83c58ce293f1b"
-  dependencies:
-    blueimp-canvas-to-blob ">=2.0.5"
-    blueimp-load-image ">=1.5.0"
-    blueimp-tmpl ">=2.1.0"
-    jquery ">=1.6"
-    jquery.ui.widget ">=1.9"
-
 jquery-validation@^1.19.1:
   version "1.19.1"
   resolved "https://registry.yarnpkg.com/jquery-validation/-/jquery-validation-1.19.1.tgz#a85043467dc2b70d9fff05778646d150e747742f"
   integrity sha512-QNnrZBqSltWUEJx+shOY5WtfrIb0gWmDjFfQP8rZKqMMSfpRSwEkSqhfHPvDfkObD8Hnv5KHSYI8yg73sVFdqA==
-
-jquery.ui.widget@>=1.9:
-  version "1.10.3"
-  resolved "https://registry.yarnpkg.com/jquery.ui.widget/-/jquery.ui.widget-1.10.3.tgz#2ceecfc64995412643eeb9508d2197ea93c02fb3"
-  integrity sha1-LO7PxkmVQSZD7rlQjSGX6pPAL7M=
 
 jquery@>=1.10, jquery@>=1.6, jquery@>=1.7, "jquery@>=1.7.1 <4.0.0", jquery@^3.2.1, jquery@^3.3.1, jquery@^3.4.1, jquery@~3:
   version "3.4.1"
