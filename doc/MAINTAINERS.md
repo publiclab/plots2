@@ -8,6 +8,8 @@ We use the GitHub feature called [Code Owners](https://help.github.com/en/articl
 
 This is really cool and it brings up the possibility of having groups that have merge rights but are responsible for only specific areas of the codebase. This will make it easier to know enough about a system to give a good final check (after reviews) and be sure it doesn't break anything, without having to know the entire codebase. This can then reduce our merge-rights bottleneck, but not bring a lot of risk of breaking code.
 
+See more discussion on this system in this issue: https://github.com/publiclab/plots2/issues/6501
+
 ## Feature areas
 
 So, for example, we might have a @publiclab/comments-maintainers group, who have merge rights and responsibilities for the comments feature area -- including:
@@ -25,6 +27,9 @@ So, for example, we might have a @publiclab/comments-maintainers group, who have
 ```
 
 These are actually each listed out in [the CODEOWNERS file](https://github.com/publiclab/plots2/blob/a2dfdf20c6bbfaa6af60201881361c5342f676ef/.github/CODEOWNERS#L39-L49), with @publiclab/comment-maintainers after each line.
+
+Note: we are adding these to the CODEOWNERS file progressively, and would love help expanding out that list. 
+
 
 ## Goals and priorities
 
