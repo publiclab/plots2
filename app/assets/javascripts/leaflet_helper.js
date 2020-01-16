@@ -104,7 +104,6 @@
 
        L.LayerGroup.EnvironmentalLayers({
            include: layers,
-           embed: true,
        }).addTo(map);
 
        if(typeof mainLayer !== "undefined" && mainLayer !== ""){

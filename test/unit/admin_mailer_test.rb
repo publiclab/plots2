@@ -3,13 +3,21 @@ require 'test_helper'
 include ActionView::Helpers::DateHelper # required for time_ago_in_words()
 
 class AdminMailerTest < ActionMailer::TestCase
+  include ActiveJob::TestHelper
+
   test 'notify_node_moderators' do
     node = nodes(:one)
     moderators = User.where(role: %w[moderator admin])
     assert !moderators.empty?
 
+    # policy at  https://github.com/publiclab/plots2/issues/6246
+    assert_difference 'ActionMailer::Base.deliveries.size', 0 do
+      assert_not_equal 4, node.status
+      AdminMailer.notify_node_moderators(node).deliver_now
+    end
+
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
-      # send the email
+      node.status = 4 # notify if status == 4
       AdminMailer.notify_node_moderators(node).deliver_now
     end
 
@@ -31,7 +39,14 @@ class AdminMailerTest < ActionMailer::TestCase
     moderators = User.where(role: %w[moderator admin])
     assert !moderators.empty?
 
+    # policy at  https://github.com/publiclab/plots2/issues/6246
+    assert_difference 'ActionMailer::Base.deliveries.size', 0 do
+      assert_not_equal 4, comment.status
+      AdminMailer.notify_comment_moderators(comment).deliver_now
+    end
+
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
+      comment.status = 4 # notify if status == 4
       AdminMailer.notify_comment_moderators(comment).deliver_now
     end
 

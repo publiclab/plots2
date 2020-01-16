@@ -58,3 +58,4 @@
 //= require jquery-validation/dist/jquery.validate.js
 //= require validation.js
 //= require submit_form_ajax.js
+//= require urlMapHash.js

@@ -101,6 +101,13 @@ a .fa-white,
     color: white !important;
 }
 
+.fa-facebook,
+.fa-twitter,
+.fa-github,
+.fa-google {
+   vertical-align: middle;
+}
+
 .label a {
   color:#007bff;
 }
@@ -490,10 +497,14 @@ div.note.moderated h4 {
 }
 
 .note p.moderated .btn {
-  color: #940;
+  color: #940 !important;
   border-color: #eb8;
   background: none;
   font-size: smaller;
+}
+
+.note p.moderated .btn:hover {
+  background-color: rgba(238, 187, 136, 0.5);
 }
 
 .btn-primary {

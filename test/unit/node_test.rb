@@ -1,5 +1,6 @@
 require 'test_helper'
 class NodeTest < ActiveSupport::TestCase
+  include ActiveJob::TestHelper
 
   def setup
     @start = (Date.today - 1.year).to_time
@@ -527,5 +528,12 @@ class NodeTest < ActiveSupport::TestCase
     assert_equal 'Chicago', Node.find_by_tag_and_author('chapter', 1, 'wiki').first.title
     assert_equal 'Canon A1200 IR conversion at PLOTS Barnraising at LUMCON', Node.find_by_tag_and_author('awesome', 2, 'notes').first.title
     assert_equal 'Question by a moderated user', Node.find_by_tag_and_author('question:spectrometer', 9, 'questions').first.title
+  end
+  test 'non-approved users should not be able to add tags' do
+    node = nodes(:one)
+    assert_difference 'node.tags.count', 0 do
+      node.add_tag('myspamtag', users(:spammer))
+    end
+    assert_not node.has_tag('myspamtag')
   end
 end

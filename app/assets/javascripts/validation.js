@@ -34,22 +34,99 @@ $(document).ready(function() {
   });
 });
 
-$(document).ready(function () {
-  // The two forms have same ID
-  var forms = document.querySelectorAll("#create-form");
+$(document).ready(function() {
+  // The two forms have the same ID
+  var signUpForms = document.querySelectorAll("#create-form");
 
   // Sign up modal form
-  forms[0].classList.add("signup-modal-form");
+  signUpForms[0].classList.add("signup-modal-form");
   var signUpModalForm = new SignUpFormValidator(".signup-modal-form");
 
   // publiclab.org/register form
-  if (forms[1]) {
-    forms[1].classList.add("signup-register-form");
+  if (signUpForms[1]) {
+    signUpForms[1].classList.add("signup-register-form");
     var signUpRegisterForm = new SignUpFormValidator(".signup-register-form");
+  }
+
+  // The same goes for login forms
+  var loginForms = document.querySelectorAll(".user-sessions-form");
+
+  loginForms[0].classList.add("login-modal-form");
+  LoginFormValidator(".login-modal-form");
+
+  // publiclab.org/login form
+  if (loginForms[1]) {
+    loginForms[1].classList.add("login-page-form");
+    LoginFormValidator(".login-page-form");
   }
 });
 
-// Form validation class
+// The main login form validation function
+function LoginFormValidator(formSelector) {
+  var loginForm = document.querySelector(formSelector);
+
+  loginForm.addEventListener("submit", handleLoginFormValidation);
+}
+
+function handleLoginFormValidation(e) {
+  var formSelector = this.classList.value.split(" ").join(".");
+  e.preventDefault();
+
+  var usernameElement = document.querySelector(
+    formSelector + " #username-login"
+  );
+  var passwordElement = document.querySelector(
+    formSelector + " #password-signup"
+  );
+
+  var username = usernameElement.value.trim();
+  var password = passwordElement.value.trim();
+
+  var isUsernameValid = username.length >= 3;
+
+  if (isUsernameValid && isPasswordValid(password)) {
+    removeLoginFormError(formSelector);
+    renderSubmitBtnSpinner(formSelector);
+    this.submit();
+  } else {
+    renderLoginFormError(formSelector);
+  }
+}
+
+function renderSubmitBtnSpinner(formSelector) {
+  var submitFormBtn = document.querySelector(formSelector + " #login-button");
+
+  submitFormBtn.classList.add("disabled");
+  submitFormBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+}
+
+function renderLoginFormError(formSelector) {
+  removeLoginFormError(formSelector);
+
+  var loginFormWrapper = document.querySelector(formSelector + " .login-form");
+
+  var errorMessageHTML =
+    '<div class="alert alert-danger error-msg-container" style="margin: 0 18px;">\
+      <button type="button" class="close" data-dismiss="alert">\
+        ×\
+      </button>\
+      Invalid username or password\
+      </div>';
+
+  loginFormWrapper.insertAdjacentHTML("beforeBegin", errorMessageHTML);
+}
+
+function removeLoginFormError(formSelector) {
+  var loginFormErrorElement = document.querySelector(
+    formSelector + " .error-msg-container"
+  );
+
+  if (loginFormErrorElement) {
+    loginFormErrorElement.remove();
+  }
+}
+
+// Sign Up form validation class
 function SignUpFormValidator(formClass) {
   var signUpForm = document.querySelector(formClass);
 
@@ -128,13 +205,11 @@ SignUpFormValidator.prototype.isFormValid = function() {
 };
 
 function validateUsername(obj) {
-  var username = this.value;
+  var username = this.value.trim();
   var self = this;
 
   if (username.length < 3) {
-    restoreOriginalStyle(this);
-    obj.disableSubmitBtn();
-    removeErrorMsg(self);
+    obj.updateUI(this, false, "Username has to be at least 3 characters long");
   } else {
     $.get("/api/srch/profiles?query=" + username, function(data) {
       if (data.items) {
@@ -153,7 +228,13 @@ function validateUsername(obj) {
 }
 
 function validateEmail(obj) {
-  var email = this.value;
+  var email = this.value.trim();
+
+  if (email.length === 0) {
+    obj.updateUI(this, false, "The email cannot be empty.");
+    return;
+  }
+
   var emailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   var isValidEmail = emailRegExp.test(email);
 
@@ -161,13 +242,18 @@ function validateEmail(obj) {
 }
 
 function validatePassword(confirmPasswordElement, obj) {
-  var password = this.value;
+  var password = this.value.trim();
+
+  if (password.length === 0) {
+    obj.updateUI(this, false, "The password cannot be empty.");
+    return;
+  }
 
   if (!isPasswordValid(password)) {
     obj.updateUI(
       this,
       false,
-      "Please make sure password is at least 8 characters long with minimum one numeric value"
+      "Please make sure password is at least 8 characters long"
     );
     return;
   }
@@ -180,11 +266,20 @@ function validatePassword(confirmPasswordElement, obj) {
 }
 
 function validateConfirmPassword(passwordElement, obj) {
-  var confirmPassword = this.value;
+  var confirmPassword = this.value.trim();
   var password = passwordElement.value;
 
-  if (confirmPassword !== password) {
-    obj.updateUI(this, false, "Passwords must be equal");
+  if (confirmPassword.length === 0) {
+    obj.updateUI(this, false, "The password confirmation cannot be empty");
+    return;
+  }
+
+  if (confirmPassword !== password || !isPasswordValid(password)) {
+    obj.updateUI(
+      this,
+      false,
+      "Password and Password Confirmation should be the same"
+    );
     return;
   }
 
@@ -194,8 +289,7 @@ function validateConfirmPassword(passwordElement, obj) {
 // Password is valid if it is at least 8 characaters long and contains a number
 // Password's validation logic, no UI updates
 function isPasswordValid(password) {
-  var doesContainNumber = /\d+/g.test(password);
-  var isValidPassword = password.length >= 8 && doesContainNumber;
+  var isValidPassword = password.length >= 8;
 
   return isValidPassword;
 }

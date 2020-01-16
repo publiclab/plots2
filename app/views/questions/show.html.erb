@@ -3,7 +3,6 @@
 <%= javascript_include_tag('textbox_expand') %>
 <script> var comments_length = <%= @node.comments.length %>; </script>
 <%= javascript_include_tag('question') %>
-
 <div class="col-lg-9 note-show question-show">
 
    <% if @node.main_image %>
@@ -22,29 +21,25 @@
       Follow this topic
     </a>
   </div>
-  <div class="pull-left">
-  <% if @node.author && @node.author.photo_file_name %>
-    <img class="rounded-circle" src="<%= @node.author.photo_path(:thumb) %>" style="width:50px;margin-right:10px;" />
-   <% else %>
-    <div class="rounded-circle"></div>
-  <% end %>
-  </div>
   <div class="inline">
-  	<p>
-    <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> 
-    asked on <%= @node.created_at.to_s(:long) %> 
-    <% if @node.status == 0 || @node.status == 4 %>| 
-      <span class="badge badge-danger">UNPUBLISHED</span>
-    <% end %> 
-    <br />
-    <small>
-      <i class="fa fa-eye"></i> <%= number_with_delimiter(@node.views) %> <span class="d-none d-lg-inline d-print-none ">views</span> | 
-      <a href="/q/<%= @node.id %>"><i class="fa fa-link"></i></a> <a href="/q/<%= @node.id %>">#<%= @node.id %></a>
-    </small></p>
+        <p>
+      <% if @node.status == 0 || @node.status == 4 %><span class="badge badge-danger">UNPUBLISHED</span> | <% end %>
+      <% if @node.status == 3 %><span class="badge badge-success">Draft</span> | <% end %>
+      by <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> |
+      <% if @node.has_power_tag('with') %>with <% @node.coauthors.each_with_index do |coauthor,i| %>
+        <a href="/profile/<%= coauthor.username %>">
+        <%= coauthor.username%></a> <%= coauthor.new_contributor %>
+        <%= ',' if i < @node.coauthors.length-1 %><% end %>
+      <% end %>
+      <span class="d-none d-lg-inline">
+        <%= @node.created_at.to_s(:long) %> |
+      </span>
+      <span>
+        <a href="/n/<%= @node.id %>"><i class="fa fa-link"></i></a> <span class="d-none d-xl-inline"><a href="/n/<%= @node.id %>">#<%= @node.id %></a>
+      </span>
+    </p>
   </div>
-
   <hr style="margin-top:10px;" />
-
   <div style="overflow:hidden;" id="content" class="pl-content question">
     <%= raw auto_link(insert_extras(@node.latest.render_body), :sanitize => false) %>
   </div>
@@ -55,7 +50,7 @@
 
   <hr />
 
-  <% comments = @node.fetch_comments(current_user) %>
+  <% comments = @node.comments_viewable_by(current_user) %>
   <h3><span id="comment-count"><%= comments.length %></span> Comments</h3>
     <div id="comments-list">
       <% comments.includes(:replied_comments).order("timestamp ASC").each do |comment| %>
@@ -68,7 +63,7 @@
       <div id="answer-0-comment-section">
       <% if current_user %>
         <div class="d-inline" id="question-comment-form">
-            <%= render :partial => "comments/form", :locals => { title: "Post Comment", comment: false, placeholder: "Help the author refine their post, or point them at other helpful information on the site. Mention users by @username to notify them of this thread by email", type: "question" } %>
+            <%= render :partial => "comments/form", :locals => { title: "Post Comment", comment: false, placeholder: "Help the author refine their post, or point them at other helpful information on the site. Mention users by @username to notify them of this thread by email", type: "question", url1: '/conduct', author: current_user.title, is_new_contributor:current_user.is_new_contributor? } %>
         </div>
       <% else %>
         <p><a data-toggle="modal" data-target="#loginModal">Log in</a> to comment</p>

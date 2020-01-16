@@ -70,7 +70,7 @@ class Revision < ApplicationRecord
   end
 
   def author
-    User.find(uid)
+    User.find_by(id: uid)
   end
 
   def parent

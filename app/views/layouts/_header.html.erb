@@ -11,7 +11,7 @@
     <!-- ||| menu, displayed for mobile: -->
   <a class="navbar-brand ml-lg-5" id="brand" href="<%= root_path %>">Public Lab</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#header-navbar-collapse">
-    <span class="fa fa-white fa-bars"></span>
+    <span class="fa fa-white"></span>
   </button>
 
     <div class="collapse navbar-collapse" id="header-navbar-collapse">
@@ -51,9 +51,11 @@
           </a>
           <div class="dropdown-menu">
             <a class="dropdown-item" href="/methods"><%= translate('Methods') %></a>
+            <div class="dropdown-divider"></div>
             <h6 class="dropdown-header">Kits</h6>
             <a class="dropdown-item" href="/kits"><%= translate('Kits initiative') %></a>
             <a class="dropdown-item" href="//store.publiclab.org"><%= translate('Store') %></a>
+            <div class="dropdown-divider"></div>
             <h6 class="dropdown-header">Software</h6>
             <a class="dropdown-item" href="https://mapknitter.org"><%= translate('MapKnitter') %></a>
             <a class="dropdown-item" href="https://infragram.org"><%= translate('Infragram') %></a>
@@ -147,7 +149,7 @@
           <% end %>
         </li>
         <li id="md-ham" class="d-lg-none dropdown">
-          <a href="#" class="btn btn-dark" data-toggle="dropdown"><span class="fa fa-white fa-bars"></span></a>
+          <a href="#" class="btn btn-dark" data-toggle="dropdown"><span class="fa fa-white" style="vertical-align: middle;"></span></a>
           <div class="dropdown-menu dropdown-menu-right">
             <a class="dropdown-item d-lg-none" href="//store.publiclab.org"><%= t('layout._header.store') %></a>
             <a class="dropdown-item d-lg-none"  href="/donate"><%= t('layout._header.donate') %></a>
@@ -183,7 +185,7 @@
 
 <%= render partial: "layouts/signupLoginModal" %>
 
-  <script type="text/javascript" src="/lib/leaflet-environmental-layers/example/lib/glify.js"></script>
+  <script type="text/javascript" src="/lib/leaflet-environmental-layers/lib/glify.js"></script>
 
 
 <style>

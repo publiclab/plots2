@@ -133,7 +133,7 @@ class TagControllerTest < ActionController::TestCase
          uid: 1
          }
 
-    assert_redirected_to('/login')
+    assert_redirected_to('/login?return_to=/tag/create/1')
   end
 
   test 'related tags' do
@@ -373,7 +373,7 @@ class TagControllerTest < ActionController::TestCase
     get :show,
         params: {
           node_type: 'contributors',
-          id: Tag.last.name
+          id: 'blog'
         }
 
     assert :success

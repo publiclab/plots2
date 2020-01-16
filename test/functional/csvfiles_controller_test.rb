@@ -17,7 +17,7 @@ class CsvfilesControllerTest < ActionController::TestCase
 
 	test 'should not get user files if not logged in'  do
 		get :user_files, params: {id: 2}
-		assert_redirected_to '/login'
+		assert_redirected_to '/login?return_to=/graph/data/2'
 	end
 
 	test 'should save graph object' do
@@ -27,7 +27,7 @@ class CsvfilesControllerTest < ActionController::TestCase
 
 	test 'should not delete a user file if not logged in'  do
 		get :delete, params: {id: 60, uid: 2}
-		assert_redirected_to '/login'
+		assert_redirected_to '/login?return_to=/graph/file/2/60'
 	end
     
 end
