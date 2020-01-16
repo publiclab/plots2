@@ -57,4 +57,21 @@ class CommentTest < ApplicationSystemTestCase
     find(".noty_body", text: "Comment Added!")
     find("p", text: "Awesome comment! :)")
   end
+
+  test 'comment preview button' do
+    visit "/wiki/wiki-page-path/comments"
+
+    find("p", text: "Reply to this comment...").click()
+
+    reply_preview_button = page.all('#post_comment')[0]
+    comment_preview_button = page.all('#post_comment')[1]
+
+    # Toggle preview
+    reply_preview_button.click()
+
+    # Make sure that buttons are not binded with each other
+    assert_equal( reply_preview_button.text, "Hide Preview" )
+    assert_equal( comment_preview_button.text, "Preview" )
+  end
+
 end
