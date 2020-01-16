@@ -8,7 +8,7 @@
     max-width: 100%;
   }
   body>.container {
-    padding-top: 28px;
+    padding-top: 0px;
   }
   .footer {
     margin: 0;
@@ -29,6 +29,13 @@
 
    <script>
 
+      // set the map just under the navbar
+      setTopPadding();
+      $(window).resize(setTopPadding);
+      function setTopPadding() {
+        $('.body-container').css('padding-top', $('#header').css('height'));
+      }
+
       var urlHash = urlMapHash();
 
         // if there are location params in URL let them override, otherwise save lat/lon/zoom from controller
@@ -41,7 +48,7 @@
             <% end %>
           <% end %>
         }
-
+        
       const params = urlHash.getUrlHashParameters();
      
       var lat = parseFloat(params.lat);
@@ -97,6 +104,7 @@
         include: layersname,
         hash: false,
         embed: true,
+        hostname: 'publiclab.org',
       }).addTo(map);
 
     </script>
