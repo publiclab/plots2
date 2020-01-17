@@ -20,6 +20,9 @@
   margin: 0;
 }
 
+#blurred-location-modal .modal-content {
+  margin-top: 0;
+}
 #blurred-location-modal .small-description {
   font-size: 0.9rem;
   color: #808080;
