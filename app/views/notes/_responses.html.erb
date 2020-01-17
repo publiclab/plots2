@@ -4,7 +4,7 @@
 
     <% @responses = Tag.find_nodes_by_type("#{response_type}:#{@node.id}", "note", 200) %>
     <% @unpaginated = true %>
- 
+
     <p id="<%= response_type %>s">
       <%
         tags = "#{response_type}:#{@node.id}"
@@ -22,24 +22,24 @@
         <% if Tag.where(name: 'activities:' + @node.power_tag('activity')).first %>
           <% if Tag.where(name: 'activities:' + @node.power_tag('activity')).first.nodes.length > 0 %>
             <a id="other-activities" href="<%= Tag.where(name: 'activities:' + @node.power_tag('activity')).first.nodes.first.path %>">Browse other activities for "<%= @node.power_tag('activity') %>"</a>
-          <% end %> 
+          <% end %>
         <% end %>
       <% end %>
     </p>
- 
+
     <div class='activity-comment' id='i-did-this' style='display: none'>
       <% if current_user %>
         <%= render :partial => "comments/form", :locals => { title: 'Add feedback, suggestions, or photos
-          ', body: 'I did this!', comment: false, placeholder: '' } %>
+          ', body: 'I did this!', comment: false, placeholder: '', url1: '/conduct', author: current_user.title, is_new_contributor:current_user.is_new_contributor? } %>
       <% else %>
         <p><%= raw t('notes._comments.must_be_logged_in', :url1 => new_user_session_path( return_to: request.path )) %></p>
       <% end %>
     </div>
     <hr />
- 
+
     <h3><%= t("notes._responses.#{response_type}s") %> (<%= @responses.length %>)</h3>
 
-    <% if response_type == 'response' %> 
+    <% if response_type == 'response' %>
       <%= render partial: "notes/notes", locals: { notes: @responses } %>
     <% elsif response_type == 'photo' %>
       <%= render partial: "notes/notes", locals: { notes: @responses, response_type: :photo } %>
@@ -52,7 +52,7 @@
         </p>
       <% end %>
     <% end %>
- 
+
     <hr />
 
   <% end %>

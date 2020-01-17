@@ -22,6 +22,8 @@
         <div class="related-tags-container">
           <%= render partial: 'tag/related', locals: { tags: Tag.related(params[:query]) } if params[:query] %>
         </div>
+
+        <%= render partial: 'search/pinned', locals: { query: params[:query] } if params[:query] %>
  
         <hr />
  

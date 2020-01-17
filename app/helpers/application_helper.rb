@@ -32,14 +32,15 @@ module ApplicationHelper
   end
 
   def emoji_info
-    emoji_names = ["thumbs-up", "thumbs-down", "laugh", "hooray", "confused", "heart"]
+    emoji_names = %w(thumbs-up thumbs-down laugh hooray confused heart)
+    prefix = "https://github.githubassets.com/images/icons/emoji/unicode/"
     emoji_image_map = {
-      "thumbs-up" => "https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png",
-      "thumbs-down" => "https://github.githubassets.com/images/icons/emoji/unicode/1f44e.png",
-      "laugh" => "https://github.githubassets.com/images/icons/emoji/unicode/1f604.png",
-      "hooray" => "https://github.githubassets.com/images/icons/emoji/unicode/1f389.png",
-      "confused" => "https://github.githubassets.com/images/icons/emoji/unicode/1f615.png",
-      "heart" => "https://github.githubassets.com/images/icons/emoji/unicode/2764.png"
+      "thumbs-up"   => "#{prefix}1f44d.png",
+      "thumbs-down" => "#{prefix}1f44e.png",
+      "laugh"       => "#{prefix}1f604.png",
+      "hooray"      => "#{prefix}1f389.png",
+      "confused"    => "#{prefix}1f615.png",
+      "heart"       => "#{prefix}2764.png"
     }
     [emoji_names, emoji_image_map]
   end
@@ -90,12 +91,12 @@ module ApplicationHelper
   end
 
   # we should move this to the Node model:
-  def render_map(lat, lon)
-    render partial: 'map/leaflet', locals: { lat: lat, lon: lon, top_map: false }
+  def render_map(lat, lon, zoom = '')
+    render partial: 'map/leaflet', locals: { lat: lat, lon: lon, zoom: zoom, top_map: false }
   end
 
-  def render_top_map(lat, lon)
-    render partial: 'map/leaflet', locals: { lat: lat, lon: lon, top_map: true }
+  def render_top_map(lat, lon, zoom = '')
+    render partial: 'map/leaflet', locals: { lat: lat, lon: lon, zoom: zoom, top_map: true }
   end
 
   # we should move this to the Comment model:

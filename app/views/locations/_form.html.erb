@@ -2,85 +2,121 @@
 <%= javascript_include_tag('/lib/leaflet-spin/example/spin/dist/spin.min.js') %>
 <%= javascript_include_tag('/lib/leaflet-spin/example/leaflet.spin.min.js') %>
 
-<div class="container blurred-location">
-  <div class="form-group">
-    <label for="placenameInput"><b>Search by place name</b></label>
-    <input id="placenameInput" type="text" class="form-control" />
+<div id="map_content" class="modal-body text-left">
+  <div class="row">
+
+    <div class="col-lg-7">
+
+      <div id="map" class="leaflet-map" style="width: 100%; height: 300px; margin-bottom:10px;"></div>
+      <div class="slide-container">
+        <label>Scale</label>
+        <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="1" data-slider-max="18" data-slider-step="1" data-slider-value="6" style="width: 100%"/>
+        <p class="small-description d-inline">World</p>
+        <p class="small-description d-inline" style="float: right">Building</p>
+      </div>
+
+    </div>
+
+
+    <div class="col-lg-5">
+
+      <div class="form-group">
+        <label for="placenameInput">Search by place name</label>
+        <input id="placenameInput" type="text" class="form-control" />
+      </div>
+
+      <div class="form-group">
+        Or <a href="#" id="coord_button">by entering coordinates</a>
+
+        <div id="coord_input" class="row">
+          <div class="col-sm-6">
+            <label class="small-description">Latitude</label>
+            <input id="lat" type="text" class="form-control" placeholder="Latitude" />
+          </div>
+
+          <div class="col-sm-6">
+            <label class="small-description">Longitude</label>
+            <input id="lng" type="text" class="form-control" placeholder="Longitude" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Not part of LBL library -->
+      <% if current_user %>
+        <div class="form-group recent-locations">
+          <% latest_locations = current_user.recent_locations %>
+          <% if latest_locations.count > 0 %>
+            <label>Your recently used locations:</label>
+            <select id="recent_locations" name="recent_locations" class="custom-select custom-select-sm">
+              <% latest_locations.reverse.each_with_index do |location, index| %>
+                <option value='{ "lat": <%= location.lat %>, "lon": <%= location.lon %> }' >
+                    <% if location.place %>
+                      <%= location.place %>:
+                    <% end %>
+                    (<%= location.lat %>, <%= location.lon %>)
+                </option>
+              <% end %>
+            </select>
+          <% end %>
+        </div>
+      <% end %>
+
+      <div class="form-group">
+        <button class="btn btn-lg btn-outline-secondary" onclick="blurredLocation.geocodeWithBrowser(true);">
+          <div id="ldi-geocode-button">
+            <i class="fa fa-compass"></i>
+            Use current location
+          </div>
+        </button>
+      </div>
+
+      <div class="form-check">
+        <label class="form-check-label">
+          <input id="obscureLocation" type="checkbox" checked class="form-check-input" onchange='blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);' />
+          Blur my location
+        </label>
+        <span class="small-description"><a href="https://publiclab.org/location-privacy" target="_blank">Learn more »</a></span>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<div class="modal-footer bg-light">
+
+  <div class="location-box text-left">
+    <div id="place_name">
+      <input id="placenameDisplay" type="text" class="form-control" data-preventOverwrite="false" />
+      <label for="placenameDisplay" class="small-description">How this location will be saved</label>
+    </div>
   </div>
 
-  <!-- Not part of LBL library -->
-  <% if current_user %>
-    <% latest_locations = current_user.recent_locations %>
-    <% if latest_locations.count > 0 %>
-      <p><b>Your recently used locations:</b></p>
-      <div class="row">
-        <% latest_locations.each_with_index do |location, index| %>
-          <a href="#" onclick="blurredLocation.goTo(<%= location.lat %>, <%= location.lon %>, 6);"> 
-            <span class="badge badge-info" style="background-color: #337ab7 ; margin-left: 7px ;margin-top: 2px; ">
-              <% if location.place %>
-                <%= location.place %>
-              <% end %>
-              <span class="badge" style="background-color: white; color: #337ab7;"><%= location.lat %></span>
-              <span class="badge" style="background-color: white; color: #337ab7;"><%= location.lon %></span>
-            </span>
-          </a>
-        <% end %>
-      </div>
-    <% end %>
-  <% end %>
-
-  <br>
-  <p><b>By dragging the map</b></p>
-  <div id="map" class="leaflet-map" style="width: 100%; height: 300px; margin-bottom:10px;"></div>
-  <p>
-    <h3><strong>Scale</strong></h3>
-    <div class="slidecontainer" style="border-bottom: 2px solid #ccc;">
-      <b><p style="display: inline">Country</p></b>
-      <b><p style="display: inline; float: right">Building</p></b>
-      <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="5" data-slider-max="18" data-slider-step="1" data-slider-value="6" style="width: 100%"/>
-    </div>
-  </p>
-
-  <br>
-
-  <p>   
-    <b>Or by co-ordinates</b>
-    <div class="row">
-      <div class="col-lg-6 form-group">
-          <input id="lat" type="text" class="form-control" value="<%= latitude ||= 40 %>">
-      </div>
-      <div class="col-lg-6 form-group">
-        <input id="lng" type="text" class="form-control" value="<%= longitude ||= -90 %>">
-      </div>
-    </div>
-
-    <div class="form-group">
-        <label for="placenameDisplay"> <b>Place name as it will be saved:</b></label>
-        <input editable="false" id="placenameDisplay" type="text" class="form-control" />
-    </div>
-
-      <button data-dismiss="modal" class="btn btn-lg btn-primary" onclick="saveLocation()">Save</button>
-
-  <button id="ldi-geocode-button" class="btn btn-outline-secondary btn-lg" onclick='blurredLocation.geocodeWithBrowser(true);'>Auto-locate me</button>
-  &nbsp; <label>
-    <input id="obscureLocation" type="checkbox" checked onchange='blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);'>
-    Blur my location
-  </label>
+  <div class="button-box">
+    <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+    <button data-dismiss="modal" class="btn btn-lg btn-primary" onclick="saveLocation()">Save</button>
+  </div>
 
 </div>
 
 <script>
-  
+
+  var bounds = new L.LatLngBounds(
+    new L.LatLng(90, -180),
+    new L.LatLng(-90, 180)
+  );
+
   var options = {
     InterfaceOptions: {
       latId: 'lat',
-      lngId: 'lng'
+      lngId: 'lng',
+      placenameDisplayOnError: ''
     },
     location: {
-      lat: 23 ,
+      lat: 23,
       lon: 77 
     }
-  } ;
+  };
 
   var blurredLocation;
 
@@ -100,21 +136,53 @@
 
     blurredLocation.panMapToGeocodedLocation("placenameInput");
 
-     var changeZoom = function() {
-        var zoom = slider.getValue();
-        blurredLocation.map.setZoom(zoom);
-      }
+    blurredLocation.map.setMaxBounds(bounds);
 
-      var slider = $('#ex1').slider()
-        .on('slide', changeZoom)
-        .data('slider');
+    var changeZoom = function() {
+      var zoom = slider.getValue();
+      blurredLocation.map.setZoom(zoom);
+    }
+
+    var slider = $('#ex1').slider()
+      .on('slide', changeZoom)
+      .data('slider');
+
+    blurredLocation.map.on('zoomend', function() {
+      let zoom = blurredLocation.map.getZoom();
+      $('#ex1').slider('setValue', zoom);
+    })
+    
+    $('#coord_button').click((event) => {
+      event.preventDefault();
+      $('#coord_input').toggle();
+    });
+    $("#coord_input").hide();
+
+    $('#recent_locations').change((event) => {
+      let location = JSON.parse($('#recent_locations').val());
+      blurredLocation.map.setView([location.lat, location.lon], blurredLocation.getZoomFromCoordinates(location.lat, location.lon));
+    });
+
+    var initialPlacename = '';
+    $('#placenameDisplay').on('focusin', function() {
+      initialPlacename = $('#placenameDisplay').val();
+    });
+    $('#placenameDisplay').on('focusout', function() {
+      if($('#placenameDisplay').val() === '') {
+        $('#placenameDisplay').attr('data-preventOverwrite', 'false');
+      } else if ($('#placenameDisplay').val() !== initialPlacename) {
+        $('#placenameDisplay').attr('data-preventOverwrite', 'true');
+      }
+    });
 
   })();
-    
+  
   function saveLocation() {
     var tags = 'lat:' + blurredLocation.getLat() + ',lon:' + blurredLocation.getLon() + ',zoom:' + blurredLocation.getZoom();
     if (blurredLocation.isBlurred()) tags = tags + ',' + 'location:blurred'
-    if ($('#placenameDisplay').val() != 'Location unavailable') tags = tags + ',' + 'place:' + parameterize($('#placenameDisplay').val());
+    if ($('#placenameDisplay').val() !== ('Location unavailable' || '')) {
+      tags = tags + ',' + 'place:' + parameterize($('#placenameDisplay').val());
+    }
     <% if params[:url] %>
       addTag(tags, '<%= params[:url] %>');
     <% else %>
@@ -129,13 +197,3 @@
   }
   
 </script>
-
-<style>
-  .modal-body {
-    background: #f8f8f8;
-  }
-  .blurred-location { 
-    background: #f8f8f8;
-    width: 100%;
-  }
-</style>

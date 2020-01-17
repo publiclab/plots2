@@ -149,6 +149,10 @@ class User < ActiveRecord::Base
   def tags(limit = 10)
     Tag.where('name in (?)', tagnames).limit(limit)
   end
+  
+  def normal_tags
+	tags.select{ |tag| ! tag.name.include?(':') }
+  end
 
   def tagnames(limit = 20, defaults = true)
     tagnames = []

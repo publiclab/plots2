@@ -1,6 +1,8 @@
 require 'test_helper'
 class NotesControllerTest < ActionController::TestCase
-   include ActionMailer::TestHelper
+  include ActionMailer::TestHelper
+  include ActiveJob::TestHelper
+
   def setup
     Timecop.freeze # account for timestamp change
     activate_authlogic
@@ -234,7 +236,7 @@ class NotesControllerTest < ActionController::TestCase
          }
     # , main_image: "/images/testimage.jpg"
 
-    assert_redirected_to('/login')
+    assert_redirected_to('/login?return_to=/notes/create')
   end
 
   test 'non-first-timer posts note' do
@@ -242,20 +244,21 @@ class NotesControllerTest < ActionController::TestCase
     title = 'My new post about balloon mapping'
     assert !users(:jeff).first_time_poster
     assert User.where(role: 'moderator').count > 0
+    perform_enqueued_jobs do
+      assert_difference 'ActionMailer::Base.deliveries.size', User.where(role: 'moderator').count do
+        post :create,
+             params: { title: title,
+             body:  'This is a fascinating post about a balloon mapping event.',
+             tags:  'balloon-mapping,event'
+             }
+        # , main_image: "/images/testimage.jpg"
+      end
 
-    assert_difference 'ActionMailer::Base.deliveries.size', User.where(role: 'moderator').count do
-      post :create,
-           params: { title: title,
-           body:  'This is a fascinating post about a balloon mapping event.',
-           tags:  'balloon-mapping,event'
-           }
-      # , main_image: "/images/testimage.jpg"
+      email = ActionMailer::Base.deliveries.last
+      assert_equal '[PublicLab] ' + title + ' (#' + Node.last.id.to_s + ') ', email.subject
+      assert_equal 1, Node.last.status
+      assert_redirected_to '/notes/' + users(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
     end
-
-    email = ActionMailer::Base.deliveries.last
-    assert_equal '[PublicLab] ' + title + ' (#' + Node.last.id.to_s + ') ', email.subject
-    assert_equal 1, Node.last.status
-    assert_redirected_to '/notes/' + users(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
   end
 
   test 'first-timer posts note' do
@@ -494,20 +497,21 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test 'should redirect to questions show page after creating a new question' do
-    user = UserSession.create(users(:bob))
     title = 'How to use Spectrometer'
-    post :create,
-         params: {
-         title: title,
-         body: 'Spectrometer question',
-         tags: 'question:spectrometer',
-         redirect: 'question'
-         }
-    node = nodes(:blog)
-    email = AdminMailer.notify_node_moderators(node)
-    assert_emails 1 do
-        email.deliver_now
+    perform_enqueued_jobs do
+      assert_emails 1 do
+        user = UserSession.create(users(:bob))
+        post :create,
+             params: {
+             title: title,
+             body: 'Spectrometer question',
+             tags: 'question:spectrometer',
+             redirect: 'question'
+             }
+        node = nodes(:blog)
+      end
     end
+
     assert_redirected_to '/questions/' + users(:bob).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
     assert_equal "Success! Thank you for contributing with a question, and thanks for your patience while your question is approved by <a href='/wiki/moderation'>community moderators</a> and we'll email you when it is published.", flash[:notice]
   end
@@ -896,7 +900,7 @@ class NotesControllerTest < ActionController::TestCase
      assert_equal "You must be logged in to access this page", flash[:warning]
      assert_equal 3, node.status
      assert_equal 1, node.author.status
-     assert_redirected_to '/login'
+     assert_redirected_to '/login?return_to=/notes/publish_draft/21'
      assert_equal ActionMailer::Base.deliveries.size, 0
    end
 
@@ -914,7 +918,7 @@ class NotesControllerTest < ActionController::TestCase
           draft: "true"
          }
 
-     assert_redirected_to('/login')
+     assert_redirected_to('/login?return_to=/notes/create')
    end
 
    test 'non-first-timer posts draft' do

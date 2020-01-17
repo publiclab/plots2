@@ -219,9 +219,9 @@ class Node < ActiveRecord::Base
 
   def notify
     if status == 4
-      AdminMailer.notify_node_moderators(self).deliver_now
+      AdminMailer.notify_node_moderators(self).deliver_later!(wait_until: 24.hours.from_now)
     else
-      SubscriptionMailer.notify_node_creation(self).deliver_now
+      SubscriptionMailer.notify_node_creation(self).deliver_later!
     end
   end
 
@@ -426,7 +426,7 @@ class Node < ActiveRecord::Base
     if tagname
       tags = tags.where('name LIKE ?', tagname + ':%')
     else
-      tags = tags.where('name LIKE ?', '%:%') # any powertag 
+      tags = tags.where('name LIKE ?', '%:%') # any powertag
     end
     tids = tags.collect(&:tid)
     NodeTag.where('nid = ? AND tid IN (?)', id, tids)
@@ -681,6 +681,8 @@ class Node < ActiveRecord::Base
           saved = false
           node.destroy
         end
+        # prevent vid non-unique bug in https://github.com/publiclab/plots2/issues/7062
+        raise ActiveRecord::Rollback if !node.valid? || node.vid == 0
       end
     end
     [saved, node, revision]
@@ -756,66 +758,70 @@ class Node < ActiveRecord::Base
   end
 
   def add_tag(tagname, user)
-    tagname = tagname.downcase
-    unless has_tag_without_aliasing(tagname)
-      saved = false
-      table_updated = false
-      tag = Tag.find_by(name: tagname) || Tag.new(vid:         3, # vocabulary id; 1
+    if user.status == 1
+      tagname = tagname.downcase
+      unless has_tag_without_aliasing(tagname)
+        saved = false
+        table_updated = false
+        tag = Tag.find_by(name: tagname) || Tag.new(vid:         3, # vocabulary id; 1
                                                   name:        tagname,
                                                   description: '',
                                                   weight:      0)
 
-      ActiveRecord::Base.transaction do
-        if tag.valid?
-          key = tag.name.split(':')[0]
-          value = tag.name.split(':')[1]
-          # add base tags:
-          if ['question', 'upgrade', 'activity'].include?(key)
-            add_tag(value, user)
-          end
-          # add sub-tags:
-          subtags = {}
-          subtags['pm'] = 'particulate-matter'
-          if subtags.include?(key)
-            add_tag(subtags[key], user)
-          end
-          # parse date tags:
-          if key == 'date'
-            begin
-              DateTime.strptime(value, '%m-%d-%Y').to_date.to_s(:long)
-            rescue StandardError
-              return [false, tag.destroy]
+        ActiveRecord::Base.transaction do
+          if tag.valid?
+            key = tag.name.split(':')[0]
+            value = tag.name.split(':')[1]
+            # add base tags:
+            if ['question', 'upgrade', 'activity'].include?(key)
+              add_tag(value, user)
             end
-          end
-          tag.save!
-          node_tag = NodeTag.new(tid: tag.id,
+            # add sub-tags:
+            subtags = {}
+            subtags['pm'] = 'particulate-matter'
+            if subtags.include?(key)
+              add_tag(subtags[key], user)
+            end
+            # parse date tags:
+            if key == 'date'
+              begin
+                DateTime.strptime(value, '%m-%d-%Y').to_date.to_s(:long)
+              rescue StandardError
+                return [false, tag.destroy]
+              end
+            end
+            tag.save!
+            node_tag = NodeTag.new(tid: tag.id,
                                  uid: user.uid,
                                  date: DateTime.now.to_i,
                                  nid: id)
 
-          # Adding lat/lon values into node table
-          if key == 'lat'
-            tagvalue = value
-            table_updated = update_attributes(latitude: tagvalue, precision: decimals(tagvalue).to_s)
-          elsif key == 'lon'
-            tagvalue = value
-            table_updated = update_attributes(longitude: tagvalue)
-          end
-
-          if node_tag.save
-            saved = true
-            tag.run_count # update count of tag usage
-            # send email notification if there are subscribers, status is OK, and less than 1 month old
-            unless tag.subscriptions.empty? || status == 3 || status == 4 || created < (DateTime.now - 1.month).to_i
-              SubscriptionMailer.notify_tag_added(self, tag, user).deliver_now
+            # Adding lat/lon values into node table
+            if key == 'lat'
+              tagvalue = value
+              table_updated = update_attributes(latitude: tagvalue, precision: decimals(tagvalue).to_s)
+            elsif key == 'lon'
+              tagvalue = value
+              table_updated = update_attributes(longitude: tagvalue)
             end
-          else
-            saved = false
-            tag.destroy
+
+            if node_tag.save
+              saved = true
+              tag.run_count # update count of tag usage
+              # send email notification if there are subscribers, status is OK, and less than 1 month old
+              isStatusValid = status == 3 || status == 4
+              isMonthOld = created < (DateTime.now - 1.month).to_i
+              unless tag.subscriptions.empty? || isStatusValid || !isMonthOld
+                SubscriptionMailer.notify_tag_added(self, tag, user).deliver_now
+              end
+            else
+              saved = false
+              tag.destroy
+            end
           end
         end
+        return [saved, tag, table_updated]
       end
-      return [saved, tag, table_updated]
     end
   end
 
@@ -896,7 +902,7 @@ class Node < ActiveRecord::Base
   # finds nodes by tag name, user id, and optional node type
   def self.find_by_tag_and_author(tagname, user_id, type = 'notes')
 
-    node_type = 'note' if type == 'notes' || 'questions'
+    node_type = 'note' if type == 'notes' || type == 'questions'
     node_type = 'page' if type == 'wiki'
     # node_type = 'map' if type == 'maps'  # Tag.tagged_nodes_by_author does not seem to work with maps, more testing required
 
@@ -1078,7 +1084,7 @@ class Node < ActiveRecord::Base
     base_url + '/notes/show/' + nid.to_s + '/' + token
   end
 
-  def fetch_comments(user)
+  def comments_viewable_by(user)
     if user&.can_moderate?
       comments.where('status = 1 OR status = 4')
     elsif user
