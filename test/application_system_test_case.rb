@@ -6,7 +6,7 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   driven_by :selenium, using: :chrome, screen_size: [1400, 1400], options: { desired_capabilities: caps }
 
   # https://web.archive.org/web/20170730200309/http://blog.paulrugelhiatt.com/rails/testing/capybara/dropzonejs/2014/12/29/test-dropzonejs-file-uploads-with-capybara.html
-  def drop_in_dropzone(file_path)
+  def drop_in_dropzone(file_path, dropzoneSelector)
     # Generate a fake input element
     page.execute_script <<-JS
       fakeFileInput = window.$('<input/>').attr(
@@ -29,7 +29,7 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
         value: new FakeDataTransferObject(fileToDrop)
       });
 
-      var dropzoneArea = document.querySelector('.dropzone');
+      var dropzoneArea = document.querySelector('#{dropzoneSelector}');
       // Transfer the image to the dropzone area
       dropzoneArea.files = dataTransfer.files;
       // Emit the fake "drop" event
