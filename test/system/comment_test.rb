@@ -110,7 +110,7 @@ class CommentTest < ApplicationSystemTestCase
     reply_preview_button = page.all('#post_comment')[0]
 
     # Upload the image
-    drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png")
+    drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", ".dropzone")
 
     # Wait for image upload to finish
     wait_for_ajax
