@@ -137,7 +137,7 @@ class PostTest < ApplicationSystemTestCase
     find('.login-page-form #login-button').click()
 
     # Upload the image
-    drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png")
+    drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", ".dropzone")
 
     # Wait for image upload to finish
     wait_for_ajax
