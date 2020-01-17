@@ -5,14 +5,17 @@ class PostTest < ApplicationSystemTestCase
   include ActiveJob::TestHelper
   Capybara.default_max_wait_time = 60
 
-  test 'posting from the editor' do
+  def setup
     visit '/'
 
-    click_on 'Login'
-    fill_in("username-login", with: "Bob")
+    find(".nav-link.loginToggle").click()
+    fill_in("username-login", with: "jeff")
     fill_in("password-signup", with: "secretive")
-    click_on "Log in"
 
+    find(".login-modal-form #login-button").click()
+  end
+
+  test 'posting from the editor' do
     visit '/post'
 
     fill_in("title-input", with: "My new post")
@@ -20,26 +23,16 @@ class PostTest < ApplicationSystemTestCase
     el = find(".wk-wysiwyg") # rich text input
     el.set("All about this interesting stuff")
 
-    assert_page_reloads do
 
-      find('.ple-publish').click
-      assert_selector('h1', text: "My new post")
-      assert_selector('#content', text: "All about this interesting stuff")
-      assert_selector('.alert-success', text: "×\nSuccess! Thank you for contributing open research, and thanks for your patience while your post is approved by community moderators and we'll email you when it is published. In the meantime, if you have more to contribute, feel free to do so.")
+    find('.ple-publish').click()
 
-    end
-
+    assert_selector('h1', text: "My new post")
+    assert_selector('#content', text: "All about this interesting stuff")
+    assert_selector('.alert-success', text: "×\nResearch note published. Get the word out on the discussion lists!")
   end
 
   test 'adding tags to the post' do
     visit '/wiki/wiki-page-path/comments'
-
-    find('a[data-target="#loginModal"]', text: 'Login').click()
-
-    fill_in 'user_session[username]', with: 'jeff'
-    fill_in 'user_session[password]', with: 'secretive'
-
-    find(".login-modal-form #login-button").click()
 
     find('a#tags-open').click()
 
@@ -52,13 +45,6 @@ class PostTest < ApplicationSystemTestCase
 
   test 'removing tags from the post' do
     visit '/wiki/wiki-page-path/comments'
-
-    find('a[data-target="#loginModal"]', text: 'Login').click()
-
-    fill_in 'user_session[username]', with: 'jeff'
-    fill_in 'user_session[password]', with: 'secretive'
-
-    find(".login-modal-form #login-button").click()
 
     find('a#tags-open').click()
 
@@ -74,13 +60,6 @@ class PostTest < ApplicationSystemTestCase
 
   test 'like button on the post' do
     visit '/wiki/wiki-page-path/comments'
-
-    find('a[data-target="#loginModal"]', text: 'Login').click()
-
-    fill_in 'user_session[username]', with: 'jeff'
-    fill_in 'user_session[password]', with: 'secretive'
-
-    click_on 'Log in'
 
     like_button = find('.btn-like').click();
 
@@ -109,11 +88,7 @@ class PostTest < ApplicationSystemTestCase
 
   test "edit wiki" do
     visit '/wiki/wiki-page-path/'
-    click_on "Login"
 
-    fill_in 'user_session[username]', with: 'jeff'
-    fill_in 'user_session[password]', with: 'secretive'
-    click_on "Log in"
     find('a.btn-circle:first-of-type .fa-pencil').click()
     fill_in("body", with: "Test for editing wikis!")
 
@@ -130,11 +105,6 @@ class PostTest < ApplicationSystemTestCase
   test 'drag and drop image upload to wiki post editor' do
     Capybara.ignore_hidden_elements = false
     visit '/wiki/new'
-
-    find('.login-page-form #username-login').set('jeff')
-    find('.login-page-form #password-signup').set('secretive')
-
-    find('.login-page-form #login-button').click()
 
     # Upload the image
     drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png")
