@@ -81,7 +81,7 @@ class SignUpTest < ActionDispatch::IntegrationTest
     assert response.body.include? 'Email should look like an email address.'
   end
   
-  test 'spamaway text area not blank error message'
+  test 'spamaway text area not blank error message' do
     post '/register', params: {
       user: {
          username: "newuser",
