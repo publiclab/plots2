@@ -4,10 +4,12 @@ class ModerationTest < ApplicationSystemTestCase
 
   def setup
     visit "/"
-    click_on "Login"
+    find(".nav-link.loginToggle").click()
+
     fill_in 'user_session[username]', with: 'palpatine'
     fill_in 'user_session[password]', with: 'secretive'
-    click_on "Log in"
+    find(".login-modal-form #login-button").click()
+
   end
 
   test "banning and unbanning a user" do
@@ -18,7 +20,7 @@ class ModerationTest < ApplicationSystemTestCase
       find("a[href='/ban/#{users(:bob).id}'").click()
     end
     assert find("div.alert", text: "That user has been banned.")
-  
+
     find("a#info-ellipsis").click
     find("a[href='/unban/#{users(:bob).id}'").click()
     assert find("div.alert", text: "The user has been unbanned.")
@@ -32,7 +34,7 @@ class ModerationTest < ApplicationSystemTestCase
       find("a[href='/admin/moderate/#{users(:bob).id}'").click()
     end
     assert find("div.alert", text: "That user has been placed in moderation.")
-  
+
     find("a#info-ellipsis").click()
     find("a[href='/admin/unmoderate/#{users(:bob).id}'").click()
     assert find("div.alert", text: "The user has been unmoderated.")

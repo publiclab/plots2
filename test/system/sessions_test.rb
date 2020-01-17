@@ -18,7 +18,8 @@ class SessionsTest < ApplicationSystemTestCase
     fill_in 'user_session[username]', with: 'jeff'
     fill_in 'user_session[password]', with: 'secretive'
 
-    click_on 'Log in'
+    find(".login-modal-form #login-button").click()
+
 
     path = URI.parse(current_url).request_uri
     assert_equal path, '/wiki/wiki-page-path/comments'

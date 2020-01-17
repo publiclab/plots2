@@ -6,13 +6,15 @@ class DashboardTest < ApplicationSystemTestCase
   test 'viewing the dashboard' do
     visit '/'
 
-    click_on 'Login'
+    find(".nav-link.loginToggle").click()
+
 
     take_screenshot
 
     fill_in("username-login", with: "Bob")
     fill_in("password-signup", with: "secretive")
-    click_on "Log in"
+    find(".login-modal-form #login-button").click()
+
 
     visit '/dashboard'
 

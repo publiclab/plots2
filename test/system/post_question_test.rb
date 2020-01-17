@@ -6,11 +6,13 @@ class QuestionTest < ApplicationSystemTestCase
   test 'viewing question post' do
     visit '/'
 
-    click_on 'Login'
+    find(".nav-link.loginToggle").click()
+
 
     fill_in("username-login", with: "Bob")
     fill_in("password-signup", with: "secretive")
-    click_on "Log in"
+    find(".login-modal-form #login-button").click()
+
 
     visit '/questions/new'
 

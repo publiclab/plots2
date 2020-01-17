@@ -6,11 +6,13 @@ class SettingsTest < ApplicationSystemTestCase
   test 'viewing the settings page' do
     visit '/'
 
-    click_on 'Login'
+    find(".nav-link.loginToggle").click()
+
 
     fill_in("username-login", with: "namangupta")
     fill_in("password-signup", with: "secretive")
-    click_on "Log in"
+    find(".login-modal-form #login-button").click()
+
 
     visit '/settings'
 
@@ -18,4 +20,3 @@ class SettingsTest < ApplicationSystemTestCase
   end
 
 end
-

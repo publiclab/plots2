@@ -56,20 +56,23 @@ class ScreenshotsTest < ApplicationSystemTestCase
 
   test 'login modal' do
     visit '/'
-    click_on 'Login'
+    find(".nav-link.loginToggle").click()
+
     assert_selector('#loginContainer', visible: true)
     take_screenshot
   end
 
   test 'login modal form validation' do
     visit '/'
-    click_on 'Login'
+    find(".nav-link.loginToggle").click()
+
 
     fill_in 'user_session[username]', with: 'Bob'
     # The length of a password should be minimum 8 characters
     fill_in 'user_session[password]', with: 'invalid'
 
-    click_on 'Log in'
+    find(".login-modal-form #login-button").click()
+
 
     # Get the error message (remove '×' that closes the modal and remaining whitespaces)
     error_msg = find('.error-msg-container').text.gsub('×', '').strip()
@@ -200,10 +203,12 @@ class ScreenshotsTest < ApplicationSystemTestCase
 
   test 'spam moderation page' do
     visit '/'
-    click_on 'Login'
+    find(".nav-link.loginToggle").click()
+
     fill_in("username-login", with: "obiwan") # moderator
     fill_in("password-signup", with: "secretive")
-    click_on "Log in"
+    find(".login-modal-form #login-button").click()
+
     visit '/spam'
     assert_selector('#batch-delete', visible: true)
     take_screenshot
@@ -211,10 +216,12 @@ class ScreenshotsTest < ApplicationSystemTestCase
 
   test 'blog page with location modal' do
     visit '/'
-    click_on 'Login'
+    find(".nav-link.loginToggle").click()
+
     fill_in("username-login", with: "steff1")
     fill_in("password-signup", with: "secretive")
-    click_on "Log in"
+    find(".login-modal-form #login-button").click()
+
     visit nodes(:blog).path
     find('a#tags-open').click # open the tagging form
     find('a.blurred-location-input').click
