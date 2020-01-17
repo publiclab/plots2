@@ -80,6 +80,7 @@ class SignUpTest < ActionDispatch::IntegrationTest
     assert response.body.include? 'errors prohibited this user from being saved'
     assert response.body.include? 'Email should look like an email address.'
   end
+  
   test 'spamaway text area not blank error message'
     post '/register', params: {
       user: {
