@@ -39,7 +39,7 @@ class PostTest < ApplicationSystemTestCase
     fill_in 'user_session[username]', with: 'jeff'
     fill_in 'user_session[password]', with: 'secretive'
 
-    click_on 'Log in'
+    find(".login-modal-form #login-button").click()
 
     find('a#tags-open').click()
 
@@ -58,7 +58,7 @@ class PostTest < ApplicationSystemTestCase
     fill_in 'user_session[username]', with: 'jeff'
     fill_in 'user_session[password]', with: 'secretive'
 
-    click_on 'Log in'
+    find(".login-modal-form #login-button").click()
 
     find('a#tags-open').click()
 
