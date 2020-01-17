@@ -274,7 +274,6 @@ class AdminController < ApplicationController
     user = User.find params[:id]
     if logged_in_as(['admin', 'moderator'])
       user.moderate
-      flash[:notice] = 'The user has been moderated.'
     else
       flash[:error] = 'Only moderators can moderate other users.'
     end
