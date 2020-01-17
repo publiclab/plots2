@@ -4,13 +4,17 @@ require "application_system_test_case"
 
 class CommentTest < ApplicationSystemTestCase
   Capybara.default_max_wait_time = 60
+
   def setup
     visit '/'
-    click_on 'Login'
+
+    find(".nav-link.loginToggle").click()
     fill_in("username-login", with: "jeff")
     fill_in("password-signup", with: "secretive")
-    click_on "Log in"
+
+    find(".login-modal-form #login-button").click()
   end
+
   test 'adding a comment via javascript' do
     visit "/wiki/wiki-page-path/comments"
 
