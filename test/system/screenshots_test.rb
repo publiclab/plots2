@@ -10,18 +10,18 @@ class ScreenshotsTest < ApplicationSystemTestCase
 
   test 'signup modal' do
     visit '/'
-    click_on 'Sign up'
+    find('.nav-link.signupToggle').click()
     assert_selector('#signupContainer', visible: true)
     take_screenshot
   end
 
   test 'signup modal form validation' do
     visit '/'
-    click_on 'Sign up'
+    find('.nav-link.signupToggle').click()
 
     fill_in 'user[username]', with: 'Bob'
     fill_in 'user[email]', with: 'Invalid@email'
-    fill_in 'user[password]', with: 'tooshort'
+    fill_in 'user[password]', with: 'short'
     fill_in 'user[password_confirmation]', with: 'password'
 
     username_error_msg = find("#username-signup ~ small").text
@@ -31,15 +31,15 @@ class ScreenshotsTest < ApplicationSystemTestCase
 
     assert_equal( username_error_msg, "Username already exists" )
     assert_equal( email_error_msg, "Invalid email" )
-    assert_equal( password_error_msg, "Please make sure password is at least 8 characters long with minimum one numeric value" )
-    assert_equal( confirm_password_error_msg, "Passwords must be equal" )
+    assert_equal( password_error_msg, "Please make sure password is at least 8 characters long" )
+    assert_equal( confirm_password_error_msg, "Password and Password Confirmation should be the same" )
 
     take_screenshot
   end
 
   test 'signup modal disabled submit button on empty username' do
     visit '/'
-    click_on 'Sign up'
+    find('.nav-link.signupToggle').click()
 
     fill_in 'user[username]', with: 'Bob'
     fill_in 'user[email]', with: 'valid@email.com'
@@ -61,6 +61,23 @@ class ScreenshotsTest < ApplicationSystemTestCase
     take_screenshot
   end
 
+  test 'login modal form validation' do
+    visit '/'
+    click_on 'Login'
+
+    fill_in 'user_session[username]', with: 'Bob'
+    # The length of a password should be minimum 8 characters
+    fill_in 'user_session[password]', with: 'invalid'
+
+    click_on 'Log in'
+
+    # Get the error message (remove '×' that closes the modal and remaining whitespaces)
+    error_msg = find('.error-msg-container').text.gsub('×', '').strip()
+
+    assert_equal( error_msg, 'Invalid username or password' )
+    take_screenshot
+  end
+
   test 'signup' do
     visit '/signup'
     take_screenshot
@@ -73,6 +90,11 @@ class ScreenshotsTest < ApplicationSystemTestCase
 
   test 'tags' do
     visit '/tags'
+    take_screenshot
+  end
+
+  test "tag stats" do
+    visit "/tag/#{node_tags(:awesome).name}/stats"
     take_screenshot
   end
 
@@ -197,7 +219,7 @@ class ScreenshotsTest < ApplicationSystemTestCase
     find('a#tags-open').click # open the tagging form
     find('a.blurred-location-input').click
     # click_on(class: 'blurred-location-input') # alternative
-    fill_in("placenameInput", with: "Pusan")
+    # fill_in("placenameInput", with: "Pusan")
     take_screenshot
   end
 
@@ -210,5 +232,10 @@ class ScreenshotsTest < ApplicationSystemTestCase
     visit node.path
     take_screenshot
   end
+
+  # test 'maps' do
+  #   visit '/map/chicago'
+  #   take_screenshot
+  # end
 
 end

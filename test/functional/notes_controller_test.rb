@@ -236,7 +236,7 @@ class NotesControllerTest < ActionController::TestCase
          }
     # , main_image: "/images/testimage.jpg"
 
-    assert_redirected_to('/login')
+    assert_redirected_to('/login?return_to=/notes/create')
   end
 
   test 'non-first-timer posts note' do
@@ -900,7 +900,7 @@ class NotesControllerTest < ActionController::TestCase
      assert_equal "You must be logged in to access this page", flash[:warning]
      assert_equal 3, node.status
      assert_equal 1, node.author.status
-     assert_redirected_to '/login'
+     assert_redirected_to '/login?return_to=/notes/publish_draft/21'
      assert_equal ActionMailer::Base.deliveries.size, 0
    end
 
@@ -918,7 +918,7 @@ class NotesControllerTest < ActionController::TestCase
           draft: "true"
          }
 
-     assert_redirected_to('/login')
+     assert_redirected_to('/login?return_to=/notes/create')
    end
 
    test 'non-first-timer posts draft' do

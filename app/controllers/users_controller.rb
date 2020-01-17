@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :require_no_user, only: [:new]
-  before_action :require_user, only: %i(edit update save_settings)
+  before_action :require_user, only: %i(edit update save_settings settings)
    before_action :set_user, only: %i(info followed following followers)
 
   def new
@@ -382,7 +382,8 @@ class UsersController < ApplicationController
     user_settings = [
       'notify-comment-direct:false',
       'notify-likes-direct:false',
-      'notify-comment-indirect:false'
+      'notify-comment-indirect:false',
+      'no-moderation-emails'
     ]
 
     user_settings.each do |setting|

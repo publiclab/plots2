@@ -42,6 +42,22 @@
   <br />
   <br />
 
+  <% if logged_in_as(['admin', 'moderator']) %>
+  <div style="display: inline-flex; justify-content: space-between; width: 90%;">
+    <span>Do you want to be notified by email for moderation emails? </span>
+    <span>
+    <label class="switch">
+      <input type="checkbox" name="no-moderation-emails" <% unless UserTag.exists?(current_user.id, 'no-moderation-emails') %>checked<% end %>>
+      <span class="slider round"></span>
+    </label>
+    </span>
+  </div>
+
+  <br />
+  <br />
+  <% end %>
+
+
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
     <span>Do you want to receive customized digest weekly?</span>
     <span>

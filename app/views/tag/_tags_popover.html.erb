@@ -1,6 +1,7 @@
 <div class="pop_content subscribe-btn">
   <p> Follow related tags: </p>
   <%= form_with remote: true, url: '/subscribe/multiple/tag' do |f| %>
+    <input type="hidden" name="return_to" class="subscription-popover-redirect" value="<%= request.fullpath %>" />
     <% tags&.each_with_index do |tag, i| %>
       <div class="form-check">
         <label class="form-check-label">

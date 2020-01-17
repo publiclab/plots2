@@ -72,9 +72,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user_session
-    return @current_user_session if defined?(@current_user_session)
-
-    @current_user_session = UserSession.find
+    @current_user_session ||= UserSession.find
   end
 
   def current_user
@@ -110,7 +108,7 @@ class ApplicationController < ActionController::Base
     unless current_user
       store_location
       flash[:warning] ||= I18n.t('application_controller.must_be_logged_in_to_access')
-      redirect_to login_url
+      redirect_to "/login?return_to=" + request.fullpath
       false
     end
     return current_user

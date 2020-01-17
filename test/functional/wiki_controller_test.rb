@@ -96,7 +96,7 @@ class WikiControllerTest < ActionController::TestCase
          tags:  'balloon-mapping,event'
         }
 
-    assert_redirected_to('/login')
+    assert_redirected_to('/login?return_to=/wiki/create')
   end
 
   test 'post wiki' do
@@ -593,7 +593,7 @@ class WikiControllerTest < ActionController::TestCase
     @user = UserSession.create(users(:jeff))
     @node = nodes(:wiki_page)
     slug = @node.path.gsub('/wiki/', '')
-    @node.add_tag('date:bad', @user)
+    @node.add_tag('date:bad', users(:jeff))
 
     assert_equal false, @node.has_power_tag('date')
     # assert_equal "anything goes", DateTime.strptime(@node.power_tag('date'),'%m- %d-%Y').to_date.to_s(:long)
@@ -635,4 +635,15 @@ class WikiControllerTest < ActionController::TestCase
       assert_equal 'text/html', @response.content_type
   end
 
+  test "should get author wikis of which none are banned" do
+    user = users(:jeff)
+    get :author, params: { id: user.name }
+    wikis = assigns(:wikis)
+    # check they are not banned
+    assert wikis.all? { |wiki| wiki.status == 1 }
+    # test their type
+    assert wikis.none? { |wiki| wiki.type == "question" || wiki.status == "note"}
+    # check correct author
+    assert wikis.all? { |wiki| wiki.uid == user.uid }
+  end
 end

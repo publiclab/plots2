@@ -90,6 +90,16 @@ Rails.application.configure do
       }
     })
 
+  # This config is has the same email as one of the fixture users. When it is used to login, instead of signing up a new user
+  # it should link this oauth config to the fixture user.
+  OmniAuth.config.mock_auth[:github4] = OmniAuth::AuthHash.new({
+      'provider' => 'github',
+      'uid' => '135799134741',
+      'info' => {
+        'name' => 'Bob',
+        'email' => 'bob@publiclab.org'
+      }
+    }) 
     #facebook Provider
     OmniAuth.config.mock_auth[:facebook1] = OmniAuth::AuthHash.new({
         'provider' => 'facebook',
@@ -99,7 +109,7 @@ Rails.application.configure do
           'email' => 'bansal.sidharth309@gmail.com'
         }
       })
-  
+
     #Twitter Provider
     OmniAuth.config.mock_auth[:twitter1] = OmniAuth::AuthHash.new({
         'provider' => 'twitter',
@@ -145,5 +155,40 @@ Rails.application.configure do
           'email' => 'emila.buffet309@gmail.com'
         }
       })
-
+  
+  
+  # This config is has the same email as one of the fixture users. When it is used to login, instead of signing up a new user
+  # it should link this oauth config to the fixture user.
+  OmniAuth.config.mock_auth[:facebook4] = OmniAuth::AuthHash.new({
+      'provider' => 'facebook',
+      'uid' => '135799134741',
+      'info' => {
+        'name' => 'Bob',
+        'email' => 'bob@publiclab.org'
+      }
+    }) 
+  
+  
+  # This config is has the same email as one of the fixture users. When it is used to login, instead of signing up a new user
+  # it should link this oauth config to the fixture user.
+  OmniAuth.config.mock_auth[:twitter4] = OmniAuth::AuthHash.new({
+      'provider' => 'twitter',
+      'uid' => '135799134741',
+      'info' => {
+        'name' => 'Bob',
+        'email' => 'bob@publiclab.org'
+      }
+    }) 
+  
+  
+  # This config is has the same email as one of the fixture users. When it is used to login, instead of signing up a new user
+  # it should link this oauth config to the fixture user.
+  OmniAuth.config.mock_auth[:google_oauth2_4] = OmniAuth::AuthHash.new({
+      'provider' => 'google_oauth2',
+      'uid' => '135799134741',
+      'info' => {
+        'name' => 'Bob',
+        'email' => 'bob@publiclab.org'
+      }
+    }) 
 end

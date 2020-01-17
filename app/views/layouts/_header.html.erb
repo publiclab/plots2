@@ -51,9 +51,11 @@
           </a>
           <div class="dropdown-menu">
             <a class="dropdown-item" href="/methods"><%= translate('Methods') %></a>
+            <div class="dropdown-divider"></div>
             <h6 class="dropdown-header">Kits</h6>
             <a class="dropdown-item" href="/kits"><%= translate('Kits initiative') %></a>
             <a class="dropdown-item" href="//store.publiclab.org"><%= translate('Store') %></a>
+            <div class="dropdown-divider"></div>
             <h6 class="dropdown-header">Software</h6>
             <a class="dropdown-item" href="https://mapknitter.org"><%= translate('MapKnitter') %></a>
             <a class="dropdown-item" href="https://infragram.org"><%= translate('Infragram') %></a>
@@ -183,7 +185,7 @@
 
 <%= render partial: "layouts/signupLoginModal" %>
 
-  <script type="text/javascript" src="/lib/leaflet-environmental-layers/example/lib/glify.js"></script>
+  <script type="text/javascript" src="/lib/leaflet-environmental-layers/lib/glify.js"></script>
 
 
 <style>

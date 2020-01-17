@@ -3,16 +3,16 @@
 
 
 "@babel/code-frame@^7.0.0":
-  version "7.5.5"
-  resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.5.5.tgz#bc0782f6d69f7b7d49531219699b988f669a8f9d"
-  integrity sha512-27d4lZoomVyo51VegxI20xZPuSHusqbQag/ztrBC7wegWoQ1nLREPVSKSW8byhTlzTKyNE4ifaTA6lCp7JjpFw==
+  version "7.8.3"
+  resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.8.3.tgz#33e25903d7481181534e12ec0a25f16b6fcf419e"
+  integrity sha512-a9gxpmdXtZEInkCSHUJDLHZVBgb1QS0jhss4cPP93EW7s+uC5bikET2twEF3KV+7rDblJcmNvTR7VJejqd2C2g==
   dependencies:
-    "@babel/highlight" "^7.0.0"
+    "@babel/highlight" "^7.8.3"
 
-"@babel/highlight@^7.0.0":
-  version "7.5.0"
-  resolved "https://registry.yarnpkg.com/@babel/highlight/-/highlight-7.5.0.tgz#56d11312bd9248fa619591d02472be6e8cb32540"
-  integrity sha512-7dV4eu9gBxoM0dAnj/BCFDW9LFU0zvTrkq0ugM7pnHEgguOEeOz1so2ZghEdzviYzQEED0r4EAgpsBChKy1TRQ==
+"@babel/highlight@^7.8.3":
+  version "7.8.3"
+  resolved "https://registry.yarnpkg.com/@babel/highlight/-/highlight-7.8.3.tgz#28f173d04223eaaa59bc1d439a3836e6d1265797"
+  integrity sha512-PX4y5xQUvy0fnEVHrYOarRPXVWafSjTW9T0Hab8gVIawpl2Sj0ORyrygANq+KjcNlSSTw0YCLSNA8OyZ1I4yEg==
   dependencies:
     chalk "^2.0.0"
     esutils "^2.0.2"
@@ -352,9 +352,9 @@ aws-sign@~0.3.0:
   integrity sha1-PYHKabR0seFlGHKLUcJP8Lvtxuk=
 
 aws4@^1.8.0:
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.9.0.tgz#24390e6ad61386b0a747265754d2a17219de862c"
-  integrity sha512-Uvq6hVe90D0B2WEnUqtdgY1bATGz3mw33nH9Y+dmA+w5DHvUmBgkr5rM/KCHpCsiFNRUfokW/szpPPgMK2hm4A==
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.9.1.tgz#7e33d8f7d449b3f673cd72deb9abdc552dbe528e"
+  integrity sha512-wMHVg2EOHaMRxbzgFJ9gtjOOCrI80OHLG14rxi28XwOW8ux6IiEbRCGGGqCtdAIg4FQCbW20k9RsT4y3gJlFug==
 
 backbone@~1.3.3:
   version "1.3.3"
@@ -444,26 +444,17 @@ bluebird@*:
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.7.2.tgz#9f229c15be272454ffa973ace0dbee79a1b0c36f"
   integrity sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==
 
+blueimp-canvas-to-blob@3:
+  version "3.17.0"
+  resolved "https://registry.yarnpkg.com/blueimp-canvas-to-blob/-/blueimp-canvas-to-blob-3.17.0.tgz#d796e72aa1fd37f9471e0396e64d323956564a23"
+  integrity sha512-LcuVZZtKtE4yUrLb0IQA7ndMm19gooDTrzvjjkvmQ1MhkFlSzTw+8Ftp+/ckfGeP2UDQvDsPyy8mIT69itAqbg==
+
 blueimp-canvas-to-blob@3.5.0:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/blueimp-canvas-to-blob/-/blueimp-canvas-to-blob-3.5.0.tgz#5679ac32f6a2835821f0c3ad661719ff85a9236b"
   integrity sha1-VnmsMvaig1gh8MOtZhcZ/4WpI2s=
 
-blueimp-canvas-to-blob@>=2.0.5:
-  version "3.17.0"
-  resolved "https://registry.yarnpkg.com/blueimp-canvas-to-blob/-/blueimp-canvas-to-blob-3.17.0.tgz#d796e72aa1fd37f9471e0396e64d323956564a23"
-  integrity sha512-LcuVZZtKtE4yUrLb0IQA7ndMm19gooDTrzvjjkvmQ1MhkFlSzTw+8Ftp+/ckfGeP2UDQvDsPyy8mIT69itAqbg==
-
-blueimp-file-upload@^9.28.0:
-  version "9.34.0"
-  resolved "https://registry.yarnpkg.com/blueimp-file-upload/-/blueimp-file-upload-9.34.0.tgz#1a57744f262f7c86d575ddb1b3d98f0bdd06feea"
-  integrity sha512-dXacFmyv6p0n+l5+u1ssYhSpCJdYabl7BZTw5WvB6ygY2ksTB3SdD6huafryEO5DH+XuspHDL6+IJ3m14Va+FQ==
-  optionalDependencies:
-    blueimp-canvas-to-blob "3.5.0"
-    blueimp-load-image "2.12.2"
-    blueimp-tmpl "3.6.0"
-
-blueimp-file-upload@blueimp/jQuery-File-Upload#^9.22.1:
+blueimp-file-upload@^9.34.0:
   version "9.34.0"
   resolved "https://codeload.github.com/blueimp/jQuery-File-Upload/tar.gz/bb52d3493d725175fcf5554da034a317aaaea0e2"
   optionalDependencies:
@@ -471,25 +462,34 @@ blueimp-file-upload@blueimp/jQuery-File-Upload#^9.22.1:
     blueimp-load-image "2.12.2"
     blueimp-tmpl "3.6.0"
 
+blueimp-file-upload@blueimp/jQuery-File-Upload#^10.7.0, jquery-file-upload@blueimp/jQuery-File-Upload#~10.7.0:
+  version "10.7.0"
+  uid faad01e7073b0ed1088efc285b16c7504d813674
+  resolved "https://codeload.github.com/blueimp/jQuery-File-Upload/tar.gz/faad01e7073b0ed1088efc285b16c7504d813674"
+  optionalDependencies:
+    blueimp-canvas-to-blob "3"
+    blueimp-load-image "2"
+    blueimp-tmpl "3"
+
+blueimp-load-image@2:
+  version "2.26.0"
+  resolved "https://registry.yarnpkg.com/blueimp-load-image/-/blueimp-load-image-2.26.0.tgz#4cd3115f115d5ef9386b2ee15a504668987dfd05"
+  integrity sha512-pL7SYdK9ZxBFmFiEoh91PIYccU9IzytQ8goIUgc+5RW6vYVyvpGRUltefceeoNyLARbF8QXiYimHp6kgjZ/IBg==
+
 blueimp-load-image@2.12.2:
   version "2.12.2"
   resolved "https://registry.yarnpkg.com/blueimp-load-image/-/blueimp-load-image-2.12.2.tgz#6a17598aab858d4fbf01543e0631141b51057c87"
   integrity sha1-ahdZiquFjU+/AVQ+BjEUG1EFfIc=
 
-blueimp-load-image@>=1.5.0:
-  version "2.26.0"
-  resolved "https://registry.yarnpkg.com/blueimp-load-image/-/blueimp-load-image-2.26.0.tgz#4cd3115f115d5ef9386b2ee15a504668987dfd05"
-  integrity sha512-pL7SYdK9ZxBFmFiEoh91PIYccU9IzytQ8goIUgc+5RW6vYVyvpGRUltefceeoNyLARbF8QXiYimHp6kgjZ/IBg==
+blueimp-tmpl@3:
+  version "3.13.0"
+  resolved "https://registry.yarnpkg.com/blueimp-tmpl/-/blueimp-tmpl-3.13.0.tgz#910c337d5742a8a17e3237139389853ebc9ced56"
+  integrity sha512-TC5eLXhPGGgBJG1gGxKRORB5DMxSVSTS/GsqsQuJ+shv0Ez5wc9bjoXVhPqtdbzVZAzFvveasAMrjqEYY/18Og==
 
 blueimp-tmpl@3.6.0:
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/blueimp-tmpl/-/blueimp-tmpl-3.6.0.tgz#a4910975d042e2bc03ba77f0e62d04f1548a524c"
   integrity sha1-pJEJddBC4rwDunfw5i0E8VSKUkw=
-
-blueimp-tmpl@>=2.1.0:
-  version "3.13.0"
-  resolved "https://registry.yarnpkg.com/blueimp-tmpl/-/blueimp-tmpl-3.13.0.tgz#910c337d5742a8a17e3237139389853ebc9ced56"
-  integrity sha512-TC5eLXhPGGgBJG1gGxKRORB5DMxSVSTS/GsqsQuJ+shv0Ez5wc9bjoXVhPqtdbzVZAzFvveasAMrjqEYY/18Og==
 
 body-parser@1.19.0:
   version "1.19.0"
@@ -1215,10 +1215,10 @@ cssstyle@^2.0.0:
   dependencies:
     cssom "~0.3.6"
 
-csv-parse@^2.0.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/csv-parse/-/csv-parse-2.5.0.tgz#65748997ecc3719c594622db1b9ea0e2eb7d56bb"
-  integrity sha512-4OcjOJQByI0YDU5COYw9HAqjo8/MOLLmT9EKyMCXUzgvh30vS1SlMK+Ho84IH5exN44cSnrYecw/7Zpu2m4lkA==
+csv-parse@^4.6.5:
+  version "4.8.5"
+  resolved "https://registry.yarnpkg.com/csv-parse/-/csv-parse-4.8.5.tgz#32e92a0e0acedab141bd5c5a3ad6fc3316f2c72d"
+  integrity sha512-rpsLmlLWJZifmLzZEVGbZ9phWnJyi+cCbCGYr4vX2NaHFtgbmQPFk+WmMkmMkQXgsIUn6CgnK9cTuUAfFjoXbA==
 
 ctype@0.5.3:
   version "0.5.3"
@@ -1243,9 +1243,9 @@ cwise-compiler@^1.0.0, cwise-compiler@^1.1.2:
     uniq "^1.0.0"
 
 cytoscape@^3.12.1:
-  version "3.12.1"
-  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.12.1.tgz#48fe85481ba7ba4c3b77396426b6b9cc27fe2bb4"
-  integrity sha512-/TIrNXcWZdjTgB2BK2oJfroO8IAM6XSu9lCGEe3boJ68KHqH0fbSrc0tIOfibkzkMfUhFLNed9tcaoYdjxOnTQ==
+  version "3.13.0"
+  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.13.0.tgz#490d06c237cf4ecefb7f86acb6d9a489a23156c4"
+  integrity sha512-1pKd6DUyprUmz/ADPI3aKFbZceqeKoVwYBr3zBplzHOaffF311z6Zo5qWqXK12t4JRdTOvFA4kwt8T/QVIrU1Q==
   dependencies:
     heap "^0.2.6"
     lodash.debounce "^4.0.8"
@@ -1529,9 +1529,9 @@ entities@~1.1.1:
   integrity sha512-f2LZMYl1Fzu7YSBKg+RoROelpOaNrcGmE9AZubeDfrCEia483oW4MI4VyFd5VNHIgQ/7qm1I0wUHK1eJnn2y2w==
 
 es-abstract@^1.17.0-next.1:
-  version "1.17.0"
-  resolved "https://registry.yarnpkg.com/es-abstract/-/es-abstract-1.17.0.tgz#f42a517d0036a5591dbb2c463591dc8bb50309b1"
-  integrity sha512-yYkE07YF+6SIBmg1MsJ9dlub5L48Ek7X0qz+c/CPCHS9EBXfESorzng4cJQjJW5/pB6vDF41u7F8vUhLVDqIug==
+  version "1.17.2"
+  resolved "https://registry.yarnpkg.com/es-abstract/-/es-abstract-1.17.2.tgz#965b10af56597b631da15872c17a405e86c1fd46"
+  integrity sha512-YoKuru3Lyoy7yVTBSH2j7UxTqe/je3dWAruC0sHvZX1GNd5zX8SSLvQqEgO9b3Ex8IW+goFI9arEEsFIbulhOw==
   dependencies:
     es-to-primitive "^1.2.1"
     function-bind "^1.1.1"
@@ -2473,9 +2473,9 @@ gpu-mock.js@^1.1.1:
   integrity sha512-BmoRk9nbMaxkrwzTJp4M0iuwIbzNEXt6tlBZ5+ZYzaGH9VWu5Nhn1Q1CBusCam3d8u3FfVEFf3Ueo8DocUCbUw==
 
 gpu.js@^2.0.0-rc.12:
-  version "2.4.6"
-  resolved "https://registry.yarnpkg.com/gpu.js/-/gpu.js-2.4.6.tgz#a625d2d24e79ad5be81dd99dff28880edad65882"
-  integrity sha512-nX2buxg6WTZPBeme6nzeWNq/wK4j3YtmkKkMcD2CmiBnRc9yWQunHk177HKSi3e7mLhJHMGjZIYprsn3xS3u4Q==
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/gpu.js/-/gpu.js-2.5.0.tgz#313998145feb8b3535c435bbbc58d3f770b7c21e"
+  integrity sha512-suq+6lqxfpQqc16VdhN5Ve8hYL9lwGRmDRY/ov4b2JUCESW7q320VO+qcadhVM/V9TDiLZVwbI9+3T5bdUUiXg==
   dependencies:
     acorn "^7.1.0"
     gl "^4.4.0"
@@ -2638,9 +2638,9 @@ gtoken@^2.3.2:
     pify "^4.0.0"
 
 handlebars@^4.0.1:
-  version "4.5.3"
-  resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.5.3.tgz#5cf75bd8714f7605713511a56be7c349becb0482"
-  integrity sha512-3yPecJoJHK/4c6aZhSvxOyG4vJKDshV36VHp0iVCDVh7o9w2vwi3NSnL2MMPj3YdduqaBcu7cGbggJQM0br9xA==
+  version "4.7.2"
+  resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.7.2.tgz#01127b3840156a0927058779482031afe0e730d7"
+  integrity sha512-4PwqDL2laXtTWZghzzCtunQUTLbo31pcCJrd/B/9JP8XbhVzpS5ZXuKqlOzsd1rtcaLo4KqAn8nl8mkknS4MHw==
   dependencies:
     neo-async "^2.6.0"
     optimist "^0.6.1"
@@ -3293,25 +3293,10 @@ jquery-confirm@^3.3.4:
   dependencies:
     jquery ">=1.6"
 
-jquery-file-upload@blueimp/jQuery-File-Upload#~8.1.0:
-  version "8.1.0"
-  resolved "https://codeload.github.com/blueimp/jQuery-File-Upload/tar.gz/442027a0fe8d483687596ee72da83c58ce293f1b"
-  dependencies:
-    blueimp-canvas-to-blob ">=2.0.5"
-    blueimp-load-image ">=1.5.0"
-    blueimp-tmpl ">=2.1.0"
-    jquery ">=1.6"
-    jquery.ui.widget ">=1.9"
-
 jquery-validation@^1.19.1:
   version "1.19.1"
   resolved "https://registry.yarnpkg.com/jquery-validation/-/jquery-validation-1.19.1.tgz#a85043467dc2b70d9fff05778646d150e747742f"
   integrity sha512-QNnrZBqSltWUEJx+shOY5WtfrIb0gWmDjFfQP8rZKqMMSfpRSwEkSqhfHPvDfkObD8Hnv5KHSYI8yg73sVFdqA==
-
-jquery.ui.widget@>=1.9:
-  version "1.10.3"
-  resolved "https://registry.yarnpkg.com/jquery.ui.widget/-/jquery.ui.widget-1.10.3.tgz#2ceecfc64995412643eeb9508d2197ea93c02fb3"
-  integrity sha1-LO7PxkmVQSZD7rlQjSGX6pPAL7M=
 
 jquery@>=1.10, jquery@>=1.6, jquery@>=1.7, "jquery@>=1.7.1 <4.0.0", jquery@^3.2.1, jquery@^3.3.1, jquery@^3.4.1, jquery@~3:
   version "3.4.1"
@@ -3522,32 +3507,33 @@ klaw@^1.0.0:
   optionalDependencies:
     graceful-fs "^4.1.9"
 
-leaflet-blurred-location@^1.2.5, leaflet-blurred-location@^1.5.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/leaflet-blurred-location/-/leaflet-blurred-location-1.5.1.tgz#3839e6322b838959726167061633f821930d4ee7"
-  integrity sha512-gR/O+Getlxn6D8dVrp/zuqj71uT72+Punbino3rEG1rCf6d65AjqYYINSqeG+gC3RtXeSi3iHZTKQj+t9jl5pQ==
+leaflet-blurred-location@^1.5.1, leaflet-blurred-location@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/leaflet-blurred-location/-/leaflet-blurred-location-1.6.0.tgz#4e597b1cb074d4eb0b9fecbd17dc26fa58b7136a"
+  integrity sha512-yT5BK1kd2wReEbTRdR3Lj4ZLzrKD/QJyxj1PgIbLxMU3RlERkyfw73cWDukRpw7gRZwySZ2iENLmAyognTu83w==
   dependencies:
     haversine-distance "^1.1.4"
     jquery "^3.2.1"
     leaflet "^1.3.3"
 
-"leaflet-blurred-location@git://github.com/publiclab/leaflet-blurred-location.git#main":
-  version "1.5.1"
-  resolved "git://github.com/publiclab/leaflet-blurred-location.git#550b8ac78144b32e0e01a0dba242a09009f155c8"
+"leaflet-blurred-location@git://github.com/publiclab/leaflet-blurred-location#main":
+  version "1.6.0"
+  resolved "git://github.com/publiclab/leaflet-blurred-location#ef66dcb768094680e92d4f972b68f18cd4db6ccc"
   dependencies:
     haversine-distance "^1.1.4"
     jquery "^3.2.1"
     leaflet "^1.3.3"
 
-leaflet-environmental-layers@^2.0.6:
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/leaflet-environmental-layers/-/leaflet-environmental-layers-2.0.6.tgz#51c96cc7f6927e9826c14fa6fa0614965676c1bc"
-  integrity sha512-grNaIVqyG/8X4QN5XhILs1ra+8Md0Pk2UezsaaCHDbl+9UsEvGJ96mSg50UgXRd2mbzTzUYB/5KXHlFHBPcvwg==
+leaflet-environmental-layers@^2.1.7:
+  version "2.1.7"
+  resolved "https://registry.yarnpkg.com/leaflet-environmental-layers/-/leaflet-environmental-layers-2.1.7.tgz#3d866404929db76b34b68d87460a6f5584bebccc"
+  integrity sha512-/lNjVMVZQBAydTWnTScWpDIx/1iPBlYp3MKI9sSKnU973Zj72du4VG7BPdlYxC6aPkKa3pHhWYNmk72E69SCSw==
   dependencies:
     jquery "^3.3.1"
     leaflet "^1.3.1"
     leaflet-blurred-location "git://github.com/publiclab/leaflet-blurred-location#main"
     leaflet-fullhash "github:sagarpreet-chadha/leaflet-fullHash"
+    leaflet-google-places-autocomplete "0.0.8"
     leaflet-heatmap "1.0.0"
     leaflet-providers "^1.1.17"
     leaflet-spin "1.1.0"
@@ -3557,6 +3543,11 @@ leaflet-environmental-layers@^2.0.6:
 "leaflet-fullhash@github:sagarpreet-chadha/leaflet-fullHash":
   version "1.0.0"
   resolved "https://codeload.github.com/sagarpreet-chadha/leaflet-fullHash/tar.gz/6c547255ef7842281c6af3d6b879a2e994e1c54d"
+
+leaflet-google-places-autocomplete@0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/leaflet-google-places-autocomplete/-/leaflet-google-places-autocomplete-0.0.8.tgz#dbcf5d1833d011bef3f266bb4357b79e3bf81d70"
+  integrity sha1-289dGDPQEb7z8ma7Q1e3njv4HXA=
 
 leaflet-hash@^0.2.1:
   version "0.2.1"
@@ -4651,14 +4642,14 @@ psl@^1.1.24, psl@^1.1.28:
   resolved "https://registry.yarnpkg.com/psl/-/psl-1.7.0.tgz#f1c4c47a8ef97167dea5d6bbf4816d736e884a3c"
   integrity sha512-5NsSEDv8zY70ScRnOTn7bK7eanl2MvFrOrS/R6x+dBt5g1ghnj9Zv90kO8GwT8gxcu2ANyFprnFYB85IogIJOQ==
 
-publiclab-editor@^2.0.0, publiclab-editor@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/publiclab-editor/-/publiclab-editor-2.0.4.tgz#aa355fe0fafdb46444e2bee2b1beaf2399e0ae81"
-  integrity sha512-MPNK8rewaxT14iPkkcC1rRvm6XhXJiyCttoQVbNngB48YTODGbYuEiMxdpxCIiC8ClGZdap+vZpLTgSfC7ARUQ==
+publiclab-editor@^2.0.0, publiclab-editor@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/publiclab-editor/-/publiclab-editor-2.0.5.tgz#0f9faa4f94850e9fe8957c8f424d43743ebed5fd"
+  integrity sha512-ICsYp37679HePsV3mEEifFt6s2ls1jeZrRfl/WDNBpiP7UYMq0AF4Szpdm/ZHKX/72uwerPx3d0lBRleb8ov8Q==
   dependencies:
     at.js "^1.5.4"
     backbone "~1.3.3"
-    blueimp-file-upload "^9.28.0"
+    blueimp-file-upload "^9.34.0"
     bootstrap "~3.4.0"
     bootstrap-datepicker "~1.9.0"
     bootstrap-tokenfield "~0.12.0"
@@ -4667,8 +4658,8 @@ publiclab-editor@^2.0.0, publiclab-editor@^2.0.4:
     font-awesome "~4.7.0"
     grow-textarea "git://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669"
     jquery "~3"
-    leaflet "^1.3.3"
-    leaflet-blurred-location "^1.2.5"
+    leaflet "^1.6.0"
+    leaflet-blurred-location "^1.5.1"
     megamark "3.3.0"
     moment "~2.24.0"
     resig-class "~1.0.0"
@@ -5035,9 +5026,9 @@ resolve@1.1.x:
   integrity sha1-IDEU2CrSxe2ejgQRs5ModeiJ6Xs=
 
 resolve@^1.1.7:
-  version "1.14.1"
-  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.14.1.tgz#9e018c540fcf0c427d678b9931cbf45e984bcaff"
-  integrity sha512-fn5Wobh4cxbLzuHaE+nphztHy43/b++4M6SsGFC2gB8uYwf0C8LcarfCz1un7UTW8OFQg9iNjZ4xpcFVGebDPg==
+  version "1.14.2"
+  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.14.2.tgz#dbf31d0fa98b1f29aa5169783b9c290cb865fea2"
+  integrity sha512-EjlOBLBO1kxsUxsKjLt7TAECyKW6fOh1VRkykQkKGzcBbjjPIxBqGh0jf7GJ3k/f5mxMqW3htMD3WdTUVtW8HQ==
   dependencies:
     path-parse "^1.0.6"
 
@@ -5253,13 +5244,13 @@ short-code-forms@jywarren/short-code-forms#~0.0.1:
   resolved "https://codeload.github.com/jywarren/short-code-forms/tar.gz/cb7a07452fce13b0ff780c1991bfe8e1eddf39e3"
 
 sifter@^0.5.1:
-  version "0.5.3"
-  resolved "https://registry.yarnpkg.com/sifter/-/sifter-0.5.3.tgz#5e6507fe8c114b2b28d90b6bf4e5b636e611e48b"
-  integrity sha1-XmUH/owRSyso2Qtr9OW2NuYR5Is=
+  version "0.5.4"
+  resolved "https://registry.yarnpkg.com/sifter/-/sifter-0.5.4.tgz#3cb9e514889edfc887d8d87a355841b01ebdd1ab"
+  integrity sha512-t2yxTi/MM/ESup7XH5oMu8PUcttlekt269RqxARgnvS+7D/oP6RyA1x3M/5w8dG9OgkOyQ8hNRWelQ8Rj4TAQQ==
   dependencies:
     async "^2.6.0"
     cardinal "^1.0.0"
-    csv-parse "^2.0.0"
+    csv-parse "^4.6.5"
     humanize "^0.0.9"
     optimist "^0.6.1"
 
@@ -5850,9 +5841,9 @@ uc.micro@~0.1.0:
   integrity sha1-7aESHR/blhVO1v3oJHu724MzCMo=
 
 uglify-js@^3.1.4:
-  version "3.7.3"
-  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.7.3.tgz#f918fce9182f466d5140f24bb0ff35c2d32dcc6a"
-  integrity sha512-7tINm46/3puUA4hCkKYo4Xdts+JDaVC9ZPRcG8Xw9R4nhO/gZgUM3TENq8IF4Vatk8qCig4MzP/c8G4u2BkVQg==
+  version "3.7.5"
+  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.7.5.tgz#278c7c24927ac5a32d3336fc68fd4ae1177a486a"
+  integrity sha512-GFZ3EXRptKGvb/C1Sq6nO1iI7AGcjyqmIyOw0DrD0675e+NNbGO72xmMM2iEBdFbxaTLo70NbjM/Wy54uZIlsg==
   dependencies:
     commander "~2.20.3"
     source-map "~0.6.1"
@@ -5902,9 +5893,9 @@ underscore@1.4.4, underscore@1.4.x:
   integrity sha1-YaajIBBiKvoHljvzJSA88SI51gQ=
 
 underscore@>=1.8.3:
-  version "1.9.1"
-  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.9.1.tgz#06dce34a0e68a7babc29b365b8e74b8925203961"
-  integrity sha512-5/4etnCkd9c8gwgowi5/om/mYO5ajCaOgdzj/oW+0eQV9WxKBDZw5+ycmKmeaTXjInS/W0BzpGLo2xR2aBwZdg==
+  version "1.9.2"
+  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.9.2.tgz#0c8d6f536d6f378a5af264a72f7bec50feb7cf2f"
+  integrity sha512-D39qtimx0c1fI3ya1Lnhk3E9nONswSKhnffBI0gME9C99fYOkNi04xs8K6pePLhvl1frbDemkaBQ5ikWllR2HQ==
 
 underscore@~1.7.0:
   version "1.7.0"
