@@ -80,6 +80,25 @@ class SignUpTest < ActionDispatch::IntegrationTest
     assert response.body.include? 'errors prohibited this user from being saved'
     assert response.body.include? 'Email should look like an email address.'
   end
+  test 'spamaway text area not blank error message'
+    post '/register', params: {
+      user: {
+         username: "newuser",
+         email: @new_user[:email],
+         password: @new_user[:password],
+         password_confirmation: @new_user[:password]
+      },
+      spamaway: {
+        statement1: @spamaway[:statement1],
+        statement2: @spamaway[:statement2],
+        statement3: @spamaway[:statement3],
+        statement4: @spamaway[:statement4],
+        follow_instructions: "Not_Blank"
+       }
+     } 
+    assert response.body.include? '1 error prohibited this user from being saved'
+    assert response.body.include? 'Spam detection Please read the instructions in the last box carefully.'
+  end
 
   private
 
