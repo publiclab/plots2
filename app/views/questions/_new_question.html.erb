@@ -49,9 +49,9 @@
               </span>
               
               <span style="display: block; width:90%;" id="tags">
-                  <% node.tags.limit(4).each do |tag| %>
+                <% node.tags.limit(4).each do |tag| %>
                   <span id="tag_<%= tag.id %>" ><a class="badge badge-primary" href="/questions/tag/<%= tag.name %>"><%= tag.name %></a></span>
-                  <% end %>
+                <% end %>
               </span>
           
               <%# Ellipsis Menu %>
@@ -68,7 +68,7 @@
                     </li>
                   <% end %>
                   <li>
-                    <a href="<%= node.path %>#comments">Total Comments: <%= node.fetch_comments(current_user).length %></a>
+                    <a href="<%= node.path %>#comments">Total Comments: <%= node.comments_viewable_by(current_user).length %></a>
                   </li>
                   <li>
                     <a href="/n/<%= node.id %>">Read More</a>
@@ -82,16 +82,17 @@
                   <% if params[:mod] %>| <a href="#"><i class="fa fa-ban"></i></a><% end %>
                   <% if current_user %>
                     <li class="buttons">
-                      <a class="btn btn-outline-secondary btn-sm" rel="popover" data-container="body" data-placement="top" data-template='<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-body"><%= render partial:'dashboard/flag_list', locals: { node: node } %></div></div>' data-html="true" data-content="sample" > Spam </a></a>
+                      <a class="btn btn-outline-secondary btn-sm" rel="popover" data-container="body" data-placement="top" data-template='<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-body"><%= render partial:'dashboard/flag_list', locals: { node: node } %></div></div>' data-html="true" data-content="sample" >Spam</a>
                     </li>
                   <% else %>
                     <li class="buttons"><a data-toggle="modal" data-target="#loginModal" class="btn btn-outline-secondary btn-sm" role="button" aria-pressed="true"> Spam </a></li>
                   <% end %>
                 </span>
               </ul>
+              
             </div>
             <%# End Card Body %>
-           
+          
           </div>
         </div>
       </div>
@@ -104,10 +105,11 @@
 
     <% end %>
   </div>
-</div>
+
+
+  <div class="text-center mt-3"><%= will_paginate questions, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || questions.empty? %></div>
 
 </div>
-<div class="text-center"><%= will_paginate questions, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || questions.empty? %></div>
 
 <style>
 
