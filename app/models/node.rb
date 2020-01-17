@@ -681,6 +681,8 @@ class Node < ActiveRecord::Base
           saved = false
           node.destroy
         end
+        # prevent vid non-unique bug in https://github.com/publiclab/plots2/issues/7062
+        raise ActiveRecord::Rollback if !node.valid? || node.vid == 0
       end
     end
     [saved, node, revision]

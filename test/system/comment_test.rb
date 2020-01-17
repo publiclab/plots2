@@ -4,13 +4,17 @@ require "application_system_test_case"
 
 class CommentTest < ApplicationSystemTestCase
   Capybara.default_max_wait_time = 60
+
   def setup
     visit '/'
-    click_on 'Login'
+
+    find(".nav-link.loginToggle").click()
     fill_in("username-login", with: "jeff")
     fill_in("password-signup", with: "secretive")
-    click_on "Log in"
+
+    find(".login-modal-form #login-button").click()
   end
+
   test 'adding a comment via javascript' do
     visit "/wiki/wiki-page-path/comments"
 
@@ -30,7 +34,7 @@ class CommentTest < ApplicationSystemTestCase
     # check that the tag showed up on the page
     assert_selector('#comments-list .comment-body p', text: 'superhero')
   end
- 
+
   test 'adding a reply comment via javascript with url only' do
     visit "/wiki/wiki-page-path/comments"
 
@@ -42,7 +46,7 @@ class CommentTest < ApplicationSystemTestCase
     # check that the tag showed up on the page
     assert_selector("#{parentid} .comment .comment-body p", text: 'batman')
   end
-  
+
   test "add a comment manually" do
     visit nodes(:one).path
 
@@ -72,6 +76,51 @@ class CommentTest < ApplicationSystemTestCase
     # Make sure that buttons are not binded with each other
     assert_equal( reply_preview_button.text, "Hide Preview" )
     assert_equal( comment_preview_button.text, "Preview" )
+  end
+
+  test 'comment image upload' do
+    Capybara.ignore_hidden_elements = false
+    visit "/wiki/wiki-page-path/comments"
+
+    find("p", text: "Reply to this comment...").click()
+
+    reply_preview_button = page.all('#post_comment')[0]
+    fileinput_element = page.all('#fileinput')[0]
+
+    # Upload the image
+    fileinput_element.set("#{Rails.root.to_s}/public/images/pl.png")
+
+    # Wait for image upload to finish
+    wait_for_ajax
+    Capybara.ignore_hidden_elements = true
+
+    # Toggle preview
+    reply_preview_button.click()
+
+    # Make sure that image has been uploaded
+    page.assert_selector('#preview img', count: 1)
+  end
+
+  test 'comment image drag and drop upload' do
+    Capybara.ignore_hidden_elements = false
+    visit "/wiki/wiki-page-path/comments"
+
+    find("p", text: "Reply to this comment...").click()
+
+    reply_preview_button = page.all('#post_comment')[0]
+
+    # Upload the image
+    drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png")
+
+    # Wait for image upload to finish
+    wait_for_ajax
+    Capybara.ignore_hidden_elements = true
+
+    # Toggle preview
+    reply_preview_button.click()
+
+    # Make sure that image has been uploaded
+    page.assert_selector('#preview img', count: 1)
   end
 
 end
