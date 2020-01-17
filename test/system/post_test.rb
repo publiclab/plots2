@@ -72,6 +72,22 @@ class PostTest < ApplicationSystemTestCase
     page.assert_selector('.tags-list p.badge', :count => 0)
   end
 
+  test 'like button on the post' do
+    visit '/wiki/wiki-page-path/comments'
+
+    find('a[data-target="#loginModal"]', text: 'Login').click()
+
+    fill_in 'user_session[username]', with: 'jeff'
+    fill_in 'user_session[password]', with: 'secretive'
+
+    click_on 'Log in'
+
+    like_button = find('.btn-like').click();
+
+    # Make sure that star is toggled
+    assert has_no_selector?('.btn-like .fa.fa-star-o')
+  end
+
   # Utility methods:
 
   def assert_page_reloads(message = "page should reload")
