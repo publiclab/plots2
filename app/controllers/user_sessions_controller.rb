@@ -117,7 +117,7 @@ class UserSessionsController < ApplicationController
 
   def handle_site_login_flow
     username = params[:user_session][:username] if params[:user_session]
-    u = User.find_by(username: username)
+    u = User.find_by(username: username) || User.find_by(email: username)
     if u && u.password_checker != 0
       n = u.password_checker
       hash = { 1 => "Facebook", 2 => "Github", 3 => "Google", 4 => "Twitter"  }
