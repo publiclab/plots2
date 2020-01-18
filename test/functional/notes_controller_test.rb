@@ -677,7 +677,7 @@ class NotesControllerTest < ActionController::TestCase
     assert (notes & expected).present?
     assert !(notes & questions).present?
   end
-  
+
     test 'first note in /liked endpoint should be highest liked' do
     get :liked
     notes = assigns(:notes)
@@ -696,7 +696,7 @@ class NotesControllerTest < ActionController::TestCase
     actual = notes.first
     assert expected == actual.created
   end
-     
+
   test 'first three posts in /liked should be sorted by likes' do
     get :liked
     # gets first notes
@@ -704,7 +704,7 @@ class NotesControllerTest < ActionController::TestCase
      # sort_by is from lowest to highest so it needs to be reversed
     assert notes.sort_by { |note| note.cached_likes }.reverse ==  notes
   end
-   
+
   test 'should choose I18n for notes controller' do
     available_testing_locales.each do |lang|
       old_controller = @controller
