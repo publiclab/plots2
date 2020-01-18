@@ -4,11 +4,11 @@ class ModerationTest < ApplicationSystemTestCase
 
   def setup
     visit "/"
-    find(".nav-link.loginToggle", match: :first).click()
+    find(".nav-link.loginToggle").click()
 
     fill_in 'user_session[username]', with: 'palpatine'
     fill_in 'user_session[password]', with: 'secretive'
-    find(".login-modal-form #login-button", match: :first).click()
+    find(".login-modal-form #login-button").click()
 
   end
 

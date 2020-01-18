@@ -8,7 +8,7 @@ class TagTest < ApplicationSystemTestCase
 
     take_screenshot
 
-    click_on "by type"
+    find("#dropdownMenuButton", text: "by type", match: :first).click()
 
     take_screenshot
 

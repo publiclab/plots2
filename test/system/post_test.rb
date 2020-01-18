@@ -8,11 +8,11 @@ class PostTest < ApplicationSystemTestCase
   def setup
     visit '/'
 
-    find(".nav-link.loginToggle", match: :first).click()
+    find(".nav-link.loginToggle").click()
     fill_in("username-login", with: "jeff")
     fill_in("password-signup", with: "secretive")
 
-    find(".login-modal-form #login-button", match: :first).click()
+    find(".login-modal-form #login-button").click()
   end
 
   test 'posting from the editor' do

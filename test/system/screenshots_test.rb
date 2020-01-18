@@ -56,7 +56,7 @@ class ScreenshotsTest < ApplicationSystemTestCase
 
   test 'login modal' do
     visit '/'
-    find(".nav-link.loginToggle", match: :first).click()
+    find(".nav-link.loginToggle").click()
 
     assert_selector('#loginContainer', visible: true)
     take_screenshot
@@ -64,14 +64,14 @@ class ScreenshotsTest < ApplicationSystemTestCase
 
   test 'login modal form validation' do
     visit '/'
-    find(".nav-link.loginToggle", match: :first).click()
+    find(".nav-link.loginToggle").click()
 
 
     fill_in 'user_session[username]', with: 'Bob'
     # The length of a password should be minimum 8 characters
     fill_in 'user_session[password]', with: 'invalid'
 
-    find(".login-modal-form #login-button", match: :first).click()
+    find(".login-modal-form #login-button").click()
 
 
     # Get the error message (remove '×' that closes the modal and remaining whitespaces)
@@ -175,7 +175,7 @@ class ScreenshotsTest < ApplicationSystemTestCase
 
   test 'wiki revisions' do
     visit "/wiki/revisions/#{nodes(:about).slug}"
-    click_on '1'
+    find('#row1 a[onclick="goto(1,0)"]', text: '1').click()
     take_screenshot
   end
 
@@ -203,11 +203,11 @@ class ScreenshotsTest < ApplicationSystemTestCase
 
   test 'spam moderation page' do
     visit '/'
-    find(".nav-link.loginToggle", match: :first).click()
+    find(".nav-link.loginToggle").click()
 
     fill_in("username-login", with: "obiwan") # moderator
     fill_in("password-signup", with: "secretive")
-    find(".login-modal-form #login-button", match: :first).click()
+    find(".login-modal-form #login-button").click()
 
     visit '/spam'
     assert_selector('#batch-delete', visible: true)
@@ -216,11 +216,11 @@ class ScreenshotsTest < ApplicationSystemTestCase
 
   test 'blog page with location modal' do
     visit '/'
-    find(".nav-link.loginToggle", match: :first).click()
+    find(".nav-link.loginToggle").click()
 
     fill_in("username-login", with: "steff1")
     fill_in("password-signup", with: "secretive")
-    find(".login-modal-form #login-button", match: :first).click()
+    find(".login-modal-form #login-button").click()
 
     visit nodes(:blog).path
     find('a#tags-open').click # open the tagging form

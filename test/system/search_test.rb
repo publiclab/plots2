@@ -10,7 +10,9 @@ class SearchTest < ApplicationSystemTestCase
     fill_in("searchform_input", with: "test")
     find('button.btn-light', match: :first).click
 
-    assert_selector('h2', text: 'Search')
+    title = find('.row h2', match: :first).text
+
+    assert_equal "Search", title
     take_screenshot
   end
 
@@ -18,8 +20,10 @@ class SearchTest < ApplicationSystemTestCase
     visit '/'
 
     fill_in("searchform_input", with: "test")
-    
-    assert_selector ".typeahead li", text: "test"
+
+    typeahead_li = find('.typeahead .dropdown-item', match: :first).text
+
+    assert_equal "test", typeahead_li
 
     take_screenshot
 

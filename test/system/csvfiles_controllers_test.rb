@@ -11,7 +11,8 @@ class CsvfilesControllersTest < ApplicationSystemTestCase
 
   test 'visit simple-data-grapher' do
     visit '/graph'
-
-    assert_selector("h2", text: "Simple Data Grapher")
+    
+    main_heading = find(".main_heading_container .main_heading", match: :first).text
+    assert_equal "Simple Data Grapher", main_heading
   end
 end
