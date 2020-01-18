@@ -114,7 +114,7 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
 
     assert_response :redirect
     follow_redirect!
-    assert_equal flash[:notice], 'The user has been moderated.'
+    assert_equal I18n.t('users_controller.user_has_been_moderated'), flash[:warning]
     u = User.find(u.id)
     assert_equal 5, u.status
 
