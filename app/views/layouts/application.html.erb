@@ -56,7 +56,7 @@
         <%= raw strip_tags(sanitize(RDiscount.new(@node.body).to_html)).truncate(100) %>
       </p>
     <% end %>
-    <p class="facebook-summary" style="display:none;"><%= t('layout._header.summary') %></p>
+    <p class="facebook-summary" style="display:none;"><%= translation('layout._header.summary') %></p>
 
     <!-- facebook needs this apparently -->
     <div id="fb-root"></div>
