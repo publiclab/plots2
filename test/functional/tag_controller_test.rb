@@ -553,15 +553,6 @@ class TagControllerTest < ActionController::TestCase
     assert_equal 'application/xml', @response.content_type
   end
 
-  test 'should have active question tab for question for show_for_author' do
-    tag = tags(:question)
-    get :show_for_author, params: { id: tag.name, author: 'jeff' }
-    selector = css_select "a[href = '/questions/tag/question:spectrometer/author/jeff']"
-    assert_equal selector.size, 1
-    selector = css_select '#questions.active'
-    assert_equal selector.size, 1
-  end
-
   test 'should take node type as note if tag is not a question tag for show_for_author' do
     tag = tags(:awesome)
 
@@ -578,6 +569,14 @@ class TagControllerTest < ActionController::TestCase
   test "wildcard does not show wiki for show_for_author" do
     get :show_for_author, params: { id: 'question:*', node_type: 'wiki', author: 'jeff' }
     assert_equal true, assigns(:wikis).empty?
+  end
+  
+  test 'should list answered questions' do
+    tag = tags(:question)
+
+    get :show_for_author, params: { id: tag.name, author: 'jeff' }
+
+    assert_not_nil assigns(:answered_questions)
   end
 
   test "does not show note for show_for_author" do
