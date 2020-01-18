@@ -119,5 +119,69 @@ class PostTest < ApplicationSystemTestCase
     # Make sure that image has been uploaded
     page.assert_selector('#preview img', count: 1)
   end
+  
+  test "changing and reverting versions works correctly for wiki" do
+    wiki = nodes(:wiki_page)
+    visit '/'
+    click_on 'Login'
+
+    fill_in("username-login", with: "palpatine")
+    fill_in("password-signup", with: "secretive")
+    click_on "Log in"
+
+    visit wiki.path
+    # save text of wiki before edit
+    old_wiki_content = find("#content").text
+
+    # edit content
+    find("a[data-original-title='Try the beta inline Rich Wiki editor.']").click()
+    first("div.inline-section").hover()
+    using_wait_time(2) { first("a.inline-edit-btn").click() }
+    find("div.wk-wysiwyg").set("wiki text")
+    click_on "Save"
+
+    # view wiki
+    find("a[href='#{wiki.path}'").click()
+    current_wiki_content = find("#content").text
+    # make sure edits worked and text is different
+    assert current_wiki_content != old_wiki_content
+
+    find("a[data-original-title='View previous versions of this page.']").click()
+    accept_confirm "Are you sure?" do
+      # revert to previous version of wiki
+      all("a", text: "Revert")[1].click()
+    end
+    visit wiki.path
+    
+    # check old wiki content is the same as current content after revert
+    assert old_wiki_content == find("#content").text 
+  end
+
+  test "revision diff is displayed when comparing versions" do
+    wiki = nodes(:wiki_page)
+    visit '/'
+    click_on 'Login'
+
+    fill_in("username-login", with: "palpatine")
+    fill_in("password-signup", with: "secretive")
+    click_on "Log in"
+
+    visit wiki.path
+
+    # edit content
+    find("a[data-original-title='Try the beta inline Rich Wiki editor.']").click()
+    first("div.inline-section").hover()
+    using_wait_time(2) { first("a.inline-edit-btn").click() }
+    find("div.wk-wysiwyg").native.send_keys(:enter, "wiki text")
+    click_on "Save"
+
+    find("a[href='#{wiki.path}'").click()
+    find("a[data-original-title='View previous versions of this page.']").click()
+
+
+    # verify additions are displayed as green `<ins>` tags
+    page.assert_selector("ins", text: "<p>wiki")
+    page.assert_selector("ins", text: "text</p>")
+  end
 
 end
