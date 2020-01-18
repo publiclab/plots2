@@ -9,7 +9,7 @@ class PostTest < ApplicationSystemTestCase
     visit '/'
 
     find(".nav-link.loginToggle").click()
-    fill_in("username-login", with: "jeff")
+    fill_in("username-login", with: "palpatine")
     fill_in("password-signup", with: "secretive")
 
     find(".login-modal-form #login-button").click()
@@ -128,7 +128,7 @@ class PostTest < ApplicationSystemTestCase
     old_wiki_content = find("#content").text
 
     # edit content
-    find("a[title='Try the beta inline Rich Wiki editor.']").click()
+    find("a[data-original-title='Try the beta inline Rich Wiki editor.']").click()
     first("div.inline-section").hover()
     using_wait_time(2) { first("a.inline-edit-btn").click() }
     find("div.wk-wysiwyg").set("wiki text")
@@ -157,7 +157,7 @@ class PostTest < ApplicationSystemTestCase
     visit wiki.path
 
     # edit content
-    find("a[title='Try the beta inline Rich Wiki editor.']").click()
+    find("a[data-original-title='Try the beta inline Rich Wiki editor.']").click()
     first("div.inline-section").hover()
     using_wait_time(2) { first("a.inline-edit-btn").click() }
     find("div.wk-wysiwyg").native.send_keys(:enter, "wiki text")
