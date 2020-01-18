@@ -122,12 +122,6 @@ class PostTest < ApplicationSystemTestCase
   
   test "changing and reverting versions works correctly for wiki" do
     wiki = nodes(:wiki_page)
-    visit '/'
-    click_on 'Login'
-
-    fill_in("username-login", with: "palpatine")
-    fill_in("password-signup", with: "secretive")
-    click_on "Log in"
 
     visit wiki.path
     # save text of wiki before edit
@@ -159,12 +153,6 @@ class PostTest < ApplicationSystemTestCase
 
   test "revision diff is displayed when comparing versions" do
     wiki = nodes(:wiki_page)
-    visit '/'
-    click_on 'Login'
-
-    fill_in("username-login", with: "palpatine")
-    fill_in("password-signup", with: "secretive")
-    click_on "Log in"
 
     visit wiki.path
 
