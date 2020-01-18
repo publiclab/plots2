@@ -8,7 +8,7 @@ class SearchTest < ApplicationSystemTestCase
     visit '/'
 
     fill_in("searchform_input", with: "test")
-    find('button.btn-light').click
+    find('button.btn-light', match: :first).click
 
     assert_selector('h2', text: 'Search')
     take_screenshot

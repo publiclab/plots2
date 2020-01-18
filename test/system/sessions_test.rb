@@ -18,7 +18,7 @@ class SessionsTest < ApplicationSystemTestCase
     fill_in 'user_session[username]', with: 'jeff'
     fill_in 'user_session[password]', with: 'secretive'
 
-    find(".login-modal-form #login-button").click()
+    find(".login-modal-form #login-button", match: :first).click()
 
 
     path = URI.parse(current_url).request_uri

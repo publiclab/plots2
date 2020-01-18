@@ -6,12 +6,12 @@ class SettingsTest < ApplicationSystemTestCase
   test 'viewing the settings page' do
     visit '/'
 
-    find(".nav-link.loginToggle").click()
+    find(".nav-link.loginToggle", match: :first).click()
 
 
     fill_in("username-login", with: "namangupta")
     fill_in("password-signup", with: "secretive")
-    find(".login-modal-form #login-button").click()
+    find(".login-modal-form #login-button", match: :first).click()
 
 
     visit '/settings'
