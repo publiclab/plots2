@@ -9,7 +9,7 @@ class PostTest < ApplicationSystemTestCase
     visit '/'
 
     find(".nav-link.loginToggle").click()
-    fill_in("username-login", with: "palpatine")
+    fill_in("username-login", with: "jeff")
     fill_in("password-signup", with: "secretive")
 
     find(".login-modal-form #login-button").click()
