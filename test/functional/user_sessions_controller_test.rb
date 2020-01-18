@@ -321,7 +321,7 @@ class UserSessionsControllerTest < ActionController::TestCase
     # logout
     post :destroy
     request.env['omniauth.auth'] = nil
-    post :create, params: { user_session: { username: "bansal_sidharth309@gmail.com", password: "random"} }
+    post :create, params: { user_session: { username: "bansal.sidharth309@gmail.com", password: "random"} }
     assert_equal flash[:error], "This account doesn't have a password set. It may be logged in with Github account, or you can set a new password via Forget password feature"
   end
   
