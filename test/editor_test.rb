@@ -12,7 +12,7 @@ class EditorTest < ApplicationSystemTestCase
     click_on "Log in"
   end
 
-  test "rich wiki editor functions correctly" do
+  test "check that rich wiki editor functions correctly" do
     visit "/wiki/wiki-page-path"
     find("a[data-original-title='Try the beta inline Rich Wiki editor.'").click()
     first("div.inline-section").hover()
@@ -26,7 +26,7 @@ class EditorTest < ApplicationSystemTestCase
     page.assert_selector("p", text: "wiki text")
   end
 
-  test "markdown wiki editor functions correctly" do
+  test "check that markdown wiki editor functions correctly" do
     visit "/wiki/wiki-page-path"
     find("a[data-original-title='Edit this wiki page.'").click()
 
@@ -36,7 +36,7 @@ class EditorTest < ApplicationSystemTestCase
     page.assert_selector("p", text: "wiki text")
   end
 
-  test "different rich wiki editor features" do
+  test "check rich editor features are functional" do
     visit "/wiki/wiki-page-path"
     find("a[data-original-title='Try the beta inline Rich Wiki editor.'").click()
     first("div.inline-section").hover()
@@ -60,7 +60,7 @@ class EditorTest < ApplicationSystemTestCase
     page.assert_selector("code", text: "code goes here")
   end
 
-  test "different markdown wiki editor features" do
+  test "check markdown editor features are functional" do
     visit "/wiki/wiki-page-path"
     find("a[data-original-title='Edit this wiki page.']").click()
 
