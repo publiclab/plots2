@@ -27,6 +27,7 @@ It was originally created by Caroline Hadilaksono: http://www.hadilaksono.com
 
 body{
   padding-top: 80px;
+  overflow-x: hidden;
 }
 
 h1,h2,h3,h4 {
