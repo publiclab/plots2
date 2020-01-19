@@ -20,7 +20,9 @@
 
       <% end %>
       <% if @wiki %>
-        <p class = "wiki-sub"><%= @wiki.latest.body.split('\n').first %></p>
+        <% 3.times do |i| %>
+          <span class="wiki-sub"><%= @wiki.latest.body.split(' ').slice!((i * 6)..(i * 6) + 5).join(' ') %></span>
+        <% end %>
       <% end %>
       <div class="tag-buttons">
         <div class="btn-group" role="group">
@@ -114,6 +116,13 @@
     overflow: hidden;
     color: #666;
     height: 70px;
+  }
+  .wiki-sub:last-of-type {
+    display: inline;
+    height: unset;
+  }
+  .wiki-sub:last-of-type:after {
+    content: '...';
   }
   .tag-buttons .btn {
     margin-top: 10px;
