@@ -31,11 +31,14 @@
 
     if(!$(this).hasClass('bound-keypress')) {
       $(this).addClass('bound-keypress');
-      $(this).find('#text-input').bind('keypress',function(e){
-        if (e.ctrlKey && e.keyCode === 10) {
+
+      $(this).on('keypress', function (e) {
+        var isPostCommentShortcut = (e.ctrlKey && e.keyCode === 10) || (e.metaKey && e.keyCode === 13);
+
+        if (isPostCommentShortcut) {
         $(this).find(".btn-primary").click();
         }
-      })
+      });
     }
     
   });
