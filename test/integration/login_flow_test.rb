@@ -180,5 +180,8 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     # login successfully with new password
     post "/user_sessions", params: { password: "newpassword", username: user.name }
     assert_equal "Successfully logged in.",  flash[:notice]
+    
+    # !!IMPORTANT!! hash must be set to nil or it will be preserved and all the tests will fail
+    Rails.application.env_config["omniauth.auth"] =  nil
   end
 end
