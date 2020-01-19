@@ -62,7 +62,7 @@ class SignUpTest < ActionDispatch::IntegrationTest
     }
 
     assert response.body.include? '2 errors prohibited this user from being saved'
-    assert response.body.include? 'Username should use only letters, numbers, spaces, and .-_@+ please.'
+    assert response.body.include? `Username can only consist of alphabets, numbers, underscore '_', and hyphen '-'.`
     assert response.body.include? 'Username is too short (minimum is 3 characters)'
   end
 
@@ -104,9 +104,9 @@ class SignUpTest < ActionDispatch::IntegrationTest
   private
 
     def test_username_regex(name)
-      post '/register', params: { 
+      post '/register', params: {
         user: {
-          username: name, 
+          username: name,
           email: @new_user[:email],
           password: @new_user[:password],
           password_confirmation: @new_user[:password],
@@ -115,6 +115,6 @@ class SignUpTest < ActionDispatch::IntegrationTest
       }
 
       assert response.body.include? '1 error prohibited this user from being saved'
-      assert response.body.include? 'Username should use only letters, numbers, spaces, and .-_@+ please.'
+      assert response.body.include? `Username can only consist of alphabets, numbers, underscore '_', and hyphen '-'.`
     end
 end
