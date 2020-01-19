@@ -17,7 +17,7 @@
           <i class="ml-1 ff fa fa-lock"></i>
         </a>
       <% else %>
-        <a class="btn-circle btn btn-outline-secondary" href='<%= node.edit_path %>?t=<%= Time.now.to_i %>'>
+        <a class="btn-circle btn btn-outline-secondary" id="edit-btn" href='<%= node.edit_path %>?t=<%= Time.now.to_i %>'>
           <i class='ml-1 ff fa fa-pencil'></i>
         </a>
       <% end %>
