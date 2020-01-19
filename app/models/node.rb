@@ -1,14 +1,12 @@
 class UniqueUrlValidator < ActiveModel::Validator
   def validate(record)
-    if record.title == '' || record.title.nil?
-      # record.errors[:base] << "You must provide a title."
+    if record.title.blank?
+      record.errors[:base] << "You must provide a title."
       # otherwise the below title uniqueness check fails, as title presence validation doesn't run until after
     elsif record.type == 'page'
       array = %w(create edit update delete new)
-      array.each do |x|
-        if record.title == x
-          record.errors[:base] << "You may not use the title '" + x + "'"
-        end
+      if array.include? record.title.downcase
+        record.errors[:base] << "You may not use the title '#{record.title}'"
       end
     else
       if !Node.where(path: record.generate_path).first.nil? && record.type == 'note'
@@ -96,7 +94,7 @@ class Node < ActiveRecord::Base
 
   belongs_to :user, foreign_key: 'uid'
 
-  validates :title, presence: true
+  validates :title, presence: true, length: { minimum: 3 }
   validates_with UniqueUrlValidator, on: :create
 
   scope :published, -> { where(status: 1) }
@@ -144,17 +142,20 @@ class Node < ActiveRecord::Base
   end
 
   # should only be run at actual creation time --
-  # or, we should refactor to us node.created instead of Time.now
+  # or, we should refactor to use node.created instead of Time.now
   def generate_path
-    if type == 'note'
-      username = User.find_by(id: uid).name
-      "/notes/#{username}/#{Time.now.strftime('%m-%d-%Y')}/#{title.parameterize}"
-    elsif type == 'page'
-      '/wiki/' + title.parameterize
-    elsif type == 'map'
-      "/map/#{title.parameterize}/#{Time.now.strftime('%m-%d-%Y')}"
-    elsif type == 'feature'
+    time = Time.now.strftime('%m-%d-%Y')
+
+    case type
+    when "note"
+      username = User.find_by(id: uid).name # name? or username?
+      "/notes/#{username}/#{time}/#{title.parameterize}"
+    when "map"
+      "/map/#{title.parameterize}/#{time}"
+    when "feature"
       "/feature/#{title.parameterize}"
+    when "page"
+      "/wiki/#{title.parameterize}"
     end
   end
 
@@ -218,9 +219,9 @@ class Node < ActiveRecord::Base
 
   def notify
     if status == 4
-      AdminMailer.notify_node_moderators(self).deliver_now
+      AdminMailer.notify_node_moderators(self).deliver_later!(wait_until: 24.hours.from_now)
     else
-      SubscriptionMailer.notify_node_creation(self).deliver_now
+      SubscriptionMailer.notify_node_creation(self).deliver_later!
     end
   end
 
@@ -274,13 +275,12 @@ class Node < ActiveRecord::Base
     User.find(uid)
   end
 
-  def coauthors
-    User.where(username: power_tags('with')) if has_power_tag('with')
-  end
-
-  # for wikis:
   def authors
     revisions.collect(&:author).uniq
+  end
+
+  def coauthors
+    User.where(username: power_tags('with')) if has_power_tag('with')
   end
 
   # tag- and node-based followers
@@ -309,6 +309,10 @@ class Node < ActiveRecord::Base
 
   def body
     latest&.body
+  end
+
+  def summary
+    body.lines.first
   end
 
   # was unable to set up this relationship properly with ActiveRecord associations
@@ -415,21 +419,32 @@ class Node < ActiveRecord::Base
   end
 
   # returns all power tag results as whole community_tag objects
-  def power_tag_objects(tagname)
-    tids = Tag.includes(:node_tag)
+  def power_tag_objects(tagname = nil)
+    tags = Tag.includes(:node_tag)
               .references(:community_tags)
-              .where('community_tags.nid = ? AND name LIKE ?', id, tagname + ':%')
-              .collect(&:tid)
+              .where('community_tags.nid = ?', id)
+    if tagname
+      tags = tags.where('name LIKE ?', tagname + ':%')
+    else
+      tags = tags.where('name LIKE ?', '%:%') # any powertag
+    end
+    tids = tags.collect(&:tid)
     NodeTag.where('nid = ? AND tid IN (?)', id, tids)
   end
 
   # return whole community_tag objects but no powertags or "event"
-  def normal_tags
-    tids = Tag.includes(:node_tag)
-              .references(:community_tags)
-              .where('community_tags.nid = ? AND name LIKE ?', id, '%:%')
-              .collect(&:tid)
-    NodeTag.where('nid = ? AND tid NOT IN (?)', id, tids)
+  def normal_tags(order = :none)
+    all_tags = tags.select { |tag| !tag.name.include?(':') }
+    tids = all_tags.collect(&:tid)
+    if order == :followers
+      tags = NodeTag.where('nid = ? AND community_tags.tid IN (?)', id, tids)
+                    .left_outer_joins(:tag, :tag_selections)
+                    .order(Arel.sql('count(tag_selections.user_id) DESC'))
+                    .group(:tid)
+    else
+      tags = NodeTag.where('nid = ? AND tid IN (?)', id, tids)
+    end
+    tags
   end
 
   def location_tags
@@ -567,6 +582,14 @@ class Node < ActiveRecord::Base
     end
   end
 
+  def zoom
+    if has_power_tag('zoom')
+      power_tag('zoom').to_f
+    else
+      false
+    end
+  end
+
   def place
     if has_power_tag('place')
       power_tag('place')
@@ -658,6 +681,8 @@ class Node < ActiveRecord::Base
           saved = false
           node.destroy
         end
+        # prevent vid non-unique bug in https://github.com/publiclab/plots2/issues/7062
+        raise ActiveRecord::Rollback if !node.valid? || node.vid == 0
       end
     end
     [saved, node, revision]
@@ -733,55 +758,70 @@ class Node < ActiveRecord::Base
   end
 
   def add_tag(tagname, user)
-    tagname = tagname.downcase
-    unless has_tag_without_aliasing(tagname)
-      saved = false
-      table_updated = false
-      tag = Tag.find_by(name: tagname) || Tag.new(vid:         3, # vocabulary id; 1
+    if user.status == 1
+      tagname = tagname.downcase
+      unless has_tag_without_aliasing(tagname)
+        saved = false
+        table_updated = false
+        tag = Tag.find_by(name: tagname) || Tag.new(vid:         3, # vocabulary id; 1
                                                   name:        tagname,
                                                   description: '',
                                                   weight:      0)
 
-      ActiveRecord::Base.transaction do
-        if tag.valid?
-          if tag.name.split(':')[0] == 'date'
-            begin
-              DateTime.strptime(tag.name.split(':')[1], '%m-%d-%Y').to_date.to_s(:long)
-            rescue StandardError
-              return [false, tag.destroy]
+        ActiveRecord::Base.transaction do
+          if tag.valid?
+            key = tag.name.split(':')[0]
+            value = tag.name.split(':')[1]
+            # add base tags:
+            if ['question', 'upgrade', 'activity'].include?(key)
+              add_tag(value, user)
             end
-          end
-          tag.save!
-          node_tag = NodeTag.new(tid: tag.id,
+            # add sub-tags:
+            subtags = {}
+            subtags['pm'] = 'particulate-matter'
+            if subtags.include?(key)
+              add_tag(subtags[key], user)
+            end
+            # parse date tags:
+            if key == 'date'
+              begin
+                DateTime.strptime(value, '%m-%d-%Y').to_date.to_s(:long)
+              rescue StandardError
+                return [false, tag.destroy]
+              end
+            end
+            tag.save!
+            node_tag = NodeTag.new(tid: tag.id,
                                  uid: user.uid,
                                  date: DateTime.now.to_i,
                                  nid: id)
 
-          # Adding lat/lon values into node table
-          if tag.valid?
-            if tag.name.split(':')[0] == 'lat'
-              tagvalue = tag.name.split(':')[1]
+            # Adding lat/lon values into node table
+            if key == 'lat'
+              tagvalue = value
               table_updated = update_attributes(latitude: tagvalue, precision: decimals(tagvalue).to_s)
-            elsif tag.name.split(':')[0] == 'lon'
-              tagvalue = tag.name.split(':')[1]
+            elsif key == 'lon'
+              tagvalue = value
               table_updated = update_attributes(longitude: tagvalue)
             end
-          end
 
-          if node_tag.save
-            saved = true
-            tag.run_count # update count of tag usage
-            # send email notification if there are subscribers, status is OK, and less than 1 month old
-            unless tag.subscriptions.empty? || status == 3 || status == 4 || created < (DateTime.now - 1.month).to_i
-              SubscriptionMailer.notify_tag_added(self, tag, user).deliver_now
+            if node_tag.save
+              saved = true
+              tag.run_count # update count of tag usage
+              # send email notification if there are subscribers, status is OK, and less than 1 month old
+              isStatusValid = status == 3 || status == 4
+              isMonthOld = created < (DateTime.now - 1.month).to_i
+              unless tag.subscriptions.empty? || isStatusValid || !isMonthOld
+                SubscriptionMailer.notify_tag_added(self, tag, user).deliver_now
+              end
+            else
+              saved = false
+              tag.destroy
             end
-          else
-            saved = false
-            tag.destroy
           end
         end
+        return [saved, tag, table_updated]
       end
-      return [saved, tag, table_updated]
     end
   end
 
@@ -850,6 +890,37 @@ class Node < ActiveRecord::Base
         .joins(:tag)
         .where('term_data.name LIKE ?', 'question:%')
         .group('node.nid')
+  end
+
+  # all nodes with tagname
+  def self.find_by_tag(tagname)
+    Node.includes(:node_tag, :tag)
+      .where('term_data.name = ? OR term_data.parent = ?', tagname, tagname)
+      .references(:term_data, :node_tag)
+  end
+
+  # finds nodes by tag name, user id, and optional node type
+  def self.find_by_tag_and_author(tagname, user_id, type = 'notes')
+
+    node_type = 'note' if type == 'notes' || type == 'questions'
+    node_type = 'page' if type == 'wiki'
+    # node_type = 'map' if type == 'maps'  # Tag.tagged_nodes_by_author does not seem to work with maps, more testing required
+
+    order = 'node_revisions.timestamp DESC'
+    order = 'created DESC' if node_type == 'note'
+
+    qids = Node.questions.where(status: 1).collect(&:nid)
+
+    nodes = Tag.tagged_nodes_by_author(tagname, user_id)
+      .includes(:revision)
+      .references(:node_revisions)
+      .where(status: 1, type: node_type)
+      .order(order)
+
+    nodes = nodes.where('node.nid NOT IN (?)', qids) if type == 'notes'
+    nodes = nodes.where('node.nid IN (?)', qids) if type == 'questions'
+
+    nodes
   end
 
   # so we can quickly fetch activities corresponding to this node
@@ -962,6 +1033,17 @@ class Node < ActiveRecord::Base
       if node.type == 'note' && !UserTag.exists?(node.uid, 'notify-likes-direct:false')
         SubscriptionMailer.notify_note_liked(node, like.user).deliver_now
       end
+      if node.uid != user.id && UserTag.where(uid: user.id, value: ['notifications:all', 'notifications:like']).any?
+        notification = Hash.new
+        notification[:title] = "New Like on your research note"
+        notification[:path] = node.path
+        option = {
+          body: "#{user.name} just liked your note #{node.title}",
+          icon: "https://publiclab.org/logo.png"
+        }
+        notification[:option] = option
+        User.send_browser_notification [user.id], notification
+      end
       count = 1
       node.toggle_like(like.user)
       # Save the changes.
@@ -970,6 +1052,8 @@ class Node < ActiveRecord::Base
     end
     count
   end
+
+
 
   def self.unlike(nid, user)
     like = nil
@@ -995,12 +1079,12 @@ class Node < ActiveRecord::Base
     self
   end
 
-  def draft_url
+  def draft_url(base_url)
     token = slug.split('token:').last
-    'https://publiclab.org/notes/show/' + nid.to_s + '/' + token
+    base_url + '/notes/show/' + nid.to_s + '/' + token
   end
 
-  def fetch_comments(user)
+  def comments_viewable_by(user)
     if user&.can_moderate?
       comments.where('status = 1 OR status = 4')
     elsif user

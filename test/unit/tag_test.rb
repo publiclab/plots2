@@ -165,13 +165,13 @@ class TagTest < ActiveSupport::TestCase
   test 'contributors with specific tag name' do
     tag = tags(:test)
     contributors = Tag.contributors(tag.name)
-    assert_equal [1,2,5,6,19],contributors.pluck(:id)
+    assert_equal [1, 2 , 5 , 6, 12, 19], contributors.pluck(:id)
   end
 
   test 'contributor_count with specific tag name' do
     tag = tags(:test)
     contributor_count = Tag.contributor_count(tag.name)
-    assert_equal 5,contributor_count
+    assert_equal 6,contributor_count
   end
 
   test 'check sort according to followers ascending' do

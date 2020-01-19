@@ -24,6 +24,14 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert_equal 1, html.scan(nodes(:one).title).length
   end
 
+  test 'that NodeShared can be used to convert short codes like [nodes:grid:foo] into tables which list nodes with image thumbnails' do
+    before = "Here are some notes in a table: \n\n[nodes:grid:test] \n\nThis is how you make it work:\n\n`[nodes:grid:tagname]`\n\n `[nodes:grid:tagname]`\n\nMake sense?"
+    html = NodeShared.nodes_thumbnail_grid(before)
+    assert html
+    assert_equal 1, html.scan('<div class="thumbnail-grid">').length
+    assert_equal 4, html.scan('h5').length
+  end
+  
   test 'that NodeShared can be used to convert short codes like [notes:foo] into tables which list notes' do
     before = "Here are some notes in a table: \n\n[notes:test] \n\nThis is how you make it work:\n\n`[notes:tagname]`\n\n `[notes:tagname]`\n\nMake sense?"
     html = NodeShared.notes_grid(before)
@@ -34,8 +42,8 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert html.scan('<td class="title">').length > 1
   end
  
-  test 'that NodeShared can be used to convert short codes like [button:foo:https://google.com] into tables which list buttons' do
-    before = "Here are some notes in a table: \n\n[button:Press me:/questions] \n\n[button:Cancel:https://google.com]\n\n`[button:Cancel:https://google.com]` This shouldn't get recognized because it's in ` ticks.\n\nMake sense?"
+  test 'that NodeShared can be used to convert short codes like [button:foo:https://google.com] into buttons' do
+    before = "Here are some buttons: \n\n[button:Press me:/questions] \n\n[button:Cancel:https://google.com]\n\n`[button:Cancel:https://google.com]` This shouldn't get recognized because it's in ` ticks.\n\nMake sense?"
     html = NodeShared.button(before)
     assert html
     assert_equal 1, html.scan('<a class="btn btn-primary inline-button-shortcode').length
@@ -159,6 +167,12 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert_equal 1, html.scan('<div class="leaflet-map"').length
   end
 
+  test 'that NodeShared can be used to convert short codes like [map:layers:23:77:mapKnitter,odorReport,wisconsin,asian,clouds] into maps which display LEL layers' do
+    before = "Here are some people in a map: [map:layers::23:77:mapKnitter,odorReport,wisconsin,asian,clouds]"
+    html = NodeShared.layers_map(before)
+    assert_equal 1, html.scan('<div class="leaflet-map').length
+  end
+
   test 'that NodeShared can be used to convert short codes like [people:organizer] into maps which display notes, but only those tagged with "organizer"' do
     before = "Here are some people in a grid: \n\n[people:organizer] \n\nThis is how you make it work:\n\n`[people:organizer]`\n\nMake sense?"
     html = NodeShared.people_grid(before)
@@ -188,7 +202,7 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert_equal 1, html.scan('<table class="table inline-grid notes-grid notes-grid-test notes-grid-test-').length
     assert_equal 1, html.scan('<table').length
     assert_equal 5, html.scan('notes-grid-test').length
-    assert_equal 4, html.scan('<td').length
+    assert_equal 5, html.scan('<td').length
   end
 
   test 'about ability of power tags to exclude tags like [questions:foo!foo1]' do

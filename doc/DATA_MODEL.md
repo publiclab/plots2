@@ -37,7 +37,7 @@ Node `status` -- a property of `Node`, can be:
 
 ### Drafts
 
-Drafts are a type of Research notes. They can be used by users to save their research notes without publishing them publically. But, not all users are eligible to create draft.
+Drafts are a type of Research notes. They can be used by users to save their research notes without publishing them publicly. But, not all users are eligible to create draft.
 Only users who have successfully published their first-note would be shown option for creating draft. Draft would be visible to co-author and other users can access it using secret link
 shared by author. Different draft-related privileges are mentioned below in the table:
 

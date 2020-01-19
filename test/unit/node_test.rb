@@ -1,5 +1,6 @@
 require 'test_helper'
 class NodeTest < ActiveSupport::TestCase
+  include ActiveJob::TestHelper
 
   def setup
     @start = (Date.today - 1.year).to_time
@@ -15,6 +16,8 @@ class NodeTest < ActiveSupport::TestCase
     assert_equal 1, node.status
     assert !node.answered
     assert_equal [], node.location_tags
+    assert node.body
+    assert node.summary
   end
 
   test 'basic question attributes' do
@@ -35,6 +38,18 @@ class NodeTest < ActiveSupport::TestCase
     assert_equal map.lat, map.power_tag('lat').split(':').first.to_f
     assert_equal map.lon, map.power_tag('lon').split(':').first.to_f
     assert map.location_tags
+  end
+
+  test 'adding a question:FOO style tag adds FOO tag as well; also for subtags' do
+    node = nodes(:one)
+    assert_difference 'node.tags.count', 2 do
+      node.add_tag('question:kites', users(:bob))
+    end
+    assert node.has_tag('kites')
+    assert_difference 'node.tags.count', 2 do
+      node.add_tag('pm', users(:bob))
+    end
+    assert node.has_tag('particulate-matter')
   end
 
   test 'notify_callout_users' do
@@ -95,22 +110,25 @@ class NodeTest < ActiveSupport::TestCase
     end
   end
 
-  test 'create a node' do
-    # in testing, uid and id should be matched, although this is not yet true in production db
-    node = Node.new(uid: users(:bob).id,
-                    type: 'note',
-                    title: 'My new node for node creation testing')
-    assert node.save
-  end
-
   test 'create a feature' do
     node = Node.new(uid: users(:admin).id,
                     type: 'feature',
                     title: 'header-feature')
     assert node.save!
-    username = users(:bob).username
-    assert_equal "/feature/#{node.title.parameterize}", node.path
     assert_equal 'feature', node.type
+    assert_equal "/feature/#{node.title.parameterize}", node.path
+  end
+
+  test 'create a map' do
+    node = Node.new(uid: users(:bob).id,
+                    type: 'map',
+                    title: 'My map')
+    assert node.save!
+    assert_equal 'map', node.type
+    username = users(:bob).username
+    time = Time.now.strftime('%m-%d-%Y')
+    title = node.title.parameterize
+    assert_equal "/map/#{title}/#{time}", node.path
   end
 
   test 'create a research note' do
@@ -118,11 +136,14 @@ class NodeTest < ActiveSupport::TestCase
                     type: 'note',
                     title: 'My research note')
     assert node.save!
-    username = users(:bob).username
-    assert_equal "/notes/#{username}/#{Time.now.strftime('%m-%d-%Y')}/#{node.title.parameterize}", node.path
-    assert_equal "/questions/#{username}/#{Time.now.strftime('%m-%d-%Y')}/#{node.title.parameterize}", node.path(:question)
     assert_equal 'note', node.type
-  end
+    username = users(:bob).username
+    time = Time.now.strftime('%m-%d-%Y')
+    title = node.title.parameterize
+    assert_equal "/notes/#{username}/#{time}/#{title}", node.path
+    assert_equal "/questions/#{username}/#{time}/#{title}",
+                 node.path(:question)
+  end 
 
   test 'edit a research note and check path' do
     original_title = 'My research note'
@@ -132,8 +153,11 @@ class NodeTest < ActiveSupport::TestCase
     assert node.save!
     node.title = 'I changed my mind'
     username = users(:bob).username
-    assert_not_equal "/notes/#{username}/#{Time.now.strftime('%m-%d-%Y')}/#{node.title.parameterize}", node.path
-    assert_equal "/notes/#{username}/#{Time.now.strftime('%m-%d-%Y')}/#{original_title.parameterize}", node.path
+    time = Time.now.strftime('%m-%d-%Y')
+    title = node.title.parameterize
+    new_title = original_title.parameterize
+    assert_not_equal "/notes/#{username}/#{time}/#{title}", node.path
+    assert_equal "/notes/#{username}/#{time}/#{new_title}", node.path
   end
 
   # new_note also generates a revision
@@ -175,6 +199,7 @@ class NodeTest < ActiveSupport::TestCase
                     title: 'My wiki page')
     assert node.save!
     assert_equal 'page', node.type
+    assert_equal "/wiki/#{node.title.parameterize}", node.path
   end
 
   test 'create a wiki page with new as title' do
@@ -200,6 +225,41 @@ class NodeTest < ActiveSupport::TestCase
     assert_equal 'Wiki page content/body', node.body
   end
 
+  test 'wikipage with wrong title should not be created' do
+    node = Node.new(uid: users(:bob).id,
+                    type: 'page')
+    words = %w(create update delete new edit)
+    words.each do |word|
+      node.title = word.capitalize
+      assert_not node.save
+    end
+  end
+
+  test 'research note with empty/blank title should not be created' do
+    node = Node.new(uid: users(:bob).id,
+                    type: 'note')
+    titles = [ '', ' ' * 5 ]
+    titles.each do |t|
+      node.title = t
+      assert_not node.valid?
+    end
+  end
+
+  test 'research note with duplicate title should not be created' do
+    node = Node.new(uid: users(:bob).id,
+                    type: 'note',
+                    title: 'My research note')
+    dup_node = node.dup
+    node.save
+    assert_not dup_node.save
+  end
+
+  test 'title should not be too short' do
+    node = Node.new(uid: users(:bob).id,
+                    type: 'note',
+                    title: 'ok')
+    assert_not node.valid?
+  end
   test 'create a node_revision' do
     # in testing, uid and id should be matched, although this is not yet true in production db
     revision_count = nodes(:one).revisions.length
@@ -427,7 +487,7 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'should delete associated comments when a node is deleted' do
     node = nodes(:one)
-    assert_equal 6, node.comments.count
+    assert_equal 7, node.comments.count
     deleted_node = node.destroy
     assert_equal 0, node.comments.count
   end
@@ -454,5 +514,26 @@ class NodeTest < ActiveSupport::TestCase
     # TODO: figure out issue here and re-enable! No rush :-)
     # assert_equal notes, graph_notes.values.sum
     # assert_equal wiki, graph_wiki.values.sum
+  end
+
+  # node.authors should be anyone who's written a revision for this node (a wiki, presumably)
+  test 'authors' do
+    authors = Node.last.authors
+    assert authors
+    assert_equal 1, authors.length
+  end
+
+  test 'find by tagname and user id' do
+    # Should test for each type of node: wiki, notes, questions
+    assert_equal 'Chicago', Node.find_by_tag_and_author('chapter', 1, 'wiki').first.title
+    assert_equal 'Canon A1200 IR conversion at PLOTS Barnraising at LUMCON', Node.find_by_tag_and_author('awesome', 2, 'notes').first.title
+    assert_equal 'Question by a moderated user', Node.find_by_tag_and_author('question:spectrometer', 9, 'questions').first.title
+  end
+  test 'non-approved users should not be able to add tags' do
+    node = nodes(:one)
+    assert_difference 'node.tags.count', 0 do
+      node.add_tag('myspamtag', users(:spammer))
+    end
+    assert_not node.has_tag('myspamtag')
   end
 end

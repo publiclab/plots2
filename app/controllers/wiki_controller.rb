@@ -456,7 +456,9 @@ class WikiController < ApplicationController
         main_image.save
       end
 
-      if params[:main_image].present? && img = Image.find(params[:main_image])
+      if params[:main_image].to_i == 0
+        @node.main_image_id = nil
+      elsif params[:main_image].present? && img = Image.find(params[:main_image])
         img.nid = @node.id
         @node.main_image_id = img.id
         img.save
@@ -464,5 +466,14 @@ class WikiController < ApplicationController
 
       @node.save
     end
+  end
+
+  def author
+    @user = User.find_by(name: params[:id])
+    @title = @user.name
+    @wikis = Node.paginate(page: params[:page], per_page: 24)
+      .order('nid DESC')
+      .where("uid = ? AND type = 'page' OR type = 'place' OR type = 'tool' AND status = 1", @user.uid)
+    render template: 'wiki/index'
   end
 end

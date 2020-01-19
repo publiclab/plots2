@@ -1,5 +1,4 @@
 function graphUrl(url, el) {
-console.log('graphUrl');
   $.get(url, function onGetGraphData(response) {
     graphCsv(response, el);
   });
@@ -8,7 +7,13 @@ console.log('graphUrl');
 function graphCsv(csv, el) {
 
   var data = [];
-  var rows = csv.split('\n').slice(1);
+  var rows = csv.split('\n');
+  var labels = false;
+
+  if (parseFloat(rows[0][0]) != rows[0][0]) { // if it's not a number
+    labels = rows[0].split(',');
+    rows = rows.slice(1);
+  }
 
   for (var i = 0; i < rows[0].split(',').length; i++) {
     data.push([]);
@@ -23,10 +28,10 @@ function graphCsv(csv, el) {
     }
   });
 
-  return graph(data, el);
+  return graph(data, el, labels);
 }
 
-function dataToDatasets(data) {
+function dataToDatasets(data, labels) {
 
   var colors = {
     "blue":"rgb(54, 162, 235)",
@@ -41,9 +46,10 @@ function dataToDatasets(data) {
   var datasets = [];
   data.forEach(function(data, i) {
     datasets.push({
-      label: "Dataset " + i,
+      label: labels ? labels[i] : "Dataset " + i,
       backgroundColor: colors[colorNames[i]],
       borderColor: colors[colorNames[i]],
+      legendPosition: 'right',
       data: data,
       fill: false,
     });
@@ -52,17 +58,17 @@ function dataToDatasets(data) {
   return datasets;
 }
 
-function graph(data, el) {
+function graph(data, el, labels) {
 
   el = el || "graph-canvas";
   data = data || [1, 2, 4, 1, 5];
 
-  var datasets = dataToDatasets(data);
+  var datasets = dataToDatasets(data, labels);
 
   var config = {
       type: 'line',
       data: {
-          labels: Array.from(Array(data[0].length).keys()),
+          labels: labels,
           datasets: datasets
       },
       options: {

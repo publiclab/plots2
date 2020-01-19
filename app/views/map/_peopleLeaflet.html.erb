@@ -63,7 +63,6 @@
       <% end %>
 
        $.getJSON(people_url , function (data) {
-           var layerGroup = L.layerGroup();
 
            if (!!data.items) {
                for (i = 0; i < data.items.length; i++) {

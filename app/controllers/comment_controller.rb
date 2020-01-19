@@ -1,6 +1,5 @@
 class CommentController < ApplicationController
   include CommentHelper
-
   respond_to :html, :xml, :json
   before_action :require_user, only: %i(create update delete)
 

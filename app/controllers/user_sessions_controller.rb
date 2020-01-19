@@ -26,7 +26,6 @@ class UserSessionsController < ApplicationController
     unless params[:hash_params].to_s.empty?
       hash_params = URI.parse("#" + params[:hash_params]).to_s
     end
-
     if signed_in?
       if @identity.nil?
         # If no identity was found, create a brand new one here
@@ -35,6 +34,7 @@ class UserSessionsController < ApplicationController
         # associate the identity
         @identity.user = current_user
         @identity.save
+
         redirect_to return_to + hash_params, notice: "Successfully linked to your account!"
       elsif @identity.user == current_user
         # User is signed in so they are trying to link an identity with their
@@ -50,7 +50,16 @@ class UserSessionsController < ApplicationController
         redirect_to return_to + hash_params, notice: "Already linked to another account!"
       end
     else # not signed in
-      if @identity&.user.present?
+      # User U has Provider P linked to U. U has email E1 while P has email E2. So, User table can't find E2 provided
+      # from auth hash, hence U is found by the user of identity having E2 as email
+      @user = User.where(email: auth["info"]["email"]) ? User.find_by(email: auth["info"]["email"]) : @identity.user
+      if @user&.status&.zero?
+        flash[:error] = I18n.t('user_sessions_controller.user_has_been_banned', username: @user.username).html_safe
+        redirect_to return_to + hash_params
+      elsif @user&.status == 5
+        flash[:error] = I18n.t('user_sessions_controller.user_has_been_moderated', username: @user.username).html_safe
+        redirect_to return_to + hash_params
+      elsif @identity&.user.present?
         # The identity we found had a user associated with it so let's
         # just log them in here
         @user = @identity.user
@@ -60,7 +69,7 @@ class UserSessionsController < ApplicationController
           session[:openid_return_to] = nil
           redirect_to return_to + hash_params
         else
-          redirect_to return_to + hash_params, notice: "Signed in!"
+          redirect_to return_to + hash_params, notice: I18n.t('user_sessions_controller.logged_in')
         end
       else # identity does not exist so we need to either create a user with identity OR link identity to existing user
         if User.where(email: auth["info"]["email"]).empty?
@@ -81,11 +90,8 @@ class UserSessionsController < ApplicationController
             flash[:notice] = "You are now following '#{params[:return_to].split('/')[4]}'."
             subscribe_multiple_tag(params[:return_to].split('/')[4])
             redirect_to '/dashboard', notice: "You have successfully signed in. Please change your password using the link sent to you via e-mail."
-          elsif params[:return_to] && params[:return_to] != "/signup" && params[:return_to] != "/login"
-            flash[:notice] += " " + I18n.t('users_controller.continue_where_you_left_off', url1: params[:return_to].to_s)
-            redirect_to return_to + hash_params, notice: "You have successfully signed in. Please change your password using the link sent to you via e-mail."
           else
-            redirect_to return_to + hash_params, notice: "You have successfully signed in. Please change your password using the link sent to you via e-mail."
+            redirect_to "/dashboard", notice: "You have successfully signed in. Please change your password using the link sent to you via e-mail."
           end
         else # email exists so link the identity with existing user and log in the user
           user = User.where(email: auth["info"]["email"])

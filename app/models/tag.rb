@@ -7,16 +7,6 @@ class Tag < ApplicationRecord
   has_many :node_tag, foreign_key: 'tid'
 
   # we're not really using the filter_by_type stuff here:
-  has_many :node, through: :drupal_node_tag do
-    def filter_by_type(type, limit = 10)
-      where(status: 1, type: type)
-        .limit(limit)
-        .order('created DESC')
-    end
-  end
-
-  # the following probably never gets used; tag.node will use the above definition.
-  # also, we're not really using the filter_by_type stuff here:
   has_many :node, through: :node_tag do
     def filter_by_type(type, limit = 10)
       where(status: 1, type: type)
@@ -373,7 +363,7 @@ class Tag < ApplicationRecord
   end
 
   def self.related(tag_name, count = 5)
-    Rails.cache.fetch('related-tags/' + tag_name + '/' + count.to_s, expires_in: 1.weeks) do
+    Rails.cache.fetch("related-tags/#{tag_name}/#{count}", expires_in: 1.weeks) do
       nids = NodeTag.joins(:tag)
                      .where(Tag.table_name => { name: tag_name })
                      .select(:nid)

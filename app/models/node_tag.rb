@@ -5,6 +5,7 @@ class NodeTag < ApplicationRecord
   belongs_to :node, foreign_key: 'nid'
   belongs_to :tag, foreign_key: 'tid'
   belongs_to :users, foreign_key: 'uid'
+  has_many :tag_selections, foreign_key: 'tid'
   accepts_nested_attributes_for :tag
 
   after_create :increment_count

@@ -22,14 +22,16 @@ class CommentTest < ActiveSupport::TestCase
       assert comments.length > 0
     end
   end
+
   test 'should have gmail quote' do
     require 'mail'
     require 'nokogiri'
-    mail = Mail.read('test/fixtures/incoming_test_emails/gmail/incoming_gmail_email.eml') 
-    mail_doc = Nokogiri::HTML(mail.html_part.body.decoded) # To parse the mail to extract comment content and reply content 
+    mail = Mail.read('test/fixtures/incoming_test_emails/gmail/incoming_gmail_email.eml')
+    mail_doc = Nokogiri::HTML(mail.html_part.body.decoded) # To parse the mail to extract comment content and reply content
     gmail_quote = Comment.gmail_quote_present?(mail_doc)
     assert_equal gmail_quote, true
   end
+
   test 'should not save comment without body' do
     comment = Comment.new
     assert !comment.save, 'Saved the comment without body text'
@@ -258,12 +260,15 @@ class CommentTest < ActiveSupport::TestCase
     comment = Comment.new({
       comment: "Thank you! On Tuesday, 3 July 2018, 11:20:57 PM IST, RP <rp@email.com> wrote:  Here you go."
     })
+
     parsed = comment.parse_quoted_text
+    output = comment.render_body
+
     assert_equal "Thank you! ", parsed[:body]
     assert_equal "On Tuesday, 3 July 2018, 11:20:57 PM IST, RP <rp@email.com> wrote:", parsed[:boundary]
     assert_equal "  Here you go.", parsed[:quote]
     assert_equal "Thank you! ", comment.scrub_quoted_text
-    assert_equal "Thank you! <!-- @@$$%% Trimmed Content @@$$%% -->On Tuesday, 3 July 2018, 11:20:57 PM IST, RP <rp@email.com> wrote:  Here you go.", comment.render_body
+    assert_equal output, "Thank you! On Tuesday, 3 July 2018, 11:20:57 PM IST, RP  wrote:  Here you go."
   end
 
   test 'should give the domain of gmail correctly' do
@@ -307,4 +312,42 @@ class CommentTest < ActiveSupport::TestCase
     email = Comment.find_email(username)
     assert_equal email, "01namangupta@gmail.com"
   end
+
+  test 'find comments using tagname and user id' do
+    assert_equal('Admin comment', Comment.find_by_tag_and_author("awesome", 5).first.comment)
+  end
+
+  test 'sanitizing comment body for XSS' do
+    comment = Comment.new
+    comment.comment = "<img src=x onerror=prompt(133)>" # inserting executable javascript into a comment
+    assert comment.save
+
+    output = comment.render_body
+
+    # Ensure that malicious attributes have been removed
+    assert_equal [], output.scan('src=x')
+    assert_equal [], output.scan('onerror=prompt')
+
+    # Ensure all the OK attributes are preserved, for a wide range of comment types:
+    comment.comment = "<iframe src='/hello' width='100' height='100' border='0'></iframe><p style='color:red;' class='nice' id='cool' title='sweet'></p>"
+    assert comment.save
+    output = comment.render_body
+
+    assert_equal [], output.scan("src='/hello' width='100' height='100' border='0'")
+    assert_equal [], output.scan("class='nice' id='cool' title='sweet'")
+  end
+
+  test 'should close incomplete tags' do
+    comment = Comment.new
+
+    # <iframe> is not closed (</iframe>)
+    comment.comment = "Let’s see how this works with images or an embedded video.\n\n&nbsp;\n\n![](cid:image001.jpg@01D45C10.01D90920)\n\n&nbsp;\n\n\\<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/Kt\\_MSMpxy7Y\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen\\>\\\n\n&nbsp;\n\nIs \\ ***markdown** \\* parsed?\n\n&nbsp;\n\n1. 1. Number 1\n\n2. 4. Number 4\n\n3. 3. Number 3\n\n&nbsp;"
+
+    assert comment.save
+    output = comment.render_body
+
+    # Make sure that <iframe> is closed (</iframe>)
+    assert_not_equal [], output.scan('<iframe width="560" height="315" src="https://www.youtube.com/embed/Kt%5C_MSMpxy7Y">\</iframe>')
+  end
+
 end

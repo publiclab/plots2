@@ -1,0 +1,91 @@
+.card-view {
+    font-family: Arial, sans-serif;
+}
+.card-view .card-header {
+    padding: 1.2rem 1.0rem 0 1.0rem;
+    background-color: inherit;
+    border:none;
+}
+.card-view .card-header p {
+    display: inline-block;
+    font-size: 0.9rem;
+    margin-left: 6px;
+}
+.card-view .card-body {
+    padding: 0 1rem 0 1rem;
+}
+.card-view p,
+.card-view h4 {
+    margin: 0;
+}
+.card-view h4 a {
+    text-decoration: none;
+    color: #212529;
+    display: inline-block;
+}
+.card-view h4 a:hover {
+    text-decoration: underline;
+    color: #212529;
+}
+.card-view a {
+    text-decoration: underline;
+    color: #808080;
+    display: inline-block;
+}
+.card-view a:hover {
+    text-decoration: none;
+    color: #505050;
+}
+.card-view a.btn {
+    text-decoration: none;
+}
+.card-view a.btn-primary {
+    color: white;
+}
+.card-view .card-meta-author {
+    font-size: 0.9em;
+    margin-bottom: 0.5rem;
+}
+.card-view .card-meta-tags {
+    margin-bottom: 0.2rem;
+    font-size: 1.0rem;
+}
+.card-view .card-meta-tags a {
+    color: #FFF;
+    text-decoration: none;
+}
+.card-view .card-footer {
+    font-family: Arial, sans-serif;
+    color: #808080;
+    font-size: 0.9rem;
+    border: 0;
+    background-color: #fff;
+    padding: 0 1rem 0.6rem 1rem;
+    margin: 0;
+}
+.card-meta-links a .fa {
+    color: #808080;
+}
+.card-meta-links {
+    color: #bdbdbd;
+}
+.card-meta-links a,
+.card-meta-links span {
+    color: #808080;
+    text-decoration: none;
+    padding: 0 4px;
+    margin: 0 -2px;
+}
+.card-meta-links a:hover {
+    color: #808080;
+    background-color: rgba(0,0,0,.1);
+    border-radius: 0.25rem;
+}
+
+/* Specific to Profile Page */
+.card-view.profile-card .card-body>div {
+    padding: 0.4em 0 0.4em 0;
+}
+.card-view.profile-card .card-footer {
+    padding: 0.8em 0 0.8em 0;
+}

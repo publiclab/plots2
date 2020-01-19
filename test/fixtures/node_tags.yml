@@ -189,3 +189,31 @@ test3_lon:
   uid: 16
   nid: 25
   date: <%= DateTime.now.to_i %>
+
+project:
+  tid: 28
+  uid: 1
+  nid: 13
+
+project2:
+  tid: 28
+  uid: 1
+  nid: 7
+
+test4_lat:
+  tid: 29
+  uid: 1
+  nid: 7
+  date: <%= DateTime.now.to_i %>
+
+test4_lon:
+  tid: 30
+  uid: 1
+  nid: 7
+  date: <%= DateTime.now.to_i %>
+
+test4_zoom:
+  tid: 31
+  uid: 1
+  nid: 7
+  date: <%= DateTime.now.to_i %>
