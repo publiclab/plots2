@@ -36,11 +36,11 @@
         var isPostCommentShortcut = (e.ctrlKey && e.keyCode === 10) || (e.metaKey && e.keyCode === 13);
 
         if (isPostCommentShortcut) {
-        $(this).find(".btn-primary").click();
+          $(this).find(".btn-primary").click();
         }
       });
     }
-    
+
   });
 }());
 
@@ -48,7 +48,7 @@ function insertTitleSuggestionTemplate() {
   var element = $('#text-input');
   var currentText = $('#text-input').val().trim();
   var template = "\n[propose:title]Propose your title here[/propose]";
-  if (currentText.length === 0) { 
+  if (currentText.length === 0) {
     template = "[propose:title]Propose your title here[/propose]";
   }
   var newText = currentText+template;
