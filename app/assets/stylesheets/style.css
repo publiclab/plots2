@@ -230,7 +230,13 @@ a .fa-white,
   font-family: "Junction Light", lucida grande,lucida sans console,sans-serif;
   font-size: 22px;
 }
-
+#header .navbar-brand:hover{
+    transition: 0.3s cubic-bezier(0.52, 0.21, 0.58, 1);
+    color: #ffffff;
+    text-decoration: none;
+    border-bottom: 3px solid #ffffff;
+    margin-top: -10px;
+}
 @media (max-width: 768px) {
   #header #brand,
   #header #brand-compact {
