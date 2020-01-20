@@ -119,32 +119,35 @@ class PostTest < ApplicationSystemTestCase
     # Make sure that image has been uploaded
     page.assert_selector('#preview img', count: 1)
   end
-  
-  test "changing and reverting versions works correctly for wiki" do
-    wiki = nodes(:wiki_page)
 
-    visit wiki.path
+  test "changing and reverting versions works correctly for wiki" do
+    visit '/wiki/wiki-page-path/'
+
     # save text of wiki before edit
-    old_wiki_content = find("#content").text
+    old_wiki_content = find("#content p").text
 
     find("a#edit-btn").click()
     find("#text-input").set("wiki text")
     find("a#publish").click()
 
     # view wiki
-    current_wiki_content = find("#content").text
+    current_wiki_content = find("#content p").text
     # make sure edits worked and text is different
     assert current_wiki_content != old_wiki_content
 
     find("a[data-original-title='View all revisions for this page.']").click()
+
     accept_confirm "Are you sure?" do
-      # revert to previous version of wiki
-      all("a", text: "Revert")[1].click()
+      # revert to the previous version of wiki
+      find('#row0 a[data-confirm="Are you sure?"]', text: "Revert").click()
     end
-    visit wiki.path
+
+    visit '/wiki/wiki-page-path/'
+
+    wiki_content = find("#content p").text
 
     # check old wiki content is the same as current content after revert
-    assert old_wiki_content == find("#content").text 
+    assert old_wiki_content == wiki_content
   end
 
   test "revision diff is displayed when comparing versions" do
