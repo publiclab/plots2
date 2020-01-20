@@ -163,4 +163,37 @@ class PostTest < ApplicationSystemTestCase
     page.assert_selector("ins", text: "text</p>")
   end
 
+  test 'following the wiki author' do
+    visit '/wiki/wiki-page-path/'
+
+    find('#menu-btn').click()
+
+    find('#menu-follow-btn').click()
+
+    page.execute_script <<-JS
+      var popup = $('.popover-body')[1]
+      var user_link = $(popup).find('a.btn')
+
+      $(user_link).click()
+    JS
+
+    message = find('.alert-success', match: :first).text
+
+    assert_equal( "×\nYou have started following Bob", message)
+  end
+
+  test 'deleting a wiki' do
+    visit '/wiki/wiki-page-path/'
+
+    find('#menu-btn').click()
+
+    accept_confirm "Are you sure?" do
+      find('#menu-delete-btn').click()
+    end
+
+    message = find('.alert-success', match: :first).text
+
+    assert_equal( "×\nContent deleted.", message )
+  end
+
 end
