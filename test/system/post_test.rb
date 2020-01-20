@@ -120,4 +120,83 @@ class PostTest < ApplicationSystemTestCase
     page.assert_selector('#preview img', count: 1)
   end
 
+  test "changing and reverting versions works correctly for wiki" do
+    visit '/wiki/wiki-page-path/'
+
+    # save text of wiki before edit
+    old_wiki_content = find("#content p").text
+
+    find("a#edit-btn").click()
+    find("#text-input").set("wiki text")
+    find("a#publish").click()
+
+    # view wiki
+    current_wiki_content = find("#content p").text
+    # make sure edits worked and text is different
+    assert current_wiki_content != old_wiki_content
+
+    find("a[data-original-title='View all revisions for this page.']").click()
+
+    accept_confirm "Are you sure?" do
+      # revert to the previous version of wiki
+      find('#row0 a[data-confirm="Are you sure?"]', text: "Revert").click()
+    end
+
+    visit '/wiki/wiki-page-path/'
+
+    wiki_content = find("#content p").text
+
+    # check old wiki content is the same as current content after revert
+    assert old_wiki_content == wiki_content
+  end
+
+  test "revision diff is displayed when comparing versions" do
+    wiki = nodes(:wiki_page)
+
+    visit wiki.path
+
+    find("a#edit-btn").click()
+    find("#text-input").native.send_keys(:enter, :enter, "wiki text")
+    find("a#publish").click()
+
+    find("a[data-original-title='View all revisions for this page.']").click()
+
+    # verify additions are displayed as green `<ins>` tags
+    page.assert_selector("ins", text: "<p>wiki")
+    page.assert_selector("ins", text: "text</p>")
+  end
+
+  test 'following the wiki author' do
+    visit '/wiki/wiki-page-path/'
+
+    find('#menu-btn').click()
+
+    find('#menu-follow-btn').click()
+
+    page.execute_script <<-JS
+      var popup = $('.popover-body')[1]
+      var user_link = $(popup).find('a.btn')
+
+      $(user_link).click()
+    JS
+
+    message = find('.alert-success', match: :first).text
+
+    assert_equal( "×\nYou have started following Bob", message)
+  end
+
+  test 'deleting a wiki' do
+    visit '/wiki/wiki-page-path/'
+
+    find('#menu-btn').click()
+
+    accept_confirm "Are you sure?" do
+      find('#menu-delete-btn').click()
+    end
+
+    message = find('.alert-success', match: :first).text
+
+    assert_equal( "×\nContent deleted.", message )
+  end
+
 end
