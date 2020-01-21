@@ -142,8 +142,6 @@ class PostTest < ApplicationSystemTestCase
       find('#row0 a[data-confirm="Are you sure?"]', text: "Revert").click()
     end
 
-    visit '/wiki/wiki-page-path/'
-
     wiki_content = find("#content p").text
 
     # check old wiki content is the same as current content after revert
