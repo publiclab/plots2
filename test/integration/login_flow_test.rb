@@ -147,4 +147,151 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     assert_redirected_to '/dashboard'
   end
 
+ 
+test 'reset password for google oauth user' do
+
+    # login user through oauth
+    get '/auth/google_oauth2'
+    assert_redirected_to '/auth/google_oauth2/callback'
+
+    Rails.application.env_config["omniauth.auth"] =  OmniAuth.config.mock_auth[:google_oauth2]
+    #Sign Up through oauth
+    post "/user_sessions"
+    assert_equal "You have successfully signed in. Please change your password using the link sent to you via e-mail.",  flash[:notice]
+
+    # find new user in db
+    user = User.find_by(username: "bansal_sidharth309")
+
+    # setup reset key to create password
+    key = user.generate_reset_key
+    user.save
+
+    user_attributes = user.attributes
+    user_attributes[:password] = 'newpassword'
+    user_attributes[:password_confirmation] = 'newpassword'
+
+    get "/reset", params: { key: key, user: user_attributes }
+
+    assert_equal 'Your password was successfully changed.', flash[:notice]
+
+    # logout
+    delete "/user_sessions/#{user.id}"
+    assert_equal "Successfully logged out.",  flash[:notice]
+
+    # login successfully with new password
+    post "/user_sessions", params: { password: "newpassword", username: user.name }
+    assert_equal "Successfully logged in.",  flash[:notice]
+    Rails.application.env_config["omniauth.auth"] =  nil
+  end
+
+
+  test 'reset password for github oauth user' do
+
+    # login user through oauth
+    get '/auth/github'
+    assert_redirected_to '/auth/github/callback'
+
+    Rails.application.env_config["omniauth.auth"] =  OmniAuth.config.mock_auth[:github1]
+    #Sign Up through oauth
+    post "/user_sessions"
+    assert_equal "You have successfully signed in. Please change your password using the link sent to you via e-mail.",  flash[:notice]
+
+    # find new user in db
+    user = User.find_by(username: "bansal_sidharth309")
+
+    # setup reset key to create password
+    key = user.generate_reset_key
+    user.save
+
+    user_attributes = user.attributes
+    user_attributes[:password] = 'newpassword'
+    user_attributes[:password_confirmation] = 'newpassword'
+
+    get "/reset", params: { key: key, user: user_attributes }
+
+    assert_equal 'Your password was successfully changed.', flash[:notice]
+
+    # logout
+    delete "/user_sessions/#{user.id}"
+    assert_equal "Successfully logged out.",  flash[:notice]
+
+    # login successfully with new password
+    post "/user_sessions", params: { password: "newpassword", username: user.name }
+    assert_equal "Successfully logged in.",  flash[:notice]
+    Rails.application.env_config["omniauth.auth"] =  nil
+  end
+
+
+  test 'reset password for twitter oauth user' do
+
+    # login user through oauth
+    get '/auth/twitter'
+    assert_redirected_to '/auth/twitter/callback'
+
+    Rails.application.env_config["omniauth.auth"] =  OmniAuth.config.mock_auth[:twitter1]
+    #Sign Up through oauth
+    post "/user_sessions"
+    assert_equal "You have successfully signed in. Please change your password using the link sent to you via e-mail.",  flash[:notice]
+
+    # find new user in db
+    user = User.find_by(username: "bansal_sidharth309")
+
+    # setup reset key to create password
+    key = user.generate_reset_key
+    user.save
+
+    user_attributes = user.attributes
+    user_attributes[:password] = 'newpassword'
+    user_attributes[:password_confirmation] = 'newpassword'
+
+    get "/reset", params: { key: key, user: user_attributes }
+
+    assert_equal 'Your password was successfully changed.', flash[:notice]
+
+    # logout
+    delete "/user_sessions/#{user.id}"
+    assert_equal "Successfully logged out.",  flash[:notice]
+
+    # login successfully with new password
+    post "/user_sessions", params: { password: "newpassword", username: user.name }
+    assert_equal "Successfully logged in.",  flash[:notice]
+    Rails.application.env_config["omniauth.auth"] =  nil
+  end
+
+
+  test 'reset password for facebook oauth user' do
+
+    # login user through oauth
+    get '/auth/facebook'
+    assert_redirected_to '/auth/facebook/callback'
+
+    Rails.application.env_config["omniauth.auth"] =  OmniAuth.config.mock_auth[:facebook1]
+    #Sign Up through oauth
+    post "/user_sessions"
+    assert_equal "You have successfully signed in. Please change your password using the link sent to you via e-mail.",  flash[:notice]
+
+    # find new user in db
+    user = User.find_by(username: "bansal_sidharth309")
+
+    # setup reset key to create password
+    key = user.generate_reset_key
+    user.save
+
+    user_attributes = user.attributes
+    user_attributes[:password] = 'newpassword'
+    user_attributes[:password_confirmation] = 'newpassword'
+
+    get "/reset", params: { key: key, user: user_attributes }
+
+    assert_equal 'Your password was successfully changed.', flash[:notice]
+
+    user = User.find_by(name: "jeff")
+    delete "/user_sessions/#{user.id}"
+    assert_equal "Successfully logged out.",  flash[:notice]
+
+    # login successfully with new password
+    post "/user_sessions", params: { password: "newpassword", username: user.name }
+    assert_equal "Successfully logged in.",  flash[:notice]
+    Rails.application.env_config["omniauth.auth"] =  nil
+  end
 end

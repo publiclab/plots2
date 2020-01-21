@@ -7,16 +7,6 @@ class Tag < ApplicationRecord
   has_many :node_tag, foreign_key: 'tid'
 
   # we're not really using the filter_by_type stuff here:
-  has_many :node, through: :drupal_node_tag do
-    def filter_by_type(type, limit = 10)
-      where(status: 1, type: type)
-        .limit(limit)
-        .order('created DESC')
-    end
-  end
-
-  # the following probably never gets used; tag.node will use the above definition.
-  # also, we're not really using the filter_by_type stuff here:
   has_many :node, through: :node_tag do
     def filter_by_type(type, limit = 10)
       where(status: 1, type: type)

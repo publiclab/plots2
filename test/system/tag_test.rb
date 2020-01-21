@@ -5,15 +5,17 @@ require "application_system_test_case"
 class TagTest < ApplicationSystemTestCase
   Capybara.default_max_wait_time = 60
 
-  test 'adding a tag via javascript' do
+  def setup
     visit '/'
 
-    click_on 'Login'
-
+    find(".nav-link.loginToggle").click()
     fill_in("username-login", with: "jeff")
     fill_in("password-signup", with: "secretive")
-    click_on "Log in"
 
+    find(".login-modal-form #login-button").click()
+  end
+
+  test 'adding a tag via javascript' do
     visit "/wiki/wiki-page-path"
 
     # run the javascript function
@@ -25,14 +27,6 @@ class TagTest < ApplicationSystemTestCase
   end
 
   test 'adding a tag via javascript with url only' do
-    visit '/'
-
-    click_on 'Login'
-
-    fill_in("username-login", with: "jeff")
-    fill_in("password-signup", with: "secretive")
-    click_on "Log in"
-
     visit "/wiki/wiki-page-path"
 
     # run the javascript function
@@ -44,14 +38,6 @@ class TagTest < ApplicationSystemTestCase
   end
 
   test 'adding a tag to a user profile' do
-    visit '/'
-
-    click_on 'Login'
-
-    fill_in("username-login", with: "jeff")
-    fill_in("password-signup", with: "secretive")
-    click_on "Log in"
-
     visit "/profile/jeff"
 
     # run the javascript function

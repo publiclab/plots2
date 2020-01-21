@@ -276,6 +276,7 @@ class UsersController < ApplicationController
             if @user.changed? && @user.save
               flash[:notice] = I18n.t('users_controller.password_change_success')
               @user.password_checker = 0
+              @user.save
               redirect_to "/dashboard"
             else
               flash[:error] = I18n.t('users_controller.password_reset_failed').html_safe

@@ -10,14 +10,14 @@ class ScreenshotsTest < ApplicationSystemTestCase
 
   test 'signup modal' do
     visit '/'
-    click_on 'Sign up'
+    find('.nav-link.signupToggle').click()
     assert_selector('#signupContainer', visible: true)
     take_screenshot
   end
 
   test 'signup modal form validation' do
     visit '/'
-    click_on 'Sign up'
+    find('.nav-link.signupToggle').click()
 
     fill_in 'user[username]', with: 'Bob'
     fill_in 'user[email]', with: 'Invalid@email'
@@ -39,7 +39,7 @@ class ScreenshotsTest < ApplicationSystemTestCase
 
   test 'signup modal disabled submit button on empty username' do
     visit '/'
-    click_on 'Sign up'
+    find('.nav-link.signupToggle').click()
 
     fill_in 'user[username]', with: 'Bob'
     fill_in 'user[email]', with: 'valid@email.com'
