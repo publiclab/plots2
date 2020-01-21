@@ -449,54 +449,33 @@ class AdminControllerTest < ActionController::TestCase
   end
 
   test 'should mark comment as spam if moderator' do
-    perform_enqueued_jobs do
-      UserSession.create(users(:moderator))
-      comment = comments(:first)
+    UserSession.create(users(:moderator))
+    comment = comments(:first)
 
-      assert_emails 1 do
-        post :mark_comment_spam, params: { id: comment.id }
+    post :mark_comment_spam, params: { id: comment.id }
 
-        comment = assigns(:comment)
-        user = users(:moderator)
+    comment = assigns(:comment)
+    user = users(:moderator)
 
-        assert_equal 0, comment.status
+    assert_equal 0, comment.status
 
-        assert_equal "Comment has been marked as spam and comment author has been banned. You can undo this on the <a href='/spam/comments'>spam moderation page</a>.", flash[:notice]
-        assert_response :redirect
-
-        email = ActionMailer::Base.deliveries.last
-        assert_not_nil email.to
-        assert_not_nil email.bcc
-        assert_equal ["comment-moderators@#{request_host}"], ActionMailer::Base.deliveries.last.to
-        assert_equal '[New Public Lab comment needs moderation]', email.subject
-      end
-    end
+    assert_equal "Comment has been marked as spam and comment author has been banned. You can undo this on the <a href='/spam/comments'>spam moderation page</a>.", flash[:notice]
+    assert_response :redirect
   end
 
   test 'should mark comment as spam if admin' do
-    perform_enqueued_jobs do
-      UserSession.create(users(:admin))
-      comment = comments(:first)
+    UserSession.create(users(:admin))
+    comment = comments(:first)
 
-      assert_emails 1 do
-        post :mark_comment_spam, params: { id: comment.id }
+    post :mark_comment_spam, params: { id: comment.id }
 
-        comment = assigns(:comment)
-        user = users(:moderator)
+    comment = assigns(:comment)
+    user = users(:moderator)
 
-        assert_equal 0, comment.status
+    assert_equal 0, comment.status
 
-        assert_equal "Comment has been marked as spam and comment author has been banned. You can undo this on the <a href='/spam/comments'>spam moderation page</a>.", flash[:notice]
-        assert_response :redirect
-
-        # this should arrive 24 hours later but inside 'perform_enqueued_jobs' it's immediate
-        email = ActionMailer::Base.deliveries.last
-        assert_not_nil email.to
-        assert_not_nil email.bcc
-        assert_equal ["comment-moderators@#{request_host}"], ActionMailer::Base.deliveries.last.to
-        assert_equal '[New Public Lab comment needs moderation]', email.subject
-      end
-    end
+    assert_equal "Comment has been marked as spam and comment author has been banned. You can undo this on the <a href='/spam/comments'>spam moderation page</a>.", flash[:notice]
+    assert_response :redirect
   end
 
   test 'should not mark comment as spam if no user' do
