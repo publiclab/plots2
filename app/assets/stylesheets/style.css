@@ -171,7 +171,7 @@ a .fa-white,
 
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     .navbar-left,.navbar-right {
         float: none !important;
     }
