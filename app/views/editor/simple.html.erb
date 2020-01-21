@@ -16,6 +16,7 @@
 <script src="/lib/bootstrap-tokenfield/dist/bootstrap-tokenfield.js"></script>
 <link href="/lib/publiclab-editor/dist/PublicLab.Editor.css" rel="stylesheet">
 <script src="/lib/publiclab-editor/dist/PublicLab.Editor.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOLUQngEmJv0_zcG1xkGq-CXIPpLQY8iQ&libraries=places"></script>
 
 <%= javascript_include_tag('/lib/leaflet-spin/example/spin/dist/spin.min.js') %>
 <%= javascript_include_tag('/lib/leaflet-spin/example/leaflet.spin.min.js') %>
@@ -43,10 +44,20 @@
                              style="width: 100% ; height: 300px; margin-bottom:8px;">
                             </div>
                     <p>
-                    Posting Near ------
+                    <form class="form-inline">
+                        <div class="form-group mb-3">
+                            Posting Near
+                        </div>
+                              <div class="form-group mx-sm-3 mb-2">
+
+                            <input id="placenameDisplay" type="text" class="form-control" data-preventOverwrite="false" />
+                        </div>
+                        <div class="form-group mb-3">
                     <a data-toggle="collapse" href="#location" role="button" aria-expanded="false" aria-controls="location">
                         Edit
                     </a>
+                        </div>
+                    </form>
                     </p>
                     <br>
 
@@ -340,4 +351,36 @@ $(document).ready(function() {
       }
       console.log("Draft:", editor.data.draft);
   }
+</script>
+<script>
+
+    var options = {
+        InterfaceOptions: {
+            latId: 'lat',
+            lngId: 'lng',
+            placenameDisplayOnError: 'Location error'
+        },
+        AddScaleDisplay: true ,
+        AddBlurryScale: true,
+        precisionTable: {'-2': 2, '-1': 3, '0': 6, '1': 10, '2': 13, '3': 16}
+    }
+
+    var blurredLocation = new BlurredLocation(options);
+
+    blurredLocation.panMapToGeocodedLocation("placenameInput");
+
+    var changeZoom = function() {
+        var zoom = slider.getValue();
+        blurredLocation.map.setZoom(zoom);
+    }
+
+    var slider = $('#ex1').slider()
+        .on('slide', changeZoom)
+        .data('slider');
+
+    blurredLocation.map.on('zoomend', function() {
+        let zoom = blurredLocation.map.getZoom();
+        $('#ex1').slider('setValue', zoom);
+    })
+
 </script>
