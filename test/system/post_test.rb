@@ -183,6 +183,28 @@ class PostTest < ApplicationSystemTestCase
     assert_equal( "×\nYou have started following Bob", message)
   end
 
+  test 'adding a location to the wiki' do
+    visit '/wiki/wiki-page-path/'
+
+    # Toggle "Add location" modal
+    find('a.btn-location').click()
+
+    # Enter a location
+    find('#map_content #coord_button').click()
+    find('#map_content #lat').set("22")
+    find('#map_content #lng').set("76")
+
+    # Save the location
+    find('#blurred-location-modal .btn-primary').click()
+
+    # Wait for the location to be added
+    wait_for_ajax
+
+    # Make sure proper latitude and longitude tags are added
+    assert_selector('.tags-list .badge a[href="/tag/lat:22"]', text: "lat:22")
+    assert_selector('.tags-list .badge a[href="/tag/lon:76"]', text: "lon:76")
+  end
+
   test 'deleting a wiki' do
     visit '/wiki/wiki-page-path/'
 
