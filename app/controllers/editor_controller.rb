@@ -43,6 +43,17 @@ class EditorController < ApplicationController
         x.include? "zoom:" and (@zoom = x.split(':')[1])
       end
     end
+
+    # if user has a location, set the @lat and @lon
+    if @lat.nil? && @lon.nil? && current_user&.has_power_tag("lat") && current_user&.has_power_tag("lon")
+      @lat = current_user.get_value_of_power_tag("lat").to_f
+      @lon = current_user.get_value_of_power_tag("lon").to_f
+      @map_blurred = current_user.has_tag('location:blurred')
+      if @zoom.nil? && current_user&.has_power_tag("zoom")
+        @zoom = current_user.get_value_of_power_tag("zoom")
+      end
+    end
+
     template if params[:n] && !params[:body] # use another node body as a template
     image if params[:i]
   end

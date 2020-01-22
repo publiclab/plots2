@@ -20,7 +20,7 @@ gem "google-cloud-storage"
 gem 'grape'
 gem 'grape-entity'
 gem 'grape-swagger', '~> 0.33.0'
-gem 'grape-swagger-entity', '0.3.3'
+gem 'grape-swagger-entity', '0.3.4'
 gem 'grape-swagger-rails'
 gem 'grape-swagger-ui'
 gem 'http_accept_language'
@@ -29,7 +29,7 @@ gem 'impressionist'
 gem 'jbuilder', '~> 2.9'
 gem 'jquery-rails'
 gem 'less-rails', '~> 4.0'
-gem 'mocha', '~> 1.9'
+gem 'mocha', '~> 1.11'
 gem 'mustermann' , '1.0.3'
 gem 'omniauth', '~> 1.9'
 gem 'omniauth-facebook', '~> 5.0'
@@ -52,7 +52,7 @@ gem 'rb-readline'
 gem 'rdiscount', '~> 2.2', '>= 2.2.0.1'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'responders', '~> 3.0'
-gem 'rubocop', '~> 0.74.0', require: false
+gem 'rubocop', '~> 0.79.0', require: false
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
 gem 'sentry-raven'
@@ -94,7 +94,7 @@ gem 'grape-rails-cache'
 group :development do
   gem 'byebug', platform: :mri
   gem "letter_opener"
-  gem 'listen', '~> 3.2.0'
+  gem 'listen', '~> 3.2.1'
   gem "nifty-generators"
   gem 'web-console', '>= 3.3.0'
 end
@@ -102,11 +102,12 @@ end
 group :test, :development do
   gem 'capybara'
   gem 'ci_reporter_test_unit'
-  gem 'coveralls', require: false
+  gem 'simplecov', require: false
+  gem 'codecov', require: false
   gem 'jasmine-jquery-rails'
   gem 'jasmine-rails'
   gem 'json_expressions'
-  gem 'minitest-reporters', '~> 1.3.8'
+  gem 'minitest-reporters', '~> 1.4.2'
   gem 'openssl', '~> 2.1.2'
   gem 'phantomjs'
   gem 'puma', '~> 4.3'
@@ -114,7 +115,7 @@ group :test, :development do
   gem 'rake', '~> 13.0.1'
   gem 'rest-client'
   gem 'rspec'
-  gem 'selenium-webdriver', '~> 3.142.6'
+  gem 'selenium-webdriver', '~> 3.142.7'
   gem 'test-unit'
   gem 'teaspoon-mocha'
   gem 'timecop'

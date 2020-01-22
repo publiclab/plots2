@@ -101,6 +101,13 @@ a .fa-white,
     color: white !important;
 }
 
+.fa-facebook,
+.fa-twitter,
+.fa-github,
+.fa-google {
+   vertical-align: middle;
+}
+
 .label a {
   color:#007bff;
 }
@@ -124,6 +131,15 @@ a .fa-white,
 
 #pl_pad {
     width:300%;
+}
+
+#header .navbar .input-group {
+  flex-wrap: nowrap;
+}
+
+#header .navbar #searchform_input {
+  cursor: text;
+  min-width: 190px;
 }
 
 @media (max-width:992px) {
@@ -218,7 +234,8 @@ a .fa-white,
 @media (max-width: 768px) {
   #header #brand,
   #header #brand-compact {
-    padding-top: 22px;
+    margin-top: 0.3125rem;
+    padding-bottom: 0;
     padding-right: 4px;
   }
 }
@@ -329,6 +346,25 @@ a .fa-white,
 }
 
 /* Styles for specific areas of the site */
+/* Remove blue background on Chrome autocomplete */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active  {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
+.form-element-valid {
+  background-color: white !important;
+  box-shadow: none !important;
+  border: green 2px solid !important;
+}
+
+.form-element-invalid {
+  background-color: white !important;
+  box-shadow: none !important;
+  border: red 2px solid !important;
+}
 
 .note-show .main-image {
   margin-bottom: 14px;
@@ -461,10 +497,14 @@ div.note.moderated h4 {
 }
 
 .note p.moderated .btn {
-  color: #940;
+  color: #940 !important;
   border-color: #eb8;
   background: none;
   font-size: smaller;
+}
+
+.note p.moderated .btn:hover {
+  background-color: rgba(238, 187, 136, 0.5);
 }
 
 .btn-primary {
@@ -487,6 +527,17 @@ a.btn-outline-secondary .fa {
   color: inherit;
 }
 
+ a.btn-outline-secondary:not([href]):not([tabindex]) {
+  color: #6c757d;
+}
+
+.container .btn-outline-secondary:hover {
+  color: white !important;
+}
+
+.container .btn-outline-secondary:hover .fa {
+  color: white !important;
+}
 .nav-button-wrapper {
   padding-top: 7.5px;
 }

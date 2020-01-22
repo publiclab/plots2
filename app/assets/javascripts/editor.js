@@ -121,30 +121,46 @@ $E = {
   generate_preview: function(id,text) {
     $('#'+id)[0].innerHTML = marked(text)
   },
-  toggle_preview: function(comment_id=null) {
-    let preview_btn
-    let dropzone
+  toggle_preview: function (comment_id = null) {
+    let previewBtn;
+    let dropzone;
 
     // if the element is part of a multi-comment page,
     // ensure to grab the current element and not the other comment element.
     if (comment_id) {
-      preview_btn = $('#'+comment_id)
+      previewBtn = $('#' + comment_id);
       const currentComment = $('#'+comment_id).parent('.control-group')
       $E.preview = currentComment.siblings('#preview')
       dropzone = currentComment.siblings('.dropzone')
       $E.textarea = dropzone.children('#text-input')
     } else {
-      preview_btn = $('.preview-btn')
-      dropzone = $('.dropzone')
+      previewBtn = $(this.textarea.context).find('#post_comment');
+      dropzone = $(this.textarea.context).find('.dropzone');
     }
 
     $E.preview[0].innerHTML = marked($E.textarea.val())
     $E.preview.toggle()
     dropzone.toggle()
 
-    // if $E.previewing flags true, change button text with button('previewing')
-    $E.previewing = !$E.previewing
-    if ($E.previewing) preview_btn.button('previewing');
-    else preview_btn.button('reset');
+    this.toggleButtonPreviewMode(previewBtn);
+  },
+  toggleButtonPreviewMode: function (previewBtn) {
+    let isPreviewing = previewBtn.attr('data-previewing');
+
+    // If data-previewing attribute is not present -> we are not in "preview" mode
+    if (!isPreviewing) {
+      previewBtn.attr('data-previewing', 'false');
+      isPreviewing = 'false';
+    }
+
+    if (isPreviewing === 'false') {
+      previewBtn.attr('data-previewing', 'true');
+
+      let previewText = previewBtn.attr('data-previewing-text');
+      previewBtn.text(previewText);
+    } else {
+      previewBtn.attr('data-previewing', 'false');
+      previewBtn.text('Preview');
+    }
   }
 }

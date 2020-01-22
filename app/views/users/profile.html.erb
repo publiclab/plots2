@@ -2,9 +2,13 @@
 <div class="col-md-7 order-last order-md-first">
 
   <% if !@map_lat.nil? && !@map_lon.nil? %>
-  <%= render :partial => "map/userLeaflet" , locals: { haslocation: true, user: @profile_user } %>
+    <%= render :partial => "map/leaflet" , locals: { lat: @map_lat, lon: @map_lon, zoom: @map_zoom, blurred: @map_blurred, topmap: true, user: @profile_user } %>
   <% elsif !current_user.nil? && current_user.id == @profile_user.id %>
-  <%= render :partial => "map/userLeaflet" , locals: { haslocation: false, user: @profile_user } %>
+    <div id="map_template" style="position: relative; width: 100%; display: inline-block;">
+      <img src="https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/0/0/0.png" style="height:300px; width: 100%; margin: 0; position: relative; margin-right: -10px;">  
+      <button type='button' class='blurred-location-input btn btn-default btn-lg' onclick='addLocation()' style="position: absolute;    position: absolute;top: 41% ; left: 15% ;"> <strong> Share your Location </strong> </button>
+      <p><i><small>Learn about <a href='https://publiclab.org/wiki/location-privacy'>privacy</a> </small></i></p>
+    </div> 
   <% end %>
 
   <br />
@@ -73,7 +77,7 @@
       <a href="/profile/<%= @profile_user.name %>/edit" class="btn btn-outline-secondary"><%= t('users.profile.edit_profile') %></a>
     <% end %>
 
-    <a class="btn btn-outline-secondary" id="info-ellipsis"><i class="fa fa-ellipsis-h" style="color : #666;"></i></a>
+    <a class="btn btn-outline-secondary" id="info-ellipsis"><i class="fa fa-ellipsis-h" style="margin:0"></i></a>
 
   </div>
 
@@ -255,7 +259,7 @@
     <ul>
     <li class="mt-3"><h5>@<%= @profile_user.name %> has</h5></li>
       <li><h5><a href='/notes/author/<%= @profile_user.name %>'><%= @profile_user.note_count %> research notes</a></h5></li>
-      <li><h5><%= @profile_user.revisions.count %> wiki edits</h5></li>
+      <li><h5><a href="/wikis/author/<%= @profile_user.name %>"><%= @profile_user.revisions.count %> wiki edits</a></h5></li>
       <li><h5><a href = "/tag/question:*/author/<%= params[:id] %>"><%= Node.questions.where(status: 1, uid: @profile_user.id).length %> questions </a></h5></li>
       <li><h5><a href = "/profile/comments/<%= params[:id] %>"><%= Comment.where(uid: @profile_user.id).count %> comments</a></h5></li>
       <li><h5><a href = "/tag/activity:*/author/<%= params[:id] %>"><%= @count_activities_posted %> activities posted </a></h5></kli>

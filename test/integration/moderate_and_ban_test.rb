@@ -59,7 +59,7 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
     assert_response :redirect
     follow_redirect!
     # in application_controller.rb:
-    assert_equal "The user '#{u.username}' has been placed in moderation; please see <a href='https://#{request_host}/wiki/moderators'>our moderation policy</a> and contact <a href='mailto:moderators@#{request_host}'>moderators@#{request_host}</a> if you believe this is in error.", flash[:warning]
+    assert_equal "The user '#{u.username}' has been placed in moderation; please see <a href='https://#{request_host}/wiki/moderators'>our moderation policy</a> and contact <a href='mailto:moderators@#{request_host}?body=Please make sure to include your username and the email address you used to sign up for the site.'>moderators@#{request_host}</a> if you believe this is in error.", flash[:warning]
 
     get nodes(:moderated_user_note).path
 
@@ -114,7 +114,7 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
 
     assert_response :redirect
     follow_redirect!
-    assert_equal flash[:notice], 'The user has been moderated.'
+    assert_equal I18n.t('users_controller.user_has_been_moderated'), flash[:warning]
     u = User.find(u.id)
     assert_equal 5, u.status
 

@@ -2,6 +2,7 @@ require 'test_helper'
 
 class UsersControllerTest < ActionController::TestCase
   include ActiveJob::TestHelper
+  include ActionMailer::TestHelper
   def setup
     activate_authlogic
 
@@ -77,6 +78,17 @@ class UsersControllerTest < ActionController::TestCase
 
   end
 
+  test "banning user should display correct flash message" do
+    UserSession.create(users(:admin))
+    banned = User.find(2)
+    banned.ban
+    get :profile, params: { id: banned.username }
+    # checks flash
+    assert_equal flash[:error], I18n.t('users_controller.user_has_been_banned')
+    # checks duplicated flash is not present
+    assert_nil flash[:notice]
+  end
+  
   test 'generate user reset key' do
     user = users(:jeff)
     assert_nil user.reset_key
@@ -246,14 +258,14 @@ class UsersControllerTest < ActionController::TestCase
     user = users(:bob)
     get :edit, params: { id: user.name }
     assert_not flash.empty?
-    assert_redirected_to '/login'
+    assert_redirected_to '/login?return_to=/profile/Bob/edit'
   end
 
   test 'should redirect update when not logged in' do
     user = users(:bob)
     post :update, params: { user: { bio: 'Hello, there!' } }
     assert_not flash.empty?
-    assert_redirected_to '/login'
+    assert_redirected_to '/login?return_to=/users/update'
   end
 
   test 'should redirect edit when logged in as another user' do
@@ -336,5 +348,24 @@ class UsersControllerTest < ActionController::TestCase
     email_verification_token = test_user.generate_token
     get :verify_email, params: { token: email_verification_token }
     assert_equal "Successfully verified email", flash[:notice]
+  end
+
+ test 'Reset password verification' do
+    user = users(:bob)
+    post 'reset', params:{
+      email: user[:email]
+    }
+    key = user.generate_reset_key
+    user.save
+    email =  PasswordResetMailer.reset_notify(user, key)
+    assert_emails 1 do
+     email.deliver_now 
+    end
+    assert_not_nil email.to
+    assert_equal 'Reset your password',email.subject
+    assert_match 'Someone (probably you) has requested a reset of your password. To reset your password, click here:',email.body.to_s
+    assert_response :redirect
+    assert_redirected_to '/login'
+    assert_match 'You should receive an email with instructions on how to reset your password. If you do not, please double check that you are using the email you',flash[:notice]
   end
 end

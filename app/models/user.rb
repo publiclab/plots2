@@ -35,6 +35,7 @@ class User < ActiveRecord::Base
 
   acts_as_authentic do |c|
     c.crypto_provider = Authlogic::CryptoProviders::Sha512
+    c.validates_format_of_login_field_options = { with: Authlogic::Regex::LOGIN, message: I18n.t('error_messages.login_invalid', default: "can only consist of alphabets, numbers, underscore '_', and hyphen '-'.") }
   end
 
   has_attached_file :photo, styles: { thumb: '200x200#', medium: '500x500#', large: '800x800#' },
@@ -152,6 +153,10 @@ class User < ActiveRecord::Base
 
   def tags(limit = 10)
     Tag.where('name in (?)', tagnames).limit(limit)
+  end
+
+  def normal_tags
+	tags.select{ |tag| ! tag.name.include?(':') }
   end
 
   def tagnames(limit = 20, defaults = true)

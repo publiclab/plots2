@@ -1,6 +1,6 @@
 
 <div class="card-view profile-card">
-<% @profile_user.tags.each do |tag| %>
+<% @profile_user.normal_tags.each do |tag| %>
   <div class="card shadow-sm p-2 mb-3 bg-white rounded" >
     <div class="card-header mt-2">
       <h4 style="display: inline-block;"><%= tag.name %></h3>

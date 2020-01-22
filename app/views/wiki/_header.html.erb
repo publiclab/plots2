@@ -31,9 +31,9 @@
 
     <div style="padding-top:8px;text-align:center">
       <span class="d-none d-lg-inline">
-        <i style="color:#888;" class="fa fa-user"></i> <%= number_with_delimiter(@node.authors.length)  %>  |
+        <span rel="tooltip" title="The number of authors for this page." data-placement="top"><i style="color:#888;" class="fa fa-user"></i> <%= number_with_delimiter(@node.authors.length) %></span>  |
         <a rel="tooltip" title="View all revisions for this page." data-placement="top" href="/wiki/revisions/<%= @node.slug_from_path %>"><i style="color:#888;" class="fa fa-history"></i> <%= @node.revisions.length %></a> |
-        <a href="/talk/<%= @node.slug_from_path %>" rel="tooltip" title="Practice in a realtime doc." data-placement="top"><i class="fa fa-comment"></i></a> | 
+        <a href="/talk/<%= @node.slug_from_path %>" rel="tooltip" title="Practice in a realtime doc." data-placement="top"><i class="fa fa-comment"></i></a> |
         <a href="/n/<%= @node.id %>"><i style="color:#888;" class="fa fa-link"></i></a> <span class="d-none d-xl-inline"><a href="/n/<%= @node.id %>">#<%= @node.id %></a></span>
       </span>
     </div>
@@ -41,10 +41,6 @@
 </div>
 
 <br />
-
-<% if @node.has_power_tag('place') && @node && @node.lat && @node.lon %>
-  <%= render_map(@node.lat, @node.lon) %>
-<% end %>
 
 <% if params[:raw] == 'true' %>
   <div class="alert alert-warning" style="">This is the new (beta) Inline Rich Wikis system. Use the "pencil" buttons after different paragraphs to edit inline, and <a href="/wiki/issues">report problems here</a></div>
