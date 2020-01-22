@@ -18,7 +18,7 @@ class UserSessionsControllerTest < ActionController::TestCase
     assert_redirected_to '/dashboard'
   end
 
-  test 'should login and redirect to corresct url' do
+  test 'should login and redirect to correct url' do
     session[:return_to] = '/post?tags=question:question&template=question'
     post :create, params: { user_session: { username: users(:jeff).username, password: 'secretive' } }
     assert_redirected_to '/post?tags=question:question&template=question'
@@ -275,7 +275,7 @@ class UserSessionsControllerTest < ActionController::TestCase
     # name of omniauth user
     User.find_by(name: "bansal_sidharth309").ban
     post :create
-    assert_redirected_to "/notes/liked?_=#{Time.now.to_i.to_s}"
+    assert @response.redirect_url.include? "/notes/liked"
     assert_equal flash[:error], I18n.t('user_sessions_controller.user_has_been_banned', username: "bansal_sidharth309").html_safe
   end
   
@@ -286,7 +286,7 @@ class UserSessionsControllerTest < ActionController::TestCase
     post :destroy
     User.find_by(name: "bansal_sidharth309").moderate
     post :create
-    assert_redirected_to "/notes/liked?_=#{Time.now.to_i.to_s}"
+    assert @response.redirect_url.include? "/notes/liked"
     assert_equal flash[:error], I18n.t('user_sessions_controller.user_has_been_moderated', username: "bansal_sidharth309").html_safe
   end
   
@@ -300,10 +300,10 @@ class UserSessionsControllerTest < ActionController::TestCase
     request.env['omniauth.origin'] = "/notes/liked"
     post :create
     assert_equal I18n.t('user_sessions_controller.logged_in'), flash[:notice]
-    assert_redirected_to "/notes/liked?_=#{Time.now.to_i.to_s}"
+    assert @response.redirect_url.include? "/notes/liked"
   end
   
-  test "logging in through omniauth and then through normal login should display error and redirect" do
+  test "logging in through omniauth and then logging in with username should display correct error and redirect" do
     request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:github1]
     # login through omniauth 
     post :create
@@ -311,6 +311,17 @@ class UserSessionsControllerTest < ActionController::TestCase
     post :destroy
     request.env['omniauth.auth'] = nil
     post :create, params: { user_session: { username: "bansal_sidharth309", password: "random"} }
+    assert_equal flash[:error], "This account doesn't have a password set. It may be logged in with Github account, or you can set a new password via Forget password feature"
+  end
+  
+  test "logging in through omniauth and then logging in with email should display correct error and redirect" do
+    request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:github1]
+    # login through omniauth 
+    post :create
+    # logout
+    post :destroy
+    request.env['omniauth.auth'] = nil
+    post :create, params: { user_session: { username: "bansal.sidharth309@gmail.com", password: "random"} }
     assert_equal flash[:error], "This account doesn't have a password set. It may be logged in with Github account, or you can set a new password via Forget password feature"
   end
   
@@ -333,7 +344,7 @@ class UserSessionsControllerTest < ActionController::TestCase
     request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:github4]
     request.env['omniauth.origin'] = "/notes/liked"
     post :create
-    assert_redirected_to "/notes/liked?_=#{Time.now.to_i.to_s}"
+    assert @response.redirect_url.include? "/notes/liked"
     assert_equal "Successfully linked to your account!", flash[:notice]
   end
 
@@ -341,7 +352,7 @@ class UserSessionsControllerTest < ActionController::TestCase
     request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:google_oauth2_4]
     request.env['omniauth.origin'] = "/notes/liked"
     post :create
-    assert_redirected_to "/notes/liked?_=#{Time.now.to_i.to_s}"
+    assert @response.redirect_url.include? "/notes/liked"
     assert_equal "Successfully linked to your account!", flash[:notice]
   end
 
@@ -349,7 +360,7 @@ class UserSessionsControllerTest < ActionController::TestCase
     request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:facebook4]
     request.env['omniauth.origin'] = "/notes/liked"
     post :create
-    assert_redirected_to "/notes/liked?_=#{Time.now.to_i.to_s}"
+    assert @response.redirect_url.include? "/notes/liked"
     assert_equal "Successfully linked to your account!", flash[:notice]
   end
 
@@ -357,7 +368,7 @@ class UserSessionsControllerTest < ActionController::TestCase
     request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:twitter4]
     request.env['omniauth.origin'] = "/notes/liked"
     post :create
-    assert_redirected_to "/notes/liked?_=#{Time.now.to_i.to_s}"
+    assert @response.redirect_url.include? "/notes/liked"
     assert_equal "Successfully linked to your account!", flash[:notice]
   end
 end

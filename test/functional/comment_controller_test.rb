@@ -2,6 +2,8 @@ require 'test_helper'
 include ::ApplicationHelper
 
 class CommentControllerTest < ActionController::TestCase
+  include ActiveJob::TestHelper
+
   def setup
     Timecop.freeze # account for timestamp change
     activate_authlogic
@@ -267,7 +269,7 @@ class CommentControllerTest < ActionController::TestCase
     assert_template 'comments/delete.js.erb'
   end
 
-  test 'should create a comment with status 4 if user has never created nothing before' do
+  test 'should create a comment with status 4 if user has never created anything before' do
     user = users(:user_first_time_poster)
     UserSession.create(user)
 
