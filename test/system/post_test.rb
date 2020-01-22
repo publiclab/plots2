@@ -48,11 +48,20 @@ class PostTest < ApplicationSystemTestCase
 
     find('a#tags-open').click()
 
-    find('.tag-input').set('nature').native.send_keys(:return)
-    find('.tag-input').set('mountains').native.send_keys(:return)
+    tag_input_box = find('.tag-input')
 
-    find('.tags-list p.badge .tag-delete').click()
-    find('.tags-list p.badge .tag-delete').click()
+    tag_input_box.set('nature').native.send_keys(:return)
+    tag_input_box.set('mountains').native.send_keys(:return)
+
+    # Wait for tags to be uploaded
+    wait_for_ajax
+
+    # Delete tags
+    page.execute_script <<-JS
+      document.querySelectorAll('.tags-list p.badge .tag-delete').forEach(function(tagDeleteBtn){
+        tagDeleteBtn.click();
+      });
+    JS
 
     # Make sure that the 2 tags are removed
     page.assert_selector('.tags-list p.badge', :count => 0)
