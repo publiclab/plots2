@@ -127,7 +127,7 @@ class Comment < ApplicationRecord
   # plus all who've starred it
   def notify(current_user)
     if status == 4
-      AdminMailer.notify_comment_moderators(self).deliver_now
+      AdminMailer.notify_comment_moderators(self).deliver_later!(wait_until: 24.hours.from_now)
     else
       if parent.uid != current_user.uid && !UserTag.exists?(parent.uid, 'notify-comment-direct:false')
         CommentMailer.notify_note_author(parent.author, self).deliver_now
