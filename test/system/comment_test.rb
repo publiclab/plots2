@@ -235,4 +235,18 @@ class CommentTest < ApplicationSystemTestCase
     assert_equal( "×\nComment updated.", message)
   end
 
+  test "reacting and unreacting to comment" do
+    note = nodes(:one)
+    visit note.path
+    
+    first(".comment #dropdownMenuButton").click()
+
+    # click on thumbs up
+    find("img[src='https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png']").click()
+    page.assert_selector("button[data-original-title='jeff reacted with thumbs up emoji']")
+
+    first("img[src='https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png']").click()
+    page.assert_no_selector("button[data-original-title='jeff reacted with thumbs up emoji'")
+  end
+
 end
