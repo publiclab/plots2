@@ -18,7 +18,7 @@ class UserSessionsControllerTest < ActionController::TestCase
     assert_redirected_to '/dashboard'
   end
 
-  test 'should login and redirect to corresct url' do
+  test 'should login and redirect to correct url' do
     session[:return_to] = '/post?tags=question:question&template=question'
     post :create, params: { user_session: { username: users(:jeff).username, password: 'secretive' } }
     assert_redirected_to '/post?tags=question:question&template=question'
@@ -303,7 +303,7 @@ class UserSessionsControllerTest < ActionController::TestCase
     assert @response.redirect_url.include? "/notes/liked"
   end
   
-  test "logging in through omniauth and then through normal login should display error and redirect" do
+  test "logging in through omniauth and then logging in with username should display correct error and redirect" do
     request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:github1]
     # login through omniauth 
     post :create
@@ -311,6 +311,17 @@ class UserSessionsControllerTest < ActionController::TestCase
     post :destroy
     request.env['omniauth.auth'] = nil
     post :create, params: { user_session: { username: "bansal_sidharth309", password: "random"} }
+    assert_equal flash[:error], "This account doesn't have a password set. It may be logged in with Github account, or you can set a new password via Forget password feature"
+  end
+  
+  test "logging in through omniauth and then logging in with email should display correct error and redirect" do
+    request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:github1]
+    # login through omniauth 
+    post :create
+    # logout
+    post :destroy
+    request.env['omniauth.auth'] = nil
+    post :create, params: { user_session: { username: "bansal.sidharth309@gmail.com", password: "random"} }
     assert_equal flash[:error], "This account doesn't have a password set. It may be logged in with Github account, or you can set a new password via Forget password feature"
   end
   
