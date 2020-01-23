@@ -415,7 +415,7 @@ class Tag < ApplicationRecord
       end
     end
     not_power_tags.uniq
-  end 
+  end
 
   def subscription_graph(start = DateTime.now - 1.year, fin = DateTime.now)
     date_hash = {}
