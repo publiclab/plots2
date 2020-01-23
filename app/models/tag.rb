@@ -408,13 +408,7 @@ class Tag < ApplicationRecord
   end
 
   def self.all_tags_by_popularity
-    not_power_tags = []
-    Tag.all.order('count DESC').select { |tag|
-      if tag.name.match(':').nil?
-        not_power_tags.push(tag.name)
-      end
-    }
-    not_power_tags.uniq
+    not_power_tags = Tag.all.order('count DESC').select { |tag| !(tag.name.include? ":") }.uniq(&:name).map(&:name)
   end
 
   def subscription_graph(start = DateTime.now - 1.year, fin = DateTime.now)
