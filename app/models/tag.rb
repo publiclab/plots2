@@ -407,6 +407,16 @@ class Tag < ApplicationRecord
     end
   end
 
+  def self.all_tags_by_popularity
+    not_power_tags = []
+    Tag.all.order('count DESC').each do |tag|
+      if tag.name.match(':').nil?
+        not_power_tags.push(tag.name)
+      end
+    end
+    not_power_tags.uniq
+  end 
+
   def subscription_graph(start = DateTime.now - 1.year, fin = DateTime.now)
     date_hash = {}
     week = start.to_date.step(fin.to_date, 7).count
