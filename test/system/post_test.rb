@@ -9,7 +9,7 @@ class PostTest < ApplicationSystemTestCase
     visit '/'
 
     find(".nav-link.loginToggle").click()
-    fill_in("username-login", with: "jeff")
+    fill_in("username-login", with: "palpatine")
     fill_in("password-signup", with: "secretive")
 
     find(".login-modal-form #login-button").click()
@@ -48,11 +48,20 @@ class PostTest < ApplicationSystemTestCase
 
     find('a#tags-open').click()
 
-    find('.tag-input').set('nature').native.send_keys(:return)
-    find('.tag-input').set('mountains').native.send_keys(:return)
+    tag_input_box = find('.tag-input')
 
-    find('.tags-list p.badge .tag-delete').click()
-    find('.tags-list p.badge .tag-delete').click()
+    tag_input_box.set('nature').native.send_keys(:return)
+    tag_input_box.set('mountains').native.send_keys(:return)
+
+    # Wait for tags to be uploaded
+    wait_for_ajax
+
+    # Delete tags
+    page.execute_script <<-JS
+      document.querySelectorAll('.tags-list p.badge .tag-delete').forEach(function(tagDeleteBtn){
+        tagDeleteBtn.click();
+      });
+    JS
 
     # Make sure that the 2 tags are removed
     page.assert_selector('.tags-list p.badge', :count => 0)
@@ -217,6 +226,18 @@ class PostTest < ApplicationSystemTestCase
     message = find('.alert-success', match: :first).text
 
     assert_equal( "×\nContent deleted.", message )
+  end
+
+  test "awarding barnstar functions correctly" do
+    note = nodes(:one)
+    visit note.path
+
+    find("span[data-original-title='Tools']").click()
+    find("input[value='Give']").click()
+
+    page.assert_selector("div.alert-success", text: "You awarded the basic barnstar to #{note.author.name}")
+    page.assert_selector("p", text: "#{note.author.name} was awarded the Basic Barnstar by palpatine for their work in this research note.")
+    page.assert_selector(".comment-body p", text: "@palpatine awards a barnstar to #{note.author.name} for their awesome contribution!")
   end
 
 end
