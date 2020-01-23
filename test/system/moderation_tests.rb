@@ -63,4 +63,48 @@ class ModerationTest < ApplicationSystemTestCase
     find("a#info-ellipsis").click()
     page.assert_selector "a[href='/unban/#{banned_page2.author.id}'"
   end
+  
+  test "spamming a comment" do
+    note = nodes(:one)
+    visit note.path
+
+    accept_confirm("Are you sure? The user will no longer be able to log in or publish, and their content will be hidden except comments.") do
+      first("a[data-original-title='Mark as spam'").click()
+    end
+
+    page.assert_selector("div.alert-success", text: "Comment has been marked as spam and comment author has been banned. You can undo this on the spam moderation page.")
+
+    banned_comment_author = note.comments.first.author
+    visit "/profile/#{banned_comment_author.name}"
+
+    page.assert_selector("div.alert", text: "That user has been banned.")
+  end
+
+
+  test "spamming and unspamming a page" do
+    spam_page = nodes(:one)
+    visit spam_page.path
+
+    # spam page
+    first("span[data-original-title='Tools']").click()
+    click_on "Spam"
+
+    # verify page has been spammed
+    page.assert_selector("div.alert-success", text: "Item marked as spam and author banned. You can undo this on the spam moderation page.")
+    visit spam_page.path
+    page.assert_selector("span", text: "UNPUBLISHED")
+
+    # verify page author is banned
+    visit "/profile/#{spam_page.author.name}"
+    page.assert_selector("div.alert", text: "That user has been banned.")
+
+    # unspam page
+    visit "/spam"
+    find("a[href='/moderate/publish/#{spam_page.id}'").click()
+
+    # verify page is no longer spammed
+    page.assert_selector("td", text: "Content published.")
+    visit spam_page.path
+    page.assert_no_selector("span", text: "UNPUBLISHED")
+  end
 end
