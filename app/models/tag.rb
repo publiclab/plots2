@@ -409,7 +409,7 @@ class Tag < ApplicationRecord
 
   def self.all_tags_by_popularity
     not_power_tags = []
-    Tag.all.order('count DESC').select{|tag|
+    Tag.all.order('count DESC').select { |tag|
       if tag.name.match(':').nil?
         not_power_tags.push(tag.name)
       end
