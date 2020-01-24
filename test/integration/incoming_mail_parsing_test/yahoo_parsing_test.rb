@@ -1,5 +1,6 @@
 require 'test_helper'
 class YahooParsingTest < ActionDispatch::IntegrationTest
+  include ActiveJob::TestHelper
 
   test 'should parse incoming mail from yahoo service correctly and add answer comment' do
     require 'mail'

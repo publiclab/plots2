@@ -4,6 +4,7 @@ include ActionView::Helpers::DateHelper # required for time_ago_in_words()
 class AdminControllerTest < ActionController::TestCase
   include ActionMailer::TestHelper
   include ActiveJob::TestHelper
+
   def setup
     activate_authlogic
     Timecop.freeze # account for timestamp change
@@ -448,59 +449,33 @@ class AdminControllerTest < ActionController::TestCase
   end
 
   test 'should mark comment as spam if moderator' do
-    perform_enqueued_jobs do
-      UserSession.create(users(:moderator))
-      comment = comments(:first)
+    UserSession.create(users(:moderator))
+    comment = comments(:first)
 
-      post :mark_comment_spam, params: { id: comment.id }
+    post :mark_comment_spam, params: { id: comment.id }
 
-      comment = assigns(:comment)
-      user = users(:moderator)
+    comment = assigns(:comment)
+    user = users(:moderator)
 
-      email = AdminMailer.notify_moderators_of_comment_spam(comment, user)
-      assert_emails 1 do
-          email.deliver_now
-      end
-      assert_equal 0, comment.status
+    assert_equal 0, comment.status
 
-      assert_equal "Comment has been marked as spam and comment author has been banned. You can undo this on the <a href='/spam/comments'>spam moderation page</a>.", flash[:notice]
-      assert_response :redirect
-
-      email = ActionMailer::Base.deliveries.last
-      assert_not_nil email.to
-      assert_not_nil email.bcc
-      assert_equal ["comment-moderators@#{request_host}"], ActionMailer::Base.deliveries.last.to
-      assert_equal '[New Public Lab comment needs moderation]', email.subject
-    end
+    assert_equal "Comment has been marked as spam and comment author has been banned. You can undo this on the <a href='/spam/comments'>spam moderation page</a>.", flash[:notice]
+    assert_response :redirect
   end
 
   test 'should mark comment as spam if admin' do
-    perform_enqueued_jobs do
-      UserSession.create(users(:admin))
-      comment = comments(:first)
+    UserSession.create(users(:admin))
+    comment = comments(:first)
 
-      post :mark_comment_spam, params: { id: comment.id }
+    post :mark_comment_spam, params: { id: comment.id }
 
-      comment = assigns(:comment)
-      user = users(:moderator)
+    comment = assigns(:comment)
+    user = users(:moderator)
 
-      # these notifications were turned off in https://github.com/publiclab/plots2/issues/6246
-      #email = AdminMailer.notify_moderators_of_comment_spam(comment, user)
-      #assert_emails 1 do
-      #  email.deliver_now
-      #end
-      assert_equal 0, comment.status
+    assert_equal 0, comment.status
 
-      assert_equal "Comment has been marked as spam and comment author has been banned. You can undo this on the <a href='/spam/comments'>spam moderation page</a>.", flash[:notice]
-      assert_response :redirect
-
-      # these notifications were turned off in https://github.com/publiclab/plots2/issues/6246
-      #email = ActionMailer::Base.deliveries.last
-      #assert_not_nil email.to
-      #assert_not_nil email.bcc
-      #assert_equal ["comment-moderators@#{request_host}"], ActionMailer::Base.deliveries.last.to
-      #assert_equal '[New Public Lab comment needs moderation]', email.subject
-    end
+    assert_equal "Comment has been marked as spam and comment author has been banned. You can undo this on the <a href='/spam/comments'>spam moderation page</a>.", flash[:notice]
+    assert_response :redirect
   end
 
   test 'should not mark comment as spam if no user' do
@@ -574,22 +549,6 @@ class AdminControllerTest < ActionController::TestCase
     comment = assigns(:comment)
     assert_equal 1, comment.status
     assert_equal "Comment published.", flash[:notice]
-    assert_redirected_to node.path + '?_=' + Time.now.to_i.to_s
-  end
-
-  test 'should send email to moderators when a comment is approved' do
-    user = users(:moderator)
-    UserSession.create(user)
-    comment = comments(:comment_status_4)
-    node = comment.node
-    post :publish_comment, params: { id: comment.id }
-    comment = assigns(:comment)
-
-    assert_emails 1 do
-        AdminMailer.notify_moderators_of_comment_approval(comment, user).deliver_now
-    end
-    #after approved
-    assert_equal 1, comment.status
     assert_redirected_to node.path + '?_=' + Time.now.to_i.to_s
   end
 
