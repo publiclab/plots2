@@ -108,6 +108,7 @@
 
        if(typeof mainLayer !== "undefined" && mainLayer !== ""){
            if(mainLayer === "people"){
+               peopleLayerParser(map, markers_hash);
                
                map.on('zoomend' , function () {
                   peopleLayerParser(map, markers_hash);
@@ -118,6 +119,7 @@
                }) ;
            }
            else if(mainLayer === "content"){
+               contentLayerParser(map, markers_hash);
                
                map.on('zoomend' , function () {
                    contentLayerParser(map, markers_hash);
@@ -128,6 +130,7 @@
                }) ;
            }
            else { // it is a tagname
+               contentLayerParser(map, markers_hash, mainLayer);
 
                map.on('zoomend' , function () {
                    contentLayerParser(map, markers_hash, mainLayer);
