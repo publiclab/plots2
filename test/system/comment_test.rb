@@ -123,4 +123,130 @@ class CommentTest < ApplicationSystemTestCase
     page.assert_selector('#preview img', count: 1)
   end
 
+  test 'ctrl/cmd + enter comment publishing keyboard shortcut' do
+    visit "/wiki/wiki-page-path/comments"
+
+    find("p", text: "Reply to this comment...").click()
+
+    # Write a comment
+    page.all("#text-input")[1].set("Great post!")
+
+    page.execute_script <<-JS
+      // Remove first text-input field
+      $("#text-input").remove()
+
+      var $textBox = $("#text-input");
+
+      // Generate fake CTRL + Enter event
+      var press = jQuery.Event("keypress");
+      press.altGraphKey = false;
+      press.altKey = false;
+      press.bubbles = true;
+      press.cancelBubble = false;
+      press.cancelable = true;
+      press.charCode = 10;
+      press.clipboardData = undefined;
+      press.ctrlKey = true;
+      press.currentTarget = $textBox[0];
+      press.defaultPrevented = false;
+      press.detail = 0;
+      press.eventPhase = 2;
+      press.keyCode = 10;
+      press.keyIdentifier = "";
+      press.keyLocation = 0;
+      press.layerX = 0;
+      press.layerY = 0;
+      press.metaKey = false;
+      press.pageX = 0;
+      press.pageY = 0;
+      press.returnValue = true;
+      press.shiftKey = false;
+      press.srcElement = $textBox[0];
+      press.target = $textBox[0];
+      press.type = "keypress";
+      press.view = Window;
+      press.which = 10;
+
+      // Emit fake CTRL + Enter event
+      $textBox.trigger(press);
+    JS
+
+    assert_selector('#comments-list .comment', count: 2)
+    assert_selector('.noty_body', text: 'Comment Added!')
+  end
+
+  test 'comment deletion' do
+    visit "/wiki/wiki-page-path/comments"
+
+    # Create a comment
+    page.execute_script <<-JS
+      var commentForm = $('.comment-form-wrapper')[1];
+      var submitCommentBtn = $(commentForm).find('.btn')[0];
+      var commentTextarea = $(commentForm).find('#text-input')[0]
+
+      $(commentTextarea).val('Great post Jeff!')
+      $(submitCommentBtn).click()
+    JS
+
+    # Delete a comment
+    find('.btn[data-original-title="Delete comment"]', match: :first).click()
+
+    # Click "confirm" on modal
+    page.evaluate_script('document.querySelector(".jconfirm-buttons .btn:first-of-type").click()')
+
+    assert_selector('#comments-list .comment', count: 1)
+    assert_selector('.noty_body', text: 'Comment deleted')
+  end
+
+  test 'comment editing' do
+    visit "/wiki/wiki-page-path/comments"
+
+    # Create a comment
+    page.execute_script <<-JS
+      var commentForm = $('.comment-form-wrapper')[1];
+      var submitCommentBtn = $(commentForm).find('.btn')[0];
+      var commentTextarea = $(commentForm).find('#text-input')[0]
+
+      // Fill the form
+      $(commentTextarea).val('Great post Jeff!')
+      $(submitCommentBtn).click()
+    JS
+
+    # Wait for comment to upload
+    wait_for_ajax
+
+    # Edit the comment
+    page.execute_script <<-JS
+      var comment = $(".comment")[1];
+      var commentID = comment.id;
+      var editCommentBtn = $(comment).find('.navbar-text #edit-comment-btn')
+
+      // Toggle edit mode
+      $(editCommentBtn).click()
+
+      var commentTextarea = $('#' + commentID + 'text');
+      $(commentTextarea).val('Updated comment.')
+
+      var submitCommentBtn = $('#' + commentID + ' .control-group .btn-primary')[1];
+      $(submitCommentBtn).click()
+    JS
+
+    message = find('.alert-success', match: :first).text
+    assert_equal( "×\nComment updated.", message)
+  end
+
+  test "reacting and unreacting to comment" do
+    note = nodes(:one)
+    visit note.path
+    
+    first(".comment #dropdownMenuButton").click()
+
+    # click on thumbs up
+    find("img[src='https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png']").click()
+    page.assert_selector("button[data-original-title='jeff reacted with thumbs up emoji']")
+
+    first("img[src='https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png']").click()
+    page.assert_no_selector("button[data-original-title='jeff reacted with thumbs up emoji'")
+  end
+
 end

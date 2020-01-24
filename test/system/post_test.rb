@@ -9,7 +9,7 @@ class PostTest < ApplicationSystemTestCase
     visit '/'
 
     find(".nav-link.loginToggle").click()
-    fill_in("username-login", with: "jeff")
+    fill_in("username-login", with: "palpatine")
     fill_in("password-signup", with: "secretive")
 
     find(".login-modal-form #login-button").click()
@@ -48,11 +48,20 @@ class PostTest < ApplicationSystemTestCase
 
     find('a#tags-open').click()
 
-    find('.tag-input').set('nature').native.send_keys(:return)
-    find('.tag-input').set('mountains').native.send_keys(:return)
+    tag_input_box = find('.tag-input')
 
-    find('.tags-list p.badge .tag-delete').click()
-    find('.tags-list p.badge .tag-delete').click()
+    tag_input_box.set('nature').native.send_keys(:return)
+    tag_input_box.set('mountains').native.send_keys(:return)
+
+    # Wait for tags to be uploaded
+    wait_for_ajax
+
+    # Delete tags
+    page.execute_script <<-JS
+      document.querySelectorAll('.tags-list p.badge .tag-delete').forEach(function(tagDeleteBtn){
+        tagDeleteBtn.click();
+      });
+    JS
 
     # Make sure that the 2 tags are removed
     page.assert_selector('.tags-list p.badge', :count => 0)
@@ -119,32 +128,33 @@ class PostTest < ApplicationSystemTestCase
     # Make sure that image has been uploaded
     page.assert_selector('#preview img', count: 1)
   end
-  
-  test "changing and reverting versions works correctly for wiki" do
-    wiki = nodes(:wiki_page)
 
-    visit wiki.path
+  test "changing and reverting versions works correctly for wiki" do
+    visit '/wiki/wiki-page-path/'
+
     # save text of wiki before edit
-    old_wiki_content = find("#content").text
+    old_wiki_content = find("#content p").text
 
     find("a#edit-btn").click()
     find("#text-input").set("wiki text")
     find("a#publish").click()
 
     # view wiki
-    current_wiki_content = find("#content").text
+    current_wiki_content = find("#content p").text
     # make sure edits worked and text is different
     assert current_wiki_content != old_wiki_content
 
     find("a[data-original-title='View all revisions for this page.']").click()
+
     accept_confirm "Are you sure?" do
-      # revert to previous version of wiki
-      all("a", text: "Revert")[1].click()
+      # revert to the previous version of wiki
+      find('#row0 a[data-confirm="Are you sure?"]', text: "Revert").click()
     end
-    visit wiki.path
+
+    wiki_content = find("#content p").text
 
     # check old wiki content is the same as current content after revert
-    assert old_wiki_content == find("#content").text 
+    assert old_wiki_content == wiki_content
   end
 
   test "revision diff is displayed when comparing versions" do
@@ -161,6 +171,73 @@ class PostTest < ApplicationSystemTestCase
     # verify additions are displayed as green `<ins>` tags
     page.assert_selector("ins", text: "<p>wiki")
     page.assert_selector("ins", text: "text</p>")
+  end
+
+  test 'following the wiki author' do
+    visit '/wiki/wiki-page-path/'
+
+    find('#menu-btn').click()
+
+    find('#menu-follow-btn').click()
+
+    page.execute_script <<-JS
+      var popup = $('.popover-body')[1]
+      var user_link = $(popup).find('a.btn')
+
+      $(user_link).click()
+    JS
+
+    message = find('.alert-success', match: :first).text
+
+    assert_equal( "×\nYou have started following Bob", message)
+  end
+
+  test 'adding a location to the wiki' do
+    visit '/wiki/wiki-page-path/'
+
+    # Toggle "Add location" modal
+    find('a.btn-location').click()
+
+    # Enter a location
+    find('#map_content #coord_button').click()
+    find('#map_content #lat').set("22")
+    find('#map_content #lng').set("76")
+
+    # Save the location
+    find('#blurred-location-modal .btn-primary').click()
+
+    # Wait for the location to be added
+    wait_for_ajax
+
+    # Make sure proper latitude and longitude tags are added
+    assert_selector('.tags-list .badge a[href="/tag/lat:22"]', text: "lat:22")
+    assert_selector('.tags-list .badge a[href="/tag/lon:76"]', text: "lon:76")
+  end
+
+  test 'deleting a wiki' do
+    visit '/wiki/wiki-page-path/'
+
+    find('#menu-btn').click()
+
+    accept_confirm "Are you sure?" do
+      find('#menu-delete-btn').click()
+    end
+
+    message = find('.alert-success', match: :first).text
+
+    assert_equal( "×\nContent deleted.", message )
+  end
+
+  test "awarding barnstar functions correctly" do
+    note = nodes(:one)
+    visit note.path
+
+    find("span[data-original-title='Tools']").click()
+    find("input[value='Give']").click()
+
+    page.assert_selector("div.alert-success", text: "You awarded the basic barnstar to #{note.author.name}")
+    page.assert_selector("p", text: "#{note.author.name} was awarded the Basic Barnstar by palpatine for their work in this research note.")
+    page.assert_selector(".comment-body p", text: "@palpatine awards a barnstar to #{note.author.name} for their awesome contribution!")
   end
 
 end
