@@ -1,5 +1,7 @@
 <h3 id="activity-header"><i><%= t('dashboard._activity.activity') %></i></h3>
-
+<% if !params.has_key?(:sort) %>
+  <% params[:sort] = "all" %>
+<% end %>
 <div class="activity-menu">
   <% if current_user && (current_user.moderator? || current_user.admin?) %>
     <a href="/spam" class="btn btn-sm btn-outline-secondary float-right" type="button">
@@ -17,52 +19,38 @@
       type="button"
       data-toggle="dropdown"
       aria-haspopup="true"
-      aria-expanded="false"
-    >
-      <span class="node-type-filter"><%= t('dashboard._activity.all_updates') %></span>
+      aria-expanded="false" 
+      <% if params[:sort] == "all" %>
+         <span class="node-type-filter"><%= t('dashboard._activity.dropdown.all') %></span>
+       <% elsif params[:sort] == "note" %>
+         <span class="node-type-filter"><%= t('dashboard._activity.dropdown.research_notes') %></span>
+       <% elsif params[:sort] == "question" %>
+         <span class="node-type-filter"><%= t('dashboard._activity.dropdown.question') %></span>
+       <% elsif params[:sort] == "event" %>
+         <span class="node-type-filter"><%= t('dashboard._activity.dropdown.events') %></span>
+       <% elsif params[:sort] == "comment" %>
+         <span class="node-type-filter"><%= t('dashboard._activity.dropdown.comments') %></span>
+      
+      <%end%>
       <span class="caret"></span>
     </button>
 
     <div class="dropdown-menu">
-      <a class="form-check dropdown-item" href="#">
-        <label class="form-check-label">
-          <input data-type="all" class="node-type-all" type="checkbox" checked="checked" />
-          <%= t('dashboard._activity.dropdown.all') %>
-        </label>
+      <a class="form-check dropdown-item">
+        <%= link_to t('dashboard._activity.dropdown.all'),{:action => "dashboard",:sort => "all" },class: "dropdown-item" %>
       </a>
-
       <div class="dropdown-divider"></div>
-
-      <a class="form-check dropdown-item" href="#">
-        <label class="form-check-label">
-          <input data-type="note" class="node-type node-type-note" type="checkbox" checked="checked" />
-          <%= t('dashboard._activity.dropdown.research_notes') %>
-        </label>
+      <a class="form-check dropdown-item">
+        <%= link_to t('dashboard._activity.dropdown.research_notes'),{:action => "dashboard",:sort => "note" },class: "dropdown-item" %>
       </a>
-      <a class="form-check dropdown-item" href="#">
-        <label class="form-check-label">
-          <input data-type="question" class="node-type node-type-question" type="checkbox" checked="checked" />
-          <%= t('dashboard._activity.dropdown.question') %>
-        </label>
+      <a class="form-check dropdown-item">
+        <%= link_to t('dashboard._activity.dropdown.question'),{:action => "dashboard",:sort => "question" },class: "dropdown-item" %>
       </a>
-      <a class="form-check dropdown-item" href="#">
-        <label class="form-check-label">
-          <input data-type="event" class="node-type node-type-event" type="checkbox" checked="checked" />
-          <%= t('dashboard._activity.dropdown.events') %>
-        </label>
+      <a class="form-check dropdown-item">
+        <%= link_to t('dashboard._activity.dropdown.events'),{:action => "dashboard",:sort => "event" },class: "dropdown-item" %> 
       </a>
-      <a class="form-check dropdown-item" href="#">
-        <label class="form-check-label">
-          <input data-type="comment" class="node-type node-type-comment" type="checkbox" checked="checked" />
-          <%= t('dashboard._activity.dropdown.comments') %>
-        </label>
-      </a>
-
-      <a class="d-lg-none dropdown-item" href="#">
-        <label>
-          <input data-type="wiki" class="node-type node-type-wiki" type="checkbox" checked="checked" />
-          <%= t('dashboard._activity.dropdown.wiki') %>
-        </label>
+      <a class="form-check dropdown-item">
+        <%= link_to t('dashboard._activity.dropdown.comments'),{:action => "dashboard",:sort => "comment" },class: "dropdown-item" %>
       </a>
       <!--
       <li class="divider"></li>
@@ -97,16 +85,14 @@
 
   <div class="row">
     <% activity.each_with_index do |node, i| %>
-      <% if node.is_a?(Revision) || node.type == 'page' %>
-        <%= render partial: "dashboard/node_wiki",     locals: { node: node, index: i } %>
-      <% elsif node.is_a?(Comment) %>
+      <% if node.is_a?(Comment) && (params[:sort] == "all" || params[:sort] == "comment") %>
         <%= render partial: "dashboard/node_comment",  locals: { node: node, index: i } %>
-      <% elsif node.has_power_tag('question') %>
+      <% elsif node.has_power_tag('question') && (params[:sort] == "all" || params[:sort] == "question") %>
         <%= render partial: "dashboard/node_question", locals: { node: node, index: i } %>
-      <% elsif node.has_tag('event') %>
+      <% elsif node.has_tag('event') && (params[:sort] == "all" || params[:sort] == "event") %>
         <%= render partial: "dashboard/node_event",    locals: { node: node, index: i } %>
-      <% else %>
-        <%= render partial: "dashboard/node_default",  locals: { node: node, index: i } %>
+      <% elsif ((!(node.is_a?(Revision) || node.type == 'page') && !node.is_a?(Comment) && !node.has_power_tag('question') && !node.has_tag('event')) && (params[:sort] == "all" || params[:sort] == "note"))%>
+        <%= render partial: "dashboard/node_default",    locals: { node: node, index: i } %>
       <% end %>
     <% end %>
   </div>
