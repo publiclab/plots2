@@ -25,6 +25,12 @@
 .leaflet-marker-icon {
     background: url("https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-black.png") ;
 }
+ .simple-text {
+    height: 400px !important;
+}
+    body {
+        padding-top: 1px;
+    }
 </style>
 <div class="pl-editor" style="width:100%;">
 
@@ -32,12 +38,11 @@
         <div class="ple-errors"></div>
 
         <!-- Map Module start-->
-        <div class="ple-module-map ple-module row">
+        <div class="ple-module-map row">
 
   <div class="ple-module-content col-sm-11 col-sm-offset-1">
-           
 
-                <div id="map_content">
+                <%# <div id="map_content"> %>
                             <div
                              id="map"
                              class="leaflet-map"
@@ -97,7 +102,7 @@
                           </label>
                           </p>
                       </div>
-                  </div>
+                  <%# </div> %>
             </div>
           </div>
         </div>
@@ -106,7 +111,7 @@
 
 
     <!-- body module -->
-    <div class="ple-module-body ple-module row">
+    <div class="ple-module-body row">
 
         <%# <div class="ple-module-guide col-sm-3"> %>
             <%# <h2>2</h2> %>
@@ -115,17 +120,18 @@
         <div class="ple-module-content col-sm-11 col-sm-offset-1">
             <h5>Tell a story about this place:</h5>
             <div class="ple-module-content">
-                <textarea id="text-input" class="ple-textarea form-control" placeholder="Your story">
+                <textarea id="text-input" class="simple-text ple-textarea form-control" placeholder="Your story" height="300px">
                     <% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %>
                 </textarea>
             </div>
 
         </div>
     </div>
+    <br> <br>
     <!-- end body module -->
 
     <!-- image module -->
-    <div class="ple-module-main_image ple-module">
+    <div class="ple-module-main_image">
         <div class="ple-module-content row">
             <div class="col-sm-1 col-sm-offset-3">
                 <br>
@@ -134,18 +140,22 @@
                     <input class ="d-none" type="file"
                            value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>"
                            accept=".png, .jpg, .jpeg"
-                           name="image[photo]">
+                           name="image[photo]" tooltip="this is">
                 </label>
             </div>
             <div class="ple-drag-drop col-sm-3"></div>
+          <p class="ple-help">
+          </p>
         </div>
+            <span class="ple-help-minor">Drag or Select an optional main image for your post.</span>
     </div>
+    <br> <br>
 
     <!-- end main_image module -->
 
  <!-- tags module -->
  <div class="d-none">
-    <div class="ple-module-tags ple-module row">
+    <div class="ple-module-tags row">
 
       <div class="ple-module-guide col-sm-3">
           <p class="muted">
@@ -169,11 +179,8 @@
     <!-- end tags module -->
 
 <!-- title module -->
-    <div class="ple-module-title ple-module row">
+    <div class="ple-module-title row">
 
-      <%# <div class="ple-module-guide col-sm-3"> %>
-        <%# <h2>5</h2> %>
-      <%# </div> %>
 
   <div class="ple-module-content col-sm-11 col-sm-offset-1">
           <h5>Give your post a title</h5>
