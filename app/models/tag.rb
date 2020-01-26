@@ -408,7 +408,6 @@ class Tag < ApplicationRecord
   end
 
   def self.all_tags_by_popularity
-    #Tag.all.order('count DESC').select { |tag| !(tag.name.include? ":") }.uniq(&:name).pluck(:name)
     not_power_tags = []
     Tag.all.order('count DESC').each do |tag|
       if tag.name.match(':').nil?
