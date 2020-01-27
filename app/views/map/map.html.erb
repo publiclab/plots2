@@ -51,9 +51,9 @@
         
       const params = urlHash.getUrlHashParameters();
      
-      var lat = parseFloat(params.lat);
-      var lon = parseFloat(params.lon);
-      var zoom = parseFloat(params.zoom);
+      var lat = parseFloat(params.lat) || 10;
+      var lon = parseFloat(params.lon) || 1;
+      var zoom = parseFloat(params.zoom) || 6;
 
       const bounds = new L.LatLngBounds(
         new L.LatLng(84.67351257, -172.96875),
