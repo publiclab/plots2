@@ -1,12 +1,9 @@
-<%= render :partial => "map/mapDependencies" %>
-  
   <style>
   body, body>.container, body>.container>.row {
     margin: 0;
     padding: 0;
     width: 100vw;
-    max-width: 100%;
-  }
+    max-width: 100%;  }
   body>.container {
     padding-top: 0px;
   }
@@ -101,9 +98,9 @@
 
 
       L.LayerGroup.EnvironmentalLayers({
-        baseLayers: {
-         'Gray-scale': baselayer
-        },
+        // baseLayers: {
+        //  'Gray-scale': baselayer
+        // },
         // include: layersname,
         hash: false,
         embed: true,
