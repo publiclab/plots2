@@ -215,4 +215,7 @@ New to open source/free software? Here is a selection of issues we've made **esp
 
 #### [Platforms that :heart: OSS](./doc/SUPPORTERS.md)
 
+[![Twitter Follow](https://img.shields.io/twitter/follow/PublicLab?style=social)](https://twitter.com/PublicLab)
+
+
 </center>
