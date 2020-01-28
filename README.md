@@ -97,8 +97,8 @@ For information on how to install for use with the cloud environment, please see
 	    * Using **rvm**: `rvm install 2.4.4` followed by `rvm use 2.4.4`
 	    * Using **rbenv**:  `rbenv install 2.4.4` followed by `rbenv local 2.4.4`
     * Install gems with `bundle install --without production mysql` from the rails root folder, to install the gems you'll need, excluding those needed only in production.
-5. Make a copy of `db/schema.rb.example` and place it at `db/schema.rb`.
-6. Make a copy of `config/database.yml.sqlite.example` and place it at `config/database.yml`
+5. Run `cp db/schema.rb.example db/schema.rb` to make a copy of `db/schema.rb.example` in `db/schema.rb`.
+6. Run `cp config/database.yml.sqlite.example config/database.yml` to make a copy of `config/database.yml.sqlite.example` in `config/database.yml`.
 7. Run `rake db:setup` to set up the database
 8. Install static assets (like external javascript libraries, fonts) with `yarn install`
 9. By default, start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser.
