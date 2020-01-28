@@ -29,6 +29,7 @@ Some key features include:
 We are developing a draft Roadmap for `plots2` and our broader Public Lab code projects; [read more and comment here](https://publiclab.org/notes/warren/05-22-2019/draft-of-a-public-lab-software-roadmap-comments-welcome).
 
 ## Table of Contents
+
 1. [What Makes This Project Different](#what-makes-this-project-different)
 2. [Data model](#data-model)
 3. [Contributing](#contributing)
@@ -40,15 +41,16 @@ We are developing a draft Roadmap for `plots2` and our broader Public Lab code p
 6. [SSL in Development](#ssl-in-development)
 7. [Login](#login)
 8. [Testing](#testing)
-9. [API](https://github.com/publiclab/plots2/blob/master/doc/API.md)
-10. [Bundle Exec](#bundle-exec)
-11. [Reply-by-email](#reply-by-email)
-12. [Bugs and Support](#bugs-and-support)
-13. [Recaptcha](#recaptcha)
-14. [Internationalization](#internationalization)
-15. [Security](#security)
-16. [Developers](#developers)
-17. [First Time?](#first-time)
+9. [Maintainers](#maintainers)
+10. [API](https://github.com/publiclab/plots2/blob/master/doc/API.md)
+11. [Bundle Exec](#bundle-exec)
+12. [Reply-by-email](#reply-by-email)
+13. [Bugs and Support](#bugs-and-support)
+14. [Recaptcha](#recaptcha)
+15. [Internationalization](#internationalization)
+16. [Security](#security)
+17. [Developers](#developers)
+18. [First Time?](#first-time)
 
 
 ****
@@ -146,6 +148,10 @@ For more on the login systems, see [this page](https://github.com/publiclab/plot
 ## Testing
 
 Click [here](https://github.com/publiclab/plots2/blob/master/doc/TESTING.md) for a comprehensive description of testing.
+
+## Maintainers
+
+See [/docs/MAINTAINERS.md](https://github.com/publiclab/plots2/blob/master/doc/LOGIN_SYSTEMS.md/docs/MAINTAINERS.md) for Public Lab's policy on feature maintainers!
 
 ## How to start and modify cron jobs
 
