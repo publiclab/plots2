@@ -39,11 +39,9 @@
         %>
         <% if is_new_contributor %>
           <div id="new_contributor_msg">
-            <p><i class="fa fa-hand-peace-o" aria-hidden="true"></i>
-            <%= author %> is a new contributor. Take care in
-            asking for clarification, commenting and answering. Be nice and check out our
-            <a href="<%= url1 %>">Code of Conduct</a>
-            </p>
+            <% cache('feature_welcome-msg', skip_digest: true) do %>
+            <%= feature("welcome-msg") %>
+            <% end %>
           </div>
         <% end %>
         <textarea style="border: 1px solid #bbb;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-bottom: 0;padding: 10px;" onFocus="editing=true" name="body" class="form-control" id="text-input" rows="6" cols="40" placeholder="<%= placeholder %>"><%= body %></textarea>
