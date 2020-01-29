@@ -390,7 +390,7 @@ class TagController < ApplicationController
         node.delete_coord_attribute(tag.name)
       end
 
-      node_tag.delete
+      node_tag.destroy
       output = {
         status: true,
         tid: node_tag.tid
