@@ -93,51 +93,39 @@
 
    function setupInlineLEL(map , layers, mainLayer, markers_hash) {
 
-       layers = layers.split(',');
+      layers = layers.split(',');
 
-       L.tileLayer('https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png').addTo(map) ;
+      L.tileLayer('https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png').addTo(map) ;
 
-       var oms = omsUtil(map, {
-          keepSpiderfied: true,
-          circleSpiralSwitchover: 0
-       });
+      var oms = omsUtil(map, {
+         keepSpiderfied: true,
+         circleSpiralSwitchover: 0
+      });
 
-       L.LayerGroup.EnvironmentalLayers({
-           include: layers,
-       }).addTo(map);
+      L.LayerGroup.EnvironmentalLayers({
+         include: layers,
+      }).addTo(map);
 
-       if(typeof mainLayer !== "undefined" && mainLayer !== ""){
-           if(mainLayer === "people"){
-               
-               map.on('zoomend' , function () {
-                  peopleLayerParser(map, markers_hash);
-               }) ;
+      if(typeof mainLayer !== "undefined" && mainLayer !== ""){
+         if(mainLayer === "people"){
+            peopleMap();
+            map.on('zoomend', peopleMap);
+            map.on('moveend', peopleMap);
+         }
+         else {
+            mainLayer = (mainLayer === "content") ? null : mainLayer;
+            contentMap();
+            map.on('zoomend', contentMap);
+            map.on('moveend', contentMap);
+         }
+      }
 
-               map.on('moveend' , function () {
-                   peopleLayerParser(map, markers_hash);
-               }) ;
-           }
-           else if(mainLayer === "content"){
-               
-               map.on('zoomend' , function () {
-                   contentLayerParser(map, markers_hash);
-               }) ;
-
-               map.on('moveend' , function () {
-                   contentLayerParser(map, markers_hash);
-               }) ;
-           }
-           else { // it is a tagname
-
-               map.on('zoomend' , function () {
-                   contentLayerParser(map, markers_hash, mainLayer);
-               }) ;
-
-               map.on('moveend' , function () {
-                   contentLayerParser(map, markers_hash, mainLayer);
-               }) ;
-           }
-       }
+      function contentMap() {
+         contentLayerParser(map, markers_hash, mainLayer);
+      }
+      function peopleMap() {
+         peopleLayerParser(map, markers_hash);
+      }
    }
 
    function setupLEL(map , sethash){
