@@ -34,39 +34,7 @@ class Node < ActiveRecord::Base
 
     # We can drastically have this simplified using one DB
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
-      if order == :natural
-        query = connection.quote(query.to_s)
-        nids = if type == :boolean
-                 # Query is done as a boolean full-text search. More info here: https://dev.mysql.com/doc/refman/5.5/en/fulltext-boolean.html
-                 Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN BOOLEAN MODE) AS score")
-                   .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN BOOLEAN MODE)")
-                   .limit(limit)
-                   .distinct
-                   .collect(&:nid)
-               else
-                 Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE) AS score")
-                   .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE)")
-                   .limit(limit)
-                   .distinct
-                   .collect(&:nid)
-               end
-        where(nid: nids, status: 1)
-      elsif order == :natural_titles_only
-        Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE) AS score")
-          .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE)")
-          .limit(limit)
-          .distinct
-          .collect(&:nid)
-        where(nid: nids, status: 1)
-      elsif
-        nids = Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query).collect(&:nid)
-
-        tnids = Tag.find_nodes_by_type(query, %w(note page)).collect(&:nid) # include results by tag
-        where(nid: nids + tnids, status: 1)
-          .order(order_param)
-          .limit(limit)
-          .distinct
-      end
+      search_results_for_mysql(query, order_param, type, limit)
     else
       Node.limit(limit)
         .where('title LIKE ?', '%' + query + '%')
@@ -174,6 +142,49 @@ class Node < ActiveRecord::Base
   def setup
     self['created'] = DateTime.now.to_i
     save
+  end
+
+  def search_results_for_mysql(query, type, order, limit)
+
+    query = connection.quote(query.to_s)
+
+    # Query is done as a boolean full-text search. More info here:
+    # https://dev.mysql.com/doc/refman/5.5/en/fulltext-boolean.html
+    mode = type == :boolean ? "BOOLEAN" : "NATURAL LANGUAGE"
+
+    natural = [:natural, :natural_titles_only].include? order
+    titles_only = order == :natural_titles_only
+
+    if natural
+      if titles_only
+	match = "node_revisions.title"
+      else
+	match = "node_revisions.body, node_revisions.title"
+      end
+
+      nids = Revision
+               .select("node_revisions.nid, node_revisions.body,
+                        node_revisions.title,
+                        MATCH(#{match})
+                        AGAINST(#{query} IN #{mode} MODE) AS score")
+               .where("MATCH(node_revisions.body, node_revisions.title)
+                       AGAINST(#{query} IN #{mode} MODE)")
+               .limit(limit)
+               .distinct
+               .collect(&:nid)
+      where(nid: nids, status: 1)
+    else
+      nids = Revision
+               .where("MATCH(node_revisions.body, node_revisions.title)
+                       AGAINST(?)", query)
+               .collect(&:nid)
+      tnids = Tag.find_nodes_by_type(query, %w(note page))
+                 .collect(&:nid) # include results by tag
+      where(nid: nids + tnids, status: 1)
+        .order(order)
+        .limit(limit)
+        .distinct
+    end
   end
 
   public
