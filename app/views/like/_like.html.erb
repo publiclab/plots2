@@ -165,6 +165,9 @@
           $('body').css('column-count', 1)
                .css('column-gap', 0);
       }
+      function print_linkless() {
+          window.print();
+      }
       // Event listner on CLICK on links
       $(document).on("click", "#print-command-3-col",print_three_column);
       $(document).on("click", "#print-command-no-links",print_linkless);
