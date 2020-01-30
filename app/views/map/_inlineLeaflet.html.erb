@@ -55,8 +55,14 @@
 
     $("#iframeID<%= unique_id %>").click(function() {
       prompt('Use this HTML code to embed this map on another site.', '<iframe style="border:none;" width="100%" height="900px" src="' + "//publiclab.org/map/" + primary_layers<%= unique_id %> + "#lat=<%= lat %>&lon=<%= lon %>&zoom=6" + '"></iframe>')
-      });
+    });
 
-    setupInlineLEL(map<%= unique_id %> , primary_layers<%= unique_id %>, main_layer<%= unique_id %>, markers_hash<%= unique_id %>) ;
+    var options<%= unique_id %> = {
+      mainContent: main_layer<%= unique_id %>,
+      layers: primary_layers<%= unique_id %>,
+      setHash: false,
+      displayLayers: true
+    }
+    setupLEL(map<%= unique_id %>, markers_hash<%= unique_id %>, options<%= unique_id %>);
 
 </script>
