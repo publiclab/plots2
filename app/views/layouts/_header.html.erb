@@ -196,6 +196,13 @@
   .profile-icon:hover .fa-user-circle:before{
       opacity:0.5;
   }
+  @media (max-width: 767px){
+    .navbar{
+      max-height: 100vh;
+      overflow-y: auto;
+      -webkit-overflow-scrolling:touch;
+    }
+  }
 </style>
 
 <%= render :partial => "map/mapDependencies" %>
