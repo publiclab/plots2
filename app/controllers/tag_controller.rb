@@ -74,14 +74,14 @@ class TagController < ApplicationController
 
   def show
 
-    # Enhancement #6306 - Add counts to `by type` dropdown on tag pages 
+    # Enhancement #6306 - Add counts to `by type` dropdown on tag pages
     @counts = {:posts => 0, :questions => 0, :wiki => 0 }
     @counts[:posts] = Tag.find_nodes_by_type([params[:id]], 'note', false).count
     @counts[:questions] = Tag.find_nodes_by_type("question:#{params[:id]}", 'note', false).count
     @counts[:wiki] = Tag.find_nodes_by_type([params[:id]], 'page', false).count
     params[:counts] = @counts
     # end Enhancement #6306 ============================================
-  
+
     if params[:id].is_a? Integer
       @wiki = Node.find(params[:id])&.first
     else
@@ -91,6 +91,9 @@ class TagController < ApplicationController
     @node = @wiki # expose the wiki node in the @node variable so we get open graph meta tags in the layout
 
     default_type = params[:id].match?('question:') ? 'questions' : 'note'
+    if params[:order].nil?
+      params[:order] = 'last_updated' # default ordering set
+    end
 
     @node_type = params[:node_type] || default_type
     @start = Time.parse(params[:start]) if params[:start]
@@ -100,7 +103,7 @@ class TagController < ApplicationController
                   'node.views DESC'
                 elsif params[:order] == 'likes'
                   'node.cached_likes DESC'
-                else
+                elsif params[:order] == 'last_updated'
                   'node_revisions.timestamp DESC'
                 end
 
@@ -534,7 +537,7 @@ class TagController < ApplicationController
     @start = params[:start] ? Time.parse(params[:start].to_s) : Time.now - 1.year
     @end = params[:end] ? Time.parse(params[:end].to_s) : Time.now
     tagname = params[:id]
-    
+
     @tag_name = params[:id]
     @tags = Tag.where(name: params[:id])
 
