@@ -213,7 +213,9 @@ class ApplicationController < ActionController::Base
   end
 
   def sort_feed(wikis)
-    if params[:sort] == "last_edited"
+    if params[:sort] == "title"
+      @sorted_wikis = wikis.sort_by { |wiki| wiki.title.downcase }
+    elsif params[:sort] == "last_edited"
       @sorted_wikis = wikis
     elsif params[:sort] == "edits"
       @sorted_wikis = wikis.sort_by { |wiki| wiki.revisions.length }
