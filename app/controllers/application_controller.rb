@@ -216,10 +216,10 @@ class ApplicationController < ActionController::Base
     if params[:sort] == "last_edited"
       @sorted_wikis = wikis
     elsif params[:sort] == "edits"
-      @sorted_wikis = wikis.sort_by {  wiki.revisions.length }
+      @sorted_wikis = wikis.sort_by { |wiki| wiki.revisions.length }
       @sorted_wikis.reverse!
     elsif params[:sort] == "page_views"
-      @sorted_wikis = wikis.sort_by {  wiki.views }
+      @sorted_wikis = wikis.sort_by { |wiki| wiki.views }
       @sorted_wikis.reverse!
     elsif params[:sort] == "likes"
       @sorted_wikis = wikis.sort_by { |wiki| wiki.cached_likes }
