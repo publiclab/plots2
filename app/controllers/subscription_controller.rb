@@ -1,7 +1,7 @@
 class SubscriptionController < ApplicationController
   respond_to :html, :xml, :json
   before_action :require_user, only: %i(create delete index digest)
-
+  helper_method :sort_feed
   def index
     @title = "Subscriptions"
     render template: "home/subscriptions"
@@ -208,5 +208,22 @@ class SubscriptionController < ApplicationController
       flash.now[:error] = "There was an error."
       false
     end
+  end
+  def sort_feed(wiki)
+    if params[:sort] == "last_edited"
+      @sorted_wikis = wiki
+    elsif params[:sort] == "edits"
+      @sorted_wikis = wiki.sort_by{ |wiki| wiki.revisions.length }
+      @sorted_wikis.reverse!
+    elsif params[:sort] == "page_views"
+      @sorted_wikis = wiki.sort_by{ |wiki| wiki.views }
+      @sorted_wikis.reverse!
+    elsif params[:sort] == "likes"
+      @sorted_wikis = wiki.sort_by{ |wiki| wiki.cached_likes }
+      @sorted_wikis.reverse!
+    else
+      @sorted_wikis = wiki
+    end
+   @sorted_wikis
   end
 end
