@@ -1,4 +1,4 @@
-<div class="col-md-6 order-1 order-sm-2">
+<div class="col-md-12 col-lg-6 order-1 order-sm-2">
 <% if current_user && (current_user.role == "admin" || current_user.role == "moderator")%>
 <h3><%= t('users.list.user_moderation') %></h3>
 <p><%= t('users.list.admins_ban_spam') %> </p>
@@ -31,12 +31,12 @@
       <div class ="col-md-6" id="user">
         <div class="card"<% if user.status == 0 %> style="background-color: #ffc;"<% end %>>
            <div class="row card-body">
-            <div class="col-md-5 nopadding">
+            <div class="col-lg-12 nopadding">
               <div class="profile-image text-center">
                   <img class="rounded-circle img-fluid" id="profile-photo" src="<%= user.profile_image %>" />
               </div>
             </div>
-            <div class="col-md-7 nopadding">
+            <div class="col-lg-12 nopadding">
               <div class="card-info">
                 <div class="d-flex justify-content-between">
                  <div>
@@ -82,10 +82,10 @@
   </div>
   <%= will_paginate @users, renderer: WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated %>
 </div>
-<div class="col-md-6 order-2 d-none d-md-block">
+<div class="col-md-12 col-lg-6 order-2 d-none d-lg-block">
 <%= render :partial => "map/peopleLeaflet" , locals: {people: true , lat:23 , lon: 4} %>
 </div>
-<div class="col-md-6 order-sm-1 d-md-none">
+<div class="col-md-12 col-lg-6 order-sm-1 d-lg-none">
 <%= render :partial => "map/peopleLeaflet" , locals: {people: true , lat:23 , lon: 4} %>
 </div>
 <style>
