@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery unless: -> { is_dataurl_post }
   layout 'application'
 
-  helper_method :current_user_session, :current_user, :prompt_login, :sidebar,:sort_feed
+  helper_method :current_user_session, :current_user, :prompt_login, :sidebar, :sort_feed
 
   before_action :set_locale
 
