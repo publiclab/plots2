@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery unless: -> { is_dataurl_post }
   layout 'application'
 
-  helper_method :current_user_session, :current_user, :prompt_login, :sidebar
+  helper_method :current_user_session, :current_user, :prompt_login, :sidebar,:sort_feed
 
   before_action :set_locale
 
@@ -210,5 +210,23 @@ class ApplicationController < ActionController::Base
       has_valid_role = true if current_user.role == role
     end
     has_valid_role
+  end
+
+  def sort_feed(wikis)
+    if params[:sort] == "last_edited"
+      @sorted_wikis = wikis
+    elsif params[:sort] == "edits"
+      @sorted_wikis = wikis.sort_by {  wiki.revisions.length }
+      @sorted_wikis.reverse!
+    elsif params[:sort] == "page_views"
+      @sorted_wikis = wikis.sort_by {  wiki.views }
+      @sorted_wikis.reverse!
+    elsif params[:sort] == "likes"
+      @sorted_wikis = wikis.sort_by { |wiki| wiki.cached_likes }
+      @sorted_wikis.reverse!
+    else
+      @sorted_wikis = wikis
+    end
+    @sorted_wikis
   end
 end
