@@ -1,4 +1,4 @@
-<h3 id="activity-header"><i><%= t('dashboard._activity.activity') %></i></h3>
+<h3 id="activity-header"><i><%= translation('dashboard._activity.activity') %></i></h3>
 
 <div class="activity-menu">
   <% if current_user && (current_user.moderator? || current_user.admin?) %>
@@ -19,7 +19,7 @@
       aria-haspopup="true"
       aria-expanded="false"
     >
-      <span class="node-type-filter"><%= t('dashboard._activity.all_updates') %></span>
+      <span class="node-type-filter"><%= translation('dashboard._activity.all_updates') %></span>
       <span class="caret"></span>
     </button>
 
@@ -27,7 +27,7 @@
       <a class="form-check dropdown-item" href="#">
         <label class="form-check-label">
           <input data-type="all" class="node-type-all" type="checkbox" checked="checked" />
-          <%= t('dashboard._activity.dropdown.all') %>
+          <%= translation('dashboard._activity.dropdown.all') %>
         </label>
       </a>
 
@@ -36,32 +36,32 @@
       <a class="form-check dropdown-item" href="#">
         <label class="form-check-label">
           <input data-type="note" class="node-type node-type-note" type="checkbox" checked="checked" />
-          <%= t('dashboard._activity.dropdown.research_notes') %>
+          <%= translation('dashboard._activity.dropdown.research_notes') %>
         </label>
       </a>
       <a class="form-check dropdown-item" href="#">
         <label class="form-check-label">
           <input data-type="question" class="node-type node-type-question" type="checkbox" checked="checked" />
-          <%= t('dashboard._activity.dropdown.question') %>
+          <%= translation('dashboard._activity.dropdown.question') %>
         </label>
       </a>
       <a class="form-check dropdown-item" href="#">
         <label class="form-check-label">
           <input data-type="event" class="node-type node-type-event" type="checkbox" checked="checked" />
-          <%= t('dashboard._activity.dropdown.events') %>
+          <%= translation('dashboard._activity.dropdown.events') %>
         </label>
       </a>
       <a class="form-check dropdown-item" href="#">
         <label class="form-check-label">
           <input data-type="comment" class="node-type node-type-comment" type="checkbox" checked="checked" />
-          <%= t('dashboard._activity.dropdown.comments') %>
+          <%= translation('dashboard._activity.dropdown.comments') %>
         </label>
       </a>
 
       <a class="d-lg-none dropdown-item" href="#">
         <label>
           <input data-type="wiki" class="node-type node-type-wiki" type="checkbox" checked="checked" />
-          <%= t('dashboard._activity.dropdown.wiki') %>
+          <%= translation('dashboard._activity.dropdown.wiki') %>
         </label>
       </a>
       <!--
@@ -72,9 +72,9 @@
       -->
     </div>
   </div> &nbsp;
-  <span class="d-none d-md-inline"><%= t('dashboard._activity.from_other') %> <a href=""><%= t('dashboard._activity.community_scientists') %></a></span> <%= t('dashboard._activity.past_week') %>
+  <span class="d-none d-md-inline"><%= translation('dashboard._activity.from_other') %> <a href=""><%= translation('dashboard._activity.community_scientists') %></a></span> <%= translation('dashboard._activity.past_week') %>
   <% if current_user %>
-    <span class="d-none">| <a href="/profile/<%= current_user.username %>"><%= t('dashboard._activity.your_work') %></a></span>
+    <span class="d-none">| <a href="/profile/<%= current_user.username %>"><%= translation('dashboard._activity.your_work') %></a></span>
   <% end %>
   <!-- (2 responses) -->
 </div>
