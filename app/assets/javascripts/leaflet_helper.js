@@ -89,8 +89,6 @@
        });
    }
 
-   
-
    function setupLEL(map, markers_hash = null, params = {}) {
       var options = {};
       options.layers = params.layers || [];
@@ -98,11 +96,9 @@
       options.mainContent = params.mainContent || "";
       options.displayLayers = params.displayLayers || false;
 
-      if (typeof options.layers == "string") {
+      if (typeof options.layers === "string") {
         options.layers = options.layers.split(',');
       }
-
-      // L.tileLayer('https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png').addTo(map) ;
 
       var oms = omsUtil(map, {
          keepSpiderfied: true,
@@ -117,14 +113,18 @@
       }
       L.LayerGroup.EnvironmentalLayers(optionsLEL).addTo(map);
 
-      if(typeof options.mainContent !== "undefined" && options.mainContent !== ""){
-         if(options.mainContent === "people"){
+      displayMapContent(map, markers_hash, options.mainContent);
+   }
+
+   function displayMapContent(map, markers_hash, mainContent) {
+      if(typeof mainContent !== "undefined" && mainContent !== ""){
+         if(mainContent === "people"){
             peopleMap();
             map.on('zoomend', peopleMap);
             map.on('moveend', peopleMap);
          }
          else {
-            options.mainContent = (options.mainContent === "content") ? null : options.mainContent;
+            mainContent = (mainContent === "content") ? null : mainContent;
             contentMap();
             map.on('zoomend', contentMap);
             map.on('moveend', contentMap);
@@ -132,7 +132,7 @@
       }
 
       function contentMap() {
-         contentLayerParser(map, markers_hash, options.mainContent);
+         contentLayerParser(map, markers_hash, mainContent);
       }
       function peopleMap() {
          peopleLayerParser(map, markers_hash);
