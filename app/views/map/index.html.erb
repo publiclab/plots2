@@ -53,11 +53,12 @@
       map.setView(user_latlng , 3) ;
    <% end %>
 
-    var options<%= unique_id %> = {
+    var markers_hash = new Map();
+    var options = {
       mainContent: "people",
       setHash: setHash
     }
-    setupLEL(map<%= unique_id %>, markers_hash<%= unique_id %>);
+    setupLEL(map, markers_hash, options);
 
    setupFullScreen(map , map.getCenter().lat , map.getCenter().lng) ;
 </script>
