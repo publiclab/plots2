@@ -74,14 +74,14 @@ class TagController < ApplicationController
 
   def show
 
-    # Enhancement #6306 - Add counts to `by type` dropdown on tag pages 
+    # Enhancement #6306 - Add counts to `by type` dropdown on tag pages
     @counts = {:posts => 0, :questions => 0, :wiki => 0 }
     @counts[:posts] = Tag.find_nodes_by_type([params[:id]], 'note', false).count
     @counts[:questions] = Tag.find_nodes_by_type("question:#{params[:id]}", 'note', false).count
     @counts[:wiki] = Tag.find_nodes_by_type([params[:id]], 'page', false).count
     params[:counts] = @counts
     # end Enhancement #6306 ============================================
-  
+
     if params[:id].is_a? Integer
       @wiki = Node.find(params[:id])&.first
     else
@@ -91,6 +91,9 @@ class TagController < ApplicationController
     @node = @wiki # expose the wiki node in the @node variable so we get open graph meta tags in the layout
 
     default_type = params[:id].match?('question:') ? 'questions' : 'note'
+    if params[:order].nil?
+      params[:order] = 'last_updated' # default ordering set
+    end
 
     @node_type = params[:node_type] || default_type
     @start = Time.parse(params[:start]) if params[:start]
@@ -100,7 +103,7 @@ class TagController < ApplicationController
                   'node.views DESC'
                 elsif params[:order] == 'likes'
                   'node.cached_likes DESC'
-                else
+                elsif params[:order] == 'last_updated'
                   'node_revisions.timestamp DESC'
                 end
 
@@ -148,9 +151,18 @@ class TagController < ApplicationController
           .order(order_by)
       end
     end
-    nodes = nodes.where(created: @start.to_i..@end.to_i) if @start && @end
 
-    qids = Node.questions.where(status: 1).collect(&:nid)
+    if @start && @end
+      nodes = nodes.where(created: @start.to_i..@end.to_i)
+    else
+      @pinned_nodes = NodeShared.pinned_nodes(params[:id])
+      if @pinned_nodes.length > 0 && params[:page].nil? # i.e. first page
+        nodes = nodes.where.not(nid: @pinned_nodes.collect(&:id))
+      end
+    end
+
+    qids = Node.questions.where(status: 1)
+               .collect(&:nid)
     if qids.empty?
       @notes = nodes
       @questions = []
@@ -271,7 +283,7 @@ class TagController < ApplicationController
     nids = Tag.find_nodes_by_type(params[:id], 'note', nil).collect(&:nid)
     @notes = Node.paginate(page: params[:page], per_page: 6)
       .where('status = 1 AND nid in (?)', nids)
-      .order('nid DESC')
+      .order('created DESC')
     @tags = Tag.where(name: params[:id])
     @tagnames = @tags.collect(&:name).uniq! || []
     @title = @tagnames.join(',') + ' Blog' if @tagnames
@@ -343,7 +355,7 @@ class TagController < ApplicationController
 
         if saved
           @tags << tag
-          @output[:saved] << [tag.name, tag.id]
+          @output[:saved] << [tag.name, tag.id, nid]
         else
           @output[:errors] << I18n.t('tag_controller.error_tags') + tag.errors[:name].first
         end
@@ -524,14 +536,26 @@ class TagController < ApplicationController
   def stats
     @start = params[:start] ? Time.parse(params[:start].to_s) : Time.now - 1.year
     @end = params[:end] ? Time.parse(params[:end].to_s) : Time.now
+    tagname = params[:id]
 
+    @tag_name = params[:id]
     @tags = Tag.where(name: params[:id])
+
+    return if @tags.empty?
+
     @tag_notes = @tags.first.contribution_graph_making('note', @start, @end)
     @tag_wikis = @tags.first.contribution_graph_making('page', @start, @end)
     @tag_questions = @tags.first.quiz_graph(@start, @end)
     @tag_comments = @tags.first.comment_graph(@start, @end)
     @subscriptions = @tags.first.subscription_graph(@start, @end)
+
     @all_subscriptions = TagSelection.graph(@start, @end)
+
+    total_questions = Node.published.questions
+      .where(created: @start.to_i..@end.to_i)
+      .where(nid: Node.find_by_tag(tagname))
+    @answers = total_questions.joins(:comments).size.count
+    @questions = total_questions.size.count
   end
 
   private

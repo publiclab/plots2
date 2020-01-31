@@ -5,7 +5,8 @@ class HomeController < ApplicationController
     if current_user
       redirect_to '/dashboard'
     else
-      blog
+      @projects = Tag.where('term_data.name IN (?)', 'project:featured').first&.nodes
+        &.sample(3) # random sampling
       @title = I18n.t('home_controller.science_community')
       render template: 'home/home'
     end
@@ -13,7 +14,8 @@ class HomeController < ApplicationController
 
   # route for seeing the front page even if you are logged in
   def front
-    blog
+    @projects = Tag.where('term_data.name IN (?)', 'project:featured').first&.nodes
+      &.sample(3) # random sampling
     @title = I18n.t('home_controller.environmental_investigation')
     render template: 'home/home'
     @unpaginated = true
@@ -86,8 +88,8 @@ class HomeController < ApplicationController
                    .group(['title', 'comments.cid']) # ONLY_FULL_GROUP_BY, issue #3120
 
     if logged_in_as(['admin', 'moderator'])
-      notes = notes.where('(node.status = 1 OR node.status = 4 OR node.status = 3)')
-      comments = comments.where('comments.status = 1 OR comments.status = 4')
+      notes = notes.where('(node.status = 1 OR node.status = 3)')
+      comments = comments.where('comments.status = 1')
     elsif current_user
       coauthor_nids = Node.joins(:node_tag)
         .joins('LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid')

@@ -154,6 +154,7 @@ Plots2::Application.routes.draw do
   get 'methods' => 'wiki#methods'
   get 'methods/:topic' => 'wiki#methods'
   get 'techniques' => 'wiki#techniques'
+  get "/wikis/author/:id" => "wiki#author"
 
   get 'report/:id' => 'legacy#report'
   get 'node/:id' => 'legacy#node'
@@ -247,9 +248,10 @@ Plots2::Application.routes.draw do
   get 'groups/:search' => 'user_tags#index'
 
 
-  get 'maps' => 'map#index'
+  get 'map' => 'map#map'
+  get 'map/:id' => 'map#wiki'
+  get 'maps' => redirect('/map/')
   get 'users/map' => 'users#map'
-  get 'map' => 'search#map'
   get 'maps/:id' => 'map#tag'
   get 'map/edit/:id' => 'map#edit'
   put 'map/update/:id' => 'map#update'

@@ -1,6 +1,6 @@
 include ActionView::Helpers::DateHelper # required for time_ago_in_words()
 class ApplicationController < ActionController::Base
-  protect_from_forgery
+  protect_from_forgery unless: -> { is_dataurl_post }
   layout 'application'
 
   helper_method :current_user_session, :current_user, :prompt_login, :sidebar
@@ -10,6 +10,11 @@ class ApplicationController < ActionController::Base
   before_action :set_raven_context
 
   private
+
+  # allow limited CSRF from external apps submitting params[:dataurl_main_image] data
+  def is_dataurl_post
+    params[:controller] == "editor" && params[:action] == "post" && !params[:datauri_main_image].nil?
+  end
 
   def set_raven_context
     Raven.user_context(id: session[:current_user_id]) # or anything else in session
@@ -67,9 +72,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user_session
-    return @current_user_session if defined?(@current_user_session)
-
-    @current_user_session = UserSession.find
+    @current_user_session ||= UserSession.find
   end
 
   def current_user
@@ -85,7 +88,7 @@ class ApplicationController < ActionController::Base
       @current_user = nil
     elsif @current_user.try(:status) == 5
       # Tell the user they are banned. Fails b/c redirect to require below.
-      flash[:warning] = "The user '#{@current_user.username}' has been placed in moderation; please see <a href='https://#{request.host}/wiki/moderators'>our moderation policy</a> and contact <a href='mailto:moderators@#{request.host}'>moderators@#{request.host}</a> if you believe this is in error."
+      flash[:warning] = "The user '#{@current_user.username}' has been placed in moderation; please see <a href='https://#{request.host}/wiki/moderators'>our moderation policy</a> and contact <a href='mailto:moderators@#{request.host}?body=Please make sure to include your username and the email address you used to sign up for the site.'>moderators@#{request.host}</a> if you believe this is in error."
       # Same effect as if the user clicked logout:
       current_user_session.destroy
       # Ensures no code will use old @current_user info. Treat the user
@@ -105,7 +108,7 @@ class ApplicationController < ActionController::Base
     unless current_user
       store_location
       flash[:warning] ||= I18n.t('application_controller.must_be_logged_in_to_access')
-      redirect_to login_url
+      redirect_to "/login?return_to=" + request.fullpath
       false
     end
     return current_user

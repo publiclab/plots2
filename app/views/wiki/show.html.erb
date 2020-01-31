@@ -13,7 +13,7 @@
 <% if @presentation && @node.main_image%>
   <div id="main-image-presentation" style="margin-bottom:8px;">
     <a href="<%= @node.main_image.path(:original) %>">
-      <img style="width:100%;" class="rounded" src="<%= @node.main_image.path(:original) %>" />
+      <img style="width: 100vw;margin: 0 calc((100% / 2) - 50vw);margin-top: -21px;margin-bottom: 12px;" class="rounded" src="<%= @node.main_image.path(:original) %>" />
     </a>
   </div>
 <% end %>
@@ -55,7 +55,7 @@
 <% if @node.has_tag('sidebar:none') %>
   <%= render partial: "sidebar/none" %>
 <% else %>
-  <% if (@wikis.nil? && @notes.nil?) || @node.has_tag('sidebar:featured') %>
+  <% if @node.has_tag('sidebar:featured') %>
     <%= render partial: "sidebar/featured" %>
   <% else %>
     <%= render partial: "sidebar/related" %>

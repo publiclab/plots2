@@ -66,7 +66,7 @@ class SubscriptionController < ApplicationController
           if request.xhr?
             message = "Started following #{params[:name]}!"
             status = "200"
-            render json: { status: status, message: message, id: tag.tid, tagname: params[:name], url: "/tags" + "?_=" + Time.now.to_i.to_s }
+            render json: { status: status, message: message, id: tag.tid, tagname: params[:name], url: "/tags" + "?_=" + Time.now.to_i.to_s } if current_user
           else
             flash[:notice] = "You are now following '#{params[:name]}'."
             redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
@@ -117,57 +117,58 @@ class SubscriptionController < ApplicationController
   end
 
   def multiple_add
-    if !params[:tagnames] || params[:tagnames] == ''
+    return_to = params[:return_to] || "/subscriptions?_=" + Time.now.to_i.to_s
+    if params[:tagnames].blank?
       flash[:notice] = "Please enter tags for subscription in the url."
-      redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
-      return
-    end
-    tag_list = if params[:tagnames].is_a? String
-                 params[:tagnames].split(',')
-               else
-                 params[:tagnames]
-               end
-    if current_user
-      if params[:type] == "tag"
-        tag_list.each do |t|
-          next unless t.length.positive?
-
-          tag = Tag.find_by(name: t)
-          unless tag.present?
-            tag = Tag.new(
-              vid: 3, # vocabulary id
-              name: t,
-              description: "",
-              weight: 0
-            )
-            begin
-              tag.save!
-            rescue ActiveRecord::RecordInvalid
-              flash[:error] = tag.errors.full_messages
-              redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
-              return false
-            end
-          end
-          # test for uniqueness
-          unless TagSelection.where(following: true, user_id: current_user.uid, tid: tag.tid).length.positive?
-            # Successfully we have added subscription
-            set_following(true, params[:type], tag.tid)
-          end
-        end
-        respond_with do |format|
-          format.html do
-            if request.xhr?
-              render json: true
-            else
-              flash[:notice] = "You are now following '#{params[:tagnames]}'."
-              redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
-            end
-          end
-        end
-      end
+      redirect_to return_to
     else
-      flash[:warning] = "You must be logged in to subscribe for email updates!"
-      redirect_to "/login?return_to=" + request.fullpath
+      tag_list = if params[:tagnames].is_a? String
+                   params[:tagnames].split(',')
+                 else
+                   params[:tagnames]
+                 end
+      if current_user
+        if params[:type] == "tag"
+          tag_list.each do |t|
+            next unless t.length.positive?
+
+            tag = Tag.find_by(name: t)
+            unless tag.present?
+              tag = Tag.new(
+                vid: 3, # vocabulary id
+                name: t,
+                description: "",
+                weight: 0
+              )
+              begin
+                tag.save!
+              rescue ActiveRecord::RecordInvalid
+                flash[:error] = tag.errors.full_messages
+                redirect_to return_to
+                return false
+              end
+            end
+            # test for uniqueness
+            unless TagSelection.where(following: true, user_id: current_user.uid, tid: tag.tid).length.positive?
+              # Successfully we have added subscription
+              set_following(true, params[:type], tag.tid)
+            end
+          end
+          respond_with do |format|
+            format.html do
+              if request.xhr?
+                render json: true
+              else
+                flash[:notice] = "You are now following '#{params[:tagnames]}'."
+                redirect_to return_to
+              end
+            end
+          end
+        end
+      else
+        flash[:warning] = "You must be logged in to subscribe for email updates!"
+        redirect_to "/login?return_to=" + request.fullpath
+      end
     end
   end
 

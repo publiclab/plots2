@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :require_no_user, only: [:new]
-  before_action :require_user, only: %i(edit update save_settings)
+  before_action :require_user, only: %i(edit update save_settings settings)
    before_action :set_user, only: %i(info followed following followers)
 
   def new
@@ -14,7 +14,9 @@ class UsersController < ApplicationController
     using_recaptcha = !params[:spamaway] && Rails.env == "production"
     recaptcha = verify_recaptcha(model: @user) if using_recaptcha
     @spamaway = Spamaway.new(spamaway_params) unless using_recaptcha
-    if ((@spamaway&.valid?) || recaptcha) && @user.save
+
+    saved_user = @user.save
+    if ((@spamaway&.valid?) || recaptcha) && saved_user
       if current_user.crypted_password.nil? # the user has not created a pwd in the new site
         flash[:warning] = I18n.t('users_controller.account_migrated_create_new_password')
         redirect_to "/profile/edit"
@@ -199,6 +201,7 @@ class UsersController < ApplicationController
         end
 
         # User's social links
+        @content_approved = !(Node.where(status: 1, uid: @profile_user.id).empty?) or !(Comment.where(status: 1, uid: @profile_user.id).empty?)
         @github = @profile_user.social_link("github")
         @twitter = @profile_user.social_link("twitter")
         @facebook = @profile_user.social_link("facebook")
@@ -207,9 +210,11 @@ class UsersController < ApplicationController
         @count_activities_attempted = Tag.tagged_nodes_by_author("replication:*", @profile_user).count
         @map_lat = nil
         @map_lon = nil
+        @map_zoom = nil
         if @profile_user.has_power_tag("lat") && @profile_user.has_power_tag("lon")
           @map_lat = @profile_user.get_value_of_power_tag("lat").to_f
           @map_lon = @profile_user.get_value_of_power_tag("lon").to_f
+          @map_zoom = @profile_user.get_value_of_power_tag("zoom").to_i if @profile_user.has_power_tag("zoom")
           @map_blurred = @profile_user.has_tag('blurred:true')
         end
 
@@ -271,6 +276,7 @@ class UsersController < ApplicationController
             if @user.changed? && @user.save
               flash[:notice] = I18n.t('users_controller.password_change_success')
               @user.password_checker = 0
+              @user.save
               redirect_to "/dashboard"
             else
               flash[:error] = I18n.t('users_controller.password_reset_failed').html_safe
@@ -377,7 +383,8 @@ class UsersController < ApplicationController
     user_settings = [
       'notify-comment-direct:false',
       'notify-likes-direct:false',
-      'notify-comment-indirect:false'
+      'notify-comment-indirect:false',
+      'no-moderation-emails'
     ]
 
     user_settings.each do |setting|

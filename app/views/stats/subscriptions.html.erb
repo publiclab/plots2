@@ -17,6 +17,7 @@
       <%= range * 10 %> - <%= range * 10 + 9 %>
     </td>
     <td>
+      <% tags = tags.sort %>
       <% tags.each do |tag| %>
       <a class="badge badge-primary" href="/tag/<%= tag[0] %>">
         <%= tag[0]%> 

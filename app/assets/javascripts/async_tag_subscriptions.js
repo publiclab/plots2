@@ -27,10 +27,12 @@ $(document).ready(function()
       $('.index-follow-buttons').on('ajax:success', function(data, status, xhr){
         console.log("Hello");
         var data_recv = JSON.parse(JSON.stringify(status));
-        notyNotification('relax', 3000, 'success', 'top', data_recv.message + 'Click <a href="../subscriptions"> here </a> to manage your subscriptions. ');
-        var html_new = '<a rel="tooltip" title=Following class="btn btn-default btn-sm active" href="/unsubscribe/tag/'+ data_recv.tagname + '"> <i class="fa fa-user-plus" aria-hidden="true"></i>Following</a>';
-        $('#follow-unfollow-column-'+data_recv.id).html(html_new);
-        window.history.pushState("", "", data_recv.url); // Preserve state
+        if(data_recv.id) {
+          notyNotification('relax', 3000, 'success', 'top', data_recv.message + 'Click <a href="../subscriptions"> here </a> to manage your subscriptions. ');
+          var html_new = '<a rel="tooltip" title=Following class="btn btn-default btn-sm active" href="/unsubscribe/tag/'+ data_recv.tagname + '"> <i class="fa fa-user-plus" aria-hidden="true"></i>Following</a>';
+          $('#follow-unfollow-column-'+data_recv.id).html(html_new);
+          window.history.pushState("", "", data_recv.url); // Preserve state
+        }
       });
       $('.index-follow-buttons').on('ajax:error', function(data, status, xhr){
         var data_recv = JSON.parse(JSON.stringify(status));

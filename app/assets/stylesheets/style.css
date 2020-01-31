@@ -101,6 +101,13 @@ a .fa-white,
     color: white !important;
 }
 
+.fa-facebook,
+.fa-twitter,
+.fa-github,
+.fa-google {
+   vertical-align: middle;
+}
+
 .label a {
   color:#007bff;
 }
@@ -118,8 +125,21 @@ a .fa-white,
   display:none;
 }
 
+.text-underline {
+  text-decoration: underline !important;
+}
+
 #pl_pad {
     width:300%;
+}
+
+#header .navbar .input-group {
+  flex-wrap: nowrap;
+}
+
+#header .navbar #searchform_input {
+  cursor: text;
+  min-width: 190px;
 }
 
 @media (max-width:992px) {
@@ -214,7 +234,8 @@ a .fa-white,
 @media (max-width: 768px) {
   #header #brand,
   #header #brand-compact {
-    padding-top: 22px;
+    margin-top: 0.3125rem;
+    padding-bottom: 0;
     padding-right: 4px;
   }
 }
@@ -252,7 +273,7 @@ a .fa-white,
   color: #666;
   clear:both;
   margin-top: 40px;
-  padding: 30px;
+  padding: 30px !important;
   border-top: 1px solid #E5E5E5;
   background-color: #f8f8f8;
 }
@@ -325,6 +346,25 @@ a .fa-white,
 }
 
 /* Styles for specific areas of the site */
+/* Remove blue background on Chrome autocomplete */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active  {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
+.form-element-valid {
+  background-color: white !important;
+  box-shadow: none !important;
+  border: green 2px solid !important;
+}
+
+.form-element-invalid {
+  background-color: white !important;
+  box-shadow: none !important;
+  border: red 2px solid !important;
+}
 
 .note-show .main-image {
   margin-bottom: 14px;
@@ -408,10 +448,6 @@ div.note .meta {
   color:#888;
 }
 
-.image-container {
-  height:auto;
-  overflow:auto;
-}
 /*start of img aspect css that will affect the
 thumbnails which appears on the user's profile
 under their notes*/
@@ -461,10 +497,14 @@ div.note.moderated h4 {
 }
 
 .note p.moderated .btn {
-  color: #940;
+  color: #940 !important;
   border-color: #eb8;
   background: none;
   font-size: smaller;
+}
+
+.note p.moderated .btn:hover {
+  background-color: rgba(238, 187, 136, 0.5);
 }
 
 .btn-primary {
@@ -487,6 +527,17 @@ a.btn-outline-secondary .fa {
   color: inherit;
 }
 
+ a.btn-outline-secondary:not([href]):not([tabindex]) {
+  color: #6c757d;
+}
+
+.container .btn-outline-secondary:hover {
+  color: white !important;
+}
+
+.container .btn-outline-secondary:hover .fa {
+  color: white !important;
+}
 .nav-button-wrapper {
   padding-top: 7.5px;
 }
@@ -541,3 +592,40 @@ textarea, input {
 .form-grey {
   color:#888;
 }
+
+/* breaks out of #content div and presents edge-to-edge content without absolute positioning */
+.inline-fullwidth-content {
+  width:100vw !important;
+  margin:0 calc((100% / 2) - 50vw) !important;
+  z-index:0 !important;
+}
+
+@media (min-width: 992px) {
+  .inline-fullwidth-content {
+    margin: 0 calc((133% / 2) - 49.4vw) !important;
+  }
+}
+@media (min-width: 1200px) {
+  .inline-fullwidth-content {
+    margin: 0 calc((133% / 2) - 48.3vw) !important;
+  }
+}
+
+.sidebar-panel {
+  background: rgba(255,255,255,0.8);
+  z-index: 9999;
+  border-radius: 4px;
+  padding: 10px; 
+}
+
+.btn-toolbar .btn-outline-secondary
+{
+    color:#222;
+}
+
+.btn-toolbar .btn-outline-secondary:hover
+{
+    color: #f1f1f1 !important;
+}
+
+

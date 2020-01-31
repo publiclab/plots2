@@ -1,6 +1,6 @@
 # A DocResult is an individual return item for a document (web page) search
 class DocResult
-  attr_accessor :doc_id, :doc_type, :doc_url, :doc_title, :doc_score, :latitude, :longitude, :blurred, :category
+  attr_accessor :doc_id, :doc_type, :doc_url, :doc_title, :doc_score, :latitude, :longitude, :blurred, :category, :doc_author, :doc_image_url
 
   def initialize(args = {})
     @doc_id = args[:doc_id]
@@ -8,6 +8,8 @@ class DocResult
     @doc_url = args[:doc_url]
     @doc_title = args[:doc_title]
     @doc_score = args[:doc_score]
+    @doc_author = args[:doc_author]
+    @doc_image_url = args[:doc_image_url]
     @latitude = args[:latitude]
     @longitude = args[:longitude]
     @blurred = args[:blurred]

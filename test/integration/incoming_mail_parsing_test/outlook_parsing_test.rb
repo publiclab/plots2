@@ -2,6 +2,7 @@ require 'test_helper'
 require 'mail'
 
 class OutlookParsingTest < ActionDispatch::IntegrationTest
+  include ActiveJob::TestHelper
   test 'should parse incoming mail from outlook service correctly and add comment reply' do
     mail = Mail.read('test/fixtures/incoming_test_emails/outlook/incoming_outlook_email.eml')
     comment = comments(:first)

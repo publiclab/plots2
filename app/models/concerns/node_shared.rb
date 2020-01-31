@@ -195,7 +195,7 @@ module NodeShared
       lat = Regexp.last_match(2)
       lon = Regexp.last_match(3)
       tagname = nil
-
+      
       map_data_string(lat, lon, tagname, "plainInlineLeaflet")
     end
   end
@@ -224,7 +224,7 @@ module NodeShared
   # [map:layers:other_inline_layer:_latitude_:_longitude:skytruth,mapknitter]
   # [map:layers::_latitude_:_longitude:skytruth,mapknitter]
   def self.layers_map(body, _page = 1)
-    body.gsub(/(?<![\>`])(\<p\>)?\[map\:layers\:(\w*)\:(\S+)\:(\S+)\:(\w+)((\,\w+)*)]/) do |_tagname|
+    body.gsub(/(?<![\>`])(\<p\>)?\[map\:layers\:(\w*)\:(\S+)\:(\S+)\:(\w+)((\,\w+)*)\]/) do |_tagname|
       mainLayer = Regexp.last_match(2)
       lat = Regexp.last_match(3)
       lon = Regexp.last_match(4)

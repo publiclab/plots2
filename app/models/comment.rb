@@ -127,7 +127,7 @@ class Comment < ApplicationRecord
   # plus all who've starred it
   def notify(current_user)
     if status == 4
-      AdminMailer.notify_comment_moderators(self).deliver_now
+      AdminMailer.notify_comment_moderators(self).deliver_later!(wait_until: 24.hours.from_now)
     else
       if parent.uid != current_user.uid && !UserTag.exists?(parent.uid, 'notify-comment-direct:false')
         CommentMailer.notify_note_author(parent.author, self).deliver_now
@@ -473,7 +473,14 @@ class Comment < ApplicationRecord
     if !trimmed_content? && parsed.present?
       body = parsed[:body] + COMMENT_FILTER + parsed[:boundary] + parsed[:quote]
     end
-    body
+
+    allowed_tags = %w(a acronym b strong i em li ul ol h1 h2 h3 h4 h5 h6 blockquote br cite sub sup ins p iframe del hr img input code table thead tbody tr th td span dl dt dd div)
+
+    # Sanitize the HTML (remove malicious attributes, unallowed tags...)
+    sanitized_body = ActionController::Base.helpers.sanitize(body, tags: allowed_tags)
+
+    # Properly parse HTML (close incomplete tags...)
+    Nokogiri::HTML::DocumentFragment.parse(sanitized_body).to_html
   end
 
   def self.find_by_tag_and_author(tagname, userid)

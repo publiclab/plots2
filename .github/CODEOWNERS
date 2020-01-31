@@ -36,6 +36,9 @@
 # directory in the root of your repository.
 # /docs/ @doctocat
 
+
+# See /docs/MAINTAINERS.md for Public Lab's policy on feature maintainers!
+
 /app/assets/javascripts/comment*              @publiclab/comment-maintainers
 /app/assets/stylesheets/comments.css          @publiclab/comment-maintainers
 /app/models/comment.rb                        @publiclab/comment-maintainers
@@ -47,3 +50,17 @@
 /test/unit/comment_mailer_test.rb             @publiclab/comment-maintainers
 /test/functional/comment_controller_test.rb   @publiclab/comment-maintainers
 /test/functional/comment_mailer_test.rb       @publiclab/comment-maintainers
+
+/db*                                          @publiclab/database-maintainers
+/config/database*                             @publiclab/database-maintainers
+
+/app/controllers/editor_controller.rb         @publiclab/editor-maintainers
+/app/views/editor*                            @publiclab/editor-maintainers
+
+/app/views/layouts*                           @publiclab/navbar-maintainers
+
+/app/controllers/users_controller.rb          @publiclab/profile-maintainers
+/app/views/users*                             @publiclab/profile-maintainers
+
+/app/controllers/user_sessions_controller.rb  @publiclab/login-maintainers
+/app/views/user_sessions                      @publiclab/login-maintainers

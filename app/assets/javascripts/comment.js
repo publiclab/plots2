@@ -31,13 +31,16 @@
 
     if(!$(this).hasClass('bound-keypress')) {
       $(this).addClass('bound-keypress');
-      $(this).find('#text-input').bind('keypress',function(e){
-        if (e.ctrlKey && e.keyCode === 10) {
-        $(this).find(".btn-primary").click();
+
+      $(this).on('keypress', function (e) {
+        var isPostCommentShortcut = (e.ctrlKey && e.keyCode === 10) || (e.metaKey && e.keyCode === 13);
+
+        if (isPostCommentShortcut) {
+          $(this).find(".btn-primary").click();
         }
-      })
+      });
     }
-    
+
   });
 }());
 
@@ -45,9 +48,19 @@ function insertTitleSuggestionTemplate() {
   var element = $('#text-input');
   var currentText = $('#text-input').val().trim();
   var template = "\n[propose:title]Propose your title here[/propose]";
-  if (currentText.length === 0) { 
+  if (currentText.length === 0) {
     template = "[propose:title]Propose your title here[/propose]";
   }
   var newText = currentText+template;
   element.val(newText);
+}
+
+// JS API for submitting comments
+function addComment(comment, submitTo, parentID = 0) {
+  submitTo = submitTo || '.comment-form'; // class instead of id because of the bound function on line 3
+  let data = { body: comment };
+  if (parentID)  {
+    data.reply_to = parentID;
+  }
+  sendFormSubmissionAjax(data, submitTo);
 }

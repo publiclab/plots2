@@ -8,21 +8,6 @@
     return map ;
   }
 
-
-  function setupFullScreen(map , lat , lon) {
-    map.addControl(new L.Control.Fullscreen()); // to go full-screen
-    map.on('fullscreenchange', function () {
-      if (map.isFullscreen()) {
-        map.options.minZoom = 3 ;
-       } 
-      else {
-        map.options.minZoom = 1 ;
-        map.panTo(new L.LatLng(lat,lon));
-      }
-    });
-  }
-
-
   function PLmarker_default(){
      L.Icon.PLmarker = L.Icon.extend({
       options: {
@@ -65,12 +50,13 @@
        });
    }
 
-   function contentLayerParser(map,markers_hash, map_tagname) {
+   function contentLayerParser(map, markers_hash, map_tagname) {
        var NWlat = map.getBounds().getNorthWest().lat ;
        var NWlng = map.getBounds().getNorthWest().lng ;
        var SElat = map.getBounds().getSouthEast().lat ;
        var SElng = map.getBounds().getSouthEast().lng ;
        map.spin(true) ;
+
        if(map_tagname === null || (typeof map_tagname === "undefined")) {
            taglocation_url = "/api/srch/taglocations?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng ;
 
@@ -82,13 +68,19 @@
                for (i = 0; i < data.items.length; i++) {
                    var url = data.items[i].doc_url;
                    var title = data.items[i].doc_title;
+                   var author = data.items[i].doc_author;
+                   var image_url = data.items[i].doc_image_url;
                    var default_url = PLmarker_default();
                    var mid = data.items[i].doc_id ;
                    var m = L.marker([data.items[i].latitude, data.items[i].longitude], {icon: default_url}).bindPopup("<a href=" + url + ">" + title + "</a>") ;
                    
                    if(markers_hash.has(mid) === false){
 
-                       m.addTo(map).bindPopup("<a href=" + url + ">" + title + "</a>") ;
+                       if(image_url) {
+                           m.addTo(map).bindPopup("<div><img src=" + image_url+ " height='140px' /><br>" + "<b>Title:</b> " + title  + "<br><b>Author:</b>   <a href=" + 'https://publiclab.org/profile/' + author + ">" + author + "</a><br>" + "<a href=" + url + ">" + "Read more..." + "</a></div>" ) ;
+                       } else {
+                           m.addTo(map).bindPopup("<span><b>Title:</b>     " + title  + "</span><br><span><b>Author:</b>    <a href=" + 'https://publiclab.org/profile/' + author + ">" + author + "</a></span><br>" + "<a href=" + url + ">" + "<br>Read more..." + "</a>" ) ;
+                       }
                        markers_hash.set(mid , m) ;
                    }
                }
@@ -97,58 +89,52 @@
        });
    }
 
-   
+   function setupLEL(map, markers_hash = null, params = {}) {
+      var options = {};
+      options.layers = params.layers || [];
+      options.setHash = params.setHash || false;
+      options.mainContent = params.mainContent || "";
+      options.displayLayers = params.displayLayers || false;
 
-   function setupInlineLEL(map , layers, mainLayer, markers_hash) {
+      if (typeof options.layers === "string") {
+        options.layers = options.layers.split(',');
+      }
 
-       layers = layers.split(',');
+      var oms = omsUtil(map, {
+         keepSpiderfied: true,
+         circleSpiralSwitchover: 0
+      });
 
-       L.tileLayer('https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png').addTo(map) ;
+      var optionsLEL = {
+        addLayersToMap: options.displayLayers,
+      };
+      if (options.layers.length > 0) {
+         optionsLEL.include = options.layers;
+      }
+      L.LayerGroup.EnvironmentalLayers(optionsLEL).addTo(map);
 
-       L.LayerGroup.EnvironmentalLayers({
-           include: layers,
-       }).addTo(map);
-
-       if(typeof mainLayer !== "undefined" && mainLayer !== ""){
-           if(mainLayer === "people"){
-               
-               map.on('zoomend' , function () {
-                  peopleLayerParser(map, markers_hash);
-               }) ;
-
-               map.on('moveend' , function () {
-                   peopleLayerParser(map, markers_hash);
-               }) ;
-           }
-           else if(mainLayer === "content"){
-               
-               map.on('zoomend' , function () {
-                   contentLayerParser(map, markers_hash);
-               }) ;
-
-               map.on('moveend' , function () {
-                   contentLayerParser(map, markers_hash);
-               }) ;
-           }
-           else { // it is a tagname
-
-               map.on('zoomend' , function () {
-                   contentLayerParser(map, markers_hash, mainLayer);
-               }) ;
-
-               map.on('moveend' , function () {
-                   contentLayerParser(map, markers_hash, mainLayer);
-               }) ;
-           }
-       }
+      displayMapContent(map, markers_hash, options.mainContent);
    }
 
-   function setupLEL(map , sethash){
-      L.tileLayer('https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(map) ;
+   function displayMapContent(map, markers_hash, mainContent) {
+      if(typeof mainContent !== "undefined" && mainContent !== ""){
+         if(mainContent === "people"){
+            peopleMap();
+            map.on('zoomend', peopleMap);
+            map.on('moveend', peopleMap);
+         }
+         else {
+            mainContent = (mainContent === "content") ? null : mainContent;
+            contentMap();
+            map.on('zoomend', contentMap);
+            map.on('moveend', contentMap);
+         }
+      }
 
-      L.LayerGroup.EnvironmentalLayers({
-          hash: !!sethash,
-      }).addTo(map);
+      function contentMap() {
+         contentLayerParser(map, markers_hash, mainContent);
+      }
+      function peopleMap() {
+         peopleLayerParser(map, markers_hash);
+      }
    }

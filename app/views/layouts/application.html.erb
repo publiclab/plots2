@@ -22,6 +22,7 @@
     </script>
 
     <%= stylesheet_link_tag "application", :media => "all" %>
+    <link href="/lib/@fortawesome/fontawesome-free/css/all.min.css" media="all" rel="stylesheet" type="text/css" />
     <link href="/lib/font-awesome/css/font-awesome.min.css" media="all" rel="stylesheet" type="text/css" />
     <% if @node && @node.has_tag('style:fancy') %>
       <%= stylesheet_link_tag "fancy", :media => "all" %>
@@ -98,15 +99,15 @@
      background: #BABABA;
     }
 
-  </style>
+    .leaflet-popup-content {
+      width: 800px !important;
+    }
 
-  <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
-  <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
-  <script src="https://cdn.jsdelivr.net/npm/leaflet-search@2.4.0/dist/leaflet-search.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/leaflet-search@2.4.0/dist/leaflet-search.min.css">
+  </style>  
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/bootstrap-slider.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/css/bootstrap-slider.min.css" />
+  
   </head>
 
   <body>

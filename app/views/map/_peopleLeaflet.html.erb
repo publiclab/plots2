@@ -1,4 +1,3 @@
-<%= render :partial => "map/mapDependencies" %>
 <% unique_id = rand(1000) %>
 
   <style>
@@ -125,10 +124,16 @@
        });
    }) ;
 
+    var setHash = 1;
     <% if defined? url_hash != nil and url_hash == 0 %>
-      setupLEL(map<%= unique_id %> , 0) ;
-    <% else %>
-      setupLEL(map<%= unique_id %> , 1) ;
+      setHash = 0;
     <% end %>
+
+    var options<%= unique_id %> = {
+      mainContent: "people",
+      setHash: setHash
+    }
+    setupLEL(map<%= unique_id %>, markers_hash<%= unique_id %>, options<%= unique_id %>);
+    
 
   </script>

@@ -1,5 +1,3 @@
-<%= render :partial => "map/mapDependencies" %>
-
 <div style="width:100%;margin-left:0;height:300px;" id="map"></div>
 <p><i><small>
   <% if !@map_lat.nil? && !@map_lon.nil? %>
@@ -55,7 +53,13 @@
       map.setView(user_latlng , 3) ;
    <% end %>
 
-   setupLEL(map , 1) ;
+    var markers_hash = new Map();
+    var options = {
+      mainContent: "people",
+      setHash: setHash
+    }
+    setupLEL(map, markers_hash, options);
+
    setupFullScreen(map , map.getCenter().lat , map.getCenter().lng) ;
 </script>
 

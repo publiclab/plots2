@@ -42,21 +42,21 @@
 <% else %>
 
 <div class="im d-none d-md-block" id="wiki-empty1">
-    <div class="bottom-right"><%= Tag.follower_count(params[:id]) %> people discussing</div>
+    <div class="bottom-right"><%= pluralize(Tag.follower_count(params[:id]), 'person') %> discussing</div>
 </div>
 <div class="im d-sm-none" id="wiki-empty2">
-    <div class="bottom-right"><%= Tag.follower_count(params[:id]) %> people discussing</div>
+    <div class="bottom-right"><%= pluralize(Tag.follower_count(params[:id]), 'person') %> discussing</div>
 </div>
 <% end %>
 
 <style>
 
-.container:not(#loginSignupContainer) {
-  min-width: 100%;
-  margin-top: -21px;
-  width: 100%;
-  float: left;
-}
+  .container:not(#loginSignupContainer) > .container {
+    min-width: 100%;
+    margin-top: -21px;
+    width: 100%;
+    float: left;
+  }
 
 #tag-wiki-header-image1 {
   width:auto;

@@ -6,7 +6,7 @@ PublicLab.org
 [![first-timers-only-friendly](http://img.shields.io/badge/first--timers--only-friendly-blue.svg?style=flat-square)](https://code.publiclab.org#r=all)
 [![Join the chat at https://publiclab.org/chat](https://img.shields.io/badge/chat-in%20different%20ways-blue.svg)](https://publiclab.org/chat)
 [![Code Climate](https://codeclimate.com/github/publiclab/plots2/badges/gpa.svg)](https://codeclimate.com/github/publiclab/plots2)
-[![Coverage Status](https://coveralls.io/repos/github/publiclab/plots2/badge.svg?branch=HEAD)](https://coveralls.io/github/publiclab/plots2?branch=HEAD)
+[![codecov](https://codecov.io/gh/publiclab/plots2/branch/master/graph/badge.svg)](https://codecov.io/gh/publiclab/plots2)
 [![View performance data on Skylight](https://badges.skylight.io/typical/GZDPChmcfm1Q.svg)](https://oss.skylight.io/app/applications/GZDPChmcfm1Q)
 [![Newcomers welcome](https://img.shields.io/badge/newcomers-welcome-pink.svg)](https://code.publiclab.org)
 
@@ -29,6 +29,7 @@ Some key features include:
 We are developing a draft Roadmap for `plots2` and our broader Public Lab code projects; [read more and comment here](https://publiclab.org/notes/warren/05-22-2019/draft-of-a-public-lab-software-roadmap-comments-welcome).
 
 ## Table of Contents
+
 1. [What Makes This Project Different](#what-makes-this-project-different)
 2. [Data model](#data-model)
 3. [Contributing](#contributing)
@@ -40,15 +41,16 @@ We are developing a draft Roadmap for `plots2` and our broader Public Lab code p
 6. [SSL in Development](#ssl-in-development)
 7. [Login](#login)
 8. [Testing](#testing)
-9. [API](https://github.com/publiclab/plots2/blob/master/doc/API.md)
-10. [Bundle Exec](#bundle-exec)
-11. [Reply-by-email](#reply-by-email)
-12. [Bugs and Support](#bugs-and-support)
-13. [Recaptcha](#recaptcha)
-14. [Internationalization](#internationalization)
-15. [Security](#security)
-16. [Developers](#developers)
-17. [First Time?](#first-time)
+9. [Maintainers](#maintainers)
+10. [API](https://github.com/publiclab/plots2/blob/master/doc/API.md)
+11. [Bundle Exec](#bundle-exec)
+12. [Reply-by-email](#reply-by-email)
+13. [Bugs and Support](#bugs-and-support)
+14. [Recaptcha](#recaptcha)
+15. [Internationalization](#internationalization)
+16. [Security](#security)
+17. [Developers](#developers)
+18. [First Time?](#first-time)
 
 
 ****
@@ -97,8 +99,8 @@ For information on how to install for use with the cloud environment, please see
 	    * Using **rvm**: `rvm install 2.4.4` followed by `rvm use 2.4.4`
 	    * Using **rbenv**:  `rbenv install 2.4.4` followed by `rbenv local 2.4.4`
     * Install gems with `bundle install --without production mysql` from the rails root folder, to install the gems you'll need, excluding those needed only in production.
-5. Make a copy of `db/schema.rb.example` and place it at `db/schema.rb`.
-6. Make a copy of `config/database.yml.sqlite.example` and place it at `config/database.yml`
+5. Run `cp db/schema.rb.example db/schema.rb` to make a copy of `db/schema.rb.example` in `db/schema.rb`.
+6. Run `cp config/database.yml.sqlite.example config/database.yml` to make a copy of `config/database.yml.sqlite.example` in `config/database.yml`.
 7. Run `rake db:setup` to set up the database
 8. Install static assets (like external javascript libraries, fonts) with `yarn install`
 9. By default, start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser.
@@ -111,6 +113,18 @@ For information on how to install for use with the cloud environment, please see
 We recommend you either work in a virtual environment, or on a dual booted system to avoid dependencies issues and also Unix system works smoother with Ruby and Rails. This will not only benefit you now for plots2, but also in future while working on other Ruby projects, a Linux or Mac based OS will make your development so much smoother. 
 1. [Dual Booting](https://www.tecmint.com/install-ubuntu-alongside-with-windows-dual-boot/amp/), [option2](https://askubuntu.com/questions/1031993/how-to-install-ubuntu-18-04-alongside-windows-10), [video guide](https://www.youtube.com/watch?v=qNeJvujdB-0&fbclid=IwAR0APhs89jlNR_ENKbSwrp6TI6P-wxlx-a0My9XBvPNAfwtADZaAXqcKtP4)
 2. [Setting up a linux virtual env](https://itsfoss.com/install-linux-in-virtualbox/)
+
+## Redis Installation
+
+Public Lab uses Redis and may be required for some functionality when running the application locally.
+1. Install Redis if you haven't already:
+  * Using **MacOS**: `brew install redis`
+  * Using **Linux**: `sudo yum -y install redis`
+2. Run Redis server:
+  * Using **MacOS**: `brew services start redis`
+  * Using **Linux**: `redis-server`
+3. Run SideKiq: `bundle exec sidekiq`
+4. If SideKiq started correctly Redis is now configured and working!
 
 ## SSL in Development
 
@@ -134,6 +148,10 @@ For more on the login systems, see [this page](https://github.com/publiclab/plot
 ## Testing
 
 Click [here](https://github.com/publiclab/plots2/blob/master/doc/TESTING.md) for a comprehensive description of testing.
+
+## Maintainers
+
+See [/docs/MAINTAINERS.md](https://github.com/publiclab/plots2/blob/master/doc/LOGIN_SYSTEMS.md/docs/MAINTAINERS.md) for Public Lab's policy on feature maintainers!
 
 ## How to start and modify cron jobs
 

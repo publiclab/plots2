@@ -49,6 +49,8 @@ window.__gcse = {
       <%= render partial: 'tag/related', locals: { tags: Tag.related(params[:query] || params[:q]) } if params[:query] || params[:q] %>
     </div>
 
+    <%= render partial: 'search/pinned', locals: { query: params[:query] || params[:q] } if params[:query] || params[:q] %>
+
     <div class="gcse-searchresults" style="width:100%" data-gname="customSearch"></div>
 
     <p id="loadingSearch">
