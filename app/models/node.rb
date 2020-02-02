@@ -387,11 +387,7 @@ class Node < ActiveRecord::Base
 
   # power tags have "key:value" format, and should be searched with a "key:*" wildcard
   def has_power_tag(key)
-    tids = Tag.includes(:node_tag)
-              .references(:community_tags)
-              .where('community_tags.nid = ? AND name LIKE ?', id, key + ':%')
-              .collect(&:tid)
-    !NodeTag.where('nid = ? AND tid IN (?)', id, tids).empty?
+    !power_tag(key).blank?
   end
 
   # returns the value for the most recent power tag of form key:value

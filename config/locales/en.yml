@@ -112,7 +112,7 @@ en:
       create_password: "Create a password"
       change_password: "Change your password"
       password: "password"
-      confirmation: "Confirmation"
+      password_confirmation: "Password Confirmation"
       confirm_password: "Retype your password to confirm"
       bio: "Bio"
       add_bio: "Add a short bio to appear on your profile page"

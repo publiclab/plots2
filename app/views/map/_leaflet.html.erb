@@ -1,4 +1,3 @@
-<%= render :partial => "map/mapDependencies" %>
 <% top_map ||= false %>
 <% zoom ||= lat.to_s.length.to_i + 6 %>
 <% unique_id = rand(1000) %>
@@ -34,7 +33,7 @@
 
     var markers_hash<%= unique_id %> = new Map() ;
 
-    setupLEL(map<%= unique_id %> , 0) ;
+    setupLEL(map<%= unique_id %>, markers_hash<%= unique_id %>);
 
     map<%= unique_id %>.on('zoomend' , function () {
        var NWlat = map<%= unique_id %>.getBounds().getNorthWest().lat ;

@@ -1,5 +1,3 @@
-<%= render :partial => "map/mapDependencies" %>
-
 <% unique_id = rand(1000) %>
 
   <style>
@@ -49,18 +47,19 @@
     
      }, 3500);
 
-    setupLEL(map<%= unique_id %> , 0) ;
+    setupLEL(map<%= unique_id %>, markers_hash<%= unique_id %>);
+
     var map_tagname<%= unique_id %> = null;
      <% if (defined? tagname != nil and tagname.nil? == false) %>
            map_tagname<%= unique_id %> = "<%= tagname %>" ;
      <% end %>
 
-     map<%= unique_id %>.on('zoomend' , function () {
-        contentLayerParser(map<%= unique_id %>, markers_hash<%= unique_id %>, map_tagname<%= unique_id %>);
-    }) ;
+    //  map<%= unique_id %>.on('zoomend' , function () {
+    //     contentLayerParser(map<%= unique_id %>, markers_hash<%= unique_id %>, map_tagname<%= unique_id %>);
+    // }) ;
 
-    map<%= unique_id %>.on('moveend' , function () {
-        contentLayerParser(map<%= unique_id %>, markers_hash<%= unique_id %>, map_tagname<%= unique_id %>);
-    }) ;
+    // map<%= unique_id %>.on('moveend' , function () {
+    //     contentLayerParser(map<%= unique_id %>, markers_hash<%= unique_id %>, map_tagname<%= unique_id %>);
+    // }) ;
    
   </script>

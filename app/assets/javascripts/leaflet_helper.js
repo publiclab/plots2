@@ -89,68 +89,52 @@
        });
    }
 
-   
+   function setupLEL(map, markers_hash = null, params = {}) {
+      var options = {};
+      options.layers = params.layers || [];
+      options.setHash = params.setHash || false;
+      options.mainContent = params.mainContent || "";
+      options.displayLayers = params.displayLayers || false;
 
-   function setupInlineLEL(map , layers, mainLayer, markers_hash) {
-
-       layers = layers.split(',');
-
-       L.tileLayer('https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png').addTo(map) ;
-
-       var oms = omsUtil(map, {
-          keepSpiderfied: true,
-          circleSpiralSwitchover: 0
-       });
-
-       L.LayerGroup.EnvironmentalLayers({
-           include: layers,
-       }).addTo(map);
-
-       if(typeof mainLayer !== "undefined" && mainLayer !== ""){
-           if(mainLayer === "people"){
-               
-               map.on('zoomend' , function () {
-                  peopleLayerParser(map, markers_hash);
-               }) ;
-
-               map.on('moveend' , function () {
-                   peopleLayerParser(map, markers_hash);
-               }) ;
-           }
-           else if(mainLayer === "content"){
-               
-               map.on('zoomend' , function () {
-                   contentLayerParser(map, markers_hash);
-               }) ;
-
-               map.on('moveend' , function () {
-                   contentLayerParser(map, markers_hash);
-               }) ;
-           }
-           else { // it is a tagname
-
-               map.on('zoomend' , function () {
-                   contentLayerParser(map, markers_hash, mainLayer);
-               }) ;
-
-               map.on('moveend' , function () {
-                   contentLayerParser(map, markers_hash, mainLayer);
-               }) ;
-           }
-       }
-   }
-
-   function setupLEL(map , sethash){
-      L.tileLayer('https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(map) ;
+      if (typeof options.layers === "string") {
+        options.layers = options.layers.split(',');
+      }
 
       var oms = omsUtil(map, {
-        keepSpiderfied: true,
-        circleSpiralSwitchover: 0
+         keepSpiderfied: true,
+         circleSpiralSwitchover: 0
       });
 
-      L.LayerGroup.EnvironmentalLayers({
-          hash: !!sethash,
-      }).addTo(map);
+      var optionsLEL = {
+        addLayersToMap: options.displayLayers,
+      };
+      if (options.layers.length > 0) {
+         optionsLEL.include = options.layers;
+      }
+      L.LayerGroup.EnvironmentalLayers(optionsLEL).addTo(map);
+
+      displayMapContent(map, markers_hash, options.mainContent);
+   }
+
+   function displayMapContent(map, markers_hash, mainContent) {
+      if(typeof mainContent !== "undefined" && mainContent !== ""){
+         if(mainContent === "people"){
+            peopleMap();
+            map.on('zoomend', peopleMap);
+            map.on('moveend', peopleMap);
+         }
+         else {
+            mainContent = (mainContent === "content") ? null : mainContent;
+            contentMap();
+            map.on('zoomend', contentMap);
+            map.on('moveend', contentMap);
+         }
+      }
+
+      function contentMap() {
+         contentLayerParser(map, markers_hash, mainContent);
+      }
+      function peopleMap() {
+         peopleLayerParser(map, markers_hash);
+      }
    }
