@@ -91,6 +91,18 @@ class Comment < ApplicationRecord
     aid.zero? ? node : answer&.node
   end
 
+  def status_value
+    if status == 0
+      'Banned'
+    elsif status == 1
+      'Normal'
+    elsif status == 4
+      'Moderated'
+    else
+      'Not Defined'  
+    end
+  end
+  
   def mentioned_users
     usernames = comment.scan(Callouts.const_get(:FINDER))
     User.where(username: usernames.map { |m| m[1] }).distinct
