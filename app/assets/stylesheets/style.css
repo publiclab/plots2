@@ -597,7 +597,7 @@ textarea, input {
 .inline-fullwidth-content {
   width:100vw !important;
   margin:0 calc((100% / 2) - 50vw) !important;
-  z-index:0 !important;
+  z-index: 10 !important;
 }
 
 @media (min-width: 992px) {
