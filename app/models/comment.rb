@@ -99,10 +99,10 @@ class Comment < ApplicationRecord
     elsif status == 4
       'Moderated'
     else
-      'Not Defined'  
+      'Not Defined'
     end
   end
-  
+
   def mentioned_users
     usernames = comment.scan(Callouts.const_get(:FINDER))
     User.where(username: usernames.map { |m| m[1] }).distinct
