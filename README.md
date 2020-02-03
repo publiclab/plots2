@@ -151,7 +151,7 @@ Click [here](https://github.com/publiclab/plots2/blob/master/doc/TESTING.md) for
 
 ## Maintainers
 
-See [/docs/MAINTAINERS.md](https://github.com/publiclab/plots2/blob/master/doc/LOGIN_SYSTEMS.md/docs/MAINTAINERS.md) for Public Lab's policy on feature maintainers!
+See [/doc/MAINTAINERS.md](https://github.com/publiclab/plots2/blob/master/doc/MAINTAINERS.md) for Public Lab's policy on feature maintainers!
 
 ## How to start and modify cron jobs
 
