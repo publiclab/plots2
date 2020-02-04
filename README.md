@@ -147,7 +147,7 @@ For more on the login systems, see [this page](https://github.com/publiclab/plot
 
 ## Testing
 
-Click [here](https://github.com/publiclab/plots2/blob/master/doc/TESTING.md) for a comprehensive description of testing.
+Click [here](https://github.com/publiclab/plots2/blob/master/doc/TESTING.md) for a comprehensive description of testing and [here](SYSTEM_TESTS.md) to learn about system tests.
 
 ## Maintainers
 
