@@ -89,31 +89,42 @@
        });
    }
 
-   
+   function setupLEL(map, markers_hash = null, params = {}) {
+      var options = {};
+      options.layers = params.layers || [];
+      options.setHash = params.setHash || false;
+      options.mainContent = params.mainContent || "";
+      options.displayLayers = params.displayLayers || false;
 
-   function setupInlineLEL(map , layers, mainLayer, markers_hash) {
-
-      layers = layers.split(',');
-
-      L.tileLayer('https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png').addTo(map) ;
+      if (typeof options.layers === "string") {
+        options.layers = options.layers.split(',');
+      }
 
       var oms = omsUtil(map, {
          keepSpiderfied: true,
          circleSpiralSwitchover: 0
       });
 
-      L.LayerGroup.EnvironmentalLayers({
-         include: layers,
-      }).addTo(map);
+      var optionsLEL = {
+        addLayersToMap: options.displayLayers,
+      };
+      if (options.layers.length > 0) {
+         optionsLEL.include = options.layers;
+      }
+      L.LayerGroup.EnvironmentalLayers(optionsLEL).addTo(map);
 
-      if(typeof mainLayer !== "undefined" && mainLayer !== ""){
-         if(mainLayer === "people"){
+      displayMapContent(map, markers_hash, options.mainContent);
+   }
+
+   function displayMapContent(map, markers_hash, mainContent) {
+      if(typeof mainContent !== "undefined" && mainContent !== ""){
+         if(mainContent === "people"){
             peopleMap();
             map.on('zoomend', peopleMap);
             map.on('moveend', peopleMap);
          }
          else {
-            mainLayer = (mainLayer === "content") ? null : mainLayer;
+            mainContent = (mainContent === "content") ? null : mainContent;
             contentMap();
             map.on('zoomend', contentMap);
             map.on('moveend', contentMap);
@@ -121,24 +132,9 @@
       }
 
       function contentMap() {
-         contentLayerParser(map, markers_hash, mainLayer);
+         contentLayerParser(map, markers_hash, mainContent);
       }
       function peopleMap() {
          peopleLayerParser(map, markers_hash);
       }
-   }
-
-   function setupLEL(map , sethash){
-      L.tileLayer('https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(map) ;
-
-      var oms = omsUtil(map, {
-        keepSpiderfied: true,
-        circleSpiralSwitchover: 0
-      });
-
-      L.LayerGroup.EnvironmentalLayers({
-          hash: !!sethash,
-      }).addTo(map);
    }
