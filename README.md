@@ -8,7 +8,7 @@ PublicLab.org
 [![Code Climate](https://codeclimate.com/github/publiclab/plots2/badges/gpa.svg)](https://codeclimate.com/github/publiclab/plots2)
 [![codecov](https://codecov.io/gh/publiclab/plots2/branch/master/graph/badge.svg)](https://codecov.io/gh/publiclab/plots2)
 [![View performance data on Skylight](https://badges.skylight.io/typical/GZDPChmcfm1Q.svg)](https://oss.skylight.io/app/applications/GZDPChmcfm1Q)
-[![Newcomers welcome](https://img.shields.io/badge/newcomers-welcome-pink.svg)](https://code.publiclab.org)
+[![Newcomers welcome](https://img.shields.io/badge/newcomers-welcome-pink.svg)](https://code.publiclab.org) [![GitHub license](https://img.shields.io/github/license/publiclab/plots2?logo=gpl)](https://github.com/publiclab/plots2/blob/master/LICENSE)
 
 The content management system for the Public Lab research community, the `plots2` web application is a combination of a group research blog of what we call "research notes" and a wiki. Read more about the [data model here](https://github.com/publiclab/plots2/blob/master/doc/DATA_MODEL.md).
 
@@ -147,11 +147,11 @@ For more on the login systems, see [this page](https://github.com/publiclab/plot
 
 ## Testing
 
-Click [here](https://github.com/publiclab/plots2/blob/master/doc/TESTING.md) for a comprehensive description of testing.
+Click [here](https://github.com/publiclab/plots2/blob/master/doc/TESTING.md) for a comprehensive description of testing and [here](SYSTEM_TESTS.md) to learn about system tests.
 
 ## Maintainers
 
-See [/docs/MAINTAINERS.md](https://github.com/publiclab/plots2/blob/master/doc/LOGIN_SYSTEMS.md/docs/MAINTAINERS.md) for Public Lab's policy on feature maintainers!
++ See [/doc/MAINTAINERS.md](https://github.com/publiclab/plots2/blob/master/doc/MAINTAINERS.md) for Public Lab's policy on feature maintainers!
 
 ## How to start and modify cron jobs
 
@@ -232,5 +232,8 @@ New to open source/free software? Here is a selection of issues we've made **esp
 <center>
 
 #### [Platforms that :heart: OSS](./doc/SUPPORTERS.md)
+
+[![Twitter Follow](https://img.shields.io/twitter/follow/PublicLab?style=social)](https://twitter.com/PublicLab)
+
 
 </center>
