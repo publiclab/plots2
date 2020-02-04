@@ -44,7 +44,7 @@ class PostTest < ApplicationSystemTestCase
   end
 
   test 'removing tags from the post' do
-    visit '/wiki/wiki-page-path/comments'
+    visit '/wiki/wiki-page-path'
 
     find('a#tags-open').click()
 
