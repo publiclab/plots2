@@ -211,8 +211,8 @@ class UserSessionsController < ApplicationController
     @user_session = UserSession.find
     if current_user
       @user_session.destroy
-      flash[:notice] = I18n.t('user_sessions_controller.logged_out')
     end
+    flash[:notice] = I18n.t('user_sessions_controller.logged_out')
     prev_uri = URI(request.referer || "").path
     redirect_to prev_uri + '?_=' + Time.current.to_i.to_s
   end
