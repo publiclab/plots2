@@ -209,7 +209,7 @@ class UserSessionsController < ApplicationController
 
   def destroy
     @user_session = UserSession.find
-    if current_user
+    unless @user_session.nil?
       @user_session.destroy
     end
     flash[:notice] = I18n.t('user_sessions_controller.logged_out')
