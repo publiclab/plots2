@@ -209,9 +209,7 @@ class UserSessionsController < ApplicationController
 
   def destroy
     @user_session = UserSession.find
-    unless @user_session.nil?
-      @user_session.destroy
-    end
+    @user_session&.destroy
     flash[:notice] = I18n.t('user_sessions_controller.logged_out')
     prev_uri = URI(request.referer || "").path
     redirect_to prev_uri + '?_=' + Time.current.to_i.to_s
