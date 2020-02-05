@@ -597,7 +597,7 @@ textarea, input {
 .inline-fullwidth-content {
   width:100vw !important;
   margin:0 calc((100% / 2) - 50vw) !important;
-  z-index:0 !important;
+  /* z-index: 10 !important; */
 }
 
 @media (min-width: 992px) {
@@ -613,7 +613,7 @@ textarea, input {
 
 .sidebar-panel {
   background: rgba(255,255,255,0.8);
-  z-index: 9999;
+  z-index: 700;
   border-radius: 4px;
   padding: 10px; 
 }

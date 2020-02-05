@@ -12,7 +12,7 @@
     "cms",
     "publiclab"
   ],
-  "author": "Public Lab",
+  "author": "Public Lab <web@publiclab.org> (https://publiclab.org)",
   "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/publiclab/plots2/issues"
@@ -41,7 +41,7 @@
     "jsdiff": "components/jsdiff#~3.4.0",
     "junction": "theleagueof/junction#*",
     "leaflet": "^1.6.0",
-    "leaflet-blurred-location": "^1.6.0",
+    "leaflet-blurred-location": "^1.7.0",
     "leaflet-environmental-layers": "^2.1.9",
     "leaflet-hash": "^0.2.1",
     "leaflet-spin": "1.1.0",

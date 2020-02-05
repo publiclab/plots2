@@ -65,6 +65,7 @@
                 <input type='hidden' name='nid' value='<%= node.id %>'/>
                 <input type='submit' class='btn btn-primary' value='Give'/> &nbsp; <a _target='blank' href='/wiki/barnstars'>Learn more</a>
             </form>
+            <br>
         <% end %>
 
         <p><a class='btn btn-sm btn-outline-secondary' rel='tooltip' title='Try the beta inline Rich Wiki editor.' data-placement='top' href='<%= node.path %>?raw=true'>
@@ -164,6 +165,9 @@
           window.print();
           $('body').css('column-count', 1)
                .css('column-gap', 0);
+      }
+      function print_linkless() {
+          window.print();
       }
       // Event listner on CLICK on links
       $(document).on("click", "#print-command-3-col",print_three_column);

@@ -1,12 +1,9 @@
-<%= render :partial => "map/mapDependencies" %>
-  
   <style>
   body, body>.container, body>.container>.row {
     margin: 0;
     padding: 0;
     width: 100vw;
-    max-width: 100%;
-  }
+    max-width: 100%;  }
   body>.container {
     padding-top: 0px;
   }
@@ -51,9 +48,9 @@
         
       const params = urlHash.getUrlHashParameters();
      
-      var lat = parseFloat(params.lat);
-      var lon = parseFloat(params.lon);
-      var zoom = parseFloat(params.zoom);
+      var lat = parseFloat(params.lat) || 10;
+      var lon = parseFloat(params.lon) || 1;
+      var zoom = parseFloat(params.zoom) || 6;
 
       const bounds = new L.LatLngBounds(
         new L.LatLng(84.67351257, -172.96875),
@@ -85,29 +82,29 @@
         urlHash.setUrlHashParameter('zoom', zoom + "");
       }
 
-      <% if @layersname.nil? %>
-        var layersname = ['odorreport', 'asian', 'clouds', 'eonetFiresLayer', 'Unearthing'];
-      <% else %>
-        var layersname = "<%= @layersname %>";
-        layersname = layersname.split(',')
-      <% end %>
+      // var baseLayer = L.tileLayer(
+      //   "https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",
+      //   {
+      //     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      //   }
+      // ).addTo(map);
 
-      var baseLayer = L.tileLayer(
-        "https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",
-        {
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }
-      ).addTo(map);
+      var markers_hash = new Map();
+      var options = {
+        mainContent: "content",
+        setHash: false
+      }
+      setupLEL(map, markers_hash, options);
 
 
-      L.LayerGroup.EnvironmentalLayers({
-        baseLayers: {
-         'Gray-scale': baselayer
-        },
-        // include: layersname,
-        hash: false,
-        embed: true,
-        hostname: 'publiclab.org',
-      }).addTo(map);
+      // L.LayerGroup.EnvironmentalLayers({
+      //   // baseLayers: {
+      //   //  'Gray-scale': baselayer
+      //   // },
+      //   // include: layersname,
+      //   hash: false,
+      //   embed: true,
+      //   hostname: 'publiclab.org',
+      // }).addTo(map);
 
     </script>

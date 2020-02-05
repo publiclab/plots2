@@ -44,7 +44,7 @@ class PostTest < ApplicationSystemTestCase
   end
 
   test 'removing tags from the post' do
-    visit '/wiki/wiki-page-path/comments'
+    visit '/wiki/wiki-page-path'
 
     find('a#tags-open').click()
 
@@ -148,7 +148,7 @@ class PostTest < ApplicationSystemTestCase
 
     accept_confirm "Are you sure?" do
       # revert to the previous version of wiki
-      find('#row0 a[data-confirm="Are you sure?"]', text: "Revert").click()
+      find('#row0 .btn-revert').click()
     end
 
     wiki_content = find("#content p").text

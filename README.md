@@ -8,7 +8,7 @@ PublicLab.org
 [![Code Climate](https://codeclimate.com/github/publiclab/plots2/badges/gpa.svg)](https://codeclimate.com/github/publiclab/plots2)
 [![codecov](https://codecov.io/gh/publiclab/plots2/branch/master/graph/badge.svg)](https://codecov.io/gh/publiclab/plots2)
 [![View performance data on Skylight](https://badges.skylight.io/typical/GZDPChmcfm1Q.svg)](https://oss.skylight.io/app/applications/GZDPChmcfm1Q)
-[![Newcomers welcome](https://img.shields.io/badge/newcomers-welcome-pink.svg)](https://code.publiclab.org)
+[![Newcomers welcome](https://img.shields.io/badge/newcomers-welcome-pink.svg)](https://code.publiclab.org) [![GitHub license](https://img.shields.io/github/license/publiclab/plots2?logo=gpl)](https://github.com/publiclab/plots2/blob/master/LICENSE)
 
 The content management system for the Public Lab research community, the `plots2` web application is a combination of a group research blog of what we call "research notes" and a wiki. Read more about the [data model here](https://github.com/publiclab/plots2/blob/master/doc/DATA_MODEL.md).
 
@@ -29,6 +29,7 @@ Some key features include:
 We are developing a draft Roadmap for `plots2` and our broader Public Lab code projects; [read more and comment here](https://publiclab.org/notes/warren/05-22-2019/draft-of-a-public-lab-software-roadmap-comments-welcome).
 
 ## Table of Contents
+
 1. [What Makes This Project Different](#what-makes-this-project-different)
 2. [Data model](#data-model)
 3. [Contributing](#contributing)
@@ -40,15 +41,16 @@ We are developing a draft Roadmap for `plots2` and our broader Public Lab code p
 6. [SSL in Development](#ssl-in-development)
 7. [Login](#login)
 8. [Testing](#testing)
-9. [API](https://github.com/publiclab/plots2/blob/master/doc/API.md)
-10. [Bundle Exec](#bundle-exec)
-11. [Reply-by-email](#reply-by-email)
-12. [Bugs and Support](#bugs-and-support)
-13. [Recaptcha](#recaptcha)
-14. [Internationalization](#internationalization)
-15. [Security](#security)
-16. [Developers](#developers)
-17. [First Time?](#first-time)
+9. [Maintainers](#maintainers)
+10. [API](https://github.com/publiclab/plots2/blob/master/doc/API.md)
+11. [Bundle Exec](#bundle-exec)
+12. [Reply-by-email](#reply-by-email)
+13. [Bugs and Support](#bugs-and-support)
+14. [Recaptcha](#recaptcha)
+15. [Internationalization](#internationalization)
+16. [Security](#security)
+17. [Developers](#developers)
+18. [First Time?](#first-time)
 
 
 ****
@@ -97,8 +99,8 @@ For information on how to install for use with the cloud environment, please see
 	    * Using **rvm**: `rvm install 2.4.4` followed by `rvm use 2.4.4`
 	    * Using **rbenv**:  `rbenv install 2.4.4` followed by `rbenv local 2.4.4`
     * Install gems with `bundle install --without production mysql` from the rails root folder, to install the gems you'll need, excluding those needed only in production.
-5. Make a copy of `db/schema.rb.example` and place it at `db/schema.rb`.
-6. Make a copy of `config/database.yml.sqlite.example` and place it at `config/database.yml`
+5. Run `cp db/schema.rb.example db/schema.rb` to make a copy of `db/schema.rb.example` in `db/schema.rb`.
+6. Run `cp config/database.yml.sqlite.example config/database.yml` to make a copy of `config/database.yml.sqlite.example` in `config/database.yml`.
 7. Run `rake db:setup` to set up the database
 8. Install static assets (like external javascript libraries, fonts) with `yarn install`
 9. By default, start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser.
@@ -145,7 +147,11 @@ For more on the login systems, see [this page](https://github.com/publiclab/plot
 
 ## Testing
 
-Click [here](https://github.com/publiclab/plots2/blob/master/doc/TESTING.md) for a comprehensive description of testing.
+Click [here](https://github.com/publiclab/plots2/blob/master/doc/TESTING.md) for a comprehensive description of testing and [here](SYSTEM_TESTS.md) to learn about system tests.
+
+## Maintainers
+
++ See [/doc/MAINTAINERS.md](https://github.com/publiclab/plots2/blob/master/doc/MAINTAINERS.md) for Public Lab's policy on feature maintainers!
 
 ## How to start and modify cron jobs
 
@@ -226,5 +232,8 @@ New to open source/free software? Here is a selection of issues we've made **esp
 <center>
 
 #### [Platforms that :heart: OSS](./doc/SUPPORTERS.md)
+
+[![Twitter Follow](https://img.shields.io/twitter/follow/PublicLab?style=social)](https://twitter.com/PublicLab)
+
 
 </center>
