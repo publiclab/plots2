@@ -8,6 +8,7 @@ class CommentMailer < ActionMailer::Base
   # CommentMailer.notify_of_comment(user,self).deliver_now
   def notify(user, comment)
     @user = user
+    @comment = comment
      mail(to: user.email, subject: "New comment on #{comment.parent.title} (##{comment.parent.id}) - #c#{comment.id} ") 
     @footer = feature('email-footer')
     mail(to: user.email, subject: "New comment on #{comment.parent.title}" \
@@ -15,6 +16,7 @@ class CommentMailer < ActionMailer::Base
   end
 
   def notify_note_author(user, comment)
+    @user=user
     mail(to: user.email, subject: "New comment on #{comment.node.title} (##{comment.node.id}) - #c#{comment.id}") 
     @comment = comment
     @footer = feature('email-footer')
