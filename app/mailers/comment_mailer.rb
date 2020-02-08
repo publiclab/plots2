@@ -9,18 +9,18 @@ class CommentMailer < ActionMailer::Base
   def notify(user, comment)
     @user = user
     @comment = comment
-     mail(to: user.email, subject: "New comment on #{comment.parent.title} (##{comment.parent.id}) - #c#{comment.id} ") 
+     mail(to: user.email, subject:"New comment on #{comment.parent.title} (##{comment.parent.id}) - #c#{comment.id} ") 
     @footer = feature('email-footer')
-    mail(to: user.email, subject: "New comment on #{comment.parent.title}" \
+    mail(to: user.email, subject:"New comment on #{comment.parent.title}" \
                                   " (##{comment.parent.id}) - #c#{comment.id} ")
   end
 
   def notify_note_author(user, comment)
-    @user=user
-    mail(to: user.email, subject: "New comment on #{comment.node.title} (##{comment.node.id}) - #c#{comment.id}") 
+    @user = user
+    mail(to: user.email, subject:"New comment on #{comment.node.title} (##{comment.node.id}) - #c#{comment.id}") 
     @comment = comment
     @footer = feature('email-footer')
-    mail(to: user.email, subject: "New comment on #{comment.node.title}" \
+    mail(to: user.email, subject:"New comment on #{comment.node.title}" \
                                   " (##{comment.node.id}) - #c#{comment.id}")
   end
 
