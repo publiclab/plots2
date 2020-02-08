@@ -9,10 +9,10 @@ class CommentMailer < ActionMailer::Base
   def notify(user, comment)
     @user = user
     @comment = comment
-     mail(to: user.email, subject: "New comment on #{comment.parent.title} (##{comment.parent.id}) - #c#{comment.id} ") 
+     mail(to: user.email, subject: "New comment on #{comment.parent.title} (##{comment.parent.id}) - #c#{comment.id}") 
     @footer = feature('email-footer')
     mail(to: user.email, subject: "New comment on #{comment.parent.title}" \
-                                  "(##{comment.parent.id}) - #c#{comment.id} ")
+                                  "(##{comment.parent.id}) - #c#{comment.id}")
   end
 
   def notify_note_author(user, comment)
@@ -37,7 +37,7 @@ class CommentMailer < ActionMailer::Base
     @comment = comment
     @footer = feature('email-footer')
     mail(to: user.email, subject: 'You were mentioned in a comment.' \
-                                  " (##{comment.node.id}) - #c#{comment.id} ")
+                                  " (##{comment.node.id}) - #c#{comment.id}")
   end
 
   def notify_tag_followers(comment, user)
@@ -46,7 +46,7 @@ class CommentMailer < ActionMailer::Base
     @footer = feature('email-footer')
     mail(to: user.email, subject: 'A tag you follow was mentioned in ' \
                                   'a comment.' \
-                                  " (##{comment.node.id}) - #c#{comment.id} ")
+                                  " (##{comment.node.id}) - #c#{comment.id}")
   end
 
   def notify_coauthor(user, note)
