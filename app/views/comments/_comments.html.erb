@@ -40,7 +40,7 @@
         <% elsif current_user &. can_moderate? %>
             Status: <%= comment.status_value  %>
             <a rel="tooltip" title="Mark as spam" class="btn btn-sm btn-outline-secondary btn-flag-spam-<%= comment.id %>" data-confirm="Are you sure? The user will no longer be able to log in or publish, and their content will be hidden except comments." href="/admin/mark_comment_spam/<%= comment.id %>">
-            <i class="fa fa-ban"></i>
+              <i class="fa fa-ban"></i>
             </a>
         <% else %>
             <a rel="tooltip" title="Flag as spam" class="btn btn-sm btn-outline-secondary btn-flag-spam-<%= comment.id %>" href="mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+comment+that+looks+like+spam+or+needs+to+be+moderated:+https://publiclab.org/<%= comment.parent.path %>#c<%= comment.cid %>+by+https://publiclab.org/profile/<% if comment.author %><%= comment.author.name %><% end %>+Thanks!">
