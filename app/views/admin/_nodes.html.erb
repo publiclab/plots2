@@ -1,5 +1,7 @@
-<table class="table">
-<tr><th><input id="batch-checkbox" type="checkbox" /></th><th>Title</th><th>Author</th><th>Action</th></tr>
+	<input type="search" class="table-filter" data-table="order" placeholder="Filter">
+
+<table class="order table">
+<thead><th><input id="batch-checkbox" type="checkbox" /></th><th>Title</th><th>Author</th><th>Action</th></thead>
 
 <script>
   (function(){
@@ -64,7 +66,9 @@
     </script>
   </div></td>
 </tr>
-<tr style="display:none;" id="ndel<%= node.id %>">
+<%
+=begin%>
+ <tr style="display:none;" id="ndel<%= node.id %>">
   <td>Content <a href='<%= node.path %>'>published</a>.</td>
   <td></td>
   <td></td>
@@ -78,6 +82,50 @@
   <td><a href="<%= node.path %>"><%= node.title %></a></td>
   <td><%= time_ago_in_words(node.created_at) %> ago</td>
   <td><%= node.body %></td>
-</tr>
+</tr> 
+<%
+=end%>
 <% end %>
 </table>
+
+<script>
+(function(document) {
+	'use strict';
+
+	var Filter = (function(Arr) {
+
+		var _input;
+
+		function _onInputEvent(e) {
+			_input = e.target;
+			var tables = document.getElementsByClassName(_input.getAttribute('data-table'));
+			Arr.forEach.call(tables, function(table) {
+				Arr.forEach.call(table.tBodies, function(tbody) {
+					Arr.forEach.call(tbody.rows, _filter);
+				});
+			});
+		}
+
+		function _filter(row) {
+			var text = row.textContent.toLowerCase(), val = _input.value.toLowerCase();
+			row.style.display = text.indexOf(val) === -1 ? 'none' : 'table-row';
+		}
+
+		return {
+			init: function() {
+				var inputs = document.getElementsByClassName('table-filter');
+				Arr.forEach.call(inputs, function(input) {
+					input.oninput = _onInputEvent;
+				});
+			}
+		};
+	})(Array.prototype);
+
+	document.addEventListener('readystatechange', function() {
+		if (document.readyState === 'complete') {
+			Filter.init();
+		}
+	});
+
+})(document);
+</script>
