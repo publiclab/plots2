@@ -33,7 +33,7 @@ gem 'mocha', '~> 1.11'
 gem 'mustermann' , '1.0.3'
 gem 'omniauth', '~> 1.9'
 gem 'omniauth-facebook', '~> 5.0'
-gem 'omniauth-github', '~> 1.1', '>= 1.1.2'
+gem 'omniauth-github', '~> 1.4'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
 gem "paperclip", "~> 6.1.0"
