@@ -53,7 +53,7 @@ class SearchServiceTest < ActiveSupport::TestCase
     result = SearchService.new.search_nodes(search_criteria.query)
 
     assert_not_nil result
-    assert_equal result.size, 1
+    assert_equal 1, result.size
   end
 
   test 'running search tags' do
@@ -68,7 +68,7 @@ class SearchServiceTest < ActiveSupport::TestCase
     result = SearchService.new.search_questions('question')
 
     assert_not_nil result
-    assert_equal result.size, 3
+    assert_equal 4, result.size
   end
 
   test 'running search taglocations with a wrong param format raises an exception' do

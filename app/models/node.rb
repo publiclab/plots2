@@ -606,6 +606,33 @@ class Node < ActiveRecord::Base
         .first
   end
 
+  def self.for_tagname_and_type(tagname, type = 'note', options = {})
+    return Node.for_wildcard_tagname_and_type(tagname, type) if options[:wildcard]
+
+    return Node.for_question_tagname_and_type(tagname, type) if options[:question]
+
+    Node.where(status: 1, type: type)
+      .includes(:revision, :tag)
+      .references(:term_data, :node_revisions)
+      .where('term_data.name = ? OR term_data.parent = ?', tagname, tagname)
+  end
+
+  def self.for_wildcard_tagname_and_type(tagname, type = 'note')
+    search_term = tagname[0..-2] + '%'
+    Node.where(status: 1, type: type)
+      .includes(:revision, :tag, :answers)
+      .references(:term_data, :node_revisions)
+      .where('term_data.name LIKE (?) OR term_data.parent LIKE (?)', search_term, search_term)
+  end
+
+  def self.for_question_tagname_and_type(tagname, type = 'note')
+    other_tag = tagname.include?("question:") ? tagname.split(':')[1] : "question:#{tagname}"
+    Node.where(status: 1, type: type)
+      .includes(:revision, :tag)
+      .references(:term_data, :node_revisions)
+      .where('term_data.name = ? OR term_data.name = ? OR term_data.parent = ?', tagname, other_tag, tagname)
+  end
+
   # ============================================
   # Automated constructors for associated models
 
