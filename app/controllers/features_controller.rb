@@ -1,7 +1,7 @@
 class FeaturesController < ApplicationController
   before_action :require_user, except: [:embed]
   helper_method :sort_feature
-  
+
   def index
     @title = "Features"
     @features = Node.where(type: 'feature')
@@ -89,7 +89,7 @@ class FeaturesController < ApplicationController
       end
     end
   end
-  
+
   def sort_feature(features, sorting_type)
     case sorting_type
     when 'title'
