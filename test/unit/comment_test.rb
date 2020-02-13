@@ -350,4 +350,10 @@ class CommentTest < ActiveSupport::TestCase
     assert_not_equal [], output.scan('<iframe width="560" height="315" src="https://www.youtube.com/embed/Kt%5C_MSMpxy7Y">\</iframe>')
   end
 
+  test 'should save comment with emojis' do
+    comment = Comment.new
+    comment.comment = "Comment with Emojis 😎😎😎"
+    assert comment.save
+  end
+
 end

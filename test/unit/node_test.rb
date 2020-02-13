@@ -110,6 +110,21 @@ class NodeTest < ActiveSupport::TestCase
     end
   end
 
+  test 'create a node' do
+    # in testing, uid and id should be matched, although this is not yet true in production db
+    node = Node.new(uid: users(:bob).id,
+                    type: 'note',
+                    title: 'My new node for node creation testing')
+    assert node.save
+  end
+
+  test 'create node with emojis' do
+    node = Node.new(uid: users(:bob).id,
+                    type: 'note',
+                    title: 'Title with Emojis 𝌆𝌆 😎😎😎𝌆𝌆')
+    assert node.save
+  end
+
   test 'create a feature' do
     node = Node.new(uid: users(:admin).id,
                     type: 'feature',
@@ -166,6 +181,17 @@ class NodeTest < ActiveSupport::TestCase
     saved, node, revision = Node.new_note(uid: users(:jeff).uid,
                                           title: 'Title',
                                           body: 'New note body')
+    assert saved
+    assert_equal 1, node.status
+    assert_equal 1, revision.status
+    assert_not_nil node.latest
+    assert_equal 'note', node.type
+  end
+
+  test 'create node revision with emojis' do
+    saved, node, revision = Node.new_note(uid: users(:jeff).uid,
+                                          title: 'Title',
+                                          body: 'Body with Emojis 😎😎😎')
     assert saved
     assert_equal 1, node.status
     assert_equal 1, revision.status

@@ -57,4 +57,10 @@ class AnswerTest < ActiveSupport::TestCase
     deleted_answer = answer.destroy
     assert_equal answer.comments.count, 0
   end
+
+  test 'should save answer with emojis' do
+    answer = Answer.new(content: "Answer with Emojis 😎😎😎")
+    assert answer.save
+  end
+
 end
