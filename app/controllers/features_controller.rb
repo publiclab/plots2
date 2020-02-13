@@ -1,6 +1,7 @@
 class FeaturesController < ApplicationController
   before_action :require_user, except: [:embed]
-
+  helper_method :sort_feature
+  
   def index
     @title = "Features"
     @features = Node.where(type: 'feature')
@@ -86,6 +87,17 @@ class FeaturesController < ApplicationController
         flash[:error] = 'Your edit could not be saved.'
         render action: 'edit'
       end
+    end
+  end
+  
+  def sort_feature(features,sorting_type)
+    case sorting_type
+    when 'title'
+      features.sort_by(&:title.downcase)
+    when 'last_edited'
+      features.sort_by(&:drupal_node_revisions_count).reverse!
+    else
+      features
     end
   end
 end
