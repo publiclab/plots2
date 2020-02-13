@@ -6,7 +6,8 @@ test:
   username: plots
   password: plots
   database: plots
-  encoding: utf8
+  encoding: utf8mb4
+  collation: utf8mb4_unicode_ci
   host: 127.0.0.1
   pool: 5
   timeout: 5000
@@ -17,7 +18,8 @@ development:
   adapter: mysql2
   username: 
   password: 
-  encoding: utf8
+  encoding: utf8mb4
+  collation: utf8mb4_unicode_ci
   database: publiclaboratory
   strict: false
 
@@ -27,7 +29,8 @@ production:
   password: plots
   database: plots
   host: db
-  encoding: utf8
+  encoding: utf8mb4
+  collation: utf8mb4_unicode_ci
   pool: 5
   timeout: 5000
   strict: false
