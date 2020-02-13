@@ -1097,7 +1097,7 @@ class Node < ActiveRecord::Base
     end
   end
 
-  def self.sort_feed(wikis,sorting_type)
+  def self.sort_feed(wikis, sorting_type)
     case sorting_type
     when 'title'
       wikis.sort_by(&:title.downcase)
@@ -1111,5 +1111,4 @@ class Node < ActiveRecord::Base
       wikis
     end
   end
-
 end
