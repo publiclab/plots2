@@ -1102,7 +1102,7 @@ class Node < ActiveRecord::Base
     when 'title'
       wikis.sort_by(&:title.downcase)
     when 'edits'
-      wikis.sort_by(&:revisions.length).reverse!
+      wikis.sort_by(&:revisions).reverse!
     when 'likes'
       wikis.sort_by(&:cached_likes).reverse!
     when 'page_views'
