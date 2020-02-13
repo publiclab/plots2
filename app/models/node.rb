@@ -1096,4 +1096,20 @@ class Node < ActiveRecord::Base
       NodeMailer.notify_callout(self, user).deliver_now if user.username != author.username
     end
   end
+
+  def self.sort_feed(wikis,sorting_type)
+    case sorting_type
+    when 'title'
+      wikis.sort_by(&:title.downcase)
+    when 'edits'
+      wikis.sort_by(&:revisions.length).reverse!
+    when 'likes'
+      wikis.sort_by(&:cached_likes).reverse!
+    when 'page_views'
+      wikis.sort_by(&:views).reverse!
+    else
+      wikis
+    end
+  end
+
 end
