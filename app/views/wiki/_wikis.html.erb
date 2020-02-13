@@ -14,7 +14,7 @@
       <th><a href = "?sort=page_views"> <%= translation('wiki._wikis.page_views') %></a> <i class="fa fa-sort" aria-hidden="true"></i></th>
       <th><a href = "?sort=likes"> <%= translation('wiki._wikis.likes') %></a> <i class="fa fa-sort" aria-hidden="true"></i></th>
     </tr>
-    <% wikis.each do |wiki| %>
+    <% Node.sort_feed(wikis, params[:sort]).each do |wiki| %>
       <tr>
         <td style="width:50%"><i class="fa fa-file"></i> <a href="<%= wiki.path %>"><%= wiki.latest.title %></a></td>
         <td><i><%= wiki.path %></i></td>
