@@ -90,7 +90,7 @@ class FeaturesController < ApplicationController
     end
   end
   
-  def sort_feature(features,sorting_type)
+  def sort_feature(features, sorting_type)
     case sorting_type
     when 'title'
       features.sort_by(&:title.downcase)
