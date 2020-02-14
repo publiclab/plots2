@@ -86,6 +86,7 @@ function addNewTagsSuccess(response, deletion_path, el = "#tagform"){
   }
   el.find('.tag-input').prop('disabled',false)
   el.find('.tag-input').focus()
+  location.reload(true);
 }
 
 function displayNewTag(tag_name, tag_id, deletion_path) {
