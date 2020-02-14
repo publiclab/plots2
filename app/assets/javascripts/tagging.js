@@ -72,7 +72,8 @@ function addNewTagsSuccess(response, deletion_path, el = "#tagform"){
   if (typeof response == "string") response = JSON.parse(response)
   $.each(response['saved'], function(i, tag) {
     // only display tag if it was added to the note we're currently viewing
-    if (!!tag[0].split(':')[0].match(/^(lat|lon|place)$/)) {
+    var tagNameCheck = !!tag[0].split(':')[0].match(/^(lat|lon|place)$/)
+    if (tagNameCheck) {
       location.reload(true);
     }
     if (tag[2] == getDeletionPathId(deletion_path)) {
