@@ -19,9 +19,9 @@
 
 <% if @is_revision %>
   <div class="alert alert-warning">
-    <%= raw t('wiki.show.revision_from', :time => @revision.created_at.to_s(:long)) %>
+    <%= raw translation('wiki.show.revision_from', :time => @revision.created_at.to_s(:long)) %>
     <a href="/wiki/revisions/<%= @node.slug_from_path %>">
-      <%= t('wiki.show.view_all_revisions') %>
+      <%= translation('wiki.show.view_all_revisions') %>
     </a>
   </div>
 <% end %>
