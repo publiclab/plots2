@@ -136,7 +136,9 @@ en:
       notes_and_edits: "research notes and wiki edits"
       banned: "Banned"
       are_you_sure: "Are you sure? The user will no longer be able to log in or publish."
+      are_you_sure_to_unban: "Are you sure? The user will be eligible to log in or publish."
       ban: "Ban"
+      unban: "Unban"
     _photo:
       profile_photo: "Profile photo"
       drag_and_drop_image: "Drag and drop to add an image, or"
