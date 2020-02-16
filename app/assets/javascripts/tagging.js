@@ -74,6 +74,7 @@ function addNewTagsSuccess(response, deletion_path, el = "#tagform"){
     // only display tag if it was added to the note we're currently viewing
     var tagNameCheck = !!tag[0].split(':')[0].match(/^(lat|lon|place)$/)
     if (tagNameCheck) {
+      
       location.reload(true);
     }
     if (tag[2] == getDeletionPathId(deletion_path)) {
