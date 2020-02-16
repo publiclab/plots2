@@ -76,7 +76,6 @@ function addNewTagsSuccess(response, deletion_path, el = "#tagform"){
     if (tagNameCheck) {
       location.reload(true);
     }
-    
     if (tag[2] == getDeletionPathId(deletion_path)) {
       displayNewTag(tag[0], tag[1], deletion_path);
     }
