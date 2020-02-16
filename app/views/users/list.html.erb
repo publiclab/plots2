@@ -51,9 +51,9 @@
                       <li><a href="/profile/<%= user.username %>">See Full Profile</a></li>
                       <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") %>
                          <% if user.status == 0 %>
-                           <i class='fa fa-ban' style="color:#a00;"></i> <%= t('users.list.banned') %>
-                           <% elsif user.status == 1 && user != current_user %>
-                             <li><a data-confirm="<%= t('users.list.are_you_sure') %>" href="/ban/<%= user.uid %>" ><i class='fa fa-ban'></i> <%= t('users.list.ban') %></a></li>
+                           <li><a data-confirm="<%= t('users.list.are_you_sure_to_unban') %>" href="/unban/<%= user.uid %>" ><i class='fa fa-ban'  style="color:#a00;"></i> <%= t('users.list.unban') %></a></li>
+                         <% elsif user.status == 1 && user != current_user %>
+                           <li><a data-confirm="<%= t('users.list.are_you_sure') %>" href="/ban/<%= user.uid %>" ><i class='fa fa-ban'></i> <%= t('users.list.ban') %></a></li>
                          <% end %>
                        <% end %>
                      </ul>
