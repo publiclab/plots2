@@ -374,7 +374,7 @@ class NotesController < ApplicationController
     if current_user && current_user.uid == @node.uid || current_user.can_moderate? || @node.has_tag("with:#{current_user.username}")
       @node.path = @node.generate_path
       @node.slug = @node.slug.split('token').first
-      #changing date of post to present date
+      # changing date of post to present date
       @node.created    = DateTime.now.to_i
       @node.changed    = DateTime.now.to_i
       @node.publish
