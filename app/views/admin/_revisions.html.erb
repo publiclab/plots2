@@ -32,4 +32,4 @@
     </tr>
   <% end %>
 </table>
-<div style="padding-left:40%"><%= will_paginate @revisions, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || @revisions.empty? %></div>
+<%= will_paginate @revisions, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || @revisions.empty? %>

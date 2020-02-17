@@ -34,4 +34,4 @@
       </tr>
   <% end %>
 </table>
-<div style="padding-left:40%"><%= will_paginate @comments, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || @comments.empty? %></div>
+<%= will_paginate @comments, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || @comments.empty? %>
