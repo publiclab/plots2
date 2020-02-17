@@ -10,7 +10,7 @@
     </div>
     <% if current_user && (@map_lat.blank? || @map_lon.blank?) %>
       <div class="col-md-4">
-        <a class="btn btn-outline-secondary blurred-location-input" style="color:#666;" onmouseover="this.style.background='white';" submit_to="/profile/tags/create/<%= current_user.uid %>"><i class="fa fa-map-marker" style="color:#c40;"></i> Add your location</a>
+        <a class="btn btn-outline-secondary blurred-location-input" style="color:#666;" hover="this.style.background='grey';" submit_to="/profile/tags/create/<%= current_user.uid %>"><i class="fa fa-map-marker" style="color:#c40;"></i> Add your location</a>
       </div>
     <% end %>
   </div>
