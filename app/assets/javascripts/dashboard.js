@@ -45,7 +45,9 @@
         $('.node-type-' + type).prop('checked', checked);
  
       }
-
+      $('.node-type-all').click(function () {
+        $('.node-type').prop('checked', this.checked);
+    });
 
       // if all checked?
       var checked_array = $(".node-type").map(function(i, el) { return $(el).prop('checked'); });
