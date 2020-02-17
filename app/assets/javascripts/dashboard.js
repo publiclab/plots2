@@ -48,6 +48,10 @@
       $('.node-type-all').click(function () {
         $('.node-type').prop('checked', this.checked);
     });
+    $('.node-type').change(function () {
+      var check = ($('.node-type').filter(":checked").length == $('.node-type').length);
+      $('.node-type-all').prop("checked", check);
+  });
 
       // if all checked?
       var checked_array = $(".node-type").map(function(i, el) { return $(el).prop('checked'); });
