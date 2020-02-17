@@ -71,7 +71,7 @@ function initTagForm(deletion_path, selector) {
 function addNewTagsSuccess(response, deletion_path, el = "#tagform"){
   if (typeof response == "string") response = JSON.parse(response)
   $.each(response['saved'], function(i, tag) {
-    // only display tag if it was added to the note we're currently viewing
+    // only display tag if it was added to the note we're currentl viewing
     if (tag[2] == getDeletionPathId(deletion_path)) {
       displayNewTag(tag[0], tag[1], deletion_path);
     }
