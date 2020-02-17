@@ -12,6 +12,9 @@ class ChangeCommentsToUtf8mb4 < ActiveRecord::Migration[5.2]
     execute "ALTER TABLE comments MODIFY name varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
     execute "ALTER TABLE comments MODIFY homepage varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
 
+    execute "REPAIR TABLE comments"
+    execute "OPTIMIZE TABLE comments"
+    
     execute "ALTER TABLE node ROW_FORMAT=DYNAMIC"
     execute "ALTER TABLE node CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
 
@@ -19,6 +22,9 @@ class ChangeCommentsToUtf8mb4 < ActiveRecord::Migration[5.2]
     execute "ALTER TABLE node MODIFY path varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
     execute "ALTER TABLE node MODIFY slug varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
 
+    execute "REPAIR TABLE node"
+    execute "OPTIMIZE TABLE node"
+    
     execute "ALTER TABLE csvfiles ROW_FORMAT=DYNAMIC"
     execute "ALTER TABLE csvfiles CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
 
@@ -28,15 +34,20 @@ class ChangeCommentsToUtf8mb4 < ActiveRecord::Migration[5.2]
     execute "ALTER TABLE csvfiles MODIFY filename varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
     execute "ALTER TABLE csvfiles MODIFY filestring text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
 
+    execute "REPAIR TABLE csvfiles"
+    execute "OPTIMIZE TABLE csvfiles"
+
     execute "ALTER TABLE images ROW_FORMAT=DYNAMIC"
     execute "ALTER TABLE images CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
 
     execute "ALTER TABLE images MODIFY title varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
     execute "ALTER TABLE images MODIFY notes varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
-
     execute "ALTER TABLE images MODIFY photo_file_name varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
     execute "ALTER TABLE images MODIFY photo_content_type varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
     execute "ALTER TABLE images MODIFY photo_file_size varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
+
+    execute "REPAIR TABLE images"
+    execute "OPTIMIZE TABLE images"
 
     execute "ALTER TABLE node_revisions ROW_FORMAT=DYNAMIC"
     execute "ALTER TABLE node_revisions CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
@@ -46,6 +57,9 @@ class ChangeCommentsToUtf8mb4 < ActiveRecord::Migration[5.2]
     execute "ALTER TABLE node_revisions MODIFY teaser text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
     execute "ALTER TABLE node_revisions MODIFY log text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
 
+    execute "REPAIR TABLE node_revisions"
+    execute "OPTIMIZE TABLE node_revisions"
+
     execute "ALTER TABLE term_data ROW_FORMAT=DYNAMIC"
     execute "ALTER TABLE term_data CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
 
@@ -53,10 +67,13 @@ class ChangeCommentsToUtf8mb4 < ActiveRecord::Migration[5.2]
     execute "ALTER TABLE term_data MODIFY parent varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
     execute "ALTER TABLE term_data MODIFY description longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
 
+    execute "REPAIR TABLE term_data"
+    execute "OPTIMIZE TABLE term_data"
+
     execute "ALTER TABLE rusers ROW_FORMAT=DYNAMIC"
     execute "ALTER TABLE rusers CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
 
-    execute "ALTER TABLE rusers MODIFY username title varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
+    execute "ALTER TABLE rusers MODIFY username varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
     execute "ALTER TABLE rusers MODIFY email varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
     execute "ALTER TABLE rusers MODIFY crypted_password varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
     execute "ALTER TABLE rusers MODIFY password_salt varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
@@ -65,10 +82,17 @@ class ChangeCommentsToUtf8mb4 < ActiveRecord::Migration[5.2]
     execute "ALTER TABLE rusers MODIFY csvfile varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
     execute "ALTER TABLE rusers MODIFY bio longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
 
+    execute "REPAIR TABLE rusers"
+    execute "OPTIMIZE TABLE rusers"
+
     execute "ALTER TABLE user_tags ROW_FORMAT=DYNAMIC"
     execute "ALTER TABLE user_tags CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
 
     execute "ALTER TABLE user_tags MODIFY data text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
     execute "ALTER TABLE user_tags MODIFY value varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
+    
+    execute "REPAIR TABLE user_tags"
+    execute "OPTIMIZE TABLE user_tags"
+
   end
 end
