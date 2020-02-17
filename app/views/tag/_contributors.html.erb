@@ -49,7 +49,7 @@
       <% if @users %>
         <% @users.each do |user| %>
           <tr class="users-row">
-            <td><a href='/profile/<%= user.name %>'><i class="fa fa-user"></i> <%= user.name %></a></td>
+            <td><a href='/profile/<%= user.name %>'><i class="fa fa-user"></i> <%= user.name %><% if user.following(params[:id])%><i class="fa fa-eye"></i><% end %></a></td>
             <td><a href='/tag/<%= params[:id] %>/author/<%= user.name %>'><%= t('tag.contributors.notes') %> &raquo;</a></td>
           </tr>
         <% end %>
