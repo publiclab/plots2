@@ -7,7 +7,7 @@ one:
   changed: <%= Time.now.to_i %>
   status: 1
   type: "note"
-  cached_likes: 3
+  cached_likes: 30
   views: 5
   drupal_node_revisions_count: 10
   slug: jeff-<%= Time.now.strftime("%m-%d-%Y") %>-canon-a1200-ir-conversion-at-plots-barnraising-at-lumcon
@@ -93,7 +93,7 @@ question:
   changed: <%= Time.now.to_i %>
   status: 1
   type: "note"
-  cached_likes: 0
+  cached_likes: 29
   drupal_node_revisions_count: 15
   slug: jeff-<%= Time.now.strftime("%m-%d-%Y") %>-how-to-use-a-spectrometer
 
