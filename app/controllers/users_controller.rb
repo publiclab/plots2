@@ -182,11 +182,7 @@ class UsersController < ApplicationController
                         .order('node.nid DESC')
         ans_ques = questions.select { |q| q.comments.collect(&:uid).include?(@profile_user.id) }
         @commented_questions = ans_ques.paginate(page: params[:page], per_page: 24)
-        wikis = Revision.order("nid DESC")
-                        .where('node.type' => 'page', 'node.status' => 1, uid: @profile_user.uid)
-                        .joins(:node)
-                        .limit(20)
-        @wikis = wikis.collect(&:parent).uniq
+        @wikis = Node.where('type' => 'page', 'status' => 1, uid: @profile_user.uid)
 
         comments = Comment.limit(20)
                           .order("timestamp DESC")
