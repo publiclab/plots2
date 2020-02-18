@@ -1100,9 +1100,9 @@ class Node < ActiveRecord::Base
   def self.sort_feed(wikis, sorting_type)
     case sorting_type
     when 'title'
-      wikis.sort_by(&:title.downcase)
+      wikis.sort_by{ |wiki| wiki.title.downcase }
     when 'edits'
-      wikis.sort_by(&:revisions).reverse!
+      wikis.sort_by(&:drupal_node_revisions_count).reverse!
     when 'likes'
       wikis.sort_by(&:cached_likes).reverse!
     when 'page_views'
