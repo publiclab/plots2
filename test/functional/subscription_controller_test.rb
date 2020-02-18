@@ -63,4 +63,35 @@ class SubscriptionControllerTest < ActionController::TestCase
     assert_redirected_to "/dashboard"
     assert_equal flash[:notice], "You are now following '#{tagnames}'."
   end
+    test 'sorting of digest by title' do
+    UserSession.create((users(:bob)))
+    get :digest, params: { sort: "title"}
+    wikis = assigns(:wikis)
+    assert_equal(wikis.first.title,"Canon A1200 IR conversion at PLOTS Barnraising at LUMCON")
+    assert_equal(wikis.last.title,"Question by a moderated user")
+  end  
+  
+  test 'sorting of digest by likes' do
+   UserSession.create((users(:bob)))
+   get :digest, params: { sort: "likes"}
+   wikis = assigns(:wikis)
+   assert_equal(wikis.first.title,"Question by a moderated user")
+   assert_equal(wikis.last.title, "Canon A1200 IR conversion at PLOTS Barnraising at LUMCON")
+  end
+  
+  test 'sorting of digest by views' do 
+    UserSession.create((users(:bob)))
+    get :digest, params: {sort: "page_views"}
+    wikis = assigns(:wikis)
+    assert_equal(wikis.first.title,"Canon A1200 IR conversion at PLOTS Barnraising at LUMCON")
+    assert_equal(wikis.second.title,"Question by a moderated user")
+  end
+  
+  test 'sorting of digest by edits' do
+    UserSession.create((users(:bob)))
+    get :digest, params: {sort: "edits"}
+    wikis = assigns(:wikis)
+    assert_equal(wikis.first.title,"How to use a Spectrometer")
+    assert_equal(wikis.second.title,"Canon A1200 IR conversion at PLOTS Barnraising at LUMCON")
+  end 
 end
