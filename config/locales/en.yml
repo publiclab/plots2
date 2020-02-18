@@ -435,7 +435,7 @@ en:
     index:
       wiki_pages_tagged_with: "Wiki pages tagged with <i style='color:#aaa;'>%{tag}</i>"
       wiki_pages_by: "Wiki pages by <a href='%{url1}'>%{user}</a> <small>%{note_length}
-        research notes and wiki edits starting %{time} ago</small>"
+        research notes starting %{time} ago</small>"
       highly_liked_wiki_pages: "Highly liked wiki pages"
       create_wiki_page: "Create a new wiki page"
       by_recency: "recency"

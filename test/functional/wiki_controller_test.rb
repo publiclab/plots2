@@ -642,7 +642,7 @@ class WikiControllerTest < ActionController::TestCase
     # check they are not banned
     assert wikis.all? { |wiki| wiki.status == 1 }
     # test their type
-    assert wikis.none? { |wiki| wiki.type == "question" || wiki.status == "note"}
+    assert wikis.none? { |wiki| wiki.type == "question" || wiki.status == "note" || wiki.status == "map"}
     # check correct author
     assert wikis.all? { |wiki| wiki.uid == user.uid }
   end
