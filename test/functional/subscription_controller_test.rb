@@ -75,8 +75,8 @@ class SubscriptionControllerTest < ActionController::TestCase
    UserSession.create((users(:bob)))
    get :digest, params: { sort: "likes"}
    wikis = assigns(:wikis)
-   assert_equal(wikis.first.title,"Question by a moderated user")
-   assert_equal(wikis.last.title, "Canon A1200 IR conversion at PLOTS Barnraising at LUMCON")
+   assert_equal(wikis.first.title, "Canon A1200 IR conversion at PLOTS Barnraising at LUMCON")
+   assert_equal(wikis.second.title,"How to use a Spectrometer")
   end
   
   test 'sorting of digest by views' do 
