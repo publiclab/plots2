@@ -108,4 +108,19 @@ class FeaturesControllerTest < ActionController::TestCase
     embed_node = assigns(:node)
     assert_equal embed_node.nid, fixture_node.nid
   end
+   test "should sort by title" do
+    user=  UserSession.create(users(:admin))
+    get :index, params: { sort: "title" }
+    features = assigns(:features)
+    assert_equal(features.first.title,"email-footer")
+    assert_equal(features.last.title,"welcome-email-body")
+  end
+  
+  test 'should sort by last edited' do
+    user=  UserSession.create(users(:admin))
+    get :index, params: { sort: "last_edited" }
+    features = assigns(:features)
+    assert_equal(features.first.title,"welcome-email-body")
+    assert_equal(features.last.title,"email-footer")
+  end
 end
