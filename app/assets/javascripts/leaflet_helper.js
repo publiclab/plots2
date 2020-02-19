@@ -91,10 +91,11 @@
 
    function setupLEL(map, markers_hash = null, params = {}) {
       var options = {};
-      options.layers = params.layers || [];
+      options.layers = params.layers || [];                 // display these layers on the map
+      options.limitMenuTo = params.limitMenuTo || [];       // limit available layers in menu to only those listed, default all layers in menu
       options.setHash = params.setHash || false;
-      options.mainContent = params.mainContent || "";
-      options.displayLayers = params.displayLayers || false;
+      options.mainContent = params.mainContent || "";       // "content" to show site content, default "" shows no site content
+      options.displayAllLayers = params.displayAllLayers || false;  // turn on display for all maps available in menu
 
       if (typeof options.layers === "string") {
         options.layers = options.layers.split(',');
@@ -105,11 +106,12 @@
          circleSpiralSwitchover: 0
       });
 
-      var optionsLEL = {
-        addLayersToMap: options.displayLayers,
-      };
+      var optionsLEL = { };
       if (options.layers.length > 0) {
-         optionsLEL.include = options.layers;
+         optionsLEL.addLayersToMap = options.displayAllLayers,
+         optionsLEL.display = options.layers;
+         optionsLEL.include = options.limitMenuTo;
+         optionsLEL.hash = options.setHash;
       }
       L.LayerGroup.EnvironmentalLayers(optionsLEL).addTo(map);
 
