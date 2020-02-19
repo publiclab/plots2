@@ -3,8 +3,8 @@ one:
   uid: 2
   title: "Canon A1200 IR conversion at PLOTS Barnraising at LUMCON"
   path: "/notes/jeff/<%= Time.now.strftime("%m-%d-%Y") %>/canon-a1200-ir-conversion-at-plots-barnraising-at-lumcon"
-  created: <%= Time.now.to_i %>
-  changed: <%= Time.now.to_i %>
+  created: <%= Time.now.to_i - (100/24) %>
+  changed: <%= Time.now.to_i - (100/24) %>
   status: 1
   type: "note"
   cached_likes: 30
