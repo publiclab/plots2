@@ -628,4 +628,6 @@ textarea, input {
     color: #f1f1f1 !important;
 }
 
-
+.d-lg-inline{
+  display: inline !important;
+}
