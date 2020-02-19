@@ -12,7 +12,7 @@
     <% end %>
     <th>Last edited</th>
   </tr>
-  <% sort_feature(@features, params[:sort]).each do |feature| %>
+  <% @features.each do |feature| %>
     <tr>
       <td style="width:50%"><a href="/features/<%= feature.id %>"><%= feature.title %></a></td>
       <% if current_user.admin? %>
