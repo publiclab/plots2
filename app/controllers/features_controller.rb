@@ -5,7 +5,7 @@ class FeaturesController < ApplicationController
   def index
     @title = "Features"
     @features = Node.where(type: 'feature')
-    @features = sort_feature(@features,params[:sort])
+    @features = sort_feature(@features, params[:sort])
                 .paginate(page: params[:page])
   end
 
