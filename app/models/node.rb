@@ -1108,7 +1108,7 @@ class Node < ActiveRecord::Base
     when 'page_views'
       wikis.sort_by(&:views).reverse!
     when 'last_edited'
-      wikis.sort_by(&:changed).reverse!  
+      wikis.sort_by(&:changed).reverse!
     else
       wikis
     end
