@@ -5,7 +5,8 @@ class FeaturesController < ApplicationController
   def index
     @title = "Features"
     @features = Node.where(type: 'feature')
-      .paginate(page: params[:page])
+    @features = sort_feature(@features,params[:sort])
+                .paginate(page: params[:page])
   end
 
   def embed
@@ -95,7 +96,7 @@ class FeaturesController < ApplicationController
     when 'title'
       features.sort_by(&:title.downcase)
     when 'last_edited'
-      features.sort_by(&:drupal_node_revisions_count).reverse!
+      features.to_a.reverse!
     else
       features
     end
