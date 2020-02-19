@@ -20,17 +20,21 @@
 
   <script>
 
+    // First check controller for calculated location - for /people page
+    // Next check for local variables - for inline maps
+    var lat = <%= @map_lat %>+"" || <%= lat ||= 48 %>;
+    var lon = <%= @map_lon %>+"" || <%= lon ||= 0 %>;
+    var zoom = <%= @map_zoom %>+"" || <%= zoom ||= 3 %>; // to do: calculate proper zoom for given lat/lon precision
+
     const bounds<%= unique_id %> = new L.LatLngBounds(
       new L.LatLng(84.67351257, -172.96875),
       new L.LatLng(-54.36775852, 178.59375)
     );
 
-    <% zoom = zoom ||= (lat.to_s.length.to_i + 6) %>
-
     var map<%= unique_id %> = L.map("map<%= unique_id %>", {
       maxBounds: bounds<%= unique_id %>,
       maxBoundsViscosity: 0.75
-    }).setView([<%= lat %>,<%= lon %>], <%= zoom || (lat.to_s.length.to_i + 6) %>);
+    }).setView([lat, lon], zoom);
 
     map<%= unique_id %>.options.minZoom = 2 ;
 
