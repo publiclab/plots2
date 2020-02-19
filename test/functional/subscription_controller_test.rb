@@ -93,5 +93,11 @@ class SubscriptionControllerTest < ActionController::TestCase
     wikis = assigns(:wikis)
     assert_equal(wikis.first.title,"How to use a Spectrometer")
     assert_equal(wikis.second.title,"Canon A1200 IR conversion at PLOTS Barnraising at LUMCON")
-  end 
+  end
+  test 'sorting by last edited' do
+    UserSession.create((users(:bob)))
+    get :digest, params: {sort: "last_edited"}
+    wikis = assigns(:wikis)
+    assert_equal(wikis.last.title,"Canon A1200 IR conversion at PLOTS Barnraising at LUMCON")
+  end
 end
