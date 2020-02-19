@@ -226,8 +226,8 @@ feature:
   nid: 19
   uid: 1
   title: "email-footer"
-  created: <%= Time.now.to_i %>
-  changed: <%= Time.now.to_i %>
+  created: <%= DateTime.new(2018,8,8).to_i %>
+  changed: <%= DateTime.new(2018,8,8).to_i %>
   status: 1
   type: "feature"
   cached_likes: 0
