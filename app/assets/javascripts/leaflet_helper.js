@@ -108,7 +108,7 @@
 
       var optionsLEL = { };
       if (options.layers.length > 0) {
-         optionsLEL.addLayersToMap = options.displayAllLayers,
+         optionsLEL.addLayersToMap = options.displayAllLayers;
          optionsLEL.display = options.layers;
          optionsLEL.include = options.limitMenuTo;
          optionsLEL.hash = options.setHash;
