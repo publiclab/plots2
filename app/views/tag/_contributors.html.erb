@@ -40,16 +40,18 @@
 <% elsif @note_count.nil? || @note_count == 0 %>
   <p><%= raw t('tag.contributors.no_contributors', :tag => params[:id]) %>:</p>
 <% else %>
-  <div class="col-md-6" style="display: inline-block;">
+  <div class="col-md-6" style="display: inline-block; max-width:75%;">
     <table class="table">
       <tr>
-        <th style="width:68%;"><%= t('tag.contributors.people_who\'ve_posted') %></th>
+        <th style="width:55%;"><%= t('tag.contributors.people_who\'ve_posted') %></th>
+        <th><%= t('tag.contributors.following') %></th>
         <th><%= t('tag.contributors.notes') %></th>
       </tr>
       <% if @users %>
         <% @users.each do |user| %>
           <tr class="users-row">
-            <td><a href='/profile/<%= user.name %>'><i class="fa fa-user"></i> <%= user.name %><% if user.following(params[:id])%><i class="fa fa-eye"></i><% end %></a></td>
+            <td><a href='/profile/<%= user.name %>'><i class="fa fa-user"></i> <%= user.name %></a></td>
+            <td><% if user.following(params[:id])%><i class="fa fa-eye"></i><% end %></td>
             <td><a href='/tag/<%= params[:id] %>/author/<%= user.name %>'><%= t('tag.contributors.notes') %> &raquo;</a></td>
           </tr>
         <% end %>
