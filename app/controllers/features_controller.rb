@@ -96,7 +96,7 @@ class FeaturesController < ApplicationController
     when 'title'
       features.sort_by(&:title.downcase)
     when 'last_edited'
-      features.to_a.reverse!
+      features.sort_by(&:changed).reverse!
     else
       features
     end
