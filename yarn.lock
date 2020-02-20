@@ -467,9 +467,10 @@ blueimp-file-upload@^9.34.0:
     blueimp-load-image "2.12.2"
     blueimp-tmpl "3.6.0"
 
-blueimp-file-upload@blueimp/jQuery-File-Upload#^10.7.0, jquery-file-upload@blueimp/jQuery-File-Upload#~10.7.0:
-  version "10.7.0"
-  resolved "https://codeload.github.com/blueimp/jQuery-File-Upload/tar.gz/faad01e7073b0ed1088efc285b16c7504d813674"
+blueimp-file-upload@blueimp/jQuery-File-Upload#^10.8.0:
+  version "10.8.0"
+  uid "3b4cec8f357c10251648ead434a581b77afa9b84"
+  resolved "https://codeload.github.com/blueimp/jQuery-File-Upload/tar.gz/3b4cec8f357c10251648ead434a581b77afa9b84"
   optionalDependencies:
     blueimp-canvas-to-blob "3"
     blueimp-load-image "2"
@@ -3296,6 +3297,14 @@ jquery-confirm@^3.3.4:
   integrity sha512-SF3mX2kWAK9FP/Hut1uLHI30LPZ9DAki3Jq6JId9vg6AlMVugjlh40APtuxPQ/0C44XTkQFSVyRrg57NMbaicA==
   dependencies:
     jquery ">=1.6"
+
+jquery-file-upload@blueimp/jQuery-File-Upload#~10.7.0:
+  version "10.7.0"
+  resolved "https://codeload.github.com/blueimp/jQuery-File-Upload/tar.gz/faad01e7073b0ed1088efc285b16c7504d813674"
+  optionalDependencies:
+    blueimp-canvas-to-blob "3"
+    blueimp-load-image "2"
+    blueimp-tmpl "3"
 
 jquery-validation@^1.19.1:
   version "1.19.1"
