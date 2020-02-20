@@ -15,10 +15,10 @@
   <hr />
   <div class="navbar d-md-none d-lg-block">
     <ul class="navbar-nav">
-      <li class="nav-item navbar-brand"><%= t('wiki.edit.more') %></li>
-      <% if @node.path %><li><a href="/wiki/revisions/<%= @node.slug_from_path %>"><%= t('wiki.edit.revisions_for_this_page') %></a></li><% end %>
-      <li class="nav-item"><a href="/wiki/posting-research"><%= t('wiki.edit.about_posting_research') %></a></li>
-      <li class="nav-item"><a href="/wiki/authoring-help#Advanced+formatting"><%= t('wiki.edit.advanced_formatting') %></a></li>
+      <li class="nav-item navbar-brand"><%= translation('wiki.edit.more') %></li>
+      <% if @node.path %><li><a href="/wiki/revisions/<%= @node.slug_from_path %>"><%= translation('wiki.edit.revisions_for_this_page') %></a></li><% end %>
+      <li class="nav-item"><a href="/wiki/posting-research"><%= translation('wiki.edit.about_posting_research') %></a></li>
+      <li class="nav-item"><a href="/wiki/authoring-help#Advanced+formatting"><%= translation('wiki.edit.advanced_formatting') %></a></li>
     </ul>
   </div>
 </div>
@@ -71,8 +71,8 @@
 
           <%= render partial: 'editor/editor' %>
 
-          <a id="publish" tabindex="5" class="publish btn btn-primary btn-lg"><%= t('wiki.edit.publish') %></a>
-          <a tabindex="6" data-previewing-text="<%= t('wiki.edit.previewing_text') %>" class="btn btn-outline-secondary btn-lg preview-btn" onClick="$E.toggle_preview()"><%= t('wiki.edit.preview') %></a>
+          <a id="publish" tabindex="5" class="publish btn btn-primary btn-lg"><%= translation('wiki.edit.publish') %></a>
+          <a tabindex="6" data-previewing-text="<%= translation('wiki.edit.previewing_text') %>" class="btn btn-outline-secondary btn-lg preview-btn" onClick="$E.toggle_preview()"><%= translation('wiki.edit.preview') %></a>
           <a class="btn btn-outline-secondary btn-lg" href="/wiki/<%= params["id"] %>">Cancel</a>
 
         </div>
