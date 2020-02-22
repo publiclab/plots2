@@ -82,12 +82,11 @@
   </div>
   <%= will_paginate @users, renderer: WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated %>
 </div>
+
 <div class="col-md-12 col-lg-6 order-2 d-none d-lg-block">
-<%= render :partial => "map/peopleLeaflet" , locals: {people: true , lat:23 , lon: 4} %>
+  <%= render :partial => "map/peopleLeaflet" , locals: {lat:23 , lon: 4, zoom: 5} %>
 </div>
-<div class="col-md-12 col-lg-6 order-sm-1 d-lg-none">
-<%= render :partial => "map/peopleLeaflet" , locals: {people: true , lat:23 , lon: 4} %>
-</div>
+
 <style>
 #user {
   padding:10px 8px 10px 8px
