@@ -8,10 +8,11 @@
     return map ;
   }
 
-  function PLmarker_default(){
+  function PLmarker_default(color = 'black'){
+     // valid colors: blue, gold, green, orange, yellow, violet, grey, black
      L.Icon.PLmarker = L.Icon.extend({
       options: {
-        iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-black.png',
+        iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-'+color+'.png',
         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
         iconSize: [25, 41],
         iconAnchor: [12, 41],
@@ -51,42 +52,52 @@
    }
 
    function contentLayerParser(map, markers_hash, map_tagname) {
-       var NWlat = map.getBounds().getNorthWest().lat ;
-       var NWlng = map.getBounds().getNorthWest().lng ;
-       var SElat = map.getBounds().getSouthEast().lat ;
-       var SElng = map.getBounds().getSouthEast().lng ;
-       map.spin(true) ;
+      var NWlat = map.getBounds().getNorthWest().lat ;
+      var NWlng = map.getBounds().getNorthWest().lng ;
+      var SElat = map.getBounds().getSouthEast().lat ;
+      var SElng = map.getBounds().getSouthEast().lng ;
+      map.spin(true) ;
 
-       if(map_tagname === null || (typeof map_tagname === "undefined")) {
-           taglocation_url = "/api/srch/taglocations?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng ;
+      if(map_tagname === null || (typeof map_tagname === "undefined")) {
+         taglocation_url = "/api/srch/taglocations?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng ;
 
-       } else {
-           taglocation_url = "/api/srch/taglocations?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng + "&tag=" + map_tagname ;
-       }
-       $.getJSON(taglocation_url , function (data) {
-           if (!!data.items) {
-               for (i = 0; i < data.items.length; i++) {
-                   var url = data.items[i].doc_url;
-                   var title = data.items[i].doc_title;
-                   var author = data.items[i].doc_author;
-                   var image_url = data.items[i].doc_image_url;
-                   var default_url = PLmarker_default();
-                   var mid = data.items[i].doc_id ;
-                   var m = L.marker([data.items[i].latitude, data.items[i].longitude], {icon: default_url}).bindPopup("<a href=" + url + ">" + title + "</a>") ;
-                   
-                   if(markers_hash.has(mid) === false){
+      } else {
+         taglocation_url = "/api/srch/taglocations?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng + "&tag=" + map_tagname ;
+      }
 
-                       if(image_url) {
-                           m.addTo(map).bindPopup("<div><img src=" + image_url+ " height='140px' /><br>" + "<b>Title:</b> " + title  + "<br><b>Author:</b>   <a href=" + 'https://publiclab.org/profile/' + author + ">" + author + "</a><br>" + "<a href=" + url + ">" + "Read more..." + "</a></div>" ) ;
-                       } else {
-                           m.addTo(map).bindPopup("<span><b>Title:</b>     " + title  + "</span><br><span><b>Author:</b>    <a href=" + 'https://publiclab.org/profile/' + author + ">" + author + "</a></span><br>" + "<a href=" + url + ">" + "<br>Read more..." + "</a>" ) ;
-                       }
-                       markers_hash.set(mid , m) ;
-                   }
+      $.getJSON(taglocation_url , function (data) {
+         if (!!data.items) {
+            for (i = 0; i < data.items.length; i++) {
+               var nodetype = data.items[i].doc_type;
+               nodetype = nodetype.charAt(0).toUpperCase() + nodetype.slice(1).toLowerCase();
+
+               var place_name = data.items[i].place_name;
+               var url = data.items[i].doc_url;
+               var title = data.items[i].doc_title;
+               var author = data.items[i].doc_author;
+               var image_url = data.items[i].doc_image_url;
+               var map_marker = PLmarker_default('blue');
+               var mid = data.items[i].doc_id;
+               var created_at = data.items[i].created_at;
+               var time_since = TimeAgo.inWords(new Date(data.items[i].created_at));
+               // var comment_count = data.items[i].comment_count;
+               var m = L.marker([data.items[i].latitude, data.items[i].longitude], {icon: map_marker}).bindPopup("<a href=" + url + ">" + title + "</a>") ;
+               var popup = "";
+               
+               if(markers_hash.has(mid) === false){
+                  if (image_url) popup += "<img src='" + image_url + "' class='popup-thumb' /><br>";
+                  popup += "<h5><a href='" + url + "'>" + title  + "</a></h5>";
+                  popup += "<span>" + nodetype + " by <a href='https://publiclab.org/profile/" + author + "'>@" + author + "</a> " + time_since + "</span><br>";
+                  if (place_name) popup += "<span><b>Place: </b>" + place_name + "</span><br>";
+
+                  m.addTo(map).bindPopup(popup);
+         
+                  markers_hash.set(mid , m) ;
                }
-           }
-           map.spin(false) ;
-       });
+            }
+         }
+         map.spin(false) ;
+      });
    }
 
    function setupLEL(map, markers_hash = null, params = {}) {
