@@ -81,16 +81,23 @@
                var created_at = data.items[i].created_at;
                var time_since = TimeAgo.inWords(new Date(data.items[i].created_at));
                // var comment_count = data.items[i].comment_count;
-               var m = L.marker([data.items[i].latitude, data.items[i].longitude], {icon: map_marker}).bindPopup("<a href=" + url + ">" + title + "</a>") ;
-               var popup = "";
-               
-               if(markers_hash.has(mid) === false){
-                  if (image_url) popup += "<img src='" + image_url + "' class='popup-thumb' /><br>";
-                  popup += "<h5><a href='" + url + "'>" + title  + "</a></h5>";
-                  popup += "<span>" + nodetype + " by <a href='https://publiclab.org/profile/" + author + "'>@" + author + "</a> " + time_since + "</span><br>";
-                  if (place_name) popup += "<span><b>Place: </b>" + place_name + "</span><br>";
 
-                  m.addTo(map).bindPopup(popup);
+               var m = L.marker([data.items[i].latitude, data.items[i].longitude], {icon: map_marker});
+
+               if(markers_hash.has(mid) === false){
+                  var popup_content = "";
+
+                  if (image_url) popup_content += "<img src='" + image_url + "' class='popup-thumb' /><br>";
+                  popup_content += "<h5><a href='" + url + "'>" + limit_words(title, 10)  + "</a></h5>";
+                  popup_content += "<span>" + nodetype + " by <a href='https://publiclab.org/profile/" + author + "'>@" + author + "</a> " + time_since + "</span><br>";
+                  if (place_name) popup_content += "<span><b>Place: </b>" + place_name + "</span><br>";
+
+                  var popup = L.popup({
+                     maxWidth: 300,
+                     autoPan: false,
+                     className: 'map-popup'
+                  }).setContent(popup_content);
+                  m.addTo(map).bindPopup(popup_content);
          
                   markers_hash.set(mid , m) ;
                }
@@ -98,6 +105,10 @@
          }
          map.spin(false) ;
       });
+
+      function limit_words(str, num_words) {
+         return str.split(" ").splice(0, num_words).join(" ");
+      }
    }
 
    function setupLEL(map, markers_hash = null, params = {}) {

@@ -18,6 +18,7 @@
   z-index:800 !important;
 }
 .leaflet-popup-content {
-  width: 800px !important;
+  width: 200px;
+  max-width: 200px;
 }
   
