@@ -87,10 +87,11 @@
                if(markers_hash.has(mid) === false){
                   var popup_content = "";
 
+                  console.log(image_url);
                   if (image_url) popup_content += "<img src='" + image_url + "' class='popup-thumb' /><br>";
                   popup_content += "<h5><a href='" + url + "'>" + limit_words(title, 10)  + "</a></h5>";
                   popup_content += "<span>" + nodetype + " by <a href='https://publiclab.org/profile/" + author + "'>@" + author + "</a> " + time_since + "</span><br>";
-                  if (place_name) popup_content += "<span><b>Place: </b>" + place_name + "</span><br>";
+                  // if (place_name) popup_content += "<span><b>Place: </b>" + place_name + "</span><br>";
 
                   var popup = L.popup({
                      maxWidth: 300,
