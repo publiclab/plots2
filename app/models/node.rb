@@ -512,35 +512,36 @@ class Node < ActiveRecord::Base
   # used in typeahead autocomplete search results
   def icon
     # It seems the order of the conditions is important here
-    icon = if has_power_tag('question')
-             'question-circle'
-           elsif tool?
-             'wrench'
-           elsif has_tag('chapter')
-             'flag'
-           elsif note?
-             'file'
-           elsif page?
-             'book'
-           elsif map?
-             'map-marker'
+    icon = case
+           when has_power_tag("question")
+             "question-circle"
+           when tool?
+             "wrench"
+           when has_tag("chapter")
+             "flag"
+           when note?
+             "file"
+           when page?
+             "book"
+           when map?
+             "map-marker"
            end
   end
 
   def note?
-    type == 'note'
+    type == "note"
   end
 
   def page?
-    type == 'page'
+    type == "page"
   end
 
   def map?
-    type == 'map'
+    type == "map"
   end
 
   def tool?
-    type == 'tool'
+    type == "tool"
   end
 
   def tags
