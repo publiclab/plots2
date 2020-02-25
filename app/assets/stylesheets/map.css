@@ -34,4 +34,14 @@
 .leaflet-popup .leaflet-popup-content h5 {
   margin-bottom: 4px;
 }
-  
+.leaflet-popup .popup-two-column {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+.leaflet-popup .popup-stretch-column {
+  flex: 1 1 100%;
+}
+.leaflet-popup .popup-shrink-column {
+  flex: 0 1 auto;
+}

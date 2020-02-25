@@ -86,11 +86,12 @@
 
                if(markers_hash.has(mid) === false){
                   var popup_content = "";
-
-                  console.log(image_url);
-                  if (image_url) popup_content += "<img src='" + image_url + "' class='popup-thumb' /><br>";
+                  if (image_url) popup_content += "<img src='" + image_url + "' class='popup-thumb' />";
                   popup_content += "<h5><a href='" + url + "'>" + limit_words(title, 10)  + "</a></h5>";
-                  popup_content += "<span>" + nodetype + " by <a href='https://publiclab.org/profile/" + author + "'>@" + author + "</a> " + time_since + "</span><br>";
+                  popup_content += "<div class='popup-two-column'>";
+                     popup_content += "<div class='popup-stretch-column'>" + nodetype + " by <a href='https://publiclab.org/profile/" + author + "'>@" + author + "</a> " + time_since + "</div><br>";
+                     if (nodetype.toLowerCase() === "wiki") popup_content += "<div class='map-slug popup-shrink-column'><a href='/map/" + url.split('/').pop() + "'>#</a></div>";
+                  popup_content += "</div>";
                   // if (place_name) popup_content += "<span><b>Place: </b>" + place_name + "</span><br>";
 
                   var popup = L.popup({
