@@ -39,4 +39,15 @@
 }
 .leaflet-popup .popup-shrink-column {
   flex: 0 1 auto;
+  }
+.leaflet-container a.btn-primary {
+  color: white;
+}
+.leaflet-container .add-content-button-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+.leaflet-container .add-content-button {
+  margin-right: 10px;
 }

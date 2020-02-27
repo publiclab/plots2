@@ -75,11 +75,13 @@
         const center = map.getCenter();
         urlHash.setUrlHashParameter('lat', center.lat + "");
         urlHash.setUrlHashParameter('lon', center.lng + "");
+        setButtonHref();
       }
 
       function updateZoomHash() {
         const zoom = map.getZoom();
         urlHash.setUrlHashParameter('zoom', zoom + "");
+        setButtonHref();
       }
 
       var markers_hash = new Map();
@@ -89,5 +91,17 @@
         setHash: false
       }
       setupLEL(map, markers_hash, options);
+
+      var bottomleft = document.getElementById("map").getElementsByClassName("leaflet-bottom leaflet-right");
+      var addButton = document.createElement('div');
+      addButton.setAttribute('class', 'add-content-button-container leaflet-control');
+      addButton.innerHTML = '<a href="/post/choose" class="btn btn-primary btn-lg add-content-button"><i class="fa fa-plus-circle fa-white"></i> Add to Map</a>';
+      setButtonHref();
+      bottomleft[0].insertBefore(addButton, document.getElementsByClassName("leaflet-control-attribution")[0]);
+      
+      function setButtonHref() {
+        var urlstring = "/post/choose?tags=lat:"+urlHash.getUrlHashParameter('lat')+",lon:"+urlHash.getUrlHashParameter('lon')+",zoom:"+urlHash.getUrlHashParameter('zoom');
+        // addButton.firstChild.setAttribute('href', urlstring);
+      }
 
     </script>
