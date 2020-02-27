@@ -356,7 +356,9 @@ module Srch
               doc_title: model.username,
               latitude: model.lat,
               longitude: model.lon,
-              blurred: model.blurred?
+              blurred: model.blurred?,
+              created_at: model.created_at,
+              doc_image_url: !model.profile_image? ? model.profile_image : "",
             )
           end
           DocList.new(docs, search_request)

@@ -18,11 +18,6 @@
   z-index:800 !important;
 }
 .leaflet-popup .leaflet-popup-content {
-  width: 200px;
-  max-width: 200px;
-  margin: 15px;
-}
-.leaflet-popup .leaflet-popup-content {
   width: 300px;
   max-width: 300px;
   margin: 15px;

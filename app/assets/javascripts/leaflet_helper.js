@@ -79,7 +79,7 @@
                var map_marker = PLmarker_default('blue');
                var mid = data.items[i].doc_id;
                var created_at = data.items[i].created_at;
-               var time_since = TimeAgo.inWords(new Date(data.items[i].created_at));
+               var time_since = TimeAgo().inWords(new Date(data.items[i].created_at));
                // var comment_count = data.items[i].comment_count;
 
                var m = L.marker([data.items[i].latitude, data.items[i].longitude], {icon: map_marker});
