@@ -2,7 +2,7 @@ require "application_system_test_case"
 # https://guides.rubyonrails.org/testing.html#implementing-a-system-test
 
 class SearchTest < ApplicationSystemTestCase
-  Capybara.default_max_wait_time = 60
+  Capybara.default_max_wait_time = 120
 
   test 'searching an item from the homepage' do
     visit '/'

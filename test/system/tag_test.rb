@@ -3,7 +3,7 @@ require "application_system_test_case"
 # https://guides.rubyonrails.org/testing.html#implementing-a-system-test
 
 class TagTest < ApplicationSystemTestCase
-  Capybara.default_max_wait_time = 60
+  Capybara.default_max_wait_time = 120
 
   def setup
     visit '/'
