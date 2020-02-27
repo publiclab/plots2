@@ -40,14 +40,16 @@ var TimeAgo = (function() {
       var distance = this.locales.seconds;
       
       for (var key in intervals) {
-        interval = Math.floor(intervals[key]);
-        
-        if (interval > 1) {
-          distance = this.locales[key + 's'];
-          break;
-        } else if (interval === 1) {
-          distance = this.locales[key];
-          break;
+        if (intervals.hasOwnProperty(key)) {
+          interval = Math.floor(intervals[key]);
+          
+          if (interval > 1) {
+            distance = this.locales[key + 's'];
+            break;
+          } else if (interval === 1) {
+            distance = this.locales[key];
+            break;
+          }
         }
       }
       
