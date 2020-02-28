@@ -3,7 +3,7 @@ require "application_system_test_case"
 # https://guides.rubyonrails.org/testing.html#implementing-a-system-test
 
 class MapTest < ApplicationSystemTestCase
-  Capybara.default_max_wait_time = 120
+  Capybara.default_max_wait_time = 60
 
   test 'correct url hash for wiki map' do
     visit '/map/chicago'
@@ -11,7 +11,7 @@ class MapTest < ApplicationSystemTestCase
     url_hash = page.evaluate_script("window.location.hash")
 
     # Wait for any potential asynchronous operations to complete
-    # wait_for_ajax
+    wait_for_ajax
 
     # check that the url hash is correct
     assert_equal("#13/41.87/-87.64", url_hash)
@@ -25,7 +25,7 @@ class MapTest < ApplicationSystemTestCase
     zoom = page.evaluate_script("map.getZoom()")
 
     # Wait for any potential asynchronous operations to complete
-    # wait_for_ajax
+    wait_for_ajax
 
     assert_equal(-25, lat)
     assert_equal(-13, lng)
@@ -39,7 +39,7 @@ class MapTest < ApplicationSystemTestCase
     url_hash = page.evaluate_script("window.location.hash")
 
     # Wait for any potential asynchronous operations to complete
-    # wait_for_ajax
+    wait_for_ajax
 
     # check that the url hash is correct
     assert_equal("#15/13/60", url_hash)

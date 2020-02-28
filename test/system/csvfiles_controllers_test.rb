@@ -1,7 +1,7 @@
 require "application_system_test_case"
 
 class CsvfilesControllersTest < ApplicationSystemTestCase
-  Capybara.default_max_wait_time = 120
+  Capybara.default_max_wait_time = 60
 
   test 'simple-data-grapher powertag' do
     visit '/post?body=[simple-data-grapher:i/2/6]'

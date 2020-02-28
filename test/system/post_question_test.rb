@@ -1,7 +1,7 @@
 require "application_system_test_case"
 
 class QuestionTest < ApplicationSystemTestCase
-  Capybara.default_max_wait_time = 120
+  Capybara.default_max_wait_time = 60
 
   def setup
     visit '/'
