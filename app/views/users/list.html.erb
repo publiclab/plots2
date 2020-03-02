@@ -40,7 +40,7 @@
               <div class="card-info">
                 <div class="d-flex justify-content-between">
                  <div>
-                    <a href="/profile/<%= user.username %>"><%= user.username %></a>
+                    <a href="/profile/<%= user.username %>" style="word-break:break-word;"><%= user.username %></a>
                    </div>
                    <div>
                       <a class="ellipsis" data-toggle="dropdown">&nbsp<i class="fa fa-ellipsis-h" style="color: #666; font-size:15px;"></i></a>
@@ -62,7 +62,7 @@
                 <div class="sub-info">
                   <div style="padding-bottom:6px;">
                     <% if user.status == 0 %>
-                      <i class='fa fa-ban' style="color:#a00;"></i> <%= t('users.list.banned') %> | 
+                      <i class='fa fa-ban' style="color:#a00;"></i> <%= t('users.list.banned') %> |
                     <% end %>
                     Active <%= t = user.revisions.order(timestamp: :desc).first.try(:created_at);time_ago_in_words(t) if (t) %> ago
                   </div>
