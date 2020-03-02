@@ -1,18 +1,18 @@
 <br><br>
 <div class="btn-group" role="group">
-    <a href="/post" class="btn btn-primary btn-lg requireLogin"><i class="fa fa-plus-circle fa-white"></i> <%= t('dashboard._header.share_work') %></a>
+    <a href="/post" class="btn btn-primary btn-lg requireLogin"><i class="fa fa-plus-circle fa-white"></i> <%= translation('dashboard._header.share_work') %></a>
     <div class="btn-group" role="group">
       <a class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <span class="caret"></span>
         <span class="sr-only">Toggle Dropdown</span>
       </a>
       <div class="dropdown-menu dropdown-menu-right mt-2">
-        <a class="dropdown-item" href="/post?n=15322&title=How%20to%20...&tags=activity:new,draft"><%= t('dashboard._header.dropdown.share_activity') %></a>
-        <a class="dropdown-item" href="/post"><%= t('dashboard._header.dropdown.share_research_note') %></a>
-        <a class="dropdown-item" href="/questions/new?tags=question:general"><%= t('dashboard._header.dropdown.ask_question') %></a>
-        <a class="dropdown-item" href="/post?template=event&tags=event"><%= t('dashboard._header.dropdown.post_event') %></a>
+        <a class="dropdown-item" href="/post?n=15322&title=How%20to%20...&tags=activity:new,draft"><%= translation('dashboard._header.dropdown.share_activity') %></a>
+        <a class="dropdown-item" href="/post"><%= translation('dashboard._header.dropdown.share_research_note') %></a>
+        <a class="dropdown-item" href="/questions/new?tags=question:general"><%= translation('dashboard._header.dropdown.ask_question') %></a>
+        <a class="dropdown-item" href="/post?template=event&tags=event"><%= translation('dashboard._header.dropdown.post_event') %></a>
         <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="/post?tags=blog-submission"><%= t('dashboard._header.dropdown.tell_story_blog') %></a>
+        <a class="dropdown-item" href="/post?tags=blog-submission"><%= translation('dashboard._header.dropdown.tell_story_blog') %></a>
       </div>
     </div>
   </div>
@@ -37,7 +37,7 @@
   <li class="nav-item" style="width:49%;">
     <a class="nav-link wikis-tab" href="#wiki" data-toggle="tab">
       <span class="d-md-none"><i class="fa fa-book"></i></span>
-      <span class="d-none d-md-inline"><%= t('dashboard._sidebar.wiki') %></span>
+      <span class="d-none d-md-inline"><%= translation('dashboard._sidebar.wiki') %></span>
     </a>
   </li>
 </ul>
