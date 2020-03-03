@@ -17,11 +17,11 @@
 <% end %>
 <hr />
 <h5>
-    <%= raw t('notes.stats.notes_wikis_comments', :notes_count => @notes, :wikis_count => @wikis, :comments_count => @comments) %>
+    <%= raw translation('notes.stats.notes_wikis_comments', :notes_count => @notes, :wikis_count => @wikis, :comments_count => @comments) %>
 </h5>
 <hr>
 <h5>
-    <%= raw t('notes.stats.members_and_contributors', :member_count => @people, :people_count => @contributors) %>
+    <%= raw translation('notes.stats.members_and_contributors', :member_count => @people, :people_count => @contributors) %>
 </h5>
 <hr>
 <% if logged_in_as(['admin']) %>
