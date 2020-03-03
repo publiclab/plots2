@@ -105,9 +105,10 @@
 
 
   const urlparams = window.location.search;
+  const urlhash = window.location.hash;
 
   for (var link of document.getElementsByClassName("choose-box")) {
-    var newurl = link.getAttribute("href") + urlparams;
+    var newurl = link.getAttribute("href") + urlhash + urlparams;
     link.setAttribute("href", newurl);
   }
 
