@@ -4,12 +4,12 @@
     <% mailing_list = @node.power_tag("list") %>
 
     <form action="https://groups.google.com/group/<%= mailing_list %>/boxsubscribe">
-      <label><%= raw t('sidebar._list.mailing_list', :mailing_list => mailing_list, :url1 =>"https://groups.google.com/group/"+mailing_list ) %>:</label>
+      <label><%= raw translation('sidebar._list.mailing_list', :mailing_list => mailing_list, :url1 =>"https://groups.google.com/group/"+mailing_list ) %>:</label>
       <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-envelope"></i></span><input name="email" class="col-md-11 form-control" type="text" placeholder="you@email.com" />
       </div>
       <br />
-      <button name="sub" type="submit" class="btn btn-primary"><%= t('sidebar._list.subscribe') %></button>
+      <button name="sub" type="submit" class="btn btn-primary"><%= translation('sidebar._list.subscribe') %></button>
     </form>
 
     <hr />
@@ -23,6 +23,6 @@
       </li>
     <% end %>
     </ul>
-    <p><a href="https://groups.google.com/group/<%= mailing_list %>"><%= t('sidebar._list.all_topics') %> &raquo;</a></p>
+    <p><a href="https://groups.google.com/group/<%= mailing_list %>"><%= translation('sidebar._list.all_topics') %> &raquo;</a></p>
   </div>
 <% end %>
