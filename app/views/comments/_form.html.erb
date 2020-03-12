@@ -120,19 +120,13 @@
             <span style="color:#888;"> &nbsp;
               <br class="d-md-none" /><%= raw translation('comments._form.logged_in', :username => current_user.username) %> &nbsp;
               <a target="_blank" href="/wiki/authoring-help#Formatting"><i class="fa fa-question-circle"></i></a> &nbsp;
-              <a onClick="changeicon()"><i id="bell" class="fa fa-bell-o"></i></a>
+              <a onClick="changeicon('#who-is-notified-form', '#bell')"><i id="bell" class="fa fa-bell-o"></i></a>
             </span>
           </div>
 
           <p id="who-is-notified-form" style="display:none;color:#888;">
             <%= translation('comments._form.email_notifications') %>
           </p>
-          <script>
-            function changeicon(){
-              $('#who-is-notified-form').toggle();
-              $('#bell').toggleClass("fa-bell-o fa-bell");
-            }
-          </script>
     </form>
   </div>
 </div>
