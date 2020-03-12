@@ -64,3 +64,8 @@ function addComment(comment, submitTo, parentID = 0) {
   }
   sendFormSubmissionAjax(data, submitTo);
 }
+
+function changeicon(messageid, buttonid){
+    $(messageid).toggle();
+    $(buttonid).toggleClass("fa-bell-o fa-bell");
+}
