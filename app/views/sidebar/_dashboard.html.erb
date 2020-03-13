@@ -27,8 +27,7 @@
   </div>
 <% end %>
 
-<% if !current_user %><div style="margin: 2.2rem 0;"><% end %>
-<ul class="nav nav-tabs">
+<ul class="nav nav-tabs" style="margin-top:2.2rem;">
   <li class="nav-item" style="width:49%;">
     <a class="nav-link active lists-tab" href="#ask-question" data-toggle="tab">
       <span class="d-md-none"><i class="fa fa-comment"></i></span>
@@ -42,7 +41,7 @@
     </a>
   </li>
 </ul>
-<% if !current_user %><div><% end %>
+
 <div class="tab-content">
   <div class="tab-pane" id="wiki">
     <%= render partial: "dashboard/wiki", locals: { wikis: @wikis } %>
