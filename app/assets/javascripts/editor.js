@@ -164,3 +164,10 @@ $E = {
     }
   }
 }
+
+$(document).ready(function(){
+  $('.woofmark-command-link').on('click', function(){
+    $('.wk-prompt-cancel').addClass("btn btn-default");
+    $('.wk-prompt-ok').addClass("btn btn-default");
+  });
+});
