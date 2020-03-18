@@ -144,7 +144,7 @@ GEM
     friendly_id (5.3.0)
       activerecord (>= 4.0.0)
     gemoji (3.0.1)
-    geocoder (1.6.0)
+    geocoder (1.6.2)
     geokit (1.13.1)
     geokit-rails (2.3.1)
       geokit (~> 1.5)
