@@ -99,7 +99,6 @@ GEM
       activerecord (~> 5.2.1)
     concurrent-ruby (1.1.5)
     connection_pool (2.2.2)
-    cookiejar (0.3.3)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     crass (1.0.5)
@@ -131,20 +130,8 @@ GEM
       dry-equalizer (~> 0.3)
       dry-inflector (~> 0.1, >= 0.1.2)
       dry-logic (~> 1.0, >= 1.0.2)
-    em-http-request (1.1.5)
-      addressable (>= 2.3.4)
-      cookiejar (!= 0.3.1)
-      em-socksify (>= 0.3)
-      eventmachine (>= 1.0.3)
-      http_parser.rb (>= 0.6.0)
-    em-socksify (0.3.2)
-      eventmachine (>= 1.0.0.beta.4)
-    em-synchrony (1.0.6)
-      eventmachine (>= 1.0.0.beta.1)
     equalizer (0.0.11)
     erubi (1.9.0)
-    eventmachine (1.2.7)
-    eventmachine_httpserver (0.2.1)
     execjs (2.7.0)
     faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
@@ -368,15 +355,7 @@ GEM
     pry-rails (0.3.9)
       pry (>= 0.10.4)
     public_suffix (4.0.3)
-    puffing-billy (2.3.0)
-      addressable (~> 2.5)
-      em-http-request (~> 1.1, >= 1.1.0)
-      em-synchrony
-      eventmachine (~> 1.2)
-      eventmachine_httpserver
-      http_parser.rb (~> 0.6.0)
-      multi_json
-    puma (4.3.1)
+    puma (4.3.3)
       nio4r (~> 2.0)
     rack (2.1.1)
     rack-accept (0.4.5)
@@ -643,7 +622,6 @@ DEPENDENCIES
   php-serialize
   progress_bar
   pry-rails
-  puffing-billy (~> 2.3)
   puma (~> 4.3)
   rack-cors
   rack-openid
