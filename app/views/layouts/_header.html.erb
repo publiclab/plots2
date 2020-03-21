@@ -180,6 +180,12 @@
           if($('#chat').is(':visible') == true)
             c.hide() ;
       });
+      $('.nav-item.dropdown').on('show.bs.dropdown', function () {
+        $('.nav-item.dropdown').addClass("no-hover");
+      })
+      $('.nav-item.dropdown').on('hide.bs.dropdown', function () {
+        $('.nav-item.dropdown').removeClass("no-hover");
+      })
   </script>
   <%= render partial: "layouts/alerts" %>
 </div>
@@ -194,6 +200,7 @@
       cursor:pointer;
   }
 
+  
   .profile-icon:hover .fa-user-circle:before{
       opacity:0.5;
   }
