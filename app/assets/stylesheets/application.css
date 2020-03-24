@@ -11,7 +11,7 @@
  * If there are other assets (which are not in this file) that are being precompiled by
  * 'stylesheet_link_tag' command in views, then add them on /config/initializers/assets.rb
 
- 
+
  *= require bootstrap/dist/css/bootstrap.min.css
  *= require bootstrap-datepicker/dist/css/bootstrap-datepicker3.css
  *= require jquery-file-upload/css/jquery.fileupload-ui.css
@@ -36,4 +36,5 @@
  *= require jquery.atwho
  *= require profile
  *= require location
+ *= require notes 
 */
