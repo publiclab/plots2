@@ -58,7 +58,7 @@ jobs:
     - name: "Integration Tests"
       script: bundle exec rails test test/integration
     - name: "System Tests"
-      script: bundle exec rails test:system > /dev/null
+      script: bundle exec rails test:system
     
 after_script:
   - echo -e '<?xml version="1.0" encoding="UTF-8"?>' > output.xml;
