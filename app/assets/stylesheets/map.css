@@ -17,7 +17,3 @@
 .leaflet-top{
   z-index:800 !important;
 }
-.leaflet-popup-content {
-  width: 800px !important;
-}
-  
