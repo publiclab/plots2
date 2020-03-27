@@ -4,7 +4,7 @@
   <div class="card shadow-sm p-2 mb-3 bg-white rounded" >
     <div class="card-header mt-2">
       <h4 style="display: inline-block;"><%= tag.name %></h3>
-      <p class="posted-by-links"><a href="/tag/<%= tag.name %>"><%= Tag.follower_count(tag.name) %> people discussing</a></p>
+      <p class="posted-by-links"><a href="/tag/<%= tag.name %>"><%= pluralize(Tag.follower_count(tag.name), 'person') %> discussing</a></p>
     </div>
     <div class="card-body">
       <% Tag.find_nodes_by_type(tag.name, type = 'note', limit = 3).each do |node|  %>

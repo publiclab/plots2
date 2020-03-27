@@ -551,7 +551,7 @@ class TagControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_select 'table' # ensure a table is shown
-    assert_equal 3, css_select('tr').length # ensure it has 3 rows
+    assert_equal 4, css_select('tr').length # ensure it has 4 rows
   end
 
   test 'rss with tagname and authorname' do
