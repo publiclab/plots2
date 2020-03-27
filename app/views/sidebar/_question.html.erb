@@ -24,8 +24,8 @@
       <% end %>
     <% end %>
 
+    <%= render partial: "sidebar/map" %>
     <%= render partial: 'sidebar/notes', locals: { notes: @notes, title: "Related Questions", node: @node } %>
-
   </div>
 
   <div id=sidebar-tags>
