@@ -1,0 +1,20 @@
+<% if @node && @node.lat && @node.lon %>
+  <% if @node.has_tag("place") %>
+    <%= render_top_map(@node.lat, @node.lon, @node.zoom) %>
+  <% else %>
+    <%= render_map(@node.lat, @node.lon, @node.zoom) %>
+  <% end %>
+  <%# Link to map %>
+  <% zoom = @node.zoom ? @node.zoom : "" %>
+  <% url = "/map#" + zoom.to_s + "/" + @node.lat.to_s + "/" + @node.lon.to_s %>
+  <% if @node.type == "page" %>
+    <% url = "/map/" + @node.slug_from_path %>
+  <% end %>
+  <a href="<%= url %>" class="btn btn-outline-secondary btn-location mt-2"><i class="fa fa-map" aria-hidden="true"></i> View on a map</a>
+<% elsif !@node.lat && !@node.lon %>
+  <div id="map_template" style="position: relative; display: inline-block;">
+    <a class="blurred-location-input btn btn-outline-secondary btn-lg btn-location my-2"><i class="fa fa-map-marker" style="color:#c40;" ></i>   <strong>Add a location</strong></a>
+  </div>
+  <br>
+  <span>Learn about location <a href="https://publiclab.org/location-privacy">privacy</a></span>
+<% end %>

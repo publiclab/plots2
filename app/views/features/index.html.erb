@@ -1,20 +1,25 @@
-<h2>Features</h2>
-
-<p>Features allow admins to edit/update text and images displayed around the site, for example banners, sidebar content, and alerts or notices.</p>
-
+<div class="row" style="align-items:baseline;">
+   <h2>Features</h2>
+   <p style="margin-inline-start:1rem;">Features allow admins to edit/update text and images displayed around the site, for example banners, sidebar content, and alerts or notices.</p>
+</div>
+<% if current_user.admin? %>
 <p><a class="btn btn-outline-secondary" href="/features/new">New feature</a></p>
-
+<% end %>
 <table class="table">
   <tr>
     <th>Title</th>
+    <% if current_user.admin? %>
     <th>Edit</th>
+    <% end %>
     <th>Last edited</th>
   </tr>
   <% @features.each do |feature| %>
     <tr>
       <td style="width:50%"><a href="/features/<%= feature.id %>"><%= feature.title %></a></td>
+      <% if current_user.admin? %>
       <td><a href="/features/<%= feature.id %>/edit?t=<%= Time.now.to_i %>">edit</a></td>
-      <td><%= time_ago_in_words(feature.latest.created_at) %> ago by 
+      <% end %>
+      <td><%= time_ago_in_words(feature.latest.created_at) %> ago by
       <a href="/profile/<%= feature.latest.author.name %>"><%= feature.latest.author.name %></td>
     </tr>
   <% end %>

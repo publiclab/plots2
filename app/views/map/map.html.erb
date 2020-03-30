@@ -82,29 +82,12 @@
         urlHash.setUrlHashParameter('zoom', zoom + "");
       }
 
-      // var baseLayer = L.tileLayer(
-      //   "https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",
-      //   {
-      //     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      //   }
-      // ).addTo(map);
-
       var markers_hash = new Map();
       var options = {
+        layers: ['PLpeople'],
         mainContent: "content",
         setHash: false
       }
       setupLEL(map, markers_hash, options);
-
-
-      // L.LayerGroup.EnvironmentalLayers({
-      //   // baseLayers: {
-      //   //  'Gray-scale': baselayer
-      //   // },
-      //   // include: layersname,
-      //   hash: false,
-      //   embed: true,
-      //   hostname: 'publiclab.org',
-      // }).addTo(map);
 
     </script>

@@ -1,7 +1,7 @@
 <% user = user || @user # allow overriding w/ local variable %>
 <div class="tags-list">
 <% if tags.length > 0 && power_tag %>
-  <a class="btn btn-circle btn-circle-sm show-more-tags" href="javascript:void(0);" style="float:left;"><i class="fa fa-ellipsis-h" style="color:#808080;margin-left:3px;"></i></a>
+  <a class="btn btn-circle btn-circle-sm show-more-tags" href="javascript:void(0);" style="float:left;"><i class="fa fa-ellipsis-h" style="color:#808080;"></i></a>
 <% end %>
 <% tags.each_with_index do |tag, i| %>
   <% if tag.class == NodeTag %>

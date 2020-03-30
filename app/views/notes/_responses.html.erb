@@ -13,7 +13,7 @@
         tags += '&n=17223' if response_type == 'photo'
       %>
       <a class='btn btn-primary btn-lg' href="/post?tags=<%= tags %>">
-        <%= t('notes._responses.post_' + response_type) %>
+        <%= translation('notes._responses.post_' + response_type) %>
       </a>
 
       Help out by offering feedback!
@@ -32,12 +32,12 @@
         <%= render :partial => "comments/form", :locals => { title: 'Add feedback, suggestions, or photos
           ', body: 'I did this!', comment: false, placeholder: '', url1: '/conduct', author: current_user.title, is_new_contributor:current_user.is_new_contributor? } %>
       <% else %>
-        <p><%= raw t('notes._comments.must_be_logged_in', :url1 => new_user_session_path( return_to: request.path )) %></p>
+        <p><%= raw translation('notes._comments.must_be_logged_in', :url1 => new_user_session_path( return_to: request.path )) %></p>
       <% end %>
     </div>
     <hr />
 
-    <h3><%= t("notes._responses.#{response_type}s") %> (<%= @responses.length %>)</h3>
+    <h3><%= translation("notes._responses.#{response_type}s") %> (<%= @responses.length %>)</h3>
 
     <% if response_type == 'response' %>
       <%= render partial: "notes/notes", locals: { notes: @responses } %>
