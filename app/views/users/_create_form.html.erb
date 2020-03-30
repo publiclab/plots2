@@ -21,13 +21,13 @@
     <div class="row">
       <div class="col-md-6">
         <div class="form-group" id="username_div">
-          <label for="username"><%= t('user_sessions.new.username') %></label>
+          <label for="username"><%= translation('user_sessions.new.username') %></label>
           <%= f.text_field :username, { tabindex: 1, placeholder: "Username", class: 'form-control', id: 'username-signup' } %>
           <small class="invisible">Placeholder</small>
         </div>
 
         <div class="form-group">
-          <label for="email"><%= t('users._form.email') %></label>
+          <label for="email"><%= translation('users._form.email') %></label>
           <%= f.text_field :email, { tabindex: 3, placeholder: "you@email.com", class: 'form-control', id: 'email' } %>
           <small class="invisible">Placeholder</small>
         </div>
@@ -48,7 +48,7 @@
 
     <div class="form-group row">
       <div class="form-group col-md-6">
-        <label for="password"><%= t('users._form.create_password') %></label>
+        <label for="password"><%= translation('users._form.create_password') %></label>
         <%= f.password_field :password, { placeholder: 'Enter your new password',
                                           tabindex: 4,
                                           class: 'form-control',
@@ -59,7 +59,7 @@
       </div>
 
       <div class="form-group col-md-6">
-        <label for="password_confirmation"><%= t('users._form.password_confirmation') %></label>
+        <label for="password_confirmation"><%= translation('users._form.password_confirmation') %></label>
         <%= f.password_field :password_confirmation, { placeholder: I18n.t('users._form.confirm_password'),
                                                        tabindex: 5,
                                                        class: 'form-control',
@@ -72,7 +72,7 @@
 
     <div class="form-group row">
       <div class="col-md-12">
-        <label for="user_bio"><%= t('users._form.bio') %></label>
+        <label for="user_bio"><%= translation('users._form.bio') %></label>
         <%= f.text_area :bio, { placeholder: I18n.t('users._form.add_bio'),
                                             rows: 8,
                                             class: 'form-control',
@@ -108,9 +108,9 @@
 
     <div class="col-md-12 form-group form-inline" style="clear:both;padding-top:10px;">
         <!-- button for creating new users -->
-        <button style="margin-right:8px;" class="btn btn-lg btn-primary btn-save sranje" type="submit" tabindex="7"><%= t('users._form.sign_up') %></button>
+        <button style="margin-right:8px;" class="btn btn-lg btn-primary btn-save sranje" type="submit" tabindex="7"><%= translation('users._form.sign_up') %></button>
         <span>or <a id="toLogin" href="/login">
-          <%= t('users._form.log_in') %>
+          <%= translation('users._form.log_in') %>
         </a>
         </span>
 
