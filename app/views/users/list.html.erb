@@ -18,9 +18,9 @@
     <br>
       <p style="width: 100%; font-size:14px; text-align: center; border-bottom: 1px solid #ccc; line-height:2px; margin: 10px 0 20px;">
       <span style="background-color: #fff; padding: 0 10px; color: #808080;">Sort by:
-      <a href = "<%= people_path %>?sort=username" style="text-decoration: underline; color: #808080;"> <%= translation('users.list.username') %></a><span> | </span>
-      <a href = "<%= people_path %>?sort=last_activity"style="text-decoration: underline; color: #808080;"> <%= translation('users.list.last_activity') %></a><span> | </span>
-      <a href = "<%= people_path %>?sort=joined" style="text-decoration: underline; color: #808080;"><%= translation('users.list.joined') %></a><span> | </span>
+      <a href = "<%= people_path %>?sort=username" class="sort-style <% if params[:sort] == "username" %>selected<%end%>"> <%= translation('users.list.username') %></a><span> | </span>
+      <a href = "<%= people_path %>?sort=last_activity" class="sort-style <% if params[:sort] == "last_activity" %>selected<%end%>"> <%= translation('users.list.last_activity') %></a><span> | </span>
+      <a href = "<%= people_path %>?sort=joined" class="sort-style <% if params[:sort] == "joined" %>selected<%end%>"><%= translation('users.list.joined') %></a><span> | </span>
       </span>
       </p>
       <br/>
@@ -51,7 +51,7 @@
                       <li><a href="/profile/<%= user.username %>">See Full Profile</a></li>
                       <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") %>
                          <% if user.status == 0 %>
-                           <i class='fa fa-ban' style="color:#a00;"></i> <%= t('users.list.banned') %>
+                           <i class='fa fa-ban' style="color:#a00;"></i> <%= translation('users.list.banned') %>
                            <% elsif user.status == 1 && user != current_user %>
                              <li><a data-confirm="<%= translation('users.list.are_you_sure') %>" href="/ban/<%= user.uid %>" ><i class='fa fa-ban'></i> <%= translation('users.list.ban') %></a></li>
                          <% end %>
@@ -168,6 +168,13 @@ h3, h2, h5 {
   display: inline-block;
   padding-bottom: 5px;
   padding-left: 14px;
+}
+  
+.sort-style{
+  color: #808080;
+}
+.selected{
+  text-decoration: underline;
 }
 </style>
 <%= render partial: 'tag/location' %>

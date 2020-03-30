@@ -129,8 +129,8 @@ class UserTest < ActiveSupport::TestCase
 
   test 'returns wikis updated in given period of time' do
     bob = users(:bob)
-    node_count = 1
-    nodes_fix = [2]
+    node_count = 2
+    nodes_fix = [2, 5]
     count_return = bob.content_followed_in_period(2.hours.ago, Time.now, 'page').count
     nodes_time = bob.content_followed_in_period(2.hours.ago, Time.now, 'page').pluck(:nid)
     assert_equal node_count, count_return

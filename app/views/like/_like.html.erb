@@ -8,12 +8,12 @@
     <% end %>
 
     <% if node.type == 'page' %>
-      <% if node.has_tag('locked') && (current_user ? (current_user.role != "moderator" && current_user.role != "admin") : true) %>	
+      <% if node.has_tag('locked') && (current_user ? (current_user.role != "moderator" && current_user.role != "admin") : true) %>
         <a href="/wiki/locked" class='btn btn-outline-secondary btn-circle btn-sm'>
           <i class="ml-1 ff fa fa-lock"></i>
         </a>
-      <% elsif current_user && current_user.first_time_poster %>	
-        <a class='btn btn-outline-secondary btn-circle btn-sm' rel="tooltip" title="Please post a question or other content before editing the wiki. Click to learn why." data-placement="top" href="https://publiclab.org/notes/tester/04-23-2016/new-moderation-system-for-first-time-posters">	
+      <% elsif current_user && current_user.first_time_poster %>
+        <a class='btn btn-outline-secondary btn-circle btn-sm' rel="tooltip" title="Please post a question or other content before editing the wiki. Click to learn why." data-placement="top" href="https://publiclab.org/notes/tester/04-23-2016/new-moderation-system-for-first-time-posters">
           <i class="ml-1 ff fa fa-lock"></i>
         </a>
       <% else %>
@@ -44,7 +44,7 @@
         <% end %>
     <% end %>
 
-    <span data-toggle="tooltip" data-placement="top" title="Tools" id="menu-btn" class="btn btn-outline-secondary btn-circle btn-sm" rel="popover" data-placement="left" data-html="true" style="overflow: auto; max-height: 500px" data-content="
+    <span data-toggle="tooltip" data-placement="bottom" title="Tools" id="menu-btn" class="btn btn-outline-secondary btn-circle btn-sm" rel="popover" data-placement="left" data-html="true" style="overflow: auto; max-height: 500px" data-content="
         <p><b>Users who liked this</b></p>
         <% node.likers.each do |user| %>
             <i class='fa fa-star-o'></i> <a href='/profile/<%= user.username %>/'><%= user.username %></a><br />
@@ -71,11 +71,11 @@
         <p><a class='btn btn-sm btn-outline-secondary' rel='tooltip' title='Try the beta inline Rich Wiki editor.' data-placement='top' href='<%= node.path %>?raw=true'>
           <i style='color:#0c8;' class='fa fa-pencil'></i>
         </a></p>
-    
+
         <% if logged_in_as(['admin', 'moderator']) || (current_user && current_user.uid == node.uid) %>
-    
+
             <hr />
-    
+
             <div class='btn-group'>
                 <a rel='tooltip' title='Flag as spam' class='btn btn-sm btn-outline-secondary btn-flag-spam-<%= node.id %>' href='mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+item+that+looks+like+spam+or+needs+to+be+moderated:+<%= node.title.gsub(/ /,'+') %>+https://publiclab.org/n/<%= node.id %>+by+https://publiclab.org/profile/<%= node.author.username %>+Thanks!'>
                     <i class='fa fa-flag'></i>
@@ -83,7 +83,7 @@
                 <li data-toggle='tooltip' data-placement='top' title='Follow by tag or author' id='menu-follow-btn' class='btn btn-outline-secondary btn-sm requireLogin nestedPopover' data-html='true' rel='popover' data-placement='left' data-content=&quot;    <%= "No tags" if tagnames.nil? || tagnames.length == 0 %>    <% if tagnames %><% tagnames.each do |tagname| %><p style='margin-bottom:3px; overflow: hidden; text-overflow: ellipsis;'><a href='/subscribe/tag/<%= tagname %>' class='btn btn-outline-secondary btn-sm'><%= tagname %></a></p><% end %><% end %><hr /><i class='fa fa-user'></i><% if current_user && !current_user.following?(node.author) && node.author != current_user %>&nbsp;<a class='btn btn-sm' href='/relationships?followed_id=<%= node.author.id %>' data-method='post' > <%= node.author.name %></a><% else %>  &nbsp;<%= node.author.name %><% end %>&quot;>
                     <i class='fa fa-user-plus' aria-hidden='true'></i>
                 </li>
-    
+
                 <a href='/notes/delete/<%= node.id %>' class='btn btn-outline-secondary btn-sm' id='menu-delete-btn' data-confirm='Are you sure?'>
                     <i class='fa fa-trash'></i><span class='d-none d-lg-inline'></span>
                 </a>
@@ -99,7 +99,7 @@
                 <% end %>
             </div>
         <% end %>
-    
+
         <br />
         <hr style='clear:both;' />
         <div>
@@ -109,6 +109,7 @@
                     <% if node.comments %>
                         | <a href='#comments'><%= node.comments.length %> <%= t('notes.show.comments') %></a>
                     <% end %>
+                    | <%= raw t('wiki.show.last_edited', url1: "/profile/" + node.latest.author.name, author: node.latest.author.name, time: time_ago_in_words(node.latest.created_at)) %>
                 <% end %>
 
                 <% if node.type == 'page' %>
@@ -129,7 +130,7 @@
     ">
         <span style="margin: 5px !important;" class="ff fa fa-ellipsis-h"></span>
     </span>
-    
+
     <style type="text/css">
     /* Styling the links to remove underline on hover and setting pointer as cursor */
     #print-command-3-col , #print-command-no-links {
