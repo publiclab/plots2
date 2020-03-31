@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
   $("#edit-form").validate({
     rules: {
       email: {
@@ -28,24 +28,30 @@ $(document).ready(function() {
         equalTo: "Passwords doesn't match"
       }
     },
-    submitHandler: function(form) {
+    submitHandler: function (form) {
       form.submit();
     }
   });
 });
 
-$(document).ready(function() {
+$(document).ready(function () {
   // The two forms have the same ID
   var signUpForms = document.querySelectorAll("#create-form");
+  var signUpErrorMessages = document.querySelector("#error-message");
 
   // Sign up modal form
   signUpForms[0].classList.add("signup-modal-form");
   var signUpModalForm = new SignUpFormValidator(".signup-modal-form");
-
   // publiclab.org/register form
   if (signUpForms[1]) {
     signUpForms[1].classList.add("signup-register-form");
     var signUpRegisterForm = new SignUpFormValidator(".signup-register-form");
+    signUpRegisterForm.validateForm()
+
+    if (signUpErrorMessages.innerHTML.includes("Email")) {
+      signUpRegisterForm.updateUI(signUpRegisterForm.emailElement, false, "Email already exists");
+    }
+    signUpRegisterForm.isFormValid()
   }
 
   // The same goes for login forms
@@ -133,45 +139,46 @@ function SignUpFormValidator(formClass) {
   if (!signUpForm) return;
 
   this.validationTracker = {};
+
   this.submitBtn = document.querySelector(formClass + ' [type="submit"');
 
   this.isFormValid();
 
-  var usernameElement = document.querySelector(
+  this.usernameElement = document.querySelector(
     formClass + " [name='user[username]']"
   );
-  var emailElement = document.querySelector(
+  this.emailElement = document.querySelector(
     formClass + " [name='user[email]']"
   );
-  var passwordElement = document.querySelector(
+  this.passwordElement = document.querySelector(
     formClass + " [name='user[password]']"
   );
-  var confirmPasswordElement = document.querySelector(
+  this.confirmPasswordElement = document.querySelector(
     formClass + " [name='user[password_confirmation]']"
   );
 
   // Every time user types something, corresponding event listener are triggered
-  usernameElement.addEventListener(
+  this.usernameElement.addEventListener(
     "input",
-    validateUsername.bind(usernameElement, this)
+    validateUsername.bind(this.usernameElement, this)
   );
-  emailElement.addEventListener(
+  this.emailElement.addEventListener(
     "input",
-    validateEmail.bind(emailElement, this)
+    validateEmail.bind(this.emailElement, this)
   );
-  passwordElement.addEventListener(
+  this.passwordElement.addEventListener(
     "input",
-    validatePassword.bind(passwordElement, confirmPasswordElement, this)
+    validatePassword.bind(this.passwordElement, this.confirmPasswordElement, this)
   );
-  confirmPasswordElement.addEventListener(
+  this.confirmPasswordElement.addEventListener(
     "input",
-    validateConfirmPassword.bind(confirmPasswordElement, passwordElement, this)
+    validateConfirmPassword.bind(this.confirmPasswordElement, this.passwordElement, this)
   );
 }
 
 // Typing the form triggers the function
 // Updates UI depending on the value of <valid> parameter
-SignUpFormValidator.prototype.updateUI = function(element, valid, errorMsg) {
+SignUpFormValidator.prototype.updateUI = function (element, valid, errorMsg) {
   var elementName = element.getAttribute("name");
 
   if (valid) {
@@ -187,15 +194,22 @@ SignUpFormValidator.prototype.updateUI = function(element, valid, errorMsg) {
   this.isFormValid();
 };
 
-SignUpFormValidator.prototype.disableSubmitBtn = function() {
+SignUpFormValidator.prototype.disableSubmitBtn = function () {
   this.submitBtn.setAttribute("disabled", "");
 };
 
-SignUpFormValidator.prototype.enableSubmitBtn = function() {
+SignUpFormValidator.prototype.enableSubmitBtn = function () {
   this.submitBtn.removeAttribute("disabled");
 };
 
-SignUpFormValidator.prototype.isFormValid = function() {
+SignUpFormValidator.prototype.validateForm = function () {
+  validateUsername.call(this.usernameElement, this)
+  validateEmail.call(this.emailElement, this)
+  validatePassword.call(this.passwordElement, this.confirmPasswordElement, this)
+  validateConfirmPassword.call(this.confirmPasswordElement, this.passwordElement, this)
+};
+
+SignUpFormValidator.prototype.isFormValid = function () {
   // Form is valid if all elements have passsed validation successfully
   var isValidForm =
     Object.values(this.validationTracker).filter(Boolean).length === 4;
@@ -211,9 +225,9 @@ function validateUsername(obj) {
   if (username.length < 3) {
     obj.updateUI(this, false, "Username has to be at least 3 characters long");
   } else {
-    $.get("/api/srch/profiles?query=" + username, function(data) {
+    $.get("/api/srch/profiles?query=" + username, function (data) {
       if (data.items) {
-        $.map(data.items, function(userData) {
+        $.map(data.items, function (userData) {
           if (userData.doc_title === username) {
             obj.updateUI(self, false, "Username already exists");
           } else {
@@ -242,6 +256,7 @@ function validateEmail(obj) {
 }
 
 function validatePassword(confirmPasswordElement, obj) {
+
   var password = this.value.trim();
 
   if (password.length === 0) {
