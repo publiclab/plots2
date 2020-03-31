@@ -16,7 +16,7 @@
 
   <% if @node && (@node.has_power_tag('iso') || @node.has_power_tag('lang')) %>
     <div class="alert alert-info">
-        <h4><%= t('sidebar._related.translation') %></h4>
+        <h4><%= translation('sidebar._related.translation') %></h4>
         <div id="google_translate_element">
       <script type="text/javascript">
       function googleTranslateElementInit() {
