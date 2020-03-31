@@ -3,10 +3,10 @@
 <input type="hidden" name="return_to" class="login-modal-redirect" value="<%= request.fullpath %>" />
 
 <center>
-  <h2><%= raw translation('user_sessions.new.log_in') %></h2>
+  <h2><%= raw translate('user_sessions.new.log_in') %></h2>
   <p class="form-grey" id="toSignup">or
     <%= link_to signup_path( return_to: params[:return_to] ) do %>
-    <%= raw translation('user_sessions.new.sign_up') %></a> <%= raw translation('user_sessions.new.to_join') %>
+    <%= raw translate('user_sessions.new.sign_up') %></a> <%= raw t('user_sessions.new.to_join') %>
     <% end %></p>
 </center>
 
@@ -25,11 +25,11 @@
 <div id="toggle" class="login-form">
 
   <div class="form-group">
-    <label for="username"><%= translation('user_sessions.new.username') %></label>
+    <label for="username"><%= translate('user_sessions.new.username') %></label>
     <%= f.text_field :username, { tabindex: 1, placeholder: "Username", class: 'form-control', id: 'username-login', required: true } %>
 
     <div class="form-group has-feedback">
-      <label class="control-label" for="password"><%= translation('user_sessions.new.password') %></label>
+      <label class="control-label" for="password"><%= translate('user_sessions.new.password') %></label>
       <div class="input-group">
         <%= f.password_field :password, { tabindex: 2,placeholder: "Password",class: 'form-control', id: 'password-signup', onpaste: 'return false;' , required: true } %>
         <div class="input-group-append">
@@ -44,17 +44,17 @@
 
   <div class="input-group-inline">
     <button id="login-button" class="btn btn-primary btn-lg" type="submit"
-      tabindex="3"><%= translation('user_sessions.new.log_in') %></button>
+      tabindex="3"><%= translate('user_sessions.new.log_in') %></button>
 
     <div class="form-check-inline">
       <label class="form-check-label" style="margin-left:12px;">
-        <%= f.check_box :remember_me %> <%= translation('user_sessions.new.remember_me') %>
+        <%= f.check_box :remember_me %> <%= translate('user_sessions.new.remember_me') %>
       </label>
     </div>
 
     <br />
 
-    <p class="form-grey"><%= raw translation('user_sessions.new.reset_by_clicking_here', :url1 => "/reset/") %></p>
+    <p class="form-grey"><%= raw translate('user_sessions.new.reset_by_clicking_here', :url1 => "/reset/") %></p>
   </div>
 
 </div>
