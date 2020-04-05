@@ -1,6 +1,6 @@
 # A DocResult is an individual return item for a document (web page) search
 class DocResult
-  attr_accessor :doc_id, :doc_type, :doc_url, :doc_title, :doc_score, :latitude, :longitude, :blurred, :category, :doc_author, :doc_image_url
+  attr_accessor :doc_id, :doc_type, :doc_url, :doc_title, :doc_score, :latitude, :longitude, :blurred, :category, :doc_author, :doc_image_url, :place_name, :created_at, :comment_count, :time_since, :user_photo_path
 
   def initialize(args = {})
     @doc_id = args[:doc_id]
@@ -14,6 +14,10 @@ class DocResult
     @longitude = args[:longitude]
     @blurred = args[:blurred]
     @category = args[:doc_type]
+    @place_name = args[:place_name]
+    @created_at = args[:created_at]
+    @time_since = args[:time_since]
+    @comment_count = args[:comment_count]
   end
 
   # This subclass is used to auto-generate the RESTful data structure.  It is generally not useful for internal Ruby usage
@@ -26,5 +30,9 @@ class DocResult
     expose :doc_score, documentation: { type: 'Float', desc: "If calculated, the relevance of the document result to the search request; i.e. the 'matching score'" }
     expose :latitude, documentation: { type: 'String', desc: "Returns the latitude associated with the node." }
     expose :longitude, documentation: { type: 'String', desc: "Returns the longitude associated with the node." }
+    expose :place_name, documentation: { type: 'String', desc: "Returns the place name of the location associated with the node." }
+    expose :created_at, documentation: { type: 'String', desc: "Returns the date the node was created." }
+    expose :time_since, documentation: { type: 'String', desc: "Returns a description of the amount of time that has passed since the node was created." }
+    expose :comment_count, documentation: { type: 'String', desc: "Returns the number of comments the user can view belonging to the node." }
   end
 end

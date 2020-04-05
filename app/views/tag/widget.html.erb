@@ -12,7 +12,7 @@
 
 <% if @notes.nil? || @notes.length == 0 %>
 
-  <p><%= raw t('tag.show.no_results_found', :tag => params[:id]) %>:</p>
+  <p><%= raw translation('tag.show.no_results_found', :tag => params[:id]) %>:</p>
 
   <%= render template: "search/new" %>
 

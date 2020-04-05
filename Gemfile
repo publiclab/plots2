@@ -26,14 +26,14 @@ gem 'grape-swagger-ui'
 gem 'http_accept_language'
 gem "i18n-js", ">= 3.0.0.rc11"
 gem 'impressionist'
-gem 'jbuilder', '~> 2.9'
+gem 'jbuilder', '~> 2.10'
 gem 'jquery-rails'
 gem 'less-rails', '~> 4.0'
 gem 'mocha', '~> 1.11'
 gem 'mustermann' , '1.0.3'
 gem 'omniauth', '~> 1.9'
-gem 'omniauth-facebook', '~> 5.0'
-gem 'omniauth-github', '~> 1.1', '>= 1.1.2'
+gem 'omniauth-facebook', '~> 6.0'
+gem 'omniauth-github', '~> 1.4'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
 gem "paperclip", "~> 6.1.0"
@@ -121,6 +121,7 @@ group :test, :development do
   gem 'timecop'
   gem 'pry-rails'
   gem 'action-cable-testing'
+  gem "webmock", "~> 3.8"
 end
 
 group :production do

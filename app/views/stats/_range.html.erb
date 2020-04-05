@@ -17,11 +17,11 @@
 <% end %>
 <hr />
 <h5>
-    <%= raw t('notes.stats.notes_wikis_comments', :notes_count => @notes, :wikis_count => @wikis, :comments_count => @comments) %>
+    <%= raw translation('notes.stats.notes_wikis_comments', :notes_count => @notes, :wikis_count => @wikis, :comments_count => @comments) %>
 </h5>
 <hr>
 <h5>
-    <%= raw t('notes.stats.members_and_contributors', :member_count => @people, :people_count => @contributors) %>
+    <%= raw translation('notes.stats.members_and_contributors', :member_count => @people, :people_count => @contributors) %>
 </h5>
 <hr>
 <% if logged_in_as(['admin']) %>
@@ -38,28 +38,28 @@
             <span class="sr-only">Toggle Dropdown</span>
         </button>
         <ul class="dropdown-menu">
-            <li>
+            <li class="dropdown-item">
                 <%= link_to "Notes", stats_notes_path(format: 'json', start: params[:start], end: params[:end]) %>
             </li>
-            <li>
+            <li class="dropdown-item">
                 <%= link_to "Wikis", stats_wikis_path(format: 'json', start: params[:start], end: params[:end]) %>
             </li>
-            <li>
+            <li class="dropdown-item">
                 <%= link_to "Comments", stats_comments_path(format: 'json', start: params[:start], end: params[:end]) %>
             </li>
-            <li>
+            <li class="dropdown-item">
                 <%= link_to "Users", stats_users_path(format: 'json', start: params[:start], end: params[:end]) %>
             </li>
-            <li>
+            <li class="dropdown-item">
                 <%= link_to "Questions Asked", stats_questions_path(format: 'json', start: params[:start], end: params[:end]) %>
             </li>
-            <li>
+            <li class="dropdown-item">
                 <%= link_to "Questions Answered", stats_answers_path(format: 'json', start: params[:start], end: params[:end]) %>
             </li>
-            <li>
+            <li class="dropdown-item">
                 <%= link_to "List of Tags", stats_tags_path(format: 'json') %>
             </li>
-            <li>
+            <li class="dropdown-item">
                 <%= link_to "Tag Usage", stats_node_tags_path(format: 'json', start: params[:start], end: params[:end])%>
             </li>
         </ul>
@@ -77,28 +77,28 @@
             <span class="sr-only">Toggle Dropdown</span>
         </button>
         <ul class="dropdown-menu">
-            <li>
+            <li class="dropdown-item">
                 <%= link_to "Notes", stats_notes_path(format: 'csv', start: params[:start], end: params[:end]) %>
             </li>
-            <li>
+            <li class="dropdown-item">
                 <%= link_to "Wikis", stats_wikis_path(format: 'csv', start: params[:start], end: params[:end]) %>
             </li>
-            <li>
+            <li class="dropdown-item">
                 <%= link_to "Comments", stats_comments_path(format: 'csv', start: params[:start], end: params[:end]) %>
             </li>
-                <li>
+                <li class="dropdown-item">
                     <%= link_to "Users", stats_users_path(format: 'csv', start: params[:start], end: params[:end]) %>
                 </li>
-                <li>
+                <li class="dropdown-item">
                     <%= link_to "Questions Asked", stats_questions_path(format: 'csv', start: params[:start], end: params[:end]) %>
                 </li>
-                <li>
+                <li class="dropdown-item">
                     <%= link_to "Questions Answered", stats_answers_path(format: 'csv', start: params[:start], end: params[:end]) %>
-                </li>
-                <li>
+                </li class="dropdown-item">
+                <li class="dropdown-item">
                     <%= link_to "List of Tags", stats_tags_path(format: 'csv') %>
                 </li>
-                <li>
+                <li class="dropdown-item">
                     <%= link_to "Tag Usage", stats_node_tags_path(format: 'csv', start: params[:start], end: params[:end])%>
                 </li>
         </ul>

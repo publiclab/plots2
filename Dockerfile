@@ -39,7 +39,8 @@ RUN wget https://github.com/webnicer/chrome-downloads/raw/master/x64.deb/google-
 WORKDIR /tmp
 ADD Gemfile /tmp/Gemfile
 ADD Gemfile.lock /tmp/Gemfile.lock
-RUN bundle install --jobs=4
+RUN bundle update --bundler && \
+    bundle install --jobs=4
 
 WORKDIR /app
 COPY Gemfile /app/Gemfile

@@ -1,10 +1,10 @@
 <div class="col-lg-10" style="margin: 20px auto; ">
 
-    <h2><%= raw t('notes.stats.contributors_statistics') %></h2>
+    <h2><%= raw translation('notes.stats.contributors_statistics') %></h2>
     <hr>
 
     <h6> See also <%= link_to "subscription statistics", stats_subscriptions_path %> </h6>
-    <h5><b><%= raw t('notes.stats.research_notes_posted_by_contributors', :note_count => @all_notes, :contributors_count => @all_contributors,
+    <h5><b><%= raw translation('notes.stats.research_notes_posted_by_contributors', :note_count => @all_notes, :contributors_count => @all_contributors,
                      :time => time_ago_in_words(Node.find_by(type: 'note', status: 1).created_at)) %></b></h5>
     <br>
 
@@ -38,8 +38,8 @@
 <h4 align="center">Notes, Wikis and Comments Statistics between <%= @start.to_date%> to <%= @end.to_date%></h4>
 <br>
 <div id="timeline"></div>
-<p><b><%= raw t('notes.stats.edits_per_week', :count => @edits_per_week_period) %></b></p>
-<p><b><%= raw t('notes.stats.notes_per_week', :note_count => @notes_per_week_period) %></b></p>
+<p><b><%= raw translation('notes.stats.edits_per_week', :count => @edits_per_week_period) %></b></p>
+<p><b><%= raw translation('notes.stats.notes_per_week', :note_count => @notes_per_week_period) %></b></p>
 <br>
 <i> Member registration may include spam accounts </i>
 
