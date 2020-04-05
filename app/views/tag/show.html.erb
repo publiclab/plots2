@@ -25,7 +25,7 @@
       <div class="tag-buttons">
         <div class="btn-group" role="group">
           <% if current_user && current_user.following(params[:id]) %>
-            <a rel="tooltip" title="<%= t('sidebar._post_button.share_your_work') %>" data-placement="bottom" href="/post?tags=<%= @title %>" class="btn btn-primary requireLogin">New post <i class="fa fa-plus fa-white"></i></a>
+            <a rel="tooltip" title="<%= translation('sidebar._post_button.share_your_work') %>" data-placement="bottom" href="/post?tags=<%= @title %>" class="btn btn-primary requireLogin">New post <i class="fa fa-plus fa-white"></i></a>
           <% else %>
             <a class="btn btn-primary requireLogin" target="_blank" href="/subscribe/tag/<%= params[:id] %>"> Follow</a>
               <% if @related_tags %>
@@ -53,10 +53,10 @@
 
             <%= render partial: 'tag/show/contributors' %>
 
-            <div class="row">
+            <div class="row" style="padding-bottom:1rem;align-items:baseline;">
               <div class="col-lg-6">
-                <p class="contributor-info"><%= Tag.find_nodes_by_type(params[:id], 'note', false).count %> posts by 
-                  <a href="/contributors/<%= params[:id] %>"><%= Tag.contributor_count(params[:id]) %> contributors</a> | 
+                <p class="contributor-info"><%= Tag.find_nodes_by_type(params[:id], 'note', false).count %> posts by
+                  <a href="/contributors/<%= params[:id] %>"><%= Tag.contributor_count(params[:id]) %> contributors</a> |
                   <a href="/contributors/<%= params[:id] %>"><%= Tag.follower_count(params[:id]) %> followers</a>
                   <a href="https://publiclab.org/wiki/contributors"><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>
                 </p>

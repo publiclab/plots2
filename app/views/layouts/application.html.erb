@@ -57,7 +57,7 @@
         <%= raw strip_tags(sanitize(RDiscount.new(@node.body).to_html)).truncate(100) %>
       </p>
     <% end %>
-    <p class="facebook-summary" style="display:none;"><%= t('layout._header.summary') %></p>
+    <p class="facebook-summary" style="display:none;"><%= translation('layout._header.summary') %></p>
 
     <!-- facebook needs this apparently -->
     <div id="fb-root"></div>
@@ -69,16 +69,13 @@
       I18n.locale = "<%= I18n.locale %>";
       I18n.fallbacks = true;
       $(function () {
-      $("[data-toggle=popover]").popover({
-          html: true, 
-          content: function() {
-              return $('#popover-content').html();
-
-          }
-
+        $("[data-toggle=popover]").popover({
+            html: true, 
+            content: function() {
+                return $('#popover-content').html();
+            }
+        });
       });
-})
-      
     </script>
     
     <% cache('feature_header', skip_digest: true) do %>
@@ -90,24 +87,8 @@
   <style type="text/css">
     .pac-container { z-index: 100000; }
 
-    #content .leaflet-pane {
-      z-index: auto;
-    }
-    #content .leaflet-control-layers {
-        max-height: 200px;
-        overflow: auto;
-    }
-
-     .leaflet-top{
-      z-index:800 !important;
-    }
-
     #ex1Slider .slider-selection {
      background: #BABABA;
-    }
-
-    .leaflet-popup-content {
-      width: 800px !important;
     }
 
   </style>  

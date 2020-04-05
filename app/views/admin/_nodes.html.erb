@@ -3,10 +3,9 @@
 
 <script>
   (function(){
-    $('input[type=checkbox]#batch-checkbox').bind('click',function(e) {
-      if ($('#batch-checkbox')[0].checked) $('.batch-checkbox').attr('checked','checked')
-      else $('.batch-checkbox').attr('checked',false)
-    })
+     $('#batch-checkbox').click(function () {
+    $('.batch-checkbox').prop('checked', this.checked);
+    });
     $('#batch-delete').bind('click',function(e) {
       vals = []
       alert_error('The mass spam button is disabled pending resolution of <a href="https://github.com/jywarren/plots2/issues/184">ticket #184</a>.')
@@ -81,3 +80,4 @@
 </tr>
 <% end %>
 </table>
+<%= will_paginate @nodes, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || @nodes.empty? %>

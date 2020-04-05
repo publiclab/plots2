@@ -60,3 +60,4 @@
 //= require submit_form_ajax.js
 //= require urlMapHash.js
 //= require scroll-func.js
+//= require timeago.js
