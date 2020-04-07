@@ -177,6 +177,9 @@ class SearchService
                          .joins(:user_tags)
                          .where('value LIKE ?', 'lat%')
                          .where('REPLACE(value, "lat:", "") BETWEEN ' + coordinates["selat"].to_s + ' AND ' + coordinates["nwlat"].to_s)
+                         .joins('INNER JOIN user_tags AS lontags ON lontags.uid = rusers.id')
+                         .where('lontags.value LIKE ?', 'lon%')
+                         .where('REPLACE(lontags.value, "lon:", "") BETWEEN ' + coordinates["nwlng"].to_s + ' AND ' + coordinates["selng"].to_s)
                          .distinct
 
     if tag.present?
@@ -184,7 +187,8 @@ class SearchService
         tids = Tag.where("term_data.name = ?", tag).collect(&:tid).uniq || []
         uids = TagSelection.where('tag_selections.tid IN (?)', tids).collect(&:user_id).uniq || []
       else
-        uids = User.joins(:user_tags)
+        uids = User.where('rusers.status <> 0')
+                   .joins(:user_tags)
                    .where('user_tags.value = ?', tag)
                    .where(id: user_locations.select("rusers.id"))
                    .collect(&:id).uniq || []
@@ -192,13 +196,7 @@ class SearchService
       user_locations = user_locations.where('rusers.id IN (?)', uids).distinct
     end
 
-    uids = user_locations.collect(&:id).uniq || []
-
-    items = User.where('rusers.status <> 0')
-      .joins(:user_tags)
-      .where('rusers.id IN (?)', uids)
-      .where('user_tags.value LIKE ?', 'lon%')
-      .where('REPLACE(user_tags.value, "lon:", "") BETWEEN ' + coordinates["nwlng"].to_s + ' AND ' + coordinates["selng"].to_s)
+    items = user_locations
 
     # selects the items whose node_tags don't have the location:blurred tag
     items.select do |item|
