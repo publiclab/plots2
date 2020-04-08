@@ -35,11 +35,11 @@
 
   <% responses = @node.responses if @node %>
   <% if @node && responses.length > 0 %>
-    <%= render partial: 'sidebar/notes', locals: { notes: @node.responded_to, title: I18n.translation('sidebar._related.response_to'), node: @node } %>
+    <%= render partial: 'sidebar/notes', locals: { notes: @node.responded_to, title: translation('sidebar._related.response_to'), node: @node } %>
   <% end %>
 
   <% if @node && @node.has_power_tag('response') %>
-    <%= render partial: 'sidebar/notes', locals: { notes: @node.responses, title: I18n.translation('sidebar._related.responses_to_note'), node: @node } %>
+    <%= render partial: 'sidebar/notes', locals: { notes: @node.responses, title: translation('sidebar._related.responses_to_note'), node: @node } %>
   <% end %>
 
     <%= render partial: "sidebar/map" %>
