@@ -17,7 +17,37 @@
 .leaflet-top{
   z-index:800 !important;
 }
-.leaflet-popup-content {
-  width: 800px !important;
+.leaflet-popup .leaflet-popup-content {
+  width: 300px;
+  max-width: 300px;
+  margin: 15px;
 }
-  
+.leaflet-popup .leaflet-popup-content img.popup-thumb  {
+  width: 100%;
+  margin-bottom: 15px;
+}
+.leaflet-popup .leaflet-popup-content h5 {
+  margin-bottom: 4px;
+}
+.leaflet-popup .popup-two-column {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+.leaflet-popup .popup-stretch-column {
+  flex: 1 1 100%;
+}
+.leaflet-popup .popup-shrink-column {
+  flex: 0 1 auto;
+  }
+.leaflet-container a.btn-primary {
+  color: white;
+}
+.leaflet-container .add-content-button-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+.leaflet-container .add-content-button {
+  margin-right: 10px;
+}

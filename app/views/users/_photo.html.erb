@@ -10,7 +10,7 @@
 
 <hr style="clear:both;" class="d-lg-none" />
 
-<h3><%= t('users._photo.profile_photo') %></h3>
+<h3><%= translation('users._photo.profile_photo') %></h3>
 
 <div class="profile-dropzone" id="profile-dropzone" style="margin-bottom:20px;">
     <img class="rounded" id="profile-pic" style="<% unless @user.photo_file_name %>display:none;<% end %>
@@ -21,9 +21,9 @@
     filter: alpha(opacity=20);" src="<% if @user.photo %><%= @user.photo_path(:thumb) %><% end %>" />
 
     <p class="prompt">
-      <span class="d-none d-lg-inline"> <%= t('users._photo.drag_and_drop_image') %> </span>
+      <span class="d-none d-lg-inline"> <%= translation('users._photo.drag_and_drop_image') %> </span>
       <span class="fileinput-button">
-        <a style="cursor:pointer"> <i class="fa fa-upload d-md-none d-lg-inline float-left" style="padding-right:6px;"></i> <%= t('users._photo.choose_image') %></a>
+        <a style="cursor:pointer"> <i class="fa fa-upload d-md-none d-lg-inline float-left" style="padding-right:6px;"></i> <%= translation('users._photo.choose_image') %></a>
         
       </span>
     </p>
@@ -34,7 +34,7 @@
 <div id="profile-progress" style="display:none;" class="progress">
   <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%;"></div>
 </div>
-<p class="profile-uploading" style="display:none;padding-top:4px;color:#aaa;"><%= t('users._photo.uploading') %>...</p>
+<p class="profile-uploading" style="display:none;padding-top:4px;color:#aaa;"><%= translation('users._photo.uploading') %>...</p>
 
 <script>
 
