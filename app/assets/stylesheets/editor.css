@@ -49,6 +49,13 @@ pre {
     border-color: #adadad;
 }
 
+.btn-xs {
+    padding: 1px 5px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+}
+
 .moderation-notice {
   font-style: italic;
   color: #888;
