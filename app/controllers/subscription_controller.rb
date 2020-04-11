@@ -159,7 +159,7 @@ class SubscriptionController < ApplicationController
               if request.xhr?
                 render json: true
               else
-                flash[:notice] = "You are now following '#{params[:tagnames]}'."
+                flash[:notice] = "You are now following #{params[:tagnames].join(', ')}."
                 redirect_to return_to
               end
             end

@@ -15,7 +15,7 @@
       <% if current_user %>
         <a class="btn btn-outline-secondary btn-sm" href="/feed/tag/<%= params[:id] %>.rss"><i class="fa fa-rss"></i> RSS</a>
         <% if current_user.following(params[:id]) %>
-          <a rel="tooltip" title="<%= t('tag.blog.unfollow') %>" class="btn btn-outline-secondary btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>"><i class="fa fa-user-plus" aria-hidden="true"></i> <%= t('tag.blog.following') %> <b><%= params[:id] %></b></a>
+          <a rel="tooltip" title="<%= translation('tag.blog.unfollow') %>" class="btn btn-outline-secondary btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>"><i class="fa fa-user-plus" aria-hidden="true"></i> <%= translation('tag.blog.following') %> <b><%= params[:id] %></b></a>
         <% else %>
           <br><br>
           <div class="alert alert-success" role="alert">
@@ -37,7 +37,7 @@
   <hr />
 
   <% if @notes.nil? || @notes.length == 0 %>
-    <p><%= raw t('tag.blog.no_results', :search => params[:id]) %>:</p>
+    <p><%= raw translation('tag.blog.no_results', :search => params[:id]) %>:</p>
 
     <%= render template: "search/new" %>
 

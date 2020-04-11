@@ -33,7 +33,7 @@ window.__gcse = {
 
 (function() {
 
-  var cx = '008366342703784425914:_p25pf-gy_w';
+  var cx = '<%= feature('search') == "" ? "008366342703784425914:_p25pf-gy_w" : feature('search') %>';
   var gcse = document.createElement('script');
   gcse.type = 'text/javascript';
   gcse.async = true;

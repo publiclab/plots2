@@ -10,11 +10,11 @@
         <% if like.status == 4 %>
           <p class="alert alert-warning moderated">
             <% if logged_in_as(['admin','moderator']) %>
-              <%= t('notes._notes.moderate_first_time_post') %> <br class="d-none d-lg-inline"/>
-              <a class="btn btn-outline-secondary btn-sm" href="/moderate/publish/<%= like.id %>"><%= t('notes._notes.approve') %></a>
-              <a class="btn btn-outline-secondary btn-sm" href="/moderate/spam/<%= like.id %>"><%= t('notes._notes.spam') %></a>
+	      <%= translation('notes._notes.moderate_first_time_post') %> <br class="d-none d-lg-inline"/>
+              <a class="btn btn-outline-secondary btn-sm" href="/moderate/publish/<%= like.id %>"><%= translation('notes._notes.approve') %></a>
+              <a class="btn btn-outline-secondary btn-sm" href="/moderate/spam/<%= like.id %>"><%= translation('notes._notes.spam') %></a>
             <% else %>
-              <%= raw t('notes._notes.pending_approval', :url1 => '/wiki/moderation') %>
+              <%= raw translation('notes._notes.pending_approval', :url1 => '/wiki/moderation') %>
             <% end %>
           </p>
         <% end %>
@@ -27,10 +27,10 @@
 	    <%= distance_of_time_in_words(like.created_at, Time.current, { include_seconds: false, scope:'datetime.time_ago_in_words' }) %>
             | <a <% if @widget %>target="_blank"<% end %> href="<%= like.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= like.comments.count %></a>
           <% else %>
-            <%= t('notes._notes.last_edit_by') %> <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= like.latest.author.name %>"><%= like.latest.author.name %></a>
+            <%= translation('notes._notes.last_edit_by') %> <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= like.latest.author.name %>"><%= like.latest.author.name %></a>
 	    <%= distance_of_time_in_words(Time.at(like.latest.timestamp), Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>
           <% end %>
-          | <i class="fa fa-eye"></i> <%= number_with_delimiter(like.views) %> <span class="d-none d-lg-inline"><%= t('notes._notes.views') %></span>
+          | <i class="fa fa-eye"></i> <%= number_with_delimiter(like.views) %> <span class="d-none d-lg-inline"><%= translation('notes._notes.views') %></span>
           | <i style="<% if like.likes > 0 %>color:#db4;<% else %>color:#888;<% end %>" class="fa fa-star-o"></i> <%= like.likes %>
         </small></p>
 
@@ -46,12 +46,12 @@
               <p><%= raw strip_tags(sanitize(RDiscount.new(like.body_preview).to_html)) if like.body %></p>
             <% end %>
             <p>
-              <% if logged_in_as(['admin','moderator']) %><a class="btn btn-outline-secondary" href="/moderate/spam/<%= like.id %>"><i class="fa fa-ban"></i> <%= t('notes._notes.spam') %></a><% end %>
-              <a class="btn btn-outline-secondary" style="float: right; margin-left: 1px;" href="<%= like.path %>"><%= t('notes._notes.read_more') %></a>
+              <% if logged_in_as(['admin','moderator']) %><a class="btn btn-outline-secondary" href="/moderate/spam/<%= like.id %>"><i class="fa fa-ban"></i> <%= translation('notes._notes.spam') %></a><% end %>
+              <a class="btn btn-outline-secondary" style="float: right; margin-left: 1px;" href="<%= like.path %>"><%= translation('notes._notes.read_more') %></a>
             </p>
           <% end %>
           <% if params[:mod] %>
-            <a class="btn btn-outline-secondary" href="#"><i class="fa fa-ban-circle"></i> <%= t('notes._notes.spam') %></a>
+            <a class="btn btn-outline-secondary" href="#"><i class="fa fa-ban-circle"></i> <%= translation('notes._notes.spam') %></a>
           <% end %>
           <hr style="display:none;" class="bottom" />
         </div>
