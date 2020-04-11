@@ -36,9 +36,9 @@ class AdminController < ApplicationController
     @user = User.find params[:id]
     unless @user.nil?
       if logged_in_as(['admin', 'moderator'])
+        flash[:error] = "User '<a href='/profile/" + @user.username + "'>" + @user.username + "</a>' is no longer "  + @user.role
         @user.role = 'basic'
         @user.save
-        flash[:notice] = "User '<a href='/profile/" + @user.username + "'>" + @user.username + "</a>' is no longer a moderator."
       else
         flash[:error] = 'Only admins and moderators can demote other users.'
       end
