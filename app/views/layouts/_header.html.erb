@@ -17,7 +17,7 @@
     <div class="collapse navbar-collapse" id="header-navbar-collapse">
       <form class="form-inline mr-3" id="searchform" autocomplete="off">
         <div class="input-group">
-          <input type="text" id="searchform_input" class="form-control search-query typeahead" role="search" qryType="tags" placeholder="<%= translation('layout._header.search') %>"  value="<%= params[:query] %>" required>
+          <input type="text" id="searchform_input" class="form-control search-query typeahead" role="search" qryType="tags" placeholder="<%= t('layout._header.search') %>"  value="<%= params[:query] %>" required>
           <div class="input-group-append">
             <button class="btn btn-light" type="submit"><i class="fa fa-search"></i></button>
           </div>
@@ -67,7 +67,7 @@
 
         <li class="nav-item dropdown" style="min-width:80px;">
           <a class="nav-link" data-toggle="dropdown" href="#">
-            <%= translation('layout._header.about.about_title') %>
+            <%= t('layout._header.about.about_title') %>
           </a>
           <div class="dropdown-menu">
             <a class="dropdown-item" href="/about"><%= translation('layout._header.about.about_public_lab') %></a>
@@ -78,10 +78,10 @@
         </li>
 
         <li class="nav-item d-sm-none d-lg-inline" style="padding:0 10px;">
-          <a class="nav-link btn btn-outline-secondary" target="_blank" href="//store.publiclab.org"><%= translation('layout._header.store') %></a>
+          <a class="nav-link btn btn-outline-secondary" target="_blank" href="//store.publiclab.org"><%= t('layout._header.store') %></a>
         </li>
         <li class="nav-item d-sm-none d-lg-inline" style="padding:0 10px;">
-          <a class="nav-link btn btn-outline-secondary" href="/donate"><%= translation('layout._header.donate') %></a>
+          <a class="nav-link btn btn-outline-secondary" href="/donate"><%= t('layout._header.donate') %></a>
         </li>
 
         <!-- end navbar feature -->
@@ -91,12 +91,12 @@
       <ul class="navbar-nav mr-lg-5">
         <% if current_user %>
           <li class="nav-item d-sm-none d-xl-inline">
-            <a rel="tooltip" class="nav-link" title="<%= translation('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard">Dashboard</a>
+            <a rel="tooltip" class="nav-link" title="<%= t('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard">Dashboard</a>
           </li>
         <% else %>
         <li class="d-md-none d-xl-inline nav-item"> <!-- signup button -->
-          <a rel="tooltip" class="nav-link signupToggle" title="<%= translation('layout._header.become_part_community') %>" href="#">
-            <%= translation('layout._header.join') %>
+          <a rel="tooltip" class="nav-link signupToggle" title="<%= t('layout._header.become_part_community') %>" href="#">
+            <%= t('layout._header.join') %>
           </a>
         </li>
         <% end %>
@@ -143,7 +143,7 @@
             <% else %> <!-- Login button -->
                 <li class="nav-item">
                     <a class="nav-link loginToggle" href="#">
-                    <%= translation('layout._header.login.login_title') %>
+                    <%= t('layout._header.login.login_title') %>
                     </a>
                 </li>
             <% end %>
@@ -167,8 +167,8 @@
 
 <div class="body-container container">
   <div class="visible-print">
-    <% if params[:controller] == "notes" %><h1>Public Lab <small><%= translation('layout._header.research_note') %></small></h1><% end %>
-    <% if params[:controller] == "wiki" %><h1>Public Lab <small><%= translation('layout._header.wiki_doc') %></small></h1><% end %>
+    <% if params[:controller] == "notes" %><h1>Public Lab <small><%= t('layout._header.research_note') %></small></h1><% end %>
+    <% if params[:controller] == "wiki" %><h1>Public Lab <small><%= t('layout._header.wiki_doc') %></small></h1><% end %>
     <hr />
   </div>
   <script>
