@@ -175,8 +175,8 @@ class SearchService
 
     user_locations = User.where('rusers.status <> 0')
                          .joins(:user_tags)
-                         .where('value LIKE ?', 'lat%')
-                         .where('REPLACE(value, "lat:", "") BETWEEN ' + coordinates["selat"].to_s + ' AND ' + coordinates["nwlat"].to_s)
+                         .where('user_tags.value LIKE ?', 'lat%')
+                         .where('REPLACE(user_tags.value, "lat:", "") BETWEEN ' + coordinates["selat"].to_s + ' AND ' + coordinates["nwlat"].to_s)
                          .joins('INNER JOIN user_tags AS lontags ON lontags.uid = rusers.id')
                          .where('lontags.value LIKE ?', 'lon%')
                          .where('REPLACE(lontags.value, "lon:", "") BETWEEN ' + coordinates["nwlng"].to_s + ' AND ' + coordinates["selng"].to_s)
