@@ -28,6 +28,7 @@
 //= require megamark/dist/megamark.min.js
 //= require ics/ics.deps.min.js
 //= require ics/ics.min.js
+//= require timeago.js
 //= require leaflet/dist/leaflet
 //= require moment/moment.js
 //= require i18n
@@ -59,4 +60,3 @@
 //= require validation.js
 //= require submit_form_ajax.js
 //= require urlMapHash.js
-//= require timeago.js
