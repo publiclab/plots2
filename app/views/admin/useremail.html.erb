@@ -18,7 +18,7 @@
    
    <br>
    <% if @address %>
-   <h3>Searched for <%= @address %></h3> 
+   <h3>Searched for <%= @address %>(<%= @users.length %>)</h3> 
    <% if @users.length > 0 %>
    <ul>
       <% @users.each do |user| %>
