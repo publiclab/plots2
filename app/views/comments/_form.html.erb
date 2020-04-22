@@ -104,8 +104,21 @@
           <%= javascript_include_tag "comment.js" %>
 
           <div class="control-group">
-            <button type="submit" class="btn btn-primary"><%= translation('comments._form.publish') %></button>
-            <% if local_assigns[:comment] %>
+          <button type="submit" class="btn btn-primary" disabled><%= translation('comments._form.publish') %></button>
+          <script>
+          function test1(){
+            if $('#text-input').val().length > 0 {
+              $(".btn-primary").prop('disabled', false);  
+            }
+            else {
+              $(".btn-primary").prop('disabled', true);
+            }
+          }
+          
+          $('.form-control').addEventListener('keydown', test1);
+          </script>
+        
+            <% if local_assigns[:comment] %> 
               <a class="btn btn-outline-secondary preview-btn" onClick="$('#c<%= comment.cid %>preview').toggle();
                   $('#c<%= comment.cid %>text-input').toggle();
                   $('#c<%= comment.cid %>edit .preview-btn').button('toggle');
@@ -116,7 +129,6 @@
             <% else %>
               <a class="btn btn-outline-secondary preview-btn>" id="post_comment" data-previewing-text="Hide Preview" onClick="handleClick();$E.toggle_preview()"><%= translation('comments._form.preview') %></a>
             <% end %>
-
             <span style="color:#888;"> &nbsp;
               <br class="d-md-none" /><%= raw translation('comments._form.logged_in', :username => current_user.username) %> &nbsp;
               <a target="_blank" href="/wiki/authoring-help#Formatting"><i class="fa fa-question-circle"></i></a> &nbsp;
