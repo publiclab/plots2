@@ -11,7 +11,7 @@
       <a href="/n/<%= node.parent.id %>"><i class="fa fa-link"></i></a>
     </div>
 
-    <% if (current_user && node.is_new_to_user(node, current_user)) %>
+    <% if current_user && node.is_new_to_user(node, current_user) %>
         <div class="card-meta-tags" style = "padding-bottom:10px">
           <a class="badge badge-primary" style = "background-color:#7FFF00; color:#FFFFFF">New</a>
         </div>
