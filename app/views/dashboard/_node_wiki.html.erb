@@ -1,11 +1,11 @@
 <div class="col-lg-6 note-container-wiki">
   <div class="note note-pane note-wiki" data-index="<%= index %>">
     
-    <div class="card-meta-tags" style = "padding-bottom:10px">
-      <% if (current_user && node.is_new_to_user(node, current_user)) %>
-        <a class="badge badge-primary" style = "background-color:#7FFF00; color:#FFFFFF">New</a>
-      <% end %>
-    </div>
+    <% if (current_user && node.is_new_to_user(node, current_user)) %>
+        <div class="card-meta-tags" style = "padding-bottom:10px">
+          <a class="badge badge-primary" style = "background-color:#7FFF00; color:#FFFFFF">New</a>
+        </div>
+    <% end %>
     
     <% if node.is_a?(Node) %>
       <div class="header-icon"><i class="fa fa-book"></i></div>
