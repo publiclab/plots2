@@ -1098,10 +1098,6 @@ class Node < ActiveRecord::Base
   end
 
   def is_new_to_user(node, user)
-    if node.created_at.to_f > user.last_login_at.to_f
-      true
-    else
-      false
-    end
+    node.created_at.to_f > user.last_login_at.to_f
   end
 end
