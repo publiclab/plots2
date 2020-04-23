@@ -19,7 +19,9 @@
       <h4>Top Answerers</h4>
         <% @users.each do |author| %>
           <% count = @node.answers.where(uid: author.uid).length %>
-          <p><i class="fa fa-user" style="margin-right: 5px;"></i><a rel="tooltip" title="<%= count %> answers" data-placement="right" href="/profile/<%= author.name %>"><%= author.name %></a></p>
+          <%if !(author.banned?)%>
+            <p><i class="fa fa-user" style="margin-right: 5px;"></i><a rel="tooltip" title="<%= count %> answers" data-placement="right" href="/profile/<%= author.name %>"><%= author.name %></a></p>
+          <% end %>
         <% end %>
       <% end %>
     <% end %>
