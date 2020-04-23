@@ -11,6 +11,12 @@
       <a href="/n/<%= node.parent.id %>"><i class="fa fa-link"></i></a>
     </div>
 
+    <% if (current_user && node.is_new_to_user(node, current_user)) %>
+        <div class="card-meta-tags" style = "padding-bottom:10px">
+          <a class="badge badge-primary" style = "background-color:#7FFF00; color:#FFFFFF">New</a>
+        </div>
+    <% end %>
+    
     <p class="meta">
       <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a>  <%= node.author.new_contributor %>
       <span><%= translation('dashboard._node_comment.commented_on') %></span> <% unless node.aid == 0 %> an answer about<% end %> <% if node.parent.has_power_tag('question') %><a href="<%= node.parent.path(:question) %>"><% else %><a href="<%= node.parent.path %>"><% end %><%= node.parent.title %></a>
