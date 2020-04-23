@@ -4,6 +4,12 @@
     <div class="header-icon"><i class="fa fa-question-circle"></i> <a href="/q/<%= node.id %>"><i class="fa fa-link"></i></a></div>
 
     <div style="overflow: hidden;">
+      
+      <% if (current_user && node.is_new_to_user(node, current_user)) %>
+        <div class="card-meta-tags" style = "padding-bottom:10px">
+          <a class="badge badge-primary" style = "background-color:#7FFF00; color:#FFFFFF">New</a>
+        </div>
+      <% end %>
 
       <%= render partial: 'dashboard/node_moderate', locals: { node: node } %>
  
