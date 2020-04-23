@@ -1,7 +1,7 @@
 <div class="col-lg-6 note-container-note" style="overflow: hidden;">
   <div class="note note-default<% if node.status == 4 || node.status == 3 %> moderated<% end %>">
     
-    <% if (current_user && node.is_new_to_user(node, current_user)) %>
+    <% if current_user && node.is_new_to_user(node, current_user) %>
         <div class="card-meta-tags" style = "padding-bottom:10px">
           <a class="badge badge-primary" style = "background-color:#7FFF00; color:#FFFFFF">New</a>
         </div>
