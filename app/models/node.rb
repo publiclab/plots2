@@ -1096,4 +1096,12 @@ class Node < ActiveRecord::Base
       NodeMailer.notify_callout(self, user).deliver_now if user.username != author.username
     end
   end
+
+  def is_new_to_user(node, user)
+    if (node.created_at.to_f > user.last_login_at.to_f)
+      true
+    else
+      false
+    end
+  end
 end
