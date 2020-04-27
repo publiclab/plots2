@@ -1,5 +1,35 @@
+$(document).ready(function () {
+  $('#selectall').click(function () {
+      $('.node-type').prop('checked', this.checked);
+  });
 
+  $('.node-type').change(function () {
+      var check = ($('.node-type').filter(":checked").length == $('.node-type').length);
+      $('#selectall').prop("checked", check);
+  });
+});
+function listselect(){
+  var types = [
+    'note',
+    'question',
+    'event',
+    'comment',
+    'wiki'
+  ];
 
+  var selected = [];
+  $('#checkboxes input:checked').each(function() {
+      selected.push($(this).attr('data-type'));
+  });
+  let intersection = types.filter(x => selected.includes(x));
+  let difference = types.filter(x => !selected.includes(x));
+  for(var i=0;i<intersection.length;i++){
+    $('.note-container-' + intersection[i]).show();
+  }
+  for(var i=0;i<difference.length;i++){
+    $('.note-container-' + difference[i]).hide();
+  }
+}
 (function() {
 
   var types = {
@@ -9,7 +39,8 @@
     'comment':  true, 
     'wiki':     true
   };
-
+ 
+  
   var viewport = function() {
     var e = window, a = 'inner';
     if (!('innerWidth' in window )) {
