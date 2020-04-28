@@ -26,8 +26,8 @@ function listselect(){
   for(var i=0;i<intersection.length;i++){
     $('.note-container-' + intersection[i]).show();
   }
-  for(var i=0;i<difference.length;i++){
-    $('.note-container-' + difference[i]).hide();
+  for(var j=0;j<difference.length;j++){
+    $('.note-container-' + difference[j]).hide();
   }
 }
 (function() {
