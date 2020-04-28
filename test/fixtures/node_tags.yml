@@ -218,6 +218,31 @@ test4_zoom:
   nid: 7
   date: <%= DateTime.now.to_i %>
 
+sun_note:
+  tid: 32
+  uid: 2
+  nid: 32
+
+sun_wiki:
+  tid: 32
+  uid: 2
+  nid: 33
+
+sunny_day_note:
+  tid: 33
+  uid: 2
+  nid: 34
+
+sunny_day_wiki:
+  tid: 33
+  uid: 2
+  nid: 35
+
+sun_question:
+  tid: 34
+  uid: 2
+  nid: 36
+
 organizers-awesome:
   tid: 2
   uid: 2
@@ -235,3 +260,4 @@ organizers-chapter:
   uid: 2
   nid: 5
   date: <%= DateTime.now.to_i %>
+
