@@ -242,3 +242,22 @@ sun_question:
   tid: 34
   uid: 2
   nid: 36
+
+organizers-awesome:
+  tid: 2
+  uid: 2
+  nid: 5
+  date: <%= DateTime.now.to_i %>
+
+organizers-everything:
+  tid: 4
+  uid: 2
+  nid: 5
+  date: <%= DateTime.now.to_i %>
+
+organizers-chapter:
+  tid: 5
+  uid: 2
+  nid: 5
+  date: <%= DateTime.now.to_i %>
+

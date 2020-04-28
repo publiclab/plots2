@@ -28,7 +28,7 @@
   overflow: hidden !important; text-overflow: ellipsis;
 }
 
-.dropdown:hover .dropdown-menu {
+.dropdown:not(.no-hover):hover .dropdown-menu {
     display: block;
     margin-top: 0;
  }

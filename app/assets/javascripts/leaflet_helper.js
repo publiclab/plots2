@@ -8,10 +8,11 @@
     return map ;
   }
 
-  function PLmarker_default(){
+  function PLmarker_default(color = 'black'){
+     // valid colors: blue, gold, green, orange, yellow, violet, grey, black
      L.Icon.PLmarker = L.Icon.extend({
       options: {
-        iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-black.png',
+        iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-'+color+'.png',
         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
         iconSize: [25, 41],
         iconAnchor: [12, 41],
@@ -51,50 +52,74 @@
    }
 
    function contentLayerParser(map, markers_hash, map_tagname) {
-       var NWlat = map.getBounds().getNorthWest().lat ;
-       var NWlng = map.getBounds().getNorthWest().lng ;
-       var SElat = map.getBounds().getSouthEast().lat ;
-       var SElng = map.getBounds().getSouthEast().lng ;
-       map.spin(true) ;
+      var NWlat = map.getBounds().getNorthWest().lat ;
+      var NWlng = map.getBounds().getNorthWest().lng ;
+      var SElat = map.getBounds().getSouthEast().lat ;
+      var SElng = map.getBounds().getSouthEast().lng ;
+      map.spin(true) ;
 
-       if(map_tagname === null || (typeof map_tagname === "undefined")) {
-           taglocation_url = "/api/srch/taglocations?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng ;
+      if(map_tagname === null || (typeof map_tagname === "undefined")) {
+         taglocation_url = "/api/srch/taglocations?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng ;
 
-       } else {
-           taglocation_url = "/api/srch/taglocations?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng + "&tag=" + map_tagname ;
-       }
-       $.getJSON(taglocation_url , function (data) {
-           if (!!data.items) {
-               for (i = 0; i < data.items.length; i++) {
-                   var url = data.items[i].doc_url;
-                   var title = data.items[i].doc_title;
-                   var author = data.items[i].doc_author;
-                   var image_url = data.items[i].doc_image_url;
-                   var default_url = PLmarker_default();
-                   var mid = data.items[i].doc_id ;
-                   var m = L.marker([data.items[i].latitude, data.items[i].longitude], {icon: default_url}).bindPopup("<a href=" + url + ">" + title + "</a>") ;
-                   
-                   if(markers_hash.has(mid) === false){
+      } else {
+         taglocation_url = "/api/srch/taglocations?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng + "&tag=" + map_tagname ;
+      }
 
-                       if(image_url) {
-                           m.addTo(map).bindPopup("<div><img src=" + image_url+ " height='140px' /><br>" + "<b>Title:</b> " + title  + "<br><b>Author:</b>   <a href=" + 'https://publiclab.org/profile/' + author + ">" + author + "</a><br>" + "<a href=" + url + ">" + "Read more..." + "</a></div>" ) ;
-                       } else {
-                           m.addTo(map).bindPopup("<span><b>Title:</b>     " + title  + "</span><br><span><b>Author:</b>    <a href=" + 'https://publiclab.org/profile/' + author + ">" + author + "</a></span><br>" + "<a href=" + url + ">" + "<br>Read more..." + "</a>" ) ;
-                       }
-                       markers_hash.set(mid , m) ;
-                   }
+      $.getJSON(taglocation_url , function (data) {
+         if (!!data.items) {
+            for (i = 0; i < data.items.length; i++) {
+               var nodetype = data.items[i].doc_type;
+               nodetype = nodetype.charAt(0).toUpperCase() + nodetype.slice(1).toLowerCase();
+
+               var place_name = data.items[i].place_name;
+               var url = data.items[i].doc_url;
+               var title = data.items[i].doc_title;
+               var author = data.items[i].doc_author;
+               var image_url = data.items[i].doc_image_url;
+               var map_marker = PLmarker_default('blue');
+               var mid = data.items[i].doc_id;
+               var created_at = data.items[i].created_at;
+               var time_since = TimeAgo().inWords(new Date(data.items[i].created_at));
+               // var comment_count = data.items[i].comment_count;
+
+               var m = L.marker([data.items[i].latitude, data.items[i].longitude], {icon: map_marker});
+
+               if(markers_hash.has(mid) === false){
+                  var popup_content = "";
+                  if (image_url) popup_content += "<img src='" + image_url + "' class='popup-thumb' />";
+                  popup_content += "<h5><a href='" + url + "'>" + limit_words(title, 10)  + "</a></h5>";
+                  popup_content += "<div class='popup-two-column'>";
+                     popup_content += "<div class='popup-stretch-column'>" + nodetype + " by <a href='https://publiclab.org/profile/" + author + "'>@" + author + "</a> " + time_since + "</div><br>";
+                     if (nodetype.toLowerCase() === "wiki") popup_content += "<div class='map-slug popup-shrink-column'><a href='/map/" + url.split('/').pop() + "'>#</a></div>";
+                  popup_content += "</div>";
+                  // if (place_name) popup_content += "<span><b>Place: </b>" + place_name + "</span><br>";
+
+                  var popup = L.popup({
+                     maxWidth: 300,
+                     autoPan: false,
+                     className: 'map-popup'
+                  }).setContent(popup_content);
+                  m.addTo(map).bindPopup(popup_content);
+         
+                  markers_hash.set(mid , m) ;
                }
-           }
-           map.spin(false) ;
-       });
+            }
+         }
+         map.spin(false) ;
+      });
+
+      function limit_words(str, num_words) {
+         return str.split(" ").splice(0, num_words).join(" ");
+      }
    }
 
    function setupLEL(map, markers_hash = null, params = {}) {
       var options = {};
-      options.layers = params.layers || [];
+      options.layers = params.layers || [];                 // display these layers on the map
+      options.limitMenuTo = params.limitMenuTo || [];       // limit available layers in menu to only those listed, default all layers in menu
       options.setHash = params.setHash || false;
-      options.mainContent = params.mainContent || "";
-      options.displayLayers = params.displayLayers || false;
+      options.mainContent = params.mainContent || "";       // "content" to show site content, default "" shows no site content
+      options.displayAllLayers = params.displayAllLayers || false;  // turn on display for all maps available in menu
 
       if (typeof options.layers === "string") {
         options.layers = options.layers.split(',');
@@ -105,11 +130,12 @@
          circleSpiralSwitchover: 0
       });
 
-      var optionsLEL = {
-        addLayersToMap: options.displayLayers,
-      };
+      var optionsLEL = { };
       if (options.layers.length > 0) {
-         optionsLEL.include = options.layers;
+         optionsLEL.addLayersToMap = options.displayAllLayers;
+         optionsLEL.display = options.layers;
+         optionsLEL.include = options.limitMenuTo;
+         optionsLEL.hash = options.setHash;
       }
       L.LayerGroup.EnvironmentalLayers(optionsLEL).addTo(map);
 

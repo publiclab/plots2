@@ -115,6 +115,14 @@ class Tag < ApplicationRecord
         .order(order)
   end
 
+  def self.counter(tagname)
+    Node.where(type: %w(note page))
+        .where('term_data.name = ?', tagname)
+        .includes(:node_tag, :tag)
+        .references(:term_data)
+        .count
+  end
+
   # just like find_nodes_by_type, but searches wiki pages, places, and tools
   def self.find_pages(tagnames, limit = 10)
     find_nodes_by_type(tagnames, %w(page place tool), limit)
@@ -405,6 +413,10 @@ class Tag < ApplicationRecord
       end
       data
     end
+  end
+
+  def self.all_tags_by_popularity
+    Tag.all.order('count DESC').select { |tag| !(tag.name.include? ":") }.uniq(&:name).pluck(:name)
   end
 
   def subscription_graph(start = DateTime.now - 1.year, fin = DateTime.now)

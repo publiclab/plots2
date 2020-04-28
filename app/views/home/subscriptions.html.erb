@@ -1,3 +1,14 @@
+<script>
+  $("body").on("mouseup", function(e) {
+    var el = $(e.target);
+    if (el[0].className.indexOf("popover") == -1) {
+      $(".popover").each(function() {
+        $(this).popover("hide");
+      });
+    }
+  });
+</script>
+
 <div class="col-lg-3">
 
   <p><b><%=raw translation('home.subscriptions.title') %></b> <%=raw translation('home.subscriptions.up_to_date_emails') %></p>
@@ -31,7 +42,7 @@
     <div class="form-group">
       <div class="row">
         <div class="col-md-7">
-          <input type="text" name="name" class="form-control" placeholder="<%= translation('home.subscriptions.enter_tags') %>" data-provide="typeahead" data-source='["balloon-mapping","thermal-flashlight","spectrometer"]' autocomplete="off" required="required">
+          <input type="text" name="name" class="form-control" placeholder="<%= translation('home.subscriptions.enter_tags') %>" data-provide="typeahead" data-source='<%= Tag.all_tags_by_popularity %>' autocomplete="off" required="required">
         </div>
         <div class="col-md-2 pl-md-1">
           <button type="submit" class="btn btn-primary add-subscriptions"><i class="fa fa-plus fa fa-white"></i> <%= translation('home.subscriptions.add') %></button>

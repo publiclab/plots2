@@ -3,6 +3,9 @@
 
 <%= stylesheet_link_tag "/lib/leaflet-environmental-layers/dist/LeafletEnvironmentalLayers.css" %>
 
+<%= javascript_include_tag('/lib/leaflet-blurred-location/dist/Leaflet.BlurredLocation.js') %>
+<%= javascript_include_tag('/lib/leaflet.blurred-location-display/dist/Leaflet.BlurredLocationDisplay.js') %>
+
 <%= javascript_include_tag('/lib/leaflet-environmental-layers/dist/LeafletEnvironmentalLayers.js') %>
 <%= javascript_include_tag('/lib/leaflet-environmental-layers/src/windRoseLayer.js') %>
 <%= javascript_include_tag('/lib/leaflet-fullhash/leaflet-fullHash.js') %>
@@ -22,3 +25,6 @@
 
 <%= javascript_include_tag('/lib/heatmap.js/build/heatmap.min.js') %>
 <%= javascript_include_tag('/lib/leaflet-heatmap/leaflet-heatmap.js') %>
+
+<%= javascript_include_tag('/lib/leaflet-google-places-autocomplete/src/js/leaflet-gplaces-autocomplete.js') %>
+<%= stylesheet_link_tag "/lib/leaflet-google-places-autocomplete/src/css/leaflet-gplaces-autocomplete.css" %>

@@ -53,7 +53,7 @@
 
             <%= render partial: 'tag/show/contributors' %>
 
-            <div class="row">
+            <div class="row" style="padding-bottom:1rem;align-items:baseline;">
               <div class="col-lg-6">
                 <p class="contributor-info"><%= @total_posts %> posts by
                   <a href="/contributors/<%= params[:id] %>"><%= Tag.contributor_count(params[:id]) %> contributors</a> |

@@ -5,7 +5,7 @@
     <div class="card shadow-sm p-2 mb-3 bg-white rounded" >
       <div class="card-header mt-2" style=" padding:0.8em; background-color: inherit; border:none;">
         <% if current_user && current_user.following(tag.name) && controller.controller_name != 'tag' %>
-          <a style="margin-top:-8px;" data-method="delete" data-confirm="Are you sure you'd like to unfollow this topic?" rel="tooltip" title="<%= t('tag.show.unfollow') %>" class="pull-right" href="/unsubscribe/tag/<%= tag.name %>"><i style="color:#ccc;" class="fa fa-times"></i></a>
+          <a style="margin-top:-8px;" data-method="delete" data-confirm="Are you sure you'd like to unfollow this topic?" rel="tooltip" title="<%= translation('tag.show.unfollow') %>" class="pull-right" href="/unsubscribe/tag/<%= tag.name %>"><i style="color:#ccc;" class="fa fa-times"></i></a>
         <% end %>
         <h4 style="display: inline-block;"><%= tag.name %></h4>
         <p style="display: inline-block; color: #808080;"><a style="text-decoration: underline; color: #808080;" href="/tag/<%= tag.name %>"><%= Tag.follower_count(tag.name) %> following</a></p>
@@ -32,25 +32,25 @@
       </div>
 
       <div class="card-footer" style="background-color: inherit; border:none;">
-        <a style="padding-top:15px;text-decoration:underline;color:#808080;display:inline-block;" href="/tag/<%= tag.name %>"><%= tag.count %> <%= t('tag.index.more_posts') %> &raquo;</a>
+        <a style="padding-top:15px;text-decoration:underline;color:#808080;display:inline-block;" href="/tag/<%= tag.name %>"><%= Tag.counter(tag.name)-shown_nids.count - Tag.find_nodes_by_type(tag.name, type = 'note', limit = 3).where.not(nid: shown_nids).count %> <%= translation('tag.index.more_posts') %> &raquo;</a>
         <div id="follow-unfollow-column-<%=tag.tid%>" style="float:right;margin:10px 0 10px 10px;">
           <% if current_user %>
             <% if !current_user.following(tag.name) %>
-              <a style="width: 100px;" class="btn btn-outline-secondary btn-sm index-follow-buttons follow-btn-remote" href="/subscribe/tag/<%= tag.name %>" data-remote="true"><%= t('tag.index.follow') %></a>
+              <a style="width: 100px;" class="btn btn-outline-secondary btn-sm index-follow-buttons follow-btn-remote" href="/subscribe/tag/<%= tag.name %>" data-remote="true"><%= translation('tag.index.follow') %></a>
             <% end %>
 
             <% if current_user.following(tag.name) && controller.controller_name == 'tag' %>
               <a style="width: 100px;"
                  data-method="delete"
                  data-confirm="Are you sure you'd like to unfollow this topic?"
-                 rel="tooltip" title="<%= t('tag.show.unfollow') %>"
+                 rel="tooltip" title="<%= translation('tag.show.unfollow') %>"
                  class="btn btn-outline-secondary btn-sm index-follow-buttons follow-btn-remote"
                  href="/unsubscribe/tag/<%= tag.name %>">Unfollow</a>
             <% end %>
 
-            <a rel="tooltip" title="<%= t('sidebar._post_button.share_your_work') %>" data-placement="bottom" href="/post?tags=<%= tag.name %>" class="btn btn-primary btn-sm requireLogin">New post <i class="fa fa-plus fa-white"></i></a>
+            <a rel="tooltip" title="<%= translation('sidebar._post_button.share_your_work') %>" data-placement="bottom" href="/post?tags=<%= tag.name %>" class="btn btn-primary btn-sm requireLogin">New post <i class="fa fa-plus fa-white"></i></a>
           <% else %>
-            <a class="btn btn-primary btn-sm index-follow-buttons follow-btn-remote requireLogin" href="/subscribe/tag/<%= tag.name %>" data-remote="true"><%= t('tag.index.follow') %></a>
+            <a class="btn btn-primary btn-sm index-follow-buttons follow-btn-remote requireLogin" href="/subscribe/tag/<%= tag.name %>" data-remote="true"><%= translation('tag.index.follow') %></a>
           <% end %>
         </div>
       </div>

@@ -19,20 +19,20 @@
     <div class="row">
 
       <div class="form-group col-md-6">
-        <label for="username"><%= t('users._form.username') %></label>
+        <label for="username"><%= translation('users._form.username') %></label>
         <%= f.text_field :username, { readonly: true, tabindex: 1, placeholder: "Username", class: 'form-control', id: 'username' , title: 'Username field cannot be changed', disabled: true} %>
         <input type="hidden" name="id" value="<%= @user.username %>" />
       </div>
 
       <div class="form-group col-md-6">
-        <label for="email"><%= t('users._form.email') %></label>
+        <label for="email"><%= translation('users._form.email') %></label>
         <%= f.text_field :email, { tabindex: 3, required: true, placeholder: "you@email.com", class: 'form-control', id: 'email'} %>
       </div>
 
     </div>
 
     <div class="form-group">
-      <label for="current_password"><%= t('users._form.current_password') %></label>
+       <label for="current_password"><%= translation('users._form.current_password') %></label>
       <%= f.password_field :current_password, { placeholder: "Type your current password for verification",
                                                       tabindex: 4,
                                                       class: 'form-control',
@@ -43,9 +43,9 @@
     <div class="row">
       <div class="form-group col-md-6">
         <% if @user.crypted_password.nil? %>
-          <label for="password"><%= t('users._form.create_password') %></label>
+          <label for="password"><%= translation('users._form.create_password') %></label>
         <% else %>
-          <label for="password"><%= t('users._form.change_password') %></label>
+           <label for="password"><%= translation('users._form.change_password') %></label>
         <% end %>
         <%= f.password_field :password, { placeholder: "Enter your new password",
                                           tabindex: 5,
@@ -56,7 +56,7 @@
       </div>
 
       <div class="form-group col-md-6">
-        <label for="password_confirmation"><%= t('users._form.password_confirmation') %></label>
+        <label for="password_confirmation"><%= translation('users._form.password_confirmation') %></label>
         <%= f.password_field :password_confirmation, { placeholder: I18n.t('users._form.confirm_password'),
                                                        tabindex: 6,
                                                        class: 'form-control',
@@ -67,7 +67,7 @@
     </div>
 
     <div class="form-group">
-      <label for="user_bio"><%= t('users._form.bio') %></label>
+      <label for="user_bio"><%= translation('users._form.bio') %></label>
       <%= f.text_area :bio, { placeholder: I18n.t('users._form.add_bio'),
                                           rows: 8,
                                           class: 'form-control',
@@ -78,7 +78,7 @@
     <div class="form-group form-inline" style="clear:both;padding-top:10px;">
 
         <!-- button for saving edits for existing users -->
-        <button class="btn btn-lg btn-primary btn-save" type="submit" tabindex="8"><%= t('users._form.save') %></button>
+         <button class="btn btn-lg btn-primary btn-save" type="submit" tabindex="8"><%= translation('users._form.save') %></button>
 
       <script>
         (function() {
