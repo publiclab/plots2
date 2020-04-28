@@ -32,7 +32,7 @@ class MapControllerTest < ActionController::TestCase
     get :map
 
     assert_response :success
-    assert_equal [0, 0, 3], [assigns(:lat), assigns(:lon), assigns(:zoom)]
+    assert_equal [0, 0, 10], [assigns(:lat), assigns(:lon), assigns(:zoom)]
   end
 
   test 'renders wiki map that has location' do
