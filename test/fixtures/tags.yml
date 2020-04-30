@@ -123,3 +123,16 @@ test4_lon:
 test4_zoom:
   tid: 31
   name: zoom:13
+
+sun:
+  tid: 32
+  name: sun
+
+sunny_day:
+  tid: 33
+  name: sunny-day
+  parent: sun
+
+sun_question:
+  tid: 34
+  name: question:sun

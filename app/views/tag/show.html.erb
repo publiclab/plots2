@@ -55,7 +55,7 @@
 
             <div class="row" style="padding-bottom:1rem;align-items:baseline;">
               <div class="col-lg-6">
-                <p class="contributor-info"><%= Tag.find_nodes_by_type(params[:id], 'note', false).count %> posts by
+                <p class="contributor-info"><%= @total_posts %> posts by
                   <a href="/contributors/<%= params[:id] %>"><%= Tag.contributor_count(params[:id]) %> contributors</a> |
                   <a href="/contributors/<%= params[:id] %>"><%= Tag.follower_count(params[:id]) %> followers</a>
                   <a href="https://publiclab.org/wiki/contributors"><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>

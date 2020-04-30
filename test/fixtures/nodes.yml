@@ -384,3 +384,63 @@ purple_air_with_hyphen:
   type: "note"
   cached_likes: 0
   slug: "purple-air-with-hyphen"
+
+sun_note:
+  nid: 32
+  uid: 2
+  title: "Note tagged with sun"
+  path: "/notes/admin/02-12-2020/note-tagged-with-sun"
+  created: <%= DateTime.new(2020,2,12).to_i %>
+  changed: <%= DateTime.new(2020,2,12).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: "note-tagged-with-sun"
+
+sun_wiki:
+  nid: 33
+  uid: 2
+  title: "Wiki tagged with sun"
+  path: "/wiki/wiki-tagged-with-sun"
+  created: <%= DateTime.new(2020,2,12).to_i %>
+  changed: <%= DateTime.new(2020,2,12).to_i %>
+  status: 1
+  type: "page"
+  cached_likes: 0
+  slug: 'wiki-tagged-with-sun'
+
+sunny_day_note:
+  nid: 34
+  uid: 2
+  title: "Note tagged with sunny-day"
+  path: "/notes/admin/02-12-2020/note-tagged-with-sunny-day"
+  created: <%= DateTime.new(2020,2,12).to_i %>
+  changed: <%= DateTime.new(2020,2,12).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: "note-tagged-with-sunny-day"
+
+sunny_day_wiki:
+  nid: 35
+  uid: 2
+  title: "Wiki tagged with sunny-day"
+  path: "/wiki/wiki-tagged-with-sunny-day"
+  created: <%= DateTime.new(2020,2,12).to_i %>
+  changed: <%= DateTime.new(2020,2,12).to_i %>
+  status: 1
+  type: "page"
+  cached_likes: 0
+  slug: 'wiki-tagged-with-sunny-day'
+
+sun_question:
+  nid: 36
+  uid: 2
+  title: "Note tagged with question:sun"
+  path: "/notes/admin/02-12-2020/note-tagged-with-question-sun"
+  created: <%= DateTime.new(2020,2,12).to_i %>
+  changed: <%= DateTime.new(2020,2,12).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: "note-tagged-with-question-sun"

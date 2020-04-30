@@ -696,4 +696,85 @@ class TagControllerTest < ActionController::TestCase
     get :index, params: { :powertags => 'true' }
     assert_not_equal 0, assigns(:tags).where("name LIKE ?", "%:%").length
   end
+
+  # Bug 6855
+  test 'counts match the nodes' do
+    tag = tags(:sunny_day)
+    get :show, params: { id: tag.name }
+
+    assert_response :success
+
+    counts = assigns(:counts)
+    assert_equal 1, counts[:posts], "Note count should match"
+    assert_equal 0, counts[:questions], "Question count should match"
+    assert_equal 1, counts[:wiki], "Wiki count should match"
+    assert_equal 1, assigns(:total_posts), "Total posts should match"
+  end
+
+  # Bug 6855
+  test 'counts match the nodes for a parent tag' do
+    tag = tags(:sun)
+    get :show, params: { id: tag.name }
+
+    assert_response :success
+
+    counts = assigns(:counts)
+    assert_equal 2, counts[:posts], "Note count should match"
+    assert_equal 1, counts[:questions], "Question count should match"
+    assert_equal 2, counts[:wiki], "Wiki count should match"
+    assert_equal 2, assigns(:total_posts), "Total posts should match"
+  end
+
+  # Bug 6855
+  test 'counts match the nodes when using a wildcard' do
+    tag = tags(:sun)
+    get :show, params: { id: tag.name + "*" }
+
+    assert_response :success
+
+    counts = assigns(:counts)
+    assert_equal 2, counts[:posts], "Note count should match"
+    assert_equal 0, counts[:questions], "Question count should match"
+    assert_equal 2, counts[:wiki], "Wiki count should match"
+    assert_equal 2, assigns(:total_posts), "Total posts should match"
+  end
+
+  test 'counts match the nodes for question node_type' do
+    tag = tags(:sun)
+    get :show, params: { id: tag.name, node_type: 'questions' }
+
+    assert_response :success
+
+    counts = assigns(:counts)
+    assert_equal 2, counts[:posts], "Note count should match"
+    assert_equal 1, counts[:questions], "Question count should match"
+    assert_equal 2, counts[:wiki], "Wiki count should match"
+    assert_equal 1, assigns(:total_posts), "Total posts should match"
+  end
+
+  test 'counts match the nodes for wiki node_type' do
+    tag = tags(:sun)
+    get :show, params: { id: tag.name, node_type: 'wiki' }
+
+    assert_response :success
+
+    counts = assigns(:counts)
+    assert_equal 2, counts[:posts], "Note count should match"
+    assert_equal 1, counts[:questions], "Question count should match"
+    assert_equal 2, counts[:wiki], "Wiki count should match"
+    assert_equal 2, assigns(:total_posts), "Total posts should match"
+  end
+
+  test 'counts match the nodes for map node type' do
+    tag = tags(:sun)
+    get :show, params: { id: tag.name, node_type: 'maps' }
+
+    assert_response :success
+
+    counts = assigns(:counts)
+    assert_equal 2, counts[:posts], "Note count should match"
+    assert_equal 1, counts[:questions], "Question count should match"
+    assert_equal 2, counts[:wiki], "Wiki count should match"
+    assert_equal 0, assigns(:total_posts), "Total posts should match"
+  end
 end
