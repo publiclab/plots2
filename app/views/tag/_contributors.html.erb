@@ -6,12 +6,6 @@
       <hr />
     <% end %>
  
-    <div class="row" id="highlight" style=" text-align: center;">
-      <h3 class="col-lg-4 col-xs-12 col-sm-12 col-md-4"><%= @users.length || 0 %> contributors</h3>
-      <h3 class="col-lg-4 col-xs-12 col-sm-12 col-md-4"><%= @note_count %> research notes</h3>
-      <h3 class="col-lg-4 col-xs-12 col-sm-12 col-md-4"><%= @wikis.length %> wiki pages</h3>
-    </div>
- 
     <% if params["action"] == "contributors"%>
       <hr />
     <% end %>
