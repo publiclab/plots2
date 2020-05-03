@@ -244,7 +244,7 @@ class ScreenshotsTest < ApplicationSystemTestCase
     fill_in("password-signup", with: "secretive")
     click_on "Log in"
     visit(simple_editor_path)
-    click_on "Edit"
+    click_on "edit"
     take_screenshot
   end
 end
