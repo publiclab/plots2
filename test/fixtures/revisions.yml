@@ -348,4 +348,43 @@ purple_air_with_hyphen:
   title: "This is purple-air with hyphen"
   body: "Is Purple-air searched with hyphens or without hyphens?"
   timestamp: <%= DateTime.new(2019,2,20).to_i %>
-  
+
+sun_note:
+  nid: 32
+  uid: 2
+  title: "Note tagged with sun"
+  body: "This is the body"
+  timestamp: <%= DateTime.new(2020,2,12).to_i %>
+  status: 1
+
+sun_wiki:
+  nid: 33
+  uid: 2
+  title: "Wiki tagged with sun"
+  body: "This is the body"
+  timestamp: <%= DateTime.new(2020,2,12).to_i %>
+  status: 1
+
+sunny_day_note:
+  nid: 34
+  uid: 2
+  title: "Note tagged with sunny-day"
+  body: "This is the body"
+  timestamp: <%= DateTime.new(2020,2,12).to_i %>
+  status: 1
+
+sunny_day_wiki:
+  nid: 35
+  uid: 2
+  title: "Wiki tagged with sunny-day"
+  body: "This is the body"
+  timestamp: <%= DateTime.new(2020,2,12).to_i %>
+  status: 1
+
+sun_question:
+  nid: 36
+  uid: 2
+  title: "Note tagged with question:sun"
+  body: "This is the body"
+  timestamp: <%= DateTime.new(2020,2,12).to_i %>
+  status: 1
