@@ -290,7 +290,8 @@ GEM
     multi_json (1.14.1)
     multi_xml (0.6.0)
     multipart-post (2.1.1)
-    mustermann (1.0.3)
+    mustermann (1.1.1)
+      ruby2_keywords (~> 0.0.1)
     mustermann-grape (1.0.1)
       mustermann (>= 1.0.0)
     mysql2 (0.5.3)
@@ -456,6 +457,7 @@ GEM
       unicode-display_width (>= 1.4.0, < 1.7)
     ruby-openid (2.9.2)
     ruby-progressbar (1.10.1)
+    ruby2_keywords (0.0.2)
     rubyzip (2.0.0)
     safe_yaml (1.0.5)
     sanitize (5.1.0)
@@ -609,7 +611,7 @@ DEPENDENCIES
   mailman
   minitest-reporters (~> 1.4.2)
   mocha (~> 1.11)
-  mustermann (= 1.0.3)
+  mustermann (= 1.1.1)
   mysql2 (>= 0.4.4)
   nifty-generators
   omniauth (~> 1.9)
