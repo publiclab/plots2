@@ -341,7 +341,7 @@ GEM
       mimemagic (~> 0.3.0)
       terrapin (~> 0.6.0)
     parallel (1.19.1)
-    parser (2.7.0.1)
+    parser (2.7.1.2)
       ast (~> 2.4.0)
     passenger (6.0.4)
       rack
@@ -435,6 +435,7 @@ GEM
     retriable (3.1.2)
     reverse_markdown (1.1.0)
       nokogiri
+    rexml (3.2.4)
     rspec (3.9.0)
       rspec-core (~> 3.9.0)
       rspec-expectations (~> 3.9.0)
@@ -448,13 +449,14 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.9.0)
     rspec-support (3.9.0)
-    rubocop (0.79.0)
+    rubocop (0.82.0)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
       parser (>= 2.7.0.1)
       rainbow (>= 2.2.2, < 4.0)
+      rexml
       ruby-progressbar (~> 1.7)
-      unicode-display_width (>= 1.4.0, < 1.7)
+      unicode-display_width (>= 1.4.0, < 2.0)
     ruby-openid (2.9.2)
     ruby-progressbar (1.10.1)
     ruby2_keywords (0.0.2)
@@ -543,7 +545,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.6)
-    unicode-display_width (1.6.0)
+    unicode-display_width (1.7.0)
     unicode-emoji (2.4.0)
     url (0.3.2)
     web-console (3.7.0)
@@ -644,7 +646,7 @@ DEPENDENCIES
   rest-client
   reverse_markdown
   rspec
-  rubocop (~> 0.79.0)
+  rubocop (~> 0.82.0)
   ruby-openid
   sanitize
   sassc-rails
