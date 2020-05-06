@@ -544,7 +544,9 @@ GEM
       unf_ext
     unf_ext (0.0.7.6)
     unicode-display_width (1.6.0)
-    unicode-emoji (2.4.0)
+    unicode-emoji (2.5.0)
+      unicode-version (~> 1.0)
+    unicode-version (1.0.0)
     url (0.3.2)
     web-console (3.7.0)
       actionview (>= 5.0)
