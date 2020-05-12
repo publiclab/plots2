@@ -1,5 +1,5 @@
 <% if current_user && @node.tags.length == 0 %>
-  <div class="alert alert-warning"><%= raw translation('wiki.show.page_has_no_tags', url: 'javascript: $(".tag-input").focus();') %></div>
+  <div class="alert alert-warning"><%= raw translation('wiki.show.page_has_no_tags', url: 'javascript: document.getElementById("tags-open").click();') %></div>
 <% end %>
 
 <% if @node.main_image && !@presentation %>

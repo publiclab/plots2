@@ -174,7 +174,7 @@ en:
       read_more: "Read more"
     show:
       note_no_tags: "This note has no tags yet; help connect it to other content by
-        <a href='%{url}'>adding descriptive tags below</a>."
+        <a href='#' onClick='%{url}'>adding descriptive tags below</a>."
       replication: "This is an attempt to replicate "
       series: "This is part of a series on "
       replication_link: "an activity"
@@ -454,7 +454,7 @@ en:
         projects."
     show:
       page_has_no_tags: "This page has no tags yet; help connect it to other content
-        by <a href='%{url}'>adding descriptive tags below</a>"
+        by <a href ='#' onClick='%{url}'>adding descriptive tags below</a>"
       revision_from: "This is a revision from %{time}."
       view_all_revisions: "View all revisions"
       views: "views"
