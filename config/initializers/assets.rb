@@ -34,6 +34,7 @@ Rails.application.config.assets.precompile += [
   'wikis.js',
 
   'blog.css',
+  'spam.css',
   'comments.css',
   'dashboard.css',
   'editor.css',
