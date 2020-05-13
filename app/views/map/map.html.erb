@@ -1,4 +1,6 @@
-<%= feature('map-intro') %>
+<% if !@node %>
+  <%= feature('map-intro') %>
+<% end %>
 <style>
   body, body>.container, body>.container>.row {
     margin: 0;
