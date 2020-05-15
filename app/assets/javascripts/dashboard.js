@@ -8,6 +8,14 @@ $(document).ready(function () {
       $('#selectall').prop("checked", check);
   });
 });
+var viewport = function() {
+  var e = window, a = 'inner';
+  if (!('innerWidth' in window )) {
+    a = 'client';
+    e = document.documentElement || document.body;
+  }
+  return { width : e[ a+'Width' ] , height : e[ a+'Height' ] };
+}
 function listselect(){
   var types = [
     'note',
@@ -17,14 +25,6 @@ function listselect(){
     'wiki'
   ];
 
-  var viewport = function() {
-    var e = window, a = 'inner';
-    if (!('innerWidth' in window )) {
-      a = 'client';
-      e = document.documentElement || document.body;
-    }
-    return { width : e[ a+'Width' ] , height : e[ a+'Height' ] };
-  }
   
   var selected = [];
   $('#checkboxes input:checked').each(function() {
@@ -53,14 +53,7 @@ function listselect(){
   };
  
   
-  var viewport = function() {
-    var e = window, a = 'inner';
-    if (!('innerWidth' in window )) {
-      a = 'client';
-      e = document.documentElement || document.body;
-    }
-    return { width : e[ a+'Width' ] , height : e[ a+'Height' ] };
-  }
+
 
   var setTypeVisibility = function(type, checked) {
 
