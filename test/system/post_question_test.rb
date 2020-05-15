@@ -70,15 +70,16 @@ class QuestionTest < ApplicationSystemTestCase
     assert_equal( "×\nResearch note published. Get the word out on the discussion lists!", message )
   end
 
-  test 'question form validation messages' do
+  test 'post question button is disabled on invalid data' do
     visit '/questions/new'
 
     find('[placeholder="What\'s your question? Be specific."]').set(' ');
     find('.wk-wysiwyg').set('Question with an empty title!')
     find('.ple-publish').click();
 
-    message = find('.alert-danger').text
-    assert_equal( "title can't be blank, is too short (minimum is 3 characters)\nbase You must provide a title.", message )
+    askQuestionButton = find('.ple-publish.disabled', text: 'Ask')
+
+    assert_equal askQuestionButton.disabled?, true
   end
 
 end
