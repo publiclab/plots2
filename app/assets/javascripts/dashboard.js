@@ -17,6 +17,15 @@ function listselect(){
     'wiki'
   ];
 
+  var viewport = function() {
+    var e = window, a = 'inner';
+    if (!('innerWidth' in window )) {
+      a = 'client';
+      e = document.documentElement || document.body;
+    }
+    return { width : e[ a+'Width' ] , height : e[ a+'Height' ] };
+  }
+  
   var selected = [];
   $('#checkboxes input:checked').each(function() {
       selected.push($(this).attr('data-type'));
@@ -24,12 +33,15 @@ function listselect(){
   let intersection = types.filter(x => selected.includes(x));
   let difference = types.filter(x => !selected.includes(x));
   for(var i=0;i<intersection.length;i++){
+    if (!(intersection[i] == 'wiki' && viewport().width > 992)){
     $('.note-container-' + intersection[i]).show();
+    }
   }
   for(var j=0;j<difference.length;j++){
     $('.note-container-' + difference[j]).hide();
   }
 }
+
 (function() {
 
   var types = {
