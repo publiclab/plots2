@@ -1,3 +1,34 @@
+#wrapper {
+  padding-left: 10px;
+  transition: all .4s ease 0s;
+  height: 100%
+}
+#sidebar-wrapper {
+  margin-left: -15%;
+  transition: all .4s ease 0s;
+  position: fixed;
+  top: 50px;
+  right: 0;
+  left: 0;
+  width: 15%;
+  height: 100vh;
+  z-index: 5;
+}
+
+#page-content-wrapper {
+  width: 100%;
+  height: auto;
+}
+#wrapper.active {
+  padding-left: 100px;
+}
+#wrapper.active #sidebar-wrapper {
+  left: 15%;
+}
+
+#page-content-wrapper {
+width: 100%;
+}
 
 .nav_top  {
     position: fixed ;
@@ -20,15 +51,7 @@
     font-size: 1.1rem;
     font-weight: bold;
   }
-  #layoutSidenav #layoutSidenav_nav{
-    position: fixed;
-    top: 50px;
-    right: 0;
-    left: 0;
-    width: 15rem;
-    height: 100vh;
-    z-index: 5;
-  }
+
   .sidenav {
     display: flex;
     flex-direction: column;
@@ -83,39 +106,25 @@
   .sidenav .sidenav-menu .nav .nav-link.active .nav-icon {
     color: #0061f2;
   }
-  .sidenav .sidenav-menu .nav .nav-link .sidenav-collapse-arrow {
-    display: inline-block;
-    margin-left: auto;
-    transition: transform 0.15s ease;
-  }
-  .sidenav .sidenav-menu .nav .nav-link.collapsed .sidenav-collapse-arrow {
-    transform: rotate(-90deg);
-  }
-  .sidenav-footer {
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    padding-top: 0.75rem;
-    padding-right: 0.75rem;
-    height: 3rem;
-    background-color: rgba(31, 45, 65, 0.05);
-  }
-  .sidenav-footer-content {
-    font-size: 0.75rem; color: #687281;
-  }
-  
   #layoutSidenav_content {
-    padding-left: 8rem;
+    margin-left:-6vw;
+    width:95vw;
     top: 3.625rem;
   }
+  #wrapper.active #layoutSidenav_content{
+    margin-left:0px;
+    width:83vw;
+  }
   .page-header{
-     background-color: #0061f2;
-    background-image: linear-gradient(135deg, #0061f2 0%, rgba(105, 0, 199, 0.8) 100%);
+  background-color: #0061f2;
+  background-image: linear-gradient(135deg, #0061f2 0%, rgba(105, 0, 199, 0.8) 100%);
   padding-bottom: 6rem !important;
-  width:110%; 
+  width:100%; 
+  border-radius: 5px; 
   }
   .page-header-content {
     padding-top: 4rem;
+    padding-left:3.5rem;
     padding-bottom: 4rem;
   }
    .page-header-title {
@@ -127,6 +136,7 @@
     margin-bottom: 0.5rem;
     color: #fff;
     margin-left:2.5rem;
+    font-family: "Lucida Console", Courier, monospace;                                                                                                                                
   }
   .page-header-icon {
     margin-right: 0.5rem;
@@ -136,6 +146,12 @@
   }
   .margin_top{
       margin-top: -6rem !important;
-      margin-left: 50px;
+      margin-left: 0px;
   }
+#menu-toggle{
+  padding-right:10px;
+  cursor: -webkit-grab; cursor: grab;
+}
+
+
   

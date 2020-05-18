@@ -4,10 +4,21 @@ $(document).ready(function() {
       "order": [[ 3, "desc" ]],
       stateSave: true,
       "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-
-
+       responsive: true
   });
+
+    $('#selectall').click(function () {
+        $('.selectedId').prop('checked', this.checked);
+    });
+
+    $('.selectedId').change(function () {
+        var check = ($('.selectedId').filter(":checked").length == $('.selectedId').length);
+        $('#selectall').prop("checked", check);
+    });
 });
+
+
+
 </script>
 
 <div id="layoutSidenav_content">
@@ -34,7 +45,7 @@ $(document).ready(function() {
           <table  id="example" class="responsive nowrap table table-hover" style="width:100%">
             <thead>
               <tr>
-                <th><input id="batch-checkbox" type="checkbox" /></th>
+                <th><input type="checkbox"  id="selectall" /></th>
                 <th>Title</th>
                 <th>Author</th>
                 <th>Status</th>
@@ -46,7 +57,7 @@ $(document).ready(function() {
             <% @nodes.each do |node| %>
               <tr id="n<%= node.id %>">
                 
-                <td><input class="batch-checkbox" value="<%= node.nid %>" type="checkbox" /></td>
+                <td><input  class="selectedId" value="<%= node.nid %>" type="checkbox" /></td>
                 
                 <td>
                 <i class="fa fa-file"></i> 
