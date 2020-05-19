@@ -4,10 +4,15 @@ class StatsController < ApplicationController
       @tags = TagSelection.where(following: true)
         .joins("LEFT JOIN community_tags ON community_tags.tid = tag_selections.tid")
         .joins(:tag)
-        .joins("INNER JOIN node ON node.nid = community_tags.nid")
-        .where("node.status = 1")
         .group("term_data.name")
         .count
+#       @tags = TagSelection.where(following: true)
+#         .joins("LEFT JOIN community_tags ON community_tags.tid = tag_selections.tid")
+#         .joins(:tag)
+#         .joins("INNER JOIN node ON node.nid = community_tags.nid")
+#         .where("node.status = 1")
+#         .group("term_data.name")
+#         .count
       @tags = @tags.group_by { |_k, v| v / 10 }
     end
   end
