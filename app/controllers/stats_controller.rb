@@ -1,10 +1,10 @@
 class StatsController < ApplicationController
   def subscriptions
-    @tags = {}
-    TagSelection.where(following: true).joins(:node_tags).each do |tag|
-      @tags[tag.tagname] = @tags[tag.tagname] || 0
-      @tags[tag.tagname] += 1
-    end
+    @tags = TagSelection.where(following: true)
+      .joins("LEFT JOIN community_tags ON community_tags.tid = tag_selections.tid")
+      .joins("JOIN term_data ON term_data.tid = tag_selections.tid")
+      .group("term_data.name")
+      .count
     @tags = @tags.group_by { |_k, v| v / 10 }
   end
 
