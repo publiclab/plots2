@@ -1,11 +1,11 @@
 class StatsController < ApplicationController
   def subscriptions
-    Rails.cache.fetch("stats/subscriptions/query", expires_in: 24.hours) do
       @tags = TagSelection.where(following: true)
         .joins("LEFT JOIN community_tags ON community_tags.tid = tag_selections.tid")
         .joins(:tag)
         .group("term_data.name")
         .count
+#     Rails.cache.fetch("stats/subscriptions/query", expires_in: 24.hours) do
 #       @tags = TagSelection.where(following: true)
 #         .joins("LEFT JOIN community_tags ON community_tags.tid = tag_selections.tid")
 #         .joins(:tag)
@@ -14,7 +14,7 @@ class StatsController < ApplicationController
 #         .group("term_data.name")
 #         .count
       @tags = @tags.group_by { |_k, v| v / 10 }
-    end
+#    end
   end
 
   def range
