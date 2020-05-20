@@ -68,6 +68,8 @@ gem 'jquery-atwho-rails'
 gem 'lemmatizer', '~> 0.2.2'
 # To implement incoming mail processing microframework
 gem 'mailman', require: false
+# To implement fontawesome v4.7.0
+gem "font-awesome-rails"
 
 # To convert html to markdown
 gem 'reverse_markdown'
