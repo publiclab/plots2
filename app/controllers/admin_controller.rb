@@ -343,8 +343,8 @@ class AdminController < ApplicationController
 
   def batch_publish
     if logged_in_as(['admin', 'moderator'])
-      nodes = 0
       users = []
+      nodes = 0  
       params[:ids].split(',').uniq.each do |nid|
         node = Node.find nid
         node.publish

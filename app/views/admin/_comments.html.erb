@@ -54,15 +54,15 @@ $(document).ready(function() {
               </tr>       
             </thead>
             <tbody> 
-            <% @comments.each do |comment| %>
-            <tr id="n<%= comment.id %>">
+              <% @comments.each do |comment| %>
+              <tr id="n<%= comment.id %>">
                 
                 <td><input  class="selectedId" value="<%= comment.nid %>" type="checkbox" /></td>
                 
                 <td>
-              
-                <i class="fa fa-file"></i> <a href="<%= comment.node.path %>"><%= comment.node.title.truncate(40) %></a><br />
-              
+                <% unless comment.node.nil? %>
+                <i class="fa fa-file"></i> <a href="<%= comment.node.path %>"><%= comment.node.title.truncate(40) %></a>
+                <% end %>
                 </td>
                 <td style="width:200px;">
                  <%= comment.body.truncate(40) %>
