@@ -13,7 +13,7 @@ class StatsController < ApplicationController
 #         .where("node.status = 1")
 #         .group("term_data.name")
 #         .count
-      @tags = @tags.group_by { |_k, v| v / 10 }
+      @tags = @tags.group_by { |_k, v| v / 10 }.sort_by { |k, _v| -k }
 #    end
   end
 
