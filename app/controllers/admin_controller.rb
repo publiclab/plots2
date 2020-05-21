@@ -348,10 +348,10 @@ class AdminController < ApplicationController
       params[:ids].split(',').uniq.each do |nid|
         node = Node.find nid
         node.publish
-        nodes += 1
         user = node.author
         user.unban
         users << user.id
+        nodes += 1
       end
       flash[:notice] = nodes.to_s + ' nodes published and ' + users.length.to_s + ' users unbanned.'
       redirect_to '/spam'
