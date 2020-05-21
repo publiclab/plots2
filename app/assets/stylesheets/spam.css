@@ -12,7 +12,7 @@
   left: 0;
   width: 15%;
   height: 100vh;
-  z-index: 5;
+  z-index: 4;
 }
 
 #page-content-wrapper {
@@ -37,7 +37,7 @@ width: 100%;
     left: 0;
     padding-left: 0;
     height: 3.625rem;
-    z-index: 15;
+    z-index: 5;
     width:100%;
     font-size: 0.9rem;
     box-shadow: 0 0.15rem 1.75rem 0 rgba(31, 45, 65, 0.15) !important;
@@ -104,7 +104,7 @@ width: 100%;
     color: #0061f2;
   }
   .sidenav .sidenav-menu .nav .nav-link.active .nav-icon {
-    color: #0061f2;
+    color: #303438;
   }
   #layoutSidenav_content {
     margin-left:-6vw;
@@ -152,6 +152,16 @@ width: 100%;
   padding-right:10px;
   cursor: -webkit-grab; cursor: grab;
 }
+#batch-delete{
+  color:red;
+}
+#batch-publish{
+  color:green;
+}
 
-
-  
+th{
+  color:#0061f2;
+}
+.alert{
+  z-index: 6;
+}

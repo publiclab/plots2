@@ -12,24 +12,23 @@ $("#menu-toggle").click(function(e) {
 <nav class="nav_top navbar navbar-expand">
     <a class="navbar_title">Moderator's Dashboard</a>
     <svg  id="menu-toggle" href="#"  width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-    <form class="form-inline">
-        <input class="form-control" type="search" placeholder="Search">
-    </form>
-    <ul class="navbar-nav align-items-center ml-auto">
-        <li class="nav-item">
-            <a class="nav-link" id="navbarDropdownDocs" href="javascript:void(0);" role="button" data-toggle="dropdown">
-                <div class="d-none d-md-inline ">Notifications</div>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right animated--fade-in-up">
-                <div class="dropdown-item">
-                <div class="large text-gray-500">Queue: 200</div>
-                </div>
-                <div class="dropdown-item">
-                    <div class="large text-gray-500">Flagged: 100</div>
-                </div>
-            </div>
-        </li>
+  
+     <% if params[:action] != "spam_revisions" && params[:action] != "spam_comments" %>
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li class="nav-item active">
+        <a class="nav-link" href="#" id="batch-delete" ><i class="fa fa-ban-circle"></i> Mark Spam</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" id="batch-publish">Publish</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link " href="#">Delete</a>
+      </li>
+       <li class="nav-item">
+        <a class="nav-link" href="#" id="all">Select all</a>
+      </li>
     </ul>
+  <% end %>
 </nav>
 
 
@@ -88,8 +87,9 @@ $("#menu-toggle").click(function(e) {
         </div>   
     </nav>
 
-    <div id="page-content-wrapper">
+   
 
+    <div id="page-content-wrapper">
         <%= render partial: 'admin/nodes' if @nodes %>
         <%= render partial: 'admin/revisions' if @revisions %>
         <%= render partial: 'admin/comments' if @comments %>

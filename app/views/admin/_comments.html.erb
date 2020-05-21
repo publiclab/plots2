@@ -2,24 +2,24 @@
 <script>
 $(document).ready(function() {
   $("#example").DataTable({
-      "order": [[ 3, "desc" ]],
+      "order": [[ 1, "desc" ]],
       stateSave: true,
-      "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-      responsive: true
-  });
-
+      "lengthMenu": [[30, -1, 0], ["Auto", "All", "None"]],
+       responsive: true,
+       "autoWidth": false,
+       "search": {
+          "regex": true
+        },
+        "info": false,
+    });
     $('#selectall').click(function () {
         $('.selectedId').prop('checked', this.checked);
     });
-
     $('.selectedId').change(function () {
         var check = ($('.selectedId').filter(":checked").length == $('.selectedId').length);
         $('#selectall').prop("checked", check);
     });
-});
-
-
-
+    });
 </script>
   
 <div id="layoutSidenav_content">
@@ -60,9 +60,9 @@ $(document).ready(function() {
                 <td><input  class="selectedId" value="<%= comment.nid %>" type="checkbox" /></td>
                 
                 <td>
-                <% unless comment.node.nil? %>
+              
                 <i class="fa fa-file"></i> <a href="<%= comment.node.path %>"><%= comment.node.title.truncate(40) %></a><br />
-                <% end %>
+              
                 </td>
                 <td style="width:200px;">
                  <%= comment.body.truncate(40) %>
@@ -80,7 +80,7 @@ $(document).ready(function() {
                       <% if comment.author.status == 0 %>
                         <a class="badge badge-pill badge-danger a<%= comment.author.id %>" href="/ban/<%= comment.author.id %>">Ban</a>
                       <% elsif comment.author.status == 1 %>
-                        <a class="badge badge-pill badge unban-danger a-unban<%= comment.author.id %>" href="/unban/<%= comment.author.id %>">Unban</a>
+                        <a class="badge badge-pill badge-secondary unban a-unban<%= comment.author.id %>" href="/unban/<%= comment.author.id %>">Unban</a>
                       <% end %>
                 </td>
               </tr>

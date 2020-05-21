@@ -289,6 +289,7 @@ Plots2::Application.routes.draw do
   get 'spam/comments' => 'admin#spam_comments'
   get 'spam/:type' => 'admin#spam'
   get 'spam/batch/:ids' => 'admin#batch'
+  get 'spam/batch_publish/:ids' => 'admin#batch_publish'
   get 'admin/users' => 'admin#users'
   get 'admin/queue' => 'admin#queue'
   get 'ban/:id' => 'admin#ban'

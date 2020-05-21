@@ -341,6 +341,26 @@ class AdminController < ApplicationController
     end
   end
 
+  def batch_publish
+    if logged_in_as(['admin', 'moderator'])
+      nodes = 0
+      users = []
+      params[:ids].split(',').uniq.each do |nid|
+        node = Node.find nid
+        node.publish
+        nodes += 1
+        user = node.author
+        user.unban
+        users << user.id
+      end
+      flash[:notice] = nodes.to_s + ' nodes published and ' + users.length.to_s + ' users unbanned.'
+      redirect_to '/spam'
+    else
+      flash[:error] = 'Only admins can batch moderate.'
+      redirect_to '/dashboard'
+    end
+  end
+
   def migrate
     if logged_in_as(['admin'])
       du = User.find params[:id]
