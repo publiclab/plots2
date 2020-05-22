@@ -21,7 +21,10 @@ class SubscriptionMailer < ActionMailer::Base
     mail(
       to: "notifications@#{ActionMailer::Base.default_url_options[:host]}",
       bcc: recipients,
-      subject: subject
+      subject: '[PublicLab] ' +
+              (node.has_power_tag('question') ? 'Question: ' : '') +
+              node.title +
+              " (##{node.id}) "
     )
   end
 
@@ -38,6 +41,10 @@ class SubscriptionMailer < ActionMailer::Base
 
   def notify_tag_added(node, tag, tagging_user)
     @tag = tag
+    subject = '[PublicLab] ' +
+              (node.has_power_tag('question') ? 'Question: ' : '') +
+              node.title +
+              " (##{node.id}) "
     @node = node
     @tags = node.tags.collect(&:name).join(',')
     @tagging_user = tagging_user
@@ -62,7 +69,7 @@ class SubscriptionMailer < ActionMailer::Base
     mail(
       to: "notifications@#{ActionMailer::Base.default_url_options[:host]}",
       bcc: recipients,
-      subject: "#{node.title} (##{node.id})"
+      subject: subject
     )
   end
 
