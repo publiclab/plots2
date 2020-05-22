@@ -1,17 +1,11 @@
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.6.3/papaparse.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/1.33.1/plotly-basic.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
 <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.3/FileSaver.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.3/xlsx.full.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
 <%= javascript_include_tag('/lib/simple-data-grapher/dist/PublicLab.Grapher.js')%>
 <%= stylesheet_link_tag '/lib/simple-data-grapher/examples/upload_file.css'%>
 <div id='first'></div>
@@ -40,10 +34,10 @@
                 $.ajax({
                     url: '/graph/object',
                     type: 'post',
-                    data:   { object: JSON.stringify(arr), 
-                            uid: <%= current_user.id %>, 
-                            filetitle: SimpleDataGrapherObject.view.fileTitle, 
-                            filedescription: SimpleDataGrapherObject.view.fileDescription, 
+                    data:   { object: JSON.stringify(arr),
+                            uid: <%= current_user.id %>,
+                            filetitle: SimpleDataGrapherObject.view.fileTitle,
+                            filedescription: SimpleDataGrapherObject.view.fileDescription,
                             filestring: csvStringForDownload },
                     success: function(data){
                         let divAlert = document.createElement('div');
@@ -113,7 +107,7 @@
                 SimpleDataGrapherObject.view.csvParser.csvValidForYAxis = allfiles['csvValidForYAxis'];
                 SimpleDataGrapherObject.view.csvParser.completeCsvMatrixTranspose = allfiles['completeCsvMatrixTranspose'];
                 SimpleDataGrapherObject.view.continueViewManipulation('prevfile');
-            }); 
+            });
         }
         $('#' + SimpleDataGrapherObject.view.elementId + '_publish').click(function(){
             var arr = {};
@@ -131,10 +125,10 @@
             $.ajax({
                 url: '/graph/note/graphobject',
                 type: 'post',
-                data: { object: JSON.stringify(arr), 
-                        uid: <%= current_user.id %>, 
-                        filetitle: SimpleDataGrapherObject.view.fileTitle, 
-                        filedescription: SimpleDataGrapherObject.view.fileDescription, 
+                data: { object: JSON.stringify(arr),
+                        uid: <%= current_user.id %>,
+                        filetitle: SimpleDataGrapherObject.view.fileTitle,
+                        filedescription: SimpleDataGrapherObject.view.fileDescription,
                         filestring: csvStringForDownload,
                         graphobject: JSON.stringify(dataObject) },
                 success: function(data){
@@ -149,4 +143,3 @@
     <% end %>
     setTimeout("$('.alert-success .alert-danger').fadeOut('slow')", 7000)
 </script>
-
