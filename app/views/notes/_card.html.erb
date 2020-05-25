@@ -13,11 +13,11 @@
   <% if node.status == 4 %>
     <p class="alert alert-warning moderated">
       <% if @current_user && ['admin','moderator'].include?(@current_user.role) %>
-        <%= t('notes._notes.moderate_first_time_post') %> <br class="d-none d-lg-inline"/>
-        <a class="btn btn-outline-secondary btn-sm" href="/moderate/publish/<%= node.id %>"><%= t('notes._notes.approve') %></a>
-        <a class="btn btn-outline-secondary btn-sm" data-test="spam" href="/moderate/spam/<%= node.id %>"><%= t('notes._notes.spam') %></a>
+        <%= translation('notes._notes.moderate_first_time_post') %> <br class="d-none d-lg-inline"/>
+        <a class="btn btn-outline-secondary btn-sm" href="/moderate/publish/<%= node.id %>"><%= translation('notes._notes.approve') %></a>
+        <a class="btn btn-outline-secondary btn-sm" data-test="spam" href="/moderate/spam/<%= node.id %>"><%= translation('notes._notes.spam') %></a>
       <% else %>
-        <%= raw t('notes._notes.pending_approval', :url1 => '/wiki/moderation') %>
+        <%= raw translation('notes._notes.pending_approval', :url1 => '/wiki/moderation') %>
       <% end %>
     </p>
   <% end %>
@@ -46,19 +46,19 @@
         <% if node.type == 'note' %>
           <li><a> Made: <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope:'datetime.time_ago_in_words' }) %> </a></li>
         <% else %>
-          <li><a>Last Edited: <%= t('notes._notes.last_edit_by') %> <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.latest.author.name %>"><%= node.latest.author.name %></a></a></li>
+          <li><a>Last Edited: <%= translation('notes._notes.last_edit_by') %> <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.latest.author.name %>"><%= node.latest.author.name %></a></a></li>
           <li><a><%= distance_of_time_in_words(Time.at(node.latest.timestamp), Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></a></li>
         <% end %>
-        <li><a>Total Views: </i> <%= number_with_delimiter(node.views) %> <span class="d-none d-lg-inline"><%= t('notes._notes.views') %></span></a></li>
+        <li><a>Total Views: </i> <%= number_with_delimiter(node.views) %> <span class="d-none d-lg-inline"><%= translation('notes._notes.views') %></span></a></li>
         <li><a>Total Likes: <%= node.likers.length %></a></li>
         <div class="content" style="width: 100%" >
           <% if @compact.nil? %>
 
-            <li class="buttons mb-2"><% if @current_user && ['admin','moderator'].include?(@current_user.role) %><a style="width: 90px" class="btn btn-outline-secondary" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> <%= t('notes._notes.spam') %></a><% end %></li>
-            <li class="buttons"><a class="btn btn-outline-secondary" href="<%= node.path %>"><%= t('notes._notes.read_more') %></a></li>
+            <li class="buttons mb-2"><% if @current_user && ['admin','moderator'].include?(@current_user.role) %><a style="width: 90px" class="btn btn-outline-secondary" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> <%= translation('notes._notes.spam') %></a><% end %></li>
+            <li class="buttons"><a class="btn btn-outline-secondary" href="<%= node.path %>"><%= translation('notes._notes.read_more') %></a></li>
           <% end %>
           <% if @current_user && params[:mod] %>
-            <a class="btn btn-outline-secondary" href="#"><i class="fa fa-ban-circle"></i> <%= t('notes._notes.spam') %></a>
+            <a class="btn btn-outline-secondary" href="#"><i class="fa fa-ban-circle"></i> <%= translation('notes._notes.spam') %></a>
           <% end %>
           <hr style="display:none;" class="bottom" />
         </div>
