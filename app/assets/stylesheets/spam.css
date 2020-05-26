@@ -100,7 +100,7 @@
     color: #0061f2;
   }
   .sidenav .sidenav-menu .nav .nav-link.active .nav-icon {
-    color: #303438;
+    color: #0061f2;
   }
   #layoutSidenav_content {
     margin-left:-6vw;
@@ -149,11 +149,25 @@
   padding-left:10px;
   cursor: -webkit-grab; cursor: grab;
 }
-#batch-delete{
-  color:red;
+#batch-delete:hover{
+  border-bottom: 2px solid red;
+  color: grey;
+  font-weight: bold;
 }
-#batch-publish{
-  color:green;
+#batch-publish:hover{
+  border-bottom: 2px solid green ;
+  color: grey;
+  font-weight: bold;
+}
+#delete:hover{
+  border-bottom: 2px solid maroon ;
+  color: grey;
+  font-weight: bold;
+}
+#all:hover{
+  border-bottom: 2px solid blue ;
+  color: grey;
+  font-weight: bold;
 }
 
 th{
@@ -162,7 +176,9 @@ th{
 .alert{
   z-index: 6;
 }
-
+.bm{
+  color:black !important;
+}
 @media (max-width: 750px) {
   #sidebar-wrapper {
     margin-left: -40%;
