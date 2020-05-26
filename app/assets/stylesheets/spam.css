@@ -211,7 +211,14 @@ th{
 @media  (max-width: 750px) and (min-width: 550px)  {
   #layoutSidenav_content {
     width:90vw;
-    margin-left: -10%;
+  }
+  .nav_top  {
+    font-size: 0.9rem;
+  }
+  .navbar_title{
+    width: 25vw;
+    font-size: 1.1rem;
+    font-weight: bold;
   }
 }
 @media  (max-width: 1050px) and (min-width: 750px)  {
