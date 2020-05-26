@@ -5,11 +5,12 @@ $(document).ready(function() {
       stateSave: true,
       "lengthMenu": [[30, -1, 0], ["Auto", "All", "None"]],
        responsive: true,
-       "autoWidth": false,
+       "autoWidth": true,
        "search": {
           "regex": true
         },
-        "info": false,
+        "info": false,  
+
     });
     $('#selectall').click(function () {
         $('.selectedId').prop('checked', this.checked);
@@ -43,8 +44,12 @@ $(document).ready(function() {
             <div class="page-header-icon">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
               </svg>
-            </div>
+            </div> 
+            <% if params[:type] == "wiki" %> 
+            <span>Bulk Moderation (Wiki)</span> 
+            <% else %>
             <span>Bulk Moderation</span>
+            <% end %>
           </h1>
         </div>
       </div>

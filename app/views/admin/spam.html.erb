@@ -5,6 +5,9 @@ $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("active");
 });
+$(".nav-link ").click(function() {
+        $("#wrapper").toggleClass("active");
+});
 });
 </script>
 <%= stylesheet_link_tag "spam" %>
@@ -16,7 +19,7 @@ $("#menu-toggle").click(function(e) {
      <% if params[:action] != "spam_revisions" && params[:action] != "spam_comments" %>
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
       <li class="nav-item active">
-        <a class="nav-link" href="#" id="batch-delete" ><i class="fa fa-ban-circle"></i> Mark Spam</a>
+        <a class="nav-link" href="#" id="batch-delete" > Spam</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#" id="batch-publish">Publish</a>
@@ -25,7 +28,7 @@ $("#menu-toggle").click(function(e) {
         <a class="nav-link " href="#">Delete</a>
       </li>
        <li class="nav-item">
-        <a class="nav-link" href="#" id="all">Select all</a>
+        <a class="nav-link" href="#" id="all">Select</a>
       </li>
     </ul>
   <% end %>
@@ -33,7 +36,7 @@ $("#menu-toggle").click(function(e) {
 
 
 
-<div id="wrapper" class="active">
+<div id="wrapper" >
     <nav class="sidenav" id="sidebar-wrapper">
         <div class="sidenav-menu">
             <div class="nav">
