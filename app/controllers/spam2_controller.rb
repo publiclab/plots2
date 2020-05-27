@@ -5,11 +5,11 @@ class Spam2Controller < ApplicationController
     if logged_in_as(['admin', 'moderator'])
       @nodes = Node.paginate(page: params[:page])
                    .order('nid DESC')
-      @nodes =  if params[:type] == 'wiki'
-                  @nodes.where(type: 'page', status: 1)
-                else
-                  @nodes.where(status: [0, 4])
-                end
+      @nodes = if params[:type] == 'wiki'
+                @nodes.where(type: 'page', status: 1)
+               else
+                @nodes.where(status: [0, 4])
+               end
     else
       flash[:error] = 'Only moderators can moderate posts.'
       redirect_to '/dashboard'
@@ -95,7 +95,7 @@ class Spam2Controller < ApplicationController
       redirect_to '/dashboard'
     end
   end
-  
+
   def batch_ban
     if logged_in_as(['admin', 'moderator'])
       users = []

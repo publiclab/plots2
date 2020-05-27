@@ -9,14 +9,14 @@ $(".collapsed").click(function() {
 });
 });
 </script>
-<%= stylesheet_link_tag "spam" %>
+<%= stylesheet_link_tag "spam2" %>
 
 <nav class="nav_top navbar navbar-expand">
     <a class="navbar_title">Moderator's Dashboard</a>
-    <i id="menu-toggle" href="#" class="fa fa-bars"></i>
+    <a class="btn btn-outline-light" id="menu-toggle" href="#"><i class="fa fa-bars"></i></a>
 
      <% if params[:action] != "spam_revisions" && params[:action] != "spam_comments" %>
-    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0" id="nav_group">
       <li class="nav-item active">
         <a class="nav-link bm" href="#" id="batch-spam" > Spam</a>
       </li>
