@@ -168,6 +168,11 @@
     color: grey;
     font-weight: bold;
   }
+  #batch-ban:hover{
+    border-bottom: 2px solid orange ;
+    color: grey;
+    font-weight: bold;
+  }
   .alert{
     z-index: 6;
   }
