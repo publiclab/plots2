@@ -5,11 +5,11 @@ class Spam2Controller < ApplicationController
     if logged_in_as(['admin', 'moderator'])
       @nodes = Node.paginate(page: params[:page])
                    .order('nid DESC')
-      @nodes = if params[:type] == 'wiki'
-                 @nodes.where(type: 'page', status: 1)
-               else
-                 @nodes.where(status: [0, 4]) 
-      end
+      @nodes =  if params[:type] == 'wiki'
+                  @nodes.where(type: 'page', status: 1)
+                else
+                  @nodes.where(status: [0, 4])
+                end
     else
       flash[:error] = 'Only moderators can moderate posts.'
       redirect_to '/dashboard'
@@ -63,7 +63,7 @@ class Spam2Controller < ApplicationController
   def batch_publish
     if logged_in_as(['admin', 'moderator'])
       users = []
-      nodes = 0  
+      nodes = 0
       params[:ids].split(',').uniq.each do |nid|
         node = Node.find nid
         node.publish
@@ -71,7 +71,7 @@ class Spam2Controller < ApplicationController
         user.unban
         users << user.id
         nodes += 1
-    end
+      end
       flash[:notice] = nodes.to_s + ' nodes published and ' + users.length.to_s + ' users unbanned.'
       redirect_to '/spam2'
     else
@@ -79,10 +79,10 @@ class Spam2Controller < ApplicationController
       redirect_to '/dashboard'
     end
   end
+
   def batch_delete
     if logged_in_as(['admin', 'moderator'])
-      users = []
-      nodes = 0  
+      nodes = 0
       params[:ids].split(',').uniq.each do |nid|
         node = Node.find nid
         node.delete
@@ -95,10 +95,11 @@ class Spam2Controller < ApplicationController
       redirect_to '/dashboard'
     end
   end
+  
   def batch_ban
     if logged_in_as(['admin', 'moderator'])
       users = []
-      nodes = 0  
+      nodes = 0
       params[:ids].split(',').uniq.each do |nid|
         node = Node.find nid
         user = node.author
