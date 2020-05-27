@@ -8,7 +8,7 @@ class Spam2Controller < ApplicationController
       @nodes = if params[:type] == 'wiki'
                  @nodes.where(type: 'page', status: 1)
                else
-                 @nodes.where(status: [0, 4]) # spam OR as-yet-unmoderated posts
+                 @nodes.where(status: [0, 4]) 
       end
     else
       flash[:error] = 'Only moderators can moderate posts.'
@@ -40,187 +40,6 @@ class Spam2Controller < ApplicationController
     end
   end
 
-  def mark_spam
-    @node = Node.find params[:id]
-    if logged_in_as(['admin', 'moderator'])
-      if @node.status == 1 || @node.status == 4
-        @node.spam
-        @node.author.ban
-        # No longer notifying other moderators as of https://github.com/publiclab/plots2/issues/6246
-        # AdminMailer.notify_moderators_of_spam(@node, current_user).deliver_later
-        flash[:notice] = "Item marked as spam and author banned. You can undo this on the <a href='/spam'>spam moderation page</a>."
-        redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
-      else
-        flash[:notice] = "Item already marked as spam and author banned. You can undo this on the <a href='/spam'>spam moderation page</a>."
-        redirect_to '/dashboard'
-      end
-    else
-      flash[:error] = 'Only moderators can moderate posts.'
-      if @node.has_power_tag('question')
-        redirect_to @node.path(:question)
-      else
-        redirect_to @node.path
-      end
-    end
-  end
-
-  def mark_comment_spam
-    @comment = Comment.find params[:id]
-    if logged_in_as(['admin', 'moderator'])
-      if @comment.status == 1 || @comment.status == 4
-        @comment.spam
-        user = @comment.author
-        user.ban
-        # No longer notifying other moderators as of https://github.com/publiclab/plots2/issues/6246
-        # AdminMailer.notify_moderators_of_comment_spam(@comment, current_user).deliver_later
-        flash[:notice] = "Comment has been marked as spam and comment author has been banned. You can undo this on the <a href='/spam/comments'>spam moderation page</a>."
-      else
-        flash[:notice] = "Comment already marked as spam."
-      end
-    else
-      flash[:error] = 'Only moderators can moderate comments.'
-    end
-    redirect_to @comment.node.path + '?_=' + Time.now.to_i.to_s
-  end
-
-  def publish_comment
-    if logged_in_as(['admin', 'moderator'])
-      @comment = Comment.find params[:id]
-      if @comment.status == 1
-        flash[:notice] = 'Comment already published.'
-      else
-        first_timer_comment = (@comment.status == 4)
-        @comment.publish
-        if @comment.author.banned?
-          @comment.author.unban
-        end
-        if first_timer_comment
-          AdminMailer.notify_author_of_comment_approval(@comment, current_user).deliver_later
-          # No longer notifying other moderators as of https://github.com/publiclab/plots2/issues/6246
-          # AdminMailer.notify_moderators_of_comment_approval(@comment, current_user).deliver_later
-        else
-          flash[:notice] = 'Comment published.'
-        end
-      end
-      @node = @comment.node
-      redirect_to @node.path + '?_=' + Time.now.to_i.to_s
-    else
-      flash[:error] = 'Only moderators can publish comments.'
-      redirect_to '/dashboard'
-    end
-  end
-
-  def publish
-    if logged_in_as(['admin', 'moderator'])
-      @node = Node.find params[:id]
-      if @node.status == 1
-        flash[:notice] = 'Item already published.'
-      else
-        first_timer_post = (@node.status == 4)
-        @node.publish
-        @node.author.unban
-        if first_timer_post
-          AdminMailer.notify_author_of_approval(@node, current_user).deliver_later
-          # No longer notifying other moderators as of https://github.com/publiclab/plots2/issues/6246
-          # AdminMailer.notify_moderators_of_approval(@node, current_user).deliver_later
-          SubscriptionMailer.notify_node_creation(@node).deliver_now
-          flash[:notice] = if @node.has_power_tag('question')
-                             "Question approved and published after #{time_ago_in_words(@node.created_at)} in moderation. Now reach out to the new community member; thank them, just say hello, or help them revise/format their post in the comments."
-                           else
-                             "Post approved and published after #{time_ago_in_words(@node.created_at)} in moderation. Now reach out to the new community member; thank them, just say hello, or help them revise/format their post in the comments."
-                           end
-        else
-          flash[:notice] = 'Item published.'
-        end
-      end
-      if @node.has_power_tag('question')
-        redirect_to @node.path(:question)
-      else
-        redirect_to @node.path
-      end
-    else
-      flash[:error] = 'Only moderators can publish posts.'
-      redirect_to '/dashboard'
-    end
-  end
-
-  def mark_spam_revision
-    @revision = Revision.find_by(vid: params[:vid])
-    @node = Node.find_by(nid: @revision.nid)
-
-    if @node.revisions.length <= 1
-      flash[:warning] = "You can't delete the last remaining revision of a page; try deleting the wiki page itself (if you're an admin) or contacting moderators@publiclab.org for assistance."
-      redirect_to @node.path
-      return
-    end
-
-    if logged_in_as(['admin', 'moderator'])
-      if @revision.status == 1
-        @revision.spam
-        @revision.author.ban
-        flash[:notice] = "Item marked as spam and author banned. You can undo this on the <a href='/spam/revisions'>spam moderation page</a>."
-        redirect_to '/wiki/revisions/' + @revision.node.slug_from_path + '?_=' + Time.now.to_i.to_s
-      else
-        flash[:notice] = "Item already marked as spam and author banned. You can undo this on the <a href='/spam/revisions'>spam moderation page</a>."
-        redirect_to '/dashboard'
-      end
-    else
-      flash[:error] = 'Only moderators can moderate posts.'
-      if @node.has_power_tag('question')
-        redirect_to @node.path(:question)
-      else
-        redirect_to @node.path
-      end
-    end
-  end
-
-  def publish_revision
-    if logged_in_as(['admin', 'moderator'])
-      @revision = Revision.find params[:vid]
-      @revision.publish
-      @revision.author.unban
-      flash[:notice] = 'Item published.'
-      if @revision.parent.has_power_tag('question')
-        redirect_to @revision.parent.path(:question)
-      else
-        redirect_to @revision.parent.path
-      end
-    else
-      flash[:error] = 'Only moderators can publish posts.'
-      redirect_to '/dashboard'
-    end
-  end
-
-  def ban
-    user = User.find params[:id]
-    if logged_in_as(['admin', 'moderator'])
-      user.ban
-    else
-      flash[:error] = 'Only moderators can ban other users.'
-    end
-    redirect_to '/profile/' + user.name + '?_=' + Time.now.to_i.to_s
-  end
-
-  def unban
-    user = User.find params[:id]
-    if logged_in_as(['admin', 'moderator'])
-      user.unban
-      flash[:notice] = 'The user has been unbanned.'
-    else
-      flash[:error] = 'Only moderators can unban other users.'
-    end
-    redirect_to '/profile/' + user.name + '?_=' + Time.now.to_i.to_s
-  end
-
-  def users
-    if logged_in_as(['admin', 'moderator'])
-      @users = User.order('uid DESC').limit(200)
-    else
-      flash[:error] = 'Only moderators can moderate other users.'
-      redirect_to '/dashboard'
-    end
-  end
-
   def batch
     if logged_in_as(['admin', 'moderator'])
       nodes = 0
@@ -240,7 +59,8 @@ class Spam2Controller < ApplicationController
       redirect_to '/dashboard'
     end
   end
-def batch_publish
+
+  def batch_publish
     if logged_in_as(['admin', 'moderator'])
       users = []
       nodes = 0  
@@ -251,7 +71,7 @@ def batch_publish
         user.unban
         users << user.id
         nodes += 1
-      end
+    end
       flash[:notice] = nodes.to_s + ' nodes published and ' + users.length.to_s + ' users unbanned.'
       redirect_to '/spam2'
     else
@@ -259,7 +79,7 @@ def batch_publish
       redirect_to '/dashboard'
     end
   end
-def batch_delete
+  def batch_delete
     if logged_in_as(['admin', 'moderator'])
       users = []
       nodes = 0  
@@ -292,29 +112,5 @@ def batch_delete
       flash[:error] = 'Only admins can batch moderate.'
       redirect_to '/dashboard'
     end
-  end
-  def smtp_test
-    require 'socket'
-
-    s = TCPSocket.new ActionMailer::Base.smtp_settings[:address], ActionMailer::Base.smtp_settings[:port]
-
-    while line = s.gets # Read lines from socket
-      if line.include? '220'
-        s.print "MAIL FROM: <example@publiclab.org>\n"
-      end
-      if line.include? '250 OK'
-        s.print "RCPT TO: <example@publiclab.org>\n"
-      end
-      if line.include? '250 Accepted'
-        render plain: "Email gateway OK"
-        s.close_write
-      elsif line.include? '550'
-        render plain: "Email gateway NOT OK"
-        render status: 500
-        s.close_write
-      end
-    end
-
-    s.close
   end
 end
