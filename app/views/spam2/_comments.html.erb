@@ -1,0 +1,93 @@
+<script>
+$(document).ready(function() {
+  $("#comment_table").DataTable({
+      "order": [[ 1, "desc" ]],
+      stateSave: true,
+      "lengthMenu": [[30, -1, 0], ["Auto", "All", "None"]],
+       responsive: true,
+       "autoWidth": false,
+       "search": {
+          "regex": true
+        },
+        "info": false,
+    });
+    $('#selectall').click(function () {
+        $('.selectedId').prop('checked', this.checked);
+    });
+    $('.selectedId').change(function () {
+        var check = ($('.selectedId').filter(":checked").length == $('.selectedId').length);
+        $('#selectall').prop("checked", check);
+    });
+    });
+</script>
+
+<div id="layoutSidenav_content">
+  <main>
+    <div class="page-header">
+      <div class="container-fluid">
+        <div class="page-header-content">
+          <h1 class="page-header-title">
+            <div class="page-header-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+              </svg>
+            </div>
+            <span>Comments</span>
+          </h1>
+        </div>
+      </div>
+    </div>         
+    <div class="container-fluid margin_top">
+      <div class="card">
+        <div class="card-header">
+        </div>
+        <div class="card-body" >
+          <table  id="comment_table" class="responsive nowrap table table-hover" style="width:100%;">
+            <thead>
+              <tr>
+                <th><input type="checkbox"  id="selectall" /></th>
+                <th>Node</th>
+                <th>Content</th>
+                <th>Author</th>
+                <th>Date</th>
+                <th>Action</th>                                
+              </tr>       
+            </thead>
+            <tbody> 
+              <% @comments.each do |comment| %>
+              <tr id="n<%= comment.id %>">
+
+                <td><input  class="selectedId" value="<%= comment.nid %>" type="checkbox" /></td>
+
+                <td>
+                <% unless comment.node.nil? %>
+                <i class="fa fa-file"></i> <a href="<%= comment.node.path %>"><%= comment.node.title.truncate(40) %></a>
+                <% end %>
+                </td>
+                <td style="width:200px;">
+                 <%= comment.body.truncate(40) %>
+                </td>
+                <td>
+                 <a href="/profile/<%= comment.author.name %>"><%= comment.author.name %></a>
+                </td>
+                <td>
+                 <% unless comment.node.nil? %>
+                <span style="color:grey;"><%= time_ago_in_words(comment.timestamp.seconds.ago) %> ago</span>
+                <% end %>
+                </td>
+                <td>
+                      <a class="badge badge-pill badge<% if comment.status == 0 %>-success<% else %>-secondary disabled<% end %> publish" href="/admin/publish_comment/<%= comment.id %>"><i class="fa fa-check-circle fa-white"></i> Publish</a>
+                      <% if comment.author.status == 0 %>
+                        <a class="badge badge-pill badge-danger a<%= comment.author.id %>" href="/ban/<%= comment.author.id %>">Ban</a>
+                      <% elsif comment.author.status == 1 %>
+                        <a class="badge badge-pill badge-secondary unban a-unban<%= comment.author.id %>" href="/unban/<%= comment.author.id %>">Unban</a>
+                      <% end %>
+                </td>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>                       
+        </div>
+      </div>
+    </div>
+  </main>
+</div> 

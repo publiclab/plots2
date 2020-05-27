@@ -1,6 +1,7 @@
 require 'sidekiq/web'
 
 Plots2::Application.routes.draw do
+
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
   mount JasmineFixtureServer => '/spec/javascripts/fixtures' if defined?(Jasmine::Jquery::Rails::Engine)
 
@@ -289,6 +290,13 @@ Plots2::Application.routes.draw do
   get 'spam/comments' => 'admin#spam_comments'
   get 'spam/:type' => 'admin#spam'
   get 'spam/batch/:ids' => 'admin#batch'
+  get 'spam2' => 'spam2#spam'  
+  get 'spam2/revisions' => 'spam2#spam_revisions'
+  get 'spam2/comments' => 'spam2#spam_comments'
+  get 'spam2/:type' => 'spam2#spam'
+  get 'spam2/batch/:ids' => 'spam2#batch'
+  get 'spam2/batch_publish/:ids' => 'spam2#batch_publish'
+  get 'spam2/batch_delete/:ids' => 'spam2#batch_delete'
   get 'admin/users' => 'admin#users'
   get 'admin/queue' => 'admin#queue'
   get 'ban/:id' => 'admin#ban'

@@ -37,4 +37,6 @@
  *= require profile
  *= require location
  *= require notes 
+ *= require spam2
+ *= require datatables
 */
