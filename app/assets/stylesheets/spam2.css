@@ -190,6 +190,7 @@
     }
     .nav_top  {
       font-size: 0.8rem;
+      overflow: hidden !important;
   
     }
     .navbar_title{

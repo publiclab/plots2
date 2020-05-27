@@ -4,12 +4,12 @@ $(document).ready(function() {
       "order": [[ 1, "desc" ]],
       stateSave: true,
       "lengthMenu": [[30, -1, 0], ["Auto", "All", "None"]],
-       responsive: true,
        "autoWidth": false,
        "search": {
           "regex": true
         },
         "info": false,
+        "scrollX": true,
     });
     $('#selectall').click(function () {
         $('.selectedId').prop('checked', this.checked);
@@ -40,8 +40,8 @@ $(document).ready(function() {
       <div class="card">
         <div class="card-header">
         </div>
-        <div class="card-body" >
-          <table  id="comment_table" class="responsive nowrap table table-hover" style="width:100%;">
+        <div class="card-body" style="overflow-x:hidden;" >
+          <table  id="comment_table" class="nowrap table table-hover" style="width:100%;">
             <thead>
               <tr>
                 <th><input type="checkbox"  id="selectall" /></th>

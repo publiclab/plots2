@@ -1,83 +1,6 @@
 class Spam2Controller < ApplicationController
   before_action :require_user, only: %i(spam spam_revisions mark_comment_spam publish_comment spam_comments)
 
-
-  def promote_admin
-    @user = User.find params[:id]
-    unless @user.nil?
-      if logged_in_as(['admin'])
-        @user.role = 'admin'
-        @user.save
-        flash[:notice] = "User '<a href='/profile/" + @user.username + "'>" + @user.username + "</a>' is now an admin."
-      else
-        flash[:error] = 'Only admins can promote other users to admins.'
-      end
-    end
-    redirect_to '/profile/' + @user.username + '?_=' + Time.now.to_i.to_s
-  end
-
-  def promote_moderator
-    @user = User.find params[:id]
-    unless @user.nil?
-      if logged_in_as(['admin', 'moderator'])
-        @user.role = 'moderator'
-        @user.save
-        flash[:notice] = "User '<a href='/profile/" + @user.username + "'>" + @user.username + "</a>' is now a moderator."
-      else
-        flash[:error] = 'Only moderators can promote other users.'
-      end
-    end
-    redirect_to '/profile/' + @user.username + '?_=' + Time.now.to_i.to_s
-  end
-
-  def demote_basic
-    @user = User.find params[:id]
-    unless @user.nil?
-      if logged_in_as(['admin', 'moderator'])
-        @user.role = 'basic'
-        @user.save
-        flash[:notice] = "User '<a href='/profile/" + @user.username + "'>" + @user.username + "</a>' is no longer a moderator."
-      else
-        flash[:error] = 'Only admins and moderators can demote other users.'
-      end
-    end
-    redirect_to '/profile/' + @user.username + '?_=' + Time.now.to_i.to_s
-  end
-
-  def reset_user_password
-    if logged_in_as(['admin'])
-      user = User.find(params[:id])
-      if user
-        key = user.generate_reset_key
-        user.save
-        # send key to user email
-        PasswordResetMailer.reset_notify(user, key).deliver_later unless user.nil? # respond the same to both successes and failures; security
-      end
-      flash[:notice] = "#{user.name} should receive an email with instructions on how to reset their password. If they do not, please double check that they are using the email they registered with."
-      redirect_to URI.parse("/profile/" + user.name).path
-    end
-  end
-
-  def useremail 
-   if logged_in_as(['admin', 'moderator']) 
-     if params[:address] 
-       # address was submitted. find the username(s) and return. 
-       @address = params[:address] 
-       if params[:include_banned]
-         @users = User.where(email: params[:address]) 
-           .where('created_at > (?)', DateTime.new(2015)) # since 2015, whether banned or not
-       else
-         @users = User.where(email: params[:address]) 
-           .where(status: [1, 4]) 
-       end
-     end 
-   else 
-     # unauthorized. instead of return ugly 403, just send somewhere else 
-     redirect_to '/dashboard' 
-   end
-  end
-
-
   def spam
     if logged_in_as(['admin', 'moderator'])
       @nodes = Node.paginate(page: params[:page])
@@ -268,27 +191,6 @@ class Spam2Controller < ApplicationController
     end
   end
 
-  def moderate
-    user = User.find params[:id]
-    if logged_in_as(['admin', 'moderator'])
-      user.moderate
-    else
-      flash[:error] = 'Only moderators can moderate other users.'
-    end
-    redirect_to '/profile/' + user.name + '?_=' + Time.now.to_i.to_s
-  end
-
-  def unmoderate
-    user = User.find params[:id]
-    if logged_in_as(['admin', 'moderator'])
-      user.unmoderate
-      flash[:notice] = 'The user has been unmoderated.'
-    else
-      flash[:error] = 'Only moderators can unmoderate other users.'
-    end
-    redirect_to '/profile/' + user.name + '?_=' + Time.now.to_i.to_s
-  end
-
   def ban
     user = User.find params[:id]
     if logged_in_as(['admin', 'moderator'])
@@ -373,36 +275,24 @@ def batch_delete
       redirect_to '/dashboard'
     end
   end
-  def migrate
-    if logged_in_as(['admin'])
-      du = User.find params[:id]
-      if du.user
-        flash[:error] = 'The user has already been migrated.'
-      else
-        if du.migrate
-          flash[:notice] = 'The user was migrated! Enthusiasm!'
-        else
-          flash[:error] = 'The user could not be migrated.'
-        end
-      end
-    else
-      flash[:error] = 'Only admins can migrate users.'
-    end
-    redirect_to '/profile/' + du.name
-  end
-
-  def queue
+  def batch_ban
     if logged_in_as(['admin', 'moderator'])
-      @notes = Node.where(status: 4)
-                   .paginate(page: params[:page])
-      flash[:warning] = "These are notes requiring moderation. <a href='/wiki/moderation'>Community moderators</a> may approve or reject them."
-      render template: 'notes/index'
+      users = []
+      nodes = 0  
+      params[:ids].split(',').uniq.each do |nid|
+        node = Node.find nid
+        user = node.author
+        user.ban
+        users << user.id
+        nodes += 1
+      end
+      flash[:notice] = users.length.to_s + ' users banned.'
+      redirect_to '/spam2'
     else
-      flash[:error] = 'Only moderators and admins can see the moderation queue.'
+      flash[:error] = 'Only admins can batch moderate.'
       redirect_to '/dashboard'
     end
   end
-
   def smtp_test
     require 'socket'
 
