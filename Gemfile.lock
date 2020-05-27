@@ -330,7 +330,7 @@ GEM
     omniauth-twitter (1.4.0)
       omniauth-oauth (~> 1.1)
       rack
-    openssl (2.1.2)
+    openssl (2.2.0)
     options (2.3.2)
     os (1.1.0)
     paperclip (6.1.0)
@@ -621,7 +621,7 @@ DEPENDENCIES
   omniauth-github (~> 1.4)
   omniauth-google-oauth2
   omniauth-twitter
-  openssl (~> 2.1.2)
+  openssl (~> 2.2.0)
   paperclip (~> 6.1.0)
   passenger
   phantomjs
