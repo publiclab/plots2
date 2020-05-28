@@ -2,12 +2,12 @@ class Spam2Controller < ApplicationController
   before_action :require_user, only: %i(spam spam_revisions mark_comment_spam publish_comment spam_comments)
 
   def _spam
-    if %w(admin moderator)
+    if logged_in_as(['admin', 'moderator'])
       @nodes = Node.paginate(page: params[:page])
       @nodes = if params[:type] == 'wiki'
-                @nodes.where(type: 'page', status: 1)
+                 @nodes.where(type: 'page', status: 1)
                else
-                @nodes.where(status: [0, 4])
+                 @nodes.where(status: [0, 4])
                end
     else
       flash[:error] = 'Only moderators can moderate posts.'
@@ -16,8 +16,9 @@ class Spam2Controller < ApplicationController
   end
 
   def _spam_revisions
-    if %w(admin moderator)
+    if logged_in_as(['admin', 'moderator'])
       @revisions = Revision.paginate(page: params[:page])
+                           .order('timestamp DESC')
                            .where(status: 0)
       render template: 'spam2/_spam'
     else
@@ -27,7 +28,7 @@ class Spam2Controller < ApplicationController
   end
 
   def _spam_comments
-    if %w(admin moderator)
+    if logged_in_as(['admin', 'moderator'])
       @comments = Comment.paginate(page: params[:page])
                        .where(status: 0)
       render template: 'spam2/_spam'
@@ -38,7 +39,7 @@ class Spam2Controller < ApplicationController
   end
 
   def batch_spam
-    if %w(admin moderator)
+    if logged_in_as(['admin', 'moderator'])
       users = []
       nodes = 0
       params[:ids].split(',').uniq.each do |nid|
@@ -58,9 +59,9 @@ class Spam2Controller < ApplicationController
   end
 
   def batch_publish
-    if %w(admin moderator)
-      users = []
+    if logged_in_as(['admin', 'moderator'])
       nodes = 0
+      users = []
       params[:ids].split(',').uniq.each do |nid|
         node = Node.find nid
         node.publish
@@ -78,7 +79,7 @@ class Spam2Controller < ApplicationController
   end
 
   def batch_delete
-    if %w(admin moderator)
+    if logged_in_as(['admin', 'moderator']))
       nodes = 0
       params[:ids].split(',').uniq.each do |nid|
         node = Node.find nid
@@ -94,9 +95,9 @@ class Spam2Controller < ApplicationController
   end
 
   def batch_ban
-    if %w(admin moderator)
-      nodes = 0
-      users = []
+    nodes = 0
+    users = []
+    if logged_in_as(['admin', 'moderator'])
       params[:ids].split(',').uniq.each do |nid|
         node = Node.find nid
         user = node.author
