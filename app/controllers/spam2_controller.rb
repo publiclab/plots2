@@ -79,7 +79,7 @@ class Spam2Controller < ApplicationController
   end
 
   def batch_delete
-    if logged_in_as(['admin', 'moderator']))
+    if logged_in_as(['admin', 'moderator'])
       nodes = 0
       params[:ids].split(',').uniq.each do |nid|
         node = Node.find nid
