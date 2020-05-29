@@ -10,152 +10,149 @@ $(document).ready(function() {
         },
         "info": false,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
         "scrollX": true,
-    });
-// select all button
-    $('#all').click(function () {
+  });
+  // select all button
+  $('#all').click(function () {
     $('.selectedId').prop('checked', !$('.selectedId').prop('checked'));                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
-     var check = ($('.selectedId').filter(":checked").length == $('.selectedId').length);
-        $('#selectall').prop("checked", check);
-    });
-// select all checkbox
-    $('#selectall').click(function () {
-        $('.selectedId').prop('checked', this.checked);
-    });
-    $('.selectedId').change(function () {
-        var check = ($('.selectedId').filter(":checked").length == $('.selectedId').length);
-        $('#selectall').prop("checked", check);
-    });
-    });
+    var check = ($('.selectedId').filter(":checked").length == $('.selectedId').length);
+    $('#selectall').prop("checked", check);
+  });
+  // select all checkbox
+  $('#selectall').click(function () {
+    $('.selectedId').prop('checked', this.checked);
+  });
+  $('.selectedId').change(function () {
+    var check = ($('.selectedId').filter(":checked").length == $('.selectedId').length);
+    $('#selectall').prop("checked", check);
+  });
+});
 // batch_spam
-    $('#batch-spam').bind('click',function(e) {
-        vals = []
-    $('.selectedId').each(function(i,a) { if (a.checked) vals.push(a.value) })
-    window.location = "/spam2/batch_spam/" + vals.join(',')                                                                                                      
-    });
+$('#batch-spam').bind('click',function(e) {
+  vals = []
+  $('.selectedId').each(function(i,a) { if (a.checked) vals.push(a.value) })
+  window.location = "/spam2/batch_spam/" + vals.join(',')                                                                                                      
+});
 // batch publish
-    $('#batch-publish').bind('click',function(e) {
-    vals = []
-    $('.selectedId').each(function(i,a) { if (a.checked) vals.push(a.value) })
-    window.location = "/spam2/batch_publish/" + vals.join(',')
-    });
-    // batch ban
-    $('#batch-ban').bind('click',function(e) {
-    vals = []
-    $('.selectedId').each(function(i,a) { if (a.checked) vals.push(a.value) })
-    window.location = "/spam2/batch_ban/" + vals.join(',')
-    });
+$('#batch-publish').bind('click',function(e) {
+  vals = []
+  $('.selectedId').each(function(i,a) { if (a.checked) vals.push(a.value) })
+  window.location = "/spam2/batch_publish/" + vals.join(',')
+});
+// batch ban
+$('#batch-ban').bind('click',function(e) {
+  vals = []
+  $('.selectedId').each(function(i,a) { if (a.checked) vals.push(a.value) })
+  window.location = "/spam2/batch_ban/" + vals.join(',')
+});
 // batch delete
- $('#delete-batch').bind('click',function(e) {
-     if(confirm("Are you sure you want to delete this?")){
+$('#delete-batch').bind('click',function(e) {
+  if(confirm("Are you sure you want to delete this?")){
     vals = []
     $('.selectedId').each(function(i,a) { if (a.checked) vals.push(a.value) })
     window.location = "/spam2/batch_delete/" + vals.join(',')
-    }
-    else{
-        return false;
-    }
+  }
+  else{
+    return false;
+  }
 });
 </script>
-<div id="layoutSidenav_content">
-      <div class="card">
-        <div class="card-header">
-        </div>
-        <div class="card-body" style="overflow-x:hidden;">
-          <table  id="node_table" class="nowrap table table-hover" style="width:100%; text-align:left">
-            <thead style="text-align:left;">
-              <tr>
-                <th><input type="checkbox"  id="selectall" /></th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Status</th>
-                <th>Time</th>
-                <th>Action</th>                                
-              </tr>       
-            </thead>
-            <tbody> 
-            <% @nodes.each do |node| %>
-              <tr id="n<%= node.id %>">
-                <td><input  class="selectedId" value="<%= node.nid %>" type="checkbox" /></td>
-                <td>
-                <i class="fa fa-file"></i> 
-                <a href="javascript:void(0);" onClick="$('#ninfo<%= node.nid %>').toggle()"><%= node.title.truncate(40) %></a><br />
-                </td>
-                <td >
-                <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a><%= node.author.new_contributor%>
-                </td>
-                <td>
-                <span style="color:grey;"><%= node.type.capitalize %> <span style="color:<% if node.status == 1 %>green;<% elsif node.status == 0 %>red;<% elsif node.status == 4 %>blue;<% end %>"%>(<% if node.status == 1 %>Published<% elsif node.status == 0 %>Spammed<% elsif node.status == 4 %>Unmoderated<% end %>)</span>
-                </td>
-                <td>
-                <%= time_ago_in_words(node.updated_at) %> ago</span>
-                </td>
-                <td style="height:35px !important;">
-                      <a class="badge badge-pill badge<% if node.status != 1 %>-success<% else %>-secondary disabled<% end %> publish" data-remote="true" href="/moderate/publish/<%= node.id %>"><i class="fa fa-check-circle fa-white"></i> Publish post</a>
-                      <a class="badge badge-pill badge<% if node.status != 0 %>-danger<% else %>-secondary disabled<% end %> spam" data-remote="true" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban fa-white"></i> Spam post</a> 
-                      <a class="badge badge-pill badge-secondary btn-lg ban a<%= node.author.id %>" <% if node.author.status == 0 %>style="display:none;"<% end %> data-remote="true" href="/ban/<%= node.author.id %>">Ban user</a>
-                      <a class="badge badge-pill badge-secondary btn-lg unban a-unban<%= node.author.id %>" <% if node.author.status == 1 %>style="display:none;"<% end %> data-remote="true" href="/unban/<%= node.author.id %>">Unban user</a>
-                      <%= link_to "/notes/delete/"+node.id.to_s, data: { confirm: 'Are you sure you want to delete "'+node.path+'"?' }, :remote => true, :class => "px-4 " do %>
-                      <i class="fa fa-trash"></i>
-                      <% end %>
-                       <script>
-                        $('#n<%= node.id %> .delete').bind('ajax:success', function(e){
-                        $('#n<%= node.id %>').fadeOut()
-                        });
 
-                        $('#n<%= node.id %> .publish').bind('ajax:success', function(e){
-                        $('#n<%= node.id %>').hide()
-                        $('#ndel<%= node.id %>').fadeIn(); // published!
-                        $('#ndel<%= node.id %>').fadeOut(); 
-                        });
-
-                        $('#n<%= node.id %> .spam').bind('ajax:success', function(e){
-                        $('#n<%= node.id %>').hide()
-                        $('#nspam<%= node.id %>').fadeIn(); // spammed!
-                        $('#nspam<%= node.id %>').fadeOut();
-                        });  
-
-                        $('.a<%= node.author.id %>.ban').bind('ajax:success', function(e){
-                        $('.a<%= node.author.id %>').hide()
-                        $('.a-unban<%= node.author.id %>').show()
-                        });
-
-                        $('.a-unban<%= node.author.id %>.unban').bind('ajax:success', function(e){
-                        $('.a-unban<%= node.author.id %>').hide()
-                        $('.a<%= node.author.id %>').show()
-                        });
-                      </script>
-                </td>
-              </tr>
-              <tr style="display:none;" id="ndel<%= node.id %>">
+<div class="card" id="table-card">
+  <div class="card-header">
+  </div>
+  <div class="card-body" style="overflow-x:hidden;">
+    <table  id="node_table" class="nowrap table table-hover" style="width:100%; text-align:left">
+      <thead style="text-align:left;">
+        <tr>
+          <th><input type="checkbox"  id="selectall" /></th>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Status</th>
+          <th>Time</th>
+          <th>Action</th>                                
+        </tr>       
+      </thead>
+      <tbody> 
+         <% @nodes.each do |node| %>
+           <tr id="n<%= node.id %>">
+            <td><input  class="selectedId" value="<%= node.nid %>" type="checkbox" /></td>
+            <td>
+              <i class="fa fa-file"></i> 
+              <a href="javascript:void(0);" onClick="$('#ninfo<%= node.nid %>').toggle()"><%= node.title.truncate(40) %></a><br />
+            </td>
+            <td>
+              <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a><%= node.author.new_contributor%>
+             </td>
+            <td>
+             <span style="color:grey;"><%= node.type.capitalize %> <span style="color:<% if node.status == 1 %>green;<% elsif node.status == 0 %>red;<% elsif node.status == 4 %>blue;<% end %>"%>(<% if node.status == 1 %>Published<% elsif node.status == 0 %>Spammed<% elsif node.status == 4 %>Unmoderated<% end %>)</span>
+            </td>
+             <td>
+               <%= time_ago_in_words(node.updated_at) %> ago</span>
+            </td>
+             <td style="height:35px !important;">
+               <a class="badge badge-pill badge<% if node.status != 1 %>-success<% else %>-secondary disabled<% end %> publish" data-remote="true" href="/moderate/publish/<%= node.id %>"><i class="fa fa-check-circle fa-white"></i> Publish post</a>
+               <a class="badge badge-pill badge<% if node.status != 0 %>-danger<% else %>-secondary disabled<% end %> spam" data-remote="true" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban fa-white"></i> Spam post</a> 
+               <a class="badge badge-pill badge-secondary btn-lg ban a<%= node.author.id %>" <% if node.author.status == 0 %>style="display:none;"<% end %> data-remote="true" href="/ban/<%= node.author.id %>">Ban user</a>
+               <a class="badge badge-pill badge-secondary btn-lg unban a-unban<%= node.author.id %>" <% if node.author.status == 1 %>style="display:none;"<% end %> data-remote="true" href="/unban/<%= node.author.id %>">Unban user</a>
+               <%= link_to "/notes/delete/"+node.id.to_s, data: { confirm: 'Are you sure you want to delete "'+node.path+'"?' }, :remote => true, :class => "px-4 " do %>
+                 <i class="fa fa-trash"></i>
+               <% end %>
+          
+               <script>
+                 $('#n<%= node.id %> .delete').bind('ajax:success', function(e){
+                  $('#n<%= node.id %>').fadeOut()
+                });
+                  $('#n<%= node.id %> .publish').bind('ajax:success', function(e){
+                    $('#n<%= node.id %>').hide()
+                    $('#ndel<%= node.id %>').fadeIn(); // published!
+                    $('#ndel<%= node.id %>').fadeOut(); 
+                  });
+                  $('#n<%= node.id %> .spam').bind('ajax:success', function(e){
+                   $('#n<%= node.id %>').hide()
+                   $('#nspam<%= node.id %>').fadeIn(); // spammed!
+                    $('#nspam<%= node.id %>').fadeOut();
+                 });  
+                 $('.a<%= node.author.id %>.ban').bind('ajax:success', function(e){
+                   $('.a<%= node.author.id %>').hide()
+                   $('.a-unban<%= node.author.id %>').show()
+                  });
+                  $('.a-unban<%= node.author.id %>.unban').bind('ajax:success', function(e){
+                    $('.a-unban<%= node.author.id %>').hide()
+                    $('.a<%= node.author.id %>').show()
+                 });
+                </script>
+              </td>
+            </tr>
+            <tr style="display:none;" id="ndel<%= node.id %>">
               <td></td>
               <td>Content <a href='<%= node.path %>'>published</a>.</td>
               <td></td>
               <td></td>
               <td></td>
               <td></td>
-              </tr>
-              <tr style="display:none;" id="nspam<%= node.id %>">
+            </tr>
+            <tr style="display:none;" id="nspam<%= node.id %>">
               <td></td>
               <td>Content <a href='<%= node.path %>'>spammed</a>.</td>
               <td></td>
               <td></td>
               <td></td>
               <td></td>
-              </tr>
-              <tr style="display:none;background:#ddd;" id="ninfo<%= node.id %>">
+            </tr>
+            <tr style="display:none;background:#ddd;" id="ninfo<%= node.id %>">
               <td></td>
               <td><a href="<%= node.path %>"><%= node.title %></a></td>
               <td><%= time_ago_in_words(node.created_at) %> ago</td>
               <td><%= node.body %></td>
               <td></td>
               <td></td>
-              </tr>
-            <% end %>
-            </tbody>
-          </table>                       
-        </div>
-      </div>
-</div>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>                       
+    </div>
+  </div>
+
 
 
 
