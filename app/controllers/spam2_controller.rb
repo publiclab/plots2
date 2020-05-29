@@ -42,11 +42,11 @@ class Spam2Controller < ApplicationController
       node_spamed = 0
       params[:ids].split(',').uniq.each do |nid|
         node = Node.find nid
-        node.spam
         node_spamed += 1
+        node.spam
         user = node.author
-        user.ban
         user_spamed << user.id
+        user.ban
       end
       flash[:notice] = node_spamed.to_s + ' nodes spammed and ' + user_spamed.length.to_s + ' users banned.'
       redirect_to '/spam2'

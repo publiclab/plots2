@@ -64,7 +64,7 @@ $('#delete-batch').bind('click',function(e) {
     <table  id="node_table" class="nowrap table table-hover" style="width:100%; text-align:left">
       <thead style="text-align:left;">
         <tr>
-          <th><input type="checkbox"  id="selectall" /></th>
+          <th><input type="checkbox"  id="selectall"/></th>
           <th>Title</th>
           <th>Author</th>
           <th>Status</th>
@@ -142,9 +142,9 @@ $('#delete-batch').bind('click',function(e) {
             <tr style="display:none;background:#ddd;" id="ninfo<%= node.id %>">
               <td></td>
               <td><a href="<%= node.path %>"><%= node.title %></a></td>
-              <td><%= time_ago_in_words(node.created_at) %> ago</td>
               <td><%= node.body %></td>
               <td></td>
+              <td><%= time_ago_in_words(node.created_at) %> ago</td>
               <td></td>
             </tr>
           <% end %>
