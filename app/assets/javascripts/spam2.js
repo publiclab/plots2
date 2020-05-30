@@ -4,24 +4,17 @@
 //= require datatables/dataTables.bootstrap4
 
 function table_main(id) {
-	// DataTable used in spam2
 	$(id).DataTable({
-		"order": [
-			[1, "asc"]
-		],
-		stateSave: true,
-		"lengthMenu": [
-			[30, -1, 0],
-			["Auto", "All", "None"]
-		],
+		"order": [[1, "desc"]],
+		"stateSave": true,
+		"lengthMenu": [[30, -1, 0], ["Auto", "All", "None"]],
 		"autoWidth": false,
 		"search": {
 			"regex": true
 		},
 		"info": false,
-		"scrollX": true,
+		"scrollX": true
 	});
-	// select all checkbox
 	$('#selectall').click(function () {
 		$('.selectedId').prop('checked', this.checked);
 	});
@@ -29,65 +22,52 @@ function table_main(id) {
 		var check = ($('.selectedId').filter(":checked").length == $('.selectedId').length);
 		$('#selectall').prop("checked", check);
 	});
-	// batch spam and alert if no item is selected
-	$('#batch-spam').bind('click', function (e) {
-		vals = []
-		$('.selectedId').each(function (i, a) {
-			if (a.checked) vals.push(a.value)
-		})
-		if (vals.length == 0) {
-			alert("You have selected nothing, Please select something")
-		} else {
-			window.location = "/spam2/batch_spam/" + vals.join(',')
-		}
-	});
 }
 
-function bulk_nav() {
-	// select all button
-	$('#all').click(function () {
+function select_all(id) {
+	$(id).click(function () {
 		$('.selectedId').prop('checked', !$('.selectedId').prop('checked'));
 		var check = ($('.selectedId').filter(":checked").length == $('.selectedId').length);
 		$('#selectall').prop("checked", check);
 	});
-	// batch publish and alert if no item is selected
-	$('#batch-publish').bind('click', function (e) {
+}
+
+function batch_spam(id) {
+	$(id).bind('click', function (e) {
 		vals = []
 		$('.selectedId').each(function (i, a) {
 			if (a.checked) vals.push(a.value)
 		})
-		if (vals.length == 0) {
-			alert("You have selected nothing, Please select something")
-		} else {
-			window.location = "/spam2/batch_publish/" + vals.join(',')
-		}
+		window.location = "/spam2/batch_spam/" + vals.join(',')
 	});
-	// batch ban and alert if no item is selected
-	$('#batch-ban').bind('click', function (e) {
+}
+
+function batch_publish(id) {
+	$(id).bind('click', function (e) {
 		vals = []
 		$('.selectedId').each(function (i, a) {
 			if (a.checked) vals.push(a.value)
 		})
-		if (vals.length == 0) {
-			alert("You have selected nothing, Please select something")
-		} else {
-			window.location = "/spam2/batch_ban/" + vals.join(',')
-		}
+		window.location = "/spam2/batch_publish/" + vals.join(',')
 	});
-	// batch delete and alert if no item is selected
-	$('#delete-batch').bind('click', function (e) {
+}
+
+function batch_ban(id) {
+	$(id).bind('click', function (e) {
 		vals = []
 		$('.selectedId').each(function (i, a) {
 			if (a.checked) vals.push(a.value)
 		})
-		if (vals.length == 0) {
-			alert("You have selected nothing, Please select something")
-		} else {
-			if (confirm("Are you sure you want to delete this?")) {
-				window.location = "/spam2/batch_delete/" + vals.join(',')
-			} else {
-				return false;
-			}
-		}
+		window.location = "/spam2/batch_ban/" + vals.join(',')
+	});
+}
+
+function batch_delete(id) {
+	$(id).bind('click', function (e) {
+		vals = []
+		$('.selectedId').each(function (i, a) {
+			if (a.checked) vals.push(a.value)
+		})
+		window.location = "/spam2/batch_delete/" + vals.join(',')
 	});
 }
