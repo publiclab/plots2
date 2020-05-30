@@ -19,7 +19,7 @@ function table_main(id) {
 		$('.selectedId').prop('checked', this.checked);
 	});
 	$('.selectedId').change(function () {
-		var check = ($('.selectedId').filter(":checked").length == $('.selectedId').length);
+		var check = ($('.selectedId').filter(":checked").length === $('.selectedId').length);
 		$('#selectall').prop("checked", check);
 	});
 }
