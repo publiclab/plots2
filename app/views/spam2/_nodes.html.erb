@@ -1,13 +1,40 @@
 <script>
 $(document).ready(function () {
   table_main("#node_table");
-  select_all("#all");
-  batch_delete("#delete-batch");
-  batch_spam("#batch-spam");
-  batch_publish("#batch-publish");
-  batch_ban("#batch-ban");
+	$("#all").click(function () {   //select all button
+		$('.selectedId').prop('checked', !$('.selectedId').prop('checked'));
+		var check = ($('.selectedId').filter(":checked").length == $('.selectedId').length);
+		$('#selectall').prop("checked", check);
+	});
+	$("#batch-spam").bind('click', function (e) {  //batch spam
+		vals = []
+		$('.selectedId').each(function (i, a) {
+			if (a.checked) vals.push(a.value)
+		})
+		window.location = "/spam2/batch_spam/" + vals.join(',')
+	});
+	$("batch-publish").bind('click', function (e) { //batch publish
+		vals = []
+		$('.selectedId').each(function (i, a) {
+			if (a.checked) vals.push(a.value)
+		})
+		window.location = "/spam2/batch_publish/" + vals.join(',')
+	});
+	$("#batch-ban").bind('click', function (e) {   //batch ban
+		vals = []
+		$('.selectedId').each(function (i, a) {
+			if (a.checked) vals.push(a.value)
+		})
+		window.location = "/spam2/batch_ban/" + vals.join(',')
+	});
+	$("#delete-batch").bind('click', function (e) {  // batch delete
+		vals = []
+		$('.selectedId').each(function (i, a) {
+			if (a.checked) vals.push(a.value)
+		})
+		window.location = "/spam2/batch_delete/" + vals.join(',')
+	});
 });
-
 </script>
 <div class="card" id="table-card">
   <div class="card-header"></div>
