@@ -1,18 +1,20 @@
 <script>
-$(document).ready(function() {
-  $("#comment_table").DataTable({
+  $(document).ready(function() {
+    $("#comment_table").DataTable({
+      //Datatable specifications
       "order": [[ 1, "desc" ]],
-      stateSave: true,
+      "stateSave": true,
       "lengthMenu": [[30, -1, 0], ["Auto", "All", "None"]],
-       "autoWidth": false,
-       "search": {
-          "regex": true
+      "autoWidth": false,
+      "search": {
+        "regex": true
         },
         "info": false,
         "scrollX": true,
     });
     $('#selectall').click(function () {
-        $('.selectedId').prop('checked', this.checked);
+      //select all checkbox
+      $('.selectedId').prop('checked', this.checked);
     });
     $('.selectedId').change(function () {
         var check = ($('.selectedId').filter(":checked").length == $('.selectedId').length);
@@ -20,8 +22,6 @@ $(document).ready(function() {
     });
     });
 </script>
-
-
 <div class="card" id="table-card">
   <div class="card-header">
   </div>

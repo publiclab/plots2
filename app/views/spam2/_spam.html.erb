@@ -1,17 +1,16 @@
 <script>
-$(document).ready(function() {
-$("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("active");
-});
-$(".collapsed").click(function() {
-        $("#wrapper").toggleClass("active");
-});
-});
+  $(document).ready(function() {
+    //sidenav toggle
+    $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("active");
+    });
+    $(".collapsed").click(function() {
+      $("#wrapper").toggleClass("active");
+    });
+  });
 </script>
-
 <%= stylesheet_link_tag "spam2" %>
-
 <nav class="navbar navbar-expand navbar-light nav_top bg-light">
   <div class="navbar-expand navbar-nav-scroll">
     <ul class=" navbar-nav"> 
@@ -93,7 +92,7 @@ $(".collapsed").click(function() {
       </div>
     </div>   
   </nav>
-
+  
   <div id="page-content-wrapper">
     <div class="card text-center" id="card-top">
       <div class="card-header bg-light"></div>

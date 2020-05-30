@@ -1,5 +1,6 @@
 <script>
 $(document).ready(function() {
+  // DataTable
   $("#node_table").DataTable({
       "order": [[ 1, "desc" ]],
       stateSave: true,
@@ -26,40 +27,56 @@ $(document).ready(function() {
     $('#selectall').prop("checked", check);
   });
 });
-// batch_spam
+// batch spam and alert if no item is selected
 $('#batch-spam').bind('click',function(e) {
   vals = []
   $('.selectedId').each(function(i,a) { if (a.checked) vals.push(a.value) })
-  window.location = "/spam2/batch_spam/" + vals.join(',')                                                                                                      
+      if (vals.length == 0){
+        alert("You have selected nothing, Please select something")
+      }
+    else{
+      window.location = "/spam2/batch_spam/" + vals.join(',')
+    }                                                                                                   
 });
-// batch publish
+// batch publish and alert if no item is selected
 $('#batch-publish').bind('click',function(e) {
   vals = []
   $('.selectedId').each(function(i,a) { if (a.checked) vals.push(a.value) })
-  window.location = "/spam2/batch_publish/" + vals.join(',')
+    if (vals.length == 0){
+      alert("You have selected nothing, Please select something")     
+    }
+    else{
+      window.location = "/spam2/batch_publish/" + vals.join(',')
+    }
 });
-// batch ban
+// batch ban and alert if no item is selected
 $('#batch-ban').bind('click',function(e) {
   vals = []
   $('.selectedId').each(function(i,a) { if (a.checked) vals.push(a.value) })
-  window.location = "/spam2/batch_ban/" + vals.join(',')
+      if (vals.length == 0){
+      alert("You have selected nothing, Please select something")     
+    }
+    else{
+      window.location = "/spam2/batch_ban/" + vals.join(',')
+    }
 });
-// batch delete
+// batch delete and alert if no item is selected
 $('#delete-batch').bind('click',function(e) {
-  if(confirm("Are you sure you want to delete this?")){
     vals = []
     $('.selectedId').each(function(i,a) { if (a.checked) vals.push(a.value) })
-    window.location = "/spam2/batch_delete/" + vals.join(',')
-  }
-  else{
-    return false;
-  }
+    if (vals.length == 0){
+      alert("You have selected nothing, Please select something")        
+    }
+    else{
+        if(confirm("Are you sure you want to delete this?")){
+          window.location = "/spam2/batch_delete/" + vals.join(',')}
+        else{return false;}
+    }
 });
 </script>
 
 <div class="card" id="table-card">
-  <div class="card-header">
-  </div>
+  <div class="card-header"></div>
   <div class="card-body" style="overflow-x:hidden;">
     <table  id="node_table" class="nowrap table table-hover" style="width:100%; text-align:left">
       <thead style="text-align:left;">
@@ -73,8 +90,8 @@ $('#delete-batch').bind('click',function(e) {
         </tr>       
       </thead>
       <tbody> 
-         <% @nodes.each do |node| %>
-           <tr id="n<%= node.id %>">
+        <% @nodes.each do |node| %>
+          <tr id="n<%= node.id %>">
             <td><input  class="selectedId" value="<%= node.nid %>" type="checkbox" /></td>
             <td>
               <i class="fa fa-file"></i> 
@@ -97,29 +114,28 @@ $('#delete-batch').bind('click',function(e) {
                <%= link_to "/notes/delete/"+node.id.to_s, data: { confirm: 'Are you sure you want to delete "'+node.path+'"?' }, :remote => true, :class => "px-4 " do %>
                  <i class="fa fa-trash"></i>
                <% end %>
-          
                <script>
-                 $('#n<%= node.id %> .delete').bind('ajax:success', function(e){
+                $('#n<%= node.id %> .delete').bind('ajax:success', function(e){
                   $('#n<%= node.id %>').fadeOut()
                 });
-                  $('#n<%= node.id %> .publish').bind('ajax:success', function(e){
-                    $('#n<%= node.id %>').hide()
-                    $('#ndel<%= node.id %>').fadeIn(); // published!
-                    $('#ndel<%= node.id %>').fadeOut(); 
-                  });
-                  $('#n<%= node.id %> .spam').bind('ajax:success', function(e){
-                   $('#n<%= node.id %>').hide()
-                   $('#nspam<%= node.id %>').fadeIn(); // spammed!
-                    $('#nspam<%= node.id %>').fadeOut();
-                 });  
-                 $('.a<%= node.author.id %>.ban').bind('ajax:success', function(e){
-                   $('.a<%= node.author.id %>').hide()
-                   $('.a-unban<%= node.author.id %>').show()
-                  });
-                  $('.a-unban<%= node.author.id %>.unban').bind('ajax:success', function(e){
-                    $('.a-unban<%= node.author.id %>').hide()
-                    $('.a<%= node.author.id %>').show()
-                 });
+                $('#n<%= node.id %> .publish').bind('ajax:success', function(e){
+                  $('#n<%= node.id %>').hide()
+                  $('#ndel<%= node.id %>').fadeIn(); // published!
+                  $('#ndel<%= node.id %>').fadeOut(); 
+                });
+                $('#n<%= node.id %> .spam').bind('ajax:success', function(e){
+                  $('#n<%= node.id %>').hide()
+                  $('#nspam<%= node.id %>').fadeIn(); // spammed!
+                  $('#nspam<%= node.id %>').fadeOut();
+                });  
+                $('.a<%= node.author.id %>.ban').bind('ajax:success', function(e){
+                  $('.a<%= node.author.id %>').hide()  // ban toggsle
+                  $('.a-unban<%= node.author.id %>').show()
+                });
+                $('.a-unban<%= node.author.id %>.unban').bind('ajax:success', function(e){
+                  $('.a-unban<%= node.author.id %>').hide()
+                  $('.a<%= node.author.id %>').show()
+                });
                 </script>
               </td>
             </tr>
