@@ -69,7 +69,7 @@ class Spam2Controller < ApplicationController
         user_published << user.id
       end
       flash[:notice] = node_published.to_s + ' nodes published and ' + user_published.length.to_s + ' users unbanned.'
-      redirect_to '/spam2/wiki'
+      redirect_back fallback_location: root_path
     else
       flash[:error] = 'Only admins and moderators can batch publish.'
       redirect_to '/dashboard'
@@ -85,7 +85,7 @@ class Spam2Controller < ApplicationController
         node.delete
       end
       flash[:notice] = node_delete.to_s + ' nodes deleted'
-      redirect_to '/spam2/'
+      redirect_back fallback_location: root_path
     else
       flash[:error] = 'Only admins and moderators can batch delete.'
       redirect_to '/dashboard'
@@ -104,7 +104,7 @@ class Spam2Controller < ApplicationController
         node_ban += 1
       end
       flash[:notice] = user_ban.length.to_s + ' users banned.'
-      redirect_to '/spam2'
+      redirect_back fallback_location: root_path
     else
       flash[:error] = 'Only admins and moderators can ban users.'
       redirect_to '/dashboard'

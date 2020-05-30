@@ -1,24 +1,7 @@
 <script>
-$(document).ready(function() {
-  $("#revision_table").DataTable({
-      "order": [[ 1, "desc" ]],
-      stateSave: true,
-      "lengthMenu": [[30, -1, 0], ["Auto", "All", "None"]],
-       "autoWidth": false,
-       "search": {
-          "regex": true
-        },
-        "info": false,
-        "scrollX": true,
-    });
-    $('#selectall').click(function () {
-        $('.selectedId').prop('checked', this.checked);
-    });
-    $('.selectedId').change(function () {
-        var check = ($('.selectedId').filter(":checked").length == $('.selectedId').length);
-        $('#selectall').prop("checked", check);
-    });
-    });
+$(document).ready(function () {
+	table_main("#revision_table");
+});
 </script>
 
 <div class="card" id="table-card">

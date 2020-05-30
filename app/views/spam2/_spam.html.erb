@@ -1,16 +1,15 @@
 <script>
-  $(document).ready(function() {
-    //sidenav toggle
-    $("#menu-toggle").click(function(e) {
-      e.preventDefault();
-      $("#wrapper").toggleClass("active");
-    });
-    $(".collapsed").click(function() {
-      $("#wrapper").toggleClass("active");
-    });
+$(document).ready(function () {
+	//sidenav toggle
+	$("#menu-toggle").click(function (e) {
+		e.preventDefault();
+		$("#wrapper").toggleClass("active");
+	});
+	$(".collapsed").click(function () {
+		$("#wrapper").toggleClass("active");
   });
+});
 </script>
-<%= stylesheet_link_tag "spam2" %>
 <nav class="navbar navbar-expand navbar-light nav_top bg-light">
   <div class="navbar-expand navbar-nav-scroll">
     <ul class=" navbar-nav"> 
@@ -63,30 +62,30 @@
           Menu
         </div>
         <a class="nav-link" style="color:grey;">
-          <div class="nav-link-icon mx-1 "><i class="fa fa-tachometer text-info"></i></div>
+          <div class="nav-link-icon mx-1 "><i class="fa fa-tachometer text-primary"></i></div>
           Dashboard
         </a>
         <div class="sidenav-menu-heading text-secondary font-weight-bold">
           Spam Moderation
         </div>
         <a class="nav-link  <% unless params[:type] && params[:action] == "_spam_revisions" %> active <% end %>" href="/spam2">
-          <div class="nav-link-icon mx-1 <% unless params[:type] && params[:action] == "_spam_revisions" %> active <% end %>"><i class="fa fa-address-book text-info"></i></div>
+          <div class="nav-link-icon mx-1 <% unless params[:type] && params[:action] == "_spam_revisions" %> active <% end %>"><i class="fa fa-address-book text-primary"></i></div>
           Bulk Moderation
         </a>
         <a class="nav-link  <% if params[:type] == "wiki" %> active <% end %>" href="/spam2/wiki" >
-          <div class="nav-link-icon mx-1  <% if params[:type] == "wiki" %> active <% end %>"><i class="fa fa-book text-info"></i></div>
+          <div class="nav-link-icon mx-1  <% if params[:type] == "wiki" %> active <% end %>"><i class="fa fa-book text-primary"></i></div>
           Wiki
         </a> 
         <a class="nav-link <% if params[:action] == "_spam_revisions" %> active <% end %>" href="/spam2/revisions">
-          <div class="nav-link-icon mx-1  <% if params[:action] == "_spam_revisions" %> active <% end %>"><i class="fa fa-list text-info"></i></div>
+          <div class="nav-link-icon mx-1  <% if params[:action] == "_spam_revisions" %> active <% end %>"><i class="fa fa-list text-primary"></i></div>
           Revisions 
         </a>         
         <a class="nav-link  <% if params[:action] == "_spam_comments" %> active <% end %>" href="/spam2/comments" >
-          <div class="nav-link-icon mx-1  <% if params[:action] == "_spam_comments" %> active <% end %>"><i class="fa fa-comment text-info"></i></div>
+          <div class="nav-link-icon mx-1  <% if params[:action] == "_spam_comments" %> active <% end %>"><i class="fa fa-comment text-primary"></i></div>
           Comments
         </a>        
         <a class="nav-link" href="/people" >
-          <div class="nav-link-icon mx-1 "><i class="fa fa-user text-info"></i></div>
+          <div class="nav-link-icon mx-1 "><i class="fa fa-user text-primary"></i></div>
           Active Users 
         </a>  
       </div>
@@ -98,7 +97,7 @@
       <div class="card-header bg-light"></div>
       <div class="card-body">
         <h5 class="card-title">Moderate Potential Spam</h5>
-        <p class="card-text">Moderators and admins have the ability to "spam" posts if they include inappropriate content, blatant advertising, or are otherwise problematic. If you're not sure, email at <a href="mailto:organizers@<%= request.host %>" class="badge badge-info text-white">moderators@<%= request.host %></a> If we all work together, we can keep spam to a minimum. Thanks for helping out!</p>
+        <p class="card-text">Moderators and admins have the ability to "spam" posts if they include inappropriate content, blatant advertising, or are otherwise problematic. If you're not sure, email at <a href="mailto:organizers@<%= request.host %>" class="badge badge-primary text-white">moderators@<%= request.host %></a> If we all work together, we can keep spam to a minimum. Thanks for helping out!</p>
       </div>
     </div>
     <%= render partial: 'spam2/nodes' if @nodes %>
