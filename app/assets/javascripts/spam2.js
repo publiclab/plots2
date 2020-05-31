@@ -23,7 +23,7 @@ function table_main(id) {
 	$('.selectedId').change(function () {
 		var check = ($('.selectedId').filter(":checked").length === $('.selectedId').length);
 		$('#select-count').text($('.selectedId').filter(":checked").length);
-		$('#selectall').prop("checked", check);;
+		$('#selectall').prop("checked", check);
 	});
 	return table;
 }

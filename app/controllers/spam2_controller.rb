@@ -10,7 +10,7 @@ class Spam2Controller < ApplicationController
                  @nodes.where(status: [0, 4])
                end
       @spam_count = @nodes.where(status: 0).length.to_s
-      @unmoderated_count = @nodes.where(status: 4).length.to_s 
+      @unmoderated_count = @nodes.where(status: 4).length.to_s
     else
       flash[:error] = 'Only moderators can moderate posts.'
       redirect_to '/dashboard'
