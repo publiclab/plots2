@@ -9,6 +9,8 @@ class Spam2Controller < ApplicationController
                else
                  @nodes.where(status: [0, 4])
                end
+      @spam_count = @nodes.where(status: 0).length.to_s
+      @unmoderated_count = @nodes.where(status: 4).length.to_s 
     else
       flash[:error] = 'Only moderators can moderate posts.'
       redirect_to '/dashboard'
@@ -107,6 +109,23 @@ class Spam2Controller < ApplicationController
       redirect_back fallback_location: root_path
     else
       flash[:error] = 'Only admins and moderators can ban users.'
+      redirect_to '/dashboard'
+    end
+  end
+
+  def batch_unban
+    if logged_in_as(%w(moderator admin))
+      users_unban = []
+      params[:ids].split(',').uniq.each do |nid|
+        node = Node.find nid
+        user = node.author
+        user.unban
+        users_unban << user.id
+      end
+      flash[:notice] = users_unban.length.to_s + ' users unbanned.'
+      redirect_back fallback_location: root_path
+    else
+      flash[:error] = 'Only admins and moderators can unban users.'
       redirect_to '/dashboard'
     end
   end

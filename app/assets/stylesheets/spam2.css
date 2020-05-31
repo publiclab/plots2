@@ -63,6 +63,12 @@
 	font-weight: bold;
 }
 
+#batch-unban:hover {
+	border-bottom: 2px solid green;
+	color: grey;
+	font-weight: bold;
+}
+
 .alert {
 	z-index: 6;
 }

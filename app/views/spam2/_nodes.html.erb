@@ -1,43 +1,71 @@
 <script>
 $(document).ready(function () {
-  table_main("#node_table");
-	$("#all").click(function () {   //select all button
+	var table = table_main("#node_table");
+	$("#all").click(function () { //select all button
 		$('.selectedId').prop('checked', !$('.selectedId').prop('checked'));
 		var check = ($('.selectedId').filter(":checked").length == $('.selectedId').length);
+		$('#select-count').text($('.selectedId').filter(":checked").length);
 		$('#selectall').prop("checked", check);
 	});
-	$("#batch-spam").bind('click', function (e) {  //batch spam
+
+	function batch_nav(bulk) {
 		vals = []
 		$('.selectedId').each(function (i, a) {
 			if (a.checked) vals.push(a.value)
 		})
-		window.location = "/spam2/batch_spam/" + vals.join(',')
+		window.location = "/spam2/" + bulk + "/" + vals.join(',')
+	}
+	$("#batch-spam").bind('click', function (e) { //batch spam
+		batch_nav("batch_spam");
 	});
-	$("batch-publish").bind('click', function (e) { //batch publish
-		vals = []
-		$('.selectedId').each(function (i, a) {
-			if (a.checked) vals.push(a.value)
-		})
-		window.location = "/spam2/batch_publish/" + vals.join(',')
+	$("#batch-publish").bind('click', function (e) { //batch publish
+		batch_nav("batch_publish");
 	});
-	$("#batch-ban").bind('click', function (e) {   //batch ban
-		vals = []
-		$('.selectedId').each(function (i, a) {
-			if (a.checked) vals.push(a.value)
-		})
-		window.location = "/spam2/batch_ban/" + vals.join(',')
+	$("#batch-ban").bind('click', function (e) { //batch ban
+		batch_nav("batch_ban");
 	});
-	$("#delete-batch").bind('click', function (e) {  // batch delete
-		vals = []
-		$('.selectedId').each(function (i, a) {
-			if (a.checked) vals.push(a.value)
-		})
-		window.location = "/spam2/batch_delete/" + vals.join(',')
+	$("#batch-unban").bind('click', function (e) { //batch ban
+		batch_nav("batch_unban");
+	});
+	$("#delete-batch").bind('click', function (e) { // batch delete
+		batch_nav("batch_delete");
+	});
+	$('#reset').on('click', function () {
+		table.search('').columns().search('').draw();
+		table.search('').columns().order('').draw();
+
+	});
+	$('#spammed').on('click', function () {
+		table.search('').columns().search('').draw();
+		table.columns(3).search("Spammed").draw();
+
+
+	});
+	$('#unmoderated').on('click', function () {
+		table.search('').columns().search('').draw();
+		table.columns(3).search("unmoderated").draw();
 	});
 });
 </script>
 <div class="card" id="table-card">
-  <div class="card-header"></div>
+  <div class="bg-light  navbar navbar-expand">
+    <ul class="nav navbar-expand  navbar-nav-scroll">
+      <li class="nav-item">
+        <a class="btn nav-link small  text-dark">Selected <span id="select-count" class="badge badge-dark">0</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="btn nav-link small  text-dark"id="reset">Reset all</a>
+      </li>
+      <% if params[:type] != "wiki" %>  
+      <li class="nav-item">
+        <a class="btn nav-link small   text-dark" id="spammed">Spammed <span class="badge badge-dark"><%= @spam_count %></span></a>
+      </li>
+      <li class="nav-item">
+        <a class="btn nav-link  text-dark" id="unmoderated">Unmoderate <span class="badge badge-dark"><%= @unmoderated_count %></span></a>
+      </li>
+      <% end %>
+    </ul>
+  </div>
   <div class="card-body" style="overflow-x:hidden;">
     <table  id="node_table" class="nowrap table table-hover" style="width:100%; text-align:left">
       <thead style="text-align:left;">
@@ -68,10 +96,10 @@ $(document).ready(function () {
                <%= time_ago_in_words(node.updated_at) %> ago</span>
             </td>
              <td style="height:35px !important;">
-               <a class="badge badge-pill badge<% if node.status != 1 %>-success<% else %>-secondary disabled<% end %> publish" data-remote="true" href="/moderate/publish/<%= node.id %>"><i class="fa fa-check-circle fa-white"></i> Publish post</a>
-               <a class="badge badge-pill badge<% if node.status != 0 %>-danger<% else %>-secondary disabled<% end %> spam" data-remote="true" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban fa-white"></i> Spam post</a> 
-               <a class="badge badge-pill badge-secondary btn-lg ban a<%= node.author.id %>" <% if node.author.status == 0 %>style="display:none;"<% end %> data-remote="true" href="/ban/<%= node.author.id %>">Ban user</a>
-               <a class="badge badge-pill badge-secondary btn-lg unban a-unban<%= node.author.id %>" <% if node.author.status == 1 %>style="display:none;"<% end %> data-remote="true" href="/unban/<%= node.author.id %>">Unban user</a>
+               <a class="badge btn badge-pill badge<% if node.status != 1 %>-success<% else %>-secondary<% end %> publish" data-remote="true" href="/moderate/publish/<%= node.id %>" ><i class="fa fa-check-circle fa-white"></i> Publish post</a>
+               <a class="badge btn badge-pill badge<% if node.status != 0 %>-danger<% else %>-secondary disabled<% end %> spam" data-remote="true" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban fa-white"></i> Spam post</a> 
+               <a class="badge badge-pill badge-secondary ban a<%= node.author.id %>" <% if node.author.status == 0 %>style="display:none;"<% end %> data-remote="true" href="/ban/<%= node.author.id %>">Ban user</a>
+               <a class="badge badge-pill badge-secondary unban a-unban<%= node.author.id %>" <% if node.author.status == 1 %>style="display:none;"<% end %> data-remote="true" href="/unban/<%= node.author.id %>">Unban user</a>
                <%= link_to "/notes/delete/"+node.id.to_s, data: { confirm: 'Are you sure you want to delete "'+node.path+'"?' }, :remote => true, :class => "px-4 " do %>
                  <i class="fa fa-trash"></i>
                <% end %>
@@ -82,7 +110,7 @@ $(document).ready(function () {
                 $('#n<%= node.id %> .publish').bind('ajax:success', function(e){
                   $('#n<%= node.id %>').hide()
                   $('#ndel<%= node.id %>').fadeIn(); // published!
-                  $('#ndel<%= node.id %>').fadeOut(); 
+                  $('#ndel<%= node.id %>').fadeOut();
                 });
                 $('#n<%= node.id %> .spam').bind('ajax:success', function(e){
                   $('#n<%= node.id %>').hide()
@@ -90,7 +118,7 @@ $(document).ready(function () {
                   $('#nspam<%= node.id %>').fadeOut();
                 });  
                 $('.a<%= node.author.id %>.ban').bind('ajax:success', function(e){
-                  $('.a<%= node.author.id %>').hide()  // ban toggsle
+                  $('.a<%= node.author.id %>').hide()  // ban toggle
                   $('.a-unban<%= node.author.id %>').show()
                 });
                 $('.a-unban<%= node.author.id %>.unban').bind('ajax:success', function(e){
