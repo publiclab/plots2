@@ -7,18 +7,16 @@ $(document).ready(function () {
 		$('#select-count').text($('.selectedId').filter(":checked").length);
 		$('#selectall').prop("checked", check);
 	});
-
 	function batch_nav(bulk) {
 		vals = []
 		$('.selectedId').each(function (i, a) {
 			if (a.checked) vals.push(a.value)
-    })
-    if (vals.length == 0){
-      alert("You have not selected anything");
-    }
-    else {
-    window.location = "/spam2/" + bulk + "/" + vals.join(',');
-    }
+		})
+		if (vals.length == 0) {
+			alert("You have not selected anything");
+		} else {
+			window.location = "/spam2/" + bulk + "/" + vals.join(',');
+		}
 	}
 	$("#batch-spam").bind('click', function (e) { //batch spam
 		batch_nav("batch_spam");
@@ -38,23 +36,20 @@ $(document).ready(function () {
 	$('#reset').on('click', function () {
 		table.search('').columns().search('').draw();
 		table.search('').columns().order('').draw();
-
 	});
 	$('#spammed').on('click', function () {
 		table.search('').columns().search('').draw();
 		table.columns(3).search("Spammed").draw();
-
-
 	});
 	$('#unmoderated').on('click', function () {
 		table.search('').columns().search('').draw();
 		table.columns(3).search("unmoderated").draw();
-  });
-  	$('#page').on('click', function () {
+	});
+	$('#page').on('click', function () {
 		table.search('').columns().search('').draw();
 		table.columns(3).search("Page").draw();
 	});
-  	$('#note').on('click', function () {
+	$('#note').on('click', function () {
 		table.search('').columns().search('').draw();
 		table.columns(3).search("Note").draw();
 	});
@@ -176,8 +171,3 @@ $(document).ready(function () {
       </table>                       
     </div>
   </div>
-
-
-
-
-                      

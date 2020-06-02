@@ -1,7 +1,6 @@
 require 'sidekiq/web'
 
 Plots2::Application.routes.draw do
-
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
   mount JasmineFixtureServer => '/spec/javascripts/fixtures' if defined?(Jasmine::Jquery::Rails::Engine)
 
