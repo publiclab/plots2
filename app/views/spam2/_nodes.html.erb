@@ -52,6 +52,20 @@ $(document).ready(function () {
 	$('#note').on('click', function () {
 		table.search('').columns().search('').draw();
 		table.columns(3).search("Note").draw();
+  });
+  $("#extSelect").change(function(e){
+		table.columns().visible(true);
+		if (this.value === '1') {
+			table.column(1).visible(false);
+		} else if (this.value === '2') {
+			table.column(2).visible(false);
+		} else if (this.value === '3') {
+			table.columns(3).visible(false);
+		} else if (this.value === '4') {
+			table.columns(4).visible(false);
+		} else if (this.value === '5') {
+			table.columns(5).visible(false);
+		}
 	});
 });
 </script>
@@ -76,6 +90,16 @@ $(document).ready(function () {
       </li>
       <li class="nav-item">
         <a class="btn nav-link  text-dark" id="note">Note <span class="badge badge-dark"><%= @note_count %></span></a>
+      </li>   
+      <li class="nav-item pt-2">
+      <select name="Visible" id="extSelect" class="custom-select custom-select-sm form-control form-control-sm">
+      <option value="">Hide(Reset)</option>
+      <option value="1">Title</option>
+      <option value="2">Author</option>
+      <option value="3">Status</option>
+      <option value="4">Time</option>
+      <option value="5">Action</option>
+      </select> 
       </li>
       <% end %>
     </ul>
@@ -98,9 +122,9 @@ $(document).ready(function () {
             <td><input  class="selectedId" value="<%= node.nid %>" type="checkbox" /></td>
             <td>
               <i class="fa fa-file"></i> 
-              <a href="javascript:void(0);" onClick="$('#ninfo<%= node.nid %>').toggle()"><%= node.title.truncate(40) %></a><br />
+              <a href="javascript:void(0);" data-toggle="modal" data-target="#ninfo<%= node.id %>"><%= node.title.truncate(28) %></a><br />
             </td>
-            <td>
+            <td>  
               <a href="/profile/<%= node.author.name %>"><%= node.author.name %> <%= node.author.new_contributor%></a>
              </td>
             <td>
@@ -114,7 +138,7 @@ $(document).ready(function () {
                <a class="badge btn badge-pill badge<% if node.status != 0 %>-danger<% else %>-secondary disabled<% end %> spam" data-remote="true" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban fa-white"></i> Spam post</a> 
                <a class="badge badge-pill badge-secondary ban a<%= node.author.id %>" <% if node.author.status == 0 %>style="display:none;"<% end %> data-remote="true" href="/ban/<%= node.author.id %>">Ban user</a>
                <a class="badge badge-pill badge-secondary unban a-unban<%= node.author.id %>" <% if node.author.status == 1 %>style="display:none;"<% end %> data-remote="true" href="/unban/<%= node.author.id %>">Unban user</a>
-               <%= link_to "/notes/delete/"+node.id.to_s, data: { confirm: 'Are you sure you want to delete "'+node.path+'"?' }, :remote => true, :class => "px-4 " do %>
+               <%= link_to "/notes/delete/"+node.id.to_s, data: { confirm: 'Are you sure you want to delete "'+node.path+'"?' }, :remote => true, :class => "px-3 " do %>
                  <i class="fa fa-trash"></i>
                <% end %>
                <script>
@@ -158,14 +182,24 @@ $(document).ready(function () {
               <td></td>
               <td></td>
             </tr>
-            <tr style="display:none;background:#ddd;" id="ninfo<%= node.id %>">
-              <td></td>
-              <td><a href="<%= node.path %>"><%= node.title %></a></td>
-              <td><%= node.body %></td>
-              <td></td>
-              <td><%= time_ago_in_words(node.created_at) %> ago</td>
-              <td></td>
-            </tr>
+            <div class="modal fade" id="ninfo<%= node.id %>"> 
+              <div class="modal-dialog" >
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title"><a href="<%= node.path %>"><%= node.title %></a></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span>&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <%= node.body %>
+                  </div>
+                  <div class="modal-footer">
+                    <%= time_ago_in_words(node.created_at) %> ago
+                  </div>
+                </div>
+              </div>
+            </div>
           <% end %>
         </tbody>
       </table>                       
