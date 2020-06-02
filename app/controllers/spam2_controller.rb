@@ -73,7 +73,7 @@ class Spam2Controller < ApplicationController
         user_published << user.id
       end
       flash[:notice] = node_published.to_s + ' nodes published and ' + user_published.length.to_s + ' users unbanned.'
-      redirect_back fallback_location: root_path
+      redirect_to '/spam2'
     else
       flash[:error] = 'Only admins and moderators can batch publish.'
       redirect_to '/dashboard'
