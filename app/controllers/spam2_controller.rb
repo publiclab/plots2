@@ -3,7 +3,7 @@ class Spam2Controller < ApplicationController
 
   def _spam
     if logged_in_as(%w(moderator admin))
-      @nodes = Node.paginate(page: params[:page])
+      @nodes = Node
       @nodes = if params[:type] == 'wiki'
                  @nodes.where(type: 'page', status: 1)
                else
@@ -11,6 +11,8 @@ class Spam2Controller < ApplicationController
                end
       @spam_count = @nodes.where(status: 0).length.to_s
       @unmoderated_count = @nodes.where(status: 4).length.to_s
+      @page_count = @nodes.where(type: 'page').length.to_s
+      @note_count = @nodes.where(type: 'note').length.to_s
     else
       flash[:error] = 'Only moderators can moderate posts.'
       redirect_to '/dashboard'
@@ -18,12 +20,12 @@ class Spam2Controller < ApplicationController
   end
 
   def _spam_revisions
-    if logged_in_as(%w(amdin moderator))
+    if logged_in_as(%w(admin moderator))
       @revisions = Revision.where(status: 0)
                             .order('timestamp DESC')
       render template: 'spam2/_spam'
     else
-      flash[:error] = 'Only moderators adn admins can moderate this.'
+      flash[:error] = 'Only moderators and admins can moderate this.'
       redirect_to '/dashboard'
     end
   end
