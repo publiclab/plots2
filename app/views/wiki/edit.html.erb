@@ -57,7 +57,7 @@
           <input class="form-control" id="taginput" type="hidden" name="tags" value="<%= params[:tags] %>" />
 
           <div class="form-group">
-            <input tabindex="1" name="title" type="text" class="form-control" id="title" value="<% if @node && @node.latest %><%= @node.latest.title %><% else %><%= params[:title] %><% end %>">
+            <input aria-label="Wiki Title" tabindex="1" name="title" type="text" class="form-control" id="title" value="<% if @node && @node.latest %><%= @node.latest.title %><% else %><%= params[:title] %><% end %>">
           </div>
 
           <script>
