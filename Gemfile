@@ -108,7 +108,7 @@ group :test, :development do
   gem 'jasmine-rails'
   gem 'json_expressions'
   gem 'minitest-reporters', '~> 1.4.2'
-  gem 'openssl', '~> 2.1.2'
+  gem 'openssl', '~> 2.2.0'
   gem 'phantomjs'
   gem 'puma', '~> 4.3'
   gem 'rails-perftest'

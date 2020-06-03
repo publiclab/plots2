@@ -25,11 +25,15 @@
 <div id="toggle" class="login-form">
 
   <div class="form-group">
+
     <label for="username"><%= translation('user_sessions.new.username') %></label>
     <%= f.text_field :username, { tabindex: 1, placeholder: "Username", class: 'form-control', id: 'username-login', required: true } %>
 
     <div class="form-group has-feedback">
     <label class="control-label" for="password"><%= translation('user_sessions.new.password') %></label>
+
+    <label for="username-login"><%= translation('user_sessions.new.username') %></label>
+
       <div class="input-group">
         <%= f.password_field :password, { tabindex: 2,placeholder: "Password",class: 'form-control', id: 'password-signup', onpaste: 'return false;' , required: true } %>
         <div class="input-group-append">
