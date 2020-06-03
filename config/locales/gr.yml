@@ -205,9 +205,9 @@ it:
       two_words_connector: " e "
       words_connector: ", "
   time:
-    am: π.μ.
+    am: π.μ
     formats:
       default: "%a %d %b %Y, %H:%M:%S %z"
       long: "%d %B %Y %H:%M"
       short: "%d %b %H:%M"
-    pm: μ.μ.
+    pm: μ.μ
