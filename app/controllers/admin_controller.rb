@@ -371,6 +371,11 @@ class AdminController < ApplicationController
     end
   end
 
+  def test_digest_email_spam
+    DigestSpamJob.perform_async(0)
+    redirect_to "/spam"
+  end
+  
   def smtp_test
     require 'socket'
 

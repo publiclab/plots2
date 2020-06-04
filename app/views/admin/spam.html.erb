@@ -10,6 +10,11 @@
     <li class="nav-item"><a class="nav-link <% if params[:action] == "spam_revisions" %> active <% end %>" href="/spam/revisions"><i class="fa fa-list"></i><span class="d-xs-inline d-md-none d-lg-inline"> Revisions</span></a></li>
     <li class="nav-item"><a class="nav-link <% if params[:action] == "spam_comments" %> active <% end %>" href="/spam/comments"><i class="fa fa-comment"></i><span class="d-xs-inline d-md-none d-lg-inline"> Comments</span></a></li>
     <li class="nav-item"><a class="nav-link" href="/people"><i class="fa fa-user"></i><span class="d-xs-inline d-md-none d-lg-inline"> Active Users</span></a></li>
+    <li class="nav-item">
+        <%= form_tag "/admin/test_digest_email_spam", method: :post do %>
+          <%= submit_tag "Test Spam Digest Email", class: "btn btn-sm btn-info", style: "width: 100%;" %>
+        <% end %>
+    </li>
   </ul>
 
   <br />

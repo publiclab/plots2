@@ -335,7 +335,8 @@ Plots2::Application.routes.draw do
   get 'questions/liked(/:tagnames)' => 'questions#liked'
 
   post 'users/test_digest_email' => 'users#test_digest_email'
-
+  post 'admin/test_digest_email_spam' => 'admin#test_digest_email_spam'
+  
   get 'comment/delete/:id' => 'comment#delete'
   get 'comment/update/:id' => 'comment#update'
   post 'comment/update/:id' => 'comment#update'
