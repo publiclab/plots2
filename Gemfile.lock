@@ -132,6 +132,7 @@ GEM
       dry-logic (~> 1.0, >= 1.0.2)
     equalizer (0.0.11)
     erubi (1.9.0)
+    etc (1.1.0)
     execjs (2.7.0)
     faraday (1.0.1)
       multipart-post (>= 1.2, < 3)
@@ -344,7 +345,8 @@ GEM
     parallel (1.19.1)
     parser (2.7.1.2)
       ast (~> 2.4.0)
-    passenger (6.0.4)
+    passenger (6.0.5)
+      etc
       rack
       rake (>= 0.8.1)
     phantomjs (2.1.1.0)
