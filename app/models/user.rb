@@ -268,7 +268,7 @@ class User < ActiveRecord::Base
     .distinct
   end
 
-  def content_unmoderated_in_period(start_time, end_time)
+  def unmoderated_in_period(start_time, end_time)
     tag_following = TagSelection.where(following: true, user_id: uid)
     ids = []
     tag_following.each do |tagname|
@@ -374,12 +374,12 @@ class User < ActiveRecord::Base
   end
 
   def send_digest_email_spam
-    if has_tag('digest:daily')
-      @nodes_unmoderated = content_unmoderated_in_period(1.day.ago, Time.current)
-      @frequency_digest = Frequency::DAILY
-    else
-      @nodes_unmoderated = content_unmoderated_in_period(1.week.ago, Time.current)
+    if has_tag('digest:weekly')
       @frequency_digest = Frequency::WEEKLY
+      @nodes_unmoderated = unmoderated_in_period(1.week.ago, Time.current)
+    else
+      @frequency_digest = Frequency::DAILY
+      @nodes_unmoderated = unmoderated_in_period(1.day.ago, Time.current)
     end
     if @nodes_unmoderated.size.positive?
       AdminMailer.send_digest_spam(@nodes_unmoderated, @frequency_digest).deliver_now
