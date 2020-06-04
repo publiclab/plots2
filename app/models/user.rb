@@ -248,7 +248,7 @@ class User < ActiveRecord::Base
     Node.questions.where(status: 1, uid: id)
   end
 
-  def content_followed_in_period(start_time, end_time, status = 1, node_type = 'note', include_revisions = false)
+  def content_followed_in_period(start_time, end_time, node_type = 'note', include_revisions = false)
     tagnames = TagSelection.where(following: true, user_id: uid)
     node_ids = []
     tagnames.each do |tagname|
@@ -261,8 +261,25 @@ class User < ActiveRecord::Base
     Node.where(nid: node_ids)
     .includes(:revision, :tag)
     .references(:node_revision)
-    .where('node.status=?', status)
+    .where('node.status = 1')
     .where(type: node_type)
+    .where(range)
+    .order('node_revisions.timestamp DESC')
+    .distinct
+  end
+
+  def content_unmoderated_in_period(start_time, end_time)
+    tag_following = TagSelection.where(following: true, user_id: uid)
+    ids = []
+    tag_following.each do |tagname|
+      ids += NodeTag.where(tid: tagname.tid).collect(&:nid)
+    end
+    range = "(created >= #{start_time.to_i} AND created <= #{end_time.to_i})"
+    Node.where(nid: ids)
+    .includes(:revision, :tag)
+    .references(:node_revision)
+    .where('node.status = 4')
+    .where(type: 'note')
     .where(range)
     .order('node_revisions.timestamp DESC')
     .distinct
@@ -358,17 +375,17 @@ class User < ActiveRecord::Base
 
   def send_digest_email_spam
     if has_tag('digest:daily')
-      @nodes_unmoderated = content_followed_in_period(1.day.ago, Time.current, status = "4")
+      @nodes_unmoderated = content_unmoderated_in_period(1.day.ago, Time.current)
       @frequency_digest = Frequency::DAILY
     else
-      @nodes_unmoderated = content_followed_in_period(1.week.ago, Time.current , status = "4")
+      @nodes_unmoderated = content_unmoderated_in_period(1.week.ago, Time.current)
       @frequency_digest = Frequency::WEEKLY
     end
     if @nodes_unmoderated.size.positive?
       AdminMailer.send_digest_spam(@nodes_unmoderated, @frequency_digest).deliver_now
     end
  end
-  
+
   def tag_counts
     tags = {}
     Node.order('nid DESC').where(type: 'note', status: 1, uid: id).limit(20).each do |node|
