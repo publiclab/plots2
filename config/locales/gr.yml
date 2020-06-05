@@ -67,7 +67,7 @@ it:
         one: "πριν μια ώρα"
         other: "πριν %{count} ώρες"
       about_x_months:
-        one:"πριν απο 1 μήνα"
+        one: "πριν απο 1 μήνα"
         other: "πριν απο %{count} μήνες " 
       about_x_years:
         one: "πριν απο 1 χρόνο"
