@@ -213,7 +213,7 @@ class PostTest < ApplicationSystemTestCase
 
     find('#menu-btn').click()
 
-    accept_confirm "Are you sure?" do
+    accept_confirm "All revisions will be lost, and you cannot undo this action. If this is a spam page, be sure that it did not overwrite valid content before deleting the entire page and the history." do
       find('#menu-delete-btn').click()
     end
 
