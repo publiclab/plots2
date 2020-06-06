@@ -21,7 +21,17 @@
       src="https://cdn.jsdelivr.net/npm/mathjax@2.7.3/MathJax.js?config=TeX-MML-AM_CHTML">
     </script>
 
-    <%= stylesheet_link_tag "application", :media => "all" %>
+    <%= javascript_include_tag "application" %>
+    <style>
+      <%= CriticalPathCss.fetch(request.path) %>
+    </style>
+    <script>
+        loadCSS("<%= stylesheet_path('application') %>");
+    </script>
+    <link rel="preload" href="<%= stylesheet_path('application') %>" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="<%= stylesheet_path('application') %>">
+    </noscript>
     <link href="/lib/@fortawesome/fontawesome-free/css/all.min.css" media="all" rel="stylesheet" type="text/css" />
     <link href="/lib/font-awesome/css/font-awesome.min.css" media="all" rel="stylesheet" type="text/css" />
     <% if @node && @node.has_tag('style:fancy') %>
@@ -34,7 +44,6 @@
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <%= javascript_include_tag "application" %>
     <%= csrf_meta_tags %>
     <meta name="google-translate-customization" content="4ce4c7c384354172-5179499fc244f592-g2b333d0d29f59663-d" />
 
@@ -70,14 +79,14 @@
       I18n.fallbacks = true;
       $(function () {
         $("[data-toggle=popover]").popover({
-            html: true, 
+            html: true,
             content: function() {
                 return $('#popover-content').html();
             }
         });
       });
     </script>
-    
+
     <% cache('feature_header', skip_digest: true) do %>
       <%= feature("header") %>
     <% end %>
@@ -91,11 +100,11 @@
      background: #BABABA;
     }
 
-  </style>  
-  
+  </style>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/bootstrap-slider.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/css/bootstrap-slider.min.css" />
-  
+
   </head>
 
   <body>

@@ -68,6 +68,8 @@ gem 'jquery-atwho-rails'
 gem 'lemmatizer', '~> 0.2.2'
 # To implement incoming mail processing microframework
 gem 'mailman', require: false
+gem 'loadcss-rails', '~> 2.0.1'
+gem 'critical-path-css-rails', '~> 3.1.0'
 
 # To convert html to markdown
 gem 'reverse_markdown'
