@@ -209,8 +209,11 @@
         <%= form_tag "/users/test_digest_email", method: :post do %>
           <%= submit_tag "Test Digest Email", class: "btn btn-info", style: "width: 100%;" %>
         <% end %>
+        <%= form_tag "/admin/test_digest_email_spam", method: :post do %>
+          <%= submit_tag "Test Spam Digest Email", class: "btn btn-sm btn-primary mt-2", style: "width: 100%;" %>
+        <% end %>
       <% end %>
-
+      
     <% end %>
 
     <hr />

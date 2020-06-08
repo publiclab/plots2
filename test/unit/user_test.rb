@@ -305,4 +305,7 @@ class UserTest < ActiveSupport::TestCase
     end
   end
 
+  test 'Send digest email for unmoderated posts' do
+    assert users(:bob).send_digest_email_spam
+  end
 end
