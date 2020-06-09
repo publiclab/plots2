@@ -12,20 +12,20 @@ $(document).ready(function () {
 </script>
 <nav class="navbar navbar-expand navbar-light nav_top bg-light">
   <div class="navbar-expand navbar-nav-scroll">
-    <ul class=" navbar-nav"> 
+    <ul class=" navbar-nav pd-1"> 
       <li class="nav-item">
         <a class="btn btn-outline-light" id="menu-toggle" href="#"><i class="fa fa-bars"></i></a>
       </li>
       <li class="nav-item">
         <a class="text-primary navbar-brand nav-link" href="#">
           <% if params[:type] == "wiki" %>
-            spam / <b>Wiki</b>                                                                                                                                                                                                                                                                                                                                                                                                        
+            Spam / <b>Wiki</b>                                                                                                                                                                                                                                                                                                                                                                                                        
           <% elsif params[:action] == "spam_revisions"%>
-            spam / <b>Revisions</b>
+            Spam / <b>Revisions</b>
           <% elsif params[:action] == "spam_comments"%>
-            spam / <b>Comments</b>
+            Spam / <b>Comments</b>
           <% else %>
-            <b>spam /</b>
+            <b>Spam /</b>
           <% end %>
         </a>
       </li>
@@ -72,23 +72,23 @@ $(document).ready(function () {
         <div class="sidenav-menu-heading text-secondary font-weight-bold">
           Spam Moderation
         </div>
-        <a class="nav-link  <% unless  params[:action] =="spam_comments" || params[:action] =="spam_revisions" || params[:type] == "wiki"%> active <% end %>" href="/spam">
+        <a class="nav-link text-secondary <% unless  params[:action] =="spam_comments" || params[:action] =="spam_revisions" || params[:type] == "wiki"%> active <% end %>" href="/spam">
           <div class="nav-link-icon mx-1 <% unless params[:action] =="spam_comments" ||  params[:action] =="spam_revisions" || params[:type] == "wiki" %> active <% end %>"><i class="fa fa-address-book text-primary"></i></div>
           Bulk Moderation
         </a>
-        <a class="nav-link  <% if params[:type] == "wiki" %> active <% end %>" href="/spam/wiki" >
+        <a class="nav-link text-secondary <% if params[:type] == "wiki" %> active <% end %>" href="/spam/wiki" >
           <div class="nav-link-icon mx-1  <% if params[:type] == "wiki" %> active <% end %>"><i class="fa fa-book text-primary"></i></div>
           Wiki
         </a> 
-        <a class="nav-link <% if params[:action] == "spam_revisions" %> active <% end %>" href="/spam/revisions">
+        <a class="nav-link text-secondary<% if params[:action] == "spam_revisions" %> active <% end %>" href="/spam/revisions">
           <div class="nav-link-icon mx-1  <% if params[:action] == "spam_revisions" %> active <% end %>"><i class="fa fa-list text-primary"></i></div>
           Revisions 
         </a>         
-        <a class="nav-link  <% if params[:action] == "spam_comments" %> active <% end %>" href="/spam/comments" >
+        <a class="nav-link text-secondary <% if params[:action] == "spam_comments" %> active <% end %>" href="/spam/comments" >
           <div class="nav-link-icon mx-1  <% if params[:action] == "spam_comments" %> active <% end %>"><i class="fa fa-comment text-primary"></i></div>
           Comments
         </a>        
-        <a class="nav-link" href="/people" >
+        <a class="nav-link text-secondary" href="/people" >
           <div class="nav-link-icon mx-1 "><i class="fa fa-user text-primary"></i></div>
           Active Users 
         </a>  
@@ -104,8 +104,8 @@ $(document).ready(function () {
         <p class="card-text">Moderators and admins have the ability to "spam" posts if they include inappropriate content, blatant advertising, or are otherwise problematic. If you're not sure, email at <a href="mailto:organizers@<%= request.host %>" class="badge badge-info text-white">moderators@<%= request.host %></a> If we all work together, we can keep spam to a minimum. Thanks for helping out!</p>
       </div>
     </div>
-    <%= render partial: 'spam/nodes' if @nodes %>
-    <%= render partial: 'spam/revisions' if @revisions %>
-    <%= render partial: 'spam/comments' if @comments %>
+    <%= render partial: 'admin/nodes' if @nodes %>
+    <%= render partial: 'admin/revisions' if @revisions %>
+    <%= render partial: 'admin/comments' if @comments %>
   </div>
 </div> 

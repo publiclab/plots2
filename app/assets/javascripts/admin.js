@@ -1,13 +1,9 @@
 function table_main(id) {
 	var table = $(id).DataTable({
-		"order": [[1, "desc"]],
-		"stateSave": false,
-		"lengthMenu": [[30, -1, 0], ["Auto", "All", "None"]],
 		"autoWidth": false,
 		"search": {
 			"regex": true
 		},
-		"info": false,
 		"scrollX": true,
 		"fixedHeader": true
 	});

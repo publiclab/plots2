@@ -32,7 +32,6 @@ Rails.application.config.assets.precompile += [
   'textbox_expand.js',
   'users.js',
   'wikis.js',
-  'admin.js',
 
   'blog.css',
   'comments.css',
@@ -53,6 +52,6 @@ Rails.application.config.assets.precompile += [
   'horsey.js',
   'atwho_autocomplete.js',
   'async_tag_subscriptions.js',
-  'cable.js'
-  'admin.js'
+  'cable.js',
+  'admin.css',
 ]

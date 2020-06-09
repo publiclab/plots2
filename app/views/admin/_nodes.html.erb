@@ -33,27 +33,27 @@ $(document).ready(function () {
 	$("#delete-batch").bind('click', function (e) { // batch delete
 		batch_nav("batch_delete");
 	});
-	$('#reset').on('click', function () {
+	$('#reset').on('click', function () {     // reset filter
 		table.search('').columns().search('').draw();
 		table.search('').columns().order('').draw();
 	});
-	$('#spammed').on('click', function () {
+	$('#spammed').on('click', function () {   // spam nodes filter
 		table.search('').columns().search('').draw();
 		table.columns(3).search("Spammed").draw();
 	});
-	$('#unmoderated').on('click', function () {
+	$('#unmoderated').on('click', function () {  // unmoderated nodes filter
 		table.search('').columns().search('').draw();
 		table.columns(3).search("unmoderated").draw();
 	});
-	$('#page').on('click', function () {
+	$('#page').on('click', function () {      // page filter 
 		table.search('').columns().search('').draw();
 		table.columns(3).search("Page").draw();
 	});
-	$('#note').on('click', function () {
+	$('#note').on('click', function () {   // note filter 
 		table.search('').columns().search('').draw();
 		table.columns(3).search("Note").draw();
   });
-  $("#extSelect").change(function(e){
+  $("#extSelect").change(function(e){   // hide dropdown
 		table.columns().visible(true);
 		if (this.value === '1') {
 			table.column(1).visible(false);
@@ -166,22 +166,14 @@ $(document).ready(function () {
                 </script>
               </td>
             </tr>
-            <tr style="display:none;" id="ndel<%= node.id %>">
-              <td></td>
-              <td>Content <a href='<%= node.path %>'>published</a>.</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr style="display:none;" id="nspam<%= node.id %>">
-              <td></td>
-              <td>Content <a href='<%= node.path %>'>spammed</a>.</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
+            <div style="display:none;" id="ndel<%= node.id %>" class="alert alert-success alert-dismissible">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Success!</strong> Content <a href='<%= node.path %>'>published</a>.
+            </div> 
+            <div style="display:none;" id="nspam<%= node.id %>" class="alert alert-success alert-dismissible">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Success!</strong> Content <a href='<%= node.path %>'>spammed</a>.
+            </div>
             <div class="modal fade" id="ninfo<%= node.id %>"> 
               <div class="modal-dialog" >
                 <div class="modal-content">

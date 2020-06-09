@@ -85,7 +85,7 @@ class AdminControllerTest < ActionController::TestCase
   test "batched spammed notes are spammed and not present in spam/wiki as a potential spam" do
     UserSession.create(users(:admin))
     spam_node = nodes(:about) 
-    get :_spam, params: { type: "wiki" }
+    get :spam, params: { type: "wiki" }
     # node should be present on spam suggestions because it is not yet spammed
     assert_select "#n#{spam_node.nid}", 1
     get :batch_spam, params: { ids: spam_node.nid }
@@ -125,7 +125,7 @@ class AdminControllerTest < ActionController::TestCase
   test "batch published notes are published and not present in spam as unmoderated note" do
     UserSession.create(users(:admin))
     spam_node = nodes(:spam)
-    get :_spam
+    get :spam
     # node is spammeed and now present in the /spam 
     assert_select "#n#{spam_node.nid}", 1
     get :batch_publish, params: { ids: spam_node.nid }
