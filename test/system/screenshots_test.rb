@@ -205,7 +205,7 @@ class ScreenshotsTest < ApplicationSystemTestCase
     fill_in("password-signup", with: "secretive")
     click_on "Log in"
     visit '/spam'
-    assert_selector('#batch-delete', visible: true)
+    assert_selector('#batch-spam', visible: true)
     take_screenshot
   end
 

@@ -148,12 +148,10 @@ $(document).ready(function () {
                 $('#n<%= node.id %> .publish').bind('ajax:success', function(e){
                   $('#n<%= node.id %>').hide()
                   $('#ndel<%= node.id %>').fadeIn(); // published!
-                  $('#ndel<%= node.id %>').fadeOut();
                 });
                 $('#n<%= node.id %> .spam').bind('ajax:success', function(e){
                   $('#n<%= node.id %>').hide()
                   $('#nspam<%= node.id %>').fadeIn(); // spammed!
-                  $('#nspam<%= node.id %>').fadeOut();
                 });  
                 $('.a<%= node.author.id %>.ban').bind('ajax:success', function(e){
                   $('.a<%= node.author.id %>').hide()  // ban toggle
