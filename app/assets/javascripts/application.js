@@ -60,4 +60,4 @@
 //= require validation.js
 //= require submit_form_ajax.js
 //= require urlMapHash.js
-//= require spam2
+//= require spam2.js

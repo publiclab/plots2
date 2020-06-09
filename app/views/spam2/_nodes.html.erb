@@ -148,12 +148,10 @@ $(document).ready(function () {
                 $('#n<%= node.id %> .publish').bind('ajax:success', function(e){
                   $('#n<%= node.id %>').hide()
                   $('#ndel<%= node.id %>').fadeIn(); // published!
-                  $('#ndel<%= node.id %>').fadeOut();
                 });
                 $('#n<%= node.id %> .spam').bind('ajax:success', function(e){
                   $('#n<%= node.id %>').hide()
                   $('#nspam<%= node.id %>').fadeIn(); // spammed!
-                  $('#nspam<%= node.id %>').fadeOut();
                 });  
                 $('.a<%= node.author.id %>.ban').bind('ajax:success', function(e){
                   $('.a<%= node.author.id %>').hide()  // ban toggle
@@ -166,22 +164,14 @@ $(document).ready(function () {
                 </script>
               </td>
             </tr>
-            <tr style="display:none;" id="ndel<%= node.id %>">
-              <td></td>
-              <td>Content <a href='<%= node.path %>'>published</a>.</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr style="display:none;" id="nspam<%= node.id %>">
-              <td></td>
-              <td>Content <a href='<%= node.path %>'>spammed</a>.</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
+            <div style="display:none;" id="ndel<%= node.id %>" class="alert alert-success alert-dismissible">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              <strong>Success!</strong> Content <a href='<%= node.path %>'>published</a>.
+            </div> 
+            <div style="display:none;" id="nspam<%= node.id %>" class="alert alert-success alert-dismissible">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              <strong>Success!</strong> Content <a href='<%= node.path %>'>spammed</a>.
+            </div>
             <div class="modal fade" id="ninfo<%= node.id %>"> 
               <div class="modal-dialog" >
                 <div class="modal-content">

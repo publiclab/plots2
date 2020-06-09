@@ -128,7 +128,8 @@
 	}
 	#table-card,
 	#card-top {
-		margin-left: 10%;
+        margin-left: 10%;
+        width:85vw;
 	}
 	#wrapper.active #page-content-wrapper {
 		opacity: 0.2;
