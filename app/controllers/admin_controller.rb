@@ -82,13 +82,16 @@ class AdminController < ApplicationController
 
   def spam
     if logged_in_as(['admin', 'moderator'])
-      @nodes = Node.paginate(page: params[:page])
-                   .order('nid DESC')
+      @nodes = Node.order('nid DESC')
       @nodes = if params[:type] == 'wiki'
                  @nodes.where(type: 'page', status: 1)
                else
                  @nodes.where(status: [0, 4]) # spam OR as-yet-unmoderated posts
       end
+      @spam_count = @nodes.where(status: 0).length.to_s
+      @unmoderated_count = @nodes.where(status: 4).length.to_s
+      @page_count = @nodes.where(type: 'page').length.to_s
+      @note_count = @nodes.where(type: 'note').length.to_s
     else
       flash[:error] = 'Only moderators can moderate posts.'
       redirect_to '/dashboard'
@@ -97,8 +100,7 @@ class AdminController < ApplicationController
 
   def spam_revisions
     if logged_in_as(['admin', 'moderator'])
-      @revisions = Revision.paginate(page: params[:page])
-                           .order('timestamp DESC')
+      @revisions = Revision.order('timestamp DESC')
                            .where(status: 0)
       render template: 'admin/spam'
     else
@@ -109,8 +111,7 @@ class AdminController < ApplicationController
 
   def spam_comments
     if current_user &. can_moderate?
-      @comments = Comment.paginate(page: params[:page])
-                       .order('timestamp DESC')
+      @comments = Comment.order('timestamp DESC')
                        .where(status: 0)
       render template: 'admin/spam'
     else
@@ -321,22 +322,94 @@ class AdminController < ApplicationController
     end
   end
 
-  def batch
-    if logged_in_as(['admin', 'moderator'])
-      nodes = 0
-      users = []
+  def batch_spam
+    if logged_in_as(%w(moderator admin))
+      user_spamed = []
+      node_spamed = 0
       params[:ids].split(',').uniq.each do |nid|
         node = Node.find nid
+        node_spamed += 1
         node.spam
-        nodes += 1
+        user = node.author
+        user_spamed << user.id
+        user.ban
+      end
+      flash[:notice] = node_spamed.to_s + ' nodes spammed and ' + user_spamed.length.to_s + ' users banned.'
+      redirect_to '/spam2'
+    else
+      flash[:error] = 'Only admins and moderators can mark a batch spam.'
+      redirect_to '/dashboard'
+    end
+  end
+
+  def batch_publish
+    if logged_in_as(%w(moderator admin))
+      node_published = 0
+      user_published = []
+      params[:ids].split(',').uniq.each do |nid|
+        node = Node.find nid
+        node_published += 1
+        node.publish
+        user = node.author
+        user.unban
+        user_published << user.id
+      end
+      flash[:notice] = node_published.to_s + ' nodes published and ' + user_published.length.to_s + ' users unbanned.'
+      redirect_to '/spam2'
+    else
+      flash[:error] = 'Only admins and moderators can batch publish.'
+      redirect_to '/dashboard'
+    end
+  end
+
+  def batch_delete
+    if logged_in_as(%w(moderator admin))
+      node_delete = 0
+      params[:ids].split(',').uniq.each do |nid|
+        node = Node.find nid
+        node_delete += 1
+        node.delete
+      end
+      flash[:notice] = node_delete.to_s + ' nodes deleted'
+      redirect_back fallback_location: root_path
+    else
+      flash[:error] = 'Only admins and moderators can batch delete.'
+      redirect_to '/dashboard'
+    end
+  end
+
+  def batch_ban
+    if logged_in_as(%w(admin moderator))
+      user_ban = []
+      node_ban = 0
+      params[:ids].split(',').uniq.each do |nid|
+        node = Node.find nid
         user = node.author
         user.ban
-        users << user.id
+        user_ban << user.id
+        node_ban += 1
       end
-      flash[:notice] = nodes.to_s + ' nodes spammed and ' + users.length.to_s + ' users banned.'
-      redirect_to '/spam/wiki'
+      flash[:notice] = user_ban.length.to_s + ' users banned.'
+      redirect_back fallback_location: root_path
     else
-      flash[:error] = 'Only admins can batch moderate.'
+      flash[:error] = 'Only admins and moderators can ban users.'
+      redirect_to '/dashboard'
+    end
+  end
+
+  def batch_unban
+    if logged_in_as(%w(moderator admin))
+      users_unban = []
+      params[:ids].split(',').uniq.each do |nid|
+        node = Node.find nid
+        user = node.author
+        user.unban
+        users_unban << user.id
+      end
+      flash[:notice] = users_unban.length.to_s + ' users unbanned.'
+      redirect_back fallback_location: root_path
+    else
+      flash[:error] = 'Only admins and moderators can unban users.'
       redirect_to '/dashboard'
     end
   end

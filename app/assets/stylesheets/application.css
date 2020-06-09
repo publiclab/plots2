@@ -36,5 +36,7 @@
  *= require jquery.atwho
  *= require profile
  *= require location
- *= require notes 
+ *= require notes
+ *= require datatables/dataTables.bootstrap4
+ *= require admin 
 */
