@@ -76,13 +76,13 @@ class AdminControllerTest < ActionController::TestCase
     UserSession.create(users(:moderator))
     spam_nodes = [nodes(:spam_targeted_page), nodes(:question)]
     get :batch_spam, params: { ids: spam_nodes.collect { |node| node["nid"] }.join(",") }
-    assert_redirected_to "/spam2"
+    assert_redirected_to "/spam"
     #  check if authors are banned
     authors = spam_nodes.collect { |node| User.find(node.author.id) }
     assert authors.all? { |spammer| spammer.status == 0 }
   end
 
-  test "batched spammed notes are spammed and not present in spam2/wiki as a potential spam" do
+  test "batched spammed notes are spammed and not present in spam/wiki as a potential spam" do
     UserSession.create(users(:admin))
     spam_node = nodes(:about) 
     get :_spam, params: { type: "wiki" }
@@ -100,7 +100,7 @@ class AdminControllerTest < ActionController::TestCase
     spam_nodes = [nodes(:spam_targeted_page), nodes(:spam)]
     authors = spam_nodes.collect { |node| node.author }
     get :batch_spam, params: { ids: spam_nodes.collect { |node| node["nid"] }.join(",") }
-    assert_redirected_to "/spam2"
+    assert_redirected_to "/spam"
     assert_equal spam_nodes.length.to_s + ' nodes spammed and ' + authors.uniq.length.to_s + ' users banned.', flash[:notice]
   end
 
@@ -116,17 +116,17 @@ class AdminControllerTest < ActionController::TestCase
     UserSession.create(users(:moderator))
     spam_nodes = [nodes(:spam_targeted_page), nodes(:spam)]
     get :batch_publish, params: { ids: spam_nodes.collect { |node| node["nid"] }.join(",") }
-    assert_redirected_to "/spam2"
+    assert_redirected_to "/spam"
     # check if users are unbanned
     authors = spam_nodes.collect { |node| User.find(node.author.id) }
     assert authors.all? { |spammer| spammer.status == 1 }
   end
 
-  test "batch published notes are published and not present in spam2 as unmoderated note" do
+  test "batch published notes are published and not present in spam as unmoderated note" do
     UserSession.create(users(:admin))
     spam_node = nodes(:spam)
     get :_spam
-    # node is spammeed and now present in the /spam2 
+    # node is spammeed and now present in the /spam 
     assert_select "#n#{spam_node.nid}", 1
     get :batch_publish, params: { ids: spam_node.nid }
     # node is no longer present as it is published
@@ -141,7 +141,7 @@ class AdminControllerTest < ActionController::TestCase
     authors = spam_nodes.collect { |node| node.author }
     get :batch_publish, params: { ids: spam_nodes.collect { |node| node["nid"] }.join(",") }
     #redirect to same path
-    assert_redirected_to '/spam2'
+    assert_redirected_to '/spam'
     assert_equal spam_nodes.length.to_s + ' nodes published and ' + authors.uniq.length.to_s + ' users unbanned.', flash[:notice]
   end
 

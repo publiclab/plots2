@@ -15,7 +15,7 @@ $(document).ready(function () {
 		if (vals.length == 0) {
 			alert("You have not selected anything");
 		} else {
-			window.location = "/spam2/" + bulk + "/" + vals.join(',');
+			window.location = "/spam/" + bulk + "/" + vals.join(',');
 		}
 	}
 	$("#batch-spam").bind('click', function (e) { //batch spam

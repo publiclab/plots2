@@ -335,7 +335,7 @@ class AdminController < ApplicationController
         user.ban
       end
       flash[:notice] = node_spamed.to_s + ' nodes spammed and ' + user_spamed.length.to_s + ' users banned.'
-      redirect_to '/spam2'
+      redirect_to '/spam'
     else
       flash[:error] = 'Only admins and moderators can mark a batch spam.'
       redirect_to '/dashboard'
@@ -355,7 +355,7 @@ class AdminController < ApplicationController
         user_published << user.id
       end
       flash[:notice] = node_published.to_s + ' nodes published and ' + user_published.length.to_s + ' users unbanned.'
-      redirect_to '/spam2'
+      redirect_to '/spam'
     else
       flash[:error] = 'Only admins and moderators can batch publish.'
       redirect_to '/dashboard'
