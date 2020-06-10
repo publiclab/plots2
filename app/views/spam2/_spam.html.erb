@@ -72,20 +72,20 @@ $(document).ready(function () {
         <div class="sidenav-menu-heading text-secondary font-weight-bold">
           Spam Moderation
         </div>
-        <a class="nav-link text-secondary <% unless  params[:action] =="spam_comments" || params[:action] =="spam_revisions" || params[:type] == "wiki"%> active <% end %>" href="/spam">
-          <div class="nav-link-icon mx-1 <% unless params[:action] =="spam_comments" ||  params[:action] =="spam_revisions" || params[:type] == "wiki" %> active <% end %>"><i class="fa fa-address-book text-primary"></i></div>
+        <a class="nav-link text-secondary <% unless  params[:action] =="_spam_comments" || params[:action] =="_spam_revisions" || params[:type] == "wiki"%> active <% end %>" href="/spam2">
+          <div class="nav-link-icon mx-1 <% unless params[:action] =="_spam_comments" ||  params[:action] =="_spam_revisions" || params[:type] == "wiki" %> active <% end %>"><i class="fa fa-address-book text-primary"></i></div>
           Bulk Moderation
         </a>
-        <a class="nav-link text-secondary <% if params[:type] == "wiki" %> active <% end %>" href="/spam/wiki" >
+        <a class="nav-link text-secondary <% if params[:type] == "wiki" %> active <% end %>" href="/spam2/wiki" >
           <div class="nav-link-icon mx-1  <% if params[:type] == "wiki" %> active <% end %>"><i class="fa fa-book text-primary"></i></div>
           Wiki
         </a> 
-        <a class="nav-link text-secondary<% if params[:action] == "spam_revisions" %> active <% end %>" href="/spam/revisions">
-          <div class="nav-link-icon mx-1  <% if params[:action] == "spam_revisions" %> active <% end %>"><i class="fa fa-list text-primary"></i></div>
+        <a class="nav-link text-secondary<% if params[:action] == "_spam_revisions" %> active <% end %>" href="/spam2/revisions">
+          <div class="nav-link-icon mx-1  <% if params[:action] == "_spam_revisions" %> active <% end %>"><i class="fa fa-list text-primary"></i></div>
           Revisions 
         </a>         
-        <a class="nav-link text-secondary <% if params[:action] == "spam_comments" %> active <% end %>" href="/spam/comments" >
-          <div class="nav-link-icon mx-1  <% if params[:action] == "spam_comments" %> active <% end %>"><i class="fa fa-comment text-primary"></i></div>
+        <a class="nav-link text-secondary <% if params[:action] == "_spam_comments" %> active <% end %>" href="/spam2/comments" >
+          <div class="nav-link-icon mx-1  <% if params[:action] == "_spam_comments" %> active <% end %>"><i class="fa fa-comment text-primary"></i></div>
           Comments
         </a>        
         <a class="nav-link text-secondary" href="/people" >
