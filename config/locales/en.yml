@@ -618,7 +618,7 @@ en:
       username: "Username"
       password: "Password"
       remember_me: "Remember me"
-      reset_by_clicking_here: "Forgot your password? Reset it <a href='%{url1}'>here</a>"
+      reset_by_clicking_here: "Forgot your password? <a href='%{url1}'>Reset it here</a>"
   home:
     dashboard:
       welcome: "Welcome!"

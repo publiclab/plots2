@@ -52,7 +52,7 @@ gem 'rb-readline'
 gem 'rdiscount', '~> 2.2', '>= 2.2.0.1'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'responders', '~> 3.0'
-gem 'rubocop', '~> 0.83.0', require: false
+gem 'rubocop', '~> 0.85.0', require: false
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
 gem 'sentry-raven'
@@ -68,6 +68,8 @@ gem 'jquery-atwho-rails'
 gem 'lemmatizer', '~> 0.2.2'
 # To implement incoming mail processing microframework
 gem 'mailman', require: false
+# To implement fontawesome v4.7.0
+gem "font-awesome-rails"
 
 # To convert html to markdown
 gem 'reverse_markdown'
@@ -111,7 +113,7 @@ group :test, :development do
   gem 'jasmine-rails'
   gem 'json_expressions'
   gem 'minitest-reporters', '~> 1.4.2'
-  gem 'openssl', '~> 2.1.2'
+  gem 'openssl', '~> 2.2.0'
   gem 'phantomjs'
   gem 'puma', '~> 4.3'
   gem 'rails-perftest'
