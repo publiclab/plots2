@@ -1,0 +1,111 @@
+<script>
+$(document).ready(function () {
+	//sidenav toggle
+	$("#menu-toggle").click(function (e) {
+		e.preventDefault();
+		$("#wrapper").toggleClass("active");
+	});
+	$(".collapsed").click(function () {
+		$("#wrapper").toggleClass("active");
+  });
+});
+</script>
+<nav class="navbar navbar-expand navbar-light nav_top bg-light">
+  <div class="navbar-expand navbar-nav-scroll">
+    <ul class=" navbar-nav"> 
+      <li class="nav-item">
+        <a class="btn btn-outline-light" id="menu-toggle" href="#"><i class="fa fa-bars"></i></a>
+      </li>
+      <li class="nav-item">
+        <a class="text-primary navbar-brand nav-link" href="#">
+          <% if params[:type] == "wiki" %>
+            Spam2 / <b>Wiki</b>                                                                                                                                                                                                                                                                                                                                                                                                        
+          <% elsif params[:action] == "_spam_revisions"%>
+            Spam2 / <b>Revisions</b>
+          <% elsif params[:action] == "_spam_comments"%>
+            Spam2 / <b>Comments</b>
+          <% else %>
+            <b>Spam2 /</b>
+          <% end %>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="navbar-expand navbar-nav-scroll d-inline">
+    <ul class=" navbar-nav pd-1">
+      <% if params[:action] != "_spam_revisions" && params[:action] != "_spam_comments" %>
+        <li class="nav-item">
+          <a class="nav-link text-dark d-inline-flex " href="#" id="batch-spam"><i class=" pt-1 pr-2 fa fa-ban text-danger"></i>  Spam</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark d-inline-flex" href="#" id="batch-publish"><i class=" pt-1 pr-2 fa fa-check-circle text-success"></i>  Publish</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark d-inline-flex" href="#" id="delete-batch"><i class=" pt-1 pr-2 fa fa-trash text-danger"></i> Delete</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark d-inline-flex" href="#" id="all"><i class=" pt-1 pr-2 fa fa-check text-primary"></i> Select</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark d-inline-flex" href="#" id="batch-ban"><i class=" pt-1 pr-2 fa fa-flag text-warning"></i> Ban</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark d-inline-flex" href="#" id="batch-unban"><i class=" pt-1 pr-2 fa fa-flag text-success"></i> Unban</a>
+        </li>
+      <% end %>
+    </ul>    
+  </div>
+</nav>
+
+<div id="wrapper">
+  <nav class="sidenav bg-light flex-nowrap pt-5 d-flex h-100 flex-column" id="sidebar-wrapper">
+    <div class="sidenav-menu flex-grow-1">
+      <div class="nav flex-column flex-nowrap">
+        <div class="sidenav-menu-heading text-secondary">
+          Menu
+        </div>
+        <a class="nav-link" style="color:grey;">
+          <div class="nav-link-icon mx-1 "><i class="fa fa-tachometer text-primary"></i></div>
+          Dashboard
+        </a>
+        <hr class="w-75 self-align-center text-dark">
+        <div class="sidenav-menu-heading text-secondary font-weight-bold">
+          Spam Moderation
+        </div>
+        <a class="nav-link text-secondary <% unless  params[:action] =="_spam_comments" || params[:action] =="_spam_revisions" || params[:type] == "wiki"%> active <% end %>" href="/spam2">
+          <div class="nav-link-icon mx-1 <% unless params[:action] =="_spam_comments" ||  params[:action] =="_spam_revisions" || params[:type] == "wiki" %> active <% end %>"><i class="fa fa-address-book text-primary"></i></div>
+          Bulk Moderation
+        </a>
+        <a class="nav-link text-secondary <% if params[:type] == "wiki" %> active <% end %>" href="/spam2/wiki" >
+          <div class="nav-link-icon mx-1  <% if params[:type] == "wiki" %> active <% end %>"><i class="fa fa-book text-primary"></i></div>
+          Wiki
+        </a> 
+        <a class="nav-link text-secondary<% if params[:action] == "_spam_revisions" %> active <% end %>" href="/spam2/revisions">
+          <div class="nav-link-icon mx-1  <% if params[:action] == "_spam_revisions" %> active <% end %>"><i class="fa fa-list text-primary"></i></div>
+          Revisions 
+        </a>         
+        <a class="nav-link text-secondary <% if params[:action] == "_spam_comments" %> active <% end %>" href="/spam2/comments" >
+          <div class="nav-link-icon mx-1  <% if params[:action] == "_spam_comments" %> active <% end %>"><i class="fa fa-comment text-primary"></i></div>
+          Comments
+        </a>        
+        <a class="nav-link text-secondary" href="/people" >
+          <div class="nav-link-icon mx-1 "><i class="fa fa-user text-primary"></i></div>
+          Active Users 
+        </a>  
+      </div>
+    </div>   
+  </nav>
+  
+  <div id="page-content-wrapper">
+    <div class="card text-center" id="card-top">
+      <div class="card-header bg-light"></div>
+      <div class="card-body">
+        <h5 class="card-title">Moderate Potential Spam</h5>
+        <p class="card-text">Moderators and admins have the ability to "spam" posts if they include inappropriate content, blatant advertising, or are otherwise problematic. If you're not sure, email at <a href="mailto:organizers@<%= request.host %>" class="badge badge-info text-white">moderators@<%= request.host %></a> If we all work together, we can keep spam to a minimum. Thanks for helping out!</p>
+      </div>
+    </div>
+    <%= render partial: 'spam2/nodes' if @nodes %>
+    <%= render partial: 'spam2/revisions' if @revisions %>
+    <%= render partial: 'spam2/comments' if @comments %>
+  </div>
+</div>
