@@ -1,5 +1,5 @@
 class Spam2Controller < ApplicationController
-  before_action :require_user, only: %i(spam spam_revisions mark_comment_spam publish_comment spam_comments)
+  before_action :require_user, only: %i(_spam _spam_revisions _spam_comments)
 
   def _spam
     if logged_in_as(%w(moderator admin))
