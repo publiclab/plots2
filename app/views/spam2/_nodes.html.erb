@@ -138,7 +138,7 @@ $(document).ready(function () {
                <a class="badge btn badge-pill badge<% if node.status != 0 %>-danger<% else %>-secondary disabled<% end %> spam" data-remote="true" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban fa-white"></i> Spam post</a> 
                <a class="badge badge-pill badge-secondary ban a<%= node.author.id %>" <% if node.author.status == 0 %>style="display:none;"<% end %> data-remote="true" href="/ban/<%= node.author.id %>">Ban user</a>
                <a class="badge badge-pill badge-secondary unban a-unban<%= node.author.id %>" <% if node.author.status == 1 %>style="display:none;"<% end %> data-remote="true" href="/unban/<%= node.author.id %>">Unban user</a>
-               <%= link_to "/notes/delete/#{node.id}", data: { confirm: 'Are you sure you want to delete "'+node.path+'"?' }, :remote => true, :class => "px-3 delete" do %>
+               <%= link_to "/notes/delete/#{node.id}", data: { confirm: "Are you sure you want to delete #{node.id}?"}, :remote => true, :class => "px-3 delete" do %>
                 <i class="fa fa-trash"></i>
                <% end %>
                <script>
