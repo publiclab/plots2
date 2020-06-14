@@ -128,7 +128,7 @@ $(document).ready(function () {
               <a href="/profile/<%= node.author.name %>"><%= node.author.name %> <%= node.author.new_contributor%></a>
              </td>
             <td>
-             <span style="color:grey;"><%= node.type.capitalize %> <span style="color:<% if node.status == 1 %>green;<% elsif node.status == 0 %>red;<% elsif node.status == 4 %>blue;<% end %>"%>(<% if node.status == 1 %>Published<% elsif node.status == 0 %>Spammed<% elsif node.status == 4 %>Unmoderated<% end %>)</span>
+             <span style="color:grey;"><%= node.type.capitalize %> <span style="color:<% if node.status == 1 %>green;<% elsif node.status == 0 %>red;<% elsif node.status == 4 %>blue;<% end %>">(<% if node.status == 1 %>Published<% elsif node.status == 0 %>Spammed<% elsif node.status == 4 %>Unmoderated<% end %>)</span>
             </td>
              <td>
                <%= time_ago_in_words(node.updated_at) %> ago</span>
