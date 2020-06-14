@@ -145,6 +145,7 @@ $(document).ready(function () {
                 $('#n<%= node.id %> .delete').bind('ajax:success', function(e){
                   $('#n<%= node.id %>').fadeOut()
                   $('#deleted<%= node.id %>').fadeIn();
+                  $('#deleted<%= node.id %>').fadeOut();
                 });
                 $('#n<%= node.id %> .publish').bind('ajax:success', function(e){
                   $('#n<%= node.id %>').hide()
@@ -166,8 +167,7 @@ $(document).ready(function () {
               </td>
             </tr>
             <div style="display:none;" id="deleted<%= node.id %>" class="alert alert-success alert-dismissible">
-              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <p>Node Deleted</p>
+              Node Deleted
             </div> 
             <div style="display:none;" id="npublish<%= node.id %>" class="alert alert-success alert-dismissible">
               <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
