@@ -32,7 +32,8 @@ class Spam2Controller < ApplicationController
 
   def _spam_comments
     if logged_in_as(%w(moderator admin))
-      @comments = Comment.where(status: 0)
+      @comments = Comment.order('timestamp DESC')
+                  .where(status: 0)
       render template: 'spam2/_spam'
     else
       flash[:error] = 'Only moderators can moderate comments.'

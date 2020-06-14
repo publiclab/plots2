@@ -25,8 +25,8 @@ $(document).ready(function () {
             <td>
               <% unless comment.node.nil? %>
                 <i class="fa fa-file"></i> <a href="<%= comment.node.path %>" data-toggle="modal" data-target="#ninfo<%= comment.id %>"><%= comment.node.title.truncate(40) %></a>
-              <% end %>
-            </td>
+              <% end %>            
+              </td>
             <td style="width:200px;">
               <%= comment.body.truncate(40) %>
             </td>
@@ -47,8 +47,9 @@ $(document).ready(function () {
               <% end %>
             </td>
           </tr>
-          <div class="modal fade" id="ninfo<%= comment.id %>"> 
+            <div class="modal fade" id="ninfo<%= comment.id %>"> 
             <div class="modal-dialog" >
+              <% unless comment.node.nil? %>
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title"><a href="<%= comment.node.path %>"><%= comment.node.title %></a></h5>
@@ -63,6 +64,7 @@ $(document).ready(function () {
                   <%= time_ago_in_words(comment.timestamp.seconds.ago) %> ago
                 </div>
               </div>
+              <% end %>
             </div>
           </div>
         <% end %>
