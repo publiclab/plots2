@@ -3,16 +3,16 @@ class Spam2Controller < ApplicationController
 
   def _spam
     if logged_in_as(%w(moderator admin))
-      @nodes = Node
+      @nodes = Node.order('nid DESC')
       @nodes = if params[:type] == 'wiki'
                  @nodes.where(type: 'page', status: 1)
                else
                  @nodes.where(status: [0, 4])
                end
-      @spam_count = @nodes.where(status: 0).length.to_s
-      @unmoderated_count = @nodes.where(status: 4).length.to_s
-      @page_count = @nodes.where(type: 'page').length.to_s
-      @note_count = @nodes.where(type: 'note').length.to_s
+      @spam_count = @nodes.where(status: 0).length
+      @unmoderated_count = @nodes.where(status: 4).length
+      @page_count = @nodes.where(type: 'page').length
+      @note_count = @nodes.where(type: 'note').length
     else
       flash[:error] = 'Only moderators can moderate posts.'
       redirect_to '/dashboard'
