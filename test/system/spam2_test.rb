@@ -18,7 +18,7 @@ class SpamTest < ApplicationSystemTestCase
       accept_confirm 'Are you sure you want to delete "'+spam_page.path+'"?' do
       find("a[href='/notes/delete/#{spam_page.id}'").click()
       end
-      assert_selector('div.alert', text: 'Node Deleted')
+      assert_selector('div.alert.p', text: 'Node Deleted')
       end
 end
 	
