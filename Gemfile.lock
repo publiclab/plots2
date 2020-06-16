@@ -143,6 +143,8 @@ GEM
       rake
     figaro (1.1.1)
       thor (~> 0.14)
+    font-awesome-rails (4.7.0.5)
+      railties (>= 3.2, < 6.1)
     friendly_id (5.3.0)
       activerecord (>= 4.0.0)
     gemoji (3.0.1)
@@ -365,7 +367,7 @@ GEM
     public_suffix (4.0.5)
     puma (4.3.5)
       nio4r (~> 2.0)
-    rack (2.2.2)
+    rack (2.2.3)
     rack-accept (0.4.5)
       rack (>= 0.4)
     rack-cors (1.1.1)
@@ -594,6 +596,7 @@ DEPENDENCIES
   composite_primary_keys
   execjs
   figaro
+  font-awesome-rails
   friendly_id
   gemoji
   geocoder
