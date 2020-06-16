@@ -10,6 +10,16 @@ $(document).ready(function () {
   });
 });
 </script>
+<% cache('feature_anniversary-banner', skip_digest: true) do %>
+  <style>
+  .nav_top{
+   margin-top:48px;
+  }
+  .sidenav{
+    margin-top:48px;
+  }
+  </style>
+<% end %>
 <nav class="navbar navbar-expand navbar-light nav_top bg-light">
   <div class="navbar-expand navbar-nav-scroll">
     <ul class=" navbar-nav"> 
@@ -109,5 +119,3 @@ $(document).ready(function () {
     <%= render partial: 'spam2/comments' if @comments %>
   </div>
 </div>
-<%= stylesheet_link_tag "spam2" %>
-<%= javascript_include_tag "spam2"%>
