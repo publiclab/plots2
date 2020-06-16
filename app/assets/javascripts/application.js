@@ -16,6 +16,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery-lazyload/jquery.lazyload.js
 //= require debounce/index.js
 //= require bootstrap/dist/js/bootstrap.bundle.min.js
 //= require bootstrap-3-typeahead/bootstrap3-typeahead.min.js
