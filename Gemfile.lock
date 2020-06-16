@@ -98,7 +98,7 @@ GEM
     composite_primary_keys (11.2.0)
       activerecord (~> 5.2.1)
     concurrent-ruby (1.1.6)
-    connection_pool (2.2.2)
+    connection_pool (2.2.3)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     crass (1.0.6)
@@ -143,6 +143,8 @@ GEM
       rake
     figaro (1.1.1)
       thor (~> 0.14)
+    font-awesome-rails (4.7.0.5)
+      railties (>= 3.2, < 6.1)
     friendly_id (5.3.0)
       activerecord (>= 4.0.0)
     gemoji (3.0.1)
@@ -365,7 +367,7 @@ GEM
     public_suffix (4.0.5)
     puma (4.3.5)
       nio4r (~> 2.0)
-    rack (2.2.2)
+    rack (2.2.3)
     rack-accept (0.4.5)
       rack (>= 0.4)
     rack-cors (1.1.1)
@@ -373,7 +375,7 @@ GEM
     rack-openid (1.4.2)
       rack (>= 1.1.0)
       ruby-openid (>= 2.1.8)
-    rack-protection (2.0.5)
+    rack-protection (2.0.8.1)
       rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
@@ -420,7 +422,7 @@ GEM
     rdiscount (2.2.0.1)
     recaptcha (4.14.0)
       json
-    redis (4.1.0)
+    redis (4.1.4)
     ref (2.0.0)
     regexp_parser (1.7.1)
     representable (3.0.4)
@@ -489,11 +491,11 @@ GEM
       rubyzip (>= 1.2.2)
     sentry-raven (3.0.0)
       faraday (>= 1.0)
-    sidekiq (5.2.7)
+    sidekiq (5.2.9)
       connection_pool (~> 2.2, >= 2.2.2)
-      rack (>= 1.5.0)
+      rack (~> 2.0)
       rack-protection (>= 1.5.0)
-      redis (>= 3.3.5, < 5)
+      redis (>= 3.3.5, < 4.2)
     signet (0.14.0)
       addressable (~> 2.3)
       faraday (>= 0.17.3, < 2.0)
@@ -594,6 +596,7 @@ DEPENDENCIES
   composite_primary_keys
   execjs
   figaro
+  font-awesome-rails
   friendly_id
   gemoji
   geocoder
