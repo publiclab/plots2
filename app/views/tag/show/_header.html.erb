@@ -13,44 +13,12 @@
                       class: "img-fluid d-sm-none",
                       id: "tag-wiki-header-image2") %>
         </div>
-        <div class="bottom-right">
-          <a href="/contributors/<%= params[:id] %>">
-            <%= Tag.follower_count(params[:id]) %> following
-          </a>
-        </div>
       </div>
-
-    <% else %>
-
-    <div class="im d-none d-md-block" id="wiki-empty1">
-      <div class="bottom-right">
-        <a href="/contributors/<%= params[:id] %>">
-          <%= Tag.follower_count(params[:id]) %> following 
-        </a>
-      </div>
-    </div>
-    <div class="im d-sm-none" id="wiki-empty2">
-      <div class="bottom-right"><%= Tag.follower_count(params[:id]) %> following</div>
-    </div>
 
     <% end %>
 
   </div>
 
-<% elsif @wildcard %>
-
-<% else %>
-
-<div class="im d-none d-md-block" id="wiki-empty1">
-  <div class="bottom-right">
-    <a href="/contributors/<%= params[:id] %>"><%= pluralize(Tag.follower_count(params[:id]), 'person') %> following</a>
-  </div>
-</div>
-<div class="im d-sm-none" id="wiki-empty2">
-  <div class="bottom-right">
-    <a href="/contributors/<%= params[:id] %>"><%= pluralize(Tag.follower_count(params[:id]), 'person') %> following</a>
-  </div>
-</div>
 <% end %>
 
 <style>
