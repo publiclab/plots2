@@ -23,9 +23,7 @@
     <span style="color:grey;"><%= node.type.capitalize %> (<span class="status"><% if node.status == 1 %>Published<% elsif node.status == 0 %>Spammed<% elsif node.status == 4 %>Unmoderated<% end %></span>) | <%= time_ago_in_words(node.updated_at) %> ago</span>
   </td>
   <td style="width:200px;">
-  <% unless node.author.nil? %>
-    <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a>  <%= node.author.new_contributor %>
-  <% end %>
+    <a href="/profile/<%= node.author&.name %>"><%= node.author&.name %></a>  <%= node.author&.new_contributor %>
   </td>
   <td><div class="btn-toolbar" style="margin:0;">
     <div class="btn-group">

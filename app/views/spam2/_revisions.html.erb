@@ -30,9 +30,7 @@ $(document).ready(function () {
               <%= revision.body.truncate(40) %>
             </td>
             <td>
-            <% unless revision.author.nil? %>
-              <a href="/profile/<%= revision.author.name %>"><%= revision.author.name %></a> 
-            <% end %>
+              <a href="/profile/<%= revision.author&.name %>"><%= revision.author&.name %></a> 
             </td>
             <td>
               <span style="color:grey;"><%= time_ago_in_words(revision.timestamp.seconds.ago) %> ago</span>
