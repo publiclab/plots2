@@ -392,7 +392,7 @@ en:
       or_subscribe_to_answer: "<a style='margin-bottom:6px;' class='btn btn-primary
         requireLogin' target='_blank' href='%{url1}'>Subscribe to answer questions
         on this topic</a>"
-      research_notes: "Research Notes"
+      research_notes: "Research notes"
       questions: "Questions"
       wiki_pages: "Wiki pages"
       maps: "Maps"
