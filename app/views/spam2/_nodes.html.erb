@@ -1,0 +1,201 @@
+<script>
+$(document).ready(function () {
+	var table = table_main("#node_table");
+	$("#all").click(function () { //select all button
+		$('.selectedId').prop('checked', !$('.selectedId').prop('checked'));
+		var check = ($('.selectedId').filter(":checked").length == $('.selectedId').length);
+		$('#select-count').text($('.selectedId').filter(":checked").length);
+		$('#selectall').prop("checked", check);
+	});
+	function batch_nav(bulk) {
+		vals = []
+		$('.selectedId').each(function (i, a) {
+			if (a.checked) vals.push(a.value)
+		})
+		if (vals.length == 0) {
+			alert("You have not selected anything");
+		} else {
+			window.location = "/spam2/" + bulk + "/" + vals.join(',');
+		}
+	}
+	$("#batch-spam").bind('click', function (e) { //batch spam
+		batch_nav("batch_spam");
+	});
+	$("#batch-publish").bind('click', function (e) { //batch publish
+		batch_nav("batch_publish");
+	});
+	$("#batch-ban").bind('click', function (e) { //batch ban
+		batch_nav("batch_ban");
+	});
+	$("#batch-unban").bind('click', function (e) { //batch ban
+		batch_nav("batch_unban");
+	});
+	$("#delete-batch").bind('click', function (e) { // batch delete
+		batch_nav("batch_delete");
+	});
+	$('#reset').on('click', function () {
+		table.search('').columns().search('').draw();
+		table.search('').columns().order('').draw();
+	});
+	$('#spammed').on('click', function () {
+		table.search('').columns().search('').draw();
+		table.columns(3).search("Spammed").draw();
+	});
+	$('#unmoderated').on('click', function () {
+		table.search('').columns().search('').draw();
+		table.columns(3).search("unmoderated").draw();
+	});
+	$('#page').on('click', function () {
+		table.search('').columns().search('').draw();
+		table.columns(3).search("Page").draw();
+	});
+	$('#note').on('click', function () {
+		table.search('').columns().search('').draw();
+		table.columns(3).search("Note").draw();
+  });
+  $("#extSelect").change(function(e){
+		table.columns().visible(true);
+		if (this.value === '1') {
+			table.column(1).visible(false);
+		} else if (this.value === '2') {
+			table.column(2).visible(false);
+		} else if (this.value === '3') {
+			table.columns(3).visible(false);
+		} else if (this.value === '4') {
+			table.columns(4).visible(false);
+		} else if (this.value === '5') {
+			table.columns(5).visible(false);
+		}
+	});
+});
+</script>
+<div class="card" id="table-card">
+  <div class="bg-light  navbar navbar-expand">
+    <ul class="nav navbar-expand  navbar-nav-scroll">
+      <li class="nav-item">
+        <a class="btn nav-link small  text-dark">Selected <span id="select-count" class="badge badge-dark">0</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="btn nav-link small  text-dark"id="reset">Reset all</a>
+      </li>
+      <% if params[:type] != "wiki" %>  
+      <li class="nav-item">
+        <a class="btn nav-link small   text-dark" id="spammed">Spammed <span class="badge badge-dark"><%= @spam_count %></span></a>
+      </li>
+      <li class="nav-item">
+        <a class="btn nav-link  text-dark" id="unmoderated">Unmoderate <span class="badge badge-dark"><%= @unmoderated_count %></span></a>
+      </li>
+      <li class="nav-item">
+        <a class="btn nav-link  text-dark" id="page">Page <span class="badge badge-dark"><%= @page_count %></span></a>
+      </li>
+      <li class="nav-item">
+        <a class="btn nav-link  text-dark" id="note">Note <span class="badge badge-dark"><%= @note_count %></span></a>
+      </li>   
+      <li class="nav-item pt-2">
+      <select name="Visible" id="extSelect" class="custom-select custom-select-sm form-control form-control-sm">
+      <option value="">Hide(Reset)</option>
+      <option value="1">Title</option>
+      <option value="2">Author</option>
+      <option value="3">Status</option>
+      <option value="4">Time</option>
+      <option value="5">Action</option>
+      </select> 
+      </li>
+      <% end %>
+    </ul>
+  </div>
+  <div class="card-body" style="overflow-x:hidden;">
+    <table  id="node_table" class="nowrap table table-hover" style="width:100%; text-align:left">
+      <thead style="text-align:left;">
+        <tr>
+          <th><input type="checkbox"  id="selectall"/></th>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Status</th>
+          <th>Time</th>
+          <th>Action</th>                                
+        </tr>       
+      </thead>
+      <tbody> 
+        <% @nodes.each do |node| %>
+          <tr id="n<%= node.id %>">
+            <td><input  class="selectedId" value="<%= node.nid %>" type="checkbox" /></td>
+            <td>
+              <i class="fa fa-file"></i> 
+              <a href="javascript:void(0);" data-toggle="modal" data-target="#ninfo<%= node.id %>"><%= node.title.truncate(28) %></a><br />
+            </td>
+            <td>  
+              <a href="/profile/<%= node.author.name %>"><%= node.author.name %> <%= node.author.new_contributor%></a>
+             </td>
+            <td>
+             <span style="color:grey;"><%= node.type.capitalize %> <span style="color:<% if node.status == 1 %>green;<% elsif node.status == 0 %>red;<% elsif node.status == 4 %>blue;<% end %>"%>(<% if node.status == 1 %>Published<% elsif node.status == 0 %>Spammed<% elsif node.status == 4 %>Unmoderated<% end %>)</span>
+            </td>
+             <td>
+               <%= time_ago_in_words(node.updated_at) %> ago</span>
+            </td>
+             <td style="height:35px !important;">
+               <a class="badge btn badge-pill badge<% if node.status != 1 %>-success<% else %>-secondary<% end %> publish" data-remote="true" href="/moderate/publish/<%= node.id %>" ><i class="fa fa-check-circle fa-white"></i> Publish post</a>
+               <a class="badge btn badge-pill badge<% if node.status != 0 %>-danger<% else %>-secondary disabled<% end %> spam" data-remote="true" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban fa-white"></i> Spam post</a> 
+               <a class="badge badge-pill badge-secondary ban a<%= node.author.id %>" <% if node.author.status == 0 %>style="display:none;"<% end %> data-remote="true" href="/ban/<%= node.author.id %>">Ban user</a>
+               <a class="badge badge-pill badge-secondary unban a-unban<%= node.author.id %>" <% if node.author.status == 1 %>style="display:none;"<% end %> data-remote="true" href="/unban/<%= node.author.id %>">Unban user</a>
+                <%= link_to "/notes/delete/#{node.id}", data: { confirm: "Are you sure you want to delete #{node.path}?" }, :remote => true, :class => "px-3 delete" do %>
+                <i class="fa fa-trash"></i>
+               <% end %>
+               <script>
+                $('#n<%= node.id %> .delete').bind('ajax:success', function(e){
+                  $('#n<%= node.id %>').fadeOut()
+                  $('#deleted<%= node.id %>').fadeIn();
+                });
+                $('#n<%= node.id %> .publish').bind('ajax:success', function(e){
+                  $('#n<%= node.id %>').hide()
+                  $('#npublish<%= node.id %>').fadeIn(); // published!
+                });
+                $('#n<%= node.id %> .spam').bind('ajax:success', function(e){
+                  $('#n<%= node.id %>').hide()
+                  $('#nspam<%= node.id %>').fadeIn(); // spammed!
+                });  
+                $('.a<%= node.author.id %>.ban').bind('ajax:success', function(e){
+                  $('.a<%= node.author.id %>').hide()  // ban toggle
+                  $('.a-unban<%= node.author.id %>').show()
+                });
+                $('.a-unban<%= node.author.id %>.unban').bind('ajax:success', function(e){
+                  $('.a-unban<%= node.author.id %>').hide()
+                  $('.a<%= node.author.id %>').show()
+                });
+                </script>
+              </td>
+            </tr>
+            <div style="display:none;" id="deleted<%= node.id %>" class="alert alert-success alert-dismissible">
+              Node Deleted
+            </div> 
+            <div style="display:none;" id="npublish<%= node.id %>" class="alert alert-success alert-dismissible">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              <strong>Success!</strong> Content <a href='<%= node.path %>'>published</a>.
+            </div> 
+            <div style="display:none;" id="nspam<%= node.id %>" class="alert alert-success alert-dismissible">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              <strong>Success!</strong> Content <a href='<%= node.path %>'>spammed</a>.
+            </div>
+            <div class="modal fade" id="ninfo<%= node.id %>"> 
+              <div class="modal-dialog" >
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title"><a href="<%= node.path %>"><%= node.title %></a></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span>&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <%= node.body %>
+                  </div>
+                  <div class="modal-footer">
+                    <%= time_ago_in_words(node.created_at) %> ago
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </tbody>
+      </table>                       
+    </div>
+  </div>

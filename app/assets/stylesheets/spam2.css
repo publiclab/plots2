@@ -1,0 +1,153 @@
+/*
+*= require datatables/dataTables.bootstrap4
+*/
+.nav_top {
+	position: fixed;
+	top: 60px;
+	left: 0px;
+	z-index: 5;
+	height: 50px;
+	width: 100%;
+	overflow-y: hidden;
+	border-bottom: 1px solid #e1e4e8;
+}
+
+#sidebar-wrapper {
+	margin-left: -15%;
+	transition: all .4s ease 0s;
+	position: fixed;
+	top: 50px;
+	right: 0;
+	left: 0;
+	width: 15%;
+	height: 100vh;
+	z-index: 4;
+}
+
+#page-content-wrapper {
+	margin-top: 8vh;
+	width: 85vw;
+}
+
+#wrapper.active #sidebar-wrapper {
+	left: 15%;
+}
+
+#batch-spam:hover {
+	border-bottom: 2px solid red;
+	color: grey;
+	font-weight: bold;
+}
+
+#batch-publish:hover {
+	border-bottom: 2px solid green;
+	color: grey;
+	font-weight: bold;
+}
+
+#delete-batch:hover {
+	border-bottom: 2px solid maroon;
+	color: grey;
+	font-weight: bold;
+}
+
+#all:hover {
+	border-bottom: 2px solid blue;
+	color: grey;
+	font-weight: bold;
+}
+
+#batch-ban:hover {
+	border-bottom: 2px solid orange;
+	color: grey;
+	font-weight: bold;
+}
+
+#batch-unban:hover {
+	border-bottom: 2px solid green;
+	color: grey;
+	font-weight: bold;
+}
+
+.alert {
+	z-index: 6;
+}
+
+#wrapper.active #card-top {
+	margin-left: 10%;
+}
+
+#wrapper.active #table-card {
+	margin-left: 10%;
+}
+
+#table-card {
+	margin-top: 8vh;
+	transition: all .4s ease 0s;
+}
+
+#card-top {
+	transition: all .4s ease 0s;
+}
+
+.sidenav {
+	font-size: 0.9rem;
+	padding-top: 3.625rem;
+	border-right: 1px solid #e1e4e8;
+}
+
+.sidenav .sidenav-menu .nav .sidenav-menu-heading {
+	padding: 1.1rem 1.4rem 0.7rem;
+	font-size: 0.9rem;
+}
+
+.sidenav .sidenav-menu .nav .nav-link {
+	display: flex;
+	align-items: center;
+	padding-top: 0.70rem;
+	padding-bottom: 0.70rem;
+	position: relative;
+	color: black;
+}
+
+.sidenav .sidenav-menu .nav .nav-link.active {
+	font-weight: bold;
+	color: #007bff!important
+}
+
+@media (max-width: 750px) {
+	#sidebar-wrapper {
+		margin-left: -45%;
+		width: 45%;
+	}
+	#wrapper.active #sidebar-wrapper {
+		left: 45%;
+	}
+	.nav_top {
+		font-size: small;
+	}
+	#table-card,
+	#card-top {
+        margin-left: 10%;
+        width:85vw;
+	}
+	#wrapper.active #page-content-wrapper {
+		opacity: 0.2;
+	}
+}
+
+@media (max-width: 1050px) and (min-width: 750px) {
+	#sidebar-wrapper {
+		margin-left: -25%;
+		width: 25%;
+	}
+	#wrapper.active #sidebar-wrapper {
+		left: 25%;
+	}
+	#wrapper.active #card-top {
+		margin-left: 25%;
+	}
+	#wrapper.active #table-card {
+		margin-left: 25%;
+	}
+}
