@@ -116,10 +116,10 @@ class Tag < ApplicationRecord
   end
 
   def self.counter(tagname)
-    Node.where(type: %w(note page))
-        .where('term_data.name = ?', tagname)
-        .includes(:node_tag, :tag)
-        .references(:term_data)
+    Node.where(status: 1, type: %w(note page))
+        .includes(:revision, :tag)
+        .references(:term_data, :node_revisions)
+        .where('term_data.name = ? OR term_data.parent = ?', tagname, tagname)
         .count
   end
 
