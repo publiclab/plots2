@@ -24,7 +24,7 @@ $(document).ready(function () {
           <tr id="n<%= revision.vid %>">
             <td><input  class="selectedId" value="<%= revision.vid %>" type="checkbox" /></td>
             <td>
-              <i class="fa fa-file"></i> <a class="text-primary" data-toggle="modal" data-target="#ninfo<%= revision.vid %>"><%= revision.title.truncate(30) %></a>
+              <i class="fa fa-file"></i> <a class="text-primary" data-toggle="modal" data-target="#ninfo<%= revision.vid %>"><%= revision.title.truncate(20) %></a>
             </td>
             <td>
               <a href="/profile/<%= revision.author.name %>"><%= revision.author.name %></a> 

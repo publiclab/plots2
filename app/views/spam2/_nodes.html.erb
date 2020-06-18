@@ -69,27 +69,28 @@ $(document).ready(function () {
 	});
 });
 </script>
+
 <div class="card" id="table-card">
   <div class="bg-light  navbar navbar-expand">
     <ul class="nav navbar-expand  navbar-nav-scroll">
       <li class="nav-item">
-        <a class="btn nav-link small  text-dark">Selected <span id="select-count" class="badge badge-dark">0</span></a>
+        <a class="btn nav-link small text-dark">Selected <span id="select-count" class="badge badge-dark">0</span></a>
       </li>
       <li class="nav-item">
-        <a class="btn nav-link small  text-dark"id="reset">Reset all</a>
+        <a class="btn nav-link small text-dark"id="reset">Reset all</a>
       </li>
       <% if params[:type] != "wiki" %>  
       <li class="nav-item">
-        <a class="btn nav-link small   text-dark" id="spammed">Spammed <span class="badge badge-dark"><%= @spam_count %></span></a>
+        <a class="btn nav-link small text-dark" id="spammed">Spammed <span class="badge badge-dark"><%= @spam_count %></span></a>
       </li>
       <li class="nav-item">
-        <a class="btn nav-link  text-dark" id="unmoderated">Unmoderate <span class="badge badge-dark"><%= @unmoderated_count %></span></a>
+        <a class="btn nav-link text-dark" id="unmoderated">Unmoderate <span class="badge badge-dark"><%= @unmoderated_count %></span></a>
       </li>
       <li class="nav-item">
-        <a class="btn nav-link  text-dark" id="page">Page <span class="badge badge-dark"><%= @page_count %></span></a>
+        <a class="btn nav-link text-dark" id="page">Page <span class="badge badge-dark"><%= @page_count %></span></a>
       </li>
       <li class="nav-item">
-        <a class="btn nav-link  text-dark" id="note">Note <span class="badge badge-dark"><%= @note_count %></span></a>
+        <a class="btn nav-link text-dark" id="note">Note <span class="badge badge-dark"><%= @note_count %></span></a>
       </li>   
       <li class="nav-item pt-2">
       <select name="Visible" id="extSelect" class="custom-select custom-select-sm form-control form-control-sm">
@@ -122,7 +123,7 @@ $(document).ready(function () {
             <td><input  class="selectedId" value="<%= node.nid %>" type="checkbox" /></td>
             <td>
               <i class="fa fa-file"></i> 
-              <a href="javascript:void(0);" data-toggle="modal" data-target="#ninfo<%= node.id %>"><%= node.title.truncate(28) %></a><br />
+              <a href="javascript:void(0);" data-toggle="modal" data-target="#ninfo<%= node.id %>"><%= node.title.truncate(20) %></a><br />
             </td>
             <td>  
               <a href="/profile/<%= node.author.name %>"><%= node.author.name %> <%= node.author.new_contributor%></a>
