@@ -140,7 +140,7 @@ $(document).ready(function () {
                <a class="badge badge-pill badge-secondary ban a<%= node.author.id %>" <% if node.author.status == 0 %>style="display:none;"<% end %> data-remote="true" href="/ban/<%= node.author.id %>">Ban user</a>
                <a class="badge badge-pill badge-secondary unban a-unban<%= node.author.id %>" <% if node.author.status == 1 %>style="display:none;"<% end %> data-remote="true" href="/unban/<%= node.author.id %>">Unban user</a>
                <%= link_to "/notes/delete/#{node.id}", data: { confirm: "Are you sure you want to delete #{node.path}?" }, :remote => true, :class => "px-3 delete" do %>
-                <i class="fa fa-trash"></i>
+                <i class="fa fa-trash text-dark"></i>
                <% end %>
                <script>
                 $('#n<%= node.id %> .delete').bind('ajax:success', function(e){

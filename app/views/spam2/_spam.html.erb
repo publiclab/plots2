@@ -1,13 +1,14 @@
 <div class="nav_top flex d-inline">
-  <h4 class="text-primary pt-2 float-left nav_title">
+  <h4 class="text-info pt-2 float-left nav_title">
+    <a href="/spam2" class="text-info">Spam2 / </a>
     <% if params[:type] == "wiki" %>
-      Spam2 / <b>Wiki</b>                                                                                                                                                                                                                                                                                                                                                                                                        
+      <b>Wiki</b>                                                                                                                                                                                                                                                                                                                                                                                                        
     <% elsif params[:action] == "_spam_revisions"%>
-      Spam2 / <b>Revisions</b>
+      <b>Revisions</b>
     <% elsif params[:action] == "_spam_comments"%>
-      Spam2 / <b>Comments</b>
+      <b>Comments</b>
     <% else %>
-      Spam2 /<b> Bulk Moderation </b>
+      <b> Bulk Moderation </b>
     <% end %>
   </h4>
   <div class="dropdown float-right">
@@ -19,10 +20,10 @@
         <a class="dropdown-item" ><i class="fa fa-list-alt text-primary"></i> Dashboard</a>
       <div class="dropdown-divider"></div>  
         <h6 class="dropdown-header">Spam Moderation</h6>
-        <a class="dropdown-item <% unless  params[:action] =="_spam_comments" || params[:action] =="_spam_revisions" || params[:type] == "wiki"%> active <% end %>" href="/spam2"><i class="fa fa-address-book text-primary"></i> Bulk Moderation</a>
-        <a class="dropdown-item <% if params[:type] == "wiki" %> active <% end %>" href="/spam2/wiki" ><i class="fa fa-book text-primary"></i> Wiki</a>
-        <a class="dropdown-item <% if params[:action] == "_spam_revisions" %> active <% end %>" href="/spam2/revisions"><i class="fa fa-list text-primary"></i> Revision</a>
-        <a class="dropdown-item <% if params[:action] == "_spam_comments" %> active <% end %>" href="/spam2/comments" ><i class="fa fa-comment text-primary"></i> Comments</a>
+        <a class="dropdown-item <% unless  params[:action] =="_spam_comments" || params[:action] =="_spam_revisions" || params[:type] == "wiki"%> active <% end %>" href="/spam2"><i class="drop fa fa-address-book text-primary"></i> Bulk Moderation</a>
+        <a class="dropdown-item <% if params[:type] == "wiki" %> active <% end %>" href="/spam2/wiki" ><i class="drop fa fa-book text-primary"></i> Wiki</a>
+        <a class="dropdown-item <% if params[:action] == "_spam_revisions" %> active <% end %>" href="/spam2/revisions"><i class="drop fa fa-list text-primary"></i> Revision</a>
+        <a class="dropdown-item <% if params[:action] == "_spam_comments" %> active <% end %>" href="/spam2/comments" ><i class="drop fa fa-comment text-primary"></i> Comments</a>
         <a class="dropdown-item" href="/people"><i class="fa fa-user text-primary"></i> Active users</a>
       </div>
     </div>

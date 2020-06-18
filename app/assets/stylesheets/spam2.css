@@ -17,7 +17,7 @@
 }
 
 #delete-batch:hover {
-	color: maroon !important;
+	color: red !important;
 	cursor: pointer;
 }
 
@@ -36,10 +36,6 @@
 	cursor: pointer;
 }
 
-.alert {
-	z-index: 6;
-}
-
 #table-card {
 	width: 100%;
 }
@@ -53,8 +49,12 @@
 	width:100%;
 }
 
+.active .drop{
+	color:white !important;
+}
+
 @media (max-width: 750px) {
-	#table-card, #bulk-nav ,.nav_top,
+	#table-card, #bulk-nav, .nav_top,
 	#card-top {
         margin-left: 5vw;
         width:90vw;
