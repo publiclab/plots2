@@ -59,8 +59,21 @@
         <li class="nav-item pr-4">
           <a class="nav-link btn btn-light text-dark d-inline-flex"  id="batch-unban"><i class=" pt-1 pr-2 fa fa-flag text-success"></i> Unban</a>
         </li>
+        <li class="nav-item pr-4 pt-1">
+          <input class="form-control h-75 w-100" id="col-search" type="search" placeholder="Search" aria-label="Search">
+        </li>
+        <li class="nav-item pr-4 pt-1">
+          <select name="Visible" id="col-select" class="custom-select custom-select-sm form-control form-control-sm">
+            <option value="">Coloumn Search</option>
+            <option value="1">Title</option>
+            <option value="2">Author</option>
+            <option value="3">Status</option>
+            <option value="4">Time</option>
+            <option value="5">Action</option>
+          </select> 
+        </li>
       <% end %>
-    </ul>    
+    </ul>
   </div>
 </nav>
 

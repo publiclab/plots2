@@ -1,7 +1,7 @@
 <script>
 $(document).ready(function () {
 	var table = table_main("#node_table");
-	$("#all").click(function () { //select all button
+	$("#all").click(function () {    //select all button
 		$('.selectedId').prop('checked', !$('.selectedId').prop('checked'));
 		var check = ($('.selectedId').filter(":checked").length == $('.selectedId').length);
 		$('#select-count').text($('.selectedId').filter(":checked").length);
@@ -9,11 +9,11 @@ $(document).ready(function () {
 	});
 	function batch_nav(bulk) {
 		vals = []
-		$('.selectedId').each(function (i, a) {
+		$('.selectedId').each(function (i, a) {    // batch nav
 			if (a.checked) vals.push(a.value)
 		})
 		if (vals.length == 0) {
-			alert("You have not selected anything");
+			alert("You have not selected anything");     // if nothing is selected
 		} else {
 			window.location = "/spam2/" + bulk + "/" + vals.join(',');
 		}
@@ -33,27 +33,27 @@ $(document).ready(function () {
 	$("#delete-batch").bind('click', function (e) { // batch delete
 		batch_nav("batch_delete");
 	});
-	$('#reset').on('click', function () {
+	$('#reset').on('click', function () {    // reset filter 
 		table.search('').columns().search('').draw();
 		table.search('').columns().order('').draw();
 	});
-	$('#spammed').on('click', function () {
+	$('#spammed').on('click', function () {     //spam filter 
 		table.search('').columns().search('').draw();
 		table.columns(3).search("Spammed").draw();
 	});
-	$('#unmoderated').on('click', function () {
-		table.search('').columns().search('').draw();
+	$('#unmoderated').on('click', function () {   // unmoderated filter
+		table.search('').columns().search('').draw();  
 		table.columns(3).search("unmoderated").draw();
 	});
-	$('#page').on('click', function () {
+	$('#page').on('click', function () {         // page filter
 		table.search('').columns().search('').draw();
 		table.columns(3).search("Page").draw();
 	});
-	$('#note').on('click', function () {
+	$('#note').on('click', function () {        // note filter 
 		table.search('').columns().search('').draw();
 		table.columns(3).search("Note").draw();
   });
-  $("#extSelect").change(function(e){
+  $("#extSelect").change(function(e){  // Hide coloumns
 		table.columns().visible(true);
 		if (this.value === '1') {
 			table.column(1).visible(false);
@@ -65,6 +65,26 @@ $(document).ready(function () {
 			table.columns(4).visible(false);
 		} else if (this.value === '5') {
 			table.columns(5).visible(false);
+		}
+  });
+  $( '#col-search').on('keyup click', function () {  // specific search
+    table.search('').columns().search('').draw();
+    var col_input =$("#col-select").val();
+    if (col_input === '1') {
+      table.search('').columns().search('').draw();
+			table.column(1).search(this.value).draw();
+		} else if (col_input === '2') {
+      table.search('').columns().search('').draw();
+			table.column(2).search(this.value).draw();
+		} else if (col_input === '3') {
+      table.search('').columns().search('').draw();
+			table.columns(3).search(this.value).draw();
+		} else if (col_input === '4') {
+      table.search('').columns().search('').draw();
+			table.columns(4).search(this.value).draw();
+		} else if (col_input === '5') {
+      table.search('').columns().search('').draw();
+			table.columns(5).search(this.value).draw();
 		}
 	});
 });
@@ -84,14 +104,14 @@ $(document).ready(function () {
         <a class="btn nav-link small text-dark" id="spammed">Spammed <span class="badge badge-dark"><%= @spam_count %></span></a>
       </li>
       <li class="nav-item">
-        <a class="btn nav-link text-dark" id="unmoderated">Unmoderate <span class="badge badge-dark"><%= @unmoderated_count %></span></a>
+        <a class="btn nav-link text-dark" id="unmoderated">Unmoderated <span class="badge badge-dark"><%= @unmoderated_count %></span></a>
       </li>
       <li class="nav-item">
         <a class="btn nav-link text-dark" id="page">Page <span class="badge badge-dark"><%= @page_count %></span></a>
       </li>
       <li class="nav-item">
         <a class="btn nav-link text-dark" id="note">Note <span class="badge badge-dark"><%= @note_count %></span></a>
-      </li>   
+      </li>
       <li class="nav-item pt-2">
       <select name="Visible" id="extSelect" class="custom-select custom-select-sm form-control form-control-sm">
       <option value="">Hide(Reset)</option>
