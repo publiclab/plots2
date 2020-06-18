@@ -65,7 +65,7 @@ $(document).ready(function () {
           Menu
         </div>
         <a class="nav-link" style="color:grey;">
-          <div class="nav-link-icon mx-1 "><i class="fa fa-list-alt text-primary"></i></div>
+          <div class="nav-link-icon mx-1 "><i class="fa fa-tachometer text-primary"></i></div>
           Dashboard
         </a>
         <hr class="w-75 self-align-center text-dark">
@@ -101,7 +101,7 @@ $(document).ready(function () {
       <div class="card-header bg-light"></div>
       <div class="card-body">
         <h5 class="card-title">Moderate Potential Spam</h5>
-        <p class="card-text">Moderators and admins have the ability to "spam" posts if they include inappropriate content, blatant advertising, or are otherwise problematic. If you're not sure, email at <a href="mailto:organizers@<%= request.host %>" class="badge badge-primary text-white">moderators@<%= request.host %></a> If we all work together, we can keep spam to a minimum. Thanks for helping out!</p>
+        <p class="card-text">Moderators and admins have the ability to "spam" posts if they include inappropriate content, blatant advertising, or are otherwise problematic. If you're not sure, email at <a href="mailto:organizers@<%= request.host %>" class="badge badge-info text-white">moderators@<%= request.host %></a> If we all work together, we can keep spam to a minimum. Thanks for helping out!</p>
       </div>
     </div>
     <%= render partial: 'spam2/nodes' if @nodes %>

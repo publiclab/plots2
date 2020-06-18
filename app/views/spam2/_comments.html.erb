@@ -31,7 +31,7 @@ $(document).ready(function () {
               <%= comment.body.truncate(40) %>
             </td>
             <td>
-              <a href="/profile/<%= comment.author.name %>"><%= comment.author.name %></a>
+              <a href="/profile/<%= comment.author&.name %>"><%= comment.author&.name %></a>
             </td>
             <td>
               <% unless comment.node.nil? %>
