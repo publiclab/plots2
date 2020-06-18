@@ -1,19 +1,20 @@
 <script>
 $(document).ready(function () {
 	var table = table_main("#node_table");
-	$("#all").click(function () {    //select all button
+	$("#all").click(function () { //select all button
 		$('.selectedId').prop('checked', !$('.selectedId').prop('checked'));
 		var check = ($('.selectedId').filter(":checked").length == $('.selectedId').length);
 		$('#select-count').text($('.selectedId').filter(":checked").length);
 		$('#selectall').prop("checked", check);
 	});
+
 	function batch_nav(bulk) {
 		vals = []
-		$('.selectedId').each(function (i, a) {    // batch nav
+		$('.selectedId').each(function (i, a) { // batch nav
 			if (a.checked) vals.push(a.value)
 		})
 		if (vals.length == 0) {
-			alert("You have not selected anything");     // if nothing is selected
+			alert("You have not selected anything"); // if nothing is selected
 		} else {
 			window.location = "/spam2/" + bulk + "/" + vals.join(',');
 		}
@@ -33,27 +34,27 @@ $(document).ready(function () {
 	$("#delete-batch").bind('click', function (e) { // batch delete
 		batch_nav("batch_delete");
 	});
-	$('#reset').on('click', function () {    // reset filter 
+	$('#reset').on('click', function () { // reset filter 
 		table.search('').columns().search('').draw();
 		table.search('').columns().order('').draw();
 	});
-	$('#spammed').on('click', function () {     //spam filter 
+	$('#spammed').on('click', function () { //spam filter 
 		table.search('').columns().search('').draw();
 		table.columns(3).search("Spammed").draw();
 	});
-	$('#unmoderated').on('click', function () {   // unmoderated filter
-		table.search('').columns().search('').draw();  
+	$('#unmoderated').on('click', function () { // unmoderated filter
+		table.search('').columns().search('').draw();
 		table.columns(3).search("unmoderated").draw();
 	});
-	$('#page').on('click', function () {         // page filter
+	$('#page').on('click', function () { // page filter
 		table.search('').columns().search('').draw();
 		table.columns(3).search("Page").draw();
 	});
-	$('#note').on('click', function () {        // note filter 
+	$('#note').on('click', function () { // note filter 
 		table.search('').columns().search('').draw();
 		table.columns(3).search("Note").draw();
-  });
-  $("#extSelect").change(function(e){  // Hide coloumns
+	});
+	$("#extSelect").change(function (e) { // Hide coloumns
 		table.columns().visible(true);
 		if (this.value === '1') {
 			table.column(1).visible(false);
@@ -66,24 +67,24 @@ $(document).ready(function () {
 		} else if (this.value === '5') {
 			table.columns(5).visible(false);
 		}
-  });
-  $( '#col-search').on('keyup click', function () {  // specific search
-    table.search('').columns().search('').draw();
-    var col_input =$("#col-select").val();
-    if (col_input === '1') {
-      table.search('').columns().search('').draw();
+	});
+	$('#col-search').on('keyup click', function () { // specific search
+		table.search('').columns().search('').draw();
+		var col_input = $("#col-select").val();
+		if (col_input === '1') {
+			table.search('').columns().search('').draw();
 			table.column(1).search(this.value).draw();
 		} else if (col_input === '2') {
-      table.search('').columns().search('').draw();
+			table.search('').columns().search('').draw();
 			table.column(2).search(this.value).draw();
 		} else if (col_input === '3') {
-      table.search('').columns().search('').draw();
+			table.search('').columns().search('').draw();
 			table.columns(3).search(this.value).draw();
 		} else if (col_input === '4') {
-      table.search('').columns().search('').draw();
+			table.search('').columns().search('').draw();
 			table.columns(4).search(this.value).draw();
 		} else if (col_input === '5') {
-      table.search('').columns().search('').draw();
+			table.search('').columns().search('').draw();
 			table.columns(5).search(this.value).draw();
 		}
 	});
