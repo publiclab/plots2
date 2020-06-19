@@ -58,7 +58,7 @@
                 <p class="contributor-info"><%= @total_posts %> posts by
                   <a href="/contributors/<%= params[:id] %>"><%= Tag.contributor_count(params[:id]) %> contributors</a> |
                   <a href="/contributors/<%= params[:id] %>"><%= Tag.follower_count(params[:id]) %> followers</a>
-                  <a href="https://publiclab.org/wiki/contributors"><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>
+                  <a aria-label="About contributors" href="https://publiclab.org/wiki/contributors"><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>
                 </p>
               </div>
               <div class="col-lg-6 d-flex justify-content-lg-end">
