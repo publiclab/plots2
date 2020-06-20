@@ -24,7 +24,7 @@ $(document).ready(function () {
           <tr id="n<%= revision.vid %>">
             <td><input  class="selectedId" value="<%= revision.nid %>" type="checkbox" /></td>
             <td>
-              <i class="fa fa-file"></i> <a href="<%= revision.parent&.path %>"><%= revision.title.truncate(40) %></a><br />
+              <i class="fa fa-file"></i> <a href="<% if !revision.parent.nil? %><%= revision.parent.path %><% end %>"><%= revision.title.truncate(40) %></a><br />
             </td>
             <td style="width:200px;">
               <%= revision.body.truncate(40) %>

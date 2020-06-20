@@ -23,8 +23,10 @@ $(document).ready(function () {
           <tr id="n<%= comment.id %>">
             <td><input  class="selectedId" value="<%= comment.nid %>" type="checkbox" /></td>
             <td>
-              <i class="fa fa-file"></i> <a href="<%= comment.node&.path %>"><%= comment.node&.title.truncate(40) %></a>
-            </td>
+              <% unless comment.node.nil? %>
+                <i class="fa fa-file"></i> <a href="<%= comment.node.path %>" data-toggle="modal" data-target="#ninfo<%= comment.id %>"><%= comment.node.title.truncate(20) %></a>
+              <% end %>            
+              </td>
             <td style="width:200px;">
               <%= comment.body.truncate(40) %>
             </td>
@@ -45,6 +47,26 @@ $(document).ready(function () {
               <% end %>
             </td>
           </tr>
+            <div class="modal fade" id="ninfo<%= comment.id %>"> 
+            <div class="modal-dialog" >
+              <% unless comment.node.nil? %>
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title"><a href="<%= comment.node.path %>"><%= comment.node.title %></a></h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span>&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <%= comment.body %>
+                </div>
+                <div class="modal-footer">
+                  <%= time_ago_in_words(comment.timestamp.seconds.ago) %> ago
+                </div>
+              </div>
+              <% end %>
+            </div>
+          </div>
         <% end %>
       </tbody>
     </table>                       
