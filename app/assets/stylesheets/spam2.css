@@ -53,6 +53,16 @@
 	color:white !important;
 }
 
+#col-search{
+	cursor: text;
+	text-align:left !important;
+	margin-top:2px;
+}
+
+#col-select{
+	margin-top:2px;
+}
+
 @media (max-width: 750px) {
 	#table-card, #bulk-nav, .nav_top,
 	#card-top {

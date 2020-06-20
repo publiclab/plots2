@@ -31,7 +31,7 @@ $(document).ready(function () {
               <%= comment.body.truncate(40) %>
             </td>
             <td>
-              <a href="/profile/<%= comment.author.name %>"><%= comment.author.name %></a>
+              <a href="/profile/<%= comment.author&.name %>"><%= comment.author&.name %></a>
             </td>
             <td>
               <% unless comment.node.nil? %>
@@ -40,10 +40,10 @@ $(document).ready(function () {
             </td>
             <td>
               <a class="badge badge-pill badge<% if comment.status == 0 %>-success<% else %>-secondary disabled<% end %> publish" href="/admin/publish_comment/<%= comment.id %>"><i class="fa fa-check-circle fa-white"></i> Publish</a>
-              <% if comment.author.status == 0 %>
-                <a class="badge badge-pill badge-danger a<%= comment.author.id %>" href="/ban/<%= comment.author.id %>">Ban</a>
-              <% elsif comment.author.status == 1 %>
-                <a class="badge badge-pill badge-secondary unban a-unban<%= comment.author.id %>" href="/unban/<%= comment.author.id %>">Unban</a>
+              <% if comment.author&.status == 0 %>
+                <a class="badge badge-pill badge-danger a<%= comment.author&.id %>" href="/ban/<%= comment.author&.id %>">Ban</a>
+              <% elsif comment.author&.status == 1 %>
+                <a class="badge badge-pill badge-secondary unban a-unban<%= comment.author&.id %>" href="/unban/<%= comment.author&.id %>">Unban</a>
               <% end %>
             </td>
           </tr>
