@@ -1,18 +1,18 @@
 <div class="nav_top flex d-inline">
-  <h4 class="text-info pt-2 float-left nav_title">
-    <a href="/spam2" class="text-info">Spam2 / </a>
+  <p class="text-primary pt-2 float-left nav_title h4">
+    <a href="/spam2" class="text-primary">Spam2 / </a><b>
     <% if params[:type] == "wiki" %>
       <b>Wiki</b>                                                                                                                                                                                                                                                                                                                                                                                                        
     <% elsif params[:action] == "_spam_revisions"%>
-      <b>Revisions</b>
+      Revisions
     <% elsif params[:action] == "_spam_comments"%>
-      <b>Comments</b>
+      Comments
     <% else %>
-      <b> Bulk Moderation </b>
-    <% end %>
-  </h4>
+      Bulk Moderation 
+    <% end %> </b>
+  </p>
   <div class="dropdown float-right">
-    <a class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuLink" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <a class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuLink" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       Menu
     </a>
     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
@@ -42,25 +42,25 @@
     <ul class=" navbar-nav ">
       <% if params[:action] != "_spam_revisions" && params[:action] != "_spam_comments" %>
         <li class="nav-item pr-4">
-          <a class="nav-link btn btn-light text-dark d-inline-flex " id="batch-spam"><i class=" pt-1 pr-2 fa fa-ban text-danger"></i>  Spam</a>
+          <a class="nav-link btn btn-light border text-dark d-inline-flex " id="batch-spam"><i class=" pt-1 pr-2 fa fa-ban text-danger"></i>  Spam</a>
         </li>
         <li class="nav-item pr-4">
-          <a class="nav-link btn btn-light text-dark d-inline-flex"  id="batch-publish"><i class=" pt-1 pr-2 fa fa-check-circle text-success"></i>  Publish</a>
+          <a class="nav-link btn btn-light border text-dark d-inline-flex"  id="batch-publish"><i class=" pt-1 pr-2 fa fa-check-circle text-success"></i>  Publish</a>
         </li>
         <li class="nav-item pr-4">
-          <a class="nav-link btn btn-light text-dark d-inline-flex" id="delete-batch"><i class=" pt-1 pr-2 fa fa-trash text-danger"></i> Delete</a>
+          <a class="nav-link btn btn-light border text-dark d-inline-flex" id="delete-batch"><i class=" pt-1 pr-2 fa fa-trash text-danger"></i> Delete</a>
         </li>
         <li class="nav-item pr-4">
-          <a class="nav-link btn btn-light text-dark d-inline-flex"  id="all"><i class=" pt-1 pr-2  fa fa-check text-primary"></i> Select</a>
+          <a class="nav-link btn btn-light border text-dark d-inline-flex"  id="all"><i class=" pt-1 pr-2  fa fa-check text-primary"></i> Select</a>
         </li>
         <li class="nav-item pr-4">
-          <a class="nav-link btn btn-light text-dark d-inline-flex"  id="batch-ban"><i class=" pt-1 pr-2 fa fa-flag text-warning"></i> Ban</a>
+          <a class="nav-link btn btn-light border text-dark d-inline-flex"  id="batch-ban"><i class=" pt-1 pr-2 fa fa-flag text-warning"></i> Ban</a>
         </li>
         <li class="nav-item pr-4">
-          <a class="nav-link btn btn-light text-dark d-inline-flex"  id="batch-unban"><i class=" pt-1 pr-2 fa fa-flag text-success"></i> Unban</a>
+          <a class="nav-link btn btn-light border text-dark d-inline-flex"  id="batch-unban"><i class=" pt-1 pr-2 fa fa-flag text-success"></i> Unban</a>
         </li>
         <li class="nav-item pr-4 pt-1">
-          <input class="form-control h-75 w-100" id="col-search" type="search" placeholder="Search" aria-label="Search">
+          <input class="form-control form-control-sm" id="col-search" type="search" placeholder="Search" aria-label="Search">
         </li>
         <li class="nav-item pr-4 pt-1">
           <select name="Visible" id="col-select" class="custom-select custom-select-sm form-control form-control-sm">
