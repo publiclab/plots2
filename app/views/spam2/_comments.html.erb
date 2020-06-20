@@ -23,9 +23,7 @@ $(document).ready(function () {
           <tr id="n<%= comment.id %>">
             <td><input  class="selectedId" value="<%= comment.nid %>" type="checkbox" /></td>
             <td>
-              <% unless comment.node.nil? %>
-                <i class="fa fa-file"></i> <a href="<%= comment.node.path %>"><%= comment.node.title.truncate(40) %></a>
-              <% end %>
+              <i class="fa fa-file"></i> <a href="<%= comment.node&.path %>"><%= comment.node&.title.truncate(40) %></a>
             </td>
             <td style="width:200px;">
               <%= comment.body.truncate(40) %>
