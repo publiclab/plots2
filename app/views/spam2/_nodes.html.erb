@@ -172,10 +172,12 @@ $(document).ready(function () {
                 $('#n<%= node.id %> .publish').bind('ajax:success', function(e){
                   $('#n<%= node.id %>').hide()
                   $('#npublish<%= node.id %>').fadeIn(); // published!
+                  $('#npublish<%= node.id %>').fadeOut();
                 });
                 $('#n<%= node.id %> .spam').bind('ajax:success', function(e){
                   $('#n<%= node.id %>').hide()
                   $('#nspam<%= node.id %>').fadeIn(); // spammed!
+                  $('#nspam<%= node.id %>').fadeOut();
                 });  
                 $('.a<%= node.author.id %>.ban').bind('ajax:success', function(e){
                   $('.a<%= node.author.id %>').hide()  // ban toggle
@@ -188,16 +190,14 @@ $(document).ready(function () {
                 </script>
               </td>
             </tr>
-            <div style="display:none;" id="deleted<%= node.id %>" class="alert alert-success alert-dismissible">
+            <div style="display:none;" id="deleted<%= node.id %>" class="alert alert-danger alert-dismissible">
               Node Deleted
             </div> 
             <div style="display:none;" id="npublish<%= node.id %>" class="alert alert-success alert-dismissible">
-              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-              <strong>Success!</strong> Content <a href='<%= node.path %>'>published</a>.
+              Content published
             </div> 
-            <div style="display:none;" id="nspam<%= node.id %>" class="alert alert-success alert-dismissible">
-              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-              <strong>Success!</strong> Content <a href='<%= node.path %>'>spammed</a>.
+            <div style="display:none;" id="nspam<%= node.id %>" class="alert alert-danger alert-dismissible">
+                Content spammed
             </div>
             <div class="modal fade" id="ninfo<%= node.id %>"> 
               <div class="modal-dialog" >
