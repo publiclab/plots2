@@ -2,9 +2,9 @@ class DigestSpamJob
   include Sidekiq::Worker
   def perform(frequency_digest)
     if frequency_digest.zero?
-        tag_digest = 'digest:daily:spam'
+      tag_digest = 'digest:daily:spam'
     elsif frequency_digest == 1
-        tag_digest = 'digest:weekly:spam'
+      tag_digest = 'digest:weekly:spam'
     end
     users = User.where(role: %w(moderator admin))
               .includes(:user_tags)
