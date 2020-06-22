@@ -401,7 +401,7 @@ class UsersController < ApplicationController
 
     digest_settings = [
       'digest:weekly',
-      'digest:daily',      
+      'digest:daily',
       'digest:weekly:spam',
       'digest:daily:spam'
     ]
