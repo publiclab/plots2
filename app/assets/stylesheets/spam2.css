@@ -36,6 +36,10 @@
 	cursor: pointer;
 }
 
+#node-hover:hover{
+	color:blue !important;
+}
+
 #table-card {
 	width: 100%;
 }
@@ -46,6 +50,7 @@
 
 #bulk-nav{
 	margin-top: 2%;
+	margin-bottom: 1%;
 	width:100%;
 }
 
@@ -70,7 +75,10 @@
         width:90vw;
 	}
 	.nav_title{
-		font-size: 20px;
+		font-size: 18px;
 		margin-bottom : 10px;
+	}
+	#card-top .card-header{
+		font-size: 18px;
 	}
 }
