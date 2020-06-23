@@ -82,7 +82,7 @@ GEM
       ci_reporter (~> 2.0)
       test-unit (>= 2.5.5, < 4.0)
     climate_control (0.2.0)
-    codecov (0.1.16)
+    codecov (0.1.17)
       json
       simplecov
       url
@@ -505,7 +505,7 @@ GEM
     simplecov (0.18.2)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
-    simplecov-html (0.12.0)
+    simplecov-html (0.12.2)
     skylight (4.3.0)
       skylight-core (= 4.3.0)
     skylight-core (4.3.0)
