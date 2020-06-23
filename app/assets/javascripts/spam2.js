@@ -6,16 +6,15 @@
 function table_main(id) {
 	var table = $(id).DataTable({
 		"order": [[1, "desc"]],
-		"stateSave": false,
 		"autoWidth": false,
 		"search": {
 			"regex": true
 		},
 		"scrollX": true,
-		"paging":false,
-		"info":false,
-		"language":{
-			"search":"Search in this page"
+		"paging": false,
+		"info": false,
+		"language": {
+			"search": "Search in this page"
 		}
 	});
 	$('#selectall').click(function () {
@@ -32,11 +31,10 @@ function table_main(id) {
 	return table;
 }
 
-function disable_buttons(id){
-	if ($(id).is(":checked")){
+function disable_buttons(id) {
+	if ($(id).is(":checked")) {
 		$("#batch-spam, #batch-publish, #delete-batch, #batch-ban, #batch-unban").removeClass("disabled");
-	}
-	else {
+	} else {
 		$("#batch-spam, #batch-publish, #delete-batch, #batch-ban, #batch-unban").addClass("disabled");
 	}
 }

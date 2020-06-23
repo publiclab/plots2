@@ -21,7 +21,7 @@ class Spam2Controller < ApplicationController
 
   def _spam_revisions
     if logged_in_as(%w(admin moderator))
-     @revisions = Revision.where(status: 0).paginate(page: params[:page])
+      @revisions = Revision.where(status: 0).paginate(page: params[:page])
                             .order('timestamp DESC')
       render template: 'spam2/_spam'
     else
