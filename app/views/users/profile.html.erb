@@ -6,7 +6,7 @@
   <% elsif !current_user.nil? && current_user.id == @profile_user.id %>
     <div id="map_template" style="position: relative; width: 100%; display: inline-block;">
       <img src="https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/0/0/0.png" style="height:300px; width: 100%; margin: 0; position: relative; margin-right: -10px;">  
-      <button type='button' class='blurred-location-input btn btn-default btn-lg' onclick='$('.blurred-location-input:last').click()' style="position: absolute;    position: absolute;top: 41% ; left: 15% ;"> <strong> Share your Location </strong> </button>
+      <button type='button' class='blurred-location-input btn btn-default btn-lg' onclick='createBlurredLocationInput()' style="position:absolute;position:absolute;top:41%;left:15%;"> <strong> Share your Location </strong> </button>
       <p><i><small>Learn about <a href='https://publiclab.org/wiki/location-privacy'>privacy</a> </small></i></p>
     </div> 
   <% end %>
