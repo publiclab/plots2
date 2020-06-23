@@ -54,4 +54,5 @@ Rails.application.config.assets.precompile += [
   'async_tag_subscriptions.js',
   'cable.js',
   'spam2.css',
+  'spam2.js',
 ]

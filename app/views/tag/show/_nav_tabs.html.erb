@@ -8,7 +8,7 @@
             <i class="fa fa-file"></i> 
             <span class="d-lg-inline"> 
               <span class="d-none d-md-inline"><%= t('tag.show.research_notes') %></span>
-              <span class="badge badge-primary"><%= params[:counts][:posts] %></span>
+              <span class="d-none d-sm-inline badge badge-primary"><%= params[:counts][:posts] %></span>
             </span>
           </a>
         </li>
@@ -18,7 +18,7 @@
           <i class="fa fa-question-circle"></i> 
           <span class="d-lg-inline">
             <span class="d-none d-md-inline"><%= t('tag.show.questions') %></span>
-            <span class="badge badge-primary"><%= params[:counts][:questions] %></span>
+            <span class="d-none d-sm-inline badge badge-primary"><%= params[:counts][:questions] %></span>
           </span>
         </a>
       </li>
@@ -27,7 +27,7 @@
           <i class="fa fa-book"></i> 
           <span class="d-lg-inline">
             <span class="d-none d-md-inline"><%= t('tag.show.wiki_pages') %></span>
-            <span class="badge badge-primary"><%= params[:counts][:wiki] %></span>
+            <span class="d-none d-sm-inline badge badge-primary"><%= params[:counts][:wiki] %></span>
           </span>
         </a>
       </li>
@@ -45,7 +45,7 @@
             <i class="fa fa-user"></i> 
             <span class="d-lg-inline">
               <span class="d-none d-lg-inline"><%= raw t('tag.show.people') %></span>
-              <span class="badge badge-primary"><%=@length %></span>
+              <span class="d-none d-sm-inline badge badge-primary"><%=@length %></span>
             </span>
           </a>
         </li>
