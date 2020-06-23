@@ -2,28 +2,29 @@
 <div class="blurred-location-container" style="position:absolute;top:0;left:0;"></div>
 
 <script>
+  function createBlurredLocationInput() {
+    $(this).attr("disabled", "disabled");
+    let modalUrl = '/locations/modal';
+    let firstVar = true;
+    <% if (params[:action] == "list") || (params[:action] == "profile") %>
+      modalUrl += firstVar ? '?' : '&';
+      modalUrl += 'reload=true';
+      firstVar = false;
+    <% end %>
+    if( $(this).attr("submit_to") ) {
+      modalUrl += firstVar ? '?' : '&';
+      modalUrl += 'url=' + encodeURIComponent($(this).attr("submit_to"));
+      firstVar = false;
+    }
+    $.ajax(modalUrl)
+     .done(function(response) {
+       $('.blurred-location-container').html(response);
+       $('#blurred-location-modal').on('shown.bs.modal', function () { blurredLocation.map.invalidateSize(); });
+       $('#blurred-location-modal').on('hide.bs.modal', function() {$('.blurred-location-input').removeAttr('disabled');});
+       $('#blurred-location-modal').modal();
+     });
+  }
   jQuery(document).ready(function() {
-    $('.blurred-location-input').click(function createBlurredLocationInput() {
-      $(this).attr("disabled", "disabled");
-      let modalUrl = '/locations/modal';
-      let firstVar = true;
-      <% if (params[:action] == "list") || (params[:action] == "profile") %>
-        modalUrl += firstVar ? '?' : '&';
-        modalUrl += 'reload=true';
-        firstVar = false;
-      <% end %>
-      if( $(this).attr("submit_to") ) {
-        modalUrl += firstVar ? '?' : '&';
-        modalUrl += 'url=' + encodeURIComponent($(this).attr("submit_to"));
-        firstVar = false;
-      }
-      $.ajax(modalUrl)
-       .done(function(response) {
-         $('.blurred-location-container').html(response);
-         $('#blurred-location-modal').on('shown.bs.modal', function () { blurredLocation.map.invalidateSize(); });
-         $('#blurred-location-modal').on('hide.bs.modal', function() {$('.blurred-location-input').removeAttr('disabled');});
-         $('#blurred-location-modal').modal();
-       });
-    });
+    $('.blurred-location-input').click(createBlurredLocationInput);
   });
 </script>
