@@ -21,17 +21,17 @@ $(document).ready(function () {
       <tbody> 
         <% @comments.each do |comment| %>
           <tr id="n<%= comment.id %>">
-            <td><input  class="selectedId" value="<%= comment.nid %>" type="checkbox" /></td>
+            <td><input  class="selectedId" value="<%= comment.id %>" type="checkbox" /></td>
             <td>
               <% unless comment.node.nil? %>
-                <i class="fa fa-file"></i> <a href="<%= comment.node.path %>"><%= comment.node.title.truncate(40) %></a>
-              <% end %>
-            </td>
+                <i class="fa fa-file"></i> <a href="<%= comment.node.path %>" data-toggle="modal" data-target="#ninfo<%= comment.id %>"><%= comment.node.title.truncate(20) %></a>
+              <% end %>            
+              </td>
             <td style="width:200px;">
               <%= comment.body.truncate(40) %>
             </td>
             <td>
-              <a href="/profile/<%= comment.author.name %>"><%= comment.author.name %></a>
+              <a href="/profile/<%= comment.author&.name %>"><%= comment.author&.name %></a>
             </td>
             <td>
               <% unless comment.node.nil? %>
@@ -40,13 +40,33 @@ $(document).ready(function () {
             </td>
             <td>
               <a class="badge badge-pill badge<% if comment.status == 0 %>-success<% else %>-secondary disabled<% end %> publish" href="/admin/publish_comment/<%= comment.id %>"><i class="fa fa-check-circle fa-white"></i> Publish</a>
-              <% if comment.author.status == 0 %>
-                <a class="badge badge-pill badge-danger a<%= comment.author.id %>" href="/ban/<%= comment.author.id %>">Ban</a>
-              <% elsif comment.author.status == 1 %>
-                <a class="badge badge-pill badge-secondary unban a-unban<%= comment.author.id %>" href="/unban/<%= comment.author.id %>">Unban</a>
+              <% if comment.author&.status == 0 %>
+                <a class="badge badge-pill badge-danger a<%= comment.author&.id %>" href="/ban/<%= comment.author&.id %>">Ban</a>
+              <% elsif comment.author&.status == 1 %>
+                <a class="badge badge-pill badge-secondary unban a-unban<%= comment.author&.id %>" href="/unban/<%= comment.author&.id %>">Unban</a>
               <% end %>
             </td>
           </tr>
+            <div class="modal fade" id="ninfo<%= comment.id %>"> 
+            <div class="modal-dialog" >
+              <% unless comment.node.nil? %>
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title"><a href="<%= comment.node.path %>"><%= comment.node.title %></a></h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span>&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <%= comment.body %>
+                </div>
+                <div class="modal-footer">
+                  <%= time_ago_in_words(comment.timestamp.seconds.ago) %> ago
+                </div>
+              </div>
+              <% end %>
+            </div>
+          </div>
         <% end %>
       </tbody>
     </table>                       

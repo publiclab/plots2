@@ -2,152 +2,83 @@
 *= require datatables/dataTables.bootstrap4
 */
 .nav_top {
-	position: fixed;
-	top: 60px;
-	left: 0px;
 	z-index: 5;
-	height: 50px;
 	width: 100%;
-	overflow-y: hidden;
-	border-bottom: 1px solid #e1e4e8;
-}
-
-#sidebar-wrapper {
-	margin-left: -15%;
-	transition: all .4s ease 0s;
-	position: fixed;
-	top: 50px;
-	right: 0;
-	left: 0;
-	width: 15%;
-	height: 100vh;
-	z-index: 4;
-}
-
-#page-content-wrapper {
-	margin-top: 8vh;
-	width: 85vw;
-}
-
-#wrapper.active #sidebar-wrapper {
-	left: 15%;
 }
 
 #batch-spam:hover {
-	border-bottom: 2px solid red;
-	color: grey;
-	font-weight: bold;
+	color:  red !important;
+	cursor: pointer;
 }
 
 #batch-publish:hover {
-	border-bottom: 2px solid green;
-	color: grey;
-	font-weight: bold;
+	color: green !important;
+	cursor: pointer;
 }
 
 #delete-batch:hover {
-	border-bottom: 2px solid maroon;
-	color: grey;
-	font-weight: bold;
+	color: red !important;
+	cursor: pointer;
 }
 
 #all:hover {
-	border-bottom: 2px solid blue;
-	color: grey;
-	font-weight: bold;
+	color: blue !important;
+	cursor: pointer;
 }
 
 #batch-ban:hover {
-	border-bottom: 2px solid orange;
-	color: grey;
-	font-weight: bold;
+	color: orange !important;
+	cursor: pointer;
 }
 
 #batch-unban:hover {
-	border-bottom: 2px solid green;
-	color: grey;
-	font-weight: bold;
+	color: green !important;	
+	cursor: pointer;
 }
 
-.alert {
-	z-index: 6;
-}
-
-#wrapper.active #card-top {
-	margin-left: 10%;
-}
-
-#wrapper.active #table-card {
-	margin-left: 10%;
+#node-hover:hover{
+	color:blue !important;
 }
 
 #table-card {
-	margin-top: 8vh;
-	transition: all .4s ease 0s;
+	width: 100%;
 }
 
 #card-top {
-	transition: all .4s ease 0s;
+	margin-top:2vh;
 }
 
-.sidenav {
-	font-size: 0.9rem;
-	padding-top: 3.625rem;
-	border-right: 1px solid #e1e4e8;
+#bulk-nav{
+	margin-top: 2%;
+	margin-bottom: 1%;
+	width:100%;
 }
 
-.sidenav .sidenav-menu .nav .sidenav-menu-heading {
-	padding: 1.1rem 1.4rem 0.7rem;
-	font-size: 0.9rem;
+.active .drop{
+	color:white !important;
 }
 
-.sidenav .sidenav-menu .nav .nav-link {
-	display: flex;
-	align-items: center;
-	padding-top: 0.70rem;
-	padding-bottom: 0.70rem;
-	position: relative;
-	color: black;
+#col-search{
+	cursor: text;
+	text-align:left !important;
+	margin-top:2px;
 }
 
-.sidenav .sidenav-menu .nav .nav-link.active {
-	font-weight: bold;
-	color: #007bff!important
+#col-select{
+	margin-top:2px;
 }
 
 @media (max-width: 750px) {
-	#sidebar-wrapper {
-		margin-left: -45%;
-		width: 45%;
-	}
-	#wrapper.active #sidebar-wrapper {
-		left: 45%;
-	}
-	.nav_top {
-		font-size: small;
-	}
-	#table-card,
+	#table-card, #bulk-nav, .nav_top,
 	#card-top {
-        margin-left: 10%;
-        width:85vw;
+        margin-left: 5vw;
+        width:90vw;
 	}
-	#wrapper.active #page-content-wrapper {
-		opacity: 0.2;
+	.nav_title{
+		font-size: 18px;
+		margin-bottom : 10px;
 	}
-}
-
-@media (max-width: 1050px) and (min-width: 750px) {
-	#sidebar-wrapper {
-		margin-left: -25%;
-		width: 25%;
-	}
-	#wrapper.active #sidebar-wrapper {
-		left: 25%;
-	}
-	#wrapper.active #card-top {
-		margin-left: 25%;
-	}
-	#wrapper.active #table-card {
-		margin-left: 25%;
+	#card-top .card-header{
+		font-size: 18px;
 	}
 }
