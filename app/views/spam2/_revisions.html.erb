@@ -61,3 +61,9 @@ $(document).ready(function () {
     </table>                      
   </div>
   </div>
+<div class="page-table">
+<div class="float-right">
+<%= will_paginate @revisions, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || @revisions.empty?%>
+</div>
+<div class="float-left">At Page <%= @revisions.current_page%> of <%= @revisions.total_pages %> total pages</div>
+<div>

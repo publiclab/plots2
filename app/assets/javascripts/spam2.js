@@ -11,7 +11,12 @@ function table_main(id) {
 		"search": {
 			"regex": true
 		},
-		"scrollX": true
+		"scrollX": true,
+		"paging":false,
+		"info":false,
+		"language":{
+			"search":"Search in this page"
+		}
 	});
 	$('#selectall').click(function () {
 		$('.selectedId').prop('checked', this.checked);

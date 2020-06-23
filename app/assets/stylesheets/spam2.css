@@ -68,6 +68,11 @@
 	margin-top:2px;
 }
 
+.page-table{
+	width:100%;
+	margin-top:2%;
+ }
+ 
 @media (max-width: 750px) {
 	#table-card, #bulk-nav, .nav_top,
 	#card-top {

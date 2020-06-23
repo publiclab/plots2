@@ -3,7 +3,7 @@ class Spam2Controller < ApplicationController
 
   def _spam
     if logged_in_as(%w(moderator admin))
-      @nodes = Node.order('nid DESC')
+      @nodes = Node.order('nid DESC').paginate(page: params[:page])
       @nodes = if params[:type] == 'wiki'
                  @nodes.where(type: 'page', status: 1)
                else
@@ -21,7 +21,7 @@ class Spam2Controller < ApplicationController
 
   def _spam_revisions
     if logged_in_as(%w(admin moderator))
-      @revisions = Revision.where(status: 0)
+     @revisions = Revision.where(status: 0).paginate(page: params[:page])
                             .order('timestamp DESC')
       render template: 'spam2/_spam'
     else
@@ -32,7 +32,7 @@ class Spam2Controller < ApplicationController
 
   def _spam_comments
     if logged_in_as(%w(moderator admin))
-      @comments = Comment.order('timestamp DESC')
+      @comments = Comment.order('timestamp DESC').paginate(page: params[:page])
                   .where(status: 0)
       render template: 'spam2/_spam'
     else
