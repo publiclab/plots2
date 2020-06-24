@@ -3,7 +3,8 @@ class Spam2Controller < ApplicationController
 
   def _spam
     if logged_in_as(%w(moderator admin))
-      @nodes = Node.order('nid DESC').paginate(page: params[:page])
+      @nodes = Node.order('nid DESC')
+                   .paginate(page: params[:page])
       @nodes = if params[:type] == 'wiki'
                  @nodes.where(type: 'page', status: 1)
                else
