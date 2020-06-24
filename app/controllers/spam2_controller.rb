@@ -21,8 +21,9 @@ class Spam2Controller < ApplicationController
 
   def _spam_revisions
     if logged_in_as(%w(admin moderator))
-      @revisions = Revision.where(status: 0).paginate(page: params[:page])
-                            .order('timestamp DESC')
+      @revisions = Revision.where(status: 0)
+                           .paginate(page: params[:page])
+                           .order('timestamp DESC')
       render template: 'spam2/_spam'
     else
       flash[:error] = 'Only moderators and admins can moderate this.'
@@ -32,8 +33,9 @@ class Spam2Controller < ApplicationController
 
   def _spam_comments
     if logged_in_as(%w(moderator admin))
-      @comments = Comment.order('timestamp DESC').paginate(page: params[:page])
-                  .where(status: 0)
+      @comments = Comment.paginate(page: params[:page])
+                         .order('timestamp DESC')
+                         .where(status: 0)
       render template: 'spam2/_spam'
     else
       flash[:error] = 'Only moderators can moderate comments.'
