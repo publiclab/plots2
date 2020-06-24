@@ -3,8 +3,8 @@ class Spam2Controller < ApplicationController
 
   def _spam
     if logged_in_as(%w(moderator admin))
-      @nodes = Node.order('nid DESC')
-                   .paginate(page: params[:page])
+      @nodes = Node.order('changed DESC')
+                   .paginate(page: params[:page], per_page: 100)
       @nodes = if params[:type] == 'wiki'
                  @nodes.where(type: 'page', status: 1)
                else
@@ -23,7 +23,7 @@ class Spam2Controller < ApplicationController
   def _spam_revisions
     if logged_in_as(%w(admin moderator))
       @revisions = Revision.where(status: 0)
-                           .paginate(page: params[:page])
+                           .paginate(page: params[:page], per_page: 100)
                            .order('timestamp DESC')
       render template: 'spam2/_spam'
     else
@@ -36,7 +36,7 @@ class Spam2Controller < ApplicationController
     if logged_in_as(%w(moderator admin))
       @comments = Comment.where(status: 0)
                          .order('timestamp DESC')
-                         .paginate(page: params[:page])
+                         .paginate(page: params[:page], per_page: 100)
       render template: 'spam2/_spam'
     else
       flash[:error] = 'Only moderators can moderate comments.'

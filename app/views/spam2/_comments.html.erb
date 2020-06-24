@@ -76,5 +76,5 @@ $(document).ready(function () {
 <div class="float-right">
 <%= will_paginate @comments, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || @comments.empty?%>
 </div>
-<div class="float-left">At Page <%= @comments.current_page%> of <%= @comments.total_pages %> total pages</div>
+<div class="float-left">Batch <%= @comments.current_page%> of <%= @comments.total_pages %> total Batches</div>
 <div>

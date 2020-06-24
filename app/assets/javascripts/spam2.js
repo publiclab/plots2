@@ -5,16 +5,16 @@
 
 function table_main(id) {
 	var table = $(id).DataTable({
-		"order": [[1, "desc"]],
 		"autoWidth": false,
 		"search": {
 			"regex": true
 		},
 		"scrollX": true,
-		"paging": false,
-		"info": false,
 		"language": {
-			"search": "Search in this page"
+			"search": "Search in this batch",
+			"info": "Showing _START_ to _END_ of _TOTAL_ entries in batch",
+			"infoFiltered": "(filtered from this batch of _MAX_ entries)",
+			"lengthMenu": "Show _MENU_ entries for this batch"
 		}
 	});
 	$('#selectall').click(function () {

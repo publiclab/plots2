@@ -65,5 +65,5 @@ $(document).ready(function () {
 <div class="float-right">
 <%= will_paginate @revisions, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || @revisions.empty?%>
 </div>
-<div class="float-left">At Page <%= @revisions.current_page%> of <%= @revisions.total_pages %> total pages</div>
+<div class="float-left">Batch  <%= @revisions.current_page%> of <%= @revisions.total_pages %> total Batches</div>
 <div>
