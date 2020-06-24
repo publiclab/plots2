@@ -50,7 +50,7 @@
           <li><a><%= distance_of_time_in_words(Time.at(node.latest.timestamp), Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></a></li>
         <% end %>
         <li><a>Total Views: </i> <%= number_with_delimiter(node.views) %> <span class="d-none d-lg-inline"><%= t('notes._notes.views') %></span></a></li>
-        <li><a>Total Likes: <%= node.likers.length %></a></li>
+        <li><a>Total Likes: <%= node.likers.size %></a></li>
         <div class="content" style="width: 100%" >
           <% if @compact.nil? %>
 
