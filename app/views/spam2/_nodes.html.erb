@@ -155,7 +155,7 @@ $(document).ready(function () {
               <a href="javascript:void(0);" class="text-dark font-weight-bold" id="node-hover" data-toggle="modal" data-target="#ninfo<%= node.id %>"><%= node.title.truncate(15) %></a><br />
             </td>
             <td>  
-              <a href="/profile/<%= node.author&.name %>" class="text-dark"><%= node.author&.name %> <%= node.author&.new_contributor%></a>
+              <a href="/profile/<%= node.author&.name %>" class="text-info"><%= node.author&.name %> <%= node.author&.new_contributor%></a>
              </td>
             <td>
              <span class="text-secondary"><%= node.type.capitalize %> <span class="badge badge-pill badge-<% if node.status == 1 %>success<% elsif node.status == 0 %>danger<% elsif node.status == 4 %>primary<% end %>"> <% if node.status == 1 %>Published<% elsif node.status == 0 %>Spammed<% elsif node.status == 4 %>Unmoderated<% end %></span>
