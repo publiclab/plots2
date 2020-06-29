@@ -1,13 +1,14 @@
 /*
 *= require datatables/dataTables.bootstrap4
 */
+
 .nav_top {
 	z-index: 5;
 	width: 100%;
 }
 
 #batch-spam:hover {
-	color:  red !important;
+	color: red !important;
 	cursor: pointer;
 }
 
@@ -32,12 +33,12 @@
 }
 
 #batch-unban:hover {
-	color: green !important;	
+	color: green !important;
 	cursor: pointer;
 }
 
-#node-hover:hover{
-	color:blue !important;
+#node-hover:hover {
+	color: blue !important;
 }
 
 #table-card {
@@ -45,45 +46,48 @@
 }
 
 #card-top {
-	margin-top:2vh;
+	margin-top: 2vh;
 }
 
-#bulk-nav{
+#bulk-nav {
 	margin-top: 2%;
 	margin-bottom: 1%;
-	width:100%;
+	width: 100%;
 }
 
-.active .drop{
-	color:white !important;
+.active .drop {
+	color: white !important;
 }
 
-#col-search{
+#col-search {
 	cursor: text;
-	text-align:left !important;
-	margin-top:2px;
+	text-align: left !important;
+	margin-top: 2px;
 }
 
-#col-select{
-	margin-top:2px;
+#col-select {
+	margin-top: 2px;
 }
 
-.page-table{
-	width:100%;
-	margin-top:2%;
- }
- 
+.page-table {
+	width: 100%;
+	margin-top: 10px;
+}
+
 @media (max-width: 750px) {
-	#table-card, #bulk-nav, .nav_top,
+	#table-card,
+	#bulk-nav,
+	.nav_top,
+	.page-table,
 	#card-top {
-        margin-left: 5vw;
-        width:90vw;
+		margin-left: 5vw;
+		width: 90vw;
 	}
-	.nav_title{
+	.nav_title {
 		font-size: 18px;
-		margin-bottom : 10px;
+		margin-bottom: 10px;
 	}
-	#card-top .card-header{
+	#card-top .card-header {
 		font-size: 18px;
 	}
 }
