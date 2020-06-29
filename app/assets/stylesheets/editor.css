@@ -64,7 +64,7 @@ version of the editor is released. */
 }
 
 .bug-btn-wrapper {
-  margin: 3rem;
+  margin: 3rem 0 3rem 0;
 }
 
 .btn-default {
