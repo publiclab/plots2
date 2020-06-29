@@ -23,42 +23,42 @@
       <span class="caret"></span>
     </button>
 
-    <div class="dropdown-menu">
-      <a class="form-check dropdown-item" href="#">
+    <div class="dropdown-menu" id="checkboxes">
+   <a class="form-check dropdown-item" href="#" onclick="listselect()">
         <label class="form-check-label">
-          <input data-type="all" class="node-type-all" type="checkbox" checked="checked" />
+          <input data-type="all" class="node-type-all" type="checkbox" checked="checked" id="selectall" />
           <%= translation('dashboard._activity.dropdown.all') %>
         </label>
       </a>
 
       <div class="dropdown-divider"></div>
 
-      <a class="form-check dropdown-item" href="#">
+      <a class="form-check dropdown-item" href="#" onclick="listselect()">
         <label class="form-check-label">
           <input data-type="note" class="node-type node-type-note" type="checkbox" checked="checked" />
           <%= translation('dashboard._activity.dropdown.research_notes') %>
         </label>
       </a>
-      <a class="form-check dropdown-item" href="#">
+      <a class="form-check dropdown-item" href="#" onclick="listselect()">
         <label class="form-check-label">
           <input data-type="question" class="node-type node-type-question" type="checkbox" checked="checked" />
           <%= translation('dashboard._activity.dropdown.question') %>
         </label>
       </a>
-      <a class="form-check dropdown-item" href="#">
+      <a class="form-check dropdown-item" href="#" onclick="listselect()">
         <label class="form-check-label">
           <input data-type="event" class="node-type node-type-event" type="checkbox" checked="checked" />
           <%= translation('dashboard._activity.dropdown.events') %>
         </label>
       </a>
-      <a class="form-check dropdown-item" href="#">
+      <a class="form-check dropdown-item" href="#" onclick="listselect()">
         <label class="form-check-label">
           <input data-type="comment" class="node-type node-type-comment" type="checkbox" checked="checked" />
           <%= translation('dashboard._activity.dropdown.comments') %>
         </label>
       </a>
 
-      <a class="d-lg-none dropdown-item" href="#">
+      <a class="d-lg-none dropdown-item" href="#" onclick="listselect()">
         <label>
           <input data-type="wiki" class="node-type node-type-wiki" type="checkbox" checked="checked" />
           <%= translation('dashboard._activity.dropdown.wiki') %>

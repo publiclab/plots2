@@ -28,39 +28,41 @@
   <% end %>
 
 <% end %>
-
+<br />
 <% if @wildcard %>
   <p><%= raw translation('tag.contributors.wild_card_search_detected', :tag => params[:id]) %></p>
 <% elsif @note_count.nil? || @note_count == 0 %>
   <p><%= raw translation('tag.contributors.no_contributors', :tag => params[:id]) %>:</p>
 <% else %>
-  <div class="col-md-6" style="display: inline-block;">
-    <table class="table">
-      <tr>
-        <th style="width:75%;"><%= translation('tag.contributors.people_who\'ve_posted') %></th>
-        <th><%= translation('tag.contributors.notes') %></th>
-      </tr>
-      <% if @users %>
-        <% @users.each do |user| %>
-          <tr class="users-row">
-            <td><a href='/profile/<%= user.name %>'><i class="fa fa-user"></i> <%= user.name %></a></td>
-            <td><a href='/tag/<%= params[:id] %>/author/<%= user.name %>'><%= translation('tag.contributors.notes') %> &raquo;</a></td>
+  <div class="row">
+    <div class="col-md-6">
+      <table class="table">
+        <tr>
+          <th style="width:75%;"><%= translation('tag.contributors.people_who\'ve_posted') %></th>
+          <th><%= translation('tag.contributors.notes') %></th>
+        </tr>
+        <% if @users %>
+          <% @users.each do |user| %>
+            <tr class="users-row">
+              <td><a href='/profile/<%= user.name %>'><i class="fa fa-user"></i> <%= user.name %></a></td>
+              <td><a href='/tag/<%= params[:id] %>/author/<%= user.name %>'><%= translation('tag.contributors.notes') %> &raquo;</a></td>
+            </tr>
+          <% end %>
+        <% end %>
+      </table>
+    </div>
+    <div class="col-md-6">
+      <table class="table">
+        <tr>
+          <th> <%= translation('tag.contributors.people_who_are_following') %> </th>
+        </tr>
+        <% Tag.followers(params[:id]) && Tag.followers(params[:id]).each do |follower| %>
+          <tr class="followers-row">
+            <td><a href='/profile/<%= follower.name %>'><i class="fa fa-user-o"></i> <%= follower.name %></a></td>
           </tr>
         <% end %>
-      <% end %>
-    </table>
-  </div>
-  <div class="col-md-6"  style="display: inline-table; position:absolute">
-    <table class="table">
-      <tr>
-        <th> <%= translation('tag.contributors.people_who_are_following') %> </th>
-      </tr>
-      <% Tag.followers(params[:id]) && Tag.followers(params[:id]).each do |follower| %>
-        <tr class="followers-row">
-          <td><a href='/profile/<%= follower.name %>'><i class="fa fa-user-o"></i> <%= follower.name %></a></td>
-        </tr>
-      <% end %>
-    </table>
+      </table>
+    </div>
   </div>
   <br />
 <% end %>
