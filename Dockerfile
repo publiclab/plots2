@@ -36,6 +36,7 @@ RUN wget https://github.com/webnicer/chrome-downloads/raw/master/x64.deb/google-
     mv chromedriver /usr/local/bin/chromedriver && \
     chmod +x /usr/local/bin/chromedriver
 
+ENV BUNDLER_VERSION=2.1.4
 WORKDIR /tmp
 ADD Gemfile /tmp/Gemfile
 ADD Gemfile.lock /tmp/Gemfile.lock
