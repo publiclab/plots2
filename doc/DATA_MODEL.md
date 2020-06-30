@@ -88,7 +88,7 @@ Answers are similar to Comments, but are used in Question-type Notes, and may ea
 
 Our primary user type is User. Users can login via email using the [Authlogic gem (a simple ruby authentication
 solution)](https://github.com/binarylogic/authlogic). Also, recently we have added the option to login via Twitter, Github, Facebook and Google using the
-[Omniauth gem](https://github.com/publiclab/plots2/blob/master/doc/Omniauth.md).
+[Omniauth gem](https://github.com/publiclab/plots2/blob/main/doc/Omniauth.md).
 
 Users each have a profile at `/profile/USERNAME`, which displays content stored in the `user.bio` text field.
 

@@ -27,6 +27,6 @@ Learn more about contributing to Public Lab code projects on these pages:
 
 If you are submitting a bug/issue , please go to https://github.com/publiclab/plots2/issues/new
 
-Follow the [First Timers Issue Template](https://github.com/publiclab/plots2/blob/master/.github/first-timers-issue-template.md) for submitting First Timers Only issues.
+Follow the [First Timers Issue Template](https://github.com/publiclab/plots2/blob/main/.github/first-timers-issue-template.md) for submitting First Timers Only issues.
 
-Follow this standard [Issue Template](https://github.com/publiclab/plots2/blob/master/.github/ISSUE_TEMPLATE/ISSUE_TEMPLATE.md) for other issues.
+Follow this standard [Issue Template](https://github.com/publiclab/plots2/blob/main/.github/ISSUE_TEMPLATE/ISSUE_TEMPLATE.md) for other issues.
