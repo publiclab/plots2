@@ -167,10 +167,16 @@ class NotesController < ApplicationController
         else
           if @node.main_image
             @main_image = @node.main_image.path(:default)
+            @node.main_image.photo_text = params[:photo_text]
+            @node.save!
           elsif params[:main_image] && Image.find_by(id: params[:main_image])
             @main_image = Image.find_by(id: params[:main_image]).path
+            Image.find_by(id: params[:main_image]).photo_text = params[:photo_text]
+            Image.find_by(id: params[:main_image]).save!
           elsif @image
             @main_image = @image.path(:default)
+            @image.photo_text = params[:photo_text]
+            @image.save!
           end
           flash.now[:notice] = "This is the new rich editor. For the legacy editor, <a href='/notes/edit/#{@node.id}?#{request.env['QUERY_STRING']}&legacy=true'>click here</a>."
           render template: 'editor/rich'

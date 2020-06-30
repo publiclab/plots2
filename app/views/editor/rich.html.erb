@@ -112,6 +112,9 @@
               >Select an optional main image for your post.</span
             >
           </p>
+          <p>
+            <input class="form-control input-lg"  type="text" id="alt-text" placeholder="Add alternate text for image" value="<% if @node && @node.main_image.photo_text %><%= @node.main_image.photo_text %><% else %><%= params[:photo_text] %><% end %>"/>
+          </p>
         </div>
       </div>
     </div>

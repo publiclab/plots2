@@ -14,7 +14,7 @@
 
   <% if @node.main_image %>
     <a class="main-image" style="max-width:100%;width:800px;" href="<%= @node.main_image.path(:original) %>">
-      <%= image_tag(@node.main_image.path(:large), class:"rounded d-none d-lg-inline", style:'max-height:600px;max-width:100%;') %>
+      <%= image_tag(@node.main_image.path(:large), class:"rounded d-none d-lg-inline", style:'max-height:600px;max-width:100%;', alt:@node.main_image.photo_text) %>
       <%= image_tag(@node.main_image.path(:large), class:"rounded d-lg-none", style:'width:100%;') %>
     </a>
     <!--<div class="expand"><a onClick="$('.main-image').toggleClass('compressed');"><i class="fa fa-angle-down"></i></a></div>-->
