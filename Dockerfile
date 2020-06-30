@@ -40,6 +40,7 @@ WORKDIR /tmp
 ADD Gemfile /tmp/Gemfile
 ADD Gemfile.lock /tmp/Gemfile.lock
 RUN gem install --default bundler && \
+    gem update --system && \
     bundle update --bundler && \
     bundle install --jobs=4
 
