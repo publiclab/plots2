@@ -39,7 +39,7 @@ RUN wget https://github.com/webnicer/chrome-downloads/raw/master/x64.deb/google-
 WORKDIR /tmp
 ADD Gemfile /tmp/Gemfile
 ADD Gemfile.lock /tmp/Gemfile.lock
-RUN gem install bundler && \
+RUN gem install --default bundler && \
     bundle update --bundler && \
     bundle install --jobs=4
 
