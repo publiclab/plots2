@@ -11,7 +11,7 @@ Hi everybody! 👏
 
 We all at Public Lab 🎈 - learn, grow, work, brainstorm ideas, contribute together so why not share about our weekly goals and the awesome work we have done at Public Lab with each other, so we can support and collaborate with each other better. We have a Community Check-In each week, where every community member can share something about their work from the past week and about their current week's goal 🎯 . You are also welcome to share fun-fact 😄 , new ideas 💡 , your learning goals ☑️.
 
-We believe in collaborative efforts to support our community. We are running a learning platform which helps a newcomer to become master of tomorrow. 💯
+We believe in collaborative efforts to support our community. We are running a learning platform which helps a newcomer to become a leader of tomorrow. 💯
 
 ## Title <!-- Apt title for this weeks check-in discussion -->
 
