@@ -16,7 +16,7 @@ However, MK and SWB are customized to **only** use PublicLab.org as an OpenId pr
 
 Code for the OpenId provider can be found at:
 
-* Controller: https://github.com/publiclab/plots2/blob/master/app/controllers/openid_controller.rb
+* Controller: https://github.com/publiclab/plots2/blob/main/app/controllers/openid_controller.rb
 * Routes: https://github.com/publiclab/plots2/blob/cac725748bbcb2a1cadf025e16f3aca5baf6a750/config/routes.rb#L58-L76
 
 ## Testing
