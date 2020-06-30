@@ -401,7 +401,9 @@ class UsersController < ApplicationController
 
     digest_settings = [
       'digest:weekly',
-      'digest:daily'
+      'digest:daily',
+      'digest:weekly:spam',
+      'digest:daily:spam'
     ]
     digest_settings.each do |setting|
       if params[setting] == "on"
