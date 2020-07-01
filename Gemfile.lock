@@ -254,10 +254,10 @@ GEM
     lemmatizer (0.2.2)
     less (2.6.0)
       commonjs (~> 0.2.7)
-    less-rails (4.0.0)
-      actionpack (>= 4)
+    less-rails (5.0.0)
+      actionpack (>= 5.0)
       less (~> 2.6.0)
-      sprockets (>= 2)
+      sprockets (~> 3.0)
     letter_opener (1.7.0)
       launchy (~> 2.2)
     libv8 (3.16.14.19)
@@ -624,7 +624,7 @@ DEPENDENCIES
   json_expressions
   lazyload-rails
   lemmatizer (~> 0.2.2)
-  less-rails (~> 4.0)
+  less-rails (~> 5.0)
   letter_opener
   listen (~> 3.2.1)
   mailman
