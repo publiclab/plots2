@@ -655,7 +655,7 @@ DEPENDENCIES
   rails-i18n (~> 5.1.3)
   rails-perftest
   rails_autolink
-  rake (~> 12.0.0)
+  rake (>= 12.0.0)
   rb-readline
   rdiscount (~> 2.2, >= 2.2.0.1)
   recaptcha
