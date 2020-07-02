@@ -1226,6 +1226,7 @@ ActiveRecord::Schema.define(:version => 0) do
     t.integer "sticky",                  :default => 0,  :null => false
     t.integer "tnid",                    :default => 0,  :null => false
     t.integer "translate",               :default => 0,  :null => false
+    t.integer "flag",                    :default => 0,  :null => false
   end
 
   add_index "node", ["changed"], :name => "node_changed"

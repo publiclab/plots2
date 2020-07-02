@@ -20,6 +20,18 @@ class Spam2Controller < ApplicationController
     end
   end
 
+  def _spam_flags
+    if logged_in_as(%w(moderator admin))
+      @flags = Node.paginate(page: params[:page], per_page: 100)
+                   .where('flag > ?' , 0)
+
+      render template: 'spam2/_spam'
+    else
+      flash[:error] = 'Only moderators can moderate posts.'
+      redirect_to '/dashboard'
+    end
+  end
+
   def _spam_revisions
     if logged_in_as(%w(admin moderator))
       @revisions = Revision.where(status: 0)
@@ -133,6 +145,23 @@ class Spam2Controller < ApplicationController
     else
       flash[:error] = 'Only admins and moderators can unban users.'
       redirect_to '/dashboard'
+    end
+  end
+
+  def flag_node
+      @node = Node.find params[:id]
+        @node.flag_node
+        flash[:notice] = 'Node flagged.'
+        redirect_back fallback_location: root_path
+  end
+
+  def remove_flag_node
+    @node = Node.find params[:id]
+    if @node.flag == 0
+      flash[:notice] = 'Item already unflagged.'
+    else
+      @node.unflag_node
+      flash[:notice] = 'Node unflagged.'
     end
   end
 end

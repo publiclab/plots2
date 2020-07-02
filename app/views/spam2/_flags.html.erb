@@ -1,0 +1,238 @@
+<script>
+$(document).ready(function () {
+	var table = table_main("#flag_table");
+	$("#all").click(function () { //select all button
+		$('.selectedId').prop('checked', !$('.selectedId').prop('checked'));
+		var check = ($('.selectedId').filter(":checked").length == $('.selectedId').length);
+		$('#select-count').text($('.selectedId').filter(":checked").length);
+    $('#selectall').prop("checked", check);
+    disable_buttons('#selectall');
+  });
+	function batch_nav(bulk) {
+		vals = []
+		$('.selectedId').each(function (i, a) { // batch nav
+			if (a.checked) vals.push(a.value)
+		})
+			window.location = "/spam2/" + bulk + "/" + vals.join(',');
+	}
+	$("#batch-spam").bind('click', function (e) { //batch spam
+		batch_nav("batch_spam");
+	});
+	$("#batch-publish").bind('click', function (e) { //batch publish
+		batch_nav("batch_publish");
+	});
+	$("#batch-ban").bind('click', function (e) { //batch ban
+		batch_nav("batch_ban");
+	});
+	$("#batch-unban").bind('click', function (e) { //batch ban
+		batch_nav("batch_unban");
+	});
+	$("#delete-batch").bind('click', function (e) { // batch delete
+		batch_nav("batch_delete");
+	});
+  $('#reset').on('click', function () { // reset filter
+    $('#reset').addClass('text-dark');
+		table.search('').columns().search('').draw();
+		table.search('').columns().order('').draw();
+	});
+  $('#spammed').on('click', function () { //spam filter 
+    $('#reset').removeClass('text-dark');
+    $('#reset').addClass('text-danger');
+		table.search('').columns().search('').draw();
+		table.columns(3).search("Spammed").draw();
+	});
+  $('#unmoderated').on('click', function () { // unmoderated filter
+    $('#reset').removeClass('text-dark');
+    $('#reset').addClass('text-danger');
+		table.search('').columns().search('').draw();
+		table.columns(3).search("unmoderated").draw();
+	});
+  $('#page').on('click', function () { // page filter
+    $('#reset').removeClass('text-dark');
+    $('#reset').addClass('text-danger');
+		table.search('').columns().search('').draw();
+		table.columns(3).search("Page").draw();
+	});
+  $('#note').on('click', function () { // note filter
+    $('#reset').removeClass('text-dark');
+    $('#reset').addClass('text-danger');
+		table.search('').columns().search('').draw();
+		table.columns(3).search("Note").draw();
+	});
+	$("#extSelect").change(function (e) { // Hide coloumns
+		table.columns().visible(true);
+		if (this.value === '1') {
+			table.column(1).visible(false);
+		} else if (this.value === '2') {
+			table.column(2).visible(false);
+		} else if (this.value === '3') {
+			table.columns(3).visible(false);
+		} else if (this.value === '4') {
+			table.columns(4).visible(false);
+		} else if (this.value === '5') {
+			table.columns(5).visible(false);
+		}
+  });
+	$('#col-search').on('keyup click', function () { // specific search
+		table.search('').columns().search('').draw();
+		var col_input = $("#col-select").val();
+		if (col_input === '1') {
+			table.search('').columns().search('').draw();
+			table.column(1).search(this.value).draw();
+		} else if (col_input === '2') {
+			table.search('').columns().search('').draw();
+			table.column(2).search(this.value).draw();
+		} else if (col_input === '3') {
+			table.search('').columns().search('').draw();
+			table.columns(3).search(this.value).draw();
+		} else if (col_input === '4') {
+			table.search('').columns().search('').draw();
+			table.columns(4).search(this.value).draw();
+		} else if (col_input === '5') {
+			table.search('').columns().search('').draw();
+			table.columns(5).search(this.value).draw();
+		}
+	});
+});
+</script>
+
+<div class="card" id="table-card">
+  <div class="bg-light  navbar navbar-expand">
+    <ul class="nav navbar-expand  navbar-nav-scroll">
+      <li class="nav-item">
+        <a class="btn nav-link small text-dark" data-toggle="tooltip" data-placement="top" title="Selected per page">Selected <span id="select-count" class="badge badge-dark">0</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="btn nav-link small"id="reset">Reset all</a>
+      </li>
+      <li class="nav-item">
+        <a class="btn nav-link small text-dark" id="spammed">Spammed </a>
+      </li>
+      <li class="nav-item">
+        <a class="btn nav-link text-dark" id="unmoderated">Unmoderated </a>
+      </li>
+      <li class="nav-item">
+        <a class="btn nav-link text-dark" id="page">Page </a>
+      </li>
+      <li class="nav-item">
+        <a class="btn nav-link text-dark" id="note">Note</a>
+      </li>
+      <li class="nav-item pt-2">
+      <select name="Visible" id="extSelect" class="custom-select custom-select-sm form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Hide selected column">
+      <option value="">None</option>
+      <option value="1">Title</option>
+      <option value="2">Author</option>
+      <option value="3">Status</option>
+      <option value="4">Time</option>
+      <option value="5">Action</option>
+      </select> 
+      </li>
+      <li class="nav-item">
+       <a class="btn nav-link text-dark" data-toggle="tooltip" data-placement="top" title="flags are divided into batch of 100 entries"><%= page_entries_info(@flags) %></a>
+     </li>
+    </ul>
+  </div>
+  <div class="card-body" style="overflow-x:hidden;">
+    <table  id="flag_table" class="nowrap table table-hover" style="width:100%; text-align:left">
+      <thead style="text-align:left;">
+        <tr>
+          <th><input type="checkbox"  id="selectall"/></th>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Status</th>
+          <th>Time</th>
+          <th>Action</th>                                
+        </tr>       
+      </thead>
+      <tbody> 
+        <% @flags.each do |flag| %>
+          <tr id="n<%= flag.id %>">
+            <td><input  class="selectedId" value="<%= flag.nid %>" type="checkbox" /></td>
+            <td>
+              <i class="fa fa-flag text-<% if flag.flag > 10%>danger<% else%>secondary<%end%>"></i> 
+              <a href="javascript:void(0);" class="text-dark font-weight-bold" id="flag-hover" data-toggle="modal" data-target="#ninfo<%= flag.id %>"><%= flag.title.truncate(15) %></a><br />
+            </td>
+            <td>  
+              <a href="/profile/<%= flag.author&.name %>" class="text-info"><%= flag.author&.name %> <%= flag.author&.new_contributor%></a>
+             </td>
+            <td>
+             <span class="text-secondary"><%= flag.type.capitalize %> <span class="badge badge-pill badge-<% if flag.status == 1 %>success<% elsif flag.status == 0 %>danger<% elsif flag.status == 4 %>primary<% end %>"> <% if flag.status == 1 %>Published<% elsif flag.status == 0 %>Spammed<% elsif flag.status == 4 %>Unmoderated<% end %></span> <span class="badge badge-pill badge-dark"><%=  flag.flag %></span>
+            </td>
+             <td>
+               <span class="text-dark"><%= time_ago_in_words(flag.updated_at) %> ago</span>
+            </td>
+             <td style="height:35px !important;">
+               <a class="badge btn badge<% if flag.status != 1 %>-success<% else %>-secondary disabled<% end %> publish" data-remote="true" href="/moderate/publish/<%= flag.id %>" ><i class="fa fa-check-circle fa-white"></i> Publish post</a>
+               <a class="badge btn badge<% if flag.status != 0 %>-danger<% else %>-secondary disabled<% end %> spam" data-remote="true" href="/moderate/spam/<%= flag.id %>"><i class="fa fa-ban fa-white"></i> Spam post</a> 
+               <a class="badge btn badge-warning unflag" data-remote="true"href="/moderate/remove_flag_node/<%= flag.id %>">Unflag</a>
+               <%= link_to "/notes/delete/#{flag.id}", data: { confirm: "Are you sure you want to delete #{flag.path}?" }, :remote => true, :class => "px-3 delete" do %>
+                <i class="fa fa-trash text-dark"></i>
+               <% end %>
+               <script>
+                $('#n<%= flag.id %> .delete').bind('ajax:success', function(e){
+                  $('#n<%= flag.id %>').fadeOut()
+                  $('#deleted<%= flag.id %>').fadeIn();
+                  $('#deleted<%= flag.id %>').fadeOut();
+                });
+                $('#n<%= flag.id %> .publish').bind('ajax:success', function(e){
+                  $('#n<%= flag.id %>').hide()
+                  $('#npublish<%= flag.id %>').fadeIn(); // published!
+                  $('#npublish<%= flag.id %>').fadeOut();
+                });
+                $('#n<%= flag.id %> .spam').bind('ajax:success', function(e){
+                  $('#n<%= flag.id %>').hide()
+                  $('#nspam<%= flag.id %>').fadeIn(); // spammed!
+                  $('#nspam<%= flag.id %>').fadeOut();
+                });
+                $('#n<%= flag.id %> .unflag').bind('ajax:success', function(e){
+                  $('#n<%= flag.id %>').hide()
+                  $('#nuflag<%= flag.id %>').fadeIn(); // spammed!
+                  $('#nunflag<%= flag.id %>').fadeOut();
+                });  
+                </script>
+              </td>
+            </tr>
+            <div style="display:none;" id="deleted<%= flag.id %>" class="alert alert-danger alert-dismissible">
+              flag Deleted
+            </div> 
+            <div style="display:none;" id="npublish<%= flag.id %>" class="alert alert-success alert-dismissible">
+              Content published
+            </div> 
+            <div style="display:none;" id="nspam<%= flag.id %>" class="alert alert-danger alert-dismissible">
+                Content spammed
+            </div>
+            <div style="display:none;" id="nunflag%= flag.id %>" class="alert alert-danger alert-dismissible">
+                Content unflagged
+            </div>
+            <div class="modal fade" id="ninfo<%= flag.id %>"> 
+              <div class="modal-dialog" >
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title"><a href="<%= flag.path %>"><%= flag.title %></a></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span>&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <%= flag.body %>
+                  </div>
+                  <div class="modal-footer">
+                    <%= time_ago_in_words(flag.created_at) %> ago
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </tbody>
+      </table>                       
+    </div>
+  </div>
+</div>
+<div class="page-table">
+  <div class="float-right">
+    <%= will_paginate @flags, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || @flags.empty?%>
+  </div>
+  <div class="float-left">
+    Batch <%= @flags.current_page%> of <%= @flags.total_pages %> total Batches
+  </div>
+</div>

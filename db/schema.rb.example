@@ -253,6 +253,7 @@ ActiveRecord::Schema.define(version: 2019_08_22_192847) do
     t.decimal "latitude",                               precision: 20, scale: 17
     t.decimal "longitude",                              precision: 20, scale: 17
     t.integer "precision"
+    t.integer "flag",                                   default: 0,  null: false
   end
 
   add_index "node", ["changed"], name: "node_changed", using: :btree
