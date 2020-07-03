@@ -24,6 +24,7 @@ class Spam2Controller < ApplicationController
     if logged_in_as(%w(moderator admin))
       @flags = Node.paginate(page: params[:page], per_page: 100)
                    .where('flag > ?' , 0)
+                   .order('flag DESC')
 
       render template: 'spam2/_spam'
     else
