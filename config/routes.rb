@@ -309,6 +309,8 @@ Plots2::Application.routes.draw do
   get 'moderate/publish/:id' => 'admin#publish'
   get 'moderate/flag_node/:id' => 'spam2#flag_node'
   get 'moderate/remove_flag_node/:id' => 'spam2#remove_flag_node'
+  get 'moderate/flag_comment/:id' => 'spam2#flag_comment'
+  get 'moderate/remove_flag_comment/:id' => 'spam2#remove_flag_comment'
   get 'admin/promote/moderator/:id' => 'admin#promote_moderator'
   get 'admin/force/reset/:id' => 'admin#reset_user_password'
   get 'admin/demote/basic/:id' => 'admin#demote_basic'

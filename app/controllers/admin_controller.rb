@@ -151,6 +151,7 @@ class AdminController < ApplicationController
         @comment.spam
         user = @comment.author
         user.ban
+        @comment.unflag_comment
         # No longer notifying other moderators as of https://github.com/publiclab/plots2/issues/6246
         # AdminMailer.notify_moderators_of_comment_spam(@comment, current_user).deliver_later
         flash[:notice] = "Comment has been marked as spam and comment author has been banned. You can undo this on the <a href='/spam/comments'>spam moderation page</a>."
@@ -174,6 +175,7 @@ class AdminController < ApplicationController
         if @comment.author.banned?
           @comment.author.unban
         end
+        @comment.unflag_comment
         if first_timer_comment
           AdminMailer.notify_author_of_comment_approval(@comment, current_user).deliver_later
           # No longer notifying other moderators as of https://github.com/publiclab/plots2/issues/6246

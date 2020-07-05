@@ -1,10 +1,70 @@
 <script>
 $(document).ready(function () {
-	table_main("#comment_table");
+	var table = table_main("#comment_table");
+
+  $('#reset').on('click', function () { // reset filter
+    $('#reset').addClass('text-dark');
+		table.search('').columns().search('').draw();
+		table.search('').columns().order('').draw();
+	});
+  $('#spammed').on('click', function () { //spam filter 
+    $('#reset').removeClass('text-dark');
+    $('#reset').addClass('text-danger');
+		table.search('').columns().search('').draw();
+		table.columns(3).search("Spammed").draw();
+	});
+  $('#flagged').on('click', function () { // flagged filter
+    $('#reset').removeClass('text-dark');
+    $('#reset').addClass('text-danger');
+		table.search('').columns().search('').draw();
+		table.columns(3).search("Published").draw();
+	});
+	$("#extSelect").change(function (e) { // Hide coloumns
+		table.columns().visible(true);
+		if (this.value === '1') {
+			table.column(1).visible(false);
+		} else if (this.value === '2') {
+			table.column(2).visible(false);
+		} else if (this.value === '3') {
+			table.columns(3).visible(false);
+		} else if (this.value === '4') {
+			table.columns(4).visible(false);
+		} else if (this.value === '5') {
+			table.columns(5).visible(false);
+		}
+  });
 });
 </script>
 <div class="card" id="table-card">
   <div class="card-header">
+      <ul class="nav navbar-expand  navbar-nav-scroll">
+      <li class="nav-item">
+        <a class="btn nav-link small text-dark" data-toggle="tooltip" data-placement="top" title="Selected per page">Selected <span id="select-count" class="badge badge-dark">0</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="btn nav-link small"id="reset">Reset all</a>
+      </li>
+      <li class="nav-item">
+        <a class="btn nav-link small text-dark" id="spammed">Spammed </a>
+      </li>
+      <li class="nav-item">
+        <a class="btn nav-link text-dark" id="flagged">Flagged </a>
+      </li>
+      <li class="nav-item pt-2">
+      <select name="Visible" id="extSelect" class="custom-select custom-select-sm form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Hide selected column">
+      <option value="">none</option>
+      <option value="1">title</option>
+      <option value="2">content</option>
+      <option value="3">author</option>
+      <option value="4">Time</option>
+      <option value="5">Action</option>
+      </select> 
+      </li>
+      <li class="nav-item">
+       <a class="btn nav-link text-dark" data-toggle="tooltip" data-placement="top" title="flags are divided into batch of 100 entries"><%= page_entries_info(@comments) %></a>
+     </li>
+    </ul>
+
   </div>
   <div class="card-body" style="overflow-x:hidden;" >
     <table  id="comment_table" class="nowrap table table-hover" style="width:100%; text-align:left">
@@ -24,29 +84,75 @@ $(document).ready(function () {
             <td><input  class="selectedId" value="<%= comment.id %>" type="checkbox" /></td>
             <td>
               <% unless comment.node.nil? %>
-                <i class="fa fa-file"></i> <a href="<%= comment.node.path %>" data-toggle="modal" data-target="#ninfo<%= comment.id %>"><%= comment.node.title.truncate(20) %></a>
+                <i class="fa fa-<% if comment.flag == 0%>file text-secondary<% elsif comment.flag >10%>flag text-danger<% else %>flag text-dark<% end %>"></i> <a href="<%= comment.node.path %>" id="node-hover" class="text-dark font-weight-bold" data-toggle="modal" data-target="#ninfo<%= comment.id %>"><%= comment.node.title.truncate(15) %></a>
               <% end %>            
               </td>
-            <td style="width:200px;">
-              <%= comment.body.truncate(40) %>
+            <td style="width:200px;" class="text-secondary font-italic">
+              <%= comment.body.truncate(20) %>
             </td>
             <td>
-              <a href="/profile/<%= comment.author&.name %>"><%= comment.author&.name %></a>
+              <a href="/profile/<%= comment.author&.name %>" class="text-info"><%= comment.author&.name %></a> <span class="badge badge-pill badge-<% if comment.status == 1 %>success<% elsif comment.status == 0 %>danger<% end %>"> <% if comment.status == 1 %>Published<% elsif comment.status == 0 %>Spammed<% end %></span> <% if comment.flag > 0%><span class="badge badge-pill badge-dark"> <%=  comment.flag %></span><% end %>
             </td>
             <td>
               <% unless comment.node.nil? %>
-                <span style="color:grey;"><%= time_ago_in_words(comment.timestamp.seconds.ago) %> ago</span>
+                <span class="text-secondary"><%= time_ago_in_words(comment.created_at) %> ago</span>
               <% end %>
             </td>
             <td>
-              <a class="badge badge-pill badge<% if comment.status == 0 %>-success<% else %>-secondary disabled<% end %> publish" href="/admin/publish_comment/<%= comment.id %>"><i class="fa fa-check-circle fa-white"></i> Publish</a>
-              <% if comment.author&.status == 0 %>
-                <a class="badge badge-pill badge-danger a<%= comment.author&.id %>" href="/ban/<%= comment.author&.id %>">Ban</a>
-              <% elsif comment.author&.status == 1 %>
-                <a class="badge badge-pill badge-secondary unban a-unban<%= comment.author&.id %>" href="/unban/<%= comment.author&.id %>">Unban</a>
-              <% end %>
+               <a class="badge btn badge<% if comment.status != 1 %>-success<% else %>-secondary disabled<% end %> publish" data-remote="true" href="/admin/publish_comment/<%= comment.id %>" ><i class="fa fa-check-circle fa-white"></i> Publish</a>
+               <a class="badge btn badge<% if comment.status != 0 %>-danger<% else %>-secondary disabled<% end %> spam" data-remote="true" href="/admin/mark_comment_spam/<%= comment.id %>"><i class="fa fa-ban fa-white"></i> Spam</a> 
+               <a class="badge badge-secondary ban a<%= comment.author.id %>" <% if comment.author.status == 0 %>style="display:none;"<% end %> data-remote="true" href="/ban/<%= comment.author.id %>">Ban user</a>
+               <a class="badge badge-secondary unban a-unban<%= comment.author.id %>" <% if comment.author.status == 1 %>style="display:none;"<% end %> data-remote="true" href="/unban/<%= comment.author.id %>">Unban user</a>
+               <%= link_to "/comment/delete/#{comment.cid}", data: { confirm: "Are you sure you want to delete this comment?" }, :remote => true, :class => "px-3 delete" do %>
+                  <i class="fa fa-trash text-dark"></i>
+                <% end %>
+               <% if comment.flag > 0%>
+               <a class="unflag" data-remote="true"href="/moderate/remove_flag_comment/<%= comment.id %>"><i class="fa fa-flag text-warning"></i></a>
+               <% end %>
+                <script>
+                $('#n<%= comment.id %> .delete').bind('ajax:success', function(e){
+                  $('#n<%= comment.id %>').fadeOut()
+                  $('#deleted<%= comment.id %>').fadeIn();
+                  $('#deleted<%= comment.id %>').fadeOut();
+                });
+                $('#n<%= comment.id %> .publish').bind('ajax:success', function(e){
+                  $('#n<%= comment.id %>').hide()
+                  $('#npublish<%= comment.id %>').fadeIn(); // published!
+                  $('#npublish<%= comment.id %>').fadeOut();
+                });
+                $('#n<%= comment.id %> .spam').bind('ajax:success', function(e){
+                  $('#n<%= comment.id %>').hide()
+                  $('#nspam<%= comment.id %>').fadeIn(); // spammed!
+                  $('#nspam<%= comment.id %>').fadeOut();
+                });
+                $('#n<%= comment.id %> .unflag').bind('ajax:success', function(e){
+                  $('#n<%= comment.id %>').hide()
+                  $('#nuflag<%= comment.id %>').fadeIn(); // spammed!
+                  $('#nunflag<%= comment.id %>').fadeOut();
+                });  
+                  $('.a<%= comment.author.id %>.ban').bind('ajax:success', function(e){
+                  $('.a<%= comment.author.id %>').hide()  // ban toggle
+                  $('.a-unban<%= comment.author.id %>').show()
+                });
+                $('.a-unban<%= comment.author.id %>.unban').bind('ajax:success', function(e){
+                  $('.a-unban<%= comment.author.id %>').hide()
+                  $('.a<%= comment.author.id %>').show()
+                });
+                </script>
             </td>
           </tr>
+            <div style="display:none;" id="deleted<%= comment.id %>" class="alert alert-danger alert-dismissible">
+              flag Deleted
+            </div> 
+            <div style="display:none;" id="npublish<%= comment.id %>" class="alert alert-success alert-dismissible">
+              Content published
+            </div> 
+            <div style="display:none;" id="nspam<%= comment.id %>" class="alert alert-danger alert-dismissible">
+                Content spammed
+            </div>
+            <div style="display:none;" id="nunflag<%= comment.id %>" class="alert alert-danger alert-dismissible">
+                Content unflagged
+            </div>
             <div class="modal fade" id="ninfo<%= comment.id %>"> 
             <div class="modal-dialog" >
               <% unless comment.node.nil? %>

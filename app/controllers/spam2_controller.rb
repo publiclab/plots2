@@ -48,6 +48,7 @@ class Spam2Controller < ApplicationController
   def _spam_comments
     if logged_in_as(%w(moderator admin))
       @comments = Comment.where(status: 0)
+                         .or(Comment.where('flag > ?' , 0))
                          .order('timestamp DESC')
                          .paginate(page: params[:page], per_page: 100)
       render template: 'spam2/_spam'
@@ -159,10 +160,25 @@ class Spam2Controller < ApplicationController
   def remove_flag_node
     @node = Node.find params[:id]
     if @node.flag == 0
-      flash[:notice] = 'Item already unflagged.'
+      flash[:notice] = 'Node already unflagged.'
     else
       @node.unflag_node
-      flash[:notice] = 'Node unflagged.'
     end
   end
+
+def flag_comment
+    @comment = Comment.find params[:id]
+      @comment.flag_comment
+      flash[:notice] = 'Comment flagged.'
+      redirect_back fallback_location: root_path
+end
+
+def remove_flag_comment
+  @comment = Comment.find params[:id]
+  if @comment.flag == 0
+    flash[:notice] = 'Comment already unflagged.'
+  else
+    @comment.unflag_comment
+  end
+end
 end
