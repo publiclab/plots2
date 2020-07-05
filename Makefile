@@ -9,7 +9,6 @@ redeploy-container:
 	docker-compose run --rm web yarn install
 	docker-compose run --rm web bash -c "bundle exec rake db:migrate && bundle exec rake assets:precompile && bundle exec rake tmp:cache:clear"
 	docker-compose down --remove-orphans
-	rm -f ./tmp/pids/server.pid
 	docker-compose up -d
 	docker-compose exec -T web bash -c "echo 172.17.0.1 smtp >> /etc/hosts"
 	docker-compose exec -T mailman bash -c "echo 172.17.0.1 smtp >> /etc/hosts"
@@ -20,7 +19,6 @@ redeploy-container:
 deploy-container:
 	docker-compose run --rm web yarn install
 	docker-compose run --rm web bash -c "sleep 5 && bundle exec rake db:migrate && bundle exec rake assets:precompile"
-	rm -f ./tmp/pids/server.pid
 	docker-compose up -d
 	docker-compose exec -T web bash -c "echo 172.17.0.1 smtp >> /etc/hosts"
 	docker-compose exec -T mailman bash -c "echo 172.17.0.1 smtp >> /etc/hosts"
