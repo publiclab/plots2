@@ -19,7 +19,6 @@ services:
     ports:
       - "127.0.0.1:4000:4000"
     build: ..
-    command: /bin/bash -c "sleep 5 && /usr/local/bundle/bin/passenger start -p 4000"
     environment:
       - RAILS_ENV=${RAILS_ENV}
       - SECRET_KEY_BASE=${SECRET_KEY_BASE}
