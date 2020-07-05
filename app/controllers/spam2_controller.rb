@@ -47,7 +47,7 @@ class Spam2Controller < ApplicationController
 
   def _spam_comments
     if logged_in_as(%w(moderator admin))
-      @comments = Comment.where(status: 0)
+      @comments = Comment.where(status: [0,4])
                          .or(Comment.where('flag > ?' , 0))
                          .order('flag DESC')
                          .paginate(page: params[:page], per_page: 100)

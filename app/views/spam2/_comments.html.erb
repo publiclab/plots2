@@ -2,22 +2,25 @@
 $(document).ready(function () {
 	var table = table_main("#comment_table");
 
-  $('#reset').on('click', function () { // reset filter
-    $('#reset').addClass('text-dark');
+	function search_table(value) {
+		$('#reset').removeClass('text-dark');
+		$('#reset').addClass('text-danger font-weight-bold');
+		table.search('').columns().search('').draw();
+		table.columns(3).search(value).draw();
+	}
+	$('#reset').on('click', function () { // reset filter
+		$('#reset').addClass('text-dark');
 		table.search('').columns().search('').draw();
 		table.search('').columns().order('').draw();
 	});
-  $('#spammed').on('click', function () { //spam filter 
-    $('#reset').removeClass('text-dark');
-    $('#reset').addClass('text-danger');
-		table.search('').columns().search('').draw();
-		table.columns(3).search("Spammed").draw();
+	$('#spammed').on('click', function () { //spam filter 
+		search_table("spammed");
 	});
-  $('#flagged').on('click', function () { // flagged filter
-    $('#reset').removeClass('text-dark');
-    $('#reset').addClass('text-danger');
-		table.search('').columns().search('').draw();
-		table.columns(3).search("Published").draw();
+	$('#flagged').on('click', function () { // flagged filter
+		search_table("published");
+	});
+	$('#unmoderated').on('click', function () { // unmoderated filter
+		search_table("unmoderated");
 	});
 	$("#extSelect").change(function (e) { // Hide coloumns
 		table.columns().visible(true);
@@ -32,23 +35,26 @@ $(document).ready(function () {
 		} else if (this.value === '5') {
 			table.columns(5).visible(false);
 		}
-  });
+	});
 });
 </script>
 <div class="card" id="table-card">
   <div class="bg-light  navbar navbar-expand">
       <ul class="nav navbar-expand  navbar-nav-scroll">
       <li class="nav-item">
-        <a class="btn nav-link small text-dark" data-toggle="tooltip" data-placement="top" title="Selected per page">Selected <span id="select-count" class="badge badge-dark">0</span></a>
+        <a class="btn nav-link text-dark" data-toggle="tooltip" data-placement="top" title="Selected per page">Selected <span id="select-count" class="badge badge-dark">0</span></a>
       </li>
       <li class="nav-item">
-        <a class="btn nav-link small"id="reset">Reset all</a>
+        <a class="btn nav-link font-weight-bold "id="reset">Reset all</a>
       </li>
       <li class="nav-item">
-        <a class="btn nav-link small text-dark" id="spammed">Spammed </a>
+        <a class="btn nav-link text-dark" id="spammed">Spammed </a>
       </li>
       <li class="nav-item">
         <a class="btn nav-link text-dark" id="flagged">Flagged </a>
+      </li>
+      <li class="nav-item">
+        <a class="btn nav-link text-dark" id="unmoderated">Unmoderated </a>
       </li>
       <li class="nav-item pt-2">
       <select name="Visible" id="extSelect" class="custom-select custom-select-sm form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Hide selected column">
@@ -91,14 +97,14 @@ $(document).ready(function () {
               <%= comment.body.truncate(20) %>
             </td>
             <td>
-              <a href="/profile/<%= comment.author&.name %>" class="text-info"><%= comment.author&.name %></a> <span class="badge badge-pill badge-<% if comment.status == 1 %>success<% elsif comment.status == 0 %>danger<% end %>"> <% if comment.status == 1 %>Published<% elsif comment.status == 0 %>Spammed<% end %></span> <% if comment.flag > 0%><span class="badge badge-pill badge-dark"> <%=  comment.flag %></span><% end %>
+              <a href="/profile/<%= comment.author&.name %>" class="text-info"><%= comment.author&.name %></a> <span class="badge badge-pill badge-<% if comment.status == 1 %>success<% elsif comment.status == 0 %>danger<% elsif comment.status == 4 %>secondary<% end %>"> <% if comment.status == 1 %>Published<% elsif comment.status == 0 %>Spammed<% elsif comment.status == 4 %>Unmoderated<% end %></span> <% if comment.flag > 0%><span class="badge badge-pill badge-dark"> <%=  comment.flag %></span><% end %>
             </td>
             <td>
               <% unless comment.node.nil? %>
                 <span class="text-secondary"><%= time_ago_in_words(comment.created_at) %> ago</span>
               <% end %>
             </td>
-            <td>
+            <td style="height:35px !important;">
                <a class="badge btn badge<% if comment.status != 1 %>-success<% else %>-secondary disabled<% end %> publish" data-remote="true" href="/admin/publish_comment/<%= comment.id %>" ><i class="fa fa-check-circle fa-white"></i> Publish</a>
                <a class="badge btn badge<% if comment.status != 0 %>-danger<% else %>-secondary disabled<% end %> spam" data-remote="true" href="/admin/mark_comment_spam/<%= comment.id %>"><i class="fa fa-ban fa-white"></i> Spam</a> 
                <a class="badge badge-secondary ban a<%= comment.author.id %>" <% if comment.author.status == 0 %>style="display:none;"<% end %> data-remote="true" href="/ban/<%= comment.author.id %>">Ban user</a>

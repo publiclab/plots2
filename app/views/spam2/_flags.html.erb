@@ -5,15 +5,23 @@ $(document).ready(function () {
 		$('.selectedId').prop('checked', !$('.selectedId').prop('checked'));
 		var check = ($('.selectedId').filter(":checked").length == $('.selectedId').length);
 		$('#select-count').text($('.selectedId').filter(":checked").length);
-    $('#selectall').prop("checked", check);
-    disable_buttons('#selectall');
-  });
+		$('#selectall').prop("checked", check);
+		disable_buttons('#selectall');
+	});
+
 	function batch_nav(bulk) {
 		vals = []
 		$('.selectedId').each(function (i, a) { // batch nav
-			if (a.checked) vals.push(a.value)
-		})
-			window.location = "/spam2/" + bulk + "/" + vals.join(',');
+			if (a.checked) vals.push(a.value);
+		});
+		window.location = "/spam2/" + bulk + "/" + vals.join(',');
+	}
+
+	function search_table(value) {
+		$('#reset').removeClass('text-dark');
+		$('#reset').addClass('text-danger font-weight-bold');
+		table.search('').columns().search('').draw();
+		table.columns(3).search(value).draw();
 	}
 	$("#batch-spam").bind('click', function (e) { //batch spam
 		batch_nav("batch_spam");
@@ -30,34 +38,22 @@ $(document).ready(function () {
 	$("#delete-batch").bind('click', function (e) { // batch delete
 		batch_nav("batch_delete");
 	});
-  $('#reset').on('click', function () { // reset filter
-    $('#reset').addClass('text-dark');
+	$('#reset').on('click', function () { // reset filter
+		$('#reset').addClass('text-dark');
 		table.search('').columns().search('').draw();
 		table.search('').columns().order('').draw();
 	});
-  $('#spammed').on('click', function () { //spam filter 
-    $('#reset').removeClass('text-dark');
-    $('#reset').addClass('text-danger');
-		table.search('').columns().search('').draw();
-		table.columns(3).search("Spammed").draw();
+	$('#spammed').on('click', function () { //spam filter 
+		search_table("spammed");
 	});
-  $('#unmoderated').on('click', function () { // unmoderated filter
-    $('#reset').removeClass('text-dark');
-    $('#reset').addClass('text-danger');
-		table.search('').columns().search('').draw();
-		table.columns(3).search("unmoderated").draw();
+	$('#unmoderated').on('click', function () { // unmoderated filter
+		search_table("unmoderated");
 	});
-  $('#page').on('click', function () { // page filter
-    $('#reset').removeClass('text-dark');
-    $('#reset').addClass('text-danger');
-		table.search('').columns().search('').draw();
-		table.columns(3).search("Page").draw();
+	$('#page').on('click', function () { // page filter
+		search_table("Page");
 	});
-  $('#note').on('click', function () { // note filter
-    $('#reset').removeClass('text-dark');
-    $('#reset').addClass('text-danger');
-		table.search('').columns().search('').draw();
-		table.columns(3).search("Note").draw();
+	$('#note').on('click', function () { // note filter
+		search_table("Note");
 	});
 	$("#extSelect").change(function (e) { // Hide coloumns
 		table.columns().visible(true);
@@ -72,7 +68,7 @@ $(document).ready(function () {
 		} else if (this.value === '5') {
 			table.columns(5).visible(false);
 		}
-  });
+	});
 	$('#col-search').on('keyup click', function () { // specific search
 		table.search('').columns().search('').draw();
 		var col_input = $("#col-select").val();
@@ -103,10 +99,10 @@ $(document).ready(function () {
         <a class="btn nav-link small text-dark" data-toggle="tooltip" data-placement="top" title="Selected per page">Selected <span id="select-count" class="badge badge-dark">0</span></a>
       </li>
       <li class="nav-item">
-        <a class="btn nav-link small"id="reset">Reset all</a>
+        <a class="btn nav-link font-weight-bold"id="reset">Reset all</a>
       </li>
       <li class="nav-item">
-        <a class="btn nav-link small text-dark" id="spammed">Spammed </a>
+        <a class="btn nav-link text-dark" id="spammed">Spammed </a>
       </li>
       <li class="nav-item">
         <a class="btn nav-link text-dark" id="unmoderated">Unmoderated </a>
