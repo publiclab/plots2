@@ -186,7 +186,7 @@ $(document).ready(function () {
                 });
                 $('#n<%= flag.id %> .unflag').bind('ajax:success', function(e){
                   $('#n<%= flag.id %>').hide()
-                  $('#nuflag<%= flag.id %>').fadeIn(); // spammed!
+                  $('#nuflag<%= flag.id %>').fadeIn(); // unflag!
                   $('#nunflag<%= flag.id %>').fadeOut();
                 });  
                 </script>

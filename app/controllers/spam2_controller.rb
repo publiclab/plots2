@@ -49,7 +49,7 @@ class Spam2Controller < ApplicationController
     if logged_in_as(%w(moderator admin))
       @comments = Comment.where(status: 0)
                          .or(Comment.where('flag > ?' , 0))
-                         .order('timestamp DESC')
+                         .order('flag DESC')
                          .paginate(page: params[:page], per_page: 100)
       render template: 'spam2/_spam'
     else

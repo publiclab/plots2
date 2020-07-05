@@ -36,7 +36,7 @@ $(document).ready(function () {
 });
 </script>
 <div class="card" id="table-card">
-  <div class="card-header">
+  <div class="bg-light  navbar navbar-expand">
       <ul class="nav navbar-expand  navbar-nav-scroll">
       <li class="nav-item">
         <a class="btn nav-link small text-dark" data-toggle="tooltip" data-placement="top" title="Selected per page">Selected <span id="select-count" class="badge badge-dark">0</span></a>
@@ -103,12 +103,10 @@ $(document).ready(function () {
                <a class="badge btn badge<% if comment.status != 0 %>-danger<% else %>-secondary disabled<% end %> spam" data-remote="true" href="/admin/mark_comment_spam/<%= comment.id %>"><i class="fa fa-ban fa-white"></i> Spam</a> 
                <a class="badge badge-secondary ban a<%= comment.author.id %>" <% if comment.author.status == 0 %>style="display:none;"<% end %> data-remote="true" href="/ban/<%= comment.author.id %>">Ban user</a>
                <a class="badge badge-secondary unban a-unban<%= comment.author.id %>" <% if comment.author.status == 1 %>style="display:none;"<% end %> data-remote="true" href="/unban/<%= comment.author.id %>">Unban user</a>
+               <a class="badge btn text-white unflag badge-<% if comment.flag > 0%>warning <% else %>secondary disabled<% end %>" data-remote="true" href="/moderate/remove_flag_comment/<%= comment.id %>"><i class="fa fa-flag fa-white"></i> Unflag</a>
                <%= link_to "/comment/delete/#{comment.cid}", data: { confirm: "Are you sure you want to delete this comment?" }, :remote => true, :class => "px-3 delete" do %>
                   <i class="fa fa-trash text-dark"></i>
                 <% end %>
-               <% if comment.flag > 0%>
-               <a class="unflag" data-remote="true"href="/moderate/remove_flag_comment/<%= comment.id %>"><i class="fa fa-flag text-warning"></i></a>
-               <% end %>
                 <script>
                 $('#n<%= comment.id %> .delete').bind('ajax:success', function(e){
                   $('#n<%= comment.id %>').fadeOut()
@@ -127,7 +125,7 @@ $(document).ready(function () {
                 });
                 $('#n<%= comment.id %> .unflag').bind('ajax:success', function(e){
                   $('#n<%= comment.id %>').hide()
-                  $('#nuflag<%= comment.id %>').fadeIn(); // spammed!
+                  $('#nuflag<%= comment.id %>').fadeIn(); // unflag!
                   $('#nunflag<%= comment.id %>').fadeOut();
                 });  
                   $('.a<%= comment.author.id %>.ban').bind('ajax:success', function(e){
