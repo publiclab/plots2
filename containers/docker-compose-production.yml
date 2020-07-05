@@ -17,7 +17,7 @@ services:
       # if you want to re-import simply put away ../../mysql/*
   web:
     ports:
-      - "127.0.0.1:4001:4001"
+      - "127.0.0.1:4000:4000"
     build: ..
     environment:
       - RAILS_ENV=${RAILS_ENV}
