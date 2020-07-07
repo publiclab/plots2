@@ -7,7 +7,7 @@
       <div class="pull-right"><%= render :partial => "tag/show/user_controls" %></div>
       <h1 style="margin-top:6px;">
         <%= @wiki&.latest&.title || @title %>
-        <span class="badge badge-secondary" style="font-family: 'Helvetica Neue',Arial,sans-serif;font-size: 12px;background: #ccc;color: white;"><%= params[:id] %></span>
+        <span rel="tooltip" title="This 'tagname' forms part of the URL for this topic." class="badge badge-secondary" style="font-family: 'Helvetica Neue',Arial,sans-serif;font-size: 12px;background: #ccc;color: white;"><%= params[:id] %></span>
       </h1>
       <% if @wildcard %>
 
