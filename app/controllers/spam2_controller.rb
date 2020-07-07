@@ -4,28 +4,19 @@ class Spam2Controller < ApplicationController
   def _spam
     if logged_in_as(%w(moderator admin))
       @nodes = Node.order('changed DESC')
-
       @nodes =  if params[:type] == 'wiki'
                   @nodes.where(type: 'page', status: 1)
-                elsif params[:type] == 'unmoderated'
-                  @nodes.where(status: 4)
-                elsif params[:type] == 'spammed'
-                  @nodes.where(status: 0)
-                elsif params[:type] == 'page'
-                  @nodes.where(type: 'page', status: [0, 4])
-                elsif params[:type] == 'note'
-                  @nodes.where(type: 'note', status: [0, 4])
-                elsif params[:type] == 'all'
-                  @nodes.where(status: [0, 4])
-                else
-                  @nodes.where(status: [0, 4])
-               end
-
+                else 
+                  if params[:type] == 'unmoderated'
+                    @nodes.where(status: 4)
+                  elsif params[:type] == 'spammed'
+                    @nodes.where(status: 0)
+                  else 
+                    @nodes.where(status: [0, 4])
+                  end
+                end
       @spam_count = @nodes.where(status: 0).length
       @unmoderated_count = @nodes.where(status: 4).length
-      @page_count = @nodes.where(type: 'page').length
-      @note_count = @nodes.where(type: 'note').length
-
       @nodes =  if params[:pagination]
                   @nodes.paginate(page: params[:page], per_page: params[:pagination])
                 else
@@ -39,21 +30,16 @@ class Spam2Controller < ApplicationController
 
   def _spam_flags
     if logged_in_as(%w(moderator admin))
-      @flags = Node.where('flag > ?', 0)
+      @flags =  Node.where('flag > ?', 0)
                    .order('flag DESC')
                    .paginate(page: params[:page], per_page: params[:pagination])
-      @flags = if params[:type] == 'unmoderated'
-                    @flags.where(status: 4)
-               elsif params[:type] == 'spammed'
-                    @flags.where(status: 0)
-               elsif params[:type] == 'page'
-                    @flags.where(type: 'page')
-               elsif params[:type] == 'note'
-                    @flags.where(type: 'note')
-               elsif params[:type] == 'all'
-                    @flags
-               end
-
+      @flags =  if params[:type] == 'unmoderated'
+                  @flags.where(status: 4)
+                elsif params[:type] == 'spammed'
+                  @flags.where(status: 0)
+                else
+                  @flags
+                end
       render template: 'spam2/_spam'
     else
       flash[:error] = 'Only moderators can moderate posts.'
@@ -79,15 +65,16 @@ class Spam2Controller < ApplicationController
                   .paginate(page: params[:page], per_page: params[:pagination])
       @comments = if params[:type] == 'unmoderated'
                       @comments.where(status: 4)
-                  elsif params[:type] == 'spammed'
+                  else 
+                    if params[:type] == 'spammed'
                       @comments.where(status: 0)
-                  elsif params[:type] == 'flagged'
+                    elsif params[:type] == 'flagged'
                       @comments.where('flag > ?', 0)
-                  elsif params[:type] == 'all'
+                    else
                       @comments.where(status: [0, 4])
                                .or(@comments.where('flag > ?', 0))
+                    end
                   end
-
       render template: 'spam2/_spam'
     else
       flash[:error] = 'Only moderators can moderate comments.'

@@ -8,8 +8,8 @@ $(document).ready(function () {
 		$('#selectall').prop("checked", check);
 		disable_buttons('#selectall');
   });
-  var pageselect_val = localStorage.getItem('page-select') || '';
-  $("#pageselect").val(pageselect_val);
+  var pageselect = localStorage.getItem('page-select') || '30';
+  $("#pageselect").val(pageselect);
 	$("#batch-spam").bind('click', function (e) { //batch spam
 		batch_nav("batch_spam");
 	});
@@ -34,12 +34,6 @@ $(document).ready(function () {
 	$('#unmoderated').on('click', function () { // unmoderated filter
 		search_table("unmoderated", "/spam2/filter/");
 	});
-	$('#page').on('click', function () { // page filter
-		search_table("page", "/spam2/filter/");
-	});
-	$('#note').on('click', function () { // note filter
-		search_table("note", "/spam2/filter/");
-	});
 	$('#reset_all').on('click', function () { // note filter
 		search_table("all", "/spam2/filter/");
 	});
@@ -61,12 +55,6 @@ $(document).ready(function () {
       </li>
       <li class="nav-item">
         <a id="unmoderated" class="btn nav-link  <% if params[:type] == "unmoderated" %> badge text-light badge-dark mt-2 py-2 <% else %> text-dark <% end %>">Unmoderated <span class="badge badge-<% if params[:type] == "unmoderated" %>light<% else %>dark <% end %>"><%= @unmoderated_count %></span></a>
-      </li>
-      <li class="nav-item">
-        <a id="page" class="btn nav-link <% if params[:type] == "page" %> badge text-light badge-dark mt-2 py-2 <% else %> text-dark <% end %>">Page <span class="badge badge-<% if params[:type] == "page" %>light<% else %>dark <% end %>"><%= @page_count %></span></a>
-      </li>
-      <li class="nav-item">
-        <a id="note" class="btn nav-link  <% if params[:type] == "note" %> badge text-light badge-dark mt-2 py-2 <% else %> text-dark <% end %>">Note <span class="badge badge-<% if params[:type] == "note" %>light<% else %>dark <% end %>"><%= @note_count %></span></a>
       </li>
       <li class="nav-item">
         <a id="note" class="btn nav-link text-info">Nodes per page </a>
