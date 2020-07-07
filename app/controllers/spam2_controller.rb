@@ -26,7 +26,7 @@ class Spam2Controller < ApplicationController
       @page_count = @nodes.where(type: 'page').length
       @note_count = @nodes.where(type: 'note').length
 
-      @nodes =  if params[:pagination]?
+      @nodes =  if params[:pagination]
                   @nodes.paginate(page: params[:page], per_page: params[:pagination])
                 else
                   @nodes.paginate(page: params[:page], per_page: 30)
