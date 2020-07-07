@@ -4,24 +4,24 @@ class Spam2Controller < ApplicationController
   def _spam
     if logged_in_as(%w(moderator admin))
       @nodes = Node.order('changed DESC')
-      @nodes =  if params[:type] == 'wiki'
-                  @nodes.where(type: 'page', status: 1)
-                else 
-                  if params[:type] == 'unmoderated'
-                    @nodes.where(status: 4)
-                  elsif params[:type] == 'spammed'
-                    @nodes.where(status: 0)
-                  else 
-                    @nodes.where(status: [0, 4])
-                  end
-                end
+      @nodes = if params[:type] == 'wiki'
+                 @nodes.where(type: 'page', status: 1)
+               else
+                 if params[:type] == 'unmoderated'
+                   @nodes.where(status: 4)
+                 elsif params[:type] == 'spammed'
+                   @nodes.where(status: 0)
+                 else
+                   @nodes.where(status: [0, 4])
+                 end
+               end
       @spam_count = @nodes.where(status: 0).length
       @unmoderated_count = @nodes.where(status: 4).length
-      @nodes =  if params[:pagination]
-                  @nodes.paginate(page: params[:page], per_page: params[:pagination])
-                else
-                  @nodes.paginate(page: params[:page], per_page: 30)
-                end
+      @nodes = if params[:pagination]
+                 @nodes.paginate(page: params[:page], per_page: params[:pagination])
+               else
+                 @nodes.paginate(page: params[:page], per_page: 30)
+               end
     else
       flash[:error] = 'Only moderators can moderate posts.'
       redirect_to '/dashboard'
@@ -64,8 +64,8 @@ class Spam2Controller < ApplicationController
       @comments = Comment.order('flag DESC')
                   .paginate(page: params[:page], per_page: params[:pagination])
       @comments = if params[:type] == 'unmoderated'
-                      @comments.where(status: 4)
-                  else 
+                    @comments.where(status: 4)
+                  else
                     if params[:type] == 'spammed'
                       @comments.where(status: 0)
                     elsif params[:type] == 'flagged'
@@ -205,13 +205,9 @@ class Spam2Controller < ApplicationController
   def remove_flag_comment
     if logged_in_as(%w(admin moderator))
       @comment = Comment.find params[:id]
-      if @comment.flag.zero?
-        flash[:notice] = 'Comment is already unflagged.'
-      else
-        @comment.unflag_comment
-      end
+      @comment.unflag_comment
     else
-      flash[:error] = 'Only admins and moderators can unflag comments.'
+      flash[:error] = 'Only moderators can unflag comments.'
       redirect_to '/dashboard'
     end
   end
