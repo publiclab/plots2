@@ -23,10 +23,10 @@
       <div class="dropdown-divider"></div>  
         <h6 class="dropdown-header">Spam Moderation</h6>
         <a class="dropdown-item <% unless  params[:action] =="_spam_comments" || params[:action] =="_spam_revisions" || params[:action] =="_spam_flags" || params[:type] == "wiki"%> active <% end %>" href="/spam2"><i class="drop fa fa-address-book text-primary"></i> Bulk Moderation</a>
-        <a class="dropdown-item <% if params[:type] == "wiki" %> active <% end %>" href="/spam2/wiki" ><i class="drop fa fa-book text-primary"></i> Wiki</a>
+        <a class="dropdown-item <% if params[:type] == "wiki" %> active <% end %>" href="/spam2/filter/wiki/50" ><i class="drop fa fa-book text-primary"></i> Wiki</a>
         <a class="dropdown-item <% if params[:action] == "_spam_revisions" %> active <% end %>" href="/spam2/revisions"><i class="drop fa fa-list text-primary"></i> Revision</a>
-        <a class="dropdown-item <% if params[:action] == "_spam_comments" %> active <% end %>" href="/spam2/comments" ><i class="drop fa fa-comment text-primary"></i> Comments</a>
-        <a class="dropdown-item <% if params[:action] == "_spam_flags" %> active <% end %>" href="/spam2/flags" ><i class="drop fa fa-flag text-primary"></i> Flag </a>
+        <a class="dropdown-item <% if params[:action] == "_spam_comments" %> active <% end %>" href="/spam2/comments/filter/all/30" ><i class="drop fa fa-comment text-primary"></i> Comments</a>
+        <a class="dropdown-item <% if params[:action] == "_spam_flags" %> active <% end %>"  href="/spam2/flags/filter/all/30" ><i class="drop fa fa-flag text-primary"></i> Flag </a>
         <a class="dropdown-item" href="/people"><i class="fa fa-user text-primary"></i> Active users</a>
       </div>
     </div>
@@ -41,38 +41,25 @@
 
 <nav class="navbar navbar-expand " id="bulk-nav">
   <div class="navbar-expand navbar-nav-scroll d-inline">
-    <ul class=" navbar-nav ">
+    <ul class=" navbar-nav">
       <% if params[:action] != "_spam_revisions" && params[:action] != "_spam_comments" %>
         <li class="nav-item pr-4">
-          <a class="nav-link btn btn-light border disabled text-dark d-inline-flex " id="batch-spam"><i class=" pt-1 pr-2 fa fa-ban text-danger"></i>  Spam</a>
+          <a class="nav-link btn btn-light border disabled text-dark d-inline-flex " id="batch-spam" data-toggle="tooltip" data-placement="top" title="Mark selected items as spam and ban users"><i class=" pt-1 pr-2 fa fa-ban text-danger"></i>  Spam</a>
         </li>
         <li class="nav-item pr-4">
-          <a class="nav-link btn btn-light border disabled text-dark d-inline-flex"  id="batch-publish"><i class=" pt-1 pr-2 fa fa-check-circle text-success"></i>  Publish</a>
+          <a class="nav-link btn btn-light border disabled text-dark d-inline-flex"  id="batch-publish" data-toggle="tooltip" data-placement="top" title="Mark selected items  as Publish and unaban users"><i class=" pt-1 pr-2 fa fa-check-circle text-success"></i>  Publish</a>
         </li>
         <li class="nav-item pr-4">
-          <a class="nav-link btn btn-light border disabled text-dark d-inline-flex" id="delete-batch"><i class=" pt-1 pr-2 fa fa-trash text-danger"></i> Delete</a>
+          <a class="nav-link btn btn-light border disabled text-dark d-inline-flex" id="delete-batch"data-toggle="tooltip" data-placement="top" title="Delete Selected items"><i class=" pt-1 pr-2 fa fa-trash text-danger"></i> Delete</a>
         </li>
         <li class="nav-item pr-4">
-          <a class="nav-link btn btn-light border text-dark d-inline-flex"  id="all" data-toggle="tooltip" data-placement="top" title="Increase entries per page to increase selections"><i class=" pt-1 pr-2  fa fa-check text-primary"></i> Select</a>
+          <a class="nav-link btn btn-light border text-dark d-inline-flex"  id="all" data-toggle="tooltip" data-placement="top" title="Select all in this page"><i class=" pt-1 pr-2  fa fa-check text-primary"></i> Select</a>
         </li>
         <li class="nav-item pr-4">
-          <a class="nav-link btn btn-light border disabled text-dark d-inline-flex"  id="batch-ban"><i class=" pt-1 pr-2 fa fa-flag text-warning"></i> Ban</a>
+          <a class="nav-link btn btn-light border disabled text-dark d-inline-flex"  id="batch-ban" data-toggle="tooltip" data-placement="top" title="Ban Users"><i class=" pt-1 pr-2 fa fa-flag text-warning"></i> Ban</a>
         </li>
         <li class="nav-item pr-4">
-          <a class="nav-link btn btn-light border disabled text-dark d-inline-flex"  id="batch-unban"><i class=" pt-1 pr-2 fa fa-flag text-success"></i> Unban</a>
-        </li>
-        <li class="nav-item pr-4">
-        <div class="btn-group" role="group" >
-          <input class="btn border" id="col-search" type="search" style="width:21vw;" placeholder="Filter by" aria-label="Search">
-          <select  id="col-select" style="width:6vw;"  class="btn bg-light text-dark custom-select custom-select-sm form-control form-control-md" data-toggle="tooltip" data-placement="top" title="Select column here and then search to filter">
-            <option value="">None </option>
-            <option value="1">Title</option>
-            <option value="2">Author</option>
-            <option value="3">Status</option>
-            <option value="4">Time</option>
-            <option value="5">Action</option>
-          </select> 
-          </div>
+          <a class="nav-link btn btn-light border disabled text-dark d-inline-flex"  id="batch-unban" data-toggle="tooltip" data-placement="top" title="Unban Users"><i class=" pt-1 pr-2 fa fa-flag text-success"></i> Unban</a>
         </li>
         <li class="nav-item pr-4">
           <a class="nav-link btn btn-light border d-inline-flex" data-toggle="tooltip" data-placement="top" title="Wiki page for info will be added later"><i class=" pt-1 pr-2 fa fa-info-circle text-info"></i> Info</a>

@@ -1,40 +1,22 @@
 <script>
 $(document).ready(function () {
-	var table = table_main("#comment_table");
-
-	function search_table(value) {
-		$('#reset').removeClass('text-dark');
-		$('#reset').addClass('text-danger font-weight-bold');
-		table.search('').columns().search('').draw();
-		table.columns(3).search(value).draw();
-	}
+  var table = table_main("#comment_table");
+  var pageselect_val = localStorage.getItem('page-select') || '';
+  $("#pageselect").val(pageselect_val);
+	$('#pageselect').change(function () {
+		pagination("#pageselect", "/spam2/comments/filter/");
+	});
 	$('#reset').on('click', function () { // reset filter
-		$('#reset').addClass('text-dark');
-		table.search('').columns().search('').draw();
-		table.search('').columns().order('').draw();
+		search_table("all", "/spam2/comments/filter/");
 	});
 	$('#spammed').on('click', function () { //spam filter 
-		search_table("spammed");
+		search_table("spammed", "/spam2/comments/filter/");
 	});
 	$('#flagged').on('click', function () { // flagged filter
-		search_table("published");
+		search_table("flagged", "/spam2/comments/filter/");
 	});
 	$('#unmoderated').on('click', function () { // unmoderated filter
-		search_table("unmoderated");
-	});
-	$("#extSelect").change(function (e) { // Hide coloumns
-		table.columns().visible(true);
-		if (this.value === '1') {
-			table.column(1).visible(false);
-		} else if (this.value === '2') {
-			table.column(2).visible(false);
-		} else if (this.value === '3') {
-			table.columns(3).visible(false);
-		} else if (this.value === '4') {
-			table.columns(4).visible(false);
-		} else if (this.value === '5') {
-			table.columns(5).visible(false);
-		}
+		search_table("unmoderated", "/spam2/comments/filter/");
 	});
 });
 </script>
@@ -45,29 +27,30 @@ $(document).ready(function () {
         <a class="btn nav-link text-dark" data-toggle="tooltip" data-placement="top" title="Selected per page">Selected <span id="select-count" class="badge badge-dark">0</span></a>
       </li>
       <li class="nav-item">
-        <a class="btn nav-link font-weight-bold "id="reset">Reset all</a>
+        <a class="btn nav-link font-weight-bold "id="reset">All</a>
       </li>
       <li class="nav-item">
-        <a class="btn nav-link text-dark" id="spammed">Spammed </a>
+        <a id="spammed" class="btn nav-link  <% if params[:type] == "spammed" %> badge text-light badge-dark mt-2 py-2 <% else %> text-dark <% end %>">Spammed </a>
       </li>
       <li class="nav-item">
-        <a class="btn nav-link text-dark" id="flagged">Flagged </a>
+        <a id="unmoderated" class="btn nav-link  <% if params[:type] == "unmoderated" %> badge text-light badge-dark mt-2 py-2 <% else %> text-dark <% end %>">Unmoderated </a>
       </li>
       <li class="nav-item">
-        <a class="btn nav-link text-dark" id="unmoderated">Unmoderated </a>
+        <a id="flagged" class="btn nav-link  <% if params[:type] == "flagged" %> badge text-light badge-dark mt-2 py-2 <% else %> text-dark <% end %>">Flagged </a>
       </li>
-      <li class="nav-item pt-2">
-      <select name="Visible" id="extSelect" class="custom-select custom-select-sm form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Hide selected column">
-      <option value="">none</option>
-      <option value="1">title</option>
-      <option value="2">content</option>
-      <option value="3">author</option>
-      <option value="4">Time</option>
-      <option value="5">Action</option>
+      <li class="nav-item">
+        <a id="note" class="btn nav-link text-info ">Nodes per page </a>
+      </li>
+      <li class="nav-item pt-1">
+      <select name="Visible" id="pageselect" class="custom-select custom-select-sm form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Select item per page">
+      <option value="30">30</option>
+      <option value="50">50</option>
+      <option value="100">100</option>
+      <option value="150">150</option>
       </select> 
       </li>
       <li class="nav-item">
-       <a class="btn nav-link text-dark" data-toggle="tooltip" data-placement="top" title="flags are divided into batch of 100 entries"><%= page_entries_info(@comments) %></a>
+       <a class="btn nav-link text-dark" data-toggle="tooltip" data-placement="top" title="item Displayed"><%= page_entries_info(@comments) %></a>
      </li>
     </ul>
 

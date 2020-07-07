@@ -7,22 +7,9 @@ $(document).ready(function () {
 		$('#select-count').text($('.selectedId').filter(":checked").length);
 		$('#selectall').prop("checked", check);
 		disable_buttons('#selectall');
-	});
-
-	function batch_nav(bulk) {
-		vals = []
-		$('.selectedId').each(function (i, a) { // batch nav
-			if (a.checked) vals.push(a.value);
-		});
-		window.location = "/spam2/" + bulk + "/" + vals.join(',');
-	}
-
-	function search_table(value) {
-		$('#reset').removeClass('text-dark');
-		$('#reset').addClass('text-danger font-weight-bold');
-		table.search('').columns().search('').draw();
-		table.columns(3).search(value).draw();
-	}
+  });
+  var pageselect_val = localStorage.getItem('page-select') || '';
+  $("#pageselect").val(pageselect_val);
 	$("#batch-spam").bind('click', function (e) { //batch spam
 		batch_nav("batch_spam");
 	});
@@ -38,56 +25,23 @@ $(document).ready(function () {
 	$("#delete-batch").bind('click', function (e) { // batch delete
 		batch_nav("batch_delete");
 	});
-	$('#reset').on('click', function () { // reset filter
-		$('#reset').addClass('text-dark');
-		table.search('').columns().search('').draw();
-		table.search('').columns().order('').draw();
+	$('#pageselect').change(function () {
+		pagination("#pageselect", "/spam2/filter/");
 	});
-	$('#spammed').on('click', function () { //spam filter 
-		search_table("spammed");
+	$('#spammed').on('click', function () { //spam filter
+		search_table("spammed", "/spam2/filter/");
 	});
 	$('#unmoderated').on('click', function () { // unmoderated filter
-		search_table("unmoderated");
+		search_table("unmoderated", "/spam2/filter/");
 	});
 	$('#page').on('click', function () { // page filter
-		search_table("Page");
+		search_table("page", "/spam2/filter/");
 	});
 	$('#note').on('click', function () { // note filter
-		search_table("Note");
+		search_table("note", "/spam2/filter/");
 	});
-	$("#extSelect").change(function (e) { // Hide coloumns
-		table.columns().visible(true);
-		if (this.value === '1') {
-			table.column(1).visible(false);
-		} else if (this.value === '2') {
-			table.column(2).visible(false);
-		} else if (this.value === '3') {
-			table.columns(3).visible(false);
-		} else if (this.value === '4') {
-			table.columns(4).visible(false);
-		} else if (this.value === '5') {
-			table.columns(5).visible(false);
-		}
-	});
-	$('#col-search').on('keyup click', function () { // specific search
-		table.search('').columns().search('').draw();
-		var col_input = $("#col-select").val();
-		if (col_input === '1') {
-			table.search('').columns().search('').draw();
-			table.column(1).search(this.value).draw();
-		} else if (col_input === '2') {
-			table.search('').columns().search('').draw();
-			table.column(2).search(this.value).draw();
-		} else if (col_input === '3') {
-			table.search('').columns().search('').draw();
-			table.columns(3).search(this.value).draw();
-		} else if (col_input === '4') {
-			table.search('').columns().search('').draw();
-			table.columns(4).search(this.value).draw();
-		} else if (col_input === '5') {
-			table.search('').columns().search('').draw();
-			table.columns(5).search(this.value).draw();
-		}
+	$('#reset_all').on('click', function () { // note filter
+		search_table("all", "/spam2/filter/");
 	});
 });
 </script>
@@ -96,37 +50,38 @@ $(document).ready(function () {
   <div class="bg-light  navbar navbar-expand">
     <ul class="nav navbar-expand  navbar-nav-scroll">
       <li class="nav-item">
-        <a class="btn nav-link small text-dark" data-toggle="tooltip" data-placement="top" title="Selected per page">Selected <span id="select-count" class="badge badge-dark">0</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="btn nav-link font-weight-bold"id="reset">Reset all</a>
+        <a class="btn nav-link text-dark" data-toggle="tooltip" data-placement="top" title="Selected per page"> Selected <span id="select-count" class="badge badge-dark">0</span></a>
       </li>
       <% if params[:type] != "wiki" %>  
       <li class="nav-item">
-        <a class="btn nav-link text-dark" id="spammed">Spammed <span class="badge badge-dark"><%= @spam_count %></span></a>
+        <a id="reset_all" class="btn nav-link <% if params[:type] == "all" %> badge text-light badge-dark mt-2 py-2<% else %> text-dark font-weight-bold <% end %>">All</a>
       </li>
       <li class="nav-item">
-        <a class="btn nav-link text-dark" id="unmoderated">Unmoderated <span class="badge badge-dark"><%= @unmoderated_count %></span></a>
+        <a id="spammed" class="btn nav-link  <% if params[:type] == "spammed" %> badge text-light badge-dark mt-2 py-2 <% else %> text-dark <% end %>">Spammed <span class="badge badge-<% if params[:type] == "spammed" %>light<% else %>dark <% end %>"><%= @spam_count %></span></a>
       </li>
       <li class="nav-item">
-        <a class="btn nav-link text-dark" id="page">Page <span class="badge badge-dark"><%= @page_count %></span></a>
+        <a id="unmoderated" class="btn nav-link  <% if params[:type] == "unmoderated" %> badge text-light badge-dark mt-2 py-2 <% else %> text-dark <% end %>">Unmoderated <span class="badge badge-<% if params[:type] == "unmoderated" %>light<% else %>dark <% end %>"><%= @unmoderated_count %></span></a>
       </li>
       <li class="nav-item">
-        <a class="btn nav-link text-dark" id="note">Note <span class="badge badge-dark"><%= @note_count %></span></a>
+        <a id="page" class="btn nav-link <% if params[:type] == "page" %> badge text-light badge-dark mt-2 py-2 <% else %> text-dark <% end %>">Page <span class="badge badge-<% if params[:type] == "page" %>light<% else %>dark <% end %>"><%= @page_count %></span></a>
       </li>
-      <li class="nav-item pt-2">
-      <select name="Visible" id="extSelect" class="custom-select custom-select-sm form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Hide selected column">
-      <option value="">None</option>
-      <option value="1">Title</option>
-      <option value="2">Author</option>
-      <option value="3">Status</option>
-      <option value="4">Time</option>
-      <option value="5">Action</option>
+      <li class="nav-item">
+        <a id="note" class="btn nav-link  <% if params[:type] == "note" %> badge text-light badge-dark mt-2 py-2 <% else %> text-dark <% end %>">Note <span class="badge badge-<% if params[:type] == "note" %>light<% else %>dark <% end %>"><%= @note_count %></span></a>
+      </li>
+      <li class="nav-item">
+        <a id="note" class="btn nav-link text-info">Nodes per page </a>
+      </li>
+      <li class="nav-item pt-1">
+      <select name="Visible" id="pageselect" class="overflow-hiden custom-select custom-select-sm form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Select item per page">
+      <option value="50">30</option>
+      <option value="50">50</option>
+      <option value="100">100</option>
+      <option value="150">150</option>
       </select> 
       </li>
       <% end %>
       <li class="nav-item">
-       <a class="btn nav-link text-dark" data-toggle="tooltip" data-placement="top" title="Nodes are divided into batch of 100 entries"><%= page_entries_info(@nodes) %></a>
+       <a class="btn nav-link text-dark" data-toggle="tooltip" data-placement="top" title="item Displayed"><%= page_entries_info(@nodes) %></a>
      </li>
     </ul>
   </div>
@@ -232,6 +187,6 @@ $(document).ready(function () {
     <%= will_paginate @nodes, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || @nodes.empty?%>
   </div>
   <div class="float-left">
-    Batch <%= @nodes.current_page%> of <%= @nodes.total_pages %> total Batches
+    Page number <%= @nodes.current_page%> of <%= @nodes.total_pages %> total Pages
   </div>
 </div>
