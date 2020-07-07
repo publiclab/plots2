@@ -34,6 +34,12 @@ $(document).ready(function () {
 	$('#unmoderated').on('click', function () { // unmoderated filter
 		search_table("unmoderated", "/spam2/flags/filter/");
 	});
+	$('#page').on('click', function () { // page filter
+		search_table("page", "/spam2/flags/filter/");
+	});
+	$('#note').on('click', function () { // note filter
+		search_table("note", "/spam2/flags/filter/");
+	});
 	$('#reset').on('click', function () { // all filter
 		search_table("all", "/spam2/flags/filter/");
 	});
@@ -54,6 +60,12 @@ $(document).ready(function () {
       </li>
       <li class="nav-item">
         <a id="unmoderated" class="btn nav-link  <% if params[:type] == "unmoderated" %> badge text-light badge-dark mt-2 py-2 <% else %> text-dark <% end %>">Unmoderated </a>
+      </li>
+      <li class="nav-item">
+        <a id="page" class="btn nav-link <% if params[:type] == "page" %> badge text-light badge-dark mt-2 py-2 <% else %> text-dark <% end %>">Page </a>
+      </li>
+      <li class="nav-item">
+        <a id="note" class="btn nav-link  <% if params[:type] == "note" %> badge text-light badge-dark mt-2 py-2 <% else %> text-dark <% end %>">Note </a>
       </li>
       <li class="nav-item">
         <a id="note" class="btn nav-link text-info ">Nodes per page </a>

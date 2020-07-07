@@ -4,16 +4,15 @@ class Spam2Controller < ApplicationController
   def _spam
     if logged_in_as(%w(moderator admin))
       @nodes = Node.order('changed DESC')
-      @nodes = if params[:type] == 'wiki'
+      @nodes = case params[:type]
+               when 'wiki'
                  @nodes.where(type: 'page', status: 1)
+               when 'unmoderated'
+                 @nodes.where(status: 4)
+               when 'spammed'
+                 @nodes.where(status: 0)
                else
-                 if params[:type] == 'unmoderated'
-                   @nodes.where(status: 4)
-                 elsif params[:type] == 'spammed'
-                   @nodes.where(status: 0)
-                 else
-                   @nodes.where(status: [0, 4])
-                 end
+                 @nodes.where(status: [0, 4])
                end
       @spam_count = @nodes.where(status: 0).length
       @unmoderated_count = @nodes.where(status: 4).length
@@ -33,13 +32,18 @@ class Spam2Controller < ApplicationController
       @flags =  Node.where('flag > ?', 0)
                    .order('flag DESC')
                    .paginate(page: params[:page], per_page: params[:pagination])
-      @flags =  if params[:type] == 'unmoderated'
-                  @flags.where(status: 4)
-                elsif params[:type] == 'spammed'
-                  @flags.where(status: 0)
-                else
-                  @flags
-                end
+      @flags = case params[:type]
+               when 'unmoderated'
+                 @flags.where(status: 4)
+               when 'spammed'
+                 @flags.where(status: 0)
+               when 'page'
+                 @flags.where(type: page)
+               when 'note'
+                 @flags.where(type: note)
+               else
+                 @flags
+               end
       render template: 'spam2/_spam'
     else
       flash[:error] = 'Only moderators can moderate posts.'
@@ -63,18 +67,17 @@ class Spam2Controller < ApplicationController
     if logged_in_as(%w(moderator admin))
       @comments = Comment.order('flag DESC')
                   .paginate(page: params[:page], per_page: params[:pagination])
-      @comments = if params[:type] == 'unmoderated'
+      @comments = case params[:type]
+                  when 'unmoderated'
                     @comments.where(status: 4)
+                  when 'spammed'
+                    @comments.where(status: 0)
+                  when 'flagged'
+                    @comments.where('flag > ?', 0)
                   else
-                    if params[:type] == 'spammed'
-                      @comments.where(status: 0)
-                    elsif params[:type] == 'flagged'
-                      @comments.where('flag > ?', 0)
-                    else
-                      @comments.where(status: [0, 4])
-                               .or(@comments.where('flag > ?', 0))
-                    end
-                  end
+                    @comments.where(status: [0, 4])
+                    .or(@comments.where('flag > ?', 0))
+                  end                
       render template: 'spam2/_spam'
     else
       flash[:error] = 'Only moderators can moderate comments.'
