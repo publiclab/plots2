@@ -3,10 +3,8 @@
 <link href="/lib/bootstrap-tokenfield/dist/css/bootstrap-tokenfield.min.css" rel="stylesheet">
 
 <!-- required for MapModule -->
-<link href="/lib/leaflet/dist/leaflet.css" rel="stylesheet">
-<script src="/lib/leaflet/dist/leaflet.js"></script>
-<link href="/lib/leaflet-blurred-location/dist/Leaflet.BlurredLocation.css" rel="stylesheet">
-<script src="/lib/leaflet-blurred-location/dist/Leaflet.BlurredLocation.js"></script>
+<%= stylesheet_link_tag "leaflet-blurred-location/dist/Leaflet.BlurredLocation.css" %>
+<%= javascript_include_tag('leaflet-blurred-location/dist/Leaflet.BlurredLocation.js') %>
 
 <!-- required for TagsModule -->
 <script src="/lib/typeahead.js/dist/bloodhound.js"></script>
