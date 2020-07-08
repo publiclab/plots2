@@ -1,7 +1,7 @@
 Rails.application.config.assets.precompile += [
   'leaflet-blurred-location/dist/Leaflet.BlurredLocation.js',
   'leaflet-blurred-location/dist/Leaflet.BlurredLocation.css',
-  
+
   'advanced_search.js',
   'submit_form_ajax.js',
   'application.js',
@@ -56,4 +56,5 @@ Rails.application.config.assets.precompile += [
   'cable.js',
   'spam2.css',
   'spam2.js',
+  'print_new.css',
 ]

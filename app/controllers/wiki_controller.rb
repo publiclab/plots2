@@ -92,6 +92,19 @@ class WikiController < ApplicationController
     render plain: Revision.find(params[:id]).body
   end
 
+  def print
+    @node = Node.find_by(nid: params[:id], type: 'page')
+    return if redirect_to_node_path?(@node)
+    @revision = @node.latest
+
+    if @node
+      impressionist(@node, 'print', unique: [:ip_address])
+
+    else
+      page_not_found
+    end
+  end
+
   def edit
     @node = if params[:lang]
               Node.find_wiki(params[:lang] + '/' + params[:id])

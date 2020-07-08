@@ -148,6 +148,7 @@ Plots2::Application.routes.draw do
   get 'notes/publish_draft/:id' => 'notes#publish_draft'
   get 'notes/edit/:id' => 'notes#edit'
   get 'notes/show/:id/:token' => 'notes#show'
+  get 'notes/print/:id' => 'notes#print'
 
   get 'places' => 'notes#places'
   get 'tools' => 'notes#tools'
@@ -155,6 +156,7 @@ Plots2::Application.routes.draw do
   get 'methods/:topic' => 'wiki#methods'
   get 'techniques' => 'wiki#techniques'
   get "/wikis/author/:id" => "wiki#author"
+  get 'wikis/print/:id' => 'wiki#print'
 
   get 'report/:id' => 'legacy#report'
   get 'node/:id' => 'legacy#node'
@@ -289,7 +291,7 @@ Plots2::Application.routes.draw do
   get 'spam/comments' => 'admin#spam_comments'
   get 'spam/:type' => 'admin#spam'
   get 'spam/batch/:ids' => 'admin#batch'
-  get 'spam2' => 'spam2#_spam'  
+  get 'spam2' => 'spam2#_spam'
   get 'spam2/revisions' => 'spam2#_spam_revisions'
   get 'spam2/comments' => 'spam2#_spam_comments'
   get 'spam2/:type' => 'spam2#_spam'
@@ -335,7 +337,7 @@ Plots2::Application.routes.draw do
   get 'questions_shadow' => 'questions#index_shadow'
   get 'question' => 'questions#index'
   get 'question_shadow' => 'questions#index_shadow'
-  get 'questions/:author/:date/:id' => 'questions#show' 
+  get 'questions/:author/:date/:id' => 'questions#show'
   get 'questions/show/:id' => 'questions#show'
   get 'q/:id' => 'questions#shortlink'
   get 'questions/answered(/:tagnames)' => 'questions#answered'
