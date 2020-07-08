@@ -31,4 +31,3 @@ production:
   pool: <%= ENV['RAILS_MAX_THREADS'] || 5 %>
   timeout: 5000
   strict: false
-  socket: <%= ENV['DB_SOCKET'] || '' %>
