@@ -20,7 +20,7 @@ gem "google-cloud-storage"
 gem 'grape'
 gem 'grape-entity'
 gem 'grape-swagger', '~> 1.2.0'
-gem 'grape-swagger-entity', '0.3.4'
+gem 'grape-swagger-entity', '0.5.1'
 gem 'grape-swagger-rails'
 gem 'grape-swagger-ui'
 gem 'http_accept_language'
