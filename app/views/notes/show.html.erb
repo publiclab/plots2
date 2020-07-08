@@ -14,30 +14,31 @@
 
   <% if @node.main_image %>
     <a class="main-image" style="max-width:100%;width:800px;" href="<%= @node.main_image.path(:original) %>">
-      <%= image_tag(@node.main_image.path(:large), class:"rounded d-none d-lg-inline", style:'max-height:600px;max-width:100%;') %>
+      <%= image_tag(@node.main_image.path(:large), id:"main-image-print", class:"rounded d-none d-lg-inline", style:'max-height:600px;max-width:100%;') %>
       <%= image_tag(@node.main_image.path(:large), class:"rounded d-lg-none", style:'width:100%;') %>
     </a>
     <!--<div class="expand"><a onClick="$('.main-image').toggleClass('compressed');"><i class="fa fa-angle-down"></i></a></div>-->
   <% end %>
 
-  <h1 style="margin-top: 40px;"><%= @node.title %></h1>
+  <h1 id='note-title' style="margin-top: 40px;"><%= @node.title %></h1>
 
   <div>
 
     <span>
       <% if @node.status == 0 || @node.status == 4 %><span class="badge badge-danger"><%= translation('notes.show.unpublished') %></span> | <% end %>
       <% if @node.status == 3 %><span class="badge badge-success">Draft</span> | <% end %>
-      by <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> <%= @node.author.new_contributor %>
+      by <a id="note-author" href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> <%= @node.author.new_contributor %>
       <% if @node.has_power_tag('with') %>with <% @node.coauthors.each_with_index do |coauthor,i| %>
-              <a href="/profile/<%= coauthor.username %>">
-                <%= coauthor.username%></a> <%= coauthor.new_contributor %>
+              <a class="note-coauthors" href="/profile/<%= coauthor.username %>">
+                <%= coauthor.username%></a>
+                <img class="rounded-circle coauthor-photo" style="width:20px; height:20px; margin-right:8px;" src="<%= coauthor.profile_image %>"/> <%= coauthor.new_contributor %>
               <%= ',' if i < @node.coauthors.length-1 %><% end %><% end %>
               <% if current_user && current_user.id == @node.uid %><a aria-label="Add Coauthor" onClick="promptTag('with:')" href="#"><i style="color:#aaa;" class="fa fa-pencil"></i></a><% end %> |
 
-      <span class="d-none d-lg-inline">
+      <span id="note-date" class="d-none d-lg-inline">
         <%= @node.created_at.to_s(:long) %>
       </span>
-      <span class="d-xl-none">
+      <span id="note-time" class="d-xl-none">
         <%= @node.created_at.to_s(:short) %>
       </span>
       <a class="d-lg-none collapse-btn" data-toggle="collapse" href="#collapse-info" role="button" aria-expanded="false" aria-controls="collapse-info" id="collapse-button">...</a>
@@ -132,6 +133,9 @@
     font-size: 85%;
     background-color: rgba(27, 31, 35, 0.14);
     border-radius: 3px;
+  }
+  .coauthor-photo{
+  display: none;
   }
 </style>
 <script>

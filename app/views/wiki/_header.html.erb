@@ -4,13 +4,13 @@
 
 <% if @node.main_image && !@presentation %>
   <a style="margin-bottom:10px;" href="<%= @node.main_image.path(:original) %>">
-    <%= image_tag(@node.main_image.path(:large), class:"rounded", style:'max-width:100%;max-height:600px;margin-bottom:10px;') %>
+    <%= image_tag(@node.main_image.path(:large), class:"rounded", id:"main-image-print", style:'max-width:100%;max-height:600px;margin-bottom:10px;') %>
   </a>
 <% end %>
 
 <br class="d-lg-none" style="clear:both;" />
 
-<h1 style="font-size:3em;margin-top:20px;text-align:center;font-family:'Junction Light';">
+<h1 id='wiki-title' style="font-size:3em;margin-top:20px;text-align:center;font-family:'Junction Light';">
   <%= @revision.title %>
   <% if @presentation || @node.has_tag('style:minimal') %>
     <a onClick="$('#wiki-toolbar').toggle()" class="btn btn-link"><b><i class="fa fa-caret-down"></i></b></a>
@@ -40,6 +40,18 @@
   </div>
 </div>
 
+<div class="wiki-author-list" style="display:none;"> <% @node.authors.each_with_index do |author,i| %>
+        <a class="wiki-authors" href="/profile/<%= author.username %>">
+          <%= author.username%></a>
+        <% end %>
+</div>
+<div class="revision-and-created-at" style="display:none;">
+        <a class="wiki-revisions" href="">
+          <%= @node.revisions.length %></a>
+        <a class="wiki-date" href="">
+          <%= @node.created_at.to_s(:long) %></a>
+
+</div>
 <br />
 
 <% if params[:raw] == 'true' %>

@@ -62,3 +62,4 @@
 //= require submit_form_ajax.js
 //= require urlMapHash.js
 //= require spam2.js
+//= require print-preview.js
