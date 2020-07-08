@@ -27,7 +27,6 @@ services:
       - DB_USER=${DB_USER}
       - DB_NAME=${DB_NAME}
       - DB_PASS=${DB_PASS}
-      - DB_SOCKET=${DB_SOCKET}
       - DB_HOST=${DB_HOST}
       - RAILS_MAX_THREADS=${RAILS_MAX_THREADS}
       - RAILS_ENV=${RAILS_ENV}
