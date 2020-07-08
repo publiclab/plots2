@@ -3,6 +3,7 @@ ports:
     onOpen: open-preview
 tasks:
   - init: >
+      rvm use 2.4.4 --default
       bundle install --without production &&
       rails db:migrate
     command: >
