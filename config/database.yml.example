@@ -23,11 +23,12 @@ development:
 
 production:
   adapter: mysql2
-  username: plots
-  password: plots
-  database: plots
-  host: db
-  encoding: utf8
-  pool: 5
+  username: <%= ENV['DB_USER'] || 'plots' %>
+  password: <%= ENV['DB_PASS'] || 'plots' %>
+  database: <%= ENV['DB_NAME'] || 'plots' %>
+  port: <%= ENV['DB_PORT'] || 3306 %>
+  host: <%= ENV['DB_HOST'] || 'db' %>
+  encoding: utf8mb4
+  pool: <%= ENV['RAILS_MAX_THREADS'] || 5 %>
   timeout: 5000
   strict: false
