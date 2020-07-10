@@ -4,6 +4,8 @@ ports:
 tasks:
   - init: >
       bundle install --without production &&
+      cp config/database.yml.example config/database.yml &&
+      cp db/schema.rb.example db/schema.rb &&
       rails db:migrate
     command: >
       rails server
