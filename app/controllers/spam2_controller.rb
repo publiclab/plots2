@@ -33,9 +33,9 @@ class Spam2Controller < ApplicationController
                when 'spammed'
                  @flags.where(status: 0)
                when 'page'
-                 @flags.where(type: page)
+                 @flags.where(type: 'page')
                when 'note'
-                 @flags.where(type: note)
+                 @flags.where(type: 'node')
                else
                  @flags
                end
@@ -188,7 +188,7 @@ class Spam2Controller < ApplicationController
         @node.unflag_node
       end
     else
-      flash[:error] = 'Only admins and moderators can unban nodes.'
+      flash[:error] = 'Only admins and moderators can unflag nodes.'
       redirect_to '/dashboard'
     end
   end

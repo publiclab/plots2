@@ -33,6 +33,13 @@ class SpamTest < ApplicationSystemTestCase
     page.assert_selector("div.alert", text: "Content spammed")
   end
 
+  test "unflag post in spam2" do
+    flag_page = nodes(:flag_post)
+    visit "/spam2/flags"
+      find("a[href='/moderate/remove_flag_node/#{flag_page.id}'").click() 
+    page.assert_selector("div.alert", text: "Content unflagged")
+  end
+
   test "banning of a user in spam2" do
     ban_page = nodes(:first_timer_note)
     visit "/spam2"

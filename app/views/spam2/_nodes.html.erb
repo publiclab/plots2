@@ -57,7 +57,7 @@ $(document).ready(function () {
         <a id="unmoderated" class="btn nav-link  <% if params[:type] == "unmoderated" %> badge text-light badge-dark mt-2 py-2 <% else %> text-dark <% end %>">Unmoderated <span class="badge badge-<% if params[:type] == "unmoderated" %>light<% else %>dark <% end %>"><%= @unmoderated_count %></span></a>
       </li>
       <li class="nav-item">
-        <a id="note" class="btn nav-link text-info">Nodes per page </a>
+        <a id="note" class="btn nav-link text-info font-weight-bold">Nodes per page </a>
       </li>
       <li class="nav-item pt-1">
       <select name="Visible" id="pageselect" class="overflow-hiden custom-select custom-select-sm form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Select item per page">
