@@ -445,15 +445,3 @@ sun_question:
   type: "note"
   cached_likes: 0
   slug: "note-tagged-with-question-sun"
-
-flag_post:
-  nid: 37
-  uid: 20
-  title: "Flag post test"
-  path: "/notes/bob/<%= DateTime.new(2018,8,15).strftime("%m-%d-%Y") %>/flag-post-test"
-  status: 1
-  flag: 1
-  type: "note"
-  cached_likes: 7
-  views: 9
-  slug: bob-<%= DateTime.new(2018,8,15).strftime("%m-%d-%Y") %>-flag-post-test
