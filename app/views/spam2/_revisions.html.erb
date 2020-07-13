@@ -60,4 +60,12 @@ $(document).ready(function () {
       </tbody>
     </table>                      
   </div>
+</div>
+<div class="page-table">
+  <div class="float-right">
+    <%= will_paginate @revisions, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || @revisions.empty?%>
   </div>
+  <div class="float-left">
+    Batch  <%= @revisions.current_page%> of <%= @revisions.total_pages %> total Batches
+  </div>
+</div>

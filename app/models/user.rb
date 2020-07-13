@@ -268,6 +268,23 @@ class User < ActiveRecord::Base
     .distinct
   end
 
+  def unmoderated_in_period(start_time, end_time)
+    tag_following = TagSelection.where(following: true, user_id: uid)
+    ids = []
+    tag_following.each do |tagname|
+      ids += NodeTag.where(tid: tagname.tid).collect(&:nid)
+    end
+    range = "(created >= #{start_time.to_i} AND created <= #{end_time.to_i})"
+    Node.where(nid: ids)
+    .includes(:revision, :tag)
+    .references(:node_revision)
+    .where('node.status = 4')
+    .where(type: 'note')
+    .where(range)
+    .order('node_revisions.timestamp DESC')
+    .distinct
+  end
+
   def social_link(site)
     return nil unless has_power_tag(site)
 
@@ -355,6 +372,19 @@ class User < ActiveRecord::Base
       SubscriptionMailer.send_digest(id, @nodes, @frequency).deliver_now
     end
   end
+
+  def send_digest_email_spam
+    if has_tag('digest:weekly:spam')
+      @frequency_digest = Frequency::WEEKLY
+      @nodes_unmoderated = unmoderated_in_period(1.week.ago, Time.current)
+    elsif has_tag('digest:daily:spam')
+      @frequency_digest = Frequency::DAILY
+      @nodes_unmoderated = unmoderated_in_period(1.day.ago, Time.current)
+    end
+    if @nodes_unmoderated.size.positive?
+      AdminMailer.send_digest_spam(@nodes_unmoderated, @frequency_digest).deliver_now
+    end
+ end
 
   def tag_counts
     tags = {}
