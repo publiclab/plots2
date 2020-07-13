@@ -14,8 +14,8 @@ class Spam2Controller < ApplicationController
                else
                  @nodes.where(status: [0, 4])
                end
-      @spam_count = @nodes.where(status: 0).length
-      @unmoderated_count = @nodes.where(status: 4).length
+      @node_unmoderated_count = Node.where(status: 4).length
+      @node_flag_count = Node.where('flag > ?', 0).length
     else
       flash[:error] = 'Only moderators can moderate posts.'
       redirect_to '/dashboard'
@@ -73,6 +73,8 @@ class Spam2Controller < ApplicationController
                     @comments.where(status: [0, 4])
                     .or(@comments.where('flag > ?', 0))
                   end
+      @comment_unmoderated_count = Comment.where(status: 4).length
+      @comment_flag_count = Comment.where('flag > ?', 0).length
       render template: 'spam2/_spam'
     else
       flash[:error] = 'Only moderators can moderate comments.'

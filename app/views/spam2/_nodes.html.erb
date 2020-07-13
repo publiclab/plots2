@@ -48,13 +48,13 @@ $(document).ready(function () {
       </li>
       <% if params[:type] != "wiki" %>  
       <li class="nav-item">
-        <a id="reset_all" class="btn nav-link <% if params[:type] == "all" %> badge text-light badge-dark mt-2 py-2<% else %> text-dark font-weight-bold <% end %>">All</a>
+        <a id="reset_all" class="btn nav-link <% if params[:type] == "all" %> badge text-white badge-dark mt-2 py-2<% else %> text-dark font-weight-bold <% end %>">All</a>
       </li>
       <li class="nav-item">
-        <a id="spammed" class="btn nav-link  <% if params[:type] == "spammed" %> badge text-light badge-dark mt-2 py-2 <% else %> text-dark <% end %>">Spammed <span class="badge badge-<% if params[:type] == "spammed" %>light<% else %>dark <% end %>"><%= @spam_count %></span></a>
+        <a id="spammed" class="btn nav-link  <% if params[:type] == "spammed" %> badge text-white badge-dark mt-2 py-2 <% else %> text-dark <% end %>">Spammed </a>
       </li>
       <li class="nav-item">
-        <a id="unmoderated" class="btn nav-link  <% if params[:type] == "unmoderated" %> badge text-light badge-dark mt-2 py-2 <% else %> text-dark <% end %>">Unmoderated <span class="badge badge-<% if params[:type] == "unmoderated" %>light<% else %>dark <% end %>"><%= @unmoderated_count %></span></a>
+        <a id="unmoderated" class="btn nav-link  <% if params[:type] == "unmoderated" %> badge text-white badge-dark mt-2 py-2 <% else %> text-dark <% end %>">Unmoderated</a>
       </li>
       <li class="nav-item">
         <a id="note" class="btn nav-link text-info font-weight-bold">Nodes per page </a>
@@ -113,18 +113,18 @@ $(document).ready(function () {
                <script>
                 $('#n<%= node.id %> .delete').bind('ajax:success', function(e){
                   $('#n<%= node.id %>').fadeOut()
-                  $('#deleted<%= node.id %>').fadeIn();
-                  $('#deleted<%= node.id %>').fadeOut();
+                  $('#deleted').fadeIn();
+                  $('#deleted').fadeOut(3000);
                 });
                 $('#n<%= node.id %> .publish').bind('ajax:success', function(e){
                   $('#n<%= node.id %>').hide()
-                  $('#npublish<%= node.id %>').fadeIn(); // published!
-                  $('#npublish<%= node.id %>').fadeOut();
+                  $('#npublish').fadeIn(); // published!
+                  $('#npublish').fadeOut(3000);
                 });
                 $('#n<%= node.id %> .spam').bind('ajax:success', function(e){
                   $('#n<%= node.id %>').hide()
-                  $('#nspam<%= node.id %>').fadeIn(); // spammed!
-                  $('#nspam<%= node.id %>').fadeOut();
+                  $('#nspam').fadeIn(); // spammed!
+                  $('#nspam').fadeOut(3000);
                 });  
                 $('.a<%= node.author.id %>.ban').bind('ajax:success', function(e){
                   $('.a<%= node.author.id %>').hide()  // ban toggle
@@ -137,15 +137,6 @@ $(document).ready(function () {
                 </script>
               </td>
             </tr>
-            <div style="display:none;" id="deleted<%= node.id %>" class="alert alert-danger alert-dismissible">
-              Node Deleted
-            </div> 
-            <div style="display:none;" id="npublish<%= node.id %>" class="alert alert-success alert-dismissible">
-              Content published
-            </div> 
-            <div style="display:none;" id="nspam<%= node.id %>" class="alert alert-danger alert-dismissible">
-                Content spammed
-            </div>
             <div class="modal fade" id="ninfo<%= node.id %>"> 
               <div class="modal-dialog" >
                 <div class="modal-content">

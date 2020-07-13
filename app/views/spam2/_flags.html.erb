@@ -122,39 +122,27 @@ $(document).ready(function () {
                <script>
                 $('#n<%= flag.id %> .delete').bind('ajax:success', function(e){
                   $('#n<%= flag.id %>').fadeOut()
-                  $('#deleted<%= flag.id %>').fadeIn();
-                  $('#deleted<%= flag.id %>').fadeOut();
+                  $('#deleted').fadeIn();
+                  $('#deleted').fadeOut(3000);
                 });
                 $('#n<%= flag.id %> .publish').bind('ajax:success', function(e){
                   $('#n<%= flag.id %>').hide()
-                  $('#npublish<%= flag.id %>').fadeIn(); // published!
-                  $('#npublish<%= flag.id %>').fadeOut();
+                  $('#npublish').fadeIn(); // published!
+                  $('#npublish').fadeOut(3000);
                 });
                 $('#n<%= flag.id %> .spam').bind('ajax:success', function(e){
                   $('#n<%= flag.id %>').hide()
-                  $('#nspam<%= flag.id %>').fadeIn(); // spammed!
-                  $('#nspam<%= flag.id %>').fadeOut();
+                  $('#nspam').fadeIn(); // spammed!
+                  $('#nspam').fadeOut(3000);
                 });
                 $('#n<%= flag.id %> .unflag').bind('ajax:success', function(e){
                   $('#n<%= flag.id %>').hide()
-                  $('#nunflag<%= flag.id %>').fadeIn(); // unflag!
-                  $('#nunflag<%= flag.id %>').fadeOut();
+                  $('#nunflag').fadeIn(); // unflag!
+                  $('#nunflag').fadeOut(3000);
                 });  
                 </script>
               </td>
             </tr>
-            <div style="display:none;" id="deleted<%= flag.id %>" class="alert alert-danger alert-dismissible">
-              flag Deleted
-            </div> 
-            <div style="display:none;" id="npublish<%= flag.id %>" class="alert alert-success alert-dismissible">
-              Content published
-            </div> 
-            <div style="display:none;" id="nspam<%= flag.id %>" class="alert alert-danger alert-dismissible">
-                Content spammed
-            </div>
-            <div style="display:none;" id="nunflag<%= flag.id %>" class="alert alert-danger alert-dismissible">
-                Content unflagged
-            </div>
             <div class="modal fade" id="ninfo<%= flag.id %>"> 
               <div class="modal-dialog" >
                 <div class="modal-content">
@@ -184,6 +172,6 @@ $(document).ready(function () {
     <%= will_paginate @flags, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || @flags.empty?%>
   </div>
   <div class="float-left">
-    Batch <%= @flags.current_page%> of <%= @flags.total_pages %> total Batches
+    Page <%= @flags.current_page%> of <%= @flags.total_pages %> total Pages
   </div>
 </div>

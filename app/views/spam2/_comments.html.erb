@@ -99,23 +99,23 @@ $(document).ready(function () {
                 <script>
                 $('#n<%= comment.id %> .delete').bind('ajax:success', function(e){
                   $('#n<%= comment.id %>').fadeOut()
-                  $('#deleted<%= comment.id %>').fadeIn();
-                  $('#deleted<%= comment.id %>').fadeOut();
+                  $('#deleted').fadeIn();
+                  $('#deleted').fadeOut(3000);
                 });
                 $('#n<%= comment.id %> .publish').bind('ajax:success', function(e){
                   $('#n<%= comment.id %>').hide()
-                  $('#npublish<%= comment.id %>').fadeIn(); // published!
-                  $('#npublish<%= comment.id %>').fadeOut();
+                  $('#npublish').fadeIn(); // published!
+                  $('#npublish').fadeOut(3000);
                 });
                 $('#n<%= comment.id %> .spam').bind('ajax:success', function(e){
                   $('#n<%= comment.id %>').hide()
-                  $('#nspam<%= comment.id %>').fadeIn(); // spammed!
-                  $('#nspam<%= comment.id %>').fadeOut();
+                  $('#nspam').fadeIn(); // spammed!
+                  $('#nspam').fadeOut(3000);
                 });
                 $('#n<%= comment.id %> .unflag').bind('ajax:success', function(e){
                   $('#n<%= comment.id %>').hide()
-                  $('#nuflag<%= comment.id %>').fadeIn(); // unflag!
-                  $('#nunflag<%= comment.id %>').fadeOut();
+                  $('#nuflag').fadeIn(); // unflag!
+                  $('#nunflag').fadeOut(3000);
                 });  
                   $('.a<%= comment.author.id %>.ban').bind('ajax:success', function(e){
                   $('.a<%= comment.author.id %>').hide()  // ban toggle
@@ -128,18 +128,6 @@ $(document).ready(function () {
                 </script>
             </td>
           </tr>
-            <div style="display:none;" id="deleted<%= comment.id %>" class="alert alert-danger alert-dismissible">
-              flag Deleted
-            </div> 
-            <div style="display:none;" id="npublish<%= comment.id %>" class="alert alert-success alert-dismissible">
-              Content published
-            </div> 
-            <div style="display:none;" id="nspam<%= comment.id %>" class="alert alert-danger alert-dismissible">
-                Content spammed
-            </div>
-            <div style="display:none;" id="nunflag<%= comment.id %>" class="alert alert-danger alert-dismissible">
-                Content unflagged
-            </div>
             <div class="modal fade" id="ninfo<%= comment.id %>"> 
             <div class="modal-dialog" >
               <% unless comment.node.nil? %>
