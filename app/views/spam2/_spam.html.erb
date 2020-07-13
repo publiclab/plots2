@@ -49,11 +49,11 @@
     Info <i class="fa fa-caret-down text-secondary"></i>
   </a>
   <% if params[:action] != "_spam_revisions" && params[:action] != "_spam_comments" && params[:action] != "_spam_flags"%>
-    <div class=" d-inline-flex"><i class="fa fa-sticky-note text-info mt-3 pl-5" data-toggle="tooltip" data-placement="left" title="Unmoderated Nodes"></i><a href="/spam2/filter/unmoderated/30"  class="badge badge-pill badge-light text-info mx-2 my-3"><%= @node_unmoderated_count %></a></div>
-    <div class=" d-inline-flex"><i class="fa fa-flag text-warning mt-3" data-toggle="tooltip" data-placement="left" title="Unmoderated Comments"></i><a href="/spam2/comments/filter/all/30" class="badge badge-pill badge-light text-warning mx-2 my-3" ><%= @node_flag_count %></a></div>
+    <div class=" d-inline-flex"><i class="fa fa-sticky-note text-info mt-3 ml-5" data-toggle="tooltip" data-placement="left" title="Unmoderated Nodes"></i><a href="/spam2/filter/unmoderated/30"  class="badge badge-pill badge-light text-info mx-2 my-3"><%= @node_unmoderated_count %></a></div>
+    <div class=" d-inline-flex"><i class="fa fa-flag text-warning mt-3" data-toggle="tooltip" data-placement="left" title="Unmoderated Comments"></i><a href="/spam2/flags/filter/all/30" class="badge badge-pill badge-light text-warning mx-2 my-3" ><%= @node_flag_count %></a></div>
   <% end%>
   <% if params[:action] == "_spam_comments" %>
-    <div class=" d-inline-flex"><i class="fa fa-comment text-info mt-3" data-toggle="tooltip" data-placement="left" title="Flags Nodes"></i><a href="/spam2/flags/filter/all/30" class="badge badge-pill badge-light text-info mx-2 my-3"><%= @comment_unmoderated_count %></a></div>
+    <div class=" d-inline-flex"><i class="fa fa-comment text-info ml-5 mt-3" data-toggle="tooltip" data-placement="left" title="Flags Nodes"></i><a href="/spam2/flags/filter/all/30" class="badge badge-pill badge-light text-info mx-2 my-3"><%= @comment_unmoderated_count %></a></div>
     <div class=" d-inline-flex"><i class="fa fa-flag text-warning mt-3" data-toggle="tooltip" data-placement="left" title="Flagged Comments"></i><a href="/spam2/comments/filter/flagged/30"  class="badge badge-pill badge-light text-warning my-3 mx-2" ><%= @comment_flag_count %></a></div>
   <% end %>
 </div>

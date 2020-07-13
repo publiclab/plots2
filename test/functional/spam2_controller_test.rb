@@ -250,7 +250,7 @@ class Spam2ControllerTest < ActionController::TestCase
         assert_redirected_to "/dashboard"
     end
     #flag Nodes
-    test 'Anyone user should be able to flag a note' do
+    test 'Anyone should be able to flag a node' do
         UserSession.create(users(:bob))
         node = nodes(:spam)
         post :flag_node, params: { id: node.id }
@@ -259,7 +259,7 @@ class Spam2ControllerTest < ActionController::TestCase
         assert_equal 'Node flagged.', flash[:notice]
     end    
     #unflag nodes
-    test 'Normal user should not be able to unflag a note' do
+    test 'Normal user should not be able to unflag a node' do
         UserSession.create(users(:bob))
         node = nodes(:about)
         post :remove_flag_node, params: { id: node.id }
@@ -267,7 +267,7 @@ class Spam2ControllerTest < ActionController::TestCase
         assert_redirected_to '/dashboard'
     end
 
-    test 'Moderator should be able to unflag nodes' do
+    test 'Moderator should be able to unflag a node' do
         UserSession.create(users(:moderator))
         node = nodes(:about)
         post :remove_flag_node, params: { id: node.id }
@@ -275,7 +275,7 @@ class Spam2ControllerTest < ActionController::TestCase
         assert_equal 0, node.flag
     end
       
-    test 'Admins should be able to unflag nodes' do
+    test 'Admins should be able to unflag a node' do
         UserSession.create(users(:admin))
         node = nodes(:about)
         post :remove_flag_node, params: { id: node.id }
@@ -283,7 +283,7 @@ class Spam2ControllerTest < ActionController::TestCase
         assert_equal 0, node.flag
     end
     #flag Comments
-    test 'Anyone user should be able to flag a comments' do
+    test 'Anyone should be able to flag a comment' do
         UserSession.create(users(:bob))
         comment = comments(:first)
         post :flag_comment, params: { id: comment.id }
@@ -292,7 +292,7 @@ class Spam2ControllerTest < ActionController::TestCase
         assert_equal 1, comment.flag
     end
     #unflag comments
-    test 'Normal user should not be able to unflag a comments' do
+    test 'Normal user should not be able to unflag a comment' do
         UserSession.create(users(:bob))
         comment = comments(:second)
         post :remove_flag_comment, params: { id: comment.id }
@@ -300,7 +300,7 @@ class Spam2ControllerTest < ActionController::TestCase
         assert_redirected_to '/dashboard'
     end
 
-    test 'Moderator should be able to unflag comments' do
+    test 'Moderator should be able to unflag a comment' do
         UserSession.create(users(:moderator))
         comment = comments(:second)
         post :remove_flag_comment, params: { id: comment.id }
@@ -308,7 +308,7 @@ class Spam2ControllerTest < ActionController::TestCase
         assert_equal 0, comments(:second).flag
     end
       
-    test 'Admins should be able to unflag comments' do
+    test 'Admins should be able to unflag a comment' do
         UserSession.create(users(:admin))
         comment = comments(:second)
         post :remove_flag_comment, params: { id: comment.id }
