@@ -51,6 +51,10 @@
           <h1><a href="<%= node.path %>"><%= node.title %></a></h1>
           <p class="meta" style="color:#888;"><small>
             <%=raw translation('tag.blog.by') %> <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a>  <%= node.author.new_contributor %>
+	    <% if node.has_power_tag('with') %>with <% node.coauthors.each_with_index do |coauthor,i| %>
+              <a href="/profile/<%= coauthor.username %>">
+              <%= coauthor.username%></a> <%= coauthor.new_contributor %>
+              <%= ',' if i < node.coauthors.length-1 %><% end %><% end %>
 	    | <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>
             | <a href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= node.comments_viewable_by(current_user).length %></a>
             <% if params[:controller] == "notes" && params[:action] == "popular" %>
