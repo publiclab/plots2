@@ -6,7 +6,7 @@ ports:
 tasks:
     - init: >
         bundle install --without production &&
-        cp config/dabase.yml.gitpod config/database.yml &&
+        cp config/database.yml.gitpod config/database.yml &&
         cp db/schema.rb.example db/schema.rb &&
         rake db:setup
 
