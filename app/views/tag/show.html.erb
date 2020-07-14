@@ -1,50 +1,117 @@
+<!-- cLose container divs so we can be full-width -->
+</div>
+</div>
+
 <script src="/assets/wikis.js" type="text/javascript"></script>
 
-<div class="container tag-header">
-  <%= render partial: 'tag/show/header' %>
-  <div class= "card tag-card">
-    <div class="card-body">
-      <div class="pull-right"><%= render :partial => "tag/show/user_controls" %></div>
-      <h1 style="margin-top:6px;">
-        <%= @wiki&.latest&.title || @title %>
-        <span rel="tooltip" title="This 'tagname' forms part of the URL for this topic." class="badge badge-secondary" style="font-family: 'Helvetica Neue',Arial,sans-serif;font-size: 12px;background: #ccc;color: white;"><%= params[:id] %></span>
-      </h1>
-      <% if @wildcard %>
+<style>
+.tag-header {
+  margin-top: -21px;
+}
+@media screen and (max-width: 340px) {
+  .tag-header {
+    margin-top: -30px;
+  }
+}
+.fdb-block {
+  box-shadow: 0;
+  margin-bottom: 0;
+  transition: margin 0.25s linear 0.25s;
+  padding: 3.5rem 0;
+  position: relative;
+  background-size: cover;
+  background-color: #FFF;
+}
+.fdb-block, .rounded {
+  overflow: hidden;
+}
+.fdb-block, .fdb-block .container {
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.fdb-block .container {
+  background-size: contain;
+}
+.fdb-block, .fdb-block .container {
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.fdb-block .fdb-box {
+  background: #FFF;
+  padding: 2.75rem 2.5rem;
+  overflow: hidden;
+  color: #444;
+  border-radius: .25rem;
+  box-shadow: 0 .3125rem .875rem 0 rgba(129,129,129,.2)!important;
+}
+.fdb-block .rounded-bottom-0 {
+  border-bottom-left-radius: 0!important;
+  border-bottom-right-radius: 0!important;
+}
 
-        <% if @node_type == "questions"%>
-          <p><i>Showing <b>questions</b></i></p>
-        <% elsif @node_type == "note" && params[:id].match("activity:") %>
-          <p><i>Showing <b>activities</b></i></p>
-        <% elsif @node_type == "note" && params[:id].match("replication:") %>
-          <p><i>Showing <b>completed activities</b></i></p>
+</style>
+
+<section class="tag-header fdb-block pb-0" style="<% if @wiki && @wiki.main_image %>background-image: url(<%= @wiki.main_image.path %>);<% else %>background: #eee;<% end %>" data-block-type="contents" data-id="1">
+
+  <div class="container">
+    <div class="row text-left justify-content-start">
+      <div class="col-12 col-md-6 col-xl-5"><div class="fdb-box rounded-bottom-0">
+
+        <div class="pull-right"><%= render :partial => "tag/show/user_controls" %></div>
+ 
+        <h1 style="margin-top:6px;">
+          <%= @wiki&.latest&.title || @title %>
+          <span rel="tooltip" title="This 'tagname' forms part of the URL for this topic." class="badge badge-secondary" style="font-family: 'Helvetica Neue',Arial,sans-serif;font-size: 12px;background: #ccc;color: white;">
+            <%= params[:id] %>
+          </span>
+        </h1>
+
+        <% if @wildcard %>
+ 
+          <% if @node_type == "questions"%>
+            <p><i>Showing <b>questions</b></i></p>
+          <% elsif @node_type == "note" && params[:id].match("activity:") %>
+            <p><i>Showing <b>activities</b></i></p>
+          <% elsif @node_type == "note" && params[:id].match("replication:") %>
+            <p><i>Showing <b>completed activities</b></i></p>
+          <% end %>
+ 
+          <p><i>This is a wildcard (*) tag search. Please enter a tag without wildcards to display lead wiki pages.</i></p>
+ 
         <% end %>
 
-        <p><i>This is a wildcard (*) tag search. Please enter a tag without wildcards to display lead wiki pages.</i></p>
-
-      <% end %>
-      <% if @wiki %>
-        <p class = "wiki-sub"><%= @wiki.latest.body.split('\n').first %></p>
-      <% end %>
-      <div class="tag-buttons">
-        <div class="btn-group" role="group">
-          <% if current_user && current_user.following(params[:id]) %>
-            <a rel="tooltip" title="<%= translation('sidebar._post_button.share_your_work') %>" data-placement="bottom" href="/post?tags=<%= @title %>" class="btn btn-primary requireLogin">New post <i class="fa fa-plus fa-white"></i></a>
+        <% if @wiki %>
+          <p class = "wiki-sub wiki-summary" id="wiki-summary"><%= @wiki.latest.body.split('\n').first %></p>
+        <% end %>
+ 
+        <div class="tag-buttons">
+          <div class="btn-group" role="group">
+            <% if current_user && current_user.following(params[:id]) %>
+              <a rel="tooltip" title="<%= translation('sidebar._post_button.share_your_work') %>" data-placement="bottom" href="/post?tags=<%= @title %>" class="btn btn-primary requireLogin">New post <i class="fa fa-plus fa-white"></i></a>
+            <% else %>
+              <a class="btn btn-primary requireLogin" target="_blank" href="/subscribe/tag/<%= params[:id] %>"> Follow</a>
+                <% if @related_tags %>
+                  <a><%= render partial: 'tag/dropdown_subscribe', locals: { tags: @related_tags, buttonStyle: "btn-primary"} %></a>
+                <% end %>
+            <% end %>
+          </div>
+          <% if @wiki %>
+            <a><%= link_to("Learn more &raquo;".html_safe, "/wiki/#{params[:id]}", :class=> "btn btn-outline-secondary")%></a>
           <% else %>
-            <a class="btn btn-primary requireLogin" target="_blank" href="/subscribe/tag/<%= params[:id] %>"> Follow</a>
-              <% if @related_tags %>
-                <a><%= render partial: 'tag/dropdown_subscribe', locals: { tags: @related_tags, buttonStyle: "btn-primary"} %></a>
-              <% end %>
+            <a class="btn btn-outline-secondary" href="/wiki/new?title=<%= params[:id] %>">Add a description <span class="fa fa-plus"></span></a>
           <% end %>
         </div>
-        <% if @wiki %>
-          <a><%= link_to("Learn more &raquo;".html_safe, "/wiki/#{params[:id]}", :class=> "btn btn-outline-secondary")%></a>
-        <% else %>
-          <a class="btn btn-outline-secondary" href="/wiki/new?title=<%= params[:id] %>">Add a description <span class="fa fa-plus"></span></a>
-        <% end %>
-      </div>
+
+      </div></div>
     </div>
   </div>
-</div>
+
+</section>
+
+<br />
+
+<div class="container">
+<div class="row">
 
 <% cache("tag-show-#{request.fullpath}", expires_in: 5.minutes, skip_digest: true) do %>
 <div class="container">
@@ -68,45 +135,13 @@
   </div>
 </div>
 <% end %>
+
 <%= stylesheet_link_tag "dashboard" %>
 
 <style>
   .node-types .nav-link {
     color: #495057;
   }
-  .tag-card {
-    position: absolute;
-    top: 100px;
-    left: 5%;
-    z-index: 1;
-    width: 40%;
-    padding: 10px 10px !important;
-  }
-
-  @media screen and (max-width: 998px) {
-   .tag-card {
-     width: 60%;
-   }
-  }
-
-  @media screen and (max-width: 480px) {
-   .tag-card {
-     top: 90px;
-     width: 90%;
-   }
-  }
-  .tag-header {
-    height: 355px;
-  }
-  .wiki-sub{
-    overflow: hidden;
-    color: #666;
-    height: 70px;
-  }
-  .tag-buttons .btn {
-    margin-top: 10px;
-  }
-
   .contributor-info,
   .contributor-info a i,
   .contributor-info a:link i,
