@@ -31,7 +31,7 @@
     | <span><i style="<% if node.likes > 0 %>color:#db4;<% end %>" class="fa fa-star-o"></i> <%= node.likes %></span>
   <% if params[:mod] %>| <a href="#"><i class="fa fa-ban"></i></a><% end %>
   <% if current_user %>
-    | <a href="/moderate/flag_node/<%= node.id %>" data-toggle="tooltip" data-placement="top" title="Flag this node"><i class="fa fa-flag"></i></a>
+    | <a href="/moderate/flag_node/<%= node.id %>" data-toggle="tooltip" data-placement="top" title="Flag this to moderators"><i class="fa fa-flag" id="flag_node<%= node.id%>"></i></a>
   <% else %>
     | <a data-toggle="modal" data-target="#loginModal" role="button" aria-pressed="true"><i class="fa fa-flag"></i></a>
   <% end %>

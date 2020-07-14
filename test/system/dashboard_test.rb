@@ -22,5 +22,16 @@ class DashboardTest < ApplicationSystemTestCase
     take_screenshot
 
   end
-
+  
+  test "User can flag a node from dashboard" do
+    visit '/'
+    click_on 'Login'
+    page1 = nodes(:one)
+    fill_in("username-login", with: "Bob")
+    fill_in("password-signup", with: "secretive")
+    click_on "Log in"
+    visit '/dashboard'
+    find("#flag_node#{page1.id}").click()
+    assert find("div.alert", text: "Node flagged.")
+  end
 end
