@@ -6,12 +6,11 @@ image:
       onOpen: open-preview
   tasks:
     - init: >
-        - bundle install --without production 
-        - yarn install
-        - cp config/database.yml.example config/database.yml 
-        - cp db/schema.rb.example db/schema.rb 
-        - bundle exec rake db:schema:load
-        - bundle exec rake db:migrate
+        bundle install --without production &&
+        cp config/database.yml.example config/database.yml &&
+        cp db/schema.rb.example db/schema.rb &&
+        bundle exec rake db:schema:load &&
+        bundle exec rake db:migrate
       command: >
         rails server
         sidekiq
