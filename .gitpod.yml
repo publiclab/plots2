@@ -17,4 +17,10 @@ tasks:
       rails server
 github:
     prebuilds:
+        branches: true
+        pullRequests: true
         pullRequestsFromForks: true
+        addCheck: true
+        addComment: true
+        addBadge: false
+        addLabel: false
