@@ -13,7 +13,7 @@ tasks:
         yarn install
 
       command: >
-        bundle exec passenger start
+        passenger start
 
 github:
     prebuilds:
