@@ -8,7 +8,9 @@ tasks:
         bundle install --without production &&
         cp config/database.yml.example config/database.yml &&
         cp db/schema.rb.example db/schema.rb &&
-        rake db:setup 
+        mysql -e "CREATE DATABASE plots;"; &&
+        bundle exec rake db:schema:load &&
+        bundle exec rake db:migrate
 
       command: >
         passsenger start
