@@ -17,7 +17,7 @@ class TagTest < ApplicationSystemTestCase
     visit '/tag/nature'
 
     # Click on 3 dots menu
-    find('.tag-card .pull-right').click()
+    find('.tag-header .pull-right').click()
 
     # Subscribe to the tag "nature"
     find('.dropdown-menu.show a[href="/subscribe/tag/nature"]').click()
