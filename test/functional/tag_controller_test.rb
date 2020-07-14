@@ -191,7 +191,7 @@ class TagControllerTest < ActionController::TestCase
     end
 
     # assert_equal assigns['tags'].length, 1
-    assert_select '#wiki-content', 1
+    assert_select '#wiki-summary', 1
   end
 
   test 'show page for non-existent tag' do
@@ -309,7 +309,7 @@ class TagControllerTest < ActionController::TestCase
 
     get :show, params: { id: nodes(:organizers).slug }
 
-    assert_select '#wiki-content', 1
+    assert_select '#wiki-summary', 1
   end
 
   test 'show note with author and tagname without wildcard' do
