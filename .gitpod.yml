@@ -1,10 +1,10 @@
  
 image:
     file: .gitpod.dockerfile
-  ports:
+ports:
     - port: 3000
       onOpen: open-preview
-  tasks:
+tasks:
     - init: >
         bundle install --without production &&
         cp config/database.yml.example config/database.yml &&
@@ -15,7 +15,7 @@ image:
       command: >
         rails server
 
-    github:
+github:
     prebuilds:
         # enable for the master/default branch (defaults to true)
         master: true
