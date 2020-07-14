@@ -1,4 +1,4 @@
- image:
+image:
     file: .gitpod.dockerfile
 ports:
     - port: 3000
@@ -8,20 +8,11 @@ tasks:
         bundle install --without production &&
         cp config/database.yml.example config/database.yml &&
         cp db/schema.rb.example db/schema.rb &&
-      init: >
-        yarn install 
-      init: >
-        bundle exec rake db:schema:load &&
-        bundle exec rake db:migrate
+        rails db:migrate
       command: >
         rails server
 
 github:
     prebuilds:
-        branches: true
-        pullRequests: true
         pullRequestsFromForks: true
-vscode:
-    extensions:
-        - connorshea.vscode-ruby-test-adapter@0.6.1:HO9rpcRv7bmRIuo7Mty/zg==
-        - hbenl.vscode-test-explorer@2.15.0:koqDUMWDPJzELp/hdS/lWw==
+
