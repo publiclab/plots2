@@ -9,9 +9,10 @@ tasks:
         cp config/database.yml.gitpod config/database.yml &&
         cp db/schema.rb.example db/schema.rb &&
         rake db:setup
+        yarn install
 
       command: >
-        passsenger start
+        bundle exec passsenger start
 
 github:
     prebuilds:
