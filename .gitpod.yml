@@ -6,11 +6,9 @@ ports:
 tasks:
     - init: >
         bundle install --without production &&
-        cp config/database.yml.example config/database.yml &&
+        cp config/dabase.yml.gitpod config/database.yml &&
         cp db/schema.rb.example db/schema.rb &&
-        mysql -e "CREATE DATABASE plots;"; &&
-        bundle exec rake db:schema:load &&
-        bundle exec rake db:migrate
+        rake db:setup 
 
       command: >
         passsenger start
