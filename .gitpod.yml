@@ -8,7 +8,11 @@ tasks:
       bundle install --without production &&
       cp config/database.yml.example config/database.yml &&
       cp db/schema.rb.example db/schema.rb &&
-      rails db:migrate
+      bundle config set path 'vendor/.bundle/' &&
+      bundle install &&
+      mysql -e "CREATE DATABASE plots;"; &&
+      bundle exec rake db:schema:load &&
+      bundle exec rails db:migrate
     command: >
       rails server
 github:
