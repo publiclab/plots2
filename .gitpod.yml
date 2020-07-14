@@ -8,10 +8,10 @@ tasks:
         bundle install --without production &&
         cp config/database.yml.example config/database.yml &&
         cp db/schema.rb.example db/schema.rb &&
-        rake db:setup &&
-        yarn install &&
+        rake db:setup 
+
       command: >
-        rails server
+        passsenger start
 
 github:
     prebuilds:
