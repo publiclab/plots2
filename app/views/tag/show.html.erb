@@ -59,7 +59,13 @@
 
         <div class="pull-right"><%= render :partial => "tag/show/user_controls" %></div>
  
-        <h1 style="margin-top:6px;"><%= @title %></h1>
+        <h1 style="margin-top:6px;">
+          <%= @wiki&.latest&.title || @title %>
+          <span rel="tooltip" title="This 'tagname' forms part of the URL for this topic." class="badge badge-secondary" style="font-family: 'Helvetica Neue',Arial,sans-serif;font-size: 12px;background: #ccc;color: white;">
+            <%= params[:id] %>
+          </span>
+        </h1>
+
         <% if @wildcard %>
  
           <% if @node_type == "questions"%>
@@ -73,8 +79,9 @@
           <p><i>This is a wildcard (*) tag search. Please enter a tag without wildcards to display lead wiki pages.</i></p>
  
         <% end %>
+
         <% if @wiki %>
-          <p class = "wiki-sub"><%= @wiki.latest.body.split('\n').first %></p>
+          <p class = "wiki-sub wiki-summary"><%= @wiki.latest.body.split('\n').first %></p>
         <% end %>
  
         <div class="tag-buttons">
@@ -106,10 +113,6 @@
 <div class="container">
 <div class="row">
 
-<div class="container">
-
-</div>
-
 <% cache("tag-show-#{request.fullpath}", expires_in: 5.minutes, skip_digest: true) do %>
 <div class="container">
   <div class="box">
@@ -132,13 +135,13 @@
   </div>
 </div>
 <% end %>
+
 <%= stylesheet_link_tag "dashboard" %>
 
 <style>
   .node-types .nav-link {
     color: #495057;
   }
-
   .contributor-info,
   .contributor-info a i,
   .contributor-info a:link i,
