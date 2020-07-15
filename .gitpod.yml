@@ -1,0 +1,16 @@
+tasks:
+  - init: npm install && grunt
+    command: npm install http-server && node_modules/http-server/bin/http-server
+ports:
+  - port: 8080
+    onOpen: open-preview
+
+github:
+  prebuilds:
+    branches: true
+    pullRequests: true
+    pullRequestsFromForks: true
+    addCheck: true
+    addComment: true
+    addBadge: false 
+    addLabel: false
