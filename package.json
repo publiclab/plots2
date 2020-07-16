@@ -35,7 +35,7 @@
     "jlouvain": "upphiminn/jLouvain#3fb3aa189b8232756c4c3f3e97aaf376debf44a7",
     "jquery": "^3.5.1",
     "jquery-confirm": "^3.3.4",
-    "jquery-file-upload": "blueimp/jQuery-File-Upload#~10.30.1",
+    "jquery-file-upload": "blueimp/jQuery-File-Upload#~10.31.0",
     "jquery-validation": "^1.19.2",
     "jsdiff": "components/jsdiff#~3.4.0",
     "junction": "theleagueof/junction#*",
