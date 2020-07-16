@@ -1,39 +1,48 @@
 <header style="margin:0 auto; text-align:center; width:100%;">
-  <img src="https://avatars2.githubusercontent.com/u/4621650?s=200&v=4">
-  <p style="font-size:1.5em; color:black;">[Public Lab] <i style="color:grey;"><%= @subject %></i></p>
-  <p style="font-size:1em; color:grey;"><%= Time.now.strftime("%B %-d %Y") %></p>
-  <p style="font-size:1em; font-family:sans-serif; margin-bottom:0; color:grey;">Unmoderated Notes at <a href="https://publiclab.org" style="color:black; text-decoration:none;">PublicLab.org</a></p>
-  <hr style="height:1px; background-color:black; width:50%;">
+   <img src=" https://avatars2.githubusercontent.com/u/4621650?s=200&v=4">
+   <p style="font-size: 1.5em; color:#004085; font-weight: 700;">[Public Lab] <i style="color:grey;"><%= @subject %></i></p>
+   <p style="font-size:1em; color:grey;"><%= Time.now.strftime("%B %-d %Y") %></p>
+   <p style="font-size:1em; font-family:sans-serif; margin-bottom:0; color:grey;">Unmoderated Notes at <a href=" https://publiclab.org" style="color: #004085; text-decoration:none; font-size:xx-large;">PublicLab.org</a></p>
+   <hr style="height:1px;color: #004085; width:50%;">
 </header>
-
-<ul style="list-style-type:none; height:auto; font-family:sans-serif;width:auto;">
-    <% @nodes.each do |n| %>
-        <li style="position:relative; height:auto; width:90vw;">
-            <div style="padding:3vh 0 0 5vw ;">
-                <a style="text-decoration:none; color:black; font-weight:500; font-size:1.5em; " href="<%= ActionMailer::Base.default_url_options[:host] + n.path %>"><%= n.title %></a>
-            </div> 
-            <table style="padding-left:5vw; font-size:1em;width:70vw">  
-                <tbody> <tr><td style="width:8vh;">
-                    <% if n.author.photo? %>
-                        <img style="width:7vh; height:7vh; border-radius:50%; padding-top:2vh" src="https://<%= ActionMailer::Base.default_url_options[:host] %><%= n.author.photo_path(:thumb) %>"/>
-                    <% else %>
-                        <img style="width:7vh; height:7vh;border-radius:50%;padding-top:2vh;" src="https://www.gravatar.com/avatar/1aedb8d9dc4751e229a335e371db8058"/>
-                    <% end %>
-                </td>
-                <td style= "font-size: 2vh;">
-                    <p style="font-weight:500;"><%= n.author.username.capitalize %> </p>
-                    <span style="color:#999;font-weight:500;">Created at <%= n.created_at.strftime("%B %-d %Y") %></span>
-                </td></tr>
-            </table>
-            <div style="padding-left:5vw;">
-                <p style="color:grey; font-size:1.0em; line-height: 1.6;"><i><%= n.body.truncate(300) %></i></p>
-            </div>
-            <a style="color:blue; text-decoration:none; padding-left:5vw" href="https://<%= ActionMailer::Base.default_url_options[:host] %>/moderate/publish/<%= n.id %>">Approve</a>      <a style="color:blue; text-decoration:none;"href="https://<%= ActionMailer::Base.default_url_options[:host] %>/moderate/spam/<%= n.id %>">Spam</a></div>
-            <hr style="border:none; height:1px; width: 45%; background-color:grey; margin-top:2%;">
-        </li>
-    <% end %>
+<ul style="list-style-type:none; height:auto; font-family:sans-serif;width:auto;" >
+   <% @nodes.each do |n| %>
+   <li style="position:relative; height:auto; width:90vw;">
+      <div style="padding:3vh 0 0 3vw ;">
+         <a style="text-decoration:none; color:#004085; font-weight:800; font-size:1.5em; " href="<%= ActionMailer::Base.default_url_options[:host] + n.path %>"><%= n.title %></a>
+      </div>
+      <table style="padding-left:3vw; font-size:1em;width:70vw">
+         <tbody>
+            <tr>
+               <td style="width:8vh;">
+                  <% if n.author.photo? %>
+                  <img style="width:7vh; height:7vh; border-radius:100px; margin-top:2vh" src=" https://<%= ActionMailer::Base.default_url_options[:host] %><%= n.author.photo_path(:thumb) %>"/>
+                  <% else %>
+                  <img style="width:7vh; height:7vh;border-radius:100px;margin-top:2vh;" src=" https://www.gravatar.com/avatar/1aedb8d9dc4751e229a335e371db8058"/>
+                  <% end %>
+               </td>
+               <td style= "font-size: 2vh;">
+                  <p style="font-weight:700;"><%= n.author.username.capitalize %> </p>
+                  <span style="color:#999;font-weight:600;">Created at <%= n.created_at.strftime("%B %-d %Y") %></span>
+               </td>
+            </tr>
+      </table>
+      <% if n.main_image.present? %>
+      <img src="https://<%= ActionMailer::Base.default_url_options[:host] %><%= n.main_image.path(:default) %>" style="object-fit:contain; margin-top:1vh;margin-left:3vw;width:50vw;height:20vw;">
+      <% elsif n.scraped_image %>
+      <img src="https://<%= ActionMailer::Base.default_url_options[:host] %><%= n.scraped_image %>" style="object-fit:contain; margin-top:1vh;margin-left:3vw;width:50vw;height:20vw;">
+      <% end %>
+      <p style="padding-left:3vw;color:grey; font-size:1.5em; width:70vw; line-height: 1.6;"><i><%= n.body.truncate(200) %> <a href="<%= ActionMailer::Base.default_url_options[:host] + n.path %>" style="color:004085; font-size:small; text-decoration:none;">Read More&nbsp;»</a></i></p>
+      <div style="margin-top:5vh  ">
+         <a style="background-color: #cce5ff;color: #004085; text-decoration:none; margin-left:3vw" href=" https://<%= ActionMailer::Base.default_url_options[:host] %>/moderate/publish/<%= n.id %>">Approve</a> || <a style="color: #721c24;
+            background-color: #f8d7da; border-color: #f5c6cb; text-decoration:none;"href=" https://<%= ActionMailer::Base.default_url_options[:host] %>/moderate/spam/<%= n.id %>">Spam</a>
+      </div>
+      </div>
+      <hr style="height:1px;margin-top:2vh; color: #004085; width:75vw;">
+   </li>
+   <% end %>
 </ul>
-<div style="margin:5% 0 0 8vw; font-size:1em;">
-    <p style=" text-decoration:none;">Click <a style="color:blue; text-decoration:none;"href="https://<%= ActionMailer::Base.default_url_options[:host] %>/subscriptions">here</a> to choose your followed topics</p>
-    <p style=" text-decoration:none;">Click <a style="color:blue; text-decoration:none;"  href="https://<%= ActionMailer::Base.default_url_options[:host] %>/settings">here</a> to change your subscription settings</p>
-</div> 
+<div style="margin-top:5%; font-size:1em; margin-left:8vw;">
+   <p style=" color:grey;text-decoration:none;">Click <a style="background-color: #cce5ff;color: #004085; text-decoration:none;"href=" https://<%= ActionMailer::Base.default_url_options[:host] %>/subscriptions">here</a> to choose your followed topics</p>
+   <p style=" color:grey;text-decoration:none;">Click <a style="background-color: #cce5ff;color: #004085; text-decoration:none;"  href=" https://<%= ActionMailer::Base.default_url_options[:host] %>/settings">here</a> to change your subscription settings</p>
+</div>
