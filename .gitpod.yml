@@ -16,6 +16,9 @@ tasks:
       command: >
         passenger start
 
+    - command: rails c
+
+
 github:
     prebuilds:
         branches: true
