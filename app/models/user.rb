@@ -269,20 +269,12 @@ class User < ActiveRecord::Base
   end
 
   def unmoderated_in_period(start_time, end_time)
-    tag_following = TagSelection.where(following: true, user_id: uid)
-    ids = []
-    tag_following.each do |tagname|
-      ids += NodeTag.where(tid: tagname.tid).collect(&:nid)
-    end
     range = "(created >= #{start_time.to_i} AND created <= #{end_time.to_i})"
-    Node.where(nid: ids)
-    .includes(:revision, :tag)
-    .references(:node_revision)
-    .where('node.status = 4')
-    .where(type: 'note')
-    .where(range)
-    .order('node_revisions.timestamp DESC')
-    .distinct
+    Node.where('node.status = 4')
+        .where(type: 'note')
+        .where(range)
+        .order('created DESC')
+        .distinct
   end
 
   def social_link(site)
