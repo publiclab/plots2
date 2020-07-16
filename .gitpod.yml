@@ -1,0 +1,27 @@
+image:
+    file: .gitpod.dockerfile
+ports:
+    - port: 3000
+      onOpen: open-preview
+tasks:
+    - init: >
+        bundle install --without production &&
+        cp config/database.yml.gitpod config/database.yml &&
+        mysql -e "SET @@global.sql_mode=(SELECT REPLACE(@@global.sql_mode, 'ONLY_FULL_GROUP_BY', ''));" &&
+        mysql -e "CREATE DATABASE plots;" &&
+        cp db/schema.rb.example db/schema.rb &&
+        rake db:setup &&
+        yarn install
+
+      command: >
+        passenger start
+
+github:
+    prebuilds:
+        branches: true
+        pullRequests: true
+        pullRequestsFromForks: true
+        addCheck: true
+        addComment: true
+        addBadge: false
+        addLabel: false
