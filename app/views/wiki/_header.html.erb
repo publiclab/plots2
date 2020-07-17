@@ -33,8 +33,8 @@
       <span class="d-none d-lg-inline">
         <span rel="tooltip" title="The number of authors for this page." data-placement="top"><i style="color:#888;" class="fa fa-user"></i> <%= number_with_delimiter(@node.authors.length) %></span>  |
         <a rel="tooltip" title="View all revisions for this page." data-placement="top" href="/wiki/revisions/<%= @node.slug_from_path %>"><i style="color:#888;" class="fa fa-history"></i> <%= @node.revisions.length %></a> |
-        <a href="/talk/<%= @node.slug_from_path %>" rel="tooltip" title="Practice in a realtime doc." data-placement="top"><i class="fa fa-comment"></i></a> |
-        <a href="/n/<%= @node.id %>"><i style="color:#888;" class="fa fa-link"></i></a> <span class="d-none d-xl-inline"><a href="/n/<%= @node.id %>">#<%= @node.id %></a></span>
+        <a aria-label="Practice in a realtime doc" href="/talk/<%= @node.slug_from_path %>" rel="tooltip" title="Practice in a realtime doc." data-placement="top"><i class="fa fa-comment"></i></a> |
+        <a aria-label="Link to wiki" href="/n/<%= @node.id %>"><i style="color:#888;" class="fa fa-link"></i></a> <span class="d-none d-xl-inline"><a href="/n/<%= @node.id %>">#<%= @node.id %></a></span>
       </span>
     </div>
   </div>
