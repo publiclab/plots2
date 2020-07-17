@@ -1,10 +1,6 @@
 development:
-  adapter: mysql2
-  username: root
-  password: 
-  encoding: utf8
-  database: plots
-  strict: false
+  adapter: sqlite3
+  database: development.sqlite
 
 production:
   adapter: sqlite3
