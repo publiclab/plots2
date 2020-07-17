@@ -54,15 +54,15 @@ module Plots2
 
     # Enable the asset pipeline
     config.assets.enabled = true
-    
+
     I18n.available_locales = [:en, :de, "zh-CN", :ar, :es, "hi-IN", :it, :ko, "pt-BR", :ru]
-    config.i18n.default_locale = :en 
-    
+    config.i18n.default_locale = :en
+
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
 
     # rails will fallback to config.i18n.default_locale translation
     config.i18n.fallbacks = true
-    
+
     # rails will fallback to en, no matter what is set as config.i18n.default_locale
     config.i18n.fallbacks = [:en]
 
@@ -73,6 +73,8 @@ module Plots2
     # Auto-load API and its subdirectories
     config.paths.add File.join('app/api'), glob: File.join('**', '*.rb')
     config.autoload_paths += Dir[Rails.root.join('app','api', '**', '*.rb')]
+
+    config.assets.precompile += ['jquery3.js']
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
