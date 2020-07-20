@@ -12,7 +12,7 @@ class Spam2Controller < ApplicationController
                  when 'spammed'
                    @nodes.where(status: 0).order('changed DESC')
                  when 'created'
-                    @nodes.where(status: [0, 4]).order('created DESC')
+                   @nodes.where(status: [0, 4]).order('created DESC')
                  else
                    @nodes.where(status: [0, 4]).order('changed DESC')
                  end
