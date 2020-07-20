@@ -93,7 +93,7 @@
 
 .spam-alert {
 	position: fixed;
-	width: 90vw;
+	width: 82vw;
 	top: 10vh;
 	z-index: 10;
 }

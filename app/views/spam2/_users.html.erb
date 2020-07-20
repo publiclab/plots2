@@ -1,0 +1,126 @@
+<script>
+$(document).ready(function () {
+	var table = table_main("#flag_table");
+	$("#all").click(function () { //select all button
+		$('.selectedId').prop('checked', !$('.selectedId').prop('checked'));
+		var check = ($('.selectedId').filter(":checked").length == $('.selectedId').length);
+		$('#select-count').text($('.selectedId').filter(":checked").length);
+		$('#selectall').prop("checked", check);
+		disable_buttons('#selectall');
+  });
+
+  $('#spam2_search_submit').bind('click', function (e) {
+    var encoded_query = encodeURIComponent($('#spam2_search').val());
+    window.location = "/spam2/users/search/" + encoded_query;
+  });
+
+	$('#pageselect').change(function () {  
+		pagination("#pageselect", "/spam2/users/filter/");
+	});
+	$('#banned').on('click', function () { //banned filter
+		search_table("banned", "/spam2/users/filter/");
+	});
+	$('#moderator').on('click', function () { // moderator filter
+		search_table("moderator", "/spam2/users/filter/");
+	});
+	$('#admin').on('click', function () { // admin filter
+		search_table("admin", "/spam2/users/filter/");
+	});
+	$('#reset').on('click', function () { // all filter
+		search_table("all", "/spam2/users/filter/");
+	});
+});
+</script>
+
+<div class="card" id="table-card">
+  <div class="bg-light  navbar navbar-expand">
+    <ul class="nav navbar-expand  navbar-nav-scroll">
+      <li class="nav-item">
+        <a class="btn nav-link small text-dark" data-toggle="tooltip" data-placement="top" title="Selected per page">Selected <span id="select-count" class="badge badge-dark">0</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="btn nav-link font-weight-bold <% if params[:type] == "all" %> badge text-light badge-dark mt-2 py-2 <% else %> text-dark <% end %>" id="reset">Active</a>
+      </li>
+      <li class="nav-item">
+        <a id="banned" class="btn nav-link  <% if params[:type] == "banned" %> badge text-light badge-dark mt-2 py-2 <% else %> text-dark <% end %>">Banned </a>
+      </li>
+      <li class="nav-item">
+        <a id="moderator" class="btn nav-link  <% if params[:type] == "moderator" %> badge text-light badge-dark mt-2 py-2 <% else %> text-dark <% end %>">Moderator </a>
+      </li>
+      <li class="nav-item">
+        <a id="admin" class="btn nav-link <% if params[:type] == "admin" %> badge text-light badge-dark mt-2 py-2 <% else %> text-dark <% end %>">Admin </a>
+      </li>
+      <li class="nav-item">
+        <a class="btn nav-link text-info font-weight-bold">Users per page </a>
+      </li>
+      <li class="nav-item pt-1">
+      <select name="Visible" id="pageselect" class="custom-select custom-select-sm form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Select item per page">
+      <option value="30">30</option>
+      <option value="50">50</option>
+      <option value="100">100</option>
+      <option value="150">150</option>
+      </select> 
+      </li>
+      <li class="nav-item">
+       <a class="btn nav-link text-dark" data-toggle="tooltip" data-placement="top" title="item Displayed"><%= page_entries_info(@users) %></a>
+     </li>
+    </ul>
+  </div>
+  <div class="card-body" style="overflow-x:hidden;">
+    <table  id="flag_table" class="nowrap table table-hover" style="width:100%; text-align:left">
+      <thead style="text-align:left;">
+        <tr>
+          <th><input type="checkbox"  id="selectall"/></th>
+          <th>Username</th>
+          <th>Posts</th>
+          <th>Created</th>
+          <th>Email</th>
+          <th>Action</th>                                
+        </tr>       
+      </thead>
+      <tbody> 
+        <% @users.each do |user| %>
+          <tr id="n<%= user.id %>">
+            <td><input  class="selectedId" value="<%= user.uid %>" type="checkbox" /></td>
+            <td>
+              <i class="fa fa-user text-<% if user.status == 0 %>danger<% elsif user.role == "admin" || user.role == "moderator" %>primary <% else %>secondary<%end%>"></i> 
+              <a href="/profile/<%= user.name %>" class="text-dark font-weight-bold" id="node-hover" > <%= user.name %></a><br />
+            </td>
+            <td>
+             <span class="text-secondary"><span class="badge badge-pill badge-success"> <%= Node.where(uid: user.id).count %>  </span> <span class="badge badge-pill badge-warning"><%= Node.where(uid: user.id).where('flag > ?', 0).count %></span>
+            </td>
+             <td>
+               <span class="text-dark"><%= time_ago_in_words(user.created_at) %> ago</span>
+            </td>
+             <td>
+               <span class="text-info"><%= user.email %> ago</span>
+            </td>
+             <td style="height:35px !important;">
+               <a class="btn badge badge-danger ban a<%= user.id %>" <% if user.status == 0 %>style="display:none;"<% end %> data-remote="true" href="/ban/<%= user.id %>">Ban user</a>
+               <a class="btn badge badge-success unban a-unban<%= user.id %>" <% if user.status == 1 %>style="display:none;"<% end %> data-remote="true" href="/unban/<%= user.id %>">Unban user</a> 
+               <script>
+                $('.a<%= user.id %>.ban').bind('ajax:success', function(e){
+                  $('.a<%= user.id %>').hide();  // ban toggle
+                  $('.a-unban<%= user.id %>').show();
+                });
+                $('.a-unban<%= user.id %>.unban').bind('ajax:success', function(e){
+                  $('.a-unban<%= user.id %>').hide();
+                  $('.a<%= user.id %>').show();
+                });
+                </script>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>                       
+    </div>
+  </div>
+</div>
+<div class="page-table">
+  <div class="float-right">
+    <%= will_paginate @users, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || @users.empty?%>
+  </div>
+  <div class="float-left">
+    Page <%= @users.current_page%> of <%= @users.total_pages %> total Pages
+  </div>
+</div>
