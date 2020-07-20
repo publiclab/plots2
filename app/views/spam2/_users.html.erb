@@ -8,12 +8,6 @@ $(document).ready(function () {
 		$('#selectall').prop("checked", check);
 		disable_buttons('#selectall');
   });
-
-  $('#spam2_search_submit').bind('click', function (e) {
-    var encoded_query = encodeURIComponent($('#spam2_search').val());
-    window.location = "/spam2/users/search/" + encoded_query;
-  });
-
 	$('#pageselect').change(function () {  
 		pagination("#pageselect", "/spam2/users/filter/");
 	});

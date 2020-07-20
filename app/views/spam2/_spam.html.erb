@@ -68,15 +68,6 @@
   <p class="text-secondary font-italic"><i class="fa fa-certificate text-info" aria-hidden="true"></i> Moderators and admins have the ability to "spam" posts if they include inappropriate content, blatant advertising, or are otherwise problematic. If you're not sure, email at <a href="mailto:organizers@<%= request.host %>" class="badge badge-info badge-pill text-white">moderators@<%= request.host %></a> If we all work together, we can keep spam to a minimum. Thanks for helping out!</p>
 </div>
 
-<% if params[:action] != "_spam_revisions" && params[:action] != "_spam_comments" && params[:action] != "_spam_flags"%>
-  <div class="input-group ml-2 mt-3">
-    <input type="text" id="spam2_search" class="form-control border-curve" placeholder="Search" aria-label="Search">
-    <div class="input-group-append">
-      <button class="btn btn-info border-curve" id="spam2_search_submit" type="button"><i class="fa fa-search "></i></button>
-    </div>
-  </div>
-<% end %>
-
 <nav class="navbar navbar-expand " id="bulk-nav">
   <div class="navbar-expand navbar-nav-scroll d-inline">
     <ul class=" navbar-nav">

@@ -10,10 +10,6 @@ $(document).ready(function () {
   });
   var pageselect = localStorage.getItem('page-select') || '30';
   $("#pageselect").val(pageselect);
-  $('#spam2_search_submit').bind('click', function (e) {
-    var encoded_query = encodeURIComponent($('#spam2_search').val());
-    window.location = "/spam2/nodes/search/" + encoded_query;
-  });
 	$("#batch-spam").bind('click', function (e) { //batch spam
 		batch_nav("batch_spam");
 	});

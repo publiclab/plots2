@@ -296,8 +296,6 @@ Plots2::Application.routes.draw do
   get 'spam2/users' => 'spam2#_spam_users'
   get 'spam2/comments/filter/:type/:pagination' => 'spam2#_spam_comments'
   get 'spam2/users/filter/:type/:pagination' => 'spam2#_spam_users'
-  get 'spam2/users/search/:query' => 'spam2#_spam_users'
-  get 'spam2/nodes/search/:query' => 'spam2#_spam'
   get 'spam2/flags/filter/:type/:pagination' => 'spam2#_spam_flags'
   get 'spam2/filter/:type/:pagination' => 'spam2#_spam'
   get 'spam2/batch_spam/:ids' => 'spam2#batch_spam'

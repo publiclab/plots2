@@ -4,23 +4,18 @@ class Spam2Controller < ApplicationController
   def _spam
     if logged_in_as(%w(moderator admin))
       @nodes = Node.paginate(page: params[:page], per_page: params[:pagination])
-      @nodes = case params[:query]
-                 @nodes.search(query: params[:query])
-                       .where(type: %w(page note)).order('changed DESC')
-               else
-                 case params[:type]
-                   when 'wiki'
-                     @nodes.where(type: 'page', status: 1).order('changed DESC')
-                   when 'unmoderated'
-                     @nodes.where(status: 4).order('changed DESC')
-                   when 'spammed'
-                     @nodes.where(status: 0).order('changed DESC')
-                   when 'created'
-                     @nodes.where(status: [0, 4]).order('created DESC')
-                   else
-                     @nodes.where(status: [0, 4]).order('changed DESC')
+      @nodes = case params[:type]
+                 when 'wiki'
+                   @nodes.where(type: 'page', status: 1).order('changed DESC')
+                 when 'unmoderated'
+                   @nodes.where(status: 4).order('changed DESC')
+                 when 'spammed'
+                   @nodes.where(status: 0).order('changed DESC')
+                 when 'created'
+                    @nodes.where(status: [0, 4]).order('created DESC')
+                 else
+                   @nodes.where(status: [0, 4]).order('changed DESC')
                  end
-               end
       @node_unmoderated_count = Node.where(status: 4).length
       @node_flag_count = Node.where('flag > ?', 0).length
     else
@@ -56,21 +51,16 @@ class Spam2Controller < ApplicationController
   def _spam_users
     if logged_in_as(%w(moderator admin))
       @users = User.paginate(page: params[:page], per_page: params[:pagination])
-      @users = case params[:query]
-                 SearchService.new.find_users(params[:query], 15)
-                                  .paginate(page: params[:page], per_page: 30)
-               else
-                 case params[:type]
-                   when 'banned'
-                     @users.where('rusers.status = 0')
-                   when 'moderator'
-                     @users.where('rusers.role = ?', params[:type])
-                   when 'admin'
-                     @users.where('rusers.role = ?', params[:type])
-                   else
-                     @users.where('rusers.status = 1')
+      @users = case params[:type]
+                 when 'banned'
+                   @users.where('rusers.status = 0')
+                 when 'moderator'
+                   @users.where('rusers.role = ?', params[:type])
+                 when 'admin'
+                   @users.where('rusers.role = ?', params[:type])
+                 else
+                   @users.where('rusers.status = 1')
                  end
-               end
       @user_active_count = User.where('rusers.status = 1').length
       @user_ban_count = User.where('rusers.status = 0').length
       render template: 'spam2/_spam'
