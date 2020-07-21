@@ -1,0 +1,113 @@
+<script>
+$(document).ready(function () {
+	var table = table_main("#flag_table");
+	$("#all").click(function () { //select all button
+		$('.selectedId').prop('checked', !$('.selectedId').prop('checked'));
+		var check = ($('.selectedId').filter(":checked").length == $('.selectedId').length);
+		$('#select-count').text($('.selectedId').filter(":checked").length);
+		$('#selectall').prop("checked", check);
+		disable_buttons('#selectall');
+  });
+	$('#pageselect').change(function () {  
+		pagination("#pageselect", "/spam2/users/filter/");
+  });
+  	$("#batch-ban").bind('click', function (e) { //batch ban user
+		batch_nav("batch_ban_user");
+	});
+	$("#batch-unban").bind('click', function (e) { //batch unban user
+		batch_nav("batch_unban_user");
+	});
+	$('#banned').on('click', function () { //banned filter
+		search_table("banned", "/spam2/users/filter/");
+	});
+	$('#moderator').on('click', function () { // moderator filter
+		search_table("moderator", "/spam2/users/filter/");
+	});
+	$('#admin').on('click', function () { // admin filter
+		search_table("admin", "/spam2/users/filter/");
+	});
+	$('#reset').on('click', function () { // all filter
+		search_table("all", "/spam2/users/filter/");
+	});
+});
+</script>
+
+<div class="card" id="table-card">
+  <div class="bg-light  navbar navbar-expand">
+    <ul class="nav navbar-expand  navbar-nav-scroll">
+      <li class="nav-item">
+        <a class="btn nav-link text-secondary font-weight-bold" data-toggle="tooltip" data-placement="top" title="Selected per page">Selected <span id="select-count" class="badge badge-dark">0</span></a>
+      </li>
+      <li class="nav-item">
+        <a id="reset" class="btn nav-link font-weight-bold <% if params[:type] == "all" %> active<% else %> text-secondary<% end %>"><i class="fa fa-arrow-circle-o-up <% if params[:type] == "all" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="All active Users"></i> Active Users</a>
+      </li>
+      <li class="nav-item">
+        <a id="banned" class="btn nav-link font-weight-bold<% if params[:type] == "banned" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-ban <% if params[:type] == "banned" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all Banned Users"></i> Banned </a>
+      </li>
+      <li class="nav-item">
+        <a id="moderator" class="btn nav-link font-weight-bold<% if params[:type] == "moderator" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-certificate <% if params[:type] == "moderator" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="All Moderators"></i> Moderators </a>
+      </li>
+      <li class="nav-item">
+        <a id="admin" class="btn nav-link font-weight-bold<% if params[:type] == "admin" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-asterisk <% if params[:type] == "admin" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="All Admin"></i> Admin </a>
+      </li>
+    </ul>
+  </div>
+  <div class="card-body" style="overflow-x:hidden;">
+    <div class="my-0 text-secondary small "><%= page_entries_info(@users) %></div>
+    <table  id="flag_table" class="nowrap table table-hover" style="width:100%; text-align:left">
+      <thead style="text-align:left;">
+        <tr>
+          <th><input type="checkbox"  id="selectall"/></th>
+          <th>Username</th>
+          <th>Posts</th>
+          <th>Created at</th>
+          <th>Email</th>
+          <th>Action</th>                                
+        </tr>       
+      </thead>
+      <tbody> 
+        <% @users.each do |user| %>
+          <tr id="n<%= user.id %>">
+            <td><input  class="selectedId" value="<%= user.uid %>" type="checkbox" /></td>
+            <td>
+              <i class="fa fa-user text-<% if user.status == 0 %>danger<% elsif user.role == "admin" || user.role == "moderator" %>primary <% else %>secondary<%end%>"></i> 
+              <a href="/profile/<%= user.name %>" class="text-dark font-weight-bold" id="node-hover" > <%= user.name %></a><br />
+            </td>
+            <td>
+             <span class="text-secondary">Nodes <span class="badge badge-pill badge-light text-success"> <%= Node.where(uid: user.id).count %>  </span> Flagged <span class="badge badge-pill badge-light text-warning"><%= Node.where(uid: user.id).where('flag > ?', 0).count %></span></span>
+            </td>
+             <td>
+               <span class="text-dark"><%= time_ago_in_words(user.created_at) %> ago</span>
+            </td>
+             <td>
+               <span class="text-info"><%= user.email %></span>
+            </td>
+             <td style="height:35px !important;">
+               <a class="btn btn-xs font-weight-bold btn-danger ban a<%= user.id %>" <% if user.status == 0 %>style="display:none;"<% end %> data-remote="true" href="/ban/<%= user.id %>">Ban user</a>
+               <a class="btn btn-xs font-weight-bold btn-success unban a-unban<%= user.id %>" <% if user.status == 1 %>style="display:none;"<% end %> data-remote="true" href="/unban/<%= user.id %>">Unban user</a> 
+               <script>
+                $('.a<%= user.id %>.ban').bind('ajax:success', function(e){
+                  $('.a<%= user.id %>').hide();  // ban toggle
+                  $('.a-unban<%= user.id %>').show();
+                });
+                $('.a-unban<%= user.id %>.unban').bind('ajax:success', function(e){
+                  $('.a-unban<%= user.id %>').hide();
+                  $('.a<%= user.id %>').show();
+                });
+                </script>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>                       
+    </div>
+  </div>
+</div>
+<div class="page-table">
+  <div class="float-right">
+    <%= will_paginate @users, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || @users.empty?%>
+  </div>
+  <div class="float-left">
+    Page <%= @users.current_page%> of <%= @users.total_pages %> total Pages
+  </div>
+</div>

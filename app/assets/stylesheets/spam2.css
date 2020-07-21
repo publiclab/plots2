@@ -41,6 +41,10 @@
 	color: blue !important;
 }
 
+#docs-btn:hover {
+	color: #17a2b8!important
+}
+
 #table-card {
 	width: 100%;
 }
@@ -50,9 +54,22 @@
 }
 
 #bulk-nav {
-	margin-top: 2%;
-	margin-bottom: 1%;
+	margin-top: 2vh;
+	margin-bottom: 1vh;
 	width: 100%;
+}
+
+#info-btn {
+	margin: 10px 0 0 1vw;
+}
+
+#info-div {
+	 padding: 10px;
+	 text-align: center;
+	 line-height: 1.6;
+}
+.border-curve {
+	border-radius: 40px;
 }
 
 .active .drop {
@@ -74,6 +91,17 @@
 	margin-top: 10px;
 }
 
+.card .navbar .nav .nav-item .active {
+	color: blue;
+	border-bottom: 2px blue solid;
+}
+
+.spam-alert {
+	position: fixed;
+	width: 82vw;
+	top: 10vh;
+	z-index: 10;
+}
 @media (max-width: 750px) {
 	#table-card,
 	#bulk-nav,
@@ -89,5 +117,8 @@
 	}
 	#card-top .card-header {
 		font-size: 18px;
+	}
+	#info-btn {
+		margin-left: 5vw;
 	}
 }

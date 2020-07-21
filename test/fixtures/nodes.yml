@@ -18,6 +18,7 @@ about:
   created: <%= Time.now.to_i %>
   changed: <%= Time.now.to_i %>
   status: 1
+  flag: 1
   type: "page"
   cached_likes: 0
   slug: about

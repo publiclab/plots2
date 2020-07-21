@@ -1,84 +1,119 @@
+<div style="display:none;" id="deleted" class="alert alert-danger alert-dismissible spam-alert" role="alert">
+  Content Deleted
+</div> 
+<div style="display:none;" id="npublish" class="alert alert-success alert-dismissible spam-alert"role="alert">
+  Content published
+</div> 
+<div style="display:none;" id="nspam" class="alert alert-danger alert-dismissible spam-alert" role="alert">
+  Content spammed
+</div>
+<div style="display:none;" id="nunflag" class="alert alert-danger alert-dismissible spam-alert" role="alert">
+  Content unflagged
+</div>
+
 <div class="nav_top flex d-inline">
   <p class="text-secondary pt-2 float-left nav_title h4">
-    <a href="/spam2" class="text-dark"><i class=" pt-1 pr-2 fa fa-check-circle text-success"></i> Spam2 / </a><b>
     <% if params[:type] == "wiki" %>
-       Wiki                                                                                                                                                                                                                                                                                                                                                                                                    
+      <a href="/spam2" class="text-dark"><i class=" pt-1 pr-2 fa fa-certificate text-success"></i> Spam2 / </a><b> Wiki   
     <% elsif params[:action] == "_spam_revisions"%>
-      Revisions
+      <a href="/spam2" class="text-dark"><i class=" pt-1 pr-2 fa fa-file text-secondary"></i> Spam2 / </a><b> Revisions
     <% elsif params[:action] == "_spam_comments"%>
-      Comments
+      <a href="/spam2" class="text-dark"><i class=" pt-1 pr-2 fa fa-comments text-info"></i> Spam2 / </a><b> Comments
+    <% elsif params[:action] == "_spam_flags"%>
+      <a href="/spam2" class="text-dark"><i class=" pt-1 pr-2 fa fa-flag text-primary"></i> Spam2 / </a><b> Flags
+    <% elsif params[:action] == "_spam_users"%>
+      <a href="/spam2" class="text-dark"><i class=" pt-1 pr-2 fa fa-user text-info"></i> Spam2 / </a><b> Users
     <% else %>
-      Bulk Moderation 
+      <a href="/spam2" class="text-dark"><i class=" pt-1 pr-2 fa fa-check-circle text-success"></i> Spam2 / </a><b> Bulk Moderation 
     <% end %> </b>
   </p>
   <div class="dropdown float-right">
-    <a class="btn btn-light border dropdown-toggle" type="button" id="dropdownMenuLink" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      Menu
+    <a class="btn btn-light border border-curve" type="button" id="dropdownMenuLink" href="#" >
+      Menu <i class="fa fa-align-left text-secondary" aria-hidden="true"></i>
     </a>
-    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+    <div class="dropdown-menu dropdown-menu-right">
       <h6 class="dropdown-header">Menu</h6>
-        <a class="dropdown-item" ><i class="fa fa-list-alt text-primary"></i> Dashboard</a>
+        <a class="dropdown-item" href="/dashboard"><i class="fa fa-list-alt text-primary"></i> Dashboard</a>
       <div class="dropdown-divider"></div>  
         <h6 class="dropdown-header">Spam Moderation</h6>
-        <a class="dropdown-item <% unless  params[:action] =="_spam_comments" || params[:action] =="_spam_revisions" || params[:type] == "wiki"%> active <% end %>" href="/spam2"><i class="drop fa fa-address-book text-primary"></i> Bulk Moderation</a>
-        <a class="dropdown-item <% if params[:type] == "wiki" %> active <% end %>" href="/spam2/wiki" ><i class="drop fa fa-book text-primary"></i> Wiki</a>
+        <a class="dropdown-item <% unless  params[:action] =="_spam_comments" || params[:action] =="_spam_revisions" || params[:action] =="_spam_flags" || params[:type] == "wiki" || params[:action] == "_spam_users"%> active <% end %>" href="/spam2/filter/all/30"><i class="drop fa fa-address-book text-primary"></i> Bulk Moderation</a>
+        <a class="dropdown-item <% if params[:type] == "wiki" %> active <% end %>" href="/spam2/filter/wiki/50" ><i class="drop fa fa-book text-primary"></i> Wiki</a>
         <a class="dropdown-item <% if params[:action] == "_spam_revisions" %> active <% end %>" href="/spam2/revisions"><i class="drop fa fa-list text-primary"></i> Revision</a>
-        <a class="dropdown-item <% if params[:action] == "_spam_comments" %> active <% end %>" href="/spam2/comments" ><i class="drop fa fa-comment text-primary"></i> Comments</a>
-        <a class="dropdown-item" href="/people"><i class="fa fa-user text-primary"></i> Active users</a>
+        <a class="dropdown-item <% if params[:action] == "_spam_comments" %> active <% end %>" href="/spam2/comments/filter/all/30" ><i class="drop fa fa-comment text-primary"></i> Comments</a>
+        <a class="dropdown-item <% if params[:action] == "_spam_flags" %> active <% end %>"  href="/spam2/flags/filter/all/30" ><i class="drop fa fa-flag text-primary"></i> Flag </a>
+        <a class="dropdown-item  <% if params[:action] == "_spam_users" %> active <% end %>" href="/spam2/users/filter/all/30"><i class="drop fa fa-user text-primary"></i> User moderation</a>
       </div>
     </div>
 </div>
 
-<div class="card text-center" id="card-top">
-  <p class="card-header border-bottom-0 h4"><a class="text-secondary" href="#bulk-nav"><b>Moderate Potential Spam  <i class="fa fa-check text-success"></i></b></a></p>
-  <div class="card-body">
-    <p class="card-text text-secondary font-italic">Moderators and admins have the ability to "spam" posts if they include inappropriate content, blatant advertising, or are otherwise problematic. If you're not sure, email at <a href="mailto:organizers@<%= request.host %>" class="badge badge-info badge-pill text-white">moderators@<%= request.host %></a> If we all work together, we can keep spam to a minimum. Thanks for helping out!</p>
-  </div>
+<div class="d-flex w-100 " style="overflow-x:auto !important;">
+  <a class="btn btn-light border border-curve text-secondary mr-auto font-weight-bold" id="info-btn" data-toggle="collapse" href="#info-div" role="button" aria-expanded="false" aria-controls="info-div">
+    Info <i class="fa fa-caret-down text-secondary"></i>
+  </a>
+  <% if params[:action] != "_spam_revisions" && params[:action] != "_spam_comments" && params[:action] != "_spam_flags" && params[:action] != "_spam_users"%>
+    <div class=" d-inline-flex"><i class="fa fa-sticky-note text-info mt-3 ml-5" data-toggle="tooltip" data-placement="left" title="Unmoderated Nodes"></i><a href="/spam2/filter/unmoderated/30"  class="badge badge-pill badge-light text-info mx-2 my-3"><%= @node_unmoderated_count %></a></div>
+    <div class=" d-inline-flex"><i class="fa fa-flag text-warning mt-3" data-toggle="tooltip" data-placement="left" title="Flagged Nodes"></i><a href="/spam2/flags/filter/all/30" class="badge badge-pill badge-light text-warning mx-2 my-3" ><%= @node_flag_count %></a></div>
+  <% end%>
+  <% if params[:action] == "_spam_comments" %>
+    <div class=" d-inline-flex"><i class="fa fa-comment text-info ml-5 mt-3" data-toggle="tooltip" data-placement="left" title="Unmoderated Comments"></i><a href="/spam2/comment/filter/unmoderated/30" class="badge badge-pill badge-light text-info mx-2 my-3"><%= @comment_unmoderated_count %></a></div>
+    <div class=" d-inline-flex"><i class="fa fa-flag text-warning mt-3" data-toggle="tooltip" data-placement="left" title="Flagged Comments"></i><a href="/spam2/comments/filter/flagged/30"  class="badge badge-pill badge-light text-warning my-3 mx-2" ><%= @comment_flag_count %></a></div>
+  <% end %>
+  <% if params[:action] == "_spam_users" %>
+    <div class=" d-inline-flex"><i class="fa fa-user text-info ml-5 mt-3" data-toggle="tooltip" data-placement="left" title="Active Users"></i><a href="/spam2/flags/filter/all/30" class="badge badge-pill badge-light text-info mx-2 my-3"><%= @user_active_count %></a></div>
+    <div class=" d-inline-flex"><i class="fa fa-user text-danger  mt-3" data-toggle="tooltip" data-placement="left" title="Banned Users"></i><a href="/spam2/comments/filter/flagged/30"  class="badge badge-pill badge-light text-danger my-3 mx-2" ><%= @user_ban_count %></a></div>
+  <% end %>
+</div>
+
+<div class="collapse" id="info-div">
+  <p class="text-secondary font-italic"><i class="fa fa-certificate text-info" aria-hidden="true"></i> Moderators and admins have the ability to "spam" posts if they include inappropriate content, blatant advertising, or are otherwise problematic. If you're not sure, email at <a href="mailto:organizers@<%= request.host %>" class="badge badge-info badge-pill text-white">moderators@<%= request.host %></a> If we all work together, we can keep spam to a minimum. Thanks for helping out!</p>
 </div>
 
 <nav class="navbar navbar-expand " id="bulk-nav">
   <div class="navbar-expand navbar-nav-scroll d-inline">
-    <ul class=" navbar-nav ">
-      <% if params[:action] != "_spam_revisions" && params[:action] != "_spam_comments" %>
+    <ul class=" navbar-nav">
+      <% if params[:action] != "_spam_revisions" && params[:action] != "_spam_comments" && params[:action] != "_spam_users"%>
         <li class="nav-item pr-4">
-          <a class="nav-link btn btn-light border disabled text-dark d-inline-flex " id="batch-spam"><i class=" pt-1 pr-2 fa fa-ban text-danger"></i>  Spam</a>
+          <a class="nav-link btn btn-light border disabled text-dark d-inline-flex border-curve" id="batch-spam" ><i class=" pt-1 pr-2 fa fa-ban text-danger" data-toggle="tooltip" data-placement="top" title="Mark selected items as spam and ban users"></i>  Spam</a>
         </li>
         <li class="nav-item pr-4">
-          <a class="nav-link btn btn-light border disabled text-dark d-inline-flex"  id="batch-publish"><i class=" pt-1 pr-2 fa fa-check-circle text-success"></i>  Publish</a>
+          <a class="nav-link btn btn-light border disabled text-dark d-inline-flex border-curve"  id="batch-publish" ><i class=" pt-1 pr-2 fa fa-check-circle text-success" data-toggle="tooltip" data-placement="top" title="Mark selected items  as Publish and unaban users"></i>  Publish</a>
         </li>
         <li class="nav-item pr-4">
-          <a class="nav-link btn btn-light border disabled text-dark d-inline-flex" id="delete-batch"><i class=" pt-1 pr-2 fa fa-trash text-danger"></i> Delete</a>
+          <a class="nav-link btn btn-light border disabled text-dark d-inline-flex border-curve" id="delete-batch"><i class=" pt-1 pr-2 fa fa-trash text-danger" data-toggle="tooltip" data-placement="top" title="Delete Selected items"></i> Delete</a>
+        </li>
+        <% end %>
+        <% if params[:action] != "_spam_revisions" && params[:action] != "_spam_comments" %>
+        <li class="nav-item pr-4">
+          <a class="nav-link btn btn-light border text-dark d-inline-flex border-curve"  id="all" ><i class=" pt-1 pr-2 fa fa-check text-primary" data-toggle="tooltip" data-placement="top" title="Select all in this page"></i> Select</a>
         </li>
         <li class="nav-item pr-4">
-          <a class="nav-link btn btn-light border text-dark d-inline-flex"  id="all" data-toggle="tooltip" data-placement="top" title="Increase entries per page to increase selections"><i class=" pt-1 pr-2  fa fa-check text-primary"></i> Select</a>
+          <a class="nav-link btn btn-light border disabled text-dark d-inline-flex border-curve" id="batch-ban" ><i class=" pt-1 pr-2 fa fa-flag text-warning" data-toggle="tooltip" data-placement="top" title="Ban Users"></i> Ban</a>
         </li>
         <li class="nav-item pr-4">
-          <a class="nav-link btn btn-light border disabled text-dark d-inline-flex"  id="batch-ban"><i class=" pt-1 pr-2 fa fa-flag text-warning"></i> Ban</a>
+          <a class="nav-link btn btn-light border disabled text-dark d-inline-flex border-curve"  id="batch-unban" ><i class=" pt-1 pr-2 fa fa-flag text-success" data-toggle="tooltip" data-placement="top" title="Unban Users"></i> Unban</a>
         </li>
         <li class="nav-item pr-4">
-          <a class="nav-link btn btn-light border disabled text-dark d-inline-flex"  id="batch-unban"><i class=" pt-1 pr-2 fa fa-flag text-success"></i> Unban</a>
-        </li>
-        <li class="nav-item pr-4">
-        <div class="btn-group" role="group">
-          <input class="btn border" id="col-search" type="search" placeholder="Filter by column" aria-label="Search">
-          <select  id="col-select" class=" btn bg-light text-dark custom-select custom-select-sm form-control form-control-md" data-toggle="tooltip" data-placement="top" title="Select column here and then search to filter">
-            <option value="">Filter by None </option>
-            <option value="1">Filter by Title</option>
-            <option value="2">Filter by Author</option>
-            <option value="3">Filter by Status</option>
-            <option value="4">Filter by Time</option>
-            <option value="5">Filter by Action</option>
-          </select> 
-          </div>
-        </li>
-        <li class="nav-item pr-4">
-          <a class="nav-link btn btn-light border d-inline-flex" data-toggle="tooltip" data-placement="top" title="Wiki page for info will be added later"><i class=" pt-1 pr-2 fa fa-info-circle text-info"></i> Info</a>
+          <a class="nav-link btn btn-light border d-inline-flex border-curve" id="docs-btn" ><i class=" pt-1 pr-2 fa fa-info-circle text-info" data-toggle="tooltip"  data-placement="top" title="Wiki page for info will be added later"></i> Docs</a>
         </li>
       <% end %>
     </ul>
   </div>
 </nav>
 
+<% if params[:type] != "wiki" %>
+<div class="w-20 d-flex ml-1">
+  <a class="btn nav-link text-secondary font-weight-bold">Nodes per page </a>
+  <select name="Visible" id="pageselect" class="overflow-hiden mt-1 custom-select custom-select-sm form-control form-control-sm">
+    <option value="30">30</option>
+    <option value="50">50</option>
+    <option value="100">100</option>
+    <option value="150">150</option>
+  </select> 
+</div>
+<% end %>
+
 <%= render partial: 'spam2/nodes' if @nodes %>
 <%= render partial: 'spam2/revisions' if @revisions %>
 <%= render partial: 'spam2/comments' if @comments %>
+<%= render partial: 'spam2/flags' if @flags %>
+<%= render partial: 'spam2/users' if @users %>
