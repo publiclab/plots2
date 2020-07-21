@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_22_192847) do
+ActiveRecord::Schema.define(version: 2020_07_05_161259) do
 
   create_table "answer_selections", force: true do |t|
     t.integer "user_id"
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 2019_08_22_192847) do
     t.string  "message_id",  limit: 255
     t.string  "tweet_id"
     t.integer "reply_to"
+    t.integer "flag",                         default: 0, null: false
   end
 
   add_index "comments", ["comment"], name: "index_comments_on_comment", type: :fulltext if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
@@ -253,6 +254,7 @@ ActiveRecord::Schema.define(version: 2019_08_22_192847) do
     t.decimal "latitude",                               precision: 20, scale: 17
     t.decimal "longitude",                              precision: 20, scale: 17
     t.integer "precision"
+    t.integer "flag",                                   default: 0, null: false
   end
 
   add_index "node", ["changed"], name: "node_changed", using: :btree

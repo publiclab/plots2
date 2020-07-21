@@ -77,7 +77,7 @@
             <hr />
 
             <div class='btn-group'>
-                <a rel='tooltip' title='Flag as spam' class='btn btn-sm btn-outline-secondary btn-flag-spam-<%= node.id %>' href='mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+item+that+looks+like+spam+or+needs+to+be+moderated:+<%= node.title.gsub(/ /,'+') %>+https://publiclab.org/n/<%= node.id %>+by+https://publiclab.org/profile/<%= node.author.username %>+Thanks!'>
+                <a rel='tooltip' title='Flag as spam' class='btn btn-sm btn-outline-secondary btn-flag-spam-<%= node.id %>' href='/moderate/flag_node/<%= node.id %>'>
                     <i class='fa fa-flag'></i>
                 </a>
                 <li data-toggle='tooltip' data-placement='top' title='Follow by tag or author' id='menu-follow-btn' class='btn btn-outline-secondary btn-sm requireLogin nestedPopover' data-html='true' rel='popover' data-placement='left' data-content=&quot;    <%= "No tags" if tagnames.nil? || tagnames.length == 0 %>    <% if tagnames %><% tagnames.each do |tagname| %><p style='margin-bottom:3px; overflow: hidden; text-overflow: ellipsis;'><a href='/subscribe/tag/<%= tagname %>' class='btn btn-outline-secondary btn-sm'><%= tagname %></a></p><% end %><% end %><hr /><i class='fa fa-user'></i><% if current_user && !current_user.following?(node.author) && node.author != current_user %>&nbsp;<a class='btn btn-sm' href='/relationships?followed_id=<%= node.author.id %>' data-method='post' > <%= node.author.name %></a><% else %>  &nbsp;<%= node.author.name %><% end %>&quot;>

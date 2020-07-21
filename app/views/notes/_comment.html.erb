@@ -62,7 +62,7 @@
           <i class="fa fa-ban"></i>
         </a>
       <% else %>
-        <a aria-label="Flag as spam" rel="tooltip" title="Flag as spam" class="btn btn-sm btn-outline-secondary btn-flag-spam-<%= comment.id %>" href="mailto:moderators@publiclab.org?subject=Reporting%20spam%20on%20Public%20Lab&body=Hi,%20I%20found%20this%20comment%20that%20looks%20like%20spam%20or%20needs%20to%20be%20moderated:%20https://publiclab.org/<%= comment.parent.path %>#c<%= comment.cid %>%20by%20https://publiclab.org/profile/<% if comment.author %><%= comment.author.name %><% end %>%20Thanks!">
+        <a aria-label="Flag as spam" rel="tooltip" title="Flag as spam" class="btn btn-sm btn-outline-secondary btn-flag-spam-<%= comment.id %>" href="/moderate/flag_comment/<%= comment.id %>" data-toggle="tooltip" data-placement="top" title="Flag this Comment">
           <i class="fa fa-flag"></i>
         </a>
       <% end %>
