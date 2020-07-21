@@ -237,6 +237,18 @@ class Node < ActiveRecord::Base
     self
   end
 
+  def flag_node
+    self.flag += 1
+    save
+    self
+  end
+
+  def unflag_node
+    self.flag = 0
+    save
+    self
+  end
+
   def files
     drupal_files
   end
