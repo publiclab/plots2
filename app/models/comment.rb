@@ -193,6 +193,18 @@ class Comment < ApplicationRecord
     self
   end
 
+  def flag_comment
+    self.flag += 1
+    save
+    self
+  end
+
+  def unflag_comment
+    self.flag = 0
+    save
+    self
+  end
+
   def liked_by(user_id)
     likes.where(user_id: user_id).count > 0
   end
