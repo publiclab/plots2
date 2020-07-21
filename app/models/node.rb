@@ -448,7 +448,7 @@ class Node < ActiveRecord::Base
       tags = NodeTag.where('nid = ? AND community_tags.tid IN (?)', id, tids)
                     .left_outer_joins(:tag, :tag_selections)
                     .order(Arel.sql('count(tag_selections.user_id) DESC'))
-                    .group(:tid)
+                    .group('community_tags.tid, community_tags.uid, community_tags.date, community_tags.created_at, community_tags.updated_at')
     else
       tags = NodeTag.where('nid = ? AND tid IN (?)', id, tids)
     end
