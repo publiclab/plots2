@@ -180,13 +180,15 @@ class Spam2Controller < ApplicationController
   end
 
   def batch_unban
+    unbanned_users = []
     if logged_in_as(%w(moderator admin))
       params[:ids].split(',').uniq.each do |node_id|
         node = Node.find node_id
         user_unban = node.author
+        unbanned_users << user_unban.id
         user_unban.unban
       end
-      flash[:notice] = 'users unbanned.'
+      flash[:notice] = unbanned_users.length.to_s + ' users unbanned.'
       redirect_back fallback_location: root_path
     else
       flash[:error] = 'Only admins and moderators can unban users.'
