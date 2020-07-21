@@ -37,7 +37,7 @@
         <%= @node.created_at.to_s(:long) %> |
       </span>
       <span>
-        <a href="/n/<%= @node.id %>"><i class="fa fa-link"></i></a> <span class="d-none d-xl-inline"><a href="/n/<%= @node.id %>">#<%= @node.id %></a>
+      <a aria-label="Link to note" href="/n/<%= @node.id %>"><i class="fa fa-link"></i></a> <span class="d-none d-xl-inline"><a href="/n/<%= @node.id %>">#<%= @node.id %></a>
       </span>
     </p>
   </div>
