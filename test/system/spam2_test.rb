@@ -16,7 +16,7 @@ class SpamTest < ApplicationSystemTestCase
     accept_confirm "Are you sure you want to delete #{spam_page.path}?" do
     find("a[href='/notes/delete/#{spam_page.id}'").click()
     end
-    assert_selector('div.alert', text: 'Node Deleted')
+    assert_selector('div.alert', text: 'Content Deleted')
   end
 
   test "publish node in spam2" do
@@ -31,6 +31,13 @@ class SpamTest < ApplicationSystemTestCase
     visit "/spam2"
     find("a[href='/moderate/spam/#{spam_page.id}'").click()    
     page.assert_selector("div.alert", text: "Content spammed")
+  end
+
+  test "unflag post in spam2" do
+    flag_page = nodes(:about)
+    visit "/spam2/flags"
+      find("a[href='/moderate/remove_flag_node/#{flag_page.id}'").click() 
+    page.assert_selector("div.alert", text: "Content unflagged")
   end
 
   test "banning of a user in spam2" do
