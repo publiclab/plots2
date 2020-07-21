@@ -314,7 +314,7 @@ class WikiController < ApplicationController
 
     @wikis = Node.includes(:revision)
       .references(:node_revisions)
-      .group('node_revisions.nid')
+      .group('node_revisions.nid, node_revisions.vid')
       .order(order_string)
       .where("node_revisions.status = 1 AND node.status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')")
       .page(params[:page])
@@ -327,7 +327,7 @@ class WikiController < ApplicationController
 
     @wikis = Node.includes(:revision)
       .references(:node_revisions)
-      .group('node_revisions.nid')
+      .group('node_revisions.nid, node_revisions.vid')
       .order('node_revisions.timestamp ASC')
       .where("node_revisions.status = 1 AND node.status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')")
       .page(params[:page])
@@ -340,7 +340,7 @@ class WikiController < ApplicationController
     @title = I18n.t('wiki_controller.popular_wiki_pages')
     @wikis = Node.limit(40)
       .joins(:revision)
-      .group('node_revisions.nid')
+      .group('node_revisions.nid, node_revisions.vid')
       .order('node_revisions.timestamp DESC')
       .where("node.status = 1 AND node_revisions.status = 1 AND node.nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place')")
       .sort_by(&:views).reverse
