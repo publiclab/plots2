@@ -200,13 +200,11 @@ class Spam2Controller < ApplicationController
 
   def batch_ban_user
     if logged_in_as(%w(admin moderator))
-      user_ban = []
       params[:ids].split(',').uniq.each do |uid|
-        user = User.find uid
-        user.ban
-        user_ban << user.id
+        user_ban = User.find uid
+        user_ban.ban
       end
-      flash[:notice] = user_ban.length.to_s + ' users banned.'
+      flash[:notice] =' users banned.'
       redirect_back fallback_location: root_path
     else
       flash[:error] = 'Only  moderators can moderate users.'
@@ -216,16 +214,14 @@ class Spam2Controller < ApplicationController
 
   def batch_unban_user
     if logged_in_as(%w(moderator admin))
-      user_unban = []
       params[:ids].split(',').uniq.each do |uid|
         user = User.find uid
         user.unban
-        user_unban << user.id
       end
-      flash[:notice] = user_unban.length.to_s + ' users unbanned.'
+      flash[:notice] = ' users unbanned.'
       redirect_back fallback_location: root_path
     else
-      flash[:error] = 'Only moderators can moderate users.'
+      flash[:error] = 'Only admins and moderators can moderate users.'
       redirect_to '/dashboard'
     end
   end
