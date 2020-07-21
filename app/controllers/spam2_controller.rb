@@ -84,18 +84,18 @@ class Spam2Controller < ApplicationController
 
   def _spam_comments
     if logged_in_as(%w(moderator admin))
-      @comments = Comment.order('flag DESC')
-                  .paginate(page: params[:page], per_page: params[:pagination])
+      @comments = Comment.paginate(page: params[:page], per_page: params[:pagination])
       @comments = case params[:type]
                   when 'unmoderated'
-                    @comments.where(status: 4)
+                    @comments.where(status: 4).order('timestamp DESC')
                   when 'spammed'
-                    @comments.where(status: 0)
+                    @comments.where(status: 0).order('timestamp DESC')
                   when 'flagged'
-                    @comments.where('flag > ?', 0)
+                    @comments.where('flag > ?', 0).order('flag DESC')
                   else
                     @comments.where(status: [0, 4])
                     .or(@comments.where('flag > ?', 0))
+                    .order('timestamp DESC')
                   end
       @comment_unmoderated_count = Comment.where(status: 4).length
       @comment_flag_count = Comment.where('flag > ?', 0).length
@@ -194,6 +194,38 @@ class Spam2Controller < ApplicationController
       redirect_back fallback_location: root_path
     else
       flash[:error] = 'Only admins and moderators can unban users.'
+      redirect_to '/dashboard'
+    end
+  end
+
+  def batch_ban_user
+    if logged_in_as(%w(admin moderator))
+      user_ban = []
+      params[:ids].split(',').uniq.each do |uid|
+        user = User.find uid
+        user.ban
+        user_ban << user.id
+      end
+      flash[:notice] = user_ban.length.to_s + ' users banned.'
+      redirect_back fallback_location: root_path
+    else
+      flash[:error] = 'Only  moderators can moderate users.'
+      redirect_to '/dashboard'
+    end
+  end
+
+  def batch_unban_user
+    if logged_in_as(%w(moderator admin))
+      user_unban = []
+      params[:ids].split(',').uniq.each do |uid|
+        user = User.find uid
+        user.unban
+        user_unban << user.id
+      end
+      flash[:notice] = user_unban.length.to_s + ' users unbanned.'
+      redirect_back fallback_location: root_path
+    else
+      flash[:error] = 'Only moderators can moderate users.'
       redirect_to '/dashboard'
     end
   end

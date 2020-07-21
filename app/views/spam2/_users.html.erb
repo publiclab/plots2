@@ -10,6 +10,12 @@ $(document).ready(function () {
   });
 	$('#pageselect').change(function () {  
 		pagination("#pageselect", "/spam2/users/filter/");
+  });
+  	$("#batch-ban").bind('click', function (e) { //batch ban user
+		batch_nav("batch_ban_user");
+	});
+	$("#batch-unban").bind('click', function (e) { //batch unban user
+		batch_nav("batch_unban_user");
 	});
 	$('#banned').on('click', function () { //banned filter
 		search_table("banned", "/spam2/users/filter/");
@@ -30,44 +36,31 @@ $(document).ready(function () {
   <div class="bg-light  navbar navbar-expand">
     <ul class="nav navbar-expand  navbar-nav-scroll">
       <li class="nav-item">
-        <a class="btn nav-link small text-dark" data-toggle="tooltip" data-placement="top" title="Selected per page">Selected <span id="select-count" class="badge badge-dark">0</span></a>
+        <a class="btn nav-link text-secondary font-weight-bold" data-toggle="tooltip" data-placement="top" title="Selected per page">Selected <span id="select-count" class="badge badge-dark">0</span></a>
       </li>
       <li class="nav-item">
-        <a class="btn nav-link font-weight-bold <% if params[:type] == "all" %> badge text-light badge-dark mt-2 py-2 <% else %> text-dark <% end %>" id="reset">Active</a>
+        <a id="reset" class="btn nav-link font-weight-bold <% if params[:type] == "all" %> active<% else %> text-secondary<% end %>"><i class="fa fa-arrow-circle-o-up <% if params[:type] == "all" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="All active Users"></i> Active Users</a>
       </li>
       <li class="nav-item">
-        <a id="banned" class="btn nav-link  <% if params[:type] == "banned" %> badge text-light badge-dark mt-2 py-2 <% else %> text-dark <% end %>">Banned </a>
+        <a id="banned" class="btn nav-link font-weight-bold<% if params[:type] == "banned" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-ban <% if params[:type] == "banned" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all Banned Users"></i> Banned </a>
       </li>
       <li class="nav-item">
-        <a id="moderator" class="btn nav-link  <% if params[:type] == "moderator" %> badge text-light badge-dark mt-2 py-2 <% else %> text-dark <% end %>">Moderator </a>
+        <a id="moderator" class="btn nav-link font-weight-bold<% if params[:type] == "moderator" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-certificate <% if params[:type] == "moderator" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="All Moderators"></i> Moderators </a>
       </li>
       <li class="nav-item">
-        <a id="admin" class="btn nav-link <% if params[:type] == "admin" %> badge text-light badge-dark mt-2 py-2 <% else %> text-dark <% end %>">Admin </a>
+        <a id="admin" class="btn nav-link font-weight-bold<% if params[:type] == "admin" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-asterisk <% if params[:type] == "admin" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="All Admin"></i> Admin </a>
       </li>
-      <li class="nav-item">
-        <a class="btn nav-link text-info font-weight-bold">Users per page </a>
-      </li>
-      <li class="nav-item pt-1">
-      <select name="Visible" id="pageselect" class="custom-select custom-select-sm form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Select item per page">
-      <option value="30">30</option>
-      <option value="50">50</option>
-      <option value="100">100</option>
-      <option value="150">150</option>
-      </select> 
-      </li>
-      <li class="nav-item">
-       <a class="btn nav-link text-dark" data-toggle="tooltip" data-placement="top" title="item Displayed"><%= page_entries_info(@users) %></a>
-     </li>
     </ul>
   </div>
   <div class="card-body" style="overflow-x:hidden;">
+    <div class="my-0 text-secondary small "><%= page_entries_info(@users) %></div>
     <table  id="flag_table" class="nowrap table table-hover" style="width:100%; text-align:left">
       <thead style="text-align:left;">
         <tr>
           <th><input type="checkbox"  id="selectall"/></th>
           <th>Username</th>
           <th>Posts</th>
-          <th>Created</th>
+          <th>Created at</th>
           <th>Email</th>
           <th>Action</th>                                
         </tr>       
@@ -81,17 +74,17 @@ $(document).ready(function () {
               <a href="/profile/<%= user.name %>" class="text-dark font-weight-bold" id="node-hover" > <%= user.name %></a><br />
             </td>
             <td>
-             <span class="text-secondary"><span class="badge badge-pill badge-success"> <%= Node.where(uid: user.id).count %>  </span> <span class="badge badge-pill badge-warning"><%= Node.where(uid: user.id).where('flag > ?', 0).count %></span>
+             <span class="text-secondary">Nodes <span class="badge badge-pill badge-light text-success"> <%= Node.where(uid: user.id).count %>  </span> Flagged <span class="badge badge-pill badge-light text-warning"><%= Node.where(uid: user.id).where('flag > ?', 0).count %></span></span>
             </td>
              <td>
                <span class="text-dark"><%= time_ago_in_words(user.created_at) %> ago</span>
             </td>
              <td>
-               <span class="text-info"><%= user.email %> ago</span>
+               <span class="text-info"><%= user.email %></span>
             </td>
              <td style="height:35px !important;">
-               <a class="btn badge badge-danger ban a<%= user.id %>" <% if user.status == 0 %>style="display:none;"<% end %> data-remote="true" href="/ban/<%= user.id %>">Ban user</a>
-               <a class="btn badge badge-success unban a-unban<%= user.id %>" <% if user.status == 1 %>style="display:none;"<% end %> data-remote="true" href="/unban/<%= user.id %>">Unban user</a> 
+               <a class="btn btn-xs font-weight-bold btn-danger ban a<%= user.id %>" <% if user.status == 0 %>style="display:none;"<% end %> data-remote="true" href="/ban/<%= user.id %>">Ban user</a>
+               <a class="btn btn-xs font-weight-bold btn-success unban a-unban<%= user.id %>" <% if user.status == 1 %>style="display:none;"<% end %> data-remote="true" href="/unban/<%= user.id %>">Unban user</a> 
                <script>
                 $('.a<%= user.id %>.ban').bind('ajax:success', function(e){
                   $('.a<%= user.id %>').hide();  // ban toggle

@@ -91,6 +91,11 @@
 	margin-top: 10px;
 }
 
+.card .navbar .nav .nav-item .active {
+	color: blue;
+	border-bottom: 2px blue solid;
+}
+
 .spam-alert {
 	position: fixed;
 	width: 82vw;

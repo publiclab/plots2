@@ -24,38 +24,24 @@ $(document).ready(function () {
   <div class="bg-light  navbar navbar-expand">
       <ul class="nav navbar-expand  navbar-nav-scroll">
       <li class="nav-item">
-        <a class="btn nav-link text-dark" data-toggle="tooltip" data-placement="top" title="Selected per page">Selected <span id="select-count" class="badge badge-dark">0</span></a>
+        <a class="btn nav-link text-secondary font-weight-bold" data-toggle="tooltip" data-placement="top" title="Selected per page">Selected <span id="select-count" class="badge badge-dark">0</span></a>
       </li>
       <li class="nav-item">
-        <a class="btn nav-link font-weight-bold <% if params[:type] == "all" %> badge text-light badge-dark mt-2 py-2 <% else %> text-dark <% end %>" id="reset">All</a>
+        <a id="reset" class="btn nav-link font-weight-bold <% if params[:type] == "all" %> active<% else %> text-secondary<% end %>"><i class="fa fa-arrow-circle-o-up <% if params[:type] == "all" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Latest updated Comments"></i> New Activity</a>
       </li>
       <li class="nav-item">
-        <a id="spammed" class="btn nav-link  <% if params[:type] == "spammed" %> badge text-light badge-dark mt-2 py-2 <% else %> text-dark <% end %>">Spammed </a>
+        <a id="spammed" class="btn nav-link font-weight-bold <% if params[:type] == "spammed" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-ban <% if params[:type] == "spammed" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all Spammed Comments "></i> Spammed </a>
       </li>
       <li class="nav-item">
-        <a id="unmoderated" class="btn nav-link  <% if params[:type] == "unmoderated" %> badge text-light badge-dark mt-2 py-2 <% else %> text-dark <% end %>">Unmoderated </a>
+        <a id="unmoderated" class="btn nav-link font-weight-bold <% if params[:type] == "unmoderated" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-check-square-o <% if params[:type] == "unmoderated" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all unmoderated Comments"></i> Unmoderated</a>
       </li>
       <li class="nav-item">
-        <a id="flagged" class="btn nav-link  <% if params[:type] == "flagged" %> badge text-light badge-dark mt-2 py-2 <% else %> text-dark <% end %>">Flagged </a>
+        <a id="flagged" class="btn nav-link font-weight-bold <% if params[:type] == "flagged" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-flag <% if params[:type] == "flagged" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all Flagged Comments and sort by flag count"></i> Flagged</a>
       </li>
-      <li class="nav-item">
-        <a class="btn nav-link text-info font-weight-bold">Nodes per page </a>
-      </li>
-      <li class="nav-item pt-1">
-      <select name="Visible" id="pageselect" class="custom-select custom-select-sm form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Select item per page">
-      <option value="30">30</option>
-      <option value="50">50</option>
-      <option value="100">100</option>
-      <option value="150">150</option>
-      </select> 
-      </li>
-      <li class="nav-item">
-       <a class="btn nav-link text-dark" data-toggle="tooltip" data-placement="top" title="item Displayed"><%= page_entries_info(@comments) %></a>
-     </li>
     </ul>
-
   </div>
   <div class="card-body" style="overflow-x:hidden;" >
+    <div class="my-0 text-secondary small "><%= page_entries_info(@comments) %></div>
     <table  id="comment_table" class="nowrap table table-hover" style="width:100%; text-align:left">
       <thead style="text-align:left;">
         <tr>
@@ -63,7 +49,7 @@ $(document).ready(function () {
           <th>Node</th>
           <th>Content</th>
           <th>Author</th>
-          <th>Date</th>
+          <th>Created at</th>
           <th>Action</th>                                
         </tr>       
       </thead>
@@ -73,27 +59,29 @@ $(document).ready(function () {
             <td><input  class="selectedId" value="<%= comment.id %>" type="checkbox" /></td>
             <td>
               <% unless comment.node.nil? %>
-                <i class="fa fa-<% if comment.flag == 0%>file text-secondary<% elsif comment.flag >10%>flag text-danger<% else %>flag text-dark<% end %>"></i> <a href="<%= comment.node.path %>" id="node-hover" class="text-dark font-weight-bold" data-toggle="modal" data-target="#ninfo<%= comment.id %>"><%= comment.node.title.truncate(15) %></a>
+                <i class="fa fa-<% if comment.flag == 0%>file text-secondary<% elsif comment.flag >10%>flag text-danger<% else %>flag text-dark<% end %>"></i> <a href="<%= comment.node&.path %>" id="node-hover" class="text-dark font-weight-bold" data-toggle="modal" data-target="#ninfo<%= comment.id %>"><%= comment.node&.title.truncate(15) %></a><br>
+                <span class="text-secondary small"><%= comment.node&.type.capitalize %>(<%= time_ago_in_words(comment.node&.created_at) %> ago)</span>
               <% end %>            
               </td>
             <td style="width:200px;" class="text-secondary font-italic">
               <%= comment.body.truncate(20) %>
             </td>
             <td>
-              <a href="/profile/<%= comment.author&.name %>" class="text-info"><%= comment.author&.name %></a> <span class="badge badge-pill badge-<% if comment.status == 1 %>success<% elsif comment.status == 0 %>danger<% elsif comment.status == 4 %>secondary<% end %>"> <% if comment.status == 1 %>Published<% elsif comment.status == 0 %>Spammed<% elsif comment.status == 4 %>Unmoderated<% end %></span> <% if comment.flag > 0%><span class="badge badge-pill badge-dark"> <%=  comment.flag %></span><% end %>
+              <a href="/profile/<%= comment.author&.name.truncate(15) %>" class="text-info"><%= comment.author&.name %></a> <br>
+                <% if comment.status == 1 %><span class="badge badge-pill badge-success"><i class="fa fa-check-circle text-white"></i> Published</span><% elsif comment.status == 0 %><span class="badge badge-pill badge-danger"><i class="fa fa-ban text-white"></i> Spammed</span><% elsif comment.status == 4 %><span class="badge badge-pill badge-primary"><i class="fa fa-circle text-white"></i> Unmoderated</span><% end %> <% if comment.flag > 0%><span class="badge badge-pill badge-light"> <%=  comment.flag %></span ><% end %>
             </td>
             <td>
               <% unless comment.node.nil? %>
-                <span class="text-secondary"><%= time_ago_in_words(comment.created_at) %> ago</span>
+                <span class="text-secondary"><%= time_ago_in_words(comment.timestamp) %> ago</span>
               <% end %>
             </td>
             <td style="height:35px !important;">
-               <a class="badge btn badge<% if comment.status != 1 %>-success<% else %>-secondary disabled<% end %> publish" data-remote="true" href="/admin/publish_comment/<%= comment.id %>" ><i class="fa fa-check-circle fa-white"></i> Publish</a>
-               <a class="badge btn badge<% if comment.status != 0 %>-danger<% else %>-secondary disabled<% end %> spam" data-remote="true" href="/admin/mark_comment_spam/<%= comment.id %>"><i class="fa fa-ban fa-white"></i> Spam</a> 
-               <a class="badge badge-secondary ban a<%= comment.author.id %>" <% if comment.author.status == 0 %>style="display:none;"<% end %> data-remote="true" href="/ban/<%= comment.author.id %>">Ban user</a>
-               <a class="badge badge-secondary unban a-unban<%= comment.author.id %>" <% if comment.author.status == 1 %>style="display:none;"<% end %> data-remote="true" href="/unban/<%= comment.author.id %>">Unban user</a>
-               <a class="badge btn text-white unflag badge-<% if comment.flag > 0%>warning <% else %>secondary disabled<% end %>" data-remote="true" href="/moderate/remove_flag_comment/<%= comment.id %>"><i class="fa fa-flag fa-white"></i> Unflag</a>
-               <%= link_to "/comment/delete/#{comment.cid}", data: { confirm: "Are you sure you want to delete this comment?" }, :remote => true, :class => "px-3 delete" do %>
+               <a class="btn btn-xs font-weight-bold btn<% if comment.status != 1 %>-success<% else %>-secondary disabled<% end %> publish" data-remote="true" href="/admin/publish_comment/<%= comment.id %>" ><i class="fa fa-check-circle fa-white"></i> Publish</a>
+               <a class="btn btn-xs font-weight-bold btn<% if comment.status != 0 %>-danger<% else %>-secondary disabled<% end %> spam" data-remote="true" href="/admin/mark_comment_spam/<%= comment.id %>"><i class="fa fa-ban fa-white"></i> Spam</a> 
+               <a class="btn btn-xs font-weight-bold btn-secondary ban a<%= comment.author.id %>" <% if comment.author.status == 0 %>style="display:none;"<% end %> data-remote="true" href="/ban/<%= comment.author.id %>">Ban user</a>
+               <a class="btn btn-xs font-weight-bold btn-secondary unban a-unban<%= comment.author.id %>" <% if comment.author.status == 1 %>style="display:none;"<% end %> data-remote="true" href="/unban/<%= comment.author.id %>">Unban user</a>
+               <a class="btn btn-xs text-dark font-weight-bold unflag btn-<% if comment.flag > 0%>warning <% else %>secondary disabled<% end %>" data-remote="true" href="/moderate/remove_flag_comment/<%= comment.id %>">Unflag</a>
+               <%= link_to "/comment/delete/#{comment.cid}", data: { confirm: "Are you sure you want to delete this comment?" }, :remote => true, :class => "btn border-curve btn-sm font-weight-bold btn-light delete" do %>
                   <i class="fa fa-trash text-dark"></i>
                 <% end %>
                 <script>

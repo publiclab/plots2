@@ -45,45 +45,31 @@ $(document).ready(function () {
 	});
 });
 </script>
-
 <div class="card" id="table-card">
   <div class="bg-light  navbar navbar-expand">
     <ul class="nav navbar-expand  navbar-nav-scroll">
       <li class="nav-item">
-        <a class="btn nav-link small text-dark" data-toggle="tooltip" data-placement="top" title="Selected per page">Selected <span id="select-count" class="badge badge-dark">0</span></a>
+        <a class="btn nav-link text-secondary font-weight-bold" data-toggle="tooltip" data-placement="top" title="Selected per page">Selected <span id="select-count" class="badge badge-dark">0</span></a>
       </li>
       <li class="nav-item">
-        <a class="btn nav-link font-weight-bold <% if params[:type] == "all" %> badge text-light badge-dark mt-2 py-2 <% else %> text-dark <% end %>" id="reset">All</a>
+        <a id="reset" class="btn nav-link font-weight-bold <% if params[:type] == "all" %> active<% else %> text-secondary<% end %>"><i class="fa fa-arrow-circle-o-up <% if params[:type] == "all" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Latest updated flagged Nodes"></i> Flagged</a>
       </li>
       <li class="nav-item">
-        <a id="spammed" class="btn nav-link  <% if params[:type] == "spammed" %> badge text-light badge-dark mt-2 py-2 <% else %> text-dark <% end %>">Spammed </a>
+        <a id="spammed" class="btn nav-link font-weight-bold<% if params[:type] == "spammed" %>  active <% else %> text-secondary <% end %>"> <i class="fa fa-ban <% if params[:type] == "spammed" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all flag Nodes which are spammed"></i> Spammed </a>
       </li>
       <li class="nav-item">
-        <a id="unmoderated" class="btn nav-link  <% if params[:type] == "unmoderated" %> badge text-light badge-dark mt-2 py-2 <% else %> text-dark <% end %>">Unmoderated </a>
+        <a id="unmoderated" class="btn nav-link  font-weight-bold<% if params[:type] == "unmoderated" %>  active <% else %> text-secondary <% end %>"> <i class="fa fa-check-square-o <% if params[:type] == "unmoderated" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all flag Nodes which are unmoderated"></i> Unmoderated</a>
       </li>
       <li class="nav-item">
-        <a id="page" class="btn nav-link <% if params[:type] == "page" %> badge text-light badge-dark mt-2 py-2 <% else %> text-dark <% end %>">Page </a>
+        <a id="page" class="btn nav-link font-weight-bold<% if params[:type] == "page" %>  active <% else %> text-secondary <% end %>"> <i class="fa fa-file-text-o <% if params[:type] == "page" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all Wikis which are flagged"></i> Page</a>
       </li>
       <li class="nav-item">
-        <a id="note" class="btn nav-link  <% if params[:type] == "note" %> badge text-light badge-dark mt-2 py-2 <% else %> text-dark <% end %>">Note </a>
+        <a id="note" class="btn nav-link font-weight-bold <% if params[:type] == "note" %>  active <% else %> text-secondary <% end %>"> <i class="fa fa-file-o <% if params[:type] == "note" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all Notes which are flagged"></i> Notes</a>
       </li>
-      <li class="nav-item">
-        <a class="btn nav-link text-info font-weight-bold">Nodes per page </a>
-      </li>
-      <li class="nav-item pt-1">
-      <select name="Visible" id="pageselect" class="custom-select custom-select-sm form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Select item per page">
-      <option value="30">30</option>
-      <option value="50">50</option>
-      <option value="100">100</option>
-      <option value="150">150</option>
-      </select> 
-      </li>
-      <li class="nav-item">
-       <a class="btn nav-link text-dark" data-toggle="tooltip" data-placement="top" title="item Displayed"><%= page_entries_info(@flags) %></a>
-     </li>
     </ul>
   </div>
   <div class="card-body" style="overflow-x:hidden;">
+    <div class="my-0 text-secondary small "><%= page_entries_info(@flags) %></div>
     <table  id="flag_table" class="nowrap table table-hover" style="width:100%; text-align:left">
       <thead style="text-align:left;">
         <tr>
@@ -91,7 +77,7 @@ $(document).ready(function () {
           <th>Title</th>
           <th>Author</th>
           <th>Status</th>
-          <th>Time</th>
+          <th>Updated at</th>
           <th>Action</th>                                
         </tr>       
       </thead>
@@ -102,21 +88,23 @@ $(document).ready(function () {
             <td>
               <i class="fa fa-flag text-<% if flag.flag > 10%>danger<% else%>secondary<%end%>"></i> 
               <a href="javascript:void(0);" class="text-dark font-weight-bold" id="node-hover" data-toggle="modal" data-target="#ninfo<%= flag.id %>"><%= flag.title.truncate(15) %></a><br />
+              <span class="text-secondary small"><%= flag.type.capitalize %>( <%= time_ago_in_words(flag.created_at) %> ago)</span>
             </td>
             <td>  
-              <a href="/profile/<%= flag.author&.name %>" class="text-info"><%= flag.author&.name %> <%= flag.author&.new_contributor%></a>
+              <a href="/profile/<%= flag.author&.name %>" class="text-info"><%= flag.author&.name %> <%= flag.author&.new_contributor%></a><br>
+                <span class="text-secondary small"><%= Node.where(uid: flag.author&.id).count %> Nodes<span>
              </td>
             <td>
-             <span class="text-secondary"><%= flag.type.capitalize %> <span class="badge badge-pill badge-<% if flag.status == 1 %>success<% elsif flag.status == 0 %>danger<% elsif flag.status == 4 %>primary<% end %>"> <% if flag.status == 1 %>Published<% elsif flag.status == 0 %>Spammed<% elsif flag.status == 4 %>Unmoderated<% end %></span> <span class="badge badge-pill badge-dark"><%=  flag.flag %></span>
+              <% if flag.status == 1 %><span class="badge badge-pill badge-success"><i class="fa fa-check-circle text-white"></i> Published</span><% elsif flag.status == 0 %><span class="badge badge-pill badge-danger"><i class="fa fa-ban text-white"></i> Spammed</span><% elsif flag.status == 4 %><span class="badge badge-pill badge-primary"><i class="fa fa-circle text-white"></i> Unmoderated</span><% end %> <span class="badge badge-pill badge-light"><%=  flag.flag %></span>
             </td>
              <td>
                <span class="text-dark"><%= time_ago_in_words(flag.updated_at) %> ago</span>
             </td>
              <td style="height:35px !important;">
-               <a class="badge btn badge<% if flag.status != 1 %>-success<% else %>-secondary disabled<% end %> publish" data-remote="true" href="/moderate/publish/<%= flag.id %>" ><i class="fa fa-check-circle fa-white"></i> Publish post</a>
-               <a class="badge btn badge<% if flag.status != 0 %>-danger<% else %>-secondary disabled<% end %> spam" data-remote="true" href="/moderate/spam/<%= flag.id %>"><i class="fa fa-ban fa-white"></i> Spam post</a> 
-               <a class="badge btn badge-warning unflag" data-remote="true"href="/moderate/remove_flag_node/<%= flag.id %>">Unflag</a>
-               <%= link_to "/notes/delete/#{flag.id}", data: { confirm: "Are you sure you want to delete #{flag.path}?" }, :remote => true, :class => "px-3 delete" do %>
+               <a class="btn btn-xs font-weight-bold btn<% if flag.status != 1 %>-success<% else %>-secondary disabled<% end %> publish" data-remote="true" href="/moderate/publish/<%= flag.id %>" ><i class="fa fa-check-circle fa-white"></i> Publish post</a>
+               <a class="btn btn-xs font-weight-bold btn<% if flag.status != 0 %>-danger<% else %>-secondary disabled<% end %> spam" data-remote="true" href="/moderate/spam/<%= flag.id %>"><i class="fa fa-ban fa-white"></i> Spam post</a> 
+               <a class="btn btn-xs font-weight-bold btn-warning unflag" data-remote="true"href="/moderate/remove_flag_node/<%= flag.id %>">Unflag</a>
+               <%= link_to "/notes/delete/#{flag.id}", data: { confirm: "Are you sure you want to delete #{flag.path}?" }, :remote => true, :class => "btn border-curve btn-sm font-weight-bold btn-light delete" do %>
                 <i class="fa fa-trash text-dark"></i>
                <% end %>
                <script>
