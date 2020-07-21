@@ -1,0 +1,165 @@
+<script>
+$(document).ready(function () {
+	var table = table_main("#flag_table");
+	$("#all").click(function () { //select all button
+		$('.selectedId').prop('checked', !$('.selectedId').prop('checked'));
+		var check = ($('.selectedId').filter(":checked").length == $('.selectedId').length);
+		$('#select-count').text($('.selectedId').filter(":checked").length);
+		$('#selectall').prop("checked", check);
+		disable_buttons('#selectall');
+  });
+  var pageselect_val = localStorage.getItem('page-select') || '';
+  $("#pageselect").val(pageselect_val);
+	$("#batch-spam").bind('click', function (e) { //batch spam
+		batch_nav("batch_spam");
+	});
+	$("#batch-publish").bind('click', function (e) { //batch publish
+		batch_nav("batch_publish");
+	});
+	$("#batch-ban").bind('click', function (e) { //batch ban
+		batch_nav("batch_ban");
+	});
+	$("#batch-unban").bind('click', function (e) { //batch ban
+		batch_nav("batch_unban");
+	});
+	$("#delete-batch").bind('click', function (e) { // batch delete
+		batch_nav("batch_delete");
+	});
+	$('#pageselect').change(function () {
+		pagination("#pageselect", "/spam2/flags/filter/");
+	});
+	$('#spammed').on('click', function () { //spam filter
+		search_table("spammed", "/spam2/flags/filter/");
+	});
+	$('#unmoderated').on('click', function () { // unmoderated filter
+		search_table("unmoderated", "/spam2/flags/filter/");
+	});
+	$('#page').on('click', function () { // page filter
+		search_table("page", "/spam2/flags/filter/");
+	});
+	$('#note').on('click', function () { // note filter
+		search_table("note", "/spam2/flags/filter/");
+	});
+	$('#reset').on('click', function () { // all filter
+		search_table("all", "/spam2/flags/filter/");
+	});
+});
+</script>
+<div class="card" id="table-card">
+  <div class="bg-light  navbar navbar-expand">
+    <ul class="nav navbar-expand  navbar-nav-scroll">
+      <li class="nav-item">
+        <a class="btn nav-link text-secondary font-weight-bold" data-toggle="tooltip" data-placement="top" title="Selected per page">Selected <span id="select-count" class="badge badge-dark">0</span></a>
+      </li>
+      <li class="nav-item">
+        <a id="reset" class="btn nav-link font-weight-bold <% if params[:type] == "all" %> active<% else %> text-secondary<% end %>"><i class="fa fa-arrow-circle-o-up <% if params[:type] == "all" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Latest updated flagged Nodes"></i> Flagged</a>
+      </li>
+      <li class="nav-item">
+        <a id="spammed" class="btn nav-link font-weight-bold<% if params[:type] == "spammed" %>  active <% else %> text-secondary <% end %>"> <i class="fa fa-ban <% if params[:type] == "spammed" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all flag Nodes which are spammed"></i> Spammed </a>
+      </li>
+      <li class="nav-item">
+        <a id="unmoderated" class="btn nav-link  font-weight-bold<% if params[:type] == "unmoderated" %>  active <% else %> text-secondary <% end %>"> <i class="fa fa-check-square-o <% if params[:type] == "unmoderated" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all flag Nodes which are unmoderated"></i> Unmoderated</a>
+      </li>
+      <li class="nav-item">
+        <a id="page" class="btn nav-link font-weight-bold<% if params[:type] == "page" %>  active <% else %> text-secondary <% end %>"> <i class="fa fa-file-text-o <% if params[:type] == "page" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all Wikis which are flagged"></i> Page</a>
+      </li>
+      <li class="nav-item">
+        <a id="note" class="btn nav-link font-weight-bold <% if params[:type] == "note" %>  active <% else %> text-secondary <% end %>"> <i class="fa fa-file-o <% if params[:type] == "note" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all Notes which are flagged"></i> Notes</a>
+      </li>
+    </ul>
+  </div>
+  <div class="card-body" style="overflow-x:hidden;">
+    <div class="my-0 text-secondary small "><%= page_entries_info(@flags) %></div>
+    <table  id="flag_table" class="nowrap table table-hover" style="width:100%; text-align:left">
+      <thead style="text-align:left;">
+        <tr>
+          <th><input type="checkbox"  id="selectall"/></th>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Status</th>
+          <th>Updated at</th>
+          <th>Action</th>                                
+        </tr>       
+      </thead>
+      <tbody> 
+        <% @flags.each do |flag| %>
+          <tr id="n<%= flag.id %>">
+            <td><input  class="selectedId" value="<%= flag.nid %>" type="checkbox" /></td>
+            <td>
+              <i class="fa fa-flag text-<% if flag.flag > 10%>danger<% else%>secondary<%end%>"></i> 
+              <a href="javascript:void(0);" class="text-dark font-weight-bold" id="node-hover" data-toggle="modal" data-target="#ninfo<%= flag.id %>"><%= flag.title.truncate(15) %></a><br />
+              <span class="text-secondary small"><%= flag.type.capitalize %>( <%= time_ago_in_words(flag.created_at) %> ago)</span>
+            </td>
+            <td>  
+              <a href="/profile/<%= flag.author&.name %>" class="text-info"><%= flag.author&.name %> <%= flag.author&.new_contributor%></a><br>
+                <span class="text-secondary small"><%= Node.where(uid: flag.author&.id).count %> Nodes<span>
+             </td>
+            <td>
+              <% if flag.status == 1 %><span class="badge badge-pill badge-success"><i class="fa fa-check-circle text-white"></i> Published</span><% elsif flag.status == 0 %><span class="badge badge-pill badge-danger"><i class="fa fa-ban text-white"></i> Spammed</span><% elsif flag.status == 4 %><span class="badge badge-pill badge-primary"><i class="fa fa-circle text-white"></i> Unmoderated</span><% end %> <span class="badge badge-pill badge-light"><%=  flag.flag %></span>
+            </td>
+             <td>
+               <span class="text-dark"><%= time_ago_in_words(flag.updated_at) %> ago</span>
+            </td>
+             <td style="height:35px !important;">
+               <a class="btn btn-xs font-weight-bold btn<% if flag.status != 1 %>-success<% else %>-secondary disabled<% end %> publish" data-remote="true" href="/moderate/publish/<%= flag.id %>" ><i class="fa fa-check-circle fa-white"></i> Publish post</a>
+               <a class="btn btn-xs font-weight-bold btn<% if flag.status != 0 %>-danger<% else %>-secondary disabled<% end %> spam" data-remote="true" href="/moderate/spam/<%= flag.id %>"><i class="fa fa-ban fa-white"></i> Spam post</a> 
+               <a class="btn btn-xs font-weight-bold btn-warning unflag" data-remote="true"href="/moderate/remove_flag_node/<%= flag.id %>">Unflag</a>
+               <%= link_to "/notes/delete/#{flag.id}", data: { confirm: "Are you sure you want to delete #{flag.path}?" }, :remote => true, :class => "btn border-curve btn-sm font-weight-bold btn-light delete" do %>
+                <i class="fa fa-trash text-dark"></i>
+               <% end %>
+               <script>
+                $('#n<%= flag.id %> .delete').bind('ajax:success', function(e){
+                  $('#n<%= flag.id %>').fadeOut()
+                  $('#deleted').fadeIn();
+                  $('#deleted').fadeOut(3000);
+                });
+                $('#n<%= flag.id %> .publish').bind('ajax:success', function(e){
+                  $('#n<%= flag.id %>').hide()
+                  $('#npublish').fadeIn(); // published!
+                  $('#npublish').fadeOut(3000);
+                });
+                $('#n<%= flag.id %> .spam').bind('ajax:success', function(e){
+                  $('#n<%= flag.id %>').hide()
+                  $('#nspam').fadeIn(); // spammed!
+                  $('#nspam').fadeOut(3000);
+                });
+                $('#n<%= flag.id %> .unflag').bind('ajax:success', function(e){
+                  $('#n<%= flag.id %>').hide()
+                  $('#nunflag').fadeIn(); // unflag!
+                  $('#nunflag').fadeOut(3000);
+                });  
+                </script>
+              </td>
+            </tr>
+            <div class="modal fade" id="ninfo<%= flag.id %>"> 
+              <div class="modal-dialog" >
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title"><a href="<%= flag.path %>"><%= flag.title %></a></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span>&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <%= flag.body %>
+                  </div>
+                  <div class="modal-footer">
+                    <%= time_ago_in_words(flag.created_at) %> ago
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </tbody>
+      </table>                       
+    </div>
+  </div>
+</div>
+<div class="page-table">
+  <div class="float-right">
+    <%= will_paginate @flags, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || @flags.empty?%>
+  </div>
+  <div class="float-left">
+    Page <%= @flags.current_page%> of <%= @flags.total_pages %> total Pages
+  </div>
+</div>
