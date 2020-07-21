@@ -334,7 +334,7 @@ class Tag < ApplicationRecord
 
   # https://github.com/publiclab/plots2/pull/4266
   def self.trending(limit = 5, start_date = DateTime.now - 1.month, end_date = DateTime.now)
-    Tag.select([:name])
+    Tag.select('term_data.name, plots.term_data.count') # ONLY_FULL_GROUP_BY, issue #8152 & #3120
        .joins(:node_tag, :node)
        .where('node.status = ?', 1)
        .where('node.created > ?', start_date.to_i)
