@@ -138,7 +138,7 @@ class UsersController < ApplicationController
                User.select('*, rusers.status, MAX(node_revisions.timestamp) AS last_updated')
                             .joins(:revisions)
                             .where("node_revisions.status = 1")
-                            .group('rusers.id, node.nid, node_revisions.vid')
+                            .group('rusers.id')
                             .order(order_string)
                             .page(params[:page])
              end
