@@ -168,8 +168,8 @@ class Spam2Controller < ApplicationController
       params[:ids].split(',').uniq.each do |nid|
         node = Node.find nid
         user = node.author
-        user.ban
         user_ban << user.id
+        user.ban
       end
       flash[:notice] = user_ban.length.to_s + ' users banned.'
       redirect_back fallback_location: root_path
@@ -181,14 +181,12 @@ class Spam2Controller < ApplicationController
 
   def batch_unban
     if logged_in_as(%w(moderator admin))
-      users_unban = []
-      params[:ids].split(',').uniq.each do |nid|
-        node = Node.find nid
-        user = node.author
-        user.unban
-        users_unban << user.id
+      params[:ids].split(',').uniq.each do |node_id|
+        node = Node.find node_id
+        user_unban = node.author
+        user_unban.unban
       end
-      flash[:notice] = users_unban.length.to_s + ' users unbanned.'
+      flash[:notice] = 'users unbanned.'
       redirect_back fallback_location: root_path
     else
       flash[:error] = 'Only admins and moderators can unban users.'
