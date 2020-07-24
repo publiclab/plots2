@@ -221,7 +221,7 @@
       </div>
 
       <div class="ple-module-content col-lg-9">
-        <textarea aria-label="Enter note description" id="text-input" class="ple-textarea form-control"><% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
+        <textarea aria-label="Enter note description" id="text-input" placeholder="Enter the content here" class="ple-textarea form-control"><% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
       </div>
 
     </div>
