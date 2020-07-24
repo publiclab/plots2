@@ -11,6 +11,7 @@ services:
 
 addons:
   mariadb: '10.2'
+  chrome: stable
   
 cache:
   directories:
