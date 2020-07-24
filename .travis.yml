@@ -64,12 +64,6 @@ jobs:
     - name: "System Tests"
       script: bundle exec rails test:system
 
-before_script:
-  - CHROME_MAIN_VERSION=`google-chrome-stable --version | sed -E 's/(^Google Chrome |\.[0-9]+ )//g'`
-  - CHROMEDRIVER_VERSION=`curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_MAIN_VERSION"`
-  - curl "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip" -O
-  - unzip chromedriver_linux64.zip -d ~/bin
-
 after_script:
   - echo -e '<?xml version="1.0" encoding="UTF-8"?>' > output.xml;
   - tail -n +2 -q ./test/reports/TEST*.xml >> output.xml
