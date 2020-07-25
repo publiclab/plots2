@@ -48,7 +48,7 @@
     <% if params[:topic] %>
       <h2>Methods related to "<%= params[:topic] %>"</h2>
       <%= render partial: "notes/notes", locals: { notes: @nodes } %>
-      <% if @nodes.length == 0 %>
+      <% if @nodes.size == 0 %>
         <p style="text-align:center;padding:10px;">No methods yet shared for this topic; <a href="">Reach out for help</a> or <a href="">learn how to share a relevant method</a>.</p>
       <% end %>
     <% else %>

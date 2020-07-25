@@ -80,8 +80,8 @@ class StatsController < ApplicationController
         end
       end
 
-      @all_notes = nids.uniq.length
-      @all_contributors = users.uniq.length
+      @all_notes = nids.uniq.size
+      @all_contributors = users.uniq.size
     end
     Rails.cache.fetch("total-contributors-all-time", expires_in: 1.weeks) do
       @all_time_contributors = User.count_all_time_contributor

@@ -78,7 +78,7 @@ class Tag < ApplicationRecord
 
   def self.contributor_count(tagname)
     uids = Tag.contributors(tagname)
-    uids.length
+    uids.size
   end
 
   # finds highest viewcount nodes

@@ -16,7 +16,7 @@
         <div class="text-center"><span id="question-<%= question.nid %>-toggle" class="btn btn-outline-secondary btn-sm">Comments <%= if user then "by #{user.name}" end %><i class="fa fa-caret-down"></i></span></div>
         <div id="question-<%= question.nid %>" class="user-answer">
           <% comments.each do |comment| %>
-            <p>commented on <a href="<%= question.path(:question) %>#c<%= comment.cid %>" style="color:#888;"><%= Time.at(comment.timestamp).strftime("%b %d, %Y") %></a><span class="float-right"><i class="fa fa-check-square" style="color: #FFEB3B;"></i> <%= comment.likers.length %></span></p>
+            <p>commented on <a href="<%= question.path(:question) %>#c<%= comment.cid %>" style="color:#888;"><%= Time.at(comment.timestamp).strftime("%b %d, %Y") %></a><span class="float-right"><i class="fa fa-check-square" style="color: #FFEB3B;"></i> <%= comment.likers.size %></span></p>
           <% end %>
           <a href="<%= question.path(:question) %>#comments">Show all <%= question.comments.count %> comments &raquo;</a>
         </div>

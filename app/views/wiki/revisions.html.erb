@@ -6,16 +6,16 @@
     <ul class="nav nav-tabs">
       <li class="nav-item"><a class="nav-link" href="/wiki/<%= @node.slug_from_path %>"><%= translation('wiki.revisions.view') %></a></li>
       <li class="nav-item"><a class="nav-link" href="/wiki/edit/<%= @node.slug_from_path %>"><%= translation('wiki.revisions.edit') %></a></li>
-      <li class="nav-item"><a class="nav-link active" href="/wiki/revisions/<%= @node.slug_from_path %>">Revisions (<%= @node.revisions.length %>)</a></li>
+      <li class="nav-item"><a class="nav-link active" href="/wiki/revisions/<%= @node.slug_from_path %>">Revisions (<%= @node.revisions.size %>)</a></li>
       <!--<li class="pull-right"><%= render :partial => "home/social" %></li>-->
     </ul>
 
     <table class="table">
     <% @revisions.each_with_index do |revision, index| %>
-      <tr id="row<%= @node.revisions.length-1-index %>"<% if index < 2 %> class="warning"<% end %><% if revision.status == 0 %> style="background:#fcc;"<% end %>>
+      <tr id="row<%= @node.revisions.size-1-index %>"<% if index < 2 %> class="warning"<% end %><% if revision.status == 0 %> style="background:#fcc;"<% end %>>
 
         <td><b>
-          <a href="javascript:void(0)" onClick="goto(<%= @node.revisions.length-1-index %>,<%= @node.revisions.length-2-index %>)"><%= @node.revisions.length-1-index %></a>
+          <a href="javascript:void(0)" onClick="goto(<%= @node.revisions.size-1-index %>,<%= @node.revisions.size-2-index %>)"><%= @node.revisions.size-1-index %></a>
           <% if revision.status == 0 %><span class="badge badge-danger"><%= translation('wiki.revisions.moderated') %></span><% end %>
           <% if revision.vid == @node.latest.vid %><span class="badge badge-success"><%= translation('wiki.revisions.current') %></span><% end %>
         </b></td>
@@ -26,7 +26,7 @@
           <a href="/wiki/revisions/<%= params[:id] %>/<%= revision.vid %>"><%= revision.created_at.to_s(:long) %></a>
           <i class="fa fa-external-link"></i>
 	  | <%= distance_of_time_in_words(revision.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>
-          <div style="display:none;" id="body_<%= @node.revisions.length-1-index %>"><%= raw RDiscount.new(revision.body).to_html %></div>
+          <div style="display:none;" id="body_<%= @node.revisions.size-1-index %>"><%= raw RDiscount.new(revision.body).to_html %></div>
         </td>
         <td><small><a class="btn btn-sm btn-outline-secondary btn-revert" href="/wiki/revert/<%= revision.vid %>" data-confirm="<%= translation('wiki.revisions.are_you_sure') %>"><i class="fa fa-arrow-reload"></i> <%= translation('wiki.revisions.revert') %></a></small></td>
         <% if logged_in_as(['admin', 'moderator']) %>
@@ -51,7 +51,7 @@
       <a class="btn btn-link" data-toggle="tooltip" title="Previous" data-placement="left" href="javascript:void(0)" onClick="prev()">&laquo;</a>
       <a class="btn btn-link" data-toggle="tooltip" title="Next" data-placement="right" href="javascript:void(0)" onClick="next()">&raquo;</a>
     </div>
-    <h3 style="margin-top:0;"><%= raw translation('wiki.revisions.comparing_revision', :revision_1 => @node.revisions.length-1, :revision_2 => @node.revisions.length-2) %></h3>
+    <h3 style="margin-top:0;"><%= raw translation('wiki.revisions.comparing_revision', :revision_1 => @node.revisions.size-1, :revision_2 => @node.revisions.size-2) %></h3>
     <div class="card bg-light">
         <div class="card-body" id="diff">
         </div>
@@ -64,8 +64,8 @@
 
     <script>
 
-      var newer = <%= @node.revisions.length - 1 %>,
-          older = <%= @node.revisions.length - 2 %>;
+      var newer = <%= @node.revisions.size - 1 %>,
+          older = <%= @node.revisions.size - 2 %>;
 
       function prev() {
         if (older > 0) {
@@ -77,7 +77,7 @@
       }
 
       function next() {
-        if (newer < <%= @node.revisions.length-1 %>) {
+        if (newer < <%= @node.revisions.size-1 %>) {
           older += 1;
           newer += 1;
           goto(newer, older);

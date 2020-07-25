@@ -458,7 +458,7 @@ class TagController < ApplicationController
       @tagdata[tagname] = {}
       t = Tag.where(name: tagname)
       nct = NodeTag.where('tid in (?)', t.collect(&:tid))
-      @tagdata[tagname][:users] = Node.where('nid IN (?)', nct.collect(&:nid)).collect(&:author).uniq.length
+      @tagdata[tagname][:users] = Node.where('nid IN (?)', nct.collect(&:nid)).collect(&:author).uniq.size
       @tagdata[tagname][:wikis] = Node.where("nid IN (?) AND (type = 'page' OR type = 'tool' OR type = 'place')", nct.collect(&:nid)).count
       @tagdata[:notes] = Node.where("nid IN (?) AND type = 'note'", nct.collect(&:nid)).count
     end

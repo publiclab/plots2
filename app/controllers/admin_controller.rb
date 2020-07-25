@@ -60,22 +60,22 @@ class AdminController < ApplicationController
     end
   end
 
-  def useremail 
-   if logged_in_as(['admin', 'moderator']) 
-     if params[:address] 
-       # address was submitted. find the username(s) and return. 
-       @address = params[:address] 
+  def useremail
+   if logged_in_as(['admin', 'moderator'])
+     if params[:address]
+       # address was submitted. find the username(s) and return.
+       @address = params[:address]
        if params[:include_banned]
-         @users = User.where(email: params[:address]) 
+         @users = User.where(email: params[:address])
            .where('created_at > (?)', DateTime.new(2015)) # since 2015, whether banned or not
        else
-         @users = User.where(email: params[:address]) 
-           .where(status: [1, 4]) 
+         @users = User.where(email: params[:address])
+           .where(status: [1, 4])
        end
-     end 
-   else 
-     # unauthorized. instead of return ugly 403, just send somewhere else 
-     redirect_to '/dashboard' 
+     end
+   else
+     # unauthorized. instead of return ugly 403, just send somewhere else
+     redirect_to '/dashboard'
    end
   end
 
@@ -227,7 +227,7 @@ class AdminController < ApplicationController
     @revision = Revision.find_by(vid: params[:vid])
     @node = Node.find_by(nid: @revision.nid)
 
-    if @node.revisions.length <= 1
+    if @node.revisions.size <= 1
       flash[:warning] = "You can't delete the last remaining revision of a page; try deleting the wiki page itself (if you're an admin) or contacting moderators@publiclab.org for assistance."
       redirect_to @node.path
       return
@@ -333,7 +333,7 @@ class AdminController < ApplicationController
         user.ban
         users << user.id
       end
-      flash[:notice] = nodes.to_s + ' nodes spammed and ' + users.length.to_s + ' users banned.'
+      flash[:notice] = nodes.to_s + ' nodes spammed and ' + users.size.to_s + ' users banned.'
       redirect_to '/spam/wiki'
     else
       flash[:error] = 'Only admins can batch moderate.'

@@ -54,7 +54,7 @@ class NotesController < ApplicationController
         redirect_to @node.path(:question)
         return
       end
-      
+
       alert_and_redirect_moderated
       redirect_power_tag_redirect
 
@@ -236,7 +236,7 @@ class NotesController < ApplicationController
   def delete
     @node = Node.find(params[:id])
     if current_user && (current_user.uid == @node.uid || current_user.can_moderate?)
-      if @node.authors.uniq.length == 1
+      if @node.authors.uniq.size == 1
         @node.destroy
         respond_with do |format|
           format.html do

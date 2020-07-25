@@ -15,7 +15,7 @@
             <div>
             <div class="answer">
               <% if params[:controller] == 'questions' %>
-                <a class="peopleResponse" href="<%= node.path(:question) %>#answers" title="Answers"><%= node.answers.length %> people responded</a>
+                <a class="peopleResponse" href="<%= node.path(:question) %>#answers" title="Answers"><%= node.answers.size %> people responded</a>
               <% end %>
             </div>
           </div>
@@ -24,7 +24,7 @@
 
           </div>
         </div>
-            
+
       <% end %>
 
       <div class="col-md-2">

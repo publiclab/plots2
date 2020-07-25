@@ -1,6 +1,6 @@
 <div class="col-md-3">
   <%= javascript_include_tag "dragdrop" %>
-  <% if @related && @related.length > 0 %>
+  <% if @related && @related.size > 0 %>
     <h3><%= translation('wiki.edit.did_you_mean') %>:</h3>
     <ul class="nav bullet">
     <% @related[0..5].each do |wiki| %>

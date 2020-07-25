@@ -69,7 +69,7 @@ class User < ActiveRecord::Base
   scope :past_month, -> { where("created_at > ?", 1.month.ago) }
 
   def is_new_contributor?
-    Node.where(uid: id).length === 1 && Node.where(uid: id).first.created_at > 1.month.ago
+    Node.where(uid: id).size === 1 && Node.where(uid: id).first.created_at > 1.month.ago
   end
 
   def new_contributor
@@ -431,7 +431,7 @@ class User < ActiveRecord::Base
       questions = Node.questions.where(status: 1, created: start_time.to_i..end_time.to_i).pluck(:uid)
       comments = Comment.where(timestamp: start_time.to_i..end_time.to_i).pluck(:uid)
       revisions = Revision.where(status: 1, timestamp: start_time.to_i..end_time.to_i).pluck(:uid)
-      contributors = (notes + answers + questions + comments + revisions).compact.uniq.length
+      contributors = (notes + answers + questions + comments + revisions).compact.uniq.size
       contributors
     end
 
@@ -463,7 +463,7 @@ class User < ActiveRecord::Base
       comments = Comment.pluck(:uid)
       revisions = Revision.where(status: 1).pluck(:uid)
 
-      (notes + answers + questions + comments + revisions).compact.uniq.length
+      (notes + answers + questions + comments + revisions).compact.uniq.size
     end
 
     def watching_location(nwlat, selat, nwlng, selng)

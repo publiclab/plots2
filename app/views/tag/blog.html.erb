@@ -36,7 +36,7 @@
 
   <hr />
 
-  <% if @notes.nil? || @notes.length == 0 %>
+  <% if @notes.nil? || @notes.size == 0 %>
     <p><%= raw translation('tag.blog.no_results', :search => params[:id]) %>:</p>
 
     <%= render template: "search/new" %>
@@ -54,9 +54,9 @@
 	    <% if node.has_power_tag('with') %>with <% node.coauthors.each_with_index do |coauthor,i| %>
               <a href="/profile/<%= coauthor.username %>">
               <%= coauthor.username%></a> <%= coauthor.new_contributor %>
-              <%= ',' if i < node.coauthors.length-1 %><% end %><% end %>
+              <%= ',' if i < node.coauthors.size-1 %><% end %><% end %>
 	    | <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>
-            | <a href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= node.comments_viewable_by(current_user).length %></a>
+            | <a href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= node.comments_viewable_by(current_user).size %></a>
             <% if params[:controller] == "notes" && params[:action] == "popular" %>
             | <%= number_with_delimiter(node.views) %> <%=raw translation('tag.blog.views') %>
             <% else %>

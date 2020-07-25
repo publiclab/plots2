@@ -6,7 +6,7 @@
 
   <% elsif params[:action] == "author" %>
 
-    <h3 style="margin-top:0;"><%= raw translation('wiki.index.wiki_pages_by', :url1 => "/people/"+@user.name, :user => @user.name, :note_length => @user.notes.length, :time => time_ago_in_words(@user.notes.first.created_at)) %></h3>
+    <h3 style="margin-top:0;"><%= raw translation('wiki.index.wiki_pages_by', :url1 => "/people/"+@user.name, :user => @user.name, :note_length => @user.notes.size, :time => time_ago_in_words(@user.notes.first.created_at)) %></h3>
 
   <% else %>
 

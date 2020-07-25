@@ -34,7 +34,7 @@
   <% end %>
 
   <% responses = @node.responses if @node %>
-  <% if @node && responses.length > 0 %>
+  <% if @node && responses.size > 0 %>
     <%= render partial: 'sidebar/notes', locals: { notes: @node.responded_to, title: translation('sidebar._related.response_to'), node: @node } %>
   <% end %>
 

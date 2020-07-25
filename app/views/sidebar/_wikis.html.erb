@@ -1,4 +1,4 @@
-<% if wikis && wikis.length > 0 %>
+<% if wikis && wikis.size > 0 %>
   <div class="d-none d-lg-inline wiki-list">
 
     <h4><%= title %></h4>
@@ -6,10 +6,10 @@
     <% wikis.each do |wiki| %>
       <% unless (!node.nil? && wiki.nid == node.nid) %>
         <p style="margin:14px 0 0;">
-          <i class="fa fa-<%= raw wiki.icon %>"></i> 
+          <i class="fa fa-<%= raw wiki.icon %>"></i>
           <a href="<%= wiki.path %>">
             <b><%= wiki.latest.title %></b>
-          </a> 
+          </a>
         </p>
         <p>
           <small style="color:#888;">

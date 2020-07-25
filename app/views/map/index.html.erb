@@ -25,23 +25,23 @@
 
   var bounds = new L.LatLngBounds(new L.LatLng(84.67351257 , -172.96875) , new L.LatLng(-54.36775852 , 178.59375)) ;
   var map = L.map('map' , {
-      maxBounds: bounds , 
+      maxBounds: bounds ,
       maxBoundsViscosity: 0.75
     }).setView([15,0], 2);
   var baselayer = L.tileLayer('https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map) ; 
+    }).addTo(map) ;
   map.options.minZoom = 1.5 ;
 
   <% @maps.each do |map| %>
-    <% 
+    <%
       lat = false
       lon = false
       map.tag.each do |tag|
         lat = tag.name.split(':').last if tag.name[0..2] == 'lat'
         lon = tag.name.split(':').last if tag.name[0..2] == 'lon'
       end
-    %> 
+    %>
      var default_Icon =new L.icon.defaultIcon() ;
     L.marker([<%= lat %>, <%= lon %>] , {icon: default_Icon}).addTo(map).bindPopup("<a href='<%= map.path %>'><%= map.title %></a>");
   <% end %>
@@ -64,8 +64,8 @@
 </script>
 
 <br style="clear:both;" />
-<h1 style="margin-top:10px;font-size:4em;">Maps <small style="font-size:50%;">open data from balloon and kite photography (<%= @maps.length %> and counting)</small></h1>
-  
+<h1 style="margin-top:10px;font-size:4em;">Maps <small style="font-size:50%;">open data from balloon and kite photography (<%= @maps.size %> and counting)</small></h1>
+
 <hr />
 
 <div class="row">
@@ -101,7 +101,7 @@
     <hr />
     <h3><i style="color:#aaa;" class="fa fa-globe"></i> How to contribute</h3>
     <p>Most of the maps in this archive were made in <a href="//mapknitter.org">MapKnitter</a>, a free and open source tool created by Public Lab contributors to turn aerial photos into maps.</p>
-    <p>To add your open source map to the archive, contact <a href="mailto:staff@<%= request.host %>">staff@<%= request.host %></a> and be prepared to provide some background and to tell the story of your map. Creative Commons and Public Domain maps are <a href="/licenses">both accepted</a>.</p> 
+    <p>To add your open source map to the archive, contact <a href="mailto:staff@<%= request.host %>">staff@<%= request.host %></a> and be prepared to provide some background and to tell the story of your map. Creative Commons and Public Domain maps are <a href="/licenses">both accepted</a>.</p>
   </div>
 
   <div class="col-md-9">

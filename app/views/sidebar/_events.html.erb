@@ -9,7 +9,7 @@
               <li class="list-group-item"><a href="<%= node.path %>"><i class="fa fa-calendar"></i><% if node.has_power_tag('date') %> <b><%= DateTime.strptime(node.power_tag('date'),'%m-%d-%Y').to_date.to_s(:long) %></b><% end %> <%= node.title %></a></li>
             <% end %>
           <% end %>
-          <% if events.length == 0 %><li><%= translation('sidebar._events.no_events') %></li><% end %>
+          <% if events.size == 0 %><li><%= translation('sidebar._events.no_events') %></li><% end %>
         </ul>
         <p><a class="btn btn-primary" href="/post?template=event&tags=event,<%= events.first %>"><%= translation('sidebar._events.post_event') %></a></p>
       </div>
