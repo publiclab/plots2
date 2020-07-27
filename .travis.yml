@@ -31,12 +31,13 @@ env:
     - RAILS_SYSTEM_TESTING_SCREENSHOT=simple
 
 before_install:
-  - sudo wget https://chromedriver.storage.googleapis.com/73.0.3683.68/chromedriver_linux64.zip
+  - sudo wget https://chromedriver.storage.googleapis.com/83.0.4103.14/chromedriver_linux64.zip
   # - sudo wget https://github.com/webnicer/chrome-downloads/raw/master/x64.deb/google-chrome-stable_75.0.3770.142-1_amd64.deb
   # - sudo wget https://chromedriver.storage.googleapis.com/74.0.3729.6/chromedriver_linux64.zip
   - sudo unzip chromedriver_linux64.zip -d /usr/local/bin/
   - sudo chmod +x /usr/local/bin/chromedriver
   - sudo chmod +x /usr/bin/google-chrome-stable
+  - google-chrome-stable --version
   - google-chrome-stable --disable-extensions --disable-dev-shm-usage --headless --no-sandbox --disable-gpu --remote-debugging-port=9222 http://localhost &
   - yes | gem update --system --force
   - gem install bundler
