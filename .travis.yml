@@ -31,14 +31,10 @@ env:
     - RAILS_SYSTEM_TESTING_SCREENSHOT=simple
 
 before_install:
-  # - sudo wget https://chromedriver.storage.googleapis.com/83.0.4103.14/chromedriver_linux64.zip
+  - sudo wget https://chromedriver.storage.googleapis.com/83.0.4103.14/chromedriver_linux64.zip
   # - sudo wget https://github.com/webnicer/chrome-downloads/raw/master/x64.deb/google-chrome-stable_75.0.3770.142-1_amd64.deb
   # - sudo wget https://chromedriver.storage.googleapis.com/74.0.3729.6/chromedriver_linux64.zip
-  # - sudo unzip chromedriver_linux64.zip -d /usr/local/bin/
-  - CHROME_DRIVER_VERSION=`curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE`
-  - sudo wget -N https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip -P ~/
-  - unzip ~/chromedriver_linux64.zip -d ~/
-  - sudo mv -f ~/chromedriver /usr/local/bin/chromedriver
+  - sudo unzip chromedriver_linux64.zip -d /usr/local/bin/
   - sudo chmod +x /usr/local/bin/chromedriver
   - sudo chmod +x /usr/bin/google-chrome
   - google-chrome --headless --no-sandbox --disable-gpu --disable-dev-shm-usage --remote-debugging-port=9222 http://localhost &
