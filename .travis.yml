@@ -37,7 +37,7 @@ before_install:
   - sudo unzip chromedriver_linux64.zip -d /usr/local/bin/
   - sudo chmod +x /usr/local/bin/chromedriver
   - sudo chmod +x /usr/bin/google-chrome-stable
-  - google-chrome-stable --headless --no-sandbox --disable-dev-shm-usage --remote-debugging-port=9222 http://localhost &
+  - google-chrome-stable --disable-extensions --disable-dev-shm-usage --headless --no-sandbox --disable-gpu --remote-debugging-port=9222 http://localhost &
   - yes | gem update --system --force
   - gem install bundler
 
