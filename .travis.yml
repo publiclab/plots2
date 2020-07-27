@@ -11,11 +11,10 @@ services:
 
 addons:
   mariadb: '10.2'
-  addons:
-    apt:
-      packages:
-        - google-chrome-stable
-  
+  apt:
+    packages:
+      - google-chrome-stable
+
 cache:
   directories:
    - $PWD/vendor/.bundle/
