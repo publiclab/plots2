@@ -11,9 +11,7 @@ services:
 
 addons:
   mariadb: '10.2'
-  apt:
-    packages:
-      - google-chrome
+
 
 cache:
   directories:
