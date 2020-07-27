@@ -13,10 +13,10 @@ addons:
   mariadb: '10.2'
 
 
-cache:
-  directories:
-   - $PWD/vendor/.bundle/
-   - $PWD/public/lib/
+# cache:
+#   directories:
+#    - $PWD/vendor/.bundle/
+#    - $PWD/public/lib/
 
 git:
     depth: false
@@ -36,7 +36,7 @@ before_install:
   - sudo chmod +x /usr/local/bin/chromedriver
   - sudo chmod +x /usr/bin/google-chrome
   - google-chrome --version
-  - google-chrome --disable-extensions --disable-dev-shm-usage --headless --no-sandbox --disable-gpu --remote-debugging-port=9222 http://localhost &
+  - google-chrome --disable-extensions --disable-dev-shm-usage --headless --no-sandbox --disable-gpu --window-size=1400,1400 --remote-debugging-port=9222 http://localhost &
   - yes | gem update --system --force
   - gem install bundler
 
