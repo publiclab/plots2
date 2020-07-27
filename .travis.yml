@@ -12,11 +12,10 @@ services:
 addons:
   mariadb: '10.2'
 
-
-# cache:
-#   directories:
-#    - $PWD/vendor/.bundle/
-#    - $PWD/public/lib/
+cache:
+  directories:
+   - $PWD/vendor/.bundle/
+   - $PWD/public/lib/
 
 git:
     depth: false
@@ -34,9 +33,9 @@ before_install:
   # - sudo wget https://chromedriver.storage.googleapis.com/74.0.3729.6/chromedriver_linux64.zip
   - sudo unzip chromedriver_linux64.zip -d /usr/local/bin/
   - sudo chmod +x /usr/local/bin/chromedriver
-  - sudo chmod +x /usr/bin/google-chrome
-  - google-chrome --version
-  - google-chrome --disable-extensions --disable-dev-shm-usage --headless --no-sandbox --disable-gpu --window-size=1400,1400 --remote-debugging-port=9222 http://localhost &
+  - sudo chmod +x /usr/bin/google-chrome-stable
+  - google-chrome-stable --version
+  - google-chrome-stable --headless --no-sandbox  --disable-dev-shm-usage --disable-gpu --remote-debugging-port=9222 http://localhost &
   - yes | gem update --system --force
   - gem install bundler
 
