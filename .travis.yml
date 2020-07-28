@@ -10,6 +10,9 @@ services:
   - redis-server
 
 addons:
+  apt:
+    - google-chrome-stable
+    - chromium-chromedriver
   mariadb: '10.2'
 
 cache:
@@ -28,7 +31,7 @@ env:
     - RAILS_SYSTEM_TESTING_SCREENSHOT=simple
 
 before_install:
-  - sudo wget https://chromedriver.storage.googleapis.com/76.0.3809.126/chromedriver_linux64.zip
+  - sudo wget https://chromedriver.storage.googleapis.com/77.0.3865.10/chromedriver_linux64.zip
   - sudo unzip chromedriver_linux64.zip -d /usr/local/bin/
   - sudo chmod +x /usr/local/bin/chromedriver
   - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
