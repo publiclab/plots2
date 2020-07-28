@@ -4,7 +4,7 @@ class Spam2Controller < ApplicationController
   def _spam
     if logged_in_as(%w(moderator admin))
       @nodes = Node.paginate(page: params[:page], per_page: params[:pagination])
-      @queue_tag  = TagSelection.where(following: true, user_id: current_user.id).limit(10)
+      @queue_tag = TagSelection.where(following: true, user_id: current_user.id).limit(10)
       @nodes = case params[:type]
                  when 'wiki'
                    @nodes.where(type: 'page', status: 1).order('changed DESC')
@@ -15,7 +15,7 @@ class Spam2Controller < ApplicationController
                  when 'created'
                    @nodes.where(status: [0, 4]).order('created DESC')
                  when 'queue'
-                  current_user.moderator_queue.order('created DESC')
+                   current_user.moderator_queue.order('created DESC')
                   .paginate(page: params[:page], per_page: params[:pagination])
                  else
                    @nodes.where(status: [0, 4]).order('changed DESC')
