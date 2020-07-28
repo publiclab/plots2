@@ -10,9 +10,6 @@ services:
   - redis-server
 
 addons:
-  apt:
-    - google-chrome-stable
-    - chromium-chromedriver
   mariadb: '10.2'
 
 cache:
