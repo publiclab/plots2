@@ -28,10 +28,10 @@ env:
     - RAILS_SYSTEM_TESTING_SCREENSHOT=simple
 
 before_install:
-  - sudo wget https://chromedriver.storage.googleapis.com/76.0.3809.12/chromedriver_linux64.zip
+  - sudo wget https://chromedriver.storage.googleapis.com/76.0.3809.25/chromedriver_linux64.zip
   - sudo unzip chromedriver_linux64.zip -d /usr/local/bin/
   - sudo chmod +x /usr/local/bin/chromedriver
-  - google-chrome-stable --headless --no-sandbox --disable-gpu --remote-debugging-port=9222 http://localhost &
+  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
   - yes | gem update --system --force
   - gem install bundler
 
