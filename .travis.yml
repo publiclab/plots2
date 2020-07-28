@@ -10,7 +10,6 @@ services:
   - redis-server
 
 addons:
-  chrome: stable
   mariadb: '10.2'
 
 cache:
