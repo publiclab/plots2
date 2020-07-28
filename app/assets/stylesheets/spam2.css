@@ -92,8 +92,8 @@
 }
 
 .card .navbar .nav .nav-item .active {
-	color: blue;
-	border-bottom: 2px blue solid;
+	color: #007bff;
+	border-bottom: 2px #007bff solid;
 }
 
 .spam-alert {

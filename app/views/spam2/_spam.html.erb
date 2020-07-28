@@ -14,13 +14,15 @@
 <div class="nav_top flex d-inline">
   <p class="text-secondary pt-2 float-left nav_title h4">
     <% if params[:type] == "wiki" %>
-      <a href="/spam2" class="text-dark"><i class=" pt-1 pr-2 fa fa-certificate text-success"></i> Spam2 / </a><b> Wiki   
+      <a href="/spam2" class="text-dark"><i class=" pt-1 pr-2 fa fa-certificate text-success"></i> Spam2 / </a><b> Wiki
+    <% elsif params[:type] == "queue"%>
+      <a href="/spam2" class="text-dark"><i class=" pt-1 pr-2 fa fa-clock text-success"></i> Spam2 / </a><b> Queue   
     <% elsif params[:action] == "_spam_revisions"%>
       <a href="/spam2" class="text-dark"><i class=" pt-1 pr-2 fa fa-file text-secondary"></i> Spam2 / </a><b> Revisions
     <% elsif params[:action] == "_spam_comments"%>
       <a href="/spam2" class="text-dark"><i class=" pt-1 pr-2 fa fa-comments text-info"></i> Spam2 / </a><b> Comments
     <% elsif params[:action] == "_spam_flags"%>
-      <a href="/spam2" class="text-dark"><i class=" pt-1 pr-2 fa fa-flag text-primary"></i> Spam2 / </a><b> Flags
+      <a href="/spam2" class="text-dark"><i class=" pt-1 pr-2 fa fa-flag text-warning"></i> Spam2 / </a><b> Flags
     <% elsif params[:action] == "_spam_users"%>
       <a href="/spam2" class="text-dark"><i class=" pt-1 pr-2 fa fa-user text-info"></i> Spam2 / </a><b> Users
     <% else %>
@@ -36,8 +38,9 @@
         <a class="dropdown-item" href="/dashboard"><i class="fa fa-list-alt text-primary"></i> Dashboard</a>
       <div class="dropdown-divider"></div>  
         <h6 class="dropdown-header">Spam Moderation</h6>
-        <a class="dropdown-item <% unless  params[:action] =="_spam_comments" || params[:action] =="_spam_revisions" || params[:action] =="_spam_flags" || params[:type] == "wiki" || params[:action] == "_spam_users"%> active <% end %>" href="/spam2/filter/all/30"><i class="drop fa fa-address-book text-primary"></i> Bulk Moderation</a>
-        <a class="dropdown-item <% if params[:type] == "wiki" %> active <% end %>" href="/spam2/filter/wiki/50" ><i class="drop fa fa-book text-primary"></i> Wiki</a>
+        <a class="dropdown-item <% unless  params[:action] =="_spam_comments" ||params[:type] =="queue" || params[:action] =="_spam_revisions" || params[:action] =="_spam_flags" || params[:type] == "wiki" || params[:action] == "_spam_users"%> active <% end %>" href="/spam2/filter/all/30"><i class="drop fa fa-address-book text-primary"></i> Bulk Moderation</a>
+        <a class="dropdown-item <% if params[:type] == "wiki" %> active <% end %>" id="wiki_drop" href="/spam2/filter/wiki/30" ><i class="drop fa fa-book text-primary"></i> Wiki</a>
+        <a class="dropdown-item <% if params[:type] == "queue" %> active <% end %>" id="queue_drop" href="/spam2/filter/queue/30" ><i class="drop fa fa-clock text-primary"></i> Queue</a>
         <a class="dropdown-item <% if params[:action] == "_spam_revisions" %> active <% end %>" href="/spam2/revisions"><i class="drop fa fa-list text-primary"></i> Revision</a>
         <a class="dropdown-item <% if params[:action] == "_spam_comments" %> active <% end %>" href="/spam2/comments/filter/all/30" ><i class="drop fa fa-comment text-primary"></i> Comments</a>
         <a class="dropdown-item <% if params[:action] == "_spam_flags" %> active <% end %>"  href="/spam2/flags/filter/all/30" ><i class="drop fa fa-flag text-primary"></i> Flag </a>
@@ -45,22 +48,27 @@
       </div>
     </div>
 </div>
-
+<script>
+  $('#wiki_drop').on('click', function () { // Wiki filter
+  localStorage.setItem('page-select', "30");
+  localStorage.setItem('filter', 'wiki');
+  });  
+  $('#queue_drop').on('click', function () { // Queue filter
+  localStorage.setItem('page-select', "30");
+  localStorage.setItem('filter', 'queue');
+	});
+</script>
 <div class="d-flex w-100 " style="overflow-x:auto !important;">
   <a class="btn btn-light border border-curve text-secondary mr-auto font-weight-bold" id="info-btn" data-toggle="collapse" href="#info-div" role="button" aria-expanded="false" aria-controls="info-div">
     Info <i class="fa fa-caret-down text-secondary"></i>
   </a>
-  <% if params[:action] != "_spam_revisions" && params[:action] != "_spam_comments" && params[:action] != "_spam_flags" && params[:action] != "_spam_users"%>
-    <div class=" d-inline-flex"><i class="fa fa-sticky-note text-info mt-3 ml-5" data-toggle="tooltip" data-placement="left" title="Unmoderated Nodes"></i><a href="/spam2/filter/unmoderated/30"  class="badge badge-pill badge-light text-info mx-2 my-3"><%= @node_unmoderated_count %></a></div>
-    <div class=" d-inline-flex"><i class="fa fa-flag text-warning mt-3" data-toggle="tooltip" data-placement="left" title="Flagged Nodes"></i><a href="/spam2/flags/filter/all/30" class="badge badge-pill badge-light text-warning mx-2 my-3" ><%= @node_flag_count %></a></div>
+  <% if params[:action] != "_spam_revisions" && params[:action] != "_spam_comments" && params[:action] != "_spam_users"%>
+    <div class=" d-inline-flex"><a href="/spam2/filter/unmoderated/30"  class="badge badge-pill badge-light text-info mx-2 my-3"><%= Node.where(status: 4).length %> Unmoderated</a></div>
+    <div class=" d-inline-flex"><a href="/spam2/flags/filter/all/30" class="badge badge-pill badge-light text-warning mx-2 my-3" ><%= Node.where('flag > ?', 0).length %> Flagged</a></div>
   <% end%>
   <% if params[:action] == "_spam_comments" %>
-    <div class=" d-inline-flex"><i class="fa fa-comment text-info ml-5 mt-3" data-toggle="tooltip" data-placement="left" title="Unmoderated Comments"></i><a href="/spam2/comment/filter/unmoderated/30" class="badge badge-pill badge-light text-info mx-2 my-3"><%= @comment_unmoderated_count %></a></div>
-    <div class=" d-inline-flex"><i class="fa fa-flag text-warning mt-3" data-toggle="tooltip" data-placement="left" title="Flagged Comments"></i><a href="/spam2/comments/filter/flagged/30"  class="badge badge-pill badge-light text-warning my-3 mx-2" ><%= @comment_flag_count %></a></div>
-  <% end %>
-  <% if params[:action] == "_spam_users" %>
-    <div class=" d-inline-flex"><i class="fa fa-user text-info ml-5 mt-3" data-toggle="tooltip" data-placement="left" title="Active Users"></i><a href="/spam2/flags/filter/all/30" class="badge badge-pill badge-light text-info mx-2 my-3"><%= @user_active_count %></a></div>
-    <div class=" d-inline-flex"><i class="fa fa-user text-danger  mt-3" data-toggle="tooltip" data-placement="left" title="Banned Users"></i><a href="/spam2/comments/filter/flagged/30"  class="badge badge-pill badge-light text-danger my-3 mx-2" ><%= @user_ban_count %></a></div>
+    <div class=" d-inline-flex"><a href="/spam2/comment/filter/unmoderated/30" class="badge badge-pill badge-light text-info mx-2 my-3"><%= Comment.where(status: 4).length %> Unmoderated</a></div>
+    <div class=" d-inline-flex"><a href="/spam2/comments/filter/flagged/30"  class="badge badge-pill badge-light text-warning my-3 mx-2" ><%= Comment.where('flag > ?', 0).length %> Flagged</a> </div>
   <% end %>
 </div>
 
@@ -100,7 +108,7 @@
   </div>
 </nav>
 
-<% if params[:type] != "wiki" %>
+
 <div class="w-20 d-flex ml-1">
   <a class="btn nav-link text-secondary font-weight-bold">Nodes per page </a>
   <select name="Visible" id="pageselect" class="overflow-hiden mt-1 custom-select custom-select-sm form-control form-control-sm">
@@ -110,6 +118,14 @@
     <option value="150">150</option>
   </select> 
 </div>
+
+<% if params[:type] == "queue" %>
+<div class="py-2 pl-3 w-100">
+  <% @queue_tag.each do |tag| %>
+    <span class="badge badge-pill badge-info" ><%= tag.tagname %> </span></span>  
+  <% end %>
+  <% if @queue_tag.length > 10   %> <span class="badge badge-pill badge-info"> and more!! <% end %>
+  </div>
 <% end %>
 
 <%= render partial: 'spam2/nodes' if @nodes %>

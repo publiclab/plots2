@@ -49,22 +49,22 @@ $(document).ready(function () {
   <div class="bg-light  navbar navbar-expand">
     <ul class="nav navbar-expand  navbar-nav-scroll">
       <li class="nav-item">
-        <a class="btn nav-link text-secondary font-weight-bold" data-toggle="tooltip" data-placement="top" title="Selected per page">Selected <span id="select-count" class="badge badge-dark">0</span></a>
+        <a class="btn nav-link text-secondary" data-toggle="tooltip" data-placement="top" title="Selected per page">Selected <span id="select-count" class="badge badge-dark">0</span></a>
       </li>
       <li class="nav-item">
-        <a id="reset" class="btn nav-link font-weight-bold <% if params[:type] == "all" %> active<% else %> text-secondary<% end %>"><i class="fa fa-arrow-circle-o-up <% if params[:type] == "all" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Latest updated flagged Nodes"></i> Flagged</a>
+        <a id="reset" class="btn nav-link <% if params[:type] == "all" %> active<% else %> text-secondary<% end %>"><i class="fa fa-arrow-circle-o-up <% if params[:type] == "all" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Latest updated flagged Nodes"></i> Flagged</a>
       </li>
       <li class="nav-item">
-        <a id="spammed" class="btn nav-link font-weight-bold<% if params[:type] == "spammed" %>  active <% else %> text-secondary <% end %>"> <i class="fa fa-ban <% if params[:type] == "spammed" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all flag Nodes which are spammed"></i> Spammed </a>
+        <a id="spammed" class="btn nav-link <% if params[:type] == "spammed" %>  active <% else %> text-secondary <% end %>"> <i class="fa fa-ban <% if params[:type] == "spammed" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all flag Nodes which are spammed"></i> Spammed </a>
       </li>
       <li class="nav-item">
-        <a id="unmoderated" class="btn nav-link  font-weight-bold<% if params[:type] == "unmoderated" %>  active <% else %> text-secondary <% end %>"> <i class="fa fa-check-square-o <% if params[:type] == "unmoderated" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all flag Nodes which are unmoderated"></i> Unmoderated</a>
+        <a id="unmoderated" class="btn nav-link  <% if params[:type] == "unmoderated" %>  active <% else %> text-secondary <% end %>"> <i class="fa fa-check-square-o <% if params[:type] == "unmoderated" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all flag Nodes which are unmoderated"></i> Unmoderated</a>
       </li>
       <li class="nav-item">
-        <a id="page" class="btn nav-link font-weight-bold<% if params[:type] == "page" %>  active <% else %> text-secondary <% end %>"> <i class="fa fa-file-text-o <% if params[:type] == "page" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all Wikis which are flagged"></i> Page</a>
+        <a id="page" class="btn nav-link <% if params[:type] == "page" %>  active <% else %> text-secondary <% end %>"> <i class="fa fa-file-text-o <% if params[:type] == "page" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all Wikis which are flagged"></i> Page</a>
       </li>
       <li class="nav-item">
-        <a id="note" class="btn nav-link font-weight-bold <% if params[:type] == "note" %>  active <% else %> text-secondary <% end %>"> <i class="fa fa-file-o <% if params[:type] == "note" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all Notes which are flagged"></i> Notes</a>
+        <a id="note" class="btn nav-link <% if params[:type] == "note" %>  active <% else %> text-secondary <% end %>"> <i class="fa fa-file-o <% if params[:type] == "note" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all Notes which are flagged"></i> Notes</a>
       </li>
     </ul>
   </div>

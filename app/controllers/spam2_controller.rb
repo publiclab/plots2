@@ -4,6 +4,7 @@ class Spam2Controller < ApplicationController
   def _spam
     if logged_in_as(%w(moderator admin))
       @nodes = Node.paginate(page: params[:page], per_page: params[:pagination])
+      @queue_tag  = TagSelection.where(following: true, user_id: current_user.id).limit(10)
       @nodes = case params[:type]
                  when 'wiki'
                    @nodes.where(type: 'page', status: 1).order('changed DESC')
@@ -13,11 +14,12 @@ class Spam2Controller < ApplicationController
                    @nodes.where(status: 0).order('changed DESC')
                  when 'created'
                    @nodes.where(status: [0, 4]).order('created DESC')
+                 when 'queue'
+                  current_user.moderator_queue.order('created DESC')
+                  .paginate(page: params[:page], per_page: params[:pagination])
                  else
                    @nodes.where(status: [0, 4]).order('changed DESC')
                  end
-      @node_unmoderated_count = Node.where(status: 4).length
-      @node_flag_count = Node.where('flag > ?', 0).length
     else
       flash[:error] = 'Only moderators can moderate posts.'
       redirect_to '/dashboard'
@@ -61,8 +63,6 @@ class Spam2Controller < ApplicationController
                  else
                    @users.where('rusers.status = 1')
                  end
-      @user_active_count = User.where('rusers.status = 1').length
-      @user_ban_count = User.where('rusers.status = 0').length
       render template: 'spam2/_spam'
     else
       flash[:error] = 'Only moderators can moderate other users.'
@@ -97,8 +97,6 @@ class Spam2Controller < ApplicationController
                     .or(@comments.where('flag > ?', 0))
                     .order('timestamp DESC')
                   end
-      @comment_unmoderated_count = Comment.where(status: 4).length
-      @comment_flag_count = Comment.where('flag > ?', 0).length
       render template: 'spam2/_spam'
     else
       flash[:error] = 'Only moderators can moderate comments.'

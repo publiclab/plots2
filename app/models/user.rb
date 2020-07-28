@@ -277,6 +277,20 @@ class User < ActiveRecord::Base
         .distinct
   end
 
+  def moderator_queue
+    tag_queue = TagSelection.where(following: true, user_id: uid)
+    nodes = []
+    tag_queue.each do |tag_queue_name|
+      nodes += NodeTag.where(tid: tag_queue_name.tid).collect(&:nid)
+    end
+
+    Node.where(nid: nodes)
+    .includes(:tag)
+    .where(type: %w(note page))
+    .where(status: [0, 4])
+    .distinct
+  end
+
   def social_link(site)
     return nil unless has_power_tag(site)
 
