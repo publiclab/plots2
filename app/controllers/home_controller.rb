@@ -111,6 +111,7 @@ class HomeController < ApplicationController
       .order('nid DESC')
       .limit(10)
     revisions = Revision.joins(:node)
+      .includes(:node)
       .order('timestamp DESC')
       .where('type = (?)', 'page')
       .where('node.status = 1')
