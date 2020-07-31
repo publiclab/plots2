@@ -203,7 +203,7 @@ class TagController < ApplicationController
 
     nodes = Tag.tagged_nodes_by_author(@tagname, @user)
       .where(status: 1, type: node_type)
-    @total_posts = nodes.count
+    @total_posts = nodes.size
 
     nodes = nodes.paginate(page: params[:page], per_page: 24)
 
@@ -386,7 +386,7 @@ class TagController < ApplicationController
   end
 
   def suggested
-    if !params[:id].empty? && params[:id].length > 2
+    if !params[:id].empty? && params[:id].size > 2
       @suggestions = SearchService.new.search_tags(params[:id])
       render json: @suggestions.collect { |tag| tag.name }.uniq
     else
@@ -459,8 +459,8 @@ class TagController < ApplicationController
       t = Tag.where(name: tagname)
       nct = NodeTag.where('tid in (?)', t.collect(&:tid))
       @tagdata[tagname][:users] = Node.where('nid IN (?)', nct.collect(&:nid)).collect(&:author).uniq.length
-      @tagdata[tagname][:wikis] = Node.where("nid IN (?) AND (type = 'page' OR type = 'tool' OR type = 'place')", nct.collect(&:nid)).count
-      @tagdata[:notes] = Node.where("nid IN (?) AND type = 'note'", nct.collect(&:nid)).count
+      @tagdata[tagname][:wikis] = Node.where("nid IN (?) AND (type = 'page' OR type = 'tool' OR type = 'place')", nct.collect(&:nid)).size
+      @tagdata[:notes] = Node.where("nid IN (?) AND type = 'note'", nct.collect(&:nid)).size
     end
     render template: 'tag/contributors-index'
   end
