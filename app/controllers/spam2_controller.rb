@@ -15,7 +15,7 @@ class Spam2Controller < ApplicationController
                  when 'created'
                    @nodes.where(status: [0, 4]).order('created DESC')
                  when 'queue'
-                     current_user.moderator_queue.order('created DESC')
+                   current_user.moderator_queue.order('created DESC')
                                  .paginate(page: params[:page], per_page: params[:pagination])
                  else
                    @nodes.where(status: [0, 4]).order('changed DESC')
@@ -272,16 +272,16 @@ class Spam2Controller < ApplicationController
         user = comment.author
         user_total << user.id
         case params[:type]
-          when 'publish'
-            comment.publish
-            user.unban
-          when 'spam'
-            comment.spam
-            user.ban
-          when 'delete'
-            comment.delete
-          else
-            flash[:notice] = 'Invalid Url'
+        when 'publish'
+          comment.publish
+          user.unban
+        when 'spam'
+          comment.spam
+          user.ban
+        when 'delete'
+          comment.delete
+        else
+          flash[:notice] = 'Invalid Url'
         end
       end
       flash[:notice] = comment_total.to_s + ' comment and ' + user_total.length.to_s + ' user moderated'
