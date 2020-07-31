@@ -9,7 +9,7 @@ module Statistics
                type: 'note',
                status: 1,
                created: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i)
-        .count
+        .size
     end
     weeks
   end
@@ -23,7 +23,7 @@ module Statistics
                type: 'note',
                status: 1,
                created: time - (day - 1).days.to_i..time - (day - 2).days.to_i)
-        .count
+        .size
     end
     days
   end
@@ -35,7 +35,7 @@ module Statistics
         .where(uid: uid,
                status: 1,
                timestamp: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i)
-        .count
+        .size
     end
     weeks
   end
@@ -50,7 +50,7 @@ module Statistics
                type: 'note',
                status: 1,
                created: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
-        .count
+        .size
       break if days[day] == 0
 
       streak += 1
@@ -69,7 +69,7 @@ module Statistics
                status: 1,
                timestamp: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
         .where('node.type != ?', 'note')
-        .count
+        .size
       break if days[day] == 0
 
       streak += 1
@@ -87,7 +87,7 @@ module Statistics
         .where(uid: uid,
           status: 1,
           timestamp: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
-        .count
+        .size
       break if days[day] == 0
 
       streak += 1
