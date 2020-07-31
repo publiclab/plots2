@@ -37,7 +37,7 @@ class Comment < ApplicationRecord
 
   def self.contribution_graph_making(start = Time.now - 1.year, fin = Time.now)
     date_hash = {}
-    week = start.to_date.step(fin.to_date, 7).size
+    week = start.to_date.step(fin.to_date, 7).count
 
     while week >= 1
       month = (fin - (week * 7 - 1).days)
