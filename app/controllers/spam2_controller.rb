@@ -16,8 +16,8 @@ class Spam2Controller < ApplicationController
                  else
                    @nodes.where(status: [0, 4]).order('changed DESC')
                  end
-      @node_unmoderated_count = Node.where(status: 4).length
-      @node_flag_count = Node.where('flag > ?', 0).length
+      @node_unmoderated_count = Node.where(status: 4).size
+      @node_flag_count = Node.where('flag > ?', 0).size
     else
       flash[:error] = 'Only moderators can moderate posts.'
       redirect_to '/dashboard'
@@ -61,8 +61,8 @@ class Spam2Controller < ApplicationController
                  else
                    @users.where('rusers.status = 1')
                  end
-      @user_active_count = User.where('rusers.status = 1').length
-      @user_ban_count = User.where('rusers.status = 0').length
+      @user_active_count = User.where('rusers.status = 1').size
+      @user_ban_count = User.where('rusers.status = 0').size
       render template: 'spam2/_spam'
     else
       flash[:error] = 'Only moderators can moderate other users.'
@@ -97,8 +97,8 @@ class Spam2Controller < ApplicationController
                     .or(@comments.where('flag > ?', 0))
                     .order('timestamp DESC')
                   end
-      @comment_unmoderated_count = Comment.where(status: 4).length
-      @comment_flag_count = Comment.where('flag > ?', 0).length
+      @comment_unmoderated_count = Comment.where(status: 4).size
+      @comment_flag_count = Comment.where('flag > ?', 0).size
       render template: 'spam2/_spam'
     else
       flash[:error] = 'Only moderators can moderate comments.'
@@ -118,7 +118,7 @@ class Spam2Controller < ApplicationController
         user_spamed << user.id
         user.ban
       end
-      flash[:notice] = node_spamed.to_s + ' nodes spammed and ' + user_spamed.length.to_s + ' users banned.'
+      flash[:notice] = node_spamed.to_s + ' nodes spammed and ' + user_spamed.size.to_s + ' users banned.'
       redirect_to '/spam2'
     else
       flash[:error] = 'Only admins and moderators can mark a batch spam.'
@@ -138,7 +138,7 @@ class Spam2Controller < ApplicationController
         user.unban
         user_published << user.id
       end
-      flash[:notice] = node_published.to_s + ' nodes published and ' + user_published.length.to_s + ' users unbanned.'
+      flash[:notice] = node_published.to_s + ' nodes published and ' + user_published.size.to_s + ' users unbanned.'
       redirect_to '/spam2'
     else
       flash[:error] = 'Only admins and moderators can batch publish.'
@@ -171,7 +171,7 @@ class Spam2Controller < ApplicationController
         user_ban << user.id
         user.ban
       end
-      flash[:notice] = user_ban.length.to_s + ' users banned.'
+      flash[:notice] = user_ban.size.to_s + ' users banned.'
       redirect_back fallback_location: root_path
     else
       flash[:error] = 'Only admins and moderators can ban users.'
@@ -188,7 +188,7 @@ class Spam2Controller < ApplicationController
         unbanned_users << user_unban.id
         user_unban.unban
       end
-      flash[:notice] = unbanned_users.length.to_s + ' users unbanned.'
+      flash[:notice] = unbanned_users.size.to_s + ' users unbanned.'
       redirect_back fallback_location: root_path
     else
       flash[:error] = 'Only admins and moderators can unban users.'
@@ -204,7 +204,7 @@ class Spam2Controller < ApplicationController
         users << user_ban.id
         user_ban.ban
       end
-      flash[:notice] = users.length.to_s + ' users banned.'
+      flash[:notice] = users.size.to_s + ' users banned.'
       redirect_back fallback_location: root_path
     else
       flash[:error] = 'Only moderators can moderate users.'
