@@ -97,9 +97,9 @@ For information on how to install for use with the cloud environment, please see
 3. Enter the new **plots2** directory with `cd plots2`.
 4. Set the upstream remote to the original repository url so that git knows where to fetch updates from in future: `git remote add upstream https://github.com/publiclab/plots2.git`
 5. Steps to install gems:
-    * You may need to first run `bundle install` if you have older gems in your environment from previous Rails work. If you get an error message like `Your Ruby version is 2.x.x, but your Gemfile specified 2.4.4` then you need to install the ruby version 2.4.4 using `rvm` or `rbenv`.
-	    * Using **rvm**: `rvm install 2.4.4` followed by `rvm use 2.4.4`
-	    * Using **rbenv**:  `rbenv install 2.4.4` followed by `rbenv local 2.4.4`
+    * You may need to first run `bundle install` if you have older gems in your environment from previous Rails work. If you get an error message like `Your Ruby version is 2.x.x, but your Gemfile specified 2.4.4` then you need to install the ruby version 2.6.6 using `rvm` or `rbenv`.
+	    * Using **rvm**: `rvm install 2.6.6` followed by `rvm use 2.6.6`
+	    * Using **rbenv**:  `rbenv install 2.6.6` followed by `rbenv local 2.6.6`
     * Install gems with `bundle install --without production mysql` from the rails root folder, to install the gems you'll need, excluding those needed only in production.
 6. Run `cp db/schema.rb.example db/schema.rb` to make a copy of `db/schema.rb.example` in `db/schema.rb`.
 7. Run `cp config/database.yml.sqlite.example config/database.yml` to make a copy of `config/database.yml.sqlite.example` in `config/database.yml`.
