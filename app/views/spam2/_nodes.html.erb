@@ -49,17 +49,17 @@ $(document).ready(function () {
         <a class="btn nav-link text-secondary" data-toggle="tooltip" data-placement="top" title="Selected per page"> Selected <span id="select-count" class="badge badge-dark">0</span></a>
       </li>
       <li class="nav-item">
-        <a id="reset_all" class="btn nav-link  <% if params[:type] == "all" %> active<% else %> text-secondary<% end %>"><i class="fa fa-arrow-circle-o-up <% if params[:type] == "all" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Latest updated Nodes"></i> New Activity </a>
+        <a id="reset_all" class="btn nav-link  <% if params[:type] == "all" %> active<% else %> text-secondary<% end %>"><i class="fa fa-arrow-circle-o-up <% if params[:type] == "all" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Latest updated Nodes"></i> New Activity </a>
       </li>
       <% if params[:type] != "wiki" && params[:type] != "queue" %>
       <li class="nav-item">
-        <a id="created" class="btn nav-link  <% if params[:type] == "created" %> active <% else %> text-secondary <% end %>"><i class="fa fa-list-ol <% if params[:type] == "created" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Order as per their creation time "></i> Recent </a>
+        <a id="created" class="btn nav-link  <% if params[:type] == "created" %> active <% else %> text-secondary <% end %>"><i class="fa fa-list-ol <% if params[:type] == "created" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Order as per their creation time "></i> Recent </a>
       </li>
       <li class="nav-item">
-        <a id="spammed" class="btn nav-link  <% if params[:type] == "spammed" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-ban <% if params[:type] == "spammed" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all Spammed Nodes "></i> Spammed <span class="badge badge-<% if params[:type] == "spammed" %>light text-primary <% else %>dark<% end %>"><%= Node.where(status: 0).length %></span></a> 
+        <a id="spammed" class="btn nav-link  <% if params[:type] == "spammed" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-ban <% if params[:type] == "spammed" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all Spammed Nodes "></i> Spammed <span class="badge badge-dark"><%= Node.where(status: 0).length %></span></a> 
       </li>
       <li class="nav-item">
-        <a id="unmoderated" class="btn nav-link  <% if params[:type] == "unmoderated" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-check-square-o <% if params[:type] == "unmoderated" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all unmoderated Nodes"></i> Unmoderated</a>
+        <a id="unmoderated" class="btn nav-link  <% if params[:type] == "unmoderated" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-check-square-o <% if params[:type] == "unmoderated" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all unmoderated Nodes"></i> Unmoderated</a>
       </li>
       <% end %>
     </ul>
@@ -165,7 +165,7 @@ $(document).ready(function () {
   <div class="float-right">
     <%= will_paginate @nodes, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || @nodes.empty? %>
   </div>
-  <div class="float-left">
+  <div class="float-left text-secondary">
     <% unless @nodes.empty? %> Page number <%= @nodes.current_page %> of <%= @nodes.total_pages %> total Pages <% end %>
   </div>
 </div>

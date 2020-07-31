@@ -305,6 +305,7 @@ Plots2::Application.routes.draw do
   get 'spam2/batch_unban/:ids' => 'spam2#batch_unban'
   get 'spam2/batch_ban_user/:ids' => 'spam2#batch_ban_user'
   get 'spam2/batch_unban_user/:ids' => 'spam2#batch_unban_user'
+  get 'spam2/batch_comment/:type/:ids' => 'spam2#batch_comment'
   get 'admin/users' => 'admin#users'
   get 'admin/queue' => 'admin#queue'
   get 'ban/:id' => 'admin#ban'

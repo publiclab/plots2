@@ -15,8 +15,8 @@ class Spam2Controller < ApplicationController
                  when 'created'
                    @nodes.where(status: [0, 4]).order('created DESC')
                  when 'queue'
-                   current_user.moderator_queue.order('created DESC')
-                  .paginate(page: params[:page], per_page: params[:pagination])
+                     current_user.moderator_queue.order('created DESC')
+                                 .paginate(page: params[:page], per_page: params[:pagination])
                  else
                    @nodes.where(status: [0, 4]).order('changed DESC')
                  end
@@ -73,7 +73,7 @@ class Spam2Controller < ApplicationController
   def _spam_revisions
     if logged_in_as(%w(admin moderator))
       @revisions = Revision.where(status: 0)
-                           .paginate(page: params[:page], per_page: 50)
+                           .paginate(page: params[:page], per_page: 30)
                            .order('timestamp DESC')
       render template: 'spam2/_spam'
     else
@@ -258,6 +258,36 @@ class Spam2Controller < ApplicationController
       @comment.unflag_comment
     else
       flash[:error] = 'Only moderators can unflag comments.'
+      redirect_to '/dashboard'
+    end
+  end
+
+  def batch_comment
+    if logged_in_as(%w(moderator admin))
+      comment_total = 0
+      user_total = []
+      params[:ids].split(',').uniq.each do |cid|
+        comment = Comment.find cid
+        comment_total += 1
+        user = comment.author
+        user_total << user.id
+        case params[:type]
+          when 'publish'
+            comment.publish
+            user.unban
+          when 'spam'
+            comment.spam
+            user.ban
+          when 'delete'
+            comment.delete
+          else
+            flash[:notice] = 'Invalid Url'
+        end
+      end
+      flash[:notice] = comment_total.to_s + ' comment and ' + user_total.length.to_s + ' user moderated'
+      redirect_back fallback_location: root_path
+    else
+      flash[:error] = 'Only admins and moderators can moderate comments and users.'
       redirect_to '/dashboard'
     end
   end
