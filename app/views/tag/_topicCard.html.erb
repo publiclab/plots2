@@ -7,7 +7,7 @@
         <% if current_user && current_user.following(tag.name) && controller.controller_name != 'tag' %>
           <a style="margin-top:-8px;" data-method="delete" data-confirm="Are you sure you'd like to unfollow this topic?" rel="tooltip" title="<%= translation('tag.show.unfollow') %>" class="pull-right" href="/unsubscribe/tag/<%= tag.name %>"><i style="color:#ccc;" class="fa fa-times"></i></a>
         <% end %>
-        <h4 style="display: inline-block;"><%= tag.name %></h4>
+        <h4 style="display: inline-block;"><a href="<%= tag.name %>"><%= tag.name %></a></h4>
         <p style="display: inline-block; color: #808080;"><a style="text-decoration: underline; color: #808080;" href="/tag/<%= tag.name %>"><%= Tag.follower_count(tag.name) %> following</a></p>
       </div>
       <div class="card-body" style="padding:0.8em;">
