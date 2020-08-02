@@ -9,7 +9,7 @@ class StatsController < ApplicationController
         .group("term_data.name")
         .joins("INNER JOIN rusers ON rusers.id = tag_selections.user_id")
         .where("rusers.status = 1 OR rusers.status = 4")
-        .count
+        .size
     end
     @tags = @tags.group_by { |_k, v| v / 10 }.sort_by { |k, _v| -k }
   end
@@ -39,8 +39,8 @@ class StatsController < ApplicationController
 
       total_questions = Node.published.questions
         .where(created: @start.to_i..@end.to_i)
-      @answers = total_questions.joins(:comments).size.count
-      @questions = total_questions.size.count
+      @answers = total_questions.joins(:comments).size.size
+      @questions = total_questions.size.size
     end
   end
 
@@ -80,8 +80,8 @@ class StatsController < ApplicationController
         end
       end
 
-      @all_notes = nids.uniq.length
-      @all_contributors = users.uniq.length
+      @all_notes = nids.uniq.size
+      @all_contributors = users.uniq.size
     end
     Rails.cache.fetch("total-contributors-all-time", expires_in: 1.weeks) do
       @all_time_contributors = User.count_all_time_contributor
