@@ -206,7 +206,7 @@ class Comment < ApplicationRecord
   end
 
   def liked_by(user_id)
-    likes.where(user_id: user_id).size > 0
+    likes.where(user_id: user_id).present?
   end
 
   def likers
