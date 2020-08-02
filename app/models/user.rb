@@ -69,7 +69,7 @@ class User < ActiveRecord::Base
   scope :past_month, -> { where("created_at > ?", 1.month.ago) }
 
   def is_new_contributor?
-    Node.where(uid: id).size=== 1 && Node.where(uid: id).first.created_at > 1.month.ago
+    Node.where(uid: id).size === 1 && Node.where(uid: id).first.created_at > 1.month.ago
   end
 
   def new_contributor
