@@ -7,7 +7,6 @@
     border:none;
 }
 .card-view .card-header p {
-    display: inline-block;
     font-size: 0.9rem;
     margin-left: 6px;
 }
