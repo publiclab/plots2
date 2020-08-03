@@ -55,71 +55,73 @@
 
 <section class="tag-header fdb-block pb-0" style="<% if @wiki && @wiki.main_image %>background-image: url(<%= @wiki.main_image.path %>);<% else %>background: #eee;<% end %>" data-block-type="contents" data-id="1">
 
-  <div class="container">
-    <div class="row text-left justify-content-start">
-      <div class="col-12 col-md-6 col-xl-5"><div class="fdb-box rounded-bottom-0">
+    <div class="container">
+        <div class="row text-left justify-content-start">
+            <div class="col-12 col-md-6 col-xl-5"><div class="fdb-box rounded-bottom-0">
 
-        <div class="pull-right"><%= render :partial => "tag/show/user_controls" %></div>
- 
-        <h1 style="margin-top:6px;">
-          <%= @wiki&.latest&.title || @title %>
+                    <div class="pull-right"><%= render :partial => "tag/show/user_controls" %></div>
 
-          <div style="display:inline;font-family: 'Helvetica Neue',Arial,sans-serif;font-size: 16px;">
-            <span style="white-space: nowrap;">
-              <span rel="tooltip" title="This 'tagname' forms part of the URL for this topic." class="badge badge-secondary" style="background: #ccc;color: white;">
-                <%= params[:id] %>
-              </span>
-              <a rel="tooltip" title="Show related topics" onclick="$('.related-tags').show();$(this).hide();"><i class="fa fa-plus-circle" style="vertical-align: middle;color:#ccc;"></i></a>
-              <span class="related-tags" style="display:none;">
-                <% @related_tags.each do |tag| %>
-                <a href="/tag/<%= tag.name %>" class="badge badge-secondary" style="background: #aaa;color: white;">
-                  <%= tag.name %>
-                </a>
-                <% end %>
-              </span>
-            </span>
-          </div>
-        </h1>
+                    <h1 style="margin-top:6px;">
+                        <%= @wiki&.latest&.title || @title %>
 
-        <% if @wildcard %>
- 
-          <% if @node_type == "questions"%>
-            <p><i>Showing <b>questions</b></i></p>
-          <% elsif @node_type == "note" && params[:id].match("activity:") %>
-            <p><i>Showing <b>activities</b></i></p>
-          <% elsif @node_type == "note" && params[:id].match("replication:") %>
-            <p><i>Showing <b>completed activities</b></i></p>
-          <% end %>
- 
-          <p><i>This is a wildcard (*) tag search. Please enter a tag without wildcards to display lead wiki pages.</i></p>
- 
-        <% end %>
+                        <div style="display:inline;font-family: 'Helvetica Neue',Arial,sans-serif;font-size: 16px;">
+                            <span style="white-space: nowrap;">
+                                <span rel="tooltip" title="This 'tagname' forms part of the URL for this topic." class="badge badge-secondary" style="background: #ccc;color: white;">
+                                    <%= params[:id] %>
+                                </span>
+                                <a rel="tooltip" title="Show related topics" onclick="$('.related-tags').show();$(this).hide();"><i class="fa fa-plus-circle" style="vertical-align: middle;color:#ccc;"></i></a>
+                                <span class="related-tags" style="display:none;">
+                                    <% unless @related_tags.nil? %>
+                                        <% @related_tags.each do |tag| %>
+                                            <a href="/tag/<%= tag.name %>" class="badge badge-secondary" style="background: #aaa;color: white;">
+                                                <%= tag.name %>
+                                            </a>
+                                        <% end %>
+                                    <% end %>
+                                </span>
+                            </span>
+                        </div>
+                    </h1>
 
-        <% if @wiki %>
-          <p class = "wiki-sub wiki-summary" id="wiki-summary"><%= @wiki.latest.body.split('\n').first %></p>
-        <% end %>
- 
-        <div class="tag-buttons">
-          <div class="btn-group" role="group">
-            <% if current_user && current_user.following(params[:id]) %>
-              <a rel="tooltip" title="<%= translation('sidebar._post_button.share_your_work') %>" data-placement="bottom" href="/post?tags=<%= @title %>" class="btn btn-primary requireLogin">New post <i class="fa fa-plus fa-white"></i></a>
-            <% else %>
-              <a class="btn btn-primary requireLogin" target="_blank" href="/subscribe/tag/<%= params[:id] %>"> Follow</a>
-                <% if @related_tags %>
-                  <a><%= render partial: 'tag/dropdown_subscribe', locals: { tags: @related_tags, buttonStyle: "btn-primary"} %></a>
-                <% end %>
-            <% end %>
-          </div>
-          <% if @wiki %>
-            <a><%= link_to("Learn more &raquo;".html_safe, "/wiki/#{params[:id]}", :class=> "btn btn-outline-secondary")%></a>
-          <% else %>
-            <a class="btn btn-outline-secondary" href="/wiki/new?title=<%= params[:id] %>">Add a description <span class="fa fa-plus"></span></a>
-          <% end %>
+                    <% if @wildcard %>
+
+                        <% if @node_type == "questions"%>
+                            <p><i>Showing <b>questions</b></i></p>
+                        <% elsif @node_type == "note" && params[:id].match("activity:") %>
+                            <p><i>Showing <b>activities</b></i></p>
+                        <% elsif @node_type == "note" && params[:id].match("replication:") %>
+                            <p><i>Showing <b>completed activities</b></i></p>
+                        <% end %>
+
+                        <p><i>This is a wildcard (*) tag search. Please enter a tag without wildcards to display lead wiki pages.</i></p>
+
+                    <% end %>
+
+                    <% if @wiki %>
+                        <p class = "wiki-sub wiki-summary" id="wiki-summary"><%= @wiki.latest.body.split('\n').first %></p>
+                    <% end %>
+
+                    <div class="tag-buttons">
+                        <div class="btn-group" role="group">
+                            <% if current_user && current_user.following(params[:id]) %>
+                                <a rel="tooltip" title="<%= translation('sidebar._post_button.share_your_work') %>" data-placement="bottom" href="/post?tags=<%= @title %>" class="btn btn-primary requireLogin">New post <i class="fa fa-plus fa-white"></i></a>
+                            <% else %>
+                                <a class="btn btn-primary requireLogin" target="_blank" href="/subscribe/tag/<%= params[:id] %>"> Follow</a>
+                                <% if @related_tags %>
+                                    <a><%= render partial: 'tag/dropdown_subscribe', locals: { tags: @related_tags, buttonStyle: "btn-primary"} %></a>
+                                <% end %>
+                            <% end %>
+                        </div>
+                        <% if @wiki %>
+                            <a><%= link_to("Learn more &raquo;".html_safe, "/wiki/#{params[:id]}", :class=> "btn btn-outline-secondary")%></a>
+                        <% else %>
+                            <a class="btn btn-outline-secondary" href="/wiki/new?title=<%= params[:id] %>">Add a description <span class="fa fa-plus"></span></a>
+                        <% end %>
+                    </div>
+
+                </div></div>
         </div>
-
-      </div></div>
     </div>
-  </div>
 
 </section>
 
