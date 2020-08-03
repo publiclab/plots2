@@ -467,7 +467,7 @@ blueimp-file-upload@^9.34.0:
     blueimp-load-image "2.12.2"
     blueimp-tmpl "3.6.0"
 
-blueimp-file-upload@blueimp/jQuery-File-Upload#^10.30.1, jquery-file-upload@blueimp/jQuery-File-Upload#~10.30.1:
+blueimp-file-upload@blueimp/jQuery-File-Upload#^10.30.1:
   version "10.30.1"
   uid "67d3f5bae532df367d6301970ce369969c7592a0"
   resolved "https://codeload.github.com/blueimp/jQuery-File-Upload/tar.gz/67d3f5bae532df367d6301970ce369969c7592a0"
@@ -1247,10 +1247,10 @@ cwise-compiler@^1.0.0, cwise-compiler@^1.1.2:
   dependencies:
     uniq "^1.0.0"
 
-cytoscape@^3.15.1:
-  version "3.15.1"
-  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.15.1.tgz#bb5724306c61dfb1500d20ce11cd90ef768fc32b"
-  integrity sha512-xU/0KYoCErDXseKiPYrJJRSwwxbaDSo2rNpKCd7uNPw7ZDrMahCo+fE0agVvw0ce+6gAg5bDnC1pT8AgmaqqtA==
+cytoscape@^3.15.2:
+  version "3.15.2"
+  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.15.2.tgz#a26bb3053471babfe0178e740672cd99a46b28de"
+  integrity sha512-HCAWjKYH60wMAl4x/QwInVuqQapJn/y6U98T0hl1WAiaNasvgIO5i+oUzddf/exG1oVKfXSNQz6E5Em6c2+HFA==
   dependencies:
     heap "^0.2.6"
     lodash.debounce "^4.0.8"
@@ -2902,10 +2902,10 @@ humanize@^0.0.9:
   resolved "https://registry.yarnpkg.com/humanize/-/humanize-0.0.9.tgz#1994ffaecdfe9c441ed2bdac7452b7bb4c9e41a4"
   integrity sha1-GZT/rs3+nEQe0r2sdFK3u0yeQaQ=
 
-i18n-js@^3.7.0:
-  version "3.7.0"
-  resolved "https://registry.yarnpkg.com/i18n-js/-/i18n-js-3.7.0.tgz#84bf7706610f8a2589b3d6b15083a0a38a33dcb7"
-  integrity sha512-t5E5iiEqnkb3vy27V73dU3vcjDlmzbusKC5sXcGFOhte3b2BieVLu+qX1kRlyty9QfZADW3iZUSqeeUS9sal5w==
+i18n-js@^3.7.1:
+  version "3.7.1"
+  resolved "https://registry.yarnpkg.com/i18n-js/-/i18n-js-3.7.1.tgz#c70de6a64dc0ad5d2b6273eecfac636e5ed0421a"
+  integrity sha512-xrRzCeda5ZC0u0yRN+dMdidtda0N+f7t7Pek0ajWb+iyKqSGdrMmuBtbNpWJWY5N4Th0cxbp/BR57zSPdrM3Rw==
 
 ianstormtaylor-css@^0.3.1:
   version "0.3.1"
@@ -3300,6 +3300,15 @@ jquery-confirm@^3.3.4:
   integrity sha512-SF3mX2kWAK9FP/Hut1uLHI30LPZ9DAki3Jq6JId9vg6AlMVugjlh40APtuxPQ/0C44XTkQFSVyRrg57NMbaicA==
   dependencies:
     jquery ">=1.6"
+
+jquery-file-upload@blueimp/jQuery-File-Upload#~10.31.0:
+  version "10.31.0"
+  uid "7e655a866677184412fe16a512c61c547a1e875c"
+  resolved "https://codeload.github.com/blueimp/jQuery-File-Upload/tar.gz/7e655a866677184412fe16a512c61c547a1e875c"
+  optionalDependencies:
+    blueimp-canvas-to-blob "3"
+    blueimp-load-image "5"
+    blueimp-tmpl "3"
 
 jquery-lazyload@1.9.7:
   version "1.9.7"
@@ -3726,10 +3735,10 @@ markdown-it@5.1.0:
     mdurl "~1.0.1"
     uc.micro "^1.0.0"
 
-marked@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-1.1.0.tgz#62504ad4d11550c942935ccc5e39d64e5a4c4e50"
-  integrity sha512-EkE7RW6KcXfMHy2PA7Jg0YJE1l8UPEZE8k45tylzmZM30/r1M1MUXWQfJlrSbsTeh7m/XTwHbWUENvAJZpp1YA==
+marked@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/marked/-/marked-1.1.1.tgz#e5d61b69842210d5df57b05856e0c91572703e6a"
+  integrity sha512-mJzT8D2yPxoPh7h0UXkB+dBj4FykPJ2OIfxAWeIHrvoHDkFxukV/29QxoFQoPM6RLEwhIFdJpmKBlqVM3s2ZIw==
 
 mdurl@~1.0.1:
   version "1.0.1"

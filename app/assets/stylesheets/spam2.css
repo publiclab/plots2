@@ -1,13 +1,14 @@
 /*
 *= require datatables/dataTables.bootstrap4
 */
+
 .nav_top {
 	z-index: 5;
 	width: 100%;
 }
 
 #batch-spam:hover {
-	color:  red !important;
+	color: red !important;
 	cursor: pointer;
 }
 
@@ -32,12 +33,16 @@
 }
 
 #batch-unban:hover {
-	color: green !important;	
+	color: green !important;
 	cursor: pointer;
 }
 
-#node-hover:hover{
-	color:blue !important;
+#node-hover:hover {
+	color: blue !important;
+}
+
+#docs-btn:hover {
+	color: #17a2b8!important
 }
 
 #table-card {
@@ -45,40 +50,75 @@
 }
 
 #card-top {
-	margin-top:2vh;
+	margin-top: 2vh;
 }
 
-#bulk-nav{
-	margin-top: 2%;
-	margin-bottom: 1%;
-	width:100%;
+#bulk-nav {
+	margin-top: 2vh;
+	margin-bottom: 1vh;
+	width: 100%;
 }
 
-.active .drop{
-	color:white !important;
+#info-btn {
+	margin: 10px 0 0 1vw;
 }
 
-#col-search{
+#info-div {
+	 padding: 10px;
+	 text-align: center;
+	 line-height: 1.6;
+}
+.border-curve {
+	border-radius: 40px;
+}
+
+.active .drop {
+	color: white !important;
+}
+
+#col-search {
 	cursor: text;
-	text-align:left !important;
-	margin-top:2px;
+	text-align: left !important;
+	margin-top: 2px;
 }
 
-#col-select{
-	margin-top:2px;
+#col-select {
+	margin-top: 2px;
 }
 
+.page-table {
+	width: 100%;
+	margin-top: 10px;
+}
+
+.card .navbar .nav .nav-item .active {
+	color: blue;
+	border-bottom: 2px blue solid;
+}
+
+.spam-alert {
+	position: fixed;
+	width: 82vw;
+	top: 10vh;
+	z-index: 10;
+}
 @media (max-width: 750px) {
-	#table-card, #bulk-nav, .nav_top,
+	#table-card,
+	#bulk-nav,
+	.nav_top,
+	.page-table,
 	#card-top {
-        margin-left: 5vw;
-        width:90vw;
+		margin-left: 5vw;
+		width: 90vw;
 	}
-	.nav_title{
+	.nav_title {
 		font-size: 18px;
-		margin-bottom : 10px;
+		margin-bottom: 10px;
 	}
-	#card-top .card-header{
+	#card-top .card-header {
 		font-size: 18px;
+	}
+	#info-btn {
+		margin-left: 5vw;
 	}
 }

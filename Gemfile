@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.4.4'
+ruby '2.6.6'
 
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
@@ -19,8 +19,8 @@ gem 'georuby', '2.0'
 gem "google-cloud-storage"
 gem 'grape'
 gem 'grape-entity'
-gem 'grape-swagger', '~> 0.33.0'
-gem 'grape-swagger-entity', '0.3.4'
+gem 'grape-swagger', '~> 1.2.1'
+gem 'grape-swagger-entity', '0.5.1'
 gem 'grape-swagger-rails'
 gem 'grape-swagger-ui'
 gem 'http_accept_language'
@@ -28,7 +28,7 @@ gem "i18n-js", ">= 3.0.0.rc11"
 gem 'impressionist'
 gem 'jbuilder', '~> 2.10'
 gem 'jquery-rails'
-gem 'less-rails', '~> 4.0'
+gem 'less-rails', '~> 5.0'
 gem 'mocha', '~> 1.11'
 gem 'mustermann' , '1.1.1'
 gem 'omniauth', '~> 1.9'
@@ -52,7 +52,7 @@ gem 'rb-readline'
 gem 'rdiscount', '~> 2.2', '>= 2.2.0.1'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'responders', '~> 3.0'
-gem 'rubocop', '~> 0.85.1', require: false
+gem 'rubocop', '~> 0.88.0', require: false
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
 gem 'sentry-raven'

@@ -157,7 +157,7 @@ class User < ActiveRecord::Base
 
   def tagnames(limit = 20, defaults = true)
     tagnames = []
-    Node.order('nid DESC').where(type: 'note', status: 1, uid: id).limit(limit).each do |node|
+    Node.includes(:tag).order('nid DESC').where(type: 'note', status: 1, uid: id).limit(limit).each do |node|
       tagnames += node.tags.collect(&:name)
     end
     tagnames.uniq
@@ -268,6 +268,15 @@ class User < ActiveRecord::Base
     .distinct
   end
 
+  def unmoderated_in_period(start_time, end_time)
+    range = "(created >= #{start_time.to_i} AND created <= #{end_time.to_i})"
+    Node.where('node.status = 4')
+        .where(type: 'note')
+        .where(range)
+        .order('created DESC')
+        .distinct
+  end
+
   def social_link(site)
     return nil unless has_power_tag(site)
 
@@ -355,6 +364,19 @@ class User < ActiveRecord::Base
       SubscriptionMailer.send_digest(id, @nodes, @frequency).deliver_now
     end
   end
+
+  def send_digest_email_spam
+    if has_tag('digest:weekly:spam')
+      @frequency_digest = Frequency::WEEKLY
+      @nodes_unmoderated = unmoderated_in_period(1.week.ago, Time.current)
+    elsif has_tag('digest:daily:spam')
+      @frequency_digest = Frequency::DAILY
+      @nodes_unmoderated = unmoderated_in_period(1.day.ago, Time.current)
+    end
+    if @nodes_unmoderated.size.positive?
+      AdminMailer.send_digest_spam(@nodes_unmoderated, @frequency_digest).deliver_now
+    end
+ end
 
   def tag_counts
     tags = {}

@@ -1,5 +1,5 @@
 <% wikis ||= @wikis #accept local if present, default to instance %>
-<% if local_assigns[:digest] and wikis.length == 0 %>
+<% if local_assigns[:digest] and wikis.size == 0 %>
   <div class="alert alert-warning" role="alert">
     You haven't subscribed to any topic yet. Visit <a href="https://publiclab.org/subscriptions">https://publiclab.org/subscriptions</a> to subscribe to more topics.
   </div>
@@ -20,7 +20,7 @@
         <td><i><%= wiki.path %></i></td>
         <td><%= distance_of_time_in_words(Time.at(wiki.latest.created_at), Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %> <%= raw translation('wiki._wikis.by') %>
         <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a></td>
-        <td><%= wiki.revisions.length %></td>
+        <td><%= wiki.revisions.size %></td>
         <td><%= number_with_delimiter(wiki.views) %></td>
         <td><%= number_with_delimiter(wiki.cached_likes) %></td>
       </tr>
@@ -28,4 +28,3 @@
 </table>
 <% end %>
 <div class="text-center"><%= will_paginate wikis, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer if @paginated %></div>
-
