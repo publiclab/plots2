@@ -22,19 +22,6 @@ class BatchControllerTest < ActionController::TestCase
         assert authors.all? { |spammer| spammer.status == 0 }
     end
     
-    test "batched spammed notes are spammed and not present in spam2/wiki as a potential spam" do
-        UserSession.create(users(:admin))
-        spam_node = nodes(:about) 
-        get :_spam, params: { type: "wiki" }
-        # node should be present on spam suggestions because it is not yet spammed
-        assert_select "#n#{spam_node.nid}", 1
-        get :batch_spam, params: { ids: spam_node.nid }
-        # node is no longer on /spam/wiki because it is now already spammed
-        assert_select "#n#{spam_node.nid}", 0
-        # call the node from database to check if spammed
-        assert_equal 0, Node.find(spam_node.id).status
-    end
-    
     test 'batch spam ban correct number of users and spam correct number of notes' do
         UserSession.create(users(:admin))
         spam_nodes = [nodes(:spam_targeted_page), nodes(:spam)]
@@ -60,19 +47,6 @@ class BatchControllerTest < ActionController::TestCase
         # check if users are unbanned
         authors = spam_nodes.collect { |node| User.find(node.author.id) }
         assert authors.all? { |spammer| spammer.status == 1 }
-    end
-
-    test "batch published notes are published and not present in spam2 as unmoderated note" do
-        UserSession.create(users(:admin))
-        spam_node = nodes(:spam)
-        get :_spam
-        # node is spammeed and now present in the /spam2 
-        assert_select "#n#{spam_node.nid}", 1
-        get :batch_publish, params: { ids: spam_node.nid }
-        # node is no longer present as it is published
-        assert_select "#n#{spam_node.nid}", 0
-        # call the node from database to check if published
-        assert_equal 1, Node.find(spam_node.id).status
     end
 
     test 'batch Publish unban correct number of users and publish correct number of notes' do

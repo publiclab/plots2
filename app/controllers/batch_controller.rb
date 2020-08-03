@@ -1,4 +1,5 @@
 class BatchController < ApplicationController
+  before_action :require_user
 
   def batch_spam
     if logged_in_as(%w(moderator admin))

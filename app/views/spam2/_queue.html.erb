@@ -1,6 +1,6 @@
 <script>
 $(document).ready(function () {
-	var table = table_main("#node_table");
+	var table = table_main("#queue_table");
 	$("#all").click(function () { //select all button
 		$('.selectedId').prop('checked', !$('.selectedId').prop('checked'));
 		var check = ($('.selectedId').filter(":checked").length == $('.selectedId').length);
@@ -36,10 +36,10 @@ $(document).ready(function () {
 	});
 	$('#reset_all').on('click', function () { // reset all filter
 		search_table("all", "/spam2/queue/filter/");
-  });
-  $('#flagged').on('click', function () { // reset all filter
+    });
+    $('#flagged').on('click', function () { // flagged filter
 		search_table("flagged", "/spam2/queue/filter/");
-  });
+    });
 });
 </script>
 
@@ -73,7 +73,7 @@ $(document).ready(function () {
     <% unless @queue.empty? %>
     <div class="my-0 text-secondary small "><%= page_entries_info(@queue) %>s</div>
     <% end %>
-    <table  id="node_table" class="nowrap table table-hover" style="width:100%; text-align:left">
+    <table  id="queue_table" class="nowrap table table-hover" style="width:100%; text-align:left">
       <thead style="text-align:left;">
         <tr>
           <th><input type="checkbox"  id="selectall"/></th>
