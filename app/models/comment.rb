@@ -30,7 +30,7 @@ class Comment < ApplicationRecord
     (0..span).each do |week|
       weeks[span - week] = Comment.select(:timestamp)
         .where(timestamp: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
-        .count
+        .size
     end
     weeks
   end
@@ -206,7 +206,7 @@ class Comment < ApplicationRecord
   end
 
   def liked_by(user_id)
-    likes.where(user_id: user_id).count > 0
+    likes.where(user_id: user_id).present?
   end
 
   def likers
@@ -214,7 +214,7 @@ class Comment < ApplicationRecord
   end
 
   def emoji_likes
-    likes.group(:emoji_type).count
+    likes.group(:emoji_type).size
   end
 
   def user_reactions_map
@@ -227,7 +227,7 @@ class Comment < ApplicationRecord
       end
 
       emoji_type = reaction.underscore.humanize.downcase
-      users_string = (users.length > 1 ? users[0..-2].join(", ") + " and " + users[-1] : users[0]) + " reacted with " + emoji_type + " emoji"
+      users_string = (users.size > 1 ? users[0..-2].join(", ") + " and " + users[-1] : users[0]) + " reacted with " + emoji_type + " emoji"
       user_like_map[reaction] = users_string
     end
     user_like_map
@@ -442,7 +442,7 @@ class Comment < ApplicationRecord
       next unless url.include? "https://"
 
       if url.last == "."
-        url = url[0...url.length - 1]
+        url = url[0...url.size - 1]
       end
       response = Net::HTTP.get_response(URI(url))
       redirected_url = response['location']
