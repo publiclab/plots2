@@ -70,15 +70,15 @@
                                     <%= params[:id] %>
                                 </span>
                                 <a rel="tooltip" title="Show related topics" onclick="$('.related-tags').show();$(this).hide();"><i class="fa fa-plus-circle" style="vertical-align: middle;color:#ccc;"></i></a>
-                                <span class="related-tags" style="display:none;">
-                                    <% unless @related_tags.nil? %>
-                                        <% @related_tags.each do |tag| %>
-                                            <a href="/tag/<%= tag.name %>" class="badge badge-secondary" style="background: #aaa;color: white;">
-                                                <%= tag.name %>
-                                            </a>
-                                        <% end %>
+                            </span>
+                            <span class="related-tags" style="display:none;">
+                                <% unless @related_tags.nil? %>
+                                    <% @related_tags.each do |tag| %>
+                                        <a href="/tag/<%= tag.name %>" class="badge badge-secondary" style="background: #aaa;color: white;">
+                                            <%= tag.name %>
+                                        </a>
                                     <% end %>
-                                </span>
+                                <% end %>
                             </span>
                         </div>
                     </h1>
