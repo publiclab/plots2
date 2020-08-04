@@ -32,7 +32,7 @@
       </div>
 
       <div class="card-footer" style="background-color: inherit; border:none;">
-        <a style="padding-top:15px;text-decoration:underline;color:#808080;display:inline-block;" href="/tag/<%= tag.name %>"><%= Tag.count %> <%= translation('tag.index.posts') %> &raquo;</a>
+        <a style="padding-top:15px;text-decoration:underline;color:#808080;display:inline-block;" href="/tag/<%= tag.name %>"><%= tag.count %> <%= translation('tag.index.posts') %> &raquo;</a>
         <div id="follow-unfollow-column-<%=tag.tid%>" style="float:right;margin:10px 0 10px 10px;">
           <% if current_user %>
             <% if !current_user.following(tag.name) %>
