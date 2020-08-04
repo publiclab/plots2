@@ -118,6 +118,7 @@ class TagController < ApplicationController
     end
 
     nodes = nodes.paginate(page: params[:page], per_page: 24).order(order_by)
+    @paginated = true
 
     if @start && @end
       nodes = nodes.where(created: @start.to_i..@end.to_i)
