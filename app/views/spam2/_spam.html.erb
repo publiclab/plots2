@@ -50,7 +50,7 @@
   <a class="btn btn-light border border-curve text-secondary mr-auto font-weight-bold" id="info-btn" data-toggle="collapse" href="#info-div" role="button" aria-expanded="false" aria-controls="info-div">
     Info <i class="fa fa-caret-down text-secondary"></i>
   </a>
-  <% if params[:action] != "_spam_revisions" && params[:action] != "_spam_comments" && params[:action] != "_spam_flags" && params[:action] != "_spam_users"%>
+  <% if params[:action] != "_spam_revisions" && params[:action] != "_spam_comments" && params[:action] != "_spam_users"%>
     <div class=" d-inline-flex"><i class="fa fa-sticky-note text-info mt-3 ml-5" data-toggle="tooltip" data-placement="left" title="Unmoderated Nodes"></i><a href="/spam2/filter/unmoderated/30"  class="badge badge-pill badge-light text-info mx-2 my-3"><%= @node_unmoderated_count %></a></div>
     <div class=" d-inline-flex"><i class="fa fa-flag text-warning mt-3" data-toggle="tooltip" data-placement="left" title="Flagged Nodes"></i><a href="/spam2/flags/filter/all/30" class="badge badge-pill badge-light text-warning mx-2 my-3" ><%= @node_flag_count %></a></div>
   <% end%>
