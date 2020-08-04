@@ -1,16 +1,6 @@
 <div class="btn-toolbar" style="margin-bottom:8px;">
 
-  <div class="btn-group mr-2 ">
-    <a data-toggle="tooltip" title="Bold" data-placement="bottom" class="btn btn-outline-secondary btn-sm " onClick="$E.bold()"><i class="fa fa-bold" ></i></a>
-    <a data-toggle="tooltip" title="Italic" data-placement="bottom" class="btn btn-outline-secondary btn-sm " onClick="$E.italic()"><i class="fa fa-italic" ></i></a>
-    <a data-toggle="tooltip" title="Header" data-placement="bottom" class="btn btn-outline-secondary btn-sm " onClick="$E.h2()"><b><span class="d-md-none d-lg-inline  ">Header</span><span class="d-none d-md-inline d-lg-none">H</span></b></a>
-  </div>
-
-  <div class="btn-group mr-2">
-    <a aria-label="Make a link" data-toggle="tooltip" title="Make a link" data-placement="bottom" class="btn btn-outline-secondary btn-sm" href="javascript:void(0)" onClick="$E.link()"><i class="fa fa-link"></i></a>
-  </div>
-
-  <div class="dropdown mr-2">
+<div class="dropdown mr-2">
     <div class="d-md-none d-lg-inline">
       <a class="btn btn-outline-secondary btn-sm dropdown-toggle" data-toggle="dropdown" href="#" >
         Templates
@@ -24,9 +14,61 @@
     </div>
   </div>
 
-  <div class="btn-group mr-2">
+  <div class="btn-group mr-2 ">
+    <a data-toggle="tooltip" title="Bold" data-placement="bottom" class="btn btn-outline-secondary btn-sm " onClick="$E.bold()"><i class="fa fa-bold" ></i></a>
+    <a data-toggle="tooltip" title="Italic" data-placement="bottom" class="btn btn-outline-secondary btn-sm " onClick="$E.italic()"><i class="fa fa-italic" ></i></a>
+    <a data-toggle="tooltip" title="Header" data-placement="bottom" class="btn btn-outline-secondary btn-sm " onClick="$E.h2()"><b><span class="d-md-none d-lg-inline"><i class="fa fa-header"></i></span></b></a>
+    <a aria-label="Make a link" data-toggle="tooltip" title="Make a link" data-placement="bottom" class="btn btn-outline-secondary btn-sm" href="javascript:void(0)" onClick="$E.link()"><i class="fa fa-link"></i></a>
+    <a aria-label="Upload Image" title="Image" data-placement="bottom" class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-target="#uploadModal"><i class="fa fa-image"></i></a>
     <a data-toggle="tooltip" title="Save" data-placement="bottom" onClick="$E.save()" class="btn btn-outline-secondary btn-sm"><i class="fa fa-save"></i></a>
     <a data-toggle="tooltip" title="Recover" data-placement="bottom" onClick="$E.recover()" class="btn btn-outline-secondary btn-sm">Recover</a>
+    <!-- Modal -->
+      <div id="uploadModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Insert Image</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+              <!-- Form -->
+              <form method="post" action="" enctype="multipart/form-data">
+                Enter the url to your image:<br> <input type="text" name="image-link" id="file-link" class="form-control" ><br>
+                <div id="imagebar">
+                  <div style="display:none;" id="create_progress" class="progress progress-striped active pull-right">
+                    <div id="create_progress-bar" class="progress-bar" style="width: 0%;"></div>
+                  </div>
+                  <p>
+
+                    <span id="create_uploading" class="uploading" style="display:none;">
+                      Uploading... (<a onClick="$E.cancel_upload()">cancel</a>)
+                    </span>
+
+                      <span id="create_prompt" class="prompt">
+                        <span style="padding-right:4px;float:left;" class="d-md-none d-lg-block">
+                          Drag and drop to add an image or file, or
+                        </span>
+
+                        <!-- http://stackoverflow.com/questions/11235206/twitter-bootstrap-form-file-element-upload-button -->
+                        <label class="" for="fileinput">
+                          <input id="fileinput" type="file" name="image[photo]" style="display:none;" />
+                          <a class="d-none d-md-inline">choose one</a>
+                          <span class="d-md-none">
+                            <i class="fa fa-upload"></i>
+                            <a>Upload image</a>
+                          </span>
+                        </label>
+                      </span>
+                  </p>
+                </div>                
+                <input type="button" class="btn btn-info" value="Ok" id="uploadButton" data-dismiss="modal">
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
   </div>
 
   <div class="btn-group">
@@ -34,3 +76,12 @@
   </div>
 
 </div>
+<script>
+  $("#uploadButton").click(function(event) {
+    var link =$("#file-link").val();
+    if(link.length > 0) {
+      document.getElementById('file-link').value = ''
+      $E.image(link);
+    }
+  });
+</script>
