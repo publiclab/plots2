@@ -26,7 +26,7 @@ class TagTest < ActiveSupport::TestCase
     assert_not_nil tag.count
     assert_equal 3, tag.count
 
-    tag = tags(:awesome)
+    tag = tags(:spam)
     assert_nil tag.count
     assert_not_nil tag.run_count
     assert_not_nil tag.count
