@@ -48,24 +48,23 @@ class Spam2Controller < ApplicationController
 
   def _spam_queue
     if logged_in_as(%w(moderator admin))
-      @tag_queue = TagSelection.where(following: true, user_id: current_user.id)
+      @tags_followed = TagSelection.where(following: true, user_id: current_user.id)
+      @tag_queue = case params[:tag]
+                   when 'everything'
+                     TagSelection.where(following: true, user_id: current_user.id)
+                   else
+                     tids = Tag.where(name: params[:tag]).collect(&:tid)
+                     TagSelection.where(following: true, tid: tids, user_id: current_user.id)
+                   end
       nodes = []
       @tag_queue.each do |tag_queue_name|
-        nodes += NodeTag.where(tid: tag_queue_name.tid).collect(&:nid)
+          nodes += NodeTag.where(tid: tag_queue_name.tid).collect(&:nid)
       end
-      @queue = Node.where(nid: nodes, type: %w(note page))
-                   .paginate(page: params[:page], per_page: params[:pagination])
-                   .order('changed DESC').distinct
-      @queue = case params[:type]
-               when 'unmoderated'
-                 @queue.where(status: 4).order('created DESC')
-               when 'spammed'
-                 @queue.where(status: 0).order('created DESC')
-               when 'flagged'
-                 @queue.where('flag > ?', 0).order('flag DESC')
-               else
-                 @queue.where(status: [0, 4]).order('changed DESC')
-               end
+      @queue = Node.where(status: [0, 4]).or(Node.where('flag > ?', 0))
+                    .where(nid: nodes, type: %w(note page))
+                    .paginate(page: params[:page], per_page: 30)
+                    .order('changed DESC')
+                    .distinct
       render template: 'spam2/_spam'
     else
       flash[:error] = 'Only moderators can moderate posts.'

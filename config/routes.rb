@@ -297,7 +297,7 @@ Plots2::Application.routes.draw do
   get 'spam2/comments/filter/:type/:pagination' => 'spam2#_spam_comments'
   get 'spam2/users/filter/:type/:pagination' => 'spam2#_spam_users'
   get 'spam2/flags/filter/:type/:pagination' => 'spam2#_spam_flags'
-  get 'spam2/queue/filter/:type/:pagination' => 'spam2#_spam_queue'
+  get 'spam2/queue/filter/:tag' => 'spam2#_spam_queue'
   get 'spam2/filter/:type/:pagination' => 'spam2#_spam'
   get 'spam2/batch_spam/:ids' => 'batch#batch_spam'
   get 'spam2/batch_publish/:ids' => 'batch#batch_publish'
