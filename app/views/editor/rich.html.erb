@@ -18,6 +18,11 @@
 <%= javascript_include_tag('/lib/leaflet-spin/example/spin/dist/spin.min.js') %>
 <%= javascript_include_tag('/lib/leaflet-spin/example/leaflet.spin.min.js') %>
 
+<link
+      href="/lib/at.js/dist/css/jquery.atwho.min.css"
+      rel="stylesheet"/>
+    <script src="/lib/at.js/dist/js/jquery.atwho.min.js"></script>
+
 <style type="text/css">
   /* Fix a background-color error on this page. */
   body {
@@ -283,6 +288,9 @@
         <a href="https://publiclab.org/post?n=23853" class="bug-btn" target="_blank">Found an issue with the editor? Report a bug.</a>
   </div>
 
+  <script src="/emoji.js" type="text/javascript"></script>
+  <script src="/assets/atwho_autocomplete.js" type="text/javascript"></script>
+
   <div class="ple-footer">
 
     <div class="ple-menu-more" style="display:none;">
@@ -378,7 +386,7 @@
         token: $('meta[name="csrf-token"]').attr('content')
       },
       richTextModule: {
-        authorsAutocomplete: false,
+        authorsAutocomplete: true,
         tagsAutocomplete: false,
         formats: ['jpg', 'jpeg', 'png', 'gif'],
         attachmentFormats: ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt', 'docx', 'bmp', 'obj', 'json']
