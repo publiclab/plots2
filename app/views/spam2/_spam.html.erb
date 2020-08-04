@@ -58,7 +58,7 @@
   <a class="btn btn-light border border-curve text-secondary mr-auto font-weight-bold" id="info-btn" data-toggle="collapse" href="#info-div" role="button" aria-expanded="false" aria-controls="info-div">
     Info <i class="fa fa-caret-down text-secondary"></i>
   </a>
-  <% if params[:action] != "_spam_revisions" && params[:action] != "_spam_comments" && params[:action] != "_spam_users"%>
+  <% if params[:action] != "_spam_revisions" && params[:action] != "_spam_comments" && params[:action] != "_spam_flags" && params[:action] != "_spam_users"%>
     <div class=" d-inline-flex"><a href="/spam2/filter/unmoderated/30"  class="badge badge-pill badge-light text-secondary mx-2 my-3"><%= Node.where(status: 4).length %> Unmoderated</a></div>
     <div class=" d-inline-flex"><a href="/spam2/flags/filter/all/30" class="badge badge-pill badge-light text-secondary mx-2 my-3" ><%= Node.where('flag > ?', 0).length %> Flagged</a></div>
   <% end%>
