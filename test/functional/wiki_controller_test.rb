@@ -144,11 +144,12 @@ class WikiControllerTest < ActionController::TestCase
     
     get :edit,
         params: {
-        id: 'wiki_page'
+        id: 'chicago'
         }
 
     assert_equal flash[:notice], "Please post a question or other content before editing the wiki. Click <a href='https://publiclab.org/notes/tester/04-23-2016/new-moderation-system-for-first-time-posters'>here</a> to learn why."
-    assert_redirected_to nodes(:wiki_page).path
+    assert_redirected_to nodes(:place).path
+
   end
   
   test 'updating wiki' do
