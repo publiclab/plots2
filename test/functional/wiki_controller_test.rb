@@ -150,6 +150,8 @@ class WikiControllerTest < ActionController::TestCase
     assert_equal flash[:notice], "Please post a question or other content before editing the wiki. Click <a href='https://publiclab.org/notes/tester/04-23-2016/new-moderation-system-for-first-time-posters'>here</a> to learn why."
     assert_redirected_to nodes(:place).path
 
+    UserSession.find.destroy
+    UserSession.create(users(:bob))
   end
   
   test 'updating wiki' do
