@@ -19,6 +19,20 @@ class TagTest < ActiveSupport::TestCase
     assert_not_nil tag.nodes
   end
 
+  test 'tag counting' do
+    tag = tags(:awesome)
+    assert_nil tag.count
+    assert_not_nil tag.run_count
+    assert_not_nil tag.count
+    assert_equal 3, tag.count
+
+    tag = tags(:spam)
+    assert_nil tag.count
+    assert_not_nil tag.run_count
+    assert_not_nil tag.count
+    assert_equal 0, tag.count # even if used, it should not count spam tags
+  end
+
   test 'tag followers' do
     followers = Tag.followers(node_tags(:awesome).name)
     assert !followers.empty?
