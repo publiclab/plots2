@@ -143,7 +143,7 @@ $(document).ready(function () {
                   </div>
                   <div class="modal-body">
                     <% node.tags.limit(4).each do |tag| %>
-                      <span ><a class="badge badge-primary" href="/questions/tag/<%= tag.name %>"> <%= tag.name %> </a></span>
+                      <%= link_to tag.name,"/questions/tag/#{tag.name}",class: 'badge badge-primary' %>
                     <% end %>
                     <br>
                     <%= node.body %>
