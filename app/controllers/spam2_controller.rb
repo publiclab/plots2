@@ -58,7 +58,7 @@ class Spam2Controller < ApplicationController
                    end
       nodes = []
       @tag_queue.each do |tag_queue_name|
-          nodes += NodeTag.where(tid: tag_queue_name.tid).collect(&:nid)
+        nodes += NodeTag.where(tid: tag_queue_name.tid).collect(&:nid)
       end
       @queue = Node.where(status: [0, 4]).or(Node.where('flag > ?', 0))
                     .where(nid: nodes, type: %w(note page))
