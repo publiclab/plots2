@@ -6,7 +6,7 @@ development:
   database: plots
   strict: false
   set_session:
-    sql_mode: TRADITIONAL
+    sql_mode: NO_AUTO_CREATE_USER,STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION
 
 production:
   adapter: sqlite3
