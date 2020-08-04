@@ -37,7 +37,7 @@ class Tag < ApplicationRecord
   end
 
   def run_count
-    self.count = NodeTag.where(tid: tid).count
+    self.count = NodeTag.joins(:node).where(tid: tid).where('node.status = 1').count
     save
   end
 
