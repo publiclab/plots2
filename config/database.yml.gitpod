@@ -5,6 +5,8 @@ development:
   encoding: utf8
   database: plots
   strict: false
+  set_session:
+    sql_mode: TRADITIONAL
 
 production:
   adapter: sqlite3
