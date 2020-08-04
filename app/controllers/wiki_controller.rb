@@ -102,8 +102,7 @@ class WikiController < ApplicationController
     if @node.has_tag('locked') && !current_user.can_moderate?
       flash[:warning] = "This page is <a href='/wiki/power-tags#Locking'>locked</a>, and only <a href='/wiki/moderators'>moderators</a> can edit it."
       redirect_to @node.path
-    end
-    if current_user &.first_time_poster
+    elsif current_user &.first_time_poster
       flash[:notice] = "Please post a question or other content before editing the wiki. Click <a href='https://publiclab.org/notes/tester/04-23-2016/new-moderation-system-for-first-time-posters'>here</a> to learn why."
       redirect_to Node.find_wiki(params[:id]).path
       return
