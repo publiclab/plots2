@@ -132,10 +132,11 @@ class WikiControllerTest < ActionController::TestCase
         id: 'organizers'
         }
 
+    assert_not users(:bob).first_time_poster
+    assert_response :success
     assert_template 'wiki/edit'
     assert_not_nil assigns(:title)
     assert_not_nil assigns(:node)
-    assert_response :success
   end
 
   test 'disallow viewing edit wiki page for first-timers' do
