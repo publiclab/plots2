@@ -37,7 +37,7 @@ class Tag < ApplicationRecord
   end
 
   def run_count
-    self.count = NodeTag.where(tid: tid).count
+    self.count = NodeTag.joins(:node).where(tid: tid).where('node.status = 1').count
     save
   end
 
@@ -113,14 +113,6 @@ class Tag < ApplicationRecord
         .where(status: 1)
         .limit(limit)
         .order(order)
-  end
-
-  def self.counter(tagname)
-    Node.where(type: %w(note page))
-        .where('term_data.name = ?', tagname)
-        .includes(:node_tag, :tag)
-        .references(:term_data)
-        .count
   end
 
   # just like find_nodes_by_type, but searches wiki pages, places, and tools
