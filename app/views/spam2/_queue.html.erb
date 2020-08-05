@@ -1,6 +1,6 @@
 <script>
 $(document).ready(function () {
-	var table = table_main("#node_table");
+	var table = table_main("#queue_table");
 	$("#all").click(function () { //select all button
 		$('.selectedId').prop('checked', !$('.selectedId').prop('checked'));
 		var check = ($('.selectedId').filter(":checked").length == $('.selectedId').length);
@@ -8,11 +8,9 @@ $(document).ready(function () {
 		$('#selectall').prop("checked", check);
 		disable_buttons('#selectall');
   });
-  var pageselect = localStorage.getItem('page-select') || '30';
-  $("#pageselect").val(pageselect);
 	$("#batch-spam").bind('click', function (e) { //batch spam
 		batch_nav("batch_spam");
-	});
+  });
 	$("#batch-publish").bind('click', function (e) { //batch publish
 		batch_nav("batch_publish");
 	});
@@ -25,23 +23,15 @@ $(document).ready(function () {
 	$("#delete-batch").bind('click', function (e) { // batch delete
 		batch_nav("batch_delete");
 	});
-	$('#pageselect').change(function () {
-		pagination("#pageselect", "/spam2/filter/");
-	});
-	$('#spammed').on('click', function () { //spam filter
-		search_table("spammed", "/spam2/filter/");
-	});
-	$('#unmoderated').on('click', function () { // unmoderated filter
-		search_table("unmoderated", "/spam2/filter/");
-	});
-	$('#reset_all').on('click', function () { // reset all filter
-		search_table("all", "/spam2/filter/");
-  });
-  $('#created').on('click', function () { // Created_at filter
-		search_table("created", "/spam2/filter/");
-	});
 });
 </script>
+
+<div class="py-3 pl-3 w-100">
+  <% if @tags_followed.length == 20 %> <a class="fa fa-plus-circle text-info" href="/subscriptions"> </a> <% end %>
+  <% @tags_followed.limit(20).each do |tag| %>
+    <a class="btn btn-xs btn-<% if params[:tag] ==  tag.tagname %>info<%else%>light border<%end%> border-curve" href="/spam2/queue/filter/<%= tag.tagname %>"><%= tag.tagname %> <span class="badge badge-pill badge-<% if params[:tag] ==  tag.tagname %>light<%else%>info<%end%>" data-toggle="tooltip" data-placement="top" title="Filter Nodes by Tag"><%= Tag.followers(tag.tagname).where('rusers.role = ?', 'moderator').or(Tag.followers(tag.tagname).where('rusers.role = ?', 'admin')).size %></span></a> 
+  <% end %>
+  </div>
 <div class="card" id="table-card">
   <div class="bg-light navbar navbar-expand">
     <ul class="nav navbar-expand navbar-nav-scroll">
@@ -49,60 +39,46 @@ $(document).ready(function () {
         <a class="btn nav-link text-secondary" data-toggle="tooltip" data-placement="top" title="Selected per page"> Selected <span id="select-count" class="badge badge-dark">0</span></a>
       </li>
       <li class="nav-item">
-        <a id="reset_all" class="btn nav-link  <% if params[:type] == "all" %> active<% else %> text-secondary<% end %>"><i class="fa fa-arrow-circle-o-up <% if params[:type] == "all" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Latest updated Nodes"></i> New Activity </a>
+        <a href="/spam2/queue/filter/everything" class="btn nav-link  <% if params[:tag] == "everything" %> active<% else %> text-secondary<% end %>"><i class="fa fa-arrow-circle-o-up <% if params[:type] == "everything" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="All Nodes which you are following"></i> All Tags</a>
       </li>
-      <% if params[:type] != "wiki" %>
-      <li class="nav-item">
-        <a id="created" class="btn nav-link  <% if params[:type] == "created" %> active <% else %> text-secondary <% end %>"><i class="fa fa-list-ol <% if params[:type] == "created" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Order as per their creation time "></i> Recent </a>
-      </li>
-      <li class="nav-item">
-        <a id="spammed" class="btn nav-link  <% if params[:type] == "spammed" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-ban <% if params[:type] == "spammed" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all Spammed Nodes "></i> Spammed <span class="badge badge-dark"><%= Node.where(status: 0).length %></span></a> 
-      </li>
-      <li class="nav-item">
-        <a id="unmoderated" class="btn nav-link  <% if params[:type] == "unmoderated" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-check-square-o <% if params[:type] == "unmoderated" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all unmoderated Nodes"></i> Unmoderated</a>
-      </li>
-      <% end %>
     </ul>
   </div>
   <div class="card-body" style="overflow-x:hidden;">
-    <% unless @nodes.empty? %>
-    <div class="my-0 text-secondary small "><%= page_entries_info(@nodes) %>s</div>
+    <% unless @queue.empty? %>
+    <div class="my-0 text-secondary small "><%= page_entries_info(@queue) %>s</div>
     <% end %>
-    <table  id="node_table" class="nowrap table table-hover" style="width:100%; text-align:left">
+    <table  id="queue_table" class="nowrap table table-hover" style="width:100%; text-align:left">
       <thead style="text-align:left;">
         <tr>
           <th><input type="checkbox"  id="selectall"/></th>
           <th>Title</th>
           <th>Author</th>
-          <th>Status</th>
-          <th><% if params[:type] == "created"%>Created at <% else %> Updated at <% end %></th>
+          <th>Updated at</th>
           <th>Action</th>                                
         </tr>       
       </thead>
       <tbody> 
-        <% @nodes.each do |node| %>
+        <% @queue.each do |node| %>
           <tr id="n<%= node.id %>">
             <td><input  class="selectedId" value="<%= node.nid %>" type="checkbox" /></td>
             <td>
-              <i class="fa fa-file text-secondary"></i> 
-              <a href="javascript:void(0);" class="text-dark font-weight-bold" id="node-hover" data-toggle="modal" data-target="#ninfo<%= node.id %>"><%= node.title.truncate(15) %></a><br />
-               <span class="text-secondary small"><%= node.type.capitalize %> | <% if params[:type] == "created"%><%= time_ago_in_words(node.updated_at) %><% else %><%= time_ago_in_words(node.created_at) %><% end %> ago</span>
+              <% if node.status == 1 %><i class="fa fa-check text-success"></i> <% elsif node.status == 0 %><i class="fa fa-ban text-danger"></i> <% elsif node.status == 4 %><i class="fa fa-circle text-priamry"></i> <% end %> <% if params[:type] == 'flagged'%> <i class="fa fa-flag text-warning"><% end %>
+              <a href="javascript:void(0);" class="text-dark font-weight-bold" id="node-hover" data-toggle="modal" data-target="#ninfo<%= node.id %>"><%= node.title.truncate(25) %></a><br />
+               <span class="text-secondary small"><%= node.type.capitalize %> | <%= time_ago_in_words(node.created_at) %> ago</span>
             </td>
             <td>  
               <a href="/profile/<%= node.author&.name %>" class="text-info"><%= node.author&.name.truncate(15) %> <%= node.author&.new_contributor%></a><br>
                <span class="text-secondary small"><%= Node.where(uid: node.author&.id).count %> Nodes<span>
              </td>
-            <td>
-              <% if node.status == 1 %><span class="badge badge-pill badge-success"><i class="fa fa-check-circle text-white"></i> Published</span><% elsif node.status == 0 %><span class="badge badge-pill badge-danger"><i class="fa fa-ban text-white"></i> Spammed</span><% elsif node.status == 4 %><span class="badge badge-pill badge-primary"><i class="fa fa-circle text-white"></i> Unmoderated</span><% end %>
-            </td>
              <td>
-               <span class="text-dark"><% if params[:type] == "created" %><%= time_ago_in_words(node.created_at) %> <% else %><%= time_ago_in_words(node.updated_at) %> <% end %> ago</span>
+               <span class="text-dark"><%= time_ago_in_words(node.updated_at) %> ago</span>
             </td>
              <td>
                <a class="btn btn-xs font-weight-bold btn<% if node.status != 1 %>-success<% else %>-secondary disabled<% end %> publish" data-remote="true" href="/moderate/publish/<%= node.id %>" ><i class="fa fa-check-circle fa-white"></i> Publish post</a>
                <a class="btn btn-xs font-weight-bold btn<% if node.status != 0 %>-danger<% else %>-secondary disabled<% end %> spam" data-remote="true" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban fa-white"></i> Spam post</a> 
                <a class="btn btn-xs font-weight-bold btn-secondary ban a<%= node.author.id %>" <% if node.author.status == 0 %>style="display:none;"<% end %> data-remote="true" href="/ban/<%= node.author.id %>">Ban user</a>
                <a class="btn btn-xs font-weight-bold btn-secondary unban a-unban<%= node.author.id %>" <% if node.author.status == 1 %>style="display:none;"<% end %> data-remote="true" href="/unban/<%= node.author.id %>">Unban user</a>
+               <a class="btn btn-xs font-weight-bold btn-warning unflag <% if node.flag == 0 %>disabled <% end %>" data-remote="true"href="/moderate/remove_flag_node/<%= node.id %>"> Unflag</a>
                <%= link_to "/notes/delete/#{node.id}", data: { confirm: "Are you sure you want to delete #{node.path}?" }, :remote => true, :class => "btn border-curve btn-sm font-weight-bold btn-light delete" do %>
                 <i class="fa fa-trash text-dark"></i>
                <% end %>
@@ -130,6 +106,11 @@ $(document).ready(function () {
                   $('.a-unban<%= node.author.id %>').hide()
                   $('.a<%= node.author.id %>').show()
                 });
+                $('#n<%= node.id %> .unflag').bind('ajax:success', function(e){
+                  $('#n<%= node.id %>').hide()
+                  $('#nunflag').fadeIn(); // unflag!
+                  $('#nunflag').fadeOut(3000);
+                });  
                 </script>
               </td>
             </tr>
@@ -143,6 +124,10 @@ $(document).ready(function () {
                     </button>
                   </div>
                   <div class="modal-body">
+                    <% node.tags.limit(4).each do |tag| %>
+                      <span ><a class="badge badge-primary" href="/questions/tag/<%= tag.name %>"> <%= tag.name %> </a></span>
+                    <% end %>
+                    <br>
                     <%= node.body %>
                   </div>
                   <div class="modal-footer">
@@ -159,9 +144,9 @@ $(document).ready(function () {
 </div>
 <div class="page-table">
   <div class="float-right">
-    <%= will_paginate @nodes, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || @nodes.empty? %>
+    <%= will_paginate @queue, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || @queue.empty? %>
   </div>
   <div class="float-left text-secondary">
-    <% unless @nodes.empty? %> Page number <%= @nodes.current_page %> of <%= @nodes.total_pages %> total Pages <% end %>
+    <% unless @queue.empty? %> Page number <%= @queue.current_page %> of <%= @queue.total_pages %> total Pages <% end %>
   </div>
 </div>

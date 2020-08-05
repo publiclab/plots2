@@ -50,7 +50,8 @@ function pagination(id, url) {
 function search_table(filter, url) {
 	localStorage.setItem('filter', filter);
 	localStorage.setItem('page-select', pageselect);
-	window.location = url + filter + "/" + $("#pageselect").val();
+	window.location = url + filter + "/30";
+	localStorage.setItem('page-select', "30");
 }
 
 function batch_nav(bulk) {
