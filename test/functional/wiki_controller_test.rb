@@ -127,17 +127,33 @@ class WikiControllerTest < ActionController::TestCase
   end
 
   test 'viewing edit wiki page' do
+    UserSession.find.destroy if UserSession.find
+    UserSession.create(users(:jeff)) # jeff user fixture is not a first-time-poster
+
     get :edit,
         params: {
         id: 'organizers'
         }
 
+    assert_not users(:jeff).first_time_poster
+    assert_response :success
     assert_template 'wiki/edit'
     assert_not_nil assigns(:title)
     assert_not_nil assigns(:node)
-    assert_response :success
   end
 
+  test 'disallow viewing edit wiki page for first-timers' do
+    # default bob user fixure is a first-time-poster
+    assert users(:bob).first_time_poster
+    get :edit,
+        params: {
+        id: 'chicago'
+        }
+
+    assert_equal flash[:notice], "Please post a question or other content before editing the wiki. Click <a href='https://publiclab.org/notes/tester/04-23-2016/new-moderation-system-for-first-time-posters'>here</a> to learn why."
+    assert_redirected_to nodes(:place).path
+  end
+  
   test 'updating wiki' do
     wiki = nodes(:organizers)
     newtitle = 'New Title'
