@@ -213,7 +213,7 @@ Plots2::Application.routes.draw do
   put 'tag/add_tag' => 'tag#add_tag'
   put 'tag/remove_tag/:id' => 'tag#remove_tag'
   put 'tag/remove_all_tags' => 'tag#remove_all_tags'
-  get 'tag/:id' => 'tag#show'
+  get 'tag/:id' => 'tag#show', :as => :tag
   get 'tag/:id/stats' => 'tag#stats', :as => :tag_stats
   get 'locations/form' => 'tag#location'
   get 'locations/modal' => 'tag#location_modal'

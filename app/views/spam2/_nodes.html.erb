@@ -142,10 +142,13 @@ $(document).ready(function () {
                     </button>
                   </div>
                   <div class="modal-body">
-                    <% node.tags.limit(4).each do |tag| %>
-                      <%= link_to tag.name,"/questions/tag/#{tag.name}",class: 'badge badge-primary' %>
+                    <% if node.tags.length>0 %>
+                      <div class="mb-2">
+                        <% node.tags.limit(4).each do |tag| %>
+                          <%= link_to tag.name, tag_path(tag.name), class: 'badge badge-primary' %>
+                        <% end %>
+                      </div>
                     <% end %>
-                    <br>
                     <%= node.body %>
                   </div>
                   <div class="modal-footer">
