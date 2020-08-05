@@ -31,24 +31,23 @@ $(document).ready(function () {
 	});
 });
 </script>
-
 <div class="card" id="table-card">
   <div class="bg-light  navbar navbar-expand">
     <ul class="nav navbar-expand  navbar-nav-scroll">
       <li class="nav-item">
-        <a class="btn nav-link text-secondary font-weight-bold" data-toggle="tooltip" data-placement="top" title="Selected per page">Selected <span id="select-count" class="badge badge-dark">0</span></a>
+        <a class="btn nav-link text-secondary " data-toggle="tooltip" data-placement="top" title="Selected per page">Selected <span id="select-count" class="badge badge-dark">0</span></a>
       </li>
       <li class="nav-item">
-        <a id="reset" class="btn nav-link font-weight-bold <% if params[:type] == "all" %> active<% else %> text-secondary<% end %>"><i class="fa fa-arrow-circle-o-up <% if params[:type] == "all" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="All active Users"></i> Active Users</a>
+        <a id="reset" class="btn nav-link <% if params[:type] == "all" %> active<% else %> text-secondary<% end %>"><i class="fa fa-arrow-circle-o-up <% if params[:type] == "all" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="All active Users"></i> Active Users <span class="badge badge-dark"><%= User.where('rusers.status = 1').length %></span></a>
       </li>
       <li class="nav-item">
-        <a id="banned" class="btn nav-link font-weight-bold<% if params[:type] == "banned" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-ban <% if params[:type] == "banned" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all Banned Users"></i> Banned </a>
+        <a id="banned" class="btn nav-link <% if params[:type] == "banned" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-ban <% if params[:type] == "banned" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all Banned Users"></i> Banned <span class="badge badge-dark"><%= User.where('rusers.status = 0').length %></span></a>
       </li>
       <li class="nav-item">
-        <a id="moderator" class="btn nav-link font-weight-bold<% if params[:type] == "moderator" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-certificate <% if params[:type] == "moderator" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="All Moderators"></i> Moderators </a>
+        <a id="moderator" class="btn nav-link <% if params[:type] == "moderator" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-certificate <% if params[:type] == "moderator" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="All Moderators"></i> Moderators <span class="badge badge-dark"><%= User.where('rusers.role = ?', 'moderator').length %></span></a>
       </li>
       <li class="nav-item">
-        <a id="admin" class="btn nav-link font-weight-bold<% if params[:type] == "admin" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-asterisk <% if params[:type] == "admin" %> text-primary<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="All Admin"></i> Admin </a>
+        <a id="admin" class="btn nav-link <% if params[:type] == "admin" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-asterisk <% if params[:type] == "admin" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="All Admin"></i> Admin <span class="badge badge-dark"><%= User.where('rusers.role = ?', 'admin').length %></span></a>
       </li>
     </ul>
   </div>

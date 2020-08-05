@@ -49,10 +49,6 @@
 	width: 100%;
 }
 
-#card-top {
-	margin-top: 2vh;
-}
-
 #bulk-nav {
 	margin-top: 2vh;
 	margin-bottom: 1vh;
@@ -68,6 +64,7 @@
 	 text-align: center;
 	 line-height: 1.6;
 }
+
 .border-curve {
 	border-radius: 40px;
 }
@@ -76,24 +73,14 @@
 	color: white !important;
 }
 
-#col-search {
-	cursor: text;
-	text-align: left !important;
-	margin-top: 2px;
-}
-
-#col-select {
-	margin-top: 2px;
-}
-
 .page-table {
 	width: 100%;
 	margin-top: 10px;
 }
 
 .card .navbar .nav .nav-item .active {
-	color: blue;
-	border-bottom: 2px blue solid;
+	color: #343a40;
+	border-bottom: 2px #343a40 solid;
 }
 
 .spam-alert {
@@ -106,17 +93,14 @@
 	#table-card,
 	#bulk-nav,
 	.nav_top,
-	.page-table,
-	#card-top {
+	.page-table
+	{
 		margin-left: 5vw;
 		width: 90vw;
 	}
 	.nav_title {
 		font-size: 18px;
 		margin-bottom: 10px;
-	}
-	#card-top .card-header {
-		font-size: 18px;
 	}
 	#info-btn {
 		margin-left: 5vw;
