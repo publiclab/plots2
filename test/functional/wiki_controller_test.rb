@@ -127,12 +127,15 @@ class WikiControllerTest < ActionController::TestCase
   end
 
   test 'viewing edit wiki page' do
+    UserSession.find.destroy if UserSession.find
+    UserSession.create(users(:jeff)) # jeff user fixture is not a first-time-poster
+
     get :edit,
         params: {
         id: 'organizers'
         }
 
-    assert_not users(:bob).first_time_poster
+    assert_not users(:jeff).first_time_poster
     assert_response :success
     assert_template 'wiki/edit'
     assert_not_nil assigns(:title)
@@ -140,6 +143,8 @@ class WikiControllerTest < ActionController::TestCase
   end
 
   test 'disallow viewing edit wiki page for first-timers' do
+    # default bob user fixure is a first-time-poster
+    assert users(:bob).first_time_poster
     get :edit,
         params: {
         id: 'chicago'
