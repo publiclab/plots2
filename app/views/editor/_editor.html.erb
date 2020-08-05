@@ -1,6 +1,6 @@
 <%= render :partial => "editor/toolbar" %>
 
-<div class="form-group">
+<div class="form-group dropzone">
   <textarea aria-label="Wiki Text" name="body" tabindex="2" class="form-control" id="text-input" rows="20" cols="60"><% if @node && @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
 </div>
 
