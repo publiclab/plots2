@@ -62,6 +62,24 @@ class CommentTest < ApplicationSystemTestCase
     find("p", text: "Awesome comment! :)")
   end
 
+  test "rply to comment manually" do
+    visit nodes(:one).path
+
+    find("p", text: "Reply to this comment...").click()
+
+    reply_element = page.all('p')[1]
+
+    fill_in(reply_element, with: "Awesome comment! :)")
+
+    assert_selector(reply_element.text, 'Awesome comment! :')
+
+    # publish comment
+    click_on "Publish"
+    find(".noty_body", text: "Comment Added!")
+    find("p", text: "Awesome comment! :)")
+
+  end
+
   test 'comment preview button' do
     visit "/wiki/wiki-page-path/comments"
 
