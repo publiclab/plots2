@@ -165,7 +165,7 @@ class WikiController < ApplicationController
         flash[:notice] = I18n.t('wiki_controller.wiki_page_created')
         params[:tags]&.tr(' ', ',')&.split(',')&.each do |tagname|
           @node.add_tag(tagname.strip, current_user)
-        
+        end
         if params[:main_image] && params[:main_image] != ''
           img = Image.find params[:main_image]
           img.nid = @node.id
