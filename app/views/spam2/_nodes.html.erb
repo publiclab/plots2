@@ -99,10 +99,10 @@ $(document).ready(function () {
                <span class="text-dark"><% if params[:type] == "created" %><%= time_ago_in_words(node.created_at) %> <% else %><%= time_ago_in_words(node.updated_at) %> <% end %> ago</span>
             </td>
              <td>
-               <a class="btn btn-xs font-weight-bold btn<% if node.status != 1 %>-success<% else %>-secondary disabled<% end %> publish" data-remote="true" href="/moderate/publish/<%= node.id %>" ><i class="fa fa-check-circle fa-white"></i> Publish post</a>
-               <a class="btn btn-xs font-weight-bold btn<% if node.status != 0 %>-danger<% else %>-secondary disabled<% end %> spam" data-remote="true" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban fa-white"></i> Spam post</a> 
-               <a class="btn btn-xs font-weight-bold btn-secondary ban a<%= node.author.id %>" <% if node.author.status == 0 %>style="display:none;"<% end %> data-remote="true" href="/ban/<%= node.author.id %>">Ban user</a>
-               <a class="btn btn-xs font-weight-bold btn-secondary unban a-unban<%= node.author.id %>" <% if node.author.status == 1 %>style="display:none;"<% end %> data-remote="true" href="/unban/<%= node.author.id %>">Unban user</a>
+               <a class="btn btn-sm font-weight-bold btn<% if node.status != 1 %>-success<% else %>-secondary disabled<% end %> publish" data-remote="true" href="/moderate/publish/<%= node.id %>" ><i class="fa fa-check-circle fa-white"></i> Publish post</a>
+               <a class="btn btn-sm font-weight-bold btn<% if node.status != 0 %>-danger<% else %>-secondary disabled<% end %> spam" data-remote="true" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban fa-white"></i> Spam post</a> 
+               <a class="btn btn-sm font-weight-bold btn-secondary ban a<%= node.author.id %>" <% if node.author.status == 0 %>style="display:none;"<% end %> data-remote="true" href="/ban/<%= node.author.id %>">Ban user</a>
+               <a class="btn btn-sm font-weight-bold btn-secondary unban a-unban<%= node.author.id %>" <% if node.author.status == 1 %>style="display:none;"<% end %> data-remote="true" href="/unban/<%= node.author.id %>">Unban user</a>
                <%= link_to "/notes/delete/#{node.id}", data: { confirm: "Are you sure you want to delete #{node.path}?" }, :remote => true, :class => "btn border-curve btn-sm font-weight-bold btn-light delete" do %>
                 <i class="fa fa-trash text-dark"></i>
                <% end %>
