@@ -129,7 +129,7 @@ class TagController < ApplicationController
       end
     end
 
-    @qids = Node.questions.where(status: 1)
+    @qids = Node.questions.where(status: 1).where('term_data.name LIKE ?', "question:#{params[:id]}")
                .collect(&:nid)
     if @qids.empty?
       @notes = nodes
