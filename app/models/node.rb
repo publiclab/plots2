@@ -124,7 +124,7 @@ class Node < ActiveRecord::Base
   end
 
   def has_a_tag(name)
-    return tags.where(name: name).count.positive?
+    return tags.where(name: name).size.positive?
   end
 
   before_save :set_changed_and_created
@@ -187,14 +187,14 @@ class Node < ActiveRecord::Base
                                .where(type:    type,
                                       status:  1,
                                       created: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
-                               .count
+                               .size
     end
     weeks
   end
 
   def self.contribution_graph_making(type = 'note', start = Time.now - 1.year, fin = Time.now)
     date_hash = {}
-    week = start.to_date.step(fin.to_date, 7).count
+    week = start.to_date.step(fin.to_date, 7).size
 
     while week >= 1
       month = (fin - (week * 7 - 1).days)
@@ -214,7 +214,7 @@ class Node < ActiveRecord::Base
     weeks = (ending.to_date - starting.to_date).to_i / 7.0
     Node.published.select(%i(created type))
       .where(type: type, created: starting.to_i..ending.to_i)
-      .count(:all) / weeks
+      .size(:all) / weeks
   end
 
   def notify
@@ -254,11 +254,11 @@ class Node < ActiveRecord::Base
   end
 
   def answered
-    answers&.length&.positive?
+    answers&.size&.positive?
   end
 
   def has_accepted_answers
-    answers.where(accepted: true).count.positive?
+    answers.where(accepted: true).size.positive?
   end
 
   # users who like this node
@@ -394,7 +394,7 @@ class Node < ActiveRecord::Base
         .includes(:revision, :tag)
         .references(:term_data)
         .where('term_data.name = ?', "#{key}:#{id}")
-        .count
+        .size
   end
 
   # power tags have "key:value" format, and should be searched with a "key:*" wildcard
@@ -1015,7 +1015,7 @@ class Node < ActiveRecord::Base
       errors ? I18n.t('node.only_RSVP_for_yourself') : false
     elsif tagname == 'locked' && user.role != 'admin'
       errors ? I18n.t('node.only_admins_can_lock') : false
-    elsif tagname.split(':')[0] == 'redirect' && Node.where(slug: tagname.split(':')[1]).length <= 0
+    elsif tagname.split(':')[0] == 'redirect' && Node.where(slug: tagname.split(':')[1]).size <= 0
       errors ? I18n.t('node.page_does_not_exist') : false
     elsif  tagname.split(':')[1] == "facebook"
       errors ? "This tag is used for associating a Facebook account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
@@ -1032,7 +1032,7 @@ class Node < ActiveRecord::Base
 
   def replace(before, after, user)
     matches = latest.body.scan(before)
-    if matches.length == 1
+    if matches.size == 1
       revision = new_revision(uid: user.id,
                               body: latest.body.gsub(before, after))
       revision.save
@@ -1046,7 +1046,7 @@ class Node < ActiveRecord::Base
   end
 
   def toggle_like(user)
-    nodes = NodeSelection.where(nid: id, liking: true).count
+    nodes = NodeSelection.where(nid: id, liking: true).size
     self.cached_likes = if is_liked_by(user)
                           nodes - 1
                         else
