@@ -101,9 +101,9 @@ $(document).ready(function () {
                <span class="text-dark"><%= time_ago_in_words(flag.updated_at) %> ago</span>
             </td>
              <td style="height:35px !important;">
-               <a class="btn btn-xs font-weight-bold btn<% if flag.status != 1 %>-success<% else %>-secondary disabled<% end %> publish" data-remote="true" href="/moderate/publish/<%= flag.id %>" ><i class="fa fa-check-circle fa-white"></i> Publish post</a>
-               <a class="btn btn-xs font-weight-bold btn<% if flag.status != 0 %>-danger<% else %>-secondary disabled<% end %> spam" data-remote="true" href="/moderate/spam/<%= flag.id %>"><i class="fa fa-ban fa-white"></i> Spam post</a> 
-               <a class="btn btn-xs font-weight-bold btn-warning unflag" data-remote="true"href="/moderate/remove_flag_node/<%= flag.id %>">Unflag</a>
+               <a class="btn btn-sm font-weight-bold btn<% if flag.status != 1 %>-success<% else %>-secondary disabled<% end %> publish" data-remote="true" href="/moderate/publish/<%= flag.id %>" ><i class="fa fa-check-circle fa-white"></i> Publish post</a>
+               <a class="btn btn-sm font-weight-bold btn<% if flag.status != 0 %>-danger<% else %>-secondary disabled<% end %> spam" data-remote="true" href="/moderate/spam/<%= flag.id %>"><i class="fa fa-ban fa-white"></i> Spam post</a> 
+               <a class="btn btn-sm font-weight-bold btn-warning unflag" data-remote="true"href="/moderate/remove_flag_node/<%= flag.id %>">Unflag</a>
                <%= link_to "/notes/delete/#{flag.id}", data: { confirm: "Are you sure you want to delete #{flag.path}?" }, :remote => true, :class => "btn border-curve btn-sm font-weight-bold btn-light delete" do %>
                 <i class="fa fa-trash text-dark"></i>
                <% end %>
