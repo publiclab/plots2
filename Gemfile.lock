@@ -421,7 +421,7 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     rb-readline (0.5.5)
-    rdiscount (2.2.0.1)
+    rdiscount (2.2.0.2)
     recaptcha (4.14.0)
       json
     redis (4.1.4)
@@ -656,7 +656,7 @@ DEPENDENCIES
   rails_autolink
   rake (~> 13.0.1)
   rb-readline
-  rdiscount (~> 2.2, >= 2.2.0.1)
+  rdiscount (~> 2.2)
   recaptcha
   responders (~> 3.0)
   rest-client
