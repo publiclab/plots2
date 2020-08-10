@@ -10,6 +10,7 @@ tasks:
         mysql -e "CREATE DATABASE plots;" &&
         cp db/schema.rb.example db/schema.rb &&
         rake db:setup &&
+        mysql -e "SET @@global.sql_mode=(SELECT REPLACE(@@global.sql_mode, 'ONLY_FULL_GROUP_BY', ''));" && 
         yarn install
 
       command: >
