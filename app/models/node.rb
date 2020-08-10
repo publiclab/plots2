@@ -194,7 +194,7 @@ class Node < ActiveRecord::Base
 
   def self.contribution_graph_making(type = 'note', start = Time.now - 1.year, fin = Time.now)
     date_hash = {}
-    week = start.to_date.step(fin.to_date, 7).size
+    week = start.to_date.step(fin.to_date, 7).count
 
     while week >= 1
       month = (fin - (week * 7 - 1).days)
@@ -214,7 +214,7 @@ class Node < ActiveRecord::Base
     weeks = (ending.to_date - starting.to_date).to_i / 7.0
     Node.published.select(%i(created type))
       .where(type: type, created: starting.to_i..ending.to_i)
-      .size(:all) / weeks
+      .size / weeks
   end
 
   def notify
