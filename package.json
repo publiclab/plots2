@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "blob.js": "^1.0.1",
-    "blueimp-file-upload": "blueimp/jQuery-File-Upload#^10.30.1",
+    "blueimp-file-upload": "blueimp/jQuery-File-Upload#^10.31.0",
     "bootstrap": "4.1.0",
     "bootstrap-3-typeahead": "^4.0.2",
     "bootstrap-datepicker": "^1.6.0",
