@@ -12,7 +12,7 @@
 <div class="col-lg-3">
 
   <p><b><%=raw translation('home.subscriptions.title') %></b> <%=raw translation('home.subscriptions.up_to_date_emails') %></p>
-  
+
   <hr />
   <p>
     <a href="/subscriptions/digest" class="btn btn-outline-secondary"><i class="fa fa-list"></i> Subscriptions digest</a>
@@ -60,7 +60,7 @@
   <% else %>
     <table class="table">
     <tr><th><%=raw translation('home.subscriptions.tag') %></th><th><%=raw translation('home.subscriptions.options') %></th></tr>
-    <% current_user.subscriptions(:tag).each do |subscription| %>
+    <% current_user.subscriptions(:tag).includes(:tag).each do |subscription| %>
     <tr>
       <td><a href="/tag/<%= subscription.tagname %>"><%= subscription.tagname %></a> <i style="color:#aaa;"> +<%= Tag.follower_count(subscription.tagname).to_i-1 %> other people</i></td>
       <td><div class="btn-toolbar" style="margin:0;">
