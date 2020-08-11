@@ -361,13 +361,6 @@ aws4@^1.8.0:
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.9.1.tgz#7e33d8f7d449b3f673cd72deb9abdc552dbe528e"
   integrity sha512-wMHVg2EOHaMRxbzgFJ9gtjOOCrI80OHLG14rxi28XwOW8ux6IiEbRCGGGqCtdAIg4FQCbW20k9RsT4y3gJlFug==
 
-backbone@~1.3.3:
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/backbone/-/backbone-1.3.3.tgz#4cc80ea7cb1631ac474889ce40f2f8bc683b2999"
-  integrity sha1-TMgOp8sWMaxHSInOQPL4vGg7KZk=
-  dependencies:
-    underscore ">=1.8.3"
-
 balanced-match@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
@@ -454,18 +447,14 @@ blueimp-canvas-to-blob@3:
   resolved "https://registry.yarnpkg.com/blueimp-canvas-to-blob/-/blueimp-canvas-to-blob-3.17.0.tgz#d796e72aa1fd37f9471e0396e64d323956564a23"
   integrity sha512-LcuVZZtKtE4yUrLb0IQA7ndMm19gooDTrzvjjkvmQ1MhkFlSzTw+8Ftp+/ckfGeP2UDQvDsPyy8mIT69itAqbg==
 
-blueimp-canvas-to-blob@3.5.0:
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/blueimp-canvas-to-blob/-/blueimp-canvas-to-blob-3.5.0.tgz#5679ac32f6a2835821f0c3ad661719ff85a9236b"
-  integrity sha1-VnmsMvaig1gh8MOtZhcZ/4WpI2s=
-
-blueimp-file-upload@^9.34.0:
-  version "9.34.0"
-  resolved "https://codeload.github.com/blueimp/jQuery-File-Upload/tar.gz/bb52d3493d725175fcf5554da034a317aaaea0e2"
+blueimp-file-upload@^10.30.1:
+  version "10.31.0"
+  resolved "https://registry.yarnpkg.com/blueimp-file-upload/-/blueimp-file-upload-10.31.0.tgz#46fc4fea4e678b57afbd9008f179e59fc3aa3e84"
+  integrity sha512-dGAxOf9+SsMDvZPTsIUpe0cOk57taMJYE3FocHEUebhn5BnDbu1hcWOmrP8oswIe6V61Qcm9UDuhq/Pv1t/eRw==
   optionalDependencies:
-    blueimp-canvas-to-blob "3.5.0"
-    blueimp-load-image "2.12.2"
-    blueimp-tmpl "3.6.0"
+    blueimp-canvas-to-blob "3"
+    blueimp-load-image "5"
+    blueimp-tmpl "3"
 
 blueimp-file-upload@blueimp/jQuery-File-Upload#^10.30.1:
   version "10.30.1"
@@ -476,11 +465,6 @@ blueimp-file-upload@blueimp/jQuery-File-Upload#^10.30.1:
     blueimp-load-image "5"
     blueimp-tmpl "3"
 
-blueimp-load-image@2.12.2:
-  version "2.12.2"
-  resolved "https://registry.yarnpkg.com/blueimp-load-image/-/blueimp-load-image-2.12.2.tgz#6a17598aab858d4fbf01543e0631141b51057c87"
-  integrity sha1-ahdZiquFjU+/AVQ+BjEUG1EFfIc=
-
 blueimp-load-image@5:
   version "5.13.0"
   resolved "https://registry.yarnpkg.com/blueimp-load-image/-/blueimp-load-image-5.13.0.tgz#685d302a5adaf99d980fadf3d94f70a8e6ab7d30"
@@ -490,11 +474,6 @@ blueimp-tmpl@3:
   version "3.13.0"
   resolved "https://registry.yarnpkg.com/blueimp-tmpl/-/blueimp-tmpl-3.13.0.tgz#910c337d5742a8a17e3237139389853ebc9ced56"
   integrity sha512-TC5eLXhPGGgBJG1gGxKRORB5DMxSVSTS/GsqsQuJ+shv0Ez5wc9bjoXVhPqtdbzVZAzFvveasAMrjqEYY/18Og==
-
-blueimp-tmpl@3.6.0:
-  version "3.6.0"
-  resolved "https://registry.yarnpkg.com/blueimp-tmpl/-/blueimp-tmpl-3.6.0.tgz#a4910975d042e2bc03ba77f0e62d04f1548a524c"
-  integrity sha1-pJEJddBC4rwDunfw5i0E8VSKUkw=
 
 body-parser@1.19.0:
   version "1.19.0"
@@ -3972,15 +3951,10 @@ mocha@^6.1.4:
     yargs-parser "13.1.1"
     yargs-unparser "1.6.0"
 
-moment@^2.10.2, "moment@~> 2.27.0":
+moment@^2.10.2, moment@~2.27.0, "moment@~> 2.27.0":
   version "2.27.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.27.0.tgz#8bff4e3e26a236220dfe3e36de756b6ebaa0105d"
   integrity sha512-al0MUK7cpIcglMv3YF13qSgdAIqxHTO7brRtaz3DlSULbqfazqkc5kEjNrLDOM7fsjshoFIihnU8snrP7zUvhQ==
-
-moment@~2.24.0:
-  version "2.24.0"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
-  integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
 
 mout@~0.6.0:
   version "0.6.0"
@@ -4668,14 +4642,13 @@ psl@^1.1.24, psl@^1.1.28:
   resolved "https://registry.yarnpkg.com/psl/-/psl-1.7.0.tgz#f1c4c47a8ef97167dea5d6bbf4816d736e884a3c"
   integrity sha512-5NsSEDv8zY70ScRnOTn7bK7eanl2MvFrOrS/R6x+dBt5g1ghnj9Zv90kO8GwT8gxcu2ANyFprnFYB85IogIJOQ==
 
-publiclab-editor@^2.0.0, publiclab-editor@^2.0.6:
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/publiclab-editor/-/publiclab-editor-2.0.6.tgz#bdebfb817bfd73f771c682f95ae41e66fa2ffb94"
-  integrity sha512-PO0iuk3Sy155KmoUUY6y4czMe5l7hQoa4AdifAwz/CfEbuwXxnNi2K9XE7Z0p60A1yj2LSCy/lrQaZBbx2c6nw==
+publiclab-editor@^2.0.0, publiclab-editor@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/publiclab-editor/-/publiclab-editor-2.1.2.tgz#9f706cce208505259ee855cb6f0858e5be33001a"
+  integrity sha512-99CI0FHfFmTPLXW4jelu0jYWATiNe4NMB+x/Viy5lJgGvMA2n+qy8DtHIYUoW85TLmX5fusnEvZZHSc9nIGFtA==
   dependencies:
     at.js "^1.5.4"
-    backbone "~1.3.3"
-    blueimp-file-upload "^9.34.0"
+    blueimp-file-upload "^10.30.1"
     bootstrap "~3.4.0"
     bootstrap-datepicker "~1.9.0"
     bootstrap-tokenfield "~0.12.0"
@@ -4687,7 +4660,7 @@ publiclab-editor@^2.0.0, publiclab-editor@^2.0.6:
     leaflet "^1.6.0"
     leaflet-blurred-location "^1.5.1"
     megamark "3.3.0"
-    moment "~2.24.0"
+    moment "~2.27.0"
     resig-class "~1.0.0"
     typeahead.js-browserify "~1.0.7"
     woofmark "git://github.com/jywarren/woofmark.git#xhrOptionsAltBureaucracy"
@@ -5922,11 +5895,6 @@ underscore@1.4.4, underscore@1.4.x:
   version "1.4.4"
   resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.4.4.tgz#61a6a32010622afa07963bf325203cf12239d604"
   integrity sha1-YaajIBBiKvoHljvzJSA88SI51gQ=
-
-underscore@>=1.8.3:
-  version "1.9.2"
-  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.9.2.tgz#0c8d6f536d6f378a5af264a72f7bec50feb7cf2f"
-  integrity sha512-D39qtimx0c1fI3ya1Lnhk3E9nONswSKhnffBI0gME9C99fYOkNi04xs8K6pePLhvl1frbDemkaBQ5ikWllR2HQ==
 
 underscore@~1.7.0:
   version "1.7.0"
