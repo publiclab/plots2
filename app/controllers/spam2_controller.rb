@@ -104,6 +104,20 @@ class Spam2Controller < ApplicationController
     end
   end
 
+  def _spam_insights
+    if logged_in_as(%w(admin moderator))
+      @graph_spammed = Node.spam_graph_making(0)
+      @graph_unmoderated = Node.spam_graph_making(4)
+      @graph_flagged = Node.where('flag > ?', 0).spam_graph_making(1)
+      @moderator_tag = Tag.tag_frequency(30)
+      @popular_tags = Tag.tag_frequency(10)
+      render template: 'spam2/_spam'
+    else
+      flash[:error] = 'Only moderators and admins can moderate this.'
+      redirect_to '/dashboard'
+    end
+  end
+  
   def _spam_comments
     if logged_in_as(%w(moderator admin))
       @comments = Comment.paginate(page: params[:page], per_page: params[:pagination])

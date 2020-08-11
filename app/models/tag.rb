@@ -443,4 +443,11 @@ class Tag < ApplicationRecord
   def range(fin, week)
     (fin.to_i - week.weeks.to_i).to_s..(fin.to_i - (week - 1).weeks.to_i).to_s
   end
+
+  def self.tag_frequency(limit)
+    uids = User.where('rusers.role = ?', 'moderator').or(User.where('rusers.role = ?', 'admin')).collect(&:uid)
+    tids = TagSelection.where(following: true, user_id: uids).collect(&:tid)
+    hash = tids.uniq.map { |id| p (Tag.find id).name, tids.count(id) }.to_h
+    hash.sort_by { |_, v| v }.reverse.first(limit).to_h
+  end
 end
