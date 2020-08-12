@@ -49,10 +49,10 @@ gem 'rails-dom-testing'
 gem 'rails-i18n', '~> 5.1.3'
 gem 'rails_autolink'
 gem 'rb-readline'
-gem 'rdiscount', '~> 2.2', '>= 2.2.0.1'
+gem 'rdiscount', '~> 2.2'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'responders', '~> 3.0'
-gem 'rubocop', '~> 0.88.0', require: false
+gem 'rubocop', '~> 0.89.1', require: false
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
 gem 'sentry-raven'
