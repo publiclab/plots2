@@ -4,7 +4,7 @@
 <div class="dropdown-menu dropdown-menu-right float-right" style="margin-top:5px;" id="pt-list">
   <% if current_user %>
     <p class="dropdown-header"><b>Recently used tags</b></p>
-    <% NodeTag.where(uid: current_user.id).order('date DESC').limit(5).each do |tag| %>
+    <% NodeTag.includes(:tag).where(uid: current_user.id).order('date DESC').limit(5).each do |tag| %>
       <a class="dropdown-item" onClick="addTag('<%= tag.name %>')"><span style="cursor:pointer;" class="badge badge-primary"><%= tag.name %></span></a>
     <% end %>
   <% end %>
