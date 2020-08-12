@@ -48,7 +48,7 @@
         <% end %>
       </a>
       <% if logged_in_as(['admin', 'moderator']) || (current_user && current_user.uid == tag.uid) %>
-      <a aria-label="Delete tag" data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/profile/tags/delete/<%= user.id %>?name=<%= tag.name %>" data-method="delete"><i class='fa fa-times-circle fa-white blue pl-1' aria-hidden='true' ></i></a>     
+      <a aria-label="Delete tag" data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/profile/tags/delete/<%= user.id %>?name=<%= tag.name %>" data-method="delete"><i class='fa fa-times-circle fa-white blue pl-1' aria-hidden='true' ></i></a>
       <% end %>
     </span>
     </li>
