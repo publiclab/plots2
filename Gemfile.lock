@@ -82,7 +82,7 @@ GEM
       ci_reporter (~> 2.0)
       test-unit (>= 2.5.5, < 4.0)
     climate_control (0.2.0)
-    codecov (0.2.3)
+    codecov (0.2.5)
       colorize
       json
       simplecov
@@ -421,7 +421,7 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     rb-readline (0.5.5)
-    rdiscount (2.2.0.1)
+    rdiscount (2.2.0.2)
     recaptcha (4.14.0)
       json
     redis (4.1.4)
@@ -458,17 +458,17 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.9.0)
     rspec-support (3.9.0)
-    rubocop (0.88.0)
+    rubocop (0.89.1)
       parallel (~> 1.10)
       parser (>= 2.7.1.1)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.7)
       rexml
-      rubocop-ast (>= 0.1.0, < 1.0)
+      rubocop-ast (>= 0.3.0, < 1.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 2.0)
-    rubocop-ast (0.1.0)
-      parser (>= 2.7.0.1)
+    rubocop-ast (0.3.0)
+      parser (>= 2.7.1.4)
     ruby-openid (2.9.2)
     ruby-progressbar (1.10.1)
     ruby2_keywords (0.0.2)
@@ -656,13 +656,13 @@ DEPENDENCIES
   rails_autolink
   rake (~> 13.0.1)
   rb-readline
-  rdiscount (~> 2.2, >= 2.2.0.1)
+  rdiscount (~> 2.2)
   recaptcha
   responders (~> 3.0)
   rest-client
   reverse_markdown
   rspec
-  rubocop (~> 0.88.0)
+  rubocop (~> 0.89.1)
   ruby-openid
   sanitize
   sassc-rails

@@ -129,6 +129,10 @@ class AdminMailer < ActionMailer::Base
     end
     moderators = User.where(role: %w(moderator admin)).collect(&:email)
     @nodes = nodes
-    mail(to: moderators, subject: @subject)
+    mail(
+      to: "moderators@#{ActionMailer::Base.default_url_options[:host]}",
+      bcc: moderators,
+      subject: @subject
+    )
   end
 end

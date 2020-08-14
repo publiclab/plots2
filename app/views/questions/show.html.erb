@@ -55,7 +55,7 @@
   <% comments = @node.comments_viewable_by(current_user) %>
   <h3><span id="comment-count"><%= comments.length %></span> Comments</h3>
     <div id="comments-list">
-      <% comments.includes(:replied_comments).order("timestamp ASC").each do |comment| %>
+      <% comments.includes([:node, :replied_comments]).order("timestamp ASC").each do |comment| %>
         <% if comment.reply_to.nil? %>
           <%= render :partial => "notes/comment", :locals => {:comment => comment} %>
         <% end %>

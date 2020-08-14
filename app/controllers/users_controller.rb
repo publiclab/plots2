@@ -158,52 +158,11 @@ class UsersController < ApplicationController
         redirect_to "/"
       else
         @title = @profile_user.name
-        @notes = Node.research_notes
-                     .paginate(page: params[:page], per_page: 24)
-                     .order("nid DESC")
-                     .where(status: 1, uid: @profile_user.uid)
-
-        if current_user && current_user.uid == @profile_user.uid
-          coauthor_nids = Node.joins(:node_tag)
-            .joins('LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid')
-            .select('node.*, term_data.*, community_tags.*')
-            .where(type: 'note', status: 3)
-            .where('term_data.name = (?)', "with:#{@profile_user.username}")
-            .collect(&:nid)
-          @drafts = Node.where('(nid IN (?) OR (status = 3 AND uid = ?))', coauthor_nids, @profile_user.uid)
-            .paginate(page: params[:page], per_page: 24)
-        end
-        @coauthored = @profile_user.coauthored_notes
-          .paginate(page: params[:page], per_page: 24)
-          .order('node_revisions.timestamp DESC')
-        @questions = @profile_user.questions
-                          .order('node.nid DESC')
-                          .paginate(page: params[:page], per_page: 24)
-        @likes = (@profile_user.liked_notes.includes(%i(tag comments)) + @profile_user.liked_pages)
-                       .paginate(page: params[:page], per_page: 24)
-        questions = Node.questions
-                        .where(status: 1)
-                        .order('node.nid DESC')
-        ans_ques = questions.select { |q| q.comments.collect(&:uid).include?(@profile_user.id) }
-        @commented_questions = ans_ques.paginate(page: params[:page], per_page: 24)
         wikis = Revision.order("nid DESC")
                         .where('node.type' => 'page', 'node.status' => 1, uid: @profile_user.uid)
                         .joins(:node)
                         .limit(20)
         @wikis = wikis.collect(&:parent).uniq
-
-        comments = Comment.limit(20)
-                          .order("timestamp DESC")
-                          .where(uid: @profile_user.uid)
-                          .paginate(page: params[:page], per_page: 24)
-
-        @normal_comments = comments.where('comments.status = 1')
-        @comment_count = @normal_comments.count
-        if current_user &.can_moderate?
-          @all_comments = comments
-          @comment_count = @all_comments.count
-        end
-
         # User's social links
         @content_approved = !(Node.where(status: 1, uid: @profile_user.id).empty?) or !(Comment.where(status: 1, uid: @profile_user.id).empty?)
         @github = @profile_user.social_link("github")
