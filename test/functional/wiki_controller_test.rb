@@ -126,6 +126,20 @@ class WikiControllerTest < ActionController::TestCase
     assert_equal selector.size, 1
   end
 
+  test 'should be able to add tag' do
+    title = 'All about balloon mapping'
+
+    post :create,
+         params: {
+         uid:   users(:bob).id,
+         title: title,
+         body:  'This is fascinating documentation about balloon mapping.',
+         tags:  'balloon-mapping'
+         }
+
+         assert Node.last.has_tag('balloon-mapping')
+  end
+
   test 'viewing edit wiki page' do
     UserSession.find.destroy if UserSession.find
     UserSession.create(users(:jeff)) # jeff user fixture is not a first-time-poster
