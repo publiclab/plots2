@@ -66,7 +66,7 @@ GEM
     buftok (0.2.0)
     builder (3.2.4)
     byebug (11.1.3)
-    capybara (3.32.2)
+    capybara (3.33.0)
       addressable
       mini_mime (>= 0.1.3)
       nokogiri (~> 1.8)
@@ -82,7 +82,7 @@ GEM
       ci_reporter (~> 2.0)
       test-unit (>= 2.5.5, < 4.0)
     climate_control (0.2.0)
-    codecov (0.2.2)
+    codecov (0.2.5)
       colorize
       json
       simplecov
@@ -98,15 +98,16 @@ GEM
     commonjs (0.2.7)
     composite_primary_keys (11.2.0)
       activerecord (~> 5.2.1)
-    concurrent-ruby (1.1.6)
+    concurrent-ruby (1.1.7)
     connection_pool (2.2.3)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     crass (1.0.6)
-    declarative (0.0.10)
+    declarative (0.0.20)
     declarative-option (0.1.0)
     diff-lcs (1.3)
-    digest-crc (0.5.1)
+    digest-crc (0.6.1)
+      rake (~> 13.0)
     docile (1.3.2)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
@@ -145,7 +146,7 @@ GEM
       thor (>= 0.14.0, < 2)
     font-awesome-rails (4.7.0.5)
       railties (>= 3.2, < 6.1)
-    friendly_id (5.3.0)
+    friendly_id (5.4.0)
       activerecord (>= 4.0.0)
     gemoji (3.0.1)
     geocoder (1.6.3)
@@ -156,7 +157,7 @@ GEM
     georuby (2.0.0)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
-    google-api-client (0.41.0)
+    google-api-client (0.42.2)
       addressable (~> 2.5, >= 2.5.1)
       googleauth (~> 0.9)
       httpclient (>= 2.8.1, < 3.0)
@@ -167,10 +168,10 @@ GEM
     google-cloud-core (1.5.0)
       google-cloud-env (~> 1.0)
       google-cloud-errors (~> 1.0)
-    google-cloud-env (1.3.2)
+    google-cloud-env (1.3.3)
       faraday (>= 0.17.3, < 2.0)
     google-cloud-errors (1.0.1)
-    google-cloud-storage (1.26.2)
+    google-cloud-storage (1.27.0)
       addressable (~> 2.5)
       digest-crc (~> 0.4)
       google-api-client (~> 0.33)
@@ -223,7 +224,7 @@ GEM
     http_accept_language (2.1.1)
     http_parser.rb (0.6.0)
     httpclient (2.8.3)
-    i18n (1.8.3)
+    i18n (1.8.5)
       concurrent-ruby (~> 1.0)
     i18n-js (3.7.1)
       i18n (>= 0.6.6)
@@ -307,7 +308,7 @@ GEM
     netrc (0.11.0)
     nifty-generators (0.4.6)
     nio4r (2.5.2)
-    nokogiri (1.10.9)
+    nokogiri (1.10.10)
       mini_portile2 (~> 2.4.0)
     nokogumbo (2.0.2)
       nokogiri (~> 1.8, >= 1.8.4)
@@ -420,7 +421,7 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     rb-readline (0.5.5)
-    rdiscount (2.2.0.1)
+    rdiscount (2.2.0.2)
     recaptcha (4.14.0)
       json
     redis (4.1.4)
@@ -457,17 +458,17 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.9.0)
     rspec-support (3.9.0)
-    rubocop (0.88.0)
+    rubocop (0.89.1)
       parallel (~> 1.10)
       parser (>= 2.7.1.1)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.7)
       rexml
-      rubocop-ast (>= 0.1.0, < 1.0)
+      rubocop-ast (>= 0.3.0, < 1.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 2.0)
-    rubocop-ast (0.1.0)
-      parser (>= 2.7.0.1)
+    rubocop-ast (0.3.0)
+      parser (>= 2.7.1.4)
     ruby-openid (2.9.2)
     ruby-progressbar (1.10.1)
     ruby2_keywords (0.0.2)
@@ -655,13 +656,13 @@ DEPENDENCIES
   rails_autolink
   rake (~> 13.0.1)
   rb-readline
-  rdiscount (~> 2.2, >= 2.2.0.1)
+  rdiscount (~> 2.2)
   recaptcha
   responders (~> 3.0)
   rest-client
   reverse_markdown
   rspec
-  rubocop (~> 0.88.0)
+  rubocop (~> 0.89.1)
   ruby-openid
   sanitize
   sassc-rails

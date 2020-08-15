@@ -81,6 +81,7 @@ class HomeController < ApplicationController
     notes = notes.where('nid != (?)', blog.nid) if blog
 
     comments = Comment.joins(:node, :user)
+                   .includes(:node)
                    .order('timestamp DESC')
                    .where('timestamp - node.created > ?', 86_400) # don't report edits within 1 day of page creation
                    .where('node.status = ?', 1)
@@ -111,6 +112,7 @@ class HomeController < ApplicationController
       .order('nid DESC')
       .limit(10)
     revisions = Revision.joins(:node)
+      .includes(:node)
       .order('timestamp DESC')
       .where('type = (?)', 'page')
       .where('node.status = 1')
