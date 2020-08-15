@@ -59,8 +59,8 @@
     Info <i class="fa fa-caret-down text-secondary"></i>
   </a>
   <% if params[:action] != "_spam_revisions" && params[:action] != "_spam_comments" && params[:action] != "_spam_users"%>
-    <div class=" d-inline-flex"><i class="fa fa-sticky-note text-info mt-3 ml-5" data-toggle="tooltip" data-placement="left" title="Unmoderated Nodes"></i><a href="/spam2/filter/unmoderated/30"  class="badge badge-pill badge-light text-info mx-2 my-3"><%= @node_unmoderated_count %></a></div>
-    <div class=" d-inline-flex"><i class="fa fa-flag text-warning mt-3" data-toggle="tooltip" data-placement="left" title="Flagged Nodes"></i><a href="/spam2/flags/filter/all/30" class="badge badge-pill badge-light text-warning mx-2 my-3" ><%= @node_flag_count %></a></div>
+    <div class=" d-inline-flex"><a href="/spam2/filter/unmoderated/30"  class="badge badge-pill badge-light text-secondary mx-2 my-3"><%= Node.where(status: 4).length %> Unmoderated</a></div>
+    <div class=" d-inline-flex"><a href="/spam2/flags/filter/all/30" class="badge badge-pill badge-light text-secondary mx-2 my-3" ><%= Node.where('flag > ?', 0).length %> Flagged</a></div>
   <% end%>
   <% if params[:action] == "_spam_comments" %>
     <div class=" d-inline-flex"><a href="/spam2/comment/filter/unmoderated/30" class="badge badge-pill badge-light text-secondary mx-2 my-3"><%= Comment.where(status: 4).length %> Unmoderated</a></div>
