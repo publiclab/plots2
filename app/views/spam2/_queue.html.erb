@@ -33,7 +33,7 @@ $(document).ready(function () {
     <a class="fa fa-plus-circle text-info" href="/subscriptions"> </a> 
   <% end %>
   <% @tags_followed.limit(20).each do |tag| %>
-    <a class="btn btn-xs btn-<% if params[:tag] ==  tag.tagname %>info<%else%>light border<%end%> border-curve" href="/spam2/queue/filter/<%= tag.tagname %>"><%= tag.tagname %> <span class="badge badge-pill badge-<% if params[:tag] ==  tag.tagname %>light<%else%>info<%end%>" data-toggle="tooltip" data-placement="top" title="Filter Nodes by Tag"><%= Tag.followers(tag.tagname).where('rusers.role = ?', 'moderator').or(Tag.followers(tag.tagname).where('rusers.role = ?', 'admin')).size %></span></a> 
+    <a class="btn btn-xs my-1 btn-<% if params[:tag] ==  tag.tagname %>info<%else%>light border<%end%> border-curve" href="/spam2/queue/filter/<%= tag.tagname %>"><%= tag.tagname %> <span class="badge badge-pill badge-<% if params[:tag] ==  tag.tagname %>light<%else%>info<%end%>" data-toggle="tooltip" data-placement="top" title="Filter Nodes by Tag"><%= Tag.followers(tag.tagname).where('rusers.role = ?', 'moderator').or(Tag.followers(tag.tagname).where('rusers.role = ?', 'admin')).size %></span></a> 
   <% end %>
   </div>
 <div class="card" id="table-card">
