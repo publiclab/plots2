@@ -1128,10 +1128,10 @@ class Node < ActiveRecord::Base
       comments.where(status: 1)
     end
   end
-  
+
   def self.spam_graph_making(status)
     start = Time.now - 1.year
-     fin = Time.now
+    fin = Time.now
     time_hash = {}
     week = start.to_date.step(fin.to_date, 7).count
     while week >= 1
@@ -1142,7 +1142,7 @@ class Node < ActiveRecord::Base
       week -= 1
     end
     time_hash
-  end 
+  end
 
   def notify_callout_users
     # notify mentioned users
