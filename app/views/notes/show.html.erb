@@ -1,7 +1,7 @@
 <script src="/assets/notes.js" type="text/javascript"></script>
 
 <div class="col-lg-9 note-show<% if @node.status == 4 || @node.status == 0 %> moderated<% end %>">
-  <% if current_user && @node.tags.length == 0 %><div class="alert alert-warning"><%= raw translation('notes.show.note_no_tags', url: 'javascript: document.getElementById("tags-open").click();') %></div><% end %>
+  <% if current_user && @node.tags.size == 0 %><div class="alert alert-warning"><%= raw translation('notes.show.note_no_tags', url: 'javascript: document.getElementById("tags-open").click();') %></div><% end %>  
   <% if @node.has_power_tag('status:candidate') %><div class="alert alert-info">This was marked as a candidate activity -- <a href="https://publiclab.org/notes/warren/09-17-2016/what-makes-a-good-activity" >read about how to adapt its content</a> into a fully-fledged, step-by-step activity that can be easily replicated.</div><% end %>
   <% if @node.has_power_tag('replication') %><div class="alert alert-info"><%= raw translation('notes.show.replication') %> <a href="/n/<%= @node.power_tag('replication') %>"><%= raw translation('notes.show.replication_link') %></a>.</div><% end %>
   <% if @node.has_power_tag('series') %><div class="alert alert-info"><%= raw translation('notes.show.series') %> <a href="/tag/series:<%= @node.power_tag('series') %>"><%= @node.power_tag('series') %></a>.</div><% end %>
@@ -31,7 +31,7 @@
       <% if @node.has_power_tag('with') %>with <% @node.coauthors.each_with_index do |coauthor,i| %>
               <a href="/profile/<%= coauthor.username %>">
                 <%= coauthor.username%></a> <%= coauthor.new_contributor %>
-              <%= ',' if i < @node.coauthors.length-1 %><% end %><% end %>
+              <%= ',' if i < @node.coauthors.size-1 %><% end %><% end %>
               <% if current_user && current_user.id == @node.uid %><a aria-label="Add Coauthor" onClick="promptTag('with:')" href="#"><i style="color:#aaa;" class="fa fa-pencil"></i></a><% end %> |
 
       <span class="d-none d-lg-inline">
@@ -64,7 +64,7 @@
   <%= raw auto_link(insert_extras(@node.latest.render_body), :sanitize => false) %>
   </div>
 
-  <% if @node.files && @node.files.length > 0 %>
+  <% if @node.files && @node.files.size > 0 %>
     <table id="files" class="table">
       <tr>
         <%= raw translation('notes.show.file_table') %>
@@ -100,7 +100,7 @@
         <a class="label" onClick="cal.download()"><%= translation('notes.show.ical') %></a>
       </p><br />
       <p><% if !current_user %><%= raw translation('notes.show.login_to', :url1 => new_user_session_path( return_to: request.path )) %> <% end %><a class="btn-lg btn-primary" href="/rsvp/<%= @node.id %>">RSVP</a>
-        <% attendees = @node.power_tags('rsvp').length %>
+        <% attendees = @node.power_tags('rsvp').size %>
         <% if attendees > 1 %>
           <%= translation('notes.show.people_will_attend', :count => attendees).html_safe %>
         <% end %>
