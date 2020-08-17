@@ -160,39 +160,10 @@ version of the editor is released. */
   resize: vertical;
 }
 
-#imagebar {
-  color: #aaa;
-  border:1px solid #bbb;
-  border-top:none;
-  background:#f8f8f8;
-  -webkit-border-radius: 0 0 4px 4px;
-  -moz-border-radius:    0 0 4px 4px;
-  border-radius:         0 0 4px 4px;
-}
-
-@media (max-width: 768px) {
-  #imagebar {
-    width:100%;
-  }
-}
-
-#imagebar p {
-  border-top:2px dotted #ddd;
-  padding:8px 12px 0px;
-}
-
-#dropzone.hover #imagebar {
-  background:#eee;
-}
-
 #dropzone.hover textarea {
   background:#f8f8f8;
 }
 
-#imagebar .progress {
-  margin:10px;
-  width:30%;
-}
 
 #side-progress {
   margin:3px 10px 10px;
