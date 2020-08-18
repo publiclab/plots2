@@ -1,6 +1,7 @@
 class TagController < ApplicationController
   respond_to :html, :xml, :json, :ics
   before_action :require_user, only: %i(create delete add_parent)
+  include Pagy::Backend
 
   def index
     @toggle = params[:sort] || "uses"
@@ -117,7 +118,7 @@ class TagController < ApplicationController
       nodes = Node.for_tagname_and_type(params[:id], node_type, question: (@node_type == 'questions'))
     end
 
-    nodes = nodes.paginate(page: params[:page], per_page: 24).order(order_by)
+    @pagy, nodes = pagy(nodes.order(order_by), items: 24)
     @paginated = true
 
     if @start && @end
