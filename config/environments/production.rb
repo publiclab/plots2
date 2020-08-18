@@ -16,6 +16,8 @@ Plots2::Application.configure do
   # Compress JavaScripts and CSS
   config.assets.compress = true
   config.assets.js_compressor = Uglifier.new(harmony: true)
+  Uglifier.new(harmony: true).compile(File.read("public/lib/leaflet-environmental-layers/dist/LeafletEnvironmentalLayers.js"))
+  Uglifier.new(harmony: true).compile(File.read("public/lib/leaflet-environmental-layers/lib/glify.js"))
 
   # Don't fallback to assets pipeline if a precompiled asset is missed
   config.assets.compile = true
