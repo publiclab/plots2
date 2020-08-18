@@ -62,7 +62,7 @@
         <meta property="og:image" content="https://<%= request.host %><%= @node.main_image.path(:default) %>" />
         <meta name="twitter:image" content="https://<%= request.host %><%= @node.main_image.path(:default) %>">
         <% elsif scraped_image = @node.scraped_image %>
-        <meta property="og:image" content="https://<%= request.host %><%= @node.images[0] %>" />
+        <meta property="og:image" content="<%= scraped_image %>" />
         <meta name="twitter:image" content="https://<%= request.host %><%= @node.images[0] %>">
     <% end %>
       <p class="facebook-summary" style="display:none;">
