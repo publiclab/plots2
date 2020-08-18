@@ -20,8 +20,20 @@
     <script type="text/javascript" async
       src="https://cdn.jsdelivr.net/npm/mathjax@2.7.3/MathJax.js?config=TeX-MML-AM_CHTML">
     </script>
+
     <link rel="stylesheet preload prefetch" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" as="style" type="text/css" />
-    <%= stylesheet_link_tag "application", :media => "all" %>
+    <!-- Loading critical css and rest asynchronously #7996 -->
+    <%= javascript_include_tag "application" %>
+    <style>
+      <%= CriticalPathCss.fetch(request.path) %>
+    </style>
+    <script>
+        loadCSS("<%= stylesheet_path('application') %>");
+    </script>
+    <link rel="preload" href="<%= stylesheet_path('application') %>" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="<%= stylesheet_path('application') %>">
+    </noscript>
     <% if @node && @node.has_tag('style:fancy') %>
       <%= stylesheet_link_tag "fancy", :media => "all" %>
     <% end %>
@@ -32,7 +44,6 @@
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <%= javascript_include_tag "application" %>
     <%= csrf_meta_tags %>
     <meta name="google-translate-customization" content="4ce4c7c384354172-5179499fc244f592-g2b333d0d29f59663-d" />
 

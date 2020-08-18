@@ -70,7 +70,11 @@ gem 'lemmatizer', '~> 0.2.2'
 gem 'mailman', require: false
 # To implement fontawesome v4.7.0
 gem "font-awesome-rails"
- gem "lazyload-rails"
+gem "lazyload-rails"
+# To implement load critical css and rest asynchronously
+gem 'loadcss-rails', '~> 2.0.1'
+gem 'critical-path-css-rails', '~> 3.1.0'
+
 
 # To convert html to markdown
 gem 'reverse_markdown'
