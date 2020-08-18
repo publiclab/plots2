@@ -710,7 +710,7 @@ bullseye@1.4.6:
     seleccion "2.0.0"
     sell "^1.0.0"
 
-bureaucracy@1.0.7, "bureaucracy@git://github.com/jywarren/bureaucracy.git#xhrOptions":
+bureaucracy@1.0.7:
   version "1.0.7"
   resolved "git://github.com/jywarren/bureaucracy.git#f2522f42eba0f09444971e7138a56179cd8bffa9"
   dependencies:
@@ -4624,10 +4624,10 @@ psl@^1.1.24, psl@^1.1.28:
   resolved "https://registry.yarnpkg.com/psl/-/psl-1.7.0.tgz#f1c4c47a8ef97167dea5d6bbf4816d736e884a3c"
   integrity sha512-5NsSEDv8zY70ScRnOTn7bK7eanl2MvFrOrS/R6x+dBt5g1ghnj9Zv90kO8GwT8gxcu2ANyFprnFYB85IogIJOQ==
 
-publiclab-editor@^2.0.0, publiclab-editor@^2.1.2:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/publiclab-editor/-/publiclab-editor-2.1.2.tgz#9f706cce208505259ee855cb6f0858e5be33001a"
-  integrity sha512-99CI0FHfFmTPLXW4jelu0jYWATiNe4NMB+x/Viy5lJgGvMA2n+qy8DtHIYUoW85TLmX5fusnEvZZHSc9nIGFtA==
+publiclab-editor@^2.0.0, publiclab-editor@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/publiclab-editor/-/publiclab-editor-2.2.0.tgz#af2a1473290198d66b7a2fcdbd9c934519a68771"
+  integrity sha512-4cdoIQaKaC/ugMezod324i74cKeYokvoIlXwo3zbXKp4atUyfcCjntpKxlicV2mLqIrUQJOFpMVzZVXG6fF3gw==
   dependencies:
     at.js "^1.5.4"
     blueimp-file-upload "^10.30.1"
@@ -4645,7 +4645,7 @@ publiclab-editor@^2.0.0, publiclab-editor@^2.1.2:
     moment "~2.27.0"
     resig-class "~1.0.0"
     typeahead.js-browserify "~1.0.7"
-    woofmark "git://github.com/jywarren/woofmark.git#xhrOptionsAltBureaucracy"
+    woofmark "git://github.com/jywarren/woofmark.git#plots2"
     xhr "~2.5.0"
 
 pump@^3.0.0:
@@ -6101,12 +6101,13 @@ window-size@0.1.0:
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
   integrity sha1-VDjNLqk7IC76Ohn+iIeu58lPnJ0=
 
-"woofmark@git://github.com/jywarren/woofmark.git#xhrOptionsAltBureaucracy":
-  version "4.2.3"
-  resolved "git://github.com/jywarren/woofmark.git#12e2c1d4559268e2de605ad6084d5dce24ea42c6"
+"woofmark@git://github.com/jywarren/woofmark.git#plots2":
+  version "4.0.3"
+  uid "39237b798308e6855acde1a938c18a8e4da62fce"
+  resolved "git://github.com/jywarren/woofmark.git#39237b798308e6855acde1a938c18a8e4da62fce"
   dependencies:
     bullseye "1.4.6"
-    bureaucracy "git://github.com/jywarren/bureaucracy.git#xhrOptions"
+    bureaucracy "1.0.7"
     crossvent "1.5.0"
     kanye "3.0.2"
     local-storage "1.4.2"
