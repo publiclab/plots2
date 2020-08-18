@@ -14,9 +14,6 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
-//= require loadCSS
-//= require cssrelpreload
-//= require onloadCSS
 //= require jquery
 //= require jquery_ujs
 //= require jquery-lazyload/jquery.lazyload.js
