@@ -124,6 +124,7 @@
         <br />
         <hr style='clear:both;' />
         <div>
+            <p><a id='print-new' style='cursor:pointer;'><i class='fa fa-print'></i> Printable format (beta) </a></p>
             <p><a id='print-command-no-links'><i class='fa fa-print'></i> Print without page links</a></p>
             <p><a id='print-command-3-col'><i class='fa fa-print'></i> Print in 3-column layout</a></p>
         </div>
@@ -170,9 +171,21 @@
       function print_linkless() {
           window.print();
       }
+      function print_new() {
+        var node_type = '<%= node.type %>';
+        if (node_type == 'page'){
+          <% if @revision %>
+          window.location.href = "/wikis/print/<%= @node.id %>";
+          <% end %>
+        }
+        else if (node_type == 'note'){
+          window.location.href = "/notes/print/" + <%= node.id %>;
+        }
+      }
       // Event listner on CLICK on links
       $(document).on("click", "#print-command-3-col",print_three_column);
       $(document).on("click", "#print-command-no-links",print_linkless);
+      $(document).on("click", "#print-new",print_new);
       jQuery(document).ready(function() {
           // 304 cached response yields no data to insert, which is not useful
           jQuery.ajaxSetup({

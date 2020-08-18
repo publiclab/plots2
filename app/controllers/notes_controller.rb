@@ -54,7 +54,7 @@ class NotesController < ApplicationController
         redirect_to @node.path(:question)
         return
       end
-      
+
       alert_and_redirect_moderated
       redirect_power_tag_redirect
 
@@ -64,6 +64,18 @@ class NotesController < ApplicationController
       @tagnames = @tags.collect(&:name)
 
       set_sidebar :tags, @tagnames
+    else
+      page_not_found
+    end
+  end
+
+  def print
+    @node = Node.find_by(nid: params[:id], type: 'note')
+    return if redirect_to_node_path?(@node)
+
+    if @node
+      impressionist(@node, 'print', unique: [:ip_address])
+
     else
       page_not_found
     end
