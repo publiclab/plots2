@@ -11,7 +11,7 @@
   <% elsif params[:action] == "author_topic" %>
     <h3><%= raw translation('notes.index.research_on', :tags => @tagnames.join(', '), :url1 => "/people/"+@user.name, :user_name => @user.name) %> <br /><small><%= raw translation('notes.index.research_notes_and_wiki_edits_with_time', :count => @user.nodes.count, :time => time_ago_in_words(@user.created_at)) %></small></h3>
   <% elsif params[:action] == "author" %>
-    <h3><%= raw translation('notes.index.research_by', :url1 => "/people/"+@user.name, :user_name => @user.name) %> <small><%= raw translation('notes.index.research_notes_and_wiki_edits', :count1 => @user.note_count, :word1 => 'note'.pluralize(@user.note_count), :count2 => @user.revisions.count, :word2 => 'edit'.pluralize(@user.revisions.count)) %> <% if @user.notes.length > 0 %><%= raw translation('notes.index.starting_time', :time => time_ago_in_words(@user.created_at)) %><% end %></small></h3>
+    <h3><%= raw translation('notes.index.research_by', :url1 => "/people/"+@user.name, :user_name => @user.name) %> <small><%= raw translation('notes.index.research_notes_and_wiki_edits', :count1 => @user.note_count, :word1 => 'note'.pluralize(@user.note_count), :count2 => @user.revisions.count, :word2 => 'edit'.pluralize(@user.revisions.count)) %> <% if @user.notes.size > 0 %><%= raw translation('notes.index.starting_time', :time => time_ago_in_words(@user.created_at)) %><% end %></small></h3>
   <% else %>
     <h2><%= raw translation('notes.index.research_notes_ideas_and_documentation') %></h2>
   <% end %>
