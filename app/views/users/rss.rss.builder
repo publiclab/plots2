@@ -5,7 +5,7 @@ xml.rss :version => "2.0" do
     xml.description "Open source environmental science research at Public Lab"
     xml.link "https://#{request.host}/feed/" + params[:author] + ".rss"
 
-    @notes.each do |node|
+    @notes.includes(:user).each do |node|
       newline = '&#13;&#10;'
 
       body = node.body
