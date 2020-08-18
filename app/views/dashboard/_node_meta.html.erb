@@ -6,7 +6,7 @@
       <% node.coauthors.each_with_index do |coauthor,i| %>
         <a href="/profile/<%= coauthor.username %>">
           <%= coauthor.username%> <%= coauthor.new_contributor %></a>
-        <%= ',' if i < node.coauthors.length-1 %>
+        <%= ',' if i < node.coauthors.size-1 %>
       <% end %>
     <% end %>
   <% end %>
@@ -25,7 +25,7 @@
 </div>
 
 <div class="card-meta-links">
-    <a href="<%= node.path %>#comments"><i class="fa fa-comment-o"></i> <%= node.comments_viewable_by(current_user).length %></a>
+    <a href="<%= node.path %>#comments"><i class="fa fa-comment-o"></i> <%= node.comments_viewable_by(current_user).size %></a>
     | <a aria-label="Link to note" href="/n/<%= node.id %>"><i class="fa fa-link"></i></a>
     | <span><i class="fa fa-eye"></i> <%= number_with_delimiter(node.views) %></span>
     | <span><i style="<% if node.likes > 0 %>color:#db4;<% end %>" class="fa fa-star-o"></i> <%= node.likes %></span>
