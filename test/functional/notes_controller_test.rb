@@ -45,6 +45,18 @@ class NotesControllerTest < ActionController::TestCase
     assert_select '#other-activities', false
   end
 
+  test 'print note template' do
+    note = nodes(:blog)
+
+    get :print,
+        params: {
+        id: note.nid
+        }
+
+    assert_template 'print'
+    assert_response :success
+  end
+
   test 'comment markdown and autolinking works' do
     node = Node.where(type: 'note', status: 1).first
     assert node.comments.length > 0
