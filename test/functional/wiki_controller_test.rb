@@ -676,4 +676,14 @@ class WikiControllerTest < ActionController::TestCase
     # check correct author
     assert wikis.all? { |wiki| wiki.uid == user.uid }
   end
+
+  test "print wiki template" do
+    node = nodes(:about)
+
+    get :print, params: { id: node.nid }
+
+    assert_template 'print'
+    assert_response :success
+    assert_select 'div#content-window', auto_link(insert_extras(node.latest.render_body), sanitize: false)[3..-6]
+  end
 end
