@@ -1,0 +1,64 @@
+@page {
+  size: auto;   /* auto is the current printer page size */
+  /* size: 5.5in 8.5in; */
+  margin: none;/* this affects the margin in the printer settings */
+}
+
+footer{
+  display: none;
+}
+
+html,body{
+  color: black;
+}
+
+h1, h2, h3, h4 {
+ padding:5px;
+ font-weight: bold;
+}
+
+h2 {
+  margin-top:none;
+}
+
+/*for page break strategy*/
+
+ul,
+ol {
+	break-inside: avoid;
+	break-before: avoid-page;
+}
+
+ul,
+table,
+img,
+svg {
+	break-inside: avoid;
+  break-before: avoid-page;
+}
+
+img {
+    page-break-before: avoid; /* 'always,' 'avoid,' 'left,' 'inherit,' or 'right' */
+    page-break-after: avoid; /* 'always,' 'avoid,' 'left,' 'inherit,' or 'right' */
+    page-break-inside: avoid; /* or 'auto' */
+}
+
+/*for link handling*/
+
+a:link,
+a:visited,
+a {
+	background: transparent;
+	text-decoration: none;
+	text-align: left;
+  color: black;
+}
+
+a {
+	break-inside: avoid;
+}
+
+a[href^=http]::after {
+  color: #2F4F4F;
+	content: "(" attr(href) ")";
+}
