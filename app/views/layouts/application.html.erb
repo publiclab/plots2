@@ -61,6 +61,9 @@
     <% if @node.main_image %>
         <meta property="og:image" content="https://<%= request.host %><%= @node.main_image.path(:default) %>" />
         <meta name="twitter:image" content="https://<%= request.host %><%= @node.main_image.path(:default) %>">
+        <% elsif scraped_image = @node.scraped_image %>
+        <meta property="og:image" content="<%= scraped_image %>" />
+        <meta name="twitter:image" content="<%= scraped_image %>">
     <% end %>
       <p class="facebook-summary" style="display:none;">
         <%= raw strip_tags(sanitize(RDiscount.new(@node.body).to_html)).truncate(100) %>
