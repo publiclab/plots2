@@ -369,7 +369,7 @@ en:
       number_of_subscriptions: "# of people"
       subscriptions: "Your subscriptions"
       sort_by: "Sort By"
-      more_posts: "more posts"
+      posts: "posts"
       follow: "Follow"
       unfollow: "Unfollow"
       notes:
