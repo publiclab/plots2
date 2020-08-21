@@ -75,6 +75,7 @@ class NotesController < ApplicationController
 
     if @node
       impressionist(@node, 'print', unique: [:ip_address])
+      render layout: false
 
     else
       page_not_found
