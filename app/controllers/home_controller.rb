@@ -38,8 +38,8 @@ class HomeController < ApplicationController
         .count(:all)
       @wiki_count = Revision.select(:timestamp)
         .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
-        .count
-      @user_note_count = Node.where(type: 'note', status: 1, uid: current_user.uid).count
+        .size
+      @user_note_count = Node.where(type: 'note', status: 1, uid: current_user.uid).size
       @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments = activity
       render template: 'dashboard/dashboard'
     else
@@ -56,7 +56,7 @@ class HomeController < ApplicationController
         .count(:all)
       @wiki_count = Revision.select(:timestamp)
         .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
-        .count
+        .size
       @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments = activity
       render template: 'dashboard/dashboard'
       @title = I18n.t('home_controller.community_research')
