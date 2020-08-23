@@ -2,6 +2,12 @@
 
 <div class="form-group dropzone">
   <textarea aria-label="Wiki Text" name="body" tabindex="2" class="form-control" id="text-input" rows="20" cols="60"><% if @node && @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
+  <div id="imagebar">
+    <div id="create_progress" style="display:none;width:100%;" class="progress progress-striped active">
+      <div class="create_progress-bar" role="progressbar" style="width: 0%;"></div>
+    </div>
+    <p class="create_uploading" style="display:none;padding-top:4px;color:#aaa;">Uploading...</p>
+  </div>
 </div>
 
 <div class="well" id="preview" style="display:none;"> </div>
