@@ -74,6 +74,48 @@ class Spam2ControllerTest < ActionController::TestCase
         assert_response :success
         assert_not_nil assigns(:comments)
     end
+    #Users moderation access control
+    test 'Normal users should not be able to access the spam2/users page' do
+        UserSession.create(users(:bob))
+        get :_spam_users
+        assert_equal 'Only moderators can moderate other users.', flash[:error]
+        assert_redirected_to '/dashboard'
+    end
+    
+    test 'Moderators should be able to access the spam2/users page' do
+        UserSession.create(users(:moderator))
+        get :_spam_users
+        assert_response :success
+        assert_not_nil assigns(:users)
+    end
+    
+    test 'Admins should be able to access the spam2/users page' do
+        UserSession.create(users(:admin))
+        get :_spam_users
+        assert_response :success
+        assert_not_nil assigns(:users)
+    end
+    #Insight section in spam2 access control
+    test 'Normal users should not be able to access the spam2/insights page' do
+        UserSession.create(users(:bob))
+        get :_spam_insights
+        assert_equal 'Only moderators and admins can access this page.', flash[:error]
+        assert_redirected_to '/dashboard'
+    end
+    
+    test 'Moderators should be able to access the spam2/insights page' do
+        UserSession.create(users(:moderator))
+        get :_spam_insights
+        assert_response :success
+        assert_not_nil assigns(:graph_spammed)
+    end
+    
+    test 'Admins should be able to access the spam2/insights page' do
+        UserSession.create(users(:admin))
+        get :_spam_insights
+        assert_response :success
+        assert_not_nil assigns(:graph_spammed)
+    end
     # Flags access control
     test 'Normal users should not be able to access the spam2/flags page' do
         UserSession.create(users(:bob))
@@ -160,5 +202,42 @@ class Spam2ControllerTest < ActionController::TestCase
         post :remove_flag_comment, params: { id: comment.id }
         comment = assigns(:comment)
         assert_equal 0, comments(:second).flag
+    end
+    #insights and graphs
+    test '_spam_insights should assign correct value to graph_spammed' do
+        UserSession.create(users(:moderator))
+        Node.delete_all
+        node1 = Node.new(uid: users(:bob).id,
+        type: 'note',
+        title: 'node1',
+        status: 0)
+        get :_spam_insights
+        assert_equal assigns(:graph_spammed), Node.spam_graph_making(0)
+        assert_response :success
+      end
+
+    test '_spam_insights should assign correct value to graph_unmoderated' do
+        UserSession.create(users(:moderator))
+        Node.delete_all
+        node2 = Node.new(uid: users(:bob).id,
+        type: 'note',
+        title: 'node2',
+        status: 4)       
+        get :_spam_insights
+        assert_equal assigns(:graph_unmoderated), Node.spam_graph_making(4)
+        assert_response :success
+    end
+    
+    test '_spam_insights should assign correct value to graph_flagged' do
+        UserSession.create(users(:moderator))
+        Node.delete_all
+        node3 = Node.new(uid: users(:bob).id,
+        type: 'note',
+        title: 'node3',
+        status: 1,
+        flag: 1)
+        get :_spam_insights
+        assert_equal assigns(:graph_flagged), Node.spam_graph_making(1)
+        assert_response :success
     end
 end

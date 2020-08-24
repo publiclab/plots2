@@ -31,7 +31,8 @@ $(document).ready(function () {
           <tr id="n<%= revision.vid %>">
             <td><input  class="selectedId" value="<%= revision.vid %>" type="checkbox" /></td>
             <td>
-              <i class="fa fa-file text-secondary"></i> <a class="text-dark font-weight-bold" data-toggle="modal" data-target="#ninfo<%= revision.vid %>" href="javascript:void(0);"> <%= revision.title.truncate(20) %></a><br />
+            <% if revision.status == 1 %><i class="fa fa-check text-success"></i> <% elsif revision.status == 0 %><i class="fa fa-ban text-danger"></i> <% elsif revision.status == 4 %><i class="fa fa-circle text-priamry"></i> <% end %>
+              <a class="text-dark font-weight-bold" data-toggle="modal" data-target="#ninfo<%= revision.vid %>" href="javascript:void(0);"> <%= revision.title.truncate(20) %></a><br />
             </td>
             <td>
               <a class="text-info" href="/profile/<%= revision.author&.name %>"><%= revision.author&.name %></a> 

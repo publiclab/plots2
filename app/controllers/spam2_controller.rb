@@ -113,7 +113,7 @@ class Spam2Controller < ApplicationController
       @popular_tags = Tag.tag_frequency(10)
       render template: 'spam2/_spam'
     else
-      flash[:error] = 'Only moderators and admins can moderate this.'
+      flash[:error] = 'Only moderators and admins can access this page.'
       redirect_to '/dashboard'
     end
   end
