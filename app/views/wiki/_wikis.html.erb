@@ -27,4 +27,9 @@
   <% end %>
 </table>
 <% end %>
-<div class="text-center"><%= will_paginate wikis, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer if @paginated %></div>
+<%= @pagy.inspect %>
+<% if @pagy %>
+  <%== pagy_bootstrap_nav @pagy %>
+<% else %>
+  <%= will_paginate wikis, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer if @paginated %>
+<% end %>
