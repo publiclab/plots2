@@ -82,16 +82,18 @@ $(document).ready(function () {
                <span class="text-info"><%= user.email %></span>
             </td>
              <td style="height:35px !important;">
-               <a class="btn btn-xs font-weight-bold btn-danger ban a<%= user.id %>" <% if user.status == 0 %>style="display:none;"<% end %> data-remote="true" href="/ban/<%= user.id %>">Ban user</a>
-               <a class="btn btn-xs font-weight-bold btn-success unban a-unban<%= user.id %>" <% if user.status == 1 %>style="display:none;"<% end %> data-remote="true" href="/unban/<%= user.id %>">Unban user</a> 
+               <a class="btn btn-xs border-curve font-weight-bold btn-danger ban a<%= user.id %>" <% if user.status == 0 %>style="display:none;"<% end %> data-remote="true" href="/ban/<%= user.id %>">Ban user</a>
+               <a class="btn btn-xs border-curve font-weight-bold btn-success unban a-unban<%= user.id %>" <% if user.status == 1 %>style="display:none;"<% end %> data-remote="true" href="/unban/<%= user.id %>">Unban user</a> 
                <script>
                 $('.a<%= user.id %>.ban').bind('ajax:success', function(e){
                   $('.a<%= user.id %>').hide();  // ban toggle
                   $('.a-unban<%= user.id %>').show();
+                  notyNotification('relax', 3000, 'danger', 'topRight', 'User banned');
                 });
                 $('.a-unban<%= user.id %>.unban').bind('ajax:success', function(e){
                   $('.a-unban<%= user.id %>').hide();
                   $('.a<%= user.id %>').show();
+                  notyNotification('relax', 3000, 'warning', 'topRight', 'User unbanned');
                 });
                 </script>
               </td>
