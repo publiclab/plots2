@@ -132,14 +132,13 @@ class BatchController < ApplicationController
           comment.publish
         when 'spam'
           comment.spam
-          user.ban
         when 'delete'
           comment.delete
         else
           flash[:notice] = 'Invalid Url'
         end
       end
-      flash[:notice] = comment_total.to_s + ' comment moderated'
+      flash[:notice] = comment_total.to_s + ' comments moderated.'
       redirect_back fallback_location: root_path
     else
       flash[:error] = 'Only admins and moderators can moderate comments.'

@@ -105,4 +105,8 @@
 	#info-btn {
 		margin-left: 5vw;
 	}
+	#stats_spam, #timeline_spam{
+		margin-left: 3vw;
+		margin-right: 3vw !important;
+	}
 }
