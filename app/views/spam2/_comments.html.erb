@@ -25,6 +25,9 @@ $(document).ready(function () {
 	$('#unmoderated').on('click', function () { // unmoderated filter
 		search_table("unmoderated", "/spam2/comments/filter/");
   });
+	$('#published').on('click', function () { // published filter
+		search_table("published", "/spam2/comments/filter/");
+  });
 	$("#batch-spam").bind('click', function (e) { //batch spam
 		batch_nav("batch_comment/spam");
 	});
@@ -49,10 +52,13 @@ $(document).ready(function () {
         <a id="spammed" class="btn nav-link <% if params[:type] == "spammed" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-ban <% if params[:type] == "spammed" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all Spammed Comments "></i> Spammed </a>
       </li>
       <li class="nav-item">
-        <a id="unmoderated" class="btn nav-link <% if params[:type] == "unmoderated" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-check-square-o <% if params[:type] == "unmoderated" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all unmoderated Comments"></i> Unmoderated</a>
+        <a id="unmoderated" class="btn nav-link <% if params[:type] == "unmoderated" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-exclamation-circle <% if params[:type] == "unmoderated" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all unmoderated Comments"></i> Unmoderated</a>
       </li>
       <li class="nav-item">
         <a id="flagged" class="btn nav-link <% if params[:type] == "flagged" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-flag <% if params[:type] == "flagged" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all Flagged Comments and sort by flag count"></i> Flagged</a>
+      </li>
+      <li class="nav-item">
+        <a id="published" class="btn nav-link  <% if params[:type] == "published" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-check-circle <% if params[:type] == "published" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all Published Comments"></i> Published</a>
       </li>
     </ul>
   </div>
@@ -84,7 +90,7 @@ $(document).ready(function () {
               <%= comment.body.truncate(20) %>
             </td>
             <td>
-              <a href="/profile/<%= comment.author&.name %>" class="text-info"><%= comment.author&.name.truncate(15) %></a> <span class="badge badge-pill badge-light text-warning"><%= comment.flag%></span>
+              <a href="/profile/<%= comment.author&.name %>" class="text-info"><%= comment.author&.name.truncate(15) %></a><br> <% if comment.flag > 0 %><span class="text-secondary small"><%= comment.flag%> Flagged </span><% end %>
             </td>
             <td>
               <% unless comment.node.nil? %>
@@ -92,42 +98,28 @@ $(document).ready(function () {
               <% end %>
             </td>
             <td style="height:35px !important;">
-               <a class="btn btn-sm font-weight-bold btn<% if comment.status != 1 %>-success<% else %>-secondary disabled<% end %> publish" data-remote="true" href="/admin/publish_comment/<%= comment.id %>" ><i class="fa fa-check-circle fa-white"></i> Publish</a>
-               <a class="btn btn-sm font-weight-bold btn<% if comment.status != 0 %>-danger<% else %>-secondary disabled<% end %> spam" data-remote="true" href="/admin/mark_comment_spam/<%= comment.id %>"><i class="fa fa-ban fa-white"></i> Spam</a> 
-               <a class="btn btn-sm font-weight-bold btn-secondary ban a<%= comment.author.id %>" <% if comment.author.status == 0 %>style="display:none;"<% end %> data-remote="true" href="/ban/<%= comment.author.id %>">Ban user</a>
-               <a class="btn btn-sm font-weight-bold btn-secondary unban a-unban<%= comment.author.id %>" <% if comment.author.status == 1 %>style="display:none;"<% end %> data-remote="true" href="/unban/<%= comment.author.id %>">Unban user</a>
-               <a class="btn btn-sm text-dark font-weight-bold unflag btn-<% if comment.flag > 0%>warning <% else %>warning disabled<% end %>" data-remote="true" href="/moderate/remove_flag_comment/<%= comment.id %>">Unflag</a>
+               <a class="btn btn-xs border-curve font-weight-bold btn<% if comment.status != 1 %>-success<% else %>-secondary disabled<% end %> publish" data-remote="true" href="/admin/publish_comment/<%= comment.id %>" ><i class="fa fa-check-circle fa-white"></i> Publish</a>
+               <a class="btn btn-xs border-curve font-weight-bold btn<% if comment.status != 0 %>-danger<% else %>-secondary disabled<% end %> spam" data-remote="true" href="/admin/mark_comment_spam/<%= comment.id %>"><i class="fa fa-ban fa-white"></i> Spam</a>
+               <a class="btn btn-xs border-curve text-dark font-weight-bold unflag btn-<% if comment.flag > 0%>warning <% else %>warning disabled<% end %>" data-remote="true" href="/moderate/remove_flag_comment/<%= comment.id %>">Unflag</a>
                <%= link_to "/comment/delete/#{comment.cid}", data: { confirm: "Are you sure you want to delete this comment?" }, :remote => true, :class => "btn border-curve btn-sm font-weight-bold btn-light delete" do %>
                   <i class="fa fa-trash text-dark"></i>
                 <% end %>
                 <script>
                 $('#n<%= comment.id %> .delete').bind('ajax:success', function(e){
                   $('#n<%= comment.id %>').fadeOut()
-                  $('#deleted').fadeIn();
-                  $('#deleted').fadeOut(3000);
+                  notyNotification('relax', 3000, 'danger', 'topRight', 'Comment deleted');
                 });
                 $('#n<%= comment.id %> .publish').bind('ajax:success', function(e){
                   $('#n<%= comment.id %>').hide()
-                  $('#npublish').fadeIn(); // published!
-                  $('#npublish').fadeOut(3000);
+                  notyNotification('relax', 3000, 'success', 'topRight', 'Comment published');
                 });
                 $('#n<%= comment.id %> .spam').bind('ajax:success', function(e){
                   $('#n<%= comment.id %>').hide()
-                  $('#nspam').fadeIn(); // spammed!
-                  $('#nspam').fadeOut(3000);
+                  notyNotification('relax', 3000, 'danger', 'topRight', 'Comment spammed');
                 });
                 $('#n<%= comment.id %> .unflag').bind('ajax:success', function(e){
                   $('#n<%= comment.id %>').hide()
-                  $('#nuflag').fadeIn(); // unflag!
-                  $('#nunflag').fadeOut(3000);
-                });  
-                  $('.a<%= comment.author.id %>.ban').bind('ajax:success', function(e){
-                  $('.a<%= comment.author.id %>').hide()  // ban toggle
-                  $('.a-unban<%= comment.author.id %>').show()
-                });
-                $('.a-unban<%= comment.author.id %>.unban').bind('ajax:success', function(e){
-                  $('.a-unban<%= comment.author.id %>').hide()
-                  $('.a<%= comment.author.id %>').show()
+                  notyNotification('relax', 3000, 'warning', 'topRight', 'Comment unflagged');
                 });
                 </script>
             </td>
