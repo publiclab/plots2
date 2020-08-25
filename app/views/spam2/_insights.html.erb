@@ -3,8 +3,8 @@
     <div class="card-body">
     <a class="card-title  text-secondary h5 font-weight-bold" href="/spam2/filter/unmoderated/30"> <i class="fa fa-circle text-primary"></i>  Unmoderated</a>
       <ul class="list-group list-group-flush text-secondary  mt-3">
-        <li class="list-group-item"><%= Node.where(status: 4, created: (Time.now - 1.month)..Time.now).size%> Nodes</li>
-        <li class="list-group-item"><%= Comment.where(status: 4, timestamp: (Time.now - 1.month)..Time.now).size %> Comments</li>
+        <li class="list-group-item"><span data-toggle="tooltip" data-placement="top" title="Unmoderated Nodes"><%= Node.where(status: 4).size%></span></li>
+        <li class="list-group-item"><span data-toggle="tooltip" data-placement="top" title="Unmoderated Comments"><%= Comment.where(status: 4).size %></span></li>
       </ul>
     </div>
   </div>
@@ -12,8 +12,8 @@
    <div class="card-body">
        <a class="card-title h5 text-secondary font-weight-bold" href="/spam2/filter/spammed/30"> <i class="fa fa-ban text-danger"></i>  Spammed</a>
       <ul class="list-group list-group-flush text-secondary mt-3">
-        <li class="list-group-item"><%= Node.where(status: 0, created: (Time.now - 1.month)..Time.now).size%> Nodes</li>
-        <li class="list-group-item"><%= Comment.where(status: 0, timestamp: (Time.now - 1.month)..Time.now).size %> Comments</li>
+        <li class="list-group-item"><span data-toggle="tooltip" data-placement="top" title="Spammed Nodes"><%= Node.where(status: 0).size%></span></li>
+        <li class="list-group-item"><span data-toggle="tooltip" data-placement="top" title="Spammed Comments"><%= Comment.where(status: 0).size %></span></li>
       </ul>
     </div>
   </div>
@@ -21,8 +21,8 @@
     <div class="card-body">
         <a class="card-title h5 text-secondary font-weight-bold" href="/spam2/flags/filter/all/30"> <i class="fa fa-flag text-warning"></i>  Flagged</a>
       <ul class="list-group list-group-flush text-secondary mt-3">
-        <li class="list-group-item"><%= Node.where('flag > ?', 0).where(created: (Time.now - 1.month)..Time.now).size%> Nodes</li>
-        <li class="list-group-item"><%= Comment.where('flag > ?', 0).where(timestamp: (Time.now - 1.month)..Time.now).size %> Comments</li>
+        <li class="list-group-item"><span data-toggle="tooltip" data-placement="top" title="Flagged Nodes"><%= Node.where('flag > ?', 0).size%></span></li>
+        <li class="list-group-item"><span data-toggle="tooltip" data-placement="top" title="Spammed Comments"><%= Comment.where('flag > ?', 0).size %></span></li>
       </ul>
     </div>
   </div>
@@ -30,13 +30,12 @@
     <div class="card-body">
         <a class="card-title h5 text-secondary font-weight-bold" href="/spam2/filter/published/30"> <i class="fa fa-check text-success"></i>  Published</a>
         <ul class="list-group list-group-flush text-secondary mt-3">
-            <li class="list-group-item"><%= Node.where(status: 1, created: (Time.now - 1.month)..Time.now).size%> Nodes</li>
-            <li class="list-group-item"><%= Comment.where(status: 1, timestamp: (Time.now - 1.month)..Time.now).count %> Comments</li>
+            <li class="list-group-item"><span data-toggle="tooltip" data-placement="top" title="Published Nodes"><%= Node.where(status: 1).size%></span></li>
+            <li class="list-group-item"><span data-toggle="tooltip" data-placement="top" title="Published Comments"><%= Comment.where(status: 1).count %></span></li>
         </ul>
     </div>
   </div>
 </div>
-<p class="text-secondary">* The above stats are for past month</p>
 <div class="card w-100 mt-2 border-0">
     <div class="card-body">
         <h4 class="card-title my-3 text-secondary font-weight-bold"> <i class="fa fa-line-chart text-primary"></i> Moderation graph</h4>
