@@ -1,6 +1,7 @@
 class TagController < ApplicationController
   respond_to :html, :xml, :json, :ics
   before_action :require_user, only: %i(create delete add_parent)
+  include Pagy::Backend
 
   def index
     @toggle = params[:sort] || "uses"
@@ -117,9 +118,6 @@ class TagController < ApplicationController
       nodes = Node.for_tagname_and_type(params[:id], node_type, question: (@node_type == 'questions'))
     end
 
-    nodes = nodes.paginate(page: params[:page], per_page: 24).order(order_by)
-    @paginated = true
-
     if @start && @end
       nodes = nodes.where(created: @start.to_i..@end.to_i)
     else
@@ -128,6 +126,9 @@ class TagController < ApplicationController
         nodes = nodes.where.not(nid: @pinned_nodes.collect(&:id))
       end
     end
+
+    @pagy, nodes = pagy(nodes.order(order_by), items: 24)
+    @paginated = true
 
     @qids = Node.questions.where(status: 1)
                .collect(&:nid)
@@ -140,7 +141,7 @@ class TagController < ApplicationController
     end
 
     @answered_questions = []
-    @questions&.each { |question| @answered_questions << question if question.answers.any?(&:accepted) }
+    @questions&.each { |question| @answered_questions << question if question.answers.any?(&:accepted) } # TODO: remove this upon refactor to remove answers code
     @wikis = nodes if @node_type == 'wiki'
     @wikis ||= []
     @nodes = nodes if @node_type == 'maps'
