@@ -27,18 +27,22 @@
         <a class="dropdown-item <% if params[:action] == "_spam_insights" %> active <% end %>" href="/spam2/insights"><i class="drop fa fa-line-chart text-primary"></i> Insights </a>
       <div class="dropdown-divider"></div>  
         <h6 class="dropdown-header">Spam Moderation</h6>
-        <a class="dropdown-item <% unless  params[:action] =="_spam_comments" ||params[:action] =="_spam_queue" || params[:action] =="_spam_insights"|| params[:action] =="_spam_revisions" || params[:action] =="_spam_flags" || params[:type] == "wiki" || params[:action] == "_spam_users"%> active <% end %>" href="/spam2/filter/all/30"><i class="drop fa fa-address-book text-primary"></i> Moderation</a>
-        <a class="dropdown-item <% if params[:type] == "wiki" %> active <% end %>" id="wiki_drop" href="/spam2/filter/wiki/30" ><i class="drop fa fa-book text-primary"></i> Wiki</a>
-        <a class="dropdown-item <% if params[:action] == "_spam_queue" %> active <% end %>" href="/spam2/queue/filter/everything" ><i class="drop fa fa-clock text-primary"></i> Queue</a>
-        <a class="dropdown-item <% if params[:action] == "_spam_revisions" %> active <% end %>" href="/spam2/revisions"><i class="drop fa fa-list text-primary"></i> Revision</a>
-        <a class="dropdown-item <% if params[:action] == "_spam_comments" %> active <% end %>" href="/spam2/comments/filter/all/30" ><i class="drop fa fa-comment text-primary"></i> Comments</a>
-        <a class="dropdown-item <% if params[:action] == "_spam_flags" %> active <% end %>"  href="/spam2/flags/filter/all/30" ><i class="drop fa fa-flag text-primary"></i> Flag </a>
-        <a class="dropdown-item  <% if params[:action] == "_spam_users" %> active <% end %>" href="/spam2/users/filter/all/30"><i class="drop fa fa-user text-primary"></i> User moderation</a>
+        <a class="drop_click dropdown-item <% unless  params[:action] =="_spam_comments" ||params[:action] =="_spam_queue" || params[:action] =="_spam_insights"|| params[:action] =="_spam_revisions" || params[:action] =="_spam_flags" || params[:type] == "wiki" || params[:action] == "_spam_users"%> active <% end %>" href="/spam2/filter/all/30"><i class="drop fa fa-address-book text-primary"></i> Moderation</a>
+        <a class="wiki_drop_click dropdown-item <% if params[:type] == "wiki" %> active <% end %>" id="wiki_drop" href="/spam2/filter/wiki/30" ><i class="drop fa fa-book text-primary"></i> Wiki</a>
+        <a class="drop_click dropdown-item <% if params[:action] == "_spam_queue" %> active <% end %>" href="/spam2/queue/filter/everything" ><i class="drop fa fa-clock text-primary"></i> Queue</a>
+        <a class="drop_click dropdown-item <% if params[:action] == "_spam_revisions" %> active <% end %>" href="/spam2/revisions"><i class="drop fa fa-list text-primary"></i> Revision</a>
+        <a class="drop_click dropdown-item <% if params[:action] == "_spam_comments" %> active <% end %>" href="/spam2/comments/filter/all/30" ><i class="drop fa fa-comment text-primary"></i> Comments</a>
+        <a class="drop_click dropdown-item <% if params[:action] == "_spam_flags" %> active <% end %>"  href="/spam2/flags/filter/all/30" ><i class="drop fa fa-flag text-primary"></i> Flag </a>
+        <a class="drop_click dropdown-item  <% if params[:action] == "_spam_users" %> active <% end %>" href="/spam2/users/filter/all/30"><i class="drop fa fa-user text-primary"></i> User moderation</a>
       </div>
     </div>
 </div>
 <script>
-  $('#wiki_drop').on('click', function () { // Wiki filter
+  $(document).on('click', '.drop_click', function(){
+    localStorage.setItem('page-select', "30");
+    localStorage.setItem('filter', 'all');
+  });
+  $(document).on('click', '.wiki_drop_click', function(){
     localStorage.setItem('page-select', "30");
     localStorage.setItem('filter', 'wiki');
   });
@@ -100,7 +104,10 @@
     <option value="30">30</option>
     <option value="50">50</option>
     <option value="100">100</option>
-    <option value="150">150</option>
+    <option value="200">200</option>
+    <option value="400">400</option>
+    <option value="600">600</option>
+    <option value="1000">1000</option>
   </select> 
 </div>
 <% end %>
