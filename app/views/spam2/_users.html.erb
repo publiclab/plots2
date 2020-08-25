@@ -8,6 +8,8 @@ $(document).ready(function () {
 		$('#selectall').prop("checked", check);
 		disable_buttons('#selectall');
   });
+  var pageselect = localStorage.getItem('page-select') || '30';
+  $("#pageselect").val(pageselect);
 	$('#pageselect').change(function () {  
 		pagination("#pageselect", "/spam2/users/filter/");
   });
