@@ -9,6 +9,8 @@ class Spam2Controller < ApplicationController
                    @nodes.where(type: 'page', status: 1).order('changed DESC')
                  when 'unmoderated'
                    @nodes.where(status: 4).order('changed DESC')
+                  when 'published'
+                    @nodes.where(status: 1).order('changed DESC')
                  when 'spammed'
                    @nodes.where(status: 0).order('changed DESC')
                  when 'created'
@@ -104,12 +106,28 @@ class Spam2Controller < ApplicationController
     end
   end
 
+  def _spam_insights
+    if logged_in_as(%w(admin moderator))
+      @graph_spammed = Node.spam_graph_making(0)
+      @graph_unmoderated = Node.spam_graph_making(4)
+      @graph_flagged = Node.where('flag > ?', 0).spam_graph_making(1)
+      @moderator_tag = Tag.tag_frequency(30)
+      @popular_tags = Tag.tag_frequency(10)
+      render template: 'spam2/_spam'
+    else
+      flash[:error] = 'Only moderators and admins can access this page.'
+      redirect_to '/dashboard'
+    end
+  end
+
   def _spam_comments
     if logged_in_as(%w(moderator admin))
       @comments = Comment.paginate(page: params[:page], per_page: params[:pagination])
       @comments = case params[:type]
                   when 'unmoderated'
                     @comments.where(status: 4).order('timestamp DESC')
+                  when 'published'
+                    @comments.where(status: 1).order('timestamp DESC')
                   when 'spammed'
                     @comments.where(status: 0).order('timestamp DESC')
                   when 'flagged'

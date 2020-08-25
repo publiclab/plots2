@@ -426,6 +426,13 @@ class Tag < ApplicationRecord
     date_hash
   end
 
+  def self.tag_frequency(limit)
+    uids = User.where('rusers.role = ?', 'moderator').or(User.where('rusers.role = ?', 'admin')).collect(&:uid)
+    tids = TagSelection.where(following: true, user_id: uids).collect(&:tid)
+    hash = tids.uniq.map { |id| p (Tag.find id).name, tids.count(id) }.to_h
+    hash.sort_by { |_, v| v }.reverse.first(limit).to_h
+  end
+
   private
 
   def tids

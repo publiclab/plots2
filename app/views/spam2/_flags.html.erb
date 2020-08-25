@@ -58,7 +58,7 @@ $(document).ready(function () {
         <a id="spammed" class="btn nav-link <% if params[:type] == "spammed" %>  active <% else %> text-secondary <% end %>"> <i class="fa fa-ban <% if params[:type] == "spammed" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all flag Nodes which are spammed"></i> Spammed </a>
       </li>
       <li class="nav-item">
-        <a id="unmoderated" class="btn nav-link  <% if params[:type] == "unmoderated" %>  active <% else %> text-secondary <% end %>"> <i class="fa fa-check-square-o <% if params[:type] == "unmoderated" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all flag Nodes which are unmoderated"></i> Unmoderated</a>
+        <a id="unmoderated" class="btn nav-link  <% if params[:type] == "unmoderated" %>  active <% else %> text-secondary <% end %>"> <i class="fa fa-exclamation-circle <% if params[:type] == "unmoderated" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all flag Nodes which are unmoderated"></i> Unmoderated</a>
       </li>
       <li class="nav-item">
         <a id="page" class="btn nav-link <% if params[:type] == "page" %>  active <% else %> text-secondary <% end %>"> <i class="fa fa-file-text-o <% if params[:type] == "page" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all Wikis which are flagged"></i> Page</a>
@@ -101,32 +101,28 @@ $(document).ready(function () {
                <span class="text-dark"><%= time_ago_in_words(flag.updated_at) %> ago</span>
             </td>
              <td style="height:35px !important;">
-               <a class="btn btn-sm font-weight-bold btn<% if flag.status != 1 %>-success<% else %>-secondary disabled<% end %> publish" data-remote="true" href="/moderate/publish/<%= flag.id %>" ><i class="fa fa-check-circle fa-white"></i> Publish post</a>
-               <a class="btn btn-sm font-weight-bold btn<% if flag.status != 0 %>-danger<% else %>-secondary disabled<% end %> spam" data-remote="true" href="/moderate/spam/<%= flag.id %>"><i class="fa fa-ban fa-white"></i> Spam post</a> 
-               <a class="btn btn-sm font-weight-bold btn-warning unflag" data-remote="true"href="/moderate/remove_flag_node/<%= flag.id %>">Unflag</a>
+               <a class="btn btn-xs border-curve font-weight-bold btn<% if flag.status != 1 %>-success<% else %>-secondary disabled<% end %> publish" data-remote="true" href="/moderate/publish/<%= flag.id %>" ><i class="fa fa-check-circle fa-white"></i> Publish post</a>
+               <a class="btn btn-xs border-curve font-weight-bold btn<% if flag.status != 0 %>-danger<% else %>-secondary disabled<% end %> spam" data-remote="true" href="/moderate/spam/<%= flag.id %>"><i class="fa fa-ban fa-white"></i> Spam post</a> 
+               <a class="btn btn-xs border-curve font-weight-bold btn-warning unflag" data-remote="true"href="/moderate/remove_flag_node/<%= flag.id %>">Unflag</a>
                <%= link_to "/notes/delete/#{flag.id}", data: { confirm: "Are you sure you want to delete #{flag.path}?" }, :remote => true, :class => "btn border-curve btn-sm font-weight-bold btn-light delete" do %>
                 <i class="fa fa-trash text-dark"></i>
                <% end %>
                <script>
                 $('#n<%= flag.id %> .delete').bind('ajax:success', function(e){
                   $('#n<%= flag.id %>').fadeOut()
-                  $('#deleted').fadeIn();
-                  $('#deleted').fadeOut(3000);
+                  notyNotification('relax', 3000, 'danger', 'topRight', 'Node deleted');
                 });
                 $('#n<%= flag.id %> .publish').bind('ajax:success', function(e){
                   $('#n<%= flag.id %>').hide()
-                  $('#npublish').fadeIn(); // published!
-                  $('#npublish').fadeOut(3000);
+                  notyNotification('relax', 3000, 'success', 'topRight', 'Node published');
                 });
                 $('#n<%= flag.id %> .spam').bind('ajax:success', function(e){
                   $('#n<%= flag.id %>').hide()
-                  $('#nspam').fadeIn(); // spammed!
-                  $('#nspam').fadeOut(3000);
+                  notyNotification('relax', 3000, 'danger', 'topRight', 'Node spammed');
                 });
                 $('#n<%= flag.id %> .unflag').bind('ajax:success', function(e){
                   $('#n<%= flag.id %>').hide()
-                  $('#nunflag').fadeIn(); // unflag!
-                  $('#nunflag').fadeOut(3000);
+                  notyNotification('relax', 3000, 'warning', 'topRight', 'Node unflagged');
                 });  
                 </script>
               </td>
@@ -159,7 +155,7 @@ $(document).ready(function () {
   <div class="float-right">
     <%= will_paginate @flags, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || @flags.empty?%>
   </div>
-  <div class="float-left">
+  <div class="float-left text-secondary">
     Page <%= @flags.current_page%> of <%= @flags.total_pages %> total Pages
   </div>
 </div>

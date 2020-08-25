@@ -139,4 +139,62 @@ class BatchControllerTest < ActionController::TestCase
         assert_equal "Only admins and moderators can batch delete.", flash[:error]
         assert_redirected_to "/dashboard"
     end
+    #batch moderation in comments
+    test 'batch publish of comments should publish selected comments' do
+        UserSession.create(users(:admin))
+        spam_comments = [comments(:comment_status_0), comments(:spam_comment)]
+        get :batch_comment, params: {type: 'publish', ids: spam_comments.collect { |comment| comment["cid"] }.join(",") }
+        assert_equal spam_comments.length.to_s + ' comments moderated.', flash[:notice]
+        assert_redirected_to root_path
+    end
+
+    test 'normal user should not be allowed to batch publish comments' do
+        UserSession.create(users(:bob))
+        spam_comments = [comments(:comment_status_0), comments(:spam_comment)]
+        get :batch_comment, params: {type: 'publish', ids: spam_comments.collect { |comment| comment["cid"] }.join(",") }
+        assert_equal "Only admins and moderators can moderate comments.", flash[:error]
+        assert_redirected_to "/dashboard"
+    end
+
+    test 'batch spam of comments should spam selected comments' do
+        UserSession.create(users(:admin))
+        comments_spam = [comments(:first), comments(:second)]
+        get :batch_comment, params: {type: 'spam', ids: comments_spam.collect { |comment| comment["cid"] }.join(",")}
+        assert_equal comments_spam.length.to_s + ' comments moderated.', flash[:notice]
+        assert_redirected_to root_path
+    end
+
+    test 'normal user should not be allowed to batch spam comments' do
+        UserSession.create(users(:bob))
+        comments = [comments(:first), comments(:second)]
+        get :batch_comment, params: {type: 'spam', ids: comments.collect { |comment| comment["cid"] }.join(",") }
+        assert_equal "Only admins and moderators can moderate comments.", flash[:error]
+        assert_redirected_to "/dashboard"
+    end
+
+    test 'batch delete of comments should delete correct number of comments' do
+        UserSession.create(users(:admin))
+        delete_comments = [comments(:first), comments(:second)]
+        get :batch_comment, params: {type: 'delete', ids: delete_comments.collect { |comment| comment["cid"] }.join(",") }
+        assert_redirected_to root_path
+        assert_equal delete_comments.length.to_s + ' comments moderated.', flash[:notice]
+    end
+
+    test 'normal user should not be allowed to batch delete comments' do
+        UserSession.create(users(:bob))
+        delete_comments = [comments(:first), comments(:second)]
+        get :batch_comment, params: {type: 'delete', ids: delete_comments.collect { |node| node["cid"] }.join(",") }
+        assert_equal "Only admins and moderators can moderate comments.", flash[:error]
+        assert_redirected_to "/dashboard"
+    end
+
+    test 'User which are batch unban are unbanned in spam2/users' do
+        UserSession.create(users(:moderator))
+        users = [users(:bob), users(:jeff)]
+        get :batch_ban_user, params: {ids: users.collect { |user| user["uid"] }.join(",") }
+        get :batch_unban_user, params: {ids: users.collect { |user| user["uid"] }.join(",") }
+        assert_redirected_to root_path
+        assert users.all? { |spammer| spammer.status == 1}
+        assert_equal 'Success! users unbanned.', flash[:notice]
+    end
 end

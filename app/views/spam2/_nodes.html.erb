@@ -33,6 +33,9 @@ $(document).ready(function () {
 	});
 	$('#unmoderated').on('click', function () { // unmoderated filter
 		search_table("unmoderated", "/spam2/filter/");
+  });
+	$('#published').on('click', function () { // published filter
+		search_table("published", "/spam2/filter/");
 	});
 	$('#reset_all').on('click', function () { // reset all filter
 		search_table("all", "/spam2/filter/");
@@ -59,7 +62,10 @@ $(document).ready(function () {
         <a id="spammed" class="btn nav-link  <% if params[:type] == "spammed" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-ban <% if params[:type] == "spammed" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all Spammed Nodes "></i> Spammed <span class="badge badge-dark"><%= Node.where(status: 0).length %></span></a> 
       </li>
       <li class="nav-item">
-        <a id="unmoderated" class="btn nav-link  <% if params[:type] == "unmoderated" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-check-square-o <% if params[:type] == "unmoderated" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all unmoderated Nodes"></i> Unmoderated</a>
+        <a id="unmoderated" class="btn nav-link  <% if params[:type] == "unmoderated" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-exclamation-circle <% if params[:type] == "unmoderated" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all unmoderated Nodes"></i> Unmoderated</a>
+      </li>
+      <li class="nav-item">
+        <a id="published" class="btn nav-link  <% if params[:type] == "published" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-check-circle <% if params[:type] == "published" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all Published Nodes"></i> Published</a>
       </li>
       <% end %>
     </ul>
@@ -89,46 +95,48 @@ $(document).ready(function () {
                <span class="text-secondary small"><%= node.type.capitalize %> | <% if params[:type] == "created"%><%= time_ago_in_words(node.updated_at) %><% else %><%= time_ago_in_words(node.created_at) %><% end %> ago</span>
             </td>
             <td>  
-              <a href="/profile/<%= node.author&.name %>" class="text-info"><%= node.author&.name.truncate(15) %> <%= node.author&.new_contributor%></a><br>
-               <span class="text-secondary small"><%= Node.where(uid: node.author&.id).count %> Nodes<span>
+              <a href="/profile/<%= node.author&.name %>" class="text-info"><%= node.author&.name.truncate(15) %> </a><br>
+               <span class="text-secondary small"><%= Node.where(uid: node.author&.id).count %> Nodes<span> <%= node.author&.new_contributor%>
              </td>
             <td>
-              <% if node.status == 1 %><span class="badge badge-pill badge-success"><i class="fa fa-check-circle text-white"></i> Published</span><% elsif node.status == 0 %><span class="badge badge-pill badge-danger"><i class="fa fa-ban text-white"></i> Spammed</span><% elsif node.status == 4 %><span class="badge badge-pill badge-primary"><i class="fa fa-circle text-white"></i> Unmoderated</span><% end %>
+              <% if node.status == 1 %><span class="badge badge-success"><i class="fa fa-check-circle text-white"></i> Published</span><% elsif node.status == 0 %><span class="badge badge-danger"><i class="fa fa-ban text-white"></i> Spammed</span><% elsif node.status == 4 %><span class="badge badge-primary"><i class="fa fa-circle text-white"></i> Unmoderated</span><% end %>
             </td>
              <td>
                <span class="text-dark"><% if params[:type] == "created" %><%= time_ago_in_words(node.created_at) %> <% else %><%= time_ago_in_words(node.updated_at) %> <% end %> ago</span>
             </td>
              <td>
-               <a class="btn btn-sm font-weight-bold btn<% if node.status != 1 %>-success<% else %>-secondary disabled<% end %> publish" data-remote="true" href="/moderate/publish/<%= node.id %>" ><i class="fa fa-check-circle fa-white"></i> Publish post</a>
-               <a class="btn btn-sm font-weight-bold btn<% if node.status != 0 %>-danger<% else %>-secondary disabled<% end %> spam" data-remote="true" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban fa-white"></i> Spam post</a> 
-               <a class="btn btn-sm font-weight-bold btn-secondary ban a<%= node.author.id %>" <% if node.author.status == 0 %>style="display:none;"<% end %> data-remote="true" href="/ban/<%= node.author.id %>">Ban user</a>
-               <a class="btn btn-sm font-weight-bold btn-secondary unban a-unban<%= node.author.id %>" <% if node.author.status == 1 %>style="display:none;"<% end %> data-remote="true" href="/unban/<%= node.author.id %>">Unban user</a>
+               <a class="btn btn-xs border-curve font-weight-bold btn<% if node.status != 1 %>-success<% else %>-secondary disabled<% end %> publish" data-remote="true" href="/moderate/publish/<%= node.id %>" ><i class="fa fa-check-circle fa-white"></i> Publish post</a>
+               <a class="btn btn-xs border-curve font-weight-bold btn<% if node.status != 0 %>-danger<% else %>-secondary disabled<% end %> spam" data-remote="true" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban fa-white"></i> Spam post</a> 
+               <a class="btn btn-xs border-curve font-weight-bold btn-secondary ban a<%= node.author.id %>" <% if node.author.status == 0 %>style="display:none;"<% end %> data-remote="true" href="/ban/<%= node.author.id %>">Ban user</a>
+               <a class="btn btn-xs border-curve font-weight-bold btn-secondary unban a-unban<%= node.author.id %>" <% if node.author.status == 1 %>style="display:none;"<% end %> data-remote="true" href="/unban/<%= node.author.id %>">Unban user</a>
                <%= link_to "/notes/delete/#{node.id}", data: { confirm: "Are you sure you want to delete #{node.path}?" }, :remote => true, :class => "btn border-curve btn-sm font-weight-bold btn-light delete" do %>
                 <i class="fa fa-trash text-dark"></i>
                <% end %>
                <script>
                 $('#n<%= node.id %> .delete').bind('ajax:success', function(e){
                   $('#n<%= node.id %>').fadeOut()
-                  $('#deleted').fadeIn();
-                  $('#deleted').fadeOut(3000);
+                  notyNotification('relax', 3000, 'danger', 'topRight', 'Node deleted');
                 });
                 $('#n<%= node.id %> .publish').bind('ajax:success', function(e){
                   $('#n<%= node.id %>').hide()
-                  $('#npublish').fadeIn(); // published!
-                  $('#npublish').fadeOut(3000);
+                  notyNotification('relax', 3000, 'success', 'topRight', 'Node published');
+
                 });
                 $('#n<%= node.id %> .spam').bind('ajax:success', function(e){
                   $('#n<%= node.id %>').hide()
-                  $('#nspam').fadeIn(); // spammed!
-                  $('#nspam').fadeOut(3000);
+                  notyNotification('relax', 3000, 'danger', 'topRight', 'Node spammed');
+
                 });  
                 $('.a<%= node.author.id %>.ban').bind('ajax:success', function(e){
                   $('.a<%= node.author.id %>').hide()  // ban toggle
                   $('.a-unban<%= node.author.id %>').show()
+                  notyNotification('relax', 3000, 'danger', 'topRight', 'Author banned');
+
                 });
                 $('.a-unban<%= node.author.id %>.unban').bind('ajax:success', function(e){
                   $('.a-unban<%= node.author.id %>').hide()
                   $('.a<%= node.author.id %>').show()
+                  notyNotification('relax', 3000, 'success', 'topRight', 'Author unbanned');
                 });
                 </script>
               </td>
