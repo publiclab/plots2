@@ -81,7 +81,7 @@
     <div class="ple-module-main_image ple-module container">
       <div class="ple-module-guide col-md-3"><h2>2</h2></div>
 
-      <div class="ple-module-content col-md-9 container">
+      <div class="module-mainImage ple-module-content col-md-9 container">
         <div class="mainImageBox">
           <div id="mainImage" class="ple-drag-drop">
             Drag an image here to upload.
@@ -98,13 +98,15 @@
               style="width: 0%;"
             ></div>
           </div>
-
-          <input type="file" name="image[photo]" id="thumbnail-img">
-          <label for="thumbnail-img" class="thumbnailBtn"> 
-            <span>Choose a file…</span>
-          </label>
           <div id="thumbnail-filename"></div>
-          <button id="removeFile" class="thumbnailBtn">Remove File</button>
+
+          <div id="imageButtons">
+            <input type="file" name="image[photo]" id="thumbnail-img">
+            <label for="thumbnail-img" class="thumbnailBtn"> 
+              <span>Choose a file…</span>
+            </label>
+            <button id="removeFile" class="thumbnailBtn">Remove File</button>
+          </div>
           <p class="ple-help">
             <span class="ple-help-minor"
               >Select an optional main image for your post.</span
