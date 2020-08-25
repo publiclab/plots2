@@ -1,32 +1,21 @@
-<div style="display:none;" id="deleted" class="alert alert-danger alert-dismissible spam-alert" role="alert">
-  Content Deleted
-</div> 
-<div style="display:none;" id="npublish" class="alert alert-success alert-dismissible spam-alert"role="alert">
-  Content published
-</div> 
-<div style="display:none;" id="nspam" class="alert alert-danger alert-dismissible spam-alert" role="alert">
-  Content spammed
-</div>
-<div style="display:none;" id="nunflag" class="alert alert-success alert-dismissible spam-alert" role="alert">
-  Content unflagged
-</div>
-
 <div class="nav_top flex d-inline">
   <p class="text-secondary pt-2 float-left nav_title ">
     <% if params[:type] == "wiki" %>
-      <a href="/spam2" class="text-dark h4"><i class=" pt-1 pr-2 fa fa-certificate text-success"></i> Spam2 / </a><b> <span class="h2">Wiki</span>
+      <a href="/spam2" class="text-dark h4"><i class=" pt-1 pr-2 fa fa-certificate text-success"></i>Spam2/</a><b> <span class="h3">Wiki</span>
     <% elsif params[:action] == "_spam_queue"%>
-      <a href="/spam2" class="text-dark h4"><i class=" pt-1 pr-2 fa fa-clock text-success"></i> Spam2 / </a><b> <span class="h2">Queue</span>
+      <a href="/spam2" class="text-dark h4"><i class=" pt-1 pr-2 fa fa-clock text-success"></i>Spam2/</a><b> <span class="h3">Queue</span>
+    <% elsif params[:action] == "_spam_insights"%>
+      <a href="/spam2" class="text-dark h4"><i class=" pt-1 pr-2 fa fa-bar-chart text-success"></i>Spam2/</a><b> <span class="h4">Insights</span>
     <% elsif params[:action] == "_spam_revisions"%>
-      <a href="/spam2" class="text-dark h4"><i class=" pt-1 pr-2 fa fa-file text-primary"></i> Spam2 / </a><b> <span class="h2">Revisions</span>
+      <a href="/spam2" class="text-dark h4"><i class=" pt-1 pr-2 fa fa-file text-info"></i>Spam2/</a><b> <span class="h4">Revisions</span>
     <% elsif params[:action] == "_spam_comments"%>
-      <a href="/spam2" class="text-dark h4"><i class=" pt-1 pr-2 fa fa-comments text-info"></i> Spam2 / </a><b> <span class="h3">Comments</span>
+      <a href="/spam2" class="text-dark h4"><i class=" pt-1 pr-2 fa fa-comments text-info"></i>Spam2/</a><b> <span class="h4">Comments</span>
     <% elsif params[:action] == "_spam_flags"%>
-      <a href="/spam2" class="text-dark h4"><i class=" pt-1 pr-2 fa fa-flag text-warning"></i> Spam2 / </a><b> <span class="h2">Flags</span>
+      <a href="/spam2" class="text-dark h4"><i class=" pt-1 pr-2 fa fa-flag text-info"></i>Spam2/</a><b> <span class="h3">Flags</span>
     <% elsif params[:action] == "_spam_users"%>
-      <a href="/spam2" class="text-dark h4"><i class=" pt-1 pr-2 fa fa-user text-info"></i> Spam2 / </a><b> <span class="h2">Users</span>
+      <a href="/spam2" class="text-dark h4"><i class=" pt-1 pr-2 fa fa-user text-primary"></i>Spam2/</a><b> <span class="h3">Users</span>
     <% else %>
-      <a href="/spam2" class="text-dark h4"><i class=" pt-1 pr-2 fa fa-check-circle text-success"></i> Spam2 / </a><b> <span class="h3">Moderation</span> 
+      <a href="/spam2" class="text-dark h4"><i class=" pt-1 pr-2 fa fa-check-circle text-success"></i>Spam2/</a><b> <span class="h4">Moderation</span> 
     <% end %> </b>
   </p>
   <div class="dropdown float-right">
@@ -35,10 +24,10 @@
     </a>
     <div class="dropdown-menu dropdown-menu-right">
       <h6 class="dropdown-header">Menu | <%= current_user.role%> </h6>
-        <a class="dropdown-item" href="/dashboard"><i class="fa fa-list-alt text-primary"></i> Dashboard</a>
+        <a class="dropdown-item <% if params[:action] == "_spam_insights" %> active <% end %>" href="/spam2/insights"><i class="drop fa fa-line-chart text-primary"></i> Insights </a>
       <div class="dropdown-divider"></div>  
         <h6 class="dropdown-header">Spam Moderation</h6>
-        <a class="dropdown-item <% unless  params[:action] =="_spam_comments" ||params[:action] =="_spam_queue" || params[:action] =="_spam_revisions" || params[:action] =="_spam_flags" || params[:type] == "wiki" || params[:action] == "_spam_users"%> active <% end %>" href="/spam2/filter/all/30"><i class="drop fa fa-address-book text-primary"></i> Moderation</a>
+        <a class="dropdown-item <% unless  params[:action] =="_spam_comments" ||params[:action] =="_spam_queue" || params[:action] =="_spam_insights"|| params[:action] =="_spam_revisions" || params[:action] =="_spam_flags" || params[:type] == "wiki" || params[:action] == "_spam_users"%> active <% end %>" href="/spam2/filter/all/30"><i class="drop fa fa-address-book text-primary"></i> Moderation</a>
         <a class="dropdown-item <% if params[:type] == "wiki" %> active <% end %>" id="wiki_drop" href="/spam2/filter/wiki/30" ><i class="drop fa fa-book text-primary"></i> Wiki</a>
         <a class="dropdown-item <% if params[:action] == "_spam_queue" %> active <% end %>" href="/spam2/queue/filter/everything" ><i class="drop fa fa-clock text-primary"></i> Queue</a>
         <a class="dropdown-item <% if params[:action] == "_spam_revisions" %> active <% end %>" href="/spam2/revisions"><i class="drop fa fa-list text-primary"></i> Revision</a>
@@ -58,13 +47,13 @@
   <a class="btn btn-light border border-curve text-secondary mr-auto font-weight-bold" id="info-btn" data-toggle="collapse" href="#info-div" role="button" aria-expanded="false" aria-controls="info-div">
     Info <i class="fa fa-caret-down text-secondary"></i>
   </a>
-  <% if params[:action] != "_spam_revisions" && params[:action] != "_spam_comments" && params[:action] != "_spam_flags" && params[:action] != "_spam_users"%>
-    <div class=" d-inline-flex"><a href="/spam2/filter/unmoderated/30"  class="badge badge-pill badge-light text-secondary mx-2 my-3"><%= Node.where(status: 4).length %> Unmoderated</a></div>
-    <div class=" d-inline-flex"><a href="/spam2/flags/filter/all/30" class="badge badge-pill badge-light text-secondary mx-2 my-3" ><%= Node.where('flag > ?', 0).length %> Flagged</a></div>
+  <% if params[:action] != "_spam_comments"&& params[:action] != "_spam_users" && params[:action] != "_spam_insights"%>
+    <div class=" d-inline-flex"><a href="/spam2/filter/unmoderated/30"  class="badge badge-pill badge-info mx-2 my-3"><%= Node.where(status: 4).count %> Unmoderated</a></div>
+    <div class=" d-inline-flex"><a href="/spam2/flags/filter/all/30" class="badge badge-pill badge-info mx-2 my-3" ><%= Node.where('flag > ?', 0).count %> Flagged</a></div>
   <% end%>
   <% if params[:action] == "_spam_comments" %>
-    <div class=" d-inline-flex"><a href="/spam2/comment/filter/unmoderated/30" class="badge badge-pill badge-light text-secondary mx-2 my-3"><%= Comment.where(status: 4).length %> Unmoderated</a></div>
-    <div class=" d-inline-flex"><a href="/spam2/comments/filter/flagged/30"  class="badge badge-pill badge-light text-secondary my-3 mx-2" ><%= Comment.where('flag > ?', 0).length %> Flagged</a> </div>
+    <div class=" d-inline-flex"><a href="/spam2/comment/filter/unmoderated/30" class="badge badge-pill badge-info mx-2 my-3"><%= Comment.where(status: 4).count %> Unmoderated</a></div>
+    <div class=" d-inline-flex"><a href="/spam2/comments/filter/flagged/30"  class="badge badge-pill badge-info  my-3 mx-2" ><%= Comment.where('flag > ?', 0).count %> Flagged</a> </div>
   <% end %>
 </div>
 
@@ -75,7 +64,7 @@
 <nav class="navbar navbar-expand " id="bulk-nav">
   <div class="navbar-expand navbar-nav-scroll d-inline">
     <ul class=" navbar-nav">
-      <% if params[:action] != "_spam_users" && params[:action] != "_spam_revisions"%>
+      <% if params[:action] != "_spam_users" && params[:action] != "_spam_revisions" && params[:action] != "_spam_insights"%>
         <li class="nav-item pr-4">
           <a class="nav-link btn btn-light border disabled text-dark d-inline-flex border-curve" id="batch-spam" ><i class=" pt-1 pr-2 fa fa-ban text-danger" data-toggle="tooltip" data-placement="top" title="Mark selected items as spam and ban users"></i>  Spam</a>
         </li>
@@ -89,22 +78,22 @@
           <a class="nav-link btn btn-light border text-dark d-inline-flex border-curve"  id="all" ><i class=" pt-1 pr-2 fa fa-check text-primary" data-toggle="tooltip" data-placement="top" title="Select all in this page"></i> Select</a>
         </li>
         <% end %>
-        <% if params[:action] != "_spam_revisions" && params[:action] != "_spam_comments" %>
+        <% if params[:action] != "_spam_revisions" && params[:action] != "_spam_insights" &&  params[:action] != "_spam_comments" %>
         <li class="nav-item pr-4">
           <a class="nav-link btn btn-light border disabled text-dark d-inline-flex border-curve" id="batch-ban" ><i class=" pt-1 pr-2 fa fa-flag text-warning" data-toggle="tooltip" data-placement="top" title="Ban Users"></i> Ban</a>
         </li>
         <li class="nav-item pr-4">
           <a class="nav-link btn btn-light border disabled text-dark d-inline-flex border-curve" id="batch-unban" ><i class=" pt-1 pr-2 fa fa-flag text-success" data-toggle="tooltip" data-placement="top" title="Unban Users"></i> Unban</a>
         </li>
-        <% end %>
         <li class="nav-item pr-4">
-          <a class="nav-link btn btn-light border d-inline-flex border-curve" id="docs-btn" ><i class=" pt-1 pr-2 fa fa-info-circle text-info" data-toggle="tooltip"  data-placement="top" title="Wiki page for info will be added later"></i> Docs</a>
+          <a href="https://publiclab.org/notes/keshav_sethi0004/08-18-2020/spam-management-dashboard-documentation" target="_blank" class="nav-link btn btn-light border d-inline-flex border-curve text-dark" id="docs-btn" ><i class=" pt-1 pr-2 fa fa-info-circle text-info" data-toggle="tooltip"  data-placement="top" title="Documentation of Spam2"></i> Docs</a>
         </li>
+        <% end %>
     </ul>
   </div>
 </nav>
 
-<% if params[:action] != "_spam_revisions" && params[:action] != "_spam_queue"%>
+<% if params[:action] != "_spam_revisions" && params[:action] != "_spam_insights" && params[:action] != "_spam_queue"%>
 <div class="w-20 d-flex ml-1">
   <a class="btn nav-link text-secondary font-weight-bold">Nodes per page </a>
   <select name="Visible" id="pageselect" class="overflow-hiden mt-1 custom-select custom-select-sm form-control form-control-sm">
@@ -119,6 +108,7 @@
 <%= render partial: 'spam2/nodes' if @nodes %>
 <%= render partial: 'spam2/revisions' if @revisions %>
 <%= render partial: 'spam2/comments' if @comments %>
+<%= render partial: 'spam2/insights' if @graph_spammed%>
 <%= render partial: 'spam2/queue' if @queue %>
 <%= render partial: 'spam2/flags' if @flags %>
 <%= render partial: 'spam2/users' if @users %>
