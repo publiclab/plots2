@@ -1,4 +1,6 @@
 module ApplicationHelper
+  include Pagy::Frontend
+
   # returns true if user is logged in and has any of the roles given, as ['admin','moderator']
   def logged_in_as(roles)
     return false unless current_user
