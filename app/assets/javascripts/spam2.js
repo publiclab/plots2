@@ -13,7 +13,7 @@ function table_main(id) {
 		"info": false,
 		"bPaginate": false,
 		"language": {
-			"search": "Search in this page"
+			"search": "Search"
 		}
 	});
 	$('#selectall').click(function () {
