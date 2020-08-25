@@ -1,8 +1,8 @@
 <div class="card-deck w-100 mb-3" id="stats_spam">
   <div class="card">
     <div class="card-body">
-    <h5 class="card-title  text-secondary font-weight-bold"> <i class="fa fa-circle text-primary"></i>  Unmoderated</h5>
-      <ul class="list-group list-group-flush text-secondary ">
+    <a class="card-title  text-secondary h5 font-weight-bold" href="/spam2/filter/unmoderated/30"> <i class="fa fa-circle text-primary"></i>  Unmoderated</a>
+      <ul class="list-group list-group-flush text-secondary  mt-3">
         <li class="list-group-item"><%= Node.where(status: 4, created: (Time.now - 1.month)..Time.now).size%> Nodes</li>
         <li class="list-group-item"><%= Comment.where(status: 4, timestamp: (Time.now - 1.month)..Time.now).size %> Comments</li>
       </ul>
@@ -10,8 +10,8 @@
   </div>
   <div class="card">
    <div class="card-body">
-       <h5 class="card-title  text-secondary font-weight-bold"> <i class="fa fa-ban text-danger"></i>  Spammed</h5>
-      <ul class="list-group list-group-flush text-secondary ">
+       <a class="card-title h5 text-secondary font-weight-bold" href="/spam2/filter/spammed/30"> <i class="fa fa-ban text-danger"></i>  Spammed</a>
+      <ul class="list-group list-group-flush text-secondary mt-3">
         <li class="list-group-item"><%= Node.where(status: 0, created: (Time.now - 1.month)..Time.now).size%> Nodes</li>
         <li class="list-group-item"><%= Comment.where(status: 0, timestamp: (Time.now - 1.month)..Time.now).size %> Comments</li>
       </ul>
@@ -19,8 +19,8 @@
   </div>
   <div class="card">
     <div class="card-body">
-        <h5 class="card-title  text-secondary font-weight-bold"> <i class="fa fa-flag text-warning"></i>  Flagged</h5>
-      <ul class="list-group list-group-flush text-secondary ">
+        <a class="card-title h5 text-secondary font-weight-bold" href="/spam2/flags/filter/all/30"> <i class="fa fa-flag text-warning"></i>  Flagged</a>
+      <ul class="list-group list-group-flush text-secondary mt-3">
         <li class="list-group-item"><%= Node.where('flag > ?', 0).where(created: (Time.now - 1.month)..Time.now).size%> Nodes</li>
         <li class="list-group-item"><%= Comment.where('flag > ?', 0).where(timestamp: (Time.now - 1.month)..Time.now).size %> Comments</li>
       </ul>
@@ -28,8 +28,8 @@
   </div>
     <div class="card">
     <div class="card-body">
-        <h5 class="card-title  text-secondary font-weight-bold"> <i class="fa fa-check text-success"></i>  Published</h5>
-        <ul class="list-group list-group-flush text-secondary ">
+        <a class="card-title h5 text-secondary font-weight-bold" href="/spam2/filter/published/30"> <i class="fa fa-check text-success"></i>  Published</a>
+        <ul class="list-group list-group-flush text-secondary mt-3">
             <li class="list-group-item"><%= Node.where(status: 1, created: (Time.now - 1.month)..Time.now).size%> Nodes</li>
             <li class="list-group-item"><%= Comment.where(status: 1, timestamp: (Time.now - 1.month)..Time.now).count %> Comments</li>
         </ul>

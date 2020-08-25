@@ -58,7 +58,7 @@ $(document).ready(function () {
         <a id="spammed" class="btn nav-link <% if params[:type] == "spammed" %>  active <% else %> text-secondary <% end %>"> <i class="fa fa-ban <% if params[:type] == "spammed" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all flag Nodes which are spammed"></i> Spammed </a>
       </li>
       <li class="nav-item">
-        <a id="unmoderated" class="btn nav-link  <% if params[:type] == "unmoderated" %>  active <% else %> text-secondary <% end %>"> <i class="fa fa-check-square-o <% if params[:type] == "unmoderated" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all flag Nodes which are unmoderated"></i> Unmoderated</a>
+        <a id="unmoderated" class="btn nav-link  <% if params[:type] == "unmoderated" %>  active <% else %> text-secondary <% end %>"> <i class="fa fa-exclamation-circle <% if params[:type] == "unmoderated" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all flag Nodes which are unmoderated"></i> Unmoderated</a>
       </li>
       <li class="nav-item">
         <a id="page" class="btn nav-link <% if params[:type] == "page" %>  active <% else %> text-secondary <% end %>"> <i class="fa fa-file-text-o <% if params[:type] == "page" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all Wikis which are flagged"></i> Page</a>
@@ -110,23 +110,19 @@ $(document).ready(function () {
                <script>
                 $('#n<%= flag.id %> .delete').bind('ajax:success', function(e){
                   $('#n<%= flag.id %>').fadeOut()
-                  $('#deleted').fadeIn();
-                  $('#deleted').fadeOut(3000);
+                  notyNotification('relax', 3000, 'danger', 'topRight', 'Node deleted');
                 });
                 $('#n<%= flag.id %> .publish').bind('ajax:success', function(e){
                   $('#n<%= flag.id %>').hide()
-                  $('#npublish').fadeIn(); // published!
-                  $('#npublish').fadeOut(3000);
+                  notyNotification('relax', 3000, 'success', 'topRight', 'Node published');
                 });
                 $('#n<%= flag.id %> .spam').bind('ajax:success', function(e){
                   $('#n<%= flag.id %>').hide()
-                  $('#nspam').fadeIn(); // spammed!
-                  $('#nspam').fadeOut(3000);
+                  notyNotification('relax', 3000, 'danger', 'topRight', 'Node spammed');
                 });
                 $('#n<%= flag.id %> .unflag').bind('ajax:success', function(e){
                   $('#n<%= flag.id %>').hide()
-                  $('#nunflag').fadeIn(); // unflag!
-                  $('#nunflag').fadeOut(3000);
+                  notyNotification('relax', 3000, 'warning', 'topRight', 'Node unflagged');
                 });  
                 </script>
               </td>

@@ -88,10 +88,12 @@ $(document).ready(function () {
                 $('.a<%= user.id %>.ban').bind('ajax:success', function(e){
                   $('.a<%= user.id %>').hide();  // ban toggle
                   $('.a-unban<%= user.id %>').show();
+                  notyNotification('relax', 3000, 'danger', 'topRight', 'User banned');
                 });
                 $('.a-unban<%= user.id %>.unban').bind('ajax:success', function(e){
                   $('.a-unban<%= user.id %>').hide();
                   $('.a<%= user.id %>').show();
+                  notyNotification('relax', 3000, 'warning', 'topRight', 'User unbanned');
                 });
                 </script>
               </td>

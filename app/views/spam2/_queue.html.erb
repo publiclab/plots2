@@ -89,31 +89,29 @@ $(document).ready(function () {
                <script>
                 $('#n<%= node.id %> .delete').bind('ajax:success', function(e){
                   $('#n<%= node.id %>').fadeOut()
-                  $('#deleted').fadeIn();
-                  $('#deleted').fadeOut(3000);
+                  noyNotification('relax', 3000, 'danger', 'topRight', 'Node deleted');
                 });
                 $('#n<%= node.id %> .publish').bind('ajax:success', function(e){
                   $('#n<%= node.id %>').hide()
-                  $('#npublish').fadeIn(); // published!
-                  $('#npublish').fadeOut(3000);
+                  notyNotification('relax', 3000, 'success', 'topRight', 'Node published');
                 });
                 $('#n<%= node.id %> .spam').bind('ajax:success', function(e){
                   $('#n<%= node.id %>').hide()
-                  $('#nspam').fadeIn(); // spammed!
-                  $('#nspam').fadeOut(3000);
+                  notyNotification('relax', 3000, 'success', 'topRight', 'Node spammed');
                 });  
                 $('.a<%= node.author.id %>.ban').bind('ajax:success', function(e){
                   $('.a<%= node.author.id %>').hide()  // ban toggle
                   $('.a-unban<%= node.author.id %>').show()
+                  notyNotification('relax', 3000, 'danger', 'topRight', 'Author banned');
                 });
                 $('.a-unban<%= node.author.id %>.unban').bind('ajax:success', function(e){
                   $('.a-unban<%= node.author.id %>').hide()
                   $('.a<%= node.author.id %>').show()
+                  notyNotification('relax', 3000, 'success', 'topRight', 'Author unbanned');
                 });
                 $('#n<%= node.id %> .unflag').bind('ajax:success', function(e){
                   $('#n<%= node.id %>').hide()
-                  $('#nunflag').fadeIn(); // unflag!
-                  $('#nunflag').fadeOut(3000);
+                  notyNotification('relax', 3000, 'warning', 'topRight', 'Node flagged');
                 });  
                 </script>
               </td>

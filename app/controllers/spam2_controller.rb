@@ -9,6 +9,8 @@ class Spam2Controller < ApplicationController
                    @nodes.where(type: 'page', status: 1).order('changed DESC')
                  when 'unmoderated'
                    @nodes.where(status: 4).order('changed DESC')
+                  when 'published'
+                    @nodes.where(status: 1).order('changed DESC')
                  when 'spammed'
                    @nodes.where(status: 0).order('changed DESC')
                  when 'created'
@@ -124,6 +126,8 @@ class Spam2Controller < ApplicationController
       @comments = case params[:type]
                   when 'unmoderated'
                     @comments.where(status: 4).order('timestamp DESC')
+                  when 'published'
+                    @comments.where(status: 1).order('timestamp DESC')
                   when 'spammed'
                     @comments.where(status: 0).order('timestamp DESC')
                   when 'flagged'
