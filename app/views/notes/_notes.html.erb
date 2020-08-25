@@ -14,8 +14,8 @@
     <% end %>
   </div>
 </div>
-<% if @pagy %>
-  <%== pagy_bootstrap_nav @pagy %>
+<% if notes.class == "Pagy" %>
+  <%== pagy_bootstrap_nav notes %>
 <% else %>
   <%= will_paginate notes, renderer: WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || (unpaginated ||= false) %>
 <% end %>

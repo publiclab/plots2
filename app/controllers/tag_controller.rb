@@ -118,9 +118,6 @@ class TagController < ApplicationController
       nodes = Node.for_tagname_and_type(params[:id], node_type, question: (@node_type == 'questions'))
     end
 
-    @pagy, nodes = pagy(nodes.order(order_by), items: 24)
-    @paginated = true
-
     if @start && @end
       nodes = nodes.where(created: @start.to_i..@end.to_i)
     else
@@ -129,6 +126,9 @@ class TagController < ApplicationController
         nodes = nodes.where.not(nid: @pinned_nodes.collect(&:id))
       end
     end
+
+    @pagy, nodes = pagy(nodes.order(order_by), items: 24)
+    @paginated = true
 
     @qids = Node.questions.where(status: 1)
                .collect(&:nid)

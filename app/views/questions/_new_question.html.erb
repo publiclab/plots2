@@ -107,10 +107,10 @@
 </div>
 
 <div class="text-center">
-<% if @pagy %>
-  <%== pagy_bootstrap_nav @pagy %>
+<% if questions.class == "Pagy" %>
+  <%== pagy_bootstrap_nav questions %>
 <% else %>
-<%= will_paginate questions, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || questions.empty? %>
+  <%= will_paginate questions, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || questions.empty? %>
 <% end %>
 </div>
 
