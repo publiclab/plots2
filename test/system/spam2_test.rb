@@ -16,28 +16,29 @@ class SpamTest < ApplicationSystemTestCase
     accept_confirm "Are you sure you want to delete #{spam_page.path}?" do
     find("a[href='/notes/delete/#{spam_page.id}'").click()
     end
-    assert_selector('div.alert', text: 'Content Deleted')
+    assert_selector('.noty_body', text: 'Node deleted')
+
   end
 
   test "publish node in spam2" do
     publish_page = nodes(:first_timer_note)
     visit "/spam2"
-    find("a[href='/moderate/publish/#{publish_page.id}'").click()    
-    page.assert_selector("div.alert", text: "Content published")
+    find("a[href='/moderate/publish/#{publish_page.id}'").click()
+    assert_selector('.noty_body', text: 'Node published')
   end
 
   test "spam post in spam2" do
     spam_page = nodes(:first_timer_note)
     visit "/spam2"
-    find("a[href='/moderate/spam/#{spam_page.id}'").click()    
-    page.assert_selector("div.alert", text: "Content spammed")
+    find("a[href='/moderate/spam/#{spam_page.id}'").click()
+    assert_selector('.noty_body', text: 'Node spammed')
   end
 
   test "unflag post in spam2" do
     flag_page = nodes(:about)
     visit "/spam2/flags"
-      find("a[href='/moderate/remove_flag_node/#{flag_page.id}'").click() 
-    page.assert_selector("div.alert", text: "Content unflagged")
+      find("a[href='/moderate/remove_flag_node/#{flag_page.id}'").click()
+      assert_selector('.noty_body', text: 'Node unflagged')
   end
 
   test "banning of a user in spam2" do
@@ -158,5 +159,12 @@ class SpamTest < ApplicationSystemTestCase
       find(".selectedId").click()
     end
     assert_selector('#select-count', text: '2')
+  end
+
+  test "unflag post in spam2/comments" do
+    flag_comment= comments(:spam_comment)
+    visit "/spam2/comments/filter/flagged/30"
+      find("a[href='/moderate/remove_flag_comment/#{flag_comment.id}'").click()
+      assert_selector('.noty_body', text: 'Comment unflagged')
   end
 end

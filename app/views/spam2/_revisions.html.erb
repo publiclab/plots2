@@ -31,7 +31,8 @@ $(document).ready(function () {
           <tr id="n<%= revision.vid %>">
             <td><input  class="selectedId" value="<%= revision.vid %>" type="checkbox" /></td>
             <td>
-              <i class="fa fa-file text-secondary"></i> <a class="text-dark font-weight-bold" data-toggle="modal" data-target="#ninfo<%= revision.vid %>" href="javascript:void(0);"> <%= revision.title.truncate(20) %></a><br />
+            <% if revision.status == 1 %><i class="fa fa-check text-success"></i> <% elsif revision.status == 0 %><i class="fa fa-ban text-danger"></i> <% elsif revision.status == 4 %><i class="fa fa-circle text-priamry"></i> <% end %>
+              <a class="text-dark font-weight-bold" data-toggle="modal" data-target="#ninfo<%= revision.vid %>" href="javascript:void(0);"> <%= revision.title.truncate(20) %></a><br />
             </td>
             <td>
               <a class="text-info" href="/profile/<%= revision.author&.name %>"><%= revision.author&.name %></a> 
@@ -41,11 +42,26 @@ $(document).ready(function () {
             </td>
             <td>
               <a class="badge badge-pill badge<% if revision.status == 0 %>-success<% else %>-secondary disabled<% end %> publish" data-remote="true" href="/moderate/revision/publish/<%= revision.vid %>"><i class="fa fa-check-circle fa-white"></i> Publish post</a>
-                <% if revision.author&.status == 0 %>
-                  <a class="badge badge-pill badge-danger ban a<%= revision.author.id %>" href="/ban/<%= revision.author.id %>">Ban</a>
-                <% elsif revision.author&.status == 1 %>
-                  <a class="badge badge-pill badge-secondary unban a-unban<%= revision.author.id %>" href="/unban/<%= revision.author.id %>">Unban</a>
-                <% end %>
+                  <a class="badge badge-pill badge-danger ban a<%= revision.author.id %>" data-remote="true" <% if revision.author.status == 0 %>style="display:none;"<% end %> href="/ban/<%= revision.author.id %>">Ban</a>  
+                  <a class="badge badge-pill badge-secondary unban a-unban<%= revision.author.id %>" data-remote="true"  <% if revision.author&.status == 1 %>style="display:none;"<% end %> href="/unban/<%= revision.author.id %>">Unban</a>
+                <script>
+                  $('#n<%= revision.vid %> .publish').bind('ajax:success', function(e){
+                    $('#n<%= revision.vid %>').hide()
+                    notyNotification('relax', 3000, 'success', 'topRight', 'Revision published');
+
+                  });  
+                  $('.a<%= revision.author.id %>.ban').bind('ajax:success', function(e){
+                    $('.a<%= revision.author.id %>').hide()  // ban toggle
+                    $('.a-unban<%= revision.author.id %>').show()
+                    notyNotification('relax', 3000, 'danger', 'topRight', 'Author banned');
+
+                  });
+                  $('.a-unban<%= revision.author.id %>.unban').bind('ajax:success', function(e){
+                    $('.a-unban<%= revision.author.id %>').hide()
+                    $('.a<%= revision.author.id %>').show()
+                    notyNotification('relax', 3000, 'success', 'topRight', 'Author unbanned');
+                  });
+                </script>
             </td>
           </tr>
             <div class="modal fade" id="ninfo<%= revision.vid %>">

@@ -135,6 +135,7 @@ spam_comment:
   comment: This thing is spam.
   timestamp: <%= Time.now.to_i + 14 %>
   thread: /01
+  flag: 1
 
 comment_by_test_user:
   uid: 8

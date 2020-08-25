@@ -1129,6 +1129,21 @@ class Node < ActiveRecord::Base
     end
   end
 
+  def self.spam_graph_making(status)
+    start = Time.now - 1.year
+    fin = Time.now
+    time_hash = {}
+    week = start.to_date.step(fin.to_date, 7).count
+    while week >= 1
+      months = (fin - (week * 7 - 1).days)
+      range = (fin.to_i - week.weeks.to_i)..(fin.to_i - (week - 1).weeks.to_i)
+      nodes = Node.where(created: range).where(status: status).select(:created).size
+      time_hash[months.to_f * 1000] = nodes
+      week -= 1
+    end
+    time_hash
+  end
+
   def notify_callout_users
     # notify mentioned users
     mentioned_users.each do |user|
