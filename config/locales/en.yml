@@ -256,7 +256,7 @@ en:
           and <b>%{comments_count} comments </b>  posted in this period.
       members_and_contributors: |
           <b>%{member_count}  member registrations</b>
-          and <b>%{people_count}  contributors </b> posted in this period.
+          and <b>%{people_count}  contributors </b> posted notes, wikis, questions, comments, or revisions in this period.
 
   dashboard:
     _node_comment:
