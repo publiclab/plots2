@@ -9,7 +9,7 @@
       <%
         tags = "#{response_type}:#{@node.id}"
         tags += ',hidden:response' if response_type == 'response'
-        tags += ",#{(@tagnames.uniq.delete_if{|x| x.match(":") }).join(',')}" if @tagnames && @tagnames.length > 0
+        tags += ",#{(@tagnames.uniq.delete_if{|x| x.match(":") }).join(',')}" if @tagnames && @tagnames.size > 0
         tags += '&n=17223' if response_type == 'photo'
       %>
       <a class='btn btn-primary btn-lg' href="/post?tags=<%= tags %>">
@@ -20,7 +20,7 @@
 
       <% if @node.power_tag('activity') %>
         <% if Tag.where(name: 'activities:' + @node.power_tag('activity')).first %>
-          <% if Tag.where(name: 'activities:' + @node.power_tag('activity')).first.nodes.length > 0 %>
+          <% if Tag.where(name: 'activities:' + @node.power_tag('activity')).first.nodes.size > 0 %>
             <a id="other-activities" href="<%= Tag.where(name: 'activities:' + @node.power_tag('activity')).first.nodes.first.path %>">Browse other activities for "<%= @node.power_tag('activity') %>"</a>
           <% end %>
         <% end %>
@@ -37,7 +37,7 @@
     </div>
     <hr />
 
-    <h3><%= translation("notes._responses.#{response_type}s") %> (<%= @responses.length %>)</h3>
+    <h3><%= translation("notes._responses.#{response_type}s") %> (<%= @responses.size %>)</h3>
 
     <% if response_type == 'response' %>
       <%= render partial: "notes/notes", locals: { notes: @responses } %>
@@ -48,7 +48,7 @@
         <%= raw insert_extras(" [notes:#{response_type}:#{@node.id}]") %>
       <% else %>
         <p>
-          None yet. <a href="/post?tags=<%= response_type %>:<%= @node.id %><% if response_type == 'response' %>,hidden:response<% end %><%= ',' + (@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') if @tagnames && @tagnames.length > 0%>">Be the first to post one!</a>
+          None yet. <a href="/post?tags=<%= response_type %>:<%= @node.id %><% if response_type == 'response' %>,hidden:response<% end %><%= ',' + (@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') if @tagnames && @tagnames.size > 0%>">Be the first to post one!</a>
         </p>
       <% end %>
     <% end %>
