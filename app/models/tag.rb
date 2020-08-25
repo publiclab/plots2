@@ -62,7 +62,7 @@ class Tag < ApplicationRecord
   end
 
   def self.contributors(tagname)
-    tag = Tag.includes(:node).where(name: tagname).first
+    tag = Tag.where(name: tagname).first
     return [] if tag.nil?
 
     nodes = tag.node.includes(:revision, :comments, :answers).where(status: 1)

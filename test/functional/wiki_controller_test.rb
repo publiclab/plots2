@@ -126,6 +126,20 @@ class WikiControllerTest < ActionController::TestCase
     assert_equal selector.size, 1
   end
 
+  test 'should be able to add tag' do
+    title = 'All about balloon mapping'
+
+    post :create,
+         params: {
+         uid:   users(:bob).id,
+         title: title,
+         body:  'This is fascinating documentation about balloon mapping.',
+         tags:  'balloon-mapping'
+         }
+
+         assert Node.last.has_tag('balloon-mapping')
+  end
+
   test 'viewing edit wiki page' do
     UserSession.find.destroy if UserSession.find
     UserSession.create(users(:jeff)) # jeff user fixture is not a first-time-poster
@@ -661,5 +675,15 @@ class WikiControllerTest < ActionController::TestCase
     assert wikis.none? { |wiki| wiki.type == "question" || wiki.status == "note"}
     # check correct author
     assert wikis.all? { |wiki| wiki.uid == user.uid }
+  end
+
+  test "print wiki template" do
+    node = nodes(:about)
+
+    get :print, params: { id: node.nid }
+
+    assert_template 'print'
+    assert_response :success
+    assert_select 'div#content-window', auto_link(insert_extras(node.latest.render_body), sanitize: false)[3..-6]
   end
 end

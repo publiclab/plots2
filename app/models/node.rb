@@ -254,7 +254,7 @@ class Node < ActiveRecord::Base
   end
 
   def answered
-    answers&.length&.positive?
+    answers&.size&.positive?
   end
 
   def has_accepted_answers

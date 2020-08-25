@@ -1,0 +1,163 @@
+<script src="/assets/notes.js" type="text/javascript"></script>
+<%= stylesheet_link_tag "print_new", :media => "print" %>
+<div>
+  <p class="info-date"><i><b><%= @node.created_at.to_s(:long) %> / <%= raw translation('wiki.show.last_edited', url1: "/profile/" + @node.latest.author.name, author: @node.latest.author.name, time: time_ago_in_words(@node.latest.created_at)) %></b></i></p>
+  <h1 id='note-title'><%= @node.title %></h1>
+  <p class="info-author"><img class="rounded-circle coauthor-photo" style="width:20px; height:20px; margin-right:8px;" src="<%= @node.user.profile_image %>"/><%= @node.author.name %></p>
+  <% if @node.has_power_tag('with') %><% @node.coauthors.each_with_index do |coauthor,i| %>
+          <p class="info-author">
+          <img class="rounded-circle coauthor-photo" style="width:20px; height:20px; margin-right:8px;" src="<%= coauthor.profile_image %>"/>
+            <%= coauthor.username%></p>
+          <%= ' ' if i < @node.coauthors.length-1 %><% end %><% end %>
+  <% if @node.main_image %>
+      <img id="main-image-print" style="max-height:600px;max-width:100%;" src="<%= @node.main_image.path(:large) %>" />
+  <% end %>
+
+  <div id=content-window>
+  <%= raw auto_link(insert_extras(@node.latest.render_body), :sanitize => false) %>
+  </div>
+
+</div><!--/span-->
+<style>
+.info-author {
+	color: rgb(49, 49, 49);
+	font-size: 12pt;
+}
+
+.info-date {
+	display: inline-block;
+	color: rgb(102, 102, 102);
+	font-size: 10pt;
+	text-transform: uppercase
+}
+
+.info-revision {
+	background-color: rgb(241, 243, 245);
+	color: rgb(60, 60, 59);
+	padding: 5px;
+	display: inline-block;
+	float: right
+}
+
+
+img {
+	display: block;
+	page-break-before: auto;
+	page-break-after: auto;
+	page-break-inside: avoid;
+	break-before: avoid-page;
+	padding: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+	border: 0.2em solid;
+	margin-left: auto;
+	margin-right: auto;
+	width: 50%;
+}
+
+#main-image-print {
+	width: 100%;
+	border: none;
+}
+
+.coauthor-photo{
+  width: 100%;
+  float: left;
+	border-radius: 50%;
+	border-style: none;
+	margin-left: 0;
+	display: block;
+  padding:0;
+}
+
+#profile-photo{
+  width: 100%;
+  padding:0;
+  float: left;
+  border: none;
+	border-style: none;
+	margin-left: none;
+	display: block;
+}
+
+h1 {
+	break-before: always;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+	break-after: avoid-page;
+	break-inside: avoid;
+}
+
+';
+
+/* for tables */
+
+table {
+	width: 100%;
+	font: 17px Calibri;
+}
+
+table,
+th,
+td {
+	border: solid 1px #DDD;
+	border-collapse: collapse;
+	padding: 2px 3px;
+	text-align: center;
+}
+
+
+/* for blockquote */
+
+blockquote {
+	position: relative;
+	padding-left: 1em;
+	border-left: 0.2em solid;
+	font-weight: 100;
+	break-inside: split;
+}
+
+blockquote:before,
+blockquote:after {
+	content: "\201C";
+}
+
+blockquote:after {
+	content: "\201D";
+}
+
+
+/*for font styling and size*/
+
+html, body{
+	font-family: Arial;
+	font-size: 12pt;
+	line-height: 1.2;
+}
+
+h1 {
+  font-family: Arial;
+	font-size: 180%;
+}
+
+h2 {
+  font-family: Arial;
+	font-size: 160%;
+}
+
+h3 {
+  font-family: Arial;
+	font-size: 140%;
+}
+
+h4 {
+  font-family: Arial;
+	font-size: 120%;
+}
+
+</style>

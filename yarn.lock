@@ -447,19 +447,10 @@ blueimp-canvas-to-blob@3:
   resolved "https://registry.yarnpkg.com/blueimp-canvas-to-blob/-/blueimp-canvas-to-blob-3.17.0.tgz#d796e72aa1fd37f9471e0396e64d323956564a23"
   integrity sha512-LcuVZZtKtE4yUrLb0IQA7ndMm19gooDTrzvjjkvmQ1MhkFlSzTw+8Ftp+/ckfGeP2UDQvDsPyy8mIT69itAqbg==
 
-blueimp-file-upload@^10.30.1:
+blueimp-file-upload@^10.30.1, blueimp-file-upload@blueimp/jQuery-File-Upload#^10.31.0, jquery-file-upload@blueimp/jQuery-File-Upload#~10.31.0:
   version "10.31.0"
-  resolved "https://registry.yarnpkg.com/blueimp-file-upload/-/blueimp-file-upload-10.31.0.tgz#46fc4fea4e678b57afbd9008f179e59fc3aa3e84"
-  integrity sha512-dGAxOf9+SsMDvZPTsIUpe0cOk57taMJYE3FocHEUebhn5BnDbu1hcWOmrP8oswIe6V61Qcm9UDuhq/Pv1t/eRw==
-  optionalDependencies:
-    blueimp-canvas-to-blob "3"
-    blueimp-load-image "5"
-    blueimp-tmpl "3"
-
-blueimp-file-upload@blueimp/jQuery-File-Upload#^10.30.1:
-  version "10.30.1"
-  uid "67d3f5bae532df367d6301970ce369969c7592a0"
-  resolved "https://codeload.github.com/blueimp/jQuery-File-Upload/tar.gz/67d3f5bae532df367d6301970ce369969c7592a0"
+  uid "7e655a866677184412fe16a512c61c547a1e875c"
+  resolved "https://codeload.github.com/blueimp/jQuery-File-Upload/tar.gz/7e655a866677184412fe16a512c61c547a1e875c"
   optionalDependencies:
     blueimp-canvas-to-blob "3"
     blueimp-load-image "5"
@@ -719,7 +710,7 @@ bullseye@1.4.6:
     seleccion "2.0.0"
     sell "^1.0.0"
 
-bureaucracy@1.0.7, "bureaucracy@git://github.com/jywarren/bureaucracy.git#xhrOptions":
+bureaucracy@1.0.7:
   version "1.0.7"
   resolved "git://github.com/jywarren/bureaucracy.git#f2522f42eba0f09444971e7138a56179cd8bffa9"
   dependencies:
@@ -3280,15 +3271,6 @@ jquery-confirm@^3.3.4:
   dependencies:
     jquery ">=1.6"
 
-jquery-file-upload@blueimp/jQuery-File-Upload#~10.31.0:
-  version "10.31.0"
-  uid "7e655a866677184412fe16a512c61c547a1e875c"
-  resolved "https://codeload.github.com/blueimp/jQuery-File-Upload/tar.gz/7e655a866677184412fe16a512c61c547a1e875c"
-  optionalDependencies:
-    blueimp-canvas-to-blob "3"
-    blueimp-load-image "5"
-    blueimp-tmpl "3"
-
 jquery-lazyload@1.9.7:
   version "1.9.7"
   resolved "https://registry.yarnpkg.com/jquery-lazyload/-/jquery-lazyload-1.9.7.tgz#9982b388c533c0b611214b3c5aaa0b9fede071f7"
@@ -4642,10 +4624,10 @@ psl@^1.1.24, psl@^1.1.28:
   resolved "https://registry.yarnpkg.com/psl/-/psl-1.7.0.tgz#f1c4c47a8ef97167dea5d6bbf4816d736e884a3c"
   integrity sha512-5NsSEDv8zY70ScRnOTn7bK7eanl2MvFrOrS/R6x+dBt5g1ghnj9Zv90kO8GwT8gxcu2ANyFprnFYB85IogIJOQ==
 
-publiclab-editor@^2.0.0, publiclab-editor@^2.1.2:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/publiclab-editor/-/publiclab-editor-2.1.2.tgz#9f706cce208505259ee855cb6f0858e5be33001a"
-  integrity sha512-99CI0FHfFmTPLXW4jelu0jYWATiNe4NMB+x/Viy5lJgGvMA2n+qy8DtHIYUoW85TLmX5fusnEvZZHSc9nIGFtA==
+publiclab-editor@^2.0.0, publiclab-editor@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/publiclab-editor/-/publiclab-editor-2.2.0.tgz#af2a1473290198d66b7a2fcdbd9c934519a68771"
+  integrity sha512-4cdoIQaKaC/ugMezod324i74cKeYokvoIlXwo3zbXKp4atUyfcCjntpKxlicV2mLqIrUQJOFpMVzZVXG6fF3gw==
   dependencies:
     at.js "^1.5.4"
     blueimp-file-upload "^10.30.1"
@@ -4663,7 +4645,7 @@ publiclab-editor@^2.0.0, publiclab-editor@^2.1.2:
     moment "~2.27.0"
     resig-class "~1.0.0"
     typeahead.js-browserify "~1.0.7"
-    woofmark "git://github.com/jywarren/woofmark.git#xhrOptionsAltBureaucracy"
+    woofmark "git://github.com/jywarren/woofmark.git#plots2"
     xhr "~2.5.0"
 
 pump@^3.0.0:
@@ -6119,12 +6101,13 @@ window-size@0.1.0:
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
   integrity sha1-VDjNLqk7IC76Ohn+iIeu58lPnJ0=
 
-"woofmark@git://github.com/jywarren/woofmark.git#xhrOptionsAltBureaucracy":
-  version "4.2.3"
-  resolved "git://github.com/jywarren/woofmark.git#12e2c1d4559268e2de605ad6084d5dce24ea42c6"
+"woofmark@git://github.com/jywarren/woofmark.git#plots2":
+  version "4.0.3"
+  uid "39237b798308e6855acde1a938c18a8e4da62fce"
+  resolved "git://github.com/jywarren/woofmark.git#39237b798308e6855acde1a938c18a8e4da62fce"
   dependencies:
     bullseye "1.4.6"
-    bureaucracy "git://github.com/jywarren/bureaucracy.git#xhrOptions"
+    bureaucracy "1.0.7"
     crossvent "1.5.0"
     kanye "3.0.2"
     local-storage "1.4.2"

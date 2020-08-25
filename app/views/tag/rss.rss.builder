@@ -5,7 +5,7 @@ xml.rss :version => '2.0', 'xmlns:atom' => 'http://www.w3.org/2005/Atom' do
     xml.link "https://#{request.host}/feed/tag/" + params[:tagname] + ".rss"
     xml.rel "self"
 
-    @notes.each do |node|
+    @notes.includes(user: [:user_tags]).each do |node|
       body = node.body
       author = node.author.username
       if node.author.has_power_tag('twitter')
