@@ -76,7 +76,7 @@ class Spam2Controller < ApplicationController
 
   def _spam_users
     if logged_in_as(%w(moderator admin))
-      @users = User.paginate(page: params[:page], per_page: params[:pagination])
+      @users = User.paginate(page: params[:page], per_page: params[:pagination]).order('created_at DESC')
       @users = case params[:type]
                  when 'banned'
                    @users.where('rusers.status = 0')
