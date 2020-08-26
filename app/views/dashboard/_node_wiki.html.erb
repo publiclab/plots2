@@ -8,14 +8,14 @@
       <div class="header-icon"><i class="fa fa-pencil"></i></div>
       <p class="meta"><%= translation('dashboard._node_wiki.new_edit_by') %> <a href="/profile/<%= node.author.try(:name) %>"><%= node.author.try(:name) %></a></p>
     <% end %>
- 
-    <!-- TODO: could be resolved with `node.node.main_image` but applying quick fix here --> 
+
+    <!-- TODO: could be resolved with `node.node.main_image` but applying quick fix here -->
     <% if false && node.main_image %>
-      <a class="img" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" style="width:100%;" /></a>
+        <a class="img" href="<%= node.path %>"><%= image_tag(node.main_image.path(:default), style:'width:100%;') %></a>
     <% elsif false && node.scraped_image %>
-      <a class="img" href="<%= node.path %>"><img src="<%= node.scraped_image %>" style="width:100%;" /></a>
+        <a class="img" href="<%= node.path %>"><%= image_tag(node.scraped_image, style:'width:100%;') %></a>
     <% end %>
- 
+
     <h4>
       <a href="<%= node.path %>">
         <% if node.is_a?(Node) %>
@@ -23,17 +23,17 @@
         <% else %>
           <%= node.parent.latest.title %>
         <% end %>
-      </a> 
+      </a>
     </h4>
 
     <% if node.is_a?(Revision) && node.previous %>
       <a class="btn btn-outline-secondary btn-sm float-right btn-diff btn-diff-<%= index %>"><%= translation('dashboard._node_wiki.changes') %> &raquo;</a>
     <% end %>
- 
+
     <p class="meta"><%= render partial: "dashboard/node_meta", locals: { node: node } %></p>
 
     <% if node.is_a?(Revision) && node.previous %>
-      
+
       <div class="card bg-light">
         <div data-diff-a="<%= node.previous.vid %>" data-diff-b="<%= node.vid %>" class="card-body wiki-diff wiki-diff-<%= index %>" style="display:none;"><i class="fa fa-circle-o-notch fa-spin"></i></div>
       </div>
