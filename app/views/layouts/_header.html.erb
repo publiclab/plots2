@@ -109,7 +109,7 @@
                   <% if current_user.profile_image == "https://www.gravatar.com/avatar/eb721d116a28f4a4da4ea67340c8ce75" %>
                     <i class="fa fa-user-circle fa-lg" style="color:white;"></i>
                   <% else %>
-                    <img class="rounded-circle" id="profile-photo" alt="profile-photo" style="width:20px; height:20px; margin-right:8px;" src="<%= current_user.profile_image %>" />
+                    <%= image_tag(current_user.profile_image, class:'rounded-circle', style:'width:20px; height:20px; margin-right:8px;', alt:'profile-photo', id:'profile-photo') %>
                   <% end %>
                 </div>
               </a>
