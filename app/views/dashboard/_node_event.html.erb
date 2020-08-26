@@ -4,19 +4,19 @@
   <div class="header-icon"><i class="fa fa-calendar"></i> <a aria-label="Link to event" href="/n/<%= node.id %>"><i class="fa fa-link"></i></a></div>
 
     <div style="overflow: hidden;">
-      
+
       <%= render partial: 'dashboard/node_moderate', locals: { node: node } %>
-     
+
       <% if node.main_image %>
-        <a class="img" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" style="width:100%;" /></a>
+          <a class="img" href="<%= node.path %>"><%= image_tag(node.main_image.path(:default), style:'width:100%;') %></a>
       <% elsif node.scraped_image %>
-        <a class="img" href="<%= node.path %>"><img src="<%= node.scraped_image %>" style="width:100%;" /></a>
+          <a class="img" href="<%= node.path %>"><%= image_tag(node.scraped_image, style:'width:100%;') %></a>
       <% end %>
-     
+
       <h4><a href="<%= node.path %>"><%= node.title %></a></h4>
-     
+
       <a class="btn btn-outline-secondary btn-sm float-right respond rsvp">RSVP</a>
-     
+
       <p class="meta">Event <%= render partial: "dashboard/node_meta", locals: { node: node } %></p>
 
     </div>
