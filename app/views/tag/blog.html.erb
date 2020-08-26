@@ -46,7 +46,7 @@
       <% @notes.each_with_index do |node,i| %>
         <div class="clearfix blog-entry">
           <% if node.main_image %>
-            <a class="img" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
+              <a class="img" href="<%= node.path %>"><%= image_tag(node.main_image.path(:default)) %></a>
           <% end %>
           <h1><a href="<%= node.path %>"><%= node.title %></a></h1>
           <p class="meta" style="color:#888;"><small>
