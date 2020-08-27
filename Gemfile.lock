@@ -248,7 +248,7 @@ GEM
       thor (>= 0.14, < 2.0)
     json (2.3.1)
     json_expressions (0.9.0)
-    jwt (2.2.1)
+    jwt (2.2.2)
     launchy (2.4.3)
       addressable (~> 2.3)
     lazyload-rails (0.5.0)
@@ -324,7 +324,7 @@ GEM
     omniauth (1.9.0)
       hashie (>= 3.4.6, < 3.7.0)
       rack (>= 1.6.2, < 3)
-    omniauth-facebook (6.0.0)
+    omniauth-facebook (7.0.0)
       omniauth-oauth2 (~> 1.2)
     omniauth-github (1.4.0)
       omniauth (~> 1.5)
@@ -336,8 +336,8 @@ GEM
     omniauth-oauth (1.1.0)
       oauth
       omniauth (~> 1.0)
-    omniauth-oauth2 (1.6.0)
-      oauth2 (~> 1.1)
+    omniauth-oauth2 (1.7.0)
+      oauth2 (~> 1.4)
       omniauth (~> 1.9)
     omniauth-twitter (1.4.0)
       omniauth-oauth (~> 1.1)
@@ -638,7 +638,7 @@ DEPENDENCIES
   mysql2 (>= 0.4.4)
   nifty-generators
   omniauth (~> 1.9)
-  omniauth-facebook (~> 6.0)
+  omniauth-facebook (~> 7.0)
   omniauth-github (~> 1.4)
   omniauth-google-oauth2
   omniauth-twitter
