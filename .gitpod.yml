@@ -13,11 +13,11 @@ tasks:
         yarn install
 
       command: >
-        passenger start
-
+        passenger start 
+        
+    - command: redis-server
     - command: rails c
-
-
+    
 github:
     prebuilds:
         branches: true

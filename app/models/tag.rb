@@ -37,7 +37,7 @@ class Tag < ApplicationRecord
   end
 
   def run_count
-    self.count = NodeTag.where(tid: tid).count
+    self.count = NodeTag.joins(:node).where(tid: tid).where('node.status = 1').count
     save
   end
 
@@ -62,7 +62,7 @@ class Tag < ApplicationRecord
   end
 
   def self.contributors(tagname)
-    tag = Tag.includes(:node).where(name: tagname).first
+    tag = Tag.where(name: tagname).first
     return [] if tag.nil?
 
     nodes = tag.node.includes(:revision, :comments, :answers).where(status: 1)
@@ -113,14 +113,6 @@ class Tag < ApplicationRecord
         .where(status: 1)
         .limit(limit)
         .order(order)
-  end
-
-  def self.counter(tagname)
-    Node.where(type: %w(note page))
-        .where('term_data.name = ?', tagname)
-        .includes(:node_tag, :tag)
-        .references(:term_data)
-        .count
   end
 
   # just like find_nodes_by_type, but searches wiki pages, places, and tools
@@ -432,6 +424,13 @@ class Tag < ApplicationRecord
       week -= 1
     end
     date_hash
+  end
+
+  def self.tag_frequency(limit)
+    uids = User.where('rusers.role = ?', 'moderator').or(User.where('rusers.role = ?', 'admin')).collect(&:uid)
+    tids = TagSelection.where(following: true, user_id: uids).collect(&:tid)
+    hash = tids.uniq.map { |id| p (Tag.find id).name, tids.count(id) }.to_h
+    hash.sort_by { |_, v| v }.reverse.first(limit).to_h
   end
 
   private

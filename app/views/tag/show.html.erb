@@ -8,6 +8,13 @@
 .tag-header {
   margin-top: -21px;
 }
+.alerts-container {
+  position: absolute;
+  z-index: 999;
+  width: 100%;
+  left: 0;
+  padding: 0 20px;
+}
 @media screen and (max-width: 340px) {
   .tag-header {
     margin-top: -30px;
@@ -64,7 +71,7 @@
                     <h1 style="margin-top:6px;">
                         <%= @wiki&.latest&.title || @title %>
 
-                        <div style="display:inline;font-family: 'Helvetica Neue',Arial,sans-serif;font-size: 16px;">
+                        <div style="font-family: 'Helvetica Neue',Arial,sans-serif;font-size: 16px;">
                             <span style="white-space: nowrap;">
                                 <span rel="tooltip" title="This 'tagname' forms part of the URL for this topic." class="badge badge-secondary" style="background: #ccc;color: white;">
                                     <%= params[:id] %>
