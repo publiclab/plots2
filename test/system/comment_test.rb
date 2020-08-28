@@ -115,7 +115,7 @@ class CommentTest < ApplicationSystemTestCase
     visit "/wiki/wiki-page-path/comments"
 
     find("p", text: "Reply to this comment...").click()
-    find("a", text: "choose one").click() 
+    first("a", text: "choose one").click() 
 
     reply_preview_button = page.all('#post_comment')[0]
     fileinput_element = page.all('#fileinput')[0]
