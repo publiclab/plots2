@@ -23,7 +23,7 @@
       <% end %>
     <% end %>
 
-    <span data-toggle="tooltip" data-placement="top" rel="tooltip" title="Liked by <%= node.likers.length %> people" class="btn btn-outline-secondary btn-circle btn-like" node-id="<%= node.id %>" id="like-button-<%= node.id %>">
+    <span data-toggle="tooltip" data-placement="top" rel="tooltip" title="Liked by <%= node.likers.size %> people" class="btn btn-outline-secondary btn-circle btn-like" node-id="<%= node.id %>" id="like-button-<%= node.id %>">
         <% if !current_user %>
             <a id="open-login-like" data-hashparams="like" data-toggle="modal" data-target="#loginModal">
                 <span id="like-star-<%= node.id %>" class="ff fa fa-star"></span>
@@ -49,7 +49,7 @@
         <% node.likers.each do |user| %>
             <i class='fa fa-star-o'></i> <a href='/profile/<%= user.username %>/'><%= user.username %></a><br />
         <% end %>
-        <% if node.likers.length == 0 %><i>None</i><% end %>
+        <% if node.likers.size == 0 %><i>None</i><% end %>
         <% if node.type == 'note' && current_user && node.uid != current_user.uid%>
             <hr style='margin-bottom:3px;' />
             <p><b>Award a Barnstar:</b></p>
@@ -80,7 +80,7 @@
                 <a rel='tooltip' title='Flag as spam' class='btn btn-sm btn-outline-secondary btn-flag-spam-<%= node.id %>' href='/moderate/flag_node/<%= node.id %>'>
                     <i class='fa fa-flag'></i>
                 </a>
-                <li data-toggle='tooltip' data-placement='top' title='Follow by tag or author' id='menu-follow-btn' class='btn btn-outline-secondary btn-sm requireLogin nestedPopover' data-html='true' rel='popover' data-placement='left' data-content=&quot;    <%= "No tags" if tagnames.nil? || tagnames.length == 0 %>    <% if tagnames %><% tagnames.each do |tagname| %><p style='margin-bottom:3px; overflow: hidden; text-overflow: ellipsis;'><a href='/subscribe/tag/<%= tagname %>' class='btn btn-outline-secondary btn-sm'><%= tagname %></a></p><% end %><% end %><hr /><i class='fa fa-user'></i><% if current_user && !current_user.following?(node.author) && node.author != current_user %>&nbsp;<a class='btn btn-sm' href='/relationships?followed_id=<%= node.author.id %>' data-method='post' > <%= node.author.name %></a><% else %>  &nbsp;<%= node.author.name %><% end %>&quot;>
+                <li data-toggle='tooltip' data-placement='top' title='Follow by tag or author' id='menu-follow-btn' class='btn btn-outline-secondary btn-sm requireLogin nestedPopover' data-html='true' rel='popover' data-placement='left' data-content=&quot;    <%= "No tags" if tagnames.nil? || tagnames.size == 0 %>    <% if tagnames %><% tagnames.each do |tagname| %><p style='margin-bottom:3px; overflow: hidden; text-overflow: ellipsis;'><a href='/subscribe/tag/<%= tagname %>' class='btn btn-outline-secondary btn-sm'><%= tagname %></a></p><% end %><% end %><hr /><i class='fa fa-user'></i><% if current_user && !current_user.following?(node.author) && node.author != current_user %>&nbsp;<a class='btn btn-sm' href='/relationships?followed_id=<%= node.author.id %>' data-method='post' > <%= node.author.name %></a><% else %>  &nbsp;<%= node.author.name %><% end %>&quot;>
                     <i class='fa fa-user-plus' aria-hidden='true'></i>
                 </li>
 
@@ -107,7 +107,7 @@
                 <% if node.type == 'note' %>
                     <%= number_with_delimiter(node.views) %> <%= translation('notes.show.views') %>
                     <% if node.comments %>
-                        | <a href='#comments'><%= node.comments.length %> <%= translation('notes.show.comments') %></a>
+                        | <a href='#comments'><%= node.comments.size %> <%= translation('notes.show.comments') %></a>
                     <% end %>
                     | <%= raw translation('wiki.show.last_edited', url1: "/profile/" + node.latest.author.name, author: node.latest.author.name, time: time_ago_in_words(node.latest.created_at)) %>
                 <% end %>
@@ -115,7 +115,7 @@
                 <% if node.type == 'page' %>
                     <%= number_with_delimiter(node.views) %> <%= translation('wiki.show.views') %>
                     <% if node.comments %>
-                        | <a href='#comments'><%= node.comments.length %> Comments</a>
+                        | <a href='#comments'><%= node.comments.size %> Comments</a>
                     <% end %>
                     | <%= raw translation('wiki.show.last_edited', url1: "/profile/" + @revision.author.name, author: @revision.author.name, time: time_ago_in_words(@revision.created_at)) %>
                 <% end %>
