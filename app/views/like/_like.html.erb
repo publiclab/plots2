@@ -115,7 +115,9 @@
                 <% if node.type == 'page' %>
                     <%= number_with_delimiter(node.views) %> <%= translation('wiki.show.views') %>
                     <% if node.comments %>
-                        | <a href='#comments'><%= node.comments.size %> Comments</a>
+
+                        | <a href='<%= node.path %>/comments'><%= node.comments.length %> Comments</a>
+
                     <% end %>
                     | <%= raw translation('wiki.show.last_edited', url1: "/profile/" + @revision.author.name, author: @revision.author.name, time: time_ago_in_words(@revision.created_at)) %>
                 <% end %>
