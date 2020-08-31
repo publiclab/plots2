@@ -1000,7 +1000,7 @@ class Node < ActiveRecord::Base
 
   def can_tag(tagname, user, errors = false)
     one_split = tagname.split(':')[1]
-    socials =  { facebook: 'Facebook', github: 'Github', google_oauth2: 'Google', twitter: 'Twitter' }
+    socials = { facebook: 'Facebook', github: 'Github', google_oauth2: 'Google', twitter: 'Twitter' }
 
     if tagname[0..4] == 'with:'
       if User.find_by_username_case_insensitive(one_split).nil?
@@ -1020,8 +1020,8 @@ class Node < ActiveRecord::Base
       errors ? I18n.t('node.only_admins_can_lock') : false
     elsif tagname.split(':')[0] == 'redirect' && Node.where(slug: one_split).size <= 0
       errors ? I18n.t('node.page_does_not_exist') : false
-    elsif  socials[one_split&.to_sym].present?
-     errors ? "This tag is used for associating a #{socials[one_split.to_sym]} account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
+    elsif socials[one_split&.to_sym].present?
+      errors ? "This tag is used for associating a #{socials[one_split.to_sym]} account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
     else
       true
     end
