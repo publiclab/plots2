@@ -999,32 +999,29 @@ class Node < ActiveRecord::Base
   end
 
   def can_tag(tagname, user, errors = false)
+    one_split = tagname.split(':')[1]
+    socials =  { facebook: 'Facebook', github: 'Github', google_oauth2: 'Google', twitter: 'Twitter' }
+
     if tagname[0..4] == 'with:'
-      if User.find_by_username_case_insensitive(tagname.split(':')[1]).nil?
+      if User.find_by_username_case_insensitive(one_split).nil?
         errors ? I18n.t('node.cannot_find_username') : false
       elsif author.uid != user.uid
         errors ? I18n.t('node.only_author_use_powertag') : false
-      elsif tagname.split(':')[1] == user.username
+      elsif one_split == user.username
         errors ? I18n.t('node.cannot_add_yourself_coauthor') : false
       else
         true
       end
     elsif tagname == 'format:raw' && user.role != 'admin'
       errors ? "Only admins may create raw pages." : false
-    elsif tagname[0..4] == 'rsvp:' && user.username != tagname.split(':')[1]
+    elsif tagname[0..4] == 'rsvp:' && user.username != one_split
       errors ? I18n.t('node.only_RSVP_for_yourself') : false
     elsif tagname == 'locked' && user.role != 'admin'
       errors ? I18n.t('node.only_admins_can_lock') : false
-    elsif tagname.split(':')[0] == 'redirect' && Node.where(slug: tagname.split(':')[1]).size <= 0
+    elsif tagname.split(':')[0] == 'redirect' && Node.where(slug: one_split).size <= 0
       errors ? I18n.t('node.page_does_not_exist') : false
-    elsif  tagname.split(':')[1] == "facebook"
-      errors ? "This tag is used for associating a Facebook account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
-    elsif  tagname.split(':')[1] == "github"
-      errors ? "This tag is used for associating a Github account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
-    elsif  tagname.split(':')[1] ==  "google_oauth2"
-      errors ? "This tag is used for associating a Google account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
-    elsif  tagname.split(':')[1] == "twitter"
-      errors ? "This tag is used for associating a Twitter account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
+    elsif  socials[one_split&.to_sym].present?
+     errors ? "This tag is used for associating a #{socials[one_split.to_sym]} account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
     else
       true
     end
