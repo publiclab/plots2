@@ -82,8 +82,7 @@ GEM
       ci_reporter (~> 2.0)
       test-unit (>= 2.5.5, < 4.0)
     climate_control (0.2.0)
-    codecov (0.2.5)
-      colorize
+    codecov (0.2.9)
       json
       simplecov
     coderay (1.1.2)
@@ -94,7 +93,6 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
-    colorize (0.8.1)
     commonjs (0.2.7)
     composite_primary_keys (11.2.0)
       activerecord (~> 5.2.1)
