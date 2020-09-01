@@ -364,14 +364,13 @@ class Tag < ApplicationRecord
 
   def self.related(tag_name, count = 5)
     Rails.cache.fetch("related-tags/#{tag_name}/#{count}", expires_in: 1.weeks) do
-      nids = NodeTag.joins(:tag)
-                     .where(Tag.table_name => { name: tag_name })
-                     .select(:nid)
-
-      # sort them by how often they co-occur:
-      nids = nids.group_by{ |v| v }.map{ |k, v| [k, v.size] }
-      nids = nids.collect(&:first)[0..4]
-                 .collect(&:nid) # take top 5
+      nids = NodeTag.joins(:tag, :node)
+                    .where(Node.table_name => { status: 1 })
+                    .where(Tag.table_name => { name: tag_name })
+                    .group(:nid)
+                    .order(NodeTag.arel_table[:nid].count.desc)
+                    .limit(5)
+                    .pluck(:nid)
 
       Tag.joins(:node_tag)
          .where(NodeTag.table_name => { nid: nids })
