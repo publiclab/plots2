@@ -39,7 +39,7 @@
           <i class="fa fa-comment-o"></i>
           <%= node.comments.size %> &nbsp; | &nbsp; <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope:'datetime.time_ago_in_words' }).gsub('about ','') %>
         </span>
-      <% elsif node.type = 'page' %>
+      <% elsif node.type == 'page' %>
         Wiki page by <%= node.revisions.collect(&:uid).uniq.length %> people
       <% end %>
       <a class="ellipsis bottom-right" data-toggle="dropdown"><i class="fa fa-ellipsis-h" style="color : #666; font-size:15px; float:right;"></i></a>
