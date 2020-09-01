@@ -60,6 +60,15 @@ class CommentTest < ApplicationSystemTestCase
     click_on "Publish"
     find(".noty_body", text: "Comment Added!")
     find("p", text: "Awesome comment! :)")
+
+    # replying to the comment
+    first("p", text: "Reply to this comment...").click()
+
+    fill_in("body", with: "Awesome Reply")
+
+    # preview reply
+    first("#post_comment").click
+    find("p", text: "Awesome Reply")
   end
 
   test 'comment preview button' do
@@ -100,7 +109,30 @@ class CommentTest < ApplicationSystemTestCase
     # Make sure that image has been uploaded
     page.assert_selector('#preview img', count: 1)
   end
+  
+  test 'comment image upload by choose one' do
+    Capybara.ignore_hidden_elements = false
+    visit "/wiki/wiki-page-path/comments"
 
+    find("p", text: "Reply to this comment...").click()
+    first("a", text: "choose one").click() 
+
+    reply_preview_button = page.all('#post_comment')[0]
+    fileinput_element = page.all('#fileinput')[0]
+
+    # Upload the image
+    fileinput_element.set("#{Rails.root.to_s}/public/images/pl.png")
+
+    # Wait for image upload to finish
+    wait_for_ajax
+    Capybara.ignore_hidden_elements = true
+
+    # Toggle preview
+    reply_preview_button.click()
+
+    # Make sure that image has been uploaded
+    page.assert_selector('#preview img', count: 1)
+  end
   test 'comment image drag and drop upload' do
     Capybara.ignore_hidden_elements = false
     visit "/wiki/wiki-page-path/comments"
