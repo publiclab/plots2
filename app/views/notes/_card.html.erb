@@ -10,63 +10,64 @@
   <% end %>
 
   <div class="card-body">
-  <% if node.status == 4 %>
-    <p class="alert alert-warning moderated">
-      <% if @current_user && ['admin','moderator'].include?(@current_user.role) %>
-        <%= t('notes._notes.moderate_first_time_post') %> <br class="d-none d-lg-inline"/>
-        <a class="btn btn-outline-secondary btn-sm" href="/moderate/publish/<%= node.id %>"><%= t('notes._notes.approve') %></a>
-        <a class="btn btn-outline-secondary btn-sm" data-test="spam" href="/moderate/spam/<%= node.id %>"><%= t('notes._notes.spam') %></a>
-      <% else %>
-        <%= raw t('notes._notes.pending_approval', :url1 => '/wiki/moderation') %>
-      <% end %>
-    </p>
-  <% end %>
-
-  <h5 style="margin-bottom: 0px;"><a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>" style="color: black"><%= (node.type == 'note') ? node.title : node.latest.title %></a></h5>
-  <% if node.has_tag("method") %>
-  <p style="margin-bottom: 0px;"><small>
-    <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#Activities"><i class="fa fa-flask" style="color:#3da56a;"></i> <%= node.activities.count %> activities</a>
-    <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#Questions"><i class="fa fa-question-circle" style="color:#db3a1e;"></i> <span id="questions-count-<%= node.id %>"><%= node.questions.count %> questions</span></a>
-  </small></p>
-<% end %>
-
-  <small>
-    <div style="font-size:1.0em;color:darkgray;">
-      <% if tagname && node.has_tag("pin:#{tagname}") %><span style="margin-right:4px;"><i rel="tooltip" title="This item was pinned with the tag 'pin:<%= tagname %>'." class="fa fa-thumb-tack"></i></span><% end %>
-      <% if node.type == 'note' %>
-        Post by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>" style="color: #303030">@<%= node.author.name %></a> <%= node.author.new_contributor %></div><br>
-        <span style="color:darkgray;">
-          <i class="fa fa-comment-o"></i>
-          <%= node.comments.size %> &nbsp; | &nbsp; <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope:'datetime.time_ago_in_words' }).gsub('about ','') %>
-        </span>
-      <% elsif node.type == 'page' %>
-        Wiki page by <%= node.revisions.collect(&:uid).uniq.length %> people
-      <% end %>
-      <a class="ellipsis bottom-right" data-toggle="dropdown"><i class="fa fa-ellipsis-h" style="color : #666; font-size:15px; float:right;"></i></a>
-
-      <ul class="dropdown-menu" style = "width: 150px; font-size:10px;">
-        <% if node.type == 'note' %>
-          <li><a> Made: <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope:'datetime.time_ago_in_words' }) %> </a></li>
+    <% if node.status == 4 %>
+      <p class="alert alert-warning moderated">
+        <% if @current_user && ['admin','moderator'].include?(@current_user.role) %>
+          <%= t('notes._notes.moderate_first_time_post') %> <br class="d-none d-lg-inline"/>
+          <a class="btn btn-outline-secondary btn-sm" href="/moderate/publish/<%= node.id %>"><%= t('notes._notes.approve') %></a>
+          <a class="btn btn-outline-secondary btn-sm" data-test="spam" href="/moderate/spam/<%= node.id %>"><%= t('notes._notes.spam') %></a>
         <% else %>
-          <li><a>Last Edited: <%= t('notes._notes.last_edit_by') %> <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.latest.author.name %>"><%= node.latest.author.name %></a></a></li>
-          <li><a><%= distance_of_time_in_words(Time.at(node.latest.timestamp), Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></a></li>
+          <%= raw t('notes._notes.pending_approval', :url1 => '/wiki/moderation') %>
         <% end %>
-        <li><a>Total Views: </i> <%= number_with_delimiter(node.views) %> <span class="d-none d-lg-inline"><%= t('notes._notes.views') %></span></a></li>
-        <li><a>Total Likes: <%= node.likers.size %></a></li>
-        <div class="content" style="width: 100%" >
-          <% if @compact.nil? %>
+      </p>
+    <% end %>
 
-            <li class="buttons mb-2"><% if @current_user && ['admin','moderator'].include?(@current_user.role) %><a style="width: 90px" class="btn btn-outline-secondary" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> <%= t('notes._notes.spam') %></a><% end %></li>
-            <li class="buttons"><a class="btn btn-outline-secondary" href="<%= node.path %>"><%= t('notes._notes.read_more') %></a></li>
+    <h5 style="margin-bottom: 0px;"><a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>" style="color: black"><%= (node.type == 'note') ? node.title : node.latest.title %></a></h5>
+    <% if node.has_tag("method") %>
+      <p style="margin-bottom: 0px;"><small>
+        <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#Activities"><i class="fa fa-flask" style="color:#3da56a;"></i> <%= node.activities.count %> activities</a>
+        <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#Questions"><i class="fa fa-question-circle" style="color:#db3a1e;"></i> <span id="questions-count-<%= node.id %>"><%= node.questions.count %> questions</span></a>
+      </small></p>
+    <% end %>
+
+    <small>
+      <div style="font-size:1.0em;color:darkgray;">
+        <% if tagname && node.has_tag("pin:#{tagname}") %><span style="margin-right:4px;"><i rel="tooltip" title="This item was pinned with the tag 'pin:<%= tagname %>'." class="fa fa-thumb-tack"></i></span><% end %>
+        <% if node.type == 'note' %>
+          Post by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>" style="color: #303030">@<%= node.author.name %></a> <%= node.author.new_contributor %></div><br>
+          <span style="color:darkgray;">
+            <i class="fa fa-comment-o"></i>
+            <%= node.comments.size %> &nbsp; | &nbsp; <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope:'datetime.time_ago_in_words' }).gsub('about ','') %>
+          </span>
+        <% elsif node.type == 'page' %>
+          Wiki page by <%= node.revisions.collect(&:uid).uniq.length %> people
+        <% end %>
+        <a class="ellipsis bottom-right" data-toggle="dropdown"><i class="fa fa-ellipsis-h" style="color : #666; font-size:15px; float:right;"></i></a>
+
+        <ul class="dropdown-menu" style = "width: 150px; font-size:10px;">
+          <% if node.type == 'note' %>
+            <li><a> Made: <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope:'datetime.time_ago_in_words' }) %> </a></li>
+          <% else %>
+            <li><a>Last Edited: <%= t('notes._notes.last_edit_by') %> <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.latest.author.name %>"><%= node.latest.author.name %></a></a></li>
+            <li><a><%= distance_of_time_in_words(Time.at(node.latest.timestamp), Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></a></li>
           <% end %>
-          <% if @current_user && params[:mod] %>
-            <a class="btn btn-outline-secondary" href="#"><i class="fa fa-ban-circle"></i> <%= t('notes._notes.spam') %></a>
-          <% end %>
-          <hr style="display:none;" class="bottom" />
-        </div>
-      </ul>
-    </div>
-  </small>
+          <li><a>Total Views: </i> <%= number_with_delimiter(node.views) %> <span class="d-none d-lg-inline"><%= t('notes._notes.views') %></span></a></li>
+          <li><a>Total Likes: <%= node.likers.size %></a></li>
+          <div class="content" style="width: 100%" >
+            <% if @compact.nil? %>
+
+              <li class="buttons mb-2"><% if @current_user && ['admin','moderator'].include?(@current_user.role) %><a style="width: 90px" class="btn btn-outline-secondary" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> <%= t('notes._notes.spam') %></a><% end %></li>
+              <li class="buttons"><a class="btn btn-outline-secondary" href="<%= node.path %>"><%= t('notes._notes.read_more') %></a></li>
+            <% end %>
+            <% if @current_user && params[:mod] %>
+              <a class="btn btn-outline-secondary" href="#"><i class="fa fa-ban-circle"></i> <%= t('notes._notes.spam') %></a>
+            <% end %>
+            <hr style="display:none;" class="bottom" />
+          </div>
+        </ul>
+      </div>
+    </small>
+  </div>
 </div>
 
 <script>
