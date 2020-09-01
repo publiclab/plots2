@@ -205,7 +205,7 @@ class TagController < ApplicationController
 
     nodes = Tag.tagged_nodes_by_author(@tagname, @user)
       .where(status: 1, type: node_type)
-    @total_posts = nodes.count
+    @total_posts = nodes.size
 
     nodes = nodes.paginate(page: params[:page], per_page: 24)
 
@@ -301,14 +301,14 @@ class TagController < ApplicationController
       if Tag.exists?(tagname, nid)
         @output[:errors] << I18n.t('tag_controller.tag_already_exists')
 
-      elsif tagname.include?(":") && tagname.split(':').length < 2
+      elsif tagname.include?(":") && tagname.split(':').size < 2
         if tagname.split(':')[0] == "barnstar" || tagname.split(':')[0] == "with"
           @output[:errors] << I18n.t('tag_controller.cant_be_empty')
         end
 
       elsif node.can_tag(tagname, current_user) === true || logged_in_as(['admin'])
         saved, tag = node.add_tag(tagname.strip, current_user)
-        if tagname.include?(":") && tagname.split(':').length == 2
+        if tagname.include?(":") && tagname.split(':').size == 2
           if tagname.split(':')[0] == "barnstar"
             CommentMailer.notify_barnstar(current_user, node)
             barnstar_info_link = '<a href="//' + request.host.to_s + '/wiki/barnstars">barnstar</a>'
@@ -342,8 +342,8 @@ class TagController < ApplicationController
           render json: @output
         else
           flash[:notice] = I18n.t('tag_controller.tags_created_error',
-            tag_count: @output[:saved].length,
-            error_count: @output[:errors].length).html_safe
+            tag_count: @output[:saved].size,
+            error_count: @output[:errors].size).html_safe
           redirect_to node.path
         end
       end
@@ -388,7 +388,7 @@ class TagController < ApplicationController
   end
 
   def suggested
-    if !params[:id].empty? && params[:id].length > 2
+    if !params[:id].empty? && params[:id].size > 2
       @suggestions = SearchService.new.search_tags(params[:id])
       render json: @suggestions.collect { |tag| tag.name }.uniq
     else
@@ -460,9 +460,9 @@ class TagController < ApplicationController
       @tagdata[tagname] = {}
       t = Tag.where(name: tagname)
       nct = NodeTag.where('tid in (?)', t.collect(&:tid))
-      @tagdata[tagname][:users] = Node.where('nid IN (?)', nct.collect(&:nid)).collect(&:author).uniq.length
-      @tagdata[tagname][:wikis] = Node.where("nid IN (?) AND (type = 'page' OR type = 'tool' OR type = 'place')", nct.collect(&:nid)).count
-      @tagdata[:notes] = Node.where("nid IN (?) AND type = 'note'", nct.collect(&:nid)).count
+      @tagdata[tagname][:users] = Node.where('nid IN (?)', nct.collect(&:nid)).collect(&:author).uniq.size
+      @tagdata[tagname][:wikis] = Node.where("nid IN (?) AND (type = 'page' OR type = 'tool' OR type = 'place')", nct.collect(&:nid)).size
+      @tagdata[:notes] = Node.where("nid IN (?) AND type = 'note'", nct.collect(&:nid)).size
     end
     render template: 'tag/contributors-index'
   end
@@ -545,21 +545,21 @@ class TagController < ApplicationController
   def fetch_counts
     # Enhancement #6306 - Add counts to `by type` dropdown on tag pages
     @counts = {}
-    @counts[:posts] = Node.for_tagname_and_type(params[:id], 'note', wildcard: @wildcard).where('node.nid NOT IN (?)', @qids).count
-    @counts[:questions] = Node.for_tagname_and_type(params[:id], 'note', question: true, wildcard: @wildcard).where('node.nid IN (?)', @qids).count
-    @counts[:wiki] = Node.for_tagname_and_type(params[:id], 'page', wildcard: @wildcard).count
+    @counts[:posts] = Node.for_tagname_and_type(params[:id], 'note', wildcard: @wildcard).where('node.nid NOT IN (?)', @qids).size
+    @counts[:questions] = Node.for_tagname_and_type(params[:id], 'note', question: true, wildcard: @wildcard).where('node.nid IN (?)', @qids).size
+    @counts[:wiki] = Node.for_tagname_and_type(params[:id], 'page', wildcard: @wildcard).size
     params[:counts] = @counts
     # end Enhancement #6306 ============================================
 
     @total_posts = case @node_type
     when 'note'
-      @notes.count
+      @notes.size
     when 'questions'
-      @questions.count
+      @questions.size
     when 'wiki'
-      @wikis.count
+      @wikis.size
     when 'maps'
-      @nodes.count
+      @nodes.size
     end
   end
 end
