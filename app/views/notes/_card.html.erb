@@ -32,18 +32,20 @@
 
     <small>
       <div style="font-size:1.0em;color:darkgray;">
-        <% if tagname && node.has_tag("pin:#{tagname}") %><span style="margin-right:4px;"><i rel="tooltip" title="This item was pinned with the tag 'pin:<%= tagname %>'." class="fa fa-thumb-tack"></i></span><% end %>
-        <% if node.type == 'note' %>
-          <p>
+        <p>
+          <% if tagname && node.has_tag("pin:#{tagname}") %>
+            <span style="margin-right:4px;"><i rel="tooltip" title="This item was pinned with the tag 'pin:<%= tagname %>'." class="fa fa-thumb-tack"></i></span>
+          <% end %>
+          <% if node.type == 'note' %>
             Post by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>" style="color: #303030">@<%= node.author.name %></a> <%= node.author.new_contributor %>
-          </p>
-          <span style="color:darkgray;">
-            <i class="fa fa-comment-o"></i>
-            <%= node.comments.size %> &nbsp; | &nbsp; <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope:'datetime.time_ago_in_words' }).gsub('about ','') %>
-          </span>
-        <% elsif node.type == 'page' %>
-          <p>Wiki page by <%= node.revisions.collect(&:uid).uniq.length %> people</p>
-        <% end %>
+            <span style="color:darkgray;">
+              <i class="fa fa-comment-o"></i>
+              <%= node.comments.size %> &nbsp; | &nbsp; <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope:'datetime.time_ago_in_words' }).gsub('about ','') %>
+            </span>
+          <% elsif node.type == 'page' %>
+            Wiki page by <%= node.revisions.collect(&:uid).uniq.length %> people
+          <% end %>
+        </p>
       </div>
 
       <a class="ellipsis bottom-right" data-toggle="dropdown"><i class="fa fa-ellipsis-h" style="color : #666; font-size:15px; float:right;"></i></a>
