@@ -62,8 +62,9 @@
               </span>
 
               <!-- http://stackoverflow.com/questions/11235206/twitter-bootstrap-form-file-element-upload-button -->
-                <input aria-label="Choose File" id="fileinput" type="file" name="image[photo]" style="display:none;" />
-                <a onClick="handleClick()" class="d-none d-md-inline text-underline">choose one</a>
+              <label for="fileinput">
+                <input id="fileinput" type="file" name="image[photo]" style="display:none;" />
+                <a onClick="handleClick()" style="cursor: pointer;" class="d-none d-md-inline text-underline">choose one</a>
                 <span class="d-md-none">
                   <i class="fa fa-upload"></i>
                   <a><%= translation('comments._form.upload_image') %></a>
