@@ -43,7 +43,7 @@
     "leaflet-blurred-location": "^1.7.0",
     "leaflet-environmental-layers": "^2.4.0",
     "leaflet-hash": "^0.2.1",
-    "leaflet-spin": "1.1.0",
+    "leaflet-spin": "1.1.2",
     "leaflet.fullscreen": "1.6.0",
     "marked": "^1.1.1",
     "megamark": "~3.3.0",
