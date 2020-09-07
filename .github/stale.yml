@@ -5,7 +5,7 @@ daysUntilStale: 45
 
 # Number of days of inactivity before an Issue or Pull Request with the stale label is closed.
 # Set to false to disable. If disabled, issues still need to be closed manually, but will remain marked as stale.
-daysUntilClose: 2
+daysUntilClose: 5
 
 # Only issues or pull requests with all of these labels are check if stale. Defaults to `[]` (disabled)
 onlyLabels: []
@@ -14,7 +14,7 @@ onlyLabels: []
 exemptLabels:
   - pinned
   - security
-  - "[Status] Maybe Later"
+  - "work in progress"
 
 # Set to true to ignore issues in a project (defaults to false)
 exemptProjects: false
@@ -30,9 +30,10 @@ staleLabel: stale
 
 # Comment to post when marking as stale. Set to `false` to disable
 markComment: >
-  This issue has been automatically marked as stale because it has not had
-  recent activity. It will be closed if no further activity occurs. Thank you
-  for your contributions.
+  Hi :smile:, this issue has been automatically marked as stale because it has not had
+  recent activity. Don't worry you can continue to work on this and ask @publiclab/reviewers 
+  to add "work in progress" label :tada: . It will be closed if no further activity occurs :100: . 
+  Thank you for your contributions :raised_hands: :balloon:.
 
 # Comment to post when removing the stale label.
 # unmarkComment: >
