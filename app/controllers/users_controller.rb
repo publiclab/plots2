@@ -169,8 +169,8 @@ class UsersController < ApplicationController
         @twitter = @profile_user.social_link("twitter")
         @facebook = @profile_user.social_link("facebook")
         @instagram = @profile_user.social_link("instagram")
-        @count_activities_posted = Tag.tagged_nodes_by_author("activity:*", @profile_user).count
-        @count_activities_attempted = Tag.tagged_nodes_by_author("replication:*", @profile_user).count
+        @count_activities_posted = Tag.tagged_nodes_by_author("activity:*", @profile_user).size
+        @count_activities_attempted = Tag.tagged_nodes_by_author("replication:*", @profile_user).size
         @map_lat = nil
         @map_lon = nil
         @map_zoom = nil
@@ -424,7 +424,7 @@ class UsersController < ApplicationController
         tag_list = tag_list.split(',')
       end
       tag_list.each do |t|
-        next unless t.length.positive?
+        next unless t.size.positive?
         tag = Tag.find_by(name: t)
         unless tag.present?
           tag = Tag.new(
@@ -442,7 +442,7 @@ class UsersController < ApplicationController
           end
         end
         # test for uniqueness
-        unless TagSelection.where(following: true, user_id: current_user.uid, tid: tag.tid).length.positive?
+        unless TagSelection.where(following: true, user_id: current_user.uid, tid: tag.tid).size.positive?
           # Successfully we have added subscription
           if Tag.find_by(tid: tag.tid)
             # Create the entry if it isn't already created.
