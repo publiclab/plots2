@@ -54,6 +54,15 @@ class NotesControllerTest < ActionController::TestCase
         }
 
     assert_template 'print'
+    assert_select '#header', false
+    assert_select 'footer', false
+    assert_select '#content', false
+    selector = css_select '#note-title'
+    assert_equal note.title, selector.text.strip
+    selector = css_select '#content-window'
+    assert_equal note.body, selector.text.strip
+    selector = css_select '.info-date a'
+    assert_equal note.latest.author.name, selector.text
     assert_response :success
   end
 

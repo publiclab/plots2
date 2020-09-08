@@ -369,7 +369,21 @@ sunny_day_note:
   nid: 34
   uid: 2
   title: "Note tagged with sunny-day"
-  body: "This is the body"
+  body: |
+      This is the body. Testing out print using
+
+      | | col0 | col1 | col2 | col3 |
+      | |------|------|------|------|
+      | | cell | cell | cell | cell |
+      | | cell | cell | cell | cell |
+      | | cell | cell | cell | cell |
+      | | cell | cell | cell | cell |
+
+      ```
+      code goes here
+      ```
+      > But my knees were far too weak To stand in your arms Without falling to your feet
+      <iframe width='560' height='315' src='https://www.youtube.com/embed/pt-9qPCBbQE' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen\=''></iframe>
   timestamp: <%= DateTime.new(2020,2,12).to_i %>
   status: 1
 
