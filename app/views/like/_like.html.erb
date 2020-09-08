@@ -177,11 +177,17 @@
         var node_type = '<%= node.type %>';
         if (node_type == 'page'){
           <% if @revision %>
-          window.location.href = "/wikis/print/<%= @node.id %>";
+          window.open(
+            "/wikis/print/<%= @node.id %>",
+            '_blank' // <- This is what makes it open in a new window.
+          );
           <% end %>
         }
         else if (node_type == 'note'){
-          window.location.href = "/notes/print/" + <%= node.id %>;
+          window.open(
+            "/notes/print/" + <%= node.id %>,
+            '_blank' // <- This is what makes it open in a new window.
+          );
         }
       }
       // Event listner on CLICK on links
