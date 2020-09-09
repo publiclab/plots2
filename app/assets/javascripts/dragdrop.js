@@ -68,15 +68,11 @@ jQuery(document).ready(function() {
                 elem.find('#create_progress').hide();
                 elem.find('#create_uploading').hide();
                 elem.find('#create_prompt').show();
-                var extension = data.result['filename'].split('.')[data.result['filename'].split('.').length - 1]
-                var file_url = data.result.url.split('?')[0]
-
-                var file_type
+                var extension = data.result['filename'].split('.')[data.result['filename'].split('.').length - 1]; var file_url = data.result.url.split('?')[0]; var file_type;
                 if (['gif', 'GIF', 'jpeg', 'JPEG', 'jpg', 'JPG', 'png', 'PNG'].includes(extension))
                     file_type = 'image'
                 else if (['csv', 'CSV'].includes(extension))
                     file_type = 'csv'
-
                 switch (file_type) {
                     case 'image':
                         orig_image_url = file_url + '?s=o' // size = original
@@ -88,11 +84,9 @@ jQuery(document).ready(function() {
                     default:
                         $E.wrap('<a href="'+data.result.url.split('?')[0]+'"><i class="fa fa-file"></i> ','</a>', {'newline': true, 'fallback': data.result['filename'].replace(/[()]/g , "-")}) // on its own line; see /app/assets/js/editor.js
                 }
-
                 // here append the image id to the wiki edit form:
                 if ($('#node_images').val() && $('#node_images').val().split(',').length > 1) $('#node_images').val([$('#node_images').val(),data.result.id].join(','))
                 else $('#node_images').val(data.result.id)
-
                 // eventual handling of multiple files; must add "multiple" to file input and handle on server side:
                 //$.each(data.result.files, function (index, file) {
                 //    $('<p/>').text(file.name).appendTo(document.body);
