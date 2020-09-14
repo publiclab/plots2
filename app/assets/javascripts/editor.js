@@ -66,7 +66,6 @@ $E = {
     $E.wrap('[',']('+uri+')')
   },
   image: function(src) {
-    src = src || prompt('Enter an image URL')
     $E.wrap('\n![',']('+src+')\n')
   },
 

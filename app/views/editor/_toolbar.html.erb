@@ -1,15 +1,5 @@
 <div class="btn-toolbar" style="margin-bottom:8px;">
 
-  <div class="btn-group mr-2 ">
-    <a data-toggle="tooltip" title="Bold" data-placement="bottom" class="btn btn-outline-secondary btn-sm " onClick="$E.bold()"><i class="fa fa-bold" ></i></a>
-    <a data-toggle="tooltip" title="Italic" data-placement="bottom" class="btn btn-outline-secondary btn-sm " onClick="$E.italic()"><i class="fa fa-italic" ></i></a>
-    <a data-toggle="tooltip" title="Header" data-placement="bottom" class="btn btn-outline-secondary btn-sm " onClick="$E.h2()"><b><span class="d-md-none d-lg-inline  ">Header</span><span class="d-none d-md-inline d-lg-none">H</span></b></a>
-  </div>
-
-  <div class="btn-group mr-2">
-    <a aria-label="Make a link" data-toggle="tooltip" title="Make a link" data-placement="bottom" class="btn btn-outline-secondary btn-sm" href="javascript:void(0)" onClick="$E.link()"><i class="fa fa-link"></i></a>
-  </div>
-
   <div class="dropdown mr-2">
     <div class="d-md-none d-lg-inline">
       <a class="btn btn-outline-secondary btn-sm dropdown-toggle" data-toggle="dropdown" href="#" >
@@ -24,7 +14,27 @@
     </div>
   </div>
 
-  <div class="btn-group mr-2">
+  <div class="btn-group mr-2 ">
+    <a data-toggle="tooltip" title="Bold" data-placement="bottom" class="btn btn-outline-secondary btn-sm " onClick="$E.bold()"><i class="fa fa-bold" ></i></a>
+    <a data-toggle="tooltip" title="Italic" data-placement="bottom" class="btn btn-outline-secondary btn-sm " onClick="$E.italic()"><i class="fa fa-italic" ></i></a>
+    <a data-toggle="tooltip" title="Header" data-placement="bottom" class="btn btn-outline-secondary btn-sm " onClick="$E.h2()"><b><span class="d-md-none d-lg-inline"><i class="fa fa-header"></i></span></b></a>
+    <a aria-label="Make a link" data-toggle="tooltip" title="Make a link" data-placement="bottom" class="btn btn-outline-secondary btn-sm" href="javascript:void(0)" onClick="$E.link()"><i class="fa fa-link"></i></a>
+    <a aria-label="Upload an image" data-toggle="tooltip" title="Upload an image" data-placement="bottom" class="btn btn-outline-secondary btn-sm">
+      <div class="dropzone">
+        <span id="create_prompt" class="prompt">
+          <label class="" for="fileinput" style="margin-bottom: 0;">
+            <input id="fileinput" type="file" name="image[photo]" accept="image/*" style="display:none;" />
+            <i class="fa fa-image"></i>
+            <span class="d-md-none">
+              <i class="fa fa-upload"></i>
+            </span>
+          </label>
+        </span>
+      </div>
+    </a>
+  </div>
+
+  <div class="btn-group mr-2 ">
     <a data-toggle="tooltip" title="Save" data-placement="bottom" onClick="$E.save()" class="btn btn-outline-secondary btn-sm"><i class="fa fa-save"></i></a>
     <a data-toggle="tooltip" title="Recover" data-placement="bottom" onClick="$E.recover()" class="btn btn-outline-secondary btn-sm">Recover</a>
   </div>
