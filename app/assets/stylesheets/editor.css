@@ -194,6 +194,10 @@ version of the editor is released. */
   width:30%;
 }
 
+#dropzone.hover textarea {
+  background:#f8f8f8;
+}
+
 #side-progress {
   margin:3px 10px 10px;
   width:30%;
