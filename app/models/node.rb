@@ -124,7 +124,7 @@ class Node < ActiveRecord::Base
   end
 
   def has_a_tag(name)
-    return tags.where(name: name).count.positive?
+    return tags.where(name: name).size.positive?
   end
 
   before_save :set_changed_and_created
@@ -187,7 +187,7 @@ class Node < ActiveRecord::Base
                                .where(type:    type,
                                       status:  1,
                                       created: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
-                               .count
+                               .size
     end
     weeks
   end
@@ -214,7 +214,7 @@ class Node < ActiveRecord::Base
     weeks = (ending.to_date - starting.to_date).to_i / 7.0
     Node.published.select(%i(created type))
       .where(type: type, created: starting.to_i..ending.to_i)
-      .count(:all) / weeks
+      .size / weeks
   end
 
   def notify
@@ -258,7 +258,7 @@ class Node < ActiveRecord::Base
   end
 
   def has_accepted_answers
-    answers.where(accepted: true).count.positive?
+    answers.where(accepted: true).size.positive?
   end
 
   # users who like this node
@@ -394,7 +394,7 @@ class Node < ActiveRecord::Base
         .includes(:revision, :tag)
         .references(:term_data)
         .where('term_data.name = ?', "#{key}:#{id}")
-        .count
+        .size
   end
 
   # power tags have "key:value" format, and should be searched with a "key:*" wildcard
@@ -999,32 +999,29 @@ class Node < ActiveRecord::Base
   end
 
   def can_tag(tagname, user, errors = false)
+    one_split = tagname.split(':')[1]
+    socials = { facebook: 'Facebook', github: 'Github', google_oauth2: 'Google', twitter: 'Twitter' }
+
     if tagname[0..4] == 'with:'
-      if User.find_by_username_case_insensitive(tagname.split(':')[1]).nil?
+      if User.find_by_username_case_insensitive(one_split).nil?
         errors ? I18n.t('node.cannot_find_username') : false
       elsif author.uid != user.uid
         errors ? I18n.t('node.only_author_use_powertag') : false
-      elsif tagname.split(':')[1] == user.username
+      elsif one_split == user.username
         errors ? I18n.t('node.cannot_add_yourself_coauthor') : false
       else
         true
       end
     elsif tagname == 'format:raw' && user.role != 'admin'
       errors ? "Only admins may create raw pages." : false
-    elsif tagname[0..4] == 'rsvp:' && user.username != tagname.split(':')[1]
+    elsif tagname[0..4] == 'rsvp:' && user.username != one_split
       errors ? I18n.t('node.only_RSVP_for_yourself') : false
     elsif tagname == 'locked' && user.role != 'admin'
       errors ? I18n.t('node.only_admins_can_lock') : false
-    elsif tagname.split(':')[0] == 'redirect' && Node.where(slug: tagname.split(':')[1]).length <= 0
+    elsif tagname.split(':')[0] == 'redirect' && Node.where(slug: one_split).size <= 0
       errors ? I18n.t('node.page_does_not_exist') : false
-    elsif  tagname.split(':')[1] == "facebook"
-      errors ? "This tag is used for associating a Facebook account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
-    elsif  tagname.split(':')[1] == "github"
-      errors ? "This tag is used for associating a Github account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
-    elsif  tagname.split(':')[1] ==  "google_oauth2"
-      errors ? "This tag is used for associating a Google account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
-    elsif  tagname.split(':')[1] == "twitter"
-      errors ? "This tag is used for associating a Twitter account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
+    elsif socials[one_split&.to_sym].present?
+      errors ? "This tag is used for associating a #{socials[one_split.to_sym]} account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
     else
       true
     end
@@ -1032,7 +1029,7 @@ class Node < ActiveRecord::Base
 
   def replace(before, after, user)
     matches = latest.body.scan(before)
-    if matches.length == 1
+    if matches.size == 1
       revision = new_revision(uid: user.id,
                               body: latest.body.gsub(before, after))
       revision.save
@@ -1046,7 +1043,7 @@ class Node < ActiveRecord::Base
   end
 
   def toggle_like(user)
-    nodes = NodeSelection.where(nid: id, liking: true).count
+    nodes = NodeSelection.where(nid: id, liking: true).size
     self.cached_likes = if is_liked_by(user)
                           nodes - 1
                         else
