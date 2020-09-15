@@ -8,6 +8,12 @@
           <a style="width: 100px;" rel="tooltip" title="<%= translation('tag.show.unfollow') %>" class="btn btn-light btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>"> <%= translation('tag.index.unsubscribe') %></a>
         </div>
         <div class="dropdown-divider"></div>
+      <% else %>
+        <div class="dropdown-item">	
+          <a style="width: 100px;" class="btn btn-outline-secondary btn-sm" href="/subscribe/tag/<%= params[:id] %>" data-remote="true">	
+            <%= translation('tag.index.subscribe') %>	
+          </a>	
+        </div>
       <% end %>
 
     <div class="dropdown-item">
