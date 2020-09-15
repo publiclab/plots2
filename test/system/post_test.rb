@@ -201,7 +201,7 @@ class PostTest < ApplicationSystemTestCase
 
     # Wait for the location to be added
     wait_for_ajax
-    find('.tags-list a.more-tags').click()
+    find('#tags a#tags-open').click()
 
     # Make sure proper latitude and longitude tags are added
     assert_selector('.tags-list .badge a[href="/tag/lat:22"]', text: "lat:22")
