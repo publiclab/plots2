@@ -111,7 +111,7 @@
                     <div class="tag-buttons">
                         <div class="btn-group" role="group">
                             <% if current_user && current_user.following(params[:id]) %>
-                                <a rel="tooltip" title="<%= translation('sidebar._post_button.share_your_work') %>" data-placement="bottom" href="/post?tags=<%= @title %>" class="btn btn-primary requireLogin">New post <i class="fa fa-plus fa-white"></i></a>
+                                <a data-toggle="tooltip" title="<%= translation('sidebar._post_button.share_your_work') %>" data-placement="bottom" href="/post?tags=<%= @title %>" class="btn btn-primary requireLogin">New post <i class="fa fa-plus fa-white"></i></a>
                             <% else %>
                                 <a class="btn btn-primary requireLogin" target="_blank" href="/subscribe/tag/<%= params[:id] %>"> Follow</a>
                                 <% if @related_tags %>
@@ -185,3 +185,10 @@
     color: #666;
   }
 </style>
+
+
+<script>
+$(function () {
+  $('.tag-header [data-toggle="tooltip"]').tooltip();
+});
+</script>

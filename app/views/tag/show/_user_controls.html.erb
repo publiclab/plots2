@@ -2,35 +2,48 @@
 <!-- AJAXify -->
   <a class="ellipsis" data-toggle="dropdown">&nbsp<i class="fa fa-ellipsis-h" style="color : #666; font-size:15px; float:right;"></i></a>
   <div class="dropdown-menu">
-    <div class="dropdown-item">
-      <a href="/feed/tag/<%= params[:id] %>.rss"><i class="fa fa-rss"></i> RSS</a>
-    </div>
     <% unless @wildcard %>
       <% if current_user.following(params[:id]) %>
         <div class="dropdown-item">
           <a style="width: 100px;" rel="tooltip" title="<%= translation('tag.show.unfollow') %>" class="btn btn-light btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>"> <%= translation('tag.index.unsubscribe') %></a>
         </div>
+        <div class="dropdown-divider"></div>
       <% else %>
-        <div class="dropdown-item">
-          <a style="width: 100px;" class="btn btn-outline-secondary btn-sm" href="/subscribe/tag/<%= params[:id] %>" data-remote="true">
-            <%= translation('tag.index.subscribe') %>
-          </a>
+        <div class="dropdown-item">	
+          <a style="width: 100px;" class="btn btn-outline-secondary btn-sm" href="/subscribe/tag/<%= params[:id] %>" data-remote="true">	
+            <%= translation('tag.index.subscribe') %>	
+          </a>	
         </div>
       <% end %>
-      <div class="dropdown-item">
-        <%= link_to tag_stats_path, id: params[:id] ,title: "Click to view graph" do %>
-          <i class="fa fa-bar-chart"></i> Topic statistics
-        <% end %>
-      </div>
-      <div class="dropdown-item">
-        <a href="/tag-pages">How to edit this card</a>
-      </div>
 
-      <div class="dropdown-divider"></div>
-      <% unless @tags.try(:first).try(:parent).nil? %>
-        <small>Alias of: <%= @tags.first.parent %></small>
+    <div class="dropdown-item">
+      <a href="/feed/tag/<%= params[:id] %>.rss"><i class="fa fa-rss"></i> RSS</a>
+    </div>
+
+    <div class="dropdown-item">
+      <a href="/tag-pages">How to edit this card</a>
+    </div>
+
+    <div class="dropdown-item">
+      <%= link_to tag_stats_path, id: params[:id] ,title: "Click to view graph" do %>
+        <i class="fa fa-bar-chart"></i> Topic statistics
       <% end %>
+    </div>
+
+    <div class="dropdown-item">
+      <a href="/tags">All topics</a>
+    </div>
+
+    <div class="dropdown-item">
+      <a href="/stats/subscriptions">Statistics for all topics</a>
+    </div>
+
+    <% unless @tags.try(:first).try(:parent).nil? %>
+      <div class="dropdown-divider"></div>
+      <small>Alias of: <%= @tags.first.parent %></small>
     <% end %>
+
+  <% end %>
 </div>
 
 <!-- AJAXify -->
