@@ -653,7 +653,7 @@ class Node < ActiveRecord::Base
     comment_via_status = params[:comment_via].nil? ? 0 : params[:comment_via].to_i
     user = User.find(params[:uid])
     status = user.first_time_poster && user.first_time_commenter ? 4 : 1
-    c = Comment.new(pid: 0,
+    c = Comment.includes(:node).new(pid: 0,
                     nid: nid,
                     uid: params[:uid],
                     subject: '',
