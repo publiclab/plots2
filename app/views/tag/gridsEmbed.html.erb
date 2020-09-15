@@ -1,5 +1,5 @@
-<link href="/assets/application.css" media="all" rel="stylesheet" type="text/css" />
-<script src="/assets/application.js" type="text/javascript"></script>
+<link rel="preload" href="<%= stylesheet_path('application') %>" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<%= javascript_include_tag "application" %>
 <style>
   body { padding: 0; }
   div.leaflet-map { height:100% !important; }
