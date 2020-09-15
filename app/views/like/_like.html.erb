@@ -68,9 +68,11 @@
             <br>
         <% end %>
 
-        <p><a class='btn btn-sm btn-outline-secondary' rel='tooltip' title='Try the beta inline Rich Wiki editor.' data-placement='top' href='<%= node.path %>?raw=true'>
-          <i style='color:#0c8;' class='fa fa-pencil'></i>
-        </a></p>
+        <% if node.type == "page" %>
+          <p><a class='btn btn-sm btn-outline-secondary' rel='tooltip' title='Try the beta inline Rich Wiki editor.' data-placement='top' href='<%= node.path %>?raw=true'>
+            <i style='color:#0c8;' class='fa fa-pencil'></i>
+          </a></p>
+        <% end %>
 
         <% if logged_in_as(['admin', 'moderator']) || (current_user && current_user.uid == node.uid) %>
 
