@@ -1018,6 +1018,8 @@ class Node < ActiveRecord::Base
       errors ? I18n.t('node.only_RSVP_for_yourself') : false
     elsif tagname == 'locked' && user.role != 'admin'
       errors ? I18n.t('node.only_admins_can_lock') : false
+    elsif tagname == 'blog' && user.role != 'admin' && user.role != 'moderator'
+      errors ? 'Only moderators or admins can use this tag.' : false
     elsif tagname.split(':')[0] == 'redirect' && Node.where(slug: one_split).size <= 0
       errors ? I18n.t('node.page_does_not_exist') : false
     elsif socials[one_split&.to_sym].present?
