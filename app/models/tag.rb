@@ -215,7 +215,7 @@ class Tag < ApplicationRecord
         nids,
         (Time.now.to_i - week.weeks.to_i).to_s,
         (Time.now.to_i - (week - 1).weeks.to_i).to_s
-      ).size(:all)
+      ).count(:all)
     end
     weeks
   end
@@ -237,7 +237,7 @@ class Tag < ApplicationRecord
           nids,
           (fin.to_i - week.weeks.to_i).to_s,
           (fin.to_i - (week - 1).weeks.to_i).to_s
-        ).size(:all)
+        ).count(:all)
 
       weeks[(month.to_f * 1000)] = current_week
       week -= 1
@@ -253,7 +253,7 @@ class Tag < ApplicationRecord
     while week >= 1
       month = (fin - (week * 7 - 1).days)
       weekly_quiz = questions.where(created: range(fin, week))
-        .size(:all)
+        .count(:all)
 
       weeks[(month.to_f * 1000)] = weekly_quiz.size
       week -= 1
@@ -269,7 +269,7 @@ class Tag < ApplicationRecord
     while week >= 1
       month = (fin - (week * 7 - 1).days)
       weekly_comments = comments.where(timestamp: range(fin, week))
-        .size(:all)
+        .count(:all)
 
       weeks[(month.to_f * 1000)] = weekly_comments
       week -= 1
@@ -367,7 +367,7 @@ class Tag < ApplicationRecord
         .includes(:revision, :tag)
         .references(:term_data, :node_revisions)
         .where('term_data.name = ?', tag_name)
-        .size
+        .count
   end
 
   def self.related(tag_name, count = 5)
@@ -402,7 +402,7 @@ class Tag < ApplicationRecord
         .limit(limit).each do |tag|
         data["tags"] << {
           "name" => tag.name,
-          "count" => tag.size
+          "count" => tag.count
         }
       end
       data["edges"] = []
@@ -421,7 +421,7 @@ class Tag < ApplicationRecord
 
   def subscription_graph(start = DateTime.now - 1.year, fin = DateTime.now)
     date_hash = {}
-    week = start.to_date.step(fin.to_date, 7).size
+    week = start.to_date.step(fin.to_date, 7).count
 
     while week >= 1
       month = (fin - (week * 7 - 1).days)
@@ -445,7 +445,7 @@ class Tag < ApplicationRecord
   end
 
   def span(start, fin)
-    start.to_date.step(fin.to_date, 7).size
+    start.to_date.step(fin.to_date, 7).count
   end
 
   def range(fin, week)
