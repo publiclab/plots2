@@ -42,7 +42,7 @@
               <% node.coauthors.each_with_index do |coauthor,i| %>
               <a href="/profile/<%= coauthor.username %>">
               @<%= coauthor.username%> <%= coauthor.new_contributor %></a>
-              <%= ',' if i < node.coauthors.length-1 %>
+              <%= ',' if i < node.coauthors.size-1 %>
               <% end %>
               <% end %>
       <% end %>
@@ -63,12 +63,12 @@
               <span class="">
                 <% if params[:controller] == 'questions' %>
                   <li>
-                  <a href="<%= node.path(:question) %>#answers" title="Answers"><i class="fa fa-comments-o" style="color: #DAA583;"></i> <%= node.answers.length %></a>
+                  <a href="<%= node.path(:question) %>#answers" title="Answers"><i class="fa fa-comments-o" style="color: #DAA583;"></i> <%= node.answers.size %></a>
                   </li>
 
                 <% end %>
                   <li>
-                  <a href="<%= node.path %>#comments">Total Comments: <%= node.comments_viewable_by(current_user).length %></a>
+                  <a href="<%= node.path %>#comments">Total Comments: <%= node.comments_viewable_by(current_user).size %></a>
                   </li>
                   <li>
                   <a href="/n/<%= node.id %>">Read More</a>
