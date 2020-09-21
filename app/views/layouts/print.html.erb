@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="<%= I18n.locale || 'en' %>">
+  <head>
+    <meta charset="utf-8" />
+    <title>&#127880; Public Lab<%= ": "+(@title || params[:action].capitalize) %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <% if @node && @node.body %>
+      <meta name="description" content="<%= raw strip_tags(sanitize(RDiscount.new(@node.body).to_html)).truncate(100) %>" />
+    <% else %>
+      <meta name="description" content="Public Lab is an open community which collaboratively develops accessible, open source, Do-It-Yourself technologies for investigating local environmental health and justice issues." />
+    <% end %>
+    <%= action_cable_meta_tag %>
+    <meta name="author" content="Public Lab contributors" />
+    <link href="https://<%= request.host %>/feed.rss" rel="alternate" type="application/rss+xml" title="Public Lab research" />
+
+    <link rel="stylesheet preload prefetch" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" as="style" type="text/css" />
+    <!-- Loading critical css and rest asynchronously #7996 -->
+    <%= javascript_include_tag "application" %>
+    <style>
+      <%= CriticalPathCss.fetch(request.path) %>
+    </style>
+    <script>
+        loadCSS("<%= stylesheet_path('application') %>");
+    </script>
+    <link rel="preload" href="<%= stylesheet_path('application') %>" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="<%= stylesheet_path('application') %>">
+    </noscript>
+    <% if @node && @node.has_tag('style:fancy') %>
+      <%= stylesheet_link_tag "fancy", :media => "all" %>
+    <% end %>
+    <%= stylesheet_link_tag "print", :media => "print" %>
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <%= csrf_meta_tags %>
+    <meta name="google-translate-customization" content="4ce4c7c384354172-5179499fc244f592-g2b333d0d29f59663-d" />
+
+    <% if current_user %>
+        <%= javascript_include_tag "cable" %>
+    <% end %>
+
+    <% if @node && @node.body %>
+      <meta property="og:title" content="<%= @title %>" />
+      <meta property="og:site_name" content="Public Lab" />
+      <meta property="og:url" content="https://<%= request.host %>/n/<%= @node.id %>" />
+      <meta property="og:description" content="<%= raw strip_tags(sanitize(RDiscount.new(@node.body).to_html)).truncate(100) %>" />
+      <meta property="og:type" content="article" />
+      <meta property="fb:app_id" content="644692375883090" />
+    <% if @node.main_image %>
+        <meta property="og:image" content="https://<%= request.host %><%= @node.main_image.path(:default) %>" />
+        <meta name="twitter:image" content="https://<%= request.host %><%= @node.main_image.path(:default) %>">
+        <% elsif scraped_image = @node.scraped_image %>
+        <meta property="og:image" content="<%= scraped_image %>" />
+        <meta name="twitter:image" content="<%= scraped_image %>">
+    <% end %>
+      <p class="facebook-summary" style="display:none;">
+        <%= raw strip_tags(sanitize(RDiscount.new(@node.body).to_html)).truncate(100) %>
+      </p>
+    <% end %>
+    <p class="facebook-summary" style="display:none;"><%= translation('layout._header.summary') %></p>
+
+    <!-- facebook needs this apparently -->
+    <div id="fb-root"></div>
+
+    <%= yield(:head) %>
+
+    <script type="text/javascript">
+      I18n.defaultLocale = "<%= I18n.default_locale %>";
+      I18n.locale = "<%= I18n.locale %>";
+      I18n.fallbacks = true;
+      $(function () {
+        $("[data-toggle=popover]").popover({
+            html: true,
+            content: function() {
+                return $('#popover-content').html();
+            }
+        });
+      });
+    </script>
+
+    <% cache('feature_header', skip_digest: true) do %>
+      <%= feature("header") %>
+    <% end %>
+
+    <%= yield(:head) %>
+
+  <style type="text/css">
+    .pac-container { z-index: 100000; }
+
+    #ex1Slider .slider-selection {
+     background: #BABABA;
+    }
+
+  </style>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/bootstrap-slider.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/css/bootstrap-slider.min.css" />
+
+  </head>
+
+  <body>
+    <div id="top_map"> </div>
+    <div class="container">
+      <div class="row">
+
+        <%= yield %>
+
+      </div><!--/row-->
+    </div><!--/container-->
+
+  </body>
+  <script>
+      $(function () {
+          $('[data-toggle="tooltip"]').tooltip()
+      })
+  </script>
+</html>
