@@ -37,7 +37,7 @@ svg {
   break-before: avoid-page;
 }
 
-img {
+img, .card {
     page-break-before: avoid; /* 'always,' 'avoid,' 'left,' 'inherit,' or 'right' */
     page-break-after: avoid; /* 'always,' 'avoid,' 'left,' 'inherit,' or 'right' */
     page-break-inside: avoid; /* or 'auto' */
