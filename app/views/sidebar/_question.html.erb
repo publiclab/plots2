@@ -15,10 +15,10 @@
     <% end %>
 
     <% if params[:controller] == 'questions' %>
-      <% if @users.length > 0 %>
+      <% if @users.size > 0 %>
       <h4>Top Answerers</h4>
         <% @users.each do |author| %>
-          <% count = @node.answers.where(uid: author.uid).length %>
+          <% count = @node.answers.where(uid: author.uid).size %>
           <%if !(author.banned?)%>
             <p><i class="fa fa-user" style="margin-right: 5px;"></i><a rel="tooltip" title="<%= count %> answers" data-placement="right" href="/profile/<%= author.name %>"><%= author.name %></a></p>
           <% end %>
