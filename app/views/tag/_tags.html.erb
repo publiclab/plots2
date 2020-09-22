@@ -1,8 +1,5 @@
 <% user = user || @user # allow overriding w/ local variable %>
 <div class="tags-list">
-<% if tags.length > 0 && power_tag %>
-  <a aria-label="Show more tags" class="btn btn-circle btn-circle-sm show-more-tags" href="javascript:void(0);" style="float:left;"><i class="fa fa-ellipsis-h" style="color:#808080;"></i></a>
-<% end %>
 <% tags.each_with_index do |tag, i| %>
   <% if tag.class == NodeTag %>
 
@@ -26,18 +23,6 @@
       </p>
 
     <% end %>
-
-    <script>
-      (function() {
-        $('.show-more-tags').click(function showMoreTags() {
-          $('.more-tags').show();
-          $('.show-more-tags').hide();
-          $("#tagform").show();
-          $("#tags-open").hide();
-          $(".tag-input").focus();
-        });
-      })();
-    </script>
 
   <% elsif tag.class == UserTag && (tag.name[0..4] != "oauth" || (logged_in_as(['admin', 'moderator']) || (current_user && current_user.uid == tag.uid))) %>
 
