@@ -520,7 +520,9 @@ class NotesControllerTest < ActionController::TestCase
   test 'should redirect to questions show page after creating a new question' do
     title = 'How to use Spectrometer'
     perform_enqueued_jobs do
-      assert_emails 1 do
+      # no emails sent for first-time posters, as it's held in moderation
+      assert users(:bob).first_time_poster
+      assert_emails 0 do
         user = UserSession.create(users(:bob))
         post :create,
              params: {
@@ -540,13 +542,17 @@ class NotesControllerTest < ActionController::TestCase
   test 'non-first-timer posts a question' do
     UserSession.create(users(:jeff))
     title = 'My first question to Public Lab'
-    post :create,
-         params: {
-         title: title,
-         body: 'Spectrometer question',
-         tags: 'question:spectrometer',
-         redirect: 'question'
-         }
+    perform_enqueued_jobs do
+      assert_emails 1 do
+        post :create,
+             params: {
+             title: title,
+             body: 'Spectrometer question',
+             tags: 'question:spectrometer',
+             redirect: 'question'
+             }
+      end
+    end
 
     assert_redirected_to '/questions/' + users(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
     assert_equal flash[:notice], 'Question published. In the meantime, if you have more to contribute, feel free to do so.'
