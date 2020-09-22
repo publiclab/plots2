@@ -2,9 +2,19 @@
   <button class="btn btn-outline-secondary dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-left:14px;">Sort by</button>
   <div class="dropdown-menu dropdown-menu-right mt-1" aria-labelledby="dropdownMenuButton">
   <% if params[:action] == "show" %>
-    <a class="dropdown-item <% if params[:order] == 'last_updated' %> active<% end %>" href="/tag/<%= params[:id] %>"><i class="fa fa-clock-o"></i> <span class="d-lg-inline">by last updated</span></a>
-    <a class="dropdown-item <% if params[:order] == 'views' %> active<% end %>" href="?order=views"><i class="fa fa-eye"></i> <span class="d-lg-inline">by views</span></a>
-    <a class="dropdown-item <% if params[:order] == 'likes' %> active<% end %>" href="?order=likes"><i class="fa fa-star"></i> <span class="d-lg-inline">by likes</span></a>
+    <a class="dropdown-item <% if params[:order] == 'last_updated' %> active<% end %>" href="/tag/<%= params[:id] %>">
+      <% if @node_type == 'wiki' %>
+        <i class="fa fa-clock-o"></i> <span class="d-lg-inline">by created date</span>
+      <% else %>
+        <i class="fa fa-clock-o"></i> <span class="d-lg-inline">by last updated</span>
+      <% end %>
+    </a>
+    <a class="dropdown-item <% if params[:order] == 'views' %> active<% end %>" href="?order=views">
+      <i class="fa fa-eye"></i> <span class="d-lg-inline">by views</span>
+    </a>
+    <a class="dropdown-item <% if params[:order] == 'likes' %> active<% end %>" href="?order=likes">
+      <i class="fa fa-star"></i> <span class="d-lg-inline">by likes</span>
+    </a>
   <% end %>
   </div>
 </div>
