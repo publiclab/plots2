@@ -45,7 +45,7 @@ $(function () {
 
 <% parent ||= nil %>
 
-<% if parent != :profile %>
+<% if current_user && (parent != :profile || (current_user.id == user.id || logged_in_as(['admin']))) %>
   <a data-toggle="tooltip" title="Add tags/View all" aria-label="Add tags/View all" id="tags-open" class="btn btn-circle btn-circle-sm tags-open" style="float:left;">
     <i class="fa fa-plus" style="color:#808080;"></i>
   </a>
