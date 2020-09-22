@@ -74,6 +74,7 @@ class Tag < ApplicationRecord
     end
     uids = uids.uniq
     User.where(id: uids)
+        .where(status: [1, 4])
   end
 
   def self.contributor_count(tagname)
