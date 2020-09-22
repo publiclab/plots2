@@ -83,21 +83,10 @@ class TagController < ApplicationController
     @node = @wiki # expose the wiki node in the @node variable so we get open graph meta tags in the layout
 
     default_type = params[:id].match?('question:') ? 'questions' : 'note'
-    if params[:order].nil?
-      params[:order] = 'last_updated' # default ordering set
-    end
 
     @node_type = params[:node_type] || default_type
     @start = Time.parse(params[:start]) if params[:start]
     @end = Time.parse(params[:end]) if params[:end]
-
-    order_by =  if params[:order] == 'views'
-                  'node.views DESC'
-                elsif params[:order] == 'likes'
-                  'node.cached_likes DESC'
-                elsif params[:order] == 'last_updated'
-                  'node_revisions.timestamp DESC'
-                end
 
     node_type = if %w(questions note).include?(@node_type)
                   'note'
@@ -126,6 +115,16 @@ class TagController < ApplicationController
         nodes = nodes.where.not(nid: @pinned_nodes.collect(&:id))
       end
     end
+
+    order_by = if params[:order] == 'views'
+                 'node.views DESC'
+               elsif params[:order] == 'likes'
+                 'node.cached_likes DESC'
+               elsif @node_type == 'wiki' # wiki sorting by timestamp isn't working; https://github.com/publiclab/plots2/issues/7334#issuecomment-696938352
+                 'node.nid DESC'
+               else # params[:order] == 'last_updated'
+                 'node_revisions.timestamp DESC'
+               end
 
     @pagy, nodes = pagy(nodes.order(order_by), items: 24)
     @paginated = true
