@@ -201,7 +201,9 @@ class PostTest < ApplicationSystemTestCase
 
     # Wait for the location to be added
     wait_for_ajax
-    find('.tags-list a.show-more-tags').click()
+
+    # there should also be a page reload now, because we want to reload to see the sidebar mini-map
+    find('a#tags-open').click()
 
     # Make sure proper latitude and longitude tags are added
     assert_selector('.tags-list .badge a[href="/tag/lat:22"]', text: "lat:22")
