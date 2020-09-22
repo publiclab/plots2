@@ -709,7 +709,7 @@ class Node < ActiveRecord::Base
             img.save
           end
           node.save!
-          if node.status != 3
+          if node.status == 1
             node.notify
           end
         else
