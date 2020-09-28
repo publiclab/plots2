@@ -45,7 +45,7 @@
     "leaflet-hash": "^0.2.1",
     "leaflet-spin": "1.1.0",
     "leaflet.fullscreen": "1.6.0",
-    "marked": "^1.1.1",
+    "marked": "^1.2.0",
     "megamark": "~3.3.0",
     "moment": "~> 2.27.0",
     "noty": "3.1.4",
