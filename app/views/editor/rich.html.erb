@@ -102,7 +102,7 @@
 
           <div id="imageButtons">
             <input type="file" name="image[photo]" id="thumbnail-img">
-            <label for="thumbnail-img" class="thumbnailBtn"> 
+            <label for="thumbnail-img" class="thumbnailBtn">
               <span>Choose a file…</span>
             </label>
             <button id="removeFile" class="thumbnailBtn">Remove File</button>
@@ -367,7 +367,7 @@
         } else if (response && Object.keys(response).length > 0) {
           $('.ple-errors').html('<div class="alert alert-danger"></div>');
           Object.keys(response).forEach(function(key, i) {
-            $('.ple-errors .alert').append('<p><b>' + key + '</b> </p>');
+            $('.ple-errors .alert').append('<p><b>' + '</b> </p>');
             $('.ple-errors .alert p:last').append(response[key].join(', '));
           });
           window.scroll(0, 0);
