@@ -31,7 +31,7 @@
       <% if @node.has_power_tag('with') %>with <% @node.coauthors.each_with_index do |coauthor,i| %>
         <a href="/profile/<%= coauthor.username %>">
         <%= coauthor.username%></a> <%= coauthor.new_contributor %>
-        <%= ',' if i < @node.coauthors.length-1 %><% end %>
+        <%= ',' if i < @node.coauthors.size-1 %><% end %>
       <% end %>
       <span class="d-none d-lg-inline">
         <%= @node.created_at.to_s(:long) %> |
@@ -53,7 +53,7 @@
   <hr />
 
   <% comments = @node.comments_viewable_by(current_user) %>
-  <h3><span id="comment-count"><%= comments.length %></span> Comments</h3>
+  <h3><span id="comment-count"><%= comments.size %></span> Comments</h3>
     <div id="comments-list">
       <% comments.includes([:node, :replied_comments]).order("timestamp ASC").each do |comment| %>
         <% if comment.reply_to.nil? %>
