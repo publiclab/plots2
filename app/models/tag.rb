@@ -37,7 +37,7 @@ class Tag < ApplicationRecord
   end
 
   def run_count
-    self.count = NodeTag.joins(:node).where(tid: tid).where('node.status = 1').count
+    self.count = NodeTag.joins(:node).where(tid: tid).where('node.status = 1').size
     save
   end
 
@@ -79,7 +79,7 @@ class Tag < ApplicationRecord
 
   def self.contributor_count(tagname)
     uids = Tag.contributors(tagname)
-    uids.length
+    uids.size
   end
 
   # finds highest viewcount nodes
@@ -168,7 +168,7 @@ class Tag < ApplicationRecord
                        .collect(&:user_id)
     User.where(id: uids)
         .where(status: [1, 4])
-        .count
+        .size
   end
 
   def self.followers(tagname)
@@ -208,7 +208,7 @@ class Tag < ApplicationRecord
         nids,
         (Time.now.to_i - week.weeks.to_i).to_s,
         (Time.now.to_i - (week - 1).weeks.to_i).to_s
-      ).count(:all)
+      ).size
     end
     weeks
   end
@@ -230,7 +230,7 @@ class Tag < ApplicationRecord
           nids,
           (fin.to_i - week.weeks.to_i).to_s,
           (fin.to_i - (week - 1).weeks.to_i).to_s
-        ).count(:all)
+        ).size
 
       weeks[(month.to_f * 1000)] = current_week
       week -= 1
@@ -246,9 +246,9 @@ class Tag < ApplicationRecord
     while week >= 1
       month = (fin - (week * 7 - 1).days)
       weekly_quiz = questions.where(created: range(fin, week))
-        .count(:all)
+        .size
 
-      weeks[(month.to_f * 1000)] = weekly_quiz.count
+      weeks[(month.to_f * 1000)] = weekly_quiz.size
       week -= 1
     end
     weeks
@@ -262,7 +262,7 @@ class Tag < ApplicationRecord
     while week >= 1
       month = (fin - (week * 7 - 1).days)
       weekly_comments = comments.where(timestamp: range(fin, week))
-        .count(:all)
+        .size
 
       weeks[(month.to_f * 1000)] = weekly_comments
       week -= 1
@@ -360,7 +360,7 @@ class Tag < ApplicationRecord
         .includes(:revision, :tag)
         .references(:term_data, :node_revisions)
         .where('term_data.name = ?', tag_name)
-        .count
+        .size
   end
 
   def self.related(tag_name, count = 5)
