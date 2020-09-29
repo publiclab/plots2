@@ -528,6 +528,7 @@ ActiveRecord::Schema.define(:version => 0) do
     t.string  "name",      :limit => 60
     t.string  "mail",      :limit => 64
     t.string  "homepage"
+    t.integer "flag",                            :default => 0,  :null => false
   end
 
   add_index "comments", ["nid"], :name => "nid"
@@ -1226,6 +1227,7 @@ ActiveRecord::Schema.define(:version => 0) do
     t.integer "sticky",                  :default => 0,  :null => false
     t.integer "tnid",                    :default => 0,  :null => false
     t.integer "translate",               :default => 0,  :null => false
+    t.integer "flag",                    :default => 0,  :null => false
   end
 
   add_index "node", ["changed"], :name => "node_changed"

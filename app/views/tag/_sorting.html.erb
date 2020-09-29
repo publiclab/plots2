@@ -7,7 +7,7 @@ line up nicely if the user is asked to login on the questions/index page -->
 
 <form id="tagform" method="GET" action="/questions/tag/">
   <div class="input-group">
-    <input type="search" tabindex="1" autocomplete="off" id="taginput" name="id" type="text" placeholder="type your topic" data-provide="typeahead" class="form-control" required="required" />
+    <input aria-label="Type your topic" type="search" tabindex="1" autocomplete="off" id="taginput" name="id" type="text" placeholder="type your topic" data-provide="typeahead" class="form-control" required="required" />
     <div class="input-group-append" >
       <button type="submit" rel="tooltip" title="View questions with the entered title" class="btn btn-primary">Search</button>
     </div>
@@ -21,7 +21,7 @@ line up nicely if the user is asked to login on the questions/index page -->
         minLength: 3,
         item: '<li class="dropdown-item"><a class="dropdown-item" href="#" role="option"></a></li>',
         source: function (query, process) {
-          var replaced_query = query.replace(' ', /-/g);
+          var replaced_query = query.replace(' ', '-');
           return $.post('/tag/suggested/' + replaced_query, {}, function (data) {
             return process(data)
           })

@@ -50,11 +50,11 @@ class PostTest < ApplicationSystemTestCase
 
     # There should be 1 tag that shows up as a badge and 2 as a card
     page.assert_selector('.tags-list .card-body', :count => 2)
-    # page.assert_selector('.tags-list p.badge', :count => 1)
+    page.assert_selector('.tags-list p.badge', :count => 1)
 
-    # accept_alert do
-    #   find('.tags-list p.badge .tag-delete').click()
-    # end
+    accept_alert do
+      find('.tags-list p.badge .tag-delete').click()
+    end
     
     # Make sure that 1 of the 3 tags is removed
     page.assert_selector('.tags-list p.badge', :count => 0)
@@ -201,7 +201,9 @@ class PostTest < ApplicationSystemTestCase
 
     # Wait for the location to be added
     wait_for_ajax
-    find('.tags-list a.show-more-tags').click()
+
+    # there should also be a page reload now, because we want to reload to see the sidebar mini-map
+    find('a#tags-open').click()
 
     # Make sure proper latitude and longitude tags are added
     assert_selector('.tags-list .badge a[href="/tag/lat:22"]', text: "lat:22")
@@ -213,7 +215,7 @@ class PostTest < ApplicationSystemTestCase
 
     find('#menu-btn').click()
 
-    accept_confirm "Are you sure?" do
+    accept_confirm "All revisions will be lost, and you cannot undo this action. If this is a spam page, be sure that it did not overwrite valid content before deleting the entire page and the history." do
       find('#menu-delete-btn').click()
     end
 

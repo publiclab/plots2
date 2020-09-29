@@ -1,11 +1,17 @@
 class StatsController < ApplicationController
   def subscriptions
-    @tags = {}
-    TagSelection.where(following: true).joins(:node_tags).each do |tag|
-      @tags[tag.tagname] = @tags[tag.tagname] || 0
-      @tags[tag.tagname] += 1
+    @tags = Rails.cache.fetch("stats-subscriptions-query", expires_in: 24.hours) do
+      TagSelection
+        .select("DISTINCT tag_selections.tid, tag_selections.user_id")
+        .where(following: true)
+        .joins("INNER JOIN community_tags ON community_tags.tid = tag_selections.tid")
+        .joins("INNER JOIN term_data ON term_data.tid = community_tags.tid")
+        .group("term_data.name")
+        .joins("INNER JOIN rusers ON rusers.id = tag_selections.user_id")
+        .where("rusers.status = 1 OR rusers.status = 4")
+        .size
     end
-    @tags = @tags.group_by { |_k, v| v / 10 }
+    @tags = @tags.group_by { |_k, v| v / 10 }.sort_by { |k, _v| -k }
   end
 
   def range
@@ -33,8 +39,8 @@ class StatsController < ApplicationController
 
       total_questions = Node.published.questions
         .where(created: @start.to_i..@end.to_i)
-      @answers = total_questions.joins(:comments).size.count
-      @questions = total_questions.size.count
+      @answers = total_questions.joins(:comments).size.size
+      @questions = total_questions.size.size
     end
   end
 
@@ -74,8 +80,8 @@ class StatsController < ApplicationController
         end
       end
 
-      @all_notes = nids.uniq.length
-      @all_contributors = users.uniq.length
+      @all_notes = nids.uniq.size
+      @all_contributors = users.uniq.size
     end
     Rails.cache.fetch("total-contributors-all-time", expires_in: 1.weeks) do
       @all_time_contributors = User.count_all_time_contributor

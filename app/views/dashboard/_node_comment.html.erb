@@ -8,7 +8,7 @@
       <a href="<%= node.parent.path(:question) %>#answer-<%= node.answer.id %>-comment"> <i class="fa fa-comment-o"> </i>
       <% end %>
       </a>
-      <a href="/n/<%= node.parent.id %>"><i class="fa fa-link"></i></a>
+      <a aria-label="Link to note" href="/n/<%= node.parent.id %>"><i class="fa fa-link"></i></a>
     </div>
 
     <p class="meta">

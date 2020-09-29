@@ -44,6 +44,29 @@ pre {
   }
 }
 
+/* Adding the bug-btn stylings below, but they can be removed once the next 
+version of the editor is released. */
+
+.bug-btn {
+  color: #f1f1f1;
+  font-size: 1em;
+  padding: 0.7em;
+  border: none;
+  margin-left: 3%;
+  border-radius: 2%;
+  background: linear-gradient(to right, #424242, #616161);
+}
+
+.bug-btn:hover {
+  background: linear-gradient(to right, #242323, #838282);
+  color: #f1f1f1;
+  text-decoration: none;
+}
+
+.bug-btn-wrapper {
+  margin: 3rem 0 3rem 0;
+}
+
 .btn-default {
     color: #333;
     background-color: #fff;
@@ -169,6 +192,10 @@ pre {
 #imagebar .progress {
   margin:10px;
   width:30%;
+}
+
+#dropzone.hover textarea {
+  background:#f8f8f8;
 }
 
 #side-progress {

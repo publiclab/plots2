@@ -1,8 +1,8 @@
 require "test_helper"
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
-  chromeOptions = %w(--headless --disable-gpu --no-sandbox --remote-debugging-port=9222)
-  caps = Selenium::WebDriver::Remote::Capabilities.chrome("chromeOptions" => {"args" => chromeOptions})
+  chromeOptions = %w(no-sandbox disable-dev-shm-usage headless disable-gpu remote-debugging-port=9222)
+  caps = Selenium::WebDriver::Remote::Capabilities.chrome("goog:chromeOptions" => {"args" => chromeOptions})
   driven_by :selenium, using: :chrome, screen_size: [1400, 1400], options: { desired_capabilities: caps }
 
   # https://web.archive.org/web/20170730200309/http://blog.paulrugelhiatt.com/rails/testing/capybara/dropzonejs/2014/12/29/test-dropzonejs-file-uploads-with-capybara.html
