@@ -5,12 +5,9 @@
   #postOnMap<%= unique_id %> {
     margin-top: 5px;
   }
-  .leaflet-popup-content {
-    width: auto !important;
-  }
   </style>
   <div class="inline-fullwidth-content">
-      <div class="leaflet-map" id="map<%= unique_id %>"></div>
+      <div class="leaflet-map inline-map" id="map<%= unique_id %>"></div>
   </div>
 
   
@@ -25,6 +22,7 @@
       maxBounds: bounds ,
       maxBoundsViscosity: 0.75,
       fullscreenControl: true,
+      scrollWheelZoom: false,
       fullscreenControlOptions: {
         position: 'topleft'
     }}).setView([<%= lat %>,<%= lon %>], <%= lat.to_s.length.to_i %> + 6);

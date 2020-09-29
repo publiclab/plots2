@@ -13,22 +13,11 @@ class TagTest < ApplicationSystemTestCase
     find(".login-modal-form #login-button").click()
   end
 
-  test 'viewing the dropdown menu' do
-    visit '/tag/test'
-
-    take_screenshot
-
-    click_on "by type"
-
-    take_screenshot
-
-  end
-
   test 'subscribing to a tag' do
     visit '/tag/nature'
 
     # Click on 3 dots menu
-    find('.tag-card .pull-right').click()
+    find('.tag-header .pull-right').click()
 
     # Subscribe to the tag "nature"
     find('.dropdown-menu.show a[href="/subscribe/tag/nature"]').click()

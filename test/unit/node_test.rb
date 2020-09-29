@@ -143,7 +143,7 @@ class NodeTest < ActiveSupport::TestCase
     assert_equal "/notes/#{username}/#{time}/#{title}", node.path
     assert_equal "/questions/#{username}/#{time}/#{title}",
                  node.path(:question)
-  end 
+  end
 
   test 'edit a research note and check path' do
     original_title = 'My research note'
@@ -351,7 +351,9 @@ class NodeTest < ActiveSupport::TestCase
     expected = [nodes(:one), nodes(:spam), nodes(:first_timer_note), nodes(:blog),
                 nodes(:moderated_user_note), nodes(:activity), nodes(:upgrade),
                 nodes(:draft), nodes(:post_test1), nodes(:post_test2),
-                nodes(:post_test3), nodes(:post_test4), nodes(:scraped_image), nodes(:search_trawling), nodes(:purple_air_without_hyphen), nodes(:purple_air_with_hyphen)]
+                nodes(:post_test3), nodes(:post_test4), nodes(:scraped_image), nodes(:search_trawling),
+                nodes(:purple_air_without_hyphen), nodes(:purple_air_with_hyphen),
+                nodes(:sun_note), nodes(:sunny_day_note)]
     assert_equal expected, notes
   end
 
@@ -361,7 +363,7 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'should find all questions' do
     questions = Node.questions
-    expected = [nodes(:question), nodes(:question2), nodes(:first_timer_question), nodes(:question3)]
+    expected = [nodes(:question), nodes(:question2), nodes(:first_timer_question), nodes(:question3), nodes(:sun_question)]
     assert_equal expected, questions
   end
 
@@ -519,6 +521,7 @@ class NodeTest < ActiveSupport::TestCase
   # node.authors should be anyone who's written a revision for this node (a wiki, presumably)
   test 'authors' do
     authors = Node.last.authors
+
     assert authors
     assert_equal 1, authors.length
   end
@@ -535,5 +538,64 @@ class NodeTest < ActiveSupport::TestCase
       node.add_tag('myspamtag', users(:spammer))
     end
     assert_not node.has_tag('myspamtag')
+  end
+
+  test 'for_tagname_and_type with notes' do
+    tag = tags(:sunny_day)
+    node = nodes(:sunny_day_note)
+
+    nodes = Node.for_tagname_and_type(tag.name)
+    assert nodes.include?(node), "Should include note tagged with sunny-day"
+  end
+
+  test 'for_tagname_and_type with a parent tag' do
+    tag = tags(:sun)
+    node1 = nodes(:sun_note)
+    node2 = nodes(:sunny_day_note)
+
+    nodes = Node.for_tagname_and_type(tag.name)
+    assert nodes.include?(node1), "Should include note with parent tag (sun)"
+    assert nodes.include?(node2), "Should include note with child tag (sunny-day)"
+  end
+
+  test 'for_tagname_and_type with questions' do
+    tag = tags(:sun)
+    node = nodes(:sun_question)
+
+    Node.expects(:for_question_tagname_and_type).once
+    Node.for_tagname_and_type(tag.name, 'note', question: true)
+  end
+
+  test 'for_question_tagname_and_type' do
+    tag = tags(:sun)
+    node = nodes(:sun_question)
+
+    nodes = Node.for_question_tagname_and_type(tag.name, 'note')
+    assert nodes.include?(node), "Should include question tagged with sun:question"
+  end
+
+  test 'for_tagname_and_type with wiki' do
+    tag = tags(:sunny_day)
+    node = nodes(:sunny_day_wiki)
+
+    nodes = Node.for_tagname_and_type(tag.name, 'page')
+    assert nodes.include?(node), "Should include wiki tagged with sunny-day"
+  end
+
+  test 'for_tagname_and_type with wildcard' do
+    tag = tags(:sun)
+
+    Node.expects(:for_wildcard_tagname_and_type).once
+    Node.for_tagname_and_type(tag.name + "*", 'note', wildcard: true)
+  end
+
+  test 'for_wildcard_tagname_and_type' do
+    tag = tags(:sun)
+    node1 = nodes(:sun_note)
+    node2 = nodes(:sunny_day_note)
+
+    nodes = Node.for_wildcard_tagname_and_type(tag.name + "*", 'note')
+    assert nodes.include?(node1), "Should include note tagged with sun for sun*"
+    assert nodes.include?(node2), "Should include note tagged with sunny-day for sun*"
   end
 end

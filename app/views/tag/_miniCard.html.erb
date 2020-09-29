@@ -1,7 +1,7 @@
 <div class="card" style="clear:left;">
   <div class="card-body">
 
-    <a class="ellipsis pull-right" data-toggle="dropdown"><i class="fa fa-ellipsis-h" style="color:#666;font-size:18px;margin-right:10px;"></i></a>
+    <a class="ellipsis pull-right" data-toggle="dropdown" style="cursor:pointer"><i class="fa fa-ellipsis-h" style="color:#666;font-size:18px;margin-right:10px;"></i></a>
     <div class="dropdown-menu" style = "font-size:13px;">
       <div class="dropdown-item"><a href='/tag/<%= tag.name %>' style="color:black; text-decoration: underline;"><%= Tag.tagged_node_count(tag.name) || 0 %> notes</a></div>
       <div class="dropdown-item">created by <a href='/profile/<%= tag.try(:author).try(:username) %>' style="color:black; text-decoration: underline;"><%= tag.try(:author).try(:username) %></a> <%= time_ago_in_words(Time.at(tag.date)) %> ago</div>

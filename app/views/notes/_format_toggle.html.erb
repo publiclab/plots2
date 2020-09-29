@@ -1,6 +1,6 @@
 <div class="btn-group d-none d-xl-inline" style="float:right;" id="note-format" data-toggle="buttons-radio">
-  <a onClick="toggle_format('grid')" id="grid-format" class="btn btn-outline-secondary btn-sm active" href="#"><i style="font-size:14px;" class="fa fa-th-large"></i></a>
-  <a onClick="toggle_format('list')" id="list-format" class="btn btn-outline-secondary btn-sm" href="#"><i style="font-size:14px;" class="fa fa-list"></i></a>
+  <a aria-label="Diplay grid-format" onClick="toggle_format('grid')" id="grid-format" class="btn btn-outline-secondary btn-sm active" href="#"><i style="font-size:14px;" class="fa fa-th-large"></i></a>
+  <a aria-label="Diplay list-format" onClick="toggle_format('list')" id="list-format" class="btn btn-outline-secondary btn-sm" href="#"><i style="font-size:14px;" class="fa fa-list"></i></a>
 </div>
 
 <script>
@@ -8,7 +8,8 @@
     toggle_format = function(format) {
       if (format == "grid") {
         <% if params[:controller] == 'questions' %>
-        $('.note').addClass('col-md-4')
+        $('.questions-page').addClass('row')
+        $('.card').css({ 'width' : '100%' })
         <% else %>
         $('.note').addClass('col-md-3')
         <% end %>
@@ -23,7 +24,8 @@
         $('#list-format').removeClass('active')
       } else {
         <% if params[:controller] == 'questions' %>
-        $('.note').removeClass('col-md-4')
+        $('.questions-page').removeClass('row')
+        $('.card').css({ 'width' : '60vw' })
         <% else %>
         $('.note').removeClass('col-md-3')
         <% end %>

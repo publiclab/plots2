@@ -28,7 +28,7 @@
 </div>
 
 
-<% if @questions.nonzero? %>
+<% if @questions.count.nonzero? %>
     <br><br>
     <h4 align="center">Questions Answered vs. Unanswered</h4>
     <div align="right" id="questAns"> </div>
@@ -45,4 +45,3 @@
     <p><i>This graph shows the number of followers who began subscribing within a given time period; this is not a cumulative graph of subscriptions. Note also: if someone 'unfollows,' the record is deleted, and we can't see it anymore, so we cannot currently measure a decline in followers over time.</i></p>
 <% end %>
 </div>
-

@@ -1,6 +1,7 @@
 class TagController < ApplicationController
   respond_to :html, :xml, :json, :ics
   before_action :require_user, only: %i(create delete add_parent)
+  include Pagy::Backend
 
   def index
     @toggle = params[:sort] || "uses"
@@ -73,15 +74,6 @@ class TagController < ApplicationController
   end
 
   def show
-
-    # Enhancement #6306 - Add counts to `by type` dropdown on tag pages
-    @counts = {:posts => 0, :questions => 0, :wiki => 0 }
-    @counts[:posts] = Tag.find_nodes_by_type([params[:id]], 'note', false).count
-    @counts[:questions] = Tag.find_nodes_by_type("question:#{params[:id]}", 'note', false).count
-    @counts[:wiki] = Tag.find_nodes_by_type([params[:id]], 'page', false).count
-    params[:counts] = @counts
-    # end Enhancement #6306 ============================================
-
     if params[:id].is_a? Integer
       @wiki = Node.find(params[:id])&.first
     else
@@ -91,21 +83,10 @@ class TagController < ApplicationController
     @node = @wiki # expose the wiki node in the @node variable so we get open graph meta tags in the layout
 
     default_type = params[:id].match?('question:') ? 'questions' : 'note'
-    if params[:order].nil?
-      params[:order] = 'last_updated' # default ordering set
-    end
 
     @node_type = params[:node_type] || default_type
     @start = Time.parse(params[:start]) if params[:start]
     @end = Time.parse(params[:end]) if params[:end]
-
-    order_by =  if params[:order] == 'views'
-                  'node.views DESC'
-                elsif params[:order] == 'likes'
-                  'node.cached_likes DESC'
-                elsif params[:order] == 'last_updated'
-                  'node_revisions.timestamp DESC'
-                end
 
     node_type = if %w(questions note).include?(@node_type)
                   'note'
@@ -120,59 +101,46 @@ class TagController < ApplicationController
     if params[:id][-1..-1] == '*' # wildcard tags
       @wildcard = true
       @tags = Tag.where('name LIKE (?)', params[:id][0..-2] + '%')
-      nodes = Node.where(status: 1, type: node_type)
-        .includes(:revision, :tag, :answers)
-        .references(:term_data, :node_revisions)
-        .where('term_data.name LIKE (?) OR term_data.parent LIKE (?)', params[:id][0..-2] + '%', params[:id][0..-2] + '%')
-        .paginate(page: params[:page], per_page: 24)
-        .order(order_by)
+      nodes = Node.for_tagname_and_type(params[:id], node_type, wildcard: true)
     else
       @tags = Tag.where(name: params[:id])
-
-      if @node_type == 'questions'
-        other_tag = if params[:id].include? "question:"
-                      params[:id].split(':')[1]
-                    else
-                      "question:" + params[:id]
-                    end
-
-        nodes = Node.where(status: 1, type: node_type)
-          .includes(:revision, :tag)
-          .references(:term_data, :node_revisions)
-          .where('term_data.name = ? OR term_data.name = ? OR term_data.parent = ?', params[:id], other_tag, params[:id])
-          .paginate(page: params[:page], per_page: 24)
-          .order(order_by)
-      else
-        nodes = Node.where(status: 1, type: node_type)
-          .includes(:revision, :tag)
-          .references(:term_data, :node_revisions)
-          .where('term_data.name = ? OR term_data.parent = ?', params[:id], params[:id])
-          .paginate(page: params[:page], per_page: 24)
-          .order(order_by)
-      end
+      nodes = Node.for_tagname_and_type(params[:id], node_type, question: (@node_type == 'questions'))
     end
 
     if @start && @end
       nodes = nodes.where(created: @start.to_i..@end.to_i)
     else
       @pinned_nodes = NodeShared.pinned_nodes(params[:id])
-      if @pinned_nodes.length > 0 && params[:page].nil? # i.e. first page
+      if @pinned_nodes.size.positive? && params[:page].nil? # i.e. first page
         nodes = nodes.where.not(nid: @pinned_nodes.collect(&:id))
       end
     end
 
-    qids = Node.questions.where(status: 1)
+    order_by = if params[:order] == 'views'
+                 'node.views DESC'
+               elsif params[:order] == 'likes'
+                 'node.cached_likes DESC'
+               elsif @node_type == 'wiki' # wiki sorting by timestamp isn't working; https://github.com/publiclab/plots2/issues/7334#issuecomment-696938352
+                 'node.nid DESC'
+               else # params[:order] == 'last_updated'
+                 'node_revisions.timestamp DESC'
+               end
+
+    @pagy, nodes = pagy(nodes.order(order_by), items: 24)
+    @paginated = true
+
+    @qids = Node.questions.where(status: 1)
                .collect(&:nid)
-    if qids.empty?
+    if @qids.empty?
       @notes = nodes
       @questions = []
     else
-      @notes = nodes.where('node.nid NOT IN (?)', qids) if @node_type == 'note'
-      @questions = nodes.where('node.nid IN (?)', qids) if @node_type == 'questions'
+      @notes = nodes.where('node.nid NOT IN (?)', @qids) if @node_type == 'note'
+      @questions = nodes.where('node.nid IN (?)', @qids) if @node_type == 'questions'
     end
 
     @answered_questions = []
-    @questions&.each { |question| @answered_questions << question if question.answers.any?(&:accepted) }
+    @questions&.each { |question| @answered_questions << question if question.answers.any?(&:accepted) } # TODO: remove this upon refactor to remove answers code
     @wikis = nodes if @node_type == 'wiki'
     @wikis ||= []
     @nodes = nodes if @node_type == 'maps'
@@ -185,6 +153,8 @@ class TagController < ApplicationController
     @note_count = Tag.tagged_node_count(params[:id]) || 0
     @users = Tag.contributors(@tagnames[0])
     @related_tags = Tag.related(@tagnames[0])
+
+    fetch_counts
 
     respond_with(nodes) do |format|
       format.html { render 'tag/show' }
@@ -234,7 +204,9 @@ class TagController < ApplicationController
 
     nodes = Tag.tagged_nodes_by_author(@tagname, @user)
       .where(status: 1, type: node_type)
-      .paginate(page: params[:page], per_page: 24)
+    @total_posts = nodes.size
+
+    nodes = nodes.paginate(page: params[:page], per_page: 24)
 
     @notes ||= []
 
@@ -328,14 +300,14 @@ class TagController < ApplicationController
       if Tag.exists?(tagname, nid)
         @output[:errors] << I18n.t('tag_controller.tag_already_exists')
 
-      elsif tagname.include?(":") && tagname.split(':').length < 2
+      elsif tagname.include?(":") && tagname.split(':').size < 2
         if tagname.split(':')[0] == "barnstar" || tagname.split(':')[0] == "with"
           @output[:errors] << I18n.t('tag_controller.cant_be_empty')
         end
 
       elsif node.can_tag(tagname, current_user) === true || logged_in_as(['admin'])
         saved, tag = node.add_tag(tagname.strip, current_user)
-        if tagname.include?(":") && tagname.split(':').length == 2
+        if tagname.include?(":") && tagname.split(':').size == 2
           if tagname.split(':')[0] == "barnstar"
             CommentMailer.notify_barnstar(current_user, node)
             barnstar_info_link = '<a href="//' + request.host.to_s + '/wiki/barnstars">barnstar</a>'
@@ -369,8 +341,8 @@ class TagController < ApplicationController
           render json: @output
         else
           flash[:notice] = I18n.t('tag_controller.tags_created_error',
-            tag_count: @output[:saved].length,
-            error_count: @output[:errors].length).html_safe
+            tag_count: @output[:saved].size,
+            error_count: @output[:errors].size).html_safe
           redirect_to node.path
         end
       end
@@ -415,7 +387,7 @@ class TagController < ApplicationController
   end
 
   def suggested
-    if !params[:id].empty? && params[:id].length > 2
+    if !params[:id].empty? && params[:id].size > 2
       @suggestions = SearchService.new.search_tags(params[:id])
       render json: @suggestions.collect { |tag| tag.name }.uniq
     else
@@ -487,9 +459,9 @@ class TagController < ApplicationController
       @tagdata[tagname] = {}
       t = Tag.where(name: tagname)
       nct = NodeTag.where('tid in (?)', t.collect(&:tid))
-      @tagdata[tagname][:users] = Node.where('nid IN (?)', nct.collect(&:nid)).collect(&:author).uniq.length
-      @tagdata[tagname][:wikis] = Node.where("nid IN (?) AND (type = 'page' OR type = 'tool' OR type = 'place')", nct.collect(&:nid)).count
-      @tagdata[:notes] = Node.where("nid IN (?) AND type = 'note'", nct.collect(&:nid)).count
+      @tagdata[tagname][:users] = Node.where('nid IN (?)', nct.collect(&:nid)).collect(&:author).uniq.size
+      @tagdata[tagname][:wikis] = Node.where("nid IN (?) AND (type = 'page' OR type = 'tool' OR type = 'place')", nct.collect(&:nid)).size
+      @tagdata[:notes] = Node.where("nid IN (?) AND type = 'note'", nct.collect(&:nid)).size
     end
     render template: 'tag/contributors-index'
   end
@@ -551,11 +523,12 @@ class TagController < ApplicationController
 
     @all_subscriptions = TagSelection.graph(@start, @end)
 
-    total_questions = Node.published.questions
+    @answers = Node.published.questions
       .where(created: @start.to_i..@end.to_i)
-      .where(nid: Node.find_by_tag(tagname))
-    @answers = total_questions.joins(:comments).size.count
-    @questions = total_questions.size.count
+      .where(nid: Node.find_by_tag(tagname)).joins(:comments).size
+    @questions = Node.published.questions
+      .where(created: @start.to_i..@end.to_i)
+      .where(nid: Node.find_by_tag(tagname)).size
   end
 
   private
@@ -565,6 +538,27 @@ class TagController < ApplicationController
       params[:order] == "asc" ? "count ASC" : "count DESC"
     else
       params[:order] == "asc" ? "name ASC" : "name DESC"
+    end
+  end
+
+  def fetch_counts
+    # Enhancement #6306 - Add counts to `by type` dropdown on tag pages
+    @counts = {}
+    @counts[:posts] = Node.for_tagname_and_type(params[:id], 'note', wildcard: @wildcard).where('node.nid NOT IN (?)', @qids).size
+    @counts[:questions] = Node.for_tagname_and_type(params[:id], 'note', question: true, wildcard: @wildcard).where('node.nid IN (?)', @qids).size
+    @counts[:wiki] = Node.for_tagname_and_type(params[:id], 'page', wildcard: @wildcard).size
+    params[:counts] = @counts
+    # end Enhancement #6306 ============================================
+
+    @total_posts = case @node_type
+    when 'note'
+      @notes.size
+    when 'questions'
+      @questions.size
+    when 'wiki'
+      @wikis.size
+    when 'maps'
+      @nodes.size
     end
   end
 end

@@ -16,6 +16,7 @@
     if(!$(this).hasClass('bound-beforeSend')) {
       $(this).addClass('bound-beforeSend').bind('ajax:beforeSend', function(event){
         $(this).find("#text-input").prop('disabled',true)
+        $(this).find('#text-input').val('');
         $(this).find(".btn-primary").button('loading',true);
       });
     }
@@ -25,6 +26,7 @@
         notyNotification('mint', 3000, 'success', 'topRight', 'Some error occured while adding comment');
         $(this).find('.control-group').addClass('has-error')
         $(this).find('.control-group .help-block ').remove()
+        $(this).find('#text-input').val('');
         $(this).find('.control-group').append('<span class="help-block ">Error: there was a problem.</span>')
       });
     }
@@ -32,6 +34,7 @@
     if(!$(this).hasClass('bound-keypress')) {
       $(this).addClass('bound-keypress');
 
+      $(this).find('#text-input').val('');
       $(this).on('keypress', function (e) {
         var isPostCommentShortcut = (e.ctrlKey && e.keyCode === 10) || (e.metaKey && e.keyCode === 13);
 
@@ -63,4 +66,9 @@ function addComment(comment, submitTo, parentID = 0) {
     data.reply_to = parentID;
   }
   sendFormSubmissionAjax(data, submitTo);
+}
+
+function changeNotificationIcon(messageId, buttonId){
+    $(messageId).toggle();
+    $(buttonId).toggleClass("fa-bell-o fa-bell");
 }

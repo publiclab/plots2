@@ -69,7 +69,7 @@ class User < ActiveRecord::Base
   scope :past_month, -> { where("created_at > ?", 1.month.ago) }
 
   def is_new_contributor?
-    Node.where(uid: id).length === 1 && Node.where(uid: id).first.created_at > 1.month.ago
+    Node.where(uid: id).size === 1 && Node.where(uid: id).first.created_at > 1.month.ago
   end
 
   def new_contributor
@@ -157,7 +157,7 @@ class User < ActiveRecord::Base
 
   def tagnames(limit = 20, defaults = true)
     tagnames = []
-    Node.order('nid DESC').where(type: 'note', status: 1, uid: id).limit(limit).each do |node|
+    Node.includes(:tag).order('nid DESC').where(type: 'note', status: 1, uid: id).limit(limit).each do |node|
       tagnames += node.tags.collect(&:name)
     end
     tagnames.uniq
@@ -217,11 +217,11 @@ class User < ActiveRecord::Base
   end
 
   def first_time_poster
-    notes.where(status: 1).count.zero?
+    notes.where(status: 1).size.zero?
   end
 
   def first_time_commenter
-    Comment.where(status: 1, uid: uid).count.zero?
+    Comment.where(status: 1, uid: uid).size.zero?
   end
 
   def follow(other_user)
@@ -266,6 +266,15 @@ class User < ActiveRecord::Base
     .where(range)
     .order('node_revisions.timestamp DESC')
     .distinct
+  end
+
+  def unmoderated_in_period(start_time, end_time)
+    range = "(created >= #{start_time.to_i} AND created <= #{end_time.to_i})"
+    Node.where('node.status = 4')
+        .where(type: 'note')
+        .where(range)
+        .order('created DESC')
+        .distinct
   end
 
   def social_link(site)
@@ -316,11 +325,11 @@ class User < ActiveRecord::Base
   end
 
   def note_count
-    Node.where(status: 1, uid: uid, type: 'note').count
+    Node.where(status: 1, uid: uid, type: 'note').size
   end
 
   def node_count
-    Node.where(status: 1, uid: uid).count + Revision.where(uid: uid).count
+    Node.where(status: 1, uid: uid).size + Revision.where(uid: uid).size
   end
 
   def liked_notes
@@ -355,6 +364,19 @@ class User < ActiveRecord::Base
       SubscriptionMailer.send_digest(id, @nodes, @frequency).deliver_now
     end
   end
+
+  def send_digest_email_spam
+    if has_tag('digest:weekly:spam')
+      @frequency_digest = Frequency::WEEKLY
+      @nodes_unmoderated = unmoderated_in_period(1.week.ago, Time.current)
+    elsif has_tag('digest:daily:spam')
+      @frequency_digest = Frequency::DAILY
+      @nodes_unmoderated = unmoderated_in_period(1.day.ago, Time.current)
+    end
+    if @nodes_unmoderated.size.positive?
+      AdminMailer.send_digest_spam(@nodes_unmoderated, @frequency_digest).deliver_now
+    end
+ end
 
   def tag_counts
     tags = {}
@@ -409,7 +431,7 @@ class User < ActiveRecord::Base
       questions = Node.questions.where(status: 1, created: start_time.to_i..end_time.to_i).pluck(:uid)
       comments = Comment.where(timestamp: start_time.to_i..end_time.to_i).pluck(:uid)
       revisions = Revision.where(status: 1, timestamp: start_time.to_i..end_time.to_i).pluck(:uid)
-      contributors = (notes + answers + questions + comments + revisions).compact.uniq.length
+      contributors = (notes + answers + questions + comments + revisions).compact.uniq.size
       contributors
     end
 
@@ -441,7 +463,7 @@ class User < ActiveRecord::Base
       comments = Comment.pluck(:uid)
       revisions = Revision.where(status: 1).pluck(:uid)
 
-      (notes + answers + questions + comments + revisions).compact.uniq.length
+      (notes + answers + questions + comments + revisions).compact.uniq.size
     end
 
     def watching_location(nwlat, selat, nwlng, selng)

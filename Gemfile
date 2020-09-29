@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.4.4'
+ruby '2.6.6'
 
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
@@ -19,8 +19,8 @@ gem 'georuby', '2.0'
 gem "google-cloud-storage"
 gem 'grape'
 gem 'grape-entity'
-gem 'grape-swagger', '~> 0.33.0'
-gem 'grape-swagger-entity', '0.3.4'
+gem 'grape-swagger', '~> 1.2.1'
+gem 'grape-swagger-entity', '0.5.1'
 gem 'grape-swagger-rails'
 gem 'grape-swagger-ui'
 gem 'http_accept_language'
@@ -28,12 +28,12 @@ gem "i18n-js", ">= 3.0.0.rc11"
 gem 'impressionist'
 gem 'jbuilder', '~> 2.10'
 gem 'jquery-rails'
-gem 'less-rails', '~> 4.0'
+gem 'less-rails', '~> 5.0'
 gem 'mocha', '~> 1.11'
-gem 'mustermann' , '1.0.3'
+gem 'mustermann' , '1.1.1'
 gem 'omniauth', '~> 1.9'
-gem 'omniauth-facebook', '~> 5.0'
-gem 'omniauth-github', '~> 1.1', '>= 1.1.2'
+gem 'omniauth-facebook', '~> 7.0'
+gem 'omniauth-github', '~> 1.4'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
 gem "paperclip", "~> 6.1.0"
@@ -49,10 +49,10 @@ gem 'rails-dom-testing'
 gem 'rails-i18n', '~> 5.1.3'
 gem 'rails_autolink'
 gem 'rb-readline'
-gem 'rdiscount', '~> 2.2', '>= 2.2.0.1'
+gem 'rdiscount', '~> 2.2'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'responders', '~> 3.0'
-gem 'rubocop', '~> 0.79.0', require: false
+gem 'rubocop', '~> 0.92.0', require: false
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
 gem 'sentry-raven'
@@ -64,15 +64,26 @@ gem 'unicode-emoji'
 gem 'whenever', require: false
 gem 'will_paginate', '>= 3.0.6'
 gem 'will_paginate-bootstrap4'
+gem 'pagy', '>=3.8.3'
 gem 'jquery-atwho-rails'
 gem 'lemmatizer', '~> 0.2.2'
 # To implement incoming mail processing microframework
 gem 'mailman', require: false
+# To implement fontawesome v4.7.0
+gem "font-awesome-rails"
+gem "lazyload-rails"
+# To implement load critical css and rest asynchronously
+gem 'loadcss-rails', '~> 2.0.1'
+gem 'critical-path-css-rails', '~> 3.1.0'
+
 
 # To convert html to markdown
 gem 'reverse_markdown'
 
 gem 'twitter'
+
+# To impliment Datatables
+gem 'jquery-datatables'
 
 # run with `bundle install --without production` or `bundle install --without mysql` to exclude this
 group :mysql, :production do
@@ -108,9 +119,9 @@ group :test, :development do
   gem 'jasmine-rails'
   gem 'json_expressions'
   gem 'minitest-reporters', '~> 1.4.2'
-  gem 'openssl', '~> 2.1.2'
+  gem 'openssl', '~> 2.2.0'
   gem 'phantomjs'
-  gem 'puma', '~> 4.3'
+  gem 'puma', '~> 5.0'
   gem 'rails-perftest'
   gem 'rake', '~> 13.0.1'
   gem 'rest-client'
@@ -121,7 +132,7 @@ group :test, :development do
   gem 'timecop'
   gem 'pry-rails'
   gem 'action-cable-testing'
-  gem "webmock", "~> 3.8"
+  gem "webmock", "~> 3.9"
 end
 
 group :production do

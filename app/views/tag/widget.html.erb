@@ -1,5 +1,4 @@
 <%= stylesheet_link_tag "application", :media => "all" %>
-<link href="/lib/font-awesome/css/font-awesome.min.css" media="all" rel="stylesheet" type="text/css" />
 
 <style>
   body {
@@ -12,7 +11,7 @@
 
 <% if @notes.nil? || @notes.length == 0 %>
 
-  <p><%= raw t('tag.show.no_results_found', :tag => params[:id]) %>:</p>
+  <p><%= raw translation('tag.show.no_results_found', :tag => params[:id]) %>:</p>
 
   <%= render template: "search/new" %>
 

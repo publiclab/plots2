@@ -17,10 +17,14 @@ services:
       # if you want to re-import simply put away ../../mysql/*
   web:
     ports:
-      - "127.0.0.1:4001:4001"
+      - "127.0.0.1:4000:4000"
     build: ..
-    command: /bin/bash -c "sleep 5 && /usr/local/bundle/bin/passenger start --max-request-queue-size 200 --max-pool-size 4 --min-instances 4 -p 4001"
     environment:
+      - DB_USER=${DB_USER}
+      - DB_NAME=${DB_NAME}
+      - DB_PASS=${DB_PASS}
+      - DB_HOST=${DB_HOST}
+      - RAILS_MAX_THREADS=${RAILS_MAX_THREADS}
       - RAILS_ENV=${RAILS_ENV}
       - SECRET_KEY_BASE=${SECRET_KEY_BASE}
       - RECAPTCHA_SECRET_KEY=${RECAPTCHA_SECRET_KEY}

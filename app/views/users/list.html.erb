@@ -1,12 +1,12 @@
 <div class="col-md-12 col-lg-6 order-1 order-sm-2">
 <% if current_user && (current_user.role == "admin" || current_user.role == "moderator")%>
-<h3><%= t('users.list.user_moderation') %></h3>
-<p><%= t('users.list.admins_ban_spam') %> </p>
+<h3><%= translation('users.list.user_moderation') %></h3>
+<p><%= translation('users.list.admins_ban_spam') %> </p>
 <% end %>
   <div class="row">
     <div class ="col-md-8">
-      <h2><%= raw t('People') %></h2>
-      <h5><%= t('Recently active on Publiclab') =%></h5>
+      <h2><%= raw translation('People') %></h2>
+      <h5><%= translation('Recently active on Publiclab') =%></h5>
     </div>
     <% if current_user && (@map_lat.blank? || @map_lon.blank?) %>
       <div class="col-md-4">
@@ -18,9 +18,9 @@
     <br>
       <p style="width: 100%; font-size:14px; text-align: center; border-bottom: 1px solid #ccc; line-height:2px; margin: 10px 0 20px;">
       <span style="background-color: #fff; padding: 0 10px; color: #808080;">Sort by:
-      <a href = "<%= people_path %>?sort=username" style="text-decoration: underline; color: #808080;"> <%= t('users.list.username') %></a><span> | </span>
-      <a href = "<%= people_path %>?sort=last_activity"style="text-decoration: underline; color: #808080;"> <%= t('users.list.last_activity') %></a><span> | </span>
-      <a href = "<%= people_path %>?sort=joined" style="text-decoration: underline; color: #808080;"><%= t('users.list.joined') %></a><span> | </span>
+      <a href = "<%= people_path %>?sort=username" class="sort-style <% if params[:sort] == "username" %>selected<%end%>"> <%= translation('users.list.username') %></a><span> | </span>
+      <a href = "<%= people_path %>?sort=last_activity" class="sort-style <% if params[:sort] == "last_activity" %>selected<%end%>"> <%= translation('users.list.last_activity') %></a><span> | </span>
+      <a href = "<%= people_path %>?sort=joined" class="sort-style <% if params[:sort] == "joined" %>selected<%end%>"><%= translation('users.list.joined') %></a><span> | </span>
       </span>
       </p>
       <br/>
@@ -33,7 +33,7 @@
            <div class="row card-body">
             <div class="col-lg-12 nopadding">
               <div class="profile-image text-center">
-                  <img class="rounded-circle img-fluid" id="profile-photo" src="<%= user.profile_image %>" />
+                  <%= image_tag(user.profile_image, class:'rounded-circle img-fluid', id:'profile-photo') %>
               </div>
             </div>
             <div class="col-lg-12 nopadding">
@@ -51,9 +51,9 @@
                       <li><a href="/profile/<%= user.username %>">See Full Profile</a></li>
                       <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") %>
                          <% if user.status == 0 %>
-                           <i class='fa fa-ban' style="color:#a00;"></i> <%= t('users.list.banned') %>
+                           <i class='fa fa-ban' style="color:#a00;"></i> <%= translation('users.list.banned') %>
                            <% elsif user.status == 1 && user != current_user %>
-                             <li><a data-confirm="<%= t('users.list.are_you_sure') %>" href="/ban/<%= user.uid %>" ><i class='fa fa-ban'></i> <%= t('users.list.ban') %></a></li>
+                             <li><a data-confirm="<%= translation('users.list.are_you_sure') %>" href="/ban/<%= user.uid %>" ><i class='fa fa-ban'></i> <%= translation('users.list.ban') %></a></li>
                          <% end %>
                        <% end %>
                      </ul>
@@ -62,7 +62,7 @@
                 <div class="sub-info">
                   <div style="padding-bottom:6px;">
                     <% if user.status == 0 %>
-                      <i class='fa fa-ban' style="color:#a00;"></i> <%= t('users.list.banned') %> |
+                      <i class='fa fa-ban' style="color:#a00;"></i> <%= translation('users.list.banned') %> |
                     <% end %>
                     Active <%= t = user.revisions.order(timestamp: :desc).first.try(:created_at);time_ago_in_words(t) if (t) %> ago
                   </div>
@@ -169,5 +169,17 @@ h3, h2, h5 {
   padding-bottom: 5px;
   padding-left: 14px;
 }
+
+.sort-style{
+  color: #808080;
+}
+.selected{
+  text-decoration: underline;
+}
 </style>
+<script>
+$(function(){
+  $("img").lazyload();
+});
+</script>
 <%= render partial: 'tag/location' %>
