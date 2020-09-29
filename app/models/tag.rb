@@ -37,7 +37,7 @@ class Tag < ApplicationRecord
   end
 
   def run_count
-    self.count = NodeTag.joins(:node).where(tid: tid).where('node.status = 1').count
+    self.count = NodeTag.joins(:node).where(tid: tid).where('node.status = 1').size
     save
   end
 
@@ -52,7 +52,7 @@ class Tag < ApplicationRecord
 
   def self.nodes_frequency(starting, ending)
     ids = Node.where(created: starting.to_i..ending.to_i).map(&:node_tags).flatten.map(&:tid)
-    hash = ids.uniq.map { |id| p (Tag.find id).name, ids.count(id) }.to_h
+    hash = ids.uniq.map { |id| p (Tag.find id).name, ids.size(id) }.to_h
     hash.sort_by { |_, v| v }.reverse.first(10).to_h
   end
 
@@ -79,7 +79,7 @@ class Tag < ApplicationRecord
 
   def self.contributor_count(tagname)
     uids = Tag.contributors(tagname)
-    uids.length
+    uids.size
   end
 
   # finds highest viewcount nodes
@@ -168,7 +168,7 @@ class Tag < ApplicationRecord
                        .collect(&:user_id)
     User.where(id: uids)
         .where(status: [1, 4])
-        .count
+        .size
   end
 
   def self.followers(tagname)
@@ -208,7 +208,7 @@ class Tag < ApplicationRecord
         nids,
         (Time.now.to_i - week.weeks.to_i).to_s,
         (Time.now.to_i - (week - 1).weeks.to_i).to_s
-      ).count(:all)
+      ).size
     end
     weeks
   end
@@ -230,7 +230,7 @@ class Tag < ApplicationRecord
           nids,
           (fin.to_i - week.weeks.to_i).to_s,
           (fin.to_i - (week - 1).weeks.to_i).to_s
-        ).count(:all)
+        ).size
 
       weeks[(month.to_f * 1000)] = current_week
       week -= 1
@@ -246,9 +246,9 @@ class Tag < ApplicationRecord
     while week >= 1
       month = (fin - (week * 7 - 1).days)
       weekly_quiz = questions.where(created: range(fin, week))
-        .count(:all)
+        .size
 
-      weeks[(month.to_f * 1000)] = weekly_quiz.count
+      weeks[(month.to_f * 1000)] = weekly_quiz.size
       week -= 1
     end
     weeks
@@ -262,7 +262,7 @@ class Tag < ApplicationRecord
     while week >= 1
       month = (fin - (week * 7 - 1).days)
       weekly_comments = comments.where(timestamp: range(fin, week))
-        .count(:all)
+        .size
 
       weeks[(month.to_f * 1000)] = weekly_comments
       week -= 1
@@ -327,7 +327,7 @@ class Tag < ApplicationRecord
 
   # https://github.com/publiclab/plots2/pull/4266
   def self.trending(limit = 5, start_date = DateTime.now - 1.month, end_date = DateTime.now)
-    Tag.select('term_data.name, term_data.count') # ONLY_FULL_GROUP_BY, issue #8152 & #3120
+    Tag.select('term_data.name, term_data.size') # ONLY_FULL_GROUP_BY, issue #8152 & #3120
        .joins(:node_tag, :node)
        .where('node.status = ?', 1)
        .where('node.created > ?', start_date.to_i)
@@ -360,7 +360,7 @@ class Tag < ApplicationRecord
         .includes(:revision, :tag)
         .references(:term_data, :node_revisions)
         .where('term_data.name = ?', tag_name)
-        .count
+        .size
   end
 
   def self.related(tag_name, count = 5)
@@ -369,7 +369,7 @@ class Tag < ApplicationRecord
                     .where(Node.table_name => { status: 1 })
                     .where(Tag.table_name => { name: tag_name })
                     .group(:nid)
-                    .order(NodeTag.arel_table[:nid].count.desc)
+                    .order(NodeTag.arel_table[:nid].size.desc)
                     .limit(5)
                     .pluck(:nid)
 
@@ -394,7 +394,7 @@ class Tag < ApplicationRecord
         .limit(limit).each do |tag|
         data["tags"] << {
           "name" => tag.name,
-          "count" => tag.count
+          "count" => tag.size
         }
       end
       data["edges"] = []
@@ -429,7 +429,7 @@ class Tag < ApplicationRecord
   def self.tag_frequency(limit)
     uids = User.where('rusers.role = ?', 'moderator').or(User.where('rusers.role = ?', 'admin')).collect(&:uid)
     tids = TagSelection.where(following: true, user_id: uids).collect(&:tid)
-    hash = tids.uniq.map { |id| p (Tag.find id).name, tids.count(id) }.to_h
+    hash = tids.uniq.map { |id| p (Tag.find id).name, tids.size(id) }.to_h
     hash.sort_by { |_, v| v }.reverse.first(limit).to_h
   end
 
