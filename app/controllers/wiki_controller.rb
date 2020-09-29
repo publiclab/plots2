@@ -277,7 +277,7 @@ class WikiController < ApplicationController
     @node = Node.find_wiki(params[:id])
     if @node
       @revisions = @node.revisions
-      @revisions = @revisions.where(status: 1).page(params[:page]).per_page(20) unless current_user&.can_moderate?
+      @pagy_revisions, @revisions = pagy(@revisions.where(status: 1), items: 20) unless current_user&.can_moderate?
       @title = I18n.t('wiki_controller.revisions_for', title: @node.title).html_safe
       @tags = @node.tags
       @paginated = true unless current_user&.can_moderate?
@@ -333,12 +333,11 @@ class WikiController < ApplicationController
       order_string = 'cached_likes DESC'
     end
 
-    @wikis = Node.includes(:revision)
+    @pagy, @wikis = pagy(Node.includes(:revision)
       .references(:node_revisions)
       .group('node_revisions.nid, node_revisions.vid')
       .order(order_string)
-      .where("node_revisions.status = 1 AND node.status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')")
-      .page(params[:page])
+      .where("node_revisions.status = 1 AND node.status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')"))
 
     @paginated = true
   end
@@ -346,12 +345,11 @@ class WikiController < ApplicationController
   def stale
     @title = I18n.t('wiki_controller.wiki')
 
-    @wikis = Node.includes(:revision)
+    @pagy, @wikis = pagy(Node.includes(:revision)
       .references(:node_revisions)
       .group('node_revisions.nid, node_revisions.vid')
       .order('node_revisions.timestamp ASC')
-      .where("node_revisions.status = 1 AND node.status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')")
-      .page(params[:page])
+      .where("node_revisions.status = 1 AND node.status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')"))
 
     @paginated = true
     render template: 'wiki/index'
@@ -492,9 +490,9 @@ class WikiController < ApplicationController
   def author
     @user = User.find_by(name: params[:id])
     @title = @user.name
-    @wikis = Node.paginate(page: params[:page], per_page: 24)
+    @pagy, @wikis = pagy(Node
       .order('nid DESC')
-      .where("uid = ? AND type = 'page' OR type = 'place' OR type = 'tool' AND status = 1", @user.uid)
+      .where("uid = ? AND type = 'page' OR type = 'place' OR type = 'tool' AND status = 1", @user.uid), items: 24)
     render template: 'wiki/index'
   end
 end

@@ -172,7 +172,7 @@ class ScreenshotsTest < ApplicationSystemTestCase
 
   test 'wiki revisions' do
     visit "/wiki/revisions/#{nodes(:about).slug}"
-    click_on '1'
+    click_on '2'
     take_screenshot
   end
 
