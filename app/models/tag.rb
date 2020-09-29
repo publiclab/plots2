@@ -52,7 +52,7 @@ class Tag < ApplicationRecord
 
   def self.nodes_frequency(starting, ending)
     ids = Node.where(created: starting.to_i..ending.to_i).map(&:node_tags).flatten.map(&:tid)
-    hash = ids.uniq.map { |id| p (Tag.find id).name, ids.size(id) }.to_h
+    hash = ids.uniq.map { |id| p (Tag.find id).name, ids.count(id) }.to_h
     hash.sort_by { |_, v| v }.reverse.first(10).to_h
   end
 
@@ -369,7 +369,7 @@ class Tag < ApplicationRecord
                     .where(Node.table_name => { status: 1 })
                     .where(Tag.table_name => { name: tag_name })
                     .group(:nid)
-                    .order(NodeTag.arel_table[:nid].size.desc)
+                    .order(NodeTag.arel_table[:nid].count.desc)
                     .limit(5)
                     .pluck(:nid)
 
@@ -394,7 +394,7 @@ class Tag < ApplicationRecord
         .limit(limit).each do |tag|
         data["tags"] << {
           "name" => tag.name,
-          "count" => tag.size
+          "count" => tag.count
         }
       end
       data["edges"] = []
@@ -429,7 +429,7 @@ class Tag < ApplicationRecord
   def self.tag_frequency(limit)
     uids = User.where('rusers.role = ?', 'moderator').or(User.where('rusers.role = ?', 'admin')).collect(&:uid)
     tids = TagSelection.where(following: true, user_id: uids).collect(&:tid)
-    hash = tids.uniq.map { |id| p (Tag.find id).name, tids.size(id) }.to_h
+    hash = tids.uniq.map { |id| p (Tag.find id).name, tids.count(id) }.to_h
     hash.sort_by { |_, v| v }.reverse.first(limit).to_h
   end
 
