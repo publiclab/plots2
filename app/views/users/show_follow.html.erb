@@ -19,6 +19,8 @@
     </table>
     <%= will_paginate @users, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
   <% else %>
-    <p class="pt-3 border-top">0 <%= @title %></p>
+    <p class="pt-3 border-top">
+      <%= @user.username %><%= @title === "Followers" ? " has no followers yet" : " is not following anyone yet" %>
+    </p>
   <% end %>
 </div>
