@@ -234,7 +234,7 @@ Plots2::Application.routes.draw do
   post 'profile/photo' => 'users#photo'
   get 'profile/info/:id' => 'users#info', as: 'info'
   get 'profile' => 'users#profile'
-  get 'profile/:id' => 'users#profile'
+  get 'profile/:id' => 'users#profile', as: :user
   get 'profile/:id/edit' => 'users#edit'
   get 'profile/:id/likes' => 'users#likes'
   get 'feed/:author' => 'users#rss'
