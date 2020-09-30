@@ -1,10 +1,26 @@
 <div class="container">
-  <% @users.each do |user| %>
-    <div class="col-lg-3">
-      <div style="text-align:center;">
-        <img class="rounded-circle" id="profile-photo" style="width:50%;margin-bottom:20px;" src="<%= user.profile_image %>">
-        <h3><%= user.username %></h3>
-      </div>
-    </div>
+  <h3><%= @user.username %></h3>
+  <ul class="nav nav-tabs border-0">
+    <li class="nav-item">
+      <%= link_to "Followers", followers_path(@user.username),class: "nav-link #{@title=='Followers' ? 'active' : ''}" %>
+    </li>
+    <li class="nav-item">
+      <%= link_to "Following", following_path(@user.username), class: "nav-link #{@title=='Following' ? 'active' : ''}"  %>
+    </li>
+  </ul>
+  <% if @users.length > 0 %>
+    <table class="table">
+      <tbody>
+      <% @users.each do |user| %>
+        <tr class="followers-row">
+          <td><%= link_to "<i class='fa fa-user-o'></i> #{user.username}".html_safe, user_path(user.username) %>
+        </tr>
+      <% end %>
+    </table>
+    <%= will_paginate @users, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+  <% else %>
+    <p class="pt-3 border-top">
+      <%= @user.username %><%= @title === "Followers" ? " has no followers yet" : " is not following anyone yet" %>
+    </p>
   <% end %>
 </div>
