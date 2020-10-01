@@ -328,6 +328,7 @@ Plots2::Application.routes.draw do
   get 'questions/:author/:date/:id' => 'questions#show'
   get 'questions/show/:id' => 'questions#show'
   get 'q/:id' => 'questions#shortlink'
+  get 'questions/answered(/:tagnames)', to: redirect('questions#recently_commented')
   get 'questions/recently_commented(/:tagnames)' => 'questions#recently_commented'
   get 'questions/popular(/:tagnames)' => 'questions#popular'
   get 'questions/unanswered(/:tagnames)' => 'questions#unanswered'
