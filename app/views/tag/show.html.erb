@@ -58,6 +58,9 @@
 .wiki-sub {
   overflow: hidden; color: #666; height: 70px; 
 }
+.popover{
+  z-index:1000;
+}
 </style>
 
 <section class="tag-header fdb-block pb-0" style="<% if @wiki && @wiki.main_image %>background-image: url(<%= @wiki.main_image.path %>);<% else %>background: #eee;<% end %>" data-block-type="contents" data-id="1">
