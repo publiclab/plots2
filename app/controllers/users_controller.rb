@@ -198,9 +198,8 @@ class UsersController < ApplicationController
   def likes
     @user = User.find_by(username: params[:id])
     @title = "Liked by " + @user.name
-    @notes = @user.liked_notes
-                  .includes(%i(tag comments))
-                  .paginate(page: params[:page], per_page: 24)
+    @pagy, @notes = pagy(@user.liked_notes
+                  .includes(%i(tag comments)), items: 24)
     @wikis = @user.liked_pages
     @tagnames = []
     @unpaginated = false
