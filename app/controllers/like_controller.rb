@@ -5,7 +5,7 @@ class LikeController < ApplicationController
   # list all recent likes
   def index
     @paginated = true
-    @likes = NodeSelection.all.reverse.paginate(page: params[:page])
+    @pagy_a, @likes = pagy_array(NodeSelection.all.reverse)
   end
 
   # return a count of likes for a given node
