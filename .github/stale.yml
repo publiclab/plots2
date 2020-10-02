@@ -15,6 +15,7 @@ exemptLabels:
   - pinned
   - security
   - "work in progress"
+  - "priority"
 
 # Set to true to ignore issues in a project (defaults to false)
 exemptProjects: false
