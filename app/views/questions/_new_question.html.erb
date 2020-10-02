@@ -1,6 +1,6 @@
 <% questions = questions || @questions # accept local if present, default to instance %>
 <div id="notes">
-	<div class="row"> 
+	<div class="row">
 	<% questions.each_with_index do |node,i| %>
 		<div class="<% if @widget %>col-4 <% end %>col-lg-4 note note-container-question" style="margin-top:20px;">
     <div class="card">
@@ -110,7 +110,7 @@
 <% if @pagy %>
   <%== pagy_bootstrap_nav @pagy %>
 <% else %>
-<%= will_paginate questions, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || questions.empty? %>
+  <%= will_paginate questions, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || questions.empty? %>
 <% end %>
 </div>
 

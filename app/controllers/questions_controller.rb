@@ -21,18 +21,16 @@ class QuestionsController < ApplicationController
   def index
     @title = 'Questions and Answers'
     set_sidebar
-    @questions = Node.questions
+    @pagy, @questions = pagy(Node.questions
       .where(status: 1)
-      .order('node.nid DESC')
-      .paginate(page: params[:page], per_page: 24)
+      .order('node.nid DESC'), items: 24)
   end
 
   def index_shadow
     @title = 'Questions and Answers'
-    @questions = Node.questions
+    @pagy, @questions = pagy(Node.questions
       .where(status: 1)
-      .order('node.nid DESC')
-      .paginate(page: params[:page], per_page: 24)
+      .order('node.nid DESC'), items: 24)
 
     @populartitle = 'Popular Questions'
     @popularquestions = Node.questions
@@ -95,11 +93,10 @@ class QuestionsController < ApplicationController
     @title = 'Recently Commented'
     @questions = Node.questions
       .where(status: 1)
-    @questions = filter_questions_by_tag(@questions, params[:tagnames])
+    @pagy, @questions = pagy(filter_questions_by_tag(@questions, params[:tagnames])
       .joins(:comments)
       .order('comments.timestamp DESC')
-      .group('node.nid')
-      .paginate(page: params[:page], per_page: 24)
+      .group('node.nid'), items: 24)
     @wikis = Node.limit(10)
       .where(type: 'page', status: 1)
       .order('nid DESC')
@@ -108,13 +105,12 @@ class QuestionsController < ApplicationController
 
   def unanswered
     @title = 'Unanswered questions'
-    @questions = Node.questions
+    @pagy, @questions = pagy(Node.questions
       .where(status: 1)
       .left_outer_joins(:comments)
       .where(comments: { cid: nil })
       .order('node.nid DESC')
-      .group('node.nid')
-      .paginate(page: params[:page], per_page: 24)
+      .group('node.nid'), items: 24)
     render template: 'questions/index'
   end
 
