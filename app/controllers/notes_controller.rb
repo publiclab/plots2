@@ -14,7 +14,7 @@ class NotesController < ApplicationController
 
   def places
     @title = 'Places'
-    @notes = Node.joins('LEFT OUTER JOIN node_revisions ON node_revisions.nid = node.nid
+    @pagy, @notes = pagy(Node.joins('LEFT OUTER JOIN node_revisions ON node_revisions.nid = node.nid
                          LEFT OUTER JOIN community_tags ON community_tags.nid = node.nid
                          LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid')
       .select('*, max(node_revisions.timestamp)')
@@ -23,8 +23,7 @@ class NotesController < ApplicationController
       .references(:term_data)
       .where('term_data.name = ?', 'chapter')
       .group('node.nid')
-      .order(Arel.sql('max(node_revisions.timestamp) DESC, node.nid'))
-      .paginate(page: params[:page], per_page: 24)
+      .order(Arel.sql('max(node_revisions.timestamp) DESC, node.nid')), items: 24)
 
     # Arel.sql is used to remove a Deprecation warning while updating to rails 5.2.
 
@@ -274,9 +273,9 @@ class NotesController < ApplicationController
   def author
     @user = User.find_by(name: params[:id])
     @title = @user.name
-    @notes = Node.paginate(page: params[:page], per_page: 24)
+    @pagy, @notes = pagy(Node
       .order('nid DESC')
-      .where(type: 'note', status: 1, uid: @user.uid)
+      .where(type: 'note', status: 1, uid: @user.uid), items: 24)
     render template: 'notes/index'
   end
 
