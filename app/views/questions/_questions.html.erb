@@ -19,4 +19,10 @@
     <% end %>
   <% end %>
 </div>
-<div class="text-center mt-3"><%= will_paginate questions, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || questions.empty? %></div>
+<div class="text-center mt-3">
+  <% if @pagy %>
+    <%== pagy_bootstrap_nav @pagy %>
+  <% else %>
+    <%= will_paginate questions, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || questions.empty? %>
+  <% end %>
+</div>
