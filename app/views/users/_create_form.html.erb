@@ -1,6 +1,6 @@
 <div style="padding:10px;">
  <%= form_for :user, :as => :user, :url => "/register", :html => {:class => "container", :id => "create-form", :'data-toggle' => "validator"} do |f| %>
- <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
+ <% if f.error_messages != "" %><div class="alert alert-danger" id="error-message"><%= f.error_messages %></div><% end %>
 
   <input type="hidden" name="return_to" class="login-modal-redirect" value="<%= params[:return_to] || request.fullpath %>" />
 
@@ -110,7 +110,7 @@
 
     <div class="col-md-12 form-group form-inline" style="clear:both;padding-top:10px;">
         <!-- button for creating new users -->
-        <button style="margin-right:8px;" class="btn btn-lg btn-primary btn-save sranje" type="submit" tabindex="7"><%= translation('users._form.sign_up') %></button>
+        <button style="margin-right:8px;" class="btn btn-lg btn-primary btn-save sranje" id="signup-button" type="submit" tabindex="7"><%= translation('users._form.sign_up') %></button>
         <span>or <a id="toLogin" href="/login">
           <%= translation('users._form.log_in') %>
         </a>
