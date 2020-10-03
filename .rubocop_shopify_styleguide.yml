@@ -69,13 +69,6 @@ Style/BlockDelimiters:
   - proc
   - it
 
-Style/BracesAroundHashParameters:
-  EnforcedStyle: no_braces
-  SupportedStyles:
-  - braces
-  - no_braces
-  - context_dependent
-
 Layout/CaseIndentation:
   EnforcedStyle: end
   SupportedStyles:
