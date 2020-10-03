@@ -72,7 +72,7 @@ Metrics/ParameterLists:
 Style/StringLiterals:
   Enabled: false
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 423
 
 Style/Documentation:
