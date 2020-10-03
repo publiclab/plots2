@@ -982,7 +982,7 @@ Lint/UnreachableCode:
 Lint/UselessAccessModifier:
   ContextCreatingMethods: []
 
-Lint/UselessComparison:
+Lint/BinaryOperatorWithIdenticalOperands:
   Enabled: true
 
 Lint/UselessElseWithoutRescue:
@@ -998,10 +998,10 @@ Performance/CaseWhenSplat:
   Enabled: true
 
 Performance/Count:
-  SafeMode: true
+  SafeAutoCorrect: true
 
 Performance/Detect:
-  SafeMode: true
+  SafeAutoCorrect: true
 
 Performance/DoubleStartEndWith:
   Enabled: true
