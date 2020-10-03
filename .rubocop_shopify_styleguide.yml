@@ -1015,7 +1015,7 @@ Performance/FixedSize:
 Performance/FlatMap:
   EnabledForFlattenWithoutParams: false
 
-Performance/LstripRstrip:
+Style/Strip:
   Enabled: true
 
 Performance/RangeInclude:
