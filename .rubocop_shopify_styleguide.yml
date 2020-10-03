@@ -861,7 +861,7 @@ Style/ZeroLengthPredicate:
   Enabled: true
 
 Layout/HeredocIndentation:
-  EnforcedStyle: squiggly
+  Enabled: true
 
 Lint/AmbiguousOperator:
   Enabled: true
