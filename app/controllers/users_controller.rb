@@ -15,8 +15,7 @@ class UsersController < ApplicationController
     recaptcha = verify_recaptcha(model: @user) if using_recaptcha
     @spamaway = Spamaway.new(spamaway_params) unless using_recaptcha
 
-    saved_user = @user.save
-    if ((@spamaway&.valid?) || recaptcha) && saved_user
+    if ((@spamaway&.valid?) || recaptcha) && @user.save # pass spamaway validation FIRST then try saving the user; https://github.com/publiclab/plots2/issues/8463
       if current_user.crypted_password.nil? # the user has not created a pwd in the new site
         flash[:warning] = I18n.t('users_controller.account_migrated_create_new_password')
         redirect_to "/profile/edit"
