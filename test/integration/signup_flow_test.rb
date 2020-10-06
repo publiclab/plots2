@@ -91,7 +91,7 @@ class SignUpTest < ActionDispatch::IntegrationTest
            password_confirmation: @new_user[:password]
         },
         spamaway: {
-          follow_instructions: "Not_Blank"
+          follow_instructions: ""
          }
        } 
     end
