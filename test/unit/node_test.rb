@@ -14,15 +14,9 @@ class NodeTest < ActiveSupport::TestCase
     node = nodes(:about)
     assert_equal 'page', node.type
     assert_equal 1, node.status
-    assert !node.answered
     assert_equal [], node.location_tags
     assert node.body
     assert node.summary
-  end
-
-  test 'basic question attributes' do
-    question = nodes(:question)
-    assert question.answered
   end
 
   test 'basic location attributes' do
@@ -415,14 +409,6 @@ class NodeTest < ActiveSupport::TestCase
 
     assert !replaced
     assert_equal 'Jingle Jingle Bells', node.body
-  end
-
-  test "question has an accepted answer" do
-    question2 = nodes(:question2)
-    assert !question2.has_accepted_answers
-
-    question = nodes(:question)
-    assert question.has_accepted_answers
   end
 
   test "user likes node or not" do
