@@ -23,4 +23,8 @@
   <% end %>
 </div>
 <div class="text-center">
+  <% if @pagy %>
+    <%= raw  pagy_bootstrap_nav @pagy %>
+  <% else %>
   <%= will_paginate @tags, renderer: WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated %></div>
+  <% end %>
