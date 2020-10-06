@@ -18,9 +18,9 @@ class SignupFormTest < ApplicationSystemTestCase
     path = URI.parse(current_url).request_uri
     assert_equal path, "/signup"
     #Searches for error
-    error_msg = find('.error-msg-container').text.gsub('×', '').strip()
+    error_msg = find("#errorExplanation").text.gsub('×', '').strip()
 
-    assert_equal( error_msg, 'Invalid email' )
+    assert_includes(error_msg, "Spam detection -- It doesn't seem like you are a real person!" )
     # assert_selector("#error-message #errorExplanation", text: "Email")
 
     fill_in("username-signup", with: "abc")
