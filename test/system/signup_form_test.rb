@@ -18,7 +18,10 @@ class SignupFormTest < ApplicationSystemTestCase
     path = URI.parse(current_url).request_uri
     assert_equal path, "/signup"
     #Searches for error
-    assert_selector("#error-message #errorExplanation", text: "Email")
+    error_msg = find('.error-msg-container').text.gsub('×', '').strip()
+
+    assert_equal( error_msg, 'Invalid email' )
+    # assert_selector("#error-message #errorExplanation", text: "Email")
 
     fill_in("username-signup", with: "abc")
     fill_in("email", with: "abc@publiclab.org")
