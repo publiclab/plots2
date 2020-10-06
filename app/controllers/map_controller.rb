@@ -1,9 +1,8 @@
 class MapController < ApplicationController
   def index
     @title = 'Maps'
-    @nodes = Node.paginate(page: params[:page], per_page: 32)
-      .order('nid DESC')
-      .where(type: 'map', status: 1)
+    @pagy, @nodes = pagy(Node.order('nid DESC')
+      .where(type: 'map', status: 1), items: 32)
 
     @map_lat = nil
     @map_lon = nil
