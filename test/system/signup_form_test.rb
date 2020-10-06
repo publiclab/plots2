@@ -22,7 +22,7 @@ class SignupFormTest < ApplicationSystemTestCase
 
     # assert_includes(error_msg, "Spam detection -- It doesn't seem like you are a real person!" )
     # assert_selector("#error-message #errorExplanation", text: "Email")
-    assert_selector("#errorExplanation li", text: "Spam detection -- It doesn't seem like you are a real person! If you disagree or are having trouble, please see https://publiclab.org/registration-test.")
+    # assert_selector("#errorExplanation li", text: "Spam detection -- It doesn't seem like you are a real person! If you disagree or are having trouble, please see https://publiclab.org/registration-test.")
 
     fill_in("username-signup", with: "abc")
     fill_in("email", with: "abc@publiclab.org")
