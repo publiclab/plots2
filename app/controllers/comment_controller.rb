@@ -51,8 +51,8 @@ class CommentController < ApplicationController
         end
       end
     rescue CommentError
-      flash[:error] = 'The comment could not be saved.'
-      render plain: 'failure'
+      flash.now[:error] = 'The comment could not be saved.'
+      render plain: 'failure', status: :bad_request
     end
   end
 
