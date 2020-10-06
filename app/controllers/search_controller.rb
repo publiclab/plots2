@@ -28,7 +28,7 @@ class SearchController < ApplicationController
     @title = "Search profiles"
     @search_criteria.sort_by = "recent"
     if params[:query]
-      @profiles = ExecuteSearch.new.by(:profiles, @search_criteria).paginate(page: params[:page], per_page: 20)
+      @pagy, @profiles = pagy(ExecuteSearch.new.by(:profiles, @search_criteria), items: 20)
     else
       @profiles = []
       @unpaginated = true
@@ -49,7 +49,7 @@ class SearchController < ApplicationController
 
   def tags
     @title = "Search tags"
-    @tags = ExecuteSearch.new.by(:tags, @search_criteria).paginate(page: params[:page], per_page: 20)
+    @pagy, @tags = pagy_array(ExecuteSearch.new.by(:tags, @search_criteria), items: 20)
   end
 
   def all_content
