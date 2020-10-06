@@ -9,7 +9,7 @@ class SignupFormTest < ApplicationSystemTestCase
         visit "/signup" 
        
         assert_difference 'User.count', 0 do
-            #Signs up with registered email 
+            # Signs up with an already-registered email 
             fill_in("username-signup", with: "abc") 
             fill_in("email", with: "jeff@pxlshp.com") 
             fill_in("password1", with: "secretive") 
