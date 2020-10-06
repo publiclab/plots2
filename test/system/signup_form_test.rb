@@ -16,9 +16,13 @@ class SignupFormTest < ApplicationSystemTestCase
 
     find("#create-form #signup-button").click()
     path = URI.parse(current_url).request_uri
-    assert_equal path, "/register"
+    assert_equal path, "/signup"
     #Searches for error
-    assert_selector("#error-message #errorExplanation", text: "Email")
+    # error_msg = find("#errorExplanation li").text.gsub('×', '').strip()
+
+    # assert_includes(error_msg, "Spam detection -- It doesn't seem like you are a real person!" )
+    # assert_selector("#error-message #errorExplanation", text: "Email")
+    # assert_selector("#errorExplanation li", text: "Spam detection -- It doesn't seem like you are a real person! If you disagree or are having trouble, please see https://publiclab.org/registration-test.")
 
     fill_in("username-signup", with: "abc")
     fill_in("email", with: "abc@publiclab.org")
