@@ -16,7 +16,7 @@ class SignupFormTest < ApplicationSystemTestCase
 
     find("#create-form #signup-button").click()
     path = URI.parse(current_url).request_uri
-    assert_equal path, "/register"
+    assert_equal path, "/signup"
     #Searches for error
     assert_selector("#error-message #errorExplanation", text: "Email")
 
