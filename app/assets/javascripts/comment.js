@@ -23,7 +23,8 @@
 
     if(!$(this).hasClass('bound-error')) {
       $(this).addClass('bound-error').bind('ajax:error', function(e,response){
-        notyNotification('mint', 3000, 'success', 'topRight', 'Some error occured while adding comment');
+        notyNotification('mint', 3000, 'error', 'topRight', 'Some error occured while adding comment');
+        $(this).find('#text-input').prop('disabled',false);
         $(this).find('.control-group').addClass('has-error')
         $(this).find('.control-group .help-block ').remove()
         $(this).find('#text-input').val('');
