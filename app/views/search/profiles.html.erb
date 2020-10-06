@@ -57,6 +57,9 @@
     </div>
     </div>
   </div>
-
+  <% if @pagy %>
+    <%= raw  pagy_bootstrap_nav @pagy unless @unpaginated %>
+  <% else %>
   <%= will_paginate @profiles, renderer: WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated %>
+  <% end %>
 </div>
