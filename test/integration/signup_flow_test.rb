@@ -96,7 +96,7 @@ class SignUpTest < ActionDispatch::IntegrationTest
        } 
     end
     assert response.body.include? '1 error prohibited this user from being saved'
-    assert response.body.include? "Spam detection Spam detection -- It doesn't seem like you are a real person! If you disagree or are having trouble, please see https://publiclab.org/registration-test."
+    assert response.body.include? "Spam detection -- It doesn't seem like you are a real person! If you disagree or are having trouble, please see https://publiclab.org/registration-test."
   end
   
   test 'spamaway text area not blank error message' do
