@@ -253,14 +253,6 @@ class Node < ActiveRecord::Base
     drupal_files
   end
 
-  def answered
-    answers&.size&.positive?
-  end
-
-  def has_accepted_answers
-    answers.where(accepted: true).size.positive?
-  end
-
   # users who like this node
   def likers
     node_selections
