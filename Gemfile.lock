@@ -121,7 +121,7 @@ GEM
       concurrent-ruby (~> 1.0)
     dry-equalizer (0.3.0)
     dry-inflector (0.2.0)
-    dry-logic (1.0.7)
+    dry-logic (1.0.8)
       concurrent-ruby (~> 1.0)
       dry-core (~> 0.2)
       dry-equalizer (~> 0.2)
@@ -181,7 +181,7 @@ GEM
       multi_json (~> 1.11)
       os (>= 0.9, < 2.0)
       signet (~> 0.14)
-    grape (1.4.0)
+    grape (1.5.0)
       activesupport
       builder
       dry-types (>= 1.1)
