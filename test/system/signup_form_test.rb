@@ -5,7 +5,7 @@ class SignupFormTest < ApplicationSystemTestCase
       visit "/"
     end
   
-    test "the signup form is validated" do 
+    test "the signup form is validated and rejects a duplicate email" do 
         visit "/signup" 
        
         assert_difference 'User.count', 0 do
