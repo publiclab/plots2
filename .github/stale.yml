@@ -16,7 +16,8 @@ exemptLabels:
   - security
   - "work in progress"
   - hold
-  - "priority"
+  - "in-progress"
+  - priority
 
 # Set to true to ignore issues in a project (defaults to false)
 exemptProjects: false
