@@ -235,7 +235,7 @@ class CommentTest < ApplicationSystemTestCase
 
     # Create a comment
     page.execute_script <<-JS
-      var commentForm = $('.comment-form-wrapper')[1];
+      var commentForm = $('.comment-form-wrapper')[0];
       var submitCommentBtn = $(commentForm).find('.btn')[0];
       var commentTextarea = $(commentForm).find('#text-input')[0]
 
@@ -249,7 +249,7 @@ class CommentTest < ApplicationSystemTestCase
 
     # Edit the comment
     page.execute_script <<-JS
-      var comment = $(".comment")[1];
+      var comment = $(".comment")[0];
       var commentID = comment.id;
       var editCommentBtn = $(comment).find('.navbar-text #edit-comment-btn')
 
