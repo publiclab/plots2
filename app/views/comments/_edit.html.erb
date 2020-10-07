@@ -8,10 +8,9 @@
       #imagebar {width:100%;}
     </style>
 
-    <% if params[:controller] == 'questions' %>
-      <%= render :partial => "editor/toolbar" %>
-    <% end %>
 
+    <%= render :partial => "editor/toolbar" %>
+    
     <div id="c<%= comment.id%>div" class="form-group">
       <textarea aria-label="Edit Comment" onFocus="editing=true" name="body" class="form-control" id="c<%= comment.id%>text" rows="6" cols="40" placeholder="<%= placeholder %>"><%= !(comment.is_a?Answer) ? comment.comment : comment.content %></textarea>
 
