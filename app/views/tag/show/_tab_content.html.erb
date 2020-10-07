@@ -37,9 +37,14 @@
 
   <% if @node_type == "wiki" %>
     <div class="tab-pane active" id="wikis">
+      <% if @nodes.nil? || @nodes.length == 0 %>
+        <p><%= raw translation('tag.show.no_results_found', tag: params[:id]) %>:</p>
+        <p><a href="/search/<%= params[:id] %>">Search for "<%= params[:id] %>"</a></p>
+      <% else %>
       <%= render partial: "wiki/wikis" %>
+      <% end %>
     </div>
-  <% end %>
+   <% end %>
 
   <% if @node_type == "maps" %>
     <div class="tab-pane active" id="wikis">
