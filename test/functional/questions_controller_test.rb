@@ -14,7 +14,7 @@ class QuestionsControllerTest < ActionController::TestCase
 
   test 'should get show' do
     note = nodes(:question)
-    
+
     get :show, params: { author: note.author.name, date: Time.at(note.created).strftime('%m-%d-%Y'), id: note.title.parameterize }
 
     assert_response :success
@@ -88,7 +88,7 @@ class QuestionsControllerTest < ActionController::TestCase
   end
 
   test 'should get answered' do
-    get :answered
+    get :recently_commented
     assert_response :success
     assert_equal assigns(:title), 'Recently Commented'
     assert_not_nil assigns(:questions)
@@ -144,7 +144,7 @@ class QuestionsControllerTest < ActionController::TestCase
   end
 
   test 'should list only answered questions in answered' do
-    get :answered
+    get :recently_commented
     questions = assigns(:questions)
     expected = [nodes(:question)]
     assert (questions & expected).present?
