@@ -35,8 +35,8 @@ staleLabel: stale
 markComment: >
   Hi :smile:, this issue has been automatically marked as stale because it has not had
   recent activity. Don't worry you can continue to work on this and ask @publiclab/reviewers 
-  to add "work in progress" label :tada: . Otherwise, it will be closed if no further activity occurs in 10 days  -- but you can always re-open it if you like! :100:
-  Thank you for your contributions :raised_hands: :balloon:.
+  to add `in-progress` label :tada: . Otherwise, it will be closed if no further activity occurs in 10 days  -- but you can always re-open it if you like! :100:
+  Thank you for your contributions! :raised_hands: :balloon:.
 
 # Comment to post when removing the stale label.
 # unmarkComment: >
