@@ -1,6 +1,6 @@
 <div class="col-lg-12">
 
-  <% if params[:action] == 'answered' %>
+  <% if params[:action] == 'recently_commented' %>
   <h2>Recently Commented <small class="d-md-none d-lg-inline">Recently commented questions</small></h2>
   <% elsif params[:action] == 'popular' %>
   <h2>Popular Questions <small class="d-md-none d-lg-inline">Most viewed questions</small></h2>
@@ -54,7 +54,7 @@
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link <% if params[:action] == "answered" %> active <% end %>" href="/questions/answered/">
+      <a class="nav-link <% if params[:action] == "recently_commented" %> active <% end %>" href="/questions/recently_commented/">
         <i class="fa fa-check"></i> <span class="d-none d-lg-inline"> Recently Commented</span>
       </a>
     </li>
