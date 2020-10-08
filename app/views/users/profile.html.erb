@@ -268,8 +268,8 @@
       <li><h5><a href = "/tag/activity:*/author/<%= params[:id] %>"><%= pluralize(@count_activities_posted, 'activity posted', plural:'activities posted') %> </a></h5></li>
       <li><h5><a href = "/tag/replication:*/author/<%= params[:id] %>"><%= pluralize(@count_activities_attempted, 'activity attempted', plural:'activities attempted')%></a> </h5></li>
       <li><h5><a href = "/tag/with:<%= @profile_user.username %>"><%= pluralize(Tag.find_nodes_by_type("with:#{@profile_user.username}").count, 'note co-authored', plural: 'notes co-authored')%></a> </h5></li>
-      <li><h5><a href = "/people/<%= params[:id]%>/followers"><%= @user.size %> followers</a></h5></li>
-      <li><h5><a href = "/people/<%= params[:id]%>/following"><%= @user.size %> following</a></h5></li>
+      <li><h5><a href = "/people/<%= @profile_user.username %>/followers"><%= pluralize(@profile_user.followers.count, 'follower', plural: 'followers')%></a> </h5></li>
+      <li><h5><a href = "/people/<%= @profile_user.username %>/following"><%= pluralize(@profile_user.following_users.count, 'following', plural: 'following')%></a> </h5></li>
     </ul>
   </div>
 
