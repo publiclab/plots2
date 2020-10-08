@@ -25,7 +25,7 @@
     "bootstrap-datepicker": "^1.6.0",
     "bootstrap-tokenfield": "^0.12.0",
     "chart.js": "^2.9.3",
-    "cytoscape": "^3.16.1",
+    "cytoscape": "^3.16.2",
     "debounce": "jywarren/debounce#patch-1",
     "file-saver": "^2.0.0",
     "i18n-js": "^3.7.1",
