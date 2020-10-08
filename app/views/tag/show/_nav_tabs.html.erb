@@ -7,7 +7,7 @@
           <a class="nav-link <% if @node_type == "note" %> active<% end %>" href="/tag/<%= params[:id] %>">
             <i class="fa fa-file"></i> 
             <span class="d-lg-inline"> 
-              <span class="d-none d-md-inline"><%= t('tag.show.research_notes') %></span>
+              <span class="d-none d-md-inline"><%= translation('tag.show.research_notes') %></span>
               <span class="d-none d-sm-inline badge badge-primary"><%= params[:counts][:posts] %></span>
             </span>
           </a>
