@@ -122,25 +122,23 @@ class UsersController < ApplicationController
       end
     end
     # allow admins to view recent users
-    @users = if params[:id]
-               User.order(order_string)
-                             .where('rusers.role = ?', params[:id])
-                             .where('rusers.status = 1')
-                             .page(params[:page])
-
-             elsif @tagname_param
-               User.where(id: UserTag.where(value: @tagname_param).collect(&:uid))
-                             .page(params[:page])
-
-             else
-               # recently active
-               User.select('*, rusers.status, MAX(node_revisions.timestamp) AS last_updated')
-                            .joins(:revisions)
-                            .where("node_revisions.status = 1")
-                            .group('rusers.id')
-                            .order(order_string)
-                            .page(params[:page])
-             end
+    if params[:id]
+      @users = User.order(order_string)
+                   .where('rusers.role = ?', params[:id])
+                   .where('rusers.status = 1')
+                   .page(params[:page])
+    elsif @tagname_param
+      @users = User.where(id: UserTag.where(value: @tagname_param).collect(&:uid))
+                   .page(params[:page])
+    else
+      # recently active
+      @users = User.select('*, rusers.status, MAX(node_revisions.timestamp) AS last_updated')
+                   .joins(:revisions)
+                   .where("node_revisions.status = 1")
+                   .order(order_string)
+                   .page(params[:page])
+      @users.group('rusers.id') unless Rails.env.development? # for GitPod compatibility; #8117
+    end
 
     @users = @users.where('rusers.status = 1') unless current_user&.can_moderate?
   end
