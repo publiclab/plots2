@@ -20,8 +20,8 @@ class TagController < ApplicationController
         .where("name LIKE :keyword", keyword: "%#{keyword}%")
         .where(powertag_clause)
         .order(order_string)
-        .paginate(page: params[:page], per_page: 24)
       @tags.group(:name) unless Rails.env.development? # for GitPod compatibility; #8117
+      @tags.paginate(page: params[:page], per_page: 24)
     elsif @toggle == "uses"
       @tags = Tag.joins(:node_tag, :node)
         .select('node.nid, node.status, term_data.*, community_tags.*')
@@ -29,8 +29,8 @@ class TagController < ApplicationController
         .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
         .where(powertag_clause)
         .order(order_string)
-        .paginate(page: params[:page], per_page: 24)
       @tags.group(:name) unless Rails.env.development? # for GitPod compatibility; #8117
+      @tags.paginate(page: params[:page], per_page: 24)
     elsif @toggle == "name"
       @tags = Tag.joins(:node_tag, :node)
         .select('node.nid, node.status, term_data.*, community_tags.*')
@@ -38,8 +38,8 @@ class TagController < ApplicationController
         .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
         .where(powertag_clause)
         .order(order_string)
-        .paginate(page: params[:page], per_page: 24)
       @tags.group(:name) unless Rails.env.development? # for GitPod compatibility; #8117
+      @tags.paginate(page: params[:page], per_page: 24)
     elsif @toggle == "followers"
       raw_tags = Tag.joins(:node_tag, :node)
         .select('node.nid, node.status, term_data.*, community_tags.*')
@@ -47,8 +47,8 @@ class TagController < ApplicationController
         .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
         .where(powertag_clause)
       raw_tags = Tag.sort_according_to_followers(raw_tags, params[:order])
+      raw_tags.group(:name) unless Rails.env.development? # for GitPod compatibility; #8117
       @tags = raw_tags.paginate(page: params[:page], per_page: 24)
-      @tags.group(:name) unless Rails.env.development? # for GitPod compatibility; #8117
     else
       tags = Tag.joins(:node_tag, :node)
         .select('node.nid, node.status, term_data.*, community_tags.*')
@@ -56,7 +56,7 @@ class TagController < ApplicationController
         .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
         .where(powertag_clause)
         .order(order_string)
-      @tags.group(:name) unless Rails.env.development? # for GitPod compatibility; #8117
+      tags.group(:name) unless Rails.env.development? # for GitPod compatibility; #8117
 
       followed = []
       not_followed = []
