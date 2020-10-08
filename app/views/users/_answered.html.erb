@@ -37,10 +37,12 @@
   </div>
 </div>
 
-<div class="text-center">
-<% if @pagy %>
-  <%== pagy_bootstrap_nav @pagy %>
-<% else %>
-  <%= will_paginate @questions, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || @questions.empty? %>
+<% if @answered_questions.present? %>
+  <div class="text-center">
+  <% if @pagy %>
+    <%== pagy_bootstrap_nav @pagy %>
+  <% else %>
+    <%= will_paginate @answered_questions, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || @answered_questions.empty? %>
+  <% end %>
+  </div>
 <% end %>
-</div>
