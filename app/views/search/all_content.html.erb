@@ -1,4 +1,4 @@
-<div class="col-md-2">
+m <div class="col-md-2">
   <%= render :partial => "search/nav", locals: { section: "search-all" } %>
 </div>
 
@@ -46,7 +46,7 @@
               <% end %>
             <% end %>
  
-            <% if (@notes.count > 9) %>
+            <% if (@notes.size > 9) %>
               <tr>
                 <td>
                   <b><%= link_to "More matching notes >>", "/search/notes/#{params[:query]}" %></b>
