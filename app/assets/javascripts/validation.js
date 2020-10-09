@@ -46,12 +46,25 @@ $(document).ready(function() {
   if (signUpForms[1]) {
     signUpForms[1].classList.add("signup-register-form");
     var signUpRegisterForm = new SignUpFormValidator(".signup-register-form");
-    signUpRegisterForm.validateForm()
 
-    if (signUpErrorMessages.innerHTML.includes("Email")) {
-      signUpRegisterForm.updateUI(signUpRegisterForm.emailElement, false, "Email already exists");
+    if (signUpErrorMessages.innerHTML.includes("error")) {
+      if (signUpErrorMessages.innerHTML.includes("Email") && signUpErrorMessages.innerHTML.includes("Username")) {
+        signUpRegisterForm.updateUI(signUpRegisterForm.emailElement, false, "Email already exists");
+        signUpRegisterForm.updateUI(signUpRegisterForm.usernameElement, false, "Username already exists");
+      }
+      else if (signUpErrorMessages.innerHTML.includes("Email") && !(signUpErrorMessages.innerHTML.includes("Username"))) {
+        signUpRegisterForm.updateUI(signUpRegisterForm.emailElement, false, "Email already exists");
+        signUpRegisterForm.updateUI(signUpRegisterForm.usernameElement, true);
+      }
+      else if (!(signUpErrorMessages.innerHTML.includes("Email")) && signUpErrorMessages.innerHTML.includes("Username")) {
+        signUpRegisterForm.updateUI(signUpRegisterForm.emailElement, true);
+        signUpRegisterForm.updateUI(signUpRegisterForm.usernameElement, false, "Username already exists");
+      }
+      else {
+        signUpRegisterForm.updateUI(signUpRegisterForm.emailElement, true);
+        signUpRegisterForm.updateUI(signUpRegisterForm.usernameElement, true);
+      }
     }
-    signUpRegisterForm.isFormValid()
   }
 
   // The same goes for login forms
