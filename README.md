@@ -40,7 +40,6 @@ We are developing a draft Roadmap for `plots2` and our broader Public Lab code p
 3. [Contributing](#contributing)
 4. [Prerequisites](#prerequisites)
 5. [Installation](#installation)
-    - [Simple Installation with Cloud9](https://github.com/publiclab/plots2/wiki/Simple-Installation-for-Cloud9)
     - [Standard Installation](#standard-installation)
     - [Windows Installation](#windows-installation)
 6. [SSL in Development](#ssl-in-development)
@@ -89,10 +88,6 @@ Please read and abide by our [Code of Conduct](https://publiclab.org/conduct); o
 For installation, prerequisites include sqlite3 and rvm. [Click here for a complete list and instructions](https://github.com/publiclab/plots2/blob/main/doc/PREREQUISITES.md).
 
 ## Installation
-
-### Installation for Cloud9
-
-For information on how to install for use with the cloud environment, please see [here](https://github.com/publiclab/plots2/wiki/Simple-Installation-for-Cloud9).
 
 ### Standard Installation
 
