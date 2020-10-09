@@ -51,12 +51,6 @@
       <a class="ellipsis bottom-right" data-toggle="dropdown"><i class="fa fa-ellipsis-h" style="color : #666; font-size:15px; float:right; cursor:pointer;"></i></a>
 
       <ul class="dropdown-menu" style = "width: 150px; font-size:10px;">
-        <% if node.type == 'note' %>
-          <li><a> Made: <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope:'datetime.time_ago_in_words' }) %> </a></li>
-        <% else %>
-          <li><a>Last Edited: <%= t('notes._notes.last_edit_by') %> <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.latest.author.name %>"><%= node.latest.author.name %></a></a></li>
-          <li><a><%= distance_of_time_in_words(Time.at(node.latest.timestamp), Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></a></li>
-        <% end %>
         <li><a>Total Views: </i> <%= number_with_delimiter(node.views) %> <span class="d-none d-lg-inline"><%= t('notes._notes.views') %></span></a></li>
         <li><a>Total Likes: <%= node.likers.size %></a></li>
         <div class="content" style="width: 100%" >
