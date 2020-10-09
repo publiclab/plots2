@@ -26,9 +26,10 @@ class SubscriptionMailer < ActionMailer::Base
   end
 
   def notify_note_liked(node, user)
-    subject = "[PublicLab] #{user.username} liked your " +
-              (node.has_power_tag('question') ? 'question' : 'research note') +
-              " (##{node.id})"
+    subject = '[PublicLab] ' +
+              (node.has_power_tag('question') ? 'Question: ' : '') +
+              node.title +
+              " (##{node.id}) "
     @user = user
     @node = node
     @tags = node.tags.collect(&:name).join(',')
@@ -37,6 +38,10 @@ class SubscriptionMailer < ActionMailer::Base
   end
 
   def notify_tag_added(node, tag, tagging_user)
+    subject = '[PublicLab] ' +
+              (node.has_power_tag('question') ? 'Question: ' : '') +
+              node.title +
+              " (##{node.id}) "
     @tag = tag
     @node = node
     @tags = node.tags.collect(&:name).join(',')
@@ -62,7 +67,7 @@ class SubscriptionMailer < ActionMailer::Base
     mail(
       to: "notifications@#{ActionMailer::Base.default_url_options[:host]}",
       bcc: recipients,
-      subject: "#{node.title} (##{node.id})"
+      subject: subject
     )
   end
 
