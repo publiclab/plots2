@@ -17,7 +17,7 @@
   <% @users.each do |user| %>
   <tr id="u<%= user.id %>">
     <td><a href="/profile/<%= user.name %>"><%= user.name %></a></td>
-    <td><%= Node.where(uid: user.id).count %></td>
+    <td><%= Node.where(uid: user.id).size %></td>
     <td><%= time_ago_in_words(user.created_at) %></td>
     <td><%= user.mail %></td>
     <td><div class="btn-toolbar" style="margin:0;">
