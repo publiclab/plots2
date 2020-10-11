@@ -5,6 +5,3 @@
 <% else %>
   <h3> <%= @node_type == "questions" ? "Questions" : "Notes" %> on <%= params[:id] %> by <%= link_to(@user.name,"/profile/#{@user.name}") %> </h3>
 <% end %>
-<% if @start && @end %>
-  <p>From <%= @start.to_formatted_s(:long) %> to <%= @end.to_formatted_s(:long) %></p>
-<% end %>
