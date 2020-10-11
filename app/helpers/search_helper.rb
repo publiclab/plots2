@@ -24,7 +24,7 @@ module SearchHelper
       { section: "search-questions", text: "Questions", path: "/search/questions/#{query}" },
       { section: "search-notes", text: "Notes", path: "/search/notes/#{query}" },
       { section: "search-wikis", text: "Wikis", path: "/search/wikis/#{query}" },
-      { section: "search-tags", text: "Tags", path: "/search/tags/#{query}" } ,
+      { section: "search-tags", text: "Tags", path: "/search/tags/#{query}" }
     ]
 
     result = ""
