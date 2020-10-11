@@ -1,30 +1,30 @@
-<%= render :partial => "search/nav" , :locals => { :section => "search-tags" }%>
+<div class="col-md-2">
+<%= render partial: "search/nav" , locals: { section: "search-tags" } %>
+</div>
 
-<div class="container">
-  <% if @tags.present? %>
-    <div class="container">
-      <h2> Results for <%= @search_criteria.query %></h2>
-      <p> <strong> Searched notes that contain the tag</strong></p>
-      <hr>
+<div class="col-md-10">
+  <div class="container">
+    <% if @tags.present? %>
+      <div class="container">
+        <h2> Results for <%= @search_criteria.query %></h2>
+        <p> <strong> Searched notes that contain the tag</strong></p>
+        <hr>
 
-      <div class="row">
-        <% @tags.each do |tag| %>
-          <p><a href=<%= "#{tag}" %>><%= tag %></a></p>
+        <div class="row">
+          <%= render partial: "tag/topicCard" %>
+        </div>
+      </div>
+      <div class="text-center">
+        <% if @pagy %>
+          <%= raw  pagy_bootstrap_nav @pagy %>
+        <% else %>
+          <%= will_paginate @tags, renderer: WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated %></div>
         <% end %>
       </div>
-    </div>
-  <% else %>
-    <h4>
-      No results found for <%= params[:query] %> :-(
-      <p> Searched notes that contain the tag</p>
-      </br>
-      Try searching <a href="/search">for another topic</a> or looking for our items tagged with <a href="/tag/<%= params[:query] %>"><%= params[:query] %></a>
-    </h4>
-  <% end %>
+    <% else %>
+     <p>No results found for "<b><%= params[:query] %></b>" :-(</p>
+     <p>Try searching for another topic or looking for our items tagged with <a href="/tag/<%= params[:query] %>"><%= params[:query] %></a>
+    <% end %>
+  </div>
 </div>
-<div class="text-center">
-  <% if @pagy %>
-    <%= raw  pagy_bootstrap_nav @pagy %>
-  <% else %>
-  <%= will_paginate @tags, renderer: WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated %></div>
-  <% end %>
+
