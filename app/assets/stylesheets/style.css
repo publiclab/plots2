@@ -25,8 +25,18 @@ It was originally created by Caroline Hadilaksono: http://www.hadilaksono.com
 
 }
 
+html{
+  position: relative;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 body{
   padding-top: 80px;
+  height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 h1,h2,h3,h4 {
@@ -267,12 +277,15 @@ a .fa-white,
 }
 
 .footer {
+  width: 100%;
   color: #666;
   clear:both;
-  margin-top: 40px;
+  /* margin-top: 100px; */
   padding: 30px !important;
   border-top: 1px solid #E5E5E5;
   background-color: #f8f8f8;
+  position: absolute;
+  bottom: 0;
 }
 
 .footer ul {
@@ -526,6 +539,12 @@ a.btn-outline-secondary .fa {
 
  a.btn-outline-secondary:not([href]):not([tabindex]) {
   color: #6c757d;
+}
+
+.container{
+  min-height: 100%;
+  padding: 0 0 80px;
+  position: relative;
 }
 
 .container .btn-outline-secondary:hover {
