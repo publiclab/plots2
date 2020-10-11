@@ -4,7 +4,7 @@
   <% if current_user && (current_user.moderator? || current_user.admin?) %>
     <a href="/spam" class="btn btn-sm btn-outline-secondary float-right" type="button">
       <i class="fa fa-flag"></i> 
-      <%= Node.where(status: 4).count %>
+      <%= Node.where(status: 4).size %>
     </a>
   <% end %>
 </div>
