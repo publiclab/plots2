@@ -1,4 +1,9 @@
 <div class="tab-content" style="clear:both;">
+
+  <% if @start && @end %>
+    <p>Displaying content from <%= @start.to_formatted_s(:long) %> to <%= @end.to_formatted_s(:long) %>. <a href="/tag/<%= params[:id] %>">View all</a></p>
+  <% end %>
+
   <!-- separate these in partials-->
   <!-- use controller to determine which partial to render -->
   <% if @node_type == "note" %>
