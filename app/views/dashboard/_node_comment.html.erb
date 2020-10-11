@@ -3,7 +3,7 @@
 
     <div class="header-icon">
      <% if node.aid == 0 %>
-      <a href="<% if node.parent.has_power_tag('question') %><%= node.parent.path(:question) %>#answer-0-comment<% else %><%= node.parent.path %>#comments<% end %>"> <i class="fa fa-comment-o"> <%= node.parent.comments_viewable_by(current_user).count %></i> </a>
+      <a href="<% if node.parent.has_power_tag('question') %><%= node.parent.path(:question) %>#answer-0-comment<% else %><%= node.parent.path %>#comments<% end %>"> <i class="fa fa-comment-o"> <%= node.parent.comments_viewable_by(current_user).size %></i> </a>
       <% else %>
       <a href="<%= node.parent.path(:question) %>#answer-<%= node.answer.id %>-comment"> <i class="fa fa-comment-o"> </i>
       <% end %>
