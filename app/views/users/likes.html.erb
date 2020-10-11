@@ -2,7 +2,7 @@
 
 <% user = user || @user # allow overriding w/ local variable %>
 
-<% if @wikis && @wikis.length > 0 %>
+<% if @wikis && @wikis.count > 0 %>
   <h3 style="margin-top:0;"><%= translation('users.likes.wiki_liked_by') %> <a href="/profile/<%= user.name %>"><%= user.name %></a></h3>
 
   <ul class="nav bullet">
@@ -23,7 +23,7 @@
   <h3 style="margin-top:0;"><i class="fa fa-star-o"></i> <%= translation('users.likes.liked_by') %> <a href="/profile/<%= user.name %>"><%= user.name %></a></h3>
 
   <hr />
-<% if @notes && @notes.length == 0 %>
+<% if @notes && @notes.count == 0 %>
   <% if current_user && (current_user.id == @user.uid) %>
     No notes liked by you.
   <% else %>
