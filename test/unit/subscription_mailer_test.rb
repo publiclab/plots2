@@ -49,7 +49,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     email = ActionMailer::Base.deliveries.last
     assert_equal ["notifications@#{request_host}"], email.from
     assert_equal [node.author.email], email.to
-    assert_equal "[PublicLab] #{user.username} liked your research note (##{node.id})", email.subject
+    assert_equal '[PublicLab] ' + (node.has_power_tag('question') ? 'Question: ' : '') + "#{node.title} (##{node.id}) ", email.subject
     assert email.body.include?("Public Lab contributor #{user.username} (https://#{request_host}/profile/#{user.username}) just liked your research note")
   end
 
@@ -64,7 +64,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     email = ActionMailer::Base.deliveries.last
     assert_equal ["notifications@#{request_host}"], email.from
     assert_equal [node.author.email], email.to
-    assert_equal "[PublicLab] #{user.username} liked your question (##{node.id})", email.subject
+    assert_equal '[PublicLab] ' + (node.has_power_tag('question') ? 'Question: ' : '') + "#{node.title} (##{node.id}) ", email.subject
     assert email.body.include?("Public Lab contributor #{user.username} (https://#{request_host}/profile/#{user.username}) just liked your question")
   end
 
@@ -86,7 +86,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     assert_equal ["notifications@#{request_host}"], email.from
     assert_equal ["notifications@#{request_host}"], email.to
     assert email.bcc.include?(users_to_email.last.email)
-    assert_equal "#{node.title} (##{node.id})", email.subject
+    assert_equal '[PublicLab] ' + (node.has_power_tag('question') ? 'Question: ' : '') + "#{node.title} (##{node.id}) ", email.subject
     assert email.body.include?("was tagged with")
   end
 end
