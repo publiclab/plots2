@@ -17,7 +17,7 @@
       <% end %>
     <% end %>
 
-    <% if @questions.count > 9 %>
+    <% if @questions.size > 9 %>
       <tr>
         <td>
           <b><%= link_to "More matching questions >>", "/search/questions/#{params[:query]}" %></b>
