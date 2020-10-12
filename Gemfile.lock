@@ -420,7 +420,7 @@ GEM
       ffi (~> 1.0)
     rb-readline (0.5.5)
     rdiscount (2.2.0.2)
-    recaptcha (4.14.0)
+    recaptcha (5.5.0)
       json
     redis (4.1.4)
     ref (2.0.0)
