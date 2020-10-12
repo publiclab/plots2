@@ -55,10 +55,6 @@ class WikiController < ApplicationController
       end
     end
 
-    # if request.path != @node.path && request.path != '/wiki/' + @node.nid.to_s
-    #   return redirect_to @node.path, :status => :moved_permanently
-    # end
-
     return if redirect_to_node_path?(@node)
 
     if !@node.nil? # it's a place page!
@@ -96,6 +92,20 @@ class WikiController < ApplicationController
     render plain: Revision.find(params[:id]).body
   end
 
+  def print
+    @node = Node.find_by(nid: params[:id], type: 'page')
+    return if redirect_to_node_path?(@node)
+    @revision = @node.latest
+
+    if @node
+      impressionist(@node, 'print', unique: [:ip_address])
+      render layout: "print"
+
+    else
+      page_not_found
+    end
+  end
+
   def edit
     @node = if params[:lang]
               Node.find_wiki(params[:lang] + '/' + params[:id])
@@ -106,6 +116,10 @@ class WikiController < ApplicationController
     if @node.has_tag('locked') && !current_user.can_moderate?
       flash[:warning] = "This page is <a href='/wiki/power-tags#Locking'>locked</a>, and only <a href='/wiki/moderators'>moderators</a> can edit it."
       redirect_to @node.path
+    elsif current_user &.first_time_poster
+      flash[:notice] = "Please post a question or other content before editing the wiki. Click <a href='https://publiclab.org/notes/tester/04-23-2016/new-moderation-system-for-first-time-posters'>here</a> to learn why."
+      redirect_to Node.find_wiki(params[:id]).path
+      return
     end
     if ((Time.now.to_i - @node.latest.timestamp) < 5.minutes.to_i) && @node.latest.author.uid != current_user.uid
       flash.now[:warning] = I18n.t('wiki_controller.someone_clicked_edit_5_minutes_ago')
@@ -145,7 +159,10 @@ class WikiController < ApplicationController
     if params[:rich]
       render template: 'editor/wikiRich'
     else
-      render template: 'wiki/edit'
+      respond_to do |format|
+        format.html { render 'wiki/edit' }
+        format.all { head :ok }
+      end
     end
   end
 
@@ -160,6 +177,9 @@ class WikiController < ApplicationController
                                               body:  params[:body])
       if saved
         flash[:notice] = I18n.t('wiki_controller.wiki_page_created')
+        params[:tags]&.tr(' ', ',')&.split(',')&.each do |tagname|
+          @node.add_tag(tagname.strip, current_user)
+        end
         if params[:main_image] && params[:main_image] != ''
           img = Image.find params[:main_image]
           img.nid = @node.id
@@ -257,7 +277,7 @@ class WikiController < ApplicationController
     @node = Node.find_wiki(params[:id])
     if @node
       @revisions = @node.revisions
-      @revisions = @revisions.where(status: 1).page(params[:page]).per_page(20) unless current_user&.can_moderate?
+      @pagy_revisions, @revisions = pagy(@revisions.where(status: 1), items: 20) unless current_user&.can_moderate?
       @title = I18n.t('wiki_controller.revisions_for', title: @node.title).html_safe
       @tags = @node.tags
       @paginated = true unless current_user&.can_moderate?
@@ -313,12 +333,11 @@ class WikiController < ApplicationController
       order_string = 'cached_likes DESC'
     end
 
-    @wikis = Node.includes(:revision)
+    @pagy, @wikis = pagy(Node.includes(:revision)
       .references(:node_revisions)
-      .group('node_revisions.nid')
+      .group('node_revisions.nid, node_revisions.vid')
       .order(order_string)
-      .where("node_revisions.status = 1 AND node.status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')")
-      .page(params[:page])
+      .where("node_revisions.status = 1 AND node.status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')"))
 
     @paginated = true
   end
@@ -326,12 +345,11 @@ class WikiController < ApplicationController
   def stale
     @title = I18n.t('wiki_controller.wiki')
 
-    @wikis = Node.includes(:revision)
+    @pagy, @wikis = pagy(Node.includes(:revision)
       .references(:node_revisions)
-      .group('node_revisions.nid')
+      .group('node_revisions.nid, node_revisions.vid')
       .order('node_revisions.timestamp ASC')
-      .where("node_revisions.status = 1 AND node.status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')")
-      .page(params[:page])
+      .where("node_revisions.status = 1 AND node.status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')"))
 
     @paginated = true
     render template: 'wiki/index'
@@ -341,10 +359,10 @@ class WikiController < ApplicationController
     @title = I18n.t('wiki_controller.popular_wiki_pages')
     @wikis = Node.limit(40)
       .joins(:revision)
-      .group('node_revisions.nid')
+      .group('node_revisions.nid, node_revisions.vid')
       .order('node_revisions.timestamp DESC')
       .where("node.status = 1 AND node_revisions.status = 1 AND node.nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place')")
-      .sort_by(&:totalviews).reverse
+      .sort_by(&:views).reverse
     render template: 'wiki/index'
   end
 
@@ -457,7 +475,9 @@ class WikiController < ApplicationController
         main_image.save
       end
 
-      if params[:main_image].present? && img = Image.find(params[:main_image])
+      if params[:main_image].to_i == 0
+        @node.main_image_id = nil
+      elsif params[:main_image].present? && img = Image.find(params[:main_image])
         img.nid = @node.id
         @node.main_image_id = img.id
         img.save
@@ -465,5 +485,14 @@ class WikiController < ApplicationController
 
       @node.save
     end
+  end
+
+  def author
+    @user = User.find_by(name: params[:id])
+    @title = @user.name
+    @pagy, @wikis = pagy(Node
+      .order('nid DESC')
+      .where("uid = ? AND type = 'page' OR type = 'place' OR type = 'tool' AND status = 1", @user.uid), items: 24)
+    render template: 'wiki/index'
   end
 end

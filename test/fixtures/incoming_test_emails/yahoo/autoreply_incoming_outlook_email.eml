@@ -1,0 +1,64 @@
+Delivered-To: foobar@gmail.com
+Received: by 2002:ac9:6015:0:0:0:0:0 with SMTP id y21csp13046920ocj;
+        Sun, 11 Aug 2019 21:24:48 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqy05qHjIvxTgEIoachyvHc4f3dFbTBoy6nIIbE7nGvHRgl+PBBJmEXTOeL/6KgQBtCcO+X2
+X-Received: by 2002:a05:6638:303:: with SMTP id w3mr35079941jap.103.1565583888518;
+        Sun, 11 Aug 2019 21:24:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1565583888; cv=none;
+        d=google.com; s=arc-20160816;
+        b=i2Of/yz8E3IZtx6vwngmErnzZiLpP3mhKDZOambyqGzSm9gYMKVM738AXpxPMkkkVt
+         /hLwBzXx1ZLv2GGcvxKkH/JIRr82B6SZuhbuAwSIxGQTkaRFI/BYkJd09nam9SmPSxr4
+         xssomdbQoq3F85G9cWCtYenRp5dVR3cWg7A3EdD96l5xhMUm3YSrwH+PwO3Tn3x4d+fS
+         ZQV2NZy84ESQuMAqRoukSdARiemyCzd2j4L4c18OUWx0XrIAb4MyrNFq/m9UKnLeyvl0
+         4JDoyk+ZtQLg5WN59n8Zfa92MUKYtOptkQN8r1yaaF2OWKBKzXfqFMjntfHPJCEn5FV7
+         y8Fw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=auto-submitted:precedence:mime-version:subject:message-id:to:from
+         :date:dkim-signature;
+        bh=ZUSpd/6lheZvSbO1XfMdA7w2xdsSjX7Duh3/MF1uhS8=;
+        b=X0ZBMb+vZwLp2nDLJI27wiBnYtWI3SPEchnwDJMeTugWQrCVHCAym9zgp8LzWxdAVo
+         GNZn1iDWr2p+AaQ63hfe1lp7JsCQN2ZDEqoNVlBkhWoMJklL5Tg3DDD4L2EPKe2cDPqQ
+         KzDgOmSD+tjMMMuUndKroslhn3+Cy4HaCxlddFfFE44URd8AtuzhHjCQ7Njfu7FtllT7
+         kYZyWLOhZPVm1xY5sgptu4ucUKOULZQmropjxtOOsjY2+lv0qlsew143Rp/+e9Zq2KPC
+         42dF7fS5KGuHpPahCpkzCoQE/lVclxoMCfx3hm91hhcEsnMDr5oA8EAGWxfjTJJiqEVb
+         ixPg==
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@yahoo.com header.s=s2048 header.b=bh++7bSk;
+       spf=pass (google.com: domain of rando@yahoo.com designates 74.6.134.42 as permitted sender) smtp.mailfrom=rando@yahoo.com;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=yahoo.com
+Return-Path: <rando@yahoo.com>
+Received: from sonic307-3.consmr.mail.bf2.yahoo.com (sonic307-3.consmr.mail.bf2.yahoo.com. [74.6.134.42])
+        by mx.google.com with ESMTPS id i9si2596247jak.102.2019.08.11.21.24.48
+        for <foobar@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 11 Aug 2019 21:24:48 -0700 (PDT)
+Received-SPF: pass (google.com: domain of rando@yahoo.com designates 74.6.134.42 as permitted sender) client-ip=74.6.134.42;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@yahoo.com header.s=s2048 header.b=bh++7bSk;
+       spf=pass (google.com: domain of rando@yahoo.com designates 74.6.134.42 as permitted sender) smtp.mailfrom=rando@yahoo.com;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=yahoo.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1565583888; bh=ZUSpd/6lheZvSbO1XfMdA7w2xdsSjX7Duh3/MF1uhS8=; h=Date:From:To:Subject:From:Subject; b=bh++7bSk4DhE/vcDIOXFnfJioWunP/Uw/KF1Ww5equGHRu6AcEGXI0IloxMyeDPYW2uKJWQFC3eUT2YRoEzWwrFBKBXFRdBB62eF4T5BbV7Bd+Gj73I89ExfnQo1N2c77nKmgISBvCDsMVrzhazh+kwB3VQ7or8/lO99vraJrm8M+E+mgTCj7mbTkmhEtwMF4lYDCQczOWTo+iZDDwyi6iBN8W2aTTnPkdOzbm6HFAOtSwc8i9A2uGH//5ptDswlUxGVRhYEq61vU/WtOvzb5nUgP35ylzJRlWvfmY0DcC/TxCIJcuu4KZ/86M1h4A9a4T+0s/vB3MU6+D8mqaC+Lw==
+X-YMail-OSG: X8rTGB0VM1lVFZXDmV3d3yDKv7uE.1Uo6DO44nDIM0VNaZhdCb0FMtf.dEj1fvO 1pJ0Fo3o4NS9nEGOGuzMe0rkN9tQGRyqVVPUfb99YESTUFOwZyHQ6u0.J17mnAhT1WR9GfWGEcDl pUP.oRP0Ln6mTaEzdI16HyyqMmVPzgvIMt_m5mqvzG1DpQ5GPnUPTty2QCTB2ycAm.KFHIIqIvIj AGHPM64D8ZXosmXhKpfiSwL8hNMgT4upm0mBsYsAGK9ezmcYbk7aSJwB6tlnX.YE9HUtlK0jul7E 3nE2um54WpS_6l9PMv8VdeDlTuMizzRv12HePUcHPznEwmIiSK6o16SlxTDk8XFo6s1yp9TKXO8D pglaWi6x2HdZY__6Nz53Z70Jt.cKXrc2uJA3q_W_2JeHAOcfV10j9qldsQ1h82xiZcD__fBeHZfW 8tYIqDHWd9Qmmo56Jcny.c.8Ni6eZGpsVNxRXqeeu98hRoXkL7ECe5ak6uxPi96lRkJnNgwmQ4C3 5Rr3Ejh5TRHehloJvTwbSMjaGBeA6PeRWoZeMYT6S09PYpC9ZrPU7u.fh0gaiNObC2ZMOLQu2j25 IUTWHPr.FZ_kUtcVUDfWWibqHxvSTY15HfIOCCga5WCpWM7z9dZwYfufgRNrJNaRdvsGKJcSWiEi lVJfBHfw2hlo4hs2emsx15.I0sU.zwT.HbGr3wA3k8rChcf8W_.dwVag0YD5oR8yt0_RnZdXPUPY 1DsK.OatUcJnfEeJZzhZiz0j8S9e8q1xslScf.aFJp.0v4943RpzsZD5H7c4DsBXXQjcDayXo9x0 Czc6Ah.2wNI1EPmQQwuhAhgUjUFcxWbteLAUOp6J4rMk.HJOZPCr_WDnBNz3DHYQt3horw2BytbM x4.8nn4mnD4HPzWfynU5pK.Ec700re8OuhzF6ZMkwujILQWEfKqT5qv.owxzlLVUdkTW6kWssEqg 15ANnW83wsl8H1oDOKUmPWfKKcEUNaGzNtlbq0ImRmT6EiU39XX8klPGVl6IUUziTDMrdqDu0KF8 aC5tFRSrqZSiThaEjzhazwLllSLWxon9DiD87te3Aarty1YjpuGNgGGHJv3zZQ26laQsd1m.vPCn CYPZ9BQRGjU73ibm.j9EYqdCzgt5deReBx01PffPAOxhS4bRiUj_UWDnej90xwvTdsJjQDpVD8EA UjV2D5cR_QnnJ
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic307.consmr.mail.bf2.yahoo.com with HTTP; Mon, 12 Aug 2019 04:24:48 +0000
+Date: Mon, 12 Aug 2019 04:24:44 +0000 (UTC)
+From: Rando <rando@yahoo.com>
+To: foo bar <foobar@gmail.com>
+Message-ID: <192592143.45277507.1565583884395@mail.yahoo.com>
+Subject: Auto Response: Doop
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="----=_Part_45277506_456475307.1565583884394"
+Precedence: bulk
+Auto-Submitted: auto-replied
+Content-Length: 360
+
+------=_Part_45277506_456475307.1565583884394
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+This is an auto message :)
+------=_Part_45277506_456475307.1565583884394
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<div dir="ltr">This is an auto message :)</div>
+------=_Part_45277506_456475307.1565583884394--

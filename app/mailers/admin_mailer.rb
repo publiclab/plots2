@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AdminMailer < ActionMailer::Base
   helper :application
   include ApplicationHelper
@@ -8,12 +10,18 @@ class AdminMailer < ActionMailer::Base
     @node = node
     @user = node.author
     @footer = feature('email-footer')
-    moderators = User.where(role: %w(moderator admin)).collect(&:email)
-    mail(
-      to: "moderators@#{ActionMailer::Base.default_url_options[:host]}",
-      bcc: moderators,
-      subject: subject
-    )
+    all_moderators = User.where(role: %w(moderator admin))
+    moderators = []
+    all_moderators.each do |mod_user|
+      moderators << mod_user.email unless mod_user.has_tag('no-moderation-emails')
+    end
+    if node.status == 4 # only if it remains unmoderated
+      mail(
+        to: "moderators@#{ActionMailer::Base.default_url_options[:host]}",
+        bcc: moderators,
+        subject: subject
+      )
+    end
   end
 
   def notify_comment_moderators(comment)
@@ -22,11 +30,13 @@ class AdminMailer < ActionMailer::Base
     @user = comment.author
     @footer = feature('email-footer')
     moderators = User.where(role: %w(moderator admin)).collect(&:email)
-    mail(
-      to: "comment-moderators@#{ActionMailer::Base.default_url_options[:host]}",
-      bcc: moderators,
-      subject: subject
-    )
+    if comment.status == 4 # only if it remains unmoderated
+      mail(
+        to: "comment-moderators@#{ActionMailer::Base.default_url_options[:host]}",
+        bcc: moderators,
+        subject: subject
+      )
+    end
   end
 
   def notify_author_of_approval(node, moderator)
@@ -50,7 +60,8 @@ class AdminMailer < ActionMailer::Base
   # Will this further bait spammers? If we don't,
   # will non-spammers whose posts were moderated get confused?
   # Should: show explanation/appeal process to authors who visit again
-  # Should: prompt moderators to reach out if it's not spam, but a guidelines violation
+  # Should: prompt moderators to reach out if it's not spam, but a guidelines
+  # violation
   # def notify_author_of_spam(node)
   # end
 
@@ -107,6 +118,21 @@ class AdminMailer < ActionMailer::Base
       to: "moderators@#{ActionMailer::Base.default_url_options[:host]}",
       bcc: moderators,
       subject: subject
+    )
+  end
+
+  def send_digest_spam(nodes, frequency_digest)
+    if frequency_digest == User::Frequency::DAILY
+      @subject = 'Your daily digest for moderation'
+    elsif frequency_digest == User::Frequency::WEEKLY
+      @subject = 'Your weekly digest for moderation'
+    end
+    moderators = User.where(role: %w(moderator admin)).collect(&:email)
+    @nodes = nodes
+    mail(
+      to: "moderators@#{ActionMailer::Base.default_url_options[:host]}",
+      bcc: moderators,
+      subject: @subject
     )
   end
 end

@@ -1,12 +1,13 @@
 class Comment < ApplicationRecord
   include CommentsShared
+  extend RawStats
 
   belongs_to :node, foreign_key: 'nid', touch: true, counter_cache: true
   belongs_to :user, foreign_key: 'uid'
   belongs_to :answer, foreign_key: 'aid'
   has_many :likes, as: :likeable
 
-  has_many :replied_comments, class_name: "Comment", foreign_key: 'reply_to'
+  has_many :replied_comments, class_name: "Comment", foreign_key: 'reply_to', dependent: :destroy
 
   validates :comment, presence: true
 
@@ -29,7 +30,7 @@ class Comment < ApplicationRecord
     (0..span).each do |week|
       weeks[span - week] = Comment.select(:timestamp)
         .where(timestamp: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
-        .count
+        .size
     end
     weeks
   end
@@ -42,9 +43,9 @@ class Comment < ApplicationRecord
       month = (fin - (week * 7 - 1).days)
       range = (fin.to_i - week.weeks.to_i)..(fin.to_i - (week - 1).weeks.to_i)
 
-      weekly_comments = Comment.select(:timestamp)
-                         .where(timestamp: range)
-                         .count
+      weekly_comments = Comment.select(:status, :timestamp)
+                         .where(status: 1, timestamp: range)
+                         .size
       date_hash[month.to_f * 1000] = weekly_comments
       week -= 1
     end
@@ -90,6 +91,18 @@ class Comment < ApplicationRecord
     aid.zero? ? node : answer&.node
   end
 
+  def status_value
+    if status == 0
+      'Banned'
+    elsif status == 1
+      'Normal'
+    elsif status == 4
+      'Moderated'
+    else
+      'Not Defined'
+    end
+  end
+
   def mentioned_users
     usernames = comment.scan(Callouts.const_get(:FINDER))
     User.where(username: usernames.map { |m| m[1] }).distinct
@@ -126,7 +139,7 @@ class Comment < ApplicationRecord
   # plus all who've starred it
   def notify(current_user)
     if status == 4
-      AdminMailer.notify_comment_moderators(self).deliver_now
+      AdminMailer.notify_comment_moderators(self).deliver_later!(wait_until: 24.hours.from_now)
     else
       if parent.uid != current_user.uid && !UserTag.exists?(parent.uid, 'notify-comment-direct:false')
         CommentMailer.notify_note_author(parent.author, self).deliver_now
@@ -137,6 +150,14 @@ class Comment < ApplicationRecord
       # notify other commenters, revisers, and likers, but not those already @called out
       already = mentioned_users.collect(&:uid) + [parent.uid]
       uids = uids_to_notify - already
+      uids+= current_user.followers.collect(&:uid)
+      uids.uniq!
+
+      # Send Browser Notification Using Action Cable
+      notify_user_ids = uids_to_notify + already
+      notify_user_ids = notify_user_ids.uniq
+      send_browser_notification notify_user_ids
+
       uids = uids.select { |i| i != 0 } # remove bad comments (some early ones lack uid)
 
       notify_users(uids, current_user)
@@ -144,24 +165,20 @@ class Comment < ApplicationRecord
     end
   end
 
-  def answer_comment_notify(current_user)
-    # notify answer author
-    if answer.uid != current_user.uid
-      CommentMailer.notify_answer_author(answer.author, self).deliver_now
+  def send_browser_notification(users_ids)
+    notification = Hash.new
+    notification[:title] = "New Comment on #{parent.title}"
+    option = {
+      data: parent.path,
+      body: comment,
+      icon: "https://publiclab.org/logo.png"
+    }
+    notification[:option] = option
+    users_ids.each do |uid|
+      if UserTag.where(value: 'notifications:all', uid: uid).any?
+        ActionCable.server.broadcast "users:notification:#{uid}", notification: notification
+      end
     end
-
-    notify_callout_users
-
-    already = mentioned_users.collect(&:uid) + [answer.uid]
-    uids = []
-    # notify other answer commenter and users who liked the answer
-    # except mentioned users and answer author
-    (answer.comments.collect(&:uid) + answer.likers.collect(&:uid)).uniq.each do |u|
-      uids << u unless already.include?(u)
-    end
-
-    notify_users(uids, current_user)
-    notify_tag_followers(already + uids)
   end
 
   def spam
@@ -176,8 +193,20 @@ class Comment < ApplicationRecord
     self
   end
 
+  def flag_comment
+    self.flag += 1
+    save
+    self
+  end
+
+  def unflag_comment
+    self.flag = 0
+    save
+    self
+  end
+
   def liked_by(user_id)
-    likes.where(user_id: user_id).count > 0
+    likes.where(user_id: user_id).present?
   end
 
   def likers
@@ -185,7 +214,7 @@ class Comment < ApplicationRecord
   end
 
   def emoji_likes
-    likes.group(:emoji_type).count
+    likes.group(:emoji_type).size
   end
 
   def user_reactions_map
@@ -198,7 +227,7 @@ class Comment < ApplicationRecord
       end
 
       emoji_type = reaction.underscore.humanize.downcase
-      users_string = (users.length > 1 ? users[0..-2].join(", ") + " and " + users[-1] : users[0]) + " reacted with " + emoji_type + " emoji"
+      users_string = (users.size > 1 ? users[0..-2].join(", ") + " and " + users[-1] : users[0]) + " reacted with " + emoji_type + " emoji"
       user_like_map[reaction] = users_string
     end
     user_like_map
@@ -208,60 +237,23 @@ class Comment < ApplicationRecord
     user = User.where(email: mail.from.first).first
     if user
       node_id = mail.subject[/#([\d]+)/, 1] # This tooks out the node ID from the subject line
-      if node_id.nil?
-        answer_id = mail.subject[/#a([\d]+)/, 1] # This tooks out the answer ID from the subject line
-        unless answer_id.nil?
-          add_answer_comment(mail, answer_id, user)
+      comment_id = mail.subject[/#c([\d]+)/, 1] # This tooks out the comment ID from the subject line if it exists
+      unless Comment.where(message_id: mail.message_id).any?
+        if node_id.present? && !comment_id.present?
+          add_comment(mail, node_id, user)
+        elsif comment_id.present?
+          comment = Comment.find comment_id
+          add_comment(mail, comment.nid, user, [true, comment.id])
         end
-      else
-        add_comment(mail, node_id, user)
       end
     end
   end
 
-  def self.add_answer_comment(mail, answer_id, user)
-    answer = Answer.where(id: answer_id).first
-    if answer
-      mail_doc = Nokogiri::HTML(mail.html_part.body.decoded) # To parse the mail to extract comment content and reply content
-      domain = get_domain mail.from.first
-      content = if domain == "gmail"
-                  gmail_parsed_mail mail_doc
-                elsif domain == "yahoo"
-                  yahoo_parsed_mail mail_doc
-                elsif domain == "outlook"
-                  outlook_parsed_mail mail_doc
-                elsif gmail_quote_present?(mail_doc)
-                  gmail_parsed_mail mail_doc
-                else
-                  {
-                    comment_content: mail_doc,
-                    extra_content: nil
-                  }
-                end
-      if content[:extra_content].nil?
-        comment_content_markdown = ReverseMarkdown.convert content[:comment_content]
-      else
-        extra_content_markdown = ReverseMarkdown.convert content[:extra_content]
-        comment_content_markdown = ReverseMarkdown.convert content[:comment_content]
-        comment_content_markdown = comment_content_markdown + COMMENT_FILTER + extra_content_markdown
-      end
-      message_id = mail.message_id
-      comment = Comment.new(uid: user.uid,
-        aid: answer_id,
-        comment: comment_content_markdown,
-        comment_via: 1,
-        message_id: message_id,
-        timestamp: Time.current.to_i)
-      if comment.save
-        comment.answer_comment_notify(user)
-      end
-    end
-  end
-
-  def self.add_comment(mail, node_id, user)
+  # parse mail and add comments based on emailed replies
+  def self.add_comment(mail, node_id, user, reply_to = [false, nil])
     node = Node.where(nid: node_id).first
-    if node
-      mail_doc = Nokogiri::HTML(mail.html_part.body.decoded) # To parse the mail to extract comment content and reply content
+    if node && mail&.html_part
+      mail_doc = Nokogiri::HTML(mail&.html_part&.body&.decoded) # To parse the mail to extract comment content and reply content
       domain = get_domain mail.from.first
       content = if domain == "gmail"
                   gmail_parsed_mail mail_doc
@@ -285,9 +277,38 @@ class Comment < ApplicationRecord
         comment_content_markdown = comment_content_markdown + COMMENT_FILTER + extra_content_markdown
       end
       message_id = mail.message_id
-      comment = node.add_comment(uid: user.uid, body: comment_content_markdown, comment_via: 1, message_id: message_id)
-      comment.notify user
+
+      # only process the email if it passese our auto-reply filters; no out-of-office responses!
+      unless is_autoreply(mail)
+        comment = node.add_comment(uid: user.uid, body: comment_content_markdown, comment_via: 1, message_id: message_id)
+        if reply_to[0]
+          comment.reply_to = reply_to[1]
+          comment.save
+        end
+        comment.notify user
+      end
     end
+  end
+
+  # parses emails to detect whether they are "autoreplies" or "out of office" messages
+  def self.is_autoreply(mail)
+    autoreply = false
+    autoreply = true if mail.header['Precedence'] && mail.header['Precedence'].value == "list"
+    autoreply = true if mail.header['Precedence'] && mail.header['Precedence'].value == "junk"
+    autoreply = true if mail.header['Precedence'] && mail.header['Precedence'].value == "bulk"
+    autoreply = true if mail.header['Precedence'] && mail.header['Precedence'].value == "auto_reply"
+    autoreply = true if mail.from.join(',').include?('mailer-daemon')
+    autoreply = true if mail.from.join(',').include?('postmaster')
+    autoreply = true if mail.from.join(',').include?('noreply')
+    autoreply = true if mail.header.collect(&:value).join(',').downcase.include?('auto-submitted')
+    autoreply = true if mail.header.collect(&:value).join(',').downcase.include?('auto-replied')
+    autoreply = true if mail.header.collect(&:value).join(',').downcase.include?('auto-reply')
+    autoreply = true if mail.header.collect(&:value).join(',').downcase.include?('auto-generated')
+    autoreply = true if mail.header.collect(&:name).join(',').downcase.include?('auto-submitted')
+    autoreply = true if mail.header.collect(&:name).join(',').downcase.include?('auto-replied')
+    autoreply = true if mail.header.collect(&:name).join(',').downcase.include?('auto-reply')
+    autoreply = true if mail.header.collect(&:name).join(',').downcase.include?('auto-generated')
+    autoreply
   end
 
   def self.gmail_quote_present?(mail_doc)
@@ -381,7 +402,6 @@ class Comment < ApplicationRecord
     tweets = tweets.reverse
     check_and_add_tweets tweets
     tweets.each do |tweet|
-      puts tweet.text
     end
   end
 
@@ -405,6 +425,7 @@ class Comment < ApplicationRecord
 
       user = users.first
       replied_tweet_text = tweet.text
+
       if tweet.truncated?
         replied_tweet = Client.status(tweet.id, tweet_mode: "extended")
         replied_tweet_text = replied_tweet.attrs[:text] || replied_tweet.attrs[:full_text]
@@ -421,13 +442,15 @@ class Comment < ApplicationRecord
       next unless url.include? "https://"
 
       if url.last == "."
-        url = url[0...url.length - 1]
+        url = url[0...url.size - 1]
       end
       response = Net::HTTP.get_response(URI(url))
       redirected_url = response['location']
+
       next unless !redirected_url.nil? && redirected_url.include?(ENV["WEBSITE_HOST_PATTERN"])
 
       node_id = redirected_url.split("/")[-1]
+
       next if node_id.nil?
 
       node = Node.where(nid: node_id.to_i)
@@ -442,7 +465,7 @@ class Comment < ApplicationRecord
     UserTag.where('value LIKE (?)', 'oauth:twitter%').where.not(data: nil).each do |user_tag|
       data = user_tag["data"]
       if !data.nil? && !data["info"].nil? && !data["info"]["nickname"].nil? && data["info"]["nickname"].to_s == twitter_user_name
-        return data["info"]["email"]
+        return user_tag.user.email
       end
     end
   end
@@ -474,6 +497,22 @@ class Comment < ApplicationRecord
     if !trimmed_content? && parsed.present?
       body = parsed[:body] + COMMENT_FILTER + parsed[:boundary] + parsed[:quote]
     end
-    body
+
+    allowed_tags = %w(a acronym b strong i em li ul ol h1 h2 h3 h4 h5 h6 blockquote br cite sub sup ins p iframe del hr img input code table thead tbody tr th td span dl dt dd div)
+
+    # Sanitize the HTML (remove malicious attributes, unallowed tags...)
+    sanitized_body = ActionController::Base.helpers.sanitize(body, tags: allowed_tags)
+
+    # Properly parse HTML (close incomplete tags...)
+    Nokogiri::HTML::DocumentFragment.parse(sanitized_body).to_html
+  end
+
+  def self.find_by_tag_and_author(tagname, userid)
+    Comment.where(uid: userid)
+      .where(node: Node.where(status: 1)
+        .includes(:node_tag, :tag)
+        .references(:node, :term_data)
+        .where('term_data.name = ?', tagname))
+      .order('timestamp DESC')
   end
 end

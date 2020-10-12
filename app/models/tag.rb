@@ -1,4 +1,5 @@
 class Tag < ApplicationRecord
+  extend RawStats
   self.table_name = 'term_data'
   self.primary_key = 'tid'
 
@@ -6,16 +7,6 @@ class Tag < ApplicationRecord
   has_many :node_tag, foreign_key: 'tid'
 
   # we're not really using the filter_by_type stuff here:
-  has_many :node, through: :drupal_node_tag do
-    def filter_by_type(type, limit = 10)
-      where(status: 1, type: type)
-        .limit(limit)
-        .order('created DESC')
-    end
-  end
-
-  # the following probably never gets used; tag.node will use the above definition.
-  # also, we're not really using the filter_by_type stuff here:
   has_many :node, through: :node_tag do
     def filter_by_type(type, limit = 10)
       where(status: 1, type: type)
@@ -32,8 +23,21 @@ class Tag < ApplicationRecord
     tid
   end
 
+  # alias
+  def nid
+    id
+  end
+
+  def title
+    name
+  end
+
+  def path
+    "/tag/#{name}"
+  end
+
   def run_count
-    self.count = NodeTag.where(tid: tid).count
+    self.count = NodeTag.joins(:node).where(tid: tid).where('node.status = 1').size
     save
   end
 
@@ -52,13 +56,13 @@ class Tag < ApplicationRecord
     hash.sort_by { |_, v| v }.reverse.first(10).to_h
   end
 
-  def belongs_to(current_user, nid)
-    node_tag = node_tag.find_by(nid: nid)
+  def belongs_to(current_user, node_id)
+    node_tag = node_tag.find_by(nid: node_id)
     node_tag && node_tag.uid == current_user.uid || node_tag.node.uid == current_user.uid
   end
 
   def self.contributors(tagname)
-    tag = Tag.includes(:node).where(name: tagname).first
+    tag = Tag.where(name: tagname).first
     return [] if tag.nil?
 
     nodes = tag.node.includes(:revision, :comments, :answers).where(status: 1)
@@ -70,11 +74,12 @@ class Tag < ApplicationRecord
     end
     uids = uids.uniq
     User.where(id: uids)
+        .where(status: [1, 4])
   end
 
   def self.contributor_count(tagname)
     uids = Tag.contributors(tagname)
-    uids.length
+    uids.size
   end
 
   # finds highest viewcount nodes
@@ -163,7 +168,7 @@ class Tag < ApplicationRecord
                        .collect(&:user_id)
     User.where(id: uids)
         .where(status: [1, 4])
-        .count
+        .size
   end
 
   def self.followers(tagname)
@@ -203,7 +208,7 @@ class Tag < ApplicationRecord
         nids,
         (Time.now.to_i - week.weeks.to_i).to_s,
         (Time.now.to_i - (week - 1).weeks.to_i).to_s
-      ).count(:all)
+      ).size
     end
     weeks
   end
@@ -225,7 +230,7 @@ class Tag < ApplicationRecord
           nids,
           (fin.to_i - week.weeks.to_i).to_s,
           (fin.to_i - (week - 1).weeks.to_i).to_s
-        ).count(:all)
+        ).size
 
       weeks[(month.to_f * 1000)] = current_week
       week -= 1
@@ -241,9 +246,9 @@ class Tag < ApplicationRecord
     while week >= 1
       month = (fin - (week * 7 - 1).days)
       weekly_quiz = questions.where(created: range(fin, week))
-        .count(:all)
+        .size
 
-      weeks[(month.to_f * 1000)] = weekly_quiz.count
+      weeks[(month.to_f * 1000)] = weekly_quiz.size
       week -= 1
     end
     weeks
@@ -257,7 +262,7 @@ class Tag < ApplicationRecord
     while week >= 1
       month = (fin - (week * 7 - 1).days)
       weekly_comments = comments.where(timestamp: range(fin, week))
-        .count(:all)
+        .size
 
       weeks[(month.to_f * 1000)] = weekly_comments
       week -= 1
@@ -322,7 +327,7 @@ class Tag < ApplicationRecord
 
   # https://github.com/publiclab/plots2/pull/4266
   def self.trending(limit = 5, start_date = DateTime.now - 1.month, end_date = DateTime.now)
-    Tag.select([:name])
+    Tag.select('term_data.name, term_data.count') # ONLY_FULL_GROUP_BY, issue #8152 & #3120
        .joins(:node_tag, :node)
        .where('node.status = ?', 1)
        .where('node.created > ?', start_date.to_i)
@@ -355,14 +360,18 @@ class Tag < ApplicationRecord
         .includes(:revision, :tag)
         .references(:term_data, :node_revisions)
         .where('term_data.name = ?', tag_name)
-        .count
+        .size
   end
 
   def self.related(tag_name, count = 5)
-    Rails.cache.fetch('related-tags/' + tag_name + '/' + count.to_s, expires_in: 1.weeks) do
-      nids = NodeTag.joins(:tag)
-                     .where(Tag.table_name => { name: tag_name })
-                     .select(:nid)
+    Rails.cache.fetch("related-tags/#{tag_name}/#{count}", expires_in: 1.weeks) do
+      nids = NodeTag.joins(:tag, :node)
+                    .where(Node.table_name => { status: 1 })
+                    .where(Tag.table_name => { name: tag_name })
+                    .group(:nid)
+                    .order(NodeTag.arel_table[:nid].count.desc)
+                    .limit(5)
+                    .pluck(:nid)
 
       Tag.joins(:node_tag)
          .where(NodeTag.table_name => { nid: nids })
@@ -396,6 +405,32 @@ class Tag < ApplicationRecord
       end
       data
     end
+  end
+
+  def self.all_tags_by_popularity
+    Tag.all.order('count DESC').select { |tag| !(tag.name.include? ":") }.uniq(&:name).pluck(:name)
+  end
+
+  def subscription_graph(start = DateTime.now - 1.year, fin = DateTime.now)
+    date_hash = {}
+    week = start.to_date.step(fin.to_date, 7).count
+
+    while week >= 1
+      month = (fin - (week * 7 - 1).days)
+      range = (fin - week.weeks)..(fin - (week - 1).weeks)
+      weekly_subs = subscriptions.where(created_at: range)
+                                 .size
+      date_hash[month.to_f * 1000] = weekly_subs
+      week -= 1
+    end
+    date_hash
+  end
+
+  def self.tag_frequency(limit)
+    uids = User.where('rusers.role = ?', 'moderator').or(User.where('rusers.role = ?', 'admin')).collect(&:uid)
+    tids = TagSelection.where(following: true, user_id: uids).collect(&:tid)
+    hash = tids.uniq.map { |id| p (Tag.find id).name, tids.count(id) }.to_h
+    hash.sort_by { |_, v| v }.reverse.first(limit).to_h
   end
 
   private

@@ -3,15 +3,14 @@
 
 <script>
   (function(){
-    $('input[type=checkbox]#batch-checkbox').bind('click',function(e) {
-      if ($('#batch-checkbox')[0].checked) $('.batch-checkbox').attr('checked','checked')
-      else $('.batch-checkbox').attr('checked',false)
-    })
+     $('#batch-checkbox').click(function () {
+    $('.batch-checkbox').prop('checked', this.checked);
+    });
     $('#batch-delete').bind('click',function(e) {
       vals = []
       alert_error('The mass spam button is disabled pending resolution of <a href="https://github.com/jywarren/plots2/issues/184">ticket #184</a>.')
-      //$('.batch-checkbox').each(function(i,a) { if (a.checked) vals.push(a.value) })
-      //window.location = "/spam/batch/"+vals.join(',')
+      $('.batch-checkbox').each(function(i,a) { if (a.checked) vals.push(a.value) })
+      window.location = "/spam/batch/" + vals.join(',')
     })
   })()
 </script>
@@ -21,18 +20,19 @@
   <td><input class="batch-checkbox" value="<%= node.nid %>" type="checkbox" /></td>
   <td>
     <i class="fa fa-file"></i> <a href="javascript:void(0);" onClick="$('#ninfo<%= node.nid %>').toggle()"><%= node.title.truncate(40) %></a><br />
-    <span style="color:grey;"><%= node.type.capitalize %> | <%= time_ago_in_words(node.updated_at) %> ago</span>
+    <span style="color:grey;"><%= node.type.capitalize %> (<span class="status"><% if node.status == 1 %>Published<% elsif node.status == 0 %>Spammed<% elsif node.status == 4 %>Unmoderated<% end %></span>) | <%= time_ago_in_words(node.updated_at) %> ago</span>
   </td>
   <td style="width:200px;">
     <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a>  <%= node.author.new_contributor %>
   </td>
   <td><div class="btn-toolbar" style="margin:0;">
     <div class="btn-group">
-      <a class="btn btn-default btn-lg <% if node.status == 0 %>btn-success<% else %>disabled<% end %> publish" data-remote="true" href="/moderate/publish/<%= node.id %>"><i class="fa fa-ok-circle fa fa-white"></i> Publish</a>
+      <a class="btn btn-lg <% if node.status != 1 %>btn-success<% else %>btn-outline-secondary disabled<% end %> publish" data-remote="true" href="/moderate/publish/<%= node.id %>"><i class="fa fa-check-circle fa-white"></i> Publish post</a>
+      <a class="btn btn-lg <% if node.status != 0 %>btn-danger<% else %>btn-outline-secondary disabled<% end %> spam" data-remote="true" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban fa-white"></i> Spam post</a>
 
-      <a class="btn btn-default btn-lg ban a<%= node.author.id %>" <% if node.author.status == 0 %>style="display:none;"<% end %> data-remote="true" href="/ban/<%= node.author.id %>">Ban</a>
-      <a class="btn btn-default btn-lg unban a-unban<%= node.author.id %>" <% if node.author.status == 1 %>style="display:none;"<% end %> data-remote="true" href="/unban/<%= node.author.id %>">Unban</a>
-      <%= link_to "/notes/delete/"+node.id.to_s, data: { confirm: 'Are you sure you want to delete "'+node.path+'"?' }, :remote => true, :class => "btn btn-default btn-lg delete" do %>
+      <a class="btn btn-outline-secondary btn-lg ban a<%= node.author.id %>" <% if node.author.status == 0 %>style="display:none;"<% end %> data-remote="true" href="/ban/<%= node.author.id %>">Ban user</a>
+      <a class="btn btn-outline-secondary btn-lg unban a-unban<%= node.author.id %>" <% if node.author.status == 1 %>style="display:none;"<% end %> data-remote="true" href="/unban/<%= node.author.id %>">Unban user</a>
+      <%= link_to "/notes/delete/"+node.id.to_s, data: { confirm: 'Are you sure you want to delete "'+node.path+'"?' }, :remote => true, :class => "btn btn-outline-secondary btn-lg delete" do %>
         <i class="fa fa-trash"></i>
       <% end %>
     </div>
@@ -40,9 +40,15 @@
       $('#n<%= node.id %> .delete').bind('ajax:success', function(e){
         $('#n<%= node.id %>').fadeOut()
       });
+
       $('#n<%= node.id %> .publish').bind('ajax:success', function(e){
         $('#n<%= node.id %>').hide()
-        $('#ndel<%= node.id %>').fadeIn()
+        $('#ndel<%= node.id %>').fadeIn(); // published!
+      });
+
+      $('#n<%= node.id %> .spam').bind('ajax:success', function(e){
+        $('#n<%= node.id %>').hide()
+        $('#nspam<%= node.id %>').fadeIn(); // spammed!
       });
 
       // authors:
@@ -62,6 +68,11 @@
   <td></td>
   <td></td>
 </tr>
+<tr style="display:none;" id="nspam<%= node.id %>">
+  <td>Content <a href='<%= node.path %>'>spammed</a>.</td>
+  <td></td>
+  <td></td>
+</tr>
 <tr style="display:none;background:#ddd;" id="ninfo<%= node.id %>">
   <td><a href="<%= node.path %>"><%= node.title %></a></td>
   <td><%= time_ago_in_words(node.created_at) %> ago</td>
@@ -69,3 +80,4 @@
 </tr>
 <% end %>
 </table>
+<%= will_paginate @nodes, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || @nodes.empty? %>

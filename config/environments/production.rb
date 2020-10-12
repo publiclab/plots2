@@ -15,6 +15,9 @@ Plots2::Application.configure do
 
   # Compress JavaScripts and CSS
   config.assets.compress = true
+  config.assets.js_compressor = Uglifier.new(harmony: true)
+  Uglifier.new(harmony: true).compile(File.read("public/lib/leaflet-environmental-layers/dist/LeafletEnvironmentalLayers.js"))
+  Uglifier.new(harmony: true).compile(File.read("public/lib/leaflet-environmental-layers/lib/glify.js"))
 
   # Don't fallback to assets pipeline if a precompiled asset is missed
   config.assets.compile = true
@@ -50,7 +53,7 @@ Plots2::Application.configure do
   # config.cache_store = :mem_cache_store
 
   # Use a real queuing backend for Active Job (and separate queues per environment)
-  # config.active_job.queue_adapter     = :resque
+  config.active_job.queue_adapter = :sidekiq
   # config.active_job.queue_name_prefix = "railsdiff_#{Rails.env}"
   config.action_mailer.perform_caching = false
 
@@ -60,7 +63,7 @@ Plots2::Application.configure do
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
   # config.action_mailer.delivery_method = :sendmail
-  
+
   config.action_mailer.delivery_method = :smtp
 
   config.action_mailer.smtp_settings = {
@@ -70,6 +73,8 @@ Plots2::Application.configure do
 
   # Enable threaded mode
   # config.threadsafe!
+
+  config.action_cable.allowed_request_origins = [/http:\/\/*/, /https:\/\/*/]
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation can not be found)

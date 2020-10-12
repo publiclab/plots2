@@ -69,9 +69,9 @@ Plots2::Application.routes.draw do
   get 'openid/decision' => 'openid#decision'
   post 'openid/decision' => 'openid#decision'
   get 'openid/resume' => 'openid#resume'
-  get 'openid/:username' => 'openid#user_page'
+  get 'openid/:username(/:provider)' => 'openid#user_page' # optional provider for logging through provider at MK or SWB
   get 'openid/:username/xrds' => 'openid#user_xrds'
-  get '/people/:username/identity' => 'legacy#openid_username'
+  get '/people/:username/identity(/:provider)' => 'legacy#openid_username' # optional provider for logging through provider at MK or SWB
   get '/user/:id/identity' => 'legacy#openid'
   post '/user/register' => 'legacy#register'
 
@@ -123,6 +123,15 @@ Plots2::Application.routes.draw do
   get 'wiki/edit/:lang/:id' => 'wiki#edit'
   get 'wiki' => 'wiki#index'
 
+  #routes for simple-data-grapher
+  get 'graph/fetch_graphobject' => 'csvfiles#fetch_graphobject'
+  get 'graph' => 'csvfiles#new'
+  post 'graph/object' => 'csvfiles#setter'
+  post 'graph/note/graphobject' => 'csvfiles#add_graphobject'
+  get 'graph/prev_file' => 'csvfiles#prev_files'
+  get 'graph/data/:id' => 'csvfiles#user_files'
+  get 'graph/file/:uid/:id' => 'csvfiles#delete'
+
   get 'place/:id/feed' => 'place#feed'
   get 'n/:id' => 'notes#shortlink'
   get 'i/:id' => 'images#shortlink'
@@ -139,12 +148,15 @@ Plots2::Application.routes.draw do
   get 'notes/publish_draft/:id' => 'notes#publish_draft'
   get 'notes/edit/:id' => 'notes#edit'
   get 'notes/show/:id/:token' => 'notes#show'
+  get 'notes/print/:id' => 'notes#print'
 
   get 'places' => 'notes#places'
   get 'tools' => 'notes#tools'
   get 'methods' => 'wiki#methods'
   get 'methods/:topic' => 'wiki#methods'
   get 'techniques' => 'wiki#techniques'
+  get "/wikis/author/:id" => "wiki#author"
+  get 'wikis/print/:id' => 'wiki#print'
 
   get 'report/:id' => 'legacy#report'
   get 'node/:id' => 'legacy#node'
@@ -173,19 +185,24 @@ Plots2::Application.routes.draw do
   get 'likes/node/:id/delete' => 'like#delete',  :as => :drop_like
 
   get "search/wikis/:query",       :to => "search#wikis"
-  get "search/profiles/:query",    :to => "search#profiles"
-  get "search/questions/:query",   :to => "search#questions"
-  get "search/places/:query",      :to => "search#places"
-  get "search/tags/:query",        :to => "search#tags"
-  get "search/",                   :to => "search#new"
-  get "search/notes/:query",       :to => "search#notes"
-  get "search/:query",             :to => "search#all_content"
+  get "search/profiles/(:query)",  :to => "search#profiles"
+  get "search/questions/(:query)", :to => "search#questions"
+  get "search/places/(:query)",    :to => "search#places"
+  get "search/tags/(:query)",      :to => "search#tags"
+  get "search/notes/(:query)",     :to => "search#notes"
+  get "search/content/(:query)",   :to => "search#new"
+  get "search/all/(:query)",       :to => "search#all_content"
+  get "search/",                   :to => "search#google"
+  get "search/:query",             :to => "search#google_redirect"
 
 
   get 'widget/:id' => 'tag#widget'
   get 'blog' => 'tag#blog', :id => "blog"
   get 'blog/:id' => 'tag#blog'
+  get 'blog2' => 'tag#blog2', :id => "blog2"
+  get 'blog2/:id' => 'tag#blog2'
   get 'tags' => 'tag#index'
+  get 'tags/related(/:id)' => 'tag#related'
   get 'tags/:search' => 'tag#index'
   post 'tag/suggested/:id' => 'tag#suggested'
   get 'tag/parent' => 'tag#add_parent'
@@ -198,7 +215,7 @@ Plots2::Application.routes.draw do
   put 'tag/add_tag' => 'tag#add_tag'
   put 'tag/remove_tag/:id' => 'tag#remove_tag'
   put 'tag/remove_all_tags' => 'tag#remove_all_tags'
-  get 'tag/:id' => 'tag#show'
+  get 'tag/:id' => 'tag#show', :as => :tag
   get 'tag/:id/stats' => 'tag#stats', :as => :tag_stats
   get 'locations/form' => 'tag#location'
   get 'locations/modal' => 'tag#location_modal'
@@ -211,12 +228,13 @@ Plots2::Application.routes.draw do
   get 'dashboard' => 'home#dashboard'
   get 'comments' => 'comment#index'
   get 'profile/comments/:id' => 'users#comments'
+  get 'profile/comments/:id/tag/:tagname' => 'users#comments_by_tagname'
   get 'nearby' => 'home#nearby'
   get 'profile/edit' => 'users#edit'
   post 'profile/photo' => 'users#photo'
   get 'profile/info/:id' => 'users#info', as: 'info'
   get 'profile' => 'users#profile'
-  get 'profile/:id' => 'users#profile'
+  get 'profile/:id' => 'users#profile', as: :user
   get 'profile/:id/edit' => 'users#edit'
   get 'profile/:id/likes' => 'users#likes'
   get 'feed/:author' => 'users#rss'
@@ -232,9 +250,10 @@ Plots2::Application.routes.draw do
   get 'groups/:search' => 'user_tags#index'
 
 
-  get 'maps' => 'map#index'
+  get 'map' => 'map#map'
+  get 'map/:id' => 'map#wiki'
+  get 'maps' => redirect('/map/')
   get 'users/map' => 'users#map'
-  get 'map' => 'search#map'
   get 'maps/:id' => 'map#tag'
   get 'map/edit/:id' => 'map#edit'
   put 'map/update/:id' => 'map#update'
@@ -259,6 +278,9 @@ Plots2::Application.routes.draw do
   get 'stats/questions/:start/:end' => 'stats#questions'
   get 'stats/answers' => 'stats#answers'
   get 'stats/answers/:start/:end' => 'stats#answers'
+  get 'stats/tags' => 'stats#tags'
+  get 'stats/node_tags' => 'stats#node_tags'
+  get 'stats/node_tags/:start/:end' => 'stats#node_tags'
   get 'feed' => 'notes#rss'
   get 'rss.xml' => 'legacy#rss'
 
@@ -269,6 +291,26 @@ Plots2::Application.routes.draw do
   get 'spam/comments' => 'admin#spam_comments'
   get 'spam/:type' => 'admin#spam'
   get 'spam/batch/:ids' => 'admin#batch'
+  get 'spam2' => 'spam2#_spam'
+  get 'spam2/revisions' => 'spam2#_spam_revisions'
+  get 'spam2/comments' => 'spam2#_spam_comments'
+  get 'spam2/revisions' => 'spam2#_spam_revisions'
+  get 'spam2/insights' => 'spam2#_spam_insights'
+  get 'spam2/flags' => 'spam2#_spam_flags'
+  get 'spam2/users' => 'spam2#_spam_users'
+  get 'spam2/comments/filter/:type/:pagination' => 'spam2#_spam_comments'
+  get 'spam2/users/filter/:type/:pagination' => 'spam2#_spam_users'
+  get 'spam2/flags/filter/:type/:pagination' => 'spam2#_spam_flags'
+  get 'spam2/queue/filter/:tag' => 'spam2#_spam_queue'
+  get 'spam2/filter/:type/:pagination' => 'spam2#_spam'
+  get 'spam2/batch_spam/:ids' => 'batch#batch_spam'
+  get 'spam2/batch_publish/:ids' => 'batch#batch_publish'
+  get 'spam2/batch_delete/:ids' => 'batch#batch_delete'
+  get 'spam2/batch_ban/:ids' => 'batch#batch_ban'
+  get 'spam2/batch_unban/:ids' => 'batch#batch_unban'
+  get 'spam2/batch_ban_user/:ids' => 'batch#batch_ban_user'
+  get 'spam2/batch_unban_user/:ids' => 'batch#batch_unban_user'
+  get 'spam2/batch_comment/:type/:ids' => 'batch#batch_comment'
   get 'admin/users' => 'admin#users'
   get 'admin/queue' => 'admin#queue'
   get 'ban/:id' => 'admin#ban'
@@ -277,6 +319,10 @@ Plots2::Application.routes.draw do
   get 'moderate/revision/publish/:vid' => 'admin#publish_revision'
   get 'moderate/spam/:id' => 'admin#mark_spam'
   get 'moderate/publish/:id' => 'admin#publish'
+  get 'moderate/flag_node/:id' => 'spam2#flag_node'
+  get 'moderate/remove_flag_node/:id' => 'spam2#remove_flag_node'
+  get 'moderate/flag_comment/:id' => 'spam2#flag_comment'
+  get 'moderate/remove_flag_comment/:id' => 'spam2#remove_flag_comment'
   get 'admin/promote/moderator/:id' => 'admin#promote_moderator'
   get 'admin/force/reset/:id' => 'admin#reset_user_password'
   get 'admin/demote/basic/:id' => 'admin#demote_basic'
@@ -288,51 +334,39 @@ Plots2::Application.routes.draw do
   get 'admin/mark_comment_spam/:id' => 'admin#mark_comment_spam'
   get 'smtp_test' => 'admin#smtp_test'
 
-  get 'post' => 'editor#post'
-  post 'post' => 'editor#post'
+  get 'post' => 'editor#post', :as => :editor_post
+  post 'post' => 'editor#post', :as => :editor_path
+  get 'post/choose' => 'editor#choose'
   get 'legacy' => 'editor#legacy'
   get 'editor' => 'editor#editor'
   get 'editor/rich/(:n)' => 'editor#rich'
   post 'images/create' => 'images#create'
   put 'note/add' => 'legacy#note_add'
   put 'page/add' => 'legacy#page_add'
+  get 'sdg' => 'editor#tempfunc'
 
   get 'talk/:id' => 'talk#show'
 
   get 'questions/new' => 'questions#new'
   get 'questions' => 'questions#index'
+  get 'questions_shadow' => 'questions#index_shadow'
   get 'question' => 'questions#index'
+  get 'question_shadow' => 'questions#index_shadow'
   get 'questions/:author/:date/:id' => 'questions#show'
   get 'questions/show/:id' => 'questions#show'
   get 'q/:id' => 'questions#shortlink'
-  get 'questions/answered(/:tagnames)' => 'questions#answered'
+  get 'questions/answered(/:tagnames)', to: redirect('questions#recently_commented')
+  get 'questions/recently_commented(/:tagnames)' => 'questions#recently_commented'
   get 'questions/popular(/:tagnames)' => 'questions#popular'
   get 'questions/unanswered(/:tagnames)' => 'questions#unanswered'
   get 'questions/liked(/:tagnames)' => 'questions#liked'
 
   post 'users/test_digest_email' => 'users#test_digest_email'
+  post 'admin/test_digest_email_spam' => 'admin#test_digest_email_spam'
 
-  post 'answers/create/:nid' => 'answers#create'
-  get 'answers/create/:nid' => 'answers#create'
-  get 'answers/update/:id' => 'answers#update'
-  post 'answers/update/:id' => 'answers#update'
-  put 'answers/update/:id' => 'answers#update'
-  get 'answers/delete/:id' => 'answers#delete'
-  delete 'answers/delete/:id' => 'answers#delete'
-  get 'answers/accept/:id' => 'answers#accept'
-  put 'answers/accept/:id' => 'answers#accept'
-
-  get 'answer_like/show/:id' => 'answer_like#show'
-  get 'answer_like/likes/:aid' => 'answer_like#likes'
-  get 'questions/:username/:date/:topic/answer_like/likes/:aid' => 'answer_like#likes'
-
-
-  get 'comment/answer_create/:aid' => 'comment#answer_create'
   get 'comment/delete/:id' => 'comment#delete'
   get 'comment/update/:id' => 'comment#update'
   post 'comment/update/:id' => 'comment#update'
-  get 'comment/make_answer/:id' => 'comment#make_answer'
-  post 'comment/make_answer/:id' => 'comment#make_answer'
   post '/comment/like' => 'comment#like_comment'
   get '/comment/create/:id' => 'comment#create'
   post 'comment/create/:id' => 'comment#create'
@@ -386,5 +420,8 @@ Plots2::Application.routes.draw do
   #handling omniauth callbacks
   match '/auth/:provider/callback', to: 'user_sessions#create', via: [:get, :post]
   get 'auth/failure', to: redirect('/')
+
+  # Serve websocket cable requests in-process
+  mount ActionCable.server => '/cable'
 
 end

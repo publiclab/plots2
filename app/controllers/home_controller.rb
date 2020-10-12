@@ -5,7 +5,8 @@ class HomeController < ApplicationController
     if current_user
       redirect_to '/dashboard'
     else
-      blog
+      @projects = Tag.where('term_data.name IN (?)', 'project:featured').first&.nodes
+        &.sample(3) # random sampling
       @title = I18n.t('home_controller.science_community')
       render template: 'home/home'
     end
@@ -13,9 +14,11 @@ class HomeController < ApplicationController
 
   # route for seeing the front page even if you are logged in
   def front
-    blog
+    @projects = Tag.where('term_data.name IN (?)', 'project:featured').first&.nodes
+      &.sample(3) # random sampling
     @title = I18n.t('home_controller.environmental_investigation')
     render template: 'home/home'
+    @unpaginated = true
   end
 
   # used in front and home methods only
@@ -35,8 +38,8 @@ class HomeController < ApplicationController
         .count(:all)
       @wiki_count = Revision.select(:timestamp)
         .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
-        .count
-      @user_note_count = Node.where(type: 'note', status: 1, uid: current_user.uid).count
+        .size
+      @user_note_count = Node.where(type: 'note', status: 1, uid: current_user.uid).size
       @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments = activity
       render template: 'dashboard/dashboard'
     else
@@ -53,7 +56,7 @@ class HomeController < ApplicationController
         .count(:all)
       @wiki_count = Revision.select(:timestamp)
         .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
-        .count
+        .size
       @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments = activity
       render template: 'dashboard/dashboard'
       @title = I18n.t('home_controller.community_research')
@@ -78,17 +81,23 @@ class HomeController < ApplicationController
     notes = notes.where('nid != (?)', blog.nid) if blog
 
     comments = Comment.joins(:node, :user)
+                   .includes(:node)
                    .order('timestamp DESC')
                    .where('timestamp - node.created > ?', 86_400) # don't report edits within 1 day of page creation
                    .where('node.status = ?', 1)
                    .page(params[:page])
                    .group(['title', 'comments.cid']) # ONLY_FULL_GROUP_BY, issue #3120
 
-    if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
-      notes = notes.where('(node.status = 1 OR node.status = 4 OR node.status = 3)')
-      comments = comments.where('comments.status = 1 OR comments.status = 4')
+    if logged_in_as(['admin', 'moderator'])
+      notes = notes.where('(node.status = 1 OR node.status = 3)')
+      comments = comments.where('comments.status = 1')
     elsif current_user
-      coauthor_nids = Node.joins(:node_tag).joins('LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid').select('node.*, term_data.*, community_tags.*').where(type: 'note', status: 3).where('term_data.name = (?)', "with:#{current_user.username}").collect(&:nid)
+      coauthor_nids = Node.joins(:node_tag)
+        .joins('LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid')
+        .select('node.*, term_data.*, community_tags.*')
+        .where(type: 'note', status: 3)
+        .where('term_data.name = (?)', "with:#{current_user.username}")
+        .collect(&:nid)
       notes = notes.where('(node.nid IN (?) OR node.status = 1 OR ((node.status = 3 OR node.status = 4) AND node.uid = ?))', coauthor_nids, current_user.uid)
       comments = comments.where('comments.status = 1 OR (comments.status = 4 AND comments.uid = ?)', current_user.uid)
     else
@@ -103,6 +112,7 @@ class HomeController < ApplicationController
       .order('nid DESC')
       .limit(10)
     revisions = Revision.joins(:node)
+      .includes(:node)
       .order('timestamp DESC')
       .where('type = (?)', 'page')
       .where('node.status = 1')

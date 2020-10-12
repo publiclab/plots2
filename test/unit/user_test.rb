@@ -32,6 +32,8 @@ class UserTest < ActiveSupport::TestCase
     assert_not_nil user.tagnames
     assert_not_nil user.tagnames
     assert_equal user.tagnames, user.tagnames
+    assert_not_nil user.recent_locations
+    assert_not_nil user.latest_location
   end
 
   test 'user creation with create_with_omniauth' do
@@ -115,12 +117,22 @@ class UserTest < ActiveSupport::TestCase
     assert !users(:bob).has_tag('test:no')
   end
 
-  test 'returns nodes created in given period of time' do
+  test 'returns notes created in given period of time' do
     bob = users(:bob)
-    node_count = 5
-    nodes_fix = [1,2,8,9,15]
-    count_return = bob.content_followed_in_period(2.hours.ago,Time.now).count
-    nodes_time = bob.content_followed_in_period(2.hours.ago,Time.now).pluck(:nid)
+    node_count = 4
+    nodes_fix = [1 ,8 ,9 , 15]
+    count_return = bob.content_followed_in_period(2.hours.ago, Time.now).count
+    nodes_time = bob.content_followed_in_period(2.hours.ago, Time.now).pluck(:nid)
+    assert_equal node_count, count_return
+    assert_equal nodes_fix, nodes_time.sort
+  end
+
+  test 'returns wikis updated in given period of time' do
+    bob = users(:bob)
+    node_count = 2
+    nodes_fix = [2, 5]
+    count_return = bob.content_followed_in_period(2.hours.ago, Time.now, 'page').count
+    nodes_time = bob.content_followed_in_period(2.hours.ago, Time.now, 'page').pluck(:nid)
     assert_equal node_count, count_return
     assert_equal nodes_fix, nodes_time.sort
   end

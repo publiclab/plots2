@@ -8,38 +8,11 @@
     return map ;
   }
 
-  function setupLayers(map) {
-    var mapboxUrl = "//a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png" ;
-    var normal_layer = L.tileLayer(mapboxUrl, {id: 'map'}) ; 
-    normal_layer.addTo(map) ; 
-    map.options.minZoom = 1 ;
-    var baseMaps = {
-      "Default": normal_layer,
-    };
-    var overlayMaps = {
-      "Skynet": layerGroup    // we can add more layers here !
-    }; 
-    L.control.layers(baseMaps , overlayMaps).addTo(map);
-  }
-
-  function setupFullScreen(map , lat , lon) {
-    map.addControl(new L.Control.Fullscreen()); // to go full-screen
-    map.on('fullscreenchange', function () {
-      if (map.isFullscreen()) {
-        map.options.minZoom = 3 ;
-       } 
-      else {
-        map.options.minZoom = 1 ;
-        map.panTo(new L.LatLng(lat,lon));
-      }
-    });
-  }
-
-
-  function PLmarker_default(){
+  function PLmarker_default(color = 'black'){
+     // valid colors: blue, gold, green, orange, yellow, violet, grey, black
      L.Icon.PLmarker = L.Icon.extend({
       options: {
-        iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-black.png',
+        iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-'+color+'.png',
         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
         iconSize: [25, 41],
         iconAnchor: [12, 41],
@@ -47,172 +20,147 @@
         shadowSize: [41, 41]
       }
    });
-  
     return new L.Icon.PLmarker();
-
   }
 
-  function onMapLoad(e){
-	// ADD MORE AJAX CALLS INSIDE THIS FUNCTION !
-      $.getJSON(skynet_url , function(data){
-       if (!!data.feed){
-        for (i = 0 ; i < data.feed.length ; i++) { 
-          var lat = data.feed[i].lat ;
-          var lng = data.feed[i].lng;
-          var title = data.feed[i].title ;
-          var url = data.feed[i].link ;
-          var skymarker ; 
-          if (!isNaN((lat)) && !isNaN((lng)) ){
-          skymarker = L.marker([(lat) , (lng)] , {icon: redDotIcon}).bindPopup(title + "<br><a>" + url +"</a>" + "<br><strong> lat: " + lat + "</strong><br><strong> lon: " + lng + "</strong>") ;
-          layerGroup.addLayer(skymarker);
-          }
-        }
-       }  
-     });
+   function peopleLayerParser(map, markers_hash) {
+       var NWlat = map.getBounds().getNorthWest().lat ;
+       var NWlng = map.getBounds().getNorthWest().lng ;
+       var SElat = map.getBounds().getSouthEast().lat ;
+       var SElng = map.getBounds().getSouthEast().lng ;
+       map.spin(true) ;
+       let people_url = "/api/srch/nearbyPeople?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng;
+       $.getJSON(people_url , function (data) {
+           if (!!data.items) {
+               for (i = 0; i < data.items.length; i++) {
+                   var default_markers = PLmarker_default();
+                   var mid = data.items[i].doc_id ;
+                   var url = data.items[i].doc_url;
+                   var title = data.items[i].doc_title;
+                   var m = L.marker([data.items[i].latitude, data.items[i].longitude], {
+                       title: title,
+                       icon: default_markers
+                   }) ;
+                   if(markers_hash.has(mid) === false){
+                       m.addTo(map).bindPopup("<a href=" + url + ">" + title + "</a>") ;
+                       markers_hash.set(mid , m) ;
+                   }
+               }
+           }
+           map.spin(false) ;
+       });
    }
 
-   function setupLEL(map , sethash){ 
+   function contentLayerParser(map, markers_hash, map_tagname) {
+      var NWlat = map.getBounds().getNorthWest().lat ;
+      var NWlng = map.getBounds().getNorthWest().lng ;
+      var SElat = map.getBounds().getSouthEast().lat ;
+      var SElng = map.getBounds().getSouthEast().lng ;
+      map.spin(true) ;
 
-    var baselayer = L.tileLayer('https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map) ; 
-   // var PurpleLayer = L.layerGroup.purpleLayer() ;
-    var PurpleAirMarkerLayer = L.layerGroup.purpleAirMarkerLayer() ;
-    var SkyTruth = L.layerGroup.skyTruthLayer() ;
-    var Fractracker = L.layerGroup.fracTrackerLayer() ;
-    var OdorReport = L.layerGroup.odorReportLayer() ;
-    var MapKnitter = L.layerGroup.mapKnitterLayer() ;
-    var ToxicRelease = L.layerGroup.toxicReleaseLayer() ;
+      if(map_tagname === null || (typeof map_tagname === "undefined")) {
+         taglocation_url = "/api/srch/taglocations?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng ;
 
-    var OpenInfraMap_Power = L.tileLayer('https://tiles-{s}.openinframap.org/power/{z}/{x}/{y}.png',{
-        maxZoom: 18,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://www.openinframap.org/about.html">About OpenInfraMap</a>'
-    });
-    var OpenInfraMap_Petroleum = L.tileLayer('https://tiles-{s}.openinframap.org/petroleum/{z}/{x}/{y}.png', {
-      maxZoom: 18,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://www.openinframap.org/about.html">About OpenInfraMap</a>'
-    });
-    var OpenInfraMap_Telecom = L.tileLayer('https://tiles-{s}.openinframap.org/telecoms/{z}/{x}/{y}.png', {
-      maxZoom: 18,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://www.openinframap.org/about.html">About OpenInfraMap</a>'
-    });
-    var OpenInfraMap_Water = L.tileLayer('https://tiles-{s}.openinframap.org/water/{z}/{x}/{y}.png',{
-      maxZoom: 18,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://www.openinframap.org/about.html">About OpenInfraMap</a>'
-    });
+      } else {
+         taglocation_url = "/api/srch/taglocations?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng + "&tag=" + map_tagname ;
+      }
 
-    var Wisconsin_NM = wisconsinLayer(map) ;
-    var FracTracker_mobile = fracTrackerMobileLayer(map) ;
+      $.getJSON(taglocation_url , function (data) {
+         if (!!data.items) {
+            for (i = 0; i < data.items.length; i++) {
+               var nodetype = data.items[i].doc_type;
+               nodetype = nodetype.charAt(0).toUpperCase() + nodetype.slice(1).toLowerCase();
 
-    var Justicemap_income = L.tileLayer.provider('JusticeMap.income') ;
-    var JusticeMap_americanIndian = L.tileLayer.provider('JusticeMap.americanIndian') ;
-    var JusticeMap_asian = L.tileLayer.provider('JusticeMap.asian') ;
-    var JusticeMap_black = L.tileLayer.provider('JusticeMap.black') ;
-    var JusticeMap_multi = L.tileLayer.provider('JusticeMap.multi') ;
-    var JusticeMap_hispanic = L.tileLayer.provider('JusticeMap.hispanic') ;
-    var JusticeMap_nonWhite = L.tileLayer.provider('JusticeMap.nonWhite') ;
-    var JusticeMap_white = L.tileLayer.provider('JusticeMap.white') ;
-    var JusticeMap_plurality = L.tileLayer.provider('JusticeMap.plurality') ;
-    
-    var clouds = L.OWM.clouds({showLegend: true, opacity: 0.5});
-    var cloudscls = L.OWM.cloudsClassic({});
-    var precipitation = L.OWM.precipitation({});
-    var precipitationcls = L.OWM.precipitationClassic({});
-    var rain = L.OWM.rain({});
-    var raincls = L.OWM.rainClassic({});
-    var snow = L.OWM.snow({});
-    var pressure = L.OWM.pressure({});
-    var pressurecntr = L.OWM.pressureContour({});
-    var temp = L.OWM.temperature({});
-    var wind = L.OWM.wind({});
+               var place_name = data.items[i].place_name;
+               var url = data.items[i].doc_url;
+               var title = data.items[i].doc_title;
+               var author = data.items[i].doc_author;
+               var image_url = data.items[i].doc_image_url;
+               var map_marker = PLmarker_default('blue');
+               var mid = data.items[i].doc_id;
+               var created_at = data.items[i].created_at;
+               var time_since = TimeAgo().inWords(new Date(data.items[i].created_at));
+               // var comment_count = data.items[i].comment_count;
 
-    var city = L.OWM.current({intervall: 15, minZoom: 3});
-    var windrose = L.OWM.current({intervall: 15, minZoom: 3, markerFunction: myWindroseMarker, popup: false, clusterSize: 50,imageLoadingBgUrl: 'https://openweathermap.org/img/w0/iwind.png' });
-    windrose.on('owmlayeradd', windroseAdded, windrose); 
+               var m = L.marker([data.items[i].latitude, data.items[i].longitude], {icon: map_marker});
 
-    var baseMaps = {
-      "Baselayer1": baselayer
-    };
-    var overlayMaps = {
-     // "PurpleAirLayer-HeatMap": PurpleLayer ,
-        "Wisconsin Non-Metal" : Wisconsin_NM ,
-        "FracTracker_mobile" : FracTracker_mobile ,
-      "PurpleAirLayer-Markers": PurpleAirMarkerLayer ,
-      "SkyTruth": SkyTruth , 
-      "Fractracker" : Fractracker ,
-      "ToxicRelease": ToxicRelease ,
-      "OdorReport": OdorReport ,
-      "MapKnitter": MapKnitter ,
-      "OpenInfraMap_Power": OpenInfraMap_Power ,
-      "OpenInfraMap_Telecom": OpenInfraMap_Telecom ,
-      "OpenInfraMap_Petroleum": OpenInfraMap_Petroleum ,
-      "OpenInfraMap_Water": OpenInfraMap_Water ,
-      "Justicemap_income": Justicemap_income,
-      "JusticeMap_americanIndian": JusticeMap_americanIndian ,
-      "JusticeMap_asian": JusticeMap_asian ,
-      "JusticeMap_black": JusticeMap_black,
-      "JusticeMap_multi": JusticeMap_multi ,
-      "JusticeMap_hispanic": JusticeMap_hispanic ,
-      "JusticeMap_nonWhite": JusticeMap_nonWhite,
-      "JusticeMap_white": JusticeMap_white ,
-      "JusticeMap_plurality": JusticeMap_plurality ,
-         "Clouds": clouds ,
-         "clouds (classic)": cloudscls ,
-         "precipitation": precipitation ,
-         "precipitation (classic)": precipitationcls , 
-         "rain": rain , 
-         "rain (classic)": raincls ,
-         "snow": snow , 
-         "pressure": pressure ,
-         "pressure contour (zoom in)": pressurecntr , 
-         "temp": temp , 
-         "wind": wind , 
-         "Cities (zoom in)": city  , 
-         "windrose (zoom in)": windrose
-    };
-    
-    if(sethash === 1) {
-      var allMapLayers = {
-        "BL1": baselayer,
+               if(markers_hash.has(mid) === false){
+                  var popup_content = "";
+                  if (image_url) popup_content += "<img src='" + image_url + "' class='popup-thumb' />";
+                  popup_content += "<h5><a href='" + url + "'>" + limit_words(title, 10)  + "</a></h5>";
+                  popup_content += "<div class='popup-two-column'>";
+                     popup_content += "<div class='popup-stretch-column'>" + nodetype + " by <a href='https://publiclab.org/profile/" + author + "'>@" + author + "</a> " + time_since + "</div><br>";
+                     if (nodetype.toLowerCase() === "wiki") popup_content += "<div class='map-slug popup-shrink-column'><a href='/map/" + url.split('/').pop() + "'>#</a></div>";
+                  popup_content += "</div>";
+                  // if (place_name) popup_content += "<span><b>Place: </b>" + place_name + "</span><br>";
 
-        "Wisconsin_NM": Wisconsin_NM,
-        "FT_mobile": FracTracker_mobile,
-        "Purple": PurpleAirMarkerLayer,
-        "STruth": SkyTruth,
-        "FracTL": Fractracker,
-        "ToxicR": ToxicRelease,
-        "OdorR": OdorReport,
-        "MapK": MapKnitter,
-        "OIMPower": OpenInfraMap_Power,
-        "OIMapTelecom": OpenInfraMap_Telecom,
-        "OIMPetroleum": OpenInfraMap_Petroleum,
-        "OIMWater": OpenInfraMap_Water,
-        "JMincome": Justicemap_income,
-        "JMamericanIndian": JusticeMap_americanIndian,
-        "JMasian": JusticeMap_asian,
-        "JMblack": JusticeMap_black,
-        "JMmulti": JusticeMap_multi,
-        "JMhispanic": JusticeMap_hispanic,
-        "JMnonWhite": JusticeMap_nonWhite,
-        "JMwhite": JusticeMap_white,
-        "JMplurality": JusticeMap_plurality,
-        "Clouds": clouds,
-        "cloudsclassic": cloudscls,
-        "precipitation": precipitation,
-        "precipcls": precipitationcls,
-        "rain": rain,
-        "raincls": raincls,
-        "snow": snow,
-        "pressure": pressure,
-        "pressurecontour": pressurecntr,
-        "temp": temp,
-        "wind": wind,
-        "Cities": city,
-        "windrose": windrose
-      };
+                  var popup = L.popup({
+                     maxWidth: 300,
+                     autoPan: false,
+                     className: 'map-popup'
+                  }).setContent(popup_content);
+                  m.addTo(map).bindPopup(popup_content);
+         
+                  markers_hash.set(mid , m) ;
+               }
+            }
+         }
+         map.spin(false) ;
+      });
 
-      var hash = new L.Hash(map, allMapLayers);	   
-          
-    }   
-    L.control.layers(baseMaps,overlayMaps).addTo(map);
+      function limit_words(str, num_words) {
+         return str.split(" ").splice(0, num_words).join(" ");
+      }
+   }
+
+   function setupLEL(map, markers_hash = null, params = {}) {
+      var options = {};
+      options.layers = params.layers || [];                 // display these layers on the map
+      options.limitMenuTo = params.limitMenuTo || [];       // limit available layers in menu to only those listed, default all layers in menu
+      options.setHash = params.setHash || false;
+      options.mainContent = params.mainContent || "";       // "content" to show site content, default "" shows no site content
+      options.displayAllLayers = params.displayAllLayers || false;  // turn on display for all maps available in menu
+
+      if (typeof options.layers === "string") {
+        options.layers = options.layers.split(',');
+      }
+
+      var oms = omsUtil(map, {
+         keepSpiderfied: true,
+         circleSpiralSwitchover: 0
+      });
+
+      var optionsLEL = { };
+      if (options.layers.length > 0) {
+         optionsLEL.addLayersToMap = options.displayAllLayers;
+         optionsLEL.display = options.layers;
+         optionsLEL.include = options.limitMenuTo;
+         optionsLEL.hash = options.setHash;
+      }
+      L.LayerGroup.EnvironmentalLayers(optionsLEL).addTo(map);
+
+      displayMapContent(map, markers_hash, options.mainContent);
+   }
+
+   function displayMapContent(map, markers_hash, mainContent) {
+      if(typeof mainContent !== "undefined" && mainContent !== ""){
+         if(mainContent === "people"){
+            peopleMap();
+            map.on('zoomend', peopleMap);
+            map.on('moveend', peopleMap);
+         }
+         else {
+            mainContent = (mainContent === "content") ? null : mainContent;
+            contentMap();
+            map.on('zoomend', contentMap);
+            map.on('moveend', contentMap);
+         }
+      }
+
+      function contentMap() {
+         contentLayerParser(map, markers_hash, mainContent);
+      }
+      function peopleMap() {
+         peopleLayerParser(map, markers_hash);
+      }
    }

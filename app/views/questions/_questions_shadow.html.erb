@@ -1,0 +1,86 @@
+<% questions = questions || @popularquestions # accept local if present, default to instance %>
+<div id="notes" class="col-md-12">
+  <div class="row">
+
+      <div class="col-md-2">
+      </div>
+
+      <% questions.limit(2).each_with_index do |node,i| %>
+        <div class="card <% if @widget %>col-xs-3 col-sm-3 col-md-3 <% end %>col-lg-3 note note-container-question" style="margin-top:20px;">
+          <div class="card-body">
+
+          <div class="card-info">
+            <p class="meta"><%= render partial: "dashboard/question_node_meta", locals: { node: node } %></p>
+            <h5><a class="question" <% if @widget %>target="_blank"<% end %> href="<%= node.path(:question) %>"><%= node.title %></a></h5>
+            <div>
+            <div class="answer">
+              <% if params[:controller] == 'questions' %>
+                <a class="peopleResponse" href="<%= node.path(:question) %>#answers" title="Answers"><%= node.answers.length %> people responded</a>
+              <% end %>
+            </div>
+          </div>
+            <a class="btn btn-outline-secondary" href="/q/<%= node.id %>" >Read More</a>
+          </div>
+
+          </div>
+        </div>
+            
+      <% end %>
+
+      <div class="col-md-2">
+      </div>
+  </div>
+</div>
+
+<style>
+.row {
+    justify-content: space-around;
+}
+.card {
+  background-color: #fff;
+  border: 1px solid;
+  border-color: #D3D3D3;
+  border-radius: 6px;
+  margin:2em 1.5em 2em 1.5em;
+}
+
+.card-body {
+  margin: auto;
+  text-align: center;
+  padding: 0.8em;
+}
+
+.profile-image {
+  margin-bottom: 1em;
+}
+
+.author {
+  color: #333;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.question {
+  font-style: italic;
+  color: #A9A9A9;
+}
+
+.peopleResponse {
+  color: #A9A9A9;
+}
+
+.answer {
+  margin-bottom: 1em;
+}
+
+.meta {
+  color: #999;
+}
+
+#profile-photo {
+  width: 6.5em;
+  border-color:#555;
+  border: 1px solid lightgrey;
+}
+
+</style>

@@ -7,31 +7,59 @@
 
 $(function() {
   $('input.search-query.typeahead').each(function(i, el){
+
     var typeahead = $(el).typeahead({
-      items: 10,
+      items: "all",
       minLength: 3,
       showCategoryHeader: true,
+      item: '<li class="dropdown-item"><a class="dropdown-item" href="#" role="option"></a></li>',
       autoSelect: false,
       source: debounce(function (query, process) {
-        var encoded_query = encodeURIComponent(query);
-        var qryType = $(el).attr('qryType');
-        return $.getJSON('/api/srch/' + qryType + '?query=' + encoded_query, function (data) {
-          return process(data.items);
-        },'json');
+
+        query = query.replace(' ', '-'); // replace spaces with hyphens
+        var encoded_query = encodeURIComponent(query); 
+        var qryType = $(el).attr('qryType'); 
+        if (qryType == "tags") {
+          var queryUrl = '/tag/suggested/' + encoded_query;
+        } else {
+          var queryUrl = 'api/srch/' + qryType + '?query=' + encoded_query;
+        }
+
+        // search analytics
+        if (window.hasOwnProperty('ga')) {
+          tracker = ga.getAll()[0];
+          tracker.send("pageview", queryUrl + '&typeahead=true');
+        }
+
+        if (qryType == "tags") {
+         return $.post('/tag/suggested/' + encoded_query, {}, function (data) { 
+           var objects = data.map(function(a) { return { doc_title: a } });
+           return process(objects);
+         });
+        } else {
+          return $.getJSON('/' + queryUrl, function (data) {
+            return process(data.items);
+          },'json');
+        }
+
       }, 350),
+
       highlighter: function (text, item) {
         return item.doc_title;
       },
+
       matcher: function() {
         return true;
       },
+
       displayText: function(item) {
         return item.doc_title;
       },
+
       updater: function(item) {
         if (item.hasOwnProperty('showAll') && item.showAll) {
           var query = this.value;
-          window.location = window.location.origin + "/search/" + query;
+          window.location = window.location.origin + "/search/?q=" + query;
         }
         else if (item.hasOwnProperty('doc_url') && item.doc_url) {
           window.location = window.location.origin + item.doc_url;
@@ -41,9 +69,10 @@ $(function() {
         item = item.doc_title;
         return item;
       },
-      addItem: { doc_title: 'View all',
-                 showAll: true
-               }
+
+      addItem: { doc_title: 'Search all content',
+        showAll: true
+      }
     });
   });
 });

@@ -18,7 +18,7 @@ Linking of any account through providers is based on the following cases:
 5) If the client is not signed in and has no account with the same email address as that given by the provider through which they are trying to sign in, then a new account is created. After a new account is created, the provider is linked to that new Public Lab account and the client is notified by email to change their password.
 
 For a new account creation, `email_prefix` i.e. the part of email before `@` symbol, is used as username. In case there exists a user with the same username then randomly generated hexadecimal code is appended to the email_prefix. Then this email_prefix is used as username.
-Corresponding code is present in https://github.com/publiclab/plots2/blob/master/app/models/user.rb and https://github.com/publiclab/plots2/blob/master/app/controllers/user_sessions_controller.rb.
+Corresponding code is present in https://github.com/publiclab/plots2/blob/main/app/models/user.rb and https://github.com/publiclab/plots2/blob/main/app/controllers/user_sessions_controller.rb.
 
 6) Usertags are used to store the provider and the uid for authentication. The client may delete their usertag via the profile page in order to delete the corresponding provider from their account.
 
@@ -58,15 +58,19 @@ Or, write them in config/application.yml file
 ## How to set up OAuth?
 
 Add the app_id and app_secret in the Jenkins and containers/docker*.yml files in the production.
-They are accessed by ENV["OAUTH_GITHUB_APP_KEY"], ENV["OAUTH_GITHUB_APP_SECRET"] etc inside the (config/initializers/omniauth.rb)[https://github.com/publiclab/plots2/blob/master/config/initializers/omniauth.rb]
+They are accessed by ENV["OAUTH_GITHUB_APP_KEY"], ENV["OAUTH_GITHUB_APP_SECRET"] etc inside the (config/initializers/omniauth.rb)[https://github.com/publiclab/plots2/blob/main/config/initializers/omniauth.rb]
 
 ## How to setup login modal on various locations?
 
-For improving UI, login and signup modals were created. The code for the login and signup modals is https://github.com/publiclab/plots2/blob/master/app/views/layouts/_header.html.erb#L176-L266.
+For improving UI, login and signup modals were created. The code for the login and signup modals is https://github.com/publiclab/plots2/blob/main/app/views/layouts/_header.html.erb#L176-L266.
 
 A custom JavaScript class named 'requireLogin' is inserted at the locations where login modal needs to be rendered.
 
 For example, it can be implemented in a button with the button class as `btn btn-default requireLogin`.
+
+There is also a JavaScript function called `require_login_and_redirect_to(url)` which will do exactly that, if you pass it a URL. The url can include GET parameters so it can be used to login and then redirect to, for example, a prepopulated post form at `/post?title=My Title&body=Hello`.
+
+See more [on this line](https://github.com/publiclab/plots2/blob/e190eae1ce7bf215b99b6efe7f828e17deb3213e/app/views/user_sessions/_form.html.erb#L83)
 
 ## Variables used
 
@@ -81,7 +85,7 @@ For example, it can be implemented in a button with the button class as `btn btn
 
 ## Testing
 
-OAuth can be tested by including the following in  [config/environments/test.rb](https://github.com/publiclab/plots2/blob/master/config/environments/test.rb)
+OAuth can be tested by including the following in  [config/environments/test.rb](https://github.com/publiclab/plots2/blob/main/config/environments/test.rb)
 
 ```
 OmniAuth.config.test_mode = true

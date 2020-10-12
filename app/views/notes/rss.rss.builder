@@ -5,14 +5,14 @@ xml.rss :version => '2.0', 'xmlns:atom' => 'http://www.w3.org/2005/Atom' do
     xml.link "https://#{request.host}/feed.rss"
     xml.tag! 'atom:link', rel: 'self', type: 'application/rss+xml', href: "https://#{request.host}/feed.rss"
 
-    @notes.each do |node|
+    @notes.includes(user: [:user_tags]).each do |node|
       author = node.author.username
       if node.author.has_power_tag('twitter')
         author = "@#{node.author.get_value_of_power_tag('twitter')}"
       end
 
       xml.item do
-        xml.title      node.title
+        xml.title      node.title + " (##{node.id})"
         xml.author     author
         xml.pubDate     node.created_at.to_s(:rfc822)
         xml.link        "https://" + request.host.to_s + node.path

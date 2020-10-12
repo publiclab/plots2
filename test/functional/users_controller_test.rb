@@ -2,6 +2,7 @@ require 'test_helper'
 
 class UsersControllerTest < ActionController::TestCase
   include ActiveJob::TestHelper
+  include ActionMailer::TestHelper
   def setup
     activate_authlogic
 
@@ -67,8 +68,25 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test 'should get profile' do
-    get :profile, params: { id: User.where(status: 1).first.name }
+    i = 0
+    25.times do
+      Node.new(uid: users(:bob).id, type: 'note', title: "Node #{i += 1}").save
+    end
+
+    get :profile, params: { id: users(:bob).username }
     assert_response :success
+
+  end
+
+  test "banning user should display correct flash message" do
+    UserSession.create(users(:admin))
+    banned = User.find(2)
+    banned.ban
+    get :profile, params: { id: banned.username }
+    # checks flash
+    assert_equal flash[:error], I18n.t('users_controller.user_has_been_banned')
+    # checks duplicated flash is not present
+    assert_nil flash[:notice]
   end
 
   test 'generate user reset key' do
@@ -140,24 +158,14 @@ class UsersControllerTest < ActionController::TestCase
     end
   end
 
-  test 'should list notes and questions in user profile' do
-    user = users(:jeff)
-    get :profile, params: { id: user.username }
-    assert_not_nil assigns(:notes)
-    assert_not_nil assigns(:questions)
-    assert_not_nil assigns(:answered_questions)
-    selector = css_select '#asked .note-question'
-    assert_equal selector.size, 2
-    selector = css_select '#answered .note-answer'
-    assert_equal selector.size, 1
-  end
-
-  test 'should get comments' do
+  test 'should get comments and render comments/index template' do
     user = users(:jeff)
     get :comments, params: { id: user.id }
     assert_response :success
-    assert_not_nil assigns(:comments)
-    assert_template partial: 'comments/_comments'
+    normal_comments = assigns(:normal_comments)
+    assert_not_nil normal_comments
+    assert_nil assigns(:moderated_comments)
+    assert_template 'comments/index'
   end
 
   test 'creating new account' do
@@ -201,18 +209,77 @@ class UsersControllerTest < ActionController::TestCase
     assert_equal User.find(user.id).bio, 'Hello, there!'
   end
 
+  test 'reject update with wrong password when ui_update is true' do
+    user = users(:bob)
+    bio = users(:bob).bio
+    UserSession.create(user)
+    post :update, params: {
+      user: {
+        bio: 'Bio updated by hacker',
+        current_password: 'wrong password',
+        ui_update: 'true'
+      }
+    }
+    assert_response :redirect
+    assert_equal User.find(user.id).bio, bio
+  end
+
+  test 'update profile with correct password when ui_update is true' do
+    user = users(:bob)
+    bio = users(:bob).bio
+    UserSession.create(user)
+    post :update, params: {
+      user: {
+        bio: 'Bio updated by user',
+        current_password: 'secretive',
+        ui_update: 'true'
+      }
+    }
+    assert_response :redirect
+    assert_equal User.find(user.id).bio, 'Bio updated by user'
+  end
+
+  test 'rejecting update profile with wrong password when ui_update is nil' do
+    user = users(:bob)
+    bio = users(:bob).bio
+    UserSession.create(user)
+    post :update, params: {
+      user: {
+        bio: 'Bio updated by user but with wrong password',
+        current_password: 'wrongpassword',
+        ui_update: nil
+      }
+    }
+    assert_response :redirect
+    assert_not_equal User.find(user.id).bio, 'Bio updated by user but with wrong password'
+  end
+
+  test 'allowing update profile with empty password when ui_update is true' do
+    user = users(:bob)
+    bio = users(:bob).bio
+    UserSession.create(user)
+    post :update, params: {
+      user: {
+        bio: 'Bio updated by user with empty password',
+        current_password: '',
+        ui_update: 'true'     }
+    }
+    assert_response :redirect
+    assert_equal User.find(user.id).bio, 'Bio updated by user with empty password'
+  end
+
   test 'should redirect edit when not logged in' do
     user = users(:bob)
     get :edit, params: { id: user.name }
     assert_not flash.empty?
-    assert_redirected_to '/login'
+    assert_redirected_to '/login?return_to=/profile/Bob/edit'
   end
 
   test 'should redirect update when not logged in' do
     user = users(:bob)
     post :update, params: { user: { bio: 'Hello, there!' } }
     assert_not flash.empty?
-    assert_redirected_to '/login'
+    assert_redirected_to '/login?return_to=/users/update'
   end
 
   test 'should redirect edit when logged in as another user' do
@@ -295,5 +362,24 @@ class UsersControllerTest < ActionController::TestCase
     email_verification_token = test_user.generate_token
     get :verify_email, params: { token: email_verification_token }
     assert_equal "Successfully verified email", flash[:notice]
+  end
+
+ test 'Reset password verification' do
+    user = users(:bob)
+    post 'reset', params:{
+      email: user[:email]
+    }
+    key = user.generate_reset_key
+    user.save
+    email =  PasswordResetMailer.reset_notify(user, key)
+    assert_emails 1 do
+     email.deliver_now
+    end
+    assert_not_nil email.to
+    assert_equal 'Reset your password',email.subject
+    assert_match 'Someone (probably you) has requested a reset of your password. To reset your password, click here:',email.body.to_s
+    assert_response :redirect
+    assert_redirected_to '/login'
+    assert_match 'You should receive an email with instructions on how to reset your password. If you do not, please double check that you are using the email you',flash[:notice]
   end
 end

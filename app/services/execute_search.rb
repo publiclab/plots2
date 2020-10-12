@@ -14,6 +14,10 @@ class ExecuteSearch
        sservice.search_profiles(search_criteria)
      when :notes
        sservice.search_notes(search_criteria.query, search_criteria.limit)
+     when :content
+       sservice.search_content(search_criteria.query, search_criteria.limit)
+     when :nodes
+       sservice.search_nodes(search_criteria.query, search_criteria.limit)
      when :wikis
        sservice.search_wikis(search_criteria.query, search_criteria.limit)
      when :questions

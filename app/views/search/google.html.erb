@@ -1,0 +1,61 @@
+<div class="col-md-2">
+  <%= render :partial => "search/nav", locals: { section: "search-all" } %>
+</div>
+
+<div class="col-md-10">
+  <div class="container">
+    <h2>Search</h2>
+
+    <script>
+
+var resultsRenderedCallback = function(response) {
+  var searchQuery = google.search.cse.element.getElement('customSearch').getInputQuery();
+  $.ajax('/tags/related?id=' + searchQuery).done(function fetchedRelatedTags(response) {
+    $('.related-tags-container').html(response);
+  });
+}
+
+window.__gcse = {
+  //parsetags: 'explicit',
+  searchCallbacks: {
+    image: {
+      //starting: searchStartingCallback,
+      //ready: resultsReadyCallback,
+      rendered: resultsRenderedCallback,
+    },
+    web: {
+      //starting: searchStartingCallback,
+      //ready: resultsReadyCallback,
+      rendered: resultsRenderedCallback,
+    },
+  }
+};
+
+(function() {
+
+  var cx = '<%= feature('search') == "" ? "008366342703784425914:_p25pf-gy_w" : feature('search') %>';
+  var gcse = document.createElement('script');
+  gcse.type = 'text/javascript';
+  gcse.async = true;
+  gcse.src = '//cse.google.com/cse.js?cx=' + cx;
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gcse, s);
+})();
+
+    </script>
+
+    <div class="gcse-searchbox" style="width:100%" id="google" data-gname="customSearch" resultsUrl="https://publiclab.org/search"></div>
+
+    <div class="related-tags-container">
+      <%= render partial: 'tag/related', locals: { tags: Tag.related(params[:query] || params[:q]) } if params[:query] || params[:q] %>
+    </div>
+
+    <%= render partial: 'search/pinned', locals: { query: params[:query] || params[:q] } if params[:query] || params[:q] %>
+
+    <div class="gcse-searchresults" style="width:100%" data-gname="customSearch"></div>
+
+    <p id="loadingSearch">
+      <small style="color:#888;"><a href="/search/content">Click here</a> if Google is not available in your region</small>
+    </p>
+
+  </div>
+</div>

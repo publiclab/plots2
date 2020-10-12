@@ -216,9 +216,7 @@
   margin-right: 5px;
 }
 
-.note-default {
 
-}
 
 .note .header-icon {
   text-align: center;
@@ -252,6 +250,10 @@
   background: #f8f8f8;
   border-color: #ddd;
   color: #555;
+}
+
+.note-comment .body {
+  overflow-wrap : break-word;
 }
 
 .note-wiki    .btn-default:hover,
@@ -332,9 +334,16 @@
 }
 
 /* end event node styles */
+.note .meta a i {
+  transition: color .15s ease-in-out,
+  background-color .15s ease-in-out,
+  border-color .15s ease-in-out,
+  box-shadow .15s ease-in-out;
+  }
 
 .note .meta a:hover i {
-  color: #666;
+  color: #FFF2CC;
+  background: #666;
 }
 
 .note .btn-default {
@@ -385,4 +394,16 @@
   {
     margin-top:10px;
   }
+}
+
+#refreshA {
+  margin-right: 2px;
+}
+
+.topics-span {
+  font-size: 18px;
+}
+
+#subscribe {
+  margin-top: 10px;
 }

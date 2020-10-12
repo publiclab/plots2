@@ -16,7 +16,7 @@ The tests take between 6-12 minutes to run (we're working on shortening this!) s
 
 ## Coverage
 
-See [plots2 on CodeClimate](https://codeclimate.com/github/publiclab/plots2) for how well covered our code is with tests; we are extremely interested in building our out test suite, so please consider helping us write tests!
+See [plots2 on CodeClimate](https://codeclimate.com/github/publiclab/plots2) for how well covered our code is with tests; we are extremely interested in building out our test suite, so please consider helping us write tests!
 
 ## Client-side tests
 
@@ -24,7 +24,7 @@ Client-side tests (for JavaScript functions) are run using [teaspoon-mocha](http
 
 `rake teaspoon`
 
-JavaScript tests can be found here: https://github.com/publiclab/plots2/tree/master/spec/javascripts but they're limited because they are only run against static HTML fixture files, which need to be kept up to date to match what's in the actual site HTML. 
+JavaScript tests can be found here: https://github.com/publiclab/plots2/tree/main/spec/javascripts but they're limited because they are only run against static HTML fixture files, which need to be kept up to date to match what's in the actual site HTML. 
 We're also interested in exploring System Tests, which would run full-stack tests in a headless Chrome environment and allow testing of JavaScript functions on live code; see https://github.com/publiclab/plots2/issues/3683
 
 ****
@@ -64,7 +64,7 @@ Mail will be same as actual mail we will get in production.
 
 ## Testing branches
 
-We have three principle branches: a master, where all tested new features are live,
+We have three principal branches: a main, where all tested new features are live,
 a stable and an unstable. Those last two are used to test new code before sending
 them to production.
 If you need to use the stable or the unstable branch,
@@ -74,7 +74,7 @@ already using it.
 ## How to run plots2 with MySQL on development and test environments
 
 In development and test environments, the project uses SQLite3, but in production
-it uses [MySQL (or mariadb)](https://github.com/publiclab/plots2/blob/master/containers/docker-compose-production.yml).
+it uses [MySQL (or mariadb)](https://github.com/publiclab/plots2/blob/main/containers/docker-compose-production.yml).
 
 If you need to test something that SQLite3 doesn't support, like a full-text
 search, for example, you need to add more steps to your configuration:
@@ -148,7 +148,30 @@ file and use a skip method for the SQLite3 adapter:
 
 `skip "full text search only works on mysql/mariadb" if ActiveRecord::Base.connection.adapter_name == 'sqlite3'`
 
-Take a look at this test [search_service_full_text_search_test.rb](https://github.com/publiclab/plots2/blob/master/test/unit/api/search_service_full_text_search_test.rb) for more details.
+Take a look at this test [search_service_full_text_search_test.rb](https://github.com/publiclab/plots2/blob/main/test/unit/api/search_service_full_text_search_test.rb) for more details.
 
 This way we don't have errors either using SQLite3 or MySQL on development and tests
 environments.
+
+## Testing your work with Unstable
+
+### What is _unstable_? 
+It is a staging server that includes a copy of the production database and is intended for experimenting or debugging purposes. Those with [write permissions](https://help.github.com/en/articles/repository-permission-levels-for-an-organization) can push to the plots2 `unstable` branch on Github, which will initiate a build and deploy to https://unstable.publiclab.org.
+
+Use it when you need database records that are too difficult or time-consuming to reproduce locally, or to debug a problem on the production site that you can't reproduce locally.
+See summary and usage instructions below.
+
+**Environment:** Test environment
+**Database:** MySQL
+**Data:** Data present at https://unstable.publiclab.org is updated occasionally using the Production database, so it has good amount of data for testing. 
+**Email testing:** _unstable_ server can't send emails so Email related features can't be tested.  
+
+### Pushing on `unstable`
+
+1. Drop a message in the [Gitter chatroom](https://gitter.im/publiclab/publiclab) that you are pushing to _unstable_, as other members also use it for testing their work so you don't want to shock them by pushing your work over theirs. After dropping the message, wait for 5 mins, and if no one mentions that they are using the branch, then go to step 2.
+2. Push using: `git push -f https://github.com/publiclab/plots2.git HEAD:unstable`.<br><br>**Note:** If you get this message - `remote: Permission to publiclab/plots2.git denied to <username>` then you don't have permission to push to _unstable_ branch.
+But, don't worry, feel free to ping @publiclab/maintainers on your open PR to request access or ask in the chatroom and someone else with write access will push your work (PR/branch) for you.  
+3. See build progress at https://jenkins.laboratoriopublico.org/job/Plots-Unstable/. It takes 8-15 mins for build to complete. 
+4. Test website: https://unstable.publiclab.org/. 
+
+Once your PR is merged into plots2/main, code is only deployed to the live site [publiclab.org](publiclab.org) after some time by our maintainers. (They often send a message in our chatroom to notify contributors of this update). Fortunately, you can see your changes implemented immediately at https://stable.publiclab.org, which builds from the main branch. This is useful for testing your work again after a merge.

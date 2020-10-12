@@ -50,6 +50,7 @@ test.db
 solr/*
 test/reports/
 !config/application.yml
+test.sqlite-journal
 # Ignore NPM
 node_modules
 .byebug_history

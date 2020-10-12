@@ -14,10 +14,14 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
+//= require loadCSS
+//= require cssrelpreload
+//= require onloadCSS
 //= require jquery
 //= require jquery_ujs
+//= require jquery-lazyload/jquery.lazyload.js
 //= require debounce/index.js
-//= require bootstrap/dist/js/bootstrap.min.js
+//= require bootstrap/dist/js/bootstrap.bundle.min.js
 //= require bootstrap-3-typeahead/bootstrap3-typeahead.min.js
 //= require bootstrap-datepicker/dist/js/bootstrap-datepicker.js
 //= require jquery-file-upload/js/vendor/jquery.ui.widget.js
@@ -28,6 +32,7 @@
 //= require megamark/dist/megamark.min.js
 //= require ics/ics.deps.min.js
 //= require ics/ics.min.js
+//= require timeago.js
 //= require leaflet/dist/leaflet
 //= require moment/moment.js
 //= require i18n
@@ -51,5 +56,12 @@
 //= require leaflet_helper
 //= require grids.js
 //= require graph.js
+//= require simple-data-grapher.js
 //= require wikis.js
 //= require header_footer.js
+//= require keybindings.js
+//= require jquery-validation/dist/jquery.validate.js
+//= require validation.js
+//= require submit_form_ajax.js
+//= require urlMapHash.js
+//= require spam2.js

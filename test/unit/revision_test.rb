@@ -121,6 +121,14 @@ class RevisionsTest < ActiveSupport::TestCase
     assert_includes tag_names, 'hashtags'
   end
 
+  test 'should make tag with hyphens' do
+    revision = revisions(:hashtag_with_hyphens)
+    revision.save
+    associated_tags = revision.parent.tag
+    tag_names = associated_tags.map(&:name)
+    assert_includes tag_names, 'purple-air-ok'
+  end
+
   test 'should ignore subheaders' do
     revision = revisions(:subheader)
     revision.save

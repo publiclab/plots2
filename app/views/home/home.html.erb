@@ -1,22 +1,135 @@
-<% cache('feature_home-carousel', skip_digest: true) do %>
-  <%= feature("home-carousel") %>
-<% end %>
-
-<div style="padding:30px 5%;">
-
 <% cache('feature_home-intro', skip_digest: true) do %>
   <%= feature("home-intro") %>
 <% end %>
 
-<div class="dashboard">
+<div class="container">
+
+<div class="projects">
   <% cache('home-blog', expires_in: 60.minutes, skip_digest: true) do %>
-    <div class="tab-pane active" id="notes">
-      <% unless @notes.nil? || @notes.length == 0 %>
-        <%= render partial: "notes/notes", locals: { paginated: false } %>
-        <p><center><a class="btn btn-default" href="/blog">Read more</a></center></p>
+    <% unless @projects.nil? || @projects.length == 0 %>
+
+      <% @projects.each_with_index do |project, index| %>
+
+        <div class="row px-lg-5<%= " odd" if index.odd? %>">
+          <div class="col-12 col-sm-6 project-image <%= index.odd? ? " odd pr-lg-5 order-2" : " pl-lg-5" %>">
+
+            <% if project.main_image %>
+              <a href="<%= project.path %>"><img src="<%= project.main_image.path(:default) %>" style="max-width:100%;" /></a>
+            <% elsif project.scraped_image %>
+              <a href="<%= project.path %>"><img src="<%= project.scraped_image %>" style="max-width:100%;" /></a>
+            <% end %>
+
+          </div>
+          <div class="col-12 col-sm-6<%= index.odd? ? " pl-lg-5" : " pr-lg-5" %>">
+
+            <h3><a href="<%= project.path %>"><%= project.title %></a></h3>
+
+            <p><%= project.summary %></p>
+
+            <p><a href="<%= project.path %>">Read more &raquo;</a></p>
+
+            <div class="people">
+              <!-- people most associated with it? editors? pinnable? -->
+              <!-- replace authors with 'featured people' or something? -->
+<!--
+              <% project.authors[0..2].each do |author| %>
+                <% if author.photo %>
+                  <a class="person" href="/profile/<%= author.username %>">
+                    <img class="person-image" src="<%= author.photo %>" />
+                  </a>
+                <% end %>
+              <% end %>
+
+              <% if project.authors.length > 2 %>
+                <span class="person person-text">
+                  <span class="text"><%= [project.authors.length - 2, 1].max %> more</span>
+                </span>
+              <% end %>
+-->
+            </div>
+
+          </div>
+        </div>
+
       <% end %>
-    </div>
+
+      <p><center><a class="btn btn-outline-secondary" href="/projects">More projects</a></center></p>
+
+    <% end %>
   <% end %>
 </div>
 
 </div>
+
+<style>
+
+.projects {
+  width: 100vw;
+  margin: 0 calc((100% / 2) - 50vw);
+  padding: 40px 0px;
+}
+.row {
+  margin-right: 0;
+}
+.projects .row {
+  padding: 50px 20px;
+  color: #222;
+  background: #ffe8c8;
+}
+.projects .row.odd {
+  background: white;
+}
+.projects .row .project-image img {
+  background: #ccc;
+}
+.projects .row h3 {
+  color: #333;
+  padding-bottom: 10px;
+}
+.projects .row h3 a {
+  color: #333;
+  text-decoration: none;
+}
+.projects .row a {
+  color: #333;
+  text-decoration: underline;
+}
+.projects .person {
+  background: #efc997;
+  float: left;
+  display: inline-block;
+  border-radius: 20px;
+  min-width: 40px;
+  height: 40px;
+  margin-right: 5px;
+}
+.projects .person-image {
+  border-radius: 20px;
+  height: 40px;
+  width: 40px;
+}
+.projects .person-text {
+  padding: 5px;
+}
+.projects .person .text {
+  color: #884d05;
+  padding: 3px 8px;
+  display: inline-block;
+}
+.project-image {
+  text-align: center;
+}
+
+@media(max-width: 575px){
+  .projects .project-image:nth-of-type(1),
+  .projects .project-image:nth-of-type(3) {
+    margin-bottom: 1.7rem;
+  }
+}
+
+</style>
+
+<% cache('feature_home-footer', skip_digest: true) do %>
+  <%= feature("home-footer") %>
+<% end %>
+

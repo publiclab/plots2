@@ -1,12 +1,22 @@
-<p>
-  <b><a href='https://<%= ActionMailer::Base.default_url_options[:host] %>/n/<%= @node.id %>'><%= @node.title %></a></b> 
-
-  was tagged with <i><a href='https://<%= ActionMailer::Base.default_url_options[:host] %>/tag/<%= @tag.name %>'>#<%= @tag.name %></a></i> 
-
-  by <a href='https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @tagging_user.username %>'><%= @tagging_user.username %></a>
-</p>
+<p><b><a href='https://<%= ActionMailer::Base.default_url_options[:host] %>/n/<%= @node.id %>'><%= @node.title %></a></b></p>
 
 <p>Read and respond to the post here: https://<%= ActionMailer::Base.default_url_options[:host] %><%= @node.path %></p>
+
+<hr />
+
+<% if @node.main_image %><a style="margin-bottom:10px;" href="<%= ActionMailer::Base.default_url_options[:host] %><%= @node.path %>"><img src="<%= ActionMailer::Base.default_url_options[:host] %><%= @node.main_image.path(:default) %>" /></a><% end %>
+
+<%= raw auto_link(@node.latest.render_body_email(ActionMailer::Base.default_url_options[:host]), sanitize: false) %>
+
+<p>Respond to the post here: https://<%= ActionMailer::Base.default_url_options[:host] %><%= @node.path %></p>
+
+<hr />
+
+
+<p>
+  This post was tagged with <i><a href='https://<%= ActionMailer::Base.default_url_options[:host] %>/tag/<%= @tag.name %>'>#<%= @tag.name %></a></i> 
+  by <a href='https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @tagging_user.username %>'><%= @tagging_user.username %></a>
+</p>
 
 <div style="color:#aaa;">
 

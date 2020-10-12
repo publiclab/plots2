@@ -1,70 +1,50 @@
-function addTag(tagname, selector) {
-
-  selector = selector || '#tagform';
+// Taking the prompt+value retrieved in promptTag() or the links in the drop-down menu and populating the form field before submitting it
+// Instead we want to take the tag value and directly submit it with AJAX
+// responseEl is the page element that we want the messages being appended to
+function addTag(tagname, submitTo, responseEl = "") {
+  submitTo = submitTo || '#tagform';
+  if (responseEl == "") {
+    if(submitTo.slice(0,1) === "/") {
+      responseEl = '#tagform';
+    } else {
+      responseEl = submitTo;
+    }
+  }
   if (tagname.slice(0,5).toLowerCase() === "place") {
-    place = tagname.split(":")[1];
-    place.replace("-", " ");
-    geo = geocodeStringAndPan(place);
+    tagname = tagname.replace(/ /g, '-');
   }
-  else {
-    var el = $(selector);
-
-    el.find('.tag-input').val(tagname);
-
-    el.submit();
-  }
-
+  let data = { name: tagname };
+  sendFormSubmissionAjax(data, submitTo, responseEl);
 }
 
 function setupTagDelete(el) {
-
   el.click(function(e) {
       $(this).css('opacity', 0.5)
     })
-    .bind('ajax:success', function(e, tid){
-      $('#tag_' + tid).remove();
+    .bind('ajax:success', function(e, response){
+      if (typeof response == "string") response = JSON.parse(response)
+      if (response['status'] == true) { 
+        $('#tag_' + response['tid']).remove() 
+      } else {
+        $('.control-group').addClass('has-error')
+        $('.control-group .help-block').remove()
+        $('.control-group').append('<span class="help-block">' + response['errors'] + '</span>')
+      }
     });
   return el;
-
 }
 
 function initTagForm(deletion_path, selector) {
 
   selector = selector || '#tagform';
-
   var el = $(selector);
 
   el.bind('ajax:beforeSend', function(){
     el.find(".tag-input").prop('disabled', true)
   });
 
-  el.bind('ajax:success', function(e, response){
-    if (typeof response == "string") response = JSON.parse(response)
-    $.each(response['saved'], function(i,tag) {
-      var tag_name = tag[0];
-      var tag_id = tag[1];
-      $('#tags ul:first').append("<li><span id='tag_"+tag_id+"' class='label label-primary'> \
-        <a href='/tag/"+tag_name+"'>"+tag_name+"</a> <a class='tag-delete' \
-        data-remote='true' href='"+deletion_path+"/"+tag_id+"' data-tag-id='"+tag_id+"' \
-        data-method='delete'>x</a></span></li> ")
-      el.find('.tag-input').val("")
-      el.find('.control-group').removeClass('has-error')
-      el.find('.control-group .help-block').remove()
-      setupTagDelete($('#tag_' + tag_id + ' .tag-delete'));
-    })
-    if (response['errors'].length > 0) {
-      el.find('.control-group').addClass('has-error')
-      el.find('.control-group .help-block').remove()
-      el.find('.control-group').append('<span class="help-block">' + response['errors'] + '</span>')
-    }
-    el.find('.tag-input').prop('disabled',false)
-  });
-
-  el.bind('ajax:error', function(e, response){
-    el.find('.control-group').addClass('has-error')
-    el.find('.tag-input').prop('disabled', false)
-    el.find('.control-group .help-block').remove();
-    el.find('.control-group').append('<span class="help-block">' + response.responseText + '</span>')
+  el.bind('ajax:success', function(e, response) {
+    addNewTagsSuccess(response, deletion_path, el);
   });
 
   setupTagDelete($('.tag-delete'));
@@ -77,6 +57,7 @@ function initTagForm(deletion_path, selector) {
         return process(data);
       })
     },
+    item: '<li class="dropdown-item"><a class="dropdown-item" href="#" role="option"></a></li>',
     updater: function(text) { 
       el.find('.tag-input').val(text);
       el.submit();
@@ -87,28 +68,40 @@ function initTagForm(deletion_path, selector) {
 
 }
 
-function geocodeStringAndPan(string, onComplete) {
-  var url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + string.split(" ").join("+");
-  var Blurred = $.ajax({
-      async: false,
-      url: url,
-      complete: function(data) {
-        geometry = data.responseJSON.results[0].geometry.location;
-        lat = geometry.lat;
-        lng = geometry.lng;
-        
-        var geo = [lat, lng];
+function addNewTagsSuccess(response, deletion_path, el = "#tagform"){
+  if (typeof response == "string") response = JSON.parse(response)
+  $.each(response['saved'], function(i, tag) {
+    // only display tag if it was added to the note we're currently viewing
+    var tagNameCheck = !!tag[0].split(':')[0].match(/^(lat|lon|place)$/)
+    if (tagNameCheck) {
+      location.reload(true);
+    }
+    if (tag[2] == getDeletionPathId(deletion_path)) {
+      displayNewTag(tag[0], tag[1], deletion_path);
+    }
+    el.find('.tag-input').val("")
+    el.find('.control-group').removeClass('has-error')
+    el.find('.control-group .help-block').remove()
+  })
+  if (response['errors'].length > 0) {
+    el.find('.control-group').addClass('has-error')
+    el.find('.control-group .help-block').remove()
+    el.find('.control-group').append('<span class="help-block">' + response['errors'] + '</span>')
+  }
+  el.find('.tag-input').prop('disabled',false)
+  el.find('.tag-input').focus()
+}
 
-        if (geo.length > 0) {
-          var r = confirm("This looks like a location. Is this full description of the location accurate?");
-          console.log(geo[0]);
-          console.log(geo[1]);
-          if(r) { 
-            addTag("lat:" + geo[0].toString() + ",lng:" + geo[1].toString()+",place:"+string);
-          }    
-        }
-      },
-  });
+function displayNewTag(tag_name, tag_id, deletion_path) {
+  $('.tags-list:first').append("<p id='tag_"+tag_id+"' class='badge badge-primary m-0'> \
+    <a class='tag-name' style='color:white;' href='/tag/"+tag_name+"'>"+tag_name+"</a> <a class='tag-delete' \
+    data-remote='true' href='"+deletion_path+"/"+tag_id+"' data-tag-id='"+tag_id+"' \
+    data-method='delete'><i class='fa fa-times-circle fa-white blue pl-1' aria-hidden='true' ></i></a></p> ")
+  setupTagDelete($('#tag_' + tag_id + ' .tag-delete'));
+}
+
+function getDeletionPathId(deletion_path) {
+  return deletion_path.split("/").pop();
 }
 
 function promptTag(val) {

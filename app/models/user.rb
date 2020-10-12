@@ -6,9 +6,13 @@ class UniqueUsernameValidator < ActiveModel::Validator
   end
 end
 
+# Overwrites authlogic username regex to allow one character usernames
+Authlogic::Regex::LOGIN = /\A[A-Za-z\d_\-]*\z/
+
 class User < ActiveRecord::Base
   extend Utils
   include Statistics
+  extend RawStats
   self.table_name = 'rusers'
   alias_attribute :name, :username
 
@@ -31,8 +35,8 @@ class User < ActiveRecord::Base
 
   acts_as_authentic do |c|
     c.crypto_provider = Authlogic::CryptoProviders::Sha512
+    c.validates_format_of_login_field_options = { with: Authlogic::Regex::LOGIN, message: I18n.t('error_messages.login_invalid', default: "can only consist of alphabets, numbers, underscore '_', and hyphen '-'.") }
   end
-  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
 
   has_attached_file :photo, styles: { thumb: '200x200#', medium: '500x500#', large: '800x800#' },
                                     url: '/system/profile/photos/:id/:style/:basename.:extension'
@@ -43,6 +47,7 @@ class User < ActiveRecord::Base
 
   has_many :images, foreign_key: :uid
   has_many :node, foreign_key: 'uid'
+  has_many :csvfiles, foreign_key: :uid
   has_many :node_selections, foreign_key: :user_id
   has_many :revision, foreign_key: 'uid'
   has_many :user_tags, foreign_key: 'uid', dependent: :destroy
@@ -57,7 +62,6 @@ class User < ActiveRecord::Base
   has_many :comments, foreign_key: :uid
 
   validates_with UniqueUsernameValidator, on: :create
-  validates_format_of :username, with: /\A[A-Za-z\d_\-]+\z/
 
   before_save :set_token
 
@@ -65,11 +69,11 @@ class User < ActiveRecord::Base
   scope :past_month, -> { where("created_at > ?", 1.month.ago) }
 
   def is_new_contributor?
-    Node.where(uid: id).length === 1 && Node.where(uid: id).first.created_at > 1.month.ago
+    Node.where(uid: id).size === 1 && Node.where(uid: id).first.created_at > 1.month.ago
   end
 
   def new_contributor
-    return "<a href='/tag/first-time-poster' class='label label-success'><i>new contributor</i></a>".html_safe if is_new_contributor?
+    return "<a href='/tag/first-time-poster' class='badge badge-success font-italic'>new contributor</a>".html_safe if is_new_contributor?
   end
 
   def set_token
@@ -147,12 +151,15 @@ class User < ActiveRecord::Base
     Tag.where('name in (?)', tagnames).limit(limit)
   end
 
+  def normal_tags
+	tags.select{ |tag| ! tag.name.include?(':') }
+  end
+
   def tagnames(limit = 20, defaults = true)
     tagnames = []
-    Node.order('nid DESC').where(type: 'note', status: 1, uid: id).limit(limit).each do |node|
+    Node.includes(:tag).order('nid DESC').where(type: 'note', status: 1, uid: id).limit(limit).each do |node|
       tagnames += node.tags.collect(&:name)
     end
-    tagnames += ['balloon-mapping', 'spectrometer', 'near-infrared-camera', 'thermal-photography', 'newsletter'] if tagnames.empty? && defaults
     tagnames.uniq
   end
 
@@ -210,11 +217,11 @@ class User < ActiveRecord::Base
   end
 
   def first_time_poster
-    notes.where(status: 1).count.zero?
+    notes.where(status: 1).size.zero?
   end
 
   def first_time_commenter
-    Comment.where(status: 1, uid: uid).count.zero?
+    Comment.where(status: 1, uid: uid).size.zero?
   end
 
   def follow(other_user)
@@ -229,9 +236,9 @@ class User < ActiveRecord::Base
     following_users.include?(other_user)
   end
 
-  def profile_image
+  def profile_image(size = :thumb)
     if photo_file_name
-      photo_path(:thumb)
+      photo_path(size)
     else
       "https://www.gravatar.com/avatar/#{OpenSSL::Digest::MD5.hexdigest(email)}"
     end
@@ -241,20 +248,33 @@ class User < ActiveRecord::Base
     Node.questions.where(status: 1, uid: id)
   end
 
-  def content_followed_in_period(start_time, end_time)
+  def content_followed_in_period(start_time, end_time, node_type = 'note', include_revisions = false)
     tagnames = TagSelection.where(following: true, user_id: uid)
     node_ids = []
     tagnames.each do |tagname|
       node_ids += NodeTag.where(tid: tagname.tid).collect(&:nid)
     end
 
+    range = "(created >= #{start_time.to_i} AND created <= #{end_time.to_i})"
+    range += " OR (timestamp >= #{start_time.to_i}  AND timestamp <= #{end_time.to_i})" if include_revisions
+
     Node.where(nid: node_ids)
     .includes(:revision, :tag)
     .references(:node_revision)
     .where('node.status = 1')
-    .where("(created >= #{start_time.to_i} AND created <= #{end_time.to_i}) OR (timestamp >= #{start_time.to_i}  AND timestamp <= #{end_time.to_i})")
+    .where(type: node_type)
+    .where(range)
     .order('node_revisions.timestamp DESC')
     .distinct
+  end
+
+  def unmoderated_in_period(start_time, end_time)
+    range = "(created >= #{start_time.to_i} AND created <= #{end_time.to_i})"
+    Node.where('node.status = 4')
+        .where(type: 'note')
+        .where(range)
+        .order('created DESC')
+        .distinct
   end
 
   def social_link(site)
@@ -292,16 +312,24 @@ class User < ActiveRecord::Base
     self
   end
 
+  def self.send_browser_notification(users_ids, notification)
+    users_ids.each do |uid|
+      if UserTag.where(value: 'notifications:all', uid: uid).any?
+        ActionCable.server.broadcast "users:notification:#{uid}", notification: notification
+      end
+    end
+  end
+
   def banned?
     status == Status::BANNED
   end
 
   def note_count
-    Node.where(status: 1, uid: uid, type: 'note').count
+    Node.where(status: 1, uid: uid, type: 'note').size
   end
 
   def node_count
-    Node.where(status: 1, uid: uid).count + Revision.where(uid: uid).count
+    Node.where(status: 1, uid: uid).size + Revision.where(uid: uid).size
   end
 
   def liked_notes
@@ -337,6 +365,19 @@ class User < ActiveRecord::Base
     end
   end
 
+  def send_digest_email_spam
+    if has_tag('digest:weekly:spam')
+      @frequency_digest = Frequency::WEEKLY
+      @nodes_unmoderated = unmoderated_in_period(1.week.ago, Time.current)
+    elsif has_tag('digest:daily:spam')
+      @frequency_digest = Frequency::DAILY
+      @nodes_unmoderated = unmoderated_in_period(1.day.ago, Time.current)
+    end
+    if @nodes_unmoderated.size.positive?
+      AdminMailer.send_digest_spam(@nodes_unmoderated, @frequency_digest).deliver_now
+    end
+ end
+
   def tag_counts
     tags = {}
     Node.order('nid DESC').where(type: 'note', status: 1, uid: id).limit(20).each do |node|
@@ -358,11 +399,11 @@ class User < ActiveRecord::Base
 
   class << self
     def search(query)
-      User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', query + '*')
+      User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', "#{query}*")
     end
 
     def search_by_username(query)
-      User.where('MATCH(username) AGAINST(? IN BOOLEAN MODE)', query + '*')
+      User.where('MATCH(username) AGAINST(? IN BOOLEAN MODE)', "#{query}*")
     end
 
     def validate_token(token)
@@ -383,14 +424,14 @@ class User < ActiveRecord::Base
       User.where('lower(username) = ?', username.downcase).first
     end
 
-    # all uses who've posted a node, comment, or answer in the given period
+    # all users who've posted a node, comment, or answer in the given period
     def contributor_count_for(start_time, end_time)
       notes = Node.where(type: 'note', status: 1, created: start_time.to_i..end_time.to_i).pluck(:uid)
       answers = Answer.where(created_at: start_time..end_time).pluck(:uid)
       questions = Node.questions.where(status: 1, created: start_time.to_i..end_time.to_i).pluck(:uid)
       comments = Comment.where(timestamp: start_time.to_i..end_time.to_i).pluck(:uid)
       revisions = Revision.where(status: 1, timestamp: start_time.to_i..end_time.to_i).pluck(:uid)
-      contributors = (notes + answers + questions + comments + revisions).compact.uniq.length
+      contributors = (notes + answers + questions + comments + revisions).compact.uniq.size
       contributors
     end
 
@@ -422,7 +463,7 @@ class User < ActiveRecord::Base
       comments = Comment.pluck(:uid)
       revisions = Revision.where(status: 1).pluck(:uid)
 
-      (notes + answers + questions + comments + revisions).compact.uniq.length
+      (notes + answers + questions + comments + revisions).compact.uniq.size
     end
 
     def watching_location(nwlat, selat, nwlng, selng)
@@ -437,6 +478,19 @@ class User < ActiveRecord::Base
 
       User.where("id IN (?)", uids).order(:id)
     end
+  end
+
+  def recent_locations(limit = 5)
+    recent_nodes = self.nodes.includes(:tag)
+      .references(:term_data)
+      .where('term_data.name LIKE ?', 'lat:%')
+      .joins("INNER JOIN term_data AS lon_tag ON lon_tag.name LIKE 'lat:%'")
+      .order(created: :desc)
+      .limit(5)
+  end
+
+  def latest_location
+    recent_locations.last
   end
 
   private

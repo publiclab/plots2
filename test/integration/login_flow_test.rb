@@ -30,6 +30,30 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     # assert_select "span.moderation-notice", false
   end
 
+  test 'should login and subscribe to multiple tags' do
+    post '/register', params: {
+          user: {
+            username: 'eleven',
+            password: 'demagorgon',
+            password_confirmation: 'demagorgon',
+            email: 'upside@down.today',
+            bio: 'From Hawkins'
+          },
+          spamaway: {
+            statement1: I18n.t('spamaway.human.statement1'),
+            statement2: I18n.t('spamaway.human.statement2'),
+            statement3: I18n.t('spamaway.human.statement3'),
+            statement4: I18n.t('spamaway.human.statement4')
+          },
+          return_to: '/subscribe/multiple/tag/arduino,games'
+        }
+    assert_response :redirect
+    # a success here would mean sent back to form with errors
+    assert_redirected_to '/dashboard'
+    assert_equal 'Registration successful. Welcome to our community!You are now following \'arduino,games\'.',flash[:notice]
+
+  end
+
   test 'should redirect to current page when logging in through the header login' do
     get '/questions'
     assert_response :success
@@ -104,4 +128,170 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     assert_not_nil request.env['omniauth.auth']
   end
 
+  test 'redirect to multiple subscription route if user is not logged in and tries to subscribe to multiple tags' do
+    get '/subscribe/multiple/tag/blog,kites,balloon,awesome'
+    assert_redirected_to '/login?return_to=/subscribe/multiple/tag/blog,kites,balloon,awesome'
+    post '/user_sessions', params: { user_session: { username: users(:jeff).username, password: 'secretive' }, return_to: '/subscribe/multiple/tag/blog,kites,balloon,awesome' }
+    assert_equal "Successfully logged in.", flash[:notice]
+    assert_redirected_to '/subscribe/multiple/tag/blog,kites,balloon,awesome'
+  end
+
+  test 'redirect to the dashboard when entering wrong password, then correct password on main page.' do
+    get '/'
+    assert_response :success
+    post '/user_sessions', params: {"return_to":"/", "user_session":{username: users(:jeff).username, password: 'wrong', "remember_me":"0"}}
+    assert_response :success
+    assert_equal '/user_sessions', path
+    post '/user_sessions', params: {"return_to":"/user_sessions", "user_session":{username: users(:jeff).username, password: 'secretive', "remember_me":"0"}}
+    follow_redirect!
+    assert_redirected_to '/dashboard'
+  end
+
+ 
+test 'reset password for google oauth user' do
+
+    # login user through oauth
+    get '/auth/google_oauth2'
+    assert_redirected_to '/auth/google_oauth2/callback'
+
+    Rails.application.env_config["omniauth.auth"] =  OmniAuth.config.mock_auth[:google_oauth2]
+    #Sign Up through oauth
+    post "/user_sessions"
+    assert_equal "You have successfully signed in. Please change your password using the link sent to you via e-mail.",  flash[:notice]
+
+    # find new user in db
+    user = User.find_by(username: "bansal_sidharth309")
+
+    # setup reset key to create password
+    key = user.generate_reset_key
+    user.save
+
+    user_attributes = user.attributes
+    user_attributes[:password] = 'newpassword'
+    user_attributes[:password_confirmation] = 'newpassword'
+
+    get "/reset", params: { key: key, user: user_attributes }
+
+    assert_equal 'Your password was successfully changed.', flash[:notice]
+
+    # logout
+    delete "/user_sessions/#{user.id}"
+    assert_equal "Successfully logged out.",  flash[:notice]
+
+    # login successfully with new password
+    post "/user_sessions", params: { password: "newpassword", username: user.name }
+    assert_equal "Successfully logged in.",  flash[:notice]
+    Rails.application.env_config["omniauth.auth"] =  nil
+  end
+
+
+  test 'reset password for github oauth user' do
+
+    # login user through oauth
+    get '/auth/github'
+    assert_redirected_to '/auth/github/callback'
+
+    Rails.application.env_config["omniauth.auth"] =  OmniAuth.config.mock_auth[:github1]
+    #Sign Up through oauth
+    post "/user_sessions"
+    assert_equal "You have successfully signed in. Please change your password using the link sent to you via e-mail.",  flash[:notice]
+
+    # find new user in db
+    user = User.find_by(username: "bansal_sidharth309")
+
+    # setup reset key to create password
+    key = user.generate_reset_key
+    user.save
+
+    user_attributes = user.attributes
+    user_attributes[:password] = 'newpassword'
+    user_attributes[:password_confirmation] = 'newpassword'
+
+    get "/reset", params: { key: key, user: user_attributes }
+
+    assert_equal 'Your password was successfully changed.', flash[:notice]
+
+    # logout
+    delete "/user_sessions/#{user.id}"
+    assert_equal "Successfully logged out.",  flash[:notice]
+
+    # login successfully with new password
+    post "/user_sessions", params: { password: "newpassword", username: user.name }
+    assert_equal "Successfully logged in.",  flash[:notice]
+    Rails.application.env_config["omniauth.auth"] =  nil
+  end
+
+
+  test 'reset password for twitter oauth user' do
+
+    # login user through oauth
+    get '/auth/twitter'
+    assert_redirected_to '/auth/twitter/callback'
+
+    Rails.application.env_config["omniauth.auth"] =  OmniAuth.config.mock_auth[:twitter1]
+    #Sign Up through oauth
+    post "/user_sessions"
+    assert_equal "You have successfully signed in. Please change your password using the link sent to you via e-mail.",  flash[:notice]
+
+    # find new user in db
+    user = User.find_by(username: "bansal_sidharth309")
+
+    # setup reset key to create password
+    key = user.generate_reset_key
+    user.save
+
+    user_attributes = user.attributes
+    user_attributes[:password] = 'newpassword'
+    user_attributes[:password_confirmation] = 'newpassword'
+
+    get "/reset", params: { key: key, user: user_attributes }
+
+    assert_equal 'Your password was successfully changed.', flash[:notice]
+
+    # logout
+    delete "/user_sessions/#{user.id}"
+    assert_equal "Successfully logged out.",  flash[:notice]
+
+    # login successfully with new password
+    post "/user_sessions", params: { password: "newpassword", username: user.name }
+    assert_equal "Successfully logged in.",  flash[:notice]
+    Rails.application.env_config["omniauth.auth"] =  nil
+  end
+
+
+  test 'reset password for facebook oauth user' do
+
+    # login user through oauth
+    get '/auth/facebook'
+    assert_redirected_to '/auth/facebook/callback'
+
+    Rails.application.env_config["omniauth.auth"] =  OmniAuth.config.mock_auth[:facebook1]
+    #Sign Up through oauth
+    post "/user_sessions"
+    assert_equal "You have successfully signed in. Please change your password using the link sent to you via e-mail.",  flash[:notice]
+
+    # find new user in db
+    user = User.find_by(username: "bansal_sidharth309")
+
+    # setup reset key to create password
+    key = user.generate_reset_key
+    user.save
+
+    user_attributes = user.attributes
+    user_attributes[:password] = 'newpassword'
+    user_attributes[:password_confirmation] = 'newpassword'
+
+    get "/reset", params: { key: key, user: user_attributes }
+
+    assert_equal 'Your password was successfully changed.', flash[:notice]
+
+    user = User.find_by(name: "jeff")
+    delete "/user_sessions/#{user.id}"
+    assert_equal "Successfully logged out.",  flash[:notice]
+
+    # login successfully with new password
+    post "/user_sessions", params: { password: "newpassword", username: user.name }
+    assert_equal "Successfully logged in.",  flash[:notice]
+    Rails.application.env_config["omniauth.auth"] =  nil
+  end
 end

@@ -37,7 +37,7 @@ Node `status` -- a property of `Node`, can be:
 
 ### Drafts
 
-Drafts are a type of Research notes. They can be used by users to save their research notes without publishing them publically. But, not all users are eligible to create draft.
+Drafts are a type of Research notes. They can be used by users to save their research notes without publishing them publicly. But, not all users are eligible to create draft.
 Only users who have successfully published their first-note would be shown option for creating draft. Draft would be visible to co-author and other users can access it using secret link
 shared by author. Different draft-related privileges are mentioned below in the table:
 
@@ -88,7 +88,7 @@ Answers are similar to Comments, but are used in Question-type Notes, and may ea
 
 Our primary user type is User. Users can login via email using the [Authlogic gem (a simple ruby authentication
 solution)](https://github.com/binarylogic/authlogic). Also, recently we have added the option to login via Twitter, Github, Facebook and Google using the
-[Omniauth gem](https://github.com/publiclab/plots2/blob/master/doc/Omniauth.md).
+[Omniauth gem](https://github.com/publiclab/plots2/blob/main/doc/Omniauth.md).
 
 Users each have a profile at `/profile/USERNAME`, which displays content stored in the `user.bio` text field.
 

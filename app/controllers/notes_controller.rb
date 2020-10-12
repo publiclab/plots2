@@ -14,7 +14,7 @@ class NotesController < ApplicationController
 
   def places
     @title = 'Places'
-    @notes = Node.joins('LEFT OUTER JOIN node_revisions ON node_revisions.nid = node.nid
+    @pagy, @notes = pagy(Node.joins('LEFT OUTER JOIN node_revisions ON node_revisions.nid = node.nid
                          LEFT OUTER JOIN community_tags ON community_tags.nid = node.nid
                          LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid')
       .select('*, max(node_revisions.timestamp)')
@@ -23,8 +23,7 @@ class NotesController < ApplicationController
       .references(:term_data)
       .where('term_data.name = ?', 'chapter')
       .group('node.nid')
-      .order(Arel.sql('max(node_revisions.timestamp) DESC, node.nid'))
-      .paginate(page: params[:page], per_page: 24)
+      .order(Arel.sql('max(node_revisions.timestamp) DESC, node.nid')), items: 24)
 
     # Arel.sql is used to remove a Deprecation warning while updating to rails 5.2.
 
@@ -50,24 +49,13 @@ class NotesController < ApplicationController
     return if redirect_to_node_path?(@node)
 
     if @node
-      if @node.status == 3 && current_user.blank?
-        flash[:warning] = "You need to login to view the page"
-        redirect_to '/login'
-        return
-      elsif @node.status == 3 && @node.author != current_user && !current_user.can_moderate? && !@node.has_tag("with:#{current_user.username}")
-        flash[:notice] = "Only author can access the draft note"
-        redirect_to '/'
-        return
-      end
-
-      if @node.has_power_tag('question')
+      if @node.has_power_tag('question') && @node.status == 1
         redirect_to @node.path(:question)
         return
       end
 
-      redirect_power_tag_redirect
-
       alert_and_redirect_moderated
+      redirect_power_tag_redirect
 
       impressionist(@node, 'show', unique: [:ip_address])
       @title = @node.latest.title
@@ -75,6 +63,19 @@ class NotesController < ApplicationController
       @tagnames = @tags.collect(&:name)
 
       set_sidebar :tags, @tagnames
+    else
+      page_not_found
+    end
+  end
+
+  def print
+    @node = Node.find_by(nid: params[:id], type: 'note')
+    return if redirect_to_node_path?(@node)
+
+    if @node
+      impressionist(@node, 'print', unique: [:ip_address])
+      render layout: "print"
+
     else
       page_not_found
     end
@@ -107,6 +108,7 @@ class NotesController < ApplicationController
     end
 
     if saved
+      @node.notify_callout_users
       params[:tags]&.tr(' ', ',')&.split(',')&.each do |tagname|
         @node.add_tag(tagname.strip, current_user)
       end
@@ -271,9 +273,9 @@ class NotesController < ApplicationController
   def author
     @user = User.find_by(name: params[:id])
     @title = @user.name
-    @notes = Node.paginate(page: params[:page], per_page: 24)
+    @pagy, @notes = pagy(Node
       .order('nid DESC')
-      .where(type: 'note', status: 1, uid: @user.uid)
+      .where(type: 'note', status: 1, uid: @user.uid), items: 24)
     render template: 'notes/index'
   end
 
@@ -297,7 +299,7 @@ class NotesController < ApplicationController
     @notes = Node.research_notes
       .where(status: 1)
       .limit(20)
-      .order('nid DESC')
+      .order('cached_likes DESC')
     @unpaginated = true
     render template: 'notes/index'
   end
@@ -308,6 +310,7 @@ class NotesController < ApplicationController
       .where(type: 'page', status: 1)
       .order('nid DESC')
     @notes = Node.where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
+                 .order('created DESC')
     @unpaginated = true
     render template: 'notes/index'
   end
@@ -383,9 +386,11 @@ class NotesController < ApplicationController
     if current_user && current_user.uid == @node.uid || current_user.can_moderate? || @node.has_tag("with:#{current_user.username}")
       @node.path = @node.generate_path
       @node.slug = @node.slug.split('token').first
+      @node['created'] = DateTime.now.to_i # odd assignment needed due to legacy Drupal column types
+      @node['changed'] = DateTime.now.to_i
       @node.publish
       SubscriptionMailer.notify_node_creation(@node).deliver_now
-      flash[:notice] = "Thanks for your contribution. Research note published! Now, it's visible publically."
+      flash[:notice] = "Thanks for your contribution. Research note published! Now, it's visible publicly."
       redirect_to @node.path
     else
       flash[:warning] = "You are not author or moderator so you can't publish a draft!"
@@ -404,7 +409,7 @@ class NotesController < ApplicationController
   end
 
   def redirect_power_tag_redirect
-    if @node.has_power_tag('redirect')
+    if @node.has_power_tag('redirect') && @node.status == 1
       if current_user.blank? || !current_user.can_moderate?
         redirect_to URI.parse(Node.find(@node.power_tag('redirect')).path).path
       elsif current_user.can_moderate?

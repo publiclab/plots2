@@ -21,10 +21,29 @@ class QuestionsController < ApplicationController
   def index
     @title = 'Questions and Answers'
     set_sidebar
-    @questions = Node.questions
+    @pagy, @questions = pagy(Node.questions
       .where(status: 1)
-      .order('node.nid DESC')
-      .paginate(page: params[:page], per_page: 24)
+      .order('node.nid DESC'), items: 24)
+  end
+
+  def index_shadow
+    @title = 'Questions and Answers'
+    @pagy, @questions = pagy(Node.questions
+      .where(status: 1)
+      .order('node.nid DESC'), items: 24)
+
+    @populartitle = 'Popular Questions'
+    @popularquestions = Node.questions
+      .where(status: 1)
+    @popularquestions = filter_questions_by_tag(@questions, params[:tagnames])
+      .order('views DESC')
+      .limit(20)
+
+    @popularwikis = Node.limit(10)
+      .where(type: 'page', status: 1)
+      .order('nid DESC')
+    @unpaginated = true
+
   end
 
   # a form for new questions, at /questions/new
@@ -70,15 +89,14 @@ class QuestionsController < ApplicationController
     set_sidebar :tags, @tagnames
   end
 
-  def answered
-    @title = 'Recently answered'
+  def recently_commented
+    @title = 'Recently Commented'
     @questions = Node.questions
       .where(status: 1)
-    @questions = filter_questions_by_tag(@questions, params[:tagnames])
-      .joins(:answers)
-      .order('answers.created_at DESC')
-      .group('node.nid')
-      .paginate(page: params[:page], per_page: 24)
+    @pagy, @questions = pagy(filter_questions_by_tag(@questions, params[:tagnames])
+      .joins(:comments)
+      .order('comments.timestamp DESC')
+      .group('node.nid'), items: 24)
     @wikis = Node.limit(10)
       .where(type: 'page', status: 1)
       .order('nid DESC')
@@ -87,14 +105,12 @@ class QuestionsController < ApplicationController
 
   def unanswered
     @title = 'Unanswered questions'
-    @questions = Node.questions
+    @pagy, @questions = pagy(Node.questions
       .where(status: 1)
-      .includes(:answers)
-      .references(:answers)
-      .where(answers: { id: nil })
+      .left_outer_joins(:comments)
+      .where(comments: { cid: nil })
       .order('node.nid DESC')
-      .group('node.nid')
-      .paginate(page: params[:page], per_page: 24)
+      .group('node.nid'), items: 24)
     render template: 'questions/index'
   end
 

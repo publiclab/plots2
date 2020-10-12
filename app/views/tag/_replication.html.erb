@@ -2,7 +2,7 @@
 <% if @node.has_power_tag(response_type) %>
 <p class="guided-tags alert alert-info">
   <b>This is marked as an <%= response_type %> for others to try.</b> <br />
-  <a href="/post?tags=<%= response_type %>:<%= @node.id %><% if response_type == 'response' %>,hidden:response<% end %><%= ',' + (@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') if @tagnames && @tagnames.length > 0%>" class="btn btn-sm btn-default requireLogin">Try it now</a> &nbsp; <br>
+  <a href="/post?tags=<%= response_type %>:<%= @node.id %><% if response_type == 'response' %>,hidden:response<% end %><%= ',' + (@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') if @tagnames && @tagnames.length > 0%>" class="btn btn-sm btn-outline-secondary requireLogin">Try it now</a> &nbsp; <br>
   <a href="javascript:void()" onClick="$('.quiz').toggle();">Click here</a> to add some more details.
 </p>
 
@@ -12,7 +12,7 @@
   <p class="time">
     How long does this <%= response_type %> take?
     <% ['1h', '3h', '5h', '10h'].each do |tag| %>
-      <a class="btn btn-sm btn-default" href="javascript:void()" onClick="addTag('time:<%= tag %>');$('.quiz .time').hide()"><%= tag %></a>
+      <a class="btn btn-sm btn-outline-secondary" href="javascript:void()" onClick="addTag('time:<%= tag %>');$('.quiz .time').hide()"><%= tag %></a>
     <% end %>
   </p>
   <% end %>
@@ -21,7 +21,7 @@
   <p class="difficulty">
     How hard is this <%= response_type %>?
     <% ['easy', 'medium', 'hard'].each do |tag| %>
-      <a class="btn btn-sm btn-default" href="javascript:void()" onClick="addTag('difficulty:<%= tag %>');$('.quiz .difficulty').hide()"><%= tag %></a>
+      <a class="btn btn-sm btn-outline-secondary" href="javascript:void()" onClick="addTag('difficulty:<%= tag %>');$('.quiz .difficulty').hide()"><%= tag %></a>
     <% end %>
   </p>
   <% end %>
@@ -30,7 +30,7 @@
   <p class="category">
     What <a href="/wiki/activity-categories">kind of <%= response_type %></a> is it?
     <% ['build','verify','observe','test-limits','field-test','experiment','monitor'].each do |tag| %>
-      <a class="btn btn-sm btn-default" href="javascript:void()" onClick="addTag('category:<%= tag %>');$('.quiz .category').hide()"><%= tag %></a>
+      <a class="btn btn-sm btn-outline-secondary" href="javascript:void()" onClick="addTag('category:<%= tag %>');$('.quiz .category').hide()"><%= tag %></a>
     <% end %>
   </p>
   <% end %>
@@ -39,7 +39,7 @@
   <p class="status">
     What is it's current <a href="/wiki/activity-categories#Status">status</a>?
     <% ['request','proposal','draft','in-progress','review-me','complete'].each do |tag| %>
-      <a class="btn btn-sm btn-default" href="javascript:void()" onClick="addTag('status:<%= tag %>');$('.quiz .status').hide()"><%= tag %></a>
+      <a class="btn btn-sm btn-outline-secondary" href="javascript:void()" onClick="addTag('status:<%= tag %>');$('.quiz .status').hide()"><%= tag %></a>
     <% end %>
   </p>
   <% end %>

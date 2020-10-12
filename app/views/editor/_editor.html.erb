@@ -1,34 +1,18 @@
 <%= render :partial => "editor/toolbar" %>
 
 <div class="form-group dropzone">
-  <textarea name="body" tabindex="2" class="form-control" id="text-input" rows="20" cols="60"><% if @node && @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
+  <textarea aria-label="Wiki Text" name="body" tabindex="2" class="form-control" id="text-input" rows="20" cols="60"><% if @node && @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
   <div id="imagebar">
-    <div style="display:none;" id="create_progress" class="progress progress-striped active pull-right">
-      <div id="create_progress-bar" class="progress-bar" style="width: 0%;"></div>
-    </div>
-    <p>
-
-      <span id="create_uploading" class="uploading" style="display:none;">
-        Uploading... (<a onClick="$E.cancel_upload()">cancel</a>)
-      </span>
-
-      <span id="create_prompt" class="prompt">
-        <span style="padding-right:4px;float:left;" class="hidden-sm">
-          Drag and drop to add an image or file, or 
+    <div class = "inline_image_drop" style="display:none;">
+      <div id="create_progress" style="display:none;" class="progress float-right">
+        <div id="create_progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%;"></div>
+      </div>
+      <p>
+        <span id="create_uploading" class="uploading" style="display:none;">
+          Uploading...
         </span>
-
-        <!-- http://stackoverflow.com/questions/11235206/twitter-bootstrap-form-file-element-upload-button -->
-        <label class="" for="fileinput">
-          <input id="fileinput" type="file" name="image[photo]" style="display:none;" />
-          <a class="hidden-xs">choose one</a>
-          <span class="visible-xs">
-            <i class="fa fa-upload"></i> 
-            <a>Upload image</a>
-          </span>
-        </label> 
-      </span>
-
-    </p>
+      </p>
+    </div>
   </div>
 </div>
 

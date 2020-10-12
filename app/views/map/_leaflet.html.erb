@@ -1,32 +1,39 @@
-<%= render :partial => "map/mapDependencies" %>
+<% top_map ||= false %>
+<% zoom ||= lat.to_s.length.to_i + 6 %>
+<% unique_id = rand(1000) %>
+<% user ||= @user # allow overriding w/ local variable %>
+<% blurred ||= false %>
 
-  <% unique_id = rand(1000) %>
+<% if top_map == true %>
+  <style>
+  #top_map { width:100%; height:300px; margin: 0 ; margin-top: -21px ; margin-bottom: 15px ; position: relative;}
+  </style>
+<% else %>
   <style>
   #map<%= unique_id %> { width:100%; height:300px; margin: 0; position: relative;}
   </style>
-  <div class="leaflet-map" id="map<%= unique_id %>"></div>
+  <div class="leaflet-map sidebar-top-map" id="map<%= unique_id %>"></div>
   <% if defined? people %><p><i><small>Share your own location on <a href='/profile'>your profile</a>.</small></i></p><% end %>
-  <script>
+<% end %>  
 
+  <script>
     var bounds = new L.LatLngBounds(new L.LatLng(84.67351257 , -172.96875) , new L.LatLng(-54.36775852 , 178.59375)) ;
 
-    var map<%= unique_id %> = L.map('map<%= unique_id %>' , {
-      maxBounds: bounds ,
-      maxBoundsViscosity: 0.75
-    }).setView([<%= lat %>,<%= lon %>], <%= lat.to_s.length.to_i %> + 6);
+    <% if top_map == true %>
+      var map<%= unique_id %> = L.map('top_map' , {
+        maxBounds: bounds ,
+        maxBoundsViscosity: 0.75
+      }).setView([<%= lat %>,<%= lon %>], <%= zoom %>);
+    <% else %>
+      var map<%= unique_id %> = L.map('map<%= unique_id %>' , {
+        maxBounds: bounds ,
+        maxBoundsViscosity: 0.75
+      }).setView([<%= lat %>,<%= lon %>], <%= zoom %>);
+    <% end %>
 
     var markers_hash<%= unique_id %> = new Map() ;
 
-    var map_lat = <%= lat %> ;
-    var map_lon = <%= lon %> ;
-
-     window.setTimeout(function(){
-
-        map<%= unique_id %>.setZoom(<%= lat.to_s.length.to_i %> + 6) ; 
-    
-     }, 3500);
-
-    setupLEL(map<%= unique_id %> , 0) ;
+    setupLEL(map<%= unique_id %>, markers_hash<%= unique_id %>);
 
     map<%= unique_id %>.on('zoomend' , function () {
        var NWlat = map<%= unique_id %>.getBounds().getNorthWest().lat ;
@@ -56,7 +63,7 @@
                    var title = data.items[i].doc_title;
                    var default_url = PLmarker_default();
                    var mid = data.items[i].doc_id ;
-                   var m = L.marker([data.items[i].latitude, data.items[i].longitude], {icon: default_url}).addTo(map<%= unique_id %>).bindPopup("<a href=" + url + ">" + title + "</a>") ;
+                   var m = L.marker([data.items[i].latitude, data.items[i].longitude], {icon: default_url}).bindPopup("<a href=" + url + ">" + title + "</a>") ;
 
                    if(markers_hash<%= unique_id %>.has(mid) === false){
                        m.addTo(map<%= unique_id %>).bindPopup("<a href=" + url + ">" + title + "</a>") ;
@@ -98,7 +105,7 @@
                    var title = data.items[i].doc_title;
                    var default_url = PLmarker_default();
                    var mid = data.items[i].doc_id ;
-                   var m = L.marker([data.items[i].latitude, data.items[i].longitude], {icon: default_url}).addTo(map<%= unique_id %>).bindPopup("<a href=" + url + ">" + title + "</a>") ;
+                   var m = L.marker([data.items[i].latitude, data.items[i].longitude], {icon: default_url}).bindPopup("<a href=" + url + ">" + title + "</a>") ;
 
                    if(markers_hash<%= unique_id %>.has(mid) === false){
                        m.addTo(map<%= unique_id %>).bindPopup("<a href=" + url + ">" + title + "</a>") ;
@@ -110,6 +117,10 @@
            map<%= unique_id %>.spin(false) ;
        });
    }) ;
-
+   
+    <% if user && !blurred %>
+      var default_Icon =new PLmarker_default();
+      L.marker([<%= lat %>, <%= lon %>] , {icon: default_Icon}).addTo(map<%= unique_id %>).bindPopup("<a href='https://publiclab.org/profile/<%= user.username %>'><%= user.username %></a>");
+    <% end %>
 
   </script>
