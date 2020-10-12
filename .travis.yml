@@ -24,7 +24,6 @@ git:
 env:
   global:
     - CC_TEST_REPORTER_ID=87727c395b58d1b112b6ad1acd238b40e4acf788c75d7f9a5c092b804b29bf7a
-    - COMPOSE_FILE=./containers/docker-compose-testing.yml
     - CI=true
     - GENERATE_REPORT=true
     - RAILS_ENV=test
