@@ -18,7 +18,7 @@ class UserTagsControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
     post :create, params: { id: users(:bob).id, name: 'environment' }, xhr: true
     assert_response :success
-    assert_equal [['environment', UserTag.where(value:'environment').first.id]], JSON.parse(response.body)['saved']
+    assert_equal [['environment', UserTag.where(value:'environment').first.id, users(:bob).id.to_s]], JSON.parse(response.body)['saved']
   end
 
   test 'should create two new tags from "one,two"' do
@@ -27,7 +27,7 @@ class UserTagsControllerTest < ActionController::TestCase
       post :create, params: { name: 'one,two', nid: nodes(:one).nid, id: users(:bob).id }, xhr: true
     end
     assert_response :success
-    assert_equal [['one', UserTag.where(value: 'one').first.id], ['two', UserTag.where(value: 'two').first.id]], JSON.parse(response.body)['saved']
+    assert_equal [['one', UserTag.where(value: 'one').first.id, users(:bob).id.to_s], ['two', UserTag.where(value: 'two').first.id, users(:bob).id.to_s]], JSON.parse(response.body)['saved']
   end
 
   test 'should delete existing tag' do
@@ -36,6 +36,13 @@ class UserTagsControllerTest < ActionController::TestCase
     delete :delete , params: { id: users(:bob).id , name: user_tag.name }
     assert_equal 'Tag deleted.', flash[:notice]
     assert_redirected_to info_path
+  end
+
+  test 'should render a text/plain when a tag is deleted through post request xhr' do
+    UserSession.create(users(:bob))
+    user_tag = user_tags(:two)
+    delete :delete , params: { id: users(:bob).id , name: user_tag.name }, xhr: true
+    assert_equal user_tag.id, JSON.parse(@response.body)['tid']
   end
 
   test 'cannot delete non-existent tag' do
@@ -128,5 +135,12 @@ class UserTagsControllerTest < ActionController::TestCase
    assert assigns(:user_tags).length > 0
    assert_template 'user_tags/index'
  end
+
+  test 'should report error if delete tag non existing (xhr req)' do
+    UserSession.create(users(:bob))
+    delete :delete, xhr: true, params: { id: users(:bob).id , name: "N/A" }
+    assert response.body.include? "Tag doesn't exist."
+    assert_not JSON.parse(response.body)['status']
+  end
 
 end

@@ -2,7 +2,7 @@ require 'test_helper'
 
 class UtilsTest < ActiveSupport::TestCase
   include Utils
-
+  
   test 'test_string_encryption' do
     data = "data_to_be_encrypted"
     encrypted_data = encrypt(data)

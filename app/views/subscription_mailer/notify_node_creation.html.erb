@@ -6,7 +6,7 @@
 <p>Read and respond to the post here: https://<%= ActionMailer::Base.default_url_options[:host] %><%= @node.path %></p>
 <% end %>
 
-<hr /> 
+<hr />
 
 <% if @node.main_image %><a style="margin-bottom:10px;" href="<%= ActionMailer::Base.default_url_options[:host] %><%= @node.path %>"><img src="<%= ActionMailer::Base.default_url_options[:host] %><%= @node.main_image.path(:default) %>" /></a><% end %>
 
@@ -17,6 +17,8 @@
 <div style="color:#aaa;">
 
 <p>You received this email because you are subscribed to some or all of the following tags: <%= @tags %>.</p>
+
+<p>Subscribe to all the tags for this post by visiting https://<%= ActionMailer::Base.default_url_options[:host] %>/subscribe/multiple/tag/<%= @tags %>.</p>
 
 <p>To change your preferences, please visit https://<%= ActionMailer::Base.default_url_options[:host] %>/subscriptions.</p>
 

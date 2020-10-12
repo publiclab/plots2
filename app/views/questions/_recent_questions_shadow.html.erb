@@ -1,0 +1,42 @@
+<div class="row justify-content-center">
+  <div class = "card col-md-9" style="padding:1em;">
+    <% @questions.limit(3).each_with_index do |node,i| %>
+      <span style="padding:0.5em;">
+        <img class="img" src="<%= node.author.profile_image %>" width="25" height="25"/>
+        <a class="ml-3 questions"<% if @widget %>target="_blank"<% end %> href="<%= node.path(:question) %>"><%= node.title %></a>
+        <span class="by-author">by <a href="/profile/<%= node.author.name %>">@<%= node.author.name %></a></span>
+      </span>
+    <% end %>
+  </div>
+</div>
+<style>
+
+.card {
+  background-color: #fff;
+  border: 1px solid;
+  border-color: #D3D3D3;
+  border-radius: 6px;
+}
+
+.questions{
+  font-size: 16px;
+  color: black;
+  font-family:"Junction Regular";
+}
+
+.img{
+  border-color:#555;
+  border-radius: 50%;
+  margin-left: 10px;
+}
+
+.by-author{
+  color: #A9A9A9;
+  font-size: 15px;
+}
+
+.by-author a{
+  color: #A9A9A9;
+}
+
+</style>

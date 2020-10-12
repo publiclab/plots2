@@ -1,10 +1,12 @@
 <link href="/lib/woofmark/dist/woofmark.min.css" rel="stylesheet">
-<link href="/lib/horsey/dist/horsey.min.css" rel="stylesheet">
 <link href="/lib/bootstrap-tokenfield/dist/css/tokenfield-typeahead.min.css" rel="stylesheet">
 <link href="/lib/bootstrap-tokenfield/dist/css/bootstrap-tokenfield.min.css" rel="stylesheet">
 
+<!-- required for MapModule -->
+<%= stylesheet_link_tag "leaflet-blurred-location/dist/Leaflet.BlurredLocation.css" %>
+<%= javascript_include_tag('leaflet-blurred-location/dist/Leaflet.BlurredLocation.js') %>
+
 <!-- required for TagsModule -->
-<script src="/lib/typeahead.js/dist/typeahead.jquery.js"></script>
 <script src="/lib/typeahead.js/dist/bloodhound.js"></script>
 <script src="/lib/bootstrap-tokenfield/dist/bootstrap-tokenfield.js"></script>
 
@@ -13,39 +15,62 @@
 <link href="/lib/publiclab-editor/dist/PublicLab.Editor.css" rel="stylesheet">
 <script src="/lib/publiclab-editor/dist/PublicLab.Editor.js"></script>
 
-<link href="/lib/publiclab-editor/dist/PublicLab.Editor.css" rel="stylesheet">
+<%= javascript_include_tag('/lib/leaflet-spin/example/spin/dist/spin.min.js') %>
+<%= javascript_include_tag('/lib/leaflet-spin/example/leaflet.spin.min.js') %>
 
-<script src="/lib/publiclab-editor/dist/PublicLab.Editor.js"></script>
+<style type="text/css">
+  /* Fix a background-color error on this page. */
+  body {
+    background-color: white;
+  }
+
+  .pl-editor {
+    max-width: 100%;
+  }
+
+  .ple-module-main_image .col-lg-9 {
+    margin: 0 auto;
+  }
+
+  button i.fa-map-marker {
+    color: #c40;
+  }
+  button:hover i.fa-map-marker {
+    color: inherit;
+  }
+</style>
 
 <div class="pl-editor">
 
-  <div class="ple-header">
-
+  <div class="col-12 ple-header">
     <h1>Share</h1>
-    <p><i>Or use the <a target="_blank" href="?<%= request.env['QUERY_STRING'] %>&legacy=true">legacy editor</a></i></p>
-
+    <p>
+      <i>Or use the <a target="_blank" href="?<%= request.env['QUERY_STRING'] %>&legacy=true">legacy editor</a></i>
+    </p>
   </div>
 
   <div class="ple-content">
 
     <!-- errors module -->
-    <div class="ple-module container">
-
-      <div class="col-md-3"></div>
-      <div class="ple-errors col-md-9"></div>
-
-    </div>
+    <div class="ple-errors"></div>
     <!-- end errors module -->
 
     <!-- title module -->
-    <div class="ple-module-title ple-module container">
+    <div class="ple-module-title ple-module row">
 
-      <div class="ple-module-guide col-md-3">
+      <div class="ple-module-guide col-lg-3">
         <h2>1</h2>
       </div>
 
-      <div class="ple-module-content col-md-9">
-        <input class="form-control input-lg" type="text" placeholder="Title" value="<%= if @node then @node.title else params[:title] end %>" />
+      <div class="ple-module-content col-lg-9">
+        <input
+          aria-label="Enter Note Title"
+          class="form-control input-lg"
+          type="text"
+          id="title-input"
+          placeholder="Title"
+          value="<%= if @node then @node.title else params[:title] end %>"
+        />
       </div>
 
     </div>
@@ -54,40 +79,151 @@
 
     <!-- main_image module -->
     <div class="ple-module-main_image ple-module container">
+      <div class="ple-module-guide col-md-3"><h2>2</h2></div>
 
-      <div class="ple-module-guide col-md-3">
-        <h2>2</h2>
-      </div>
-
-      <div class="ple-module-content col-md-9 container">
-        <div class="ple-drag-drop col-md-6">
-          Drag an image here to upload.
+      <div class="module-mainImage ple-module-content col-md-9 container">
+        <div class="mainImageBox">
+          <div id="mainImage" class="ple-drag-drop">
+            Drag an image here to upload.
+          </div>
         </div>
         <div class="col-md-6 help">
-
           <div style="display:none;" class="progress">
-            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
+            <div
+              class="progress-bar progress-bar-striped active"
+              role="progressbar"
+              aria-valuenow="0"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              style="width: 0%;"
+            ></div>
           </div>
+          <div id="thumbnail-filename"></div>
 
-          <p><input type="file"  accept=".png, .jpg, .jpeg" name="image[photo]" value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>" /></p>
-          <p class="ple-help"><span class="ple-help-minor">Select an optional main image for your post.</span></p>
-
+          <div id="imageButtons">
+            <input type="file" name="image[photo]" id="thumbnail-img">
+            <label for="thumbnail-img" class="thumbnailBtn">
+              <span>Choose a file…</span>
+            </label>
+            <button id="removeFile" class="thumbnailBtn">Remove File</button>
+          </div>
+          <p class="ple-help">
+            <span class="ple-help-minor"
+              >Select an optional main image for your post.</span
+            >
+          </p>
         </div>
       </div>
-
     </div>
     <!-- end main_image module -->
 
+   <!-- Map Module start-->
+    <div class="ple-module-map ple-module row">
 
-    <!-- body module -->
-    <div class="ple-module-body ple-module container">
-
-      <div class="ple-module-guide col-md-3">
+      <div class="ple-module-guide col-lg-3">
         <h2>3</h2>
       </div>
 
-      <div class="ple-module-content col-md-9 container">
-        <textarea id="text-input" class="ple-textarea form-control"><% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
+      <div class="ple-module-content col-lg-9">
+        <button id="location_button" class="btn btn-lg btn-outline-secondary">
+          <i class="fa fa-map-marker" aria-hidden="true"></i>
+          Add a location
+        </button>
+        <p class="ple-help">
+          <span class="ple-help-minor">Search the map by entering a location's name or its latitude & longitude coordinates. You can also pan the map directly.</span>
+        </p>
+
+        <div id="map_content">
+          <div class="row">
+            <div class="col-lg-6">
+              <div
+                id="map"
+                class="leaflet-map"
+                style="width: 100% ; height: 300px; margin-bottom:8px;">
+              </div>
+
+
+            </div>
+
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="placenameInput">By place name</label>
+                <p>
+                  <input id="placenameInput" type="text" class="form-control" />
+                </p>
+              </div>
+
+              <div class="form-group">
+                Or <a href="#" id="coord_button">by entering coordinates</a>
+
+                <div id="coord_input" class="row">
+                  <div class="col-sm-6">
+                    <label for="lat">Latitude</label>
+                    <p>
+                      <input
+                        id="lat"
+                        type="text"
+                        class="form-control"
+                        placeholder="Latitude"
+                      />
+                    </p>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <label for="lng">Longitude</label>
+                    <p>
+                      <input
+                        id="lng"
+                        type="text"
+                        class="form-control"
+                        placeholder="Longitude"
+                      />
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <button
+                  class="btn btn-lg btn-outline-secondary"
+                  onclick="editor.mapModule.blurredLocation.geocodeWithBrowser(true);"
+                >
+                  <div id="ldi-geocode-button">
+                    <i class="fa fa-compass"></i>
+                    Use current location
+                  </div>
+                </button>
+              </div>
+
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input
+                    id="obscureLocation"
+                    type="checkbox"
+                    class="form-check-input"
+                    onchange='editor.mapModule.blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);'
+                  />
+                  Blur my location
+                </label>
+                <a href="https://publiclab.org/location-privacy" target="_blank">Learn more »</a>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Map Module end -->
+
+    <!-- body module -->
+    <div class="ple-module-body ple-module row">
+
+      <div class="ple-module-guide col-lg-3">
+        <h2>4</h2>
+      </div>
+
+      <div class="ple-module-content col-lg-9">
+        <textarea aria-label="Enter note description" id="text-input" placeholder="Enter the content here" class="ple-textarea form-control"><% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
       </div>
 
     </div>
@@ -95,14 +231,20 @@
 
 
     <!-- tags module -->
-    <div class="ple-module-tags ple-module container">
+    <div class="ple-module-tags ple-module row">
 
-      <div class="ple-module-guide col-md-3">
-        <h2>4</h2>
+      <div class="ple-module-guide col-lg-3">
+        <h2>5</h2>
       </div>
 
-      <div class="ple-module-content col-md-9">
-        <input class="form-control input-lg" type="text" placeholder="balloon-mapping, water-quality..." value="<% if params[:tags] || (@node && @node.tagnames) %><%= params[:tags] || @node.tagnames.join(',') %><% end %>" />
+      <div class="ple-module-content col-lg-9">
+        <input
+          aria-label="Enter related tags"
+          class="form-control input-lg"
+          type="text"
+          placeholder="balloon-mapping, water-quality..."
+          value="<% if params[:tags] || (@node && @node.tagnames) %><%= params[:tags] || @node.tagnames.join(',') %><% end %>"
+        />
       </div>
 
     </div>
@@ -111,13 +253,10 @@
     <!-- multi module -->
     <!--
     <div class="ple-module-multi ple-module container">
-
       <div class="ple-module-guide col-md-3">
         <p>Extras</p>
       </div>
-
       <div class="ple-module-content col-md-9">
-
         <div class="btn-group">
           <a class="btn btn-lg btn-default">
             <i class="fa fa-comment-o"></i> Invite responses <i class="fa fa-caret-down"></i>
@@ -135,36 +274,35 @@
             More <i class="fa fa-caret-down"></i>
           </a>
         </div>
-
       </div>
-
     </div>
     -->
     <!-- end multi module -->
 
 
   </div>
+  <div class="bug-btn-wrapper">
+        <a href="https://publiclab.org/post?n=23853" class="bug-btn" target="_blank">Found an issue with the editor? Report a bug.</a>
+  </div>
 
   <div class="ple-footer">
 
     <div class="ple-menu-more" style="display:none;">
       <b>History</b>
-      <div class="ple-history">
-      </div>
+      <div class="ple-history"></div>
       <hr />
       <!--
       <div class="form-control input-md ple-history">
         <option selected value="">recent edits</option>
       </div>
       -->
-  </div>
+    </div>
 
-    <button class="btn btn-lg btn-default btn-more">...</button>
+    <button class="btn btn-lg btn-outline-secondary btn-more"><i class="fa fa-clock-o"></i></button>
 
-    <span> &nbsp; By publishing, you agree to <a href="https://publiclab.org/licenses">open source your work</a><span class="hidden-xs"> so that others may use it.</span></span>
-
-    <button class="ple-publish btn btn-lg btn-primary pull-right disabled"><% if controller.action_name == "edit" && @node.status == 3 %>Save<% else %>Publish<% end %></button>
-    <span class="ple-help pull-right">
+    <span> &nbsp; By publishing, you agree to <a href="https://publiclab.org/licenses">open source your work</a><span class="d-none d-md-inline"> so that others may use it.</span></span>
+    <button class="ple-publish btn btn-lg btn-primary float-right disabled"><% if controller.action_name == "edit" && @node.status == 3 %>Save<% else %>Publish<% end %></button>
+    <span class="ple-help float-right">
       <% if controller.action_name != "edit" && !current_user.first_time_poster %>
         <span id="newOpts" style="display: inline-block;">
         <span id="text" style="display: none; color:red;">
@@ -177,7 +315,7 @@
             </label> |
           </span>
           <span class="ple-steps-left">2</span>
-          <span class="hidden-xs"> steps left</span>
+          <span class="d-none d-md-inline"> steps left</span>
         </span>
       <% end %>
     </span>
@@ -190,29 +328,29 @@
   var editor;
 
   (function() {
-
     editor = new PL.Editor({
-
       data: {
         token: $('meta[name="csrf-token"]').attr('content')
       },
-
+      <% if @lat and @lon %>
+        lat: <%= @lat %> ,
+        lon: <%= @lon %> ,
+        <% if @zoom %>
+          zoom: <%= @zoom %>,
+        <% end %>
+      <% end %>
       textarea:    $('.ple-textarea')[0],
-
       <% if @main_image %>
         mainImageUrl:   '<%= @main_image %>',
       <% end %>
-
       <% if params[:action] == 'edit' %>
         destination: '/notes/update/<%= @node.id %>?rich=true',
       <% else %>
         destination: '/notes/create?rich=true',
       <% end %>
-
       <% if params[:redirect] == 'question' %>
         redirect: 'redirect',
       <% end %>
-
       <% if (@node && @node.errors.size > 0) && (@revision && @revision.errors.size > 0) %>
          errors: <%=raw (@node.errors.to_h.merge(@revision.errors.to_h)).to_json %>,
        <% elsif (@node && @node.errors.size > 0) %>
@@ -220,9 +358,7 @@
        <% elsif (@revision && @revision.errors.size > 0) %>
          errors: <%=raw (@revision.errors.to_h).to_json %>,
        <% end %>
-
       format:      'publiclab',
-
       publishCallback: function publishCallback(response) {
         // parse and display errors!
         if (typeof response === "string") {
@@ -231,19 +367,18 @@
         } else if (response && Object.keys(response).length > 0) {
           $('.ple-errors').html('<div class="alert alert-danger"></div>');
           Object.keys(response).forEach(function(key, i) {
-            $('.ple-errors .alert').append('<p><b>' + key + '</b> </p>');
+            $('.ple-errors .alert').append('<p><b>' + '</b> </p>');
             $('.ple-errors .alert p:last').append(response[key].join(', '));
           });
           window.scroll(0, 0);
         }
       },
-
+      mapModule: true,
       mainImageModule: {
         uid: <%= current_user.id %><% if @node && @node.id %>,
-	nid: <%= @node.id %><% end %>,
+  nid: <%= @node.id %><% end %>,
         token: $('meta[name="csrf-token"]').attr('content')
       },
-
       richTextModule: {
         authorsAutocomplete: false,
         tagsAutocomplete: false,
@@ -251,10 +386,9 @@
         attachmentFormats: ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt', 'docx', 'bmp', 'obj', 'json']
         //formats: ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt', 'docx', 'bmp', 'obj', 'json', 'jpg', 'jpeg', 'png', 'gif']
       },
-
       titleModule: {
         suggestRelated: true,
-        fetchRelated: function(show) {
+        fetchRelated: debounce(function(show) {
           $.getJSON("/api/srch/notes?query=" + editor.titleModule.value(), function(response) {
             /* API provides:
             {"items":[{
@@ -279,9 +413,8 @@
               show(formatted);
             }
           });
-        }
+        }, 1000)
       },
-
       tagsModule: {
         remote: {
           url: "/tag/suggested/test",
@@ -291,13 +424,79 @@
         }
       }
     });
-  })();
 
+    var bounds = new L.LatLngBounds(
+      new L.LatLng(90, -180),
+      new L.LatLng(-90, 180)
+    );
+    editor.mapModule.blurredLocation.map.setMaxBounds(bounds);
+
+    <% if @lat and @lon %>
+      <% if @zoom %>
+        editor.mapModule.blurredLocation.setZoom(<%= @zoom %>);
+      <% else %>
+        let zoom = editor.mapModule.blurredLocation.getZoomFromCoordinates(<%= @lat %>, <%= @lon %>);
+        addTag('zoom:'+zoom, '/profile/tags/create/<%= current_user.uid %>');
+        editor.mapModule.blurredLocation.setZoom(zoom);
+      <% end %>
+    <% end %>
+
+    $('#coord_button').click((event) => {
+      event.preventDefault();
+      $('#coord_input').toggle();
+    });
+    $("#coord_input").hide();
+
+    $(function() {
+      var target = document.querySelector('#map_content');
+      var observer = new MutationObserver(function(mutations) {
+        setLocationButtonText();
+      });
+      observer.observe(target, {
+        attributes: true
+      });
+    });
+
+    function setLocationButtonText() {
+      if ($('#map_content').is(':hidden')) {
+        $('#location_button').html('<i class="fa fa-map-marker" aria-hidden="true"></i> Add a location');
+      } else {
+        $('#location_button').html('<i class="fa fa-trash"></i> Remove location');
+      }
+    }
+    setLocationButtonText();
+
+    $("#obscureLocation").prop('checked', <%= @map_blurred %>);
+    editor.mapModule.blurredLocation.setBlurred(<%= @map_blurred %>);
+
+    // upload via posting "posted_main_image"
+    function dataURItoBlob(dataURI) {
+      // convert base64 to raw binary data held in a string
+      // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+      var byteString = atob(dataURI.split(',')[1]);
+      // separate out the mime component
+      var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+      // write the bytes of the string to an ArrayBuffer
+      var ab = new ArrayBuffer(byteString.length);
+      // create a view into the buffer
+      var ia = new Uint8Array(ab);
+      // set the bytes of the buffer to the correct values
+      for (var i = 0; i < byteString.length; i++) {
+          ia[i] = byteString.charCodeAt(i);
+      }
+      // write the ArrayBuffer to a blob, and you're done
+      var blob = new Blob([ab], {type: mimeString});
+      return blob;
+    }
+    <% if true || params[:datauri_main_image] %>
+      $('.ple-module-main_image input').fileupload('add', {'files': [ dataURItoBlob('<%= params[:datauri_main_image] %>') ]});
+    <% end %>
+
+  })();
   $('.legacy-button').click(function onLegacyClick(event) {
       event.preventDefault();
       window.location = "/post?legacy=true&body=" + editor.richTextModule.value() + "&tags=" + editor.tagsModule.value() + "&title=" + editor.titleModule.value();
   });
-
   function draftCheck() {
       var checkBox = document.getElementById("myCheck");
       var text = document.getElementById("text");
@@ -313,4 +512,5 @@
       }
       console.log("Draft:", editor.data.draft);
   }
+
 </script>

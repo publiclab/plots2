@@ -114,8 +114,6 @@ class NodeTagTest < ActiveSupport::TestCase
     assert_equal false, node.has_mailing_list?
     assert_equal false, node.lat
     assert_equal false, node.lon
-    assert_nil node.tagged_lat
-    assert_nil node.tagged_lon
   end
 
   test "can't powertag with: yourself" do

@@ -9,15 +9,31 @@
     <% else %>
       <meta name="description" content="Public Lab is an open community which collaboratively develops accessible, open source, Do-It-Yourself technologies for investigating local environmental health and justice issues." />
     <% end %>
+    <%= action_cable_meta_tag %>
     <meta name="author" content="Public Lab contributors" />
     <link href="https://<%= request.host %>/feed.rss" rel="alternate" type="application/rss+xml" title="Public Lab research" />
+
+    <% if Rails.env != "production" %>
+      <script src="https://maps.googleapis.com/maps/api/js?libraries=places&language=en&key=AIzaSyAOLUQngEmJv0_zcG1xkGq-CXIPpLQY8iQ"></script>
+    <% end %>
 
     <script type="text/javascript" async
       src="https://cdn.jsdelivr.net/npm/mathjax@2.7.3/MathJax.js?config=TeX-MML-AM_CHTML">
     </script>
 
-    <%= stylesheet_link_tag "application", :media => "all" %>
-    <link href="/lib/fontawesome/css/font-awesome.min.css" media="all" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet preload prefetch" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" as="style" type="text/css" />
+    <!-- Loading critical css and rest asynchronously #7996 -->
+    <%= javascript_include_tag "application" %>
+    <style>
+      <%= CriticalPathCss.fetch(request.path) %>
+    </style>
+    <script>
+        loadCSS("<%= stylesheet_path('application') %>");
+    </script>
+    <link rel="preload" href="<%= stylesheet_path('application') %>" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="<%= stylesheet_path('application') %>">
+    </noscript>
     <% if @node && @node.has_tag('style:fancy') %>
       <%= stylesheet_link_tag "fancy", :media => "all" %>
     <% end %>
@@ -28,25 +44,32 @@
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <%= javascript_include_tag "application" %>
     <%= csrf_meta_tags %>
     <meta name="google-translate-customization" content="4ce4c7c384354172-5179499fc244f592-g2b333d0d29f59663-d" />
+
+    <% if current_user %>
+        <%= javascript_include_tag "cable" %>
+    <% end %>
 
     <% if @node && @node.body %>
       <meta property="og:title" content="<%= @title %>" />
       <meta property="og:site_name" content="Public Lab" />
-      <meta property="og:url" content="<%= request.host %>/n/<%= @node.id %>" />
+      <meta property="og:url" content="https://<%= request.host %>/n/<%= @node.id %>" />
       <meta property="og:description" content="<%= raw strip_tags(sanitize(RDiscount.new(@node.body).to_html)).truncate(100) %>" />
       <meta property="og:type" content="article" />
       <meta property="fb:app_id" content="644692375883090" />
-      <% if @node.main_image %>
-        <meta property="og:image" content="<%= @node.main_image.path(:default) %>" />
-      <% end %>
+    <% if @node.main_image %>
+        <meta property="og:image" content="https://<%= request.host %><%= @node.main_image.path(:default) %>" />
+        <meta name="twitter:image" content="https://<%= request.host %><%= @node.main_image.path(:default) %>">
+        <% elsif scraped_image = @node.scraped_image %>
+        <meta property="og:image" content="<%= scraped_image %>" />
+        <meta name="twitter:image" content="<%= scraped_image %>">
+    <% end %>
       <p class="facebook-summary" style="display:none;">
         <%= raw strip_tags(sanitize(RDiscount.new(@node.body).to_html)).truncate(100) %>
       </p>
     <% end %>
-    <p class="facebook-summary" style="display:none;"><%= t('layout._header.summary') %></p>
+    <p class="facebook-summary" style="display:none;"><%= translation('layout._header.summary') %></p>
 
     <!-- facebook needs this apparently -->
     <div id="fb-root"></div>
@@ -57,8 +80,16 @@
       I18n.defaultLocale = "<%= I18n.default_locale %>";
       I18n.locale = "<%= I18n.locale %>";
       I18n.fallbacks = true;
+      $(function () {
+        $("[data-toggle=popover]").popover({
+            html: true,
+            content: function() {
+                return $('#popover-content').html();
+            }
+        });
+      });
     </script>
-    
+
     <% cache('feature_header', skip_digest: true) do %>
       <%= feature("header") %>
     <% end %>
@@ -68,22 +99,21 @@
   <style type="text/css">
     .pac-container { z-index: 100000; }
 
-    .leaflet-control-layers {
-        max-height: 200px;
-        overflow: auto;
+    #ex1Slider .slider-selection {
+     background: #BABABA;
     }
+
   </style>
 
-  <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
-  <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
-  <script src="https://cdn.jsdelivr.net/npm/leaflet-search@2.4.0/dist/leaflet-search.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/leaflet-search@2.4.0/dist/leaflet-search.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/bootstrap-slider.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/css/bootstrap-slider.min.css" />
+
   </head>
 
   <body>
 
     <%= render :partial => 'layouts/header' %>
-
+    <div id="top_map"> </div>
     <div class="container">
       <div class="row">
 
@@ -94,6 +124,10 @@
 
     <%= render :partial => "layouts/footer" %>
 
-    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&language=en&key=<%= ENV['GMAPS_API_KEY'] %>"></script>
   </body>
+  <script>
+      $(function () {
+          $('[data-toggle="tooltip"]').tooltip()
+      })
+  </script>
 </html>

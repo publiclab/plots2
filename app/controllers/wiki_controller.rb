@@ -55,11 +55,8 @@ class WikiController < ApplicationController
       end
     end
 
-    # if request.path != @node.path && request.path != '/wiki/' + @node.nid.to_s
-    #   return redirect_to @node.path, :status => :moved_permanently
-    # end
+    return if redirect_to_node_path?(@node)
 
-    return if check_and_redirect_node(@node)
     if !@node.nil? # it's a place page!
       @tags = @node.tags
       @tags += [Tag.find_by(name: params[:id])] if Tag.find_by(name: params[:id])
@@ -95,6 +92,20 @@ class WikiController < ApplicationController
     render plain: Revision.find(params[:id]).body
   end
 
+  def print
+    @node = Node.find_by(nid: params[:id], type: 'page')
+    return if redirect_to_node_path?(@node)
+    @revision = @node.latest
+
+    if @node
+      impressionist(@node, 'print', unique: [:ip_address])
+      render layout: "print"
+
+    else
+      page_not_found
+    end
+  end
+
   def edit
     @node = if params[:lang]
               Node.find_wiki(params[:lang] + '/' + params[:id])
@@ -105,6 +116,10 @@ class WikiController < ApplicationController
     if @node.has_tag('locked') && !current_user.can_moderate?
       flash[:warning] = "This page is <a href='/wiki/power-tags#Locking'>locked</a>, and only <a href='/wiki/moderators'>moderators</a> can edit it."
       redirect_to @node.path
+    elsif current_user &.first_time_poster
+      flash[:notice] = "Please post a question or other content before editing the wiki. Click <a href='https://publiclab.org/notes/tester/04-23-2016/new-moderation-system-for-first-time-posters'>here</a> to learn why."
+      redirect_to Node.find_wiki(params[:id]).path
+      return
     end
     if ((Time.now.to_i - @node.latest.timestamp) < 5.minutes.to_i) && @node.latest.author.uid != current_user.uid
       flash.now[:warning] = I18n.t('wiki_controller.someone_clicked_edit_5_minutes_ago')
@@ -144,12 +159,15 @@ class WikiController < ApplicationController
     if params[:rich]
       render template: 'editor/wikiRich'
     else
-      render template: 'wiki/edit'
+      respond_to do |format|
+        format.html { render 'wiki/edit' }
+        format.all { head :ok }
+      end
     end
   end
 
   def create
-    if current_user.drupal_user.status == 1
+    if current_user.status == 1
       # we no longer allow custom urls, just titles which are parameterized automatically into urls
       # slug = params[:title].parameterize
       # slug = params[:id].parameterize if params[:id] != "" && !params[:id].nil?
@@ -159,6 +177,9 @@ class WikiController < ApplicationController
                                               body:  params[:body])
       if saved
         flash[:notice] = I18n.t('wiki_controller.wiki_page_created')
+        params[:tags]&.tr(' ', ',')&.split(',')&.each do |tagname|
+          @node.add_tag(tagname.strip, current_user)
+        end
         if params[:main_image] && params[:main_image] != ''
           img = Image.find params[:main_image]
           img.nid = @node.id
@@ -187,41 +208,20 @@ class WikiController < ApplicationController
     @revision = @node.new_revision(uid:   current_user.uid,
                                    title: params[:title],
                                    body:  params[:body])
+
     if @node.has_tag('locked') && !current_user.can_moderate?
       flash[:warning] = "This page is <a href='/wiki/power-tags#Locking'>locked</a>, and only <a href='/wiki/moderators'>moderators</a> can update it."
       redirect_to @node.path
 
     elsif @revision.valid?
-      ActiveRecord::Base.transaction do
-        @revision.save
-        @node.vid = @revision.vid
-        # update vid (version id) of main image
-        if @node.drupal_main_image && params[:main_image].nil?
-          i = @node.drupal_main_image
-          i.vid = @revision.vid
-          i.save
-        end
-        @node.title = @revision.title
-        # save main image
-        if params[:main_image] && params[:main_image] != ''
-          begin
-            img = Image.find params[:main_image]
-            unless img.nil?
-              img.nid = @node.id
-              @node.main_image_id = img.id
-              img.save
-            end
-          rescue StandardError
-          end
-        end
-        @node.save
-      end
+      @revision.save
+      update_node_attributes
+
       flash[:notice] = I18n.t('wiki_controller.edits_saved')
       redirect_to @node.path
     else
       flash[:error] = I18n.t('wiki_controller.edit_could_not_be_saved')
       render action: :edit
-      # redirect_to "/wiki/edit/"+@node.slug
     end
   end
 
@@ -258,7 +258,8 @@ class WikiController < ApplicationController
   # also just redirect anything else matching /____ to /wiki/____
   def root
     @node = Node.find_by(path: "/" + params[:id])
-    return if check_and_redirect_node(@node)
+    return if redirect_to_node_path?(@node)
+
     if @node
       @revision = @node.latest
       @title = @revision.title
@@ -276,7 +277,7 @@ class WikiController < ApplicationController
     @node = Node.find_wiki(params[:id])
     if @node
       @revisions = @node.revisions
-      @revisions = @revisions.where(status: 1).page(params[:page]).per_page(20) unless current_user&.can_moderate?
+      @pagy_revisions, @revisions = pagy(@revisions.where(status: 1), items: 20) unless current_user&.can_moderate?
       @title = I18n.t('wiki_controller.revisions_for', title: @node.title).html_safe
       @tags = @node.tags
       @paginated = true unless current_user&.can_moderate?
@@ -332,12 +333,11 @@ class WikiController < ApplicationController
       order_string = 'cached_likes DESC'
     end
 
-    @wikis = Node.includes(:revision)
+    @pagy, @wikis = pagy(Node.includes(:revision)
       .references(:node_revisions)
-      .group('node_revisions.nid')
+      .group('node_revisions.nid, node_revisions.vid')
       .order(order_string)
-      .where("node_revisions.status = 1 AND node.status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')")
-      .page(params[:page])
+      .where("node_revisions.status = 1 AND node.status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')"))
 
     @paginated = true
   end
@@ -345,12 +345,11 @@ class WikiController < ApplicationController
   def stale
     @title = I18n.t('wiki_controller.wiki')
 
-    @wikis = Node.includes(:revision)
+    @pagy, @wikis = pagy(Node.includes(:revision)
       .references(:node_revisions)
-      .group('node_revisions.nid')
+      .group('node_revisions.nid, node_revisions.vid')
       .order('node_revisions.timestamp ASC')
-      .where("node_revisions.status = 1 AND node.status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')")
-      .page(params[:page])
+      .where("node_revisions.status = 1 AND node.status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')"))
 
     @paginated = true
     render template: 'wiki/index'
@@ -360,10 +359,10 @@ class WikiController < ApplicationController
     @title = I18n.t('wiki_controller.popular_wiki_pages')
     @wikis = Node.limit(40)
       .joins(:revision)
-      .group('node_revisions.nid')
+      .group('node_revisions.nid, node_revisions.vid')
       .order('node_revisions.timestamp DESC')
       .where("node.status = 1 AND node_revisions.status = 1 AND node.nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place')")
-      .sort_by(&:totalviews).reverse
+      .sort_by(&:views).reverse
     render template: 'wiki/index'
   end
 
@@ -382,7 +381,7 @@ class WikiController < ApplicationController
     if params[:before] && params[:after]
       # during round trip, strings are getting "\r\n" newlines converted to "\n",
       # so we're ensuring they remain "\r\n"; this may vary based on platform, unfortunately
-      before = params[:before].gsub("\n", "\r\n")
+      before = params[:before] # params[:before].gsub("\n", "\r\n") # actually we're stopping this bc it didn't work...
       after  = params[:after] # .gsub( "\n", "\r\n")
       if output = @node.replace(before, after, current_user)
         flash[:notice] = 'New revision created with your additions.' unless request.xhr?
@@ -393,7 +392,11 @@ class WikiController < ApplicationController
       flash[:error] = "You must specify 'before' and 'after' terms to replace content in a wiki page."
     end
     if request.xhr?
-      render json: output
+      if output.blank?
+        render json: output, status: 500
+      else
+        render json: output
+      end
     else
       redirect_to @node.path
     end
@@ -404,7 +407,7 @@ class WikiController < ApplicationController
   end
 
   def methods
-    @nodes = Node.where(status: 1, type: ['page'])
+    @nodes = Node.where(status: 1, type: %w(page))
       .where('term_data.name = ?', 'method')
       .includes(:revision, :tag)
       .references(:node_revision)
@@ -412,7 +415,7 @@ class WikiController < ApplicationController
     # deprecating the following in favor of javascript implementation in /app/assets/javascripts/methods.js
     if params[:topic]
       nids = @nodes.collect(&:nid) || []
-      @notes = Node.where(status: 1, type: ['page'])
+      @notes = Node.where(status: 1, type: %w(page))
         .where('node.nid IN (?)', nids)
         .where('(type = "note" OR type = "page" OR type = "map") AND node.status = 1 AND (node.title LIKE ? OR node_revisions.title LIKE ? OR node_revisions.body LIKE ? OR term_data.name = ?)',
           '%' + params[:topic] + '%',
@@ -425,7 +428,7 @@ class WikiController < ApplicationController
     end
     if params[:topic]
       nids = @nodes.collect(&:nid) || []
-      @nodes = Node.where(status: 1, type: ['page'])
+      @nodes = Node.where(status: 1, type: %w(page))
         .where('node.nid IN (?)', nids)
         .where('(type = "note" OR type = "page" OR type = "map") AND node.status = 1 AND (node.title LIKE ? OR node_revisions.title LIKE ? OR node_revisions.body LIKE ? OR term_data.name = ?)',
           '%' + params[:topic] + '%',
@@ -460,5 +463,36 @@ class WikiController < ApplicationController
   def comments
     show
     render :show
+  end
+
+  def update_node_attributes
+    ActiveRecord::Base.transaction do
+      @node.vid = @revision.vid
+      @node.title = @revision.title
+
+      if main_image = @node.drupal_main_image && params[:main_image].blank?
+        main_image.vid = @revision.vid
+        main_image.save
+      end
+
+      if params[:main_image].to_i == 0
+        @node.main_image_id = nil
+      elsif params[:main_image].present? && img = Image.find(params[:main_image])
+        img.nid = @node.id
+        @node.main_image_id = img.id
+        img.save
+      end
+
+      @node.save
+    end
+  end
+
+  def author
+    @user = User.find_by(name: params[:id])
+    @title = @user.name
+    @pagy, @wikis = pagy(Node
+      .order('nid DESC')
+      .where("uid = ? AND type = 'page' OR type = 'place' OR type = 'tool' AND status = 1", @user.uid), items: 24)
+    render template: 'wiki/index'
   end
 end

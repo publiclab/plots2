@@ -1,0 +1,58 @@
+<div class="inline-node-container">
+<div style="max-height:800px;overflow:scroll;">
+<table class="table inline-grid <%= type %>-grid <%= className %> <%= className %>-<%= randomSeed %>">
+  <tr>
+    <th><a data-type="title">Title</a></th>
+    <th><a data-type="author">Author</a></th>
+    <th><a data-type="updated">Created | Updated</a></th>
+    <th><a data-type="likes">Likes</a></th>
+    <th><a data-type="views">Views</a></th>
+    <th><a data-type="type">Type</th>
+  </tr>
+  <% nodes.each do |node| %>
+    <tr>
+      <td style="width:40%">
+        <% if node.has_tag("pin:#{tagname}") %><i rel="tooltip" title="This item was pinned with the tag 'pin:<%= tagname %>'." class="fa fa-thumb-tack"></i> <% end %>
+        <a href="<%= node.path %>"><%= node.latest.title %></a>
+      </td>
+      <td class="author"><a href="/profile/<%= node.author.username %>">@<%= node.author.username %> <%=node.author.new_contributor %></a></td>
+      <td class="updated" data-timestamp="<%= node.latest.timestamp.to_s %>"><%= distance_of_time_in_words(Time.at(node.latest.updated_at), Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></td>
+      <td class="likes"><%= node.cached_likes.to_s %></td>
+      <td><%= node.revisions.length %></td>
+      <td class="hidden-xs"><%= node.type %></td>
+    </tr>
+  <% end %>
+</table>
+</div>
+<%= will_paginate @nodes, :renderer => BootstrapPagination::Rails if @paginated %>
+
+<a class="grid-embed grid-embed-<%= randomSeed %>" rel="tooltip" title="Embed this table on another site."><i class="fa fa-code" style="color:#aaa;"></i></a>
+
+<script>
+(function(){
+  $(".<%= className %>-<%= randomSeed %> .show-all a").click(function() {
+    $(".<%= className %>-<%= randomSeed %> tr.hide").toggleClass("hide");
+  });
+  $(".grid-embed-<%= randomSeed %>").click(function() {
+    prompt('Use this HTML code to embed this table on another site.', '<iframe style="border:none;" width="100%" height="900px" src="//publiclab.org/embed/grid/<% if type != "notes" %><%= type.gsub('questions', 'question').gsub('activities', 'activity') %>:<% end %><%= tagname %>"></iframe>')
+  });
+  setupGridSorters(".<%= className %>-<%= randomSeed %>");
+})()
+</script>
+
+<style>
+  a.grid-embed {
+    float:right;
+    padding:8px;
+  }
+  a.grid-embed:hover {
+    color: #888;
+  }
+  th {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: #fff;
+}
+</style>
+</div>

@@ -1,0 +1,113 @@
+<% if !@node %>
+  <%= feature('map-intro') %>
+<% end %>
+<style>
+  body, body>.container, body>.container>.row {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    max-width: 100%;  }
+  body>.container {
+    padding-top: 0px;
+  }
+  .footer {
+    margin: 0;
+  }
+  #map{ 
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 80vh;
+    background:rgba(255,255,255,0.5);
+  }
+  .alert {
+    z-index: 600;
+  }
+  </style>
+
+<div id="map"></div>
+
+   <script>
+
+      // set the map just under the navbar
+      setTopPadding();
+      $(window).resize(setTopPadding);
+      function setTopPadding() {
+        $('.body-container').css('padding-top', $('#header').css('height'));
+      }
+
+      var urlHash = urlMapHash();
+
+        // if there are location params in URL let them override, otherwise save lat/lon/zoom from controller
+        if (!urlHash.getUrlHashParameter('lat') || !urlHash.getUrlHashParameter('lon')) {
+          <% if @lat && @lon %>
+            urlHash.setUrlHashParameter('lat', <%= @lat %> + "");
+            urlHash.setUrlHashParameter('lon', <%= @lon %> + "");
+            <% if @zoom %>
+              urlHash.setUrlHashParameter('zoom', <%= @zoom %> + "");
+            <% end %>
+          <% end %>
+        }
+        
+      const params = urlHash.getUrlHashParameters();
+     
+      var lat = parseFloat(params.lat) || 10;
+      var lon = parseFloat(params.lon) || 1;
+      var zoom = parseFloat(params.zoom) || 10;
+
+      const bounds = new L.LatLngBounds(
+        new L.LatLng(84.67351257, -172.96875),
+        new L.LatLng(-54.36775852, 178.59375)
+      );
+
+      var map = L.map("map", {
+        maxBounds: bounds,
+        maxBoundsViscosity: 0.75
+      }).setView([lat, lon], zoom);
+
+      updateLocationHash();
+      updateZoomHash();
+
+      map.options.minZoom = 3;
+
+      map.on('moveend', updateLocationHash);
+
+      map.on('zoomend', updateZoomHash);
+
+      function updateLocationHash() {
+        const center = map.getCenter();
+        urlHash.setUrlHashParameter('lat', center.lat + "");
+        urlHash.setUrlHashParameter('lon', center.lng + "");
+      }
+
+      function updateZoomHash() {
+        const zoom = map.getZoom();
+        urlHash.setUrlHashParameter('zoom', zoom + "");
+      }
+
+      var markers_hash = new Map();
+      var options = {
+        layers: ['PLpeople'],
+        mainContent: "content",
+        setHash: false
+      }
+      setupLEL(map, markers_hash, options);
+
+
+      var bottomleft = document.getElementById("map").getElementsByClassName("leaflet-bottom leaflet-right");
+      var buttoncontainer = document.createElement('div');
+      buttoncontainer.setAttribute('class', 'add-content-button-container leaflet-control');
+      buttoncontainer.innerHTML = '<a href="/post/choose" class="btn btn-primary btn-lg add-content-button"><i class="fa fa-plus-circle fa-white"></i> Add to Map</a>';
+      var addButton = buttoncontainer.firstChild;
+      setButtonHref();
+      bottomleft[0].insertBefore(buttoncontainer, document.getElementsByClassName("leaflet-control-attribution")[0]);
+
+      map.on('moveend', setButtonHref);
+      map.on('zoomend', setButtonHref);
+      
+      function setButtonHref() {
+        var urlstring = "/post/choose?tags=lat:"+urlHash.getUrlHashParameter('lat')+",lon:"+urlHash.getUrlHashParameter('lon')+",zoom:"+urlHash.getUrlHashParameter('zoom');
+        addButton.setAttribute('href', urlstring);
+      }
+
+    </script>

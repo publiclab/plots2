@@ -4,6 +4,9 @@ require 'test_helper'
 class SubscriptionMailerTest < ActionMailer::TestCase
   test 'notify subscribers on creation of a research note' do
     node = nodes(:one)
+    node_author = User.where(id: node.uid).first
+    user = users(:newcomer)
+    user.follow node_author
     subscribers = Tag.subscribers(node.tags)
     assert_difference 'ActionMailer::Base.deliveries.size' do
       SubscriptionMailer.notify_node_creation(node).deliver_now
@@ -13,6 +16,8 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     email = ActionMailer::Base.deliveries.last
     assert_equal ["notifications@#{request_host}"], email.from
     assert_equal ["notifications@#{request_host}"], email.to
+    assert_includes email.bcc, user.email
+    assert_not_includes subscribers, user
     assert_equal '[PublicLab] ' + node.title + ' (#' + node.id.to_s + ') ', email.subject
     assert email.body.include?("Public Lab contributor <a href='https://#{request_host}/profile/#{node.author.name}'>#{node.author.name}</a> just posted a new research note")
   end
@@ -44,7 +49,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     email = ActionMailer::Base.deliveries.last
     assert_equal ["notifications@#{request_host}"], email.from
     assert_equal [node.author.email], email.to
-    assert_equal "[PublicLab] #{user.username} liked your research note (##{node.id})", email.subject
+    assert_equal '[PublicLab] ' + (node.has_power_tag('question') ? 'Question: ' : '') + "#{node.title} (##{node.id}) ", email.subject
     assert email.body.include?("Public Lab contributor #{user.username} (https://#{request_host}/profile/#{user.username}) just liked your research note")
   end
 
@@ -59,7 +64,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     email = ActionMailer::Base.deliveries.last
     assert_equal ["notifications@#{request_host}"], email.from
     assert_equal [node.author.email], email.to
-    assert_equal "[PublicLab] #{user.username} liked your question (##{node.id})", email.subject
+    assert_equal '[PublicLab] ' + (node.has_power_tag('question') ? 'Question: ' : '') + "#{node.title} (##{node.id}) ", email.subject
     assert email.body.include?("Public Lab contributor #{user.username} (https://#{request_host}/profile/#{user.username}) just liked your question")
   end
 
@@ -67,7 +72,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     node = nodes(:one)
     node_tags = node.tags
     new_tag = tags(:spam)
-    user = drupal_users(:spammer)
+    user = users(:spammer)
     users_not_following_tags = new_tag.followers_who_dont_follow_tags(node_tags)
     users_to_email = users_not_following_tags.reject { |u| u.uid == user.uid }
     u_e = Tag.followers('everything')
@@ -81,7 +86,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     assert_equal ["notifications@#{request_host}"], email.from
     assert_equal ["notifications@#{request_host}"], email.to
     assert email.bcc.include?(users_to_email.last.email)
-    assert_equal "#{node.title} (##{node.id})", email.subject
+    assert_equal '[PublicLab] ' + (node.has_power_tag('question') ? 'Question: ' : '') + "#{node.title} (##{node.id}) ", email.subject
     assert email.body.include?("was tagged with")
   end
 end

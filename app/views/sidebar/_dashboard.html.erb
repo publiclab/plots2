@@ -1,0 +1,64 @@
+<br><br>
+<div class="btn-group" role="group">
+    <a href="/post" class="btn btn-primary btn-lg requireLogin"><i class="fa fa-plus-circle fa-white"></i> <%= t('dashboard._header.share_work') %></a>
+    <div class="btn-group" role="group">
+      <a class="btn btn-primary btn-lg dropdown-toggle fa-white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="caret"></span>
+        <span class="sr-only">Toggle Dropdown</span>
+      </a>
+      <div class="dropdown-menu dropdown-menu-right mt-2">
+        <a class="dropdown-item" href="/post?n=15322&title=How%20to%20...&tags=activity:new,draft"><%= translation('dashboard._header.dropdown.share_activity') %></a>
+        <a class="dropdown-item" href="/post"><%= translation('dashboard._header.dropdown.share_research_note') %></a>
+        <a class="dropdown-item" href="/questions/new?tags=question:general"><%= translation('dashboard._header.dropdown.ask_question') %></a>
+        <a class="dropdown-item" href="/post?template=event&tags=event"><%= translation('dashboard._header.dropdown.post_event') %></a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="/post?tags=blog-submission"><%= translation('dashboard._header.dropdown.tell_story_blog') %></a>
+      </div>
+    </div>
+  </div>
+  
+<% if current_user %>
+  <div style="margin: 2.2rem 0;">
+    <a class="btn btn-lg btn-outline-secondary blurred-location-input" submit_to="/profile/tags/create/<%= current_user.uid %>"><i class="fa fa-map-marker" style="color:#c40;"></i> Add your location</a>
+    <p style="font-size: smaller; margin: 0.3rem 0;">
+      Add your location to see work near you<br>
+      <a href="https://publiclab.org/location-privacy" target="_blank">About location privacy »</a>
+    </p>
+  </div>
+<% end %>
+
+<ul class="nav nav-tabs" style="margin-top:2.2rem;">
+  <li class="nav-item" style="width:49%;">
+    <a class="nav-link active lists-tab" href="#ask-question" data-toggle="tab">
+      <span class="d-md-none"><i class="fa fa-comment"></i></span>
+      <span class="d-none d-md-inline">Ask a question</span>
+    </a>
+  </li>
+  <li class="nav-item" style="width:49%;">
+    <a class="nav-link wikis-tab" href="#wiki" data-toggle="tab">
+      <span class="d-md-none"><i class="fa fa-book"></i></span>
+      <span class="d-none d-md-inline"><%= translation('dashboard._sidebar.wiki') %></span>
+    </a>
+  </li>
+</ul>
+
+<div class="tab-content">
+  <div class="tab-pane" id="wiki">
+    <%= render partial: "dashboard/wiki", locals: { wikis: @wikis } %>
+  </div>
+
+  <div class="tab-pane active" id="ask-question">
+    <% cache('feature_dashboard-sidebar', skip_digest: true) do %>
+      <%= feature('dashboard-sidebar') %>
+    <% end %>
+    <!-- Twitter follow button, options can be adjusted here: https://publish.twitter.com/# -->
+    <div class="social-media-btn">
+      <a href="https://twitter.com/PublicLab?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-size="large" data-show-count="false">Follow @PublicLab</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    </div>
+    <!-- Facebook like button, options can be adjusted here: https://developers.facebook.com/docs/plugins/like-button/  -->
+    <div class="social-media-btn">  
+      <div class="fb-like" data-href="https://www.facebook.com/PublicLab/" data-layout="button_count" data-action="like" data-size="large" data-show-faces="false" data-share="false"></div>
+    </div>
+  </div>
+</div>
+<%= render partial: 'tag/location' %>

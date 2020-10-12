@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class NodeSeriesTagTest < ActionDispatch::IntegrationTest
+  include ActiveJob::TestHelper
+
   test 'add series tag' do
     post '/user_sessions', params: { user_session: { username: users(:bob).username, password: 'secretive'} }
 

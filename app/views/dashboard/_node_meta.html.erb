@@ -1,26 +1,38 @@
-<% unless node.is_a?(Comment) || node.is_a?(Revision) || node.type == 'page' %>
-  <%= t('dashboard.dashboard.by') %> <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a> <%= node.author.new_author_contributor %>
-  <% if node.has_power_tag('with') %>
-    with
-    <% node.coauthors.each_with_index do |coauthor,i| %>
-      <a href="/profile/<%= coauthor.username %>">
-        <%= coauthor.username%> <%= coauthor.new_contributor %></a>
-      <%= ',' if i < node.coauthors.length-1 %>
+<div class="card-meta-author">
+  <% unless node.is_a?(Comment) || node.is_a?(Revision) || node.type == 'page' %>
+    <%= translation('dashboard.dashboard.by') %> <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a> <%= node.author.new_contributor %>
+    <% if node.has_power_tag('with') %>
+      with
+      <% node.coauthors.each_with_index do |coauthor,i| %>
+        <a href="/profile/<%= coauthor.username %>">
+          <%= coauthor.username%> <%= coauthor.new_contributor %></a>
+        <%= ',' if i < node.coauthors.size-1 %>
+      <% end %>
     <% end %>
   <% end %>
-<% end %>
-<%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>
-<% node = node.parent if node.is_a?(Revision) %>
-<span class="">
-  <% if params[:controller] == 'questions' %>
-    | <a href="<%= node.path(:question) %>#answers" title="Answers"><i class="fa fa-comments-o" style="color: #DAA583;"></i> <%= node.answers.length %></a>
-  <% end %>
-    | <a href="<%= node.path %>#comments"><i class="fa fa-comment-o"></i> <%= node.comment_count %></a>
-    | <a href="/n/<%= node.id %>"><i class="fa fa-link"></i></a>
-    <span class="hidden-xs hidden-sm">| <i class="fa fa-eye"></i> <%= number_with_delimiter(node.totalviews) %></span>
-    | <i style="<% if node.likes > 0 %>color:#db4;<% end %>" class="fa fa-star-o"></i> <%= node.likes %>
+  <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>
+  <% node = node.parent if node.is_a?(Revision) %>
+</div>
+
+<div class="card-meta-tags">
+  <span id="tags">
+    <% if node.type == 'note' %>
+      <% node.tags.limit(4).each do |tag| %>
+        <span id="tag_<%= tag.id %>" ><a class="badge badge-primary" href="/questions/tag/<%= tag.name %>"><%= tag.name %></a></span>
+      <% end %>
+    <% end %>
+  </span>
+</div>
+
+<div class="card-meta-links">
+    <a href="<%= node.path %>#comments"><i class="fa fa-comment-o"></i> <%= node.comments_viewable_by(current_user).size %></a>
+    | <a aria-label="Link to note" href="/n/<%= node.id %>"><i class="fa fa-link"></i></a>
+    | <span><i class="fa fa-eye"></i> <%= number_with_delimiter(node.views) %></span>
+    | <span><i style="<% if node.likes > 0 %>color:#db4;<% end %>" class="fa fa-star-o"></i> <%= node.likes %></span>
   <% if params[:mod] %>| <a href="#"><i class="fa fa-ban"></i></a><% end %>
-  <a rel="tooltip" title="Flag as spam." class="btn btn-xs btn-default btn-flag-spam-<%= node.id %>" href="mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+item+that+looks+like+spam+or+needs+to+be+moderated:+<%= node.title.gsub(/ /,'+') %>+https://publiclab.org/n/<%= node.id %>+by+https://publiclab.org/profile/<%= node.author.username %>+Thanks!">
-    <i class="fa fa-flag"></i>
-  </a>
-</span>
+  <% if current_user %>
+    | <a href="/moderate/flag_node/<%= node.id %>" data-toggle="tooltip" data-placement="top" title="Flag this to moderators"><i class="fa fa-flag" id="flag_node<%= node.id%>"></i></a>
+  <% else %>
+    | <a data-toggle="modal" data-target="#loginModal" role="button" aria-pressed="true"><i class="fa fa-flag"></i></a>
+  <% end %>
+</div>

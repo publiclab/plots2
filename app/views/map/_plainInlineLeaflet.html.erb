@@ -1,0 +1,63 @@
+<% unique_id = rand(1000) %>
+
+  <style>
+  #map<%= unique_id %> { width:100%; height:300px; margin: 0; position: relative;}
+  #postOnMap<%= unique_id %> {
+    margin-top: 5px;
+  }
+  </style>
+  <div class="inline-fullwidth-content">
+      <div class="leaflet-map inline-map" id="map<%= unique_id %>"></div>
+  </div>
+
+  
+    <p><i><small>
+      <button id="postOnMap<%= unique_id %>" class="btn btn-primary">Add a story +</button>
+    </small></i></p>
+  
+  <script>
+    var bounds = new L.LatLngBounds(new L.LatLng(84.67351257 , -172.96875) , new L.LatLng(-54.36775852 , 178.59375)) ;
+
+    var map<%= unique_id %> = L.map('map<%= unique_id %>', {
+      maxBounds: bounds ,
+      maxBoundsViscosity: 0.75,
+      fullscreenControl: true,
+      scrollWheelZoom: false,
+      fullscreenControlOptions: {
+        position: 'topleft'
+    }}).setView([<%= lat %>,<%= lon %>], <%= lat.to_s.length.to_i %> + 6);
+
+    var button<%= unique_id %> = document.getElementById('postOnMap<%= unique_id %>');
+
+    button<%= unique_id %>.addEventListener('click', function(event) {
+      var center_lat = map<%= unique_id %>.getCenter().lat;
+      var center_lng = map<%= unique_id %>.getCenter().lng;
+      window.location.href='/post?tags=lat:' + center_lat + ',lon:' + center_lng + '&title=This post will apppear on maps';
+    });
+
+    var markers_hash<%= unique_id %> = new Map() ;
+    var map_lat = <%= lat %> ;
+    var map_lon = <%= lon %> ;
+
+     window.setTimeout(function(){
+
+        map<%= unique_id %>.setZoom(<%= lat.to_s.length.to_i %> + 6) ; 
+    
+     }, 3500);
+
+    setupLEL(map<%= unique_id %>, markers_hash<%= unique_id %>);
+
+    var map_tagname<%= unique_id %> = null;
+     <% if (defined? tagname != nil and tagname.nil? == false) %>
+           map_tagname<%= unique_id %> = "<%= tagname %>" ;
+     <% end %>
+
+    //  map<%= unique_id %>.on('zoomend' , function () {
+    //     contentLayerParser(map<%= unique_id %>, markers_hash<%= unique_id %>, map_tagname<%= unique_id %>);
+    // }) ;
+
+    // map<%= unique_id %>.on('moveend' , function () {
+    //     contentLayerParser(map<%= unique_id %>, markers_hash<%= unique_id %>, map_tagname<%= unique_id %>);
+    // }) ;
+   
+  </script>

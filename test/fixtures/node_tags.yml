@@ -76,6 +76,12 @@ blog2:
   nid: 13
   date: <%= DateTime.now.to_i %>
 
+place:
+  tid: 27
+  uid: 1
+  nid: 13
+  date: <%= DateTime.now.to_i %>
+
 question3:
   tid: 6
   uid: 2
@@ -147,3 +153,111 @@ co-author:
   uid: 2
   nid: 21
   date: <%= DateTime.now.to_i %>
+
+test1_lat:
+  tid: 23
+  uid: 15
+  nid: 23
+  date: <%= DateTime.now.to_i %>
+
+test2_lat:
+  tid: 23
+  uid: 17
+  nid: 24
+  date: <%= DateTime.now.to_i %>
+
+test3_lat:
+  tid: 23
+  uid: 16
+  nid: 25
+  date: <%= DateTime.now.to_i %>
+
+test1_lon:
+  tid: 24
+  uid: 15
+  nid: 23
+  date: <%= DateTime.now.to_i %>
+
+test2_lon:
+  tid: 24
+  uid: 17
+  nid: 24
+  date: <%= DateTime.now.to_i %>
+
+test3_lon:
+  tid: 24
+  uid: 16
+  nid: 25
+  date: <%= DateTime.now.to_i %>
+
+project:
+  tid: 28
+  uid: 1
+  nid: 13
+
+project2:
+  tid: 28
+  uid: 1
+  nid: 7
+
+test4_lat:
+  tid: 29
+  uid: 1
+  nid: 7
+  date: <%= DateTime.now.to_i %>
+
+test4_lon:
+  tid: 30
+  uid: 1
+  nid: 7
+  date: <%= DateTime.now.to_i %>
+
+test4_zoom:
+  tid: 31
+  uid: 1
+  nid: 7
+  date: <%= DateTime.now.to_i %>
+
+sun_note:
+  tid: 32
+  uid: 2
+  nid: 32
+
+sun_wiki:
+  tid: 32
+  uid: 2
+  nid: 33
+
+sunny_day_note:
+  tid: 33
+  uid: 2
+  nid: 34
+
+sunny_day_wiki:
+  tid: 33
+  uid: 2
+  nid: 35
+
+sun_question:
+  tid: 34
+  uid: 2
+  nid: 36
+
+organizers-awesome:
+  tid: 2
+  uid: 2
+  nid: 5
+  date: <%= DateTime.now.to_i %>
+
+organizers-everything:
+  tid: 4
+  uid: 2
+  nid: 5
+  date: <%= DateTime.now.to_i %>
+
+organizers-chapter:
+  tid: 5
+  uid: 2
+  nid: 5
+  date: <%= DateTime.now.to_i %>
+

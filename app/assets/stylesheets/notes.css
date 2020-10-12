@@ -1,0 +1,52 @@
+#notes .card {
+  background-color: #fff;
+  border: 1px solid;
+  border-color: #D3D3D3;
+  border-radius: 6px;
+  margin:1em 0em 1em 0em;
+  padding: 0px !important;
+}
+#notes .card-body {
+  margin-right: 1em;
+  margin-left: 1em;
+  padding: 0.8em;
+  text-align: left;
+}
+
+#notes .btn {
+  font-size: 15px;
+}
+
+#notes .buttons {
+  text-align: center;
+}
+
+#notes .imgg {
+  background: #aaa;
+  display: flex;
+  align-items: center;
+}
+
+#notes .note-not {
+  margin-left:auto;
+  margin-right: auto;
+  color: #fff;
+}
+
+#notes .ellipsis {
+  cursor: pointer;
+}
+
+#notes .dropdown-menu li a{
+  display: inline-block;
+  padding-bottom: 5px;
+  padding-left: 14px;
+  font-size: 13px;
+}
+
+#notes .bottom-right {
+  position: absolute;
+  bottom: 10px;
+  right: 16px;
+  text-decoration: underline;
+ }

@@ -25,8 +25,11 @@ It was originally created by Caroline Hadilaksono: http://www.hadilaksono.com
 
 }
 
+body{
+  padding-top: 80px;
+}
 
-h1,h2,h3 {
+h1,h2,h3,h4 {
   font-family:"Junction Light", lucida grande,lucida sans console,sans-serif;
   font-weight:normal;
 }
@@ -35,7 +38,7 @@ h2 small {
   font-size: 60%;
 }
 
-h4,h5,h6, h1 small, h3 small {
+h5,h6, h1 small, h3 small {
   font-family: "Junction Regular", lucida grande,lucida sans console,sans-serif;
   font-weight: normal;
   line-height: 1.4em;
@@ -59,9 +62,29 @@ h4,h5,h6, h1 small, h3 small {
 .pl-content p img,
 #comments p img,
 #answer-0-comment p img,
-.pl-content p iframe {
+.pl-content p {
   max-width: 100%;
   border: none;
+}
+
+.btn-circle {
+  height: 45px;
+  width: 45px;
+  border-radius: 50%;
+  display: block;
+  padding: 8px 8px 0;
+  margin-right: 3px;
+  border-color: #ccc;
+  font-size: 18px;
+}
+
+.btn-circle-sm {
+  height: 25px;
+  width: 25px;
+  margin: 13px 5px;
+  display: flex;
+  justify-content: center;
+  font-size: 11px;
 }
 
 #profile-fileinput {
@@ -79,8 +102,15 @@ a .fa-white,
     color: white !important;
 }
 
+.fa-facebook,
+.fa-twitter,
+.fa-github,
+.fa-google {
+   vertical-align: middle;
+}
+
 .label a {
-  color:white;
+  color:#007bff;
 }
 
 .label {
@@ -89,10 +119,34 @@ a .fa-white,
 
 .alert h2 {
   font-size:1.2em;
+  font-weight: 800;
 }
 
 .visible-print {
   display:none;
+}
+
+.text-underline {
+  text-decoration: underline !important;
+}
+
+#pl_pad {
+    width:300%;
+}
+
+#header .navbar .input-group {
+  flex-wrap: nowrap;
+}
+
+#header .navbar #searchform_input {
+  cursor: text;
+  min-width: 190px;
+}
+
+@media (max-width:992px) {
+    #pl_pad {
+        width:250%;
+    }
 }
 
 @media (max-width:400px) {
@@ -101,6 +155,10 @@ a .fa-white,
   }
   .visible-tiny {
     display:inline;
+  }
+
+  #pl_pad {
+      width: 75%;
   }
 }
 
@@ -111,29 +169,23 @@ a .fa-white,
   .visible-tiny {
     display:none;
   }
+
 }
 
 @media (max-width: 768px) {
-    .navbar-header {
-        float: none;
-    }
     .navbar-left,.navbar-right {
         float: none !important;
     }
     .navbar-toggle {
         display: block;
     }
-    .navbar-collapse {
-        border-top: 1px solid transparent;
-        box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
-    }
     .navbar-fixed-top {
         top: 0;
         border-width: 0 0 1px;
     }
-    .navbar-collapse.collapse {
+    /*.navbar-collapse.collapse {
         display: none!important;
-    }
+    }*/
     .navbar-nav {
         float: none!important;
         margin-top: 7.5px;
@@ -151,9 +203,11 @@ a .fa-white,
     #md-ham {
         display: none;
     }
+    #pl_pad {
+        width:150%;
+    }
 }
 
-body { padding-top: 70px; }
 
 #header .collapse.in .hidden-xs,
 #header .collapse.in .hidden-sm,
@@ -169,7 +223,7 @@ body { padding-top: 70px; }
 
 #header .navbar-brand {
   color: white;
-  padding-top: 19px;
+  /*padding-top: 19px;*/
   font-family: "Junction Light", lucida grande,lucida sans console,sans-serif;
   font-size: 22px;
 }
@@ -177,7 +231,8 @@ body { padding-top: 70px; }
 @media (max-width: 768px) {
   #header #brand,
   #header #brand-compact {
-    padding-top: 22px;
+    margin-top: 0.3125rem;
+    padding-bottom: 0;
     padding-right: 4px;
   }
 }
@@ -185,6 +240,9 @@ body { padding-top: 70px; }
 @media (max-width: 340px) {
   #brand { display:none; }
   #header .brand-compact { display:inline; }
+  #pl_pad {
+      width: 75%;
+  }
 }
 
 @media (min-width: 340px) {
@@ -192,7 +250,7 @@ body { padding-top: 70px; }
   #header .brand-compact { display:none; }
 }
 
-.navbar-inverse .navbar-nav > li > a {
+.navbar-nav > li > a {
   color: #aaa;
 }
 
@@ -212,7 +270,7 @@ body { padding-top: 70px; }
   color: #666;
   clear:both;
   margin-top: 40px;
-  padding: 30px;
+  padding: 30px !important;
   border-top: 1px solid #E5E5E5;
   background-color: #f8f8f8;
 }
@@ -263,8 +321,14 @@ body { padding-top: 70px; }
 }
 
 .pl-content blockquote p {
-  padding: 8px 4px;
+  padding: 14px;
+  font-style: italic;
   margin-top: 8px;
+  font-size: 16px;
+  font-family: "Helvetica Neue";
+  border-left: 5px solid #736f6f;
+  color: #555;
+  background-color: #f3f1ef;
 }
 
 #tags .label {
@@ -279,6 +343,25 @@ body { padding-top: 70px; }
 }
 
 /* Styles for specific areas of the site */
+/* Remove blue background on Chrome autocomplete */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active  {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
+.form-element-valid {
+  background-color: white !important;
+  box-shadow: none !important;
+  border: green 2px solid !important;
+}
+
+.form-element-invalid {
+  background-color: white !important;
+  box-shadow: none !important;
+  border: red 2px solid !important;
+}
 
 .note-show .main-image {
   margin-bottom: 14px;
@@ -334,14 +417,14 @@ body { padding-top: 70px; }
   border-bottom: 1px solid #ddd;
 }
 
-@media (max-width:400px) {
+.pagination > li:first-child,
+.pagination > li:last-child {
+    display: inline;
+}
+
+@media (max-width:640px) {
   .pagination > li {
     display: none;
-  }
-
-  .pagination > li:first-child,
-  .pagination > li:last-child {
-    display: inline;
   }
 }
 
@@ -362,13 +445,32 @@ div.note .meta {
   color:#888;
 }
 
+/*start of img aspect css that will affect the
+thumbnails which appears on the user's profile
+under their notes*/
 #notes .note a.img {
-  max-height: 200px;
-  height:160px;
+  height: auto;
+  display: inline-block;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.note-image {
+  height: auto;
+  overflow: hidden;
+}
+.note-image img {
+  width: auto;
+}
+
+.grid-image {
+  width: 100% !important;
+  height: auto;
   display: block;
   overflow: hidden;
   margin-bottom: 10px;
 }
+/*end of img aspect css*/
 
 #notes .note h3 a {
   color: #444;
@@ -392,17 +494,21 @@ div.note.moderated h4 {
 }
 
 .note p.moderated .btn {
-  color: #940;
+  color: #940 !important;
   border-color: #eb8;
   background: none;
   font-size: smaller;
+}
+
+.note p.moderated .btn:hover {
+  background-color: rgba(238, 187, 136, 0.5);
 }
 
 .btn-primary {
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
   background-color: #006dcc;
   *background-color: #3071a9;
-  background-image: -moz-linear-gradient(top, #0088cc, #3071a9);
+  background-image: -moz-linear-gradient(top, #0077dd, #4451a9);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#3071a9));
   background-image: -webkit-linear-gradient(top, #0088cc, #3071a9);
   background-image: -o-linear-gradient(top, #0088cc, #3071a9);
@@ -414,6 +520,21 @@ div.note.moderated h4 {
   filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
 
+a.btn-outline-secondary .fa {
+  color: inherit;
+}
+
+ a.btn-outline-secondary:not([href]):not([tabindex]) {
+  color: #6c757d;
+}
+
+.container .btn-outline-secondary:hover {
+  color: white !important;
+}
+
+.container .btn-outline-secondary:hover .fa {
+  color: white !important;
+}
 .nav-button-wrapper {
   padding-top: 7.5px;
 }
@@ -421,6 +542,14 @@ div.note.moderated h4 {
 @media (max-width:768px) {
   table {
     font-size: 90%;
+  }
+
+  .grid-image {
+  width: auto;
+  height: auto;
+  display: block;
+  overflow: hidden;
+  margin-bottom: 10px;
   }
 }
 
@@ -438,6 +567,60 @@ div.note.moderated h4 {
 
 .back-to-top i {
 
-  font-size: 60px;
+  font-size: 40px;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
 
+}
+
+.is-active{
+    cursor: default;
+    background-color: #e3f2fd;
+}
+textarea, input {
+    padding:10px;
+    font-family: FontAwesome, "Open Sans", Verdana, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
+}
+
+.form-grey {
+  color:#888;
+}
+
+/* breaks out of #content div and presents edge-to-edge content without absolute positioning */
+.inline-fullwidth-content {
+  width:100vw !important;
+  margin:0 calc((100% / 2) - 50vw) !important;
+  /* z-index: 10 !important; */
+}
+
+@media (min-width: 992px) {
+  .inline-fullwidth-content {
+    margin: 0 calc((133% / 2) - 49.4vw) !important;
+  }
+}
+@media (min-width: 1200px) {
+  .inline-fullwidth-content {
+    margin: 0 calc((133% / 2) - 48.3vw) !important;
+  }
+}
+
+.sidebar-panel {
+  background: rgba(255,255,255,0.8);
+  z-index: 700;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.btn-toolbar .btn-outline-secondary
+{
+    color:#222;
+}
+
+.btn-toolbar .btn-outline-secondary:hover
+{
+    color: #f1f1f1 !important;
 }

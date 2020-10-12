@@ -1,4 +1,46 @@
+$(document).ready(function () {
+  $('#selectall').click(function () {
+      $('.node-type').prop('checked', this.checked);
+  });
 
+  $('.node-type').change(function () {
+      var check = ($('.node-type').filter(":checked").length == $('.node-type').length);
+      $('#selectall').prop("checked", check);
+  });
+});
+var viewport = function() {
+  var e = window, a = 'inner';
+  if (!('innerWidth' in window )) {
+    a = 'client';
+    e = document.documentElement || document.body;
+  }
+  return { width : e[ a+'Width' ] , height : e[ a+'Height' ] };
+}
+function listselect(){
+  var types = [
+    'note',
+    'question',
+    'event',
+    'comment',
+    'wiki'
+  ];
+
+  
+  var selected = [];
+  $('#checkboxes input:checked').each(function() {
+      selected.push($(this).attr('data-type'));
+  });
+  let intersection = types.filter(x => selected.includes(x));
+  let difference = types.filter(x => !selected.includes(x));
+  for(var i=0;i<intersection.length;i++){
+    if (!(intersection[i] == 'wiki' && viewport().width > 992)){
+    $('.note-container-' + intersection[i]).show();
+    }
+  }
+  for(var j=0;j<difference.length;j++){
+    $('.note-container-' + difference[j]).hide();
+  }
+}
 
 (function() {
 
@@ -9,15 +51,9 @@
     'comment':  true, 
     'wiki':     true
   };
+ 
+  
 
-  var viewport = function() {
-    var e = window, a = 'inner';
-    if (!('innerWidth' in window )) {
-      a = 'client';
-      e = document.documentElement || document.body;
-    }
-    return { width : e[ a+'Width' ] , height : e[ a+'Height' ] };
-  }
 
   var setTypeVisibility = function(type, checked) {
 
@@ -45,8 +81,15 @@
         $('.node-type-' + type).prop('checked', checked);
  
       }
+   
+    $('.node-type').change(function () {
+      var check = ($('.node-type').filter(":checked").length == $('.node-type').length);
+      $('.node-type-all').prop("checked", check);
+    });
 
-
+    $('.node-type-all').click(function () {
+    $('.node-type').prop('checked', this.checked);
+    });
       // if all checked?
       var checked_array = $(".node-type").map(function(i, el) { return $(el).prop('checked'); });
 

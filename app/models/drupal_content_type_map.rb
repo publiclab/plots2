@@ -4,13 +4,7 @@ class DrupalContentTypeMap < ApplicationRecord
 
   belongs_to :node, foreign_key: 'nid', dependent: :destroy
 
-  validates :field_zoom_min_value, presence: :true
-
-  acts_as_mappable default_units: :miles,
-                   default_formula: :sphere,
-                   distance_field_name: :distance,
-                   lat_column_name: :lat,
-                   lng_column_name: :lng
+  validates :field_zoom_min_value, presence: true
 
   before_save :truncate_fields
 

@@ -54,15 +54,15 @@ module Plots2
 
     # Enable the asset pipeline
     config.assets.enabled = true
-    
-    I18n.available_locales = [:en, :de]
-    config.i18n.default_locale = :en 
-    
+
+    I18n.available_locales = [:en, :de, "zh-CN", :ar, :es, "hi-IN", :it, :ko, "pt-BR", :ru]
+    config.i18n.default_locale = :en
+
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
 
     # rails will fallback to config.i18n.default_locale translation
     config.i18n.fallbacks = true
-    
+
     # rails will fallback to en, no matter what is set as config.i18n.default_locale
     config.i18n.fallbacks = [:en]
 
@@ -80,15 +80,13 @@ module Plots2
     config.less.paths << Rails.root.join("assets","less")
     config.less.compress = true
 
+    # Add environments to skylight
+    config.skylight.environments += ["staging_unstable", "staging"]
+
     ActiveRecord::SessionStore::Session.table_name = 'rsessions'
-
-    require Rails.root + 'lib/open_id_authentication/open_id_authentication.rb'
-
-    config.middleware.use OpenIdAuthentication
 
     config.after_initialize do
       OpenID::Util.logger = Rails.logger
-      ActionController::Base.send :include, OpenIdAuthentication
     end
 
     config.autoload_paths += %W(
@@ -99,6 +97,13 @@ module Plots2
     # Search API configuration
     config.paths.add File.join('app','api'), glob: File.join('**', '*.rb')
     config.autoload_paths += Dir[Rails.root.join('app', 'api', '*')]
+
+    Raven.configure do |config|
+      # DSN should be an ENV variable!
+      config.dsn = ENV["SENTRY_DSN"] || 'https://0490297edae647b3bd935bdb4658da54:3d1a74cf68744c53b5e70484bece84d1@sentry.io/1410626'
+      config.environments = %w(production)
+      config.current_environment = ENV["COMPOSE_PROJECT_NAME"] || ENV["RAILS_ENV"] || %w(production)
+    end
 
   end
 end

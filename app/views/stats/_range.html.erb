@@ -1,0 +1,244 @@
+<br>
+<h6>Choose a starting and an ending date in the field below to see activity during that range</h6>
+<%= form_tag request.url, method: 'get', enforce_utf8: false do %>
+    <div class="row">
+        <div class="col-lg-4">
+            <label>Starting</label>
+            <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%d-%m-%Y") %>" value="<%= @start.strftime("%d-%m-%Y") %>" data-date-format="dd-mm-yyyy" tabindex="1" class="form-control" type="text" name="start">
+        </div>
+        <div class="col-lg-4">
+            <label>Ending</label>
+            <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%d-%m-%Y") %>" value="<%=@end.strftime("%d-%m-%Y") %>" data-date-format="dd-mm-yyyy" tabindex="1" class="form-control" type="text" name="end">
+        </div>
+        <div class="col-lg-1">
+            <%= submit_tag "Go", name: nil, class: 'btn btn-primary', :style=>'margin-top:2em;'  %>
+        </div>
+    </div>
+<% end %>
+<hr />
+<h5>
+    <%= raw translation('notes.stats.notes_wikis_comments', :notes_count => @notes, :wikis_count => @wikis, :comments_count => @comments) %>
+</h5>
+<hr>
+<h5>
+    <%= raw translation('notes.stats.members_and_contributors', :member_count => @people, :people_count => @contributors) %>
+</h5>
+<hr>
+<% if logged_in_as(['admin']) %>
+
+  <div class="row">
+ <div class="col-md-4 offset-md-1">
+    <div class="btn-group">
+        <button type="button" class="btn btn-lg btn-outline-secondary">
+            <i class="fa fa-cloud-download" style="color:blue"> </i>
+            Download as json
+        </button>
+        <button type="button" class="btn btn-lg btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu">
+            <li class="dropdown-item">
+                <%= link_to "Notes", stats_notes_path(format: 'json', start: params[:start], end: params[:end]) %>
+            </li>
+            <li class="dropdown-item">
+                <%= link_to "Wikis", stats_wikis_path(format: 'json', start: params[:start], end: params[:end]) %>
+            </li>
+            <li class="dropdown-item">
+                <%= link_to "Comments", stats_comments_path(format: 'json', start: params[:start], end: params[:end]) %>
+            </li>
+            <li class="dropdown-item">
+                <%= link_to "Users", stats_users_path(format: 'json', start: params[:start], end: params[:end]) %>
+            </li>
+            <li class="dropdown-item">
+                <%= link_to "Questions Asked", stats_questions_path(format: 'json', start: params[:start], end: params[:end]) %>
+            </li>
+            <li class="dropdown-item">
+                <%= link_to "Questions Answered", stats_answers_path(format: 'json', start: params[:start], end: params[:end]) %>
+            </li>
+            <li class="dropdown-item">
+                <%= link_to "List of Tags", stats_tags_path(format: 'json') %>
+            </li>
+            <li class="dropdown-item">
+                <%= link_to "Tag Usage", stats_node_tags_path(format: 'json', start: params[:start], end: params[:end])%>
+            </li>
+        </ul>
+    </div>
+</div>
+&emsp;
+<div class="col-md-3">
+    <div class="btn-group">
+        <button type="button" class="btn btn-lg btn-outline-secondary">
+            <i class="fa fa-cloud-download" style="color:purple"> </i>
+            Download as csv
+        </button>
+        <button type="button" class="btn btn-lg btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu">
+            <li class="dropdown-item">
+                <%= link_to "Notes", stats_notes_path(format: 'csv', start: params[:start], end: params[:end]) %>
+            </li>
+            <li class="dropdown-item">
+                <%= link_to "Wikis", stats_wikis_path(format: 'csv', start: params[:start], end: params[:end]) %>
+            </li>
+            <li class="dropdown-item">
+                <%= link_to "Comments", stats_comments_path(format: 'csv', start: params[:start], end: params[:end]) %>
+            </li>
+                <li class="dropdown-item">
+                    <%= link_to "Users", stats_users_path(format: 'csv', start: params[:start], end: params[:end]) %>
+                </li>
+                <li class="dropdown-item">
+                    <%= link_to "Questions Asked", stats_questions_path(format: 'csv', start: params[:start], end: params[:end]) %>
+                </li>
+                <li class="dropdown-item">
+                    <%= link_to "Questions Answered", stats_answers_path(format: 'csv', start: params[:start], end: params[:end]) %>
+                </li class="dropdown-item">
+                <li class="dropdown-item">
+                    <%= link_to "List of Tags", stats_tags_path(format: 'csv') %>
+                </li>
+                <li class="dropdown-item">
+                    <%= link_to "Tag Usage", stats_node_tags_path(format: 'csv', start: params[:start], end: params[:end])%>
+                </li>
+        </ul>
+    </div>
+    </div>
+</div>
+    <br><br> <br>
+<% end %>
+<h6> Move back or forward using the buttons below </h6>
+ <div class="row">
+ <div class="col-lg-4 offset-lg-1">
+<div class="btn-group" role="group" aria-label="Basic example">
+    <a href="<%= "?start="+(@start - 1.year).to_formatted_s(:long) %> <%= "&end="+(@end - 1.year).to_formatted_s(:long)   %>">
+        <button type="button" class="btn btn-default" title= "1 year back">
+            <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
+            <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
+            <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
+            <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
+        </button>
+    </a>
+    <a>
+        <a href="<%= "?start="+(@start - 3.months).to_formatted_s(:long) %> <%= "&end="+(@end - 3.months).to_formatted_s(:long)   %>">
+            <button type="button" class="btn btn-default" title="3 months back">
+                <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
+                <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
+                <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
+            </button>
+        </a>
+    <a href="<%= "?start="+(@start - 1.month).to_formatted_s(:long) %> <%= "&end="+(@end - 1.month).to_formatted_s(:long)   %>">
+        <button type="button" class="btn btn-default" title="1 month back">
+            <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
+            <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
+        </button>
+    </a>
+    <a href="<%= "?start="+(@start - 1.week).to_formatted_s(:long) %> <%= "&end="+(@end - 1.week).to_formatted_s(:long)   %>">
+        <button type="button" class="btn btn-default" title="1 week back">
+            <i class="fa fa-caret-left fa-2x"  style="color:#3071a9;"> </i>
+        </button>
+    </a>
+</div>
+
+</div>
+&emsp;
+<div class="col-lg-3">
+<div class="btn-group" role="group" aria-label="Basic example">
+    <a href="<%= "?start="+(@start + 1.week).to_formatted_s(:long) %> <%= "&end="+(@end + 1.week).to_formatted_s(:long)   %>">
+        <button type="button" class="btn btn-default" title="1 week forward">
+            <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
+        </button>
+    </a>
+    <a href="<%= "?start="+(@start + 1.month).to_formatted_s(:long) %> <%= "&end="+(@end + 1.month).to_formatted_s(:long)   %>">
+        <button type="button" class="btn btn-default" title="1 month forward">
+            <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
+            <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
+        </button>
+    </a>
+    <a href="<%= "?start="+(@start + 3.months).to_formatted_s(:long) %> <%= "&end="+(@end + 3.months).to_formatted_s(:long)   %>">
+        <button type="button" class="btn btn-default" title="3 months forward">
+            <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
+            <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
+            <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
+        </button>
+    </a>
+    <%# <a href="/stats/range/<%= (@start + 1.year).to_formatted_s(:long)   %1>/<%= (@end + 1.year).to_formatted_s(:long)   %1>"> %>
+        <a href="<%= "?start="+(@start + 1.year).to_formatted_s(:long) %> <%= "&end="+(@end + 1.year).to_formatted_s(:long)   %>">
+            <button type="button" class="btn btn-default" title="1 year forward">
+                <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
+                <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
+                <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
+                <i class="fa fa-caret-right fa-2x"  style="color:#3071a9;"> </i>
+            </button>
+        </a>
+</div>
+<br> <br> <br>
+
+</div>
+ </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+var questions = [<%= @questions %>];
+var answers = [<%= @answers %>];
+
+var options = {
+    chart: {
+        type: 'bar',
+        height: 130,
+        width: '90%',
+        stacked: true,
+        stackType: '100%'
+    },
+    plotOptions: {
+        bar: {
+            horizontal: true,
+        },
+    },
+    stroke: {
+        width: 1,
+        colors: ['#fff']
+    },
+    series: [{
+        name: 'Questions asked',
+        data: questions
+    },{
+        name: 'Questions answered',
+        data: answers
+    }],
+        fill: {
+            opacity: 1
+        },
+        title: {
+            text: "Questions asked vs Answered in this period",
+        },
+
+        legend: {
+            show: false,
+        },
+        grid: {
+            show: false,
+        },
+        xaxis: {
+            labels: {
+                show: false,
+            },
+            axisBorder: {
+                show: false
+            },
+            lines: {
+                show: false,
+            }
+        },
+        yaxis: {
+            labels: {
+                show: false,
+            }
+        }
+
+}
+
+var chart2 = new ApexCharts(document.querySelector("#chart2"),options);
+chart2.render();
+
+</script>
