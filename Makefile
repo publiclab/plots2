@@ -16,6 +16,11 @@ redeploy-container:
 	docker-compose exec -T web bundle exec whenever --update-crontab
 	docker-compose exec -T web service cron start
 
+pull-from-stable:
+	git pull --ff-only origin stable
+
+automated-redeploy: pull-from-stable redeploy-container
+
 deploy-container:
 	docker-compose run --rm web yarn install
 	docker-compose run --rm web bash -c "sleep 5 && bundle exec rake db:migrate && bundle exec rake assets:precompile"
