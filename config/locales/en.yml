@@ -550,6 +550,23 @@ en:
         fellows: "Fellows"
         lending_library: "Lending Library"
       search: "Search on Public Lab"
+      community:
+        community_title: "Community"
+        get_started: "Get Started"
+        people: "People"
+        places: "Places"
+        projects: "Projects"
+        events: "Events"
+        questions: "Questions"
+        chat: "Chat"
+      tools:
+        tools_title: "Tools"
+        methods: "Methods"
+        kits_initiative: "Kits Initiative"
+        store: "Store"
+        map_knitter: "Map Knitter"
+        spectral_workbench: "Spectral Workbench"
+        code_community: "Code Community"
       about:
         about_title: "About us"
         stories: "Stories"
