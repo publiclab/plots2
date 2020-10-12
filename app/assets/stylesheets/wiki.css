@@ -43,6 +43,10 @@
   margin-bottom: 4px;
 }
 
+.tooltip-inner { 
+  max-width: 500px 
+}
+
 @media (min-width: 768px) {
   .inline-edit-btns {
     font-size: 11px;
