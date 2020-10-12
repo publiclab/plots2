@@ -5,7 +5,7 @@
     <%= render :partial => "map/leaflet" , locals: { lat: @map_lat, lon: @map_lon, zoom: @map_zoom, blurred: @map_blurred, topmap: true, user: @profile_user } %>
   <% elsif !current_user.nil? && current_user.id == @profile_user.id %>
     <div id="map_template" style="position: relative; width: 100%; display: inline-block;">
-      <img src="https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/0/0/0.png" style="height:300px; width: 100%; margin: 0; position: relative; margin-right: -10px;">  
+      <img src="https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/0/0/0.png" style="height:300px; width: 100%; margin: 0; position: relative; margin-right: -10px;">
       <button type='button' class='blurred-location-input btn btn-default btn-lg' style="position:absolute;position:absolute;top:41%;left:15%;"> <strong> Share your Location </strong> </button>
       <p><i><small>Learn about <a href='https://publiclab.org/wiki/location-privacy'>privacy</a> </small></i></p>
     </div>
@@ -268,6 +268,8 @@
       <li><h5><a href = "/tag/activity:*/author/<%= params[:id] %>"><%= pluralize(@count_activities_posted, 'activity posted', plural:'activities posted') %> </a></h5></li>
       <li><h5><a href = "/tag/replication:*/author/<%= params[:id] %>"><%= pluralize(@count_activities_attempted, 'activity attempted', plural:'activities attempted')%></a> </h5></li>
       <li><h5><a href = "/tag/with:<%= @profile_user.username %>"><%= pluralize(Tag.find_nodes_by_type("with:#{@profile_user.username}").count, 'note co-authored', plural: 'notes co-authored')%></a> </h5></li>
+      <li><h5><a href = "/people/<%= @profile_user.username %>/followers"><%= pluralize(@profile_user.followers.count, 'follower', plural: 'followers')%></a> </h5></li>
+      <li><h5><a href = "/people/<%= @profile_user.username %>/following"><%= pluralize(@profile_user.following_users.count, 'following', plural: 'following')%></a> </h5></li>
     </ul>
   </div>
 
