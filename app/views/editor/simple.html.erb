@@ -32,138 +32,109 @@
         padding-top: 1px;
     }
 </style>
+
 <div class="pl-editor" style="width:100%;">
 
-    <div class="ple-content">
-        <div class="ple-errors"></div>
+  <div class="ple-content">
+    <div class="ple-errors"></div>
 
-        <!-- Map Module start-->
-        <div class="ple-module-map row">
+    <!-- Map Module start-->
+    <div class="ple-module-map row">
 
-  <div class="ple-module-content col-sm-11 col-sm-offset-1">
+      <div class="ple-module-content col-sm-11 col-sm-offset-1">
 
-                <%# <div id="map_content"> %>
-                            <div
-                             id="map"
-                             class="leaflet-map"
-                             style="width: 100% ; height: 300px; margin-bottom:8px;">
-                            </div>
-                    <p>
-                    <form class="form-inline">
-                        <div class="form-group mb-3">
-                            Posting near
-                        </div>
-                              <div class="form-group mx-sm-3 mb-2">
-
-                            <input id="placenameDisplay" type="text" class="form-control" data-preventOverwrite="false" />
-                        </div>
-                        <div class="form-group mb-3">
-                    (<a data-toggle="collapse" href="#location" role="button" aria-expanded="false" aria-controls="location">edit</a>)
-                        </div>
-                    </form>
-                    </p>
-                    <br>
-
-              <div class="row collapse" id="location">
-                  <%# <div class="row"> %>
-                      <div class="col-sm-4">
-                          <label>Search place by name</label>
-                          <p>
-                          <input id="placenameInput" type="text" class="form-control" />
-                          </p>
-                      </div>
-
-                      <div class="col-sm-4">
-                          <p>
-                          <label>
-                              Latitude
-                              <input
-                           id="lat"
-                           type="text"
-                           class="form-control"
-                           placeholder="Latitude"
-                           />
-                          </label>
-                          </p>
-                      </div>
-
-                      <div class="col-sm-4">
-                          <p>
-                          <label>
-                              Longitude
-                              <input
-                           id="lng"
-                           type="text"
-                           class="form-control"
-                           placeholder="Longitude"
-                           />
-                          </label>
-                          </p>
-                      </div>
-                  <%# </div> %>
-            </div>
-          </div>
-        </div>
+      <div
+         id="map"
+         class="leaflet-map"
+         style="width: 100% ; height: 300px; margin-bottom:8px;">
       </div>
-    <!-- Map Module end -->
+      <p>
+        <form class="form-inline">
+          <div class="form-group mb-3">
+            Posting near
+          </div>
+          <div class="form-group mx-sm-3 mb-2">
 
+            <input id="placenameDisplay" type="text" class="form-control" data-preventOverwrite="false" />
+          </div>
+          <div class="form-group mb-3">
+            (<a data-toggle="collapse" href="#location" role="button" aria-expanded="false" aria-controls="location">edit</a>)
+          </div>
+        </form>
+      </p>
+      <br />
 
-    <!-- body module -->
-    <div class="ple-module-body row">
-
-        <%# <div class="ple-module-guide col-sm-3"> %>
-            <%# <h2>2</h2> %>
-            <%# </div> %>
-
-        <div class="ple-module-content col-sm-11 col-sm-offset-1">
-            <h5>Tell a story about this place:</h5>
-            <div class="ple-module-content">
-                <textarea id="text-input" class="simple-text ple-textarea form-control" placeholder="Your story" height="300px">
-                    <% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %>
-                </textarea>
-            </div>
-
+      <div class="row collapse" id="location">
+        <div class="col-sm-4">
+          <label>Search place by name</label>
+          <p><input id="placenameInput" type="text" class="form-control" /></p>
         </div>
-    </div>
-    <br> <br>
-    <!-- end body module -->
 
-    <!-- image module -->
-    <div class="ple-module-main_image">
-        <div class="ple-module-content row">
-            <div class="col-sm-1 col-sm-offset-3">
-                <br>
+        <div class="col-sm-4">
+          <p><label>
+              Latitude
+              <input id="lat" type="text" class="form-control" placeholder="Latitude" />
+          </label></p>
+        </div>
+
+        <div class="col-sm-4">
+          <p>
             <label>
-                    <i class="fa fa-camera fa-3x" aria-hidden="true" style="color:gray"></i>
-                    <input class ="d-none" type="file"
-                           value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>"
-                           accept=".png, .jpg, .jpeg"
-                           name="image[photo]" tooltip="this is">
-                </label>
-            </div>
-            <div class="ple-drag-drop col-sm-3"></div>
-          <p class="ple-help">
+              Longitude
+              <input id="lng" type="text" class="form-control" placeholder="Longitude" />
+            </label>
           </p>
         </div>
-            <span class="ple-help-minor">Drag or Select an optional main image for your post.</span>
+
+      </div>
     </div>
-    <br> <br>
+  </div>
+  <!-- Map Module end -->
 
-    <!-- end main_image module -->
+  <!-- body module -->
+  <div class="ple-module-body row">
+    <div class="ple-module-content col-sm-11 col-sm-offset-1">
+      <h5>Tell a story about this place:</h5>
+      <div class="ple-module-content">
+        <textarea id="text-input" class="simple-text ple-textarea form-control" placeholder="Your story" height="300px">
+          <% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %>
+        </textarea>
+      </div>
+    </div>
+  </div>
+  <br /> <br />
+  <!-- end body module -->
 
- <!-- tags module -->
- <div class="d-none">
+  <!-- image module -->
+  <div class="ple-module-main_image">
+    <div class="ple-module-content row">
+      <div class="col-sm-1 col-sm-offset-3">
+        <br />
+        <label>
+          <i class="fa fa-camera fa-3x" aria-hidden="true" style="color:gray"></i>
+          <input class ="d-none" type="file"
+                 value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>"
+                 accept=".png, .jpg, .jpeg"
+                 name="image[photo]" tooltip="this is">
+        </label>
+      </div>
+      <div class="ple-drag-drop col-sm-3"></div>
+      <p class="ple-help"></p>
+    </div>
+    <span class="ple-help-minor">Drag or Select an optional main image for your post.</span>
+  </div>
+  <br /><br />
+  <!-- end main_image module -->
+
+  <!-- tags module -->
+  <div class="d-none">
     <div class="ple-module-tags row">
 
       <div class="ple-module-guide col-sm-3">
-          <p class="muted">
-          Add tags to connect your story to other related stories
-          </p>
-
+        <p class="muted">Add tags to connect your story to other related stories</p>
       </div>
 
       <div class="ple-module-content col-sm-9">
-  <%# <div class="ple-module-content col-sm-11 col-sm-offset-1"> %>
         <input
           class="form-control input-sm"
           type="text"
@@ -172,73 +143,49 @@
         />
       </div>
 
-      </div>
     </div>
-    <!-- end tags module -->
+  </div>
+  <!-- end tags module -->
 
-<!-- title module -->
-    <div class="ple-module-title row">
+  <!-- title module -->
+  <div class="ple-module-title row">
 
-
-  <div class="ple-module-content col-sm-11 col-sm-offset-1">
-          <h5>Give your post a title</h5>
-        <input
-          class="form-control input-sm"
-          type="text"
-          id="title-input"
-          placeholder="Title"
-          value="<%= if @node then @node.title else params[:title] end %>"
-        />
-      </div>
-
+    <div class="ple-module-content col-sm-11 col-sm-offset-1">
+      <h5>Give your post a title</h5>
+      <input class="form-control input-sm" type="text" id="title-input" placeholder="Title" value="<%= if @node then @node.title else params[:title] end %>" />
     </div>
-    <!-- end title module -->
-    <div class="text-center">
-        <%= link_to "Help", "", class: 'btn btn-lg btn-outline-secondary' %>
-        <button class="ple-publish btn btn-lg btn-primary  disabled"><% if controller.action_name == "edit" && @node.status == 3 %>Save<% else %>Post<% end %></button>
-    </div>
-
 
   </div>
+  <!-- end title module -->
 
-  <div class="ple-footer">
-
-    <div class="ple-menu-more" style="display:none;">
-      <b>History</b>
-      <div class="ple-history"></div>
-      <hr />
-    </div>
-
-    <button class="btn btn-sm btn-outline-secondary btn-more">...</button>
-
-    <span> &nbsp; By publishing, you agree to <a href="https://publiclab.org/licenses">open source your work</a><span class="d-none d-md-inline"> so that others may use it.</span></span>
-    <span class="ple-help float-right">
-      <% if controller.action_name != "edit" && !current_user.first_time_poster %>
-        <span id="newOpts" style="display: inline-block;">
-        <span id="text" style="display: none; color:red;">
-          Others won't see your post yet
-          (<a href="https://publiclab.org/draft-feature" target="_blank">?</a>) &nbsp; &nbsp;</span>
-          <span class="checkbox">
-            <label>
-              <input type="checkbox" id="myCheck" onclick="draftCheck()" />
-              Save as draft
-            </label> |
-          </span>
-          <span class="ple-steps-left">2</span>
-          <span class="d-none d-md-inline"> steps left</span>
-        </span>
-      <% end %>
-    </span>
-
+  <div class="text-center">
+    <%= link_to "Help", "", class: 'btn btn-lg btn-outline-secondary' %>
+    <button class="ple-publish btn btn-lg btn-primary  disabled"><% if controller.action_name == "edit" && @node.status == 3 %>Save<% else %>Post<% end %></button>
   </div>
 
 </div>
+
+<div class="ple-footer">
+  <div class="ple-menu-more" style="display:none;">
+    <b>History</b>
+    <div class="ple-history"></div>
+    <hr />
+  </div>
+
+  <button class="btn btn-sm btn-outline-secondary btn-more"><i class="fa fa-clock"></i></button>
+
+  <span> &nbsp; By publishing, you agree to <a href="https://publiclab.org/licenses">open source your work</a><span class="d-none d-md-inline"> so that others may use it.</span></span>
+  <span class="ple-help float-right">
+    <% if controller.action_name != "edit" && !current_user.first_time_poster %>
+      <span id="newOpts" style="display: inline-block;">
+        <span class="ple-steps-left">2</span>
+        <span class="d-none d-md-inline"> steps left</span>
+      </span>
+    <% end %>
+  </span>
+
 </div>
-    <script>
-$(document).ready(function() {
-    $("#map_content").show();
-});
-    </script>
+
 <script>
   var editor;
 
@@ -288,7 +235,7 @@ $(document).ready(function() {
       mapModule: true,
       mainImageModule: {
         uid: <%= current_user.id %><% if @node && @node.id %>,
-  nid: <%= @node.id %><% end %>,
+        nid: <%= @node.id %><% end %>,
         token: $('meta[name="csrf-token"]').attr('content')
       },
       richTextModule: {
@@ -337,55 +284,32 @@ $(document).ready(function() {
       }
     });
   })();
-  $('.legacy-button').click(function onLegacyClick(event) {
-      event.preventDefault();
-      window.location = "/post?legacy=true&body=" + editor.richTextModule.value() + "&tags=" + editor.tagsModule.value() + "&title=" + editor.titleModule.value();
+
+  var blurredLocation = new BlurredLocation({
+    InterfaceOptions: {
+        latId: 'lat',
+        lngId: 'lng',
+        placenameDisplayOnError: 'Location error'
+    },
+    AddScaleDisplay: true ,
+    AddBlurryScale: true,
+    precisionTable: {'-2': 2, '-1': 3, '0': 6, '1': 10, '2': 13, '3': 16}
   });
-  function draftCheck() {
-      var checkBox = document.getElementById("myCheck");
-      var text = document.getElementById("text");
-      var button = document.getElementsByClassName("ple-publish")[0];
-     if (checkBox.checked === true){
-          editor.data.draft = true;
-         text.style.display = "inline-block";
-         button.innerHTML = "Save";
-      } else {
-          editor.data.draft = false;
-          text.style.display = "none";
-         button.innerHTML = "Publish";
-      }
-      console.log("Draft:", editor.data.draft);
+
+  blurredLocation.panMapToGeocodedLocation("placenameInput");
+
+  var changeZoom = function() {
+    var zoom = slider.getValue();
+    blurredLocation.map.setZoom(zoom);
   }
-</script>
-<script>
 
-    var options = {
-        InterfaceOptions: {
-            latId: 'lat',
-            lngId: 'lng',
-            placenameDisplayOnError: 'Location error'
-        },
-        AddScaleDisplay: true ,
-        AddBlurryScale: true,
-        precisionTable: {'-2': 2, '-1': 3, '0': 6, '1': 10, '2': 13, '3': 16}
-    }
+  var slider = $('#ex1').slider()
+    .on('slide', changeZoom)
+    .data('slider');
 
-    var blurredLocation = new BlurredLocation(options);
-
-    blurredLocation.panMapToGeocodedLocation("placenameInput");
-
-    var changeZoom = function() {
-        var zoom = slider.getValue();
-        blurredLocation.map.setZoom(zoom);
-    }
-
-    var slider = $('#ex1').slider()
-        .on('slide', changeZoom)
-        .data('slider');
-
-    blurredLocation.map.on('zoomend', function() {
-        let zoom = blurredLocation.map.getZoom();
-        $('#ex1').slider('setValue', zoom);
-    })
+  blurredLocation.map.on('zoomend', function() {
+    let zoom = blurredLocation.map.getZoom();
+    $('#ex1').slider('setValue', zoom);
+  });
 
 </script>
