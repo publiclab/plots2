@@ -18,7 +18,7 @@
       <% end %>
     <% end %>
 
-    <% if @wikis.count > 9 %>
+    <% if @wikis.size > 9 %>
       <tr>
         <td>
           <b><%= link_to "More matching wikis >>", "/search/wikis/#{params[:query]}" %></b>

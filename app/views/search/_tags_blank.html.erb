@@ -9,7 +9,7 @@
       <% end %>
     <% end %>
 
-    <% if @tags.count > 9 %>
+    <% if @tags.size > 9 %>
       <tr>
         <td>
           <b><%= link_to "More matching tags >>", "/search/tags/#{params[:query]}" %></b>

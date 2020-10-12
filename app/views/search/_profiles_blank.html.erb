@@ -12,7 +12,7 @@
       <% end %>
     <% end %>
 
-    <% if @profiles.count > 9 %>
+    <% if @profiles.size > 9 %>
       <tr> <td><b><%= link_to "More matching profiles >>", "/search/profiles/#{params[:query]}" %></b></td></tr>
     <% end %>
   </table>
