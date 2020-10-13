@@ -7,7 +7,7 @@
           <a class="nav-link <% if @node_type == "note" %> active<% end %>" href="/tag/<%= params[:id] %>">
             <i class="fa fa-file"></i> 
             <span class="d-lg-inline"> 
-              <span class="d-none d-md-inline"><%= translation('tag.show.research_notes') %></span>
+              <span class="d-none d-md-inline"><%= t('tag.show.research_notes') %></span>
               <span class="d-none d-sm-inline badge badge-primary"><%= params[:counts][:posts] %></span>
             </span>
           </a>
@@ -17,7 +17,7 @@
         <a class="nav-link <% if @node_type == "questions" %> active<% end %>" href="/questions/tag/<%= params[:id] %>">
           <i class="fa fa-question-circle"></i> 
           <span class="d-lg-inline">
-            <span class="d-none d-md-inline"><%= translation('tag.show.questions') %></span>
+            <span class="d-none d-md-inline"><%= t('tag.show.questions') %></span>
             <span class="d-none d-sm-inline badge badge-primary"><%= params[:counts][:questions] %></span>
           </span>
         </a>
@@ -26,7 +26,7 @@
         <a class="nav-link <% if @node_type=="wiki" %> active <% end %>" href="/wiki/tag/<%= params[:id] %>">
           <i class="fa fa-book"></i> 
           <span class="d-lg-inline">
-            <span class="d-none d-md-inline"><%= translation('tag.show.wiki_pages') %></span>
+            <span class="d-none d-md-inline"><%= t('tag.show.wiki_pages') %></span>
             <span class="d-none d-sm-inline badge badge-primary"><%= params[:counts][:wiki] %></span>
           </span>
         </a>
@@ -35,7 +35,7 @@
       <li class="nav-item">
         <a class="nav-link <% if @node_type == "maps" %> active <% end %>" href="/maps/tag/<%= params[:id] %>">
           <i class="fa fa-map-marker"></i> 
-          <span class="d-lg-inline"><%= translation('tag.show.maps') %></span>
+          <span class="d-lg-inline"><%= t('tag.show.maps') %></span>
         </a>
       </li>
       -->
@@ -44,7 +44,7 @@
           <a class="nav-link <% if @node_type == "contributors" %> active <% end %>" href="/contributors/<%= params[:id] %>">
             <i class="fa fa-user"></i> 
             <span class="d-lg-inline">
-              <span class="d-none d-lg-inline"><%= raw translation('tag.show.people') %></span>
+              <span class="d-none d-lg-inline"><%= raw t('tag.show.people') %></span>
               <span class="d-none d-sm-inline badge badge-primary"><%=@length %></span>
             </span>
           </a>
@@ -52,30 +52,30 @@
       <% else %>
         <a class="disabled" class="dropdown-item<% if @node_type == "contributors" %> active <% end %>" href="#" rel="tooltip" title="Contributors cannot be listed for wildcard tag searches" >
           <i class="fa fa-user"></i> 
-          <span class="d-lg-inline d-none d-md-inline"><%= raw translation('tag.show.contributors') %></span>
+          <span class="d-lg-inline d-none d-md-inline"><%= raw t('tag.show.contributors') %></span>
         </a>
       <% end %>
 
     <% else %>
 
       <% unless params[:id].match("question:") %>
-        <a class="dropdown-item" <% if @node_type == "note" %> class="active"<% end %> href="/tag/<%= params[:id] %>/author/<%= params[:author] %>"><i class="fa fa-file"></i> <span class="d-lg-inline"><%= raw translation('tag.show.research_notes') %></span>
+        <a class="dropdown-item" <% if @node_type == "note" %> class="active"<% end %> href="/tag/<%= params[:id] %>/author/<%= params[:author] %>"><i class="fa fa-file"></i> <span class="d-lg-inline"><%= raw t('tag.show.research_notes') %></span>
         </a>
       <% end %>
 
       <a class="dropdown-item" <% if @node_type == "questions" %> class="active"<% end %> href="/questions/tag/<%= params[:id] %>/author/<%= params[:author] %>" >
-        <i class="fa fa-question-circle"></i> <span class="d-lg-inline"><%= translation('tag.show.questions') %></span>
+        <i class="fa fa-question-circle"></i> <span class="d-lg-inline"><%= t('tag.show.questions') %></span>
       </a>
       <a class="dropdown-item" <% if @node_type == "wiki" %> class="active"<% end %> href="/wiki/tag/<%= params[:id] %>/author/<%= params[:author] %>" >
-        <i class="fa fa-book"></i> <span class="d-lg-inline"><%= raw translation('tag.show.wiki_pages') %></span>
+        <i class="fa fa-book"></i> <span class="d-lg-inline"><%= raw t('tag.show.wiki_pages') %></span>
       </a>
       <!--
       <a class="dropdown-item" <% if @node_type == "maps" %> class="active"<% end %> href="/maps/tag/<%= params[:id] %>/author/<%= params[:author] %>" >
-        <i class="fa fa-map-marker"></i> <span class="d-lg-inline"><%= translation('tag.show.maps') %></span>
+        <i class="fa fa-map-marker"></i> <span class="d-lg-inline"><%= t('tag.show.maps') %></span>
       </a>
       -->
       <a class="dropdown-item"<% if @node_type == "contributors" %> class="active"<% end %> href="#" rel="tooltip" title="Contributors can't be listed for tag searches with Authors" >
-        <i class="fa fa-user"></i> <span class="d-lg-inline"><%= raw translation('tag.show.contributors') %></span>
+        <i class="fa fa-user"></i> <span class="d-lg-inline"><%= raw t('tag.show.contributors') %></span>
       </a>
     <% end %>
   </ul>
