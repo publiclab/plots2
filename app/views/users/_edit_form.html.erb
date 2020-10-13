@@ -2,11 +2,11 @@
 <%= form_for @user, :url => {:controller => 'users', :action => 'update'}, :html => {:class => "row",:id => 'edit-form' } do |f| %>
   <%= hidden_field_tag "user[ui_update]", "true" %>
   <div class="col-md-10">
-    <% if @model.errors.any? %>
+    <% if @user.errors.any? %>
       <div id="error_explanation">
-        <h2><%= pluralize(@model.errors.count, "error") %> prohibited this form from being saved:</h2>
+        <h2><%= pluralize(@user.errors.count, "error") %> prohibited this form from being saved:</h2>
         <ul>
-          <% @model.errors.full_messages.each do |msg| %>
+          <% @user.errors.full_messages.each do |msg| %>
             <li><%= msg %></li>
           <% end %>
         </ul>
