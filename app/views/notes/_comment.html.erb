@@ -81,7 +81,7 @@
             <p id="emoji-title" style="text-align: center;color: #586069; font-size:14px;margin:6px;">Pick your reaction</p>
             <div id= "dropdown-divider" style="display: block;height: 0;border-top: 1px solid #e1e4e8;"></div>         
                          
-            <div id="emoji-list" class="open">              
+            <div id="emoji-list" class="emoji-container">              
               <% emoji_names, emoji_image_map = emoji_info %>                           
               <% emoji_names.each do |e| %>
               <% capitalized_emoji_name = e.split("-").map(&:capitalize).join %>
@@ -208,7 +208,7 @@
 </script>
 
 <style>
-  .open {
+  .emoji-container {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
