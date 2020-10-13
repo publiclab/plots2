@@ -16,9 +16,11 @@ class StatsController < ApplicationController
 
   def range
     flash.now[:notice] = "Data is cached and recalculated daily"
-    if params[:options].present?
+    if params[:options].present? && params[:options] != 'For all time'
       params[:start] = Time.now - to_keyword(params[:options])
       params[:end] = Time.now
+    elsif params[:options] == 'For all time'
+      all_time_stats
     end
     @start = start
     @end = fin
@@ -42,6 +44,11 @@ class StatsController < ApplicationController
       @answers = total_questions.joins(:comments).size.size
       @questions = total_questions.size.size
     end
+  end
+
+  def all_time_stats
+    params[:start] = Date.new(2014, 01, 01).to_time
+    params[:end] = Time.now
   end
 
   def index
