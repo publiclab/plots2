@@ -2,8 +2,15 @@
 <%= form_for @user, :url => {:controller => 'users', :action => 'update'}, :html => {:class => "row",:id => 'edit-form' } do |f| %>
   <%= hidden_field_tag "user[ui_update]", "true" %>
   <div class="col-md-10">
-    <% if f.error_messages != "" %>
-      <div class="alert alert-danger"><%= f.error_messages %></div>
+    <% if @user.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@user.errors.count, "error") %> prohibited this form from being saved:</h2>
+        <ul>
+          <% @user.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
     <% end %>
 
       <div class='col-md-12' style="display:flex; justify-content: center;">
