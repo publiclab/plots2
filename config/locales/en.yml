@@ -414,7 +414,7 @@ en:
       no_contributors_listed: "No contributors are listed."
       write_research_note: "Write a research note"
     _tagging:
-      enter_tags: "enter tags"
+      enter_tags: "Enter tags"
     contributors:
       contributors_for: "Contributors for <i style=\"color:#aaa;\">%{tag_name}</i>"
       contributions_over_past_year: "Above: contributions over the past year."
@@ -676,7 +676,7 @@ en:
       all: "all"
       notes: "notes"
       receive_mails: "Receive emails for all research notes."
-      enter_tags: "enter tags"
+      enter_tags: "Enter tags"
       add: "Add"
       tag: "Tag"
       options: "Options"
