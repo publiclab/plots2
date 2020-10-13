@@ -1,6 +1,6 @@
-<div id="social" style="clear:both;margin-top:10px;">
+<div id="social" style="clear:both;margin-top:10px;display:flex;">
   <% if Rails.env == "production" %>
-    <div class="fb-like" data-send="false" data-layout="button_count" data-width="50" data-show-faces="false" style="vertical-align: middle; bottom: 6px;margin-right:10px" ></div>
+    <div class="fb-like" data-send="false" data-layout="button_count" data-width="50" data-show-faces="false" style="display:flex;margin-right:10px;" ></div>
 
     <script>(function(d, s, id) {
        var js, fjs = d.getElementsByTagName(s)[0];
@@ -10,7 +10,7 @@
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));</script>
 
-    <div class="fb-share-button" style="vertical-align: middle; bottom: 6px;margin-right:10px"
+    <div class="fb-share-button" style="display:flex;margin-right:10px;"
     data-layout="button"
     data-size="small" data-mobile-iframe="true"><a target="_blank"
     href="https://www.facebook.com/sharer"
@@ -25,6 +25,5 @@
 <style>
 .tweet{
   position: relative;
-  vertical-align: middle;
 }
 </style>

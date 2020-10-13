@@ -46,12 +46,17 @@ $(document).ready(function() {
   if (signUpForms[1]) {
     signUpForms[1].classList.add("signup-register-form");
     var signUpRegisterForm = new SignUpFormValidator(".signup-register-form");
-    signUpRegisterForm.validateForm()
 
-    if (signUpErrorMessages.innerHTML.includes("Email")) {
-      signUpRegisterForm.updateUI(signUpRegisterForm.emailElement, false, "Email already exists");
+    if (signUpErrorMessages.innerHTML.includes("error")) {
+      signUpRegisterForm.updateUI(signUpRegisterForm.emailElement, true);
+      signUpRegisterForm.updateUI(signUpRegisterForm.usernameElement, true);
+      if (signUpErrorMessages.innerHTML.includes("Email")) {
+        signUpRegisterForm.updateUI(signUpRegisterForm.emailElement, false, "Email already exists");
+      }
+      if (signUpErrorMessages.innerHTML.includes("Username")) {
+        signUpRegisterForm.updateUI(signUpRegisterForm.usernameElement, false, "Username already exists");
+      }
     }
-    signUpRegisterForm.isFormValid()
   }
 
   // The same goes for login forms
