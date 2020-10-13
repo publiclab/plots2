@@ -7,15 +7,17 @@
 
 <%= form_for :revision, :as => :revision, :url => url, :html => {:class => "form"} do |f| %>
 
-    <% if @revision.errors.any? %>
-      <div class="alert alert-danger">
-        <h2><%= pluralize(@revision.errors.count, "error") %> prohibited this map from being saved:</h2>
-        <ul>
-        <% @revision.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
+    <% if defined?(@revision) %>
+        <% if @revision.errors.any? %>
+        <div class="alert alert-danger">
+            <h2><%= pluralize(@revision.errors.count, "error") %> prohibited this revision from being saved:</h2>
+            <ul>
+            <% @revision.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+            <% end %>
+            </ul>
+        </div>
         <% end %>
-        </ul>
-      </div>
     <% end %>
 
 <% end %>
