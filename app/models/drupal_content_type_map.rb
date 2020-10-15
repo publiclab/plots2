@@ -29,9 +29,9 @@ class DrupalContentTypeMap < ApplicationRecord
   end
 
   def license
-    l = "<a href='http://creativecommons.org/publicdomain/zero/1.0/'>Public Domain</a>" if field_license_value == 'publicdomain'
-    l = "<a href='http://creativecommons.org/licenses/by/3.0/'>CC-BY</a>" if field_license_value == 'cc-by'
-    l = "<a href='http://creativecommons.org/licenses/by-sa/3.0/'>CC-BY-SA</a>" if field_license_value == 'cc-by-sa'
+    l = "<a href='https://creativecommons.org/publicdomain/zero/1.0/'>Public Domain</a>" if field_license_value == 'publicdomain'
+    l = "<a href='https://creativecommons.org/licenses/by/3.0/'>CC-BY</a>" if field_license_value == 'cc-by'
+    l = "<a href='https://creativecommons.org/licenses/by-sa/3.0/'>CC-BY-SA</a>" if field_license_value == 'cc-by-sa'
     l
   end
 
