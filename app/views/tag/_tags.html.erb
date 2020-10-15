@@ -9,17 +9,6 @@
 
       <% if i == 2 && !power_tag %>
         <a class="show-more-tags" href="javascript:void(0);"><p style="float:left; color:#666; margin-top:14px; margin-left:5px;"><u><%= tags.length - 2 %> more</u> &nbsp </p>
-        
-          <button class="collapsed" type="button" data-toggle="collapse" data-target="#demo" aria-expanded="false">
-            <i class="fa fa-plus-circle" aria-hidden="true"></i>
-          </button>
-          <div id="demo" class="in collapse">
-          <ul>
-            <% tags.each do |t| %>
-                <li><%=  t %></li>
-            <% end %>
-          </ul>
-          </div>
         </a>
       <% end %>
 
