@@ -2870,10 +2870,10 @@ humanize@^0.0.9:
   resolved "https://registry.yarnpkg.com/humanize/-/humanize-0.0.9.tgz#1994ffaecdfe9c441ed2bdac7452b7bb4c9e41a4"
   integrity sha1-GZT/rs3+nEQe0r2sdFK3u0yeQaQ=
 
-i18n-js@^3.7.1:
-  version "3.7.1"
-  resolved "https://registry.yarnpkg.com/i18n-js/-/i18n-js-3.7.1.tgz#c70de6a64dc0ad5d2b6273eecfac636e5ed0421a"
-  integrity sha512-xrRzCeda5ZC0u0yRN+dMdidtda0N+f7t7Pek0ajWb+iyKqSGdrMmuBtbNpWJWY5N4Th0cxbp/BR57zSPdrM3Rw==
+i18n-js@^3.8.0:
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/i18n-js/-/i18n-js-3.8.0.tgz#b8fd6b12e1d88cb71f9806c29bca7c31c012e504"
+  integrity sha512-hDsGgPuvw/2P+lXSbOafAwspK8Ste8YrwuuUg17W3wEcO1JkQxBlPgsN1t2+852nTnz4YSYTjZc/1nAA2PC/nw==
 
 ianstormtaylor-css@^0.3.1:
   version "0.3.1"
