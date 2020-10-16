@@ -38,6 +38,29 @@ $(document).ready(function()
         var data_recv = JSON.parse(JSON.stringify(status));
         notyNotification('relax', 3000, 'error', 'top', data_recv.message + 'Click <a href="../subscriptions"> here </a> to manage your subscriptions. ');
       });
+
+    $('.show-unfollow-button').on('ajax:success', function(data, status, xhr){
+        var data_recv = JSON.parse(JSON.stringify(status));
+        var html_new = '<a rel="tooltip" title=Following class="btn btn-outline-secondary btn-sm show-follow-button" href="/subscribe/tag/'+ data_recv.tagname + '">Subscribe</a>';
+        notyNotification('relax', 3000, 'success', 'top', data_recv.message + 'Click <a href="../subscriptions"> here </a> to manage your subscriptions. ');
+        $('.show-unfollow-button').parent().html(html_new);
+    });
+    $('.show-follow-button').on('ajax:success', function(data, status, xhr){
+        var data_recv = JSON.parse(JSON.stringify(status));
+        var html_new = '<a rel="tooltip" title=UnFollow class="btn btn-outline-secondary btn-sm show-unfollow-button" data-method="delete" href="/unsubscribe/tag/'+ data_recv.tagname + '">Unsubscribe</a>';
+        notyNotification('relax', 3000, 'success', 'top', data_recv.message + 'Click <a href="../subscriptions"> here </a> to manage your subscriptions. ');
+        $('.show-follow-button').parent().html(html_new);
+    });
+    $('.show-unfollow-button').on('ajax:error', function(data, status, xhr){
+        var data_recv = JSON.parse(JSON.stringify(status));
+        notyNotification('relax', 3000, 'error', 'top', data_recv.message + 'Click <a href="../subscriptions"> here </a> to manage your subscriptions. ');
+        $('.show-unfollow-button').remove();
+    });
+    $('.show-follow-button').on('ajax:error', function(data, status, xhr){
+        var data_recv = JSON.parse(JSON.stringify(status));
+        notyNotification('relax', 3000, 'error', 'top', data_recv.message + 'Click <a href="../subscriptions"> here </a> to manage your subscriptions. ');
+        $('.show-follow-button').remove();
+    });
 });
 
 $(document).ready(function(){

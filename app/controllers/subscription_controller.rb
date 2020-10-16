@@ -94,7 +94,9 @@ class SubscriptionController < ApplicationController
         respond_with do |format|
           format.html do
             if request.xhr?
-              render json: true
+              message = "You have stopped following #{params[:name]}!"
+              status = "200"
+              render json: { status: status, message: message, tagname: params[:name] }
             else
               flash[:notice] = "You have stopped following '#{params[:name]}'."
               redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s

@@ -5,14 +5,14 @@
     <% unless @wildcard %>
       <% if current_user.following(params[:id]) %>
         <div class="dropdown-item">
-          <a style="width: 100px;" rel="tooltip" title="<%= translation('tag.show.unfollow') %>" class="btn btn-light btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>"> <%= translation('tag.index.unsubscribe') %></a>
+          <a style="width: 100px;" rel="tooltip" title="<%= translation('tag.show.unfollow') %>" class="btn btn-light btn-sm active show-unfollow-button" data-method="delete" data-remote="true" data-confirm="Are you sure you'd like to unfollow this topic?" href="/unsubscribe/tag/<%= params[:id] %>"> <%= translation('tag.index.unsubscribe') %></a>
         </div>
         <div class="dropdown-divider"></div>
       <% else %>
-        <div class="dropdown-item">	
-          <a style="width: 100px;" class="btn btn-outline-secondary btn-sm" href="/subscribe/tag/<%= params[:id] %>" data-remote="true">	
-            <%= translation('tag.index.subscribe') %>	
-          </a>	
+        <div class="dropdown-item">
+          <a style="width: 100px;" class="btn btn-outline-secondary btn-sm show-follow-button" href="/subscribe/tag/<%= params[:id] %>" data-remote="true">
+            <%= translation('tag.index.subscribe') %>
+          </a>
         </div>
       <% end %>
 
@@ -61,7 +61,5 @@ $(function() {
   });
 });
 
-$('.dropdown-menu').on('click', function(e) {
-  e.stopPropagation();
-});
+
 </script>
