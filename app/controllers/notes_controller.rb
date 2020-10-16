@@ -128,6 +128,7 @@ class NotesController < ApplicationController
         flash[:notice] = thanks_for_question
 
       elsif not_draft_and_user_is_first_time_poster?
+        flash[:first_time_post] = true
         thanks_for_contribution = I18n.t('notes_controller.thank_you_for_contribution').html_safe
         flash[:notice] = thanks_for_contribution
 
