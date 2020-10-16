@@ -15,6 +15,10 @@
     <a class="dropdown-item <% if params[:order] == 'likes' %> active<% end %>" href="?order=likes">
       <i class="fa fa-star"></i> <span class="d-lg-inline">by likes</span>
     </a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header">View date range</h6>
+    <a class="dropdown-item" href="?start=<%= (@start || Time.now - 1.month).to_formatted_s(:long) %>&end=<%= (@end || Time.now).to_formatted_s(:long) %>" >past month</a>
+    <a class="dropdown-item" href="?start=<%= (@start || Time.now - 1.year).to_formatted_s(:long) %>&end=<%= (@end || Time.now).to_formatted_s(:long) %>" >past year</a>
   <% end %>
   </div>
 </div>
