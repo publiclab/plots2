@@ -6,7 +6,7 @@ class CommentController < ApplicationController
   def index
     @pagy, comments = pagy(Comment.joins(:node, :user)
                    .order('timestamp DESC')
-                   .where('node.status = ?', 1), items:30)
+                   .where('node.status = ?', 1), items: 30)
 
     @normal_comments = comments.where('comments.status = 1')
     if logged_in_as(%w(admin moderator))
