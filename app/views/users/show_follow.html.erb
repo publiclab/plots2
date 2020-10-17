@@ -17,7 +17,11 @@
         </tr>
       <% end %>
     </table>
-  <% if @pagy %> <%= raw pagy_bootstrap_nav @pagy %> <% else %> <%= will_paginate @users, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %> <% end %>
+   <% if @pagy %> 
+      <%= raw pagy_bootstrap_nav @pagy %> 
+   <% else %> 
+      <%= will_paginate @users, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+   <% end %>
   <% else %>
     <p class="pt-3 border-top">
       <%= @user.username %><%= @title === "Followers" ? " has no followers yet" : " is not following anyone yet" %>
