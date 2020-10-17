@@ -61,7 +61,8 @@ class NotesController < ApplicationController
       @title = @node.latest.title
       @tags = @node.tags
       @tagnames = @tags.collect(&:name)
-
+      @tags = []
+      @preview = false
       set_sidebar :tags, @tagnames
     else
       page_not_found
@@ -155,6 +156,27 @@ class NotesController < ApplicationController
         render template: 'editor/post'
       end
     end
+  end
+
+  def preview
+    return show_banned_flash unless current_user.status == User::Status::NORMAL
+    @node, @img, @body = new_preview_note
+    
+    #TODO1: handle error cases and show proper banner
+
+    #TODO2: Make @tags array of all tags
+    @tags = []
+    @preview = true
+    params[:tags]&.tr(' ', ',')&.split(',')&.each do |tagname|
+      # append (tagname.strip) to @tags 
+    end
+
+    if params[:event] == 'on'
+        # append ('event') to @tags 
+        # append ('event:rsvp') to @tags 
+        # append ('date:' + params[:date]) to @tags if params[:date]
+    end
+     # append ('first-time-poster') to @tags if current_user.first_time_poster
   end
 
   def edit

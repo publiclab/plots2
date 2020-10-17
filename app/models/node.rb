@@ -390,8 +390,11 @@ class Node < ActiveRecord::Base
   end
 
   # power tags have "key:value" format, and should be searched with a "key:*" wildcard
-  def has_power_tag(key)
-    !power_tag(key).blank?
+  def has_power_tag(key, preview_tags_array = [])
+    if preview_tags_array.nil? || preview_tags_array.empty?
+      !power_tag(key).blank?
+    else
+      # TODO3: Write logic to search if /key/ regex is present in preview_tags_array or not
   end
 
   # returns the value for the most recent power tag of form key:value
@@ -713,6 +716,23 @@ class Node < ActiveRecord::Base
       end
     end
     [saved, node, revision]
+  end
+
+  def self.new_preview_note(params)
+
+    author = User.find(params[:uid])
+    node = Node.new(uid:     author.uid,
+                    title:   params[:title],
+                    comment: 2,
+                    type:    'note')
+    node.status = 4 if author.first_time_poster
+    node.draft if params[:draft] == "true"
+    
+    if params[:main_image] && (params[:main_image] != '')
+      img = Image.find params[:main_image]
+    end
+    
+    [node, img, params[:body])]
   end
 
   def self.new_wiki(params)

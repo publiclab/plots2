@@ -2,8 +2,9 @@
 
 <div class="col-lg-9 note-show<% if @node.status == 4 || @node.status == 0 %> moderated<% end %>">
   <% if current_user && @node.tags.size == 0 %><div class="alert alert-warning"><%= raw translation('notes.show.note_no_tags', url: 'javascript: document.getElementById("tags-open").click();') %></div><% end %>  
-  <% if @node.has_power_tag('status:candidate') %><div class="alert alert-info">This was marked as a candidate activity -- <a href="https://publiclab.org/notes/warren/09-17-2016/what-makes-a-good-activity" >read about how to adapt its content</a> into a fully-fledged, step-by-step activity that can be easily replicated.</div><% end %>
-  <% if @node.has_power_tag('replication') %><div class="alert alert-info"><%= raw translation('notes.show.replication') %> <a href="/n/<%= @node.power_tag('replication') %>"><%= raw translation('notes.show.replication_link') %></a>.</div><% end %>
+  # TODO4: pass @tags to all `has_power_tag` model functions everywhere in this file
+  <% if @node.has_power_tag('status:candidate',  @tags) %><div class="alert alert-info">This was marked as a candidate activity -- <a href="https://publiclab.org/notes/warren/09-17-2016/what-makes-a-good-activity" >read about how to adapt its content</a> into a fully-fledged, step-by-step activity that can be easily replicated.</div><% end %>
+  <% if @node.has_power_tag('replication',  @tags) %><div class="alert alert-info"><%= raw translation('notes.show.replication') %> <a href="/n/<%= @node.power_tag('replication') %>"><%= raw translation('notes.show.replication_link') %></a>.</div><% end %>
   <% if @node.has_power_tag('series') %><div class="alert alert-info"><%= raw translation('notes.show.series') %> <a href="/tag/series:<%= @node.power_tag('series') %>"><%= @node.power_tag('series') %></a>.</div><% end %>
   <% if @node.has_power_tag('build') %><div class="alert alert-info"><%= raw translation('notes.show.build') %> <a href="/n/<%= @node.power_tag('build') %>"><%= raw translation('notes.show.build_link') %></a>.</div><% end %>
   <% if @node.has_power_tag('alert') && feature("alert-#{@node.power_tag('alert')}") != "" %>
@@ -12,6 +13,7 @@
   <% if @node.has_power_tag('with') && current_user && @node.coauthors.collect(&:username).include?(current_user.username) %> <div class="alert alert-success"> You are a coauthor of this post. This attributes your contribution, and gives you edit access to the note. <a href="https://publiclab.org/wiki/power-tags#Coauthorship"> Learn more </a></div><% end %>
   <% if @node.has_power_tag('upgrade') %><div class="alert alert-success"> This is an upgrade for <a href="/<%= @node.power_tag('upgrade') %>"><%= @node.power_tag('upgrade') %></a>. Try building it and <a href="/n/<%= @node.power_tag('upgrade') %>"> report back </a>how it goes.</div><% end %>
 
+  # TODO5: Mock image by using @img in the same way we did for 'has_power_tag' or maybe do  @node.main_image || @img
   <% if @node.main_image %>
     <a class="main-image" style="max-width:100%;width:800px;" href="<%= @node.main_image.path(:original) %>">
       <%= image_tag(@node.main_image.path(:large), class:"rounded d-none d-lg-inline", style:'max-height:600px;max-width:100%;') %>
@@ -32,6 +34,7 @@
               <a href="/profile/<%= coauthor.username %>">
                 <%= coauthor.username%></a> <%= coauthor.new_contributor %>
               <%= ',' if i < @node.coauthors.size-1 %><% end %><% end %>
+              #TODO6: Make sure this line is not rendered in 'preview' using @preview maybe
               <% if current_user && current_user.id == @node.uid %><a aria-label="Add Coauthor" onClick="promptTag('with:')" href="#"><i style="color:#aaa;" class="fa fa-pencil"></i></a><% end %> |
 
       <span class="d-none d-lg-inline">
@@ -60,10 +63,12 @@
 
   <%= render :partial => "notes/gallery" %>
 
+  #TODO7: raw auto_link(insert_extras(@node.latest.render_body ||  @body ), :sanitize => false) 
   <div id="content" class="pl-content note">
   <%= raw auto_link(insert_extras(@node.latest.render_body), :sanitize => false) %>
   </div>
 
+  #TODO8: Is this depreciated code? Ask @jywarren
   <% if @node.files && @node.files.size > 0 %>
     <table id="files" class="table">
       <tr>
@@ -109,6 +114,7 @@
 
     <%= render partial: "notes/responses" %>
 
+    #TODO9: if @preview === true, remove this, you can use this if condition anywhere you want
     <div><%= render partial: "notes/comments" %></div>
 
   </div>
