@@ -325,13 +325,13 @@ class UsersController < ApplicationController
 
   def following
     @title = "Following"
-    @users = @user.following_users.paginate(page: params[:page], per_page: 10)
+    @pagy, @users = pagy(@user.following_users, items: 10)
     render 'show_follow'
   end
 
   def followers
     @title = "Followers"
-    @users = @user.followers.paginate(page: params[:page], per_page: 10)
+    @pagy, @users = pagy(@user.followers, items: 10)
     render 'show_follow'
   end
 
