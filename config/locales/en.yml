@@ -355,6 +355,7 @@ en:
       unfollow: "Click to unfollow"
       follow: "Follow"
       no_results: "No results found; try searching for '%{search}'"
+      no_recent_posts: "There are no recent posts"
       advanced_search: "Or try an <a href='%{url}'>advanced search</a>"
       by: "by"
       views: "views"
