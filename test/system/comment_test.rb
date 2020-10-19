@@ -213,7 +213,7 @@ class CommentTest < ApplicationSystemTestCase
     # Create a comment
     page.execute_script <<-JS
       var commentForm = $('.comment-form-wrapper')[1];
-      var submitCommentBtn = $(commentForm).find('.btn')[0];
+      var submitCommentBtn = $(commentForm).find('.btn-primary')[0];
       var commentTextarea = $(commentForm).find('#text-input')[0]
 
       $(commentTextarea).val('Great post Jeff!')
@@ -226,9 +226,8 @@ class CommentTest < ApplicationSystemTestCase
     # Click "confirm" on modal
     page.evaluate_script('document.querySelector(".jconfirm-buttons .btn:first-of-type").click()')
 
-    assert_selector('#comments-list .comment', count: 0)
+    assert_selector('#comments-list .comment', count: 1)
     assert_selector('.noty_body', text: 'Comment deleted')
-    assert_selector('#comment-count', {:text=>"0"})
   end
 
   test 'comment editing' do
@@ -237,7 +236,7 @@ class CommentTest < ApplicationSystemTestCase
     # Create a comment
     page.execute_script <<-JS
       var commentForm = $('.comment-form-wrapper')[1];
-      var submitCommentBtn = $(commentForm).find('.btn')[0];
+      var submitCommentBtn = $(commentForm).find('.btn-primary')[0];
       var commentTextarea = $(commentForm).find('#text-input')[0]
 
       // Fill the form

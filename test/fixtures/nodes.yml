@@ -133,6 +133,18 @@ wiki_page:
   cached_likes: 0
   slug: wiki-page-title
 
+fresh_wiki_page:
+  nid: 11
+  uid: 1
+  title: "Wiki page title"
+  path: "/wiki/fresh_wiki-page-path"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "page"
+  cached_likes: 0
+  slug: wiki-page-title
+
 map:
   nid: 12
   uid: 1
