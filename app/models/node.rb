@@ -176,6 +176,11 @@ class Node < ActiveRecord::Base
     save
   end
 
+  def match_preview_tag(key, preview_tags)
+    preview_tag = preview_tags.join(" ").match(key)
+    !preview_tag.blank?
+  end
+
   public
 
   is_impressionable counter_cache: true, column_name: :views, unique: :ip_address
@@ -390,11 +395,9 @@ class Node < ActiveRecord::Base
   end
 
   # power tags have "key:value" format, and should be searched with a "key:*" wildcard
-  def has_power_tag(key, preview_tags_array = [])
-    if preview_tags_array.nil? || preview_tags_array.empty?
-      !power_tag(key).blank?
-    else
-      # TODO3: Write logic to search if /key/ regex is present in preview_tags_array or not
+  def has_power_tag(key, preview_tags = [])
+    return !power_tag(key).blank? if preview_tags.blank?
+    match_preview_tag(key, preview_tags)
   end
 
   # returns the value for the most recent power tag of form key:value
@@ -463,21 +466,25 @@ class Node < ActiveRecord::Base
   # access a tagname /or/ tagname ending in wildcard such as "tagnam*"
   # also searches for other tags whose parent field matches given tagname,
   # but not tags matching given tag's parent field
-  def has_tag(tagname)
-    tags = get_matching_tags_without_aliasing(tagname)
-    # search for tags with parent matching this
-    tags += Tag.includes(:node_tag)
-               .references(:community_tags)
-               .where('community_tags.nid = ? AND parent LIKE ?', id, tagname)
-    # search for parent tag of this, if exists
-    # tag = Tag.where(name: tagname).try(:first)
-    # if tag && tag.parent
-    #  tags += Tag.includes(:node_tag)
-    #             .references(:community_tags)
-    #             .where("community_tags.nid = ? AND name LIKE ?", self.id, tag.parent)
-    # end
-    tids = tags.collect(&:tid).uniq
-    !NodeTag.where('nid IN (?) AND tid IN (?)', id, tids).empty?
+  def has_tag(tagname, preview_tags = [])
+    if preview_tags.blank?
+      tags = get_matching_tags_without_aliasing(tagname)
+      # search for tags with parent matching this
+      tags += Tag.includes(:node_tag)
+                 .references(:community_tags)
+                 .where('community_tags.nid = ? AND parent LIKE ?', id, tagname)
+      # search for parent tag of this, if exists
+      # tag = Tag.where(name: tagname).try(:first)
+      # if tag && tag.parent
+      #  tags += Tag.includes(:node_tag)
+      #             .references(:community_tags)
+      #             .where("community_tags.nid = ? AND name LIKE ?", self.id, tag.parent)
+      # end
+      tids = tags.collect(&:tid).uniq
+      !NodeTag.where('nid IN (?) AND tid IN (?)', id, tids).empty?
+    else
+      match_preview_tag(tagname, preview_tags)
+    end
   end
 
   # can return multiple Tag records -- we don't yet hard-enforce uniqueness, but should soon
@@ -719,20 +726,20 @@ class Node < ActiveRecord::Base
   end
 
   def self.new_preview_note(params)
-
     author = User.find(params[:uid])
     node = Node.new(uid:     author.uid,
                     title:   params[:title],
                     comment: 2,
                     type:    'note')
+    revision = node.new_revision(uid:   author.uid,
+                                title: params[:title],
+                                body:  params[:body])
     node.status = 4 if author.first_time_poster
     node.draft if params[:draft] == "true"
-    
     if params[:main_image] && (params[:main_image] != '')
       img = Image.find params[:main_image]
     end
-    
-    [node, img, params[:body])]
+    [node, img, revision]
   end
 
   def self.new_wiki(params)

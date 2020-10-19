@@ -61,7 +61,7 @@ class NotesController < ApplicationController
       @title = @node.latest.title
       @tags = @node.tags
       @tagnames = @tags.collect(&:name)
-      @tags = []
+      @preview_tags = []
       @preview = false
       set_sidebar :tags, @tagnames
     else
@@ -161,22 +161,11 @@ class NotesController < ApplicationController
   def preview
     return show_banned_flash unless current_user.status == User::Status::NORMAL
     @node, @img, @body = new_preview_note
-    
-    #TODO1: handle error cases and show proper banner
-
-    #TODO2: Make @tags array of all tags
-    @tags = []
     @preview = true
-    params[:tags]&.tr(' ', ',')&.split(',')&.each do |tagname|
-      # append (tagname.strip) to @tags 
-    end
-
-    if params[:event] == 'on'
-        # append ('event') to @tags 
-        # append ('event:rsvp') to @tags 
-        # append ('date:' + params[:date]) to @tags if params[:date]
-    end
-     # append ('first-time-poster') to @tags if current_user.first_time_poster
+    @preview_tags = add_preview_tags
+    @event_date = params[:date] if params[:date]
+    flash[:notice] = "You are currently viewing a preview"
+    render template: 'notes/show'
   end
 
   def edit
@@ -260,7 +249,7 @@ class NotesController < ApplicationController
           render json: errors
         else
           render 'editor/post'
-       end
+        end
       end
     end
   end
@@ -448,6 +437,14 @@ class NotesController < ApplicationController
                   draft: params[:draft])
   end
 
+  def new_preview_note
+    Node.new_preview_note(uid: current_user.uid,
+      title: params[:title],
+      body: params[:body],
+      main_image: params[:main_image],
+      draft: params[:draft])
+  end
+
   def not_draft_and_user_is_first_time_poster?
     params[:draft] != "true" && current_user.first_time_poster
   end
@@ -455,5 +452,21 @@ class NotesController < ApplicationController
   def show_banned_flash
     flash.keep[:error] = I18n.t('notes_controller.you_have_been_banned').html_safe
     redirect_to '/logout'
+  end
+
+  def add_preview_tags
+    tags = []
+    if params[:tags].present?
+      params[:tags]&.tr(' ', ',')&.split(',')&.each do |tagname|
+        tags << tagname
+      end
+    end
+    if params[:event] == 'on'
+      tags << 'event'
+      tags << 'event:rsvp'
+      tags << "date:#{params[:date]}" if params[:date]
+    end
+    tags << 'first-time-poster' if current_user.first_time_poster
+    tags
   end
 end

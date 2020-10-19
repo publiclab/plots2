@@ -1061,4 +1061,22 @@ class NotesControllerTest < ActionController::TestCase
      assert_equal I18n.t('notes_controller.saved_as_draft'), flash[:notice]
      assert_redirected_to '/notes/' + users(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
    end
+
+  # Preview test
+   test 'note preview' do
+    UserSession.create(users(:jeff))
+    title = 'My preview post about balloon mapping'
+    flash_msg = "You are currently viewing a preview"
+
+    assert_no_difference 'Node.count' do  post :preview,
+         params: {
+             title: title,
+             body:  'This is a fascinating post about a balloon mapping event.',
+             tags:  'balloon-mapping,event',
+             draft: "true",
+             uid: users(:jeff).id
+         }
+    end
+    assert_equal flash_msg, flash[:notice]
+  end
 end
