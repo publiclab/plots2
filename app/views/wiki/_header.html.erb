@@ -1,4 +1,4 @@
-<% if current_user && @node.tags.length == 0 %>
+<% if current_user && @node.tags.size == 0 %>
   <div class="alert alert-warning"><%= raw translation('wiki.show.page_has_no_tags', url: 'javascript: document.getElementById("tags-open").click();') %></div>
 <% end %>
 
@@ -31,8 +31,8 @@
 
     <div style="padding-top:8px;text-align:center">
       <span class="d-none d-lg-inline">
-        <span rel="tooltip" title="The number of authors for this page." data-placement="top"><i style="color:#888;" class="fa fa-user"></i> <%= number_with_delimiter(@node.authors.length) %></span>  |
-        <a rel="tooltip" title="View all revisions for this page." data-placement="top" href="/wiki/revisions/<%= @node.slug_from_path %>"><i style="color:#888;" class="fa fa-history"></i> <%= @node.revisions.length %></a> |
+        <span rel="tooltip" title="The number of authors for this page." data-placement="top"><i style="color:#888;" class="fa fa-user"></i> <%= number_with_delimiter(@node.authors.size) %></span>  |
+        <a rel="tooltip" title="View all revisions for this page." data-placement="top" href="/wiki/revisions/<%= @node.slug_from_path %>"><i style="color:#888;" class="fa fa-history"></i> <%= @node.revisions.size %></a> |
         <a aria-label="Practice in a realtime doc" href="/talk/<%= @node.slug_from_path %>" rel="tooltip" title="Practice in a realtime doc." data-placement="top"><i class="fa fa-comment"></i></a> |
         <a aria-label="Link to wiki" href="/n/<%= @node.id %>"><i style="color:#888;" class="fa fa-link"></i></a> <span class="d-none d-xl-inline"><a href="/n/<%= @node.id %>">#<%= @node.id %></a></span>
       </span>
