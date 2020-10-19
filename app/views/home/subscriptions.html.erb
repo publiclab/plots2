@@ -40,7 +40,7 @@
 
 <div class="col-lg-9">
 
-  <h3><%=raw translation('home.subscriptions.manage_subscriptions') %> (<%= current_user.subscriptions.length %>)</h3>
+  <h3><%=raw translation('home.subscriptions.manage_subscriptions') %> (<%= current_user.subscriptions.size %>)</h3>
 
   <form class="navbar-form" action="/subscribe/tag">
     <div class="form-group">
@@ -55,7 +55,7 @@
     </div>
   </form>
 
-  <% if current_user.subscriptions.length == 0 %>
+  <% if current_user.subscriptions.size == 0 %>
   <p> You haven't subscribed to any topic yet </p>
   <% else %>
     <table class="table">
