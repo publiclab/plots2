@@ -40,6 +40,6 @@ Thanks so much `xyz` <!-- Replace `xyz` with the contributors who worked on the 
 ## Next Check-in
 If you would like to open the next check-in..Leave a comment below. We are happy to help if its your first time
 
-**Thanks everyone for making Public Lab awesome** 🎈
-Have a great week and year ahead all ❤️
+**Thanks everyone for making Public Lab awesome** :heart:  
+Have a great week ahead all :balloon: 
 

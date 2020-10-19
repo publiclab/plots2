@@ -56,8 +56,8 @@ class UsersController < ApplicationController
     @password_verification = user_verification_params
     @user = current_user
     @user = User.find_by(username: params[:id]) if params[:id] && logged_in_as(['admin'])
-    if @user.valid_password?(user_verification_params["current_password"]) || user_verification_params["ui_update"].nil?
-      # correct password
+    if @user.valid_password?(user_verification_params["current_password"]) || user_verification_params["ui_update"].nil? || (user_verification_params["current_password"].blank? && user_verification_params["password"].blank? && user_verification_params["password_confirmation"].blank?)
+      # correct password or if any other field needs to be updated
       @user.attributes = user_params
       if @user.save
         if session[:openid_return_to] # for openid login, redirects back to openid auth process
@@ -325,13 +325,13 @@ class UsersController < ApplicationController
 
   def following
     @title = "Following"
-    @users = @user.following_users.paginate(page: params[:page], per_page: 10)
+    @pagy, @users = pagy(@user.following_users, items: 10)
     render 'show_follow'
   end
 
   def followers
     @title = "Followers"
-    @users = @user.followers.paginate(page: params[:page], per_page: 10)
+    @pagy, @users = pagy(@user.followers, items: 10)
     render 'show_follow'
   end
 
@@ -469,7 +469,7 @@ class UsersController < ApplicationController
   end
 
   def user_verification_params
-    params.require(:user).permit(:ui_update, :current_password)
+    params.require(:user).permit(:ui_update, :current_password, :password, :password_confirmation)
   end
 
   def spamaway_params

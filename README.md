@@ -40,7 +40,6 @@ We are developing a draft Roadmap for `plots2` and our broader Public Lab code p
 3. [Contributing](#contributing)
 4. [Prerequisites](#prerequisites)
 5. [Installation](#installation)
-    - [Simple Installation with Cloud9](https://github.com/publiclab/plots2/wiki/Simple-Installation-for-Cloud9)
     - [Standard Installation](#standard-installation)
     - [Windows Installation](#windows-installation)
 6. [SSL in Development](#ssl-in-development)
@@ -90,10 +89,6 @@ For installation, prerequisites include sqlite3 and rvm. [Click here for a compl
 
 ## Installation
 
-### Installation for Cloud9
-
-For information on how to install for use with the cloud environment, please see [here](https://github.com/publiclab/plots2/wiki/Simple-Installation-for-Cloud9).
-
 ### Standard Installation
 
 1. Fork our repo from https://github.com/publiclab/plots2.
@@ -101,7 +96,7 @@ For information on how to install for use with the cloud environment, please see
 3. Enter the new **plots2** directory with `cd plots2`.
 4. Set the upstream remote to the original repository url so that git knows where to fetch updates from in future: `git remote add upstream https://github.com/publiclab/plots2.git`
 5. Steps to install gems:
-    * You may need to first run `bundle install` if you have older gems in your environment from previous Rails work. If you get an error message like `Your Ruby version is 2.x.x, but your Gemfile specified 2.4.4` then you need to install the ruby version 2.6.6 using `rvm` or `rbenv`.
+    * You may need to first run `bundle install` if you have older gems in your environment from previous Rails work. If you get an error message like `Your Ruby version is 2.x.x, but your Gemfile specified 2.6.6` then you need to install the ruby version 2.6.6 using `rvm` or `rbenv`.
 	    * Using **rvm**: `rvm install 2.6.6` followed by `rvm use 2.6.6`
 	    * Using **rbenv**:  `rbenv install 2.6.6` followed by `rbenv local 2.6.6`
     * Install gems with `bundle install --without production mysql` from the rails root folder, to install the gems you'll need, excluding those needed only in production.
