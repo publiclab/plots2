@@ -226,8 +226,9 @@ class CommentTest < ApplicationSystemTestCase
     # Click "confirm" on modal
     page.evaluate_script('document.querySelector(".jconfirm-buttons .btn:first-of-type").click()')
 
-    assert_selector('#comments-list .comment', count: 1)
+    assert_selector('#comments-list .comment', count: 0)
     assert_selector('.noty_body', text: 'Comment deleted')
+    assert_selector('#comment-count', {:text=>"0"})
   end
 
   test 'comment editing' do
