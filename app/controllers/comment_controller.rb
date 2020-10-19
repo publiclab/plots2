@@ -4,10 +4,9 @@ class CommentController < ApplicationController
   before_action :require_user, only: %i(create update delete)
 
   def index
-    comments = Comment.joins(:node, :user)
+    @pagy, comments = pagy(Comment.joins(:node, :user)
                    .order('timestamp DESC')
-                   .where('node.status = ?', 1)
-                   .paginate(page: params[:page], per_page: 30)
+                   .where('node.status = ?', 1), items: 30)
 
     @normal_comments = comments.where('comments.status = 1')
     if logged_in_as(%w(admin moderator))
