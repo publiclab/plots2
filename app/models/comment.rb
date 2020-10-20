@@ -329,7 +329,10 @@ class Comment < ApplicationRecord
       extra_content = nil
     end
 
-    return comment_content, extra_content
+    {
+      comment_content: comment_content,
+      extra_content: extra_content
+    }
   end
 
   def self.yahoo_parsed_mail(mail_doc)
