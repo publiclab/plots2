@@ -331,6 +331,7 @@ class Comment < ApplicationRecord
     else
       comment_content = mail_doc
       extra_content = nil
+    end
 
     {
       comment_content: comment_content,
