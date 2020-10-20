@@ -6,7 +6,7 @@
 
 <div class="projects">
   <% cache('home-blog', expires_in: 60.minutes, skip_digest: true) do %>
-    <% unless @projects.nil? || @projects.length == 0 %>
+    <% unless @projects.nil? || @projects.size == 0 %>
 
       <% @projects.each_with_index do |project, index| %>
 
@@ -40,9 +40,9 @@
                 <% end %>
               <% end %>
 
-              <% if project.authors.length > 2 %>
+              <% if project.authors.size > 2 %>
                 <span class="person person-text">
-                  <span class="text"><%= [project.authors.length - 2, 1].max %> more</span>
+                  <span class="text"><%= [project.authors.size - 2, 1].max %> more</span>
                 </span>
               <% end %>
 -->
