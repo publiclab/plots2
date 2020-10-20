@@ -320,23 +320,17 @@ class Comment < ApplicationRecord
   end
 
   def self.yahoo_quote_present?(mail_doc)
-    if mail_doc.css(".yahoo_quotes").any?
+    mail_doc.css(".yahoo_quotes").any?
+  end
+
+  def self.yahoo_parsed_mail(mail_doc)
+    if yahoo_quote_present?(mail_doc)
       extra_content = mail_doc.css(".yahoo_quoted")[0]
       mail_doc.css(".yahoo_quoted")[0].remove
       comment_content = mail_doc
     else
       comment_content = mail_doc
       extra_content = nil
-    end
-
-    {
-      comment_content: comment_content,
-      extra_content: extra_content
-    }
-  end
-
-  def self.yahoo_parsed_mail(mail_doc)
-    comment_content, extra_content = yahoo_quote_present?(mail_doc)
 
     {
       comment_content: comment_content,
