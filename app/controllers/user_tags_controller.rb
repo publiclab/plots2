@@ -10,25 +10,22 @@ class UserTagsController < ApplicationController
     @paginated = true
     if params[:search]
       keyword = params[:search]
-      @user_tags = UserTag
+      @pagy, @user_tags = pagy_array(UserTag
         .select('value')
         .where("value LIKE :keyword", keyword: "%#{keyword}%")
         .group(:value)
         .order('value ASC')
-        .count('value').to_a
-        .paginate(page: params[:page], per_page: 24)
+        .count('value').to_a, items: 24)
     elsif @toggle == "value"
-      @user_tags = UserTag.group(:value)
+      @pagy, @user_tags = pagy_array(UserTag.group(:value)
         .select('value')
         .order('value ASC')
-        .count('value').to_a
-        .paginate(page: params[:page], per_page: 24)
+        .count('value').to_a, items: 24)
     else # @toggle == "uses"
-      @user_tags = UserTag.group(:value)
+      @pagy, @user_tags = pagy_array(UserTag.group(:value)
         .select('value')
         .order('count_value DESC')
-        .count('value').to_a
-        .paginate(page: params[:page], per_page: 24)
+        .count('value').to_a, items: 24)
     end
   end
 
