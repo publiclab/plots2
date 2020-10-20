@@ -134,8 +134,9 @@ GEM
     equalizer (0.0.11)
     erubi (1.9.0)
     execjs (2.7.0)
-    faraday (1.0.1)
+    faraday (1.1.0)
       multipart-post (>= 1.2, < 3)
+      ruby2_keywords
     ffi (1.11.3)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
@@ -318,7 +319,7 @@ GEM
     omniauth (1.9.0)
       hashie (>= 3.4.6, < 3.7.0)
       rack (>= 1.6.2, < 3)
-    omniauth-facebook (7.0.0)
+    omniauth-facebook (8.0.0)
       omniauth-oauth2 (~> 1.2)
     omniauth-github (1.4.0)
       omniauth (~> 1.5)
@@ -630,7 +631,7 @@ DEPENDENCIES
   mysql2 (>= 0.4.4)
   nifty-generators
   omniauth (~> 1.9)
-  omniauth-facebook (~> 7.0)
+  omniauth-facebook (~> 8.0)
   omniauth-github (~> 1.4)
   omniauth-google-oauth2
   omniauth-twitter
