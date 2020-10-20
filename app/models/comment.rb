@@ -319,8 +319,8 @@ class Comment < ApplicationRecord
     email[/(?<=@)[^.]+(?=\.)/, 0]
   end
 
-  def self.yahoo_parsed_mail(mail_doc)
-    if mail_doc.css(".yahoo_quoted")
+  def self.yahoo_quote_present?(mail_doc)
+    if mail_doc.css(".yahoo_quotes").any?
       extra_content = mail_doc.css(".yahoo_quoted")[0]
       mail_doc.css(".yahoo_quoted")[0].remove
       comment_content = mail_doc
@@ -328,6 +328,10 @@ class Comment < ApplicationRecord
       comment_content = mail_doc
       extra_content = nil
     end
+  end
+
+  def self.yahoo_parsed_mail(mail_doc)
+    yahoo_quote_present?(mail_doc)
 
     {
       comment_content: comment_content,
