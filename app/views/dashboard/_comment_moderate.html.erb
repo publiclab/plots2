@@ -1,11 +1,11 @@
 <% if comment.status == 4 %>
   <p class="alert alert-warning moderated">
     <% if logged_in_as(['admin','moderator']) %>
-      <%= t('dashboard._comment_moderate.first_time_post') %>
-      <a class="btn btn-outline-secondary btn-sm" href="/admin/publish_comment/<%= comment.id %>"><%= t('dashboard.moderate.approve') %></a>
-      <a class="btn btn-outline-secondary btn-sm" href="/admin/mark_comment_spam/<%= comment.id %>"><%= t('dashboard.moderate.spam') %></a>
+      <%= translation('dashboard._comment_moderate.first_time_post') %>
+      <a class="btn btn-outline-secondary btn-sm" href="/admin/publish_comment/<%= comment.id %>"><%= translation('dashboard.moderate.approve') %></a>
+      <a class="btn btn-outline-secondary btn-sm" href="/admin/mark_comment_spam/<%= comment.id %>"><%= translation('dashboard.moderate.spam') %></a>
     <% else %>
-      <%= raw t('dashboard.moderate.pending_approval', :url => '/wiki/moderation') %>
+      <%= raw translation('dashboard.moderate.pending_approval', :url => '/wiki/moderation') %>
     <% end %>
   </p>
 <% end %>
