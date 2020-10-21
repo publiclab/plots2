@@ -43,14 +43,16 @@ h5,h6, h1 small, h3 small {
   font-weight: normal;
   line-height: 1.4em;
 }
-
+.pl-content{
+overflow-wrap: break-word;
+max-width: 100%;
+}
 .pl-content h1,
 .pl-content h2,
 .pl-content h3 {
   font-family: "Junction Light",lucida grande,lucida sans console,sans-serif;
   padding-top: 0.4em;
-  overflow-wrap: break-word;
-  max-width: 100%;
+  
 }
 
 .pl-content h4 {
