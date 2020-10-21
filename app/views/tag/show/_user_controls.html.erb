@@ -1,11 +1,11 @@
 <% if current_user %>
 <!-- AJAXify -->
   <a class="ellipsis" data-toggle="dropdown">&nbsp<i class="fa fa-ellipsis-h" style="color : #666; font-size:15px; float:right;"></i></a>
-  <div class="dropdown-menu openDropdown">
+  <div class="dropdown-menu">
     <% unless @wildcard %>
       <% if current_user.following(params[:id]) %>
         <div class="dropdown-item">
-          <a id="unsubscribe" style="width: 100px;" data-method="delete" rel="tooltip" title="<%= translation('tag.show.unfollow') %>" class="btn btn-light btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>"> <%= translation('tag.index.unsubscribe') %></a>
+          <a style="width: 100px;" data-method="delete" rel="tooltip" title="<%= translation('tag.show.unfollow') %>" class="btn btn-light btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>"> <%= translation('tag.index.unsubscribe') %></a>
         </div>
         <div class="dropdown-divider"></div>
       <% else %>
