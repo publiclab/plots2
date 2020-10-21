@@ -320,7 +320,7 @@ class Comment < ApplicationRecord
   end
 
   def self.yahoo_quote_present?(mail_doc)
-    mail_doc.css(".yahoo_quotes").any?
+    mail_doc.css(".yahoo_quoted").any?
   end
 
   def self.yahoo_parsed_mail(mail_doc)
