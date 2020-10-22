@@ -77,8 +77,7 @@ class TagController < ApplicationController
     if params[:id].is_a? Integer
       @wiki = Node.find(params[:id])&.first
     elsif params[:id].match?(":")
-      tagname = params[:id].match('[^:]*$')
-      @wiki = Node.where(slug: tagname.to_s).try(:first)
+      @wiki = Node.where(slug: params[:id].match('[^:]*$').to_s).try(:first)
     else
       @wiki = Node.where(path: "/wiki/#{params[:id]}").try(:first) || Node.where(path: "/#{params[:id]}").try(:first)
       @wiki = Node.where(slug: @wiki.power_tag('redirect'))&.first if @wiki&.has_power_tag('redirect') # use a redirected wiki page if it exists
