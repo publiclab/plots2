@@ -340,7 +340,7 @@ GEM
     openssl (2.2.0)
     options (2.3.2)
     os (1.1.1)
-    pagy (3.8.3)
+    pagy (3.9.0)
     paperclip (6.1.0)
       activemodel (>= 4.2.0)
       activesupport (>= 4.2.0)
