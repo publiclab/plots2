@@ -76,7 +76,7 @@ class TagController < ApplicationController
   def show
     if params[:id].is_a? Integer
       @wiki = Node.find(params[:id])&.first
-    elsif params[:id] =~ /:/
+    elsif params[:id].match?(":")
       tagname = params[:id].match('[^:]*$')
       @wiki = Node.where(slug: tagname.to_s).try(:first)
     else
