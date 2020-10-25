@@ -1073,7 +1073,7 @@ class NotesControllerTest < ActionController::TestCase
              title: title,
              body:  'This is a fascinating post about a balloon mapping event.',
              tags:  'balloon-mapping,event',
-             draft: "true",
+             draft: "false",
              uid: users(:jeff).id
          }
     end
