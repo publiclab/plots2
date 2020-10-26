@@ -1063,7 +1063,7 @@ class NotesControllerTest < ActionController::TestCase
    end
 
   # Preview test
-   test 'note preview' do
+   test 'Node is not saved in note preview' do
     UserSession.create(users(:jeff))
     title = 'My preview post about balloon mapping'
     flash_msg = "You are currently viewing a preview"
