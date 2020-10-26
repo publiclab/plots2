@@ -106,23 +106,25 @@
         <hr style='clear:both;' />
         <div>
             <span>
+                <!-- `translation()` javascript does not work in this area because it is within a Bootstrap Popover and is rendered later -->
                 <% if node.type == 'note' %>
-                    <%= number_with_delimiter(node.views) %> <%= translation('notes.show.views') %>
+                    <%= number_with_delimiter(node.views) %> <%= t('notes.show.views') %>
                     <% if node.comments %>
-                        | <a href='#comments'><%= node.comments.size %> <%= translation('notes.show.comments') %></a>
+                        | <a href='#comments'><%= node.comments.size %> <%= t('notes.show.comments') %></a>
                     <% end %>
-                    | <%= raw translation('wiki.show.last_edited', url1: "/profile/" + node.latest.author.name, author: node.latest.author.name, time: time_ago_in_words(node.latest.created_at)) %>
+                    | <%= raw t('wiki.show.last_edited', url1: "/profile/" + node.latest.author.name, author: node.latest.author.name, time: time_ago_in_words(node.latest.created_at)) %>
                 <% end %>
 
                 <% if node.type == 'page' %>
-                    <%= number_with_delimiter(node.views) %> <%= translation('wiki.show.views') %>
+                    <%= number_with_delimiter(node.views) %> <%= t('wiki.show.views') %>
                     <% if node.comments %>
 
                         | <a href='<%= node.path %>/comments'><%= node.comments.length %> Comments</a>
 
                     <% end %>
-                    | <%= raw translation('wiki.show.last_edited', url1: "/profile/" + @revision.author.name, author: @revision.author.name, time: time_ago_in_words(@revision.created_at)) %>
+                    | <%= raw t('wiki.show.last_edited', url1: "/profile/" + @revision.author.name, author: @revision.author.name, time: time_ago_in_words(@revision.created_at)) %>
                 <% end %>
+                <!-- END OF: `translation()` javascript does not work in this area because it is within a Bootstrap Popover and is rendered later -->
             </span>
         </div>
         <br />
