@@ -5,38 +5,38 @@
     <% unless @wildcard %>
       <% if current_user.following(params[:id]) %>
         <div class="dropdown-item">
-          <a style="width: 100px;" rel="tooltip" title="<%= translation('tag.show.unfollow') %>" class="btn btn-light btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>"> <%= translation('tag.index.unsubscribe') %></a>
+          <a style="width: 100px;" data-method="delete" rel="tooltip" title="<%= translation('tag.show.unfollow') %>" class="btn btn-light btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>"> <%= translation('tag.index.unsubscribe') %></a>
         </div>
         <div class="dropdown-divider"></div>
       <% else %>
         <div class="dropdown-item">	
-          <a style="width: 100px;" class="btn btn-outline-secondary btn-sm" href="/subscribe/tag/<%= params[:id] %>" data-remote="true">	
+          <a style="width: 100px;" class="btn btn-outline-secondary btn-sm" href="/subscribe/tag/<%= params[:id] %>" >	
             <%= translation('tag.index.subscribe') %>	
           </a>	
         </div>
+        <div class="dropdown-divider"></div>
       <% end %>
 
-    <div class="dropdown-item">
-      <a href="/feed/tag/<%= params[:id] %>.rss"><i class="fa fa-rss"></i> RSS</a>
-    </div>
+    <a href="/feed/tag/<%= params[:id] %>.rss">  
+    <div class="dropdown-item tag-dropdown"><i class="fa fa-rss"></i> RSS</div>
+    </a>
+    
+    <a href="/tag-pages">
+    <div class="dropdown-item tag-dropdown">How to edit this card</div>
+    </a>
 
-    <div class="dropdown-item">
-      <a href="/tag-pages">How to edit this card</a>
-    </div>
+    <%= link_to tag_stats_path, id: params[:id], title: "Click to view graph" do %>
+      <div class="dropdown-item tag-dropdown"><i class="fa fa-bar-chart"></i> Topic statistics</div>
+    <% end %>
+    
+    
+    <a href="/tags">
+    <div class="dropdown-item tag-dropdown">All topics</div>
+    </a>    
 
-    <div class="dropdown-item">
-      <%= link_to tag_stats_path, id: params[:id] ,title: "Click to view graph" do %>
-        <i class="fa fa-bar-chart"></i> Topic statistics
-      <% end %>
-    </div>
-
-    <div class="dropdown-item">
-      <a href="/tags">All topics</a>
-    </div>
-
-    <div class="dropdown-item">
-      <a href="/stats/subscriptions">Statistics for all topics</a>
-    </div>
+    <a href="/stats/subscriptions">
+    <div class="dropdown-item tag-dropdown">Statistics for all topics</div>
+    </a>
 
     <% unless @tags.try(:first).try(:parent).nil? %>
       <div class="dropdown-divider"></div>
@@ -45,13 +45,19 @@
 
   <% end %>
 </div>
-
 <!-- AJAXify -->
 <% end %>
 <style>
 .ellipsis{
   cursor: pointer;
 }
+.tag-dropdown{
+  color: #007bff;
+}
+.tag-dropdown:hover{
+  color: #0056b3;
+}
+
 </style>
 <script>
 $(function() {
@@ -59,9 +65,5 @@ $(function() {
       selector: '[data-toggle=popover]',
       trigger: 'focus'
   });
-});
-
-$('.dropdown-menu').on('click', function(e) {
-  e.stopPropagation();
 });
 </script>
