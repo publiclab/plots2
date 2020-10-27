@@ -30,7 +30,7 @@
     "file-saver": "^2.0.0",
     "i18n-js": "^3.8.0",
     "ics": "nwcell/ics.js#^0.2.0",
-    "image-sequencer": "^3.5.1",
+    "image-sequencer": "^3.6.0",
     "inline-markdown-editor": "^0.5.0",
     "jlouvain": "upphiminn/jLouvain#3fb3aa189b8232756c4c3f3e97aaf376debf44a7",
     "jquery": "^3.5.1",
