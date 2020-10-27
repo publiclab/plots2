@@ -11,7 +11,7 @@
         <a class="show-more-tags" href="javascript:void(0);"><p style="float:left; color:#666; margin-top:14px; margin-left:5px;"><u><%= tags.length - 2 %> more</u> &nbsp </p></a>
       <% end %>
 
-     <%= render partial: 'tag/miniCard', locals: { tag: tag, button: false, grey: <%= power_tag %> } %>
+     <%= render partial: 'tag/miniCard', locals: { tag: tag, hide_button: true, grey: <%= power_tag %> } %>
 
     <% end %>
 
