@@ -1,5 +1,5 @@
 ---
-name: "\U0001F41B Weekly Check-in"
+name:  ":loudspeaker: Weekly Check-in"
 about: Create this week's communication issue
 title: 'Weekly Community Check-In # - Topic'
 labels: community check-in 
