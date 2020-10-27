@@ -48,9 +48,10 @@ class PostTest < ApplicationSystemTestCase
 
     find('a#tags-open').click()
 
-    # There should be 1 tag that shows up as a badge and 2 as a card
-    page.assert_selector('.tags-list .card-body', :count => 2)
-    page.assert_selector('.tags-list p.badge', :count => 1)
+    # There should be 0 tags that shows up as a badge and 3 as a card
+    # TODO: adjust these to check for buttons in cards (should be 2) and grey cards (none until we have power tags in the test)
+    page.assert_selector('.tags-list .card-body', count: 3)
+    page.assert_selector('.tags-list p.badge', count: 0)
 
     accept_alert do
       find('.tags-list p.badge .tag-delete').click()
