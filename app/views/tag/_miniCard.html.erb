@@ -1,4 +1,4 @@
-<div class="card" style="clear:left;">
+<div class="card" style="clear:left;<% if grey %>background:#eee;<% end %>">
   <div class="card-body">
 
     <a class="ellipsis pull-right" data-toggle="dropdown" style="cursor:pointer"><i class="fa fa-ellipsis-h" style="color:#666;font-size:18px;margin-right:10px;"></i></a>
@@ -20,14 +20,16 @@
     <a href="/tag/<%= tag.name%>">
       <h5 style="text-decoration:underline;color:black;"><%= tag.name %></h5>
     </a>
-    <p style="font-size:15px;">
+    <p style="font-size:15px;<% if hide_button %>margin-bottom:0;<% end %>">
       <a style="color:#808080;" href="/tag/<%= tag.name %>"><%= Tag.follower_count(tag.name) %> following</a>
     </p>
 
-    <% if current_user && current_user.following(tag.name) %>
-      <a class="pull-right btn btn-primary requireLogin" href="/post?tags=<%= tag.name %>">Post <i class="fa fa-plus fa-white"></i></a>
-    <% else %>
-      <a class="pull-right btn btn-primary requireLogin" href='/subscribe/tag/<%= tag.name %>'>Follow</a>
+    <% unless hide_button %>
+      <% if current_user && current_user.following(tag.name) %>
+        <a class="pull-right btn btn-primary requireLogin" href="/post?tags=<%= tag.name %>">Post <i class="fa fa-plus fa-white"></i></a>
+      <% else %>
+        <a class="pull-right btn btn-primary requireLogin" href='/subscribe/tag/<%= tag.name %>'>Follow</a>
+      <% end %>
     <% end %>
   </div>
 </div>
