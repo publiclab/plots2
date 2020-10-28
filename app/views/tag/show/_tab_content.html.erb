@@ -26,11 +26,11 @@
         </div>
 
         <div class="tab-content">
-          <div class="" id="asked-content">
+          <div id="asked-content">
             <%= render partial: "questions/new_question" %>
           </div>
 
-          <div class="" id="answered-content">
+          <div id="answered-content">
                       <% if @answered_questions %>
               <%= render partial: "users/answered" %>
                           <% end %>
