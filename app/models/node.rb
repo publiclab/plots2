@@ -691,7 +691,7 @@ class Node < ActiveRecord::Base
                     comment: 2,
                     type:    'note')
     node.status = 4 if author.first_time_poster
-    node.save_draft if params[:draft] == "true"
+    node.draft if params[:draft] == "true"
 
     if node.valid? # is this not triggering title uniqueness validation?
       saved = true
@@ -1125,7 +1125,7 @@ class Node < ActiveRecord::Base
   end
 
   # status = 3 for draft nodes,visible to author only
-  def save_draft
+  def draft
     self.status = 3
     save
     self
