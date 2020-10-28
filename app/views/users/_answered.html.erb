@@ -1,4 +1,3 @@
-<div id="answered-question">
   <div class="row">
 
   <% user = user || @user # allow overriding w/ local variable %>
@@ -34,8 +33,6 @@
     });
   </script>
   <% end %>
-  </div>
-</div>
 
 <div class="text-center">
 <% if @pagy %>
@@ -43,4 +40,8 @@
 <% else %>
   <%= will_paginate @questions, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || @questions.empty? %>
 <% end %>
+<h3>this is the answered content</h3>
+  </div>
 </div>
+
+
