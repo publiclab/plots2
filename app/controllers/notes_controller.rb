@@ -441,8 +441,7 @@ class NotesController < ApplicationController
     Node.new_preview_note(uid: current_user.uid,
       title: params[:title],
       body: params[:body],
-      main_image: params[:main_image],
-      draft: params[:draft])
+      main_image: params[:main_image])
   end
 
   def not_draft_and_user_is_first_time_poster?
