@@ -1,7 +1,7 @@
-html[lang="de"] .chat-popover {
+html.chat-popover {
     top:100px;
 }
 
-html[lang="de"] body {
+html body{
   padding-top: 120px;
 }
