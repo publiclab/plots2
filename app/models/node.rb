@@ -1037,11 +1037,16 @@ class Node < ActiveRecord::Base
   end
 
   def toggle_like(user)
-    nodes = NodeSelection.where(nid: id, liking: true).size
+    node_likes = NodeSelection.where(nid: id, liking: true)
+                              .joins(:user)
+                              .references(:rusers)
+                              .where(liking: true)
+                              .where('rusers.status': 1)
+                              .size
     self.cached_likes = if is_liked_by(user)
-                          nodes - 1
+                          node_likes - 1
                         else
-                          nodes + 1
+                          node_likes + 1
                         end
   end
 
