@@ -52,7 +52,7 @@
 
       <ul class="dropdown-menu" style = "width: 150px; font-size:10px;">
         <li><a>Total Views: </i> <%= number_with_delimiter(node.views) %> <span class="d-none d-lg-inline"><%= t('notes._notes.views') %></span></a></li>
-        <li><a>Total Likes: <%= node.likers.size %></a></li>
+        <li><a>Total Likes: <%= node.cached_likes %></a></li>
         <div class="content" style="width: 100%" >
           <% if @compact.nil? %>
 
