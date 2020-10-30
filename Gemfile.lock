@@ -148,7 +148,7 @@ GEM
     friendly_id (5.4.0)
       activerecord (>= 4.0.0)
     gemoji (3.0.1)
-    geocoder (1.6.3)
+    geocoder (1.6.4)
     georuby (2.0.0)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
