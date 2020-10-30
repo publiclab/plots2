@@ -16,9 +16,10 @@
 
 <div style="color:#aaa;">
 
-<p>You received this email because you are subscribed to some or all of the following tags: <%= @tags %>.</p>
-
-<p>Subscribe to all the tags for this post by visiting https://<%= ActionMailer::Base.default_url_options[:host] %>/subscribe/multiple/tag/<%= @tags %>.</p>
+<% unless @tags.empty? %>
+  <p>You received this email because you are subscribed to some or all of the following tags: <%= @tags %>.</p>
+  <p>Subscribe to all the tags for this post by visiting https://<%= ActionMailer::Base.default_url_options[:host] %>/subscribe/multiple/tag/<%= @tags %>.</p>
+<% end %>
 
 <p>To change your preferences, please visit https://<%= ActionMailer::Base.default_url_options[:host] %>/subscriptions.</p>
 
