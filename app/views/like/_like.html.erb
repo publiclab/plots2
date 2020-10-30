@@ -167,12 +167,20 @@
         $(this).tooltip('hide')
       })
       function print_three_column() {
-          $('body').css('column-count', 3)
-               .css('column-gap', '50px');
+          $('body').css({'column-count': 3, 'column-gap': '50px'});
+          $('h1').css('max-width', '30%');
+          $('#content').css('max-width', '30%');
+          $('#note-info').css('max-width', '30%');
           $('.popover').popover('hide');
+          $('hr').css({'max-width': '30%', 'margin-left': 0});
+          $('.main-image').css('max-width', '30%');
           window.print();
-          $('body').css('column-count', 1)
-               .css('column-gap', 0);
+          $('body').css({'column-count': 1, 'column-gap': 0});
+          $('h1').css('max-width', '100%');
+          $('#content').css('max-width', '100%');
+          $('#note-info').css('max-width', '100%');    
+          $('hr').css('max-width', '100%');   
+          $('.main-image').css('max-width', '100%');   
       }
       function print_linkless() {
           window.print();

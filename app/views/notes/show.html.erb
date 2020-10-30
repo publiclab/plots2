@@ -11,18 +11,22 @@
   <% end %>
   <% if @node.has_power_tag('with') && current_user && @node.coauthors.collect(&:username).include?(current_user.username) %> <div class="alert alert-success"> You are a coauthor of this post. This attributes your contribution, and gives you edit access to the note. <a href="https://publiclab.org/wiki/power-tags#Coauthorship"> Learn more </a></div><% end %>
   <% if @node.has_power_tag('upgrade') %><div class="alert alert-success"> This is an upgrade for <a href="/<%= @node.power_tag('upgrade') %>"><%= @node.power_tag('upgrade') %></a>. Try building it and <a href="/n/<%= @node.power_tag('upgrade') %>"> report back </a>how it goes.</div><% end %>
-
+  
+  <div class="d-print-block" style="display:none;margin-bottom:3%">
+  <span> <h1 style="display:inline-block;">Public Lab </h1> <h3 style="display:inline-block;">Research note</h3></span>
+  </div>
+  
   <% if @node.main_image %>
     <a class="main-image" style="max-width:100%;width:800px;" href="<%= @node.main_image.path(:original) %>">
-      <%= image_tag(@node.main_image.path(:large), class:"rounded d-none d-lg-inline", style:'max-height:600px;max-width:100%;') %>
-      <%= image_tag(@node.main_image.path(:large), class:"rounded d-lg-none", style:'width:100%;') %>
+      <%= image_tag(@node.main_image.path(:large), class:"rounded d-none d-lg-inline d-print-block", style:'max-height:600px;max-width:100%;') %>
+      <%= image_tag(@node.main_image.path(:large), class:"rounded d-lg-none d-print-none", style:'width:100%;') %>
     </a>
     <!--<div class="expand"><a onClick="$('.main-image').toggleClass('compressed');"><i class="fa fa-angle-down"></i></a></div>-->
   <% end %>
 
   <h1 style="margin-top: 40px;"><%= @node.title %></h1>
 
-  <div>
+  <div id="note-info">
 
     <span>
       <% if @node.status == 0 || @node.status == 4 %><span class="badge badge-danger"><%= translation('notes.show.unpublished') %></span> | <% end %>
@@ -32,15 +36,15 @@
               <a href="/profile/<%= coauthor.username %>">
                 <%= coauthor.username%></a> <%= coauthor.new_contributor %>
               <%= ',' if i < @node.coauthors.size-1 %><% end %><% end %>
-              <% if current_user && current_user.id == @node.uid %><a aria-label="Add Coauthor" onClick="promptTag('with:')" href="#"><i style="color:#aaa;" class="fa fa-pencil"></i></a><% end %> |
+              <% if current_user && current_user.id == @node.uid %><a class="d-print-none" aria-label="Add Coauthor" onClick="promptTag('with:')" href="#"><i style="color:#aaa;" class="fa fa-pencil"></i></a><% end %> |
 
-      <span class="d-none d-lg-inline">
+      <span class="d-none d-lg-inline d-print-none">
         <%= @node.created_at.to_s(:long) %>
       </span>
       <span class="d-xl-none">
         <%= @node.created_at.to_s(:short) %>
       </span>
-      <a class="d-lg-none collapse-btn" data-toggle="collapse" href="#collapse-info" role="button" aria-expanded="false" aria-controls="collapse-info" id="collapse-button">...</a>
+      <a class="d-lg-none collapse-btn d-print-none" data-toggle="collapse" href="#collapse-info" role="button" aria-expanded="false" aria-controls="collapse-info" id="collapse-button">...</a>
       <span class="collapse collapse-info" id="collapse-info">
         | <a aria-label="Link to note" href="/n/<%= @node.id %>"><i class="fa fa-link"></i></a> <span class="d-none d-xl-inline"><a href="/n/<%= @node.id %>">#<%= @node.id %></a></span>
       </span>
