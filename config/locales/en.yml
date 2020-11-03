@@ -200,6 +200,7 @@ en:
       ical: "iCal"
       login_to: "Please <a href='%{url1}'>log in</a> to"
       people_will_attend: "%{count} people will attend"
+      preview: "You are currently viewing a preview"
     _comments:
       comments: "Comments"
       post_comment: "Post comment"

@@ -165,7 +165,6 @@ class NotesController < ApplicationController
     @preview = true
     @preview_tags = add_preview_tags
     @event_date = params[:date] if params[:date]
-    flash[:notice] = "You are currently viewing a preview"
     render template: 'notes/show'
   end
 

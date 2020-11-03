@@ -310,7 +310,7 @@
     <button class="btn btn-lg btn-outline-secondary btn-more"><i class="fa fa-clock-o"></i></button>
 
     <span> &nbsp; By publishing, you agree to <a href="https://publiclab.org/licenses">open source your work</a><span class="d-none d-md-inline"> so that others may use it.</span></span>
-    <button class="btn btn-outline-secondary btn-lg preview-btn float-right" onClick="preview()">Preview</button>
+    <button class="btn btn-outline-secondary btn-lg float-right" onclick="preview()">Preview</button>
     <button class="publish-space ple-publish btn btn-lg btn-primary float-right disabled"><% if controller.action_name == "edit" && @node.status == 3 %>Save<% else %>Publish<% end %></button>
     <span class="ple-help float-right">
       <% if controller.action_name != "edit" && !current_user.first_time_poster %>
@@ -331,13 +331,6 @@
     </span>
 
   </div>
-  <!-- start of preview hidden form -->
-  <%= form_with(url:"notes/preview", method: "post", id: "preview-form") do |form| %>
-    <%= form.hidden_field( :title, :value => params[:title]) %>
-    <%= form.hidden_field( :body, :value => params[:body]) %>
-    <%= form.hidden_field( :main_image, :value => params[:main_image]) %>
-  <% end %>
-  <!-- end of preview hidden form -->
 </div>
 <script>
 
@@ -528,19 +521,43 @@
       }
       console.log("Draft:", editor.data.draft);
   }
+
+  var previewWindow = null;
+
   function preview() {
-    let form = document.getElementById('preview-form');
-    let url = form.action
+    let url = 'notes/preview'
     $.ajax({
       type: "POST",
       url: url,
-      data: $('#preview-form').serialize(),
+      data:
+        {
+          'title': editor.titleModule.value(),
+          // 'image': editor.mainImageModule,
+          // 'location': editor.titleModule.value(),
+          'body': editor.richTextModule.value(),
+          'tags': editor.tagsModule.value()
+        },
       success: function(data)
       {
-        previewWindow = window.open('', 'previewindow');
-        previewWindow.document.write(data)
+        previewPopup(data);
       }
     })
+  }
+
+  function previewPopup(data) {
+    if(previewWindow == null || previewWindow.closed)
+    {
+      previewWindow = window.open('', 'previewWindow', "resizeable, scrollbars, status");
+      previewWindow.document.write(data);
+    }
+    else
+    {
+      previewWindow.document.body.innerHTML = "";
+      previewWindow.document.open();
+      previewWindow.document.write(data);
+      previewWindow.focus();
+    }
+
   }
 
 </script>

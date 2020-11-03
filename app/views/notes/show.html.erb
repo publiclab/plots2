@@ -1,7 +1,8 @@
 <script src="/assets/notes.js" type="text/javascript"></script>
 
 <div class="col-lg-9 note-show<% if @node.status == 4 || @node.status == 0 %> moderated<% end %>">
-  <% if current_user && @node.tags.size == 0 || @preview_tags.size == 0  %><div class="alert alert-warning"><%= raw translation('notes.show.note_no_tags', url: 'javascript: document.getElementById("tags-open").click();') %></div><% end %>  
+  <% if @preview %><div class="alert alert-info"><%= raw translation('notes.show.preview') %></div><% end %>
+  <% if current_user && @node.tags.size == 0 && !@preview %><div class="alert alert-warning"><%= raw translation('notes.show.note_no_tags', url: 'javascript: document.getElementById("tags-open").click();') %></div><% end %>  
   <% if @node.has_power_tag('status:candidate', @preview_tags) %><div class="alert alert-info">This was marked as a candidate activity -- <a href="https://publiclab.org/notes/warren/09-17-2016/what-makes-a-good-activity" >read about how to adapt its content</a> into a fully-fledged, step-by-step activity that can be easily replicated.</div><% end %>
   <% if @node.has_power_tag('replication', @preview_tags) %><div class="alert alert-info"><%= raw translation('notes.show.replication') %> <a href="/n/<% if !@preview %><%= @node.power_tag('replication') %><% end %>"><%= raw translation('notes.show.replication_link') %></a>.</div><% end %>
   <% if @node.has_power_tag('series', @preview_tags) %><div class="alert alert-info"><%= raw translation('notes.show.series') %> <a href="/tag/series:<% if !@preview %><%= @node.power_tag('series')%>"><%= @node.power_tag('series') %><% end %></a>.</div><% end %>
@@ -11,7 +12,7 @@
     <%= feature("alert-#{@node.power_tag('alert')}") %>
   <% end %>
   <% if @node.has_power_tag('with', @preview_tags)  && current_user && @node.coauthors.collect(&:username).include?(current_user.username) && !@preview  %> <div class="alert alert-success"> You are a coauthor of this post. This attributes your contribution, and gives you edit access to the note. <a href="https://publiclab.org/wiki/power-tags#Coauthorship"> Learn more </a></div><% end %>
-  <% if @node.has_power_tag('upgrade', @preview_tags) %><div class="alert alert-success"> This is an upgrade for <a href="/<% if !@preview %><%= @node.power_tag('upgrade') %>"><%= @node.power_tag('upgrade') %></a>. Try building it and <a href="/n/<% if !@preview %><%= @node.power_tag('upgrade') %>"> report back </a>how it goes.</div><% end %>
+  <% if @node.has_power_tag('upgrade', @preview_tags) %><div class="alert alert-success"> This is an upgrade for <% if !@preview %><a href="/<%= @node.power_tag('upgrade') %>"><%= @node.power_tag('upgrade') %></a>.<% end %> Try building it and <% if !@preview %><a href="/n/<%= @node.power_tag('upgrade') %>"><% end %> report back </a>how it goes.</div><% end %>
   
   <div class="d-print-block" style="display:none;margin-bottom:3%">
   <span> <h1 style="display:inline-block;">Public Lab </h1> <h3 style="display:inline-block;">Research note</h3></span>
@@ -25,7 +26,7 @@
     <!--<div class="expand"><a onClick="$('.main-image').toggleClass('compressed');"><i class="fa fa-angle-down"></i></a></div>-->
   <% end %>
 
-  <h1 style="margin-top: 40px;"><%= @node.title %></h1>
+  <h1 style="margin-top: 40px;"><%= @node.title || params[:title] %></h1>
 
   <div id="note-info">
 
