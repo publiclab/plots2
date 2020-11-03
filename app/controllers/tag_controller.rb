@@ -8,7 +8,7 @@ class TagController < ApplicationController
 
     @title = I18n.t('tag_controller.tags')
     @paginated = true
-    @order_type = params[:order] == "desc" ? "asc" : "desc"
+    @order_type = params[:order].blank? || params[:order] == "desc" ? "asc" : "desc"
     powertag_clause = params[:powertags] == 'true' ? '' : ['name NOT LIKE ?', '%:%']
 
     if params[:search]
@@ -521,21 +521,20 @@ class TagController < ApplicationController
 
     @all_subscriptions = TagSelection.graph(@start, @end)
 
-    @answers = Node.published.questions
+    total_questions = Node.published.questions
       .where(created: @start.to_i..@end.to_i)
-      .where(nid: Node.find_by_tag(tagname)).joins(:comments).size
-    @questions = Node.published.questions
-      .where(created: @start.to_i..@end.to_i)
-      .where(nid: Node.find_by_tag(tagname)).size
+      .where(nid: Node.find_by_tag(tagname))
+    @answers = total_questions.joins(:comments).size.size
+    @questions = total_questions.size.size
   end
 
   private
 
   def order_string
     if params[:search] || @toggle == "uses"
-      params[:order] == "asc" ? "count ASC" : "count DESC"
+      params[:order].blank? || params[:order] == "asc" ? "count ASC" : "count DESC"
     else
-      params[:order] == "asc" ? "name ASC" : "name DESC"
+      params[:order].blank? || params[:order] == "asc" ? "name ASC" : "name DESC"
     end
   end
 

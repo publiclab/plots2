@@ -6,7 +6,7 @@
 
 <% @events.each do |note| %>
 <% tags = note.normal_tags[0..3] %>
-_<% if note.has_power_tag('date') %><%= DateTime.strptime(note.power_tag('date'),'%m-%d-%Y').to_date.to_s(:long) %>:_ **<% end %>[<%= note.title %>](<%= note.path %>)** by [<%= note.author.username %>](/profile/<%= note.author.username %>) <% if tags.length > 0 %>(<% tags.each_with_index do |tag,i| %>[<%= tag.name %>](/tag/<%= tag.name %>)<%= ', ' if i < tags.length-1 %><% end %>)<% end %>
+_<% if note.has_power_tag('date') %><%= DateTime.strptime(note.power_tag('date'),'%m-%d-%Y').to_date.to_s(:long) %>:_ **<% end %>[<%= note.title %>](<%= note.path %>)** by [<%= note.author.username %>](/profile/<%= note.author.username %>) <% if tags.size > 0 %>(<% tags.each_with_index do |tag,i| %>[<%= tag.name %>](/tag/<%= tag.name %>)<%= ', ' if i < tags.size-1 %><% end %>)<% end %>
 <% end %>
 
 _To find more events or post your own, see the [Public Lab calendar](/events)_
@@ -17,7 +17,7 @@ _Activities near [regional Public Lab groups](/places)_
 
 <% @places.each do |note| %>
 <% tags = note.normal_tags[0..3] %>
-**[<%= note.title %>](<%= note.path %>)** by [<%= note.author.username %>](/profile/<%= note.author.username %>) <% if tags.length > 0 %>(<% tags.each_with_index do |tag,i| %>[<%= tag.name %>](/tag/<%= tag.name %>)<%= ', ' if i < tags.length-1 %><% end %>)<% end %>
+**[<%= note.title %>](<%= note.path %>)** by [<%= note.author.username %>](/profile/<%= note.author.username %>) <% if tags.size > 0 %>(<% tags.each_with_index do |tag,i| %>[<%= tag.name %>](/tag/<%= tag.name %>)<%= ', ' if i < tags.size-1 %><% end %>)<% end %>
 <% end %>
 
 ###Barnstars this week
@@ -26,14 +26,14 @@ _[Barnstars](/wiki/barnstars) are a way to show appreciation for others' work._
 
 <% @barnstars.each do |note| %>
 <% tags = note.normal_tags[0..3] %>
-<i style="color:#db4;" class="fa fa-large icon-star-empty"></i> [<%= note.author.username %>](/profile/<%= note.author.username %>) was awarded a barnstar for their work in "[<%= note.title %>](<%= note.path %>)" by [<%= note.barnstar.author.username %>](/profile/<%= note.barnstar.author.username %>) <% if tags.length > 0 %>(<% tags.each_with_index do |tag,i| %>[<%= tag.name %>](/tag/<%= tag.name %>)<%= ', ' if i < tags.length-1 %><% end %>)<% end %>
+<i style="color:#db4;" class="fa fa-large icon-star-empty"></i> [<%= note.author.username %>](/profile/<%= note.author.username %>) was awarded a barnstar for their work in "[<%= note.title %>](<%= note.path %>)" by [<%= note.barnstar.author.username %>](/profile/<%= note.barnstar.author.username %>) <% if tags.size > 0 %>(<% tags.each_with_index do |tag,i| %>[<%= tag.name %>](/tag/<%= tag.name %>)<%= ', ' if i < tags.size-1 %><% end %>)<% end %>
 <% end %>
 
 ###Recent research
 
 <% @notes.each do |note| %>
 <% tags = note.normal_tags[0..3] %>
-**[<%= note.title %>](<%= note.path %>)** by [<%= note.author.username %>](/profile/<%= note.author.username %>) <% if tags.length > 0 %>(<% tags.each_with_index do |tag,i| %>[<%= tag.name %>](/tag/<%= tag.name %>)<%= ', ' if i < tags.length-1 %><% end %>)<% end %>
+**[<%= note.title %>](<%= note.path %>)** by [<%= note.author.username %>](/profile/<%= note.author.username %>) <% if tags.size > 0 %>(<% tags.each_with_index do |tag,i| %>[<%= tag.name %>](/tag/<%= tag.name %>)<%= ', ' if i < tags.size-1 %><% end %>)<% end %>
 <% end %>
 
 [Subscribe to this newsletter](/subscribe/tag/newsletter) or [follow via RSS](/feed/tag/newsletter.rss)
