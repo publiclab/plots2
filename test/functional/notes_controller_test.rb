@@ -1066,7 +1066,6 @@ class NotesControllerTest < ActionController::TestCase
    test 'Node is not saved in note preview' do
     UserSession.create(users(:jeff))
     title = 'My preview post about balloon mapping'
-    flash_msg = "You are currently viewing a preview"
 
     assert_no_difference 'Node.count' do  post :preview,
          params: {
@@ -1077,6 +1076,5 @@ class NotesControllerTest < ActionController::TestCase
              uid: users(:jeff).id
          }
     end
-    assert_equal flash_msg, flash[:notice]
   end
 end
