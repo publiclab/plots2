@@ -555,7 +555,6 @@
     {
       // Replace previous window with new data
       previewWindow.document.body.innerHTML = "";
-      previewWindow.document.open();
       previewWindow.document.write(data);
       previewWindow.document.close();
       previewWindow.focus();
