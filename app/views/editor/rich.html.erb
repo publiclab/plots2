@@ -526,16 +526,23 @@
 
   function preview() {
     let url = 'notes/preview'
+    let image_url = editor.mainImageModule.image.src
+    let image_id = image_url.split("/").pop()
+    let location = {'latitude': editor.mapModule.blurredLocation.getLat(),
+                    'longitude': editor.mapModule.blurredLocation.getLon(),
+                    'zoom': editor.mapModule.blurredLocation.getZoom()
+                    }
+
     $.ajax({
       type: "POST",
       url: url,
       data:
         {
           'title': editor.titleModule.value(),
-          // 'image': editor.mainImageModule,
-          // 'location': editor.titleModule.value(),
           'body': editor.richTextModule.value(),
-          'tags': editor.tagsModule.value()
+          'main_image': image_id,
+          'tags': editor.tagsModule.value(),
+          'location': location
         },
       success: function(data)
       {

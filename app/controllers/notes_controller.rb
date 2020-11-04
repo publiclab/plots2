@@ -161,7 +161,9 @@ class NotesController < ApplicationController
 
   def preview
     return show_banned_flash unless current_user.status == User::Status::NORMAL
+
     @node, @img, @body = new_preview_note
+    @zoom = params[:location][:zoom].to_f
     @preview = true
     @preview_tags = add_preview_tags
     @event_date = params[:date] if params[:date]
@@ -441,7 +443,8 @@ class NotesController < ApplicationController
     Node.new_preview_note(uid: current_user.uid,
       title: params[:title],
       body: params[:body],
-      main_image: params[:main_image])
+      main_image: params[:main_image],
+      location: params[:location])
   end
 
   def not_draft_and_user_is_first_time_poster?

@@ -1,11 +1,16 @@
 <% if @node && @node.lat && @node.lon %>
-  <% if @node.has_tag("place") %>
-    <%= render_top_map(@node.lat, @node.lon, @node.zoom) %>
+  <% if !@preview %>
+    <% node_zoom = @node.zoom %>
   <% else %>
-    <%= render_map(@node.lat, @node.lon, @node.zoom) %>
+     <% node_zoom = @zoom %>
+  <% end %>
+  <% if @node.has_tag("place") %>
+    <%= render_top_map(@node.lat, @node.lon, node_zoom) %>
+  <% else %>
+    <%= render_map(@node.lat, @node.lon, node_zoom) %>
   <% end %>
   <%# Link to map %>
-  <% zoom = @node.zoom ? @node.zoom : "" %>
+  <% zoom = node_zoom ? node_zoom : "" %>
   <% url = "/map#" + zoom.to_s + "/" + @node.lat.to_s + "/" + @node.lon.to_s %>
   <% if @node.type == "page" %>
     <% url = "/map/" + @node.slug_from_path %>
