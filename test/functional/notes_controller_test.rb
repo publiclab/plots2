@@ -1066,6 +1066,10 @@ class NotesControllerTest < ActionController::TestCase
    test 'Node is not saved in note preview' do
     UserSession.create(users(:jeff))
     title = 'My preview post about balloon mapping'
+    location = {'latitude': "-1",
+                'longitude': "-1",
+                'zoom': "6"
+                }
 
     assert_no_difference 'Node.count' do  post :preview,
          params: {
@@ -1073,6 +1077,7 @@ class NotesControllerTest < ActionController::TestCase
              body:  'This is a fascinating post about a balloon mapping event.',
              tags:  'balloon-mapping,event',
              draft: "false",
+             location: location,
              uid: users(:jeff).id
          }
     end
