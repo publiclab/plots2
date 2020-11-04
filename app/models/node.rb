@@ -740,7 +740,7 @@ class Node < ActiveRecord::Base
                                 body:  params[:body])
     node.status = 4 if author.first_time_poster
     if params[:main_image] && (params[:main_image] != '')
-      img = Image.find params[:main_image]
+      img = Image.find_by(id: params[:main_image])
     end
     [node, img, revision]
   end

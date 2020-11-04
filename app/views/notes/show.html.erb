@@ -17,11 +17,13 @@
   <div class="d-print-block" style="display:none;margin-bottom:3%">
   <span> <h1 style="display:inline-block;">Public Lab </h1> <h3 style="display:inline-block;">Research note</h3></span>
   </div>
-  
-  <% if @node.main_image %>
-    <a class="main-image" style="max-width:100%;width:800px;" href="<%= @node.main_image.path(:original) || @img.path(:original) %>">
-      <%= image_tag(@node.main_image.path(:large) || @img.path(:large), class:"rounded d-none d-lg-inline d-print-block", style:'max-height:600px;max-width:100%;') %>
-      <%= image_tag(@node.main_image.path(:large) || @img.path(:large), class:"rounded d-lg-none d-print-none", style:'width:100%;') %>
+
+  <% main_image = @preview? @img : @node.main_image %>
+
+  <% if main_image %>
+    <a class="main-image" style="max-width:100%;width:800px;" href="<%= main_image.path(:original) %>">
+      <%= image_tag(main_image.path(:large), class:"rounded d-none d-lg-inline d-print-block", style:'max-height:600px;max-width:100%;') %>
+      <%= image_tag(main_image.path(:large), class:"rounded d-lg-none d-print-none", style:'width:100%;') %>
     </a>
     <!--<div class="expand"><a onClick="$('.main-image').toggleClass('compressed');"><i class="fa fa-angle-down"></i></a></div>-->
   <% end %>
