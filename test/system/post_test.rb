@@ -40,7 +40,7 @@ class PostTest < ApplicationSystemTestCase
     find('.tag-input').set('mountains').native.send_keys(:return)
 
     # Make sure that the 2 tags are added
-    page.assert_selector('.tags-list p.badge', :count => 2)
+    page.assert_selector('.tags-list .card', :count => 2)
   end
 
   test 'removing tags from the post' do
@@ -50,15 +50,15 @@ class PostTest < ApplicationSystemTestCase
 
     # There should be 0 tags that shows up as a badge and 3 as a card
     # TODO: adjust these to check for buttons in cards (should be 2) and grey cards (none until we have power tags in the test)
-    page.assert_selector('.tags-list .card-body', count: 3)
-    page.assert_selector('.tags-list p.badge', count: 0)
+    page.assert_selector('.tags-list .card', count: 3)
+    page.assert_selector('.tags-list .card', count: 0)
 
     accept_alert do
-      find('.tags-list p.badge .tag-delete').click()
+      find('.tags-list .card-body .tag-delete').click()
     end
     
     # Make sure that 1 of the 3 tags is removed
-    page.assert_selector('.tags-list p.badge', :count => 0)
+    page.assert_selector('.tags-list .card-body', :count => 0)
   end
 
   test 'like button on the post' do
@@ -207,8 +207,8 @@ class PostTest < ApplicationSystemTestCase
     find('a#tags-open').click()
 
     # Make sure proper latitude and longitude tags are added
-    assert_selector('.tags-list .badge a[href="/tag/lat:22"]', text: "lat:22")
-    assert_selector('.tags-list .badge a[href="/tag/lon:76"]', text: "lon:76")
+    assert_selector('.tags-list .card-body a[href="/tag/lat:22"]', text: "lat:22")
+    assert_selector('.tags-list .card-body a[href="/tag/lon:76"]', text: "lon:76")
   end
 
   test 'deleting a wiki' do
