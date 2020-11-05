@@ -525,13 +525,13 @@
   var previewWindow = null;
 
   function preview() {
-    let url = 'notes/preview'
-    let image_url = editor.mainImageModule.image.src
-    let image_id = image_url.split("/").pop()
+    let url = 'notes/preview';
+    let image_url = editor.mainImageModule.image.src;
+    let image_id = image_url.split("/").pop();
     let location = {'latitude': editor.mapModule.blurredLocation.getLat(),
                     'longitude': editor.mapModule.blurredLocation.getLon(),
                     'zoom': editor.mapModule.blurredLocation.getZoom()
-                    }
+                    };
 
     $.ajax({
       type: "POST",
@@ -548,11 +548,11 @@
       {
         previewPopup(data);
       }
-    })
+    });
   }
 
   function previewPopup(data) {
-    if(previewWindow == null || previewWindow.closed)
+    if(!previewWindow || previewWindow.closed)
     {
       previewWindow = window.open('', 'previewWindow', "resizeable, scrollbars, status");
       previewWindow.document.write(data);
