@@ -53,6 +53,8 @@ class PostTest < ApplicationSystemTestCase
     page.assert_selector('.tags-list .card', count: 3)
     page.assert_selector('.tags-list .card', count: 0)
 
+    find('.tags-list .card-body .ellipsis').click() # open the dropdown
+
     accept_alert do
       find('.tags-list .card-body .tag-delete').click()
     end
