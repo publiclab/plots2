@@ -43,10 +43,10 @@
               <% if current_user && current_user.id == @node.uid  && !@preview %><a class="d-print-none" aria-label="Add Coauthor" onClick="promptTag('with:')" href="#"><i style="color:#aaa;" class="fa fa-pencil"></i></a><% end %> |
 
       <span class="d-none d-lg-inline d-print-none">
-        <%= @node.created_at.to_s(:long) %>
+        <%= @preview ? Time.new.strftime("%B %d, %Y %H:%M:%S") : @node.created_at.to_s(:long) %>
       </span>
       <span class="d-xl-none">
-        <%= @node.created_at.to_s(:short) %>
+        <%= @preview ? Time.new.strftime("%B %d, %Y %H:%M:%S") : @node.created_at.to_s(:short) %>
       </span>
       <a class="d-lg-none collapse-btn d-print-none" data-toggle="collapse" href="#collapse-info" role="button" aria-expanded="false" aria-controls="collapse-info" id="collapse-button">...</a>
       <span class="collapse collapse-info" id="collapse-info">
