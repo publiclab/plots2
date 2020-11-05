@@ -18,7 +18,7 @@ gem 'georuby', '2.0'
 gem "google-cloud-storage"
 gem 'grape'
 gem 'grape-entity'
-gem 'grape-swagger', '~> 1.3.0'
+gem 'grape-swagger', '~> 1.3.1'
 gem 'grape-swagger-entity', '0.5.1'
 gem 'grape-swagger-rails'
 gem 'grape-swagger-ui'
@@ -31,14 +31,13 @@ gem 'less-rails', '~> 5.0'
 gem 'mocha', '~> 1.11'
 gem 'mustermann' , '1.1.1'
 gem 'omniauth', '~> 1.9'
-gem 'omniauth-facebook', '~> 7.0'
+gem 'omniauth-facebook', '~> 8.0'
 gem 'omniauth-github', '~> 1.4'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
 gem "paperclip", "~> 6.1.0"
 gem 'passenger'
 gem "php-serialize", :require => "php_serialize"
-gem 'progress_bar'
 gem 'rack-cors', :require => 'rack/cors'
 gem "rack-openid"
 gem "rack-test", "1.1.0"
@@ -51,7 +50,7 @@ gem 'rb-readline'
 gem 'rdiscount', '~> 2.2'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'responders', '~> 3.0'
-gem 'rubocop', '~> 0.93.1', require: false
+gem 'rubocop', '~> 1.2.0', require: false
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
 gem 'sentry-raven'

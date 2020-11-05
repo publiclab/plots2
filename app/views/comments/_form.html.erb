@@ -1,37 +1,35 @@
 <div class="comment-form-wrapper" style="background-color:#f8f8f8; border: 1px solid #e7e7e7;padding: 18px;">
-    <div class="card-body">
-        <form class="comment-form" id="comment-form" data-remote="true" action="/comment/create/<%= @node.nid %><%= "?type=question" if local_assigns[:type]=="question" %>" <% if local_assigns[:aid].blank? %>method="post" <% end %>>
+  <div class="card-body">
+    <form class="comment-form" id="comment-form" data-remote="true" action="/comment/create/<%= @node.nid %><%= "?type=question" if local_assigns[:type]=="question" %>" <% if local_assigns[:aid].blank? %>method="post"<% end %>>
 
-            <% if current_user && current_user.id == @node.uid %>
-            <span class="pull-right" style="color:#ccc;"><a target="_blank" href="https://publiclab.org/comment-templates">Add a template</a></span>
-            <% end %>
+      <% if current_user && current_user.id == @node.uid %>
+        <span class="pull-right" style="color:#ccc;"><a target="_blank" href="https://publiclab.org/comment-templates">Add a template</a></span>
+      <% end %>
 
-            <h4 style="margin-top:0;"><%= title %></h4>
+      <h4 style="margin-top:0;"><%= title %></h4>
 
-            <style>
-                #imagebar {
-                    width: 100%;
-                }
+      <style>
+        #imagebar {
+          width:100%;
+        }
+        #new_contributor_msg {
+          background-color:#C3CCE7;
+          font-size: 14px;
+          padding: 5px;
+          padding-top: 10px;
+        }
+      </style>
 
-                #new_contributor_msg {
-                    background-color:#C3CCE7;
-                    font-size: 14px;
-                    padding: 5px;
-                    padding-top: 10px;
-                }
-            </style>
 
-            <% if params[:controller] == 'questions' %>
-            <%= render :partial => "editor/toolbar" %>
-            <% end %>
+      <%= render :partial => "editor/toolbar" %>
 
-            <% if local_assigns[:reply_to].present? %>
-            <%= hidden_field_tag :reply_to, local_assigns[:reply_to] %>
-            <% end %>
+      <% if local_assigns[:reply_to].present? %>
+        <%= hidden_field_tag :reply_to, local_assigns[:reply_to] %>
+      <% end %>
 
-            <div class="form-group dropzone">
+      <div class="form-group dropzone">
 
-                <%
+        <%
           body = body || params[:body]
           # Look for comment templates
           if params[:body].nil? && @node && @node.has_power_tag('comment-template')

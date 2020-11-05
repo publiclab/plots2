@@ -681,7 +681,7 @@ class Node < ActiveRecord::Base
                     comment: 2,
                     type:    'note')
     node.status = 4 if author.first_time_poster
-    node.draft if params[:draft] == "true"
+    node.save_draft if params[:draft] == "true"
 
     if node.valid? # is this not triggering title uniqueness validation?
       saved = true
@@ -1037,11 +1037,16 @@ class Node < ActiveRecord::Base
   end
 
   def toggle_like(user)
-    nodes = NodeSelection.where(nid: id, liking: true).size
+    node_likes = NodeSelection.where(nid: id, liking: true)
+                              .joins(:user)
+                              .references(:rusers)
+                              .where(liking: true)
+                              .where('rusers.status': 1)
+                              .size
     self.cached_likes = if is_liked_by(user)
-                          nodes - 1
+                          node_likes - 1
                         else
-                          nodes + 1
+                          node_likes + 1
                         end
   end
 
@@ -1099,7 +1104,7 @@ class Node < ActiveRecord::Base
   end
 
   # status = 3 for draft nodes,visible to author only
-  def draft
+  def save_draft
     self.status = 3
     save
     self
