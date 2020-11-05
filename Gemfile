@@ -38,7 +38,6 @@ gem 'omniauth-twitter'
 gem "paperclip", "~> 6.1.0"
 gem 'passenger'
 gem "php-serialize", :require => "php_serialize"
-gem 'progress_bar'
 gem 'rack-cors', :require => 'rack/cors'
 gem "rack-openid"
 gem "rack-test", "1.1.0"
