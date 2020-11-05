@@ -11,7 +11,7 @@
   <% if @node.has_power_tag('alert', @preview_tags) && feature("alert-#{@node.power_tag('alert')}") != "" && !@preview %>
     <%= feature("alert-#{@node.power_tag('alert')}") %>
   <% end %>
-  <% if @node.has_power_tag('with', @preview_tags)  && current_user && @node.coauthors.collect(&:username).include?(current_user.username) && !@preview  %> <div class="alert alert-success"> You are a coauthor of this post. This attributes your contribution, and gives you edit access to the note. <a href="https://publiclab.org/wiki/power-tags#Coauthorship"> Learn more </a></div><% end %>
+  <% if @node.has_power_tag('with', @preview_tags)  && current_user && @node&.coauthors&.collect(&:username)&.include?(current_user.username) && !@preview  %> <div class="alert alert-success"> You are a coauthor of this post. This attributes your contribution, and gives you edit access to the note. <a href="https://publiclab.org/wiki/power-tags#Coauthorship"> Learn more </a></div><% end %>
   <% if @node.has_power_tag('upgrade', @preview_tags) %><div class="alert alert-success"> This is an upgrade for <% if !@preview %><a href="/<%= @node.power_tag('upgrade') %>"><%= @node.power_tag('upgrade') %></a>.<% end %> Try building it and <% if !@preview %><a href="/n/<%= @node.power_tag('upgrade') %>"><% end %> report back </a>how it goes.</div><% end %>
   
   <div class="d-print-block" style="display:none;margin-bottom:3%">
@@ -28,7 +28,7 @@
     <!--<div class="expand"><a onClick="$('.main-image').toggleClass('compressed');"><i class="fa fa-angle-down"></i></a></div>-->
   <% end %>
 
-  <h1 style="margin-top: 40px;"><%= @node.title || params[:title] %></h1>
+  <h1 style="margin-top: 40px;"><%= @node.title %></h1>
 
   <div id="note-info">
 
@@ -36,7 +36,7 @@
       <% if @node.status == 0 || @node.status == 4 %><span class="badge badge-danger"><%= translation('notes.show.unpublished') %></span> | <% end %>
       <% if @node.status == 3 %><span class="badge badge-success">Draft</span> | <% end %>
       by <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> <%= @node.author.new_contributor %>
-      <% if @node.has_power_tag('with', @preview_tags) %>with <% @node.coauthors.each_with_index do |coauthor,i| %>
+      <% if @node.has_power_tag('with', @preview_tags) %>with <% @node&.coauthors&.each_with_index do |coauthor,i| %>
               <a href="/profile/<%= coauthor.username %>">
                 <%= coauthor.username%></a> <%= coauthor.new_contributor %>
               <%= ',' if i < @node.coauthors.size-1 %><% end %><% end %>

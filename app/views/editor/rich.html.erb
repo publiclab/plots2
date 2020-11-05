@@ -525,7 +525,7 @@
   var previewWindow = null;
 
   function preview() {
-    let url = 'notes/preview';
+    let url = '/notes/preview';
     let image_url = editor.mainImageModule.image.src;
     let image_id = image_url.split("/").pop();
     let location = {'latitude': editor.mapModule.blurredLocation.getLat(),
