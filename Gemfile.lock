@@ -145,7 +145,7 @@ GEM
       thor (>= 0.14.0, < 2)
     font-awesome-rails (4.7.0.5)
       railties (>= 3.2, < 6.1)
-    friendly_id (5.4.0)
+    friendly_id (5.4.1)
       activerecord (>= 4.0.0)
     gemoji (3.0.1)
     geocoder (1.6.4)
