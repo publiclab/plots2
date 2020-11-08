@@ -739,7 +739,6 @@ class Node < ActiveRecord::Base
     revision = node.new_revision(uid:   author.uid,
                                 title: params[:title],
                                 body:  params[:body])
-    node.status = 4 if author.first_time_poster
     if params[:main_image] && (params[:main_image] != '')
       img = Image.find_by(id: params[:main_image])
     end
