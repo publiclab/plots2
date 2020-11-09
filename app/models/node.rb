@@ -176,8 +176,9 @@ class Node < ActiveRecord::Base
     save
   end
 
-  def match_preview_tag(key, preview_tags)
-    preview_tag = preview_tags.join(" ").match(key)
+  # override_tags limits the searching of tags to a predefined list
+  def match_preview_tag(key, override_tags)
+    preview_tag = override_tags.join(" ").match(key)
     !preview_tag.blank?
   end
 
@@ -395,9 +396,10 @@ class Node < ActiveRecord::Base
   end
 
   # power tags have "key:value" format, and should be searched with a "key:*" wildcard
-  def has_power_tag(key, preview_tags = [])
-    return !power_tag(key).blank? if preview_tags.blank?
-    match_preview_tag(key, preview_tags)
+  # override_tags limits the searching of tags to a predefined list
+  def has_power_tag(key, override_tags = [])
+    return !power_tag(key).blank? if override_tags.blank?
+    match_preview_tag(key, override_tags)
   end
 
   # returns the value for the most recent power tag of form key:value
@@ -466,8 +468,9 @@ class Node < ActiveRecord::Base
   # access a tagname /or/ tagname ending in wildcard such as "tagnam*"
   # also searches for other tags whose parent field matches given tagname,
   # but not tags matching given tag's parent field
-  def has_tag(tagname, preview_tags = [])
-    if preview_tags.blank?
+  # override_tags limits the searching of tags to a predefined list
+  def has_tag(tagname, override_tags = [])
+    if override_tags.blank?
       tags = get_matching_tags_without_aliasing(tagname)
       # search for tags with parent matching this
       tags += Tag.includes(:node_tag)
@@ -483,7 +486,7 @@ class Node < ActiveRecord::Base
       tids = tags.collect(&:tid).uniq
       !NodeTag.where('nid IN (?) AND tid IN (?)', id, tids).empty?
     else
-      match_preview_tag(tagname, preview_tags)
+      match_preview_tag(tagname, override_tags)
     end
   end
 
