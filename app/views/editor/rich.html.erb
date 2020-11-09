@@ -528,10 +528,14 @@
     let url = '/notes/preview';
     let image_url = editor.mainImageModule.image.src;
     let image_id = image_url.split("/").pop();
-    let location = {'latitude': editor.mapModule.blurredLocation.getLat(),
-                    'longitude': editor.mapModule.blurredLocation.getLon(),
-                    'zoom': editor.mapModule.blurredLocation.getZoom()
-                    };
+    let location = null
+
+    if ($("#map_content").is(':visible')) {
+      location = {'latitude': editor.mapModule.blurredLocation.getLat(),
+                'longitude': editor.mapModule.blurredLocation.getLon(),
+                'zoom': editor.mapModule.blurredLocation.getZoom()
+                };
+    };
 
     $.ajax({
       type: "POST",

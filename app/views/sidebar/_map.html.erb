@@ -1,5 +1,5 @@
-<% lat = @preview? @node.latitude.to_f : @node.lat %>
-<% lon = @preview? @node.longitude.to_f : @node.lon %>
+<% lat = @preview? @node.latitude : @node.lat %>
+<% lon = @preview? @node.longitude : @node.lon %>
 
 <% if @node && lat && lon %>
   <% node_zoom = @preview? @zoom : @node.zoom %>

@@ -163,7 +163,7 @@ class NotesController < ApplicationController
     return show_banned_flash unless current_user.status == User::Status::NORMAL
 
     @node, @img, @body = new_preview_note
-    @zoom = params[:location][:zoom].to_f
+    @zoom = params[:location][:zoom].to_f if params[:location].present?
     @preview = true
     @preview_tags = add_preview_tags
     @event_date = params[:date] if params[:date]

@@ -730,14 +730,22 @@ class Node < ActiveRecord::Base
 
   def self.new_preview_note(params)
     author = User.find(params[:uid])
-    lat = params[:location][:latitude]
+    lat,lon,precision = nil
+
+    if params[:location].present?
+      lat = params[:location][:latitude].to_f
+      lon = params[:location][:longitude].to_f
+    end
+
     node = Node.new(uid:     author.uid,
                     title:   params[:title],
-                    latitude: lat.to_f,
-                    longitude: params[:location][:longitude].to_f,
+                    latitude: lat,
+                    longitude: lon,
                     comment: 2,
                     type:    'note')
-    precision = node.decimals(lat.to_s)
+
+    precision = node.decimals(lat.to_s) if params[:location].present?
+
     node.precision = precision
     revision = node.new_revision(uid:   author.uid,
                                 title: params[:title],
