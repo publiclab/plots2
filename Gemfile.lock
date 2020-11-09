@@ -188,7 +188,7 @@ GEM
       mustermann-grape (~> 1.0.0)
       rack (>= 1.3.0)
       rack-accept
-    grape-entity (0.8.1)
+    grape-entity (0.8.2)
       activesupport (>= 3.0.0)
       multi_json (>= 1.3.2)
     grape-rails-cache (0.1.2)
@@ -541,7 +541,7 @@ GEM
       multipart-post (~> 2.0)
       naught (~> 1.0)
       simple_oauth (~> 0.3.0)
-    tzinfo (1.2.7)
+    tzinfo (1.2.8)
       thread_safe (~> 0.1)
     uber (0.1.0)
     uglifier (4.2.0)
