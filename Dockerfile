@@ -45,8 +45,8 @@ RUN gem install --default bundler && \
     bundle install --jobs=4
 
 WORKDIR /app
-COPY Gemfile /app/Gemfile
-COPY Gemfile.lock /app/Gemfile.lock
-COPY start.sh /app/start.sh
+COPY . /app
+COPY config/database.yml.example /app/config/database.yml
+COPY db/schema.rb.example /app/db/schema.rb
 
 CMD [ "bash", "-l", "start.sh" ]
