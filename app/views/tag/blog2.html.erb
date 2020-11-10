@@ -115,18 +115,9 @@
             </div>
             <div class="col-12 pt-4">
                <div id="categories-content">
-                  <div class="recent-heading">
-                     <h4>
-                     Categories</h3>
-                  </div>
-                  <hr style="background-color: black;">
-                  <div class="recent-content">
-                  <ul>
-                     <% @alltags.each do |tag| %>
-                  <li><a href="/tag/<%= tag.name %>"><%= tag.name %></a></li>
-                  <% end %>
-                  </ul>
-                  </div>
+                 <% cache('feature_blog-sidebar', skip_digest: true) do %>
+                   <%= feature('blog-sidebar') %>
+                 <% end %>
                </div>
             </div>
          </div>
