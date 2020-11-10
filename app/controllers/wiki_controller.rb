@@ -288,21 +288,25 @@ class WikiController < ApplicationController
 
   def revision
     @node = Node.find_wiki(params[:id])
-    @tags = @node.tags
-    @tagnames = @tags.collect(&:name)
-    @unpaginated = true
-    @is_revision = true
-    set_sidebar :tags, @tagnames, videos: true
-    @revision = Revision.find_by_nid_and_vid(@node.id, params[:vid])
-    if @revision.nil?
-      flash[:error] = I18n.t('wiki_controller.revision_not_found')
-      redirect_to action: 'revisions'
-    elsif @revision.status == 1 || current_user&.can_moderate?
-      @title = I18n.t('wiki_controller.revisions_for', title: @revision.title).html_safe
-      render template: 'wiki/show'
+    if @node
+      @tags = @node.tags
+      @tagnames = @tags.collect(&:name)
+      @unpaginated = true
+      @is_revision = true
+      set_sidebar :tags, @tagnames, videos: true
+      @revision = Revision.find_by_nid_and_vid(@node.id, params[:vid])
+      if @revision.nil?
+        flash[:error] = I18n.t('wiki_controller.revision_not_found')
+        redirect_to action: 'revisions'
+      elsif @revision.status == 1 || current_user&.can_moderate?
+        @title = I18n.t('wiki_controller.revisions_for', title: @revision.title).html_safe
+        render template: 'wiki/show'
+      else
+        flash[:error] = I18n.t('wiki_controller.revision_has_been_moderated').html_safe
+        redirect_to @node.path
+      end
     else
-      flash[:error] = I18n.t('wiki_controller.revision_has_been_moderated').html_safe
-      redirect_to @node.path
+      flash[:error] = I18n.t('wiki_controller.invalid_wiki_page')
     end
   end
 
