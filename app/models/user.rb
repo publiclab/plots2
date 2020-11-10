@@ -399,11 +399,15 @@ class User < ActiveRecord::Base
 
   class << self
     def search(query)
-      User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', "#{query}*")
+      query = query.gsub('@',' ') # @ is a special char in full text search in MYSQL, and cannot be escaped; https://github.com/publiclab/plots2/issues/8344
+      query = query + '*' unless query.empty?
+      User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', "#{query}")
     end
 
     def search_by_username(query)
-      User.where('MATCH(username) AGAINST(? IN BOOLEAN MODE)', "#{query}*")
+      query = query.gsub('@',' ') # @ is a special char in full text search in MYSQL, and cannot be escaped; https://github.com/publiclab/plots2/issues/8344
+      query = query + '*' unless query.empty?
+      User.where('MATCH(username) AGAINST(? IN BOOLEAN MODE)', "#{query}")
     end
 
     def validate_token(token)
