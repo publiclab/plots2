@@ -251,6 +251,14 @@ class TagController < ApplicationController
     render layout: false
   end
 
+  def blog2
+    nids = Tag.find_nodes_by_type(params[:id], 'note', nil).collect(&:nid)
+    @pagy, @notes = pagy(Node.where('status = 1 AND nid in (?)', nids).order('created DESC'), items: 6)
+    @tags = Tag.where(name: params[:id])
+    @tagnames = @tags.collect(&:name).uniq! || []
+    @title = @tagnames.join(',') + ' Blog' if @tagnames
+  end
+
   def blog
     nids = Tag.find_nodes_by_type(params[:id], 'note', nil).collect(&:nid)
     @pagy, @notes = pagy(Node.where('status = 1 AND nid in (?)', nids).order('created DESC'), items: 6)
