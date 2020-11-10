@@ -257,7 +257,6 @@ class TagController < ApplicationController
     @tags = Tag.where(name: params[:id])
     @tagnames = @tags.collect(&:name).uniq! || []
     @title = @tagnames.join(',') + ' Blog' if @tagnames
-    @alltags = Tag.first(6)
   end
 
   def blog
