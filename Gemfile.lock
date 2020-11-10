@@ -137,7 +137,7 @@ GEM
     faraday (1.1.0)
       multipart-post (>= 1.2, < 3)
       ruby2_keywords
-    ffi (1.11.3)
+    ffi (1.13.1)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
@@ -205,7 +205,6 @@ GEM
       railties (>= 3.1)
     hashdiff (1.0.1)
     hashie (3.6.0)
-    highline (2.0.3)
     http (4.4.1)
       addressable (~> 2.3)
       http-cookie (~> 1.0)
@@ -258,7 +257,7 @@ GEM
     letter_opener (1.7.0)
       launchy (~> 2.2)
     libv8 (3.16.14.19)
-    listen (3.2.1)
+    listen (3.3.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     loadcss-rails (2.0.1)
@@ -338,7 +337,6 @@ GEM
       omniauth-oauth (~> 1.1)
       rack
     openssl (2.2.0)
-    options (2.3.2)
     os (1.1.1)
     pagy (3.9.0)
     paperclip (6.1.0)
@@ -356,8 +354,6 @@ GEM
     phantomjs (2.1.1.0)
     php-serialize (1.3.0)
     power_assert (1.2.0)
-      highline (>= 1.6, < 3)
-      options (~> 2.3.0)
     pry (0.12.2)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
@@ -414,7 +410,7 @@ GEM
       thor (>= 0.19.0, < 2.0)
     rainbow (3.0.0)
     rake (13.0.1)
-    rb-fsevent (0.10.3)
+    rb-fsevent (0.10.4)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     rb-readline (0.5.5)
@@ -621,7 +617,7 @@ DEPENDENCIES
   lemmatizer (~> 0.2.2)
   less-rails (~> 5.0)
   letter_opener
-  listen (~> 3.2.1)
+  listen (~> 3.3.0)
   loadcss-rails (~> 2.0.1)
   mailman
   minitest-reporters (~> 1.4.2)
@@ -640,7 +636,6 @@ DEPENDENCIES
   passenger
   phantomjs
   php-serialize
-  progress_bar
   pry-rails
   puma (~> 5.0)
   rack-cors
