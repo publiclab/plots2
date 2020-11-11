@@ -163,8 +163,7 @@ class NotesController < ApplicationController
 
     @node, @img, @body = new_preview_note
     @zoom = params[:location][:zoom].to_f if params[:location].present?
-    @latitude = @node.latitude.present? ? @node.latitude.to_f : false
-    @longitude = @node.longitude.present? ? @node.longitude.to_f : false
+    @latitude, @longitude = location
     @preview = true
     @event_date = params[:date] if params[:date]
     render template: 'notes/show'
@@ -454,5 +453,12 @@ class NotesController < ApplicationController
   def show_banned_flash
     flash.keep[:error] = I18n.t('notes_controller.you_have_been_banned').html_safe
     redirect_to '/logout'
+  end
+
+  def location
+    latitude, @longitude = @node.latitude.present? ? @node.latitude.to_f : false
+    longitude = @node.longitude.present? ? @node.longitude.to_f : false
+
+    [latitude, longitude]
   end
 end
