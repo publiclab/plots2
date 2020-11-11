@@ -176,12 +176,6 @@ class Node < ActiveRecord::Base
     save
   end
 
-  # override_tags limits the searching of tags to a predefined list
-  def match_preview_tag(key, override_tags)
-    preview_tag = override_tags.join(" ").match(key)
-    !preview_tag.blank?
-  end
-
   public
 
   is_impressionable counter_cache: true, column_name: :views, unique: :ip_address
@@ -396,10 +390,8 @@ class Node < ActiveRecord::Base
   end
 
   # power tags have "key:value" format, and should be searched with a "key:*" wildcard
-  # override_tags limits the searching of tags to a predefined list
-  def has_power_tag(key, override_tags = [])
-    return !power_tag(key).blank? if override_tags.blank?
-    match_preview_tag(key, override_tags)
+  def has_power_tag(key)
+    !power_tag(key).blank?
   end
 
   # returns the value for the most recent power tag of form key:value
@@ -468,26 +460,21 @@ class Node < ActiveRecord::Base
   # access a tagname /or/ tagname ending in wildcard such as "tagnam*"
   # also searches for other tags whose parent field matches given tagname,
   # but not tags matching given tag's parent field
-  # override_tags limits the searching of tags to a predefined list
-  def has_tag(tagname, override_tags = [])
-    if override_tags.blank?
-      tags = get_matching_tags_without_aliasing(tagname)
-      # search for tags with parent matching this
-      tags += Tag.includes(:node_tag)
-                 .references(:community_tags)
-                 .where('community_tags.nid = ? AND parent LIKE ?', id, tagname)
-      # search for parent tag of this, if exists
-      # tag = Tag.where(name: tagname).try(:first)
-      # if tag && tag.parent
-      #  tags += Tag.includes(:node_tag)
-      #             .references(:community_tags)
-      #             .where("community_tags.nid = ? AND name LIKE ?", self.id, tag.parent)
-      # end
-      tids = tags.collect(&:tid).uniq
-      !NodeTag.where('nid IN (?) AND tid IN (?)', id, tids).empty?
-    else
-      match_preview_tag(tagname, override_tags)
-    end
+  def has_tag(tagname)
+    tags = get_matching_tags_without_aliasing(tagname)
+    # search for tags with parent matching this
+    tags += Tag.includes(:node_tag)
+                .references(:community_tags)
+                .where('community_tags.nid = ? AND parent LIKE ?', id, tagname)
+    # search for parent tag of this, if exists
+    # tag = Tag.where(name: tagname).try(:first)
+    # if tag && tag.parent
+    #  tags += Tag.includes(:node_tag)
+    #             .references(:community_tags)
+    #             .where("community_tags.nid = ? AND name LIKE ?", self.id, tag.parent)
+    # end
+    tids = tags.collect(&:tid).uniq
+    !NodeTag.where('nid IN (?) AND tid IN (?)', id, tids).empty?
   end
 
   # can return multiple Tag records -- we don't yet hard-enforce uniqueness, but should soon

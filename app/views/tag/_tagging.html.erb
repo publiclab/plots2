@@ -19,6 +19,8 @@
   </div>
 <% end %>
 
+<% if @preview %><div class="alert alert-info"><%= raw translation('notes.show.preview_topics') %></div><% end %>
+
 <script>
 $(function () {
   $('#tags [data-toggle="tooltip"]').tooltip();

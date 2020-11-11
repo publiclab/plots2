@@ -335,13 +335,6 @@ class NodeTest < ActiveSupport::TestCase
     assert node.has_power_tag("lat")
   end
 
-  test 'has power tag using override tags list' do
-    node = nodes(:blog)
-    override_tag = ["lat"]
-    assert node.has_power_tag("lat", override_tag)
-    assert !node.has_power_tag("non-existent-tag", override_tag)
-  end
-
   test 'should show question icon for question node' do
     node = nodes(:question)
     assert_equal 'question-circle', node.icon

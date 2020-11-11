@@ -1,7 +1,7 @@
 <% lat = @preview? @node.latitude.to_f : @node.lat %>
 <% lon = @preview? @node.longitude.to_f : @node.lon %>
 
-<% if @node && lat && lon %>
+<% if @node && !lat.zero? && !lon.zero? %>
   <% node_zoom = @preview? @zoom : @node.zoom %>
   <% if @node.has_tag("place") %>
     <%= render_top_map(lat, lon, node_zoom) %>

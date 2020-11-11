@@ -545,7 +545,6 @@
           'title': editor.titleModule.value(),
           'body': editor.richTextModule.value(),
           'main_image': image_id,
-          'tags': editor.tagsModule.value(),
           'location': location
         },
       success: function(data)
@@ -567,9 +566,9 @@
       // Replace previous window with new data
       previewWindow.document.body.innerHTML = "";
       previewWindow.document.write(data);
-      previewWindow.document.close();
       previewWindow.focus();
-    }
+      previewWindow.document.close();
+    };
 
   }
 

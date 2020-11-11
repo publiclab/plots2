@@ -61,7 +61,6 @@ class NotesController < ApplicationController
       @title = @node.latest.title
       @tags = @node.tags
       @tagnames = @tags.collect(&:name)
-      @preview_tags = []
       @preview = false
       set_sidebar :tags, @tagnames
     else
@@ -165,7 +164,6 @@ class NotesController < ApplicationController
     @node, @img, @body = new_preview_note
     @zoom = params[:location][:zoom].to_f if params[:location].present?
     @preview = true
-    @preview_tags = add_preview_tags
     @event_date = params[:date] if params[:date]
     render template: 'notes/show'
   end
@@ -454,21 +452,5 @@ class NotesController < ApplicationController
   def show_banned_flash
     flash.keep[:error] = I18n.t('notes_controller.you_have_been_banned').html_safe
     redirect_to '/logout'
-  end
-
-  def add_preview_tags
-    tags = []
-    if params[:tags].present?
-      params[:tags]&.tr(' ', ',')&.split(',')&.each do |tagname|
-        tags << tagname
-      end
-    end
-    if params[:event] == 'on'
-      tags << 'event'
-      tags << 'event:rsvp'
-      tags << "date:#{params[:date]}" if params[:date]
-    end
-    tags << 'first-time-poster' if current_user.first_time_poster
-    tags
   end
 end
