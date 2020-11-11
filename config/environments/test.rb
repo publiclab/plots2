@@ -191,4 +191,14 @@ Rails.application.configure do
         'email' => 'bob@publiclab.org'
       }
     }) 
+  
+  
+  # Twitter Provider with no email provided
+  OmniAuth.config.mock_auth[:twitter1] = OmniAuth::AuthHash.new({
+      'provider' => 'twitter',
+      'uid' => '135798079602',
+      'info' => {
+        'name' => 'jeff with no email',
+      }
+    })
 end
