@@ -640,7 +640,6 @@ DEPENDENCIES
   passenger
   phantomjs
   php-serialize
-  progress_bar
   pry-rails
   puma (~> 5.0)
   rack-cors
