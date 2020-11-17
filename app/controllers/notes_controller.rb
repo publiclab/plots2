@@ -61,7 +61,7 @@ class NotesController < ApplicationController
       @title = @node.latest.title
       @tags = @node.tags
       @tagnames = @tags.collect(&:name)
-
+      @preview = false
       set_sidebar :tags, @tagnames
     else
       page_not_found
@@ -158,6 +158,17 @@ class NotesController < ApplicationController
     end
   end
 
+  def preview
+    return show_banned_flash unless current_user.status == User::Status::NORMAL
+
+    @node, @img, @body = new_preview_note
+    @zoom = params[:location][:zoom].to_f if params[:location].present?
+    @latitude, @longitude = location
+    @preview = true
+    @event_date = params[:date] if params[:date]
+    render template: 'notes/show'
+  end
+
   def edit
     @node = Node.find_by(nid: params[:id], type: 'note')
 
@@ -239,7 +250,7 @@ class NotesController < ApplicationController
           render json: errors
         else
           render 'editor/post'
-       end
+        end
       end
     end
   end
@@ -427,6 +438,14 @@ class NotesController < ApplicationController
                   draft: params[:draft])
   end
 
+  def new_preview_note
+    Node.new_preview_note(uid: current_user.uid,
+      title: params[:title],
+      body: params[:body],
+      main_image: params[:main_image],
+      location: params[:location])
+  end
+
   def not_draft_and_user_is_first_time_poster?
     params[:draft] != "true" && current_user.first_time_poster
   end
@@ -434,5 +453,12 @@ class NotesController < ApplicationController
   def show_banned_flash
     flash.keep[:error] = I18n.t('notes_controller.you_have_been_banned').html_safe
     redirect_to '/logout'
+  end
+
+  def location
+    latitude, @longitude = @node.latitude.present? ? @node.latitude.to_f : false
+    longitude = @node.longitude.present? ? @node.longitude.to_f : false
+
+    [latitude, longitude]
   end
 end

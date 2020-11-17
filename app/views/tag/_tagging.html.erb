@@ -19,6 +19,8 @@
   </div>
 <% end %>
 
+<% if @preview %><div class="alert alert-info"><%= raw translation('notes.show.preview_topics') %></div><% end %>
+
 <script>
 $(function () {
   $('#tags [data-toggle="tooltip"]').tooltip();
@@ -45,12 +47,12 @@ $(function () {
 
 <% parent ||= nil %>
 
-<% if current_user && (parent != :profile || (current_user.id == user.id || logged_in_as(['admin']))) %>
+<% if current_user && (parent != :profile || (current_user.id == user.id || logged_in_as(['admin']))) && !@preview  %>
   <a data-toggle="tooltip" title="Add tags/View all" aria-label="Add tags/View all" id="tags-open" class="btn btn-circle btn-circle-sm tags-open" style="float:left;">
     <i class="fa fa-plus" style="color:#808080;"></i>
   </a>
 
-  <% if @node && @node.tags.count == 0 %>
+  <% if @node && @node.tags.count == 0 && !@preview %>
     <span style="float:left;color:#666;margin-top:14px;margin-left:5px;">Add tags</span>
   <% end %>
 

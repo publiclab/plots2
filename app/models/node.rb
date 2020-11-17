@@ -464,8 +464,8 @@ class Node < ActiveRecord::Base
     tags = get_matching_tags_without_aliasing(tagname)
     # search for tags with parent matching this
     tags += Tag.includes(:node_tag)
-               .references(:community_tags)
-               .where('community_tags.nid = ? AND parent LIKE ?', id, tagname)
+                .references(:community_tags)
+                .where('community_tags.nid = ? AND parent LIKE ?', id, tagname)
     # search for parent tag of this, if exists
     # tag = Tag.where(name: tagname).try(:first)
     # if tag && tag.parent
@@ -713,6 +713,34 @@ class Node < ActiveRecord::Base
       end
     end
     [saved, node, revision]
+  end
+
+  def self.new_preview_note(params)
+    author = User.find(params[:uid])
+    lat, lon, precision = nil
+
+    if params[:location].present?
+      lat = params[:location][:latitude].to_f
+      lon = params[:location][:longitude].to_f
+    end
+
+    node = Node.new(uid:     author.uid,
+                    title:   params[:title],
+                    latitude: lat,
+                    longitude: lon,
+                    comment: 2,
+                    type:    'note')
+
+    precision = node.decimals(lat.to_s) if params[:location].present?
+
+    node.precision = precision
+    revision = node.new_revision(uid:   author.uid,
+                                title: params[:title],
+                                body:  params[:body])
+    if params[:main_image] && (params[:main_image] != '')
+      img = Image.find_by(id: params[:main_image])
+    end
+    [node, img, revision]
   end
 
   def self.new_wiki(params)
