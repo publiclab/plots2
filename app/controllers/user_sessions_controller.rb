@@ -89,9 +89,17 @@ class UserSessionsController < ApplicationController
           elsif params[:return_to] && params[:return_to].split('/')[0..3] == ["", "subscribe", "multiple", "tag"]
             flash[:notice] = "You are now following '#{params[:return_to].split('/')[4]}'."
             subscribe_multiple_tag(params[:return_to].split('/')[4])
-            redirect_to '/dashboard', notice: "You have successfully signed in. Please change your password using the link sent to you via e-mail."
+            if user.email
+              redirect_to '/dashboard', notice: "You have successfully signed in. Please change your password using the link sent to you via e-mail."
+            else
+              redirect_to '/dashboard', notice: "You have successfully signed in. Please add an email address and change your password from the Edit Profile menu item."
+            end
           else
-            redirect_to "/dashboard", notice: "You have successfully signed in. Please change your password using the link sent to you via e-mail."
+            if user.email
+              redirect_to '/dashboard', notice: "You have successfully signed in. Please change your password using the link sent to you via e-mail."
+            else
+              redirect_to '/dashboard', notice: "You have successfully signed in. Please add an email address and change your password from the Edit Profile menu item."
+            end
           end
         else # email exists so link the identity with existing user and log in the user
           user = User.where(email: auth["info"]["email"])
