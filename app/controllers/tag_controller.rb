@@ -8,7 +8,7 @@ class TagController < ApplicationController
 
     @title = I18n.t('tag_controller.tags')
     @paginated = true
-    @order_type = params[:order] == "desc" ? "asc" : "desc"
+    @order_type = params[:order].blank? || params[:order] == "desc" ? "asc" : "desc"
     powertag_clause = params[:powertags] == 'true' ? '' : ['name NOT LIKE ?', '%:%']
 
     if params[:search]
@@ -249,6 +249,14 @@ class TagController < ApplicationController
       .where('status = 1 AND nid in (?)', nids)
       .order('nid DESC')
     render layout: false
+  end
+
+  def blog2
+    nids = Tag.find_nodes_by_type(params[:id], 'note', nil).collect(&:nid)
+    @pagy, @notes = pagy(Node.where('status = 1 AND nid in (?)', nids).order('created DESC'), items: 6)
+    @tags = Tag.where(name: params[:id])
+    @tagnames = @tags.collect(&:name).uniq! || []
+    @title = @tagnames.join(',') + ' Blog' if @tagnames
   end
 
   def blog
@@ -532,9 +540,9 @@ class TagController < ApplicationController
 
   def order_string
     if params[:search] || @toggle == "uses"
-      params[:order] == "asc" ? "count ASC" : "count DESC"
+      params[:order].blank? || params[:order] == "asc" ? "count ASC" : "count DESC"
     else
-      params[:order] == "asc" ? "name ASC" : "name DESC"
+      params[:order].blank? || params[:order] == "asc" ? "name ASC" : "name DESC"
     end
   end
 
