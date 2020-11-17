@@ -227,7 +227,7 @@
         <h2>4</h2>
       </div>
 
-      <div class="ple-module-content col-lg-9">
+      <div class="ple-module-content col-lg-9 wk-placeholder-text">
         <textarea aria-label="Enter note description" id="text-input" placeholder="Enter the content here" class="ple-textarea form-control"><% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
       </div>
 
