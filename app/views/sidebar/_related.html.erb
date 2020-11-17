@@ -5,10 +5,11 @@
   <% cache('related_sidebar-feature', skip_digest: true) do %>
     <%= feature('sidebar') %>
   <% end %>
-
+<% if !@preview%>
   <div class="d-print-none">
     <%= render :partial => "like/like", :locals => {:node => @node, :tagnames => @tagnames } %>
   </div>
+<% end %>
 
   <% if @node %>
     <%= render partial: "sidebar/events" %>
