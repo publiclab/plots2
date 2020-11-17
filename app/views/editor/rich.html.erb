@@ -43,6 +43,10 @@
     flex: 0 0 25%;
     max-width: 25%;
   }
+
+  .publish-space {
+    margin-right: 10px;
+  }
 </style>
 
 <div class="pl-editor">
@@ -306,7 +310,8 @@
     <button class="btn btn-lg btn-outline-secondary btn-more"><i class="fa fa-clock-o"></i></button>
 
     <span> &nbsp; By publishing, you agree to <a href="https://publiclab.org/licenses">open source your work</a><span class="d-none d-md-inline"> so that others may use it.</span></span>
-    <button class="ple-publish btn btn-lg btn-primary float-right disabled"><% if controller.action_name == "edit" && @node.status == 3 %>Save<% else %>Publish<% end %></button>
+    <button class="btn btn-outline-secondary btn-lg float-right" onclick="preview()">Preview</button>
+    <button class="publish-space ple-publish btn btn-lg btn-primary float-right disabled"><% if controller.action_name == "edit" && @node.status == 3 %>Save<% else %>Publish<% end %></button>
     <span class="ple-help float-right">
       <% if controller.action_name != "edit" && !current_user.first_time_poster %>
         <span id="newOpts" style="display: inline-block;">
@@ -326,7 +331,6 @@
     </span>
 
   </div>
-
 </div>
 <script>
 
@@ -516,6 +520,56 @@
          button.innerHTML = "Publish";
       }
       console.log("Draft:", editor.data.draft);
+  }
+
+  var previewWindow = null;
+
+  function preview() {
+    let url = '/notes/preview';
+    let image_url = editor.mainImageModule.image.src;
+    let image_id = image_url.split("/").pop();
+    let location = null
+
+    if ($("#map_content").is(':visible')) {
+      location = {'latitude': editor.mapModule.blurredLocation.getLat(),
+                'longitude': editor.mapModule.blurredLocation.getLon(),
+                'zoom': editor.mapModule.blurredLocation.getZoom()
+                };
+    };
+
+    $.ajax({
+      type: "POST",
+      url: url,
+      data:
+        {
+          'title': editor.titleModule.value(),
+          'body': editor.richTextModule.value(),
+          'main_image': image_id,
+          'location': location
+        },
+      success: function(data)
+      {
+        previewPopup(data);
+      }
+    });
+  }
+
+  function previewPopup(data) {
+    if(!previewWindow || previewWindow.closed)
+    {
+      previewWindow = window.open('', 'previewWindow', "resizeable, scrollbars, status");
+      previewWindow.document.write(data);
+      previewWindow.document.close();
+    }
+    else
+    {
+      // Replace previous window with new data
+      previewWindow.document.body.innerHTML = "";
+      previewWindow.document.write(data);
+      previewWindow.focus();
+      previewWindow.document.close();
+    };
+
   }
 
 </script>
