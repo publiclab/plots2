@@ -95,6 +95,7 @@ class UsersController < ApplicationController
 
   def list
     sort_param = params[:sort]
+    search_param = params[:search]
     @tagname_param = params[:tagname]
 
     order_string = if params[:id]
@@ -131,7 +132,8 @@ class UsersController < ApplicationController
              elsif @tagname_param
                User.where(id: UserTag.where(value: @tagname_param).collect(&:uid))
                              .page(params[:page])
-
+             elsif params[:search]
+                User.search_people(params[:search]).page(params[:page])
              else
                # recently active
                User.select('*, rusers.status, MAX(node_revisions.timestamp) AS last_updated')
@@ -474,5 +476,9 @@ class UsersController < ApplicationController
 
   def spamaway_params
     params.require(:spamaway).permit(:follow_instructions, :statement1, :statement2, :statement3, :statement4)
+  end
+
+  def index
+    @users = User.pips_search(params[:search])
   end
 end
