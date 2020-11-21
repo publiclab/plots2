@@ -95,7 +95,6 @@ class UsersController < ApplicationController
 
   def list
     sort_param = params[:sort]
-    search_param = params[:search]
     @tagname_param = params[:tagname]
 
     order_string = if params[:id]
@@ -133,7 +132,7 @@ class UsersController < ApplicationController
                User.where(id: UserTag.where(value: @tagname_param).collect(&:uid))
                              .page(params[:page])
              elsif params[:search]
-                User.search_people(params[:search]).page(params[:page])
+               User.search_people(params[:search]).page(params[:page])
              else
                # recently active
                User.select('*, rusers.status, MAX(node_revisions.timestamp) AS last_updated')
