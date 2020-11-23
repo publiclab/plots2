@@ -217,7 +217,7 @@ class ScreenshotsTest < ApplicationSystemTestCase
     click_on "Log in"
     visit nodes(:blog).path
     find('a#tags-open').click # open the tagging form
-    click_on(class: 'blurred-location-input') # alternative
+    # click_on(class: 'blurred-location-input') # alternative
     # fill_in("placenameInput", with: "Pusan")
     take_screenshot
   end
