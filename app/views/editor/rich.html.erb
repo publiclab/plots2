@@ -3,10 +3,8 @@
 <link href="/lib/bootstrap-tokenfield/dist/css/bootstrap-tokenfield.min.css" rel="stylesheet">
 
 <!-- required for MapModule -->
-<link href="/lib/leaflet/dist/leaflet.css" rel="stylesheet">
-<script src="/lib/leaflet/dist/leaflet.js"></script>
-<link href="/lib/leaflet-blurred-location/dist/Leaflet.BlurredLocation.css" rel="stylesheet">
-<script src="/lib/leaflet-blurred-location/dist/Leaflet.BlurredLocation.js"></script>
+<%= stylesheet_link_tag "leaflet-blurred-location/dist/Leaflet.BlurredLocation.css" %>
+<%= javascript_include_tag('leaflet-blurred-location/dist/Leaflet.BlurredLocation.js') %>
 
 <!-- required for TagsModule -->
 <script src="/lib/typeahead.js/dist/bloodhound.js"></script>
@@ -39,6 +37,15 @@
   }
   button:hover i.fa-map-marker {
     color: inherit;
+  }
+
+  .ple-image_module_guide {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+
+  .publish-space {
+    margin-right: 10px;
   }
 </style>
 
@@ -80,40 +87,42 @@
 
 
     <!-- main_image module -->
-    <div class="ple-module-main_image ple-module row">
+    <div class="ple-module-main_image ple-module container">
+      <div class="ple-module-guide ple-image_module_guide" ><h2>2</h2></div>
 
-      <div class="ple-module-guide col-lg-3">
-        <h2>2</h2>
-      </div>
-
-      <div class="ple-module-content row col-lg-9">
-        <div class="ple-drag-drop col-lg-6">Drag an image here to upload.</div>
-        <div class="col-lg-6 help">
+      <div class="module-mainImage ple-module-content col-md-9 container">
+        <div class="mainImageBox">
+          <div id="mainImage" class="ple-drag-drop">
+            Drag an image here to upload.
+          </div>
+        </div>
+        <div class="col-md-6 help">
           <div style="display:none;" class="progress">
             <div
-              class="progress-bar progress-bar-striped progress-bar-animated"
+              class="progress-bar progress-bar-striped active"
               role="progressbar"
               aria-valuenow="0"
               aria-valuemin="0"
               aria-valuemax="100"
-              style="width: 0%;">
-            </div>
+              style="width: 0%;"
+            ></div>
           </div>
-          <p>
-            <input
-              aria-label="Upload image"
-              type="file"
-              accept=".png, .jpg, .jpeg"
-              name="image[photo]"
-              value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>"
-            />
-          </p>
+          <div id="thumbnail-filename"></div>
+
+          <div id="imageButtons">
+            <input type="file" name="image[photo]" id="thumbnail-img">
+            <label for="thumbnail-img" class="thumbnailBtn">
+              <span>Choose a file…</span>
+            </label>
+            <button id="removeFile" class="thumbnailBtn">Remove File</button>
+          </div>
           <p class="ple-help">
-            <span class="ple-help-minor">Select an optional main image for your post.</span>
+            <span class="ple-help-minor"
+              >Select an optional main image for your post.</span
+            >
           </p>
         </div>
       </div>
-
     </div>
     <!-- end main_image module -->
 
@@ -222,8 +231,8 @@
         <h2>4</h2>
       </div>
 
-      <div class="ple-module-content col-lg-9">
-        <textarea aria-label="Enter note description" id="text-input" class="ple-textarea form-control"><% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
+      <div class="ple-module-content col-lg-9 wk-placeholder-text">
+        <textarea aria-label="Enter note description" id="text-input" placeholder="Enter the content here" class="ple-textarea form-control"><% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
       </div>
 
     </div>
@@ -301,7 +310,8 @@
     <button class="btn btn-lg btn-outline-secondary btn-more"><i class="fa fa-clock-o"></i></button>
 
     <span> &nbsp; By publishing, you agree to <a href="https://publiclab.org/licenses">open source your work</a><span class="d-none d-md-inline"> so that others may use it.</span></span>
-    <button class="ple-publish btn btn-lg btn-primary float-right disabled"><% if controller.action_name == "edit" && @node.status == 3 %>Save<% else %>Publish<% end %></button>
+    <button class="btn btn-outline-secondary btn-lg float-right" onclick="preview()">Preview</button>
+    <button class="publish-space ple-publish btn btn-lg btn-primary float-right disabled"><% if controller.action_name == "edit" && @node.status == 3 %>Save<% else %>Publish<% end %></button>
     <span class="ple-help float-right">
       <% if controller.action_name != "edit" && !current_user.first_time_poster %>
         <span id="newOpts" style="display: inline-block;">
@@ -321,7 +331,6 @@
     </span>
 
   </div>
-
 </div>
 <script>
 
@@ -367,7 +376,7 @@
         } else if (response && Object.keys(response).length > 0) {
           $('.ple-errors').html('<div class="alert alert-danger"></div>');
           Object.keys(response).forEach(function(key, i) {
-            $('.ple-errors .alert').append('<p><b>' + key + '</b> </p>');
+            $('.ple-errors .alert').append('<p><b>' + '</b> </p>');
             $('.ple-errors .alert p:last').append(response[key].join(', '));
           });
           window.scroll(0, 0);
@@ -511,6 +520,56 @@
          button.innerHTML = "Publish";
       }
       console.log("Draft:", editor.data.draft);
+  }
+
+  var previewWindow = null;
+
+  function preview() {
+    let url = '/notes/preview';
+    let image_url = editor.mainImageModule.image.src;
+    let image_id = image_url.split("/").pop();
+    let location = null
+
+    if ($("#map_content").is(':visible')) {
+      location = {'latitude': editor.mapModule.blurredLocation.getLat(),
+                'longitude': editor.mapModule.blurredLocation.getLon(),
+                'zoom': editor.mapModule.blurredLocation.getZoom()
+                };
+    };
+
+    $.ajax({
+      type: "POST",
+      url: url,
+      data:
+        {
+          'title': editor.titleModule.value(),
+          'body': editor.richTextModule.value(),
+          'main_image': image_id,
+          'location': location
+        },
+      success: function(data)
+      {
+        previewPopup(data);
+      }
+    });
+  }
+
+  function previewPopup(data) {
+    if(!previewWindow || previewWindow.closed)
+    {
+      previewWindow = window.open('', 'previewWindow', "resizeable, scrollbars, status");
+      previewWindow.document.write(data);
+      previewWindow.document.close();
+    }
+    else
+    {
+      // Replace previous window with new data
+      previewWindow.document.body.innerHTML = "";
+      previewWindow.document.write(data);
+      previewWindow.focus();
+      previewWindow.document.close();
+    };
+
   }
 
 </script>

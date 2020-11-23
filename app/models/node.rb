@@ -124,7 +124,7 @@ class Node < ActiveRecord::Base
   end
 
   def has_a_tag(name)
-    return tags.where(name: name).count.positive?
+    return tags.where(name: name).size.positive?
   end
 
   before_save :set_changed_and_created
@@ -187,7 +187,7 @@ class Node < ActiveRecord::Base
                                .where(type:    type,
                                       status:  1,
                                       created: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
-                               .count
+                               .size
     end
     weeks
   end
@@ -214,7 +214,7 @@ class Node < ActiveRecord::Base
     weeks = (ending.to_date - starting.to_date).to_i / 7.0
     Node.published.select(%i(created type))
       .where(type: type, created: starting.to_i..ending.to_i)
-      .count(:all) / weeks
+      .size / weeks
   end
 
   def notify
@@ -237,16 +237,20 @@ class Node < ActiveRecord::Base
     self
   end
 
+  def flag_node
+    self.flag += 1
+    save
+    self
+  end
+
+  def unflag_node
+    self.flag = 0
+    save
+    self
+  end
+
   def files
     drupal_files
-  end
-
-  def answered
-    answers&.length&.positive?
-  end
-
-  def has_accepted_answers
-    answers.where(accepted: true).count.positive?
   end
 
   # users who like this node
@@ -382,7 +386,7 @@ class Node < ActiveRecord::Base
         .includes(:revision, :tag)
         .references(:term_data)
         .where('term_data.name = ?', "#{key}:#{id}")
-        .count
+        .size
   end
 
   # power tags have "key:value" format, and should be searched with a "key:*" wildcard
@@ -436,7 +440,7 @@ class Node < ActiveRecord::Base
       tags = NodeTag.where('nid = ? AND community_tags.tid IN (?)', id, tids)
                     .left_outer_joins(:tag, :tag_selections)
                     .order(Arel.sql('count(tag_selections.user_id) DESC'))
-                    .group(:tid)
+                    .group('community_tags.tid, community_tags.uid, community_tags.date, community_tags.created_at, community_tags.updated_at')
     else
       tags = NodeTag.where('nid = ? AND tid IN (?)', id, tids)
     end
@@ -460,8 +464,8 @@ class Node < ActiveRecord::Base
     tags = get_matching_tags_without_aliasing(tagname)
     # search for tags with parent matching this
     tags += Tag.includes(:node_tag)
-               .references(:community_tags)
-               .where('community_tags.nid = ? AND parent LIKE ?', id, tagname)
+                .references(:community_tags)
+                .where('community_tags.nid = ? AND parent LIKE ?', id, tagname)
     # search for parent tag of this, if exists
     # tag = Tag.where(name: tagname).try(:first)
     # if tag && tag.parent
@@ -641,7 +645,7 @@ class Node < ActiveRecord::Base
     comment_via_status = params[:comment_via].nil? ? 0 : params[:comment_via].to_i
     user = User.find(params[:uid])
     status = user.first_time_poster && user.first_time_commenter ? 4 : 1
-    c = Comment.new(pid: 0,
+    c = Comment.includes(:node).new(pid: 0,
                     nid: nid,
                     uid: params[:uid],
                     subject: '',
@@ -677,7 +681,7 @@ class Node < ActiveRecord::Base
                     comment: 2,
                     type:    'note')
     node.status = 4 if author.first_time_poster
-    node.draft if params[:draft] == "true"
+    node.save_draft if params[:draft] == "true"
 
     if node.valid? # is this not triggering title uniqueness validation?
       saved = true
@@ -697,7 +701,7 @@ class Node < ActiveRecord::Base
             img.save
           end
           node.save!
-          if node.status != 3
+          if node.status == 1
             node.notify
           end
         else
@@ -709,6 +713,34 @@ class Node < ActiveRecord::Base
       end
     end
     [saved, node, revision]
+  end
+
+  def self.new_preview_note(params)
+    author = User.find(params[:uid])
+    lat, lon, precision = nil
+
+    if params[:location].present?
+      lat = params[:location][:latitude].to_f
+      lon = params[:location][:longitude].to_f
+    end
+
+    node = Node.new(uid:     author.uid,
+                    title:   params[:title],
+                    latitude: lat,
+                    longitude: lon,
+                    comment: 2,
+                    type:    'note')
+
+    precision = node.decimals(lat.to_s) if params[:location].present?
+
+    node.precision = precision
+    revision = node.new_revision(uid:   author.uid,
+                                title: params[:title],
+                                body:  params[:body])
+    if params[:main_image] && (params[:main_image] != '')
+      img = Image.find_by(id: params[:main_image])
+    end
+    [node, img, revision]
   end
 
   def self.new_wiki(params)
@@ -987,32 +1019,31 @@ class Node < ActiveRecord::Base
   end
 
   def can_tag(tagname, user, errors = false)
+    one_split = tagname.split(':')[1]
+    socials = { facebook: 'Facebook', github: 'Github', google_oauth2: 'Google', twitter: 'Twitter' }
+
     if tagname[0..4] == 'with:'
-      if User.find_by_username_case_insensitive(tagname.split(':')[1]).nil?
+      if User.find_by_username_case_insensitive(one_split).nil?
         errors ? I18n.t('node.cannot_find_username') : false
       elsif author.uid != user.uid
         errors ? I18n.t('node.only_author_use_powertag') : false
-      elsif tagname.split(':')[1] == user.username
+      elsif one_split == user.username
         errors ? I18n.t('node.cannot_add_yourself_coauthor') : false
       else
         true
       end
     elsif tagname == 'format:raw' && user.role != 'admin'
       errors ? "Only admins may create raw pages." : false
-    elsif tagname[0..4] == 'rsvp:' && user.username != tagname.split(':')[1]
+    elsif tagname[0..4] == 'rsvp:' && user.username != one_split
       errors ? I18n.t('node.only_RSVP_for_yourself') : false
     elsif tagname == 'locked' && user.role != 'admin'
       errors ? I18n.t('node.only_admins_can_lock') : false
-    elsif tagname.split(':')[0] == 'redirect' && Node.where(slug: tagname.split(':')[1]).length <= 0
+    elsif tagname == 'blog' && user.role != 'admin' && user.role != 'moderator'
+      errors ? 'Only moderators or admins can use this tag.' : false
+    elsif tagname.split(':')[0] == 'redirect' && Node.where(slug: one_split).size <= 0
       errors ? I18n.t('node.page_does_not_exist') : false
-    elsif  tagname.split(':')[1] == "facebook"
-      errors ? "This tag is used for associating a Facebook account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
-    elsif  tagname.split(':')[1] == "github"
-      errors ? "This tag is used for associating a Github account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
-    elsif  tagname.split(':')[1] ==  "google_oauth2"
-      errors ? "This tag is used for associating a Google account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
-    elsif  tagname.split(':')[1] == "twitter"
-      errors ? "This tag is used for associating a Twitter account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
+    elsif socials[one_split&.to_sym].present?
+      errors ? "This tag is used for associating a #{socials[one_split.to_sym]} account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
     else
       true
     end
@@ -1020,7 +1051,7 @@ class Node < ActiveRecord::Base
 
   def replace(before, after, user)
     matches = latest.body.scan(before)
-    if matches.length == 1
+    if matches.size == 1
       revision = new_revision(uid: user.id,
                               body: latest.body.gsub(before, after))
       revision.save
@@ -1034,11 +1065,16 @@ class Node < ActiveRecord::Base
   end
 
   def toggle_like(user)
-    nodes = NodeSelection.where(nid: id, liking: true).count
+    node_likes = NodeSelection.where(nid: id, liking: true)
+                              .joins(:user)
+                              .references(:rusers)
+                              .where(liking: true)
+                              .where('rusers.status': 1)
+                              .size
     self.cached_likes = if is_liked_by(user)
-                          nodes - 1
+                          node_likes - 1
                         else
-                          nodes + 1
+                          node_likes + 1
                         end
   end
 
@@ -1096,7 +1132,7 @@ class Node < ActiveRecord::Base
   end
 
   # status = 3 for draft nodes,visible to author only
-  def draft
+  def save_draft
     self.status = 3
     save
     self
@@ -1115,6 +1151,21 @@ class Node < ActiveRecord::Base
     else
       comments.where(status: 1)
     end
+  end
+
+  def self.spam_graph_making(status)
+    start = Time.now - 1.year
+    fin = Time.now
+    time_hash = {}
+    week = start.to_date.step(fin.to_date, 7).count
+    while week >= 1
+      months = (fin - (week * 7 - 1).days)
+      range = (fin.to_i - week.weeks.to_i)..(fin.to_i - (week - 1).weeks.to_i)
+      nodes = Node.where(created: range).where(status: status).select(:created).size
+      time_hash[months.to_f * 1000] = nodes
+      week -= 1
+    end
+    time_hash
   end
 
   def notify_callout_users

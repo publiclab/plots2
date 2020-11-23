@@ -24,6 +24,11 @@ services:
     cap_add:
       - SYS_PTRACE
     environment:
+      - DB_USER=${DB_USER}
+      - DB_NAME=${DB_NAME}
+      - DB_PASS=${DB_PASS}
+      - DB_HOST=${DB_HOST}
+      - RAILS_MAX_THREADS=${RAILS_MAX_THREADS}
       - RAILS_ENV=${RAILS_ENV}
       - SECRET_KEY_BASE=${SECRET_KEY_BASE}
       - REDIS_URL=redis://redis:6379/0

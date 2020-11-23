@@ -44,7 +44,11 @@
     </table>
 
    <hr />
+   <% if @pagy_revisions %>
+   <%= raw pagy_bootstrap_nav(@pagy_revisions) if @paginated %>
+   <% else %>
    <%= will_paginate @revisions, renderer: WillPaginate::ActionView::BootstrapLinkRenderer if @paginated %>
+   <% end %>
 </div>
   <div class="col-lg-7">
     <div class="btn-group float-right">

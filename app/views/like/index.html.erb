@@ -43,9 +43,11 @@
 		</tr>
 	<% end %>
 </table>
-
-<%= will_paginate @likes, renderer: WillPaginate::ActionView::BootstrapLinkRenderer if @paginated %>
-
+<% if @pagy_a %>
+	<%= raw pagy_bootstrap_nav @pagy_a if @paginated %>
+<% else %>
+	<%= will_paginate @likes, renderer: WillPaginate::ActionView::BootstrapLinkRenderer if @paginated %>
+<% end %>
 </div>
 
 <%= render :partial => "sidebar/featured" %>

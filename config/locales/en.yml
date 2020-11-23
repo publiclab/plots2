@@ -200,6 +200,8 @@ en:
       ical: "iCal"
       login_to: "Please <a href='%{url1}'>log in</a> to"
       people_will_attend: "%{count} people will attend"
+      preview: "You are currently viewing a preview."
+      preview_topics: "This preview is not yet published and is not part of any topics yet."
     _comments:
       comments: "Comments"
       post_comment: "Post comment"
@@ -256,7 +258,7 @@ en:
           and <b>%{comments_count} comments </b>  posted in this period.
       members_and_contributors: |
           <b>%{member_count}  member registrations</b>
-          and <b>%{people_count}  contributors </b> posted in this period.
+          and <b>%{people_count}  contributors </b> posted notes, wikis, questions, comments, or revisions in this period.
 
   dashboard:
     _node_comment:
@@ -355,6 +357,7 @@ en:
       unfollow: "Click to unfollow"
       follow: "Follow"
       no_results: "No results found; try searching for '%{search}'"
+      no_recent_posts: "There are no recent posts"
       advanced_search: "Or try an <a href='%{url}'>advanced search</a>"
       by: "by"
       views: "views"
@@ -369,7 +372,7 @@ en:
       number_of_subscriptions: "# of people"
       subscriptions: "Your subscriptions"
       sort_by: "Sort By"
-      more_posts: "more posts"
+      posts: "posts"
       follow: "Follow"
       unfollow: "Unfollow"
       notes:
@@ -414,7 +417,7 @@ en:
       no_contributors_listed: "No contributors are listed."
       write_research_note: "Write a research note"
     _tagging:
-      enter_tags: "enter tags"
+      enter_tags: "Enter tags"
     contributors:
       contributors_for: "Contributors for <i style=\"color:#aaa;\">%{tag_name}</i>"
       contributions_over_past_year: "Above: contributions over the past year."
@@ -550,6 +553,23 @@ en:
         fellows: "Fellows"
         lending_library: "Lending Library"
       search: "Search on Public Lab"
+      community:
+        community_title: "Community"
+        get_started: "Get Started"
+        people: "People"
+        places: "Places"
+        projects: "Projects"
+        events: "Events"
+        questions: "Questions"
+        chat: "Chat"
+      tools:
+        tools_title: "Tools"
+        methods: "Methods"
+        kits_initiative: "Kits Initiative"
+        store: "Store"
+        map_knitter: "Map Knitter"
+        spectral_workbench: "Spectral Workbench"
+        code_community: "Code Community"
       about:
         about_title: "About us"
         stories: "Stories"
@@ -659,7 +679,7 @@ en:
       all: "all"
       notes: "notes"
       receive_mails: "Receive emails for all research notes."
-      enter_tags: "enter tags"
+      enter_tags: "Enter tags"
       add: "Add"
       tag: "Tag"
       options: "Options"

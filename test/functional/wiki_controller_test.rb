@@ -126,16 +126,46 @@ class WikiControllerTest < ActionController::TestCase
     assert_equal selector.size, 1
   end
 
+  test 'should be able to add tag' do
+    title = 'All about balloon mapping'
+
+    post :create,
+         params: {
+         uid:   users(:bob).id,
+         title: title,
+         body:  'This is fascinating documentation about balloon mapping.',
+         tags:  'balloon-mapping'
+         }
+
+         assert Node.last.has_tag('balloon-mapping')
+  end
+
   test 'viewing edit wiki page' do
+    UserSession.find.destroy if UserSession.find
+    UserSession.create(users(:jeff)) # jeff user fixture is not a first-time-poster
+
     get :edit,
         params: {
         id: 'organizers'
         }
 
+    assert_not users(:jeff).first_time_poster
+    assert_response :success
     assert_template 'wiki/edit'
     assert_not_nil assigns(:title)
     assert_not_nil assigns(:node)
-    assert_response :success
+  end
+
+  test 'disallow viewing edit wiki page for first-timers' do
+    # default bob user fixure is a first-time-poster
+    assert users(:bob).first_time_poster
+    get :edit,
+        params: {
+        id: 'chicago'
+        }
+
+    assert_equal flash[:notice], "Please post a question or other content before editing the wiki. Click <a href='https://publiclab.org/notes/tester/04-23-2016/new-moderation-system-for-first-time-posters'>here</a> to learn why."
+    assert_redirected_to nodes(:place).path
   end
 
   test 'updating wiki' do
@@ -645,5 +675,26 @@ class WikiControllerTest < ActionController::TestCase
     assert wikis.none? { |wiki| wiki.type == "question" || wiki.status == "note"}
     # check correct author
     assert wikis.all? { |wiki| wiki.uid == user.uid }
+  end
+
+  test "print wiki template" do
+    node = nodes(:wiki_page)
+
+    get :print, params: { id: node.nid }
+
+    assert_template 'print'
+    assert_response :success
+    assert_select '#header', false
+    assert_select 'footer', false
+    assert_select '#content', false
+    selector = css_select '.title'
+    assert_equal node.latest.title, selector.text
+    selector = css_select '.info-revision'
+    assert_equal node.revisions.length.to_s + " revisions ", selector.text
+    selector = css_select '.wi-author'
+    assert_equal node.author.username, selector.text.strip
+    selector = css_select '.info-date a'
+    assert_equal node.latest.author.name, selector.text
+    assert_select 'div#content-window', auto_link(insert_extras(node.latest.render_body), sanitize: false)[3..-6]
   end
 end

@@ -34,7 +34,7 @@ class LikeControllerTest < ActionController::TestCase
     assert_equal cached_likes + 1, note.cached_likes
     assert ActionMailer::Base.deliveries.size, 1
     assert ActionMailer::Base.deliveries.collect(&:to).include?([note.author.email])
-    assert ActionMailer::Base.deliveries.collect(&:subject).include?("[PublicLab] #{current_user.username} liked your " + (note.has_power_tag('question') ? 'question' : 'research note') + " (##{note.id})")
+    assert ActionMailer::Base.deliveries.collect(&:subject).include?("[PublicLab] " + (note.has_power_tag('question') ? 'Question: ' : '') + "#{note.title} (##{note.id}) ")
   end
 
   test 'delete like' do
@@ -73,7 +73,7 @@ class LikeControllerTest < ActionController::TestCase
     note = Node.find note.id
     cached_likes =  note.cached_likes
 
-    current_user = User.find 2 
+    current_user = User.find 2
     current_user.ban    #banned user
 
     note = Node.find note.id

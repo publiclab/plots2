@@ -6,12 +6,6 @@ class DrupalContentTypeMap < ApplicationRecord
 
   validates :field_zoom_min_value, presence: true
 
-  acts_as_mappable default_units: :miles,
-                   default_formula: :sphere,
-                   distance_field_name: :distance,
-                   lat_column_name: :lat,
-                   lng_column_name: :lng
-
   before_save :truncate_fields
 
   def truncate_fields
@@ -35,9 +29,9 @@ class DrupalContentTypeMap < ApplicationRecord
   end
 
   def license
-    l = "<a href='http://creativecommons.org/publicdomain/zero/1.0/'>Public Domain</a>" if field_license_value == 'publicdomain'
-    l = "<a href='http://creativecommons.org/licenses/by/3.0/'>CC-BY</a>" if field_license_value == 'cc-by'
-    l = "<a href='http://creativecommons.org/licenses/by-sa/3.0/'>CC-BY-SA</a>" if field_license_value == 'cc-by-sa'
+    l = "<a href='https://creativecommons.org/publicdomain/zero/1.0/'>Public Domain</a>" if field_license_value == 'publicdomain'
+    l = "<a href='https://creativecommons.org/licenses/by/3.0/'>CC-BY</a>" if field_license_value == 'cc-by'
+    l = "<a href='https://creativecommons.org/licenses/by-sa/3.0/'>CC-BY-SA</a>" if field_license_value == 'cc-by-sa'
     l
   end
 

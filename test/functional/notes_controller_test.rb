@@ -45,6 +45,27 @@ class NotesControllerTest < ActionController::TestCase
     assert_select '#other-activities', false
   end
 
+  test 'print note template' do
+    note = nodes(:blog)
+
+    get :print,
+        params: {
+        id: note.nid
+        }
+
+    assert_template 'print'
+    assert_select '#header', false
+    assert_select 'footer', false
+    assert_select '#content', false
+    selector = css_select '#note-title'
+    assert_equal note.title, selector.text.strip
+    selector = css_select '#content-window'
+    assert_equal note.body, selector.text.strip
+    selector = css_select '.info-date a'
+    assert_equal note.latest.author.name, selector.text
+    assert_response :success
+  end
+
   test 'comment markdown and autolinking works' do
     node = Node.where(type: 'note', status: 1).first
     assert node.comments.length > 0
@@ -499,7 +520,9 @@ class NotesControllerTest < ActionController::TestCase
   test 'should redirect to questions show page after creating a new question' do
     title = 'How to use Spectrometer'
     perform_enqueued_jobs do
-      assert_emails 1 do
+      # no emails sent for first-time posters, as it's held in moderation
+      assert users(:bob).first_time_poster
+      assert_emails 0 do
         user = UserSession.create(users(:bob))
         post :create,
              params: {
@@ -519,13 +542,17 @@ class NotesControllerTest < ActionController::TestCase
   test 'non-first-timer posts a question' do
     UserSession.create(users(:jeff))
     title = 'My first question to Public Lab'
-    post :create,
-         params: {
-         title: title,
-         body: 'Spectrometer question',
-         tags: 'question:spectrometer',
-         redirect: 'question'
-         }
+    perform_enqueued_jobs do
+      assert_emails 1 do
+        post :create,
+             params: {
+             title: title,
+             body: 'Spectrometer question',
+             tags: 'question:spectrometer',
+             redirect: 'question'
+             }
+      end
+    end
 
     assert_redirected_to '/questions/' + users(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
     assert_equal flash[:notice], 'Question published. In the meantime, if you have more to contribute, feel free to do so.'
@@ -1034,4 +1061,25 @@ class NotesControllerTest < ActionController::TestCase
      assert_equal I18n.t('notes_controller.saved_as_draft'), flash[:notice]
      assert_redirected_to '/notes/' + users(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
    end
+
+  # Preview test
+   test 'Node is not saved in note preview' do
+    UserSession.create(users(:jeff))
+    title = 'My preview post about balloon mapping'
+    location = {'latitude': "-1",
+                'longitude': "-1",
+                'zoom': "6"
+                }
+
+    assert_no_difference 'Node.count' do  post :preview,
+         params: {
+             title: title,
+             body:  'This is a fascinating post about a balloon mapping event.',
+             tags:  'balloon-mapping,event',
+             draft: "false",
+             location: location,
+             uid: users(:jeff).id
+         }
+    end
+  end
 end
