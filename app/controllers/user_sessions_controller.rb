@@ -50,7 +50,7 @@ class UserSessionsController < ApplicationController
         redirect_to return_to + hash_params, notice: "Already linked to another account!"
       end
     else # not signed in
-      if auth["info"]["email"].empty?
+      if auth["info"]["email"].nil?
         flash[:error] = "You have tried using a Twitter account with no associated email address. Unfortunately we need an email address; please add one and try again, or sign up a different way. Thank you!"
         redirect_to return_to
       else
