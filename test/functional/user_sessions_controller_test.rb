@@ -177,14 +177,10 @@ class UserSessionsControllerTest < ActionController::TestCase
       request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:twitter_no_email]
       assert_not_nil request.env['omniauth.auth']
       #Sign Up for a new user
-      post :create
-      assert_equal "You have successfully signed in. Please change your password by editing your profile in the upper right menu.",  flash[:notice]
-      #Log Out
-      post :destroy
-      assert_equal "Successfully logged out.",  flash[:notice]
-      #auth hash is present so login via a provider
-      post :create
-      assert_equal "Successfully logged in.",  flash[:notice]
+      assert_difference 'User.count', 0 do
+        post :create
+      end
+      assert_equal "You have tried using a Twitter account with no associated email address. Unfortunately we need an email address; please add one and try again, or sign up a different way. Thank you!",  flash[:error]
     end
 
     test 'sign up and login via provider alternative flow for twitter' do
