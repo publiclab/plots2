@@ -178,7 +178,9 @@ class UserSessionsControllerTest < ActionController::TestCase
       assert_not_nil request.env['omniauth.auth']
       #Sign Up for a new user
       assert_difference 'User.count', 0 do
-        post :create
+        assert_difference 'UserSession.count', 0 do
+          post :create
+        end
       end
       assert_equal "You have tried using a Twitter account with no associated email address. Unfortunately we need an email address; please add one and try again, or sign up a different way. Thank you!",  flash[:error]
     end
