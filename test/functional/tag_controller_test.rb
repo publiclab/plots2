@@ -253,6 +253,8 @@ class TagControllerTest < ActionController::TestCase
     assert :wikis
     assert assigns(:wikis).length > 0
 
+    selector = css_select '#wikis table tr'
+    assert_equal selector.size, 2
     assert_select '#note-graph', 0
   end
 
