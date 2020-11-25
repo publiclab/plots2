@@ -451,7 +451,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.10.0)
     rspec-support (3.10.0)
-    rubocop (1.4.1)
+    rubocop (1.4.2)
       parallel (~> 1.10)
       parser (>= 2.7.1.5)
       rainbow (>= 2.2.2, < 4.0)
@@ -460,7 +460,7 @@ GEM
       rubocop-ast (>= 1.1.1)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 2.0)
-    rubocop-ast (1.1.1)
+    rubocop-ast (1.2.0)
       parser (>= 2.7.1.5)
     ruby-openid (2.9.2)
     ruby-progressbar (1.10.1)
@@ -655,7 +655,7 @@ DEPENDENCIES
   rest-client
   reverse_markdown
   rspec
-  rubocop (~> 1.4.1)
+  rubocop (~> 1.4.2)
   ruby-openid
   sanitize
   sassc-rails
