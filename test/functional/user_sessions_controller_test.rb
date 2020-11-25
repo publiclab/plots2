@@ -176,11 +176,11 @@ class UserSessionsControllerTest < ActionController::TestCase
     request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:twitter_no_email]
     assert_not_nil request.env['omniauth.auth']
     #Sign Up for a new user
-    session[:user_session].should be_nil
+    assert_nil session[:user_session]
     assert_difference 'User.count', 0 do
       post :create
     end
-    session[:user_session].should be_nil
+    assert_nil session[:user_session]
     assert_equal "You have tried using a Twitter account with no associated email address. Unfortunately we need an email address; please add one and try again, or sign up a different way. Thank you!",  flash[:error]
   end
 
