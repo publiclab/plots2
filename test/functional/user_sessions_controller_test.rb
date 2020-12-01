@@ -154,61 +154,74 @@ class UserSessionsControllerTest < ActionController::TestCase
     assert_equal "Successfully logged out.",  flash[:notice]
   end
 
+  test 'sign up and login via provider basic flow for twitter' do
+    assert_not_nil OmniAuth.config.mock_auth[:twitter1]
+    #Omniauth hash is present
+    request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:twitter1]
+    assert_not_nil request.env['omniauth.auth']
+    #Sign Up for a new user
+    post :create
+    assert_equal "You have successfully signed in. Please change your password using the link sent to you via e-mail.",  flash[:notice]
+    #Log Out
+    post :destroy
+    assert_equal "Successfully logged out.",  flash[:notice]
+    #auth hash is present so login via a provider
+    post :create
+    assert_equal "Successfully logged in.",  flash[:notice]
+  end
 
-    test 'sign up and login via provider basic flow for twitter' do
-      assert_not_nil OmniAuth.config.mock_auth[:twitter1]
-      #Omniauth hash is present
-      request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:twitter1]
-      assert_not_nil request.env['omniauth.auth']
-      #Sign Up for a new user
+  test 'sign up and login via provider basic flow for twitter user with no email' do
+    assert_not_nil OmniAuth.config.mock_auth[:twitter_no_email]
+    #Omniauth hash is present
+    request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:twitter_no_email]
+    assert_not_nil request.env['omniauth.auth']
+    #Sign Up for a new user
+    assert_nil session[:user_session]
+    assert_difference 'User.count', 0 do
       post :create
-      assert_equal "You have successfully signed in. Please change your password using the link sent to you via e-mail.",  flash[:notice]
-      #Log Out
-      post :destroy
-      assert_equal "Successfully logged out.",  flash[:notice]
-      #auth hash is present so login via a provider
-      post :create
-      assert_equal "Successfully logged in.",  flash[:notice]
     end
+    assert_nil session[:user_session]
+    assert_equal "You have tried using a Twitter account with no associated email address. Unfortunately we need an email address; please add one and try again, or sign up a different way. Thank you!",  flash[:error]
+  end
 
-    test 'sign up and login via provider alternative flow for twitter' do
-      assert_not_nil OmniAuth.config.mock_auth[:twitter2]
-      #Omniauth hash is present
-      request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:twitter2]
-      assert_not_nil request.env['omniauth.auth']
-      #Sign Up for an existing user as email exists in the db
-      post :create
-      assert_equal "Successfully linked to your account!",  flash[:notice]
-      #Log Out
-      post :destroy
-      assert_equal "Successfully logged out.",  flash[:notice]
-      #auth hash is present so login via a provider
-      post :create
-      assert_equal "Successfully logged in.",  flash[:notice]
-    end
+  test 'sign up and login via provider alternative flow for twitter' do
+    assert_not_nil OmniAuth.config.mock_auth[:twitter2]
+    #Omniauth hash is present
+    request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:twitter2]
+    assert_not_nil request.env['omniauth.auth']
+    #Sign Up for an existing user as email exists in the db
+    post :create
+    assert_equal "Successfully linked to your account!",  flash[:notice]
+    #Log Out
+    post :destroy
+    assert_equal "Successfully logged out.",  flash[:notice]
+    #auth hash is present so login via a provider
+    post :create
+    assert_equal "Successfully logged in.",  flash[:notice]
+  end
 
-    test 'login user with an email and then contwitter provider' do
-      post :create,
-         params: {
-          user_session: {
-          username: users(:jeff).email,
-          password: 'secretive'
-          }
-         }
-      assert_redirected_to '/dashboard'
-      assert_not_nil OmniAuth.config.mock_auth[:twitter2]
-      #Omniauth hash is present
-      request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:twitter2]
-      assert_not_nil request.env['omniauth.auth']
-      #Link a twitter account to an existing user
-      post :create
-      assert_equal "Successfully linked to your account!",  flash[:notice]
-      #Link same twitter account to an existing user again
-      post :create
-      assert_equal "Already linked to your account!",  flash[:notice]
-      #Log Out
-      post :destroy
-      assert_equal "Successfully logged out.",  flash[:notice]
+  test 'login user with an email and then contwitter provider' do
+    post :create,
+       params: {
+        user_session: {
+        username: users(:jeff).email,
+        password: 'secretive'
+        }
+       }
+    assert_redirected_to '/dashboard'
+    assert_not_nil OmniAuth.config.mock_auth[:twitter2]
+    #Omniauth hash is present
+    request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:twitter2]
+    assert_not_nil request.env['omniauth.auth']
+    #Link a twitter account to an existing user
+    post :create
+    assert_equal "Successfully linked to your account!",  flash[:notice]
+    #Link same twitter account to an existing user again
+    post :create
+    assert_equal "Already linked to your account!",  flash[:notice]
+    #Log Out
+    post :destroy
+    assert_equal "Successfully logged out.",  flash[:notice]
   end
 
   test 'sign up and login via provider basic flow for facebook' do
