@@ -1,0 +1,29 @@
+name: continuous-integration
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Setup database
+        run: cp config/database.yml.example config/database.yml
+        run: cp db/schema.rb.example db/schema.rb
+        run: mysql -e "CREATE DATABASE plots;";
+
+      - name: Install Ruby gems with Bundler
+        run: bundle config set path 'vendor/.bundle/'
+        run: bundle install
+        run: gem list
+
+      - name: Install JavaScript dependencies with Yarn
+        run: |
+          if [ $RAILS_ENV != 'production' ]; then
+          yarn check || yarn install;
+          fi
+
+      - name: Load and migrate database
+        run: bundle exec rake db:schema:load
+        run: bundle exec rake db:migrate
+
+      - name: Unit tests
+        run: bundle exec rails test test/unit
