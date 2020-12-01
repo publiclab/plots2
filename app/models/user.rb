@@ -412,7 +412,12 @@ class User < ActiveRecord::Base
 
     def search_people(query)
       if query
-        User.where('username LIKE ?', "%#{query}%")
+        if query.length > 2
+          User.where('username LIKE ?', "#{query}%")
+            .where(status: 1)
+        else
+          []
+        end
       else
         scoped
       end
