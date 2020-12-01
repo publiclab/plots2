@@ -45,7 +45,7 @@ jobs:
     - name: Load and migrate database
       env:
         RAILS_ENV: test
-        DATABASE_URL: mysql2://root:test@127.0.0.1/test
+        DATABASE_URL: mysql2://root:test@127.0.0.1/plots
       run: bundle exec rake db:schema:load db:migrate --trace
 
     - name: Unit tests
