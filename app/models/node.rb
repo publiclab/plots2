@@ -180,6 +180,10 @@ class Node < ActiveRecord::Base
 
   is_impressionable counter_cache: true, column_name: :views, unique: :ip_address
 
+  def is_question?
+    has_power_tag('question')
+  end
+
   def self.weekly_tallies(type = 'note', span = 52, time = Time.now)
     weeks = {}
     (0..span).each do |week|
