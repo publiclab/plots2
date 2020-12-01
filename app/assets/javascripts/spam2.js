@@ -13,7 +13,7 @@ function table_main(id) {
 		"info": false,
 		"bPaginate": false,
 		"language": {
-			"search": "Search"
+			"search": "Filter displayed results"
 		}
 	});
 	$('#selectall').click(function () {
