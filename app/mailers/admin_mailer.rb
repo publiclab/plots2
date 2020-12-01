@@ -127,11 +127,17 @@ class AdminMailer < ActionMailer::Base
     elsif frequency_digest == User::Frequency::WEEKLY
       @subject = 'Your weekly digest for moderation'
     end
-    moderators = User.where(role: %w(moderator admin)).collect(&:email)
+    all_moderators = User.where(role: %w(moderator admin))
+    moderators = []
+    all_moderators.each do |mod_user|
+      if (frequency_digest == User::Frequency::DAILY && mod_user.has_tag('digest:daily:spam')) || (frequency_digest == User::Frequency::WEEKLY && mod_user.has_tag('digest:weekly:spam'))
+        moderators << mod_user.email unless mod_user.has_tag('no-moderation-emails')
+      end
+    end
     @nodes = nodes
     mail(
       to: "moderators@#{ActionMailer::Base.default_url_options[:host]}",
-      bcc: moderators,
+      bcc: moderators.collect(&:email),
       subject: @subject
     )
   end
