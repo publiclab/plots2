@@ -126,7 +126,10 @@
 </div>
 <style>
    .blog-main {
-   margin-right: 4em;
+      margin-right: 4em;
+   }
+   .blog-main a.img {
+     margin-bottom: 10px;
    }
    p a {
    color: #696969;
@@ -145,6 +148,7 @@
 </style>
 <script>
    $(document).ready(function() {
+       $("img").lazyload();
        var showChar = 300; // How many characters are shown by default
        var moretext = "Read more";
        var lesstext = "Read less";
