@@ -6,9 +6,6 @@
     <div class="input-group">
       <input aria-label="Enter tag name" autocomplete="off" class="tag-input form-control" name="name" type="text" placeholder="<%= translation('tag._tagging.enter_tags') %>" data-provide="typeahead" />
       <div class="input-group-append">
-        <a class="btn btn-outline-secondary blurred-location-input" rel="tooltip" title="Link with a location" style="border-color:#ccc;">
-          <i class="fa fa-map-marker"></i>
-        </a>
         <%= render partial: 'tag/advanced_tagging' %>
       </div>
     </div>
