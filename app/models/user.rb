@@ -56,8 +56,6 @@ class User < ActiveRecord::Base
   has_many :following_users, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
   has_many :likes
-  has_many :answers, foreign_key: :uid
-  has_many :answer_selections, foreign_key: :user_id
   has_many :revisions, through: :node
   has_many :comments, foreign_key: :uid
 
@@ -424,14 +422,13 @@ class User < ActiveRecord::Base
       User.where('lower(username) = ?', username.downcase).first
     end
 
-    # all users who've posted a node, comment, or answer in the given period
+    # all users who've posted a node, comment in the given period
     def contributor_count_for(start_time, end_time)
       notes = Node.where(type: 'note', status: 1, created: start_time.to_i..end_time.to_i).pluck(:uid)
-      answers = Answer.where(created_at: start_time..end_time).pluck(:uid)
       questions = Node.questions.where(status: 1, created: start_time.to_i..end_time.to_i).pluck(:uid)
       comments = Comment.where(timestamp: start_time.to_i..end_time.to_i).pluck(:uid)
       revisions = Revision.where(status: 1, timestamp: start_time.to_i..end_time.to_i).pluck(:uid)
-      contributors = (notes + answers + questions + comments + revisions).compact.uniq.size
+      contributors = (notes + questions + comments + revisions).compact.uniq.size
       contributors
     end
 
@@ -458,12 +455,11 @@ class User < ActiveRecord::Base
 
     def count_all_time_contributor
       notes = Node.where(type: 'note', status: 1).pluck(:uid)
-      answers = Answer.pluck(:uid)
       questions = Node.questions.where(status: 1).pluck(:uid)
       comments = Comment.pluck(:uid)
       revisions = Revision.where(status: 1).pluck(:uid)
 
-      (notes + answers + questions + comments + revisions).compact.uniq.size
+      (notes + questions + comments + revisions).compact.uniq.size
     end
 
     def watching_location(nwlat, selat, nwlng, selng)
