@@ -6,23 +6,28 @@ jobs:
     steps:
 
     - uses: actions/checkout@v2
-#     - uses: getong/mariadb-action@v1.1
-#       with:
-#         mariadb version: '10.2' # Optional, default value is "latest". The version of the MariaDB. Try 10.4.10 next.
-#         mysql database: 'plots' # Optional, default value is "test". The specified database which will be create
-#         mysql user: 'root' # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
-#         mysql password: 'test' # Required if "mysql user" exists. The password for the "mysql user"
+    - uses: getong/mariadb-action@v1.1
+      with:
+        mariadb version: '10.2' # Optional, default value is "latest". The version of the MariaDB. Try 10.4.10 next.
+        mysql database: 'plots' # Optional, default value is "test". The specified database which will be create
+        mysql user: 'root' # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
+        mysql password: 'test' # Required if "mysql user" exists. The password for the "mysql user"
+
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.6 # Not needed with a .ruby-version file
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+
     - uses: nanasess/setup-chromedriver@v1.0.1
+
+    - name: Stop default MySQL
+      run: sudo systemctl stop mysql
 
     - name: Setup database
       run: |
         cp config/database.yml.example config/database.yml
         cp db/schema.rb.example db/schema.rb
-        mysql -e "CREATE DATABASE plots;";
+        mysql -uroot -proot -e "CREATE DATABASE plots;"
 
 #       - name: Install Ruby gems with Bundler
 #         run: |
@@ -39,11 +44,11 @@ jobs:
     - name: Load and migrate database
       env:
         RAILS_ENV: test
-#         DATABASE_URL: mysql2://root:test@127.0.0.1/test
+        DATABASE_URL: mysql2://root:test@127.0.0.1/test
       run: bundle exec rake db:schema:load db:migrate --trace
 
     - name: Unit tests
       env:
         RAILS_ENV: test
-#         DATABASE_URL: mysql2://root:test@127.0.0.1/plots
+        DATABASE_URL: mysql2://root:test@127.0.0.1/plots
       run: bundle exec rails test test/unit
