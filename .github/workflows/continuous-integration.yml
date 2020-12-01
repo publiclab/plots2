@@ -13,16 +13,16 @@ jobs:
         mysql user: 'root' # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
         mysql password: '' # Required if "mysql user" exists. The password for the "mysql user"
     - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 2.6 # Not needed with a .ruby-version file
-          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      with:
+        ruby-version: 2.6 # Not needed with a .ruby-version file
+        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
     - uses: nanasess/setup-chromedriver@v1.0.1
 
-      - name: Setup database
-        run: |
-          cp config/database.yml.example config/database.yml
-          cp db/schema.rb.example db/schema.rb
-          mysql -e "CREATE DATABASE plots;";
+    - name: Setup database
+      run: |
+        cp config/database.yml.example config/database.yml
+        cp db/schema.rb.example db/schema.rb
+        mysql -e "CREATE DATABASE plots;";
 
 #       - name: Install Ruby gems with Bundler
 #         run: |
@@ -30,16 +30,16 @@ jobs:
 #           bundle install
 #           gem list
 
-      - name: Install JavaScript dependencies with Yarn
-        run: |
-          if [ $RAILS_ENV != 'production' ]; then
-          yarn check || yarn install;
-          fi
+    - name: Install JavaScript dependencies with Yarn
+      run: |
+        if [ $RAILS_ENV != 'production' ]; then
+        yarn check || yarn install;
+        fi
 
-      - name: Load and migrate database
-        run: |
-          bundle exec rake db:schema:load
-          bundle exec rake db:migrate
+    - name: Load and migrate database
+      run: |
+        bundle exec rake db:schema:load
+        bundle exec rake db:migrate
 
-      - name: Unit tests
-        run: bundle exec rails test test/unit
+    - name: Unit tests
+      run: bundle exec rails test test/unit
