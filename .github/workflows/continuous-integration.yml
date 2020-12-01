@@ -27,8 +27,8 @@ jobs:
         cp config/database.yml.example config/database.yml
         cp db/schema.rb.example db/schema.rb
         sudo systemctl start mysql
-#        mysql -uroot -proot -e "CREATE DATABASE plots;"
         bundle exec rake db:schema:load db:migrate --trace
+#        mysql -uroot -proot -e "CREATE DATABASE plots;" # could go one line up
 
 #       - name: Install Ruby gems with Bundler
 #         run: |
