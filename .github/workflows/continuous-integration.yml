@@ -11,7 +11,7 @@ jobs:
         mariadb version: '10.2' # Optional, default value is "latest". The version of the MariaDB. Try 10.4.10 next.
         mysql database: 'plots' # Optional, default value is "test". The specified database which will be create
         mysql user: 'root' # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
-        mysql password: '' # Required if "mysql user" exists. The password for the "mysql user"
+        mysql password: 'test' # Required if "mysql user" exists. The password for the "mysql user"
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.6 # Not needed with a .ruby-version file
