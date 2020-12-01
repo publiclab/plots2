@@ -33,6 +33,8 @@ Some key features include:
 
 We are developing a draft Roadmap for `plots2` and our broader Public Lab code projects; [read more and comment here](https://publiclab.org/notes/warren/05-22-2019/draft-of-a-public-lab-software-roadmap-comments-welcome).
 
+A full description of features, audience, inter-relationships, and goals of Public Lab software projects can be found here: https://publiclab.org/software-overview
+
 ## Table of Contents
 
 1. [What Makes This Project Different](#what-makes-this-project-different)
