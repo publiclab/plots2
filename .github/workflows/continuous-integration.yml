@@ -10,7 +10,7 @@ jobs:
       with:
         mariadb version: '10.2' # Optional, default value is "latest". The version of the MariaDB. Try 10.4.10 next.
         mysql database: 'plots' # Optional, default value is "test". The specified database which will be create
-        mysql user: 'root' # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
+        mysql user: 'test' # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
         mysql password: 'test' # Required if "mysql user" exists. The password for the "mysql user"
 
     - uses: ruby/setup-ruby@v1
@@ -28,7 +28,7 @@ jobs:
         cp config/database.yml.example config/database.yml
         cp db/schema.rb.example db/schema.rb
         sudo systemctl start mysql
-        mysql -uroot -proot -e "CREATE DATABASE plots;"
+#        mysql -uroot -proot -e "CREATE DATABASE plots;"
 
 #       - name: Install Ruby gems with Bundler
 #         run: |
@@ -45,11 +45,29 @@ jobs:
     - name: Load and migrate database
       env:
         RAILS_ENV: test
-        DATABASE_URL: mysql2://root:test@127.0.0.1/plots
+        DATABASE_URL: mysql2://test:test@127.0.0.1/plots
       run: bundle exec rake db:schema:load db:migrate --trace
 
-    - name: Unit tests
+    - name: "Unit Tests"
       env:
         RAILS_ENV: test
-        DATABASE_URL: mysql2://root:test@127.0.0.1/plots
+        DATABASE_URL: mysql2://test:test@127.0.0.1/plots
       run: bundle exec rails test test/unit
+
+    - name: "Functional Tests"
+      env:
+        RAILS_ENV: test
+        DATABASE_URL: mysql2://test:test@127.0.0.1/plots
+      script: bundle exec rails test test/functional
+
+    - name: "Integration Tests"
+      env:
+        RAILS_ENV: test
+        DATABASE_URL: mysql2://test:test@127.0.0.1/plots
+      script: bundle exec rails test test/integration
+
+    - name: "System Tests"
+      env:
+        RAILS_ENV: test
+        DATABASE_URL: mysql2://test:test@127.0.0.1/plots
+      script: bundle exec rails test test:system
