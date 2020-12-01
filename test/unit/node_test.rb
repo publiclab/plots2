@@ -36,9 +36,11 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'adding a question:FOO style tag adds FOO tag as well; also for subtags' do
     node = nodes(:one)
+    assert !node.is_question?
     assert_difference 'node.tags.count', 2 do
       node.add_tag('question:kites', users(:bob))
     end
+    assert node.is_question?
     assert node.has_tag('kites')
     assert_difference 'node.tags.count', 2 do
       node.add_tag('pm', users(:bob))
