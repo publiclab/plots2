@@ -43,10 +43,10 @@ jobs:
         cp config/database.yml.example config/database.yml
         cp db/schema.rb.example db/schema.rb
         sudo systemctl start mysql
-        gem install bundler --version 1.17.3 --no-ri --no-rdoc
         bundle config path vendor/bundle
         bundle install --jobs 4 --retry 3 --path vendor/bundle
         bundle exec rake db:schema:load db:migrate --trace
+#        gem install bundler --version 1.17.3 --no-document
 #        mysql -uroot -proot -e "CREATE DATABASE plots;"
 
 #       - name: Install Ruby gems with Bundler
