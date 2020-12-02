@@ -3,6 +3,16 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+    
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+        - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
     steps:
 
     - uses: ruby/setup-ruby@v1
@@ -12,23 +22,29 @@ jobs:
 
     - uses: nanasess/setup-chromedriver@v1.0.1
     - uses: actions/checkout@v2
-    - uses: getong/mariadb-action@v1.1
-      with:
-        mariadb version: '10.2' # Optional, default value is "latest". The version of the MariaDB. Try 10.4.10 next.
-        mysql database: 'plots' # Optional, default value is "test". The specified database which will be create
-        mysql user: 'test' # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
-        mysql password: 'test' # Required if "mysql user" exists. The password for the "mysql user"
 
-    - name: Stop default MySQL
-      run: sudo systemctl stop mysql
+#     - uses: getong/mariadb-action@v1.1
+#       with:
+#         mariadb version: '10.2' # Optional, default value is "latest". The version of the MariaDB. Try 10.4.10 next.
+#         mysql database: 'plots' # Optional, default value is "test". The specified database which will be create
+#         mysql user: 'test' # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
+#         mysql password: 'test' # Required if "mysql user" exists. The password for the "mysql user"
+
+#     - name: Stop default MySQL
+#       run: sudo systemctl stop mysql
 
     - name: Setup database
+      env:
+        RAILS_ENV: test
+        DB_PASSWORD: root
+        # tell Rails to use proper port for MySQL
+        DB_PORT: ${{ job.services.mysql.ports[3306] }}
       run: |
         cp config/database.yml.example config/database.yml
         cp db/schema.rb.example db/schema.rb
         sudo systemctl start mysql
-        mysql -uroot -proot -e "CREATE DATABASE plots;"
         bundle exec rake db:schema:load db:migrate --trace
+#        mysql -uroot -proot -e "CREATE DATABASE plots;"
 
 #       - name: Install Ruby gems with Bundler
 #         run: |
@@ -45,7 +61,10 @@ jobs:
     - name: "Unit Tests"
       env:
         RAILS_ENV: test
-        DATABASE_URL: mysql2://test:test@127.0.0.1/plots
+        DB_PASSWORD: root
+        # tell Rails to use proper port for MySQL
+        DB_PORT: ${{ job.services.mysql.ports[3306] }}
+#        DATABASE_URL: mysql2://test:test@127.0.0.1/plots
       run: bundle exec rails test test/unit
 
     - name: "Functional Tests"
