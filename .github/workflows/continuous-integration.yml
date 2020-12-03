@@ -64,25 +64,26 @@ jobs:
       env:
         RAILS_ENV: test
         DB_PASSWORD: root
-        # tell Rails to use proper port for MySQL
         DB_PORT: ${{ job.services.mysql.ports[3306] }}
-#        DATABASE_URL: mysql2://test:test@127.0.0.1/plots
       run: bundle exec rails test test/unit
 
     - name: "Functional Tests"
       env:
         RAILS_ENV: test
-        DATABASE_URL: mysql2://test:test@127.0.0.1/plots
+        DB_PASSWORD: root
+        DB_PORT: ${{ job.services.mysql.ports[3306] }}
       run: bundle exec rails test test/functional
 
     - name: "Integration Tests"
       env:
         RAILS_ENV: test
-        DATABASE_URL: mysql2://test:test@127.0.0.1/plots
+        DB_PASSWORD: root
+        DB_PORT: ${{ job.services.mysql.ports[3306] }}
       run: bundle exec rails test test/integration
 
     - name: "System Tests"
       env:
         RAILS_ENV: test
-        DATABASE_URL: mysql2://test:test@127.0.0.1/plots
+        DB_PASSWORD: root
+        DB_PORT: ${{ job.services.mysql.ports[3306] }}
       run: bundle exec rails test test:system
