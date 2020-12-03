@@ -109,7 +109,7 @@ group :development do
 end
 
 group :test, :development do
-  gem 'capybara'
+  gem 'capybara', '~> 3.33.0'
   gem 'ci_reporter_test_unit'
   gem 'simplecov', require: false
   gem 'codecov', require: false
