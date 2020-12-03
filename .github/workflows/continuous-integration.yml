@@ -56,9 +56,7 @@ jobs:
 
     - name: Install JavaScript dependencies with Yarn
       run: |
-        if [ $RAILS_ENV != 'production' ]; then
         yarn check || yarn install;
-        fi
 
     - name: "Unit Tests"
       env:
