@@ -18,20 +18,29 @@ jobs:
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.6 # Not needed with a .ruby-version file
-        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+        bundler-cache: true # runs 'bundle install' and caches installed gems automatically (not working?)
 
     - uses: nanasess/setup-chromedriver@v1.0.1
     - uses: actions/checkout@v2
 
-#     - uses: getong/mariadb-action@v1.1
+# Trying to cache yarn deps but they're in public/assets/**/**, but application.js is also 
+# compiled there so we have to create an exception for that for any in-app js changes
+#     - name: Cache yarn
+#       uses: actions/cache@v2
 #       with:
-#         mariadb version: '10.2' # Optional, default value is "latest". The version of the MariaDB. Try 10.4.10 next.
-#         mysql database: 'plots' # Optional, default value is "test". The specified database which will be create
-#         mysql user: 'test' # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
-#         mysql password: 'test' # Required if "mysql user" exists. The password for the "mysql user"
+#         path: public/assets/**/**
+#         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+#         restore-keys: |
+#           ${{ runner.os }}-yarn-
 
-#     - name: Stop default MySQL
-#       run: sudo systemctl stop mysql
+    # shouldn't be required w/ setup-ruby bundler-cache, but that isn't working?
+    - name: Cache gems
+      uses: actions/cache@v2
+      with:
+        path: vendor/bundle
+        key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-gem-
 
     - name: Install Ruby gems with Bundler
       run: |
