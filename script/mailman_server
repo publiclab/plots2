@@ -12,11 +12,11 @@ Mailman.config.poll_interval = 20 # To poll for mails in every 5 seconds
 
 # Email Configration for mailman
 Mailman.config.pop3 = {
-  server: ENV['SERVER_ADDRESS'], # example pop.example.com 
+  server: ENV['POP3_HOST'], # example pop.example.com 
   port: 995, 
   ssl: true,
-  username: ENV['USERNAME'],
-  password: ENV['EMAIL_PASSWORD']
+  username: ENV['POP3_USER'],
+  password: ENV['POP3_PASS']
 }
 
 Mailman::Application.run do
