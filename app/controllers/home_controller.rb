@@ -64,10 +64,11 @@ class HomeController < ApplicationController
   end
 
   # Display all posts assuming all posts == activity
-  def all
+  def all_posts
     if current_user
       # underscore used for variables not needed
       # I'm assuming all comments == @comments + @answer_comments
+      # TO DO: Identify what will be pinned at the top of the page. A featured post maybe?
       _, _, @notes, @wikis, _, @comments, @answer_comments = activity
       @questions = Node.questions.where(status: 1)
       render template: 'dashboard/all_posts'
