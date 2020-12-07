@@ -72,7 +72,7 @@ Plots2::Application.configure do
   :user_name => ENV["SMTP_USER"] || '',
   :password => ENV["SMTP_PASS"] || '',
   :authentication => ENV["SMTP_AUTH"] || '',
-  :enable_starttls_auto =>  ENV["SMTP_STLS"] || false }
+  :enable_starttls_auto =>  ENV["SMTP_STLS"] || false
   }
 
   # Enable threaded mode
