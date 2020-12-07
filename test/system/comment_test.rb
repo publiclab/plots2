@@ -71,6 +71,13 @@ class CommentTest < ApplicationSystemTestCase
     find("p", text: "Awesome Reply")
   end
 
+  test 'question page: add synchronous comment via javascript with URL only' do
+    # questions: the comment form points toward /comment/create/{node ID}?type=question.
+    visit "/wiki/wiki-page-path/comments"
+    page.evaluate_script("addComment('superhero', '/comment/create/11?type=question')")
+    assert_selector('#comments-list .comment-body p', text: 'superhero')
+  end
+
   test 'comment preview button' do
     visit "/wiki/wiki-page-path/comments"
 
