@@ -690,6 +690,8 @@ class NotesControllerTest < ActionController::TestCase
     get :recent
     notes = assigns(:notes)
     expected = [nodes(:one)]
+    # Just that using nodes(:question) is misleading because
+    # the /notes page is designed not to return any question related notes
     questions = [nodes(:question)]
     assert (notes & expected).present?
     assert (notes & questions).present?
@@ -700,12 +702,14 @@ class NotesControllerTest < ActionController::TestCase
     get :liked
     notes = assigns(:notes)
     expected = [nodes(:one)]
+    # Just that using nodes(:question) is misleading because
+    # the /notes page is designed not to return any question related notes
     questions = [nodes(:question)]
     assert (notes & expected).present?
     assert !(notes & questions).present?
   end
 
-    test 'first note in /liked endpoint should be highest liked' do
+  test 'first note in /liked endpoint should be highest liked' do
     get :liked
     notes = assigns(:notes)
     # gets highest liked note's number of likes
