@@ -700,8 +700,6 @@ class NotesControllerTest < ActionController::TestCase
     get :liked
     notes = assigns(:notes)
     expected = [nodes(:one)]
-    # Just that using nodes(:question) is misleading because
-    # the /notes page is designed not to return any question related notes
     questions = [nodes(:question)]
     assert (notes & expected).present?
     assert !(notes & questions).present?
