@@ -314,7 +314,6 @@ class NotesController < ApplicationController
 
   def recent
     @title = I18n.t('notes_controller.recent_research_notes')
-    # Not sure why it was unpaginated before
     @pagy, @notes = pagy(Node.where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
                  .order('created DESC'))
     render template: 'notes/index'
