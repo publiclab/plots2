@@ -5,7 +5,7 @@ class NotesController < ApplicationController
 
   def index
     @title = I18n.t('notes_controller.research_notes')
-    @pagy, @notes = pagy(published_notes)
+    @pagy, @notes = pagy(published_notes.order('node.nid DESC'))
   end
 
   def tools
@@ -304,8 +304,7 @@ class NotesController < ApplicationController
   # notes with high # of likes
   def liked
     @title = I18n.t('notes_controller.highly_liked_research_notes')
-    @notes = Node.research_notes
-      .where(status: 1)
+    @notes = published_notes
       .limit(20)
       .order('cached_likes DESC')
     @unpaginated = true
@@ -314,7 +313,7 @@ class NotesController < ApplicationController
 
   def recent
     @title = I18n.t('notes_controller.recent_research_notes')
-    @pagy, @notes = pagy(Node.where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
+    @pagy, @notes = pagy(published_notes.where(created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
                  .order('created DESC'))
     render template: 'notes/index'
   end
@@ -322,9 +321,8 @@ class NotesController < ApplicationController
   # notes with high # of views
   def popular
     @title = I18n.t('notes_controller.popular_research_notes')
-    @notes = Node.research_notes
+    @notes = published_notes
       .limit(20)
-      .where(status: 1)
       .order('views DESC')
     @unpaginated = true
     render template: 'notes/index'
@@ -459,6 +457,6 @@ class NotesController < ApplicationController
       notes
     else
       notes.where('node.nid NOT IN (?)', hidden_nids)
-    end.order('node.nid DESC')
+    end
   end
 end
