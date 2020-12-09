@@ -124,7 +124,11 @@ class Node < ActiveRecord::Base
   end
 
   def has_a_tag(name)
-    return tags.where(name: name).size.positive?
+    tags.where(name: name).size.positive?
+  end
+
+  def self.hidden_response_nids
+    Node.where(type: :note, status: 1).select { |n| n.has_a_tag('hidden:response') }.collect(&:nid)
   end
 
   before_save :set_changed_and_created
@@ -920,8 +924,14 @@ class Node < ActiveRecord::Base
                .group('node.nid')
                .collect(&:nid)
 
-    Node.where(type: 'note')
-                .where('node.nid NOT IN (?)', nids)
+    notes = Node.where(type: 'note')
+
+    # if the nids are empty, it should not be used in the query
+    if nids.empty?
+      notes
+    else
+      notes.where('node.nid NOT IN (?)', nids)
+    end
   end
 
   def body_preview(length = 100)

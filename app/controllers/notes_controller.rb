@@ -5,7 +5,7 @@ class NotesController < ApplicationController
 
   def index
     @title = I18n.t('notes_controller.research_notes')
-    set_sidebar
+    @pagy, @notes = pagy(published_notes)
   end
 
   def tools
@@ -304,10 +304,6 @@ class NotesController < ApplicationController
   # notes with high # of likes
   def liked
     @title = I18n.t('notes_controller.highly_liked_research_notes')
-    @wikis = Node.limit(10)
-      .where(type: 'page', status: 1)
-      .order('nid DESC')
-
     @notes = Node.research_notes
       .where(status: 1)
       .limit(20)
@@ -318,21 +314,15 @@ class NotesController < ApplicationController
 
   def recent
     @title = I18n.t('notes_controller.recent_research_notes')
-    @wikis = Node.limit(10)
-      .where(type: 'page', status: 1)
-      .order('nid DESC')
-    @notes = Node.where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
-                 .order('created DESC')
-    @unpaginated = true
+    # Not sure why it was unpaginated before
+    @pagy, @notes = pagy(Node.where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
+                 .order('created DESC'))
     render template: 'notes/index'
   end
 
   # notes with high # of views
   def popular
     @title = I18n.t('notes_controller.popular_research_notes')
-    @wikis = Node.limit(10)
-      .where(type: 'page', status: 1)
-      .order('nid DESC')
     @notes = Node.research_notes
       .limit(20)
       .where(status: 1)
@@ -460,5 +450,16 @@ class NotesController < ApplicationController
     longitude = @node.longitude.present? ? @node.longitude.to_f : false
 
     [latitude, longitude]
+  end
+
+  def published_notes
+    hidden_nids = Node.hidden_response_nids
+    notes = Node.research_notes.where('node.status = 1')
+
+    if hidden_nids.empty?
+      notes
+    else
+      notes.where('node.nid NOT IN (?)', hidden_nids)
+    end.order('node.nid DESC')
   end
 end
