@@ -69,10 +69,10 @@ Plots2::Application.configure do
   config.action_mailer.smtp_settings = {
   :address => ENV["SMTP_HOST"] || "smtp",
   :port => ENV["SMTP_PORT"] || 25,
-  :user_name => ENV["SMTP_USER"] || '',
-  :password => ENV["SMTP_PASS"] || '',
-  :authentication => ENV["SMTP_AUTH"] || '',
-  :enable_starttls_auto =>  ENV["SMTP_STLS"] || false
+  #:user_name => ENV["SMTP_USER"] || '',
+  #:password => ENV["SMTP_PASS"] || '',
+  #:authentication => ENV["SMTP_AUTH"] || '',
+  #:enable_starttls_auto =>  ENV["SMTP_STLS"] || false
   }
 
   # Enable threaded mode
