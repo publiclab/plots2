@@ -58,11 +58,11 @@
         </a>
       <% end %>
       <% if current_user &. can_moderate? %>
-        <a aria-label="Mark as spam" rel="tooltip" title="Mark as spam" class="btn btn-sm btn-outline-secondary btn-flag-spam-<%= comment.id %>" data-confirm="Are you sure? The user will no longer be able to log in or publish, and their content will be hidden except comments." href="/admin/mark_comment_spam/<%= comment.id %>">
+        <a aria-label = "Marcar como spam" rel = "tooltip" title = "Marcar como spam: o comentário desaparecerá e o usuário será banido "class =" btn btn-sm btn-outline-secondary btn-flag-spam - <% = comment.id%> "data-confirm =" Tem certeza? O usuário não poderá mais fazer login ou publicar, e seu conteúdo ficará oculto, exceto comentários. " href = "
           <i class="fa fa-ban"></i>
         </a>
       <% else %>
-        <a aria-label="Flag as spam" rel="tooltip" title="Flag as spam" class="btn btn-sm btn-outline-secondary btn-flag-spam-<%= comment.id %>" href="/moderate/flag_comment/<%= comment.id %>" data-toggle="tooltip" data-placement="top" title="Flag this Comment">
+        <a aria-label =" Sinalizar como spam "rel =" tooltip "title =" Sinalizar como spam para moderadores "class =" btn btn-sm btn-outline-secondary btn-flag-spam - <% = comment.id%> "href =" / moderado / flag_comment / <% = comment.id%> "data-toggle =" tooltip "data-placement =" top "title =" Sinalizar este comentário ">
           <i class="fa fa-flag"></i>
         </a>
       <% end %>
