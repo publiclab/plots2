@@ -5,7 +5,7 @@ class NotesController < ApplicationController
 
   def index
     @title = I18n.t('notes_controller.research_notes')
-    @pagy, @notes = pagy(published_notes)
+    @pagy, @notes = pagy(published_notes.order('node.nid DESC'))
   end
 
   def tools
@@ -304,10 +304,7 @@ class NotesController < ApplicationController
   # notes with high # of likes
   def liked
     @title = I18n.t('notes_controller.highly_liked_research_notes')
-    @notes = published_notes
-             .limit(20)
-             .order('cached_likes DESC')
-    @unpaginated = true
+    @pagy, @notes = pagy(published_notes.limit(100).order(cached_likes: :desc, nid: :desc))
     render template: 'notes/index'
   end
 
@@ -321,10 +318,9 @@ class NotesController < ApplicationController
   # notes with high # of views
   def popular
     @title = I18n.t('notes_controller.popular_research_notes')
-    @notes = published_notes
-      .limit(20)
-      .order('views DESC')
-    @unpaginated = true
+    @pagy, @notes = pagy(published_notes
+            .limit(100)
+            .order(views: :desc, nid: :desc))
     render template: 'notes/index'
   end
 
@@ -451,7 +447,7 @@ class NotesController < ApplicationController
 
   def published_notes
     hidden_nids = Node.hidden_response_node_ids
-    notes = Node.research_notes.where('node.status = 1').order('node.nid DESC')
+    notes = Node.research_notes.where('node.status = 1')
 
     if hidden_nids.empty?
       notes
