@@ -127,7 +127,7 @@ class Node < ActiveRecord::Base
     tags.where(name: name).size.positive?
   end
 
-  def self.hidden_response_nids
+  def self.hidden_response_node_ids
     Node.where(type: :note, status: 1).select { |n| n.has_a_tag('hidden:response') }.collect(&:nid)
   end
 
@@ -926,7 +926,10 @@ class Node < ActiveRecord::Base
 
     notes = Node.where(type: 'note')
 
-    # if the nids are empty, it should not be used in the query
+    # The nids variable contains nodes with the Tag name 'question'
+    # that should be removed from the query
+    # if the nids are empty, the query in the else block
+    # will not return the valid notes
     if nids.empty?
       notes
     else
