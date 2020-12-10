@@ -38,7 +38,7 @@ class ApplicationController < ActionController::Base
       @maps = Tag.find_nodes_by_type(data, 'map', 20)
     else # type is generic
       # remove "classroom" postings; also switch to an EXCEPT operator in sql, see https://github.com/publiclab/plots2/issues/375
-      hidden_nids = Node.hidden_response_nids
+      hidden_nids = Node.hidden_response_node_ids
       @notes = if params[:controller] == 'questions'
                  Node.questions
                    .joins(:revision)

@@ -692,7 +692,7 @@ class NotesControllerTest < ActionController::TestCase
     expected = [nodes(:one)]
     questions = [nodes(:question)]
     assert (notes & expected).present?
-    assert (notes & questions).present?
+    assert !(notes & questions).present?
   end
 
   test 'should list only research notes with status 1 in liked' do
