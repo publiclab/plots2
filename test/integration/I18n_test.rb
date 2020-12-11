@@ -356,6 +356,15 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
+      post '/user_sessions',
+        params: {
+          user_session: {
+            username: users(:jeff).username,
+            password: 'secretive'
+          }
+        }
+      follow_redirect!
+
       get '/wiki/' + nodes(:organizers).title.parameterize
       assert_select 'a[rel=tooltip] i.fa.fa-comment'
     end
@@ -432,8 +441,16 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
+      post '/user_sessions',
+        params: {
+          user_session: {
+            username: users(:jeff).username,
+            password: 'secretive'
+          }
+        }
+
       get '/tag/some-tag'
-      assert_select 'a span.d-none', I18n.t('tag.show.wiki_pages')
+      assert_select 'a span.d-none', I18n.t('tag.show.wiki_pages', tag: 'some-tag')
     end
   end
 
