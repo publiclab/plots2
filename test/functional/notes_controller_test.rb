@@ -368,7 +368,7 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_response :success
     selector = css_select 'div.note'
-    assert_equal 27, selector.size
+    assert_equal 28, selector.size
     assert_select "div p", 'Pending approval by community moderators. Please be patient!'
   end
 
@@ -397,7 +397,7 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_response :success
     selector = css_select 'div.note'
-    assert_equal 27, selector.size
+    assert_equal 28, selector.size
     assert_select 'a[data-test="spam"]','Spam'
   end
 
