@@ -47,6 +47,19 @@ class CommentTest < ApplicationSystemTestCase
     assert_selector("#{parentid} .comment .comment-body p", text: 'batman')
   end
 
+  test 'note: comment, then respond to fresh comment' do
+    visit nodes(:comment_note).path
+    # find comment ID of the first comment on page
+    parent_id = "#" + page.find('#comments-list').first('.comment')[:id]
+    # comment ID format is id="c9834"
+    # regex to find everything after the "c"
+    parent_id_num = /c(\d+)/.match(parent_id)[1] 
+    # parameters for addComment: addComment(comment text, submitURL, comment's parent ID)
+    page.evaluate_script("addComment(\"I admire you\", '/comment/create/#{nodes(:comment_note).nid}', #{parent_id_num})")
+    # check for comment text
+    assert_selector("#{parent_id} .comment .comment-body p", text: 'I admire you')
+  end
+
   test "add a comment manually" do
     visit nodes(:one).path
 
