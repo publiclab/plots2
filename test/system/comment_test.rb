@@ -15,7 +15,7 @@ class CommentTest < ApplicationSystemTestCase
     find(".login-modal-form #login-button").click()
   end
 
-  test 'adding a comment via javascript' do
+  test 'wiki: comment via JavaScript, with comment body ONLY' do
     visit "/wiki/wiki-page-path/comments"
 
     # run the javascript function
@@ -25,7 +25,7 @@ class CommentTest < ApplicationSystemTestCase
     assert_selector('#comments-list .comment-body p', text: 'fantastic four')
   end
 
-  test 'adding a comment via javascript with url only' do
+  test 'wiki: comment via JavaScript, with comment body + URL' do
     visit "/wiki/wiki-page-path/comments"
 
     # run the javascript function
@@ -35,7 +35,7 @@ class CommentTest < ApplicationSystemTestCase
     assert_selector('#comments-list .comment-body p', text: 'superhero')
   end
 
-  test 'adding a reply comment via javascript with url only' do
+  test 'wiki: reply to comment via JavaScript with comment body + URL' do
     visit "/wiki/wiki-page-path/comments"
 
     # run the javascript function
@@ -47,7 +47,13 @@ class CommentTest < ApplicationSystemTestCase
     assert_selector("#{parentid} .comment .comment-body p", text: 'batman')
   end
 
-  test "add a comment manually" do
+  test 'note: comment via JavaScript, with comment body + URL' do
+    visit nodes(:comment_note).path
+    page.evaluate_script("addComment('hahaha', '/comment/create/38')")
+    assert_selector('#comments-list .comment-body p', text: 'hahaha')
+  end
+
+  test "note: comment manually" do
     visit nodes(:one).path
 
     fill_in("body", with: "Awesome comment! :)")
