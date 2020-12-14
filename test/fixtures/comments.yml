@@ -161,3 +161,10 @@ comment_by_first_time_user:
   comment: This is comment is replied to first
   timestamp: <%= Time.now.to_i + 10 %>
   thread: /01
+
+reply_to_this_comment:
+  uid: 1
+  nid: 37
+  status: 1
+  comment: Uhh...
+  timestamp: <%= Time.now.to_i + 10 %>

@@ -82,6 +82,20 @@ class CommentTest < ApplicationSystemTestCase
     page.evaluate_script("addComment('yes you can', '/comment/create/37')")
     assert_selector('#comments-list .comment-body p', text: 'yes you can')
   end
+  
+  test 'question page: respond to existing comment with addComment' do
+    visit "/questions/jeff/12-07-2020/can-i-post-comments-here"
+
+    # find comment ID of the first comment on page
+    parent_id = "#" + page.find('#comments-list').first('.comment')[:id]
+    parent_id_num = /c(\d+)/.match(parent_id)[1] # eg. comment ID format is id="c9834"
+
+    # addComment(comment text, submitURL, comment's parent ID)
+    page.evaluate_script("addComment(\"no you can't\", '/comment/create/37', #{parent_id_num})")
+
+    # check for comment text
+    assert_selector("#{parent_id} .comment .comment-body p", text: 'no you can\'t')
+  end
 
   test 'comment preview button' do
     visit "/wiki/wiki-page-path/comments"
