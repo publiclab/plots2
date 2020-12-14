@@ -368,8 +368,7 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_response :success
     selector = css_select 'div.note'
-    assert_equal 27, selector.size
-    assert_select "div p", 'Pending approval by community moderators. Please be patient!'
+    assert_equal 15, selector.size
   end
 
   test 'first-timer moderated note (status=4) shown to moderator with notice and approval prompt in full view' do
@@ -397,8 +396,7 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_response :success
     selector = css_select 'div.note'
-    assert_equal 27, selector.size
-    assert_select 'a[data-test="spam"]','Spam'
+    assert_equal 15, selector.size
   end
 
   test 'post_note_error_no_title' do
