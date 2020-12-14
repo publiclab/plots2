@@ -402,3 +402,11 @@ sun_question:
   body: "This is the body"
   timestamp: <%= DateTime.new(2020,2,12).to_i %>
   status: 1
+
+question4: # fresh question fixture for testing comments on question pages
+  nid: 37
+  uid: 2
+  title: "Can I post comments here"
+  body: "I'm gonna do it"
+  timestamp: <%= DateTime.new(2020,12,7).to_i %>
+  status: 1

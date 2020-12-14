@@ -136,3 +136,9 @@ sunny_day:
 sun_question:
   tid: 34
   name: question:sun
+
+# this tags node 37 as a question
+# ultimately, this is for testing comments on that node.
+question4: 
+  tid: 35
+  name: question:general
