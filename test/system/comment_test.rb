@@ -71,6 +71,12 @@ class CommentTest < ApplicationSystemTestCase
     find("p", text: "Awesome Reply")
   end
 
+  test 'question page: add synchronous comment via javascript with URL only' do
+    visit "/questions/jeff/12-07-2020/can-i-post-comments-here"
+    page.evaluate_script("addComment('yes you can', '/comment/create/37')")
+    assert_selector('#comments-list .comment-body p', text: 'yes you can')
+  end
+
   test 'comment preview button' do
     visit "/wiki/wiki-page-path/comments"
 
