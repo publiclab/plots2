@@ -47,7 +47,7 @@ class CommentTest < ApplicationSystemTestCase
     assert_selector("#{parentid} .comment .comment-body p", text: 'batman')
   end
 
-  test 'note: comment, then respond to fresh comment' do
+  test 'note: respond to existing comment' do
     visit nodes(:comment_note).path
     # find comment ID of the first comment on page
     parent_id = "#" + page.find('#comments-list').first('.comment')[:id]
