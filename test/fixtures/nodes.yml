@@ -446,7 +446,7 @@ sun_question:
   cached_likes: 0
   slug: "note-tagged-with-question-sun"
 
-question4: # fresh question fixture for testing comments on question pages
+question4: # for testing comments on questions
   nid: 37
   uid: 2
   title: "Can I post comments here"
@@ -457,3 +457,15 @@ question4: # fresh question fixture for testing comments on question pages
   type: "note"
   cached_likes: 0
   slug: jeff-12-07-2020-can-i-post-comments-here
+
+comment_note: # for testing comments on notes
+  nid: 38
+  uid: 2
+  title: "Please don't comment here"
+  path: "/notes/jeff/12-08-2020/please-don-t-comment-here"
+  created: <%= DateTime.new(2020,12,8).to_i %>
+  changed: <%= DateTime.new(2020,12,8).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: "note-please-don-t-comment-here"
