@@ -42,7 +42,7 @@ class NotesController < ApplicationController
   # display a revision, raw
   def raw
     response.headers['Content-Type'] = 'text/plain; charset=utf-8'
-    render plain: Node.find(params[:id]).latest.body
+    render plain: Node.find(params[:id]).latest&.body
   end
 
   def show
