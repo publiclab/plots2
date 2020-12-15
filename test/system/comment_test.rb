@@ -15,7 +15,7 @@ class CommentTest < ApplicationSystemTestCase
     find(".login-modal-form #login-button").click()
   end
 
-  test 'adding a comment via javascript' do
+  test 'wiki: comment via JavaScript, with comment body ONLY' do
     visit "/wiki/wiki-page-path/comments"
 
     # run the javascript function
@@ -25,7 +25,7 @@ class CommentTest < ApplicationSystemTestCase
     assert_selector('#comments-list .comment-body p', text: 'fantastic four')
   end
 
-  test 'adding a comment via javascript with url only' do
+  test 'wiki: comment via JavaScript, with comment body + URL' do
     visit "/wiki/wiki-page-path/comments"
 
     # run the javascript function
@@ -35,7 +35,7 @@ class CommentTest < ApplicationSystemTestCase
     assert_selector('#comments-list .comment-body p', text: 'superhero')
   end
 
-  test 'adding a reply comment via javascript with url only' do
+  test 'wiki: reply to comment via JavaScript with comment body + URL' do
     visit "/wiki/wiki-page-path/comments"
 
     # run the javascript function
@@ -47,7 +47,26 @@ class CommentTest < ApplicationSystemTestCase
     assert_selector("#{parentid} .comment .comment-body p", text: 'batman')
   end
 
-  test "add a comment manually" do
+  test 'note: comment via JavaScript, with comment body + URL' do
+    visit nodes(:comment_note).path
+    page.evaluate_script("addComment('hahaha', '/comment/create/38')")
+    assert_selector('#comments-list .comment-body p', text: 'hahaha')
+  end
+  
+  test 'note: respond to existing comment' do
+    visit nodes(:comment_note).path
+    # find comment ID of the first comment on page
+    parent_id = "#" + page.find('#comments-list').first('.comment')[:id]
+    # comment ID format is id="c9834"
+    # regex to find everything after the "c"
+    parent_id_num = /c(\d+)/.match(parent_id)[1] 
+    # parameters for addComment: addComment(comment text, submitURL, comment's parent ID)
+    page.evaluate_script("addComment(\"I admire you\", '/comment/create/#{nodes(:comment_note).nid}', #{parent_id_num})")
+    # check for comment text
+    assert_selector("#{parent_id} .comment .comment-body p", text: 'I admire you')
+  end
+
+  test "note: comment manually" do
     visit nodes(:one).path
 
     fill_in("body", with: "Awesome comment! :)")
@@ -71,6 +90,12 @@ class CommentTest < ApplicationSystemTestCase
     find("p", text: "Awesome Reply")
   end
 
+  test 'question page: add synchronous comment via javascript with URL only' do
+    visit "/questions/jeff/12-07-2020/can-i-post-comments-here"
+    page.evaluate_script("addComment('yes you can', '/comment/create/37')")
+    assert_selector('#comments-list .comment-body p', text: 'yes you can')
+  end
+  
   test 'question page: respond to existing comment' do
     visit "/questions/jeff/12-07-2020/can-i-post-comments-here"
 

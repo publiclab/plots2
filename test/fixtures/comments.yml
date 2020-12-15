@@ -168,3 +168,10 @@ reply_to_this_comment:
   status: 1
   comment: Uhh...
   timestamp: <%= Time.now.to_i + 10 %>
+
+note_comment_for_responses:
+  uid: 1
+  nid: 38
+  status: 1
+  comment: I do what I want!
+  timestamp: <%= Time.now.to_i + 10 %>
