@@ -96,7 +96,7 @@ class CommentTest < ApplicationSystemTestCase
     assert_selector('#comments-list .comment-body p', text: 'yes you can')
   end
   
-  test 'question page: respond to existing comment with addComment' do
+  test 'question page: respond to existing comment' do
     visit "/questions/jeff/12-07-2020/can-i-post-comments-here"
 
     # find comment ID of the first comment on page
@@ -108,6 +108,23 @@ class CommentTest < ApplicationSystemTestCase
 
     # check for comment text
     assert_selector("#{parent_id} .comment .comment-body p", text: 'no you can\'t')
+  end
+
+  test 'question page: reply to freshly posted comment' do
+    visit nodes(:question4).path
+    # post new comment
+    comment_text = 'woot woot'
+    page.evaluate_script("addComment('#{comment_text}', '/comment/create/#{nodes(:question4).nid}')")
+    # we need the ID of parent div that contains <p>comment_text</p>:
+    parent_id = page.find('p', text: comment_text).find(:xpath, '..')[:id]
+    # regex to strip the ID number out of string. ID format is comment-body-4231
+    parent_id_num = /comment-body-(\d+)/.match(parent_id)[1]
+    # reply to comment
+    comment_response_text = 'wooly woot!'
+    # addComment(comment text, submitURL, comment's parent ID)
+    page.evaluate_script("addComment('#{comment_response_text}', '/comment/create/#{nodes(:question4).nid}', #{parent_id_num})")
+    # assert that <div id="c1show"> has child div[div[p[text="wooly woot!"]]]
+    assert_selector("#{'#c' + parent_id_num + 'show'} div div div p", text: comment_response_text)
   end
 
   test 'comment preview button' do
