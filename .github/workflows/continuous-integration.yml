@@ -110,4 +110,4 @@ jobs:
       run: |
         export DISPLAY=:99
         chromedriver --url-base=/wd/hub &
-        bundle exec rails test test:system
+        bundle exec rails test:system
