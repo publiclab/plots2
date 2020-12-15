@@ -23,13 +23,13 @@
         <a class="nav-link <% if params[:controller] == "notes" %> active <% end %>" href="/notes/"> <i class="fa fa-file"></i><span class="hidden-sm hidden-xs"> <%= translation('notes.index.research_notes') %></span></a>
         </li>
       <li class="nav-item">
-        <a class="nav-link" href="/questions/" target="_blank"> <i class="fa fa-question-circle"></i><span class="hidden-sm hidden-xs"> <%= translation('notes.index.questions') %></span></a>
+        <a class="nav-link" href="/questions/"> <i class="fa fa-question-circle"></i><span class="hidden-sm hidden-xs"> <%= translation('notes.index.questions') %></span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/wiki/" target="_blank"> <i class="fa fa-book"></i><span class="hidden-sm hidden-xs"> <%= translation('notes.index.wiki_pages') %></span></a>
+        <a class="nav-link" href="/wiki/"> <i class="fa fa-book"></i><span class="hidden-sm hidden-xs"> <%= translation('notes.index.wiki_pages') %></span></a>
       </li>
        <li class="nav-item">
-        <a class="nav-link" href="/comments/" target="_blank"> <i class="fa fa-comment"></i><span class="hidden-sm hidden-xs"> <%= translation('notes.index.comments') %></span></a>
+        <a class="nav-link" href="/comments/"> <i class="fa fa-comment"></i><span class="hidden-sm hidden-xs"> <%= translation('notes.index.comments') %></span></a>
       </li>
     </ul>
     <%= render :partial => "notes/sidebar" %>
