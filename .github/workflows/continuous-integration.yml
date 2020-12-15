@@ -98,6 +98,8 @@ jobs:
         RAILS_ENV: test
         DB_PASSWORD: root
         DB_PORT: ${{ job.services.mysql.ports[3306] }}
+        REDIS_HOST: redis
+        REDIS_PORT: 6379
       run: bundle exec rails test test/integration
 
     - name: "System Tests"
