@@ -349,7 +349,7 @@ class NodeTest < ActiveSupport::TestCase
                 nodes(:draft), nodes(:post_test1), nodes(:post_test2),
                 nodes(:post_test3), nodes(:post_test4), nodes(:scraped_image), nodes(:search_trawling),
                 nodes(:purple_air_without_hyphen), nodes(:purple_air_with_hyphen),
-                nodes(:sun_note), nodes(:sunny_day_note)]
+                nodes(:sun_note), nodes(:sunny_day_note), nodes(:comment_note)]
     assert_equal expected, notes
   end
 
@@ -359,7 +359,7 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'should find all questions' do
     questions = Node.questions
-    expected = [nodes(:question), nodes(:question2), nodes(:first_timer_question), nodes(:question3), nodes(:sun_question)]
+    expected = [nodes(:question), nodes(:question2), nodes(:first_timer_question), nodes(:question3), nodes(:sun_question), nodes(:question4)]
     assert_equal expected, questions
   end
 
