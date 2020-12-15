@@ -261,3 +261,16 @@ organizers-chapter:
   nid: 5
   date: <%= DateTime.now.to_i %>
 
+# this tags node 37 as a question
+# ultimately, this is for testing comments on that node.
+question4:
+  tid: 35
+  uid: 2
+  nid: 37
+  date: <%= DateTime.now.to_i %>
+
+hidden_response_node_tag:
+  tid: 36
+  uid: 2
+  nid: 39
+  date: <%= DateTime.now.to_i %>

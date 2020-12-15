@@ -123,12 +123,13 @@ class Node < ActiveRecord::Base
     path.split('/').last
   end
 
-  def has_a_tag(name)
-    tags.where(name: name).size.positive?
-  end
-
   def self.hidden_response_node_ids
-    Node.where(type: :note, status: 1).select { |n| n.has_a_tag('hidden:response') }.collect(&:nid)
+    Node.joins(:node_tag)
+        .joins('LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid')
+        .select('node.nid')
+        .where(type: 'note', status: 1)
+        .where('term_data.name = (?)', 'hidden:response')
+        .collect(&:nid)
   end
 
   before_save :set_changed_and_created

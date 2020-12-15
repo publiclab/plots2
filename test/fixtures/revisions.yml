@@ -402,3 +402,20 @@ sun_question:
   body: "This is the body"
   timestamp: <%= DateTime.new(2020,2,12).to_i %>
   status: 1
+
+question4: # for testing comments on questions
+  nid: 37
+  uid: 2
+  title: "Can I post comments here"
+  body: "I'm gonna do it"
+  timestamp: <%= DateTime.new(2020,12,7).to_i %>
+  status: 1
+
+comment_note: # for testing comments on notes
+  nid: 38
+  uid: 2
+  title: "Please don't comment here"
+  body: "I beg you, please"
+  timestamp: <%= DateTime.new(2020,12,8).to_i %>
+  status: 1
+  
