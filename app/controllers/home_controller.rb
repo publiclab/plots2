@@ -69,7 +69,6 @@ class HomeController < ApplicationController
     blog = Tag.find_nodes_by_type('blog', 'note', 1).first
     # remove "classroom" postings; also switch to an EXCEPT operator in sql, see https://github.com/publiclab/plots2/issues/375
     hidden_nids = Node.hidden_response_node_ids
-    
     notes = Node.where(type: 'note')
       .where('node.nid NOT IN (?)', hidden_nids + [0]) # in case hidden_nids is empty
       .order('nid DESC')
