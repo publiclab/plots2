@@ -274,4 +274,3 @@ hidden_response_node_tag:
   uid: 2
   nid: 39
   date: <%= DateTime.now.to_i %>
-
