@@ -586,4 +586,11 @@ class NodeTest < ActiveSupport::TestCase
     assert nodes.include?(node1), "Should include note tagged with sun for sun*"
     assert nodes.include?(node2), "Should include note tagged with sunny-day for sun*"
   end
+
+  test 'for hidden_response_node_ids' do
+    node = nodes(:hidden_response_note)
+
+    hidden_nids = Node.hidden_response_node_ids
+    assert hidden_nids.include?(node.nid)
+  end
 end
