@@ -5,6 +5,7 @@ ports:
       onOpen: open-preview
 tasks:
     - init: >
+        gem install bundler &&
         bundle install --without production &&
         cp config/database.yml.gitpod config/database.yml &&
         mysql -uroot -proot -e "SET @@global.sql_mode=(SELECT REPLACE(@@global.sql_mode, 'ONLY_FULL_GROUP_BY', ''));" &&
