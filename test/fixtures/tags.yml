@@ -136,3 +136,7 @@ sunny_day:
 sun_question:
   tid: 34
   name: question:sun
+
+hidden_response_tag:
+  tid: 35
+  name: hidden:response

@@ -445,3 +445,15 @@ sun_question:
   type: "note"
   cached_likes: 0
   slug: "note-tagged-with-question-sun"
+
+hidden_response_note:
+  nid: 37
+  uid: 2
+  title: "Note tagged with hidden:response"
+  path: "/notes/admin/02-12-2020/note-tagged-with-hidden-response"
+  created: <%= DateTime.new(2020,2,12).to_i %>
+  changed: <%= DateTime.new(2020,2,12).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: "note-tagged-with-hidden-response"
