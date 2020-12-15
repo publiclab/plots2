@@ -1,7 +1,8 @@
-require 'test_helper'
 require "application_system_test_case"
 
 class EditorTest < ApplicationSystemTestCase
+  include ActiveJob::TestHelper
+  Capybara.default_max_wait_time = 60
 
   def setup
     visit '/'
