@@ -5,12 +5,10 @@ class EditorTest < ApplicationSystemTestCase
 
   def setup
     visit '/'
-
-    click_on 'Login'
-
+    find(".nav-link.loginToggle").click()
     fill_in("username-login", with: "palpatine")
     fill_in("password-signup", with: "secretive")
-    click_on "Log in"
+    find(".login-modal-form #login-button").click()
   end
 
   test "check that rich wiki editor functions correctly" do
