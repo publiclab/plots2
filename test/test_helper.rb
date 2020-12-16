@@ -40,6 +40,14 @@ def available_testing_locales
   I18n.available_locales
 end
 
+# used in comment_test.rb
+def page_types
+  {
+    :note => :comment_note, 
+    :question => :comment_question, 
+    :wiki => :wiki_page
+  }
+end
 
 WebMock.allow_net_connect!
 WebMock.stub_request(:any, "publiclab.org/api/srch/nearbyPeople")
