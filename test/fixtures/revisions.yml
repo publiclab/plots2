@@ -403,7 +403,7 @@ sun_question:
   timestamp: <%= DateTime.new(2020,2,12).to_i %>
   status: 1
 
-question4: # for testing comments on questions
+comment_question: # for testing comments on questions
   nid: 37
   uid: 2
   title: "Can I post comments here"
