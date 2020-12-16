@@ -23,7 +23,7 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert_equal 1, html.scan('<table').length
     assert_equal 5, html.scan('nodes-grid-test').length
     assert_equal 2, html.scan('<td class="author">').length # but not 3 because it shouldn't appear twice
-    assert_equal 1, html.scan(nodes(:one).title).length
+    assert_equal 1, html.scan(nodes(:question).title).length
   end
 
   test 'that NodeShared can be used to convert short codes like [nodes:grid:foo] into tables which list nodes with image thumbnails' do
