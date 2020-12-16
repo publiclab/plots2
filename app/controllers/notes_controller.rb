@@ -447,7 +447,7 @@ class NotesController < ApplicationController
 
   def published_notes
     hidden_nids = Node.hidden_response_node_ids
-    
+
     Node.research_notes
         .where('node.status = 1')
         .where.not(nid: hidden_nids)
