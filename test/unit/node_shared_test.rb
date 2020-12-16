@@ -15,6 +15,8 @@ class NodeSharedTest < ActiveSupport::TestCase
     before = "Here are some nodes in a table: \n\n[nodes:test] \n\nThis is how you make it work:\n\n`[nodes:tagname]`\n\n `[nodes:tagname]`\n\nMake sense?"
     nodes(:one).add_tag('pinned:test', User.first)
     nodes(:one).add_tag('test', User.first) # ensure it would appear anyways (although we aren't yet asserting order below, we should)
+    assert nodes(:one).has_tag('pinned:test')
+    assert nodes(:one).has_tag('test')
     html = NodeShared.nodes_grid(before)
     assert html
     assert_equal 1, html.scan('<table class="table inline-grid nodes-grid nodes-grid-test nodes-grid-test-').length
