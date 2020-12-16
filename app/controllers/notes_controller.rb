@@ -302,19 +302,11 @@ class NotesController < ApplicationController
 
   # notes with high # of likes
   def liked
-<<<<<<< HEAD
-=======
-    @title = I18n.t('notes_controller.highly_liked_research_notes')
->>>>>>> add_all_posts_route
     @pagy, @notes = pagy(published_notes.limit(100).order(cached_likes: :desc, nid: :desc))
     render template: 'notes/index'
   end
 
   def recent
-<<<<<<< HEAD
-=======
-    @title = I18n.t('notes_controller.recent_research_notes')
->>>>>>> add_all_posts_route
     @pagy, @notes = pagy(published_notes.where(created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
                  .order('created DESC'))
     render template: 'notes/index'
@@ -322,10 +314,6 @@ class NotesController < ApplicationController
 
   # notes with high # of views
   def popular
-<<<<<<< HEAD
-=======
-    @title = I18n.t('notes_controller.popular_research_notes')
->>>>>>> add_all_posts_route
     @pagy, @notes = pagy(published_notes
             .limit(100)
             .order(views: :desc, nid: :desc))
