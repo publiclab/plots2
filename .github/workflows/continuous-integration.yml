@@ -1,5 +1,5 @@
 name: continuous-integration
-on: [push]
+on: [pull_request]
 jobs:
   test-runner:
     runs-on: ubuntu-latest
