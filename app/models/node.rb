@@ -126,7 +126,7 @@ class Node < ActiveRecord::Base
   def self.hidden_response_node_ids
     Node.joins(:node_tag)
         .joins('LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid')
-        .select('node.nid')
+        .select('node.nid, term_data.tid, term_data.name, community_tags.tid')
         .where(type: 'note', status: 1)
         .where('term_data.name = (?)', 'hidden:response')
         .collect(&:nid)
