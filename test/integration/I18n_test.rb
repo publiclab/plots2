@@ -357,7 +357,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       get '/wiki/' + nodes(:organizers).title.parameterize
-      assert_select 'a[rel=tooltip] i.fa.fa-comment'
+      assert_select '.fa-comment'
     end
   end
 
@@ -433,7 +433,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       get '/tag/some-tag'
-      assert_select 'a span.d-none', I18n.t('tag.show.wiki_pages')
+      assert_select '.tags-tab-wiki', I18n.t('tag.show.wiki_pages')
     end
   end
 
