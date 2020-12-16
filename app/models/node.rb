@@ -925,17 +925,11 @@ class Node < ActiveRecord::Base
                .group('node.nid')
                .collect(&:nid)
 
-    notes = Node.where(type: 'note')
-
     # The nids variable contains nodes with the Tag name 'question'
     # that should be removed from the query
     # if the nids are empty, the query in the else block
     # will not return the valid notes
-    if nids.empty?
-      notes
-    else
-      notes.where('node.nid NOT IN (?)', nids)
-    end
+    Node.where(type: 'note').where.not(nid: nids)
   end
 
   def body_preview(length = 100)

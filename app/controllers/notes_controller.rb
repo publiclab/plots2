@@ -447,12 +447,9 @@ class NotesController < ApplicationController
 
   def published_notes
     hidden_nids = Node.hidden_response_node_ids
-    notes = Node.research_notes.where('node.status = 1')
-
-    if hidden_nids.empty?
-      notes
-    else
-      notes.where('node.nid NOT IN (?)', hidden_nids)
-    end
+    
+    Node.research_notes
+        .where('node.status = 1')
+        .where.not(nid: hidden_nids)
   end
 end
