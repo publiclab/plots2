@@ -1,5 +1,5 @@
 name: continuous-integration
-on: [push]
+on: [pull_request]
 jobs:
   test-runner:
     runs-on: ubuntu-latest
@@ -72,7 +72,7 @@ jobs:
         mysql -uroot -proot -e "SET @@global.sql_mode=(SELECT REPLACE(@@global.sql_mode, 'ONLY_FULL_GROUP_BY', ''));"
         mysql -uroot -proot -e "CREATE DATABASE plots;"
         bundle exec rake db:schema:load db:migrate --trace
-        # above SET @@global.sql_mode is to address https://github.com/publiclab/plots2/issues/3120
+        # above SET @@global.sql_mode is to address issue in https://github.com/publiclab/plots2/issues/3120
 
     - name: Install JavaScript dependencies with Yarn
       run: |
