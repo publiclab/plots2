@@ -522,7 +522,7 @@ class TagControllerTest < ActionController::TestCase
     get :suggested, params: { id: 'spectr' }
 
     assert_equal 4, assigns(:suggestions).length
-    assert_equal ['question:spectrometer', 'spectrometer', 'activity:spectrometer', 'activities:spectrometer'], JSON.parse(response.body)
+    assert_equal ['question:spectrometer', 'spectrometer', 'activity:spectrometer', 'activities:spectrometer'].sort, JSON.parse(response.body).sort
   end
 
   test 'should choose I18n for tag controller' do

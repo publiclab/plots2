@@ -4,7 +4,7 @@
 test:
   adapter: mysql2
   username: root
-  password: 
+  password: root
   database: plots
   encoding: utf8
   host: 127.0.0.1
