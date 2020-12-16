@@ -26,7 +26,7 @@
         <a class="nav-link <% if @node_type=="wiki" %> active <% end %>" href="/wiki/tag/<%= params[:id] %>">
           <i class="fa fa-book"></i> 
           <span class="d-lg-inline">
-            <span class="d-none d-md-inline"><%= t('tag.show.wiki_pages') %></span>
+            <span class="tags-tab-wiki d-none d-md-inline"><%= t('tag.show.wiki_pages') %></span>
             <span class="d-none d-sm-inline badge badge-primary"><%= params[:counts][:wiki] %></span>
           </span>
         </a>
