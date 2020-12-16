@@ -1,7 +1,7 @@
 name: continuous-integration
 on: [push]
 jobs:
-  build:
+  test-runner:
     runs-on: ubuntu-latest
     
     services:
