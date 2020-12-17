@@ -50,7 +50,7 @@ gem 'rb-readline'
 gem 'rdiscount', '~> 2.2'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'responders', '~> 3.0'
-gem 'rubocop', '~> 1.4.2', require: false
+gem 'rubocop', '~> 1.6.1', require: false
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
 gem 'sentry-raven'
@@ -103,7 +103,7 @@ gem 'grape-rails-cache'
 group :development do
   gem 'byebug', platform: :mri
   gem "letter_opener"
-  gem 'listen', '~> 3.3.1'
+  gem 'listen', '~> 3.3.3'
   gem "nifty-generators"
   gem 'web-console', '>= 3.3.0'
 end
@@ -119,7 +119,7 @@ group :test, :development do
   gem 'minitest-reporters', '~> 1.4.2'
   gem 'openssl', '~> 2.2.0'
   gem 'phantomjs'
-  gem 'puma', '~> 5.0'
+  gem 'puma', '~> 5.1'
   gem 'rails-perftest'
   gem 'rake', '~> 13.0.1'
   gem 'rest-client'
