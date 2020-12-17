@@ -446,7 +446,7 @@ sun_question:
   cached_likes: 0
   slug: "note-tagged-with-question-sun"
 
-question4: # for testing comments on questions
+comment_question: # for testing comments on questions
   nid: 37
   uid: 2
   title: "Can I post comments here"
