@@ -142,3 +142,7 @@ sun_question:
 comment_question: 
   tid: 35
   name: question:general
+
+hidden_response_tag:
+  tid: 36
+  name: hidden:response

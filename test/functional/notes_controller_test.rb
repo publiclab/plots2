@@ -365,11 +365,9 @@ class NotesControllerTest < ActionController::TestCase
     assert_equal 4, node.status
 
     get :index
-
     assert_response :success
     selector = css_select 'div.note'
-    assert_equal 28, selector.size
-    assert_select "div p", 'Pending approval by community moderators. Please be patient!'
+    assert_equal 16, selector.size
   end
 
   test 'first-timer moderated note (status=4) shown to moderator with notice and approval prompt in full view' do
@@ -397,8 +395,7 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_response :success
     selector = css_select 'div.note'
-    assert_equal 28, selector.size
-    assert_select 'a[data-test="spam"]','Spam'
+    assert_equal 16, selector.size
   end
 
   test 'post_note_error_no_title' do
@@ -692,7 +689,7 @@ class NotesControllerTest < ActionController::TestCase
     expected = [nodes(:one)]
     questions = [nodes(:question)]
     assert (notes & expected).present?
-    assert (notes & questions).present?
+    assert !(notes & questions).present?
   end
 
   test 'should list only research notes with status 1 in liked' do
@@ -705,7 +702,7 @@ class NotesControllerTest < ActionController::TestCase
     assert !(notes & questions).present?
   end
 
-    test 'first note in /liked endpoint should be highest liked' do
+  test 'first note in /liked endpoint should be highest liked' do
     get :liked
     notes = assigns(:notes)
     # gets highest liked note's number of likes

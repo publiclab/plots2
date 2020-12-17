@@ -123,8 +123,13 @@ class Node < ActiveRecord::Base
     path.split('/').last
   end
 
-  def has_a_tag(name)
-    return tags.where(name: name).size.positive?
+  def self.hidden_response_node_ids
+    Node.joins(:node_tag)
+        .joins('LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid')
+        .select('node.nid, term_data.tid, term_data.name, community_tags.tid')
+        .where(type: 'note', status: 1)
+        .where('term_data.name = (?)', 'hidden:response')
+        .collect(&:nid)
   end
 
   before_save :set_changed_and_created
@@ -920,8 +925,11 @@ class Node < ActiveRecord::Base
                .group('node.nid')
                .collect(&:nid)
 
-    Node.where(type: 'note')
-                .where('node.nid NOT IN (?)', nids)
+    # The nids variable contains nodes with the Tag name 'question'
+    # that should be removed from the query
+    # if the nids are empty, the query in the else block
+    # will not return the valid notes
+    Node.where(type: 'note').where.not(nid: nids)
   end
 
   def body_preview(length = 100)
