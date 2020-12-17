@@ -268,3 +268,9 @@ question4:
   uid: 2
   nid: 37
   date: <%= DateTime.now.to_i %>
+
+hidden_response_node_tag:
+  tid: 36
+  uid: 2
+  nid: 39
+  date: <%= DateTime.now.to_i %>

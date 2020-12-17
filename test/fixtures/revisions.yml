@@ -418,4 +418,11 @@ comment_note: # for testing comments on notes
   body: "I beg you, please"
   timestamp: <%= DateTime.new(2020,12,8).to_i %>
   status: 1
-  
+
+hidden_response_note_revision: # for testing comments on notes
+  nid: 39
+  uid: 2
+  title: "Note tagged with hidden:response"
+  body: "This is a hidden note"
+  timestamp: <%= DateTime.new(2020,12,8).to_i %>
+  status: 1
