@@ -139,7 +139,7 @@ sun_question:
 
 # this tags node 37 as a question
 # ultimately, this is for testing comments on that node.
-question4:
+comment_question: 
   tid: 35
   name: question:general
 
