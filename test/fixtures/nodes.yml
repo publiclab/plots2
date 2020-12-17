@@ -469,3 +469,15 @@ comment_note: # for testing comments on notes
   type: "note"
   cached_likes: 0
   slug: "note-please-don-t-comment-here"
+
+hidden_response_note:
+  nid: 39
+  uid: 2
+  title: "Note tagged with hidden:response"
+  path: "/notes/admin/02-12-2020/note-tagged-with-hidden-response"
+  created: <%= DateTime.new(2020,2,12).to_i %>
+  changed: <%= DateTime.new(2020,2,12).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: "note-tagged-with-hidden-response"
