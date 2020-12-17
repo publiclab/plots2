@@ -5,7 +5,7 @@ class NotesController < ApplicationController
 
   def index
     @title = I18n.t('notes_controller.research_notes')
-    set_sidebar
+    @pagy, @notes = pagy(published_notes.order('node.nid DESC'))
   end
 
   def tools
@@ -42,7 +42,7 @@ class NotesController < ApplicationController
   # display a revision, raw
   def raw
     response.headers['Content-Type'] = 'text/plain; charset=utf-8'
-    render plain: Node.find(params[:id]).latest.body
+    render plain: Node.find(params[:id]).latest&.body
   end
 
   def show
@@ -304,40 +304,23 @@ class NotesController < ApplicationController
   # notes with high # of likes
   def liked
     @title = I18n.t('notes_controller.highly_liked_research_notes')
-    @wikis = Node.limit(10)
-      .where(type: 'page', status: 1)
-      .order('nid DESC')
-
-    @notes = Node.research_notes
-      .where(status: 1)
-      .limit(20)
-      .order('cached_likes DESC')
-    @unpaginated = true
+    @pagy, @notes = pagy(published_notes.limit(100).order(cached_likes: :desc, nid: :desc))
     render template: 'notes/index'
   end
 
   def recent
     @title = I18n.t('notes_controller.recent_research_notes')
-    @wikis = Node.limit(10)
-      .where(type: 'page', status: 1)
-      .order('nid DESC')
-    @notes = Node.where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
-                 .order('created DESC')
-    @unpaginated = true
+    @pagy, @notes = pagy(published_notes.where(created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
+                 .order('created DESC'))
     render template: 'notes/index'
   end
 
   # notes with high # of views
   def popular
     @title = I18n.t('notes_controller.popular_research_notes')
-    @wikis = Node.limit(10)
-      .where(type: 'page', status: 1)
-      .order('nid DESC')
-    @notes = Node.research_notes
-      .limit(20)
-      .where(status: 1)
-      .order('views DESC')
-    @unpaginated = true
+    @pagy, @notes = pagy(published_notes
+            .limit(100)
+            .order(views: :desc, nid: :desc))
     render template: 'notes/index'
   end
 
@@ -460,5 +443,13 @@ class NotesController < ApplicationController
     longitude = @node.longitude.present? ? @node.longitude.to_f : false
 
     [latitude, longitude]
+  end
+
+  def published_notes
+    hidden_nids = Node.hidden_response_node_ids
+
+    Node.research_notes
+        .where('node.status = 1')
+        .where.not(nid: hidden_nids)
   end
 end

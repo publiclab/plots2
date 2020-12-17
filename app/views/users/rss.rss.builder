@@ -16,7 +16,7 @@ xml.rss :version => "2.0" do
         xml.author      node.author.name
         xml.pubDate     node.created_at.to_s(:rfc822)
         xml.link        "https://" + request.host.to_s + node.path
-        xml.description auto_link(node.latest.render_body, sanitize: false)
+        xml.description auto_link(node.latest&.render_body, sanitize: false)
         xml.guid        url_for only_path: false, controller: 'notes', action: 'show', id: node.nid
       end
     end
