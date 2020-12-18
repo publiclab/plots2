@@ -4,7 +4,6 @@ class NotesController < ApplicationController
   before_action :set_node, only: %i(show)
 
   def index
-    @title = I18n.t('notes_controller.research_notes')
     @pagy, @notes = pagy(published_notes.order('node.nid DESC'))
   end
 
@@ -303,13 +302,11 @@ class NotesController < ApplicationController
 
   # notes with high # of likes
   def liked
-    @title = I18n.t('notes_controller.highly_liked_research_notes')
     @pagy, @notes = pagy(published_notes.limit(100).order(cached_likes: :desc, nid: :desc))
     render template: 'notes/index'
   end
 
   def recent
-    @title = I18n.t('notes_controller.recent_research_notes')
     @pagy, @notes = pagy(published_notes.where(created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
                  .order('created DESC'))
     render template: 'notes/index'
@@ -317,7 +314,6 @@ class NotesController < ApplicationController
 
   # notes with high # of views
   def popular
-    @title = I18n.t('notes_controller.popular_research_notes')
     @pagy, @notes = pagy(published_notes
             .limit(100)
             .order(views: :desc, nid: :desc))
@@ -447,7 +443,6 @@ class NotesController < ApplicationController
 
   def published_notes
     hidden_nids = Node.hidden_response_node_ids
-
     Node.research_notes
         .where('node.status = 1')
         .where.not(nid: hidden_nids)
