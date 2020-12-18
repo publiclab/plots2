@@ -44,9 +44,9 @@
 </div>
 
 <div class="offset-md-1 order-first order-md-last col-md-4 text-center">
-  <div class="text-center">
+  <div class="text-center d-none d-lg-block">
     <%if @content_approved or (!current_user.nil? && current_user.id == @profile_user.id)%>
-      <%= image_tag(@profile_user.profile_image, class:'d-none d-lg-inline rounded-circle', id:'profile-photo', style:"width:50%;margin-bottom:10px;") %>
+      <%= image_tag(@profile_user.profile_image, class:'rounded-circle', id:'profile-photo', style:"width:50%;margin-bottom:10px;") %>
     <%end%>
     <h4 class="mt-3"><strong>@<%= @profile_user.name %> <%= @profile_user.new_contributor %></strong></h4>
   </div>
