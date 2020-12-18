@@ -18,7 +18,7 @@
   <br/>
   <% if params[:action] == "liked" %><a style="margin-right:9px;" class="float-right btn btn-outline-secondary btn-sm" href="/feed/liked.rss"><i class="fa fa-rss"></i></a><% end %>
 
-    <ul class="nav nav-pills flex-column flex-sm-row">
+    <ul class="nav nav-pills notes-pills">
       <li class="nav-item">
         <a class="nav-link <% if params[:controller] == "notes" %> active <% end %>" href="/notes/"> 
           <i class="fa fa-file"></i>
@@ -59,3 +59,9 @@
   <hr />
 </div>
 
+<!-- Galaxy Fold Responsive Styling  -->
+<style>
+  @media (max-width: 280px)  {
+    .notes-pills{ display: inline !important; }
+   }
+</style>
