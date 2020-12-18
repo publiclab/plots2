@@ -163,6 +163,10 @@ en:
       popular: "Popular"
       liked: "Liked"
       wiki_pages: "Wiki pages"
+      research_notes: "Research Notes"
+      questions: "Questions"
+      comments: "Comments"
+      all_notes: "All Notes"
     _notes:
       moderate_first_time_post: "Moderate first-time post:"
       approve: "Approve"

@@ -1,7 +1,7 @@
 <div class="col-lg-9">
   <% if params[:controller] == "search" %>
     <h3><%= raw translation('notes.index.search_results_for', :params => params[:id]) %> <small>(<a href="/search/advanced/<%= params[:id] %>"><%= translation('notes.index.advanced_search') %></a>)</h3>
-    
+
   <% elsif params[:controller] == "tag" %>
     <h3><%= raw translation('notes.index.notes_tagged_with', :params => params[:id]) %></h3>
   <% elsif params[:action] == "popular" %>
@@ -15,29 +15,53 @@
   <% else %>
     <h2><%= raw translation('notes.index.research_notes_ideas_and_documentation') %></h2>
   <% end %>
-  <% if params[:controller] == "notes" && (params[:action] == "popular" || params[:action] == "index" || params[:action] == "liked" || params[:action] == "recent") %>
+  <br/>
+  <% if params[:action] == "liked" %><a style="margin-right:9px;" class="float-right btn btn-outline-secondary btn-sm" href="/feed/liked.rss"><i class="fa fa-rss"></i></a><% end %>
 
-    <%= render :partial => "notes/format_toggle" %>
-    <% if params[:action] == "liked" %><a style="margin-right:4px;" class="float-right btn btn-outline-secondary btn-sm" href="/feed/liked.rss"><i class="fa fa-rss"></i></a><% end %>
-
-    <ul class="nav nav-tabs" id="tab-bar">
+    <ul class="nav nav-pills notes-pills">
       <li class="nav-item">
-        <a class="nav-link <% if params[:action] == "recent" %> active <% end %>" href="/notes/recent"> <i class="fa fa-clock-o"></i><span class="hidden-sm hidden-xs"> <%= translation('notes.index.recent') %></span></a>
-        </li>
-      <li class="nav-item">
-        <a class="nav-link <% if params[:action] == "popular" %> active <% end %> " href="/notes/popular/"> <i class="fa fa-bolt"></i><span class="hidden-sm hidden-xs"> <%= translation('notes.index.popular') %></span></a>
+        <a class="nav-link <% if params[:controller] == "notes" %> active <% end %>" href="/notes/"> 
+          <i class="fa fa-file"></i>
+          <span class="d-lg-inline">
+            <span class="d-none d-md-inline"> <%= translation('notes.index.research_notes') %></span>
+          </span>
+        </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link <% if params[:action] == "liked" %> active <% end %> " href="/notes/liked/"> <i class="fa fa-star-o"></i><span class="hidden-sm hidden-xs"> <%= translation('notes.index.liked') %></span></a>
+        <a class="nav-link" href="/questions/">
+         <i class="fa fa-question-circle"></i>
+         <span class="d-lg-inline">
+          <span class="d-none d-md-inline"> <%= translation('notes.index.questions') %></span>
+         </span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/wiki/">
+        <i class="fa fa-book"></i>
+        <span class="d-lg-inline">
+          <span class="d-none d-md-inline"> <%= translation('notes.index.wiki_pages') %></span>
+        </span>
+        </a>
+      </li>
+       <li class="nav-item">
+        <a class="nav-link" href="/comments/">
+        <i class="fa fa-comment"></i>
+        <span class="d-lg-inline">
+          <span class="d-none d-md-inline"> <%= translation('notes.index.comments') %></span>
+        </span>
+        </a>
       </li>
     </ul>
-
-  <% end %>
-
+    <%= render :partial => "notes/sidebar" %>
   <br />
 
   <%= render :partial => "notes/notes" %>
-
   <hr />
 </div>
 
+<!-- Galaxy Fold Responsive Styling  -->
+<style>
+  @media (max-width: 280px)  {
+    .notes-pills{ display: inline !important; }
+   }
+</style>
