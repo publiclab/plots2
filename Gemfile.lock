@@ -55,11 +55,11 @@ GEM
     ansi (1.5.0)
     arel (9.0.0)
     ast (2.4.1)
-    authlogic (4.4.2)
-      activerecord (>= 4.2, < 5.3)
-      activesupport (>= 4.2, < 5.3)
+    authlogic (6.3.0)
+      activemodel (>= 5.2, < 6.2)
+      activerecord (>= 5.2, < 6.2)
+      activesupport (>= 5.2, < 6.2)
       request_store (~> 1.0)
-      scrypt (>= 1.2, < 4.0)
     authlogic-oid (1.0.4)
       authlogic
     bindex (0.6.0)
@@ -425,7 +425,7 @@ GEM
       declarative (< 0.1.0)
       declarative-option (< 0.2.0)
       uber (< 0.2.0)
-    request_store (1.4.1)
+    request_store (1.5.0)
       rack (>= 1.4)
     responders (3.0.1)
       actionpack (>= 5.0)
@@ -542,7 +542,7 @@ GEM
       multipart-post (~> 2.0)
       naught (~> 1.0)
       simple_oauth (~> 0.3.0)
-    tzinfo (1.2.8)
+    tzinfo (1.2.9)
       thread_safe (~> 0.1)
     uber (0.1.0)
     uglifier (4.2.0)
@@ -580,7 +580,7 @@ PLATFORMS
 DEPENDENCIES
   action-cable-testing
   activerecord-session_store
-  authlogic (= 4.4.2)
+  authlogic (= 6.3.0)
   authlogic-oid
   byebug
   capybara
