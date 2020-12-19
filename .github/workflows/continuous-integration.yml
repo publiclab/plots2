@@ -6,7 +6,7 @@ jobs:
     
     services:
       mysql:
-        image: mysql:5.7
+        image: mariadb:10.2
         env:
           MYSQL_ROOT_PASSWORD: root
         ports:
@@ -82,28 +82,28 @@ jobs:
       env:
         RAILS_ENV: test
         DB_PASSWORD: root
-        DB_PORT: ${{ job.services.mysql.ports[3306] }}
+        DB_PORT: ${{ job.services.mariadb.ports[3306] }}
       run: bundle exec rails test test/unit
 
     - name: "Functional Tests"
       env:
         RAILS_ENV: test
         DB_PASSWORD: root
-        DB_PORT: ${{ job.services.mysql.ports[3306] }}
+        DB_PORT: ${{ job.services.mariadb.ports[3306] }}
       run: bundle exec rails test test/functional
 
     - name: "Integration Tests"
       env:
         RAILS_ENV: test
         DB_PASSWORD: root
-        DB_PORT: ${{ job.services.mysql.ports[3306] }}
+        DB_PORT: ${{ job.services.mariadb.ports[3306] }}
       run: bundle exec rails test test/integration
 
     - name: "System Tests"
       env:
         RAILS_ENV: test
         DB_PASSWORD: root
-        DB_PORT: ${{ job.services.mysql.ports[3306] }}
+        DB_PORT: ${{ job.services.mariadb.ports[3306] }}
         REDIS_HOST: localhost
         REDIS_PORT: 6379
       run: |
