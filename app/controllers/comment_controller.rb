@@ -150,7 +150,7 @@ class CommentController < ApplicationController
       comment.likes.create(user_id: @user_id, emoji_type: @emoji_type)
     end
     # select likes from users that aren't banned (status = 0)
-    @likes = comment.likes.joins(:user).select(:emoji_type, :status).where("emoji_type IS NOT NULL").where("status IS NOT 0").group(:emoji_type).size
+    @likes = comment.likes.joins(:user).select(:emoji_type, :status).where("emoji_type IS NOT NULL").where("status != 0").group(:emoji_type).size
     @user_reactions_map = comment.user_reactions_map
     respond_with do |format|
       format.js do
