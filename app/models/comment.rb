@@ -215,7 +215,7 @@ class Comment < ApplicationRecord
 
   def user_reactions_map
     # select likes from users that aren't banned (status = 0)
-    likes_map = likes.joins(:user).select(:emoji_type, :username, :status).where("emoji_type IS NOT NULL").where("status IS NOT 0").group_by(&:emoji_type)
+    likes_map = likes.joins(:user).select(:emoji_type, :username, :status).where("emoji_type IS NOT NULL").where("status != 0").group_by(&:emoji_type)
     user_like_map = {}
     likes_map.each do |reaction, likes|
       users = []
