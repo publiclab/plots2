@@ -179,15 +179,17 @@
   <% str = "#{comment.id}-like-emojis" %>
   <div id="<%= str %>" class="navbar-text float-right" style="margin: 0;width: 100%;display: flex;border: 1px solid #e7e7e7;border-top: 0;">
     <% emoji_names, emoji_image_map = emoji_info %>
-    <% emoji_like_map = comment.emoji_likes %>
     <% user_reactions_map = comment.user_reactions_map %>
     <% emoji_names.each do |e| %>
       <% capitalized_emoji_name = e.split("-").map(&:capitalize).join %>
       <% str = "#{comment.id}-emoji-button-#{e}" %>
-      <% display = (emoji_like_map.has_key? capitalized_emoji_name) ? "display: flex;" : "display: none;" %>
-      <button aria-label="Reaction" id="<%= str %>" style="border: 0;background: #f1f8ff;border-radius: 0;border-right: 1px solid #e7e7e7;<%= display %>" type="button" class="btn btn-outline-secondary btn-sm" data-toggle="tooltip" data-placement="bottom" title="<%= user_reactions_map[capitalized_emoji_name] %>">
+      <% user_reactions_exist = user_reactions_map.has_key? capitalized_emoji_name %>
+      <% display = user_reactions_exist ? "display: flex;" : "display: none;" %>
+      <% title = user_reactions_exist ? user_reactions_map[capitalized_emoji_name][:users_string] : "" %>
+      <% likes_num = user_reactions_exist ? user_reactions_map[capitalized_emoji_name][:likes_num] : "" %>
+      <button aria-label="Reaction" id="<%= str %>" style="border: 0;background: #f1f8ff;border-radius: 0;border-right: 1px solid #e7e7e7;<%= display %>" type="button" class="btn btn-outline-secondary btn-sm" data-toggle="tooltip" data-placement="bottom" title="<%= title %>">
         <img alt="<%= str %>" height="20" width="20" src="<%= emoji_image_map[e] %>">
-        <div style="margin-left: 6px;font-size: 14px;"><%= emoji_like_map[capitalized_emoji_name] %></div>
+        <div style="margin-left: 6px;font-size: 14px;"><%= likes_num %></div>
       </button>
     <% end %>
   </div>

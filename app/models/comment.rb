@@ -213,22 +213,21 @@ class Comment < ApplicationRecord
     User.where(id: likes.pluck(:user_id))
   end
 
-  def emoji_likes
-    likes.group(:emoji_type).size
-  end
-
   def user_reactions_map
-    likes_map = likes.where.not(emoji_type: nil).includes(:user).group_by(&:emoji_type)
+    # select likes from users that aren't banned (status = 0)
+    likes_map = likes.joins(:user).select(:emoji_type, :username, :status).where("emoji_type IS NOT NULL").where("status != 0").group_by(&:emoji_type)
     user_like_map = {}
     likes_map.each do |reaction, likes|
       users = []
       likes.each do |like|
-        users << like.user.name
+        users << like.username
       end
-
       emoji_type = reaction.underscore.humanize.downcase
       users_string = (users.size > 1 ? users[0..-2].join(", ") + " and " + users[-1] : users[0]) + " reacted with " + emoji_type + " emoji"
-      user_like_map[reaction] = users_string
+      like_data = {}
+      like_data[:users_string] = users_string
+      like_data[:likes_num] = users.size
+      user_like_map[reaction] = like_data
     end
     user_like_map
   end
