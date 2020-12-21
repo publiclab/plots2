@@ -231,12 +231,23 @@ class CommentTest < ActiveSupport::TestCase
     user = users(:bob)
     like = Like.create(likeable_id: comment.id, user_id: user.id, likeable_type: "Comment", emoji_type: "Heart")
     map = comment.user_reactions_map
-    assert_equal map["Heart"], "Bob reacted with heart emoji"
+    assert_equal map["Heart"][:users_string], "Bob reacted with heart emoji"
     like = Like.create(likeable_id: comment.id, user_id: users(:jeff).id, likeable_type: "Comment", emoji_type: "Heart")
     map = comment.user_reactions_map
-    assert_equal map["Heart"], "Bob and jeff reacted with heart emoji"
+    assert_equal map["Heart"][:users_string], "Bob and jeff reacted with heart emoji"
   end
 
+  test "should return reactions ONLY from users that aren't banned" do
+    comment = comments(:first)
+    # normal user
+    user = users(:bob)
+    new_like = Like.create(likeable_id: comment.id, user_id: user.id, likeable_type: "Comment", emoji_type: "Heart")
+    # banned user
+    spammer = users(:spammer)
+    new_like = Like.create(likeable_id: comment.id, user_id: spammer.id, likeable_type: "Comment", emoji_type: "Heart")
+    map = comment.user_reactions_map
+    assert_equal map["Heart"][:users_string], "Bob reacted with heart emoji"
+  end
 
   test 'should parse incoming mail from gmail service correctly and add comment' do
     require 'mail'
