@@ -49,9 +49,11 @@
       $("#users_map").html("<div id='map' class='col-lg-12' style='height:500px;'></div>");
 
       var user_map = L.map('map').setView([15,0], 2);
-      L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",{
-          attribution: "<a href='https://openstreetmap.org'>OSM</a> tiles by <a href='https://mapbox.com'>MapBox</a>"
-        }).addTo(user_map);
+      L.tileLayer('https://api.mapbox.com/styles/v1/jywarren/ckj06ujnc1nmi19nuelh46pr9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoianl3YXJyZW4iLCJhIjoiVzVZcGg3NCJ9.BJ6ArUPuTs1JT9Ssu3K8ig', {
+        tileSize: 512,
+        zoomOffset: -1,
+        attribution: '© <a href="https://apps.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      }).addTo(user_map);
 
       <% @location_tags.each do |location_tag, user_tag| %>
 
@@ -75,9 +77,11 @@
         var user_map = L.map('map').setView([15,0], 2);
       <% end %>
       
-      L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",{
-          attribution: "<a href='https://openstreetmap.org'>OSM</a> tiles by <a href='https://mapbox.com'>MapBox</a>"
-        }).addTo(user_map);
+      L.tileLayer('https://api.mapbox.com/styles/v1/jywarren/ckj06ujnc1nmi19nuelh46pr9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoianl3YXJyZW4iLCJhIjoiVzVZcGg3NCJ9.BJ6ArUPuTs1JT9Ssu3K8ig', {
+        tileSize: 512,
+        zoomOffset: -1,
+        attribution: '© <a href="https://apps.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      }).addTo(user_map);
 
       <% @users.each do |user| %>
         <% location_privacy = user.user.location_privacy %>
