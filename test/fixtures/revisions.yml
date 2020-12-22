@@ -419,10 +419,34 @@ comment_note: # for testing comments on notes
   timestamp: <%= DateTime.new(2020,12,8).to_i %>
   status: 1
 
-hidden_response_note_revision: # for testing comments on notes
+hidden_response_note_revision:
   nid: 39
   uid: 2
   title: "Note tagged with hidden:response"
   body: "This is a hidden note"
   timestamp: <%= DateTime.new(2020,12,8).to_i %>
+  status: 1
+
+question_with_multiple_comments:
+  nid: 40
+  uid: 2
+  title: "Which condiments do you like"
+  body: "I want to know"
+  timestamp: <%= DateTime.new(2020,12,20).to_i %>
+  status: 1
+
+note_with_multiple_comments:
+  nid: 41
+  uid: 2
+  title: "Ouija Board"
+  body: "Don't be scurred"
+  timestamp: <%= DateTime.new(2020,12,20).to_i %>
+  status: 1
+
+wiki_with_multiple_comments:
+  nid: 42
+  uid: 2
+  title: "List of pokemon"
+  body: "Gotta catch em all"
+  timestamp: <%= DateTime.new(2020,12,21).to_i %>
   status: 1
