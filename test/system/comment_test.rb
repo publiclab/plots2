@@ -289,7 +289,6 @@ class CommentTest < ApplicationSystemTestCase
         find("div#comment-#{comment_ids[number]}-reply-section button", text: 'Publish').click
         wait_for_ajax
       end
-      take_screenshot
       # assert that the replies went to the right comments
       assert_selector("#c" + comment_ids[0] + "show div div div p", text: 'A')
       assert_selector("#c" + comment_ids[1] + "show div div div p", text: 'H')
