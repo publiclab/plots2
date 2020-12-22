@@ -5,9 +5,11 @@
 
 <script>
   var map = L.map('map').setView([22,0], 2);
-  L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",{
-    attribution: "<a href='https://openstreetmap.org'>OSM</a> tiles by <a href='http://mapbox.com'>MapBox</a>",
-  }).addTo(map)
+  L.tileLayer('https://api.mapbox.com/styles/v1/jywarren/ckj06ujnc1nmi19nuelh46pr9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoianl3YXJyZW4iLCJhIjoiVzVZcGg3NCJ9.BJ6ArUPuTs1JT9Ssu3K8ig', {
+    tileSize: 512,
+    zoomOffset: -1,
+    attribution: '© <a href="https://apps.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  }).addTo(map);
 
   <% @notes.each do |place| %>
     <% if place.lat && place.lon %>L.marker([<%= place.lat %>, <%= place.lon %>]).addTo(map).bindPopup("<a href='<%= place.path %>'><%= place.latest.title %></a>");<% end %>
