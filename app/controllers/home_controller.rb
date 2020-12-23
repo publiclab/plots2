@@ -51,19 +51,7 @@ class HomeController < ApplicationController
     # The new dashboard displays the blog and topics list
     if current_user
       @blog = Tag.find_nodes_by_type('blog', 'note', 1).first
-      # Topics a user has subscribed to
-      subscibed_tags = TagSelection.includes(:tag)
-                                    .where(following: true, user_id: current_user.id)
-
-      # Also Needed on the view:
-        # Number of people discussing the tag/topic: Not sure how to get this,
-          # is this the number of people commenting on posts?
-        # Total number of posts (post type: "notes" or wikis)
-          # Assuming that the node type to be displayed is type: "note"
-            # Tag.tagged_node_count(subscribed_tags[index].tag.name)
-          # Posts within the topic (Tag.find_research_notes(subscribed_tags[index].tag.name))
-            # Each topic card displayes at least 3 posts, would that be the most recent?
-
+      @tags = current_user.subscriptions(:tag).includes(:tag)
       render template: 'dashboard/dashboard_v2'
     else
       redirect_to '/research'
