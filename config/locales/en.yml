@@ -343,7 +343,7 @@ en:
       first_time_post: "Moderate first-time post:"
     _comment_moderate:
       first_time_post: "Moderate first-time comment:"
-  dashboard2:
+  dashboard_v2:
     view: "This is the dashboard redesign page"
   like:
     index:

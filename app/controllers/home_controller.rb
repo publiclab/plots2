@@ -47,7 +47,7 @@ class HomeController < ApplicationController
     end
   end
 
-  def dashboard2
+  def dashboard_v2
     # The new dashboard displays the blog and topics list
     if current_user
       @blog = Tag.find_nodes_by_type('blog', 'note', 1).first
@@ -64,7 +64,7 @@ class HomeController < ApplicationController
           # Posts within the topic (Tag.find_research_notes(subscribed_tags[index].tag.name))
             # Each topic card displayes at least 3 posts, would that be the most recent?
 
-      render template: 'dashboard/dashboard2'
+      render template: 'dashboard/dashboard_v2'
     else
       redirect_to '/research'
     end
