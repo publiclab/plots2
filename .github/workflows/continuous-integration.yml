@@ -56,7 +56,7 @@ jobs:
     - name: Install Ruby gems with Bundler
       run: |
         bundle config path vendor/bundle
-        bundle config build.sassc --disable-march-tune-native # https://github.com/sass/sassc-ruby/issues/146
+        bundle config force_ruby_platform true # https://github.com/sass/sassc-ruby/issues/146
         bundle install --jobs 4 --retry 3 --path vendor/bundle
         bundle exec gem list
 
