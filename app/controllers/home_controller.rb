@@ -47,6 +47,17 @@ class HomeController < ApplicationController
     end
   end
 
+  def dashboard_v2
+    # The new dashboard displays the blog and topics list
+    if current_user
+      @blog = Tag.find_nodes_by_type('blog', 'note', 1).limit(1).first
+      @tags = current_user.subscriptions(:tag).includes(:tag)
+      render template: 'dashboard/dashboard_v2'
+    else
+      redirect_to '/research'
+    end
+  end
+
   def research
     if current_user
       redirect_to '/dashboard'
