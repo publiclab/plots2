@@ -6,9 +6,6 @@ class UniqueUsernameValidator < ActiveModel::Validator
   end
 end
 
-# Overwrites authlogic username regex to allow one character usernames
-Authlogic::Regex::LOGIN = /\A[A-Za-z\d_\-]*\z/
-
 class User < ActiveRecord::Base
   extend Utils
   include Statistics
@@ -35,7 +32,6 @@ class User < ActiveRecord::Base
 
   acts_as_authentic do |c|
     c.crypto_provider = Authlogic::CryptoProviders::Sha512
-    c.validates_format_of_login_field_options = { with: Authlogic::Regex::LOGIN, message: I18n.t('error_messages.login_invalid', default: "can only consist of alphabets, numbers, underscore '_', and hyphen '-'.") }
   end
 
   has_attached_file :photo, styles: { thumb: '200x200#', medium: '500x500#', large: '800x800#' },
@@ -62,6 +58,7 @@ class User < ActiveRecord::Base
   has_many :comments, foreign_key: :uid
 
   validates_with UniqueUsernameValidator, on: :create
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP, message: I18n.t('error_messages.login_invalid', default: "can only consist of alphabets, numbers, underscore '_', and hyphen '-'.") }
 
   before_save :set_token
 
