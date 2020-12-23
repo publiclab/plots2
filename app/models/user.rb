@@ -59,6 +59,17 @@ class User < ActiveRecord::Base
 
   validates_with UniqueUsernameValidator, on: :create
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP, message: I18n.t('error_messages.login_invalid', default: "can only consist of alphabets, numbers, underscore '_', and hyphen '-'.") }
+  validates :password,
+    confirmation: { if: :require_password? },
+    length: {
+      minimum: 8,
+      if: :require_password?
+    }
+  validates :password_confirmation,
+    length: {
+      minimum: 8,
+      if: :require_password?
+  }
 
   before_save :set_token
 
