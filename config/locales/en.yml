@@ -344,7 +344,13 @@ en:
     _comment_moderate:
       first_time_post: "Moderate first-time comment:"
   dashboard_v2:
-    view: "This is the dashboard redesign page"
+    _header:
+      dashboard: "Dashboard"
+      updates: "Updates from community members on <a href='%{url}'>topics</a> you follow"
+      community_research: "Community research"
+    dashboard:
+      from_blog: "From the <a href='%{url}'>Public Lab Blog</a>"
+      by: "by"
   like:
     index:
       recent_likes: "Recent Likes"
