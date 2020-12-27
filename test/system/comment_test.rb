@@ -143,6 +143,62 @@ class CommentTest < ApplicationSystemTestCase
       page.assert_selector('#preview img', count: 1)
     end
 
+    # bugs can occur if we upload an image to the main comment form, and then try to upload an image into edit comment.
+    # the second image ends up in the main comment form, when it should end up in edit comment.
+    # so the two forms can get 'cross-wired.'
+    test "#{page_type_string}: check that edit form's select image upload isn't cross-wired with post comment form" do
+      node_name == :wiki_page ? (visit nodes(node_name).path + '/comments') : (visit nodes(node_name).path)
+
+      # post a fresh comment
+      # find the main comment form at the bottom of the page, and save for reuse
+      main_comment_form =  page.find('h4', text: /Post comment|Post Comment/).find(:xpath, '..') # title text on wikis is 'Post comment'
+      # fill out the comment form
+      main_comment_form
+        .find('textarea')
+        .click
+        .fill_in with: comment_text
+      # publish
+      main_comment_form
+        .find('button', text: 'Publish')
+        .click
+      page.find(".noty_body", text: "Comment Added!")
+
+      # now we upload the images.
+      # the <inputs> that take image uploads are hidden, so reveal them for finder:
+      Capybara.ignore_hidden_elements = false
+      
+      # we need to make the main comment form the focus by clicking on "Preview," then hiding preview.
+      # otherwise, image upload to main comment form will fail.
+      main_comment_form.find('a', text: 'Preview').click.click
+      # upload an image in the main comment form
+      main_comment_form.all('#fileinput')[1].set("#{Rails.root.to_s}/public/images/pl.png")
+      wait_for_ajax
+
+      # we need the selector of the EDIT comment's #fileinput
+      # first find the parent comment ID:
+      comment_id = page.find('p', text: comment_text).find(:xpath, '..')[:id]
+      # regex to strip the ID number out of string. ID format is comment-body-4231
+      comment_id_num = /comment-body-(\d+)/.match(comment_id)[1]
+      # this is the ID of the edit form:
+      edit_form_id = '#c' + comment_id_num + 'edit' 
+      edit_image_selector = edit_form_id + ' #fileinput'
+
+      # open the edit comment form:
+      find("#edit-comment-btn").click
+      # upload an image in the edit comment form:
+      file_input_element = page.find(edit_image_selector)
+      file_input_element.set("#{Rails.root.to_s}/public/images/pl.png")
+      wait_for_ajax
+      Capybara.ignore_hidden_elements = true
+
+      # open the preview for the main comment form
+      main_comment_form.find('a', text: 'Preview').click
+      # once preview is open, the images are embedded in the page.
+      # there should only be 1 image in the main comment form!
+      preview_imgs = page.all('#preview img').size
+      assert_equal(1, preview_imgs)
+    end
+
     test "#{page_type_string}: ctrl/cmd + enter comment publishing keyboard shortcut" do
       node_name == :wiki_page ? (visit nodes(node_name).path + '/comments') : (visit nodes(node_name).path)
       find("p", text: "Reply to this comment...").click()
