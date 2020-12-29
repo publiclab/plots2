@@ -72,7 +72,7 @@ gem "font-awesome-rails"
 gem "lazyload-rails"
 # To implement load critical css and rest asynchronously
 gem 'loadcss-rails', '~> 2.0.1'
-gem 'critical-path-css-rails', '~> 4.1.0'
+gem 'critical-path-css-rails', '~> 4.1.1'
 
 
 # To convert html to markdown
