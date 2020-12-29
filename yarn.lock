@@ -4558,10 +4558,10 @@ leaflet-blurred-location@^1.5.1, leaflet-blurred-location@^1.7.0:
     jquery "^3.2.1"
     leaflet "^1.3.3"
 
-leaflet-environmental-layers@^2.4.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/leaflet-environmental-layers/-/leaflet-environmental-layers-2.4.0.tgz#cd347d6a13011a8618b0cc81c6abc8244a32a69c"
-  integrity sha512-KULqD0sCZXObg5XC7TC8JU2bsR/to2jEy8EBmZLUfsoH1cH7m6+fHd20Blxrli3qju2TMpzNhiXJF0ijR2sMkA==
+leaflet-environmental-layers@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/leaflet-environmental-layers/-/leaflet-environmental-layers-2.4.1.tgz#eb17d862fe3ccf7fe45310573bd90950bd2e50d8"
+  integrity sha512-sYEmdWeV/a4NgHZ5xwojvJ7we5ybk20LNVPAm2GkK9PbL6grkRB8Zpe1BjSj8x2VZBZLvpPcS9k4pAnnwXzOmw==
   dependencies:
     esri-leaflet "^2.3.3"
     jquery "^3.3.1"
@@ -4572,7 +4572,7 @@ leaflet-environmental-layers@^2.4.0:
     leaflet-heatmap "1.0.0"
     leaflet-providers "^1.1.17"
     leaflet-spin "1.1.0"
-    leaflet.blurred-location-display "^1.3.0"
+    leaflet.blurred-location-display "^1.1.0"
     leaflet.glify "github:robertleeplummerjr/Leaflet.glify#aa2b356"
 
 "leaflet-fullhash@github:sagarpreet-chadha/leaflet-fullHash":
@@ -4616,7 +4616,7 @@ leaflet-virtual-grid@^1.0.7:
   dependencies:
     leaflet "^1.0.0"
 
-leaflet.blurred-location-display@^1.3.0:
+leaflet.blurred-location-display@^1.1.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/leaflet.blurred-location-display/-/leaflet.blurred-location-display-1.3.0.tgz#19ae494d07bfd06e2c3517d72ab7dba90f5fe142"
   integrity sha512-H+5k9R+XR0vAq/sfUJlFg8OYczeQ2ZHR/tgT2SWAZQWHVafVgiyHMNFVEdf8zKREi+ZsaikfIhWSkAxYvxM+EA==
