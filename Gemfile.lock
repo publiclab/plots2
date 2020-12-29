@@ -99,7 +99,7 @@ GEM
     connection_pool (2.2.3)
     crack (0.4.4)
     crass (1.0.6)
-    critical-path-css-rails (4.1.0)
+    critical-path-css-rails (4.1.1)
     declarative (0.0.20)
     declarative-option (0.1.0)
     diff-lcs (1.4.4)
@@ -587,7 +587,7 @@ DEPENDENCIES
   codecov
   coffee-rails (~> 5.0.0)
   composite_primary_keys
-  critical-path-css-rails (~> 4.1.0)
+  critical-path-css-rails (~> 4.1.1)
   execjs
   figaro
   font-awesome-rails
