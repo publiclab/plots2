@@ -247,13 +247,17 @@ class CommentTest < ApplicationSystemTestCase
     test "#{page_type_string}: comment deletion" do
       node_name == :wiki_page ? (visit nodes(node_name).path + '/comments') : (visit nodes(node_name).path)
       # Create a comment
-      page.execute_script <<-JS
-        var commentForm = $('.comment-form-wrapper')[1];
-        var submitCommentBtn = $(commentForm).find('.btn-primary')[0];
-        var commentTextarea = $(commentForm).find('#text-input')[0]
-        $(commentTextarea).val('Great post Jeff!')
-        $(submitCommentBtn).click()
-      JS
+      main_comment_form =  page.find('h4', text: /Post comment|Post Comment/).find(:xpath, '..') # title text on wikis is 'Post comment'
+      # fill out the comment form
+      main_comment_form
+        .find('textarea')
+        .click
+        .fill_in with: comment_text
+      # publish
+      main_comment_form
+        .find('button', text: 'Publish')
+        .click
+      page.find(".noty_body", text: "Comment Added!")
       # Delete a comment
       find('.btn[data-original-title="Delete comment"]', match: :first).click()
       # Click "confirm" on modal
@@ -277,14 +281,17 @@ class CommentTest < ApplicationSystemTestCase
     test "#{page_type_string}: edit comment" do
       node_name == :wiki_page ? (visit nodes(node_name).path + '/comments') : (visit nodes(node_name).path)
       # Create a comment
-      page.execute_script <<-JS
-        var commentForm = $('.comment-form-wrapper')[1];
-        var submitCommentBtn = $(commentForm).find('.btn-primary')[0];
-        var commentTextarea = $(commentForm).find('#text-input')[0]
-        // Fill the form
-        $(commentTextarea).val('Great post Jeff!')
-        $(submitCommentBtn).click()
-      JS
+      main_comment_form =  page.find('h4', text: /Post comment|Post Comment/).find(:xpath, '..') # title text on wikis is 'Post comment'
+      # fill out the comment form
+      main_comment_form
+        .find('textarea')
+        .click
+        .fill_in with: comment_text
+      # publish
+      main_comment_form
+        .find('button', text: 'Publish')
+        .click
+      page.find(".noty_body", text: "Comment Added!")
       # Wait for comment to upload
       wait_for_ajax
       # Edit the comment
