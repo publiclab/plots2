@@ -27,7 +27,6 @@ gem "i18n-js", ">= 3.0.0.rc11"
 gem 'impressionist'
 gem 'jbuilder', '~> 2.10'
 gem 'jquery-rails'
-gem 'less-rails', '~> 5.0'
 gem 'mocha', '~> 1.11'
 gem 'mustermann' , '1.1.1'
 gem 'omniauth', '~> 1.9'
@@ -97,7 +96,6 @@ gem 'coffee-rails', '~> 5.0.0'
 gem 'execjs' # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem "sassc", "~> 2.4.0"
 gem 'sassc-rails'
-gem 'therubyracer'
 gem 'uglifier', '>= 1.0.3'
 gem 'grape-rails-cache'
 
