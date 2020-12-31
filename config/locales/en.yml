@@ -401,6 +401,9 @@ en:
       following: "Following"
       unfollow: "Click to unfollow"
       follow: "Follow"
+      unfollow_text: "Unfollow"
+      subscribe: "Subscribe"
+      blog_updates: "Click to subscribe to blog updates via email"
       none: "None"
       users_following_tag: "Users following this tag"
       ask_question: "Ask a question about <b>%{tag}</b>"
@@ -416,6 +419,9 @@ en:
       people: "People"
       no_map_results_found: "Sorry, no map is tagged with <i>%{tag}</i>"
       contributors: "Contributors"
+      notes_not_available: "This topic has no available notes. View other posts by clicking the link below."
+      by: "by"
+      new_post: "New post"
     contributors-index:
       contributors_over_last_week: "Contributors for <i style=\"color:#aaa;\">%{tag_name}</i>
         over the past 52 weeks"
