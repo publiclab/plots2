@@ -14,7 +14,7 @@
       </div>
     <% end %>
   </div>
-    <div>
+  <div>
     <br>
       <p style="width: 100%; font-size:14px; text-align: center; border-bottom: 1px solid #ccc; line-height:2px; margin: 10px 0 20px;">
       <span style="background-color: #fff; padding: 0 10px; color: #808080;">Sort by:
@@ -23,10 +23,19 @@
       <a href = "<%= people_path %>?sort=joined" class="sort-style <% if params[:sort] == "joined" %>selected<%end%>"><%= translation('users.list.joined') %></a><span> | </span>
       </span>
       </p>
-      <br/>
+    <br/>
+  </div>
+  <div class="row">
+    <div class="col-md-12 d-flex justify-content-end">
+      <%= form_tag people_path, :method => 'get', :id => "people_search" do %>
+        <p>
+          <%= text_field_tag :search, params[:search], :placeholder => "Find a Person" %>
+          <%= submit_tag "Search", :name => nil %>
+        </p>
+      <% end %>
     </div>
+  </div>
   <div class="row" id="user_cards">
-
     <% @users.each do |user| %>
       <div class ="col-md-6" id="user">
         <div class="card peoplecard"<% if user.status == 0 %> style="background-color: #ffc;"<% end %>>
@@ -180,6 +189,6 @@ h3, h2, h5 {
 <script>
 $(function(){
   $("img").lazyload();
-});
+}); 
 </script>
 <%= render partial: 'tag/location' %>

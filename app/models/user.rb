@@ -410,6 +410,19 @@ class User < ActiveRecord::Base
       User.where('MATCH(username) AGAINST(? IN BOOLEAN MODE)', "#{query}")
     end
 
+    def search_people(query)
+      if query
+        if query.length > 2
+          User.where('username LIKE ?', "#{query}%")
+            .where(status: 1)
+        else
+          []
+        end
+      else
+        scoped
+      end
+    end
+
     def validate_token(token)
       begin
         decrypted_data = User.decrypt(token)
