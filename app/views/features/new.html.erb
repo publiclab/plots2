@@ -22,6 +22,7 @@
 
 <% end %>
 
+<%= form_for :node, :as => :drupal_node, :url => url do |f| %>
 <%= render partial: 'layouts/errorMessages', locals: { model: @node } %>
 
   <%= render :partial => "features/form" %>
