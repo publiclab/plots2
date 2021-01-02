@@ -22,8 +22,7 @@
 
 <% end %>
 
-<%= form_for :node, :as => :drupal_node, :url => url do |f| %>
-  <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
+<%= render partial: 'layouts/errorMessages', locals: { model: @node } %>
 
   <%= render :partial => "features/form" %>
 
