@@ -22,49 +22,6 @@ class ApplicationController < ActionController::Base
     Raven.extra_context(params: params.to_unsafe_h, url: request.url)
   end
 
-  # eventually videos could be a power tag
-  def set_sidebar(type = :generic, data = :all, args = {})
-    args[:note_count] ||= 8
-    if type == :tags # accepts data of array of tag names as strings
-      @notes ||= if params[:controller] == 'questions'
-                   Tag.find_nodes_by_type(data, 'note', args[:note_count])
-                 else
-                   Tag.find_research_notes(data, args[:note_count])
-                 end
-
-      @notes = @notes.where('node.nid != (?)', @node.nid) if @node
-      @wikis = Tag.find_pages(data, 10)
-      @videos = Tag.find_nodes_by_type_with_all_tags(%w(video) + data, 'note', 8) if args[:videos] && data.length > 1
-      @maps = Tag.find_nodes_by_type(data, 'map', 20)
-    else # type is generic
-      # remove "classroom" postings; also switch to an EXCEPT operator in sql, see https://github.com/publiclab/plots2/issues/375
-      hidden_nids = Node.hidden_response_node_ids
-      @notes = if params[:controller] == 'questions'
-                 Node.questions
-                   .joins(:revision)
-               else
-                 Node.research_notes.joins(:revision).order('node.nid DESC').paginate(page: params[:page])
-               end
-
-      @notes = @notes.where('node.nid != (?)', @node.nid) if @node
-      @notes = @notes.where('node_revisions.status = 1 AND node.nid NOT IN (?)', hidden_nids) unless hidden_nids.empty?
-
-      @notes = if logged_in_as(['admin', 'moderator'])
-                 @notes.where('(node.status = 1 OR node.status = 4)')
-               elsif current_user
-                 @notes.where('(node.status = 1 OR (node.status = 4 AND node.uid = ?))', current_user.uid)
-               else
-                 @notes.where('node.status = 1')
-               end
-
-      @wikis = Node.order('changed DESC')
-        .joins(:revision)
-        .where('node_revisions.status = 1 AND node.status = 1 AND type = "page"')
-        .limit(10)
-        .group('node_revisions.nid')
-        .order('node_revisions.timestamp DESC')
-    end
-  end
 
   # non-Authlogic... homebrew
   def prompt_login(message = I18n.t('application_controller.must_be_logged_in'))
