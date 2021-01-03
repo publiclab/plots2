@@ -19,16 +19,30 @@
           padding-top: 10px;
         }
       </style>
-
-
-      <%= render :partial => "editor/toolbar" %>
+      <%# if location == reply, toolbar needs reply_to for dropzone IDs %>
+      <% locals = (location == :reply) ? 
+        { :location => location, :reply_to => reply_to } : 
+        { :location => location } 
+      %>
+      <%# location: for creating unique .dropzone IDs %>
+      <%# location can be: edit form, reply form, main comment form, note responses %>
+      <%= render :partial => "editor/toolbar", :locals => locals %>
 
       <% if local_assigns[:reply_to].present? %>
         <%= hidden_field_tag :reply_to, local_assigns[:reply_to] %>
       <% end %>
 
-      <div class="form-group dropzone">
-
+      <%# most comment forms have two dropzones: 1) small button, 2) large form that covers textarea %>
+      <% dropzone_large_id = '' %>
+      <% case location 
+        when :main %>
+        <% dropzone_large_id = '-main' %>
+      <% when :reply %>
+        <% dropzone_large_id = '-reply-' + local_assigns[:reply_to].to_s %>
+      <% when :responses %>
+        <% dropzone_large_id = '-responses' %>
+      <% end %>
+      <div id="dropzone-large<%= dropzone_large_id %>" class="form-group dropzone">
         <%
           body = body || params[:body]
           # Look for comment templates
@@ -45,24 +59,20 @@
         <% end %>
         <textarea aria-label="Comment Text" style="border: 1px solid #bbb;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-bottom: 0;padding: 10px;" onFocus="editing=true" name="body" class="form-control" id="text-input" rows="6" cols="40" placeholder="<%= placeholder %>"><%= body %></textarea>
         <div id="imagebar">
-
           <div id="create_progress" style="display:none;" class="progress float-right">
             <div id="create_progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%;"></div>
           </div>
-
           <p>
             <span id="create_uploading" class="uploading" style="display:none;">
               <%= translation('comments._form.uploading') %>
             </span>
             <span id="create_prompt" class="prompt">
-
               <span style="padding-right:4px;float:left;" class="d-none d-md-inline">
                 <%= raw translation('comments._form.drag_and_drop') %>
               </span>
-
               <!-- http://stackoverflow.com/questions/11235206/twitter-bootstrap-form-file-element-upload-button -->
-              <label for="fileinput">
-                <input id="fileinput" type="file" name="image[photo]" style="display:none;" />
+              <label for="fileinput-choose-one<%= dropzone_large_id %>">
+                <input id="fileinput-choose-one<%= dropzone_large_id %>" type="file" name="image[photo]" style="display:none;" />
                 <a onClick="handleClick()" style="cursor: pointer;" class="d-none d-md-inline text-underline">choose one</a>
                 <span class="d-md-none">
                   <i class="fa fa-upload"></i>
@@ -71,61 +81,60 @@
               </label>
             </span>
           </p>
+        </div>
+      </div>
 
-            </div>
-          </div>
+      <div id="preview" style="background: white; display: none;">
+      </div>
+      <script>
+        jQuery(document).ready(function() {
+          $E.initialize();
+        });
+        $D = {
+          uid: <%= current_user.uid if current_user %>,
+          type: 'comment'
+        };
 
-            <div id="preview" style="background: white; display: none;">
-            </div>
-          <script>
-            jQuery(document).ready(function() {
-              $E.initialize();
-            });
-            $D = {
-              uid: <%= current_user.uid if current_user %>,
-              type: 'comment'
-            };
+        function handleClick() {
+            $D.selected = $(event.target.closest('div.comment-form-wrapper'));
+            console.log($D.selected);
+            $E.refresh();
+        }
 
-            function handleClick() {
-                $D.selected = $(event.target.closest('div.comment-form-wrapper'));
-                console.log($D.selected);
-                $E.refresh();
-            }
+        $('#input_label').click(function(e){
+            $E.initialize({});
+        });
+      </script>
 
-            $('#input_label').click(function(e){
-                $E.initialize({});
-            });
-          </script>
+      <%= javascript_include_tag "dragdrop" %>
+      <script src="/emoji.js" type="text/javascript"></script>
+      <script src="/assets/atwho_autocomplete.js" type="text/javascript"></script>
+      <%= javascript_include_tag "comment.js" %>
 
-          <%= javascript_include_tag "dragdrop" %>
-          <script src="/emoji.js" type="text/javascript"></script>
-          <script src="/assets/atwho_autocomplete.js" type="text/javascript"></script>
-          <%= javascript_include_tag "comment.js" %>
+      <div class="control-group">
+        <button type="submit" class="btn btn-primary"><%= translation('comments._form.publish') %></button>
+        <% if local_assigns[:comment] %>
+          <a class="btn btn-outline-secondary preview-btn" onClick="$('#c<%= comment.cid %>preview').toggle();
+              $('#c<%= comment.cid %>text-input').toggle();
+              $('#c<%= comment.cid %>edit .preview-btn').button('toggle');
+              $E.generate_preview('c<%= comment.cid %>preview',$('#c<%= comment.cid %>text-input').val())">
+            <%= translation('comments._form.preview') %>
+          </a>
+          <a class="btn btn-outline-secondary" onClick="$('#c<%= comment.cid %>show').toggle();$('#c<%= comment.cid %>edit').toggle()"><%= translation('comments._form.cancel') %></a>
+        <% else %>
+          <a class="btn btn-outline-secondary preview-btn>" id="post_comment" data-previewing-text="Hide Preview" onClick="handleClick();$E.toggle_preview()"><%= translation('comments._form.preview') %></a>
+        <% end %>
 
-          <div class="control-group">
-            <button type="submit" class="btn btn-primary"><%= translation('comments._form.publish') %></button>
-            <% if local_assigns[:comment] %>
-              <a class="btn btn-outline-secondary preview-btn" onClick="$('#c<%= comment.cid %>preview').toggle();
-                  $('#c<%= comment.cid %>text-input').toggle();
-                  $('#c<%= comment.cid %>edit .preview-btn').button('toggle');
-                  $E.generate_preview('c<%= comment.cid %>preview',$('#c<%= comment.cid %>text-input').val())">
-                <%= translation('comments._form.preview') %>
-              </a>
-              <a class="btn btn-outline-secondary" onClick="$('#c<%= comment.cid %>show').toggle();$('#c<%= comment.cid %>edit').toggle()"><%= translation('comments._form.cancel') %></a>
-            <% else %>
-              <a class="btn btn-outline-secondary preview-btn>" id="post_comment" data-previewing-text="Hide Preview" onClick="handleClick();$E.toggle_preview()"><%= translation('comments._form.preview') %></a>
-            <% end %>
+        <span style="color:#888;"> &nbsp;
+          <br class="d-md-none" /><%= raw translation('comments._form.logged_in', :username => current_user.username) %> &nbsp;
+          <a aria-label="Authoring Help" target="_blank" href="/wiki/authoring-help#Formatting"><i class="fa fa-question-circle"></i></a> &nbsp;
+          <a onClick="changeNotificationIcon('#who-is-notified-form', '#bell')"><i id="bell" class="fa fa-bell-o"></i></a>
+        </span>
+      </div>
 
-            <span style="color:#888;"> &nbsp;
-              <br class="d-md-none" /><%= raw translation('comments._form.logged_in', :username => current_user.username) %> &nbsp;
-              <a aria-label="Authoring Help" target="_blank" href="/wiki/authoring-help#Formatting"><i class="fa fa-question-circle"></i></a> &nbsp;
-              <a onClick="changeNotificationIcon('#who-is-notified-form', '#bell')"><i id="bell" class="fa fa-bell-o"></i></a>
-            </span>
-          </div>
-
-          <p id="who-is-notified-form" style="display:none;color:#888;">
-            <%= translation('comments._form.email_notifications') %>
-          </p>
+      <p id="who-is-notified-form" style="display:none;color:#888;">
+        <%= translation('comments._form.email_notifications') %>
+      </p>
     </form>
   </div>
 </div>
