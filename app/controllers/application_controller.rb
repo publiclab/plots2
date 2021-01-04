@@ -22,7 +22,6 @@ class ApplicationController < ActionController::Base
     Raven.extra_context(params: params.to_unsafe_h, url: request.url)
   end
 
-
   # non-Authlogic... homebrew
   def prompt_login(message = I18n.t('application_controller.must_be_logged_in'))
     flash[:warning] = message
