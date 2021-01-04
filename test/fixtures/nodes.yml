@@ -517,3 +517,172 @@ wiki_with_multiple_comments:
   type: "page"
   cached_likes: 0
   slug: "wiki-list-of-pokemon"
+
+# /test/unit/revision_test.rb
+checkbox_one:
+  nid: 43
+  uid: 2
+  title: "Should render an unchecked checkbox"
+  path: "/notes/bob/01-04-2021/should-render-an-unchecked-checkbox"
+  created: <%= DateTime.new(2021,1,4).to_i %>
+  changed: <%= DateTime.new(2021,1,4).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: "note-should-render-an-unchecked-checkbox"
+
+# /test/unit/revision_test.rb
+checkbox_two:
+  nid: 44
+  uid: 2
+  title: "Should render a checked checkbox"
+  path: "/notes/bob/01-03-2021/should-render-a-checked-checkbox"
+  created: <%= DateTime.new(2021,1,3).to_i %>
+  changed: <%= DateTime.new(2021,1,3).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: "note-should-render-a-checked-checkbox"
+
+# /test/unit/revision_test.rb
+hashtag_one:
+  nid: 45
+  uid: 2
+  title: "Hashtag post"
+  path: "/notes/bob/01-02-2021/hashtag-post"
+  created: <%= DateTime.new(2021,1,2).to_i %>
+  changed: <%= DateTime.new(2021,1,2).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: "note-hashtag-post"
+
+# /test/unit/revision_test.rb
+hashtag_two:
+  nid: 46
+  uid: 2
+  title: "Ignore headings as hasgtag" 
+  path: "/notes/bob/01-01-2021/ignore-headings-as-hasgtag"
+  created: <%= DateTime.new(2021,1,1).to_i %>
+  changed: <%= DateTime.new(2021,1,1).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: "note-ignore-headings-as-hasgtag"
+
+# /test/unit/revision_test.rb
+hashtag_three:
+  nid: 47
+  uid: 2
+  title: "Ignores multiple same hashtags" 
+  path: "/notes/bob/12-31-2020/ignore-multiple-same-hashtags"
+  created: <%= DateTime.new(2020,12,31).to_i %>
+  changed: <%= DateTime.new(2020,12,31).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: "note-ignore-multiple-same-hashtags"
+
+# /test/unit/revision_test.rb
+hashtag_four:
+  nid: 48
+  uid: 2
+  title: "Ignores pure numbers" 
+  path: "/notes/bob/12-30-2020/ignores-pure-numbers"
+  created: <%= DateTime.new(2020,12,30).to_i %>
+  changed: <%= DateTime.new(2020,12,30).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: "note-ignores-pure-numbers"
+
+# /test/unit/revision_test.rb
+hashtag_with_hyphens:
+  nid: 49
+  uid: 2
+  title: "Hashtag post with hypen"
+  path: "/notes/jeff/12-29-2020/hashtag-post-with-hyphen"
+  created: <%= DateTime.new(2020,12,29).to_i %>
+  changed: <%= DateTime.new(2020,12,29).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: "note-hashtag-post-with-hyphen"
+
+# /test/unit/revision_test.rb
+hashtag_with_punctuation:
+  nid: 50
+  uid: 2
+  title: "Ignores punctuation in hashtags" 
+  path: "/notes/jeff/12-28-2020/ignores-punctuation-in-hashtags"
+  created: <%= DateTime.new(2020,12,28).to_i %>
+  changed: <%= DateTime.new(2020,12,28).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: "note-ignores-punctuation-in-hashtags"
+
+# /test/unit/revision_test.rb
+hashtag_in_header:
+  nid: 51
+  uid: 2
+  title: "grabs hashtags in headers"
+  path: "/notes/jeff/12-27-2020/grabs-hashtags-in-headers"
+  created: <%= DateTime.new(2020,12,27).to_i %>
+  changed: <%= DateTime.new(2020,12,27).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: "note-grabs-hashtags-in-headers"
+
+# /test/unit/revision_test.rb
+subheader:
+  nid: 52
+  uid: 2
+  title: "ignores subheaders"
+  path: "/notes/jeff/12-26-2020/ignores-subheaders"
+  created: <%= DateTime.new(2020,12,26).to_i %>
+  changed: <%= DateTime.new(2020,12,26).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: "note-ignores-subheaders"
+
+# /test/unit/revision_test.rb
+hashtag_in_link:
+  nid: 53
+  uid: 2
+  title: "ignores hashtags in links"
+  path: "/notes/jeff/12-25-2020/ignores-hashtags-in-links"
+  created: <%= DateTime.new(2020,12,25).to_i %>
+  changed: <%= DateTime.new(2020,12,25).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: "note-ignores-hashtags-in-links"
+
+# /test/unit/revision_test.rb
+hashtag_in_url:
+  nid: 54
+  uid: 2
+  title: "ignores hashtags in url"
+  path: "/notes/jeff/12-24-2020/ignores-hashtags-in-url"
+  created: <%= DateTime.new(2020,12,24).to_i %>
+  changed: <%= DateTime.new(2020,12,24).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: "note-ignores-hashtags-in-url"
+
+# /test/unit/revision_test.rb
+email:
+  nid: 55
+  uid: 2
+  title: "Email links"
+  path: "/notes/jeff/12-23-2020/email-links"
+  created: <%= DateTime.new(2020,12,23).to_i %>
+  changed: <%= DateTime.new(2020,12,23).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: "note-email-links"
