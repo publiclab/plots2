@@ -1,6 +1,4 @@
-<%# If the user is new and not yet subscribed to other posts %>
-<%# The dashboard header should change if current user i.e "dashboard/_header.html" %>
-
+<%# TODO: Topics to display if the user is new and not yet subscribed to other posts %>
 <div class="container">
   <div class="row">
     <%# Topics %>
@@ -15,21 +13,20 @@
       <%= render partial: "sidebar/dashboard_v2"%>
     </div>
   </div>
-  <br/>
   <%# Additional Topics %>
   <div class="other-topics">
     <h4>
-      <span class="form-grey"><%= translation('dashboard_v2.dashboard.interest_topics')%></span>
+      <i class="form-grey d-none d-lg-inline"><%= translation('dashboard_v2.sidebar.interest_topics')%></i>
     </h4>
     <%# TODO Recommended topics %>
-
+    <br/>
     <%# Trending topics %>
     <%# The Follow more topics section also has a trending topics sections. Maybe this is repetitive.. %>
     <small><a href="/tags" class="form-grey"><%= translation('dashboard_v2.sidebar.trending_topics') %>:</a></small>
     <span>
       <% cache('trending-tags', expires_in: 24.hours, skip_digest: true) do %>
           <% Tag.trending.each do |i| %>
-              <a href="/tag/<%= i.name %>" class="badge badge-primary"><%= i.name %></a>
+              <a href="/tag/<%= i.name %>" class="badge badge-secondary"><%= i.name %></a>
           <% end %>
         <% end %>
       <small class="text-format form-grey" style="text-decoration: underline"><%= translation('dashboard_v2.sidebar.more_topics',:url => '/wiki/topics') %> </small>
@@ -48,15 +45,34 @@
     padding: 16px 10px 6px;
   }
 
-  .other-topics h4{
+  .other-topics h4 i {
     font-style: normal;
     font-size: small;
+    display: inline-block;
+    position: relative;
+    margin-left: 201px;
   }
 
+  .other-topics h4 i:after,
+  .other-topics h4 i:before {
+    content: "";
+    position: absolute;
+    height: 12px;
+    border-bottom: 1px solid #888;
+    top: 0;
 
-  .other-topics h4 {
-    display: flex;
-    flex-direction: row;
+  }
+
+  .other-topics h4 i:before {
+    right: 100%;
+    margin-right: 15px;
+    width: 186px;
+  }
+
+  .other-topics h4 i:after {
+    left: 100%;
+    margin-left: 15px;
+    width: 231px;
   }
 
 </style>
