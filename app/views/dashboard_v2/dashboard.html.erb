@@ -3,56 +3,37 @@
 
 <div class="container">
   <div class="row">
+    <%# Topics %>
     <div class="col-lg-8">
-      <%# blog %>
-      <%= render partial: "dashboard_v2/header" %>
-        <div class="pt-2 d-block" >
-          <% if @blog %>
-              <% if @blog.main_image %>
-                <div class="img" style="background-image: url('<%= @blog.main_image.path(:large) %>')">
-                <% elsif @blog.scraped_image %>
-                <div class="img" style="background-image: url('<%= @blog.scraped_image %>')">
-              <% end %>
-              <%# subscribe to blog updates possibly via email %>
-              <a class="ellipsis pull-right pl-2" data-toggle="dropdown" rel="tooltip" title="<%= translation('tag.show.blog_updates') %>" style="cursor:pointer; background-color: #444" aria-expanded="true"><i class="fa fa-ellipsis-h" style="color:#ccc;font-size:18px;margin-right:10px;"></i></a>
-              <div class="dropdown-menu">
-                <div class="dropdown-item">
-                  <a style="margin-top:-8px;" rel="tooltip" title="<%= translation('tag.show.blog_updates') %>" href="/subscribe/tag/<%= @blog_tag.name %>">
-                    <%= translation('tag.show.subscribe') %>
-                  </a>
-                </div>
-              </div>
-              <%# blog caption %>
-              <div style="padding-top: 220px">
-                  <h4 class="blog-caption">
-                    <small style="font-size: 13px;" class="float-right d-none d-lg-inline"><%= raw translation('dashboard_v2.dashboard.from_blog', :url => '/blog') %></small>
-                    <a style="color: #444;" href="/blog"><%= @blog.title %></a>
-                    <small style="font-size: 13px;"><%= translation('dashboard_v2.dashboard.by') %>
-                    <a href="/profile/<%= @blog.author.username %>"><%= @blog.author.username %></a></small>
-                  </h4>
-              </div>
-
-              <% if @blog.main_image || @blog.scraped_image %>
-                </div>
-              <% end %>
-          <% end %>
-        </div>
-          <%= render partial: "dashboard_v2/topicCard"%>
+      <%= render partial: "dashboard_v2/blog"%>
+      <%= render partial: "dashboard_v2/topicCard"%>
     </div>
-    <%# sidebar %>
+    <%# Sidebar %>
     <div class="col-lg-4">
-      <%# Location will be added in issue #8840 %>
-      <%# view all posts link%>
-      <%# Follow more topics %>
       <%# Admin feature %>
+      <%= feature('dashboard-feature') %>
+      <%= render partial: "sidebar/dashboard_v2"%>
     </div>
   </div>
+  <br/>
+  <%# Additional Topics %>
   <div class="other-topics">
-    <h6>
-      <i>Click to start followong topics that interest you</i>
-    </h6>
-    <%# Recommended topics %>
+    <h4>
+      <span class="form-grey"><%= translation('dashboard_v2.dashboard.interest_topics')%></span>
+    </h4>
+    <%# TODO Recommended topics %>
+
     <%# Trending topics %>
+    <%# The Follow more topics section also has a trending topics sections. Maybe this is repetitive.. %>
+    <small><a href="/tags" class="form-grey"><%= translation('dashboard_v2.sidebar.trending_topics') %>:</a></small>
+    <span>
+      <% cache('trending-tags', expires_in: 24.hours, skip_digest: true) do %>
+          <% Tag.trending.each do |i| %>
+              <a href="/tag/<%= i.name %>" class="badge badge-primary"><%= i.name %></a>
+          <% end %>
+        <% end %>
+      <small class="text-format form-grey" style="text-decoration: underline"><%= translation('dashboard_v2.sidebar.more_topics',:url => '/wiki/topics') %> </small>
+    </span>
   </div>
 </div>
 
@@ -67,9 +48,15 @@
     padding: 16px 10px 6px;
   }
 
-  .other-topics h6 i {
+  .other-topics h4{
     font-style: normal;
-    color: #808080;
+    font-size: small;
+  }
+
+
+  .other-topics h4 {
+    display: flex;
+    flex-direction: row;
   }
 
 </style>

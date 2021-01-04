@@ -346,11 +346,23 @@ en:
   dashboard_v2:
     _header:
       dashboard: "Dashboard"
-      updates: "Updates from community members on <a href='%{url}'>topics</a> you follow"
+      updates: "Updates from community members on <a href='%{url}' class='form-grey' style='text-decoration: underline;'>topics</a> you follow"
       community_research: "Community research"
     dashboard:
       from_blog: "From the <a href='%{url}'>Public Lab Blog</a>"
       by: "by"
+    sidebar:
+      add_location: "Add your location"
+      location_work: "Add your location to see work near you"
+      location_privacy: "About location privacy"
+      all_posts: "<a href='%{url}' class='form-grey'>View all posts</a>"
+      follow_topics: "Follow more topics"
+      trending_topics: "Trending topics"
+      learn_more: "learn more"
+      add_topics: "Click to add topics, or"
+      all_topics: "<a href='%{url}' class='form-grey'>All topics</a>"
+      more_topics: "<a href='%{url}' class='form-grey'>more...</a>"
+      interest_topics: "Click to start followong topics that interest you"
   like:
     index:
       recent_likes: "Recent Likes"

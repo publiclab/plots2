@@ -1,5 +1,4 @@
 <%# Most of this design has been extracted from the tags _topicCard with slight variations %>
-<%# TODO: translations %>
 <% subscriptions ||= @tag_subscriptions  # allow overriding with local variable %>
 <div class="card-view pt-5">
   <% subscriptions.each do |subscription| %>
@@ -26,6 +25,7 @@
         <div class="node-list">
           <% notes = Tag.find_nodes_by_type(subscription.tag.name, type = 'note', limit = 3).where.not(nid: @blog.nid)  %>
           <div class="node-body">
+          <%# TODO fix odd line folding https://github.com/publiclab/plots2/issues/8837 %>
             <% if notes.present? %>
               <% notes.each do |node|  %>
                   <% if node.main_image %>
