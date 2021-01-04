@@ -370,7 +370,7 @@ class NotesControllerTest < ActionController::TestCase
     get :index
     assert_response :success
     selector = css_select 'div.note'
-    assert_equal 17, selector.size
+    assert_equal 20, selector.size
   end
 
   test 'first-timer moderated note (status=4) shown to moderator with notice and approval prompt in full view' do
@@ -398,7 +398,7 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_response :success
     selector = css_select 'div.note'
-    assert_equal 17, selector.size
+    assert_equal 20, selector.size
   end
 
   test 'post_note_error_no_title' do
