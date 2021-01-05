@@ -65,13 +65,12 @@
   <div class="card bg-light">
     <div class="card-body">
       <%= form_for :node, :as => :drupal_node, :url => url do |f| %>
-        <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages :header_message => "Your note couldn't be saved." %></div><% end %>
+          <%= render partial: 'layouts/errorMessages', locals: { model: @node } %>
       <% end %>
 
       <%= form_for :revision, :as => :revision, :url => url, :html => {:class => "form well legacy-form row"} do |f| %>
 
-        <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages :header_message => "Your note couldn't be saved." %></div><% end %>
-
+          <%= render partial: 'layouts/errorMessages', locals: { model: @revision } %>
         <%= render :partial => "editor/main_image" %>
 
         <div class="col-lg-9 order-md-1">
