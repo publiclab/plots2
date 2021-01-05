@@ -51,7 +51,10 @@ class SearchServiceTest < ActiveSupport::TestCase
     search_criteria = SearchCriteria.new(params)
 
     result = SearchService.new.search_nodes(search_criteria.query)
-
+    p result
+    result.each do |node|
+      puts node.title
+    end
     assert_not_nil result
     assert_equal 1, result.size
   end
