@@ -21,7 +21,6 @@
     <%# TODO Recommended topics %>
     <br/>
     <%# Trending topics %>
-    <%# The Follow more topics section also has a trending topics sections. Maybe this is repetitive.. %>
     <small><a href="/tags" class="form-grey"><%= translation('dashboard_v2.sidebar.trending_topics') %>:</a></small>
     <span>
       <% cache('trending-tags', expires_in: 24.hours, skip_digest: true) do %>
