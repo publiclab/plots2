@@ -51,11 +51,9 @@ class HomeController < ApplicationController
     # The new dashboard displays the blog and topics list
     if current_user
       @blog = Tag.find_nodes_by_type('blog', 'note', 1).limit(1).first
-      # Is this tag name "blog" removed from the node when another
-      # blog is available?
       @blog_tag = @blog.tag.find_by(name: "blog")
       # Tags without the blog tag to avoid double display
-      # Not all tags have notes, the notes section within the card body will be empty
+      # Not all tags have notes, some are wikis. A text will be displayed to show this.
       @pagy, @tag_subscriptions = pagy(current_user.subscriptions(:tag).includes(:tag).where.not(tid: @blog_tag.tid))
       render template: 'dashboard_v2/dashboard'
     else
