@@ -68,12 +68,12 @@ module ApplicationHelper
   # used in views/comments/_form.html.erb
   def get_large_dropzone_id(location, reply_to)
     case location
-      when :main
-        '-main'
-      when :reply
-        '-reply-' + reply_to.to_s
-      when :responses
-        '-responses'
+    when :main
+      '-main'
+    when :reply
+      '-reply-' + reply_to.to_s
+    when :responses
+      '-responses'
     end
   end
 
