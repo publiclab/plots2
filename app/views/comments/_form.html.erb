@@ -19,29 +19,23 @@
           padding-top: 10px;
         }
       </style>
-      <%# if location == reply, toolbar needs reply_to for dropzone IDs %>
+      <!-- location: for creating unique .dropzone IDs -->
+      <!-- this view is used for: main comment form, replies to comments, and 'responses' -->
+      <!-- if location == reply, toolbar needs reply_to for dropzone IDs -->
       <% locals = (location == :reply) ? 
         { :location => location, :reply_to => reply_to } : 
         { :location => location } 
       %>
-      <%# location: for creating unique .dropzone IDs %>
-      <%# location can be: edit form, reply form, main comment form, note responses %>
       <%= render :partial => "editor/toolbar", :locals => locals %>
 
       <% if local_assigns[:reply_to].present? %>
         <%= hidden_field_tag :reply_to, local_assigns[:reply_to] %>
       <% end %>
 
-      <%# most comment forms have two dropzones: 1) small button, 2) large form that covers textarea %>
-      <% dropzone_large_id = '' %>
-      <% case location 
-        when :main %>
-        <% dropzone_large_id = '-main' %>
-      <% when :reply %>
-        <% dropzone_large_id = '-reply-' + local_assigns[:reply_to].to_s %>
-      <% when :responses %>
-        <% dropzone_large_id = '-responses' %>
-      <% end %>
+      <!-- most comment forms have two dropzones: 1) small button, 2) large form that covers textarea -->
+      <!-- this is the large dropzone -->
+      <!-- get_large_dropzone_id defined in application_helper.rb -->
+      <% dropzone_large_id = get_large_dropzone_id(location,local_assigns[:reply_to]) %>
       <div id="dropzone-large<%= dropzone_large_id %>" class="form-group dropzone">
         <%
           body = body || params[:body]
