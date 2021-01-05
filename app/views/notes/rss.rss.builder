@@ -1,4 +1,4 @@
-xml.rss :version => '2.0', 'xmlns:atom' => 'http://www.w3.org/2005/Atom' do
+xml.rss :version => '2.0', 'xmlns:atom' => 'https://www.w3.org/2005/Atom' do
   xml.channel do
     xml.title "Recent research notes on PublicLab.org"
     xml.description "Open source environmental science research at Public Lab"
