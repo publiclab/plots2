@@ -45,8 +45,6 @@ class SubscriptionController < ApplicationController
         end
       end
 
-      # The route params does not have :tid, it only accepts the name..
-      # I think the name should be used to check if the user is subscribed to a tag already
       case tag_selection_more_than_zero?(tag.tid)
       when true
         respond_to do |format|
