@@ -8,7 +8,7 @@
       #imagebar {width:100%;}
     </style>
 
-    <%# toolbar needs location & comment_id to make unique element IDs%>
+    <!-- toolbar needs location & comment_id to make unique element IDs -->
     <%= render :partial => "editor/toolbar", :locals => { :comment_id => comment.id.to_s, :location => :edit } %>
     
     <div id="c<%= comment.id%>div" class="form-group">
