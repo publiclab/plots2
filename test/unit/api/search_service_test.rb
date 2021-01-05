@@ -47,7 +47,7 @@ class SearchServiceTest < ActiveSupport::TestCase
   end
 
   test 'running search nodes' do
-    params = {query: 'Blog' }
+    params = {query: 'Blog post alias title' }
     search_criteria = SearchCriteria.new(params)
 
     result = SearchService.new.search_nodes(search_criteria.query)
