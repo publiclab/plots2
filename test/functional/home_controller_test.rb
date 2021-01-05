@@ -116,10 +116,12 @@ class HomeControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test 'get v2/dashboard' do
-    UserSession.create(users(:bob))
+  test 'get v2/dashboard includes a subscribed topic' do
+    current_user = users(:bob)
+    UserSession.create(current_user)
+    subscribed_topic  = current_user.subscriptions.first.tag.name
     get :dashboard_v2
-    assert_includes response.body, "This is the dashboard redesign page"
+    assert_includes response.body, subscribed_topic
   end
 
 end
