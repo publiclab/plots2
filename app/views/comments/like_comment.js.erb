@@ -11,6 +11,6 @@ $("<%= str %>").css("display","none");
     $("<%= str %> div").first().html("<%= @likes[capitalized_emoji_name] %>");
   <% end %>
   <% if @user_reactions_map.has_key? capitalized_emoji_name %>
-    $("<%= str %>").attr("data-original-title", "<%= @user_reactions_map[capitalized_emoji_name] %>");
+    $("<%= str %>").attr("data-original-title", "<%= @user_reactions_map[capitalized_emoji_name][:users_string] %>");
   <% end %>
 <% end %>

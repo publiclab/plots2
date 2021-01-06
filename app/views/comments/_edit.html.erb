@@ -8,8 +8,8 @@
       #imagebar {width:100%;}
     </style>
 
-
-    <%= render :partial => "editor/toolbar" %>
+    <!-- toolbar needs location & comment_id to make unique element IDs -->
+    <%= render :partial => "editor/toolbar", :locals => { :comment_id => comment.id.to_s, :location => :edit } %>
     
     <div id="c<%= comment.id%>div" class="form-group">
       <textarea aria-label="Edit Comment" onFocus="editing=true" name="body" class="form-control" id="c<%= comment.id%>text" rows="6" cols="40" placeholder="<%= placeholder %>"><%= !(comment.is_a?Answer) ? comment.comment : comment.content %></textarea>

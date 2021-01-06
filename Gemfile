@@ -28,7 +28,7 @@ gem 'impressionist'
 gem 'jbuilder', '~> 2.10'
 gem 'jquery-rails'
 gem 'less-rails', '~> 5.0'
-gem 'mocha', '~> 1.11'
+gem 'mocha', '~> 1.12'
 gem 'mustermann' , '1.1.1'
 gem 'omniauth', '~> 1.9'
 gem 'omniauth-facebook', '~> 8.0'
@@ -50,7 +50,7 @@ gem 'rb-readline'
 gem 'rdiscount', '~> 2.2'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'responders', '~> 3.0'
-gem 'rubocop', '~> 1.6.1', require: false
+gem 'rubocop', '~> 1.7.0', require: false
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
 gem 'sentry-raven'
@@ -72,7 +72,7 @@ gem "font-awesome-rails"
 gem "lazyload-rails"
 # To implement load critical css and rest asynchronously
 gem 'loadcss-rails', '~> 2.0.1'
-gem 'critical-path-css-rails', '~> 4.1.0'
+gem 'critical-path-css-rails', '~> 4.1.1'
 
 
 # To convert html to markdown
@@ -95,6 +95,7 @@ end
 
 gem 'coffee-rails', '~> 5.0.0'
 gem 'execjs' # See https://github.com/sstephenson/execjs#readme for more supported runtimes
+gem "sassc", "~> 2.4.0"
 gem 'sassc-rails'
 gem 'therubyracer'
 gem 'uglifier', '>= 1.0.3'
@@ -103,7 +104,7 @@ gem 'grape-rails-cache'
 group :development do
   gem 'byebug', platform: :mri
   gem "letter_opener"
-  gem 'listen', '~> 3.3.3'
+  gem 'listen', '~> 3.4.0'
   gem "nifty-generators"
   gem 'web-console', '>= 3.3.0'
 end
@@ -121,7 +122,7 @@ group :test, :development do
   gem 'phantomjs'
   gem 'puma', '~> 5.1'
   gem 'rails-perftest'
-  gem 'rake', '~> 13.0.1'
+  gem 'rake', '~> 13.0.3'
   gem 'rest-client'
   gem 'rspec'
   gem 'selenium-webdriver', '~> 3.142.7'

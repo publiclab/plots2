@@ -107,4 +107,19 @@ class HomeControllerTest < ActionController::TestCase
       assert_template 'home/home'
     end
   end
+
+  # dashboard_v2 tests
+  test 'should get research if not logged by v2/dashboard' do
+    get :dashboard_v2
+    assert_redirected_to :research
+    get :research
+    assert_response :success
+  end
+
+  test 'get v2/dashboard' do
+    UserSession.create(users(:bob))
+    get :dashboard_v2
+    assert_includes response.body, "This is the dashboard redesign page"
+  end
+
 end

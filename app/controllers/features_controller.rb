@@ -13,6 +13,8 @@ class FeaturesController < ApplicationController
   end
 
   def new
+    @node = Node.new
+    @revision = Revision.new
     unless current_user.admin?
       flash[:warning] = 'Only admins may edit features.'
       redirect_to '/features'

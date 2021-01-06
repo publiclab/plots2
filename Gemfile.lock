@@ -82,9 +82,8 @@ GEM
       ci_reporter (~> 2.0)
       test-unit (>= 2.5.5, < 4.0)
     climate_control (0.2.0)
-    codecov (0.2.12)
-      json
-      simplecov
+    codecov (0.2.15)
+      simplecov (>= 0.15, < 0.21)
     coderay (1.1.2)
     coffee-rails (5.0.0)
       coffee-script (>= 2.2.0)
@@ -100,13 +99,13 @@ GEM
     connection_pool (2.2.3)
     crack (0.4.4)
     crass (1.0.6)
-    critical-path-css-rails (4.1.0)
+    critical-path-css-rails (4.1.1)
     declarative (0.0.20)
     declarative-option (0.1.0)
     diff-lcs (1.4.4)
-    digest-crc (0.6.1)
-      rake (~> 13.0)
-    docile (1.3.2)
+    digest-crc (0.6.3)
+      rake (>= 12.0.0, < 14.0.0)
+    docile (1.3.4)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     dry-configurable (0.11.6)
@@ -132,19 +131,21 @@ GEM
       dry-inflector (~> 0.1, >= 0.1.2)
       dry-logic (~> 1.0, >= 1.0.2)
     equalizer (0.0.11)
-    erubi (1.9.0)
+    erubi (1.10.0)
     execjs (2.7.0)
-    faraday (1.1.0)
+    faraday (1.3.0)
+      faraday-net_http (~> 1.0)
       multipart-post (>= 1.2, < 3)
       ruby2_keywords
-    ffi (1.13.1)
+    faraday-net_http (1.0.0)
+    ffi (1.14.2)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
     figaro (1.2.0)
       thor (>= 0.14.0, < 2)
-    font-awesome-rails (4.7.0.5)
-      railties (>= 3.2, < 6.1)
+    font-awesome-rails (4.7.0.6)
+      railties (>= 3.2, < 6.2)
     friendly_id (5.4.1)
       activerecord (>= 4.0.0)
     gemoji (3.0.1)
@@ -152,7 +153,7 @@ GEM
     georuby (2.0.0)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
-    google-api-client (0.46.0)
+    google-api-client (0.52.0)
       addressable (~> 2.5, >= 2.5.1)
       googleauth (~> 0.9)
       httpclient (>= 2.8.1, < 3.0)
@@ -164,17 +165,17 @@ GEM
     google-cloud-core (1.5.0)
       google-cloud-env (~> 1.0)
       google-cloud-errors (~> 1.0)
-    google-cloud-env (1.3.3)
+    google-cloud-env (1.4.0)
       faraday (>= 0.17.3, < 2.0)
     google-cloud-errors (1.0.1)
-    google-cloud-storage (1.29.1)
+    google-cloud-storage (1.29.2)
       addressable (~> 2.5)
       digest-crc (~> 0.4)
       google-api-client (~> 0.33)
       google-cloud-core (~> 1.2)
       googleauth (~> 0.9)
       mini_mime (~> 1.0)
-    googleauth (0.13.1)
+    googleauth (0.14.0)
       faraday (>= 0.17.3, < 2.0)
       jwt (>= 1.4, < 3.0)
       memoist (~> 0.16)
@@ -240,7 +241,7 @@ GEM
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
-    json (2.3.1)
+    json (2.5.1)
     json_expressions (0.9.0)
     jwt (2.2.2)
     launchy (2.4.3)
@@ -257,11 +258,11 @@ GEM
     letter_opener (1.7.0)
       launchy (~> 2.2)
     libv8 (3.16.14.19)
-    listen (3.3.3)
+    listen (3.4.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     loadcss-rails (2.0.1)
-    loofah (2.6.0)
+    loofah (2.8.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -284,14 +285,14 @@ GEM
     mime-types-data (3.2019.0331)
     mimemagic (0.3.3)
     mini_mime (1.0.2)
-    mini_portile2 (2.4.0)
+    mini_portile2 (2.5.0)
     minitest (5.14.2)
     minitest-reporters (1.4.2)
       ansi
       builder
       minitest (>= 5.0)
       ruby-progressbar
-    mocha (1.11.2)
+    mocha (1.12.0)
     multi_json (1.15.0)
     multi_xml (0.6.0)
     multipart-post (2.1.1)
@@ -304,8 +305,9 @@ GEM
     netrc (0.11.0)
     nifty-generators (0.4.6)
     nio4r (2.5.4)
-    nokogiri (1.10.10)
-      mini_portile2 (~> 2.4.0)
+    nokogiri (1.11.0)
+      mini_portile2 (~> 2.5.0)
+      racc (~> 1.4)
     nokogumbo (2.0.2)
       nokogiri (~> 1.8, >= 1.8.4)
     oauth (0.5.4)
@@ -347,7 +349,7 @@ GEM
       mimemagic (~> 0.3.0)
       terrapin (~> 0.6.0)
     parallel (1.20.1)
-    parser (2.7.2.0)
+    parser (3.0.0.0)
       ast (~> 2.4.1)
     passenger (6.0.7)
       rack
@@ -363,6 +365,7 @@ GEM
     public_suffix (4.0.6)
     puma (5.1.1)
       nio4r (~> 2.0)
+    racc (1.5.2)
     rack (2.2.3)
     rack-accept (0.4.5)
       rack (>= 0.4)
@@ -410,7 +413,7 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.19.0, < 2.0)
     rainbow (3.0.0)
-    rake (13.0.1)
+    rake (13.0.3)
     rb-fsevent (0.10.4)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
@@ -452,7 +455,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.10.0)
     rspec-support (3.10.0)
-    rubocop (1.6.1)
+    rubocop (1.7.0)
       parallel (~> 1.10)
       parser (>= 2.7.1.5)
       rainbow (>= 2.2.2, < 4.0)
@@ -471,7 +474,7 @@ GEM
       crass (~> 1.0.2)
       nokogiri (>= 1.8.0)
       nokogumbo (~> 2.0)
-    sassc (2.2.1)
+    sassc (2.4.0)
       ffi (~> 1.9)
     sassc-rails (2.1.2)
       railties (>= 4.0.0)
@@ -497,10 +500,12 @@ GEM
       jwt (>= 1.5, < 3.0)
       multi_json (~> 1.10)
     simple_oauth (0.3.1)
-    simplecov (0.19.1)
+    simplecov (0.20.0)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
+      simplecov_json_formatter (~> 0.1)
     simplecov-html (0.12.3)
+    simplecov_json_formatter (0.1.2)
     skylight (4.3.2)
       skylight-core (= 4.3.2)
     skylight-core (4.3.2)
@@ -519,7 +524,7 @@ GEM
       teaspoon (>= 1.0.0)
     terrapin (0.6.0)
       climate_control (>= 0.0.3, < 1.0)
-    test-unit (3.3.7)
+    test-unit (3.3.9)
       power_assert
     therubyracer (0.12.3)
       libv8 (~> 3.16.14.15)
@@ -542,7 +547,7 @@ GEM
       multipart-post (~> 2.0)
       naught (~> 1.0)
       simple_oauth (~> 0.3.0)
-    tzinfo (1.2.8)
+    tzinfo (1.2.9)
       thread_safe (~> 0.1)
     uber (0.1.0)
     uglifier (4.2.0)
@@ -551,7 +556,7 @@ GEM
       unf_ext
     unf_ext (0.0.7.7)
     unicode-display_width (1.7.0)
-    unicode-emoji (2.7.0)
+    unicode-emoji (2.7.1)
       unicode-version (~> 1.0)
     unicode-version (1.0.0)
     web-console (3.7.0)
@@ -588,7 +593,7 @@ DEPENDENCIES
   codecov
   coffee-rails (~> 5.0.0)
   composite_primary_keys
-  critical-path-css-rails (~> 4.1.0)
+  critical-path-css-rails (~> 4.1.1)
   execjs
   figaro
   font-awesome-rails
@@ -618,11 +623,11 @@ DEPENDENCIES
   lemmatizer (~> 0.2.2)
   less-rails (~> 5.0)
   letter_opener
-  listen (~> 3.3.3)
+  listen (~> 3.4.0)
   loadcss-rails (~> 2.0.1)
   mailman
   minitest-reporters (~> 1.4.2)
-  mocha (~> 1.11)
+  mocha (~> 1.12)
   mustermann (= 1.1.1)
   mysql2 (>= 0.4.4)
   nifty-generators
@@ -648,7 +653,7 @@ DEPENDENCIES
   rails-i18n (~> 5.1.3)
   rails-perftest
   rails_autolink
-  rake (~> 13.0.1)
+  rake (~> 13.0.3)
   rb-readline
   rdiscount (~> 2.2)
   recaptcha
@@ -656,9 +661,10 @@ DEPENDENCIES
   rest-client
   reverse_markdown
   rspec
-  rubocop (~> 1.6.1)
+  rubocop (~> 1.7.0)
   ruby-openid
   sanitize
+  sassc (~> 2.4.0)
   sassc-rails
   scrypt (~> 3)
   selenium-webdriver (~> 3.142.7)
@@ -686,4 +692,4 @@ RUBY VERSION
    ruby 2.6.6p146
 
 BUNDLED WITH
-   2.1.4
+   2.2.3

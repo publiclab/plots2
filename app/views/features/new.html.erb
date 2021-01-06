@@ -8,22 +8,13 @@
 <%= form_for :revision, :as => :revision, :url => url, :html => {:class => "form"} do |f| %>
 
     <% if defined?(@revision) %>
-        <% if @revision.errors.any? %>
-        <div class="alert alert-danger">
-            <h2><%= pluralize(@revision.errors.count, "error") %> prohibited this revision from being saved:</h2>
-            <ul>
-            <% @revision.errors.full_messages.each do |msg| %>
-            <li><%= msg %></li>
-            <% end %>
-            </ul>
-        </div>
-        <% end %>
+        <%= render partial: 'layouts/errorMessages', locals: { model: @revision } %>
     <% end %>
 
 <% end %>
 
 <%= form_for :node, :as => :drupal_node, :url => url do |f| %>
-  <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
+  <%= render partial: 'layouts/errorMessages', locals: { model: @node } %>
 
   <%= render :partial => "features/form" %>
 
