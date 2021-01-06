@@ -256,5 +256,43 @@ class CommentTest < ApplicationSystemTestCase
       first("img[src='https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png']").click()
       page.assert_no_selector("button[data-original-title='jeff reacted with thumbs up emoji'")
     end
+
+    test "#{page_type}: multiple comment boxes, post comments" do
+      if page_type == :note
+        visit nodes(:note_with_multiple_comments).path
+      elsif page_type == :question
+        visit nodes(:question_with_multiple_comments).path
+      elsif page_type == :wiki
+        visit nodes(:wiki_with_multiple_comments).path + '/comments'
+      end
+      # there should be exactly three "Reply to comment..."s on this fixture
+      reply_toggles = page.all('p', text: 'Reply to this comment...')
+      # extract the comment IDs from each
+      comment_ids = []
+      reply_toggles.each do |reply_toggle|
+        id_string = reply_toggle[:id]
+        comment_id = /comment-(\d+)-reply-toggle/.match(id_string)[1]
+        comment_ids << comment_id
+      end
+      # work with just the 2nd comment
+      reply_toggles[1].click 
+      # open the comment form by toggling, and fill in some text
+      find("div#comment-#{comment_ids[1]}-reply-section textarea#text-input").click.fill_in with: 'H'
+      # open the other two comment forms
+      reply_toggles[0].click
+      reply_toggles[2].click
+      # fill them in with text
+      find("div#comment-#{comment_ids[0]}-reply-section textarea#text-input").click.fill_in with: 'A'
+      find("div#comment-#{comment_ids[2]}-reply-section textarea#text-input").click.fill_in with: 'Y'
+      # click the publish buttons for each in a random sequence
+      [1, 2, 0].each do |number|
+        find("div#comment-#{comment_ids[number]}-reply-section button", text: 'Publish').click
+        wait_for_ajax
+      end
+      # assert that the replies went to the right comments
+      assert_selector("#c" + comment_ids[0] + "show div div div p", text: 'A')
+      assert_selector("#c" + comment_ids[1] + "show div div div p", text: 'H')
+      assert_selector("#c" + comment_ids[2] + "show div div div p", text: 'Y')
+    end
   end
 end
