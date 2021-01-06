@@ -97,7 +97,7 @@ class CommentTest < ApplicationSystemTestCase
       node_name == :wiki_page ? (visit nodes(node_name).path + '/comments') : (visit nodes(node_name).path)
       find("p", text: "Reply to this comment...").click()
       reply_preview_button = page.all('#post_comment')[0]
-      fileinput_element = page.all('#fileinput')[0]
+      fileinput_element = page.find('#fileinput-button-main')
       # Upload the image
       fileinput_element.set("#{Rails.root.to_s}/public/images/pl.png")
       # Wait for image upload to finish
@@ -110,17 +110,17 @@ class CommentTest < ApplicationSystemTestCase
     end
 
     test "#{page_type_string}: comment image upload by choose one" do
-      Capybara.ignore_hidden_elements = false
       node_name == :wiki_page ? (visit nodes(node_name).path + '/comments') : (visit nodes(node_name).path)
+      # Open reply comment form
       find("p", text: "Reply to this comment...").click()
       first("a", text: "choose one").click() 
-      reply_preview_button = page.all('#post_comment')[0]
-      fileinput_element = page.all('#fileinput')[0]
+      reply_preview_button = page.first('a', text: 'Preview')
+      Capybara.ignore_hidden_elements = false
       # Upload the image
+      fileinput_element = page.first("[id^=fileinput-button-reply]")
       fileinput_element.set("#{Rails.root.to_s}/public/images/pl.png")
-      # Wait for image upload to finish
-      wait_for_ajax
       Capybara.ignore_hidden_elements = true
+      wait_for_ajax
       # Toggle preview
       reply_preview_button.click()
       # Make sure that image has been uploaded
