@@ -5,10 +5,11 @@ class SubscriptionLocationTest < ActionMailer::TestCase
 
     # Params order: watching_location(nwlat, selat, nwlng, selng)
     response_user = User.watching_location(90.0,34.10,12.7,178.0)
-    user = users(:steff2)
+    user = users(:steff2, :bob)
 
-    assert_equal 1, response_user.length
-    assert_equal user, response_user[0]
+    assert_equal 2, response_user.length
+    assert_equal user[0], response_user[0]
+    assert_equal user[1], response_user[1]
   end
 
   test 'return collection of User records subscribed to a area inside nwlat/selat/nwlng/selng with negative values' do
