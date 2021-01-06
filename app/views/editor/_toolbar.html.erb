@@ -20,10 +20,21 @@
     <a data-toggle="tooltip" title="Header" data-placement="bottom" class="btn btn-outline-secondary btn-sm " onClick="$E.h2()"><b><span class="d-md-none d-lg-inline"><i class="fa fa-header"></i></span></b></a>
     <a aria-label="Make a link" data-toggle="tooltip" title="Make a link" data-placement="bottom" class="btn btn-outline-secondary btn-sm" href="javascript:void(0)" onClick="$E.link()"><i class="fa fa-link"></i></a>
     <a aria-label="Upload an image" data-toggle="tooltip" title="Upload an image" data-placement="bottom" class="btn btn-outline-secondary btn-sm">
-      <div class="dropzone">
+      <% dropzone_small_id = '' %>
+      <% case location
+        when :main %>
+        <% dropzone_small_id = 'main' %>
+      <% when :reply %>
+        <% dropzone_small_id = 'reply-' + local_assigns[:reply_to].to_s %>
+      <% when :edit %>
+        <% dropzone_small_id = 'edit-' + comment_id %>
+      <% when :responses %>
+        <% dropzone_small_id = 'responses' %>
+      <%  end %>
+      <div id="dropzone-small-<%= dropzone_small_id %>" class="dropzone">
         <span id="create_prompt" class="prompt">
-          <label class="" for="fileinput" style="margin-bottom: 0;">
-            <input id="fileinput" type="file" name="image[photo]" accept="image/*" style="display:none;" />
+          <label class="" for="fileinput-button-<%= dropzone_small_id %>" style="margin-bottom: 0;">
+            <input id="fileinput-button-<%= dropzone_small_id %>" class="fileinput" type="file" name="image[photo]" accept="image/*" style="display:none;" />
             <i class="fa fa-image"></i>
             <span class="d-md-none">
               <i class="fa fa-upload"></i>
