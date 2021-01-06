@@ -5,7 +5,7 @@ class SubscriptionLocationTest < ActionMailer::TestCase
 
     # Params order: watching_location(nwlat, selat, nwlng, selng)
     response_user = User.watching_location(90.0,34.10,12.7,178.0)
-    user = users(:steff2, :bob)
+    user = users(:steff2)
 
     assert_equal 1, response_user.length
   end

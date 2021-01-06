@@ -14,8 +14,8 @@ class SubscriptionControllerTest < ActionController::TestCase
 
   test 'user should be notified if adding a tag already subscribed to' do
     UserSession.create(users(:bob))
-    get :add, params: { type: 'tag', name: 'subscribed:tag' }
-    assert_equal "You are already subscribed to 'subscribed:tag'", flash[:error]
+    get :add, params: { type: 'tag', name: 'sub:tag' }
+    assert_equal "You are already subscribed to 'sub:tag'", flash[:error]
   end
 
   test 'should redirect to login if user is not logged in and trying to access digest' do
