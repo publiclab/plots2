@@ -8,7 +8,7 @@ class TagController < ApplicationController
 
     @title = I18n.t('tag_controller.tags')
     @paginated = true
-    @order_type = params[:order].blank? || params[:order] == "desc" ? "asc" : "desc"
+    @order_type = params[:order].blank? || (params[:order] == "desc") ? "desc" : "asc"
     powertag_clause = params[:powertags] == 'true' ? '' : ['name NOT LIKE ?', '%:%']
 
     if params[:search]
@@ -542,9 +542,9 @@ class TagController < ApplicationController
 
   def order_string
     if params[:search] || @toggle == "uses"
-      params[:order].blank? || params[:order] == "asc" ? "count ASC" : "count DESC"
+      params[:order].blank? || (params[:order] == "desc") ? "count DESC" : "count ASC"
     else
-      params[:order].blank? || params[:order] == "asc" ? "name ASC" : "name DESC"
+      params[:order].blank? || (params[:order] == "desc") ? "name DESC" : "name ASC"
     end
   end
 
