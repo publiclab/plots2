@@ -43,7 +43,7 @@ install:
   - cp config/database.yml.example config/database.yml
   - cp db/schema.rb.example db/schema.rb
   - bundle config set path 'vendor/.bundle/'
-  - bundle install
+  - bundle check --path vendor/.bundle/ || bundle install --path vendor/.bundle/
   - gem list
   - if [ $RAILS_ENV != 'production' ]; then
       yarn check || yarn install;
