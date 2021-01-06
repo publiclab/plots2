@@ -15,6 +15,11 @@ class CommentTest < ApplicationSystemTestCase
     find(".login-modal-form #login-button").click()
   end
 
+  def get_path(page_type, path)
+    # wiki pages' comments, unlike questions' and notes', are viewable from /wiki/wiki-page-path/comments
+    page_type == :wiki ? path + '/comments' : path
+  end
+
   # page_types are wiki, research note, question:
   page_types.each do |page_type, node_name|
     page_type_string = page_type.to_s
@@ -22,20 +27,19 @@ class CommentTest < ApplicationSystemTestCase
     comment_response_text = 'wooly woot'
 
     test "#{page_type_string}: addComment(comment_text)" do
-      # wiki pages' comments, unlike questions' and notes', are viewable from /wiki/wiki-page-path/comments
-      node_name == :wiki_page ? (visit nodes(node_name).path + '/comments') : (visit nodes(node_name).path)
+      visit get_path(page_type, nodes(node_name).path)
       page.evaluate_script("addComment('#{comment_text}')")
       assert_selector('#comments-list .comment-body p', text: comment_text)
     end
 
     test "#{page_type_string}: addComment(comment_text, submit_url)" do
-      node_name == :wiki_page ? (visit nodes(node_name).path + '/comments') : (visit nodes(node_name).path)
+      visit get_path(page_type, nodes(node_name).path)
       page.evaluate_script("addComment('#{comment_text}', '/comment/create/#{nodes(node_name).nid.to_s}')")
       assert_selector('#comments-list .comment-body p', text: comment_text)
     end
 
     test "#{page_type_string}: reply to existing comment" do
-      node_name == :wiki_page ? (visit nodes(node_name).path + '/comments') : (visit nodes(node_name).path)
+      visit get_path(page_type, nodes(node_name).path)
       # find comment ID of the first comment on page
       parent_id = "#" + page.find('#comments-list').first('.comment')[:id]
       parent_id_num = /c(\d+)/.match(parent_id)[1] # eg. comment ID format is id="c9834"
@@ -63,7 +67,7 @@ class CommentTest < ApplicationSystemTestCase
     end
 
     test "#{page_type_string}: manual comment and reply to comment" do
-      node_name == :wiki_page ? (visit nodes(node_name).path + '/comments') : (visit nodes(node_name).path)
+      visit get_path(page_type, nodes(node_name).path)
       fill_in("body", with: comment_text)
       # preview comment
       find("#post_comment").click
@@ -80,8 +84,47 @@ class CommentTest < ApplicationSystemTestCase
       find("p", text: comment_response_text)
     end
 
+    test "post #{page_type_string}, then comment on FRESH #{page_type_string}" do
+      title_text, body_text = String.new, String.new
+      case page_type_string
+        when 'note'
+          visit '/post'
+          title_text = 'Ahh, a nice fresh note'
+          body_text = "Can\'t wait to write in it!"
+          fill_in('title-input', with: title_text)
+          find('.wk-wysiwyg').set(body_text)
+          find('.ple-publish').click()
+        when 'question'
+          visit '/questions/new?&tags=question%3Ageneral'
+          title_text = "Let's talk condiments"
+          body_text = 'Ketchup or mayo?'
+          find("input[aria-label='Enter question']", match: :first)
+            .click()
+            .fill_in with: title_text
+          find('.wk-wysiwyg').set(body_text)
+          find('.ple-publish').click()
+        when 'wiki'
+          visit '/wiki/new'
+          title_text = 'pokemon'
+          body_text = 'Gotta catch em all!'
+          fill_in('title', with: title_text)
+          fill_in('text-input', with: body_text)
+          find('#publish').click()
+          visit "/wiki/#{title_text}/comments"
+      end
+      assert_selector('h1', text: title_text)
+      fill_in("body", with: comment_text)
+      # preview comment
+      find("#post_comment").click
+      find("p", text: comment_text)
+      # publish comment
+      click_on "Publish"
+      find(".noty_body", text: "Comment Added!")
+      find("p", text: comment_text)
+    end
+
     test "#{page_type_string}: comment preview button works" do
-      node_name == :wiki_page ? (visit nodes(node_name).path + '/comments') : (visit nodes(node_name).path)
+      visit get_path(page_type, nodes(node_name).path)
       find("p", text: "Reply to this comment...").click()
       reply_preview_button = page.all('#post_comment')[0]
       comment_preview_button = page.all('#post_comment')[1]
@@ -94,7 +137,7 @@ class CommentTest < ApplicationSystemTestCase
 
     test "#{page_type_string}: comment image upload" do
       Capybara.ignore_hidden_elements = false
-      node_name == :wiki_page ? (visit nodes(node_name).path + '/comments') : (visit nodes(node_name).path)
+      visit get_path(page_type, nodes(node_name).path)
       find("p", text: "Reply to this comment...").click()
       reply_preview_button = page.all('#post_comment')[0]
       fileinput_element = page.find('#fileinput-button-main')
@@ -110,8 +153,8 @@ class CommentTest < ApplicationSystemTestCase
     end
 
     test "#{page_type_string}: comment image upload by choose one" do
-      node_name == :wiki_page ? (visit nodes(node_name).path + '/comments') : (visit nodes(node_name).path)
-      # Open reply comment form
+      Capybara.ignore_hidden_elements = false
+      visit get_path(page_type, nodes(node_name).path)
       find("p", text: "Reply to this comment...").click()
       first("a", text: "choose one").click() 
       reply_preview_button = page.first('a', text: 'Preview')
@@ -129,7 +172,7 @@ class CommentTest < ApplicationSystemTestCase
 
     test "#{page_type_string}: comment image drag and drop upload" do
       Capybara.ignore_hidden_elements = false
-      node_name == :wiki_page ? (visit nodes(node_name).path + '/comments') : (visit nodes(node_name).path)
+      visit get_path(page_type, nodes(node_name).path)
       find("p", text: "Reply to this comment...").click()
       reply_preview_button = page.all('#post_comment')[0]
       # Upload the image
@@ -144,7 +187,7 @@ class CommentTest < ApplicationSystemTestCase
     end
 
     test "#{page_type_string}: ctrl/cmd + enter comment publishing keyboard shortcut" do
-      node_name == :wiki_page ? (visit nodes(node_name).path + '/comments') : (visit nodes(node_name).path)
+      visit get_path(page_type, nodes(node_name).path)
       find("p", text: "Reply to this comment...").click()
       # Write a comment
       page.all("#text-input")[1].set("Great post!")
@@ -189,7 +232,7 @@ class CommentTest < ApplicationSystemTestCase
     end
 
     test "#{page_type_string}: comment deletion" do
-      node_name == :wiki_page ? (visit nodes(node_name).path + '/comments') : (visit nodes(node_name).path)
+      visit get_path(page_type, nodes(node_name).path)
       # Create a comment
       page.execute_script <<-JS
         var commentForm = $('.comment-form-wrapper')[1];
@@ -207,7 +250,7 @@ class CommentTest < ApplicationSystemTestCase
     end
 
     test "#{page_type_string}: formatting toolbar is rendered" do
-      node_name == :wiki_page ? (visit nodes(node_name).path + '/comments') : (visit nodes(node_name).path)
+      visit get_path(page_type, nodes(node_name).path)
       assert_selector('.btn[data-original-title="Bold"]', count: 1)
       assert_selector('.btn[data-original-title="Italic"]', count: 1)
       assert_selector('.btn[data-original-title="Header"]', count: 1)
@@ -219,7 +262,7 @@ class CommentTest < ApplicationSystemTestCase
     end
 
     test "#{page_type_string}: edit comment" do
-      node_name == :wiki_page ? (visit nodes(node_name).path + '/comments') : (visit nodes(node_name).path)
+      visit get_path(page_type, nodes(node_name).path)
       # Create a comment
       page.execute_script <<-JS
         var commentForm = $('.comment-form-wrapper')[1];
@@ -248,7 +291,7 @@ class CommentTest < ApplicationSystemTestCase
     end
 
     test "#{page_type_string}: react and unreact to comment" do
-      node_name == :wiki_page ? (visit nodes(node_name).path + '/comments') : (visit nodes(node_name).path)
+      visit get_path(page_type, nodes(node_name).path)
       first(".comment #dropdownMenuButton").click()
       # click on thumbs up
       find("img[src='https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png']").click()
