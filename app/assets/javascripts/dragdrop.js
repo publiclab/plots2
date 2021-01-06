@@ -32,9 +32,9 @@ jQuery(function() {
     $('#side-dropzone').removeClass('hover');
   });
   $('.dropzone').on('drop',function(e) {
-    $D.selected = $(e.target.closest('div.comment-form-wrapper')).eq(0);
+    $D.selected = $(e.target).closest('div.comment-form-wrapper').eq(0);
     e.preventDefault();
-    // $E.initialize({});
+    $E.initialize({});
   });
   $('#side-dropzone').on('drop',function(e) {
     e.preventDefault();
