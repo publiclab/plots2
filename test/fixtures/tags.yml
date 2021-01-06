@@ -139,10 +139,14 @@ sun_question:
 
 # this tags node 37 as a question
 # ultimately, this is for testing comments on that node.
-comment_question: 
+comment_question:
   tid: 35
   name: question:general
 
 hidden_response_tag:
   tid: 36
   name: hidden:response
+
+subscribed_tag:
+  tid: 37
+  name: subscribed:tag
