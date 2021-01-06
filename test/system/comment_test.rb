@@ -15,9 +15,9 @@ class CommentTest < ApplicationSystemTestCase
     find(".login-modal-form #login-button").click()
   end
 
-  def get_visit_path(node_name, path)
+  def get_path(page_type, path)
     # wiki pages' comments, unlike questions' and notes', are viewable from /wiki/wiki-page-path/comments
-    node_name == :wiki_page ? path + '/comments' : path
+    page_type == :wiki ? path + '/comments' : path
   end
 
   # page_types are wiki, research note, question:
@@ -27,20 +27,19 @@ class CommentTest < ApplicationSystemTestCase
     comment_response_text = 'wooly woot'
 
     test "#{page_type_string}: addComment(comment_text)" do
-      visit get_visit_path(node_name, nodes(node_name).path)
+      visit get_path(page_type, nodes(node_name).path)
       page.evaluate_script("addComment('#{comment_text}')")
       assert_selector('#comments-list .comment-body p', text: comment_text)
     end
 
     test "#{page_type_string}: addComment(comment_text, submit_url)" do
-      visit get_visit_path(node_name, nodes(node_name).path)
+      visit get_path(page_type, nodes(node_name).path)
       page.evaluate_script("addComment('#{comment_text}', '/comment/create/#{nodes(node_name).nid.to_s}')")
       assert_selector('#comments-list .comment-body p', text: comment_text)
     end
 
     test "#{page_type_string}: reply to existing comment" do
-      visit get_visit_path(node_name, nodes(node_name).path)
-      visit get_visit_path(node_name, nodes(node_name).path)
+      visit get_path(page_type, nodes(node_name).path)
       # find comment ID of the first comment on page
       parent_id = "#" + page.find('#comments-list').first('.comment')[:id]
       parent_id_num = /c(\d+)/.match(parent_id)[1] # eg. comment ID format is id="c9834"
@@ -68,7 +67,7 @@ class CommentTest < ApplicationSystemTestCase
     end
 
     test "#{page_type_string}: manual comment and reply to comment" do
-      visit get_visit_path(node_name, nodes(node_name).path)
+      visit get_path(page_type, nodes(node_name).path)
       fill_in("body", with: comment_text)
       # preview comment
       find("#post_comment").click
@@ -125,7 +124,7 @@ class CommentTest < ApplicationSystemTestCase
     end
 
     test "#{page_type_string}: comment preview button works" do
-      visit get_visit_path(node_name, nodes(node_name).path)
+      visit get_path(page_type, nodes(node_name).path)
       find("p", text: "Reply to this comment...").click()
       reply_preview_button = page.all('#post_comment')[0]
       comment_preview_button = page.all('#post_comment')[1]
@@ -138,7 +137,7 @@ class CommentTest < ApplicationSystemTestCase
 
     test "#{page_type_string}: comment image upload" do
       Capybara.ignore_hidden_elements = false
-      visit get_visit_path(node_name, nodes(node_name).path)
+      visit get_path(page_type, nodes(node_name).path)
       find("p", text: "Reply to this comment...").click()
       reply_preview_button = page.all('#post_comment')[0]
       fileinput_element = page.all('#fileinput')[0]
@@ -155,7 +154,7 @@ class CommentTest < ApplicationSystemTestCase
 
     test "#{page_type_string}: comment image upload by choose one" do
       Capybara.ignore_hidden_elements = false
-      visit get_visit_path(node_name, nodes(node_name).path)
+      visit get_path(page_type, nodes(node_name).path)
       find("p", text: "Reply to this comment...").click()
       first("a", text: "choose one").click() 
       reply_preview_button = page.all('#post_comment')[0]
@@ -173,7 +172,7 @@ class CommentTest < ApplicationSystemTestCase
 
     test "#{page_type_string}: comment image drag and drop upload" do
       Capybara.ignore_hidden_elements = false
-      visit get_visit_path(node_name, nodes(node_name).path)
+      visit get_path(page_type, nodes(node_name).path)
       find("p", text: "Reply to this comment...").click()
       reply_preview_button = page.all('#post_comment')[0]
       # Upload the image
@@ -188,7 +187,7 @@ class CommentTest < ApplicationSystemTestCase
     end
 
     test "#{page_type_string}: ctrl/cmd + enter comment publishing keyboard shortcut" do
-      visit get_visit_path(node_name, nodes(node_name).path)
+      visit get_path(page_type, nodes(node_name).path)
       find("p", text: "Reply to this comment...").click()
       # Write a comment
       page.all("#text-input")[1].set("Great post!")
@@ -233,7 +232,7 @@ class CommentTest < ApplicationSystemTestCase
     end
 
     test "#{page_type_string}: comment deletion" do
-      visit get_visit_path(node_name, nodes(node_name).path)
+      visit get_path(page_type, nodes(node_name).path)
       # Create a comment
       page.execute_script <<-JS
         var commentForm = $('.comment-form-wrapper')[1];
@@ -251,7 +250,7 @@ class CommentTest < ApplicationSystemTestCase
     end
 
     test "#{page_type_string}: formatting toolbar is rendered" do
-      visit get_visit_path(node_name, nodes(node_name).path)
+      visit get_path(page_type, nodes(node_name).path)
       assert_selector('.btn[data-original-title="Bold"]', count: 1)
       assert_selector('.btn[data-original-title="Italic"]', count: 1)
       assert_selector('.btn[data-original-title="Header"]', count: 1)
@@ -263,7 +262,7 @@ class CommentTest < ApplicationSystemTestCase
     end
 
     test "#{page_type_string}: edit comment" do
-      visit get_visit_path(node_name, nodes(node_name).path)
+      visit get_path(page_type, nodes(node_name).path)
       # Create a comment
       page.execute_script <<-JS
         var commentForm = $('.comment-form-wrapper')[1];
@@ -292,7 +291,7 @@ class CommentTest < ApplicationSystemTestCase
     end
 
     test "#{page_type_string}: react and unreact to comment" do
-      visit get_visit_path(node_name, nodes(node_name).path)
+      visit get_path(page_type, nodes(node_name).path)
       first(".comment #dropdownMenuButton").click()
       # click on thumbs up
       find("img[src='https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png']").click()
