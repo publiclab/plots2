@@ -15,7 +15,15 @@
     </div>
 
     <% if current_user %>
-        <%= render :partial => "comments/form", :locals => { title: I18n.t('notes._comments.post_comment'), comment: false, placeholder: I18n.t('notes._comments.post_placeholder'), url1: '/conduct', author: current_user.title, is_new_contributor:current_user.is_new_contributor? } %>
+      <%= render :partial => "comments/form", :locals => { 
+        title: I18n.t('notes._comments.post_comment'), 
+        comment: false, 
+        placeholder: I18n.t('notes._comments.post_placeholder'), 
+        url1: '/conduct', 
+        author: current_user.title, 
+        is_new_contributor:current_user.is_new_contributor?,
+        location: :main # toolbar needs this to create dropzone ID
+      } %>
     <% else %>
       <p><a href="#" data-toggle="modal" data-target="#loginModal">
         <%= translation('layout._header.login.login_title') %> </a> to comment.

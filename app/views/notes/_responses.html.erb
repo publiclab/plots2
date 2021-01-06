@@ -29,8 +29,16 @@
 
     <div class='activity-comment' id='i-did-this' style='display: none'>
       <% if current_user %>
-        <%= render :partial => "comments/form", :locals => { title: 'Add feedback, suggestions, or photos
-          ', body: 'I did this!', comment: false, placeholder: '', url1: '/conduct', author: current_user.title, is_new_contributor:current_user.is_new_contributor? } %>
+        <%= render :partial => "comments/form", :locals => { 
+          title: 'Add feedback, suggestions, or photos', 
+          body: 'I did this!', 
+          comment: false, 
+          placeholder: '', 
+          url1: '/conduct', 
+          author: current_user.title, 
+          is_new_contributor:current_user.is_new_contributor?, 
+          location: :responses
+        } %>
       <% else %>
         <p><%= raw translation('notes._comments.must_be_logged_in', :url1 => new_user_session_path( return_to: request.path )) %></p>
       <% end %>
