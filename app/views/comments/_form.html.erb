@@ -18,11 +18,24 @@
           padding-top: 10px;
         }
       </style>
-      <%= render :partial => "editor/toolbar" %>
+      <!-- location: for creating unique .dropzone IDs -->
+      <!-- this view is used for: main comment form, replies to comments, and 'responses' -->
+      <!-- if location == reply, toolbar needs reply_to for dropzone IDs -->
+      <% locals = (location == :reply) ? 
+        { :location => location, :reply_to => reply_to } : 
+        { :location => location } 
+      %>
+      <%= render :partial => "editor/toolbar", :locals => locals %>
+
       <% if local_assigns[:reply_to].present? %>
         <%= hidden_field_tag :reply_to, local_assigns[:reply_to] %>
       <% end %>
-      <div class="form-group dropzone">
+
+      <!-- most comment forms have two dropzones: 1) small button, 2) large form that covers textarea -->
+      <!-- this is the large dropzone -->
+      <!-- get_large_dropzone_id defined in application_helper.rb -->
+      <% dropzone_large_id = get_large_dropzone_id(location,local_assigns[:reply_to]) %>
+      <div id="dropzone-large<%= dropzone_large_id %>" class="form-group dropzone">
         <%
           body = body || params[:body]
           # Look for comment templates
@@ -47,14 +60,12 @@
               <%= translation('comments._form.uploading') %>
             </span>
             <span id="create_prompt" class="prompt">
-
               <span style="padding-right:4px;float:left;" class="d-none d-md-inline">
                 <%= raw translation('comments._form.drag_and_drop') %>
               </span>
-
               <!-- http://stackoverflow.com/questions/11235206/twitter-bootstrap-form-file-element-upload-button -->
-              <label for="fileinput">
-                <input id="fileinput" type="file" name="image[photo]" style="display:none;" />
+              <label for="fileinput-choose-one<%= dropzone_large_id %>">
+                <input id="fileinput-choose-one<%= dropzone_large_id %>" type="file" name="image[photo]" style="display:none;" />
                 <a onClick="handleClick()" style="cursor: pointer;" class="d-none d-md-inline text-underline">choose one</a>
                 <span class="d-md-none">
                   <i class="fa fa-upload"></i>
@@ -65,6 +76,7 @@
           </p>
         </div>
       </div>
+
       <div id="preview" style="background: white; display: none;">
       </div>
       <script>
@@ -77,8 +89,8 @@
         };
 
         function handleClick() {
-            $D.selected = $(event.target.closest('div.comment-form-wrapper'));
-            $E.refresh();
+          $D.selected = $(event.target.closest('div.comment-form-wrapper'));
+          $E.refresh();
         }
       </script>
 
@@ -100,7 +112,6 @@
         <% else %>
           <a class="btn btn-outline-secondary preview-btn>" id="post_comment" data-previewing-text="Hide Preview" onClick="handleClick();$E.toggle_preview()"><%= translation('comments._form.preview') %></a>
         <% end %>
-
         <span style="color:#888;"> &nbsp;
           <br class="d-md-none" /><%= raw translation('comments._form.logged_in', :username => current_user.username) %> &nbsp;
           <a aria-label="Authoring Help" target="_blank" href="/wiki/authoring-help#Formatting"><i class="fa fa-question-circle"></i></a> &nbsp;

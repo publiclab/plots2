@@ -9,37 +9,35 @@
         #imagebar {width:100%;}
       </style>
 
-
-      <%= render :partial => "editor/toolbar" %>
-      
-      <div id="c<%= comment.id%>div" class="form-group">
-        <textarea aria-label="Edit Comment" onFocus="editing=true" name="body" class="form-control" id="c<%= comment.id%>text" rows="6" cols="40" placeholder="<%= placeholder %>"><%= !(comment.is_a?Answer) ? comment.comment : comment.content %></textarea>
-
-        <div id="imagebar">
-          <div id="c<%= comment.id%>progress" style="display:none;" class="progress progress-striped active pull-right">
-            <div id="c<%= comment.id%>progress-bar" class="progress-bar" style="width: 0%;"></div>
-          </div>
-
-          <p>
-            <span id="c<%= comment.id%>uploading" class="uploading" style="display:none;">
-              <%= translation('comments._edit.uploading') %>
-            </span>
-            <span id="c<%= comment.id%>prompt" class="prompt">
-              <span style="padding-right:4px;float:left;" class="hidden-xs">
-                <%= raw translation('comments._edit.drag_and_drop') %>
-              </span>
-              <label id="c<%= comment.id%>input_label" for="c<%= comment.id%>input">
-                <input id="c<%= comment.id%>input" type="file" name="image[photo]" style="display:none;" />
-                <a class="hidden-xs"><%= translation('comments._edit.choose_one') %></a>
-                <span class="visible-xs">
-                  <i class="fa fa-upload"></i>
-                  <a><%= translation('comments._edit.upload_image') %></a>
-                </span>
-              </label>
-            </span>
-          </p>
-        </div>
+    <!-- toolbar needs location & comment_id to make unique element IDs -->
+    <%= render :partial => "editor/toolbar", :locals => { :comment_id => comment.id.to_s, :location => :edit } %>
+    
+    <div id="c<%= comment.id%>div" class="form-group">
+    <textarea aria-label="Edit Comment" onFocus="editing=true" name="body" class="form-control" id="c<%= comment.id%>text" rows="6" cols="40" placeholder="<%= placeholder %>"><%= !(comment.is_a?Answer) ? comment.comment : comment.content %></textarea>
+    <div id="imagebar">
+      <div id="c<%= comment.id%>progress" style="display:none;" class="progress progress-striped active pull-right">
+        <div id="c<%= comment.id%>progress-bar" class="progress-bar" style="width: 0%;"></div>
       </div>
+      <p>
+        <span id="c<%= comment.id%>uploading" class="uploading" style="display:none;">
+          <%= translation('comments._edit.uploading') %>
+        </span>
+        <span id="c<%= comment.id%>prompt" class="prompt">
+          <span style="padding-right:4px;float:left;" class="hidden-xs">
+          <%= raw translation('comments._edit.drag_and_drop') %>
+          </span>
+          <label id="c<%= comment.id%>input_label" for="c<%= comment.id%>input">
+            <input id="c<%= comment.id%>input" type="file" name="image[photo]" style="display:none;" />
+            <a class="hidden-xs"><%= translation('comments._edit.choose_one') %></a>
+            <span class="visible-xs">
+              <i class="fa fa-upload"></i>
+              <a><%= translation('comments._edit.upload_image') %></a>
+            </span>
+          </label>
+        </span>
+      </p>
+      </div>
+    </div>
       <script type="application/javascript">
         jQuery(document).ready(function() {
           $E.initialize();
