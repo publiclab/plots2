@@ -481,3 +481,39 @@ hidden_response_note:
   type: "note"
   cached_likes: 0
   slug: "note-tagged-with-hidden-response"
+
+question_with_multiple_comments: # for testing multiple comment forms
+  nid: 40
+  uid: 2
+  title: "Which condiments do you like"
+  path: "/notes/jeff/12-20-2020/which-condiments-do-you-like"
+  created: <%= DateTime.new(2020,12,20).to_i %>
+  changed: <%= DateTime.new(2020,12,20).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: "jeff-12-20-2020-which-condiments-do-you-like"
+
+note_with_multiple_comments:
+  nid: 41
+  uid: 2
+  title: "Ouija Board"
+  path: "/notes/jeff/12-20-2020/ouija-board"
+  created: <%= DateTime.new(2020,12,20).to_i %>
+  changed: <%= DateTime.new(2020,12,20).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: "jeff-12-20-2020-ouija-board"
+
+wiki_with_multiple_comments: 
+  nid: 42
+  uid: 2
+  title: "List of pokemon"
+  path: "/wiki/list-of-pokemon"
+  created: <%= DateTime.new(2020,12,21).to_i %>
+  changed: <%= DateTime.new(2020,12,21).to_i %>
+  status: 1
+  type: "page"
+  cached_likes: 0
+  slug: "wiki-list-of-pokemon"

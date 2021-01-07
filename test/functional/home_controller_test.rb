@@ -59,7 +59,7 @@ class HomeControllerTest < ActionController::TestCase
     @wikis.each do |obj|
       if obj.class == Revision && obj.status == 1
         selections = css_select '.wiki'
-        assert_equal 9, selections.length
+        assert_equal 10, selections.length
       elsif obj.class == Revision && obj.status != 1
         selections = css_select '.wiki'
         assert_equal 0, selections.length

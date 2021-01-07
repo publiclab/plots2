@@ -1,11 +1,11 @@
-xml.rss :version => '2.0', 'xmlns:atom' => 'http://www.w3.org/2005/Atom' do
+xml.rss :version => '2.0', 'xmlns:atom' => 'https://www.w3.org/2005/Atom' do
   xml.channel do
     xml.title "Recent research notes on PublicLab.org"
     xml.description "Open source environmental science research at Public Lab"
     xml.link "https://#{request.host}/feed.rss"
     xml.tag! 'atom:link', rel: 'self', type: 'application/rss+xml', href: "https://#{request.host}/feed.rss"
 
-    @notes.includes(user: [:user_tags]).each do |node|
+    @notes.each do |node|
       author = node.author.username
       if node.author.has_power_tag('twitter')
         author = "@#{node.author.get_value_of_power_tag('twitter')}"
