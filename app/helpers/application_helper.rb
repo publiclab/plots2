@@ -67,26 +67,26 @@ module ApplicationHelper
 
   # used in views/comments/_form.html.erb
   def get_large_dropzone_id(location, reply_to)
-  case location
-  when :main
-    '-main'
-  when :reply
-    '-reply-' + reply_to.to_s
-  when :responses
-    '-responses'
-  end
+    case location
+    when :main
+      '-main'
+    when :reply
+      '-reply-' + reply_to.to_s
+    when :responses
+      '-responses'
+    end
   end
 
   # used in views/comments/_form.html.erb
   def get_textarea_id(location, reply_to)
-  case location
-  when :main
-    'text-input'
-  when :reply
-    'text-input-reply-' + reply_to.to_s
-  when :responses
-    'text-input-responses'
-  end
+    case location
+    when :main
+      'text-input'
+    when :reply
+      'text-input-reply-' + reply_to.to_s
+    when :responses
+      'text-input-responses'
+    end
   end
 
   def locale_name_pairs
