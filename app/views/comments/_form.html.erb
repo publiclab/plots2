@@ -34,7 +34,7 @@
       <!-- most comment forms have two dropzones: 1) small button, 2) large form that covers textarea -->
       <!-- this is the large dropzone -->
       <!-- get_large_dropzone_id defined in application_helper.rb -->
-      <% dropzone_large_id = get_large_dropzone_id(location,local_assigns[:reply_to]) %>
+      <% dropzone_large_id = get_large_dropzone_id(location, local_assigns[:reply_to]) %>
       <div id="dropzone-large<%= dropzone_large_id %>" class="form-group dropzone">
         <%
           body = body || params[:body]
@@ -50,7 +50,17 @@
             <% end %>
           </div>
         <% end %>
-        <textarea aria-label="Comment Text" style="border: 1px solid #bbb;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-bottom: 0;padding: 10px;" onFocus="editing=true" name="body" class="form-control" id="text-input" rows="6" cols="40" placeholder="<%= placeholder %>"><%= body %></textarea>
+        <textarea 
+          aria-label="Comment Text" 
+          style="border: 1px solid #bbb;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-bottom: 0;padding: 10px;" 
+          onFocus="editing=true" 
+          name="body" 
+          class="form-control text-input" 
+          id=<%= get_textarea_id(location, local_assigns[:reply_to]) %> 
+          rows="6" 
+          cols="40" 
+          placeholder="<%= placeholder %>"><%= body %>
+        </textarea>
         <div id="imagebar">
           <div id="create_progress" style="display:none;" class="progress float-right">
             <div id="create_progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%;"></div>
