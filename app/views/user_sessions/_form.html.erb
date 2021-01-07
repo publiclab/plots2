@@ -10,7 +10,7 @@
     <% end %></p>
 </center>
 
-<% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
+<%= render partial: 'layouts/errorMessages', locals: { form: f } %>
 
 <br style="clear:both;" />
 
