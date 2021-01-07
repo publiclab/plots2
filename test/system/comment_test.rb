@@ -92,24 +92,23 @@ class CommentTest < ApplicationSystemTestCase
       assert_equal( comment_preview_button.text, "Preview" )
     end
 
-    test "#{page_type_string}: comment image upload" do
-      Capybara.ignore_hidden_elements = false
+    test "#{page_type_string}: IMMEDIATE image SELECT upload into MAIN comment form" do
       node_name == :wiki_page ? (visit nodes(node_name).path + '/comments') : (visit nodes(node_name).path)
-      find("p", text: "Reply to this comment...").click()
-      reply_preview_button = page.all('#post_comment')[0]
-      fileinput_element = page.find('#fileinput-button-main')
+      main_comment_form =  page.find('h4', text: /Post comment|Post Comment/).find(:xpath, '..') # title text on wikis is 'Post comment'
+      Capybara.ignore_hidden_elements = false
+      fileinput_element = main_comment_form.find('input#fileinput-button-main')
       # Upload the image
       fileinput_element.set("#{Rails.root.to_s}/public/images/pl.png")
+      Capybara.ignore_hidden_elements = true
       # Wait for image upload to finish
       wait_for_ajax
-      Capybara.ignore_hidden_elements = true
       # Toggle preview
-      reply_preview_button.click()
+      main_comment_form.find('a', text: 'Preview').click
       # Make sure that image has been uploaded
       page.assert_selector('#preview img', count: 1)
     end
 
-    test "#{page_type_string}: comment image upload by choose one" do
+    test "#{page_type_string}: IMMEDIATE image CHOOSE ONE upload into REPLY comment form" do
       node_name == :wiki_page ? (visit nodes(node_name).path + '/comments') : (visit nodes(node_name).path)
       # Open reply comment form
       find("p", text: "Reply to this comment...").click()
@@ -127,7 +126,7 @@ class CommentTest < ApplicationSystemTestCase
       page.assert_selector('#preview img', count: 1)
     end
 
-    test "#{page_type_string}: comment image drag and drop upload" do
+    test "#{page_type_string}: IMMEDIATE image DRAG & DROP into REPLY comment form" do
       Capybara.ignore_hidden_elements = false
       node_name == :wiki_page ? (visit nodes(node_name).path + '/comments') : (visit nodes(node_name).path)
       find("p", text: "Reply to this comment...").click()
@@ -151,7 +150,7 @@ class CommentTest < ApplicationSystemTestCase
     #   main comment form
     #   drag & drop
     #   onto edit form's .dropzone button
-    test "#{page_type_string}: image DRAG & DROP into edit form isn't cross-wired with main form" do
+    test "#{page_type_string}: image DRAG & DROP into EDIT form isn't cross-wired with MAIN form" do
       node_name == :wiki_page ? (visit nodes(node_name).path + '/comments') : (visit nodes(node_name).path)
       
       # make a fresh comment in the main comment form
@@ -202,11 +201,11 @@ class CommentTest < ApplicationSystemTestCase
       node_name == :wiki_page ? (visit nodes(node_name).path + '/comments') : (visit nodes(node_name).path)
       find("p", text: "Reply to this comment...").click()
       # Write a comment
-      page.all("#text-input")[1].set("Great post!")
+      page.all(".text-input")[1].set("Great post!")
       page.execute_script <<-JS
         // Remove first text-input field
-        $("#text-input").remove()
-        var $textBox = $("#text-input");
+        $(".text-input").first().remove()
+        var $textBox = $(".text-input");
         // Generate fake CTRL + Enter event
         var press = jQuery.Event("keypress");
         press.altGraphKey = false;
