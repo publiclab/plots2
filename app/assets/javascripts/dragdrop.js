@@ -12,8 +12,8 @@ jQuery(function() {
   function progressAll(elem, data) {
     var progress = parseInt(data.loaded / data.total * 100, 10);
     $(elem).css(
-        'width',
-        progress + '%'
+      'width',
+      progress + '%'
     );
   }
 
@@ -34,7 +34,9 @@ jQuery(function() {
   $('.dropzone').on('drop',function(e) {
     $D.selected = $(e.target).closest('div.comment-form-wrapper').eq(0);
     e.preventDefault();
-    $E.initialize({});
+    $E.initialize({
+      textarea: $D.selected[0].querySelector('textarea').id
+    });
   });
   $('#side-dropzone').on('drop',function(e) {
     e.preventDefault();
@@ -77,10 +79,10 @@ jQuery(function() {
             case 'image':
               orig_image_url = file_url + '?s=o' // size = original
               $E.wrap('[![', '](' + file_url + ')](' + orig_image_url + ')', {'newline': true, 'fallback': data.result['filename']}) // on its own line; see /app/assets/js/editor.js
-              break
+              break;
             case 'csv':
               $E.wrap('[graph:' + file_url + ']', '', {'newline': true})
-              break
+              break;
             default:
               $E.wrap('<a href="'+data.result.url.split('?')[0]+'"><i class="fa fa-file"></i> ','</a>', {'newline': true, 'fallback': data.result['filename'].replace(/[()]/g , "-")}) // on its own line; see /app/assets/js/editor.js
           }
