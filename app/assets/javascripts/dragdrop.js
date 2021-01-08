@@ -34,9 +34,13 @@ jQuery(function() {
   $('.dropzone').on('drop',function(e) {
     $D.selected = $(e.target).closest('div.comment-form-wrapper').eq(0);
     e.preventDefault();
-    $E.initialize({
-      textarea: $D.selected[0].querySelector('textarea').id
-    });
+    let params = {};
+    if ($D.selected.hasOwnProperty(0)) {
+      params['textarea'] = $D.selected[0].querySelector('textarea').id
+    } else {
+      params['textarea'] = 'text-input'
+    };
+    $E.initialize(params);
   });
   $('#side-dropzone').on('drop',function(e) {
     e.preventDefault();
