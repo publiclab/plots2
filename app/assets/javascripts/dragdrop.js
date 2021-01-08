@@ -39,7 +39,7 @@ jQuery(function() {
       params['textarea'] = $D.selected[0].querySelector('textarea').id
     } else {
       params['textarea'] = 'text-input'
-    };
+    }
     $E.initialize(params);
   });
   $('#side-dropzone').on('drop',function(e) {
