@@ -387,8 +387,8 @@ class CommentTest < ApplicationSystemTestCase
       reply_toggles[0].click
       reply_toggles[2].click
       # fill them in with text
-      find("div#comment-#{comment_ids[0]}-reply-section textarea#text-input").click.fill_in with: 'A'
-      find("div#comment-#{comment_ids[2]}-reply-section textarea#text-input").click.fill_in with: 'Y'
+      find("div#comment-#{comment_ids[0]}-reply-section textarea.text-input").click.fill_in with: 'A'
+      find("div#comment-#{comment_ids[2]}-reply-section textarea.text-input").click.fill_in with: 'Y'
       # click the publish buttons for each in a random sequence
       [1, 2, 0].each do |number|
         find("div#comment-#{comment_ids[number]}-reply-section button", text: 'Publish').click
