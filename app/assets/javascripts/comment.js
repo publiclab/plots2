@@ -3,20 +3,20 @@
   $('.comment-form').each(function() {
     if(!$(this).hasClass('bound-success')) {
       $(this).addClass('bound-success').bind('ajax:success', function(e, data, status, xhr){
-        $(this).find('#text-input').prop('disabled',false);
-        $(this).find('#text-input').val('');
+        $(this).find('.text-input').prop('disabled',false);
+        $(this).find('.text-input').val('');
         $('#comments-container').append(xhr.responseText);
         $(this).find(".btn-primary").button('reset');
         $(this).find('#preview').hide();
-        $(this).find('#text-input').show();
+        $(this).find('.text-input').show();
         $(this).find('#preview-btn').button('toggle');
       });
     }
 
     if(!$(this).hasClass('bound-beforeSend')) {
       $(this).addClass('bound-beforeSend').bind('ajax:beforeSend', function(event){
-        $(this).find("#text-input").prop('disabled',true)
-        $(this).find('#text-input').val('');
+        $(this).find(".text-input").prop('disabled',true)
+        $(this).find('.text-input').val('');
         $(this).find(".btn-primary").button('loading',true);
       });
     }
@@ -24,10 +24,10 @@
     if(!$(this).hasClass('bound-error')) {
       $(this).addClass('bound-error').bind('ajax:error', function(e,response){
         notyNotification('mint', 3000, 'error', 'topRight', 'Some error occured while adding comment');
-        $(this).find('#text-input').prop('disabled',false);
+        $(this).find('.text-input').prop('disabled',false);
         $(this).find('.control-group').addClass('has-error')
         $(this).find('.control-group .help-block ').remove()
-        $(this).find('#text-input').val('');
+        $(this).find('.text-input').val('');
         $(this).find('.control-group').append('<span class="help-block ">Error: there was a problem.</span>')
       });
     }
@@ -35,7 +35,7 @@
     if(!$(this).hasClass('bound-keypress')) {
       $(this).addClass('bound-keypress');
 
-      $(this).find('#text-input').val('');
+      $(this).find('.text-input').val('');
       $(this).on('keypress', function (e) {
         var isPostCommentShortcut = (e.ctrlKey && e.keyCode === 10) || (e.metaKey && e.keyCode === 13);
 

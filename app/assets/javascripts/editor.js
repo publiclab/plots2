@@ -131,7 +131,7 @@ $E = {
       const currentComment = $('#'+comment_id).parent('.control-group')
       $E.preview = currentComment.siblings('#preview')
       dropzone = currentComment.siblings('.dropzone')
-      $E.textarea = dropzone.children('#text-input')
+      $E.textarea = dropzone.children('.text-input')
     } else {
       previewBtn = $(this.textarea.context).find('#post_comment');
       dropzone = $(this.textarea.context).find('.dropzone');
