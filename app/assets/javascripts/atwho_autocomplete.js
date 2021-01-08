@@ -38,7 +38,7 @@
       limit: 100
    }
 
-  $('textarea#text-input')
+  $('textarea.text-input')
     .atwho(at_config)
     .atwho(hashtags_config)
     .atwho(emojis_config);
