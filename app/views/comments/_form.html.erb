@@ -1,13 +1,12 @@
 <div class="comment-form-wrapper" style="background-color:#f8f8f8; border: 1px solid #e7e7e7;padding: 18px;">
   <div class="card-body">
     <form class="comment-form" id="comment-form" data-remote="true" action="/comment/create/<%= @node.nid %><%= "?type=question" if local_assigns[:type]=="question" %>" <% if local_assigns[:aid].blank? %>method="post"<% end %>>
-
       <% if current_user && current_user.id == @node.uid %>
-        <span class="pull-right" style="color:#ccc;"><a target="_blank" href="https://publiclab.org/comment-templates">Add a template</a></span>
+        <span class="pull-right" style="color:#ccc;">
+          <a target="_blank" href="https://publiclab.org/comment-templates">Add a template</a>
+        </span>
       <% end %>
-
       <h4 style="margin-top:0;"><%= title %></h4>
-
       <style>
         #imagebar {
           width:100%;
@@ -35,7 +34,7 @@
       <!-- most comment forms have two dropzones: 1) small button, 2) large form that covers textarea -->
       <!-- this is the large dropzone -->
       <!-- get_large_dropzone_id defined in application_helper.rb -->
-      <% dropzone_large_id = get_large_dropzone_id(location,local_assigns[:reply_to]) %>
+      <% dropzone_large_id = get_large_dropzone_id(location, local_assigns[:reply_to]) %>
       <div id="dropzone-large<%= dropzone_large_id %>" class="form-group dropzone">
         <%
           body = body || params[:body]
@@ -51,7 +50,17 @@
             <% end %>
           </div>
         <% end %>
-        <textarea aria-label="Comment Text" style="border: 1px solid #bbb;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-bottom: 0;padding: 10px;" onFocus="editing=true" name="body" class="form-control" id="text-input" rows="6" cols="40" placeholder="<%= placeholder %>"><%= body %></textarea>
+        <textarea 
+          aria-label="Comment Text" 
+          style="border: 1px solid #bbb;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-bottom: 0;padding: 10px;" 
+          onFocus="editing=true" 
+          name="body" 
+          class="form-control text-input" 
+          id=<%= get_textarea_id(location, local_assigns[:reply_to]) %> 
+          rows="6" 
+          cols="40" 
+          placeholder="<%= placeholder %>"><%= body %>
+        </textarea>
         <div id="imagebar">
           <div id="create_progress" style="display:none;" class="progress float-right">
             <div id="create_progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%;"></div>
@@ -90,14 +99,9 @@
         };
 
         function handleClick() {
-            $D.selected = $(event.target.closest('div.comment-form-wrapper'));
-            console.log($D.selected);
-            $E.refresh();
+          $D.selected = $(event.target.closest('div.comment-form-wrapper'));
+          $E.refresh();
         }
-
-        $('#input_label').click(function(e){
-            $E.initialize({});
-        });
       </script>
 
       <%= javascript_include_tag "dragdrop" %>
@@ -118,7 +122,6 @@
         <% else %>
           <a class="btn btn-outline-secondary preview-btn>" id="post_comment" data-previewing-text="Hide Preview" onClick="handleClick();$E.toggle_preview()"><%= translation('comments._form.preview') %></a>
         <% end %>
-
         <span style="color:#888;"> &nbsp;
           <br class="d-md-none" /><%= raw translation('comments._form.logged_in', :username => current_user.username) %> &nbsp;
           <a aria-label="Authoring Help" target="_blank" href="/wiki/authoring-help#Formatting"><i class="fa fa-question-circle"></i></a> &nbsp;

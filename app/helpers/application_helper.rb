@@ -77,6 +77,18 @@ module ApplicationHelper
     end
   end
 
+  # used in views/comments/_form.html.erb
+  def get_textarea_id(location, reply_to)
+    case location
+    when :main
+      'text-input'
+    when :reply
+      'text-input-reply-' + reply_to.to_s
+    when :responses
+      'text-input-responses'
+    end
+  end
+
   def locale_name_pairs
     I18n.available_locales.map do |locale|
       [I18n.t('language', locale: locale), locale]

@@ -59,7 +59,7 @@
             <input aria-label="Wiki Title" tabindex="1" name="title" type="text" class="form-control" id="title" value="<% if @node && @node.latest %><%= @node.latest.title %><% else %><%= params[:title] %><% end %>">
           </div>
 
-          <script>
+          <script type="application/javascript">
             (function(){
               $D = {
                 uid: <%= current_user.uid %>,
@@ -86,7 +86,7 @@
           <br />
         </div>
 
-        <script>
+        <script type="application/javascript">
           (function(){
             publish = function(e) {
               $('form.wiki-form').submit()
