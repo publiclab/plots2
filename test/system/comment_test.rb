@@ -382,7 +382,7 @@ class CommentTest < ApplicationSystemTestCase
       # work with just the 2nd comment
       reply_toggles[1].click 
       # open the comment form by toggling, and fill in some text
-      find("div#comment-#{comment_ids[1]}-reply-section textarea#text-input").click.fill_in with: 'H'
+      find("div#comment-#{comment_ids[1]}-reply-section textarea.text-input").click.fill_in with: 'H'
       # open the other two comment forms
       reply_toggles[0].click
       reply_toggles[2].click
