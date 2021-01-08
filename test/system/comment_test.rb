@@ -135,26 +135,26 @@ class CommentTest < ApplicationSystemTestCase
       assert_equal( comment_preview_button.text, "Preview" )
     end
 
-    test "#{page_type_string}: comment image upload" do
+    test "#{page_type_string}: IMMEDIATE image SELECT upload into MAIN comment form" do
       Capybara.ignore_hidden_elements = false
       visit get_path(page_type, nodes(node_name).path)
-      find("p", text: "Reply to this comment...").click()
-      reply_preview_button = page.all('#post_comment')[0]
-      fileinput_element = page.find('#fileinput-button-main')
+      main_comment_form =  page.find('h4', text: /Post comment|Post Comment/).find(:xpath, '..') # title text on wikis is 'Post comment'
+      fileinput_element = main_comment_form.find('input#fileinput-button-main')
       # Upload the image
       fileinput_element.set("#{Rails.root.to_s}/public/images/pl.png")
+      Capybara.ignore_hidden_elements = true
       # Wait for image upload to finish
       wait_for_ajax
-      Capybara.ignore_hidden_elements = true
       # Toggle preview
-      reply_preview_button.click()
+      main_comment_form.find('a', text: 'Preview').click
       # Make sure that image has been uploaded
       page.assert_selector('#preview img', count: 1)
     end
 
-    test "#{page_type_string}: comment image upload by choose one" do
+    test "#{page_type_string}: IMMEDIATE image CHOOSE ONE upload into REPLY comment form" do
       Capybara.ignore_hidden_elements = false
       visit get_path(page_type, nodes(node_name).path)
+      # Open reply comment form
       find("p", text: "Reply to this comment...").click()
       first("a", text: "choose one").click() 
       reply_preview_button = page.first('a', text: 'Preview')
@@ -170,7 +170,7 @@ class CommentTest < ApplicationSystemTestCase
       page.assert_selector('#preview img', count: 1)
     end
 
-    test "#{page_type_string}: comment image drag and drop upload" do
+    test "#{page_type_string}: IMMEDIATE image DRAG & DROP into REPLY comment form" do
       Capybara.ignore_hidden_elements = false
       visit get_path(page_type, nodes(node_name).path)
       find("p", text: "Reply to this comment...").click()
@@ -186,15 +186,70 @@ class CommentTest < ApplicationSystemTestCase
       page.assert_selector('#preview img', count: 1)
     end
 
+    # sometimes if edit and reply/main comment forms are open, 
+    # you drop an image into edit form, and the link will end
+    # up in the other one.
+
+    # there are many variations of this bug. this particular test involves:
+    #   main comment form
+    #   drag & drop
+    #   onto edit form's .dropzone button
+    test "#{page_type_string}: image DRAG & DROP into EDIT form isn't cross-wired with MAIN form" do
+      node_name == :wiki_page ? (visit nodes(node_name).path + '/comments') : (visit nodes(node_name).path)
+      
+      # make a fresh comment in the main comment form
+      main_comment_form =  page.find('h4', text: /Post comment|Post Comment/).find(:xpath, '..') # title text on wikis is 'Post comment'
+      # fill out the comment form
+      main_comment_form
+        .find('textarea')
+        .click
+        .fill_in with: comment_text
+      # publish
+      main_comment_form
+        .find('button', text: 'Publish')
+        .click
+      page.find(".noty_body", text: "Comment Added!")
+
+      # before we drop an image, we need to make the main comment form the focus by clicking on "Preview," then hiding preview.
+      # otherwise, image upload in the next step won't be 'wired' to the "Post Comment" form.
+      main_comment_form.find('a', text: 'Preview').click.click
+      # .dropzone is hidden, so reveal it for Capybara's finders:
+      Capybara.ignore_hidden_elements = false
+      # drag & drop the image. drop_in_dropzone simulates 'drop' event,  see application_system_test_case.rb
+      drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", '#comments-list + div .dropzone') # this CSS selects .dropzones that belong to sibling element immediately following #comments-list. technically, there are two .dropzones in the main comment form.
+      Capybara.ignore_hidden_elements = true
+      wait_for_ajax
+
+      # we need the ID of parent div that contains <p>comment_text</p>:
+      comment_id = page.find('p', text: comment_text).find(:xpath, '..')[:id]
+      # regex to strip the ID number out of string. ID format is comment-body-4231
+      comment_id_num = /comment-body-(\d+)/.match(comment_id)[1]
+      comment_dropzone_selector = '#c' + comment_id_num + 'div'
+      # open the edit comment form
+      page.find("#edit-comment-btn").click
+      # drop into the edit comment form
+      Capybara.ignore_hidden_elements = false
+      drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", comment_dropzone_selector)
+      Capybara.ignore_hidden_elements = true
+      wait_for_ajax
+
+      # open the preview for the main comment form
+      main_comment_form.find('a', text: 'Preview').click
+      # once preview is open, the images are embedded in the page.
+      # there should only be 1 image in the main comment form!
+      preview_imgs = page.all('#preview img').size
+      assert_equal(1, preview_imgs)
+    end
+
     test "#{page_type_string}: ctrl/cmd + enter comment publishing keyboard shortcut" do
       visit get_path(page_type, nodes(node_name).path)
       find("p", text: "Reply to this comment...").click()
       # Write a comment
-      page.all("#text-input")[1].set("Great post!")
+      page.all(".text-input")[1].set("Great post!")
       page.execute_script <<-JS
         // Remove first text-input field
-        $("#text-input").remove()
-        var $textBox = $("#text-input");
+        $(".text-input").first().remove()
+        var $textBox = $(".text-input");
         // Generate fake CTRL + Enter event
         var press = jQuery.Event("keypress");
         press.altGraphKey = false;
@@ -234,13 +289,17 @@ class CommentTest < ApplicationSystemTestCase
     test "#{page_type_string}: comment deletion" do
       visit get_path(page_type, nodes(node_name).path)
       # Create a comment
-      page.execute_script <<-JS
-        var commentForm = $('.comment-form-wrapper')[1];
-        var submitCommentBtn = $(commentForm).find('.btn-primary')[0];
-        var commentTextarea = $(commentForm).find('#text-input')[0]
-        $(commentTextarea).val('Great post Jeff!')
-        $(submitCommentBtn).click()
-      JS
+      main_comment_form =  page.find('h4', text: /Post comment|Post Comment/).find(:xpath, '..') # title text on wikis is 'Post comment'
+      # fill out the comment form
+      main_comment_form
+        .find('textarea')
+        .click
+        .fill_in with: comment_text
+      # publish
+      main_comment_form
+        .find('button', text: 'Publish')
+        .click
+      page.find(".noty_body", text: "Comment Added!")
       # Delete a comment
       find('.btn[data-original-title="Delete comment"]', match: :first).click()
       # Click "confirm" on modal
@@ -264,14 +323,17 @@ class CommentTest < ApplicationSystemTestCase
     test "#{page_type_string}: edit comment" do
       visit get_path(page_type, nodes(node_name).path)
       # Create a comment
-      page.execute_script <<-JS
-        var commentForm = $('.comment-form-wrapper')[1];
-        var submitCommentBtn = $(commentForm).find('.btn-primary')[0];
-        var commentTextarea = $(commentForm).find('#text-input')[0]
-        // Fill the form
-        $(commentTextarea).val('Great post Jeff!')
-        $(submitCommentBtn).click()
-      JS
+      main_comment_form =  page.find('h4', text: /Post comment|Post Comment/).find(:xpath, '..') # title text on wikis is 'Post comment'
+      # fill out the comment form
+      main_comment_form
+        .find('textarea')
+        .click
+        .fill_in with: comment_text
+      # publish
+      main_comment_form
+        .find('button', text: 'Publish')
+        .click
+      page.find(".noty_body", text: "Comment Added!")
       # Wait for comment to upload
       wait_for_ajax
       # Edit the comment
@@ -320,13 +382,13 @@ class CommentTest < ApplicationSystemTestCase
       # work with just the 2nd comment
       reply_toggles[1].click 
       # open the comment form by toggling, and fill in some text
-      find("div#comment-#{comment_ids[1]}-reply-section textarea#text-input").click.fill_in with: 'H'
+      find("div#comment-#{comment_ids[1]}-reply-section textarea.text-input").click.fill_in with: 'H'
       # open the other two comment forms
       reply_toggles[0].click
       reply_toggles[2].click
       # fill them in with text
-      find("div#comment-#{comment_ids[0]}-reply-section textarea#text-input").click.fill_in with: 'A'
-      find("div#comment-#{comment_ids[2]}-reply-section textarea#text-input").click.fill_in with: 'Y'
+      find("div#comment-#{comment_ids[0]}-reply-section textarea.text-input").click.fill_in with: 'A'
+      find("div#comment-#{comment_ids[2]}-reply-section textarea.text-input").click.fill_in with: 'Y'
       # click the publish buttons for each in a random sequence
       [1, 2, 0].each do |number|
         find("div#comment-#{comment_ids[number]}-reply-section button", text: 'Publish').click
