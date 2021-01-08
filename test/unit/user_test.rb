@@ -307,6 +307,6 @@ class UserTest < ActiveSupport::TestCase
 
   test 'for_subscriptions' do
     user = users(:bob)
-    assert_equal  user.subscriptions(:tag).size, 3
+    assert_equal  user.subscriptions(:tag).size, 4
   end
 end

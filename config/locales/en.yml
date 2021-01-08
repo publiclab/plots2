@@ -344,7 +344,25 @@ en:
     _comment_moderate:
       first_time_post: "Moderate first-time comment:"
   dashboard_v2:
-    view: "This is the dashboard redesign page"
+    _header:
+      dashboard: "Dashboard"
+      updates: "Updates from community members on <a href='%{url}' class='form-grey' style='text-decoration: underline;'>topics</a> you follow"
+      community_research: "Community research"
+    dashboard:
+      from_blog: "From the <a href='%{url}'>Public Lab Blog</a>"
+      by: "by"
+    sidebar:
+      add_location: "Add your location"
+      location_work: "Add your location to see work near you"
+      location_privacy: "About location privacy"
+      all_posts: "<a href='%{url}' class='form-grey'>View all posts</a>"
+      follow_topics: "Follow more topics"
+      trending_topics: "Trending topics"
+      learn_more: "learn more"
+      add_topics: "Click to add topics, or"
+      all_topics: "<a href='%{url}' class='form-grey'>All topics</a>"
+      more_topics: "<a href='%{url}' class='form-grey'>more...</a>"
+      interest_topics: "Click to start followong topics that interest you"
   like:
     index:
       recent_likes: "Recent Likes"
@@ -395,6 +413,9 @@ en:
       following: "Following"
       unfollow: "Click to unfollow"
       follow: "Follow"
+      unfollow_text: "Unfollow"
+      subscribe: "Subscribe"
+      blog_updates: "Click to subscribe to blog updates via email"
       none: "None"
       users_following_tag: "Users following this tag"
       ask_question: "Ask a question about <b>%{tag}</b>"
@@ -410,6 +431,9 @@ en:
       people: "People"
       no_map_results_found: "Sorry, no map is tagged with <i>%{tag}</i>"
       contributors: "Contributors"
+      notes_not_available: "This topic has no available notes. View other posts by clicking the link below."
+      by: "by"
+      new_post: "New post"
     contributors-index:
       contributors_over_last_week: "Contributors for <i style=\"color:#aaa;\">%{tag_name}</i>
         over the past 52 weeks"

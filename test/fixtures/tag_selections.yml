@@ -123,3 +123,10 @@ selection_spectrometer:
   following: true
   created_at: <%= Time.now %>
   updated_at: <%= Time.now %>
+
+subscribed_tag:
+  user_id: 1
+  tid: 37
+  following: true
+  created_at: <%= Time.now  %>
+  updated_at: <%= Time.now %>

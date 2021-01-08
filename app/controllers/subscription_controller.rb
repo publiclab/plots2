@@ -45,7 +45,7 @@ class SubscriptionController < ApplicationController
         end
       end
 
-      case tag_selection_more_than_zero?(params[:tid])
+      case tag_selection_more_than_zero?(tag.tid)
       when true
         respond_to do |format|
           format.html do
