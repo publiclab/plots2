@@ -36,7 +36,7 @@
     "jquery": "^3.5.1",
     "jquery-confirm": "^3.3.4",
     "jquery-file-upload": "blueimp/jQuery-File-Upload#~10.31.0",
-    "jquery-validation": "^1.19.2",
+    "jquery-validation": "^1.19.3",
     "jsdiff": "components/jsdiff#~3.4.0",
     "junction": "theleagueof/junction#*",
     "leaflet": "^1.7.1",
