@@ -2,7 +2,7 @@
 
   $('.comment-form').each(function() {
     if(!$(this).hasClass('bound-success')) {
-      $(this).addClass('bound-success').bind('ajax:success', function(e, data, status, xhr){
+      $(this).addClass('bound-success').on('ajax:success', function(e, data, status, xhr){
         $(this).find('.text-input').prop('disabled',false);
         $(this).find('.text-input').val('');
         $('#comments-container').append(xhr.responseText);
@@ -14,7 +14,7 @@
     }
 
     if(!$(this).hasClass('bound-beforeSend')) {
-      $(this).addClass('bound-beforeSend').bind('ajax:beforeSend', function(event){
+      $(this).addClass('bound-beforeSend').on('ajax:beforeSend', function(event){
         $(this).find(".text-input").prop('disabled',true)
         $(this).find('.text-input').val('');
         $(this).find(".btn-primary").button('loading',true);
@@ -22,7 +22,7 @@
     }
 
     if(!$(this).hasClass('bound-error')) {
-      $(this).addClass('bound-error').bind('ajax:error', function(e,response){
+      $(this).addClass('bound-error').on('ajax:error', function(e,response){
         notyNotification('mint', 3000, 'error', 'topRight', 'Some error occured while adding comment');
         $(this).find('.text-input').prop('disabled',false);
         $(this).find('.control-group').addClass('has-error')
