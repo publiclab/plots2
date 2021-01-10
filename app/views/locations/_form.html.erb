@@ -190,6 +190,7 @@
     <% end %>
     
     <% if params[:reload] %>setTimeout(function() { location.reload(); }, 3000);<% end %>
+    notyNotification('relax', 3000, 'success', 'topCenter', 'Location Saved');
   }
 
   function parameterize(input) {
