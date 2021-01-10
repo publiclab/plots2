@@ -51,16 +51,16 @@
           $E.initialize(args);
         }
 
-        $('#c<%= comment.id%>div').bind('dragover',function(e) {
+        $('#c<%= comment.id%>div').on('dragover',function(e) {
           e.preventDefault();
           $('#c<%= comment.id%>div').addClass('hover');
         });
 
-        $('#c<%= comment.id%>div').bind('dragout',function(e) {
+        $('#c<%= comment.id%>div').on('dragout',function(e) {
           $('#c<%= comment.id%>div').removeClass('hover');
         });
 
-        $('#c<%= comment.id%>div').bind('drop',function(e) {
+        $('#c<%= comment.id%>div').on('drop',function(e) {
           e.preventDefault();
           $D.selected = $(e.target).closest('div.comment-form-wrapper').eq(0);
           setInit(<%= comment.id %>);
