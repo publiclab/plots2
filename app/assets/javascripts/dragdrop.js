@@ -32,13 +32,19 @@ jQuery(function() {
     $('#side-dropzone').removeClass('hover');
   });
   $('.dropzone').on('drop',function(e) {
+    // this 'drop' listener is also reused for pages with just one form, ie. /wiki/new
     $D.selected = $(e.target).closest('div.comment-form-wrapper').eq(0);
     e.preventDefault();
     let params = {};
-    if ($D.selected.hasOwnProperty(0)) {
-      params['textarea'] = $D.selected[0].querySelector('textarea').id
+    // $D.selected will look different for multi vs. single form pages, because of what $.closest returns:
+    //   multiple comments: { 0: the_closest_element }
+    //   /wiki/new: .comment-form-wrapper doesn't exist!
+    if ($D.selected.hasOwnProperty(0)) { // eg. jQuery finds a .comment-form-wrapper somewhere on the page.
+      params['textarea'] = $D.selected[0].querySelector('textarea').id // assign the ID of the textarea within the closest comment-form-wrapper
     } else {
-      params['textarea'] = 'text-input'
+      // default to #text-input
+      // ideally there should only be one per page
+      params['textarea'] = 'text-input' 
     }
     $E.initialize(params);
   });
