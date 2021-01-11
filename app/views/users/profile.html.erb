@@ -6,7 +6,7 @@
   <% elsif !current_user.nil? && current_user.id == @profile_user.id %>
     <div id="map_template" style="position: relative; width: 100%; display: inline-block;">
       <img src="https://api.mapbox.com/styles/v1/jywarren/ckj06ujnc1nmi19nuelh46pr9/tiles/0/0/0?access_token=pk.eyJ1Ijoianl3YXJyZW4iLCJhIjoiVzVZcGg3NCJ9.BJ6ArUPuTs1JT9Ssu3K8ig" style="height:300px; width: 100%; margin: 0; position: relative; margin-right: -10px;">
-      <button type='button' class='blurred-location-input btn btn-default btn-lg' style="position:absolute;position:absolute;top:41%;left:15%;"> <strong> Share your Location </strong> </button>
+      <button type='button' class='blurred-location-input btn btn-default btn-lg' style="position:absolute;position:absolute;top:41%;left:15%;" submit_to="/profile/tags/create/<%= current_user.uid %>"> <strong> Share your Location </strong> </button>
       <p><i><small>Learn about <a href='https://publiclab.org/location-privacy'>privacy</a> </small></i></p>
     </div>
   <% end %>
