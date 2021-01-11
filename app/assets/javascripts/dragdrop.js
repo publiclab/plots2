@@ -33,18 +33,19 @@ jQuery(function() {
   });
   $('.dropzone').on('drop',function(e) {
     // this 'drop' listener is also reused for pages with just one form, ie. /wiki/new
-    $D.selected = $(e.target).closest('div.comment-form-wrapper').eq(0);
+    const closestCommentFormWrapper = e.target.closest('div.comment-form-wrapper'); // this returns null if there is no match
     e.preventDefault();
     let params = {};
-    // $D.selected will look different for multi vs. single form pages, because of what $.closest returns:
-    //   multiple comments: { 0: the_closest_element }
-    //   /wiki/new: .comment-form-wrapper doesn't exist!
-    if ($D.selected.hasOwnProperty(0)) { // eg. jQuery finds a .comment-form-wrapper somewhere on the page.
-      params['textarea'] = $D.selected[0].querySelector('textarea').id // assign the ID of the textarea within the closest comment-form-wrapper
+    // there are no .comment-form-wrappers on /wiki/edit or /wiki/new
+    // these pages just have a single text-input form.
+    if (closestCommentFormWrapper) {
+      $D.selected = $(closestCommentFormWrapper);
+      // assign the ID of the textarea within the closest comment-form-wrapper
+      params['textarea'] = closestCommentFormWrapper.querySelector('textarea').id;
     } else {
       // default to #text-input
       // ideally there should only be one per page
-      params['textarea'] = 'text-input' 
+      params['textarea'] = 'text-input';
     }
     $E.initialize(params);
   });
@@ -52,6 +53,7 @@ jQuery(function() {
     e.preventDefault();
   });
 
+  // these functions are also used on /wiki/edit and /wiki/new pages
   $('.dropzone').each(function() {
     $(this).fileupload({
       url: "/images",
@@ -63,6 +65,13 @@ jQuery(function() {
           'nid':$D.nid
         },
         start: function(e) {
+          // 'start' function runs:
+          //   1. when user drag-and-drops image
+          //   2. when user clicks on upload button.
+          // for click-upload-button scenarios, it's important to set $D.selected here, because the 'drop' listener above doesn't run in those:
+          $D.selected = $(e.target).closest('div.comment-form-wrapper');
+          // the above line is redundant in drag & drop, because it's assigned in 'drop' listener too.
+          // on /wiki/new & /wiki/edit, $D.selected will = undefined from this assignment
           $('#imagebar .inline_image_drop').show();
           $('#create_progress').show();
           $('#create_uploading').show();

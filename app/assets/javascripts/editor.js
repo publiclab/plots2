@@ -1,13 +1,16 @@
 $E = {
   initialize: function(args) {
     args = args || {}
+    // title
+    $E.title = $('#title')
+    // textarea
     args['textarea'] = args['textarea'] || 'text-input'
     $E.textarea = $('#'+args['textarea'])
-    $E.title = $('#title')
+    $E.textarea.bind('input propertychange',$E.save)
+    // preview
     args['preview'] = args['preview'] || 'preview'
     $E.preview = $('#'+args['preview'])
-    $E.textarea.bind('input propertychange',$E.save)
-
+    
     marked.setOptions({
       gfm: true,
       tables: true,
@@ -23,24 +26,25 @@ $E = {
         return code;
       }
     });
-
   },
   is_editing: function() {
     return ($E.textarea[0].selectionStart == 0 && $E.textarea[0].selectionEnd == 0)
   },
-
   refresh: function() {
-      if($D.selected) {
-          $E.textarea = ($D.selected).find('textarea').eq(0);
-          $E.preview = ($D.selected).find('#preview').eq(0);
-          $E.textarea.bind('input propertychange',$E.save);
-      }
+    // textarea
+    $E.textarea = ($D.selected).find('textarea').eq(0);
+    $E.textarea.bind('input propertychange',$E.save);
+    // preview
+    $E.preview = ($D.selected).find('#preview').eq(0);
   },
-
   // wraps currently selected text in textarea with strings a and b
   wrap: function(a,b,args) {
-    var isWiki = (window.location + '').includes('wiki');
-    if (!isWiki) this.refresh();
+    // this RegEx is: /wiki/ + any char not "/" + /edit
+    const isWikiCommentPage = (/\/wiki\/[^\/]+\/edit/).test(window.location.pathname);
+    // we don't need to refresh $E's values if we're on a page with a single comment form, ie. /wiki/new or /wiki/edit
+    if (window.location.pathname !== "/wiki/new" && !isWikiCommentPage && $D.selected) {
+      this.refresh();
+    }
     var len = $E.textarea.val().length;
     var start = $E.textarea[0].selectionStart;
     var end = $E.textarea[0].selectionEnd;
@@ -68,7 +72,6 @@ $E = {
   image: function(src) {
     $E.wrap('\n![',']('+src+')\n')
   },
-
   h1: function() {
     $E.wrap('#','')
   },
@@ -123,7 +126,6 @@ $E = {
   toggle_preview: function (comment_id = null) {
     let previewBtn;
     let dropzone;
-
     // if the element is part of a multi-comment page,
     // ensure to grab the current element and not the other comment element.
     if (comment_id) {
