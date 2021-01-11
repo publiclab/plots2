@@ -218,21 +218,21 @@ ouija_comment_3:
   comment: O
   timestamp: <%= Time.now.to_i + 30 %>
 
-wiki_comment_1: # wiki fixture for testing multiple comments
+pokemon_comment_1: # wiki fixture for testing multiple comments
   uid: 1
   nid: 42
   status: 1
   comment: Squirtle
   timestamp: <%= Time.now.to_i + 10 %>
 
-wiki_comment_2:
+pokemon_comment_2:
   uid: 5
   nid: 42
   status: 1
   comment: Charmander
   timestamp: <%= Time.now.to_i + 20 %>
 
-wiki_comment_3:
+pokemon_comment_3:
   uid: 6
   nid: 42
   status: 1

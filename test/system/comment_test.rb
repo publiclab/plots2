@@ -136,9 +136,9 @@ class CommentTest < ApplicationSystemTestCase
     end
 
     test "#{page_type_string}: IMMEDIATE image SELECT upload into MAIN comment form" do
-      Capybara.ignore_hidden_elements = false
       visit get_path(page_type, nodes(node_name).path)
       main_comment_form =  page.find('h4', text: /Post comment|Post Comment/).find(:xpath, '..') # title text on wikis is 'Post comment'
+      Capybara.ignore_hidden_elements = false
       fileinput_element = main_comment_form.find('input#fileinput-button-main')
       # Upload the image
       fileinput_element.set("#{Rails.root.to_s}/public/images/pl.png")
@@ -147,6 +147,74 @@ class CommentTest < ApplicationSystemTestCase
       wait_for_ajax
       # Toggle preview
       main_comment_form.find('a', text: 'Preview').click
+      # Make sure that image has been uploaded
+      page.assert_selector('#preview img', count: 1)
+    end
+
+    # navigate to page, immediately upload into EDIT form by SELECTing image
+    test "#{page_type_string}: IMMEDIATE image SELECT upload into EDIT comment form" do
+      nodes(node_name).add_comment({
+        uid: 2,
+        body: comment_text
+      })
+      visit get_path(page_type, nodes(node_name).path)
+      # open up the edit comment form
+      page.find("#edit-comment-btn").click
+      edit_comment_form = page.find('h4', text: 'Edit comment').find(:xpath, '..')
+      # we need the comment ID:
+      edit_comment_form_id = edit_comment_form[:id]
+      # regex to strip the ID number out of string. ID format is #c1234edit
+      comment_id_num = /c(\d+)edit/.match(edit_comment_form_id)[1]
+      edit_preview_id = '#c' + comment_id_num + 'preview'
+      # the <inputs> that take image uploads are hidden, so reveal them:
+      Capybara.ignore_hidden_elements = false
+      file_input_element = edit_comment_form.all('input')[1]
+      file_input_element.set("#{Rails.root.to_s}/public/images/pl.png")
+      wait_for_ajax
+      Capybara.ignore_hidden_elements = true
+      # open edit comment preview
+      edit_comment_form.find('a', text: 'Preview').click
+      # there should be 1 preview image in the edit comment
+      assert_selector("#{edit_preview_id} img", count: 1)
+    end
+
+    test "#{page_type_string}: IMMEDIATE image SELECT upload into REPLY comment form" do
+      nodes(node_name).add_comment({
+        uid: 5,
+        body: comment_text
+      })
+      nodes(node_name).add_comment({
+        uid: 2,
+        body: comment_text
+      })
+      visit get_path(page_type, nodes(node_name).path)
+      reply_toggles = page.all('p', text: 'Reply to this comment...')
+      reply_toggles[2].click
+      reply_dropzone_id = page.find('[id^=dropzone-small-reply-]')[:id] # ID begins with...
+      comment_id_num = /dropzone-small-reply-(\d+)/.match(reply_dropzone_id)[1]
+      # upload images
+      # the <inputs> that take image uploads are hidden, so reveal them:
+      Capybara.ignore_hidden_elements = false
+      # upload an image in the reply comment form
+      page.find('#fileinput-button-reply-' + comment_id_num).set("#{Rails.root.to_s}/public/images/pl.png")
+      wait_for_ajax
+      Capybara.ignore_hidden_elements = true
+      page.all('a', text: 'Preview')[0].click
+      assert_selector('#comment-' + comment_id_num + '-reply-section #preview img', count: 1)
+    end
+
+    test "#{page_type_string}: IMMEDIATE image DRAG & DROP into REPLY comment form" do
+      Capybara.ignore_hidden_elements = false
+      visit get_path(page_type, nodes(node_name).path)
+      find("p", text: "Reply to this comment...").click()
+      reply_preview_button = page.all('#post_comment')[0]
+      # Upload the image
+      drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", ".dropzone")
+      # Wait for image upload to finish
+      wait_for_ajax
+      Capybara.ignore_hidden_elements = true
+      # Toggle preview
+      reply_preview_button.click()
       # Make sure that image has been uploaded
       page.assert_selector('#preview img', count: 1)
     end
@@ -170,33 +238,18 @@ class CommentTest < ApplicationSystemTestCase
       page.assert_selector('#preview img', count: 1)
     end
 
-    test "#{page_type_string}: IMMEDIATE image DRAG & DROP into REPLY comment form" do
-      Capybara.ignore_hidden_elements = false
-      visit get_path(page_type, nodes(node_name).path)
-      find("p", text: "Reply to this comment...").click()
-      reply_preview_button = page.all('#post_comment')[0]
-      # Upload the image
-      drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", ".dropzone")
-      # Wait for image upload to finish
-      wait_for_ajax
-      Capybara.ignore_hidden_elements = true
-      # Toggle preview
-      reply_preview_button.click()
-      # Make sure that image has been uploaded
-      page.assert_selector('#preview img', count: 1)
-    end
+    # Cross-Wiring Bugs
 
     # sometimes if edit and reply/main comment forms are open, 
     # you drop an image into edit form, and the link will end
     # up in the other one.
 
     # there are many variations of this bug. this particular test involves:
-    #   main comment form
-    #   drag & drop
-    #   onto edit form's .dropzone button
+    #  DRAG & DROP image upload in both:
+    #    MAIN comment form
+    #    EDIT comment form (.dropzone button)
     test "#{page_type_string}: image DRAG & DROP into EDIT form isn't cross-wired with MAIN form" do
-      node_name == :wiki_page ? (visit nodes(node_name).path + '/comments') : (visit nodes(node_name).path)
-      
+      visit get_path(page_type, nodes(node_name).path)
       # make a fresh comment in the main comment form
       main_comment_form =  page.find('h4', text: /Post comment|Post Comment/).find(:xpath, '..') # title text on wikis is 'Post comment'
       # fill out the comment form
@@ -209,17 +262,12 @@ class CommentTest < ApplicationSystemTestCase
         .find('button', text: 'Publish')
         .click
       page.find(".noty_body", text: "Comment Added!")
-
-      # before we drop an image, we need to make the main comment form the focus by clicking on "Preview," then hiding preview.
-      # otherwise, image upload in the next step won't be 'wired' to the "Post Comment" form.
-      main_comment_form.find('a', text: 'Preview').click.click
       # .dropzone is hidden, so reveal it for Capybara's finders:
       Capybara.ignore_hidden_elements = false
-      # drag & drop the image. drop_in_dropzone simulates 'drop' event,  see application_system_test_case.rb
+      # drag & drop the image. drop_in_dropzone simulates 'drop' event, see application_system_test_case.rb
       drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", '#comments-list + div .dropzone') # this CSS selects .dropzones that belong to sibling element immediately following #comments-list. technically, there are two .dropzones in the main comment form.
       Capybara.ignore_hidden_elements = true
       wait_for_ajax
-
       # we need the ID of parent div that contains <p>comment_text</p>:
       comment_id = page.find('p', text: comment_text).find(:xpath, '..')[:id]
       # regex to strip the ID number out of string. ID format is comment-body-4231
@@ -232,13 +280,92 @@ class CommentTest < ApplicationSystemTestCase
       drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", comment_dropzone_selector)
       Capybara.ignore_hidden_elements = true
       wait_for_ajax
-
       # open the preview for the main comment form
       main_comment_form.find('a', text: 'Preview').click
       # once preview is open, the images are embedded in the page.
       # there should only be 1 image in the main comment form!
       preview_imgs = page.all('#preview img').size
       assert_equal(1, preview_imgs)
+    end
+
+    # cross-wiring test: 
+    # SELECT image upload in both:
+    #   EDIT form
+    #   MAIN form
+    test "#{page_type_string}: image SELECT upload into EDIT form isn't CROSS-WIRED with MAIN form" do
+      nodes(node_name).add_comment({
+        uid: 5,
+        body: comment_text
+      })
+      nodes(node_name).add_comment({
+        uid: 2,
+        body: comment_text
+      })
+      visit get_path(page_type, nodes(node_name).path)
+      # open the edit comment form:
+      find("#edit-comment-btn").click
+      # find the parent of edit comment's fileinput:
+      comment_fileinput_parent_id = page.find('[id^=dropzone-small-edit-]')[:id] # 'begins with' CSS selector
+      comment_id_num = /dropzone-small-edit-(\d+)/.match(comment_fileinput_parent_id)[1]
+      # upload images
+      # the <inputs> that take image uploads are hidden, so reveal them:
+      Capybara.ignore_hidden_elements = false
+      # upload an image in the main comment form
+      page.find('#fileinput-button-main').set("#{Rails.root.to_s}/public/images/pl.png")
+      wait_for_ajax
+      # find edit comment's fileinput:
+      page.find('#fileinput-button-edit-' + comment_id_num).set("#{Rails.root.to_s}/public/images/pl.png")
+      wait_for_ajax
+      Capybara.ignore_hidden_elements = true
+      # click preview buttons in main and edit form
+      page.find('h4', text: /Post comment|Post Comment/) # title text on wikis is 'Post comment'
+        .find(:xpath, '..')
+        .find('a', text: 'Preview').click
+      page.find('#c' + comment_id_num + 'edit a', text: 'Preview').click
+      # once preview is open, the images are embedded in the page.
+      # there should be 1 image in main, and 1 image in edit
+      assert_selector('#c' + comment_id_num + 'preview img', count: 1)
+      assert_selector('#preview img', count: 1)
+    end
+
+    # cross-wiring test
+    # SELECT image upload in both:
+    #   EDIT FORM
+    #   REPLY form
+    test "#{page_type_string}:  image SELECT upload into EDIT form isn't CROSS-WIRED with REPLY form" do
+      nodes(node_name).add_comment({
+        uid: 2,
+        body: comment_text
+      })
+      visit get_path(page_type, nodes(node_name).path)
+      # find the EDIT id
+      # open up the edit comment form
+      page.find("#edit-comment-btn").click
+      edit_comment_form_id = page.find('h4', text: 'Edit comment').find(:xpath, '..')[:id]
+      # regex to strip the ID number out of string. ID format is #c1234edit
+      edit_id_num = /c(\d+)edit/.match(edit_comment_form_id)[1]
+      # open the edit comment form
+      edit_preview_id = '#c' + edit_id_num + 'preview'
+      # find the REPLY id
+      page.all('p', text: 'Reply to this comment...')[0].click
+      reply_dropzone_id = page.find('[id^=dropzone-small-reply-]')[:id]
+      # ID begins with...
+      reply_id_num = /dropzone-small-reply-(\d+)/.match(reply_dropzone_id)[1]
+      # upload images
+      # the <inputs> that take image uploads are hidden, so reveal them:
+      Capybara.ignore_hidden_elements = false
+      # upload an image in the reply comment form
+      page.find('#fileinput-button-reply-' + reply_id_num).set("#{Rails.root.to_s}/public/images/pl.png")
+      wait_for_ajax
+      # upload an image in the edit comment form
+      page.find('#fileinput-button-edit-' + edit_id_num).set("#{Rails.root.to_s}/public/images/pl.png")
+      Capybara.ignore_hidden_elements = true
+      wait_for_ajax
+      # click preview buttons in reply and edit form
+      page.find('#c' + edit_id_num + 'edit a', text: 'Preview').click
+      page.first('a', text: 'Preview').click
+      assert_selector('#c' + edit_id_num + 'preview img', count: 1)
+      assert_selector('#preview img', count: 1)
     end
 
     test "#{page_type_string}: ctrl/cmd + enter comment publishing keyboard shortcut" do
@@ -321,21 +448,11 @@ class CommentTest < ApplicationSystemTestCase
     end
 
     test "#{page_type_string}: edit comment" do
+      nodes(node_name).add_comment({
+        uid: 2,
+        body: comment_text
+      })
       visit get_path(page_type, nodes(node_name).path)
-      # Create a comment
-      main_comment_form =  page.find('h4', text: /Post comment|Post Comment/).find(:xpath, '..') # title text on wikis is 'Post comment'
-      # fill out the comment form
-      main_comment_form
-        .find('textarea')
-        .click
-        .fill_in with: comment_text
-      # publish
-      main_comment_form
-        .find('button', text: 'Publish')
-        .click
-      page.find(".noty_body", text: "Comment Added!")
-      # Wait for comment to upload
-      wait_for_ajax
       # Edit the comment
       page.execute_script <<-JS
         var comment = $(".comment")[1];
@@ -370,7 +487,7 @@ class CommentTest < ApplicationSystemTestCase
       elsif page_type == :wiki
         visit nodes(:wiki_with_multiple_comments).path + '/comments'
       end
-      # there should be exactly three "Reply to comment..."s on this fixture
+      # there should be multiple "Reply to comment..."s on this fixture
       reply_toggles = page.all('p', text: 'Reply to this comment...')
       # extract the comment IDs from each
       comment_ids = []
