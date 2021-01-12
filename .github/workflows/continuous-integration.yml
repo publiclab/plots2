@@ -1,7 +1,7 @@
 name: continuous-integration
 on: [pull_request]
 jobs:
-  test-runner:
+  setup-test-environment:
     runs-on: ubuntu-latest
     
     services:
@@ -78,12 +78,19 @@ jobs:
       run: |
         yarn check || yarn install;
 
+  unit-tests:
+    needs: setup-tests
+
+    steps:
     - name: "Unit Tests"
       env:
         RAILS_ENV: test
         DB_PASSWORD: root
         DB_PORT: ${{ job.services.mysql.ports[3306] }}
       run: bundle exec rails test test/unit
+
+  functional-tests:
+    needs: setup-tests
 
     - name: "Functional Tests"
       env:
@@ -92,12 +99,18 @@ jobs:
         DB_PORT: ${{ job.services.mysql.ports[3306] }}
       run: bundle exec rails test test/functional
 
+  integration-tests:
+    needs: setup-tests
+
     - name: "Integration Tests"
       env:
         RAILS_ENV: test
         DB_PASSWORD: root
         DB_PORT: ${{ job.services.mysql.ports[3306] }}
       run: bundle exec rails test test/integration
+
+  system-tests:
+    needs: setup-tests
 
     - name: "System Tests"
       env:
