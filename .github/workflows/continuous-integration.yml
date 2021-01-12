@@ -79,6 +79,7 @@ jobs:
         yarn check || yarn install;
 
   unit-tests:
+    runs-on: ubuntu-latest
     needs: setup-tests
     steps:
     - name: "Unit Tests"
@@ -89,6 +90,7 @@ jobs:
       run: bundle exec rails test test/unit
 
   functional-tests:
+    runs-on: ubuntu-latest
     needs: setup-tests
     steps:
     - name: "Functional Tests"
@@ -99,6 +101,7 @@ jobs:
       run: bundle exec rails test test/functional
 
   integration-tests:
+    runs-on: ubuntu-latest
     needs: setup-tests
     steps:
     - name: "Integration Tests"
@@ -109,6 +112,7 @@ jobs:
       run: bundle exec rails test test/integration
 
   system-tests:
+    runs-on: ubuntu-latest
     needs: setup-tests
     steps:
     - name: "System Tests"
