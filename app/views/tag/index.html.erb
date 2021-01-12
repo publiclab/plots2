@@ -21,7 +21,7 @@
    <% powertags = '&powertags=' + params[:powertags] if params[:powertags] %>
    <p style="width: 100%; text-align: center; border-bottom: 1px solid #ccc; line-height:2px; margin: 10px 0 20px;">
     <span style="background-color: #fff; padding: 0 10px; color: #808080;">Sort by:
-      <a href = "<%= tags_path %>?sort=name&order=<%= @order_name %><%= powertags %>" style="text-decoration: underline; color: #808080;"><%= translation('tag.index.tag') %></a><span> | </span>
+      <a href = "<%= tags_path %>?sort=name&order=<%= @order_type_for_name %><%= powertags %>" style="text-decoration: underline; color: #808080;"><%= translation('tag.index.tag') %></a><span> | </span>
       <a href = "<%= tags_path %>?sort=followers&order=<%= @order_type %><%= powertags %>" style="text-decoration: underline; color: #808080;"><%= translation('tag.index.number_of_subscriptions')%></a><span> | </span>
       <a href = "<%= tags_path %>?sort=uses&order=<%= @order_type %><%= powertags %>" style="text-decoration: underline; color: #808080;"><%= translation('tag.index.number_of_uses') %></a>
     </span>

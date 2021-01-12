@@ -9,7 +9,7 @@ class TagController < ApplicationController
     @title = I18n.t('tag_controller.tags')
     @paginated = true
     @order_type = params[:order].blank? || (params[:order] == "desc") ? "desc" : "asc"
-    @order_name = params[:order].blank? || (params[:order] == "asc") ? "asc" : "desc"
+    @order_type_for_name = params[:order].blank? || (params[:order] == "asc") ? "asc" : "desc"
     powertag_clause = params[:powertags] == 'true' ? '' : ['name NOT LIKE ?', '%:%']
 
     if params[:search]
