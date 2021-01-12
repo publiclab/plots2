@@ -80,14 +80,14 @@ module ApplicationHelper
   # used in views/editor/_toolbar.html.erb
   def get_toolbar_element_id(location, reply_to, comment_id)
     case location
-    when :main 
-      'main' 
-    when :reply 
+    when :main
+      'main'
+    when :reply
       'reply-' + reply_to.to_s
-    when :edit 
-      'edit-' + comment_id 
-    when :responses 
-      'responses' 
+    when :edit
+      'edit-' + comment_id
+    when :responses
+      'responses'
     end
   end
 
