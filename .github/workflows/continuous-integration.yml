@@ -80,7 +80,6 @@ jobs:
 
   unit-tests:
     needs: setup-tests
-
     steps:
     - name: "Unit Tests"
       env:
@@ -91,7 +90,7 @@ jobs:
 
   functional-tests:
     needs: setup-tests
-
+    steps:
     - name: "Functional Tests"
       env:
         RAILS_ENV: test
@@ -101,7 +100,7 @@ jobs:
 
   integration-tests:
     needs: setup-tests
-
+    steps:
     - name: "Integration Tests"
       env:
         RAILS_ENV: test
@@ -111,7 +110,7 @@ jobs:
 
   system-tests:
     needs: setup-tests
-
+    steps:
     - name: "System Tests"
       env:
         RAILS_ENV: test
