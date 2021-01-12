@@ -35,10 +35,12 @@
                   <% else %>
                     <div class="circle"></div>
                   <% end %>
-                  <p style="margin-left: 10px;">
+                <div style="margin-left: 10px; display: grid;">
+                  <p>
                     <a style="color: inherit;" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= (node.type == 'note') ? node.title : node.latest.title %></a>
-                    <span style="color: #808080;"><%= translation('tag.show.by') %> <a style="color: #808080;" <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>">@<%= node.author.name %></a>
+                    <span style="color: #808080;"><%= translation('tag.show.by') %> <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>">@<%= node.author.name %></a></span>
                   </p>
+                </div>
               <% end %>
 
             <% else %>
@@ -80,6 +82,10 @@
     height: 20px;
     width: 20px;
     border-radius: 100%;
+  }
+
+  .card-view a {
+    display: revert;
   }
 
 </style>
