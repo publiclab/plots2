@@ -264,14 +264,6 @@ class TagControllerTest < ActionController::TestCase
     assert_not_nil assigns(:answered_questions)
   end
 
-  test 'wildcard tag should have a active asked and an inactive answered tab for question' do
-    get :show, params: { id: 'question:*' }
-
-    selector = css_select '#asked-tab.active'
-    assert_equal selector.size, 1
-    assert_select '#answered-tab', 1
-  end
-
   test "wildcard tag show wiki pages with author" do
     get :show_for_author, params: { node_type: 'wiki', id: 'awes*', author: 'Bob' }
     assert :success
@@ -570,16 +562,6 @@ class TagControllerTest < ActionController::TestCase
     assert_equal selector.size, 1
     selector = css_select '#questions.active'
     assert_equal selector.size, 1
-  end
-
-  test 'should have a active asked and an inactive answered tab for question' do
-    tag = tags(:question)
-
-    get :show_for_author, params: { id: tag.name, author: 'jeff' }
-
-    selector = css_select '#asked-tab.active'
-    assert_equal selector.size, 1
-    assert_select '#answered-tab', 1
   end
 
   test 'should list answered questions' do

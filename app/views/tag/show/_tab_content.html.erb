@@ -4,8 +4,6 @@
     <p>Displaying content from <%= @start.to_formatted_s(:long) %> to <%= @end.to_formatted_s(:long) %>. <a href="/tag/<%= params[:id] %>">View all</a></p>
   <% end %>
 
-  <!-- separate these in partials-->
-  <!-- use controller to determine which partial to render -->
   <% if @node_type == "note" %>
     <div class="tab-pane active" id="notes">
       <% if @notes.nil? || @notes.length == 0 %>
@@ -20,22 +18,13 @@
   <% if @node_type == "questions" %>
     <div class="tab-pane active" id="questions">
       <div id="questions-tab">
-        <div class="btn-group text-center">
-          <a id="asked-tab" class="btn btn-outline-secondary active">Asked</a>
-          <a id="answered-tab" class="btn btn-outline-secondary">Answered</a>
-        </div>
 
         <div class="tab-content">
           <div id="asked-content">
             <%= render partial: "questions/new_question" %>
           </div>
-
-          <div id="answered-content">
-                      <% if @answered_questions %>
-              <%= render partial: "users/answered" %>
-                          <% end %>
-          </div>
         </div>
+
       </div>
     </div>
   <% end %>
@@ -62,25 +51,10 @@
   <% end %>
 
   <% if @node_type == "contributors" %>
-      <div class="tab-pane active" id="contributors">
-        <%= render partial: "tag/contributors" %>
-      </div>
+    <div class="tab-pane active" id="contributors">
+      <%= render partial: "tag/contributors" %>
+    </div>
   <% end %>
   <br>
 
 </div>
-
-<script type="text/javascript">
-  $("#answered-content").hide();
-  $("#asked-content").show();
-  $("#asked-tab").on('click', function() {
-    $("#answered-content").hide();
-    $("#asked-content").show();
-  }
-  )
-$("#answered-tab").on('click', function() {
-    $("#asked-content").hide();
-    $("#answered-content").show();
-}
-  )
-</script>
