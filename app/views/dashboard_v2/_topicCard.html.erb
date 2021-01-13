@@ -44,7 +44,7 @@
               <% end %>
 
             <% else %>
-              <h6><%= translation('tag.show.notes_not_available') %></h6>
+              <p><%= translation('tag.show.notes_not_available') %></p>
             <% end %>
           </div>
         </div>
@@ -64,7 +64,8 @@
   <% end %>
 </div>
 
-<% if @pagy %>
+<%# If the items are listed on only one page, the pagination button will not be displayed %>
+<% if @pagy.pages > 1 %>
   <%== pagy_bootstrap_nav @pagy %>
 <% end %>
 
