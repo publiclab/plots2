@@ -1,5 +1,6 @@
 <%# Most of this design has been extracted from the tags _topicCard with slight variations %>
 <% subscriptions ||= @tag_subscriptions  # allow overriding with local variable %>
+<% shown_nids = [@blog.nid] %>
 <div class="card-view pt-5">
   <% subscriptions.each do |subscription| %>
     <div class="card shadow-sm p-2 mb-3 bg-white rounded" >
@@ -23,11 +24,12 @@
       <div class="card-body" style="padding:0.8em;">
       <%# First 3 notes in the Topic  %>
         <div class="node-list">
-          <% notes = Tag.find_nodes_by_type(subscription.tag.name, type = 'note', limit = 3).where.not(nid: @blog.nid)  %>
+          <% notes = Tag.find_nodes_by_type(subscription.tag.name, type = 'note', limit = 3).where.not(nid: shown_nids)  %>
           <div class="node-body">
           <%# TODO fix odd line folding https://github.com/publiclab/plots2/issues/8837 %>
             <% if notes.present? %>
               <% notes.each do |node|  %>
+                  <% shown_nids << node.id %>
                   <% if node.main_image %>
                     <img class="rounded-circle pull-left" id="profile-photo" style="width:20px; height:20px; margin-right:8px; display: inline-block;" src="<%= node.main_image.path(:default) %>" />
                   <% elsif node.scraped_image %>
@@ -51,7 +53,7 @@
       </div>
 
       <div class="card-footer" style="background-color: inherit; border:none;">
-        <a style="padding-top:15px;text-decoration:underline;color:#808080;display:inline-block;" href="/tag/<%= subscription.tag.name %>"><%= subscription.tag.count %> <%= translation('tag.index.posts') %> &raquo;</a>
+        <a style="padding-top:15px;text-decoration:underline;color:#808080;display:inline-block;" href="/tag/<%= subscription.tag.name %>"><%= Tag.tagged_node_count(subscription.tag.name) %> <%= translation('tag.index.posts') %> &raquo;</a>
         <div id="new-post" style="float:right;margin:10px 0 10px 10px;">
           <% if current_user %>
             <a rel="tooltip" title="<%= translation('sidebar._post_button.share_your_work') %>" data-placement="bottom" href="/post?tags=<%= subscription.tag.name %>" class="btn btn-primary btn-sm requireLogin"><%= translation('tag.show.new_post') %> <i class="fa fa-plus fa-white"></i></a>
