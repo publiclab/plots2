@@ -351,6 +351,8 @@ en:
     dashboard:
       from_blog: "From the <a href='%{url}'>Public Lab Blog</a>"
       by: "by"
+      new_user: "Welcome! To improve your feed, follow the trending and featured topics linked below."
+      more_topics: "To improve your feed, follow the trending and featured topics linked below."
     sidebar:
       add_location: "Add your location"
       location_work: "Add your location to see work near you"
