@@ -52,7 +52,7 @@ class HomeController < ApplicationController
     if current_user
       @blog = Tag.find_nodes_by_type('blog', 'note', 1).limit(1).first
       # Tags without the blog tag and everything tag to avoid double display
-      exclude_tids = Tag.where(name: ["blog", "everything"]).pluck(:tid)
+      exclude_tids = Tag.where(name: %w(blog everything)).pluck(:tid)
       # Not all tags have notes, some are wikis. A text will be displayed to show this.
       @pagy, @tag_subscriptions = pagy(current_user.subscriptions(:tag).includes(:tag).where.not(tid: exclude_tids))
       render template: 'dashboard_v2/dashboard'
