@@ -1,0 +1,17 @@
+<%# Welcome a new user %>
+<% if current_user %>
+  <% recent = Time.now - current_user.created_at < 1.week %>
+  <% if recent %>
+    <div class="alert alert-success">
+      <button type="button" class="close" data-dismiss="alert">×</button>
+    <%= raw translation('dashboard_v2.dashboard.new_user') %>
+    </div>
+  <% end %>
+  <%# Suggest that a user follows more topics if they follow less than 3 %>
+  <% if @tag_subscriptions.size <= 3 && !recent  # ensures new users won't see alert bc they won't follow 3 topics yet%>
+    <div class="alert alert-info">
+      <button type="button" class="close" data-dismiss="alert">×</button>
+    <%= raw translation('dashboard_v2.dashboard.more_topics') %>
+    </div>
+  <% end %>
+<% end %>

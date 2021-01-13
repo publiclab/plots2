@@ -4,13 +4,14 @@
     <%# Topics %>
     <div class="col-lg-8">
       <%= render partial: "dashboard_v2/blog"%>
+      <%= render partial: "dashboard_v2/alerts"%>
       <%= render partial: "dashboard_v2/topicCard"%>
     </div>
     <%# Sidebar %>
     <div class="col-lg-4">
       <%# Admin feature %>
       <%= feature('dashboard-feature') %>
-      <%= render partial: "sidebar/dashboard_v2"%>
+      <%= render partial: "dashboard_v2/sidebar"%>
     </div>
   </div>
   <%# Additional Topics %>
@@ -79,7 +80,7 @@
     color: #505050;
   }
 
-  /* Shorten line in Ipad */
+  /* Shorten line in Ipad Pro*/
   @media (max-width: 1366px){
     .other-topics h4 i:after {
       left: 100%;

@@ -124,4 +124,22 @@ class HomeControllerTest < ActionController::TestCase
     assert_includes response.body, subscribed_topic
   end
 
+  test 'new user v2/dashboard alert' do
+    # :newcomer has their created_at value as Time.now
+    current_user = users(:newcomer)
+    alert = "Welcome! To improve your feed, follow the trending and featured topics linked below."
+    UserSession.create(current_user)
+    get :dashboard_v2
+    assert_includes response.body, alert
+  end
+
+  test 'user with 3 or less subscriptions v2/dashboard alert' do
+    # :olduser has their created_at value as 3.weeks.ago
+    current_user = users(:olduser)
+    alert = "To improve your feed, follow the trending and featured topics linked below."
+    UserSession.create(current_user)
+    get :dashboard_v2
+    assert_includes response.body, alert
+  end
+
 end
