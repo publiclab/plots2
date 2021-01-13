@@ -51,5 +51,10 @@ class TagTest < ApplicationSystemTestCase
     end
 
   end
-
+  
+  test 'adding a location tag to a user profile' do
+    visit "/profile/admin"
+    click_button "Share your Location"
+    expect(page).to have_text("Enter a location")
+  end
 end
