@@ -10,7 +10,7 @@
       <a class="ellipsis pull-right pl-2" data-toggle="dropdown" rel="tooltip" title="<%= translation('tag.show.blog_updates') %>" style="cursor:pointer; background-color: #444" aria-expanded="true"><i class="fa fa-ellipsis-h" style="color:#ccc;font-size:18px;margin-right:10px;"></i></a>
       <div class="dropdown-menu">
         <div class="dropdown-item">
-          <a style="margin-top:-8px;" rel="tooltip" title="<%= translation('tag.show.blog_updates') %>" href="/subscribe/tag/<%= @blog_tag.name %>">
+          <a style="margin-top:-8px;" rel="tooltip" title="<%= translation('tag.show.blog_updates') %>" href="/subscribe/tag/blog">
             <%= translation('tag.show.subscribe') %>
           </a>
         </div>
@@ -19,7 +19,7 @@
       <div style="padding-top: 220px">
           <h4 class="blog-caption">
             <small style="font-size: 13px;" class="float-right d-none d-lg-inline"><%= raw translation('dashboard_v2.dashboard.from_blog', :url => '/blog') %></small>
-            <a style="color: #444;" href="/blog"><%= @blog.title %></a>
+            <a style="color: #444;" href="/blog"><%= @blog.title  %></a>
             <small style="font-size: 13px;"><%= translation('dashboard_v2.dashboard.by') %>
             <a href="/profile/<%= @blog.author.username %>"><%= @blog.author.username %></a></small>
           </h4>
