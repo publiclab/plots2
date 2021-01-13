@@ -1,3 +1,28 @@
+// jQuery (document).ready function:
+$(function() {
+  // this click eventHandler assigns $D.selected to the appropriate comment form
+  // on pages with multiple comments, $D.selected needs to be accurate so that rich-text changes (bold, italic, etc.) go into the right comment form
+  // however, the editor is also used on pages with JUST ONE form, and no other comments, eg. /wiki/new & /wiki/edit, so this code needs to be reusable for that context
+  $('.rich-text-button').on('click', function(e) {
+    const closestCommentFormWrapper = e.target.closest('div.comment-form-wrapper'); // this returns null if there is no match
+    let params = {};
+    // there are no .comment-form-wrappers on /wiki/edit or /wiki/new
+    // these pages just have a single text-input form.
+    if (closestCommentFormWrapper) {
+      $D.selected = $(closestCommentFormWrapper);
+      // assign the ID of the textarea within the closest comment-form-wrapper
+      params['textarea'] = closestCommentFormWrapper.querySelector('textarea').id;
+    } else {
+      // default to #text-input
+      // ideally there should only be one per page
+      params['textarea'] = 'text-input';
+    }
+    $E.initialize(params);
+    const action = e.currentTarget.dataset.action // 'bold', 'italic', etc.
+    $E[action](); // call the appropriate editor function
+  });
+});
+
 $E = {
   initialize: function(args) {
     args = args || {}
@@ -65,9 +90,10 @@ $E = {
   italic: function() {
     $E.wrap('_','_')
   },
-  link: function(uri) {
-    uri = uri || prompt('Enter a URL')
-    $E.wrap('[',']('+uri+')')
+  link: function() {
+    uri = prompt('Enter a URL');
+    if (uri == null) { uri = ""; }
+    $E.wrap('[', '](' + uri + ')');
   },
   image: function(src) {
     $E.wrap('\n![',']('+src+')\n')
