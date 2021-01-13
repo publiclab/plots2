@@ -1,4 +1,4 @@
-name: continuous-integration
+name: tests
 on: [pull_request]
 jobs:
   setup-test-environment:
