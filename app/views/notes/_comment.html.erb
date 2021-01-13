@@ -72,27 +72,26 @@
         </a>
       <% end %>
       <% if current_user %>
-            <button style="border: 1px solid;padding: 4px 6px;" class="btn btn-outline-secondary dropdown" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class='icon fa fa-smile-o'></i>
-              <sup style="font-size: 12px;">+</sup>
-            </button>
-            
-            <div id="emoji-dropdown" style="background:#f8f8f8;padding:0;" class=" dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-              <p id="emoji-title" style="text-align: center;color: #586069; font-size:14px;margin:6px;">Pick your reaction</p>
-              <div id= "dropdown-divider" style="display: block;height: 0;border-top: 1px solid #e1e4e8;"></div>         
-                          
-              <div id="emoji-list" class="emoji-container">              
-                <% emoji_names, emoji_image_map = emoji_info %>                           
-                <% emoji_names.each do |e| %>
-                <% capitalized_emoji_name = e.split("-").map(&:capitalize).join %>
-                <% str = "/comment/like?comment_id=#{comment.cid}&user_id=#{current_user.uid}&emoji_type=#{capitalized_emoji_name}" %>               
-                <%= link_to str, data: { method: "post", remote: true }, style: "margin: 6px;" do %>                     
-                  <img alt="React to post" class="emoji grow" height="20" width="20" src="<%= emoji_image_map[e] %>">                         
-                <% end %>
-                <% end %>
-              </div>
-            </div>  
-        <% end %>      
+        <button style="border: 1px solid;padding: 4px 6px;" class="btn btn-outline-secondary dropdown" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class='icon fa fa-smile-o'></i>
+          <sup style="font-size: 12px;">+</sup>
+        </button>    
+        <div id="emoji-dropdown" style="background:#f8f8f8;padding:0;" class=" dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+          <p id="emoji-title" style="text-align: center;color: #586069; font-size:14px;margin:6px;">Pick your reaction</p>
+          <div id= "dropdown-divider" style="display: block;height: 0;border-top: 1px solid #e1e4e8;">
+          </div>         
+          <div id="emoji-list" class="emoji-container">              
+            <% emoji_names, emoji_image_map = emoji_info %>                           
+            <% emoji_names.each do |e| %>
+              <% capitalized_emoji_name = e.split("-").map(&:capitalize).join %>
+              <% str = "/comment/like?comment_id=#{comment.cid}&user_id=#{current_user.uid}&emoji_type=#{capitalized_emoji_name}" %>               
+              <%= link_to str, data: { method: "post", remote: true }, style: "margin: 6px;" do %>                     
+                <img alt="React to post" class="emoji grow" height="20" width="20" src="<%= emoji_image_map[e] %>">                         
+              <% end %>
+            <% end %>
+          </div>
+        </div>  
+      <% end %>      
     </div>  
   </div>
 
@@ -152,7 +151,6 @@
     <% if comment.parent.has_power_tag('activity') && current_user && current_user.id == comment.uid %>
       <div class="alert alert-info">Have you attempted or completed this activity? Consider <a href="/post?n=15798&tags=replication:<%= comment.nid %>,<%= comment.parent.tagnames.join(',') %>">sharing how it went</a> to help refine and improve it.</div>
     <% end %>
-
 
     <% if comment.reply_to.nil? %>
       <% comment.replied_comments.order("timestamp ASC").each do |replied_comment| %>
