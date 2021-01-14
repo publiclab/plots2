@@ -53,8 +53,8 @@ class TagTest < ApplicationSystemTestCase
   end
   
   test 'adding a location tag to a user profile' do
-    visit "/profile/admin"
-    click_button('Share your Location')
+    visit "/profile/jeff"
+    find('#location-btn').click
     page.should have_content('Enter a location')
   end
 end
