@@ -251,7 +251,7 @@ GEM
     lemmatizer (0.2.2)
     letter_opener (1.7.0)
       launchy (~> 2.2)
-    listen (3.4.0)
+    listen (3.4.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     loadcss-rails (2.0.1)
@@ -611,7 +611,7 @@ DEPENDENCIES
   lazyload-rails
   lemmatizer (~> 0.2.2)
   letter_opener
-  listen (~> 3.4.0)
+  listen (~> 3.4.1)
   loadcss-rails (~> 2.0.1)
   mailman
   minitest-reporters (~> 1.4.2)
