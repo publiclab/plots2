@@ -54,7 +54,7 @@ class TagTest < ApplicationSystemTestCase
   
   test 'adding a location tag to a user profile' do
     visit "/profile/jeff"
-    find('#location-btn').click
+    find('.blurred-location-input').click
     page.should have_content('Enter a location')
   end
 end
