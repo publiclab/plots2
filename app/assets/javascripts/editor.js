@@ -84,7 +84,7 @@ $E = {
   },
   link: function(uri) {
     uri = prompt('Enter a URL');
-    if (uri == null) { uri = ""; }
+    if (uri === null) { uri = ""; }
     $E.wrap('[', '](' + uri + ')');
   },
   image: function(src) {
