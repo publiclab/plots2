@@ -57,7 +57,7 @@ class MapController < ApplicationController
     @tags = @node.tags
     @tagnames = @tags.collect(&:name)
 
-    set_sidebar :tags, @tagnames
+    # set_sidebar :tags, @tagnames
   end
 
   def edit
@@ -234,7 +234,7 @@ class MapController < ApplicationController
   end
 
   def tag
-    set_sidebar :tags, [params[:id]], note_count: 20
+    # set_sidebar :tags, [params[:id]], note_count: 20
 
     @tagnames = params[:id].split(',')
     nids = Tag.find_nodes_by_type(params[:id], 'map', 20).collect(&:nid)
