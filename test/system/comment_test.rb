@@ -80,7 +80,7 @@ class CommentTest < ApplicationSystemTestCase
       first("p", text: "Reply to this comment...").click()
       fill_in("body", with: comment_response_text)
       # preview reply
-      first("#toggle-preview-button-main").click
+      first(".preview-btn").click
       find("p", text: comment_response_text)
     end
 
