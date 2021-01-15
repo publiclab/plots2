@@ -25,7 +25,7 @@
     <small><a href="/tags" class="form-grey"><%= translation('dashboard_v2.sidebar.trending_topics') %>:</a></small>
     <span>
       <% cache('trending-tags', expires_in: 24.hours, skip_digest: true) do %>
-          <% Tag.trending.each do |i| %>
+          <% @trending_tags.each do |i| %>
               <a href="/tag/<%= i.name %>" class="badge badge-secondary"><%= i.name %></a>
           <% end %>
         <% end %>
