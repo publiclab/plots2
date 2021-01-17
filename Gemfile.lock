@@ -467,7 +467,7 @@ GEM
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.2)
     rubyzip (2.0.0)
-    sanitize (5.2.2)
+    sanitize (5.2.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.8.0)
       nokogumbo (~> 2.0)
