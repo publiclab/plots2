@@ -86,16 +86,16 @@ version of the editor is released. */
     border-radius: 3px;
 }
 
+.comment-preview {
+  margin:0;
+  margin-bottom:10px;
+  background:white;
+}
+
 .moderation-notice {
   font-style: italic;
   color: #888;
   padding-left: 8px;
-}
-
-#preview {
-  margin:0;
-  margin-bottom:10px;
-  background:white;
 }
 
 .side-dropzone, .profile-dropzone {
