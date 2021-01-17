@@ -14,34 +14,34 @@
   </div>
   <!-- defined in application_helper.rb -->
   <% toolbar_element_id = get_toolbar_element_id(location, local_assigns[:reply_to], local_assigns[:comment_id]) %>
-  <div class="btn-group mr-2 ">
+  <div class="btn-group mr-2">
     <a
       id="bold-button-<%= toolbar_element_id %>"
-      data-toggle="tooltip" 
       title="Bold" 
+      data-action="bold"
       data-placement="bottom" 
-      class="bold-button btn btn-outline-secondary btn-sm" 
-      onClick="$E.bold()"
+      data-toggle="tooltip" 
+      class="bold-button btn btn-outline-secondary btn-sm rich-text-button" 
     >
       <i class="fa fa-bold" ></i>
     </a>
     <a
       id="italic-button-<%= toolbar_element_id %>"
-      data-toggle="tooltip" 
       title="Italic" 
+      data-action="italic"
       data-placement="bottom" 
-      class="italic-button btn btn-outline-secondary btn-sm" 
-      onClick="$E.italic()"
+      data-toggle="tooltip" 
+      class="italic-button btn btn-outline-secondary btn-sm rich-text-button" 
     >
       <i class="fa fa-italic" ></i>
     </a>
     <a
       id="header-button-<%= toolbar_element_id %>"
-      data-toggle="tooltip" 
       title="Header" 
+      data-action="h2"
       data-placement="bottom" 
-      class="header-button btn btn-outline-secondary btn-sm" 
-      onClick="$E.h2()"
+      data-toggle="tooltip" 
+      class="header-button btn btn-outline-secondary btn-sm rich-text-button" 
     >
       <b>
         <span class="d-md-none d-lg-inline">
@@ -52,11 +52,11 @@
     <a
       id="link-button-<%= toolbar_element_id %>"
       aria-label="Make a link" 
-      data-toggle="tooltip" 
       title="Make a link" 
+      data-action="link"
       data-placement="bottom" 
-      class="link-button btn btn-outline-secondary btn-sm" href="javascript:void(0)" 
-      onClick="$E.link()"
+      data-toggle="tooltip" 
+      class="link-button btn btn-outline-secondary btn-sm rich-text-button" href="javascript:void(0)" 
     >
       <i class="fa fa-link"></i>
     </a>
