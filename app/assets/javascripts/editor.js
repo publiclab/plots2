@@ -1,3 +1,20 @@
+// jQuery (document).ready function:
+$(function() {
+  // this click eventHandler assigns $D.selected to the appropriate comment form
+  // on pages with multiple comments, $D.selected needs to be accurate so that rich-text changes (bold, italic, etc.) go into the right comment form
+  // however, the editor is also used on pages with JUST ONE form, and no other comments, eg. /wiki/new & /wiki/edit, so this code needs to be reusable for that context
+  $('.rich-text-button').on('click', function(e) {
+    const params = getEditorParams(e.target); // defined in editorHelper.js
+    // assign dSelected
+    if (params.hasOwnProperty('dSelected')) {
+      $D.selected = params['dSelected'];
+    }
+    $E.initialize(params);
+    const action = e.currentTarget.dataset.action // 'bold', 'italic', etc.
+    $E[action](); // call the appropriate editor function
+  });
+});
+
 $E = {
   initialize: function(args) {
     args = args || {}
@@ -66,8 +83,9 @@ $E = {
     $E.wrap('_','_')
   },
   link: function(uri) {
-    uri = uri || prompt('Enter a URL')
-    $E.wrap('[',']('+uri+')')
+    uri = prompt('Enter a URL');
+    if (uri === null) { uri = ""; }
+    $E.wrap('[', '](' + uri + ')');
   },
   image: function(src) {
     $E.wrap('\n![',']('+src+')\n')
