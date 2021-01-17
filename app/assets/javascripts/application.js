@@ -47,6 +47,7 @@
 //  APPLICATION SCRIPTS:
 //= require setup.js
 //= require editor.js
+//= require editorHelper.js
 //= require like.js
 //= require main_image.js
 //= require restful_typeahead.js

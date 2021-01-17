@@ -447,6 +447,37 @@ class CommentTest < ApplicationSystemTestCase
       assert_selector('.btn[data-original-title="Help"]', count: 1)
     end
 
+    test "#{page_type_string}: IMMEDIATE rich-text input works in MAIN form" do
+      visit get_path(page_type, nodes(node_name).path)
+      main_comment_form =  page.find('h4', text: /Post comment|Post Comment/).find(:xpath, '..') # title text on wikis is 'Post comment'
+      main_comment_form.find("[data-original-title='Bold']").click
+      text_input_value = main_comment_form.find('#text-input').value
+      assert_equal(text_input_value, '****')
+    end
+
+    test "#{page_type_string}: rich-text input into REPLY form isn't CROSS-WIRED with EDIT form" do
+      nodes(node_name).add_comment({
+        uid: 5,
+        body: comment_text
+      })
+      nodes(node_name).add_comment({
+        uid: 2,
+        body: comment_text
+      })
+      visit get_path(page_type, nodes(node_name).path)
+      # open up the edit comment form
+      page.find("#edit-comment-btn").click
+      # find the EDIT id
+      edit_comment_form_id = page.find('h4', text: 'Edit comment').find(:xpath, '..')[:id]
+      # open up the reply comment form
+      page.all('p', text: 'Reply to this comment...')[1].click
+      page.all("[data-original-title='Bold']")[0].click
+      reply_input_value = page.find('[id^=text-input-reply-]').value
+      edit_input_value = page.find('#' + edit_comment_form_id + ' textarea').value
+      assert_equal(comment_text, edit_input_value)
+      assert_equal('****', reply_input_value)
+    end
+
     test "#{page_type_string}: edit comment" do
       nodes(node_name).add_comment({
         uid: 2,
