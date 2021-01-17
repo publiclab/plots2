@@ -66,7 +66,7 @@ module ApplicationHelper
   end
 
   # used in views/comments/_form.html.erb
-  def get_large_dropzone_id(location, reply_to)
+  def get_comment_form_id(location, reply_to)
     case location
     when :main
       '-main'
