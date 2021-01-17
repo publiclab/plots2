@@ -1,3 +1,20 @@
+// jQuery (document).ready function:
+$(function() {
+  // this click eventHandler assigns $D.selected to the appropriate comment form
+  // on pages with multiple comments, $D.selected needs to be accurate so that rich-text changes (bold, italic, etc.) go into the right comment form
+  // however, the editor is also used on pages with JUST ONE form, and no other comments, eg. /wiki/new & /wiki/edit, so this code needs to be reusable for that context
+  $('.rich-text-button').on('click', function(e) {
+    const params = getEditorParams(e.target); // defined in editorHelper.js
+    // assign dSelected
+    if (params.hasOwnProperty('dSelected')) {
+      $D.selected = params['dSelected'];
+    }
+    $E.initialize(params);
+    const action = e.currentTarget.dataset.action // 'bold', 'italic', etc.
+    $E[action](); // call the appropriate editor function
+  });
+});
+
 $E = {
   initialize: function(args) {
     args = args || {}
@@ -8,7 +25,7 @@ $E = {
     $E.textarea = $('#'+args['textarea'])
     $E.textarea.bind('input propertychange',$E.save)
     // preview
-    args['preview'] = args['preview'] || 'preview'
+    args['preview'] = args['preview'] || 'preview-main'
     $E.preview = $('#'+args['preview'])
     
     marked.setOptions({
@@ -35,7 +52,7 @@ $E = {
     $E.textarea = ($D.selected).find('textarea').eq(0);
     $E.textarea.bind('input propertychange',$E.save);
     // preview
-    $E.preview = ($D.selected).find('#preview').eq(0);
+    $E.preview = ($D.selected).find('.comment-preview').eq(0);
   },
   // wraps currently selected text in textarea with strings a and b
   wrap: function(a,b,args) {
@@ -66,8 +83,9 @@ $E = {
     $E.wrap('_','_')
   },
   link: function(uri) {
-    uri = uri || prompt('Enter a URL')
-    $E.wrap('[',']('+uri+')')
+    uri = prompt('Enter a URL');
+    if (uri === null) { uri = ""; }
+    $E.wrap('[', '](' + uri + ')');
   },
   image: function(src) {
     $E.wrap('\n![',']('+src+')\n')
@@ -123,25 +141,17 @@ $E = {
   generate_preview: function(id,text) {
     $('#'+id)[0].innerHTML = marked(text)
   },
-  toggle_preview: function (comment_id = null) {
+  toggle_preview: function() {
     let previewBtn;
     let dropzone;
     // if the element is part of a multi-comment page,
     // ensure to grab the current element and not the other comment element.
-    if (comment_id) {
-      previewBtn = $('#' + comment_id);
-      const currentComment = $('#'+comment_id).parent('.control-group')
-      $E.preview = currentComment.siblings('#preview')
-      dropzone = currentComment.siblings('.dropzone')
-      $E.textarea = dropzone.children('.text-input')
-    } else {
-      previewBtn = $(this.textarea.context).find('#post_comment');
-      dropzone = $(this.textarea.context).find('.dropzone');
-    }
+    previewBtn = $(this.textarea.context).find('.preview-btn');
+    dropzone = $(this.textarea.context).find('.dropzone');
 
-    $E.preview[0].innerHTML = marked($E.textarea.val())
-    $E.preview.toggle()
-    dropzone.toggle()
+    $E.preview[0].innerHTML = marked($E.textarea.val());
+    $E.preview.toggle();
+    dropzone.toggle();
 
     this.toggleButtonPreviewMode(previewBtn);
   },

@@ -29,20 +29,10 @@ jQuery(function() {
     });
 
     $(this).on('drop',function(e) {
-      // this 'drop' listener is also reused for pages with just one form, ie. /wiki/new
-      const closestCommentFormWrapper = e.target.closest('div.comment-form-wrapper'); // this returns null if there is no match
+      const params = getEditorParams(e.target); // defined in editorHelper.js
       e.preventDefault();
-      let params = {};
-      // there are no .comment-form-wrappers on /wiki/edit or /wiki/new
-      // these pages just have a single text-input form.
-      if (closestCommentFormWrapper) {
-        $D.selected = $(closestCommentFormWrapper);
-        // assign the ID of the textarea within the closest comment-form-wrapper
-        params['textarea'] = closestCommentFormWrapper.querySelector('textarea').id;
-      } else {
-        // default to #text-input
-        // ideally there should only be one per page
-        params['textarea'] = 'text-input';
+      if (params.hasOwnProperty('dSelected')) {
+        $D.selected = params['dSelected'];
       }
       $E.initialize(params);
     });

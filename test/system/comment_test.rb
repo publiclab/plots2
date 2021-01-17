@@ -70,7 +70,7 @@ class CommentTest < ApplicationSystemTestCase
       visit get_path(page_type, nodes(node_name).path)
       fill_in("body", with: comment_text)
       # preview comment
-      find("#post_comment").click
+      find("#toggle-preview-button-main").click
       find("p", text: comment_text)
       # publish comment
       click_on "Publish"
@@ -80,7 +80,7 @@ class CommentTest < ApplicationSystemTestCase
       first("p", text: "Reply to this comment...").click()
       fill_in("body", with: comment_response_text)
       # preview reply
-      first("#post_comment").click
+      first(".preview-btn").click
       find("p", text: comment_response_text)
     end
 
@@ -115,7 +115,7 @@ class CommentTest < ApplicationSystemTestCase
       assert_selector('h1', text: title_text)
       fill_in("body", with: comment_text)
       # preview comment
-      find("#post_comment").click
+      find("#toggle-preview-button-main").click
       find("p", text: comment_text)
       # publish comment
       click_on "Publish"
@@ -126,8 +126,8 @@ class CommentTest < ApplicationSystemTestCase
     test "#{page_type_string}: comment preview button works" do
       visit get_path(page_type, nodes(node_name).path)
       find("p", text: "Reply to this comment...").click()
-      reply_preview_button = page.all('#post_comment')[0]
-      comment_preview_button = page.all('#post_comment')[1]
+      reply_preview_button = page.all('.preview-btn')[0]
+      comment_preview_button = page.all('.preview-btn')[1]
       # Toggle preview
       reply_preview_button.click()
       # Make sure that buttons are not binded with each other
@@ -148,7 +148,7 @@ class CommentTest < ApplicationSystemTestCase
       # Toggle preview
       main_comment_form.find('a', text: 'Preview').click
       # Make sure that image has been uploaded
-      page.assert_selector('#preview img', count: 1)
+      page.assert_selector('#preview-main img', count: 1)
     end
 
     # navigate to page, immediately upload into EDIT form by SELECTing image
@@ -200,14 +200,14 @@ class CommentTest < ApplicationSystemTestCase
       wait_for_ajax
       Capybara.ignore_hidden_elements = true
       page.all('a', text: 'Preview')[0].click
-      assert_selector('#comment-' + comment_id_num + '-reply-section #preview img', count: 1)
+      assert_selector('#comment-' + comment_id_num + '-reply-section img', count: 1)
     end
 
     test "#{page_type_string}: IMMEDIATE image DRAG & DROP into REPLY comment form" do
       Capybara.ignore_hidden_elements = false
       visit get_path(page_type, nodes(node_name).path)
       find("p", text: "Reply to this comment...").click()
-      reply_preview_button = page.all('#post_comment')[0]
+      reply_preview_button = page.all('.preview-btn')[0]
       # Upload the image
       drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", ".dropzone")
       # Wait for image upload to finish
@@ -216,7 +216,7 @@ class CommentTest < ApplicationSystemTestCase
       # Toggle preview
       reply_preview_button.click()
       # Make sure that image has been uploaded
-      page.assert_selector('#preview img', count: 1)
+      page.assert_selector('.comment-preview img', count: 1)
     end
 
     test "#{page_type_string}: IMMEDIATE image CHOOSE ONE upload into REPLY comment form" do
@@ -235,7 +235,7 @@ class CommentTest < ApplicationSystemTestCase
       # Toggle preview
       reply_preview_button.click()
       # Make sure that image has been uploaded
-      page.assert_selector('#preview img', count: 1)
+      page.assert_selector('.comment-preview img', count: 1)
     end
 
     # Cross-Wiring Bugs
@@ -284,7 +284,7 @@ class CommentTest < ApplicationSystemTestCase
       main_comment_form.find('a', text: 'Preview').click
       # once preview is open, the images are embedded in the page.
       # there should only be 1 image in the main comment form!
-      preview_imgs = page.all('#preview img').size
+      preview_imgs = page.all('#preview-main img').size
       assert_equal(1, preview_imgs)
     end
 
@@ -325,7 +325,7 @@ class CommentTest < ApplicationSystemTestCase
       # once preview is open, the images are embedded in the page.
       # there should be 1 image in main, and 1 image in edit
       assert_selector('#c' + comment_id_num + 'preview img', count: 1)
-      assert_selector('#preview img', count: 1)
+      assert_selector('#preview-main img', count: 1)
     end
 
     # cross-wiring test
@@ -365,7 +365,7 @@ class CommentTest < ApplicationSystemTestCase
       page.find('#c' + edit_id_num + 'edit a', text: 'Preview').click
       page.first('a', text: 'Preview').click
       assert_selector('#c' + edit_id_num + 'preview img', count: 1)
-      assert_selector('#preview img', count: 1)
+      assert_selector('.comment-preview img', count: 1)
     end
 
     test "#{page_type_string}: ctrl/cmd + enter comment publishing keyboard shortcut" do
@@ -445,6 +445,37 @@ class CommentTest < ApplicationSystemTestCase
       assert_selector('.btn[data-original-title="Save"]', count: 1)
       assert_selector('.btn[data-original-title="Recover"]', count: 1)
       assert_selector('.btn[data-original-title="Help"]', count: 1)
+    end
+
+    test "#{page_type_string}: IMMEDIATE rich-text input works in MAIN form" do
+      visit get_path(page_type, nodes(node_name).path)
+      main_comment_form =  page.find('h4', text: /Post comment|Post Comment/).find(:xpath, '..') # title text on wikis is 'Post comment'
+      main_comment_form.find("[data-original-title='Bold']").click
+      text_input_value = main_comment_form.find('#text-input').value
+      assert_equal(text_input_value, '****')
+    end
+
+    test "#{page_type_string}: rich-text input into REPLY form isn't CROSS-WIRED with EDIT form" do
+      nodes(node_name).add_comment({
+        uid: 5,
+        body: comment_text
+      })
+      nodes(node_name).add_comment({
+        uid: 2,
+        body: comment_text
+      })
+      visit get_path(page_type, nodes(node_name).path)
+      # open up the edit comment form
+      page.find("#edit-comment-btn").click
+      # find the EDIT id
+      edit_comment_form_id = page.find('h4', text: 'Edit comment').find(:xpath, '..')[:id]
+      # open up the reply comment form
+      page.all('p', text: 'Reply to this comment...')[1].click
+      page.all("[data-original-title='Bold']")[0].click
+      reply_input_value = page.find('[id^=text-input-reply-]').value
+      edit_input_value = page.find('#' + edit_comment_form_id + ' textarea').value
+      assert_equal(comment_text, edit_input_value)
+      assert_equal('****', reply_input_value)
     end
 
     test "#{page_type_string}: edit comment" do
