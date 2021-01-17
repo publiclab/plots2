@@ -17,44 +17,36 @@ jQuery(function() {
     );
   }
 
-  $('.dropzone').on('dragover',function(e) {
-    e.preventDefault();
-    $('.dropzone').addClass('hover');
-  });
-  $('#side-dropzone').on('dragover',function(e) {
-    e.preventDefault();
-    $('#side-dropzone').addClass('hover');
-  });
-  $('.dropzone').on('dragout',function(e) {
-    $('.dropzone').removeClass('hover');
-  });
-  $('#side-dropzone').on('dragout',function(e) {
-    $('#side-dropzone').removeClass('hover');
-  });
-  $('.dropzone').on('drop',function(e) {
-    // this 'drop' listener is also reused for pages with just one form, ie. /wiki/new
-    const closestCommentFormWrapper = e.target.closest('div.comment-form-wrapper'); // this returns null if there is no match
-    e.preventDefault();
-    let params = {};
-    // there are no .comment-form-wrappers on /wiki/edit or /wiki/new
-    // these pages just have a single text-input form.
-    if (closestCommentFormWrapper) {
-      $D.selected = $(closestCommentFormWrapper);
-      // assign the ID of the textarea within the closest comment-form-wrapper
-      params['textarea'] = closestCommentFormWrapper.querySelector('textarea').id;
-    } else {
-      // default to #text-input
-      // ideally there should only be one per page
-      params['textarea'] = 'text-input';
-    }
-    $E.initialize(params);
-  });
-  $('#side-dropzone').on('drop',function(e) {
-    e.preventDefault();
-  });
-
   // these functions are also used on /wiki/edit and /wiki/new pages
   $('.dropzone').each(function() {
+    $(this).on('dragenter',function(e) {
+      e.preventDefault();
+      $(e.currentTarget).addClass('hover');
+    });
+
+    $(this).on('dragleave',function(e) {
+      $(e.currentTarget).removeClass('hover');
+    });
+
+    $(this).on('drop',function(e) {
+      // this 'drop' listener is also reused for pages with just one form, ie. /wiki/new
+      const closestCommentFormWrapper = e.target.closest('div.comment-form-wrapper'); // this returns null if there is no match
+      e.preventDefault();
+      let params = {};
+      // there are no .comment-form-wrappers on /wiki/edit or /wiki/new
+      // these pages just have a single text-input form.
+      if (closestCommentFormWrapper) {
+        $D.selected = $(closestCommentFormWrapper);
+        // assign the ID of the textarea within the closest comment-form-wrapper
+        params['textarea'] = closestCommentFormWrapper.querySelector('textarea').id;
+      } else {
+        // default to #text-input
+        // ideally there should only be one per page
+        params['textarea'] = 'text-input';
+      }
+      $E.initialize(params);
+    });
+
     $(this).fileupload({
       url: "/images",
         paramName: "image[photo]",
@@ -65,6 +57,7 @@ jQuery(function() {
           'nid':$D.nid
         },
         start: function(e) {
+          $(e.target).removeClass('hover');
           // 'start' function runs:
           //   1. when user drag-and-drops image
           //   2. when user clicks on upload button.
@@ -72,23 +65,17 @@ jQuery(function() {
           $D.selected = $(e.target).closest('div.comment-form-wrapper');
           // the above line is redundant in drag & drop, because it's assigned in 'drop' listener too.
           // on /wiki/new & /wiki/edit, $D.selected will = undefined from this assignment
-          $('#imagebar .inline_image_drop').show();
-          $('#create_progress').show();
-          $('#create_uploading').show();
           elem = $($D.selected).closest('div.comment-form-wrapper').eq(0);
-          elem.find('#create_progress').eq(0).show();
-          elem.find('#create_uploading').eq(0).show();
-          elem.find('#create_prompt').eq(0).hide();
-          elem.find('.dropzone').eq(0).removeClass('hover');
+          elem.find('.progress-bar-container').eq(0).show();
+          elem.find('.uploading-text').eq(0).show();
+          elem.find('.choose-one-prompt-text').eq(0).hide();
         },
         done: function (e, data) {
-          $('#create_progress').hide();
-          $('#create_uploading').hide();
-          $('#imagebar .inline_image_drop').hide();
           elem = $($D.selected).closest('div.comment-form-wrapper').eq(0);
-          elem.find('#create_progress').hide();
-          elem.find('#create_uploading').hide();
-          elem.find('#create_prompt').show();
+          elem.find('.progress-bar-container').hide();
+          elem.find('.progress-bar').css('width', 0);
+          elem.find('.uploading-text').hide();
+          elem.find('.choose-one-prompt-text').show();
           var extension = data.result['filename'].split('.')[data.result['filename'].split('.').length - 1]; var file_url = data.result.url.split('?')[0]; var file_type;
           if (['gif', 'GIF', 'jpeg', 'JPEG', 'jpg', 'JPG', 'png', 'PNG'].includes(extension))
             file_type = 'image'
@@ -115,13 +102,25 @@ jQuery(function() {
         },
 
         // see callbacks at https://github.com/blueimp/jQuery-File-Upload/wiki/Options
-        fileuploadfail: function(e,data) {
+        // fileuploadfail: function(e,data) {
 
-        },
+        // },
         progressall: function (e, data) {
-            return progressAll('#create_progress .progress-bar', data);
+          const closestProgressBar = $($D.selected).closest('div.comment-form-wrapper').find('.progress-bar').eq(0);
+          return progressAll(closestProgressBar, data);
         }
     });
+  });
+
+  $('#side-dropzone').on('dragover',function(e) {
+    e.preventDefault();
+    $('#side-dropzone').addClass('hover');
+  });
+  $('#side-dropzone').on('dragout',function(e) {
+    $('#side-dropzone').removeClass('hover');
+  });
+  $('#side-dropzone').on('drop',function(e) {
+    e.preventDefault();
   });
 
   $('#side-dropzone').fileupload({
