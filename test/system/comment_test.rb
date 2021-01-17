@@ -491,8 +491,8 @@ class CommentTest < ApplicationSystemTestCase
       # drag & drop the image. drop_in_dropzone simulates 'drop' event,  see application_system_test_case.rb
       drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", '#comments-list + div .dropzone') # this CSS selects .dropzones that belong to sibling element immediately following #comments-list. technically, there are two .dropzones in the main comment form.
       Capybara.ignore_hidden_elements = true
-      assert_selector('#create_progress')
-      assert_selector('#create_uploading')
+      assert_selector('.progress')
+      assert_selector('.uploading-text')
     end
 
     test "#{page_type_string}: progress bars display for EDIT comment form's image SELECT upload" do
