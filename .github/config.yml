@@ -24,7 +24,7 @@ newPRWelcomeComment: |
 firstPRMergeComment: |
  Congrats on merging your first pull request! 🙌🎉⚡️
  Your code will likely be published to PublicLab.org in the next few days, but first it will be published to https://stable.publiclab.org/ (it will take some minutes for this to load, and until then you may see logs from the build process). Please test out your work on this testing server and report back with a comment that all has gone well!
- Do join our weekly check-in to share your this week goal and the awesome work you did 😃. Please find the link **pinned in the issue section** 📝
+ Do join our weekly check-in to share your this week goal and the awesome work you did 😃. Please find the link to our latest check-in [here](https://github.com/publiclab/plots2/issues/5627) 📝
  Now that you've completed this, you can help someone else take their first step!
  Reach out to someone else working on theirs on [Public Lab's code welcome page](https://code.publiclab.org#r=all) (where you'll now be featured as a recent contributor!). Thanks!
  <details>
