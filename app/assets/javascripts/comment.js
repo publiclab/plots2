@@ -7,9 +7,9 @@
         $(this).find('.text-input').val('');
         $('#comments-container').append(xhr.responseText);
         $(this).find(".btn-primary").button('reset');
-        $(this).find('#preview').hide();
+        $(this).find('.comment-preview').hide();
         $(this).find('.text-input').show();
-        $(this).find('#preview-btn').button('toggle');
+        $(this).find('.preview-btn').button('toggle');
       });
     }
 
