@@ -513,7 +513,6 @@ class CommentTest < ApplicationSystemTestCase
       # find edit comment's fileinput:
       page.find('#fileinput-button-edit-' + comment_id_num).set("#{Rails.root.to_s}/public/images/pl.png")
       Capybara.ignore_hidden_elements = true
-      take_screenshot
       assert_selector('#c' + comment_id_num + 'progress')
       assert_selector('#c' + comment_id_num + 'uploading')
     end
