@@ -55,6 +55,8 @@ class HomeController < ApplicationController
       exclude_tids = Tag.where(name: %w(blog everything)).pluck(:tid)
       # Not all tags have notes, some are wikis. A text will be displayed to show this.
       @pagy, @tag_subscriptions = pagy(current_user.subscriptions(:tag).includes(:tag).where.not(tid: exclude_tids))
+      # Trending tags exculding subscriptions
+      @trending_tags = trending
       render template: 'dashboard_v2/dashboard'
     else
       redirect_to '/research'
@@ -156,5 +158,10 @@ class HomeController < ApplicationController
       answer_comments
     ]
     response
+  end
+
+  def trending
+    exclude_tids = @tag_subscriptions.pluck(:tid)
+    Tag.trending.where.not(tid: exclude_tids)
   end
 end
