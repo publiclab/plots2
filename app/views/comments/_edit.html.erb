@@ -40,11 +40,9 @@
     </div>
       <script type="application/javascript">
         function setInit(id) {
-          var args = {
-            'textarea': 'c'+id+'text',
-            'preview': 'c'+id+'preview'
-          }
-          $E.initialize(args);
+          const textArea = 'c'+id+'text';
+          const preview = 'c'+id+'preview';
+          $E.setState(textArea, preview);
         }
 
         $('#c<%= comment.id%>div').on('dragover',function(e) {
@@ -115,7 +113,7 @@
         });
       </script>
 
-      <div class="well col-md-11" id="c<%= comment.id %>preview" style="background:white;display: none">
+      <div class="comment-preview well col-md-11" id="c<%= comment.id %>preview" style="background:white;display: none">
       </div>
 
       <div class="control-group">
