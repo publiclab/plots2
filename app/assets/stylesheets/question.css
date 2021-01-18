@@ -118,7 +118,6 @@ table th a:hover {
   visibility: hidden;
 }
 
-.question-show textarea,
 .question-show pre {
   margin: 0;
   padding: 0;
