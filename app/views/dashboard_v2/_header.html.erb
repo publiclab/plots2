@@ -1,9 +1,10 @@
 <div class="row header" style="padding-left:10px;">
     <% if current_user %>
-      <h1 class="pr-2"><%= translation('dashboard_v2._header.dashboard', :url => '/subscriptions') %></h1>
+      <h1 class="pr-2"><%= translation('dashboard_v2._header.dashboard') %></h1>
       <h4 style="color: #888; margin-top: 1.25rem; font-size: 14px;">
         <span class="d-none d-lg-inline">
           <%= translation('dashboard_v2._header.updates',:url => '/wiki/topics') %>
+          <%= translation('dashboard_v2._header.follow',:url => '/subscriptions') %>
         </span>
       </h4>
     <% else %>

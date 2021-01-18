@@ -346,7 +346,8 @@ en:
   dashboard_v2:
     _header:
       dashboard: "Dashboard"
-      updates: "Updates from community members on <a href='%{url}' class='form-grey' style='text-decoration: underline;'>topics</a> you <a href='%{url}' class='form-grey' style='text-decoration: underline;'>following</a>"
+      updates: "Updates from community members on <a href='%{url}' class='form-grey' style='text-decoration: underline;'>topics</a> you"
+      follow: "<a href='%{url}' class='form-grey' style='text-decoration: underline;'> follow</a>"
       community_research: "Community research"
     dashboard:
       from_blog: "From the <a href='%{url}'>Public Lab Blog</a>"
