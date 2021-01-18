@@ -1186,4 +1186,22 @@ class Node < ActiveRecord::Base
       NodeMailer.notify_callout(self, user).deliver_now if user.username != author.username
     end
   end
+
+  def self.sort_wikis(wikis,sorting_type,current_user)
+    case sorting_type
+    when 'title'
+      wikis = current_user.content_followed_in_period(1.week.ago, Time.now, 'title DESC')
+    when 'edits'
+      wikis = current_user.content_followed_in_period(1.week.ago, Time.now, 'drupal_node_revisions_count DESC')
+    when 'likes'
+      wikis = current_user.content_followed_in_period(1.week.ago, Time.now, 'cached_likes DESC')
+    when 'page_views'
+      wikis = current_user.content_followed_in_period(1.week.ago, Time.now, 'views DESC')
+    when 'last_edited'
+      wikis = current_user.content_followed_in_period(1.week.ago, Time.now, 'changed DESC')
+    else
+      wikis = current_user.content_followed_in_period(1.week.ago, Time.now)
+    end
+    return wikis
+  end
 end
