@@ -346,7 +346,8 @@ en:
   dashboard_v2:
     _header:
       dashboard: "Dashboard"
-      updates: "Updates from community members on <a href='%{url}' class='form-grey' style='text-decoration: underline;'>topics</a> you follow"
+      updates: "Updates from community members on <a href='%{url}' class='form-grey' style='text-decoration: underline;'>topics</a> you"
+      follow: "<a href='%{url}' class='form-grey' style='text-decoration: underline;'> follow</a>"
       community_research: "Community research"
     dashboard:
       from_blog: "From the <a href='%{url}'>Public Lab Blog</a>"
@@ -365,7 +366,7 @@ en:
       add_topics: "Click to add topics, or"
       all_topics: "<a href='%{url}' class='form-grey'>All topics</a>"
       more_topics: "<a href='%{url}' class='form-grey'>more...</a>"
-      interest_topics: "Click to start followong topics that interest you"
+      interest_topics: "Click to start <a href='%{url}' class='form-grey' style='text-decoration: underline;'>following</a> topics that interest you"
   like:
     index:
       recent_likes: "Recent Likes"
