@@ -2,15 +2,11 @@ name: continuous-integration
 on: [pull_request]
 jobs:
 
-    - name: Install JavaScript dependencies with Yarn
-      run: |
-        yarn check || yarn install;
-
   unit-tests:
     runs-on: ubuntu-latest
-    needs: setup-test-environment
     steps:
     - name: "Unit Tests"
+      uses: actions/setup-test-environment.yml@latest
       env:
         RAILS_ENV: test
         DB_PASSWORD: root
@@ -19,9 +15,9 @@ jobs:
 
   functional-tests:
     runs-on: ubuntu-latest
-    needs: setup-test-environment
     steps:
     - name: "Functional Tests"
+      uses: actions/setup-test-environment.yml@latest
       env:
         RAILS_ENV: test
         DB_PASSWORD: root
@@ -30,9 +26,12 @@ jobs:
 
   integration-tests:
     runs-on: ubuntu-latest
-    needs: setup-test-environment
     steps:
+    - name: Install JavaScript dependencies with Yarn
+      run: |
+        yarn check || yarn install;
     - name: "Integration Tests"
+      uses: actions/setup-test-environment.yml@latest
       env:
         RAILS_ENV: test
         DB_PASSWORD: root
@@ -41,9 +40,12 @@ jobs:
 
   system-tests:
     runs-on: ubuntu-latest
-    needs: setup-test-environment
     steps:
+    - name: Install JavaScript dependencies with Yarn
+      run: |
+        yarn check || yarn install;
     - name: "System Tests"
+      uses: actions/setup-test-environment.yml@latest
       env:
         RAILS_ENV: test
         DB_PASSWORD: root
