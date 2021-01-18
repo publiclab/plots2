@@ -24,21 +24,6 @@ runs:
   using: "composite"
   steps:
 
-  # shouldn't be required w/ setup-ruby bundler-cache, but that isn't working?
-  - name: Cache gems
-    uses: actions/cache@v2
-    with:
-      path: vendor/bundle
-      key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
-      restore-keys: |
-        ${{ runner.os }}-gem-
-
-  - name: Install Ruby gems with Bundler
-    run: |
-      bundle config path vendor/bundle
-      bundle install --jobs 4 --retry 3 --path vendor/bundle
-      bundle exec gem list
-
   - name: Setup database
     env:
       RAILS_ENV: test
