@@ -1,10 +1,11 @@
 name: tests
-on: [pull_request,push]
+on: [pull_request]
 jobs:
 
   unit-tests:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2
     - uses: ./.github/actions/setup-test-environment
     - name: "Unit Tests"
       env:
@@ -16,6 +17,7 @@ jobs:
   functional-tests:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2
     - uses: ./.github/actions/setup-test-environment
     - name: "Functional Tests"
       env:
@@ -27,6 +29,7 @@ jobs:
   integration-tests:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2
     - uses: ./.github/actions/setup-test-environment
     - name: Install JavaScript dependencies with Yarn
       run: |
@@ -41,6 +44,7 @@ jobs:
   system-tests:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2
     - uses: ./.github/actions/setup-test-environment
     - name: Install JavaScript dependencies with Yarn
       run: |
