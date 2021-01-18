@@ -8,7 +8,7 @@
       <% end %>
       <h4 style="margin-top:0;"><%= title %></h4>
       <style>
-        #imagebar {
+        .imagebar {
           width:100%;
         }
         #new_contributor_msg {
@@ -61,15 +61,15 @@
           cols="40" 
           placeholder="<%= placeholder %>"><%= body %>
         </textarea>
-        <div id="imagebar">
-          <div id="create_progress" style="display:none;" class="progress float-right">
-            <div id="create_progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%;"></div>
+        <div class="imagebar">
+          <div style="display:none;" class="progress progress-bar-container float-right">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%;"></div>
           </div>
           <p>
-            <span id="create_uploading" class="uploading" style="display:none;">
+            <span class="uploading-text" style="display:none;">
               <%= translation('comments._form.uploading') %>
             </span>
-            <span id="create_prompt" class="prompt">
+            <span class="prompt choose-one-prompt-text">
               <span style="padding-right:4px;float:left;" class="d-none d-md-inline">
                 <%= raw translation('comments._form.drag_and_drop') %>
               </span>

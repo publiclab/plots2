@@ -510,6 +510,44 @@ class CommentTest < ApplicationSystemTestCase
       page.assert_no_selector("button[data-original-title='jeff reacted with thumbs up emoji'")
     end
 
+    test "#{page_type_string}: progress bars display for image DRAG & DROP in MAIN comment form" do
+      node_name == :wiki_page ? (visit nodes(node_name).path + '/comments') : (visit nodes(node_name).path)
+      # make a fresh comment in the main comment form
+      main_comment_form =  page.find('h4', text: /Post comment|Post Comment/).find(:xpath, '..') # title text on wikis is 'Post comment'
+      # before we drop an image, we need to make the main comment form the focus by clicking on "Preview," then hiding preview.
+      # otherwise, image upload in the next step won't be 'wired' to the "Post Comment" form.
+      main_comment_form.find('a', text: 'Preview').click.click
+      # .dropzone is hidden, so reveal it:
+      Capybara.ignore_hidden_elements = false
+      # drag & drop the image. drop_in_dropzone simulates 'drop' event,  see application_system_test_case.rb
+      drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", '#comments-list + div .dropzone') # this CSS selects .dropzones that belong to sibling element immediately following #comments-list. technically, there are two .dropzones in the main comment form.
+      Capybara.ignore_hidden_elements = true
+      assert_selector('.progress')
+      assert_selector('.uploading-text')
+    end
+
+    test "#{page_type_string}: progress bars display for EDIT comment form's image SELECT upload" do
+      # before we visit the page, add a jeff comment so that we can edit it.
+      nodes(node_name).add_comment({
+        uid: 2,
+        body: comment_text
+      })
+      visit get_path(page_type, nodes(node_name).path)
+      # open the edit comment form:
+      page.find("#edit-comment-btn").click
+      # find the parent of edit comment's fileinput:
+      comment_fileinput_parent_id = page.find('[id^=dropzone-small-edit-]')[:id] # 'begins with' CSS selector
+      comment_id_num = /dropzone-small-edit-(\d+)/.match(comment_fileinput_parent_id)[1]
+      # upload images
+      # the <inputs> that take image uploads are hidden, so reveal them:
+      Capybara.ignore_hidden_elements = false
+      # find edit comment's fileinput:
+      page.find('#fileinput-button-edit-' + comment_id_num).set("#{Rails.root.to_s}/public/images/pl.png")
+      Capybara.ignore_hidden_elements = true
+      assert_selector('#c' + comment_id_num + 'progress')
+      assert_selector('#c' + comment_id_num + 'uploading')
+    end
+
     test "#{page_type}: multiple comment boxes, post comments" do
       if page_type == :note
         visit nodes(:note_with_multiple_comments).path

@@ -32,17 +32,17 @@ pre {
     background-color: #f5f5f5;
     border: 1px solid #ccc;
     border-radius: 4px;
+  }
 
-  // Account for some code outputs that place code tags in pre tags
+  /* Account for some code outputs that place code tags in pre tags */
   code {
-    padding: 0;
+    padding: 0px;
     font-size: inherit;
     color: inherit;
     white-space: pre-wrap;
     background-color: transparent;
     border-radius: 0;
   }
-}
 
 /* Adding the bug-btn stylings below, but they can be removed once the next 
 version of the editor is released. */
@@ -142,7 +142,7 @@ version of the editor is released. */
 }
 
 @media (max-width: 480px) {
-  #dropzone textarea {
+  .dropzone textarea {
     height:300px;
   }
 }
@@ -151,7 +151,7 @@ version of the editor is released. */
   margin-bottom:10px;
 }
 
-#dropzone textarea {
+.dropzone textarea {
   border-bottom:none;
   margin-bottom:0;
   -webkit-border-radius: 4px 4px 0 0;
@@ -160,7 +160,7 @@ version of the editor is released. */
   resize: vertical;
 }
 
-#imagebar {
+.imagebar {
   color: #aaa;
   border:1px solid #bbb;
   border-top:none;
@@ -171,31 +171,28 @@ version of the editor is released. */
 }
 
 @media (max-width: 768px) {
-  #imagebar {
+  .imagebar {
     width:100%;
   }
 }
 
-#imagebar p {
+.imagebar p {
   border-top:2px dotted #ddd;
   padding:8px 12px 0px;
 }
 
-#dropzone.hover #imagebar {
+.dropzone.hover .imagebar {
   background:#eee;
 }
 
-#dropzone.hover textarea {
-  background:#f8f8f8;
+.dropzone.hover textarea {
+  background:#f8f8f8
 }
 
-#imagebar .progress {
-  margin:10px;
-  width:30%;
-}
-
-#dropzone.hover textarea {
-  background:#f8f8f8;
+.imagebar .progress-bar-container {
+  margin: 10px;
+  width: 30%;
+  background-color: #aaa;
 }
 
 #side-progress {
