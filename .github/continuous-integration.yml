@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: "Unit Tests"
-      uses: actions/setup-test-environment.yml@latest
+      uses: ./.github/actions/setup-test-environment
       env:
         RAILS_ENV: test
         DB_PASSWORD: root
@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: "Functional Tests"
-      uses: actions/setup-test-environment.yml@latest
+      uses: ./.github/actions/setup-test-environment
       env:
         RAILS_ENV: test
         DB_PASSWORD: root
@@ -31,7 +31,7 @@ jobs:
       run: |
         yarn check || yarn install;
     - name: "Integration Tests"
-      uses: actions/setup-test-environment.yml@latest
+      uses: ./.github/actions/setup-test-environment
       env:
         RAILS_ENV: test
         DB_PASSWORD: root
@@ -45,7 +45,7 @@ jobs:
       run: |
         yarn check || yarn install;
     - name: "System Tests"
-      uses: actions/setup-test-environment.yml@latest
+      uses: ./.github/actions/setup-test-environment
       env:
         RAILS_ENV: test
         DB_PASSWORD: root
