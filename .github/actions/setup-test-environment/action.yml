@@ -25,6 +25,7 @@ runs:
   steps:
 
   - name: Setup database
+    shell: bash
     env:
       RAILS_ENV: test
       DB_PASSWORD: root
