@@ -360,6 +360,7 @@ en:
       all_posts: "<a href='%{url}' class='form-grey'>View all posts</a>"
       follow_topics: "Follow more topics"
       trending_topics: "Trending topics"
+      featured_topics: "Featured topics"
       learn_more: "learn more"
       add_topics: "Click to add topics, or"
       all_topics: "<a href='%{url}' class='form-grey'>All topics</a>"
