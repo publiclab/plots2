@@ -1,0 +1,63 @@
+name: 'Set up test environment'
+description: 'Set up test environment for plots2, except yarn'
+
+services:
+  mysql:
+    image: mysql:5.7
+    env:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+    - 3306
+    options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+  redis:
+    image: redis
+    # Set health checks to wait until redis has started
+    options: >-
+      --health-cmd "redis-cli ping"
+      --health-interval 10s
+      --health-timeout 5s
+      --health-retries 5
+    ports:
+      # Maps port 6379 on service container to the host
+      - 6379:6379
+runs:
+  using: "composite"
+  steps:
+
+  - uses: ruby/setup-ruby@v1
+    with:
+      ruby-version: 2.6 # Not needed with a .ruby-version file
+      bundler-cache: true # runs 'bundle install' and caches installed gems automatically (not working?)
+
+  - uses: nanasess/setup-chromedriver@v1.0.1
+  - uses: actions/checkout@v2
+
+  # shouldn't be required w/ setup-ruby bundler-cache, but that isn't working?
+  - name: Cache gems
+    uses: actions/cache@v2
+    with:
+      path: vendor/bundle
+      key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
+      restore-keys: |
+        ${{ runner.os }}-gem-
+
+  - name: Install Ruby gems with Bundler
+    run: |
+      bundle config path vendor/bundle
+      bundle install --jobs 4 --retry 3 --path vendor/bundle
+      bundle exec gem list
+
+  - name: Setup database
+    env:
+      RAILS_ENV: test
+      DB_PASSWORD: root
+      # tell Rails to use proper port for MySQL
+      DB_PORT: ${{ job.services.mysql.ports[3306] }}
+    run: |
+      cp config/database.yml.example config/database.yml
+      cp db/schema.rb.example db/schema.rb
+      sudo systemctl start mysql
+      mysql -uroot -proot -e "SET @@global.sql_mode=(SELECT REPLACE(@@global.sql_mode, 'ONLY_FULL_GROUP_BY', ''));"
+      mysql -uroot -proot -e "CREATE DATABASE plots;"
+      bundle exec rake db:schema:load db:migrate --trace
+      # above SET @@global.sql_mode is to address issue in https://github.com/publiclab/plots2/issues/3120
