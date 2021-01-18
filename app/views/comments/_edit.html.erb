@@ -14,15 +14,15 @@
     
     <div id="c<%= comment.id%>div" class="form-group">
     <textarea aria-label="Edit Comment" onFocus="editing=true" name="body" class="form-control" id="c<%= comment.id%>text" rows="6" cols="40" placeholder="<%= placeholder %>"><%= !(comment.is_a?Answer) ? comment.comment : comment.content %></textarea>
-    <div id="imagebar">
-      <div id="c<%= comment.id%>progress" style="display:none;" class="progress progress-striped active pull-right">
-        <div id="c<%= comment.id%>progress-bar" class="progress-bar" style="width: 0%;"></div>
+    <div class="imagebar">
+      <div id="c<%= comment.id%>progress" style="display:none;" class="progress progress-bar-container active pull-right">
+        <div id="c<%= comment.id%>progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%;"></div>
       </div>
       <p>
-        <span id="c<%= comment.id%>uploading" class="uploading" style="display:none;">
+        <span id="c<%= comment.id%>uploading" class="uploading uploading-text" style="display:none;">
           <%= translation('comments._edit.uploading') %>
         </span>
-        <span id="c<%= comment.id%>prompt" class="prompt">
+        <span id="c<%= comment.id%>prompt" class="prompt choose-one-prompt-text">
           <span style="padding-right:4px;float:left;" class="hidden-xs">
           <%= raw translation('comments._edit.drag_and_drop') %>
           </span>
@@ -39,10 +39,6 @@
       </div>
     </div>
       <script type="application/javascript">
-        jQuery(document).ready(function() {
-          $E.initialize();
-        });
-
         function setInit(id) {
           var args = {
             'textarea': 'c'+id+'text',
@@ -83,6 +79,7 @@
           },
           done: function (e, data) {
             $('#c<%= comment.id%>progress').hide()
+            $('#c<%= comment.id%>progress #c<%= comment.id%>progress-bar').css('width', 0);
             $('#c<%= comment.id%>uploading').hide()
             $('#c<%= comment.id%>prompt').show()
             var is_image = false
@@ -107,7 +104,7 @@
             else $('#node_images').val(data.result.id)
           },
 
-          fileuploadfail: function(e,data) {},
+          // fileuploadfail: function(e,data) {},
           progressall: function (e, data) {
             var progress = parseInt(data.loaded / data.total * 100, 10);
             $('#c<%= comment.id%>progress #c<%= comment.id%>progress-bar').css(
