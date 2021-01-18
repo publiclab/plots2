@@ -5,8 +5,8 @@ jobs:
   unit-tests:
     runs-on: ubuntu-latest
     steps:
+    - uses: ./.github/actions/setup-test-environment
     - name: "Unit Tests"
-      uses: ./.github/actions/setup-test-environment
       env:
         RAILS_ENV: test
         DB_PASSWORD: root
@@ -16,8 +16,8 @@ jobs:
   functional-tests:
     runs-on: ubuntu-latest
     steps:
+    - uses: ./.github/actions/setup-test-environment
     - name: "Functional Tests"
-      uses: ./.github/actions/setup-test-environment
       env:
         RAILS_ENV: test
         DB_PASSWORD: root
@@ -27,11 +27,11 @@ jobs:
   integration-tests:
     runs-on: ubuntu-latest
     steps:
+    - uses: ./.github/actions/setup-test-environment
     - name: Install JavaScript dependencies with Yarn
       run: |
         yarn check || yarn install;
     - name: "Integration Tests"
-      uses: ./.github/actions/setup-test-environment
       env:
         RAILS_ENV: test
         DB_PASSWORD: root
@@ -41,11 +41,11 @@ jobs:
   system-tests:
     runs-on: ubuntu-latest
     steps:
+    - uses: ./.github/actions/setup-test-environment
     - name: Install JavaScript dependencies with Yarn
       run: |
         yarn check || yarn install;
     - name: "System Tests"
-      uses: ./.github/actions/setup-test-environment
       env:
         RAILS_ENV: test
         DB_PASSWORD: root
