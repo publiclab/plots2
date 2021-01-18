@@ -4,29 +4,22 @@ $(function() {
   // on pages with multiple comments, $D.selected needs to be accurate so that rich-text changes (bold, italic, etc.) go into the right comment form
   // however, the editor is also used on pages with JUST ONE form, and no other comments, eg. /wiki/new & /wiki/edit, so this code needs to be reusable for that context
   $('.rich-text-button').on('click', function(e) {
-    const params = getEditorParams(e.target); // defined in editorHelper.js
+    const { textArea, preview, dSelected } = getEditorParams(e.target); // defined in editorHelper.js
     // assign dSelected
-    if (params.hasOwnProperty('dSelected')) {
-      $D.selected = params['dSelected'];
-    }
-    $E.initialize(params);
+    if (dSelected) { $D.selected = dSelected; }
+    $E.setState(textArea, preview);
     const action = e.currentTarget.dataset.action // 'bold', 'italic', etc.
     $E[action](); // call the appropriate editor function
   });
 });
 
 $E = {
-  initialize: function(args) {
-    args = args || {}
-    // title
-    $E.title = $('#title')
-    // textarea
-    args['textarea'] = args['textarea'] || 'text-input'
-    $E.textarea = $('#'+args['textarea'])
-    $E.textarea.bind('input propertychange',$E.save)
-    // preview
-    args['preview'] = args['preview'] || 'preview-main'
-    $E.preview = $('#'+args['preview'])
+  initialize: function() {
+    // call setState with no parameters, aka. default parameters.
+    // default parameters point toward either:
+    //   1. the comment form at the bottom of multi-comment wikis/questions/research notes
+    //   2. the only editor form on /wiki/new and /wiki/edit
+    $E.setState();
     
     marked.setOptions({
       gfm: true,
@@ -43,6 +36,12 @@ $E = {
         return code;
       }
     });
+  },
+  setState: function(textarea = 'text-input', preview = 'preview-main', title = 'title') {
+    $E.title = $('#' + title + 'title'); // not sure why this exists? seems like $E.title is always #title
+    $E.textarea = $('#' + textarea);
+    $E.textarea.bind('input propertychange', $E.save);
+    $E.preview = $('#' + preview);
   },
   is_editing: function() {
     return ($E.textarea[0].selectionStart == 0 && $E.textarea[0].selectionEnd == 0)
