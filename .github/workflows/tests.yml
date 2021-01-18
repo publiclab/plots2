@@ -27,6 +27,8 @@ jobs:
         ruby-version: 2.6 # Not needed with a .ruby-version file
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically (not working?)
     - uses: ./.github/actions/setup-test-environment
+    - name: Install JavaScript dependencies with Yarn
+      run: yarn check || yarn install;
     - name: "Functional Tests"
       env:
         RAILS_ENV: test
@@ -44,8 +46,7 @@ jobs:
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically (not working?)
     - uses: ./.github/actions/setup-test-environment
     - name: Install JavaScript dependencies with Yarn
-      run: |
-        yarn check || yarn install;
+      run: yarn check || yarn install;
     - name: "Integration Tests"
       env:
         RAILS_ENV: test
@@ -64,8 +65,7 @@ jobs:
     - uses: nanasess/setup-chromedriver@v1.0.1
     - uses: ./.github/actions/setup-test-environment
     - name: Install JavaScript dependencies with Yarn
-      run: |
-        yarn check || yarn install;
+      run: yarn check || yarn install;
     - name: "System Tests"
       env:
         RAILS_ENV: test
