@@ -48,6 +48,8 @@ class QuestionsController < ApplicationController
 
   # a form for new questions, at /questions/new
   def new
+    @node = Node.new
+    @revision = Revision.new
     # use another node body as a template
     node_id = params[:n].to_i
     if node_id && !params[:body] && Node.exists?(node_id)
