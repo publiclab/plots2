@@ -662,6 +662,13 @@ en:
     index:
       explanation: "Ask a question to the Public Lab community to help you in your
         environmental exploration."
+      recently_commented: Recently Commented
+      recently_commented_questions: Recently commented questions
+      popular_questions: Popular Questions
+      most_viewed_questions: Most viewed questions
+      unanswered_questions: Unanswered Questions
+      liked_questions: Liked Questions
+      most_liked_questions: Most liked questions
     _comment:
       promotion: "Promote this comment to an answer"
   user_sessions:
