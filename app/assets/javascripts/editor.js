@@ -53,20 +53,19 @@ $E = {
     // preview
     $E.preview = ($D.selected).find('.comment-preview').eq(0);
   },
-  // wraps currently selected text in textarea with strings a and b
-  wrap: function(a,b,args) {
+  isRichTextEditor: function(url) {
     // this RegEx matches three different cases where the legacy editor is still used:
     //   1. /wiki/new
     //   2. /wiki/{wiki name}/edit
     //   3. /features/new
-    const url = window.location.pathname;
     const legacyEditorPath = RegExp(/\/(wiki|features)(\/[^\/]+\/edit|\/new)/);
-    const isRichTextEditor = !legacyEditorPath.test(url);
-    // we only refresh $E's values if with the rich-text editor (most pages).
+    return !legacyEditorPath.test(url); // if we're not on one of these pages, we are using the rich-text editor.
+  },
+  // wraps currently selected text in textarea with strings a and b
+  wrap: function(a, b, args) {
+    // we only refresh $E's values if we are on a page using the rich-text editor (most pages).
     // the legacy editor pages only have one editor form, unlike pages with multiple comments.
-    if (isRichTextEditor && $D.selected) {
-      this.refresh();
-    }
+    this.isRichTextEditor(window.location.pathname) && this.refresh();
     var len = $E.textarea.val().length;
     var start = $E.textarea[0].selectionStart;
     var end = $E.textarea[0].selectionEnd;
