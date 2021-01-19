@@ -117,8 +117,6 @@
       <hr />
     <% end %>
     <% if !@preview %>
-        <%= javascript_include_tag "dragdrop" %>
-        <%= javascript_include_tag "comment" %>
         <%= render partial: "notes/responses" %>
         <div><%= render partial: "notes/comments" %></div>
     <% end %>

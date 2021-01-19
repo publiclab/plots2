@@ -32,8 +32,6 @@
 
     <div class="tab-pane active" id="tab-overview">
       <% if controller.action_name == 'comments' %>
-        <%= javascript_include_tag "dragdrop" %>
-        <%= javascript_include_tag "comment" %>
         <%= render partial: "notes/comments", :locals => {:nodes => @nodes} %>
       <% else %>
         <div <% unless @node.has_tag('style:wide') %>style="max-width:800px;"<% end %> id="content" class="pl-content wiki">
