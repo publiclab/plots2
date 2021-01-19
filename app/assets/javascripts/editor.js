@@ -4,29 +4,22 @@ $(function() {
   // on pages with multiple comments, $D.selected needs to be accurate so that rich-text changes (bold, italic, etc.) go into the right comment form
   // however, the editor is also used on pages with JUST ONE form, and no other comments, eg. /wiki/new & /wiki/edit, so this code needs to be reusable for that context
   $('.rich-text-button').on('click', function(e) {
-    const params = getEditorParams(e.target); // defined in editorHelper.js
+    const { textArea, preview, dSelected } = getEditorParams(e.target); // defined in editorHelper.js
     // assign dSelected
-    if (params.hasOwnProperty('dSelected')) {
-      $D.selected = params['dSelected'];
-    }
-    $E.initialize(params);
+    if (dSelected) { $D.selected = dSelected; }
+    $E.setState(textArea, preview);
     const action = e.currentTarget.dataset.action // 'bold', 'italic', etc.
     $E[action](); // call the appropriate editor function
   });
 });
 
 $E = {
-  initialize: function(args) {
-    args = args || {}
-    // title
-    $E.title = $('#title')
-    // textarea
-    args['textarea'] = args['textarea'] || 'text-input'
-    $E.textarea = $('#'+args['textarea'])
-    $E.textarea.bind('input propertychange',$E.save)
-    // preview
-    args['preview'] = args['preview'] || 'preview-main'
-    $E.preview = $('#'+args['preview'])
+  initialize: function() {
+    // call setState with no parameters, aka. default parameters.
+    // default parameters point toward either:
+    //   1. the comment form at the bottom of multi-comment wikis/questions/research notes
+    //   2. the only editor form on /wiki/new and /wiki/edit
+    $E.setState();
     
     marked.setOptions({
       gfm: true,
@@ -44,6 +37,12 @@ $E = {
       }
     });
   },
+  setState: function(textarea = 'text-input', preview = 'preview-main', title = 'title') {
+    $E.title = $('#' + title + 'title'); // not sure why this exists? seems like $E.title is always #title
+    $E.textarea = $('#' + textarea);
+    $E.textarea.bind('input propertychange', $E.save);
+    $E.preview = $('#' + preview);
+  },
   is_editing: function() {
     return ($E.textarea[0].selectionStart == 0 && $E.textarea[0].selectionEnd == 0)
   },
@@ -54,25 +53,31 @@ $E = {
     // preview
     $E.preview = ($D.selected).find('.comment-preview').eq(0);
   },
+  isRichTextEditor: function(url) {
+    // this RegEx matches three different cases where the legacy editor is still used:
+    //   1. /wiki/new
+    //   2. /wiki/{wiki name}/edit
+    //   3. /features/new
+    const legacyEditorPath = RegExp(/\/(wiki|features)(\/[^\/]+\/edit|\/new)/);
+    return !legacyEditorPath.test(url); // if we're not on one of these pages, we are using the rich-text editor.
+  },
   // wraps currently selected text in textarea with strings a and b
-  wrap: function(a,b,args) {
-    // this RegEx is: /wiki/ + any char not "/" + /edit
-    const isWikiCommentPage = (/\/wiki\/[^\/]+\/edit/).test(window.location.pathname);
-    // we don't need to refresh $E's values if we're on a page with a single comment form, ie. /wiki/new or /wiki/edit
-    if (window.location.pathname !== "/wiki/new" && !isWikiCommentPage && $D.selected) {
-      this.refresh();
-    }
+  wrap: function(a, b, args) {
+    // we only refresh $E's values if we are on a page using the rich-text editor (most pages).
+    // the legacy editor pages only have one editor form, unlike pages with multiple comments.
+    if (this.isRichTextEditor(window.location.pathname)) { this.refresh(); }
     var len = $E.textarea.val().length;
     var start = $E.textarea[0].selectionStart;
     var end = $E.textarea[0].selectionEnd;
-    var sel = $E.textarea.val().substring(start, end);
-    if (args && args['fallback']) { // an alternative if nothing has been selected, but we're simply dealing with an insertion point
-      sel = args['fallback']
-    }
+    const fallbackParameterExists = args && args['fallback'];
+    const newlineParameterExists = args && args['newline'];
+    var sel = fallbackParameterExists ? args['fallback'] : $E.textarea.val().substring(start, end); // // fallback if nothing has been selected, and we're simply dealing with an insertion point
     var replace = a + sel + b;
-    if (args && args['newline']) {
-      if ($E.textarea[0].selectionStart > 0) replace = "\n"+replace
-      replace = replace+"\n\n"
+    if (newlineParameterExists) {
+      replace = replace + "\n\n";
+    }
+    if (newlineParameterExists && $E.textarea[0].selectionStart > 0) { 
+      replace = "\n" + replace; 
     }
     $E.textarea.val($E.textarea.val().substring(0,start) + replace + $E.textarea.val().substring(end,len));
   },
