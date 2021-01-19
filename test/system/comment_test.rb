@@ -365,7 +365,7 @@ class CommentTest < ApplicationSystemTestCase
       page.find('#c' + edit_id_num + 'edit a', text: 'Preview').click
       page.first('a', text: 'Preview').click
       assert_selector('#c' + edit_id_num + 'preview img', count: 1)
-      assert_selector('.comment-preview img', count: 1)
+      assert_selector('#preview-reply-' + reply_id_num, count: 1)
     end
 
     test "#{page_type_string}: ctrl/cmd + enter comment publishing keyboard shortcut" do
