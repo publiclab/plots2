@@ -69,10 +69,7 @@ $E = {
     var len = $E.textarea.val().length;
     var start = $E.textarea[0].selectionStart;
     var end = $E.textarea[0].selectionEnd;
-    var sel = $E.textarea.val().substring(start, end);
-    if (args && args['fallback']) { // an alternative if nothing has been selected, but we're simply dealing with an insertion point
-      sel = args['fallback']
-    }
+    var sel = (args && args['fallback']) ? $E.textarea.val().substring(start, end) : args['fallback']; // // fallback if nothing has been selected, and we're simply dealing with an insertion point
     var replace = a + sel + b;
     if (args && args['newline']) {
       if ($E.textarea[0].selectionStart > 0) replace = "\n"+replace
