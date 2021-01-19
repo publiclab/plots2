@@ -29,12 +29,10 @@ jQuery(function() {
     });
 
     $(this).on('drop',function(e) {
-      const params = getEditorParams(e.target); // defined in editorHelper.js
+      const { textArea, preview, dSelected } = getEditorParams(e.target); // defined in editorHelper.js
       e.preventDefault();
-      if (params.hasOwnProperty('dSelected')) {
-        $D.selected = params['dSelected'];
-      }
-      $E.initialize(params);
+      if (dSelected) { $D.selected = dSelected; }
+      $E.setState(textArea, preview);
     });
 
     $(this).fileupload({

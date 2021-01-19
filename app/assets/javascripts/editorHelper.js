@@ -8,10 +8,13 @@ const getEditorParams = (targetDiv) => {
     params['dSelected'] = $(closestCommentFormWrapper);
     // assign the ID of the textarea within the closest comment-form-wrapper
     params['textarea'] = closestCommentFormWrapper.querySelector('textarea').id;
+    params['preview'] = closestCommentFormWrapper.querySelector('.comment-preview').id;
   } else {
     // default to #text-input
     // #text-input ID should be unique, and the only comment form on /wiki/new & /wiki/edit
     params['textarea'] = 'text-input';
+    // #preview-main should be unique as well
+    params['preview'] = 'preview-main';
   }
   return params;
 };
