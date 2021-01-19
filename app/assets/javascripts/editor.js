@@ -71,7 +71,7 @@ $E = {
     var end = $E.textarea[0].selectionEnd;
     const fallbackParameterExists = args && args['fallback'];
     const newlineParameterExists = args && args['newline'];
-    var sel = fallbackParameterExists ? $E.textarea.val().substring(start, end) : args['fallback']; // // fallback if nothing has been selected, and we're simply dealing with an insertion point
+    var sel = fallbackParameterExists ? args['fallback'] : $E.textarea.val().substring(start, end); // // fallback if nothing has been selected, and we're simply dealing with an insertion point
     var replace = a + sel + b;
     if (newlineParameterExists) {
       replace = replace + "\n\n";
