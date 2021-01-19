@@ -55,10 +55,15 @@ $E = {
   },
   // wraps currently selected text in textarea with strings a and b
   wrap: function(a,b,args) {
-    // this RegEx is: /wiki/ + any char not "/" + /edit
-    const isWikiCommentPage = (/\/wiki\/[^\/]+\/edit/).test(window.location.pathname);
-    // we don't need to refresh $E's values if we're on a page with a single comment form, ie. /wiki/new or /wiki/edit
-    if (window.location.pathname !== "/wiki/new" && !isWikiCommentPage && $D.selected) {
+    // this RegEx matches three different cases where the legacy editor is still used:
+    //   1. /wiki/new
+    //   2. /wiki/{wiki name}/edit
+    //   3. /features/new
+    const isLegacyEditorPath = RegExp(/\/(wiki|features)(\/[^\/]+\/edit|\/new)/);
+    const isLegacyEditorPage = isLegacyEditorPath.test(window.location.pathname);
+    // we don't need to refresh $E's values if we're on a page where the legacy editor is still used.
+    // this is because these pages only have one editor form, unlike pages with multiple comments.
+    if (!isLegacyEditorPage && $D.selected) {
       this.refresh();
     }
     var len = $E.textarea.val().length;
