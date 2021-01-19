@@ -65,7 +65,7 @@ $E = {
   wrap: function(a, b, args) {
     // we only refresh $E's values if we are on a page using the rich-text editor (most pages).
     // the legacy editor pages only have one editor form, unlike pages with multiple comments.
-    this.isRichTextEditor(window.location.pathname) && this.refresh();
+    if (this.isRichTextEditor(window.location.pathname)) { this.refresh(); }
     var len = $E.textarea.val().length;
     var start = $E.textarea[0].selectionStart;
     var end = $E.textarea[0].selectionEnd;
