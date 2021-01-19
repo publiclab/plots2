@@ -59,11 +59,12 @@ $E = {
     //   1. /wiki/new
     //   2. /wiki/{wiki name}/edit
     //   3. /features/new
-    const isLegacyEditorPath = RegExp(/\/(wiki|features)(\/[^\/]+\/edit|\/new)/);
-    const isLegacyEditorPage = isLegacyEditorPath.test(window.location.pathname);
-    // we don't need to refresh $E's values if we're on a page where the legacy editor is still used.
-    // this is because these pages only have one editor form, unlike pages with multiple comments.
-    if (!isLegacyEditorPage && $D.selected) {
+    const url = window.location.pathname;
+    const legacyEditorPath = RegExp(/\/(wiki|features)(\/[^\/]+\/edit|\/new)/);
+    const isRichTextEditor = !legacyEditorPath.test(url);
+    // we only refresh $E's values if with the rich-text editor (most pages).
+    // the legacy editor pages only have one editor form, unlike pages with multiple comments.
+    if (isRichTextEditor && $D.selected) {
       this.refresh();
     }
     var len = $E.textarea.val().length;
