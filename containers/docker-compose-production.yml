@@ -80,6 +80,11 @@ services:
       - RAILS_ENV=${RAILS_ENV}
       - REDIS_URL=redis://redis:6379/0
       - SECRET_KEY_BASE=${SECRET_KEY_BASE}
+      - DB_USER=${DB_USER}
+      - DB_NAME=${DB_NAME}
+      - DB_PASS=${DB_PASS}
+      - DB_HOST=${DB_HOST}
+      - DB_SOCKET=${DB_SOCKET}
   mailman:
     build: ..
     command: script/mailman_server
@@ -90,6 +95,11 @@ services:
       - SERVER_ADDRESS=${SERVER_ADDRESS}
       - USERNAME=${USERNAME}
       - EMAIL_PASSWORD=${EMAIL_PASSWORD}
+      - DB_USER=${DB_USER}
+      - DB_NAME=${DB_NAME}
+      - DB_PASS=${DB_PASS}
+      - DB_HOST=${DB_HOST}
+      - DB_SOCKET=${DB_SOCKET}
     volumes:
       - ..:/app
     restart: on-failure:5
