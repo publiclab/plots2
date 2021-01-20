@@ -20,9 +20,14 @@ class CommentTest < ApplicationSystemTestCase
     page_type == :wiki ? path + '/comments' : path
   end
 
-  # page_types are wiki, research note, question:
-  page_types.each do |page_type, node_name|
-    page_type_string = page_type.to_s
+  # weird syntax, i know. 
+  #   most comment tests we can simply test on Research Note pages.
+  #   that's what this block is for.
+
+  #   other comment tests can ALSO be tested on Wikis and Questions.
+  #   scroll past this block for those tests.
+  { :note => :comment_note }.each do |page_type, node_name|
+    page_type_string = 'note'
     comment_text = 'woot woot'
     comment_response_text = 'wooly woot'
 
@@ -36,17 +41,6 @@ class CommentTest < ApplicationSystemTestCase
       visit get_path(page_type, nodes(node_name).path)
       page.evaluate_script("addComment('#{comment_text}', '/comment/create/#{nodes(node_name).nid.to_s}')")
       assert_selector('#comments-list .comment-body p', text: comment_text)
-    end
-
-    test "#{page_type_string}: reply to existing comment" do
-      visit get_path(page_type, nodes(node_name).path)
-      # find comment ID of the first comment on page
-      parent_id = "#" + page.find('#comments-list').first('.comment')[:id]
-      parent_id_num = /c(\d+)/.match(parent_id)[1] # eg. comment ID format is id="c9834"
-      # addComment(comment text, submitURL, comment's parent ID)
-      page.evaluate_script("addComment(\"no you can't\", '/comment/create/#{nodes(:comment_note).nid}', #{parent_id_num})")
-      # check for comment text
-      assert_selector("#{parent_id} .comment .comment-body p", text: 'no you can\'t')
     end
 
     test "#{page_type_string}: comment, then reply to FRESH comment" do
@@ -84,6 +78,215 @@ class CommentTest < ApplicationSystemTestCase
       find("p", text: comment_response_text)
     end
 
+    test "#{page_type_string}: comment preview button works" do
+      visit get_path(page_type, nodes(node_name).path)
+      find("p", text: "Reply to this comment...").click()
+      reply_preview_button = page.all('.preview-btn')[0]
+      comment_preview_button = page.all('.preview-btn')[1]
+      # Toggle preview
+      reply_preview_button.click()
+      # Make sure that buttons are not binded with each other
+      assert_equal( reply_preview_button.text, "Hide Preview" )
+      assert_equal( comment_preview_button.text, "Preview" )
+    end
+
+    test "#{page_type_string}: ctrl/cmd + enter comment publishing keyboard shortcut" do
+      visit get_path(page_type, nodes(node_name).path)
+      find("p", text: "Reply to this comment...").click()
+      # Write a comment
+      page.all(".text-input")[1].set("Great post!")
+      page.execute_script <<-JS
+        // Remove first text-input field
+        $(".text-input").first().remove()
+        var $textBox = $(".text-input");
+        // Generate fake CTRL + Enter event
+        var press = jQuery.Event("keypress");
+        press.altGraphKey = false;
+        press.altKey = false;
+        press.bubbles = true;
+        press.cancelBubble = false;
+        press.cancelable = true;
+        press.charCode = 10;
+        press.clipboardData = undefined;
+        press.ctrlKey = true;
+        press.currentTarget = $textBox[0];
+        press.defaultPrevented = false;
+        press.detail = 0;
+        press.eventPhase = 2;
+        press.keyCode = 10;
+        press.keyIdentifier = "";
+        press.keyLocation = 0;
+        press.layerX = 0;
+        press.layerY = 0;
+        press.metaKey = false;
+        press.pageX = 0;
+        press.pageY = 0;
+        press.returnValue = true;
+        press.shiftKey = false;
+        press.srcElement = $textBox[0];
+        press.target = $textBox[0];
+        press.type = "keypress";
+        press.view = Window;
+        press.which = 10;
+        // Emit fake CTRL + Enter event
+        $textBox.trigger(press);
+      JS
+      assert_selector('#comments-list .comment', count: 2)
+      assert_selector('.noty_body', text: 'Comment Added!')
+    end
+
+    test "#{page_type_string}: comment deletion" do
+      visit get_path(page_type, nodes(node_name).path)
+      # Create a comment
+      main_comment_form =  page.find('h4', text: /Post comment|Post Comment/).find(:xpath, '..') # title text on wikis is 'Post comment'
+      # fill out the comment form
+      main_comment_form
+        .find('textarea')
+        .click
+        .fill_in with: comment_text
+      # publish
+      main_comment_form
+        .find('button', text: 'Publish')
+        .click
+      page.find(".noty_body", text: "Comment Added!")
+      # Delete a comment
+      find('.btn[data-original-title="Delete comment"]', match: :first).click()
+      # Click "confirm" on modal
+      page.evaluate_script('document.querySelector(".jconfirm-buttons .btn:first-of-type").click()')
+      assert_selector('#comments-list .comment', count: 1)
+      assert_selector('.noty_body', text: 'Comment deleted')
+    end
+
+    test "#{page_type_string}: formatting toolbar is rendered" do
+      visit get_path(page_type, nodes(node_name).path)
+      assert_selector('.btn[data-original-title="Bold"]', count: 1)
+      assert_selector('.btn[data-original-title="Italic"]', count: 1)
+      assert_selector('.btn[data-original-title="Header"]', count: 1)
+      assert_selector('.btn[data-original-title="Make a link"]', count: 1)
+      assert_selector('.btn[data-original-title="Upload an image"]', count: 1)
+      assert_selector('.btn[data-original-title="Save"]', count: 1)
+      assert_selector('.btn[data-original-title="Recover"]', count: 1)
+      assert_selector('.btn[data-original-title="Help"]', count: 1)
+    end
+
+    test "#{page_type_string}: edit comment" do
+      nodes(node_name).add_comment({
+        uid: 2,
+        body: comment_text
+      })
+      visit get_path(page_type, nodes(node_name).path)
+      # Edit the comment
+      page.execute_script <<-JS
+        var comment = $(".comment")[1];
+        var commentID = comment.id;
+        var editCommentBtn = $(comment).find('.navbar-text #edit-comment-btn')
+        // Toggle edit mode
+        $(editCommentBtn).click()
+        var commentTextarea = $('#' + commentID + 'text');
+        $(commentTextarea).val('Updated comment.')
+        var submitCommentBtn = $('#' + commentID + ' .control-group .btn-primary')[1];
+        $(submitCommentBtn).click()
+      JS
+      message = find('.alert-success', match: :first).text
+      assert_equal( "×\nComment updated.", message)
+    end
+
+    test "#{page_type_string}: react and unreact to comment" do
+      visit get_path(page_type, nodes(node_name).path)
+      first(".comment #dropdownMenuButton").click()
+      # click on thumbs up
+      find("img[src='https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png']").click()
+      page.assert_selector("button[data-original-title='jeff reacted with thumbs up emoji']")
+      first("img[src='https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png']").click()
+      page.assert_no_selector("button[data-original-title='jeff reacted with thumbs up emoji'")
+    end
+
+    test "#{page_type}: multiple comment boxes, post comments" do
+      if page_type == :note
+        visit nodes(:note_with_multiple_comments).path
+      elsif page_type == :question
+        visit nodes(:question_with_multiple_comments).path
+      elsif page_type == :wiki
+        visit nodes(:wiki_with_multiple_comments).path + '/comments'
+      end
+      # there should be multiple "Reply to comment..."s on this fixture
+      reply_toggles = page.all('p', text: 'Reply to this comment...')
+      # extract the comment IDs from each
+      comment_ids = []
+      reply_toggles.each do |reply_toggle|
+        id_string = reply_toggle[:id]
+        comment_id = /comment-(\d+)-reply-toggle/.match(id_string)[1]
+        comment_ids << comment_id
+      end
+      # work with just the 2nd comment
+      reply_toggles[1].click 
+      # open the comment form by toggling, and fill in some text
+      find("div#comment-#{comment_ids[1]}-reply-section textarea.text-input").click.fill_in with: 'H'
+      # open the other two comment forms
+      reply_toggles[0].click
+      reply_toggles[2].click
+      # fill them in with text
+      find("div#comment-#{comment_ids[0]}-reply-section textarea.text-input").click.fill_in with: 'A'
+      find("div#comment-#{comment_ids[2]}-reply-section textarea.text-input").click.fill_in with: 'Y'
+      # click the publish buttons for each in a random sequence
+      [1, 2, 0].each do |number|
+        find("div#comment-#{comment_ids[number]}-reply-section button", text: 'Publish').click
+        wait_for_ajax
+      end
+      # assert that the replies went to the right comments
+      assert_selector("#c" + comment_ids[0] + "show div div div p", text: 'A')
+      assert_selector("#c" + comment_ids[1] + "show div div div p", text: 'H')
+      assert_selector("#c" + comment_ids[2] + "show div div div p", text: 'Y')
+    end
+
+    test "#{page_type_string}: progress bars display for image DRAG & DROP in MAIN comment form" do
+      node_name == :wiki_page ? (visit nodes(node_name).path + '/comments') : (visit nodes(node_name).path)
+      # make a fresh comment in the main comment form
+      main_comment_form =  page.find('h4', text: /Post comment|Post Comment/).find(:xpath, '..') # title text on wikis is 'Post comment'
+      # before we drop an image, we need to make the main comment form the focus by clicking on "Preview," then hiding preview.
+      # otherwise, image upload in the next step won't be 'wired' to the "Post Comment" form.
+      main_comment_form.find('a', text: 'Preview').click.click
+      # .dropzone is hidden, so reveal it:
+      Capybara.ignore_hidden_elements = false
+      # drag & drop the image. drop_in_dropzone simulates 'drop' event,  see application_system_test_case.rb
+      drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", '#comments-list + div .dropzone') # this CSS selects .dropzones that belong to sibling element immediately following #comments-list. technically, there are two .dropzones in the main comment form.
+      Capybara.ignore_hidden_elements = true
+      assert_selector('.progress')
+      assert_selector('.uploading-text')
+    end
+
+    test "#{page_type_string}: progress bars display for EDIT comment form's image SELECT upload" do
+      # before we visit the page, add a jeff comment so that we can edit it.
+      nodes(node_name).add_comment({
+        uid: 2,
+        body: comment_text
+      })
+      visit get_path(page_type, nodes(node_name).path)
+      # open the edit comment form:
+      page.find("#edit-comment-btn").click
+      # find the parent of edit comment's fileinput:
+      comment_fileinput_parent_id = page.find('[id^=dropzone-small-edit-]')[:id] # 'begins with' CSS selector
+      comment_id_num = /dropzone-small-edit-(\d+)/.match(comment_fileinput_parent_id)[1]
+      # upload images
+      # the <inputs> that take image uploads are hidden, so reveal them:
+      Capybara.ignore_hidden_elements = false
+      # find edit comment's fileinput:
+      page.find('#fileinput-button-edit-' + comment_id_num).set("#{Rails.root.to_s}/public/images/pl.png")
+      Capybara.ignore_hidden_elements = true
+      assert_selector('#c' + comment_id_num + 'progress')
+      assert_selector('#c' + comment_id_num + 'uploading')
+    end
+  end
+
+  # TESTS for ALL PAGE TYPES!
+  #
+  # the page_types are: Wikis, Research Notes, and Questions
+  # defined in test/test_helper.rb
+  page_types.each do |page_type, node_name|
+    page_type_string = page_type.to_s
+    comment_text = 'woot woot'
+    comment_response_text = 'wooly woot'
+
     test "post #{page_type_string}, then comment on FRESH #{page_type_string}" do
       title_text, body_text = String.new, String.new
       case page_type_string
@@ -113,7 +316,9 @@ class CommentTest < ApplicationSystemTestCase
           visit "/wiki/#{title_text}/comments"
       end
       assert_selector('h1', text: title_text)
-      fill_in("body", with: comment_text)
+      page.find("textarea#text-input")
+        .click
+        .fill_in with: comment_text
       # preview comment
       find("#toggle-preview-button-main").click
       find("p", text: comment_text)
@@ -121,34 +326,6 @@ class CommentTest < ApplicationSystemTestCase
       click_on "Publish"
       find(".noty_body", text: "Comment Added!")
       find("p", text: comment_text)
-    end
-
-    test "#{page_type_string}: comment preview button works" do
-      visit get_path(page_type, nodes(node_name).path)
-      find("p", text: "Reply to this comment...").click()
-      reply_preview_button = page.all('.preview-btn')[0]
-      comment_preview_button = page.all('.preview-btn')[1]
-      # Toggle preview
-      reply_preview_button.click()
-      # Make sure that buttons are not binded with each other
-      assert_equal( reply_preview_button.text, "Hide Preview" )
-      assert_equal( comment_preview_button.text, "Preview" )
-    end
-
-    test "#{page_type_string}: IMMEDIATE image SELECT upload into MAIN comment form" do
-      visit get_path(page_type, nodes(node_name).path)
-      main_comment_form =  page.find('h4', text: /Post comment|Post Comment/).find(:xpath, '..') # title text on wikis is 'Post comment'
-      Capybara.ignore_hidden_elements = false
-      fileinput_element = main_comment_form.find('input#fileinput-button-main')
-      # Upload the image
-      fileinput_element.set("#{Rails.root.to_s}/public/images/pl.png")
-      Capybara.ignore_hidden_elements = true
-      # Wait for image upload to finish
-      wait_for_ajax
-      # Toggle preview
-      main_comment_form.find('a', text: 'Preview').click
-      # Make sure that image has been uploaded
-      page.assert_selector('#preview-main img', count: 1)
     end
 
     # navigate to page, immediately upload into EDIT form by SELECTing image
@@ -245,23 +422,15 @@ class CommentTest < ApplicationSystemTestCase
     # up in the other one.
 
     # there are many variations of this bug. this particular test involves:
-    #  DRAG & DROP image upload in both:
-    #    MAIN comment form
-    #    EDIT comment form (.dropzone button)
+    #  DRAG & DROP upload into MAIN comment form
+    #  DRAG & DROP into EDIT comment form (.dropzone button)
     test "#{page_type_string}: image DRAG & DROP into EDIT form isn't cross-wired with MAIN form" do
+      # setup page with editable comment
+      nodes(node_name).add_comment({
+        uid: 2,
+        body: comment_text
+      })
       visit get_path(page_type, nodes(node_name).path)
-      # make a fresh comment in the main comment form
-      main_comment_form =  page.find('h4', text: /Post comment|Post Comment/).find(:xpath, '..') # title text on wikis is 'Post comment'
-      # fill out the comment form
-      main_comment_form
-        .find('textarea')
-        .click
-        .fill_in with: comment_text
-      # publish
-      main_comment_form
-        .find('button', text: 'Publish')
-        .click
-      page.find(".noty_body", text: "Comment Added!")
       # .dropzone is hidden, so reveal it for Capybara's finders:
       Capybara.ignore_hidden_elements = false
       # drag & drop the image. drop_in_dropzone simulates 'drop' event, see application_system_test_case.rb
@@ -281,7 +450,7 @@ class CommentTest < ApplicationSystemTestCase
       Capybara.ignore_hidden_elements = true
       wait_for_ajax
       # open the preview for the main comment form
-      main_comment_form.find('a', text: 'Preview').click
+      page.find('#toggle-preview-button-main').click
       # once preview is open, the images are embedded in the page.
       # there should only be 1 image in the main comment form!
       preview_imgs = page.all('#preview-main img').size
@@ -292,6 +461,9 @@ class CommentTest < ApplicationSystemTestCase
     # SELECT image upload in both:
     #   EDIT form
     #   MAIN form
+
+    # NOTE: this is also a test for:
+    #   IMMEDIATE image SELECT upload into MAIN comment form
     test "#{page_type_string}: image SELECT upload into EDIT form isn't CROSS-WIRED with MAIN form" do
       nodes(node_name).add_comment({
         uid: 5,
@@ -368,85 +540,6 @@ class CommentTest < ApplicationSystemTestCase
       assert_selector('#preview-reply-' + reply_id_num, count: 1)
     end
 
-    test "#{page_type_string}: ctrl/cmd + enter comment publishing keyboard shortcut" do
-      visit get_path(page_type, nodes(node_name).path)
-      find("p", text: "Reply to this comment...").click()
-      # Write a comment
-      page.all(".text-input")[1].set("Great post!")
-      page.execute_script <<-JS
-        // Remove first text-input field
-        $(".text-input").first().remove()
-        var $textBox = $(".text-input");
-        // Generate fake CTRL + Enter event
-        var press = jQuery.Event("keypress");
-        press.altGraphKey = false;
-        press.altKey = false;
-        press.bubbles = true;
-        press.cancelBubble = false;
-        press.cancelable = true;
-        press.charCode = 10;
-        press.clipboardData = undefined;
-        press.ctrlKey = true;
-        press.currentTarget = $textBox[0];
-        press.defaultPrevented = false;
-        press.detail = 0;
-        press.eventPhase = 2;
-        press.keyCode = 10;
-        press.keyIdentifier = "";
-        press.keyLocation = 0;
-        press.layerX = 0;
-        press.layerY = 0;
-        press.metaKey = false;
-        press.pageX = 0;
-        press.pageY = 0;
-        press.returnValue = true;
-        press.shiftKey = false;
-        press.srcElement = $textBox[0];
-        press.target = $textBox[0];
-        press.type = "keypress";
-        press.view = Window;
-        press.which = 10;
-        // Emit fake CTRL + Enter event
-        $textBox.trigger(press);
-      JS
-      assert_selector('#comments-list .comment', count: 2)
-      assert_selector('.noty_body', text: 'Comment Added!')
-    end
-
-    test "#{page_type_string}: comment deletion" do
-      visit get_path(page_type, nodes(node_name).path)
-      # Create a comment
-      main_comment_form =  page.find('h4', text: /Post comment|Post Comment/).find(:xpath, '..') # title text on wikis is 'Post comment'
-      # fill out the comment form
-      main_comment_form
-        .find('textarea')
-        .click
-        .fill_in with: comment_text
-      # publish
-      main_comment_form
-        .find('button', text: 'Publish')
-        .click
-      page.find(".noty_body", text: "Comment Added!")
-      # Delete a comment
-      find('.btn[data-original-title="Delete comment"]', match: :first).click()
-      # Click "confirm" on modal
-      page.evaluate_script('document.querySelector(".jconfirm-buttons .btn:first-of-type").click()')
-      assert_selector('#comments-list .comment', count: 1)
-      assert_selector('.noty_body', text: 'Comment deleted')
-    end
-
-    test "#{page_type_string}: formatting toolbar is rendered" do
-      visit get_path(page_type, nodes(node_name).path)
-      assert_selector('.btn[data-original-title="Bold"]', count: 1)
-      assert_selector('.btn[data-original-title="Italic"]', count: 1)
-      assert_selector('.btn[data-original-title="Header"]', count: 1)
-      assert_selector('.btn[data-original-title="Make a link"]', count: 1)
-      assert_selector('.btn[data-original-title="Upload an image"]', count: 1)
-      assert_selector('.btn[data-original-title="Save"]', count: 1)
-      assert_selector('.btn[data-original-title="Recover"]', count: 1)
-      assert_selector('.btn[data-original-title="Help"]', count: 1)
-    end
-
     test "#{page_type_string}: IMMEDIATE rich-text input works in MAIN form" do
       visit get_path(page_type, nodes(node_name).path)
       main_comment_form =  page.find('h4', text: /Post comment|Post Comment/).find(:xpath, '..') # title text on wikis is 'Post comment'
@@ -476,114 +569,6 @@ class CommentTest < ApplicationSystemTestCase
       edit_input_value = page.find('#' + edit_comment_form_id + ' textarea').value
       assert_equal(comment_text, edit_input_value)
       assert_equal('****', reply_input_value)
-    end
-
-    test "#{page_type_string}: edit comment" do
-      nodes(node_name).add_comment({
-        uid: 2,
-        body: comment_text
-      })
-      visit get_path(page_type, nodes(node_name).path)
-      # Edit the comment
-      page.execute_script <<-JS
-        var comment = $(".comment")[1];
-        var commentID = comment.id;
-        var editCommentBtn = $(comment).find('.navbar-text #edit-comment-btn')
-        // Toggle edit mode
-        $(editCommentBtn).click()
-        var commentTextarea = $('#' + commentID + 'text');
-        $(commentTextarea).val('Updated comment.')
-        var submitCommentBtn = $('#' + commentID + ' .control-group .btn-primary')[1];
-        $(submitCommentBtn).click()
-      JS
-      message = find('.alert-success', match: :first).text
-      assert_equal( "×\nComment updated.", message)
-    end
-
-    test "#{page_type_string}: react and unreact to comment" do
-      visit get_path(page_type, nodes(node_name).path)
-      first(".comment #dropdownMenuButton").click()
-      # click on thumbs up
-      find("img[src='https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png']").click()
-      page.assert_selector("button[data-original-title='jeff reacted with thumbs up emoji']")
-      first("img[src='https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png']").click()
-      page.assert_no_selector("button[data-original-title='jeff reacted with thumbs up emoji'")
-    end
-
-    test "#{page_type_string}: progress bars display for image DRAG & DROP in MAIN comment form" do
-      node_name == :wiki_page ? (visit nodes(node_name).path + '/comments') : (visit nodes(node_name).path)
-      # make a fresh comment in the main comment form
-      main_comment_form =  page.find('h4', text: /Post comment|Post Comment/).find(:xpath, '..') # title text on wikis is 'Post comment'
-      # before we drop an image, we need to make the main comment form the focus by clicking on "Preview," then hiding preview.
-      # otherwise, image upload in the next step won't be 'wired' to the "Post Comment" form.
-      main_comment_form.find('a', text: 'Preview').click.click
-      # .dropzone is hidden, so reveal it:
-      Capybara.ignore_hidden_elements = false
-      # drag & drop the image. drop_in_dropzone simulates 'drop' event,  see application_system_test_case.rb
-      drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", '#comments-list + div .dropzone') # this CSS selects .dropzones that belong to sibling element immediately following #comments-list. technically, there are two .dropzones in the main comment form.
-      Capybara.ignore_hidden_elements = true
-      assert_selector('.progress')
-      assert_selector('.uploading-text')
-    end
-
-    test "#{page_type_string}: progress bars display for EDIT comment form's image SELECT upload" do
-      # before we visit the page, add a jeff comment so that we can edit it.
-      nodes(node_name).add_comment({
-        uid: 2,
-        body: comment_text
-      })
-      visit get_path(page_type, nodes(node_name).path)
-      # open the edit comment form:
-      page.find("#edit-comment-btn").click
-      # find the parent of edit comment's fileinput:
-      comment_fileinput_parent_id = page.find('[id^=dropzone-small-edit-]')[:id] # 'begins with' CSS selector
-      comment_id_num = /dropzone-small-edit-(\d+)/.match(comment_fileinput_parent_id)[1]
-      # upload images
-      # the <inputs> that take image uploads are hidden, so reveal them:
-      Capybara.ignore_hidden_elements = false
-      # find edit comment's fileinput:
-      page.find('#fileinput-button-edit-' + comment_id_num).set("#{Rails.root.to_s}/public/images/pl.png")
-      Capybara.ignore_hidden_elements = true
-      assert_selector('#c' + comment_id_num + 'progress')
-      assert_selector('#c' + comment_id_num + 'uploading')
-    end
-
-    test "#{page_type}: multiple comment boxes, post comments" do
-      if page_type == :note
-        visit nodes(:note_with_multiple_comments).path
-      elsif page_type == :question
-        visit nodes(:question_with_multiple_comments).path
-      elsif page_type == :wiki
-        visit nodes(:wiki_with_multiple_comments).path + '/comments'
-      end
-      # there should be multiple "Reply to comment..."s on this fixture
-      reply_toggles = page.all('p', text: 'Reply to this comment...')
-      # extract the comment IDs from each
-      comment_ids = []
-      reply_toggles.each do |reply_toggle|
-        id_string = reply_toggle[:id]
-        comment_id = /comment-(\d+)-reply-toggle/.match(id_string)[1]
-        comment_ids << comment_id
-      end
-      # work with just the 2nd comment
-      reply_toggles[1].click 
-      # open the comment form by toggling, and fill in some text
-      find("div#comment-#{comment_ids[1]}-reply-section textarea.text-input").click.fill_in with: 'H'
-      # open the other two comment forms
-      reply_toggles[0].click
-      reply_toggles[2].click
-      # fill them in with text
-      find("div#comment-#{comment_ids[0]}-reply-section textarea.text-input").click.fill_in with: 'A'
-      find("div#comment-#{comment_ids[2]}-reply-section textarea.text-input").click.fill_in with: 'Y'
-      # click the publish buttons for each in a random sequence
-      [1, 2, 0].each do |number|
-        find("div#comment-#{comment_ids[number]}-reply-section button", text: 'Publish').click
-        wait_for_ajax
-      end
-      # assert that the replies went to the right comments
-      assert_selector("#c" + comment_ids[0] + "show div div div p", text: 'A')
-      assert_selector("#c" + comment_ids[1] + "show div div div p", text: 'H')
-      assert_selector("#c" + comment_ids[2] + "show div div div p", text: 'Y')
     end
   end
 end
