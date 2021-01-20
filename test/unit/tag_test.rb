@@ -261,4 +261,13 @@ class TagTest < ActiveSupport::TestCase
     assert_equal last_week_subscriptions, graph.values.sum
     assert_equal Hash, graph.class
   end
+
+  test 'tagged_node_count' do
+    tag = tags(:test)
+    note_count = Tag.tagged_node_count(tag.name)
+    wiki_count = Tag.tagged_node_count(tag.name, 'page')
+
+    assert_equal 2 , note_count
+    assert_equal 0 , wiki_count
+  end
 end
