@@ -316,7 +316,9 @@ class CommentTest < ApplicationSystemTestCase
           visit "/wiki/#{title_text}/comments"
       end
       assert_selector('h1', text: title_text)
-      fill_in("#text-input", with: comment_text)
+      page.find("textarea#text-input")
+        .click
+        .fill_in with: comment_text
       # preview comment
       find("#toggle-preview-button-main").click
       find("p", text: comment_text)
