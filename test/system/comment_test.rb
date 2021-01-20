@@ -27,7 +27,7 @@ class CommentTest < ApplicationSystemTestCase
   #   other comment tests can ALSO be tested on Wikis and Questions.
   #   scroll past this block for those tests.
   { :note => :comment_note }.each do |page_type, node_name|
-    page_type_string = 'research notes'
+    page_type_string = 'note'
     comment_text = 'woot woot'
     comment_response_text = 'wooly woot'
 
@@ -76,45 +76,6 @@ class CommentTest < ApplicationSystemTestCase
       # preview reply
       first(".preview-btn").click
       find("p", text: comment_response_text)
-    end
-
-    test "post #{page_type_string}, then comment on FRESH #{page_type_string}" do
-      title_text, body_text = String.new, String.new
-      case page_type_string
-        when 'note'
-          visit '/post'
-          title_text = 'Ahh, a nice fresh note'
-          body_text = "Can\'t wait to write in it!"
-          fill_in('title-input', with: title_text)
-          find('.wk-wysiwyg').set(body_text)
-          find('.ple-publish').click()
-        when 'question'
-          visit '/questions/new?&tags=question%3Ageneral'
-          title_text = "Let's talk condiments"
-          body_text = 'Ketchup or mayo?'
-          find("input[aria-label='Enter question']", match: :first)
-            .click()
-            .fill_in with: title_text
-          find('.wk-wysiwyg').set(body_text)
-          find('.ple-publish').click()
-        when 'wiki'
-          visit '/wiki/new'
-          title_text = 'pokemon'
-          body_text = 'Gotta catch em all!'
-          fill_in('title', with: title_text)
-          fill_in('text-input', with: body_text)
-          find('#publish').click()
-          visit "/wiki/#{title_text}/comments"
-      end
-      assert_selector('h1', text: title_text)
-      fill_in("body", with: comment_text)
-      # preview comment
-      find("#toggle-preview-button-main").click
-      find("p", text: comment_text)
-      # publish comment
-      click_on "Publish"
-      find(".noty_body", text: "Comment Added!")
-      find("p", text: comment_text)
     end
 
     test "#{page_type_string}: comment preview button works" do
@@ -326,6 +287,45 @@ class CommentTest < ApplicationSystemTestCase
     comment_text = 'woot woot'
     comment_response_text = 'wooly woot'
 
+    test "post #{page_type_string}, then comment on FRESH #{page_type_string}" do
+      title_text, body_text = String.new, String.new
+      case page_type_string
+        when 'note'
+          visit '/post'
+          title_text = 'Ahh, a nice fresh note'
+          body_text = "Can\'t wait to write in it!"
+          fill_in('title-input', with: title_text)
+          find('.wk-wysiwyg').set(body_text)
+          find('.ple-publish').click()
+        when 'question'
+          visit '/questions/new?&tags=question%3Ageneral'
+          title_text = "Let's talk condiments"
+          body_text = 'Ketchup or mayo?'
+          find("input[aria-label='Enter question']", match: :first)
+            .click()
+            .fill_in with: title_text
+          find('.wk-wysiwyg').set(body_text)
+          find('.ple-publish').click()
+        when 'wiki'
+          visit '/wiki/new'
+          title_text = 'pokemon'
+          body_text = 'Gotta catch em all!'
+          fill_in('title', with: title_text)
+          fill_in('text-input', with: body_text)
+          find('#publish').click()
+          visit "/wiki/#{title_text}/comments"
+      end
+      assert_selector('h1', text: title_text)
+      fill_in("#text-input", with: comment_text)
+      # preview comment
+      find("#toggle-preview-button-main").click
+      find("p", text: comment_text)
+      # publish comment
+      click_on "Publish"
+      find(".noty_body", text: "Comment Added!")
+      find("p", text: comment_text)
+    end
+
     # navigate to page, immediately upload into EDIT form by SELECTing image
     test "#{page_type_string}: IMMEDIATE image SELECT upload into EDIT comment form" do
       nodes(node_name).add_comment({
@@ -448,7 +448,7 @@ class CommentTest < ApplicationSystemTestCase
       Capybara.ignore_hidden_elements = true
       wait_for_ajax
       # open the preview for the main comment form
-      main_comment_form.find('a', text: 'Preview').click
+      page.find('#toggle-preview-button-main').click
       # once preview is open, the images are embedded in the page.
       # there should only be 1 image in the main comment form!
       preview_imgs = page.all('#preview-main img').size
