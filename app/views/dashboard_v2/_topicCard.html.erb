@@ -53,7 +53,10 @@
       </div>
 
       <div class="card-footer" style="background-color: inherit; border:none;">
-        <a style="padding-top:15px;text-decoration:underline;color:#808080;display:inline-block;" href="/tag/<%= subscription.tag.name %>"><%= Tag.tagged_node_count(subscription.tag.name) %> <%= translation('tag.index.posts') %> &raquo;</a>
+        <% note_count = post_count(subscription.tag.name, 'note') %>
+        <% wiki_count = post_count(subscription.tag.name, 'page') %>
+        <a style="padding-top:15px;text-decoration:underline;color:#808080;display:inline-block;" href="/tag/<%= subscription.tag.name %>"><%= note_count %> <% if note_count > 1 %> <%= translation('tag.index.post').pluralize %> <% else %> <%= translation('tag.index.post') %> <% end %></a> |
+        <a style="text-decoration:underline;color:#808080;display:inline-block;" href="/wiki/<%= subscription.tag.name %>"><%= wiki_count %><% if wiki_count > 1 %> <%= translation('tag.index.wiki').pluralize %> <% else %> <%= translation('tag.index.wiki') %> <% end %></a>
         <div id="new-post" style="float:right;margin:10px 0 10px 10px;">
           <% if current_user %>
             <a rel="tooltip" title="<%= translation('sidebar._post_button.share_your_work') %>" data-placement="bottom" href="/post?tags=<%= subscription.tag.name %>" class="btn btn-primary btn-sm requireLogin"><%= translation('tag.show.new_post') %> <i class="fa fa-plus fa-white"></i></a>
