@@ -50,27 +50,27 @@
   <ul class="nav nav-tabs">
     <li class="nav-item">
       <a class="nav-link <% if params[:action] == "index" %> active <% end %>" href="/questions/">
-        <i class="fa fa-refresh"></i> <span class="d-none d-lg-inline"> Recently Asked</span>
+        <i class="fa fa-refresh"></i> <span class="d-none d-lg-inline"> <%=translation('questions.index.recently_asked')%></span>
       </a>
     </li>
     <li class="nav-item">
       <a class="nav-link <% if params[:action] == "recently_commented" %> active <% end %>" href="/questions/recently_commented/">
-        <i class="fa fa-check"></i> <span class="d-none d-lg-inline"> Recently Commented</span>
+        <i class="fa fa-check"></i> <span class="d-none d-lg-inline"> <%=translation('questions.index.recently_commented')%></span>
       </a>
     </li>
     <li class="nav-item">
     <a class="nav-link <% if params[:action] == "popular" %> active <% end %>" href="/questions/popular/">
-        <i class="fa fa-bolt"></i> <span class="d-none d-lg-inline"> Popular</span>
+        <i class="fa fa-bolt"></i> <span class="d-none d-lg-inline"> <%=translation('questions.index.popular')%></span>
       </a>
     </li>
     <li class="nav-item">
     <a class="nav-link <% if params[:action] == "unanswered" %> active <% end %>" href="/questions/unanswered/">
-        <i class="fa fa-question-circle"></i> <span class="d-none d-lg-inline"> Unanswered</span>
+       <i class="fa fa-question-circle"></i> <span class="d-none d-lg-inline"> <%=translation('questions.index.unanswered')%></span>
       </a>
     </li>
     <li class="nav-item">
     <a class="nav-link <% if params[:action] == "liked" %> active <%end %>" href="/questions/liked/">
-        <i class="fa fa-star-o"></i> <span class="d-none d-lg-inline"> Liked</span>
+        <i class="fa fa-star-o"></i> <span class="d-none d-lg-inline"> <%=translation('questions.index.liked')%></span>
       </a>
     </li>
   </ul>
