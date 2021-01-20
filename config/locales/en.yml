@@ -400,7 +400,8 @@ en:
       number_of_subscriptions: "# of people"
       subscriptions: "Your subscriptions"
       sort_by: "Sort By"
-      posts: "posts"
+      post: "post"
+      wiki: "wiki"
       follow: "Follow"
       unfollow: "Unfollow"
       notes:
