@@ -1,5 +1,4 @@
-(function() {
-
+$(function() {
   $('.comment-form').each(function() {
     if(!$(this).hasClass('bound-success')) {
       $(this).addClass('bound-success').on('ajax:success', function(e, data, status, xhr){
@@ -46,7 +45,7 @@
     }
 
   });
-}());
+});
 
 function insertTitleSuggestionTemplate() {
   var element = $('#text-input');
