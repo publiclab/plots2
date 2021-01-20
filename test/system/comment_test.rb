@@ -27,6 +27,10 @@ class CommentTest < ApplicationSystemTestCase
   #   other comment tests can ALSO be tested on Wikis and Questions.
   #   scroll past this block for those tests.
   { :note => :comment_note }.each do |page_type, node_name|
+    page_type_string = 'research notes'
+    comment_text = 'woot woot'
+    comment_response_text = 'wooly woot'
+
     test "#{page_type_string}: addComment(comment_text)" do
       visit get_path(page_type, nodes(node_name).path)
       page.evaluate_script("addComment('#{comment_text}')")
