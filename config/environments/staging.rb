@@ -24,7 +24,7 @@ Plots2::Application.configure do
   config.assets.digest = true
 
   # Add non-concatenated scripts
-  config.assets.precompile += ['dragdrop.js', 'post.js']
+  config.assets.precompile += ['editorToolbar.js', 'post.js']
 
   # Defaults to nil and saved in location specified by config.assets.prefix
   # config.assets.manifest = YOUR_PATH
