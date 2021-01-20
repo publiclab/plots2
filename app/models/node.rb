@@ -1202,6 +1202,5 @@ class Node < ActiveRecord::Base
     else
       wikis = current_user.content_followed_in_period(1.week.ago, Time.now)
     end
-    return wikis
   end
 end
