@@ -28,6 +28,7 @@ Mailman::Application.run do
 #       retries ||= 0
       # do something with the database that does not fetch mails yet (let's try to ensure we have a MySQL connection first)
       puts Comment.last.inspect
+      Mailman.logger.info "Mail received from #{mail.from.first}: '#{mail.subject}' - '#{mail&.html_part}'"
       Comment.receive_mail(message)
 #     rescue Exception => e
 #       Mailman.logger.error "Exception occurred while receiving message:\n#{message}"
