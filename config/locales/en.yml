@@ -672,6 +672,7 @@ en:
       popular: "Popular"
       unanswered: "Unanswered"
       liked: "Liked"
+      recently_commented: "Recently Commented"
     _comment:
       promotion: "Promote this comment to an answer"
   user_sessions:
