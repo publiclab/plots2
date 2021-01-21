@@ -341,7 +341,7 @@ class CommentTest < ApplicationSystemTestCase
       # we need the comment ID:
       edit_comment_form_id = edit_comment_form[:id]
       # regex to strip the ID number out of string. ID format is #c1234edit
-      comment_id_num = /c(\d+)edit/.match(edit_comment_form_id)[1]
+      comment_id_num = /comment-form-edit-(\d+)/.match(edit_comment_form_id)[1]
       edit_preview_id = '#c' + comment_id_num + 'preview'
       # the <inputs> that take image uploads are hidden, so reveal them:
       Capybara.ignore_hidden_elements = false
@@ -493,7 +493,7 @@ class CommentTest < ApplicationSystemTestCase
       page.find('h4', text: /Post comment|Post Comment/) # title text on wikis is 'Post comment'
         .find(:xpath, '..')
         .find('a', text: 'Preview').click
-      page.find('#c' + comment_id_num + 'edit a', text: 'Preview').click
+      page.find('#comment-form-edit-' + comment_id_num + ' a', text: 'Preview').click
       # once preview is open, the images are embedded in the page.
       # there should be 1 image in main, and 1 image in edit
       assert_selector('#c' + comment_id_num + 'preview img', count: 1)
@@ -515,7 +515,7 @@ class CommentTest < ApplicationSystemTestCase
       page.find("#edit-comment-btn").click
       edit_comment_form_id = page.find('h4', text: 'Edit comment').find(:xpath, '..')[:id]
       # regex to strip the ID number out of string. ID format is #c1234edit
-      edit_id_num = /c(\d+)edit/.match(edit_comment_form_id)[1]
+      edit_id_num = /comment-form-edit-(\d+)/.match(edit_comment_form_id)[1]
       # open the edit comment form
       edit_preview_id = '#c' + edit_id_num + 'preview'
       # find the REPLY id
