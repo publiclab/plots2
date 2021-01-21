@@ -534,7 +534,7 @@ class CommentTest < ApplicationSystemTestCase
       Capybara.ignore_hidden_elements = true
       wait_for_ajax
       # click preview buttons in reply and edit form
-      page.find('#c' + edit_id_num + 'edit a', text: 'Preview').click
+      page.find('#comment-form-edit-' + edit_id_num + ' a', text: 'Preview').click
       page.first('a', text: 'Preview').click
       assert_selector('#c' + edit_id_num + 'preview img', count: 1)
       assert_selector('#preview-reply-' + reply_id_num, count: 1)
