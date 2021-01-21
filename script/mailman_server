@@ -33,9 +33,9 @@ Mailman::Application.run do
         Mailman.logger.info "Received incoming mail parsing test from #{message.from.first} at #{Time.now.to_s}"
       end
       last_comment = Comment.last
-      comment = Comment.new_comment_from_email(message)
+      comment_node_id = Comment.new_comment_from_email(message)
       if Comment.last.id != last_comment.id
-        Mailman.logger.info "Comment created from #{message.from.first}: '#{message.subject}' - https://publiclab.org/n/#{comment.node_id}"
+        Mailman.logger.info "Comment created from #{message.from.first}: '#{message.subject}' - https://publiclab.org/n/#{comment_node_id}"
       end
 #     rescue Exception => e
 #       Mailman.logger.error "Exception occurred while receiving message:\n#{message}"
