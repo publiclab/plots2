@@ -22,7 +22,7 @@
     <div class="col-lg-6">
       <h4><%=translation('questions.index.ask_question')%)></h4>
       <% if !current_user %>
-        <p><%=translation('questions.index.to_ask_question')%>, please <a href="/login?return_to=/questions"><%=translation('questions.index.log_in')%></a><%=translation('questions.index.or')%><a href="/signup?return_to=/questions"><%=translation('questions.index.sign_up')%></a> 
+        <p><%=translation('questions.index.to_ask_question')%><a href="/login?return_to=/questions"><%=translation('questions.index.log_in')%></a><%=translation('questions.index.or')%><a href="/signup?return_to=/questions"><%=translation('questions.index.sign_up')%></a> 
           <%=translation('questions.index.first')%>.</p>
       <% end %>
       <form id="questions_searchform" role="search" autocomplete="off" action="/post">
