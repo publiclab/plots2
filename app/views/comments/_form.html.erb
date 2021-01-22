@@ -1,7 +1,7 @@
 <!-- get_comment_form_id defined in app/helpers/application_helper.rb: -->
 <% comment_form_id = get_comment_form_id(location, local_assigns[:reply_to]) %>
 <div class="comment-form-wrapper card-body" style="background-color:#f8f8f8; border: 1px solid #e7e7e7;padding: 18px;">
-  <form id="comment-form<%= comment_form_id %>" class="comment-form" data-remote="true" action="/comment/create/<%= @node.nid %><%= "?type=question" if local_assigns[:type]=="question" %>" <% if local_assigns[:aid].blank? %>method="post"<% end %>>
+  <form id="comment-form-<%= comment_form_id %>" class="comment-form" data-remote="true" action="/comment/create/<%= @node.nid %><%= "?type=question" if local_assigns[:type]=="question" %>" <% if local_assigns[:aid].blank? %>method="post"<% end %>>
     <% if current_user && current_user.id == @node.uid %>
       <span class="pull-right" style="color:#ccc;">
         <a target="_blank" href="https://publiclab.org/comment-templates">Add a template</a>
@@ -34,7 +34,7 @@
 
     <!-- most comment forms have two dropzones: 1) small button, 2) large form that covers textarea -->
     <!-- this is the large dropzone -->
-    <div id="dropzone-large<%= comment_form_id %>" class="form-group dropzone">
+    <div id="dropzone-large-<%= comment_form_id %>" class="form-group dropzone">
       <%
         body = body || params[:body]
         # Look for comment templates
@@ -56,7 +56,7 @@
         name="body" 
         class="form-control text-input" 
         <%# a messy workaround for now. many dependencies rely on this being #text-input instead of #text-input-main. %>
-        id="text-input<%= comment_form_id == '-main' ? '' : comment_form_id %>" 
+        id="text-input<%= comment_form_id == 'main' ? '' : '-' + comment_form_id %>" 
         rows="6" 
         cols="40" 
         placeholder="<%= placeholder %>"><%= body %>
@@ -74,8 +74,8 @@
               <%= raw translation('comments._form.drag_and_drop') %>
             </span>
             <!-- http://stackoverflow.com/questions/11235206/twitter-bootstrap-form-file-element-upload-button -->
-            <label for="fileinput-choose-one<%= comment_form_id %>">
-              <input id="fileinput-choose-one<%= comment_form_id %>" type="file" name="image[photo]" style="display:none;" />
+            <label for="fileinput-choose-one-<%= comment_form_id %>">
+              <input id="fileinput-choose-one-<%= comment_form_id %>" type="file" name="image[photo]" style="display:none;" />
               <a onClick="handleClick()" style="cursor: pointer;" class="d-none d-md-inline text-underline">choose one</a>
               <span class="d-md-none">
                 <i class="fa fa-upload"></i>
@@ -87,7 +87,7 @@
       </div>
     </div>
 
-    <div id="preview<%= comment_form_id %>" class="comment-preview" style="background: white; display: none;">
+    <div id="comment-preview-<%= comment_form_id %>" class="comment-preview" style="background: white; display: none;">
     </div>
     <script>
       jQuery(document).ready(function() {
@@ -117,7 +117,7 @@
         </a>
         <a class="btn btn-outline-secondary" onClick="$('#c<%= comment.cid %>show').toggle();$('#c<%= comment.cid %>edit').toggle()"><%= translation('comments._form.cancel') %></a>
       <% else %>
-        <a class="btn btn-outline-secondary preview-btn" id="toggle-preview-button<%= comment_form_id %>" data-previewing-text="Hide Preview" onClick="handleClick();$E.toggle_preview()"><%= translation('comments._form.preview') %></a>
+        <a class="btn btn-outline-secondary preview-btn" id="toggle-preview-button-<%= comment_form_id %>" data-previewing-text="Hide Preview" onClick="handleClick();$E.toggle_preview()"><%= translation('comments._form.preview') %></a>
       <% end %>
       <span style="color:#888;"> &nbsp;
         <br class="d-md-none" /><%= raw translation('comments._form.logged_in', :username => current_user.username) %> &nbsp;

@@ -453,7 +453,7 @@ class CommentTest < ApplicationSystemTestCase
       page.find('#toggle-preview-button-main').click
       # once preview is open, the images are embedded in the page.
       # there should only be 1 image in the main comment form!
-      preview_imgs = page.all('#preview-main img').size
+      preview_imgs = page.all('#comment-preview-main img').size
       assert_equal(1, preview_imgs)
     end
 
@@ -497,7 +497,7 @@ class CommentTest < ApplicationSystemTestCase
       # once preview is open, the images are embedded in the page.
       # there should be 1 image in main, and 1 image in edit
       assert_selector('#c' + comment_id_num + 'preview img', count: 1)
-      assert_selector('#preview-main img', count: 1)
+      assert_selector('#comment-preview-main img', count: 1)
     end
 
     # cross-wiring test
@@ -537,7 +537,7 @@ class CommentTest < ApplicationSystemTestCase
       page.find('#comment-form-edit-' + edit_id_num + ' a', text: 'Preview').click
       page.first('a', text: 'Preview').click
       assert_selector('#c' + edit_id_num + 'preview img', count: 1)
-      assert_selector('#preview-reply-' + reply_id_num, count: 1)
+      assert_selector('#comment-preview-reply-' + reply_id_num, count: 1)
     end
 
     test "#{page_type_string}: IMMEDIATE rich-text input works in MAIN form" do
