@@ -179,10 +179,10 @@ class CommentTest < ApplicationSystemTestCase
       page.execute_script <<-JS
         var comment = $(".comment")[1];
         var commentID = comment.id;
-        var editCommentBtn = $(comment).find('.navbar-text #edit-comment-btn')
+        var editCommentBtn = $(comment).find('.navbar-text .edit-comment-btn')
         // Toggle edit mode
         $(editCommentBtn).click()
-        var commentTextarea = $('#' + commentID + 'text');
+        var commentTextarea = $('#text-input-edit-' + commentID);
         $(commentTextarea).val('Updated comment.')
         var submitCommentBtn = $('#' + commentID + ' .control-group .btn-primary')[1];
         $(submitCommentBtn).click()
@@ -263,7 +263,7 @@ class CommentTest < ApplicationSystemTestCase
       })
       visit get_path(page_type, nodes(node_name).path)
       # open the edit comment form:
-      page.find("#edit-comment-btn").click
+      page.find(".edit-comment-btn").click
       # find the parent of edit comment's fileinput:
       comment_fileinput_parent_id = page.find('[id^=dropzone-small-edit-]')[:id] # 'begins with' CSS selector
       comment_id_num = /dropzone-small-edit-(\d+)/.match(comment_fileinput_parent_id)[1]
@@ -336,13 +336,13 @@ class CommentTest < ApplicationSystemTestCase
       })
       visit get_path(page_type, nodes(node_name).path)
       # open up the edit comment form
-      page.find("#edit-comment-btn").click
+      page.find(".edit-comment-btn").click
       edit_comment_form = page.find('h4', text: 'Edit comment').find(:xpath, '..')
       # we need the comment ID:
       edit_comment_form_id = edit_comment_form[:id]
       # regex to strip the ID number out of string. ID format is #c1234edit
       comment_id_num = /c(\d+)edit/.match(edit_comment_form_id)[1]
-      edit_preview_id = '#c' + comment_id_num + 'preview'
+      edit_preview_id = '#comment-preview-edit-' + comment_id_num
       # the <inputs> that take image uploads are hidden, so reveal them:
       Capybara.ignore_hidden_elements = false
       file_input_element = edit_comment_form.all('input')[1]
@@ -443,7 +443,7 @@ class CommentTest < ApplicationSystemTestCase
       comment_id_num = /comment-body-(\d+)/.match(comment_id)[1]
       comment_dropzone_selector = '#c' + comment_id_num + 'div'
       # open the edit comment form
-      page.find("#edit-comment-btn").click
+      page.find(".edit-comment-btn").click
       # drop into the edit comment form
       Capybara.ignore_hidden_elements = false
       drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", comment_dropzone_selector)
@@ -475,7 +475,7 @@ class CommentTest < ApplicationSystemTestCase
       })
       visit get_path(page_type, nodes(node_name).path)
       # open the edit comment form:
-      find("#edit-comment-btn").click
+      find(".edit-comment-btn").click
       # find the parent of edit comment's fileinput:
       comment_fileinput_parent_id = page.find('[id^=dropzone-small-edit-]')[:id] # 'begins with' CSS selector
       comment_id_num = /dropzone-small-edit-(\d+)/.match(comment_fileinput_parent_id)[1]
@@ -496,7 +496,7 @@ class CommentTest < ApplicationSystemTestCase
       page.find('#c' + comment_id_num + 'edit a', text: 'Preview').click
       # once preview is open, the images are embedded in the page.
       # there should be 1 image in main, and 1 image in edit
-      assert_selector('#c' + comment_id_num + 'preview img', count: 1)
+      assert_selector('#comment-preview-edit-' + comment_id_num + ' img', count: 1)
       assert_selector('#preview-main img', count: 1)
     end
 
@@ -512,12 +512,12 @@ class CommentTest < ApplicationSystemTestCase
       visit get_path(page_type, nodes(node_name).path)
       # find the EDIT id
       # open up the edit comment form
-      page.find("#edit-comment-btn").click
+      page.find(".edit-comment-btn").click
       edit_comment_form_id = page.find('h4', text: 'Edit comment').find(:xpath, '..')[:id]
       # regex to strip the ID number out of string. ID format is #c1234edit
       edit_id_num = /c(\d+)edit/.match(edit_comment_form_id)[1]
       # open the edit comment form
-      edit_preview_id = '#c' + edit_id_num + 'preview'
+      edit_preview_id = '#comment-preview-edit-' + edit_id_num
       # find the REPLY id
       page.all('p', text: 'Reply to this comment...')[0].click
       reply_dropzone_id = page.find('[id^=dropzone-small-reply-]')[:id]
@@ -536,7 +536,7 @@ class CommentTest < ApplicationSystemTestCase
       # click preview buttons in reply and edit form
       page.find('#c' + edit_id_num + 'edit a', text: 'Preview').click
       page.first('a', text: 'Preview').click
-      assert_selector('#c' + edit_id_num + 'preview img', count: 1)
+      assert_selector('#comment-preview-edit-' + edit_id_num + ' img', count: 1)
       assert_selector('#preview-reply-' + reply_id_num, count: 1)
     end
 
@@ -559,7 +559,7 @@ class CommentTest < ApplicationSystemTestCase
       })
       visit get_path(page_type, nodes(node_name).path)
       # open up the edit comment form
-      page.find("#edit-comment-btn").click
+      page.find(".edit-comment-btn").click
       # find the EDIT id
       edit_comment_form_id = page.find('h4', text: 'Edit comment').find(:xpath, '..')[:id]
       # open up the reply comment form
