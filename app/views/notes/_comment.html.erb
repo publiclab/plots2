@@ -53,7 +53,7 @@
         <i data-toggle="tooltip" title="This comment was posted by email." class="fa fa-envelope"></i>
       <% end %>
       <% if current_user && comment.uid == current_user.uid %>
-        <a aria-label="Edit comment" class="btn btn-outline-secondary btn-sm" id="edit-comment-btn" href="javascript:void(0)" onClick="$('#c<%= comment.cid %>edit').toggle();$('#c<%= comment.cid %>show').toggle();setInit(<%= comment.cid %>);">
+        <a aria-label="Edit comment" class="btn btn-outline-secondary btn-sm edit-comment-btn" href="javascript:void(0)" onClick="$('#c<%= comment.cid %>edit').toggle();$('#c<%= comment.cid %>show').toggle();">
           <i class="fa fa-pencil"></i>
         </a>
       <% end %>
