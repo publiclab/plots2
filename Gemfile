@@ -115,7 +115,7 @@ group :test, :development do
   gem 'jasmine-jquery-rails'
   gem 'jasmine-rails'
   gem 'json_expressions'
-  gem 'minitest-reporters', '~> 1.4.2'
+  gem 'minitest-reporters', '~> 1.4.3'
   gem 'openssl', '~> 2.2.0'
   gem 'phantomjs'
   gem 'puma', '~> 5.1'
