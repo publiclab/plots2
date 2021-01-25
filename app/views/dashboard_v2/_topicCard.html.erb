@@ -1,73 +1,70 @@
 <%# Most of this design has been extracted from the tags _topicCard with slight variations %>
 <% subscriptions ||= @tag_subscriptions  # allow overriding with local variable %>
 <% shown_nids = [@blog.nid] %>
-<div class="card-view pt-5">
-  <% subscriptions.each do |subscription| %>
-    <div class="card shadow-sm p-2 mb-3 bg-white rounded" >
-      <div class="card-header mt-2" style=" padding:0.8em; background-color: inherit; border:none;">
-      <%# Unfollow section %>
-        <% if current_user && current_user.following(subscription.tag.name) %>
-          <a class="ellipsis pull-right" data-toggle="dropdown" style="cursor:pointer" aria-expanded="true"><i class="fa fa-ellipsis-h" style="color:#ccc;font-size:18px;margin-right:10px;"></i></a>
-          <div class="dropdown-menu">
-            <div class="dropdown-item">
-              <a style="margin-top:-8px;" data-method="delete" data-confirm="Are you sure you'd like to unfollow this topic?" rel="tooltip" title="<%= translation('tag.show.unfollow') %>" href="/unsubscribe/tag/<%= subscription.tag.name %>">
-                <%= translation('tag.show.unfollow_text') %>
-              </a>
-            </div>
-          </div>
-        <% end %>
-      <%# Topic name %>
-        <h4 style="display: inline-block;"><a href="/tag/<%= subscription.tag.name %>"><%= subscription.tag.name %></a></h4>
-      <%# Follower count  %>
-        <p style="display: inline-block; color: #808080;"><a style="text-decoration: underline; color: #808080;" href="/tag/<%= subscription.tag.name %>"><%= Tag.follower_count(subscription.tag.name) %> <%= translation('tag.show.following') %></a></p>
-      </div>
-      <div class="card-body" style="padding:0.8em;">
-      <%# First 3 notes in the Topic  %>
-        <div class="node-list">
-          <% notes = Tag.find_nodes_by_type(subscription.tag.name, type = 'note', limit = 3).where.not(nid: shown_nids)  %>
-          <div class="node-body">
-          <%# TODO fix odd line folding https://github.com/publiclab/plots2/issues/8837 %>
-            <% if notes.present? %>
-              <% notes.each do |node|  %>
-                  <% shown_nids << node.id %>
-                  <% if node.main_image %>
-                    <img class="rounded-circle pull-left" id="profile-photo" style="width:20px; height:20px; margin-right:8px; display: inline-block;" src="<%= node.main_image.path(:default) %>" />
-                  <% elsif node.scraped_image %>
-                    <img class="rounded-circle pull-left" id="profile-photo" style="width:20px; height:20px; margin-right:8px; display: inline-block;" src="<%= node.scraped_image %>" />
-                  <% else %>
-                    <div class="circle"></div>
-                  <% end %>
-                <div style="margin-left: 10px; display: grid;">
-                  <p>
-                    <a style="color: inherit;" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= (node.type == 'note') ? node.title : node.latest.title %></a>
-                    <span style="color: #808080;"><%= translation('tag.show.by') %> <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>">@<%= node.author.name %></a></span>
-                  </p>
+<% subscriptions.each do |subscription| %>
+  <% notes = Tag.find_nodes_by_type(subscription.tag.name, type = 'note', limit = 3).where.not(nid: shown_nids)  %>
+    <% if notes.present?  %> <%# Topics without notes will not be displayed. If pagination shows many empty pages, refer to https://github.com/publiclab/plots2/issues/8964#issuecomment-763303076 %>
+      <div class="card-view pt-5">
+          <div class="card shadow-sm p-2 mb-3 bg-white rounded" >
+            <div class="card-header mt-2" style=" padding:0.8em; background-color: inherit; border:none;">
+            <%# Unfollow section %>
+              <% if current_user && current_user.following(subscription.tag.name) %>
+                <a class="ellipsis pull-right" data-toggle="dropdown" style="cursor:pointer" aria-expanded="true"><i class="fa fa-ellipsis-h" style="color:#ccc;font-size:18px;margin-right:10px;"></i></a>
+                <div class="dropdown-menu">
+                  <div class="dropdown-item">
+                    <a style="margin-top:-8px;" data-method="delete" data-confirm="Are you sure you'd like to unfollow this topic?" rel="tooltip" title="<%= translation('tag.show.unfollow') %>" href="/unsubscribe/tag/<%= subscription.tag.name %>">
+                      <%= translation('tag.show.unfollow_text') %>
+                    </a>
+                  </div>
                 </div>
               <% end %>
+            <%# Topic name %>
+              <h4 style="display: inline-block;"><a href="/tag/<%= subscription.tag.name %>"><%= subscription.tag.name %></a></h4>
+            <%# Follower count  %>
+              <p style="display: inline-block; color: #808080;"><a style="text-decoration: underline; color: #808080;" href="/tag/<%= subscription.tag.name %>"><%= Tag.follower_count(subscription.tag.name) %> <%= translation('tag.show.following') %></a></p>
+            </div>
+            <div class="card-body" style="padding:0.8em;">
+            <%# First 3 notes in the Topic  %>
+              <div class="node-list">
+                <div class="node-body">
+                    <% notes.each do |node|  %>
+                        <% shown_nids << node.id %>
+                        <% if node.main_image %>
+                          <img class="rounded-circle pull-left" id="profile-photo" style="width:20px; height:20px; margin-right:8px; display: inline-block;" src="<%= node.main_image.path(:default) %>" />
+                        <% elsif node.scraped_image %>
+                          <img class="rounded-circle pull-left" id="profile-photo" style="width:20px; height:20px; margin-right:8px; display: inline-block;" src="<%= node.scraped_image %>" />
+                        <% else %>
+                          <div class="circle"></div>
+                        <% end %>
+                      <div style="margin-left: 10px; display: grid;">
+                        <p>
+                          <a style="color: inherit;" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= (node.type == 'note') ? node.title : node.latest.title %></a>
+                          <span style="color: #808080;"><%= translation('tag.show.by') %> <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>">@<%= node.author.name %></a></span>
+                        </p>
+                      </div>
+                    <% end %>
+                </div>
+              </div>
+            </div>
 
-            <% else %>
-              <p><%= translation('tag.show.notes_not_available') %></p>
-            <% end %>
+            <div class="card-footer" style="background-color: inherit; border:none;">
+              <% note_count = post_count(subscription.tag.name, 'note') %>
+              <% wiki_count = post_count(subscription.tag.name, 'page') %>
+              <a style="padding-top:15px;text-decoration:underline;color:#808080;display:inline-block;" href="/tag/<%= subscription.tag.name %>"><%= note_count %> <% if note_count > 1 %> <%= translation('tag.index.post').pluralize %> <% else %> <%= translation('tag.index.post') %> <% end %></a> |
+              <a style="text-decoration:underline;color:#808080;display:inline-block;" href="/wiki/<%= subscription.tag.name %>"><%= wiki_count %><% if wiki_count > 1 %> <%= translation('tag.index.wiki').pluralize %> <% else %> <%= translation('tag.index.wiki') %> <% end %></a>
+              <div id="new-post" style="float:right;margin:10px 0 10px 10px;">
+                <% if current_user %>
+                  <a rel="tooltip" title="<%= translation('sidebar._post_button.share_your_work') %>" data-placement="bottom" href="/post?tags=<%= subscription.tag.name %>" class="btn btn-primary btn-sm requireLogin"><%= translation('tag.show.new_post') %> <i class="fa fa-plus fa-white"></i></a>
+                <% else %>
+                  <a class="btn btn-primary btn-sm index-follow-buttons follow-btn-remote requireLogin" href="/subscribe/tag/<%= subscription.tag.name %>" data-remote="true"><%= translation('tag.index.follow') %></a>
+                <% end %>
+              </div>
+            </div>
           </div>
-        </div>
       </div>
-
-      <div class="card-footer" style="background-color: inherit; border:none;">
-        <% note_count = post_count(subscription.tag.name, 'note') %>
-        <% wiki_count = post_count(subscription.tag.name, 'page') %>
-        <a style="padding-top:15px;text-decoration:underline;color:#808080;display:inline-block;" href="/tag/<%= subscription.tag.name %>"><%= note_count %> <% if note_count > 1 %> <%= translation('tag.index.post').pluralize %> <% else %> <%= translation('tag.index.post') %> <% end %></a> |
-        <a style="text-decoration:underline;color:#808080;display:inline-block;" href="/wiki/<%= subscription.tag.name %>"><%= wiki_count %><% if wiki_count > 1 %> <%= translation('tag.index.wiki').pluralize %> <% else %> <%= translation('tag.index.wiki') %> <% end %></a>
-        <div id="new-post" style="float:right;margin:10px 0 10px 10px;">
-          <% if current_user %>
-            <a rel="tooltip" title="<%= translation('sidebar._post_button.share_your_work') %>" data-placement="bottom" href="/post?tags=<%= subscription.tag.name %>" class="btn btn-primary btn-sm requireLogin"><%= translation('tag.show.new_post') %> <i class="fa fa-plus fa-white"></i></a>
-          <% else %>
-            <a class="btn btn-primary btn-sm index-follow-buttons follow-btn-remote requireLogin" href="/subscribe/tag/<%= subscription.tag.name %>" data-remote="true"><%= translation('tag.index.follow') %></a>
-          <% end %>
-        </div>
-      </div>
-    </div>
   <% end %>
-</div>
+<% end %>
+
 
 <%# If the items are listed on only one page, the pagination button will not be displayed %>
 <% if @pagy.pages > 1 %>
