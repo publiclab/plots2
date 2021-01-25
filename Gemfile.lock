@@ -94,7 +94,7 @@ GEM
     coffee-script-source (1.12.2)
     composite_primary_keys (11.2.0)
       activerecord (~> 5.2.1)
-    concurrent-ruby (1.1.7)
+    concurrent-ruby (1.1.8)
     connection_pool (2.2.3)
     crack (0.4.5)
       rexml
@@ -238,7 +238,7 @@ GEM
       phantomjs (>= 1.9)
       railties (>= 3.2.0)
       sprockets-rails
-    jbuilder (2.10.1)
+    jbuilder (2.11.1)
       activesupport (>= 5.0.0)
     jquery-atwho-rails (1.5.4)
     jquery-datatables (1.10.20)
@@ -608,7 +608,7 @@ DEPENDENCIES
   impressionist
   jasmine-jquery-rails
   jasmine-rails
-  jbuilder (~> 2.10)
+  jbuilder (~> 2.11)
   jquery-atwho-rails
   jquery-datatables
   jquery-rails
