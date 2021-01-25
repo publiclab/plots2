@@ -25,7 +25,7 @@ gem 'grape-swagger-ui'
 gem 'http_accept_language'
 gem "i18n-js", ">= 3.0.0.rc11"
 gem 'impressionist'
-gem 'jbuilder', '~> 2.10'
+gem 'jbuilder', '~> 2.11'
 gem 'jquery-rails'
 gem 'mocha', '~> 1.12'
 gem 'mustermann' , '1.1.1'
