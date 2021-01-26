@@ -150,7 +150,7 @@ class CommentTest < ApplicationSystemTestCase
         .click
       page.find(".noty_body", text: "Comment Added!")
       # Delete a comment
-      find('.btn[data-original-title="Delete comment"]', match: :first).click()
+      find('.btn[data-original-title="Delete Comment"]', match: :first).click()
       # Click "confirm" on modal
       page.evaluate_script('document.querySelector(".jconfirm-buttons .btn:first-of-type").click()')
       assert_selector('#comments-list .comment', count: 1)
