@@ -86,13 +86,9 @@
         </p>
       </div>
     </div>
-
     <div id="comment-preview-<%= comment_form_id %>" class="comment-preview" style="background: white; display: none;">
     </div>
     <script>
-      jQuery(document).ready(function() {
-        $E.initialize();
-      });
       $D = {
         uid: <%= current_user.uid if current_user %>,
         type: 'comment'
