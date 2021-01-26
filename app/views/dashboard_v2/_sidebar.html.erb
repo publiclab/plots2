@@ -1,3 +1,4 @@
+<%= javascript_include_tag('async_tag_subscriptions.js') %>
 <%# TODO Location not working, will be fixed after working on https://github.com/publiclab/plots2/issues/8566 %>
 <% if current_user %>
   <div style="margin: 2.2rem 0;">
@@ -47,7 +48,8 @@
               <% end %>
           </div>
         </div>
-        <%# TODO Search topics %>
+        <small class="form-grey">Search topics</small>
+        <%= render :partial => "tag/typeahead_search" %>
         <br/>
         <%# All topics link %>
         <small class="text-format form-grey" style="text-decoration: underline"><%= translation('dashboard_v2.sidebar.all_topics',:url => '/wiki/topics') %> </small>
