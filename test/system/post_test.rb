@@ -119,7 +119,7 @@ class PostTest < ApplicationSystemTestCase
     find('.preview-btn').click()
 
     # Make sure that image has been uploaded
-    page.assert_selector('#preview-main img', count: 1)
+    page.assert_selector('#comment-preview-main img', count: 1)
   end
 
   test "changing and reverting versions works correctly for wiki" do
