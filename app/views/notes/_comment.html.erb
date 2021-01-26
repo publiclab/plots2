@@ -55,14 +55,12 @@
       <% if current_user && comment.uid == current_user.uid %>
         <a 
           aria-label="Edit comment" 
-          class="btn btn-outline-secondary btn-sm" 
-          id="edit-comment-btn" href="javascript:void(0)" 
-          onClick="
+          class="btn btn-outline-secondary btn-sm edit-comment-btn" 
+          href="javascript:void(0)" onClick="
             $('#edit-comment-form-wrapper-<%= comment.cid %>').toggle();
-            $('#<%= comment.cid %>-like-emojis').toggle();
+            $('#<%= comment.cid %>-like-emojis').toggle();                               
             $('#comment-form-edit-<%= comment.cid %>').toggle();
             $('#c<%= comment.cid %>show').toggle();
-            setInit(<%= comment.cid %>);
           "
         >
           <i class="fa fa-pencil"></i>
