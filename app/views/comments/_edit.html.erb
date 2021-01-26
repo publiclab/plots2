@@ -1,146 +1,152 @@
-<div class="comment-form-wrapper">
-  <div class="card card-body bg-light">
-    <form method="post" id="c<%= comment.id %>edit" style="display:none;" class="well" <% if comment.is_a?Answer %> action= "/answers/update/<%= comment.id %>" <% else %> action="/comment/update/<%= comment.id %>" <% end %>>
+<div id="edit-comment-form-wrapper-<%= comment.id %>" class="card card-body bg-light comment-form-wrapper" style="display: none;">
+  <form method="post" id="c<%= comment.id %>edit" style="display:none;" class="well" <% if comment.is_a?Answer %> action= "/answers/update/<%= comment.id %>" <% else %> action="/comment/update/<%= comment.id %>" <% end %>>
 
-      <h4 style="margin-top:0;"><%= title %></h4>
-      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    <h4 style="margin-top:0;"><%= title %></h4>
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
 
-      <style>
-        #imagebar {width:100%;}
-      </style>
+    <style>
+      #imagebar {width:100%;}
+    </style>
 
-    <!-- toolbar needs location & comment_id to make unique element IDs -->
-    <%= render :partial => "editor/toolbar", :locals => { :comment_id => comment.id.to_s, :location => :edit } %>
-    
-    <div id="c<%= comment.id%>div" class="form-group">
-    <textarea aria-label="Edit Comment" onFocus="editing=true" name="body" class="form-control" id="c<%= comment.id%>text" rows="6" cols="40" placeholder="<%= placeholder %>"><%= !(comment.is_a?Answer) ? comment.comment : comment.content %></textarea>
-    <div class="imagebar">
-      <div id="c<%= comment.id%>progress" style="display:none;" class="progress progress-bar-container active pull-right">
-        <div id="c<%= comment.id%>progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%;"></div>
-      </div>
-      <p>
-        <span id="c<%= comment.id%>uploading" class="uploading uploading-text" style="display:none;">
-          <%= translation('comments._edit.uploading') %>
-        </span>
-        <span id="c<%= comment.id%>prompt" class="prompt choose-one-prompt-text">
-          <span style="padding-right:4px;float:left;" class="hidden-xs">
-          <%= raw translation('comments._edit.drag_and_drop') %>
-          </span>
-          <label id="c<%= comment.id%>input_label" for="c<%= comment.id%>input">
-            <input id="c<%= comment.id%>input" type="file" name="image[photo]" style="display:none;" />
-            <a class="hidden-xs"><%= translation('comments._edit.choose_one') %></a>
-            <span class="visible-xs">
-              <i class="fa fa-upload"></i>
-              <a><%= translation('comments._edit.upload_image') %></a>
-            </span>
-          </label>
-        </span>
-      </p>
-      </div>
+  <!-- toolbar needs location & comment_id to make unique element IDs -->
+  <%= render :partial => "editor/toolbar", :locals => { :comment_id => comment.id.to_s, :location => :edit } %>
+  
+  <div id="c<%= comment.id%>div" class="form-group">
+  <textarea aria-label="Edit Comment" onFocus="editing=true" name="body" class="form-control" id="c<%= comment.id%>text" rows="6" cols="40" placeholder="<%= placeholder %>"><%= !(comment.is_a?Answer) ? comment.comment : comment.content %></textarea>
+  <div class="imagebar">
+    <div id="c<%= comment.id%>progress" style="display:none;" class="progress progress-bar-container active pull-right">
+      <div id="c<%= comment.id%>progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%;"></div>
     </div>
-      <script type="application/javascript">
-        function setInit(id) {
-          const textArea = 'c'+id+'text';
-          const preview = 'c'+id+'preview';
-          $E.setState(textArea, preview);
-        }
-
-        $('#c<%= comment.id%>div').on('dragover',function(e) {
-          e.preventDefault();
-          $('#c<%= comment.id%>div').addClass('hover');
-        });
-
-        $('#c<%= comment.id%>div').on('dragout',function(e) {
-          $('#c<%= comment.id%>div').removeClass('hover');
-        });
-
-        $('#c<%= comment.id%>div').on('drop',function(e) {
-          e.preventDefault();
-          $D.selected = $(e.target).closest('div.comment-form-wrapper').eq(0);
-          setInit(<%= comment.id %>);
-        });
-
-        $('#c<%= comment.id%>div').fileupload({
-          url: "/images",
-          paramName: "image[photo]",
-          dropZone: $('#c<%= comment.id%>div'),
-          dataType: 'json',
-          formData: {
-            'uid':<%= current_user.uid %>,
-            'nid':<%= comment.uid %>
-          },
-          start: function(e) {
-            $('#c<%= comment.id%>progress').show()
-            $('#c<%= comment.id%>uploading').show()
-            $('#c<%= comment.id%>prompt').hide()
-            $('#c<%= comment.id%>div').removeClass('hover');
-          },
-          done: function (e, data) {
-            $('#c<%= comment.id%>progress').hide()
-            $('#c<%= comment.id%>progress #c<%= comment.id%>progress-bar').css('width', 0);
-            $('#c<%= comment.id%>uploading').hide()
-            $('#c<%= comment.id%>prompt').show()
-            var is_image = false
-            if (data.result['filename'].substr(-3,3) == "jpg") is_image = true
-            if (data.result['filename'].substr(-4,4) == "jpeg") is_image = true
-            if (data.result['filename'].substr(-3,3) == "png") is_image = true
-            if (data.result['filename'].substr(-3,3) == "gif") is_image = true
-            if (data.result['filename'].substr(-3,3) == "JPG") is_image = true
-            if (data.result['filename'].substr(-4,4) == "JPEG") is_image = true
-            if (data.result['filename'].substr(-3,3) == "PNG") is_image = true
-            if (data.result['filename'].substr(-3,3) == "GIF") is_image = true
-
-            if (is_image) {
-              image_url = data.result.url.split('?')[0];
-              orig_image_url = image_url.replace('medium','original');
-              $E.wrap('[![',']('+image_url+')]('+orig_image_url+')', {'newline': true, 'fallback': data.result['filename']});
-            } else {
-              $E.wrap('<a href="'+data.result.url.split('?')[0]+'"><i class="fa fa-file"></i> ','</a>', {'newline': true, 'fallback': data.result['filename']});
-            }
-
-            if ($('#node_images').val() && $('#node_images').val().split(',').length > 1) $('#node_images').val([$('#node_images').val(),data.result.id].join(','));
-            else $('#node_images').val(data.result.id)
-          },
-
-          // fileuploadfail: function(e,data) {},
-          progressall: function (e, data) {
-            var progress = parseInt(data.loaded / data.total * 100, 10);
-            $('#c<%= comment.id%>progress #c<%= comment.id%>progress-bar').css(
-                'width',
-                progress + '%'
-            );
-          }
-        });
-      </script>
-
-      <div class="comment-preview well col-md-11" id="c<%= comment.id %>preview" style="background:white;display: none">
-      </div>
-
-      <div class="control-group">
-        <button type="submit" class="btn btn-primary"><%= translation('comments._edit.publish') %></button>
-          <a class="btn btn-default preview-btn"  data-previewing-text="Hide Preview"
-              onClick="$('#c<%= comment.id %>preview').toggle();
-              $('#c<%= comment.id %>text').toggle();
-              $('#c<%= comment.id %>text').next('#imagebar').toggle();
-              this.previewing = !this.previewing;
-              $('#c<%= comment.id %>edit .preview-btn').button(this.previewing ? 'previewing' : 'reset');
-              $E.generate_preview('c<%= comment.id %>preview',$('#c<%= comment.id %>text').val())">
-            Preview
-          </a>
-          <a class="btn btn-default" onClick="$('#c<%= comment.id %>show').toggle();$('#c<%= comment.id %>edit').toggle()">
-            Cancel
-          </a>
-
-        <span class="form-grey"> &nbsp;
-          <br class="visible-xs" /><%= raw translation('comments._edit.logged_in', :username => current_user.username) %> |
-          <a target="_blank" href="/wiki/authoring-help#Formatting"><%= translation('comments._edit.formatting') %></a> |
-          <a onClick="$('#who-is-notified').toggle()"><%= translation('comments._edit.notifications') %></a>
+    <p>
+      <span id="c<%= comment.id%>uploading" class="uploading uploading-text" style="display:none;">
+        <%= translation('comments._edit.uploading') %>
+      </span>
+      <span id="c<%= comment.id%>prompt" class="prompt choose-one-prompt-text">
+        <span style="padding-right:4px;float:left;" class="hidden-xs">
+        <%= raw translation('comments._edit.drag_and_drop') %>
         </span>
-      </div>
-
-      <p id="who-is-notified" style="display:none;color:#888;">
-        <%= translation('comments._edit.email_notifications') %>
-      </p>
-    </form>
+        <label id="c<%= comment.id%>input_label" for="c<%= comment.id%>input">
+          <input id="c<%= comment.id%>input" type="file" name="image[photo]" style="display:none;" />
+          <a class="hidden-xs"><%= translation('comments._edit.choose_one') %></a>
+          <span class="visible-xs">
+            <i class="fa fa-upload"></i>
+            <a><%= translation('comments._edit.upload_image') %></a>
+          </span>
+        </label>
+      </span>
+    </p>
+    </div>
   </div>
+    <script type="application/javascript">
+      function setInit(id) {
+        const textArea = 'c'+id+'text';
+        const preview = 'c'+id+'preview';
+        $E.setState(textArea, preview);
+      }
+
+      $('#c<%= comment.id%>div').on('dragover',function(e) {
+        e.preventDefault();
+        $('#c<%= comment.id%>div').addClass('hover');
+      });
+
+      $('#c<%= comment.id%>div').on('dragout',function(e) {
+        $('#c<%= comment.id%>div').removeClass('hover');
+      });
+
+      $('#c<%= comment.id%>div').on('drop',function(e) {
+        e.preventDefault();
+        $D.selected = $(e.target).closest('div.comment-form-wrapper').eq(0);
+        setInit(<%= comment.id %>);
+      });
+
+      $('#c<%= comment.id%>div').fileupload({
+        url: "/images",
+        paramName: "image[photo]",
+        dropZone: $('#c<%= comment.id%>div'),
+        dataType: 'json',
+        formData: {
+          'uid':<%= current_user.uid %>,
+          'nid':<%= comment.uid %>
+        },
+        start: function(e) {
+          $('#c<%= comment.id%>progress').show()
+          $('#c<%= comment.id%>uploading').show()
+          $('#c<%= comment.id%>prompt').hide()
+          $('#c<%= comment.id%>div').removeClass('hover');
+        },
+        done: function (e, data) {
+          $('#c<%= comment.id%>progress').hide()
+          $('#c<%= comment.id%>progress #c<%= comment.id%>progress-bar').css('width', 0);
+          $('#c<%= comment.id%>uploading').hide()
+          $('#c<%= comment.id%>prompt').show()
+          var is_image = false
+          if (data.result['filename'].substr(-3,3) == "jpg") is_image = true
+          if (data.result['filename'].substr(-4,4) == "jpeg") is_image = true
+          if (data.result['filename'].substr(-3,3) == "png") is_image = true
+          if (data.result['filename'].substr(-3,3) == "gif") is_image = true
+          if (data.result['filename'].substr(-3,3) == "JPG") is_image = true
+          if (data.result['filename'].substr(-4,4) == "JPEG") is_image = true
+          if (data.result['filename'].substr(-3,3) == "PNG") is_image = true
+          if (data.result['filename'].substr(-3,3) == "GIF") is_image = true
+
+          if (is_image) {
+            image_url = data.result.url.split('?')[0];
+            orig_image_url = image_url.replace('medium','original');
+            $E.wrap('[![',']('+image_url+')]('+orig_image_url+')', {'newline': true, 'fallback': data.result['filename']});
+          } else {
+            $E.wrap('<a href="'+data.result.url.split('?')[0]+'"><i class="fa fa-file"></i> ','</a>', {'newline': true, 'fallback': data.result['filename']});
+          }
+
+          if ($('#node_images').val() && $('#node_images').val().split(',').length > 1) $('#node_images').val([$('#node_images').val(),data.result.id].join(','));
+          else $('#node_images').val(data.result.id)
+        },
+
+        // fileuploadfail: function(e,data) {},
+        progressall: function (e, data) {
+          var progress = parseInt(data.loaded / data.total * 100, 10);
+          $('#c<%= comment.id%>progress #c<%= comment.id%>progress-bar').css(
+              'width',
+              progress + '%'
+          );
+        }
+      });
+    </script>
+
+    <div class="comment-preview well col-md-11" id="c<%= comment.id %>preview" style="background:white;display: none">
+    </div>
+
+    <div class="control-group">
+      <button type="submit" class="btn btn-primary"><%= translation('comments._edit.publish') %></button>
+        <a class="btn btn-default preview-btn"  data-previewing-text="Hide Preview"
+            onClick="$('#c<%= comment.id %>preview').toggle();
+            $('#c<%= comment.id %>text').toggle();
+            $('#c<%= comment.id %>text').next('#imagebar').toggle();
+            this.previewing = !this.previewing;
+            $('#c<%= comment.id %>edit .preview-btn').button(this.previewing ? 'previewing' : 'reset');
+            $E.generate_preview('c<%= comment.id %>preview',$('#c<%= comment.id %>text').val())">
+          Preview
+        </a>
+        <a 
+          class="btn btn-default" 
+          onClick="
+            $('#edit-comment-form-wrapper-<%= comment.id %>').toggle();
+            $('#<%= comment.id %>-like-emojis').toggle();
+            $('#c<%= comment.id %>edit').toggle();
+            $('#c<%= comment.id %>show').toggle();
+          "
+        >
+          Cancel
+        </a>
+
+      <span class="form-grey"> &nbsp;
+        <br class="visible-xs" /><%= raw translation('comments._edit.logged_in', :username => current_user.username) %> |
+        <a target="_blank" href="/wiki/authoring-help#Formatting"><%= translation('comments._edit.formatting') %></a> |
+        <a onClick="$('#who-is-notified').toggle()"><%= translation('comments._edit.notifications') %></a>
+      </span>
+    </div>
+
+    <p id="who-is-notified" style="display:none;color:#888;">
+      <%= translation('comments._edit.email_notifications') %>
+    </p>
+  </form>
 </div>
