@@ -69,11 +69,11 @@ module ApplicationHelper
   def get_comment_form_id(location, reply_to)
     case location
     when :main
-      '-main'
+      'main'
     when :reply
-      '-reply-' + reply_to.to_s
+      'reply-' + reply_to.to_s
     when :responses
-      '-responses'
+      'responses'
     end
   end
 
@@ -88,18 +88,6 @@ module ApplicationHelper
       'edit-' + comment_id
     when :responses
       'responses'
-    end
-  end
-
-  # used in views/comments/_form.html.erb
-  def get_textarea_id(location, reply_to)
-    case location
-    when :main
-      'text-input'
-    when :reply
-      'text-input-reply-' + reply_to.to_s
-    when :responses
-      'text-input-responses'
     end
   end
 

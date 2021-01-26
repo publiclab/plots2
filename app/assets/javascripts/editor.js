@@ -24,7 +24,7 @@ $E = {
       }
     });
   },
-  setState: function(textarea = 'text-input', preview = 'preview-main', title = 'title') {
+  setState: function(textarea = 'text-input', preview = 'comment-preview-main', title = 'title') {
     $E.title = $('#' + title + 'title'); // not sure why this exists? seems like $E.title is always #title
     $E.textarea = $('#' + textarea);
     $E.textarea.bind('input propertychange', $E.save);
