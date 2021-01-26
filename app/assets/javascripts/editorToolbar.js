@@ -20,7 +20,7 @@ const getEditorParams = (targetDiv) => {
     // #text-input ID should be unique, and the only comment form on /wiki/new & /wiki/edit
     params['textarea'] = 'text-input';
     // #preview-main should be unique as well
-    params['preview'] = 'preview-main';
+    params['preview'] = 'comment-preview-main';
   }
   return params;
 };
