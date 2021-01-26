@@ -341,7 +341,7 @@ class CommentTest < ApplicationSystemTestCase
       # we need the comment ID:
       edit_comment_form_id = edit_comment_form[:id]
       # regex to strip the ID number out of string. ID format is #c1234edit
-      comment_id_num = /c(\d+)edit/.match(edit_comment_form_id)[1]
+      comment_id_num = /comment-form-edit-(\d+)/.match(edit_comment_form_id)[1]
       edit_preview_id = '#comment-preview-edit-' + comment_id_num
       # the <inputs> that take image uploads are hidden, so reveal them:
       Capybara.ignore_hidden_elements = false
