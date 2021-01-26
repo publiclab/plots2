@@ -341,7 +341,7 @@ class CommentTest < ApplicationSystemTestCase
       # we need the comment ID:
       edit_comment_form_id = edit_comment_form[:id]
       # regex to strip the ID number out of string. ID format is #c1234edit
-      comment_id_num = /c(\d+)edit/.match(edit_comment_form_id)[1]
+      comment_id_num = /comment-form-edit-(\d+)/.match(edit_comment_form_id)[1]
       edit_preview_id = '#c' + comment_id_num + 'preview'
       # the <inputs> that take image uploads are hidden, so reveal them:
       Capybara.ignore_hidden_elements = false
@@ -453,7 +453,7 @@ class CommentTest < ApplicationSystemTestCase
       page.find('#toggle-preview-button-main').click
       # once preview is open, the images are embedded in the page.
       # there should only be 1 image in the main comment form!
-      preview_imgs = page.all('#preview-main img').size
+      preview_imgs = page.all('#comment-preview-main img').size
       assert_equal(1, preview_imgs)
     end
 
@@ -493,11 +493,11 @@ class CommentTest < ApplicationSystemTestCase
       page.find('h4', text: /Post comment|Post Comment/) # title text on wikis is 'Post comment'
         .find(:xpath, '..')
         .find('a', text: 'Preview').click
-      page.find('#c' + comment_id_num + 'edit a', text: 'Preview').click
+      page.find('#comment-form-edit-' + comment_id_num + ' a', text: 'Preview').click
       # once preview is open, the images are embedded in the page.
       # there should be 1 image in main, and 1 image in edit
       assert_selector('#c' + comment_id_num + 'preview img', count: 1)
-      assert_selector('#preview-main img', count: 1)
+      assert_selector('#comment-preview-main img', count: 1)
     end
 
     # cross-wiring test
@@ -515,7 +515,7 @@ class CommentTest < ApplicationSystemTestCase
       page.find("#edit-comment-btn").click
       edit_comment_form_id = page.find('h4', text: 'Edit comment').find(:xpath, '..')[:id]
       # regex to strip the ID number out of string. ID format is #c1234edit
-      edit_id_num = /c(\d+)edit/.match(edit_comment_form_id)[1]
+      edit_id_num = /comment-form-edit-(\d+)/.match(edit_comment_form_id)[1]
       # open the edit comment form
       edit_preview_id = '#c' + edit_id_num + 'preview'
       # find the REPLY id
@@ -534,10 +534,10 @@ class CommentTest < ApplicationSystemTestCase
       Capybara.ignore_hidden_elements = true
       wait_for_ajax
       # click preview buttons in reply and edit form
-      page.find('#c' + edit_id_num + 'edit a', text: 'Preview').click
+      page.find('#comment-form-edit-' + edit_id_num + ' a', text: 'Preview').click
       page.first('a', text: 'Preview').click
       assert_selector('#c' + edit_id_num + 'preview img', count: 1)
-      assert_selector('#preview-reply-' + reply_id_num, count: 1)
+      assert_selector('#comment-preview-reply-' + reply_id_num, count: 1)
     end
 
     test "#{page_type_string}: IMMEDIATE rich-text input works in MAIN form" do
