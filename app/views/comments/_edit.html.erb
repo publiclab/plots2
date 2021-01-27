@@ -1,23 +1,21 @@
-<div class="card card-body bg-light comment-form-wrapper">
-  <form method="post" id="comment-form-edit-<%= comment.id %>" style="display:none;" class="well" <% if comment.is_a?Answer %> action= "/answers/update/<%= comment.id %>" <% else %> action="/comment/update/<%= comment.id %>" <% end %>>
 
+<div id="edit-comment-form-wrapper-<%= comment.id %>" class="card card-body bg-light comment-form-wrapper" style="display: none;">
+  <form method="post" id="comment-form-edit-<%= comment.id %>" style="display:none;" class="well" <% if comment.is_a?Answer %> action= "/answers/update/<%= comment.id %>" <% else %> action="/comment/update/<%= comment.id %>" <% end %>>
     <h4 style="margin-top:0;"><%= title %></h4>
     <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
 
     <style>
       #imagebar {width:100%;}
     </style>
-
-  <!-- toolbar needs location & comment_id to make unique element IDs -->
-  <%= render :partial => "editor/toolbar", :locals => { :comment_id => comment.id.to_s, :location => :edit } %>
-  
-  <div id="c<%= comment.id%>div" class="form-group dropzone">
-    <textarea aria-label="Edit Comment" onFocus="editing=true" name="body" class="form-control" id="text-input-edit-<%= comment.id%>" rows="6" cols="40" placeholder="<%= placeholder %>"><%= !(comment.is_a?Answer) ? comment.comment : comment.content %></textarea>
-    <div class="imagebar">
-      <div id="c<%= comment.id%>progress" style="display:none;" class="progress progress-bar-container active pull-right">
-        <div id="c<%= comment.id%>progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%;"></div>
-      </div>
-      <p>
+    <!-- toolbar needs location & comment_id to make unique element IDs -->
+    <%= render :partial => "editor/toolbar", :locals => { :comment_id => comment.id.to_s, :location => :edit } %>
+    <div id="c<%= comment.id%>div" class="form-group dropzone">
+      <textarea aria-label="Edit Comment" onFocus="editing=true" name="body" class="form-control" id="text-input-edit-<%= comment.id%>" rows="6" cols="40" placeholder="<%= placeholder %>"><%= !(comment.is_a?Answer) ? comment.comment : comment.content %></textarea>
+      <div class="imagebar">
+        <div id="c<%= comment.id%>progress" style="display:none;" class="progress progress-bar-container active pull-right">
+          <div id="c<%= comment.id%>progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%;"></div>
+        </div>
+        <p>
         <span id="c<%= comment.id%>uploading" class="uploading uploading-text" style="display:none;">
           <%= translation('comments._edit.uploading') %>
         </span>
@@ -25,25 +23,28 @@
           <span style="padding-right:4px;float:left;" class="hidden-xs">
             <%= raw translation('comments._edit.drag_and_drop') %>
           </span>
-          <label id="c<%= comment.id%>input_label" for="c<%= comment.id%>input">
-            <input id="c<%= comment.id%>input" type="file" name="image[photo]" style="display:none;" />
-            <a class="hidden-xs"><%= translation('comments._edit.choose_one') %></a>
-            <span class="visible-xs">
-              <i class="fa fa-upload"></i>
-              <a><%= translation('comments._edit.upload_image') %></a>
+          <span id="c<%= comment.id%>prompt" class="prompt choose-one-prompt-text">
+            <span style="padding-right:4px;float:left;" class="hidden-xs">
+              <%= raw translation('comments._edit.drag_and_drop') %>
             </span>
-          </label>
-        </span>
-      </p>
+            <label id="c<%= comment.id%>input_label" for="c<%= comment.id%>input">
+              <input id="c<%= comment.id%>input" type="file" name="image[photo]" style="display:none;" />
+              <a class="hidden-xs"><%= translation('comments._edit.choose_one') %></a>
+              <span class="visible-xs">
+                <i class="fa fa-upload"></i>
+                <a><%= translation('comments._edit.upload_image') %></a>
+              </span>
+            </label>
+          </span>
+        </p>
+      </div>
     </div>
-  </div>
   <script type="application/javascript">
 //   function setInit(id) {
 //     const textArea = 'c'+id+'text';
 //     const preview = 'c'+id+'preview';
 //     $E.setState(textArea, preview);
 //   }
-
 //   $('#c<%= comment.id%>div').on('dragover',function(e) {
 //     e.preventDefault();
 //     $('#c<%= comment.id%>div').addClass('hover');
@@ -114,7 +115,6 @@
 
   <div class="comment-preview well col-md-11" id="comment-preview-edit-<%= comment.id %>" style="background: white; display: none">
   </div>
-
   <div class="control-group">
     <button type="submit" class="btn btn-primary"><%= translation('comments._edit.publish') %></button>
       <a 
@@ -130,10 +130,17 @@
       >
         Preview
       </a>
-      <a class="btn btn-default" onClick="$('#c<%= comment.id %>show').toggle();$('#comment-form-edit-<%= comment.id %>').toggle()">
-        Cancel
-      </a>
-
+    <a 
+      class="btn btn-default" 
+      onClick="
+        $('#edit-comment-form-wrapper-<%= comment.id %>').toggle();
+        $('#c<%= comment.id %>show').toggle();
+        $('#<%= comment.id %>-like-emojis').toggle();
+        $('#comment-form-edit-<%= comment.id %>').toggle()
+      "
+    >
+      Cancel
+    </a>
     <span class="form-grey"> &nbsp;
       <br class="visible-xs" /><%= raw translation('comments._edit.logged_in', :username => current_user.username) %> |
       <a target="_blank" href="/wiki/authoring-help#Formatting"><%= translation('comments._edit.formatting') %></a> |
