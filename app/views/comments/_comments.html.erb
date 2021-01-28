@@ -1,4 +1,4 @@
-<h1>Comments </h1>
+<h1> <%= translation('comments._comments.comments') %> </h1>
 <% if comments.count() > 0 %>
   <table class="table">
       <tr>
@@ -34,11 +34,11 @@
       <td><%= distance_of_time_in_words(comment.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></td>
       <td>
         <% if comment.status == 4 && current_user &. can_moderate? %>
-              Status: <%= comment.status_value %>
+        <%= translation('comments._comments.status') %> <%= comment.status_value %>
               <a class="btn btn-outline-secondary btn-sm" href="/admin/publish_comment/<%= comment.id %>"><%= translation('dashboard.moderate.approve') %></a>
               <a class="btn btn-outline-secondary btn-sm" href="/admin/mark_comment_spam/<%= comment.id %>"><%= translation('dashboard.moderate.spam') %></a>
         <% elsif current_user &. can_moderate? %>
-            Status: <%= comment.status_value  %>
+        <%= translation('comments._comments.status') %> <%= comment.status_value  %>
             <a rel="tooltip" title="Mark as spam" class="btn btn-sm btn-outline-secondary btn-flag-spam-<%= comment.id %>" data-confirm="Are you sure? The user will no longer be able to log in or publish, and their content will be hidden except comments." href="/admin/mark_comment_spam/<%= comment.id %>">
               <i class="fa fa-ban"></i>
             </a>
@@ -52,6 +52,6 @@
     <% end %>
   </table>
 <% else %>
-  <p>No comments yet.</p>
+<p><%= translation('comments._comments.no_comments') %></p>
 <% end %>
 <% if @pagy %> <%= raw pagy_bootstrap_nav @pagy %> <% else %> <%= will_paginate comments, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %> <% end %>
