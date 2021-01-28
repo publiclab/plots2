@@ -24,7 +24,7 @@ class TokenCommentTest < ActionDispatch::IntegrationTest
     node = Node.last
     mail.subject = "Re: #{node.title} (##{node.nid})"
     mail.from = ["jeff@publiclab.org"]
-    Comment.receive_mail(mail)
+    Comment.new_comment_from_email(mail)
     f = File.open('test/fixtures/incoming_test_emails/gmail/final_parsed_comment.txt', 'r')
     comment = Comment.last
     assert_equal comment.comment, f.read
@@ -40,7 +40,7 @@ class TokenCommentTest < ActionDispatch::IntegrationTest
     mail = Mail.read('test/fixtures/incoming_test_emails/yahoo/incoming_yahoo_email.eml')
     node = Node.last
     mail.subject = "Re: #{node.title} (##{node.nid})"
-    Comment.receive_mail(mail)
+    Comment.new_comment_from_email(mail)
     f = File.open('test/fixtures/incoming_test_emails/yahoo/final_parsed_comment.txt', 'r')
     comment = Comment.last
     user_email = mail.from.first
