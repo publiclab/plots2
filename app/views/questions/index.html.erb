@@ -1,13 +1,13 @@
 <div class="col-lg-12">
 
   <% if params[:action] == 'recently_commented' %>
-  <h2>Recently Commented <small class="d-md-none d-lg-inline">Recently commented questions</small></h2>
+  <h2><%=translation('questions.index.recently_commented')%> <small class="d-md-none d-lg-inline"><%=translation('questions.index.recently_commented_questions')%></small></h2>
   <% elsif params[:action] == 'popular' %>
-  <h2>Popular Questions <small class="d-md-none d-lg-inline">Most viewed questions</small></h2>
+  <h2><%=translation('questions.index.popular_questions')%> <small class="d-md-none d-lg-inline"><%=translation('questions.index.most_viewed_questions')%></small></h2>
   <% elsif params[:action] == 'unanswered' %>
-  <h2>Unanswered Questions <small class="d-md-none d-lg-inline">Unanswered questions</small></h2>
+  <h2><%=translation('questions.index.unanswered_questions')%> <small class="d-md-none d-lg-inline"><%=translation('questions.index.unanswered_questions')%></small></h2>
   <% elsif params[:action] == 'liked' %>
-  <h2>Liked Questions <small class="d-md-none d-lg-inline">Most liked questions</small></h2>
+  <h2><%=translation('questions.index.liked_questions')%> <small class="d-md-none d-lg-inline"><%=translation('questions.index.most_liked_questions')%></small></h2>
   <% else %>
   <div class="text-center">
     <% cache('feature_questions-header', skip_digest: true) do %>
