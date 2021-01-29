@@ -748,7 +748,10 @@ en:
     _author:
       recent_tags_for_author: "Recent tags for <a href='%{url1}'>%{author}</a>"
     _wikis:
-      updated_by: |
+      updated_by:
+        index:
+        all_comments: "All Comments"
+        moderated_comments: "Moderated Comments" |
         updated %{time} ago
         by <a href='%{url1}'>%{author}</a>
       more: "More..."

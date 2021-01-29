@@ -1,10 +1,10 @@
 <div class="nav flex-column nav-pills col-lg-3 col-md-3 col-sm-12 mb-4" id="v-pills-tab" role="tablist" aria-orientation="vertical">
   <a class="nav-link active" href="#comments" data-toggle="pill">
-    <span class="d-lg-inline">All comments</span>
+  <span class="d-lg-inline"><%= translation('comments.index.all_comments') %></span>
   </a>
   <% if current_user &.can_moderate? %>
     <a class="nav-link" href="#moderated-comments" id="comments-tab" data-toggle="pill">
-      <span class="d-lg-inline">Moderated Comments</span>
+    <span class="d-lg-inline"><%= translation('comments.index.moderated_comments') %></span>
     </a>
   <% end %>
 </div>
