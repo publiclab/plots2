@@ -64,15 +64,14 @@
   %>
   <div class="card bg-light">
     <div class="card-body">
-     <% if params[:id] %>
-        <%= form_for :node, :as => :drupal_node, :url => url do |f| %>
-          <%= render partial: 'layouts/errorMessages', locals: { model: @node } %>
-        <% end %>
+      <%= form_for :node, :as => :drupal_node, :url => url if params[:id] do |f| %>
+        <%= render partial: 'layouts/errorMessages', locals: { model: @node } %>
 
-        <%= form_for :revision, :as => :revision, :url => url, :html => {:class => "form well legacy-form row"} do |f| %>
-          <%= render partial: 'layouts/errorMessages', locals: { model: @revision } %>
-        <% end %>
-     <% end %>
+      <% end %>
+
+      <%= form_for :revision, :as => :revision, :url => url, :html => {:class => "form well legacy-form row"} do |f| %>
+
+        <%= render partial: 'layouts/errorMessages', locals: { model: @revision } if @revision.present? %>
         <%= render :partial => "editor/main_image" %>
 
         <div class="col-lg-9 order-md-1">
@@ -120,6 +119,7 @@
           <p class="col-md-12">By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</p>
           <br />
         </div>
+        <% end %>
 
     </div>
   </div>

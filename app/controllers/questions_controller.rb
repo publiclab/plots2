@@ -48,13 +48,12 @@ class QuestionsController < ApplicationController
 
   # a form for new questions, at /questions/new
   def new
-    @node = Node.new
-    @revision = Revision.new
     # use another node body as a template
     node_id = params[:n].to_i
     if node_id && !params[:body] && Node.exists?(node_id)
-      node = Node.find(node_id)
-      params[:body] = node.body
+      @node = Node.find(node_id)
+      @revision = @node.revision.first
+      params[:body] = @node.body
     end
     if current_user.nil?
       redirect_to new_user_session_path(return_to: request.path)
