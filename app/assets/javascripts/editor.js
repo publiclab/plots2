@@ -56,15 +56,21 @@ class Editor {
   wrap(a, b, args) {
     // we only refresh $E's values if we are on a page with multiple comments
     if (this.isMultiFormPage(window.location.pathname)) { this.refresh(); }
-    var len = $E.textarea.val().length;
-    var start = $E.textarea[0].selectionStart;
-    var end = $E.textarea[0].selectionEnd;
+
+    const selectionStart = $E.textarea[0].selectionStart;
+    const selectionEnd = $E.textarea[0].selectionEnd;
+    const selection = args['fallback'] || $E.textarea.val().substring(selectionStart, selectionEnd); // fallback if nothing has been selected, and we're simply dealing with an insertion point
+
     const newlineParameterExists = args && args['newline'];
-    var sel = args['fallback'] || $E.textarea.val().substring(start, end); // fallback if nothing has been selected, and we're simply dealing with an insertion point
-    var replace = a + sel + b;
-    if (newlineParameterExists) { replace = replace + "\n\n"; }
-    if (newlineParameterExists && $E.textarea[0].selectionStart > 0) { replace = "\n" + replace; }
-    $E.textarea.val($E.textarea.val().substring(0,start) + replace + $E.textarea.val().substring(end,len));
+    const newText = a + selection + b;
+    if (newlineParameterExists) { newText = newText + "\n\n"; }
+    const selectionStartsMidText = $E.textarea[0].selectionStart > 0;
+    if (newlineParameterExists && selectionStartsMidText) { newText = "\n" + newText; }
+
+    const textLength = $E.textarea.val().length;
+    const textBeforeSelection = $E.textarea.val().substring(0,selectionStart);
+    const textAfterSelection = $E.textarea.val().substring(selectionEnd, textLength);
+    $E.textarea.val(textBeforeSelection + newText + textAfterSelection);
   }
   bold() {
     $E.wrap('**','**')
