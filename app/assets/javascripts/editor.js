@@ -55,8 +55,8 @@ class Editor {
   // wraps currently selected text in textarea with strings a and b
   wrap(a, b, args) {
     // we only refresh $E's values if we are on a page with multiple comments
-    const singleFormPage = this.isSingleFormPage(window.location.pathname);
-    if (!singleFormPage) { this.refresh(); }
+    const multiFormPage = !this.isSingleFormPage(window.location.pathname);
+    if (multiFormPage) { this.refresh(); }
     var len = $E.textarea.val().length;
     var start = $E.textarea[0].selectionStart;
     var end = $E.textarea[0].selectionEnd;
