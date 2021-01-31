@@ -44,19 +44,18 @@ class Editor {
     // preview
     $E.preview = ($D.selected).find('.comment-preview').eq(0);
   }
-  isSingleFormPage(url) {
+  isMultiFormPage(url) {
     // this RegEx matches three different pages where only one editor form is present (instead of multiple comment forms):
     //   1. /wiki/new
     //   2. /wiki/{wiki name}/edit
     //   3. /features/new
     const singleFormPath = RegExp(/\/(wiki|features)(\/[^\/]+\/edit|\/new)/);
-    return singleFormPath.test(url);
+    return !singleFormPath.test(url);
   }
   // wraps currently selected text in textarea with strings a and b
   wrap(a, b, args) {
     // we only refresh $E's values if we are on a page with multiple comments
-    const multiFormPage = !this.isSingleFormPage(window.location.pathname);
-    if (multiFormPage) { this.refresh(); }
+    if (this.isMultiFormPage(window.location.pathname)) { this.refresh(); }
     var len = $E.textarea.val().length;
     var start = $E.textarea[0].selectionStart;
     var end = $E.textarea[0].selectionEnd;
