@@ -53,20 +53,18 @@ class Editor {
     return !singleFormPath.test(url);
   }
   // wraps currently selected text in textarea with strings a and b
-  wrap(a, b, args) {
+  wrap(a, b, newlineDesired = false, fallback) {
     // we only refresh $E's values if we are on a page with multiple comments
     if (this.isMultiFormPage(window.location.pathname)) { this.refresh(); }
 
     const selectionStart = $E.textarea[0].selectionStart;
     const selectionEnd = $E.textarea[0].selectionEnd;
-    const fallBackParameterExists = args && args['fallback'];
-    const selection = fallBackParameterExists ? args['fallback'] : $E.textarea.val().substring(selectionStart, selectionEnd); // fallback if nothing has been selected, and we're simply dealing with an insertion point
+    const selection = fallback || $E.textarea.val().substring(selectionStart, selectionEnd); // fallback if nothing has been selected, and we're simply dealing with an insertion point
 
-    const newlineParameterExists = args && args['newline'];
     const newText = a + selection + b; // ie. ** + selection + ** (wrapping selection in bold)
-    if (newlineParameterExists) { newText = newText + "\n\n"; }
+    if (newlineDesired) { newText = newText + "\n\n"; }
     const selectionStartsMidText = $E.textarea[0].selectionStart > 0;
-    if (newlineParameterExists && selectionStartsMidText) { newText = "\n" + newText; }
+    if (newlineDesired && selectionStartsMidText) { newText = "\n" + newText; }
 
     const textLength = $E.textarea.val().length;
     const textBeforeSelection = $E.textarea.val().substring(0,selectionStart);
