@@ -19,41 +19,41 @@ class Editor {
       sanitize: false,
       smartLists: true,
       langPrefix: 'language-',
-      highlight: function(code, lang) {
+      highligh(code, lang) {
         if (lang === 'js') {
           return highlighter.javascript(code);
         }
         return code;
       }
     });
-  };
-  const setState = function(textarea = 'text-input', preview = 'comment-preview-main', title = 'title') {
+  }
+  setState(textarea = 'text-input', preview = 'comment-preview-main', title = 'title') {
     $E.title = $('#' + title + 'title'); // not sure why this exists? seems like $E.title is always #title
     $E.textarea = $('#' + textarea);
     $E.textarea.bind('input propertychange', $E.save);
     $E.preview = $('#' + preview);
-  };
+  }
   // code seems unused, commenting out for now.
-  // is_editing = function() {
+  // is_editing() {
   //   return ($E.textarea[0].selectionStart == 0 && $E.textarea[0].selectionEnd == 0)
   // };
-  refresh = function() {
+  refresh() {
     // textarea
     $E.textarea = ($D.selected).find('textarea').eq(0);
     $E.textarea.bind('input propertychange',$E.save);
     // preview
     $E.preview = ($D.selected).find('.comment-preview').eq(0);
-  };
-  isSingleFormPage = function(url) {
+  }
+  isSingleFormPage(url) {
     // this RegEx matches three different pages where only one editor form is present (instead of multiple comment forms):
     //   1. /wiki/new
     //   2. /wiki/{wiki name}/edit
     //   3. /features/new
     const singleFormPath = RegExp(/\/(wiki|features)(\/[^\/]+\/edit|\/new)/);
     return singleFormPath.test(url);
-  };
+  }
   // wraps currently selected text in textarea with strings a and b
-  wrap = function(a, b, args) {
+  wrap(a, b, args) {
     // we only refresh $E's values if we are on a page with multiple comments
     if (this.isSingleFormPage(window.location.pathname) === false) { this.refresh(); }
     var len = $E.textarea.val().length;
@@ -70,54 +70,54 @@ class Editor {
       replace = "\n" + replace; 
     }
     $E.textarea.val($E.textarea.val().substring(0,start) + replace + $E.textarea.val().substring(end,len));
-  };
-  bold = function() {
+  }
+  bold() {
     $E.wrap('**','**')
-  };
-  italic = function() {
+  }
+  italic() {
     $E.wrap('_','_')
-  };
-  link = function(uri) {
+  }
+  link(uri) {
     uri = prompt('Enter a URL');
     if (uri === null) { uri = ""; }
     $E.wrap('[', '](' + uri + ')');
-  };
-  image = function(src) {
+  }
+  image(src) {
     $E.wrap('\n![',']('+src+')\n')
-  };
+  }
   // these header formatting functions are not used anywhere, so commenting them out for now to pass codeclimate:
 
-  // h1 = function() {
+  // h1() {
   //   $E.wrap('#','')
-  // };
-  h2 = function() {
+  // }
+  h2() {
     $E.wrap('##','')
-  };
-  // h3 = function() {
+  }
+  // h3() {
   //   $E.wrap('###','')
-  // };
-  // h4 = function() {
+  // }
+  // h4() {
   //   $E.wrap('####','')
-  // };
-  // h5 = function() {
+  // }
+  // h5() {
   //   $E.wrap('#####','')
-  // };
-  // h6 = function() {
+  // }
+  // h6() {
   //   $E.wrap('######','')
-  // };
-  // h7 = function() {
+  // }
+  // h7() {
   //   $E.wrap('#######','')
-  // };
+  // }
   // this function is dedicated to Don Blair https://github.com/donblair
-  save = function() {
+  save() {
     localStorage.setItem('plots:lastpost',$E.textarea.val())
     localStorage.setItem('plots:lasttitle',$E.title.val())
-  };
-  recover = function() {
+  }
+  recover() {
     $E.textarea.val(localStorage.getItem('plots:lastpost'))
     $E.title.val(localStorage.getItem('plots:lasttitle'))
-  };
-  apply_template = function(template) {
+  }
+  apply_template(template) {
     if($E.textarea.val() == ""){
       $E.textarea.val($E.templates[template])
     }else if(($E.textarea.val() == $E.templates['event']) || ($E.textarea.val() == $E.templates['default']) || ($E.textarea.val() == $E.templates['support'])){
@@ -125,11 +125,11 @@ class Editor {
     }else{
       $E.textarea.val($E.textarea.val()+'\n\n'+$E.templates[template])
     }
-  };
-  generate_preview = function(id,text) {
+  }
+  generate_preview(id,text) {
     $('#'+id)[0].innerHTML = marked(text)
-  };
-  toggle_preview = function() {
+  }
+  toggle_preview() {
     let previewBtn;
     let dropzone;
     // if the element is part of a multi-comment page,
@@ -142,8 +142,8 @@ class Editor {
     dropzone.toggle();
 
     this.toggleButtonPreviewMode(previewBtn);
-  };
-  toggleButtonPreviewMode = function(previewBtn) {
+  }
+  toggleButtonPreviewMode(previewBtn) {
     let isPreviewing = previewBtn.attr('data-previewing');
 
     // If data-previewing attribute is not present -> we are not in "preview" mode
@@ -161,5 +161,5 @@ class Editor {
       previewBtn.attr('data-previewing', 'false');
       previewBtn.text('Preview');
     }
-  };
+  }
 }
