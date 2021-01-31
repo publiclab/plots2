@@ -19,7 +19,7 @@ class Editor {
       sanitize: false,
       smartLists: true,
       langPrefix: 'language-',
-      highligh(code, lang) {
+      highlight(code, lang) {
         if (lang === 'js') {
           return highlighter.javascript(code);
         }
