@@ -59,10 +59,11 @@ class Editor {
 
     const selectionStart = $E.textarea[0].selectionStart;
     const selectionEnd = $E.textarea[0].selectionEnd;
-    const selection = args['fallback'] || $E.textarea.val().substring(selectionStart, selectionEnd); // fallback if nothing has been selected, and we're simply dealing with an insertion point
+    const fallBackParameterExists = args && args['fallback'];
+    const selection = fallBackParameterExists ? args['fallback'] : $E.textarea.val().substring(selectionStart, selectionEnd); // fallback if nothing has been selected, and we're simply dealing with an insertion point
 
     const newlineParameterExists = args && args['newline'];
-    const newText = a + selection + b;
+    const newText = a + selection + b; // ie. ** + selection + ** (wrapping selection in bold)
     if (newlineParameterExists) { newText = newText + "\n\n"; }
     const selectionStartsMidText = $E.textarea[0].selectionStart > 0;
     if (newlineParameterExists && selectionStartsMidText) { newText = "\n" + newText; }
