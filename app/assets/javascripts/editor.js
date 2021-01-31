@@ -1,13 +1,21 @@
-// jQuery (document).ready function:
-
-$E = {
-  initialize: function() {
-    // call setState with no parameters, aka. default parameters.
-    // default parameters point toward either:
-    //   1. the comment form at the bottom of multi-comment wikis/questions/research notes
-    //   2. the only editor form on /wiki/new and /wiki/edit
-    $E.setState();
-    
+class Editor {
+  // default parameters reference the IDs of:
+  //   1. main comment form in multi-comment wikis, questions, & research notes.
+  //   2. the only editor form on /wiki/new and /wiki/edit
+  constructor(textarea = "text-input", preview = "comment-preview-main", title = "title") {
+    this.textarea = textarea;
+    this.preview = preview;
+    this.title = title;
+    this.previewing = false;
+    this.previewed = false;
+    this.templates = {
+      'blog': "## The beginning\n\n## What we did\n\n## Why it matters\n\n## How can you help",
+      'default': "## What I want to do\n\n## My attempt and results\n\n## Questions and next steps\n\n## Why I'm interested",
+      'support': "## Details about the problem\n\n## A photo or screenshot of the setup",
+      'event': "## Event details\n\nWhen, where, what\n\n## Background\n\nWho, why",
+      'question': "## What I want to do or know\n\n## Background story"
+    };
+      
     marked.setOptions({
       gfm: true,
       tables: true,
@@ -23,36 +31,36 @@ $E = {
         return code;
       }
     });
-  },
-  setState: function(textarea = 'text-input', preview = 'comment-preview-main', title = 'title') {
+  }
+  setState = function(textarea = 'text-input', preview = 'comment-preview-main', title = 'title') {
     $E.title = $('#' + title + 'title'); // not sure why this exists? seems like $E.title is always #title
     $E.textarea = $('#' + textarea);
     $E.textarea.bind('input propertychange', $E.save);
     $E.preview = $('#' + preview);
-  },
-  is_editing: function() {
-    return ($E.textarea[0].selectionStart == 0 && $E.textarea[0].selectionEnd == 0)
-  },
-  refresh: function() {
+  };
+  // code seems unused, commenting out for now.
+  // is_editing = function() {
+  //   return ($E.textarea[0].selectionStart == 0 && $E.textarea[0].selectionEnd == 0)
+  // };
+  refresh = function() {
     // textarea
     $E.textarea = ($D.selected).find('textarea').eq(0);
     $E.textarea.bind('input propertychange',$E.save);
     // preview
     $E.preview = ($D.selected).find('.comment-preview').eq(0);
-  },
-  isRichTextEditor: function(url) {
-    // this RegEx matches three different cases where the legacy editor is still used:
+  };
+  isSingleFormPage = function(url) {
+    // this RegEx matches three different pages where only one editor form is present (instead of multiple comment forms):
     //   1. /wiki/new
     //   2. /wiki/{wiki name}/edit
     //   3. /features/new
-    const legacyEditorPath = RegExp(/\/(wiki|features)(\/[^\/]+\/edit|\/new)/);
-    return !legacyEditorPath.test(url); // if we're not on one of these pages, we are using the rich-text editor.
-  },
+    const singleFormPath = RegExp(/\/(wiki|features)(\/[^\/]+\/edit|\/new)/);
+    return singleFormPath.test(url);
+  };
   // wraps currently selected text in textarea with strings a and b
-  wrap: function(a, b, args) {
-    // we only refresh $E's values if we are on a page using the rich-text editor (most pages).
-    // the legacy editor pages only have one editor form, unlike pages with multiple comments.
-    if (this.isRichTextEditor(window.location.pathname)) { this.refresh(); }
+  wrap = function(a, b, args) {
+    // we only refresh $E's values if we are on a page with multiple comments
+    if (this.isSingleFormPage(window.location.pathname) === false) { this.refresh(); }
     var len = $E.textarea.val().length;
     var start = $E.textarea[0].selectionStart;
     var end = $E.textarea[0].selectionEnd;
@@ -67,52 +75,52 @@ $E = {
       replace = "\n" + replace; 
     }
     $E.textarea.val($E.textarea.val().substring(0,start) + replace + $E.textarea.val().substring(end,len));
-  },
-  bold: function() {
+  };
+  bold = function() {
     $E.wrap('**','**')
-  },
-  italic: function() {
+  };
+  italic = function() {
     $E.wrap('_','_')
-  },
-  link: function(uri) {
+  };
+  link = function(uri) {
     uri = prompt('Enter a URL');
     if (uri === null) { uri = ""; }
     $E.wrap('[', '](' + uri + ')');
-  },
-  image: function(src) {
+  };
+  image = function(src) {
     $E.wrap('\n![',']('+src+')\n')
-  },
-  h1: function() {
+  };
+  h1 = function() {
     $E.wrap('#','')
-  },
-  h2: function() {
+  };
+  h2 = function() {
     $E.wrap('##','')
-  },
-  h3: function() {
+  };
+  h3 = function() {
     $E.wrap('###','')
-  },
-  h4: function() {
+  };
+  h4 = function() {
     $E.wrap('####','')
-  },
-  h5: function() {
+  };
+  h5 = function() {
     $E.wrap('#####','')
-  },
-  h6: function() {
+  };
+  h6 = function() {
     $E.wrap('######','')
-  },
-  h7: function() {
+  };
+  h7 = function() {
     $E.wrap('#######','')
-  },
+  };
   // this function is dedicated to Don Blair https://github.com/donblair
-  save: function() {
+  save = function() {
     localStorage.setItem('plots:lastpost',$E.textarea.val())
     localStorage.setItem('plots:lasttitle',$E.title.val())
-  },
-  recover: function() {
+  };
+  recover = function() {
     $E.textarea.val(localStorage.getItem('plots:lastpost'))
     $E.title.val(localStorage.getItem('plots:lasttitle'))
-  },
-  apply_template: function(template) {
+  };
+  apply_template = function(template) {
     if($E.textarea.val() == ""){
       $E.textarea.val($E.templates[template])
     }else if(($E.textarea.val() == $E.templates['event']) || ($E.textarea.val() == $E.templates['default']) || ($E.textarea.val() == $E.templates['support'])){
@@ -120,20 +128,11 @@ $E = {
     }else{
       $E.textarea.val($E.textarea.val()+'\n\n'+$E.templates[template])
     }
-  },
-  templates: {
-    'blog': "## The beginning\n\n## What we did\n\n## Why it matters\n\n## How can you help",
-    'default': "## What I want to do\n\n## My attempt and results\n\n## Questions and next steps\n\n## Why I'm interested",
-    'support': "## Details about the problem\n\n## A photo or screenshot of the setup",
-    'event': "## Event details\n\nWhen, where, what\n\n## Background\n\nWho, why",
-    'question': "## What I want to do or know\n\n## Background story"
-  },
-  previewing: false,
-  previewed: false,
-  generate_preview: function(id,text) {
+  };
+  generate_preview = function(id,text) {
     $('#'+id)[0].innerHTML = marked(text)
-  },
-  toggle_preview: function() {
+  };
+  toggle_preview = function() {
     let previewBtn;
     let dropzone;
     // if the element is part of a multi-comment page,
@@ -146,8 +145,8 @@ $E = {
     dropzone.toggle();
 
     this.toggleButtonPreviewMode(previewBtn);
-  },
-  toggleButtonPreviewMode: function (previewBtn) {
+  };
+  toggleButtonPreviewMode = function(previewBtn) {
     let isPreviewing = previewBtn.attr('data-previewing');
 
     // If data-previewing attribute is not present -> we are not in "preview" mode
@@ -165,5 +164,5 @@ $E = {
       previewBtn.attr('data-previewing', 'false');
       previewBtn.text('Preview');
     }
-  }
+  };
 }
