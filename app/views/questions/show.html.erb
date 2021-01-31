@@ -2,7 +2,7 @@
 <%= javascript_include_tag('notes') %>
 <%= javascript_include_tag('textbox_expand') %>
 <script> var comments_length = <%= @node.comments.length %>; $(function(){
-  $E.initialize();
+  $E = new Editor();
   $("img").lazyload();
 });</script>
 <%= javascript_include_tag('question') %>
