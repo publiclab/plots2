@@ -3,9 +3,9 @@ class Editor {
   //   1. main comment form in multi-comment wikis, questions, & research notes.
   //   2. the only editor form on /wiki/new and /wiki/edit
   constructor(textarea = "text-input", preview = "comment-preview-main", title = "title") {
-    this.textarea = textarea;
-    this.preview = preview;
-    this.title = title;
+    this.textarea = $('#' + textarea);
+    this.preview = $('#' + preview);
+    this.title = $('#' + title + 'title'); // not sure why this exists? seems like $E.title is always #title
     this.previewing = false;
     this.previewed = false;
     // this will get deleted in the next few PRs, so collapsing into one line to pass codeclimate
@@ -44,18 +44,18 @@ class Editor {
     // preview
     $E.preview = ($D.selected).find('.comment-preview').eq(0);
   }
-  isMultiFormPage(url) {
+  isSingleFormPage(url) {
     // this RegEx matches three different pages where only one editor form is present (instead of multiple comment forms):
     //   1. /wiki/new
     //   2. /wiki/{wiki name}/edit
     //   3. /features/new
     const singleFormPath = RegExp(/\/(wiki|features)(\/[^\/]+\/edit|\/new)/);
-    return !singleFormPath.test(url);
+    return singleFormPath.test(url);
   }
   // wraps currently selected text in textarea with strings a and b
   wrap(a, b, newlineDesired = false, fallback) {
     // we only refresh $E's values if we are on a page with multiple comments
-    if (this.isMultiFormPage(window.location.pathname)) { this.refresh(); }
+    if (!this.isSingleFormPage(window.location.pathname)) { this.refresh(); }
 
     const selectionStart = $E.textarea[0].selectionStart;
     const selectionEnd = $E.textarea[0].selectionEnd;
@@ -67,7 +67,7 @@ class Editor {
     if (newlineDesired && selectionStartsMidText) { newText = "\n" + newText; }
 
     const textLength = $E.textarea.val().length;
-    const textBeforeSelection = $E.textarea.val().substring(0,selectionStart);
+    const textBeforeSelection = $E.textarea.val().substring(0, selectionStart);
     const textAfterSelection = $E.textarea.val().substring(selectionEnd, textLength);
     $E.textarea.val(textBeforeSelection + newText + textAfterSelection);
   }
