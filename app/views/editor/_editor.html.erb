@@ -2,7 +2,7 @@
 <%= render :partial => "editor/toolbar", :locals => { :location => :main } %>
 
 <div class="form-group dropzone">
-  <textarea aria-label="Wiki Text" name="body" tabindex="2" class="form-control" id="text-input" rows="20" cols="60"><% if @node && @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
+  <textarea aria-label="Wiki Text" name="body" tabindex="2" class="form-control" id="text-input-main" rows="20" cols="60"><% if @node && @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
   <div id="imagebar">
     <div class = "inline_image_drop" style="display:none;">
       <div id="create_progress" style="display:none;" class="progress float-right">
@@ -21,6 +21,6 @@
 
 <script>
   jQuery(document).ready(function() {
-    $E.initialize();
+    $E = new Editor();
   })
 </script>

@@ -72,7 +72,9 @@ class CommentTest < ApplicationSystemTestCase
       find("p", text: comment_text)
       # replying to the comment
       first("p", text: "Reply to this comment...").click()
-      fill_in("body", with: comment_response_text)
+      page.find('[id^=text-input-reply-]')
+        .click
+        .fill_in with: comment_response_text
       # preview reply
       first(".preview-btn").click
       find("p", text: comment_response_text)
@@ -311,12 +313,12 @@ class CommentTest < ApplicationSystemTestCase
           title_text = 'pokemon'
           body_text = 'Gotta catch em all!'
           fill_in('title', with: title_text)
-          fill_in('text-input', with: body_text)
+          fill_in('text-input-main', with: body_text)
           find('#publish').click()
           visit "/wiki/#{title_text}/comments"
       end
       assert_selector('h1', text: title_text)
-      page.find("textarea#text-input")
+      page.find("textarea#text-input-main")
         .click
         .fill_in with: comment_text
       # preview comment
@@ -544,7 +546,7 @@ class CommentTest < ApplicationSystemTestCase
       visit get_path(page_type, nodes(node_name).path)
       main_comment_form =  page.find('h4', text: /Post comment|Post Comment/).find(:xpath, '..') # title text on wikis is 'Post comment'
       main_comment_form.find("[data-original-title='Bold']").click
-      text_input_value = main_comment_form.find('#text-input').value
+      text_input_value = main_comment_form.find('#text-input-main').value
       assert_equal(text_input_value, '****')
     end
 

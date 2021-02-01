@@ -16,9 +16,9 @@ const getEditorParams = (targetDiv) => {
     params['textarea'] = closestCommentFormWrapper.querySelector('textarea').id;
     params['preview'] = closestCommentFormWrapper.querySelector('.comment-preview').id;
   } else {
-    // default to #text-input
-    // #text-input ID should be unique, and the only comment form on /wiki/new & /wiki/edit
-    params['textarea'] = 'text-input';
+    // default to #text-input-main
+    // #text-input-main ID should be unique, and the only comment form on /wiki/new & /wiki/edit
+    params['textarea'] = 'text-input-main';
     // #preview-main should be unique as well
     params['preview'] = 'comment-preview-main';
   }
@@ -42,7 +42,7 @@ $(function() {
     const { textArea, preview, dSelected } = getEditorParams(e.target);
     // assign dSelected
     if (dSelected) { $D.selected = dSelected; }
-    $E.setState(textArea, preview);
+    $E.setState(e.currentTarget.dataset.formId);
     const action = e.currentTarget.dataset.action // 'bold', 'italic', etc.
     $E[action](); // call the appropriate editor function
   });
@@ -68,7 +68,7 @@ $(function() {
       const { textArea, preview, dSelected } = getEditorParams(e.target);
       e.preventDefault();
       if (dSelected) { $D.selected = dSelected; }
-      $E.setState(textArea, preview);
+      $E.setState(e.currentTarget.dataset.formId);
     });
 
     $(this).fileupload({
@@ -108,21 +108,17 @@ $(function() {
           switch (file_type) {
             case 'image':
               orig_image_url = file_url + '?s=o' // size = original
-              $E.wrap('[![', '](' + file_url + ')](' + orig_image_url + ')', {'newline': true, 'fallback': data.result['filename']}) // on its own line; see /app/assets/js/editor.js
+              $E.wrap('[![', '](' + file_url + ')](' + orig_image_url + ')', true, data.result['filename']);
               break;
             case 'csv':
-              $E.wrap('[graph:' + file_url + ']', '', {'newline': true})
+              $E.wrap('[graph:' + file_url + ']', '', true);
               break;
             default:
-              $E.wrap('<a href="'+data.result.url.split('?')[0]+'"><i class="fa fa-file"></i> ','</a>', {'newline': true, 'fallback': data.result['filename'].replace(/[()]/g , "-")}) // on its own line; see /app/assets/js/editor.js
+              $E.wrap('<a href="'+data.result.url.split('?')[0]+'"><i class="fa fa-file"></i> ', '</a>', true, data.result['filename'].replace(/[()]/g , "-")); // on its own line; see /app/assets/js/editor.js
           }
           // here append the image id to the wiki edit form:
           if ($('#node_images').val() && $('#node_images').val().split(',').length > 1) $('#node_images').val([$('#node_images').val(),data.result.id].join(','))
           else $('#node_images').val(data.result.id)
-          // eventual handling of multiple files; must add "multiple" to file input and handle on server side:
-          //$.each(data.result.files, function (index, file) {
-          //    $('<p/>').text(file.name).appendTo(document.body);
-          //});
         },
         fileuploadfail: function(e, data) {
           console.log(e);
