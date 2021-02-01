@@ -17,7 +17,7 @@ const progressAll = (elem, data) => {
 $(function() {
   // for rich-text buttons (bold, italic, header, and link):
   $('.rich-text-button').on('click', function(e) {
-    $E.setState(e.currentTarget.dataset.formId);
+    $E.setState(e.currentTarget.dataset.formId); // string that is: "main", "reply-123", "edit-123" etc.
     const action = e.currentTarget.dataset.action // 'bold', 'italic', etc.
     $E[action](); // call the appropriate editor function
   });
@@ -41,7 +41,7 @@ $(function() {
     // runs on drag & drop
     $(this).on('drop',function(e) {
       e.preventDefault();
-      $E.setState(e.currentTarget.dataset.formId);
+      $E.setState(e.currentTarget.dataset.formId); // string that is: "main", "reply-123", "edit-123" etc.
     });
 
     $(this).fileupload({
@@ -57,6 +57,7 @@ $(function() {
           //   1. when user drag-and-drops image
           //   2. when user clicks on upload button.
         start: function(e) {
+          $E.setState(e.target.dataset.formId); // string that is: "main", "reply-123", "edit-123" etc.
           $(e.target).removeClass('hover');
           // for click-upload-button scenarios, it's important to set $D.selected here, because the 'drop' listener above doesn't run in those:
           $D.selected = $(e.target).closest('div.comment-form-wrapper');
