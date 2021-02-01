@@ -59,15 +59,16 @@ $(function() {
         start: function(e) {
           $E.setState(e.target.dataset.formId); // string that is: "main", "reply-123", "edit-123" etc.
           $(e.target).removeClass('hover');
-          $("#image-upload-progress-container" + this.commentFormID).show();
-          $("#image-upload-text-" + this.commentFormID).show();
-          $("#dropzone-choose-one-" + this.commentFormID).hide();
+          console.log($("#image-upload-progress-container-" + $E.commentFormID));
+          $("#image-upload-progress-container-" + $E.commentFormID).show();
+          $("#image-upload-text-" + $E.commentFormID).show();
+          $("#dropzone-choose-one-" + $E.commentFormID).hide();
         },
         done: function (e, data) {
-          $("#image-upload-progress-container" + this.commentFormID).hide();
-          $("#image-upload-text-" + this.commentFormID).hide();
-          $("#dropzone-choose-one-" + this.commentFormID).show();
-          $("#image-upload-progress-bar" + this.commentFormID).css('width', 0);
+          $("#image-upload-progress-container-" + $E.commentFormID).hide();
+          $("#image-upload-text-" + $E.commentFormID).hide();
+          $("#dropzone-choose-one-" + $E.commentFormID).show();
+          $("#image-upload-progress-bar-" + $E.commentFormID).css('width', 0);
           var extension = data.result['filename'].split('.')[data.result['filename'].split('.').length - 1]; var file_url = data.result.url.split('?')[0]; var file_type;
           if (['gif', 'GIF', 'jpeg', 'JPEG', 'jpg', 'JPG', 'png', 'PNG'].includes(extension))
             file_type = 'image'
@@ -92,7 +93,7 @@ $(function() {
           console.log(e);
         },
         progressall: function (e, data) {
-          const closestProgressBar = $("#image-upload-progress-bar" + this.commentFormID);
+          const closestProgressBar = $("#image-upload-progress-bar-" + $E.commentFormID);
           return progressAll(closestProgressBar, data);
         }
     });

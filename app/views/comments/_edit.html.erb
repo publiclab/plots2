@@ -30,11 +30,11 @@
       ><%= !(comment.is_a?Answer) ? comment.comment : comment.content %></textarea>
       <div class="imagebar">
         <div 
-          id="image-upload-progress-container-edit<%= comment.id %>" style="display: none;" 
+          id="image-upload-progress-container-edit-<%= comment.id %>" style="display: none;" 
           class="progress progress-bar-container active pull-right"
         >
           <div 
-            id="image-upload-progress-bar-edit<%= comment.id %>" 
+            id="image-upload-progress-bar-edit-<%= comment.id %>" 
             class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%;"
           >
           </div>
