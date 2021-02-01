@@ -59,21 +59,15 @@ $(function() {
         start: function(e) {
           $E.setState(e.target.dataset.formId); // string that is: "main", "reply-123", "edit-123" etc.
           $(e.target).removeClass('hover');
-          // for click-upload-button scenarios, it's important to set $D.selected here, because the 'drop' listener above doesn't run in those:
-          $D.selected = $(e.target).closest('div.comment-form-wrapper');
-          // the above line is redundant in drag & drop, because it's assigned in 'drop' listener too.
-          // on /wiki/new & /wiki/edit, $D.selected will = undefined from this assignment
-          elem = $($D.selected).closest('div.comment-form-wrapper').eq(0);
-          elem.find('.progress-bar-container').eq(0).show();
-          elem.find('.uploading-text').eq(0).show();
-          elem.find('.choose-one-prompt-text').eq(0).hide();
+          $("#image-upload-progress-container" + this.commentFormID).show();
+          $("#image-upload-text-" + this.commentFormID).show();
+          $("#dropzone-choose-one-" + this.commentFormID).hide();
         },
         done: function (e, data) {
-          elem = $($D.selected).closest('div.comment-form-wrapper').eq(0);
-          elem.find('.progress-bar-container').hide();
-          elem.find('.progress-bar').css('width', 0);
-          elem.find('.uploading-text').hide();
-          elem.find('.choose-one-prompt-text').show();
+          $("#image-upload-progress-container" + this.commentFormID).hide();
+          $("#image-upload-text-" + this.commentFormID).hide();
+          $("#dropzone-choose-one-" + this.commentFormID).show();
+          $("#image-upload-progress-bar" + this.commentFormID).css('width', 0);
           var extension = data.result['filename'].split('.')[data.result['filename'].split('.').length - 1]; var file_url = data.result.url.split('?')[0]; var file_type;
           if (['gif', 'GIF', 'jpeg', 'JPEG', 'jpg', 'JPG', 'png', 'PNG'].includes(extension))
             file_type = 'image'
@@ -98,7 +92,7 @@ $(function() {
           console.log(e);
         },
         progressall: function (e, data) {
-          const closestProgressBar = $($D.selected).closest('div.comment-form-wrapper').find('.progress-bar').eq(0);
+          const closestProgressBar = $("#image-upload-progress-bar" + this.commentFormID);
           return progressAll(closestProgressBar, data);
         }
     });
