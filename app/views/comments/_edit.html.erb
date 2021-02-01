@@ -36,23 +36,19 @@
         <span id="c<%= comment.id%>uploading" class="uploading uploading-text" style="display:none;">
           <%= translation('comments._edit.uploading') %>
         </span>
-        <span id="c<%= comment.id%>prompt" class="prompt choose-one-prompt-text">
+        <span id="dropzone-choose-one-edit-<%= comment.id%>" class="prompt choose-one-prompt-text dropzone">
           <span style="padding-right:4px;float:left;" class="hidden-xs">
             <%= raw translation('comments._edit.drag_and_drop') %>
           </span>
-          <span id="c<%= comment.id%>prompt" class="prompt choose-one-prompt-text">
-            <span style="padding-right:4px;float:left;" class="hidden-xs">
-              <%= raw translation('comments._edit.drag_and_drop') %>
+          <label id="c<%= comment.id%>input_label" for="fileinput-choose-one-edit-<%= comment.id%>">
+            <input id="fileinput-choose-one-edit-<%= comment.id%>" type="file" name="image[photo]" style="display:none;" />
+            <a class="hidden-xs"><%= translation('comments._edit.choose_one') %></a>
+            <span class="visible-xs">
+              <i class="fa fa-upload"></i>
+              <a><%= translation('comments._edit.upload_image') %></a>
             </span>
-            <label id="c<%= comment.id%>input_label" for="c<%= comment.id%>input">
-              <input id="c<%= comment.id%>input" type="file" name="image[photo]" style="display:none;" />
-              <a class="hidden-xs"><%= translation('comments._edit.choose_one') %></a>
-              <span class="visible-xs">
-                <i class="fa fa-upload"></i>
-                <a><%= translation('comments._edit.upload_image') %></a>
-              </span>
-            </label>
-          </span>
+          </label>
+        </span>
         </p>
       </div>
     </div>
