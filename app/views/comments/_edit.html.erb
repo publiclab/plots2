@@ -27,9 +27,7 @@
         rows="6" 
         cols="40" 
         placeholder="<%= placeholder %>"
-      >
-        <%= !(comment.is_a?Answer) ? comment.comment : comment.content %>
-      </textarea>
+      ><%= !(comment.is_a?Answer) ? comment.comment : comment.content %></textarea>
       <div class="imagebar">
         <div id="c<%= comment.id%>progress" style="display:none;" class="progress progress-bar-container active pull-right">
           <div id="c<%= comment.id%>progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%;"></div>
