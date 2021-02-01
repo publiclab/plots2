@@ -40,7 +40,11 @@
           </div>
         </div>
         <p>
-        <span id="c<%= comment.id%>uploading" class="uploading uploading-text" style="display:none;">
+        <span 
+          id="image-upload-text-edit-<%= comment.id %>" 
+          class="uploading uploading-text" 
+          style="display:none;"
+        >
           <%= translation('comments._edit.uploading') %>
         </span>
         <span id="dropzone-choose-one-edit-<%= comment.id%>" class="prompt choose-one-prompt-text dropzone">

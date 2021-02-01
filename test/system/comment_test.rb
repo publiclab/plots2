@@ -276,7 +276,7 @@ class CommentTest < ApplicationSystemTestCase
       page.find('#fileinput-button-edit-' + comment_id_num).set("#{Rails.root.to_s}/public/images/pl.png")
       Capybara.ignore_hidden_elements = true
       assert_selector('#image-upload-progress-container-edit-' + comment_id_num)
-      assert_selector('#c' + comment_id_num + 'uploading')
+      assert_selector('#image-upload-text-edit-' + comment_id_num)
     end
   end
 
