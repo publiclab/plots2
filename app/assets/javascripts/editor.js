@@ -2,10 +2,9 @@ class Editor {
   // default parameters reference the IDs of:
   //   1. main comment form in multi-comment wikis, questions, & research notes.
   //   2. the only editor form on /wiki/new and /wiki/edit
-  constructor(textarea = "text-input", preview = "comment-preview-main", title = "title") {
+  constructor(textarea = "text-input-main", preview = "comment-preview-main") {
     this.textarea = $('#' + textarea);
     this.preview = $('#' + preview);
-    this.title = $('#' + title + 'title'); // not sure why this exists? seems like $E.title is always #title
     this.previewing = false;
     this.previewed = false;
     // this will get deleted in the next few PRs, so collapsing into one line to pass codeclimate
@@ -27,11 +26,10 @@ class Editor {
       }
     });
   }
-  setState(textarea = 'text-input', preview = 'comment-preview-main', title = 'title') {
-    $E.title = $('#' + title + 'title'); // not sure why this exists? seems like $E.title is always #title
-    $E.textarea = $('#' + textarea);
+  setState(commentFormID = "main") {
+    $E.textarea = $("#text-input-" + commentFormID);
     $E.textarea.bind('input propertychange', $E.save);
-    $E.preview = $('#' + preview);
+    $E.preview = $("#comment-preview-" + commentFormID);
   }
   // code seems unused, commenting out for now.
   // is_editing() {
@@ -110,12 +108,10 @@ class Editor {
   // }
   // this function is dedicated to Don Blair https://github.com/donblair
   save() {
-    localStorage.setItem('plots:lastpost',$E.textarea.val())
-    localStorage.setItem('plots:lasttitle',$E.title.val())
+    localStorage.setItem('plots:lastpost',$E.textarea.val());
   }
   recover() {
-    $E.textarea.val(localStorage.getItem('plots:lastpost'))
-    $E.title.val(localStorage.getItem('plots:lasttitle'))
+    $E.textarea.val(localStorage.getItem('plots:lastpost'));
   }
   apply_template(template) {
     if($E.textarea.val() == ""){
