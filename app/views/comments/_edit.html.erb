@@ -13,7 +13,7 @@
     <h4 style="margin-top:0;"><%= title %></h4>
     <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
     <style>
-      #imagebar {width:100%;}
+      .imagebar {width:100%;}
     </style>
     <!-- toolbar needs location & comment_id to make unique element IDs -->
     <%= render :partial => "editor/toolbar", :locals => { :comment_id => comment.id.to_s, :location => :edit } %>
@@ -29,8 +29,15 @@
         placeholder="<%= placeholder %>"
       ><%= !(comment.is_a?Answer) ? comment.comment : comment.content %></textarea>
       <div class="imagebar">
-        <div id="c<%= comment.id%>progress" style="display:none;" class="progress progress-bar-container active pull-right">
-          <div id="c<%= comment.id%>progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%;"></div>
+        <div 
+          id="image-upload-progress-container-edit<%= comment.id %>" style="display: none;" 
+          class="progress progress-bar-container active pull-right"
+        >
+          <div 
+            id="image-upload-progress-bar-edit<%= comment.id %>" 
+            class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%;"
+          >
+          </div>
         </div>
         <p>
         <span id="c<%= comment.id%>uploading" class="uploading uploading-text" style="display:none;">
