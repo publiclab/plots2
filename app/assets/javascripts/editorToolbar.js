@@ -42,7 +42,7 @@ $(function() {
     const { textArea, preview, dSelected } = getEditorParams(e.target);
     // assign dSelected
     if (dSelected) { $D.selected = dSelected; }
-    $E.setState(textArea, preview);
+    $E.setState(e.currentTarget.dataset.formId);
     const action = e.currentTarget.dataset.action // 'bold', 'italic', etc.
     $E[action](); // call the appropriate editor function
   });
@@ -68,7 +68,7 @@ $(function() {
       const { textArea, preview, dSelected } = getEditorParams(e.target);
       e.preventDefault();
       if (dSelected) { $D.selected = dSelected; }
-      $E.setState(textArea, preview);
+      $E.setState(e.currentTarget.dataset.formId);
     });
 
     $(this).fileupload({
