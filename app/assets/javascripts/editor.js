@@ -1,10 +1,11 @@
 class Editor {
-  // default parameters reference the IDs of:
+  // default parameter references the ID of:
   //   1. main comment form in multi-comment wikis, questions, & research notes.
   //   2. the only editor form on /wiki/new and /wiki/edit
-  constructor(textarea = "text-input-main", preview = "comment-preview-main") {
-    this.textarea = $('#' + textarea);
-    this.preview = $('#' + preview);
+  constructor(commentFormID = "main") {
+    this.commentFormID = commentFormID;
+    this.textarea = $("#text-input-" + commentFormID);
+    this.preview = $("#comment-preview-" + commentFormID);
     this.previewing = false;
     this.previewed = false;
     // this will get deleted in the next few PRs, so collapsing into one line to pass codeclimate
@@ -27,6 +28,7 @@ class Editor {
     });
   }
   setState(commentFormID = "main") {
+    this.commentFormID = commentFormID;
     $E.textarea = $("#text-input-" + commentFormID);
     $E.textarea.bind('input propertychange', $E.save);
     $E.preview = $("#comment-preview-" + commentFormID);
@@ -130,7 +132,7 @@ class Editor {
     let dropzone;
     // if the element is part of a multi-comment page,
     // ensure to grab the current element and not the other comment element.
-    previewBtn = $(this.textarea.context).find('.preview-btn');
+    previewBtn = $("#toggle-preview-button-" + this.commentFormID);
     dropzone = $(this.textarea.context).find('.dropzone');
 
     $E.preview[0].innerHTML = marked($E.textarea.val());
