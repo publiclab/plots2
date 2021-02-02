@@ -56,7 +56,7 @@
         <input id="longitude" tabindex="3" name="lon" type="text" class="form-control" placeholder="-71" value="<%= @node.lon %>"><br />
       </label>
      
-      <textarea name="body" tabindex="4" class="form-control" id="text-input" rows="20" cols="60"><% if @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
+      <textarea name="body" tabindex="4" class="form-control" id="text-input-main" rows="20" cols="60"><% if @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
     </div>
 
     <hr style="clear:both;" />

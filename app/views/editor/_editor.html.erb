@@ -2,25 +2,37 @@
 <%= render :partial => "editor/toolbar", :locals => { :location => :main } %>
 
 <div class="form-group dropzone">
-  <textarea aria-label="Wiki Text" name="body" tabindex="2" class="form-control" id="text-input" rows="20" cols="60"><% if @node && @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
-  <div id="imagebar">
-    <div class = "inline_image_drop" style="display:none;">
-      <div id="create_progress" style="display:none;" class="progress float-right">
-        <div id="create_progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%;"></div>
+  <textarea aria-label="Wiki Text" name="body" tabindex="2" class="form-control" id="text-input-main" rows="20" cols="60"><% if @node && @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
+  <div class="imagebar">
+    <div 
+      id="image-upload-progress-container-main" style="display:none;" 
+      class="progress progress-bar-container float-right"
+    >
+      <div 
+        id="image-upload-progress-bar-main" 
+        class="progress-bar progress-bar-striped progress-bar-animated" 
+        style="width: 0%;"
+      >
       </div>
-      <p>
-        <span id="create_uploading" class="uploading" style="display:none;">
-          Uploading...
-        </span>
-      </p>
     </div>
+    <p>
+      <span 
+        id="image-upload-text-main" 
+        class="uploading-text" 
+        style="display:none;">
+        Uploading...
+      </span>
+    </p>
   </div>
 </div>
 
-<div class="well" id="comment-preview-main" style="display:none;"> </div>
+<div class="well" id="preview-main" style="display:none;"></div>
 
 <script>
   jQuery(document).ready(function() {
-    $E.initialize();
+    $E = new Editor(
+      "main", 
+      { "preview": "preview" } // the preview element here is #preview-main, not #comment-preview-main
+    );
   })
 </script>
