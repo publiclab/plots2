@@ -191,11 +191,18 @@
   }
 
   function locationCallback(event){
-    notyNotification('relax', 3000, 'success', 'topCenter', 'Location Saved');
+    if (event.errors.length > 0 && event.errors.includes("Error: tag already exists.")) {
+        notyNotification('relax', 3000, 'error', 'topCenter', 'Location Already Saved.');
+      } else if (event.saved.length > 0) {
+        notyNotification('relax', 3000, 'success', 'topCenter', 'Location Saved');
+      } else {
+        notyNotification('relax', 3000, 'error', 'topCenter', 'Something went wrong. Contact administrator.');
+    }
   }
+
+
 
   function parameterize(input) {
     return input.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
   }
-  
 </script>
