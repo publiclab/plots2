@@ -15,7 +15,7 @@ function addTag(tagname, submitTo, responseEl = "", callback) {
     tagname = tagname.replace(/ /g, '-');
   }
   let data = { name: tagname };
-  sendFormSubmissionAjax(data, submitTo, responseEl, callback)
+  sendFormSubmissionAjax(data, submitTo, responseEl, callback);
 }
 
 function setupTagDelete(el) {
