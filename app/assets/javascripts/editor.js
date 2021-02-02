@@ -78,7 +78,7 @@ class Editor {
   }
   link(uri) {
     uri = prompt('Enter a URL');
-    if (uri === null) { uri = ""; }
+    if (!uri) { uri = ""; }
     $E.wrap('[', '](' + uri + ')');
   }
   image(src) {
