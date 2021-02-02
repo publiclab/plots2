@@ -10,12 +10,12 @@ function sendFormSubmissionAjax(dataObj, submitTo, responseEl = "", callback) {
   }
   $.ajax({
     url: url,
-    data: dataObj,
-    success: (event, success) => {
-      if (responseEl !== "") {
-        $(responseEl).trigger('ajax:success', event);
-      }
-      if (callback) callback(event);
+    data: dataObj
+  })
+  .done((event) =>{
+    if (responseEl !== "") {
+      $(responseEl).trigger('ajax:success', event);
     }
-  });
+    if (callback) callback(event);
+  })
 }
