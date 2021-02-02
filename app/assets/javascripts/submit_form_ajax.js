@@ -11,7 +11,7 @@ function sendFormSubmissionAjax(dataObj, submitTo, responseEl = "", callback) {
     if (responseEl !== "") {
       $(responseEl).trigger('ajax:success', event);
     }
-    if (callback) return callback(event);
+    callback && callback(event);
   })
 }
 
