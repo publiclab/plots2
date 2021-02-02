@@ -176,7 +176,6 @@
     });
 
   })();
-  
   function saveLocation() {
     var tags = 'lat:' + blurredLocation.getLat() + ',lon:' + blurredLocation.getLon() + ',zoom:' + blurredLocation.getZoom();
     if (blurredLocation.isBlurred()) tags = tags + ',' + 'location:blurred'
@@ -184,12 +183,15 @@
       tags = tags + ',' + 'place:' + parameterize($('#placenameDisplay').val());
     }
     <% if params[:url] %>
-      addTag(tags, '<%= params[:url] %>');
+      addTag(tags, '<%= params[:url] %>', "", locationCallback);
     <% else %>
-      addTag(tags);
+      addTag(tags, null, "", locationCallback);
     <% end %>
-    
     <% if params[:reload] %>setTimeout(function() { location.reload(); }, 3000);<% end %>
+  }
+
+  function locationCallback(event){
+    notyNotification('relax', 3000, 'success', 'topCenter', 'Location Saved');
   }
 
   function parameterize(input) {
