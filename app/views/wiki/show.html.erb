@@ -55,11 +55,7 @@
 <% if @node.has_tag('sidebar:none') %>
   <%= render partial: "sidebar/none" %>
 <% else %>
-  <% if @node.has_tag('sidebar:featured') %>
-    <%= render partial: "sidebar/featured" %>
-  <% else %>
-    <%= render partial: "sidebar/related" %>
-  <% end %>
+  <%= render partial: "sidebar/related" %>
 <% end %>
 
 <script>
