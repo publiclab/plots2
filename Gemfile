@@ -10,7 +10,7 @@ gem 'activerecord-session_store'
 gem "authlogic", "4.4.2"
 gem 'authlogic-oid'
 gem "composite_primary_keys"
-gem 'figaro'
+gem 'figaro' # To easily test OAuth providers in the development mode
 gem 'friendly_id'
 gem 'gemoji'
 gem 'geocoder'
@@ -25,7 +25,7 @@ gem 'grape-swagger-ui'
 gem 'http_accept_language'
 gem "i18n-js", ">= 3.0.0.rc11"
 gem 'impressionist'
-gem 'jbuilder', '~> 2.10'
+gem 'jbuilder', '~> 2.11'
 gem 'jquery-rails'
 gem 'mocha', '~> 1.12'
 gem 'mustermann' , '1.1.1'
@@ -49,7 +49,7 @@ gem 'rb-readline'
 gem 'rdiscount', '~> 2.2'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'responders', '~> 3.0'
-gem 'rubocop', '~> 1.8.1', require: false
+gem 'rubocop', '~> 1.9.0', require: false
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
 gem 'sentry-raven'
@@ -115,10 +115,10 @@ group :test, :development do
   gem 'jasmine-jquery-rails'
   gem 'jasmine-rails'
   gem 'json_expressions'
-  gem 'minitest-reporters', '~> 1.4.2'
+  gem 'minitest-reporters', '~> 1.4.3'
   gem 'openssl', '~> 2.2.0'
   gem 'phantomjs'
-  gem 'puma', '~> 5.1'
+  gem 'puma', '~> 5.2'
   gem 'rails-perftest'
   gem 'rake', '~> 13.0.3'
   gem 'rest-client'

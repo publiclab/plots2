@@ -355,8 +355,8 @@ class Tag < ApplicationRecord
     end
   end
 
-  def self.tagged_node_count(tag_name)
-    Node.where(status: 1, type: 'note')
+  def self.tagged_node_count(tag_name, type = 'note')
+    Node.where(status: 1, type: type)
         .includes(:revision, :tag)
         .references(:term_data, :node_revisions)
         .where('term_data.name = ?', tag_name)

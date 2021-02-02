@@ -7,7 +7,7 @@ Rails.application.config.assets.precompile += [
   'comment_expand.js',
   'comment.js',
   'dashboard.js',
-  'dragdrop.js',
+  'editorToolbar.js',
   'locationForm.js',
   'methods.js',
   'notes.js',

@@ -400,7 +400,8 @@ en:
       number_of_subscriptions: "# of people"
       subscriptions: "Your subscriptions"
       sort_by: "Sort By"
-      posts: "posts"
+      post: "post"
+      wiki: "wiki"
       follow: "Follow"
       unfollow: "Unfollow"
       notes:
@@ -673,6 +674,12 @@ en:
       unanswered: "Unanswered"
       liked: "Liked"
       recently_commented: "Recently Commented"
+      recently_commented_questions: Recently commented questions
+      popular_questions: Popular Questions
+      most_viewed_questions: Most viewed questions
+      unanswered_questions: Unanswered Questions
+      liked_questions: Liked Questions
+      most_liked_questions: Most liked questions
     _comment:
       promotion: "Promote this comment to an answer"
   user_sessions:
@@ -759,6 +766,10 @@ en:
       formatting: "Formatting"
       notifications: "Notifications"
       email_notifications: "Author, commenters, and those who've \"liked\" this note will receive email notifications"
+    _comments:
+      comments: "Comments"
+      status: "Status:"
+      no_comments: "No comments yet." 
   sidebar:
     _events:
       post_event: "Post an event"

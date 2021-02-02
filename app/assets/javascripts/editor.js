@@ -1,17 +1,4 @@
 // jQuery (document).ready function:
-$(function() {
-  // this click eventHandler assigns $D.selected to the appropriate comment form
-  // on pages with multiple comments, $D.selected needs to be accurate so that rich-text changes (bold, italic, etc.) go into the right comment form
-  // however, the editor is also used on pages with JUST ONE form, and no other comments, eg. /wiki/new & /wiki/edit, so this code needs to be reusable for that context
-  $('.rich-text-button').on('click', function(e) {
-    const { textArea, preview, dSelected } = getEditorParams(e.target); // defined in editorHelper.js
-    // assign dSelected
-    if (dSelected) { $D.selected = dSelected; }
-    $E.setState(textArea, preview);
-    const action = e.currentTarget.dataset.action // 'bold', 'italic', etc.
-    $E[action](); // call the appropriate editor function
-  });
-});
 
 $E = {
   initialize: function() {
@@ -37,7 +24,7 @@ $E = {
       }
     });
   },
-  setState: function(textarea = 'text-input', preview = 'preview-main', title = 'title') {
+  setState: function(textarea = 'text-input', preview = 'comment-preview-main', title = 'title') {
     $E.title = $('#' + title + 'title'); // not sure why this exists? seems like $E.title is always #title
     $E.textarea = $('#' + textarea);
     $E.textarea.bind('input propertychange', $E.save);

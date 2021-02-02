@@ -1,24 +1,59 @@
-jQuery(function() {
-/*
- * Based on the basic plugin from jQuery file upload: 
- * https://github.com/blueimp/jQuery-File-Upload/wiki/Basic-plugin
- *
- * .dropzone is for inline images for both wiki and research notes, in:
- *   /app/views/editor/_editor.html.erb
- *   /app/views/wiki/edit.html.erb
- * #side-dropzone, is for the main image of research notes, in /app/views/editor/post.html.erb
-*/
+// this script is used in a variety of different contexts including:
+//   pages (wikis, questions, research notes) with multiple comments & editors for each comment
+//   pages with JUST ONE form, and no other comments, eg. /wiki/new & /wiki/edit
+//   /app/views/features/_form.html.erb
+//   /app/views/map/edit.html.erb
+//   the legacy editor: /app/views/editor/_editor.html.erb (if it's still in use live?)
 
-  function progressAll(elem, data) {
-    var progress = parseInt(data.loaded / data.total * 100, 10);
-    $(elem).css(
-      'width',
-      progress + '%'
-    );
+const getEditorParams = (targetDiv) => {
+  const closestCommentFormWrapper = targetDiv.closest('div.comment-form-wrapper'); // this returns null if there is no match
+  let params = {};
+  // there are no .comment-form-wrappers on /wiki/edit or /wiki/new
+  // these pages just have a single text-input form.
+  if (closestCommentFormWrapper) {
+    params['dSelected'] = $(closestCommentFormWrapper);
+    // assign the ID of the textarea within the closest comment-form-wrapper
+    params['textarea'] = closestCommentFormWrapper.querySelector('textarea').id;
+    params['preview'] = closestCommentFormWrapper.querySelector('.comment-preview').id;
+  } else {
+    // default to #text-input
+    // #text-input ID should be unique, and the only comment form on /wiki/new & /wiki/edit
+    params['textarea'] = 'text-input';
+    // #preview-main should be unique as well
+    params['preview'] = 'comment-preview-main';
   }
+  return params;
+};
 
-  // these functions are also used on /wiki/edit and /wiki/new pages
+const progressAll = (elem, data) => {
+  var progress = parseInt(data.loaded / data.total * 100, 10);
+  $(elem).css(
+    'width',
+    progress + '%'
+  );
+}
+
+// attach eventListeners on document.load for toolbar rich-text buttons & image upload .dropzones
+$(function() {
+  // for rich-text buttons (bold, italic, header, and link):
+  // click eventHandler that assigns $D.selected to the appropriate comment form
+  // on pages with multiple comments, $D.selected needs to be accurate so that rich-text changes (bold, italic, etc.) go into the right comment form
+  $('.rich-text-button').on('click', function(e) {
+    const { textArea, preview, dSelected } = getEditorParams(e.target);
+    // assign dSelected
+    if (dSelected) { $D.selected = dSelected; }
+    $E.setState(textArea, preview);
+    const action = e.currentTarget.dataset.action // 'bold', 'italic', etc.
+    $E[action](); // call the appropriate editor function
+  });
+
+  // image upload event listeners for both:
+  //   1. click-to-upload
+  //   2. drag & drop
+  // based on the basic plugin from jQuery file upload: 
+  // https://github.com/blueimp/jQuery-File-Upload/wiki/Basic-plugin
   $('.dropzone').each(function() {
+    // style changes for dragging an image over a dropzone
     $(this).on('dragenter',function(e) {
       e.preventDefault();
       $(e.currentTarget).addClass('hover');
@@ -28,8 +63,9 @@ jQuery(function() {
       $(e.currentTarget).removeClass('hover');
     });
 
+    // runs on drag & drop
     $(this).on('drop',function(e) {
-      const { textArea, preview, dSelected } = getEditorParams(e.target); // defined in editorHelper.js
+      const { textArea, preview, dSelected } = getEditorParams(e.target);
       e.preventDefault();
       if (dSelected) { $D.selected = dSelected; }
       $E.setState(textArea, preview);
@@ -44,11 +80,11 @@ jQuery(function() {
           'uid':$D.uid,
           'nid':$D.nid
         },
-        start: function(e) {
-          $(e.target).removeClass('hover');
-          // 'start' function runs:
+        // 'start' function runs:
           //   1. when user drag-and-drops image
           //   2. when user clicks on upload button.
+        start: function(e) {
+          $(e.target).removeClass('hover');
           // for click-upload-button scenarios, it's important to set $D.selected here, because the 'drop' listener above doesn't run in those:
           $D.selected = $(e.target).closest('div.comment-form-wrapper');
           // the above line is redundant in drag & drop, because it's assigned in 'drop' listener too.
@@ -88,11 +124,9 @@ jQuery(function() {
           //    $('<p/>').text(file.name).appendTo(document.body);
           //});
         },
-
-        // see callbacks at https://github.com/blueimp/jQuery-File-Upload/wiki/Options
-        // fileuploadfail: function(e,data) {
-
-        // },
+        fileuploadfail: function(e, data) {
+          console.log(e);
+        },
         progressall: function (e, data) {
           const closestProgressBar = $($D.selected).closest('div.comment-form-wrapper').find('.progress-bar').eq(0);
           return progressAll(closestProgressBar, data);
@@ -100,6 +134,7 @@ jQuery(function() {
     });
   });
 
+  // #side-dropzone, is for the main image of research notes, in /app/views/editor/post.html.erb
   $('#side-dropzone').on('dragover',function(e) {
     e.preventDefault();
     $('#side-dropzone').addClass('hover');
@@ -133,13 +168,12 @@ jQuery(function() {
       $('.side-uploading').hide();
       $('#leadImage')[0].src = data.result.url;
       $('#leadImage').show();
-    // here append the image id to the note as the lead image
+      // here append the image id to the note as the lead image
       $('#main_image').val(data.result.id);
       $("#image_revision").append('<option selected="selected" id="'+data.result.id+'" value="'+data.result.url+'">Temp Image '+data.result.id+'</option>');
     },
-
-    // see callbacks at https://github.com/blueimp/jQuery-File-Upload/wiki/Options
-    fileuploadfail: function(e,data) {
+    fileuploadfail: function(e, data) {
+      console.log(e);
     },
     progressall: function (e, data) {
       return progressAll('#side-progress .progress-bar', data);

@@ -1,4 +1,4 @@
-<div id="c<%= comment.cid %>" class="comment" style="margin-top: 20px;padding-bottom: 9px; word-wrap: break-word">
+<div id="c<%= comment.cid %>" class="comment" style="margin-top: 20px; margin-bottom: 20px; padding-bottom: 9px; word-wrap: break-word;">
 
   <div style="margin-bottom: 0;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-bottom: 0;" class="navbar navbar-light bg-light">
     <% if comment.status == 4 %>
@@ -53,12 +53,21 @@
         <i data-toggle="tooltip" title="This comment was posted by email." class="fa fa-envelope"></i>
       <% end %>
       <% if current_user && comment.uid == current_user.uid %>
-        <a aria-label="Edit comment" class="btn btn-outline-secondary btn-sm" id="edit-comment-btn" href="javascript:void(0)" onClick="$('#c<%= comment.cid %>edit').toggle();$('#c<%= comment.cid %>show').toggle();setInit(<%= comment.cid %>);">
+        <a 
+          aria-label="Edit comment" 
+          class="btn btn-outline-secondary btn-sm edit-comment-btn" 
+          href="javascript:void(0)" onClick="
+            $('#edit-comment-form-wrapper-<%= comment.cid %>').toggle();
+            $('#<%= comment.cid %>-like-emojis').toggle();                               
+            $('#comment-form-edit-<%= comment.cid %>').toggle();
+            $('#c<%= comment.cid %>show').toggle();
+          "
+        >
           <i class="fa fa-pencil"></i>
         </a>
       <% end %>
       <% if current_user &. can_moderate? %>
-        <a aria-label="Mark as spam" rel="tooltip" title="Mark as spam: comment will disappear and user will be banned" class="btn btn-sm btn-outline-secondary btn-flag-spam-<%= comment.id %>" data-confirm="Are you sure? The user will no longer be able to log in or publish, and their content will be hidden except comments." href="/admin/mark_comment_spam/<%= comment.id %>">
+        <a aria-label="Mark Spam" rel="tooltip" title="Mark Spam: Remove Comment and Ban User" class="btn btn-sm btn-outline-secondary btn-flag-spam-<%= comment.id %>" data-confirm="Are you sure? The user will no longer be able to log in or publish, and their content will be hidden except comments." href="/admin/mark_comment_spam/<%= comment.id %>">
           <i class="fa fa-ban"></i>
         </a>
       <% else %>
@@ -67,17 +76,16 @@
         </a>
       <% end %>
       <% if logged_in_as(['admin', 'moderator']) || (current_user && (comment.uid == current_user.uid || comment.parent.uid == current_user.uid)) %>
-        <a aria-label="Delete comment" rel="tooltip" title="Delete comment" class="btn btn-outline-secondary btn-sm" id="c<%= comment.cid %>delete-btn">
+        <a aria-label="Delete Comment" rel="tooltip" title="Delete Comment" class="btn btn-outline-secondary btn-sm" id="c<%= comment.cid %>delete-btn">
           <i class='icon fa fa-trash'></i>
         </a>
       <% end %>
       <% if current_user %>
-        <button style="border: 1px solid;padding: 4px 6px;" class="btn btn-outline-secondary dropdown" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class='icon fa fa-smile-o'></i>
-          <sup style="font-size: 12px;">+</sup>
-        </button>    
+        <a aria-label="Leave an Emoji Reaction" rel="tooltip" title="Leave an Emoji Reaction" class="btn btn-outline-secondary btn-sm dropdown" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class='far fa-heart'></i>
+        </a>
         <div id="emoji-dropdown" style="background:#f8f8f8;padding:0;" class=" dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-          <p id="emoji-title" style="text-align: center;color: #586069; font-size:14px;margin:6px;">Pick your reaction</p>
+          <p id="emoji-title" style="text-align: center;color: #586069; font-size:14px;margin:6px;">Pick Your Reaction</p>
           <div id= "dropdown-divider" style="display: block;height: 0;border-top: 1px solid #e1e4e8;">
           </div>         
           <div id="emoji-list" class="emoji-container">              
@@ -157,7 +165,7 @@
         <%= render :partial => "notes/comment", :locals => {:comment => replied_comment} %>
       <% end %>
 
-      <p style="color: #006dcc;cursor: pointer;margin-top: 20px;" id="comment-<%= comment.cid %>-reply-toggle">Reply to this comment...</p>
+      <p style="color: #006dcc; cursor: pointer; user-select: none;" id="comment-<%= comment.cid %>-reply-toggle">Reply to this comment...</p>
       <div id="comment-<%= comment.cid %>-reply" style="margin-top: 30px;display: none;">
         <div id="comment-<%= comment.cid %>-reply-section">
           <% if current_user %>
@@ -182,9 +190,9 @@
 
   </div>
   <% str = "#{comment.id}-like-emojis" %>
-  <div id="<%= str %>" class="navbar-text float-right" style="margin: 0;width: 100%;display: flex;border: 1px solid #e7e7e7;border-top: 0;">
-    <% emoji_names, emoji_image_map = emoji_info %>
-    <% user_reactions_map = comment.user_reactions_map %>
+  <% emoji_names, emoji_image_map = emoji_info %>
+  <% user_reactions_map = comment.user_reactions_map %>
+  <div id="<%= str %>" class="float-right comment-reactions-container" style="margin: 0; width: 100%; display: flex; border: 1px solid #e7e7e7; border-top: 0;">
     <% emoji_names.each do |e| %>
       <% capitalized_emoji_name = e.split("-").map(&:capitalize).join %>
       <% str = "#{comment.id}-emoji-button-#{e}" %>
@@ -192,7 +200,7 @@
       <% display = user_reactions_exist ? "display: flex;" : "display: none;" %>
       <% title = user_reactions_exist ? user_reactions_map[capitalized_emoji_name][:users_string] : "" %>
       <% likes_num = user_reactions_exist ? user_reactions_map[capitalized_emoji_name][:likes_num] : "" %>
-      <button aria-label="Reaction" id="<%= str %>" style="border: 0;background: #f1f8ff;border-radius: 0;border-right: 1px solid #e7e7e7;<%= display %>" type="button" class="btn btn-outline-secondary btn-sm" data-toggle="tooltip" data-placement="bottom" title="<%= title %>">
+      <button aria-label="Reaction" id="<%= str %>" style="border: 0; border-radius: 0px; background: #f1f8ff; border-right: 1px solid #e7e7e7; padding-top: 8px; padding-bottom: 8px; <%= display %>" type="button" class="btn btn-sm" data-toggle="tooltip" data-placement="bottom" title="<%= title %>">
         <img alt="<%= str %>" height="20" width="20" src="<%= emoji_image_map[e] %>">
         <div style="margin-left: 6px;font-size: 14px;"><%= likes_num %></div>
       </button>

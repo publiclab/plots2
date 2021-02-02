@@ -2,6 +2,7 @@
 <%= javascript_include_tag('notes') %>
 <%= javascript_include_tag('textbox_expand') %>
 <script> var comments_length = <%= @node.comments.length %>; $(function(){
+  $E.initialize();
   $("img").lazyload();
 });</script>
 <%= javascript_include_tag('question') %>
@@ -55,6 +56,8 @@
   <% comments = @node.comments_viewable_by(current_user) %>
   <h3><span id="comment-count"><%= comments.size %></span> Comments</h3>
     <div id="comments-list">
+    <%= javascript_include_tag "editorToolbar" %>
+    <%= javascript_include_tag "comment" %>
       <% comments.includes([:node, :replied_comments]).order("timestamp ASC").each do |comment| %>
         <% if comment.reply_to.nil? %>
           <%= render :partial => "notes/comment", :locals => {:comment => comment} %>

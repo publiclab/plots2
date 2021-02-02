@@ -1,4 +1,3 @@
-<%# TODO: Topics to display if the user is new and not yet subscribed to other posts %>
 <div class="container dashboard">
   <div class="row">
     <%# Topics %>
@@ -17,7 +16,7 @@
   <%# Additional Topics %>
   <div class="other-topics">
     <h4>
-      <i class="form-grey d-none d-lg-inline"><%= translation('dashboard_v2.sidebar.interest_topics', :url => '/subscriptions')%></i>
+      <i class="form-grey"><%= translation('dashboard_v2.sidebar.interest_topics', :url => '/subscriptions')%></i>
     </h4>
     <%# Featured topics %>
     <small><a href="/tags" class="form-grey"><%= translation('dashboard_v2.sidebar.featured_topics') %>:</a></small>
@@ -85,12 +84,18 @@
     color: #505050;
   }
 
-  /* Shorten line in Ipad Pro*/
+  /* Small devices and tablets*/
   @media (max-width: 1366px){
+    .other-topics h4 i {
+      margin-left: 21px;
+      font-size: 10px;
+    }
+
+    .other-topics h4 i:before,
     .other-topics h4 i:after {
-      left: 100%;
-      margin-left: 15px;
-      width: 112px;
+      width: 12px;
+      margin-right: 3px;
+      margin-left: 3px;
     }
   }
 

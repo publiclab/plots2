@@ -2,7 +2,8 @@
   <div id="comments" class="col-lg-10 comments">
     <% comments = @node.comments_viewable_by(current_user) %>
     <h3><span id="comment-count"><%= comments.size %></span> <%= translation('notes._comments.comments') %></h3>
-
+    <%= javascript_include_tag "editorToolbar" %>
+    <%= javascript_include_tag "comment" %>
     <div style="margin-bottom: 50px;" id="comments-list">
       <% comments.includes([:replied_comments, :node]).order('timestamp ASC').each do |comment| %>
         <% if comment.cid == @node.comments&.first&.cid %><a id="last" name="last"></a><% end %>
