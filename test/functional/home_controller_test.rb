@@ -142,7 +142,7 @@ class HomeControllerTest < ActionController::TestCase
     assert_includes response.body, alert
   end
 
-  test 'ensure trending tags returned when user has not subscribed to any topics' do
+  test 'trending tags are returned when a user has not subscribed to any topics' do
     current_user = users(:user_without_tag_subscriptions)
     expected_tag = Tag.trending.pluck(:name).sample
     UserSession.create(current_user)
