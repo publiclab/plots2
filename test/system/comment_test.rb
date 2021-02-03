@@ -443,7 +443,7 @@ class CommentTest < ApplicationSystemTestCase
       comment_id = page.find('p', text: comment_text).find(:xpath, '..')[:id]
       # regex to strip the ID number out of string. ID format is comment-body-4231
       comment_id_num = /comment-body-(\d+)/.match(comment_id)[1]
-      comment_dropzone_selector = '#c' + comment_id_num + 'div'
+      comment_dropzone_selector = '#comment-form-body-edit-' + comment_id_num
       # open the edit comment form
       page.find(".edit-comment-btn").click
       # drop into the edit comment form
