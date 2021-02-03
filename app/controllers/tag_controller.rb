@@ -449,7 +449,6 @@ class TagController < ApplicationController
   end
 
   def contributors
-    # set_sidebar :tags, [params[:id]], note_count: 20
     @tagnames = [params[:id]]
     @tag = Tag.find_by(name: params[:id])
     @note_count = Tag.tagged_node_count(params[:id]) || 0

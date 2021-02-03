@@ -1,4 +1,3 @@
-# def set_sidebar(type = :generic, data = :all, args = {})
 # def prompt_login(message = "You must be logged in to do that.")
 # def current_user_session
 # def current_user
