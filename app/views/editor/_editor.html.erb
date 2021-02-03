@@ -1,7 +1,7 @@
 <%# toolbar needs location & comment_id to make unique element IDs%>
 <%= render :partial => "editor/toolbar", :locals => { :location => :main } %>
 
-<div class="form-group dropzone" data-form-id="main">
+<div class="form-group dropzone dropzone-large" data-form-id="main">
   <textarea aria-label="Wiki Text" name="body" tabindex="2" class="form-control" id="text-input-main" rows="20" cols="60"><% if @node && @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
   <div class="imagebar">
     <div 
