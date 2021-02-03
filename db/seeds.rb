@@ -83,4 +83,6 @@ end
 # create a bunch of random tags
 tagnames = ['one', 'two', 'three', 'four', 'five', 'six']
 80.times { try { Node.find(rand(Node.count-2)+1).add_tag(tagnames[rand(tagnames.length-1)],User.first) } }
-
+# Create a footer message
+footer_feature = Node.create! "type"=>"feature", "title"=>"footer-notice", "uid"=>admin.id
+Revision.create! "nid"=>footer_feature.nid, "uid"=>admin.uid, "title"=>"footer-notice", "body"=>"The footer is empty during local development", "teaser"=>"", "log"=>"", "format"=>1
