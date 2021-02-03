@@ -109,7 +109,7 @@ class PostTest < ApplicationSystemTestCase
     visit '/wiki/new'
 
     # Upload the image
-    drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", ".dropzone")
+    drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", ".dropzone-large")
 
     # Wait for image upload to finish
     wait_for_ajax
@@ -119,7 +119,7 @@ class PostTest < ApplicationSystemTestCase
     find('.preview-btn').click()
 
     # Make sure that image has been uploaded
-    page.assert_selector('#comment-preview-main img', count: 1)
+    page.assert_selector('#preview-main img', count: 1)
   end
 
   test "changing and reverting versions works correctly for wiki" do
@@ -129,7 +129,7 @@ class PostTest < ApplicationSystemTestCase
     old_wiki_content = find("#content p").text
 
     find("a#edit-btn").click()
-    find("#text-input").set("wiki text")
+    find("#text-input-main").set("wiki text")
     find("a#publish").click()
 
     # view wiki
@@ -156,7 +156,7 @@ class PostTest < ApplicationSystemTestCase
     visit wiki.path
 
     find("a#edit-btn").click()
-    find("#text-input").native.send_keys(:enter, :enter, "wiki text")
+    find("#text-input-main").native.send_keys(:enter, :enter, "wiki text")
     find("a#publish").click()
 
     find("a[data-original-title='View all revisions for this page.']").click()

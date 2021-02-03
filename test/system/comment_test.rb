@@ -72,7 +72,9 @@ class CommentTest < ApplicationSystemTestCase
       find("p", text: comment_text)
       # replying to the comment
       first("p", text: "Reply to this comment...").click()
-      fill_in("body", with: comment_response_text)
+      page.find('[id^=text-input-reply-]')
+        .click
+        .fill_in with: comment_response_text
       # preview reply
       first(".preview-btn").click
       find("p", text: comment_response_text)
@@ -249,7 +251,7 @@ class CommentTest < ApplicationSystemTestCase
       # .dropzone is hidden, so reveal it:
       Capybara.ignore_hidden_elements = false
       # drag & drop the image. drop_in_dropzone simulates 'drop' event,  see application_system_test_case.rb
-      drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", '#comments-list + div .dropzone') # this CSS selects .dropzones that belong to sibling element immediately following #comments-list. technically, there are two .dropzones in the main comment form.
+      drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", '#comments-list + div .dropzone-large') # this CSS selects .dropzones that belong to sibling element immediately following #comments-list. technically, there are two .dropzones in the main comment form.
       Capybara.ignore_hidden_elements = true
       assert_selector('.progress')
       assert_selector('.uploading-text')
@@ -273,8 +275,8 @@ class CommentTest < ApplicationSystemTestCase
       # find edit comment's fileinput:
       page.find('#fileinput-button-edit-' + comment_id_num).set("#{Rails.root.to_s}/public/images/pl.png")
       Capybara.ignore_hidden_elements = true
-      assert_selector('#c' + comment_id_num + 'progress')
-      assert_selector('#c' + comment_id_num + 'uploading')
+      assert_selector('#image-upload-progress-container-edit-' + comment_id_num)
+      assert_selector('#image-upload-text-edit-' + comment_id_num)
     end
   end
 
@@ -311,12 +313,12 @@ class CommentTest < ApplicationSystemTestCase
           title_text = 'pokemon'
           body_text = 'Gotta catch em all!'
           fill_in('title', with: title_text)
-          fill_in('text-input', with: body_text)
+          fill_in('text-input-main', with: body_text)
           find('#publish').click()
           visit "/wiki/#{title_text}/comments"
       end
       assert_selector('h1', text: title_text)
-      page.find("textarea#text-input")
+      page.find("textarea#text-input-main")
         .click
         .fill_in with: comment_text
       # preview comment
@@ -384,13 +386,13 @@ class CommentTest < ApplicationSystemTestCase
       Capybara.ignore_hidden_elements = false
       visit get_path(page_type, nodes(node_name).path)
       find("p", text: "Reply to this comment...").click()
-      reply_preview_button = page.all('.preview-btn')[0]
       # Upload the image
-      drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", ".dropzone")
+      drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", ".dropzone-large")
       # Wait for image upload to finish
       wait_for_ajax
       Capybara.ignore_hidden_elements = true
       # Toggle preview
+      reply_preview_button = page.all('.preview-btn')[0]
       reply_preview_button.click()
       # Make sure that image has been uploaded
       page.assert_selector('.comment-preview img', count: 1)
@@ -434,7 +436,7 @@ class CommentTest < ApplicationSystemTestCase
       # .dropzone is hidden, so reveal it for Capybara's finders:
       Capybara.ignore_hidden_elements = false
       # drag & drop the image. drop_in_dropzone simulates 'drop' event, see application_system_test_case.rb
-      drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", '#comments-list + div .dropzone') # this CSS selects .dropzones that belong to sibling element immediately following #comments-list. technically, there are two .dropzones in the main comment form.
+      drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", '#comments-list + div .dropzone-large') # this CSS selects .dropzones that belong to sibling element immediately following #comments-list. technically, there are two .dropzones in the main comment form.
       Capybara.ignore_hidden_elements = true
       wait_for_ajax
       # we need the ID of parent div that contains <p>comment_text</p>:
@@ -544,7 +546,7 @@ class CommentTest < ApplicationSystemTestCase
       visit get_path(page_type, nodes(node_name).path)
       main_comment_form =  page.find('h4', text: /Post comment|Post Comment/).find(:xpath, '..') # title text on wikis is 'Post comment'
       main_comment_form.find("[data-original-title='Bold']").click
-      text_input_value = main_comment_form.find('#text-input').value
+      text_input_value = main_comment_form.find('#text-input-main').value
       assert_equal(text_input_value, '****')
     end
 

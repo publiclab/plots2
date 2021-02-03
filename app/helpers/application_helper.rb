@@ -66,19 +66,7 @@ module ApplicationHelper
   end
 
   # used in views/comments/_form.html.erb
-  def get_comment_form_id(location, reply_to)
-    case location
-    when :main
-      'main'
-    when :reply
-      'reply-' + reply_to.to_s
-    when :responses
-      'responses'
-    end
-  end
-
-  # used in views/editor/_toolbar.html.erb
-  def get_toolbar_element_id(location, reply_to, comment_id)
+  def get_comment_form_id(location, reply_to, comment_id)
     case location
     when :main
       'main'
