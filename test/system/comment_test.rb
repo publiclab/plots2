@@ -80,16 +80,60 @@ class CommentTest < ApplicationSystemTestCase
       find("p", text: comment_response_text)
     end
 
-    test "#{page_type_string}: comment preview button works" do
+    test "#{page_type_string}: toggle preview buttons work" do
+      nodes(node_name).add_comment({
+        uid: 2,
+        # **bold**
+        body: "**" + comment_text + "**"
+      })
       visit get_path(page_type, nodes(node_name).path)
-      find("p", text: "Reply to this comment...").click()
-      reply_preview_button = page.all('.preview-btn')[0]
-      comment_preview_button = page.all('.preview-btn')[1]
-      # Toggle preview
-      reply_preview_button.click()
-      # Make sure that buttons are not binded with each other
-      assert_equal( reply_preview_button.text, "Hide Preview" )
-      assert_equal( comment_preview_button.text, "Preview" )
+
+      # open up reply comment form
+      page.all('p', text: 'Reply to this comment...')[0].click
+      # get the ID of reply form
+      reply_form = page.find('[id^=comment-form-reply-]')
+      reply_form_id = reply_form[:id]
+      reply_id_num = /comment-form-reply-(\d+)/.match(reply_form_id)[1]
+      page.find('#text-input-reply-' + reply_id_num)
+        .click
+        .fill_in with: "**" + comment_text + "**"
+
+      # open up edit comment form
+      page.find(".edit-comment-btn").click
+      # get the ID of edit form
+      edit_form = page.find('[id^=comment-form-edit-]')
+      edit_form_id = edit_form[:id]
+      edit_id_num = /comment-form-edit-(\d+)/.match(edit_form_id)[1]
+      page.find('#text-input-edit-' + edit_id_num)
+        .click
+        .fill_in with: "**" + comment_text + "**"
+
+      # fill out main comment form
+      main_form = page.find('#text-input-main')
+      main_form
+        .click
+        .fill_in with: "**" + comment_text + "**"
+
+      # click on toggle preview buttons for main, edit, and reply
+      replyPreviewButton = page.find('#toggle-preview-button-reply-' + reply_id_num)
+      editPreviewButton = page.find('#toggle-preview-button-edit-' + edit_id_num)
+      mainPreviewButton = page.find('#toggle-preview-button-main')
+      replyPreviewButton.click
+      editPreviewButton.click
+      mainPreviewButton.click
+
+      # assert preview element appears
+      assert_selector('#comment-preview-edit-' + edit_id_num)
+      assert_selector('#comment-preview-reply-' + reply_id_num)
+      assert_selector('#comment-preview-main')
+      # assert that button text says Hide Preview
+      assert_equal(replyPreviewButton.text, 'Hide Preview')
+      assert_equal(editPreviewButton.text, 'Hide Preview')
+      assert_equal(mainPreviewButton.text, 'Hide Preview')
+      # assert text is woot woot, not **woot woot**
+      reply_form.has_no_text? '**' + comment_text + '**'
+      edit_form.has_no_text? '**' + comment_text + '**'
+      main_form.has_no_text? '**' + comment_text + '**'
     end
 
     test "#{page_type_string}: ctrl/cmd + enter comment publishing keyboard shortcut" do
