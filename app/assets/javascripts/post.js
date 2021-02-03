@@ -2,7 +2,7 @@ jQuery(document).ready(function() {
 
   $('.datepicker').datepicker()
   
-  $E.initialize()
+  $E = new Editor();
 
   $('#side-fileinput').bind('focus',function(e) { $('#side-dropzone').css('border-color','#4ac') })
   $('#side-fileinput').bind('focusout',function(e) { $('#side-dropzone').css('border-color','#ccc') })

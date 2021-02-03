@@ -63,14 +63,18 @@
 <% end %>
 
 <script>
-(function(){
-  $("img").lazyload();
+  $(function() {
+    $("img").lazyload();
 
-  <% if @fancy %>
-    $('#content img').addClass('img-rounded');
-  <% end %>
+    <% if @fancy %>
+      $('#content img').addClass('img-rounded');
+    <% end %>
 
-  setupWiki(<%= @node.id %>, "<%= @node.title %>", <%= params[:raw] == 'true' %>, <%= current_user.nil? != true %>);
+    <% if controller.action_name == 'comments' %>
+      // create an instance of the editor
+      $E = new Editor();
+    <% end %>
 
-})()
+    setupWiki(<%= @node.id %>, "<%= @node.title %>", <%= params[:raw] == 'true' %>, <%= current_user.nil? != true %>);
+  });
 </script>
