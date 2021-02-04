@@ -57,8 +57,7 @@ class Editor {
     const selectionEnd = this.textAreaElement[0].selectionEnd;
     const selection = fallback || this.textAreaValue.substring(selectionStart, selectionEnd); // fallback if nothing has been selected, and we're simply dealing with an insertion point
 
-    let newText = a + selection + b; // ie. ** + selection + ** (wrapping selection in bold)
-    if (newlineDesired) { newText = newText + "\n\n"; }
+    let newText = newlineDesired ?  a + selection + b + "\n\n" : a + selection + b; // ie. ** + selection + ** (wrapping selection in bold)
     const selectionStartsMidText = this.textAreaElement[0].selectionStart > 0;
     if (newlineDesired && selectionStartsMidText) { newText = "\n" + newText; }
 
