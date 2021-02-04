@@ -251,7 +251,7 @@ class CommentTest < ApplicationSystemTestCase
       # .dropzone is hidden, so reveal it:
       Capybara.ignore_hidden_elements = false
       # drag & drop the image. drop_in_dropzone simulates 'drop' event,  see application_system_test_case.rb
-      drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", '#comments-list + div .dropzone') # this CSS selects .dropzones that belong to sibling element immediately following #comments-list. technically, there are two .dropzones in the main comment form.
+      drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", '#comments-list + div .dropzone-large') # this CSS selects .dropzones that belong to sibling element immediately following #comments-list. technically, there are two .dropzones in the main comment form.
       Capybara.ignore_hidden_elements = true
       assert_selector('.progress')
       assert_selector('.uploading-text')
@@ -386,13 +386,13 @@ class CommentTest < ApplicationSystemTestCase
       Capybara.ignore_hidden_elements = false
       visit get_path(page_type, nodes(node_name).path)
       find("p", text: "Reply to this comment...").click()
-      reply_preview_button = page.all('.preview-btn')[0]
       # Upload the image
-      drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", ".dropzone")
+      drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", ".dropzone-large")
       # Wait for image upload to finish
       wait_for_ajax
       Capybara.ignore_hidden_elements = true
       # Toggle preview
+      reply_preview_button = page.all('.preview-btn')[0]
       reply_preview_button.click()
       # Make sure that image has been uploaded
       page.assert_selector('.comment-preview img', count: 1)
@@ -436,7 +436,7 @@ class CommentTest < ApplicationSystemTestCase
       # .dropzone is hidden, so reveal it for Capybara's finders:
       Capybara.ignore_hidden_elements = false
       # drag & drop the image. drop_in_dropzone simulates 'drop' event, see application_system_test_case.rb
-      drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", '#comments-list + div .dropzone') # this CSS selects .dropzones that belong to sibling element immediately following #comments-list. technically, there are two .dropzones in the main comment form.
+      drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", '#comments-list + div .dropzone-large') # this CSS selects .dropzones that belong to sibling element immediately following #comments-list. technically, there are two .dropzones in the main comment form.
       Capybara.ignore_hidden_elements = true
       wait_for_ajax
       # we need the ID of parent div that contains <p>comment_text</p>:

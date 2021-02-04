@@ -44,10 +44,17 @@ $(function() {
       $E.setState(e.currentTarget.dataset.formId); // string that is: "main", "reply-123", "edit-123" etc.
     });
 
+    // disable drag-and-drop image upload on small dropzones
+    // small dropzones are the image upload button in the comment form toolbar
+    let dropZone = $(this);
+    if ($(this).hasClass("dropzone-small")) {
+      dropZone = null;
+    }
+
     $(this).fileupload({
       url: "/images",
         paramName: "image[photo]",
-        dropZone: $(this),
+        dropZone: dropZone,
         dataType: 'json',
         formData: {
           'uid':$D.uid,
