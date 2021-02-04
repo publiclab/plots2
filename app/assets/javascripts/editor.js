@@ -128,7 +128,6 @@ class Editor {
     $('#' + id)[0].innerHTML = marked(text)
   }
   toggle_preview() {
-    $('#'+id)[0].innerHTML = marked(text)
     // if the element is part of a multi-comment page,
     // ensure to grab the current element and not the other comment element.
     const previewBtn = $("#toggle-preview-button-" + this.commentFormID);
