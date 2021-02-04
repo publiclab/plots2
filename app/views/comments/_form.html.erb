@@ -61,14 +61,26 @@
         placeholder="<%= placeholder %>"><%= body %>
       </textarea>
       <div class="imagebar">
-        <div style="display:none;" class="progress progress-bar-container float-right">
-          <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%;"></div>
+        <div 
+          id="image-upload-progress-container-<%= comment_form_id %>"
+          style="display:none;" 
+          class="progress progress-bar-container float-right"
+        >
+          <div 
+            id="image-upload-progress-bar-<%= comment_form_id %>"
+            class="progress-bar progress-bar-striped progress-bar-animated" 
+            style="width: 0%;">
+          </div>
         </div>
         <p>
-          <span class="uploading-text" style="display:none;">
+          <span 
+            id="image-upload-text-<%= comment_form_id %>" 
+            class="uploading-text" 
+            style="display:none;"
+          >
             <%= translation('comments._form.uploading') %>
           </span>
-          <span class="prompt choose-one-prompt-text">
+          <span id="dropzone-choose-one-<%= comment_form_id %>" class="prompt choose-one-prompt-text dropzone">
             <span style="padding-right:4px;float:left;" class="d-none d-md-inline">
               <%= raw translation('comments._form.drag_and_drop') %>
             </span>
