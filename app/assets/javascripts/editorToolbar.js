@@ -1,29 +1,9 @@
-// this script is used in a variety of different contexts including:
+// this script is used wherever the legacy editor is used.
 //   pages (wikis, questions, research notes) with multiple comments & editors for each comment
 //   pages with JUST ONE form, and no other comments, eg. /wiki/new & /wiki/edit
 //   /app/views/features/_form.html.erb
 //   /app/views/map/edit.html.erb
-//   the legacy editor: /app/views/editor/_editor.html.erb (if it's still in use live?)
-
-const getEditorParams = (targetDiv) => {
-  const closestCommentFormWrapper = targetDiv.closest('div.comment-form-wrapper'); // this returns null if there is no match
-  let params = {};
-  // there are no .comment-form-wrappers on /wiki/edit or /wiki/new
-  // these pages just have a single text-input form.
-  if (closestCommentFormWrapper) {
-    params['dSelected'] = $(closestCommentFormWrapper);
-    // assign the ID of the textarea within the closest comment-form-wrapper
-    params['textarea'] = closestCommentFormWrapper.querySelector('textarea').id;
-    params['preview'] = closestCommentFormWrapper.querySelector('.comment-preview').id;
-  } else {
-    // default to #text-input
-    // #text-input ID should be unique, and the only comment form on /wiki/new & /wiki/edit
-    params['textarea'] = 'text-input';
-    // #preview-main should be unique as well
-    params['preview'] = 'comment-preview-main';
-  }
-  return params;
-};
+//   and wherever /app/views/editor/editor.html.erb is still used in production
 
 const progressAll = (elem, data) => {
   var progress = parseInt(data.loaded / data.total * 100, 10);
@@ -36,13 +16,8 @@ const progressAll = (elem, data) => {
 // attach eventListeners on document.load for toolbar rich-text buttons & image upload .dropzones
 $(function() {
   // for rich-text buttons (bold, italic, header, and link):
-  // click eventHandler that assigns $D.selected to the appropriate comment form
-  // on pages with multiple comments, $D.selected needs to be accurate so that rich-text changes (bold, italic, etc.) go into the right comment form
   $('.rich-text-button').on('click', function(e) {
-    const { textArea, preview, dSelected } = getEditorParams(e.target);
-    // assign dSelected
-    if (dSelected) { $D.selected = dSelected; }
-    $E.setState(textArea, preview);
+    $E.setState(e.currentTarget.dataset.formId); // string that is: "main", "reply-123", "edit-123" etc.
     const action = e.currentTarget.dataset.action // 'bold', 'italic', etc.
     $E[action](); // call the appropriate editor function
   });
@@ -65,10 +40,8 @@ $(function() {
 
     // runs on drag & drop
     $(this).on('drop',function(e) {
-      const { textArea, preview, dSelected } = getEditorParams(e.target);
       e.preventDefault();
-      if (dSelected) { $D.selected = dSelected; }
-      $E.setState(textArea, preview);
+      $E.setState(e.currentTarget.dataset.formId); // string that is: "main", "reply-123", "edit-123" etc.
     });
 
     $(this).fileupload({
@@ -84,22 +57,18 @@ $(function() {
           //   1. when user drag-and-drops image
           //   2. when user clicks on upload button.
         start: function(e) {
+          $E.setState(e.target.dataset.formId); // string that is: "main", "reply-123", "edit-123" etc.
           $(e.target).removeClass('hover');
-          // for click-upload-button scenarios, it's important to set $D.selected here, because the 'drop' listener above doesn't run in those:
-          $D.selected = $(e.target).closest('div.comment-form-wrapper');
-          // the above line is redundant in drag & drop, because it's assigned in 'drop' listener too.
-          // on /wiki/new & /wiki/edit, $D.selected will = undefined from this assignment
-          elem = $($D.selected).closest('div.comment-form-wrapper').eq(0);
-          elem.find('.progress-bar-container').eq(0).show();
-          elem.find('.uploading-text').eq(0).show();
-          elem.find('.choose-one-prompt-text').eq(0).hide();
+          console.log($("#image-upload-progress-container-" + $E.commentFormID));
+          $("#image-upload-progress-container-" + $E.commentFormID).show();
+          $("#image-upload-text-" + $E.commentFormID).show();
+          $("#dropzone-choose-one-" + $E.commentFormID).hide();
         },
         done: function (e, data) {
-          elem = $($D.selected).closest('div.comment-form-wrapper').eq(0);
-          elem.find('.progress-bar-container').hide();
-          elem.find('.progress-bar').css('width', 0);
-          elem.find('.uploading-text').hide();
-          elem.find('.choose-one-prompt-text').show();
+          $("#image-upload-progress-container-" + $E.commentFormID).hide();
+          $("#image-upload-text-" + $E.commentFormID).hide();
+          $("#dropzone-choose-one-" + $E.commentFormID).show();
+          $("#image-upload-progress-bar-" + $E.commentFormID).css('width', 0);
           var extension = data.result['filename'].split('.')[data.result['filename'].split('.').length - 1]; var file_url = data.result.url.split('?')[0]; var file_type;
           if (['gif', 'GIF', 'jpeg', 'JPEG', 'jpg', 'JPG', 'png', 'PNG'].includes(extension))
             file_type = 'image'
@@ -108,27 +77,23 @@ $(function() {
           switch (file_type) {
             case 'image':
               orig_image_url = file_url + '?s=o' // size = original
-              $E.wrap('[![', '](' + file_url + ')](' + orig_image_url + ')', {'newline': true, 'fallback': data.result['filename']}) // on its own line; see /app/assets/js/editor.js
+              $E.wrap('[![', '](' + file_url + ')](' + orig_image_url + ')', true, data.result['filename']);
               break;
             case 'csv':
-              $E.wrap('[graph:' + file_url + ']', '', {'newline': true})
+              $E.wrap('[graph:' + file_url + ']', '', true);
               break;
             default:
-              $E.wrap('<a href="'+data.result.url.split('?')[0]+'"><i class="fa fa-file"></i> ','</a>', {'newline': true, 'fallback': data.result['filename'].replace(/[()]/g , "-")}) // on its own line; see /app/assets/js/editor.js
+              $E.wrap('<a href="'+data.result.url.split('?')[0]+'"><i class="fa fa-file"></i> ', '</a>', true, data.result['filename'].replace(/[()]/g , "-")); // on its own line; see /app/assets/js/editor.js
           }
           // here append the image id to the wiki edit form:
           if ($('#node_images').val() && $('#node_images').val().split(',').length > 1) $('#node_images').val([$('#node_images').val(),data.result.id].join(','))
           else $('#node_images').val(data.result.id)
-          // eventual handling of multiple files; must add "multiple" to file input and handle on server side:
-          //$.each(data.result.files, function (index, file) {
-          //    $('<p/>').text(file.name).appendTo(document.body);
-          //});
         },
         fileuploadfail: function(e, data) {
           console.log(e);
         },
         progressall: function (e, data) {
-          const closestProgressBar = $($D.selected).closest('div.comment-form-wrapper').find('.progress-bar').eq(0);
+          const closestProgressBar = $("#image-upload-progress-bar-" + $E.commentFormID);
           return progressAll(closestProgressBar, data);
         }
     });
