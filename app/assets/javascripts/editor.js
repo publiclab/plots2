@@ -73,7 +73,7 @@ class Editor {
   }
   link(uri) {
     uri = prompt('Enter a URL');
-    if (uri === null) { uri = ""; }
+    if (!uri) { uri = ""; }
     this.wrap(
       '[', 
       '](' + uri + ')'
@@ -126,9 +126,6 @@ class Editor {
   }
   generate_preview(id,text) {
     $('#' + id)[0].innerHTML = marked(text)
-  }
-  toggle_preview() {
-    $('#'+id)[0].innerHTML = marked(text)
   }
   toggle_preview() {
     // if the element is part of a multi-comment page,
