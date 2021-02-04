@@ -129,7 +129,7 @@ class PostTest < ApplicationSystemTestCase
     old_wiki_content = find("#content p").text
 
     find("a#edit-btn").click()
-    find("#text-input").set("wiki text")
+    find("#text-input-main").set("wiki text")
     find("a#publish").click()
 
     # view wiki
@@ -156,7 +156,7 @@ class PostTest < ApplicationSystemTestCase
     visit wiki.path
 
     find("a#edit-btn").click()
-    find("#text-input").native.send_keys(:enter, :enter, "wiki text")
+    find("#text-input-main").native.send_keys(:enter, :enter, "wiki text")
     find("a#publish").click()
 
     find("a[data-original-title='View all revisions for this page.']").click()

@@ -54,7 +54,7 @@ class EditorControllerTest < ActionController::TestCase
         n: nodes(:blog).id
         }
     assert_response :success
-    assert_select 'textarea#text-input', nodes(:blog).body
+    assert_select 'textarea#text-input-main', nodes(:blog).body
   end
 
   test "should use existing node body as template in legacy form based on param 'n' in rich editor" do
