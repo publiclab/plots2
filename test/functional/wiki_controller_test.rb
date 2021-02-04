@@ -49,7 +49,7 @@ class WikiControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_select '#taginput[value=?]', 'one,two'
-    assert_select 'textarea#text-input', nodes(:blog).body
+    assert_select 'textarea#text-input-main', nodes(:blog).body
   end
 
   test 'should get raw wiki markup' do

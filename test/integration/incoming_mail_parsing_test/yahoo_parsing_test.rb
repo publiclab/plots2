@@ -8,7 +8,7 @@ class YahooParsingTest < ActionDispatch::IntegrationTest
     # Mail contain ["01namangupta@gmail.com"] in from field.
     node = Node.find(21) # this is the nid used in the .eml fixture
     mail.subject = "Re: (##{node.id})"
-    Comment.receive_mail(mail)
+    Comment.new_comment_from_email(mail)
     f = File.open('test/fixtures/incoming_test_emails/yahoo/final_parsed_comment.txt', 'r')
     comment = Comment.last # this should be the just-created comment
     user_email = mail.from.first
