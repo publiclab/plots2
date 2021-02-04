@@ -10,7 +10,7 @@ class Editor {
     this.commentFormID = defaultForm;
     this.elementIDPrefixes = elementIDPrefixes;
     this.textarea = $("#text-input-" + this.commentFormID);
-
+    
     // this will get deleted in the next few PRs, so collapsing into one line to pass codeclimate
     this.templates = { 'blog': "## The beginning\n\n## What we did\n\n## Why it matters\n\n## How can you help", 'default': "## What I want to do\n\n## My attempt and results\n\n## Questions and next steps\n\n## Why I'm interested", 'support': "## Details about the problem\n\n## A photo or screenshot of the setup", 'event': "## Event details\n\nWhen, where, what\n\n## Background\n\nWho, why", 'question': "## What I want to do or know\n\n## Background story" };
       
@@ -57,8 +57,7 @@ class Editor {
     const selectionEnd = this.textAreaElement[0].selectionEnd;
     const selection = fallback || this.textAreaValue.substring(selectionStart, selectionEnd); // fallback if nothing has been selected, and we're simply dealing with an insertion point
 
-    let newText = a + selection + b; // ie. ** + selection + ** (wrapping selection in bold)
-    if (newlineDesired) { newText = newText + "\n\n"; }
+    let newText = newlineDesired ?  a + selection + b + "\n\n" : a + selection + b; // ie. ** + selection + ** (wrapping selection in bold)
     const selectionStartsMidText = this.textAreaElement[0].selectionStart > 0;
     if (newlineDesired && selectionStartsMidText) { newText = "\n" + newText; }
 
@@ -121,13 +120,16 @@ class Editor {
     if(this.textAreaValue == ""){
       this.textAreaElement.val(this.templates[template])
     }else if((this.textAreaValue == this.templates['event']) || (this.textAreaValue == this.templates['default']) || (this.textAreaValue == this.templates['support'])){
-        this.textAreaElement.val(this.templates[template])
+      this.textAreaElement.val(this.templates[template])
     }else{
       this.textAreaElement.val(this.textAreaValue+'\n\n'+this.templates[template])
     }
   }
   generate_preview(id,text) {
     $('#' + id)[0].innerHTML = marked(text)
+  }
+  toggle_preview() {
+    $('#'+id)[0].innerHTML = marked(text)
   }
   toggle_preview() {
     // if the element is part of a multi-comment page,
