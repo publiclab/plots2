@@ -33,30 +33,8 @@ class Editor {
     $E.textarea.bind('input propertychange', $E.save);
     $E.preview = $("#comment-preview-" + commentFormID);
   }
-  // code seems unused, commenting out for now.
-  // is_editing() {
-  //   return ($E.textarea[0].selectionStart == 0 && $E.textarea[0].selectionEnd == 0)
-  // };
-  refresh() {
-    // textarea
-    $E.textarea = ($D.selected).find('textarea').eq(0);
-    $E.textarea.bind('input propertychange',$E.save);
-    // preview
-    $E.preview = ($D.selected).find('.comment-preview').eq(0);
-  }
-  isSingleFormPage(url) {
-    // this RegEx matches three different pages where only one editor form is present (instead of multiple comment forms):
-    //   1. /wiki/new
-    //   2. /wiki/{wiki name}/edit
-    //   3. /features/new
-    const singleFormPath = RegExp(/\/(wiki|features)(\/[^\/]+\/edit|\/new)/);
-    return singleFormPath.test(url);
-  }
   // wraps currently selected text in textarea with strings a and b
   wrap(a, b, newlineDesired = false, fallback) {
-    // we only refresh $E's values if we are on a page with multiple comments
-    if (!this.isSingleFormPage(window.location.pathname)) { this.refresh(); }
-
     const selectionStart = $E.textarea[0].selectionStart;
     const selectionEnd = $E.textarea[0].selectionEnd;
     const selection = fallback || $E.textarea.val().substring(selectionStart, selectionEnd); // fallback if nothing has been selected, and we're simply dealing with an insertion point
