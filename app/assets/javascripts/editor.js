@@ -1,11 +1,11 @@
 class Editor {
-  // default parameters reference the IDs of:
+  // default parameter references the ID of:
   //   1. main comment form in multi-comment wikis, questions, & research notes.
   //   2. the only editor form on /wiki/new and /wiki/edit
-  constructor(textarea = "text-input", preview = "comment-preview-main", title = "title") {
-    this.textarea = $('#' + textarea);
-    this.preview = $('#' + preview);
-    this.title = $('#' + title + 'title'); // not sure why this exists? seems like $E.title is always #title
+  constructor(commentFormID = "main") {
+    this.commentFormID = commentFormID;
+    this.textarea = $("#text-input-" + commentFormID);
+    this.preview = $("#comment-preview-" + commentFormID);
     this.previewing = false;
     this.previewed = false;
     // this will get deleted in the next few PRs, so collapsing into one line to pass codeclimate
@@ -27,11 +27,11 @@ class Editor {
       }
     });
   }
-  setState(textarea = 'text-input', preview = 'comment-preview-main', title = 'title') {
-    $E.title = $('#' + title + 'title'); // not sure why this exists? seems like $E.title is always #title
-    $E.textarea = $('#' + textarea);
+  setState(commentFormID = "main") {
+    this.commentFormID = commentFormID;
+    $E.textarea = $("#text-input-" + commentFormID);
     $E.textarea.bind('input propertychange', $E.save);
-    $E.preview = $('#' + preview);
+    $E.preview = $("#comment-preview-" + commentFormID);
   }
   // code seems unused, commenting out for now.
   // is_editing() {
@@ -109,12 +109,10 @@ class Editor {
   // }
   // this function is dedicated to Don Blair https://github.com/donblair
   save() {
-    localStorage.setItem('plots:lastpost',$E.textarea.val())
-    localStorage.setItem('plots:lasttitle',$E.title.val())
+    localStorage.setItem('plots:lastpost',$E.textarea.val());
   }
   recover() {
-    $E.textarea.val(localStorage.getItem('plots:lastpost'))
-    $E.title.val(localStorage.getItem('plots:lasttitle'))
+    $E.textarea.val(localStorage.getItem('plots:lastpost'));
   }
   apply_template(template) {
     if($E.textarea.val() == ""){
@@ -133,8 +131,8 @@ class Editor {
     let dropzone;
     // if the element is part of a multi-comment page,
     // ensure to grab the current element and not the other comment element.
-    previewBtn = $(this.textarea.context).find('.preview-btn');
-    dropzone = $(this.textarea.context).find('.dropzone');
+    previewBtn = $("#toggle-preview-button-" + this.commentFormID);
+    dropzone = $("#dropzone-large-" + this.commentFormID);
 
     $E.preview[0].innerHTML = marked($E.textarea.val());
     $E.preview.toggle();
