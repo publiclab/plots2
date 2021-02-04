@@ -131,11 +131,11 @@ class Editor {
     // if the element is part of a multi-comment page,
     // ensure to grab the current element and not the other comment element.
     const previewBtn = $("#toggle-preview-button-" + this.commentFormID);
-    const dropzone = $("#dropzone-large-" + this.commentFormID);
+    const commentFormBody = $("#comment-form-body-" + this.commentFormID);
 
     this.previewElement[0].innerHTML = marked(this.textAreaValue);
     this.previewElement.toggle();
-    dropzone.toggle();
+    commentFormBody.toggle();
 
     this.toggleButtonPreviewMode(previewBtn);
   }

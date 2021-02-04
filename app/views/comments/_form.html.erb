@@ -34,7 +34,7 @@
 
     <!-- most comment forms have two dropzones: 1) small button, 2) large form that covers textarea -->
     <!-- this is the large dropzone -->
-    <div id="dropzone-large-<%= comment_form_id %>" class="form-group dropzone dropzone-large" data-form-id="<%= comment_form_id %>">
+    <div id="comment-form-body-<%= comment_form_id %>" class="comment-face form-group dropzone dropzone-large" data-form-id="<%= comment_form_id %>">
       <%
         body = body || params[:body]
         # Look for comment templates
@@ -80,7 +80,7 @@
           >
             <%= translation('comments._form.uploading') %>
           </span>
-          <span id="dropzone-choose-one-<%= comment_form_id %>" class="prompt choose-one-prompt-text">
+          <span id="choose-one-<%= comment_form_id %>" class="prompt choose-one-prompt-text">
             <span style="padding-right:4px;float:left;" class="d-none d-md-inline">
               <%= raw translation('comments._form.drag_and_drop') %>
             </span>

@@ -17,7 +17,7 @@
     </style>
     <!-- toolbar needs location & comment_id to make unique element IDs -->
     <%= render :partial => "editor/toolbar", :locals => { :comment_id => comment.id.to_s, :location => :edit } %>
-    <div id="c<%= comment.id%>div" class="form-group dropzone" data-form-id="edit-<%= comment.id %>">
+    <div id="comment-form-body-edit-<%= comment.id%>" class="form-group dropzone dropzone-large" data-form-id="edit-<%= comment.id %>">
       <textarea 
         aria-label="Edit Comment" 
         onFocus="editing=true" 
@@ -47,7 +47,7 @@
         >
           <%= translation('comments._edit.uploading') %>
         </span>
-        <span id="dropzone-choose-one-edit-<%= comment.id%>" class="prompt choose-one-prompt-text">
+        <span id="choose-one-edit-<%= comment.id%>" class="prompt choose-one-prompt-text">
           <span style="padding-right:4px;float:left;" class="hidden-xs">
             <%= raw translation('comments._edit.drag_and_drop') %>
           </span>
