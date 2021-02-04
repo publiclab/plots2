@@ -245,6 +245,14 @@ class Comment < ApplicationRecord
           add_comment(mail, comment.nid, user, [true, comment.id])
         end
       end
+    else
+      email = mail.select { |s| s.match(/.*@.*/) }
+      ActionMailer::Base.mail(
+        from: "me@example.com", # @jywarren what should this be?
+        to: email,
+        subject: "Could not post your reply",
+        body: "Your reply wasn't posted since we couldn't find your account on publiclab.org. Please sign up on publiclab.org"
+      ).deliver
     end
   end
 
