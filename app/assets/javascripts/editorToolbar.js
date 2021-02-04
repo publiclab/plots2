@@ -69,12 +69,12 @@ $(function() {
           console.log($("#image-upload-progress-container-" + $E.commentFormID));
           $("#image-upload-progress-container-" + $E.commentFormID).show();
           $("#image-upload-text-" + $E.commentFormID).show();
-          $("#dropzone-choose-one-" + $E.commentFormID).hide();
+          $("#choose-one-" + $E.commentFormID).hide();
         },
         done: function (e, data) {
           $("#image-upload-progress-container-" + $E.commentFormID).hide();
           $("#image-upload-text-" + $E.commentFormID).hide();
-          $("#dropzone-choose-one-" + $E.commentFormID).show();
+          $("#choose-one-" + $E.commentFormID).show();
           $("#image-upload-progress-bar-" + $E.commentFormID).css('width', 0);
           var extension = data.result['filename'].split('.')[data.result['filename'].split('.').length - 1]; var file_url = data.result.url.split('?')[0]; var file_type;
           if (['gif', 'GIF', 'jpeg', 'JPEG', 'jpg', 'JPG', 'png', 'PNG'].includes(extension))
