@@ -55,7 +55,6 @@ class HomeController < ApplicationController
       exclude_tids = Tag.where(name: %w(blog everything)).pluck(:tid)
       # Not all tags have notes, some are wikis. A text will be displayed to show this.
       @pagy, @tag_subscriptions = pagy(current_user.subscriptions(:tag).includes(:tag).where.not(tid: exclude_tids))
-      # Trending tags exculding subscriptions
       @trending_tags = trending
       render template: 'dashboard_v2/dashboard'
     else
@@ -161,7 +160,11 @@ class HomeController < ApplicationController
   end
 
   def trending
+    # Trending tags exculding subscriptions and tag first time poster tag
+    # The first time poster tag is not useful in search
     exclude_tids = @tag_subscriptions.pluck(:tid)
-    Tag.trending.where.not(tid: exclude_tids)
+    first_time_poster_tid =  Tag.where(name: "first-time-poster").first.tid
+    exclude_tids << first_time_poster_tid
+    Tag.trending.where('term_data.name NOT LIKE (?)', '%:%').where.not(tid: exclude_tids)
   end
 end
