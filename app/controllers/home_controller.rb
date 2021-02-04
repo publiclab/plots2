@@ -163,7 +163,7 @@ class HomeController < ApplicationController
     # Trending tags exculding subscriptions and tag first time poster tag
     # The first time poster tag is not useful in search
     exclude_tids = @tag_subscriptions.pluck(:tid)
-    exclude_tids << Tag.where(name: "first-time-poster").first&.tid
+    exclude_tids << Tag.where(name: %w(everything first-time-poster)).first&.tid
     exclude_tids.flatten.uniq
     Tag.trending.where('term_data.name NOT LIKE (?)', '%:%').where.not(tid: exclude_tids)
   end
