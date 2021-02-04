@@ -119,7 +119,7 @@ class Editor {
     if(this.textAreaValue == ""){
       this.textAreaElement.val(this.templates[template])
     }else if((this.textAreaValue == this.templates['event']) || (this.textAreaValue == this.templates['default']) || (this.textAreaValue == this.templates['support'])){
-        this.textAreaElement.val(this.templates[template])
+      this.textAreaElement.val(this.templates[template])
     }else{
       this.textAreaElement.val(this.textAreaValue+'\n\n'+this.templates[template])
     }

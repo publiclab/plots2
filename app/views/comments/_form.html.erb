@@ -34,7 +34,7 @@
 
     <!-- most comment forms have two dropzones: 1) small button, 2) large form that covers textarea -->
     <!-- this is the large dropzone -->
-    <div id="dropzone-large-<%= comment_form_id %>" class="form-group dropzone" data-form-id="<%= comment_form_id %>">
+    <div id="dropzone-large-<%= comment_form_id %>" class="form-group dropzone dropzone-large" data-form-id="<%= comment_form_id %>">
       <%
         body = body || params[:body]
         # Look for comment templates

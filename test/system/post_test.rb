@@ -109,7 +109,7 @@ class PostTest < ApplicationSystemTestCase
     visit '/wiki/new'
 
     # Upload the image
-    drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", ".dropzone")
+    drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", ".dropzone-large")
 
     # Wait for image upload to finish
     wait_for_ajax

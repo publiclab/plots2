@@ -77,9 +77,9 @@
       class="upload-button btn btn-outline-secondary btn-sm"
     >
       <%# data-form-id is for setState on editor.js %>
-      <div id="dropzone-small-<%= toolbar_element_id %>" class="dropzone" data-form-id="<%= toolbar_element_id %>">
+      <div id="dropzone-small-<%= toolbar_element_id %>" class="dropzone dropzone-small" data-form-id="<%= toolbar_element_id %>">
         <span id="create_prompt" class="prompt">
-          <label class="" for="fileinput-button-<%= toolbar_element_id %>" style="margin-bottom: 0;">
+          <label class="fileinput-dropzone-label" for="fileinput-button-<%= toolbar_element_id %>" style="margin-bottom: 0;">
             <input id="fileinput-button-<%= toolbar_element_id %>" class="fileinput" type="file" name="image[photo]" accept="image/*" style="display:none;" />
             <i class="fa fa-image"></i>
             <span class="d-md-none">
