@@ -232,19 +232,20 @@ class Comment < ApplicationRecord
     user_like_map
   end
 
-  def self.receive_mail(mail)
+  def self.new_comment_from_email(mail)
     user = User.where(email: mail.from.first).first
     if user
       node_id = mail.subject[/#([\d]+)/, 1] # This tooks out the node ID from the subject line
       comment_id = mail.subject[/#c([\d]+)/, 1] # This tooks out the comment ID from the subject line if it exists
       unless Comment.where(message_id: mail.message_id).any?
         if node_id.present? && !comment_id.present?
-          add_comment(mail, node_id, user)
+          parse_comment_from_email(mail, node_id, user)
         elsif comment_id.present?
           comment = Comment.find comment_id
-          add_comment(mail, comment.nid, user, [true, comment.id])
+          parse_comment_from_email(mail, comment.nid, user, [true, comment.id])
         end
       end
+      return node_id
     else
       email = mail.select { |s| s.match(/.*@.*/) }
       ActionMailer::Base.mail(
@@ -257,7 +258,7 @@ class Comment < ApplicationRecord
   end
 
   # parse mail and add comments based on emailed replies
-  def self.add_comment(mail, node_id, user, reply_to = [false, nil])
+  def self.parse_comment_from_email(mail, node_id, user, reply_to = [false, nil])
     node = Node.where(nid: node_id).first
     if node && mail&.html_part
       mail_doc = Nokogiri::HTML(mail&.html_part&.body&.decoded) # To parse the mail to extract comment content and reply content
