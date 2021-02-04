@@ -22,7 +22,7 @@ jQuery(document).ready(function() {
     if (e.which == 32 || e.which == 13) publish()
   })
 
-  if ($E.textarea.val() == "") $E.apply_template(getUrlParameter('template') || "default")
+  if (!$E.textAreaValue ) $E.apply_template(getUrlParameter('template') || "default")
   
   /* tag autocomplete */
   $('#taginput').typeahead({
