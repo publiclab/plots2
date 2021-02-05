@@ -27,8 +27,8 @@ class DashboardV2Test < ApplicationSystemTestCase
     fill_in("password-signup", with: "secretive")
     click_on 'Log in'
     visit '/v2/dashboard'
-    # Ensure that a trending tags are present on the trending and follow section
-    assert_selector("div > div.other-topics > span a", /.+/)
-    assert_selector("div#moreTopics div > div > div a", /.+/)
+    # Ensure that at least one trending tag is present on the trending and follow section
+    assert_selector("div > div.other-topics > span a")
+    assert_selector("div#moreTopics div > div > div a")
   end
 end
