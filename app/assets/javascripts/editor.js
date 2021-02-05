@@ -9,7 +9,6 @@ class Editor {
   constructor(defaultForm = "main", elementIDPrefixes = {}) {
     this.commentFormID = defaultForm;
     this.elementIDPrefixes = elementIDPrefixes;
-    this.textarea = $("#text-input-" + this.commentFormID);
     // this will get deleted in the next few PRs, so collapsing into one line to pass codeclimate
     this.templates = { 'blog': "## The beginning\n\n## What we did\n\n## Why it matters\n\n## How can you help", 'default': "## What I want to do\n\n## My attempt and results\n\n## Questions and next steps\n\n## Why I'm interested", 'support': "## Details about the problem\n\n## A photo or screenshot of the setup", 'event': "## Event details\n\nWhen, where, what\n\n## Background\n\nWho, why", 'question': "## What I want to do or know\n\n## Background story" };
       
@@ -31,8 +30,7 @@ class Editor {
   }
   setState(commentFormID) {
     this.commentFormID = commentFormID;
-    this.textarea = $("#text-input-" + commentFormID);
-    $E.textarea.bind('input propertychange', $E.save);
+    this.attachSaveListener();
   }
   get textAreaElement() {
     const textAreaID = "#text-input-" + this.commentFormID;
@@ -50,13 +48,13 @@ class Editor {
     const previewID = previewIDPrefix + this.commentFormID;
     return $(previewID);
   }
-  // wraps currently selected text in textarea with strings a and b
-  wrap(a, b, newlineDesired = false, fallback) {
+  // wraps currently selected text in textarea with strings startString & endString
+  wrap(startString, endString, newlineDesired = false, fallback) {
     const selectionStart = this.textAreaElement[0].selectionStart;
     const selectionEnd = this.textAreaElement[0].selectionEnd;
     const selection = fallback || this.textAreaValue.substring(selectionStart, selectionEnd); // fallback if nothing has been selected, and we're simply dealing with an insertion point
 
-    let newText = newlineDesired ?  a + selection + b + "\n\n" : a + selection + b; // ie. ** + selection + ** (wrapping selection in bold)
+    let newText = newlineDesired ? startString + selection + endString + "\n\n" : startString + selection + endString; // ie. ** + selection + ** (wrapping selection in bold)
     const selectionStartsMidText = this.textAreaElement[0].selectionStart > 0;
     if (newlineDesired && selectionStartsMidText) { newText = "\n" + newText; }
 
@@ -109,11 +107,21 @@ class Editor {
   //   this.wrap('#######','')
   // }
   // this function is dedicated to Don Blair https://github.com/donblair
-  save() {
-    localStorage.setItem('plots:lastpost', this.textAreaValue);
+  attachSaveListener() {
+    // remove any other existing eventHandler
+    $("textarea").off("input.save"); // input.save is a custom jQuery eventHandler
+    const thisEditor = this; // save a reference to this editor, because inside the eventListener, "this" points to e.target
+    this.textAreaElement.on("input.save", function() {
+      thisEditor.save(thisEditor) 
+    });
+  }
+  save(thisEditor) {
+    const storageKey = "plots:" + window.location.href + ":" + thisEditor.commentFormID;
+    localStorage.setItem(storageKey, thisEditor.textAreaValue);
   }
   recover() {
-    this.textAreaElement.val(localStorage.getItem('plots:lastpost'));
+    const storageKey = "plots:" + window.location.href + ":" + this.commentFormID;
+    this.textAreaElement.val(localStorage.getItem(storageKey));
   }
   apply_template(template) {
     if(this.textAreaValue == ""){
