@@ -141,17 +141,4 @@ class HomeControllerTest < ActionController::TestCase
     get :dashboard_v2
     assert_includes response.body, alert
   end
-
-  test 'trending tags are returned when a user has not subscribed to any topics' do
-    current_user = users(:user_without_tag_subscriptions)
-    exclude_tids = Tag.where(name: %w(everything first-time-poster)).pluck(:tid)
-    expected_tag = Tag.trending.where('term_data.name NOT LIKE (?)', '%:%')
-                  .where.not(tid: exclude_tids)
-                  .pluck(:name).sample
-
-    UserSession.create(current_user)
-    get :dashboard_v2
-    assert_includes response.body, expected_tag
-  end
-
 end
