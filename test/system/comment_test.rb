@@ -209,7 +209,7 @@ class CommentTest < ApplicationSystemTestCase
       assert_selector('.btn[data-original-title="Italic"]', count: 1)
       assert_selector('.btn[data-original-title="Header"]', count: 1)
       assert_selector('.btn[data-original-title="Link"]', count: 1)
-      assert_selector('.btn[data-original-title="Upload an image"]', count: 1)
+      assert_selector('.btn[data-original-title="Upload Image"]', count: 1)
       assert_selector('.btn[data-original-title="Save"]', count: 1)
       assert_selector('.btn[data-original-title="Recover"]', count: 1)
       assert_selector('.btn[data-original-title="Help"]', count: 1)
