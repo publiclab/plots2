@@ -35,7 +35,6 @@
         <div>
           <%= feature('feature-tags') %>
         </div>
-        <br/>
         <div>
           <%# Trending topics %>
           <small><a href="/tags" class="form-grey"><%= translation('dashboard_v2.sidebar.trending_topics') %>:</a></small>
@@ -48,6 +47,7 @@
               <% end %>
           </div>
         </div>
+        <br>
         <small class="form-grey">Search topics</small>
         <%= render :partial => "tag/typeahead_search" %>
         <br/>
