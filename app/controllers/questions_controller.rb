@@ -20,7 +20,6 @@ class QuestionsController < ApplicationController
 
   def index
     @title = 'Questions and Answers'
-    # set_sidebar
     @pagy, @questions = pagy(Node.questions
       .where(status: 1)
       .order('node.nid DESC'), items: 24)
@@ -86,8 +85,6 @@ class QuestionsController < ApplicationController
     @users = @node.answers.group(:uid)
                   .order(Arel.sql('count(*) DESC'))
                   .collect(&:author)
-
-    # set_sidebar :tags, @tagnames
   end
 
   def recently_commented

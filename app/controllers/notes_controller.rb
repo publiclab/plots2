@@ -61,7 +61,7 @@ class NotesController < ApplicationController
       @tags = @node.tags
       @tagnames = @tags.collect(&:name)
       @preview = false
-      # set_sidebar :tags, @tagnames
+
     else
       page_not_found
     end
