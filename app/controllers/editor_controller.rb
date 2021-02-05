@@ -30,6 +30,12 @@ class EditorController < ApplicationController
     end
   end
 
+  def new
+    @node = Node.find(node_id)
+    @revision = @node.revision.first
+    params[:body] = @node.body
+  end
+
   def rich
     if params[:main_image] && Image.find_by(id: params[:main_image])
       @main_image = Image.find_by(id: params[:main_image]).path
