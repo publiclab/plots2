@@ -116,11 +116,11 @@ class Editor {
     });
   }
   save(thisEditor) {
-    const storageKey = "plots:" + window.location.href + ":" + thisEditor.commentFormID;
+    const storageKey = "plots:" + window.location.pathname + ":" + thisEditor.commentFormID;
     localStorage.setItem(storageKey, thisEditor.textAreaValue);
   }
   recover() {
-    const storageKey = "plots:" + window.location.href + ":" + this.commentFormID;
+    const storageKey = "plots:" + window.location.pathname + ":" + this.commentFormID;
     this.textAreaElement.val(localStorage.getItem(storageKey));
   }
   apply_template(template) {
