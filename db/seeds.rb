@@ -86,3 +86,11 @@ tagnames = ['one', 'two', 'three', 'four', 'five', 'six']
 # Create a footer message
 footer_feature = Node.create! "type"=>"feature", "title"=>"footer-notice", "uid"=>admin.id
 Revision.create! "nid"=>footer_feature.nid, "uid"=>admin.uid, "title"=>"footer-notice", "body"=>"The footer is empty during local development", "teaser"=>"", "log"=>"", "format"=>1
+# Create home intro message
+home_intro_feature = Node.create! "type"=>"feature", "title"=>"home-intro", "uid"=>admin.id
+Revision.create! "nid"=>home_intro_feature.nid, "uid"=>admin.uid, "title"=>"home-intro",
+                  "body"=>"Welcome to the plots2 application!
+                  This message is displayed only to developers running the code in a development environment.
+                  To use a lot of the features on this site, even locally, you'll have to log in. Default username and password are
+                  username: admin, moderator, or user and password: password",
+                  "teaser"=>"", "log"=>"", "format"=>1
