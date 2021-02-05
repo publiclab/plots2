@@ -76,7 +76,6 @@ class WikiController < ApplicationController
         redirect_to '/wiki'
       end
       @tagnames = @tags.collect(&:name)
-      # set_sidebar :tags, @tagnames, videos: true
       @wikis = Tag.find_pages(@node.slug_from_path, 30) if @node.has_tag('chapter') || @node.has_tag('tabbed:wikis')
 
       impressionist(@node, 'show', unique: [:ip_address])
@@ -295,7 +294,6 @@ class WikiController < ApplicationController
       @tagnames = @tags.collect(&:name)
       @unpaginated = true
       @is_revision = true
-      # set_sidebar :tags, @tagnames, videos: true
       @revision = Revision.find_by_nid_and_vid(@node.id, params[:vid])
       if @revision.nil?
         flash[:error] = I18n.t('wiki_controller.revision_not_found')
