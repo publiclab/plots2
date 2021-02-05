@@ -142,8 +142,6 @@ class TagController < ApplicationController
       @questions = nodes.where('node.nid IN (?)', @qids) if @node_type == 'questions'
     end
 
-    @answered_questions = []
-    @questions&.each { |question| @answered_questions << question if question.answers.any?(&:accepted) } # TODO: remove this upon refactor to remove answers code
     @wikis = nodes if @node_type == 'wiki'
     @wikis ||= []
     @nodes = nodes if @node_type == 'maps'

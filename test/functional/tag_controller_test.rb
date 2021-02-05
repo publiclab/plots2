@@ -258,12 +258,6 @@ class TagControllerTest < ActionController::TestCase
     assert_select '#note-graph', 0
   end
 
-  test 'wildcard tag should list answered questions' do
-    get :show, params: { id: 'question:*' }
-
-    assert_not_nil assigns(:answered_questions)
-  end
-
   test "wildcard tag show wiki pages with author" do
     get :show_for_author, params: { node_type: 'wiki', id: 'awes*', author: 'Bob' }
     assert :success
