@@ -50,12 +50,13 @@
         </div>
       <% end %>
       <textarea 
+        id="text-input-<%= comment_form_id %>" 
+        class="form-control text-input" 
+        name="body" 
+        data-form-id="<%= comment_form_id %>" 
+        onFocus="editing=true" 
         aria-label="Comment Text" 
         style="border: 1px solid #bbb;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-bottom: 0;padding: 10px;" 
-        onFocus="editing=true" 
-        name="body" 
-        class="form-control text-input" 
-        id="text-input-<%= comment_form_id %>" 
         rows="6" 
         cols="40" 
         placeholder="<%= placeholder %>"><%= body %>
