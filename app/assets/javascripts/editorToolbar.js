@@ -5,21 +5,35 @@
 //   /app/views/map/edit.html.erb
 //   and wherever /app/views/editor/editor.html.erb is still used in production
 
-const progressAll = (elem, data) => {
-  var progress = parseInt(data.loaded / data.total * 100, 10);
-  $(elem).css(
-    'width',
-    progress + '%'
-  );
-}
+// * * * * * * * * * * * 
 
-// attach eventListeners on document.load for toolbar rich-text buttons & image upload .dropzones
+// attach eventListeners on document.load: 
+//   1. rich-text buttons
+//   2. save & recover buttons
+//   3. textareas
+//   4. image upload .dropzones & buttons
 $(function() {
   // for rich-text buttons (bold, italic, header, and link):
   $('.rich-text-button').on('click', function(e) {
     $E.setState(e.currentTarget.dataset.formId); // string that is: "main", "reply-123", "edit-123" etc.
     const action = e.currentTarget.dataset.action // 'bold', 'italic', etc.
     $E[action](); // call the appropriate editor function
+  });
+
+  // for save & recover buttons
+  $('.save-button').on('click', function(e) {
+    $E.setState(e.currentTarget.dataset.formId); // string that is: "main", "reply-123", "edit-123" etc.
+    $E.save($E);
+  });
+
+  $('.recover-button').on('click', function(e) {
+    $E.setState(e.currentTarget.dataset.formId); // string that is: "main", "reply-123", "edit-123" etc.
+    $E.recover();
+  });
+
+  // textAreas
+  $('.text-input').on('click', function(e) {
+    $E.setState(e.currentTarget.dataset.formId);
   });
 
   // image upload event listeners for both:
@@ -66,7 +80,6 @@ $(function() {
         start: function(e) {
           $E.setState(e.target.dataset.formId); // string that is: "main", "reply-123", "edit-123" etc.
           $(e.target).removeClass('hover');
-          console.log($("#image-upload-progress-container-" + $E.commentFormID));
           $("#image-upload-progress-container-" + $E.commentFormID).show();
           $("#image-upload-text-" + $E.commentFormID).show();
           $("#choose-one-" + $E.commentFormID).hide();
@@ -105,6 +118,14 @@ $(function() {
         }
     });
   });
+
+  const progressAll = (elem, data) => {
+    var progress = parseInt(data.loaded / data.total * 100, 10);
+    $(elem).css(
+      'width',
+      progress + '%'
+    );
+  }
 
   // #side-dropzone, is for the main image of research notes, in /app/views/editor/post.html.erb
   $('#side-dropzone').on('dragover',function(e) {

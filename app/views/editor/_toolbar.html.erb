@@ -57,8 +57,8 @@
     </a>
     <a
       id="link-button-<%= toolbar_element_id %>"
-      aria-label="Make a link" 
-      title="Make a link" 
+      aria-label="Link" 
+      title="Link" 
       data-action="link"
       <%# to setState on editor.js %>
       data-form-id="<%= toolbar_element_id %>"
@@ -70,9 +70,9 @@
     </a>
     <a
       id="image-upload-button-<%= toolbar_element_id %>"
-      aria-label="Upload an image" 
+      aria-label="Upload Image" 
       data-toggle="tooltip" 
-      title="Upload an image" 
+      title="Upload Image" 
       data-placement="bottom" 
       class="upload-button btn btn-outline-secondary btn-sm"
     >
@@ -94,23 +94,23 @@
   <div class="btn-group mr-2 ">
     <a
       id="save-button-<%= toolbar_element_id %>"
-      data-toggle="tooltip" 
-      title="Save" 
-      data-placement="bottom" 
-      onClick="$E.save()" 
       class="save-button btn btn-outline-secondary btn-sm"
+      title="Save" 
+      data-form-id="<%= toolbar_element_id %>" 
+      data-placement="bottom" 
+      data-toggle="tooltip" 
     >
       <i class="fa fa-save"></i>
     </a>
     <a 
       id="recover-button-<%= toolbar_element_id %>"
-      data-toggle="tooltip" 
-      title="Recover" 
-      data-placement="bottom" 
-      onClick="$E.recover()" 
       class="recover-button btn btn-outline-secondary btn-sm"
+      title="Recover" 
+      data-form-id="<%= toolbar_element_id %>" 
+      data-placement="bottom" 
+      data-toggle="tooltip" 
     >
-      Recover
+      <i class="fas fa-undo"></i>
     </a>
   </div>
 

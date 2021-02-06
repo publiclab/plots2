@@ -19,11 +19,12 @@
     <%= render :partial => "editor/toolbar", :locals => { :comment_id => comment.id.to_s, :location => :edit } %>
     <div id="comment-form-body-edit-<%= comment.id%>" class="form-group dropzone dropzone-large" data-form-id="edit-<%= comment.id %>">
       <textarea 
-        aria-label="Edit Comment" 
-        onFocus="editing=true" 
-        name="body" 
-        class="form-control" 
         id="text-input-edit-<%= comment.id%>" 
+        class="form-control text-input" 
+        name="body" 
+        data-form-id="edit-<%= comment.id %>"
+        onFocus="editing=true" 
+        aria-label="Edit Comment" 
         rows="6" 
         cols="40" 
         placeholder="<%= placeholder %>"
