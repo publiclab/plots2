@@ -322,6 +322,60 @@ class CommentTest < ApplicationSystemTestCase
       assert_selector('#image-upload-progress-container-edit-' + comment_id_num)
       assert_selector('#image-upload-text-edit-' + comment_id_num)
     end
+
+    test "#{page_type_string}: save & recover buttons work" do
+      # quick-add an editable comment before visiting page
+      nodes(node_name).add_comment({
+        uid: 2,
+        body: comment_text
+      })
+      visit get_path(page_type, nodes(node_name).path)
+
+      comment_text_main = 'Waffles'
+      comment_text_reply = 'Eggs and Bacon'
+      comment_text_edit = 'Fruit & Yogurt'
+
+      # type some text into main comment form
+      page.find('#text-input-main')
+        .click
+        .fill_in with: comment_text_main
+
+      # open up reply comment form
+      page.all('p', text: 'Reply to this comment...')[0].click
+      # get the ID of reply form
+      reply_form = page.find('[id^=comment-form-reply-]')
+      reply_form_id = reply_form[:id]
+      reply_id_num = /comment-form-reply-(\d+)/.match(reply_form_id)[1]
+      page.find('#text-input-reply-' + reply_id_num)
+        .click
+        .fill_in with: comment_text_reply
+
+      # open up edit comment form
+      page.find(".edit-comment-btn").click
+      # get the ID of edit form
+      edit_form = page.find('[id^=comment-form-edit-]')
+      edit_form_id = edit_form[:id]
+      edit_id_num = /comment-form-edit-(\d+)/.match(edit_form_id)[1]
+      page.find('#text-input-edit-' + edit_id_num)
+        .click
+        .fill_in with: comment_text_edit
+      
+      # visit the page again (ie. refresh it)
+      visit get_path(page_type, nodes(node_name).path)
+      page.find('#recover-button-main').click
+      # click on reply recover button
+      page.all('p', text: 'Reply to this comment...')[0].click
+      page.find('#recover-button-reply-' + reply_id_num).click
+      # click on edit recover button
+      page.find('.edit-comment-btn').click
+      page.find('#recover-button-edit-' + edit_id_num).click
+      main_text = page.find('#text-input-main').value
+      reply_text = page.find('#text-input-reply-' + reply_id_num).value
+      edit_text = page.find('#text-input-edit-' + edit_id_num).value
+      assert_equal(main_text, comment_text_main)
+      assert_equal(reply_text, comment_text_reply)
+      assert_equal(edit_text, comment_text_edit)
+    end
   end
 
   # TESTS for ALL PAGE TYPES!
