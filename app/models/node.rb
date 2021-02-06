@@ -1187,7 +1187,7 @@ class Node < ActiveRecord::Base
     end
   end
 
-  def self.sort_wikis(wikis,sorting_type,current_user)
+  def self.sort_wikis(wikis, sorting_type, current_user)
     case sorting_type
     when 'title'
       wikis = current_user.content_followed_in_period(1.week.ago, Time.now, 'title DESC')
