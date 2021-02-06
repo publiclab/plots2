@@ -82,7 +82,7 @@ GEM
       ci_reporter (~> 2.0)
       test-unit (>= 2.5.5, < 4.0)
     climate_control (0.2.0)
-    codecov (0.3.0)
+    codecov (0.4.3)
       simplecov (>= 0.15, < 0.22)
     coderay (1.1.2)
     coffee-rails (5.0.0)
