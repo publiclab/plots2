@@ -2,7 +2,16 @@
 <%= render :partial => "editor/toolbar", :locals => { :location => :main } %>
 
 <div class="form-group dropzone dropzone-large" data-form-id="main">
-  <textarea aria-label="Wiki Text" name="body" tabindex="2" class="form-control" id="text-input-main" rows="20" cols="60"><% if @node && @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
+  <textarea 
+    id="text-input-main" 
+    class="form-control text-input" 
+    name="body" 
+    data-form-id="main"
+    aria-label="Wiki Text" 
+    tabindex="2" 
+    rows="20" 
+    cols="60"
+  ><% if @node && @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
   <div class="imagebar">
     <div 
       id="image-upload-progress-container-main" style="display:none;" 
