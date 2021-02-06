@@ -109,7 +109,7 @@ class SubscriptionController < ApplicationController
   end
 
   def digest
-    @wikis = Node.sort_wikis(@wikis,params[:sort],current_user).paginate(page: params[:page], per_page: 100)
+    @wikis = Node.sort_wikis(params[:sort], current_user).paginate(page: params[:page], per_page: 100)
     @paginated = true
     render template: "subscriptions/digest"
   end

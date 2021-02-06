@@ -248,7 +248,7 @@ class User < ActiveRecord::Base
     Node.questions.where(status: 1, uid: id)
   end
 
-  def content_followed_in_period(start_time, end_time, order_by='node_revisions.timestamp DESC', node_type = 'note', include_revisions = false)
+  def content_followed_in_period(start_time, end_time, order_by = 'node_revisions.timestamp DESC', node_type = 'note', include_revisions = false)
     tagnames = TagSelection.where(following: true, user_id: uid)
     node_ids = []
     tagnames.each do |tagname|
