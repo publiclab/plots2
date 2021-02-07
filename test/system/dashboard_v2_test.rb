@@ -19,4 +19,16 @@ class DashboardV2Test < ApplicationSystemTestCase
     assert_selector("div > div.other-topics > span a[href='/tag/#{tag_name}']", count: 0)
     assert_selector("div#moreTopics div > div > div a[href='/tag/#{tag_name}']", count: 0)
   end
+
+  test 'trending tags are returned when a user has not subscribed to any topics' do
+    visit '/'
+    click_on 'Login'
+    fill_in("username-login", with: "user_without_subscriptions")
+    fill_in("password-signup", with: "secretive")
+    click_on 'Log in'
+    visit '/v2/dashboard'
+    # Ensure that at least one trending tag is present on the trending and follow section
+    assert_selector("div > div.other-topics > span a")
+    assert_selector("div#moreTopics div > div > div a")
+  end
 end

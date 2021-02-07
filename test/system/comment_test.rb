@@ -72,22 +72,68 @@ class CommentTest < ApplicationSystemTestCase
       find("p", text: comment_text)
       # replying to the comment
       first("p", text: "Reply to this comment...").click()
-      fill_in("body", with: comment_response_text)
+      page.find('[id^=text-input-reply-]')
+        .click
+        .fill_in with: comment_response_text
       # preview reply
       first(".preview-btn").click
       find("p", text: comment_response_text)
     end
 
-    test "#{page_type_string}: comment preview button works" do
+    test "#{page_type_string}: toggle preview buttons work" do
+      nodes(node_name).add_comment({
+        uid: 2,
+        # **bold**
+        body: "**" + comment_text + "**"
+      })
       visit get_path(page_type, nodes(node_name).path)
-      find("p", text: "Reply to this comment...").click()
-      reply_preview_button = page.all('.preview-btn')[0]
-      comment_preview_button = page.all('.preview-btn')[1]
-      # Toggle preview
-      reply_preview_button.click()
-      # Make sure that buttons are not binded with each other
-      assert_equal( reply_preview_button.text, "Hide Preview" )
-      assert_equal( comment_preview_button.text, "Preview" )
+
+      # open up reply comment form
+      page.all('p', text: 'Reply to this comment...')[0].click
+      # get the ID of reply form
+      reply_form = page.find('[id^=comment-form-reply-]')
+      reply_form_id = reply_form[:id]
+      reply_id_num = /comment-form-reply-(\d+)/.match(reply_form_id)[1]
+      page.find('#text-input-reply-' + reply_id_num)
+        .click
+        .fill_in with: "**" + comment_text + "**"
+
+      # open up edit comment form
+      page.find(".edit-comment-btn").click
+      # get the ID of edit form
+      edit_form = page.find('[id^=comment-form-edit-]')
+      edit_form_id = edit_form[:id]
+      edit_id_num = /comment-form-edit-(\d+)/.match(edit_form_id)[1]
+      page.find('#text-input-edit-' + edit_id_num)
+        .click
+        .fill_in with: "**" + comment_text + "**"
+
+      # fill out main comment form
+      main_form = page.find('#text-input-main')
+      main_form
+        .click
+        .fill_in with: "**" + comment_text + "**"
+
+      # click on toggle preview buttons for main, edit, and reply
+      replyPreviewButton = page.find('#toggle-preview-button-reply-' + reply_id_num)
+      editPreviewButton = page.find('#toggle-preview-button-edit-' + edit_id_num)
+      mainPreviewButton = page.find('#toggle-preview-button-main')
+      replyPreviewButton.click
+      editPreviewButton.click
+      mainPreviewButton.click
+
+      # assert preview element appears
+      assert_selector('#comment-preview-edit-' + edit_id_num)
+      assert_selector('#comment-preview-reply-' + reply_id_num)
+      assert_selector('#comment-preview-main')
+      # assert that button text says Hide Preview
+      assert_equal(replyPreviewButton.text, 'Hide Preview')
+      assert_equal(editPreviewButton.text, 'Hide Preview')
+      assert_equal(mainPreviewButton.text, 'Hide Preview')
+      # assert text is woot woot, not **woot woot**
+      reply_form.has_no_text? '**' + comment_text + '**'
+      edit_form.has_no_text? '**' + comment_text + '**'
+      main_form.has_no_text? '**' + comment_text + '**'
     end
 
     test "#{page_type_string}: ctrl/cmd + enter comment publishing keyboard shortcut" do
@@ -162,8 +208,8 @@ class CommentTest < ApplicationSystemTestCase
       assert_selector('.btn[data-original-title="Bold"]', count: 1)
       assert_selector('.btn[data-original-title="Italic"]', count: 1)
       assert_selector('.btn[data-original-title="Header"]', count: 1)
-      assert_selector('.btn[data-original-title="Make a link"]', count: 1)
-      assert_selector('.btn[data-original-title="Upload an image"]', count: 1)
+      assert_selector('.btn[data-original-title="Link"]', count: 1)
+      assert_selector('.btn[data-original-title="Upload Image"]', count: 1)
       assert_selector('.btn[data-original-title="Save"]', count: 1)
       assert_selector('.btn[data-original-title="Recover"]', count: 1)
       assert_selector('.btn[data-original-title="Help"]', count: 1)
@@ -249,7 +295,7 @@ class CommentTest < ApplicationSystemTestCase
       # .dropzone is hidden, so reveal it:
       Capybara.ignore_hidden_elements = false
       # drag & drop the image. drop_in_dropzone simulates 'drop' event,  see application_system_test_case.rb
-      drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", '#comments-list + div .dropzone') # this CSS selects .dropzones that belong to sibling element immediately following #comments-list. technically, there are two .dropzones in the main comment form.
+      drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", '#comments-list + div .dropzone-large') # this CSS selects .dropzones that belong to sibling element immediately following #comments-list. technically, there are two .dropzones in the main comment form.
       Capybara.ignore_hidden_elements = true
       assert_selector('.progress')
       assert_selector('.uploading-text')
@@ -273,8 +319,62 @@ class CommentTest < ApplicationSystemTestCase
       # find edit comment's fileinput:
       page.find('#fileinput-button-edit-' + comment_id_num).set("#{Rails.root.to_s}/public/images/pl.png")
       Capybara.ignore_hidden_elements = true
-      assert_selector('#c' + comment_id_num + 'progress')
-      assert_selector('#c' + comment_id_num + 'uploading')
+      assert_selector('#image-upload-progress-container-edit-' + comment_id_num)
+      assert_selector('#image-upload-text-edit-' + comment_id_num)
+    end
+
+    test "#{page_type_string}: save & recover buttons work" do
+      # quick-add an editable comment before visiting page
+      nodes(node_name).add_comment({
+        uid: 2,
+        body: comment_text
+      })
+      visit get_path(page_type, nodes(node_name).path)
+
+      comment_text_main = 'Waffles'
+      comment_text_reply = 'Eggs and Bacon'
+      comment_text_edit = 'Fruit & Yogurt'
+
+      # type some text into main comment form
+      page.find('#text-input-main')
+        .click
+        .fill_in with: comment_text_main
+
+      # open up reply comment form
+      page.all('p', text: 'Reply to this comment...')[0].click
+      # get the ID of reply form
+      reply_form = page.find('[id^=comment-form-reply-]')
+      reply_form_id = reply_form[:id]
+      reply_id_num = /comment-form-reply-(\d+)/.match(reply_form_id)[1]
+      page.find('#text-input-reply-' + reply_id_num)
+        .click
+        .fill_in with: comment_text_reply
+
+      # open up edit comment form
+      page.find(".edit-comment-btn").click
+      # get the ID of edit form
+      edit_form = page.find('[id^=comment-form-edit-]')
+      edit_form_id = edit_form[:id]
+      edit_id_num = /comment-form-edit-(\d+)/.match(edit_form_id)[1]
+      page.find('#text-input-edit-' + edit_id_num)
+        .click
+        .fill_in with: comment_text_edit
+      
+      # visit the page again (ie. refresh it)
+      visit get_path(page_type, nodes(node_name).path)
+      page.find('#recover-button-main').click
+      # click on reply recover button
+      page.all('p', text: 'Reply to this comment...')[0].click
+      page.find('#recover-button-reply-' + reply_id_num).click
+      # click on edit recover button
+      page.find('.edit-comment-btn').click
+      page.find('#recover-button-edit-' + edit_id_num).click
+      main_text = page.find('#text-input-main').value
+      reply_text = page.find('#text-input-reply-' + reply_id_num).value
+      edit_text = page.find('#text-input-edit-' + edit_id_num).value
+      assert_equal(main_text, comment_text_main)
+      assert_equal(reply_text, comment_text_reply)
+      assert_equal(edit_text, comment_text_edit)
     end
   end
 
@@ -311,12 +411,12 @@ class CommentTest < ApplicationSystemTestCase
           title_text = 'pokemon'
           body_text = 'Gotta catch em all!'
           fill_in('title', with: title_text)
-          fill_in('text-input', with: body_text)
+          fill_in('text-input-main', with: body_text)
           find('#publish').click()
           visit "/wiki/#{title_text}/comments"
       end
       assert_selector('h1', text: title_text)
-      page.find("textarea#text-input")
+      page.find("textarea#text-input-main")
         .click
         .fill_in with: comment_text
       # preview comment
@@ -384,13 +484,13 @@ class CommentTest < ApplicationSystemTestCase
       Capybara.ignore_hidden_elements = false
       visit get_path(page_type, nodes(node_name).path)
       find("p", text: "Reply to this comment...").click()
-      reply_preview_button = page.all('.preview-btn')[0]
       # Upload the image
-      drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", ".dropzone")
+      drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", ".dropzone-large")
       # Wait for image upload to finish
       wait_for_ajax
       Capybara.ignore_hidden_elements = true
       # Toggle preview
+      reply_preview_button = page.all('.preview-btn')[0]
       reply_preview_button.click()
       # Make sure that image has been uploaded
       page.assert_selector('.comment-preview img', count: 1)
@@ -434,14 +534,14 @@ class CommentTest < ApplicationSystemTestCase
       # .dropzone is hidden, so reveal it for Capybara's finders:
       Capybara.ignore_hidden_elements = false
       # drag & drop the image. drop_in_dropzone simulates 'drop' event, see application_system_test_case.rb
-      drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", '#comments-list + div .dropzone') # this CSS selects .dropzones that belong to sibling element immediately following #comments-list. technically, there are two .dropzones in the main comment form.
+      drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", '#comments-list + div .dropzone-large') # this CSS selects .dropzones that belong to sibling element immediately following #comments-list. technically, there are two .dropzones in the main comment form.
       Capybara.ignore_hidden_elements = true
       wait_for_ajax
       # we need the ID of parent div that contains <p>comment_text</p>:
       comment_id = page.find('p', text: comment_text).find(:xpath, '..')[:id]
       # regex to strip the ID number out of string. ID format is comment-body-4231
       comment_id_num = /comment-body-(\d+)/.match(comment_id)[1]
-      comment_dropzone_selector = '#c' + comment_id_num + 'div'
+      comment_dropzone_selector = '#comment-form-body-edit-' + comment_id_num
       # open the edit comment form
       page.find(".edit-comment-btn").click
       # drop into the edit comment form
@@ -544,7 +644,7 @@ class CommentTest < ApplicationSystemTestCase
       visit get_path(page_type, nodes(node_name).path)
       main_comment_form =  page.find('h4', text: /Post comment|Post Comment/).find(:xpath, '..') # title text on wikis is 'Post comment'
       main_comment_form.find("[data-original-title='Bold']").click
-      text_input_value = main_comment_form.find('#text-input').value
+      text_input_value = main_comment_form.find('#text-input-main').value
       assert_equal(text_input_value, '****')
     end
 

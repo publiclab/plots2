@@ -13,12 +13,14 @@
     </div>
   </div>
   <!-- defined in application_helper.rb -->
-  <% toolbar_element_id = get_toolbar_element_id(location, local_assigns[:reply_to], local_assigns[:comment_id]) %>
+  <% toolbar_element_id = get_comment_form_id(location, local_assigns[:reply_to], local_assigns[:comment_id]) %>
   <div class="btn-group mr-2">
     <a
       id="bold-button-<%= toolbar_element_id %>"
       title="Bold" 
       data-action="bold"
+      <%# to setState on editor.js %>
+      data-form-id="<%= toolbar_element_id %>" 
       data-placement="bottom" 
       data-toggle="tooltip" 
       class="bold-button btn btn-outline-secondary btn-sm rich-text-button" 
@@ -29,6 +31,8 @@
       id="italic-button-<%= toolbar_element_id %>"
       title="Italic" 
       data-action="italic"
+      <%# to setState on editor.js %>
+      data-form-id="<%= toolbar_element_id %>"
       data-placement="bottom" 
       data-toggle="tooltip" 
       class="italic-button btn btn-outline-secondary btn-sm rich-text-button" 
@@ -39,6 +43,8 @@
       id="header-button-<%= toolbar_element_id %>"
       title="Header" 
       data-action="h2"
+      <%# to setState on editor.js %>
+      data-form-id="<%= toolbar_element_id %>"
       data-placement="bottom" 
       data-toggle="tooltip" 
       class="header-button btn btn-outline-secondary btn-sm rich-text-button" 
@@ -51,9 +57,11 @@
     </a>
     <a
       id="link-button-<%= toolbar_element_id %>"
-      aria-label="Make a link" 
-      title="Make a link" 
+      aria-label="Link" 
+      title="Link" 
       data-action="link"
+      <%# to setState on editor.js %>
+      data-form-id="<%= toolbar_element_id %>"
       data-placement="bottom" 
       data-toggle="tooltip" 
       class="link-button btn btn-outline-secondary btn-sm rich-text-button" href="javascript:void(0)" 
@@ -62,15 +70,16 @@
     </a>
     <a
       id="image-upload-button-<%= toolbar_element_id %>"
-      aria-label="Upload an image" 
+      aria-label="Upload Image" 
       data-toggle="tooltip" 
-      title="Upload an image" 
+      title="Upload Image" 
       data-placement="bottom" 
       class="upload-button btn btn-outline-secondary btn-sm"
     >
-      <div id="dropzone-small-<%= toolbar_element_id %>" class="dropzone">
+      <%# data-form-id is for setState on editor.js %>
+      <div id="dropzone-small-<%= toolbar_element_id %>" class="dropzone dropzone-small" data-form-id="<%= toolbar_element_id %>">
         <span id="create_prompt" class="prompt">
-          <label class="" for="fileinput-button-<%= toolbar_element_id %>" style="margin-bottom: 0;">
+          <label class="fileinput-dropzone-label" for="fileinput-button-<%= toolbar_element_id %>" style="margin-bottom: 0;">
             <input id="fileinput-button-<%= toolbar_element_id %>" class="fileinput" type="file" name="image[photo]" accept="image/*" style="display:none;" />
             <i class="fa fa-image"></i>
             <span class="d-md-none">
@@ -85,23 +94,23 @@
   <div class="btn-group mr-2 ">
     <a
       id="save-button-<%= toolbar_element_id %>"
-      data-toggle="tooltip" 
-      title="Save" 
-      data-placement="bottom" 
-      onClick="$E.save()" 
       class="save-button btn btn-outline-secondary btn-sm"
+      title="Save" 
+      data-form-id="<%= toolbar_element_id %>" 
+      data-placement="bottom" 
+      data-toggle="tooltip" 
     >
       <i class="fa fa-save"></i>
     </a>
     <a 
       id="recover-button-<%= toolbar_element_id %>"
-      data-toggle="tooltip" 
-      title="Recover" 
-      data-placement="bottom" 
-      onClick="$E.recover()" 
       class="recover-button btn btn-outline-secondary btn-sm"
+      title="Recover" 
+      data-form-id="<%= toolbar_element_id %>" 
+      data-placement="bottom" 
+      data-toggle="tooltip" 
     >
-      Recover
+      <i class="fas fa-undo"></i>
     </a>
   </div>
 

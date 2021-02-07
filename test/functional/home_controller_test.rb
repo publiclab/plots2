@@ -141,5 +141,4 @@ class HomeControllerTest < ActionController::TestCase
     get :dashboard_v2
     assert_includes response.body, alert
   end
-
 end

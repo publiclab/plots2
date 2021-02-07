@@ -142,8 +142,6 @@ class TagController < ApplicationController
       @questions = nodes.where('node.nid IN (?)', @qids) if @node_type == 'questions'
     end
 
-    @answered_questions = []
-    @questions&.each { |question| @answered_questions << question if question.answers.any?(&:accepted) } # TODO: remove this upon refactor to remove answers code
     @wikis = nodes if @node_type == 'wiki'
     @wikis ||= []
     @nodes = nodes if @node_type == 'maps'
@@ -449,7 +447,6 @@ class TagController < ApplicationController
   end
 
   def contributors
-    # set_sidebar :tags, [params[:id]], note_count: 20
     @tagnames = [params[:id]]
     @tag = Tag.find_by(name: params[:id])
     @note_count = Tag.tagged_node_count(params[:id]) || 0

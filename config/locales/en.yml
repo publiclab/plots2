@@ -759,6 +759,10 @@ en:
     index:
       all_comments: "All Comments"
       moderated_comments: "Moderated Comments"  
+    _comments:
+      comments: "Comments"
+      status: "Status:"
+      no_comments: "No comments yet." 
   sidebar:
     _events:
       post_event: "Post an event"

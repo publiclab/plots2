@@ -55,22 +55,22 @@
 <% if @node.has_tag('sidebar:none') %>
   <%= render partial: "sidebar/none" %>
 <% else %>
-  <% if @node.has_tag('sidebar:featured') %>
-    <%= render partial: "sidebar/featured" %>
-  <% else %>
-    <%= render partial: "sidebar/related" %>
-  <% end %>
+  <%= render partial: "sidebar/related" %>
 <% end %>
 
 <script>
-(function(){
-  $("img").lazyload();
+  $(function() {
+    $("img").lazyload();
 
-  <% if @fancy %>
-    $('#content img').addClass('img-rounded');
-  <% end %>
+    <% if @fancy %>
+      $('#content img').addClass('img-rounded');
+    <% end %>
 
-  setupWiki(<%= @node.id %>, "<%= @node.title %>", <%= params[:raw] == 'true' %>, <%= current_user.nil? != true %>);
+    <% if controller.action_name == 'comments' %>
+      // create an instance of the editor
+      $E = new Editor();
+    <% end %>
 
-})()
+    setupWiki(<%= @node.id %>, "<%= @node.title %>", <%= params[:raw] == 'true' %>, <%= current_user.nil? != true %>);
+  });
 </script>

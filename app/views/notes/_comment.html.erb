@@ -54,8 +54,10 @@
       <% end %>
       <% if current_user && comment.uid == current_user.uid %>
         <a 
-          aria-label="Edit comment" 
+          aria-label="Edit Comment" 
           class="btn btn-outline-secondary btn-sm edit-comment-btn" 
+          rel="tooltip" 
+          title="Edit Comment"
           href="javascript:void(0)" onClick="
             $('#edit-comment-form-wrapper-<%= comment.cid %>').toggle();
             $('#<%= comment.cid %>-like-emojis').toggle();                               
