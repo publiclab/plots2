@@ -58,7 +58,7 @@
 //= require graph.js
 //= require simple-data-grapher.js
 //= require wikis.js
-//= require header_footer.js
+//= require headerFooter.js
 //= require keybindings.js
 //= require jquery-validation/dist/jquery.validate.js
 //= require validation.js
