@@ -433,6 +433,11 @@ class Tag < ApplicationRecord
     hash.sort_by { |_, v| v }.reverse.first(limit).to_h
   end
 
+  def update_activity_timestamp
+    self.activity_timestamp =  DateTime.now
+    save
+  end
+
   private
 
   def tids

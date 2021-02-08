@@ -54,7 +54,15 @@ class HomeController < ApplicationController
       # Tags without the blog tag and everything tag to avoid double display
       exclude_tids = Tag.where(name: %w(blog everything)).pluck(:tid)
       # Not all tags have notes, some are wikis. A text will be displayed to show this.
-      @pagy, @tag_subscriptions = pagy(current_user.subscriptions(:tag).includes(:tag).where.not(tid: exclude_tids))
+      # @pagy, @tag_subscriptions = pagy(current_user.subscriptions(:tag).includes(:tag).where.not(tid: exclude_tids))
+      @pagy, @tag_subscriptions = pagy(
+        TagSelection
+        .select('tag_selections.tid, term_data.name')
+        .where(user_id: current_user.id, following: true)
+        .where.not(tid: exclude_tids)
+        .joins("INNER JOIN term_data ON tag_selections.tid = term_data.tid")
+        .order("term_data.activity_timestamp DESC")
+      )
       @trending_tags = trending
       render template: 'dashboard_v2/dashboard'
     else
