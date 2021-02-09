@@ -1,7 +1,7 @@
 version: "2"
 services:
   db:
-    image: mariadb:10.2
+    image: mysql:5.7
     environment:
       - MYSQL_DATABASE=plots
       - MYSQL_USER=plots
