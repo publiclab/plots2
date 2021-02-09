@@ -409,7 +409,7 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_template 'editor/post'
     selector = css_select '.alert'
-    assert_equal selector.size, 1
+    assert_equal selector.size, 2
   end
 
   test 'posting note successfully with no errors using xhr (rich editor)' do
