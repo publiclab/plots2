@@ -15,7 +15,7 @@ class TagController < ApplicationController
     if params[:search]
       keyword = params[:search]
       @tags = Tag.joins(:node_tag, :node)
-        .select('MAX(term_data.count) count, ANY_VALUE(term_data.name) name, ANY_VALUE(term_data.tid) tid, ANY_VALUE(node.nid) nid, node.status, ANY_VALUE(community_tags.tid), ANY_VALUE(community_tags.date)')
+        .select('MAX(term_data.count) count, MAX(term_data.name) name, MAX(term_data.tid) tid, MAX(node.nid) nid, node.status, MAX(community_tags.tid), MAX(community_tags.date)')
         .where('node.status = ?', 1)
         .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
         .where("name LIKE :keyword", keyword: "%#{keyword}%")
@@ -25,7 +25,7 @@ class TagController < ApplicationController
         .paginate(page: params[:page], per_page: 24)
     elsif @toggle == "uses"
       @tags = Tag.joins(:node_tag, :node)
-        .select('MAX(term_data.count) count, ANY_VALUE(term_data.name) name, ANY_VALUE(term_data.tid) tid, ANY_VALUE(node.nid) nid, node.status, ANY_VALUE(community_tags.tid), ANY_VALUE(community_tags.date)')
+        .select('MAX(term_data.count) count, MAX(term_data.name) name, MAX(term_data.tid) tid, MAX(node.nid) nid, node.status, MAX(community_tags.tid), MAX(community_tags.date)')
         .where('node.status = ?', 1)
         .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
         .where(powertag_clause)
@@ -34,7 +34,7 @@ class TagController < ApplicationController
         .paginate(page: params[:page], per_page: 24)
     elsif @toggle == "name"
       @tags = Tag.joins(:node_tag, :node)
-        .select('MAX(term_data.count) count, ANY_VALUE(term_data.name) name, ANY_VALUE(term_data.tid) tid, ANY_VALUE(node.nid) nid, node.status, ANY_VALUE(community_tags.tid), ANY_VALUE(community_tags.date)')
+        .select('MAX(term_data.count) count, MAX(term_data.name) name, MAX(term_data.tid) tid, MAX(node.nid) nid, node.status, MAX(community_tags.tid), MAX(community_tags.date)')
         .where('node.status = ?', 1)
         .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
         .where(powertag_clause)
@@ -43,7 +43,7 @@ class TagController < ApplicationController
         .paginate(page: params[:page], per_page: 24)
     elsif @toggle == "followers"
       raw_tags = Tag.joins(:node_tag, :node)
-        .select('MAX(term_data.count) count, ANY_VALUE(term_data.name) name, ANY_VALUE(term_data.tid) tid, ANY_VALUE(node.nid) nid, node.status, ANY_VALUE(community_tags.tid), ANY_VALUE(community_tags.date)')
+        .select('MAX(term_data.count) count, MAX(term_data.name) name, MAX(term_data.tid) tid, MAX(node.nid) nid, node.status, MAX(community_tags.tid), MAX(community_tags.date)')
         .where('node.status = ?', 1)
         .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
         .where(powertag_clause)
@@ -52,7 +52,7 @@ class TagController < ApplicationController
       @tags = raw_tags.paginate(page: params[:page], per_page: 24)
     else
       tags = Tag.joins(:node_tag, :node)
-        .select('ANY_VALUE(node.nid), node.status, term_data.*, community_tags.*')
+        .select('MAX(node.nid), node.status, term_data.*, community_tags.*')
         .where('node.status = ?', 1)
         .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
         .where(powertag_clause)
