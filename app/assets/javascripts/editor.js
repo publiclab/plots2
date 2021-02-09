@@ -112,7 +112,7 @@ class Editor {
     $("textarea").off("input.save"); // input.save is a custom jQuery eventHandler
     const thisEditor = this; // save a reference to this editor, because inside the eventListener, "this" points to e.target
     this.textAreaElement.on("input.save", function() {
-      thisEditor.save(thisEditor) 
+      thisEditor.save(thisEditor);
     });
   }
   save(thisEditor) {
@@ -131,9 +131,6 @@ class Editor {
     }else{
       this.textAreaElement.val(this.textAreaValue+'\n\n'+this.templates[template])
     }
-  }
-  generate_preview(id,text) {
-    $('#' + id)[0].innerHTML = marked(text)
   }
   toggle_preview() {
     // if the element is part of a multi-comment page,

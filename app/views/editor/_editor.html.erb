@@ -28,8 +28,23 @@
       <span 
         id="image-upload-text-main" 
         class="uploading-text" 
-        style="display:none;">
-        Uploading...
+        style="display:none;"
+      >
+        <%= translation('comments._form.uploading') %>
+      </span>
+      <span id="choose-one-main" class="prompt choose-one-prompt-text">
+        <span style="padding-right:4px;float:left;" class="d-none d-md-inline">
+          <%= raw translation('comments._form.drag_and_drop') %>
+        </span>
+        <!-- http://stackoverflow.com/questions/11235206/twitter-bootstrap-form-file-element-upload-button -->
+        <label for="fileinput-choose-one-main">
+          <input id="fileinput-choose-one-main" type="file" name="image[photo]" style="display:none;" />
+          <a style="cursor: pointer;" class="d-none d-md-inline text-underline"><%= translation('comments._form.choose_one') %></a>
+          <span class="d-md-none">
+            <i class="fa fa-upload"></i>
+            <a><%= translation('comments._form.upload_image') %></a>
+          </span>
+        </label>
       </span>
     </p>
   </div>

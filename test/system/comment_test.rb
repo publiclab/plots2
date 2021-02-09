@@ -376,6 +376,42 @@ class CommentTest < ApplicationSystemTestCase
       assert_equal(reply_text, comment_text_reply)
       assert_equal(edit_text, comment_text_edit)
     end
+
+    test "#{page_type_string}: rich-text change and image upload work on editing FRESH comment" do
+      visit get_path(page_type, nodes(node_name).path)
+      # make a fresh comment in the main comment form
+      main_comment_form =  page.find('#comment-form-main')
+      # fill out the comment form
+      main_comment_form.find('#text-input-main')
+        .click
+        .fill_in with: comment_text
+      # publish
+      main_comment_form
+        .find('button', text: 'Publish')
+        .click
+      page.find(".noty_body", text: "Comment Added!")
+      # we need the ID of parent div that contains <p>comment_text</p>:
+      fresh_comment_id = page.find('p', text: comment_text).find(:xpath, '..')[:id]
+      # regex to strip the ID number out of string. ID format is comment-body-4231
+      fresh_comment_id_num = /comment-body-(\d+)/.match(fresh_comment_id)[1]
+      # open up the edit comment form
+      page.find(".edit-comment-btn").click
+      # click on the Bold rich-text button
+      page.find("#bold-button-edit-" + fresh_comment_id_num).click
+      # find what's in the textarea
+      edit_input_value = page.find('#text-input-edit-' + fresh_comment_id_num).value
+      # 1st assertion: check if bold (****) text is in the textarea!
+      assert_equal('****' + comment_text, edit_input_value)
+      # upload image by select
+      Capybara.ignore_hidden_elements = false
+      page.find('#fileinput-button-edit-' + fresh_comment_id_num).set("#{Rails.root.to_s}/public/images/pl.png")
+      Capybara.ignore_hidden_elements = true
+      wait_for_ajax
+      # click on comment preview button
+      page.find('#comment-form-edit-' + fresh_comment_id_num + ' a', text: 'Preview').click
+      # 2nd assertion: check if image uploaded
+      assert_selector('#comment-preview-edit-' + fresh_comment_id_num + ' img', count: 1)
+    end
   end
 
   # TESTS for ALL PAGE TYPES!

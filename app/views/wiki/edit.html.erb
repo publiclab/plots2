@@ -43,7 +43,7 @@
         <%= render partial: 'layouts/errorMessages', locals: { model: @revision } %>
         <%= render :partial => "editor/main_image" %>
 
-        <div class="col-lg-9 order-lg-1">
+        <div id="legacy-editor-container" class="col-lg-9 order-lg-1">
 
           <% if @node && @node.latest && @node.latest.title %>
             <h3><%= translation('wiki.edit.editing_page') %>: <i><%= @node.latest.title %></i></h3>
