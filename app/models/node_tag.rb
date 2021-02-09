@@ -31,7 +31,7 @@ class NodeTag < ApplicationRecord
     tag.description if tag&.description && !tag.description.empty?
   end
 
-  def update_tag_timestamp
+  def update_timestamp
     tag.update_activity_timestamp
     tag.save
   end
