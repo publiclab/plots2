@@ -766,6 +766,9 @@ en:
       formatting: "Formatting"
       notifications: "Notifications"
       email_notifications: "Author, commenters, and those who've \"liked\" this note will receive email notifications"
+    index:
+      all_comments: "All Comments"
+      moderated_comments: "Moderated Comments"  
     _comments:
       comments: "Comments"
       status: "Status:"
