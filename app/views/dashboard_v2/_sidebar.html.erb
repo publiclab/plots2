@@ -3,22 +3,19 @@
 <% if current_user %>
   <div style="margin: 2.2rem 0;">
     <a class="btn btn-lg btn-outline-secondary blurred-location-input" submit_to="/profile/tags/create/<%= current_user.uid %>"><i class="fa fa-map-marker" style="color:#c40;"></i> <%= translation('dashboard_v2.sidebar.add_location') %></a>
-    <h4 class="text-format">
+    <p><small class="form-grey">
       <%= translation('dashboard_v2.sidebar.location_work') %> |
-      <a class="text-format" style="text-decoration: underline;" href="https://publiclab.org/location-privacy" target="_blank"><%= translation('dashboard_v2.sidebar.location_privacy') %></a>
-    </h4>
+      <a class="form-grey" style="text-decoration: underline;" href="https://publiclab.org/location-privacy" target="_blank"><%= translation('dashboard_v2.sidebar.location_privacy') %></a>
+    </p></small>
   </div>
 <% end %>
 <%= render partial: 'tag/location' %>
-
-<%# All posts %>
-<h4 class="text-format" style="text-decoration: underline; margin-top: -34px;"><%= translation('dashboard_v2.sidebar.all_posts',:url => '/notes') %> </h4>
 
 <%# More Topics %>
 <div id="accordion">
   <div class="card">
     <div  id="headingOne">
-      <h4 class="mb-0">
+      <h4 class="mb-0 pt-3">
           <a class="btn btn-link" style="font-size: 1.5rem" data-toggle="collapse" data-target="#moreTopics" aria-expanded="true" aria-controls="moreTopics">
                       <%= translation('dashboard_v2.sidebar.follow_topics') %>
                       <i class="fas fa-angle-down arrow form-grey"></i>
@@ -52,7 +49,10 @@
         <%= render :partial => "tag/typeahead_search" %>
         <br/>
         <%# All topics link %>
-        <small class="text-format form-grey" style="text-decoration: underline"><%= translation('dashboard_v2.sidebar.all_topics',:url => '/wiki/topics') %> </small>
+        <small class="form-grey" style="text-decoration: underline"><%= translation('dashboard_v2.sidebar.all_topics',:url => '/wiki/topics') %> </small>
+        <br/>
+        <%# All posts %>
+        <small class="form-grey" style="text-decoration: underline; margin-top: -34px;"><%= translation('dashboard_v2.sidebar.all_posts',:url => '/notes') %> </small>
       </div>
     </div>
   </div>
