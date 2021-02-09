@@ -663,7 +663,17 @@ en:
     index:
       explanation: "Ask a question to the Public Lab community to help you in your
         environmental exploration."
-      recently_commented: Recently Commented
+      ask_question: "Ask a question here"
+      to_ask_question: "To ask a question, please"
+      log_in: "log in"
+      or: "or"
+      sign_up: "sign up"
+      first: "first"
+      recently_asked: "Recently Asked"
+      popular: "Popular"
+      unanswered: "Unanswered"
+      liked: "Liked"
+      recently_commented: "Recently Commented"
       recently_commented_questions: Recently commented questions
       popular_questions: Popular Questions
       most_viewed_questions: Most viewed questions
