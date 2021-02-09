@@ -20,9 +20,10 @@
 
   <div class="row">
     <div class="col-lg-6">
-      <h4>Ask a question here</h4>
+      <h4><%=translation('questions.index.ask_question')%></h4>
       <% if !current_user %>
-        <p>To ask a question, please <a href="/login?return_to=/questions">log in</a> or <a href="/signup?return_to=/questions">sign up</a> first.</p>
+        <p><%=translation('questions.index.to_ask_question')%><a href="/login?return_to=/questions"><%=translation('questions.index.log_in')%></a><%=translation('questions.index.or')%><a href="/signup?return_to=/questions"><%=translation('questions.index.sign_up')%></a> 
+          <%=translation('questions.index.first')%>.</p>
       <% end %>
       <form id="questions_searchform" role="search" autocomplete="off" action="/post">
         <div class="input-group">
@@ -50,27 +51,27 @@
   <ul class="nav nav-tabs">
     <li class="nav-item">
       <a class="nav-link <% if params[:action] == "index" %> active <% end %>" href="/questions/">
-        <i class="fa fa-refresh"></i> <span class="d-none d-lg-inline"> Recently Asked</span>
+        <i class="fa fa-refresh"></i> <span class="d-none d-lg-inline"><%=translation('questions.index.recently_asked')%></span>
       </a>
     </li>
     <li class="nav-item">
       <a class="nav-link <% if params[:action] == "recently_commented" %> active <% end %>" href="/questions/recently_commented/">
-        <i class="fa fa-check"></i> <span class="d-none d-lg-inline"> Recently Commented</span>
+        <i class="fa fa-check"></i> <span class="d-none d-lg-inline"><%=translation('questions.index.recently_commented')%></span>
       </a>
     </li>
     <li class="nav-item">
     <a class="nav-link <% if params[:action] == "popular" %> active <% end %>" href="/questions/popular/">
-        <i class="fa fa-bolt"></i> <span class="d-none d-lg-inline"> Popular</span>
+        <i class="fa fa-bolt"></i> <span class="d-none d-lg-inline"><%=translation('questions.index.popular')%></span>
       </a>
     </li>
     <li class="nav-item">
     <a class="nav-link <% if params[:action] == "unanswered" %> active <% end %>" href="/questions/unanswered/">
-        <i class="fa fa-question-circle"></i> <span class="d-none d-lg-inline"> Unanswered</span>
+        <i class="fa fa-question-circle"></i> <span class="d-none d-lg-inline"><%=translation('questions.index.unanswered')%></span>
       </a>
     </li>
     <li class="nav-item">
     <a class="nav-link <% if params[:action] == "liked" %> active <%end %>" href="/questions/liked/">
-        <i class="fa fa-star-o"></i> <span class="d-none d-lg-inline"> Liked</span>
+        <i class="fa fa-star-o"></i> <span class="d-none d-lg-inline"><%=translation('questions.index.liked')%></span>
       </a>
     </li>
   </ul>
