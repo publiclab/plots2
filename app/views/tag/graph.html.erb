@@ -261,9 +261,9 @@ html, body {
 
     community = jLouvain()
       .nodes(data.tagnames)
-      .edges(data.edges)
+      .edges(data.edges.map(function(a) {return a.data}))
     c_result  = community();
-//console.log(data.edges, 'result', c_result);
+    // console.log(data, 'result', c_result); // https://github.com/publiclab/plots2/issues/1502
 
     cy.nodes().forEach(function(node) {
       var index = c_result[node.id()];
