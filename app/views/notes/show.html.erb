@@ -119,6 +119,12 @@
     <% if !@preview %>
         <%= render partial: "notes/responses" %>
         <div id="legacy-editor-container"><%= render partial: "notes/comments" %></div>
+      <%= render partial: "notes/responses" %>
+      <% if @react %>
+        HELLO WORLD REACT!
+      <% else %>
+        <div id="legacy-editor-container"><%= render partial: "notes/comments" %></div>
+      <% end %>
     <% end %>
   </div>
 

@@ -61,6 +61,7 @@ class NotesController < ApplicationController
       @tags = @node.tags
       @tagnames = @tags.collect(&:name)
       @preview = false
+      @react = params[:react]
 
     else
       page_not_found
