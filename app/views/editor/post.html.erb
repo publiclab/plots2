@@ -70,6 +70,7 @@
         <% end %>
       <% end %>
 
+    <div id="legacy-editor-container" class="card-body">
       <%= form_for :revision, :as => :revision, :url => url, :html => {:class => "form well legacy-form row"} do |f| %>
 
         <%= render partial: 'layouts/errorMessages', locals: { model: @revision } if @revision.present? %>

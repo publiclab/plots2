@@ -11,4 +11,4 @@ if [ -f $pidfile ] ; then
 fi
 
 bundle exec passenger-config compile-nginx-engine
-bundle exec passenger start --max-pool-size 9 --min-instances 9 -p 4000
+bundle exec passenger start --max-pool-size 16 --min-instances 16 -p 4000
