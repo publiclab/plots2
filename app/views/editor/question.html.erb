@@ -74,7 +74,7 @@
         <%= render partial: 'layouts/errorMessages', locals: { model: @revision } if @revision.present? %>
         <%= render :partial => "editor/main_image" %>
 
-        <div class="col-lg-9 order-md-1">
+        <div id="legacy-editor-container" class="col-lg-9 order-md-1">
 
           <% if params[:template] == "question" %>
             <h3>Ask a question of the community</h3>
