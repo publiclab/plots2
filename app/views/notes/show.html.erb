@@ -121,7 +121,7 @@
         <div id="legacy-editor-container"><%= render partial: "notes/comments" %></div>
       <%= render partial: "notes/responses" %>
       <% if @react %>
-        HELLO WORLD REACT!
+        <%= react_component("HelloWorld", { greeting: "HELLO REACT!!!" }) %>
       <% else %>
         <div id="legacy-editor-container"><%= render partial: "notes/comments" %></div>
       <% end %>
