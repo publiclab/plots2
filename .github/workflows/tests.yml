@@ -40,7 +40,7 @@ jobs:
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically (not working?)
     - uses: ./.github/actions/setup-test-environment
     - name: Install JavaScript dependencies with Yarn
-      run: yarn check || yarn install;
+      run: yarn check || yarn install --frozen-lockfile;
     - name: "Functional Tests"
       env:
         RAILS_ENV: test
@@ -58,7 +58,7 @@ jobs:
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically (not working?)
     - uses: ./.github/actions/setup-test-environment
     - name: Install JavaScript dependencies with Yarn
-      run: yarn check || yarn install;
+      run: yarn check || yarn install --frozen-lockfile;
     - name: "Integration Tests"
       env:
         RAILS_ENV: test
@@ -89,7 +89,7 @@ jobs:
     - uses: nanasess/setup-chromedriver@v1.0.1
     - uses: ./.github/actions/setup-test-environment
     - name: Install JavaScript dependencies with Yarn
-      run: yarn check || yarn install;
+      run: yarn check || yarn install --frozen-lockfile;
     - name: "System Tests"
       env:
         RAILS_ENV: test
