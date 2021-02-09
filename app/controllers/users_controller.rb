@@ -134,7 +134,7 @@ class UsersController < ApplicationController
 
              else
                # recently active
-               User.select('rusers.*, ANY_VALUE(node_revisions.status), MAX(node_revisions.timestamp) AS last_updated')
+               User.select('rusers.*, MAX(node_revisions.status), MAX(node_revisions.timestamp) AS last_updated')
                             .joins("INNER JOIN `node_revisions` ON `node_revisions`.`uid` = `rusers`.`id` ")
                             .where("node_revisions.status = 1")
                             .group('rusers.id')
