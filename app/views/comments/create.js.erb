@@ -3,8 +3,21 @@
 <% else %>
   $('#comment-<%= @comment.reply_to %>-reply').before('<%= escape_javascript(render :partial => "notes/comment", :locals => {comment: @comment, answer_id: @answer_id}) %>')
 <% end %>
+// create image upload functionality for fresh comment form
+// see editorToolbar.js
+const replyFormBody = $('#comment-form-body-reply-<%= @comment.cid %>');
+const editFormBody = $('#comment-form-body-edit-<%= @comment.cid %>');
+const replyButton = $('#dropzone-small-reply-<%= @comment.cid %>');
+const editButton = $('#dropzone-small-edit-<%= @comment.cid %>');
+const replyFormOptions = getFileUploadOptions(replyFormBody, false);
+const editFormOptions = getFileUploadOptions(editFormBody, false);
+const replyButtonOptions = getFileUploadOptions(replyButton, true);
+const editButtonOptions = getFileUploadOptions(editButton, true);
+replyFormBody.fileupload(replyFormOptions);
+editFormBody.fileupload(editFormOptions);
+replyButton.fileupload(replyButtonOptions);
+editButton.fileupload(editButtonOptions);
+
 $('#answer-<%= @answer_id %>-comment-section .help-block').remove();
 notyNotification('mint', 3000, 'success', 'topRight', 'Comment Added!');
 $('#comment-count')[0].innerHTML = parseInt($('#comment-count')[0].innerHTML, 10)+1;
-
-
