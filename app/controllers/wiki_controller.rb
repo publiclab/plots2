@@ -493,7 +493,7 @@ class WikiController < ApplicationController
 
   def update_tags
     tids = NodeTag.where(nid: @node.nid).pluck(:tid)
-    Tag.update_tag_activity(tids, @node.nid)
+    Tag.update_tags_activity(tids, @node.nid)
   end
 
   def author

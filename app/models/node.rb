@@ -675,7 +675,7 @@ class Node < ActiveRecord::Base
   def update_tag_timestamp(cid)
     tids = NodeTag.where(nid: nid).pluck(:tid)
     comment_id = "c#{cid}"
-    Tag.update_tag_activity(tids, comment_id)
+    Tag.update_tags_activity(tids, comment_id)
   end
 
   def new_revision(params)

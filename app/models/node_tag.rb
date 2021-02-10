@@ -37,3 +37,5 @@ class NodeTag < ApplicationRecord
     tag.save
   end
 end
+
+unnecessary
