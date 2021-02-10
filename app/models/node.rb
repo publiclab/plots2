@@ -668,11 +668,11 @@ class Node < ActiveRecord::Base
                     message_id: params[:message_id],
                     tweet_id: params[:tweet_id])
     c.save
-    update_tag_activity(c.cid) if c.valid?
+    tag_activity(c.cid) if c.valid?
     c
   end
 
-  def update_tag_activity(cid)
+  def tag_activity(cid)
     tids = NodeTag.where(nid: nid).pluck(:tid)
     comment_id = "c#{cid}"
     Tag.update_tags_activity(tids, comment_id)
@@ -878,7 +878,6 @@ class Node < ActiveRecord::Base
 
             if node_tag.save
               saved = true
-              tag.run_count # update count of tag usage # REMEMBER The node_tag model has a callback that updates run_count
               # send email notification if there are subscribers, status is OK, and less than 1 month old
               isStatusValid = status == 3 || status == 4
               isMonthOld = created < (DateTime.now - 1.month).to_i
