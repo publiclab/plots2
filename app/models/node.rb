@@ -668,13 +668,14 @@ class Node < ActiveRecord::Base
                     message_id: params[:message_id],
                     tweet_id: params[:tweet_id])
     c.save
-    update_tag_timestamp if c.valid?
+    update_tag_timestamp(c.cid) if c.valid?
     c
   end
 
-  def update_tag_timestamp
+  def update_tag_timestamp(cid)
     tags_ids = NodeTag.where(nid: nid).pluck(:tid)
-    Tag.where(tid: tags_ids).update_all(activity_timestamp: DateTime.now)
+    comment_id = "c#{cid}"
+    Tag.where(tid: tags_ids).update_all(activity_timestamp: DateTime.now, latest_activity_nid: comment_id)
   end
 
   def new_revision(params)

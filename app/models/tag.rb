@@ -434,7 +434,7 @@ class Tag < ApplicationRecord
   end
 
   def update_activity_timestamp
-    self.activity_timestamp =  DateTime.now
+    self.activity_timestamp = DateTime.now
     save
   end
 

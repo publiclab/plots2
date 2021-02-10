@@ -33,6 +33,8 @@ class NodeTag < ApplicationRecord
 
   def update_timestamp
     tag.update_activity_timestamp
+    tag.latest_activity_nid = nid
+    # binding.pry
     tag.save
   end
 end
