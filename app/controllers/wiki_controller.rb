@@ -492,7 +492,7 @@ class WikiController < ApplicationController
   end
 
   def update_tags
-    tids = NodeTag.where(nid: @node.nid).pluck(:tid)
+    tids = @node.tag.pluck(:tid)
     Tag.update_tags_activity(tids, @node.nid)
   end
 

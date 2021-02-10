@@ -673,7 +673,7 @@ class Node < ActiveRecord::Base
   end
 
   def tag_activity(cid)
-    tids = NodeTag.where(nid: nid).pluck(:tid)
+    tids = self.tag.pluck(:tid)
     comment_id = "c#{cid}"
     Tag.update_tags_activity(tids, comment_id)
   end
