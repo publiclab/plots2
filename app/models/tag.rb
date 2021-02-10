@@ -438,6 +438,10 @@ class Tag < ApplicationRecord
     save
   end
 
+  def self.update_tag_activity(tids = [], activity_id = nil)
+    Tag.where(tid: tids).update_all(activity_timestamp: DateTime.now, latest_activity_nid: activity_id)
+  end
+
   private
 
   def tids
