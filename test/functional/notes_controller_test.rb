@@ -747,6 +747,12 @@ class NotesControllerTest < ActionController::TestCase
            body: 'Some text.',
            tags: 'event'
            }
+      # latest_activity_nid should be updated with the node nid created in all tags
+      nid = Tag.where(name: 'event').first.latest_activity_nid.to_i
+      node = Node.where(nid: nid).first
+
+      assert_equal node.title, title + lang.to_s
+      assert_equal node.latest.body, 'Some text.'
 
       assert_equal I18n.t('notes_controller.research_note_published'), flash[:notice]
     end

@@ -109,7 +109,7 @@ class WikiControllerTest < ActionController::TestCase
          body:  'This is fascinating documentation about balloon mapping.',
          tags:  'balloon-mapping,event'
          }
-    # latest_activity_nid should be updated with wiki nid created in all tags
+    # latest_activity_nid should be updated with the wiki nid created in all tags
     wiki_nid = Tag.where(name: 'balloon-mapping').first.latest_activity_nid.to_i
     wiki = Node.where(nid: wiki_nid).first
 
