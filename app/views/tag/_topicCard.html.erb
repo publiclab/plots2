@@ -16,9 +16,9 @@
             <% shown_nids << node.id %>
             <div class="node-body">
               <% if node.main_image %>
-                <img class="rounded-circle pull-left" id="profile-photo" style="width:20px; height:20px; margin-right:8px; display: inline-block;" src="<%= node.main_image.path(:default) %>" />
+                <img aria-hidden="true" class="rounded-circle pull-left" id="profile-photo" style="width:20px; height:20px; margin-right:8px; display: inline-block;" src="<%= node.main_image.path(:default) %>" />
               <% elsif node.scraped_image %>
-                <img class="rounded-circle pull-left" id="profile-photo" style="width:20px; height:20px; margin-right:8px; display: inline-block;" src="<%= node.scraped_image %>" />
+                <img aria-hidden="true" class="rounded-circle pull-left" id="profile-photo" style="width:20px; height:20px; margin-right:8px; display: inline-block;" src="<%= node.scraped_image %>" />
               <% else %>
                 <div class="circle"></div>
               <% end %>
