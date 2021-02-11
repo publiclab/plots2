@@ -240,6 +240,14 @@ html, body {
         .style('border-color', 'white');
     });
 
+    cy.on('zoom', function(e){
+      cy.nodes().style('font-size', 11/cy.zoom())
+                .style('text-outline-width', 1.5/cy.zoom())
+                .style('border-width', 3/cy.zoom())
+                // .style('width', 'mapData(weight / ' + cy.zoom() + ', ' + min + ',' + max + ', 30, 150)')
+                // .style('height', 'mapData(weight / ' + cy.zoom() + ', ' + min + ',' + max + ', 30, 150)')
+    });
+
 
     /*
     //attempt to use cytoscape native clustering
