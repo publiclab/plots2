@@ -14,17 +14,18 @@
 >
   <form 
     id="comment-form-<%= comment_form_id %>" 
-    class="comment-form" 
-    <% if location != :edit %>
-      action="/comment/create/<%= @node.nid %>"
-      data-remote="true" 
-    <% else %>
+    <% if location == :edit %>
       action = "/comment/update/<%= comment.id %>"
+      class="edit-comment-form well"
+      style="display: none;"
+    <% else %>
+      action="/comment/create/<%= @node.nid %>"
+      class="comment-form"
+      <%# data-remote="true" means the form is submitted with AJAX %>
+      <%# see https://guides.rubyonrails.org/working_with_javascript_in_rails.html#remote-elements %>
+      data-remote="true" 
     <% end %>
     method="post" 
-    <% if location == :edit %>
-      style="display: none;"
-    <% end %>
   >
     <h4 style="margin-top: 0;">
       <%= title %>
@@ -73,19 +74,22 @@
         name="body" 
         data-form-id="<%= comment_form_id %>" 
         onFocus="editing=true" 
-        aria-label="Comment Text" 
+        <% if location == :edit %>
+          aria-label="Edit Comment"
+        <% else %>
+          aria-label="Comment Text" 
+          style="
+            border: 1px solid #bbb; 
+            border-bottom-left-radius: 0; 
+            border-bottom-right-radius: 0; 
+            border-bottom: 0; 
+            padding: 10px;
+          " 
+        <% end %>
         rows="6" 
         cols="40" 
-        style="
-          border: 1px solid #bbb; 
-          border-bottom-left-radius: 0; 
-          border-bottom-right-radius: 0; 
-          border-bottom: 0; 
-          padding: 10px;
-        " 
         placeholder="<%= placeholder %>"
-        <% comment_text = location == :edit ? comment.comment : params[:body] %>
-      ><%= comment_text %></textarea>
+      ><%= location == :edit ? comment.comment : params[:body] %></textarea>
       <div class="imagebar">
         <div 
           id="image-upload-progress-container-<%= comment_form_id %>" 
@@ -152,14 +156,17 @@
       style="background: white; display: none;"
     >
     </div>
-    <script>
-      $D = {
-        uid: <%= current_user.uid if current_user %>,
-        type: 'comment'
-      };
-    </script>
-    <script src="/emoji.js" type="text/javascript"></script>
-    <script src="/assets/atwho_autocomplete.js" type="text/javascript"></script>
+    <% if location != :edit %>
+      <script>
+        $D = {
+          uid: <%= current_user.uid if current_user %>,
+          type: 'comment'
+        };
+      </script>
+      <script src="/emoji.js" type="text/javascript"></script>
+      <%# if this script runs on the edit form, it will blank out the value of #text-input-edit-123 %>
+      <script src="/assets/atwho_autocomplete.js" type="text/javascript"></script>
+    <% end %>
     <div class="control-group">
       <button 
         type="submit" 
