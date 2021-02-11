@@ -278,6 +278,9 @@ class NotesControllerTest < ActionController::TestCase
       email = ActionMailer::Base.deliveries.last
       assert_equal '[PublicLab] ' + title + ' (#' + Node.last.id.to_s + ') ', email.subject
       assert_equal 1, Node.last.status
+      # Tag count should increase
+      tag = Node.last.tag.first
+      assert_equal 1, tag.count
       assert_redirected_to '/notes/' + users(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
     end
   end
