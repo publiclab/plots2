@@ -54,6 +54,9 @@
     <% locals[:reply_to] = reply_to if location == :reply %>
     <% locals[:comment_id] = comment.id.to_s if comment %>
     <%= render :partial => "editor/toolbar", :locals => locals %>
+    <% if local_assigns[:reply_to].present? %>
+      <%= hidden_field_tag :reply_to, local_assigns[:reply_to] %>
+    <% end %>
     <!-- the following div is where users can upload images via drag & drop -->
     <!-- it is also toggled when user previews their comment -->
     <div 
