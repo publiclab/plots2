@@ -392,6 +392,7 @@ class Tag < ApplicationRecord
         .group(:tid)
         .where('node.status': 1)
         .where('term_data.name NOT LIKE (?)', '%:%')
+        .where.not(name: 'first-time-poster')
         .order(count: :desc)
         .limit(limit).each do |tag|
         data["tags"] << {
