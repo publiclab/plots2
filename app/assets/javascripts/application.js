@@ -53,7 +53,7 @@
 //= require users.js
 //= require searchform.js
 //= require tagging.js
-//= require leaflet_helper
+//= require leafletHelper
 //= require grids.js
 //= require graph.js
 //= require simple-data-grapher.js
