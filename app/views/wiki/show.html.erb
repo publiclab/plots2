@@ -30,7 +30,7 @@
       <%= feature("alert-#{@node.power_tag('alert')}") %>
     <% end %>
 
-    <div class="tab-pane active" id="tab-overview">
+    <div id="legacy-editor-container" class="tab-pane active">
       <% if controller.action_name == 'comments' %>
         <%= render partial: "notes/comments", :locals => {:nodes => @nodes} %>
       <% else %>
@@ -55,11 +55,7 @@
 <% if @node.has_tag('sidebar:none') %>
   <%= render partial: "sidebar/none" %>
 <% else %>
-  <% if @node.has_tag('sidebar:featured') %>
-    <%= render partial: "sidebar/featured" %>
-  <% else %>
-    <%= render partial: "sidebar/related" %>
-  <% end %>
+  <%= render partial: "sidebar/related" %>
 <% end %>
 
 <script>
