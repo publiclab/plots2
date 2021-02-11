@@ -1,7 +1,7 @@
 /**
   This javascript contains the page-specific functionality for the advanced search page.  This script is included via the tag on the advanced.html.erb page as follows:
 
-  <% content_for (:head) { javascript_include_tag "advanced_search" } %>
+  <% content_for (:head) { javascript_include_tag "advancedSearch" } %>
 
   To expand on the capabilities, either add more script here or add the functionality to another script and add the values to the tag above.
 
