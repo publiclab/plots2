@@ -3,7 +3,7 @@
 
   <h2>Upload an image</h2>
 
-  <%= f.error_messages %>
+  <%= render partial: 'layouts/errorMessages', locals: { model: @image } %>
 
   <p><%= f.file_field :photo %></p>
 
