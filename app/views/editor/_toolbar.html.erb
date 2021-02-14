@@ -65,6 +65,7 @@
       data-placement="bottom" 
       data-toggle="tooltip" 
       class="link-button btn btn-outline-secondary btn-sm rich-text-button" href="javascript:void(0)" 
+      style="color: #6c757d;"
     >
       <i class="fa fa-link"></i>
     </a>
@@ -79,7 +80,7 @@
       <%# data-form-id is for setState on editor.js %>
       <div id="dropzone-small-<%= toolbar_element_id %>" class="dropzone dropzone-small" data-form-id="<%= toolbar_element_id %>">
         <span id="create_prompt" class="prompt">
-          <label class="fileinput-dropzone-label" for="fileinput-button-<%= toolbar_element_id %>" style="margin-bottom: 0;">
+          <label class="fileinput-dropzone-label" for="fileinput-button-<%= toolbar_element_id %>" style="margin-bottom: 0; cursor: pointer;">
             <input id="fileinput-button-<%= toolbar_element_id %>" class="fileinput" type="file" name="image[photo]" accept="image/*" style="display:none;" />
             <i class="fa fa-image"></i>
             <span class="d-md-none">
@@ -124,6 +125,7 @@
       class="help-button btn btn-outline-secondary btn-sm" 
       target="_blank" 
       href="/wiki/authoring-help"
+      style="color: #6c757d;"
     >
       <i class="fa fa-question-circle"></i>
     </a>
