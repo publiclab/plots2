@@ -1,6 +1,8 @@
 $(function() {
+  // attach AJAX eventHandlers to comment forms for form submission
+  // EXCEPT for edit comment forms (those don't use AJAX form submission)
   $('.comment-form').each(function() {
-    if(!$(this).hasClass('bound-success')) {
+    if(!$(this).hasClass('bound-success') && !$(this).hasClass('edit-comment-form')) {
       $(this).addClass('bound-success').on('ajax:success', function(e, data, status, xhr){
         $(this).find('.text-input').prop('disabled',false);
         $(this).find('.text-input').val('');
@@ -12,7 +14,7 @@ $(function() {
       });
     }
 
-    if(!$(this).hasClass('bound-beforeSend')) {
+    if(!$(this).hasClass('bound-beforeSend') && !$(this).hasClass('edit-comment-form')) {
       $(this).addClass('bound-beforeSend').on('ajax:beforeSend', function(event){
         $(this).find(".text-input").prop('disabled',true)
         $(this).find('.text-input').val('');
@@ -20,7 +22,7 @@ $(function() {
       });
     }
 
-    if(!$(this).hasClass('bound-error')) {
+    if(!$(this).hasClass('bound-error') && !$(this).hasClass('edit-comment-form')) {
       $(this).addClass('bound-error').on('ajax:error', function(e,response){
         notyNotification('mint', 3000, 'error', 'topRight', 'Some error occured while adding comment');
         $(this).find('.text-input').prop('disabled',false);
@@ -31,7 +33,7 @@ $(function() {
       });
     }
 
-    if(!$(this).hasClass('bound-keypress')) {
+    if(!$(this).hasClass('bound-keypress') && !$(this).hasClass('edit-comment-form')) {
       $(this).addClass('bound-keypress');
 
       $(this).find('.text-input').val('');

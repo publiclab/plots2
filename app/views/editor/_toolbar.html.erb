@@ -1,17 +1,4 @@
 <div class="btn-toolbar" style="margin-bottom:8px;">
-  <div class="dropdown mr-2">
-    <div class="d-md-none d-lg-inline">
-      <a class="btn btn-outline-secondary btn-sm dropdown-toggle" data-toggle="dropdown" href="#" >
-        Templates
-        <span class="caret"></span>
-      </a>
-      <div class="dropdown-menu">
-        <a class="dropdown-item" onClick="$E.apply_template('default')">Default</a>
-        <a class="dropdown-item" onClick="$E.apply_template('support')">Request help</a>
-        <a class="dropdown-item" onClick="$E.apply_template('event')">Post an event</a>
-      </div>
-    </div>
-  </div>
   <!-- defined in application_helper.rb -->
   <% toolbar_element_id = get_comment_form_id(location, local_assigns[:reply_to], local_assigns[:comment_id]) %>
   <div class="btn-group mr-2">

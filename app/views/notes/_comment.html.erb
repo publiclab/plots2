@@ -59,7 +59,7 @@
           rel="tooltip" 
           title="Edit Comment"
           href="javascript:void(0)" onClick="
-            $('#edit-comment-form-wrapper-<%= comment.cid %>').toggle();
+            $('#comment-form-wrapper-edit-<%= comment.cid %>').toggle();
             $('#<%= comment.cid %>-like-emojis').toggle();                               
             $('#comment-form-edit-<%= comment.cid %>').toggle();
             $('#c<%= comment.cid %>show').toggle();
@@ -210,9 +210,16 @@
   </div>
 
   <% if current_user %>
-    <% h = { title: I18n.t('notes._comment.edit_comment'), comment: comment, placeholder: I18n.t('notes._comment.edit_placeholder') } %>
+    <% 
+      h = { 
+        title: I18n.t('notes._comment.edit_comment'), 
+        comment: comment, 
+        location: :edit,
+        placeholder: I18n.t('notes._comment.edit_placeholder')
+      } 
+    %>
     <% h[:is_answer] = true if local_assigns[:is_answer] %>
-    <%=  render :partial => "comments/edit", :locals => h %>
+    <%=  render :partial => "comments/form", :locals => h %>
   <% end %>
   <br />
 
