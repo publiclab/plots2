@@ -33,7 +33,7 @@ Rails.application.config.assets.precompile += [
   'user_tags.css.scss',
   'wiki.css',
   'horsey.js',
-  'atwho_autocomplete.js',
+  'atWhoAutoComplete.js',
   'asyncTagSubscriptions.js',
   'cable.js',
   'spam2.css',
