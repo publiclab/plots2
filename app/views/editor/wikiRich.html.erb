@@ -15,25 +15,24 @@
 
 <script src="/lib/publiclab-editor/dist/PublicLab.Editor.js"></script>
 
-<div class="container">
-
-  <!-- Modal -->
-  <div class="modal fade" id="wikiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
+<% if @is_new %>
+  <div class="container">
+    <div class="modal fade" id="wikiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
         
-        <div class="modal-body"> 
-          <h1> Content from the feature will be added here! </h1>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-link" data-dismiss="modal"><u>Skip template</u></button>
-        </div>
+          <div class="modal-body"> 
+            <h1> Content from the feature will be added here! </h1>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-link" data-dismiss="modal"><u>Skip template</u></button>
+          </div>
        
+        </div>
       </div>
     </div>
   </div>
-
-</div>
+<% end %>
 
 <div class="pl-editor">
 
