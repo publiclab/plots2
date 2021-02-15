@@ -3,6 +3,7 @@
 <% shown_nids = [@blog.nid] %>
 <% subscriptions.each do |subscription| %>
   <% tag_name = subscription.tagname %>
+  <% latest_activity_nid = subscription.tag.latest_activity_nid %>
   <% notes = Tag.find_nodes_by_type(tag_name, type = 'note', limit = 3).where.not(nid: shown_nids)  %>
     <% if notes.present?  %> <%# Topics without notes will not be displayed. If pagination shows many empty pages, refer to https://github.com/publiclab/plots2/issues/8964#issuecomment-763303076 %>
       <div class="card-view pt-5">
@@ -53,6 +54,10 @@
               <% wiki_count = post_count(tag_name, 'page') %>
               <a style="padding-top:15px;text-decoration:underline;color:#808080;display:inline-block;" href="/tag/<%= tag_name %>"><%= note_count %> <% if note_count > 1 %> <%= translation('tag.index.post').pluralize %> <% else %> <%= translation('tag.index.post') %> <% end %></a> |
               <a style="text-decoration:underline;color:#808080;display:inline-block;" href="/wiki/<%= tag_name %>"><%= wiki_count %><% if wiki_count > 1 %> <%= translation('tag.index.wiki').pluralize %> <% else %> <%= translation('tag.index.wiki') %> <% end %></a>
+              <% if latest_activity_nid.start_with?('c') %>
+                |
+                &#8226; <a style="text-decoration:underline;color:#808080;display:inline-block;" href="/comments/"> <%= translation('dashboard_v2.dashboard.new_comment')%></a>
+              <% end %>
               <div id="new-post" style="float:right;margin:10px 0 10px 10px;">
                 <% if current_user %>
                   <a rel="tooltip" title="<%= translation('sidebar._post_button.share_your_work') %>" data-placement="bottom" href="/post?tags=<%= tag_name %>" class="btn btn-primary btn-sm requireLogin"><%= translation('tag.show.new_post') %> <i class="fa fa-plus fa-white"></i></a>
