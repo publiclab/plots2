@@ -71,6 +71,7 @@
       $E = new Editor();
       // attach tooltips to comment buttons
       $('[data-toggle="tooltip"]').tooltip();
+      $('[rel="tooltip"]').tooltip();
     <% end %>
 
     setupWiki(<%= @node.id %>, "<%= @node.title %>", <%= params[:raw] == 'true' %>, <%= current_user.nil? != true %>);
