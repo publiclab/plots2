@@ -109,7 +109,12 @@ class WikiControllerTest < ActionController::TestCase
          body:  'This is fascinating documentation about balloon mapping.',
          tags:  'balloon-mapping,event'
          }
+    # latest_activity_nid should be updated with the wiki nid created in all tags
+    wiki_nid = Tag.where(name: 'balloon-mapping').first.latest_activity_nid.to_i
+    wiki = Node.where(nid: wiki_nid).first
 
+    assert_equal wiki.title, title
+    assert_equal wiki.latest.body, 'This is fascinating documentation about balloon mapping.'
     assert_redirected_to '/wiki/' + title.parameterize
   end
 
@@ -173,7 +178,10 @@ class WikiControllerTest < ActionController::TestCase
     newtitle = 'New Title'
 
     post :update, params: { id: wiki.nid, uid: users(:bob).id, title: newtitle, body: 'Editing about Page' }
+    # latest_activity_nid should be updated in all tags related to the wiki
+    latest_activity_nid = wiki.tag.first.latest_activity_nid.to_i
 
+    assert_equal latest_activity_nid, wiki.nid
     assert_redirected_to wiki.path
     assert_equal flash[:notice], 'Edits saved.'
   end

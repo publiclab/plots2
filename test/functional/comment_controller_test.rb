@@ -44,9 +44,18 @@ class CommentControllerTest < ActionController::TestCase
 
   test 'should create note comments' do
     UserSession.create(users(:bob))
+    node = nodes(:one)
     assert_difference 'Comment.count' do
-      post :create, params: { id: nodes(:one).nid, body: '[notes:awesome]' }, xhr: true
+      post :create, params: { id: node.nid, body: '[notes:awesome]' }, xhr: true
     end
+
+    # latest_activity_nid for the node should be updated with the comment id in the format 'c_comment_id'
+    cid = Comment.where(comment: '[notes:awesome]').first.cid
+    expected_activity_nid = "c#{cid}"
+    node_tid = node.tag.first.tid
+    returned_activity_nid = Tag.where(tid: node_tid).first.latest_activity_nid
+
+    assert_equal expected_activity_nid, returned_activity_nid
     assert_response :success
     assert_not_nil :comment
     assert_template partial: 'notes/_comment'

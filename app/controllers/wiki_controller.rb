@@ -486,9 +486,14 @@ class WikiController < ApplicationController
         @node.main_image_id = img.id
         img.save
       end
-
       @node.save
+      update_tags if @node.valid?
     end
+  end
+
+  def update_tags
+    tids = @node.tag.pluck(:tid)
+    Tag.update_tags_activity(tids, @node.nid)
   end
 
   def author

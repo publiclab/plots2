@@ -278,6 +278,9 @@ class NotesControllerTest < ActionController::TestCase
       email = ActionMailer::Base.deliveries.last
       assert_equal '[PublicLab] ' + title + ' (#' + Node.last.id.to_s + ') ', email.subject
       assert_equal 1, Node.last.status
+      # Tag count should increase
+      tag = Node.last.tag.first
+      assert_equal 1, tag.count
       assert_redirected_to '/notes/' + users(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
     end
   end
@@ -747,6 +750,12 @@ class NotesControllerTest < ActionController::TestCase
            body: 'Some text.',
            tags: 'event'
            }
+      # latest_activity_nid should be updated with the node nid created in all tags
+      nid = Tag.where(name: 'event').first.latest_activity_nid.to_i
+      node = Node.where(nid: nid).first
+
+      assert_equal node.title, title + lang.to_s
+      assert_equal node.latest.body, 'Some text.'
 
       assert_equal I18n.t('notes_controller.research_note_published'), flash[:notice]
     end
