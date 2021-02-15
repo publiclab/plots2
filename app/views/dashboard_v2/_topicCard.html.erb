@@ -54,7 +54,7 @@
               <% wiki_count = post_count(tag_name, 'page') %>
               <a style="padding-top:15px;text-decoration:underline;color:#808080;display:inline-block;" href="/tag/<%= tag_name %>"><%= note_count %> <% if note_count > 1 %> <%= translation('tag.index.post').pluralize %> <% else %> <%= translation('tag.index.post') %> <% end %></a> |
               <a style="text-decoration:underline;color:#808080;display:inline-block;" href="/wiki/<%= tag_name %>"><%= wiki_count %><% if wiki_count > 1 %> <%= translation('tag.index.wiki').pluralize %> <% else %> <%= translation('tag.index.wiki') %> <% end %></a>
-              <% if latest_activity_nid.start_with?('c') %>
+              <% if latest_activity_nid&.start_with?('c') %>
                 |
                 &#8226; <a style="text-decoration:underline;color:#808080;display:inline-block;" href="/comments/"> <%= translation('dashboard_v2.dashboard.new_comment')%></a>
               <% end %>
