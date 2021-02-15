@@ -8,7 +8,7 @@ class NodeTag < ApplicationRecord
   has_many :tag_selections, foreign_key: 'tid'
   accepts_nested_attributes_for :tag
 
-  after_create :update_count
+  after_create :update_count, :update_activity
   after_destroy :update_count
 
   def update_count
@@ -29,5 +29,11 @@ class NodeTag < ApplicationRecord
 
   def description
     tag.description if tag&.description && !tag.description.empty?
+  end
+
+  def update_activity
+    tag.activity_timestamp = DateTime.now
+    tag.latest_activity_nid = nid
+    tag.save
   end
 end
