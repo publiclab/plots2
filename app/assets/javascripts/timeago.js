@@ -1,6 +1,6 @@
 // Function by caiotarifa: https://gist.github.com/caiotarifa/30ae974f2293c761f3139dd194abd9e5
 //
-// using this function instead of distance_of_time_in_words in Ruby for the map popups calculation in leaflet_helper.js
+// using this function instead of distance_of_time_in_words in Ruby for the map popups calculation in leafletHelper.js
 
 var TimeAgo = (function() {
     var self = {};
