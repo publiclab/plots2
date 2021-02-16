@@ -121,7 +121,20 @@
         <div id="legacy-editor-container"><%= render partial: "notes/comments" %></div>
       <%= render partial: "notes/responses" %>
       <% if @react %>
-        <%= react_component("HelloWorld", { greeting: "HELLO REACT!!!" }) %>
+        <% comments = @node.comments_viewable_by(current_user).includes([:replied_comments, :node]).order('timestamp ASC').to_a %>
+        <%# run rails methods on comments %>
+        <%# can't access rails methods within %>
+        <% comments.collect! do |comment| %>
+          <% comment_body = comment.render_body %>
+          <% comment_text = raw insert_extras(filtered_comment_body(comment_body)) %>
+          <% comment = comment.as_json %>
+          <% comment.merge({ "commentText" => comment_text }) %>
+        <% end %>
+        
+        <%= react_component("CommentsContainer", { 
+          comments: comments,
+          commentsHeaderText: translation('notes._comments.comments')
+        }) %>
       <% else %>
         <div id="legacy-editor-container"><%= render partial: "notes/comments" %></div>
       <% end %>
