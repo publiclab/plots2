@@ -354,6 +354,7 @@ en:
       by: "by"
       new_user: "Welcome! To improve your feed, follow the trending and featured topics linked below."
       more_topics: "To improve your feed, follow the trending and featured topics linked below."
+      new_comment: "new comment"
     sidebar:
       add_location: "Add your location"
       location_work: "Add your location to see work near you"
