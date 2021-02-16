@@ -279,3 +279,8 @@ question_with_multiple_comments: # another question for testing comments
   tid: 35
   uid: 2
   nid: 40
+
+sub_tag:
+  tid: 37
+  nid: 1
+  uid: 2

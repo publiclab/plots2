@@ -56,10 +56,10 @@
         <a 
           aria-label="Edit Comment" 
           class="btn btn-outline-secondary btn-sm edit-comment-btn" 
-          rel="tooltip" 
+          data-toggle="tooltip" 
           title="Edit Comment"
           href="javascript:void(0)" onClick="
-            $('#edit-comment-form-wrapper-<%= comment.cid %>').toggle();
+            $('#comment-form-wrapper-edit-<%= comment.cid %>').toggle();
             $('#<%= comment.cid %>-like-emojis').toggle();                               
             $('#comment-form-edit-<%= comment.cid %>').toggle();
             $('#c<%= comment.cid %>show').toggle();
@@ -69,16 +69,16 @@
         </a>
       <% end %>
       <% if current_user &. can_moderate? %>
-        <a aria-label="Mark Spam" rel="tooltip" title="Mark Spam: Remove Comment and Ban User" class="btn btn-sm btn-outline-secondary btn-flag-spam-<%= comment.id %>" data-confirm="Are you sure? The user will no longer be able to log in or publish, and their content will be hidden except comments." href="/admin/mark_comment_spam/<%= comment.id %>">
+        <a aria-label="Mark Spam" data-toggle="tooltip" title="Mark Spam: Remove Comment and Ban User" class="btn btn-sm btn-outline-secondary btn-flag-spam-<%= comment.id %>" data-confirm="Are you sure? The user will no longer be able to log in or publish, and their content will be hidden except comments." href="/admin/mark_comment_spam/<%= comment.id %>">
           <i class="fa fa-ban"></i>
         </a>
       <% else %>
-        <a aria-label="Flag as spam" rel="tooltip" title="Flag as spam to moderators" class="btn btn-sm btn-outline-secondary btn-flag-spam-<%= comment.id %>" href="/moderate/flag_comment/<%= comment.id %>" data-toggle="tooltip" data-placement="top" title="Flag this Comment">
+        <a aria-label="Flag as spam" data-toggle="tooltip" title="Flag as spam to moderators" class="btn btn-sm btn-outline-secondary btn-flag-spam-<%= comment.id %>" href="/moderate/flag_comment/<%= comment.id %>" data-toggle="tooltip" data-placement="top" title="Flag this Comment">
           <i class="fa fa-flag"></i>
         </a>
       <% end %>
       <% if logged_in_as(['admin', 'moderator']) || (current_user && (comment.uid == current_user.uid || comment.parent.uid == current_user.uid)) %>
-        <a aria-label="Delete Comment" rel="tooltip" title="Delete Comment" class="btn btn-outline-secondary btn-sm" id="c<%= comment.cid %>delete-btn">
+        <a aria-label="Delete Comment" data-toggle="tooltip" title="Delete Comment" class="btn btn-outline-secondary btn-sm" id="c<%= comment.cid %>delete-btn">
           <i class='icon fa fa-trash'></i>
         </a>
       <% end %>
@@ -132,13 +132,9 @@
         }
       });
     });
-
-    $(function () {
-      $('[data-toggle="tooltip"]').tooltip()
-    })
   </script>
 
-  <div style="border: 1px solid #e7e7e7;padding: 18px;" id="c<%= comment.cid %>show">
+  <div style="border: 1px solid #e7e7e7;padding: 36px;" id="c<%= comment.cid %>show">
 
     <% comment_body = comment.render_body %>
     <div class="comment-body" id="comment-body-<%= comment.cid %>">
@@ -210,9 +206,16 @@
   </div>
 
   <% if current_user %>
-    <% h = { title: I18n.t('notes._comment.edit_comment'), comment: comment, placeholder: I18n.t('notes._comment.edit_placeholder') } %>
+    <% 
+      h = { 
+        title: I18n.t('notes._comment.edit_comment'), 
+        comment: comment, 
+        location: :edit,
+        placeholder: I18n.t('notes._comment.edit_placeholder')
+      } 
+    %>
     <% h[:is_answer] = true if local_assigns[:is_answer] %>
-    <%=  render :partial => "comments/edit", :locals => h %>
+    <%=  render :partial => "comments/form", :locals => h %>
   <% end %>
   <br />
 

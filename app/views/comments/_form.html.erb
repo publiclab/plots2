@@ -1,118 +1,186 @@
+<!-- comment is false in reply & main comment forms; defined for edit forms -->
+<% comment_id_string = comment ? comment.id.to_s : nil %>
 <!-- get_comment_form_id defined in app/helpers/application_helper.rb: -->
-<% comment_form_id = get_comment_form_id(location, local_assigns[:reply_to], nil) %>
-<div class="comment-form-wrapper card-body" style="background-color:#f8f8f8; border: 1px solid #e7e7e7;padding: 18px;">
-  <form id="comment-form-<%= comment_form_id %>" class="comment-form" data-remote="true" action="/comment/create/<%= @node.nid %><%= "?type=question" if local_assigns[:type]=="question" %>" <% if local_assigns[:aid].blank? %>method="post"<% end %>>
-    <% if current_user && current_user.id == @node.uid %>
-      <span class="pull-right" style="color:#ccc;">
-        <a target="_blank" href="https://publiclab.org/comment-templates">Add a template</a>
-      </span>
+<% comment_form_id = get_comment_form_id(location, local_assigns[:reply_to], comment_id_string) %>
+<div 
+  id="comment-form-wrapper-<%= comment_form_id %>" 
+  class="bg-light card card-body comment-form-wrapper"
+  style="
+    background-color: #f8f8f8; 
+    border: 1px solid #e7e7e7;
+    padding: 36px;
+    <%= "display: none" if location == :edit  %>
+  "
+>
+  <form 
+    id="comment-form-<%= comment_form_id %>" 
+    <% if location == :edit %>
+      action = "/comment/update/<%= comment.id %>"
+      class="edit-comment-form well"
+      style="display: none;"
+    <% else %>
+      action="/comment/create/<%= @node.nid %>"
+      class="comment-form"
+      <%# data-remote="true" means the form is submitted with AJAX %>
+      <%# see https://guides.rubyonrails.org/working_with_javascript_in_rails.html#remote-elements %>
+      data-remote="true" 
     <% end %>
-    <h4 style="margin-top:0;"><%= title %></h4>
+    method="post" 
+  >
+    <h4 style="margin-top: 0;">
+      <%= title %>
+    </h4>
+    <input 
+      type="hidden" 
+      name="authenticity_token" 
+      value="<%= form_authenticity_token %>"
+    />
     <style>
       .imagebar {
-        width:100%;
+        width: 100%;
       }
       #new_contributor_msg {
-        background-color:#C3CCE7;
+        background-color: #C3CCE7;
         font-size: 14px;
         padding: 5px;
         padding-top: 10px;
       }
     </style>
     <!-- location: for creating unique .dropzone IDs -->
-    <!-- this view is used for: main comment form, replies to comments, and 'responses' -->
+    <!--   can be :edit, :reply, :main, or :responses -->
     <!-- if location == reply, toolbar needs reply_to for dropzone IDs -->
-    <% locals = (location == :reply) ? 
-      { :location => location, :reply_to => reply_to } : 
-      { :location => location } 
-    %>
+    <% locals = {} %>
+    <% locals[:location] = location %>
+    <% locals[:reply_to] = reply_to if location == :reply %>
+    <% locals[:comment_id] = comment.id.to_s if comment %>
     <%= render :partial => "editor/toolbar", :locals => locals %>
-
     <% if local_assigns[:reply_to].present? %>
       <%= hidden_field_tag :reply_to, local_assigns[:reply_to] %>
     <% end %>
-
-    <!-- most comment forms have two dropzones: 1) small button, 2) large form that covers textarea -->
-    <!-- this is the large dropzone -->
-    <div id="comment-form-body-<%= comment_form_id %>" class="comment-face form-group dropzone dropzone-large" data-form-id="<%= comment_form_id %>">
-      <%
-        body = body || params[:body]
-        # Look for comment templates
-        if params[:body].nil? && @node && @node.has_power_tag('comment-template')
-          body = Node.find_by(slug: @node.power_tag('comment-template')).try(:body)
-        end
-      %>
-      <% if is_new_contributor %>
+    <!-- the following div is where users can upload images via drag & drop -->
+    <!-- it is also toggled when user previews their comment -->
+    <div 
+      id="comment-form-body-<%= comment_form_id %>"
+      class="comment-form-body form-group dropzone dropzone-large"
+      data-form-id="<%= comment_form_id %>"
+    >
+      <% if location != :edit && is_new_contributor %>
         <div id="new_contributor_msg">
           <% cache('feature_welcome-msg', skip_digest: true) do %>
           <%= feature("welcome-msg") %>
           <% end %>
         </div>
       <% end %>
-      <textarea 
+      <textarea
         id="text-input-<%= comment_form_id %>" 
         class="form-control text-input" 
         name="body" 
         data-form-id="<%= comment_form_id %>" 
         onFocus="editing=true" 
-        aria-label="Comment Text" 
-        style="border: 1px solid #bbb;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-bottom: 0;padding: 10px;" 
+        <% if location == :edit %>
+          aria-label="Edit Comment"
+        <% else %>
+          aria-label="Comment Text" 
+          style="
+            border: 1px solid #bbb; 
+            border-bottom-left-radius: 0; 
+            border-bottom-right-radius: 0; 
+            border-bottom: 0; 
+            padding: 10px;
+          " 
+        <% end %>
         rows="6" 
         cols="40" 
-        placeholder="<%= placeholder %>"><%= body %>
-      </textarea>
+        placeholder="<%= placeholder %>"
+      ><%= location == :edit ? comment.comment : params[:body] %></textarea>
       <div class="imagebar">
         <div 
-          id="image-upload-progress-container-<%= comment_form_id %>"
-          style="display:none;" 
+          id="image-upload-progress-container-<%= comment_form_id %>" 
+          <%# has classes active pull-right in edit form %>
           class="progress progress-bar-container float-right"
+          style="display: none;" 
         >
           <div 
-            id="image-upload-progress-bar-<%= comment_form_id %>"
+            id="image-upload-progress-bar-<%= comment_form_id %>" 
             class="progress-bar progress-bar-striped progress-bar-animated" 
-            style="width: 0%;">
+            style="width: 0%;"
+          >
           </div>
         </div>
         <p>
-          <span 
+          <span
             id="image-upload-text-<%= comment_form_id %>" 
-            class="uploading-text" 
-            style="display:none;"
+            class="uploading uploading-text" 
+            style="display: none;"
           >
             <%= translation('comments._form.uploading') %>
           </span>
-          <span id="choose-one-<%= comment_form_id %>" class="prompt choose-one-prompt-text">
-            <span style="padding-right:4px;float:left;" class="d-none d-md-inline">
+          <span 
+            id="choose-one-<%= comment_form_id %>" 
+            class="prompt choose-one-prompt-text"
+          >
+            <span 
+              class="d-none d-md-inline hidden-xs"
+              style="padding-right: 4px; float: left;"
+            >
               <%= raw translation('comments._form.drag_and_drop') %>
             </span>
             <!-- http://stackoverflow.com/questions/11235206/twitter-bootstrap-form-file-element-upload-button -->
-            <label for="fileinput-choose-one-<%= comment_form_id %>">
-              <input id="fileinput-choose-one-<%= comment_form_id %>" type="file" name="image[photo]" style="display:none;" />
-              <a style="cursor: pointer;" class="d-none d-md-inline text-underline"><%= translation('comments._form.choose_one') %></a>
-              <span class="d-md-none">
+            <label
+              id="fileinput-choose-one-label-<%= comment_form_id %>"
+              for="fileinput-choose-one-<%= comment_form_id %>"
+            >
+              <input 
+                id="fileinput-choose-one-<%= comment_form_id %>" 
+                type="file" 
+                name="image[photo]" 
+                style="display: none;" 
+              />
+              <a 
+                class="d-none d-md-inline hidden-xs text-underline" 
+                style="cursor: pointer;" 
+              >
+                <%= translation('comments._form.choose_one') %>
+              </a>
+              <span class="visible-xs d-md-none">
                 <i class="fa fa-upload"></i>
-                <a><%= translation('comments._form.upload_image') %></a>
+                <a>
+                  <%= translation('comments._form.upload_image') %>
+                </a>
               </span>
             </label>
           </span>
         </p>
       </div>
     </div>
-    <div id="comment-preview-<%= comment_form_id %>" class="comment-preview" style="background: white; display: none;">
+    <div 
+      id="comment-preview-<%= comment_form_id %>" 
+      class="comment-preview well col-md-11" 
+      style="background: white; display: none;"
+    >
     </div>
-    <script>
-      $D = {
-        uid: <%= current_user.uid if current_user %>,
-        type: 'comment'
-      };
-    </script>
-    <script src="/emoji.js" type="text/javascript"></script>
-    <script src="/assets/atwho_autocomplete.js" type="text/javascript"></script>
-
+    <% if location != :edit %>
+      <script>
+        $D = {
+          uid: <%= current_user.uid if current_user %>,
+          type: 'comment'
+        };
+      </script>
+      <script src="/emoji.js" type="text/javascript"></script>
+      <!-- if this script runs on the edit form, it will blank out the value of #text-input-edit-123 -->
+      <script src="/assets/atWhoAutoComplete.js" type="text/javascript"></script>
+    <% end %>
     <div class="control-group">
-      <button type="submit" class="btn btn-primary"><%= translation('comments._form.publish') %></button>
+      <button 
+        type="submit" 
+        class="btn btn-primary"
+      >
+        <%= translation('comments._form.publish') %>
+      </button>
       <a 
-        class="btn btn-outline-secondary preview-btn" id="toggle-preview-button-<%= comment_form_id %>" data-previewing-text="Hide Preview" 
+        id="toggle-preview-button-<%= comment_form_id %>" 
+        class="btn btn-default btn-outline-secondary preview-btn" 
+        data-previewing-text="Hide Preview" 
         onClick="
           $E.setState('<%= comment_form_id %>');
           $E.toggle_preview();
@@ -120,13 +188,30 @@
       >
         <%= translation('comments._form.preview') %>
       </a>
-      <span style="color:#888;"> &nbsp;
-        <br class="d-md-none" /><%= raw translation('comments._form.logged_in', :username => current_user.username) %> &nbsp;
+      <% if location == :edit %>
+        <a 
+          class="btn btn-default" 
+          onClick="
+            $('#comment-form-wrapper-edit-<%= comment.id %>').toggle();
+            $('#c<%= comment.id %>show').toggle();
+            $('#<%= comment.id %>-like-emojis').toggle();
+            $('#comment-form-edit-<%= comment.id %>').toggle()
+          "
+        >
+          Cancel
+        </a>
+      <% end %>
+      <span class="form-grey" style="color: #888;"> &nbsp;
+        <br class="visible-xs d-md-none" />
+        <%= raw translation(
+          'comments._form.logged_in', 
+          :username => current_user.username
+        ) %>
+        &nbsp;
         <a aria-label="Authoring Help" target="_blank" href="/wiki/authoring-help#Formatting"><i class="fa fa-question-circle"></i></a> &nbsp;
         <a onClick="changeNotificationIcon('#who-is-notified-form', '#bell')"><i id="bell" class="fa fa-bell-o"></i></a>
       </span>
     </div>
-
     <p id="who-is-notified-form" style="display:none;color:#888;">
       <%= translation('comments._form.email_notifications') %>
     </p>

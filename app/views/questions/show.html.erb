@@ -7,10 +7,13 @@
     $("img").lazyload();
     // create an instance of the editor
     $E = new Editor();
+    // attach tooltips to comment buttons
+    $('[data-toggle="tooltip"]').tooltip();
+    $('[rel="tooltip"]').tooltip();
   });
 </script>
 <%= javascript_include_tag('question') %>
-<div id="legacy-editor-container" class="col-lg-9 note-show question-show">
+<div class="col-lg-9 note-show question-show">
 
    <% if @node.main_image %>
     <a class="main-image" style="max-width:100%;width:800px;" href="<%= @node.main_image.path(:original) %>">
@@ -58,34 +61,36 @@
   <hr />
 
   <% comments = @node.comments_viewable_by(current_user) %>
-  <h3><span id="comment-count"><%= comments.size %></span> Comments</h3>
-  <div id="comments-list">
-  <%= javascript_include_tag "editorToolbar" %>
-  <%= javascript_include_tag "comment" %>
-    <% comments.includes([:node, :replied_comments]).order("timestamp ASC").each do |comment| %>
-      <% if comment.reply_to.nil? %>
-        <%= render :partial => "notes/comment", :locals => {:comment => comment} %>
+  <div id="legacy-editor-container" class="col-lg-10">
+    <h3><span id="comment-count"><%= comments.size %></span> Comments</h3>
+    <div id="comments-list">
+    <%= javascript_include_tag "editorToolbar" %>
+    <%= javascript_include_tag "comment" %>
+      <% comments.includes([:node, :replied_comments]).order("timestamp ASC").each do |comment| %>
+        <% if comment.reply_to.nil? %>
+          <%= render :partial => "notes/comment", :locals => {:comment => comment} %>
+        <% end %>
       <% end %>
-    <% end %>
-  </div>
-  <div id="answer-0-comment" style="margin-top: 30px;">
-    <div id="answer-0-comment-section">
-    <% if current_user %>
-      <div class="d-inline" id="question-comment-form">
-        <%= render :partial => "comments/form", :locals => { 
-          title: "Post Comment", 
-          comment: false, 
-          placeholder: "Help the author refine their post, or point them at other helpful information on the site. Mention users by @username to notify them of this thread by email", 
-          type: "question", 
-          url1: '/conduct', 
-          author: current_user.title, 
-          is_new_contributor: current_user.is_new_contributor?, 
-          location: :main # toolbar needs this to create dropzone ID
-        } %> 
+    </div>
+    <div id="answer-0-comment" style="margin-top: 30px;">
+      <div id="answer-0-comment-section">
+      <% if current_user %>
+        <div class="d-inline" id="question-comment-form">
+          <%= render :partial => "comments/form", :locals => { 
+            title: "Post Comment", 
+            comment: false, 
+            placeholder: "Help the author refine their post, or point them at other helpful information on the site. Mention users by @username to notify them of this thread by email", 
+            type: "question", 
+            url1: '/conduct', 
+            author: current_user.title, 
+            is_new_contributor: current_user.is_new_contributor?, 
+            location: :main # toolbar needs this to create dropzone ID
+          } %> 
+        </div>
+      <% else %>
+        <p><a data-toggle="modal" data-target="#loginModal">Log in</a> to comment</p>
+      <% end %>
       </div>
-    <% else %>
-      <p><a data-toggle="modal" data-target="#loginModal">Log in</a> to comment</p>
-    <% end %>
     </div>
   </div>
 </div>

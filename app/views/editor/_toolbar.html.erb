@@ -1,17 +1,4 @@
 <div class="btn-toolbar" style="margin-bottom:8px;">
-  <div class="dropdown mr-2">
-    <div class="d-md-none d-lg-inline">
-      <a class="btn btn-outline-secondary btn-sm dropdown-toggle" data-toggle="dropdown" href="#" >
-        Templates
-        <span class="caret"></span>
-      </a>
-      <div class="dropdown-menu">
-        <a class="dropdown-item" onClick="$E.apply_template('default')">Default</a>
-        <a class="dropdown-item" onClick="$E.apply_template('support')">Request help</a>
-        <a class="dropdown-item" onClick="$E.apply_template('event')">Post an event</a>
-      </div>
-    </div>
-  </div>
   <!-- defined in application_helper.rb -->
   <% toolbar_element_id = get_comment_form_id(location, local_assigns[:reply_to], local_assigns[:comment_id]) %>
   <div class="btn-group mr-2">
@@ -65,6 +52,7 @@
       data-placement="bottom" 
       data-toggle="tooltip" 
       class="link-button btn btn-outline-secondary btn-sm rich-text-button" href="javascript:void(0)" 
+      style="color: #6c757d;"
     >
       <i class="fa fa-link"></i>
     </a>
@@ -79,7 +67,7 @@
       <%# data-form-id is for setState on editor.js %>
       <div id="dropzone-small-<%= toolbar_element_id %>" class="dropzone dropzone-small" data-form-id="<%= toolbar_element_id %>">
         <span id="create_prompt" class="prompt">
-          <label class="fileinput-dropzone-label" for="fileinput-button-<%= toolbar_element_id %>" style="margin-bottom: 0;">
+          <label class="fileinput-dropzone-label" for="fileinput-button-<%= toolbar_element_id %>" style="margin-bottom: 0; cursor: pointer;">
             <input id="fileinput-button-<%= toolbar_element_id %>" class="fileinput" type="file" name="image[photo]" accept="image/*" style="display:none;" />
             <i class="fa fa-image"></i>
             <span class="d-md-none">
@@ -124,6 +112,7 @@
       class="help-button btn btn-outline-secondary btn-sm" 
       target="_blank" 
       href="/wiki/authoring-help"
+      style="color: #6c757d;"
     >
       <i class="fa fa-question-circle"></i>
     </a>
