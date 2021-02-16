@@ -4,7 +4,7 @@ Rails.application.config.assets.precompile += [
 
   'advancedSearch.js',
   'application.js',
-  'comment_expand.js',
+  'commentExpand.js',
   'comment.js',
   'dashboard.js',
   'editorToolbar.js',
