@@ -1,6 +1,6 @@
 /* eslint-disable no-empty-label */
 /* eslint-disable no-unused-expressions */
-//= require comment_expand
+//= require commentExpand
 
 describe("Comments", function() {
 
