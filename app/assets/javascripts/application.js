@@ -48,7 +48,7 @@
 //= require setup.js
 //= require editor.js
 //= require like.js
-//= require main_image.js
+//= require mainImage.js
 //= require restful_typeahead.js
 //= require users.js
 //= require searchform.js
