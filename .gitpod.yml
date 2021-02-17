@@ -5,16 +5,15 @@ ports:
       onOpen: open-preview
 tasks:
     - init: >
-        export CHROME_BIN=/usr/bin/chromium-browser &&
-        gem install bundler &&
-        bundle config set without 'production' &&
-        bundle install &&
-        cp config/database.yml.gitpod config/database.yml &&
-        mysql -e "SET @@global.sql_mode=(SELECT REPLACE(@@global.sql_mode, 'ONLY_FULL_GROUP_BY', ''));" &&
-        mysql -e "CREATE DATABASE plots;" &&
-        cp db/schema.rb.example db/schema.rb &&
+        export CHROME_BIN=/usr/bin/chromium-browser
+        gem install bundler
+        bundle config set without 'production'
+        bundle install
+        cp config/database.yml.gitpod config/database.yml
+        mysql -e "SET @@global.sql_mode=(SELECT REPLACE(@@global.sql_mode, 'ONLY_FULL_GROUP_BY', ''));"
+        mysql -e "CREATE DATABASE plots;"
+        cp db/schema.rb.example db/schema.rb
         rake db:setup
-
         yarn install
 
       command: >
