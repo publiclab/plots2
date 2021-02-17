@@ -83,15 +83,3 @@ a.navbar-offset {
   background: white;
 }
 
-.modal{
-  margin-top: 300px;
-}
-
-.modal-body{
-  margin-top: 10px;
-  padding: 0 80px;
-}
-.modal-footer{
-  padding-bottom: 10px;
-  text-align:center;
-}
