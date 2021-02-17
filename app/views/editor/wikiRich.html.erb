@@ -15,17 +15,14 @@
 
 <script src="/lib/publiclab-editor/dist/PublicLab.Editor.js"></script>
 
-<% if @is_new %>
+<% if params[:action] == "new" && params[:controller] == "wiki" %>
   <div class="container">
-    <div class="modal fade" id="wikiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal fade" id="newWikiTemplateChooser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
         
           <div class="modal-body"> 
             <h1> Content from the feature will be added here! </h1>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-link" data-dismiss="modal"><u>Skip template</u></button>
           </div>
        
         </div>
@@ -148,7 +145,7 @@
 
 <script>
   $(window).on('load',function(){
-    $('#wikiModal').modal('show');
+    $('#newWikiTemplateChooser').modal('show');
   });
 
   var editor;

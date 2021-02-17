@@ -106,7 +106,6 @@ class WikiController < ApplicationController
   end
 
   def edit
-    @is_new = false
     @revision = Revision.new
     @node = if params[:lang]
               Node.find_wiki(params[:lang] + '/' + params[:id])
@@ -134,7 +133,6 @@ class WikiController < ApplicationController
   end
 
   def new
-    @is_new = true
     @revision = Revision.new
     if current_user &.first_time_poster
       flash[:notice] = "Please post a question or other content before editing the wiki. Click <a href='https://publiclab.org/notes/tester/04-23-2016/new-moderation-system-for-first-time-posters'>here</a> to learn why."
