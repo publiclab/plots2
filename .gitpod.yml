@@ -7,7 +7,8 @@ tasks:
     - init: >
         export CHROME_BIN=/usr/bin/chromium-browser &&
         gem install bundler &&
-        bundle install --without production &&
+        bundle config set without 'production' &&
+        bundle install &&
         cp config/database.yml.gitpod config/database.yml &&
         mysql -e "SET @@global.sql_mode=(SELECT REPLACE(@@global.sql_mode, 'ONLY_FULL_GROUP_BY', ''));" &&
         mysql -e "CREATE DATABASE plots;" &&
@@ -16,12 +17,12 @@ tasks:
         yarn install
 
       command: >
-        passenger start 
-        
+          passenger start 
+
     - command: chromium-browser --no-sandbox
     - command: redis-server
     - command: rails c
-    
+
 github:
     prebuilds:
         branches: true
