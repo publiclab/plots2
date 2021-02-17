@@ -13,11 +13,12 @@ tasks:
         mysql -e "SET @@global.sql_mode=(SELECT REPLACE(@@global.sql_mode, 'ONLY_FULL_GROUP_BY', ''));" &&
         mysql -e "CREATE DATABASE plots;" &&
         cp db/schema.rb.example db/schema.rb &&
-        rake db:setup &&
+        rake db:setup
+
         yarn install
 
       command: >
-          passenger start 
+          passenger start
 
     - command: chromium-browser --no-sandbox
     - command: redis-server
