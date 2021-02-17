@@ -120,7 +120,6 @@
       options.setHash = params.setHash || false;
       options.mainContent = params.mainContent || "";       // "content" to show site content, default "" shows no site content
       options.displayAllLayers = params.displayAllLayers || false;  // turn on display for all maps available in menu
-      options.imageLoadingUrl = "/lib/leaflet-environmental-layers/example/images/owmloading.gif";
 
       if (typeof options.layers === "string") {
         options.layers = options.layers.split(',');
@@ -137,6 +136,7 @@
          optionsLEL.display = options.layers;
          optionsLEL.include = options.limitMenuTo;
          optionsLEL.hash = options.setHash;
+         optionsLEL.imageLoadingUrl = "/lib/leaflet-environmental-layers/example/images/owmloading.gif";
       }
       L.LayerGroup.EnvironmentalLayers(optionsLEL).addTo(map);
 
