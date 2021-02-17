@@ -100,14 +100,17 @@
     </div>
     <div id="comment-preview-<%= comment_form_id %>" class="comment-preview" style="background: white; display: none;">
     </div>
-    <script>
-      $D = {
-        uid: <%= current_user.uid if current_user %>,
-        type: 'comment'
-      };
-    </script>
-    <script src="/emoji.js" type="text/javascript"></script>
-    <script src="/assets/atWhoAutoComplete.js" type="text/javascript"></script>
+    <% if location != :edit %>
+      <script>
+        $D = {
+          uid: <%= current_user.uid if current_user %>,
+          type: 'comment'
+        };
+      </script>
+      <script src="/emoji.js" type="text/javascript"></script>
+      <!-- if this script runs on the edit form, it will blank out the value of #text-input-edit-123 -->
+      <script src="/assets/atWhoAutoComplete.js" type="text/javascript"></script>
+    <% end %>
 
     <div class="control-group">
       <button type="submit" class="btn btn-primary"><%= translation('comments._form.publish') %></button>
