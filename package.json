@@ -41,7 +41,7 @@
     "junction": "theleagueof/junction#*",
     "leaflet": "^1.7.1",
     "leaflet-blurred-location": "^1.7.0",
-    "leaflet-environmental-layers": "^2.4.2",
+    "leaflet-environmental-layers": "^2.4.3",
     "leaflet-hash": "^0.2.1",
     "leaflet-spin": "1.1.0",
     "leaflet.fullscreen": "2.0.0",
