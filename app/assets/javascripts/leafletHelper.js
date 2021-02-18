@@ -136,8 +136,8 @@
          optionsLEL.display = options.layers;
          optionsLEL.include = options.limitMenuTo;
          optionsLEL.hash = options.setHash;
-         optionsLEL.imageLoadingUrl = "/lib/leaflet-environmental-layers/example/images/owmloading.gif";
       }
+      optionsLEL.imageLoadingUrl = "/lib/leaflet-environmental-layers/example/images/owmloading.gif";
       L.LayerGroup.EnvironmentalLayers(optionsLEL).addTo(map);
 
       displayMapContent(map, markers_hash, options.mainContent);
