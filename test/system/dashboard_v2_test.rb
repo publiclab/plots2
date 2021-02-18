@@ -14,7 +14,7 @@ class DashboardV2Test < ApplicationSystemTestCase
     fill_in("username-login", with: "Bob")
     fill_in("password-signup", with: "secretive")
     click_on 'Log in'
-    visit '/v2/dashboard'
+    visit '/v1/dashboard'
     # Ensure that a subscribed tag is not present on the trending and follow section
     assert_selector("div > div.other-topics > span a[href='/tag/#{tag_name}']", count: 0)
     assert_selector("div#moreTopics div > div > div a[href='/tag/#{tag_name}']", count: 0)
