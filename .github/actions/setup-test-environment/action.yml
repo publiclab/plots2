@@ -26,5 +26,6 @@ runs:
       sudo systemctl start mysql
       mysql -uroot -proot -e "SET @@global.sql_mode=(SELECT REPLACE(@@global.sql_mode, 'ONLY_FULL_GROUP_BY', ''));"
       mysql -uroot -proot -e "CREATE DATABASE plots;"
-      bundle exec rake db:schema:load db:migrate --trace
+      bundle exec rake db:schema:load --trace
+      # bundle exec rake db:schema:load db:migrate --trace
       # above SET @@global.sql_mode is to address issue in https://github.com/publiclab/plots2/issues/3120
