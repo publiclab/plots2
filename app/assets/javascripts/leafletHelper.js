@@ -146,16 +146,11 @@
 
    function displayMapContent(map, markers_hash, mainContent) {
       if(typeof mainContent !== "undefined" && mainContent !== ""){
-         if(mainContent === "people"){
-            peopleMap();
-            map.on('zoomend', peopleMap);
-            map.on('moveend', peopleMap);
-         }
-         else {
-            mainContent = (mainContent === "content") ? null : mainContent;
-            contentMap();
-            map.on('zoomend', contentMap);
-            map.on('moveend', contentMap);
+         if (mainContent === "people") {
+           map.on('load viewreset resize zoomend moveend', peopleMap);
+         } else {
+           mainContent = (mainContent === "content") ? null : mainContent;
+           map.on('load viewreset resize zoomend moveend', contentMap);
          }
       }
 
