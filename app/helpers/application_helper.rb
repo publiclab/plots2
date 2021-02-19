@@ -79,6 +79,19 @@ module ApplicationHelper
     end
   end
 
+  # see /app/views/notes/show.html.erb
+  # adds values to react props using methods that aren't available in controller
+  def get_comment_react_props(comments_array)
+    comments_array.collect! do |comment| #collect! overwrites the value of each array entry
+      # timeCreatedString: "2 days ago"
+      time_created_string = distance_of_time_in_words(comment[:createdAt], Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' })
+      comment[:timeCreatedString] = time_created_string
+      comment[:htmlCommentText] = raw insert_extras(filtered_comment_body(comment[:htmlCommentText])) # comment text rendered as HTML
+      comment[:replies] = get_comment_react_props(comment[:replies]) unless comment[:replies].empty? # replies are nested within the comment, so add values to those too
+      comment
+    end
+  end
+
   def locale_name_pairs
     I18n.available_locales.map do |locale|
       [I18n.t('language', locale: locale), locale]
