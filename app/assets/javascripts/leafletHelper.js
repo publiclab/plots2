@@ -148,9 +148,11 @@
       if(typeof mainContent !== "undefined" && mainContent !== ""){
          if (mainContent === "people") {
            map.on('load viewreset resize zoomend moveend', peopleMap);
+           setTimeout(peopleMap,0); // to ensure fetch on initial page load
          } else {
            mainContent = (mainContent === "content") ? null : mainContent;
            map.on('load viewreset resize zoomend moveend', contentMap);
+           setTimeout(contentMap,0); // to ensure fetch on initial page load
          }
       }
 
