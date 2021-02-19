@@ -117,23 +117,16 @@
       <hr />
     <% end %>
     <% if !@preview %>
-        <%= render partial: "notes/responses" %>
-        <div id="legacy-editor-container"><%= render partial: "notes/comments" %></div>
       <%= render partial: "notes/responses" %>
       <% if @react %>
-        <% comments = @node.comments_viewable_by(current_user).includes([:replied_comments, :node]).order('timestamp ASC').to_a %>
-        <%# run rails methods on comments %>
-        <%# can't access rails methods within %>
-        <% comments.collect! do |comment| %>
-          <% comment_body = comment.render_body %>
-          <% comment_text = raw insert_extras(filtered_comment_body(comment_body)) %>
-          <% comment = comment.as_json %>
-          <% comment.merge({ "commentText" => comment_text }) %>
-        <% end %>
-        
+        <!-- some methods aren't available in the controller, so we have to add them to the props object here -->
+        <!-- get_comment_react_props defined in application_helper.rb -->
+        <% comments = get_comment_react_props(@react_props[:comments]) %>
         <%= react_component("CommentsContainer", { 
           comments: comments,
-          commentsHeaderText: translation('notes._comments.comments')
+          commentsHeaderText: translation('notes._comments.comments'),
+          currentUser: @react_props[:currentUser],
+          userCommentedText: translation('notes._comment.commented') 
         }) %>
       <% else %>
         <div id="legacy-editor-container"><%= render partial: "notes/comments" %></div>
