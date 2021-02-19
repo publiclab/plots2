@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_05_161259) do
+ActiveRecord::Schema.define(version: 2021_02_10_162026) do
 
   create_table "answer_selections", force: true do |t|
     t.integer "user_id"
@@ -380,6 +380,8 @@ ActiveRecord::Schema.define(version: 2020_07_05_161259) do
     t.integer "weight",      limit: 1,          default: 0,  null: false
     t.integer "count"
     t.string  "parent"
+    t.datetime "activity_timestamp"
+    t.string "latest_activity_nid"
   end
 
   add_index "term_data", ["name"], name: "index_term_data_on_name", using: :btree
