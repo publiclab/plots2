@@ -126,6 +126,10 @@ class User < ActiveRecord::Base
     get_value_of_power_tag('lon')
   end
 
+  def zoom
+    get_value_of_power_tag('zoom')
+  end
+
   # we can revise/improve this for m2m later...
   def has_role(some_role)
     role == some_role
