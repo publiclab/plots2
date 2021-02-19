@@ -7,7 +7,10 @@ import Comment from "./Comment";
 class CommentsContainer extends React.Component {
   
   render() {
-    const comments = this.props.comments.map((comment, index) => <Comment key={index} comment={comment} />);
+    const comments = this.props.comments.map((comment, index) => {
+      
+      return <Comment key={index} comment={comment} userCommentedText={this.props.userCommentedText} />;
+    })
 
     return (
       <div id="legacy-editor-container" className="row">
@@ -29,7 +32,8 @@ class CommentsContainer extends React.Component {
 
 CommentsContainer.propTypes = {
   comments: PropTypes.array,
-  commentsHeaderText: PropTypes.string
+  commentsHeaderText: PropTypes.string,
+  userCommentedText: PropTypes.string
 };
 
 export default CommentsContainer;
