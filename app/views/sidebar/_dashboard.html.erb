@@ -20,7 +20,7 @@
 <% if current_user %>
   <% if current_user.has_power_tag("lat") && current_user.has_power_tag("lon") && current_user.has_power_tag("zoom") %>
     <div style="margin: 2.2rem 0;">
-      <a class="btn btn-lg btn-outline-secondary" href="https://publiclab.org/map/#<%= current_user.get_value_of_power_tag("zoom").to_i%>/<%=current_user.get_value_of_power_tag("lat").to_f %>/<%=current_user.get_value_of_power_tag("lon").to_f %>">
+      <a class="btn btn-lg btn-outline-secondary" href="https://publiclab.org/map/#<%= current_user.get_value_of_power_tag("zoom").to_i%>/<%=current_user.lat.to_f %>/<%=current_user.lon.to_f %>">
       <i class="fa fa-map-marker" style="color:#c40;"></i> Nearby Activity</a>
     </div>
   <%else %>
