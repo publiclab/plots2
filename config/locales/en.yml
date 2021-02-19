@@ -356,6 +356,7 @@ en:
       more_topics: "To improve your feed, follow the trending and featured topics linked below."
       new_comment: "new comment"
     sidebar:
+      nearby_activity: "Nearby Activity"
       add_location: "Add your location"
       location_work: "Add your location to see work near you"
       location_privacy: "About location privacy"

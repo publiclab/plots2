@@ -216,4 +216,15 @@ class HomeControllerTest < ActionController::TestCase
     # Checking the latest_activity_node ensures that the most recent activity was bumped up.
     assert_equal expected_first_topic.latest_activity_nid, new_first_topic.latest_activity_nid
   end
+
+  test 'subscribed topics do not appear in trending topics' do
+    current_user = users(:bob)
+    UserSession.create(current_user)
+    get :dashboard_v2
+    # Sort both the subscribed tags and the trending tags alphabetically and compare the names
+    subscribed_tags = TagSelection.where(user_id: current_user.id).pluck(:tid)
+    tag_names = Tag.where(tid: subscribed_tags).pluck(:name).sort
+    trending_tags = assigns[:trending_tags].pluck(:name).sort
+    assert_not_equal tag_names , trending_tags
+  end
 end
