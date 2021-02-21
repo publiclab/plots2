@@ -50,10 +50,11 @@ class NotesController < ApplicationController
     comments_record.each_with_index do |comment, index|
       if comment.reply_to.nil? || get_replies
         commentJSON = {}
+        commentJSON[:authorId] = comment.uid
         commentJSON[:authorPicFilename] = comment.author.photo_file_name
         commentJSON[:authorPicUrl] = comment.author.photo_path(:thumb)
         commentJSON[:authorUsername] = comment.author.username
-        commentJSON[:cid] = comment.cid
+        commentJSON[:commentId] = comment.cid
         commentJSON[:commentName] = comment.name
         commentJSON[:createdAt] = comment.created_at
         commentJSON[:htmlCommentText] = comment.render_body
@@ -95,9 +96,19 @@ class NotesController < ApplicationController
         
         comments = get_react_comments(comments_record)
         
+        currentUser = {
+          :canModerate => current_user.can_moderate?,
+          :id => current_user[:id],
+          :role => current_user[:role],
+          :status => current_user[:status]
+        }
+
         @react_props = {
-          :currentUser => current_user,
-          :comments => comments
+          :currentUser => currentUser,
+          :comments => comments,
+          :nodeId => @node.id,
+          :nodeAuthorId => @node.uid,
+          :user => current_user
         }
       end
     else
