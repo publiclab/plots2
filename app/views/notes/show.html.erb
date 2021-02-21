@@ -126,6 +126,9 @@
           comments: comments,
           commentsHeaderText: translation('notes._comments.comments'),
           currentUser: @react_props[:currentUser],
+          nodeAuthorId: @react_props[:nodeAuthorId],
+          nodeId: @react_props[:nodeId],
+          user: @react_props[:user],
           userCommentedText: translation('notes._comment.commented') 
         }) %>
       <% else %>
