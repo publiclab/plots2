@@ -9,4 +9,4 @@ function notyNotification(theme, timeout, type, layout, text){
 }
 
 // More details about themes, layouts and more can be found at : https://ned.im/noty
-//= require noty_notification.js
+//= require notyNotification.js
