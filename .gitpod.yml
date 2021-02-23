@@ -17,7 +17,7 @@ tasks:
         rake db:setup
 
         yarn install
-        ./node_modules/.bin/webpack-dev-server
+        ./public/lib/.bin/webpack-dev-server
 
       command: >
           passenger start
