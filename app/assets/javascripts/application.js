@@ -40,7 +40,7 @@
 //= require short-code-forms/dist/short-code-prompts.js
 //= require chart.js/dist/Chart.js
 //= require noty/lib/noty.js
-//= require noty_notification.js
+//= require notyNotification.js
 //= require jquery-confirm/js/jquery-confirm.js
 //= require jquery.atwho
 //= require jsdiff/diff.js
