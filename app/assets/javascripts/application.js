@@ -49,7 +49,7 @@
 //= require editor.js
 //= require like.js
 //= require mainImage.js
-//= require restful_typeahead.js
+//= require restfulTypeahead.js
 //= require users.js
 //= require searchform.js
 //= require tagging.js
