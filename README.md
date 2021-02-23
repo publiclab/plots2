@@ -102,7 +102,7 @@ For installation, prerequisites include sqlite3 and rvm. [Click here for a compl
 	    * Using **rvm**: `rvm install 2.6.6` followed by `rvm use 2.6.6`
 	    * Using **rbenv**:  `rbenv install 2.6.6` followed by `rbenv local 2.6.6`
     * Run this `bundle config set without 'production mysql'` from the rails root folder to set your project to exclude libraries only needed in production.
-    * Install gems with `bundle install` from the rails root folder, to install the gems.
+    * Install gems with `bundle install` from the rails root folder.
 6. Run `cp db/schema.rb.example db/schema.rb` to make a copy of `db/schema.rb.example` in `db/schema.rb`.
 7. You could choose to use mysql2 or sqlite3 as your database
     * If mysql2,  run `cp config/database.yml.mysql.example config/database.yml` to make a copy of `config/database.yml.mysql.example` in `config/database.yml` 
