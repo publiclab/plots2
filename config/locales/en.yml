@@ -162,7 +162,11 @@ en:
       recent: "Recent"
       popular: "Popular"
       liked: "Liked"
-      wiki_pages: "Wiki<span class=\"hidden-sm\"> pages</span>"
+      wiki_pages: "Wiki pages"
+      research_notes: "Research Notes"
+      questions: "Questions"
+      comments: "Comments"
+      all_notes: "All Notes"
     _notes:
       moderate_first_time_post: "Moderate first-time post:"
       approve: "Approve"
@@ -200,9 +204,11 @@ en:
       ical: "iCal"
       login_to: "Please <a href='%{url1}'>log in</a> to"
       people_will_attend: "%{count} people will attend"
+      preview: "You are currently viewing a preview."
+      preview_topics: "This preview is not yet published and is not part of any topics yet."
     _comments:
       comments: "Comments"
-      post_comment: "Post comment"
+      post_comment: "Post Comment"
       post_placeholder: "Help the author refine their post, or point them at other
         helpful information on the site. Mention users by @username to notify them
         of this thread by email"
@@ -256,7 +262,7 @@ en:
           and <b>%{comments_count} comments </b>  posted in this period.
       members_and_contributors: |
           <b>%{member_count}  member registrations</b>
-          and <b>%{people_count}  contributors </b> posted in this period.
+          and <b>%{people_count}  contributors </b> posted notes, wikis, questions, comments, or revisions in this period.
 
   dashboard:
     _node_comment:
@@ -337,6 +343,32 @@ en:
       first_time_post: "Moderate first-time post:"
     _comment_moderate:
       first_time_post: "Moderate first-time comment:"
+  dashboard_v2:
+    _header:
+      dashboard: "Dashboard"
+      updates: "Updates from community members on <a href='%{url}' class='form-grey' style='text-decoration: underline;'>topics</a> you"
+      follow: "<a href='%{url}' class='form-grey' style='text-decoration: underline;'> follow</a>"
+      community_research: "Community research"
+    dashboard:
+      from_blog: "From the <a href='%{url}'>Public Lab Blog</a>"
+      by: "by"
+      new_user: "Welcome! To improve your feed, follow the trending and featured topics linked below."
+      more_topics: "To improve your feed, follow the trending and featured topics linked below."
+      new_comment: "new comment"
+    sidebar:
+      nearby_activity: "Nearby Activity"
+      add_location: "Add your location"
+      location_work: "Add your location to see work near you"
+      location_privacy: "About location privacy"
+      all_posts: "<a href='%{url}' class='form-grey'>View all posts</a>"
+      follow_topics: "Follow more topics"
+      trending_topics: "Trending topics"
+      featured_topics: "Featured topics"
+      learn_more: "learn more"
+      add_topics: "Click to add topics, or"
+      all_topics: "<a href='%{url}' class='form-grey'>All topics</a>"
+      more_topics: "<a href='%{url}' class='form-grey'>more...</a>"
+      interest_topics: "Click to start <a href='%{url}' class='form-grey' style='text-decoration: underline;'>following</a> topics that interest you"
   like:
     index:
       recent_likes: "Recent Likes"
@@ -355,6 +387,7 @@ en:
       unfollow: "Click to unfollow"
       follow: "Follow"
       no_results: "No results found; try searching for '%{search}'"
+      no_recent_posts: "There are no recent posts"
       advanced_search: "Or try an <a href='%{url}'>advanced search</a>"
       by: "by"
       views: "views"
@@ -369,7 +402,8 @@ en:
       number_of_subscriptions: "# of people"
       subscriptions: "Your subscriptions"
       sort_by: "Sort By"
-      more_posts: "more posts"
+      post: "post"
+      wiki: "wiki"
       follow: "Follow"
       unfollow: "Unfollow"
       notes:
@@ -386,21 +420,27 @@ en:
       following: "Following"
       unfollow: "Click to unfollow"
       follow: "Follow"
+      unfollow_text: "Unfollow"
+      subscribe: "Subscribe"
+      blog_updates: "Click to subscribe to blog updates via email"
       none: "None"
       users_following_tag: "Users following this tag"
       ask_question: "Ask a question about <b>%{tag}</b>"
       or_subscribe_to_answer: "<a style='margin-bottom:6px;' class='btn btn-primary
         requireLogin' target='_blank' href='%{url1}'>Subscribe to answer questions
         on this topic</a>"
-      research_notes: "<span class=\"hidden-sm\">Research </span>Notes"
+      research_notes: "Research notes"
       questions: "Questions"
-      wiki_pages: "Wiki<span class=\"hidden-sm\"> pages</span>"
+      wiki_pages: "Wiki pages"
       maps: "Maps"
       no_results_found: "No results found; try searching for '<b>%{tag}</b>'"
       try_advanced_search: "Or try an <a href='%{url1}'>advanced search</a>"
       people: "People"
       no_map_results_found: "Sorry, no map is tagged with <i>%{tag}</i>"
       contributors: "Contributors"
+      notes_not_available: "This topic has no available notes. View other posts by clicking the link below."
+      by: "by"
+      new_post: "New post"
     contributors-index:
       contributors_over_last_week: "Contributors for <i style=\"color:#aaa;\">%{tag_name}</i>
         over the past 52 weeks"
@@ -414,7 +454,7 @@ en:
       no_contributors_listed: "No contributors are listed."
       write_research_note: "Write a research note"
     _tagging:
-      enter_tags: "enter tags"
+      enter_tags: "Enter tags"
     contributors:
       contributors_for: "Contributors for <i style=\"color:#aaa;\">%{tag_name}</i>"
       contributions_over_past_year: "Above: contributions over the past year."
@@ -471,7 +511,7 @@ en:
       back_to_wiki: "Back to <a href='%{url1}'>%{title}"
       overview: "Overview"
       research: "Research"
-      wiki_pages: "Wiki<span class=\"hidden-sm\"> pages</span>"
+      wiki_pages: "Wiki pages"
       more_research: "More research on \"%{tag}\""
       more_tag_research: "More \"%{tag}\" research"
     _wikis:
@@ -550,6 +590,23 @@ en:
         fellows: "Fellows"
         lending_library: "Lending Library"
       search: "Search on Public Lab"
+      community:
+        community_title: "Community"
+        get_started: "Get Started"
+        people: "People"
+        places: "Places"
+        projects: "Projects"
+        events: "Events"
+        questions: "Questions"
+        chat: "Chat"
+      tools:
+        tools_title: "Tools"
+        methods: "Methods"
+        kits_initiative: "Kits Initiative"
+        store: "Store"
+        map_knitter: "Map Knitter"
+        spectral_workbench: "Spectral Workbench"
+        code_community: "Code Community"
       about:
         about_title: "About us"
         stories: "Stories"
@@ -608,6 +665,23 @@ en:
     index:
       explanation: "Ask a question to the Public Lab community to help you in your
         environmental exploration."
+      ask_question: "Ask a question here"
+      to_ask_question: "To ask a question, please"
+      log_in: "log in"
+      or: "or"
+      sign_up: "sign up"
+      first: "first"
+      recently_asked: "Recently Asked"
+      popular: "Popular"
+      unanswered: "Unanswered"
+      liked: "Liked"
+      recently_commented: "Recently Commented"
+      recently_commented_questions: Recently commented questions
+      popular_questions: Popular Questions
+      most_viewed_questions: Most viewed questions
+      unanswered_questions: Unanswered Questions
+      liked_questions: Liked Questions
+      most_liked_questions: Most liked questions
     _comment:
       promotion: "Promote this comment to an answer"
   user_sessions:
@@ -618,7 +692,7 @@ en:
       username: "Username"
       password: "Password"
       remember_me: "Remember me"
-      reset_by_clicking_here: "Forgot your password? Reset it <a href='%{url1}'>here</a>"
+      reset_by_clicking_here: "Forgot your password? <a href='%{url1}'>Reset it here</a>"
   home:
     dashboard:
       welcome: "Welcome!"
@@ -659,7 +733,7 @@ en:
       all: "all"
       notes: "notes"
       receive_mails: "Receive emails for all research notes."
-      enter_tags: "enter tags"
+      enter_tags: "Enter tags"
       add: "Add"
       tag: "Tag"
       options: "Options"
@@ -694,6 +768,13 @@ en:
       formatting: "Formatting"
       notifications: "Notifications"
       email_notifications: "Author, commenters, and those who've \"liked\" this note will receive email notifications"
+    index:
+      all_comments: "All Comments"
+      moderated_comments: "Moderated Comments"  
+    _comments:
+      comments: "Comments"
+      status: "Status:"
+      no_comments: "No comments yet." 
   sidebar:
     _events:
       post_event: "Post an event"

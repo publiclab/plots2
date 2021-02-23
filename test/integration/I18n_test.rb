@@ -357,27 +357,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       get '/wiki/' + nodes(:organizers).title.parameterize
-      assert_select 'a[rel=tooltip] i.fa.fa-comment'
-    end
-  end
-
-  test 'should choose i18n for sidebar/_author + sidebar/_post_button' do
-    available_testing_locales.each do |lang|
-      get '/change_locale/' + lang.to_s
-      follow_redirect!
-
-      post '/user_sessions',
-        params: {
-          user_session: {
-            username: users(:jeff).username,
-            password: 'secretive'
-          }
-        }
-      follow_redirect!
-
-      get '/notes/author/' + users(:jeff).username
-      assert_select 'h4', ActionView::Base.full_sanitizer.sanitize(I18n.t('sidebar._author.recent_tags_for_author', url1: '/people/' + users(:jeff).username, author: users(:jeff).username))
-      assert_select 'a', I18n.t('sidebar._post_button.write_research_note')
+      assert_select '.fa-comment'
     end
   end
 
@@ -433,7 +413,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       get '/tag/some-tag'
-      assert_select 'a', I18n.t('tag.show.maps')
+      assert_select '.tags-tab-wiki', I18n.t('tag.show.wiki_pages')
     end
   end
 

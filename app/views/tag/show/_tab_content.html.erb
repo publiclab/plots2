@@ -1,6 +1,9 @@
 <div class="tab-content" style="clear:both;">
-  <!-- separate these in partials-->
-  <!-- use controller to determine which partial to render -->
+
+  <% if @start && @end %>
+    <p>Displaying content from <%= @start.to_formatted_s(:long) %> to <%= @end.to_formatted_s(:long) %>. <a href="/tag/<%= params[:id] %>">View all</a></p>
+  <% end %>
+
   <% if @node_type == "note" %>
     <div class="tab-pane active" id="notes">
       <% if @notes.nil? || @notes.length == 0 %>
@@ -14,32 +17,28 @@
 
   <% if @node_type == "questions" %>
     <div class="tab-pane active" id="questions">
-      <div class="tab-pane" id="questions-tab">
-        <div class="btn-group text-center">
-          <a href="#asked-tab" class="btn btn-outline-secondary active" data-toggle="tab">Asked</a>
-          <a href="#answered-tab" class="btn btn-outline-secondary" data-toggle="tab">Answered</a>
-        </div>
+      <div id="questions-tab">
 
         <div class="tab-content">
-          <div class="tab-pane active" id="asked-tab">
+          <div id="asked-content">
             <%= render partial: "questions/new_question" %>
           </div>
-
-          <div class="tab-pane" id="answered-tab">
-            <% if @answered_questions %>
-              <%= render partial: "users/answered" %>
-            <% end %>
-          </div>
         </div>
+
       </div>
     </div>
   <% end %>
 
   <% if @node_type == "wiki" %>
     <div class="tab-pane active" id="wikis">
+      <% if @wikis.nil? || @wikis.length == 0 %>
+        <p><%= raw translation('tag.show.no_results_found', tag: params[:id]) %>:</p>
+        <p><a href="/search/<%= params[:id] %>">Search for "<%= params[:id] %>"</a></p>
+      <% else %>
       <%= render partial: "wiki/wikis" %>
+      <% end %>
     </div>
-  <% end %>
+   <% end %>
 
   <% if @node_type == "maps" %>
     <div class="tab-pane active" id="wikis">
@@ -52,14 +51,10 @@
   <% end %>
 
   <% if @node_type == "contributors" %>
-      <div class="tab-pane active" id="contributors">
-        <div class="row">
-          <div class="col-md-9" style="padding-left: 46px">
-            <%= render partial: "tag/contributors" %>
-          </div>
-        </div>
-      </div>
+    <div class="tab-pane active" id="contributors">
+      <%= render partial: "tag/contributors" %>
+    </div>
   <% end %>
-  <br />
+  <br>
 
 </div>

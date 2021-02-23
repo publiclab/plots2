@@ -15,8 +15,7 @@ class UsersController < ApplicationController
     recaptcha = verify_recaptcha(model: @user) if using_recaptcha
     @spamaway = Spamaway.new(spamaway_params) unless using_recaptcha
 
-    saved_user = @user.save
-    if ((@spamaway&.valid?) || recaptcha) && saved_user
+    if ((@spamaway&.valid?) || recaptcha) && @user.save # pass spamaway validation FIRST then try saving the user; https://github.com/publiclab/plots2/issues/8463
       if current_user.crypted_password.nil? # the user has not created a pwd in the new site
         flash[:warning] = I18n.t('users_controller.account_migrated_create_new_password')
         redirect_to "/profile/edit"
@@ -57,8 +56,8 @@ class UsersController < ApplicationController
     @password_verification = user_verification_params
     @user = current_user
     @user = User.find_by(username: params[:id]) if params[:id] && logged_in_as(['admin'])
-    if @user.valid_password?(user_verification_params["current_password"]) || user_verification_params["ui_update"].nil?
-      # correct password
+    if @user.valid_password?(user_verification_params["current_password"]) || user_verification_params["ui_update"].nil? || (user_verification_params["current_password"].blank? && user_verification_params["password"].blank? && user_verification_params["password_confirmation"].blank?)
+      # correct password or if any other field needs to be updated
       @user.attributes = user_params
       if @user.save
         if session[:openid_return_to] # for openid login, redirects back to openid auth process
@@ -135,8 +134,8 @@ class UsersController < ApplicationController
 
              else
                # recently active
-               User.select('*, rusers.status, MAX(node_revisions.timestamp) AS last_updated')
-                            .joins(:revisions)
+               User.select('rusers.*, MAX(node_revisions.status), MAX(node_revisions.timestamp) AS last_updated')
+                            .joins("INNER JOIN `node_revisions` ON `node_revisions`.`uid` = `rusers`.`id` ")
                             .where("node_revisions.status = 1")
                             .group('rusers.id')
                             .order(order_string)
@@ -158,60 +157,19 @@ class UsersController < ApplicationController
         redirect_to "/"
       else
         @title = @profile_user.name
-        @notes = Node.research_notes
-                     .paginate(page: params[:page], per_page: 24)
-                     .order("nid DESC")
-                     .where(status: 1, uid: @profile_user.uid)
-
-        if current_user && current_user.uid == @profile_user.uid
-          coauthor_nids = Node.joins(:node_tag)
-            .joins('LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid')
-            .select('node.*, term_data.*, community_tags.*')
-            .where(type: 'note', status: 3)
-            .where('term_data.name = (?)', "with:#{@profile_user.username}")
-            .collect(&:nid)
-          @drafts = Node.where('(nid IN (?) OR (status = 3 AND uid = ?))', coauthor_nids, @profile_user.uid)
-            .paginate(page: params[:page], per_page: 24)
-        end
-        @coauthored = @profile_user.coauthored_notes
-          .paginate(page: params[:page], per_page: 24)
-          .order('node_revisions.timestamp DESC')
-        @questions = @profile_user.questions
-                          .order('node.nid DESC')
-                          .paginate(page: params[:page], per_page: 24)
-        @likes = (@profile_user.liked_notes.includes(%i(tag comments)) + @profile_user.liked_pages)
-                       .paginate(page: params[:page], per_page: 24)
-        questions = Node.questions
-                        .where(status: 1)
-                        .order('node.nid DESC')
-        ans_ques = questions.select { |q| q.comments.collect(&:uid).include?(@profile_user.id) }
-        @commented_questions = ans_ques.paginate(page: params[:page], per_page: 24)
         wikis = Revision.order("nid DESC")
                         .where('node.type' => 'page', 'node.status' => 1, uid: @profile_user.uid)
                         .joins(:node)
                         .limit(20)
         @wikis = wikis.collect(&:parent).uniq
-
-        comments = Comment.limit(20)
-                          .order("timestamp DESC")
-                          .where(uid: @profile_user.uid)
-                          .paginate(page: params[:page], per_page: 24)
-
-        @normal_comments = comments.where('comments.status = 1')
-        @comment_count = @normal_comments.count
-        if current_user &.can_moderate?
-          @all_comments = comments
-          @comment_count = @all_comments.count
-        end
-
         # User's social links
         @content_approved = !(Node.where(status: 1, uid: @profile_user.id).empty?) or !(Comment.where(status: 1, uid: @profile_user.id).empty?)
         @github = @profile_user.social_link("github")
         @twitter = @profile_user.social_link("twitter")
         @facebook = @profile_user.social_link("facebook")
         @instagram = @profile_user.social_link("instagram")
-        @count_activities_posted = Tag.tagged_nodes_by_author("activity:*", @profile_user).count
-        @count_activities_attempted = Tag.tagged_nodes_by_author("replication:*", @profile_user).count
+        @count_activities_posted = Tag.tagged_nodes_by_author("activity:*", @profile_user).size
+        @count_activities_attempted = Tag.tagged_nodes_by_author("replication:*", @profile_user).size
         @map_lat = nil
         @map_lon = nil
         @map_zoom = nil
@@ -239,9 +197,8 @@ class UsersController < ApplicationController
   def likes
     @user = User.find_by(username: params[:id])
     @title = "Liked by " + @user.name
-    @notes = @user.liked_notes
-                  .includes(%i(tag comments))
-                  .paginate(page: params[:page], per_page: 24)
+    @pagy, @notes = pagy(@user.liked_notes
+                  .includes(%i(tag comments)), items: 24)
     @wikis = @user.liked_pages
     @tagnames = []
     @unpaginated = false
@@ -368,13 +325,13 @@ class UsersController < ApplicationController
 
   def following
     @title = "Following"
-    @users = @user.following_users.paginate(page: params[:page], per_page: 24)
+    @pagy, @users = pagy(@user.following_users, items: 10)
     render 'show_follow'
   end
 
   def followers
     @title = "Followers"
-    @users = @user.followers.paginate(page: params[:page], per_page: 24)
+    @pagy, @users = pagy(@user.followers, items: 10)
     render 'show_follow'
   end
 
@@ -401,7 +358,9 @@ class UsersController < ApplicationController
 
     digest_settings = [
       'digest:weekly',
-      'digest:daily'
+      'digest:daily',
+      'digest:weekly:spam',
+      'digest:daily:spam'
     ]
     digest_settings.each do |setting|
       if params[setting] == "on"
@@ -463,7 +422,7 @@ class UsersController < ApplicationController
         tag_list = tag_list.split(',')
       end
       tag_list.each do |t|
-        next unless t.length.positive?
+        next unless t.size.positive?
         tag = Tag.find_by(name: t)
         unless tag.present?
           tag = Tag.new(
@@ -481,7 +440,7 @@ class UsersController < ApplicationController
           end
         end
         # test for uniqueness
-        unless TagSelection.where(following: true, user_id: current_user.uid, tid: tag.tid).length.positive?
+        unless TagSelection.where(following: true, user_id: current_user.uid, tid: tag.tid).size.positive?
           # Successfully we have added subscription
           if Tag.find_by(tid: tag.tid)
             # Create the entry if it isn't already created.
@@ -510,7 +469,7 @@ class UsersController < ApplicationController
   end
 
   def user_verification_params
-    params.require(:user).permit(:ui_update, :current_password)
+    params.require(:user).permit(:ui_update, :current_password, :password, :password_confirmation)
   end
 
   def spamaway_params

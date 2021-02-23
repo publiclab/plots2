@@ -33,7 +33,7 @@
            <div class="row card-body">
             <div class="col-lg-12 nopadding">
               <div class="profile-image text-center">
-                  <img class="rounded-circle img-fluid" id="profile-photo" src="<%= user.profile_image %>" />
+                  <%= image_tag(user.profile_image, class:'rounded-circle img-fluid', id:'profile-photo') %>
               </div>
             </div>
             <div class="col-lg-12 nopadding">
@@ -169,7 +169,7 @@ h3, h2, h5 {
   padding-bottom: 5px;
   padding-left: 14px;
 }
-  
+
 .sort-style{
   color: #808080;
 }
@@ -177,4 +177,9 @@ h3, h2, h5 {
   text-decoration: underline;
 }
 </style>
+<script>
+$(function(){
+  $("img").lazyload();
+});
+</script>
 <%= render partial: 'tag/location' %>

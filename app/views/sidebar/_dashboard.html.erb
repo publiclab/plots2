@@ -2,7 +2,7 @@
 <div class="btn-group" role="group">
     <a href="/post" class="btn btn-primary btn-lg requireLogin"><i class="fa fa-plus-circle fa-white"></i> <%= t('dashboard._header.share_work') %></a>
     <div class="btn-group" role="group">
-      <a class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <a class="btn btn-primary btn-lg dropdown-toggle fa-white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <span class="caret"></span>
         <span class="sr-only">Toggle Dropdown</span>
       </a>
@@ -18,13 +18,20 @@
   </div>
   
 <% if current_user %>
-  <div style="margin: 2.2rem 0;">
-    <a class="btn btn-lg btn-outline-secondary blurred-location-input" submit_to="/profile/tags/create/<%= current_user.uid %>"><i class="fa fa-map-marker" style="color:#c40;"></i> Add your location</a>
-    <p style="font-size: smaller; margin: 0.3rem 0;">
-      Add your location to see work near you<br>
-      <a href="https://publiclab.org/location-privacy" target="_blank">About location privacy »</a>
-    </p>
-  </div>
+  <% if current_user.has_power_tag("lat") && current_user.has_power_tag("lon")%>
+    <div style="margin: 2.2rem 0;">
+      <a class="btn btn-lg btn-outline-secondary" href="https://publiclab.org/map/#<%= current_user.get_value_of_power_tag("zoom").to_i%>/<%=current_user.lat.to_f %>/<%=current_user.lon.to_f %>">
+      <i class="fa fa-map-marker" style="color:#c40;"></i> Nearby Activity</a>
+    </div>
+  <%else %>
+    <div style="margin: 2.2rem 0;">
+      <a class="btn btn-lg btn-outline-secondary blurred-location-input" submit_to="/profile/tags/create/<%= current_user.uid %>"><i class="fa fa-map-marker" style="color:#c40;"></i> Add your location</a>
+      <p style="font-size: smaller; margin: 0.3rem 0;">
+        Add your location to see work near you<br>
+        <a href="https://publiclab.org/location-privacy" target="_blank">About location privacy »</a>
+      </p>
+    </div>
+  <% end %>
 <% end %>
 
 <ul class="nav nav-tabs" style="margin-top:2.2rem;">

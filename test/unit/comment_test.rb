@@ -231,28 +231,22 @@ class CommentTest < ActiveSupport::TestCase
     user = users(:bob)
     like = Like.create(likeable_id: comment.id, user_id: user.id, likeable_type: "Comment", emoji_type: "Heart")
     map = comment.user_reactions_map
-    assert_equal map["Heart"], "Bob reacted with heart emoji"
+    assert_equal map["Heart"][:users_string], "Bob reacted with heart emoji"
     like = Like.create(likeable_id: comment.id, user_id: users(:jeff).id, likeable_type: "Comment", emoji_type: "Heart")
     map = comment.user_reactions_map
-    assert_equal map["Heart"], "Bob and jeff reacted with heart emoji"
+    assert_equal map["Heart"][:users_string], "Bob and jeff reacted with heart emoji"
   end
 
-
-  test 'should parse incoming mail from gmail service correctly and add comment' do
-    require 'mail'
-    mail = Mail.read('test/fixtures/incoming_test_emails/gmail/incoming_gmail_email.eml')
-    node = Node.last
-    mail.subject = "Re: #{node.title} (##{node.nid})"
-    Comment.receive_mail(mail)
-    f = File.open('test/fixtures/incoming_test_emails/gmail/final_parsed_comment.txt', 'r')
-    comment = Comment.last
-    user_email = mail.from.first
-    assert_equal comment.comment, f.read
-    assert_equal comment.nid, node.id
-    assert_equal comment.message_id, mail.message_id
-    assert_equal comment.comment_via, 1
-    assert_equal User.find(comment.uid).email, user_email
-    f.close()
+  test "should return reactions ONLY from users that aren't banned" do
+    comment = comments(:first)
+    # normal user
+    user = users(:bob)
+    new_like = Like.create(likeable_id: comment.id, user_id: user.id, likeable_type: "Comment", emoji_type: "Heart")
+    # banned user
+    spammer = users(:spammer)
+    new_like = Like.create(likeable_id: comment.id, user_id: spammer.id, likeable_type: "Comment", emoji_type: "Heart")
+    map = comment.user_reactions_map
+    assert_equal map["Heart"][:users_string], "Bob reacted with heart emoji"
   end
 
   test 'should parse text containing "On ____ <email@email.com> wrote:" from comments on display' do

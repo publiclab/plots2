@@ -17,6 +17,7 @@
  *= require jquery-file-upload/css/jquery.fileupload-ui.css
  *= require leaflet/dist/leaflet.css
  *= require_self
+ *= require font-awesome
  *= require cross_browser
  *= require style
  *= require login_modal
@@ -36,5 +37,6 @@
  *= require jquery.atwho
  *= require profile
  *= require location
- *= require notes 
+ *= require notes
+ *= require spam2
 */

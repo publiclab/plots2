@@ -31,7 +31,7 @@
       </tr>
     <% end %>
   </table>
-  <%= will_paginate @user_tags, renderer: WillPaginate::ActionView::BootstrapLinkRenderer if @paginated %>
+<% if @pagy %> <%= raw pagy_bootstrap_nav @pagy %> <% else %> <%= will_paginate @user_tags, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %> <% end %>
 
   <hr />
 

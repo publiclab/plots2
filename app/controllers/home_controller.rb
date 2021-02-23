@@ -38,10 +38,31 @@ class HomeController < ApplicationController
         .count(:all)
       @wiki_count = Revision.select(:timestamp)
         .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
-        .count
-      @user_note_count = Node.where(type: 'note', status: 1, uid: current_user.uid).count
+        .size
+      @user_note_count = Node.where(type: 'note', status: 1, uid: current_user.uid).size
       @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments = activity
       render template: 'dashboard/dashboard'
+    else
+      redirect_to '/research'
+    end
+  end
+
+  def dashboard_v2
+    # The new dashboard displays the blog and topics list
+    if current_user
+      @blog = Tag.find_nodes_by_type('blog', 'note', 1).limit(1).first
+      # Tags without the blog tag and everything tag to avoid double display
+      exclude_tids = Tag.where(name: %w(blog everything)).pluck(:tid)
+      @pagy, @tag_subscriptions = pagy(
+        TagSelection
+        .select('tag_selections.tid, term_data.name')
+        .where(user_id: current_user.id, following: true)
+        .where.not(tid: exclude_tids)
+        .joins("INNER JOIN term_data ON tag_selections.tid = term_data.tid")
+        .order("term_data.activity_timestamp DESC")
+      )
+      @trending_tags = trending
+      render template: 'dashboard_v2/dashboard'
     else
       redirect_to '/research'
     end
@@ -56,7 +77,7 @@ class HomeController < ApplicationController
         .count(:all)
       @wiki_count = Revision.select(:timestamp)
         .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
-        .count
+        .size
       @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments = activity
       render template: 'dashboard/dashboard'
       @title = I18n.t('home_controller.community_research')
@@ -68,12 +89,7 @@ class HomeController < ApplicationController
   def activity
     blog = Tag.find_nodes_by_type('blog', 'note', 1).first
     # remove "classroom" postings; also switch to an EXCEPT operator in sql, see https://github.com/publiclab/plots2/issues/375
-    hidden_nids = Node.joins(:node_tag)
-      .joins('LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid')
-      .select('node.*, term_data.*, community_tags.*')
-      .where(type: 'note', status: 1)
-      .where('term_data.name = (?)', 'hidden:response')
-      .collect(&:nid)
+    hidden_nids = Node.hidden_response_node_ids
     notes = Node.where(type: 'note')
       .where('node.nid NOT IN (?)', hidden_nids + [0]) # in case hidden_nids is empty
       .order('nid DESC')
@@ -81,6 +97,7 @@ class HomeController < ApplicationController
     notes = notes.where('nid != (?)', blog.nid) if blog
 
     comments = Comment.joins(:node, :user)
+                   .includes(:node)
                    .order('timestamp DESC')
                    .where('timestamp - node.created > ?', 86_400) # don't report edits within 1 day of page creation
                    .where('node.status = ?', 1)
@@ -111,6 +128,7 @@ class HomeController < ApplicationController
       .order('nid DESC')
       .limit(10)
     revisions = Revision.joins(:node)
+      .includes(:node)
       .order('timestamp DESC')
       .where('type = (?)', 'page')
       .where('node.status = 1')
@@ -145,5 +163,14 @@ class HomeController < ApplicationController
       answer_comments
     ]
     response
+  end
+
+  def trending
+    # Trending tags exculding subscriptions and tag first time poster tag
+    # The first time poster tag is not useful in search
+    exclude_tids = @tag_subscriptions.pluck(:tid)
+    exclude_tids << Tag.where(name: %w(everything first-time-poster)).pluck(:tid)
+    exclude_tids.flatten!.uniq
+    Tag.trending.where('term_data.name NOT LIKE (?)', '%:%').where.not(tid: exclude_tids)
   end
 end

@@ -1,41 +1,62 @@
-<%= render :partial => "editor/toolbar" %>
+<%# toolbar needs location & comment_id to make unique element IDs%>
+<%= render :partial => "editor/toolbar", :locals => { :location => :main } %>
 
-<div class="form-group dropzone">
-  <textarea name="body" tabindex="2" class="form-control" id="text-input" rows="20" cols="60"><% if @node && @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
-  <div id="imagebar">
-    <div style="display:none;" id="create_progress" class="progress progress-striped active pull-right">
-      <div id="create_progress-bar" class="progress-bar" style="width: 0%;"></div>
+<div class="form-group dropzone dropzone-large" data-form-id="main">
+  <textarea 
+    id="text-input-main" 
+    class="form-control text-input" 
+    name="body" 
+    data-form-id="main"
+    aria-label="Wiki Text" 
+    tabindex="2" 
+    rows="20" 
+    cols="60"
+  ><% if @node && @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
+  <div class="imagebar">
+    <div 
+      id="image-upload-progress-container-main" style="display:none;" 
+      class="progress progress-bar-container float-right"
+    >
+      <div 
+        id="image-upload-progress-bar-main" 
+        class="progress-bar progress-bar-striped progress-bar-animated" 
+        style="width: 0%;"
+      >
+      </div>
     </div>
     <p>
-
-      <span id="create_uploading" class="uploading" style="display:none;">
-        Uploading... (<a onClick="$E.cancel_upload()">cancel</a>)
+      <span 
+        id="image-upload-text-main" 
+        class="uploading-text" 
+        style="display:none;"
+      >
+        <%= translation('comments._form.uploading') %>
       </span>
-
-      <span id="create_prompt" class="prompt">
-        <span style="padding-right:4px;float:left;" class="d-md-none d-lg-block">
-          Drag and drop to add an image or file, or 
+      <span id="choose-one-main" class="prompt choose-one-prompt-text">
+        <span style="padding-right:4px;float:left;" class="d-none d-md-inline">
+          <%= raw translation('comments._form.drag_and_drop') %>
         </span>
-
         <!-- http://stackoverflow.com/questions/11235206/twitter-bootstrap-form-file-element-upload-button -->
-        <label class="" for="fileinput">
-          <input id="fileinput" type="file" name="image[photo]" style="display:none;" />
-          <a class="d-none d-md-inline">choose one</a>
+        <label for="fileinput-choose-one-main">
+          <input id="fileinput-choose-one-main" type="file" name="image[photo]" style="display:none;" />
+          <a style="cursor: pointer;" class="d-none d-md-inline text-underline"><%= translation('comments._form.choose_one') %></a>
           <span class="d-md-none">
-            <i class="fa fa-upload"></i> 
-            <a>Upload image</a>
+            <i class="fa fa-upload"></i>
+            <a><%= translation('comments._form.upload_image') %></a>
           </span>
-        </label> 
+        </label>
       </span>
-
     </p>
   </div>
 </div>
 
-<div class="well" id="preview" style="display:none;"> </div>
+<div class="well" id="preview-main" style="display:none;"></div>
 
 <script>
   jQuery(document).ready(function() {
-    $E.initialize({})
+    $E = new Editor(
+      "main", 
+      { "preview": "preview" } // the preview element here is #preview-main, not #comment-preview-main
+    );
   })
 </script>

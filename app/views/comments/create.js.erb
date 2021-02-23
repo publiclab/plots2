@@ -1,9 +1,45 @@
+// this code runs after a new comment is posted.
+//   1. it inserts the new comment into the DOM
+//   2. it also creates image upload functionality for the new comment form (see /app/assets/javascripts/editorToolbar.js)
+
+// the new comment will have an 'edit comment' form that needs image upload functionality:
+let fileUploadElements = [
+  {
+    selector: '#comment-form-body-edit-<%= @comment.cid %>',
+    isButton: false
+  },
+  {
+    selector: '#dropzone-small-edit-<%= @comment.cid %>',
+    isButton: true
+  }
+];
+// if new comment is NOT a reply to another comment
 <% if @comment.reply_to.nil? %>
-  $("#comments-list").append('<%= escape_javascript(render :partial => "notes/comment", :locals => {comment: @comment, answer_id: @answer_id}) %>')
+  $("#comments-list").append('<%= escape_javascript(render :partial => "notes/comment", :locals => { comment: @comment }) %>');
+   // the new comment will also have its own reply section
+  // this reply comment form needs image upload functionality
+  fileUploadElements = fileUploadElements.concat([
+    {
+      selector: '#comment-form-body-reply-<%= @comment.cid %>',
+      isButton: false
+    },
+    {
+      selector: '#dropzone-small-reply-<%= @comment.cid %>',
+      isButton: true
+    }
+  ]);
 <% else %>
-  $('#comment-<%= @comment.reply_to %>-reply').before('<%= escape_javascript(render :partial => "notes/comment", :locals => {comment: @comment, answer_id: @answer_id}) %>')
+// new comment IS a reply to another comment
+// no other elements need upload functionality
+  $('#comment-<%= @comment.reply_to %>-reply-toggle').before('<%= escape_javascript(render :partial => "notes/comment", :locals => {comment: @comment, answer_id: @answer_id}) %>')
 <% end %>
-$('#answer-<%= @answer_id %>-comment-section .help-block').remove();
+// create image upload functionality for fresh comment's elements
+// see editorToolbar.js
+fileUploadElements.forEach(function(element) {
+  const options = getFileUploadOptions($(element.selector), element.isButton);
+  $(element.selector).fileupload(options);
+});
 notyNotification('mint', 3000, 'success', 'topRight', 'Comment Added!');
 $('#comment-count')[0].innerHTML = parseInt($('#comment-count')[0].innerHTML, 10)+1;
-
+// attach tooltips to comment buttons
+$('[data-toggle="tooltip"]').tooltip();

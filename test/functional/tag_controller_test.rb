@@ -191,7 +191,7 @@ class TagControllerTest < ActionController::TestCase
     end
 
     # assert_equal assigns['tags'].length, 1
-    assert_select '#wiki-content', 1
+    assert_select '#wiki-summary', 1
   end
 
   test 'show page for non-existent tag' do
@@ -253,21 +253,9 @@ class TagControllerTest < ActionController::TestCase
     assert :wikis
     assert assigns(:wikis).length > 0
 
+    selector = css_select '#wikis table tr'
+    assert_equal selector.size, 2
     assert_select '#note-graph', 0
-  end
-
-  test 'wildcard tag should list answered questions' do
-    get :show, params: { id: 'question:*' }
-
-    assert_not_nil assigns(:answered_questions)
-  end
-
-  test 'wildcard tag should have a active asked and an inactive answered tab for question' do
-    get :show, params: { id: 'question:*' }
-
-    selector = css_select '#asked-tab.active'
-    assert_equal selector.size, 1
-    assert_select '#answered-tab', 1
   end
 
   test "wildcard tag show wiki pages with author" do
@@ -309,7 +297,7 @@ class TagControllerTest < ActionController::TestCase
 
     get :show, params: { id: nodes(:organizers).slug }
 
-    assert_select '#wiki-content', 1
+    assert_select '#wiki-summary', 1
   end
 
   test 'show note with author and tagname without wildcard' do
@@ -520,7 +508,7 @@ class TagControllerTest < ActionController::TestCase
     get :suggested, params: { id: 'spectr' }
 
     assert_equal 4, assigns(:suggestions).length
-    assert_equal ['question:spectrometer', 'spectrometer', 'activity:spectrometer', 'activities:spectrometer'], JSON.parse(response.body)
+    assert_equal ['question:spectrometer', 'spectrometer', 'activity:spectrometer', 'activities:spectrometer'].sort, JSON.parse(response.body).sort
   end
 
   test 'should choose I18n for tag controller' do
@@ -568,16 +556,6 @@ class TagControllerTest < ActionController::TestCase
     assert_equal selector.size, 1
     selector = css_select '#questions.active'
     assert_equal selector.size, 1
-  end
-
-  test 'should have a active asked and an inactive answered tab for question' do
-    tag = tags(:question)
-
-    get :show_for_author, params: { id: tag.name, author: 'jeff' }
-
-    selector = css_select '#asked-tab.active'
-    assert_equal selector.size, 1
-    assert_select '#answered-tab', 1
   end
 
   test 'should list answered questions' do

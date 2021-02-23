@@ -1,7 +1,7 @@
 version: "2"
 services:
   db:
-    image: mariadb:10.2
+    image: mysql:5.7
     environment:
       - MYSQL_DATABASE=plots
       - MYSQL_USER=plots
@@ -19,8 +19,12 @@ services:
     ports:
       - "127.0.0.1:4000:4000"
     build: ..
-    command: /bin/bash -c "sleep 5 && /usr/local/bundle/bin/passenger start -p 4000"
     environment:
+      - DB_USER=${DB_USER}
+      - DB_NAME=${DB_NAME}
+      - DB_PASS=${DB_PASS}
+      - DB_HOST=${DB_HOST}
+      - RAILS_MAX_THREADS=${RAILS_MAX_THREADS}
       - RAILS_ENV=${RAILS_ENV}
       - SECRET_KEY_BASE=${SECRET_KEY_BASE}
       - RECAPTCHA_SECRET_KEY=${RECAPTCHA_SECRET_KEY}
@@ -28,6 +32,12 @@ services:
       - SERVER_ADDRESS=${SERVER_ADDRESS}
       - USERNAME=${USERNAME}
       - EMAIL_PASSWORD=${EMAIL_PASSWORD}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASS=${SMTP_PASS}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_AUTH=${SMTP_AUTH}
+      - SMTP_STLS=${SMTP_STLS}
       - OAUTH_GOOGLE_APP_KEY=${OAUTH_GOOGLE_APP_KEY}
       - OAUTH_GOOGLE_APP_SECRET=${OAUTH_GOOGLE_APP_SECRET}
       - OAUTH_GITHUB_APP_KEY=${OAUTH_GITHUB_APP_KEY}

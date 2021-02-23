@@ -46,8 +46,10 @@ end
 
 every 1.day do
   runner "DigestMailJob.perform_async(0)"
+  runner "DigestSpamJob.perform_async(0)"
 end
 
 every 1.week do
   runner "DigestMailJob.perform_async(1)"
+  runner "DigestSpamJob.perform_async(1)"
 end

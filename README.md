@@ -2,15 +2,20 @@ PublicLab.org
 ======
 
 [![Code of Conduct](https://img.shields.io/badge/code-of%20conduct-green.svg)](https://publiclab.org/conduct)
-[![Build Status](https://travis-ci.org/publiclab/plots2.svg)](https://travis-ci.org/publiclab/plots2)
+[![Build Status](https://github.com/publiclab/plots2/workflows/tests/badge.svg?branch=main)](https://github.com/publiclab/plots2/actions)
 [![first-timers-only-friendly](http://img.shields.io/badge/first--timers--only-friendly-blue.svg?style=flat-square)](https://code.publiclab.org#r=all)
 [![Join the chat at https://publiclab.org/chat](https://img.shields.io/badge/chat-in%20different%20ways-blue.svg)](https://publiclab.org/chat)
 [![Code Climate](https://codeclimate.com/github/publiclab/plots2/badges/gpa.svg)](https://codeclimate.com/github/publiclab/plots2)
-[![codecov](https://codecov.io/gh/publiclab/plots2/branch/master/graph/badge.svg)](https://codecov.io/gh/publiclab/plots2)
+[![codecov](https://codecov.io/gh/publiclab/plots2/branch/main/graph/badge.svg)](https://codecov.io/gh/publiclab/plots2)
 [![View performance data on Skylight](https://badges.skylight.io/typical/GZDPChmcfm1Q.svg)](https://oss.skylight.io/app/applications/GZDPChmcfm1Q)
-[![Newcomers welcome](https://img.shields.io/badge/newcomers-welcome-pink.svg)](https://code.publiclab.org) [![GitHub license](https://img.shields.io/github/license/publiclab/plots2?logo=gpl)](https://github.com/publiclab/plots2/blob/master/LICENSE)
+[![Newcomers welcome](https://img.shields.io/badge/newcomers-welcome-pink.svg)](https://code.publiclab.org) [![GitHub license](https://img.shields.io/github/license/publiclab/plots2?logo=gpl)](https://github.com/publiclab/plots2/blob/main/LICENSE)
+[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/publiclab/plots2/)
 
-The content management system for the Public Lab research community, the `plots2` web application is a combination of a group research blog of what we call "research notes" and a wiki. Read more about the [data model here](https://github.com/publiclab/plots2/blob/master/doc/DATA_MODEL.md).
+The content management system for the Public Lab research community, the `plots2` web application is a combination of a group research blog of what we call "research notes" and a wiki. Read more about the [data model here](https://github.com/publiclab/plots2/blob/main/doc/DATA_MODEL.md).
+
+Begin running (and contributing to) this codebase immediately with [GitPod](https://gitpod.io):
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/publiclab/plots2)
 
 It showcases a variety of features that help the Public Lab community collaborate on environmental technology design and documentation, as well as community organizing. Originally a Drupal site, it was rewritten in 2012 in Ruby on Rails and has since extended but [not yet entirely replaced](https://github.com/publiclab/plots2/issues/956) the legacy Drupal data model and database design. We ❤️ Open Source and actively participate in various OSS programs such as [Google Summer of Code(GSoC)](https://publiclab.org/wiki/gsoc), Rails Girls Summer of Code (RGSoC), Outreachy and Google Code-In (GCI).
 Some key features include:
@@ -20,13 +25,15 @@ Some key features include:
 * [Wiki editing](https://publiclab.org/wiki) and revision tracking
 * Tagging and [topically-based groups and content organization](http://publiclab.org/tags)
 * Email notification subscriptions for topics and comments
-* A search interface built out of [our growing API](https://github.com/publiclab/plots2/blob/master/doc/API.md)
+* A search interface built out of [our growing API](https://github.com/publiclab/plots2/blob/main/doc/API.md)
 * A user dashboard [presenting recent activity](https://publiclab.org/dashboard)
 * A privacy-sensitive, Leaflet-based [location tagging system](https://github.com/publiclab/leaflet-blurred-location/) and [community map](http://publiclab.org/people)
 
 ## Roadmap
 
 We are developing a draft Roadmap for `plots2` and our broader Public Lab code projects; [read more and comment here](https://publiclab.org/notes/warren/05-22-2019/draft-of-a-public-lab-software-roadmap-comments-welcome).
+
+A full description of features, audience, inter-relationships, and goals of Public Lab software projects can be found here: https://publiclab.org/software-overview
 
 ## Table of Contents
 
@@ -35,14 +42,13 @@ We are developing a draft Roadmap for `plots2` and our broader Public Lab code p
 3. [Contributing](#contributing)
 4. [Prerequisites](#prerequisites)
 5. [Installation](#installation)
-    - [Simple Installation with Cloud9](https://github.com/publiclab/plots2/wiki/Simple-Installation-for-Cloud9)
     - [Standard Installation](#standard-installation)
     - [Windows Installation](#windows-installation)
 6. [SSL in Development](#ssl-in-development)
 7. [Login](#login)
 8. [Testing](#testing)
 9. [Maintainers](#maintainers)
-10. [API](https://github.com/publiclab/plots2/blob/master/doc/API.md)
+10. [API](https://github.com/publiclab/plots2/blob/main/doc/API.md)
 11. [Bundle Exec](#bundle-exec)
 12. [Reply-by-email](#reply-by-email)
 13. [Bugs and Support](#bugs-and-support)
@@ -69,7 +75,7 @@ Our mutual aims of democratizing inexpensive and accessible do-it-yourself techn
 
 ![Diagram](https://user-images.githubusercontent.com/24359/50705765-d84ae000-1029-11e9-9e4c-f166a0c0d5d1.png)
 
-_(Above: draft of our [Data model](https://github.com/publiclab/plots2/blob/master/doc/DATA_MODEL.md))_
+_(Above: draft of our [Data model](https://github.com/publiclab/plots2/blob/main/doc/DATA_MODEL.md))_
 
 ## Contributing
 
@@ -81,13 +87,9 @@ Please read and abide by our [Code of Conduct](https://publiclab.org/conduct); o
 
 ## Prerequisites
 
-For installation, prerequisites include sqlite3 and rvm. [Click here for a complete list and instructions](https://github.com/publiclab/plots2/blob/master/doc/PREREQUISITES.md).
+For installation, prerequisites include sqlite3 and rvm. [Click here for a complete list and instructions](https://github.com/publiclab/plots2/blob/main/doc/PREREQUISITES.md).
 
 ## Installation
-
-### Installation for Cloud9
-
-For information on how to install for use with the cloud environment, please see [here](https://github.com/publiclab/plots2/wiki/Simple-Installation-for-Cloud9).
 
 ### Standard Installation
 
@@ -96,18 +98,22 @@ For information on how to install for use with the cloud environment, please see
 3. Enter the new **plots2** directory with `cd plots2`.
 4. Set the upstream remote to the original repository url so that git knows where to fetch updates from in future: `git remote add upstream https://github.com/publiclab/plots2.git`
 5. Steps to install gems:
-    * You may need to first run `bundle install` if you have older gems in your environment from previous Rails work. If you get an error message like `Your Ruby version is 2.x.x, but your Gemfile specified 2.4.4` then you need to install the ruby version 2.4.4 using `rvm` or `rbenv`.
-	    * Using **rvm**: `rvm install 2.4.4` followed by `rvm use 2.4.4`
-	    * Using **rbenv**:  `rbenv install 2.4.4` followed by `rbenv local 2.4.4`
-    * Install gems with `bundle install --without production mysql` from the rails root folder, to install the gems you'll need, excluding those needed only in production.
+    * You may need to first run `bundle install` if you have older gems in your environment from previous Rails work. If you get an error message like `Your Ruby version is 2.x.x, but your Gemfile specified 2.6.6` then you need to install the ruby version 2.6.6 using `rvm` or `rbenv`.
+	    * Using **rvm**: `rvm install 2.6.6` followed by `rvm use 2.6.6`
+	    * Using **rbenv**:  `rbenv install 2.6.6` followed by `rbenv local 2.6.6`
+    * Run this `bundle config set without 'production mysql'` from the rails root folder to set your project to exclude libraries only needed in production.
+    * Install gems with `bundle install` from the rails root folder.
 6. Run `cp db/schema.rb.example db/schema.rb` to make a copy of `db/schema.rb.example` in `db/schema.rb`.
-7. Run `cp config/database.yml.sqlite.example config/database.yml` to make a copy of `config/database.yml.sqlite.example` in `config/database.yml`.
+7. You could choose to use mysql2 or sqlite3 as your database
+    * If mysql2,  run `cp config/database.yml.mysql.example config/database.yml` to make a copy of `config/database.yml.mysql.example` in `config/database.yml` 
+    * If sqlite3, run `cp config/database.yml.sqlite.example config/database.yml` to make a copy of `config/database.yml.sqlite.example` in `config/database.yml`.
+_kindly note if you choose to use sqlite some tests may fail. The project was setup initially to use mysql and some tests are tailored for mysql db. No need for alarm, we are working to fix these and this will not interfere with your development process_
 8. Run `rake db:setup` to set up the database
 9. Install static assets (like external javascript libraries, fonts) with `yarn install`
 10. By default, start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser.
 (for local SSL work, see [SSL](#ssl-in-development) below)
 11. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
-12. Run `rails test` to confirm that your install is working properly. Or `rails test:system` for system tests.
+12. Run `rails test` to confirm that your install is working properly. Or `rails test:system` for system tests. (_if you chose sqlite as your database, some tests may fail, please ignore these we are working to fix these, if your server starts correctly you all are set_)
 
 ### Windows Installation
 
@@ -149,11 +155,11 @@ For more on the login systems, see [this page](https://github.com/publiclab/plot
 
 ## Testing
 
-Click [here](https://github.com/publiclab/plots2/blob/master/doc/TESTING.md) for a comprehensive description of testing and [here](SYSTEM_TESTS.md) to learn about system tests.
+Click [here](https://github.com/publiclab/plots2/blob/main/doc/TESTING.md) for a comprehensive description of testing and [here](SYSTEM_TESTS.md) to learn about system tests.
 
 ## Maintainers
 
-+ See [/doc/MAINTAINERS.md](https://github.com/publiclab/plots2/blob/master/doc/MAINTAINERS.md) for Public Lab's policy on feature maintainers!
++ See [/doc/MAINTAINERS.md](https://github.com/publiclab/plots2/blob/main/doc/MAINTAINERS.md) for Public Lab's policy on feature maintainers!
 
 ## How to start and modify cron jobs
 
@@ -176,7 +182,7 @@ Adding `bundle exec` ensures you're using the version of passenger you just inst
 
 ## Reply-by-email
 
-Public Lab now supports reply by email to comment feature. For more details regarding it go to the [email documentation](https://github.com/publiclab/plots2/blob/master/doc/EMAIL.md)
+Public Lab now supports reply by email to comment feature. For more details regarding it go to the [email documentation](https://github.com/publiclab/plots2/blob/main/doc/EMAIL.md)
 
 
 ## Bugs and support
@@ -187,7 +193,7 @@ For additional support, join the Public Lab website and mailing list at http://p
 
 ## Recaptcha
 
-This application uses RECAPTCHA via the recaptcha gem in production only. For more information, click [here](https://github.com/publiclab/plots2/blob/master/doc/RECAPTCHA.md).
+This application uses RECAPTCHA via the recaptcha gem in production only. For more information, click [here](https://github.com/publiclab/plots2/blob/main/doc/RECAPTCHA.md).
 
 ## Internationalization
 
@@ -195,8 +201,10 @@ Publiclab.org now supports Internationalization and localization, though we are 
 
 To see it in action, click on the 'Language' drop-down located in the footer section of the page. All the guidelines and best practices for I18n can be found [here](http://guides.rubyonrails.org/i18n.html).
 
-Translations are arranged in the YAML files [here](https://github.com/publiclab/plots2/tree/master/config/locales), which are
-set in a similar way to [views](https://github.com/publiclab/plots2/tree/master/app/views) files. An example for adding translations can be found [here](http://guides.rubyonrails.org/i18n.html#adding-translations).
+Translations are arranged in the YAML files [here](https://github.com/publiclab/plots2/tree/main/config/locales), which are
+set in a similar way to [views](https://github.com/publiclab/plots2/tree/main/app/views) files. An example for adding translations can be found [here](http://guides.rubyonrails.org/i18n.html#adding-translations).
+
+Since the implementation of our new [Translation system](https://github.com/publiclab/plots2/issues/5737), we now use the `translation()` helper, [found here](https://github.com/publiclab/plots2/blob/438b649669b2029d01437bec9eb2826cf764851b/app/helpers/application_helper.rb#L141-L153). This provides some extra translation features such as inserting a prompt visible to site visitors if no translation exists yet. 
 
 To add new languages or for additional support, please write to plots-dev@googlegroups.com
 
@@ -216,8 +224,8 @@ Help improve Public Lab software!
 * Some devs hang out in http://publiclab.org/chat (irc webchat)
 * Join our gitter chat at https://gitter.im/publiclab/publiclab
 * Try out some supportive tasks https://github.com/publiclab/plots2/wiki/Supportive-Tasks
-* Get involved with our weekly community check-ins. For guidelines: [https://github.com/publiclab/plots2/tree/master/doc/CHECKINS.md
-](https://github.com/publiclab/plots2/tree/master/doc/CHECKINS.md)
+* Get involved with our weekly community check-ins. For guidelines: [https://github.com/publiclab/plots2/tree/main/doc/CHECKINS.md
+](https://github.com/publiclab/plots2/tree/main/doc/CHECKINS.md)
 * You can help us by opening first timers issues or fto. The template for opening an issue can be found https://docs.google.com/document/d/1dO-CAgModEGM5cOaMmcnBh2pEON0hv_rH3P2ou2r1eE/edit 
 
 ## First Time?

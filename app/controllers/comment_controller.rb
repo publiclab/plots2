@@ -4,10 +4,9 @@ class CommentController < ApplicationController
   before_action :require_user, only: %i(create update delete)
 
   def index
-    comments = Comment.joins(:node, :user)
+    @pagy, comments = pagy(Comment.joins(:node, :user)
                    .order('timestamp DESC')
-                   .where('node.status = ?', 1)
-                   .paginate(page: params[:page], per_page: 30)
+                   .where('node.status = ?', 1), items: 30)
 
     @normal_comments = comments.where('comments.status = 1')
     if logged_in_as(%w(admin moderator))
@@ -51,8 +50,8 @@ class CommentController < ApplicationController
         end
       end
     rescue CommentError
-      flash[:error] = 'The comment could not be saved.'
-      render plain: 'failure'
+      flash.now[:error] = 'The comment could not be saved.'
+      render plain: 'failure', status: :bad_request
     end
   end
 
@@ -144,14 +143,14 @@ class CommentController < ApplicationController
     @emoji_type = params["emoji_type"]
     comment = Comment.where(cid: @comment_id).first
     like = comment.likes.where(user_id: @user_id, emoji_type: @emoji_type)
-    @is_liked = like.count.positive?
-    if like.count.positive?
+    @is_liked = like.size.positive?
+    if like.size.positive?
       like.first.destroy
     else
       comment.likes.create(user_id: @user_id, emoji_type: @emoji_type)
     end
-
-    @likes = comment.likes.group(:emoji_type).count
+    # select likes from users that aren't banned (status = 0)
+    @likes = comment.likes.joins(:user).select(:emoji_type, :status).where("emoji_type IS NOT NULL").where("status != 0").group(:emoji_type).size
     @user_reactions_map = comment.user_reactions_map
     respond_with do |format|
       format.js do

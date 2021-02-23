@@ -1,0 +1,112 @@
+/*
+*= require datatables/dataTables.bootstrap4
+*/
+
+.nav_top {
+	z-index: 5;
+	width: 100%;
+}
+
+#batch-spam:hover {
+	color: red !important;
+	cursor: pointer;
+}
+
+#batch-publish:hover {
+	color: green !important;
+	cursor: pointer;
+}
+
+#delete-batch:hover {
+	color: red !important;
+	cursor: pointer;
+}
+
+#all:hover {
+	color: blue !important;
+	cursor: pointer;
+}
+
+#batch-ban:hover {
+	color: orange !important;
+	cursor: pointer;
+}
+
+#batch-unban:hover {
+	color: green !important;
+	cursor: pointer;
+}
+
+#node-hover:hover {
+	color: blue !important;
+}
+
+#docs-btn:hover {
+	color: #17a2b8!important
+}
+
+#table-card {
+	width: 100%;
+}
+
+#bulk-nav {
+	margin-top: 2vh;
+	margin-bottom: 1vh;
+	width: 100%;
+}
+
+#info-btn {
+	margin: 10px 0 0 1vw;
+}
+
+#info-div {
+	 padding: 10px;
+	 text-align: center;
+	 line-height: 1.6;
+}
+
+.border-curve {
+	border-radius: 40px;
+}
+
+.active .drop {
+	color: white !important;
+}
+
+.page-table {
+	width: 100%;
+	margin-top: 10px;
+}
+
+.card .navbar .nav .nav-item .active {
+	color: #343a40;
+	border-bottom: 2px #343a40 solid;
+}
+
+.spam-alert {
+	position: fixed;
+	width: 82vw;
+	top: 10vh;
+	z-index: 10;
+}
+@media (max-width: 750px) {
+	#table-card,
+	#bulk-nav,
+	.nav_top,
+	.page-table
+	{
+		margin-left: 5vw;
+		width: 90vw;
+	}
+	.nav_title {
+		font-size: 18px;
+		margin-bottom: 10px;
+	}
+	#info-btn {
+		margin-left: 5vw;
+	}
+	#stats_spam, #timeline_spam{
+		margin-left: 3vw;
+		margin-right: 3vw !important;
+	}
+}

@@ -369,7 +369,21 @@ sunny_day_note:
   nid: 34
   uid: 2
   title: "Note tagged with sunny-day"
-  body: "This is the body"
+  body: |
+      This is the body. Testing out print using
+
+      | | col0 | col1 | col2 | col3 |
+      | |------|------|------|------|
+      | | cell | cell | cell | cell |
+      | | cell | cell | cell | cell |
+      | | cell | cell | cell | cell |
+      | | cell | cell | cell | cell |
+
+      ```
+      code goes here
+      ```
+      > But my knees were far too weak To stand in your arms Without falling to your feet
+      <iframe width='560' height='315' src='https://www.youtube.com/embed/pt-9qPCBbQE' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen\=''></iframe>
   timestamp: <%= DateTime.new(2020,2,12).to_i %>
   status: 1
 
@@ -387,4 +401,52 @@ sun_question:
   title: "Note tagged with question:sun"
   body: "This is the body"
   timestamp: <%= DateTime.new(2020,2,12).to_i %>
+  status: 1
+
+comment_question: # for testing comments on questions
+  nid: 37
+  uid: 2
+  title: "Can I post comments here"
+  body: "I'm gonna do it"
+  timestamp: <%= DateTime.new(2020,12,7).to_i %>
+  status: 1
+
+comment_note: # for testing comments on notes
+  nid: 38
+  uid: 2
+  title: "Please don't comment here"
+  body: "I beg you, please"
+  timestamp: <%= DateTime.new(2020,12,8).to_i %>
+  status: 1
+
+hidden_response_note_revision:
+  nid: 39
+  uid: 2
+  title: "Note tagged with hidden:response"
+  body: "This is a hidden note"
+  timestamp: <%= DateTime.new(2020,12,8).to_i %>
+  status: 1
+
+question_with_multiple_comments:
+  nid: 40
+  uid: 2
+  title: "Which condiments do you like"
+  body: "I want to know"
+  timestamp: <%= DateTime.new(2020,12,20).to_i %>
+  status: 1
+
+note_with_multiple_comments:
+  nid: 41
+  uid: 2
+  title: "Ouija Board"
+  body: "Don't be scurred"
+  timestamp: <%= DateTime.new(2020,12,20).to_i %>
+  status: 1
+
+wiki_with_multiple_comments:
+  nid: 42
+  uid: 2
+  title: "List of pokemon"
+  body: "Gotta catch em all"
+  timestamp: <%= DateTime.new(2020,12,21).to_i %>
   status: 1

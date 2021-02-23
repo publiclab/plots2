@@ -1,9 +1,0 @@
-<% if @related_tags %>
-  <%=  render :partial => "tag/related", :locals => {tags: @related_tags } %>
-<% end %>
-
-<% unless current_user %>
-  <% cache('related_sidebar-welcome', skip_digest: true) do %>
-    <%= feature('sidebar-welcome') %>
-  <% end %>
-<% end %>

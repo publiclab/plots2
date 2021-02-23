@@ -28,7 +28,15 @@ Mailman::Application.run do
 #       retries ||= 0
       # do something with the database that does not fetch mails yet (let's try to ensure we have a MySQL connection first)
       puts Comment.last.inspect
-      Comment.receive_mail(message)
+      Mailman.logger.info "Mail received from #{message.from.first}: '#{message.subject}' - '#{message&.html_part}'"
+      if message.subject == "Incoming mail parsing test"
+        Mailman.logger.info "Received incoming mail parsing test from #{message.from.first} at #{Time.now.to_s}"
+      end
+      last_comment = Comment.last
+      comment_node_id = Comment.new_comment_from_email(message)
+      if Comment.last.id != last_comment.id
+        Mailman.logger.info "Comment created from #{message.from.first}: '#{message.subject}' - https://publiclab.org/n/#{comment_node_id}"
+      end
 #     rescue Exception => e
 #       Mailman.logger.error "Exception occurred while receiving message:\n#{message}"
 #       Mailman.logger.error [e, *e.backtrace].join("\n")

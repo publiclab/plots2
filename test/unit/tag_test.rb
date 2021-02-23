@@ -19,21 +19,39 @@ class TagTest < ActiveSupport::TestCase
     assert_not_nil tag.nodes
   end
 
+  test 'tag counting' do
+    tag = tags(:awesome)
+    assert_nil tag.count
+    assert_not_nil tag.run_count
+    assert_not_nil tag.count
+    assert_equal 3, tag.count
+
+    tag = tags(:spam)
+    assert_nil tag.count
+    assert_not_nil tag.run_count
+    assert_not_nil tag.count
+    assert_equal 0, tag.count # even if used, it should not count spam tags
+  end
+
   test 'tag followers' do
     followers = Tag.followers(node_tags(:awesome).name)
-    assert !followers.empty?
+    assert followers.any?
     assert followers.include?(tag_selections(:awesome).user)
   end
 
-  test 'related tags' do
-    related = Tag.related(tags(:awesome).name)
-    assert !related.empty?
+  test 'related tags does not include spam' do
+    awesome_tag = tags(:awesome)
+    spam_node = nodes(:spam)
+    spam_node.tags << awesome_tag
+    related = Tag.related(awesome_tag.name)
+    assert related.any?
     assert related.include?(tags(:test))
+    refute related.include?(tags(:spam))
   end
 
   test 'tag subscribers' do
     subscribers = Tag.subscribers([tags(:awesome)])
-    assert !subscribers.empty?
+    assert subscribers.any?
     assert (subscribers.to_a.collect(&:last).map { |o| o[:user] }).include?(tag_selections(:awesome).user)
   end
 
@@ -64,7 +82,7 @@ class TagTest < ActiveSupport::TestCase
       Time.now.to_i.to_s
     )
     assert_not_nil nodes_in_week
-    assert !nodes_in_week.empty?
+    assert nodes_in_week.any?
 
     nodes_in_year = Tag.nodes_for_period(
       'note',
@@ -73,7 +91,7 @@ class TagTest < ActiveSupport::TestCase
       Time.now.to_i.to_s
     )
     assert_not_nil nodes_in_year
-    assert !nodes_in_year.empty?
+    assert nodes_in_year.any?
   end
 
   test 'find all tagged research notes with status 1' do
@@ -92,7 +110,7 @@ class TagTest < ActiveSupport::TestCase
       uid: users(:bob).uid
     )
     assert node_tag.save!
-    assert !nodes(:blog).responses.empty?
+    assert nodes(:blog).responses.any?
     assert nodes(:blog).response_count > 0
   end
 
@@ -105,7 +123,7 @@ class TagTest < ActiveSupport::TestCase
       uid: users(:bob).uid
     )
     assert node_tag.save!
-    assert !nodes(:blog).responses('replication').empty?
+    assert nodes(:blog).responses('replication').any?
     assert nodes(:blog).response_count('replication') > 0
   end
 
@@ -148,7 +166,7 @@ class TagTest < ActiveSupport::TestCase
     trending_tags = Tag.trending
     assert_not_nil trending_tags
     assert_not_equal [], trending_tags
-    assert !trending_tags.empty?
+    assert trending_tags.any?
     assert_not_nil Tag.trending(2, Time.now - 1.year, Time.now - 1.month)
   end
 
@@ -242,5 +260,14 @@ class TagTest < ActiveSupport::TestCase
 
     assert_equal last_week_subscriptions, graph.values.sum
     assert_equal Hash, graph.class
+  end
+
+  test 'tagged_node_count' do
+    tag = tags(:test)
+    note_count = Tag.tagged_node_count(tag.name)
+    wiki_count = Tag.tagged_node_count(tag.name, 'page')
+
+    assert_equal 2 , note_count
+    assert_equal 0 , wiki_count
   end
 end

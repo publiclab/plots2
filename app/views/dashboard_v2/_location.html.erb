@@ -1,0 +1,19 @@
+<% if current_user.has_power_tag("lat") && current_user.has_power_tag("lon") %>
+  <% lon = current_user.lon %>
+  <% lat = current_user.lat%>
+  <% zoom = current_user.zoom ? current_user.zoom: ''  %>
+  <%# Display Map %>
+  <%= render_map(lat, lon, zoom) %>
+  <%# Link to view Nearby Activity %>
+  <% url = "/map#" + zoom.to_s + "/" + lat.to_s + lon.to_s %>
+  <a href="<%= url %>" class="btn btn-outline-secondary btn-location mt-2 mb-5"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= translation('dashboard_v2.sidebar.nearby_activity') %> </a>
+<% else %>
+  <div style="margin: 2.2rem 0;">
+    <a class="btn btn-lg btn-outline-secondary blurred-location-input" submit_to="/profile/tags/create/<%= current_user.uid %>"><i class="fa fa-map-marker" style="color:#c40;"></i> <%= translation('dashboard_v2.sidebar.add_location') %></a>
+    <p><small class="form-grey">
+      <%= translation('dashboard_v2.sidebar.location_work') %> |
+      <a class="form-grey" style="text-decoration: underline;" href="https://publiclab.org/location-privacy" target="_blank"><%= translation('dashboard_v2.sidebar.location_privacy') %></a>
+    </p></small>
+  </div>
+  <%= render partial: 'tag/location' %>
+<% end %>

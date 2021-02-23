@@ -131,8 +131,8 @@ class UserTest < ActiveSupport::TestCase
     bob = users(:bob)
     node_count = 2
     nodes_fix = [2, 5]
-    count_return = bob.content_followed_in_period(2.hours.ago, Time.now, 'page').count
-    nodes_time = bob.content_followed_in_period(2.hours.ago, Time.now, 'page').pluck(:nid)
+    count_return = bob.content_followed_in_period(2.hours.ago, Time.now, 'node_revisions.timestamp DESC','page').count
+    nodes_time = bob.content_followed_in_period(2.hours.ago, Time.now, 'node_revisions.timestamp DESC', 'page').pluck(:nid)
     assert_equal node_count, count_return
     assert_equal nodes_fix, nodes_time.sort
   end
@@ -305,4 +305,8 @@ class UserTest < ActiveSupport::TestCase
     end
   end
 
+  test 'for_subscriptions' do
+    user = users(:bob)
+    assert_equal  user.subscriptions(:tag).size, 4
+  end
 end
