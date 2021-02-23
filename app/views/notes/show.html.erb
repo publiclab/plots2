@@ -124,12 +124,16 @@
         <% comments = get_comment_react_props(@react_props[:comments]) %>
         <%= react_component("CommentsContainer", { 
           comments: comments,
-          commentsHeaderText: translation('notes._comments.comments'),
           currentUser: @react_props[:currentUser],
+          elementText: {
+            :commentFormPlaceholder => I18n.t('notes._comments.post_placeholder'),
+            :commentsHeaderText => translation('notes._comments.comments'),
+            :commentPreviewText => translation('comments._form.preview'),
+            :commentPublishText => translation('comments._form.publish'),
+            :userCommentedText => translation('notes._comment.commented'),
+          },
           nodeAuthorId: @react_props[:nodeAuthorId],
-          nodeId: @react_props[:nodeId],
-          user: @react_props[:user],
-          userCommentedText: translation('notes._comment.commented') 
+          nodeId: @react_props[:nodeId]
         }) %>
       <% else %>
         <div id="legacy-editor-container"><%= render partial: "notes/comments" %></div>
