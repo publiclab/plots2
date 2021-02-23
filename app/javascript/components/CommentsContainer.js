@@ -9,11 +9,17 @@ class CommentsContainer extends React.Component {
   render() {
     const {
       comments,
-      commentsHeaderText,
       currentUser,
+      elementText,
+      elementText: {
+        commentFormPlaceholder,
+        commentsHeaderText,
+        commentPreviewText,
+        commentPublishText,
+        userCommentedText
+      },
       nodeAuthorId,
-      nodeId,
-      userCommentedText
+      nodeId
     } = this.props;
 
     const commentsList = comments.map((comment, index) => {
@@ -21,7 +27,10 @@ class CommentsContainer extends React.Component {
       null :
       <CommentForm
         commentId={comment.commentId}
+        commentFormPlaceholder={elementText.commentFormPlaceholder}
         commentFormType="reply"
+        commentPreviewText={elementText.commentPreviewText}
+        commentPublishText={elementText.commentPublishText}
         nodeId={nodeId}
       />;
 
@@ -30,7 +39,7 @@ class CommentsContainer extends React.Component {
         comment={comment} 
         nodeAuthorId={nodeAuthorId}
         replyCommentForm={replyCommentForm}
-        userCommentedText={userCommentedText} 
+        userCommentedText={elementText.userCommentedText} 
       />;
     })
 
@@ -40,13 +49,19 @@ class CommentsContainer extends React.Component {
           <div id="comments" className="col-lg-10 comments">
             <h3>
               <span id="comment-count">
-                {comments.length + " " + commentsHeaderText}
+                {comments.length + " " + elementText.commentsHeaderText}
               </span>
             </h3>
             <div id="comments-list" style={{ marginBottom: "50px" }}>
               {commentsList}
             </div>
-            <CommentForm commentFormType="main" nodeId={nodeId} />
+            <CommentForm 
+              commentFormPlaceholder={elementText.commentFormPlaceholder}
+              commentFormType="main" 
+              commentPreviewText={elementText.commentPreviewText}
+              commentPublishText={elementText.commentPublishText}
+              nodeId={nodeId} 
+            />
           </div>
         </div>
       </UserContext.Provider>
@@ -56,10 +71,9 @@ class CommentsContainer extends React.Component {
 
 CommentsContainer.propTypes = {
   comments: PropTypes.array,
-  commentsHeaderText: PropTypes.string,
+  elementText: PropTypes.object,
   nodeAuthorId: PropTypes.number,
-  nodeId: PropTypes.number,
-  userCommentedText: PropTypes.string
+  nodeId: PropTypes.number
 };
 
 export default CommentsContainer;
