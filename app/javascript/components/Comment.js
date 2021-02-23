@@ -6,19 +6,24 @@ import { UserContext } from "./user-context";
 import CommentToolbar from "./CommentToolbar.js"
 
 const Comment = ({
-  authorId,
-  authorPicUrl,
-  authorPicFilename,
-  authorUsername,
-  commentId,
-  commentName,
-  htmlCommentText,
-  rawCommentText,
-  replies,
-  replyTo,
-  timeCreatedString
+  comment,
+  comment: {
+    authorId,
+    authorPicUrl,
+    authorPicFilename,
+    authorUsername,
+    commentId,
+    commentName,
+    htmlCommentText,
+    rawCommentText,
+    replies,
+    replyTo,
+    timeCreatedString
+  },
+  nodeAuthorId,
+  replyCommentForm,
+  userCommentedText
 }) => {
-
   // top-left comment author information
   let authorSection = [];
   // author's profile pic, or anonymous blank circle
@@ -64,8 +69,8 @@ const Comment = ({
       return <Comment 
         key={"reply-to-comment-" + commentId + "-" + index} 
         comment={reply} 
-        nodeAuthorId={props.nodeAuthorId}
-        userCommentedText={props.userCommentedText} 
+        nodeAuthorId={nodeAuthorId}
+        userCommentedText={userCommentedText} 
       />;
     });
     const replyToggleLink = <p
@@ -80,7 +85,7 @@ const Comment = ({
       Reply to this comment...
     </p>;
     const replyForm = isReplyFormVisible ?
-      props.replyCommentForm :
+      replyCommentForm :
       "";
     replySection = [repliesList, replyToggleLink, replyForm];
   }
@@ -113,7 +118,7 @@ const Comment = ({
             <div className="navbar-text float-left d-md-none">&nbsp;&nbsp;</div>
             <div className="navbar-text float-left">
               {authorSection}
-              <span className="d-none d-md-inline">{" " + props.userCommentedText}</span>
+              <span className="d-none d-md-inline">{" " + userCommentedText}</span>
               <a style={{ color: "#aaa" }} href={"#c" + commentId}>
                 {" " + timeCreatedString}
               </a>
@@ -130,7 +135,7 @@ const Comment = ({
               <CommentToolbar 
                 authorId={authorId} 
                 currentUser={currentUser} 
-                nodeAuthorId={props.nodeAuthorId}
+                nodeAuthorId={nodeAuthorId}
               />
             </div>
           </div>
