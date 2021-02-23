@@ -74,7 +74,7 @@
           <br>
           <a id="publish" tabindex="5" class="publish btn btn-primary btn-lg"><%= translation('wiki.edit.publish') %></a>
           <!-- due to translation helper issues the following line cannot use the `translation()` helper - https://github.com/publiclab/plots2/issues/7798 -->
-          <a tabindex="6" data-previewing-text="<%= t('wiki.edit.previewing_text') %>" class="btn btn-outline-secondary btn-lg preview-btn" onClick="$E.toggle_preview()"><%= t('wiki.edit.preview') %></a>
+          <a tabindex="6" id="toggle-preview-button-main" data-previewing-text="<%= t('wiki.edit.previewing_text') %>" class="btn btn-outline-secondary btn-lg preview-btn" onClick="$E.toggle_preview()"><%= t('wiki.edit.preview') %></a>
           <a class="btn btn-outline-secondary btn-lg" href="/wiki/<%= params["id"] %>">Cancel</a>
 
         </div>

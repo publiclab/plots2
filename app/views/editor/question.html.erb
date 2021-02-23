@@ -108,8 +108,7 @@
           <% end %>
 
           <a id="publish" tabindex="5" class="publish btn btn-primary btn-lg">Publish</a>
-          <a tabindex="6" data-previewing-text="Previewing (click to edit)" class="btn btn-outline-secondary btn-lg preview-btn" onClick="$E.toggle_preview()">Preview</a>
-
+          <a tabindex="6" id="toggle-preview-button-main" data-previewing-text="<%= t('wiki.edit.previewing_text') %>" class="btn btn-outline-secondary btn-lg preview-btn" onClick="$E.toggle_preview()"><%= t('wiki.edit.preview') %></a>
           <%= render partial: 'editor/event' %>
 
         </div>
