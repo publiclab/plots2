@@ -41,6 +41,8 @@ jobs:
     - uses: ./.github/actions/setup-test-environment
     - name: Install JavaScript dependencies with Yarn
       run: yarn check || yarn install --frozen-lockfile;
+    - name: Start webpacker for React integrations
+      run: ./node_modules/.bin/webpack-dev-server
     - name: "Functional Tests"
       env:
         RAILS_ENV: test
@@ -59,6 +61,8 @@ jobs:
     - uses: ./.github/actions/setup-test-environment
     - name: Install JavaScript dependencies with Yarn
       run: yarn check || yarn install --frozen-lockfile;
+    - name: Start webpacker for React integrations
+      run: ./node_modules/.bin/webpack-dev-server
     - name: "Integration Tests"
       env:
         RAILS_ENV: test
@@ -90,6 +94,8 @@ jobs:
     - uses: ./.github/actions/setup-test-environment
     - name: Install JavaScript dependencies with Yarn
       run: yarn check || yarn install --frozen-lockfile;
+    - name: Start webpacker for React integrations
+      run: ./node_modules/.bin/webpack-dev-server
     - name: "System Tests"
       env:
         RAILS_ENV: test
