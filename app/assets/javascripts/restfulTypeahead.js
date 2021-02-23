@@ -5,8 +5,8 @@
   Documentation here: https://github.com/bassjobsen/Bootstrap-3-Typeahead
 **/
 
-$(function() {
-  $('input.search-query.typeahead').each(function(i, el){
+$(function () {
+  $('input.search-query.typeahead').each(function (i, el) {
 
     var typeahead = $(el).typeahead({
       items: "all",
@@ -17,13 +17,9 @@ $(function() {
       source: debounce(function (query, process) {
 
         query = query.replace(' ', '-'); // replace spaces with hyphens
-        var encoded_query = encodeURIComponent(query); 
-        var qryType = $(el).attr('qryType'); 
-        if (qryType == "tags") {
-          var queryUrl = '/tag/suggested/' + encoded_query;
-        } else {
-          var queryUrl = 'api/srch/' + qryType + '?query=' + encoded_query;
-        }
+        var encoded_query = encodeURIComponent(query);
+        var qryType = $(el).attr('qryType');
+        const queryUrl = (qryType === "tags") ? "/tag/suggested/" + encoded_query : "api/srch/" + qryType + "?query=" + encoded_query;
 
         // search analytics
         if (window.hasOwnProperty('ga')) {
@@ -31,15 +27,15 @@ $(function() {
           tracker.send("pageview", queryUrl + '&typeahead=true');
         }
 
-        if (qryType == "tags") {
-         return $.post('/tag/suggested/' + encoded_query, {}, function (data) { 
-           var objects = data.map(function(a) { return { doc_title: a } });
-           return process(objects);
-         });
+        if (qryType === "tags") {
+          return $.post('/tag/suggested/' + encoded_query, {}, function (data) {
+            var objects = data.map(function (a) { return { doc_title: a } });
+            return process(objects);
+          });
         } else {
           return $.getJSON('/' + queryUrl, function (data) {
             return process(data.items);
-          },'json');
+          }, 'json');
         }
 
       }, 350),
@@ -48,15 +44,15 @@ $(function() {
         return item.doc_title;
       },
 
-      matcher: function() {
+      matcher: function () {
         return true;
       },
 
-      displayText: function(item) {
+      displayText: function (item) {
         return item.doc_title;
       },
 
-      updater: function(item) {
+      updater: function (item) {
         if (item.hasOwnProperty('showAll') && item.showAll) {
           var query = this.value;
           window.location = window.location.origin + "/search/?q=" + query;
@@ -70,7 +66,8 @@ $(function() {
         return item;
       },
 
-      addItem: { doc_title: 'Search all content',
+      addItem: {
+        doc_title: 'Search all content',
         showAll: true
       }
     });
