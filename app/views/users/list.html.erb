@@ -48,11 +48,12 @@
                       <li><a style="color: #808080; cursor: no-drop;">Joined <%= distance_of_time_in_words(user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></a></li>
                       <li><a href='/notes/author/<%= user.name %>'><%= user.note_count %> Research Notes</a></li>
                       <li><a style="color: #808080; cursor: no-drop;"><%= user.nodes.count %> Wiki Edits</a></li>
-                      <li><a href="/profile/<%= user.username %>">See Full Profile</a></li>
                       <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") %>
                          <% if user.status == 0 %>
+                           <li><a href="/profile/<%= user.username %>">Unban on profile</a></li>
                            <i class='fa fa-ban' style="color:#a00;"></i> <%= translation('users.list.banned') %>
                            <% elsif user.status == 1 && user != current_user %>
+                             <li><a href="/profile/<%= user.username %>">See Full Profile</a></li>
                              <li><a data-confirm="<%= translation('users.list.are_you_sure') %>" href="/ban/<%= user.uid %>" ><i class='fa fa-ban'></i> <%= translation('users.list.ban') %></a></li>
                          <% end %>
                        <% end %>
