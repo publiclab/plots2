@@ -7,6 +7,8 @@ const CommentForm = ({
   commentId,
   commentPreviewText,
   commentPublishText,
+  handleFormSubmit,
+  handleTextAreaChange,
   nodeId
 }) => {
 
@@ -60,8 +62,10 @@ const CommentForm = ({
           <textarea
             id={"text-input-" + commentId}
             className="form-control text-input"
+            data-form-id={formId}
             name="body"
             cols="40"
+            onChange={handleTextAreaChange}
             rows="6"
             style={{
               border: "1px solid #bbb",
@@ -77,8 +81,8 @@ const CommentForm = ({
         {/* placeholder: comment preview section */}
         <div className="control-group">
           <button
-            type="submit"
             className="btn btn-primary"
+            onClick={handleFormSubmit}
           >
             {commentPublishText}
           </button>
@@ -101,6 +105,8 @@ CommentForm.propTypes = {
   commentFormType: PropTypes.string,
   commentPreviewText: PropTypes.string,
   commentPublishText: PropTypes.string,
+  handleFormSubmit: PropTypes.func,
+  handleTextAreaChange: PropTypes.func,
   nodeId: PropTypes.number
 };
 
