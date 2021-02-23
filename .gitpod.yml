@@ -17,6 +17,7 @@ tasks:
         rake db:setup
 
         yarn install
+
         ./public/lib/.bin/webpack-dev-server
 
       command: >
