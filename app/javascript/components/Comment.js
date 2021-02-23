@@ -5,25 +5,23 @@ import { UserContext } from "./user-context";
 
 import CommentToolbar from "./CommentToolbar.js"
 
-function Comment(props) {
-  const {
-    authorId,
-    authorPicUrl,
-    authorPicFilename,
-    authorUsername,
-    commentId,
-    commentName,
-    htmlCommentText,
-    rawCommentText,
-    replies,
-    replyTo,
-    timeCreatedString
-  } = props.comment;
+const Comment = ({
+  authorId,
+  authorPicUrl,
+  authorPicFilename,
+  authorUsername,
+  commentId,
+  commentName,
+  htmlCommentText,
+  rawCommentText,
+  replies,
+  replyTo,
+  timeCreatedString
+}) => {
 
-  // React Hooks
-  const [isReplyFormVisible, setIsReplyFormVisible] = useState(false);
-
+  // top-left comment author information
   let authorSection = [];
+  // author's profile pic, or anonymous blank circle
   const authorProfilePic = (authorPicFilename) ? 
     <img
       className="rounded-circle"
@@ -53,6 +51,13 @@ function Comment(props) {
     commentName;
   authorSection = authorSection.concat([authorProfilePic, authorName]);
   
+  // React Hook for toggling reply form state
+  const [isReplyFormVisible, setIsReplyFormVisible] = useState(false);
+
+  // generate comment's replies section:
+  //   1. a list of all replies (if any)
+  //   2. "Reply to this comment..." link that toggles the reply form
+  //   3. the actual reply CommentForm
   let replySection = "";
   if (!replyTo) {
     const repliesList = replies.map((reply, index) => {
@@ -81,6 +86,8 @@ function Comment(props) {
   }
 
   return (
+    // hooks this component up to React Context, so it can access currentUser object.
+    // see CommentsContainer.js
     <UserContext.Consumer>
       {currentUser => (
         <div
