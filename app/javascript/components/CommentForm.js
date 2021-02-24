@@ -19,9 +19,11 @@ const CommentForm = ({
   const formClass = commentFormType === "edit" ?
     "edit-comment-form well" : 
     "comment-form";
+  // these lines can probably be deleted.
+  // all form submission is handled in CommentsContainer.js anyway, this component isn't doing any submission, so the form doesn't need to have an action:
   const formAction = commentFormType === "edit" ?
-    "/update/" + commentId :
-    "/create/" + nodeId;
+    "/comment/update/" + commentId :
+    "/comment/create/" + nodeId;
 
   // comment form's title text
   let formTitle = "Post Comment";
@@ -54,13 +56,13 @@ const CommentForm = ({
         {/* placeholder: form_authenticity_token */}
         {/* placeholder: hidden_field_tag :reply_to */}
         <div
-          id={"comment-form-body-" + commentId}
+          id={"comment-form-body-" + formId}
           className="comment-form-body dropzone dropzone-large form-group"
         >
           {/* placeholder: new contributor message for non-edit form */}
           {/* placeholder: textarea below needs an aria-label attribute*/}
           <textarea
-            id={"text-input-" + commentId}
+            id={"text-input-" + formId}
             className="form-control text-input"
             data-form-id={formId}
             name="body"
@@ -82,6 +84,7 @@ const CommentForm = ({
         <div className="control-group">
           <button
             className="btn btn-primary"
+            data-form-id={formId}
             onClick={handleFormSubmit}
           >
             {commentPublishText}
