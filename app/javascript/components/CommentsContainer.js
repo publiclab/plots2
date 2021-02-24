@@ -36,7 +36,18 @@ const CommentsContainer = ({
   // comment form submission
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    console.log(textAreaValues);
+    const formId = event.target.dataset.formId;
+    const commentBody = textAreaValues[formId];
+    $.post(
+      "/comment/create/" + nodeId, 
+      {
+        body: commentBody,
+        id: nodeId
+      },
+      function(data) {
+        console.log(data);
+      }
+    );
   }
 
   // iterate over comments prop containing all node comments.
