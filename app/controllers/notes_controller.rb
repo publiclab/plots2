@@ -62,7 +62,7 @@ class NotesController < ApplicationController
         # nest the comment's replies in an array within the comment
         commentJSON[:replies] = get_react_comments(comment.replied_comments, true)
         commentJSON[:replyTo] = comment.reply_to
-        comments[index] = commentJSON
+        comments << commentJSON
       end
     end
     comments
@@ -95,7 +95,7 @@ class NotesController < ApplicationController
           .order('timestamp ASC')
         
         comments = get_react_comments(comments_record)
-        
+
         currentUser = {
           :canModerate => current_user.can_moderate?,
           :id => current_user[:id],
