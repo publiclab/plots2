@@ -213,8 +213,6 @@ class TagController < ApplicationController
 
     @notes = nodes.where('node.nid NOT IN (?)', qids) if @node_type == 'note'
     @questions = nodes.where('node.nid IN (?)', qids) if @node_type == 'questions'
-    ans_ques = Answer.where(uid: @user.id, accepted: true).includes(:node).map(&:node)
-    @answered_questions = ans_ques.paginate(page: params[:page], per_page: 24)
     @wikis = nodes if @node_type == 'wiki'
     @nodes = nodes if @node_type == 'maps'
     @title = "'" + @tagname.to_s + "' by " + params[:author]
