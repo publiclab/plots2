@@ -31,7 +31,8 @@ class CommentController < ApplicationController
       end
 
       if params[:react]
-        new_comment = helpers.get_react_comments([@comment])
+        is_reply = params[:reply_to].present?
+        new_comment = helpers.get_react_comments([@comment], is_reply)
         render json: {
           :comment => new_comment
         }

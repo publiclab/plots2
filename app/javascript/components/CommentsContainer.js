@@ -46,18 +46,19 @@ const CommentsContainer = ({
       {
         body: commentBody,
         id: nodeId,
-        react: true
+        react: true,
+        reply_to: event.target.dataset.replyTo ? event.target.dataset.replyTo : null
       },
       function(data) {
         let newComments = JSON.parse(JSON.stringify(comments)); // make a deep copy of the comments state
 
         if (data.comment[0].replyTo) {
-          for (let i = 0; i < comments.length; i++) {
-            if (comments[i].commentId == data.comment[0].replyTo) {
-              let newReplies = JSON.parse(JSON.stringify(comments[i].replies)); // make a deep copy of the comment's replies
+          for (let i = 0; i < newComments.length; i++) {
+            if (newComments[i].commentId == data.comment[0].replyTo) {
+              let newReplies = JSON.parse(JSON.stringify(newComments[i].replies)); // make a deep copy of the comment's replies
               newReplies.push(data.comment[0]);
               newReplies = newReplies.sort((a, b) => b.date - a.date);
-              comments[i].replies = newReplies;
+              newComments[i].replies = newReplies;
               break;
             }
           }
