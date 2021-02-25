@@ -30,14 +30,21 @@ class CommentController < ApplicationController
         @comment.save
       end
 
+      if params[:react]
+        new_comment = helpers.get_react_comments([@comment])
+        render json: {
+          :comment => new_comment
+        }
+      end
+
       respond_to do |format|
         @answer_id = 0
         format.js do
-          render 'comments/create'
+          render 'comments/create' unless params[:react]
         end
         format.html do
           if request.xhr?
-            render partial: 'notes/comment', locals: { comment: @comment }
+            render partial: 'notes/comment', locals: { comment: @comment } unless params[:react]
           else
             tagnames = @node.tagnames.map do |tagname|
               "<a href='/subscribe/tag/#{tagname}'>#{tagname}</a>"
