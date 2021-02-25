@@ -7,19 +7,19 @@ import CommentForm from "./CommentForm";
 
 const CommentsContainer = ({
   // ES6 destructure the props
-  // so we can simply refer to comments instead of this.props.comments
-  comments,
-    currentUser,
-    elementText,
-    elementText: {
-      commentFormPlaceholder,
-      commentsHeaderText,
-      commentPreviewText,
-      commentPublishText,
-      userCommentedText
-    },
-    nodeAuthorId,
-    nodeId
+  // so we can simply refer to initialComments instead of this.props.initialComments
+  initialComments,
+  currentUser,
+  elementText,
+  elementText: {
+    commentFormPlaceholder,
+    commentsHeaderText,
+    commentPreviewText,
+    commentPublishText,
+    userCommentedText
+  },
+  nodeAuthorId,
+  nodeId
 }) => {
   // React Hook managing textarea input state 
   const [textAreaValues, setTextAreaValues] = useState({});
@@ -33,6 +33,9 @@ const CommentsContainer = ({
     setTextAreaValues(state => ({ ...state, [formId]: value }));
   }
 
+  // React Hook for comments state
+  const [comments, setComments] = useState(initialComments);
+
   // comment form submission
   const handleFormSubmit = (event) => {
     event.preventDefault();
@@ -42,10 +45,29 @@ const CommentsContainer = ({
       "/comment/create/" + nodeId, 
       {
         body: commentBody,
-        id: nodeId
+        id: nodeId,
+        react: true
       },
       function(data) {
-        console.log(data);
+        let newComments = JSON.parse(JSON.stringify(comments)); // make a deep copy of the comments state
+
+        if (data.comment[0].replyTo) {
+          for (let i = 0; i < comments.length; i++) {
+            if (comments[i].commentId == data.comment[0].replyTo) {
+              let newReplies = JSON.parse(JSON.stringify(comments[i].replies)); // make a deep copy of the comment's replies
+              newReplies.push(data.comment[0]);
+              newReplies = newReplies.sort((a, b) => b.date - a.date);
+              comments[i].replies = newReplies;
+              break;
+            }
+          }
+        } else {
+          newComments = JSON.parse(JSON.stringify(comments)); // make a deep copy of the comments state
+          newComments.push(data.comment[0]);
+          newComments = newComments.sort((a, b) => b.date - a.date);
+        }
+
+        setComments(newComments);
       }
     );
   }
