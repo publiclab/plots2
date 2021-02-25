@@ -119,11 +119,8 @@
     <% if !@preview %>
       <%= render partial: "notes/responses" %>
       <% if @react %>
-        <!-- some methods aren't available in the controller, so we have to add them to the props object here -->
-        <!-- get_comment_react_props defined in application_helper.rb -->
-        <% comments = get_comment_react_props(@react_props[:comments]) %>
         <%= react_component("CommentsContainer", { 
-          comments: comments,
+          initialComments: @react_props[:comments],
           currentUser: @react_props[:currentUser],
           elementText: {
             :commentFormPlaceholder => I18n.t('notes._comments.post_placeholder'),
