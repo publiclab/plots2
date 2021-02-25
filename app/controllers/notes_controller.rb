@@ -44,30 +44,6 @@ class NotesController < ApplicationController
     render plain: Node.find(params[:id]).latest&.body
   end
 
-  # takes an activerecord query, returns a plain array
-  def get_react_comments(comments_record, get_replies = false)
-    comments = []
-    comments_record.each_with_index do |comment, index|
-      if comment.reply_to.nil? || get_replies
-        commentJSON = {}
-        commentJSON[:authorId] = comment.uid
-        commentJSON[:authorPicFilename] = comment.author.photo_file_name
-        commentJSON[:authorPicUrl] = comment.author.photo_path(:thumb)
-        commentJSON[:authorUsername] = comment.author.username
-        commentJSON[:commentId] = comment.cid
-        commentJSON[:commentName] = comment.name
-        commentJSON[:createdAt] = comment.created_at
-        commentJSON[:htmlCommentText] = comment.render_body
-        commentJSON[:rawCommentText] = comment.comment
-        # nest the comment's replies in an array within the comment
-        commentJSON[:replies] = get_react_comments(comment.replied_comments, true)
-        commentJSON[:replyTo] = comment.reply_to
-        comments << commentJSON
-      end
-    end
-    comments
-  end
-
   def show
     return if redirect_to_node_path?(@node)
 
@@ -94,7 +70,7 @@ class NotesController < ApplicationController
           .includes([:replied_comments, :node])
           .order('timestamp ASC')
         
-        comments = get_react_comments(comments_record)
+        comments = helpers.get_react_comments(comments_record)
 
         currentUser = {
           :canModerate => current_user.can_moderate?,
