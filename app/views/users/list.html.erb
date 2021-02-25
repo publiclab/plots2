@@ -50,11 +50,11 @@
                       <li><a style="color: #808080; cursor: no-drop;"><%= user.nodes.count %> Wiki Edits</a></li>
                       <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") %>
                          <% if user.status == 0 %>
-                           <li><a href="/profile/<%= user.username %>">Unban on profile</a></li>
+                           <li class="btn-success"><a  style="color: white;" href="/profile/<%= user.username %>"><i class="fa fa-check-circle fa-white"></i> Unban on profile</a></li>
                            <i class='fa fa-ban' style="color:#a00;"></i> <%= translation('users.list.banned') %>
                            <% elsif user.status == 1 && user != current_user %>
                              <li><a href="/profile/<%= user.username %>">See Full Profile</a></li>
-                             <li><a data-confirm="<%= translation('users.list.are_you_sure') %>" href="/ban/<%= user.uid %>" ><i class='fa fa-ban'></i> <%= translation('users.list.ban') %></a></li>
+                             <li class="btn-danger"><a style="color: white;" data-confirm="<%= translation('users.list.are_you_sure') %>" href="/ban/<%= user.uid %>" ><i class="fa fa-ban fa-white"></i> <%= translation('users.list.ban') %></a></li>
                          <% end %>
                        <% end %>
                      </ul>
