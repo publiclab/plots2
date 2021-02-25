@@ -558,14 +558,6 @@ class TagControllerTest < ActionController::TestCase
     assert_equal selector.size, 1
   end
 
-  test 'should list answered questions' do
-    tag = tags(:question)
-
-    get :show_for_author, params: { id: tag.name, author: 'jeff' }
-
-    assert_not_nil assigns(:answered_questions)
-  end
-
   test 'should take node type as note if tag is not a question tag for show_for_author' do
     tag = tags(:awesome)
 
