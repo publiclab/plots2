@@ -85,6 +85,7 @@ const CommentForm = ({
           <button
             className="btn btn-primary"
             data-form-id={formId}
+            data-reply-to={(commentFormType === "reply") ? commentId : ""}
             onClick={handleFormSubmit}
           >
             {commentPublishText}
