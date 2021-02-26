@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 import { UserContext } from "./user-context";
 
+import CommentAuthorSlug from "./CommentAuthorSlug.js";
 import CommentToolbar from "./CommentToolbar.js"
 
 const Comment = ({
@@ -20,42 +21,11 @@ const Comment = ({
     replyTo,
     timeCreatedString
   },
+  editCommentForm,
   nodeAuthorId,
   replyCommentForm,
   userCommentedText
 }) => {
-  // top-left comment author information
-  let authorSection = [];
-  // author's profile pic, or anonymous blank circle
-  const authorProfilePic = (authorPicFilename) ? 
-    <img
-      className="rounded-circle"
-      alt="Comment Author Profile Picture"
-      src={authorPicUrl}
-      style={{
-        marginRight: "6px",
-        width: "32px"
-      }}
-    /> :
-    <div 
-      className="rounded-circle" 
-      style={{
-        background: "#ccc", 
-        display: "inline-block", 
-        height: "32px", 
-        marginRight: "6px", 
-        verticalAlign: "middle", 
-        width: "32px"
-      }} 
-    ></div>;
-    
-  const authorName = (authorUsername) ?
-    <a href={"/profile/" + authorUsername}>
-      {" " + authorUsername}
-    </a> :
-    commentName;
-  authorSection = authorSection.concat([authorProfilePic, authorName]);
-  
   // React Hook for toggling reply form state
   const [isReplyFormVisible, setIsReplyFormVisible] = useState(false);
 
@@ -117,7 +87,12 @@ const Comment = ({
             {/* placeholder: moderator controls for approving comments from first-time posters */}
             <div className="navbar-text float-left d-md-none">&nbsp;&nbsp;</div>
             <div className="navbar-text float-left">
-              {authorSection}
+              <CommentAuthorSlug 
+                authorPicFilename={authorPicFilename}
+                authorUsername={authorUsername}
+                authorPicUrl={authorPicUrl}
+                commentName={commentName}
+              />
               <span className="d-none d-md-inline">{" " + userCommentedText}</span>
               <a style={{ color: "#aaa" }} href={"#c" + commentId}>
                 {" " + timeCreatedString}
@@ -160,7 +135,7 @@ const Comment = ({
             {/* reply form, or link to login if no currentUser */}
           </div>
           {/* emojis section */}
-          {/* edit comment form */}
+          {/* {editCommentForm} */}
         </div>
       )}
     </UserContext.Consumer>
@@ -169,6 +144,7 @@ const Comment = ({
 
 Comment.propTypes = {
   comment: PropTypes.object,
+  editCommentForm: PropTypes.element,
   nodeAuthorId: PropTypes.number,
   userCommentedText: PropTypes.string
 };
