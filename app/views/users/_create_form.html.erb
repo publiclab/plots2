@@ -1,6 +1,6 @@
 <div style="padding:10px;">
  <%= form_for :user, :as => :user, :url => "/register", :html => {:class => "container", :id => "create-form", :'data-toggle' => "validator"} do |f| %>
- <% if f.error_messages != "" %><div class="alert alert-danger" id="error-message"><%= f.error_messages %></div><% end %>
+  <%= render partial: 'layouts/errorMessages', locals: { model: @user } if @user.present? %>
 
   <input type="hidden" name="return_to" class="login-modal-redirect" value="<%= params[:return_to] || request.fullpath %>" />
 
