@@ -93,9 +93,20 @@ const CommentsContainer = ({
       nodeId={nodeId}
     />;
 
+    const editCommentForm = <CommentForm 
+      commentId={comment.commentId}
+      commentFormType="edit"
+      commentPreviewText={commentPreviewText}
+      commentPublishText={commentPublishText}
+      handleFormSubmit={handleFormSubmit}
+      handleTextAreaChange={handleTextAreaChange}
+      nodeId={nodeId}
+    />
+
     return <Comment 
       key={index} 
-      comment={comment} 
+      comment={comment}
+      editCommentForm={editCommentForm}
       nodeAuthorId={nodeAuthorId}
       replyCommentForm={replyCommentForm}
       userCommentedText={userCommentedText} 

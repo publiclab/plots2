@@ -105,7 +105,6 @@ const CommentForm = ({
 
 CommentForm.propTypes = {
   commentId: PropTypes.number,
-  commentFormPlaceholder: PropTypes.string,
   commentFormType: PropTypes.string,
   commentPreviewText: PropTypes.string,
   commentPublishText: PropTypes.string,
