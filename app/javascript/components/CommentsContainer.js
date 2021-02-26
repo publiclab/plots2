@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import  { UserContext } from "./user-context";
 import Comment from "./Comment";
 import CommentForm from "./CommentForm";
+import CommentsHeader from "./CommentsHeader";
 
 const CommentsContainer = ({
   // ES6 destructure the props
@@ -52,6 +53,7 @@ const CommentsContainer = ({
       function(data) {
         let newComments = JSON.parse(JSON.stringify(comments)); // make a deep copy of the comments state
 
+        // if the freshly posted comment is a reply, it needs to be nested within comment.replies
         if (data.comment[0].replyTo) {
           for (let i = 0; i < newComments.length; i++) {
             if (newComments[i].commentId == data.comment[0].replyTo) {
@@ -82,10 +84,10 @@ const CommentsContainer = ({
     null :
     <CommentForm
       commentId={comment.commentId}
-      commentFormPlaceholder={elementText.commentFormPlaceholder}
+      commentFormPlaceholder={commentFormPlaceholder}
       commentFormType="reply"
-      commentPreviewText={elementText.commentPreviewText}
-      commentPublishText={elementText.commentPublishText}
+      commentPreviewText={commentPreviewText}
+      commentPublishText={commentPublishText}
       handleFormSubmit={handleFormSubmit}
       handleTextAreaChange={handleTextAreaChange}
       nodeId={nodeId}
@@ -96,7 +98,7 @@ const CommentsContainer = ({
       comment={comment} 
       nodeAuthorId={nodeAuthorId}
       replyCommentForm={replyCommentForm}
-      userCommentedText={elementText.userCommentedText} 
+      userCommentedText={userCommentedText} 
     />;
   })
 
@@ -105,19 +107,16 @@ const CommentsContainer = ({
     <UserContext.Provider value={currentUser}>
       <div id="legacy-editor-container" className="row">
         <div id="comments" className="col-lg-10 comments">
-          <h3>
-            <span id="comment-count">
-              {comments.length + " " + elementText.commentsHeaderText}
-            </span>
-          </h3>
+          <CommentsHeader comments={comments} commentsHeaderText={commentsHeaderText} />
           <div id="comments-list" style={{ marginBottom: "50px" }}>
             {commentsList}
           </div>
+          {/* main comment form */}
           <CommentForm 
-            commentFormPlaceholder={elementText.commentFormPlaceholder}
+            commentFormPlaceholder={commentFormPlaceholder}
             commentFormType="main" 
-            commentPreviewText={elementText.commentPreviewText}
-            commentPublishText={elementText.commentPublishText}
+            commentPreviewText={commentPreviewText}
+            commentPublishText={commentPublishText}
             handleFormSubmit={handleFormSubmit}
             handleTextAreaChange={handleTextAreaChange}
             nodeId={nodeId} 
