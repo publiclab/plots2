@@ -1,7 +1,6 @@
 import React from "react";
-import PropTypes from "prop-types";
 
-const CommentAuthorSection = ({
+const CommentAuthorSlug = ({
   authorPicFilename,
   authorUsername,
   authorPicUrl,
@@ -40,8 +39,11 @@ const CommentAuthorSection = ({
   authorSection = authorSection.concat([authorProfilePic, authorName]);
 
   return (
-    authorSection
+    <>
+      {authorProfilePic}
+      {authorName}
+    </>
   );
 }
 
-export default CommentAuthorSection;
+export default CommentAuthorSlug;
