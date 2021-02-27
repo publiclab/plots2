@@ -4,10 +4,10 @@ import PropTypes from "prop-types";
 import { UserContext } from "./user-context";
 
 import CommentAuthorSlug from "./CommentAuthorSlug.js";
-import CommentToolbar from "./CommentToolbar.js"
+import CommentReplies from "./CommentReplies.js";
+import CommentToolbar from "./CommentToolbar.js";
 
 const Comment = ({
-  comment,
   comment: {
     authorId,
     authorPicUrl,
@@ -28,37 +28,8 @@ const Comment = ({
 }) => {
   // React Hook for toggling reply form state
   const [isReplyFormVisible, setIsReplyFormVisible] = useState(false);
-
-  // generate comment's replies section:
-  //   1. a list of all replies (if any)
-  //   2. "Reply to this comment..." link that toggles the reply form
-  //   3. the actual reply CommentForm
-  let replySection = "";
-  if (!replyTo) {
-    const repliesList = replies.map((reply, index) => {
-      return <Comment 
-        key={"reply-to-comment-" + commentId + "-" + index} 
-        comment={reply} 
-        nodeAuthorId={nodeAuthorId}
-        userCommentedText={userCommentedText} 
-      />;
-    });
-    const replyToggleLink = <p
-      id={"comment-" + commentId + "-reply-toggle"}
-      onClick={() => setIsReplyFormVisible(!isReplyFormVisible)}
-      style={{
-        color: "#006dcc",
-        cursor: "pointer",
-        userSelect: "none"
-      }}
-    >
-      Reply to this comment...
-    </p>;
-    const replyForm = isReplyFormVisible ?
-      replyCommentForm :
-      "";
-    replySection = [repliesList, replyToggleLink, replyForm];
-  }
+  // React Hook for toggling edit form state
+  const [isEditFormVisible, setIsEditFormVisible] = useState(false);
 
   return (
     // hooks this component up to React Context, so it can access currentUser object.
@@ -131,8 +102,20 @@ const Comment = ({
               {/* breakout questions */}
               {/* have you attempted or completed this activity? */}
             </div>
-            {replySection}
-            {/* reply form, or link to login if no currentUser */}
+            {/* only comments that DO NOT have a replyTo will have a reply section */}
+            {replyTo ?
+              "" :
+              <CommentReplies 
+                commentId={commentId}
+                currentUser={currentUser}
+                isReplyFormVisible={isReplyFormVisible}
+                handleReplyFormToggle={() => setIsReplyFormVisible(!isReplyFormVisible)}
+                nodeAuthorId={nodeAuthorId}
+                replies={replies}
+                replyCommentForm={replyCommentForm}
+                userCommentedText={userCommentedText}
+              />
+            }
           </div>
           {/* emojis section */}
           {/* {editCommentForm} */}
