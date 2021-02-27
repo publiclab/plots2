@@ -104,7 +104,7 @@ const CommentsContainer = ({
     />
 
     return <Comment 
-      key={index} 
+      key={"comment-" + index} 
       comment={comment}
       editCommentForm={editCommentForm}
       nodeAuthorId={nodeAuthorId}
