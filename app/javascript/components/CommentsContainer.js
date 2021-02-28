@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 import  { UserContext } from "./user-context";
-import Comment from "./Comment";
 import CommentForm from "./CommentForm";
 import CommentsHeader from "./CommentsHeader";
 import CommentsList from "./CommentsList"
@@ -22,8 +21,30 @@ const CommentsContainer = ({
   nodeAuthorId,
   nodeId
 }) => {
+  // React Hook for comments state
+  const [comments, setComments] = useState(initialComments);
+
+  // when a user opens an edit comment form, its textAreaValue should be the comment text (not blank)
+  const getEditTextAreaValues = (commentsArray) => {
+    let editTextValues = {};
+
+    for (let i = 0; i < commentsArray.length; i++) {
+      const rawText = commentsArray[i].rawCommentText;
+      editTextValues["edit-" + commentsArray[i].commentId] = rawText
+
+      if (!commentsArray[i].replyTo) {
+        const replyEditTextValues = getEditTextAreaValues(commentsArray[i].replies);
+        editTextValues = {...editTextValues, ...replyEditTextValues};
+      }
+    }
+    return editTextValues;
+  }
+
+  const initialTextAreaValues = { "main": "", ...getEditTextAreaValues(comments) };
+
   // React Hook managing textarea input state 
-  const [textAreaValues, setTextAreaValues] = useState({ "main": "" });
+  const [textAreaValues, setTextAreaValues] = useState(initialTextAreaValues);
+
   // function for handling user input into comment form <textarea>s
   const handleTextAreaChange = (event) => {
     const value = event.target.value;
@@ -33,9 +54,6 @@ const CommentsContainer = ({
     // keep the old state values (as ...state) and insert the new one
     setTextAreaValues(state => ({ ...state, [formId]: value }));
   }
-
-  // React Hook for comments state
-  const [comments, setComments] = useState(initialComments);
 
   // comment form submission
   const handleFormSubmit = (event) => {
