@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 import React from "react";
 import PropTypes from "prop-types";
 
@@ -8,15 +7,11 @@ const CommentForm = ({
   commentId,
   commentPreviewText,
   commentPublishText,
+  formId,
   handleFormSubmit,
   handleTextAreaChange,
   rawCommentText
 }) => {
-
-  // HTML attributes for <form> tag
-  const formId = commentFormType === "main" ?
-    "main" : 
-    commentFormType + "-" + commentId;
 
   // comment form's title text
   let formTitle = "Post Comment";
@@ -102,6 +97,7 @@ CommentForm.propTypes = {
   commentFormType: PropTypes.string.isRequired,
   commentPreviewText: PropTypes.string.isRequired,
   commentPublishText: PropTypes.string.isRequired,
+  formId: PropTypes.string.isRequired,
   handleFormSubmit: PropTypes.func.isRequired,
   handleTextAreaChange: PropTypes.func.isRequired,
   rawCommentText: PropTypes.string
