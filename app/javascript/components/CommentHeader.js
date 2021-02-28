@@ -1,10 +1,14 @@
 import React from "react";
+import PropTypes from "prop-types";
 
-const CommentAuthorSlug = ({
+const CommentHeader = ({
   authorPicFilename,
   authorUsername,
   authorPicUrl,
-  commentName
+  commentId,
+  commentName,
+  timeCreatedString,
+  userCommentedText
 }) => {
   // top-left comment author information
   let authorSection = [];
@@ -36,14 +40,27 @@ const CommentAuthorSlug = ({
       {" " + authorUsername}
     </a> :
     commentName;
-  authorSection = authorSection.concat([authorProfilePic, authorName]);
 
   return (
-    <>
+    <div className="navbar-text float-left">
       {authorProfilePic}
       {authorName}
-    </>
+      <span className="d-none d-md-inline">{" " + userCommentedText}</span>
+      <a style={{ color: "#aaa" }} href={"#c" + commentId}>
+        {" " + timeCreatedString}
+      </a>
+    </div>
   );
 }
 
-export default CommentAuthorSlug;
+CommentHeader.propTypes = {
+  authorPicFilename: PropTypes.string,
+  authorUsername: PropTypes.string,
+  authorPicUrl: PropTypes.string,
+  commentId: PropTypes.number.isRequired,
+  commentName: PropTypes.string,
+  timeCreatedString: PropTypes.string.isRequired,
+  userCommentedText: PropTypes.string.isRequired
+}
+
+export default CommentHeader;
