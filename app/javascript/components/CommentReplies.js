@@ -10,6 +10,7 @@ const CommentReplies = ({
   nodeAuthorId,
   replies,
   replyCommentForm,
+  setTextAreaValues,
   userCommentedText
 }) => {
   // generate comment's replies section:
@@ -22,6 +23,7 @@ const CommentReplies = ({
       comment={reply} 
       editCommentForm={reply.editCommentForm}
       nodeAuthorId={nodeAuthorId}
+      setTextAreaValues={setTextAreaValues}
       userCommentedText={userCommentedText} 
     />;
   });
@@ -59,6 +61,7 @@ CommentReplies.propTypes = {
   nodeAuthorId: PropTypes.number.isRequired,
   replies: PropTypes.array.isRequired,
   replyCommentForm: PropTypes.element,
+  setTextAreaValues: PropTypes.func.isRequired,
   userCommentedText: PropTypes.string.isRequired
 }
 

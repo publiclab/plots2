@@ -13,6 +13,7 @@ const CommentDisplay = ({
   replyCommentForm,
   replyTo,
   setIsReplyFormVisible,
+  setTextAreaValues,
   user,
   userCommentedText
 }) => {
@@ -46,6 +47,7 @@ const CommentDisplay = ({
             nodeAuthorId={nodeAuthorId}
             replies={replies}
             replyCommentForm={replyCommentForm}
+            setTextAreaValues={setTextAreaValues}
             userCommentedText={userCommentedText}
           />
         }
@@ -63,6 +65,7 @@ CommentDisplay.propTypes = {
   replyCommentForm: PropTypes.element,
   replyTo: PropTypes.number,
   setIsReplyFormVisible: PropTypes.func,
+  setTextAreaValues: PropTypes.func.isRequired,
   user: PropTypes.object,
   userCommentedText: PropTypes.string.isRequired
 }

@@ -16,6 +16,7 @@ const Comment = ({
     commentId,
     commentName,
     htmlCommentText,
+    rawCommentText,
     replies,
     replyTo,
     timeCreatedString
@@ -23,6 +24,7 @@ const Comment = ({
   editCommentForm,
   nodeAuthorId,
   replyCommentForm,
+  setTextAreaValues,
   userCommentedText
 }) => {
   // React Hook for toggling reply form state
@@ -32,7 +34,13 @@ const Comment = ({
 
   const handleEditFormToggle = () => {
     setIsReplyFormVisible(false);
+    if (isEditFormVisible) {
+      setTextAreaValues(state => ({ ...state, ["edit-" + commentId]: rawCommentText }))
+    }
     setIsEditFormVisible(!isEditFormVisible);
+    // put setTextAreaValues call here
+    // textAreaValues needs to include "edit-123: 'raw text'" key value pair
+    // then that textAreaValue is passed all the way down here to populate edit comment form's textarea
   }
 
   return (
@@ -87,6 +95,7 @@ const Comment = ({
               replyCommentForm={replyCommentForm}
               replyTo={replyTo}
               setIsReplyFormVisible={setIsReplyFormVisible}
+              setTextAreaValues={setTextAreaValues}
               user={currentUser}
               userCommentedText={userCommentedText}
             />
@@ -102,6 +111,7 @@ Comment.propTypes = {
   editCommentForm: PropTypes.element.isRequired,
   nodeAuthorId: PropTypes.number.isRequired,
   replyCommentForm: PropTypes.element,
+  setTextAreaValues: PropTypes.func.isRequired,
   userCommentedText: PropTypes.string.isRequired
 };
 
