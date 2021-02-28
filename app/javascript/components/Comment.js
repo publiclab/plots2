@@ -16,7 +16,6 @@ const Comment = ({
     commentId,
     commentName,
     htmlCommentText,
-    rawCommentText,
     replies,
     replyTo,
     timeCreatedString
@@ -30,6 +29,50 @@ const Comment = ({
   const [isReplyFormVisible, setIsReplyFormVisible] = useState(false);
   // React Hook for toggling edit form state
   const [isEditFormVisible, setIsEditFormVisible] = useState(false);
+
+  const handleEditFormToggle = () => {
+    setIsReplyFormVisible(false);
+    setIsEditFormVisible(!isEditFormVisible);
+  }
+
+  // this toggles visibility depending on isEditFormVisible
+  const commentDisplay = (user) => {
+    return (
+      <div
+        id={"c" + commentId + "show"}
+        style={{
+          border: "1px solid #e7e7e7",
+          padding: "36px"
+        }}
+      >
+        <div 
+          id={"comment-body-" + commentId} 
+          className="comment-body"
+        >
+          {htmlCommentText}
+          {/* partial has a contain_trimmed_body bit ? */}
+          {/* is this a question? post it to the questions page */}
+          {/* breakout questions */}
+          {/* have you attempted or completed this activity? */}
+        </div>
+        {/* only comments that DO NOT have a replyTo will have a reply section */}
+        {replyTo ?
+          "" :
+          <CommentReplies 
+            commentId={commentId}
+            currentUser={user}
+            isReplyFormVisible={isReplyFormVisible}
+            handleReplyFormToggle={() => setIsReplyFormVisible(!isReplyFormVisible)}
+            nodeAuthorId={nodeAuthorId}
+            replies={replies}
+            replyCommentForm={replyCommentForm}
+            userCommentedText={userCommentedText}
+          />
+        }
+        {/* emojis section - can decide which <div> this should nest into, in non-React version, this is right after the closing </div> tag below */}
+      </div>
+    );
+  }
 
   return (
     // hooks this component up to React Context, so it can access currentUser object.
@@ -56,7 +99,6 @@ const Comment = ({
             }}
           >
             {/* placeholder: moderator controls for approving comments from first-time posters */}
-            <div className="navbar-text float-left d-md-none">&nbsp;&nbsp;</div>
             <div className="navbar-text float-left">
               <CommentAuthorSlug 
                 authorPicFilename={authorPicFilename}
@@ -69,56 +111,17 @@ const Comment = ({
                 {" " + timeCreatedString}
               </a>
             </div>
-            <div
-              className="navbar-text float-right"
-              style={{
-                marginRight: 0,
-                paddingRight: "10px"
-              }}
-            >
-              {/* placeholder: role icon for admins and moderators--but it's commented out in the original partial? */}
-              {/* placeholder: this comment was posted by email */}
-              <CommentToolbar 
-                authorId={authorId} 
-                currentUser={currentUser} 
-                nodeAuthorId={nodeAuthorId}
-              />
-            </div>
+            <CommentToolbar 
+              authorId={authorId} 
+              currentUser={currentUser} 
+              handleEditFormToggle={handleEditFormToggle}
+              nodeAuthorId={nodeAuthorId}
+            />
           </div>
-          <div
-            id={"c" + commentId + "show"}
-            style={{
-              border: "1px solid #e7e7e7",
-              padding: "36px"
-            }}
-          >
-            <div 
-              id={"comment-body-" + commentId} 
-              className="comment-body"
-            >
-              {htmlCommentText}
-              {/* partial has a contain_trimmed_body bit ? */}
-              {/* is this a question? post it to the questions page */}
-              {/* breakout questions */}
-              {/* have you attempted or completed this activity? */}
-            </div>
-            {/* only comments that DO NOT have a replyTo will have a reply section */}
-            {replyTo ?
-              "" :
-              <CommentReplies 
-                commentId={commentId}
-                currentUser={currentUser}
-                isReplyFormVisible={isReplyFormVisible}
-                handleReplyFormToggle={() => setIsReplyFormVisible(!isReplyFormVisible)}
-                nodeAuthorId={nodeAuthorId}
-                replies={replies}
-                replyCommentForm={replyCommentForm}
-                userCommentedText={userCommentedText}
-              />
-            }
-          </div>
-          {/* emojis section */}
-          {/* {editCommentForm} */}
+          {isEditFormVisible ?
+            editCommentForm :
+            commentDisplay(currentUser)
+          }
         </div>
       )}
     </UserContext.Consumer>
@@ -126,10 +129,11 @@ const Comment = ({
 }
 
 Comment.propTypes = {
-  comment: PropTypes.object,
-  editCommentForm: PropTypes.element,
-  nodeAuthorId: PropTypes.number,
-  userCommentedText: PropTypes.string
+  comment: PropTypes.object.isRequired,
+  editCommentForm: PropTypes.element.isRequired,
+  nodeAuthorId: PropTypes.number.isRequired,
+  replyCommentForm: PropTypes.element,
+  userCommentedText: PropTypes.string.isRequired
 };
 
 export default Comment;
