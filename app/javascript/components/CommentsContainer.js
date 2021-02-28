@@ -94,12 +94,14 @@ const CommentsContainer = ({
       commentId={comment.commentId}
       commentFormPlaceholder={commentFormPlaceholder}
       commentFormType="reply"
+      formId={"reply-" + comment.commentId}
       {...commentFormProps}
     />;
 
     const editCommentForm = <CommentForm 
       commentFormType="edit"
       commentId={comment.commentId}
+      formId={"edit-" + comment.commentId}
       rawCommentText={comment.rawCommentText}
       {...commentFormProps}
     />
@@ -110,6 +112,7 @@ const CommentsContainer = ({
       reply.editCommentForm = <CommentForm 
         commentFormType="edit"
         commentId={reply.commentId}
+        formId={"edit-" + reply.commentId}
         rawCommentText={comment.rawCommentText}
         {...commentFormProps}
       />;
@@ -141,6 +144,7 @@ const CommentsContainer = ({
             commentFormType="main" 
             commentPreviewText={commentPreviewText}
             commentPublishText={commentPublishText}
+            formId="main"
             handleFormSubmit={handleFormSubmit}
             handleTextAreaChange={handleTextAreaChange}
             nodeId={nodeId} 
