@@ -10,7 +10,7 @@ const CommentForm = ({
   formId,
   handleFormSubmit,
   handleTextAreaChange,
-  rawCommentText
+  textAreaValue
 }) => {
 
   // comment form's title text
@@ -64,7 +64,7 @@ const CommentForm = ({
               padding: "10px"
             }}
             placeholder={commentFormPlaceholder}
-            value={commentFormType === "edit" ? rawCommentText : ""}
+            value={textAreaValue}
           ></textarea>
           {/* placeholder: image upload elements */}
         </div>
@@ -100,7 +100,7 @@ CommentForm.propTypes = {
   formId: PropTypes.string.isRequired,
   handleFormSubmit: PropTypes.func.isRequired,
   handleTextAreaChange: PropTypes.func.isRequired,
-  rawCommentText: PropTypes.string
+  textAreaValue: PropTypes.string
 };
 
 export default CommentForm;
