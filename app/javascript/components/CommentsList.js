@@ -19,8 +19,6 @@ const CommentsList = ({
   setTextAreaValues,
   textAreaValues
 }) => {
-  let commentTextAreaValues = {};
-
   // iterate over comments prop containing all node comments.
   // create a Comment component containing 1-3 CommentForms.
   const commentsList = comments.map((comment, index) => {
@@ -32,23 +30,11 @@ const CommentsList = ({
       nodeId
     };
 
-    // comment forms' textAreaValues is derived from CommentsContainer's state
-    // this object is used to hold textAreaValues for a comment's:
-    //   1. reply comment form (optional)
-    //   2. edit comment form
-    //   3. edit comment forms for comment's replies (optional)
-    let newTextAreaValues = {}
-
-    // each comment comes with in a edit comment form
-    const editFormId = "edit-" + comment.commentId;
-    newTextAreaValues[editFormId] = comment.rawCommentText;
-
     // if the comment is a reply to another comment, DON'T render a reply form.
     // otherwise, the comment can accept replies
     let replyCommentForm = null;
     if (!comment.replyTo) {
       const replyFormId = "reply-" + comment.commentId;
-      newTextAreaValues[replyFormId] = "";
       replyCommentForm = <CommentForm
         commentId={comment.commentId}
         commentFormPlaceholder={commentFormPlaceholder}
@@ -59,12 +45,19 @@ const CommentsList = ({
       />;
     }
 
+    // each comment comes with in a edit comment form
+    const editFormId = "edit-" + comment.commentId;
+    const editCommentForm = <CommentForm 
+      commentFormType="edit"
+      commentId={comment.commentId}
+      formId={editFormId}
+      textAreaValue={textAreaValues[editFormId]}
+      {...commentFormProps}
+    />;
+
     // generate the replies' edit comment forms to avoid the alternative: passing down props two levels
     const repliesWithEditForms = comment.replies.map((reply) => {
       const replyEditFormId = "edit-" + reply.commentId;
-      // comment form's textAreaValue is derived from CommentsContainer's state
-      newTextAreaValues[replyEditFormId] = reply.rawCommentText;
-
       reply.editCommentForm = <CommentForm 
         commentFormType="edit"
         commentId={reply.commentId}
@@ -75,16 +68,6 @@ const CommentsList = ({
       />;
     });
 
-    const editCommentForm = <CommentForm 
-      commentFormType="edit"
-      commentId={comment.commentId}
-      formId={editFormId}
-      textAreaValue={textAreaValues[editFormId]}
-      {...commentFormProps}
-    />;
-
-    commentTextAreaValues = {...textAreaValues, ...newTextAreaValues};
-
     return <Comment 
       key={"comment-" + index} 
       comment={comment}
@@ -92,11 +75,10 @@ const CommentsList = ({
       nodeAuthorId={nodeAuthorId}
       replyCommentForm={replyCommentForm}
       replies={repliesWithEditForms}
+      setTextAreaValues={setTextAreaValues}
       userCommentedText={userCommentedText} 
     />;
   });
-
-  setTextAreaValues(commentTextAreaValues);
 
   return (
     <div id="comments-list" style={{ marginBottom: "50px" }}>
