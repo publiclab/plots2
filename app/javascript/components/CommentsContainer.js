@@ -5,6 +5,7 @@ import  { UserContext } from "./user-context";
 import Comment from "./Comment";
 import CommentForm from "./CommentForm";
 import CommentsHeader from "./CommentsHeader";
+import CommentsList from "./CommentsList"
 
 const CommentsContainer = ({
   // ES6 destructure the props
@@ -16,14 +17,13 @@ const CommentsContainer = ({
     commentFormPlaceholder,
     commentsHeaderText,
     commentPreviewText,
-    commentPublishText,
-    userCommentedText
+    commentPublishText
   },
   nodeAuthorId,
   nodeId
 }) => {
   // React Hook managing textarea input state 
-  const [textAreaValues, setTextAreaValues] = useState({});
+  const [textAreaValues, setTextAreaValues] = useState({ "main": "" });
   // function for handling user input into comment form <textarea>s
   const handleTextAreaChange = (event) => {
     const value = event.target.value;
@@ -75,69 +75,22 @@ const CommentsContainer = ({
     );
   }
 
-  // iterate over comments prop containing all node comments.
-  // create a Comment component containing 1-3 CommentForms.
-  const commentsList = comments.map((comment, index) => {
-    const commentFormProps = {
-      commentPreviewText,
-      commentPublishText,
-      handleFormSubmit,
-      handleTextAreaChange,
-      nodeId
-    };
-   
-    // if the comment is a reply to another comment, DON'T render a reply form.
-    // otherwise, the comment can accept replies
-    const replyCommentForm = comment.replyTo ?
-    null :
-    <CommentForm
-      commentId={comment.commentId}
-      commentFormPlaceholder={commentFormPlaceholder}
-      commentFormType="reply"
-      formId={"reply-" + comment.commentId}
-      {...commentFormProps}
-    />;
-
-    const editCommentForm = <CommentForm 
-      commentFormType="edit"
-      commentId={comment.commentId}
-      formId={"edit-" + comment.commentId}
-      rawCommentText={comment.rawCommentText}
-      {...commentFormProps}
-    />
-
-    // generate the replies' edit comment forms to avoid the alternative:
-    //   ie. passing down props two levels
-    const repliesWithEditForms = comment.replies.map((reply) => {
-      reply.editCommentForm = <CommentForm 
-        commentFormType="edit"
-        commentId={reply.commentId}
-        formId={"edit-" + reply.commentId}
-        rawCommentText={comment.rawCommentText}
-        {...commentFormProps}
-      />;
-    });
-
-    return <Comment 
-      key={"comment-" + index} 
-      comment={comment}
-      editCommentForm={editCommentForm}
-      nodeAuthorId={nodeAuthorId}
-      replyCommentForm={replyCommentForm}
-      replies={repliesWithEditForms}
-      userCommentedText={userCommentedText} 
-    />;
-  })
-
   return (
     // React Context ensures that all components below this one can access the currentUser prop object.
     <UserContext.Provider value={currentUser}>
       <div id="legacy-editor-container" className="row">
         <div id="comments" className="col-lg-10 comments">
           <CommentsHeader comments={comments} commentsHeaderText={commentsHeaderText} />
-          <div id="comments-list" style={{ marginBottom: "50px" }}>
-            {commentsList}
-          </div>
+          <CommentsList 
+            comments={comments}
+            elementText={elementText}
+            handleFormSubmit={handleFormSubmit}
+            handleTextAreaChange={handleTextAreaChange}
+            nodeAuthorId={nodeAuthorId}
+            nodeId={nodeId}
+            setTextAreaValues={setTextAreaValues}
+            textAreaValues={textAreaValues}
+          />
           {/* main comment form */}
           <CommentForm 
             commentFormPlaceholder={commentFormPlaceholder}
@@ -148,6 +101,7 @@ const CommentsContainer = ({
             handleFormSubmit={handleFormSubmit}
             handleTextAreaChange={handleTextAreaChange}
             nodeId={nodeId} 
+            textAreaValue={textAreaValues["main"]}
           />
         </div>
       </div>
