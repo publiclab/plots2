@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import React from "react";
 import PropTypes from "prop-types";
 
@@ -9,21 +10,13 @@ const CommentForm = ({
   commentPublishText,
   handleFormSubmit,
   handleTextAreaChange,
-  nodeId
+  rawCommentText
 }) => {
 
   // HTML attributes for <form> tag
   const formId = commentFormType === "main" ?
     "main" : 
     commentFormType + "-" + commentId;
-  const formClass = commentFormType === "edit" ?
-    "edit-comment-form well" : 
-    "comment-form";
-  // these lines can probably be deleted.
-  // all form submission is handled in CommentsContainer.js anyway, this component isn't doing any submission, so the form doesn't need to have an action:
-  const formAction = commentFormType === "edit" ?
-    "/comment/update/" + commentId :
-    "/comment/create/" + nodeId;
 
   // comment form's title text
   let formTitle = "Post Comment";
@@ -47,8 +40,7 @@ const CommentForm = ({
       {/* see https://guides.rubyonrails.org/working_with_javascript_in_rails.html#remote-elements */}
       <form 
         id={"comment-form-" + formId}
-        className={formClass}
-        action={formAction}
+        className={commentFormType === "edit" ? "edit-comment-form well" : "comment-form"}
         data-remote="true"
         method="post"
       >
@@ -77,6 +69,7 @@ const CommentForm = ({
               padding: "10px"
             }}
             placeholder={commentFormPlaceholder}
+            value={commentFormType === "edit" ? rawCommentText : ""}
           ></textarea>
           {/* placeholder: image upload elements */}
         </div>
@@ -105,12 +98,13 @@ const CommentForm = ({
 
 CommentForm.propTypes = {
   commentId: PropTypes.number,
-  commentFormType: PropTypes.string,
-  commentPreviewText: PropTypes.string,
-  commentPublishText: PropTypes.string,
-  handleFormSubmit: PropTypes.func,
-  handleTextAreaChange: PropTypes.func,
-  nodeId: PropTypes.number
+  commentFormPlaceholder: PropTypes.string,
+  commentFormType: PropTypes.string.isRequired,
+  commentPreviewText: PropTypes.string.isRequired,
+  commentPublishText: PropTypes.string.isRequired,
+  handleFormSubmit: PropTypes.func.isRequired,
+  handleTextAreaChange: PropTypes.func.isRequired,
+  rawCommentText: PropTypes.string
 };
 
 export default CommentForm;
