@@ -78,6 +78,14 @@ const CommentsContainer = ({
   // iterate over comments prop containing all node comments.
   // create a Comment component containing 1-3 CommentForms.
   const commentsList = comments.map((comment, index) => {
+    const commentFormProps = {
+      commentPreviewText,
+      commentPublishText,
+      handleFormSubmit,
+      handleTextAreaChange,
+      nodeId
+    };
+   
     // if the comment is a reply to another comment, DON'T render a reply form.
     // otherwise, the comment can accept replies
     const replyCommentForm = comment.replyTo ?
@@ -86,22 +94,26 @@ const CommentsContainer = ({
       commentId={comment.commentId}
       commentFormPlaceholder={commentFormPlaceholder}
       commentFormType="reply"
-      commentPreviewText={commentPreviewText}
-      commentPublishText={commentPublishText}
-      handleFormSubmit={handleFormSubmit}
-      handleTextAreaChange={handleTextAreaChange}
-      nodeId={nodeId}
+      {...commentFormProps}
     />;
 
     const editCommentForm = <CommentForm 
-      commentId={comment.commentId}
       commentFormType="edit"
-      commentPreviewText={commentPreviewText}
-      commentPublishText={commentPublishText}
-      handleFormSubmit={handleFormSubmit}
-      handleTextAreaChange={handleTextAreaChange}
-      nodeId={nodeId}
+      commentId={comment.commentId}
+      rawCommentText={comment.rawCommentText}
+      {...commentFormProps}
     />
+
+    // generate the replies' edit comment forms to avoid the alternative:
+    //   ie. passing down props two levels
+    const repliesWithEditForms = comment.replies.map((reply) => {
+      reply.editCommentForm = <CommentForm 
+        commentFormType="edit"
+        commentId={reply.commentId}
+        rawCommentText={comment.rawCommentText}
+        {...commentFormProps}
+      />;
+    });
 
     return <Comment 
       key={"comment-" + index} 
@@ -109,6 +121,7 @@ const CommentsContainer = ({
       editCommentForm={editCommentForm}
       nodeAuthorId={nodeAuthorId}
       replyCommentForm={replyCommentForm}
+      replies={repliesWithEditForms}
       userCommentedText={userCommentedText} 
     />;
   })

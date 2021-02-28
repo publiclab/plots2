@@ -20,6 +20,7 @@ const CommentReplies = ({
     return <Comment 
       key={"comment-reply-" + index}
       comment={reply} 
+      editCommentForm={reply.editCommentForm}
       nodeAuthorId={nodeAuthorId}
       userCommentedText={userCommentedText} 
     />;
@@ -36,7 +37,7 @@ const CommentReplies = ({
   >
     Reply to this comment...
   </p>;
-  {/* placeholder: link to login if no currentUser */}
+  // placeholder: link to login if no currentUser
 
   const replyForm = isReplyFormVisible ?
     replyCommentForm :
@@ -52,12 +53,13 @@ const CommentReplies = ({
 }
 
 CommentReplies.propTypes = {
-  commentId: PropTypes.number,
-  isReplyFormVisible: PropTypes.bool,
+  commentId: PropTypes.number.isRequired,
+  isReplyFormVisible: PropTypes.bool.isRequired,
   handleReplyFormToggle: PropTypes.func,
-  nodeAuthorId: PropTypes.number,
-  replies: PropTypes.array,
-  userCommentedText: PropTypes.string
+  nodeAuthorId: PropTypes.number.isRequired,
+  replies: PropTypes.array.isRequired,
+  replyCommentForm: PropTypes.element,
+  userCommentedText: PropTypes.string.isRequired
 }
 
 export default CommentReplies;
