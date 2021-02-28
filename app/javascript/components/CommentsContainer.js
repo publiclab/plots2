@@ -56,7 +56,7 @@ const CommentsContainer = ({
         // if the freshly posted comment is a reply, it needs to be nested within comment.replies
         if (data.comment[0].replyTo) {
           for (let i = 0; i < newComments.length; i++) {
-            if (newComments[i].commentId == data.comment[0].replyTo) {
+            if (newComments[i].commentId === data.comment[0].replyTo) {
               let newReplies = JSON.parse(JSON.stringify(newComments[i].replies)); // make a deep copy of the comment's replies
               newReplies.push(data.comment[0]);
               newReplies = newReplies.sort((a, b) => b.date - a.date);
@@ -152,8 +152,9 @@ const CommentsContainer = ({
 }
 
 CommentsContainer.propTypes = {
-  comments: PropTypes.array,
+  currentUser: PropTypes.object,
   elementText: PropTypes.object,
+  initialComments: PropTypes.array.isRequired,
   nodeAuthorId: PropTypes.number,
   nodeId: PropTypes.number
 };
