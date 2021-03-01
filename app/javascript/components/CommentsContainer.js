@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 import  { UserContext } from "./user-context";
+import { getEditTextAreaValues, makeDeepCopy } from "./helpers";
 import CommentForm from "./CommentForm";
 import CommentsHeader from "./CommentsHeader";
 import CommentsList from "./CommentsList"
@@ -24,33 +25,18 @@ const CommentsContainer = ({
   // React Hook for comments state
   const [comments, setComments] = useState(initialComments);
 
-  // when a user opens an edit comment form, its textAreaValue should be the comment text (not blank)
-  const getEditTextAreaValues = (commentsArray) => {
-    let editTextValues = {};
-
-    for (let i = 0; i < commentsArray.length; i++) {
-      const rawText = commentsArray[i].rawCommentText;
-      editTextValues["edit-" + commentsArray[i].commentId] = rawText
-
-      if (!commentsArray[i].replyTo) {
-        const replyEditTextValues = getEditTextAreaValues(commentsArray[i].replies);
-        editTextValues = {...editTextValues, ...replyEditTextValues};
-      }
-    }
-    return editTextValues;
-  }
-
-  const initialTextAreaValues = { "main": "", ...getEditTextAreaValues(comments) };
-
   // React Hook managing textarea input state 
+  // the initial state needs to include default values for edit coment forms
+  // if a user opens an edit comment form, it should contain the already existing comment text to be edited
+  const initialTextAreaValues = { "main": "", ...getEditTextAreaValues(comments) };
+  // textAreaValues is an object that holds multiple text forms, eg:
+  //   { main: "foo", reply-123: "bar" }
   const [textAreaValues, setTextAreaValues] = useState(initialTextAreaValues);
 
   // function for handling user input into comment form <textarea>s
   const handleTextAreaChange = (event) => {
     const value = event.target.value;
     const formId = event.target.dataset.formId // eg. "main", "reply-123", "edit-432"
-    // textAreaValues is an object that holds multiple text forms, eg:
-    //   { main: "foo", reply-123: "bar" }
     // keep the old state values (as ...state) and insert the new one
     setTextAreaValues(state => ({ ...state, [formId]: value }));
   }
@@ -58,39 +44,44 @@ const CommentsContainer = ({
   // comment form submission
   const handleFormSubmit = (event) => {
     event.preventDefault();
+    const formType = event.target.dataset.formType;
     const formId = event.target.dataset.formId;
     const commentBody = textAreaValues[formId];
-    $.post(
-      "/comment/create/" + nodeId, 
-      {
-        body: commentBody,
-        id: nodeId,
-        react: true,
-        reply_to: event.target.dataset.replyTo ? event.target.dataset.replyTo : null
-      },
-      function(data) {
-        let newComments = JSON.parse(JSON.stringify(comments)); // make a deep copy of the comments state
 
-        // if the freshly posted comment is a reply, it needs to be nested within comment.replies
-        if (data.comment[0].replyTo) {
-          for (let i = 0; i < newComments.length; i++) {
-            if (newComments[i].commentId === data.comment[0].replyTo) {
-              let newReplies = JSON.parse(JSON.stringify(newComments[i].replies)); // make a deep copy of the comment's replies
-              newReplies.push(data.comment[0]);
-              newReplies = newReplies.sort((a, b) => b.date - a.date);
-              newComments[i].replies = newReplies;
-              break;
+    if (formType === "edit") {
+      console.log("Edit form!");
+    } else {
+      $.post(
+        "/comment/create/" + nodeId, 
+        {
+          body: commentBody,
+          id: nodeId,
+          react: true,
+          reply_to: event.target.dataset.replyTo ? event.target.dataset.replyTo : null
+        },
+        function(data) {
+          // if the freshly posted comment is a reply, it needs to be nested within comment.replies
+          if (data.comment[0].replyTo) {
+            for (let i = 0; i < comments.length; i++) {
+              // find the comment with the matching replyTo
+              if (comments[i].commentId === data.comment[0].replyTo) {
+                let newComment = makeDeepCopy(comments[i]);
+                newComment.replies.push(data.comment[0]);
+                // it seems as if React sometimes fails to update state if it doesn't think that newState is different.
+                // if newState is a deeply nested array like comments, React will have difficulty registering changes.
+                // this is weird syntax, but it addresses the issue.
+                // basically it keeps oldComments, but replaces the comment at index i with newComment.
+                setComments(oldComments => (Object.assign([], oldComments, {i: newComment})));
+                break;
+              }
             }
+          // if the freshly posted comment is NOT a reply, just push it into the comments state as is
+          } else {
+            setComments(oldComments => ([...oldComments, data.comment[0]]));
           }
-        } else {
-          newComments = JSON.parse(JSON.stringify(comments)); // make a deep copy of the comments state
-          newComments.push(data.comment[0]);
-          newComments = newComments.sort((a, b) => b.date - a.date);
         }
-
-        setComments(newComments);
-      }
-    );
+      );
+    }
   }
 
   return (
