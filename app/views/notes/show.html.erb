@@ -87,6 +87,15 @@
     </table>
   <% end %>
 
+  <% if current_user && (current_user.role == "admin" || current_user.role == "moderator" || current_user.id == @node.id || current_user.is_coauthor?(@node)) && @node.has_tag('event') %>
+  <hr/>
+  <p>This looks like an event.     <span><button id="date-toggle" class="btn-outline-secondary btn-sm" data-toggle="tooltip" data-placement="right" title="Add Date"><i class="fa fa-calendar" aria-hidden="true"></i></button></span></p>
+  <div id="event-datepicker">
+    <input type="text" class="datepicker"/>
+    <span><button id="save-event-date" class="btn-outline-secondary btn-sm">Save Date</button></span>
+  </div>
+  <% end %>
+
   <div class="d-print-none">
     <hr />
 
@@ -142,11 +151,3 @@
     border-radius: 3px;
   }
 </style>
-<script>
-  $("#collapse-button").click(function(){
-      $(this).remove();
-  });
-  $(function() {
-    $("img").lazyload();
-  });
-</script>
