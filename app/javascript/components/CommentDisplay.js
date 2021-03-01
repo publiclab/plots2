@@ -29,8 +29,12 @@ const CommentDisplay = ({
         <div 
           id={"comment-body-" + commentId} 
           className="comment-body"
+          dangerouslySetInnerHTML={{ __html: htmlCommentText }}
+          style={{ 
+            marginTop: "1rem",
+            paddingBottom: !replyTo && "16px" // puts a little buffer in between main comment and its replies
+          }} 
         >
-          {htmlCommentText}
           {/* partial has a contain_trimmed_body bit ? */}
           {/* is this a question? post it to the questions page */}
           {/* breakout questions */}
