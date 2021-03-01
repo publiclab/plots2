@@ -70,7 +70,7 @@ const CommentsContainer = ({
                 // it seems as if React sometimes fails to update state if it doesn't think that newState is different.
                 // if newState is a deeply nested array like comments, React will have difficulty registering changes.
                 // this is weird syntax, but it addresses the issue.
-                // basically it keeps oldComments, but replaces the comment at index i with newComment.
+                // basically it keeps oldComments (this seems integral to React registering changes), but replaces the comment at index i with newComment.
                 setComments(oldComments => (Object.assign([], oldComments, {i: newComment})));
                 break;
               }
@@ -79,6 +79,7 @@ const CommentsContainer = ({
           } else {
             setComments(oldComments => ([...oldComments, data.comment[0]]));
           }
+          notyNotification('mint', 3000, 'success', 'topRight', 'Comment Added!');
         }
       );
     }
