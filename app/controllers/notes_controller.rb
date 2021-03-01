@@ -82,6 +82,13 @@ class NotesController < ApplicationController
         @react_props = {
           :currentUser => currentUser,
           :comments => comments,
+          :elementText => {
+            :commentFormPlaceholder => I18n.t('notes._comments.post_placeholder'),
+            :commentsHeaderText => helpers.translation('notes._comments.comments'),
+            :commentPreviewText => helpers.translation('comments._form.preview'),
+            :commentPublishText => helpers.translation('comments._form.publish'),
+            :userCommentedText => helpers.translation('notes._comment.commented')
+          },
           :nodeId => @node.id,
           :nodeAuthorId => @node.uid,
           :user => current_user
