@@ -99,8 +99,16 @@ class CommentController < ApplicationController
       # should abstract ".comment" to ".body" for future migration to native db
       @comment.comment = params[:body]
       if @comment.save
-        flash[:notice] = 'Comment updated.'
-        redirect_to @path + '?_=' + Time.now.to_i.to_s
+        if params[:react]
+          is_reply = @comment.reply_to.present? 
+          new_comment = helpers.get_react_comments([@comment], is_reply)
+          render json: {
+            :comment => new_comment
+          }
+        else
+          flash[:notice] = 'Comment updated.'
+          redirect_to @path + '?_=' + Time.now.to_i.to_s
+        end
       else
         flash[:error] = 'The comment could not be updated.'
         redirect_to @path
