@@ -14,10 +14,10 @@ module CommentHelper
 
   # takes an activerecord query, returns a plain array
   # used in notes_controller.rb and comment_controller.rb
-  def get_react_comments(comments_record, get_replies = false)
+  def get_react_comments(comments_record, getting_replies = false)
     comments = []
     comments_record.each_with_index do |comment, index|
-      if comment.reply_to.nil? || get_replies
+      if comment.reply_to.nil? || getting_replies
         commentJSON = {}
         commentJSON[:authorId] = comment.uid
         commentJSON[:authorPicFilename] = comment.author.photo_file_name
