@@ -7,6 +7,7 @@ import CommentToolbarButton from "./CommentToolbarButton";
 const CommentToolbar = ({
   authorId,
   currentUser,
+  handleDeleteComment,
   handleEditFormToggle,
   nodeAuthorId
 }) => {
@@ -35,7 +36,10 @@ const CommentToolbar = ({
     currentUser && currentUser.canModerate ||
     authorId === nodeAuthorId
   ) ?
-    <CommentToolbarButton icon={deleteIcon} /> :
+    <CommentToolbarButton 
+      icon={deleteIcon} 
+      onClick={handleDeleteComment}
+    /> :
     "";
 
   // 4. leave an emoji reaction button
@@ -68,6 +72,7 @@ const CommentToolbar = ({
 CommentToolbar.propTypes = {
   authorId: PropTypes.number.isRequired,
   currentUser: PropTypes.object,
+  handleDeleteComment: PropTypes.func.isRequired,
   handleEditFormToggle: PropTypes.func.isRequired,
   nodeAuthorId: PropTypes.number.isRequired
 };
