@@ -1,9 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import { StaticPropsContext } from "./static-props-context";
+
 const CommentsHeader = ({
-  comments,
-  commentsHeaderText
+  comments
 }) => {
   let numberOfComments = comments.length;
   let numberOfReplies = 0;
@@ -16,17 +17,20 @@ const CommentsHeader = ({
   numberOfComments += numberOfReplies;
 
   return (
-    <h3> 
-      <span id="comment-count">
-        {numberOfComments + " " + commentsHeaderText}
-      </span>
-    </h3>
+    <StaticPropsContext.Consumer>
+      {staticProps => (
+        <h3> 
+          <span id="comment-count">
+            {numberOfComments + " " + staticProps.elementText.commentsHeaderText}
+          </span>
+        </h3>
+      )}
+    </StaticPropsContext.Consumer>
   );
 }
 
 CommentsHeader.propTypes = {
-  comments: PropTypes.array,
-  commentsHeaderText: PropTypes.string
+  comments: PropTypes.array.isRequired
 };
 
 export default CommentsHeader;

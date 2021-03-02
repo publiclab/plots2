@@ -3,7 +3,9 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 import  { UserContext } from "./user-context";
+import { StaticPropsContext } from "./static-props-context";
 import { getEditTextAreaValues, makeDeepCopy } from "./helpers";
+
 import CommentForm from "./CommentForm";
 import CommentsHeader from "./CommentsHeader";
 import CommentsList from "./CommentsList"
@@ -20,8 +22,11 @@ const CommentsContainer = ({
     commentPreviewText,
     commentPublishText
   },
-  nodeAuthorId,
-  nodeId
+  node,
+  node: {
+    nodeAuthorId,
+    nodeId
+  }
 }) => {
   // React Hook for comments state
   const [comments, setComments] = useState(initialComments);
@@ -33,6 +38,10 @@ const CommentsContainer = ({
   // textAreaValues is an object that holds multiple text forms, eg:
   //   { main: "foo", reply-123: "bar" }
   const [textAreaValues, setTextAreaValues] = useState(initialTextAreaValues);
+
+  const handleDeleteComment = (event) => {
+    console.log("delete comment!");
+  }
 
   // function for handling user input into comment form <textarea>s
   const handleTextAreaChange = (event) => {
@@ -130,43 +139,44 @@ const CommentsContainer = ({
   return (
     // React Context ensures that all components below this one can access the currentUser prop object.
     <UserContext.Provider value={currentUser}>
-      <div id="legacy-editor-container" className="row">
-        <div id="comments" className="col-lg-10 comments">
-          <CommentsHeader comments={comments} commentsHeaderText={commentsHeaderText} />
-          <CommentsList 
-            comments={comments}
-            elementText={elementText}
-            handleFormSubmit={handleFormSubmit}
-            handleTextAreaChange={handleTextAreaChange}
-            nodeAuthorId={nodeAuthorId}
-            nodeId={nodeId}
-            setTextAreaValues={setTextAreaValues}
-            textAreaValues={textAreaValues}
-          />
-          {/* main comment form */}
-          <CommentForm 
-            commentFormPlaceholder={commentFormPlaceholder}
-            commentFormType="main" 
-            commentPreviewText={commentPreviewText}
-            commentPublishText={commentPublishText}
-            formId="main"
-            handleFormSubmit={handleFormSubmit}
-            handleTextAreaChange={handleTextAreaChange}
-            nodeId={nodeId} 
-            textAreaValue={textAreaValues["main"]}
-          />
+      <StaticPropsContext.Provider value={{ node, elementText }}>
+        <div id="legacy-editor-container" className="row">
+          <div id="comments" className="col-lg-10 comments">
+            <CommentsHeader comments={comments} />
+            <CommentsList 
+              comments={comments}
+              elementText={elementText}
+              handleFormSubmit={handleFormSubmit}
+              handleTextAreaChange={handleTextAreaChange}
+              nodeAuthorId={nodeAuthorId}
+              nodeId={nodeId}
+              setTextAreaValues={setTextAreaValues}
+              textAreaValues={textAreaValues}
+            />
+            {/* main comment form */}
+            <CommentForm 
+              commentFormPlaceholder={commentFormPlaceholder}
+              commentFormType="main" 
+              commentPreviewText={commentPreviewText}
+              commentPublishText={commentPublishText}
+              formId="main"
+              handleFormSubmit={handleFormSubmit}
+              handleTextAreaChange={handleTextAreaChange}
+              nodeId={nodeId} 
+              textAreaValue={textAreaValues["main"]}
+            />
+          </div>
         </div>
-      </div>
+      </StaticPropsContext.Provider>
     </UserContext.Provider>
   );
 }
 
 CommentsContainer.propTypes = {
   currentUser: PropTypes.object,
-  elementText: PropTypes.object,
+  elementText: PropTypes.object.isRequired,
   initialComments: PropTypes.array.isRequired,
-  nodeAuthorId: PropTypes.number,
-  nodeId: PropTypes.number
+  node: PropTypes.object.isRequired
 };
 
 export default CommentsContainer;
