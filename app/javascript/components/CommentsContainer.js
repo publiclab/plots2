@@ -16,17 +16,7 @@ const CommentsContainer = ({
   initialComments,
   currentUser,
   elementText,
-  elementText: {
-    commentFormPlaceholder,
-    commentsHeaderText,
-    commentPreviewText,
-    commentPublishText
-  },
-  node,
-  node: {
-    nodeAuthorId,
-    nodeId
-  }
+  node
 }) => {
   // React Hook for comments state
   const [comments, setComments] = useState(initialComments);
@@ -145,24 +135,17 @@ const CommentsContainer = ({
             <CommentsHeader comments={comments} />
             <CommentsList 
               comments={comments}
-              elementText={elementText}
               handleFormSubmit={handleFormSubmit}
               handleTextAreaChange={handleTextAreaChange}
-              nodeAuthorId={nodeAuthorId}
-              nodeId={nodeId}
               setTextAreaValues={setTextAreaValues}
               textAreaValues={textAreaValues}
             />
             {/* main comment form */}
             <CommentForm 
-              commentFormPlaceholder={commentFormPlaceholder}
               commentFormType="main" 
-              commentPreviewText={commentPreviewText}
-              commentPublishText={commentPublishText}
               formId="main"
               handleFormSubmit={handleFormSubmit}
               handleTextAreaChange={handleTextAreaChange}
-              nodeId={nodeId} 
               textAreaValue={textAreaValues["main"]}
             />
           </div>

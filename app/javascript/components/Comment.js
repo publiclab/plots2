@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 import { UserContext } from "./user-context";
+import { StaticPropsContext } from "./static-props-context";
 
 import CommentDisplay from "./CommentDisplay";
 import CommentHeader from "./CommentHeader.js";
@@ -22,10 +23,8 @@ const Comment = ({
     timeCreatedString
   },
   editCommentForm,
-  nodeAuthorId,
   replyCommentForm,
-  setTextAreaValues,
-  userCommentedText
+  setTextAreaValues
 }) => {
   // React Hook for toggling reply form state
   const [isReplyFormVisible, setIsReplyFormVisible] = useState(false);
@@ -48,59 +47,60 @@ const Comment = ({
     // see CommentsContainer.js
     <UserContext.Consumer>
       {currentUser => (
-        <div
-          id={"c" + commentId}
-          className="comment"
-          style={{
-            marginTop: "20px",
-            marginBottom: "20px",
-            paddingBottom: "9px",
-            wordWrap: "break-word"
-          }}
-        >
-          <div
-            className="bg-light navbar navbar-light"
-            style ={{
-              borderBottom: 0,
-              borderBottomLeftRadius: 0,
-              borderBottomRightRadius: 0,
-              marginBottom: 0
-            }}
-          >
-            {/* placeholder: moderator controls for approving comments from first-time posters */}
-            <CommentHeader 
-              authorPicFilename={authorPicFilename}
-              authorUsername={authorUsername}
-              authorPicUrl={authorPicUrl}
-              commentId={commentId}
-              commentName={commentName}
-              timeCreatedString={timeCreatedString}
-              userCommentedText={userCommentedText}
-            />
-            <CommentToolbar 
-              authorId={authorId} 
-              currentUser={currentUser} 
-              handleEditFormToggle={handleEditFormToggle}
-              nodeAuthorId={nodeAuthorId}
-            />
-          </div>
-          {isEditFormVisible ?
-            editCommentForm :
-            <CommentDisplay
-              commentId={commentId}
-              htmlCommentText={htmlCommentText}
-              isReplyFormVisible={isReplyFormVisible}
-              nodeAuthorId={nodeAuthorId}
-              replies={replies}
-              replyCommentForm={replyCommentForm}
-              replyTo={replyTo}
-              setIsReplyFormVisible={setIsReplyFormVisible}
-              setTextAreaValues={setTextAreaValues}
-              user={currentUser}
-              userCommentedText={userCommentedText}
-            />
-          }
-        </div>
+        <StaticPropsContext.Consumer>
+          {staticProps => (
+            <div
+              id={"c" + commentId}
+              className="comment"
+              style={{
+                marginTop: "20px",
+                marginBottom: "20px",
+                paddingBottom: "9px",
+                wordWrap: "break-word"
+              }}
+            >
+              <div
+                className="bg-light navbar navbar-light"
+                style ={{
+                  borderBottom: 0,
+                  borderBottomLeftRadius: 0,
+                  borderBottomRightRadius: 0,
+                  marginBottom: 0
+                }}
+              >
+                {/* placeholder: moderator controls for approving comments from first-time posters */}
+                <CommentHeader 
+                  authorPicFilename={authorPicFilename}
+                  authorUsername={authorUsername}
+                  authorPicUrl={authorPicUrl}
+                  commentId={commentId}
+                  commentName={commentName}
+                  timeCreatedString={timeCreatedString}
+                />
+                <CommentToolbar 
+                  authorId={authorId} 
+                  currentUser={currentUser} 
+                  handleEditFormToggle={handleEditFormToggle}
+                  nodeAuthorId={staticProps.node.nodeAuthorId}
+                />
+              </div>
+              {isEditFormVisible ?
+                editCommentForm :
+                <CommentDisplay
+                  commentId={commentId}
+                  htmlCommentText={htmlCommentText}
+                  isReplyFormVisible={isReplyFormVisible}
+                  replies={replies}
+                  replyCommentForm={replyCommentForm}
+                  replyTo={replyTo}
+                  setIsReplyFormVisible={setIsReplyFormVisible}
+                  setTextAreaValues={setTextAreaValues}
+                  user={currentUser}
+                />
+              }
+            </div>
+          )}
+        </StaticPropsContext.Consumer>
       )}
     </UserContext.Consumer>
   );
@@ -109,10 +109,8 @@ const Comment = ({
 Comment.propTypes = {
   comment: PropTypes.object.isRequired,
   editCommentForm: PropTypes.element.isRequired,
-  nodeAuthorId: PropTypes.number.isRequired,
   replyCommentForm: PropTypes.element,
-  setTextAreaValues: PropTypes.func.isRequired,
-  userCommentedText: PropTypes.string.isRequired
+  setTextAreaValues: PropTypes.func.isRequired
 };
 
 export default Comment;
