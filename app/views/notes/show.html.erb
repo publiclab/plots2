@@ -123,8 +123,7 @@
           initialComments: @react_props[:comments],
           currentUser: @react_props[:currentUser],
           elementText: @react_props[:elementText],
-          nodeAuthorId: @react_props[:nodeAuthorId],
-          nodeId: @react_props[:nodeId]
+          node: @react_props[:node]
         }) %>
       <% else %>
         <div id="legacy-editor-container"><%= render partial: "notes/comments" %></div>

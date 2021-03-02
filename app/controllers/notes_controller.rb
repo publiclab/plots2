@@ -89,8 +89,10 @@ class NotesController < ApplicationController
             :commentPublishText => helpers.translation('comments._form.publish'),
             :userCommentedText => helpers.translation('notes._comment.commented')
           },
-          :nodeId => @node.id,
-          :nodeAuthorId => @node.uid,
+          :node => {
+            :nodeId => @node.id,
+            :nodeAuthorId => @node.uid
+          },
           :user => current_user
         }
       end
