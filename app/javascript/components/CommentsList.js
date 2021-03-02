@@ -6,16 +6,8 @@ import CommentForm from "./CommentForm";
 
 const CommentsList = ({
   comments,
-  elementText: {
-    commentFormPlaceholder,
-    commentPreviewText,
-    commentPublishText,
-    userCommentedText
-  },
   handleFormSubmit,
   handleTextAreaChange,
-  nodeAuthorId,
-  nodeId,
   setTextAreaValues,
   textAreaValues
 }) => {
@@ -23,11 +15,8 @@ const CommentsList = ({
   // create a Comment component containing 1-3 CommentForms.
   const commentsList = comments.map((comment, index) => {
     const commentFormProps = {
-      commentPreviewText,
-      commentPublishText,
       handleFormSubmit,
-      handleTextAreaChange,
-      nodeId
+      handleTextAreaChange
     };
 
     // if the comment is a reply to another comment, DON'T render a reply form.
@@ -37,7 +26,6 @@ const CommentsList = ({
       const replyFormId = "reply-" + comment.commentId;
       replyCommentForm = <CommentForm
         commentId={comment.commentId}
-        commentFormPlaceholder={commentFormPlaceholder}
         commentFormType="reply"
         formId={replyFormId}
         textAreaValue={textAreaValues[replyFormId]}
@@ -72,11 +60,9 @@ const CommentsList = ({
       key={"comment-" + index} 
       comment={comment}
       editCommentForm={editCommentForm}
-      nodeAuthorId={nodeAuthorId}
       replyCommentForm={replyCommentForm}
       replies={repliesWithEditForms}
       setTextAreaValues={setTextAreaValues}
-      userCommentedText={userCommentedText} 
     />;
   });
 
@@ -89,11 +75,8 @@ const CommentsList = ({
 
 CommentsList.propTypes = {
   comments: PropTypes.array.isRequired,
-  elementText: PropTypes.object.isRequired,
   handleFormSubmit: PropTypes.func.isRequired,
   handleTextAreaChange: PropTypes.func.isRequired,
-  nodeAuthorId: PropTypes.number.isRequired,
-  nodeId: PropTypes.number.isRequired,
   setTextAreaValues: PropTypes.func.isRequired,
   textAreaValues: PropTypes.object.isRequired
 };

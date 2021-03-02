@@ -7,11 +7,9 @@ const CommentReplies = ({
   commentId,
   isReplyFormVisible,
   handleReplyFormToggle,
-  nodeAuthorId,
   replies,
   replyCommentForm,
-  setTextAreaValues,
-  userCommentedText
+  setTextAreaValues
 }) => {
   // generate comment's replies section:
   //   1. a list of all replies (if any)
@@ -22,9 +20,7 @@ const CommentReplies = ({
       key={"comment-reply-" + index}
       comment={reply} 
       editCommentForm={reply.editCommentForm}
-      nodeAuthorId={nodeAuthorId}
       setTextAreaValues={setTextAreaValues}
-      userCommentedText={userCommentedText} 
     />;
   });
 
@@ -58,11 +54,9 @@ CommentReplies.propTypes = {
   commentId: PropTypes.number.isRequired,
   isReplyFormVisible: PropTypes.bool.isRequired,
   handleReplyFormToggle: PropTypes.func,
-  nodeAuthorId: PropTypes.number.isRequired,
   replies: PropTypes.array.isRequired,
   replyCommentForm: PropTypes.element,
-  setTextAreaValues: PropTypes.func.isRequired,
-  userCommentedText: PropTypes.string.isRequired
+  setTextAreaValues: PropTypes.func.isRequired
 }
 
 export default CommentReplies;

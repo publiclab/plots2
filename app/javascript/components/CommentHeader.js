@@ -1,14 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import { StaticPropsContext } from "./static-props-context";
+
 const CommentHeader = ({
   authorPicFilename,
   authorUsername,
   authorPicUrl,
   commentId,
   commentName,
-  timeCreatedString,
-  userCommentedText
+  timeCreatedString
 }) => {
   // top-left comment author information
   let authorSection = [];
@@ -42,14 +43,18 @@ const CommentHeader = ({
     commentName;
 
   return (
-    <div className="navbar-text float-left">
-      {authorProfilePic}
-      {authorName}
-      <span className="d-none d-md-inline">{" " + userCommentedText}</span>
-      <a style={{ color: "#aaa" }} href={"#c" + commentId}>
-        {" " + timeCreatedString}
-      </a>
-    </div>
+    <StaticPropsContext.Consumer>
+      {staticProps => (
+        <div className="navbar-text float-left">
+          {authorProfilePic}
+          {authorName}
+          <span className="d-none d-md-inline">{" " + staticProps.elementText.userCommentedText}</span>
+          <a style={{ color: "#aaa" }} href={"#c" + commentId}>
+            {" " + timeCreatedString}
+          </a>
+        </div>
+      )}
+    </StaticPropsContext.Consumer>
   );
 }
 
@@ -59,8 +64,7 @@ CommentHeader.propTypes = {
   authorPicUrl: PropTypes.string,
   commentId: PropTypes.number.isRequired,
   commentName: PropTypes.string,
-  timeCreatedString: PropTypes.string.isRequired,
-  userCommentedText: PropTypes.string.isRequired
+  timeCreatedString: PropTypes.string.isRequired
 }
 
 export default CommentHeader;
