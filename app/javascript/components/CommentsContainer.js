@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
@@ -44,12 +45,56 @@ const CommentsContainer = ({
   // comment form submission
   const handleFormSubmit = (event) => {
     event.preventDefault();
+    const commentId = event.target.dataset.commentId;
     const formType = event.target.dataset.formType;
     const formId = event.target.dataset.formId;
     const commentBody = textAreaValues[formId];
 
     if (formType === "edit") {
-      console.log("Edit form!");
+      $.post(
+        "/comment/update/" + commentId,
+        {
+          id: commentId,
+          body: commentBody,
+          react: true
+        }, 
+        function(data) {
+          console.log(data);
+          // if the freshly posted comment is a reply, it needs to be nested within comment.replies
+          if (data.comment[0].replyTo) {
+            for (let i = 0; i < comments.length; i++) {
+              // find the comment with the matching replyTo
+              if (comments[i].commentId === data.comment[0].replyTo) {
+                let newParent = makeDeepCopy(comments[i]); // make a copy of the parent comment
+                for (let j = 0; j < comments[i].replies.length; j++) {
+                  let updatedComment = makeDeepCopy(comments[i].replies[j]);
+                  updatedComment.htmlCommentText = data.comment[0].htmlCommentText;
+                  updatedComment.rawCommentText = data.comment[0].rawCommentText;
+                  newParent.replies = Object.assign([], newParent.replies, {j: updatedComment});
+                  // React sometimes fails to update state if it doesn't think that newState is different.
+                  // if newState is a deeply nested array like comments, React will have difficulty registering changes.
+                  // this is weird syntax, but it addresses the issue.
+                  // basically it keeps oldComments (this seems integral to React registering changes), but replaces the comment at index i with newComment.
+                  setComments(oldComments => (Object.assign([], oldComments, {i: newParent})));
+                  break;
+                }
+              }
+            }
+          } else {
+            for (let i = 0; i < comments.length; i++) {
+              if (comments[i].commentId === data.comment[0].commentId) {
+                let newComment = makeDeepCopy(comments[i]);
+                newComment.htmlCommentText = data.comment[0].htmlCommentText;
+                newComment.rawCommentText = data.comment[0].rawCommentText;
+                // keep most of oldComments, but replace the comment at index i with newComment.
+                setComments(oldComments => (Object.assign([], oldComments, {i: newComment})));
+                break;
+              }
+            }
+          }
+          notyNotification('mint', 3000, 'success', 'topRight', 'Comment Updated!');
+        }
+      );
     } else {
       $.post(
         "/comment/create/" + nodeId, 
@@ -57,7 +102,7 @@ const CommentsContainer = ({
           body: commentBody,
           id: nodeId,
           react: true,
-          reply_to: event.target.dataset.replyTo ? event.target.dataset.replyTo : null
+          reply_to: formType === "reply" ? commentId : null
         },
         function(data) {
           // if the freshly posted comment is a reply, it needs to be nested within comment.replies
@@ -67,10 +112,7 @@ const CommentsContainer = ({
               if (comments[i].commentId === data.comment[0].replyTo) {
                 let newComment = makeDeepCopy(comments[i]);
                 newComment.replies.push(data.comment[0]);
-                // it seems as if React sometimes fails to update state if it doesn't think that newState is different.
-                // if newState is a deeply nested array like comments, React will have difficulty registering changes.
-                // this is weird syntax, but it addresses the issue.
-                // basically it keeps oldComments (this seems integral to React registering changes), but replaces the comment at index i with newComment.
+                // keep most of oldComments, but replace the comment at index i with newComment.
                 setComments(oldComments => (Object.assign([], oldComments, {i: newComment})));
                 break;
               }
