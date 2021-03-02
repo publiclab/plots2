@@ -18,6 +18,8 @@ tasks:
 
         yarn install
 
+        rails g webpack:install; rails g webpack:install:react; rails g react:install
+
         ./public/lib/.bin/webpack-dev-server
 
       command: >
