@@ -122,6 +122,20 @@ class PostTest < ApplicationSystemTestCase
     page.assert_selector('#preview-main img', count: 1)
   end
 
+  test 'preview works in legacy wiki editor' do
+    visit '/wiki/new'
+    legacy_editor = page.find('#legacy-editor-container')
+    preview_button = page.find("#toggle-preview-button-main")
+    legacy_editor
+      .find('#text-input-main')
+      .click
+      .fill_in with: 'stuff!'
+    preview_button.click
+    assert_equal('Hide Preview', preview_button.text)
+    assert_selector('#preview-main')
+    assert legacy_editor.has_no_selector?('#text-input-main')
+  end
+
   test "changing and reverting versions works correctly for wiki" do
     visit '/wiki/wiki-page-path/'
 

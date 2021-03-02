@@ -3,12 +3,13 @@ class Editor {
   //   defaultForm - when the Editor is initialized, there needs to be a default editor form:
   //     1. the main comment form in multi-comment wikis, questions, & research notes.
   //     2. the only editor form on /wiki/new and /wiki/edit
-  //   elementIDPrefixes - the ID naming conventions are different depending on context:
+  //   isSingleFormPage - to distinguish between a) pages with multiple comments b) pages like /wiki/new, and /features/new with only one comment form
+  //     elements have different ID naming conventions on the two kinds of pages:
   //     1. multi-form pages with multiple comments: #comment-preview-123
   //     2. /wiki/new and /wiki/edit: #preview-main
-  constructor(defaultForm = "main", elementIDPrefixes = {}) {
+  constructor(defaultForm = "main", isSingleFormPage = false) {
     this.commentFormID = defaultForm;
-    this.elementIDPrefixes = elementIDPrefixes;
+    this.isSingleFormPage = isSingleFormPage;
     // this will get deleted in the next few PRs, so collapsing into one line to pass codeclimate
     this.templates = { 'blog': "## The beginning\n\n## What we did\n\n## Why it matters\n\n## How can you help", 'default': "## What I want to do\n\n## My attempt and results\n\n## Questions and next steps\n\n## Why I'm interested", 'support': "## Details about the problem\n\n## A photo or screenshot of the setup", 'event': "## Event details\n\nWhen, where, what\n\n## Background\n\nWho, why", 'question': "## What I want to do or know\n\n## Background story" };
       
@@ -40,11 +41,8 @@ class Editor {
     return this.textAreaElement.val(); 
   }
   get previewElement() {
-    let previewIDPrefix = "#comment-preview-";
-    if (this.elementIDPrefixes.hasOwnProperty("preview")) {
-      // eg. on /wiki/new & /wiki/edit, the preview element is called #preview-main
-      previewIDPrefix = "#" + this.elementIDPrefixes["preview"] + "-";
-    }
+    // eg. on /wiki/new & /wiki/edit, the preview element is called #preview-main
+    const previewIDPrefix = this.isSingleFormPage ? "#preview-" : "#comment-preview-"
     const previewID = previewIDPrefix + this.commentFormID;
     return $(previewID);
   }
@@ -136,7 +134,8 @@ class Editor {
     // if the element is part of a multi-comment page,
     // ensure to grab the current element and not the other comment element.
     const previewBtn = $("#toggle-preview-button-" + this.commentFormID);
-    const commentFormBody = $("#comment-form-body-" + this.commentFormID);
+    const formIdPrefix = this.isSingleFormPage ? "#form-body-" : "#comment-form-body-";
+    const commentFormBody = $(formIdPrefix + this.commentFormID);
 
     this.previewElement[0].innerHTML = marked(this.textAreaValue);
     this.previewElement.toggle();

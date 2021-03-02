@@ -556,7 +556,7 @@ en:
       create_page: "Create page"
       publish: "Publish"
       preview: "Preview"
-      previewing_text: "Previewing (click to edit)"
+      previewing_text: "Hide Preview"
       agree_to_open_source_work: "By publishing, you agree to <a target='_blank' href='%{url1}'>open
         source your work</a> so that others may use it."
       last_edited_by: "This page was last edited %{time} ago by <a href='%{url1}'>%{author}</a>"
