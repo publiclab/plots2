@@ -72,9 +72,9 @@ const CommentForm = ({
         <div className="control-group">
           <button
             className="btn btn-primary"
+            data-comment-id={commentId}
             data-form-id={formId}
             data-form-type={commentFormType}
-            data-reply-to={(commentFormType === "reply") ? commentId : ""}
             onClick={handleFormSubmit}
           >
             {commentPublishText}
