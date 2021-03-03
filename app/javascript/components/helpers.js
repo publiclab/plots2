@@ -19,6 +19,24 @@ const getEditTextAreaValues = (commentsArray) => {
   return editTextValues;
 };
 
+const getInitialCommentFormToggleState = (commentsArray) => {
+  let commentFormToggleState = {};
+
+  for (let i = 0; i < commentsArray.length; i++) {
+    if (!commentsArray[i].replyTo) {
+      const replyFormId = "reply-" + commentsArray[i].commentId;
+      commentFormToggleState[replyFormId] = false;
+      // recursively get IDs for the replies
+      const repliesToggleStates = getInitialCommentFormToggleState(commentsArray[i].replies);
+      commentFormToggleState = {...commentFormToggleState, ...repliesToggleStates};
+    }
+    const editFormID = "edit-" + commentsArray[i].commentId;
+    commentFormToggleState[editFormID] = false;
+  }
+
+  return commentFormToggleState;
+};
+
 // for making deep copies of nested arrays and objects
 const makeDeepCopy = (input) => {
   let output, value, key;
@@ -42,6 +60,7 @@ const makeDeepCopy = (input) => {
 };
 
 export { 
-  getEditTextAreaValues, 
+  getEditTextAreaValues,
+  getInitialCommentFormToggleState, 
   makeDeepCopy 
 };

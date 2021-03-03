@@ -3,9 +3,12 @@ import PropTypes from "prop-types";
 
 import Comment from "./Comment";
 import CommentForm from "./CommentForm";
+import CommentToolbarButton from "./CommentToolbarButton";
 
 const CommentsList = ({
+  commentFormsVisibility,
   comments,
+  handleFormVisibilityToggle,
   handleFormSubmit,
   handleTextAreaChange,
   setTextAreaValues,
@@ -19,19 +22,16 @@ const CommentsList = ({
       handleTextAreaChange
     };
 
-    // if the comment is a reply to another comment, DON'T render a reply form.
-    // otherwise, the comment can accept replies
-    let replyCommentForm = null;
-    if (!comment.replyTo) {
-      const replyFormId = "reply-" + comment.commentId;
-      replyCommentForm = <CommentForm
-        commentId={comment.commentId}
-        commentFormType="reply"
-        formId={replyFormId}
-        textAreaValue={textAreaValues[replyFormId]}
-        {...commentFormProps}
-      />;
-    }
+    // every comment at the top level has a reply form
+    // comments nested in the second level don't have a reply form
+    const replyFormId = "reply-" + comment.commentId;
+    const replyCommentForm = <CommentForm
+      commentId={comment.commentId}
+      commentFormType="reply"
+      formId={replyFormId}
+      textAreaValue={textAreaValues[replyFormId]}
+      {...commentFormProps}
+    />;
 
     // each comment comes with in a edit comment form
     const editFormId = "edit-" + comment.commentId;
@@ -43,12 +43,29 @@ const CommentsList = ({
       {...commentFormProps}
     />;
 
+    // each comment comes with a button to toggle edit form visible
+    const toggleEditButton = <CommentToolbarButton 
+      icon={<i className="fa fa-pencil"></i>}
+      onClick={() => handleFormVisibilityToggle("edit-" + comment.commentId)}
+    />;
+
     // generate the replies' edit comment forms to avoid the alternative: passing down props two levels
     const repliesWithEditForms = comment.replies.map((reply) => {
       const replyEditFormId = "edit-" + reply.commentId;
+
+      // reply has a button to toggle edit form visible
+      const replyToggleEditButton = <CommentToolbarButton
+        icon={<i className="fa fa-pencil"></i>}
+        onClick={() => handleFormVisibilityToggle(replyEditFormId)}
+      />;
+      reply.toggleEditButton = replyToggleEditButton;
+      reply.isEditFormVisible = commentFormsVisibility[replyEditFormId];
+
+      // reply has an edit comment form
       reply.editCommentForm = <CommentForm 
         commentFormType="edit"
         commentId={reply.commentId}
+        isEditFormVisible={commentFormsVisibility[replyEditFormId]}
         formId={replyEditFormId}
         rawCommentText={reply.rawCommentText}
         textAreaValue={textAreaValues[replyEditFormId]}
@@ -60,9 +77,13 @@ const CommentsList = ({
       key={"comment-" + index} 
       comment={comment}
       editCommentForm={editCommentForm}
+      handleFormVisibilityToggle={handleFormVisibilityToggle}
+      isEditFormVisible={commentFormsVisibility[editFormId]}
+      isReplyFormVisible={commentFormsVisibility[replyFormId]}
       replyCommentForm={replyCommentForm}
       replies={repliesWithEditForms}
       setTextAreaValues={setTextAreaValues}
+      toggleEditButton={toggleEditButton}
     />;
   });
 
@@ -74,7 +95,9 @@ const CommentsList = ({
 };
 
 CommentsList.propTypes = {
+  commentFormsVisibility: PropTypes.object.isRequired,
   comments: PropTypes.array.isRequired,
+  handleFormVisibilityToggle: PropTypes.func.isRequired,
   handleFormSubmit: PropTypes.func.isRequired,
   handleTextAreaChange: PropTypes.func.isRequired,
   setTextAreaValues: PropTypes.func.isRequired,

@@ -19,14 +19,16 @@ const CommentReplies = ({
     return <Comment 
       key={"comment-reply-" + index}
       comment={reply} 
+      isEditFormVisible={reply.isEditFormVisible}
       editCommentForm={reply.editCommentForm}
       setTextAreaValues={setTextAreaValues}
+      toggleEditButton={reply.toggleEditButton}
     />;
   });
 
   const replyToggleLink = <p
     id={"comment-" + commentId + "-reply-toggle"}
-    onClick={handleReplyFormToggle}
+    onClick={() => handleReplyFormToggle("reply-" + commentId)}
     style={{
       color: "#006dcc",
       cursor: "pointer",

@@ -8,16 +8,13 @@ const CommentToolbar = ({
   authorId,
   currentUser,
   handleDeleteComment,
-  handleEditFormToggle,
-  nodeAuthorId
+  nodeAuthorId,
+  toggleEditButton
 }) => {
   // 1. edit button
-  const editIcon = <i className="fa fa-pencil"></i>;
-  const editButton = (currentUser && authorId === currentUser.id) ?
-    <CommentToolbarButton 
-      icon={editIcon} 
-      onClick={handleEditFormToggle}
-    /> :
+  const isAuthoredByCurrentUser = currentUser && authorId === currentUser.id;
+  const editButton = isAuthoredByCurrentUser ?
+    toggleEditButton :
     "";
 
   // 2. mark spam button (for moderators) OR flag as spam (for all users)
@@ -73,8 +70,8 @@ CommentToolbar.propTypes = {
   authorId: PropTypes.number.isRequired,
   currentUser: PropTypes.object,
   handleDeleteComment: PropTypes.func.isRequired,
-  handleEditFormToggle: PropTypes.func.isRequired,
-  nodeAuthorId: PropTypes.number.isRequired
+  nodeAuthorId: PropTypes.number.isRequired,
+  toggleEditButton: PropTypes.element.isRequired
 };
 
 export default CommentToolbar;

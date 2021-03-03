@@ -6,12 +6,12 @@ import CommentReplies from "./CommentReplies.js";
 // this component swaps visibility with edit form depending on isEditFormVisible, see Comment.js
 const CommentDisplay = ({
   commentId,
+  handleFormVisibilityToggle,
   htmlCommentText,
   isReplyFormVisible,
   replies,
   replyCommentForm,
   replyTo,
-  setIsReplyFormVisible,
   setTextAreaValues,
   user
 }) => {
@@ -27,7 +27,7 @@ const CommentDisplay = ({
       <div 
         id={"comment-body-" + commentId} 
         className="comment-body"
-        dangerouslySetInnerHTML={{ __html: htmlCommentText }}
+        dangerouslySetInnerHTML={{ __html: htmlCommentText }} // see React docs, there can be some security risk with doing this in general, probably doesn't apply here
         style={{ 
           marginTop: "1rem",
           paddingBottom: !replyTo && "16px" // puts a little buffer in between main comment and its replies
@@ -45,7 +45,7 @@ const CommentDisplay = ({
           commentId={commentId}
           currentUser={user}
           isReplyFormVisible={isReplyFormVisible}
-          handleReplyFormToggle={() => setIsReplyFormVisible(!isReplyFormVisible)}
+          handleReplyFormToggle={handleFormVisibilityToggle}
           replies={replies}
           replyCommentForm={replyCommentForm}
           setTextAreaValues={setTextAreaValues}
@@ -59,11 +59,11 @@ const CommentDisplay = ({
 CommentDisplay.propTypes = {
   commentId: PropTypes.number.isRequired,
   htmlCommentText: PropTypes.string.isRequired,
+  handleFormVisibilityToggle: PropTypes.func,
   isReplyFormVisible: PropTypes.bool,
   replies: PropTypes.array,
   replyCommentForm: PropTypes.element,
   replyTo: PropTypes.number,
-  setIsReplyFormVisible: PropTypes.func,
   setTextAreaValues: PropTypes.func.isRequired,
   user: PropTypes.object
 }

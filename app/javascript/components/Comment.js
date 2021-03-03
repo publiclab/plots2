@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
 import { UserContext } from "./user-context";
@@ -17,31 +17,18 @@ const Comment = ({
     commentId,
     commentName,
     htmlCommentText,
-    rawCommentText,
     replies,
     replyTo,
     timeCreatedString
   },
   editCommentForm,
+  handleFormVisibilityToggle,
+  isEditFormVisible,
+  isReplyFormVisible,
   replyCommentForm,
-  setTextAreaValues
+  setTextAreaValues,
+  toggleEditButton
 }) => {
-  // React Hook for toggling reply form state
-  const [isReplyFormVisible, setIsReplyFormVisible] = useState(false);
-  // React Hook for toggling edit form state
-  const [isEditFormVisible, setIsEditFormVisible] = useState(false);
-
-  const handleEditFormToggle = () => {
-    setIsReplyFormVisible(false);
-    if (isEditFormVisible) {
-      setTextAreaValues(state => ({ ...state, ["edit-" + commentId]: rawCommentText }))
-    }
-    setIsEditFormVisible(!isEditFormVisible);
-    // put setTextAreaValues call here
-    // textAreaValues needs to include "edit-123: 'raw text'" key value pair
-    // then that textAreaValue is passed all the way down here to populate edit comment form's textarea
-  }
-
   return (
     // hooks this component up to React Context, so it can access currentUser object.
     // see CommentsContainer.js
@@ -80,20 +67,20 @@ const Comment = ({
                 <CommentToolbar 
                   authorId={authorId} 
                   currentUser={currentUser} 
-                  handleEditFormToggle={handleEditFormToggle}
                   nodeAuthorId={staticProps.node.nodeAuthorId}
+                  toggleEditButton={toggleEditButton}
                 />
               </div>
               {isEditFormVisible ?
                 editCommentForm :
                 <CommentDisplay
                   commentId={commentId}
+                  handleFormVisibilityToggle={handleFormVisibilityToggle}
                   htmlCommentText={htmlCommentText}
                   isReplyFormVisible={isReplyFormVisible}
                   replies={replies}
                   replyCommentForm={replyCommentForm}
                   replyTo={replyTo}
-                  setIsReplyFormVisible={setIsReplyFormVisible}
                   setTextAreaValues={setTextAreaValues}
                   user={currentUser}
                 />
@@ -109,8 +96,12 @@ const Comment = ({
 Comment.propTypes = {
   comment: PropTypes.object.isRequired,
   editCommentForm: PropTypes.element.isRequired,
+  handleFormVisibilityToggle: PropTypes.func,
+  isEditFormVisible: PropTypes.bool.isRequired,
+  isReplyFormVisible: PropTypes.bool,
   replyCommentForm: PropTypes.element,
-  setTextAreaValues: PropTypes.func.isRequired
+  setTextAreaValues: PropTypes.func.isRequired,
+  toggleEditButton: PropTypes.element.isRequired
 };
 
 export default Comment;
