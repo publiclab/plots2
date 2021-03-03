@@ -2,9 +2,13 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-import  { UserContext } from "./user-context";
+import { UserContext } from "./user-context";
 import { StaticPropsContext } from "./static-props-context";
-import { getEditTextAreaValues, makeDeepCopy } from "./helpers";
+import { 
+  getEditTextAreaValues, 
+  getInitialCommentFormToggleState, 
+  makeDeepCopy 
+} from "./helpers";
 
 import CommentForm from "./CommentForm";
 import CommentsHeader from "./CommentsHeader";
@@ -16,21 +20,32 @@ const CommentsContainer = ({
   initialComments,
   currentUser,
   elementText,
-  node
+  node,
+  node: {
+    nodeId
+  }
 }) => {
-  // React Hook for comments state
+  // React Hook: Comments State
   const [comments, setComments] = useState(initialComments);
 
-  // React Hook managing textarea input state 
+  // React Hook: Visibility for Reply and Edit Comment Forms
+  const initialCommentFormToggleState = getInitialCommentFormToggleState(initialComments);
+  const [commentFormsVisibility, setCommentFormsVisibility] = useState(initialCommentFormToggleState);
+
+  // React Hook: <textarea> input state
   // the initial state needs to include default values for edit coment forms
   // if a user opens an edit comment form, it should contain the already existing comment text to be edited
-  const initialTextAreaValues = { "main": "", ...getEditTextAreaValues(comments) };
+  const initialTextAreaValues = { "main": "", ...getEditTextAreaValues(initialComments) };
   // textAreaValues is an object that holds multiple text forms, eg:
   //   { main: "foo", reply-123: "bar" }
   const [textAreaValues, setTextAreaValues] = useState(initialTextAreaValues);
 
   const handleDeleteComment = (event) => {
     console.log("delete comment!");
+  }
+
+  const handleFormVisibilityToggle = (commentFormId) => {
+    setCommentFormsVisibility(oldState => (Object.assign({}, oldState, { [commentFormId]: !oldState[commentFormId] })));
   }
 
   // function for handling user input into comment form <textarea>s
@@ -58,39 +73,45 @@ const CommentsContainer = ({
           react: true
         }, 
         function(data) {
-          console.log(data);
-          // if the freshly posted comment is a reply, it needs to be nested within comment.replies
+          // if the freshly updated comment is a reply, it needs to be nested within comment.replies
           if (data.comment[0].replyTo) {
             for (let i = 0; i < comments.length; i++) {
-              // find the comment with the matching replyTo
+              // find the comment's parent
               if (comments[i].commentId === data.comment[0].replyTo) {
                 let newParent = makeDeepCopy(comments[i]); // make a copy of the parent comment
                 for (let j = 0; j < comments[i].replies.length; j++) {
-                  let updatedComment = makeDeepCopy(comments[i].replies[j]);
-                  updatedComment.htmlCommentText = data.comment[0].htmlCommentText;
-                  updatedComment.rawCommentText = data.comment[0].rawCommentText;
-                  newParent.replies = Object.assign([], newParent.replies, {j: updatedComment});
-                  // React sometimes fails to update state if it doesn't think that newState is different.
-                  // if newState is a deeply nested array like comments, React will have difficulty registering changes.
-                  // this is weird syntax, but it addresses the issue.
-                  // basically it keeps oldComments (this seems integral to React registering changes), but replaces the comment at index i with newComment.
-                  setComments(oldComments => (Object.assign([], oldComments, {i: newParent})));
-                  break;
+                  // find comment inside parent's replies
+                  if (comments[i].replies[j].commentId === data.comment[0].commentId) {
+                    let updatedComment = makeDeepCopy(comments[i].replies[j]);
+                    updatedComment.htmlCommentText = data.comment[0].htmlCommentText; // update comment text
+                    updatedComment.rawCommentText = data.comment[0].rawCommentText;
+                    newParent.replies = Object.assign([], newParent.replies, { [j]: updatedComment });
+                    // React sometimes fails to update state if it doesn't think that newState is different.
+                    // if newState is a deeply nested array like comments, React will have difficulty registering changes.
+                    // this is weird syntax, but it addresses the issue.
+                    // basically it keeps oldComments (this seems integral to React registering changes), but replaces the comment at index i with newComment.
+                    setComments(oldComments => (Object.assign([], oldComments, {[i]: newParent}))); // update state
+                    break;
+                  }
                 }
               }
             }
           } else {
+            // the freshly updated comment is NOT a reply
             for (let i = 0; i < comments.length; i++) {
+              // find the comment in state
               if (comments[i].commentId === data.comment[0].commentId) {
                 let newComment = makeDeepCopy(comments[i]);
-                newComment.htmlCommentText = data.comment[0].htmlCommentText;
+                newComment.htmlCommentText = data.comment[0].htmlCommentText; // update comment text
                 newComment.rawCommentText = data.comment[0].rawCommentText;
                 // keep most of oldComments, but replace the comment at index i with newComment.
-                setComments(oldComments => (Object.assign([], oldComments, {i: newComment})));
+                setComments(oldComments => (Object.assign([], oldComments, { [i]: newComment })));
                 break;
               }
             }
           }
+          // close the edit comment form
+          setCommentFormsVisibility(oldState => (Object.assign({}, oldState, { [formId]: false })));
           notyNotification('mint', 3000, 'success', 'topRight', 'Comment Updated!');
         }
       );
@@ -121,6 +142,12 @@ const CommentsContainer = ({
             setComments(oldComments => ([...oldComments, data.comment[0]]));
           }
           notyNotification('mint', 3000, 'success', 'topRight', 'Comment Added!');
+          // blank out the value of textarea
+          setTextAreaValues(oldState => ({ ...oldState, [formId]: "" }));
+          // close the comment form
+          if (formType !== "main") {
+            setCommentFormsVisibility(oldState => (Object.assign({}, oldState, { [formId]: false })));
+          }
         }
       );
     }
@@ -134,7 +161,9 @@ const CommentsContainer = ({
           <div id="comments" className="col-lg-10 comments">
             <CommentsHeader comments={comments} />
             <CommentsList 
+              commentFormsVisibility={commentFormsVisibility}
               comments={comments}
+              handleFormVisibilityToggle={handleFormVisibilityToggle}
               handleFormSubmit={handleFormSubmit}
               handleTextAreaChange={handleTextAreaChange}
               setTextAreaValues={setTextAreaValues}
