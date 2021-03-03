@@ -3,7 +3,7 @@ PublicLab.org
 
 [![Code of Conduct](https://img.shields.io/badge/code-of%20conduct-green.svg)](https://publiclab.org/conduct)
 [![Build Status](https://github.com/publiclab/plots2/workflows/tests/badge.svg?branch=main)](https://github.com/publiclab/plots2/actions)
-+[![first-timers-only-friendly](https://img.shields.io/badge/first--timers--only-friendly-blue.svg?style=flat-square)](https://code.publiclab.org#r=all)
+[![first-timers-only-friendly](https://img.shields.io/badge/first--timers--only-friendly-blue.svg?style=flat-square)](https://code.publiclab.org#r=all)
 [![Join the chat at https://publiclab.org/chat](https://img.shields.io/badge/chat-in%20different%20ways-blue.svg)](https://publiclab.org/chat)
 [![Code Climate](https://codeclimate.com/github/publiclab/plots2/badges/gpa.svg)](https://codeclimate.com/github/publiclab/plots2)
 [![codecov](https://codecov.io/gh/publiclab/plots2/branch/main/graph/badge.svg)](https://codecov.io/gh/publiclab/plots2)
@@ -23,11 +23,11 @@ Some key features include:
 * A [Q&A portal](https://publiclab.org/questions) for peer-based problem solving
 * A rich text and Markdown [editor](https://github.com/publiclab/PublicLab.Editor)
 * [Wiki editing](https://publiclab.org/wiki) and revision tracking
-+* Tagging and [topically-based groups and content organization](https://publiclab.org/tags)
+* Tagging and [topically-based groups and content organization](https://publiclab.org/tags)
 * Email notification subscriptions for topics and comments
 * A search interface built out of [our growing API](https://github.com/publiclab/plots2/blob/main/doc/API.md)
 * A user dashboard [presenting recent activity](https://publiclab.org/dashboard)
-+* A privacy-sensitive, Leaflet-based [location tagging system](https://github.com/publiclab/leaflet-blurred-location/) and [community map](https://publiclab.org/people)
+* A privacy-sensitive, Leaflet-based [location tagging system](https://github.com/publiclab/leaflet-blurred-location/) and [community map](https://publiclab.org/people)
 
 
 ## Roadmap
