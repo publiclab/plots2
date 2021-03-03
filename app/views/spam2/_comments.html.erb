@@ -138,7 +138,7 @@ $(document).ready(function () {
                   <%= comment.body %>
                 </div>
                 <div class="modal-footer">
-                  <%= time_ago_in_words(comment.timestamp.seconds.ago) %> ago
+                  <%= time_ago_in_words(comment.timestamp) %> ago
                 </div>
               </div>
               <% end %>
