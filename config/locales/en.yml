@@ -684,6 +684,13 @@ en:
       most_liked_questions: Most liked questions
     _comment:
       promotion: "Promote this comment to an answer"
+    index_shadow:
+      what_is_your_question: "What's your question?"
+      to_ask_a_question_please: "To ask a question, please"
+      log_in: "log in"
+      or: "or"
+      sign_up: "sign_up"
+      first: "first."
   user_sessions:
     new:
       log_in: "Log in"
@@ -1211,10 +1218,3 @@ en:
       long: "%B %d, %Y %H:%M"
       short: "%d %b %H:%M"
     pm: pm
-  index_shadow:
-    what_is_your_question: "What's your question?"
-    to_ask_a_question_please: "To ask a question, please"
-    log_in: "log in"
-    or: "or"
-    sign_up: "sign_up"
-    first: "first."
