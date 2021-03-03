@@ -4,9 +4,9 @@
 
 <div class="question-area col-md-12">
   <div class= "question-header">
-   <h5>What's your question?</h5>
+   <h5><%=translation('questions.index_shadow.what_is_your_question')%></h5>
    <% if !current_user %>
-     <p>To ask a question, please <a class="requireLogin" href="/questions">log in</a> or <a class="requireLogin" href="/questions">sign up</a> first.</p>
+     <p><%=translation('questions.index_shadow.to_ask_a_question_please')%><a class="requireLogin" href="/questions"><%=translation('questions.index_shadow.log_in')%></a><%=translation('questions.index_shadow.or')%> <a class="requireLogin" href="/questions"><%=translation('questions.index_shadow.sign_up')%></a><%=translation('questions.index_shadow.first')%></p>
    <% end %>
   </div>
  <div class= "question-form">
