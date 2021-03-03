@@ -104,6 +104,7 @@ jobs:
       run: yarn check || yarn install --frozen-lockfile;
     - name: Run webpacker setup
       env:
+        RAILS_ENV: test
         DB_PASSWORD: root
         DB_PORT: ${{ job.services.mysql.ports[3306] }}
       run: bundle exec rails g webpack:install && bundle exec rails g webpack:install:react && bundle exec rails g react:install
