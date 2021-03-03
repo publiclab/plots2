@@ -43,8 +43,6 @@ jobs:
       run: yarn check || yarn install --frozen-lockfile;
     - name: Run webpacker setup
       run: bundle exec rails g webpack:install && bundle exec rails g webpack:install:react && bundle exec rails g react:install
-    - name: Start webpacker for React integrations
-      run: ./public/lib/.bin/webpack-dev-server
     - name: "Functional Tests"
       env:
         RAILS_ENV: test
@@ -65,8 +63,6 @@ jobs:
       run: yarn check || yarn install --frozen-lockfile;
     - name: Run webpacker setup
       run: bundle exec rails g webpack:install && bundle exec rails g webpack:install:react && bundle exec rails g react:install
-    - name: Start webpacker for React integrations
-      run: ./public/lib/.bin/webpack-dev-server
     - name: "Integration Tests"
       env:
         RAILS_ENV: test
@@ -100,8 +96,6 @@ jobs:
       run: yarn check || yarn install --frozen-lockfile;
     - name: Run webpacker setup
       run: bundle exec rails g webpack:install && bundle exec rails g webpack:install:react && bundle exec rails g react:install
-    - name: Start webpacker for React integrations
-      run: ./public/lib/.bin/webpack-dev-server
     - name: "System Tests"
       env:
         RAILS_ENV: test
