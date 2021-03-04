@@ -71,7 +71,11 @@ class AdminMailer < ActionMailer::Base
     @moderator = moderator
     @comment = comment
     @footer = feature('email-footer')
-    moderators = User.where(role: %w(moderator admin)).collect(&:email)
+    all_moderators = User.where(role: %w(moderator admin))
+    moderators = []
+    all_moderators.each do |mod_user|
+      moderators << mod_user.email unless mod_user.has_tag('no-moderation-emails')
+    end
     mail(
       to: "comment-moderators@#{ActionMailer::Base.default_url_options[:host]}",
       bcc: moderators,
@@ -85,7 +89,11 @@ class AdminMailer < ActionMailer::Base
     @moderator = moderator
     @node = node
     @footer = feature('email-footer')
-    moderators = User.where(role: %w(moderator admin)).collect(&:email)
+    all_moderators = User.where(role: %w(moderator admin))
+    moderators = []
+    all_moderators.each do |mod_user|
+      moderators << mod_user.email unless mod_user.has_tag('no-moderation-emails')
+    end
     mail(
       to: "moderators@#{ActionMailer::Base.default_url_options[:host]}",
       bcc: moderators,
@@ -99,7 +107,11 @@ class AdminMailer < ActionMailer::Base
     @moderator = moderator
     @comment = comment
     @footer = feature('email-footer')
-    moderators = User.where(role: %w(moderator admin)).collect(&:email)
+    all_moderators = User.where(role: %w(moderator admin))
+    moderators = []
+    all_moderators.each do |mod_user|
+      moderators << mod_user.email unless mod_user.has_tag('no-moderation-emails')
+    end
     mail(
       to: "comment-moderators@#{ActionMailer::Base.default_url_options[:host]}",
       bcc: moderators,
@@ -113,7 +125,11 @@ class AdminMailer < ActionMailer::Base
     @moderator = moderator
     @node = node
     @footer = feature('email-footer')
-    moderators = User.where(role: %w(moderator admin)).collect(&:email)
+    all_moderators = User.where(role: %w(moderator admin))
+    moderators = []
+    all_moderators.each do |mod_user|
+      moderators << mod_user.email unless mod_user.has_tag('no-moderation-emails')
+    end
     mail(
       to: "moderators@#{ActionMailer::Base.default_url_options[:host]}",
       bcc: moderators,
