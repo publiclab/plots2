@@ -26,6 +26,18 @@ class RoutesTest < ActionDispatch::IntegrationTest
 	    assert_routing({ path: '/places', method: :get }, { controller: 'notes', action: 'places' })
 	end
 
+	test "test archive route" do
+	    assert_routing({ path: '/archive', method: :get }, { controller: 'map', action: 'index' })
+	end
+
+	test "test methods route" do
+	    assert_routing({ path: '/methods', method: :get }, { controller: 'wiki', action: 'methods' })
+	end
+
+	test "test blog2 route" do
+	    assert_routing({ path: '/blog2', method: :get }, { controller: 'tag', action: 'blog2', id: 'blog' })
+	end
+
 	test "edit profile route when user logged out redirects to profile page" do	
     	assert_routing({ path: '/profile/jeff/edit', method: :get }, { controller: 'users', action: 'edit' , id: 'jeff' })	
         get '/profile/jeff/edit'
