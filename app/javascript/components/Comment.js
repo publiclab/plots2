@@ -21,6 +21,7 @@ const Comment = ({
     replyTo,
     timeCreatedString
   },
+  deleteButton,
   editCommentForm,
   handleFormVisibilityToggle,
   isEditFormVisible,
@@ -67,6 +68,7 @@ const Comment = ({
                 <CommentToolbar 
                   authorId={authorId} 
                   currentUser={currentUser} 
+                  deleteButton={deleteButton}
                   nodeAuthorId={staticProps.node.nodeAuthorId}
                   toggleEditButton={toggleEditButton}
                 />
@@ -95,6 +97,7 @@ const Comment = ({
 
 Comment.propTypes = {
   comment: PropTypes.object.isRequired,
+  deleteButton: PropTypes.element.isRequired,
   editCommentForm: PropTypes.element.isRequired,
   handleFormVisibilityToggle: PropTypes.func,
   isEditFormVisible: PropTypes.bool.isRequired,

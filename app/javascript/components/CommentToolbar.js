@@ -7,37 +7,25 @@ import CommentToolbarButton from "./CommentToolbarButton";
 const CommentToolbar = ({
   authorId,
   currentUser,
-  handleDeleteComment,
+  deleteButton,
   nodeAuthorId,
   toggleEditButton
 }) => {
   // 1. edit button
-  const isAuthoredByCurrentUser = currentUser && authorId === currentUser.id;
-  const editButton = isAuthoredByCurrentUser ?
-    toggleEditButton :
-    "";
+  const isUserAuthor = currentUser && authorId === currentUser.id;
 
   // 2. mark spam button (for moderators) OR flag as spam (for all users)
   const markSpamIcon = <i className="fa fa-ban"></i>;
   const flagSpamIcon = <i className="fa fa-flag"></i>;
-  const markSpamButton = (currentUser && currentUser.canModerate) ?
+  const isUserModerator = currentUser && currentUser.canModerate;
+  const markSpamButton = isUserModerator ?
     <CommentToolbarButton icon={markSpamIcon} /> :
     <CommentToolbarButton icon={flagSpamIcon} />;
   // original Rails view's conditionals include logged_in_as['admin', 'moderator']
   // don't know if this is completely equivalent to user.canModerate
 
   // 3. delete comment button
-  const deleteIcon = <i className='icon fa fa-trash'></i>;
-  const deleteButton = (
-    currentUser && authorId === currentUser.id ||
-    currentUser && currentUser.canModerate ||
-    authorId === nodeAuthorId
-  ) ?
-    <CommentToolbarButton 
-      icon={deleteIcon} 
-      onClick={handleDeleteComment}
-    /> :
-    "";
+  const userCanDeleteComment = isUserAuthor || isUserModerator || authorId === nodeAuthorId;
 
   // 4. leave an emoji reaction button
   const emojiIcon = <i className='far fa-heart'></i>;
@@ -55,11 +43,11 @@ const CommentToolbar = ({
     >
       {/* placeholder: role icon for admins and moderators--but it's commented out in the original partial? */}
       {/* placeholder: this comment was posted by email */}
-      {editButton}
+      {isUserAuthor && toggleEditButton}
       &nbsp;
       {markSpamButton}
       &nbsp;
-      {deleteButton}
+      {userCanDeleteComment && deleteButton}
       &nbsp;
       {emojiButton}
     </div>
@@ -69,7 +57,7 @@ const CommentToolbar = ({
 CommentToolbar.propTypes = {
   authorId: PropTypes.number.isRequired,
   currentUser: PropTypes.object,
-  handleDeleteComment: PropTypes.func.isRequired,
+  deleteButton: PropTypes.element.isRequired,
   nodeAuthorId: PropTypes.number.isRequired,
   toggleEditButton: PropTypes.element.isRequired
 };

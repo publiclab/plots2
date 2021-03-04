@@ -40,8 +40,25 @@ const CommentsContainer = ({
   //   { main: "foo", reply-123: "bar" }
   const [textAreaValues, setTextAreaValues] = useState(initialTextAreaValues);
 
-  const handleDeleteComment = (event) => {
-    console.log("delete comment!");
+  const handleDeleteComment = (commentId) => {
+    $.get(
+      "/comment/delete/" + commentId,
+      {
+        id: commentId,
+        react: true
+      },
+      function(data) {
+        console.log(data);
+        if (data.success) {
+          for (let i = 0; i < comments.length; i++) {
+            if (comments[i].commentId === commentId) {
+              setComments(oldState => (oldState.filter(comment => comment.commentId !== commentId)));
+              notyNotification('sunset', 3000, 'error', 'topRight', 'Comment deleted');
+            }
+          }
+        }
+      }
+    )
   }
 
   const handleFormVisibilityToggle = (commentFormId) => {
@@ -163,6 +180,7 @@ const CommentsContainer = ({
             <CommentsList 
               commentFormsVisibility={commentFormsVisibility}
               comments={comments}
+              handleDeleteComment={handleDeleteComment}
               handleFormVisibilityToggle={handleFormVisibilityToggle}
               handleFormSubmit={handleFormSubmit}
               handleTextAreaChange={handleTextAreaChange}

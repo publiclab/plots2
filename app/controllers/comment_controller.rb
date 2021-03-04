@@ -130,16 +130,21 @@ class CommentController < ApplicationController
 
       if @comment.destroy
         respond_with do |format|
-          if params[:type] && params[:type] == 'question'
-            @answer_id = @comment.aid
-            format.js { render 'comments/delete.js.erb' }
+          if params[:react]
+            render json: { :success => true }
+            return
           else
-            format.html do
-              if request.xhr?
-                render plain: 'success'
-              else
-                flash[:notice] = 'Comment deleted.'
-                redirect_to '/' + @node.path
+            if params[:type] && params[:type] == 'question'
+              @answer_id = @comment.aid
+              format.js { render 'comments/delete.js.erb' } unless params[:react]
+            else
+              format.html do
+                if request.xhr?
+                  render plain: 'success' unless params[:react]
+                else
+                  flash[:notice] = 'Comment deleted.' unless params[:react]
+                  redirect_to '/' + @node.path unless params[:react]
+                end
               end
             end
           end
