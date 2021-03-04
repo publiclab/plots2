@@ -33,9 +33,7 @@ class CommentController < ApplicationController
       if params[:react]
         is_reply = params[:reply_to].present?
         new_comment = helpers.get_react_comments([@comment], is_reply)
-        render json: {
-          :comment => new_comment
-        }
+        render json: { comment: new_comment }
       end
 
       respond_to do |format|
@@ -100,11 +98,9 @@ class CommentController < ApplicationController
       @comment.comment = params[:body]
       if @comment.save
         if params[:react]
-          is_reply = @comment.reply_to.present? 
+          is_reply = @comment.reply_to.present?
           new_comment = helpers.get_react_comments([@comment], is_reply)
-          render json: {
-            :comment => new_comment
-          }
+          render json: { comment: new_comment }
         else
           flash[:notice] = 'Comment updated.'
           redirect_to @path + '?_=' + Time.now.to_i.to_s
@@ -131,7 +127,7 @@ class CommentController < ApplicationController
       if @comment.destroy
         respond_with do |format|
           if params[:react]
-            render json: { :success => true }
+            render json: { success: true }
             return
           else
             if params[:type] && params[:type] == 'question'

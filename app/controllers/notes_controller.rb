@@ -67,33 +67,33 @@ class NotesController < ApplicationController
         # query everything we need in the comments state object
         comments_record = @node
           .comments_viewable_by(current_user)
-          .includes([:replied_comments, :node])
+          .includes(%i[replied_comments node])
           .order('timestamp ASC')
-        
+
         comments = helpers.get_react_comments(comments_record)
 
-        currentUser = {
-          :canModerate => current_user.can_moderate?,
-          :id => current_user[:id],
-          :role => current_user[:role],
-          :status => current_user[:status]
+        current_user_json = {
+          canModerate: current_user.can_moderate?,
+          id: current_user[:id],
+          role: current_user[:role],
+          status: current_user[:status]
         }
 
         @react_props = {
-          :currentUser => currentUser,
-          :comments => comments,
-          :elementText => {
-            :commentFormPlaceholder => I18n.t('notes._comments.post_placeholder'),
-            :commentsHeaderText => helpers.translation('notes._comments.comments'),
-            :commentPreviewText => helpers.translation('comments._form.preview'),
-            :commentPublishText => helpers.translation('comments._form.publish'),
-            :userCommentedText => helpers.translation('notes._comment.commented')
+          currentUser: current_user_json,
+          comments: comments,
+          elementText: {
+            commentFormPlaceholder: I18n.t('notes._comments.post_placeholder'),
+            commentsHeaderText: helpers.translation('notes._comments.comments'),
+            commentPreviewText: helpers.translation('comments._form.preview'),
+            commentPublishText: helpers.translation('comments._form.publish'),
+            userCommentedText: helpers.translation('notes._comment.commented')
           },
-          :node => {
-            :nodeId => @node.id,
-            :nodeAuthorId => @node.uid
+          node: {
+            nodeId: @node.id,
+            nodeAuthorId: @node.uid
           },
-          :user => current_user
+          user: current_user
         }
       end
     else
