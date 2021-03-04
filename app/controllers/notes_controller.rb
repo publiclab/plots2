@@ -67,7 +67,7 @@ class NotesController < ApplicationController
         # query everything we need in the comments state object
         comments_record = @node
           .comments_viewable_by(current_user)
-          .includes(%i[replied_comments node])
+          .includes(%i(replied_comments node))
           .order('timestamp ASC')
 
         comments = helpers.get_react_comments(comments_record)
