@@ -22,8 +22,8 @@ class RoutesTest < ActionDispatch::IntegrationTest
 		assert_routing({ path: '/profile/jeff', method: :get }, { controller: 'users', action: 'profile' , id: 'jeff' })
 	end
 
-	test "test login page route" do
-	    assert_routing({ path: '/login', method: :get }, { controller: 'user_sessions', action: 'new' })
+	test "test places route" do
+	    assert_routing({ path: '/places', method: :get }, { controller: 'notes', action: 'places' })
 	end
 
 	test "edit profile route when user logged out redirects to profile page" do	
