@@ -8,6 +8,7 @@ import CommentToolbarButton from "./CommentToolbarButton";
 const CommentsList = ({
   commentFormsVisibility,
   comments,
+  handleDeleteComment,
   handleFormVisibilityToggle,
   handleFormSubmit,
   handleTextAreaChange,
@@ -49,6 +50,11 @@ const CommentsList = ({
       onClick={() => handleFormVisibilityToggle("edit-" + comment.commentId)}
     />;
 
+    const deleteButton = <CommentToolbarButton
+      icon={<i className='icon fa fa-trash'></i>}
+      onClick={() => handleDeleteComment(comment.commentId)}
+    />;
+
     // generate the replies' edit comment forms to avoid the alternative: passing down props two levels
     const repliesWithEditForms = comment.replies.map((reply) => {
       const replyEditFormId = "edit-" + reply.commentId;
@@ -60,6 +66,14 @@ const CommentsList = ({
       />;
       reply.toggleEditButton = replyToggleEditButton;
       reply.isEditFormVisible = commentFormsVisibility[replyEditFormId];
+
+      // delete button
+      const replyDeleteButton = <CommentToolbarButton
+        icon={<i className='icon fa fa-trash'></i>}
+        onClick={() => handleDeleteComment(reply.commentId)}
+      />;
+
+      reply.deleteButton = replyDeleteButton;
 
       // reply has an edit comment form
       reply.editCommentForm = <CommentForm 
@@ -76,6 +90,7 @@ const CommentsList = ({
     return <Comment 
       key={"comment-" + index} 
       comment={comment}
+      deleteButton={deleteButton}
       editCommentForm={editCommentForm}
       handleFormVisibilityToggle={handleFormVisibilityToggle}
       isEditFormVisible={commentFormsVisibility[editFormId]}
@@ -97,6 +112,7 @@ const CommentsList = ({
 CommentsList.propTypes = {
   commentFormsVisibility: PropTypes.object.isRequired,
   comments: PropTypes.array.isRequired,
+  handleDeleteComment: PropTypes.func.isRequired,
   handleFormVisibilityToggle: PropTypes.func.isRequired,
   handleFormSubmit: PropTypes.func.isRequired,
   handleTextAreaChange: PropTypes.func.isRequired,

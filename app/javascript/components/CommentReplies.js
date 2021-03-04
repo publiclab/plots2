@@ -19,6 +19,7 @@ const CommentReplies = ({
     return <Comment 
       key={"comment-reply-" + index}
       comment={reply} 
+      deleteButton={reply.deleteButton}
       isEditFormVisible={reply.isEditFormVisible}
       editCommentForm={reply.editCommentForm}
       setTextAreaValues={setTextAreaValues}
