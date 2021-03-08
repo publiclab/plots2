@@ -70,13 +70,13 @@ class NotesControllerTest < ActionController::TestCase
     node = Node.where(type: 'note', status: 1).first
     assert node.comments.length > 0
     comment = node.comments.last(2).first
-    comment.comment = 'Test **markdown** and http://links.com'
+    comment.comment = 'Test **markdown** and https://links.com'
     comment.save!
 
     get :show, params: { id: node.id }
 
     assert_select 'strong', 'markdown'
-    assert_select 'a', 'http://links.com'
+    assert_select 'a', 'https://links.com'
 
     assert_response :success
   end
@@ -483,13 +483,13 @@ class NotesControllerTest < ActionController::TestCase
     comment = Comment.new(nid: nodes(:one).nid,
                           uid: users(:bob).id,
                           thread: '01/')
-    comment.comment = '<iframe src="http://mapknitter.org/embed/sattelite-imagery" style="border:0;"></iframe>'
+    comment.comment = '<iframe src="https://mapknitter.org/embed/sattelite-imagery" style="border:0;"></iframe>'
     comment.save
     node = nodes(:one).path.split('/')
 
     get :show, params: { id: node[4], author: node[2], date: node[3] }
 
-    assert_select 'iframe[src=?]', 'http://mapknitter.org/embed/sattelite-imagery'
+    assert_select 'iframe[src=?]', 'https://mapknitter.org/embed/sattelite-imagery'
   end
 
   # test "should mark admins and moderators with a special icon" do
