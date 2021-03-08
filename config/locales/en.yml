@@ -684,6 +684,9 @@ en:
       most_liked_questions: Most liked questions
     _comment:
       promotion: "Promote this comment to an answer"
+    _questions_shadow:
+      people_responded: "people responded"
+      read_more: "Read More"
   user_sessions:
     new:
       log_in: "Log in"
