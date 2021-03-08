@@ -15,11 +15,11 @@
             <div>
             <div class="answer">
               <% if params[:controller] == 'questions' %>
-                <a class="peopleResponse" href="<%= node.path(:question) %>#answers" title="Answers"><%= node.answers.length %> people responded</a>
+                <a class="peopleResponse" href="<%= node.path(:question) %>#answers" title="Answers"><%= node.answers.length %> <%=translation('questions._questions_shadow.people_responded')%></a>
               <% end %>
             </div>
           </div>
-            <a class="btn btn-outline-secondary" href="/q/<%= node.id %>" >Read More</a>
+            <a class="btn btn-outline-secondary" href="/q/<%= node.id %>" ><%=translation('questions._questions_shadow.read_more')%></a>
           </div>
 
           </div>
