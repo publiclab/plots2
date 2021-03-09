@@ -32,8 +32,12 @@
     <% end %>
 
     var markers_hash<%= unique_id %> = new Map() ;
-
-    setupLEL(map<%= unique_id %>, markers_hash<%= unique_id %>);
+    var options<%= unique_id %> = {
+        layers: ['PLpeople'],
+        mainContent: "content",
+        setHash: false
+      }
+    setupLEL(map<%= unique_id %>, markers_hash<%= unique_id %>, options<%= unique_id %>);
 
     map<%= unique_id %>.on('zoomend' , function () {
        var NWlat = map<%= unique_id %>.getBounds().getNorthWest().lat ;
