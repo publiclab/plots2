@@ -23,12 +23,11 @@ development:
 
 production:
   adapter: mysql2
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: <%= ENV['DB_HOST'] || 'db' %>
   username: <%= ENV['DB_USER'] || 'plots' %>
   password: <%= ENV['DB_PASS'] || 'plots' %>
   database: <%= ENV['DB_NAME'] || 'plots' %>
-  port: <%= ENV['DB_PORT'] || 3306 %>
-  host: <%= ENV['DB_HOST'] || 'db' %>
-  encoding: utf8mb4
-  pool: <%= ENV['RAILS_MAX_THREADS'] || 5 %>
+  socket: <%= ENV['DB_SOCKET'] %>
   timeout: 5000
   strict: false
