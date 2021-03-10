@@ -687,6 +687,8 @@ en:
     _questions_shadow:
       people_responded: "people responded"
       read_more: "Read More"
+    _form:
+      submit: "Submit"
   user_sessions:
     new:
       log_in: "Log in"
