@@ -22,25 +22,20 @@
     </a>
   <% end %>
 
-  <h1 style="margin-top: 20px;"><span class="question">Question: </span><a href="<%= @node.path(:question) %>"><%= @node.title %></a></h1>
+  <h1 style="margin-top: 20px;"><span class="question"><%=translation('questions.show.question')%>:</span><a href="<%= @node.path(:question) %>"><%= @node.title %></a></h1>
   <% pt = @node.power_tag('question') %>
   <div class="alert alert-warning">
-    <a href="/profile/<%= @node.author.name %>"> <%= @node.author.name %> </a>
-    is asking a question about <b><a href="/questions/tag/<%= pt %>"><%= pt %></a></b>:
+  <a href="/profile/<%= @node.author.name %>"> <%= @node.author.name %> </a<%=translation('questions.show.question_about')%> <b><a href="/questions/tag/<%= pt %>"><%= pt %></a></b>:
     <a class="btn btn-outline-secondary requireLogin" target="_blank" href="/subscribe/tag/question:<%= pt %>">
       Follow this topic
     </a>
   </div>
   <div class="inline">
         <p>
-      <% if @node.status == 0 || @node.status == 4 %><span class="badge badge-danger">UNPUBLISHED</span> | <% end %>
-      <% if @node.status == 3 %><span class="badge badge-success">Draft</span> | <% end %>
-      by <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> |
-      <% if @node.has_power_tag('with') %>with <% @node.coauthors.each_with_index do |coauthor,i| %>
-        <a href="/profile/<%= coauthor.username %>">
-        <%= coauthor.username%></a> <%= coauthor.new_contributor %>
-        <%= ',' if i < @node.coauthors.size-1 %><% end %>
-      <% end %>
+        <% if @node.status == 0 || @node.status == 4 %><span class="badge badge-danger"><%=translation('questions.show.unpublished')%></span> | <% end %>
+        <% if @node.status == 3 %><span class="badge badge-success"><%=translation('questions.show.draft')%></span> | <% end %><%=translation('questions.show.by')%> <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> |
+        <% if @node.has_power_tag('with') %><%=translation('questions.show.with')%> <% @node.coauthors.each_with_index do |coauthor,i| %>
+        <a href="/profile/<%= coauthor.username %>"><%= coauthor.username%></a> <%= coauthor.new_contributor %><%= ',' if i < @node.coauthors.size-1 %><% end %><% end %>
       <span class="d-none d-lg-inline">
         <%= @node.created_at.to_s(:long) %> |
       </span>
