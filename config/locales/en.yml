@@ -144,6 +144,21 @@ en:
       uploading: "Uploading"
     edit:
       edit_profile: "Edit Profile"
+    settings:
+      notified_by_email: "I want to be notified by email for:"
+      direct_comment: "Comments on my posts"
+      direct_likes: "Likes on my posts"
+      indirect_comment: "Comments on all posts I've commented on"
+      moderation_email: "Moderation emails"
+      email_notifications: "Email notifications are sent for each post in topics you follow. If you prefer to receive a digest, choose one of these options:"
+      weekly_digest: "In a weekly digest"
+      daily_digest: "In a daily digest"
+      spam_weekly_digest: "In a weekly digest for unmoderated posts"
+      spam_daily_digest: "In a daily digest for unmoderated posts"
+      browser_notifications: "I want to receive browser notifications:"
+      mentioned: "When I'm mentioned"
+      everything: "For everything"
+      likes: "When someone likes my work"
   notes:
     index:
       search_results_for: "Search results for <i style=\"color:#aaa;\">%{params}</i>"
@@ -662,6 +677,13 @@ en:
       research_note: "Research note"
       wiki_doc: "Wiki documentation"
   questions:
+    show:
+      question: "Question"
+      question_about: "is asking a question about"
+      unpublished: "UNPUBLISHED"
+      by: "by"
+      draft: "Draft"
+      with: "with"
     index:
       explanation: "Ask a question to the Public Lab community to help you in your
         environmental exploration."
@@ -691,6 +713,11 @@ en:
       or: "or"
       sign_up: "sign_up"
       first: "first."
+    _questions_shadow:
+      people_responded: "people responded"
+      read_more: "Read More"
+    _form:
+      submit: "Submit"
   user_sessions:
     new:
       log_in: "Log in"
