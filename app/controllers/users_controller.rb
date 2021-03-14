@@ -325,13 +325,13 @@ class UsersController < ApplicationController
 
   def following
     @title = "Following"
-    @pagy, @users = pagy(@user.following_users.where(status:1), items: 10)
+    @pagy, @users = pagy(@user.following_users.where(status: 1), items: 10)
     render 'show_follow'
   end
 
   def followers
     @title = "Followers"
-    @pagy, @users = pagy(@user.followers.where(status:1), items: 10)
+    @pagy, @users = pagy(@user.followers.where(status: 1), items: 10)
     render 'show_follow'
   end
 
