@@ -1,16 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import Comment from "./Comment";
-
 const CommentReplies = ({
   children,
   commentId,
   isReplyFormVisible,
   handleReplyFormToggle,
-  replies,
-  replyCommentForm,
-  setTextAreaValues
+  replyCommentForm
 }) => {
   const replyToggleLink = <p
     id={"comment-" + commentId + "-reply-toggle"}
@@ -43,9 +39,7 @@ CommentReplies.propTypes = {
   commentId: PropTypes.number.isRequired,
   isReplyFormVisible: PropTypes.bool.isRequired,
   handleReplyFormToggle: PropTypes.func,
-  replies: PropTypes.array.isRequired,
-  replyCommentForm: PropTypes.element,
-  setTextAreaValues: PropTypes.func.isRequired
+  replyCommentForm: PropTypes.element
 }
 
 export default CommentReplies;

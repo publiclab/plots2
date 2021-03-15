@@ -10,10 +10,8 @@ const CommentDisplay = ({
   handleFormVisibilityToggle,
   htmlCommentText,
   isReplyFormVisible,
-  replies,
   replyCommentForm,
   replyTo,
-  setTextAreaValues,
   user
 }) => {
 
@@ -48,9 +46,7 @@ const CommentDisplay = ({
           currentUser={user}
           isReplyFormVisible={isReplyFormVisible}
           handleReplyFormToggle={handleFormVisibilityToggle}
-          replies={replies}
           replyCommentForm={replyCommentForm}
-          setTextAreaValues={setTextAreaValues}
         >
           {children}
         </CommentReplies>
@@ -66,10 +62,8 @@ CommentDisplay.propTypes = {
   htmlCommentText: PropTypes.string.isRequired,
   handleFormVisibilityToggle: PropTypes.func,
   isReplyFormVisible: PropTypes.bool,
-  replies: PropTypes.array,
   replyCommentForm: PropTypes.element,
   replyTo: PropTypes.number,
-  setTextAreaValues: PropTypes.func.isRequired,
   user: PropTypes.object
 }
 
