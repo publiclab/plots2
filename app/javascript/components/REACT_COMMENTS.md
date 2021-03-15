@@ -39,13 +39,12 @@ When the user visits a research note with `?react=true`, the server bundles up a
 
 Rather than rendering a Rails template, the front-end uses this JSON object to build out the commenting system in React!
 
-The initial comments state cascades down into several components starting with the topmost component `CommentsContainer`. This is standard practice for React. [See the docs for more info](https://reactjs.org/docs/getting-started.html).
+The initial comments state cascades down into all of the components starting with the topmost component `App`. This is standard practice for React. [See the docs for more info](https://reactjs.org/docs/getting-started.html).
 
 ## `Known Issues to Be Resolved Soon!`
 
 _(Help Wanted!)_
 
-- You must be logged into the website to see React comments (no guest browsing)
-- New React-centric routes must be created, so that the client sends requests to `/comment/REACT/create/46` instead of `/comment/create/46`
+- Currently you must be logged into the website to see React comments (no guest browsing, it will throw an error)
 - Any contributors MUST install the following linters to protect the React codebase: `plugin:react/recommended`, `plugin:react-hooks/recommended`.
   - We need to fix the `.eslintrc` config to install these linters permanently, and get them working with codeclimate.
