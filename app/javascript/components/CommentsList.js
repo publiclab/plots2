@@ -5,6 +5,7 @@ import { makeDeepCopy } from "./helpers";
 
 import Comment from "./Comment";
 import CommentForm from "./CommentForm";
+import CommentReplies from "./CommentReplies";
 import CommentToolbarButton from "./CommentToolbarButton";
 
 const CommentsList = ({
@@ -53,10 +54,20 @@ const CommentsList = ({
       const replyFormId = "reply-" + comment.commentId;
       let replies = [];
       let replyCommentForm = null;
-      
+      let replySection = [];
+
+      // if comment has replies...
+      if (comment.replies && comment.replies.length) {
+        // recursively generate <Comment> components for the comment's replies
+        replies = generateCommentComponents(comment.replies);
+      }
+
       if (!comment.replyTo) {
         // if the comment is NOT a reply to another comment, then it's a top-level comment
-        // that means it comes with a reply form.
+        // generate the reply section here, to avoid passing down props
+        //   1. "Reply to this comment..." toggle link
+        //   2. reply comment form
+        //   3. list of replies
         replyCommentForm = <CommentForm
           commentId={comment.commentId}
           commentFormType="reply"
@@ -64,12 +75,15 @@ const CommentsList = ({
           textAreaValue={textAreaValues[replyFormId]}
           {...commentFormProps}
         />;
-      }
 
-      // if comment has replies...
-      if (comment.replies && comment.replies.length) {
-        // recursively generate <Comment> components for the comment's replies
-        replies = generateCommentComponents(comment.replies);
+        replySection = <CommentReplies 
+          commentId={comment.commentId}
+          isReplyFormVisible={commentFormsVisibility[replyFormId]}
+          handleReplyFormToggle={handleFormVisibilityToggle}
+          replyCommentForm={replyCommentForm}
+        >
+          {replies}
+        </CommentReplies>
       }
 
       return (
@@ -78,14 +92,12 @@ const CommentsList = ({
           comment={comment}
           deleteButton={deleteButton}
           editCommentForm={editCommentForm}
-          handleFormVisibilityToggle={handleFormVisibilityToggle}
           isEditFormVisible={commentFormsVisibility[editFormId]}
           isReplyFormVisible={comment.replyTo ? null : commentFormsVisibility[replyFormId]}
-          replyCommentForm={replyCommentForm}
           setTextAreaValues={setTextAreaValues}
           toggleEditButton={toggleEditButton}
         >
-          {replies}
+          {replySection}
         </Comment>
       );
     });
