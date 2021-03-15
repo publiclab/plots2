@@ -31,8 +31,7 @@ class CommentController < ApplicationController
       end
 
       if params[:react]
-        is_reply = params[:reply_to].present?
-        new_comment = helpers.get_react_comments([@comment], is_reply)
+        new_comment = helpers.get_react_comments([@comment])
         render json: { comment: new_comment }
       end
 
@@ -98,8 +97,7 @@ class CommentController < ApplicationController
       @comment.comment = params[:body]
       if @comment.save
         if params[:react]
-          is_reply = @comment.reply_to.present?
-          new_comment = helpers.get_react_comments([@comment], is_reply)
+          new_comment = helpers.get_react_comments([@comment])
           render json: { comment: new_comment }
         else
           flash[:notice] = 'Comment updated.'
