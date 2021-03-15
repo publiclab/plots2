@@ -18,7 +18,6 @@ const Comment = ({
     commentId,
     commentName,
     htmlCommentText,
-    replies,
     replyTo,
     timeCreatedString
   },
@@ -28,7 +27,6 @@ const Comment = ({
   isEditFormVisible,
   isReplyFormVisible,
   replyCommentForm,
-  setTextAreaValues,
   toggleEditButton
 }) => {
   return (
@@ -81,10 +79,8 @@ const Comment = ({
                   handleFormVisibilityToggle={handleFormVisibilityToggle}
                   htmlCommentText={htmlCommentText}
                   isReplyFormVisible={isReplyFormVisible}
-                  replies={replies}
                   replyCommentForm={replyCommentForm}
                   replyTo={replyTo}
-                  setTextAreaValues={setTextAreaValues}
                   user={currentUser}
                 >
                   {children}
