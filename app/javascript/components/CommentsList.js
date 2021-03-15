@@ -17,8 +17,11 @@ const CommentsList = ({
   setTextAreaValues,
   textAreaValues
 }) => {
+  // this takes an array of comment JSON, then returns a list of React <Comment /> components
+  // replies are nested within parent <Comment /> components
   const generateCommentComponents = (commentsArray) => {
     return commentsArray.map((comment) => {
+      // these props are common to all forms
       const commentFormProps = {
         commentId: comment.commentId,
         handleFormSubmit,
