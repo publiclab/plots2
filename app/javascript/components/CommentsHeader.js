@@ -6,15 +6,7 @@ import { StaticPropsContext } from "./static-props-context";
 const CommentsHeader = ({
   comments
 }) => {
-  let numberOfComments = comments.length;
-  let numberOfReplies = 0;
-  // comments.length only counts comments, not replies to comments.
-  // comment replies are nested within the body of { comment }
-  // iterate over each comment to count its replies
-  for (let i = 0; i < comments.length; i++) {
-    numberOfReplies += comments[i].replies.length;
-  }
-  numberOfComments += numberOfReplies;
+  const numberOfComments = comments.length;
 
   return (
     <StaticPropsContext.Consumer>

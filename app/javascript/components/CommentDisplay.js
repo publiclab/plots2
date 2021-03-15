@@ -5,6 +5,7 @@ import CommentReplies from "./CommentReplies.js";
 
 // this component swaps visibility with edit form depending on isEditFormVisible, see Comment.js
 const CommentDisplay = ({
+  children,
   commentId,
   handleFormVisibilityToggle,
   htmlCommentText,
@@ -27,6 +28,7 @@ const CommentDisplay = ({
       <div 
         id={"comment-body-" + commentId} 
         className="comment-body"
+        // dangerously set HTML so that rich text tags like <b>, <i> will display as HTML
         dangerouslySetInnerHTML={{ __html: htmlCommentText }} // see React docs, there can be some security risk with doing this in general, probably doesn't apply here
         style={{ 
           marginTop: "1rem",
@@ -49,7 +51,9 @@ const CommentDisplay = ({
           replies={replies}
           replyCommentForm={replyCommentForm}
           setTextAreaValues={setTextAreaValues}
-        />
+        >
+          {children}
+        </CommentReplies>
       }
       {/* emojis section - can decide which <div> this should nest into, in non-React version, this is right after the closing </div> tag below */}
     </div>
@@ -57,6 +61,7 @@ const CommentDisplay = ({
 }
 
 CommentDisplay.propTypes = {
+  children: PropTypes.array,
   commentId: PropTypes.number.isRequired,
   htmlCommentText: PropTypes.string.isRequired,
   handleFormVisibilityToggle: PropTypes.func,

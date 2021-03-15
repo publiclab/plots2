@@ -9,6 +9,7 @@ import CommentHeader from "./CommentHeader.js";
 import CommentToolbar from "./CommentToolbar.js";
 
 const Comment = ({
+  children,
   comment: {
     authorId,
     authorPicUrl,
@@ -85,7 +86,9 @@ const Comment = ({
                   replyTo={replyTo}
                   setTextAreaValues={setTextAreaValues}
                   user={currentUser}
-                />
+                >
+                  {children}
+                </CommentDisplay>
               }
             </div>
           )}
@@ -96,6 +99,7 @@ const Comment = ({
 }
 
 Comment.propTypes = {
+  children: PropTypes.array,
   comment: PropTypes.object.isRequired,
   deleteButton: PropTypes.element.isRequired,
   editCommentForm: PropTypes.element.isRequired,

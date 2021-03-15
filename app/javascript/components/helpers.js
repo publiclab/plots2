@@ -9,12 +9,6 @@ const getEditTextAreaValues = (commentsArray) => {
   for (let i = 0; i < commentsArray.length; i++) {
     const rawText = commentsArray[i].rawCommentText;
     editTextValues["edit-" + commentsArray[i].commentId] = rawText
-
-    // make sure to get the replies too
-    if (!commentsArray[i].replyTo) {
-      const replyEditTextValues = getEditTextAreaValues(commentsArray[i].replies);
-      editTextValues = {...editTextValues, ...replyEditTextValues};
-    }
   }
   return editTextValues;
 };
@@ -26,9 +20,6 @@ const getInitialCommentFormToggleState = (commentsArray) => {
     if (!commentsArray[i].replyTo) {
       const replyFormId = "reply-" + commentsArray[i].commentId;
       commentFormToggleState[replyFormId] = false;
-      // recursively get IDs for the replies
-      const repliesToggleStates = getInitialCommentFormToggleState(commentsArray[i].replies);
-      commentFormToggleState = {...commentFormToggleState, ...repliesToggleStates};
     }
     const editFormID = "edit-" + commentsArray[i].commentId;
     commentFormToggleState[editFormID] = false;

@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import Comment from "./Comment";
 
 const CommentReplies = ({
+  children,
   commentId,
   isReplyFormVisible,
   handleReplyFormToggle,
@@ -11,22 +12,6 @@ const CommentReplies = ({
   replyCommentForm,
   setTextAreaValues
 }) => {
-  // generate comment's replies section:
-  //   1. a list of all replies (if any)
-  //   2. "Reply to this comment..." link that toggles the reply form
-  //   3. the actual reply CommentForm
-  const repliesList = replies.map((reply, index) => {
-    return <Comment 
-      key={"comment-reply-" + index}
-      comment={reply} 
-      deleteButton={reply.deleteButton}
-      isEditFormVisible={reply.isEditFormVisible}
-      editCommentForm={reply.editCommentForm}
-      setTextAreaValues={setTextAreaValues}
-      toggleEditButton={reply.toggleEditButton}
-    />;
-  });
-
   const replyToggleLink = <p
     id={"comment-" + commentId + "-reply-toggle"}
     onClick={() => handleReplyFormToggle("reply-" + commentId)}
@@ -46,7 +31,7 @@ const CommentReplies = ({
 
   return (
     <>
-      {repliesList}
+      {children}
       {replyToggleLink}
       {replyForm}
     </>
@@ -54,6 +39,7 @@ const CommentReplies = ({
 }
 
 CommentReplies.propTypes = {
+  children: PropTypes.array,
   commentId: PropTypes.number.isRequired,
   isReplyFormVisible: PropTypes.bool.isRequired,
   handleReplyFormToggle: PropTypes.func,

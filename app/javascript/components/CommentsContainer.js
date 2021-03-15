@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
@@ -90,41 +89,16 @@ const CommentsContainer = ({
           react: true
         }, 
         function(data) {
-          // if the freshly updated comment is a reply, it needs to be nested within comment.replies
-          if (data.comment[0].replyTo) {
-            for (let i = 0; i < comments.length; i++) {
-              // find the comment's parent
-              if (comments[i].commentId === data.comment[0].replyTo) {
-                let newParent = makeDeepCopy(comments[i]); // make a copy of the parent comment
-                for (let j = 0; j < comments[i].replies.length; j++) {
-                  // find comment inside parent's replies
-                  if (comments[i].replies[j].commentId === data.comment[0].commentId) {
-                    let updatedComment = makeDeepCopy(comments[i].replies[j]);
-                    updatedComment.htmlCommentText = data.comment[0].htmlCommentText; // update comment text
-                    updatedComment.rawCommentText = data.comment[0].rawCommentText;
-                    newParent.replies = Object.assign([], newParent.replies, { [j]: updatedComment });
-                    // React sometimes fails to update state if it doesn't think that newState is different.
-                    // if newState is a deeply nested array like comments, React will have difficulty registering changes.
-                    // this is weird syntax, but it addresses the issue.
-                    // basically it keeps oldComments (this seems integral to React registering changes), but replaces the comment at index i with newComment.
-                    setComments(oldComments => (Object.assign([], oldComments, {[i]: newParent}))); // update state
-                    break;
-                  }
-                }
-              }
-            }
-          } else {
-            // the freshly updated comment is NOT a reply
-            for (let i = 0; i < comments.length; i++) {
-              // find the comment in state
-              if (comments[i].commentId === data.comment[0].commentId) {
-                let newComment = makeDeepCopy(comments[i]);
-                newComment.htmlCommentText = data.comment[0].htmlCommentText; // update comment text
-                newComment.rawCommentText = data.comment[0].rawCommentText;
-                // keep most of oldComments, but replace the comment at index i with newComment.
-                setComments(oldComments => (Object.assign([], oldComments, { [i]: newComment })));
-                break;
-              }
+          // the freshly updated comment is NOT a reply
+          for (let i = 0; i < comments.length; i++) {
+            // find the comment in state
+            if (comments[i].commentId === data.comment[0].commentId) {
+              let newComment = makeDeepCopy(comments[i]);
+              newComment.htmlCommentText = data.comment[0].htmlCommentText; // update comment text
+              newComment.rawCommentText = data.comment[0].rawCommentText;
+              // keep most of oldComments, but replace the comment at index i with newComment.
+              setComments(oldComments => (Object.assign([], oldComments, { [i]: newComment })));
+              break;
             }
           }
           // close the edit comment form
@@ -142,22 +116,8 @@ const CommentsContainer = ({
           reply_to: formType === "reply" ? commentId : null
         },
         function(data) {
-          // if the freshly posted comment is a reply, it needs to be nested within comment.replies
-          if (data.comment[0].replyTo) {
-            for (let i = 0; i < comments.length; i++) {
-              // find the comment with the matching replyTo
-              if (comments[i].commentId === data.comment[0].replyTo) {
-                let newComment = makeDeepCopy(comments[i]);
-                newComment.replies.push(data.comment[0]);
-                // keep most of oldComments, but replace the comment at index i with newComment.
-                setComments(oldComments => (Object.assign([], oldComments, {i: newComment})));
-                break;
-              }
-            }
-          // if the freshly posted comment is NOT a reply, just push it into the comments state as is
-          } else {
-            setComments(oldComments => ([...oldComments, data.comment[0]]));
-          }
+          // push the comment into state
+          setComments(oldComments => ([...oldComments, data.comment[0]]));
           notyNotification('mint', 3000, 'success', 'topRight', 'Comment Added!');
           // blank out the value of textarea
           setTextAreaValues(oldState => ({ ...oldState, [formId]: "" }));
