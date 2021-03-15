@@ -11,10 +11,11 @@ import CommentToolbarButton from "./CommentToolbarButton";
 const CommentsList = ({
   commentFormsVisibility,
   comments,
+  handleCreateComment,
   handleDeleteComment,
   handleFormVisibilityToggle,
-  handleFormSubmit,
   handleTextAreaChange,
+  handleUpdateComment,
   setTextAreaValues,
   textAreaValues
 }) => {
@@ -25,7 +26,6 @@ const CommentsList = ({
       // these props are common to all forms
       const commentFormProps = {
         commentId: comment.commentId,
-        handleFormSubmit,
         handleTextAreaChange
       }
   
@@ -33,8 +33,8 @@ const CommentsList = ({
       const editFormId = "edit-" + comment.commentId;
       const editCommentForm = <CommentForm 
         commentFormType="edit"
-        commentId={comment.commentId}
         formId={editFormId}
+        handleFormSubmit={handleUpdateComment}
         textAreaValue={textAreaValues[editFormId]}
         {...commentFormProps}
       />;
@@ -69,9 +69,9 @@ const CommentsList = ({
         //   2. reply comment form
         //   3. list of replies
         replyCommentForm = <CommentForm
-          commentId={comment.commentId}
           commentFormType="reply"
           formId={replyFormId}
+          handleFormSubmit={handleCreateComment}
           textAreaValue={textAreaValues[replyFormId]}
           {...commentFormProps}
         />;
@@ -139,10 +139,11 @@ const CommentsList = ({
 CommentsList.propTypes = {
   commentFormsVisibility: PropTypes.object.isRequired,
   comments: PropTypes.array.isRequired,
+  handleCreateComment: PropTypes.func.isRequired,
   handleDeleteComment: PropTypes.func.isRequired,
   handleFormVisibilityToggle: PropTypes.func.isRequired,
-  handleFormSubmit: PropTypes.func.isRequired,
   handleTextAreaChange: PropTypes.func.isRequired,
+  handleUpdateComment: PropTypes.func.isRequired,
   setTextAreaValues: PropTypes.func.isRequired,
   textAreaValues: PropTypes.object.isRequired
 };
