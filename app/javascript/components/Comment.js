@@ -18,15 +18,12 @@ const Comment = ({
     commentId,
     commentName,
     htmlCommentText,
-    replyTo,
     timeCreatedString
   },
   deleteButton,
   editCommentForm,
-  handleFormVisibilityToggle,
   isEditFormVisible,
   isReplyFormVisible,
-  replyCommentForm,
   toggleEditButton
 }) => {
   return (
@@ -76,12 +73,8 @@ const Comment = ({
                 editCommentForm :
                 <CommentDisplay
                   commentId={commentId}
-                  handleFormVisibilityToggle={handleFormVisibilityToggle}
                   htmlCommentText={htmlCommentText}
                   isReplyFormVisible={isReplyFormVisible}
-                  replyCommentForm={replyCommentForm}
-                  replyTo={replyTo}
-                  user={currentUser}
                 >
                   {children}
                 </CommentDisplay>
@@ -95,14 +88,15 @@ const Comment = ({
 }
 
 Comment.propTypes = {
-  children: PropTypes.array,
+  children: PropTypes.oneOfType([
+    PropTypes.array,
+    PropTypes.element
+  ]),
   comment: PropTypes.object.isRequired,
   deleteButton: PropTypes.element.isRequired,
   editCommentForm: PropTypes.element.isRequired,
-  handleFormVisibilityToggle: PropTypes.func,
   isEditFormVisible: PropTypes.bool.isRequired,
   isReplyFormVisible: PropTypes.bool,
-  replyCommentForm: PropTypes.element,
   setTextAreaValues: PropTypes.func.isRequired,
   toggleEditButton: PropTypes.element.isRequired
 };

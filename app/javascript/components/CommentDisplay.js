@@ -7,12 +7,8 @@ import CommentReplies from "./CommentReplies.js";
 const CommentDisplay = ({
   children,
   commentId,
-  handleFormVisibilityToggle,
   htmlCommentText,
-  isReplyFormVisible,
-  replyCommentForm,
-  replyTo,
-  user
+  replyTo
 }) => {
 
   return (
@@ -41,15 +37,7 @@ const CommentDisplay = ({
       {/* only comments that DO NOT have a replyTo will have a reply section */}
       {replyTo ?
         "" :
-        <CommentReplies 
-          commentId={commentId}
-          currentUser={user}
-          isReplyFormVisible={isReplyFormVisible}
-          handleReplyFormToggle={handleFormVisibilityToggle}
-          replyCommentForm={replyCommentForm}
-        >
-          {children}
-        </CommentReplies>
+        children // this is the reply section, passed down from CommentsList.js
       }
       {/* emojis section - can decide which <div> this should nest into, in non-React version, this is right after the closing </div> tag below */}
     </div>
@@ -57,14 +45,13 @@ const CommentDisplay = ({
 }
 
 CommentDisplay.propTypes = {
-  children: PropTypes.array,
+  children: PropTypes.oneOfType([
+    PropTypes.array,
+    PropTypes.element
+  ]),
   commentId: PropTypes.number.isRequired,
   htmlCommentText: PropTypes.string.isRequired,
-  handleFormVisibilityToggle: PropTypes.func,
-  isReplyFormVisible: PropTypes.bool,
-  replyCommentForm: PropTypes.element,
-  replyTo: PropTypes.number,
-  user: PropTypes.object
+  replyTo: PropTypes.number
 }
 
 export default CommentDisplay;
