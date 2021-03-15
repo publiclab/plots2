@@ -1,3 +1,5 @@
+<%= stylesheet_link_tag "show_follow" %>
+
 <div class="container">
   <h3><%= @user.username %></h3>
   <ul class="nav nav-tabs border-0">
@@ -9,22 +11,45 @@
     </li>
   </ul>
   <% if @users.length > 0 %>
-    <table class="table">
-      <tbody>
-      <% @users.each do |user| %>
-        <tr class="followers-row">
-          <td><%= link_to "<i class='fa fa-user-o'></i> #{user.username}".html_safe, user_path(user.username) %>
-        </tr>
-      <% end %>
-    </table>
-   <% if @pagy %> 
-      <%= raw pagy_bootstrap_nav @pagy %> 
-   <% else %> 
-      <%= will_paginate @users, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
-   <% end %>
-  <% else %>
-    <p class="pt-3 border-top">
-      <%= @user.username %><%= @title === "Followers" ? " has no followers yet" : " is not following anyone yet" %>
-    </p>
-  <% end %>
-</div>
+
+<div class="profile-container border-top p-2">
+        <div class="row row-space-20">
+            <div class="col-md-8">
+                <div class="tab-content p-0">
+
+                    <div class="tab-pane fade active show" id="profile-follows">
+
+                        <ul class="follow-list clearfix">
+
+                        <% @users.each do |user| %>
+
+                            <li>
+                            
+                                <%= link_to user_path(user.username) do %>
+                                    <div class="follow-img"><img src="<%= user.profile_image %>" alt="" /></div>
+                                    <div class="follow-info">
+                                        <h4> <%= user.username %>
+                                        </h4>
+                                        <p><small><%= user.followers.where(status: 1).length %> followers, <%= user.following_users.where(status: 1).length %> following</small></p>
+                                    </div>
+                                <% end %>
+                            </li>
+                        <% end %>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </br>
+        <% if @pagy %> 
+        <%= raw pagy_bootstrap_nav @pagy %>       
+    </div>
+<% else %> 
+  <%= will_paginate @users, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+<% end %>
+<% else %>
+  <p class="pt-3 border-top">
+    <%= @user.username %><%= @title === "Followers" ? " has no followers yet" : " is not following anyone yet" %>
+  </p>
+<% end %>
