@@ -74,9 +74,10 @@ const CommentForm = ({
               <button
                 className="btn btn-primary"
                 data-comment-id={commentId}
-                data-form-id={formId}
-                data-form-type={commentFormType}
-                onClick={handleFormSubmit}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleFormSubmit(commentId, commentFormType);
+                }}
               >
                 {staticProps.elementText.commentPublishText}
               </button>
