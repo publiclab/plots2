@@ -119,7 +119,7 @@
     <% if !@preview %>
       <%= render partial: "notes/responses" %>
       <% if @react %>
-        <%= react_component("CommentsContainer", { 
+        <%= react_component("App", { 
           initialComments: @react_props[:comments],
           currentUser: @react_props[:currentUser],
           elementText: @react_props[:elementText],

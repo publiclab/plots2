@@ -1,42 +1,25 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-import { UserContext } from "./user-context";
-import { StaticPropsContext } from "./static-props-context";
-import { 
-  getEditTextAreaValues, 
-  getInitialCommentFormToggleState, 
-  makeDeepCopy 
-} from "./helpers";
+import { makeDeepCopy } from "./helpers";
 
 import CommentForm from "./CommentForm";
 import CommentsHeader from "./CommentsHeader";
 import CommentsList from "./CommentsList"
 
 const CommentsContainer = ({
-  // ES6 destructure the props
-  // so we can simply refer to initialComments instead of this.props.initialComments
+  initialCommentFormToggleState,
   initialComments,
-  currentUser,
-  elementText,
-  node,
-  node: {
-    nodeId
-  }
+  initialTextAreaValues,
+  nodeId
 }) => {
   // React Hook: Comments State
   const [comments, setComments] = useState(initialComments);
 
   // React Hook: Visibility for Reply and Edit Comment Forms
-  const initialCommentFormToggleState = getInitialCommentFormToggleState(initialComments);
   const [commentFormsVisibility, setCommentFormsVisibility] = useState(initialCommentFormToggleState);
 
-  // React Hook: <textarea> input state
-  // the initial state needs to include default values for edit coment forms
-  // if a user opens an edit comment form, it should contain the already existing comment text to be edited
-  const initialTextAreaValues = { "main": "", ...getEditTextAreaValues(initialComments) };
-  // textAreaValues is an object that holds multiple text forms, eg:
-  //   { main: "foo", reply-123: "bar" }
+  // React Hook: <textarea> Input State for Comment Forms
   const [textAreaValues, setTextAreaValues] = useState(initialTextAreaValues);
 
   const handleDeleteComment = (commentId) => {
@@ -140,42 +123,37 @@ const CommentsContainer = ({
   }
 
   return (
-    // React Context ensures that all components below this one can access the currentUser prop object.
-    <UserContext.Provider value={currentUser}>
-      <StaticPropsContext.Provider value={{ node, elementText }}>
-        <div id="legacy-editor-container" className="row">
-          <div id="comments" className="col-lg-10 comments">
-            <CommentsHeader comments={comments} />
-            <CommentsList 
-              commentFormsVisibility={commentFormsVisibility}
-              comments={comments}
-              handleDeleteComment={handleDeleteComment}
-              handleFormVisibilityToggle={handleFormVisibilityToggle}
-              handleFormSubmit={handleFormSubmit}
-              handleTextAreaChange={handleTextAreaChange}
-              setTextAreaValues={setTextAreaValues}
-              textAreaValues={textAreaValues}
-            />
-            {/* main comment form */}
-            <CommentForm 
-              commentFormType="main" 
-              formId="main"
-              handleFormSubmit={handleFormSubmit}
-              handleTextAreaChange={handleTextAreaChange}
-              textAreaValue={textAreaValues["main"]}
-            />
-          </div>
-        </div>
-      </StaticPropsContext.Provider>
-    </UserContext.Provider>
+    <div id="legacy-editor-container" className="row">
+      <div id="comments" className="col-lg-10 comments">
+        <CommentsHeader comments={comments} />
+        <CommentsList 
+          commentFormsVisibility={commentFormsVisibility}
+          comments={comments}
+          handleDeleteComment={handleDeleteComment}
+          handleFormVisibilityToggle={handleFormVisibilityToggle}
+          handleFormSubmit={handleFormSubmit}
+          handleTextAreaChange={handleTextAreaChange}
+          setTextAreaValues={setTextAreaValues}
+          textAreaValues={textAreaValues}
+        />
+        {/* main comment form */}
+        <CommentForm 
+          commentFormType="main" 
+          formId="main"
+          handleFormSubmit={handleFormSubmit}
+          handleTextAreaChange={handleTextAreaChange}
+          textAreaValue={textAreaValues["main"]}
+        />
+      </div>
+    </div>
   );
 }
 
 CommentsContainer.propTypes = {
-  currentUser: PropTypes.object,
-  elementText: PropTypes.object.isRequired,
+  initialCommentFormToggleState: PropTypes.object.isRequired,
   initialComments: PropTypes.array.isRequired,
-  node: PropTypes.object.isRequired
+  initialTextAreaValues: PropTypes.object.isRequired,
+  nodeId: PropTypes.number.isRequired
 };
 
 export default CommentsContainer;
