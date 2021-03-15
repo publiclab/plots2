@@ -116,11 +116,20 @@ const CommentsContainer = ({
           reply_to: formType === "reply" ? commentId : null
         },
         function(data) {
+          notyNotification('mint', 3000, 'success', 'topRight', 'Comment Added!');
+          const newCommentId = data.comment[0].commentId;
+          const newCommentRawText = data.comment[0].rawCommentText;
+          // blank out the value of textarea & also create a value for the new comment's edit form
+          setTextAreaValues(oldState => ({ ...oldState, [formId]: "", ["edit-" + newCommentId]: newCommentRawText }));
+          // the new comment form comes with an edit form, its toggle state needs to be created as well
+          setCommentFormsVisibility(oldState => ({ ...oldState, ["edit-" + newCommentId]: false }));
+          // if the comment doesn't have a replyTo, then it's a parent comment
+          // parent comments have reply forms, this needs to be set in state as well.
+          if (!data.comment[0].replyTo) {
+            setCommentFormsVisibility(oldState => ({ ...oldState, ["reply-" + newCommentId]: false }));
+          }
           // push the comment into state
           setComments(oldComments => ([...oldComments, data.comment[0]]));
-          notyNotification('mint', 3000, 'success', 'topRight', 'Comment Added!');
-          // blank out the value of textarea
-          setTextAreaValues(oldState => ({ ...oldState, [formId]: "" }));
           // close the comment form
           if (formType !== "main") {
             setCommentFormsVisibility(oldState => (Object.assign({}, oldState, { [formId]: false })));
