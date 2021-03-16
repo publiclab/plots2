@@ -7,13 +7,13 @@
 <% end %>
 <table class="table">
   <tr>
-    <th>Title</th>
+    <th><a href = "?sort=title">Title</a> <i class="fa fa-sort" aria-hidden="true"></i></th>
     <% if current_user.admin? %>
     <th>Edit</th>
     <% end %>
-    <th>Last edited</th>
+    <th><a href = "?sort=last_edited">Last edited</a> <i class="fa fa-sort" aria-hidden="true"></i></th>
   </tr>
-  <% @features.each do |feature| %>
+  <% @sorted_features.each do |feature| %>
     <tr>
       <td style="width:50%"><a href="/features/<%= feature.id %>"><%= feature.title %></a></td>
       <% if current_user.admin? %>
@@ -25,4 +25,4 @@
   <% end %>
 </table>
 
-<%= will_paginate @features, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+<%= will_paginate @sorted_features, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
