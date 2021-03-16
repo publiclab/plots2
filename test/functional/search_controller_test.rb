@@ -48,7 +48,7 @@ class SearchControllerTest < ActionController::TestCase
   test "search question at /search/questions/question" do
     get :questions, params: { query: 'question' }
     assert_response :success
-    assert_equal assigns(:questions).include?(nodes(:question))
+    assert assigns(:questions).include?(nodes(:question))
   end
 
   test "search places page at /search/places/map" do
