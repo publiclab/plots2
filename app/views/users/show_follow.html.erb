@@ -29,13 +29,31 @@
           <div class="tab-pane fade active show" id="profile-follows">
             <ul class="follow-list clearfix">
               <% @users.each do |user| %>
-                <li>              
+                <li>
                   <%= link_to user_path(user.username) do %>
-                    <div class="follow-img"><img src="<%= user.profile_image %>" alt="" /></div>
-                      <div class="follow-info">
-                        <h4> <%= user.username %></h4>
-                        <p><small><%= user.followers.where(status: 1).length %> followers, <%= user.following_users.where(status: 1).length %> following</small></p>
-                      </div>
+                    <div class="follow-img" data-toggle="popover-hover" 
+                        title="<%= user.note_count %> research notes" 
+                        data-img="<%= user.profile_image %>" 
+                        data-content='<div class="card">
+                                        <div class="media m-2">
+                                          <img src="<%= user.profile_image %>" class="mr-3" alt="">
+                                          <div class="media-body">
+                                            <h5 class="media-heading"><%= user.username %></h5>
+                                            <p><%= user.bio %></p>
+                                          </div>
+                                        </div>
+                                        <% if user.note_count > 0 %>
+                                          <div class="card-footer text-muted text-left">
+                                            last posted <%= distance_of_time_in_words(Time.now.to_i - user.notes.order("created DESC").first.created.to_i) %> ago
+                                          </div>
+                                        <% end %>
+                                      </div>'>
+                      <img src="<%= user.profile_image %>" alt="" />
+                    </div>
+                    <div class="follow-info">
+                      <h4> <%= user.username %></h4>
+                      <p><small><%= user.followers.where(status: 1).length %> followers, <%= user.following_users.where(status: 1).length %> following</small></p>
+                    </div>
                   <% end %>
                 </li>
               <% end %>
@@ -57,3 +75,10 @@
     </p>
   <% end %>
 </div>
+
+<script type="text/javascript">
+  $('[data-toggle="popover-hover"]').popover({
+    html: true,
+    trigger: 'hover',
+  });
+</script>
