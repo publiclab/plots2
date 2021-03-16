@@ -7,11 +7,11 @@
 <% end %>
 <table class="table">
   <tr>
-    <th>Title</th>
+    <th><a href = "?sort=title">Title</a> <i class="fa fa-sort" aria-hidden="true"></i></th>
     <% if current_user.admin? %>
     <th>Edit</th>
     <% end %>
-    <th>Last edited</th>
+    <th><a href = "?sort=last_edited">Last edited</a> <i class="fa fa-sort" aria-hidden="true"></i></th>
   </tr>
   <% @features.each do |feature| %>
     <tr>

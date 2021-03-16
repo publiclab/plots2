@@ -4,7 +4,8 @@ class FeaturesController < ApplicationController
   def index
     @title = "Features"
     @features = Node.where(type: 'feature')
-      .paginate(page: params[:page])
+    @features = Node.sort_features(@features, params[:sort])
+    .paginate(page: params[:page])
   end
 
   def embed
