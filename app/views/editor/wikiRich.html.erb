@@ -15,6 +15,21 @@
 
 <script src="/lib/publiclab-editor/dist/PublicLab.Editor.js"></script>
 
+<% if params[:action] == "new" && params[:controller] == "wiki" && feature('new-wiki-modal') %>
+  <div class="container">
+    <div class="modal fade" id="newWikiTemplateChooser" tabindex="-1" role="dialog" aria-labelledby="Wiki templates" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <%= feature('new-wiki-modal') %>
+      </div>
+    </div>
+  </div>
+  <script>
+  $(window).on('load',function(){
+    $('#newWikiTemplateChooser').modal('show');
+  });
+  </script>
+<% end %>
+
 <div class="pl-editor">
 
   <div class="ple-header">
