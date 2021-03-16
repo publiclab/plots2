@@ -13,7 +13,7 @@ class AdminMailer < ActionMailer::Base
     all_moderators = User.where(role: %w(moderator admin))
     moderators = []
     all_moderators.each do |mod_user|
-      moderators << mod_user.email unless mod_user.has_tag('no-moderation-emails')
+      moderators << mod_user.email unless mod_user.has_tag('no-moderation-emails') || mod_user.has_tag('notifications:noemail')
     end
     if node.status == 4 # only if it remains unmoderated
       mail(
@@ -71,7 +71,11 @@ class AdminMailer < ActionMailer::Base
     @moderator = moderator
     @comment = comment
     @footer = feature('email-footer')
-    moderators = User.where(role: %w(moderator admin)).collect(&:email)
+    all_moderators = User.where(role: %w(moderator admin))
+    moderators = []
+    all_moderators.each do |mod_user|
+      moderators << mod_user.email unless mod_user.has_tag('no-moderation-emails') || mod_user.has_tag('notifications:noemail')
+    end
     mail(
       to: "comment-moderators@#{ActionMailer::Base.default_url_options[:host]}",
       bcc: moderators,
@@ -85,7 +89,11 @@ class AdminMailer < ActionMailer::Base
     @moderator = moderator
     @node = node
     @footer = feature('email-footer')
-    moderators = User.where(role: %w(moderator admin)).collect(&:email)
+    all_moderators = User.where(role: %w(moderator admin))
+    moderators = []
+    all_moderators.each do |mod_user|
+      moderators << mod_user.email unless mod_user.has_tag('no-moderation-emails') || mod_user.has_tag('notifications:noemail')
+    end
     mail(
       to: "moderators@#{ActionMailer::Base.default_url_options[:host]}",
       bcc: moderators,
@@ -99,7 +107,11 @@ class AdminMailer < ActionMailer::Base
     @moderator = moderator
     @comment = comment
     @footer = feature('email-footer')
-    moderators = User.where(role: %w(moderator admin)).collect(&:email)
+    all_moderators = User.where(role: %w(moderator admin))
+    moderators = []
+    all_moderators.each do |mod_user|
+      moderators << mod_user.email unless mod_user.has_tag('no-moderation-emails') || mod_user.has_tag('notifications:noemail')
+    end
     mail(
       to: "comment-moderators@#{ActionMailer::Base.default_url_options[:host]}",
       bcc: moderators,
@@ -113,7 +125,11 @@ class AdminMailer < ActionMailer::Base
     @moderator = moderator
     @node = node
     @footer = feature('email-footer')
-    moderators = User.where(role: %w(moderator admin)).collect(&:email)
+    all_moderators = User.where(role: %w(moderator admin))
+    moderators = []
+    all_moderators.each do |mod_user|
+      moderators << mod_user.email unless mod_user.has_tag('no-moderation-emails') || mod_user.has_tag('notifications:noemail')
+    end
     mail(
       to: "moderators@#{ActionMailer::Base.default_url_options[:host]}",
       bcc: moderators,
@@ -131,7 +147,7 @@ class AdminMailer < ActionMailer::Base
     moderators = []
     all_moderators.each do |mod_user|
       if (frequency_digest == User::Frequency::DAILY && mod_user.has_tag('digest:daily:spam')) || (frequency_digest == User::Frequency::WEEKLY && mod_user.has_tag('digest:weekly:spam'))
-        moderators << mod_user.email unless mod_user.has_tag('no-moderation-emails')
+        moderators << mod_user.email unless mod_user.has_tag('no-moderation-emails') || mod_user.has_tag('notifications:noemail')
       end
     end
     @nodes = nodes
