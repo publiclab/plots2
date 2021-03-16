@@ -290,7 +290,9 @@ class CommentControllerTest < ActionController::TestCase
 
   test 'should send mail to moderator if comment has status 4' do
     UserSession.create(users(:moderator))
-    post :create, params: { id: nodes(:one).nid, body: 'example', status: 4 }, xhr: true
+    assert_difference 'ActionMailer::Base.deliveries.size', 1 do
+      post :create, params: { id: nodes(:one).nid, body: 'example', status: 4 }, xhr: true
+    end
     assert ActionMailer::Base.deliveries.collect(&:to).include?([users(:moderator).email])
   end
 
@@ -304,14 +306,18 @@ class CommentControllerTest < ActionController::TestCase
 
   test 'should send mail to tag followers in the comment' do
     UserSession.create(users(:jeff))
-    post :create, params: { id: nodes(:question).nid, body: 'Question #awesome', type: 'question' }, xhr: true
+    assert_difference 'ActionMailer::Base.deliveries.size', 1 do
+      post :create, params: { id: nodes(:question).nid, body: 'Question #awesome', type: 'question' }, xhr: true
+    end
     assert ActionMailer::Base.deliveries.collect(&:to).include?([users(:bob).email])
     # tag followers can be found in tag_selection.yml
   end
 
   test 'should send mail to multiple tag followers in the comment' do
     UserSession.create(users(:jeff))
-    post :create, params: { id: nodes(:question).nid, body: 'Question #everything #awesome', type: 'question' }, xhr: true
+    assert_difference 'ActionMailer::Base.deliveries.size', 1 do
+      post :create, params: { id: nodes(:question).nid, body: 'Question #everything #awesome', type: 'question' }, xhr: true
+    end
     assert ActionMailer::Base.deliveries.collect(&:to).include?([users(:bob).email])
     assert ActionMailer::Base.deliveries.collect(&:to).include?([users(:moderator).email])
     # tag followers can be found in tag_selection.yml
@@ -319,7 +325,9 @@ class CommentControllerTest < ActionController::TestCase
 
   test 'should send notification email upon a new wiki comment' do
     UserSession.create(users(:jeff))
-    post :create, params: { id: nodes(:wiki_page).nid, body: 'A comment by Jeff on a wiki page of author bob', type: 'page' }, xhr: true
+    assert_difference 'ActionMailer::Base.deliveries.size', 1 do
+      post :create, params: { id: nodes(:wiki_page).nid, body: 'A comment by Jeff on a wiki page of author bob', type: 'page' }, xhr: true
+    end
     assert ActionMailer::Base.deliveries.collect(&:subject).include?("New comment on Wiki page title (#11) - #c#{Comment.last.id}")
   end
 
@@ -368,11 +376,12 @@ class CommentControllerTest < ActionController::TestCase
 
   test 'should not send notification email to author if notify-comment-direct:false usertag is present' do
     UserSession.create(users(:jeff))
-    post :create, params: {
+    assert_difference 'ActionMailer::Base.deliveries.size', 0 do
+      post :create, params: {
         id: nodes(:activity).nid,
         body: 'A comment by Jeff on note of author test_user'
-    }, xhr: true
-
+      }, xhr: true
+    end
     assert_not ActionMailer::Base.deliveries.collect(&:subject).include?("New comment on #{nodes(:activity).title} (##{nodes(:activity).nid}) ")
     assert_not ActionMailer::Base.deliveries.collect(&:to).include?([users(:test_user).email])
   end
