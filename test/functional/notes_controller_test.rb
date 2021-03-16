@@ -663,12 +663,6 @@ class NotesControllerTest < ActionController::TestCase
     assert assigns(:notes).collect(&:status).uniq == [1]
   end
 
-  test 'should list research notes with status 1 & 4 in index if admin is logged in' do
-    UserSession.create(users(:admin))
-    get :index
-    assert assigns(:notes).collect(&:status).uniq.sort == [1,4]
-  end
-
   test 'should list only research notes with status 1 in popular' do
     UserSession.create(users(:admin))
     get :popular
