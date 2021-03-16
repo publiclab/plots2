@@ -39,4 +39,5 @@ Rails.application.config.assets.precompile += [
   'spam2.css',
   'spam2.js',
   'print_new.css',
+  'show_follow.css',
 ]
