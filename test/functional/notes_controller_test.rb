@@ -660,49 +660,30 @@ class NotesControllerTest < ActionController::TestCase
   test 'should list only research notes with status 1 in index' do
     get :index
     notes = assigns(:notes)
-    expected = [nodes(:one)]
-    questions = [nodes(:question)]
-    assert (notes & expected).present?
-    assert !(notes & questions).present?
+    assert assigns(:notes).collect(&:status).uniq == [1]
   end
 
   test 'should list research notes with status 1 & 4 in index if admin is logged in' do
     UserSession.create(users(:admin))
     get :index
-    notes = assigns(:notes)
-    expected = [nodes(:one), nodes(:first_timer_note)]
-    questions = [nodes(:question)]
-    assert (notes & expected).present?
-    assert !(notes & questions).present?
+    assert assigns(:notes).collect(&:status).uniq.sort == [1,4]
   end
 
   test 'should list only research notes with status 1 in popular' do
     UserSession.create(users(:admin))
     get :popular
-    notes = assigns(:notes)
-    expected = [nodes(:one)]
-    questions = [nodes(:question)]
-    assert (notes & expected).present?
-    assert !(notes & questions).present?
+    assert assigns(:notes).collect(&:status).uniq == [1]
   end
 
   test 'should list only research notes with status 1 in recent' do
     get :recent
-    notes = assigns(:notes)
-    expected = [nodes(:one)]
-    questions = [nodes(:question)]
-    assert (notes & expected).present?
-    assert !(notes & questions).present?
+    assert assigns(:notes).collect(&:status).uniq == [1]
   end
 
   test 'should list only research notes with status 1 in liked' do
     UserSession.create(users(:admin))
     get :liked
-    notes = assigns(:notes)
-    expected = [nodes(:one)]
-    questions = [nodes(:question)]
-    assert (notes & expected).present?
-    assert !(notes & questions).present?
+    assert assigns(:notes).collect(&:status).uniq == [1]
   end
 
   test 'first note in /liked endpoint should be highest liked' do
@@ -715,6 +696,7 @@ class NotesControllerTest < ActionController::TestCase
     # both should be equal
     assert expected == actual.cached_likes
   end
+
   test 'first note in /recent endpoint should be most recent' do
     get :recent
     notes = assigns(:notes)
