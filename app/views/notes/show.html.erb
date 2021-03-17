@@ -86,7 +86,10 @@
     </table>
   <% end %>
 
-  <% if current_user && (current_user.role == "admin" || current_user.role == "moderator" || current_user.id == @node.id || current_user.is_coauthor?(@node)) && @node.has_tag('event') %>
+  <% if current_user && 
+    ( current_user.role == "admin" || current_user.role == "moderator" || 
+      current_user.id == @node.id || current_user.is_coauthor?(@node) ) && 
+      @node.has_tag('event') %>
   <hr/>
   <p>This looks like an event.     <span><button id="date-toggle" class="btn-outline-secondary btn-sm" data-toggle="tooltip" data-placement="right" title="Add Date"><i class="fa fa-calendar" aria-hidden="true"></i></button></span></p>
   <div id="event-datepicker">
@@ -97,9 +100,9 @@
       Add date to your awesome event in this box
     </small>
 
-    <!-- <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast fade alert alert-success" id="mytoast" role="alert" aria-live="assertive" aria-atomic="true">
     Date added successfully
-    </div> -->
+    </div>
 
   </div>
   <% end %>

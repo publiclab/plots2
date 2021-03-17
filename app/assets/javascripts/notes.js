@@ -49,7 +49,7 @@ jQuery(document).ready(function($) {
     if(eventDate!== null)
     {
       addTag("date:"+eventDate.val());
-      //$('.toast').toast('show');
+      $('#mytoast').addClass("show").fadeIn('fast').delay(2000).fadeOut('fast');
     }
   });
 });
