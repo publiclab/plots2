@@ -25,7 +25,8 @@ const CommentToolbar = ({
   // don't know if this is completely equivalent to user.canModerate
 
   // 3. delete comment button
-  const userCanDeleteComment = isUserAuthor || isUserModerator || authorId === nodeAuthorId;
+  const isUserNodeAuthor = currentUser && currentUser.id === authorId && authorId === nodeAuthorId;
+  const userCanDeleteComment = isUserAuthor || isUserModerator || isUserNodeAuthor;
 
   // 4. leave an emoji reaction button
   const emojiIcon = <i className='far fa-heart'></i>;
