@@ -1209,4 +1209,15 @@ class Node < ActiveRecord::Base
       current_user.content_followed_in_period(1.week.ago, Time.now)
     end
   end
+
+  def self.sort_features(features, sorting_type)
+    case sorting_type
+    when 'title'
+      features.sort_by(&:title.downcase)
+    when 'last_edited'
+      features.sort_by(&:changed).reverse!
+    else
+      features
+    end
+  end
 end

@@ -464,7 +464,7 @@ class TagController < ApplicationController
       t = Tag.where(name: tagname)
       nct = NodeTag.where('tid in (?)', t.collect(&:tid))
       @tagdata[tagname][:users] = Node.where('nid IN (?)', nct.collect(&:nid)).collect(&:author).uniq.size
-      @tagdata[tagname][:wikis] = Node.where("nid IN (?) AND (type = 'page' OR type = 'tool' OR type = 'place')", nct.collect(&:nid)).size
+      @tagdata[tagname][:wikis] = Node.where("nid IN (?) AND (type = 'page')", nct.collect(&:nid)).size
       @tagdata[:notes] = Node.where("nid IN (?) AND type = 'note'", nct.collect(&:nid)).size
     end
     render template: 'tag/contributors-index'

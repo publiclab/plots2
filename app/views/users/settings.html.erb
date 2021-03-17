@@ -3,10 +3,10 @@
   <h4><b>Email Notifications</b></h4>
   <hr style="width: 35%;  margin-left: 0;" />
 
-  <h4><b>I want to be notified by email for:</b></h4>
+  <h4><b><%=translation('users.settings.notified_by_email')%></b></h4>
 
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-    <span>Comments on my posts </span>
+    <span><%=translation('users.settings.direct_comment')%> </span>
     <span>
     <label class="switch">
       <p> Notification switch </p>
@@ -20,7 +20,7 @@
   <br />
 
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-    <span>Likes on my posts </span>
+    <span><%=translation('users.settings.direct_likes')%> </span>
     <span>
     <label class="switch">
       <p> Notification switch </p>
@@ -34,7 +34,7 @@
   <br />
 
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-    <span>Comments on all posts I've commented on </span>
+    <span><%=translation('users.settings.indirect_comment')%> </span>
     <span>
     <label class="switch">
       <p> Notification switch </p>
@@ -64,10 +64,10 @@
   <% end %>
   
   <br />
-  <h4><b>Email notifications are sent for each post in topics you follow. If you prefer to receive a digest, choose one of these options: </b></h4>
+  +<h4><b><%=translation('users.settings.email_notifications')%> </b></h4>
 
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-    <span>In a weekly digest </span>
+    <span><%=translation('users.settings.weekly_digest')%> </span>
     <span>
     <label style=" vertical-align: middle;" class="switch">
       <p> Notification switch </p>
@@ -81,7 +81,7 @@
   <br />
 
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-    <span>In a daily digest</span>
+    <span><%=translation('users.settings.daily_digest')%> </span>
     <span>
     <label style=" vertical-align: middle;" class="switch">
       <p> Notification switch </p>
@@ -96,7 +96,7 @@
 
   <% if current_user.can_moderate? %>
     <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-      <span>In a weekly digest for unmoderated posts</span>
+      <span><%=translation('users.settings.spam_weekly_digest')%> </span>
       <span>
         <label style=" vertical-align: middle;" class="switch">
           <p> Notification switch </p>
@@ -110,7 +110,7 @@
     <br />
 
     <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-      <span>In a daily digest for unmoderated posts</span>
+      <span><%=translation('users.settings.spam_daily_digest')%> </span>
       <span>
         <label style=" vertical-align: middle;" class="switch">
           <p> Notification switch </p>
@@ -129,10 +129,10 @@
   <h4><b>Browser Notifications</b></h4>
   <hr style="width: 35%;  margin-left: 0;" />
 
-  <h4><b>I want to receive browser notifications:</b></h4>
+  <h4><b><%=translation('users.settings.browser_notifications')%> </b></h4>
 
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-    <span>When I'm mentioned</span>
+    <span><%=translation('users.settings.mentioned')%></span>
     <span>
     <label style=" vertical-align: middle;" class="switch">
       <p> Notification switch </p>
@@ -146,7 +146,7 @@
   <br />
 
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-    <span>For everything</span>
+    <span><%=translation('users.settings.everything')%></span>
     <span>
     <label style=" vertical-align: middle;" class="switch">
       <p> Notification switch </p>
@@ -160,7 +160,7 @@
   <br />
 
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-    <span>When someone likes my work</span>
+    <span><%=translation('users.settings.likes')%></span>
     <span>
     <label style=" vertical-align: middle;" class="switch">
       <p> Notification switch </p>
