@@ -115,7 +115,6 @@ const CommentsContainer = ({
         react: true
       },
       function(data) {
-        console.log(data);
         if (data.success) {
           for (let i = 0; i < comments.length; i++) {
             if (comments[i].commentId === commentId) {

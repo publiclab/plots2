@@ -72,12 +72,16 @@ class NotesController < ApplicationController
 
         comments = helpers.get_react_comments(comments_record)
 
-        current_user_json = {
-          canModerate: current_user.can_moderate?,
-          id: current_user[:id],
-          role: current_user[:role],
-          status: current_user[:status]
-        }
+        current_user_json = nil
+
+        if current_user
+          current_user_json = {
+            canModerate: current_user.can_moderate?,
+            id: current_user[:id],
+            role: current_user[:role],
+            status: current_user[:status]
+          }
+        end
 
         @react_props = {
           currentUser: current_user_json,
