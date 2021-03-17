@@ -19,7 +19,6 @@ const CommentReplies = ({
   >
     Reply to this comment...
   </p>;
-  // placeholder: link to login if no currentUser
 
   const replyForm = isReplyFormVisible ?
     replyCommentForm :

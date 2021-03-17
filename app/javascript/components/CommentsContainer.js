@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
+import { UserContext } from "./user-context";
 import { makeDeepCopy } from "./helpers";
 
 import CommentForm from "./CommentForm";
@@ -128,30 +129,35 @@ const CommentsContainer = ({
   }
 
   return (
-    <div id="legacy-editor-container" className="row">
-      <div id="comments" className="col-lg-10 comments">
-        <CommentsHeader comments={comments} />
-        <CommentsList 
-          commentFormsVisibility={commentFormsVisibility}
-          comments={comments}
-          handleCreateComment={handleCreateComment}
-          handleDeleteComment={handleDeleteComment}
-          handleFormVisibilityToggle={handleFormVisibilityToggle}
-          handleTextAreaChange={handleTextAreaChange}
-          handleUpdateComment={handleUpdateComment}
-          setTextAreaValues={setTextAreaValues}
-          textAreaValues={textAreaValues}
-        />
-        {/* main comment form */}
-        <CommentForm 
-          commentFormType="main" 
-          formId="main"
-          handleFormSubmit={handleCreateComment}
-          handleTextAreaChange={handleTextAreaChange}
-          textAreaValue={textAreaValues["main"]}
-        />
-      </div>
-    </div>
+    <UserContext.Consumer>
+      {currentUser => (
+        <div id="legacy-editor-container" className="row">
+          <div id="comments" className="col-lg-10 comments">
+            <CommentsHeader comments={comments} />
+            <CommentsList 
+              commentFormsVisibility={commentFormsVisibility}
+              comments={comments}
+              currentUser={currentUser}
+              handleCreateComment={handleCreateComment}
+              handleDeleteComment={handleDeleteComment}
+              handleFormVisibilityToggle={handleFormVisibilityToggle}
+              handleTextAreaChange={handleTextAreaChange}
+              handleUpdateComment={handleUpdateComment}
+              setTextAreaValues={setTextAreaValues}
+              textAreaValues={textAreaValues}
+            />
+            {/* main comment form */}
+            <CommentForm 
+              commentFormType="main" 
+              formId="main"
+              handleFormSubmit={handleCreateComment}
+              handleTextAreaChange={handleTextAreaChange}
+              textAreaValue={textAreaValues["main"]}
+            />
+          </div>
+        </div>
+      )}
+    </UserContext.Consumer>
   );
 }
 
