@@ -11,6 +11,7 @@ import CommentToolbarButton from "./CommentToolbarButton";
 const CommentsList = ({
   commentFormsVisibility,
   comments,
+  currentUser,
   handleCreateComment,
   handleDeleteComment,
   handleFormVisibilityToggle,
@@ -68,13 +69,16 @@ const CommentsList = ({
         //   1. "Reply to this comment..." toggle link
         //   2. reply comment form
         //   3. list of replies
-        replyCommentForm = <CommentForm
-          commentFormType="reply"
-          formId={replyFormId}
-          handleFormSubmit={handleCreateComment}
-          textAreaValue={textAreaValues[replyFormId]}
-          {...commentFormProps}
-        />;
+
+        replyCommentForm = currentUser ?
+          <CommentForm
+            commentFormType="reply"
+            formId={replyFormId}
+            handleFormSubmit={handleCreateComment}
+            textAreaValue={textAreaValues[replyFormId]}
+            {...commentFormProps}
+          /> :
+          <p><a href="/login">Please login to comment.</a></p>; // TODO: this should have a paramter like /login?return_to=[nodePath]
 
         replySection = <CommentReplies 
           commentId={comment.commentId}
@@ -139,6 +143,7 @@ const CommentsList = ({
 CommentsList.propTypes = {
   commentFormsVisibility: PropTypes.object.isRequired,
   comments: PropTypes.array.isRequired,
+  currentUser: PropTypes.object,
   handleCreateComment: PropTypes.func.isRequired,
   handleDeleteComment: PropTypes.func.isRequired,
   handleFormVisibilityToggle: PropTypes.func.isRequired,
