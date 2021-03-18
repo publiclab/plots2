@@ -78,7 +78,7 @@ const CommentsList = ({
             textAreaValue={textAreaValues[replyFormId]}
             {...commentFormProps}
           /> :
-          <p><a href="/login">Please login to comment.</a></p>; // TODO: this should have a paramter like /login?return_to=[nodePath]
+          <p><a href="/login">Please login to comment.</a></p>; // placeholder: this should have a parameter like /login?return_to=[nodePath]
 
         replySection = <CommentReplies 
           commentId={comment.commentId}

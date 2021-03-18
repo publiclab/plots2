@@ -122,7 +122,7 @@ class CommentController < ApplicationController
               if request.xhr?
                 render plain: 'success'
               else
-                flash[:notice] = 'Comment deleted.' unless params[:react]
+                flash[:notice] = 'Comment deleted.'
                 redirect_to '/' + @node.path
               end
             end
@@ -186,8 +186,8 @@ class CommentController < ApplicationController
     comments_node_and_path
 
     if current_user.uid == @node.uid ||
-      @comment.uid == current_user.uid ||
-      logged_in_as(%w(admin moderator))
+       @comment.uid == current_user.uid ||
+       logged_in_as(%w(admin moderator))
 
       if @comment.destroy
         render json: { success: true }
