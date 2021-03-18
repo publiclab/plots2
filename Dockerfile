@@ -49,6 +49,4 @@ COPY Gemfile /app/Gemfile
 COPY Gemfile.lock /app/Gemfile.lock
 COPY start.sh /app/start.sh
 
-RUN rails g webpack:install && rails g webpack:install:react && rails g react:install
-
 CMD [ "bash", "-l", "start.sh" ]
