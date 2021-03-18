@@ -33,7 +33,7 @@ class ImagesController < ApplicationController
                          title: params[:image][:title],
                          notes: params[:image][:notes])
     end
-    @image.nid = Node.find(params[:nid].to_i).nid unless params[:nid].nil? || params[:nid] == 'undefined'
+    @image.nid = Node.find(params[:nid].to_i).nid unless params[:nid].nil? || params[:nid] == 'undefined' || params[:nid].to_i == 0
     if @image.save!
       render json: {
         id: @image.id,
