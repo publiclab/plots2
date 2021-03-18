@@ -11,4 +11,5 @@ if [ -f $pidfile ] ; then
 fi
 
 bundle exec passenger-config compile-nginx-engine
+bundle exec rails g webpack:install && bundle exec rails g webpack:install:react && bundle exec rails g react:install
 bundle exec passenger start --max-pool-size 16 --min-instances 16 -p 4000
