@@ -30,19 +30,14 @@ class CommentController < ApplicationController
         @comment.save
       end
 
-      if params[:react]
-        new_comment = helpers.get_react_comments([@comment])
-        render json: { comment: new_comment }
-      end
-
       respond_to do |format|
         @answer_id = 0
         format.js do
-          render 'comments/create' unless params[:react]
+          render 'comments/create'
         end
         format.html do
           if request.xhr?
-            render partial: 'notes/comment', locals: { comment: @comment } unless params[:react]
+            render partial: 'notes/comment', locals: { comment: @comment }
           else
             tagnames = @node.tagnames.map do |tagname|
               "<a href='/subscribe/tag/#{tagname}'>#{tagname}</a>"
@@ -96,13 +91,8 @@ class CommentController < ApplicationController
       # should abstract ".comment" to ".body" for future migration to native db
       @comment.comment = params[:body]
       if @comment.save
-        if params[:react]
-          new_comment = helpers.get_react_comments([@comment])
-          render json: { comment: new_comment }
-        else
-          flash[:notice] = 'Comment updated.'
-          redirect_to @path + '?_=' + Time.now.to_i.to_s
-        end
+        flash[:notice] = 'Comment updated.'
+        redirect_to @path + '?_=' + Time.now.to_i.to_s
       else
         flash[:error] = 'The comment could not be updated.'
         redirect_to @path
@@ -124,21 +114,16 @@ class CommentController < ApplicationController
 
       if @comment.destroy
         respond_with do |format|
-          if params[:react]
-            render json: { success: true }
-            return
+          if params[:type] && params[:type] == 'question'
+            @answer_id = @comment.aid
+            format.js { render 'comments/delete.js.erb' }
           else
-            if params[:type] && params[:type] == 'question'
-              @answer_id = @comment.aid
-              format.js { render 'comments/delete.js.erb' } unless params[:react]
-            else
-              format.html do
-                if request.xhr?
-                  render plain: 'success' unless params[:react]
-                else
-                  flash[:notice] = 'Comment deleted.' unless params[:react]
-                  redirect_to '/' + @node.path unless params[:react]
-                end
+            format.html do
+              if request.xhr?
+                render plain: 'success'
+              else
+                flash[:notice] = 'Comment deleted.' unless params[:react]
+                redirect_to '/' + @node.path
               end
             end
           end
@@ -171,6 +156,69 @@ class CommentController < ApplicationController
       format.js do
         render template: 'comments/like_comment'
       end
+    end
+  end
+
+  def react_create
+    @node = Node.find params[:id]
+    @body = params[:body]
+    @user = current_user
+
+    begin
+      @comment = create_comment(@node, @user, @body)
+
+      if params[:reply_to].present?
+        @comment.reply_to = params[:reply_to].to_i
+        @comment.save
+      end
+
+      new_comment = helpers.get_react_comments([@comment])
+      render json: { comment: new_comment }
+    rescue CommentError
+      flash.now[:error] = 'The comment could not be saved.'
+      render plain: 'failure', status: :bad_request
+    end
+  end
+
+  def react_delete
+    @comment = Comment.find params[:id]
+
+    comments_node_and_path
+
+    if current_user.uid == @node.uid ||
+      @comment.uid == current_user.uid ||
+      logged_in_as(%w(admin moderator))
+
+      if @comment.destroy
+        render json: { success: true }
+        return
+      else
+        flash[:error] = 'The comment could not be deleted.'
+        render plain: 'failure'
+      end
+    else
+      prompt_login 'Only the comment or post author can delete this comment'
+    end
+  end
+
+  def react_update
+    @comment = Comment.find params[:id]
+
+    comments_node_and_path
+
+    if @comment.uid == current_user.uid
+      # should abstract ".comment" to ".body" for future migration to native db
+      @comment.comment = params[:body]
+      if @comment.save
+        new_comment = helpers.get_react_comments([@comment])
+        render json: { comment: new_comment }
+      else
+        flash[:error] = 'The comment could not be updated.'
+        redirect_to @path
+      end
+    else
+      flash[:error] = 'Only the author of the comment can edit it.'
+      redirect_to @path
     end
   end
 end
