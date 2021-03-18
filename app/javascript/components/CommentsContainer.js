@@ -47,11 +47,10 @@ const CommentsContainer = ({
     const commentBody = textAreaValues[formId];
 
     $.post(
-      "/comment/create/" + nodeId, 
+      "/comment/react/create/" + nodeId, 
       {
         body: commentBody,
         id: nodeId,
-        react: true,
         reply_to: formType === "reply" ? commentId : null
       },
       function(data) {
@@ -77,16 +76,15 @@ const CommentsContainer = ({
     );
   }
 
-  const handleUpdateComment = (commentId, formType) => {
+  const handleUpdateComment = (commentId) => {
     const formId = "edit-" + commentId;
     const commentBody = textAreaValues[formId];
 
     $.post(
-      "/comment/update/" + commentId,
+      "/comment/react/update/" + commentId,
       {
         id: commentId,
-        body: commentBody,
-        react: true
+        body: commentBody
       }, 
       function(data) {
         // the freshly updated comment is NOT a reply
@@ -109,11 +107,10 @@ const CommentsContainer = ({
   }
 
   const handleDeleteComment = (commentId) => {
-    $.get(
-      "/comment/delete/" + commentId,
+    $.post(
+      "/comment/react/delete/" + commentId,
       {
-        id: commentId,
-        react: true
+        id: commentId
       },
       function(data) {
         if (data.success) {
