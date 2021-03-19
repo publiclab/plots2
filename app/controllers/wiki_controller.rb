@@ -341,7 +341,7 @@ class WikiController < ApplicationController
       .references(:node_revisions)
       .group('node_revisions.nid, node_revisions.vid')
       .order(order_string)
-      .where("node_revisions.status = 1 AND node.status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')"), items:10)
+      .where("node_revisions.status = 1 AND node.status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')"))
 
     @paginated = true
   end

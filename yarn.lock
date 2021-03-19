@@ -1525,10 +1525,10 @@ cwise-compiler@^1.0.0, cwise-compiler@^1.1.2:
   dependencies:
     uniq "^1.0.0"
 
-cytoscape@^3.18.0:
-  version "3.18.0"
-  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.18.0.tgz#26999eb1a19631527a9c56ebc881a995981cb474"
-  integrity sha512-9GeAWkcy8gzecNyUGqFe2P42JgA8O+pJ4bFxr85jyXmH92042e/e9ERMqwfM1UWGMfIDasMoe7dvKMLGlF5vzQ==
+cytoscape@^3.18.1:
+  version "3.18.1"
+  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.18.1.tgz#58197622f748c0eb24db7bdc7313c7cd96e6a10a"
+  integrity sha512-XTGI9RPcufWOQ4itNm4lleILvnwBT2jY85eDxWVU6FsKk5Gahd6jl0QQcpzxsIbh86pd7XjEgXHdvi2Z4+g0hA==
   dependencies:
     heap "^0.2.6"
     lodash.debounce "^4.0.8"
@@ -4841,10 +4841,10 @@ markdown-it@5.1.0:
     mdurl "~1.0.1"
     uc.micro "^1.0.0"
 
-marked@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-2.0.0.tgz#9662bbcb77ebbded0662a7be66ff929a8611cee5"
-  integrity sha512-NqRSh2+LlN2NInpqTQnS614Y/3NkVMFFU6sJlRFEpxJ/LHuK/qJECH7/fXZjk4VZstPW/Pevjil/VtSONsLc7Q==
+marked@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/marked/-/marked-2.0.1.tgz#5e7ed7009bfa5c95182e4eb696f85e948cefcee3"
+  integrity sha512-5+/fKgMv2hARmMW7DOpykr2iLhl0NgjyELk5yn92iE7z8Se1IS9n3UsFm86hFXIkvMBmVxki8+ckcpjBeyo/hw==
 
 mdurl@~1.0.1:
   version "1.0.1"
