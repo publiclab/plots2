@@ -116,7 +116,7 @@ class Tag < ApplicationRecord
         .order(order)
   end
 
-  # just like find_nodes_by_type, but searches wiki pages, places, and tools
+  # just like find_nodes_by_type, but searches wiki pages, places
   def self.find_pages(tagnames, limit = 10)
     find_nodes_by_type(tagnames, %w(page place tool), limit)
   end
