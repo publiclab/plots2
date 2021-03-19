@@ -8,7 +8,7 @@ redeploy-container:
 	docker-compose build --pull
 	docker-compose run --rm web yarn install
 	docker-compose run --rm web bash -c "bundle exec rake db:migrate && bundle exec rake assets:precompile && bundle exec rake tmp:cache:clear"
-	docker-compose run --rm web bash -c "bundle exec rails g webpacker:install && bundle exec rails g webpacker:install:react && bundle exec rails g react:install"
+	docker-compose run --rm web bash -c "bundle exec rails webpacker:install && bundle exec rails webpacker:install:react && bundle exec rails g react:install"
 	docker-compose down --remove-orphans
 	docker-compose up -d
 	docker-compose exec -T web bash -c "echo 172.17.0.1 smtp >> /etc/hosts"
@@ -25,7 +25,7 @@ automated-redeploy: pull-from-stable redeploy-container
 deploy-container:
 	docker-compose run --rm web yarn install
 	docker-compose run --rm web bash -c "sleep 5 && bundle exec rake db:migrate && bundle exec rake assets:precompile"
-	docker-compose run --rm web bash -c "sleep 5 && bundle exec rails g webpacker:install && bundle exec rails g webpacker:install:react && bundle exec rails g react:install"
+	docker-compose run --rm web bash -c "sleep 5 && bundle exec rails webpacker:install && bundle exec rails webpacker:install:react && bundle exec rails g react:install"
 	docker-compose up -d
 	docker-compose exec -T web bash -c "echo 172.17.0.1 smtp >> /etc/hosts"
 	docker-compose exec -T mailman bash -c "echo 172.17.0.1 smtp >> /etc/hosts"
