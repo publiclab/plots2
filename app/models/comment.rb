@@ -116,21 +116,21 @@ class Comment < ApplicationRecord
   def notify_callout_users
     # notify mentioned users
     mentioned_users.each do |user|
-      CommentMailer.notify_callout(self, user).deliver_now if user.username != author.username
+      CommentMailer.notify_callout(self, user).deliver_later if user.username != author.username
     end
   end
 
   def notify_tag_followers(already_mailed_uids = [])
     # notify users who follow the tags mentioned in the comment
     followers_of_mentioned_tags.each do |user|
-      CommentMailer.notify_tag_followers(self, user).deliver_now unless already_mailed_uids.include?(user.uid)
+      CommentMailer.notify_tag_followers(self, user).deliver_later unless already_mailed_uids.include?(user.uid)
     end
   end
 
   def notify_users(uids, current_user)
     User.where('id IN (?)', uids).find_each do |user|
       if user.uid != current_user.uid
-        CommentMailer.notify(user, self).deliver_now
+        CommentMailer.notify(user, self).deliver_later
       end
     end
   end
@@ -142,7 +142,7 @@ class Comment < ApplicationRecord
       AdminMailer.notify_comment_moderators(self).deliver_later!(wait_until: 24.hours.from_now)
     else
       if parent.uid != current_user.uid && !UserTag.exists?(parent.uid, 'notify-comment-direct:false')
-        CommentMailer.notify_note_author(parent.author, self).deliver_now
+        CommentMailer.notify_note_author(parent.author, self).deliver_later
       end
 
       notify_callout_users
