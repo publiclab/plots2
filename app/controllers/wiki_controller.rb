@@ -353,7 +353,8 @@ class WikiController < ApplicationController
       .references(:node_revisions)
       .group('node_revisions.nid, node_revisions.vid')
       .order('node_revisions.timestamp ASC')
-                           .where("node_revisions.status = 1 AND node.status = 1 AND type = 'page'"), items: 10)
+      .where("node_revisions.status = 1 AND node.status = 1 AND type = 'page'"), items: 10)
+
     @paginated = true
     render template: 'wiki/index'
   end
