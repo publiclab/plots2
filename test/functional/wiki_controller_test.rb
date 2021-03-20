@@ -31,6 +31,13 @@ class WikiControllerTest < ActionController::TestCase
     assert assigns(:wikis).each_cons(2).all?{|i,j| "j.node_revisions.title" >= "i.node_revisions.title" }
   end
 
+  test 'should sort by last edited' do
+    get :index, params: { sort: "last_edited" }
+    wikis = assigns(:wikis)
+    assert_equal(wikis.first.title,"Important work")
+    assert_equal(wikis.last.title,"Method page")
+  end
+
   test 'should get wiki stale pages' do
     get :stale
 
