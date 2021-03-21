@@ -44,7 +44,7 @@
                                         </div>
                                         <% if user.note_count > 0 %>
                                           <div class="card-footer text-muted text-left">
-                                            last posted <%= distance_of_time_in_words(Time.now.to_i - user.notes.order("created DESC").first.created.to_i) %> ago
+                                          <i class="fas fa-clock"></i>&nbsp;last posted <%= distance_of_time_in_words(Time.now.to_i - user.notes.order("created DESC").first.created.to_i) %> ago
                                           </div>
                                         <% end %>
                                       </div>'>
