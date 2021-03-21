@@ -4,7 +4,7 @@
 
 <% if @node.main_image && !@presentation %>
   <a style="margin-bottom:10px;" href="<%= @node.main_image.path(:original) %>">
-    <%= image_tag(@node.main_image.path(:large), class:"rounded", style:'max-width:100%;max-height:600px;margin-bottom:10px;') %>
+    <%= image_tag(@node.main_image.path(:large), class:"rounded", style:'width:100%;max-height:600px;margin-bottom:10px;') %>
   </a>
 <% end %>
 
