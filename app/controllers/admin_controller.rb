@@ -60,22 +60,22 @@ class AdminController < ApplicationController
     end
   end
 
-  def useremail 
-   if logged_in_as(['admin', 'moderator']) 
-     if params[:address] 
-       # address was submitted. find the username(s) and return. 
-       @address = params[:address] 
+  def useremail
+   if logged_in_as(['admin', 'moderator'])
+     if params[:address]
+       # address was submitted. find the username(s) and return.
+       @address = params[:address]
        if params[:include_banned]
-         @users = User.where(email: params[:address]) 
+         @users = User.where(email: params[:address])
            .where('created_at > (?)', DateTime.new(2015)) # since 2015, whether banned or not
        else
-         @users = User.where(email: params[:address]) 
-           .where(status: [1, 4]) 
+         @users = User.where(email: params[:address])
+           .where(status: [1, 4])
        end
-     end 
-   else 
-     # unauthorized. instead of return ugly 403, just send somewhere else 
-     redirect_to '/dashboard' 
+     end
+   else
+     # unauthorized. instead of return ugly 403, just send somewhere else
+     redirect_to '/dashboard'
    end
   end
 
@@ -205,7 +205,7 @@ class AdminController < ApplicationController
           AdminMailer.notify_author_of_approval(@node, current_user).deliver_later
           # No longer notifying other moderators as of https://github.com/publiclab/plots2/issues/6246
           # AdminMailer.notify_moderators_of_approval(@node, current_user).deliver_later
-          SubscriptionMailer.notify_node_creation(@node).deliver_now
+          SubscriptionMailer.notify_node_creation(@node).deliver_later
           flash[:notice] = if @node.has_power_tag('question')
                              "Question approved and published after #{time_ago_in_words(@node.created_at)} in moderation. Now reach out to the new community member; thank them, just say hello, or help them revise/format their post in the comments."
                            else
