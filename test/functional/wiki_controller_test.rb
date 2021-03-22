@@ -32,7 +32,7 @@ class WikiControllerTest < ActionController::TestCase
   end
 
   test 'should paginate the wikis' do
-    31.times{
+    6.times{
     post :create,
          params: {
            uid:   users(:bob).id,
