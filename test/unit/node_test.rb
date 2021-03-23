@@ -344,7 +344,42 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'should find all research notes' do
     notes = Node.research_notes
-    expected = [nodes(:one), nodes(:spam), nodes(:first_timer_note), nodes(:blog), nodes(:moderated_user_note), nodes(:activity), nodes(:upgrade), nodes(:draft), nodes(:post_test1), nodes(:post_test2), nodes(:post_test3), nodes(:post_test4), nodes(:scraped_image), nodes(:search_trawling), nodes(:purple_air_without_hyphen), nodes(:purple_air_with_hyphen), nodes(:sun_note), nodes(:sunny_day_note), nodes(:comment_note), nodes(:hidden_response_note), nodes(:note_with_multiple_comments)]
+    expected = [
+      nodes(:one), 
+      nodes(:spam), 
+      nodes(:first_timer_note), 
+      nodes(:blog),
+      nodes(:moderated_user_note), 
+      nodes(:activity), 
+      nodes(:upgrade),
+      nodes(:draft), 
+      nodes(:post_test1), 
+      nodes(:post_test2),
+      nodes(:post_test3), 
+      nodes(:post_test4), 
+      nodes(:scraped_image), 
+      nodes(:search_trawling),
+      nodes(:purple_air_without_hyphen), 
+      nodes(:purple_air_with_hyphen),
+      nodes(:sun_note), 
+      nodes(:sunny_day_note), 
+      nodes(:comment_note), 
+      nodes(:hidden_response_note),
+      nodes(:note_with_multiple_comments),
+      nodes(:checkbox_one),
+      nodes(:checkbox_two),
+      nodes(:hashtag_one),
+      nodes(:hashtag_two),
+      nodes(:hashtag_three),
+      nodes(:hashtag_four),
+      nodes(:hashtag_with_hyphens),
+      nodes(:hashtag_with_punctuation),
+      nodes(:hashtag_in_header),
+      nodes(:subheader),
+      nodes(:hashtag_in_link),
+      nodes(:hashtag_in_url),
+      nodes(:email),
+    ]
     assert_equal expected, notes
   end
 
