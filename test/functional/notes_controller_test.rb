@@ -370,7 +370,7 @@ class NotesControllerTest < ActionController::TestCase
     get :index
     assert_response :success
     selector = css_select 'div.note'
-    assert_equal 17, selector.size
+    assert_equal 20, selector.size
   end
 
   test 'first-timer moderated note (status=4) shown to moderator with notice and approval prompt in full view' do
@@ -398,7 +398,7 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_response :success
     selector = css_select 'div.note'
-    assert_equal 17, selector.size
+    assert_equal 20, selector.size
   end
 
   test 'post_note_error_no_title' do
@@ -660,49 +660,24 @@ class NotesControllerTest < ActionController::TestCase
   test 'should list only research notes with status 1 in index' do
     get :index
     notes = assigns(:notes)
-    expected = [nodes(:one)]
-    questions = [nodes(:question)]
-    assert (notes & expected).present?
-    assert !(notes & questions).present?
-  end
-
-  test 'should list research notes with status 1 & 4 in index if admin is logged in' do
-    UserSession.create(users(:admin))
-    get :index
-    notes = assigns(:notes)
-    expected = [nodes(:one), nodes(:first_timer_note)]
-    questions = [nodes(:question)]
-    assert (notes & expected).present?
-    assert !(notes & questions).present?
+    assert assigns(:notes).collect(&:status).uniq == [1]
   end
 
   test 'should list only research notes with status 1 in popular' do
     UserSession.create(users(:admin))
     get :popular
-    notes = assigns(:notes)
-    expected = [nodes(:one)]
-    questions = [nodes(:question)]
-    assert (notes & expected).present?
-    assert !(notes & questions).present?
+    assert assigns(:notes).collect(&:status).uniq == [1]
   end
 
   test 'should list only research notes with status 1 in recent' do
     get :recent
-    notes = assigns(:notes)
-    expected = [nodes(:one)]
-    questions = [nodes(:question)]
-    assert (notes & expected).present?
-    assert !(notes & questions).present?
+    assert assigns(:notes).collect(&:status).uniq == [1]
   end
 
   test 'should list only research notes with status 1 in liked' do
     UserSession.create(users(:admin))
     get :liked
-    notes = assigns(:notes)
-    expected = [nodes(:one)]
-    questions = [nodes(:question)]
-    assert (notes & expected).present?
-    assert !(notes & questions).present?
+    assert assigns(:notes).collect(&:status).uniq == [1]
   end
 
   test 'first note in /liked endpoint should be highest liked' do
@@ -715,6 +690,7 @@ class NotesControllerTest < ActionController::TestCase
     # both should be equal
     assert expected == actual.cached_likes
   end
+
   test 'first note in /recent endpoint should be most recent' do
     get :recent
     notes = assigns(:notes)
