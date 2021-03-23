@@ -206,7 +206,7 @@ class User < ActiveRecord::Base
 
   def add_to_lists(lists)
     lists.each do |list|
-      WelcomeMailer.add_to_list(self, list).deliver_now
+      WelcomeMailer.add_to_list(self, list).deliver_later
     end
   end
 
@@ -365,7 +365,7 @@ class User < ActiveRecord::Base
     end
 
     if @nodes.size.positive?
-      SubscriptionMailer.send_digest(id, @nodes, @frequency).deliver_now
+      SubscriptionMailer.send_digest(id, @nodes, @frequency).deliver_later
     end
   end
 
@@ -378,7 +378,7 @@ class User < ActiveRecord::Base
       @nodes_unmoderated = unmoderated_in_period(1.day.ago, Time.current)
     end
     if @nodes_unmoderated.size.positive?
-      AdminMailer.send_digest_spam(@nodes_unmoderated, @frequency_digest).deliver_now
+      AdminMailer.send_digest_spam(@nodes_unmoderated, @frequency_digest).deliver_later
     end
  end
 
