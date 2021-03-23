@@ -117,8 +117,17 @@
       <hr />
     <% end %>
     <% if !@preview %>
-        <%= render partial: "notes/responses" %>
+      <%= render partial: "notes/responses" %>
+      <% if @react %>
+        <%= react_component("App", { 
+          initialComments: @react_props[:comments],
+          currentUser: @react_props[:currentUser],
+          elementText: @react_props[:elementText],
+          node: @react_props[:node]
+        }) %>
+      <% else %>
         <div id="legacy-editor-container"><%= render partial: "notes/comments" %></div>
+      <% end %>
     <% end %>
   </div>
 

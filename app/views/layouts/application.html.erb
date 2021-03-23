@@ -96,18 +96,18 @@
 
     <%= yield(:head) %>
 
-  <style type="text/css">
-    .pac-container { z-index: 100000; }
+    <style type="text/css">
+      .pac-container { z-index: 100000; }
 
-    #ex1Slider .slider-selection {
-     background: #BABABA;
-    }
+      #ex1Slider .slider-selection {
+      background: #BABABA;
+      }
 
   </style>
 
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/bootstrap-slider.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/css/bootstrap-slider.min.css" />
-
+  <%= javascript_pack_tag 'application' %>
   </head>
 
   <body>

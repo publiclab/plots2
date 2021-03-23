@@ -158,4 +158,67 @@ class CommentController < ApplicationController
       end
     end
   end
+
+  def react_create
+    @node = Node.find params[:id]
+    @body = params[:body]
+    @user = current_user
+
+    begin
+      @comment = create_comment(@node, @user, @body)
+
+      if params[:reply_to].present?
+        @comment.reply_to = params[:reply_to].to_i
+        @comment.save
+      end
+
+      new_comment = helpers.get_react_comments([@comment])
+      render json: { comment: new_comment }
+    rescue CommentError
+      flash.now[:error] = 'The comment could not be saved.'
+      render plain: 'failure', status: :bad_request
+    end
+  end
+
+  def react_delete
+    @comment = Comment.find params[:id]
+
+    comments_node_and_path
+
+    if current_user.uid == @node.uid ||
+       @comment.uid == current_user.uid ||
+       logged_in_as(%w(admin moderator))
+
+      if @comment.destroy
+        render json: { success: true }
+        return
+      else
+        flash[:error] = 'The comment could not be deleted.'
+        render plain: 'failure'
+      end
+    else
+      prompt_login 'Only the comment or post author can delete this comment'
+    end
+  end
+
+  def react_update
+    @comment = Comment.find params[:id]
+
+    comments_node_and_path
+
+    if @comment.uid == current_user.uid
+      # should abstract ".comment" to ".body" for future migration to native db
+      @comment.comment = params[:body]
+      if @comment.save
+        new_comment = helpers.get_react_comments([@comment])
+        render json: { comment: new_comment }
+      else
+        flash[:error] = 'The comment could not be updated.'
+        redirect_to @path
+      end
+    else
+      flash[:error] = 'Only the author of the comment can edit it.'
+      redirect_to @path
+    end
+  end
 end

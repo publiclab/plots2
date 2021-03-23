@@ -58,3 +58,10 @@ vendor/bundle
 spec/TEST-Teaspoon-Result.xml
 yarn.lock
 yarn-error.log
+
+/public/packs
+/public/packs-test
+/node_modules
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity

@@ -47,6 +47,7 @@ gem 'rails-i18n', '~> 5.1.3'
 gem 'rails_autolink'
 gem 'rb-readline'
 gem 'rdiscount', '~> 2.2'
+gem 'react-rails'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'responders', '~> 3.0'
 gem 'rubocop', '~> 1.11.0', require: false
@@ -58,6 +59,7 @@ gem 'skylight' # performance tracking via skylight.io
 gem 'turbolinks', '~> 5'
 gem 'tzinfo-data', platforms: %i(mingw mswin x64_mingw jruby)
 gem 'unicode-emoji'
+gem 'webpacker'
 gem 'whenever', require: false
 gem 'will_paginate', '>= 3.0.6'
 gem 'will_paginate-bootstrap4'

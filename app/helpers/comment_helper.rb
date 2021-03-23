@@ -11,4 +11,27 @@ module CommentHelper
       raise CommentError
     end
   end
+
+  # takes an activerecord query, returns a plain array
+  # used in notes_controller.rb and comment_controller.rb
+  def get_react_comments(comments_record)
+    comments = []
+    comments_record.each do |comment|
+      comment_json = {}
+      comment_json[:authorId] = comment.uid
+      comment_json[:authorPicFilename] = comment.author.photo_file_name
+      comment_json[:authorPicUrl] = comment.author.photo_path(:thumb)
+      comment_json[:authorUsername] = comment.author.username
+      comment_json[:commentId] = comment.cid
+      comment_json[:commentName] = comment.name
+      comment_json[:createdAt] = comment.created_at
+      comment_json[:htmlCommentText] = raw insert_extras(filtered_comment_body(comment.render_body))
+      comment_json[:rawCommentText] = comment.comment
+      comment_json[:replyTo] = comment.reply_to
+      time_created_string = distance_of_time_in_words(comment.created_at, Time.current, include_seconds: false, scope: 'datetime.time_ago_in_words')
+      comment_json[:timeCreatedString] = time_created_string
+      comments << comment_json
+    end
+    comments
+  end
 end
