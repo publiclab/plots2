@@ -219,10 +219,10 @@ class Spam2ControllerTest < ActionController::TestCase
     test '_spam_insights should assign correct value to graph_unmoderated' do
         UserSession.create(users(:moderator))
         Node.delete_all
-        node2 = Node.new(uid: users(:bob).id,
+        Node.new(uid: users(:bob).id,
         type: 'note',
         title: 'node2',
-        status: 4)       
+        status: 4) 
         get :_spam_insights
         assert_equal assigns(:graph_unmoderated), Node.spam_graph_making(4)
         assert_response :success
@@ -231,7 +231,7 @@ class Spam2ControllerTest < ActionController::TestCase
     test '_spam_insights should assign correct value to graph_flagged' do
         UserSession.create(users(:moderator))
         Node.delete_all
-        node3 = Node.new(uid: users(:bob).id,
+        Node.new(uid: users(:bob).id,
         type: 'note',
         title: 'node3',
         status: 1,
