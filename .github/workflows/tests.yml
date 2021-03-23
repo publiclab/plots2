@@ -41,6 +41,12 @@ jobs:
     - uses: ./.github/actions/setup-test-environment
     - name: Install JavaScript dependencies with Yarn
       run: yarn check || yarn install --frozen-lockfile;
+    - name: Run webpacker setup
+      env:
+        RAILS_ENV: test
+        DB_PASSWORD: root
+        DB_PORT: ${{ job.services.mysql.ports[3306] }}
+      run: bundle exec rails g webpack:install && bundle exec rails g webpack:install:react && bundle exec rails g react:install
     - name: "Functional Tests"
       env:
         RAILS_ENV: test
@@ -59,6 +65,12 @@ jobs:
     - uses: ./.github/actions/setup-test-environment
     - name: Install JavaScript dependencies with Yarn
       run: yarn check || yarn install --frozen-lockfile;
+    - name: Run webpacker setup
+      env:
+        RAILS_ENV: test
+        DB_PASSWORD: root
+        DB_PORT: ${{ job.services.mysql.ports[3306] }}
+      run: bundle exec rails g webpack:install && bundle exec rails g webpack:install:react && bundle exec rails g react:install
     - name: "Integration Tests"
       env:
         RAILS_ENV: test
@@ -90,6 +102,12 @@ jobs:
     - uses: ./.github/actions/setup-test-environment
     - name: Install JavaScript dependencies with Yarn
       run: yarn check || yarn install --frozen-lockfile;
+    - name: Run webpacker setup
+      env:
+        RAILS_ENV: test
+        DB_PASSWORD: root
+        DB_PORT: ${{ job.services.mysql.ports[3306] }}
+      run: bundle exec rails g webpack:install && bundle exec rails g webpack:install:react && bundle exec rails g react:install
     - name: "System Tests"
       env:
         RAILS_ENV: test
