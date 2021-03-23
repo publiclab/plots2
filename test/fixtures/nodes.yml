@@ -237,8 +237,8 @@ method:
   nid: 20
   uid: 8
   title: "Method page"
-  created: <%= Time.now.to_i %>
-  changed: <%= Time.now.to_i %>
+  created: <%= DateTime.new(2018,8,1).to_i %>
+  changed: <%= DateTime.new(2018,8,1).to_i %>
   status: 1
   type: "page"
   cached_likes: 0
@@ -260,8 +260,8 @@ welcome_feature:
   nid: 22
   uid: 1
   title: "welcome-email-body"
-  created: <%= Time.now.to_i %>
-  changed: <%= Time.now.to_i %>
+  created: <%= DateTime.new(2018,8,1).to_i %>
+  changed: <%= DateTime.new(2018,8,1).to_i %>
   status: 1
   type: "feature"
   cached_likes: 0

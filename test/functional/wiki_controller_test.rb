@@ -45,6 +45,13 @@ class WikiControllerTest < ActionController::TestCase
     wikis = assigns(:wikis)
     assert wikis.size==10
   end
+  
+  test 'should sort by last edited' do
+    get :index, params: { sort: "last_edited" }
+    wikis = assigns(:wikis)
+    assert_equal(wikis.first.title,"Important work")
+    assert_equal(wikis.last.title,"Method page")
+  end
 
   test 'should get wiki stale pages' do
     get :stale
