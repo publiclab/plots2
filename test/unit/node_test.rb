@@ -49,7 +49,6 @@ class NodeTest < ActiveSupport::TestCase
   end
 
   test 'notify_callout_users' do
-  perform_enqueued_jobs do
     saved, node, revision = Node.new_note(uid: users(:naman).id,
                     title: 'Note with mentioned users',
                     body: '@naman18996 and @jeffrey are being mentioned in the body')
@@ -62,7 +61,6 @@ class NodeTest < ActiveSupport::TestCase
     end
     assert_equal 2, emails.count
     assert_equal ["naman18996@yahoo.com", "jeff@publiclab.org"].to_set, emails.to_set
-  end
   end
 
   test 'emoji conversion' do
