@@ -114,7 +114,7 @@
     },
     location: {
       lat: 23,
-      lon: 77 
+      lon: 77
     }
   };
 
@@ -123,7 +123,7 @@
   (function() {
 
     L.Icon.Default.imagePath = '/lib/leaflet/dist/images/';
-    
+
     <% if current_user %>
       <%  latest_location = current_user.latest_location %>
       <% unless latest_location.nil? %>
@@ -151,7 +151,7 @@
       let zoom = blurredLocation.map.getZoom();
       $('#ex1').slider('setValue', zoom);
     })
-    
+
     $('#coord_button').click((event) => {
       event.preventDefault();
       $('#coord_input').toggle();
@@ -176,7 +176,6 @@
     });
 
   })();
-  
   function saveLocation() {
     var tags = 'lat:' + blurredLocation.getLat() + ',lon:' + blurredLocation.getLon() + ',zoom:' + blurredLocation.getZoom();
     if (blurredLocation.isBlurred()) tags = tags + ',' + 'location:blurred'
@@ -184,16 +183,24 @@
       tags = tags + ',' + 'place:' + parameterize($('#placenameDisplay').val());
     }
     <% if params[:url] %>
-      addTag(tags, '<%= params[:url] %>');
+      addTag(tags, '<%= params[:url] %>', "", locationCallback);
     <% else %>
-      addTag(tags);
+      addTag(tags, null, "", locationCallback);
     <% end %>
-    
     <% if params[:reload] %>setTimeout(function() { location.reload(); }, 3000);<% end %>
+  }
+
+  function locationCallback(event){
+    if (event.errors.length > 0 && event.errors.includes("Error: tag already exists.")) {
+        notyNotification('relax', 3000, 'error', 'topRight', 'Location Already Saved.');
+      } else if (event.saved.length > 0) {
+        notyNotification('relax', 3000, 'success', 'topRight', 'Location Saved');
+      } else {
+        notyNotification('relax', 3000, 'error', 'topRight', 'Something went wrong. Contact administrator.');
+    }
   }
 
   function parameterize(input) {
     return input.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
   }
-  
 </script>

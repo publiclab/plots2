@@ -1,10 +1,11 @@
 <div class="row">
   <div id="comments" class="col-lg-10 comments">
     <% comments = @node.comments_viewable_by(current_user) %>
-    <h3><span id="comment-count"><%= comments.length %></span> <%= translation('notes._comments.comments') %></h3>
-
+    <h3><span id="comment-count"><%= comments.size %></span> <%= translation('notes._comments.comments') %></h3>
+    <%= javascript_include_tag "editorToolbar" %>
+    <%= javascript_include_tag "comment" %>
     <div style="margin-bottom: 50px;" id="comments-list">
-      <% comments.includes(:replied_comments).order('timestamp ASC').each do |comment| %>
+      <% comments.includes([:replied_comments, :node]).order('timestamp ASC').each do |comment| %>
         <% if comment.cid == @node.comments&.first&.cid %><a id="last" name="last"></a><% end %>
 
         <% if comment.reply_to.nil? %>
@@ -15,12 +16,28 @@
     </div>
 
     <% if current_user %>
-        <%= render :partial => "comments/form", :locals => { title: I18n.t('notes._comments.post_comment'), comment: false, placeholder: I18n.t('notes._comments.post_placeholder'), url1: '/conduct', author: current_user.title, is_new_contributor:current_user.is_new_contributor? } %>
+      <%= render :partial => "comments/form", :locals => { 
+        title: I18n.t('notes._comments.post_comment'), 
+        comment: false, 
+        placeholder: I18n.t('notes._comments.post_placeholder'), 
+        url1: '/conduct', 
+        author: current_user.title, 
+        is_new_contributor:current_user.is_new_contributor?,
+        location: :main # toolbar needs this to create dropzone ID
+      } %>
     <% else %>
       <p><a href="#" data-toggle="modal" data-target="#loginModal">
         <%= translation('layout._header.login.login_title') %> </a> to comment.
       </p>
     <% end %>
-
   </div>
 </div>
+<script>
+  $(function() {
+    // create an instance of the editor
+    $E = new Editor();
+    // attach tooltips to comment buttons
+    $('[data-toggle="tooltip"]').tooltip();
+    $('[rel="tooltip"]').tooltip();
+  });
+</script>

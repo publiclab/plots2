@@ -30,9 +30,9 @@
       <%= feature("alert-#{@node.power_tag('alert')}") %>
     <% end %>
 
-    <div class="tab-pane active" id="tab-overview">
+    <div id="legacy-editor-container" class="tab-pane active">
       <% if controller.action_name == 'comments' %>
-          <%= render partial: "notes/comments", :locals => {:nodes => @nodes} %>
+        <%= render partial: "notes/comments", :locals => {:nodes => @nodes} %>
       <% else %>
         <div <% unless @node.has_tag('style:wide') %>style="max-width:800px;"<% end %> id="content" class="pl-content wiki">
           <% if @node.has_tag('format:raw') %>
@@ -55,22 +55,25 @@
 <% if @node.has_tag('sidebar:none') %>
   <%= render partial: "sidebar/none" %>
 <% else %>
-  <% if @node.has_tag('sidebar:featured') %>
-    <%= render partial: "sidebar/featured" %>
-  <% else %>
-    <%= render partial: "sidebar/related" %>
-  <% end %>
+  <%= render partial: "sidebar/related" %>
 <% end %>
 
 <script>
-(function(){
-  $("img").lazyload();
+  $(function() {
+    $("img").lazyload();
 
-  <% if @fancy %>
-    $('#content img').addClass('img-rounded');
-  <% end %>
+    <% if @fancy %>
+      $('#content img').addClass('img-rounded');
+    <% end %>
 
-  setupWiki(<%= @node.id %>, "<%= @node.title %>", <%= params[:raw] == 'true' %>, <%= current_user.nil? != true %>);
+    <% if controller.action_name == 'comments' %>
+      // create an instance of the editor
+      $E = new Editor();
+      // attach tooltips to comment buttons
+      $('[data-toggle="tooltip"]').tooltip();
+      $('[rel="tooltip"]').tooltip();
+    <% end %>
 
-})()
+    setupWiki(<%= @node.id %>, "<%= @node.title %>", <%= params[:raw] == 'true' %>, <%= current_user.nil? != true %>);
+  });
 </script>

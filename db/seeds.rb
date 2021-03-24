@@ -72,8 +72,8 @@ blog_post_comment = Comment.create! "nid"=>blog_post.id, "uid"=>admin.id,
   content_type_mape = DrupalContentTypeMap.create! "vid"=>map_node.nid,
     "nid"=>map_node.nid, "field_publication_date_value"=>Time.now.to_s(:short),
     "field_capture_date_value"=>Time.now.to_s(:short),
-    "field_tms_url_value"=>"http://archive.publiclaboratory.org/leaflet/?\
-    tms=http://archive.publiclab.org/2013/2013-04-15-us-massachusetts-plum-\
+    "field_tms_url_value"=>"https://archive.publiclaboratory.org/leaflet/?\
+    tms=https://archive.publiclab.org/2013/2013-04-15-us-massachusetts-plum-\
     island/tms/&lon=-70.80848&lat=42.7952&zoom=16", "field_license_value"=>"publicdomain",
     "field_raw_images_value"=>"", "field_cartographer_notes_value"=>"No notes",
     "field_notes_value"=>"No note value",  "field_zoom_min_value"=>1,
@@ -83,4 +83,14 @@ end
 # create a bunch of random tags
 tagnames = ['one', 'two', 'three', 'four', 'five', 'six']
 80.times { try { Node.find(rand(Node.count-2)+1).add_tag(tagnames[rand(tagnames.length-1)],User.first) } }
-
+# Create a footer message
+footer_feature = Node.create! "type"=>"feature", "title"=>"footer-notice", "uid"=>admin.id
+Revision.create! "nid"=>footer_feature.nid, "uid"=>admin.uid, "title"=>"footer-notice", "body"=>"The footer is empty during local development", "teaser"=>"", "log"=>"", "format"=>1
+# Create home intro message
+home_intro_feature = Node.create! "type"=>"feature", "title"=>"home-intro", "uid"=>admin.id
+Revision.create! "nid"=>home_intro_feature.nid, "uid"=>admin.uid, "title"=>"home-intro",
+                  "body"=>"Welcome to the plots2 application!
+                  This message is displayed only to developers running the code in a development environment.
+                  To use a lot of the features on this site, even locally, you'll have to log in. Default username and password are
+                  username: admin, moderator, or user and password: password",
+                  "teaser"=>"", "log"=>"", "format"=>1

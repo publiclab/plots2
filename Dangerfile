@@ -2,7 +2,7 @@
 if ENV['TASK'] == "rails test:system"
   message "@#{github.pr_author} Thank you for your pull request! I'm here to help with some tips and recommendations. Please take a look at the list provided and help us review and accept your contribution! And **don't be discouraged if you see errors** -- we're here to help."
 
-  message "Your pull request is on the `master` branch. Please [make a separate feature branch](https://publiclab.org/wiki/contributing-to-public-lab-software#A+sample+git+workflow)) with a descriptive name like `new-blog-design` while making PRs in the future." if github.branch_for_head == 'master'
+  message "Your pull request is on the `main` branch. Please [make a separate feature branch](https://publiclab.org/wiki/contributing-to-public-lab-software#A+sample+git+workflow)) with a descriptive name like `new-blog-design` while making PRs in the future." if github.branch_for_head == 'main'
 
   unless git.commits.any? { |c| c.message =~ /#[\d]+/ }  || github.pr_body =~ /#[\d]+/
     message "This pull request doesn't link to a issue number. Please refer to the issue it fixes (if any) in the body of your PR, in the format: `Fixes #123`."
@@ -16,8 +16,8 @@ if ENV['TASK'] == "rails test:system"
     warn "New migrations added. Please update `schema.rb.example` by overwriting it with a copy of the up-to-date `db/schema.rb`. Also, be aware to preserve the MySQL-specific conditions for full-text indices."
   end
 
-  if git.commits.any? { |c| c.message =~ /^Merge branch 'master'/ }
-    warn "It looks like you merged from master in this pull request. Please [rebase](https://help.github.com/articles/about-git-rebase/) to get rid of the merge commits -- you may want to [rewind the master branch and rebase](https://publiclab.org/wiki/contributing-to-public-lab-software#Rewinding+the+master+branch) instead of merging in from master, which can cause problems when accepting new code!"
+  if git.commits.any? { |c| c.message =~ /^Merge branch 'main'/ }
+    warn "It looks like you merged from main in this pull request. Please [rebase](https://help.github.com/articles/about-git-rebase/) to get rid of the merge commits -- you may want to [rewind the main branch and rebase](https://publiclab.org/wiki/contributing-to-public-lab-software#Rewinding+the+main+branch) instead of merging in from main, which can cause problems when accepting new code!"
   end
 
   can_merge = github.pr_json["mergeable"]

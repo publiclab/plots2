@@ -1,5 +1,5 @@
 ---
-name: "\U0001F41B Weekly Check-in"
+name:  ":loudspeaker: Weekly Check-in"
 about: Create this week's communication issue
 title: 'Weekly Community Check-In # - Topic'
 labels: community check-in 
@@ -11,7 +11,7 @@ Hi everybody! 👏
 
 We all at Public Lab 🎈 - learn, grow, work, brainstorm ideas, contribute together so why not share about our weekly goals and the awesome work we have done at Public Lab with each other, so we can support and collaborate with each other better. We have a Community Check-In each week, where every community member can share something about their work from the past week and about their current week's goal 🎯 . You are also welcome to share fun-fact 😄 , new ideas 💡 , your learning goals ☑️.
 
-We believe in collaborative efforts to support our community. We are running a learning platform which helps a newcomer to become master of tomorrow. 💯
+We believe in collaborative efforts to support our community. We are running a learning platform which helps a newcomer to become a leader of tomorrow. 💯
 
 ## Title <!-- Apt title for this weeks check-in discussion -->
 
@@ -40,6 +40,6 @@ Thanks so much `xyz` <!-- Replace `xyz` with the contributors who worked on the 
 ## Next Check-in
 If you would like to open the next check-in..Leave a comment below. We are happy to help if its your first time
 
-**Thanks everyone for making Public Lab awesome** 🎈
-Have a great week and year ahead all ❤️
+**Thanks everyone for making Public Lab awesome** :heart:  
+Have a great week ahead all :balloon: 
 

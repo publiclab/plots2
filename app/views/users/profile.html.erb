@@ -5,9 +5,9 @@
     <%= render :partial => "map/leaflet" , locals: { lat: @map_lat, lon: @map_lon, zoom: @map_zoom, blurred: @map_blurred, topmap: true, user: @profile_user } %>
   <% elsif !current_user.nil? && current_user.id == @profile_user.id %>
     <div id="map_template" style="position: relative; width: 100%; display: inline-block;">
-      <img src="https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/0/0/0.png" style="height:300px; width: 100%; margin: 0; position: relative; margin-right: -10px;">  
+      <img src="https://api.mapbox.com/styles/v1/jywarren/ckj06ujnc1nmi19nuelh46pr9/tiles/0/0/0?access_token=pk.eyJ1Ijoianl3YXJyZW4iLCJhIjoiVzVZcGg3NCJ9.BJ6ArUPuTs1JT9Ssu3K8ig" style="height:300px; width: 100%; margin: 0; position: relative; margin-right: -10px;">
       <button type='button' class='blurred-location-input btn btn-default btn-lg' style="position:absolute;position:absolute;top:41%;left:15%;"> <strong> Share your Location </strong> </button>
-      <p><i><small>Learn about <a href='https://publiclab.org/wiki/location-privacy'>privacy</a> </small></i></p>
+      <p><i><small>Learn about <a href='https://publiclab.org/location-privacy'>privacy</a> </small></i></p>
     </div>
   <% end %>
 
@@ -44,9 +44,9 @@
 </div>
 
 <div class="offset-md-1 order-first order-md-last col-md-4 text-center">
-  <div class="text-center">
+  <div class="text-center d-none d-lg-block">
     <%if @content_approved or (!current_user.nil? && current_user.id == @profile_user.id)%>
-      <%= image_tag(@profile_user.profile_image, class:'d-none d-lg-inline rounded-circle', id:'profile-photo', style:"width:50%;margin-bottom:10px;") %>
+      <%= image_tag(@profile_user.profile_image, class:'rounded-circle', id:'profile-photo', style:"width:50%;margin-bottom:10px;") %>
     <%end%>
     <h4 class="mt-3"><strong>@<%= @profile_user.name %> <%= @profile_user.new_contributor %></strong></h4>
   </div>
@@ -268,6 +268,8 @@
       <li><h5><a href = "/tag/activity:*/author/<%= params[:id] %>"><%= pluralize(@count_activities_posted, 'activity posted', plural:'activities posted') %> </a></h5></li>
       <li><h5><a href = "/tag/replication:*/author/<%= params[:id] %>"><%= pluralize(@count_activities_attempted, 'activity attempted', plural:'activities attempted')%></a> </h5></li>
       <li><h5><a href = "/tag/with:<%= @profile_user.username %>"><%= pluralize(Tag.find_nodes_by_type("with:#{@profile_user.username}").count, 'note co-authored', plural: 'notes co-authored')%></a> </h5></li>
+      <li><h5><a href = "/people/<%= @profile_user.username %>/followers"><%= pluralize(@profile_user.followers.count, 'follower', plural: 'followers')%></a> </h5></li>
+      <li><h5><a href = "/people/<%= @profile_user.username %>/following"><%= pluralize(@profile_user.following_users.count, 'following', plural: 'following')%></a> </h5></li>
     </ul>
   </div>
 

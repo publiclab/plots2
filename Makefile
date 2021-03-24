@@ -7,9 +7,8 @@ build:
 redeploy-container:
 	docker-compose build --pull
 	docker-compose run --rm web yarn install
-	docker-compose run --rm web bash -c "rake db:migrate && rake assets:precompile && rake tmp:cache:clear"
+	docker-compose run --rm web bash -c "bundle exec rake db:migrate && bundle exec rake assets:precompile && bundle exec rake tmp:cache:clear"
 	docker-compose down --remove-orphans
-	rm -f ./tmp/pids/server.pid
 	docker-compose up -d
 	docker-compose exec -T web bash -c "echo 172.17.0.1 smtp >> /etc/hosts"
 	docker-compose exec -T mailman bash -c "echo 172.17.0.1 smtp >> /etc/hosts"
@@ -17,10 +16,14 @@ redeploy-container:
 	docker-compose exec -T web bundle exec whenever --update-crontab
 	docker-compose exec -T web service cron start
 
+pull-from-stable:
+	git pull --ff-only origin stable
+
+automated-redeploy: pull-from-stable redeploy-container
+
 deploy-container:
 	docker-compose run --rm web yarn install
-	docker-compose run --rm web bash -c "sleep 5 && rake db:migrate && rake assets:precompile"
-	rm -f ./tmp/pids/server.pid
+	docker-compose run --rm web bash -c "sleep 5 && bundle exec rake db:migrate && bundle exec rake assets:precompile"
 	docker-compose up -d
 	docker-compose exec -T web bash -c "echo 172.17.0.1 smtp >> /etc/hosts"
 	docker-compose exec -T mailman bash -c "echo 172.17.0.1 smtp >> /etc/hosts"
@@ -30,11 +33,11 @@ deploy-container:
 
 test-container:
 	docker-compose up -d
-	docker-compose exec -T web rake db:setup
-	docker-compose exec -T web rake db:migrate
-	docker-compose exec -T web yarn install
-	docker-compose exec -T web rake assets:precompile
-	docker-compose exec -T web rake test:all
+	docker-compose exec -T web bundle exec rake db:setup
+	docker-compose exec -T web bundle exec rake db:migrate
+	docker-compose exec -T web bundle exec yarn install
+	docker-compose exec -T web bundle exec rake assets:precompile
+	docker-compose exec -T web bundle exec rake test:all
 	docker-compose exec -T web rails test -d
 	docker-compose down
 

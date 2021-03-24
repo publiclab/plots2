@@ -1,0 +1,76 @@
+<%= javascript_include_tag('asyncTagSubscriptions.js') %>
+
+<%= render partial: 'dashboard_v2/location'%>
+<%# More Topics %>
+<div id="accordion">
+  <div class="card">
+    <div  id="headingOne">
+      <h4 class="mb-0 pt-3">
+          <a class="btn btn-link" style="font-size: 1.5rem" data-toggle="collapse" data-target="#moreTopics" aria-expanded="true" aria-controls="moreTopics">
+                      <%= translation('dashboard_v2.sidebar.follow_topics') %>
+                      <i class="fas fa-angle-down arrow form-grey"></i>
+                      <i class="fas fa-angle-up arrow form-grey"></i>
+          </a>
+      </h4>
+    </div>
+    <div id="moreTopics" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+      <div class="card-body">
+        <small class="form-grey"><%= translation('dashboard_v2.sidebar.add_topics') %> <a href="#" class="form-grey" style="text-decoration: underline;"><%= translation('dashboard_v2.sidebar.learn_more') %></a></small>
+        <br/> <br/>
+        <%# Featured topics %>
+        <small><a href="/tags" class="form-grey"><%= translation('dashboard_v2.sidebar.featured_topics') %>:</a></small>
+        <div>
+          <%= feature('feature-tags') %>
+        </div>
+        <div>
+          <%# Trending topics %>
+          <small><a href="/tags" class="form-grey"><%= translation('dashboard_v2.sidebar.trending_topics') %>:</a></small>
+          <div>
+
+            <% cache('trending-tags', expires_in: 24.hours, skip_digest: true) do %>
+                <% @trending_tags.each do |i| %>
+                    <a href="/tag/<%= i.name %>" class="badge badge-primary"><%= i.name %></a>
+                <% end %>
+              <% end %>
+          </div>
+        </div>
+        <br>
+        <small class="form-grey">Search topics</small>
+        <%= render :partial => "tag/typeahead_search" %>
+        <br/>
+        <%# All topics link %>
+        <small class="form-grey" style="text-decoration: underline"><%= translation('dashboard_v2.sidebar.all_topics',:url => '/wiki/topics') %> </small>
+        <br/>
+        <%# All posts %>
+        <small class="form-grey" style="text-decoration: underline; margin-top: -34px;"><%= translation('dashboard_v2.sidebar.all_posts',:url => '/notes') %> </small>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<style>
+
+  .text-format{
+    color: #888;
+    font-size: small;
+    margin: 1.3rem 0;
+  }
+
+  .arrow{
+    font-size: 20px;
+    position: absolute;
+    right: 0;
+    padding-right: 9px;
+    padding-top: 9px;
+  }
+
+  a[aria-expanded=true] .fa-angle-up {
+   display: none;
+  }
+
+  a[aria-expanded=false] .fa-angle-down {
+    display: none;
+  }
+
+</style>

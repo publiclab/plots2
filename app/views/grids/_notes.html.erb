@@ -41,13 +41,6 @@
         <% if node.has_tag("pin:#{tagname}") %><i rel="tooltip" title="This item was pinned with the tag 'pin:<%= tagname %>'." class="fa fa-thumb-tack"></i> 
         <% elsif node.has_tag("pin:question:#{tagname}") %><i rel="tooltip" title="This item was pinned with the tag 'pin:question:<%= tagname %>'." class="fa fa-thumb-tack"></i> 
         <% end %>
-        <% if node.answered %>
-          <% if node.has_accepted_answers %>
-            <i class="fa fa-check-square" style="color:#0c8;"></i>
-          <% else %>
-            <i class="fa fa-check-square" style="color:#808080;"></i>
-          <% end %>
-        <% end %>
         <a href="<%= node.path %>"><%= node.title %></a>
       </td>
       <td class="author"><a href="/profile/<%= node.author.username %>">@<%= node.author.username %> <%=node.author.new_contributor %></a></td>

@@ -143,8 +143,9 @@ class Revision < ApplicationRecord
   end
 
   def body_extras(content)
-    # inline edit button
-    content = content.gsub('[edit]', '<p class="well" style="padding:6px;"><a class="btn btn-primary" href="' + parent.edit_path + '"><i class="fa fa-white icon-pencil"></i> Edit this page</a> to help complete it!</p>')
+    # inline edit button adds a # if vid is absent showing a preview
+    edit_path = vid ? parent.edit_path : '#'
+    content = content.gsub('[edit]', '<p class="well" style="padding:6px;"><a class="btn btn-primary" href="' + edit_path + '"><i class="fa fa-white icon-pencil"></i> Edit this page</a> to help complete it!</p>')
     # inline question button
     content = content.gsub(/\[question:([\w-]+)\]/, '<p class="well" style="padding:6px;"><a style="margin-bottom:6px;" class="btn btn-primary" href="/post?tags=question:\\1&template=question"><i class="fa fa-white icon-question-sign"></i> Ask a question about <b>\\1</b></a> or <a style="margin-bottom:6px;" class="btn" target="_blank" href="/subscribe/tag/question:\\1">Sign up to answer questions on this topic</a></p>')
     # inline foldaway

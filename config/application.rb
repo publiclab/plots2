@@ -54,15 +54,15 @@ module Plots2
 
     # Enable the asset pipeline
     config.assets.enabled = true
-    
+
     I18n.available_locales = [:en, :de, "zh-CN", :ar, :es, "hi-IN", :it, :ko, "pt-BR", :ru]
-    config.i18n.default_locale = :en 
-    
+    config.i18n.default_locale = :en
+
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
 
     # rails will fallback to config.i18n.default_locale translation
     config.i18n.fallbacks = true
-    
+
     # rails will fallback to en, no matter what is set as config.i18n.default_locale
     config.i18n.fallbacks = [:en]
 
@@ -77,8 +77,9 @@ module Plots2
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
     config.assets.paths << Rails.root.join("public","lib")
-    config.less.paths << Rails.root.join("assets","less")
-    config.less.compress = true
+
+    # Add environments to skylight
+    config.skylight.environments += ["staging_unstable", "staging"]
 
     ActiveRecord::SessionStore::Session.table_name = 'rsessions'
 

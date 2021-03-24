@@ -14,6 +14,9 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
+//= require loadCSS
+//= require cssrelpreload
+//= require onloadCSS
 //= require jquery
 //= require jquery_ujs
 //= require jquery-lazyload/jquery.lazyload.js
@@ -37,7 +40,7 @@
 //= require short-code-forms/dist/short-code-prompts.js
 //= require chart.js/dist/Chart.js
 //= require noty/lib/noty.js
-//= require noty_notification.js
+//= require notyNotification.js
 //= require jquery-confirm/js/jquery-confirm.js
 //= require jquery.atwho
 //= require jsdiff/diff.js
@@ -45,20 +48,20 @@
 //= require setup.js
 //= require editor.js
 //= require like.js
-//= require main_image.js
-//= require restful_typeahead.js
+//= require mainImage.js
+//= require restfulTypeahead.js
 //= require users.js
 //= require searchform.js
 //= require tagging.js
-//= require leaflet_helper
+//= require leafletHelper
 //= require grids.js
 //= require graph.js
 //= require simple-data-grapher.js
 //= require wikis.js
-//= require header_footer.js
+//= require headerFooter.js
 //= require keybindings.js
 //= require jquery-validation/dist/jquery.validate.js
 //= require validation.js
-//= require submit_form_ajax.js
+//= require submitFormAjax.js
 //= require urlMapHash.js
 //= require spam2.js

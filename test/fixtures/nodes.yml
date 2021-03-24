@@ -18,6 +18,7 @@ about:
   created: <%= Time.now.to_i %>
   changed: <%= Time.now.to_i %>
   status: 1
+  flag: 1
   type: "page"
   cached_likes: 0
   slug: about
@@ -444,3 +445,75 @@ sun_question:
   type: "note"
   cached_likes: 0
   slug: "note-tagged-with-question-sun"
+
+comment_question: # for testing comments on questions
+  nid: 37
+  uid: 2
+  title: "Can I post comments here"
+  path: "/notes/jeff/12-07-2020/can-i-post-comments-here"
+  created: <%= DateTime.new(2020,12,7).to_i %>
+  changed: <%= DateTime.new(2020,12,7).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: jeff-12-07-2020-can-i-post-comments-here
+
+comment_note: # for testing comments on notes
+  nid: 38
+  uid: 2
+  title: "Please don't comment here"
+  path: "/notes/jeff/12-08-2020/please-don-t-comment-here"
+  created: <%= DateTime.new(2020,12,8).to_i %>
+  changed: <%= DateTime.new(2020,12,8).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: "note-please-don-t-comment-here"
+
+hidden_response_note:
+  nid: 39
+  uid: 2
+  title: "Note tagged with hidden:response"
+  path: "/notes/admin/02-12-2020/note-tagged-with-hidden-response"
+  created: <%= DateTime.new(2020,2,12).to_i %>
+  changed: <%= DateTime.new(2020,2,12).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: "note-tagged-with-hidden-response"
+
+question_with_multiple_comments: # for testing multiple comment forms
+  nid: 40
+  uid: 2
+  title: "Which condiments do you like"
+  path: "/notes/jeff/12-20-2020/which-condiments-do-you-like"
+  created: <%= DateTime.new(2020,12,20).to_i %>
+  changed: <%= DateTime.new(2020,12,20).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: "jeff-12-20-2020-which-condiments-do-you-like"
+
+note_with_multiple_comments:
+  nid: 41
+  uid: 2
+  title: "Ouija Board"
+  path: "/notes/jeff/12-20-2020/ouija-board"
+  created: <%= DateTime.new(2020,12,20).to_i %>
+  changed: <%= DateTime.new(2020,12,20).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: "jeff-12-20-2020-ouija-board"
+
+wiki_with_multiple_comments: 
+  nid: 42
+  uid: 2
+  title: "List of pokemon"
+  path: "/wiki/list-of-pokemon"
+  created: <%= DateTime.new(2020,12,21).to_i %>
+  changed: <%= DateTime.new(2020,12,21).to_i %>
+  status: 1
+  type: "page"
+  cached_likes: 0
+  slug: "wiki-list-of-pokemon"

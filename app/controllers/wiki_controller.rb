@@ -76,7 +76,6 @@ class WikiController < ApplicationController
         redirect_to '/wiki'
       end
       @tagnames = @tags.collect(&:name)
-      set_sidebar :tags, @tagnames, videos: true
       @wikis = Tag.find_pages(@node.slug_from_path, 30) if @node.has_tag('chapter') || @node.has_tag('tabbed:wikis')
 
       impressionist(@node, 'show', unique: [:ip_address])
@@ -92,7 +91,22 @@ class WikiController < ApplicationController
     render plain: Revision.find(params[:id]).body
   end
 
+  def print
+    @node = Node.find_by(nid: params[:id], type: 'page')
+    return if redirect_to_node_path?(@node)
+    @revision = @node.latest
+
+    if @node
+      impressionist(@node, 'print', unique: [:ip_address])
+      render layout: "print"
+
+    else
+      page_not_found
+    end
+  end
+
   def edit
+    @revision = Revision.new
     @node = if params[:lang]
               Node.find_wiki(params[:lang] + '/' + params[:id])
             else
@@ -102,6 +116,10 @@ class WikiController < ApplicationController
     if @node.has_tag('locked') && !current_user.can_moderate?
       flash[:warning] = "This page is <a href='/wiki/power-tags#Locking'>locked</a>, and only <a href='/wiki/moderators'>moderators</a> can edit it."
       redirect_to @node.path
+    elsif current_user &.first_time_poster
+      flash[:notice] = "Please post a question or other content before editing the wiki. Click <a href='https://publiclab.org/notes/tester/04-23-2016/new-moderation-system-for-first-time-posters'>here</a> to learn why."
+      redirect_to Node.find_wiki(params[:id]).path
+      return
     end
     if ((Time.now.to_i - @node.latest.timestamp) < 5.minutes.to_i) && @node.latest.author.uid != current_user.uid
       flash.now[:warning] = I18n.t('wiki_controller.someone_clicked_edit_5_minutes_ago')
@@ -115,6 +133,7 @@ class WikiController < ApplicationController
   end
 
   def new
+    @revision = Revision.new
     if current_user &.first_time_poster
       flash[:notice] = "Please post a question or other content before editing the wiki. Click <a href='https://publiclab.org/notes/tester/04-23-2016/new-moderation-system-for-first-time-posters'>here</a> to learn why."
       redirect_to '/'
@@ -159,6 +178,9 @@ class WikiController < ApplicationController
                                               body:  params[:body])
       if saved
         flash[:notice] = I18n.t('wiki_controller.wiki_page_created')
+        params[:tags]&.tr(' ', ',')&.split(',')&.each do |tagname|
+          @node.add_tag(tagname.strip, current_user)
+        end
         if params[:main_image] && params[:main_image] != ''
           img = Image.find params[:main_image]
           img.nid = @node.id
@@ -256,7 +278,7 @@ class WikiController < ApplicationController
     @node = Node.find_wiki(params[:id])
     if @node
       @revisions = @node.revisions
-      @revisions = @revisions.where(status: 1).page(params[:page]).per_page(20) unless current_user&.can_moderate?
+      @pagy_revisions, @revisions = pagy(@revisions.where(status: 1), items: 20) unless current_user&.can_moderate?
       @title = I18n.t('wiki_controller.revisions_for', title: @node.title).html_safe
       @tags = @node.tags
       @paginated = true unless current_user&.can_moderate?
@@ -267,21 +289,24 @@ class WikiController < ApplicationController
 
   def revision
     @node = Node.find_wiki(params[:id])
-    @tags = @node.tags
-    @tagnames = @tags.collect(&:name)
-    @unpaginated = true
-    @is_revision = true
-    set_sidebar :tags, @tagnames, videos: true
-    @revision = Revision.find_by_nid_and_vid(@node.id, params[:vid])
-    if @revision.nil?
-      flash[:error] = I18n.t('wiki_controller.revision_not_found')
-      redirect_to action: 'revisions'
-    elsif @revision.status == 1 || current_user&.can_moderate?
-      @title = I18n.t('wiki_controller.revisions_for', title: @revision.title).html_safe
-      render template: 'wiki/show'
+    if @node
+      @tags = @node.tags
+      @tagnames = @tags.collect(&:name)
+      @unpaginated = true
+      @is_revision = true
+      @revision = Revision.find_by_nid_and_vid(@node.id, params[:vid])
+      if @revision.nil?
+        flash[:error] = I18n.t('wiki_controller.revision_not_found')
+        redirect_to action: 'revisions'
+      elsif @revision.status == 1 || current_user&.can_moderate?
+        @title = I18n.t('wiki_controller.revisions_for', title: @revision.title).html_safe
+        render template: 'wiki/show'
+      else
+        flash[:error] = I18n.t('wiki_controller.revision_has_been_moderated').html_safe
+        redirect_to @node.path
+      end
     else
-      flash[:error] = I18n.t('wiki_controller.revision_has_been_moderated').html_safe
-      redirect_to @node.path
+      flash[:error] = I18n.t('wiki_controller.invalid_wiki_page')
     end
   end
 
@@ -312,12 +337,11 @@ class WikiController < ApplicationController
       order_string = 'cached_likes DESC'
     end
 
-    @wikis = Node.includes(:revision)
+    @pagy, @wikis = pagy(Node.includes(:revision)
       .references(:node_revisions)
-      .group('node_revisions.nid')
+      .group('node_revisions.nid, node_revisions.vid')
       .order(order_string)
-      .where("node_revisions.status = 1 AND node.status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')")
-      .page(params[:page])
+      .where("node_revisions.status = 1 AND node.status = 1 AND type = 'page'"))
 
     @paginated = true
   end
@@ -325,12 +349,11 @@ class WikiController < ApplicationController
   def stale
     @title = I18n.t('wiki_controller.wiki')
 
-    @wikis = Node.includes(:revision)
+    @pagy, @wikis = pagy(Node.includes(:revision)
       .references(:node_revisions)
-      .group('node_revisions.nid')
+      .group('node_revisions.nid, node_revisions.vid')
       .order('node_revisions.timestamp ASC')
-      .where("node_revisions.status = 1 AND node.status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')")
-      .page(params[:page])
+      .where("node_revisions.status = 1 AND node.status = 1 AND type = 'page'"))
 
     @paginated = true
     render template: 'wiki/index'
@@ -340,7 +363,7 @@ class WikiController < ApplicationController
     @title = I18n.t('wiki_controller.popular_wiki_pages')
     @wikis = Node.limit(40)
       .joins(:revision)
-      .group('node_revisions.nid')
+      .group('node_revisions.nid, node_revisions.vid')
       .order('node_revisions.timestamp DESC')
       .where("node.status = 1 AND node_revisions.status = 1 AND node.nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place')")
       .sort_by(&:views).reverse
@@ -463,17 +486,22 @@ class WikiController < ApplicationController
         @node.main_image_id = img.id
         img.save
       end
-
       @node.save
+      update_tags if @node.valid?
     end
+  end
+
+  def update_tags
+    tids = @node.tag.pluck(:tid)
+    Tag.update_tags_activity(tids, @node.nid)
   end
 
   def author
     @user = User.find_by(name: params[:id])
     @title = @user.name
-    @wikis = Node.paginate(page: params[:page], per_page: 24)
+    @pagy, @wikis = pagy(Node
       .order('nid DESC')
-      .where("uid = ? AND type = 'page' OR type = 'place' OR type = 'tool' AND status = 1", @user.uid)
+      .where("uid = ? AND type = 'page' OR type = 'place' OR type = 'tool' AND status = 1", @user.uid), items: 24)
     render template: 'wiki/index'
   end
 end

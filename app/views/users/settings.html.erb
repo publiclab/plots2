@@ -1,10 +1,12 @@
 <form name="settingsForm" action="/save_settings" method='post' data-remote="true">
 <div class="emailSettings">
-  <h4><b>Notification Settings</b></h4>
+  <h4><b>Email Notifications</b></h4>
   <hr style="width: 35%;  margin-left: 0;" />
 
+  <h4><b><%=translation('users.settings.notified_by_email')%></b></h4>
+
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-    <span>Do you want to be notified by a email for comments on your posts? </span>
+    <span><%=translation('users.settings.direct_comment')%> </span>
     <span>
     <label class="switch">
       <p> Notification switch </p>
@@ -18,7 +20,7 @@
   <br />
 
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-    <span>Do you want to be notified by a email for likes on your posts? </span>
+    <span><%=translation('users.settings.direct_likes')%> </span>
     <span>
     <label class="switch">
       <p> Notification switch </p>
@@ -32,7 +34,7 @@
   <br />
 
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-    <span>Do you want to be notified by a email for comments on all posts you've commented on? </span>
+    <span><%=translation('users.settings.indirect_comment')%> </span>
     <span>
     <label class="switch">
       <p> Notification switch </p>
@@ -47,7 +49,7 @@
 
   <% if logged_in_as(['admin', 'moderator']) %>
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-    <span>Do you want to be notified by a email for moderation emails? </span>
+    <span>Moderation emails </span>
     <span>
     <label class="switch">
       <p> Notification switch </p>
@@ -60,10 +62,12 @@
   <br />
   <br />
   <% end %>
-
+  
+  <br />
+  +<h4><b><%=translation('users.settings.email_notifications')%> </b></h4>
 
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-    <span>Do you want to receive a customized digest weekly?</span>
+    <span><%=translation('users.settings.weekly_digest')%> </span>
     <span>
     <label style=" vertical-align: middle;" class="switch">
       <p> Notification switch </p>
@@ -77,7 +81,7 @@
   <br />
 
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-    <span>Do you want to receive a customized digest daily?</span>
+    <span><%=translation('users.settings.daily_digest')%> </span>
     <span>
     <label style=" vertical-align: middle;" class="switch">
       <p> Notification switch </p>
@@ -90,8 +94,45 @@
   <br />
   <br />
 
+  <% if current_user.can_moderate? %>
+    <div style="display: inline-flex; justify-content: space-between; width: 90%;">
+      <span><%=translation('users.settings.spam_weekly_digest')%> </span>
+      <span>
+        <label style=" vertical-align: middle;" class="switch">
+          <p> Notification switch </p>
+          <input type="checkbox" name="digest:weekly:spam" <% if UserTag.exists?(current_user.id, 'digest:weekly:spam') %>checked<% end %>>
+          <span class="slider round"></span>
+        </label>
+      </span>
+    </div>
+
+    <br />
+    <br />
+
+    <div style="display: inline-flex; justify-content: space-between; width: 90%;">
+      <span><%=translation('users.settings.spam_daily_digest')%> </span>
+      <span>
+        <label style=" vertical-align: middle;" class="switch">
+          <p> Notification switch </p>
+          <input type="checkbox" name="digest:daily:spam" <% if UserTag.exists?(current_user.id, 'digest:daily:spam') %>checked<% end %>>
+          <span class="slider round"></span>
+        </label>
+      </span>
+    </div>
+
+    <br />
+    <br />
+  <% end %>
+
+  <br />
+
+  <h4><b>Browser Notifications</b></h4>
+  <hr style="width: 35%;  margin-left: 0;" />
+
+  <h4><b><%=translation('users.settings.browser_notifications')%> </b></h4>
+
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-    <span>Do you want to receive a browser notification when you are mentioned?</span>
+    <span><%=translation('users.settings.mentioned')%></span>
     <span>
     <label style=" vertical-align: middle;" class="switch">
       <p> Notification switch </p>
@@ -105,7 +146,7 @@
   <br />
 
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-    <span>Do you want to receive a browser notification for all ?</span>
+    <span><%=translation('users.settings.everything')%></span>
     <span>
     <label style=" vertical-align: middle;" class="switch">
       <p> Notification switch </p>
@@ -119,7 +160,7 @@
   <br />
 
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-    <span>Do you want to receive a browser notification when someone likes your work?</span>
+    <span><%=translation('users.settings.likes')%></span>
     <span>
     <label style=" vertical-align: middle;" class="switch">
       <p> Notification switch </p>
@@ -129,7 +170,6 @@
     </span>
   </div>
 
-  <br />
   <br />
 
 
@@ -171,40 +211,6 @@
 
 <!--  <br />-->
 <!--  <br />-->
-
-
-  <br>
-  <% if current_user.can_moderate? %>
-  <h4><b>Spam Digest Settings</b></h4>
-  <hr style="width: 35%;  margin-left: 0;" />
-    <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-      <span>Do you want to receive a weekly digest for unmoderated posts?</span>
-      <span>
-        <label style=" vertical-align: middle;" class="switch">
-          <p> Notification switch </p>
-          <input type="checkbox" name="digest:weekly:spam" <% if UserTag.exists?(current_user.id, 'digest:weekly:spam') %>checked<% end %>>
-          <span class="slider round"></span>
-        </label>
-      </span>
-    </div>
-
-    <br />
-    <br />
-
-    <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-      <span>Do you want to receive a daily digest for unmoderated posts?</span>
-      <span>
-        <label style=" vertical-align: middle;" class="switch">
-          <p> Notification switch </p>
-          <input type="checkbox" name="digest:daily:spam" <% if UserTag.exists?(current_user.id, 'digest:daily:spam') %>checked<% end %>>
-          <span class="slider round"></span>
-        </label>
-      </span>
-    </div>
-
-    <br />
-    <br />
-  <% end %>
 </div>
 
 <br />

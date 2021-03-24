@@ -2,7 +2,7 @@ jQuery(document).ready(function() {
 
   $('.datepicker').datepicker()
   
-  $E.initialize()
+  $E = new Editor();
 
   $('#side-fileinput').bind('focus',function(e) { $('#side-dropzone').css('border-color','#4ac') })
   $('#side-fileinput').bind('focusout',function(e) { $('#side-dropzone').css('border-color','#ccc') })
@@ -22,7 +22,7 @@ jQuery(document).ready(function() {
     if (e.which == 32 || e.which == 13) publish()
   })
 
-  if ($E.textarea.val() == "") $E.apply_template(getUrlParameter('template') || "default")
+  if (!$E.textAreaValue) $E.apply_template(getUrlParameter('template') || "default")
   
   /* tag autocomplete */
   $('#taginput').typeahead({

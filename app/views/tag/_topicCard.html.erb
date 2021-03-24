@@ -7,7 +7,7 @@
         <% if current_user && current_user.following(tag.name) && controller.controller_name != 'tag' %>
           <a style="margin-top:-8px;" data-method="delete" data-confirm="Are you sure you'd like to unfollow this topic?" rel="tooltip" title="<%= translation('tag.show.unfollow') %>" class="pull-right" href="/unsubscribe/tag/<%= tag.name %>"><i style="color:#ccc;" class="fa fa-times"></i></a>
         <% end %>
-        <h4 style="display: inline-block;"><%= tag.name %></h4>
+        <h4 style="display: inline-block;"><a href="<%= tag.name %>"><%= tag.name %></a></h4>
         <p style="display: inline-block; color: #808080;"><a style="text-decoration: underline; color: #808080;" href="/tag/<%= tag.name %>"><%= Tag.follower_count(tag.name) %> following</a></p>
       </div>
       <div class="card-body" style="padding:0.8em;">
@@ -16,23 +16,25 @@
             <% shown_nids << node.id %>
             <div class="node-body">
               <% if node.main_image %>
-                <img class="rounded-circle pull-left" id="profile-photo" style="width:20px; height:20px; margin-right:8px; display: inline-block;" src="<%= node.main_image.path(:default) %>" />
+                <img aria-hidden="true" class="rounded-circle pull-left" id="profile-photo" style="width:20px; height:20px; margin-right:8px; display: inline-block;" src="<%= node.main_image.path(:default) %>" />
               <% elsif node.scraped_image %>
-                <img class="rounded-circle pull-left" id="profile-photo" style="width:20px; height:20px; margin-right:8px; display: inline-block;" src="<%= node.scraped_image %>" />
+                <img aria-hidden="true" class="rounded-circle pull-left" id="profile-photo" style="width:20px; height:20px; margin-right:8px; display: inline-block;" src="<%= node.scraped_image %>" />
               <% else %>
                 <div class="circle"></div>
               <% end %>
-              <p style="margin-left: 10px;">
-                <a style="color: inherit;" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= (node.type == 'note') ? node.title : node.latest.title %></a>
-                <span style="color: #808080;">by <a style="color: #808080;" <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>">@<%= node.author.name %></a>
-              </p>
+              <div style="margin-left: 10px; display: grid;">
+                <p>
+                  <a style="color: inherit;" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= (node.type == 'note') ? node.title : node.latest.title %></a>
+                    <span style="color: #808080;"><%= translation('tag.show.by') %> <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>">@<%= node.author.name %></a></span>
+                </p>
+              </div>
             </div>
           <% end %>
         </div>
       </div>
 
       <div class="card-footer" style="background-color: inherit; border:none;">
-        <a style="padding-top:15px;text-decoration:underline;color:#808080;display:inline-block;" href="/tag/<%= tag.name %>"><%= Tag.counter(tag.name)-shown_nids.count - Tag.find_nodes_by_type(tag.name, type = 'note', limit = 3).where.not(nid: shown_nids).count %> <%= translation('tag.index.more_posts') %> &raquo;</a>
+        <a style="padding-top:15px;text-decoration:underline;color:#808080;display:inline-block;" href="/tag/<%= tag.name %>"><%= Tag.tagged_node_count(tag.name) %> <%= translation('tag.index.posts') %> &raquo;</a>
         <div id="follow-unfollow-column-<%=tag.tid%>" style="float:right;margin:10px 0 10px 10px;">
           <% if current_user %>
             <% if !current_user.following(tag.name) %>
@@ -72,6 +74,10 @@
     height: 20px;
     width: 20px;
     border-radius: 100%;
+  }
+
+  .card-view a {
+    display: revert;
   }
 
 </style>

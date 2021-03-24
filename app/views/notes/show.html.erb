@@ -1,46 +1,53 @@
 <script src="/assets/notes.js" type="text/javascript"></script>
 
 <div class="col-lg-9 note-show<% if @node.status == 4 || @node.status == 0 %> moderated<% end %>">
-  <% if current_user && @node.tags.length == 0 %><div class="alert alert-warning"><%= raw translation('notes.show.note_no_tags', url: 'javascript: document.getElementById("tags-open").click();') %></div><% end %>
+  <% if @preview %><div class="alert alert-info"><%= raw translation('notes.show.preview') %></div><% end %>
+  <% if current_user && @node.tags.size == 0 && !@preview %><div class="alert alert-warning"><%= raw translation('notes.show.note_no_tags', url: 'javascript: document.getElementById("tags-open").click();') %></div><% end %>  
   <% if @node.has_power_tag('status:candidate') %><div class="alert alert-info">This was marked as a candidate activity -- <a href="https://publiclab.org/notes/warren/09-17-2016/what-makes-a-good-activity" >read about how to adapt its content</a> into a fully-fledged, step-by-step activity that can be easily replicated.</div><% end %>
-  <% if @node.has_power_tag('replication') %><div class="alert alert-info"><%= raw translation('notes.show.replication') %> <a href="/n/<%= @node.power_tag('replication') %>"><%= raw translation('notes.show.replication_link') %></a>.</div><% end %>
-  <% if @node.has_power_tag('series') %><div class="alert alert-info"><%= raw translation('notes.show.series') %> <a href="/tag/series:<%= @node.power_tag('series') %>"><%= @node.power_tag('series') %></a>.</div><% end %>
-  <% if @node.has_power_tag('build') %><div class="alert alert-info"><%= raw translation('notes.show.build') %> <a href="/n/<%= @node.power_tag('build') %>"><%= raw translation('notes.show.build_link') %></a>.</div><% end %>
-  <% if @node.has_power_tag('alert') && feature("alert-#{@node.power_tag('alert')}") != "" %>
+  <% if @node.has_power_tag('replication') %><div class="alert alert-info"><%= raw translation('notes.show.replication') %> <a href="/n/<% if !@preview %><%= @node.power_tag('replication') %><% end %>"><%= raw translation('notes.show.replication_link') %></a>.</div><% end %>
+  <% if @node.has_power_tag('series') %><div class="alert alert-info"><%= raw translation('notes.show.series') %> <a href="/tag/series:<% if !@preview %><%= @node.power_tag('series')%>"><%= @node.power_tag('series') %><% end %></a>.</div><% end %>
+  <% if @node.has_power_tag('build') %><div class="alert alert-info"><%= raw translation('notes.show.build') %> <a href="/n/<% if !@preview %><%= @node.power_tag('build') %><% end %>"><%= raw translation('notes.show.build_link') %></a>.</div><% end %>
+
+  <% if @node.has_power_tag('alert') && feature("alert-#{@node.power_tag('alert')}") != "" && !@preview %>
     <%= feature("alert-#{@node.power_tag('alert')}") %>
   <% end %>
-  <% if @node.has_power_tag('with') && current_user && @node.coauthors.collect(&:username).include?(current_user.username) %> <div class="alert alert-success"> You are a coauthor of this post. This attributes your contribution, and gives you edit access to the note. <a href="https://publiclab.org/wiki/power-tags#Coauthorship"> Learn more </a></div><% end %>
-  <% if @node.has_power_tag('upgrade') %><div class="alert alert-success"> This is an upgrade for <a href="/<%= @node.power_tag('upgrade') %>"><%= @node.power_tag('upgrade') %></a>. Try building it and <a href="/n/<%= @node.power_tag('upgrade') %>"> report back </a>how it goes.</div><% end %>
+  <% if @node.has_power_tag('with')  && current_user && @node&.coauthors&.collect(&:username)&.include?(current_user.username) && !@preview  %> <div class="alert alert-success"> You are a coauthor of this post. This attributes your contribution, and gives you edit access to the note. <a href="https://publiclab.org/wiki/power-tags#Coauthorship"> Learn more </a></div><% end %>
+  <% if @node.has_power_tag('upgrade') %><div class="alert alert-success"> This is an upgrade for <% if !@preview %><a href="/<%= @node.power_tag('upgrade') %>"><%= @node.power_tag('upgrade') %></a>.<% end %> Try building it and <% if !@preview %><a href="/n/<%= @node.power_tag('upgrade') %>"><% end %> report back </a>how it goes.</div><% end %>
+  <div class="d-print-block" style="display:none;margin-bottom:3%">
+  <span> <h1 style="display:inline-block;">Public Lab </h1> <h3 style="display:inline-block;">Research note</h3></span>
+  </div>
 
-  <% if @node.main_image %>
-    <a class="main-image" style="max-width:100%;width:800px;" href="<%= @node.main_image.path(:original) %>">
-      <%= image_tag(@node.main_image.path(:large), class:"rounded d-none d-lg-inline", style:'max-height:600px;max-width:100%;') %>
-      <%= image_tag(@node.main_image.path(:large), class:"rounded d-lg-none", style:'width:100%;') %>
+  <% main_image = @preview? @img : @node.main_image %>
+
+  <% if main_image %>
+    <a class="main-image" style="max-width:100%;width:800px;" href="<%= main_image.path(:original) %>">
+      <%= image_tag(main_image.path(:large), class:"rounded d-none d-lg-inline d-print-block", style:'max-height:600px;max-width:100%;') %>
+      <%= image_tag(main_image.path(:large), class:"rounded d-lg-none d-print-none", style:'width:100%;') %>
     </a>
     <!--<div class="expand"><a onClick="$('.main-image').toggleClass('compressed');"><i class="fa fa-angle-down"></i></a></div>-->
   <% end %>
 
   <h1 style="margin-top: 40px;"><%= @node.title %></h1>
 
-  <div>
+  <div id="note-info">
 
     <span>
       <% if @node.status == 0 || @node.status == 4 %><span class="badge badge-danger"><%= translation('notes.show.unpublished') %></span> | <% end %>
       <% if @node.status == 3 %><span class="badge badge-success">Draft</span> | <% end %>
       by <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> <%= @node.author.new_contributor %>
-      <% if @node.has_power_tag('with') %>with <% @node.coauthors.each_with_index do |coauthor,i| %>
+      <% if @node.has_power_tag('with') %>with <% @node&.coauthors&.each_with_index do |coauthor,i| %>
               <a href="/profile/<%= coauthor.username %>">
                 <%= coauthor.username%></a> <%= coauthor.new_contributor %>
-              <%= ',' if i < @node.coauthors.length-1 %><% end %><% end %>
-              <% if current_user && current_user.id == @node.uid %><a aria-label="Add Coauthor" onClick="promptTag('with:')" href="#"><i style="color:#aaa;" class="fa fa-pencil"></i></a><% end %> |
+              <%= ',' if i < @node.coauthors.size-1 %><% end %><% end %>
+              <% if current_user && current_user.id == @node.uid  && !@preview %><a class="d-print-none" aria-label="Add Coauthor" onClick="promptTag('with:')" href="#"><i style="color:#aaa;" class="fa fa-pencil"></i></a><% end %> |
 
-      <span class="d-none d-lg-inline">
-        <%= @node.created_at.to_s(:long) %>
+      <span class="d-none d-lg-inline d-print-none">
+        <%= @preview ? Time.new.strftime("%B %d, %Y %H:%M:%S") : @node.created_at.to_s(:long) %>
       </span>
       <span class="d-xl-none">
-        <%= @node.created_at.to_s(:short) %>
+        <%= @preview ? Time.new.strftime("%B %d, %Y %H:%M:%S") : @node.created_at.to_s(:short) %>
       </span>
-      <a class="d-lg-none collapse-btn" data-toggle="collapse" href="#collapse-info" role="button" aria-expanded="false" aria-controls="collapse-info" id="collapse-button">...</a>
+      <a class="d-lg-none collapse-btn d-print-none" data-toggle="collapse" href="#collapse-info" role="button" aria-expanded="false" aria-controls="collapse-info" id="collapse-button">...</a>
       <span class="collapse collapse-info" id="collapse-info">
         | <a aria-label="Link to note" href="/n/<%= @node.id %>"><i class="fa fa-link"></i></a> <span class="d-none d-xl-inline"><a href="/n/<%= @node.id %>">#<%= @node.id %></a></span>
       </span>
@@ -61,10 +68,11 @@
   <%= render :partial => "notes/gallery" %>
 
   <div id="content" class="pl-content note">
-  <%= raw auto_link(insert_extras(@node.latest.render_body), :sanitize => false) %>
+    <% body = @preview ? @body.render_body : @node.latest.render_body %>
+    <%= raw auto_link(insert_extras(body), :sanitize => false) %>
   </div>
 
-  <% if @node.files && @node.files.length > 0 %>
+  <% if @node.files && @node.files.size > 0 %>
     <table id="files" class="table">
       <tr>
         <%= raw translation('notes.show.file_table') %>
@@ -82,39 +90,39 @@
   <div class="d-print-none">
     <hr />
 
-    <% if @node.has_power_tag('prompt') && feature("prompt-#{@node.power_tag('prompt')}") != "" %>
-      <% if current_user && (current_user.id == @node.uid || current_user.admin? || current_user.moderator? || current_user.is_coauthor?(@node)) %>
-        <%= feature("prompt-#{@node.power_tag('prompt')}") %>
+   <% if !@preview %>
+      <% if @node.has_power_tag('prompt') && feature("prompt-#{@node.power_tag('prompt')}") != "" %>
+        <% if current_user && (current_user.id == @node.uid || current_user.admin? || current_user.moderator? || current_user.is_coauthor?(@node)) %>
+          <%= feature("prompt-#{@node.power_tag('prompt')}") %>
+        <% end %>
       <% end %>
-    <% end %>
+   <% end %>
 
     <% if @node.has_tag('event:rsvp') %>
       <p><b><% if @node.has_power_tag('date') %>
         <script>
           jQuery(document).ready(function() {
             cal = ics();
-            cal.addEvent('<%= @node.latest.title %>', false, false, '<%= @node.power_tag('date') %>', '<%= @node.power_tag('date') %>');
+            cal.addEvent('<%= @node.latest.title || @node.title %>', false, false, '<%= @node.power_tag('date') || @event_date %>', '<%= @node.power_tag('date') || @event_date %>');
           })
         </script>
-        <i class="fa fa-calendar"></i> <%= raw translation('notes.show.event_is_on', :date => @node.power_tag('date')) %> <% end %></b>
+        <i class="fa fa-calendar"></i> <%= raw translation('notes.show.event_is_on', :date => @node.power_tag('date') || @event_date) %> <% end %></b>
         <a class="label" onClick="cal.download()"><%= translation('notes.show.ical') %></a>
       </p><br />
       <p><% if !current_user %><%= raw translation('notes.show.login_to', :url1 => new_user_session_path( return_to: request.path )) %> <% end %><a class="btn-lg btn-primary" href="/rsvp/<%= @node.id %>">RSVP</a>
-        <% attendees = @node.power_tags('rsvp').length %>
+        <% attendees = @preview ? 0 : @node.power_tags('rsvp').size %>
         <% if attendees > 1 %>
           <%= translation('notes.show.people_will_attend', :count => attendees).html_safe %>
         <% end %>
       <hr />
     <% end %>
-
-    <%= render partial: "notes/responses" %>
-
-    <div><%= render partial: "notes/comments" %></div>
-
+    <% if !@preview %>
+        <%= render partial: "notes/responses" %>
+        <div id="legacy-editor-container"><%= render partial: "notes/comments" %></div>
+    <% end %>
   </div>
 
 </div><!--/span-->
-
 <%= render partial: "sidebar/related" %>
 
 <style>
@@ -138,7 +146,7 @@
   $("#collapse-button").click(function(){
       $(this).remove();
   });
-  $(function(){
+  $(function() {
     $("img").lazyload();
   });
 </script>
