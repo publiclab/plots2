@@ -463,7 +463,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test 'returning json errors on xhr note update' do
-    user = UserSession.create(users(:jeff))
+    UserSession.create(users(:jeff))
 
     post :update,
         params: {
@@ -525,7 +525,7 @@ class NotesControllerTest < ActionController::TestCase
       # no emails sent for first-time posters, as it's held in moderation
       assert users(:bob).first_time_poster
       assert_emails 0 do
-        user = UserSession.create(users(:bob))
+        UserSession.create(users(:bob))
         post :create,
              params: {
              title: title,
@@ -533,7 +533,6 @@ class NotesControllerTest < ActionController::TestCase
              tags: 'question:spectrometer',
              redirect: 'question'
              }
-        node = nodes(:blog)
       end
     end
 
@@ -561,7 +560,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test 'should display /post template when editing a note in legacy mode' do
-    user = UserSession.create(users(:jeff))
+    UserSession.create(users(:jeff))
     note = nodes(:blog)
     get :edit,
          params: {
@@ -573,7 +572,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test 'should display /post template when editing a question in legacy mode' do
-    user = UserSession.create(users(:jeff))
+    UserSession.create(users(:jeff))
     note = nodes(:question)
     note.add_tag('nice', users(:jeff))
     get :edit,
@@ -586,7 +585,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test 'should display /post template when editing a note' do
-    user = UserSession.create(users(:jeff))
+    UserSession.create(users(:jeff))
     note = nodes(:blog)
     get :edit,
          params: {
@@ -598,7 +597,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test 'should display /post template when editing a question' do
-    user = UserSession.create(users(:jeff))
+    UserSession.create(users(:jeff))
     note = nodes(:question)
     note.add_tag('nice', users(:jeff))
     get :edit,
@@ -611,7 +610,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test 'should redirect to questions show page when editing an existing question' do
-    user = UserSession.create(users(:jeff))
+    UserSession.create(users(:jeff))
     note = nodes(:question)
     post :update, params: { id: note.nid, title: note.title, body: 'Spectrometer doubts', tags: 'question:spectrometer', redirect: 'question' }
 
@@ -620,7 +619,7 @@ class NotesControllerTest < ActionController::TestCase
 
 
   test 'should render a text/plain when the note is edited through xhr' do
-    user = UserSession.create(users(:jeff))
+    UserSession.create(users(:jeff))
     note = nodes(:one)
     post :update, params: { id: note.nid, title: note.title, body: 'Canon A1200 IR Conversion is working' }, xhr: true
     assert_equal I18n.t('notes_controller.edits_saved'), flash[:notice]
@@ -756,7 +755,7 @@ class NotesControllerTest < ActionController::TestCase
     node = nodes(:about)
     length=node.authors.uniq.length
     assert_not_equal 1,length
-    user = UserSession.create(users(:jeff))
+    UserSession.create(users(:jeff))
 
     assert_no_difference 'Node.count' do
       get :delete, params: { id: node.nid }
@@ -790,13 +789,11 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test 'draft should not be shown when no user' do
-    node = nodes(:draft)
     get :show, params: { id: '21',title: 'Draft note' }
     assert_response :missing
   end
 
   test 'draft should not be shown when user is not author' do
-    node = nodes(:draft)
     UserSession.create(users(:bob))
     get :show, params: { id: '21',title: 'Draft note' }
     assert_response :missing
