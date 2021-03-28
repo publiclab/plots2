@@ -226,7 +226,6 @@ class UsersControllerTest < ActionController::TestCase
 
   test 'update profile with correct password when ui_update is true' do
     user = users(:bob)
-    bio = users(:bob).bio
     UserSession.create(user)
     post :update, params: {
       user: {
@@ -241,7 +240,6 @@ class UsersControllerTest < ActionController::TestCase
 
   test 'rejecting update profile with wrong password when ui_update is nil' do
     user = users(:bob)
-    bio = users(:bob).bio
     UserSession.create(user)
     post :update, params: {
       user: {
@@ -256,7 +254,6 @@ class UsersControllerTest < ActionController::TestCase
 
   test 'allowing update profile with empty password when ui_update is true' do
     user = users(:bob)
-    bio = users(:bob).bio
     UserSession.create(user)
     post :update, params: {
       user: {
@@ -276,7 +273,6 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test 'should redirect update when not logged in' do
-    user = users(:bob)
     post :update, params: { user: { bio: 'Hello, there!' } }
     assert_not flash.empty?
     assert_redirected_to '/login?return_to=/users/update'
