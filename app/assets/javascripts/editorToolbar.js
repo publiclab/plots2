@@ -90,9 +90,24 @@ $(function() {
     })
     // for save & recover buttons
     .on("click", ".save-button", function(e) {
-      $E.setState(e.currentTarget.dataset.formId); // string that is: "main", "reply-123", "edit-123" etc.
-      $E.save($E);
-    })
+      // toggling the favicon save icon class to add a spinner icon
+      $(this).find("i").toggleClass("fa fa-save fas fa-sync fa-spin");
+    
+      //changing the text from "Upload an image" to "Saving..."
+      let saving_text = $('<p id="saving-text"> Saving... </p>');
+      $(".imagebar").prepend(saving_text);
+      $(".imagebar p").not("#saving-text").hide();
+    
+      //setting up delay and reverting the styles
+      setTimeout(() => {
+        $(this).find("i").toggleClass("fa fa-save fas fa-sync fa-spin");
+        $(".imagebar").find("#saving-text").remove();
+        $(".imagebar p").not("#saving-text").show();
+    
+        $E.setState(e.currentTarget.dataset.formId); // string that is: "main", "reply-123", "edit-123" etc.
+        $E.save($E);
+      }, 400);
+    })        
     .on("click", ".recover-button", function(e) {
       $E.setState(e.currentTarget.dataset.formId); // string that is: "main", "reply-123", "edit-123" etc.
       $E.recover();

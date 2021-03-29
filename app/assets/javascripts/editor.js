@@ -104,16 +104,55 @@ class Editor {
   // h7() {
   //   this.wrap('#######','')
   // }
+
+  //debounce function addition
+  debounce(func, wait, immediate) {
+    var timeout;
+    return function () {
+      var context = this,
+        args = arguments;
+      var later = function () {
+        timeout = null;
+        if (!immediate) func.apply(context, args);
+      };
+      var callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+      if (callNow) func.apply(context, args);
+    };
+  }
+
   // this function is dedicated to Don Blair https://github.com/donblair
   attachSaveListener() {
     // remove any other existing eventHandler
     $("textarea").off("input.save"); // input.save is a custom jQuery eventHandler
     const thisEditor = this; // save a reference to this editor, because inside the eventListener, "this" points to e.target
-    this.textAreaElement.on("input.save", function() {
-      thisEditor.save(thisEditor);
-    });
-  }
-  save(thisEditor) {
+    //implementing a debounce function on save method
+    this.textAreaElement.on(
+    "input.save",
+    debounce(function () {
+      //changing styles and text
+      let saving_text = $('<p id="saving-text"> Saving... </p>');
+      $(".imagebar").prepend(saving_text);
+      $(".imagebar p").not("#saving-text").hide();
+
+      $("#save-button-main").find("i").removeClass("fa fa-save");
+      $("#save-button-main").find("i").addClass("fas fa-sync fa-spin");
+
+      //adding delay and reverting the styles
+        setTimeout(() => {
+          $("#save-button-main").find("i").removeClass("fas fa-sync fa-spin");
+          $("#save-button-main").find("i").addClass("fa fa-save");
+  
+          $(".imagebar").find("#saving-text").remove();
+          $(".imagebar p").not("#saving-text").show();
+        }, 400);
+  
+        thisEditor.save(thisEditor);
+      }, 700)
+    );
+  }  
+    save(thisEditor) {
     const storageKey = "plots:" + window.location.pathname + ":" + thisEditor.commentFormID;
     localStorage.setItem(storageKey, thisEditor.textAreaValue);
   }
