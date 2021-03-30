@@ -46,7 +46,7 @@ jobs:
         RAILS_ENV: test
         DB_PASSWORD: root
         DB_PORT: ${{ job.services.mysql.ports[3306] }}
-      run: bundle exec rails g webpack:install && bundle exec rails g webpack:install:react && bundle exec rails g react:install
+      run: bundle exec rails g webpacker:install && bundle exec rails g webpacker:install:react && bundle exec rails g react:install
     - name: "Functional Tests"
       env:
         RAILS_ENV: test
@@ -70,7 +70,7 @@ jobs:
         RAILS_ENV: test
         DB_PASSWORD: root
         DB_PORT: ${{ job.services.mysql.ports[3306] }}
-      run: bundle exec rails g webpack:install && bundle exec rails g webpack:install:react && bundle exec rails g react:install
+      run: bundle exec rails g webpacker:install && bundle exec rails g webpacker:install:react && bundle exec rails g react:install
     - name: "Integration Tests"
       env:
         RAILS_ENV: test
@@ -107,7 +107,7 @@ jobs:
         RAILS_ENV: test
         DB_PASSWORD: root
         DB_PORT: ${{ job.services.mysql.ports[3306] }}
-      run: bundle exec rails g webpack:install && bundle exec rails g webpack:install:react && bundle exec rails g react:install
+      run: bundle exec rails g webpacker:install && bundle exec rails g webpacker:install:react && bundle exec rails g react:install
     - name: "System Tests"
       env:
         RAILS_ENV: test
