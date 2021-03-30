@@ -3,6 +3,7 @@ require 'test_helper'
 class TagSelectionTest < ActiveSupport::TestCase
 
   test 'graph' do
+    Timecop.freeze # account for timestamp change
     end_time = Time.now
     start_time = end_time - 4.weeks
     ts_count = TagSelection.select(:following, :created_at)
@@ -13,5 +14,6 @@ class TagSelectionTest < ActiveSupport::TestCase
 
     assert_equal ts_count, graph.values.sum
     assert_equal Hash, graph.class
+    Timecop.return # unfreeze
   end
 end
