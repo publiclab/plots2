@@ -160,9 +160,20 @@
 
     <% if comment.reply_to.nil? %>
       <% comment.replied_comments.order("timestamp ASC").each do |replied_comment| %>
-        <%= render :partial => "notes/comment", :locals => {:comment => replied_comment} %>
+        <% if logged_in_as(['admin','moderator'])%>
+          <% if replied_comment.status == 4 || replied_comment.status == 1 %>
+            <%= render :partial => "notes/comment", :locals => {:comment => replied_comment} %>
+          <% end %>
+        <% elsif current_user && current_user.id = replied_comment.author.id %>
+          <% if replied_comment.status == 1 || (replied_comment.status == 4 && replied_comment.uid = current_user.id) %>
+            <%= render :partial => "notes/comment", :locals => {:comment => replied_comment} %>
+          <% end %>
+        <% else %>
+          <% if replied_comment.status == 1 %>
+            <%= render :partial => "notes/comment", :locals => {:comment => replied_comment} %>
+          <% end %>
+        <% end %>
       <% end %>
-
       <p style="color: #006dcc; cursor: pointer; user-select: none;" id="comment-<%= comment.cid %>-reply-toggle">Reply to this comment...</p>
       <div id="comment-<%= comment.cid %>-reply" style="margin-top: 30px;display: none;">
         <div id="comment-<%= comment.cid %>-reply-section">
