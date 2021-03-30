@@ -31,7 +31,13 @@
 
     <div style="padding-top:8px;text-align:center">
       <span class="d-none d-lg-inline">
-        <span rel="tooltip" title="The number of authors for this page." data-placement="top"><i style="color:#888;" class="fa fa-user"></i> <%= number_with_delimiter(@node.authors.size) %></span>  |
+        <span rel="popover" style='cursor: pointer;' title="Authors" data-html="true" data-placement="top" data-content= "
+        <ul>
+        <% @node.authors.each do |author| %>
+          <li style='list-style: none;'><a href='/profile/<%= author.username %>' style='color: #009bff;'>@<%= author.username %></a></li>
+        <% end %>
+      </ul>
+      "> <i style="color:#888;" class="fa fa-user"></i> <%= number_with_delimiter(@node.authors.size) %></span>  | 
         <a rel="tooltip" title="View all revisions for this page." data-placement="top" href="/wiki/revisions/<%= @node.slug_from_path %>"><i style="color:#888;" class="fa fa-history"></i> <%= @node.revisions.size %></a> |
         <a aria-label="Practice in a realtime doc" href="/talk/<%= @node.slug_from_path %>" rel="tooltip" title="Practice in a realtime doc." data-placement="top"><i class="fa fa-comment"></i></a> |
         <a aria-label="Link to wiki" href="/n/<%= @node.id %>"><i style="color:#888;" class="fa fa-link"></i></a> <span class="d-none d-xl-inline"><a href="/n/<%= @node.id %>">#<%= @node.id %></a></span>
@@ -62,3 +68,5 @@
   </ul>
 </nav>
 <% end %>
+
+
