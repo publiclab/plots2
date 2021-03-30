@@ -114,7 +114,7 @@ _kindly note if you choose to use sqlite some tests may fail. The project was se
 10. By default, start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser.
 (for local SSL work, see [SSL](#ssl-in-development) below)
 11. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
-12. Run `rails test` to confirm that your install is working properly. Or `rails test:system` for system tests. (_if you chose sqlite as your database, some tests may fail, please ignore these we are working to fix these, if your server starts correctly you all are set_)
+12. Run `rails test` to confirm that your install is working properly. Or `rails test:system` for system tests. (_if you chose sqlite as your database, some tests may fail, please ignore these we are working to fix these, if your server starts correctly you are all set_)
 
 ### Windows Installation
 
