@@ -105,7 +105,7 @@ gem 'grape-rails-cache'
 group :development do
   gem 'byebug', platform: :mri
   gem "letter_opener"
-  gem 'listen', '~> 3.5.0'
+  gem 'listen', '~> 3.5.1'
   gem "nifty-generators"
   gem 'web-console', '>= 3.3.0'
 end
