@@ -127,7 +127,7 @@
                                 <% end %>
                             <% end %>
                         </div>
-						 <% core_tag = params[:id].gsub('question:','') %>
+			<% core_tag = params[:id].gsub('question:','') %>
                         <% if @wiki %>
                             <a><%= link_to("Learn more &raquo;".html_safe, "/wiki/#{core_tag)}", :class=> "btn btn-outline-secondary")%></a>
                         <% else %>
