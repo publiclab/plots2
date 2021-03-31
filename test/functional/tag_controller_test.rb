@@ -182,14 +182,6 @@ class TagControllerTest < ActionController::TestCase
     assert :success
     assert_not_nil :tags
 
-    assert_equal tags(:spectrometer).parent, 'spectrometry'
-    # iterate through results
-    assert !assigns['notes'].empty?
-    assigns['notes'].each do |node|
-      assert node.has_tag('spectrometry') # should return false
-      assert_not node.has_tag_without_aliasing('spectrometry') # should return false
-    end
-
     # assert_equal assigns['tags'].length, 1
     assert_select '#wiki-summary', 1
   end
@@ -442,68 +434,6 @@ class TagControllerTest < ActionController::TestCase
     assert (notes & expected).present?
   end
 
-  test 'can create tag instance (community_tag) using a parent tag' do
-    UserSession.create(users(:bob))
-
-    post :create, params: { name: 'spectrometry', nid: nodes(:one).nid, uid: users(:bob).id }
-
-    assert_equal 'spectrometry', assigns[:tags].last.name
-    assert_redirected_to(nodes(:one).path)
-  end
-
-  test 'shows things tagged with child tag' do
-    tag = tags(:spectrometer)
-    tag.parent = 'spectrometry'
-    tag.save
-    tag2 = tags(:spectrometry)
-    tag2.parent = ''
-    tag2.save
-
-    assert_equal 'spectrometry', tag.parent
-    assert_equal '',             tag2.parent
-    nodes(:blog).add_tag('spectrometry', users(:bob))
-    assert nodes(:blog).has_tag_without_aliasing('spectrometry')
-
-    get :show, params: { id: 'spectrometry' }
-
-    # order of timestamps during testing (almost same timestamps) was causing testing irregularities
-    notes = assigns(:notes).sort_by(&:title).reverse
-
-    assert_equal 2, notes.length
-    assert_equal [1, 13], notes.collect(&:nid)
-    assert_equal [nodes(:one).title, 'Blog post'], notes.collect(&:title)
-
-    # should be the first node, nid=1
-    assert_equal nodes(:one).title, notes.first.title
-    assert_equal ['spectrometer'], notes.first.tags.collect(&:name)
-    assert       notes.first.has_tag_without_aliasing('spectrometer')
-    assert_not notes.first.has_tag_without_aliasing('spectrometry')
-
-    # should be the blog node, nid=13
-    assert_equal 'Blog post', notes.last.title
-    assert_equal ['spectrometry'], notes.last.tags.collect(&:name)
-    assert_not notes.last.has_tag_without_aliasing('spectrometer')
-    assert notes.last.has_tag_without_aliasing('spectrometry')
-  end
-
-  test 'does not show things tagged with parent tag' do
-    tag = tags(:spectrometer)
-    tag.parent = 'spectrometry'
-    tag.save
-    tag2 = tags(:spectrometry)
-    tag2.parent = ''
-    tag2.save
-    assert_equal 'spectrometry', tags(:spectrometer).parent
-    assert_equal '',             tags(:spectrometry).parent
-    nodes(:blog).add_tag('spectrometry', users(:bob))
-
-    get :show, params: { id: 'spectrometer' }
-
-    assert_equal 1, assigns(:notes).length
-    assert_not assigns(:notes).first.has_tag_without_aliasing('spectrometry')
-    assert       assigns(:notes).first.has_tag_without_aliasing('spectrometer')
-  end
-
   test 'shows suggested tags' do
     get :suggested, params: { id: 'spectr' }
 
@@ -613,25 +543,6 @@ class TagControllerTest < ActionController::TestCase
     assert_equal true, JSON.parse(@response.body)['status']
   end
 
-  test 'add_parent method adds a tag parent' do
-    user = UserSession.create(users(:admin))
-    get :add_parent, params: { name: Tag.last.name, parent: Tag.first.name }
-    assert_response :redirect
-    assert_equal Tag.first.name, Tag.last.parent
-    # flash[:notice] = "Tag parent added."
-    # flash[:error] = "There was an error adding a tag parent."
-    # redirect_to '/tag/' + @tag.name + '?_=' + Time.now.to_i.to_s
-  end
-
-  test 'add_parent method works with non-existent parent' do
-    user = UserSession.create(users(:admin))
-    get :add_parent, params: { name: Tag.last.name, parent: Tag.first.name }
-    assert_response :redirect
-    assert_equal Tag.first.name, Tag.last.parent
-    get :index
-    assert_response :success
-  end
-
   test 'sort according to followers ascending' do
     get :index, params: { :sort => "followers", :order => "asc" }
     tags_array = assigns(:tags)
@@ -665,20 +576,6 @@ class TagControllerTest < ActionController::TestCase
 
     get :index, params: { :powertags => 'true' }
     assert_not_equal 0, assigns(:tags).where("name LIKE ?", "%:%").length
-  end
-
-  # Bug 6855
-  test 'counts match the nodes' do
-    tag = tags(:sunny_day)
-    get :show, params: { id: tag.name }
-
-    assert_response :success
-
-    counts = assigns(:counts)
-    assert_equal 1, counts[:posts], "Note count should match"
-    assert_equal 0, counts[:questions], "Question count should match"
-    assert_equal 1, counts[:wiki], "Wiki count should match"
-    assert_equal 1, assigns(:total_posts), "Total posts should match"
   end
 
   # Bug 6855
