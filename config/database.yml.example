@@ -26,6 +26,7 @@ production:
   username: <%= ENV['DB_USER'] || 'plots' %>
   password: <%= ENV['DB_PASS'] || 'plots' %>
   database: <%= ENV['DB_NAME'] || 'plots' %>
+  socket: <%= ENV['DB_SOCKET'] || '' %>
   port: <%= ENV['DB_PORT'] || 3306 %>
   host: <%= ENV['DB_HOST'] || 'db' %>
   encoding: utf8mb4
