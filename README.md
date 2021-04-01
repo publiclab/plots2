@@ -109,7 +109,15 @@ For installation, prerequisites include sqlite3 and rvm. [Click here for a compl
     * If mysql2,  run `cp config/database.yml.mysql.example config/database.yml` to make a copy of `config/database.yml.mysql.example` in `config/database.yml` 
     * If sqlite3, run `cp config/database.yml.sqlite.example config/database.yml` to make a copy of `config/database.yml.sqlite.example` in `config/database.yml`.
 _kindly note if you choose to use sqlite some tests may fail. The project was setup initially to use mysql and some tests are tailored for mysql db. No need for alarm, we are working to fix these and this will not interfere with your development process_
-8. Run `rake db:setup` to set up the database
+8. Run `rake db:setup` to set up the database. If this gives you error for `manifest.js` **missing**. Create your manifest file by using these steps
+  1. `mkdir -p app/assets/config`
+  2. `touch app/assets/config/manifest.js`
+  3. copy and paste in the manifest.js
+    `
+      //= link_tree ../images
+      //= link_directory ../javascripts .js
+      //= link_directory ../stylesheets .css
+    `
 9. Install static assets (like external javascript libraries, fonts) with `yarn install`
 10. By default, start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser.
 (for local SSL work, see [SSL](#ssl-in-development) below)
