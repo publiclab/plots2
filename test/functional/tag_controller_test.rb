@@ -293,8 +293,6 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test "should show a featured wiki page at top, if it exists" do
-    tag = tags(:test)
-
     get :show, params: { id: nodes(:organizers).slug }
 
     assert_select '#wiki-summary', 1
@@ -606,7 +604,7 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test 'should render a text/plain when a tag is deleted through post request xhr' do
-    user = UserSession.create(users(:jeff))
+    UserSession.create(users(:jeff))
     node_tag = node_tags(:awesome)
     post :delete, params: { nid: node_tag.nid, tid: node_tag.tid, uid: node_tag.uid}, xhr: true
     assert_equal node_tag.tid, JSON.parse(@response.body)['tid']
@@ -614,7 +612,7 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test 'add_parent method adds a tag parent' do
-    user = UserSession.create(users(:admin))
+    UserSession.create(users(:admin))
     get :add_parent, params: { name: Tag.last.name, parent: Tag.first.name }
     assert_response :redirect
     assert_equal Tag.first.name, Tag.last.parent
@@ -624,7 +622,7 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test 'add_parent method works with non-existent parent' do
-    user = UserSession.create(users(:admin))
+    UserSession.create(users(:admin))
     get :add_parent, params: { name: Tag.last.name, parent: Tag.first.name }
     assert_response :redirect
     assert_equal Tag.first.name, Tag.last.parent
