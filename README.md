@@ -102,6 +102,9 @@ For installation, prerequisites include sqlite3 and rvm. [Click here for a compl
     * You may need to first run `bundle install` if you have older gems in your environment from previous Rails work. If you get an error message like `Your Ruby version is 2.x.x, but your Gemfile specified 2.6.6` then you need to install the ruby version 2.6.6 using `rvm` or `rbenv`.
 	    * Using **rvm**: `rvm install 2.6.6` followed by `rvm use 2.6.6`
 	    * Using **rbenv**:  `rbenv install 2.6.6` followed by `rbenv local 2.6.6`
+    * If `bundle install` gives you following error 
+      `Your bundle is locked to mimemagic (0.3.3), but that version could not be found in any of the sources listed in your Gemfile. If you haven't changed sources, that means the author of mimemagic (0.3.3) has removed it. You'll need to update your bundle to a version other than mimemagic (0.3.3) that hasn't been removed in order to install`
+      **Delete `Gemfile.lock` and re run `bundle install`**
     * Run this `bundle config set without 'production mysql'` from the rails root folder to set your project to exclude libraries only needed in production.
     * Install gems with `bundle install` from the rails root folder.
 6. Run `cp db/schema.rb.example db/schema.rb` to make a copy of `db/schema.rb.example` in `db/schema.rb`.
