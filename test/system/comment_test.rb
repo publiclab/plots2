@@ -491,6 +491,92 @@ class CommentTest < ApplicationSystemTestCase
       assert_selector("#{edit_preview_id} img", count: 1)
     end
 
+    test "#{page_type_string}: should list first time replied comment to moderator" do
+      comment = nodes(node_name).add_comment({
+        uid: 19,
+        body: "This is a first time reply",
+        status: 4,
+        reply_to: 1,
+      })
+      visit get_path(page_type, nodes(node_name).path)
+      page.find("#c#{comment.id}")
+      assert_equal comment.status, 4
+      assert_selector("#c#{comment.id} div p", text: "Moderate first-time comment:")
+    end
+
+    test "#{page_type_string}: should not list first time replied comment to non-registered user" do
+      comment = nodes(node_name).add_comment({
+        uid: 19,
+        body: "This is a first time reply",
+        status: 4,
+        reply_to: 1,
+      })
+      visit '/logout'
+      visit get_path(page_type, nodes(node_name).path)
+      assert_selector("#c#{comment.id}", count: 0)
+    end
+
+    test "#{page_type_string}: should not list first time replied comment to other user" do
+      comment = nodes(node_name).add_comment({
+        uid: 19,
+        body: "This is a first time reply",
+        status: 4,
+        reply_to: 1,
+      })
+      visit '/logout'
+      visit '/'
+
+      find(".nav-link.loginToggle").click()
+      fill_in("username-login", with: "sushmita")
+      fill_in("password-signup", with: "secretive")
+
+      find(".login-modal-form #login-button").click()
+      visit get_path(page_type, nodes(node_name).path)
+      assert_selector("#c#{comment.id}", count: 0)
+    end
+
+    test "#{page_type_string}: should not list spam replied comment to moderator" do
+      comment = nodes(node_name).add_comment({
+        uid: 5,
+        body: "This is a spam reply",
+        reply_to: 1,
+      })
+      visit "/admin/mark_comment_spam/#{comment.id}"
+      visit get_path(page_type, nodes(node_name).path)
+      assert_selector("#c#{comment.id}", count: 0)
+    end
+
+    test "#{page_type_string}: should not list spam replied comment to non-registered user" do
+      comment = nodes(node_name).add_comment({
+        uid: 5,
+        body: "This is a spam reply",
+        reply_to: 1,
+      })
+      visit "/admin/mark_comment_spam/#{comment.id}"
+      visit '/logout'
+      visit get_path(page_type, nodes(node_name).path)
+      assert_selector("#c#{comment.id}", count: 0)
+    end
+
+    test "#{page_type_string}: should not list spam replied comment to registered user" do
+      comment = nodes(node_name).add_comment({
+        uid: 5,
+        body: "This is a spam reply",
+        reply_to: 1,
+      })
+      visit "/admin/mark_comment_spam/#{comment.id}"
+      visit '/logout'
+      visit '/'
+
+      find(".nav-link.loginToggle").click()
+      fill_in("username-login", with: "sushmita")
+      fill_in("password-signup", with: "secretive")
+
+      find(".login-modal-form #login-button").click()
+      visit get_path(page_type, nodes(node_name).path)
+      assert_selector("#c#{comment.id}", count: 0)
+    end
+
     test "#{page_type_string}: IMMEDIATE image SELECT upload into REPLY comment form" do
       nodes(node_name).add_comment({
         uid: 5,
