@@ -111,7 +111,7 @@ For installation, prerequisites include sqlite3 and rvm. [Click here for a compl
 _kindly note if you choose to use sqlite some tests may fail. The project was setup initially to use mysql and some tests are tailored for mysql db. No need for alarm, we are working to fix these and this will not interfere with your development process_
 8. Run `rake db:setup` to set up the database
 9. Install static assets (like external javascript libraries, fonts) with `yarn install`
-10. By default, start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser.
+10. Setup React & webpacker by running `rails webpacker:install && rails webpacker:install:react && rails generate react:install`
 (for local SSL work, see [SSL](#ssl-in-development) below)
 11. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
 12. Run `rails test` to confirm that your install is working properly. Or `rails test:system` for system tests. (_if you chose sqlite as your database, some tests may fail, please ignore these we are working to fix these, if your server starts correctly you are all set_)
