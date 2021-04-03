@@ -418,7 +418,7 @@ class NotesController < ApplicationController
       @node['created'] = DateTime.now.to_i # odd assignment needed due to legacy Drupal column types
       @node['changed'] = DateTime.now.to_i
       @node.publish
-      SubscriptionMailer.notify_node_creation(@node).deliver_now
+      SubscriptionMailer.notify_node_creation(@node).deliver_later
       flash[:notice] = "Thanks for your contribution. Research note published! Now, it's visible publicly."
       redirect_to @node.path
     else
