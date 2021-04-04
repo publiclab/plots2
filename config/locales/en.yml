@@ -391,7 +391,7 @@ en:
       liked: "Liked"
       action: "Action"
   map:
-   index:
+    index:
       current_view: "Current view based on your shared location. Click <a href='/profile'>here</a> to adjust."
       share: "Share your own location on <a href='/profile'>your profile</a>."
       privacy: "Learn about <a href='https://publiclab.org/wiki/location-privacy'>privacy</a>"
