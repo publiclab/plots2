@@ -1,6 +1,10 @@
 Plots2::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
+  # Paperclip config:
+  Paperclip.options[:image_magick_path] = "/opt/ImageMagick/bin"
+  Paperclip.options[:command_path] = "/opt/ImageMagick/bin"
+  
   # Code is not reloaded between requests
   config.cache_classes = true
 
