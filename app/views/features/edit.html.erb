@@ -1,6 +1,6 @@
 <% url = { :controller => "features", :action => "update", :id => @node.id } %>
 
-<%= form_for :node, :as => :drupal_node, :url => url do |f| %>
+<%= form_for @node, :as => :drupal_node, :url => url do |f| %>
 <%= render partial: 'layouts/errorMessages', locals: { model: @node } %>
 
 <% if @node && @node.title %>
