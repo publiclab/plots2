@@ -113,7 +113,7 @@ _kindly note if you choose to use sqlite some tests may fail. The project was se
 9. Install static assets (like external javascript libraries, fonts) with `yarn install`
 10. Setup React & webpacker by running `rails webpacker:install && rails webpacker:install:react && rails generate react:install`
 (for local SSL work, see [SSL](#ssl-in-development) below)
-11. Start the server with `passenger start` and navigate to `http://localhost:3000/` in your browser.
+11. Start the server with `passenger start` and navigate to `http://localhost:3000/` on your browser.
 12. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
 13. Run `rails test` to confirm that your install is working properly. You can also run `rails test:system` for system tests. (_Note: if you chose sqlite as your database, some tests may fail; Please ignore these, we are working to fix this. If your server starts correctly, you are all set_)
 
