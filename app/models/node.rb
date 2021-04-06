@@ -850,7 +850,6 @@ class Node < ActiveRecord::Base
             # add sub-tags:
             subtags = {}
             subtags['pm'] = 'particulate-matter'
-            subtags['pm'] = 'air-quality'
             subtags['h2s'] = 'hydrogen-sulfide'
             subtags['near-infrared-camera'] = 'multispectral-imaging'
             subtags['infragram'] = 'multispectral-imaging'
