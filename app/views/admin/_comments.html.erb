@@ -11,7 +11,7 @@
         <td>
           <% unless comment.node.nil? %>
             <i class="fa fa-file"></i> <a href="<%= comment.node.path %>"><%= comment.node.title.truncate(40) %></a><br />
-            <span style="color:grey;"><%= time_ago_in_words(comment.timestamp.seconds.ago) %> ago</span>
+            <span style="color:grey;"><%= time_ago_in_words(comment.timestamp.seconds) %> ago</span>
           <% end %>
         </td>
         <td style="width:200px;">
