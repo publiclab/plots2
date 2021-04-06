@@ -28,6 +28,7 @@ gem 'impressionist'
 gem 'jbuilder', '~> 2.11'
 gem 'jquery-rails'
 gem 'mocha', '~> 1.12'
+gem 'mimemagic', '~> 0.3.8'
 gem 'mustermann' , '1.1.1'
 gem 'omniauth', '~> 1.9'
 gem 'omniauth-facebook', '~> 8.0'
@@ -104,7 +105,7 @@ gem 'grape-rails-cache'
 group :development do
   gem 'byebug', platform: :mri
   gem "letter_opener"
-  gem 'listen', '~> 3.4.1'
+  gem 'listen', '~> 3.5.1'
   gem "nifty-generators"
   gem 'web-console', '>= 3.3.0'
 end
@@ -131,7 +132,7 @@ group :test, :development do
   gem 'timecop'
   gem 'pry-rails'
   gem 'action-cable-testing'
-  gem "webmock", "~> 3.11"
+  gem "webmock", "~> 3.12"
 end
 
 group :production do

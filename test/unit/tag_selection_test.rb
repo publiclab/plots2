@@ -3,8 +3,8 @@ require 'test_helper'
 class TagSelectionTest < ActiveSupport::TestCase
 
   test 'graph' do
-    end_time = Time.now
-    start_time = end_time - 1.year
+    start_time = (Date.today - 1.month).to_time
+    end_time = Date.today.to_time
     ts_count = TagSelection.select(:following, :created_at)
       .where(following: true, created_at: (start_time..end_time))
       .count

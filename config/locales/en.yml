@@ -390,6 +390,23 @@ en:
       user: "User"
       liked: "Liked"
       action: "Action"
+  map:
+    index:
+      current_view: "Current view based on your shared location. Click <a href='/profile'>here</a> to adjust."
+      share: "Share your own location on <a href='/profile'>your profile</a>."
+      privacy: "Learn about <a href='https://publiclab.org/wiki/location-privacy'>privacy</a>"
+      archive: |
+        <h3><i style="color:#aaa;" class="fa fa-hdd"></i> A grassroots data archive</h3>
+        <p>This archive represents the collective work of our community to provide an alternative source for aerial imagery, and to highlight issues of environmental and social concern with Do-It-Yourself tools. The archive provides:</p>
+        <ul>
+          <li>A permanent, backed up archive</li>
+          <li>A place to advocate around your data</li>
+          <li>A space to discuss and understand the maps</li>
+        </ul>
+        <hr />
+        <h3><i style="color:#aaa;" class="fa fa-globe"></i> How to contribute</h3>
+        <p>Most of the maps in this archive were made in <a href="//mapknitter.org">MapKnitter</a>, a free and open source tool created by Public Lab contributors to turn aerial photos into maps.</p>
+        <p>To add your open source map to the archive, contact <a href="mailto:staff@<%= request.host %>">staff@<%= request.host %></a> and be prepared to provide some background and to tell the story of your map. Creative Commons and Public Domain maps are <a href="/licenses">both accepted</a>.</p>      
   tag:
     blog:
       the_public_lab: "The Public Lab"
@@ -871,6 +888,19 @@ en:
         more</a>"
       try_direct_link: "If this page does not load properly, <a href='%{url1}'>try
         here</a>"
+  editor:
+    post:
+      welcome: "Here you can ask a question to the Public Lab community to help you in your environmental exploration. This is a great space to ask whether a method exists for identifying a possible pollutant, or ask about details of a specific technique for identifying a pollutant."
+      add_tags: "You can add more tags in the tags section below to further relate your question. You can also change the main tag of the question by renaming the part after"
+      q_and_a: "New to Public Lab? Take a minute to read the Q &amp; A wiki before posting your question"
+      learn_more: "Learn more &raquo;"
+      research_note: "At Public Lab, we all collaborate to invent and improve open source environmental science tools. <b>Research notes</b> are the primary way we share what we learn, ask questions, pose challenges, and critique one another's work."
+      photo: "photos of what you've made"
+      troubleshooting: "requests for troubleshooting"
+      projects: "proposals for new projects"
+      events: "announcements of events"
+      reports: "reports from a field test or meetup"
+      video: "Watch a 30 second video on posting research notes &raquo;"
   home_controller:
     science_community: "a DIY environmental science community"
     environmental_investigation: "a community for DIY environmental investigation"

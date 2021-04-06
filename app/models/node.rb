@@ -825,7 +825,7 @@ class Node < ActiveRecord::Base
 
   def add_barnstar(tagname, giver)
     add_tag(tagname, giver)
-    CommentMailer.notify_barnstar(giver, self).deliver_now
+    CommentMailer.notify_barnstar(giver, self).deliver_later
   end
 
   def add_tag(tagname, user)
@@ -882,7 +882,7 @@ class Node < ActiveRecord::Base
               isStatusValid = status == 3 || status == 4
               isMonthOld = created < (DateTime.now - 1.month).to_i
               unless tag.subscriptions.empty? || isStatusValid || !isMonthOld
-                SubscriptionMailer.notify_tag_added(self, tag, user).deliver_now
+                SubscriptionMailer.notify_tag_added(self, tag, user).deliver_later
               end
             else
               saved = false
@@ -1108,7 +1108,7 @@ class Node < ActiveRecord::Base
       like.liking = true
       node = Node.find(nid)
       if node.type == 'note' && !UserTag.exists?(node.uid, 'notify-likes-direct:false')
-        SubscriptionMailer.notify_note_liked(node, like.user).deliver_now
+        SubscriptionMailer.notify_note_liked(node, like.user).deliver_later
       end
       if node.uid != user.id && UserTag.where(uid: user.id, value: ['notifications:all', 'notifications:like']).any?
         notification = Hash.new
@@ -1189,7 +1189,7 @@ class Node < ActiveRecord::Base
   def notify_callout_users
     # notify mentioned users
     mentioned_users.each do |user|
-      NodeMailer.notify_callout(self, user).deliver_now if user.username != author.username
+      NodeMailer.notify_callout(self, user).deliver_later if user.username != author.username
     end
   end
 
