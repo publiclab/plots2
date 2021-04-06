@@ -127,10 +127,11 @@
                                 <% end %>
                             <% end %>
                         </div>
+                        <% core_tag = params[:id].gsub('question:','') %>
                         <% if @wiki %>
-                            <a><%= link_to("Learn more &raquo;".html_safe, "/wiki/#{params[:id]}", :class=> "btn btn-outline-secondary")%></a>
+                            <a><%= link_to("Learn more &raquo;".html_safe, "/wiki/#{core_tag}", :class=> "btn btn-outline-secondary")%></a>
                         <% else %>
-                            <a class="btn btn-outline-secondary" href="/wiki/new?title=<%= params[:id] %>">Add a description <span class="fa fa-plus"></span></a>
+                            <a class="btn btn-outline-secondary" href="/wiki/new?title=<%= core_tag %>">Add a description <span class="fa fa-plus"></span></a>
                         <% end %>
                     </div>
 
