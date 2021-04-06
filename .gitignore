@@ -15,6 +15,7 @@ data
 *.swp
 .DS_Store
 .idea
+.ruby-version
 Gemfile.lock
 coverage*
 development.sqlite
