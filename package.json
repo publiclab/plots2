@@ -57,7 +57,7 @@
     "popper.js": "^1.16.1",
     "prop-types": "^15.7.2",
     "publiclab-editor": "^3.0.2",
-    "react": "^17.0.1",
+    "react": "^17.0.2",
     "react-dom": "^17.0.1",
     "react_ujs": "^2.6.1",
     "short-code-forms": "jywarren/short-code-forms#~0.0.1",
