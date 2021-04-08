@@ -79,13 +79,13 @@ class UserSessionsController < ApplicationController
           if User.where(email: auth["info"]["email"]).empty?
             # Create a new user as email provided is not present in PL database
             user = User.create_with_omniauth(auth)
-            WelcomeMailer.notify_newcomer(user).deliver_now
+            WelcomeMailer.notify_newcomer(user).deliver_later
             @identity = UserTag.create_with_omniauth(auth, user.id)
             key = user.generate_reset_key
             @user_session = UserSession.create(@identity.user)
             @user = user
             # send key to user email
-            PasswordResetMailer.reset_notify(user, key).deliver_now unless user.nil? # respond the same to both successes and failures; security
+            PasswordResetMailer.reset_notify(user, key).deliver_later unless user.nil? # respond the same to both successes and failures; security
             if session[:openid_return_to] # for openid login, redirects back to openid auth process
               return_to = session[:openid_return_to]
               session[:openid_return_to] = nil
