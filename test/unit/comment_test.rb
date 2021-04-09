@@ -154,22 +154,18 @@ class CommentTest < ActiveSupport::TestCase
     assert_not_equal comment.body, '[tags in URLs](/mypage[#tags](/tags/tags))'
   end
 
-  test 'should create comments for answers' do
-    answer = answers(:one)
+  test 'should create comments' do
     comment = Comment.new(
       uid: users(:bob).id,
-      aid: answer.id,
       comment: 'Test comment'
     )
     assert comment.save
   end
 
-  test 'should relate answer comments to user and answer but not node' do
-    answer = answers(:one)
+  test 'should relatecomments to user but not node' do
     user = users(:bob)
     comment = Comment.new(comment: 'Test comment')
     comment.user = user
-    comment.answer = answer
 
     assert comment.save
     assert_equal user.comments.last, comment
