@@ -850,6 +850,14 @@ class Node < ActiveRecord::Base
             # add sub-tags:
             subtags = {}
             subtags['pm'] = 'particulate-matter'
+            subtags['h2s'] = 'hydrogen-sulfide'
+            subtags['near-infrared-camera'] = 'multispectral-imaging'
+            subtags['infragram'] = 'multispectral-imaging'
+            subtags['odors'] = 'odor'
+            subtags['oil'] = 'oil-and-gas'
+            subtags['purple-air'] = 'purpleair'
+            subtags['reagent'] = 'reagents'
+            subtags['spectrometer'] = 'spectrometry'
             if subtags.include?(key)
               add_tag(subtags[key], user)
             end
