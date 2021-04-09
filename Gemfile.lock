@@ -257,7 +257,7 @@ GEM
     lemmatizer (0.2.2)
     letter_opener (1.7.0)
       launchy (~> 2.2)
-    listen (3.5.0)
+    listen (3.5.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     loadcss-rails (2.0.1)
@@ -495,7 +495,7 @@ GEM
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
     semantic_range (2.3.1)
-    sentry-raven (3.1.1)
+    sentry-raven (3.1.2)
       faraday (>= 1.0)
     sidekiq (5.2.9)
       connection_pool (~> 2.2, >= 2.2.2)
@@ -631,7 +631,7 @@ DEPENDENCIES
   lazyload-rails
   lemmatizer (~> 0.2.2)
   letter_opener
-  listen (~> 3.5.0)
+  listen (~> 3.5.1)
   loadcss-rails (~> 2.0.1)
   mailman
   mimemagic (~> 0.3.8)

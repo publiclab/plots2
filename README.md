@@ -111,17 +111,18 @@ For installation, prerequisites include sqlite3 and rvm. [Click here for a compl
 _kindly note if you choose to use sqlite some tests may fail. The project was setup initially to use mysql and some tests are tailored for mysql db. No need for alarm, we are working to fix these and this will not interfere with your development process_
 8. Run `rake db:setup` to set up the database
 9. Install static assets (like external javascript libraries, fonts) with `yarn install`
-10. By default, start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser.
-(for local SSL work, see [SSL](#ssl-in-development) below)
-11. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
-12. Run `rails test` to confirm that your install is working properly. Or `rails test:system` for system tests. (_if you chose sqlite as your database, some tests may fail, please ignore these we are working to fix these, if your server starts correctly you are all set_)
+10. Setup React & webpacker by running `rails webpacker:install && rails webpacker:install:react && rails generate react:install`(for local SSL work, see [SSL](#ssl-in-development) below) 
+   * If you get any prompt to overwrite files in this step please choose no. The prompt will be something like _"Overwrite /home/plots2/config/webpacker.yml? (enter "h" for help) [Ynaqdhm]"_ :-  type "n" and enter. 
+11. Start the server with `passenger start` and navigate to `http://localhost:3000/` on your browser.
+12. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
+13. Run `rails test` to confirm that your install is working properly. You can also run `rails test:system` for system tests. (_Note: if you chose sqlite as your database, some tests may fail; Please ignore these, we are working to fix this. If your server starts correctly, you are all set_)
 
 ### Windows Installation
 
-We recommend you either work in a virtual environment, or on a dual booted system to avoid dependencies issues and also Unix system works smoother with Ruby and Rails. This will not only benefit you now for plots2, but also in future while working on other Ruby projects, a Linux or Mac based OS will make your development so much smoother. 
+We recommend you either work in a virtual environment, or on a dual booted system to avoid dependencies issues and also Unix system works smoother with Ruby and Rails. This will not only benefit you now for plots2, but also in the future while working on other Ruby projects, a Linux or Mac based OS will make your development so much smoother. 
 1. [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10) (recommended)
 2. [Dual Booting](https://www.tecmint.com/install-ubuntu-alongside-with-windows-dual-boot/amp/), [option2](https://askubuntu.com/questions/1031993/how-to-install-ubuntu-18-04-alongside-windows-10), [video guide](https://www.youtube.com/watch?v=qNeJvujdB-0&fbclid=IwAR0APhs89jlNR_ENKbSwrp6TI6P-wxlx-a0My9XBvPNAfwtADZaAXqcKtP4)
-3. [Setting up a linux virtual env](https://itsfoss.com/install-linux-in-virtualbox/)
+3. [Setting up a Linux virtual env](https://itsfoss.com/install-linux-in-virtualbox/)
 
 ## Redis Installation
 
