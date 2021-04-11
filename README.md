@@ -70,7 +70,7 @@ From design to system architecture to basic vocabulary and communication pattern
 
 This broad community, and the Public Lab team have facilitated a space where we can discuss, break down, construct, prototype, and critique real-world projects. Together we have shaped a platform that incorporates familiar pieces, but ultimately looks and feels quite different from anywhere else on the internet. Our platform continues to grow and be refined, but it also reflects a commitment to listening to one another, to mutual respect and support, to an awareness of the barriers and challenges presented by gaps in expertise and knowledge, and a sensitivity to the inequalities and power imbalances perpetuated by many mainstream modes of knowledge production and technological and scientific development.
 
-Our mutual aims of democratizing inexpensive and accessible do-it-yourself techniques has allowed us to create a collaborative network of practitioners who actively re-imagine the human relationship with the environment. Our goals are supported and facilitated by a system which questions and even challenges how collaborative work can happen.
+Our mutual aim of democratizing inexpensive and accessible do-it-yourself techniques has allowed us to create a collaborative network of practitioners who actively reimagine the human relationship with the environment. Our goals are supported and facilitated by a robust system which questions and even challenges how collaborative work can happen.
 
 ## Data Model
 
@@ -147,7 +147,7 @@ Secure connection is needed for OAuth authentication etc.
 
 ## Login
 
-Once you complete the installation, use any of these credentials to login in to the PL website in your local development / testing environment to gain additional permissions for only logged in users. Each one comes with its own set of permissions, but besides that the experience across them is pretty much the same.
+Once you complete the installation, use any of these credentials to login in to the PL website in your local development / testing environment to gain additional permissions that are avaialable only for only logged in users. Each one comes with its own set of permissions, but besides that the experience across them is more or less the same.
 
 **username**: `admin`, `moderator`, or `user` 
 
@@ -191,7 +191,7 @@ Public Lab now supports reply by email to comment feature. For more details rega
 
 To report bugs and request features, please use the GitHub issue tracker provided at https://github.com/publiclab/plots2/issues
 
-For additional support, join the Public Lab website and mailing list at http://publiclab.org/lists or for urgent requests, email web@publiclab.org
+For additional support, join the Public Lab website and mailing list at http://publiclab.org/lists or for urgent requests, email:web@publiclab.org
 
 ## Recaptcha
 
