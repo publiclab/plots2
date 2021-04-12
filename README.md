@@ -102,6 +102,9 @@ For installation, prerequisites include sqlite3 and rvm. [Click here for a compl
     * You may need to first run `bundle install` if you have older gems in your environment from previous Rails work. If you get an error message like `Your Ruby version is 2.x.x, but your Gemfile specified 2.6.6` then you need to install the ruby version 2.6.6 using `rvm` or `rbenv`.
 	    * Using **rvm**: `rvm install 2.6.6` followed by `rvm use 2.6.6`
 	    * Using **rbenv**:  `rbenv install 2.6.6` followed by `rbenv local 2.6.6`
+    * If `bundle install` gives you following error 
+      `Your bundle is locked to mimemagic (0.3.3), but that version could not be found in any of the sources listed in your Gemfile. If you haven't changed sources, that means the author of mimemagic (0.3.3) has removed it. You'll need to update your bundle to a version other than mimemagic (0.3.3) that hasn't been removed in order to install`
+      **Delete `Gemfile.lock` and re run `bundle install`**
     * Run this `bundle config set without 'production mysql'` from the rails root folder to set your project to exclude libraries only needed in production.
     * Install gems with `bundle install` from the rails root folder.
 6. Run `cp db/schema.rb.example db/schema.rb` to make a copy of `db/schema.rb.example` in `db/schema.rb`.
@@ -109,7 +112,7 @@ For installation, prerequisites include sqlite3 and rvm. [Click here for a compl
     * If mysql2,  run `cp config/database.yml.mysql.example config/database.yml` to make a copy of `config/database.yml.mysql.example` in `config/database.yml` 
     * If sqlite3, run `cp config/database.yml.sqlite.example config/database.yml` to make a copy of `config/database.yml.sqlite.example` in `config/database.yml`.
 _kindly note if you choose to use sqlite some tests may fail. The project was setup initially to use mysql and some tests are tailored for mysql db. No need for alarm, we are working to fix these and this will not interfere with your development process_
-8. Run `rake db:setup` to set up the database
+8. Run `rake db:setup` to set up the database.
 9. Install static assets (like external javascript libraries, fonts) with `yarn install`
 10. Setup React & webpacker by running `rails webpacker:install && rails webpacker:install:react && rails generate react:install`(for local SSL work, see [SSL](#ssl-in-development) below) 
    * If you get any prompt to overwrite files in this step please choose no. The prompt will be something like _"Overwrite /home/plots2/config/webpacker.yml? (enter "h" for help) [Ynaqdhm]"_ :-  type "n" and enter. 
