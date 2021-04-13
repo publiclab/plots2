@@ -1,0 +1,1043 @@
+---
+fr:
+  users:
+    reset:
+      reset_password: "Réinitialisez votre mot de passe"
+      enter_username_and_password: "Entrez votre nom d'utilisat⋅rice⋅eur et un nouveau mot de passe"
+      username_placeholder: "nom d'utilisat⋅rice⋅eur"
+      password_placeholder: "entrez un nouveau mot de passe"
+      retype_password_placeholder: "retapez votre mot de passe"
+      save: "Enregistrer"
+      enter_email_reset_password: "Entrez votre adresse mail pour réinitialiser votre mot de passe"
+      reset: "Réinitialiser"
+    _tags_form:
+      skills: "Savoir-faire"
+      enter_tags: "Entrez des étiquettes"
+      gears: "Équipements "
+      tools: "Outils"
+      roles: "Rôles"
+      location: "Localisation"
+      type_location: "Entrez la localisation"
+      map: "Carte"
+      location_privacy: "Confidentialité de la localisation"
+    new:
+      sign_up: "Inscrivez-vous pour rejoindre la communauté du Public Lab"
+      licensing_agreement: "Contrat de licence"
+      licensing_detail: 'En tant que communauté open source, nous croyons à l''usage de licences ouvertes pour le contenu afin que les autres membres de la communauté puissent exploiter votre travail légalement -- avec attribution, bien sûr. En rejoignant le site Public Lab, <b>vous acceptez de libérer le contenu que vous publiez ici sous une licence <a href="%{url1}" target="_blank">Creative Commons Attribution Sharealike</a></b>, et les conceptions de matériel que vous publiez sous la <b><a href="%{url2}" target="_blank">licence CERN Open Hardware 1.1</a> (<a href="%{url3}" target="_blank">texte intégral</a>)</b>. Cela présente l''avantage supplémentaire que d''autres personnes doivent partager leurs améliorations avec vous à leur tour.'
+      code_of_conduct_agreement: "Convention de Code de conduite"
+      code_of_conduct_detail: 'En vous inscrivant, <b>vous acceptez le<a href="%{url1}" target="_blank"> Code de Conduite</a></b>, qui s''applique à tous les espaces en ligne et en présentiel gérés par la communauté Public Lab et à but non lucratif.'
+      about_public_lab: |2
+
+        <h3>Qu'est-ce que le Public Lab ?</h3>
+
+        <p>Public Lab est une communauté ouverte qui développe et applique des outils à code source libre pour l'exploration et l'étude de l'environnement. <a href="/about">Pour en savoir plus, cliquez ici</a></p>
+
+        <p>En vous inscrivant, vous rejoindrez un groupe diversifié de chercheuses et chercheur en communauté et profiterez d'un grand nombre de compétences de base. Nous mettons au point de nouveaux outils pour étudier et relever les défis en matière d'environnement et de santé environnementale, en mettant l'accent sur :</p>
+
+        <ul>
+        <li>faible coût</li>
+        <li>la lisibilité des données</li>
+        <li>facilité d'utilisation/faible barrière à l'entrée et grande participation du public</li>
+        <li>des données de haute qualité, pertinentes sur le plan environnemental et social</li>
+        <li>la réutilisation créative des technologies grand public</li>
+        <li>les sources ouvertes et les conceptions modifiables par les personnes</li>
+        </ul>
+    map:
+      search: "Rechercher"
+      location: "Localisation"
+      skill: "Savoir-faire"
+      gear: "Équipement "
+      role: "Rôle"
+      tool: "Outil"
+    likes:
+      wiki_liked_by: "Pages de wiki aimées par"
+      more: "Plus"
+      liked_by: "Aimé par"
+      updated: "mis à jour"
+    profile:
+      follow: "Suivre"
+      migrate_new_site: "Migrer vers le nouveau site"
+      make_admin: "Rendre administrateur, administratrice "
+      revert_to_basic_user: "Retourner vers un mode utilisateur·ice basique "
+      make_moderator: "Rendre modérateur, modératrice"
+      unban_user: "Utilisateur·ice non banni·e"
+      ban_user: "Utilisat⋅eur·ice banni·e"
+      confirm_ban_user: "Êtes-vous sûr·e ? L'utilisateur·ice ne pourra plus se connecter ou publier, et ses contenus seront cachés."
+      unmoderate_user: "Utilisateur·ice non modéré·e"
+      moderate_user: "Utilisateur·ice modéré·e"
+      confirm_moderate_user: "Êtes-vous sûr·e ? L'utilisateur·ice ne pourra plus se connecter ou publier."
+      reset_user: "Réinitialiser la clef"
+      rss_feed_for: "Flux RSS pour"
+      edit_profile: "Éditer le profil"
+      preview_profile_tag: "Prévisualiser le système des étiquettes de profil"
+      location: "Localisation"
+      edit_information: "Éditer les informations"
+      wiki_contributed_to: "Pages de wiki auxquelles vous avez récemment contribué"
+      updated: "mis à jour"
+      by: "par"
+      more: "Plus"
+      notes_and_edits: "<a href='%{url1}'>notes de recherche</a> et modifications du wiki"
+      moderator: "Modérateur·ice"
+      admin: "Administrateur·ice"
+      banned: "Banni·e"
+      barnstar_awarded_to_by: "<a href='%{url1}'>%{author}</a>a reçu <a href='%{url2}'>la bannière%{barnstar}</a> de la part de<a href='%{url3}'>%{awarder}</a> pour son travail publié dans <a href='%{url4}'>%{work}</a>."
+      joined_time_ago: "A rejoint il y a %{time_ago}"
+      research: "Recherche"
+      Coauthored: "À co-écrit"
+      questions: "Questions"
+      comments: "Commentaires"
+      liked: "Aimé"
+      view_these_maps: "Visualiser ces cartes <a href='%{url1}'>sur MapKnitter.org &raquo;</a>"
+      title: "Titre"
+      creation_date: "Date de création"
+      image: "Image"
+    info:
+      additonal_information: "Information additionnelle"
+    _form:
+      username: "Nom d'utilisateur·ice"
+      email: "Adresse de courriel"
+      create_password: "Créer un mot de passe"
+      change_password: "Changez votre mot de passe"
+      password: "mot de passe"
+      password_confirmation: "Confirmation du mot de passe"
+      confirm_password: "Retapez votre mot de passe pour confirmer"
+      bio: "Bio"
+      add_bio: "Ajoutez une courte biographie qui apparaîtra sur votre profil"
+      are_you_human: "Êtes-vous un⋅e humain⋅e ?"
+      spam_filtering: "Désolé : un filtre anti-spam ! S'il vous plaît, sélectionnez les animaux - \U0001F981 - ci-dessous, pour montrer que vous êtes une vraie personne."
+      dont_write_here: "N'écrivez rien ici si vous êtes une vraie personne."
+      sign_up: "S'enregistrer"
+      log_in: "Se connecter"
+      save: "Enregistrer"
+    list:
+      user_moderation: "Modération d'utilisatrice, d'utilisateur"
+      admins_ban_spam: 'Les utilisateur·ices normaux·les voient ici uniquement la liste des nouveaux·elles utilisateur·ices, mais les modérater·ices et les admins peuvent bannir les utilisateur·ices "spam" et voir celles et ceux qui ont été banni·e·s.'
+      members_last_activity: "Membres de Public Lab <small>par dernière activité</small>"
+      username: "Nom d'utilisateur·ice"
+      last_activity: "Dernière activité"
+      history: "Histoirique"
+      joined: "À rejoint"
+      moderation: "Modération"
+      notes_and_edits: "Notes de recherche et modifications du wiki"
+      banned: "Banni·e"
+      are_you_sure: "Êtes-vous sûr·e ? L'utilisateur·ice ne pourra plus se connecter ou publier."
+      ban: "Bannir"
+    _photo:
+      profile_photo: "Photo de profile"
+      drag_and_drop_image: "Cliquez-déposez pour ajouter une image ou"
+      choose_image: "choisissez une image"
+      uploading: "Téléchargement en cours"
+    edit:
+      edit_profile: "Éditer le profil"
+  notes:
+    index:
+      search_results_for: "Résultats de recherche pour <i style=\"color:#aaa;\">%{params}</i>"
+      advanced_search: "Recherche avancée"
+      notes_tagged_with: "Notes taguées avec <i style=\"color:#aaa;\">%{params}</i>"
+      popular_research_notes: "Notes de recherche populaires"
+      recent_research_notes: "Notes de recherche récentes"
+      research_on: "Recherchez dans les \"%{tags}\" en filtrant par <a href='%{url1}'>%{user_name}</a>"
+      research_notes_and_wiki_edits_with_time: "%{count} notes de recherche et modifications du wiki, depuis %{time}"
+      research_by: "Rechercher par <a href='%{url1}'>%{user_name}</a>"
+      research_notes_and_wiki_edits: "%{count1} %{word1} de recherche et %{count2} %{word2} de wiki"
+      starting_time: "depuis %{time}"
+      research_notes_ideas_and_documentation: "Notes de recherche <small class=\"hidden-sm\"> idées & documentation de contributeur·ices comme vous </small>"
+      recent: "Récent"
+      popular: "Populaire"
+      liked: "Liké"
+      wiki_pages: "Pages wiki (de documentation)"
+    _notes:
+      moderate_first_time_post: "Modérer le premier post :"
+      approve: "Valider"
+      spam: "Spam"
+      pending_approval: "En attende de validation par les <a href='%{url1}'>modérateur·ices de la communauté</a>. Soyez patient·e !"
+      last_edit_by: "dernière modification par"
+      views: "vues"
+      read_more: "En savoir plus"
+    show:
+      note_no_tags: "Cette note n'a pas de tag. Contribuez à la connecter à d'autres contenus en <a href='#' onClick='%{url}'>ajoutant un tag de description ci-dessous </a>."
+      replication: "Ceci est une tentative de répliquer"
+      series: "Ceci fait partie d'une série sur"
+      replication_link: "un auctivité"
+      build: "Ceci est une tentative de construire"
+      build_link: "une mise à jour"
+      question: "Question :"
+      author_is_asking_about: |
+        <a href='%{url1}'>%{author}</a>
+        pose une question sur <b>%{tag}</b> :
+      sign_up_to_answer: "Enregistrez-vous pour répondre aux questions sur ce sujet"
+      unpublished: "NON PUBLIÉ"
+      views: "vues"
+      comments: "commentaires"
+      shortlink: "lien court"
+      barnstar_awarded_to_by: "<a href='%{url1}'>%{author} </a> a reçu <a href='%{url2}'>la bannière %{barnstar} </a> par <a href='%{url3}'>%{awarder} </a> pour son travail sur cette note de recherche."
+      file_table: |
+        <th> Fichiers </th>
+        <th> Taille </th>
+        <th> Téléchargé </th>
+      event_is_on: "Cette événement aura lieu le %{date}"
+      ical: "iCal"
+      login_to: "S'il vous plaît, <a href='%{url1}'> connectez-vous</a> à"
+      people_will_attend: "%{count} personnes seront présentes"
+    _comments:
+      comments: "Commentaires"
+      post_comment: "Publiez un commentaire"
+      post_placeholder: "Aidez l'auteur·ice à raffiner son post, indiquez-lui des informations complémentaires présentes sur le site. Mentionnez des utilisateur·ices par leur @pseudo pour les notifier par email de l'activité dans ce fil"
+      must_be_logged_in: "Vous devez <a href='%{url1}'> être connecté·e </a> pour commenter."
+    tools_places:
+      tools_and_techniques: "Méthodes"
+      subtitle: "développé par les contributeur·ices de Public Lab"
+      public_lab_chapters: "Rubriques du Public Lab"
+      start_a_chapter: "groupes locaux et rassemblements à travers le monde <a href='%{url1}'>commencer un chapitre &raquo; </a>"
+      tools: "Outils"
+      places: "Lieux"
+    _tagged_notes:
+      by_author_time_ago: |
+        par <a href='%{url1}'>%{author}</a>
+        | a%{time}
+      views: "vues"
+      read_more: "En savoir plus"
+      spam: "Spam"
+    _comment:
+      commented: "commenté"
+      streak_title: "%{author} est en fou ! %{streak_notes} notes, %{streak_wiki} modifications du wiki, %{streak_comments} commentaires dans les derniers %{streak_days} jours"
+      are_you_sure: "Êtes-vous sûr·e ?"
+      please_exercise_caution: "S'il vous plaît, soyez précautionneux·se si vous devez supprimer/modérer les commentaires des autres utilisateur·ices. Cela ne peut pas être annulé."
+      edit_comment: "Éditer le commentaire"
+      edit_placeholder: "Aidez l'auteur·ice à raffiner son post, indiquez-lui des informations complémentaires présentes sur le site. Mentionnez des utilisateur·ices par leur @pseudo pour les notifier par email de l'activité dans ce fil"
+    _responses:
+      post_response: "Publiez votre réponse"
+      post_build: "J'ai réalisé ceci"
+      post_replication: "J'ai fait ceci"
+      responses: "Réponses"
+      builds: "Personnes qui ont réalisé ceci"
+      replications: "Personnes qui ont fait ceci"
+    stats:
+      about_this_page: |
+        <h4> À propos de cette page </h4>
+
+        <p> Public Lab est construit sur les contributions des membres de la communauté, et ce site représente notre travail libre et open source. </p>
+      contributors_statistics: "Statistiques de contributeur·ice"
+      research_notes_posted_by_contributors: "%{note_count} notes de recherche ont été postées par %{contributors_count} contributeur·ices depuis %{time}"
+      total_contributors: "%{all_contributors_count} Contributeur·ices au total (calculé chaque semaine)"
+      notes_per_week: "%{note_count} notes par semaine sur cette période."
+      edits_per_week: "%{count} modifications par semaine sur cette période"
+      notes_wikis_comments: |
+        <b>%{notes_count}notes</b>,<b>%{wikis_count}éditions wiki</b>
+        et<b>%{comments_count}commentaires</b>publiés durant cette période.
+      members_and_contributors: |
+        <b>%{member_count} inscriptions de membres </b>
+        et <b>%{people_count} contributeur·ices </b> ont posté sur cette période.
+  dashboard:
+    _node_comment:
+      commented_on: "commenté sur"
+      comments: "commentaires"
+    _sidebar:
+      wiki: "wiki"
+      discussion_list: "Listes de discussion"
+      all: "Tout"
+      public_laboratory: "Laboratoire public"
+      grassroots_mapping: "Cartographie Populaire"
+      spectrometry: "Spectrométrie"
+      infrared: 'Infra-rouge'
+      air_quality: "Qualité de l'air"
+      water_quality: "Qualité de l'eau"
+      developers: "Développeur·ses"
+    _activity:
+      activity: "Activité"
+      all_updates: "Toutes les mises à jour"
+      dropdown:
+        all: "Tout"
+        research_notes: "Notes de recherche"
+        questions: "Questions"
+        events: "Événements"
+        comments: "Commentaires"
+        wiki: "wiki"
+      from_other: "par d'autres"
+      community_scientists: "scientifiques de la communauté"
+      past_week: "au cours de la dernière semaine"
+      your_work: "Votre travail"
+      share_work: "Partagez votre travail"
+    dashboard:
+      from_blog: "depuis le <a href='%{url}'>le blog de Public Lab</a>"
+      by: "par "
+    _node_question:
+      post_answer: "poster une réponse"
+      question: "Question"
+    _node_wiki:
+      new_page_by: "Nouvelle page par"
+      new_edit_by: "Nouvelle modification par"
+      changes: "Changements"
+    _header:
+      share_work: "Partagez votre travail"
+      dropdown:
+        share_activity: "partagez une activité étape-par-étape"
+        share_research_note: "Partager une note de recherche"
+        ask_question: "Poser une question"
+        post_event: "Poster un événement"
+        tell_story_blog: "Racontez votre histoire sur le blog"
+      dashboard: "Tableau de bord"
+      community_research: "Recherche communautaire"
+      welcome: "Bienvenue"
+      notes: "notes"
+      note: "note"
+      and: "et"
+      wiki_edits: "modifications du wiki"
+      posted_past_week: "posté au cours de la semaine passée"
+      you_shared: "Vous avez partagé"
+      research_note: "note de recherche"
+      research_notes: "notes de recherche"
+      this_could_be_dashboard: "Cela pourrait être votre tableau de bord si vous"
+      joined_public_lab: "rejoigniez Public Lab"
+    _wiki:
+      shared_knowledge_base: "Une <a href='%{url}'> base de connaissances partagée </a> pour la community science"
+      search: "Rechercher…"
+      new_page: "Nouvelle page"
+      new_page_by: "Nouvelle page par"
+      new_edit_by: "Nouvelle modification par"
+      changes: "changements"
+      more: "Plus"
+    moderate:
+      approve: "Valider"
+      spam: "Spam"
+      pending_approval: "En attende de validation par les <a href='%{url1}'>modérateur·ices de la communauté</a>. Soyez patient·e !"
+    _node_moderate:
+      first_time_post: "Modérer le premier post :"
+    _comment_moderate:
+      first_time_post: "Modérer le premier commentaire :"
+  like:
+    index:
+      recent_likes: "Likes récents"
+      user: "Utilisateur·ice"
+      liked: "Liké"
+      action: "Action"
+  tag:
+    blog:
+      the_public_lab: "Le Public Lab"
+      blog: "Blog"
+      stories_from_community: "Récits de la communauté Public Lab"
+      about_the_blog: "À propos du blog"
+      research: "Dernières mises à jour"
+      methods: "Méthodes"
+      following: "Suit"
+      unfollow: "Cliquez pour ne plus suivre"
+      follow: "Suivre"
+      no_results: "Aucun résultat trouvé en cherchant \"%{search}\""
+      advanced_search: "Ou essayez une <a href='%{url}'>recherche avancée</a>"
+      by: "par"
+      views: "vues"
+      read_more: "En savoir plus"
+      spam: "Spam"
+    index:
+      popular_tags: "Populaire"
+      browse_popular_tags: "Nous utilisons les tags pour regrouper les recherches par sujets – naviguez ci-dessous pour voir les tags les plus populaires au cours du dernier mois."
+      tag: "nom"
+      number_of_uses: "# d'utilisations"
+      number_of_subscriptions: "# de personnes"
+      subscriptions: "Vos abonnements"
+      sort_by: "Trié Par"
+      more_posts: "plus de posts"
+      follow: "Suivre"
+      unfollow: "Ne plus suivre"
+      notes:
+        one: "1 note"
+        other: "%{count} notes"
+      questions:
+        one: "1 question"
+        other: "%{count} questions"
+      comments:
+        one: "1 commentaire"
+        other: "%{count} commentaires"
+    show:
+      notes_tagged: "Notes taguées avec <i style=\"color:#aaa;\">%{tag}</i>"
+      following: "Suit"
+      unfollow: "Cliquez pour ne plus suivre"
+      follow: "Suivre"
+      none: "Aucun"
+      users_following_tag: "Utilisateur·ices qui suivent ce tag"
+      ask_question: "Posez une question à propos de <b>%{tag}</b>"
+      or_subscribe_to_answer: "<a style='margin-bottom:6px;' class='btn btn-primary requireLogin' target='_blank' href='%{url1}'>Abonnez-vous pour répondre aux questions sur ce sujet</a>"
+      research_notes: "Notes de recherche "
+      questions: "Questions"
+      wiki_pages: "Pages du wiki"
+      maps: "Cartes"
+      no_results_found: "Aucun résultat trouvé en cherchant \"%{search}\""
+      try_advanced_search: "Ou essayez une <a href='%{url}'>recherche avancée</a>"
+      people: "Personnes"
+      no_map_results_found: "Désolé, aucune carte n'est taguée avec <i>%{tag}</i>"
+      contributors: "Contributeur·ices"
+    contributors-index:
+      contributors_over_last_week: "Contributeur·ices pour <i style=\"color:#aaa;\">%{tag_name}</i> au cours des 52 semaines "
+      read_more: "En savoir plus"
+      notes_and_wiki_contributions: '%{users} personnes ont contribué %{notes} notes de recherche et %{wikis} pages de wikis taguées avec "%{tag_name}"'
+      following: "Suit"
+      unfollow: "Cliquez pour ne plus suivre"
+      follow: "Suivre"
+      people_watching_tag: "%{count} personnes suivent ce tag"
+      no_contributors_listed: "Aucun·e contributeur·ice de listé·e."
+      write_research_note: "Écrire une note de recherche"
+    _tagging:
+      enter_tags: "entrez des tags"
+    contributors:
+      contributors_for: "Contributeur·ices pour <i style=\"color:#aaa;\">%{tag_name}</i>"
+      contributions_over_past_year: "Ci-dessus : contributions de la dernière année."
+      notes_and_wiki_contributions: '%{users} personnes ont contribué %{notes} notes de recherche et %{wikis} pages de wikis taguées avec "%{tag_name}"'
+      following: "Suit"
+      unfollow: "Cliquez pour ne plus suivre"
+      follow: "Suivre"
+      people_watching_tag: "%{count} personnes suivent ce tag"
+      no_contributors: "Aucun·e contributeur·ice pour ce tag. Essayez une recherche sur \"%{tag}\""
+      wild_card_search_detected: "Recherche générique détectée. Les recherches générique de tag utilisent l'astérisque * dans l'URL, et ne montreront pas de liste de contributeur·ices."
+      contributor: "Contributeur·ice"
+      notes: "Notes"
+      people_who've_posted: "Personnes qui ont posté"
+      people_who_are_following: "Personnes qui suiven"
+  wiki:
+    index:
+      wiki_pages_tagged_with: "Pages de wiki taguées avec <i style='color:#aaa;'>%{tag}</i>"
+      wiki_pages_by: "Pages de wiki par <a href='%{url1}'>%{user}</a> <small>%{note_length} notes de recherche et modifications de wiki depuis %{time}</small>"
+      highly_liked_wiki_pages: "Pages de wiki les plus likées"
+      create_wiki_page: "Créer une nouvelle page de wiki"
+      by_recency: "fraîcheur"
+      by_popularity: "popularité"
+      by_number_of_likes: "likes"
+      by_alphabetic: "nom"
+      sort_by: "trié par :"
+      popular_wiki_pages: "Pages de wiki populaires"
+      collaborative_documentation: "documentation collaborative réalisée par des contributeur·ices comme vous"
+      public_lab_wiki: "Le wiki de Public Lab"
+      about_collaboration: "Chez Public Lab, nous collaborons pour inventer et améliorer les outils scientifiques open source des sciences de l'environnement."
+      about_wiki_pages: "Les pages de wiki sont des pages web que <b>tout le monde peut créer ou éditer</b> — nous les utilisons pour collecter de l'information, de la documentation et des instructions sur les projets."
+    show:
+      page_has_no_tags: "Cette note n'a pas de tag. Contribuez à la connecter à d'autres contenus en <a href='#' onClick='%{url}'>ajoutant un tag de description ci-dessous </a>."
+      revision_from: "Ceci est une révision datant de %{time}."
+      view_all_revisions: "Voir toutes les révisions"
+      views: "vues"
+      last_edited: "Modifié pour la dernière fois par <a href='%{url1}'>%{author}</a> il y a %{time}"
+      shortlink: "lien court"
+      view: "Voir"
+      edit: "Éditer"
+      delete: "Supprimer"
+      are_you_sure_delete: "Êtes-vous absolument sûr·e de vouloir supprimer \"%{path}\" ? Toutes les révisions seront perdues et vous ne pouvez pas annuler cette action. Si cette page est du spam, assurez-vous que le spam n'a pas été mis à la place des contenus précédents, avant de supprimer l'intégralité de la page et de l'historique."
+      talk: "Discussion"
+      back_to_wiki: "Retour vers <a href='%{url1}'>%{title}"
+      overview: "Vue d'ensemble"
+      research: "Recherche"
+      wiki_pages: "Pages du wiki"
+      more_research: "Plus de recherches sur \"%{tag}\""
+      more_tag_research: "Plus de recherche sur \"%{tag}\""
+    _wikis:
+      title: "Titre"
+      last_edited: "Dernière modification"
+      edits: "Modifications"
+      page_views: "Vues de pages"
+      likes: "Likes"
+      by: "par"
+    revisions:
+      revisions_for: "Révisions pour <i>%{wiki}</i>"
+      view: "Vues"
+      edit: "Modifications"
+      revisions: "Révisions"
+      moderated: "MODÉRÉ"
+      current: "ACTUEL"
+      revert: "Revenir en arrière"
+      are_you_sure: "Êtes-vous sûr·e ?"
+      republish: "Republier"
+      comparing_revision: "Comparaison entre les révisions <span id='older'>%{revision_1}</span> et <span id='newer'>%{revision_2}</span>"
+    edit:
+      did_you_mean: "Voulez-vous dire"
+      try_searching_for: "Essayez de rechercher <a href='%{url1}'>'%{wiki}' &raquo;</a>"
+      whats_a_wiki_page: |
+        <h3><i class="fa fa-book"></i>Qu'est qu'une <br />page Wiki?</h3>
+        <p>A Public Lab, nous collaborons tous pour inventer et améliorer des outils environnementaux open source.<b>Les pages Wiki</b> sont des pages web que tout le monde peut créer et éditer -- nous les utilisons pour collecter informations, documentation et instructions sur les projets</p>
+        <p><b>Les pages Wiki peut être:</b></p>
+        <ul>
+        <li>un <a href="/tag/tutorial">tutoriel</a>sur comment faire quelque chose</li>
+        <li>la documentation d'un projet</li>
+        <li>le planning d'un événement</li>
+        <li>un endroit pour collecter des listes et des notes de recherche</li>
+        <li>etc ! </li>
+        </ul>
+      more: "Plus"
+      getting_started: "Commencer avec Public Lab"
+      revisions_for_this_page: "Révisions pour cette page"
+      about_posting_research: "Au sujet de la publication de recherche"
+      advanced_formatting: "Formattage avancé"
+      editing_page: "Éditer la page"
+      create_page: "Créer une page"
+      publish: "Publier"
+      preview: "Aperçu"
+      previewing_text: "Prévisualiser (cliquez pour éditer)"
+      agree_to_open_source_work: "En publiant, vous acceptez <a target='_blank' href='%{url1}'>d'ouvrir votre travail et ses sources</a> afin que d'autres puissent l'utiliser."
+      last_edited_by: "Cette page fut éditée la dernière fois en %{time} par <a href='%{url1}'>%{author}</a>"
+  layout:
+    _alerts:
+      request_access: "Un site web demande l'accès à votre compte"
+      approve_or_deny: "Approuver ou refuser la demande"
+    _header:
+      summary: "Public Lab est une communauté ouverte qui développe collaborativement des technologies abordables à faire soi-même et à code source ouvert pour étudier les problèmes locaux de santé et de justice environnementale."
+      your_dashboard: "Votre tableau de bord"
+      projects:
+        projects_title: "Projets"
+        research:
+          research_title: "Recherche"
+          research_notes: "Notes de recherche "
+          publiclab_wiki: "Wiki de Public Lab"
+          questions: "Questions"
+          tools: "Outils"
+          places: "Lieux"
+          kits: "Kits"
+          users_map: "carte des utilisateur·ices"
+          people: "Personnes"
+          comments: "Commentaires récents"
+        initiatives:
+          initiatives_title: "Initatives"
+          open_land: "Territoire Ouvert"
+          open_water: "Eaux Ouvertes"
+          open_air: "Atmosphère Ouverte"
+        fellows: "Suit"
+        lending_library: "Librairie de prêts"
+      search: "Rechercher dans Public Lab"
+      about:
+        about_title: "À propos de nous"
+        stories: "Récits"
+        blog: "Blog"
+        about_public_lab: "À propos de Public Lab"
+        team: "Équipe à but non-lucratif"
+        organizers: "Organisateurs⋅rices"
+        board: "Comité administrateur à but non lucratif"
+        fund: "Comment nous sommes financés"
+        press_and_media: "Presse et Média"
+        contact: "Contact"
+      get_involved:
+        get_involved_title: "Participez"
+        getting_started: "Pour Commencer"
+        join: "Rejoindre le site web"
+        discussion_lists: "Rejoignez une de nos listes de discussion"
+        attend_event: "Participer à un événement"
+        post_event: "Publier un évènement"
+        new_chapters: "Commencer une nouvelle rubrique"
+        new_projects: "Commencer un nouveau projet"
+        organizer: "Devenir organisatrice, organisateur"
+      data:
+        data_title: "Données"
+        archive: "Les archives du Public Lab"
+        web_tools:
+          web_tools_title: "Outils Web"
+          mapknitter: "Tricoteur de Cartes"
+          spectral_workbench: "Établis Spectral"
+          infragram: "Infragramme"
+          open_water: "Eaux Ouvertes"
+      donate: "Faire un don"
+      store: "Magasin"
+      chatroom:
+        pop_out: "extraire"
+        chatroom_title: "Salon de discussion Public Lab"
+      become_part_community: "Faire partie de cette communauté"
+      join: "S'inscrire"
+      dashboard: "Tableau de bord"
+      profile: "Profil"
+      edit_profile: "Modifier le profile"
+      subscriptions: "Abonnements"
+      notes_liked: "Notes que vous avez aimées"
+      logout: "Déconnexion"
+      login:
+        login_title: "Connexion"
+        username: "Identifiant ou adresse courriel"
+        password: "Mot de passe"
+        remember_me: "Se souvenir de moi"
+        sign_up: "S'inscrire"
+        reset_password: "Réinitialiser votre mot de passe"
+      language:
+        language_title: "Langue"
+      research_note: "Note de recherche"
+      wiki_doc: "Documentation du wiki"
+  questions:
+    index:
+      explanation: "Posez une question à la communauté Public Lab pour vous aider dans vos explorations environnementales "
+    _comment:
+      promotion: "Promouvoir ce commentaire en réponse"
+  user_sessions:
+    new:
+      log_in: "Se connecter"
+      sign_up: "S'inscrire"
+      to_join: "Pour rejoindre la communauté Public Lab"
+      username: "Nom d'utilisat⋅eur·ice"
+      password: "Mot de passe"
+      remember_me: "Se souvenir de moi"
+      reset_by_clicking_here: "Mot de passe oublié ? <a href='%{url1}'>Réinitialiser le ici</a>"
+  home:
+    dashboard:
+      welcome: "Bienvenue !"
+      need_help: "Besoin d'aide, envie de lancer une idée, ou de trouver des collaborateurs⋅rices ?"
+      join_discussion_list: "Rejoindre une liste de discussion Public Lab thématique ou locale"
+      no_research_note: "Vous n'avez pas encore posté de note de recherche -- considérez "
+      sharing_work: "Partagez vos travaux et intérêts"
+      please: "s'il vous plaît"
+      create_password: "Créer un mot de passe pour le nouveau site web PublicLab.org"
+      older_site_deactive: "l'ancien PublicLaboratory.org sera bientôt retiré"
+      coming_soon: "À venir prochainement"
+      revised_dashboard: "un tableau de bord révisé!"
+      try_it: "Essayez ici"
+      dashboard_main:
+        dashboard_title: "Tableau de bord"
+        welcome: "Bienvenue !"
+        notes: "notes"
+        and: "et"
+        wiki_edits: "modifications du wiki"
+        posted_last_week: "on été postés au cours de la semaine passée"
+      nav_tabs:
+        recent: "Récent"
+        activity: "Activité"
+        comments: "Commentaires"
+        liked: "Aimé"
+        subscriptions: "Inscriptions"
+        lists: "Listes"
+      read_more_research_notes: "Lire plus de notes de recherche"
+    subscriptions:
+      title: "Inscriptions"
+      up_to_date_emails: "vous permet de rester au courant des sujets sur Public Lab. Vous pouvez choisir de les recevoir par email ou en forme condensée."
+      manage_subscriptions: "Gérer vos abonnements"
+      click_unfollow: "Cliquer pour ne plus suivre"
+      following: "Suit"
+      research_notes: "toutes les notes de recherche"
+      subscribe_to: "Suivre"
+      all: "tout"
+      notes: "notes"
+      receive_mails: "Recevoir un courriel pour toutes ces notes de recherche"
+      enter_tags: "entrer une étiquette"
+      add: "Ajouter"
+      tag: "Étiquette"
+      options: "Options"
+      share_subscription_link: "Partager ce lien d'inscription"
+      share: "Partager"
+      unsubscribe: "Ne plus suivre"
+    _comments:
+      commented: "commenté"
+      read_more: "En lire plus"
+  comments:
+    _form:
+      uploading: "Téléchargement…"
+      drag_and_drop: "Glisser et positionner pour ajouter une image ou un fichier, ou"
+      choose_one: "en choisir un"
+      upload_image: "Charger une image"
+      preview: "Prévisualiser"
+      cancel: "Effacer"
+      publish: "Publier"
+      logged_in: "Connecté⋅e en tant que <b>%{username}</b>"
+      formatting: "Mise en forme"
+      notifications: "Notifications"
+      email_notifications: "Auteur·ices, commentateur·ices, et celleux qui ont \"aimé\" cette note recevront des notification par email"
+    _edit:
+      uploading: "Téléchargement…"
+      drag_and_drop: "Glisser et déposer une image ou un fichier, ou"
+      choose_one: "en choisir un"
+      upload_image: "Télécharger une image"
+      preview: "Prévisualisation"
+      cancel: "Effacer"
+      publish: "Publier"
+      logged_in: "Connecté⋅e en tant que <b>%{username}</b>"
+      formatting: "Mise en forme"
+      notifications: "Notifications"
+      email_notifications: "Auteur·ices, commentateur·ices, et celleux qui ont \"aimé\" cette note recevront des notification par email"
+  sidebar:
+    _events:
+      post_event: "Publier un évènement"
+      local_events: "Événements locaux"
+      no_events: "Aucun événement"
+    _notes:
+      updated_by: |
+        Mis à jour à la date du %{time}
+         par <a href='%{url1}'>%{author_name}
+      more: "Plus…"
+    _related:
+      write_research_note: "Écrire une publication"
+      share_your_work: "partager votre travail avec d'autres"
+      ask_a_question: "Poser une question"
+      translation: "Traduction"
+      response_to: "C'est une réponse à"
+      responses_to_note: "En réponse à cette note"
+      recent_topic_contributors: "contributeur·ices récent·es du sujet"
+      view_all: "Tout voir"
+      contributors: "Contributrices, contributeurs"
+      recent_wiki_edits: "Modifications récentes dans le wiki"
+      recent_wiki_pages: "Pages récentes du wiki"
+      related_research_notes: "Notes de recherche apparentées"
+      related_maps: "Cartes associées"
+      contributors_for_this_topic: "Contributrices, contributeurs, pour ce sujet"
+    _author:
+      recent_tags_for_author: "Tags récents pour <a href='%{url1}'>%{author}</a>"
+    _wikis:
+      updated_by: |
+        mis à jour il y a %{time}
+        par <a href='%{url1}'>%{author}</a>
+      more: "Plus…"
+    _post_button:
+      share_your_work: "Partager vos travaux avec d'autres personnes"
+      write_research_note: "Écrire une note de recherche"
+      post_research: "Publier une recherche"
+      post_research_note: "Publier une note de recherche"
+      create_wiki_page: "Créer une page wiki"
+      about_posting: "Au sujet des publications"
+      moderate_spam: "Modérer le Spam "
+      email_search: "Rechercher une adresse de courriel"
+      tools: "Outils"
+      post_newsletter: "envoyer une infolettre"
+      browse_wiki: "Parcourir le Wiki de Public Lab"
+    _list:
+      mailing_list: "S’inscrire sur <a href='%{url1}'<b>%{mailing_list}</b> la liste de diffusion par courriel</a>"
+      subscribe: "Suivre"
+      recent_discussion_topics: "Sujets de discussion récents"
+      all_topics: "Tous les sujets"
+    _user:
+      discussion_list: "Listes de discussion"
+      work_happens_on_discussion_lists: "Une grande partie de notre travail se fait sur nos listes de discussion régionales et thématiques."
+      join_one_today: "En rejoindre aujourd'hui!"
+      recent_wiki_edits: "Récentes modifications dans le wiki"
+  talk:
+    show:
+      welcome: "Page de discussion pour <a href='%{url1}'>%{page}</a>| Cette page permet l'édition synchronisée par de multiple personnes tout en tapant. <a href='%{url2}'>plus d'info</a>"
+      try_direct_link: "Si cette page ne charge pas correctement, <a href='%{url1}'>essayez ici</a>"
+  home_controller:
+    science_community: "une communauté de science environnementale DIY"
+    environmental_investigation: "une communauté pour l'investigation environnementale à faire soi-même"
+    community_research: "Communauté de recherche"
+  user_tags_controller:
+    tag_already_exists: "Erreur : étiquette déjà existante"
+    cannot_save_value: "Erreur : La valeur ne peut-être enregistrée. Essayez encore."
+    value_cannot_be_empty: "Erreur : La valeur ne peut-être vide"
+    invalid_value: "Erreur : La valeur est invalide %{type}"
+    admin_user_manage_tags: "Seuls les Adminitrateur·ices (ou) utilisateur·ice ciblé·e peuvent gérer les tags"
+    errors_occured: "%{count}erreurs ont eu lieu."
+    tag_created: "Le tag %{tag_name} a été créé avec succès"
+    tag_deleted: "Étiquette effacée"
+    tag_doesnt_exist: "Cette étiquette n'existe pas"
+  wiki_controller:
+    new_wiki_page: "Nouvelle page wiki"
+    pages_does_not_exist: "Cette page n'existe pas encore. Vous devez être inscrit⋅e pour créer une nouvelle page wiki."
+    page_moderated_as_spam: "Cette page a été modérée en tant que spam. Veuillez contacter web@publiclab.org si vous pensez qu'il y a un problème."
+    someone_clicked_edit_5_minutes_ago: "Quelqu'un a cliqué 'édition' il y a moins de 5 minutes; soyez prudent·e de ne pas écraser les changements des autres!"
+    editing: "Édition de \"%{title}\""
+    page_does_not_exist_create: "Cette page n'existe pas encore, vous  pouvez la créer"
+    wiki_page_created: "Page wiki créée"
+    you_have_been_banned: "Vous avez été interdit⋅e. Veuillez contacter <a href='mailto:web@publiclab.org'>web@publiclab.org</a> si vous pensez que c'est une erreur."
+    edit_could_not_be_saved: "Votre édition n'a pas pu être enregistrée."
+    edits_saved: "Modifications sauvegardées"
+    wiki_page_deleted: "Page wiki supprimée"
+    only_admins_delete_pages: "Uniquement un⋅e administrat⋅eur⋅rice peu effacer cette page"
+    wiki_page_reverted: "Cette page wiki a été rétablie."
+    problem_reverting: "Il y a eut un problème durant la réversion."
+    moderators_admin_delete_pages: "Seuls les modérateurs et administrateurs peuvent supprimer des pages du wiki."
+    revisions_for: "Révisions pour \"%{title}\""
+    invalid_wiki_page: "Page wiki invalide. Il n'y a pas de révision existante pour cette page wiki."
+    revision_not_found: "Modification introuvable "
+    revision_has_been_moderated: "Cette révision a été mise en modération. Merci de voir <a href='/wiki/moderation'>la page de modération pour en savoir plus</a>."
+    lead_image_or_title_change: "<p>Changement d'image ou de titre</p>"
+    wiki: "Wiki"
+    popular_wiki_pages: "Pages populaires dans le wiki"
+    well_liked_wiki_pages: "Pages wiki appréciées"
+  application_controller:
+    must_be_logged_in: "Vous devez vous connecter pour réaliser cela"
+    must_be_logged_in_to_access: "Vous devez être connecté⋅e pour accéder à cette page"
+    must_be_logged_out_to_access: "Vous devez être connecté⋅e pour accéder à cette page"
+    author_has_been_banned: "L'autrice ou l'auteur de cette note à été banni⋅e"
+  users_controller:
+    account_migrated_create_new_password: "Votre compte a été transféré de l'ancien site PublicLaboratory.org ; veuillez créer un mot de passe pour le nouveau site"
+    registration_successful: "Inscription réussie. Bienvenue dans notre communauté !"
+    continue_where_you_left_off: "Cliquez <a href='%{url1}'>ici</a> pour continuer là où vous vous êtes arrêté⋅e."
+    spectralworkbench_or_mapknitter: "<i class='icon icon-exclamation-sign'></i>Si vous vous êtes enregistré pour utiliser <b>SpectralWorkbench.org </b>ou <b>MapKnitter.org</b>,<a href='%{url1}'>cliquez ici pour continuer &raquo;</a>"
+    successful_updated_profile: "Profil mis à jour avec succès."
+    return_profile: "Retour à votre page de profile"
+    only_user_edit_profile: "Seul <b>%{user}</b> peut éditer son profile"
+    user_has_been_banned: "Cet utilisateur ou cette utilisatrice a été banni⋅e "
+    user_has_been_moderated: "Cet utilisatrice ou cet utilisateur a été mis⋅e <a href='/wiki/moderation'>en modération</a>"
+    no_user_found: "Aucun utilisatrice, utilisateur de ce nom n'a été trouvé⋅e"
+    no_user_found_name: "Utilisatrice, utilisateur '%{username}' introuvable"
+    password_change_success: "Votre mot de passe a été changé avec succès."
+    password_reset_failed: "La réinitialisation du mot de passe a échoué. Veuillez <a href='/wiki/issues'>contacter l'équipe web</a> si vous rencontrez des difficultés."
+    password_change_failed: "Le changement de mot de passe a échoué ; la clé ne correspond pas au nom d'utilisateur."
+    password_reset_failed_no_user: "La réinitialisation du mot de passe a échoué. Veuillez <a href='/wiki/issues'>contacter l'équipe web</a> si vous rencontrez des difficultés. (Erreur: pas d'utilisateur·ice avec cette clé)"
+    password_reset_email: "Vous devriez recevoir un courriel contenant des instructions sur la manière de réinitialiser votre mot de passe. Si ce n'est pas le cas, veuillez vérifier que vous utilisez bien l'adresse électronique avec laquelle vous vous êtes inscrit⋅e."
+    image_saved: "Image sauvegardée"
+    image_not_saved: "Cette image n'a pas pu être sauvegardée"
+    preference_saved: "Votre choix a bien été enrigistré"
+    something_went_wrong: "Quelque chose s'est mal déroulé, merci de réessayer"
+  user_sessions_controller:
+    log_in: "Se connecter"
+    create_password_for_new_site: "Votre compte a été transféré de l'ancien site PublicLaboratory.org ; veuillez créer un mot de passe pour le nouveau site"
+    logged_in: "Connexion réussie"
+    sign_up_to_join: "On dirait que vous êtes nouvelle, nouveau ici ! Inscrivez-vous ci-dessous pour nous rejoindre."
+    user_has_been_banned: "L'utilisateru·ice '%{username}' été interdit⋅e; veuillez contacter <a href='mailto:moderators@publiclab.org'>moderators@publiclab.org</a> si vous pensez que c'est une erreur."
+    user_has_been_moderated: "l'utilisateur·ice '%{username}'  a été  <a href='/wiki/moderation'>mis·e en modération </a>; veuillez contacter <a href='mailto:moderators@publiclab.org'>moderators@publiclab.org</a> si vous pensez que c'est une erreur."
+    logged_out: "Déconnexion réussie"
+  notes_controller:
+    research_notes: "Notes de recherche"
+    thank_you_for_contribution: "Succès! Merci d'avoir contribué à la recherche ouverte, et merci de votre patience pendant que votre publication est approuvée par un·e <a href='/wiki/moderation'>modérateur·ice de la communauté</a> et vous recevrez un courriel quand ça sera publié. Entre-temps, si vous avez d'autres choses à contribuer, n'hésitez pas."
+    thank_you_for_question: "Succès! Merci d'avoir contribué avec une question, et merci de votre patience pendant que votre question est approuvée par les <a href='/wiki/moderation'>modérateur·ices de la communauté</a> et vous recevrez un courriel quand elle sera publiée."
+    question_note_published: "Question publiée. Entre-temps, si vous avez plus à contribuer, n'hésitez pas."
+    research_note_published: "Note de recherche publiée. Passez le mot sur <a href='/lists'>les listes de discussion </a> !"
+    you_have_been_banned: "Vous avez été interdit⋅e. Veuillez contacter <a href='mailto:moderators@publiclab.org'>moderators@publiclab.org</a> si vous pensez que c'est une erreur."
+    author_can_edit_note: "Uniquement l'autrice, l'auteur, peut modifier une note de recherche"
+    author_can_edit_question: "Seul⋅e l'autrice, ou l'auteur, peut éditer cette question"
+    edits_saved: "Modification sauvegardée"
+    edit_not_saved: "Votre modification n'a pas être enregistrée"
+    content_deleted: "Contenu supprimé"
+    highly_liked_research_notes: "Notes de recherche très appréciées"
+    popular_research_notes: "Notes de recherche populaires"
+    recent_research_notes: "Récentes notes de recherche"
+    more_than_one_contributor: "Vous ne pouvez pas supprimer une page wiki une fois que quelqu'un d'autre a commencé à y contribuer"
+    saved_as_draft: "Votre contribution a été enregistrée sous forme de projet et ne sera visible que pour vous"
+  tag_controller:
+    tags: "Étiquettes"
+    tag_already_exists: "Erreur : cette étiquette existe déjà."
+    cant_be_empty: "Erreur : le Tag de Puissance ne peut être vide"
+    barnstar_not_created: "l'étoile de ferme (le fer à cheval) n'a pus être créé."
+    barnstar_awarded: "vous avez crédité <a href='%{url1}'>%{star}d'une étoile de ferme (fer à cheval)</a> à <a href='%{url2}'>%{awardee}</a>"
+    error_tags: "Erreur : étiquettes"
+    tags_created_error: "%{tag_count}tags créés, %{error_count}erreurs."
+    tag_deleted: "Étiquette supprimée"
+    must_own_tag_to_delete: "Vous devez posséder l'étiquette pour la supprimer."
+  js:
+    dashboard:
+      selected_updates: "Mises à jours sélectionnées"
+      none: "Aucun"
+      all_updates: "Toutes les mises à jour"
+  node:
+    cannot_find_username: "Erreur : Ce nom d'utilisateur⋅rice n'a pas été trouvé."
+    cannot_add_yourself_coauthor: "Erreur : vous ne pouvez pas vous ajouter comme coautrice, coauteur."
+    only_RSVP_for_yourself: "Erreur: vous ne pouvez pas RSVP pour vous-même."
+    only_admins_can_lock: "Erreur : seul⋅e un administrateur⋅rice peut verrouiller les pages"
+    page_does_not_exist: "Erreur : la page n'existe pas."
+    only_author_use_powertag: "Erreur : seul l'auteur, l'autrice peut utiliser ce processus."
+  spamaway:
+    human:
+      statement1: "\U0001F411"
+      statement2: "\U0001F439"
+      statement3: "\U0001F43C"
+      statement4: "\U0001F414"
+      statement5: "\U0001F427"
+      statement6: "\U0001F98A"
+    robot:
+      statement1: "⏰"
+      statement2: "\U0001F4E0"
+      statement3: "\U0001F5A8"
+      statement4: "\U0001F4FB"
+      statement5: "\U0001F4BE"
+      statement6: "\U0001F4FA"
+    errors:
+      please_read_instructions: "Veuillez lire les instructions de la prochaine partie avec attention."
+      not_a_real_person: "-- Il semblerait que vous n'êtes pas une personne réelle ! Si vous n'êtes pas d'accord ou si vous avez des difficultés, veuillez consulter le site https://publiclab.org/registration-test."
+  language: Anglais
+  activerecord:
+    errors:
+      messages:
+        record_invalid: 'La validation a échoué : %{errors}'
+        restrict_dependent_destroy:
+          has_one: "Impossible de supprimer l'enregistrement parce qu'un %{record}dépendant existe"
+          has_many: "Impossible de supprimer l'enregistrement parce que %{record}en dépendant existe"
+  date:
+    abbr_day_names:
+    - Dim
+    - Lun
+    - Mar
+    - Mer
+    - Jeu
+    - Ven
+    - Sam
+    abbr_month_names:
+    -
+    - Jan
+    - Fev
+    - Mar
+    - Avr
+    - Mai
+    - Juin
+    - Juill
+    - Août
+    - Sept
+    - Oct
+    - Nov
+    - Déc
+    day_names:
+    - Dimanche
+    - Lundi
+    - Mardi
+    - Mercredi
+    - Jeudi
+    - Vendredi
+    - Samedi
+  datetime:
+    time_ago_in_words:
+      about_x_hours:
+        one: "il y a environ 1 heure"
+        other: "il y a environ %{count} heures"
+      about_x_months:
+        one: "il y a environ 1 mois"
+        other: "il y a environ %{count} mois"
+      about_x_years:
+        one: "il y a environ 1 an"
+        other: "il y a environ %{count} ans"
+      almost_x_years:
+        one: "il y a presque 1 an"
+        other: "il y a presque %{count} ans"
+      half_a_minute: "il y a moins d'une minute"
+      less_than_x_minutes:
+        one: "il y a moins d'une minute"
+        other: "il y a moins de %{count} minutes"
+      less_than_x_seconds:
+        one: "il y a moins de 1 seconde"
+        other: "il y a moins de %{count} secondes"
+      over_x_years:
+        one: "il y a plus de 1 an"
+        other: "il y a plus de %{count} ans"
+      x_days:
+        one: "il y a 1 jour"
+        other: "il y a %{count} jours"
+      x_minutes:
+        one: "il y a 1 minute"
+        other: "il y a %{count} minutes"
+      x_months:
+        one: "il y a 1 mois"
+        other: "il y a %{count} mois"
+      x_seconds:
+        one: "il y a 1 seconde"
+        other: "il y a %{count} secondes"
+      x_years:
+        one: "il y a 1 an"
+        other: "il y a %{count} ans"
+    formats:
+      default: "%Y-%m-%d"
+      long: "%B %d, %Y"
+      short: "%b %d"
+    month_names:
+    -
+    - Janvier
+    - Février
+    - Mars
+    - Avril
+    - Mai
+    - Juin
+    - Juillet
+    - Août
+    - Septembre
+    - Octobre
+    - Novembre
+    - Décembre
+    order:
+    - ":année"
+    - ":mois"
+    - ":jour"
+    prompts:
+      second: "Secondes"
+      minute: "Minute"
+      hour: "Heure"
+      day: "Jour"
+      month: "Mois"
+      year: "Année"
+  errors:
+    format: "%{attribute}%{message}"
+    messages:
+      accepted: devrait être accepté
+      blank: ne peut être vide
+      confirmation: "%{attribute} ne corresponds pas "
+      empty: ne peut pas être vide
+      equal_to: "doit être égal à %{count}"
+      even: doit être pair
+      exclusion: est réservé
+      greater_than: "doit être plus grand que %{count}"
+      greater_than_or_equal_to: "doit être plus grand ou égal à %{count}"
+      inclusion: n'est pas inclus dans la liste
+      invalid: est invalide
+      less_than: "doit être inférieur à %{count}"
+      less_than_or_equal_to: "doit être inférieur ou égal à %{count}"
+      model_invalid: 'La validation a échoué : %{errors}'
+      not_a_number: n'est pas un nombre
+      not_an_integer: doit être un entier
+      odd: doit être impair
+      other_than: "doit être différent de %{count}"
+      present: doit être vide
+      required: doit exister
+      taken: a déjà été pris
+      too_long:
+        one: est trop long (maximum 1 caractère)
+        other: est trop long (maximum %{count} caractères)
+      too_short:
+        one: est trop court (maximum 1 caractère)
+        other: est trop court (maximum %{count} caractères)
+      wrong_length:
+        one: n'a pas la bonne longueur (doit faire 1 caractère)
+        other: n'a pas la bonne longueur (doit faire %{count} caractères)
+    template:
+      body: 'Il y a des problèmes avec les champs suivants:'
+      header:
+        one: 1 erreur empêche ce %{model} d'être enregistré
+        other: "%{count} erreurs empêchent ce %{model}d'être enregistré"
+  helpers:
+    select:
+      prompt: Veuillez sélectionner
+    submit:
+      create: "Créer %{model}"
+      submit: "Enregistrer %{model}"
+      update: "Mettre à jour %{model}"
+  number:
+    currency:
+      format:
+        delimiter: ","
+        format: "%u%n"
+        precision: 2
+        separator: "."
+        significant: false
+        strip_insignificant_zeros: false
+        unit: "$"
+    format:
+      delimiter: ","
+      precision: 3
+      separator: "."
+      significant: false
+      strip_insignificant_zeros: false
+    human:
+      decimal_units:
+        format: "%n%u"
+        units:
+          billion: Milliard
+          million: Million
+          quadrillion: Quadrillion
+          thousand: Mille
+          trillion: Trillion
+          unit: ''
+      format:
+        delimiter: ''
+        precision: 3
+        significant: true
+        strip_insignificant_zeros: true
+      storage_units:
+        format: "%n%u"
+        units:
+          byte:
+            one: Octet
+            other: Octets
+          eb: EB
+          gb: GB
+          kb: KB
+          mb: MB
+          pb: PB
+          tb: TB
+    percentage:
+      format:
+        delimiter: ''
+        format: "%n%"
+    precision:
+      format:
+        delimiter: ''
+  support:
+    array:
+      last_word_connector: ", et"
+      two_words_connector: "et"
+      words_connector: ", "
+  time:
+    am: au matin
+    formats:
+      default: "%a, %d %b %Y %H:%M:%S %z"
+      long: "%B %d, %Y %H:%M"
+      short: "%d %b %H:%M"
+    pm: l'après-midi
