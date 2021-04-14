@@ -1,5 +1,6 @@
 class TagController < ApplicationController
   respond_to :html, :xml, :json, :ics
+  before_action :require_user, only: %i(create delete)
   include Pagy::Backend
 
   def index

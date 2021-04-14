@@ -100,7 +100,6 @@ class Tag < ApplicationRecord
                 .where('term_data.name IN (?)', tagnames)
     # .select(%i[node.nid node.status node.type community_tags.nid community_tags.tid term_data.name term_data.tid])
     # above select could be added later for further optimization
-    # .where('term_data.name IN (?) OR term_data.parent in (?)', tagnames, tagnames) # greedily fetch children
     order = 'node_revisions.timestamp DESC'
     order = 'created DESC' if type == 'note'
     Node.where('node.nid IN (?)', nodes.collect(&:nid))
