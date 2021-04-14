@@ -92,7 +92,7 @@
         rows="6" 
         cols="40" 
         placeholder="<%= placeholder %>"
-      ><%= location == :edit ? comment.comment : params[:body] %></textarea>
+      ><%= location == :edit ? comment.comment : params[:none] %></textarea>
       <div class="imagebar">
         <div 
           id="image-upload-progress-container-<%= comment_form_id %>" 
