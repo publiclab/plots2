@@ -10680,10 +10680,10 @@ publiclab-editor@^2.0.0:
     woofmark "git://github.com/jywarren/woofmark.git#plots2"
     xhr "~2.5.0"
 
-publiclab-editor@^3.0.2:
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/publiclab-editor/-/publiclab-editor-3.0.2.tgz#aa6102fe6b5b2e157d1ffc2e3a22fa37a8bb5c3b"
-  integrity sha512-tvJmJeHF8XEA+v91fljQriDiXlY5nV/a1qGJlo2bJdnR9GNCsMRFNCrz/CTJmHezmlEL4Fj4/Hst0BclVWycKg==
+publiclab-editor@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/publiclab-editor/-/publiclab-editor-3.0.3.tgz#6ef1280210044eab5fb6cd33cd48cd140dd39813"
+  integrity sha512-ToEgSQQnchTbGCsvaJ6ntc+bBWdeVXMJwxNDZCStBRRd9VsEZ9TmKv0nPy3yCV5ea9CocUzj1bZ0jCcP041WCw==
   dependencies:
     at.js "^1.5.4"
     blueimp-file-upload "^10.30.1"
