@@ -282,8 +282,9 @@ GEM
     mime-types (3.2.2)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2019.0331)
-    mimemagic (0.3.8)
+    mimemagic (0.3.10)
       nokogiri (~> 1)
+      rake
     mini_mime (1.0.2)
     mini_portile2 (2.5.0)
     minitest (5.14.4)
@@ -305,7 +306,7 @@ GEM
     netrc (0.11.0)
     nifty-generators (0.4.6)
     nio4r (2.5.5)
-    nokogiri (1.11.1)
+    nokogiri (1.11.3)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
     nokogumbo (2.0.4)
@@ -634,7 +635,7 @@ DEPENDENCIES
   listen (~> 3.5.1)
   loadcss-rails (~> 2.0.1)
   mailman
-  mimemagic (~> 0.3.8)
+  mimemagic (~> 0.3.10)
   minitest-reporters (~> 1.4.3)
   mocha (~> 1.12)
   mustermann (= 1.1.1)
