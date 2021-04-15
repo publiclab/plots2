@@ -164,12 +164,10 @@ class CommentTest < ActiveSupport::TestCase
     assert comment.save
   end
 
-  test 'should relate answer comments to user and answer but not node' do
-    answer = answers(:one)
+  test 'should relate comments to user but not node' do
     user = users(:bob)
     comment = Comment.new(comment: 'Test comment')
     comment.user = user
-    comment.answer = answer
 
     assert comment.save
     assert_equal user.comments.last, comment
