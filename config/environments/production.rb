@@ -71,10 +71,10 @@ Plots2::Application.configure do
   :port => ENV["SMTP_PORT"] || 25
   }
 
-  if ENV["SMTP_USER"] then config.action_mailer.smtp_settings[:user_name] = ENV["SMTP_USER"] end
-  if ENV["SMTP_PASS"] then config.action_mailer.smtp_settings[:password] = ENV["SMTP_PASS"] end
-  if ENV["SMTP_AUTH"] then config.action_mailer.smtp_settings[:authentication] = ENV["SMTP_AUTH"] end
-  if ENV["SMTP_STLS"] then config.action_mailer.smtp_settings[:enable_starttls_auto] = ENV["SMTP_STLS"] end
+  if not ENV["SMTP_USER"].blank? then config.action_mailer.smtp_settings[:user_name] = ENV["SMTP_USER"] end
+  if not ENV["SMTP_PASS"].blank? then config.action_mailer.smtp_settings[:password] = ENV["SMTP_PASS"] end
+  if not ENV["SMTP_AUTH"].blank? then config.action_mailer.smtp_settings[:authentication] = ENV["SMTP_AUTH"] end
+  if not ENV["SMTP_STLS"].blank? then config.action_mailer.smtp_settings[:enable_starttls_auto] = ENV["SMTP_STLS"] end
 
   # Enable threaded mode
   # config.threadsafe!
