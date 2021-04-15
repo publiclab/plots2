@@ -5,13 +5,13 @@ class LikeController < ApplicationController
   # list all recent likes
   def index
     @paginated = true
-    @likes = NodeSelection.all.reverse.paginate(page: params[:page])
+    @pagy_a, @likes = pagy_array(NodeSelection.all.reverse)
   end
 
   # return a count of likes for a given node
   # This does not support non-nodes very well
   def show
-    render json: Node.find(params[:id]).likers.count
+    render json: Node.find(params[:id]).likers.size
   end
 
   # for the current user, return whether is presently liked or not

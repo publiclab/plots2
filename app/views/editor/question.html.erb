@@ -9,7 +9,7 @@
   </script>
 
   <%= javascript_include_tag "post" %>
-  <%= javascript_include_tag "dragdrop" %>
+  <%= javascript_include_tag "editorToolbar" %>
 
   <% if params[:template] == "question" %>
     <h4 class="d-lg-none">Ask a question</h4>
@@ -64,17 +64,17 @@
   %>
   <div class="card bg-light">
     <div class="card-body">
-      <%= form_for :node, :as => :drupal_node, :url => url do |f| %>
-        <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages :header_message => "Your note couldn't be saved." %></div><% end %>
+      <%= form_for :node, :as => :drupal_node, :url => url if params[:id] do |f| %>
+        <%= render partial: 'layouts/errorMessages', locals: { model: @node } %>
+
       <% end %>
 
       <%= form_for :revision, :as => :revision, :url => url, :html => {:class => "form well legacy-form row"} do |f| %>
 
-        <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages :header_message => "Your note couldn't be saved." %></div><% end %>
-
+        <%= render partial: 'layouts/errorMessages', locals: { model: @revision } if @revision.present? %>
         <%= render :partial => "editor/main_image" %>
 
-        <div class="col-lg-9 order-md-1">
+        <div id="legacy-editor-container" class="col-lg-9 order-md-1">
 
           <% if params[:template] == "question" %>
             <h3>Ask a question of the community</h3>
@@ -108,8 +108,7 @@
           <% end %>
 
           <a id="publish" tabindex="5" class="publish btn btn-primary btn-lg">Publish</a>
-          <a tabindex="6" data-previewing-text="Previewing (click to edit)" class="btn btn-outline-secondary btn-lg preview-btn" onClick="$E.toggle_preview()">Preview</a>
-
+          <a tabindex="6" id="toggle-preview-button-main" data-previewing-text="<%= t('wiki.edit.previewing_text') %>" class="btn btn-outline-secondary btn-lg preview-btn" onClick="$E.toggle_preview()"><%= t('wiki.edit.preview') %></a>
           <%= render partial: 'editor/event' %>
 
         </div>
@@ -119,8 +118,8 @@
           <p class="col-md-12">By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</p>
           <br />
         </div>
+        <% end %>
 
-      <% end %>
     </div>
   </div>
 </div>

@@ -1,41 +1,46 @@
-<%= javascript_include_tag('comment_expand') %>
+<%= javascript_include_tag('commentExpand') %>
 <%= javascript_include_tag('notes') %>
-<%= javascript_include_tag('textbox_expand') %>
-<script> var comments_length = <%= @node.comments.length %>; </script>
+<%= javascript_include_tag('textBoxExpand') %>
+<script> 
+  var comments_length = <%= @node.comments.length %>; 
+  $(function(){
+    $("img").lazyload();
+    // create an instance of the editor
+    $E = new Editor();
+    // attach tooltips to comment buttons
+    $('[data-toggle="tooltip"]').tooltip();
+    $('[rel="tooltip"]').tooltip();
+  });
+</script>
 <%= javascript_include_tag('question') %>
 <div class="col-lg-9 note-show question-show">
 
    <% if @node.main_image %>
     <a class="main-image" style="max-width:100%;width:800px;" href="<%= @node.main_image.path(:original) %>">
-      <img style="max-height:600px;" class="rounded d-none d-lg-inline" src="<%= @node.main_image.path(:large) %>" />
-      <img style="width:100%;" class="rounded d-lg-none" src="<%= @node.main_image.path(:large) %>" />
+      <%= image_tag(@node.main_image.path(:large), class:"rounded d-none d-lg-inline", style:'max-height:600px;max-width:100%;') %>
+      <%= image_tag(@node.main_image.path(:large), class:"rounded d-lg-none", style:'width:100%;') %>
     </a>
   <% end %>
 
-  <h1 style="margin-top: 20px;"><span class="question">Question: </span><a href="<%= @node.path(:question) %>"><%= @node.title %></a></h1>
+  <h1 style="margin-top: 20px;"><span class="question"><%=translation('questions.show.question')%>:</span><a href="<%= @node.path(:question) %>"><%= @node.title %></a></h1>
   <% pt = @node.power_tag('question') %>
   <div class="alert alert-warning">
-    <a href="/profile/<%= @node.author.name %>"> <%= @node.author.name %> </a>
-    is asking a question about <b><a href="/questions/tag/<%= pt %>"><%= pt %></a></b>:
+  <a href="/profile/<%= @node.author.name %>"> <%= @node.author.name %> </a<%=translation('questions.show.question_about')%> <b><a href="/questions/tag/<%= pt %>"><%= pt %></a></b>:
     <a class="btn btn-outline-secondary requireLogin" target="_blank" href="/subscribe/tag/question:<%= pt %>">
       Follow this topic
     </a>
   </div>
   <div class="inline">
         <p>
-      <% if @node.status == 0 || @node.status == 4 %><span class="badge badge-danger">UNPUBLISHED</span> | <% end %>
-      <% if @node.status == 3 %><span class="badge badge-success">Draft</span> | <% end %>
-      by <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> |
-      <% if @node.has_power_tag('with') %>with <% @node.coauthors.each_with_index do |coauthor,i| %>
-        <a href="/profile/<%= coauthor.username %>">
-        <%= coauthor.username%></a> <%= coauthor.new_contributor %>
-        <%= ',' if i < @node.coauthors.length-1 %><% end %>
-      <% end %>
+        <% if @node.status == 0 || @node.status == 4 %><span class="badge badge-danger"><%=translation('questions.show.unpublished')%></span> | <% end %>
+        <% if @node.status == 3 %><span class="badge badge-success"><%=translation('questions.show.draft')%></span> | <% end %><%=translation('questions.show.by')%> <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> |
+        <% if @node.has_power_tag('with') %><%=translation('questions.show.with')%> <% @node.coauthors.each_with_index do |coauthor,i| %>
+        <a href="/profile/<%= coauthor.username %>"><%= coauthor.username%></a> <%= coauthor.new_contributor %><%= ',' if i < @node.coauthors.size-1 %><% end %><% end %>
       <span class="d-none d-lg-inline">
         <%= @node.created_at.to_s(:long) %> |
       </span>
       <span>
-        <a href="/n/<%= @node.id %>"><i class="fa fa-link"></i></a> <span class="d-none d-xl-inline"><a href="/n/<%= @node.id %>">#<%= @node.id %></a>
+      <a aria-label="Link to note" href="/n/<%= @node.id %>"><i class="fa fa-link"></i></a> <span class="d-none d-xl-inline"><a href="/n/<%= @node.id %>">#<%= @node.id %></a>
       </span>
     </p>
   </div>
@@ -51,9 +56,12 @@
   <hr />
 
   <% comments = @node.comments_viewable_by(current_user) %>
-  <h3><span id="comment-count"><%= comments.length %></span> Comments</h3>
+  <div id="legacy-editor-container" class="col-lg-10">
+    <h3><span id="comment-count"><%= comments.size %></span> Comments</h3>
     <div id="comments-list">
-      <% comments.includes(:replied_comments).order("timestamp ASC").each do |comment| %>
+    <%= javascript_include_tag "editorToolbar" %>
+    <%= javascript_include_tag "comment" %>
+      <% comments.includes([:node, :replied_comments]).order("timestamp ASC").each do |comment| %>
         <% if comment.reply_to.nil? %>
           <%= render :partial => "notes/comment", :locals => {:comment => comment} %>
         <% end %>
@@ -63,12 +71,22 @@
       <div id="answer-0-comment-section">
       <% if current_user %>
         <div class="d-inline" id="question-comment-form">
-            <%= render :partial => "comments/form", :locals => { title: "Post Comment", comment: false, placeholder: "Help the author refine their post, or point them at other helpful information on the site. Mention users by @username to notify them of this thread by email", type: "question", url1: '/conduct', author: current_user.title, is_new_contributor:current_user.is_new_contributor? } %>
+          <%= render :partial => "comments/form", :locals => { 
+            title: "Post Comment", 
+            comment: false, 
+            placeholder: "Help the author refine their post, or point them at other helpful information on the site. Mention users by @username to notify them of this thread by email", 
+            type: "question", 
+            url1: '/conduct', 
+            author: current_user.title, 
+            is_new_contributor: current_user.is_new_contributor?, 
+            location: :main # toolbar needs this to create dropzone ID
+          } %> 
         </div>
       <% else %>
         <p><a data-toggle="modal" data-target="#loginModal">Log in</a> to comment</p>
       <% end %>
       </div>
+    </div>
   </div>
 </div>
 

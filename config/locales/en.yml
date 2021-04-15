@@ -144,6 +144,21 @@ en:
       uploading: "Uploading"
     edit:
       edit_profile: "Edit Profile"
+    settings:
+      notified_by_email: "I want to be notified by email for:"
+      direct_comment: "Comments on my posts"
+      direct_likes: "Likes on my posts"
+      indirect_comment: "Comments on all posts I've commented on"
+      moderation_email: "Moderation emails"
+      email_notifications: "Email notifications are sent for each post in topics you follow. If you prefer to receive a digest, choose one of these options:"
+      weekly_digest: "In a weekly digest"
+      daily_digest: "In a daily digest"
+      spam_weekly_digest: "In a weekly digest for unmoderated posts"
+      spam_daily_digest: "In a daily digest for unmoderated posts"
+      browser_notifications: "I want to receive browser notifications:"
+      mentioned: "When I'm mentioned"
+      everything: "For everything"
+      likes: "When someone likes my work"
   notes:
     index:
       search_results_for: "Search results for <i style=\"color:#aaa;\">%{params}</i>"
@@ -162,7 +177,11 @@ en:
       recent: "Recent"
       popular: "Popular"
       liked: "Liked"
-      wiki_pages: "Wiki<span class=\"hidden-sm\"> pages</span>"
+      wiki_pages: "Wiki pages"
+      research_notes: "Research Notes"
+      questions: "Questions"
+      comments: "Comments"
+      all_notes: "All Notes"
     _notes:
       moderate_first_time_post: "Moderate first-time post:"
       approve: "Approve"
@@ -174,7 +193,7 @@ en:
       read_more: "Read more"
     show:
       note_no_tags: "This note has no tags yet; help connect it to other content by
-        <a href='%{url}'>adding descriptive tags below</a>."
+        <a href='#' onClick='%{url}'>adding descriptive tags below</a>."
       replication: "This is an attempt to replicate "
       series: "This is part of a series on "
       replication_link: "an activity"
@@ -200,9 +219,11 @@ en:
       ical: "iCal"
       login_to: "Please <a href='%{url1}'>log in</a> to"
       people_will_attend: "%{count} people will attend"
+      preview: "You are currently viewing a preview."
+      preview_topics: "This preview is not yet published and is not part of any topics yet."
     _comments:
       comments: "Comments"
-      post_comment: "Post comment"
+      post_comment: "Post Comment"
       post_placeholder: "Help the author refine their post, or point them at other
         helpful information on the site. Mention users by @username to notify them
         of this thread by email"
@@ -256,7 +277,7 @@ en:
           and <b>%{comments_count} comments </b>  posted in this period.
       members_and_contributors: |
           <b>%{member_count}  member registrations</b>
-          and <b>%{people_count}  contributors </b> posted in this period.
+          and <b>%{people_count}  contributors </b> posted notes, wikis, questions, comments, or revisions in this period.
 
   dashboard:
     _node_comment:
@@ -337,12 +358,55 @@ en:
       first_time_post: "Moderate first-time post:"
     _comment_moderate:
       first_time_post: "Moderate first-time comment:"
+  dashboard_v2:
+    _header:
+      dashboard: "Dashboard"
+      updates: "Updates from community members on <a href='%{url}' class='form-grey' style='text-decoration: underline;'>topics</a> you"
+      follow: "<a href='%{url}' class='form-grey' style='text-decoration: underline;'> follow</a>"
+      community_research: "Community research"
+    dashboard:
+      from_blog: "From the <a href='%{url}'>Public Lab Blog</a>"
+      by: "by"
+      new_user: "Welcome! To improve your feed, follow the trending and featured topics linked below."
+      more_topics: "To improve your feed, follow the trending and featured topics linked below."
+      new_comment: "new comment"
+    sidebar:
+      nearby_activity: "Nearby Activity"
+      add_location: "Add your location"
+      location_work: "Add your location to see work near you"
+      location_privacy: "About location privacy"
+      all_posts: "<a href='%{url}' class='form-grey'>View all posts</a>"
+      follow_topics: "Follow more topics"
+      trending_topics: "Trending topics"
+      featured_topics: "Featured topics"
+      learn_more: "learn more"
+      add_topics: "Click to add topics, or"
+      all_topics: "<a href='%{url}' class='form-grey'>All topics</a>"
+      more_topics: "<a href='%{url}' class='form-grey'>more...</a>"
+      interest_topics: "Click to start <a href='%{url}' class='form-grey' style='text-decoration: underline;'>following</a> topics that interest you"
   like:
     index:
       recent_likes: "Recent Likes"
       user: "User"
       liked: "Liked"
       action: "Action"
+  map:
+    index:
+      current_view: "Current view based on your shared location. Click <a href='/profile'>here</a> to adjust."
+      share: "Share your own location on <a href='/profile'>your profile</a>."
+      privacy: "Learn about <a href='https://publiclab.org/wiki/location-privacy'>privacy</a>"
+      archive: |
+        <h3><i style="color:#aaa;" class="fa fa-hdd"></i> A grassroots data archive</h3>
+        <p>This archive represents the collective work of our community to provide an alternative source for aerial imagery, and to highlight issues of environmental and social concern with Do-It-Yourself tools. The archive provides:</p>
+        <ul>
+          <li>A permanent, backed up archive</li>
+          <li>A place to advocate around your data</li>
+          <li>A space to discuss and understand the maps</li>
+        </ul>
+        <hr />
+        <h3><i style="color:#aaa;" class="fa fa-globe"></i> How to contribute</h3>
+        <p>Most of the maps in this archive were made in <a href="//mapknitter.org">MapKnitter</a>, a free and open source tool created by Public Lab contributors to turn aerial photos into maps.</p>
+        <p>To add your open source map to the archive, contact <a href="mailto:staff@<%= request.host %>">staff@<%= request.host %></a> and be prepared to provide some background and to tell the story of your map. Creative Commons and Public Domain maps are <a href="/licenses">both accepted</a>.</p>      
   tag:
     blog:
       the_public_lab: "The Public Lab"
@@ -355,6 +419,7 @@ en:
       unfollow: "Click to unfollow"
       follow: "Follow"
       no_results: "No results found; try searching for '%{search}'"
+      no_recent_posts: "There are no recent posts"
       advanced_search: "Or try an <a href='%{url}'>advanced search</a>"
       by: "by"
       views: "views"
@@ -369,7 +434,8 @@ en:
       number_of_subscriptions: "# of people"
       subscriptions: "Your subscriptions"
       sort_by: "Sort By"
-      more_posts: "more posts"
+      post: "post"
+      wiki: "wiki"
       follow: "Follow"
       unfollow: "Unfollow"
       notes:
@@ -386,21 +452,27 @@ en:
       following: "Following"
       unfollow: "Click to unfollow"
       follow: "Follow"
+      unfollow_text: "Unfollow"
+      subscribe: "Subscribe"
+      blog_updates: "Click to subscribe to blog updates via email"
       none: "None"
       users_following_tag: "Users following this tag"
       ask_question: "Ask a question about <b>%{tag}</b>"
       or_subscribe_to_answer: "<a style='margin-bottom:6px;' class='btn btn-primary
         requireLogin' target='_blank' href='%{url1}'>Subscribe to answer questions
         on this topic</a>"
-      research_notes: "<span class=\"hidden-sm\">Research </span>Notes"
+      research_notes: "Research notes"
       questions: "Questions"
-      wiki_pages: "Wiki<span class=\"hidden-sm\"> pages</span>"
+      wiki_pages: "Wiki pages"
       maps: "Maps"
       no_results_found: "No results found; try searching for '<b>%{tag}</b>'"
       try_advanced_search: "Or try an <a href='%{url1}'>advanced search</a>"
       people: "People"
       no_map_results_found: "Sorry, no map is tagged with <i>%{tag}</i>"
       contributors: "Contributors"
+      notes_not_available: "This topic has no available notes. View other posts by clicking the link below."
+      by: "by"
+      new_post: "New post"
     contributors-index:
       contributors_over_last_week: "Contributors for <i style=\"color:#aaa;\">%{tag_name}</i>
         over the past 52 weeks"
@@ -414,7 +486,7 @@ en:
       no_contributors_listed: "No contributors are listed."
       write_research_note: "Write a research note"
     _tagging:
-      enter_tags: "enter tags"
+      enter_tags: "Enter tags"
     contributors:
       contributors_for: "Contributors for <i style=\"color:#aaa;\">%{tag_name}</i>"
       contributions_over_past_year: "Above: contributions over the past year."
@@ -454,7 +526,7 @@ en:
         projects."
     show:
       page_has_no_tags: "This page has no tags yet; help connect it to other content
-        by <a href='%{url}'>adding descriptive tags below</a>"
+        by <a href ='#' onClick='%{url}'>adding descriptive tags below</a>"
       revision_from: "This is a revision from %{time}."
       view_all_revisions: "View all revisions"
       views: "views"
@@ -471,7 +543,7 @@ en:
       back_to_wiki: "Back to <a href='%{url1}'>%{title}"
       overview: "Overview"
       research: "Research"
-      wiki_pages: "Wiki<span class=\"hidden-sm\"> pages</span>"
+      wiki_pages: "Wiki pages"
       more_research: "More research on \"%{tag}\""
       more_tag_research: "More \"%{tag}\" research"
     _wikis:
@@ -516,7 +588,7 @@ en:
       create_page: "Create page"
       publish: "Publish"
       preview: "Preview"
-      previewing_text: "Previewing (click to edit)"
+      previewing_text: "Hide Preview"
       agree_to_open_source_work: "By publishing, you agree to <a target='_blank' href='%{url1}'>open
         source your work</a> so that others may use it."
       last_edited_by: "This page was last edited %{time} ago by <a href='%{url1}'>%{author}</a>"
@@ -550,6 +622,23 @@ en:
         fellows: "Fellows"
         lending_library: "Lending Library"
       search: "Search on Public Lab"
+      community:
+        community_title: "Community"
+        get_started: "Get Started"
+        people: "People"
+        places: "Places"
+        projects: "Projects"
+        events: "Events"
+        questions: "Questions"
+        chat: "Chat"
+      tools:
+        tools_title: "Tools"
+        methods: "Methods"
+        kits_initiative: "Kits Initiative"
+        store: "Store"
+        map_knitter: "Map Knitter"
+        spectral_workbench: "Spectral Workbench"
+        code_community: "Code Community"
       about:
         about_title: "About us"
         stories: "Stories"
@@ -605,11 +694,47 @@ en:
       research_note: "Research note"
       wiki_doc: "Wiki documentation"
   questions:
+    show:
+      question: "Question"
+      question_about: "is asking a question about"
+      unpublished: "UNPUBLISHED"
+      by: "by"
+      draft: "Draft"
+      with: "with"
     index:
       explanation: "Ask a question to the Public Lab community to help you in your
         environmental exploration."
+      ask_question: "Ask a question here"
+      to_ask_question: "To ask a question, please"
+      log_in: "log in"
+      or: "or"
+      sign_up: "sign up"
+      first: "first"
+      recently_asked: "Recently Asked"
+      popular: "Popular"
+      unanswered: "Unanswered"
+      liked: "Liked"
+      recently_commented: "Recently Commented"
+      recently_commented_questions: Recently commented questions
+      popular_questions: Popular Questions
+      most_viewed_questions: Most viewed questions
+      unanswered_questions: Unanswered Questions
+      liked_questions: Liked Questions
+      most_liked_questions: Most liked questions
     _comment:
       promotion: "Promote this comment to an answer"
+    index_shadow:
+      what_is_your_question: "What's your question?"
+      to_ask_a_question_please: "To ask a question, please"
+      log_in: "log in"
+      or: "or"
+      sign_up: "sign_up"
+      first: "first."
+    _questions_shadow:
+      people_responded: "people responded"
+      read_more: "Read More"
+    _form:
+      submit: "Submit"
   user_sessions:
     new:
       log_in: "Log in"
@@ -618,7 +743,7 @@ en:
       username: "Username"
       password: "Password"
       remember_me: "Remember me"
-      reset_by_clicking_here: "Forgot your password? Reset it <a href='%{url1}'>here</a>"
+      reset_by_clicking_here: "Forgot your password? <a href='%{url1}'>Reset it here</a>"
   home:
     dashboard:
       welcome: "Welcome!"
@@ -659,7 +784,7 @@ en:
       all: "all"
       notes: "notes"
       receive_mails: "Receive emails for all research notes."
-      enter_tags: "enter tags"
+      enter_tags: "Enter tags"
       add: "Add"
       tag: "Tag"
       options: "Options"
@@ -694,6 +819,13 @@ en:
       formatting: "Formatting"
       notifications: "Notifications"
       email_notifications: "Author, commenters, and those who've \"liked\" this note will receive email notifications"
+    index:
+      all_comments: "All Comments"
+      moderated_comments: "Moderated Comments"  
+    _comments:
+      comments: "Comments"
+      status: "Status:"
+      no_comments: "No comments yet." 
   sidebar:
     _events:
       post_event: "Post an event"
@@ -756,6 +888,19 @@ en:
         more</a>"
       try_direct_link: "If this page does not load properly, <a href='%{url1}'>try
         here</a>"
+  editor:
+    post:
+      welcome: "Here you can ask a question to the Public Lab community to help you in your environmental exploration. This is a great space to ask whether a method exists for identifying a possible pollutant, or ask about details of a specific technique for identifying a pollutant."
+      add_tags: "You can add more tags in the tags section below to further relate your question. You can also change the main tag of the question by renaming the part after"
+      q_and_a: "New to Public Lab? Take a minute to read the Q &amp; A wiki before posting your question"
+      learn_more: "Learn more &raquo;"
+      research_note: "At Public Lab, we all collaborate to invent and improve open source environmental science tools. <b>Research notes</b> are the primary way we share what we learn, ask questions, pose challenges, and critique one another's work."
+      photo: "photos of what you've made"
+      troubleshooting: "requests for troubleshooting"
+      projects: "proposals for new projects"
+      events: "announcements of events"
+      reports: "reports from a field test or meetup"
+      video: "Watch a 30 second video on posting research notes &raquo;"
   home_controller:
     science_community: "a DIY environmental science community"
     environmental_investigation: "a community for DIY environmental investigation"

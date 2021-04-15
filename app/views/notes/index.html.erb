@@ -1,51 +1,67 @@
 <div class="col-lg-9">
   <% if params[:controller] == "search" %>
-    <h3><%= raw t('notes.index.search_results_for', :params => params[:id]) %> <small>(<a href="/search/advanced/<%= params[:id] %>"><%= t('notes.index.advanced_search') %></a>)</h3>
-    
+    <h3><%= raw translation('notes.index.search_results_for', :params => params[:id]) %> <small>(<a href="/search/advanced/<%= params[:id] %>"><%= translation('notes.index.advanced_search') %></a>)</h3>
+
   <% elsif params[:controller] == "tag" %>
-    <h3><%= raw t('notes.index.notes_tagged_with', :params => params[:id]) %></h3>
+    <h3><%= raw translation('notes.index.notes_tagged_with', :params => params[:id]) %></h3>
   <% elsif params[:action] == "popular" %>
-    <h2><%= t('notes.index.popular_research_notes') %></h2>
+    <h2><%= translation('notes.index.popular_research_notes') %></h2>
   <% elsif params[:action] == "recent" %>
-    <h2><%= t('notes.index.recent_research_notes') %></h2>
+    <h2><%= translation('notes.index.recent_research_notes') %></h2>
   <% elsif params[:action] == "author_topic" %>
-    <h3><%= raw t('notes.index.research_on', :tags => @tagnames.join(', '), :url1 => "/people/"+@user.name, :user_name => @user.name) %> <br /><small><%= raw t('notes.index.research_notes_and_wiki_edits_with_time', :count => @user.nodes.count, :time => time_ago_in_words(@user.created_at)) %></small></h3>
+    <h3><%= raw translation('notes.index.research_on', :tags => @tagnames.join(', '), :url1 => "/people/"+@user.name, :user_name => @user.name) %> <br /><small><%= raw translation('notes.index.research_notes_and_wiki_edits_with_time', :count => @user.nodes.count, :time => time_ago_in_words(@user.created_at)) %></small></h3>
   <% elsif params[:action] == "author" %>
-    <h3><%= raw t('notes.index.research_by', :url1 => "/people/"+@user.name, :user_name => @user.name) %> <small><%= raw t('notes.index.research_notes_and_wiki_edits', :count1 => @user.note_count, :word1 => 'note'.pluralize(@user.note_count), :count2 => @user.revisions.count, :word2 => 'edit'.pluralize(@user.revisions.count)) %> <% if @user.notes.length > 0 %><%= raw t('notes.index.starting_time', :time => time_ago_in_words(@user.created_at)) %><% end %></small></h3>
+    <h3><%= raw translation('notes.index.research_by', :url1 => "/people/"+@user.name, :user_name => @user.name) %> <small><%= raw translation('notes.index.research_notes_and_wiki_edits', :count1 => @user.note_count, :word1 => 'note'.pluralize(@user.note_count), :count2 => @user.revisions.count, :word2 => 'edit'.pluralize(@user.revisions.count)) %> <% if @user.notes.size > 0 %><%= raw translation('notes.index.starting_time', :time => time_ago_in_words(@user.created_at)) %><% end %></small></h3>
   <% else %>
-    <h2><%= raw t('notes.index.research_notes_ideas_and_documentation') %></h2>
+    <h2><%= raw translation('notes.index.research_notes_ideas_and_documentation') %></h2>
   <% end %>
-  <% if params[:controller] == "notes" && (params[:action] == "popular" || params[:action] == "index" || params[:action] == "liked" || params[:action] == "recent") %>
+  <br/>
+  <% if params[:action] == "liked" %><a style="margin-right:9px; margin-top: -33px;" class="float-right btn btn-outline-secondary btn-sm" href="/feed/liked.rss"><i class="fa fa-rss"></i></a><% end %>
 
-    <%= render :partial => "notes/format_toggle" %>
-    <% if params[:action] == "liked" %><a style="margin-right:4px;" class="float-right btn btn-outline-secondary btn-sm" href="/feed/liked.rss"><i class="fa fa-rss"></i></a><% end %>
-
-    <ul class="nav nav-tabs" id="tab-bar">
+    <ul class="nav nav-pills notes-pills">
       <li class="nav-item">
-        <a class="nav-link <% if params[:action] == "recent" %> active <% end %>" href="/notes/recent"> <i class="fa fa-clock-o"></i><span class="hidden-sm hidden-xs"> <%= t('notes.index.recent') %></span></a>
-        </li>
-      <li class="nav-item">
-        <a class="nav-link <% if params[:action] == "popular" %> active <% end %> " href="/notes/popular/"> <i class="fa fa-bolt"></i><span class="hidden-sm hidden-xs"> <%= t('notes.index.popular') %></span></a>
+        <a class="nav-link <% if params[:controller] == "notes" %> active <% end %>" href="/notes/"> 
+          <i class="fa fa-file"></i>
+          <span class="d-lg-inline">
+            <span class="d-none d-md-inline"> <%= translation('notes.index.research_notes') %></span>
+          </span>
+        </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link <% if params[:action] == "liked" %> active <% end %> " href="/notes/liked/"> <i class="fa fa-star-o"></i><span class="hidden-sm hidden-xs"> <%= t('notes.index.liked') %></span></a>
+        <a class="nav-link" href="/questions/">
+         <i class="fa fa-question-circle"></i>
+         <span class="d-lg-inline">
+          <span class="d-none d-md-inline"> <%= translation('notes.index.questions') %></span>
+         </span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/wiki/">
+        <i class="fa fa-book"></i>
+        <span class="d-lg-inline">
+          <span class="d-none d-md-inline"> <%= translation('notes.index.wiki_pages') %></span>
+        </span>
+        </a>
+      </li>
+       <li class="nav-item">
+        <a class="nav-link" href="/comments/">
+        <i class="fa fa-comment"></i>
+        <span class="d-lg-inline">
+          <span class="d-none d-md-inline"> <%= translation('notes.index.comments') %></span>
+        </span>
+        </a>
       </li>
     </ul>
-
-  <% end %>
-
+    <%= render :partial => "notes/sidebar" %>
   <br />
 
   <%= render :partial => "notes/notes" %>
-
   <hr />
-  
 </div>
 
-<% if params[:controller] == "tag" || params[:controller] == "search" %>
-  <%= render :partial => "sidebar/related" %>
-<% elsif params[:action] == "author" || params[:action] == "author_topic" %>
-  <%= render :partial => "sidebar/author" %>
-<% else %>
-  <%= render :partial => "sidebar/user" %>
-<% end %>
+<!-- Galaxy Fold Responsive Styling  -->
+<style>
+  @media (max-width: 280px)  {
+    .notes-pills{ display: inline !important; }
+   }
+</style>

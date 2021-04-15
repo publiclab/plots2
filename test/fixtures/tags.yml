@@ -123,3 +123,30 @@ test4_lon:
 test4_zoom:
   tid: 31
   name: zoom:13
+
+sun:
+  tid: 32
+  name: sun
+
+sunny_day:
+  tid: 33
+  name: sunny-day
+  parent: sun
+
+sun_question:
+  tid: 34
+  name: question:sun
+
+# this tags node 37 as a question
+# ultimately, this is for testing comments on that node.
+comment_question:
+  tid: 35
+  name: question:general
+
+hidden_response_tag:
+  tid: 36
+  name: hidden:response
+
+subscribed_tag:
+  tid: 37
+  name: sub:tag

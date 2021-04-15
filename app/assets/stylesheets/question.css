@@ -28,7 +28,7 @@
   overflow: hidden !important; text-overflow: ellipsis;
 }
 
-.dropdown:hover .dropdown-menu {
+.dropdown:not(.no-hover):hover .dropdown-menu {
     display: block;
     margin-top: 0;
  }
@@ -118,7 +118,6 @@ table th a:hover {
   visibility: hidden;
 }
 
-.question-show textarea,
 .question-show pre {
   margin: 0;
   padding: 0;

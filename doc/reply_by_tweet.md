@@ -4,9 +4,9 @@
 
 ### Steps:
 
-- Cron job for polling for getting new tweets to `publiclab` is defined in [config/schedule.rb](https://github.com/publiclab/plots2/blob/master/config/schedule.rb "config/schedule.rb") using whenever gem which will call `receive_tweet` function of [models/comment.rb](https://github.com/publiclab/plots2/blob/master/app/models/comment.rb "models/comment.rb") in the interval of one minute.
+- Cron job for polling for getting new tweets to `publiclab` is defined in [config/schedule.rb](https://github.com/publiclab/plots2/blob/main/config/schedule.rb "config/schedule.rb") using whenever gem which will call `receive_tweet` function of [models/comment.rb](https://github.com/publiclab/plots2/blob/main/app/models/comment.rb "models/comment.rb") in the interval of one minute.
 
-- `receive_tweet` method of [models/comment.rb](https://github.com/publiclab/plots2/blob/master/app/models/comment.rb "models/comment.rb") will look for if there is any comment already present that contains tweet_id if it does it will call `receive_tweet_using_since` otherwise it will call `receive_tweet_without_using_since `.
+- `receive_tweet` method of [models/comment.rb](https://github.com/publiclab/plots2/blob/main/app/models/comment.rb "models/comment.rb") will look for if there is any comment already present that contains tweet_id if it does it will call `receive_tweet_using_since` otherwise it will call `receive_tweet_without_using_since `.
 
 - `receive_tweet_using_since` will search for the tweets to the `publiclab` which are tweeted after that tweet with the `tweet_id` present in the database.
 

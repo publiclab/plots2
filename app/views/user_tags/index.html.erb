@@ -1,11 +1,11 @@
 <div class="col-lg-12">
-  <h1 style="font-family:Junction Light;"><%= t('user_tag.index.popular_user_tags') %></h1>
+  <h1 style="font-family:Junction Light;"><%= translation('user_tag.index.popular_user_tags') %></h1>
 
   <% cache('feature_user_tags-header', skip_digest: true) do %>
     <%= feature('user-tags-header') %>
   <% end %>
 
-  <p><%= t('user_tag.index.browse_popular_user_tags') %></p>
+  <p><%= translation('user_tag.index.browse_popular_user_tags') %></p>
 
   <input class="form-control" type="text" id="myInput"  placeholder="Search for user tags..">
   <script>
@@ -21,8 +21,8 @@
 
   <table class="table">
     <tr>
-      <th><a href = "<%= user_tags_path %>?sort=value"><%= t('user_tag.index.user_tag') %></a> <i class="fa fa-arrows-v"></i></th>
-      <th><a href = "<%= user_tags_path %>?sort=uses"><%= t('user_tag.index.number_of_uses') %></a> <i class="fa fa-arrows-v"></i></th>
+      <th><a href = "<%= user_tags_path %>?sort=value"><%= translation('user_tag.index.user_tag') %></a> <i class="fa fa-arrows-v"></i></th>
+      <th><a href = "<%= user_tags_path %>?sort=uses"><%= translation('user_tag.index.number_of_uses') %></a> <i class="fa fa-arrows-v"></i></th>
     </tr>
     <% @user_tags.each do |user_tag| %>
       <tr>
@@ -31,7 +31,7 @@
       </tr>
     <% end %>
   </table>
-  <%= will_paginate @user_tags, renderer: WillPaginate::ActionView::BootstrapLinkRenderer if @paginated %>
+<% if @pagy %> <%= raw pagy_bootstrap_nav @pagy %> <% else %> <%= will_paginate @user_tags, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %> <% end %>
 
   <hr />
 

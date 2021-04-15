@@ -17,11 +17,24 @@ function changeLikeStatus(node_id, method) {
     .then(function(resp) {
       updateLikeCount(parseInt(resp), node_id);
       renderLikeStar(parseInt(resp), node_id);
+      displayNotyNotification(method);
     })
     .then(function(resp) {
       let method1 = method === "/delete" ? clicknotliked : clickliked
       $('#like-button-' + node_id).on('click', method1);
     });
+}
+
+function displayNotyNotification(method) {
+  let text, type;
+  if (method === "/create") {
+    text = "Note Liked!";
+    type = "info";
+  } else {
+    text = "Note Unliked!";
+    type = "error";
+  }
+  notyNotification('relax', 3000, type, 'topRight', text);
 }
 
 function updateLikeCount(value, node_id) {

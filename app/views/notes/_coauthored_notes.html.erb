@@ -31,7 +31,7 @@
             <%= translation('notes._notes.last_edit_by') %> <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.latest.author.name %>"><%= node.latest.author.name %></a>
 	    <%= distance_of_time_in_words(Time.at(node.latest.timestamp), Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>
           <% end %>
-          | <i class="fa fa-eye"></i> <%= number_with_delimiter(node.views) %> <span class="d-none d-lg-inline"><%= t('notes._notes.views') %></span>
+          | <i class="fa fa-eye"></i> <%= number_with_delimiter(node.views) %> <span class="d-none d-lg-inline"><%= translation('notes._notes.views') %></span>
           | <i style="<% if node.likes > 0 %>color:#db4;<% else %>color:#888;<% end %>" class="fa fa-star-o"></i> <%= node.likes %>
         </small></p>
 
@@ -47,7 +47,7 @@
               <p><%= raw strip_tags(sanitize(RDiscount.new(node.body_preview).to_html)) if node.body %></p>
             <% end %>
             <p>
-              <% if logged_in_as(['admin','moderator']) %><a class="btn btn-outline-secondary" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> <%= t('notes._notes.spam') %></a><% end %>
+              <% if logged_in_as(['admin','moderator']) %><a class="btn btn-outline-secondary" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> <%= translation('notes._notes.spam') %></a><% end %>
               <a style="float: right; margin-left: 1px;" class="btn btn-outline-secondary" href="<%= node.path %>"><%= translation('notes._notes.read_more') %></a>
             </p>
           <% end %>
@@ -67,4 +67,8 @@
     <% end %>
     </div>
 </div>
-<%= will_paginate notes, renderer: WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated %>
+<% if @pagy %>
+  <%== pagy_bootstrap_nav @pagy %>
+<% else %>
+  <%= will_paginate notes, renderer: WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated %>
+<% end %>

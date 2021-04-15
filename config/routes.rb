@@ -142,12 +142,14 @@ Plots2::Application.routes.draw do
   get 'notes/liked' => 'notes#liked'
   get 'notes/image/:id' => 'notes#image'
   get 'notes/delete/:id' => 'notes#delete'
+  match 'notes/preview', to: 'notes#preview', via: [:post, :get]
   post 'notes/delete/:id' => 'notes#delete'
   post 'notes/update/:id' => 'notes#update'
   post 'notes/create' => 'notes#create'
   get 'notes/publish_draft/:id' => 'notes#publish_draft'
   get 'notes/edit/:id' => 'notes#edit'
   get 'notes/show/:id/:token' => 'notes#show'
+  get 'notes/print/:id' => 'notes#print'
 
   get 'places' => 'notes#places'
   get 'tools' => 'notes#tools'
@@ -155,6 +157,7 @@ Plots2::Application.routes.draw do
   get 'methods/:topic' => 'wiki#methods'
   get 'techniques' => 'wiki#techniques'
   get "/wikis/author/:id" => "wiki#author"
+  get 'wikis/print/:id' => 'wiki#print'
 
   get 'report/:id' => 'legacy#report'
   get 'node/:id' => 'legacy#node'
@@ -197,11 +200,11 @@ Plots2::Application.routes.draw do
   get 'widget/:id' => 'tag#widget'
   get 'blog' => 'tag#blog', :id => "blog"
   get 'blog/:id' => 'tag#blog'
-  get 'blog2' => 'tag#blog2', :id => "blog2"
+  get 'blog2' => 'tag#blog2', :id => "blog"
   get 'blog2/:id' => 'tag#blog2'
   get 'tags' => 'tag#index'
   get 'tags/related(/:id)' => 'tag#related'
-  get 'tags/:search' => 'tag#index'
+  get 'tags/:id' => redirect('/tag/:id')
   post 'tag/suggested/:id' => 'tag#suggested'
   get 'tag/parent' => 'tag#add_parent'
   get 'tag/author/:id.json' => 'tag#author'
@@ -213,7 +216,7 @@ Plots2::Application.routes.draw do
   put 'tag/add_tag' => 'tag#add_tag'
   put 'tag/remove_tag/:id' => 'tag#remove_tag'
   put 'tag/remove_all_tags' => 'tag#remove_all_tags'
-  get 'tag/:id' => 'tag#show'
+  get 'tag/:id' => 'tag#show', :as => :tag
   get 'tag/:id/stats' => 'tag#stats', :as => :tag_stats
   get 'locations/form' => 'tag#location'
   get 'locations/modal' => 'tag#location_modal'
@@ -224,6 +227,7 @@ Plots2::Application.routes.draw do
   get 'feed/liked' => 'notes#liked_rss'
 
   get 'dashboard' => 'home#dashboard'
+  get '/v2/dashboard' => 'home#dashboard_v2'
   get 'comments' => 'comment#index'
   get 'profile/comments/:id' => 'users#comments'
   get 'profile/comments/:id/tag/:tagname' => 'users#comments_by_tagname'
@@ -232,7 +236,7 @@ Plots2::Application.routes.draw do
   post 'profile/photo' => 'users#photo'
   get 'profile/info/:id' => 'users#info', as: 'info'
   get 'profile' => 'users#profile'
-  get 'profile/:id' => 'users#profile'
+  get 'profile/:id' => 'users#profile', as: :user
   get 'profile/:id/edit' => 'users#edit'
   get 'profile/:id/likes' => 'users#likes'
   get 'feed/:author' => 'users#rss'
@@ -289,6 +293,26 @@ Plots2::Application.routes.draw do
   get 'spam/comments' => 'admin#spam_comments'
   get 'spam/:type' => 'admin#spam'
   get 'spam/batch/:ids' => 'admin#batch'
+  get 'spam2' => 'spam2#_spam'
+  get 'spam2/revisions' => 'spam2#_spam_revisions'
+  get 'spam2/comments' => 'spam2#_spam_comments'
+  get 'spam2/revisions' => 'spam2#_spam_revisions'
+  get 'spam2/insights' => 'spam2#_spam_insights'
+  get 'spam2/flags' => 'spam2#_spam_flags'
+  get 'spam2/users' => 'spam2#_spam_users'
+  get 'spam2/comments/filter/:type/:pagination' => 'spam2#_spam_comments'
+  get 'spam2/users/filter/:type/:pagination' => 'spam2#_spam_users'
+  get 'spam2/flags/filter/:type/:pagination' => 'spam2#_spam_flags'
+  get 'spam2/queue/filter/:tag' => 'spam2#_spam_queue'
+  get 'spam2/filter/:type/:pagination' => 'spam2#_spam'
+  get 'spam2/batch_spam/:ids' => 'batch#batch_spam'
+  get 'spam2/batch_publish/:ids' => 'batch#batch_publish'
+  get 'spam2/batch_delete/:ids' => 'batch#batch_delete'
+  get 'spam2/batch_ban/:ids' => 'batch#batch_ban'
+  get 'spam2/batch_unban/:ids' => 'batch#batch_unban'
+  get 'spam2/batch_ban_user/:ids' => 'batch#batch_ban_user'
+  get 'spam2/batch_unban_user/:ids' => 'batch#batch_unban_user'
+  get 'spam2/batch_comment/:type/:ids' => 'batch#batch_comment'
   get 'admin/users' => 'admin#users'
   get 'admin/queue' => 'admin#queue'
   get 'ban/:id' => 'admin#ban'
@@ -297,6 +321,10 @@ Plots2::Application.routes.draw do
   get 'moderate/revision/publish/:vid' => 'admin#publish_revision'
   get 'moderate/spam/:id' => 'admin#mark_spam'
   get 'moderate/publish/:id' => 'admin#publish'
+  get 'moderate/flag_node/:id' => 'spam2#flag_node'
+  get 'moderate/remove_flag_node/:id' => 'spam2#remove_flag_node'
+  get 'moderate/flag_comment/:id' => 'spam2#flag_comment'
+  get 'moderate/remove_flag_comment/:id' => 'spam2#remove_flag_comment'
   get 'admin/promote/moderator/:id' => 'admin#promote_moderator'
   get 'admin/force/reset/:id' => 'admin#reset_user_password'
   get 'admin/demote/basic/:id' => 'admin#demote_basic'
@@ -310,6 +338,7 @@ Plots2::Application.routes.draw do
 
   get 'post' => 'editor#post', :as => :editor_post
   post 'post' => 'editor#post', :as => :editor_path
+  get 'post/choose' => 'editor#choose'
   get 'legacy' => 'editor#legacy'
   get 'editor' => 'editor#editor'
   get 'editor/rich/(:n)' => 'editor#rich'
@@ -325,15 +354,17 @@ Plots2::Application.routes.draw do
   get 'questions_shadow' => 'questions#index_shadow'
   get 'question' => 'questions#index'
   get 'question_shadow' => 'questions#index_shadow'
-  get 'questions/:author/:date/:id' => 'questions#show' 
+  get 'questions/:author/:date/:id' => 'questions#show'
   get 'questions/show/:id' => 'questions#show'
   get 'q/:id' => 'questions#shortlink'
-  get 'questions/answered(/:tagnames)' => 'questions#answered'
+  get 'questions/answered(/:tagnames)', to: redirect('questions#recently_commented')
+  get 'questions/recently_commented(/:tagnames)' => 'questions#recently_commented'
   get 'questions/popular(/:tagnames)' => 'questions#popular'
   get 'questions/unanswered(/:tagnames)' => 'questions#unanswered'
   get 'questions/liked(/:tagnames)' => 'questions#liked'
 
   post 'users/test_digest_email' => 'users#test_digest_email'
+  post 'admin/test_digest_email_spam' => 'admin#test_digest_email_spam'
 
   get 'comment/delete/:id' => 'comment#delete'
   get 'comment/update/:id' => 'comment#update'
@@ -341,6 +372,11 @@ Plots2::Application.routes.draw do
   post '/comment/like' => 'comment#like_comment'
   get '/comment/create/:id' => 'comment#create'
   post 'comment/create/:id' => 'comment#create'
+
+  # routes for React commenting system
+  post 'comment/react/create/:id' => 'comment#react_create'
+  post 'comment/react/delete/:id' => 'comment#react_delete'
+  post 'comment/react/update/:id' => 'comment#react_update'
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products

@@ -12,6 +12,12 @@ class SubscriptionControllerTest < ActionController::TestCase
     assert users(:bob).following(:blog)
   end
 
+  test 'user should be notified if adding a tag already subscribed to' do
+    UserSession.create(users(:bob))
+    get :add, params: { type: 'tag', name: 'sub:tag' }
+    assert_equal "You are already subscribed to 'sub:tag'", flash[:error]
+  end
+
   test 'should redirect to login if user is not logged in and trying to access digest' do
       get :digest
 
@@ -28,7 +34,7 @@ class SubscriptionControllerTest < ActionController::TestCase
   test 'should subscribe to multiple tags' do
     UserSession.create(users(:bob))
     assert users(:bob).following(:awesome)
-    get :multiple_add, params: { type: 'tag', tagnames: 'blog,kites,,balloon,awesome' }
+    get :multiple_add, params: { type: 'tag', tagnames: ["blog","kites","","balloon","awesome"]}
     assert_response :redirect
     assert users(:bob).following(:blog)
     assert users(:bob).following(:awesome)
@@ -55,12 +61,12 @@ class SubscriptionControllerTest < ActionController::TestCase
     get :add, params: { type: 'tag', name: 'blog' }, xhr: true
     assert users(:bob).following(:blog)
   end
-  
+
   test "should redirect properly when subscribing to multiple tags" do
     UserSession.create((users(:bob)))
-    tagnames = 'blog,kites,,balloon,awesome'
+    tagnames = ["blog","kites","","balloon","awesome"]
     get :multiple_add, params: { type: "tag", tagnames: tagnames, return_to: "/dashboard" }
     assert_redirected_to "/dashboard"
-    assert_equal flash[:notice], "You are now following '#{tagnames}'."
+    assert_equal flash[:notice], "You are now following #{tagnames.join(', ')}."
   end
 end

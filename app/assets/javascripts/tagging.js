@@ -1,7 +1,8 @@
 // Taking the prompt+value retrieved in promptTag() or the links in the drop-down menu and populating the form field before submitting it
 // Instead we want to take the tag value and directly submit it with AJAX
 // responseEl is the page element that we want the messages being appended to
-function addTag(tagname, submitTo, responseEl = "") {
+// callback is an optional function that will be passed and invoked when a request is successful
+function addTag(tagname, submitTo, responseEl = "", callback) {
   submitTo = submitTo || '#tagform';
   if (responseEl == "") {
     if(submitTo.slice(0,1) === "/") {
@@ -14,7 +15,7 @@ function addTag(tagname, submitTo, responseEl = "") {
     tagname = tagname.replace(/ /g, '-');
   }
   let data = { name: tagname };
-  sendFormSubmissionAjax(data, submitTo, responseEl);
+  sendFormSubmissionAjax(data, submitTo, responseEl, callback);
 }
 
 function setupTagDelete(el) {
@@ -72,6 +73,10 @@ function addNewTagsSuccess(response, deletion_path, el = "#tagform"){
   if (typeof response == "string") response = JSON.parse(response)
   $.each(response['saved'], function(i, tag) {
     // only display tag if it was added to the note we're currently viewing
+    var tagNameCheck = !!tag[0].split(':')[0].match(/^(lat|lon|place)$/)
+    if (tagNameCheck) {
+      location.reload(true);
+    }
     if (tag[2] == getDeletionPathId(deletion_path)) {
       displayNewTag(tag[0], tag[1], deletion_path);
     }

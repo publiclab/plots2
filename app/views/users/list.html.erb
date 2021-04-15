@@ -1,16 +1,16 @@
 <div class="col-md-12 col-lg-6 order-1 order-sm-2">
 <% if current_user && (current_user.role == "admin" || current_user.role == "moderator")%>
-<h3><%= t('users.list.user_moderation') %></h3>
-<p><%= t('users.list.admins_ban_spam') %> </p>
+<h3><%= translation('users.list.user_moderation') %></h3>
+<p><%= translation('users.list.admins_ban_spam') %> </p>
 <% end %>
   <div class="row">
     <div class ="col-md-8">
-      <h2><%= raw t('People') %></h2>
-      <h5><%= t('Recently active on Publiclab') =%></h5>
+      <h2><%= raw translation('People') %></h2>
+      <h5><%= translation('Recently active on Publiclab') =%></h5>
     </div>
     <% if current_user && (@map_lat.blank? || @map_lon.blank?) %>
       <div class="col-md-4">
-        <a class="btn btn-outline-secondary blurred-location-input" style="color:#666;" onmouseover="this.style.background='white';" submit_to="/profile/tags/create/<%= current_user.uid %>"><i class="fa fa-map-marker" style="color:#c40;"></i> Add your location</a>
+        <a class="btn btn-outline-secondary blurred-location-input" style="color:#666;" hover="this.style.background='grey';" submit_to="/profile/tags/create/<%= current_user.uid %>"><i class="fa fa-map-marker" style="color:#c40;"></i> Add your location</a>
       </div>
     <% end %>
   </div>
@@ -18,9 +18,9 @@
     <br>
       <p style="width: 100%; font-size:14px; text-align: center; border-bottom: 1px solid #ccc; line-height:2px; margin: 10px 0 20px;">
       <span style="background-color: #fff; padding: 0 10px; color: #808080;">Sort by:
-      <a href = "<%= people_path %>?sort=username" style="text-decoration: underline; color: #808080;"> <%= t('users.list.username') %></a><span> | </span>
-      <a href = "<%= people_path %>?sort=last_activity"style="text-decoration: underline; color: #808080;"> <%= t('users.list.last_activity') %></a><span> | </span>
-      <a href = "<%= people_path %>?sort=joined" style="text-decoration: underline; color: #808080;"><%= t('users.list.joined') %></a><span> | </span>
+      <a href = "<%= people_path %>?sort=username" class="sort-style <% if params[:sort] == "username" %>selected<%end%>"> <%= translation('users.list.username') %></a><span> | </span>
+      <a href = "<%= people_path %>?sort=last_activity" class="sort-style <% if params[:sort] == "last_activity" %>selected<%end%>"> <%= translation('users.list.last_activity') %></a><span> | </span>
+      <a href = "<%= people_path %>?sort=joined" class="sort-style <% if params[:sort] == "joined" %>selected<%end%>"><%= translation('users.list.joined') %></a><span> | </span>
       </span>
       </p>
       <br/>
@@ -33,14 +33,14 @@
            <div class="row card-body">
             <div class="col-lg-12 nopadding">
               <div class="profile-image text-center">
-                  <img class="rounded-circle img-fluid" id="profile-photo" src="<%= user.profile_image %>" />
+                  <%= image_tag(user.profile_image, class:'rounded-circle img-fluid', id:'profile-photo') %>
               </div>
             </div>
             <div class="col-lg-12 nopadding">
               <div class="card-info">
                 <div class="d-flex justify-content-between">
                  <div>
-                    <a href="/profile/<%= user.username %>"><%= user.username %></a>
+                    <a href="/profile/<%= user.username %>" style="word-break:break-word;"><%= user.username %></a>
                    </div>
                    <div>
                       <a class="ellipsis" data-toggle="dropdown">&nbsp<i class="fa fa-ellipsis-h" style="color: #666; font-size:15px;"></i></a>
@@ -48,12 +48,13 @@
                       <li><a style="color: #808080; cursor: no-drop;">Joined <%= distance_of_time_in_words(user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></a></li>
                       <li><a href='/notes/author/<%= user.name %>'><%= user.note_count %> Research Notes</a></li>
                       <li><a style="color: #808080; cursor: no-drop;"><%= user.nodes.count %> Wiki Edits</a></li>
-                      <li><a href="/profile/<%= user.username %>">See Full Profile</a></li>
                       <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") %>
                          <% if user.status == 0 %>
-                           <i class='fa fa-ban' style="color:#a00;"></i> <%= t('users.list.banned') %>
+                           <li class="btn-success"><a  style="color: white;" href="/profile/<%= user.username %>"><i class="fa fa-check-circle fa-white"></i> Unban on profile</a></li>
+                           <i class='fa fa-ban' style="color:#a00;"></i> <%= translation('users.list.banned') %>
                            <% elsif user.status == 1 && user != current_user %>
-                             <li><a data-confirm="<%= t('users.list.are_you_sure') %>" href="/ban/<%= user.uid %>" ><i class='fa fa-ban'></i> <%= t('users.list.ban') %></a></li>
+                             <li><a href="/profile/<%= user.username %>">See Full Profile</a></li>
+                             <li class="btn-danger"><a style="color: white;" data-confirm="<%= translation('users.list.are_you_sure') %>" href="/ban/<%= user.uid %>" ><i class="fa fa-ban fa-white"></i> <%= translation('users.list.ban') %></a></li>
                          <% end %>
                        <% end %>
                      </ul>
@@ -62,7 +63,7 @@
                 <div class="sub-info">
                   <div style="padding-bottom:6px;">
                     <% if user.status == 0 %>
-                      <i class='fa fa-ban' style="color:#a00;"></i> <%= t('users.list.banned') %> | 
+                      <i class='fa fa-ban' style="color:#a00;"></i> <%= translation('users.list.banned') %> |
                     <% end %>
                     Active <%= t = user.revisions.order(timestamp: :desc).first.try(:created_at);time_ago_in_words(t) if (t) %> ago
                   </div>
@@ -82,12 +83,11 @@
   </div>
   <%= will_paginate @users, renderer: WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated %>
 </div>
+
 <div class="col-md-12 col-lg-6 order-2 d-none d-lg-block">
-<%= render :partial => "map/peopleLeaflet" , locals: {people: true , lat:23 , lon: 4} %>
+  <%= render :partial => "map/peopleLeaflet" , locals: {lat:23 , lon: 4, zoom: 5} %>
 </div>
-<div class="col-md-12 col-lg-6 order-sm-1 d-lg-none">
-<%= render :partial => "map/peopleLeaflet" , locals: {people: true , lat:23 , lon: 4} %>
-</div>
+
 <style>
 #user {
   padding:10px 8px 10px 8px
@@ -170,5 +170,17 @@ h3, h2, h5 {
   padding-bottom: 5px;
   padding-left: 14px;
 }
+
+.sort-style{
+  color: #808080;
+}
+.selected{
+  text-decoration: underline;
+}
 </style>
+<script>
+$(function(){
+  $("img").lazyload();
+});
+</script>
 <%= render partial: 'tag/location' %>

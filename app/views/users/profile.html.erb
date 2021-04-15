@@ -5,10 +5,10 @@
     <%= render :partial => "map/leaflet" , locals: { lat: @map_lat, lon: @map_lon, zoom: @map_zoom, blurred: @map_blurred, topmap: true, user: @profile_user } %>
   <% elsif !current_user.nil? && current_user.id == @profile_user.id %>
     <div id="map_template" style="position: relative; width: 100%; display: inline-block;">
-      <img src="https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/0/0/0.png" style="height:300px; width: 100%; margin: 0; position: relative; margin-right: -10px;">  
-      <button type='button' class='blurred-location-input btn btn-default btn-lg' onclick='addLocation()' style="position: absolute;    position: absolute;top: 41% ; left: 15% ;"> <strong> Share your Location </strong> </button>
-      <p><i><small>Learn about <a href='https://publiclab.org/wiki/location-privacy'>privacy</a> </small></i></p>
-    </div> 
+      <img src="https://api.mapbox.com/styles/v1/jywarren/ckj06ujnc1nmi19nuelh46pr9/tiles/0/0/0?access_token=pk.eyJ1Ijoianl3YXJyZW4iLCJhIjoiVzVZcGg3NCJ9.BJ6ArUPuTs1JT9Ssu3K8ig" style="height:300px; width: 100%; margin: 0; position: relative; margin-right: -10px;">
+      <button type='button' class='blurred-location-input btn btn-default btn-lg' style="position:absolute;position:absolute;top:41%;left:15%;"> <strong> Share your Location </strong> </button>
+      <p><i><small>Learn about <a href='https://publiclab.org/location-privacy'>privacy</a> </small></i></p>
+    </div>
   <% end %>
 
   <br />
@@ -44,15 +44,15 @@
 </div>
 
 <div class="offset-md-1 order-first order-md-last col-md-4 text-center">
-  <div class="text-center">
-    <%if @content_approved or (!current_user.nil? && current_user.id == @profile_user.id)%> 
-      <img class="d-none d-lg-inline rounded-circle" id="profile-photo" style="width:50%;margin-bottom:10px;" src="<%= @profile_user.profile_image %>" />
+  <div class="text-center d-none d-lg-block">
+    <%if @content_approved or (!current_user.nil? && current_user.id == @profile_user.id)%>
+      <%= image_tag(@profile_user.profile_image, class:'rounded-circle', id:'profile-photo', style:"width:50%;margin-bottom:10px;") %>
     <%end%>
     <h4 class="mt-3"><strong>@<%= @profile_user.name %> <%= @profile_user.new_contributor %></strong></h4>
   </div>
   <div style="text-align:center;" class="d-lg-none">
-    <%if @content_approved or (!current_user.nil? && current_user.id == @profile_user.id)%> 
-      <img class="rounded-circle" id="profile-photo" style="width:50%;margin-bottom:20px;" src="<%= @profile_user.profile_image(:medium) %>" />
+    <%if @content_approved or (!current_user.nil? && current_user.id == @profile_user.id)%>
+      <%= image_tag(@profile_user.profile_image(:medium), class:'rounded-circle', id:'profile-photo', style:"width:50%;margin-bottom:20px;") %>
     <%end%>
   <h4 class="mt-3"><strong>@<%= @profile_user.name %> <%= @profile_user.new_contributor %></strong></h4>
   </div>
@@ -60,21 +60,21 @@
   <h4>
     <small>
       <% if logged_in_as(['admin']) %><%= @profile_user.email %><% end %>
-      <span style = "font-size:24px;"><small> <%= raw t('users.profile.joined_time_ago', :time_ago => distance_of_time_in_words(@profile_user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' })) %></small></span>
-      <% if @profile_user.role == "moderator" %> | <i class="fa fa-certificate"></i> <%= t('users.profile.moderator') %><% end %>
-      <% if @profile_user.role == "admin" %> | <i class="fa fa-certificate"></i> <%= t('users.profile.admin') %><% end %>
-      <% if @profile_user.status == 0 %> | <i class="fa fa-ban" style="color:#a00;"></i> <%= t('users.profile.banned') %><% end %>
+      <span style = "font-size:24px;"><small> <%= raw translation('users.profile.joined_time_ago', :time_ago => distance_of_time_in_words(@profile_user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' })) %></small></span>
+      <% if @profile_user.role == "moderator" %> | <i class="fa fa-certificate"></i> <%= translation('users.profile.moderator') %><% end %>
+      <% if @profile_user.role == "admin" %> | <i class="fa fa-certificate"></i> <%= translation('users.profile.admin') %><% end %>
+      <% if @profile_user.status == 0 %> | <i class="fa fa-ban" style="color:#a00;"></i> <%= translation('users.profile.banned') %><% end %>
     </small>
   </h4>
-  <%if @content_approved or (!current_user.nil? && current_user.id == @profile_user.id)%> 
+  <%if @content_approved or (!current_user.nil? && current_user.id == @profile_user.id)%>
     <p><%= raw auto_link(RDiscount.new(@profile_user.bio || '').to_html, :sanitize => false) %></p>
-  <%end%>  
+  <%end%>
   <div class="mt-3">
 
     <a class="btn btn-outline-secondary" id="tags-section">Tags</a>
 
     <% if current_user && current_user.uid == @profile_user.uid %>
-      <a href="/profile/<%= @profile_user.name %>/edit" class="btn btn-outline-secondary"><%= t('users.profile.edit_profile') %></a>
+      <a href="/profile/<%= @profile_user.name %>/edit" class="btn btn-outline-secondary"><%= translation('users.profile.edit_profile') %></a>
     <% end %>
 
     <a class="btn btn-outline-secondary" id="info-ellipsis"><i class="fa fa-ellipsis-h" style="margin:0"></i></a>
@@ -127,31 +127,31 @@
     <% end %>
 
     <% if @profile_user && logged_in_as(['admin']) && @profile_user.role != "admin" %>
-      <a href="/admin/promote/admin/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-certificate"></i> <%= t('users.profile.make_admin') %></a>
+      <a href="/admin/promote/admin/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-certificate"></i> <%= translation('users.profile.make_admin') %></a>
     <% end %>
 
     <% if @profile_user && logged_in_as(['admin']) && @profile_user.role == "moderator" %>
-      <a href="/admin/demote/basic/<%= @profile_user.id %>" class="btn btn-default btn-block"><i class="fa fa-ban"></i> <%= t('users.profile.revert_to_basic_user') %></a>
+      <a href="/admin/demote/basic/<%= @profile_user.id %>" class="btn btn-default btn-block"><i class="fa fa-ban"></i> <%= translation('users.profile.revert_to_basic_user') %></a>
     <% end %>
 
     <% if @profile_user && logged_in_as(['admin', 'moderator']) && @profile_user.role == "basic" %>
-      <a href="/admin/promote/moderator/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-certificate"></i> <%= t('users.profile.make_moderator') %></a>
+      <a href="/admin/promote/moderator/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-certificate"></i> <%= translation('users.profile.make_moderator') %></a>
     <% end %>
 
     <% if logged_in_as(['admin', 'moderator']) && @profile_user.status == 0 %>
-      <a href="/unban/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-thumbs-up"></i> <%= t('users.profile.unban_user') %></a>
+      <a href="/unban/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-thumbs-up"></i> <%= translation('users.profile.unban_user') %></a>
     <% elsif logged_in_as(['admin', 'moderator']) && @profile_user.status == 1 && @profile_user != current_user %>
-      <a data-confirm="<%= t('users.profile.confirm_ban_user') %>" href="/ban/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-ban"></i> <%= t('users.profile.ban_user') %></a>
+      <a data-confirm="<%= translation('users.profile.confirm_ban_user') %>" href="/ban/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-ban"></i> <%= translation('users.profile.ban_user') %></a>
     <% end %>
 
     <% if logged_in_as(['admin', 'moderator']) && @profile_user.status == 5 %>
-      <a href="/admin/unmoderate/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-thumbs-up"></i> <%= t('users.profile.unmoderate_user') %></a>
+      <a href="/admin/unmoderate/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-thumbs-up"></i> <%= translation('users.profile.unmoderate_user') %></a>
     <% elsif logged_in_as(['admin', 'moderator']) && @profile_user.status == 1 %>
-      <a rel="tooltip" title="Prevent author from logging in, without hiding their work or profile." data-confirm="<%= t('users.profile.confirm_moderate_user') %>" href="/admin/moderate/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-ban"></i> <%= t('users.profile.moderate_user') %></a>
+      <a rel="tooltip" title="Prevent author from logging in, without hiding their work or profile." data-confirm="<%= translation('users.profile.confirm_moderate_user') %>" href="/admin/moderate/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-ban"></i> <%= translation('users.profile.moderate_user') %></a>
     <% end %>
 
     <% if @profile_user && !@profile_user.reset_key.nil? && logged_in_as(['admin']) %>
-      <a id="user-reset-key" href="/reset/key/<%= @profile_user.reset_key %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-info-sign"></i> <%= t('users.profile.reset_user') %>: <%= @profile_user.reset_key %></a>
+      <a id="user-reset-key" href="/reset/key/<%= @profile_user.reset_key %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-info-sign"></i> <%= translation('users.profile.reset_user') %>: <%= @profile_user.reset_key %></a>
     <% end %>
 
     <% if @profile_user && @profile_user.reset_key.nil? && logged_in_as(['admin', 'moderator']) && (@profile_user.role == "basic" || @profile_user.role == "moderator") %>
@@ -161,7 +161,7 @@
     <hr />
 
     <p>
-      <a class="btn btn-outline-secondary btn-block" href="/feed/<%= @profile_user.name %>.rss"><i class="fa fa-rss" style="color:orange;"></i> <%= t('users.profile.rss_feed_for') %> <%= @profile_user.name %></a>
+      <a class="btn btn-outline-secondary btn-block" href="/feed/<%= @profile_user.name %>.rss"><i class="fa fa-rss" style="color:orange;"></i> <%= translation('users.profile.rss_feed_for') %> <%= @profile_user.name %></a>
     </p>
 
     <% if @profile_user && current_user && @profile_user == current_user %>
@@ -209,6 +209,9 @@
         <%= form_tag "/users/test_digest_email", method: :post do %>
           <%= submit_tag "Test Digest Email", class: "btn btn-info", style: "width: 100%;" %>
         <% end %>
+        <%= form_tag "/admin/test_digest_email_spam", method: :post do %>
+          <%= submit_tag "Test Spam Digest Email", class: "btn btn-sm btn-primary mt-2", style: "width: 100%;" %>
+        <% end %>
       <% end %>
 
     <% end %>
@@ -240,15 +243,15 @@
 
     <div class="d-none d-md-inline">
       <% if @wikis && @wikis.length > 0 %>
-        <h4><%= t('users.profile.wiki_contributed_to') %></h4>
+        <h4><%= translation('users.profile.wiki_contributed_to') %></h4>
         <ul class="nav">
           <% @wikis.each do |wiki| %>
             <% unless (!@node.nil? && wiki.nid == @node.nid) %>
-              <li><a href="<%= wiki.path %>"><i style="margin-left: -12px;" class="fa fa-<%= wiki.icon %>"></i> <%= wiki.latest.title %></a> <small style="color:#888;"><%= t('users.profile.updated') %> <%= distance_of_time_in_words(wiki.updated_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %> <%= t('users.profile.by') %> <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a></small></li>
+              <li><a href="<%= wiki.path %>"><i style="margin-left: -12px;" class="fa fa-<%= wiki.icon %>"></i> <%= wiki.latest.title %></a> <small style="color:#888;"><%= translation('users.profile.updated') %> <%= distance_of_time_in_words(wiki.updated_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %> <%= translation('users.profile.by') %> <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a></small></li>
             <% end %>
           <% end %>
           <% if params[:controller] == "search" %>
-            <li><a href="/tag/<%= params[:id] %>"><%= t('users.profile.more') %>...</a></li>
+            <li><a href="/tag/<%= params[:id] %>"><%= translation('users.profile.more') %>...</a></li>
           <% end %>
         </ul>
       <% end %>
@@ -265,6 +268,8 @@
       <li><h5><a href = "/tag/activity:*/author/<%= params[:id] %>"><%= pluralize(@count_activities_posted, 'activity posted', plural:'activities posted') %> </a></h5></li>
       <li><h5><a href = "/tag/replication:*/author/<%= params[:id] %>"><%= pluralize(@count_activities_attempted, 'activity attempted', plural:'activities attempted')%></a> </h5></li>
       <li><h5><a href = "/tag/with:<%= @profile_user.username %>"><%= pluralize(Tag.find_nodes_by_type("with:#{@profile_user.username}").count, 'note co-authored', plural: 'notes co-authored')%></a> </h5></li>
+      <li><h5><a href = "/people/<%= @profile_user.username %>/followers"><%= pluralize(@profile_user.followers.count, 'follower', plural: 'followers')%></a> </h5></li>
+      <li><h5><a href = "/people/<%= @profile_user.username %>/following"><%= pluralize(@profile_user.following_users.count, 'following', plural: 'following')%></a> </h5></li>
     </ul>
   </div>
 
@@ -273,6 +278,9 @@
 <script src = "https://cdn.jsdelivr.net/npm/frappe-charts@0.0.8/dist/frappe-charts.min.iife.js"></script>
 
 <script type = "text/javascript">
+  $(function(){
+    $("img").lazyload();
+  });
   //Upon clicking copy button, copyToken function is activated.
   $('#copy-btn').on('click', copyToken);
 

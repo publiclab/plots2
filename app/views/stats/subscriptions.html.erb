@@ -1,9 +1,10 @@
 <div class="col-lg-3">
-  <h4> About this page </h4>
-  <p> People subscribe to tags so that they can be updated when a research is posted with the tag they are subscribed to. This page shows the number of subscriptions and subscription rates on different tags. </p>
+  <h4>About this page </h4>
+  <p>People subscribe to tags so that they can be updated when a research is posted with the tag they are subscribed to. This page shows the number of subscriptions for every tag on the site. </p>
 </div>
 <div class="col-lg-8 col-lg-offset-1">
   <h2>Subscriptions</h2>
+  <p>This data is cached every 24 hours.</p>
   <table class="table inline-grid">
   <tr>
     <thead>
@@ -11,7 +12,7 @@
     <th>Tags</th>
     </thead>
   </tr>
-  <% @tags.reverse_each do |range,tags| %>
+  <% @tags.each do |range,tags| %>
   <tr>
     <td>
       <%= range * 10 %> - <%= range * 10 + 9 %>

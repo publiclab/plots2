@@ -88,7 +88,7 @@ class UsersControllerTest < ActionController::TestCase
     # checks duplicated flash is not present
     assert_nil flash[:notice]
   end
-  
+
   test 'generate user reset key' do
     user = users(:jeff)
     assert_nil user.reset_key
@@ -226,7 +226,6 @@ class UsersControllerTest < ActionController::TestCase
 
   test 'update profile with correct password when ui_update is true' do
     user = users(:bob)
-    bio = users(:bob).bio
     UserSession.create(user)
     post :update, params: {
       user: {
@@ -241,7 +240,6 @@ class UsersControllerTest < ActionController::TestCase
 
   test 'rejecting update profile with wrong password when ui_update is nil' do
     user = users(:bob)
-    bio = users(:bob).bio
     UserSession.create(user)
     post :update, params: {
       user: {
@@ -254,6 +252,19 @@ class UsersControllerTest < ActionController::TestCase
     assert_not_equal User.find(user.id).bio, 'Bio updated by user but with wrong password'
   end
 
+  test 'allowing update profile with empty password when ui_update is true' do
+    user = users(:bob)
+    UserSession.create(user)
+    post :update, params: {
+      user: {
+        bio: 'Bio updated by user with empty password',
+        current_password: '',
+        ui_update: 'true'     }
+    }
+    assert_response :redirect
+    assert_equal User.find(user.id).bio, 'Bio updated by user with empty password'
+  end
+
   test 'should redirect edit when not logged in' do
     user = users(:bob)
     get :edit, params: { id: user.name }
@@ -262,7 +273,6 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test 'should redirect update when not logged in' do
-    user = users(:bob)
     post :update, params: { user: { bio: 'Hello, there!' } }
     assert_not flash.empty?
     assert_redirected_to '/login?return_to=/users/update'
@@ -359,7 +369,7 @@ class UsersControllerTest < ActionController::TestCase
     user.save
     email =  PasswordResetMailer.reset_notify(user, key)
     assert_emails 1 do
-     email.deliver_now 
+     email.deliver_now
     end
     assert_not_nil email.to
     assert_equal 'Reset your password',email.subject

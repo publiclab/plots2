@@ -1,50 +1,81 @@
 sudo: required
 
-language: generic
+language: ruby
+
+rvm:
+  - 2.6.6
 
 services:
   - docker
+  - redis-server
+
+addons:
+  mariadb: '10.2'
+  chrome: stable
+
+cache:
+  directories:
+   - $PWD/vendor/.bundle/
+   - $PWD/public/lib/
 
 git:
     depth: false
-  
+
 env:
   global:
-    - COMPOSE_FILE=./containers/docker-compose-testing.yml
     - CI=true
-  matrix:
-    - TASK="rake test:all"
-    - TASK="rails test test/unit"
-    - TASK="rails test test/functional"
-    - TASK="rails test test/integration"
-    - TASK="rails test:system"
+    - GENERATE_REPORT=true
+    - RAILS_ENV=test
+    - RAILS_SYSTEM_TESTING_SCREENSHOT=simple
 
-branches:
-  only:
-    - master
-    - unstable
-    - codecov
+before_install:
+  - CHROME_MAIN_VERSION=`google-chrome-stable --version | sed -E 's/(^Google Chrome |\.[0-9]+ )//g'`
+  - CHROMEDRIVER_VERSION=`curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_MAIN_VERSION"`
+  - sudo wget https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip
+  - sudo unzip chromedriver_linux64.zip -d /usr/local/bin/
+  - sudo chmod +x /usr/local/bin/chromedriver
+  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+  - yes | gem update --system --force
+  - gem install bundler
 
 install:
   - rm -rf test/reports
   - cp config/database.yml.example config/database.yml
   - cp db/schema.rb.example db/schema.rb
-  - docker-compose build
-  - docker-compose up -d
-  - docker-compose exec web sleep 15 # wait until mysql is up
-  - netstat -ltpn
-  - docker-compose exec web bash -c "rake db:setup"
-  - docker-compose exec web bash -c "rake db:migrate"
-  - docker-compose exec web bash -c "rake assets:precompile"
-  - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then bash -c "docker-compose exec web gem install danger danger-junit google-cloud-storage"; fi'
+  - bundle config set path 'vendor/.bundle/'
+  - bundle install
+  - gem list
+  - if [ $RAILS_ENV != 'production' ]; then
+      yarn check || yarn install;
+    fi
+  - mysql -e "CREATE DATABASE plots;";
+  - bundle exec rake db:schema:load
+  - bundle exec rake db:migrate
+  - if [ "$TRAVIS_PULL_REQUEST" == "true" ]; then
+      gem install danger danger-junit google-cloud-storage;
+    fi
+  - echo "$GOOGLE_APPLICATION_CREDENTIALS_JSON" > /tmp/credentials.json # needs to be a path to a json file, so we shuffle...
 
-script:
-  - docker-compose exec web bash -c 'echo "$GOOGLE_APPLICATION_CREDENTIALS_JSON" > /tmp/credentials.json' # needs to be a path to a json file, so we shuffle...
-  - docker-compose exec web bash -c "GENERATE_REPORT=true $TASK"
-  - if [ $TASK != "rake test:all" ]; then
-      echo -e '<?xml version="1.0" encoding="UTF-8"?>' > output.xml;
-      tail -n +2 -q ./test/reports/TEST*.xml >> output.xml;
+jobs:
+  include:
+    - name: "Unit Tests"
+      script: bundle exec rails test test/unit
+    - name: "Functional Tests"
+      script: bundle exec rails test test/functional
+    - name: "Integration Tests"
+      script: bundle exec rails test test/integration
+    - name: "System Tests"
+      script: bundle exec rails test:system
+
+after_script:
+  - echo -e '<?xml version="1.0" encoding="UTF-8"?>' > output.xml;
+  - tail -n +2 -q ./test/reports/TEST*.xml >> output.xml
+  - if [ $TRAVIS_PULL_REQUEST == "true" ]; then
+      bundle exec danger --verbose;
     fi
-  - if [ $TRAVIS_PULL_REQUEST != "false" ]; then
-      docker-compose exec web danger --verbose;
-    fi
+
+branches:
+  only:
+    - main
+    - unstable
+    - codecov

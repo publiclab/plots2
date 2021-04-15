@@ -45,7 +45,7 @@ class SubscriptionController < ApplicationController
         end
       end
 
-      case tag_selection_more_than_zero?(params[:tid])
+      case tag_selection_more_than_zero?(tag.tid)
       when true
         respond_to do |format|
           format.html do
@@ -109,9 +109,7 @@ class SubscriptionController < ApplicationController
   end
 
   def digest
-    @wikis = current_user.content_followed_in_period(1.week.ago, Time.now)
-      .paginate(page: params[:page], per_page: 100)
-
+    @wikis = Node.sort_wikis(params[:sort], current_user).paginate(page: params[:page], per_page: 100)
     @paginated = true
     render template: "subscriptions/digest"
   end
@@ -159,7 +157,8 @@ class SubscriptionController < ApplicationController
               if request.xhr?
                 render json: true
               else
-                flash[:notice] = "You are now following '#{params[:tagnames]}'."
+                tagnames = params[:tagnames].class == Array ? params[:tagnames].join(', ') : params[:tagnames]
+                flash[:notice] = "You are now following #{tagnames}."
                 redirect_to return_to
               end
             end

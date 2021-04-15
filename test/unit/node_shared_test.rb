@@ -15,13 +15,15 @@ class NodeSharedTest < ActiveSupport::TestCase
     before = "Here are some nodes in a table: \n\n[nodes:test] \n\nThis is how you make it work:\n\n`[nodes:tagname]`\n\n `[nodes:tagname]`\n\nMake sense?"
     nodes(:one).add_tag('pinned:test', User.first)
     nodes(:one).add_tag('test', User.first) # ensure it would appear anyways (although we aren't yet asserting order below, we should)
+    assert nodes(:one).has_tag('pinned:test')
+    assert nodes(:one).has_tag('test')
     html = NodeShared.nodes_grid(before)
     assert html
     assert_equal 1, html.scan('<table class="table inline-grid nodes-grid nodes-grid-test nodes-grid-test-').length
     assert_equal 1, html.scan('<table').length
     assert_equal 5, html.scan('nodes-grid-test').length
     assert_equal 2, html.scan('<td class="author">').length # but not 3 because it shouldn't appear twice
-    assert_equal 1, html.scan(nodes(:one).title).length
+    assert_equal 1, html.scan(nodes(:question).title).length
   end
 
   test 'that NodeShared can be used to convert short codes like [nodes:grid:foo] into tables which list nodes with image thumbnails' do
@@ -150,21 +152,21 @@ class NodeSharedTest < ActiveSupport::TestCase
   test 'that NodeShared can be used to convert short codes like [map:content:lat:lon] into maps which display notes' do
     before = "Here are some notes in a map: \n\n[map:content:71.00:52.00] \n\nThis is how you make it work:\n\n`[map:content:71.00:52.00]`\n\n `[map:content:71.00:52.00]`\n\nMake sense?"
     html = NodeShared.notes_map(before)
-    assert_equal 1, html.scan('<div class="leaflet-map"').length
+    assert_equal 1, html.scan('<div class="leaflet-map inline-map"').length
    # assert_equal 1, html.scan('L.marker').length  # This is not checking the markers on map but is checking the occurrence on L.marker in the code which is currently 2 !
   end
 
   test 'that NodeShared can be used to convert short codes like [map:tag:blog:lat:lon] into maps which display notes, but only those tagged with "blog"' do
     before = "Here are some notes in a map: \n\n[map:tag:blog:71.00:52.00] \n\nThis is how you make it work:\n\n`[map:tag:blog:71.00:52.00]`\n\n `[map:tag:blog:71.00:52.00]`\n\nMake sense?"
     html = NodeShared.notes_map_by_tag(before)
-    assert_equal 1, html.scan('<div class="leaflet-map"').length
+    assert_equal 1, html.scan('<div class="leaflet-map inline-map"').length
     # assert_equal 1, html.scan('L.marker').length
   end
 
   test 'that NodeShared can be used to convert short codes like [map:people:___:___] into maps which display peoples locations' do
     before = "Here are some people in a map: \n\n[map:people:41.00:-90.01] \n\nThis is how you make it work:\n\n`[map:people:41:-90]`\n\nMake sense?"
     html = NodeShared.people_map(before)
-    assert_equal 1, html.scan('<div class="leaflet-map"').length
+    assert_equal 1, html.scan('<div class="leaflet-map inline-map"').length
   end
 
   test 'that NodeShared can be used to convert short codes like [map:layers:23:77:mapKnitter,odorReport,wisconsin,asian,clouds] into maps which display LEL layers' do

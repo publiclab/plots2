@@ -1,24 +1,24 @@
 <div class="col-md-3">
-  <%= javascript_include_tag "dragdrop" %>
+  <%= javascript_include_tag "editorToolbar" %>
   <% if @related && @related.length > 0 %>
-    <h3><%= t('wiki.edit.did_you_mean') %>:</h3>
+    <h3><%= translation('wiki.edit.did_you_mean') %>:</h3>
     <ul class="nav bullet">
     <% @related[0..5].each do |wiki| %>
       <li><a href="/wiki/<%= wiki.path %>"><i class="fa fa-book"></i> <%= wiki.title %></a></li>
     <% end %>
     </ul>
-    <p><i class="fa fa-search"></i> <%= raw t('wiki.edit.try_searching_for', :url1 => "/search/"+params[:id], :wiki => params[:id]) %></p>
+    <p><i class="fa fa-search"></i> <%= raw translation('wiki.edit.try_searching_for', :url1 => "/search/"+params[:id], :wiki => params[:id]) %></p>
   <hr />
   <% end %>
 
-  <%= raw t('wiki.edit.whats_a_wiki_page') %>
+  <%= raw translation('wiki.edit.whats_a_wiki_page') %>
   <hr />
   <div class="navbar d-md-none d-lg-block">
     <ul class="navbar-nav">
-      <li class="nav-item navbar-brand"><%= t('wiki.edit.more') %></li>
-      <% if @node.path %><li><a href="/wiki/revisions/<%= @node.slug_from_path %>"><%= t('wiki.edit.revisions_for_this_page') %></a></li><% end %>
-      <li class="nav-item"><a href="/wiki/posting-research"><%= t('wiki.edit.about_posting_research') %></a></li>
-      <li class="nav-item"><a href="/wiki/authoring-help#Advanced+formatting"><%= t('wiki.edit.advanced_formatting') %></a></li>
+      <li class="nav-item navbar-brand"><%= translation('wiki.edit.more') %></li>
+      <% if @node.path %><li><a href="/wiki/revisions/<%= @node.slug_from_path %>"><%= translation('wiki.edit.revisions_for_this_page') %></a></li><% end %>
+      <li class="nav-item"><a href="/wiki/posting-research"><%= translation('wiki.edit.about_posting_research') %></a></li>
+      <li class="nav-item"><a href="/wiki/authoring-help#Advanced+formatting"><%= translation('wiki.edit.advanced_formatting') %></a></li>
     </ul>
   </div>
 </div>
@@ -34,22 +34,21 @@
   %>
 
   <%= form_for :node, :as => :node, :url => url do |f| %>
-    <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
+    <%= render partial: 'layouts/errorMessages', locals: { model: @node } %>
   <% end %>
   <div class="card bg-light">
     <div class="card-body">
       <%= form_for :revision, :as => :revision, :url => url, :html => {:class => "form well wiki-form row"} do |f| %>
 
-        <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
-
+        <%= render partial: 'layouts/errorMessages', locals: { model: @revision } %>
         <%= render :partial => "editor/main_image" %>
 
-        <div class="col-lg-9 order-lg-1">
+        <div id="legacy-editor-container" class="col-lg-9 order-lg-1">
 
           <% if @node && @node.latest && @node.latest.title %>
-            <h3><%= t('wiki.edit.editing_page') %>: <i><%= @node.latest.title %></i></h3>
+            <h3><%= translation('wiki.edit.editing_page') %>: <i><%= @node.latest.title %></i></h3>
           <% else %>
-            <h3><%= t('wiki.edit.create_page') %>: <i><%=h params[:id] %></i></h3>
+            <h3><%= translation('wiki.edit.create_page') %>: <i><%=h params[:id] %></i></h3>
           <% end %>
           <input class="form-control" id="main_image" type="hidden" name="main_image" value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>" />
           <input class="form-control" id="images_input" type="hidden" name="images" value="" />
@@ -57,10 +56,10 @@
           <input class="form-control" id="taginput" type="hidden" name="tags" value="<%= params[:tags] %>" />
 
           <div class="form-group">
-            <input tabindex="1" name="title" type="text" class="form-control" id="title" value="<% if @node && @node.latest %><%= @node.latest.title %><% else %><%= params[:title] %><% end %>">
+            <input aria-label="Wiki Title" tabindex="1" name="title" type="text" class="form-control" id="title" value="<% if @node && @node.latest %><%= @node.latest.title %><% else %><%= params[:title] %><% end %>">
           </div>
 
-          <script>
+          <script type="application/javascript">
             (function(){
               $D = {
                 uid: <%= current_user.uid %>,
@@ -71,20 +70,23 @@
 
           <%= render partial: 'editor/editor' %>
 
-          <a id="publish" tabindex="5" class="publish btn btn-primary btn-lg"><%= t('wiki.edit.publish') %></a>
-          <a tabindex="6" data-previewing-text="<%= t('wiki.edit.previewing_text') %>" class="btn btn-outline-secondary btn-lg preview-btn" onClick="$E.toggle_preview()"><%= t('wiki.edit.preview') %></a>
+          <%= render partial: 'editor/tag_input' %>
+          <br>
+          <a id="publish" tabindex="5" class="publish btn btn-primary btn-lg"><%= translation('wiki.edit.publish') %></a>
+          <!-- due to translation helper issues the following line cannot use the `translation()` helper - https://github.com/publiclab/plots2/issues/7798 -->
+          <a tabindex="6" id="toggle-preview-button-main" data-previewing-text="<%= t('wiki.edit.previewing_text') %>" class="btn btn-outline-secondary btn-lg preview-btn" onClick="$E.toggle_preview()"><%= t('wiki.edit.preview') %></a>
           <a class="btn btn-outline-secondary btn-lg" href="/wiki/<%= params["id"] %>">Cancel</a>
 
         </div>
 
         <div class="order-lg-3">
           <br />
-          <p><%= raw t('wiki.edit.agree_to_open_source_work', :url1 => "/licenses") %></p>
-          <% if @node && @node.latest %><p style="padding:10px 0 0 0;"><i><%= raw t('wiki.edit.last_edited_by', :time => time_ago_in_words(@node.latest.created_at), :url1 => "/profile/"+@node.latest.author.name, :author => @node.latest.author.name) %></i></p><% end %>
+          <p><%= raw translation('wiki.edit.agree_to_open_source_work', :url1 => "/licenses") %></p>
+          <% if @node && @node.latest %><p style="padding:10px 0 0 0;"><i><%= raw translation('wiki.edit.last_edited_by', :time => time_ago_in_words(@node.latest.created_at), :url1 => "/profile/"+@node.latest.author.name, :author => @node.latest.author.name) %></i></p><% end %>
           <br />
         </div>
 
-        <script>
+        <script type="application/javascript">
           (function(){
             publish = function(e) {
               $('form.wiki-form').submit()

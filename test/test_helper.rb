@@ -5,6 +5,8 @@ require 'rails/test_help'
 require 'authlogic/test_case'
 require 'i18n'
 require 'mocha/setup'
+require 'webmock/minitest'
+# require 'support/billy'
 
 require "minitest/reporters"
 MiniTest::Reporters.use! [MiniTest::Reporters::ProgressReporter.new,
@@ -37,3 +39,20 @@ end
 def available_testing_locales
   I18n.available_locales
 end
+
+# used in comment_test.rb
+def page_types
+  {
+    :note => :comment_note, 
+    :question => :comment_question, 
+    :wiki => :wiki_page
+  }
+end
+
+WebMock.allow_net_connect!
+WebMock.stub_request(:any, "publiclab.org/api/srch/nearbyPeople")
+  .to_return(
+    body: "{items:[]}",
+    status: 200,
+    :headers => {"Content-Type"=> "application/json"}
+  )

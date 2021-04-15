@@ -59,10 +59,10 @@ class HomeControllerTest < ActionController::TestCase
     @wikis.each do |obj|
       if obj.class == Revision && obj.status == 1
         selections = css_select '.wiki'
-        assert_equal selections.length, 7
+        assert_equal 10, selections.length
       elsif obj.class == Revision && obj.status != 1
         selections = css_select '.wiki'
-        assert_equal selections.length, 0
+        assert_equal 0, selections.length
       end
     end
   end
@@ -106,5 +106,125 @@ class HomeControllerTest < ActionController::TestCase
       get 'home'
       assert_template 'home/home'
     end
+  end
+
+  # dashboard_v2 tests
+  test 'should get research if not logged by v2/dashboard' do
+    get :dashboard_v2
+    assert_redirected_to :research
+    get :research
+    assert_response :success
+  end
+
+  test 'get v2/dashboard includes a subscribed topic' do
+    current_user = users(:bob)
+    UserSession.create(current_user)
+    subscribed_topic  = current_user.subscriptions.first.tag.name
+    get :dashboard_v2
+    assert_includes response.body, subscribed_topic
+  end
+
+  test 'new user v2/dashboard alert' do
+    # :newcomer has their created_at value as Time.now
+    current_user = users(:newcomer)
+    alert = "Welcome! To improve your feed, follow the trending and featured topics linked below."
+    UserSession.create(current_user)
+    get :dashboard_v2
+    assert_includes response.body, alert
+  end
+
+  test 'user with 3 or less subscriptions v2/dashboard alert' do
+    # :olduser has their created_at value as 3.weeks.ago
+    current_user = users(:olduser)
+    alert = "To improve your feed, follow the trending and featured topics linked below."
+    UserSession.create(current_user)
+    get :dashboard_v2
+    assert_includes response.body, alert
+  end
+
+  test 'topic order change after note is created v2/dashboard' do
+    current_user = users(:bob)
+    UserSession.create(current_user)
+    get :dashboard_v2
+    expected_first_topic = assigns[:tag_subscriptions].last.tag
+
+    node = Node.create!(type: 'note', title:'Topic Order Note', uid: current_user.id, status: 1)
+    Revision.create(nid: node.id, uid: current_user.id, title: node.title,  body: 'Topic order Note')
+    node.add_tag(expected_first_topic.name, current_user)
+
+    get :dashboard_v2
+    expected_first_topic.reload
+    new_first_topic = assigns[:tag_subscriptions].first.tag
+
+    # In some cases, the previous first tag might still be the first tag because nodes can have multiple tags.
+    # Checking the latest_activity_node ensures that the most recent activity was bumped up.
+    assert_equal expected_first_topic.latest_activity_nid, new_first_topic.latest_activity_nid
+  end
+
+  test 'topic order change after wiki is created v2/dashboard' do
+    current_user = users(:bob)
+    UserSession.create(current_user)
+    get :dashboard_v2
+    expected_first_topic = assigns[:tag_subscriptions].last.tag
+
+    node = Node.create!(type: 'wiki', title:'Topic Order Wiki', uid: current_user.id, status: 1)
+    Revision.create(nid: node.id, uid: current_user.id, title: node.title,  body: 'Topic order Wiki')
+    node.add_tag(expected_first_topic.name, current_user)
+
+    get :dashboard_v2
+    expected_first_topic.reload
+    new_first_topic = assigns[:tag_subscriptions].first.tag
+
+    # In some cases, the previous first tag might still be the first tag because nodes can have multiple tags.
+    # Checking the latest_activity_node ensures that the most recent activity was bumped up.
+    assert_equal expected_first_topic.latest_activity_nid, new_first_topic.latest_activity_nid
+  end
+
+  test 'topic order change after wiki is edited v2/dashboard' do
+    current_user = users(:bob)
+    UserSession.create(current_user)
+    get :dashboard_v2
+    # User is subscribed to :awesome node_tag which contains a wiki node
+    node_tag = node_tags(:awesome2)
+    expected_first_topic = assigns[:tag_subscriptions].where(tid: node_tag.tid).first.tag
+    node_tag.node.latest.body = "Wiki update"
+
+    get :dashboard_v2
+    expected_first_topic.reload
+    new_first_topic = assigns[:tag_subscriptions].first.tag
+
+    # In some cases, the previous first tag might still be the first tag because nodes can have multiple tags.
+    # Checking the latest_activity_node ensures that the most recent activity was bumped up.
+    assert_equal expected_first_topic.latest_activity_nid, new_first_topic.latest_activity_nid
+  end
+
+  test 'topic order change after comment is created v2/dashboard' do
+    current_user = users(:bob)
+    UserSession.create(current_user)
+    get :dashboard_v2
+    expected_first_topic = assigns[:tag_subscriptions].last.tag
+
+    node_tag = NodeTag.where(tid: expected_first_topic.tid).first
+    node = node_tag.node
+    node.add_comment(subject: 'node comment', uid: current_user.uid, body: 'node body')
+
+    get :dashboard_v2
+    expected_first_topic.reload
+    new_first_topic = assigns[:tag_subscriptions].first.tag
+
+    # In some cases, the previous first tag might still be the first tag because nodes can have multiple tags.
+    # Checking the latest_activity_node ensures that the most recent activity was bumped up.
+    assert_equal expected_first_topic.latest_activity_nid, new_first_topic.latest_activity_nid
+  end
+
+  test 'subscribed topics do not appear in trending topics' do
+    current_user = users(:bob)
+    UserSession.create(current_user)
+    get :dashboard_v2
+    # Sort both the subscribed tags and the trending tags alphabetically and compare the names
+    subscribed_tags = TagSelection.where(user_id: current_user.id).pluck(:tid)
+    tag_names = Tag.where(tid: subscribed_tags).pluck(:name).sort
+    trending_tags = assigns[:trending_tags].pluck(:name).sort
+    assert_not_equal tag_names , trending_tags
   end
 end

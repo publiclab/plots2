@@ -3,8 +3,9 @@
 
 <script>
   jQuery(document).ready(function() {
-    $('.blurred-location-input').click(function createBlurredLocationInput() {
-      $(this).attr("disabled", "disabled");
+    function createBlurredLocationInput() {
+      var locationInput = $('.tag-input .blurred-location-input');
+      locationInput.attr("disabled", "disabled");
       let modalUrl = '/locations/modal';
       let firstVar = true;
       <% if (params[:action] == "list") || (params[:action] == "profile") %>
@@ -19,11 +20,13 @@
       }
       $.ajax(modalUrl)
        .done(function(response) {
+         $('body').append($('.blurred-location-container').remove()); // move modal to top of DOM for better compatibility
          $('.blurred-location-container').html(response);
          $('#blurred-location-modal').on('shown.bs.modal', function () { blurredLocation.map.invalidateSize(); });
          $('#blurred-location-modal').on('hide.bs.modal', function() {$('.blurred-location-input').removeAttr('disabled');});
          $('#blurred-location-modal').modal();
        });
-    });
+    }
+    $('.blurred-location-input').click(createBlurredLocationInput); // this will setup any button on the page with class .blurred-location-input
   });
 </script>

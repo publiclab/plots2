@@ -1,13 +1,13 @@
 <div class="col-lg-12">
 
-  <% if params[:action] == 'answered' %>
-  <h2>Recently Commented <small class="d-md-none d-lg-inline">Recently commented questions</small></h2>
+  <% if params[:action] == 'recently_commented' %>
+  <h2><%=translation('questions.index.recently_commented')%> <small class="d-md-none d-lg-inline"><%=translation('questions.index.recently_commented_questions')%></small></h2>
   <% elsif params[:action] == 'popular' %>
-  <h2>Popular Questions <small class="d-md-none d-lg-inline">Most viewed questions</small></h2>
+  <h2><%=translation('questions.index.popular_questions')%> <small class="d-md-none d-lg-inline"><%=translation('questions.index.most_viewed_questions')%></small></h2>
   <% elsif params[:action] == 'unanswered' %>
-  <h2>Unanswered Questions <small class="d-md-none d-lg-inline">Unanswered questions</small></h2>
+  <h2><%=translation('questions.index.unanswered_questions')%> <small class="d-md-none d-lg-inline"><%=translation('questions.index.unanswered_questions')%></small></h2>
   <% elsif params[:action] == 'liked' %>
-  <h2>Liked Questions <small class="d-md-none d-lg-inline">Most liked questions</small></h2>
+  <h2><%=translation('questions.index.liked_questions')%> <small class="d-md-none d-lg-inline"><%=translation('questions.index.most_liked_questions')%></small></h2>
   <% else %>
   <div class="text-center">
     <% cache('feature_questions-header', skip_digest: true) do %>
@@ -19,14 +19,15 @@
   <hr />
 
   <div class="row">
-    <div class="col-lg-6">
-      <h4>Ask a question here</h4>
+    <div class="col-lg-6" style="margin-top: 20px;">
+      <h4><%=translation('questions.index.ask_question')%></h4>
       <% if !current_user %>
-        <p>To ask a question, please <a href="/login?return_to=/questions">log in</a> or <a href="/signup?return_to=/questions">sign up</a> first.</p>
+        <p><%=translation('questions.index.to_ask_question')%><a href="/login?return_to=/questions"> <%=translation('questions.index.log_in')%> </a><%=translation('questions.index.or')%> <a href="/signup?return_to=/questions"><%=translation('questions.index.sign_up')%></a> 
+          <%=translation('questions.index.first')%>.</p>
       <% end %>
       <form id="questions_searchform" role="search" autocomplete="off" action="/post">
         <div class="input-group">
-          <input tabindex="1" id="questions_searchform_input" type="text" name="title" class="<%= "disabled " if !current_user %>form-control search-query typeahead" qryType="questions" placeholder="type your question">
+          <input aria-label="Type your question" tabindex="1" id="questions_searchform_input" type="text" name="title" class="<%= "disabled " if !current_user %>form-control search-query typeahead" qryType="questions" placeholder="type your question">
           <input type="hidden" name="tags" value="question:general">
           <input type="hidden" name="template" value="question">
           <input type="hidden" name="redirect" value="question">
@@ -36,7 +37,7 @@
         </div>
       </form>
     </div>
-    <div class="col-lg-6">
+    <div class="col-lg-6" style="margin-top: 20px;">
       <% if params[:controller] == 'questions' %>
         <%= render partial: 'tag/sorting' %>
       <% end %>
@@ -50,27 +51,27 @@
   <ul class="nav nav-tabs">
     <li class="nav-item">
       <a class="nav-link <% if params[:action] == "index" %> active <% end %>" href="/questions/">
-        <i class="fa fa-refresh"></i> <span class="d-none d-lg-inline"> Recently Asked</span>
+        <i class="fa fa-refresh"></i> <span class="d-none d-lg-inline"><%=translation('questions.index.recently_asked')%></span>
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link <% if params[:action] == "answered" %> active <% end %>" href="/questions/answered/">
-        <i class="fa fa-check"></i> <span class="d-none d-lg-inline"> Recently Commented</span>
+      <a class="nav-link <% if params[:action] == "recently_commented" %> active <% end %>" href="/questions/recently_commented/">
+        <i class="fa fa-check"></i> <span class="d-none d-lg-inline"><%=translation('questions.index.recently_commented')%></span>
       </a>
     </li>
     <li class="nav-item">
     <a class="nav-link <% if params[:action] == "popular" %> active <% end %>" href="/questions/popular/">
-        <i class="fa fa-bolt"></i> <span class="d-none d-lg-inline"> Popular</span>
+        <i class="fa fa-bolt"></i> <span class="d-none d-lg-inline"><%=translation('questions.index.popular')%></span>
       </a>
     </li>
     <li class="nav-item">
     <a class="nav-link <% if params[:action] == "unanswered" %> active <% end %>" href="/questions/unanswered/">
-        <i class="fa fa-question-circle"></i> <span class="d-none d-lg-inline"> Unanswered</span>
+        <i class="fa fa-question-circle"></i> <span class="d-none d-lg-inline"><%=translation('questions.index.unanswered')%></span>
       </a>
     </li>
     <li class="nav-item">
     <a class="nav-link <% if params[:action] == "liked" %> active <%end %>" href="/questions/liked/">
-        <i class="fa fa-star-o"></i> <span class="d-none d-lg-inline"> Liked</span>
+        <i class="fa fa-star-o"></i> <span class="d-none d-lg-inline"><%=translation('questions.index.liked')%></span>
       </a>
     </li>
   </ul>

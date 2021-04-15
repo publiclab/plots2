@@ -2,24 +2,24 @@
 
   <% if params[:controller] == "tag" %>
 
-    <h3 style="margin-top:0;"><%= raw t('wiki.index.wiki_pages_tagged_with', :tag => params[:id]) %></h3>
+    <h3 style="margin-top:0;"><%= raw translation('wiki.index.wiki_pages_tagged_with', tag: params[:id]) %></h3>
 
   <% elsif params[:action] == "author" %>
 
-    <h3 style="margin-top:0;"><%= raw t('wiki.index.wiki_pages_by', :url1 => "/people/"+@user.name, :user => @user.name, :note_length => @user.notes.length, :time => time_ago_in_words(@user.notes.first.created_at)) %></h3>
+    <h3 style="margin-top:0;"><%= raw translation('wiki.index.wiki_pages_by', url1: "/people/"+@user.name, user: @user.name, note_length: @user.notes.size, time: @user.notes.first ? time_ago_in_words(@user.notes.first&.created_at) : '-') %></h3>
 
   <% else %>
 
-    <h2 style="font-family:Junction Light;"><%= t('wiki.index.public_lab_wiki') %>
-      <small><%= t('wiki.index.collaborative_documentation') %></small>
+    <h2 style="font-family:Junction Light;"><%= translation('wiki.index.public_lab_wiki') %>
+      <small><%= translation('wiki.index.collaborative_documentation') %></small>
     </h2>
-    <p><%= t('wiki.index.about_collaboration') %> <%= raw t('wiki.index.about_wiki_pages') %></p>
+    <p><%= translation('wiki.index.about_collaboration') %> <%= raw translation('wiki.index.about_wiki_pages') %></p>
   <% end %>
   <hr style="margin-bottom:10px;" />
 
   <p>&nbsp;
      <a style="margin-bottom:4px;" href="/wiki/new" class="btn btn-outline-secondary">
-       <i class="fa fa-plus-circle"></i> <%= t('wiki.index.create_wiki_page') %>
+       <i class="fa fa-plus-circle"></i> <%= translation('wiki.index.create_wiki_page') %>
      </a>
   </p>
 

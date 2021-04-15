@@ -311,9 +311,11 @@ module Srch
 
         if results.present?
           docs = results.map do |model|
+            doctype = model.has_power_tag('question') ? 'QUESTION' : 'NOTE'
+            doctype = 'WIKI' if model.type == 'page'
             DocResult.new(
               doc_id: model.nid,
-              doc_type: 'PLACES',
+              doc_type: doctype,
               doc_url: model.path(:items),
               doc_title: model.title,
               doc_author: model.user.username,
@@ -321,7 +323,11 @@ module Srch
               score: model.answers.length,
               latitude: model.lat,
               longitude: model.lon,
-              blurred: model.blurred?
+              blurred: model.blurred?,
+              place_name: model.has_power_tag('place') ? model.power_tag('place') : '',
+              created_at: model.created_at,
+              # time_since: distance_of_time_in_words(model.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }),  # works, but really slows down the search results
+              # comment_count: model.comments_viewable_by(current_user).length  # causes an error because of current_user?
             )
           end
           DocList.new(docs, search_request)
@@ -350,7 +356,9 @@ module Srch
               doc_title: model.username,
               latitude: model.lat,
               longitude: model.lon,
-              blurred: model.blurred?
+              blurred: model.blurred?,
+              created_at: model.created_at,
+              doc_image_url: model.profile_image ? model.profile_image : ""
             )
           end
           DocList.new(docs, search_request)

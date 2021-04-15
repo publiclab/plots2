@@ -638,4 +638,10 @@ class AdminControllerTest < ActionController::TestCase
     assert_response :success
     assert_not_nil assigns(:users)
   end
+  
+  test "test digest emails to moderators" do
+    UserSession.create(users(:moderator))
+    post :test_digest_email_spam
+    assert_redirected_to '/spam'
+  end
 end

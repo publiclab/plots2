@@ -12,7 +12,12 @@
 
   <script>
     var map = L.map('map').setView([<%= current_user.lat %>,<%= current_user.lon %>], 8);
-    L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map)
+    L.tileLayer('https://api.mapbox.com/styles/v1/jywarren/ckj06ujnc1nmi19nuelh46pr9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoianl3YXJyZW4iLCJhIjoiVzVZcGg3NCJ9.BJ6ArUPuTs1JT9Ssu3K8ig', {
+      tileSize: 512,
+      zoomOffset: -1,
+      attribution: '© <a href="https://apps.mapbox.com/feedback/">Mapbox</a> © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
 
     <% if @users %>
     <% @users.each do |user| %>

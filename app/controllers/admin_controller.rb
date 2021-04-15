@@ -125,6 +125,7 @@ class AdminController < ApplicationController
       if @node.status == 1 || @node.status == 4
         @node.spam
         @node.author.ban
+        @node.unflag_node
         # No longer notifying other moderators as of https://github.com/publiclab/plots2/issues/6246
         # AdminMailer.notify_moderators_of_spam(@node, current_user).deliver_later
         flash[:notice] = "Item marked as spam and author banned. You can undo this on the <a href='/spam'>spam moderation page</a>."
@@ -150,6 +151,7 @@ class AdminController < ApplicationController
         @comment.spam
         user = @comment.author
         user.ban
+        @comment.unflag_comment
         # No longer notifying other moderators as of https://github.com/publiclab/plots2/issues/6246
         # AdminMailer.notify_moderators_of_comment_spam(@comment, current_user).deliver_later
         flash[:notice] = "Comment has been marked as spam and comment author has been banned. You can undo this on the <a href='/spam/comments'>spam moderation page</a>."
@@ -173,6 +175,7 @@ class AdminController < ApplicationController
         if @comment.author.banned?
           @comment.author.unban
         end
+        @comment.unflag_comment
         if first_timer_comment
           AdminMailer.notify_author_of_comment_approval(@comment, current_user).deliver_later
           # No longer notifying other moderators as of https://github.com/publiclab/plots2/issues/6246
@@ -202,7 +205,7 @@ class AdminController < ApplicationController
           AdminMailer.notify_author_of_approval(@node, current_user).deliver_later
           # No longer notifying other moderators as of https://github.com/publiclab/plots2/issues/6246
           # AdminMailer.notify_moderators_of_approval(@node, current_user).deliver_later
-          SubscriptionMailer.notify_node_creation(@node).deliver_now
+          SubscriptionMailer.notify_node_creation(@node).deliver_later
           flash[:notice] = if @node.has_power_tag('question')
                              "Question approved and published after #{time_ago_in_words(@node.created_at)} in moderation. Now reach out to the new community member; thank them, just say hello, or help them revise/format their post in the comments."
                            else
@@ -227,7 +230,7 @@ class AdminController < ApplicationController
     @revision = Revision.find_by(vid: params[:vid])
     @node = Node.find_by(nid: @revision.nid)
 
-    if @node.revisions.length <= 1
+    if @node.revisions.size <= 1
       flash[:warning] = "You can't delete the last remaining revision of a page; try deleting the wiki page itself (if you're an admin) or contacting moderators@publiclab.org for assistance."
       redirect_to @node.path
       return
@@ -333,7 +336,7 @@ class AdminController < ApplicationController
         user.ban
         users << user.id
       end
-      flash[:notice] = nodes.to_s + ' nodes spammed and ' + users.length.to_s + ' users banned.'
+      flash[:notice] = nodes.to_s + ' nodes spammed and ' + users.size.to_s + ' users banned.'
       redirect_to '/spam/wiki'
     else
       flash[:error] = 'Only admins can batch moderate.'
@@ -394,5 +397,10 @@ class AdminController < ApplicationController
     end
 
     s.close
+  end
+
+  def test_digest_email_spam
+    DigestSpamJob.perform_async(0)
+    redirect_to "/spam"
   end
 end

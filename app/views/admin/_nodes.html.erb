@@ -80,3 +80,4 @@
 </tr>
 <% end %>
 </table>
+<%= will_paginate @nodes, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || @nodes.empty? %>

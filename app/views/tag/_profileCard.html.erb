@@ -4,7 +4,7 @@
   <div class="card shadow-sm p-2 mb-3 bg-white rounded" >
     <div class="card-header mt-2">
       <h4 style="display: inline-block;"><%= tag.name %></h3>
-      <p class="posted-by-links"><a href="/tag/<%= tag.name %>"><%= Tag.follower_count(tag.name) %> people discussing</a></p>
+      <p class="posted-by-links"><a href="/tag/<%= tag.name %>"><%= pluralize(Tag.follower_count(tag.name), 'person') %> discussing</a></p>
     </div>
     <div class="card-body">
       <% Tag.find_nodes_by_type(tag.name, type = 'note', limit = 3).each do |node|  %>
@@ -22,21 +22,21 @@
     <div class="card-footer row align-items-center">
       <div class="col-12 col-xl-auto">
         <div class="posted-by-links">
-          <a href="/tag/<%= tag.name %>/author/<%= @profile_user.name %>"><%= t('tag.index.notes', count: Node.find_by_tag_and_author(tag.name, @profile_user.id, 'notes').count) %></a> |
-          <a href="/questions/tag/<%= tag.name %>/author/<%= @profile_user.name %>"><%= t('tag.index.questions', count: Node.find_by_tag_and_author(tag.name, @profile_user.id, 'questions').count) %></a> |
-          <a href="/profile/comments/<%= @profile_user.name %>/tag/<%= tag.name %>"><%= t('tag.index.comments', count: Comment.find_by_tag_and_author(tag.name, @profile_user.id).count) %></a>
+          <a href="/tag/<%= tag.name %>/author/<%= @profile_user.name %>"><%= translation('tag.index.notes', count: Node.find_by_tag_and_author(tag.name, @profile_user.id, 'notes').size) %></a> |
+          <a href="/questions/tag/<%= tag.name %>/author/<%= @profile_user.name %>"><%= translation('tag.index.questions', count: Node.find_by_tag_and_author(tag.name, @profile_user.id, 'questions').size) %></a> |
+          <a href="/profile/comments/<%= @profile_user.name %>/tag/<%= tag.name %>"><%= translation('tag.index.comments', count: Comment.find_by_tag_and_author(tag.name, @profile_user.id).size) %></a>
           by @<%= @profile_user.name %>
         </div>
       </div>
 
       <div class="col">
-        <a style="float: right;  width: 100px;" rel="tooltip" title="<%= t('sidebar._post_button.share_your_work') %>" data-placement="bottom" href="/post?tags=<%= tag.name %>" class="btn btn-primary btn-sm">New post <i class="fa fa-plus fa-white"></i></a>
+        <a style="float: right;  width: 100px;" rel="tooltip" title="<%= translation('sidebar._post_button.share_your_work') %>" data-placement="bottom" href="/post?tags=<%= tag.name %>" class="btn btn-primary btn-sm">New post <i class="fa fa-plus fa-white"></i></a>
         <% if current_user %>
         <div id="follow-unfollow-column-<%=tag.tid%>" style="float: right; margin-right: 10px;">
           <% if current_user.following(tag.name) %>
-            <a style="width: 100px;" rel="tooltip" title="<%= t('tag.show.unfollow') %>" class="btn btn-light btn-sm active" href="/unsubscribe/tag/<%= tag.name %>"></i> <%= t('tag.index.unfollow') %></a>
+            <a style="width: 100px;" rel="tooltip" title="<%= translation('tag.show.unfollow') %>" class="btn btn-light btn-sm active" href="/unsubscribe/tag/<%= tag.name %>"></i> <%= translation('tag.index.unfollow') %></a>
           <% else %>
-            <a style="width: 100px;" class="btn btn-outline-secondary btn-sm index-follow-buttons follow-btn-remote" href="/subscribe/tag/<%= tag.name %>" data-remote="true"><%= t('tag.index.follow') %></a>
+            <a style="width: 100px;" class="btn btn-outline-secondary btn-sm index-follow-buttons follow-btn-remote" href="/subscribe/tag/<%= tag.name %>" data-remote="true"><%= translation('tag.index.follow') %></a>
           <% end %>
         </div>
         <% end %>

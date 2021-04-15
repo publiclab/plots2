@@ -46,7 +46,7 @@
               <% end %>
             <% end %>
  
-            <% if (@notes.count > 9) %>
+            <% if (@notes.size > 9) %>
               <tr>
                 <td>
                   <b><%= link_to "More matching notes >>", "/search/notes/#{params[:query]}" %></b>

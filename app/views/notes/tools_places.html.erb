@@ -5,9 +5,11 @@
 
 <script>
   var map = L.map('map').setView([22,0], 2);
-  L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",{
-    attribution: "<a href='http://openstreetmap.org'>OSM</a> tiles by <a href='http://mapbox.com'>MapBox</a>",
-  }).addTo(map)
+  L.tileLayer('https://api.mapbox.com/styles/v1/jywarren/ckj06ujnc1nmi19nuelh46pr9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoianl3YXJyZW4iLCJhIjoiVzVZcGg3NCJ9.BJ6ArUPuTs1JT9Ssu3K8ig', {
+    tileSize: 512,
+    zoomOffset: -1,
+    attribution: '© <a href="https://apps.mapbox.com/feedback/">Mapbox</a> © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  }).addTo(map);
 
   <% @notes.each do |place| %>
     <% if place.lat && place.lon %>L.marker([<%= place.lat %>, <%= place.lon %>]).addTo(map).bindPopup("<a href='<%= place.path %>'><%= place.latest.title %></a>");<% end %>
@@ -25,8 +27,8 @@
   <% if params[:controller] == "notes" && (params[:action] == "popular" || params[:action] == "index" || params[:action] == "liked") %>
     <div class="navbar">
       <ul class="navbar-nav">
-        <li class="nav-item <% if params[:action] == "methods" %> active <% end %>"><a class="nav-link" href="/methods/"><i class="fa fa-wrench"></i> <%= t('notes.tools_places.tools') %></a></li>
-        <li class="nav-item <% if params[:action] == "places" %> active <% end %>"><a class="nav-link" href="/places/"><i class="fa fa-flag"></i> <%= t('notes.tools_places.places') %></a></li>
+        <li class="nav-item <% if params[:action] == "methods" %> active <% end %>"><a class="nav-link" href="/methods/"><i class="fa fa-wrench"></i> <%= translation('notes.tools_places.tools') %></a></li>
+        <li class="nav-item <% if params[:action] == "places" %> active <% end %>"><a class="nav-link" href="/places/"><i class="fa fa-flag"></i> <%= translation('notes.tools_places.places') %></a></li>
       </ul>
     </div>
   <% end %>

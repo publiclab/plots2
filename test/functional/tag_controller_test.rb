@@ -191,7 +191,7 @@ class TagControllerTest < ActionController::TestCase
     end
 
     # assert_equal assigns['tags'].length, 1
-    assert_select '#wiki-content', 1
+    assert_select '#wiki-summary', 1
   end
 
   test 'show page for non-existent tag' do
@@ -253,21 +253,9 @@ class TagControllerTest < ActionController::TestCase
     assert :wikis
     assert assigns(:wikis).length > 0
 
+    selector = css_select '#wikis table tr'
+    assert_equal selector.size, 2
     assert_select '#note-graph', 0
-  end
-
-  test 'wildcard tag should list answered questions' do
-    get :show, params: { id: 'question:*' }
-
-    assert_not_nil assigns(:answered_questions)
-  end
-
-  test 'wildcard tag should have a active asked and an inactive answered tab for question' do
-    get :show, params: { id: 'question:*' }
-
-    selector = css_select '#asked-tab.active'
-    assert_equal selector.size, 1
-    assert_select '#answered-tab', 1
   end
 
   test "wildcard tag show wiki pages with author" do
@@ -305,11 +293,9 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test "should show a featured wiki page at top, if it exists" do
-    tag = tags(:test)
-
     get :show, params: { id: nodes(:organizers).slug }
 
-    assert_select '#wiki-content', 1
+    assert_select '#wiki-summary', 1
   end
 
   test 'show note with author and tagname without wildcard' do
@@ -520,7 +506,7 @@ class TagControllerTest < ActionController::TestCase
     get :suggested, params: { id: 'spectr' }
 
     assert_equal 4, assigns(:suggestions).length
-    assert_equal ['question:spectrometer', 'spectrometer', 'activity:spectrometer', 'activities:spectrometer'], JSON.parse(response.body)
+    assert_equal ['question:spectrometer', 'spectrometer', 'activity:spectrometer', 'activities:spectrometer'].sort, JSON.parse(response.body).sort
   end
 
   test 'should choose I18n for tag controller' do
@@ -551,7 +537,7 @@ class TagControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_select 'table' # ensure a table is shown
-    assert_equal 3, css_select('tr').length # ensure it has 3 rows
+    assert_equal 4, css_select('tr').length # ensure it has 4 rows
   end
 
   test 'rss with tagname and authorname' do
@@ -568,24 +554,6 @@ class TagControllerTest < ActionController::TestCase
     assert_equal selector.size, 1
     selector = css_select '#questions.active'
     assert_equal selector.size, 1
-  end
-
-  test 'should have a active asked and an inactive answered tab for question' do
-    tag = tags(:question)
-
-    get :show_for_author, params: { id: tag.name, author: 'jeff' }
-
-    selector = css_select '#asked-tab.active'
-    assert_equal selector.size, 1
-    assert_select '#answered-tab', 1
-  end
-
-  test 'should list answered questions' do
-    tag = tags(:question)
-
-    get :show_for_author, params: { id: tag.name, author: 'jeff' }
-
-    assert_not_nil assigns(:answered_questions)
   end
 
   test 'should take node type as note if tag is not a question tag for show_for_author' do
@@ -636,7 +604,7 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test 'should render a text/plain when a tag is deleted through post request xhr' do
-    user = UserSession.create(users(:jeff))
+    UserSession.create(users(:jeff))
     node_tag = node_tags(:awesome)
     post :delete, params: { nid: node_tag.nid, tid: node_tag.tid, uid: node_tag.uid}, xhr: true
     assert_equal node_tag.tid, JSON.parse(@response.body)['tid']
@@ -644,7 +612,7 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test 'add_parent method adds a tag parent' do
-    user = UserSession.create(users(:admin))
+    UserSession.create(users(:admin))
     get :add_parent, params: { name: Tag.last.name, parent: Tag.first.name }
     assert_response :redirect
     assert_equal Tag.first.name, Tag.last.parent
@@ -654,7 +622,7 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test 'add_parent method works with non-existent parent' do
-    user = UserSession.create(users(:admin))
+    UserSession.create(users(:admin))
     get :add_parent, params: { name: Tag.last.name, parent: Tag.first.name }
     assert_response :redirect
     assert_equal Tag.first.name, Tag.last.parent
@@ -695,5 +663,86 @@ class TagControllerTest < ActionController::TestCase
 
     get :index, params: { :powertags => 'true' }
     assert_not_equal 0, assigns(:tags).where("name LIKE ?", "%:%").length
+  end
+
+  # Bug 6855
+  test 'counts match the nodes' do
+    tag = tags(:sunny_day)
+    get :show, params: { id: tag.name }
+
+    assert_response :success
+
+    counts = assigns(:counts)
+    assert_equal 1, counts[:posts], "Note count should match"
+    assert_equal 0, counts[:questions], "Question count should match"
+    assert_equal 1, counts[:wiki], "Wiki count should match"
+    assert_equal 1, assigns(:total_posts), "Total posts should match"
+  end
+
+  # Bug 6855
+  test 'counts match the nodes for a parent tag' do
+    tag = tags(:sun)
+    get :show, params: { id: tag.name }
+
+    assert_response :success
+
+    counts = assigns(:counts)
+    assert_equal 2, counts[:posts], "Note count should match"
+    assert_equal 1, counts[:questions], "Question count should match"
+    assert_equal 2, counts[:wiki], "Wiki count should match"
+    assert_equal 2, assigns(:total_posts), "Total posts should match"
+  end
+
+  # Bug 6855
+  test 'counts match the nodes when using a wildcard' do
+    tag = tags(:sun)
+    get :show, params: { id: tag.name + "*" }
+
+    assert_response :success
+
+    counts = assigns(:counts)
+    assert_equal 2, counts[:posts], "Note count should match"
+    assert_equal 0, counts[:questions], "Question count should match"
+    assert_equal 2, counts[:wiki], "Wiki count should match"
+    assert_equal 2, assigns(:total_posts), "Total posts should match"
+  end
+
+  test 'counts match the nodes for question node_type' do
+    tag = tags(:sun)
+    get :show, params: { id: tag.name, node_type: 'questions' }
+
+    assert_response :success
+
+    counts = assigns(:counts)
+    assert_equal 2, counts[:posts], "Note count should match"
+    assert_equal 1, counts[:questions], "Question count should match"
+    assert_equal 2, counts[:wiki], "Wiki count should match"
+    assert_equal 1, assigns(:total_posts), "Total posts should match"
+  end
+
+  test 'counts match the nodes for wiki node_type' do
+    tag = tags(:sun)
+    get :show, params: { id: tag.name, node_type: 'wiki' }
+
+    assert_response :success
+
+    counts = assigns(:counts)
+    assert_equal 2, counts[:posts], "Note count should match"
+    assert_equal 1, counts[:questions], "Question count should match"
+    assert_equal 2, counts[:wiki], "Wiki count should match"
+    assert_equal 2, assigns(:total_posts), "Total posts should match"
+  end
+
+  test 'counts match the nodes for map node type' do
+    tag = tags(:sun)
+    get :show, params: { id: tag.name, node_type: 'maps' }
+
+    assert_response :success
+
+    counts = assigns(:counts)
+    assert_equal 2, counts[:posts], "Note count should match"
+    assert_equal 1, counts[:questions], "Question count should match"
+    assert_equal 2, counts[:wiki], "Wiki count should match"
+    assert_equal 0, assigns(:total_posts), "Total posts should match"
   end
 end

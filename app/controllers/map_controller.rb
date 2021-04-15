@@ -1,9 +1,8 @@
 class MapController < ApplicationController
   def index
     @title = 'Maps'
-    @nodes = Node.paginate(page: params[:page], per_page: 32)
-      .order('nid DESC')
-      .where(type: 'map', status: 1)
+    @pagy, @nodes = pagy(Node.order('nid DESC')
+      .where(type: 'map', status: 1), items: 32)
 
     @map_lat = nil
     @map_lon = nil
@@ -23,7 +22,7 @@ class MapController < ApplicationController
   def map
     @lat = 0
     @lon = 0
-    @zoom = 3
+    @zoom = 10
 
     if current_user&.has_power_tag("lat") && current_user&.has_power_tag("lon")
       @lat = current_user.get_value_of_power_tag("lat").to_f
@@ -57,8 +56,6 @@ class MapController < ApplicationController
     @title = @node.title
     @tags = @node.tags
     @tagnames = @tags.collect(&:name)
-
-    set_sidebar :tags, @tagnames
   end
 
   def edit
@@ -235,8 +232,6 @@ class MapController < ApplicationController
   end
 
   def tag
-    set_sidebar :tags, [params[:id]], note_count: 20
-
     @tagnames = params[:id].split(',')
     nids = Tag.find_nodes_by_type(params[:id], 'map', 20).collect(&:nid)
     @notes = Node.paginate(page: params[:page])

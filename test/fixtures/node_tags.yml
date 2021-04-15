@@ -217,3 +217,70 @@ test4_zoom:
   uid: 1
   nid: 7
   date: <%= DateTime.now.to_i %>
+
+sun_note:
+  tid: 32
+  uid: 2
+  nid: 32
+
+sun_wiki:
+  tid: 32
+  uid: 2
+  nid: 33
+
+sunny_day_note:
+  tid: 33
+  uid: 2
+  nid: 34
+
+sunny_day_wiki:
+  tid: 33
+  uid: 2
+  nid: 35
+
+sun_question:
+  tid: 34
+  uid: 2
+  nid: 36
+
+organizers-awesome:
+  tid: 2
+  uid: 2
+  nid: 5
+  date: <%= DateTime.now.to_i %>
+
+organizers-everything:
+  tid: 4
+  uid: 2
+  nid: 5
+  date: <%= DateTime.now.to_i %>
+
+organizers-chapter:
+  tid: 5
+  uid: 2
+  nid: 5
+  date: <%= DateTime.now.to_i %>
+
+# this tags node 37 as a question
+# ultimately, this is for testing comments on that node.
+comment_question:
+  tid: 35
+  uid: 2
+  nid: 37
+  date: <%= DateTime.now.to_i %>
+
+hidden_response_node_tag:
+  tid: 36
+  uid: 2
+  nid: 39
+  date: <%= DateTime.now.to_i %>
+
+question_with_multiple_comments: # another question for testing comments
+  tid: 35
+  uid: 2
+  nid: 40
+
+sub_tag:
+  tid: 37
+  nid: 1
+  uid: 2
