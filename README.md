@@ -181,7 +181,7 @@ Adding `bundle exec` ensures you're using the version of passenger you just inst
 
 ## Reply-by-email
 
-Public Lab now supports reply by email to comment features. For more details, go to the [email documentation](https://github.com/publiclab/plots2/blob/main/doc/EMAIL.md)
+Public Lab now supports "reply by email to comment" feature. For more details, go to the [email documentation](https://github.com/publiclab/plots2/blob/main/doc/EMAIL.md)
 
 
 ## Bugs and support
