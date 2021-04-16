@@ -50,6 +50,8 @@ jQuery(document).ready(function($) {
     {
       addTag("date:"+eventDate.val());
       $('#mytoast').addClass("show").fadeIn('fast').delay(2000).fadeOut('fast');
+      $("#event-datepicker").hide();
++     $("#date-toggle").hide();
     }
   });
 });
