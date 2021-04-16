@@ -28,6 +28,10 @@
     max-width: 100%;
   }
 
+  .ple-textarea {
+    word-wrap: break-word;
+  }
+
   .ple-module-main_image .col-lg-9 {
     margin: 0 auto;
   }
@@ -389,6 +393,7 @@
         token: $('meta[name="csrf-token"]').attr('content')
       },
       richTextModule: {
+        token: $('meta[name="csrf-token"]').attr('content'),
         authorsAutocomplete: false,
         tagsAutocomplete: false,
         formats: ['jpg', 'jpeg', 'png', 'gif'],

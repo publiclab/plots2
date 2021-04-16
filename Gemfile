@@ -28,7 +28,7 @@ gem 'impressionist'
 gem 'jbuilder', '~> 2.11'
 gem 'jquery-rails'
 gem 'mocha', '~> 1.12'
-gem 'mimemagic', '~> 0.3.8'
+gem 'mimemagic', '~> 0.3.10'
 gem 'mustermann' , '1.1.1'
 gem 'omniauth', '~> 1.9'
 gem 'omniauth-facebook', '~> 8.0'
@@ -51,7 +51,7 @@ gem 'rdiscount', '~> 2.2'
 gem 'react-rails'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'responders', '~> 3.0'
-gem 'rubocop', '~> 1.11.0', require: false
+gem 'rubocop', '~> 1.12.1', require: false
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
 gem 'sentry-raven'
@@ -105,7 +105,7 @@ gem 'grape-rails-cache'
 group :development do
   gem 'byebug', platform: :mri
   gem "letter_opener"
-  gem 'listen', '~> 3.5.0'
+  gem 'listen', '~> 3.5.1'
   gem "nifty-generators"
   gem 'web-console', '>= 3.3.0'
 end
