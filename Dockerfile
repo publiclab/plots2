@@ -12,7 +12,7 @@ RUN echo \
    'deb http://ftp.ca.debian.org/debian/ stretch main\n \
     deb http://ftp.ca.debian.org/debian/ stretch-updates main\n \
     deb http://security.debian.org stretch/updates main\n \
-    deb http://deb.nodesource.com/node_8.x stretch main\n' \
+    deb http://deb.nodesource.com/node_12.x stretch main\n' \
     > /etc/apt/sources.list
 
 # Install dependencies

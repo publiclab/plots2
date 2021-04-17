@@ -49,9 +49,10 @@ class NodeTest < ActiveSupport::TestCase
   end
 
   test 'notify_callout_users' do
+    perform_enqueued_jobs do
     saved, node, revision = Node.new_note(uid: users(:naman).id,
-                    title: 'Note with mentioned users',
-                    body: '@naman18996 and @jeffrey are being mentioned in the body')
+                                          title: 'Note with mentioned users',
+                                          body: '@naman18996 and @jeffrey are being mentioned in the body')
     node.notify_callout_users
     emails = []
     ActionMailer::Base.deliveries.each do |m|
@@ -61,6 +62,7 @@ class NodeTest < ActiveSupport::TestCase
     end
     assert_equal 2, emails.count
     assert_equal ["naman18996@yahoo.com", "jeff@publiclab.org"].to_set, emails.to_set
+    end
   end
 
   test 'emoji conversion' do
@@ -344,7 +346,42 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'should find all research notes' do
     notes = Node.research_notes
-    expected = [nodes(:one), nodes(:spam), nodes(:first_timer_note), nodes(:blog), nodes(:moderated_user_note), nodes(:activity), nodes(:upgrade), nodes(:draft), nodes(:post_test1), nodes(:post_test2), nodes(:post_test3), nodes(:post_test4), nodes(:scraped_image), nodes(:search_trawling), nodes(:purple_air_without_hyphen), nodes(:purple_air_with_hyphen), nodes(:sun_note), nodes(:sunny_day_note), nodes(:comment_note), nodes(:hidden_response_note), nodes(:note_with_multiple_comments)]
+    expected = [
+      nodes(:one), 
+      nodes(:spam), 
+      nodes(:first_timer_note), 
+      nodes(:blog),
+      nodes(:moderated_user_note), 
+      nodes(:activity), 
+      nodes(:upgrade),
+      nodes(:draft), 
+      nodes(:post_test1), 
+      nodes(:post_test2),
+      nodes(:post_test3), 
+      nodes(:post_test4), 
+      nodes(:scraped_image), 
+      nodes(:search_trawling),
+      nodes(:purple_air_without_hyphen), 
+      nodes(:purple_air_with_hyphen),
+      nodes(:sun_note), 
+      nodes(:sunny_day_note), 
+      nodes(:comment_note), 
+      nodes(:hidden_response_note),
+      nodes(:note_with_multiple_comments),
+      nodes(:checkbox_one),
+      nodes(:checkbox_two),
+      nodes(:hashtag_one),
+      nodes(:hashtag_two),
+      nodes(:hashtag_three),
+      nodes(:hashtag_four),
+      nodes(:hashtag_with_hyphens),
+      nodes(:hashtag_with_punctuation),
+      nodes(:hashtag_in_header),
+      nodes(:subheader),
+      nodes(:hashtag_in_link),
+      nodes(:hashtag_in_url),
+      nodes(:email),
+    ]
     assert_equal expected, notes
   end
 
