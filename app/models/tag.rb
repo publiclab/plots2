@@ -100,15 +100,9 @@ class Tag < ApplicationRecord
                 .where('term_data.name IN (?)', tagnames)
     # .select(%i[node.nid node.status node.type community_tags.nid community_tags.tid term_data.name term_data.tid])
     # above select could be added later for further optimization
-    # .where('term_data.name IN (?) OR term_data.parent in (?)', tagnames, tagnames) # greedily fetch children
-    tags = Tag.where('term_data.name IN (?)', tagnames)
-    parents = Node.where(status: 1, type: type)
-                  .includes(:tag)
-                  .references(:term_data)
-                  .where('term_data.name IN (?)', tags.collect(&:parent))
     order = 'node_revisions.timestamp DESC'
     order = 'created DESC' if type == 'note'
-    Node.where('node.nid IN (?)', (nodes + parents).collect(&:nid))
+    Node.where('node.nid IN (?)', nodes.collect(&:nid))
         .includes(:revision, :tag)
         .references(:node_revisions)
         .where(status: 1)
@@ -132,11 +126,7 @@ class Tag < ApplicationRecord
       tag = Tag.where(name: tagname).last
       next unless tag
 
-      parents = Node.where(status: 1, type: type)
-                    .includes(:revision, :tag)
-                    .references(:term_data)
-                    .where('term_data.name LIKE ?', tag.parent)
-      nids += tag_nids + parents.collect(&:nid)
+      nids += tag_nids
     end
     Node.where('nid IN (?)', nids)
         .order('nid DESC')
@@ -342,13 +332,13 @@ class Tag < ApplicationRecord
     if tagname[-1..-1] == '*'
       @wildcard = true
       Node.includes(:node_tag, :tag)
-          .where('term_data.name LIKE(?) OR term_data.parent LIKE (?)', tagname[0..-2] + '%', tagname[0..-2] + '%')
+          .where('term_data.name LIKE(?)', tagname[0..-2] + '%')
           .references(:term_data, :node_tag)
           .where('node.uid = ?', user_id)
           .order('node.nid DESC')
     else
       Node.includes(:node_tag, :tag)
-          .where('term_data.name = ? OR term_data.parent = ?', tagname, tagname)
+          .where('term_data.name = ?', tagname)
           .references(:term_data, :node_tag)
           .where('node.uid = ?', user_id)
           .order('node.nid DESC')

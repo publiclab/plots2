@@ -206,7 +206,6 @@ Plots2::Application.routes.draw do
   get 'tags/related(/:id)' => 'tag#related'
   get 'tags/:id' => redirect('/tag/:id')
   post 'tag/suggested/:id' => 'tag#suggested'
-  get 'tag/parent' => 'tag#add_parent'
   get 'tag/author/:id.json' => 'tag#author'
   post 'tag/create/:nid' => 'tag#create'
   get 'tag/create/:nid' => 'tag#create'
