@@ -1,6 +1,6 @@
 class TagController < ApplicationController
   respond_to :html, :xml, :json, :ics
-  before_action :require_user, only: %i(create delete add_parent)
+  before_action :require_user, only: %i(create delete)
   include Pagy::Backend
 
   def index
@@ -468,21 +468,6 @@ class TagController < ApplicationController
       @tagdata[:notes] = Node.where("nid IN (?) AND type = 'note'", nct.collect(&:nid)).size
     end
     render template: 'tag/contributors-index'
-  end
-
-  def add_parent
-    if logged_in_as(['admin'])
-      @tag = Tag.find_by(name: params[:name])
-      @tag.update_attribute('parent', params[:parent])
-      if @tag.save
-        flash[:notice] = "Tag parent added."
-      else
-        flash[:error] = "There was an error adding a tag parent."
-      end
-      redirect_to '/tag/' + @tag.name + '?_=' + Time.now.to_i.to_s
-    else
-      flash[:error] = "Only admins may add tag parents."
-    end
   end
 
   def location
