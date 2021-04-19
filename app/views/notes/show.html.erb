@@ -91,7 +91,13 @@
       current_user.id == @node.id || current_user.is_coauthor?(@node) ) && 
       @node.has_tag('event') %>
   <hr/>
-  <p>This looks like an event.     <span><button id="date-toggle" class="btn-outline-secondary btn-sm" data-toggle="tooltip" data-placement="right" title="Add Date"><i class="fa fa-calendar" aria-hidden="true"></i></button></span></p>
+  
+  <p>This looks like an event.
+    <% unless @node.has_power_tag('date')%>
+      <span><button id="date-toggle" class="btn-outline-secondary btn-sm" data-toggle="tooltip" data-placement="right" title="Add Date"><i class="fa fa-calendar" aria-hidden="true"></i></button></span>
+    <% end %>
+  </p>
+
   <div id="event-datepicker">
     <input type="text" class="datepicker" aria-describedby="DatePickerGuide"/>
 
