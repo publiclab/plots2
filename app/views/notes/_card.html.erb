@@ -13,11 +13,11 @@
     <% if node.status == 4 %>
       <p class="alert alert-warning moderated">
         <% if @current_user && ['admin','moderator'].include?(@current_user.role) %>
-          <%= translation('notes._notes.moderate_first_time_post') %> <br class="d-none d-lg-inline"/>
-          <a class="btn btn-outline-secondary btn-sm" href="/moderate/publish/<%= node.id %>"><%= translation('notes._notes.approve') %></a>
-          <a class="btn btn-outline-secondary btn-sm" data-test="spam" href="/moderate/spam/<%= node.id %>"><%= translation('notes._notes.spam') %></a>
+          <%= ApplicationController.helpers.translation('notes._notes.moderate_first_time_post') %> <br class="d-none d-lg-inline"/>
+          <a class="btn btn-outline-secondary btn-sm" href="/moderate/publish/<%= node.id %>"><%= ApplicationController.helpers.translation('notes._notes.approve') %></a>
+          <a class="btn btn-outline-secondary btn-sm" data-test="spam" href="/moderate/spam/<%= node.id %>"><%= ApplicationController.helpers.translation('notes._notes.spam') %></a>
         <% else %>
-          <%= raw translation('notes._notes.pending_approval', :url1 => '/wiki/moderation') %>
+          <%= raw ApplicationController.helpers.translation('notes._notes.pending_approval', :url1 => '/wiki/moderation') %>
         <% end %>
       </p>
     <% end %>
@@ -51,16 +51,16 @@
       <a class="ellipsis bottom-right" data-toggle="dropdown"><i class="fa fa-ellipsis-h" style="color : #666; font-size:15px; float:right; cursor:pointer;"></i></a>
 
       <ul class="dropdown-menu" style = "width: 150px; font-size:10px;">
-        <li><a>Total Views: </i> <%= number_with_delimiter(node.views) %> <span class="d-none d-lg-inline"><%= translation('notes._notes.views') %></span></a></li>
+        <li><a>Total Views: </i> <%= number_with_delimiter(node.views) %> <span class="d-none d-lg-inline"><%= ApplicationController.helpers.translation('notes._notes.views') %></span></a></li>
         <li><a>Total Likes: <%= node.cached_likes %></a></li>
         <div class="content" style="width: 100%" >
           <% if @compact.nil? %>
 
-            <li class="buttons mb-2"><% if @current_user && ['admin','moderator'].include?(@current_user.role) %><a style="width: 90px" class="btn btn-outline-secondary" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> <%= translation('notes._notes.spam') %></a><% end %></li>
-            <li class="buttons"><a class="btn btn-outline-secondary" href="<%= node.path %>"><%= translation('notes._notes.read_more') %></a></li>
+            <li class="buttons mb-2"><% if @current_user && ['admin','moderator'].include?(@current_user.role) %><a style="width: 90px" class="btn btn-outline-secondary" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> <%= ApplicationController.helpers.translation('notes._notes.spam') %></a><% end %></li>
+            <li class="buttons"><a class="btn btn-outline-secondary" href="<%= node.path %>"><%= ApplicationController.helpers.translation('notes._notes.read_more') %></a></li>
           <% end %>
           <% if @current_user && params[:mod] %>
-            <a class="btn btn-outline-secondary" href="#"><i class="fa fa-ban-circle"></i> <%= translation('notes._notes.spam') %></a>
+            <a class="btn btn-outline-secondary" href="#"><i class="fa fa-ban-circle"></i> <%= ApplicationController.helpers.translation('notes._notes.spam') %></a>
           <% end %>
           <hr style="display:none;" class="bottom" />
         </div>
