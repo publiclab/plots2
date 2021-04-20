@@ -423,7 +423,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       get '/widget/some-tag'
-      assert_select 'p', ActionView::Base.full_sanitizer.sanitize(I18n.t('tag.show.no_results_found', tag: 'some-tag')) + ':'
+      assert_select 'p', ActionView::Base.full_sanitizer.sanitize(I18n.t('tag.show.no_results_found', other_tab: 'some-tag')) + ':'
     end
   end
 
