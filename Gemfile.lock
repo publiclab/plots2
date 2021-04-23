@@ -350,7 +350,7 @@ GEM
       mimemagic (~> 0.3.0)
       terrapin (~> 0.6.0)
     parallel (1.20.1)
-    parser (3.0.0.0)
+    parser (3.0.1.0)
       ast (~> 2.4.1)
     passenger (6.0.7)
       rack
@@ -449,7 +449,7 @@ GEM
     retriable (3.1.2)
     reverse_markdown (1.1.0)
       nokogiri
-    rexml (3.2.4)
+    rexml (3.2.5)
     rspec (3.10.0)
       rspec-core (~> 3.10.0)
       rspec-expectations (~> 3.10.0)
@@ -463,7 +463,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.10.0)
     rspec-support (3.10.0)
-    rubocop (1.12.1)
+    rubocop (1.13.0)
       parallel (~> 1.10)
       parser (>= 3.0.0.0)
       rainbow (>= 2.2.2, < 4.0)
@@ -672,7 +672,7 @@ DEPENDENCIES
   rest-client
   reverse_markdown
   rspec
-  rubocop (~> 1.12.1)
+  rubocop (~> 1.13.0)
   ruby-openid
   sanitize
   sassc (~> 2.4.0)
