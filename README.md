@@ -44,6 +44,7 @@ A full description of the features, audiences, inter-relationships, and goals of
 5. [Installation](#installation)
     - [Standard Installation](#standard-installation)
     - [Windows Installation](#windows-installation)
+    - [Windows Subsystem for Linux 2 Installation](#Windows Subsystem for Linux 2 Installation)
 6. [SSL in Development](#ssl-in-development)
 7. [Login](#login)
 8. [Testing](#testing)
@@ -120,6 +121,31 @@ We recommend you either work in a virtual environment, or on a dual booted syste
 1. [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10) (recommended)
 2. [Dual Booting](https://www.tecmint.com/install-ubuntu-alongside-with-windows-dual-boot/amp/), [option2](https://askubuntu.com/questions/1031993/how-to-install-ubuntu-18-04-alongside-windows-10), [video guide](https://www.youtube.com/watch?v=qNeJvujdB-0&fbclid=IwAR0APhs89jlNR_ENKbSwrp6TI6P-wxlx-a0My9XBvPNAfwtADZaAXqcKtP4)
 3. [Setting up a Linux virtual env](https://itsfoss.com/install-linux-in-virtualbox/)
+
+### Windows Subsystem for Linux 2 Installation
+Open the WSL 2 Terminal and type out the commands below
+Install Dependencies required from Ruby Source with the following commands:
+1. sudo apt update
+2. sudo apt install curl g++ gcc autoconf automake bison libc6-dev
+3. sudo apt install libffi-dev libgdbm-dev libncurses5-dev libsqlite3-dev libtool
+4. sudo apt install libyaml-dev make pkg-config sqlite3 zlib1g-dev libgmp-dev
+5. sudo apt install libreadline-dev libssl-dev
+
+    Add GPG Key & Install RVM:
+    
+    gpg --keyserver hkp://keys.gnupg.net --recv-keys
+    409B6B1796C275462A1703113804BB82D39DC0E37D2BAF1CF37B13E2069D6956105BD0E739499BDB
+
+    curl -sSL https://get.rvm.io | bash -s stable
+
+Load the Script environment variables using source command:
+	source ~/.rvm/scripts/rvm
+	Install and use specific Ruby version:
+        rvm install ruby-x.x.x (this projects Ruby version)
+        rvm --default use ruby-x.x.x (replace x.x.x with this project's Ruby version)
+	
+For further reference, read here
+
 
 ## Redis Installation
 
