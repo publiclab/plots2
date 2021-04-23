@@ -38,11 +38,6 @@
     <div class="dropdown-item tag-dropdown">Statistics for all topics</div>
     </a>
 
-    <% unless @tags.try(:first).try(:parent).nil? %>
-      <div class="dropdown-divider"></div>
-      <small>Alias of: <%= @tags.first.parent %></small>
-    <% end %>
-
   <% end %>
 </div>
 <!-- AJAXify -->
