@@ -124,7 +124,7 @@ We recommend you either work in a virtual environment, or on a dual booted syste
 
 ## Windows Subsystem for Linux 2 Installation
 
-**Open the WSL 2 Terminal and type out the commands below**
+Before continuing with the installation steps in this README, users of Windows Subsystem for Linux 2 (WSL 2) should open the WSL 2 Terminal and type out the commands below.
 
 1. Install Dependencies required from Ruby Source with the following commands:
   * `sudo apt update`
