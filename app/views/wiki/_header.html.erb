@@ -34,7 +34,7 @@
         <span rel="popover" style='cursor: pointer;' title="Authors" data-html="true" data-placement="top" data-content= "
         <ul>
         <% @node.authors.each do |author| %>
-          <li style='list-style: none;'><a href='/profile/<%= author.username %>' style='color: #009bff;'>@<%= author.username %></a></li>
+          <li style='list-style: none;'><a href='/profile/<%= author&.username %>' style='color: #009bff;'>@<%= author&.username %></a></li>
         <% end %>
       </ul>
       "> <i style="color:#888;" class="fa fa-user"></i> <%= number_with_delimiter(@node.authors.size) %></span>  | 

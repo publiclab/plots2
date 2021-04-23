@@ -7,7 +7,6 @@ build:
 redeploy-container:
 	docker-compose build --pull
 	docker-compose run --rm web yarn install
-	docker-compose run --rm web bash -c "bundle exec rails webpacker:install && bundle exec rails webpacker:install:react && bundle exec rails g react:install"
 	docker-compose run --rm web bash -c "bundle exec rake db:migrate && bundle exec rake assets:precompile && bundle exec rake tmp:cache:clear"
 	docker-compose down --remove-orphans
 	docker-compose up -d
