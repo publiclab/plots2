@@ -30,6 +30,18 @@ class RoutesTest < ActionDispatch::IntegrationTest
 	    assert_routing({ path: '/archive', method: :get }, { controller: 'map', action: 'index' })
 	end
 
+	test "test images route" do
+	    assert_routing({ path: '/images', method: :get }, { controller: 'images', action: 'index' })
+	end
+
+	test "test features route" do
+	    assert_routing({ path: '/features', method: :get }, { controller: 'features', action: 'index' })
+	end
+
+	test "test subscriptions route" do
+	    assert_routing({ path: '/subscriptions', method: :get }, { controller: 'subscription', action: 'index' })
+	end
+
 	test "test methods route" do
 	    assert_routing({ path: '/methods', method: :get }, { controller: 'wiki', action: 'methods' })
 	end
@@ -72,6 +84,14 @@ class RoutesTest < ActionDispatch::IntegrationTest
 
 	test "test questions shadow route" do
 	    assert_routing({ path: '/questions_shadow', method: :get }, { controller: 'questions', action: 'index_shadow' })
+	end
+
+	test "test wiki create route" do
+	    assert_routing({ path: '/wiki/create', method: :post }, { controller: 'wiki', action: 'create' })
+	end
+
+	test "test notes create route" do
+	    assert_routing({ path: '/notes/create', method: :post }, { controller: 'notes', action: 'create' })
 	end
 
 	test "edit profile route when user logged out redirects to profile page" do	
