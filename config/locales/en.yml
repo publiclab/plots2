@@ -466,7 +466,7 @@ en:
       wiki_pages: "Wiki pages"
       maps: "Maps"
       no_results_found: "No results found; try searching for '<b>%{tag}</b>'"
-      no_questions_results_found: "Hi! No Questions have this tag <span>&#x1F937</span>, try checking the <b>Research Notes</b> or <b>Wikis</b> tabs on this page."
+      no_notes_results_found: "Hi! No Research Notes have this tag <span>&#x1F937</span>, try checking the <b>Questions</b> or <b>Wiki</b> tabs on this page."
       try_advanced_search: "Or try an <a href='%{url1}'>advanced search</a>"
       people: "People"
       no_map_results_found: "Sorry, no map is tagged with <i>%{tag}</i>"
