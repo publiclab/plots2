@@ -18,13 +18,16 @@
   <% if @node_type == "questions" %>
     <div class="tab-pane active" id="questions">
       <div id="questions-tab">
-
-        <div class="tab-content">
-          <div id="asked-content">
-            <%= render partial: "questions/new_question" %>
+        <% if @questions.nil? || @questions.length == 0 %>
+          <p><%= raw translation('tag.show.no_questions_results_found') %></p>
+          <p>Or try searching: <a href="/search/<%= params[:id] %>"><%= params[:id] %></a></p>
+        <% else %>
+          <div class="tab-content">
+            <div id="asked-content">
+              <%= render partial: "questions/new_question" %>
+            </div>
           </div>
-        </div>
-
+        <% end %>
       </div>
     </div>
   <% end %>
