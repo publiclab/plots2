@@ -143,7 +143,7 @@ class Editor {
         
        //adding delay and revering the styles
         setTimeout(() => {
-          $("#comment-form-main .btn-toolbar #save-button-main").find("i").removeClass("fas fa-sync fa-spin").addClass("fa fa-save");;
+          $("#comment-form-main .btn-toolbar #save-button-main").find("i").removeClass("fas fa-sync fa-spin").addClass("fa fa-save");
           
           $("#comment-form-main .imagebar").find("#saving-text").remove();
           $("#comment-form-main .imagebar p").not("#saving-text").show();
