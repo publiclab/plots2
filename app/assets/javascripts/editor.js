@@ -132,23 +132,42 @@ class Editor {
     "input.save",
     debounce(function () {
       //changing styles and text
-      let saving_text = $('<p id="saving-text"> Saving... </p>');
-      $(".imagebar").prepend(saving_text);
-      $(".imagebar p").not("#saving-text").hide();
-
-      $("#save-button-main").find("i").removeClass("fa fa-save");
-      $("#save-button-main").find("i").addClass("fas fa-sync fa-spin");
-
-      //adding delay and reverting the styles
+      //explicitly handling main comment form
+      if ($('#text-input-main').is(':focus')) {
+       
+       $("#comment-form-main .btn-toolbar #save-button-main").find("i").removeClass("fa fa-save").addClass("fas fa-sync fa-spin");
+     
+       let saving_text = $('<p id="saving-text"> Saving... </p>');
+       $("#comment-form-main .imagebar").prepend(saving_text);
+       $("#comment-form-main .imagebar p").not("#saving-text").hide();
+        
+       //adding delay and revering the styles
         setTimeout(() => {
-          $("#save-button-main").find("i").removeClass("fas fa-sync fa-spin");
-          $("#save-button-main").find("i").addClass("fa fa-save");
-  
-          $(".imagebar").find("#saving-text").remove();
-          $(".imagebar p").not("#saving-text").show();
+          $("#comment-form-main .btn-toolbar #save-button-main").find("i").removeClass("fas fa-sync fa-spin").addClass("fa fa-save");;
+          
+          $("#comment-form-main .imagebar").find("#saving-text").remove();
+          $("#comment-form-main .imagebar p").not("#saving-text").show();
         }, 400);
-  
-        thisEditor.save(thisEditor);
+    }
+    else { 
+        //handling other comment forms
+        let comment_temp_id = (document.activeElement.parentElement.parentElement.id);
+        let imager_bar = (document.activeElement.nextElementSibling.className);
+
+        $('#'+comment_temp_id).find('.btn-toolbar').find(".save-button").find("i").removeClass("fa fa-save").addClass("fas fa-sync fa-spin");
+
+        let saving_text = $('<p id="saving-text"> Saving... </p>');
+        $('#'+comment_temp_id).find('.'+imager_bar).prepend(saving_text);
+        $('#'+comment_temp_id).find('.'+imager_bar).find("p").not("#saving-text").hide();
+
+        setTimeout(() => {
+          $('#'+comment_temp_id).find('.btn-toolbar').find(".save-button").find("i").removeClass("fas fa-sync fa-spin").addClass("fa fa-save");
+          
+          $('#'+comment_temp_id).find('.'+imager_bar).find("#saving-text").remove();
+          $('#'+comment_temp_id).find('.'+imager_bar).find("p").not("#saving-text").show();
+        }, 400);
+    }
+      thisEditor.save(thisEditor);
       }, 700)
     );
   }  
