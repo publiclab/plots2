@@ -115,7 +115,6 @@ $(function() {
           else {
             //handling other comment sections
             let comment_reply_id = (this.parentNode.parentNode.nextElementSibling.nextElementSibling.id);
-            console.log(comment_reply_id);
 
             // toggling the favicon save icon class to add a spinner icon
             $(this).find("i").toggleClass("fa fa-save fas fa-sync fa-spin");
