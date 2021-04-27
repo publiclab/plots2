@@ -64,5 +64,17 @@ services:
     volumes:
       - .:/app
     environment:
+      - RAILS_ENV=${RAILS_ENV}
       - REDIS_URL=redis://redis:6379/0
-
+      - SECRET_KEY_BASE=${SECRET_KEY_BASE}
+      - DB_USER=${DB_USER}
+      - DB_NAME=${DB_NAME}
+      - DB_PASS=${DB_PASS}
+      - DB_HOST=${DB_HOST}
+      - DB_SOCKET=${DB_SOCKET}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASS=${SMTP_PASS}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_AUTH=${SMTP_AUTH}
+      - SMTP_STLS=${SMTP_STLS}
