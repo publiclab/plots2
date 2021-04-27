@@ -352,7 +352,7 @@ GEM
     parallel (1.20.1)
     parser (3.0.1.0)
       ast (~> 2.4.1)
-    passenger (6.0.7)
+    passenger (6.0.8)
       rack
       rake (>= 0.8.1)
     phantomjs (2.1.1.0)
