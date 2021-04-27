@@ -560,9 +560,9 @@ GEM
       unf_ext
     unf_ext (0.0.7.7)
     unicode-display_width (2.0.0)
-    unicode-emoji (2.7.1)
+    unicode-emoji (2.8.0)
       unicode-version (~> 1.0)
-    unicode-version (1.0.0)
+    unicode-version (1.1.0)
     web-console (3.7.0)
       actionview (>= 5.0)
       activemodel (>= 5.0)
