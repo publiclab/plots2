@@ -2,9 +2,9 @@
 <div class="pt-2 d-block" >
   <% if @blog %>
       <% if @blog.main_image %>
-        <div aria-hiddden = 'true' class="img" style="background-image: url('<%= @blog.main_image.path(:large) %>')">
+        <div aria-hidden = 'true' class="img" style="background-image: url('<%= @blog.main_image.path(:large) %>')">
         <% elsif @blog.scraped_image %>
-        <div aria-hiddden = 'true' class="img" style="background-image: url('<%= @blog.scraped_image %>')">
+        <div aria-hidden = 'true' class="img" style="background-image: url('<%= @blog.scraped_image %>')">
       <% end %>
       <%# subscribe to blog updates possibly via email %>
       <a class="ellipsis pull-right pl-2" data-toggle="dropdown" rel="tooltip" title="<%= translation('tag.show.blog_updates') %>" style="cursor:pointer; background-color: #444" aria-expanded="true"><i class="fa fa-ellipsis-h" style="color:#ccc;font-size:18px;margin-right:10px;"></i></a>
