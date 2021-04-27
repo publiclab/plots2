@@ -18,11 +18,13 @@ class SubscriptionMailer < ActionMailer::Base
                     .collect(&:email)
     recipients += node.author.followers.collect(&:email)
     recipients.uniq!
-    mail(
-      to: "notifications@#{ActionMailer::Base.default_url_options[:host]}",
-      bcc: recipients,
-      subject: subject
-    )
+    while recipients.length > 0
+      mail(
+        to: "notifications@#{ActionMailer::Base.default_url_options[:host]}",
+        bcc: recipients.pop(50),
+        subject: subject
+      )
+    end
   end
 
   def notify_note_liked(node, user)
@@ -64,11 +66,13 @@ class SubscriptionMailer < ActionMailer::Base
       end
     end
     @footer = feature('email-footer')
-    mail(
-      to: "notifications@#{ActionMailer::Base.default_url_options[:host]}",
-      bcc: recipients,
-      subject: subject
-    )
+    while recipients.length > 0
+      mail(
+        to: "notifications@#{ActionMailer::Base.default_url_options[:host]}",
+        bcc: recipients.pop(50),
+        subject: subject
+      )
+    end
   end
 
   def send_digest(user_id, nodes, frequency)
