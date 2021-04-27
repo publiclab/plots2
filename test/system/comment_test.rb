@@ -350,6 +350,8 @@ class CommentTest < ApplicationSystemTestCase
       page.find('#text-input-main')
         .click
         .fill_in with: comment_text_main
+        # taking into account the time for debounce function
+        sleep(0.7)
 
       # open up reply comment form
       page.all('p', text: 'Reply to this comment...')[0].click
@@ -360,6 +362,8 @@ class CommentTest < ApplicationSystemTestCase
       page.find('#text-input-reply-' + reply_id_num)
         .click
         .fill_in with: comment_text_reply
+        # taking into account the time for debounce function
+        sleep(0.7)
 
       # open up edit comment form
       page.find(".edit-comment-btn").click
@@ -370,6 +374,8 @@ class CommentTest < ApplicationSystemTestCase
       page.find('#text-input-edit-' + edit_id_num)
         .click
         .fill_in with: comment_text_edit
+        # taking into account the time for debounce function
+        sleep(0.7)
       
       # visit the page again (ie. refresh it)
       visit get_path(page_type, nodes(node_name).path)
