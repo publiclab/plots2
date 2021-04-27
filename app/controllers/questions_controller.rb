@@ -82,9 +82,6 @@ class QuestionsController < ApplicationController
     @title = @node.latest.title
     @tags = @node.power_tag_objects('question')
     @tagnames = @tags.collect(&:name)
-    @users = @node.answers.group(:uid)
-                  .order(Arel.sql('count(*) DESC'))
-                  .collect(&:author)
   end
 
   def recently_commented
