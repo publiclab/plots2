@@ -365,7 +365,7 @@ class User < ActiveRecord::Base
     end
 
     if @nodes.size.positive?
-      SubscriptionMailer.send_digest(id, @nodes, @frequency).deliver_later
+      SubscriptionMailer.send_digest(id, @nodes.to_json, @frequency).deliver_later
     end
   end
 
