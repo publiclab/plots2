@@ -57,7 +57,7 @@ And to run just a single test within a file:
 ### Testing mails in development environment
 
 We are using 'letter_opener' gem to open the mails in development environment.
-Whenever a email is sent then it will automatically catch by letter_opener and it will open in new window in development environment, nothing is to be done to run it, it will be done automatically.
+Whenever an email is sent then it will automatically catch by letter_opener and it will open in new window in development environment, nothing is to be done to run it, it will be done automatically.
 Same links would work, no modification in links are required.
 It will also show us how our actual mail will look like.
 Mail will be same as actual mail we will get in production.
