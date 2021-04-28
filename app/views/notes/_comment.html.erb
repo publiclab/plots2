@@ -1,6 +1,6 @@
 <div id="c<%= comment.cid %>" class="comment" style="margin-top: 20px; margin-bottom: 20px; padding-bottom: 9px; word-wrap: break-word;">
 
-  <div style="margin-bottom: 0;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-bottom: 0;overflow-y: visible" class="navbar navbar-light bg-light">
+  <div style="margin-bottom: 0;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-bottom: 0;overflow-y: visible;" class="navbar navbar-light bg-light">
     <% if comment.status == 4 %>
       <p class="alert alert-warning moderated">
         <% if logged_in_as(['admin','moderator']) %>
