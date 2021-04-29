@@ -44,6 +44,7 @@ A full description of the features, audiences, inter-relationships, and goals of
 5. [Installation](#installation)
     - [Standard Installation](#standard-installation)
     - [Windows Installation](#windows-installation)
+    - [Windows Subsystem for Linux 2 Installation](#windows-subsystem-for-linux-2-installation)
 6. [SSL in Development](#ssl-in-development)
 7. [Login](#login)
 8. [Testing](#testing)
@@ -121,6 +122,26 @@ We recommend you either work in a virtual environment, or on a dual booted syste
 2. [Dual Booting](https://www.tecmint.com/install-ubuntu-alongside-with-windows-dual-boot/amp/), [option2](https://askubuntu.com/questions/1031993/how-to-install-ubuntu-18-04-alongside-windows-10), [video guide](https://www.youtube.com/watch?v=qNeJvujdB-0&fbclid=IwAR0APhs89jlNR_ENKbSwrp6TI6P-wxlx-a0My9XBvPNAfwtADZaAXqcKtP4)
 3. [Setting up a Linux virtual env](https://itsfoss.com/install-linux-in-virtualbox/)
 
+## Windows Subsystem for Linux 2 Installation
+
+Before continuing with the installation steps in this README, users of Windows Subsystem for Linux 2 (WSL 2) should open the WSL 2 Terminal and type out the commands below.
+
+1. Install Dependencies required from Ruby Source with the following commands:
+  * `sudo apt update`
+  * `sudo apt install curl g++ gcc autoconf automake bison libc6-dev`
+  * `sudo apt install libffi-dev libgdbm-dev libncurses5-dev libsqlite3-dev libtool`
+  * `sudo apt install libyaml-dev make pkg-config sqlite3 zlib1g-dev libgmp-dev`
+  * `sudo apt install libreadline-dev libssl-dev`
+2. Add GPG Key & Install RVM:
+  * `gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E37D2BAF1CF37B13E2069D6956105BD0E739499BDB`
+  * `curl -sSL https://get.rvm.io | bash -s stable`
+3. Load the Script environment variables using source command:
+  * `source ~/.rvm/scripts/rvm`
+4. Install and use specific Ruby version:
+  * `rvm install ruby-x.x.x (this projects Ruby version)`
+  * `rvm --default use ruby-x.x.x (replace x.x.x with this project's Ruby version)`
+5. For further reference, [read here](https://linuxize.com/post/how-to-install-ruby-on-ubuntu-20-04/)
+
 ## Redis Installation
 
 Public Lab uses Redis and may be required for some functionality when running the application locally.
@@ -144,7 +165,7 @@ Secure connection is needed for OAuth authentication etc.
 
 ## Login
 
-Once you complete the installation, use any of these credentials to login in to the PL website in your local development / testing environment to gain additional permissions for logged in users only. Each one comes with its own set of permissions; nevertheless, the experience across them is pretty much the same.
+Once you complete the installation, use any of these credentials to login into the PL website in your local development/testing environment to gain additional permissions for logged in users only. Each one comes with its own set of permissions; nevertheless, the experience across them is pretty much the same.
 
 **username**: `admin`, `moderator`, or `user`
 
