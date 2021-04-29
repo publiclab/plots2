@@ -54,7 +54,7 @@ Each type comes with a different "attitude" towards merging. Some need to be REA
 3. maintain commenting from a mobile phone
 4. maintain comment-by-email
 5. simplify and clean commenting code
-6. consolidate and refine commenting cdoe
+6. consolidate and refine commenting code
 7. increase test coverage, esp. full-stack system tests
 
 ## Editor maintainers

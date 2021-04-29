@@ -16,7 +16,7 @@
 
 - If that twitter username is present in the `user_tags` column  then add the tweet otherwise ignore the current tweet.
 
-- Same process is with when there are no comment present with tweet_id in the comment table where we search for all the replied tweets to the `publiclab`.
+- Same process is with when there are no comments present with tweet_id in the comment table where we search for all the replied tweets to the `publiclab`.
 
 To use this feature we have to set some environment variables which includes Twitter API keys and Searching Query: For getting Twitter Keys go to [Twitter app keys](https://apps.twitter.com/)
 Environment variables used for twitter keys are : `TWITTER_CONSUMER_KEY`, `TWITTER_CONSUMER_SECRET`, `TWITTER_ACCESS_TOKEN` and `TWITTER_ACCESS_TOKEN_SECRET`.

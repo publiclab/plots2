@@ -165,7 +165,7 @@ Secure connection is needed for OAuth authentication etc.
 
 ## Login
 
-Once you complete the installation, use any of these credentials to login in to the PL website in your local development / testing environment to gain additional permissions for logged in users only. Each one comes with its own set of permissions; nevertheless, the experience across them is pretty much the same.
+Once you complete the installation, use any of these credentials to login into the PL website in your local development/testing environment to gain additional permissions for logged in users only. Each one comes with its own set of permissions; nevertheless, the experience across them is pretty much the same.
 
 **username**: `admin`, `moderator`, or `user`
 

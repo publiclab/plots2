@@ -44,7 +44,7 @@ You'll also need **yarn** to get your JavaScript dependencies.
 
 Use `yarn --version` to verify whether the installation is up and running!
 	
-**Note:** In case the options described above do not work for you, you can also install yarn using npm,though it is generally not recommended. As a prerequisite, you will have to [install Node.js](https://nodejs.org/en/download/) if not already installed.
+**Note:** In case the options described above do not work for you, you can also install yarn using npm, though it is generally not recommended. As a prerequisite, you will have to [install Node.js](https://nodejs.org/en/download/) if not already installed.
 To install yarn using npm, use `npm install --global yarn` and continue with path setup similar to the usual installation.	
 
 ### phantomjs for javascript tests (optional)
