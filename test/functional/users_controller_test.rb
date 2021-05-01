@@ -316,6 +316,13 @@ class UsersControllerTest < ActionController::TestCase
     assert assigns(:users).each_cons(2).all?{|i,j| "j.node_revisions.username" >= "i.node_revisions.username" }
   end
 
+  test 'should sort based on last activity in decreasing order' do
+    get :list, params: { sort: 'last_activity' }
+
+    assert_response :success
+    assert assigns(:users).each_cons(2).all?{|i,j| "i.updated_at" >= "j.updated_at" }
+  end
+
   test "digest emails" do
     user = users(:bob)
     UserSession.create(user)
