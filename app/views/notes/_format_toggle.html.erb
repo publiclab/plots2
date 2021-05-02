@@ -4,6 +4,12 @@
 </div>
 
 <script>
+  jQuery(document).ready(function () {
+    if('displayFormat' in sessionStorage){
+      toggle_format(sessionStorage.getItem('displayFormat'))
+    }
+  });
+
   (function(){
     toggle_format = function(format) {
       if (format == "grid") {
@@ -40,6 +46,7 @@
         $('#list-format').addClass('active')
         $('#grid-format').removeClass('active')
       }
+      sessionStorage.setItem('displayFormat', format)
     }
   })()
 </script>
