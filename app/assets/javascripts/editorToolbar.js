@@ -91,7 +91,7 @@ $(function() {
     // for save & recover buttons
     .on("click", ".save-button", function(e) {
       //preventing multiple clicks on the button
-      if(!e.detail || e.detail == 1) {
+      if(!e.detail || e.detail === 1) {
           //explicitly handling main comment section
           if ((this.id) === "save-button-main") {
             // toggling the favicon save icon class to add a spinner icon
