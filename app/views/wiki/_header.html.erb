@@ -13,7 +13,7 @@
 <h1 style="font-size:3em;margin-top:20px;text-align:center;font-family:'Junction Light';">
   <%= @revision.title %>
   <% if @presentation || @node.has_tag('style:minimal') %>
-    <a onClick="$('#wiki-toolbar').toggle()" class="btn btn-link"><b><i class="fa fa-caret-down"></i></b></a>
+  <a rel="tooltip" title="Show or Hide the toolbar." data-placement="right" onClick="$('#wiki-toolbar').toggle()" class="btn btn-link"><b class="caret"></b></a>
   <% end %>
 </h1>
 
