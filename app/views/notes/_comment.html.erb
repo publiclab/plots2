@@ -95,7 +95,7 @@
             <% emoji_names.each do |e| %>
               <% capitalized_emoji_name = e.split("-").map(&:capitalize).join %>
               <% str = "/comment/like?comment_id=#{comment.cid}&user_id=#{current_user.uid}&emoji_type=#{capitalized_emoji_name}" %>               
-              <%= link_to str, data: { method: "post", remote: true }, style: "margin: 6px;" do %>                     
+              <%= link_to str, data: { method: "post", remote: true }, style: "margin: 6px;", class: "emoji-btn" do %>                     
                 <img alt="React to post" class="emoji grow" height="20" width="20" src="<%= emoji_image_map[e] %>">                         
               <% end %>
             <% end %>
@@ -131,6 +131,13 @@
           },
         }
       });
+    });
+
+    $('.emoji-btn').click(function() {
+      setTimeout(() => {
+        $('#emoji-dropdown').removeClass('show');
+        $('#dropdownMenuButton').attr('aria-expanded', 'false');
+      }, 5000);
     });
   </script>
 
