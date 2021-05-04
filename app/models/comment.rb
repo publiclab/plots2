@@ -249,7 +249,7 @@ class Comment < ApplicationRecord
     else
       email = mail.select { |s| s.match(/.*@.*/) }
       ActionMailer::Base.mail(
-        from: "me@example.com", # @jywarren what should this be?
+        from: "do-not-reply@publiclab.org",
         to: email,
         subject: "Could not post your reply",
         body: "Your reply wasn't posted since we couldn't find your account on publiclab.org. Please sign up at https://publiclab.org or try sending email from the account matching your username. Thank you!"
