@@ -16,10 +16,11 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     get '/login'
     assert_response :success
 
-    post '/user_sessions', params: { return_to: request.path, user_session: { user_name: users(:jeff).username, password: 'secretive' } }
+    post '/login', params: { return_to: request.path, user_session: { user_name: users(:jeff).username, password: 'secretive' } }
 
     follow_redirect!
-    assert_equal '/dashboard', path
+    assert_response :redirect
+    assert_redirected_to '/dashboard'
   end
 
   # This test depend on question based search functionality
