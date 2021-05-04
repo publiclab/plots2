@@ -32,6 +32,7 @@ class StatsControllerTest < ActionController::TestCase
   end
 
   test 'should load stats range query' do
+    UserSession.create(users(:bob)) # we now require login for this page for load reasons
     get :index
     assert_response :success
     assert_not_nil assigns(:notes)
@@ -48,6 +49,7 @@ class StatsControllerTest < ActionController::TestCase
   end
 
   def csv_stats_download
+    UserSession.create(users(:bob)) # we now require login for this page for load reasons
     @stats.each do |action|
       test "should download #{action} as csv" do
         get action, params: { format: 'csv' }
@@ -59,6 +61,7 @@ class StatsControllerTest < ActionController::TestCase
   end
 
   def json_stats_downloads
+    UserSession.create(users(:bob)) # we now require login for this page for load reasons
     @stats.each do |action|
       test "should download #{action} as json" do
         get action, params: { format: 'json' }
