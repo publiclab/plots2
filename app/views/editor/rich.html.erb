@@ -21,7 +21,8 @@
 />
 <script src="/lib/at.js/dist/js/jquery.atwho.min.js"></script>
 <script src="/lib/publiclab-editor/examples/data/emoji.js"></script>
-<script src="/lib/publiclab-editor/examples/data/atwho.PLE.js"></script>
+<!-- <script src="/lib/publiclab-editor/examples/data/atwho.PLE.js"></script> -->
+<%= javascript_include_tag('atWhoAutoComplete.js') %>
 
 <%= javascript_include_tag('/lib/leaflet-spin/example/spin/dist/spin.min.js') %>
 <%= javascript_include_tag('/lib/leaflet-spin/example/leaflet.spin.min.js') %>
@@ -349,6 +350,50 @@
   var editor;
 
   (function() {
+
+  // settings at https://github.com/ichord/At.js/wiki/Base-Document#settings
+  var at_config = {
+    at: "@",
+    delay: 400,
+    callbacks: {
+      remoteFilter: debounce(function(query, callback) {
+        $.getJSON("/api/srch/profiles?query=" + query + "&sort_by=recent&field=username", {}, function(data) {
+          if (data.hasOwnProperty('items') && data.items.length > 0) {
+            callback(data.items.map(function(i) { return i.doc_title }));
+          }
+         });
+        }, 200)
+      },
+      limit: 20
+    },
+    hashtags_config = {
+      at: "#",
+      delay: 400,
+      callbacks: {
+        remoteFilter: debounce(function(query, callback) {
+          if (query != ''){
+            $.post('/tag/suggested/' + query, {}, function(response) {
+               callback(response.map(function(tagnames){ return tagnames }));
+             });
+            }
+          }, 200)
+        },
+      limit: 20
+    },
+    emojis_config = {
+      at: ':',
+      delay: 400,
+      data: Object.keys(emoji).map(function(name){ return {'name': name, 'value': emoji[name]}}),
+      displayTpl: "<li>${value} ${name}</li>",
+      insertTpl: ":${name}:",
+      limit: 100
+   }
+
+  $('.wk-wysiwyg')
+    .atwho(hashtags_config)
+    .atwho(emojis_config)
+    //.atwho(at_config) // off for performance reasons for now
+
     editor = new PL.Editor({
       data: {
         token: $('meta[name="csrf-token"]').attr('content')
@@ -401,6 +446,8 @@
         token: $('meta[name="csrf-token"]').attr('content')
       },
       richTextModule: {
+        authorsAutocomplete: true,
+        tagsAutocomplete: true,
         token: $('meta[name="csrf-token"]').attr('content'),
         formats: ['jpg', 'jpeg', 'png', 'gif'],
         attachmentFormats: ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt', 'docx', 'bmp', 'obj', 'json']
