@@ -12,6 +12,16 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     assert_equal '/post?tags=question:question&template=question', request.fullpath
   end
 
+  test 'should redirect to dashboard when logging in from /login' do 
+    get '/login'
+    assert_response :success
+
+    post '/user_sessions', params: { return_to: request.path, user_session: { user_name: users(:jeff).username, password: 'secretive' } }
+
+    follow_redirect!
+    assert_equal '/dashboard', path
+  end
+
   # This test depend on question based search functionality
   test 'search a question and go through post mechanism if question not found when user is not logged in' do
     get '/post', params: { tags: 'question:question', template: 'question', title: 'What', redirect: 'question' }
