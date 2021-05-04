@@ -36,7 +36,6 @@ Plots2::Application.routes.draw do
   get 'assets' => "admin#assets"
 
   get 'login' => "user_sessions#new",      :as => :login
-  post 'login' => "user_sessions#create"
   get 'logout' => "user_sessions#destroy", :as => :logout
   get 'logoutRemotely' => 'user_sessions#logout_remotely'
   get 'users' => 'users#index'

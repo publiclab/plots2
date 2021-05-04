@@ -16,10 +16,9 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     get '/login'
     assert_response :success
 
-    post '/login', params: { return_to: request.path, user_session: { user_name: users(:jeff).username, password: 'secretive' } }
+    post '/user_sessions', params: { return_to: request.path, user_session: { user_name: users(:jeff).username, password: 'secretive' } }
 
     follow_redirect!
-    assert_response :redirect
     assert_redirected_to '/dashboard'
   end
 
