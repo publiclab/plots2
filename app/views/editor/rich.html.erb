@@ -15,6 +15,15 @@
 <link href="/lib/publiclab-editor/dist/PublicLab.Editor.css" rel="stylesheet">
 <script src="/lib/publiclab-editor/dist/PublicLab.Editor.js"></script>
 
+<link
+  href="/lib/at.js/dist/css/jquery.atwho.min.css"
+  rel="stylesheet"
+/>
+<script src="/lib/at.js/dist/js/jquery.atwho.min.js"></script>
+<script src="/lib/publiclab-editor/examples/data/emoji.js"></script>
+<!-- <script src="/lib/publiclab-editor/examples/data/atwho.PLE.js"></script> -->
+<%= javascript_include_tag('atWhoAutoComplete.js') %>
+
 <%= javascript_include_tag('/lib/leaflet-spin/example/spin/dist/spin.min.js') %>
 <%= javascript_include_tag('/lib/leaflet-spin/example/leaflet.spin.min.js') %>
 
@@ -341,6 +350,7 @@
   var editor;
 
   (function() {
+
     editor = new PL.Editor({
       data: {
         token: $('meta[name="csrf-token"]').attr('content')
@@ -393,9 +403,9 @@
         token: $('meta[name="csrf-token"]').attr('content')
       },
       richTextModule: {
+        authorsAutocomplete: true,
+        tagsAutocomplete: true,
         token: $('meta[name="csrf-token"]').attr('content'),
-        authorsAutocomplete: false,
-        tagsAutocomplete: false,
         formats: ['jpg', 'jpeg', 'png', 'gif'],
         attachmentFormats: ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt', 'docx', 'bmp', 'obj', 'json']
         //formats: ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt', 'docx', 'bmp', 'obj', 'json', 'jpg', 'jpeg', 'png', 'gif']
@@ -483,6 +493,54 @@
     $("#obscureLocation").prop('checked', <%= @map_blurred %>);
     editor.mapModule.blurredLocation.setBlurred(<%= @map_blurred %>);
 
+
+
+  setTimeout(function(){
+
+    // settings at https://github.com/ichord/At.js/wiki/Base-Document#settings
+    var at_config = {
+        at: "@",
+        delay: 400,
+        callbacks: {
+        remoteFilter: debounce(function(query, callback) {
+            $.getJSON("/api/srch/profiles?query=" + query + "&sort_by=recent&field=username", {}, function(data) {
+            if (data.hasOwnProperty('items') && data.items.length > 0) {
+                callback(data.items.map(function(i) { return i.doc_title }));
+            }
+            });
+            }, 200)
+        },
+        limit: 20
+        },
+        hashtags_config = {
+        at: "#",
+        delay: 400,
+        callbacks: {
+            remoteFilter: debounce(function(query, callback) {
+            if (query != ''){
+                $.post('/tag/suggested/' + query, {}, function(response) {
+                callback(response.map(function(tagnames){ return tagnames }));
+                });
+                }
+            }, 200)
+            },
+        limit: 20
+        },
+        emojis_config = {
+        at: ':',
+        delay: 400,
+        data: Object.keys(emoji).map(function(name){ return {'name': name, 'value': emoji[name]}}),
+        displayTpl: "<li>${value} ${name}</li>",
+        insertTpl: ":${name}:",
+        limit: 100
+    }
+
+    $('.wk-wysiwyg')
+        .atwho(hashtags_config)
+        .atwho(emojis_config)
+        //.atwho(at_config) // off for performance reasons for now
+  })
+
     // upload via posting "posted_main_image"
     function dataURItoBlob(dataURI) {
       // convert base64 to raw binary data held in a string
@@ -506,7 +564,9 @@
       $('.ple-module-main_image input').fileupload('add', {'files': [ dataURItoBlob('<%= params[:datauri_main_image] %>') ]});
     <% end %>
 
+
   })();
+
   $('.legacy-button').click(function onLegacyClick(event) {
       event.preventDefault();
       window.location = "/post?legacy=true&body=" + editor.richTextModule.value() + "&tags=" + editor.tagsModule.value() + "&title=" + editor.titleModule.value();
