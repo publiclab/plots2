@@ -9,6 +9,7 @@ class StatsControllerTest < ActionController::TestCase
   end
 
   test 'should assign correct value to graph_notes on GET stats' do
+    UserSession.create(users(:bob)) # we now require login for this page for load reasons
     Node.delete_all
     Node.create!(type: 'note', title:'blah', uid: 1, status: 1)
     get :index, params: { start: @start.to_s, end: @end.to_s }
@@ -16,6 +17,7 @@ class StatsControllerTest < ActionController::TestCase
   end
 
   test 'should assign correct value to graph_wikis on GET stats' do
+    UserSession.create(users(:bob)) # we now require login for this page for load reasons
     Node.delete_all
     Node.create(type: 'note', title: 'blah', uid: 1, status: 1)
     Node.create(type: 'page', title: 'blahblah', uid: 1, status: 1)
@@ -24,6 +26,7 @@ class StatsControllerTest < ActionController::TestCase
   end
 
   test 'should assign correct value to graph_comments on GET stats' do
+    UserSession.create(users(:bob)) # we now require login for this page for load reasons
     Comment.delete_all
     Comment.create!(comment: 'blah', timestamp: Time.now - 1)
     get :index, params: { start: @start.to_s, end: @end.to_s }
