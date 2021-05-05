@@ -35,7 +35,7 @@ class WikiControllerTest < ActionController::TestCase
     get :index
 
     assert_response :success
-    assert assigns(:wikis).each_cons(2).all?{|i,j| "j.node_revisions.title" != "i.node_revisions.title" }
+    assert assigns(:wikis).each_cons(2).all?{|i,j| "j.node_revisions.id" != "i.node_revisions.id" }
   end
 
   test 'should paginate the wikis' do
