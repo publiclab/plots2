@@ -6,6 +6,7 @@ class StatsControllerTest < ActionController::TestCase
     @start = 1.month.ago
     @end = Date.today
     @stats =  [:notes, :comments, :users, :wikis, :questions, :answers, :tags, :node_tags]
+    activate_authlogic
   end
 
   test 'should assign correct value to graph_notes on GET stats' do
