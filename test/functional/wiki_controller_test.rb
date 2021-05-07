@@ -31,6 +31,13 @@ class WikiControllerTest < ActionController::TestCase
     assert assigns(:wikis).each_cons(2).all?{|i,j| "j.node_revisions.title" >= "i.node_revisions.title" }
   end
 
+  test 'should display unique wikis' do
+    get :index
+
+    assert_response :success
+    assert assigns(:wikis).each_cons(2).all?{|i,j| "j.node_revisions.id" != "i.node_revisions.id" }
+  end
+
   test 'should paginate the wikis' do
     12.times{
     post :create,
