@@ -31,6 +31,13 @@ class WikiControllerTest < ActionController::TestCase
     assert assigns(:wikis).each_cons(2).all?{|i,j| "j.node_revisions.title" >= "i.node_revisions.title" }
   end
 
+  test 'should display unique wikis' do
+    get :index
+
+    assert_response :success
+    assert assigns(:wikis).each_cons(2).all?{|i,j| "j.node_revisions.id" != "i.node_revisions.id" }
+  end
+
   test 'should paginate the wikis' do
     12.times{
     post :create,
@@ -193,7 +200,7 @@ class WikiControllerTest < ActionController::TestCase
         id: 'chicago'
         }
 
-    assert_equal flash[:notice], "Please post a question or other content before editing the wiki. Click <a href='https://publiclab.org/notes/tester/04-23-2016/new-moderation-system-for-first-time-posters'>here</a> to learn why."
+    assert_equal flash[:notice], "You can create the wiki once your research note/question is approved by moderators. Click <a href='https://publiclab.org/notes/tester/04-23-2016/new-moderation-system-for-first-time-posters'>here</a> to learn why."
     assert_redirected_to nodes(:place).path
   end
 

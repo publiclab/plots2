@@ -117,7 +117,7 @@ class WikiController < ApplicationController
       flash[:warning] = "This page is <a href='/wiki/power-tags#Locking'>locked</a>, and only <a href='/wiki/moderators'>moderators</a> can edit it."
       redirect_to @node.path
     elsif current_user &.first_time_poster
-      flash[:notice] = "Please post a question or other content before editing the wiki. Click <a href='https://publiclab.org/notes/tester/04-23-2016/new-moderation-system-for-first-time-posters'>here</a> to learn why."
+      flash[:notice] = "You can create the wiki once your research note/question is approved by moderators. Click <a href='https://publiclab.org/notes/tester/04-23-2016/new-moderation-system-for-first-time-posters'>here</a> to learn why."
       redirect_to Node.find_wiki(params[:id]).path
       return
     end
@@ -135,7 +135,7 @@ class WikiController < ApplicationController
   def new
     @revision = Revision.new
     if current_user &.first_time_poster
-      flash[:notice] = "Please post a question or other content before editing the wiki. Click <a href='https://publiclab.org/notes/tester/04-23-2016/new-moderation-system-for-first-time-posters'>here</a> to learn why."
+      flash[:notice] = "You can create the wiki once your research note/question is approved by moderators. Click <a href='https://publiclab.org/notes/tester/04-23-2016/new-moderation-system-for-first-time-posters'>here</a> to learn why."
       redirect_to '/'
       return
     end
@@ -341,7 +341,7 @@ class WikiController < ApplicationController
       .references(:node_revisions)
       .group('node_revisions.nid, node_revisions.vid')
       .order(order_string)
-      .where("node_revisions.status = 1 AND node.status = 1 AND type = 'page'"), items: 10)
+      .where("node_revisions.status = 1 AND node.status = 1 AND type = 'page'"), items: 10).uniq
 
     @paginated = true
   end
@@ -353,7 +353,7 @@ class WikiController < ApplicationController
       .references(:node_revisions)
       .group('node_revisions.nid, node_revisions.vid')
       .order('node_revisions.timestamp ASC')
-      .where("node_revisions.status = 1 AND node.status = 1 AND type = 'page'"), items: 10)
+      .where("node_revisions.status = 1 AND node.status = 1 AND type = 'page'"), items: 10).uniq
 
     @paginated = true
     render template: 'wiki/index'
@@ -365,8 +365,8 @@ class WikiController < ApplicationController
       .joins(:revision)
       .group('node_revisions.nid, node_revisions.vid')
       .order('node_revisions.timestamp DESC')
-      .where("node.status = 1 AND node_revisions.status = 1 AND node.nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place')")
-      .sort_by(&:views).reverse
+      .where("node.status = 1 AND node_revisions.status = 1 AND node.nid != 259 AND type = 'page'")
+      .sort_by(&:views).reverse.uniq
     render template: 'wiki/index'
   end
 
@@ -374,7 +374,7 @@ class WikiController < ApplicationController
     @title = I18n.t('wiki_controller.well_liked_wiki_pages')
     @wikis = Node.limit(40)
       .order('node.cached_likes DESC')
-      .where("status = 1 AND nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place') AND cached_likes >= 0")
+      .where("status = 1 AND nid != 259 AND (type = 'page') AND cached_likes >= 0").uniq
 
     render template: 'wiki/index'
   end
@@ -501,7 +501,7 @@ class WikiController < ApplicationController
     @title = @user.name
     @pagy, @wikis = pagy(Node
       .order('nid DESC')
-      .where("uid = ? AND type = 'page' OR type = 'place' OR type = 'tool' AND status = 1", @user.uid), items: 24)
+      .where("uid = ? AND type = 'page' AND status = 1", @user.uid), items: 24)
     render template: 'wiki/index'
   end
 end
