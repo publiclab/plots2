@@ -75,11 +75,6 @@ class PublicPagesTest < ActionDispatch::IntegrationTest
     assert_redirected_to '/search?q=foo'
   end
 
-  test 'browse /stats' do
-    get '/stats'
-    assert_response :success
-  end
-
   test 'browse redirected node' do
     get nodes(:redirect).path
     assert_response :redirect

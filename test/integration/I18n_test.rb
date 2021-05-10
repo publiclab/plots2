@@ -500,6 +500,16 @@ class I18nTest < ActionDispatch::IntegrationTest
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s
       follow_redirect!
+
+      post '/user_sessions',
+        params: {
+          user_session: {
+            username: users(:jeff).username,
+            password: 'secretive'
+          }
+        }
+      follow_redirect!
+
       start_time = 1.month.ago
       end_time = Date.today
       @graph_notes = Node.contribution_graph_making('note', start_time.to_time, end_time.to_time)
