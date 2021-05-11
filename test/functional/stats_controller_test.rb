@@ -6,9 +6,11 @@ class StatsControllerTest < ActionController::TestCase
     @start = 1.month.ago
     @end = Date.today
     @stats =  [:notes, :comments, :users, :wikis, :questions, :answers, :tags, :node_tags]
+    activate_authlogic
   end
 
   test 'should assign correct value to graph_notes on GET stats' do
+    UserSession.create(users(:bob)) # we now require login for this page for load reasons
     Node.delete_all
     Node.create!(type: 'note', title:'blah', uid: 1, status: 1)
     get :index, params: { start: @start.to_s, end: @end.to_s }
@@ -16,6 +18,7 @@ class StatsControllerTest < ActionController::TestCase
   end
 
   test 'should assign correct value to graph_wikis on GET stats' do
+    UserSession.create(users(:bob)) # we now require login for this page for load reasons
     Node.delete_all
     Node.create(type: 'note', title: 'blah', uid: 1, status: 1)
     Node.create(type: 'page', title: 'blahblah', uid: 1, status: 1)
@@ -24,6 +27,7 @@ class StatsControllerTest < ActionController::TestCase
   end
 
   test 'should assign correct value to graph_comments on GET stats' do
+    UserSession.create(users(:bob)) # we now require login for this page for load reasons
     Comment.delete_all
     Comment.create!(comment: 'blah', timestamp: Time.now - 1)
     get :index, params: { start: @start.to_s, end: @end.to_s }
@@ -32,6 +36,7 @@ class StatsControllerTest < ActionController::TestCase
   end
 
   test 'should load stats range query' do
+    UserSession.create(users(:bob)) # we now require login for this page for load reasons
     get :index
     assert_response :success
     assert_not_nil assigns(:notes)
@@ -48,6 +53,7 @@ class StatsControllerTest < ActionController::TestCase
   end
 
   def csv_stats_download
+    UserSession.create(users(:bob)) # we now require login for this page for load reasons
     @stats.each do |action|
       test "should download #{action} as csv" do
         get action, params: { format: 'csv' }
@@ -59,6 +65,7 @@ class StatsControllerTest < ActionController::TestCase
   end
 
   def json_stats_downloads
+    UserSession.create(users(:bob)) # we now require login for this page for load reasons
     @stats.each do |action|
       test "should download #{action} as json" do
         get action, params: { format: 'json' }

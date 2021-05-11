@@ -1,4 +1,6 @@
 class StatsController < ApplicationController
+  before_action :require_user, only: %i(index range notes wikis users questions comments tags)
+
   def subscriptions
     @tags = Rails.cache.fetch("stats-subscriptions-query", expires_in: 24.hours) do
       TagSelection
