@@ -51,7 +51,7 @@ gem 'rdiscount', '~> 2.2'
 gem 'react-rails'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'responders', '~> 3.0'
-gem 'rubocop', '~> 1.13.0', require: false
+gem 'rubocop', '~> 1.14.0', require: false
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
 gem 'sentry-raven'
@@ -121,7 +121,7 @@ group :test, :development do
   gem 'minitest-reporters', '~> 1.4.3'
   gem 'openssl', '~> 2.2.0'
   gem 'phantomjs'
-  gem 'puma', '~> 5.2'
+  gem 'puma', '~> 5.3'
   gem 'rails-perftest'
   gem 'rake', '~> 13.0.3'
   gem 'rest-client'
