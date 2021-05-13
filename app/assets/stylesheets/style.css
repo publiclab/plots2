@@ -143,6 +143,10 @@ a .fa-white,
   min-width: 190px;
 }
 
+#header .navbar #searchform_input:focus {
+  box-shadow: 2px 3px rgba(21, 156, 228, 0.4) inset !important;
+}
+
 @media (max-width:992px) {
     #pl_pad {
         width:250%;
