@@ -34,6 +34,10 @@ notify everyone by referencing `@/all` and linking the post. Include a brief mes
 
 - Include sections from the [last check-in](https://github.com/publiclab/plots2/issues?q=is%3Aopen+is%3Aissue+label%3A%22community+check-in%22) that make sense to carry over. If you need a hint, reference the template, theme, or content of [past check-ins](https://github.com/publiclab/plots2/issues?utf8=%E2%9C%93&q=is%3Aissue+label%3A%22community+check-in%22+).
 
+## Celebrate recent contributors and newcomers!
+
+- Our Welcome Page shows [recent contributors](https://code.publiclab.org#recent-contributors), as well as [recent first-timers-only authors](https://code.publiclab.org/#fto-author) (issues welcoming in newcomers) and list usernames for each, which we can mention and thank or celebrate in the weekly check-in. Use some emoji to show appreciation for those who've been active recently! ✨ 🎉
+
 ## Thanks! 
 
 Thank you for helping us maintain our community! 🌐 🎉 
