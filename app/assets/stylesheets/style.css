@@ -348,7 +348,7 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active  {
-    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    -webkit-box-shadow: 0 0 0 3px rgba(21, 156, 228, 0.4) inset !important; /*See: https://github.com/publiclab/plots2/issues/9624*/
 }
 
 .form-element-valid {
