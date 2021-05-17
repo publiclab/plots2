@@ -266,11 +266,22 @@ class CommentTest < ApplicationSystemTestCase
       end
       # work with just the 2nd comment
       reply_toggles[1].click 
+
+      # check if the comment form reply textarea has no content on input field
+      assert_selector("#comment-form-reply-#{comment_ids[1]} textarea.text-input", text: "")
+
       # open the comment form by toggling, and fill in some text
       find("div#comment-#{comment_ids[1]}-reply-section textarea.text-input").click.fill_in with: 'H'
+      
       # open the other two comment forms
       reply_toggles[0].click
+      # check if the comment form reply textarea has no content on input field
+      assert_selector("#comment-form-reply-#{comment_ids[0]} textarea.text-input", text: "")
+
       reply_toggles[2].click
+      # check if the comment form reply textarea has no content on input field
+      assert_selector("#comment-form-reply-#{comment_ids[2]} textarea.text-input", text: "")
+      
       # fill them in with text
       find("div#comment-#{comment_ids[0]}-reply-section textarea.text-input").click.fill_in with: 'A'
       find("div#comment-#{comment_ids[2]}-reply-section textarea.text-input").click.fill_in with: 'Y'
