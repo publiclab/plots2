@@ -28,10 +28,12 @@ let fileUploadElements = [
       isButton: true
     }
   ]);
+  $('textarea#text-input-reply-<%= @comment.cid %>').val("");
 <% else %>
 // new comment IS a reply to another comment
 // no other elements need upload functionality
   $('#comment-<%= @comment.reply_to %>-reply-toggle').before('<%= escape_javascript(render :partial => "notes/comment", :locals => {comment: @comment, answer_id: @answer_id}) %>')
+  $('textarea#text-input-reply-<%= @comment.reply_to %>').val("");
 <% end %>
 // create image upload functionality for fresh comment's elements
 // see editorToolbar.js
