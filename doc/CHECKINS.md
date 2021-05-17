@@ -33,6 +33,7 @@ notify everyone by referencing `@/all` and linking the post. Include a brief mes
   - Troubleshot any issues that the rest of the community can learn from?
 
 - Include sections from the [last check-in](https://github.com/publiclab/plots2/issues?q=is%3Aopen+is%3Aissue+label%3A%22community+check-in%22) that make sense to carry over. If you need a hint, reference the template, theme, or content of [past check-ins](https://github.com/publiclab/plots2/issues?utf8=%E2%9C%93&q=is%3Aissue+label%3A%22community+check-in%22+).
+- [Here](https://github.com/publiclab/plots2/issues/9480) is an issue where we list and brainstorm check-in ideas
 
 ## Celebrate recent contributors and newcomers!
 
