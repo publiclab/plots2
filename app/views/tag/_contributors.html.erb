@@ -31,7 +31,7 @@
 <br />
 <% if @wildcard %>
   <p><%= raw translation('tag.contributors.wild_card_search_detected', :tag => params[:id]) %></p>
-<% elsif @note_count.nil? || @note_count == 0 %>
+<% elsif @contributor_count.nil? || @contributor_count == 0 %>
   <p><%= raw translation('tag.contributors.no_contributors', :tag => params[:id]) %></p>
 <% else %>
   <div class="row">
