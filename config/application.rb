@@ -55,7 +55,7 @@ module Plots2
     # Enable the asset pipeline
     config.assets.enabled = true
 
-    I18n.available_locales = [:en, :de, "zh-CN", :ar, :es, "hi-IN", :it, :ko, "pt-BR", :ru]
+    I18n.available_locales = [:en, :de, "zh-CN", :ar, :es, "hi-IN", :it, :ko, "pt-BR", :ru, :fr]
     config.i18n.default_locale = :en
 
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
