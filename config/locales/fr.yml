@@ -361,10 +361,10 @@ fr:
       questions: "Questions"
       wiki_pages: "Pages du wiki"
       maps: "Cartes"
-      no_results_found: "Aucun résultat trouvé en cherchant '%{search}'"
+      no_results_found: "Aucun résultat trouvé en cherchant '%{tag}'"
+      no_map_results_found: "Désolé, aucune carte n'est taguée avec <i>%{tag}</i>"
       try_advanced_search: "Ou essayez une <a href='%{url}'>recherche avancée</a>"
       people: "Personnes"
-      no_map_results_found: "Désolé, aucune carte n'est taguée avec <i>%{tag}</i>"
       contributors: "Contributeur·ices"
     contributors-index:
       contributors_over_last_week: "Contributeur·ices pour <i style=\"color:#aaa;\">%{tag_name}</i> au cours des 52 semaines "
