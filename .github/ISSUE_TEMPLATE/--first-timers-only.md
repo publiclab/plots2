@@ -1,5 +1,5 @@
 ---
-name: "First Timers Only issue"
+name: "\U00002728 First Timers Only issue"
 about: Open a First Timers Only issue for someone
 title: ''
 labels: first-timers-only
