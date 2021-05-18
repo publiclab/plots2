@@ -147,7 +147,7 @@ class TagController < ApplicationController
     @nodes = nodes if @node_type == 'maps'
     @title = params[:id]
 
-    @length = Tag.contributor_count(params[:id]) || 0
+    @contributor_count = Tag.contributor_count(params[:id]) || 0
 
     @tagnames = [params[:id]]
     @tag = Tag.find_by(name: params[:id])
@@ -217,7 +217,7 @@ class TagController < ApplicationController
     @nodes = nodes if @node_type == 'maps'
     @title = "'" + @tagname.to_s + "' by " + params[:author]
 
-    @length = Tag.contributor_count(params[:id]) || 0
+    @contributor_count = Tag.contributor_count(params[:id]) || 0
     respond_with(nodes) do |format|
       format.html { render 'tag/show' }
       format.xml  { render xml: nodes }
