@@ -4,12 +4,9 @@
     <% if params[:action] == "show" %>
       <% unless params[:id].match("question:") %>
         <li class="nav-item">
-          <a class="nav-link <% if @node_type == "note" %> active<% end %>" href="/tag/<%= params[:id] %>">
+          <a class="nav-link <% if @node_type == "note" %>active<% end %>" href="/tag/<%= params[:id] %>/author/<%= params[:author] %>">
             <i class="fa fa-file"></i> 
-            <span class="d-lg-inline"> 
-              <span class="d-none d-md-inline"><%= t('tag.show.research_notes') %></span>
-              <span class="d-none d-sm-inline badge badge-primary"><%= params[:counts][:posts] %></span>
-            </span>
+            <span class="d-lg-inline"><%= raw t('tag.show.research_notes') %></span>
           </a>
         </li>
       <% end %>
@@ -63,20 +60,23 @@
         </a>
       <% end %>
 
-      <a class="nav-item" <% if @node_type == "questions" %> class="active"<% end %> href="/questions/tag/<%= params[:id] %>/author/<%= params[:author] %>" >
-        <i class="fa fa-question-circle"></i> <span class="d-lg-inline"><%= t('tag.show.questions') %></span>
-      </a>
-      <a class="nav-item" <% if @node_type == "wiki" %> class="active"<% end %> href="/wiki/tag/<%= params[:id] %>/author/<%= params[:author] %>" >
-        <i class="fa fa-book"></i> <span class="d-lg-inline"><%= raw t('tag.show.wiki_pages') %></span>
-      </a>
-      <!--
-      <a class="nav-item" <% if @node_type == "maps" %> class="active"<% end %> href="/maps/tag/<%= params[:id] %>/author/<%= params[:author] %>" >
-        <i class="fa fa-map-marker"></i> <span class="d-lg-inline"><%= t('tag.show.maps') %></span>
-      </a>
-      -->
-      <a class="nav-item"<% if @node_type == "contributors" %> class="active"<% end %> href="#" rel="tooltip" title="Contributors can't be listed for tag searches with Authors" >
-        <i class="fa fa-user"></i> <span class="d-lg-inline"><%= raw t('tag.show.contributors') %></span>
-      </a>
+      <li class="nav-item">
+        <a class="nav-link<% if @node_type == "questions" %> active<% end %>" href="/questions/tag/<%= params[:id] %>/author/<%= params[:author] %>" >
+          <i class="fa fa-question-circle"></i> <span class="d-lg-inline"><%= t('tag.show.questions') %></span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link<% if @node_type == "wiki" %> active<% end %>" href="/wiki/tag/<%= params[:id] %>/author/<%= params[:author] %>" >
+          <i class="fa fa-book"></i> <span class="d-lg-inline"><%= raw t('tag.show.wiki_pages') %></span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link<% if @node_type == "contributors" %> active<% end %>" href="#" rel="tooltip" title="Contributors can't be listed for tag searches with Authors" >
+          <i class="fa fa-user"></i> <span class="d-lg-inline"><%= raw t('tag.show.contributors') %></span>
+        </a>
+      </li>
     <% end %>
   </ul>
 </div>
