@@ -20,7 +20,7 @@ Some of the most used labels are:-
 * ` design ` - This says that the issue requires more design work and discussion (i.e. mockups and sketches).
 * ` documentation ` - This tells that a certain feature lacks proper documentation or needs more documents. :orange_book:
 * ` testing ` - These issues are usually for adding `unit tests`, `integration tests` or any other tests for a particular feature/program. :heavy_check_mark:
- * ` outreach ` - The outreach issues involve community involvement and helping people who're stuck somewhere. :tada: :raising_hand_man:
+* ` outreach ` - The outreach issues involve community involvement and helping people who're stuck somewhere. :tada: :raising_hand_man:
 * Some issues have been labeled with ` summer-of-code ` , ` outreachy ` , ` first-timers-only `, ` gci-candidate ` and ` rgsoc ` which mean that these issues have been reserved for students who're participating in these events.
 * `brainstorm` - Issues that need discussion and requirements need to be elucidated
 
