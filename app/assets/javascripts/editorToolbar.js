@@ -98,7 +98,7 @@ $(function() {
             $(this).find("i").toggleClass("fa fa-save fas fa-sync fa-spin");
       
             //changing the text from "Upload an image" to "Saving..."
-            let saving_text = $('<p id="saving-text"> Saving... </p>');
+            let saving_text = $('<p id="saving-text" style="padding-bottom: 8px"> Saving... </p>');
             $("#comment-form-main .imagebar").prepend(saving_text);
             $("#comment-form-main .imagebar p").not("#saving-text").hide();
       
@@ -120,7 +120,7 @@ $(function() {
             $(this).find("i").toggleClass("fa fa-save fas fa-sync fa-spin");
     
             //changing the text from "Upload an image" to "Saving..."
-            let saving_text = $('<p id="saving-text"> Saving... </p>');
+            let saving_text = $('<p id="saving-text" style="padding-bottom: 8px"> Saving... </p>');
             $('#'+comment_reply_id).find(".imagebar").prepend(saving_text);
             $('#'+comment_reply_id).find(".imagebar p").not("#saving-text").hide();
     

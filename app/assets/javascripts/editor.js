@@ -137,7 +137,7 @@ class Editor {
        
        $("#comment-form-main .btn-toolbar #save-button-main").find("i").removeClass("fa fa-save").addClass("fas fa-sync fa-spin");
      
-       let saving_text = $('<p id="saving-text"> Saving... </p>');
+       let saving_text = $('<p id="saving-text" style="padding-bottom: 8px"> Saving... </p>');
        $("#comment-form-main .imagebar").prepend(saving_text);
        $("#comment-form-main .imagebar p").not("#saving-text").hide();
         
@@ -156,7 +156,7 @@ class Editor {
 
         $('#'+comment_temp_id).find('.btn-toolbar').find(".save-button").find("i").removeClass("fa fa-save").addClass("fas fa-sync fa-spin");
 
-        let saving_text = $('<p id="saving-text"> Saving... </p>');
+        let saving_text = $('<p id="saving-text" style="padding-bottom: 8px"> Saving... </p>');
         $('#'+comment_temp_id).find('.'+imager_bar).prepend(saving_text);
         $('#'+comment_temp_id).find('.'+imager_bar).find("p").not("#saving-text").hide();
 
