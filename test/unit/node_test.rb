@@ -392,7 +392,7 @@ class NodeTest < ActiveSupport::TestCase
   test 'should find all questions' do
     questions = Node.questions
     expected = [nodes(:question), nodes(:question2), nodes(:first_timer_question), nodes(:question3), nodes(:sun_question), nodes(:comment_question), nodes(:question_with_multiple_comments)]
-    assert_equal expected, questions
+    assert_equal expected.sort, questions.sort
   end
 
   test 'should find all activities associated with this node' do
