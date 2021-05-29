@@ -25,30 +25,38 @@
             <%# Follower count  %>
               <p style="display: inline-block; color: #808080;"><a style="text-decoration: underline; color: #808080;" href="/tag/<%= tag_name %>"><%= Tag.follower_count(tag_name) %> <%= translation('tag.show.following') %></a></p>
             </div>
-            <div class="card-body" style="padding:0.8em;">
+            <div class="card-body mr-3" style="padding:0.8em;">
             <%# First 3 notes in the Topic  %>
               <div class="node-list">
-                <div class="node-body">
-                    <% notes.each do |node|  %>
-                        <% shown_nids << node.id %>
-                        <% if node.main_image %>
-                          <img class="rounded-circle pull-left" id="profile-photo" style="width:20px; height:20px; margin-right:8px; display: inline-block;" src="<%= node.main_image.path(:default) %>" />
-                        <% elsif node.scraped_image %>
-                          <img class="rounded-circle pull-left" id="profile-photo" style="width:20px; height:20px; margin-right:8px; display: inline-block;" src="<%= node.scraped_image %>" />
-                        <% else %>
-                          <div class="circle"></div>
-                        <% end %>
-                      <div style="margin-left: 10px; display: grid;">
-                        <p>
-                          <a style="color: inherit;" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= (node.type == 'note') ? node.title : node.latest.title %></a>
-                          <span style="color: #808080;"><%= translation('tag.show.by') %> <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>">@<%= node.author.name %></a></span>
-                        </p>
+               <div class="row">
+                <% notes.each do |node|  %>
+                <% shown_nids << node.id %>
+                  <div class="col-md-4 card-responsive">
+                    <div class="card h-100" style="width: 14rem;">
+                      <% if node.main_image %>
+                          <img class="card-img-top" style="margin-bottom: 10px;" aria-hidden="true" src="<%= node.main_image.path(:default) %>" />
+                      <% elsif node.scraped_image %>
+                          <img class="card-img-top" style="margin-bottom: 10px;" aria-hidden="true" src="<%= node.scraped_image %>" />
+                      <% else %>
+                        <a class="imgg text-center" style="height:9em; margin-bottom: 10px; padding: 1rem;">
+                          <i class="fa fa-picture-o note-not" aria-hidden="true" style="color: #ccc; font-size: 6em;"></i>
+                        </a>
+                      <% end %>
+                      <div class="card-body">
+                          <h5 style="margin-bottom: 0px;" class="text-truncate"><a style="color: inherit; text-decoration: none;" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>" style="color: black"><%= (node.type == 'note') ? node.title : node.latest.title %></a></h5>
+                          <div style="font-size:1.0em;color:darkgray;">
+                              <p>
+                                 <%= translation('tag.show.by') %>
+                                  <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>" style="color: #303030">@<%= node.author.name %></a>
+                              </p>
+                          </div>
                       </div>
-                    <% end %>
+                    </div>
+                  </div>
+                <% end %>
                 </div>
               </div>
             </div>
-
             <div class="card-footer" style="background-color: inherit; border:none;">
               <% note_count = post_count(tag_name, 'note') %>
               <% wiki_count = post_count(tag_name, 'page') %>
@@ -93,8 +101,35 @@
     border-radius: 100%;
   }
 
+  .imgg {
+    background: #aaa;
+    display: flex;
+    align-items: center;
+  }
+
   .card-view a {
     display: revert;
   }
 
+ /* Small devices */
+  @media (min-width: 280px) and (max-device-width : 720px) {
+    .card-responsive {
+      margin-bottom: 21px;
+    }
+  }
+
+   /* Tablets */
+  @media (min-width: 768px) and (max-device-width : 1024px) {
+    .card-responsive {
+      margin-bottom: 21px;
+      margin-right: 48px;
+    }
+  }
+
+  /* Iphone 5 Responsiveness */
+  @media (min-width: 320px) and (max-width: 568px) {
+    .card-responsive {
+      margin-bottom: 8px;
+    }
+  }
 </style>
