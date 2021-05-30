@@ -20,16 +20,68 @@ class CommentTest < ApplicationSystemTestCase
     page_type == :wiki ? path + '/comments' : path
   end
 
-  # weird syntax, i know. 
-  #   most comment tests we can simply test on Research Note pages.
-  #   that's what this block is for.
+  comment_text = 'woot woot'
+  comment_response_text = 'wooly woot'
 
-  #   other comment tests can ALSO be tested on Wikis and Questions.
-  #   scroll past this block for those tests.
+  # comment system tests are divided into 3 parts:
+  #   1. basic CRUD in both React and Rails research notes
+  #   2. tests for research notes
+  #   3. tests for research notes, wikis, and questions
+
+  # PART 1: TESTS FOR BASIC CRUD (REACT & RAILS NOTES)
+  # system tests for BASIC commenting CRUD functionality:
+  #   create (posting comments & replies)
+  #   update (editing comments)
+  #   delete
+  [true, false].each do |is_testing_react|
+    page_type_string = is_testing_react ? 'react note' : 'rails note'
+    test_path = is_testing_react ? '?react=true' : ''
+
+    test "#{page_type_string}: post comment" do
+      visit nodes(:comment_note).path + test_path
+      main_comment_form = page.find('#comment-form-main')
+      # fill in comment text
+      main_comment_form
+        .find('#text-input-main')
+        .click
+        .fill_in with: comment_text
+      # click publish button
+      main_comment_form
+        .find('button', text: 'Publish')
+        .click
+      # wait for notyNotification to appear
+      find(".noty_body", text: "Comment Added!")
+      # assert that comment has appeared
+      assert_selector('#comments-list .comment-body p', text: comment_text)
+    end
+
+    test "#{page_type_string}: post REPLY to comment" do
+      visit nodes(:comment_note).path + test_path
+      # find the first comment
+      first_comment = page.first('.comment')
+      # click on the reply form toggle
+      first_comment
+        .find('p', text: 'Reply to this comment...')
+        .click
+      # enter text in reply form
+      first_comment.find('[id^=text-input-reply-]')
+        .click
+        .fill_in with: comment_response_text
+      # click publish button
+      first_comment
+        .find('button', text: 'Publish')
+        .click
+      # wait for notyNotification to appear
+      page.find(".noty_body", text: "Comment Added!")
+      assert_selector('.comment .comment .comment-body p', text: comment_response_text)
+    end
+  end
+
+  # PART 2: TESTS FOR RESEARCH NOTES ONLY
+  #    public lab has 3 different page types: research notes, wikis, and questions
+  #    to save testing resources, we can run most tests on just research notes
   { :note => :comment_note }.each do |page_type, node_name|
     page_type_string = 'note'
-    comment_text = 'woot woot'
-    comment_response_text = 'wooly woot'
 
     test "#{page_type_string}: addComment(comment_text)" do
       visit get_path(page_type, nodes(node_name).path)
@@ -58,26 +110,6 @@ class CommentTest < ApplicationSystemTestCase
       page.evaluate_script("addComment('#{comment_response_text}', '/comment/create/#{nodes(:comment_question).nid}', #{parent_id_num})")
       # assert that <div id="c1show"> has child div[div[p[text="wooly woot!"]]]
       assert_selector("#{'#c' + parent_id_num + 'show'} div div div p", text: comment_response_text)
-    end
-
-    test "#{page_type_string}: manual comment and reply to comment" do
-      visit get_path(page_type, nodes(node_name).path)
-      fill_in("body", with: comment_text)
-      # preview comment
-      find("#toggle-preview-button-main").click
-      find("p", text: comment_text)
-      # publish comment
-      click_on "Publish"
-      find(".noty_body", text: "Comment Added!")
-      find("p", text: comment_text)
-      # replying to the comment
-      first("p", text: "Reply to this comment...").click()
-      page.find('[id^=text-input-reply-]')
-        .click
-        .fill_in with: comment_response_text
-      # preview reply
-      first(".preview-btn").click
-      find("p", text: comment_response_text)
     end
 
     test "#{page_type_string}: toggle preview buttons work" do
@@ -425,14 +457,12 @@ class CommentTest < ApplicationSystemTestCase
     end
   end
 
-  # TESTS for ALL PAGE TYPES!
+  # PART 3: TESTS for ALL PAGE TYPES!
   #
   # the page_types are: Wikis, Research Notes, and Questions
   # defined in test/test_helper.rb
   page_types.each do |page_type, node_name|
     page_type_string = page_type.to_s
-    comment_text = 'woot woot'
-    comment_response_text = 'wooly woot'
 
     test "post #{page_type_string}, then comment on FRESH #{page_type_string}" do
       title_text, body_text = String.new, String.new
