@@ -4,7 +4,7 @@
   <div class="col-lg-8 col-md-7 col-sm-7 col-7">
     <div class="input-group">
       <form class="search-form-wiki form-inline" role="search" autocomplete="off">
-        <input type="text" class="search-wiki form-control form-control-sm" id="sidebar-searchform-input" style="width:70%;" placeholder="<%= translation('dashboard._wiki.search') %>" required>
+        <input type="text" class="search-wiki form-control form-control-sm" id="sidebar-searchform-input" style="width:70%;" placeholder="<%= t('dashboard._wiki.search') %>" required>
         <div class="input-group-append">
           <button class="btn btn-sm btn-outline-secondary" type="submit"><i class="fa fa-search"></i></button>
         </div>
@@ -13,8 +13,8 @@
     </div>
   </div>
 
-  <div class="col-xl-4 col-lg-5 col-md-5 col-5">
-    <a href="/wiki/new" class="btn btn-primary btn-sm text-white" type="button" >
+  <div class="col-xl-4 col-lg-5 col-md-5 col-5 btn btn-primary btn-sm" type="button" >
+    <a href="/wiki/new" class="text-white">
       <i class="fa fa-plus-circle text-white" ></i> 
         <%= translation('dashboard._wiki.new_page') %>
     </a>
