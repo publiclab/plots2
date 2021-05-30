@@ -154,7 +154,7 @@ module ApplicationHelper
     'is-active' if request.path == page
   end
 
-  def translation(key, options = {},html = true)
+  def translation(key, options = {}, html = true)
     translated_string = t(key, options)
     options[:fallback] = false
     translated_string2 = t(key, options)
