@@ -95,8 +95,6 @@
 
     $('.toc-list li').first().css('font-weight', '600');
 
-    console.log($('.js-toc .toc-list-item').first())
-
     $(document).on('click', function (e) {
       let tocBtn = $('#toc-menu')
       if(!tocBtn.is(e.target) && tocBtn.has(e.target).length === 0) {
