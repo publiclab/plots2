@@ -13,6 +13,8 @@
             <img class="rounded-circle" id="profile-photo" style="width:20px; height:20px; margin-right:8px; display: inline-block;" src="<%= node.main_image.path(:default) %>" />
           <% elsif node.scraped_image %>
             <img class="rounded-circle" id="profile-photo" style="width:20px; height:20px; margin-right:8px; display: inline-block;" src="<%= node.scraped_image %>" />
+          <% else %>
+            <div class="circle"></div>
           <% end %>
           <a class="post-title" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= (node.type == 'note') ? node.title : node.latest.title %></a>
           &nbsp; by @<%= node.author.name %>
