@@ -38,8 +38,8 @@
                       <% elsif node.scraped_image %>
                           <img class="card-img-top" style="margin-bottom: 10px;" aria-hidden="true" src="<%= node.scraped_image %>" />
                       <% else %>
-                        <a class="imgg text-center" style="background: #aaa; margin-bottom: 10px; padding: 3rem;">
-                          <i class="fa fa-picture-o note-not" aria-hidden="true" style="color: #ccc; font-size: 6em;"></i>
+                        <a class="imgg" style="background: #aaa; margin-bottom: 10px;">
+                          <i class="fa fa-picture-o image-block" aria-hidden="true" style="color: #ccc; font-size: 6em; padding: 1.5rem;"></i>
                         </a>
                       <% end %>
                       <div class="card-body">
@@ -107,8 +107,13 @@
 
   .imgg,
   .card-img-top {
-    height: 9vw;
+    height: 9rem;
     object-fit: cover;
+  }
+
+  .image-block {
+    justify-content: center;
+    display: flex;
   }
 
  /* Small devices */
