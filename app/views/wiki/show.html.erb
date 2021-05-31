@@ -20,7 +20,7 @@
 
 <div class="row">
 
-<div class="col-lg-9">
+<div class="col-lg-9" id="main-content">
 
   <%= render partial: "wiki/header" %>
 
@@ -75,5 +75,37 @@
     <% end %>
 
     setupWiki(<%= @node.id %>, "<%= @node.title %>", <%= params[:raw] == 'true' %>, <%= current_user.nil? != true %>);
+
+    $('#main-content h1, h2, h3, h4, h5, h6').each(function (){
+      //convert the heading's text to lowercase and remove all spaces
+      let headingId = $(this).text().toLowerCase().replace(/\s/g, '');
+      $(this).attr('id', headingId);
+    });
+
+    tocbot.init({
+      // Where to render the table of contents.
+      tocSelector: '.js-toc',
+      // Where to grab the headings to build the table of contents.
+      contentSelector: '#main-content',
+      // Which headings to grab inside of the contentSelector element.
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      // For headings inside relative or absolute positioned containers within content.
+      hasInnerContainers: true,
+    });
+
+    $('.toc-list li').first().css('font-weight', '600');
+
+    console.log($('.js-toc .toc-list-item').first())
+
+    $(document).on('click', function (e) {
+      let tocBtn = $('#toc-menu')
+      if(!tocBtn.is(e.target) && tocBtn.has(e.target).length === 0) {
+        //closes the menu when there's a click outside the menu
+        $('details').removeAttr('open');
+        tocBtn.removeClass('toc-active');
+      } else {
+        tocBtn.addClass('toc-active');
+      }
+    });
   });
 </script>
