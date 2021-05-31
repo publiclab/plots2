@@ -34,7 +34,7 @@
       <% if @node.status == 0 || @node.status == 4 %><span class="badge badge-danger"><%= translation('notes.show.unpublished') %></span> | <% end %>
       <% if @node.status == 3 %><span class="badge badge-success">Draft</span> | <% end %>
       by <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> <%= @node.author.new_contributor %>
-      <% if @node.has_power_tag('with') %>with <% @node&.coauthors&.each_with_index do |coauthor,i| %>
+      <% if @node.has_power_tag('with') %>, <% @node&.coauthors&.each_with_index do |coauthor,i| %>
               <a href="/profile/<%= coauthor.username %>">
                 <%= coauthor.username%></a> <%= coauthor.new_contributor %>
               <%= ',' if i < @node.coauthors.size-1 %><% end %><% end %>
