@@ -19,13 +19,13 @@ class LegacyController < ApplicationController
     redirect_to URI.parse('/profile/' + params[:id]).path, status: 301
   end
 
-  def place
-    redirect_to URI.parse('/wiki/' + params[:id]).path, status: 301
-  end
+  # def place
+  #   redirect_to URI.parse('/wiki/' + params[:id]).path, status: 301
+  # end
 
-  def tool
-    redirect_to URI.parse('/wiki/' + params[:id]).path, status: 301
-  end
+  # def tool
+  #   redirect_to URI.parse('/wiki/' + params[:id]).path, status: 301
+  # end
 
   def openid
     user = User.find params[:id]

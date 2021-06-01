@@ -524,7 +524,7 @@ class Node < ActiveRecord::Base
     icon = 'book' if type == 'page'
     icon = 'map-marker' if type == 'map'
     icon = 'flag' if has_tag('chapter')
-    icon = 'wrench' if type == 'tool'
+    # icon = 'wrench' if type == 'tool'
     icon = 'question-circle' if has_power_tag('question')
     icon
   end
@@ -553,7 +553,7 @@ class Node < ActiveRecord::Base
   end
 
   def edit_path
-    path = if type == 'page' || type == 'tool' || type == 'place'
+    path = if type == 'page'
              '/wiki/edit/' + self.path.split('/').last
            else
              '/notes/edit/' + id.to_s
