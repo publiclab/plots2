@@ -75,6 +75,35 @@ class CommentTest < ApplicationSystemTestCase
       page.find(".noty_body", text: "Comment Added!")
       assert_selector('.comment .comment .comment-body p', text: comment_response_text)
     end
+
+    test "#{page_type_string}: edit comment" do
+      nodes(:comment_note).add_comment({
+        uid: 2,
+        body: comment_text
+      })
+      visit nodes(:comment_note).path + test_path
+      # open up the edit comment form
+      page
+        .find('.edit-comment-btn')
+        .click
+      # find the edit form's textarea
+      textarea = page.find('[id^=text-input-edit-]', text: comment_text)
+      # extract the comment's ID from the textarea
+      textarea_id = textarea[:id]
+      comment_id_num = /text-input-edit-(\d+)/.match(textarea_id)[1]
+      # click on the textarea, and enter updated comment text
+      textarea
+        .click
+        .fill_in with: 'new comment text!'
+      # click the publish button
+      page
+        .find('#comment-form-edit-' + comment_id_num)
+        .find('button', text: 'Publish')
+        .click
+      # revisit the page. why? currently rails comments reload the page, react comments don't reload, but update the DOM.
+      visit nodes(:comment_note).path + test_path
+      assert_selector('#comments-list .comment-body p', text: 'new comment text!')
+    end
   end
 
   # PART 2: TESTS FOR RESEARCH NOTES ONLY
@@ -245,28 +274,6 @@ class CommentTest < ApplicationSystemTestCase
       assert_selector('.btn[data-original-title="Save"]', count: 1)
       assert_selector('.btn[data-original-title="Recover"]', count: 1)
       assert_selector('.btn[data-original-title="Help"]', count: 1)
-    end
-
-    test "#{page_type_string}: edit comment" do
-      nodes(node_name).add_comment({
-        uid: 2,
-        body: comment_text
-      })
-      visit get_path(page_type, nodes(node_name).path)
-      # Edit the comment
-      page.execute_script <<-JS
-        var comment = $(".comment")[1];
-        var commentID = comment.id;
-        var editCommentBtn = $(comment).find('.navbar-text .edit-comment-btn')
-        // Toggle edit mode
-        $(editCommentBtn).click()
-        var commentTextarea = $('#text-input-edit-' + commentID);
-        $(commentTextarea).val('Updated comment.')
-        var submitCommentBtn = $('#' + commentID + ' .control-group .btn-primary')[1];
-        $(submitCommentBtn).click()
-      JS
-      message = find('.alert-success', match: :first).text
-      assert_equal( "×\nComment updated.", message)
     end
 
     test "#{page_type_string}: react and unreact to comment" do
