@@ -42,12 +42,14 @@ const CommentsList = ({
   
       // each comment comes with a button to toggle edit form visible
       const toggleEditButton = <CommentToolbarButton 
+        buttonType="edit"
         icon={<i className="fa fa-pencil"></i>}
         onClick={() => handleFormVisibilityToggle("edit-" + comment.commentId)}
       />;
   
       // and a delete button
       const deleteButton = <CommentToolbarButton
+        buttonType="delete"
         icon={<i className='icon fa fa-trash'></i>}
         onClick={() => handleDeleteComment(comment.commentId)}
       />;
