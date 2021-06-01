@@ -12893,6 +12893,11 @@ to-space-case@0.1.2:
   dependencies:
     to-no-case "0.1.1"
 
+tocbot@^4.12.3:
+  version "4.12.3"
+  resolved "https://registry.yarnpkg.com/tocbot/-/tocbot-4.12.3.tgz#173dd144835d54f4c60cc57b2dbe569e10df0b74"
+  integrity sha512-1uA4rNZgY3a9OjwmIV076ksNr72PdxlLj7DD+0pKXUh1vNf6/GRL8nJT4ZtmhX9NRVPLPOehe0NEmwf2ukDTSg==
+
 toidentifier@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/toidentifier/-/toidentifier-1.0.0.tgz#7e1be3470f1e77948bc43d94a3c8f4d7752ba553"
