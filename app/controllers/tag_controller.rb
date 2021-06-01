@@ -386,7 +386,7 @@ class TagController < ApplicationController
         end
       end
     elsif node_tag.name == "locked"
-      flash[:error] = "You cannot delete the locked tag."
+      flash[:error] = "Only admins can delete the locked tag."
       redirect_to Node.find_by(nid: params[:nid]).path
     else
       flash[:error] = I18n.t('tag_controller.must_own_tag_to_delete')
