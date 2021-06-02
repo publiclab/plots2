@@ -78,7 +78,7 @@
         </a>
       <% end %>
       <% if logged_in_as(['admin', 'moderator']) || (current_user && (comment.uid == current_user.uid || comment.parent.uid == current_user.uid)) %>
-        <a aria-label="Delete Comment" data-toggle="tooltip" title="Delete Comment" class="btn btn-outline-secondary btn-sm" id="c<%= comment.cid %>delete-btn">
+        <a aria-label="Delete Comment" data-toggle="tooltip" title="Delete Comment" class="btn btn-outline-secondary btn-sm delete-comment-btn" id="c<%= comment.cid %>delete-btn">
           <i class='icon fa fa-trash'></i>
         </a>
       <% end %>
