@@ -104,6 +104,28 @@ class CommentTest < ApplicationSystemTestCase
       visit nodes(:comment_note).path + test_path
       assert_selector('#comments-list .comment-body p', text: 'new comment text!')
     end
+
+    test "#{page_type_string}: delete comment" do
+      # add comment by test user before page loads
+      # after this, there should be 2 comments total
+      nodes(:comment_note).add_comment({
+        uid: 2,
+        body: comment_text
+      })
+      visit nodes(:comment_note).path + test_path
+      # click the delete button
+      comment = page.all('.delete-comment-btn')[1].click
+      if !is_testing_react
+      # there's an extra step to confirm deletion in rails commenting system
+        page
+          .find('button', text: 'confirm')
+          .click
+      end
+      wait_for_ajax
+      number_of_comments = page.all('.comment').length
+      # after deleting 1 comment, there should be 1 left.
+      assert_equal(number_of_comments, 1)
+    end
   end
 
   # PART 2: TESTS FOR RESEARCH NOTES ONLY
@@ -240,28 +262,6 @@ class CommentTest < ApplicationSystemTestCase
       JS
       assert_selector('#comments-list .comment', count: 2)
       assert_selector('.noty_body', text: 'Comment Added!')
-    end
-
-    test "#{page_type_string}: comment deletion" do
-      visit get_path(page_type, nodes(node_name).path)
-      # Create a comment
-      main_comment_form =  page.find('h4', text: /Post comment|Post Comment/).find(:xpath, '..') # title text on wikis is 'Post comment'
-      # fill out the comment form
-      main_comment_form
-        .find('textarea')
-        .click
-        .fill_in with: comment_text
-      # publish
-      main_comment_form
-        .find('button', text: 'Publish')
-        .click
-      page.find(".noty_body", text: "Comment Added!")
-      # Delete a comment
-      find('.btn[data-original-title="Delete Comment"]', match: :first).click()
-      # Click "confirm" on modal
-      page.evaluate_script('document.querySelector(".jconfirm-buttons .btn:first-of-type").click()')
-      assert_selector('#comments-list .comment', count: 1)
-      assert_selector('.noty_body', text: 'Comment deleted')
     end
 
     test "#{page_type_string}: formatting toolbar is rendered" do
