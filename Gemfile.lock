@@ -55,11 +55,11 @@ GEM
     ansi (1.5.0)
     arel (9.0.0)
     ast (2.4.2)
-    authlogic (4.4.2)
-      activerecord (>= 4.2, < 5.3)
-      activesupport (>= 4.2, < 5.3)
+    authlogic (6.4.1)
+      activemodel (>= 5.2, < 6.2)
+      activerecord (>= 5.2, < 6.2)
+      activesupport (>= 5.2, < 6.2)
       request_store (~> 1.0)
-      scrypt (>= 1.2, < 4.0)
     authlogic-oid (1.0.4)
       authlogic
     babel-source (5.8.35)
@@ -145,7 +145,7 @@ GEM
     faraday-excon (1.1.0)
     faraday-net_http (1.0.1)
     faraday-net_http_persistent (1.1.0)
-    ffi (1.15.0)
+    ffi (1.15.1)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
@@ -443,7 +443,7 @@ GEM
       declarative (< 0.1.0)
       trailblazer-option (>= 0.1.1, < 0.2.0)
       uber (< 0.2.0)
-    request_store (1.4.1)
+    request_store (1.5.0)
       rack (>= 1.4)
     responders (3.0.1)
       actionpack (>= 5.0)
@@ -603,7 +603,7 @@ PLATFORMS
 DEPENDENCIES
   action-cable-testing
   activerecord-session_store
-  authlogic (= 4.4.2)
+  authlogic (= 6.4.1)
   authlogic-oid
   byebug
   capybara
