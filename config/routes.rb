@@ -334,7 +334,6 @@ Plots2::Application.routes.draw do
   get 'admin/publish_comment/:id' => 'admin#publish_comment'
   get 'admin/mark_comment_spam/:id' => 'admin#mark_comment_spam'
   get 'smtp_test' => 'admin#smtp_test'
-  get 'notes/lock_note/:id' => 'notes#lock_note'
 
   get 'post' => 'editor#post', :as => :editor_post
   post 'post' => 'editor#post', :as => :editor_path

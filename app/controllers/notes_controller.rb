@@ -206,12 +206,6 @@ class NotesController < ApplicationController
     render template: 'notes/show'
   end
 
-  def lock_note
-    @node = Node.find(params[:id])
-    @node.add_tag('locked', current_user)
-    redirect_to URI.parse(@node.path).path
-  end
-
   def edit
     @node = Node.find_by(nid: params[:id], type: 'note')
 

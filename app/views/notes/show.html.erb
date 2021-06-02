@@ -87,7 +87,7 @@
   <% end %>
 
   <% if current_user && ( current_user.role == "admin" || current_user.role == "moderator") && !(@node.has_tag('locked')) %>
-    <%= link_to "Lock Note", "/notes/lock_note/#{@node.id}" %>
+    <a href="javascript:window.location.reload(true)" onClick="addTag('locked');">Lock Note</a>
   <% end %>
 
   <% if current_user && 
