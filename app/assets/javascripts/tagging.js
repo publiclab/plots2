@@ -140,7 +140,7 @@ function promptTag(val) {
       break;
 
     default:
-      addTag(expr);
+      addTag(val);
       break;
 
   }

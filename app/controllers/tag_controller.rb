@@ -359,7 +359,7 @@ class TagController < ApplicationController
     node_tag = NodeTag.where(nid: params[:nid], tid: params[:tid]).first
     node = Node.where(nid: params[:nid]).first
     # only admins, mods, and tag authors can delete other peoples' tags
-    if node_tag.uid == current_user.uid || logged_in_as(['admin', 'moderator']) || node.uid == current_user.uid
+    if node_tag.uid == current_user.uid || logged_in_as(['admin', 'moderator']) || (node.uid == current_user.uid && node_tag.name != "locked")
 
       tag = Tag.joins(:node_tag)
                    .select('term_data.name')
@@ -385,6 +385,9 @@ class TagController < ApplicationController
           end
         end
       end
+    elsif node_tag.name == "locked"
+      flash[:error] = "Only admins can delete the locked tag."
+      redirect_to Node.find_by(nid: params[:nid]).path
     else
       flash[:error] = I18n.t('tag_controller.must_own_tag_to_delete')
       redirect_to Node.find_by(nid: params[:nid]).path
