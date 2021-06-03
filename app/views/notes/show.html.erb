@@ -86,6 +86,10 @@
     </table>
   <% end %>
 
+  <% if current_user && ( current_user.role == "admin" || current_user.role == "moderator") && !(@node.has_tag('locked')) %>
+    <a href="javascript:window.location.reload(true)" onClick="addTag('locked');">Lock Note</a>
+  <% end %>
+
   <% if current_user && 
     ( current_user.role == "admin" || current_user.role == "moderator" || 
       current_user.id == @node.id || current_user.is_coauthor?(@node) ) && 
