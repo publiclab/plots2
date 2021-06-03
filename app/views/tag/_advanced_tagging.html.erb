@@ -10,15 +10,15 @@
   <% end %>
   <div class="dropdown-divider"></div>
   <% if @node && @node.type == "page" %>
-    <a class="dropdown-item" href="javascript:window.location.reload(true)" data-value="parent:">Link to a "parent" page (wikis only)</a>
-    <a class="dropdown-item" href="javascript:window.location.reload(true)" data-value="style:">Add style</a>
-    <a class="dropdown-item" href="javascript:window.location.reload(true)" data-value="lang:">Add Translation widget</a>
+    <a class="dropdown-item" href="#" data-value="parent:">Link to a "parent" page (wikis only)</a>
+    <a class="dropdown-item" href="#" data-value="style:">Add style</a>
+    <a class="dropdown-item" href="#" data-value="lang:">Add Translation widget</a>
   <% else %>
-    <a class="dropdown-item" href="javascript:window.location.reload(true)" data-value="seeks:photos">Request response photos</a>
-    <a class="dropdown-item" href="javascript:window.location.reload(true)" data-value="hidden:response">Hide responses from dashboard</a>
-    <a class="dropdown-item" href="javascript:window.location.reload(true)" data-value="with:">Add Coauthor (notes only)</a>
-    <a class="dropdown-item" href="javascript:window.location.reload(true)" data-value="series:">Mark as part of a series</a>
-    <a class="dropdown-item" href="javascript:window.location.reload(true)" data-value="comment-template:">Add template to the comment form</a>
+    <a class="dropdown-item" href="#" data-value="seeks:photos">Request response photos</a>
+    <a class="dropdown-item" href="#" data-value="hidden:response">Hide responses from dashboard</a>
+    <a class="dropdown-item" href="#" data-value="with:">Add Coauthor (notes only)</a>
+    <a class="dropdown-item" href="#" data-value="series:">Mark as part of a series</a>
+    <a class="dropdown-item" href="#" data-value="comment-template:">Add template to the comment form</a>
     <a class="dropdown-item" target="_blank" href="/wiki/comment-templates">Write a template for the comment form</a>
   <% end %>
   <div class="dropdown-divider"></div>
@@ -33,6 +33,7 @@
       $( this ).click(function(event){
         var val = $(event.target).attr('data-value');
         promptTag(val);
+        window.location.reload();
       });
     });
 
