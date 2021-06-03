@@ -66,7 +66,7 @@ class SearchService
 
   def search_wikis(input, limit = 25, order = :natural, type = :boolean)
     Node.search(query: input, order: order, type: type, limit: limit)
-        .where("`node`.`type` = 'page' OR `node`.`type` = 'place' OR `node`.`type` = 'tool'")
+        .where("`node`.`type` = 'page'")
   end
 
   def search_maps(input, limit = 25, order = :natural, type = :boolean)
