@@ -9,7 +9,7 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         label: work-in-progress
-        tyle: add
+        type: add
 
   unit-tests:
     runs-on: ubuntu-latest
@@ -131,6 +131,7 @@ jobs:
 
   remove-labels:
     runs-on: ubuntu-latest
+    needs: [add-label, unit-tests, functional-tests, integration-tests, system-tests]
     steps:
     - uses: buildsville/add-remove-label@v1
       with:
