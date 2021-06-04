@@ -2,6 +2,15 @@ name: tests
 on: [pull_request]
 jobs:
 
+  add-label:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: buildsville/add-remove-label@v1
+      with:
+        token: ${{ secrets,GITHUB_TOKEN }}
+        label: work-in-progress
+        tyle: add
+
   unit-tests:
     runs-on: ubuntu-latest
     steps:
@@ -119,3 +128,17 @@ jobs:
         export DISPLAY=:99
         chromedriver --url-base=/wd/hub &
         bundle exec rails test:system
+
+  remove-labels:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: buildsville/add-remove-label@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        label: Work In Progress
+        type: remove
+    - uses: buildsville/add-remove-label@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        label: ready-for-review
+        type: add
