@@ -7,7 +7,7 @@ jobs:
     steps:
     - uses: buildsville/add-remove-label@v1
       with:
-        token: ${{ secrets,GITHUB_TOKEN }}
+        token: ${{ secrets.GITHUB_TOKEN }}
         label: work-in-progress
         tyle: add
 
