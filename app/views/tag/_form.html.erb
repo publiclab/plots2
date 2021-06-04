@@ -3,7 +3,7 @@
 <form id="tagform" class="form" data-remote="true" action="<%= url %>">
   <div class="control-group">
     <input class="form-control" name="remote" type="hidden" value="true" />
-    <% if @node && @node.has_tag('locked') && (current_user.role != "admin" || current_user.role != "moderator") %>
+    <% if @node && @node.has_tag('locked') && (current_user.role != "admin" && current_user.role != "moderator") %>
       <div class="modal-dialog" >
         <div class="modal-content">
           <div class="modal-body">
