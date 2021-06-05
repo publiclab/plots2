@@ -84,6 +84,11 @@ a.navbar-offset {
   overflow: auto;
   line-height: 2;
   border: 1px solid #e1e4e8;
+  z-index: 1000;
+}
+
+.js-toc > .toc-list {
+  margin-top: 20px;
 }
 
 .toc-list {
