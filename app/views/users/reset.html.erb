@@ -11,9 +11,9 @@
 <form class='form'>
 
   <input class="form-control" name="key" type="hidden" value="<%= params[:key] %>" /> 
-  <input class="form-control" name="user[username]" placeholder="<%= translation('users.reset.username_placeholder') %>" tabindex='2' type="text" /> <br />
-  <input class="form-control" name="user[password]" placeholder="<%= translation('users.reset.password_placeholder') %>" tabindex='3' type="password" /> <br />
-  <input class="form-control" name="user[password_confirmation]" placeholder="<%= translation('users.reset.retype_password_placeholder') %>" tabindex='4' type="password" /> <br />
+  <input class="form-control" name="user[username]" placeholder="<%= translation('users.reset.username_placeholder',{},false) %>" tabindex='2' type="text" /> <br />
+  <input class="form-control" name="user[password]" placeholder="<%= translation('users.reset.password_placeholder',{},false) %>" tabindex='3' type="password" /> <br />
+  <input class="form-control" name="user[password_confirmation]" placeholder="<%= translation('users.reset.retype_password_placeholder',{},false) %>" tabindex='4' type="password" /> <br />
 
   <button class="btn btn-lg btn-primary" type="submit" tabindex="5"><%= translation('users.reset.save') %></button>
 
