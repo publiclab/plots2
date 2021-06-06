@@ -63,6 +63,16 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_equal '/questions', path
   end
+  
+  test 'should redirect to dashboard when logging in from /login' do
+    get '/login'
+    assert_response :success
+
+    post '/user_sessions', params: { return_to: request.path, user_session: { username: users(:jeff).username,  password: 'secretive' }  }
+
+    follow_redirect!
+    assert_equal '/dashboard', path
+  end
 
   test 'google login routing' do
     assert_routing '/auth/google_oauth2/callback', {controller: 'user_sessions', action: 'create',provider: 'google_oauth2'}
