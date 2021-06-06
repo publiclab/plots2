@@ -36,4 +36,8 @@ class NodeTag < ApplicationRecord
     tag.latest_activity_nid = nid
     tag.save
   end
+
+  def location_tag?
+    name.include?('lon:') || name.include?('lat:')
+  end
 end
