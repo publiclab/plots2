@@ -1,4 +1,10 @@
 <% user = user || @user # allow overriding w/ local variable %>
+<style>
+  .popover {
+    max-width: 300px
+  }
+</style>
+
 <div class="tags-list">
 <% tags.each_with_index do |tag, i| %>
   <% if !tag.try(:author).banned? %>
