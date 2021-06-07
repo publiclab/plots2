@@ -7,7 +7,7 @@
 
 <div class="tags-list">
 <% tags.each_with_index do |tag, i| %>
-  <% if !tag.try(:author).banned? %>
+  <% if tag.try(:author) && !tag.try(:author).banned? %>
     <% if tag.class == NodeTag %>
 
       <% if !power_tag && i < 2 # just the first 2 get special display, power tags excluded %>
