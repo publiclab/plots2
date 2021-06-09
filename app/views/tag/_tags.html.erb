@@ -17,9 +17,20 @@
         <a class="show-more-tags" href="javascript:void(0);"><p style="float:left; color:#666; margin-top:14px; margin-left:5px;"><u><%= tags.length - 2 %> more</u> &nbsp </p></a>
       <% end %>
 
-      <p class="badge <%= badge_name %> pop more-tags" style="display:none;cursor:pointer;margin-bottom:3px;" id="tag_<%= tag.tid %>" data-toggle="popover" data-trigger="focus" data-count=0 data-placement="top" data-content="<p style='text-align:center;'><a href='/tag/<%= tag.name %>'><%= Tag.tagged_node_count(tag.name) || 0 %> notes</a> - <a href='/contributors/<%= tag.name %>'><%= Tag.contributors(tag.name).count %> people <br></a></p><% if tag.location_tag? %><p>This is a geographical tag for placing this content on a map. Please visit our <a href='https://publiclab.org/wiki/location-privacy'>location privacy</a> page. </p><% end %> <p style='text-align:center;font-size:12px;'><%if tag.description %><%= tag.description %> |<% end %> created by <a href='/profile/<%= tag.try(:author).try(:username) %>'><%= tag.try(:author).try(:username) %></a> <%= time_ago_in_words(Time.at(tag.date)) %> ago </p><div class='text-center'><a href='/subscribe/tag/<%= tag.name %>' class='btn btn-primary'>Follow</a></div>" data-html="true" title="<%= tag.name %>">
-        <a class='tag-name' href='/tag/<%= tag.name %>'><%= tag.name %></a>
-        <% if logged_in_as(['admin', 'moderator']) || (current_user && ( current_user.uid ==  @node.uid || current_user.uid == tag.uid)) %>
+       <p 
+        class="badge <%= badge_name %> pop more-tags" 
+        style="display:none;cursor:pointer;margin-bottom:3px;"
+        id="tag_<%= tag.tid %>" 
+        data-toggle="popover"
+        data-trigger="focus"
+        data-count=0 
+        data-placement="top" 
+        data-content="<p style='text-align:center;'><a href='/tag/<%= tag.name %>'><%= Tag.tagged_node_count(tag.name) || 0 %> notes</a> - <a href='/contributors/<%= tag.name %>'><%= Tag.contributors(tag.name).count %> people <br></a></p><% if tag.location_tag? %><p>This is a geographical tag for placing this content on a map. Please visit our <a href='https://publiclab.org/wiki/location-privacy'>location privacy</a> page. </p><% end %> <p style='text-align:center;font-size:12px;'><%if tag.description %><%= tag.description %> |<% end %> created by <a href='/profile/<%= tag.try(:author).try(:username) %>'><%= tag.try(:author).try(:username) %></a> <%= time_ago_in_words(Time.at(tag.date)) %> ago </p><div class='text-center'><a href='/subscribe/tag/<%= tag.name %>' class='btn btn-primary'>Follow</a></div>" 
+        data-html="true" 
+        title="<%= tag.name %>"
+        >
+          <a class='tag-name' href='/tag/<%= tag.name %>'><%= tag.name %></a>
+          <% if logged_in_as(['admin', 'moderator']) || (current_user && ( current_user.uid ==  @node.uid || current_user.uid == tag.uid)) %>
           <% if tag.name.include? ':' %>
             <a aria-label="Delete tag" data-confirm="This is a power tag (see https://publiclab.org/wiki/power-tags) -- and may drive a specific function on this page. Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/tag/delete/<%= @node.id %>/<%= tag.tid %>" data-tag-id="<%= tag.tid %>" data-method="delete"><i class='fa fa-times-circle fa-white blue pl-1' aria-hidden='true' ></i></a>
           <% else %>
