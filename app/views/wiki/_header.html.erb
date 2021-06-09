@@ -42,6 +42,10 @@
         <a aria-label="Practice in a realtime doc" href="/talk/<%= @node.slug_from_path %>" rel="tooltip" title="Practice in a realtime doc." data-placement="top"><i class="fa fa-comment"></i></a> |
         <a aria-label="Link to wiki" href="/n/<%= @node.id %>"><i style="color:#888;" class="fa fa-link"></i></a> <span class="d-none d-xl-inline"><a href="/n/<%= @node.id %>">#<%= @node.id %></a></span>
       </span>
+      <details class="d-inline-flex flex-column position-relative">
+        <summary id="toc-menu" class="btn btn-light" role="button" aria-label="Table of Contents" aria-haspopup="menu"><i class="fa fa-list-ul" aria-hidden="true"></i></summary>
+        <span class="js-toc position-absolute shadow p-0 rounded" role="menu"></span>
+      </details>
     </div>
   </div>
 </div>

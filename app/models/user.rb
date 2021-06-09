@@ -147,6 +147,10 @@ class User < ActiveRecord::Base
     admin? || moderator?
   end
 
+  def basic_user?
+    can_moderate? ? false : true
+  end
+
   def is_coauthor?(node)
     id == node.author.id || node.has_tag("with:#{username}")
   end

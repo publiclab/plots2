@@ -51,7 +51,7 @@ gem 'rdiscount', '~> 2.2'
 gem 'react-rails'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'responders', '~> 3.0'
-gem 'rubocop', '~> 1.15.0', require: false
+gem 'rubocop', '~> 1.16.0', require: false
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
 gem 'sentry-raven'
@@ -92,7 +92,7 @@ group :mysql, :production do
 end
 
 group :sqlite, :development do
-  gem 'sqlite3', '~> 1.3.6'
+  gem 'sqlite3', '~> 1.4.2'
 end
 
 gem 'coffee-rails', '~> 5.0.0'

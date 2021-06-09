@@ -29,10 +29,11 @@
 
   $(document).ready(function(){
 
-    $( "#pt-list > li " ).each(function() {
+    $( "#pt-list" ).each(function() {
       $( this ).click(function(event){
         var val = $(event.target).attr('data-value');
         promptTag(val);
+        window.location.reload();
       });
     });
 
