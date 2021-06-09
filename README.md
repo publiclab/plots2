@@ -148,6 +148,16 @@ Public Lab uses Redis and may be required for some functionality when running th
 1. Install Redis if you haven't already:
   * Using **MacOS**: `brew install redis`
   * Using **Linux**: `sudo yum -y install redis`
+  * Using **Ubuntu WSL2**:
+  	* update & upgrade Ubuntu: `sudo apt update && apt upgrade`
+	* install redis: `sudo apt install Redis-server`
+	* open Redis.config file: `sudo nano /etc/redis/redis.conf`
+	* update the file by changing the supervised no line to supervised systemd(ubuntu uses systemd)
+	* start Redis: `sudo service redis-server start`
+	* open Redis CLI: `redis-cli`
+	* test Redis: type `ping` & response should be `pong`
+	* exit cli: type `quit`
+	* Awesome :thumbsup: All done :white_check_mark:
 2. Run Redis server:
   * Using **MacOS**: `brew services start redis`
   * Using **Linux**: `redis-server`
