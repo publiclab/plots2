@@ -32,10 +32,11 @@
         >
           <a class='tag-name' href='/tag/<%= tag.name %>'><%= tag.name %></a>
           <% if logged_in_as(['admin', 'moderator']) || (current_user && ( current_user.uid ==  @node.uid || current_user.uid == tag.uid)) %>
-          <% if tag.name.include? ':' %>
-            <a aria-label="Delete tag" data-confirm="This is a power tag (see https://publiclab.org/wiki/power-tags) -- and may drive a specific function on this page. Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/tag/delete/<%= @node.id %>/<%= tag.tid %>" data-tag-id="<%= tag.tid %>" data-method="delete"><i class='fa fa-times-circle fa-white blue pl-1' aria-hidden='true' ></i></a>
-          <% else %>
-            <a data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/tag/delete/<%= @node.id %>/<%= tag.tid %>" data-tag-id="<%= tag.tid %>" data-method="delete"><i class='fa fa-times-circle fa-white blue pl-1' aria-hidden='true' ></i></a>
+            <% if tag.name.include? ':' %>
+              <a aria-label="Delete tag" data-confirm="This is a power tag (see https://publiclab.org/wiki/power-tags) -- and may drive a specific function on this page. Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/tag/delete/<%= @node.id %>/<%= tag.tid %>" data-tag-id="<%= tag.tid %>" data-method="delete"><i class='fa fa-times-circle fa-white blue pl-1' aria-hidden='true' ></i></a>
+            <% else %>
+              <a data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/tag/delete/<%= @node.id %>/<%= tag.tid %>" data-tag-id="<%= tag.tid %>" data-method="delete"><i class='fa fa-times-circle fa-white blue pl-1' aria-hidden='true' ></i></a>
+            <% end %>
           <% end %>
         </p>
 
