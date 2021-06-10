@@ -26,7 +26,11 @@
     <!--<div class="expand"><a onClick="$('.main-image').toggleClass('compressed');"><i class="fa fa-angle-down"></i></a></div>-->
   <% end %>
 
-  <h1 style="margin-top: 40px;"><%= @node.title %></h1>
+  <% if @node.has_tag('locked') %>
+    <h1 style="margin-top: 40px;"><%= @node.title %>&nbsp;<span class="fa fa-lock"></span></h1>
+  <% else %>
+    <h1 style="margin-top: 40px;"><%= @node.title %></h1>
+  <% end %>
 
   <div id="note-info">
 
