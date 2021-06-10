@@ -48,7 +48,7 @@ class TagControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test 'only admins can added the locked tag' do
+  test 'normal users cannot add the locked tag' do
     UserSession.create(users(:bob))
     post :create,
          params: {
@@ -56,6 +56,15 @@ class TagControllerTest < ActionController::TestCase
             nid: nodes(:one).nid
          }
     assert_equal 'Error: only admins can lock pages.', assigns[:output][:errors][0]
+  end
+
+  test 'admin and moderators can add the locked tag' do
+    UserSession.create(users(:admin))
+    UserSession.create(users(:moderator))
+    nodes(:one).add_tag('locked', users(:admin))
+    nodes(:about).add_tag('locked', users(:moderator))
+    assert nodes(:one).has_tag('locked')
+    assert nodes(:about).has_tag('locked')
   end
 
   test 'validate unused tag' do
