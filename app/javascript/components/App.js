@@ -52,10 +52,39 @@ const App = ({
 }
 
 App.propTypes = {
-  currentUser: PropTypes.object,
-  elementText: PropTypes.object.isRequired,
-  initialComments: PropTypes.array.isRequired,
-  node: PropTypes.object.isRequired
+  currentUser: PropTypes.shape({
+    canModerate: PropTypes.bool,
+    id: PropTypes.number,
+    role: PropTypes.string,
+    status: PropTypes.number
+  }),
+  elementText: PropTypes.exact({
+    commentFormPlaceholder: PropTypes.string.isRequired,
+    commentsHeaderText: PropTypes.string.isRequired,
+    commentPreviewText: PropTypes.string.isRequired,
+    commentPublishText: PropTypes.string.isRequired,
+    userCommentedText: PropTypes.string.isRequired
+  }).isRequired,
+  initialComments: PropTypes.arrayOf(
+    PropTypes.shape({
+      authorId: PropTypes.number.isRequired,
+      authorPicFilename: PropTypes.string,
+      authorPicUrl: PropTypes.string,
+      authorUsername: PropTypes.string.isRequired,
+      commentId: PropTypes.number.isRequired,
+      commentName: PropTypes.string,
+      createdAt: PropTypes.string.isRequired,
+      htmlCommentText: PropTypes.string.isRequired,
+      rawCommentText: PropTypes.string.isRequired,
+      replies: PropTypes.array,
+      replyTo: PropTypes.number,
+      timeCreatedString: PropTypes.string.isRequired
+    })
+  ).isRequired,
+  node: PropTypes.exact({
+    nodeId: PropTypes.number.isRequired,
+    nodeAuthorId: PropTypes.number.isRequired
+  }).isRequired
 };
 
 export default App;

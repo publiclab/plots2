@@ -34,7 +34,7 @@ const CommentReplies = ({
 }
 
 CommentReplies.propTypes = {
-  children: PropTypes.array,
+  children: PropTypes.arrayOf(PropTypes.element).isRequired,
   commentId: PropTypes.number.isRequired,
   isReplyFormVisible: PropTypes.bool.isRequired,
   handleReplyFormToggle: PropTypes.func,

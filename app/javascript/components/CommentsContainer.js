@@ -159,9 +159,9 @@ const CommentsContainer = ({
 }
 
 CommentsContainer.propTypes = {
-  initialCommentFormToggleState: PropTypes.object.isRequired,
+  initialCommentFormToggleState: PropTypes.objectOf(PropTypes.bool).isRequired,
   initialComments: PropTypes.array.isRequired,
-  initialTextAreaValues: PropTypes.object.isRequired,
+  initialTextAreaValues: PropTypes.objectOf(PropTypes.string).isRequired,
   nodeId: PropTypes.number.isRequired
 };
 
