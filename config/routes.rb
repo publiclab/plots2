@@ -53,6 +53,7 @@ Plots2::Application.routes.draw do
   get 'signup' => 'users#new'
   get 'home' => 'home#front'
   get 'verify/:token' => 'users#verify_email'
+  get 'users/active' => 'users#recently_active_users'
   resources :relationships, only: [:create, :destroy]
 
   get '/wiki/:id/comments', to: 'wiki#comments'

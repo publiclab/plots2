@@ -412,6 +412,11 @@ class UsersController < ApplicationController
     redirect_to "/login", flash: { notice: action_msg }
   end
 
+  def recently_active_users
+    active_users = User.recently_active_users
+    render json: active_users, root: false
+  end
+
   private
 
   def subscribe_multiple_tag(tag_list)
