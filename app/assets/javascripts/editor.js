@@ -104,16 +104,74 @@ class Editor {
   // h7() {
   //   this.wrap('#######','')
   // }
+
+  //debounce function addition
+  debounce(func, wait, immediate) {
+    let timeout;
+    return function () {
+      let context = this,
+        args = arguments;
+      let later = function () {
+        timeout = null;
+        if (!immediate) func.apply(context, args);
+      };
+      let callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+      if (callNow) func.apply(context, args);
+    };
+  }
+
   // this function is dedicated to Don Blair https://github.com/donblair
   attachSaveListener() {
     // remove any other existing eventHandler
     $("textarea").off("input.save"); // input.save is a custom jQuery eventHandler
     const thisEditor = this; // save a reference to this editor, because inside the eventListener, "this" points to e.target
-    this.textAreaElement.on("input.save", function() {
+    //implementing a debounce function on save method
+    this.textAreaElement.on(
+    "input.save",
+    debounce(function () {
+      //changing styles and text
+      //explicitly handling main comment form
+      if ($('#text-input-main').is(':focus')) {
+       
+       $("#comment-form-main .btn-toolbar #save-button-main").find("i").removeClass("fa fa-save").addClass("fas fa-sync fa-spin");
+     
+       let saving_text = $('<p id="saving-text" style="padding-bottom: 8px"> Saving... </p>');
+       $("#comment-form-main .imagebar").prepend(saving_text);
+       $("#comment-form-main .imagebar p").not("#saving-text").hide();
+        
+       //adding delay and revering the styles
+        setTimeout(() => {
+          $("#comment-form-main .btn-toolbar #save-button-main").find("i").removeClass("fas fa-sync fa-spin").addClass("fa fa-save");
+          
+          $("#comment-form-main .imagebar").find("#saving-text").remove();
+          $("#comment-form-main .imagebar p").not("#saving-text").show();
+        }, 400);
+    }
+    else { 
+        //handling other comment forms
+        let comment_temp_id = (document.activeElement.parentElement.parentElement.id);
+        let imager_bar = (document.activeElement.nextElementSibling.className);
+
+        $('#'+comment_temp_id).find('.btn-toolbar').find(".save-button").find("i").removeClass("fa fa-save").addClass("fas fa-sync fa-spin");
+
+        let saving_text = $('<p id="saving-text" style="padding-bottom: 8px"> Saving... </p>');
+        $('#'+comment_temp_id).find('.'+imager_bar).prepend(saving_text);
+        $('#'+comment_temp_id).find('.'+imager_bar).find("p").not("#saving-text").hide();
+
+        setTimeout(() => {
+          $('#'+comment_temp_id).find('.btn-toolbar').find(".save-button").find("i").removeClass("fas fa-sync fa-spin").addClass("fa fa-save");
+          
+          $('#'+comment_temp_id).find('.'+imager_bar).find("#saving-text").remove();
+          $('#'+comment_temp_id).find('.'+imager_bar).find("p").not("#saving-text").show();
+        }, 400);
+    }
       thisEditor.save(thisEditor);
-    });
-  }
-  save(thisEditor) {
+      }, 700)
+    );
+  }  
+    save(thisEditor) {
     const storageKey = "plots:" + window.location.pathname + ":" + thisEditor.commentFormID;
     localStorage.setItem(storageKey, thisEditor.textAreaValue);
   }

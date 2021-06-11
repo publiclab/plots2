@@ -90,9 +90,52 @@ $(function() {
     })
     // for save & recover buttons
     .on("click", ".save-button", function(e) {
-      $E.setState(e.currentTarget.dataset.formId); // string that is: "main", "reply-123", "edit-123" etc.
-      $E.save($E);
-    })
+      //preventing multiple clicks on the button
+      if(!e.detail || e.detail === 1) {
+          //explicitly handling main comment section
+          if ((this.id) === "save-button-main") {
+            // toggling the favicon save icon class to add a spinner icon
+            $(this).find("i").toggleClass("fa fa-save fas fa-sync fa-spin");
+      
+            //changing the text from "Upload an image" to "Saving..."
+            let saving_text = $('<p id="saving-text" style="padding-bottom: 8px"> Saving... </p>');
+            $("#comment-form-main .imagebar").prepend(saving_text);
+            $("#comment-form-main .imagebar p").not("#saving-text").hide();
+      
+            //setting up delay and reverting the styles
+            setTimeout(() => {
+              $(this).find("i").toggleClass("fa fa-save fas fa-sync fa-spin");
+              $("#comment-form-main .imagebar").find("#saving-text").remove();
+              $("#comment-form-main .imagebar p").not("#saving-text").show();
+      
+              $E.setState(e.currentTarget.dataset.formId); // string that is: "main", "reply-123", "edit-123" etc.
+              $E.save($E);
+            }, 400);
+          }
+          else {
+            //handling other comment sections
+            let comment_reply_id = (this.parentNode.parentNode.nextElementSibling.nextElementSibling.id);
+
+            // toggling the favicon save icon class to add a spinner icon
+            $(this).find("i").toggleClass("fa fa-save fas fa-sync fa-spin");
+    
+            //changing the text from "Upload an image" to "Saving..."
+            let saving_text = $('<p id="saving-text" style="padding-bottom: 8px"> Saving... </p>');
+            $('#'+comment_reply_id).find(".imagebar").prepend(saving_text);
+            $('#'+comment_reply_id).find(".imagebar p").not("#saving-text").hide();
+    
+            //setting up delay and reverting the styles
+            setTimeout(() => {
+              $(this).find("i").toggleClass("fa fa-save fas fa-sync fa-spin");
+              $('#'+comment_reply_id).find(".imagebar").find("#saving-text").remove();
+              $('#'+comment_reply_id).find(".imagebar p").not("#saving-text").show();
+    
+              $E.setState(e.currentTarget.dataset.formId); // string that is: "main", "reply-123", "edit-123" etc.
+              $E.save($E);
+            }, 400);
+          }
+  }
+    })        
     .on("click", ".recover-button", function(e) {
       $E.setState(e.currentTarget.dataset.formId); // string that is: "main", "reply-123", "edit-123" etc.
       $E.recover();
