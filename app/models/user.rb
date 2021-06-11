@@ -505,6 +505,18 @@ class User < ActiveRecord::Base
     recent_locations.last
   end
 
+  def self.recently_active_users(limit = 5, order = 'last_updated DESC')
+    Rails.cache.fetch('users/active', expires_in: 24.hours) do
+      User.select('rusers.username, rusers.status, rusers.id, MAX(node_revisions.timestamp) AS last_updated')
+        .joins("INNER JOIN `node_revisions` ON `node_revisions`.`uid` = `rusers`.`id` ")
+        .where("node_revisions.status = 1")
+        .where("rusers.status = 1")
+        .group('rusers.id')
+        .order(order)
+        .limit(limit)
+    end
+  end
+
   private
 
   def decrease_likes_banned
