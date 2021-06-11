@@ -172,7 +172,7 @@ class AdminController < ApplicationController
       else
         first_timer_comment = (@comment.status == 4)
         @comment.publish
-        if @comment.author.banned?
+        if @comment.author.status != 1 # not a normal user
           @comment.author.unban
         end
         @comment.unflag_comment
