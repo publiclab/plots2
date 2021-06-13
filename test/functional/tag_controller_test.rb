@@ -68,6 +68,16 @@ class TagControllerTest < ActionController::TestCase
     assert nodes(:one).has_tag('locked')
   end
 
+  test 'moderator can add the locked tag' do
+    UserSession.create(users(:moderator))
+    post :create,
+         params: {
+            name: 'locked',
+            nid: nodes(:one).nid
+         }
+    assert nodes(:one).has_tag('locked')
+  end
+
   test 'validate unused tag' do
     UserSession.create(users(:bob))
 
