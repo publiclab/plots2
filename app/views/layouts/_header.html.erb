@@ -209,9 +209,9 @@
             <a class="dropdown-item d-lg-none"  href="/donate"><%= translation('layout._header.donate') %></a>
             <!--These menu items will only appear in the "More" dropdown menu. -->
             <% if current_user %>
-              <a class="dropdown-item d-xl-none" rel="tooltip" title="<%= translation('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard">Dashboard</a>
+              <a class="dropdown-item d-xl-none" rel="tooltip" title="<%= translation('layout._header.your_dashboard',{},false) %>" data-placement="bottom" href="/dashboard">Dashboard</a>
             <% else %>
-              <a class="dropdown-item d-xl-none" rel="tooltip" title="<%= translation('layout._header.become_part_community') %>" href="/signup"><%= translation('layout._header.join') %></a>
+              <a class="dropdown-item d-xl-none" rel="tooltip" title="<%= translation('layout._header.become_part_community',{},false) %>" href="/signup"><%= translation('layout._header.join') %></a>
             <% end %>
           </div>
         </li>
