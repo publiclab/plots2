@@ -28,10 +28,10 @@
 	  | <%= distance_of_time_in_words(revision.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>
           <div style="display:none;" id="body_<%= @node.revisions.length-1-index %>"><%= raw RDiscount.new(revision.body).to_html %></div>
         </td>
-        <td><small><a class="btn btn-sm btn-outline-secondary btn-revert" href="/wiki/revert/<%= revision.vid %>" data-confirm="<%= translation('wiki.revisions.are_you_sure') %>"><i class="fa fa-arrow-reload"></i> <%= translation('wiki.revisions.revert') %></a></small></td>
+        <td><small><a class="btn btn-sm btn-outline-secondary btn-revert" href="/wiki/revert/<%= revision.vid %>" data-confirm="<%= translation('wiki.revisions.are_you_sure',{},false) %>"><i class="fa fa-arrow-reload"></i> <%= translation('wiki.revisions.revert') %></a></small></td>
         <% if logged_in_as(['admin', 'moderator']) %>
           <% if revision.status == 1 %>
-            <td><small><a class='btn btn-sm btn-outline-secondary' data-toggle="tooltip" title="Mark as Spam" data-placement="top" href='/moderate/revision/spam/<%= revision.vid %>' data-confirm="<%= translation('wiki.revisions.are_you_sure') %>"><i class='fa fa-ban'></i></a></small></td>
+            <td><small><a class='btn btn-sm btn-outline-secondary' data-toggle="tooltip" title="Mark as Spam" data-placement="top" href='/moderate/revision/spam/<%= revision.vid %>' data-confirm="<%= translation('wiki.revisions.are_you_sure',{},false) %>"><i class='fa fa-ban'></i></a></small></td>
           <% elsif revision.status == 0 %>
             <td><small><a class='btn btn-sm btn-outline-secondary' href='/moderate/revision/publish/<%= revision.vid %>'><i class='fa fa-plus-circle'></i> <%= translation('wiki.revisions.republish') %></a></small></td>
           <% end %>

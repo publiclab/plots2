@@ -33,7 +33,7 @@
 						<b> - </b>
 					<% else %>
 						<% if like.user.status == 1 %>
-							<a data-confirm="<%= translation('users.profile.confirm_ban_user') %>" href="/ban/<%= like.user.id %>" class="btn btn-outline-secondary"><i class="fa fa-ban"></i> <%= translation('users.profile.ban_user') %></a>
+							<a data-confirm="<%= translation('users.profile.confirm_ban_user',{},false) %>" href="/ban/<%= like.user.id %>" class="btn btn-outline-secondary"><i class="fa fa-ban"></i> <%= translation('users.profile.ban_user') %></a>
 			          	<% else %>
 			          		<a href="/unban/<%= like.user.id %>" class="btn btn-outline-secondary"><i class="fa fa-thumbs-up"></i> <%= translation('users.profile.unban_user') %></a>
 			          	<% end %>

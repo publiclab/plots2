@@ -141,13 +141,13 @@
     <% if logged_in_as(['admin', 'moderator']) && @profile_user.status == 0 %>
       <a href="/unban/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-thumbs-up"></i> <%= translation('users.profile.unban_user') %></a>
     <% elsif logged_in_as(['admin', 'moderator']) && @profile_user.status == 1 && @profile_user != current_user %>
-      <a data-confirm="<%= translation('users.profile.confirm_ban_user') %>" href="/ban/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-ban"></i> <%= translation('users.profile.ban_user') %></a>
+      <a data-confirm="<%= translation('users.profile.confirm_ban_user',{},false) %>" href="/ban/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-ban"></i> <%= translation('users.profile.ban_user') %></a>
     <% end %>
 
     <% if logged_in_as(['admin', 'moderator']) && @profile_user.status == 5 %>
       <a href="/admin/unmoderate/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-thumbs-up"></i> <%= translation('users.profile.unmoderate_user') %></a>
     <% elsif logged_in_as(['admin', 'moderator']) && @profile_user.status == 1 %>
-      <a rel="tooltip" title="Prevent author from logging in, without hiding their work or profile." data-confirm="<%= translation('users.profile.confirm_moderate_user') %>" href="/admin/moderate/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-ban"></i> <%= translation('users.profile.moderate_user') %></a>
+      <a rel="tooltip" title="Prevent author from logging in, without hiding their work or profile." data-confirm="<%= translation('users.profile.confirm_moderate_user',{},false) %>" href="/admin/moderate/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-ban"></i> <%= translation('users.profile.moderate_user') %></a>
     <% end %>
 
     <% if @profile_user && !@profile_user.reset_key.nil? && logged_in_as(['admin']) %>
