@@ -4,7 +4,7 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require 'authlogic/test_case'
 require 'i18n'
-require 'mocha/setup'
+require 'mocha/minitest'
 require 'webmock/minitest'
 # require 'support/billy'
 
@@ -54,5 +54,4 @@ WebMock.stub_request(:any, "publiclab.org/api/srch/nearbyPeople")
   .to_return(
     body: "{items:[]}",
     status: 200,
-    :headers => {"Content-Type"=> "application/json"}
-  )
+    :headers => {"Content-Type"=> "application/json"})
