@@ -506,6 +506,9 @@ en:
       notes: "Notes"
       people_who've_posted: "People who've posted"
       people_who_are_following: "People who are following"
+    location:
+      tooltip: "This is a geographical tag for placing this content on a map. 
+        Please visit our <a href='https://publiclab.org/wiki/location-privacy'>location privacy</a> page."
   wiki:
     index:
       wiki_pages_tagged_with: "Wiki pages tagged with <i style='color:#aaa;'>%{tag}</i>"
