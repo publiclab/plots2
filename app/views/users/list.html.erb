@@ -1,5 +1,5 @@
 <div class="col-md-12 col-lg-6 order-1 order-sm-2">
-<% if current_user && (current_user.role == "admin" || current_user.role == "moderator")%>
+<% if current_user && current_user.can_moderate? %>
 <h3><%= translation('users.list.user_moderation') %></h3>
 <p><%= translation('users.list.admins_ban_spam') %> </p>
 <% end %>
@@ -48,7 +48,7 @@
                       <li><a style="color: #808080; cursor: no-drop;">Joined <%= distance_of_time_in_words(user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></a></li>
                       <li><a href='/notes/author/<%= user.name %>'><%= user.note_count %> Research Notes</a></li>
                       <li><a style="color: #808080; cursor: no-drop;"><%= user.nodes.count %> Wiki Edits</a></li>
-                      <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") %>
+                      <% if current_user && current_user.can_moderate? %>
                          <% if user.status == 0 %>
                            <li class="btn-success"><a  style="color: white;" href="/profile/<%= user.username %>"><i class="fa fa-check-circle fa-white"></i> Unban on profile</a></li>
                            <i class='fa fa-ban' style="color:#a00;"></i> <%= translation('users.list.banned') %>
