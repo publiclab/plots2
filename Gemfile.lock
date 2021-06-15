@@ -293,7 +293,7 @@ GEM
       nokogiri (~> 1)
       rake
     mini_mime (1.1.0)
-    mini_portile2 (2.5.1)
+    mini_portile2 (2.5.3)
     minitest (5.14.4)
     minitest-reporters (1.4.3)
       ansi
@@ -313,7 +313,7 @@ GEM
     netrc (0.11.0)
     nifty-generators (0.4.6)
     nio4r (2.5.7)
-    nokogiri (1.11.4)
+    nokogiri (1.11.7)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
     nokogumbo (2.0.4)
@@ -454,7 +454,7 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     retriable (3.1.2)
-    reverse_markdown (1.1.0)
+    reverse_markdown (2.0.0)
       nokogiri
     rexml (3.2.5)
     rspec (3.10.0)
