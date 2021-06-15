@@ -4,7 +4,10 @@ class Image < ApplicationRecord
   belongs_to :user, foreign_key: :uid
   belongs_to :node, foreign_key: :nid
 
-  has_attached_file :photo, styles: { thumb: '200x150>', medium: '500x375>', large: '800x600>' } # ,
+  has_attached_file :photo, styles: { thumb: '200x150>', medium: '500x375>', large: '800x600>' },
+    :fog_credentials => {  :provider => 'Google',
+                           :google_storage_access_key_id => ENV["GOOGLE_STORAGE_KEY"],
+                           :google_storage_secret_access_key => ENV["GOOGLE_STORAGE_SECRET"]}
 
   validates :uid, presence: true
   validates :photo, presence: true, unless: :remote_url_provided?
