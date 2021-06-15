@@ -48,15 +48,22 @@ $(function () {
 <% parent ||= nil %>
 
 <% if current_user && (parent != :profile || (current_user.id == user.id || logged_in_as(['admin']))) && !@preview  %>
-  <a data-toggle="tooltip" title="Add tags/View all" aria-label="Add tags/View all" id="tags-open" class="btn btn-circle btn-circle-sm tags-open" style="float:left;">
-    <i class="fa fa-plus" style="color:#808080;"></i>
-  </a>
+  <% if current_user.first_time_poster && !(current_user.username == @node.author.username || ( @node.coauthors && @node.coauthors.exists?(username: current_user.username)) || logged_in_as(['admin', 'moderator'])) %>
+    <a data-toggle="popover" data-content="Adding tags to other people’s posts is not available to you until your own first post has been approved by site moderators" class="btn btn-circle btn-circle-sm" data-placement="top" style="float:left; cursor: not-allowed;">
+      <i class="fa fa-plus" style="color:#808080;"></i>
+    </a>
+    
+  <% else %>
+    <a data-toggle="tooltip" title="Add tags/View all" aria-label="Add tags/View all" id="tags-open" class="btn btn-circle btn-circle-sm tags-open" style="float:left;">
+      <i class="fa fa-plus" style="color:#808080;"></i>
+    </a>
 
-  <% if @node && @node.tags.count == 0 && !@preview %>
-    <span style="float:left;color:#666;margin-top:14px;margin-left:5px;">Add tags</span>
+    <% if @node && @node.tags.count == 0 && !@preview %>
+      <span style="float:left;color:#666;margin-top:14px;margin-left:5px;">Add tags</span>
+    <% end %>
+
+    <%= render partial: 'tag/form', locals: { node: @node ||= nil, user: user ||= nil, url: url ||= nil } %>
   <% end %>
-
-  <%= render partial: 'tag/form', locals: { node: @node ||= nil, user: user ||= nil, url: url ||= nil } %>
 <% end %>
 
 <script>
