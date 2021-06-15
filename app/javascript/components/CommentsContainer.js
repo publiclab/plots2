@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useReducer, useState } from "react";
 import PropTypes from "prop-types";
 
 import { UserContext } from "./user-context";
-import { makeDeepCopy } from "./helpers";
+import { reducer } from "./reducers";
 
 import CommentForm from "./CommentForm";
 import CommentsHeader from "./CommentsHeader";
@@ -14,8 +14,13 @@ const CommentsContainer = ({
   initialTextAreaValues,
   nodeId
 }) => {
-  // React Hook: Comments State
-  const [comments, setComments] = useState(initialComments);
+  const initialState = {
+    comments: initialComments,
+    commentFormsVisibility: initialCommentFormToggleState,
+    textAreaValues: initialTextAreaValues
+  }
+
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   // React Hook: Visibility for Reply and Edit Comment Forms
   const [commentFormsVisibility, setCommentFormsVisibility] = useState(initialCommentFormToggleState);
@@ -66,8 +71,11 @@ const CommentsContainer = ({
         if (!data.comment[0].replyTo) {
           setCommentFormsVisibility(oldState => ({ ...oldState, ["reply-" + newCommentId]: false }));
         }
-        // push the comment into state
-        setComments(oldComments => ([...oldComments, data.comment[0]]));
+        // call useReducer's dispatch function to push the comment into state
+        dispatch({
+          type: "CREATE COMMENT",
+          newComment: data.comment[0]
+        })
         // close the comment form
         if (formType !== "main") {
           setCommentFormsVisibility(oldState => (Object.assign({}, oldState, { [formId]: false })));
@@ -87,18 +95,11 @@ const CommentsContainer = ({
         body: commentBody
       }, 
       function(data) {
-        // the freshly updated comment is NOT a reply
-        for (let i = 0; i < comments.length; i++) {
-          // find the comment in state
-          if (comments[i].commentId === data.comment[0].commentId) {
-            let newComment = makeDeepCopy(comments[i]);
-            newComment.htmlCommentText = data.comment[0].htmlCommentText; // update comment text
-            newComment.rawCommentText = data.comment[0].rawCommentText;
-            // keep most of oldComments, but replace the comment at index i with newComment.
-            setComments(oldComments => (Object.assign([], oldComments, { [i]: newComment })));
-            break;
-          }
-        }
+        // call useReducer's dispatch function to update the comment in state
+        dispatch({
+          type: "UPDATE COMMENT",
+          newComment: data.comment[0]
+        })
         // close the edit comment form
         setCommentFormsVisibility(oldState => (Object.assign({}, oldState, { [formId]: false })));
         notyNotification('mint', 3000, 'success', 'topRight', 'Comment Updated!');
@@ -114,12 +115,11 @@ const CommentsContainer = ({
       },
       function(data) {
         if (data.success) {
-          for (let i = 0; i < comments.length; i++) {
-            if (comments[i].commentId === commentId) {
-              setComments(oldState => (oldState.filter(comment => comment.commentId !== commentId)));
-              notyNotification('sunset', 3000, 'error', 'topRight', 'Comment deleted');
-            }
-          }
+          dispatch({
+            type: "DELETE COMMENT",
+            commentId
+          })
+          notyNotification('sunset', 3000, 'error', 'topRight', 'Comment deleted');
         }
       }
     )
@@ -130,10 +130,10 @@ const CommentsContainer = ({
       {currentUser => (
         <div id="legacy-editor-container" className="row">
           <div id="comments" className="col-lg-10 comments">
-            <CommentsHeader comments={comments} />
+            <CommentsHeader comments={state.comments} />
             <CommentsList 
               commentFormsVisibility={commentFormsVisibility}
-              comments={comments}
+              comments={state.comments}
               currentUser={currentUser}
               handleCreateComment={handleCreateComment}
               handleDeleteComment={handleDeleteComment}
