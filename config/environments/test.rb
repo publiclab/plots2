@@ -13,6 +13,8 @@ Rails.application.configure do
   # Configure static asset server for tests with Cache-Control for performance
   config.public_file_server.enabled = true
   config.public_file_server.headers = { 'Cache-Control' => 'public, max-age=3600' }
+  
+  config.active_record.sqlite3.represent_boolean_as_integer = true
 
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
