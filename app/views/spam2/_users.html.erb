@@ -71,7 +71,7 @@ $(document).ready(function () {
           <tr id="n<%= user.id %>">
             <td><input  class="selectedId" value="<%= user.uid %>" type="checkbox" /></td>
             <td>
-              <i class="fa fa-user text-<% if user.status == 0 %>danger<% elsif user.role == "admin" || user.role == "moderator" %>primary <% else %>secondary<%end%>"></i> 
+	        <i class="fa fa-user text-<% if user.status == 0 %>danger<% elsif user.can_moderate? %>primary <% else %>secondary<%end%>"></i>
               <a href="/profile/<%= user.name %>" class="text-dark font-weight-bold" id="node-hover" > <%= user.name %></a><br />
             </td>
             <td>

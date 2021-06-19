@@ -26,7 +26,11 @@
     <!--<div class="expand"><a onClick="$('.main-image').toggleClass('compressed');"><i class="fa fa-angle-down"></i></a></div>-->
   <% end %>
 
-  <h1 style="margin-top: 40px;"><%= @node.title %></h1>
+  <% if @node.has_tag('locked') %>
+    <h1 style="margin-top: 40px;"><%= @node.title %>&nbsp;<span class="fa fa-lock"></span></h1>
+  <% else %>
+    <h1 style="margin-top: 40px;"><%= @node.title %></h1>
+  <% end %>
 
   <div id="note-info">
 
@@ -86,13 +90,13 @@
     </table>
   <% end %>
 
-  <% if current_user && ( current_user.role == "admin" || current_user.role == "moderator") && !(@node.has_tag('locked')) %>
+  <% if current_user && current_user.can_moderate? && !(@node.has_tag('locked')) %>
     <a href="javascript:window.location.reload(true)" onClick="addTag('locked');">Lock Note</a>
   <% end %>
 
   <% if current_user && 
-    ( current_user.role == "admin" || current_user.role == "moderator" || 
-      current_user.id == @node.id || current_user.is_coauthor?(@node) ) && 
+   ( current_user.can_moderate? || 
+     current_user.id == @node.id || current_user.is_coauthor?(@node) ) && 
       @node.has_tag('event') %>
   <hr/>
   <p>This looks like an event.
