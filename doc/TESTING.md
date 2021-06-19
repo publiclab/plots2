@@ -169,7 +169,7 @@ See summary and usage instructions below.
 ### Pushing on `unstable`
 
 1. Drop a message in the [Gitter chatroom](https://gitter.im/publiclab/publiclab) that you are pushing to _unstable_, as other members also use it for testing their work so you don't want to shock them by pushing your work over theirs. After dropping the message, wait for 5 mins, and if no one mentions that they are using the branch, then go to step 2.
-2. Push using: `git push -f git@github.com/publiclab/plots2 HEAD:unstable`.<br><br>**Note:** If you get this message - `remote: Permission to publiclab/plots2.git denied to <username>` then you don't have permission to push to _unstable_ branch.
+2. Push using: `git push -f https://github.com/publiclab/plots2.git HEAD:unstable`.<br><br>**Note:** If you get this message - `remote: Permission to publiclab/plots2.git denied to <username>` then you don't have permission to push to _unstable_ branch.
 But, don't worry, feel free to ping @publiclab/maintainers on your open PR to request access or ask in the chatroom and someone else with write access will push your work (PR/branch) for you.  
 3. See build progress at https://jenkins.laboratoriopublico.org/job/Plots-Unstable/. It takes 8-15 mins for build to complete. 
 4. Test website: https://unstable.publiclab.org/. 
@@ -177,10 +177,16 @@ But, don't worry, feel free to ping @publiclab/maintainers on your open PR to re
 
 ### Stable Server
 
-You've tested your code on the unstable server. Now, once your PR is merged into plots2/main, it auto-triggers the build of the [stable version](https://stable.publiclab.org) of the website.
+You've tested your code on the unstable server. Now, once your PR is merged into plots2/main, it auto-triggers the build of the [stable version](https://stable.publiclab.org) of the website. This is the "pre-production" server.
 This is the last chance for you to run any manual tests that you have, and the last chance to find any bugs. Do checkout the stable build once your PR is acccepted!
 
 The stable server also uses a copy of the production database, so you can make 'example' and 'test' posts and no one will see it on the live website. However, emails aren't sent, which means you won't be able to test them. All passwords are also replaced with "publiclab" for security reasons.
+
+The exact workflow is this:<br>
+1. Merge to main <br>
+2. Auto-trigger build of stable.publiclab.org <br>
+3. Push to the stable branch <br>
+4. Publish on the live site at publiclab.org <br>
 
 After some time, one of the maintainers deploys the code to the [live site](https://publiclab.org). Usually, they send a message in the chatroom to notify other contributors of the update. Your code is now live!
 
