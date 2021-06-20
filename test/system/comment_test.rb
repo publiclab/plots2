@@ -20,16 +20,119 @@ class CommentTest < ApplicationSystemTestCase
     page_type == :wiki ? path + '/comments' : path
   end
 
-  # weird syntax, i know. 
-  #   most comment tests we can simply test on Research Note pages.
-  #   that's what this block is for.
+  comment_text = 'woot woot'
+  comment_response_text = 'wooly woot'
 
-  #   other comment tests can ALSO be tested on Wikis and Questions.
-  #   scroll past this block for those tests.
+  # comment system tests are divided into 3 parts:
+  #   1. basic CRUD in both React and Rails research notes
+  #   2. tests for research notes
+  #   3. tests for research notes, wikis, and questions
+
+  # PART 1: TESTS FOR BASIC CRUD (REACT & RAILS NOTES)
+  # system tests for BASIC commenting CRUD functionality:
+  #   create (posting comments & replies)
+  #   update (editing comments)
+  #   delete
+  [true, false].each do |is_testing_react|
+    page_type_string = is_testing_react ? 'react note' : 'rails note'
+    test_path = is_testing_react ? '?react=true' : ''
+
+    test "#{page_type_string}: post comment" do
+      visit nodes(:comment_note).path + test_path
+      main_comment_form = page.find('#comment-form-main')
+      # fill in comment text
+      main_comment_form
+        .find('#text-input-main')
+        .click
+        .fill_in with: comment_text
+      # click publish button
+      main_comment_form
+        .find('button', text: 'Publish')
+        .click
+      # wait for notyNotification to appear
+      find(".noty_body", text: "Comment Added!")
+      # assert that comment has appeared
+      assert_selector('#comments-list .comment-body p', text: comment_text)
+    end
+
+    test "#{page_type_string}: post REPLY to comment" do
+      visit nodes(:comment_note).path + test_path
+      # find the first comment
+      first_comment = page.first('.comment')
+      # click on the reply form toggle
+      first_comment
+        .find('p', text: 'Reply to this comment...')
+        .click
+      # enter text in reply form
+      first_comment.find('[id^=text-input-reply-]')
+        .click
+        .fill_in with: comment_response_text
+      # click publish button
+      first_comment
+        .find('button', text: 'Publish')
+        .click
+      # wait for notyNotification to appear
+      page.find(".noty_body", text: "Comment Added!")
+      assert_selector('.comment .comment .comment-body p', text: comment_response_text)
+    end
+
+    test "#{page_type_string}: edit comment" do
+      nodes(:comment_note).add_comment({
+        uid: 2,
+        body: comment_text
+      })
+      visit nodes(:comment_note).path + test_path
+      # open up the edit comment form
+      page
+        .find('.edit-comment-btn')
+        .click
+      # find the edit form's textarea
+      textarea = page.find('[id^=text-input-edit-]', text: comment_text)
+      # extract the comment's ID from the textarea
+      textarea_id = textarea[:id]
+      comment_id_num = /text-input-edit-(\d+)/.match(textarea_id)[1]
+      # click on the textarea, and enter updated comment text
+      textarea
+        .click
+        .fill_in with: 'new comment text!'
+      # click the publish button
+      page
+        .find('#comment-form-edit-' + comment_id_num)
+        .find('button', text: 'Publish')
+        .click
+      # revisit the page. why? currently rails comments reload the page, react comments don't reload, but update the DOM.
+      visit nodes(:comment_note).path + test_path
+      assert_selector('#comments-list .comment-body p', text: 'new comment text!')
+    end
+
+    test "#{page_type_string}: delete comment" do
+      # add comment by test user before page loads
+      # after this, there should be 2 comments total
+      nodes(:comment_note).add_comment({
+        uid: 2,
+        body: comment_text
+      })
+      visit nodes(:comment_note).path + test_path
+      # click the delete button
+      comment = page.all('.delete-comment-btn')[1].click
+      if !is_testing_react
+      # there's an extra step to confirm deletion in rails commenting system
+        page
+          .find('button', text: 'confirm')
+          .click
+      end
+      wait_for_ajax
+      number_of_comments = page.all('.comment').length
+      # after deleting 1 comment, there should be 1 left.
+      assert_equal(number_of_comments, 1)
+    end
+  end
+
+  # PART 2: TESTS FOR RESEARCH NOTES ONLY
+  #    public lab has 3 different page types: research notes, wikis, and questions
+  #    to save testing resources, we can run most tests on just research notes
   { :note => :comment_note }.each do |page_type, node_name|
     page_type_string = 'note'
-    comment_text = 'woot woot'
-    comment_response_text = 'wooly woot'
 
     test "#{page_type_string}: addComment(comment_text)" do
       visit get_path(page_type, nodes(node_name).path)
@@ -58,26 +161,6 @@ class CommentTest < ApplicationSystemTestCase
       page.evaluate_script("addComment('#{comment_response_text}', '/comment/create/#{nodes(:comment_question).nid}', #{parent_id_num})")
       # assert that <div id="c1show"> has child div[div[p[text="wooly woot!"]]]
       assert_selector("#{'#c' + parent_id_num + 'show'} div div div p", text: comment_response_text)
-    end
-
-    test "#{page_type_string}: manual comment and reply to comment" do
-      visit get_path(page_type, nodes(node_name).path)
-      fill_in("body", with: comment_text)
-      # preview comment
-      find("#toggle-preview-button-main").click
-      find("p", text: comment_text)
-      # publish comment
-      click_on "Publish"
-      find(".noty_body", text: "Comment Added!")
-      find("p", text: comment_text)
-      # replying to the comment
-      first("p", text: "Reply to this comment...").click()
-      page.find('[id^=text-input-reply-]')
-        .click
-        .fill_in with: comment_response_text
-      # preview reply
-      first(".preview-btn").click
-      find("p", text: comment_response_text)
     end
 
     test "#{page_type_string}: toggle preview buttons work" do
@@ -181,28 +264,6 @@ class CommentTest < ApplicationSystemTestCase
       assert_selector('.noty_body', text: 'Comment Added!')
     end
 
-    test "#{page_type_string}: comment deletion" do
-      visit get_path(page_type, nodes(node_name).path)
-      # Create a comment
-      main_comment_form =  page.find('h4', text: /Post comment|Post Comment/).find(:xpath, '..') # title text on wikis is 'Post comment'
-      # fill out the comment form
-      main_comment_form
-        .find('textarea')
-        .click
-        .fill_in with: comment_text
-      # publish
-      main_comment_form
-        .find('button', text: 'Publish')
-        .click
-      page.find(".noty_body", text: "Comment Added!")
-      # Delete a comment
-      find('.btn[data-original-title="Delete Comment"]', match: :first).click()
-      # Click "confirm" on modal
-      page.evaluate_script('document.querySelector(".jconfirm-buttons .btn:first-of-type").click()')
-      assert_selector('#comments-list .comment', count: 1)
-      assert_selector('.noty_body', text: 'Comment deleted')
-    end
-
     test "#{page_type_string}: formatting toolbar is rendered" do
       visit get_path(page_type, nodes(node_name).path)
       assert_selector('.btn[data-original-title="Bold"]', count: 1)
@@ -213,28 +274,6 @@ class CommentTest < ApplicationSystemTestCase
       assert_selector('.btn[data-original-title="Save"]', count: 1)
       assert_selector('.btn[data-original-title="Recover"]', count: 1)
       assert_selector('.btn[data-original-title="Help"]', count: 1)
-    end
-
-    test "#{page_type_string}: edit comment" do
-      nodes(node_name).add_comment({
-        uid: 2,
-        body: comment_text
-      })
-      visit get_path(page_type, nodes(node_name).path)
-      # Edit the comment
-      page.execute_script <<-JS
-        var comment = $(".comment")[1];
-        var commentID = comment.id;
-        var editCommentBtn = $(comment).find('.navbar-text .edit-comment-btn')
-        // Toggle edit mode
-        $(editCommentBtn).click()
-        var commentTextarea = $('#text-input-edit-' + commentID);
-        $(commentTextarea).val('Updated comment.')
-        var submitCommentBtn = $('#' + commentID + ' .control-group .btn-primary')[1];
-        $(submitCommentBtn).click()
-      JS
-      message = find('.alert-success', match: :first).text
-      assert_equal( "×\nComment updated.", message)
     end
 
     test "#{page_type_string}: react and unreact to comment" do
@@ -266,11 +305,22 @@ class CommentTest < ApplicationSystemTestCase
       end
       # work with just the 2nd comment
       reply_toggles[1].click 
+
+      # check if the comment form reply textarea has no content on input field
+      assert_selector("#comment-form-reply-#{comment_ids[1]} textarea.text-input", text: "")
+
       # open the comment form by toggling, and fill in some text
       find("div#comment-#{comment_ids[1]}-reply-section textarea.text-input").click.fill_in with: 'H'
+      
       # open the other two comment forms
       reply_toggles[0].click
+      # check if the comment form reply textarea has no content on input field
+      assert_selector("#comment-form-reply-#{comment_ids[0]} textarea.text-input", text: "")
+
       reply_toggles[2].click
+      # check if the comment form reply textarea has no content on input field
+      assert_selector("#comment-form-reply-#{comment_ids[2]} textarea.text-input", text: "")
+      
       # fill them in with text
       find("div#comment-#{comment_ids[0]}-reply-section textarea.text-input").click.fill_in with: 'A'
       find("div#comment-#{comment_ids[2]}-reply-section textarea.text-input").click.fill_in with: 'Y'
@@ -339,6 +389,8 @@ class CommentTest < ApplicationSystemTestCase
       page.find('#text-input-main')
         .click
         .fill_in with: comment_text_main
+        # taking into account the time for debounce function
+        sleep(0.7)
 
       # open up reply comment form
       page.all('p', text: 'Reply to this comment...')[0].click
@@ -349,6 +401,8 @@ class CommentTest < ApplicationSystemTestCase
       page.find('#text-input-reply-' + reply_id_num)
         .click
         .fill_in with: comment_text_reply
+        # taking into account the time for debounce function
+        sleep(0.7)
 
       # open up edit comment form
       page.find(".edit-comment-btn").click
@@ -359,6 +413,8 @@ class CommentTest < ApplicationSystemTestCase
       page.find('#text-input-edit-' + edit_id_num)
         .click
         .fill_in with: comment_text_edit
+        # taking into account the time for debounce function
+        sleep(0.7)
       
       # visit the page again (ie. refresh it)
       visit get_path(page_type, nodes(node_name).path)
@@ -414,14 +470,12 @@ class CommentTest < ApplicationSystemTestCase
     end
   end
 
-  # TESTS for ALL PAGE TYPES!
+  # PART 3: TESTS for ALL PAGE TYPES!
   #
   # the page_types are: Wikis, Research Notes, and Questions
   # defined in test/test_helper.rb
   page_types.each do |page_type, node_name|
     page_type_string = page_type.to_s
-    comment_text = 'woot woot'
-    comment_response_text = 'wooly woot'
 
     test "post #{page_type_string}, then comment on FRESH #{page_type_string}" do
       title_text, body_text = String.new, String.new

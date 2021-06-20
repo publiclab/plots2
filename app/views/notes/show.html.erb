@@ -26,7 +26,11 @@
     <!--<div class="expand"><a onClick="$('.main-image').toggleClass('compressed');"><i class="fa fa-angle-down"></i></a></div>-->
   <% end %>
 
-  <h1 style="margin-top: 40px;"><%= @node.title %></h1>
+  <% if @node.has_tag('locked') %>
+    <h1 style="margin-top: 40px;"><%= @node.title %>&nbsp;<span class="fa fa-lock"></span></h1>
+  <% else %>
+    <h1 style="margin-top: 40px;"><%= @node.title %></h1>
+  <% end %>
 
   <div id="note-info">
 
@@ -34,7 +38,7 @@
       <% if @node.status == 0 || @node.status == 4 %><span class="badge badge-danger"><%= translation('notes.show.unpublished') %></span> | <% end %>
       <% if @node.status == 3 %><span class="badge badge-success">Draft</span> | <% end %>
       by <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> <%= @node.author.new_contributor %>
-      <% if @node.has_power_tag('with') %>with <% @node&.coauthors&.each_with_index do |coauthor,i| %>
+      <% if @node.has_power_tag('with') %>, <% @node&.coauthors&.each_with_index do |coauthor,i| %>
               <a href="/profile/<%= coauthor.username %>">
                 <%= coauthor.username%></a> <%= coauthor.new_contributor %>
               <%= ',' if i < @node.coauthors.size-1 %><% end %><% end %>
@@ -86,9 +90,13 @@
     </table>
   <% end %>
 
+  <% if current_user && current_user.can_moderate? && !(@node.has_tag('locked')) %>
+    <a href="javascript:window.location.reload(true)" onClick="addTag('locked');">Lock Note</a>
+  <% end %>
+
   <% if current_user && 
-    ( current_user.role == "admin" || current_user.role == "moderator" || 
-      current_user.id == @node.id || current_user.is_coauthor?(@node) ) && 
+   ( current_user.can_moderate? || 
+     current_user.id == @node.id || current_user.is_coauthor?(@node) ) && 
       @node.has_tag('event') %>
   <hr/>
   <p>This looks like an event.

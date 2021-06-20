@@ -1,8 +1,17 @@
 (function() {
 
   // settings at https://github.com/ichord/At.js/wiki/Base-Document#settings
+
+  // checks if the 'name' key in the JSON data is named 'username' or 'name' and then returns the
+  // correct key-value
+  const displayName = (item) => item.username ? item.username : item.name;
+
   var at_config = {
     at: "@",
+    displayTpl: (item) => `<li>${displayName(item)}</li>`,
+    insertTpl: (item) => `@${displayName(item)}`,
+    // loads and saves remote JSON data by URL
+    data: '/users/active',
     delay: 400,
     callbacks: {
       remoteFilter: debounce(function(query, callback) {

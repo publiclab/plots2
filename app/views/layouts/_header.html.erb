@@ -17,7 +17,7 @@
     <div class="collapse navbar-collapse" id="header-navbar-collapse">
       <form class="form-inline mr-3" id="searchform" autocomplete="off">
         <div class="input-group">
-          <input aria-label="Enter Search Query" type="text" id="searchform_input" class="form-control search-query typeahead" role="search" qryType="tags" placeholder="<%= t('layout._header.search') %>"  value="<%= params[:query] %>" required>
+          <input aria-label="Enter Search Query" type="text" id="searchform_input" class="form-control search-query typeahead" role="search" qryType="tags" placeholder="<%= translation('layout._header.search',{},false) %>"  value="<%= params[:query] %>" required>
           <div class="input-group-append">
             <button class="btn btn-light" type="submit" title="Search button" aria-label="Search Button"><i class="fa fa-search"></i></button>
           </div>
@@ -31,49 +31,90 @@
         <% end %>
 
         <li class="nav-item dropdown" style="min-width:80px;">
-          <a class="nav-link" data-toggle="dropdown" href="#">
+          <div class="nav-link" data-toggle="dropdown" onclick="location.href='#">
             <%= translation('layout._header.community.community_title') %>
-          </a>
+          </div>  
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="/getting-started"><b><%= translation('layout._header.community.get_started') %> &raquo;</b></a>
+            <div class="dropdown-item">
+              <a class="text-body" href="/getting-started"><b><%= translation('layout._header.community.get_started') %> &raquo;</b></a>
+            </div>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="/people"><%= translation('layout._header.community.people') %></a>
-            <a class="dropdown-item" href="/map"><%= translation('layout._header.community.places') %></a>
-            <a class="dropdown-item" href="/projects"><%= translation('layout._header.community.projects') %></a>
-            <a class="dropdown-item" href="/events"><%= translation('layout._header.community.events') %></a>
-            <a class="dropdown-item" href="/questions"><%= translation('layout._header.community.questions') %></a>
-            <a class="dropdown-item" href="/chat"><%= translation('layout._header.community.chat') %></a>
+            <div class="dropdown-item">
+              <a class="text-body" href="/people"><%= translation('layout._header.community.people') %></a>
+            </div>
+            <div class="dropdown-item">
+              <a class="text-body" href="/map"><%= translation('layout._header.community.places') %></a>
+            </div>
+            <div class="dropdown-item">
+              <a class="text-body" href="/projects"><%= translation('layout._header.community.projects') %></a>
+            </div>
+            <div class="dropdown-item">  
+              <a class="text-body" href="/events"><%= translation('layout._header.community.events') %></a>
+            </div>
+            <div class="dropdown-item">
+              <a class="text-body" href="/questions"><%= translation('layout._header.community.questions') %></a>
+            </div>
+            <div class="dropdown-item">
+              <a class="text-body" href="/chat"><%= translation('layout._header.community.chat') %></a>
+            </div>
           </div>
         </li>
 
         <li class="nav-item dropdown" style="min-width:80px;">
-          <a class="nav-link" data-toggle="dropdown" href="#">
+          
+            <div class="nav-link" data-toggle="dropdown" onclick="location.href='#">
             <%= translation('layout._header.tools.tools_title') %>
-          </a>
+            </div>
+          
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="/methods"><%= translation('layout._header.tools.methods') %></a>
+          <div class="nav-link dropdown-item">
+            <a class="text-body" href="/methods"><%= translation('layout._header.tools.methods') %></a>
+          </div>
             <div class="dropdown-divider"></div>
             <h6 class="dropdown-header">Kits</h6>
-            <a class="dropdown-item" href="/kits"><%= translation('layout._header.tools.kits_initiative') %></a>
-            <a class="dropdown-item" href="//store.publiclab.org"><%= translation('layout._header.tools.store') %></a>
+            <div class="dropdown-item">
+              <a class="text-body" href="/kits"><%= translation('layout._header.tools.kits_initiative') %></a>
+            </div>
+            <div class="dropdown-item">
+              <a class="text-body" href="//store.publiclab.org"><%= translation('layout._header.tools.store') %></a>
+            </div>
             <div class="dropdown-divider"></div>
             <h6 class="dropdown-header">Software</h6>
-            <a class="dropdown-item" href="https://mapknitter.org"><%= translation('layout._header.tools.map_knitter') %></a>
-            <a class="dropdown-item" href="https://infragram.org"><%= translation('layout._header.tools.infragram') %></a>
-            <a class="dropdown-item" href="https://spectralworkbench.org"><%= translation('layout._header.tools.spectral_workbench') %></a>
-            <a class="dropdown-item" href="https://code.publiclab.org#r=all"><%= translation('layout._header.tools.code_community') %></a>
+            <div class="dropdown-item">
+              <a class="text-body" href="https://mapknitter.org"><%= translation('layout._header.tools.map_knitter') %></a>
+            </div>
+            <div class="dropdown-item">
+            <a class="text-body" href="https://infragram.org"><%= translation('layout._header.tools.infragram') %></a>
+            </div>
+            <div class="dropdown-item">
+              <a class="text-body" href="https://spectralworkbench.org"><%= translation('layout._header.tools.spectral_workbench') %></a>
+            </div>
+            <div class="dropdown-item">
+              <a class="text-body" href="https://code.publiclab.org#r=all"><%= translation('layout._header.tools.code_community') %></a>
+            </div>
           </div>
         </li>
 
         <li class="nav-item dropdown" style="min-width:80px;">
-          <a class="nav-link" data-toggle="dropdown" href="#">
+          <div class="nav-link" data-toggle="dropdown" onclick="location.href='#'">
+            <!-- <a > -->
             <%= t('layout._header.about.about_title') %>
-          </a>
+            <!-- </a> -->
+          </div>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="/about"><%= translation('layout._header.about.about_public_lab') %></a>
-            <a class="dropdown-item" href="/blog"><%= translation('layout._header.about.blog') %></a>
-            <a class="dropdown-item" href="/newsletter"><%= translation('Newsletter') %></a>
-            <a class="dropdown-item" href="/wiki/contact"><%= translation('layout._header.about.contact') %></a>
+            <div class="dropdown-item">
+              <a class="text-body" href="/about"><%= translation('layout._header.about.about_public_lab') %></a>
+            </div>
+            <div class="dropdown-item">
+              <a class="text-body" href="/blog"><%= translation('layout._header.about.blog') %></a>
+            </div>
+            <div class="dropdown-item">
+            <a class="text-body" href="/newsletter"><%= translation('Newsletter') %></a>
+            </div>
+            <div class="dropdown-item">
+              <a class="text-body" href="/wiki/contact">
+                <%= translation(' layout._header.about.contact') %></a>
+            </div>
           </div>
         </li>
 
@@ -121,12 +162,22 @@
                     <% end %>
                   </h5>
 
-                    <a class="dropdown-item" href="/profile/<%= current_user.username %>"><%= translation('layout._header.profile') %></a>
-                    <a class="dropdown-item" href="/profile/edit"><%= translation('layout._header.edit_profile') %></a>
-                    <a class="dropdown-item" href="/settings" >Notifications</a>
+                    <div class="dropdown-item">
+                      <a class="text-body" href="/profile/<%= current_user.username %>"><%= translation('layout._header.profile') %></a>
+                    </div>
+                    <div class="dropdown-item">
+                      <a class="text-body" href="/profile/edit"><%= translation('layout._header.edit_profile') %></a>
+                    </div>
+                    <div class="dropdown-item">
+                      <a class="text-body" href="/settings" >Notifications</a>
+                    </div>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="/subscriptions"><%= translation('layout._header.subscriptions') %></a>
-                    <a class="dropdown-item" href="/profile/<%= current_user.username %>/likes"><%= translation('layout._header.notes_liked') %></a>
+                    <div class="dropdown-item">
+                      <a class="text-body" href="/subscriptions"><%= translation('layout._header.subscriptions') %></a>
+                    </div>
+                    <div class="dropdown-item">
+                      <a class="text-body" href="/profile/<%= current_user.username %>/likes"><%= translation('layout._header.notes_liked') %></a>
+                    </div>
                     <div class="dropdown-divider"></div>
                       <% if logged_in_as(['admin']) %>
                       <a class="dropdown-item" href="/useremail">Email search</a>
@@ -136,7 +187,9 @@
                       <a class="dropdown-item" href="/features">Features</a>
                       <div class="dropdown-divider"></div>
                       <% end %>
-                      <%= link_to translation('layout._header.logout'), logout_path, class: "dropdown-item" %>
+                      <div class="dropdown-item">
+                      <%= link_to translation('layout._header.logout'), logout_path, class: "text-body" %>
+                      </div>
                     <a class="dropdown-item" href="/logoutRemotely">Logout from all devices</a>
                   </div>
               </li>
@@ -156,9 +209,9 @@
             <a class="dropdown-item d-lg-none"  href="/donate"><%= translation('layout._header.donate') %></a>
             <!--These menu items will only appear in the "More" dropdown menu. -->
             <% if current_user %>
-              <a class="dropdown-item d-xl-none" rel="tooltip" title="<%= translation('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard">Dashboard</a>
+              <a class="dropdown-item d-xl-none" rel="tooltip" title="<%= translation('layout._header.your_dashboard',{},false) %>" data-placement="bottom" href="/dashboard">Dashboard</a>
             <% else %>
-              <a class="dropdown-item d-xl-none" rel="tooltip" title="<%= translation('layout._header.become_part_community') %>" href="/signup"><%= translation('layout._header.join') %></a>
+              <a class="dropdown-item d-xl-none" rel="tooltip" title="<%= translation('layout._header.become_part_community',{},false) %>" href="/signup"><%= translation('layout._header.join') %></a>
             <% end %>
           </div>
         </li>

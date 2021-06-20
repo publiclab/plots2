@@ -147,7 +147,7 @@ class TagController < ApplicationController
     @nodes = nodes if @node_type == 'maps'
     @title = params[:id]
 
-    @length = Tag.contributor_count(params[:id]) || 0
+    @contributor_count = Tag.contributor_count(params[:id]) || 0
 
     @tagnames = [params[:id]]
     @tag = Tag.find_by(name: params[:id])
@@ -217,7 +217,7 @@ class TagController < ApplicationController
     @nodes = nodes if @node_type == 'maps'
     @title = "'" + @tagname.to_s + "' by " + params[:author]
 
-    @length = Tag.contributor_count(params[:id]) || 0
+    @contributor_count = Tag.contributor_count(params[:id]) || 0
     respond_with(nodes) do |format|
       format.html { render 'tag/show' }
       format.xml  { render xml: nodes }
@@ -359,7 +359,7 @@ class TagController < ApplicationController
     node_tag = NodeTag.where(nid: params[:nid], tid: params[:tid]).first
     node = Node.where(nid: params[:nid]).first
     # only admins, mods, and tag authors can delete other peoples' tags
-    if node_tag.uid == current_user.uid || logged_in_as(['admin', 'moderator']) || node.uid == current_user.uid
+    if (node_tag.uid == current_user.uid && !node.has_tag('locked')) || logged_in_as(['admin', 'moderator']) || (node.uid == current_user.uid && !node.has_tag('locked'))
 
       tag = Tag.joins(:node_tag)
                    .select('term_data.name')
@@ -385,6 +385,9 @@ class TagController < ApplicationController
           end
         end
       end
+    elsif node.has_tag('locked')
+      flash[:error] = "Only admins can delete tags on locked pages."
+      redirect_to Node.find_by(nid: params[:nid]).path
     else
       flash[:error] = I18n.t('tag_controller.must_own_tag_to_delete')
       redirect_to Node.find_by(nid: params[:nid]).path

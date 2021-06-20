@@ -499,13 +499,16 @@ en:
       unfollow: "Click to unfollow"
       follow: "Follow"
       people_watching_tag: "%{count} people are watching this tag"
-      no_contributors: "No contributors for that tag; try searching for '<b>%{tag}</b>'"
+      no_contributors: "Hi! There are no contributors for this tag <span>&#x1F937</span>, try searching for <a href='/search/%{tag}'>%{tag}</a>"
       wild_card_search_detected: "Wildcard tag search detected. Wildcard tag searches
         use the * asterisk in their URLs, and will not show contributor listings."
       contributor: "Contributor"
       notes: "Notes"
       people_who've_posted: "People who've posted"
       people_who_are_following: "People who are following"
+    location:
+      tooltip: "This is a geographical tag for placing this content on a map. 
+        Please visit our <a href='https://publiclab.org/wiki/location-privacy'>location privacy</a> page."
   wiki:
     index:
       wiki_pages_tagged_with: "Wiki pages tagged with <i style='color:#aaa;'>%{tag}</i>"

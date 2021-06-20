@@ -1,6 +1,6 @@
 <div id="c<%= comment.cid %>" class="comment" style="margin-top: 20px; margin-bottom: 20px; padding-bottom: 9px; word-wrap: break-word;">
 
-  <div style="margin-bottom: 0;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-bottom: 0;" class="navbar navbar-light bg-light">
+  <div style="margin-bottom: 0;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-bottom: 0;overflow-y: visible;" class="navbar navbar-light bg-light">
     <% if comment.status == 4 %>
       <p class="alert alert-warning moderated">
         <% if logged_in_as(['admin','moderator']) %>
@@ -78,7 +78,7 @@
         </a>
       <% end %>
       <% if logged_in_as(['admin', 'moderator']) || (current_user && (comment.uid == current_user.uid || comment.parent.uid == current_user.uid)) %>
-        <a aria-label="Delete Comment" data-toggle="tooltip" title="Delete Comment" class="btn btn-outline-secondary btn-sm" id="c<%= comment.cid %>delete-btn">
+        <a aria-label="Delete Comment" data-toggle="tooltip" title="Delete Comment" class="btn btn-outline-secondary btn-sm delete-comment-btn" id="c<%= comment.cid %>delete-btn">
           <i class='icon fa fa-trash'></i>
         </a>
       <% end %>

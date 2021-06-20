@@ -270,4 +270,12 @@ class TagTest < ActiveSupport::TestCase
     assert_equal 2 , note_count
     assert_equal 0 , wiki_count
   end
+
+  test 'check if a tag is a location tag' do
+    lat = node_tags(:test1_lat)
+    lon = node_tags(:test1_lon)
+
+    assert lat.location_tag?
+    assert lon.location_tag?
+  end
 end

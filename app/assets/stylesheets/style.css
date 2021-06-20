@@ -282,6 +282,10 @@ a .fa-white,
   line-height: 2em;
 }
 
+.footer a {
+  color: #007bff !important;
+}
+
 .caption {
   padding:12px;
   font-size:10px;
@@ -348,7 +352,7 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active  {
-    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    -webkit-box-shadow: 0 0 0 3px rgba(21, 156, 228, 0.4) inset !important;
 }
 
 .form-element-valid {
