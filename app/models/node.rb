@@ -1062,7 +1062,7 @@ class Node < ActiveRecord::Base
       errors ? "Only admins may create raw pages." : false
     elsif tagname[0..4] == 'rsvp:' && user.username != one_split
       errors ? I18n.t('node.only_RSVP_for_yourself') : false
-    elsif tagname == 'locked' && user.role != 'admin'
+    elsif tagname == 'locked' && !user.can_moderate?
       errors ? I18n.t('node.only_admins_can_lock') : false
     elsif tagname == 'blog' && user.role != 'admin' && user.role != 'moderator'
       errors ? 'Only moderators or admins can use this tag.' : false
