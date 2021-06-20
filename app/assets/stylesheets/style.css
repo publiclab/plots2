@@ -282,6 +282,10 @@ a .fa-white,
   line-height: 2em;
 }
 
+.footer a {
+  color: #007bff !important;
+}
+
 .caption {
   padding:12px;
   font-size:10px;
