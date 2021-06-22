@@ -168,7 +168,7 @@ module ApplicationHelper
     end
   end
 
-  def create_dropdown(href, text)
+  def create_nav_dropdown_item(href, text)
     translated_string = translation(text)
     if current_user&.has_tag('translation-helper') && I18n.locale != :en
       raw(%(<div class="dropdown-item"> <a class="text-body" href="/#{href}"> #{translated_string}</a> </div>))
