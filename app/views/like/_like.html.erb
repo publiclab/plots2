@@ -8,7 +8,7 @@
     <% end %>
 
     <% if node.type == 'page' %>
-      <% if node.has_tag('locked') && (current_user ? (current_user.role != "moderator" && current_user.role != "admin") : true) %>
+      <% if node.has_tag('locked') && (current_user ? current_user.basic_user? : true) %>
         <a href="/wiki/locked" class='btn btn-outline-secondary btn-circle btn-sm'>
           <i class="ml-1 ff fa fa-lock"></i>
         </a>
