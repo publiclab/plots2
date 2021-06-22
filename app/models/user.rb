@@ -517,6 +517,12 @@ class User < ActiveRecord::Base
     end
   end
 
+  def drafts
+    Node.where(uid: uid)
+    .where(status: 3, type: 'note')
+    .order('created DESC')
+  end
+
   private
 
   def decrease_likes_banned
