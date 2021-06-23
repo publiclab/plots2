@@ -48,9 +48,8 @@ class PostTest < ApplicationSystemTestCase
 
     find('a#tags-open').click()
 
-    # There should be 1 tag that shows up as a badge and 2 as a card
-    page.assert_selector('.tags-list .card-body', :count => 2)
-    page.assert_selector('.tags-list p.badge', :count => 1)
+    # There should be 3 tags that show up as a card
+    page.assert_selector('.tags-list .card-body', :count => 3)
 
     accept_alert do
       find('.tags-list p.badge .tag-delete').click()
@@ -220,8 +219,8 @@ class PostTest < ApplicationSystemTestCase
     find('a#tags-open').click()
 
     # Make sure proper latitude and longitude tags are added
-    assert_selector('.tags-list .badge a[href="/tag/lat:22"]', text: "lat:22")
-    assert_selector('.tags-list .badge a[href="/tag/lon:76"]', text: "lon:76")
+    assert_selector('.tags-list .card-body a[href="/tag/lat:22"]', text: "lat:22")
+    assert_selector('.tags-list .card-body a[href="/tag/lon:76"]', text: "lon:76")
   end
 
   test 'deleting a wiki' do
