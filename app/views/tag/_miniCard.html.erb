@@ -1,9 +1,6 @@
 <div class="card" style="clear:left; <% if local_assigns[:grey] %>background:#eee;<% end %>">
   <div class="card-body">
 
-    <% if local_assigns[:grey] %>
-      <div class="power-tag"></div>
-    <% end %>
     <a class="ellipsis pull-right" data-toggle="dropdown" style="cursor:pointer"><i class="fa fa-ellipsis-h" style="color:#666;font-size:18px;margin-right:10px;"></i></a>
     <div class="dropdown-menu" style = "font-size:13px;">
       <div class="dropdown-item"><a href='/tag/<%= tag.name %>' style="color:black; text-decoration: underline;"><%= Tag.tagged_node_count(tag.name) || 0 %> notes</a></div>
@@ -13,7 +10,7 @@
       <% end %>
       <% if logged_in_as(['admin', 'moderator']) || (current_user && ( current_user.uid ==  @node.uid || current_user.uid == tag.uid)) %>
         <% if tag.name.include? ':' %>
-          <div class="dropdown-item"><a data-confirm="This is a power tag (see https://publiclab.org/wiki/power-tags) -- and may drive a specific function on this page. Are you sure you want to delete it?" class="tag-delete" href="/tag/delete/<%= @node.id %>/<%= tag.tid %>" data-tag-id="<%= tag.tid %>" data-method="delete" style="color:black; text-decoration: underline;">delete tag</a></div>
+          <div class="dropdown-item power-tag"><a data-confirm="This is a power tag (see https://publiclab.org/wiki/power-tags) -- and may drive a specific function on this page. Are you sure you want to delete it?" class="tag-delete" href="/tag/delete/<%= @node.id %>/<%= tag.tid %>" data-tag-id="<%= tag.tid %>" data-method="delete" style="color:black; text-decoration: underline;">delete tag</a></div>
         <% else %>
           <div class="dropdown-item"><a data-confirm="Are you sure you want to delete it?" class="tag-delete" href="/tag/delete/<%= @node.id %>/<%= tag.tid %>" data-tag-id="<%= tag.tid %>" data-method="delete" style="color:black; text-decoration: underline;">delete tag</a></div>
         <% end %>
