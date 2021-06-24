@@ -1,6 +1,9 @@
 <div class="card" style="clear:left; <% if local_assigns[:grey] %>background:#eee;<% end %>">
   <div class="card-body">
 
+    <% if local_assigns[:grey] %>
+      <div class="power-tag"></div>
+    <% end %>
     <a class="ellipsis pull-right" data-toggle="dropdown" style="cursor:pointer"><i class="fa fa-ellipsis-h" style="color:#666;font-size:18px;margin-right:10px;"></i></a>
     <div class="dropdown-menu" style = "font-size:13px;">
       <div class="dropdown-item"><a href='/tag/<%= tag.name %>' style="color:black; text-decoration: underline;"><%= Tag.tagged_node_count(tag.name) || 0 %> notes</a></div>
