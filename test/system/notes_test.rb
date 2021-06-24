@@ -8,14 +8,5 @@ class NoteTest < ApplicationSystemTestCase
 
   find('.nav-link', text: 'Research Notes').click()
   page.assert_selector('.nav-link active', text: 'Research Notes')
-
-  find('.nav-link', text: 'Questions').click()
-  page.assert_selector('.nav-link active', text: 'Questions')
-
-  find('.nav-link', text: 'Wiki pages').click()
-  page.assert_selector('.nav-link active', text: 'Wiki pages')
-
-  find('.nav-link', text: 'Comments').click()
-  page.assert_selector('.nav-link active', text: 'Comments')
   end
 end
