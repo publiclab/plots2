@@ -40,7 +40,7 @@ class PostTest < ApplicationSystemTestCase
     find('.tag-input').set('mountains').native.send_keys(:return)
 
     # Make sure that the 2 tags are added
-    page.assert_selector('.tags-list p.badge', :count => 2)
+    page.assert_selector('.tags-list .card', :count => 2)
   end
 
   test 'removing tags from the post' do
@@ -56,7 +56,7 @@ class PostTest < ApplicationSystemTestCase
     end
     
     # Make sure that 1 of the 3 tags is removed
-    page.assert_selector('.tags-list .card-body', :count => 2)
+    page.assert_selector('.tags-list .card-body', :count => 0)
   end
 
   test 'like button on the post' do
