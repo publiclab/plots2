@@ -52,11 +52,11 @@ class PostTest < ApplicationSystemTestCase
     page.assert_selector('.tags-list .card-body', :count => 3)
 
     accept_alert do
-      find('.tags-list p.badge .tag-delete').click()
+      find('.tags-list .card-body .tag-delete').click()
     end
     
     # Make sure that 1 of the 3 tags is removed
-    page.assert_selector('.tags-list p.badge', :count => 0)
+    page.assert_selector('.tags-list .card-body', :count => 2)
   end
 
   test 'like button on the post' do
