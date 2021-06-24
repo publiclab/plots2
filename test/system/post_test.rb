@@ -40,7 +40,7 @@ class PostTest < ApplicationSystemTestCase
     find('.tag-input').set('mountains').native.send_keys(:return)
 
     # Make sure that the 2 tags are added
-    page.assert_selector('.tags-list .card', :count => 2)
+    page.assert_selector('.tags-list .card-body', :count => 2)
   end
 
   test 'removing tags from the post' do
