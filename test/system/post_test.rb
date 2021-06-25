@@ -52,7 +52,7 @@ class PostTest < ApplicationSystemTestCase
     # There should be 3 tags that show up as a card
     page.assert_selector('.tags-list .card-body', :count => 3)
 
-    find('.tags-list .card-body .ellipsis').click()
+    find('.tags-list .card-body .ellipsis:first-of-type').click()
 
     accept_alert do
       find('.tags-list .card-body .tag-delete').click()
