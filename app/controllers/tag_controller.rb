@@ -358,7 +358,7 @@ class TagController < ApplicationController
   def delete
     node_tag = NodeTag.where(nid: params[:nid], tid: params[:tid]).first
     node = Node.where(nid: params[:nid]).first
-    # only admins, mods, and tag authors can delete other peoples' tags
+    # only admins, mods can delete other peoples' tags if the note/wiki contains the locked tag
     if (node_tag.uid == current_user.uid && !node.has_tag('locked')) || logged_in_as(['admin', 'moderator']) || (node.uid == current_user.uid && !node.has_tag('locked'))
 
       tag = Tag.joins(:node_tag)
