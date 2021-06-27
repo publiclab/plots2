@@ -4,13 +4,16 @@ import PropTypes from "prop-types";
 const CommentReplies = ({
   children,
   commentId,
+  dispatch,
   isReplyFormVisible,
-  handleReplyFormToggle,
   replyCommentForm
 }) => {
   const replyToggleLink = <p
     id={"comment-" + commentId + "-reply-toggle"}
-    onClick={() => handleReplyFormToggle("reply-" + commentId)}
+    onClick={() => dispatch({
+      type: "TOGGLE COMMENT FORM VISIBILITY",
+      commentFormId: "reply-" + commentId
+    })}
     style={{
       color: "#006dcc",
       cursor: "pointer",
@@ -36,6 +39,7 @@ const CommentReplies = ({
 CommentReplies.propTypes = {
   children: PropTypes.array,
   commentId: PropTypes.number.isRequired,
+  dispatch: PropTypes.func.isRequired,
   isReplyFormVisible: PropTypes.bool.isRequired,
   handleReplyFormToggle: PropTypes.func,
   replyCommentForm: PropTypes.element

@@ -9,26 +9,18 @@ import CommentsHeader from "./CommentsHeader";
 import CommentsList from "./CommentsList"
 
 const CommentsContainer = ({
-  initialCommentFormToggleState,
+  initialCommentFormsVisibility,
   initialComments,
   initialTextAreaValues,
   nodeId
 }) => {
   const initialState = {
     comments: initialComments,
-    commentFormsVisibility: initialCommentFormToggleState,
+    commentFormsVisibility: initialCommentFormsVisibility,
     textAreaValues: initialTextAreaValues
   }
 
   const [state, dispatch] = useReducer(reducer, initialState);
-
-  // React Hook: Visibility for Reply and Edit Comment Forms
-  const [commentFormsVisibility, setCommentFormsVisibility] = useState(initialCommentFormToggleState);
-
-  // hide and reveal reply & edit comment forms
-  const handleFormVisibilityToggle = (commentFormId) => {
-    setCommentFormsVisibility(oldState => (Object.assign({}, oldState, { [commentFormId]: !oldState[commentFormId] })));
-  }
 
   // React Hook: <textarea> Input State for Comment Forms
   //   ie. the value that shows inside a comment form's <textarea>
@@ -132,12 +124,12 @@ const CommentsContainer = ({
           <div id="comments" className="col-lg-10 comments">
             <CommentsHeader comments={state.comments} />
             <CommentsList 
-              commentFormsVisibility={commentFormsVisibility}
+              commentFormsVisibility={state.commentFormsVisibility}
               comments={state.comments}
               currentUser={currentUser}
+              dispatch={dispatch}
               handleCreateComment={handleCreateComment}
               handleDeleteComment={handleDeleteComment}
-              handleFormVisibilityToggle={handleFormVisibilityToggle}
               handleTextAreaChange={handleTextAreaChange}
               handleUpdateComment={handleUpdateComment}
               setTextAreaValues={setTextAreaValues}
@@ -159,7 +151,7 @@ const CommentsContainer = ({
 }
 
 CommentsContainer.propTypes = {
-  initialCommentFormToggleState: PropTypes.object.isRequired,
+  initialCommentFormsVisibility: PropTypes.object.isRequired,
   initialComments: PropTypes.array.isRequired,
   initialTextAreaValues: PropTypes.object.isRequired,
   nodeId: PropTypes.number.isRequired

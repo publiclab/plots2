@@ -40,6 +40,14 @@ const reducer = (state, action) => {
         }
       }
       break;
+    case "TOGGLE COMMENT FORM VISIBILITY": // shows/hides reply & edit comment forms when user clicks the toggle button
+      return {
+        ...state,
+        commentFormsVisibility: {
+          ...state.commentFormsVisibility,
+          [action.commentFormId]: !state.commentFormsVisibility[action.commentFormId]
+        }
+      };
     default:
       throw new Error(); // default should never be called
   }
