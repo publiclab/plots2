@@ -84,6 +84,13 @@ class SearchService
       .includes(:node)
       .references(:node)
       .where('node.status = 1')
+      .order('
+        CASE
+          WHEN name LIKE "' + query + '" THEN 1
+          WHEN name LIKE "'+ query+'%" THEN 2
+          WHEN name LIKE "%'+ query +'" THEN 4
+          ELSE 3
+        END')
       .limit(limit).each do |tag|
       suggestions << tag
     end
