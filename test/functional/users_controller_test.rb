@@ -320,7 +320,7 @@ class UsersControllerTest < ActionController::TestCase
     get :list, params: { sort: 'last_activity' }
 
     assert_response :success
-    assert assigns(:users).each_cons(2).all?{|i,j| "i.updated_at" >= "j.updated_at" }
+    assert assigns(:users).each_cons(2).all?{|i,j| i.updated_at >= j.updated_at }
   end
 
   test "digest emails" do
