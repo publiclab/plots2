@@ -57,11 +57,17 @@ const CommentsContainer = ({
         // blank out the value of textarea & also create a value for the new comment's edit form
         setTextAreaValues(oldState => ({ ...oldState, [formId]: "", ["edit-" + newCommentId]: newCommentRawText }));
         // the new comment form comes with an edit form, its toggle state needs to be created as well
-        setCommentFormsVisibility(oldState => ({ ...oldState, ["edit-" + newCommentId]: false }));
+        dispatch({
+          type: "HIDE COMMENT FORM",
+          commentFormId: "edit-" + newCommentId
+        })
         // if the comment doesn't have a replyTo, then it's a parent comment
         // parent comments have reply forms, this needs to be set in state as well.
         if (!data.comment[0].replyTo) {
-          setCommentFormsVisibility(oldState => ({ ...oldState, ["reply-" + newCommentId]: false }));
+          dispatch({
+            type: "HIDE COMMENT FORM",
+            commentFormId: "reply-" + newCommentId
+          })
         }
         // call useReducer's dispatch function to push the comment into state
         dispatch({
@@ -70,7 +76,10 @@ const CommentsContainer = ({
         })
         // close the comment form
         if (formType !== "main") {
-          setCommentFormsVisibility(oldState => (Object.assign({}, oldState, { [formId]: false })));
+          dispatch({
+            type: "HIDE COMMENT FORM",
+            commentFormId: formId
+          });
         }
       }
     );
@@ -93,7 +102,10 @@ const CommentsContainer = ({
           newComment: data.comment[0]
         })
         // close the edit comment form
-        setCommentFormsVisibility(oldState => (Object.assign({}, oldState, { [formId]: false })));
+        dispatch({
+          type: "HIDE COMMENT FORM",
+          commentFormId: formId
+        });
         notyNotification('mint', 3000, 'success', 'topRight', 'Comment Updated!');
       }
     );

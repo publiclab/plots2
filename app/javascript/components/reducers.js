@@ -48,6 +48,14 @@ const reducer = (state, action) => {
           [action.commentFormId]: !state.commentFormsVisibility[action.commentFormId]
         }
       };
+    case "HIDE COMMENT FORM":
+      return {
+        ...state,
+        commentFormsVisibility: {
+          ...state.commentFormsVisibility,
+          [action.commentFormId]: false
+        }
+      }
     default:
       throw new Error(); // default should never be called
   }
