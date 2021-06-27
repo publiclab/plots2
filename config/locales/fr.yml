@@ -390,7 +390,7 @@ fr:
       wild_card_search_detected: "Recherche générique détectée. Les recherches générique de tag utilisent l'astérisque * dans l'URL, et ne montreront pas de liste de contributeur·ices."
       contributor: "Contributeur·ice"
       notes: "Notes"
-      people_who've_posted: "Personnes qui ont posté"
+      people_who've_contributed: "Personnes qui ont contribué"
       people_who_are_following: "Personnes qui suiven"
   wiki:
     index:

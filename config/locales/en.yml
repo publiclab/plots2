@@ -504,7 +504,7 @@ en:
         use the * asterisk in their URLs, and will not show contributor listings."
       contributor: "Contributor"
       notes: "Notes"
-      people_who've_posted: "People who've posted"
+      people_who've_contributed: "People who've contributed"
       people_who_are_following: "People who are following"
     location:
       tooltip: "This is a geographical tag for placing this content on a map. 
