@@ -154,6 +154,7 @@
         nid: <%= @node.id %><% end %>
       },
       richTextModule: {
+        token: $('meta[name="csrf-token"]').attr('content'),
         authorsAutocomplete: false,
         tagsAutocomplete: false,
         formats: ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt', 'docx', 'bmp', 'obj', 'json', 'jpg', 'jpeg', 'png', 'gif']

@@ -1,5 +1,5 @@
 <div class="like-buttons d-print-none btn-toolbar" style="margin-bottom :4px;">
-    <% if logged_in_as(['admin', 'moderator']) || (current_user && (current_user.uid == node.uid || node.has_tag("with:#{current_user.username}"))) %>
+    <% if logged_in_as(['admin']) || (current_user && (current_user.uid == node.uid || node.has_tag("with:#{current_user.username}"))) %>
         <% if node.type == 'note' %>
             <a aria-label="Edit post" <% if current_user && current_user.uid != node.uid %>data-confirm='Please be aware that you are editing a post by another contributor, a privilege you have only because you are an admin or co-author.' <% end %> class='btn btn-outline-secondary btn-circle btn-sm' href='/notes/edit/<%= node.id %>?t=<%= Time.now.to_i %><% if params[:controller] == "questions" %>&redirect=question&template=question<% end %>'>
                 <i class='ml-1 ff fa fa-pencil'></i>
@@ -8,7 +8,7 @@
     <% end %>
 
     <% if node.type == 'page' %>
-      <% if node.has_tag('locked') && (current_user ? (current_user.role != "moderator" && current_user.role != "admin") : true) %>
+      <% if node.has_tag('locked') && (current_user ? current_user.basic_user? : true) %>
         <a href="/wiki/locked" class='btn btn-outline-secondary btn-circle btn-sm'>
           <i class="ml-1 ff fa fa-lock"></i>
         </a>

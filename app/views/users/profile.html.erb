@@ -61,8 +61,8 @@
     <small>
       <% if logged_in_as(['admin']) %><%= @profile_user.email %><% end %>
       <span style = "font-size:24px;"><small> <%= raw translation('users.profile.joined_time_ago', :time_ago => distance_of_time_in_words(@profile_user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' })) %></small></span>
-      <% if @profile_user.role == "moderator" %> | <i class="fa fa-certificate"></i> <%= translation('users.profile.moderator') %><% end %>
-      <% if @profile_user.role == "admin" %> | <i class="fa fa-certificate"></i> <%= translation('users.profile.admin') %><% end %>
+      <% if @profile_user.moderator? %> | <i class="fa fa-certificate"></i> <%= translation('users.profile.moderator') %><% end %>
+      <% if @profile_user.admin? %> | <i class="fa fa-certificate"></i> <%= translation('users.profile.admin') %><% end %>
       <% if @profile_user.status == 0 %> | <i class="fa fa-ban" style="color:#a00;"></i> <%= translation('users.profile.banned') %><% end %>
     </small>
   </h4>
@@ -141,13 +141,13 @@
     <% if logged_in_as(['admin', 'moderator']) && @profile_user.status == 0 %>
       <a href="/unban/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-thumbs-up"></i> <%= translation('users.profile.unban_user') %></a>
     <% elsif logged_in_as(['admin', 'moderator']) && @profile_user.status == 1 && @profile_user != current_user %>
-      <a data-confirm="<%= translation('users.profile.confirm_ban_user') %>" href="/ban/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-ban"></i> <%= translation('users.profile.ban_user') %></a>
+      <a data-confirm="<%= translation('users.profile.confirm_ban_user',{},false) %>" href="/ban/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-ban"></i> <%= translation('users.profile.ban_user') %></a>
     <% end %>
 
     <% if logged_in_as(['admin', 'moderator']) && @profile_user.status == 5 %>
       <a href="/admin/unmoderate/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-thumbs-up"></i> <%= translation('users.profile.unmoderate_user') %></a>
     <% elsif logged_in_as(['admin', 'moderator']) && @profile_user.status == 1 %>
-      <a rel="tooltip" title="Prevent author from logging in, without hiding their work or profile." data-confirm="<%= translation('users.profile.confirm_moderate_user') %>" href="/admin/moderate/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-ban"></i> <%= translation('users.profile.moderate_user') %></a>
+      <a rel="tooltip" title="Prevent author from logging in, without hiding their work or profile." data-confirm="<%= translation('users.profile.confirm_moderate_user',{},false) %>" href="/admin/moderate/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-ban"></i> <%= translation('users.profile.moderate_user') %></a>
     <% end %>
 
     <% if @profile_user && !@profile_user.reset_key.nil? && logged_in_as(['admin']) %>
@@ -274,6 +274,7 @@
   </div>
 
 </div>
+<%= javascript_include_tag "translation" %>
 
 <script src = "https://cdn.jsdelivr.net/npm/frappe-charts@0.0.8/dist/frappe-charts.min.iife.js"></script>
 

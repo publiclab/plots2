@@ -359,7 +359,7 @@ GEM
     parallel (1.20.1)
     parser (3.0.1.1)
       ast (~> 2.4.1)
-    passenger (6.0.8)
+    passenger (6.0.9)
       rack
       rake (>= 0.8.1)
     phantomjs (2.1.1.0)
@@ -470,7 +470,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.10.0)
     rspec-support (3.10.0)
-    rubocop (1.16.0)
+    rubocop (1.17.0)
       parallel (~> 1.10)
       parser (>= 3.0.0.0)
       rainbow (>= 2.2.2, < 4.0)
@@ -522,7 +522,7 @@ GEM
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.12.3)
     simplecov_json_formatter (0.1.2)
-    skylight (5.1.0)
+    skylight (5.1.1)
       activesupport (>= 5.2.0)
     sprockets (3.7.2)
       concurrent-ruby (~> 1.0)
@@ -538,7 +538,7 @@ GEM
       teaspoon (>= 1.0.0)
     terrapin (0.6.0)
       climate_control (>= 0.0.3, < 1.0)
-    test-unit (3.4.2)
+    test-unit (3.4.4)
       power_assert
     thor (1.1.0)
     thread_safe (0.3.6)
@@ -680,7 +680,7 @@ DEPENDENCIES
   rest-client
   reverse_markdown
   rspec
-  rubocop (~> 1.16.0)
+  rubocop (~> 1.17.0)
   ruby-openid
   sanitize
   sassc (~> 2.4.0)

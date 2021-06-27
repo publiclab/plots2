@@ -146,7 +146,7 @@ const CommentsList = ({
 };
 
 CommentsList.propTypes = {
-  commentFormsVisibility: PropTypes.object.isRequired,
+  commentFormsVisibility: PropTypes.objectOf(PropTypes.bool).isRequired,
   comments: PropTypes.array.isRequired,
   currentUser: PropTypes.object,
   dispatch: PropTypes.func.isRequired,
@@ -155,7 +155,7 @@ CommentsList.propTypes = {
   handleTextAreaChange: PropTypes.func.isRequired,
   handleUpdateComment: PropTypes.func.isRequired,
   setTextAreaValues: PropTypes.func.isRequired,
-  textAreaValues: PropTypes.object.isRequired
+  textAreaValues: PropTypes.objectOf(PropTypes.string).isRequired
 };
 
 export default CommentsList;
