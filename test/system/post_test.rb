@@ -49,8 +49,8 @@ class PostTest < ApplicationSystemTestCase
 
     find('a#tags-open').click()
 
-    # There should be 3 tags that show up as a card
-    page.assert_selector('.tags-list .card-body', :count => 3)
+    # There should be 2 tags that show up as a card
+    page.assert_selector('.tags-list .card-body', :count => 2)
 
     find(".tags-list .card-body .ellipsis", match: :first).click()
 
@@ -58,8 +58,8 @@ class PostTest < ApplicationSystemTestCase
       find('.tags-list .card-body .tag-delete').click()
     end
     
-    # Make sure that 1 of the 3 tags is removed
-    page.assert_selector('.tags-list .card-body', :count => 2)
+    # Make sure that 1 of the 2 tags is removed
+    page.assert_selector('.tags-list .card-body', :count => 1)
   end
 
   test 'like button on the post' do
