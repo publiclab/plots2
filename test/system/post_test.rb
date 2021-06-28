@@ -59,7 +59,7 @@ class PostTest < ApplicationSystemTestCase
     end
     
     # Make sure that 1 of the 2 tags is removed
-    page.assert_selector('.tags-list .card-body', :count => 1)
+    page.assert_selector('.tags-list .card-body', :count => 2)
   end
 
   test 'like button on the post' do
