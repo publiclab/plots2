@@ -10,16 +10,15 @@
   <% if tag.try(:author) && !tag.try(:author).banned? %>
     <% if tag.class == NodeTag %>
 
-      <% if !power_tag && i < 2 # just the first 2 get special display, power tags excluded %>
-        <%= render partial: 'tag/miniCard', locals: { tag: tag } %>
-      <% else %>
-
-        <% if i == 2 && !power_tag %>
-          <a class="show-more-tags" href="javascript:void(0);"><p style="float:left; color:#666; margin-top:14px; margin-left:5px;"><u><%= tags.length - 2 %> more</u> &nbsp </p></a>
+      <% if i < 2 # just the first 2 get special display %>
+        <% if !power_tag %>
+          <%= render partial: 'tag/miniCard', locals: { tag: tag } %>
+        <% else %>
+          <%= render partial: 'tag/miniCard', locals: { tag: tag, grey: power_tag } %>
         <% end %>
 
-        <%= render partial: 'tag/miniCard', locals: { tag: tag, grey: power_tag } %>
-
+      <% else %>
+        <a class="show-more-tags" href="javascript:void(0);"><p style="float:left; color:#666; margin-top:14px; margin-left:5px;"><u><%= tags.length - 2 %> more</u> &nbsp </p></a>
       <% end %>
 
     <% elsif tag.class == UserTag && (tag.name[0..4] != "oauth" || (logged_in_as(['admin', 'moderator']) || (current_user && current_user.uid == tag.uid))) %>
