@@ -44,7 +44,7 @@
         <% end %>
     <% end %>
 
-    <span data-toggle="tooltip" data-placement="bottom" title="Tools" id="menu-btn" class="btn btn-outline-secondary btn-circle btn-sm" rel="popover" data-placement="left" data-html="true" style="overflow: auto; max-height: 500px" data-content="
+    <span data-toggle="tooltip" data-placement="top" title="Tools" id="menu-btn" class="btn btn-outline-secondary btn-circle btn-sm" rel="popover" data-placement="left" data-html="true" style="overflow: auto; max-height: 500px" data-content="
         <p><b>Users who liked this</b></p>
         <% node.likers.each do |user| %>
             <i class='fa fa-star-o'></i> <a href='/profile/<%= user.username %>/'><%= user.username %></a><br />
