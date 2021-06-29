@@ -161,7 +161,7 @@ GEM
       excon (~> 0.58)
       formatador (~> 0.2)
       mime-types
-    fog-google (1.15.0)
+    fog-google (1.13.0)
       fog-core (<= 2.1.0)
       fog-json (~> 1.2)
       fog-xml (~> 0.1.0)
@@ -647,7 +647,7 @@ DEPENDENCIES
   critical-path-css-rails (~> 4.1.1)
   execjs
   figaro
-  fog-google (= 1.15.0)
+  fog-google (= 1.13.0)
   fog-local (= 0.6.0)
   font-awesome-rails
   friendly_id
