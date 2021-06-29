@@ -468,6 +468,13 @@ class CommentTest < ApplicationSystemTestCase
       # 2nd assertion: check if image uploaded
       assert_selector('#comment-preview-edit-' + fresh_comment_id_num + ' img', count: 1)
     end
+
+    test "#{page_type_string}: prefetch recently active users" do
+      visit get_path(page_type, nodes(node_name).path) 
+      page.find('#text-input-main').click.fill_in with: '@'
+      # checks for the list of recently active users
+      assert_selector('#atwho-ground-text-input-main .atwho-view .atwho-view-ul li')
+    end
   end
 
   # PART 3: TESTS for ALL PAGE TYPES!
