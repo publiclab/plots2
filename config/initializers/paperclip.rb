@@ -17,4 +17,4 @@ Paperclip::Attachment.default_options[:fog_credentials] = {
     google_storage_access_key_id: ENV["GOOGLE_STORAGE_KEY"] || '' ,
     google_storage_secret_access_key: ENV["GOOGLE_STORAGE_SECRET"] || ''
 }
-Paperclip::Attachment.default_options[:fog_host] = "http://localhost:3000"
+Paperclip::Attachment.default_options[:fog_host] = ""
