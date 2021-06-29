@@ -57,6 +57,7 @@ services:
       - GOOGLE_STORAGE_SECRET=${GOOGLE_STORAGE_SECRET}
       - GOOGLE_STORAGE_KEY=${GOOGLE_STORAGE_KEY}
       - GOOGLE_STORAGE_BUCKET_NAME=${GOOGLE_STORAGE_BUCKET_NAME}
+      - FOG_PROVIDER=${FOG_PROVIDER}
     volumes:
       - ..:/app
       - /etc/passwd:/etc/passwd:ro
