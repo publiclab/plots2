@@ -9,11 +9,12 @@ Paperclip.options[:content_type_mappings] = {
 }
 Paperclip::DataUriAdapter.register
 Paperclip::Attachment.default_options[:storage] = :fog
-Paperclip::Attachment.default_options[:fog_directory] = ENV["GOOGLE_STORAGE_BUCKET_NAME"]
+Paperclip::Attachment.default_options[:fog_directory] = ENV["GOOGLE_STORAGE_BUCKET_NAME"] || ''
 #Paperclip::Attachment.default_options[:path] = "public/system" # this is set by paperclip already
 Paperclip::Attachment.default_options[:fog_credentials] = {
-    provider: ENV["FOG_PROVIDER"] | "Local",
-    local_root: "#{Rails.root}/public"
+    provider: ENV["FOG_PROVIDER"] || "Local",
+    local_root: "#{Rails.root}/public",
+    google_storage_access_key_id: ENV["GOOGLE_STORAGE_KEY"] || '' ,
+    google_storage_secret_access_key: ENV["GOOGLE_STORAGE_SECRET"] || ''
 }
-# the following are for local storage:
-#Paperclip::Attachment.default_options[:fog_host] = "http://localhost:3000"
+Paperclip::Attachment.default_options[:fog_host] = "http://localhost:3000"

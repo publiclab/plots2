@@ -170,6 +170,8 @@ GEM
     fog-json (1.2.0)
       fog-core
       multi_json (~> 1.10)
+    fog-local (0.6.0)
+      fog-core (>= 1.27, < 3.0)
     fog-xml (0.1.3)
       fog-core
       nokogiri (>= 1.5.11, < 2.0.0)
@@ -646,6 +648,7 @@ DEPENDENCIES
   execjs
   figaro
   fog-google (= 1.15.0)
+  fog-local (= 0.6.0)
   font-awesome-rails
   friendly_id
   gemoji
