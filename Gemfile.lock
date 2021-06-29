@@ -300,7 +300,7 @@ GEM
       builder
       minitest (>= 5.0)
       ruby-progressbar
-    mocha (1.12.0)
+    mocha (1.13.0)
     multi_json (1.15.0)
     multi_xml (0.6.0)
     multipart-post (2.1.1)
@@ -645,7 +645,7 @@ DEPENDENCIES
   mailman
   mimemagic (~> 0.3.10)
   minitest-reporters (~> 1.4.3)
-  mocha (~> 1.12)
+  mocha (~> 1.13)
   mustermann (= 1.1.1)
   mysql2 (>= 0.4.4)
   nifty-generators
