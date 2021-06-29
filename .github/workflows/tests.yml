@@ -128,6 +128,11 @@ jobs:
         export DISPLAY=:99
         chromedriver --url-base=/wd/hub &
         bundle exec rails test:system
+    - name: Archive system test screenshots
+      uses: actions/upload-artifact@v2
+      with:
+        name: system-test-screenshots
+        path: tmp/screenshots/*
 
   remove-labels:
     runs-on: ubuntu-latest
