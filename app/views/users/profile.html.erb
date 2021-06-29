@@ -265,6 +265,9 @@
       <li><h5><a href="/wikis/author/<%= @profile_user.name %>"><%= pluralize(@profile_user.revisions.count, 'wiki edit', plural: 'wiki edits') %></a></h5></li>
       <li><h5><a href = "/tag/question:*/author/<%= params[:id] %>"><%= pluralize(Node.questions.where(status: 1, uid: @profile_user.id).length, 'question', plural:'questions') %></a></h5></li>
       <li><h5><a href = "/profile/comments/<%= params[:id] %>"><%= pluralize(Comment.where(uid: @profile_user.id).count, 'comment', plural: 'comments') %></a></h5></li>
+      <% if current_user&.can_moderate? || @profile_user == current_user %>
+        <li><h5><a href='#'><%= pluralize(@profile_user.drafts.size, 'draft', plural: 'drafts' )%></a></h5></li>
+      <% end %>
       <li><h5><a href = "/tag/activity:*/author/<%= params[:id] %>"><%= pluralize(@count_activities_posted, 'activity posted', plural:'activities posted') %> </a></h5></li>
       <li><h5><a href = "/tag/replication:*/author/<%= params[:id] %>"><%= pluralize(@count_activities_attempted, 'activity attempted', plural:'activities attempted')%></a> </h5></li>
       <li><h5><a href = "/tag/with:<%= @profile_user.username %>"><%= pluralize(Tag.find_nodes_by_type("with:#{@profile_user.username}").count, 'note co-authored', plural: 'notes co-authored')%></a> </h5></li>
