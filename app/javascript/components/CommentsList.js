@@ -12,9 +12,9 @@ const CommentsList = ({
   commentFormsVisibility,
   comments,
   currentUser,
+  dispatch,
   handleCreateComment,
   handleDeleteComment,
-  handleFormVisibilityToggle,
   handleTextAreaChange,
   handleUpdateComment,
   setTextAreaValues,
@@ -44,7 +44,10 @@ const CommentsList = ({
       const toggleEditButton = <CommentToolbarButton 
         buttonType="edit"
         icon={<i className="fa fa-pencil"></i>}
-        onClick={() => handleFormVisibilityToggle("edit-" + comment.commentId)}
+        onClick={() => dispatch({ 
+          type: "TOGGLE COMMENT FORM VISIBILITY",
+          commentFormId: "edit-" + comment.commentId 
+        })}
       />;
   
       // and a delete button
@@ -85,7 +88,7 @@ const CommentsList = ({
         replySection = <CommentReplies 
           commentId={comment.commentId}
           isReplyFormVisible={commentFormsVisibility[replyFormId]}
-          handleReplyFormToggle={handleFormVisibilityToggle}
+          dispatch={dispatch}
           replyCommentForm={replyCommentForm}
         >
           {replies}
@@ -146,9 +149,9 @@ CommentsList.propTypes = {
   commentFormsVisibility: PropTypes.objectOf(PropTypes.bool).isRequired,
   comments: PropTypes.array.isRequired,
   currentUser: PropTypes.object,
+  dispatch: PropTypes.func.isRequired,
   handleCreateComment: PropTypes.func.isRequired,
   handleDeleteComment: PropTypes.func.isRequired,
-  handleFormVisibilityToggle: PropTypes.func.isRequired,
   handleTextAreaChange: PropTypes.func.isRequired,
   handleUpdateComment: PropTypes.func.isRequired,
   setTextAreaValues: PropTypes.func.isRequired,
