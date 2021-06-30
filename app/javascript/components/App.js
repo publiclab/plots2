@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { UserContext } from "./user-context";
 import { StaticPropsContext } from "./static-props-context";
-import { getEditTextAreaValues, getInitialCommentFormToggleState } from "./helpers";
+import { getEditTextAreaValues, getInitialCommentFormsVisibility } from "./helpers";
 
 import CommentsContainer from "./CommentsContainer";
 
@@ -23,7 +23,7 @@ const App = ({
   // this is an object containing boolean values like: { "reply-33": false, "edit-1": true }
   // this is used as the initial state showing whether or not an edit or reply comment form is shown or hidden
   // false means the comment form is closed, true means open
-  const initialCommentFormToggleState = getInitialCommentFormToggleState(initialComments);
+  const initialCommentFormsVisibility = getInitialCommentFormsVisibility(initialComments);
 
   // this is used as initial state for the content of <textarea>s inside comment forms
   // main and reply comment forms are an empty string
@@ -41,7 +41,7 @@ const App = ({
     <UserContext.Provider value={currentUser}>
       <StaticPropsContext.Provider value={{ node, elementText }}>
         <CommentsContainer 
-          initialCommentFormToggleState={initialCommentFormToggleState}
+          initialCommentFormsVisibility={initialCommentFormsVisibility}
           initialComments={initialComments} 
           initialTextAreaValues={initialTextAreaValues}
           nodeId={nodeId}
