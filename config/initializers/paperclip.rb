@@ -13,6 +13,7 @@ Paperclip::Attachment.default_options[:fog_directory] = ENV["GOOGLE_STORAGE_BUCK
 #Paperclip::Attachment.default_options[:path] = "public/system" # this is set by paperclip already
 Paperclip::Attachment.default_options[:fog_credentials] = {
     provider: ENV["FOG_PROVIDER"] || "Local",
+    local_root: "#{Rails.root}/public",
     google_storage_access_key_id: ENV["GOOGLE_STORAGE_KEY"] || '' ,
     google_storage_secret_access_key: ENV["GOOGLE_STORAGE_SECRET"] || ''
 }
