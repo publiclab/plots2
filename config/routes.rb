@@ -173,7 +173,7 @@ Plots2::Application.routes.draw do
 
   get 'research' => 'home#research'
   get 'notes' => 'legacy#notes'
-  get 'notes/author/:id' => 'notes#author'
+  get 'notes/author/:id' => 'notes#author', as: 'notes_author'
   get 'notes/author/:author/:topic' => 'notes#author_topic'
   get 'notes/show/:id' => 'notes#show'
   get 'notes/:author/:date/:id' => 'notes#show'
