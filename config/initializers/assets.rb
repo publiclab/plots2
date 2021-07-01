@@ -15,6 +15,7 @@ Rails.application.config.assets.precompile += [
   'question.js',
   'sidebar.js',
   'textBoxExpand.js',
+  'translation.js',
 
   'blog.css',
   'comments.css',
