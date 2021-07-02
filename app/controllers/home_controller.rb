@@ -47,6 +47,16 @@ class HomeController < ApplicationController
     end
   end
 
+  def switch_on_translation
+    UserTag.create_if_absent(current_user.uid,'translation-helper')
+    redirect_to '/change_locale/zh-CN'
+  end
+
+def switch_off_translation
+    UserTag.remove_if_exists(current_user.uid,'translation-helper')
+    redirect_to '/change_locale/en'
+  end
+
   def dashboard_v2
     # The new dashboard displays the blog and topics list
     if current_user

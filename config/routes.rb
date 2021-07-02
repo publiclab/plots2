@@ -378,6 +378,8 @@ Plots2::Application.routes.draw do
   post 'comment/react/delete/:id' => 'comment#react_delete'
   post 'comment/react/update/:id' => 'comment#react_update'
 
+  get 'switch_on_translation' => 'home#switch_on_translation'
+  get 'switch_off_translation' => 'home#switch_off_translation'
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 
