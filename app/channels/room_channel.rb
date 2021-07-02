@@ -9,8 +9,7 @@ class RoomChannel < ApplicationCable::Channel
   end
 
   def speak(message)
-    return unless current_user && current_user.admin?
-
+    return unless current_user&.admin?
     ActionCable.server.broadcast 'room_channel', message: message["message"]
   end
 end
