@@ -222,7 +222,7 @@ class PostTest < ApplicationSystemTestCase
     find('a#tags-open').click()
 
     # Make sure proper latitude and longitude tags are added
-    assert_selector('.tags-list .badge a[href="/tag/lat:22"]', text: "lat:22")
+    #assert_selector('.tags-list .badge a[href="/tag/lat:22"]', text: "lat:22") This is displayed as a miniCard since it's the first power tag
     assert_selector('.tags-list .badge a[href="/tag/lon:76"]', text: "lon:76")
   end
 
