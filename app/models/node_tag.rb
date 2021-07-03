@@ -32,8 +32,8 @@ class NodeTag < ApplicationRecord
   end
 
   def update_activity
-    #tag.activity_timestamp = DateTime.now
-    #tag.latest_activity_nid = nid
+    tag.activity_timestamp = DateTime.now
+    tag.latest_activity_nid = nid
     tag.save
   end
 
