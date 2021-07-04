@@ -48,12 +48,12 @@ class HomeController < ApplicationController
   end
 
   def switch_on_translation
-    UserTag.create_if_absent(current_user.uid,'translation-helper')
+    UserTag.create_if_absent(current_user.uid, 'translation-helper')
     redirect_to '/change_locale/zh-CN'
   end
 
-def switch_off_translation
-    UserTag.remove_if_exists(current_user.uid,'translation-helper')
+  def switch_off_translation
+    UserTag.remove_if_exists(current_user.uid, 'translation-helper')
     redirect_to '/change_locale/en'
   end
 
