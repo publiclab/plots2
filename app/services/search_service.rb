@@ -78,19 +78,16 @@ class SearchService
   # chained to the notes that are tagged with those values
   def search_tags(query, limit = 10)
     suggestions = []
+    # order tag autosuggestions by placing exact match of the tag on the top, then tags with query and some other text as suffix, 
+    # then tags with some text as prefix or suffix and lastly the tags with some text as prefix
+    tags_order = 'CASE WHEN name LIKE ? OR name LIKE ? THEN 1 WHEN name LIKE ? OR name LIKE ? THEN 2 WHEN name LIKE ? OR name LIKE ? THEN 4 ELSE 3 END', "#{query}", "#{query.to_s.gsub(' ', '-')}", "#{query}%", "#{query.to_s.gsub(' ', '-')}%", "%#{query}", "%#{query.to_s.gsub(' ', '-')}"
     # filtering out tag spam by requiring tags attached to a published node
     # also, we search for both "balloon mapping" and "balloon-mapping":
     Tag.where('name LIKE ? OR name LIKE ?', "%#{query}%", "%#{query.to_s.gsub(' ', '-')}%")
       .includes(:node)
       .references(:node)
       .where('node.status = 1')
-      .order('
-        CASE
-          WHEN name LIKE "' + query + '" THEN 1
-          WHEN name LIKE "'+ query+'%" THEN 2
-          WHEN name LIKE "%'+ query +'" THEN 4
-          ELSE 3
-        END')
+      .order(tags_order)
       .limit(limit).each do |tag|
       suggestions << tag
     end
