@@ -49,8 +49,8 @@ class PostTest < ApplicationSystemTestCase
 
     find('a#tags-open').click()
 
-    # There should be 3 tags that show up as a card
-    page.assert_selector('.tags-list .card-body', :count => 3)
+    # There should be 2 tags that show up as a card
+    page.assert_selector('.tags-list .card-body', :count => 2)
 
     find(".tags-list .card-body .ellipsis", match: :first).click()
 
@@ -58,7 +58,7 @@ class PostTest < ApplicationSystemTestCase
       find('.tags-list .card-body .tag-delete').click()
     end
     
-    # Make sure that 1 of the 3 tags is removed
+    # Make sure that 1 of the 2 tags is removed
     page.assert_selector('.tags-list .card-body', :count => 2)
   end
 
@@ -222,8 +222,8 @@ class PostTest < ApplicationSystemTestCase
     find('a#tags-open').click()
 
     # Make sure proper latitude and longitude tags are added
-    assert_selector('.tags-list .card-body a[href="/tag/lat:22"]', text: "lat:22")
-    assert_selector('.tags-list .card-body a[href="/tag/lon:76"]', text: "lon:76")
+    assert_selector('.tags-list .card a[href="/tag/lat:22"]', text: "lat:22") #This is displayed as a miniCard since it's the first power tag
+    assert_selector('.tags-list .badge a[href="/tag/lon:76"]', text: "lon:76")
   end
 
   test 'deleting a wiki' do
