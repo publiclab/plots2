@@ -427,7 +427,12 @@ class Tag < ApplicationRecord
   end
 
   def self.update_tags_activity(tids = [], activity_id = nil)
-    Tag.where(tid: tids).update_all(activity_timestamp: DateTime.now, latest_activity_nid: activity_id)
+    Tag.transaction do
+      # this lock is to avoid db errors in testing: https://github.com/publiclab/plots2/issues/9873
+      Tag.lock
+        .where(tid: tids)
+        .update_all(activity_timestamp: DateTime.now, latest_activity_nid: activity_id) 
+    end
   end
 
   private
