@@ -1,0 +1,34 @@
+   <ul class="nav nav-pills notes-pills">
+     <li class="nav-item">
+       <a class="nav-link <% if params[:controller] == "notes" %> active <% end %>" href="/notes/">
+         <i class="fa fa-file"></i>
+         <span class="d-lg-inline">
+           <span class="d-none d-md-inline"> <%= translation('notes.index.research_notes') %></span>
+         </span>
+       </a>
+     </li>
+     <li class="nav-item">
+       <a class="nav-link" href="/questions/">
+         <i class="fa fa-question-circle"></i>
+         <span class="d-lg-inline">
+           <span class="d-none d-md-inline"> <%= translation('notes.index.questions') %></span>
+         </span>
+       </a>
+     </li>
+     <li class="nav-item">
+       <a class="nav-link" href="/wiki/">
+         <i class="fa fa-book"></i>
+         <span class="d-lg-inline">
+           <span class="d-none d-md-inline"> <%= translation('notes.index.wiki_pages') %></span>
+         </span>
+       </a>
+     </li>
+     <li class="nav-item">
+       <a class="nav-link" href="/comments/">
+         <i class="fa fa-comment"></i>
+         <span class="d-lg-inline">
+           <span class="d-none d-md-inline"> <%= translation('notes.index.comments') %></span>
+         </span>
+       </a>
+     </li>
+   </ul>
