@@ -1,0 +1,31 @@
+<div class="node-types" style="margin-bottom:8px;">
+  <ul class="nav nav-tabs" aria-labelledby="dropdownMenuButton">
+
+    <li class="nav-item">
+      <a class="nav-link active" href="/notes/author/<%= @user.name %>">
+        <i class="fa fa-file"></i>
+        <span class="d-lg-inline"><%= translation('notes.index.research_notes') %></span>
+          <span class="d-none d-sm-inline badge badge-primary"><%= @notes.count %></span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" href="/tag/question:*/author/<%= @user.name %>">
+        <i class="fa fa-question-circle"></i> <span class="d-lg-inline"><%= translation('notes.index.questions') %></span>
+      </a>
+    </li>
+
+        <li class="nav-item">
+      <a class="nav-link" href="/wikis/author/<%= @user.name %>">
+        <i class="fa fa-book"></i> <span class="d-lg-inline"><%= translation('notes.index.wiki_pages') %></span>
+      </a>
+    </li>
+
+        <li class="nav-item">
+      <a class="nav-link" href="/profile/comments/<%= @user.name %>">
+        <i class="fa fa-comment"></i>
+        <span class="d-lg-inline"><%= translation('notes.index.comments') %></span>
+      </a>
+    </li>
+  </ul>
+</div>
