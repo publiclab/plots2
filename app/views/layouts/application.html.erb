@@ -112,7 +112,7 @@
 
   <body>
 
-    <%= render :partial => 'layouts/header' %>
+    <%= render :partial => 'layouts/header' unless action_name == 'simple' %>
     <div id="top_map"> </div>
     <div class="container">
       <div class="row">
@@ -122,7 +122,7 @@
       </div><!--/row-->
     </div><!--/container-->
 
-    <%= render :partial => "layouts/footer" %>
+    <%= render :partial => "layouts/footer" unless action_name == 'simple' %>
 
   </body>
   <script>

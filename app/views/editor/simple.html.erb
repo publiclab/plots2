@@ -1,0 +1,315 @@
+<link href="/lib/woofmark/dist/woofmark.min.css" rel="stylesheet">
+<link href="/lib/bootstrap-tokenfield/dist/css/tokenfield-typeahead.min.css" rel="stylesheet">
+<link href="/lib/bootstrap-tokenfield/dist/css/bootstrap-tokenfield.min.css" rel="stylesheet">
+
+<!-- required for MapModule -->
+<link href="/lib/leaflet/dist/leaflet.css" rel="stylesheet">
+<script src="/lib/leaflet/dist/leaflet.js"></script>
+<link href="/lib/leaflet-blurred-location/dist/Leaflet.BlurredLocation.css" rel="stylesheet">
+<script src="/lib/leaflet-blurred-location/dist/Leaflet.BlurredLocation.js"></script>
+
+<!-- required for TagsModule -->
+<script src="/lib/typeahead.js/dist/bloodhound.js"></script>
+<script src="/lib/bootstrap-tokenfield/dist/bootstrap-tokenfield.js"></script>
+
+<script src="/lib/typeahead.js/dist/bloodhound.js"></script>
+<script src="/lib/bootstrap-tokenfield/dist/bootstrap-tokenfield.js"></script>
+<link href="/lib/publiclab-editor/dist/PublicLab.Editor.css" rel="stylesheet">
+<script src="/lib/publiclab-editor/dist/PublicLab.Editor.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOLUQngEmJv0_zcG1xkGq-CXIPpLQY8iQ&libraries=places"></script>
+
+<%= javascript_include_tag('/lib/leaflet-spin/example/spin/dist/spin.min.js') %>
+<%= javascript_include_tag('/lib/leaflet-spin/example/leaflet.spin.min.js') %>
+
+<style type="text/css">
+.leaflet-marker-icon {
+    background: url("https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-black.png") ;
+}
+ .simple-text {
+    height: 400px !important;
+}
+    body {
+        padding-top: 1px;
+    }
+</style>
+
+<div class="pl-editor" style="width:100%;">
+
+  <div class="ple-content">
+    <div class="ple-errors"></div>
+
+    <!-- Map Module start-->
+    <div class="ple-module-map row">
+
+      <div class="ple-module-content col-sm-11 col-sm-offset-1">
+
+      <div
+         id="map"
+         class="leaflet-map"
+         style="width: 100% ; height: 300px; margin-bottom:8px;">
+      </div>
+      <p>
+        <form class="form-inline">
+          <div class="form-group mb-3">
+            Posting near
+          </div>
+          <div class="form-group mx-sm-3 mb-2">
+
+            <input id="placenameDisplay" type="text" class="form-control" data-preventOverwrite="false" />
+          </div>
+          <div class="form-group mb-3">
+            (<a data-toggle="collapse" href="#location" role="button" aria-expanded="false" aria-controls="location">edit</a>)
+          </div>
+        </form>
+      </p>
+      <br />
+
+      <div class="row collapse" id="location">
+        <div class="col-sm-4">
+          <label>Search place by name</label>
+          <p><input id="placenameInput" type="text" class="form-control" /></p>
+        </div>
+
+        <div class="col-sm-4">
+          <p><label>
+              Latitude
+              <input id="lat" type="text" class="form-control" placeholder="Latitude" />
+          </label></p>
+        </div>
+
+        <div class="col-sm-4">
+          <p>
+            <label>
+              Longitude
+              <input id="lng" type="text" class="form-control" placeholder="Longitude" />
+            </label>
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- Map Module end -->
+
+  <!-- body module -->
+  <div class="ple-module-body row">
+    <div class="ple-module-content col-sm-11 col-sm-offset-1">
+      <h5>Tell a story about this place:</h5>
+      <div class="ple-module-content">
+        <textarea id="text-input" class="simple-text ple-textarea form-control" placeholder="Your story" height="300px">
+          <% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %>
+        </textarea>
+      </div>
+    </div>
+  </div>
+  <br /> <br />
+  <!-- end body module -->
+
+  <!-- image module -->
+  <div class="ple-module-main_image">
+    <div class="ple-module-content row">
+      <div class="col-sm-1 col-sm-offset-3">
+        <br />
+        <label>
+          <i class="fa fa-camera fa-3x" aria-hidden="true" style="color:gray"></i>
+          <input class ="d-none" type="file"
+                 value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>"
+                 accept=".png, .jpg, .jpeg"
+                 name="image[photo]" tooltip="this is">
+        </label>
+      </div>
+      <div class="ple-drag-drop col-sm-3"></div>
+      <p class="ple-help"></p>
+    </div>
+    <span class="ple-help-minor">Drag or Select an optional main image for your post.</span>
+  </div>
+  <br /><br />
+  <!-- end main_image module -->
+
+  <!-- tags module -->
+  <div class="d-none">
+    <div class="ple-module-tags row">
+
+      <div class="ple-module-guide col-sm-3">
+        <p class="muted">Add tags to connect your story to other related stories</p>
+      </div>
+
+      <div class="ple-module-content col-sm-9">
+        <input
+          class="form-control input-sm"
+          type="text"
+          placeholder="balloon-mapping, water-quality..."
+          value="<% if params[:tags] || (@node && @node.tagnames) %><%= params[:tags] || @node.tagnames.join(',') %><% end %>"
+        />
+      </div>
+
+    </div>
+  </div>
+  <!-- end tags module -->
+
+  <!-- title module -->
+  <div class="ple-module-title row">
+
+    <div class="ple-module-content col-sm-11 col-sm-offset-1">
+      <h5>Give your post a title</h5>
+      <input class="form-control input-sm" type="text" id="title-input" placeholder="Title" value="<%= if @node then @node.title else params[:title] end %>" />
+    </div>
+
+  </div>
+  <!-- end title module -->
+
+  <div class="text-center">
+    <%= link_to "Help", "", class: 'btn btn-lg btn-outline-secondary' %>
+    <button class="ple-publish btn btn-lg btn-primary  disabled"><% if controller.action_name == "edit" && @node.status == 3 %>Save<% else %>Post<% end %></button>
+  </div>
+
+</div>
+
+<div class="ple-footer">
+  <div class="ple-menu-more" style="display:none;">
+    <b>History</b>
+    <div class="ple-history"></div>
+    <hr />
+  </div>
+
+  <button class="btn btn-sm btn-outline-secondary btn-more"><i class="fa fa-clock"></i></button>
+
+  <span> &nbsp; By publishing, you agree to <a href="https://publiclab.org/licenses">open source your work</a><span class="d-none d-md-inline"> so that others may use it.</span></span>
+  <span class="ple-help float-right">
+    <% if controller.action_name != "edit" && !current_user.first_time_poster %>
+      <span id="newOpts" style="display: inline-block;">
+        <span class="ple-steps-left">2</span>
+        <span class="d-none d-md-inline"> steps left</span>
+      </span>
+    <% end %>
+  </span>
+
+</div>
+
+<script>
+  var editor;
+
+  (function() {
+    editor = new PL.Editor({
+      data: {
+        token: $('meta[name="csrf-token"]').attr('content')
+      },
+      <% if @lat and @lon %>
+       lat: <%= @lat %> , 
+       lon: <%= @lon %> ,
+      <% end %>
+      textarea:    $('.ple-textarea')[0],
+      <% if @main_image %>
+        mainImageUrl:   '<%= @main_image %>',
+      <% end %>
+      <% if params[:action] == 'edit' %>
+        destination: '/notes/update/<%= @node.id %>?rich=true',
+      <% else %>
+        destination: '/notes/create?rich=true',
+      <% end %>
+      <% if params[:redirect] == 'question' %>
+        redirect: 'redirect',
+      <% end %>
+      <% if (@node && @node.errors.size > 0) && (@revision && @revision.errors.size > 0) %>
+         errors: <%=raw (@node.errors.to_h.merge(@revision.errors.to_h)).to_json %>,
+       <% elsif (@node && @node.errors.size > 0) %>
+         errors: <%=raw (@node.errors.to_h).to_json %>,
+       <% elsif (@revision && @revision.errors.size > 0) %>
+         errors: <%=raw (@revision.errors.to_h).to_json %>,
+       <% end %>
+      format:      'publiclab',
+      publishCallback: function publishCallback(response) {
+        // parse and display errors!
+        if (typeof response === "string") {
+          if (response.substr(1, 8) == "!DOCTYPE") $('.ple-errors').html('<div class="alert alert-danger">There was an error posting. Please contact web@publiclab.org for assistance - and note that your draft is saved under the "..." menu at the lower left.</div>');
+          else window.location = response;
+        } else if (response && Object.keys(response).length > 0) {
+          $('.ple-errors').html('<div class="alert alert-danger"></div>');
+          Object.keys(response).forEach(function(key, i) {
+            $('.ple-errors .alert').append('<p><b>' + key + '</b> </p>');
+            $('.ple-errors .alert p:last').append(response[key].join(', '));
+          });
+          window.scroll(0, 0);
+        }
+      },
+      mapModule: true,
+      mainImageModule: {
+        uid: <%= current_user.id %><% if @node && @node.id %>,
+        nid: <%= @node.id %><% end %>,
+        token: $('meta[name="csrf-token"]').attr('content')
+      },
+      richTextModule: {
+        authorsAutocomplete: false,
+        tagsAutocomplete: false,
+        formats: ['jpg', 'jpeg', 'png', 'gif'],
+        attachmentFormats: ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt', 'docx', 'bmp', 'obj', 'json']
+        //formats: ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt', 'docx', 'bmp', 'obj', 'json', 'jpg', 'jpeg', 'png', 'gif']
+      },
+      titleModule: {
+        suggestRelated: true,
+        fetchRelated: debounce(function(show) {
+          $.getJSON("/api/srch/notes?query=" + editor.titleModule.value(), function(response) {
+            /* API provides:
+            {"items":[{
+              "doc_id":14022,
+              "doc_type":"file",
+              "doc_url":"/notes/liz/03-15-2017/host-a-balloon-mapping-workshop",
+              "doc_title":"Host a balloon mapping workshop",
+              "doc_score":0}
+            ]}
+            */
+            // But we need: [{ id: 1, title: 'A related post',       url: '/', author: 'eustatic'}, ... ]
+            var formatted = [];
+            if (response['items']) {
+              response['items'].forEach(function(item) {
+                var formattedItem = {};
+                formattedItem.id = item.doc_id;
+                formattedItem.title = item.doc_title;
+                formattedItem.url = item.doc_url;
+                formattedItem.author = item.doc_url.split('/')[2];
+                formatted.push(formattedItem);
+              });
+              show(formatted);
+            }
+          });
+        }, 1000)
+      },
+      tagsModule: {
+        remote: {
+          url: "/tag/suggested/test",
+          prepare: function prepareRemote(x) {
+            return "/tag/suggested/" + x
+          }
+        }
+      }
+    });
+  })();
+
+  var blurredLocation = new BlurredLocation({
+    InterfaceOptions: {
+        latId: 'lat',
+        lngId: 'lng',
+        placenameDisplayOnError: 'Location error'
+    },
+    AddScaleDisplay: true ,
+    AddBlurryScale: true,
+    precisionTable: {'-2': 2, '-1': 3, '0': 6, '1': 10, '2': 13, '3': 16}
+  });
+
+  blurredLocation.panMapToGeocodedLocation("placenameInput");
+
+  var changeZoom = function() {
+    var zoom = slider.getValue();
+    blurredLocation.map.setZoom(zoom);
+  }
+
+  var slider = $('#ex1').slider()
+    .on('slide', changeZoom)
+    .data('slider');
+
+  blurredLocation.map.on('zoomend', function() {
+    let zoom = blurredLocation.map.getZoom();
+    $('#ex1').slider('setValue', zoom);
+  });
+
+</script>

@@ -30,6 +30,9 @@ class EditorController < ApplicationController
     end
   end
 
+  def simple
+  end
+
   def rich
     if params[:main_image] && Image.find_by(id: params[:main_image])
       @main_image = Image.find_by(id: params[:main_image]).path
