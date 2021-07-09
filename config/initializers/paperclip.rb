@@ -14,6 +14,7 @@ Paperclip::Attachment.default_options[:path] = ":rails_root/public/system/system
 Paperclip::Attachment.default_options[:fog_credentials] = {
     provider: ENV["FOG_PROVIDER"] || "Local",
     local_root: "#{Rails.root}/public",
+    google_project: 'public-lab' ,
     google_json_key_location: ENV["GOOGLE_JSON_KEY_FILE"] || '' ,
     google_storage_access_key_id: ENV["GOOGLE_STORAGE_KEY"] || '' ,
     google_storage_secret_access_key: ENV["GOOGLE_STORAGE_SECRET"] || ''
