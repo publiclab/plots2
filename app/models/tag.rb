@@ -354,7 +354,7 @@ class Tag < ApplicationRecord
   end
 
   def self.related(tag_name, count = 5)
-    Rails.cache.fetch("related-tags/#{tag_name}/#{count}", expires_in: 1.weeks) do
+    Rails.cache.fetch("related-tags/#{tag_name}/#{count}/new", expires_in: 1) do
       nids = NodeTag.joins(:tag, :node)
                     .where(Node.table_name => { status: 1 })
                     .where(Tag.table_name => { name: tag_name })
@@ -375,7 +375,7 @@ class Tag < ApplicationRecord
 
   # for Cytoscape.js http://js.cytoscape.org/
   def self.graph_data(limit = 250)
-    Rails.cache.fetch("graph-data/#{limit}", expires_in: 1.weeks) do
+    Rails.cache.fetch("graph-data/#{limit}/new", expires_in: 1) do
       data = {}
       data["tags"] = []
       Tag.joins(:node)
@@ -387,13 +387,16 @@ class Tag < ApplicationRecord
         .limit(limit).each do |tag|
         data["tags"] << {
           "name" => tag.name,
-          "count" => tag.count
+          "count" => tag.count,
         }
       end
       data["edges"] = []
       data["tags"].each do |tag|
         Tag.related(tag["name"], 10).each do |related_tag|
-          data["edges"] << { "from" => tag["name"], "to" => related_tag.name }
+          reverse = {"from" => related_tag.name, "to" => tag["name"]}
+          unless (data["edges"].include? reverse)
+            data["edges"] << { "from" => tag["name"], "to" => related_tag.name }
+          end
         end
       end
       data
