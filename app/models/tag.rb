@@ -387,14 +387,14 @@ class Tag < ApplicationRecord
         .limit(limit).each do |tag|
         data["tags"] << {
           "name" => tag.name,
-          "count" => tag.count,
+          "count" => tag.count
         }
       end
       data["edges"] = []
       data["tags"].each do |tag|
         Tag.related(tag["name"], 10).each do |related_tag|
-          reverse = {"from" => related_tag.name, "to" => tag["name"]}
-          unless (data["edges"].include? reverse)
+          reverse = { "from" => related_tag.name, "to" => tag["name"] }
+          unless data["edges"].include? reverse
             data["edges"] << { "from" => tag["name"], "to" => related_tag.name }
           end
         end
