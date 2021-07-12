@@ -11,11 +11,11 @@
         <a class="show-more-tags" href="javascript:void(0);"><p style="float:left; color:#666; margin-top:14px; margin-left:5px;"><u><%= tags.length - 2 %> more</u> &nbsp </p></a>
       <% end %>
 
-      <% if (tag.name.include? ':') && i == 0 %>
+      <% if power_tag && i == 0 %>
         <p style="margin-top:14px;"><%= render partial: 'tag/miniCard', locals: { tag: tag, grey: power_tag } %></p>
       
       <% else %>
-        <p class="badge <%= badge_name %> pop more-tags" style="display:none;cursor:pointer;margin-bottom:3px;" id="tag_<%= tag.tid %>" data-toggle="popover" data-trigger="focus" data-count=0 data-placement="top" data-content="<p style='text-align:center;'><a href='/tag/<%= tag.name %>'><%= Tag.tagged_node_count(tag.name) || 0 %> notes</a> - <a href='/contributors/<%= tag.name %>'><%= Tag.contributors(tag.name).count %> people <br></a></p> <p style='text-align:center;font-size:12px;'><%if tag.description %><%= tag.description %> |<% end %> created by <a href='/profile/<%= tag.try(:author).try(:username) %>'><%= tag.try(:author).try(:username) %></a> <%= time_ago_in_words(Time.at(tag.date)) %> ago </p><div class='text-center'><a href='/subscribe/tag/<%= tag.name %>' class='btn btn-primary'>Follow</a></div>" data-html="true" title="<%= tag.name %>">
+        <p class="badge <%= badge_name %> pop more-tags" style="<% if power_tag %>background-color:rgb(102,102,102);<% else %>background-color:rgb(0,123,255);<% end %>display:none;cursor:pointer;margin-bottom:3px;" id="tag_<%= tag.tid %>" data-toggle="popover" data-trigger="focus" data-count=0 data-placement="top" data-content="<p style='text-align:center;'><a href='/tag/<%= tag.name %>'><% if tag.name.include? ':' %>This is a power tag.<% end %><br><%= Tag.tagged_node_count(tag.name) || 0 %> notes</a> - <a href='/contributors/<%= tag.name %>'><%= Tag.contributors(tag.name).count %> people <br></a></p> <p style='text-align:center;font-size:12px;'><%if tag.description %><%= tag.description %> |<% end %> created by <a href='/profile/<%= tag.try(:author).try(:username) %>'><%= tag.try(:author).try(:username) %></a> <%= time_ago_in_words(Time.at(tag.date)) %> ago </p><div class='text-center'><a href='/subscribe/tag/<%= tag.name %>' class='btn btn-primary'>Follow</a></div>" data-html="true" title="<%= tag.name %>">
           <a class='tag-name' href='/tag/<%= tag.name %>'><%= tag.name %></a>
           <% if logged_in_as(['admin', 'moderator']) || (current_user && ( current_user.uid ==  @node.uid || current_user.uid == tag.uid)) %>
             <% if tag.name.include? ':' %>
