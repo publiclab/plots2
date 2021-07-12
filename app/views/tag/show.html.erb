@@ -34,7 +34,7 @@
   background-size: cover;
   background-color: #FFF;
 }
-.fdb-block, .rounded {
+.rounded {
   overflow: hidden;
 }
 .fdb-block, .fdb-block .container {
@@ -68,7 +68,7 @@
 }
 </style>
 
-<section class="tag-header fdb-block pb-0" style="<% if @wiki && @wiki.main_image %>background-image: url(<%= @wiki.main_image.path %>);<% else %>background: #eee;<% end %>" data-block-type="contents" data-id="1">
+<section class="tag-header fdb-block" style="<% if @wiki && @wiki.main_image %>background-image: url(<%= @wiki.main_image.path %>);<% else %>background: #eee;<% end %>" data-block-type="contents" data-id="1">
 
     <div class="container">
         <div class="row text-left justify-content-start">
