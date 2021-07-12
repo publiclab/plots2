@@ -1062,14 +1062,16 @@ class Node < ActiveRecord::Base
       errors ? "Only admins may create raw pages." : false
     elsif tagname[0..4] == 'rsvp:' && user.username != one_split
       errors ? I18n.t('node.only_RSVP_for_yourself') : false
-    elsif tagname == 'locked' && user.role != 'admin'
+    elsif tagname == 'locked' && !user.can_moderate?
       errors ? I18n.t('node.only_admins_can_lock') : false
-    elsif tagname == 'blog' && user.role != 'admin' && user.role != 'moderator'
+    elsif tagname == 'blog' && user.basic_user?
       errors ? 'Only moderators or admins can use this tag.' : false
     elsif tagname.split(':')[0] == 'redirect' && Node.where(slug: one_split).size <= 0
       errors ? I18n.t('node.page_does_not_exist') : false
     elsif socials[one_split&.to_sym].present?
       errors ? "This tag is used for associating a #{socials[one_split.to_sym]} account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
+    elsif user.first_time_poster && !(user.username == self.author.username || self.coauthors&.exists?(username: user.username) || (['admin', 'moderator'].include? user.role))
+      errors ? 'Adding tags to other people’s posts is not available to you until your own first post has been approved by site moderators' : false
     else
       true
     end

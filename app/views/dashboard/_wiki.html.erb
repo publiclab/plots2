@@ -13,14 +13,21 @@
     </div>
   </div>
 
-  <div class="col-xl-4 col-lg-5 col-md-5 col-5 btn btn-primary btn-sm" type="button" >
-    <a href="/wiki/new" class="text-white">
-      <i class="fa fa-plus-circle text-white" ></i> 
+  
+    <% if current_user&.has_tag('translation-helper') && I18n.locale != :en %>
+      <a href="/wiki/new" class=" btn btn-primary btn-sm text-white">
+        <i class="fa fa-plus-circle text-white" ></i> 
         <%= translation('dashboard._wiki.new_page') %>
-    </a>
+      </a>
+    <% else %>
+    <div class="col-xl-4 col-lg-5 col-md-5 col-5" type="button" >
+      <a href="/wiki/new" class=" btn btn-primary btn-sm text-white">
+        <i class="fa fa-plus-circle text-white" ></i> 
+        <%= translation('dashboard._wiki.new_page') %>
+      </a>
+    </div>
+    <% end %>
   </div>
-
-</div>
 
 <div class="wikis">
 
