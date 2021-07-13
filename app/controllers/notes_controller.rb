@@ -427,6 +427,17 @@ class NotesController < ApplicationController
     end
   end
 
+  def drafts
+    @user = User.find_by(name: params[:id])
+    if current_user&.can_moderate? || current_user == @user
+      @pagy, @drafts = pagy(@user.drafts, items: 24)
+      render template: 'notes/drafts'
+    else
+      flash[:warning] = "This page is only visible to the author and moderators."
+      redirect_to '/'
+    end
+  end
+
   private
 
   def set_node
