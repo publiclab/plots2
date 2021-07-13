@@ -106,7 +106,7 @@ class UsersController < ApplicationController
     if sort_param == 'username'
       order_string = 'username ASC'
     elsif sort_param == 'last_activity'
-      order_string = 'last_updated DESC'
+      order_string = 'updated_at DESC'
     elsif sort_param == 'joined'
       order_string = 'created_at DESC'
     end
