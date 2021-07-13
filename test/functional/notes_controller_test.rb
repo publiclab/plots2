@@ -1069,4 +1069,26 @@ class NotesControllerTest < ActionController::TestCase
          }
     end
   end
+
+  test 'moderators can view drafts page' do
+    user = users(:moderator)
+    UserSession.create(user)
+    get :drafts, params: { id: users(:newcomer).username }
+    assert_response :success
+  end
+
+  test 'draft author can view drafts page' do
+    user = users(:jeff)
+    UserSession.create(user)
+    get :drafts, params: { id: user.username }
+    assert_response :success
+  end
+
+  test 'drafts page is not shown when user is not a draft author or moderator' do
+    user = users(:newcomer)
+    UserSession.create(user)
+    get :drafts, params: { id: users(:jeff).username }
+    assert_equal "This page is only visible to the author and moderators.", flash[:warning]
+    assert_response :redirect
+  end
 end

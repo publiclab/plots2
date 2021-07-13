@@ -309,4 +309,9 @@ class UserTest < ActiveSupport::TestCase
     user = users(:bob)
     assert_equal  user.subscriptions(:tag).size, 4
   end
+
+  test 'user drafts' do
+    user = users(:jeff)
+    assert_not user.drafts.empty?
+  end
 end

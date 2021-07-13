@@ -29,7 +29,7 @@ gem "i18n-js", ">= 3.0.0.rc11"
 gem 'impressionist'
 gem 'jbuilder', '~> 2.11'
 gem 'jquery-rails'
-gem 'mocha', '~> 1.12'
+gem 'mocha', '~> 1.13'
 gem 'mimemagic', '~> 0.3.10'
 gem 'mustermann' , '1.1.1'
 gem 'omniauth', '~> 1.9'
@@ -53,7 +53,7 @@ gem 'rdiscount', '~> 2.2'
 gem 'react-rails'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'responders', '~> 3.0'
-gem 'rubocop', '~> 1.17.0', require: false
+gem 'rubocop', '~> 1.18.3', require: false
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
 gem 'sentry-raven'

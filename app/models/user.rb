@@ -505,8 +505,8 @@ class User < ActiveRecord::Base
     recent_locations.last
   end
 
-  def self.recently_active_users(limit = 5, order = 'last_updated DESC')
-    Rails.cache.fetch('users/active', expires_in: 24.hours) do
+  def self.recently_active_users(limit = 15, order = 'last_updated DESC')
+    Rails.cache.fetch('users/active', expires_in: 1.hour) do
       User.select('rusers.username, rusers.status, rusers.id, MAX(node_revisions.timestamp) AS last_updated')
         .joins("INNER JOIN `node_revisions` ON `node_revisions`.`uid` = `rusers`.`id` ")
         .where("node_revisions.status = 1")
@@ -515,6 +515,12 @@ class User < ActiveRecord::Base
         .order(order)
         .limit(limit)
     end
+  end
+
+  def drafts
+    Node.where(uid: uid)
+    .where(status: 3, type: 'note')
+    .order('created DESC')
   end
 
   private

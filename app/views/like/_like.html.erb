@@ -8,7 +8,7 @@
     <% end %>
 
     <% if node.type == 'page' %>
-      <% if node.has_tag('locked') && (current_user ? (current_user.role != "moderator" && current_user.role != "admin") : true) %>
+      <% if node.has_tag('locked') && (current_user ? current_user.basic_user? : true) %>
         <a href="/wiki/locked" class='btn btn-outline-secondary btn-circle btn-sm'>
           <i class="ml-1 ff fa fa-lock"></i>
         </a>
@@ -44,7 +44,7 @@
         <% end %>
     <% end %>
 
-    <span data-toggle="tooltip" data-placement="bottom" title="Tools" id="menu-btn" class="btn btn-outline-secondary btn-circle btn-sm" rel="popover" data-placement="left" data-html="true" style="overflow: auto; max-height: 500px" data-content="
+    <span data-toggle="tooltip" data-placement="top" title="Tools" id="menu-btn" class="btn btn-outline-secondary btn-circle btn-sm" rel="popover" data-placement="left" data-html="true" style="overflow: auto; max-height: 500px" data-content="
         <p><b>Users who liked this</b></p>
         <% node.likers.each do |user| %>
             <i class='fa fa-star-o'></i> <a href='/profile/<%= user.username %>/'><%= user.username %></a><br />

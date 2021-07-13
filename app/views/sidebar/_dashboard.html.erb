@@ -7,12 +7,12 @@
         <span class="sr-only">Toggle Dropdown</span>
       </a>
       <div class="dropdown-menu dropdown-menu-right mt-2">
-        <a class="dropdown-item" href="/post?n=15322&title=How%20to%20...&tags=activity:new,draft"><%= translation('dashboard._header.dropdown.share_activity') %></a>
-        <a class="dropdown-item" href="/post"><%= translation('dashboard._header.dropdown.share_research_note') %></a>
-        <a class="dropdown-item" href="/questions/new?tags=question:general"><%= translation('dashboard._header.dropdown.ask_question') %></a>
-        <a class="dropdown-item" href="/post?template=event&tags=event"><%= translation('dashboard._header.dropdown.post_event') %></a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="/post?tags=blog-submission"><%= translation('dashboard._header.dropdown.tell_story_blog') %></a>
+          <%= create_nav_dropdown_item("post?n=15322&title=How%20to%20...&tags=activity:new,draft","dashboard._header.dropdown.share_activity") %>
+          <%= create_nav_dropdown_item("post","dashboard._header.dropdown.share_research_note") %>
+          <%= create_nav_dropdown_item("questions/new?tags=question:general","dashboard._header.dropdown.ask_question") %>
+          <%= create_nav_dropdown_item("post?template=event&tags=event","dashboard._header.dropdown.post_event") %>
+          <div class="dropdown-divider"></div>
+          <%= create_nav_dropdown_item("post?tags=blog-submission","dashboard._header.dropdown.tell_story_blog") %>
       </div>
     </div>
   </div>

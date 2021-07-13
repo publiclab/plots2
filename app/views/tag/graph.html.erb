@@ -36,13 +36,26 @@ html, body {
 
   (function() {
 
-  $.ajax({
-    url : '/tag/graph.json?limit=' + <%= params[:limit] || 250 %>,
-    type: 'GET',
-    success: function(response){
-      setup_cytoscape(response);
-    }
-  });
+  var mobile = window.matchMedia("(max-width: 400px)")
+  var desktop = window.matchMedia("(min-width: 400px)")
+
+  if (mobile.matches){
+    $.ajax({
+      url : '/tag/graph.json?limit=' + <%= params[:limit] || 100 %>,
+      type: 'GET',
+      success: function(response){
+        setup_cytoscape(response);
+      }
+    });
+  } else{
+    $.ajax({
+      url : '/tag/graph.json?limit=' + <%= params[:limit] || 250 %>,
+      type: 'GET',
+      success: function(response){
+        setup_cytoscape(response);
+      }
+    });
+  }
 
   function parse_cyto_data(data) {
     var output = {
@@ -66,7 +79,7 @@ html, body {
             id: edge.from + "_" + edge.to,
             source: edge.from,
             target: edge.to,
-            weight: Math.random()*10+3 // <= dummy value for jlouvain
+            weight: 10 //Math.random()*10+3 // <= dummy value for jlouvain
           }
         });
       }
@@ -183,15 +196,15 @@ html, body {
           style: {
             'width': 'mapData(weight, ' + min + ',' + max + ', 30, 150)',
             'height': 'mapData(weight, ' + min + ',' + max + ', 30, 150)',
-            'background-color': '#888',
-            'label': 'data(id)',
-            'font-size': 11,
+            'content': 'data(id)',
+            'font-size': '12px',
             'text-valign': 'center',
-            'color': 'white',
-            'border-width': 3,
-            'border-color': 'white',
-            'text-outline-width': 1.5,
-            'text-outline-color': '#444'
+            'text-halign': 'center',
+            'text-outline-width': '2px',
+            'color': '#fff',
+            'overlay-padding': '6px',
+            'z-index': '10'
+
           }
         },
 
@@ -199,25 +212,32 @@ html, body {
           selector: 'edge',
           style: {
             'curve-style': 'haystack',
-            'haystack-radius': 0,
+            'haystack-radius': '0.5',
+            'opacity': '0.4',
+            'line-color': '#000',
             'width': 2,
-            'opacity': 0.3,
-            'line-color': '#888'
+            'overlay-padding': '3px'
           }
         }
       ]
 
     });
 
-    cy.on('tap', 'node', function(){
-      try { // your browser may block popups
-        window.open( this.data('href') );
-      } catch(e){ // fall back on url change
-        window.location.href = this.data('href');
-      }
-    });
 
-    cy.on('tapstart', 'node', function(e){
+  if (mobile.matches) { // If media query matches
+    cy.on('taphold', 'node', function(e){
+      cy.nodes().style('opacity', 1);
+      cy.edges().style('opacity', 0.3);
+      var node = e.target;
+      node.connectedEdges()
+        .style('line-color', '#888');
+      node.connectedEdges()
+        .connectedNodes()
+        .style('border-color', 'white');
+    });
+    
+
+    cy.on('tapend', 'node', function(e){
       cy.elements().style('opacity', 0.2);
       var node = e.target;
       node.connectedEdges()
@@ -229,7 +249,40 @@ html, body {
         .style('border-color', 'magenta');
     });
 
-    cy.on('tapend', 'node', function(e){
+    cy.on('tap', 'node', function(){
+      try { // your browser may block popups
+        window.open( this.data('href') );
+      } catch(e){ // fall back on url change
+        window.location.href = this.data('href');
+      }
+    });
+  }
+
+  if (desktop.matches) { // If media query matches
+    cy.on('tap', 'node', function(){
+      try { // your browser may block popups
+        window.open( this.data('href') );
+      } catch(e){ // fall back on url change
+        window.location.href = this.data('href');
+      }
+    });
+    
+  }
+
+    
+    cy.on('mouseover', 'node', function(e){
+      cy.elements().style('opacity', 0.2);
+      var node = e.target;
+      node.connectedEdges()
+        .style('opacity', 1)
+        .style('line-color', 'magenta');
+      node.connectedEdges()
+        .connectedNodes()
+        .style('opacity', 1)
+        .style('border-color', 'magenta');
+    });
+
+    cy.on('mouseout', 'node', function(e){
       cy.nodes().style('opacity', 1);
       cy.edges().style('opacity', 0.3);
       var node = e.target;
@@ -241,9 +294,9 @@ html, body {
     });
 
     cy.on('zoom', function(e){
-      cy.nodes().style('font-size', 11/cy.zoom())
-                .style('text-outline-width', 1.5/cy.zoom())
-                .style('border-width', 3/cy.zoom())
+      //cy.nodes()//.style('font-size', 20/cy.zoom())
+                //.style('text-outline-width', 1.5/cy.zoom())
+                //.style('border-width', 3/cy.zoom())
                 // .style('width', 'mapData(weight / ' + cy.zoom() + ', ' + min + ',' + max + ', 30, 150)')
                 // .style('height', 'mapData(weight / ' + cy.zoom() + ', ' + min + ',' + max + ', 30, 150)')
     });
@@ -278,6 +331,7 @@ html, body {
       if (index > colors.length) index = colors.length - 1;
       color = colors[index];
       node.style('backgroundColor', color);
+      node.style('text-outline-color', color);
     });
 
   }

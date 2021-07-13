@@ -65,3 +65,4 @@ yarn-error.log
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
+.rake_tasks~

@@ -2,12 +2,11 @@ class StatsController < ApplicationController
   before_action :require_user, only: %i(index range notes wikis users questions comments tags)
 
   def subscriptions
-    @tags = Rails.cache.fetch("stats-subscriptions-query", expires_in: 24.hours) do
-      TagSelection
-        .select("DISTINCT tag_selections.tid, tag_selections.user_id")
-        .where(following: true)
-        .joins("INNER JOIN community_tags ON community_tags.tid = tag_selections.tid")
-        .joins("INNER JOIN term_data ON term_data.tid = community_tags.tid")
+    @tags = Rails.cache.fetch("subscriptions-stats-query", expires_in: 24.hours) do
+      Tag
+        .joins("INNER JOIN tag_selections ON term_data.tid = tag_selections.tid")
+        .select("term_data.name")
+        .where(tag_selections: { following: true })
         .group("term_data.name")
         .joins("INNER JOIN rusers ON rusers.id = tag_selections.user_id")
         .where("rusers.status = 1 OR rusers.status = 4")

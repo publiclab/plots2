@@ -161,10 +161,10 @@ It is a staging server that includes a copy of the production database and is in
 Use it when you need database records that are too difficult or time-consuming to reproduce locally, or to debug a problem on the production site that you can't reproduce locally.
 See summary and usage instructions below.
 
-**Environment:** Test environment
-**Database:** MySQL
-**Data:** Data present at https://unstable.publiclab.org is updated occasionally using the Production database, so it has good amount of data for testing. 
-**Email testing:** _unstable_ server can't send emails so Email related features can't be tested.  
+**Environment:** Test environment<br>
+**Database:** MySQL<br>
+**Data:** Data present at https://unstable.publiclab.org is updated occasionally using the Production database, so it has good amount of data for testing. <br>
+**Email testing:** _unstable_ server can't send emails so Email related features can't be tested.  <br>
 
 ### Pushing on `unstable`
 
@@ -174,4 +174,23 @@ But, don't worry, feel free to ping @publiclab/maintainers on your open PR to re
 3. See build progress at https://jenkins.laboratoriopublico.org/job/Plots-Unstable/. It takes 8-15 mins for build to complete. 
 4. Test website: https://unstable.publiclab.org/. 
 
-Once your PR is merged into plots2/main, code is only deployed to the live site [publiclab.org](publiclab.org) after some time by our maintainers. (They often send a message in our chatroom to notify contributors of this update). Fortunately, you can see your changes implemented immediately at https://stable.publiclab.org, which builds from the main branch. This is useful for testing your work again after a merge.
+
+### Stable Server
+
+Whether or not you've tested your code on the unstable server, once your PR is merged into `plots2/main`, it auto-triggers the build of the [stable version](https://stable.publiclab.org) of the website. This is the "pre-production" server and the last chance to test out any changes before they're published to the live site. 
+
+While it builds, on either the unstable or stable server, you'll be redirected to see the progress of the build in our [Jenkins](https://jenkins.laboratoriopublico.org/) console. Once it's complete, you can try accessing the original URL once more to try it out. See Build Status, below. 
+This is the last chance for you to run any manual tests that you have, and the last chance to find any bugs. Do checkout the stable build once your PR is acccepted!
+
+The stable server also uses a copy of the production database, so you can make 'example' and 'test' posts and no one will see it on the live website. However, emails aren't sent, which means you won't be able to test them. All passwords are also replaced with "publiclab" for security reasons.
+
+The exact workflow is this:<br>
+1. Merge to main <br>
+2. Auto-trigger build of stable.publiclab.org <br>
+3. Push to the stable branch <br>
+4. Publish on the live site at publiclab.org <br>
+
+After some time (usually a week or two), one of the maintainers deploys the code to the [live site](https://publiclab.org). Usually, they send a message in the [chatroom](http://publiclab.org/chat) to notify other contributors of the update. Your code is now live!
+
+## Build Status
+You can monitor all the buils at [Jenkins](https://jenkins.laboratoriopublico.org/)

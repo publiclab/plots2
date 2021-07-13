@@ -7,9 +7,9 @@ class TagControllerTest < ActionController::TestCase
 
   # create accepts comma-delimited list of tags
   test 'add one or two tags' do
-    UserSession.create(users(:bob))
+    UserSession.create(users(:jeff))
 
-    post :create, params: { name: 'mytag', nid: nodes(:one).nid, uid: users(:bob).id }
+    post :create, params: { name: 'mytag', nid: nodes(:one).nid }
 
     assert_equal 'mytag', assigns[:tags].last.name
     assert_redirected_to(nodes(:one).path)
@@ -17,15 +17,14 @@ class TagControllerTest < ActionController::TestCase
     post :create,
          params: {
          name: 'mysecondtag,mythirdtag',
-         nid: nodes(:one).nid,
-         uid: users(:bob).id
+         nid: nodes(:one).nid
          }
 
     assert_equal 'mysecondtag', assigns[:tags][assigns[:tags].length - 2].name
     assert_equal 'mythirdtag', assigns[:tags].last.name
     assert_redirected_to(nodes(:one).path)
 
-    post :create, params: { name: 'myfourthtag,myfifthtag', nid: nodes(:one).nid, uid: users(:bob).id }, xhr: true
+    post :create, params: { name: 'myfourthtag,myfifthtag', nid: nodes(:one).nid }, xhr: true
 
     assert_response :success
     assert_equal [['myfourthtag', Tag.find_by_name('myfourthtag').tid, nodes(:one).nid.to_s], ['myfifthtag', Tag.find_by_name('myfifthtag').tid, nodes(:one).nid.to_s]], JSON.parse(response.body)['saved']
@@ -48,6 +47,36 @@ class TagControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test 'normal users cannot add the locked tag' do
+    UserSession.create(users(:bob))
+    post :create,
+         params: {
+            name: 'locked',
+            nid: nodes(:one).nid
+         }
+    assert_equal 'Error: only admins can lock pages.', assigns[:output][:errors][0]
+  end
+
+  test 'admin can add the locked tag' do
+    UserSession.create(users(:admin))
+    post :create,
+         params: {
+            name: 'locked',
+            nid: nodes(:one).nid
+         }
+    assert nodes(:one).has_tag('locked')
+  end
+
+  test 'moderator can add the locked tag' do
+    UserSession.create(users(:moderator))
+    post :create,
+         params: {
+            name: 'locked',
+            nid: nodes(:one).nid
+         }
+    assert nodes(:one).has_tag('locked')
+  end
+
   test 'validate unused tag' do
     UserSession.create(users(:bob))
 
@@ -61,7 +90,7 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test "won't add invalid tags" do
-    UserSession.create(users(:bob))
+    UserSession.create(users(:jeff))
 
     post :create,
          params: {
@@ -101,13 +130,12 @@ class TagControllerTest < ActionController::TestCase
 
   # create returns JSON list of errors in response[:errors]
   test 'add duplicate tag' do
-    UserSession.create(users(:bob))
+    UserSession.create(users(:jeff))
 
     post :create,
          params: {
          name: 'mytag',
          nid: nodes(:one).nid,
-         uid: users(:bob)
          }
 
     assert_redirected_to(nodes(:one).path)
@@ -118,7 +146,6 @@ class TagControllerTest < ActionController::TestCase
          params: {
          name: 'mytag',
          nid: nodes(:one).nid,
-         uid: users(:bob)
          }
 
     assert_redirected_to(nodes(:one).path)
@@ -448,9 +475,9 @@ class TagControllerTest < ActionController::TestCase
 
       @controller = old_controller
 
-      UserSession.create(users(:bob))
-      post :create, params: { name: 'mytag', nid: nodes(:one).nid, uid: users(:bob) }
-      post :create, params: { name: 'mytag', nid: nodes(:one).nid, uid: users(:bob) }
+      UserSession.create(users(:jeff))
+      post :create, params: { name: 'mytag', nid: nodes(:one).nid }
+      post :create, params: { name: 'mytag', nid: nodes(:one).nid }
       assert_equal I18n.t('tag_controller.tag_already_exists'), assigns[:output][:errors][0]
     end
   end
@@ -641,5 +668,21 @@ class TagControllerTest < ActionController::TestCase
     assert_equal 1, counts[:questions], "Question count should match"
     assert_equal 2, counts[:wiki], "Wiki count should match"
     assert_equal 0, assigns(:total_posts), "Total posts should match"
+  end
+  
+  test 'should prevent first time posters to add tags on other users posts' do
+    UserSession.create(users(:newcomer))
+
+    post :create, params: { name: 'mytag', nid: nodes(:one).nid }
+
+    assert_equal 'Adding tags to other people’s posts is not available to you until your own first post has been approved by site moderators', assigns[:output][:errors][0]
+  end
+
+  test 'should allow first time posters to add tags on their own posts' do
+    UserSession.create(users(:newcomer))
+
+    post :create, params: { name: 'mytag', nid: nodes(:first_timer_note).nid }
+
+    assert_equal 'mytag', assigns[:tags].last.name
   end
 end
