@@ -7984,6 +7984,13 @@ leaflet-spin@1.1.0:
   dependencies:
     spin.js "^2.3.1"
 
+leaflet-spin@1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/leaflet-spin/-/leaflet-spin-1.1.2.tgz#d77f93d9a6ce70a62f33bc367b1e16e8356d22b2"
+  integrity sha512-OLpeDrrAv1YY8NVSnOP0YfICFFm+IFauL77erXH87ZiTIXl3aPwUJXOd336DrQCe4aFsY+F3oG/1+aXyjqKV2w==
+  dependencies:
+    spin.js "^2.3.1"
+
 leaflet-virtual-grid@^1.0.7:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/leaflet-virtual-grid/-/leaflet-virtual-grid-1.0.7.tgz#0dbb0dacd506b6e6d291314da5022d348729f8ad"
