@@ -1,4 +1,4 @@
-<div class="node-types" style="margin-bottom:8px;">
+<div class="node-types mr-3" style="margin-bottom:8px;">
   <ul class="nav nav-tabs" aria-labelledby="dropdownMenuButton">
 
     <li class="nav-item">
@@ -27,5 +27,13 @@
         <span class="d-lg-inline"><%= translation('notes.index.comments') %></span>
       </a>
     </li>
+
+    <% if current_user&.can_moderate? || current_user == @user %>
+      <li class="nav-item" style="width: 155px;">
+        <a class="nav-link" href="/drafts/author/<%= @user.name %>">
+          <i class="fa fa-pencil"></i> <span class="d-lg-inline"><%= translation('notes.index.drafts') %></span>
+        </a>
+      </li>
+    <% end %>
   </ul>
 </div>

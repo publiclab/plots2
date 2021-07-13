@@ -178,6 +178,7 @@ Plots2::Application.routes.draw do
   get 'notes/show/:id' => 'notes#show'
   get 'notes/:author/:date/:id' => 'notes#show'
   get 'notes/feeds' => 'subscription#notes'
+  get 'drafts/author/:id' => 'notes#drafts'
 
   # :id will be the node's id (like has no id)
   get 'likes' => 'like#index'

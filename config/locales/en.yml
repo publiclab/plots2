@@ -181,6 +181,7 @@ en:
       research_notes: "Research Notes"
       questions: "Questions"
       comments: "Comments"
+      drafts: "Drafts"
       all_notes: "All Notes"
     _notes:
       moderate_first_time_post: "Moderate first-time post:"
