@@ -240,7 +240,7 @@ GEM
       concurrent-ruby (~> 1.0)
     i18n-js (3.8.0)
       i18n (>= 0.6.6)
-    impressionist (1.6.1)
+    impressionist (2.0.0)
       nokogiri (~> 1)
     jasmine-core (3.4.0)
     jasmine-jquery-rails (2.0.3)
@@ -296,7 +296,7 @@ GEM
       nokogiri (~> 1)
       rake
     mini_mime (1.1.0)
-    mini_portile2 (2.5.1)
+    mini_portile2 (2.5.3)
     minitest (5.14.4)
     minitest-reporters (1.4.3)
       ansi
@@ -316,7 +316,7 @@ GEM
     netrc (0.11.0)
     nifty-generators (0.4.6)
     nio4r (2.5.7)
-    nokogiri (1.11.4)
+    nokogiri (1.11.7)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
     nokogumbo (2.0.4)
