@@ -4,7 +4,7 @@ class Image < ApplicationRecord
   belongs_to :user, foreign_key: :uid
   belongs_to :node, foreign_key: :nid
 
-  has_attached_file :photo, styles: { thumb: '200x150>', medium: '500x375>', large: '800x600>' } # ,
+  has_attached_file :photo, styles: { thumb: '200x150>', medium: '500x375>', large: '800x600>' }
 
   validates :uid, presence: true
   validates :photo, presence: true, unless: :remote_url_provided?
