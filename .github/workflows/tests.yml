@@ -26,6 +26,8 @@ jobs:
         DB_PASSWORD: root
         DB_PORT: ${{ job.services.mysql.ports[3306] }}
       run: bundle exec rails test test/unit
+    - name: Upload to codecov
+      uses: codecov/codecov-action@v1
 
   functional-tests:
     runs-on: ubuntu-latest
@@ -62,6 +64,8 @@ jobs:
         DB_PASSWORD: root
         DB_PORT: ${{ job.services.mysql.ports[3306] }}
       run: bundle exec rails test test/functional
+    - name: Upload to codecov
+      uses: codecov/codecov-action@v1
 
   integration-tests:
     runs-on: ubuntu-latest
@@ -86,6 +90,8 @@ jobs:
         DB_PASSWORD: root
         DB_PORT: ${{ job.services.mysql.ports[3306] }}
       run: bundle exec rails test test/integration
+    - name: Upload to codecov
+      uses: codecov/codecov-action@v1
 
   system-tests:
     runs-on: ubuntu-latest
@@ -133,6 +139,8 @@ jobs:
       with:
         name: system-test-screenshots
         path: tmp/screenshots/*
+    - name: Upload to codecov
+      uses: codecov/codecov-action@v1
 
   remove-labels:
     runs-on: ubuntu-latest
