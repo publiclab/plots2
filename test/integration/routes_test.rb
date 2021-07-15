@@ -116,13 +116,5 @@ class RoutesTest < ActionDispatch::IntegrationTest
   test "test get request for updating a comment" do
     assert_routing({ path: '/comment/update/:id', method: 'get' }, {controller: 'comment', action: 'update', id: ':id' })
   end
-	
-  test "test switch on translation route" do
-  	assert_routing({ path: 'switch_on_translation',method: 'get' }, {controller: 'home', action: 'switch_on_translation' })
-  end
-
-  test "test switch off translation route" do
-  	assert_routing({ path: 'switch_off_translation',method: 'get' }, {controller: 'home', action: 'switch_off_translation' })
-  end
 
 end
