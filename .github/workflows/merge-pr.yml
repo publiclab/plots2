@@ -2,7 +2,6 @@ name: Upload coverage on PR merge
 on:
   pull_request:
     types: [closed]
-permissions: read-all
 jobs:
   merge-PR:
     if: github.event.pull_request.merged == true
