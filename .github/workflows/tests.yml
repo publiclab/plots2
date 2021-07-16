@@ -1,5 +1,10 @@
 name: tests
-on: [pull_request]
+on: 
+  pull_request:
+    types: [assigned, opened, synchronize, reopened]
+  workflow_run:
+    workflows: ["Upload coverage on PR merge"]
+
 jobs:
 
   add-label:
