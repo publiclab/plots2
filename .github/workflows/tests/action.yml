@@ -3,6 +3,7 @@ on: [pull_request]
 jobs:
 
   add-label:
+    if: ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     steps:
     - uses: buildsville/add-remove-label@v1
@@ -135,6 +136,7 @@ jobs:
         path: tmp/screenshots/*
 
   remove-labels:
+    if: ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     needs: [add-label, unit-tests, functional-tests, integration-tests, system-tests]
     steps:
