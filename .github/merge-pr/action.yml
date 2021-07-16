@@ -1,4 +1,4 @@
-name: Merge PR
+name: Upload coverage on PR merge
 on:
   pull_request:
     types: [closed]
