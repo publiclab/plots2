@@ -4,6 +4,8 @@ on:
     types: [assigned, opened, synchronize, reopened]
   workflow_run:
     workflows: ["Upload coverage on PR merge"]
+    type:
+      - complete
 
 jobs:
 
