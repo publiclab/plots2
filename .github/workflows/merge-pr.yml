@@ -7,5 +7,5 @@ jobs:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: ./.github/workflows/tests
+      - name: Triggering tests workflow
+        run: echo "Triggering tests workflow"
