@@ -23,20 +23,6 @@
 
 <% end %>
 
-      <% if Rails.env==="development" %> 
-      <% if current_user %>
-        <% if current_user&.has_tag('translation-helper') %>
-        <a class="btn btn-sm btn-light" data-method="delete" href="/profile/tags/delete/<%= current_user.id %>?name=translation-helper&translationswitch=yes">
-          Switch off Translation
-        </a>        
-        <% else %>
-          <a class="btn btn-sm btn-light" data-method="post" href="/profile/tags/create/<%= current_user.id %>?translationswitch=yes&name=translation-helper">
-          Switch on Translation
-          </a>
-          <% end %>
-        <% end %>
-      <% end %>
-
 <div class="dashboard container">
 
   <div class="row">

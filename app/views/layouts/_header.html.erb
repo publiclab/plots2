@@ -104,6 +104,21 @@
 
       </ul>
 
+      <% if Rails.env==="development" %> 
+        <% if current_user %>
+          <ul class="navbar-nav mr-lg-5">
+          <% if current_user&.has_tag('translation-helper') %>
+            <a rel="tooltip" class="nav-link" data-placement="bottom" data-method="delete" href="/profile/tags/delete/<%= current_user.id %>?name=translation-helper&translationswitch=yes">
+              Switch off Translation
+            </a>        
+          <% else %>
+            <a rel="tooltip" class="nav-link" data-placement="bottom" data-method="post" href="/profile/tags/create/<%= current_user.id %>?translationswitch=yes&name=translation-helper">
+            Switch on Translation
+            </a>
+          <% end %>
+        <% end %>
+      <% end %>
+
       <ul class="navbar-nav mr-lg-5">
         <% if current_user %>
           <li class="nav-item d-sm-none d-xl-inline">
