@@ -44,7 +44,7 @@
             </span>
           <% elsif node.type == 'page' %>
             Wiki page by <%= node.revisions.collect(&:uid).uniq.length %> people
-          <% elsif node.type == 'question %>
+          <% elsif node.type == 'question' %>
             <div class="card bg-white rounded<% if node.status == 4 %> moderated<% end %>">
               <div class="card-header">
                 <%= render partial: 'dashboard/node_moderate', locals: { node: node } %>
