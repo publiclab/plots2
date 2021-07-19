@@ -23,7 +23,10 @@ jQuery(document).ready(function() {
 		})
 	}
 
-	let observer = new IntersectionObserver(scrollToTop, options);
-	observer.observe(document.querySelector("h1"));
-	
+	const heading = document.querySelector("h1");
+
+	if(heading !== null) {
+		let observer = new IntersectionObserver(scrollToTop, options);
+		observer.observe(heading);
+	}
 });
