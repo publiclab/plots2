@@ -12,7 +12,7 @@ gem 'authlogic-oid'
 gem "composite_primary_keys"
 gem 'figaro' # To easily test OAuth providers in the development mode
 gem 'friendly_id'
-gem 'fog-google', '1.13.0' # Limited to `v1.13.0` due to https://github.com/fog/fog-google/issues/535
+gem 'fog-google', '1.15.0' # Limited to `v1.13.0` due to https://github.com/fog/fog-google/issues/535
 gem 'fog-local', '0.7.0'
 gem 'gemoji'
 gem 'geocoder'
