@@ -163,6 +163,22 @@
                       <a class="dropdown-item" href="/features">Features</a>
                       <div class="dropdown-divider"></div>
                       <% end %>
+
+                      <% if Rails.env==="development" %> 
+                          <% if current_user %>
+                              <% if current_user&.has_tag('translation-helper') %>
+                                  <a rel="tooltip" class="dropdown-item" data-placement="bottom" data-method="delete" href="/profile/tags/delete/<%= current_user.id %>?name=translation-helper&translationswitch=yes">
+                                        Switch off Translation
+                                  </a>        
+                              <% else %>
+                                  <a rel="tooltip" class="dropdown-item" data-placement="bottom" data-method="post" href="/profile/tags/create/<%= current_user.id %>?translationswitch=yes&name=translation-helper">
+                                      Switch on Translation
+                                  </a>
+                              <% end %>
+                            <div class="dropdown-divider"></div>
+                          <% end %>
+                      <% end %>
+                      
                       <% if current_user&.has_tag('translation-helper') && I18n.locale != :en %>
                       <div class="dropdown-item">
                       <%= link_to translation('layout._header.logout'), logout_path, class: "text-body" %>

@@ -68,6 +68,9 @@ class UserTagsController < ApplicationController
       else
         @output[:errors] << I18n.t('user_tags_controller.value_cannot_be_empty')
       end
+      if params[:translationswitch]
+        redirect_to URI.parse('/change_locale/zh-CN').path and return
+      end
     else
       @output[:errors] << I18n.t('user_tags_controller.admin_user_manage_tags')
     end
@@ -103,6 +106,10 @@ class UserTagsController < ApplicationController
       end
     else
       output[:errors] = I18n.t('user_tags_controller.tag_doesnt_exist')
+    end
+
+    if params[:translationswitch]
+      redirect_to URI.parse('/change_locale/en').path and return
     end
 
     output[:tid] = @user_tag&.id
