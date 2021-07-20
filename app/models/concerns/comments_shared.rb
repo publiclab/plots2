@@ -14,6 +14,17 @@ module CommentsShared
     body.gsub(/([\s|"|'|\[|\(])(\/\/)([\w]?\.?#{host})/, '\1https://\3')
   end
 
+  def body_email_html(host = 'publiclab.org')
+    allowed_tags = %w(a acronym b strong i em li ul ol h1 h2 h3 h4 h5 h6 blockquote br cite sub sup ins p iframe del hr img input code table thead tbody tr th td span dl dt dd div)
+
+    # Sanitize the HTML (remove malicious attributes, unallowed tags...)
+    # also see https://github.com/publiclab/plots2/blob/8daad1a70d022810b249a3d7882f6c4bd4fe3727/app/models/comment.rb#L513
+    sanitized_body = ActionController::Base.helpers.sanitize(body_email(host), tags: allowed_tags)
+
+    # render HTML from markdown
+    RDiscount.new(sanitized_body)
+  end
+
   def author
     return nil if uid.zero?
 
