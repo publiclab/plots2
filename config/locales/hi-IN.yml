@@ -120,9 +120,15 @@ hi-IN:
       not_an_integer: एक पूर्णांक होना चाहिए
       odd: विषम होना चाहिए
       taken: पहले ही ले लिया गया है
-      too_long: बहुत लंबा है (अधिकतम %{count} अक्षरों है)
-      too_short: बहुत छोटा है (न्यूनतम %{count} अक्षरों है)
-      wrong_length: गलत लंबाई है (%{count} वर्ण वाले होने चाहिए)
+      too_long:
+        one: ""
+        other: बहुत लंबा है (अधिकतम %{count} अक्षरों है)
+      too_short:
+        one: ""
+        other: बहुत छोटा है (न्यूनतम %{count} अक्षरों है)
+      wrong_length:
+        one: ""
+        other: गलत लंबाई है (%{count} वर्ण वाले होने चाहिए)
     template:
       body: 'वहाँ निम्नलिखित क्षेत्रों के साथ समस्याओं रहे थे:'
       header:

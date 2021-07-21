@@ -1195,7 +1195,13 @@ en:
       not_a_number: is not a number
       not_an_integer: must be an integer
       odd: must be odd
-      other_than: must be other than %{count}
+      other_than:
+        zero: must be other than %{count}
+        one: must be other than %{count}
+        two: must be other than %{count}
+        few: must be other than %{count}
+        many: must be other than %{count}
+        other: must be other than %{count}
       present: must be blank
       required: must exist
       taken: has already been taken
@@ -1240,11 +1246,31 @@ en:
       decimal_units:
         format: "%n %u"
         units:
-          billion: Billion
-          million: Million
-          quadrillion: Quadrillion
-          thousand: Thousand
-          trillion: Trillion
+          billion:
+            one: Billion
+            few: Billion
+            many: Billion
+            other: Billion
+          million:
+            one: Million
+            few: Million
+            many: Million
+            other: Million
+          quadrillion:
+            one: Quadrillion
+            few: Quadrillion
+            many: Quadrillion
+            other: Quadrillion
+          thousand:
+            one: Thousand
+            few: Thousand
+            many: Thousand
+            other: Thousand
+          trillion:
+            one: Trillion
+            few: Trillion
+            many: Trillion
+            other: Trillion
           unit: ''
       format:
         delimiter: ''
