@@ -150,7 +150,7 @@ GEM
     faraday-net_http (1.0.1)
     faraday-net_http_persistent (1.1.0)
     faraday-patron (1.0.0)
-    ffi (1.15.0)
+    ffi (1.15.3)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
@@ -297,7 +297,7 @@ GEM
     lemmatizer (0.2.2)
     letter_opener (1.7.0)
       launchy (~> 2.2)
-    listen (3.5.1)
+    listen (3.6.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     loadcss-rails (2.0.1)
@@ -457,7 +457,7 @@ GEM
       thor (>= 0.19.0, < 2.0)
     rainbow (3.0.0)
     rake (13.0.6)
-    rb-fsevent (0.10.4)
+    rb-fsevent (0.11.0)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     rb-readline (0.5.5)
@@ -675,7 +675,7 @@ DEPENDENCIES
   lazyload-rails
   lemmatizer (~> 0.2.2)
   letter_opener
-  listen (~> 3.5.1)
+  listen (~> 3.6.0)
   loadcss-rails (~> 2.0.1)
   mailman
   mimemagic (~> 0.3.10)
