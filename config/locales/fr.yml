@@ -129,6 +129,21 @@ fr:
       uploading: "Téléchargement en cours"
     edit:
       edit_profile: "Éditer le profil"
+    settings:
+      notified_by_email: ""
+      direct_comment: ""
+      direct_likes: ""
+      indirect_comment: ""
+      moderation_email: ""
+      email_notifications: ""
+      weekly_digest: ""
+      daily_digest: ""
+      spam_weekly_digest: ""
+      spam_daily_digest: ""
+      browser_notifications: ""
+      mentioned: ""
+      everything: ""
+      likes: ""
   notes:
     index:
       search_results_for: "Résultats de recherche pour <i style=\"color:#aaa;\">%{params}</i>"
@@ -146,6 +161,11 @@ fr:
       popular: "Populaire"
       liked: "Aimé"
       wiki_pages: "Pages wiki (de documentation)"
+      research_notes: ""
+      questions: "Questions"
+      comments: "Commentaires"
+      drafts: ""
+      all_notes: ""
     _notes:
       moderate_first_time_post: "Modérer le premier post :"
       approve: "Valider"
@@ -179,6 +199,8 @@ fr:
       ical: "iCal"
       login_to: "S'il vous plaît, <a href='%{url1}'> connectez-vous</a> à"
       people_will_attend: "%{count} personnes seront présentes"
+      preview: ""
+      preview_topics: ""
     _comments:
       comments: "Commentaires"
       post_comment: "Publiez un commentaire"
@@ -305,12 +327,44 @@ fr:
       first_time_post: "Modérer le premier post :"
     _comment_moderate:
       first_time_post: "Modérer le premier commentaire :"
+  dashboard_v2:
+    _header:
+      dashboard: "Tableau de bord"
+      updates: ""
+      follow: ""
+      community_research: "Recherche communautaire"
+    dashboard:
+      from_blog: "depuis le <a href='%{url}'>le blog de Public Lab</a>"
+      by: "par"
+      new_user: ""
+      more_topics: ""
+      new_comment: ""
+    sidebar:
+      nearby_activity: ""
+      add_location: ""
+      location_work: ""
+      location_privacy: ""
+      all_posts: ""
+      follow_topics: ""
+      trending_topics: ""
+      featured_topics: ""
+      learn_more: ""
+      add_topics: ""
+      all_topics: ""
+      more_topics: ""
+      interest_topics: ""
   like:
     index:
       recent_likes: "Likes récents"
       user: "Utilisateur·ice"
       liked: "Liké"
       action: "Action"
+  map:
+    index:
+      current_view: ""
+      share: ""
+      privacy: ""
+      archive: |
   tag:
     blog:
       the_public_lab: "Le Public Lab"
@@ -323,6 +377,7 @@ fr:
       unfollow: "Cliquez pour ne plus suivre"
       follow: "Suivre"
       no_results: "Aucun résultat trouvé en cherchant '%{search}'"
+      no_recent_posts: ""
       advanced_search: "Ou essayez une <a href='%{url}'>recherche avancée</a>"
       by: "par"
       views: "vues"
@@ -336,7 +391,8 @@ fr:
       number_of_subscriptions: "# de personnes"
       subscriptions: "Vos abonnements"
       sort_by: "Trié Par"
-      more_posts: "plus de posts"
+      post: ""
+      wiki: ""
       follow: "Suivre"
       unfollow: "Ne plus suivre"
       notes:
@@ -353,6 +409,9 @@ fr:
       following: "Suit"
       unfollow: "Cliquez pour ne plus suivre"
       follow: "Suivre"
+      unfollow_text: "Ne plus suivre"
+      subscribe: ""
+      blog_updates: ""
       none: "Aucun"
       users_following_tag: "Utilisateur·ices qui suivent ce tag"
       ask_question: "Posez une question à propos de <b>%{tag}</b>"
@@ -362,10 +421,16 @@ fr:
       wiki_pages: "Pages du wiki"
       maps: "Cartes"
       no_results_found: "Aucun résultat trouvé en cherchant '%{tag}'"
-      no_map_results_found: "Désolé, aucune carte n'est taguée avec <i>%{tag}</i>"
+      no_notes_results_found: ""
+      no_wikis_results_found: ""
+      no_questions_results_found: ""
       try_advanced_search: "Ou essayez une <a href='%{url}'>recherche avancée</a>"
       people: "Personnes"
+      no_map_results_found: "Désolé, aucune carte n'est taguée avec <i>%{tag}</i>"
       contributors: "Contributeur·ices"
+      notes_not_available: ""
+      by: "par"
+      new_post: ""
     contributors-index:
       contributors_over_last_week: "Contributeur·ices pour <i style=\"color:#aaa;\">%{tag_name}</i> au cours des 52 semaines "
       read_more: "En savoir plus"
@@ -392,6 +457,8 @@ fr:
       notes: "Notes"
       people_who've_contributed: "Personnes qui ont contribué"
       people_who_are_following: "Personnes qui suiven"
+    location:
+      tooltip: ""
   wiki:
     index:
       wiki_pages_tagged_with: "Pages de wiki taguées avec <i style='color:#aaa;'>%{tag}</i>"
@@ -498,6 +565,23 @@ fr:
         fellows: "Suit"
         lending_library: "Librairie de prêts"
       search: "Rechercher dans Public Lab"
+      community:
+        community_title: ""
+        get_started: ""
+        people: "Personnes"
+        places: "Lieux"
+        projects: "Projets"
+        events: "Événements"
+        questions: "Questions"
+        chat: ""
+      tools:
+        tools_title: "Outils"
+        methods: "Méthodes"
+        kits_initiative: ""
+        store: "Magasin"
+        map_knitter: ""
+        spectral_workbench: "Établis Spectral"
+        code_community: ""
       about:
         about_title: "À propos de nous"
         stories: "Récits"
@@ -553,10 +637,46 @@ fr:
       research_note: "Note de recherche"
       wiki_doc: "Documentation du wiki"
   questions:
+    show:
+      question: "Question"
+      question_about: ""
+      unpublished: "NON PUBLIÉ"
+      by: "par"
+      draft: ""
+      with: ""
     index:
       explanation: "Posez une question à la communauté Public Lab pour vous aider dans vos explorations environnementales "
+      ask_question: ""
+      to_ask_question: ""
+      log_in: ""
+      or: ""
+      sign_up: "S'inscrire"
+      first: ""
+      recently_asked: ""
+      popular: "Populaire"
+      unanswered: ""
+      liked: "Aimé"
+      recently_commented: ""
+      recently_commented_questions: ""
+      popular_questions: ""
+      most_viewed_questions: ""
+      unanswered_questions: ""
+      liked_questions: ""
+      most_liked_questions: ""
     _comment:
       promotion: "Promouvoir ce commentaire en réponse"
+    index_shadow:
+      what_is_your_question: ""
+      to_ask_a_question_please: ""
+      log_in: ""
+      or: ""
+      sign_up: ""
+      first: ""
+    _questions_shadow:
+      people_responded: ""
+      read_more: ""
+    _form:
+      submit: ""
   user_sessions:
     new:
       log_in: "Se connecter"
@@ -640,6 +760,13 @@ fr:
       formatting: "Mise en forme"
       notifications: "Notifications"
       email_notifications: "Auteur·ices, commentateur·ices, et celleux qui ont \"aimé\" cette note recevront des notification par email"
+    index:
+      all_comments: ""
+      moderated_comments: ""  
+    _comments:
+      comments: "Commentaires"
+      status: ""
+      no_comments: "" 
   sidebar:
     _events:
       post_event: "Publier un évènement"
@@ -698,6 +825,19 @@ fr:
     show:
       welcome: "Page de discussion pour <a href='%{url1}'>%{page}</a>| Cette page permet l'édition synchronisée par de multiple personnes tout en tapant. <a href='%{url2}'>plus d'info</a>"
       try_direct_link: "Si cette page ne charge pas correctement, <a href='%{url1}'>essayez ici</a>"
+  editor:
+    post:
+      welcome: ""
+      add_tags: ""
+      q_and_a: ""
+      learn_more: ""
+      research_note: ""
+      photo: ""
+      troubleshooting: ""
+      projects: ""
+      events: ""
+      reports: ""
+      video: ""
   home_controller:
     science_community: "une communauté de science environnementale DIY"
     environmental_investigation: "une communauté pour l'investigation environnementale à faire soi-même"
@@ -954,7 +1094,9 @@ fr:
       not_a_number: n'est pas un nombre
       not_an_integer: doit être un entier
       odd: doit être impair
-      other_than: "doit être différent de %{count}"
+      other_than:
+        one: ''
+        other: ''
       present: doit être vide
       required: doit exister
       taken: a déjà été pris
@@ -999,11 +1141,21 @@ fr:
       decimal_units:
         format: "%n%u"
         units:
-          billion: Milliard
-          million: Million
-          quadrillion: Quadrillion
-          thousand: Mille
-          trillion: Trillion
+          billion:
+            one: ''
+            other: ''
+          million:
+            one: ''
+            other: ''
+          quadrillion:
+            one: ''
+            other: ''
+          thousand:
+            one: ''
+            other: ''
+          trillion:
+            one: ''
+            other: ''
           unit: ''
       format:
         delimiter: ''
