@@ -204,9 +204,7 @@ class SearchService
     items = user_locations
 
     # selects the items whose node_tags don't have the location:blurred tag
-    
     items = items.where('user_tags.value <> "location:blurred"')
-
 
     # Here we use period["from"] and period["to"] in the query only if they have been specified,
     # so we avoid to join revision table
