@@ -73,6 +73,14 @@ a.navbar-offset {
     visibility: hidden;
 }
 
+details > summary {
+  list-style: none;
+}
+
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
 #toc-menu:hover, .toc-active {
   background-color: #cbd5e0;
 }
