@@ -147,11 +147,11 @@
    function displayMapContent(map, markers_hash, mainContent) {
       if(typeof mainContent !== "undefined" && mainContent !== ""){
          if (mainContent === "people") {
-           map.on('load viewreset resize zoomend moveend', peopleMap);
+           map.on('load viewreset resize zoomend moveend', debounce(peopleMap, 400));
            setTimeout(peopleMap,0); // to ensure fetch on initial page load
          } else {
            mainContent = (mainContent === "content") ? null : mainContent;
-           map.on('load viewreset resize zoomend moveend', contentMap);
+           map.on('load viewreset resize zoomend moveend', debounce(contentMap, 400));
            setTimeout(contentMap,0); // to ensure fetch on initial page load
          }
       }
