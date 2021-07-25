@@ -2,18 +2,7 @@ require 'test_helper'
 require 'sanitize'
 
 class I18nTest < ActionDispatch::IntegrationTest
-
-  test 'should translate search input bar' do
-    available_testing_locales.each do |lang|
-      get '/change_locale/es'
-      follow_redirect!
-      get '/dashboard'
-      follow_redirect!
-      #assert_select '#searchform_input:match("placeholder",?)',I18n.t('layout._header.search')
-      assert_select '#searchform_input:match("placeholder",?)',/span/
-    end
-  end
-
+  
   test 'should choose i18n-locale for header partial' do
     available_testing_locales.each do |lang|
       # This test could use a rewrite. Two `get`s in succession?

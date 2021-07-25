@@ -3,6 +3,23 @@ require "application_system_test_case"
 class DashboardTest < ApplicationSystemTestCase
   Capybara.default_max_wait_time = 60
 
+  test 'should translate search input bar' do
+    visit '/'
+    click_on 'Login'
+    fill_in("username-login", with: "admin")
+    fill_in("password-signup", with: "password")
+    click_on "Log in"
+    visit '/dashboard'
+    uid = users(:admin).id
+    visit '/profile/tags/create/'+uid.to_s+'?translationswitch=yes&name=translation-helper"'
+    available_testing_locales.each do |lang|
+      visit '/change_locale/es'
+      visit '/dashboard'
+      assert_selector(:xpath,'//*[@id="searchform_input"]')
+      #assert_selector(:xpath,'/html/body/nav/div/form/div/i')
+    end
+  end
+
   test 'viewing the dashboard' do
     visit '/'
 
