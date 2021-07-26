@@ -123,6 +123,14 @@ a.navbar-offset {
   color: #0c82c4;
 }
 
+details > summary {
+  list-style: none;
+}
+
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
 @media (max-width: 606px) {
   .js-toc {
     max-width: 260px;
