@@ -716,38 +716,38 @@ class CommentTest < ApplicationSystemTestCase
     # there are many variations of this bug. this particular test involves:
     #  DRAG & DROP upload into MAIN comment form
     #  DRAG & DROP into EDIT comment form (.dropzone button)
-    # test "#{page_type_string}: image DRAG & DROP into EDIT form isn't cross-wired with MAIN form" do
-    #   # setup page with editable comment
-    #   nodes(node_name).add_comment({
-    #     uid: 2,
-    #     body: comment_text
-    #   })
-    #   visit get_path(page_type, nodes(node_name).path)
-    #   # .dropzone is hidden, so reveal it for Capybara's finders:
-    #   Capybara.ignore_hidden_elements = false
-    #   # drag & drop the image. drop_in_dropzone simulates 'drop' event, see application_system_test_case.rb
-    #   drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", '#comments-list + div .dropzone-large') # this CSS selects .dropzones that belong to sibling element immediately following #comments-list. technically, there are two .dropzones in the main comment form.
-    #   Capybara.ignore_hidden_elements = true
-    #   wait_for_ajax
-    #   # we need the ID of parent div that contains <p>comment_text</p>:
-    #   comment_id = page.find('p', text: comment_text).find(:xpath, '..')[:id]
-    #   # regex to strip the ID number out of string. ID format is comment-body-4231
-    #   comment_id_num = /comment-body-(\d+)/.match(comment_id)[1]
-    #   comment_dropzone_selector = '#comment-form-body-edit-' + comment_id_num
-    #   # open the edit comment form
-    #   page.find(".edit-comment-btn").click
-    #   # drop into the edit comment form
-    #   Capybara.ignore_hidden_elements = false
-    #   drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", comment_dropzone_selector)
-    #   Capybara.ignore_hidden_elements = true
-    #   wait_for_ajax
-    #   # open the preview for the main comment form
-    #   page.find('#toggle-preview-button-main').click
-    #   # once preview is open, the images are embedded in the page.
-    #   # there should only be 1 image in the main comment form!
-    #   preview_imgs = page.all('#comment-preview-main img').size
-    #   assert_equal(1, preview_imgs)
-    # end
+    test "#{page_type_string}: image DRAG & DROP into EDIT form isn't cross-wired with MAIN form" do
+      # setup page with editable comment
+      nodes(node_name).add_comment({
+        uid: 2,
+        body: comment_text
+      })
+      visit get_path(page_type, nodes(node_name).path)
+      # .dropzone is hidden, so reveal it for Capybara's finders:
+      Capybara.ignore_hidden_elements = false
+      # drag & drop the image. drop_in_dropzone simulates 'drop' event, see application_system_test_case.rb
+      drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", '#comments-list + div .dropzone-large') # this CSS selects .dropzones that belong to sibling element immediately following #comments-list. technically, there are two .dropzones in the main comment form.
+      Capybara.ignore_hidden_elements = true
+      wait_for_ajax
+      # we need the ID of parent div that contains <p>comment_text</p>:
+      comment_id = page.find('p', text: comment_text).find(:xpath, '..')[:id]
+      # regex to strip the ID number out of string. ID format is comment-body-4231
+      comment_id_num = /comment-body-(\d+)/.match(comment_id)[1]
+      comment_dropzone_selector = '#comment-form-body-edit-' + comment_id_num
+      # open the edit comment form
+      page.find(".edit-comment-btn").click
+      # drop into the edit comment form
+      Capybara.ignore_hidden_elements = false
+      drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", comment_dropzone_selector)
+      Capybara.ignore_hidden_elements = true
+      wait_for_ajax
+      # open the preview for the main comment form
+      page.find('#toggle-preview-button-main').click
+      # once preview is open, the images are embedded in the page.
+      # there should only be 1 image in the main comment form!
+      preview_imgs = page.all('#comment-preview-main img').size
+      assert_equal(1, preview_imgs)
+    end
 
     # cross-wiring test: 
     # SELECT image upload in both:
@@ -756,103 +756,103 @@ class CommentTest < ApplicationSystemTestCase
 
     # NOTE: this is also a test for:
     #   IMMEDIATE image SELECT upload into MAIN comment form
-    # test "#{page_type_string}: image SELECT upload into EDIT form isn't CROSS-WIRED with MAIN form" do
-    #   nodes(node_name).add_comment({
-    #     uid: 5,
-    #     body: comment_text
-    #   })
-    #   nodes(node_name).add_comment({
-    #     uid: 2,
-    #     body: comment_text
-    #   })
-    #   visit get_path(page_type, nodes(node_name).path)
-    #   # open the edit comment form:
-    #   find(".edit-comment-btn").click
-    #   # find the parent of edit comment's fileinput:
-    #   comment_fileinput_parent_id = page.find('[id^=dropzone-small-edit-]')[:id] # 'begins with' CSS selector
-    #   comment_id_num = /dropzone-small-edit-(\d+)/.match(comment_fileinput_parent_id)[1]
-    #   # upload images
-    #   # the <inputs> that take image uploads are hidden, so reveal them:
-    #   Capybara.ignore_hidden_elements = false
-    #   # upload an image in the main comment form
-    #   page.find('#fileinput-button-main').set("#{Rails.root.to_s}/public/images/pl.png")
-    #   wait_for_ajax
-    #   # find edit comment's fileinput:
-    #   page.find('#fileinput-button-edit-' + comment_id_num).set("#{Rails.root.to_s}/public/images/pl.png")
-    #   wait_for_ajax
-    #   Capybara.ignore_hidden_elements = true
-    #   # click preview buttons in main and edit form
-    #   page.find('h4', text: /Post comment|Post Comment/) # title text on wikis is 'Post comment'
-    #     .find(:xpath, '..')
-    #     .find('a', text: 'Preview').click
-    #   page.find('#comment-form-edit-' + comment_id_num + ' a', text: 'Preview').click
-    #   # once preview is open, the images are embedded in the page.
-    #   # there should be 1 image in main, and 1 image in edit
-    #   assert_selector('#comment-preview-edit-' + comment_id_num + ' img', count: 1)
-    #   assert_selector('#comment-preview-main img', count: 1)
-    # end
+    test "#{page_type_string}: image SELECT upload into EDIT form isn't CROSS-WIRED with MAIN form" do
+      nodes(node_name).add_comment({
+        uid: 5,
+        body: comment_text
+      })
+      nodes(node_name).add_comment({
+        uid: 2,
+        body: comment_text
+      })
+      visit get_path(page_type, nodes(node_name).path)
+      # open the edit comment form:
+      find(".edit-comment-btn").click
+      # find the parent of edit comment's fileinput:
+      comment_fileinput_parent_id = page.find('[id^=dropzone-small-edit-]')[:id] # 'begins with' CSS selector
+      comment_id_num = /dropzone-small-edit-(\d+)/.match(comment_fileinput_parent_id)[1]
+      # upload images
+      # the <inputs> that take image uploads are hidden, so reveal them:
+      Capybara.ignore_hidden_elements = false
+      # upload an image in the main comment form
+      page.find('#fileinput-button-main').set("#{Rails.root.to_s}/public/images/pl.png")
+      wait_for_ajax
+      # find edit comment's fileinput:
+      page.find('#fileinput-button-edit-' + comment_id_num).set("#{Rails.root.to_s}/public/images/pl.png")
+      wait_for_ajax
+      Capybara.ignore_hidden_elements = true
+      # click preview buttons in main and edit form
+      page.find('h4', text: /Post comment|Post Comment/) # title text on wikis is 'Post comment'
+        .find(:xpath, '..')
+        .find('a', text: 'Preview').click
+      page.find('#comment-form-edit-' + comment_id_num + ' a', text: 'Preview').click
+      # once preview is open, the images are embedded in the page.
+      # there should be 1 image in main, and 1 image in edit
+      assert_selector('#comment-preview-edit-' + comment_id_num + ' img', count: 1)
+      assert_selector('#comment-preview-main img', count: 1)
+    end
 
     # cross-wiring test
     # SELECT image upload in both:
     #   EDIT FORM
     #   REPLY form
-    # test "#{page_type_string}:  image SELECT upload into EDIT form isn't CROSS-WIRED with REPLY form" do
-    #   nodes(node_name).add_comment({
-    #     uid: 2,
-    #     body: comment_text
-    #   })
-    #   visit get_path(page_type, nodes(node_name).path)
-    #   # find the EDIT id
-    #   # open up the edit comment form
-    #   page.find(".edit-comment-btn").click
-    #   edit_comment_form_id = page.find('h4', text: 'Edit comment').find(:xpath, '..')[:id]
-    #   # regex to strip the ID number out of string. ID format is #c1234edit
-    #   edit_id_num = /comment-form-edit-(\d+)/.match(edit_comment_form_id)[1]
-    #   # open the edit comment form
-    #   edit_preview_id = '#comment-preview-edit-' + edit_id_num
-    #   # find the REPLY id
-    #   page.all('p', text: 'Reply to this comment...')[0].click
-    #   reply_dropzone_id = page.find('[id^=dropzone-small-reply-]')[:id]
-    #   # ID begins with...
-    #   reply_id_num = /dropzone-small-reply-(\d+)/.match(reply_dropzone_id)[1]
-    #   # upload images
-    #   # the <inputs> that take image uploads are hidden, so reveal them:
-    #   Capybara.ignore_hidden_elements = false
-    #   # upload an image in the reply comment form
-    #   page.find('#fileinput-button-reply-' + reply_id_num).set("#{Rails.root.to_s}/public/images/pl.png")
-    #   wait_for_ajax
-    #   # upload an image in the edit comment form
-    #   page.find('#fileinput-button-edit-' + edit_id_num).set("#{Rails.root.to_s}/public/images/pl.png")
-    #   Capybara.ignore_hidden_elements = true
-    #   wait_for_ajax
-    #   # click preview buttons in reply and edit form
-    #   page.find('#comment-form-edit-' + edit_id_num + ' a', text: 'Preview').click
-    #   page.first('a', text: 'Preview').click
-    #   assert_selector('#comment-preview-edit-' + edit_id_num + ' img', count: 1)
-    #   assert_selector('#comment-preview-reply-' + reply_id_num, count: 1)
-    # end
+    test "#{page_type_string}:  image SELECT upload into EDIT form isn't CROSS-WIRED with REPLY form" do
+      nodes(node_name).add_comment({
+        uid: 2,
+        body: comment_text
+      })
+      visit get_path(page_type, nodes(node_name).path)
+      # find the EDIT id
+      # open up the edit comment form
+      page.find(".edit-comment-btn").click
+      edit_comment_form_id = page.find('h4', text: 'Edit comment').find(:xpath, '..')[:id]
+      # regex to strip the ID number out of string. ID format is #c1234edit
+      edit_id_num = /comment-form-edit-(\d+)/.match(edit_comment_form_id)[1]
+      # open the edit comment form
+      edit_preview_id = '#comment-preview-edit-' + edit_id_num
+      # find the REPLY id
+      page.all('p', text: 'Reply to this comment...')[0].click
+      reply_dropzone_id = page.find('[id^=dropzone-small-reply-]')[:id]
+      # ID begins with...
+      reply_id_num = /dropzone-small-reply-(\d+)/.match(reply_dropzone_id)[1]
+      # upload images
+      # the <inputs> that take image uploads are hidden, so reveal them:
+      Capybara.ignore_hidden_elements = false
+      # upload an image in the reply comment form
+      page.find('#fileinput-button-reply-' + reply_id_num).set("#{Rails.root.to_s}/public/images/pl.png")
+      wait_for_ajax
+      # upload an image in the edit comment form
+      page.find('#fileinput-button-edit-' + edit_id_num).set("#{Rails.root.to_s}/public/images/pl.png")
+      Capybara.ignore_hidden_elements = true
+      wait_for_ajax
+      # click preview buttons in reply and edit form
+      page.find('#comment-form-edit-' + edit_id_num + ' a', text: 'Preview').click
+      page.first('a', text: 'Preview').click
+      assert_selector('#comment-preview-edit-' + edit_id_num + ' img', count: 1)
+      assert_selector('#comment-preview-reply-' + reply_id_num, count: 1)
+    end
 
-    # test "#{page_type_string}: rich-text input into REPLY form isn't CROSS-WIRED with EDIT form" do
-    #   nodes(node_name).add_comment({
-    #     uid: 5,
-    #     body: comment_text
-    #   })
-    #   nodes(node_name).add_comment({
-    #     uid: 2,
-    #     body: comment_text
-    #   })
-    #   visit get_path(page_type, nodes(node_name).path)
-    #   # open up the edit comment form
-    #   page.find(".edit-comment-btn").click
-    #   # find the EDIT id
-    #   edit_comment_form_id = page.find('h4', text: 'Edit comment').find(:xpath, '..')[:id]
-    #   # open up the reply comment form
-    #   page.all('p', text: 'Reply to this comment...')[1].click
-    #   page.all("[data-original-title='Bold']")[0].click
-    #   reply_input_value = page.find('[id^=text-input-reply-]').value
-    #   edit_input_value = page.find('#' + edit_comment_form_id + ' textarea').value
-    #   assert_equal(comment_text, edit_input_value)
-    #   assert_equal('****', reply_input_value)
-    # end
+    test "#{page_type_string}: rich-text input into REPLY form isn't CROSS-WIRED with EDIT form" do
+      nodes(node_name).add_comment({
+        uid: 5,
+        body: comment_text
+      })
+      nodes(node_name).add_comment({
+        uid: 2,
+        body: comment_text
+      })
+      visit get_path(page_type, nodes(node_name).path)
+      # open up the edit comment form
+      page.find(".edit-comment-btn").click
+      # find the EDIT id
+      edit_comment_form_id = page.find('h4', text: 'Edit comment').find(:xpath, '..')[:id]
+      # open up the reply comment form
+      page.all('p', text: 'Reply to this comment...')[1].click
+      page.all("[data-original-title='Bold']")[0].click
+      reply_input_value = page.find('[id^=text-input-reply-]').value
+      edit_input_value = page.find('#' + edit_comment_form_id + ' textarea').value
+      assert_equal(comment_text, edit_input_value)
+      assert_equal('****', reply_input_value)
+    end
   end
 end
