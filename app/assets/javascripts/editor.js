@@ -11,7 +11,6 @@ class Editor {
     this.commentFormID = defaultForm;
     this.isSingleFormPage = isSingleFormPage;
     // this will get deleted in the next few PRs, so collapsing into one line to pass codeclimate
-    this.templates = { 'blog': "## The beginning\n\n## What we did\n\n## Why it matters\n\n## How can you help", 'default': "## What I want to do\n\n## My attempt and results\n\n## Questions and next steps\n\n## Why I'm interested", 'support': "## Details about the problem\n\n## A photo or screenshot of the setup", 'event': "## Event details\n\nWhen, where, what\n\n## Background\n\nWho, why", 'question': "## What I want to do or know\n\n## Background story" };
       
     marked.setOptions({
       gfm: true,
@@ -81,29 +80,10 @@ class Editor {
       '](' + src + ')\n'
     );
   }
-  // these header formatting functions are not used anywhere, so commenting them out for now to pass codeclimate:
-
-  // h1() {
-  //   this.wrap('#','')
-  // }
+  
   h2() {
     this.wrap('##', '');
   }
-  // h3() {
-  //   this.wrap('###','')
-  // }
-  // h4() {
-  //   this.wrap('####','')
-  // }
-  // h5() {
-  //   this.wrap('#####','')
-  // }
-  // h6() {
-  //   this.wrap('######','')
-  // }
-  // h7() {
-  //   this.wrap('#######','')
-  // }
 
   //debounce function addition
   debounce(func, wait, immediate) {
