@@ -24,6 +24,7 @@ services:
     cap_add:
       - SYS_PTRACE
     environment:
+      - COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME}
       - DB_USER=${DB_USER}
       - DB_NAME=${DB_NAME}
       - DB_PASS=${DB_PASS}
