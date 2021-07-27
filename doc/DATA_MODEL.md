@@ -98,6 +98,8 @@ Users each have a profile at `/profile/USERNAME`, which displays content stored 
 * 1: normal
 * 5: moderated
 
+These are the basic user statuses. However, being a "first timer" for commenting or node posting is calculated on the fly here, rather than being stored as a state: https://github.com/publiclab/plots2/blob/main/app/models/user.rb#L227-L233 (see `first_time_poster` and `first_time_commenter`)
+
 User `role` can be:
 
 * `basic`
