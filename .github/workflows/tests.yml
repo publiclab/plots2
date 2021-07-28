@@ -171,7 +171,7 @@ jobs:
         DB_PASSWORD: root
         DB_PORT: ${{ job.services.mysql.ports[3306] }}
       run: bundle exec rails g webpacker:install && bundle exec rails g webpacker:install:react && bundle exec rails g react:install
-    - name: "System Tests"
+    - name: "Comment System Tests"
       env:
         RAILS_ENV: test
         DB_PASSWORD: root
@@ -181,7 +181,7 @@ jobs:
       run: |
         export DISPLAY=:99
         chromedriver --url-base=/wd/hub &
-        bundle exec rails test:comment_system_tests
+        bundle exec rails test test/comment_system_tests
     - name: Archive system test screenshots
       uses: actions/upload-artifact@v2
       with:
