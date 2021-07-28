@@ -475,7 +475,6 @@ class CommentTest < ApplicationSystemTestCase
       # checks for the list of recently active users
       assert_selector('#atwho-ground-text-input-main .atwho-view .atwho-view-ul li')
     end
-  end
 
     test "#{page_type_string}: IMMEDIATE image SELECT upload into REPLY comment form" do
       nodes(node_name).add_comment({
