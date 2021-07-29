@@ -43,12 +43,12 @@
               <a class="dropdown-item" href="/getting-started"><b><%= translation('layout._header.community.get_started') %> &raquo;</b></a>
             <% end %>
               <div class="dropdown-divider"></div>
-              <%= create_nav_dropdown_item("people","layout._header.community.people") %>
-              <%= create_nav_dropdown_item("map","layout._header.community.places") %>
-              <%= create_nav_dropdown_item("projects","layout._header.community.projects") %>
-              <%= create_nav_dropdown_item("events","layout._header.community.events") %>
-              <%= create_nav_dropdown_item("questions","layout._header.community.questions") %>
-              <%= create_nav_dropdown_item("chat","layout._header.community.chat") %>
+              <%= create_nav_dropdown_item("/people","layout._header.community.people") %>
+              <%= create_nav_dropdown_item("/map","layout._header.community.places") %>
+              <%= create_nav_dropdown_item("/projects","layout._header.community.projects") %>
+              <%= create_nav_dropdown_item("/events","layout._header.community.events") %>
+              <%= create_nav_dropdown_item("/questions","layout._header.community.questions") %>
+              <%= create_nav_dropdown_item("/chat","layout._header.community.chat") %>
           </div>
         </li>
 
@@ -69,13 +69,13 @@
               
               <div class="dropdown-divider"></div>
               <h6 class="dropdown-header">Kits</h6>
-              <%= create_nav_dropdown_item("kits","layout._header.tools.kits_initiative") %>
+              <%= create_nav_dropdown_item("/kits","layout._header.tools.kits_initiative") %>
               <%= create_nav_dropdown_item("//store.publiclab.org","layout._header.tools.store") %>
               <h6 class="dropdown-header">Software</h6>
-              <%= create_nav_dropdown_item("https://mapknitter.org","layout._header.tools.map_knitter") %>
-              <%= create_nav_dropdown_item("https://infragram.org","layout._header.tools.infragram") %>
-              <%= create_nav_dropdown_item("https://spectralworkbench.org","layout._header.tools.spectral_workbench") %>
-              <%= create_nav_dropdown_item("https://code.publiclab.org#r=all","layout._header.tools.code_community") %>
+              <%= create_nav_dropdown_item("//mapknitter.org","layout._header.tools.map_knitter") %>
+              <%= create_nav_dropdown_item("//infragram.org","layout._header.tools.infragram") %>
+              <%= create_nav_dropdown_item("//spectralworkbench.org","layout._header.tools.spectral_workbench") %>
+              <%= create_nav_dropdown_item("//code.publiclab.org#r=all","layout._header.tools.code_community") %>
           </div>
         </li>
 
@@ -86,11 +86,11 @@
             <!-- </a> -->
           </div>
           <div class="dropdown-menu">
-              <%= create_nav_dropdown_item("about","layout._header.about.about_public_lab") %>
-              <%= create_nav_dropdown_item("blog","layout._header.about.blog") %>
-              <%= create_nav_dropdown_item("newsletter","Newsletter") %>
-              <%= create_nav_dropdown_item("public-lab-careers","Careers") %>
-              <%= create_nav_dropdown_item("wiki/contact","layout._header.about.contact") %>
+              <%= create_nav_dropdown_item("/about","layout._header.about.about_public_lab") %>
+              <%= create_nav_dropdown_item("/blog","layout._header.about.blog") %>
+              <%= create_nav_dropdown_item("/newsletter","Newsletter") %>
+              <%= create_nav_dropdown_item("/public-lab-careers","Careers") %>
+              <%= create_nav_dropdown_item("/wiki/contact","layout._header.about.contact") %>
           </div>
         </li>
 
@@ -144,10 +144,10 @@
                   <% else %>
                     <a class="dropdown-item" href="/profile/<%= current_user.username %>"><%= translation('layout._header.profile') %></a>
                   <% end %>
-                    <%= create_nav_dropdown_item("profile/edit","layout._header.edit_profile") %>
-                    <%= create_nav_dropdown_item("settings","Notifications") %>
+                    <%= create_nav_dropdown_item("/profile/edit","layout._header.edit_profile") %>
+                    <%= create_nav_dropdown_item("/settings","Notifications") %>
                     <div class="dropdown-divider"></div>
-                    <%= create_nav_dropdown_item("subscriptions","layout._header.subscriptions") %>
+                    <%= create_nav_dropdown_item("/subscriptions","layout._header.subscriptions") %>
                     <% if current_user&.has_tag('translation-helper') && I18n.locale != :en %>
                     <div class="dropdown-item">
                       <a class="text-body" href="/profile/<%= current_user.username %>/likes"><%= translation('layout._header.notes_liked') %></a>
