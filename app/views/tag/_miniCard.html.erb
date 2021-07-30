@@ -27,6 +27,11 @@
     <p style="font-size:15px;">
       <a style="color:#808080;" href="/tag/<%= tag.name %>"><%= Tag.follower_count(tag.name) %> following</a>
     </p>
+    <% if tag.name.include? ':' %>
+      <a href="https://publiclab.org/wiki/power-tags">
+        <span class="fa fa-question-circle"></span>
+      </a>
+    <% end %>
 
     <% if current_user && current_user.following(tag.name) %>
       <a class="pull-right btn btn-primary requireLogin" href="/post?tags=<%= tag.name %>">Post <i class="fa fa-plus fa-white"></i></a>
