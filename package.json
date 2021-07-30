@@ -62,7 +62,7 @@
     "react_ujs": "^2.6.1",
     "short-code-forms": "jywarren/short-code-forms#~0.0.1",
     "simple-data-grapher": "^2.0.0",
-    "tocbot": "^4.12.3",
+    "tocbot": "^4.13.0",
     "typeahead.js": "^0.11.1",
     "typeahead.js-browserify": "Javier-Rotelli/typeahead.js-browserify#~1.0.7",
     "urlhash": "^0.1.3",
