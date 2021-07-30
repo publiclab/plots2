@@ -2,7 +2,7 @@
 <div class="card-view questions-page row">
 	<% questions.each_with_index do |node,i| %>
 		<div class="<% if @widget %>col-xs-4 col-sm-4 col-md-4 <% end %>col-lg-4" style="margin-top:20px;">
-      <%= render partial: 'notes/card', locals: { node: node, i: i, tagname: tagname } %>
+      <%= render partial: 'notes/card', locals: { node: node, i: i, tagname: @tagname } %>
     </div>
 
     <% unless @widget %><hr class="d-lg-none" /><% end %>
