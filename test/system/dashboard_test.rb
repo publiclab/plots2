@@ -1,22 +1,22 @@
 require "application_system_test_case"
+require "i18n"
 
 class DashboardTest < ApplicationSystemTestCase
   Capybara.default_max_wait_time = 60
 
   test 'should translate search input bar' do
-    visit '/'
-    click_on 'Login'
-    fill_in("username-login", with: "admin")
-    fill_in("password-signup", with: "password")
-    click_on "Log in"
-    visit '/dashboard'
-    uid = users(:admin).id
-    visit '/profile/tags/create/'+uid.to_s+'?translationswitch=yes&name=translation-helper"'
     available_testing_locales.each do |lang|
-      visit '/change_locale/es'
+      visit '/'
+      visit '/change_locale/'+lang.to_s
+      click_on I18n.t('layout._header.login.login_title', locale: lang)
+      fill_in("username-login", with: "Bob")
+      fill_in("password-signup", with: "secretive")
+      click_on I18n.t('user_sessions.new.log_in', locale: lang)
       visit '/dashboard'
-      assert_selector(:xpath,'//*[@id="searchform_input"]')
-      #assert_selector(:xpath,'/html/body/nav/div/form/div/i')
+      uid = users(:bob).id
+      visit '/profile/tags/create/'+uid.to_s+'?translationswitch=yes&name=translation-helper'
+      assert_selector(:xpath, './/input[@id="searchform_input"][contains(@placeholder,"Search")]')
+      visit '/logout'
     end
   end
 
