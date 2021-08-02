@@ -3,7 +3,7 @@
 comment:
   layout: "reach, diff, flags, files"
   behavior: default
-  after_n_builds: 4
+  after_n_builds: 5
   require_changes: true  # if true: only post the comment if coverage changes
   require_base: yes       # [yes :: must have a base report to post]
   require_head: yes       # [yes :: must have a head report to post]
@@ -27,4 +27,4 @@ codecov:
   # https://docs.codecov.io/v4.3.6/docs/comparing-commits
   allow_coverage_offsets: true
   notify:
-    after_n_builds: 4
+    after_n_builds: 5
