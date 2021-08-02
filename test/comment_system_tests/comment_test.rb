@@ -475,54 +475,73 @@ class CommentTest < ApplicationSystemTestCase
       # checks for the list of recently active users
       assert_selector('#atwho-ground-text-input-main .atwho-view .atwho-view-ul li')
     end
-  end
 
-  # PART 3: TESTS for ALL PAGE TYPES!
-  #
-  # the page_types are: Wikis, Research Notes, and Questions
-  # defined in test/test_helper.rb
-  page_types.each do |page_type, node_name|
-    page_type_string = page_type.to_s
+    test "#{page_type_string}: IMMEDIATE image SELECT upload into REPLY comment form" do
+      nodes(node_name).add_comment({
+        uid: 5,
+        body: comment_text
+      })
+      nodes(node_name).add_comment({
+        uid: 2,
+        body: comment_text
+      })
+      visit get_path(page_type, nodes(node_name).path)
+      reply_toggles = page.all('p', text: 'Reply to this comment...')
+      reply_toggles[2].click
+      reply_dropzone_id = page.find('[id^=dropzone-small-reply-]')[:id] # ID begins with...
+      comment_id_num = /dropzone-small-reply-(\d+)/.match(reply_dropzone_id)[1]
+      # upload images
+      # the <inputs> that take image uploads are hidden, so reveal them:
+      Capybara.ignore_hidden_elements = false
+      # upload an image in the reply comment form
+      page.find('#fileinput-button-reply-' + comment_id_num).set("#{Rails.root.to_s}/public/images/pl.png")
+      wait_for_ajax
+      Capybara.ignore_hidden_elements = true
+      page.all('a', text: 'Preview')[0].click
+      assert_selector('#comment-' + comment_id_num + '-reply-section img', count: 1)
+    end
 
-    test "post #{page_type_string}, then comment on FRESH #{page_type_string}" do
-      title_text, body_text = String.new, String.new
-      case page_type_string
-        when 'note'
-          visit '/post'
-          title_text = 'Ahh, a nice fresh note'
-          body_text = "Can\'t wait to write in it!"
-          fill_in('title-input', with: title_text)
-          find('.wk-wysiwyg').set(body_text)
-          find('.ple-publish').click()
-        when 'question'
-          visit '/questions/new?&tags=question%3Ageneral'
-          title_text = "Let's talk condiments"
-          body_text = 'Ketchup or mayo?'
-          find("input[aria-label='Enter question']", match: :first)
-            .click()
-            .fill_in with: title_text
-          find('.wk-wysiwyg').set(body_text)
-          find('.ple-publish').click()
-        when 'wiki'
-          visit '/wiki/new'
-          title_text = 'pokemon'
-          body_text = 'Gotta catch em all!'
-          fill_in('title', with: title_text)
-          fill_in('text-input-main', with: body_text)
-          find('#publish').click()
-          visit "/wiki/#{title_text}/comments"
-      end
-      assert_selector('h1', text: title_text)
-      page.find("textarea#text-input-main")
-        .click
-        .fill_in with: comment_text
-      # preview comment
-      find("#toggle-preview-button-main").click
-      find("p", text: comment_text)
-      # publish comment
-      click_on "Publish"
-      find(".noty_body", text: "Comment Added!")
-      find("p", text: comment_text)
+    test "#{page_type_string}: IMMEDIATE image DRAG & DROP into REPLY comment form" do
+      Capybara.ignore_hidden_elements = false
+      visit get_path(page_type, nodes(node_name).path)
+      find("p", text: "Reply to this comment...").click()
+      # Upload the image
+      drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", ".dropzone-large")
+      # Wait for image upload to finish
+      wait_for_ajax
+      Capybara.ignore_hidden_elements = true
+      # Toggle preview
+      reply_preview_button = page.all('.preview-btn')[0]
+      reply_preview_button.click()
+      # Make sure that image has been uploaded
+      page.assert_selector('.comment-preview img', count: 1)
+    end
+
+    test "#{page_type_string}: IMMEDIATE image CHOOSE ONE upload into REPLY comment form" do
+      Capybara.ignore_hidden_elements = false
+      visit get_path(page_type, nodes(node_name).path)
+      # Open reply comment form
+      find("p", text: "Reply to this comment...").click()
+      first("a", text: "choose one").click() 
+      reply_preview_button = page.first('a', text: 'Preview')
+      Capybara.ignore_hidden_elements = false
+      # Upload the image
+      fileinput_element = page.first("[id^=fileinput-button-reply]")
+      fileinput_element.set("#{Rails.root.to_s}/public/images/pl.png")
+      Capybara.ignore_hidden_elements = true
+      wait_for_ajax
+      # Toggle preview
+      reply_preview_button.click()
+      # Make sure that image has been uploaded
+      page.assert_selector('.comment-preview img', count: 1)
+    end
+
+    test "#{page_type_string}: IMMEDIATE rich-text input works in MAIN form" do
+      visit get_path(page_type, nodes(node_name).path)
+      main_comment_form =  page.find('h4', text: /Post comment|Post Comment/).find(:xpath, '..') # title text on wikis is 'Post comment'
+      main_comment_form.find("[data-original-title='Bold']").click
+      text_input_value = main_comment_form.find('#text-input-main').value
+      assert_equal(text_input_value, '****')
     end
 
     # navigate to page, immediately upload into EDIT form by SELECTing image
@@ -637,65 +656,54 @@ class CommentTest < ApplicationSystemTestCase
       visit get_path(page_type, nodes(node_name).path)
       assert_selector("#c#{comment.id}", count: 0)
     end
+  end
 
-    test "#{page_type_string}: IMMEDIATE image SELECT upload into REPLY comment form" do
-      nodes(node_name).add_comment({
-        uid: 5,
-        body: comment_text
-      })
-      nodes(node_name).add_comment({
-        uid: 2,
-        body: comment_text
-      })
-      visit get_path(page_type, nodes(node_name).path)
-      reply_toggles = page.all('p', text: 'Reply to this comment...')
-      reply_toggles[2].click
-      reply_dropzone_id = page.find('[id^=dropzone-small-reply-]')[:id] # ID begins with...
-      comment_id_num = /dropzone-small-reply-(\d+)/.match(reply_dropzone_id)[1]
-      # upload images
-      # the <inputs> that take image uploads are hidden, so reveal them:
-      Capybara.ignore_hidden_elements = false
-      # upload an image in the reply comment form
-      page.find('#fileinput-button-reply-' + comment_id_num).set("#{Rails.root.to_s}/public/images/pl.png")
-      wait_for_ajax
-      Capybara.ignore_hidden_elements = true
-      page.all('a', text: 'Preview')[0].click
-      assert_selector('#comment-' + comment_id_num + '-reply-section img', count: 1)
-    end
+  # PART 3: TESTS for ALL PAGE TYPES!
+  #
+  # the page_types are: Wikis, Research Notes, and Questions
+  # defined in test/test_helper.rb
+  page_types.each do |page_type, node_name|
+    page_type_string = page_type.to_s
 
-    test "#{page_type_string}: IMMEDIATE image DRAG & DROP into REPLY comment form" do
-      Capybara.ignore_hidden_elements = false
-      visit get_path(page_type, nodes(node_name).path)
-      find("p", text: "Reply to this comment...").click()
-      # Upload the image
-      drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", ".dropzone-large")
-      # Wait for image upload to finish
-      wait_for_ajax
-      Capybara.ignore_hidden_elements = true
-      # Toggle preview
-      reply_preview_button = page.all('.preview-btn')[0]
-      reply_preview_button.click()
-      # Make sure that image has been uploaded
-      page.assert_selector('.comment-preview img', count: 1)
-    end
-
-    test "#{page_type_string}: IMMEDIATE image CHOOSE ONE upload into REPLY comment form" do
-      Capybara.ignore_hidden_elements = false
-      visit get_path(page_type, nodes(node_name).path)
-      # Open reply comment form
-      find("p", text: "Reply to this comment...").click()
-      first("a", text: "choose one").click() 
-      reply_preview_button = page.first('a', text: 'Preview')
-      Capybara.ignore_hidden_elements = false
-      # Upload the image
-      fileinput_element = page.first("[id^=fileinput-button-reply]")
-      fileinput_element.set("#{Rails.root.to_s}/public/images/pl.png")
-      Capybara.ignore_hidden_elements = true
-      wait_for_ajax
-      # Toggle preview
-      reply_preview_button.click()
-      # Make sure that image has been uploaded
-      page.assert_selector('.comment-preview img', count: 1)
+    test "post #{page_type_string}, then comment on FRESH #{page_type_string}" do
+      title_text, body_text = String.new, String.new
+      case page_type_string
+        when 'note'
+          visit '/post'
+          title_text = 'Ahh, a nice fresh note'
+          body_text = "Can\'t wait to write in it!"
+          fill_in('title-input', with: title_text)
+          find('.wk-wysiwyg').set(body_text)
+          find('.ple-publish').click()
+        when 'question'
+          visit '/questions/new?&tags=question%3Ageneral'
+          title_text = "Let's talk condiments"
+          body_text = 'Ketchup or mayo?'
+          find("input[aria-label='Enter question']", match: :first)
+            .click()
+            .fill_in with: title_text
+          find('.wk-wysiwyg').set(body_text)
+          find('.ple-publish').click()
+        when 'wiki'
+          visit '/wiki/new'
+          title_text = 'pokemon'
+          body_text = 'Gotta catch em all!'
+          fill_in('title', with: title_text)
+          fill_in('text-input-main', with: body_text)
+          find('#publish').click()
+          visit "/wiki/#{title_text}/comments"
+      end
+      assert_selector('h1', text: title_text)
+      page.find("textarea#text-input-main")
+        .click
+        .fill_in with: comment_text
+      # preview comment
+      find("#toggle-preview-button-main").click
+      find("p", text: comment_text)
+      # publish comment
+      click_on "Publish"
+      find(".noty_body", text: "Comment Added!")
+      find("p", text: comment_text)
     end
 
     # Cross-Wiring Bugs
@@ -821,14 +829,6 @@ class CommentTest < ApplicationSystemTestCase
       page.first('a', text: 'Preview').click
       assert_selector('#comment-preview-edit-' + edit_id_num + ' img', count: 1)
       assert_selector('#comment-preview-reply-' + reply_id_num, count: 1)
-    end
-
-    test "#{page_type_string}: IMMEDIATE rich-text input works in MAIN form" do
-      visit get_path(page_type, nodes(node_name).path)
-      main_comment_form =  page.find('h4', text: /Post comment|Post Comment/).find(:xpath, '..') # title text on wikis is 'Post comment'
-      main_comment_form.find("[data-original-title='Bold']").click
-      text_input_value = main_comment_form.find('#text-input-main').value
-      assert_equal(text_input_value, '****')
     end
 
     test "#{page_type_string}: rich-text input into REPLY form isn't CROSS-WIRED with EDIT form" do
