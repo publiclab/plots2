@@ -38,9 +38,9 @@ class User < ActiveRecord::Base
     c.validates_format_of_login_field_options = { with: Authlogic::Regex::LOGIN, message: I18n.t('error_messages.login_invalid', default: "can only consist of alphabets, numbers, underscore '_', and hyphen '-'.") }
   end
 
-  has_attached_file :photo, styles: { thumb: '200x200#', medium: '500x500#', large: '800x800#' }
-	#,
-        #                            url: '/system/profile/photos/:id/:style/:basename.:extension'
+  has_attached_file :photo,
+                    styles: { thumb: '200x200#', medium: '500x500#', large: '800x800#' },
+                    url: '/public/system/users/photos/:id/:style/:basename.:extension'
   #:path => ":rails_root/public/system/images/photos/:id/:style/:basename.:extension"
   #.        ":rails_root/public/system/public/system/:class/:attachment/:id_partition/:style/:filename" # from config/initializers/paperclip.rb
 
