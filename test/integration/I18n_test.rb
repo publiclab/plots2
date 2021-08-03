@@ -2,7 +2,7 @@ require 'test_helper'
 require 'sanitize'
 
 class I18nTest < ActionDispatch::IntegrationTest
-
+  
   test 'should choose i18n-locale for header partial' do
     available_testing_locales.each do |lang|
       # This test could use a rewrite. Two `get`s in succession?
