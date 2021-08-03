@@ -417,6 +417,10 @@ class NotesController < ApplicationController
       @node.slug = @node.slug.split('token').first
       @node['created'] = DateTime.now.to_i # odd assignment needed due to legacy Drupal column types
       @node['changed'] = DateTime.now.to_i
+      revision = @node.latest
+      revision['timestamp'] = DateTime.now.to_i # odd assignment needed due to legacy Drupal column types 
+      revision.save
+      @node.save
       @node.publish
       SubscriptionMailer.notify_node_creation(@node).deliver_later
       flash[:notice] = "Thanks for your contribution. Research note published! Now, it's visible publicly."
