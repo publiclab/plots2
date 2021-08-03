@@ -361,13 +361,13 @@ class Node < ActiveRecord::Base
                                   .order('field_image_gallery_fid')
   end
 
-  def gallery
-    if !drupal_content_field_image_gallery.empty? && drupal_content_field_image_gallery.first.field_image_gallery_fid
-      drupal_content_field_image_gallery
-    else
-      []
-    end
-  end
+  # def gallery
+  #   if !drupal_content_field_image_gallery.empty? && drupal_content_field_image_gallery.first.field_image_gallery_fid
+  #     drupal_content_field_image_gallery
+  #   else
+  #     []
+  #   end
+  # end
 
   # ============================================
   # Tag-related methods
