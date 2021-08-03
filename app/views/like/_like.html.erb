@@ -1,9 +1,11 @@
 <div class="like-buttons d-print-none btn-toolbar" style="margin-bottom :4px;">
     <% if logged_in_as(['admin']) || (current_user && (current_user.uid == node.uid || node.has_tag("with:#{current_user.username}"))) %>
         <% if node.type == 'note' %>
+          <span data-toggle="tooltip" data-placement="top" rel="tooltip" title="Edit Note">
             <a aria-label="Edit post" <% if current_user && current_user.uid != node.uid %>data-confirm='Please be aware that you are editing a post by another contributor, a privilege you have only because you are an admin or co-author.' <% end %> class='btn btn-outline-secondary btn-circle btn-sm' href='/notes/edit/<%= node.id %>?t=<%= Time.now.to_i %><% if params[:controller] == "questions" %>&redirect=question&template=question<% end %>'>
                 <i class='ml-1 ff fa fa-pencil'></i>
             </a>
+          </span>
         <% end %>
     <% end %>
 
@@ -17,9 +19,11 @@
           <i class="ml-1 ff fa fa-lock"></i>
         </a>
       <% else %>
-        <a class="btn-circle btn btn-outline-secondary" id="edit-btn" href='<%= node.edit_path %>?t=<%= Time.now.to_i %>'>
+        <span data-toggle="tooltip" data-placement="top" rel="tooltip" title="Edit">
+          <a class="btn-circle btn btn-outline-secondary" id="edit-btn" href='<%= node.edit_path %>?t=<%= Time.now.to_i %>'>
           <i class='ml-1 ff fa fa-pencil'></i>
-        </a>
+          </a>
+        </span>
       <% end %>
     <% end %>
 
