@@ -1,6 +1,11 @@
 <div class="card" style="clear:left; <% if local_assigns[:grey] %>background:#eee;<% end %>">
   <div class="card-body">
 
+    <% if tag.name.include? ':' %>
+      <a href="https://publiclab.org/wiki/power-tags">
+        <span class="fa fa-question-circle" style="margin-left:140px;"></span>
+      </a>
+    <% end %>
     <a class="ellipsis pull-right" data-toggle="dropdown" style="cursor:pointer"><i class="fa fa-ellipsis-h" style="color:#666;font-size:18px;margin-right:10px;"></i></a>
     <div class="dropdown-menu" style = "font-size:13px;">
       <div class="dropdown-item"><a href='/tag/<%= tag.name %>' style="color:black; text-decoration: underline;"><%= Tag.tagged_node_count(tag.name) || 0 %> notes</a></div>
@@ -22,15 +27,16 @@
     </div>
 
     <a href="/tag/<%= tag.name%>">
-      <h5 style="text-decoration:underline;color:black;"><%= tag.name %></h5>
+      <% if !tag.name.include? ':' %>
+        <h5 style="text-decoration:underline;color:black;"><%= tag.name %></h5>
+      <% else %>
+        <h5 style="text-decoration:underline;color:black;margin-top:-25px;"><%= tag.name %></h5>
+      <% end %>
     </a>
-    <p style="font-size:15px;">
-      <a style="color:#808080;" href="/tag/<%= tag.name %>"><%= Tag.follower_count(tag.name) %> following</a>
-    </p>
-    <% if tag.name.include? ':' %>
-      <a href="https://publiclab.org/wiki/power-tags">
-        <span class="fa fa-question-circle"></span>
-      </a>
+    <% if !tag.name.include? ':' %>
+      <p style="font-size:15px;">
+        <a style="color:#808080;" href="/tag/<%= tag.name %>"><%= Tag.follower_count(tag.name) %> following</a>
+      </p>
     <% end %>
 
     <% if current_user && current_user.following(tag.name) %>
