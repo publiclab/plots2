@@ -96,7 +96,7 @@ This page is dedicated to enumerating the various organizations that have provid
 
 <br>
 
-[![Coveralls](../app/assets/images/logos/coveralls.png)](https://coveralls.io/)
+[![Codecov](../app/assets/images/logos/codecov.png)](https://about.codecov.io/)
 
 </div>
 </center>
