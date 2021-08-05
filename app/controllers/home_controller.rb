@@ -91,10 +91,12 @@ class HomeController < ApplicationController
     # remove "classroom" postings; also switch to an EXCEPT operator in sql, see https://github.com/publiclab/plots2/issues/375
     hidden_nids = Node.hidden_response_node_ids
     notes = Node.where(type: 'note')
+      .includes(:revision)
+      .references(:node_revision)
       .where('node.nid NOT IN (?)', hidden_nids + [0]) # in case hidden_nids is empty
-      .order('nid DESC')
+      .order('node_revisions.timestamp DESC')
       .page(params[:page])
-    notes = notes.where('nid != (?)', blog.nid) if blog
+    notes = notes.where('node.nid != (?)', blog.nid) if blog
 
     comments = Comment.joins(:node, :user)
                    .includes(:node)
