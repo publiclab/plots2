@@ -1,0 +1,23 @@
+name: Tag Locations Data
+
+on:
+  schedule:    
+    - cron: "*/60 * * * *"
+
+  workflow_dispatch:
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Fetch data from API endpoint
+        run: curl "https://publiclab.org/api/srch/taglocations?nwlat=52&selat=-52&nwlng=-150&selng=150&limit=1000" > data/tagLocStore.json
+
+      - name: Commit and push
+        working-directory: ./website
+        run: |
+          git add .
+          git commit -m "updated tagLocations data"
+          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/daemon1024/plots2
