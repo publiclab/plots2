@@ -71,7 +71,7 @@ This page is dedicated to enumerating the various organizations that have provid
 
 <br>
 
-[![Travis-ci](../app/assets/images/logos/TravisCI-Full-Color.png)](https://travis-ci.com/)
+[![Github-action](../app/assets/images/logos/github_actions.png)](https://github.com/features/actions)
 </div>
 
 <div style="width:350px; float: right">
@@ -96,7 +96,7 @@ This page is dedicated to enumerating the various organizations that have provid
 
 <br>
 
-[![Coveralls](../app/assets/images/logos/coveralls.png)](https://coveralls.io/)
+[![Codecov](../app/assets/images/logos/codecov.png)](https://about.codecov.io/)
 
 </div>
 </center>
