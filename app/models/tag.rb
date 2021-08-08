@@ -401,10 +401,12 @@ class Tag < ApplicationRecord
           .order('c desc')
           .having("c >= #{weight}")
           .limit(limit).each do |tag|
-          data["tags"] << {
-            "name" => tag.name,
-            "count" => tag.c
-          }
+            unless tag.name.strip.empty?
+              data["tags"] << {
+              "name" => tag.name,
+              "count" => tag.c
+            }
+            end
         end
       end
 
