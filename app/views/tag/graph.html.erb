@@ -25,16 +25,13 @@ html, body {
 
 .toppanel {
   height: auto; /* Specify a height */
-  width: 100%; /* 0 width - change this with JavaScript */
   position: absolute; /* Stay in place */
   z-index: 1000; /* Stay on top */
   top: 0;
   left: 0;
   padding-left: 1em;
-  overflow-x: hidden; /* Disable horizontal scroll */
   padding-top: 10px; /* Place content 10px from the top */
   padding-bottom: 10px; /* Place content 10px from the bottom */
-  transition: 0s; /* 0.5 second transition effect to slide in the sidepanel */
 }
 
 label{
@@ -46,6 +43,47 @@ input[type="range" i] {
 }
 }
 
+#toolbar > * {
+  display: block;
+
+}
+.center-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+  z-index: 1000000;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+.spinner-grow {
+  0%{-webkit-transform:scale(0);transform:scale(0)}
+  50%{opacity:1;-webkit-transform:none;transform:none}
+}
+
+@keyframes spinner-grow{
+  0%{-webkit-transform:scale(0);transform:scale(0)}
+  50%{opacity:1;-webkit-transform:none;transform:none}
+}
+
+.spinner-grow{
+  display:inline-block;
+  width:2rem;
+  height:2rem;
+  vertical-align:text-bottom;
+  background-color:currentColor;
+  border-radius:50%;
+  opacity:0;
+  -webkit-animation:spinner-grow .75s linear infinite;
+  animation:spinner-grow .75s linear infinite
+}
 </style>
 
 <script src="/lib/cytoscape/dist/cytoscape.min.js" type="text/javascript"></script>
@@ -55,29 +93,37 @@ input[type="range" i] {
 <script type="text/javascript" src="/lib/jlouvain/jLouvain.js"></script>
 
 <div id="toppanel" class="toppanel">
-  <div>
+  <a class="btn btn-primary" data-toggle="collapse" href="#toolbar" aria-expanded="false" aria-controls="toolbar">
+      <i class="fa fa-filter"></i>
+  </a>
+
+  <div class="collapse" id="toolbar">
     <span>
-      <label title="filter"> Weight </label>
-      <input id="filter" name="filter" onchange="rangevalue.value=value" value="0" type="range" min="0">
+      <label class="form-label" id="filterlabel" for="filter">Min. no. of Nodes</label>
+      <input class="form-range" id="filter" name="filter" onchange="rangevalue.value=value" value="0" type="range" min="0">
       <span class="highlight"></span>
       <output id="rangevalue">0</output>
     </span>
-
+    <br>
     <span>
-    <label title="Whether to perform animation after layout"> Sort by </label>
-
-      <select id="sort" class="input-small">
-        <option value="nodes" selected checked>Nodes</option>
+      <select id="sort" class="form-control">
+        <option id="defaultsort" value="nodes" selected>Sort By</option>
+        <option value="nodes">Notes</option>
         <option value="subscribers">Subscribers</option>
       </select>
     </span>
-    <span>
-      <input type="text" id="search" placeholder="Search">
-    </span>
+    <br>
+    <%# <span>
+      <input type="text" class="form-control" id="search" placeholder="Search">
+    </span> %>
   </div>
 
 </div>
 
+<div id="loader" class="center-screen" role="status">
+  <div class="spinner-grow">
+  </div>  
+</div>
 
 <div id="cytoscape"></div>
 
@@ -123,14 +169,17 @@ input[type="range" i] {
 
 // function to sort or filter
   function sort_or_filter(type, limit, weight) {
-
     $.ajax({
       url : '/tag/graph.json?limit=' + limit + '&type=' + type + '&weight=' + weight, 
-      type: 'GET',
-      success: function(response){
-        console.log('res',response);
+      beforeSend: function(){
+        $('#cytoscape').hide();
+        $('#loader').show();
+      },
+      success:function(response){
+        $('#loader').hide();
+        $('#cytoscape').show();
+
         max_weight =  response.tags[0].count;
-        // console.log('max_weight>>',max_weight);
 
         setup_cytoscape(response);
       }
@@ -146,7 +195,14 @@ input[type="range" i] {
 
 
 $('#sort').change(function () {
+      $('#defaultsort').attr('disabled', 'true');
+      if ($(this).val() == 'nodes') {
+        $('#filterlabel').text('Min. no. of Notes');
+      } else {
+        $('#filterlabel').text('Min. no. of Subscribers');
+      }
       $('#filter').val(0);
+      $('#rangevalue').val(0);
 
     var sort = ("<%= params[:type] %>" == "") ? $('#sort').val() : "<%= params[:type] %>"
 
@@ -160,7 +216,6 @@ $('#sort').change(function () {
 
     var weight = ("<%= params[:weight] %>" == "") ? $('#filter').val() : "<%= params[:filter] %>"
 
-    console.log(sort, weight, l);
     sort_or_filter(sort, l, weight);
   });
 
@@ -190,10 +245,17 @@ $('#sort').change(function () {
         name: 'cose',
 
         // Called on `layoutready`
-        ready: function(){},
+        ready: function(){
+          $('html').attr('background-color', 'black');
+          $('#toolbar').attr('background-color', 'black');
+
+        },
 
         // Called on `layoutstop`
-        stop: function(){},
+        stop: function(){
+          $('#toolbar').attr('background-color', 'black');
+
+        },
 
         // Whether to animate while running the layout
         // true : Animate continuously as the layout is running
@@ -376,13 +438,13 @@ $('#sort').change(function () {
         .style('border-color', 'white');
     });
 
-    cy.on('zoom', function(e){
-      //cy.nodes()//.style('font-size', 20/cy.zoom())
-                //.style('text-outline-width', 1.5/cy.zoom())
-                //.style('border-width', 3/cy.zoom())
-                // .style('width', 'mapData(weight / ' + cy.zoom() + ', ' + min + ',' + max + ', 30, 150)')
-                // .style('height', 'mapData(weight / ' + cy.zoom() + ', ' + min + ',' + max + ', 30, 150)')
-    });
+    // cy.on('zoom', function(e){
+    //   cy.nodes()//.style('font-size', 20/cy.zoom())
+    //             .style('text-outline-width', 1.5/cy.zoom())
+    //             .style('border-width', 3/cy.zoom())
+    //             .style('width', 'mapData(weight / ' + cy.zoom() + ', ' + min + ',' + max + ', 30, 150)')
+    //             .style('height', 'mapData(weight / ' + cy.zoom() + ', ' + min + ',' + max + ', 30, 150)')
+    // });
 
 
     /*

@@ -375,7 +375,7 @@ class Tag < ApplicationRecord
 
   # for Cytoscape.js http://js.cytoscape.org/
   def self.graph_data(limit = 250, type = 'nodes', weight = 0)
-    Rails.cache.fetch("graph-data/#{limit}/new--", expires_in: 1) do
+    Rails.cache.fetch("graph-data/#{limit}/#{type}/#{weight}", expires_in: 1.weeks) do
       data = {}
       data["tags"] = []
       if type == 'nodes' # notes
@@ -385,7 +385,7 @@ class Tag < ApplicationRecord
           .where('term_data.name NOT LIKE (?)', '%:%')
           .where.not(name: 'first-time-poster')
           .order(count: :desc)
-          .having("count >= #{weight}")
+          .having("count >= ?", weight)
           .limit(limit).each do |tag|
           data["tags"] << {
             "name" => tag.name,
@@ -393,18 +393,18 @@ class Tag < ApplicationRecord
           }
         end
       elsif type == 'subscribers' # subscribers
-        Tag.select("name, count(tag_selections.tid) as c")
+        Tag.select("name, count(tag_selections.tid) as subcount")
           .joins("LEFT OUTER JOIN tag_selections ON tag_selections.tid = term_data.tid")
           .group('term_data.name')
           .where('term_data.name NOT LIKE (?)', '%:%')
           .where.not(name: 'first-time-poster')
-          .order('c desc')
-          .having("c >= #{weight}")
+          .order(subcount: :desc)
+          .having("subcount >= ?", weight)
           .limit(limit).each do |tag|
             unless tag.name.strip.empty?
               data["tags"] << {
               "name" => tag.name,
-              "count" => tag.c
+              "count" => tag.subcount
             }
             end
         end
