@@ -160,10 +160,14 @@ module ApplicationHelper
     translated_string2 = t(key, options)
     english_translation = t(key, locale: :en)
 
-    if html && current_user&.has_tag('translation-helper') && (translated_string2.include?("translation missing") || translated_string === "") && !translated_string.include?("<")
-      raw(%(<span>#{english_translation} <a class="translationIcon" style='display: none; padding-left: 3px;' href="https://www.transifex.com/publiclab/publiclaborg/translate/#de/$?q=text%3A#{translated_string}">
-          <i data-toggle='tooltip' data-placement='top' title='Needs translation? Click to help translate the text \" #{translated_string} \" .' style='position:relative; right:2px; color:#bbb; font-size: 15px;' class='fa fa-globe'></i></a>
-       </span>))
+    if html && current_user&.has_tag('translation-helper') && translated_string2.include?("translation missing") && !translated_string.include?("<")
+      raw(%(<span>#{translated_string} <a class="translationIcon" style='display: none; padding-left: 3px;' href="https://www.transifex.com/publiclab/publiclaborg/translate/#de/$?q=text%3A#{translated_string}">
+        <i data-toggle='tooltip' data-placement='top' title='Needs translation? Click to help translate the text \" #{translated_string} \" .' style='position:relative; right:2px; color:#bbb; font-size: 15px;' class='fa fa-globe'></i></a>
+      </span>))
+    elsif translated_string === ""
+      raw(%(<span>#{english_translation} <a class="translationIcon" style='display: none; padding-left: 3px;' href="https://www.transifex.com/publiclab/publiclaborg/translate/#de/$?q=text%3A#{english_translation}">
+            <i data-toggle='tooltip' data-placement='top' title='Needs translation? Click to help translate the text \" #{english_translation} \" .' style='position:relative; right:2px; color:#bbb; font-size: 15px;' class='fa fa-globe'></i></a>
+        </span>))
     else
       raw(translated_string)
     end
