@@ -7,7 +7,9 @@
     <% NodeTag.includes(:tag).where(uid: current_user.id).order('date DESC').limit(5).each do |tag| %>
       <a class="dropdown-item" onClick="addTag('<%= tag.name %>')"><span style="cursor:pointer;" class="badge badge-primary"><%= tag.name %></span></a>
     <% end %>
+    
   <% end %>
+  
   <div class="dropdown-divider"></div>
   <% if @node && @node.type == "page" %>
     <a class="dropdown-item" href="#" data-value="parent:">Link to a "parent" page (wikis only)</a>
@@ -21,6 +23,12 @@
     <a class="dropdown-item" href="#" data-value="comment-template:">Add template to the comment form</a>
     <a class="dropdown-item" target="_blank" href="/wiki/comment-templates">Write a template for the comment form</a>
   <% end %>
+  <div class="dropdown-divider"></div>
+     <% if current_user && current_user.can_moderate? && !(@node.has_tag('locked')) %> 
+     <a href="javascript:window.location.reload(true)" onClick="addTag('locked');">Lock Note</a> 
+     <% end %>
+  
+  
   <div class="dropdown-divider"></div>
   <a class="dropdown-item" href="https://publiclab.org/power-tags" target="_blank">Learn About Powertags</a>
 </div>
