@@ -90,9 +90,6 @@
     </table>
   <% end %>
 
-  <% if current_user && current_user.can_moderate? && !(@node.has_tag('locked')) %>
-    <a href="javascript:window.location.reload(true)" onClick="addTag('locked');">Lock Note</a>
-  <% end %>
 
   <% if current_user && 
    ( current_user.can_moderate? || 
