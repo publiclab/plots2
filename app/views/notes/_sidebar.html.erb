@@ -1,5 +1,5 @@
 <div class="dropdown pull-right" style="<%if params[:action] == 'author'%> margin-top: -57px; <%else%>margin-top: -26px; <%end%>">
-  <button class="btn btn-outline-secondary dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >Sort by</button>
+  <button class="btn btn-outline-secondary dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >translation('tag.index.sort_by')</button>
   <div class="dropdown-menu dropdown-menu-right mt-1" aria-labelledby="dropdownMenuButton">
     <a class="dropdown-item <% if params[:action] == 'recent' %> active<% end %>" href="/notes/recent/">
       <i class="fa fa-clock-o"></i> <span class="d-lg-inline"><%= translation('notes.index.recent') %></span>
