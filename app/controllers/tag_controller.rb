@@ -494,7 +494,7 @@ class TagController < ApplicationController
   end
 
   def graph_data
-    render json: params.key?(:limit) ? Tag.graph_data(params[:limit].to_i) : Tag.graph_data
+    render json: params.key?(:limit) ? Tag.graph_data(params[:limit].to_i, params[:type].to_s, params[:weight].to_i) : Tag.graph_data
   end
 
   def stats
