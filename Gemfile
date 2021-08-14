@@ -134,7 +134,7 @@ group :test, :development do
   gem 'timecop'
   gem 'pry-rails'
   gem 'action-cable-testing'
-  gem "webmock", "~> 3.13"
+  gem "webmock", "~> 3.14"
 end
 
 group :production do
