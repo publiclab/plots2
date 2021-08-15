@@ -60,6 +60,29 @@
   .publish-space {
     margin-right: 10px;
   }
+  .tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
 </style>
 
 <div class="pl-editor">
@@ -331,12 +354,15 @@
         <span id="text" style="display: none; color:red;">
           Others won't see your post yet
           (<a href="https://publiclab.org/draft-feature" target="_blank">?</a>) &nbsp; &nbsp;</span>
+          <div class="tooltip">
           <span class="checkbox">
             <label>
               <input type="checkbox" id="myCheck" onclick="draftCheck()" />
               Save as draft
+              <span class="tooltiptext">"Save as Draft" feature will only be available after you publish your first post and it is approved by human moderators.</span>
             </label> |
           </span>
+          </div>
           <span class="ple-steps-left">2</span>
           <span class="d-none d-md-inline"> steps left</span>
         </span>
