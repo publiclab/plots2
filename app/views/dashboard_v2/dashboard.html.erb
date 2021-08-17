@@ -7,9 +7,9 @@
       <%= render partial: "dashboard_v2/topicCard"%>
       <%# Additional Topics %>
       <div class="other-topics">
-        <h4>
+        <p><small>
           <i class="form-grey"><%= translation('dashboard_v2.sidebar.interest_topics', :url => '/subscriptions')%></i>
-        </h4>
+        </small></p>
         <%# Featured topics %>
         <small><a href="/tags" class="form-grey"><%= translation('dashboard_v2.sidebar.featured_topics') %>:</a></small>
         <span>
@@ -43,16 +43,16 @@
 
 <style>
 
-  .img {
+  .dashboard .img {
     background-size: cover;
   }
 
-  .blog-caption {
+  .dashboard .blog-caption {
     background: rgba(255, 255, 255, 0.8);
     padding: 16px 10px 6px;
   }
 
-  .other-topics h4 i {
+  .dashboard .other-topics h4 i {
     font-style: normal;
     font-size: small;
     display: inline-block;
@@ -60,8 +60,8 @@
     margin-left: 201px;
   }
 
-  .other-topics h4 i:after,
-  .other-topics h4 i:before {
+  .dashboard .other-topics h4 i:after,
+  .dashboard .other-topics h4 i:before {
     content: "";
     position: absolute;
     height: 12px;
@@ -70,32 +70,32 @@
 
   }
 
-  .other-topics h4 i:before {
+  .dashboard .other-topics h4 i:before {
     right: 100%;
     margin-right: 15px;
     width: 186px;
   }
 
-  .other-topics h4 i:after {
+  .dashboard .other-topics h4 i:after {
     left: 100%;
     margin-left: 15px;
     width: 231px;
   }
 
-  .dashboard a:hover {
+  .dashboard .dashboard a:hover {
     text-decoration: none;
     color: #505050;
   }
 
   /* Small devices and tablets*/
   @media (max-width: 1366px){
-    .other-topics h4 i {
+    .dashboard .other-topics h4 i {
       margin-left: 21px;
       font-size: 10px;
     }
 
-    .other-topics h4 i:before,
-    .other-topics h4 i:after {
+    .dashboard .other-topics h4 i:before,
+    .dashboard .other-topics h4 i:after {
       width: 12px;
       margin-right: 3px;
       margin-left: 3px;
