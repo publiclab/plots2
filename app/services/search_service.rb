@@ -145,11 +145,7 @@ class SearchService
       .where('created BETWEEN ' + period["from"].to_s + ' AND ' + period["to"].to_s)
 
     # selects the items whose node_tags don't have the location:blurred tag
-    items.select do |item|
-      item.node_tags.none? do |node_tag|
-        node_tag.name == "location:blurred"
-      end
-    end
+    items.joins(:term_data).where('term_data.name <> "location:blurred"')
 
     # sort nodes by recent activities if the sort_by==recent
     if sort_by == "recent"
