@@ -49,7 +49,7 @@
     "leaflet-hash": "^0.2.1",
     "leaflet-spin": "1.1.0",
     "leaflet.fullscreen": "2.0.0",
-    "marked": "^2.0.7",
+    "marked": "^3.0.0",
     "megamark": "~3.3.0",
     "moment": "~> 2.29.1",
     "noty": "3.1.4",
