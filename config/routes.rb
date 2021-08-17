@@ -227,8 +227,9 @@ Plots2::Application.routes.draw do
   get 'rsvp/:id' => 'notes#rsvp'
   get 'feed/liked' => 'notes#liked_rss'
 
-  get 'dashboard' => 'home#dashboard'
+  get 'dashboard' => 'home#dashboard_v2'
   get '/v2/dashboard' => 'home#dashboard_v2'
+  get '/v1/dashboard' => 'home#dashboard'
   get 'comments' => 'comment#index'
   get 'profile/comments/:id' => 'users#comments'
   get 'profile/comments/:id/tag/:tagname' => 'users#comments_by_tagname'
