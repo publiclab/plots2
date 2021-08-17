@@ -12,7 +12,7 @@ class DashboardTest < ApplicationSystemTestCase
       fill_in("username-login", with: "Bob")
       fill_in("password-signup", with: "secretive")
       click_on I18n.t('user_sessions.new.log_in', locale: lang)
-      visit '/dashboard'
+      visit '/v1/dashboard'
       uid = users(:bob).id
       visit '/profile/tags/create/'+uid.to_s+'?translationswitch=yes&name=translation-helper'
       assert_selector(:xpath, './/input[@id="searchform_input"][contains(@placeholder,"Search")]')
@@ -31,7 +31,7 @@ class DashboardTest < ApplicationSystemTestCase
     fill_in("password-signup", with: "secretive")
     click_on "Log in"
 
-    visit '/dashboard'
+    visit '/v1/dashboard'
 
     assert_selector('.row .header h1', text: "Dashboard")
     assert_selector('#activity-header > i', text: "Activity")
@@ -49,7 +49,7 @@ class DashboardTest < ApplicationSystemTestCase
     fill_in("username-login", with: "Bob")
     fill_in("password-signup", with: "secretive")
     click_on "Log in"
-    visit '/dashboard'
+    visit 'v1//dashboard'
     find("#flag_node#{node.id}").click()
     assert find("div.alert", text: "Node flagged.")
   end
