@@ -60,9 +60,9 @@
               <% end %>
               <div id="new-post" style="float:right;margin:10px 0 10px 10px;">
                 <% if current_user %>
-                  <a rel="tooltip" title="<%= translation('sidebar._post_button.share_your_work',{},false) %>" data-placement="bottom" href="/post?tags=<%= tag_name %>" class="btn btn-primary btn-sm requireLogin"><%= translation('tag.show.new_post') %> <i class="fa fa-plus fa-white"></i></a>
+                  <a rel="tooltip" title="<%= translation('sidebar._post_button.share_your_work',{},false) %>" data-placement="bottom" href="/post?tags=<%= tag_name %>" class="btn btn-primary btn-md requireLogin"><%= translation('tag.show.new_post') %> <i class="fa fa-plus fa-white"></i></a>
                 <% else %>
-                  <a class="btn btn-primary btn-sm index-follow-buttons follow-btn-remote requireLogin" href="/subscribe/tag/<%= tag_name %>" data-remote="true"><%= translation('tag.index.follow') %></a>
+                  <a class="btn btn-primary btn-md index-follow-buttons follow-btn-remote requireLogin" href="/subscribe/tag/<%= tag_name %>" data-remote="true"><%= translation('tag.index.follow') %></a>
                 <% end %>
               </div>
             </div>
