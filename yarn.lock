@@ -7977,13 +7977,6 @@ leaflet-providers@^1.1.17:
   resolved "https://registry.yarnpkg.com/leaflet-providers/-/leaflet-providers-1.9.1.tgz#43b82defe6cfbc33e891c3b7a6a6439a169f343f"
   integrity sha512-YpJB9y4/nT5NGicU9vuqlttJaCer6paD3J3b8Wrw+IIQvK9dtcdzE9CsTkDg7Dg9FeGp5NEr3hu17xcHbYI/2w==
 
-leaflet-spin@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/leaflet-spin/-/leaflet-spin-1.1.0.tgz#7298be3be9ab05b540913d84915d6347f49b1e4e"
-  integrity sha1-cpi+O+mrBbVAkT2EkV1jR/SbHk4=
-  dependencies:
-    spin.js "^2.3.1"
-
 leaflet-spin@1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/leaflet-spin/-/leaflet-spin-1.1.2.tgz#d77f93d9a6ce70a62f33bc367b1e16e8356d22b2"
