@@ -12,7 +12,7 @@
   <%= javascript_include_tag "editorToolbar" %>
 
   <% if params[:template] == "question" %>
-    <h4 class="d-lg-none">Ask a question</h4>
+    <h4 class="d-lg-none"><%=translation('dashboard._header.dropdown.ask_question')%></h4>
     <div id="research-note-detail" class="d-none d-lg-inline">
       <h4><i class="fa fa-question-circle"></i> Use this form to ask Question about <b><%= @node.power_tag('question') if @node %></b></h4>
       <% if @node && Tag.follower_count(@node.power_tag('question')) > 0 %>
