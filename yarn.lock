@@ -7933,31 +7933,31 @@ leaflet-blurred-location@^1.5.1, leaflet-blurred-location@^1.7.0, leaflet-blurre
     jquery "^3.2.1"
     leaflet "^1.3.3"
 
-leaflet-environmental-layers@^2.4.6:
-  version "2.4.6"
-  resolved "https://registry.yarnpkg.com/leaflet-environmental-layers/-/leaflet-environmental-layers-2.4.6.tgz#379db2fdd38955218cee0110ea17cf3147458aec"
-  integrity sha512-C4LFZMoQL/ezonoLvd3hsujZdGyoTNpRwc0Z1p4tQeEPXoFD4Uf3DTU+Xpe2ULj79e0TlQtsPA7x3Xo3E0jgHw==
+leaflet-environmental-layers@^2.4.7:
+  version "2.4.7"
+  resolved "https://registry.yarnpkg.com/leaflet-environmental-layers/-/leaflet-environmental-layers-2.4.7.tgz#26c9096bb6962179bcca3404827dc122ee81892e"
+  integrity sha512-C74eupR8g5bM+NUeuhT1jSTBdvHOaG1E0UKsESYeQW6ix8at465t3CFbJ6jJRkfGyVorR6Iyu7L6Mrgu3uMDWQ==
   dependencies:
     esri-leaflet "^2.3.3"
     jquery "^3.3.1"
     leaflet "^1.3.1"
     leaflet-blurred-location "^1.7.0"
     leaflet-fullhash "github:sagarpreet-chadha/leaflet-fullHash"
-    leaflet-google-places-autocomplete "0.0.8"
+    leaflet-google-places-autocomplete "0.0.9"
     leaflet-heatmap "1.0.0"
     leaflet-providers "^1.1.17"
-    leaflet-spin "1.1.0"
-    leaflet.blurred-location-display "^1.3.1"
+    leaflet-spin "1.1.2"
+    leaflet.blurred-location-display "^1.3.2"
     leaflet.glify "github:robertleeplummerjr/Leaflet.glify#aa2b356"
 
 "leaflet-fullhash@github:sagarpreet-chadha/leaflet-fullHash":
   version "1.0.0"
   resolved "https://codeload.github.com/sagarpreet-chadha/leaflet-fullHash/tar.gz/6c547255ef7842281c6af3d6b879a2e994e1c54d"
 
-leaflet-google-places-autocomplete@0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/leaflet-google-places-autocomplete/-/leaflet-google-places-autocomplete-0.0.8.tgz#dbcf5d1833d011bef3f266bb4357b79e3bf81d70"
-  integrity sha1-289dGDPQEb7z8ma7Q1e3njv4HXA=
+leaflet-google-places-autocomplete@0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/leaflet-google-places-autocomplete/-/leaflet-google-places-autocomplete-0.0.9.tgz#88b20a90948af7158b4bf0a25301a9e595747a30"
+  integrity sha512-NHefPZn53GQIjuAZmwEN/KTy8TobEu8kRU/WlYR58j5WrQU3vZ4w2OKVUCFzKU5jlWxeZP/SQTFhmXf2vkHIeQ==
 
 leaflet-hash@^0.2.1:
   version "0.2.1"
@@ -7984,6 +7984,13 @@ leaflet-spin@1.1.0:
   dependencies:
     spin.js "^2.3.1"
 
+leaflet-spin@1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/leaflet-spin/-/leaflet-spin-1.1.2.tgz#d77f93d9a6ce70a62f33bc367b1e16e8356d22b2"
+  integrity sha512-OLpeDrrAv1YY8NVSnOP0YfICFFm+IFauL77erXH87ZiTIXl3aPwUJXOd336DrQCe4aFsY+F3oG/1+aXyjqKV2w==
+  dependencies:
+    spin.js "^2.3.1"
+
 leaflet-virtual-grid@^1.0.7:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/leaflet-virtual-grid/-/leaflet-virtual-grid-1.0.7.tgz#0dbb0dacd506b6e6d291314da5022d348729f8ad"
@@ -7991,10 +7998,10 @@ leaflet-virtual-grid@^1.0.7:
   dependencies:
     leaflet "^1.0.0"
 
-leaflet.blurred-location-display@^1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/leaflet.blurred-location-display/-/leaflet.blurred-location-display-1.3.1.tgz#ed276b6b1d0719669eda67ecb354497ec1b1e113"
-  integrity sha512-pTj1uzRibVN0PVcyGb4F0tYuiHvHt1vgF9yNtqNlv3uTHzW0MKeJtfXcapUUZlUVYvNRwtIl5Z/oiUsCDprPEw==
+leaflet.blurred-location-display@^1.3.2:
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/leaflet.blurred-location-display/-/leaflet.blurred-location-display-1.3.2.tgz#bcf2d5ff7c1d16083c379afbc80e1300821903b9"
+  integrity sha512-QB3YOCGx3O08o1kWTQsO7mm01JIeNvgqcYbJRs1xYA6tTgOe63i/hnUmcRY5oQH1P0ETmFo8qeFLwWNbmXVPNA==
   dependencies:
     jquery "^3.3.1"
 
