@@ -7933,10 +7933,10 @@ leaflet-blurred-location@^1.5.1, leaflet-blurred-location@^1.7.0, leaflet-blurre
     jquery "^3.2.1"
     leaflet "^1.3.3"
 
-leaflet-environmental-layers@^2.4.7:
-  version "2.4.7"
-  resolved "https://registry.yarnpkg.com/leaflet-environmental-layers/-/leaflet-environmental-layers-2.4.7.tgz#26c9096bb6962179bcca3404827dc122ee81892e"
-  integrity sha512-C74eupR8g5bM+NUeuhT1jSTBdvHOaG1E0UKsESYeQW6ix8at465t3CFbJ6jJRkfGyVorR6Iyu7L6Mrgu3uMDWQ==
+leaflet-environmental-layers@^2.4.8:
+  version "2.4.8"
+  resolved "https://registry.yarnpkg.com/leaflet-environmental-layers/-/leaflet-environmental-layers-2.4.8.tgz#8c6484ce9f8a29e8d4c96dbd8678a87a5fd9dde8"
+  integrity sha512-8lUfn2ADMNDAYg992T3AQGAOacO1QF5aWeje5HCAPoGEvJIDGmYOtZiyoGr4I2NiO2erPvfxvvIp1ruVAyds+g==
   dependencies:
     esri-leaflet "^2.3.3"
     jquery "^3.3.1"
