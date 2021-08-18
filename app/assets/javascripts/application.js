@@ -66,3 +66,4 @@
 //= require urlMapHash.js
 //= require spam2.js
 //= require tocbot
+//= require spin.js/spin.min.js

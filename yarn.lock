@@ -12266,6 +12266,11 @@ spin.js@^2.3.1:
   resolved "https://registry.yarnpkg.com/spin.js/-/spin.js-2.3.2.tgz#6caa56d520673450fd5cfbc6971e6d0772c37a1a"
   integrity sha1-bKpW1SBnNFD9XPvGlx5tB3LDeho=
 
+spin.js@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/spin.js/-/spin.js-4.1.0.tgz#afcf12738fafd5f6aa0a385a5b4cec45c86a3555"
+  integrity sha512-WI8O1OdJlKjialIhB9Z5RfFFM4pI7Hohik76bB3N4Ep3N/vTDPZiRU8QeefyLbmpI5n2bFQXgticl2g+/KiKYA==
+
 split-string@^3.0.1, split-string@^3.0.2:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/split-string/-/split-string-3.1.0.tgz#7cb09dda3a86585705c64b39a6466038682e8fe2"
