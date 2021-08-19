@@ -18,3 +18,9 @@
     <%= will_paginate questions, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || questions.empty? %>
   <% end %>
 </div>
+
+<script>
+$(function(){
+  $("img").lazyload();
+});
+</script>
