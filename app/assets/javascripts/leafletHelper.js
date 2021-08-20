@@ -58,11 +58,12 @@
       var SElng = map.getBounds().getSouthEast().lng ;
       map.spin(true) ;
 
-      if(map_tagname === null || (typeof map_tagname === "undefined")) {
-         taglocation_url = "/api/srch/taglocations?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng + "&limit=" + limit ;
+		taglocation_url = "/api/srch/taglocations?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng + "&limit=" + limit ;
 
+      if(map_tagname === null || (typeof map_tagname === "undefined")) {
+         taglocation_url = taglocation_url ;
       } else {
-         taglocation_url = "/api/srch/taglocations?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng + "&tag=" + map_tagname ;
+         taglocation_url = taglocation_url + "&tag=" + map_tagname ;
       }
 
       $.getJSON(taglocation_url , function (data) {
