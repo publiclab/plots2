@@ -51,7 +51,7 @@
        });
    }
 
-   function contentLayerParser(map, markers_hash, map_tagname) {
+   function contentLayerParser(map, markers_hash, map_tagname, limit) {
       var NWlat = map.getBounds().getNorthWest().lat ;
       var NWlng = map.getBounds().getNorthWest().lng ;
       var SElat = map.getBounds().getSouthEast().lat ;
@@ -59,7 +59,7 @@
       map.spin(true) ;
 
       if(map_tagname === null || (typeof map_tagname === "undefined")) {
-         taglocation_url = "/api/srch/taglocations?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng + "&limit=50" ;
+         taglocation_url = "/api/srch/taglocations?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng + "&limit=" + limit ;
 
       } else {
          taglocation_url = "/api/srch/taglocations?nwlat=" + NWlat + "&selat=" + SElat + "&nwlng=" + NWlng + "&selng=" + SElng + "&tag=" + map_tagname ;
@@ -120,7 +120,9 @@
       options.setHash = params.setHash || false;
       options.mainContent = params.mainContent || "";       // "content" to show site content, default "" shows no site content
       options.displayAllLayers = params.displayAllLayers || false;  // turn on display for all maps available in menu
-      options.imageLoadingUrl = "/lib/leaflet-environmental-layers/example/images/owmloading.gif";
+      options.imageLoadingUrl = "/lib/leaflet-environmental-layers/example/images/owmloading.gif";      
+      options.queryLimit = params.queryLimit || 5;               // limit the query amount for tagLocations API, defaults to 5
+
 
       if (typeof options.layers === "string") {
         options.layers = options.layers.split(',');
@@ -141,10 +143,10 @@
       optionsLEL.imageLoadingUrl = "/lib/leaflet-environmental-layers/example/images/owmloading.gif";
       L.LayerGroup.EnvironmentalLayers(optionsLEL).addTo(map);
 
-      displayMapContent(map, markers_hash, options.mainContent);
+      displayMapContent(map, markers_hash, options.mainContent, options.queryLimit);
    }
 
-   function displayMapContent(map, markers_hash, mainContent) {
+   function displayMapContent(map, markers_hash, mainContent, limit) {
       if(typeof mainContent !== "undefined" && mainContent !== ""){
          if (mainContent === "people") {
            map.on('load viewreset resize zoomend moveend', debounce(peopleMap, 400));
@@ -157,7 +159,7 @@
       }
 
       function contentMap() {
-         contentLayerParser(map, markers_hash, mainContent);
+         contentLayerParser(map, markers_hash, mainContent, limit);
       }
       function peopleMap() {
          peopleLayerParser(map, markers_hash);
