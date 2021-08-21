@@ -865,6 +865,29 @@ class NotesControllerTest < ActionController::TestCase
     end
    end
 
+   test "drafts are sorted by last updated" do
+    UserSession.create(users(:jeff))
+    saved, node, revision = Node.new_note( title: 'Sort Drafts', draft: 'true', uid: 2, body: 'I have sorted drafts' )
+    revision_timestamp = revision.timestamp
+
+    assert_equal 3, node.status
+    assert_equal DateTime.now.to_i, revision_timestamp
+
+    updated_timestamp = nil
+
+    Timecop.freeze(Date.today + 1.day) do
+      get :publish_draft, params: { id: node.id }
+
+      updated_timestamp = DateTime.now.to_i
+      assert_response :redirect
+      node = assigns(:node)
+      assert_equal 1, node.status
+    end
+    
+    assert_equal updated_timestamp, node.latest['timestamp']
+    assert_redirected_to '/notes/' + users(:jeff).username + '/' + (Date.today + 1.day).strftime('%m-%d-%Y') + '/' + node.title.parameterize
+   end
+
    test 'co-author can publish the draft' do
     perform_enqueued_jobs do
        UserSession.create(users(:test_user))
