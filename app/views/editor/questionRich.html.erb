@@ -33,7 +33,7 @@
       <div class="ple-module-title ple-module">
 
         <div class="ple-module-content">
-          <h2>Ask a question of the PublicLab community</h2>
+          <h2><%=translation('editor.post.question')%></h2>
           <br />
           <div>
             <input aria-label="Enter question" class="form-control form-control-lg" type="text" placeholder="What's your question? Be specific." value="<%= if @node then @node.title else params[:title] end %>" />
