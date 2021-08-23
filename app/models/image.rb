@@ -32,12 +32,10 @@ class Image < ApplicationRecord
     end
   end
 
-  def path(size = :medium)
-    size = if is_image? && size == :default
-             :medium
-           else
-             :original
-           end
+  def path(size)
+    if is_image? && size == :default
+      size = :medium
+    end
     photo.url(size)
   end
 
