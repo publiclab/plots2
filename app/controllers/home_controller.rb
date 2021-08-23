@@ -48,6 +48,7 @@ class HomeController < ApplicationController
   end
 
   def dashboard_v2
+    @title = I18n.t('dashboard._header.dashboard')
     # The new dashboard displays the blog and topics list
     if current_user
       @blog = Tag.find_nodes_by_type('blog', 'note', 1).limit(1).first
