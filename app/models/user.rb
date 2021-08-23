@@ -38,9 +38,10 @@ class User < ActiveRecord::Base
     c.validates_format_of_login_field_options = { with: Authlogic::Regex::LOGIN, message: I18n.t('error_messages.login_invalid', default: "can only consist of alphabets, numbers, underscore '_', and hyphen '-'.") }
   end
 
-  has_attached_file :photo, styles: { thumb: '200x200#', medium: '500x500#', large: '800x800#' },
-                                    url: '/system/profile/photos/:id/:style/:basename.:extension'
-  #:path => ":rails_root/public/system/images/photos/:id/:style/:basename.:extension"
+  has_attached_file :photo,
+                    styles: { thumb: '200x200#', medium: '500x500#', large: '800x800#' },
+                    url: '/public/system/profile/photos/:id/:style/:basename.:extension',
+                    path: ':rails_root/public/system/public/system/profile/photos/:id/:style/:filename'
 
   do_not_validate_attachment_file_type :photo_file_name
   # validates_attachment_content_type :photo_file_name, :content_type => %w(image/jpeg image/jpg image/png)
