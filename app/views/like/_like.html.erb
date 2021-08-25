@@ -49,11 +49,14 @@
     <% end %>
 
     <span data-toggle="tooltip" data-placement="top" title="Tools" id="menu-btn" class="btn btn-outline-secondary btn-circle btn-sm" rel="popover" data-placement="left" data-html="true" style="overflow: auto; max-height: 500px" data-content="
-        <p><b>Users who liked this</b></p>
-        <% node.likers.each do |user| %>
-            <i class='fa fa-star-o'></i> <a href='/profile/<%= user.username %>/'><%= user.username %></a><br />
-        <% end %>
-        <% if node.likers.size == 0 %><i>None</i><% end %>
+        
+        <div class='mb-3'>
+           <p><b>Users who liked this</b></p>
+           <% node.likers.each do |user| %>
+                <i class='fa fa-star-o'></i> <a href='/profile/<%= user.username %>/'><%= user.username %></a><br />
+            <% end %>
+            <% if node.likers.size == 0 %><i>None</i><% end %>
+       </div>
         <% if node.type == 'note' && current_user && node.uid != current_user.uid%>
             <hr style='margin-bottom:3px;' />
             <p><b>Award a Barnstar:</b></p>
