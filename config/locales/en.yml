@@ -322,6 +322,8 @@ en:
       changes: "Changes"
     _header:
       share_work: "Share your work"
+     _node_event: 
+      rsvp: "RSVP"
       dropdown:
         share_activity: "Share a step-by-step activity"
         share_research_note: "Share a research note"
