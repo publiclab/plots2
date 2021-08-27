@@ -843,6 +843,7 @@ en:
         updated %{time} ago
         by <a href='%{url1}'>%{author_name}</a>
       more: "More..."
+      delete: "Delete Post"
     _related:
       write_research_note: "Write a post"
       share_your_work: "Share your work with others"
