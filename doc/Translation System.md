@@ -29,13 +29,19 @@ You can find calls like this in views that have translation function call in sea
 
 Some improvements to this call can be reorganising the parameters to make it bit concise but it is tricky as lots of tests are written that follow the existing call structure, many function calls have this structure and also the gem has an inbuilt options parameter that can be passsed as array of options or as list of key value pairs , so for now, this call is simple to check and for now though a bit longer.
 
+![Untitled Diagram](https://user-images.githubusercontent.com/38528640/131227801-aa46fe85-a2a0-4385-833f-36f6d433d3fe.png)
+
+
 ## Importing and exporting translations 
 Moving on to the second part of the project. We use [Transifex](https://www.transifex.com/publiclab/publiclaborg/dashboard/) localisation platform to handle voluntary contributions and add them regualarly to the code-base. 
 ### Importing translation
 We don't need to exclusively add new strings to the Transifex project.Adding it as a key-value pair in the `en.yml` file will do the trick. Transifex keeps track of the file and automatically adds new strigs at regular intervals. Managers and admins can also run a manual sync from `settings->integrations->Send to Github`.  option, more about it [here](https://publiclab.org/notes/ajitmujumdar25999/07-18-2021/importing-new-translations-from-transifex-project). Once imported you can find the string in the Transifex resource file. You can check by searching it in the translation search bar.
+Here is where managers can trigger a pull request
+![Screenshot from 2021-07-18 14-28-34](https://user-images.githubusercontent.com/38528640/131228051-a602d83f-1cca-4d30-a064-bf43516cc562.png)
+
 ### Exporting translations 
  Transifex bot automatically raises a PR when a language resource is 100% reviewed. Managers and admins can also trigger a manual sync by `settings->integrations->Send to Github` option, we can specify a threshold percentage and any language files having reviewed percentage above the threshold will be added and a PR will be raised by the Transifex bot. Alternatively, we can also directly download a yaml file for the translation resource from the transifex site. More about it [here](https://publiclab.org/notes/ajitmujumdar25999/07-18-2021/importing-new-translations-from-transifex-project)
-
+Here is a [sample pull request](https://github.com/publiclab/plots2/pull/10079)
 ## Translation life-cycle
 So now that you know all the aspects in this project, let's see how the entire project works. 
 ### Step 1: Adding a string
