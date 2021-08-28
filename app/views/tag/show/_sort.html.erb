@@ -1,5 +1,5 @@
 <div class="dropdown pull-right">
-  <button class="btn btn-outline-secondary dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-left:14px;">Sort by</button>
+  <button class="btn btn-outline-secondary dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-left:14px;"><%=translation('tag.index.sort_by')%></button>
   <div class="dropdown-menu dropdown-menu-right mt-1" aria-labelledby="dropdownMenuButton">
   <% if params[:action] == "show" %>
     <a class="dropdown-item <% if params[:order] == 'last_updated' %> active<% end %>" href="/tag/<%= params[:id] %>">
