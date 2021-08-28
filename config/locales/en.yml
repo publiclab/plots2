@@ -310,6 +310,8 @@ en:
       past_week: "in the past week"
       your_work: "Your work"
       share_work: "Share your work"
+      recent_activity: "Recent activity"
+      post_date: "Post date"
     dashboard:
       from_blog: "From the <a href='%{url}'>Public Lab Blog</a>"
       by: "by"
