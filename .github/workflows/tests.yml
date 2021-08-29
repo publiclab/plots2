@@ -216,10 +216,9 @@ jobs:
         echo "::set-output name=views::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep app/views/ | xargs))"
 
   translation-screenshot:
-    if: ${{ github.event.label.name == 'Translation System' }}
     runs-on: ubuntu-latest
     needs: changed-files
-    if: ${{needs.changed-files.outputs.views}}
+    if: ${{ github.event.label.name == 'Translation System' }} && ${{needs.changed-files.outputs.views}}
     services:
       redis:
         image: redis
@@ -258,6 +257,7 @@ jobs:
       run: |
         export DISPLAY=:99
         chromedriver --url-base=/wd/hub &
+        $${{needs.changed-files.outputs.views}} > test/reports/changed-files.txt &
         bundle exec rails test:ui-tests
     - name: Archive ui test screenshots
       uses: actions/upload-artifact@v2
