@@ -210,10 +210,11 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-    - name: Get changed files
+      with:
+        fetch-depth: 0
       id: changes
       run:  |
-        echo "::set-output name=views::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep app/views/ | xargs))"
+        echo "::set-output name=views::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep app/views/ | xargs)) > test/reports/changed-files.txt"
 
   translation-screenshot:
     runs-on: ubuntu-latest
@@ -257,7 +258,6 @@ jobs:
       run: |
         export DISPLAY=:99
         chromedriver --url-base=/wd/hub &
-        ${{needs.changed-files.outputs.views}} > test/reports/changed-files.txt &
         bundle exec rails test:ui-tests
     - name: Archive ui test screenshots
       uses: actions/upload-artifact@v2
