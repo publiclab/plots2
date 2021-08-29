@@ -257,7 +257,7 @@ jobs:
       run: |
         export DISPLAY=:99
         chromedriver --url-base=/wd/hub &
-        $${{needs.changed-files.outputs.views}} > test/reports/changed-files.txt &
+        ${{needs.changed-files.outputs.views}} > test/reports/changed-files.txt &
         bundle exec rails test:ui-tests
     - name: Archive ui test screenshots
       uses: actions/upload-artifact@v2
