@@ -360,10 +360,10 @@ en:
     _comment_moderate:
       first_time_post: "Moderate first-time comment:"
   dashboard_v2:
-   _flag_list:
-     flag_post: "Flag post to moderators"
-     become_moderator: "Become a moderator"
     _header:
+      _flag_list:
+        flag_post: "Flag post to moderators"
+        become_moderator: "Become a moderator"
       dashboard: "Dashboard"
       updates: "Updates from community members on <a href='%{url}' class='form-grey' style='text-decoration: underline;'>topics</a> you"
       follow: "<a href='%{url}' class='form-grey' style='text-decoration: underline;'> follow</a>"
