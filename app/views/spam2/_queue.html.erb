@@ -65,8 +65,7 @@ $(document).ready(function () {
         <% @queue.each do |node| %>
           <tr id="n<%= node.id %>">
             <td><input  class="selectedId" value="<%= node.nid %>" type="checkbox" /></td>
-                       <td style="width:250px !importan<th style="width:250px !important;"><%=translation('users.profile.title')%></th>
-									      t;">
+            <td style="width:250px !important;">
               <% if node.status == 1 %><i class="fa fa-check text-success"></i> <% elsif node.status == 0 %><i class="fa fa-ban text-danger"></i> <% elsif node.status == 4 %><i class="fa fa-circle text-primary"></i> <% end %> <% if params[:type] == 'flagged'%> <i class="fa fa-flag text-warning"><% end %>
               <a href="javascript:void(0);" class="text-dark font-weight-bold" id="node-hover" data-toggle="modal" data-target="#ninfo<%= node.id %>"><%= node.title.truncate(25) %></a><br />
                <span class="text-secondary small"><%= node.type.capitalize %> | <%= time_ago_in_words(node.created_at) %> ago</span>
