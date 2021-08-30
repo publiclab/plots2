@@ -15,7 +15,7 @@
 
       <h4><a href="<%= node.path %>"><%= node.title %></a></h4>
 
-      <a class="btn btn-outline-secondary btn-sm float-right respond rsvp">RSVP</a>
+      <a class="btn btn-outline-secondary btn-sm float-right respond rsvp"><%= translation('dashboard._node_event.rsvp') %></a>
 
       <p class="meta">Event <%= render partial: "dashboard/node_meta", locals: { node: node } %></p>
 
