@@ -12969,10 +12969,10 @@ to-space-case@0.1.2:
   dependencies:
     to-no-case "0.1.1"
 
-tocbot@^4.13.1:
-  version "4.13.1"
-  resolved "https://registry.yarnpkg.com/tocbot/-/tocbot-4.13.1.tgz#df1dde108558a12175a264a50d54cca86d246b0b"
-  integrity sha512-3kkxE9otN0dxCDMyYgkvRm9Mvikecc9b9LNC5liBtVDcXNxU0BpW+4rpmzM6QQpQ8jVMcyUUIsHb1da/17KhAw==
+tocbot@^4.13.2:
+  version "4.13.2"
+  resolved "https://registry.yarnpkg.com/tocbot/-/tocbot-4.13.2.tgz#37ce9eb38cdb101cb70a526cdec782f7f7b1776b"
+  integrity sha512-iRyeYgMwB/SiCOu7gLfzGfPTqZKhAVco166p1Jfajkj5JLgC8izi0jRtLYRZJ1choZF4Vwb8B6pc5VG27y22mg==
 
 toidentifier@1.0.0:
   version "1.0.0"
