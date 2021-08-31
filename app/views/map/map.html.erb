@@ -92,7 +92,7 @@
         layers: ['PLpeople','mapknitter'],
         mainContent: "content",
         setHash: false,
-        queryLimit: queryParams.get("limit"),
+        queryLimit: queryParams.get("limit") || 25,
       }
       setupLEL(map, markers_hash, options);
 
