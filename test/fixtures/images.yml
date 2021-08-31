@@ -4,6 +4,12 @@ one:
   photo_content_type: "image/jpeg"
   photo_file_size: "159616"
 
+pdf:
+  nid: 2
+  photo_file_name: "test.pdf"
+  photo_content_type: "application/pdf"
+  photo_file_size: "25934"
+
 two:
   nid: 2
   photo_file_name: "filename-2.jpg"
