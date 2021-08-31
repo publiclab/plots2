@@ -901,6 +901,7 @@ en:
     post:
       welcome: "Here you can ask a question to the Public Lab community to help you in your environmental exploration. This is a great space to ask whether a method exists for identifying a possible pollutant, or ask about details of a specific technique for identifying a pollutant."
       add_tags: "You can add more tags in the tags section below to further relate your question. You can also change the main tag of the question by renaming the part after"
+      question: "Ask a Question of the Public Lab Community"
       q_and_a: "New to Public Lab? Take a minute to read the Q &amp; A wiki before posting your question"
       learn_more: "Learn more &raquo;"
       research_note: "At Public Lab, we all collaborate to invent and improve open source environmental science tools. <b>Research notes</b> are the primary way we share what we learn, ask questions, pose challenges, and critique one another's work."
