@@ -7,16 +7,23 @@ class ImagesControllerTest < ActionController::TestCase
   end
 
   test "image shortlinks redirect properly" do
-    get :shortlink, params: { id: Image.last.id }
-    assert_redirected_to Image.last.path(:large)
-    get :shortlink, params: { id: Image.last.id, size: 'medium' }
-    assert_redirected_to Image.last.path(:medium)
-    get :shortlink, params: { id: Image.last.id, size: 'm' }
-    assert_redirected_to Image.last.path(:medium)
-    get :shortlink, params: { id: Image.last.id, size: 'thumbnail' }
-    assert_redirected_to Image.last.path(:thumb)
-    get :shortlink, params: { id: Image.last.id, s: 'thumbnail' }
-    assert_redirected_to Image.last.path(:thumb)
+    get :shortlink, params: { id: images(:one).id }
+    assert_redirected_to images(:one).path(:large)
+    get :shortlink, params: { id: images(:one).id, size: 'medium' }
+    assert_redirected_to images(:one).path(:medium)
+    get :shortlink, params: { id: images(:one).id, size: 'm' }
+    assert_redirected_to images(:one).path(:medium)
+    get :shortlink, params: { id: images(:one).id, size: 'thumbnail' }
+    assert_redirected_to images(:one).path(:thumb)
+    get :shortlink, params: { id: images(:one).id, s: 'thumbnail' }
+    assert_redirected_to images(:one).path(:thumb)
+  end
+  
+  test "image shortlinks redirect properly with non-images, like PDFs" do
+    get :shortlink, params: { id: images(:pdf).id }
+    assert_redirected_to images(:pdf).path(:original) # as default size
+    get :shortlink, params: { id: images(:pdf).id, s: 'thumbnail' }
+    assert_redirected_to images(:pdf).path(:original) # should return original regardless of requested size
   end
 
   #  test "normal user should not delete image" do
