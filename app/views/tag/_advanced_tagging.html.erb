@@ -22,6 +22,11 @@
     <a class="dropdown-item" target="_blank" href="/wiki/comment-templates">Write a template for the comment form</a>
   <% end %>
   <div class="dropdown-divider"></div>
+  <% if current_user && current_user.can_moderate? && @node && !(@node.has_tag('locked')) %> 
+   <div class="dropdown-divider"></div>
+   <a class="dropdown-item" href="javascript:window.location.reload(true)" onClick="addTag('locked');">Lock Note</a> 
+  <% end %>
+
   <a class="dropdown-item" href="https://publiclab.org/power-tags" target="_blank">Learn About Powertags</a>
 </div>
 
@@ -40,3 +45,4 @@
   });
 
 </script>
+
