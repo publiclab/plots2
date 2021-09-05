@@ -27,6 +27,11 @@ tasks:
     - command: redis-server
     - command: rails c
 
+vscode: # run tests in vscode with a plugin!
+  extensions:
+    - connorshea.vscode-ruby-test-adapter@0.6.1:HO9rpcRv7bmRIuo7Mty/zg==
+    - hbenl.vscode-test-explorer@2.15.0:koqDUMWDPJzELp/hdS/lWw==
+
 github:
     prebuilds:
         branches: true
