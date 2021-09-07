@@ -69,7 +69,7 @@
     "woofmark": "~4.2.0"
   },
   "devDependencies": {
-    "webpack-dev-server": "^3.11.2"
+    "webpack-dev-server": "^4.1.1"
   },
   "homepage": "https://github.com/publiclab/plots2",
   "engines": {
