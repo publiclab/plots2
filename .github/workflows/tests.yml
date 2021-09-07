@@ -62,7 +62,7 @@ jobs:
         RAILS_ENV: test
         DB_PASSWORD: root
         DB_PORT: ${{ job.services.mysql.ports[3306] }}
-      run: bundle exec rails g webpacker:install && bundle exec rails g webpacker:install:react && bundle exec rails g react:install
+      run: bundle exec rails webpacker:install && bundle exec rails webpacker:install:react && bundle exec rails g react:install
     - name: "Functional Tests"
       env:
         RAILS_ENV: test
