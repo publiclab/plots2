@@ -55,6 +55,7 @@ jobs:
         ruby-version: 2.6.6 # Not needed with a .ruby-version file
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically (not working?)
     - uses: ./.github/actions/setup-test-environment
+    - uses: egordm/gha-yarn-node-cache@v1
     - name: Install JavaScript dependencies with Yarn
       run: yarn check || yarn install --frozen-lockfile;
     - name: Run webpacker setup

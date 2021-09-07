@@ -13,7 +13,12 @@ class ImagesController < ApplicationController
     size = :large if (size.to_s == "l")
     size = :original if (size.to_s == "o")
     image = Image.find(params[:id])
-    redirect_to URI.parse(image.path(size)).path
+    if image.is_image?
+      path = URI.parse(image.path(size)).path
+    else
+      path = URI.parse(image.path(:original)).path # PDFs etc don't get resized
+    end
+    redirect_to path
   end
 
   def create
