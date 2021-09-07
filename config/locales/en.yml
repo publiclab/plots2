@@ -313,6 +313,8 @@ en:
     dashboard:
       from_blog: "From the <a href='%{url}'>Public Lab Blog</a>"
       by: "by"
+    _node_event: 
+      rsvp: "RSVP"
     _node_question:
       post_answer: "Post an answer"
       question: "Question"
@@ -328,8 +330,6 @@ en:
         ask_question: "Ask a question"
         post_event: "Post an event"
         tell_story_blog: "Tell your story on the blog"
-    _node_event: 
-      rsvp: "RSVP"
       dashboard: "Dashboard"
       community_research: "Community research"
       welcome: "Welcome"
