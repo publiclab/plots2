@@ -18,7 +18,6 @@ tasks:
 
         yarn install
 
-        rails webpacker:install && rails webpacker:install:react && rails g react:install
 
       command: >
           passenger start
