@@ -12,7 +12,7 @@
         <div class=col-lg-6>
             <h6> Statistics from <b><%= @start.to_formatted_s(:long)%></b> to <b><%= @end.to_formatted_s(:long)%></b> </h6>
         </div>
-        <div class=col-lg-2>
+        <div class=col-6>
             <%= form_tag request.url, method: 'get', enforce_utf8: false do %>
                 <%= select_tag :options, options_for_select(["Past week", "Past month","Past year", "For all time"], params[:options]), prompt: "Filter period: ",
                     class: " form-control custom-select", onchange: "this.form.submit();" %>
