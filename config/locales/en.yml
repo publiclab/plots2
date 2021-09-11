@@ -280,7 +280,7 @@ en:
           <b>%{member_count}  member registrations</b>
           and <b>%{people_count}  contributors </b> posted notes, wikis, questions, comments, or revisions in this period.
 
-  dashboard:
+    dashboard:
     _node_comment:
       commented_on: "commented on"
       comments: "comments"
