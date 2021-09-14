@@ -477,7 +477,7 @@ en:
       no_questions_results_found: "Hi! No Questions have this tag <span>&#x1F937</span>, try checking the <b>Research Notes</b> or <b>Wikis</b> tabs on this page."
       try_advanced_search: "Or try an <a href='%{url1}'>advanced search</a>"
       people: "People"
-      no_map_results_found: "Sorry, no map is tagged with <i>%{tag}</i>"
+      no_map_results_found: "Sorry, no map is tagged with <i>%{tag}</i>. You can view other maps <a href="/maps">here</a>."
       contributors: "Contributors"
       notes_not_available: "This topic has no available notes. View other posts by clicking the link below."
       by: "by"
