@@ -279,8 +279,11 @@ en:
       members_and_contributors: |
           <b>%{member_count}  member registrations</b>
           and <b>%{people_count}  contributors </b> posted notes, wikis, questions, comments, or revisions in this period.
-
+   
   dashboard:
+    _flag_list:
+      flag_post: "Flag post to moderators"
+      become_moderator: "Become a moderator"
     _node_comment:
       commented_on: "commented on"
       comments: "comments"
@@ -313,6 +316,8 @@ en:
     dashboard:
       from_blog: "From the <a href='%{url}'>Public Lab Blog</a>"
       by: "by"
+    _node_event: 
+      rsvp: "RSVP"
     _node_question:
       post_answer: "Post an answer"
       question: "Question"
