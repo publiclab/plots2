@@ -46,7 +46,7 @@
   <% if @node_type == "maps" %>
     <div class="tab-pane active" id="wikis">
      <% if @nodes.empty? %>
-        <p><%= raw translation('tag.show.no_map_results_found', :tag => params[:id]) %>. You can view other maps <a href="/maps">here</a>.</p>
+        <%= raw translation('tag.show.no_map_results_found', :tag => params[:id]) %>.
       <% else %>
         <%= render partial: "map/maps" %>
       <% end %>
