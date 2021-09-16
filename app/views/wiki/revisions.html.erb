@@ -6,7 +6,7 @@
     <ul class="nav nav-tabs">
       <li class="nav-item"><a class="nav-link" href="/wiki/<%= @node.slug_from_path %>"><%= translation('wiki.revisions.view') %></a></li>
       <li class="nav-item"><a class="nav-link" href="/wiki/edit/<%= @node.slug_from_path %>"><%= translation('wiki.revisions.edit') %></a></li>
-      <li class="nav-item"><a class="nav-link active" href="/wiki/revisions/<%= @node.slug_from_path %>">Revisions (<%= @node.revisions.length %>)</a></li>
+      <li class="nav-item"><a class="nav-link active" href="/wiki/revisions/<%= @node.slug_from_path %>"><%= translation('wiki.revisions.revisions') %> (<%= @node.revisions.length %>)</a></li>
       <!--<li class="pull-right"><%= render :partial => "home/social" %></li>-->
     </ul>
 
