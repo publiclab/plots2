@@ -1,12 +1,5 @@
 ---
 fr:
-  community:
-    community_title: "Communauté"
-    get_started: "Se lancer"
-    people: "Individus"
-    places: "Régions"
-    projects: "Projets"
-    events: "Evènements"
   users:
     reset:
       reset_password: "Réinitialisez votre mot de passe"
