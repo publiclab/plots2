@@ -528,10 +528,6 @@ fr:
           spectral_workbench: "Établis Spectral"
           infragram: "Infragramme"
           open_water: "Eaux Ouvertes"
-      tools:
-        methods: "Méthodes"
-        store: "Magasin"
-        code_community: "Communauté des développeurs"
       donate: "Faire un don"
       store: "Magasin"
       chatroom:
