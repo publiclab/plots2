@@ -69,8 +69,6 @@
     "woofmark": "~4.2.0"
   },
   "devDependencies": {
-    "@webpack-cli/serve": "^1.5.2",
-    "webpack-cli": "^4.8.0",
     "webpack-dev-server": "^4.2.1"
   },
   "homepage": "https://github.com/publiclab/plots2",
