@@ -916,6 +916,8 @@ en:
       events: "announcements of events"
       reports: "reports from a field test or meetup"
       video: "Watch a 30 second video on posting research notes &raquo;"
+  rich:
+    drag_image: "Drag an image here to upload."
   home_controller:
     science_community: "a DIY environmental science community"
     environmental_investigation: "a community for DIY environmental investigation"
