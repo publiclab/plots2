@@ -151,6 +151,7 @@ GEM
     faraday-net_http_persistent (1.1.0)
     faraday-patron (1.0.0)
     ffi (1.15.3)
+    ffi (1.15.3-x86-mingw32)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
@@ -342,12 +343,15 @@ GEM
     mustermann-grape (1.0.1)
       mustermann (>= 1.0.0)
     mysql2 (0.5.3)
+    mysql2 (0.5.3-x86-mingw32)
     naught (1.1.0)
     netrc (0.11.0)
     nifty-generators (0.4.6)
     nio4r (2.5.7)
     nokogiri (1.11.4)
       mini_portile2 (~> 2.5.0)
+      racc (~> 1.4)
+    nokogiri (1.11.4-x86-mingw32)
       racc (~> 1.4)
     nokogumbo (2.0.4)
       nokogiri (~> 1.8, >= 1.8.4)
@@ -486,6 +490,12 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
+    rest-client (2.1.0-x86-mingw32)
+      ffi (~> 1.9)
+      http-accept (>= 1.7.0, < 2.0)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
     retriable (3.1.2)
     reverse_markdown (1.1.0)
       nokogiri
@@ -594,12 +604,15 @@ GEM
       simple_oauth (~> 0.3.0)
     tzinfo (1.2.9)
       thread_safe (~> 0.1)
+    tzinfo-data (1.2021.1)
+      tzinfo (>= 1.0.0)
     uber (0.1.0)
     uglifier (4.2.0)
       execjs (>= 0.3.0, < 3)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.7)
+    unf_ext (0.0.7.7-x86-mingw32)
     unicode-display_width (2.0.0)
     unicode-emoji (2.8.0)
       unicode-version (~> 1.0)
@@ -632,6 +645,7 @@ GEM
 
 PLATFORMS
   ruby
+  x86-mingw32
 
 DEPENDENCIES
   action-cable-testing
