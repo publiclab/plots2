@@ -12,14 +12,10 @@ tasks:
         cp config/database.yml.gitpod config/database.yml &&
         mysql -e "SET @@global.sql_mode=(SELECT REPLACE(@@global.sql_mode, 'ONLY_FULL_GROUP_BY', ''));" &&
         mysql -e "CREATE DATABASE plots;" &&
-        cp db/schema.rb.example db/schema.rb
-
-        rake db:setup
-
-        yarn install
-
-        rails g webpacker:install && rails g webpacker:install:react && rails g react:install
-
+        cp db/schema.rb.example db/schema.rb &&
+        rake db:setup &&
+        yarn install &&
+        rails g react:install
       command: >
           passenger start
 
