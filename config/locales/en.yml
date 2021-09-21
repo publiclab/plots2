@@ -919,6 +919,8 @@ en:
       video: "Watch a 30 second video on posting research notes &raquo;"
     wikiRich:
       new_wiki: "New Wiki Page"
+      questionRich:
+      consider_sharing: "Consider sharing:"
   home_controller:
     science_community: "a DIY environmental science community"
     environmental_investigation: "a community for DIY environmental investigation"
