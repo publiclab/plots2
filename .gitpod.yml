@@ -14,7 +14,8 @@ tasks:
         mysql -e "CREATE DATABASE plots;" &&
         cp db/schema.rb.example db/schema.rb &&
         rake db:setup &&
-        yarn install
+        yarn install &&
+        rails g react:install
       command: >
           passenger start
 
