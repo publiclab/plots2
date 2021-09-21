@@ -4,6 +4,17 @@ ports:
     - port: 3000
       onOpen: open-preview
 tasks:
+
+    - name: Chromium
+      init: gp sync-await bundle # await Rails command
+      command: chromium-browser --no-sandbox
+      openMode: tab-before
+
+    - name: Redis
+      init: gp sync-await bundle # await Rails command
+      command: redis-server
+      openMode: tab-before
+
     - name: Rails
       init: >
         export CHROME_BIN=/usr/bin/chromium-browser &&
@@ -21,16 +32,6 @@ tasks:
       command: >
           passenger start
       openMode: split-left
-
-    - name: Chromium
-      init: gp sync-await bundle # await Rails command
-      command: chromium-browser --no-sandbox
-      openMode: tab-after
-
-    - name: Redis
-      init: gp sync-await bundle # await Rails command
-      command: redis-server
-      openMode: tab-after
 
     - name: Rails console
       init: gp sync-await bundle # await Rails command
