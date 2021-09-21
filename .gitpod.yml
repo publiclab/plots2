@@ -4,7 +4,8 @@ ports:
     - port: 3000
       onOpen: open-preview
 tasks:
-    - init: >
+    - name: Rails
+      init: >
         export CHROME_BIN=/usr/bin/chromium-browser &&
         gem install bundler &&
         bundle config set without 'production' &&
@@ -19,9 +20,20 @@ tasks:
       command: >
           passenger start
 
-    - command: chromium-browser --no-sandbox
-    - command: redis-server
-    - command: rails c
+    - name: Chromium
+      init: gp sync-await bundle
+      command: chromium-browser --no-sandbox
+      openMode: tab-before
+
+    - name: Redis
+      init: gp sync-await bundle
+      command: redis-server
+      openMode: tab-before
+
+    - name: Rails console
+      init: gp sync-await bundle
+      command: rails c
+      openMode: split-right
 
 github:
     prebuilds:
