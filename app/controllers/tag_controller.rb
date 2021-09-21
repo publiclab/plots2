@@ -513,6 +513,13 @@ class TagController < ApplicationController
     @tag_comments = @tags.first.comment_graph(@start, @end)
     @subscriptions = @tags.first.subscription_graph(@start, @end)
 
+    # count nodes tagged "first-time-poster" in addition to this tag:
+    ftp_tid = Tag.where(name: 'first-time-poster')&.first&.tid
+    ftp_nids = NodeTag.where(tid: ftp_tid)
+      .collect(&:nid)
+    tag_nids = NodeTag.where(tid: @tags&.first&.tid)
+    @first_time_poster_content_tally = (ftp_nids & tag_nids).count # intersection of 2 collections
+
     @all_subscriptions = TagSelection.graph(@start, @end)
 
     total_questions = Node.published.questions
