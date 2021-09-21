@@ -10,6 +10,7 @@ tasks:
         gem install bundler &&
         bundle config set without 'production' &&
         bundle install &&
+        gp sync-done bundle && # 'bundle' is an arbitrary name I picked
         cp config/database.yml.gitpod config/database.yml &&
         mysql -e "SET @@global.sql_mode=(SELECT REPLACE(@@global.sql_mode, 'ONLY_FULL_GROUP_BY', ''));" &&
         mysql -e "CREATE DATABASE plots;" &&
@@ -19,19 +20,20 @@ tasks:
         rails g react:install
       command: >
           passenger start
+      openMode: split-left
 
     - name: Chromium
-      init: gp sync-await bundle
+      init: gp sync-await bundle # await Rails command
       command: chromium-browser --no-sandbox
-      openMode: tab-before
+      openMode: tab-after
 
     - name: Redis
-      init: gp sync-await bundle
+      init: gp sync-await bundle # await Rails command
       command: redis-server
-      openMode: tab-before
+      openMode: tab-after
 
     - name: Rails console
-      init: gp sync-await bundle
+      init: gp sync-await bundle # await Rails command
       command: rails c
       openMode: split-right
 
