@@ -67,10 +67,10 @@
       <!--
       <li class="divider"></li>
       <li class="dropdown-header"><%=translation('tag.index.sort_by')%></li>
-      <li><a href="#"><a href="#">Post date</a></li>
-      <li><a href="#"><a href="#">Recent activity</a></li>
+      <li><a href="#"><a href="#"><%= translation('dashboard._activity.post_date') %></a></li>
+      <li><a href="#"><a href="#"><%= translation('dashboard._activity.recent_activity') %></a></li>
       -->
-    </div>
+       </div>
   </div> &nbsp;
   <span class="d-none d-md-inline"><%= translation('dashboard._activity.from_other') %> <a href=""><%= translation('dashboard._activity.community_scientists') %></a></span> <%= translation('dashboard._activity.past_week') %>
   <% if current_user %>
