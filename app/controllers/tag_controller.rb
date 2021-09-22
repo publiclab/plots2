@@ -119,7 +119,9 @@ class TagController < ApplicationController
       end
     end
 
-    order_by = if params[:order] == 'views'
+    order_by = if params[:order] == 'newest'
+                 'node_revisions.timestamp ASC'
+               elsif params[:order] == 'views'
                  'node.views DESC'
                elsif params[:order] == 'likes'
                  'node.cached_likes DESC'

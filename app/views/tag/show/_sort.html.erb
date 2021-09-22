@@ -9,6 +9,9 @@
         <i class="fa fa-clock-o"></i> <span class="d-lg-inline">by last updated</span>
       <% end %>
     </a>
+    <a class="dropdown-item <% if params[:order] == 'newest' %> active<% end %>" href="?order=newest">
+      <i class="fa fa-clock-o"></i> <span class="d-lg-inline">by newest</span>
+    </a>
     <a class="dropdown-item <% if params[:order] == 'views' %> active<% end %>" href="?order=views">
       <i class="fa fa-eye"></i> <span class="d-lg-inline">by views</span>
     </a>
