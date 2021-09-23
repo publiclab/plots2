@@ -513,17 +513,18 @@ class TagController < ApplicationController
     @tag_comments = @tags.first.comment_graph(@start, @end)
     @subscriptions = @tags.first.subscription_graph(@start, @end)
 
-    # this section could be cached daily:
-    # count nodes tagged "first-time-poster" in addition to this tag:
-    ftp_tid = Tag.where(name: 'first-time-poster')&.first&.tid
-    ftp_nids = NodeTag
-      .where(tid: ftp_tid)
-      .joins(:node)
-      .where('node.created': @start.to_i..@end.to_i)
-      .collect(&:nid)
-    tag_nids = NodeTag.where(tid: @tags&.first&.tid)
-      .collect(&:nid)
-    @first_time_poster_content_tally = (ftp_nids & tag_nids).count # intersection of 2 collections
+    @first_time_poster_content_tally = Rails.cache.fetch("#{params[:id]}/first-time-posters-in-period", expires_in: 1.day) do
+      # count nodes tagged "first-time-poster" in addition to this tag:
+      ftp_tid = Tag.where(name: 'first-time-poster')&.first&.tid
+      ftp_nids = NodeTag
+        .where(tid: ftp_tid)
+        .joins(:node)
+        .where('node.created': @start.to_i..@end.to_i)
+        .collect(&:nid)
+      tag_nids = NodeTag.where(tid: @tags&.first&.tid)
+        .collect(&:nid)
+      (ftp_nids & tag_nids).count # intersection of 2 collections
+    end
 
     @all_subscriptions = TagSelection.graph(@start, @end)
 
