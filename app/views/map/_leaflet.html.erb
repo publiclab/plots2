@@ -33,7 +33,8 @@
 
     var markers_hash<%= unique_id %> = new Map() ;
     var options<%= unique_id %> = {
-        layers: ['PLpeople'],
+        limitMenuTo: ['PLpeople','skytruth','mapknitter'],
+        layers: ['PLpeople','mapknitter'],
         mainContent: "content",
         setHash: false
       }
