@@ -513,6 +513,7 @@ class TagController < ApplicationController
     @tag_comments = @tags.first.comment_graph(@start, @end)
     @subscriptions = @tags.first.subscription_graph(@start, @end)
 
+    # this section could be cached daily:
     # count nodes tagged "first-time-poster" in addition to this tag:
     ftp_tid = Tag.where(name: 'first-time-poster')&.first&.tid
     ftp_nids = NodeTag
