@@ -513,7 +513,7 @@ class TagController < ApplicationController
     @tag_comments = @tags.first.comment_graph(@start, @end)
     @subscriptions = @tags.first.subscription_graph(@start, @end)
 
-    @first_time_poster_content_tally = Rails.cache.fetch("#{params[:id]}/first-time-posters-in-period", expires_in: 1.day) do
+    @first_time_poster_content_tally = Rails.cache.fetch("#{params[:id].to_s+@start.to_s+@end.to_s}/first-time-posters-in-period", expires_in: 1.day) do
       # count nodes tagged "first-time-poster" in addition to this tag:
       ftp_tid = Tag.where(name: 'first-time-poster')&.first&.tid
       ftp_nids = NodeTag
