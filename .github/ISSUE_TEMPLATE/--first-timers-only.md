@@ -39,7 +39,7 @@ $DIFF
 
 - [ ] 🔀 **Start a Pull Request**. There are two ways how you can start a pull request:
 
-1. If you are familiar with the terminal or would like to learn it, [here is a great tutorial](https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github) on how to send a pull request using the terminal.
+1. If you are familiar with the terminal or would like to learn it, [here is a great tutorial](https://app.egghead.io/playlists/how-to-contribute-to-an-open-source-project-on-github) on how to send a pull request using the terminal.
 
 2. You can also [edit files directly in your browser](https://help.github.com/articles/editing-files-in-your-repository/) and open a pull request from there. 
 

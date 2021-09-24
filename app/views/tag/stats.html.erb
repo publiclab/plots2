@@ -1,47 +1,57 @@
 <br>
 <div class="col-lg-8">
-    <% if @tags.empty? %>
-      <h4>Uh oh, your search for <%= @tag_name %> returned no results</h4>
-      <h6> <%= link_to "See statistics for all contents", stats_path %> </h6>
-    <% else %>
+  <% if @tags.empty? %>
+    <h4>Uh oh, your search for <%= @tag_name %> returned no results</h4>
+    <h6> <%= link_to "See statistics for all contents", stats_path %> </h6>
+  <% else %>
     <h4>Tag statistics for <%= @tag_name %> </h4>
     <hr>
-    <h6> <%= link_to "See statistics for all contents", stats_path %> </h6>
+    <h6><%= link_to "See statistics for all contents", stats_path %></h6>
     <%= form_tag request.url, method: :get do %>
-        <h6>Choose a range to show a graph of statistics within that period</h6>
-        <br>
-        <div class="col-md-6">
-            <label>Starting</label>
-            <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%d-%m-%Y") %>" data-date-format="dd-mm-yyyy" value="<%= @start.strftime("%d-%m-%Y") %>" tabindex="1" class="form-control input-lg" type="text" name="start"  placeholder="&#xf133; Select start date">
-        </div>
-        &emsp;
-        <div class="col-md-6">
-            <label>Ending</label>
-            <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%d-%m-%Y") %>" data-date-format="dd-mm-yyyy" value="<%= @end.strftime("%d-%m-%Y") %>" tabindex="1" class="form-control input-lg" type="text" name="end"  placeholder="&#xf133; Select end date">
-        </div>
-</div>
-</div>
-<br>
-<div class="col-lg-8">
-    <%= submit_tag "Go", class: 'btn btn-default' %>
-<% end %>
-</div>
+      <h6>Choose a range to show a graph of statistics within that period</h6>
+      <br>
+      <div class="col-md-6">
+        <label>Starting</label>
+        <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%d-%m-%Y") %>" data-date-format="dd-mm-yyyy" value="<%= @start.strftime("%d-%m-%Y") %>" tabindex="1" class="form-control input-lg" type="text" name="start"  placeholder="&#xf133; Select start date">
+      </div>
+      &emsp;
+      <div class="col-md-6">
+        <label>Ending</label>
+        <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%d-%m-%Y") %>" data-date-format="dd-mm-yyyy" value="<%= @end.strftime("%d-%m-%Y") %>" tabindex="1" class="form-control input-lg" type="text" name="end"  placeholder="&#xf133; Select end date">
+      </div>
+      <br>
+      <div class="col-lg-8">
+        <%= submit_tag "Go", class: 'btn btn-default' %>
+      </div>
+    <% end %>
+  </div>
 
-
-<% if @questions.nonzero? %>
+  <% if @questions.nonzero? %>
     <br><br>
     <h4 align="center">Questions Answered vs. Unanswered</h4>
     <div align="right" id="questAns"> </div>
-<% end %>
+  <% end %>
 
-<%= render 'stats/barchart' %>
+  <%= render 'stats/barchart' %>
 
-<br><br><br>
-<div class="graph">
+  <br><br><br>
+  <div class="graph">
     <p> <b><%= params[:id].capitalize%></b> graph from <b><%= (@start).to_formatted_s(:long)%></b> to <b><%= @end.to_formatted_s(:long)%></b> </p>
     <br>
     <%= render partial: "tag/graph", locals: { wikis: @tag_wikis, notes: @tag_notes, questions: @tag_questions, comments: @tag_comments  } %>
     <br>
     <p><i>This graph shows the number of followers who began subscribing within a given time period; this is not a cumulative graph of subscriptions. Note also: if someone 'unfollows,' the record is deleted, and we can't see it anymore, so we cannot currently measure a decline in followers over time.</i></p>
-<% end %>
+
+    <h3>Content totals</h3>
+    <p>
+        This period saw 
+        <b><%= @tag_notes.values.sum %> notes</b>,
+        <b><%= @tag_questions.values.sum %> questions</b>,
+        <b><%= @tag_wikis.values.sum %> wikis</b>, and
+        <b><%= @tag_comments.values.sum %> comments</b>, in total.
+    </p>
+    <p>
+      <b><%= @first_time_poster_content_tally %> first-time posters</b> published content on this topic during this period (cached daily).
+    </p>
+  <% end %>
 </div>

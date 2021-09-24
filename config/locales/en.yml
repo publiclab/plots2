@@ -310,6 +310,8 @@ en:
         wiki: "Wiki"
       from_other: "From other"
       community_scientists: "community scientists"
+      recent_activity: "Recent activity"
+      post_date: "Post date"
       past_week: "in the past week"
       your_work: "Your work"
       share_work: "Share your work"
@@ -390,6 +392,7 @@ en:
       all_topics: "<a href='%{url}' class='form-grey'>All topics</a>"
       more_topics: "<a href='%{url}' class='form-grey'>more...</a>"
       interest_topics: "Click to start <a href='%{url}' class='form-grey' style='text-decoration: underline;'>following</a> topics that interest you"
+      welcome: "Welcome to the new dashboard!"
   like:
     index:
       recent_likes: "Recent Likes"
@@ -918,6 +921,12 @@ en:
       events: "announcements of events"
       reports: "reports from a field test or meetup"
       video: "Watch a 30 second video on posting research notes &raquo;"
+    rich:
+      drag_image: "Drag an image here to upload."
+    wikiRich:
+      new_wiki: "New Wiki Page"
+    questionRich:
+      consider_sharing: "Consider sharing:"
   home_controller:
     science_community: "a DIY environmental science community"
     environmental_investigation: "a community for DIY environmental investigation"

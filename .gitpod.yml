@@ -4,28 +4,39 @@ ports:
     - port: 3000
       onOpen: open-preview
 tasks:
-    - init: >
+
+    - name: Chromium
+      init: gp sync-await bundle # await Rails command
+      command: chromium-browser --no-sandbox
+      openMode: tab-before
+
+    - name: Redis
+      init: gp sync-await bundle # await Rails command
+      command: redis-server
+      openMode: tab-before
+
+    - name: Rails
+      init: >
         export CHROME_BIN=/usr/bin/chromium-browser &&
         gem install bundler &&
         bundle config set without 'production' &&
         bundle install &&
+        gp sync-done bundle &&
         cp config/database.yml.gitpod config/database.yml &&
         mysql -e "SET @@global.sql_mode=(SELECT REPLACE(@@global.sql_mode, 'ONLY_FULL_GROUP_BY', ''));" &&
         mysql -e "CREATE DATABASE plots;" &&
-        cp db/schema.rb.example db/schema.rb
-
-        rake db:setup
-
-        yarn install
-
-        rails g webpacker:install && rails g webpacker:install:react && rails g react:install
-
+        cp db/schema.rb.example db/schema.rb &&
+        rake db:setup &&
+        yarn install &&
+        rails g react:install
       command: >
           passenger start
+      openMode: split-left
 
-    - command: chromium-browser --no-sandbox
-    - command: redis-server
-    - command: rails c
+    - name: Rails console
+      init: gp sync-await bundle # await Rails command
+      command: rails c
+      openMode: split-right
 
 github:
     prebuilds:

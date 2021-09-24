@@ -36,6 +36,6 @@ class TagSelection < ApplicationRecord
   end
 
   def self.start_tracking
-    TagSelection.first.updated_at.to_date.to_formatted_s(:long_ordinal)
+    TagSelection.first&.updated_at&.to_date&.to_formatted_s(:long_ordinal)
   end
 end
