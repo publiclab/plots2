@@ -248,16 +248,15 @@ To report security vulnerabilities or for questions about security, please conta
 Help improve Public Lab software!
 
 * Join the plots-dev@googlegroups.com discussion list to get involved
+* Most of the contributors network on our [gitter chat](https://gitter.im/publiclab/publiclab)
 * Look for open issues at https://github.com/publiclab/plots2/labels/help-wanted
 * We're specifically asking for help with issues labelled with [help-wanted](https://github.com/publiclab/plots2/labels/help-wanted) tag
 * Find lots of info on contributing at http://publiclab.org/wiki/developers
-* Review specific contributor guidelines at http://publiclab.org/wiki/contributing-to-public-lab-software
-* Some devs hang out in the [irc webchat](http://publiclab.org/chat)
-* Join our [gitter chat](https://gitter.im/publiclab/publiclab)
-* Try out some [supportive tasks](https://github.com/publiclab/plots2/wiki/Supportive-Tasks)
-* Get involved with our weekly community check-ins. For guidelines: [https://github.com/publiclab/plots2/tree/main/doc/CHECKINS.md
-](https://github.com/publiclab/plots2/tree/main/doc/CHECKINS.md)
-* You can help us by opening first timers issues or fto. The template for opening an issue can be found at https://docs.google.com/document/d/1dO-CAgModEGM5cOaMmcnBh2pEON0hv_rH3P2ou2r1eE/edit
+* Review specific contributor guidelines at http://publiclab.org/wiki/contributing-to-public-lab-software 
+* Try out some supportive tasks https://github.com/publiclab/plots2/wiki/Supportive-Tasks
+* Get involved with our weekly community check-ins. For guidelines: [https://github.com/publiclab/plots2/tree/master/doc/CHECKINS.md
+](https://github.com/publiclab/plots2/tree/master/doc/CHECKINS.md)
+* You can help us by opening first timers issues or fto. The template for opening an issue can be found https://docs.google.com/document/d/1dO-CAgModEGM5cOaMmcnBh2pEON0hv_rH3P2ou2r1eE/edit 
 
 ## First Time?
 
