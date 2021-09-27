@@ -925,6 +925,7 @@ en:
       new_wiki: "New Wiki Page"
     questionRich:
       consider_sharing: "Consider sharing:"
+      where_you_are_working: "Where you are working"
   home_controller:
     science_community: "a DIY environmental science community"
     environmental_investigation: "a community for DIY environmental investigation"
