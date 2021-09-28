@@ -1,5 +1,5 @@
 # PublicLab - Hacktoberfest
-Welcome to PublicLab! This document contains all the information you need to contribute to PublicLab during Hacktoberfest. Make sure that you follow the quality standards to make it easier for maintainers and contributors to accept your Pull Requests (PRs)!
+Welcome to PublicLab! This document contains all the information you need to contribute to PublicLab during Hacktoberfest. Make sure that you follow the quality standards to make it easier for maintainers and contributors to accept your Pull Requests (PRs)! For an overview of how our Code Community works together, see [https://code.publiclab.org/](https://code.publiclab.org).
 
 ## Hacktoberfest Values
 - All people are invited to participate! There is no prerequisite needed per-say, and we are always here to help! Remember that our community has people from all over the world and have unique skills. If you have any questions at any time, feel free to ping us on [Gitter](https://publiclab.org/chat) or the [Weekly Check-Ins](https://github.com/publiclab/plots2/issues?q=is%3Aissue+weekly+community+check+in) on GitHub.
@@ -14,7 +14,7 @@ Read more about us [here](https://publiclab.org/about).
 ## Hacktoberfest Issues
 All contributors, please keep in mind the following points before working on particular issues:
 - All issues that will be considered a part of Hacktoberfest will have the "__Hacktoberfest__" label.
-- If you find an issue you are interested in working on, please comment on the issue so that we and any future contributors are aware. This is necessary so that at the end of the day, two people don’t work on the same issue and submit two different PRs.
+- If there is an issue you are interested in working on, please comment on the issue so that we and any future contributors are aware. This is necessary so that at the end of the day, two people don’t work on the same issue and submit two different PRs.
 - If there has been no recent activity on an issue for some time, ping the person who had last claimed it, asking if they are still working on it. If they aren’t, you are free to take up the issue for yourself!
 
 We also encourage you to raise new issues! We constantly strive to improve PublicLab, and you can help by pointing out issues.
@@ -36,7 +36,7 @@ Before making any PR, make sure you read the contributing docs (CONTRIBUTING.md)
 While making a PR, keep in mind the following:
 - The PR must contain commits you made yourself. We will not accept automated commits from bots.
 - We only accept changes solving a particular issue and the specific code changes mentioned within the issue. We will not merge any change outside of this scope.
-- If you notice an issue, we encourage you to open it first and get it approved by the maintainers. Opening a PR without doing this may result in it being marked as spam.
+- When you find an issue, we encourage you to open it first and get it approved by the maintainers. Opening a PR without doing this may result in it being marked as spam.
 
 When you make a PR, the contents are auto-populated on GitHub. Try to fill as many fields as you can so that reviewers can quickly check your PR. Remember to mention the issue that is resolved by the PR.
 
