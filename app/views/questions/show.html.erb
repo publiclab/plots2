@@ -16,9 +16,10 @@
 <div class="col-lg-9 note-show question-show">
 
    <% if @node.main_image %>
+    <% img_path = @node.main_image.path(@node.main_image.photo_file_name == "blob" ? :original : :large) # special case for "blob" images, see https://github.com/publiclab/plots2/issues/10210 %>
     <a class="main-image" style="max-width:100%;width:800px;" href="<%= @node.main_image.path(:original) %>">
-      <%= image_tag(@node.main_image.path(:large), class:"rounded d-none d-lg-inline", style:'max-height:600px;max-width:100%;') %>
-      <%= image_tag(@node.main_image.path(:large), class:"rounded d-lg-none", style:'width:100%;') %>
+      <%= image_tag(img_path, class:"rounded d-none d-lg-inline", style:'max-height:600px;max-width:100%;', lazy: @node.main_image.photo_file_name =! "blob") %>
+      <%= image_tag(img_path, class:"rounded d-lg-none", style:'width:100%;', lazy: @node.main_image.photo_file_name =! "blob") %>
     </a>
   <% end %>
 
