@@ -3,8 +3,9 @@
 <% end %>
 
 <% if @node.main_image && !@presentation %>
+  <% img_path = @node.main_image.path(@node.main_image.photo_file_name == "blob" ? :original : :large) # special case for "blob" images, see https://github.com/publiclab/plots2/issues/10210 %>
   <a style="margin-bottom:10px;" href="<%= @node.main_image.path(:original) %>">
-    <%= image_tag(@node.main_image.path(:large), class:"rounded", style:'max-width:100%;max-height:600px;margin-bottom:10px;') %>
+    <%= image_tag(img_path, class:"rounded", style:'max-width:100%;max-height:600px;margin-bottom:10px;', lazy: @node.main_image.photo_file_name == "blob") %>
   </a>
 <% end %>
 
