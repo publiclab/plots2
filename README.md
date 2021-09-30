@@ -264,10 +264,10 @@ Help improve Public Lab software!
 
 New to open source/free software? Here is a selection of issues we've made **especially for first-timers**. We're here to help, so just ask if one looks interesting : https://code.publiclab.org
 
+[Here](https://publiclab.org/notes/warren/11-22-2017/use-git-and-github-to-contribute-and-improve-public-lab-software) is a link to our Git workflow.
+
 ## Hacktoberfest
 Wishing to contribute to Publiclab as part of Hacktoberfest? Check out our [Hacktoberfest contributing docs](https://github.com/publiclab/plots2/blob/main/HACKTOBERFEST.md)
-
-[Here](https://publiclab.org/notes/warren/11-22-2017/use-git-and-github-to-contribute-and-improve-public-lab-software) is a link to our Git workflow.
 
 ## Let the code be with you.
 ### Happy opensourcing. :smile:
