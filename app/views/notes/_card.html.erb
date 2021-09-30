@@ -1,7 +1,7 @@
 <div class="card">
   <% if node.main_image %>
     <% img_path = node.main_image.path(node.main_image.photo_file_name == "blob" ? :original : :default) # special case for "blob" images, see https://github.com/publiclab/plots2/issues/10210 %>
-    <a class="card-img-top img" style="overflow: hidden; height:10em;"<% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= image_tag(img_path, style:'width:100%;', lazy: @node.main_image.photo_file_name =! "blob") %></a>
+    <a class="card-img-top img" style="overflow: hidden; height:10em;"<% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= image_tag(img_path, style:'width:100%;', lazy: node.main_image.photo_file_name =! "blob") %></a>
   <% elsif node.scraped_image %>
     <a class="card-img-top img" style="overflow: hidden; height:10em;" href="<%= node.path %>"><%= image_tag(node.scraped_image, style:'width:100%;') %></a>
   <%  else %>
