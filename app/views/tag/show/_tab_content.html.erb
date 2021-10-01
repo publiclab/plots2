@@ -1,7 +1,8 @@
 <div class="tab-content" style="clear:both;">
 
   <% if @start && @end %>
-    <p>Displaying content from <%= @start.to_formatted_s(:long) %> to <%= @end.to_formatted_s(:long) %>. <a href="/tag/<%= params[:id] %>">View all</a></p>
+    <p><%= raw translation('tag.show.displaying_content') %> <%= @start.to_formatted_s(:long) %> to <%= @end.to_formatted_s(:long) %>. <a href="/tag/<%= params[:id] %>">View all</a></p>
+
   <% end %>
 
   <% if @node_type == "note" %>
