@@ -928,6 +928,7 @@ en:
       consider_sharing: "Consider sharing:"
       what_resources_you_need: "What resources you need"
       where_you_are_working: "Where you are working"
+      why_you_are_interested: "Why you are interested"
   home_controller:
     science_community: "a DIY environmental science community"
     environmental_investigation: "a community for DIY environmental investigation"
