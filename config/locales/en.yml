@@ -457,6 +457,7 @@ en:
         one: "1 comment"
         other: "%{count} comments"
     show:
+      displaying_content: "Displaying content from"
       notes_tagged: "Notes tagged with <i style=\"color:#aaa;\">%{tag}</i>"
       following: "Following"
       unfollow: "Click to unfollow"
