@@ -464,6 +464,7 @@ en:
       unfollow_text: "Unfollow"
       subscribe: "Subscribe"
       blog_updates: "Click to subscribe to blog updates via email"
+      displaying_content: "Displaying content from"
       none: "None"
       users_following_tag: "Users following this tag"
       ask_question: "Ask a question about <b>%{tag}</b>"
