@@ -94,6 +94,10 @@ class RoutesTest < ActionDispatch::IntegrationTest
 	    assert_routing({ path: '/notes/create', method: :post }, { controller: 'notes', action: 'create' })
 	end
 
+	test "test user_sessions create route" do
+	    assert_routing({ path: '/user_sessions', method: :post }, { controller: 'user_sessions', action: 'create' })
+	end
+
 	test "edit profile route when user logged out redirects to profile page" do	
     	assert_routing({ path: '/profile/jeff/edit', method: :get }, { controller: 'users', action: 'edit' , id: 'jeff' })	
         get '/profile/jeff/edit'
