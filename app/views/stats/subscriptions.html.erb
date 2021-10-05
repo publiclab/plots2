@@ -3,13 +3,13 @@
   <p>People subscribe to tags so that they can be updated when a research is posted with the tag they are subscribed to. This page shows the number of subscriptions for every tag on the site. </p>
 </div>
 <div class="col-lg-8 col-lg-offset-1">
-  <h2>Subscriptions</h2>
+  <h2><%= translation('layout._header.subscriptions') %></h2>
   <p>This data is cached every 24 hours.</p>
   <table class="table inline-grid">
   <tr>
     <thead>
-    <th>Subscriptions</th>
-    <th>Tags</th>
+    <th><%= translation('layout._header.subscriptions') %></th>
+    <th><%= translation('tag_controller.tags') %></th>
     </thead>
   </tr>
   <% @tags.each do |range,tags| %>
