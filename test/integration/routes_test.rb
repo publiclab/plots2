@@ -46,6 +46,10 @@ class RoutesTest < ActionDispatch::IntegrationTest
 	    assert_routing({ path: '/subscriptions', method: :get }, { controller: 'subscription', action: 'index' })
 	end
 
+	test "test create features route" do
+	    assert_routing({ path: '/features', method: :post }, { controller: 'features', action: 'create' })
+	end
+
 	test "test methods route" do
 	    assert_routing({ path: '/methods', method: :get }, { controller: 'wiki', action: 'methods' })
 	end
