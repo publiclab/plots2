@@ -34,12 +34,20 @@ class RoutesTest < ActionDispatch::IntegrationTest
 	    assert_routing({ path: '/images', method: :get }, { controller: 'images', action: 'index' })
 	end
 
+	test "test openid route" do
+	    assert_routing({ path: '/openid', method: :get }, { controller: 'openid', action: 'index' })
+	end
+
 	test "test features route" do
 	    assert_routing({ path: '/features', method: :get }, { controller: 'features', action: 'index' })
 	end
 
 	test "test subscriptions route" do
 	    assert_routing({ path: '/subscriptions', method: :get }, { controller: 'subscription', action: 'index' })
+	end
+
+	test "test create features route" do
+	    assert_routing({ path: '/features', method: :post }, { controller: 'features', action: 'create' })
 	end
 
 	test "test methods route" do
@@ -96,7 +104,10 @@ class RoutesTest < ActionDispatch::IntegrationTest
 
 	test "test user_sessions create route" do
 	    assert_routing({ path: '/user_sessions', method: :post }, { controller: 'user_sessions', action: 'create' })
-	end
+
+  test "test images create route" do
+	    assert_routing({ path: '/images', method: :post }, { controller: 'images', action: 'create' })
+  end
 
 	test "edit profile route when user logged out redirects to profile page" do	
     	assert_routing({ path: '/profile/jeff/edit', method: :get }, { controller: 'users', action: 'edit' , id: 'jeff' })	

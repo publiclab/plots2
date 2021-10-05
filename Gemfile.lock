@@ -326,7 +326,7 @@ GEM
       nokogiri (~> 1)
       rake
     mini_mime (1.1.0)
-    mini_portile2 (2.5.1)
+    mini_portile2 (2.6.1)
     minitest (5.14.4)
     minitest-reporters (1.4.3)
       ansi
@@ -346,8 +346,8 @@ GEM
     netrc (0.11.0)
     nifty-generators (0.4.6)
     nio4r (2.5.7)
-    nokogiri (1.11.4)
-      mini_portile2 (~> 2.5.0)
+    nokogiri (1.12.5)
+      mini_portile2 (~> 2.6.1)
       racc (~> 1.4)
     nokogumbo (2.0.4)
       nokogiri (~> 1.8, >= 1.8.4)
@@ -571,7 +571,7 @@ GEM
       teaspoon (>= 1.0.0)
     terrapin (0.6.0)
       climate_control (>= 0.0.3, < 1.0)
-    test-unit (3.4.5)
+    test-unit (3.4.7)
       power_assert
     thor (1.1.0)
     thread_safe (0.3.6)
