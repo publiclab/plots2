@@ -33,18 +33,12 @@ class HomeControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test 'should get dashboard if logged in by /research' do
+  test 'should get dashboard if logged in and redirects work' do
     UserSession.create(users(:bob))
     get :research
     assert_response :success
     get :dashboard
     assert_redirected_to :research
-  end
-
-  test 'should get dashboard if logged in' do
-    UserSession.create(users(:bob))
-    get :dashboard
-    assert_response :success
   end
 
   test 'should show only unmoderated spam' do
