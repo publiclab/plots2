@@ -19,10 +19,10 @@
   },
   "dependencies": {
     "@babel/preset-react": "^7.14.5",
-    "@rails/webpacker": "5.4.2",
+    "@rails/webpacker": "5.4.3",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "blob.js": "^1.0.1",
-    "blueimp-file-upload": "blueimp/jQuery-File-Upload#^10.31.0",
+    "blueimp-file-upload": "blueimp/jQuery-File-Upload#^10.32.0",
     "bootstrap": "4.1.0",
     "bootstrap-3-typeahead": "^4.0.2",
     "bootstrap-datepicker": "^1.6.0",
@@ -38,7 +38,7 @@
     "jlouvain": "upphiminn/jLouvain#3fb3aa189b8232756c4c3f3e97aaf376debf44a7",
     "jquery": "^3.6.0",
     "jquery-confirm": "^3.3.4",
-    "jquery-file-upload": "blueimp/jQuery-File-Upload#~10.31.0",
+    "jquery-file-upload": "blueimp/jQuery-File-Upload#~10.32.0",
     "jquery-lazyload": "1.9.7",
     "jquery-validation": "^1.19.3",
     "jsdiff": "components/jsdiff#~3.4.0",
@@ -49,7 +49,7 @@
     "leaflet-hash": "^0.2.1",
     "leaflet-spin": "1.1.0",
     "leaflet.fullscreen": "2.0.0",
-    "marked": "^3.0.2",
+    "marked": "^3.0.4",
     "megamark": "~3.3.0",
     "moment": "~> 2.29.1",
     "noty": "3.1.4",
@@ -69,7 +69,7 @@
     "woofmark": "~4.2.0"
   },
   "devDependencies": {
-    "webpack-dev-server": "^4.2.1"
+    "webpack-dev-server": "^4.3.0"
   },
   "homepage": "https://github.com/publiclab/plots2",
   "engines": {
