@@ -34,6 +34,10 @@ class RoutesTest < ActionDispatch::IntegrationTest
 	    assert_routing({ path: '/images', method: :get }, { controller: 'images', action: 'index' })
 	end
 
+	test "test openid route" do
+	    assert_routing({ path: '/openid', method: :get }, { controller: 'openid', action: 'index' })
+	end
+
 	test "test features route" do
 	    assert_routing({ path: '/features', method: :get }, { controller: 'features', action: 'index' })
 	end
