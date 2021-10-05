@@ -36,9 +36,9 @@ class HomeControllerTest < ActionController::TestCase
   test 'should get dashboard if logged in by /research' do
     UserSession.create(users(:bob))
     get :research
-    assert_redirected_to :dashboard
-    get :dashboard
     assert_response :success
+    get :dashboard
+    assert_redirected_to :research
   end
 
   test 'should get dashboard if logged in' do
@@ -88,7 +88,7 @@ class HomeControllerTest < ActionController::TestCase
 
       UserSession.create(users(:bob))
       session[:openid_return_to] = '/home'
-      get :dashboard
+      get :research
       assert_select 'a[href=?]', "/openid/resume", I18n.t('layout._alerts.approve_or_deny') + Sanitize.clean(' &raquo;')
       assert true
     end
