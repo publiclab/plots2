@@ -32,19 +32,8 @@ class HomeController < ApplicationController
   end
 
   def dashboard
-    if current_user
-      @note_count = Node.select(%i(created type status))
-        .where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
-        .count(:all)
-      @wiki_count = Revision.select(:timestamp)
-        .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
-        .size
-      @user_note_count = Node.where(type: 'note', status: 1, uid: current_user.uid).size
-      @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments = activity
-      render template: 'dashboard/dashboard'
-    else
-      redirect_to '/research'
-    end
+    redirect_to '/research'
+
   end
 
   def dashboard_v2
@@ -71,7 +60,15 @@ class HomeController < ApplicationController
 
   def research
     if current_user
-      redirect_to '/dashboard'
+      @note_count = Node.select(%i(created type status))
+        .where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
+        .count(:all)
+      @wiki_count = Revision.select(:timestamp)
+        .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
+        .size
+      @user_note_count = Node.where(type: 'note', status: 1, uid: current_user.uid).size
+      @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments = activity
+      render template: 'dashboard/dashboard'
     else
       @note_count = Node.select(%i(created type status))
         .where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
