@@ -119,7 +119,7 @@
           <% if current_user.following?(@profile_user) %>
             <a id="profile-unfollow-button" class="btn btn-primary" data-method="delete" data-remote="true" href="../relationships/<%= @profile_user.id %>">Unfollow</a>
           <% else %>
-            <a id="profile-follow-button" class="btn btn-primary" data-method="post" data-remote="true" href="/relationships" data-params="followed_id=<%= @profile_user.id %>">Follow</a>
+            <a id="profile-follow-button" class="btn btn-primary" data-method="post" data-remote="true" href="/relationships" data-params="followed_id=<%= @profile_user.id %>"><%= translation('users.profile.follow') %></a>
           <% end %>
         </div>
         <br />
