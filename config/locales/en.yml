@@ -393,6 +393,7 @@ en:
       more_topics: "<a href='%{url}' class='form-grey'>more...</a>"
       interest_topics: "Click to start <a href='%{url}' class='form-grey' style='text-decoration: underline;'>following</a> topics that interest you"
       welcome: "Welcome to the new dashboard!"
+      all_new_activity: "<a href='%{url}' class='form-grey'>All new activity</a>"
   like:
     index:
       recent_likes: "Recent Likes"
