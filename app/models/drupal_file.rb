@@ -11,6 +11,10 @@ class DrupalFile < ApplicationRecord
   def is_image?
     (filetype == 'jpg' || filetype == 'jpeg' || filetype == 'gif' || filetype == 'png')
   end
+  
+  def photo_file_name
+    return filename
+  end
 
   # swap legacy Drupal static routes
   def path(size = :default)
