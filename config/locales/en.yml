@@ -63,6 +63,7 @@ en:
       more: "More"
       liked_by: "Liked by"
       updated: "updated"
+      no_likes: "No notes liked by"
     profile:
       follow: "Follow"
       migrate_new_site: "Migrate to new site"
