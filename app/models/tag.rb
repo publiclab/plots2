@@ -61,7 +61,7 @@ class Tag < ApplicationRecord
     node_tag && node_tag.uid == current_user.uid || node_tag.node.uid == current_user.uid
   end
 
-  def self.contributors(tagname, start: Time.at(0), finish: Time.now)
+  def self.contributors(tagname, start: Time.now-100.years, finish: Time.now)
     tag = Tag.where(name: tagname).first
     return [] if tag.nil?
 
