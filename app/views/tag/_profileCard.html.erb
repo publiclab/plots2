@@ -32,7 +32,7 @@
       </div>
 
       <div class="col">
-        <a style="float: right;  width: 100px;" rel="tooltip" title="<%= translation('sidebar._post_button.share_your_work',{},false) %>" data-placement="bottom" href="/post?tags=<%= tag.name %>" class="btn btn-primary btn-sm">New post <i class="fa fa-plus fa-white"></i></a>
+      <a style="float: right;  width: 100px;" rel="tooltip" title="<%= translation('sidebar._post_button.share_your_work',{},false) %>" data-placement="bottom" href="/post?tags=<%= tag.name %>" class="btn btn-primary btn-sm"><i class="fa fa-plus fa-white ml-0"></i> New post</a>
         <% if current_user %>
         <div id="follow-unfollow-column-<%=tag.tid%>" style="float: right; margin-right: 10px;">
           <% if current_user.following(tag.name) %>
