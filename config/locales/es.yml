@@ -1,6 +1,6 @@
 ---
 es:
-    users:
+  users:
     reset:
       reset_password: "Resetear tu contraseña"
       enter_username_and_password: "Ingrese su usuario y una nueva contraseña"
@@ -34,7 +34,7 @@ es:
       code_of_conduct_agreement: "Acuerdo de Codigo de Conducta"
       code_of_conduct_detail: 'Al registrarse, <b>usted acepta el <a href="%{url1}"
         target="_blank">Codigo de Conducta</a></b>, que se aplica a todos los
-         espacios online y fisicos gestionados por la comunidad Public Lab y sin ánimo de lucro.'
+        espacios online y fisicos gestionados por la comunidad Public Lab y sin ánimo de lucro.'
       about_public_lab: |
               <h3>¿Que es Public Lab?</h3>
               <p>Public Lab es una comunidad abierta que desarrolla y aplica herramientas de código abierto a la exploración e investigación medioambiental. <a href="/about"> Lea más aquí </a> </p>
