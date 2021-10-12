@@ -155,7 +155,7 @@
     <% end %>
 
     <% if @profile_user && @profile_user.reset_key.nil? && logged_in_as(['admin', 'moderator']) && (@profile_user.role == "basic" || @profile_user.role == "moderator") %>
-      <a href="/admin/force/reset/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block">Reset User Password</a>
+      <a href="/admin/force/reset/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><%= translation('users.profile.reset_password') %></a>
     <% end %>
 
     <hr />
