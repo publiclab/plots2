@@ -6,8 +6,8 @@
   <% elsif !current_user.nil? && current_user.id == @profile_user.id %>
     <div id="map_template" style="position: relative; width: 100%; display: inline-block;">
       <img src="https://api.mapbox.com/styles/v1/jywarren/ckj06ujnc1nmi19nuelh46pr9/tiles/0/0/0?access_token=pk.eyJ1Ijoianl3YXJyZW4iLCJhIjoiVzVZcGg3NCJ9.BJ6ArUPuTs1JT9Ssu3K8ig" style="height:300px; width: 100%; margin: 0; position: relative; margin-right: -10px;">
-      <button type='button' class='blurred-location-input btn btn-default btn-lg' style="position:absolute;position:absolute;top:41%;left:15%;"> <strong> Share your Location </strong> </button>
-      <p><i><small>Learn about <a href='https://publiclab.org/location-privacy'>privacy</a> </small></i></p>
+      <button type='button' class='blurred-location-input btn btn-default btn-lg' style="position:absolute;position:absolute;top:41%;left:15%;"> <strong> <%= translation('users.profile.share_location') %> </strong> </button>
+      <p><i><small><%= translation('users.profile.privacy') %></small></i></p>
     </div>
   <% end %>
 
@@ -20,7 +20,7 @@
 
   <p style="width: 100%; text-align: center; border-bottom: 1px solid #ccc; line-height:2px; margin: 21px 0 20px;">
     <span style="background-color: #fff; padding: 0 10px; color: #808080;">
-      <h7>Most Common Tags</h7>
+      <h7><%= translation('users.profile.most_common_tags') %></h7>
     </span>
   </p>
 
@@ -117,9 +117,9 @@
         <hr />
         <div id="follow_form" class="col-md-offset-4">
           <% if current_user.following?(@profile_user) %>
-            <a id="profile-unfollow-button" class="btn btn-primary" data-method="delete" data-remote="true" href="../relationships/<%= @profile_user.id %>">Unfollow</a>
+            <a id="profile-unfollow-button" class="btn btn-primary" data-method="delete" data-remote="true" href="../relationships/<%= @profile_user.id %>"><%= translation('users.profile.unfollow') %></a>
           <% else %>
-            <a id="profile-follow-button" class="btn btn-primary" data-method="post" data-remote="true" href="/relationships" data-params="followed_id=<%= @profile_user.id %>">Follow</a>
+            <a id="profile-follow-button" class="btn btn-primary" data-method="post" data-remote="true" href="/relationships" data-params="followed_id=<%= @profile_user.id %>"><%= translation('users.profile.follow') %></a>
           <% end %>
         </div>
         <br />
@@ -166,7 +166,7 @@
 
     <% if @profile_user && current_user && @profile_user == current_user %>
       <button id="accessTokenButton" data-toggle="modal" data-target="#btn-token" class="btn btn-default btn-block"><%= translation('users.profile.access_token') %></button>
-      <button data-toggle="modal" data-target="#socialModal" class="btn btn-outline-secondary btn-block">Link Social Media</button>
+      <button data-toggle="modal" data-target="#socialModal" class="btn btn-outline-secondary btn-block"><%= translation('users.profile.link_social_media') %></button>
 
       <div class="modal" id="btn-token" tabindex="-1" role="dialog" aria-labelledby="accessModal" aria-hidden="true">
         <div class="modal-dialog" role="document" id="token-popup">
@@ -179,7 +179,7 @@
               <p id="accessTokenForm" type="text" class="token form-control text-center"><%= @profile_user.token %></p>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-outline-secondary" id="copy-btn">Copy</button>
+            <button type="button" class="btn btn-outline-secondary" id="copy-btn"><%= translation('users.profile.copy') %></button>
             </div>
           </div>
         </div>
@@ -190,15 +190,15 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="socialModal">Link Social Media</h5>
+              <h5 class="modal-title" id="socialModal"><%= translation('users.profile.link_social_media') %></h5>
             </div>
             <div class="modal-body">
               <label for="social-name">Enter Your Social Media User name like twitter:publiclab or instagram:publiclab</label>
             <input type="text" class="form-control" id="social-name" placeholder="instagram:publiclab">
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button id="link_social_media" type="button" class="btn btn-primary">Save changes</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal"><%= translation('users.profile.close') %></button>
+              <button id="link_social_media" type="button" class="btn btn-primary"><%= translation('users.profile.save_changes') %></button>
             </div>
           </div>
         </div>
@@ -223,10 +223,10 @@
 
       <div class="row">
         <div class="col-lg-3 col-lg-offset-1">
-          <h4>Followers</h4>
+         <h4><%= translation('users.profile.followers') %></h4>
         </div>
         <div class="col-lg-3 col-lg-offset-2">
-          <h4>Following</h4>
+          <h4><%= translation('users.profile.following') %></h4>
         </div>
 
         <br />
