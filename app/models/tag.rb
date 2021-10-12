@@ -65,11 +65,10 @@ class Tag < ApplicationRecord
     tag = Tag.where(name: tagname).first
     return [] if tag.nil?
 
-    nodes = tag.node.includes(:revision, :comments, :answers).where(status: 1)
+    nodes = tag.node.includes(:revision, :comments).where(status: 1)
     uids = nodes.collect(&:uid)
     nodes.each do |n|
       uids += n.comments.collect(&:uid)
-      uids += n.answers.collect(&:uid)
       uids += n.revision.collect(&:uid)
     end
     uids = uids.uniq
