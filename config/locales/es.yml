@@ -1,5 +1,52 @@
 ---
 es:
+    users:
+    reset:
+      reset_password: "Resetear tu contraseña"
+      enter_username_and_password: "Ingrese su usuario y una nueva contraseña"
+      username_placeholder: "usuario"
+      password_placeholder: "ingrese una nueva contraseña"
+      retype_password_placeholder: "ingrese su contraseña nuevamente"
+      save: "Guardar"
+      enter_email_reset_password: "Ingrese su dirección de correo para resetear su contraseña"
+      reset: "Resetear"
+    _tags_form:
+      skills: "Capacidades"
+      enter_tags: "Ingresar etiquetas"
+      gears: "Equipos"
+      tools: "Herramientas"
+      roles: "Roles"
+      location: "Ubicación"
+      type_location: "tipo de ubicación"
+      map: "Mapa"
+      location_privacy: "Privacidad de ubicación"
+    new:
+      sign_up: "Registrese para unirse a la comunidad Public Lab"
+      licensing_agreement: "Acuerdo de licenciamiento"
+      licensing_detail: 'Como comunidad de código abierto, creemos en las licencias abiertas de contenido
+         para que otros miembros de la comunidad puedan aprovechar tus contribuciones de manera legal
+        -- con atribución, por supuesto. Al unirse al sitio de Public Lab, <b> acepta
+          publicar el contenido que publica aquí bajo una <a href="%{url1}" target="_blank">
+         Licencia Creative Commons Attribution </a> </b> y los diseños de hardware que 
+         publique bajo la <b><a href="%{url2}" target="_blank"> Licencia de hardware abierto CERN
+         1.1 </a> (<a href="%{url3}" target="_blank"> texto completo </a>) </b>. Esto tiene el
+         beneficio adicional de que otros deben compartir sus mejoras con usted.'
+      code_of_conduct_agreement: "Acuerdo de Codigo de Conducta"
+      code_of_conduct_detail: 'Al registrarse, <b>usted acepta el <a href="%{url1}"
+        target="_blank">Codigo de Conducta</a></b>, que se aplica a todos los
+         espacios online y fisicos gestionados por la comunidad Public Lab y sin ánimo de lucro.'
+      about_public_lab: |
+              <h3>¿Que es Public Lab?</h3>
+              <p>Public Lab es una comunidad abierta que desarrolla y aplica herramientas de código abierto a la exploración e investigación medioambiental. <a href="/about"> Lea más aquí </a> </p>
+               <p>Al registrarte, te unirás a un grupo diverso de investigadores comunitarios y aprovecharás una gran cantidad de experiencia de base. Estamos desarrollando nuevas herramientas para investigar y enfrentar los desafíos ambientales y de salud ambiental, con énfasis en: </p>
+               <ul>
+                 <li>bajo costo</li>
+                 <li>legibilidad de los datos</li>
+                 <li>facilidad de uso / barrera de entrada baja & amp; alta participación pública</li>
+                 <li>datos de alta calidad, ambiental y socialmente relevantes</li>
+                 <li>reutilización creativa de la tecnología de consumo</li>
+                 <li>diseños de código abierto y modificables por el usuario</li>
+               </ul>
   activerecord:
     errors:
       messages:
