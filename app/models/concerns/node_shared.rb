@@ -385,7 +385,7 @@ module NodeShared
         .where('user_tags.value IN (?)', exclude)
   end
 
-  def self.nodes_by_tagname(tagname, type)
+  def self.nodes_by_tagname(tagname, type, limit: 24)
     if type.is_a? Array
       type1 = type.first
       type2 = type.last
@@ -398,6 +398,7 @@ module NodeShared
                    .references(:term_data, :node_revisions)
                    .where('term_data.name = ?', tagname)
                    .order('node_revisions.timestamp DESC')
+                   .limit(limit)
                    .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
     else
       pinned = pinned_nodes(tagname)
@@ -409,6 +410,7 @@ module NodeShared
                    .references(:term_data, :node_revisions)
                    .where('term_data.name = ?', tagname)
                    .order('node_revisions.timestamp DESC')
+                   .limit(limit)
                    .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
     end
   end
