@@ -193,7 +193,7 @@ class TagTest < ActiveSupport::TestCase
     assert_equal [1, 2, 5, 6], contributors.pluck(:id)
     # during presumably mostly empty time period
     contributors2 = Tag.contributors(tag.name, start: Time.now-10.years, finish: Time.now-9.years)
-    assert_equal [1, 2, 5, 6], contributors.pluck(:id)
+    assert_equal [1], contributors2.pluck(:id)
     # during maximum time, even into future (see comments.yml timestamps)
     contributors3 = Tag.contributors(tag.name, start: Time.now-10.years, finish: Time.now+1.year)
     assert_equal 6, contributors3.length
