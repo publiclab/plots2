@@ -190,10 +190,10 @@ class TagTest < ActiveSupport::TestCase
   test 'contributors with timeframe' do
     tag = tags(:test)
     # including current date
-    contributors = Tag.contributors(tag.name, start: Time.now-1.month, end: Time.now)
+    contributors = Tag.contributors(tag.name, start: Time.now-1.month, finish: Time.now)
     assert_equal [1, 2, 5, 6], contributors.pluck(:id)
     # during presumably empty time period
-    contributors2 = Tag.contributors(tag.name, start: Time.now-1.month, end: Time.now-1.week)
+    contributors2 = Tag.contributors(tag.name, start: Time.now-1.month, finish: Time.now-1.week)
     assert_equal 0, contributors2.length
   end
 
