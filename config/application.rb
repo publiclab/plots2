@@ -99,7 +99,6 @@ module Plots2
     Raven.configure do |config|
       # DSN should be an ENV variable!
       config.dsn = ENV["SENTRY_DSN"] || 'https://0490297edae647b3bd935bdb4658da54@o239675.ingest.sentry.io/1410626'
-      config.environments = %w(production)
       config.current_environment = ENV["COMPOSE_PROJECT_NAME"] || ENV["RAILS_ENV"] || %w(production)
     end
 
