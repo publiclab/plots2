@@ -61,15 +61,15 @@ class Tag < ApplicationRecord
     node_tag && node_tag.uid == current_user.uid || node_tag.node.uid == current_user.uid
   end
 
-  def self.contributors(tagname)
+  def self.contributors(tagname, start = Time.at(0), end = Time.now)
     tag = Tag.where(name: tagname).first
     return [] if tag.nil?
 
     nodes = tag.node.includes(:revision, :comments).where(status: 1)
     uids = nodes.collect(&:uid)
     nodes.each do |n|
-      uids += n.comments.collect(&:uid)
-      uids += n.revision.collect(&:uid)
+      uids += n.comments.where(timestamp: start.to_i..end.to_i).collect(&:uid)
+      uids += n.revision.where(timestamp: start.to_i..end.to_i).collect(&:uid)
     end
     uids = uids.uniq
     User.where(id: uids)
