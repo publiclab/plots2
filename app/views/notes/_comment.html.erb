@@ -172,7 +172,7 @@
             <%= render :partial => "notes/comment", :locals => {:comment => replied_comment} %>
           <% end %>
         <% elsif current_user && current_user.id = replied_comment.author.id %>
-          <% if replied_comment.status == 1 || (replied_comment.status == 4 && replied_comment.uid = current_user.id) %>
+          <% if replied_comment.status == 1 || (replied_comment.status == 4 && replied_comment.uid == current_user.id) %>
             <%= render :partial => "notes/comment", :locals => {:comment => replied_comment} %>
           <% end %>
         <% else %>
