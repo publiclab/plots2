@@ -2,13 +2,14 @@
 name: "\U00002728 First Timers Only issue"
 about: Open a First Timers Only issue for someone
 title: ''
-labels: first-timers-only
+labels: fto-candidate
 assignees: ''
-
 ---
 
+💡Format this Issue Into a First Timers Issue
+This has been marked as a good candidate for becoming a [first-timers-only issue](https://code.publiclab.org/#r=all) like these, meaning that it's **simple, self-contained**, and with some extra formatting✍️, could be a great entry point for a new contributor. If you're familiar enough with this code, please consider **reformatting it as a first-timers-only issue**, and then ping @publiclab/reviewers to get it labelled🏷. Or, if this is not your first time, **try to solve it yourself**🧑‍💻!
 
-Hi, this is a [first-timers-only issue](https://code.publiclab.org/#r=all). This means we've worked to make it more legible to folks who either **haven't contributed to our codebase before, or even folks who haven't contributed to open source before**. 
+Hi, this is a [first-timers-only issue](https://code.publiclab.org/#r=all). This means we've worked to make it more legible to folks who either **haven't contributed to our codebase before, or even folks who haven't contributed to open source before**.
 
 If that's you, we're interested in helping you take the first step and can answer questions and help you out as you do. Note that we're especially interested in contributions from people from groups underrepresented in free and open source software!
 
@@ -24,7 +25,7 @@ Nothing. This issue is meant to welcome you to Open Source :) We are happy to wa
 
 - [ ] 🙋 **Claim this issue**: Comment below. If someone else has claimed it, ask if they've opened a pull request already and if they're stuck -- maybe you can help them solve a problem or move it along!
 
-- [ ] 📝 **Update** the file [$FILENAME]($BRANCH_URL) in the `$REPO` repository (press the little pen Icon) and edit the line as shown below. 
+- [ ] 📝 **Update** the file [$FILENAME]($BRANCH_URL) in the `$REPO` repository (press the little pen Icon) and edit the line as shown below.
 
 [See this page](https://code.publiclab.org/#r=all) for some help in taking your first steps!
 
@@ -34,30 +35,28 @@ Below is a "diff" showing in red (and a `-`) which lines to remove, and in green
 $DIFF
 ```
 
-
 - [ ] 💾 **Commit** your changes
 
 - [ ] 🔀 **Start a Pull Request**. There are two ways how you can start a pull request:
 
 1. If you are familiar with the terminal or would like to learn it, [here is a great tutorial](https://app.egghead.io/playlists/how-to-contribute-to-an-open-source-project-on-github) on how to send a pull request using the terminal.
 
-2. You can also [edit files directly in your browser](https://help.github.com/articles/editing-files-in-your-repository/) and open a pull request from there. 
+2. You can also [edit files directly in your browser](https://help.github.com/articles/editing-files-in-your-repository/) and open a pull request from there.
 
 - [ ] 🏁 **Done** Ask in comments for a review :)
 
 ### Please keep us updated
 
-💬⏰ - We encourage contributors to be respectful to the community and provide an update **within a week** of claiming a first-timers-only issue. We're happy to keep it assigned to you as long as you need if you update us with a request for more time or help, but if we don't see any activity a week after you claim it we may reassign it to give someone else a chance. Thank you in advance! 
+💬⏰ - We encourage contributors to be respectful to the community and provide an update **within a week** of claiming a first-timers-only issue. We're happy to keep it assigned to you as long as you need if you update us with a request for more time or help, but if we don't see any activity a week after you claim it we may reassign it to give someone else a chance. Thank you in advance!
 
 If this happens to you, don't sweat it! Grab another open issue.
 
 ### Is someone else already working on this?
 
-🔗- We encourage contributors to link to the original issue in their pull request so all users can easily see if someone's already started on it. 
+🔗- We encourage contributors to link to the original issue in their pull request so all users can easily see if someone's already started on it.
 
 👥- **If someone seems stuck, offer them some help!** Otherwise, [take a look at some other issues you can help with](https://code.publiclab.org/#r=all). Thanks!
 
 ### 🤔❓ Questions?
 
 Leave a comment below!
-
