@@ -21,8 +21,8 @@
   <% if main_image %>
     <% img_path = main_image.path(main_image.photo_file_name == "blob" ? :original : :large) # special case for "blob" images, see https://github.com/publiclab/plots2/issues/10210 %>
     <a class="main-image" style="max-width:100%;width:800px;" href="<%= main_image.path(:original) %>">
-      <%= image_tag(img_path, class:"rounded d-none d-lg-inline d-print-block", style:'max-height:600px;max-width:100%;', lazy: main_image.photo_file_name =! "blob") %>
-      <%= image_tag(img_path, class:"rounded d-lg-none d-print-none", style:'width:100%;', lazy: main_image.photo_file_name =! "blob") %>
+      <%= image_tag(img_path, class:"rounded d-none d-lg-inline d-print-block", style:'max-height:600px;max-width:100%;', lazy: main_image.photo_file_name != "blob") %>
+      <%= image_tag(img_path, class:"rounded d-lg-none d-print-none", style:'width:100%;', lazy: main_image.photo_file_name != "blob") %>
     </a>
     <!--<div class="expand"><a onClick="$('.main-image').toggleClass('compressed');"><i class="fa fa-angle-down"></i></a></div>-->
   <% end %>
