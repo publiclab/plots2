@@ -9,6 +9,11 @@ assignees: ''
 💡Format this Issue Into a First Timers Issue
 This has been marked as a good candidate for becoming a [first-timers-only issue](https://code.publiclab.org/#r=all) like these, meaning that it's **simple, self-contained**, and with some extra formatting✍️, could be a great entry point for a new contributor. If you're familiar enough with this code, please consider **reformatting it as a first-timers-only issue**, and then ping @publiclab/reviewers to get it labelled🏷. Or, if this is not your first time, **try to solve it yourself**🧑‍💻!
 
+### 💡Format this Issue Into a First Timers Issue
+This has been marked as a good candidate for becoming a [first-timers-only issue](https://code.publiclab.org/#r=all) like these, meaning that it's **simple, self-contained**, and with some extra formatting✍️, could be a great entry point for a new contributor. If you're familiar enough with this code, please consider **reformatting it as a first-timers-only issue**, and then ping @publiclab/reviewers to get it labelled🏷. Or, if this is not your first time, **try to solve it yourself**🧑‍💻!
+
+****
+
 Hi, this is a [first-timers-only issue](https://code.publiclab.org/#r=all). This means we've worked to make it more legible to folks who either **haven't contributed to our codebase before, or even folks who haven't contributed to open source before**.
 
 If that's you, we're interested in helping you take the first step and can answer questions and help you out as you do. Note that we're especially interested in contributions from people from groups underrepresented in free and open source software!
