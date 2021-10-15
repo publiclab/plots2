@@ -5,6 +5,7 @@ class TagTest < ActiveSupport::TestCase
     @start = (Date.today - 1.year).to_time
     @fin = Date.today.to_time
   end
+
   test 'create a tag' do
     tag = Tag.new(name: 'stick-mapping')
     assert tag.save!
@@ -190,7 +191,7 @@ class TagTest < ActiveSupport::TestCase
     tag = tags(:test)
     # including current date
     contributors = Tag.contributors(tag.name, start: Time.now-1.month, finish: Time.now)
-    assert_equal [1, 2, 5, 6], contributors.pluck(:id)
+    assert_equal [1, 2], contributors.pluck(:id)
     # during presumably mostly empty time period
     contributors2 = Tag.contributors(tag.name, start: Time.now-10.years, finish: Time.now-9.years)
     assert_equal [2], contributors2.pluck(:id)
