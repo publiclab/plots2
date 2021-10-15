@@ -526,6 +526,7 @@ class TagController < ApplicationController
       (ftp_nids & tag_nids).count # intersection of 2 collections
     end
 
+    @overall_contributor_tally = Tag.contributors(@tag_name, start: @start, finish: @end)
     @all_subscriptions = TagSelection.graph(@start, @end)
 
     total_questions = Node.published.questions
