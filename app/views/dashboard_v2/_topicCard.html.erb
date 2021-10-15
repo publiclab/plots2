@@ -25,14 +25,15 @@
             <%# Follower count  %>
               <p style="display: inline-block; color: #808080;"><a style="text-decoration: underline; color: #808080;" href="/tag/<%= tag_name %>"><%= Tag.follower_count(tag_name) %> <%= translation('tag.show.following') %></a></p>
             </div>
-            <div class="card-body mr-3" style="padding:0.8em;">
-            <%# First 3 notes in the Topic  %>
+            <div class="card-body pr-0">
+
+              <!-- First 3 notes in the Topic -->
               <div class="node-list">
-               <div class="row">
+               <div class="row no-gutters">
                 <% notes.each do |node|  %>
                 <% shown_nids << node.id %>
-                  <div class="col-md-4 card-responsive">
-                    <div class="card h-100" style="width: 14rem;">
+                  <div class="col-md-4 card-responsive mb-2 pr-2">
+                    <div class="card">
                       <% if node.main_image %>
                           <img class="card-img-top" style="margin-bottom: 10px;" aria-hidden="true" src="<%= node.main_image.path(:default) %>" />
                       <% elsif node.scraped_image %>
@@ -56,6 +57,7 @@
                 <% end %>
                 </div>
               </div>
+
             </div>
             <div class="card-footer" style="background-color: inherit; border:none;">
               <% note_count = post_count(tag_name, 'note') %>
