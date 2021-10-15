@@ -384,6 +384,7 @@ en:
       dashboard: "Dashboard"
       updates: "Updates from community members on <a href='%{url}' class='form-grey' style='text-decoration: underline;'>topics</a> you"
       follow: "<a href='%{url}' class='form-grey' style='text-decoration: underline;'> follow</a>"
+      search_topics: "Search topics"
       community_research: "Community research"
     dashboard:
       from_blog: "From the <a href='%{url}'>Public Lab Blog</a>"
