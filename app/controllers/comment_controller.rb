@@ -30,6 +30,8 @@ class CommentController < ApplicationController
         @comment.save
       end
 
+      @comment_count = @node.comments.where(status: 1).count
+
       respond_to do |format|
         @answer_id = 0
         format.js do
