@@ -58,6 +58,7 @@ A full description of the features, audiences, inter-relationships, and goals of
 16. [Security](#security)
 17. [Developers](#developers)
 18. [First Time?](#first-time)
+19. [Hacktoberfest](#hacktoberfest)
 ****
 
 ## What makes this project different
@@ -133,7 +134,7 @@ Before continuing with the installation steps in this README, users of Windows S
   * `sudo apt install libyaml-dev make pkg-config sqlite3 zlib1g-dev libgmp-dev`
   * `sudo apt install libreadline-dev libssl-dev`
 2. Add GPG Key & Install RVM:
-  * `gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E37D2BAF1CF37B13E2069D6956105BD0E739499BDB`
+  * `gpg2 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB`
   * `curl -sSL https://get.rvm.io | bash -s stable`
 3. Load the Script environment variables using source command:
   * `source ~/.rvm/scripts/rvm`
@@ -148,6 +149,16 @@ Public Lab uses Redis and may be required for some functionality when running th
 1. Install Redis if you haven't already:
   * Using **MacOS**: `brew install redis`
   * Using **Linux**: `sudo yum -y install redis`
+  * Using **Ubuntu WSL2**:
+  	* update & upgrade Ubuntu: `sudo apt update && apt upgrade`
+	* install redis: `sudo apt install Redis-server`
+	* open Redis.config file: `sudo nano /etc/redis/redis.conf`
+	* update the file by changing the supervised no line to supervised systemd(ubuntu uses systemd)
+	* start Redis: `sudo service redis-server start`
+	* open Redis CLI: `redis-cli`
+	* test Redis: type `ping` & response should be `pong`
+	* exit cli: type `quit`
+	* Awesome :thumbsup: All done :white_check_mark:
 2. Run Redis server:
   * Using **MacOS**: `brew services start redis`
   * Using **Linux**: `redis-server`
@@ -254,6 +265,9 @@ Help improve Public Lab software!
 New to open source/free software? Here is a selection of issues we've made **especially for first-timers**. We're here to help, so just ask if one looks interesting : https://code.publiclab.org
 
 [Here](https://publiclab.org/notes/warren/11-22-2017/use-git-and-github-to-contribute-and-improve-public-lab-software) is a link to our Git workflow.
+
+## Hacktoberfest
+Wishing to contribute to Publiclab as part of Hacktoberfest? Check out our [Hacktoberfest contributing docs](https://github.com/publiclab/plots2/blob/main/HACKTOBERFEST.md)
 
 ## Let the code be with you.
 ### Happy opensourcing. :smile:

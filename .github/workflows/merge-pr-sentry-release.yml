@@ -1,0 +1,20 @@
+name: Upload coverage on PR merge and create Sentry release
+on:
+  pull_request:
+    types: [closed]
+jobs:
+  merge-PR:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Triggering tests workflow
+        run: echo "Triggering tests workflow"
+      - uses: actions/checkout@v2
+      - name: Sentry Release
+        uses: getsentry/action-release@v1.1.5
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: publiclab
+          SENTRY_PROJECT: plots2
+        with:
+          environment: staging

@@ -12,9 +12,9 @@ const CommentsList = ({
   commentFormsVisibility,
   comments,
   currentUser,
+  dispatch,
   handleCreateComment,
   handleDeleteComment,
-  handleFormVisibilityToggle,
   handleTextAreaChange,
   handleUpdateComment,
   setTextAreaValues,
@@ -42,12 +42,17 @@ const CommentsList = ({
   
       // each comment comes with a button to toggle edit form visible
       const toggleEditButton = <CommentToolbarButton 
+        buttonType="edit"
         icon={<i className="fa fa-pencil"></i>}
-        onClick={() => handleFormVisibilityToggle("edit-" + comment.commentId)}
+        onClick={() => dispatch({ 
+          type: "TOGGLE COMMENT FORM VISIBILITY",
+          commentFormId: "edit-" + comment.commentId 
+        })}
       />;
   
       // and a delete button
       const deleteButton = <CommentToolbarButton
+        buttonType="delete"
         icon={<i className='icon fa fa-trash'></i>}
         onClick={() => handleDeleteComment(comment.commentId)}
       />;
@@ -83,7 +88,7 @@ const CommentsList = ({
         replySection = <CommentReplies 
           commentId={comment.commentId}
           isReplyFormVisible={commentFormsVisibility[replyFormId]}
-          handleReplyFormToggle={handleFormVisibilityToggle}
+          dispatch={dispatch}
           replyCommentForm={replyCommentForm}
         >
           {replies}
@@ -141,16 +146,16 @@ const CommentsList = ({
 };
 
 CommentsList.propTypes = {
-  commentFormsVisibility: PropTypes.object.isRequired,
+  commentFormsVisibility: PropTypes.objectOf(PropTypes.bool).isRequired,
   comments: PropTypes.array.isRequired,
   currentUser: PropTypes.object,
+  dispatch: PropTypes.func.isRequired,
   handleCreateComment: PropTypes.func.isRequired,
   handleDeleteComment: PropTypes.func.isRequired,
-  handleFormVisibilityToggle: PropTypes.func.isRequired,
   handleTextAreaChange: PropTypes.func.isRequired,
   handleUpdateComment: PropTypes.func.isRequired,
   setTextAreaValues: PropTypes.func.isRequired,
-  textAreaValues: PropTypes.object.isRequired
+  textAreaValues: PropTypes.objectOf(PropTypes.string).isRequired
 };
 
 export default CommentsList;

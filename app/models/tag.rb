@@ -61,16 +61,15 @@ class Tag < ApplicationRecord
     node_tag && node_tag.uid == current_user.uid || node_tag.node.uid == current_user.uid
   end
 
-  def self.contributors(tagname)
+  def self.contributors(tagname, start: Time.now-100.years, finish: Time.now+1.years)
     tag = Tag.where(name: tagname).first
     return [] if tag.nil?
 
-    nodes = tag.node.includes(:revision, :comments, :answers).where(status: 1)
+    nodes = tag.node.includes(:revision, :comments).where(status: 1)
     uids = nodes.collect(&:uid)
     nodes.each do |n|
-      uids += n.comments.collect(&:uid)
-      uids += n.answers.collect(&:uid)
-      uids += n.revision.collect(&:uid)
+      uids += n.comments.where(timestamp: start.to_i..finish.to_i).collect(&:uid)
+      uids += n.revision.where(timestamp: start.to_i..finish.to_i).collect(&:uid)
     end
     uids = uids.uniq
     User.where(id: uids)
@@ -354,7 +353,7 @@ class Tag < ApplicationRecord
   end
 
   def self.related(tag_name, count = 5)
-    Rails.cache.fetch("related-tags/#{tag_name}/#{count}", expires_in: 1.weeks) do
+    Rails.cache.fetch("related-tags/#{tag_name}/#{count}/new", expires_in: 1) do
       nids = NodeTag.joins(:tag, :node)
                     .where(Node.table_name => { status: 1 })
                     .where(Tag.table_name => { name: tag_name })
@@ -374,26 +373,49 @@ class Tag < ApplicationRecord
   end
 
   # for Cytoscape.js http://js.cytoscape.org/
-  def self.graph_data(limit = 250)
-    Rails.cache.fetch("graph-data/#{limit}", expires_in: 1.weeks) do
+  def self.graph_data(limit = 250, type = 'nodes', weight = 0)
+    Rails.cache.fetch("graph-data/#{limit}/#{type}/#{weight}", expires_in: 1.weeks) do
       data = {}
       data["tags"] = []
-      Tag.joins(:node)
-        .group(:tid)
-        .where('node.status': 1)
-        .where('term_data.name NOT LIKE (?)', '%:%')
-        .where.not(name: 'first-time-poster')
-        .order(count: :desc)
-        .limit(limit).each do |tag|
-        data["tags"] << {
-          "name" => tag.name,
-          "count" => tag.count
-        }
+      if type == 'nodes' # notes
+        Tag.joins(:node)
+          .group(:tid)
+          .where('node.status': 1)
+          .where('term_data.name NOT LIKE (?)', '%:%')
+          .where.not(name: 'first-time-poster')
+          .order(count: :desc)
+          .having("count >= ?", weight)
+          .limit(limit).each do |tag|
+          data["tags"] << {
+            "name" => tag.name,
+            "count" => tag.count
+          }
+        end
+      elsif type == 'subscribers' # subscribers
+        Tag.select("name, count(tag_selections.tid) as subcount")
+          .joins("LEFT OUTER JOIN tag_selections ON tag_selections.tid = term_data.tid")
+          .group('term_data.name')
+          .where('term_data.name NOT LIKE (?)', '%:%')
+          .where.not(name: 'first-time-poster')
+          .order(subcount: :desc)
+          .having("subcount >= ?", weight)
+          .limit(limit).each do |tag|
+            unless tag.name.strip.empty?
+              data["tags"] << {
+              "name" => tag.name,
+              "count" => tag.subcount
+            }
+            end
+        end
       end
+
       data["edges"] = []
       data["tags"].each do |tag|
         Tag.related(tag["name"], 10).each do |related_tag|
-          data["edges"] << { "from" => tag["name"], "to" => related_tag.name }
+          reverse = { "from" => related_tag.name, "to" => tag["name"] }
+          unless data["edges"].include? reverse
+            data["edges"] << { "from" => tag["name"], "to" => related_tag.name }
+          end
         end
       end
       data
@@ -427,7 +449,12 @@ class Tag < ApplicationRecord
   end
 
   def self.update_tags_activity(tids = [], activity_id = nil)
-    Tag.where(tid: tids).update_all(activity_timestamp: DateTime.now, latest_activity_nid: activity_id)
+    Tag.transaction do
+      # this lock is to avoid db errors in testing: https://github.com/publiclab/plots2/issues/9873
+      Tag.lock
+        .where(tid: tids)
+        .update_all(activity_timestamp: DateTime.now, latest_activity_nid: activity_id) 
+    end
   end
 
   private

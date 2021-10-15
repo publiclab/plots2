@@ -73,6 +73,70 @@ a.navbar-offset {
     visibility: hidden;
 }
 
+#toc-menu:hover, .toc-active {
+  background-color: #cbd5e0;
+}
+
+.js-toc {
+  max-height: 339px;
+  max-width: 298px;
+  top: 40px;
+  overflow: auto;
+  line-height: 2;
+  border: 1px solid #e1e4e8;
+  z-index: 1000;
+}
+
+.js-toc > .toc-list {
+  margin-top: 20px;
+}
+
+.toc-list {
+  list-style: none;
+  background-color: #fff;
+  z-index: 2000;
+  margin-bottom: 0;
+  padding: 0px 15px 15px 15px;
+}
+
+.is-collapsible {
+  padding-left: 20px;
+  padding-bottom: 5px;
+  list-style: none;
+}
+
+.toc-list-item {
+  padding: 0;
+  font-weight: initial;
+  text-align: start;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.toc-list-item a {
+  color: #343a40;
+  text-decoration: none;
+}
+
+.toc-list-item a:hover {
+  color: #0c82c4;
+}
+
+details > summary {
+  list-style: none;
+}
+
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+@media (max-width: 606px) {
+  .js-toc {
+    max-width: 260px;
+  }
+}
+
 @media (max-width: 768px) {
   .add-subscriptions {
     margin-top:10px;

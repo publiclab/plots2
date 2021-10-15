@@ -20,6 +20,69 @@ html, body {
   width: 100%;
   height: 100%;
   display: block;
+  z-index: 999;
+}
+
+.toppanel {
+  height: auto; /* Specify a height */
+  position: absolute; /* Stay in place */
+  z-index: 1000; /* Stay on top */
+  top: 0;
+  left: 0;
+  padding-left: 1em;
+  padding-top: 10px; /* Place content 10px from the top */
+  padding-bottom: 10px; /* Place content 10px from the bottom */
+}
+
+label{
+  top: 12px;
+}
+input[type="range" i] {
+  position: relative;
+  top: 12px;
+}
+}
+
+#toolbar > * {
+  display: block;
+
+}
+.center-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+  z-index: 1000000;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+.spinner-grow {
+  0%{-webkit-transform:scale(0);transform:scale(0)}
+  50%{opacity:1;-webkit-transform:none;transform:none}
+}
+
+@keyframes spinner-grow{
+  0%{-webkit-transform:scale(0);transform:scale(0)}
+  50%{opacity:1;-webkit-transform:none;transform:none}
+}
+
+.spinner-grow{
+  display:inline-block;
+  width:2rem;
+  height:2rem;
+  vertical-align:text-bottom;
+  background-color:currentColor;
+  border-radius:50%;
+  opacity:0;
+  -webkit-animation:spinner-grow .75s linear infinite;
+  animation:spinner-grow .75s linear infinite
 }
 </style>
 
@@ -29,6 +92,39 @@ html, body {
 
 <script type="text/javascript" src="/lib/jlouvain/jLouvain.js"></script>
 
+<div id="toppanel" class="toppanel">
+  <a class="btn btn-outline-dark" data-toggle="collapse" href="#toolbar" aria-expanded="false" aria-controls="toolbar">
+      <i class="fa fa-filter"></i>
+  </a>
+
+  <div class="collapse" id="toolbar">
+    <span>
+      <label class="form-label" id="filterlabel" for="filter">Min. no. of Nodes</label>
+      <input class="form-range" id="filter" name="filter" onchange="rangevalue.value=value" value="0" type="range" min="0">
+      <span class="highlight"></span>
+      <output id="rangevalue">0</output>
+    </span>
+    <br>
+    <span>
+      <select id="sort" class="form-control">
+        <option id="defaultsort" value="nodes" selected>Sort By</option>
+        <option value="nodes">Notes</option>
+        <option value="subscribers">Subscribers</option>
+      </select>
+    </span>
+    <br>
+    <%# <span>
+      <input type="text" class="form-control" id="search" placeholder="Search">
+    </span> %>
+  </div>
+
+</div>
+
+<div id="loader" class="center-screen" role="status">
+  <div class="spinner-grow">
+  </div>  
+</div>
+
 <div id="cytoscape"></div>
 
 <script>
@@ -36,13 +132,9 @@ html, body {
 
   (function() {
 
-  $.ajax({
-    url : '/tag/graph.json?limit=' + <%= params[:limit] || 250 %>,
-    type: 'GET',
-    success: function(response){
-      setup_cytoscape(response);
-    }
-  });
+  var mobile = window.matchMedia("(max-width: 400px)")
+  var desktop = window.matchMedia("(min-width: 400px)")
+
 
   function parse_cyto_data(data) {
     var output = {
@@ -66,7 +158,7 @@ html, body {
             id: edge.from + "_" + edge.to,
             source: edge.from,
             target: edge.to,
-            weight: Math.random()*10+3 // <= dummy value for jlouvain
+            weight: 10 //Math.random()*10+3 // <= dummy value for jlouvain
           }
         });
       }
@@ -74,7 +166,65 @@ html, body {
     return output;
   }
 
+
+// function to sort or filter
+  function sort_or_filter(type, limit, weight) {
+    $.ajax({
+      url : '/tag/graph.json?limit=' + limit + '&type=' + type + '&weight=' + weight, 
+      beforeSend: function(){
+        $('#cytoscape').hide();
+        $('#loader').show();
+      },
+      success:function(response){
+        $('#loader').hide();
+        $('#cytoscape').show();
+
+        max_weight =  response.tags[0].count;
+
+        setup_cytoscape(response);
+      }
+    });
+  }
+
+  if (mobile.matches){
+    l = ("<%= params[:limit] %>" == "") ? 100 : "<%= params[:limit] %>"
+  }
+  else{
+    l = ("<%= params[:limit] %>" == "") ? 250 : "<%= params[:limit] %>"
+  }
+
+
+$('#sort').change(function () {
+      $('#defaultsort').attr('disabled', 'true');
+      if ($(this).val() == 'nodes') {
+        $('#filterlabel').text('Min. no. of Notes');
+      } else {
+        $('#filterlabel').text('Min. no. of Subscribers');
+      }
+      $('#filter').val(0);
+      $('#rangevalue').val(0);
+
+    var sort = ("<%= params[:type] %>" == "") ? $('#sort').val() : "<%= params[:type] %>"
+
+    var weight = 0;
+    sort_or_filter(sort, l, weight);
+
+})
+
+  $('#filter').change(function() {
+    var sort = ("<%= params[:type] %>" == "") ? $('#sort').val() : "<%= params[:type] %>"
+
+    var weight = ("<%= params[:weight] %>" == "") ? $('#filter').val() : "<%= params[:filter] %>"
+
+    sort_or_filter(sort, l, weight);
+  });
+
+  sort_or_filter("nodes", <%= params[:limit] || 100 %>, <%= params[:weight] || 0 %>);
+
   function setup_cytoscape(data) {
+    max_weight =  data.tags[0].count;
+    $('#filter').attr('max', max_weight);
+
 
     var data = parse_cyto_data(data),
         weights = data.nodes.map(function(aa){ return aa.data.weight });
@@ -95,10 +245,17 @@ html, body {
         name: 'cose',
 
         // Called on `layoutready`
-        ready: function(){},
+        ready: function(){
+          $('html').attr('background-color', 'black');
+          $('#toolbar').attr('background-color', 'black');
+
+        },
 
         // Called on `layoutstop`
-        stop: function(){},
+        stop: function(){
+          $('#toolbar').attr('background-color', 'black');
+
+        },
 
         // Whether to animate while running the layout
         // true : Animate continuously as the layout is running
@@ -176,22 +333,21 @@ html, body {
         // Pass a reference to weaver to use threads for calculations
         weaver: false
       },
-
       style: [
         {
           selector: 'node',
           style: {
             'width': 'mapData(weight, ' + min + ',' + max + ', 30, 150)',
             'height': 'mapData(weight, ' + min + ',' + max + ', 30, 150)',
-            'background-color': '#888',
-            'label': 'data(id)',
-            'font-size': 11,
+            'content': 'data(id)',
+            'font-size': '12px',
             'text-valign': 'center',
-            'color': 'white',
-            'border-width': 3,
-            'border-color': 'white',
-            'text-outline-width': 1.5,
-            'text-outline-color': '#444'
+            'text-halign': 'center',
+            'text-outline-width': '2px',
+            'color': '#fff',
+            'overlay-padding': '6px',
+            'z-index': '10'
+
           }
         },
 
@@ -199,25 +355,34 @@ html, body {
           selector: 'edge',
           style: {
             'curve-style': 'haystack',
-            'haystack-radius': 0,
+            'haystack-radius': '0.5',
+            'opacity': '0.4',
+            'line-color': '#000',
             'width': 2,
-            'opacity': 0.3,
-            'line-color': '#888'
+            'overlay-padding': '3px'
           }
         }
       ]
 
     });
 
-    cy.on('tap', 'node', function(){
-      try { // your browser may block popups
-        window.open( this.data('href') );
-      } catch(e){ // fall back on url change
-        window.location.href = this.data('href');
-      }
+  cy.minZoom( 0.5 );
+  cy.maxZoom( 20 );
+  
+  if (mobile.matches) { // If media query matches
+    cy.on('taphold', 'node', function(e){
+      cy.nodes().style('opacity', 1);
+      cy.edges().style('opacity', 0.3);
+      var node = e.target;
+      node.connectedEdges()
+        .style('line-color', '#888');
+      node.connectedEdges()
+        .connectedNodes()
+        .style('border-color', 'white');
     });
+    
 
-    cy.on('tapstart', 'node', function(e){
+    cy.on('tapend', 'node', function(e){
       cy.elements().style('opacity', 0.2);
       var node = e.target;
       node.connectedEdges()
@@ -229,7 +394,40 @@ html, body {
         .style('border-color', 'magenta');
     });
 
-    cy.on('tapend', 'node', function(e){
+    cy.on('tap', 'node', function(){
+      try { // your browser may block popups
+        window.open( this.data('href') );
+      } catch(e){ // fall back on url change
+        window.location.href = this.data('href');
+      }
+    });
+  }
+
+  if (desktop.matches) { // If media query matches
+    cy.on('tap', 'node', function(){
+      try { // your browser may block popups
+        window.open( this.data('href') );
+      } catch(e){ // fall back on url change
+        window.location.href = this.data('href');
+      }
+    });
+    
+  }
+
+    
+    cy.on('mouseover', 'node', function(e){
+      cy.elements().style('opacity', 0.2);
+      var node = e.target;
+      node.connectedEdges()
+        .style('opacity', 1)
+        .style('line-color', 'magenta');
+      node.connectedEdges()
+        .connectedNodes()
+        .style('opacity', 1)
+        .style('border-color', 'magenta');
+    });
+
+    cy.on('mouseout', 'node', function(e){
       cy.nodes().style('opacity', 1);
       cy.edges().style('opacity', 0.3);
       var node = e.target;
@@ -240,13 +438,13 @@ html, body {
         .style('border-color', 'white');
     });
 
-    cy.on('zoom', function(e){
-      cy.nodes().style('font-size', 11/cy.zoom())
-                .style('text-outline-width', 1.5/cy.zoom())
-                .style('border-width', 3/cy.zoom())
-                // .style('width', 'mapData(weight / ' + cy.zoom() + ', ' + min + ',' + max + ', 30, 150)')
-                // .style('height', 'mapData(weight / ' + cy.zoom() + ', ' + min + ',' + max + ', 30, 150)')
-    });
+    // cy.on('zoom', function(e){
+    //   cy.nodes()//.style('font-size', 20/cy.zoom())
+    //             .style('text-outline-width', 1.5/cy.zoom())
+    //             .style('border-width', 3/cy.zoom())
+    //             .style('width', 'mapData(weight / ' + cy.zoom() + ', ' + min + ',' + max + ', 30, 150)')
+    //             .style('height', 'mapData(weight / ' + cy.zoom() + ', ' + min + ',' + max + ', 30, 150)')
+    // });
 
 
     /*
@@ -278,6 +476,7 @@ html, body {
       if (index > colors.length) index = colors.length - 1;
       color = colors[index];
       node.style('backgroundColor', color);
+      node.style('text-outline-color', color);
     });
 
   }

@@ -6,8 +6,8 @@
   <% elsif !current_user.nil? && current_user.id == @profile_user.id %>
     <div id="map_template" style="position: relative; width: 100%; display: inline-block;">
       <img src="https://api.mapbox.com/styles/v1/jywarren/ckj06ujnc1nmi19nuelh46pr9/tiles/0/0/0?access_token=pk.eyJ1Ijoianl3YXJyZW4iLCJhIjoiVzVZcGg3NCJ9.BJ6ArUPuTs1JT9Ssu3K8ig" style="height:300px; width: 100%; margin: 0; position: relative; margin-right: -10px;">
-      <button type='button' class='blurred-location-input btn btn-default btn-lg' style="position:absolute;position:absolute;top:41%;left:15%;"> <strong> Share your Location </strong> </button>
-      <p><i><small>Learn about <a href='https://publiclab.org/location-privacy'>privacy</a> </small></i></p>
+      <button type='button' class='blurred-location-input btn btn-default btn-lg' style="position:absolute;position:absolute;top:41%;left:15%;"> <strong> <%= translation('users.profile.share_location') %> </strong> </button>
+      <p><i><small><%= translation('users.profile.privacy') %></small></i></p>
     </div>
   <% end %>
 
@@ -20,7 +20,7 @@
 
   <p style="width: 100%; text-align: center; border-bottom: 1px solid #ccc; line-height:2px; margin: 21px 0 20px;">
     <span style="background-color: #fff; padding: 0 10px; color: #808080;">
-      <h7>Most Common Tags</h7>
+      <h7><%= translation('users.profile.most_common_tags') %></h7>
     </span>
   </p>
 
@@ -61,8 +61,8 @@
     <small>
       <% if logged_in_as(['admin']) %><%= @profile_user.email %><% end %>
       <span style = "font-size:24px;"><small> <%= raw translation('users.profile.joined_time_ago', :time_ago => distance_of_time_in_words(@profile_user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' })) %></small></span>
-      <% if @profile_user.role == "moderator" %> | <i class="fa fa-certificate"></i> <%= translation('users.profile.moderator') %><% end %>
-      <% if @profile_user.role == "admin" %> | <i class="fa fa-certificate"></i> <%= translation('users.profile.admin') %><% end %>
+      <% if @profile_user.moderator? %> | <i class="fa fa-certificate"></i> <%= translation('users.profile.moderator') %><% end %>
+      <% if @profile_user.admin? %> | <i class="fa fa-certificate"></i> <%= translation('users.profile.admin') %><% end %>
       <% if @profile_user.status == 0 %> | <i class="fa fa-ban" style="color:#a00;"></i> <%= translation('users.profile.banned') %><% end %>
     </small>
   </h4>
@@ -117,9 +117,9 @@
         <hr />
         <div id="follow_form" class="col-md-offset-4">
           <% if current_user.following?(@profile_user) %>
-            <a id="profile-unfollow-button" class="btn btn-primary" data-method="delete" data-remote="true" href="../relationships/<%= @profile_user.id %>">Unfollow</a>
+            <a id="profile-unfollow-button" class="btn btn-primary" data-method="delete" data-remote="true" href="../relationships/<%= @profile_user.id %>"><%= translation('users.profile.unfollow') %></a>
           <% else %>
-            <a id="profile-follow-button" class="btn btn-primary" data-method="post" data-remote="true" href="/relationships" data-params="followed_id=<%= @profile_user.id %>">Follow</a>
+            <a id="profile-follow-button" class="btn btn-primary" data-method="post" data-remote="true" href="/relationships" data-params="followed_id=<%= @profile_user.id %>"><%= translation('users.profile.follow') %></a>
           <% end %>
         </div>
         <br />
@@ -141,13 +141,13 @@
     <% if logged_in_as(['admin', 'moderator']) && @profile_user.status == 0 %>
       <a href="/unban/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-thumbs-up"></i> <%= translation('users.profile.unban_user') %></a>
     <% elsif logged_in_as(['admin', 'moderator']) && @profile_user.status == 1 && @profile_user != current_user %>
-      <a data-confirm="<%= translation('users.profile.confirm_ban_user') %>" href="/ban/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-ban"></i> <%= translation('users.profile.ban_user') %></a>
+      <a data-confirm="<%= translation('users.profile.confirm_ban_user',{},false) %>" href="/ban/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-ban"></i> <%= translation('users.profile.ban_user') %></a>
     <% end %>
 
     <% if logged_in_as(['admin', 'moderator']) && @profile_user.status == 5 %>
       <a href="/admin/unmoderate/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-thumbs-up"></i> <%= translation('users.profile.unmoderate_user') %></a>
     <% elsif logged_in_as(['admin', 'moderator']) && @profile_user.status == 1 %>
-      <a rel="tooltip" title="Prevent author from logging in, without hiding their work or profile." data-confirm="<%= translation('users.profile.confirm_moderate_user') %>" href="/admin/moderate/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-ban"></i> <%= translation('users.profile.moderate_user') %></a>
+      <a rel="tooltip" title="Prevent author from logging in, without hiding their work or profile." data-confirm="<%= translation('users.profile.confirm_moderate_user',{},false) %>" href="/admin/moderate/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><i class="fa fa-ban"></i> <%= translation('users.profile.moderate_user') %></a>
     <% end %>
 
     <% if @profile_user && !@profile_user.reset_key.nil? && logged_in_as(['admin']) %>
@@ -155,7 +155,7 @@
     <% end %>
 
     <% if @profile_user && @profile_user.reset_key.nil? && logged_in_as(['admin', 'moderator']) && (@profile_user.role == "basic" || @profile_user.role == "moderator") %>
-      <a href="/admin/force/reset/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block">Reset User Password</a>
+      <a href="/admin/force/reset/<%= @profile_user.id %>" class="btn btn-outline-secondary btn-block"><%= translation('users.profile.reset_password') %></a>
     <% end %>
 
     <hr />
@@ -165,21 +165,21 @@
     </p>
 
     <% if @profile_user && current_user && @profile_user == current_user %>
-      <button id="accessTokenButton" data-toggle="modal" data-target="#btn-token" class="btn btn-default btn-block">My Access Token</button>
-      <button data-toggle="modal" data-target="#socialModal" class="btn btn-outline-secondary btn-block">Link Social Media</button>
+      <button id="accessTokenButton" data-toggle="modal" data-target="#btn-token" class="btn btn-default btn-block"><%= translation('users.profile.access_token') %></button>
+      <button data-toggle="modal" data-target="#socialModal" class="btn btn-outline-secondary btn-block"><%= translation('users.profile.link_social_media') %></button>
 
       <div class="modal" id="btn-token" tabindex="-1" role="dialog" aria-labelledby="accessModal" aria-hidden="true">
         <div class="modal-dialog" role="document" id="token-popup">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="accessModal">My Access Token</h5>
+              <h5 class="modal-title" id="accessModal"><%= translation('users.profile.access_token') %></h5>
               <button type="button" class="close" id="close-btn" data-dismiss="modal">x</button>
             </div>
             <div class="modal-body">
               <p id="accessTokenForm" type="text" class="token form-control text-center"><%= @profile_user.token %></p>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-outline-secondary" id="copy-btn">Copy</button>
+            <button type="button" class="btn btn-outline-secondary" id="copy-btn"><%= translation('users.profile.copy') %></button>
             </div>
           </div>
         </div>
@@ -190,15 +190,15 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="socialModal">Link Social Media</h5>
+              <h5 class="modal-title" id="socialModal"><%= translation('users.profile.link_social_media') %></h5>
             </div>
             <div class="modal-body">
-              <label for="social-name">Enter Your Social Media User name like twitter:publiclab or instagram:publiclab</label>
+              <label for="social-name"><%= translation('users.profile.enter_social_media') %></label>
             <input type="text" class="form-control" id="social-name" placeholder="instagram:publiclab">
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button id="link_social_media" type="button" class="btn btn-primary">Save changes</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal"><%= translation('users.profile.close') %></button>
+              <button id="link_social_media" type="button" class="btn btn-primary"><%= translation('users.profile.save_changes') %></button>
             </div>
           </div>
         </div>
@@ -223,10 +223,10 @@
 
       <div class="row">
         <div class="col-lg-3 col-lg-offset-1">
-          <h4>Followers</h4>
+         <h4><%= translation('users.profile.followers') %></h4>
         </div>
         <div class="col-lg-3 col-lg-offset-2">
-          <h4>Following</h4>
+          <h4><%= translation('users.profile.following') %></h4>
         </div>
 
         <br />
@@ -265,6 +265,9 @@
       <li><h5><a href="/wikis/author/<%= @profile_user.name %>"><%= pluralize(@profile_user.revisions.count, 'wiki edit', plural: 'wiki edits') %></a></h5></li>
       <li><h5><a href = "/tag/question:*/author/<%= params[:id] %>"><%= pluralize(Node.questions.where(status: 1, uid: @profile_user.id).length, 'question', plural:'questions') %></a></h5></li>
       <li><h5><a href = "/profile/comments/<%= params[:id] %>"><%= pluralize(Comment.where(uid: @profile_user.id).count, 'comment', plural: 'comments') %></a></h5></li>
+      <% if current_user&.can_moderate? || @profile_user == current_user %>
+        <li><h5><a href='/drafts/author/<%= @profile_user.name %>'><%= pluralize(@profile_user.drafts.size, 'draft', plural: 'drafts' )%></a></h5></li>
+      <% end %>
       <li><h5><a href = "/tag/activity:*/author/<%= params[:id] %>"><%= pluralize(@count_activities_posted, 'activity posted', plural:'activities posted') %> </a></h5></li>
       <li><h5><a href = "/tag/replication:*/author/<%= params[:id] %>"><%= pluralize(@count_activities_attempted, 'activity attempted', plural:'activities attempted')%></a> </h5></li>
       <li><h5><a href = "/tag/with:<%= @profile_user.username %>"><%= pluralize(Tag.find_nodes_by_type("with:#{@profile_user.username}").count, 'note co-authored', plural: 'notes co-authored')%></a> </h5></li>
@@ -274,6 +277,7 @@
   </div>
 
 </div>
+<%= javascript_include_tag "translation" %>
 
 <script src = "https://cdn.jsdelivr.net/npm/frappe-charts@0.0.8/dist/frappe-charts.min.iife.js"></script>
 

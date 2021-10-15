@@ -14,7 +14,7 @@ If that's you, we're interested in helping you take the first step and can answe
 
 We know that the process of creating a pull request is the biggest barrier for new contributors. This issue is for you 💝
 
-If you have contributed before, **consider leaving this one for someone new**, and looking through our general [help wanted](https://github.com/publiclab/plots2/labels/help-wanted) issues. Thanks!
+If you have contributed before, **consider leaving this one for someone new** and looking through our general [help wanted](https://github.com/publiclab/plots2/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) issues. Thanks!
 
 ### 🤔 What you will need to know.
 
@@ -39,7 +39,7 @@ $DIFF
 
 - [ ] 🔀 **Start a Pull Request**. There are two ways how you can start a pull request:
 
-1. If you are familiar with the terminal or would like to learn it, [here is a great tutorial](https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github) on how to send a pull request using the terminal.
+1. If you are familiar with the terminal or would like to learn it, [here is a great tutorial](https://app.egghead.io/playlists/how-to-contribute-to-an-open-source-project-on-github) on how to send a pull request using the terminal.
 
 2. You can also [edit files directly in your browser](https://help.github.com/articles/editing-files-in-your-repository/) and open a pull request from there. 
 

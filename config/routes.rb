@@ -53,6 +53,7 @@ Plots2::Application.routes.draw do
   get 'signup' => 'users#new'
   get 'home' => 'home#front'
   get 'verify/:token' => 'users#verify_email'
+  get 'users/active' => 'users#recently_active_users'
   resources :relationships, only: [:create, :destroy]
 
   get '/wiki/:id/comments', to: 'wiki#comments'
@@ -172,11 +173,12 @@ Plots2::Application.routes.draw do
 
   get 'research' => 'home#research'
   get 'notes' => 'legacy#notes'
-  get 'notes/author/:id' => 'notes#author'
+  get 'notes/author/:id' => 'notes#author', as: 'notes_author'
   get 'notes/author/:author/:topic' => 'notes#author_topic'
   get 'notes/show/:id' => 'notes#show'
   get 'notes/:author/:date/:id' => 'notes#show'
   get 'notes/feeds' => 'subscription#notes'
+  get 'drafts/author/:id' => 'notes#drafts'
 
   # :id will be the node's id (like has no id)
   get 'likes' => 'like#index'
@@ -225,8 +227,9 @@ Plots2::Application.routes.draw do
   get 'rsvp/:id' => 'notes#rsvp'
   get 'feed/liked' => 'notes#liked_rss'
 
-  get 'dashboard' => 'home#dashboard'
+  get 'dashboard' => 'home#dashboard_v2'
   get '/v2/dashboard' => 'home#dashboard_v2'
+  get '/v1/dashboard' => 'home#dashboard'
   get 'comments' => 'comment#index'
   get 'profile/comments/:id' => 'users#comments'
   get 'profile/comments/:id/tag/:tagname' => 'users#comments_by_tagname'

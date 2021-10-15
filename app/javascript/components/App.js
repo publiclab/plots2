@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { UserContext } from "./user-context";
 import { StaticPropsContext } from "./static-props-context";
-import { getEditTextAreaValues, getInitialCommentFormToggleState } from "./helpers";
+import { getEditTextAreaValues, getInitialCommentFormsVisibility } from "./helpers";
 
 import CommentsContainer from "./CommentsContainer";
 
@@ -23,7 +23,7 @@ const App = ({
   // this is an object containing boolean values like: { "reply-33": false, "edit-1": true }
   // this is used as the initial state showing whether or not an edit or reply comment form is shown or hidden
   // false means the comment form is closed, true means open
-  const initialCommentFormToggleState = getInitialCommentFormToggleState(initialComments);
+  const initialCommentFormsVisibility = getInitialCommentFormsVisibility(initialComments);
 
   // this is used as initial state for the content of <textarea>s inside comment forms
   // main and reply comment forms are an empty string
@@ -41,7 +41,7 @@ const App = ({
     <UserContext.Provider value={currentUser}>
       <StaticPropsContext.Provider value={{ node, elementText }}>
         <CommentsContainer 
-          initialCommentFormToggleState={initialCommentFormToggleState}
+          initialCommentFormsVisibility={initialCommentFormsVisibility}
           initialComments={initialComments} 
           initialTextAreaValues={initialTextAreaValues}
           nodeId={nodeId}
@@ -52,10 +52,39 @@ const App = ({
 }
 
 App.propTypes = {
-  currentUser: PropTypes.object,
-  elementText: PropTypes.object.isRequired,
-  initialComments: PropTypes.array.isRequired,
-  node: PropTypes.object.isRequired
+  currentUser: PropTypes.shape({
+    canModerate: PropTypes.bool,
+    id: PropTypes.number,
+    role: PropTypes.string,
+    status: PropTypes.number
+  }),
+  elementText: PropTypes.exact({
+    commentFormPlaceholder: PropTypes.string.isRequired,
+    commentsHeaderText: PropTypes.string.isRequired,
+    commentPreviewText: PropTypes.string.isRequired,
+    commentPublishText: PropTypes.string.isRequired,
+    userCommentedText: PropTypes.string.isRequired
+  }).isRequired,
+  initialComments: PropTypes.arrayOf(
+    PropTypes.shape({
+      authorId: PropTypes.number.isRequired,
+      authorPicFilename: PropTypes.string,
+      authorPicUrl: PropTypes.string,
+      authorUsername: PropTypes.string.isRequired,
+      commentId: PropTypes.number.isRequired,
+      commentName: PropTypes.string,
+      createdAt: PropTypes.string.isRequired,
+      htmlCommentText: PropTypes.string.isRequired,
+      rawCommentText: PropTypes.string.isRequired,
+      replies: PropTypes.array,
+      replyTo: PropTypes.number,
+      timeCreatedString: PropTypes.string.isRequired
+    })
+  ).isRequired,
+  node: PropTypes.exact({
+    nodeId: PropTypes.number.isRequired,
+    nodeAuthorId: PropTypes.number.isRequired
+  }).isRequired
 };
 
 export default App;

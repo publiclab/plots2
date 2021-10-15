@@ -5,7 +5,7 @@
     <div class="card shadow-sm p-2 mb-3 bg-white rounded" >
       <div class="card-header mt-2" style=" padding:0.8em; background-color: inherit; border:none;">
         <% if current_user && current_user.following(tag.name) && controller.controller_name != 'tag' %>
-          <a style="margin-top:-8px;" data-method="delete" data-confirm="Are you sure you'd like to unfollow this topic?" rel="tooltip" title="<%= translation('tag.show.unfollow') %>" class="pull-right" href="/unsubscribe/tag/<%= tag.name %>"><i style="color:#ccc;" class="fa fa-times"></i></a>
+          <a style="margin-top:-8px;" data-method="delete" data-confirm="Are you sure you'd like to unfollow this topic?" rel="tooltip" title="<%= translation('tag.show.unfollow',{},false) %>" class="pull-right" href="/unsubscribe/tag/<%= tag.name %>"><i style="color:#ccc;" class="fa fa-times"></i></a>
         <% end %>
         <h4 style="display: inline-block;"><a href="<%= tag.name %>"><%= tag.name %></a></h4>
         <p style="display: inline-block; color: #808080;"><a style="text-decoration: underline; color: #808080;" href="/tag/<%= tag.name %>"><%= Tag.follower_count(tag.name) %> following</a></p>
@@ -45,12 +45,12 @@
               <a style="width: 100px;"
                  data-method="delete"
                  data-confirm="Are you sure you'd like to unfollow this topic?"
-                 rel="tooltip" title="<%= translation('tag.show.unfollow') %>"
+                 rel="tooltip" title="<%= translation('tag.show.unfollow',{},false) %>"
                  class="btn btn-outline-secondary btn-sm index-follow-buttons follow-btn-remote"
                  href="/unsubscribe/tag/<%= tag.name %>">Unfollow</a>
             <% end %>
 
-            <a rel="tooltip" title="<%= translation('sidebar._post_button.share_your_work') %>" data-placement="bottom" href="/post?tags=<%= tag.name %>" class="btn btn-primary btn-sm requireLogin">New post <i class="fa fa-plus fa-white"></i></a>
+            <a rel="tooltip" title="<%= translation('sidebar._post_button.share_your_work',{},false) %>" data-placement="bottom" href="/post?tags=<%= tag.name %>" class="btn btn-primary btn-sm requireLogin">New post <i class="fa fa-plus fa-white"></i></a>
           <% else %>
             <a class="btn btn-primary btn-sm index-follow-buttons follow-btn-remote requireLogin" href="/subscribe/tag/<%= tag.name %>" data-remote="true"><%= translation('tag.index.follow') %></a>
           <% end %>
@@ -64,16 +64,6 @@
 
   .node-list {
     display: grid;
-  }
-
-  .circle {
-    background-color: gray;
-    display: block;
-    margin-right: 8px;
-    float: left;
-    height: 20px;
-    width: 20px;
-    border-radius: 100%;
   }
 
   .card-view a {

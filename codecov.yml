@@ -1,18 +1,30 @@
+# Documentation: https://docs.codecov.io/docs/codecov-yaml
+
 comment:
   layout: "reach, diff, flags, files"
   behavior: default
-  require_changes: false  # if true: only post the comment if coverage changes
-  require_base: no        # [yes :: must have a base report to post]
+  after_n_builds: 5
+  require_changes: true  # if true: only post the comment if coverage changes
+  require_base: yes       # [yes :: must have a base report to post]
   require_head: yes       # [yes :: must have a head report to post]
   branches: null          # branch names that can post comment
 coverage:
+  precision: 2
   status:
     project: 
       default:
-        threshold: 1%
+        threshold: 3%
     patch:
       default:
         threshold: 50%
 
 ignore:
   - app/assets/stylesheets/
+
+codecov:
+  # Avoid "Missing base report" due to committing CHANGES.rst with "[CI skip]"
+  # https://github.com/codecov/support/issues/363
+  # https://docs.codecov.io/v4.3.6/docs/comparing-commits
+  allow_coverage_offsets: true
+  notify:
+    after_n_builds: 5

@@ -252,7 +252,7 @@ class TagController < ApplicationController
 
   def blog2
     nids = Tag.find_nodes_by_type(params[:id], 'note', nil).collect(&:nid)
-    @pagy, @notes = pagy(Node.where('status = 1 AND nid in (?)', nids).order('created DESC'), items: 6)
+    @pagy, @notes = pagy(Node.includes(:node_tag).where('node.status = 1 AND node.nid in (?)', nids).order('community_tags.updated_at DESC'), items: 6)
     @tags = Tag.where(name: params[:id])
     @tagnames = @tags.collect(&:name).uniq! || []
     @title = @tagnames.join(',') + ' Blog' if @tagnames
@@ -358,8 +358,8 @@ class TagController < ApplicationController
   def delete
     node_tag = NodeTag.where(nid: params[:nid], tid: params[:tid]).first
     node = Node.where(nid: params[:nid]).first
-    # only admins, mods, and tag authors can delete other peoples' tags
-    if node_tag.uid == current_user.uid || logged_in_as(['admin', 'moderator']) || node.uid == current_user.uid
+    # only admins, mods can delete other peoples' tags if the note/wiki contains the locked tag
+    if (node_tag.uid == current_user.uid && !node.has_tag('locked')) || logged_in_as(['admin', 'moderator']) || (node.uid == current_user.uid && !node.has_tag('locked'))
 
       tag = Tag.joins(:node_tag)
                    .select('term_data.name')
@@ -385,6 +385,9 @@ class TagController < ApplicationController
           end
         end
       end
+    elsif node.has_tag('locked')
+      flash[:error] = "Only admins can delete tags on locked pages."
+      redirect_to Node.find_by(nid: params[:nid]).path
     else
       flash[:error] = I18n.t('tag_controller.must_own_tag_to_delete')
       redirect_to Node.find_by(nid: params[:nid]).path
@@ -491,7 +494,7 @@ class TagController < ApplicationController
   end
 
   def graph_data
-    render json: params.key?(:limit) ? Tag.graph_data(params[:limit].to_i) : Tag.graph_data
+    render json: params.key?(:limit) ? Tag.graph_data(params[:limit].to_i, params[:type].to_s, params[:weight].to_i) : Tag.graph_data
   end
 
   def stats
@@ -510,6 +513,20 @@ class TagController < ApplicationController
     @tag_comments = @tags.first.comment_graph(@start, @end)
     @subscriptions = @tags.first.subscription_graph(@start, @end)
 
+    @first_time_poster_content_tally = Rails.cache.fetch("#{params[:id].to_s+@start.to_s+@end.to_s}/first-time-posters-in-period", expires_in: 1.day) do
+      # count nodes tagged "first-time-poster" in addition to this tag:
+      ftp_tid = Tag.where(name: 'first-time-poster')&.first&.tid
+      ftp_nids = NodeTag
+        .where(tid: ftp_tid)
+        .joins(:node)
+        .where('node.created': @start.to_i..@end.to_i)
+        .collect(&:nid)
+      tag_nids = NodeTag.where(tid: @tags&.first&.tid)
+        .collect(&:nid)
+      (ftp_nids & tag_nids).count # intersection of 2 collections
+    end
+
+    @overall_contributor_tally = Tag.contributors(@tag_name, start: @start, finish: @end)
     @all_subscriptions = TagSelection.graph(@start, @end)
 
     total_questions = Node.published.questions

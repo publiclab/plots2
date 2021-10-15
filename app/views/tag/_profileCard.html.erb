@@ -13,6 +13,8 @@
             <img class="rounded-circle" id="profile-photo" style="width:20px; height:20px; margin-right:8px; display: inline-block;" src="<%= node.main_image.path(:default) %>" />
           <% elsif node.scraped_image %>
             <img class="rounded-circle" id="profile-photo" style="width:20px; height:20px; margin-right:8px; display: inline-block;" src="<%= node.scraped_image %>" />
+          <% else %>
+            <div class="circle"></div>
           <% end %>
           <a class="post-title" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= (node.type == 'note') ? node.title : node.latest.title %></a>
           &nbsp; by @<%= node.author.name %>
@@ -30,11 +32,11 @@
       </div>
 
       <div class="col">
-        <a style="float: right;  width: 100px;" rel="tooltip" title="<%= translation('sidebar._post_button.share_your_work') %>" data-placement="bottom" href="/post?tags=<%= tag.name %>" class="btn btn-primary btn-sm">New post <i class="fa fa-plus fa-white"></i></a>
+        <a style="float: right;  width: 100px;" rel="tooltip" title="<%= translation('sidebar._post_button.share_your_work',{},false) %>" data-placement="bottom" href="/post?tags=<%= tag.name %>" class="btn btn-primary btn-sm">New post <i class="fa fa-plus fa-white"></i></a>
         <% if current_user %>
         <div id="follow-unfollow-column-<%=tag.tid%>" style="float: right; margin-right: 10px;">
           <% if current_user.following(tag.name) %>
-            <a style="width: 100px;" rel="tooltip" title="<%= translation('tag.show.unfollow') %>" class="btn btn-light btn-sm active" href="/unsubscribe/tag/<%= tag.name %>"></i> <%= translation('tag.index.unfollow') %></a>
+            <a style="width: 100px;" rel="tooltip" title="<%= translation('tag.show.unfollow',{},false) %>" class="btn btn-light btn-sm active" href="/unsubscribe/tag/<%= tag.name %>"></i> <%= translation('tag.index.unfollow') %></a>
           <% else %>
             <a style="width: 100px;" class="btn btn-outline-secondary btn-sm index-follow-buttons follow-btn-remote" href="/subscribe/tag/<%= tag.name %>" data-remote="true"><%= translation('tag.index.follow') %></a>
           <% end %>

@@ -11,7 +11,6 @@ class Editor {
     this.commentFormID = defaultForm;
     this.isSingleFormPage = isSingleFormPage;
     // this will get deleted in the next few PRs, so collapsing into one line to pass codeclimate
-    this.templates = { 'blog': "## The beginning\n\n## What we did\n\n## Why it matters\n\n## How can you help", 'default': "## What I want to do\n\n## My attempt and results\n\n## Questions and next steps\n\n## Why I'm interested", 'support': "## Details about the problem\n\n## A photo or screenshot of the setup", 'event': "## Event details\n\nWhen, where, what\n\n## Background\n\nWho, why", 'question': "## What I want to do or know\n\n## Background story" };
       
     marked.setOptions({
       gfm: true,
@@ -81,39 +80,78 @@ class Editor {
       '](' + src + ')\n'
     );
   }
-  // these header formatting functions are not used anywhere, so commenting them out for now to pass codeclimate:
-
-  // h1() {
-  //   this.wrap('#','')
-  // }
+  
   h2() {
     this.wrap('##', '');
   }
-  // h3() {
-  //   this.wrap('###','')
-  // }
-  // h4() {
-  //   this.wrap('####','')
-  // }
-  // h5() {
-  //   this.wrap('#####','')
-  // }
-  // h6() {
-  //   this.wrap('######','')
-  // }
-  // h7() {
-  //   this.wrap('#######','')
-  // }
+
+  //debounce function addition
+  debounce(func, wait, immediate) {
+    let timeout;
+    return function () {
+      let context = this,
+        args = arguments;
+      let later = function () {
+        timeout = null;
+        if (!immediate) func.apply(context, args);
+      };
+      let callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+      if (callNow) func.apply(context, args);
+    };
+  }
+
   // this function is dedicated to Don Blair https://github.com/donblair
   attachSaveListener() {
     // remove any other existing eventHandler
     $("textarea").off("input.save"); // input.save is a custom jQuery eventHandler
     const thisEditor = this; // save a reference to this editor, because inside the eventListener, "this" points to e.target
-    this.textAreaElement.on("input.save", function() {
+    //implementing a debounce function on save method
+    this.textAreaElement.on(
+    "input.save",
+    debounce(function () {
+      //changing styles and text
+      //explicitly handling main comment form
+      if ($('#text-input-main').is(':focus')) {
+       
+       $("#comment-form-main .btn-toolbar #save-button-main").find("i").removeClass("fa fa-save").addClass("fas fa-sync fa-spin");
+     
+       let saving_text = $('<p id="saving-text" style="padding-bottom: 8px"> Saving... </p>');
+       $("#comment-form-main .imagebar").prepend(saving_text);
+       $("#comment-form-main .imagebar p").not("#saving-text").hide();
+        
+       //adding delay and revering the styles
+        setTimeout(() => {
+          $("#comment-form-main .btn-toolbar #save-button-main").find("i").removeClass("fas fa-sync fa-spin").addClass("fa fa-save");
+          
+          $("#comment-form-main .imagebar").find("#saving-text").remove();
+          $("#comment-form-main .imagebar p").not("#saving-text").show();
+        }, 400);
+    }
+    else { 
+        //handling other comment forms
+        let comment_temp_id = (document.activeElement.parentElement.parentElement.id);
+        let imager_bar = (document.activeElement.nextElementSibling.className);
+
+        $('#'+comment_temp_id).find('.btn-toolbar').find(".save-button").find("i").removeClass("fa fa-save").addClass("fas fa-sync fa-spin");
+
+        let saving_text = $('<p id="saving-text" style="padding-bottom: 8px"> Saving... </p>');
+        $('#'+comment_temp_id).find('.'+imager_bar).prepend(saving_text);
+        $('#'+comment_temp_id).find('.'+imager_bar).find("p").not("#saving-text").hide();
+
+        setTimeout(() => {
+          $('#'+comment_temp_id).find('.btn-toolbar').find(".save-button").find("i").removeClass("fas fa-sync fa-spin").addClass("fa fa-save");
+          
+          $('#'+comment_temp_id).find('.'+imager_bar).find("#saving-text").remove();
+          $('#'+comment_temp_id).find('.'+imager_bar).find("p").not("#saving-text").show();
+        }, 400);
+    }
       thisEditor.save(thisEditor);
-    });
-  }
-  save(thisEditor) {
+      }, 700)
+    );
+  }  
+    save(thisEditor) {
     const storageKey = "plots:" + window.location.pathname + ":" + thisEditor.commentFormID;
     localStorage.setItem(storageKey, thisEditor.textAreaValue);
   }

@@ -1,6 +1,22 @@
 name: tests
-on: [pull_request]
+on: 
+  pull_request:
+    types: [assigned, opened, synchronize, reopened]
+  workflow_run:
+    workflows: ["Upload coverage on PR merge and create Sentry release"]
+    type:
+      - complete
+
 jobs:
+
+  add-label:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: buildsville/add-remove-label@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        label: work-in-progress
+        type: add
 
   unit-tests:
     runs-on: ubuntu-latest
@@ -39,6 +55,7 @@ jobs:
         ruby-version: 2.6.6 # Not needed with a .ruby-version file
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically (not working?)
     - uses: ./.github/actions/setup-test-environment
+    - uses: egordm/gha-yarn-node-cache@v1
     - name: Install JavaScript dependencies with Yarn
       run: yarn check || yarn install --frozen-lockfile;
     - name: Run webpacker setup
@@ -119,3 +136,70 @@ jobs:
         export DISPLAY=:99
         chromedriver --url-base=/wd/hub &
         bundle exec rails test:system
+    - name: Archive system test screenshots
+      uses: actions/upload-artifact@v2
+      with:
+        name: system-test-screenshots
+        path: tmp/screenshots/*
+
+  comment-system-tests:
+    runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis
+        # Set health checks to wait until redis has started
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps port 6379 on service container to the host
+          - 6379:6379
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.6.6 # Not needed with a .ruby-version file
+        bundler-cache: true # runs 'bundle install' and caches installed gems automatically (not working?)
+    - uses: nanasess/setup-chromedriver@v1.0.1
+    - uses: ./.github/actions/setup-test-environment
+    - name: Install JavaScript dependencies with Yarn
+      run: yarn check || yarn install --frozen-lockfile;
+    - name: Run webpacker setup
+      env:
+        RAILS_ENV: test
+        DB_PASSWORD: root
+        DB_PORT: ${{ job.services.mysql.ports[3306] }}
+      run: bundle exec rails g webpacker:install && bundle exec rails g webpacker:install:react && bundle exec rails g react:install
+    - name: "Comment System Tests"
+      env:
+        RAILS_ENV: test
+        DB_PASSWORD: root
+        DB_PORT: ${{ job.services.mysql.ports[3306] }}
+        REDIS_HOST: localhost
+        REDIS_PORT: 6379
+      run: |
+        export DISPLAY=:99
+        chromedriver --url-base=/wd/hub &
+        bundle exec rails test test/comment_system_tests
+    - name: Archive system test screenshots
+      uses: actions/upload-artifact@v2
+      with:
+        name: system-test-screenshots
+        path: tmp/screenshots/*
+
+  remove-labels:
+    runs-on: ubuntu-latest
+    needs: [add-label, unit-tests, functional-tests, integration-tests, system-tests]
+    steps:
+    - uses: buildsville/add-remove-label@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        label: work-in-progress
+        type: remove
+    - uses: buildsville/add-remove-label@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        label: ready-for-review
+        type: add

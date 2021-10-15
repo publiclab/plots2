@@ -1,4 +1,5 @@
 <%= javascript_include_tag('asyncTagSubscriptions.js') %>
+<p class="alert alert-primary"><%= translation('dashboard_v2.sidebar.welcome') %> <a href="https://publiclab.org/n/27575">Learn more &raquo;</a></p>
 
 <%= render partial: 'dashboard_v2/location'%>
 <%# More Topics %>
@@ -13,9 +14,12 @@
           </a>
       </h4>
     </div>
+    
+    <%= feature('dashboard-sidebar-top') %>
+    
     <div id="moreTopics" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
       <div class="card-body">
-        <small class="form-grey"><%= translation('dashboard_v2.sidebar.add_topics') %> <a href="#" class="form-grey" style="text-decoration: underline;"><%= translation('dashboard_v2.sidebar.learn_more') %></a></small>
+       <small class="form-grey"><%= translation('dashboard_v2.sidebar.add_topics') %> <a href="/wiki/topics" class="form-grey" style="text-decoration: underline;"><%= translation('dashboard_v2.sidebar.learn_more') %></a></small>
         <br/> <br/>
         <%# Featured topics %>
         <small><a href="/tags" class="form-grey"><%= translation('dashboard_v2.sidebar.featured_topics') %>:</a></small>
@@ -38,11 +42,15 @@
         <small class="form-grey">Search topics</small>
         <%= render :partial => "tag/typeahead_search" %>
         <br/>
-        <%# All topics link %>
-        <small class="form-grey" style="text-decoration: underline"><%= translation('dashboard_v2.sidebar.all_topics',:url => '/wiki/topics') %> </small>
-        <br/>
-        <%# All posts %>
-        <small class="form-grey" style="text-decoration: underline; margin-top: -34px;"><%= translation('dashboard_v2.sidebar.all_posts',:url => '/notes') %> </small>
+        <small class="form-grey" style="text-decoration: underline">
+          <%= translation('dashboard_v2.sidebar.all_topics',:url => '/wiki/topics') %> 
+        </small> |
+        <small class="form-grey" style="text-decoration: underline; margin-top: -34px;">
+          <%= translation('dashboard_v2.sidebar.all_posts',:url => '/notes') %>
+        </small> |
+        <small class="form-grey" style="text-decoration: underline; margin-top: -34px;">
+          <a href='/research'>All new activity</a>
+        </small>
       </div>
     </div>
   </div>
@@ -51,10 +59,18 @@
 
 <style>
 
-  .text-format{
+  .text-format {
     color: #888;
     font-size: small;
     margin: 1.3rem 0;
+  }
+
+  .dashboard .form-grey {
+    color: #777;
+  }
+
+  .dashboard small {
+    font-size: 13px;
   }
 
   .arrow{

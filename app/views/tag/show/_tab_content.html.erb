@@ -8,7 +8,7 @@
     <div class="tab-pane active" id="notes">
       <% if @notes.nil? || @notes.length == 0 %>
       <p><%= raw translation('tag.show.no_notes_results_found') %></p>
-      <p>Or try searching: <a href="/search/<%= params[:id] %>"><%= params[:id] %></a></p>
+      <p><%= raw translation('tag.show.or_try_searching') %> <a href="/search/<%= params[:id] %>"><%= params[:id] %></a></p>
       <% else %>
         <%= render partial: "notes/notes", locals: { tagname: params[:id] } %>
       <% end %>
@@ -46,7 +46,7 @@
   <% if @node_type == "maps" %>
     <div class="tab-pane active" id="wikis">
      <% if @nodes.empty? %>
-        <p><%= raw translation('tag.show.no_map_results_found', :tag => params[:id]) %>. You can view other maps <a href="/maps">here</a>.</p>
+        <%= raw translation('tag.show.no_map_results_found', :tag => params[:id]) %>.
       <% else %>
         <%= render partial: "map/maps" %>
       <% end %>

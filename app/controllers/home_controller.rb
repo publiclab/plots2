@@ -32,22 +32,12 @@ class HomeController < ApplicationController
   end
 
   def dashboard
-    if current_user
-      @note_count = Node.select(%i(created type status))
-        .where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
-        .count(:all)
-      @wiki_count = Revision.select(:timestamp)
-        .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
-        .size
-      @user_note_count = Node.where(type: 'note', status: 1, uid: current_user.uid).size
-      @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments = activity
-      render template: 'dashboard/dashboard'
-    else
-      redirect_to '/research'
-    end
+    redirect_to '/research'
+
   end
 
   def dashboard_v2
+    @title = I18n.t('dashboard._header.dashboard')
     # The new dashboard displays the blog and topics list
     if current_user
       @blog = Tag.find_nodes_by_type('blog', 'note', 1).limit(1).first
@@ -70,7 +60,15 @@ class HomeController < ApplicationController
 
   def research
     if current_user
-      redirect_to '/dashboard'
+      @note_count = Node.select(%i(created type status))
+        .where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
+        .count(:all)
+      @wiki_count = Revision.select(:timestamp)
+        .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
+        .size
+      @user_note_count = Node.where(type: 'note', status: 1, uid: current_user.uid).size
+      @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments = activity
+      render template: 'dashboard/dashboard'
     else
       @note_count = Node.select(%i(created type status))
         .where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
@@ -91,10 +89,12 @@ class HomeController < ApplicationController
     # remove "classroom" postings; also switch to an EXCEPT operator in sql, see https://github.com/publiclab/plots2/issues/375
     hidden_nids = Node.hidden_response_node_ids
     notes = Node.where(type: 'note')
+      .includes(:revision)
+      .references(:node_revision)
       .where('node.nid NOT IN (?)', hidden_nids + [0]) # in case hidden_nids is empty
-      .order('nid DESC')
+      .order('node_revisions.timestamp DESC')
       .page(params[:page])
-    notes = notes.where('nid != (?)', blog.nid) if blog
+    notes = notes.where('node.nid != (?)', blog.nid) if blog
 
     comments = Comment.joins(:node, :user)
                    .includes(:node)

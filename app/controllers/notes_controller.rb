@@ -417,12 +417,27 @@ class NotesController < ApplicationController
       @node.slug = @node.slug.split('token').first
       @node['created'] = DateTime.now.to_i # odd assignment needed due to legacy Drupal column types
       @node['changed'] = DateTime.now.to_i
+      revision = @node.latest
+      revision['timestamp'] = DateTime.now.to_i # odd assignment needed due to legacy Drupal column types 
+      revision.save
+      @node.save
       @node.publish
       SubscriptionMailer.notify_node_creation(@node).deliver_later
       flash[:notice] = "Thanks for your contribution. Research note published! Now, it's visible publicly."
       redirect_to @node.path
     else
       flash[:warning] = "You are not author or moderator so you can't publish a draft!"
+      redirect_to '/'
+    end
+  end
+
+  def drafts
+    @user = User.find_by(name: params[:id])
+    if current_user&.can_moderate? || current_user == @user
+      @pagy, @drafts = pagy(@user.drafts, items: 24)
+      render template: 'notes/drafts'
+    else
+      flash[:warning] = "This page is only visible to the author and moderators."
       redirect_to '/'
     end
   end

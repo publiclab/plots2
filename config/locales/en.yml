@@ -104,6 +104,19 @@ en:
       title: "Title"
       creation_date: "Creation date"
       image: "Image"
+      most_common_tags: "Most Common Tags"
+      unfollow: "Unfollow"
+      share_location: "Share your Location"
+      reset_password: "Reset User Password"
+      access_token: "My Access Token"
+      link_social_media: "Link Social Media"
+      copy: "Copy"
+      enter_social_media: "Enter Your Social Media User name like twitter:publiclab or instagram:publiclab"
+      close: "Close"
+      save_changes: "Save changes"
+      followers: "Followers"
+      following: "Following"
+      privacy: "Learn about <a href='https://publiclab.org/location-privacy'>privacy</a>"
     info:
       additonal_information: "Additional Information"
     _form:
@@ -181,6 +194,7 @@ en:
       research_notes: "Research Notes"
       questions: "Questions"
       comments: "Comments"
+      drafts: "Drafts"
       all_notes: "All Notes"
     _notes:
       moderate_first_time_post: "Moderate first-time post:"
@@ -278,8 +292,11 @@ en:
       members_and_contributors: |
           <b>%{member_count}  member registrations</b>
           and <b>%{people_count}  contributors </b> posted notes, wikis, questions, comments, or revisions in this period.
-
+   
   dashboard:
+    _flag_list:
+      flag_post: "Flag post to moderators"
+      become_moderator: "Become a moderator"
     _node_comment:
       commented_on: "commented on"
       comments: "comments"
@@ -306,12 +323,16 @@ en:
         wiki: "Wiki"
       from_other: "From other"
       community_scientists: "community scientists"
+      recent_activity: "Recent activity"
+      post_date: "Post date"
       past_week: "in the past week"
       your_work: "Your work"
       share_work: "Share your work"
     dashboard:
       from_blog: "From the <a href='%{url}'>Public Lab Blog</a>"
       by: "by"
+    _node_event: 
+      rsvp: "RSVP"
     _node_question:
       post_answer: "Post an answer"
       question: "Question"
@@ -384,6 +405,7 @@ en:
       all_topics: "<a href='%{url}' class='form-grey'>All topics</a>"
       more_topics: "<a href='%{url}' class='form-grey'>more...</a>"
       interest_topics: "Click to start <a href='%{url}' class='form-grey' style='text-decoration: underline;'>following</a> topics that interest you"
+      welcome: "Welcome to the new dashboard!"
   like:
     index:
       recent_likes: "Recent Likes"
@@ -461,6 +483,7 @@ en:
       or_subscribe_to_answer: "<a style='margin-bottom:6px;' class='btn btn-primary
         requireLogin' target='_blank' href='%{url1}'>Subscribe to answer questions
         on this topic</a>"
+      or_try_searching: "Or try searching:"
       research_notes: "Research notes"
       questions: "Questions"
       wiki_pages: "Wiki pages"
@@ -471,7 +494,7 @@ en:
       no_questions_results_found: "Hi! No Questions have this tag <span>&#x1F937</span>, try checking the <b>Research Notes</b> or <b>Wikis</b> tabs on this page."
       try_advanced_search: "Or try an <a href='%{url1}'>advanced search</a>"
       people: "People"
-      no_map_results_found: "Sorry, no map is tagged with <i>%{tag}</i>"
+      no_map_results_found: "Sorry, no map is tagged with <i>%{tag}</i>. You can view other maps <a href='/maps'>here</a>."
       contributors: "Contributors"
       notes_not_available: "This topic has no available notes. View other posts by clicking the link below."
       by: "by"
@@ -504,8 +527,11 @@ en:
         use the * asterisk in their URLs, and will not show contributor listings."
       contributor: "Contributor"
       notes: "Notes"
-      people_who've_posted: "People who've posted"
+      people_who've_contributed: "People who've contributed"
       people_who_are_following: "People who are following"
+    location:
+      tooltip: "This is a geographical tag for placing this content on a map. 
+        Please visit our <a href='https://publiclab.org/wiki/location-privacy'>location privacy</a> page."
   wiki:
     index:
       wiki_pages_tagged_with: "Wiki pages tagged with <i style='color:#aaa;'>%{tag}</i>"
@@ -604,6 +630,7 @@ en:
         open source, Do-It-Yourself technologies for investigating local environmental
         health and justice issues."
       your_dashboard: "Your dashboard"
+      features: "Features"
       projects:
         projects_title: "Projects"
         research:
@@ -839,6 +866,7 @@ en:
         updated %{time} ago
         by <a href='%{url1}'>%{author_name}</a>
       more: "More..."
+      delete: "Delete Post"
     _related:
       write_research_note: "Write a post"
       share_your_work: "Share your work with others"
@@ -895,6 +923,7 @@ en:
     post:
       welcome: "Here you can ask a question to the Public Lab community to help you in your environmental exploration. This is a great space to ask whether a method exists for identifying a possible pollutant, or ask about details of a specific technique for identifying a pollutant."
       add_tags: "You can add more tags in the tags section below to further relate your question. You can also change the main tag of the question by renaming the part after"
+      question: "Ask a Question of the Public Lab Community"
       q_and_a: "New to Public Lab? Take a minute to read the Q &amp; A wiki before posting your question"
       learn_more: "Learn more &raquo;"
       research_note: "At Public Lab, we all collaborate to invent and improve open source environmental science tools. <b>Research notes</b> are the primary way we share what we learn, ask questions, pose challenges, and critique one another's work."
@@ -904,6 +933,14 @@ en:
       events: "announcements of events"
       reports: "reports from a field test or meetup"
       video: "Watch a 30 second video on posting research notes &raquo;"
+    rich:
+      drag_image: "Drag an image here to upload."
+    wikiRich:
+      new_wiki: "New Wiki Page"
+    questionRich:
+      consider_sharing: "Consider sharing:"
+      what_resources_you_need: "What resources you need"
+      where_you_are_working: "Where you are working"
   home_controller:
     science_community: "a DIY environmental science community"
     environmental_investigation: "a community for DIY environmental investigation"
@@ -1191,7 +1228,13 @@ en:
       not_a_number: is not a number
       not_an_integer: must be an integer
       odd: must be odd
-      other_than: must be other than %{count}
+      other_than:
+        zero: must be other than %{count}
+        one: must be other than %{count}
+        two: must be other than %{count}
+        few: must be other than %{count}
+        many: must be other than %{count}
+        other: must be other than %{count}
       present: must be blank
       required: must exist
       taken: has already been taken
@@ -1236,11 +1279,31 @@ en:
       decimal_units:
         format: "%n %u"
         units:
-          billion: Billion
-          million: Million
-          quadrillion: Quadrillion
-          thousand: Thousand
-          trillion: Trillion
+          billion:
+            one: Billion
+            few: Billion
+            many: Billion
+            other: Billion
+          million:
+            one: Million
+            few: Million
+            many: Million
+            other: Million
+          quadrillion:
+            one: Quadrillion
+            few: Quadrillion
+            many: Quadrillion
+            other: Quadrillion
+          thousand:
+            one: Thousand
+            few: Thousand
+            many: Thousand
+            other: Thousand
+          trillion:
+            one: Trillion
+            few: Trillion
+            many: Trillion
+            other: Trillion
           unit: ''
       format:
         delimiter: ''

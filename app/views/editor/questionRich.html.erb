@@ -33,7 +33,7 @@
       <div class="ple-module-title ple-module">
 
         <div class="ple-module-content">
-          <h2>Ask a question of the PublicLab community</h2>
+          <h2><%=translation('editor.post.question')%></h2>
           <br />
           <div>
             <input aria-label="Enter question" class="form-control form-control-lg" type="text" placeholder="What's your question? Be specific." value="<%= if @node then @node.title else params[:title] end %>" />
@@ -56,11 +56,11 @@
           <div style="color:#aaa;">
             <br />
             <br />
-            <p>Consider sharing:</p>
+            <p><%= raw translation('editor.questionRich.consider_sharing') %></p>
             <ul style="list-style-type:disk ;">
-              <li>Where you are working</li>
+              <li><%= raw translation('editor.questionRich.where_you_are_working') %></li>
               <li>Why you are interested</li>
-              <li>What resources you need</li>
+              <li><%= raw translation('editor.questionRich.what_resources_you_need') %></li>
             </ul>
           </div>
 
@@ -154,6 +154,7 @@
         nid: <%= @node.id %><% end %>
       },
       richTextModule: {
+        token: $('meta[name="csrf-token"]').attr('content'),
         authorsAutocomplete: false,
         tagsAutocomplete: false,
         formats: ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt', 'docx', 'bmp', 'obj', 'json', 'jpg', 'jpeg', 'png', 'gif']

@@ -44,6 +44,14 @@ h5,h6, h1 small, h3 small {
   line-height: 1.4em;
 }
 
+h6.dropdown-header {
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 75%;
+    color: #aaa;
+}
+
 .pl-content h1,
 .pl-content h2,
 .pl-content h3 {
@@ -141,6 +149,10 @@ a .fa-white,
 #header .navbar #searchform_input {
   cursor: text;
   min-width: 190px;
+}
+
+#header .input-group #searchform_input:focus {
+  box-shadow: 0 0 0 3px rgba(21, 156, 228, 0.4) inset !important;
 }
 
 @media (max-width:992px) {
@@ -280,6 +292,10 @@ a .fa-white,
   list-style: none;
   padding-left: 0;
   line-height: 2em;
+}
+
+.footer a {
+  color: #007bff !important;
 }
 
 .caption {

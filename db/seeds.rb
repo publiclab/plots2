@@ -90,7 +90,8 @@ Revision.create! "nid"=>footer_feature.nid, "uid"=>admin.uid, "title"=>"footer-n
 home_intro_feature = Node.create! "type"=>"feature", "title"=>"home-intro", "uid"=>admin.id
 Revision.create! "nid"=>home_intro_feature.nid, "uid"=>admin.uid, "title"=>"home-intro",
                   "body"=>"Welcome to the plots2 application!
-                  This message is displayed only to developers running the code in a development environment.
-                  To use a lot of the features on this site, even locally, you'll have to log in. Default username and password are
-                  username: admin, moderator, or user and password: password",
+                  This message is displayed only to developers running the code in a development environment (normally it's the front page content!).
+                  To use a lot of the features on this site, even locally, you'll have to <a href='/login'>log in</a>. Default username and password are
+                  username: admin, moderator, or user and password: password. If you run into trouble, please reach out at https://publiclab.org/chat or in our getting started issue at https://github.com/publiclab/plots2/issues/3840 .
+                  To test UI changes related to 'Translation-System' please login and 'Switch on Translation' from the drop-down menu visible on hoverig over profile picture in top navigation bar.",
                   "teaser"=>"", "log"=>"", "format"=>1

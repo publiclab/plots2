@@ -41,6 +41,7 @@ todo.txt
 !config/localhost.key
 passenger.*
 passenger-standalone.json.bkp
+public/public/
 public/pdf.js/
 public/sites/
 public/assets/
@@ -65,3 +66,4 @@ yarn-error.log
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
+.rake_tasks~

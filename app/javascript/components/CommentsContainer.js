@@ -1,29 +1,26 @@
-import React, { useState } from "react";
+import React, { useReducer, useState } from "react";
 import PropTypes from "prop-types";
 
 import { UserContext } from "./user-context";
-import { makeDeepCopy } from "./helpers";
+import { reducer } from "./reducers";
 
 import CommentForm from "./CommentForm";
 import CommentsHeader from "./CommentsHeader";
 import CommentsList from "./CommentsList"
 
 const CommentsContainer = ({
-  initialCommentFormToggleState,
+  initialCommentFormsVisibility,
   initialComments,
   initialTextAreaValues,
   nodeId
 }) => {
-  // React Hook: Comments State
-  const [comments, setComments] = useState(initialComments);
-
-  // React Hook: Visibility for Reply and Edit Comment Forms
-  const [commentFormsVisibility, setCommentFormsVisibility] = useState(initialCommentFormToggleState);
-
-  // hide and reveal reply & edit comment forms
-  const handleFormVisibilityToggle = (commentFormId) => {
-    setCommentFormsVisibility(oldState => (Object.assign({}, oldState, { [commentFormId]: !oldState[commentFormId] })));
+  const initialState = {
+    comments: initialComments,
+    commentFormsVisibility: initialCommentFormsVisibility,
+    textAreaValues: initialTextAreaValues
   }
+
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   // React Hook: <textarea> Input State for Comment Forms
   //   ie. the value that shows inside a comment form's <textarea>
@@ -60,17 +57,29 @@ const CommentsContainer = ({
         // blank out the value of textarea & also create a value for the new comment's edit form
         setTextAreaValues(oldState => ({ ...oldState, [formId]: "", ["edit-" + newCommentId]: newCommentRawText }));
         // the new comment form comes with an edit form, its toggle state needs to be created as well
-        setCommentFormsVisibility(oldState => ({ ...oldState, ["edit-" + newCommentId]: false }));
+        dispatch({
+          type: "HIDE COMMENT FORM",
+          commentFormId: "edit-" + newCommentId
+        })
         // if the comment doesn't have a replyTo, then it's a parent comment
         // parent comments have reply forms, this needs to be set in state as well.
         if (!data.comment[0].replyTo) {
-          setCommentFormsVisibility(oldState => ({ ...oldState, ["reply-" + newCommentId]: false }));
+          dispatch({
+            type: "HIDE COMMENT FORM",
+            commentFormId: "reply-" + newCommentId
+          })
         }
-        // push the comment into state
-        setComments(oldComments => ([...oldComments, data.comment[0]]));
+        // call useReducer's dispatch function to push the comment into state
+        dispatch({
+          type: "CREATE COMMENT",
+          newComment: data.comment[0]
+        })
         // close the comment form
         if (formType !== "main") {
-          setCommentFormsVisibility(oldState => (Object.assign({}, oldState, { [formId]: false })));
+          dispatch({
+            type: "HIDE COMMENT FORM",
+            commentFormId: formId
+          });
         }
       }
     );
@@ -87,20 +96,16 @@ const CommentsContainer = ({
         body: commentBody
       }, 
       function(data) {
-        // the freshly updated comment is NOT a reply
-        for (let i = 0; i < comments.length; i++) {
-          // find the comment in state
-          if (comments[i].commentId === data.comment[0].commentId) {
-            let newComment = makeDeepCopy(comments[i]);
-            newComment.htmlCommentText = data.comment[0].htmlCommentText; // update comment text
-            newComment.rawCommentText = data.comment[0].rawCommentText;
-            // keep most of oldComments, but replace the comment at index i with newComment.
-            setComments(oldComments => (Object.assign([], oldComments, { [i]: newComment })));
-            break;
-          }
-        }
+        // call useReducer's dispatch function to update the comment in state
+        dispatch({
+          type: "UPDATE COMMENT",
+          newComment: data.comment[0]
+        })
         // close the edit comment form
-        setCommentFormsVisibility(oldState => (Object.assign({}, oldState, { [formId]: false })));
+        dispatch({
+          type: "HIDE COMMENT FORM",
+          commentFormId: formId
+        });
         notyNotification('mint', 3000, 'success', 'topRight', 'Comment Updated!');
       }
     );
@@ -114,12 +119,11 @@ const CommentsContainer = ({
       },
       function(data) {
         if (data.success) {
-          for (let i = 0; i < comments.length; i++) {
-            if (comments[i].commentId === commentId) {
-              setComments(oldState => (oldState.filter(comment => comment.commentId !== commentId)));
-              notyNotification('sunset', 3000, 'error', 'topRight', 'Comment deleted');
-            }
-          }
+          dispatch({
+            type: "DELETE COMMENT",
+            commentId
+          })
+          notyNotification('sunset', 3000, 'error', 'topRight', 'Comment deleted');
         }
       }
     )
@@ -130,14 +134,14 @@ const CommentsContainer = ({
       {currentUser => (
         <div id="legacy-editor-container" className="row">
           <div id="comments" className="col-lg-10 comments">
-            <CommentsHeader comments={comments} />
+            <CommentsHeader comments={state.comments} />
             <CommentsList 
-              commentFormsVisibility={commentFormsVisibility}
-              comments={comments}
+              commentFormsVisibility={state.commentFormsVisibility}
+              comments={state.comments}
               currentUser={currentUser}
+              dispatch={dispatch}
               handleCreateComment={handleCreateComment}
               handleDeleteComment={handleDeleteComment}
-              handleFormVisibilityToggle={handleFormVisibilityToggle}
               handleTextAreaChange={handleTextAreaChange}
               handleUpdateComment={handleUpdateComment}
               setTextAreaValues={setTextAreaValues}
@@ -159,9 +163,9 @@ const CommentsContainer = ({
 }
 
 CommentsContainer.propTypes = {
-  initialCommentFormToggleState: PropTypes.object.isRequired,
+  initialCommentFormsVisibility: PropTypes.objectOf(PropTypes.bool).isRequired,
   initialComments: PropTypes.array.isRequired,
-  initialTextAreaValues: PropTypes.object.isRequired,
+  initialTextAreaValues: PropTypes.objectOf(PropTypes.string).isRequired,
   nodeId: PropTypes.number.isRequired
 };
 

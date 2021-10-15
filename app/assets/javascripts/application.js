@@ -65,3 +65,4 @@
 //= require submitFormAjax.js
 //= require urlMapHash.js
 //= require spam2.js
+//= require tocbot

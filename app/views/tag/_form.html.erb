@@ -3,12 +3,18 @@
 <form id="tagform" class="form" data-remote="true" action="<%= url %>">
   <div class="control-group">
     <input class="form-control" name="remote" type="hidden" value="true" />
-    <div class="input-group">
-      <input aria-label="Enter tag name" autocomplete="off" class="tag-input form-control" name="name" type="text" placeholder="<%= translation('tag._tagging.enter_tags') %>" data-provide="typeahead" />
-      <div class="input-group-append">
-        <%= render partial: 'tag/advanced_tagging' %>
+    <% if @node && @node.has_tag('locked') && current_user.basic_user? %>
+      <div class="alert alert-danger" role="alert">
+        Only admins / moderators can add tags on locked content.
       </div>
-    </div>
+    <% else %>
+      <div class="input-group">
+         <input aria-label="Enter tag name" autocomplete="off" class="tag-input form-control" name="name" type="text" placeholder="<%= translation('tag._tagging.enter_tags',{},false) %>" data-provide="typeahead" />
+        <div class="input-group-append">
+          <%= render partial: 'tag/advanced_tagging' %>
+        </div>
+      </div>
+    <% end %>
     <script>
       jQuery(document).ready(function() {
         <% if node %>
