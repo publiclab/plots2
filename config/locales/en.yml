@@ -384,7 +384,6 @@ en:
       dashboard: "Dashboard"
       updates: "Updates from community members on <a href='%{url}' class='form-grey' style='text-decoration: underline;'>topics</a> you"
       follow: "<a href='%{url}' class='form-grey' style='text-decoration: underline;'> follow</a>"
-      search_topics: "Search topics"
       community_research: "Community research"
     dashboard:
       from_blog: "From the <a href='%{url}'>Public Lab Blog</a>"
@@ -402,6 +401,7 @@ en:
       trending_topics: "Trending topics"
       featured_topics: "Featured topics"
       learn_more: "learn more"
+      search_topics: "Search topics"
       add_topics: "Click to add topics, or"
       all_topics: "<a href='%{url}' class='form-grey'>All topics</a>"
       more_topics: "<a href='%{url}' class='form-grey'>more...</a>"
