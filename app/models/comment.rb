@@ -532,7 +532,9 @@ class Comment < ApplicationRecord
   end
 
   def update_counter
-    self.node.comments_count = Comment.where(status: 1, nid: self.node.id).count
-    self.node.save
+    return if node.nil?
+
+    node.comments_count = Comment.where(status: 1, nid: node.id).count
+    node.save
   end
 end
