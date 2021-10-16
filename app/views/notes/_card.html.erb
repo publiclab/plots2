@@ -41,7 +41,7 @@
             Post by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>" style="color: #303030">@<%= node.author.name %></a> <%= node.author.new_contributor %>
             <span style="color:darkgray;">
               <i class="fa fa-comment-o"></i>
-              <%= node.comments.size %> &nbsp; | &nbsp; <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope:'datetime.time_ago_in_words' }).gsub('about ','') %>
+              <%= node.comments_count %> &nbsp; | &nbsp; <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope:'datetime.time_ago_in_words' }).gsub('about ','') %>
             </span>
           <% elsif node.type == 'page' %>
             Wiki page by <%= node.revisions.collect(&:uid).uniq.length %> people
