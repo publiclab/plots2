@@ -70,11 +70,5 @@
     "webpack-cli": "^3.3.12",
     "woofmark": "~4.2.0"
   },
-  "devDependencies": {
-    "webpack-dev-server": "^3"
-  },
-  "homepage": "https://github.com/publiclab/plots2",
-  "engines": {
-    "yarn": ">= 1.0.0"
-  }
+  "homepage": "https://github.com/publiclab/plots2"
 }
