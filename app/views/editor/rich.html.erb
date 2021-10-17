@@ -344,10 +344,10 @@
     </div>
 
     <button class="btn btn-lg btn-outline-secondary btn-more"><i class="fa fa-clock-o"></i></button>
-
-    <span> &nbsp; By publishing, you agree to <a href="https://publiclab.org/licenses">open source your work</a><span class="d-none d-md-inline"> so that others may use it.</span></span>
+    <span> &nbsp;By publishing, you agree to <a href="https://publiclab.org/licenses">open source your work</a><span class="d-none d-md-inline"> so that others may use it.</span></span>
     <button class="btn btn-outline-secondary btn-lg float-right" onclick="preview()">Preview</button>
     <button class="publish-space ple-publish btn btn-lg btn-primary float-right disabled"><% if controller.action_name == "edit" && @node.status == 3 %>Save<% else %>Publish<% end %></button>
+    <span> &nbsp;&nbsp;&nbsp;<br>*Save as Draft feature is not available to first-time contributors<br></a><span class="d-none d-md-inline"> so that others may use it.</span></span>
     <span class="ple-help float-right">
       <% if controller.action_name != "edit" && !current_user.first_time_poster %>
         <span id="newOpts" style="display: inline-block;">
