@@ -452,8 +452,8 @@ en:
       browse_popular_tags: "We use tags to group research by topic -- browse below
         to see the most popular tags over the past month."
       tag: "name"
-      number_of_uses: "# of uses"
-      number_of_subscriptions: "# of people"
+      number_of_uses: "posts"
+      number_of_subscriptions: "followers"
       subscriptions: "Your subscriptions"
       sort_by: "Sort By"
       post: "post"
