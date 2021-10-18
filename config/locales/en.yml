@@ -104,6 +104,19 @@ en:
       title: "Title"
       creation_date: "Creation date"
       image: "Image"
+      most_common_tags: "Most Common Tags"
+      unfollow: "Unfollow"
+      share_location: "Share your Location"
+      reset_password: "Reset User Password"
+      access_token: "My Access Token"
+      link_social_media: "Link Social Media"
+      copy: "Copy"
+      enter_social_media: "Enter Your Social Media User name like twitter:publiclab or instagram:publiclab"
+      close: "Close"
+      save_changes: "Save changes"
+      followers: "Followers"
+      following: "Following"
+      privacy: "Learn about <a href='https://publiclab.org/location-privacy'>privacy</a>"
     info:
       additonal_information: "Additional Information"
     _form:
@@ -310,6 +323,8 @@ en:
         wiki: "Wiki"
       from_other: "From other"
       community_scientists: "community scientists"
+      recent_activity: "Recent activity"
+      post_date: "Post date"
       past_week: "in the past week"
       your_work: "Your work"
       share_work: "Share your work"
@@ -468,6 +483,7 @@ en:
       or_subscribe_to_answer: "<a style='margin-bottom:6px;' class='btn btn-primary
         requireLogin' target='_blank' href='%{url1}'>Subscribe to answer questions
         on this topic</a>"
+      or_try_searching: "Or try searching:"
       research_notes: "Research notes"
       questions: "Questions"
       wiki_pages: "Wiki pages"
@@ -921,6 +937,11 @@ en:
       drag_image: "Drag an image here to upload."
     wikiRich:
       new_wiki: "New Wiki Page"
+    questionRich:
+      consider_sharing: "Consider sharing:"
+      what_resources_you_need: "What resources you need"
+      where_you_are_working: "Where you are working"
+      why_you_are_interested: "Why you are interested"
   home_controller:
     science_community: "a DIY environmental science community"
     environmental_investigation: "a community for DIY environmental investigation"

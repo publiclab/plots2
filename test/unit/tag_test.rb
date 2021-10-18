@@ -5,6 +5,7 @@ class TagTest < ActiveSupport::TestCase
     @start = (Date.today - 1.year).to_time
     @fin = Date.today.to_time
   end
+
   test 'create a tag' do
     tag = Tag.new(name: 'stick-mapping')
     assert tag.save!
@@ -183,13 +184,26 @@ class TagTest < ActiveSupport::TestCase
   test 'contributors with specific tag name' do
     tag = tags(:test)
     contributors = Tag.contributors(tag.name)
-    assert_equal [1, 2 , 5 , 6, 12, 19], contributors.pluck(:id)
+    assert_equal [1, 2, 5, 6, 12, 19], contributors.pluck(:id)
+  end
+
+  test 'contributors with timeframe' do
+    tag = tags(:test)
+    # including current date
+    contributors = Tag.contributors(tag.name, start: Time.now-1.month, finish: Time.now)
+    assert_equal [1, 2], contributors.pluck(:id)
+    # during presumably mostly empty time period
+    contributors2 = Tag.contributors(tag.name, start: Time.now-10.years, finish: Time.now-9.years)
+    assert_equal [2], contributors2.pluck(:id)
+    # during maximum time, even into future (see comments.yml timestamps)
+    contributors3 = Tag.contributors(tag.name, start: Time.now-10.years, finish: Time.now+1.year)
+    assert_equal 6, contributors3.length
   end
 
   test 'contributor_count with specific tag name' do
     tag = tags(:test)
     contributor_count = Tag.contributor_count(tag.name)
-    assert_equal 6,contributor_count
+    assert_equal 6, contributor_count
   end
 
   test 'check sort according to followers ascending' do

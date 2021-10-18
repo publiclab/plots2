@@ -50,5 +50,10 @@
         <b><%= @tag_wikis.values.sum %> wikis</b>, and
         <b><%= @tag_comments.values.sum %> comments</b>, in total.
     </p>
+    <p>
+      <b><%= @first_time_poster_content_tally %> first-time posters</b> 
+      and <b><%= @overall_contributor_tally %> contributors overall</b> 
+      published content on this topic during this period (cached daily).
+    </p>
   <% end %>
 </div>
