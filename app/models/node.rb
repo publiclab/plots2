@@ -96,7 +96,7 @@ class Node < ActiveRecord::Base
 
   validates :title,
     presence: true,
-    length: { minimum: 2 },
+    length: { minimum: 3 },
     format: { with: /[A-Z][\w\-_]*/i, message: 'can only include letters, numbers, and dashes' }
   validates_with UniqueUrlValidator, on: :create
 
