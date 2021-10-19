@@ -1,16 +1,16 @@
 <div class="tab-content" style="clear:both;">
 
   <% if @start && @end %>
-    <p>Displaying content from <%= @start.to_formatted_s(:long) %> to <%= @end.to_formatted_s(:long) %>. <a href="/tag/<%= params[:id] %>">View all</a></p>
+    <p>Displaying content from <%= @start.to_formatted_s(:long) %> to <%= @end.to_formatted_s(:long) %>. <a href="/tag/<%=h params[:id] %>">View all</a></p>
   <% end %>
 
   <% if @node_type == "note" %>
     <div class="tab-pane active" id="notes">
       <% if @notes.nil? || @notes.length == 0 %>
       <p><%= raw translation('tag.show.no_notes_results_found') %></p>
-      <p><%= raw translation('tag.show.or_try_searching') %> <a href="/search/<%= params[:id] %>"><%= params[:id] %></a></p>
+      <p><%= raw translation('tag.show.or_try_searching') %> <a href="/search/<%=h params[:id] %>"><%=h params[:id] %></a></p>
       <% else %>
-        <%= render partial: "notes/notes", locals: { tagname: params[:id] } %>
+        <%= render partial: "notes/notes", locals: { tagname: sanitize(params[:id]) } %>
       <% end %>
     </div>
   <% end %>
@@ -20,7 +20,7 @@
       <div id="questions-tab">
         <% if @questions.nil? || @questions.length == 0 %>
           <p><%= raw translation('tag.show.no_questions_results_found') %></p>
-          <p>Or try searching: <a href="/search/<%= params[:id] %>"><%= params[:id] %></a></p>
+          <p>Or try searching: <a href="/search/<%=h params[:id] %>"><%=h params[:id] %></a></p>
         <% else %>
           <div class="tab-content">
             <div id="asked-content">
@@ -36,7 +36,7 @@
     <div class="tab-pane active" id="wikis">
       <% if @wikis.nil? || @wikis.length == 0 %>
         <p><%= raw translation('tag.show.no_wikis_results_found') %></p>
-        <p>Or try searching: <a href="/search/<%= params[:id] %>"><%= params[:id] %></a></p>
+        <p>Or try searching: <a href="/search/<%=h params[:id] %>"><%=h params[:id] %></a></p>
       <% else %>
       <%= render partial: "wiki/wikis" %>
       <% end %>
@@ -46,7 +46,7 @@
   <% if @node_type == "maps" %>
     <div class="tab-pane active" id="wikis">
      <% if @nodes.empty? %>
-        <%= raw translation('tag.show.no_map_results_found', :tag => params[:id]) %>.
+        <%= raw translation('tag.show.no_map_results_found', tag: strip_tags(params[:id])) %>.
       <% else %>
         <%= render partial: "map/maps" %>
       <% end %>
