@@ -188,6 +188,7 @@ class TagTest < ActiveSupport::TestCase
   end
 
   test 'contributors with timeframe' do
+    Timecop.freeze # account for timestamp change uncertainty
     tag = tags(:test)
     # including current date
     contributors = Tag.contributors(tag.name, start: Time.now-1.month, finish: Time.now)
@@ -198,6 +199,7 @@ class TagTest < ActiveSupport::TestCase
     # during maximum time, even into future (see comments.yml timestamps)
     contributors3 = Tag.contributors(tag.name, start: Time.now-10.years, finish: Time.now+1.year)
     assert_equal 6, contributors3.length
+    Timecop.return
   end
 
   test 'contributor_count with specific tag name' do
