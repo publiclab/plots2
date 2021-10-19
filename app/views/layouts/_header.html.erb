@@ -145,7 +145,7 @@
                     <a class="dropdown-item" href="/profile/<%= current_user.username %>"><%= translation('layout._header.profile') %></a>
                   <% end %>
                     <%= create_nav_dropdown_item("/profile/edit","layout._header.edit_profile") %>
-                    <%= create_nav_dropdown_item("/settings","Notifications") %>
+                    <%= create_nav_dropdown_item("/settings","Notification Settings") %>
                     <div class="dropdown-divider"></div>
                     <%= create_nav_dropdown_item("/subscriptions","layout._header.subscriptions") %>
                     <% if current_user&.has_tag('translation-helper') && I18n.locale != :en %>
