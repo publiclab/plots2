@@ -94,7 +94,10 @@ class Node < ActiveRecord::Base
 
   belongs_to :user, foreign_key: 'uid'
 
-  validates :title, presence: true, length: { minimum: 3 }
+  validates :title,
+    presence: true,
+    length: { minimum: 3 },
+    format: { with: /[A-Z][\w\-_]*/i, message: 'can only include letters, numbers, and dashes' }
   validates_with UniqueUrlValidator, on: :create
 
   scope :published, -> { where(status: 1) }
@@ -723,9 +726,11 @@ class Node < ActiveRecord::Base
         else
           saved = false
           node.destroy
+          # and numerical title validation bug in https://github.com/publiclab/plots2/issues/10361
+          raise ActiveRecord::Rollback
         end
         # prevent vid non-unique bug in https://github.com/publiclab/plots2/issues/7062
-        raise ActiveRecord::Rollback if !node.valid? || node.vid == 0
+        raise ActiveRecord::Rollback if !node.valid? || node.vid == 0 || !revision.valid?
       end
     end
     [saved, node, revision]
