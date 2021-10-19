@@ -444,7 +444,7 @@ class NotesControllerTest < ActionController::TestCase
     assert_response :success
     assert_not_nil @response.body
     json = JSON.parse(@response.body)
-    assert_equal ["can't be blank", "is too short (minimum is 3 characters)"], json['title']
+    assert_equal ["can't be blank", "is too short (minimum is 3 characters)", "can only include letters, numbers, and dashes"], json['title']
     assert !json['title'].empty?
   end
 
