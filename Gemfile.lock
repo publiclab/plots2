@@ -99,7 +99,7 @@ GEM
     composite_primary_keys (11.2.0)
       activerecord (~> 5.2.1)
     concurrent-ruby (1.1.9)
-    connection_pool (2.2.3)
+    connection_pool (2.2.5)
     crack (0.4.5)
       rexml
     crass (1.0.6)
@@ -473,7 +473,7 @@ GEM
       tilt
     recaptcha (4.14.0)
       json
-    redis (4.1.4)
+    redis (4.5.1)
     redis-namespace (1.8.1)
       redis (>= 3.0.4)
     regexp_parser (2.1.1)
@@ -566,11 +566,10 @@ GEM
     sentry-sidekiq (4.7.3)
       sentry-ruby-core (~> 4.7.0)
       sidekiq (>= 3.0)
-    sidekiq (5.2.9)
-      connection_pool (~> 2.2, >= 2.2.2)
+    sidekiq (6.2.2)
+      connection_pool (>= 2.2.2)
       rack (~> 2.0)
-      rack-protection (>= 1.5.0)
-      redis (>= 3.3.5, < 4.2)
+      redis (>= 4.2.0)
     signet (0.15.0)
       addressable (~> 2.3)
       faraday (>= 0.17.3, < 2.0)
