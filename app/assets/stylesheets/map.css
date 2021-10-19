@@ -1,4 +1,10 @@
 /* Control layer order on maps */
+.leaflet-pane{
+  position: initial !important;
+}
+.leaflet-bar, .leaflet-top{
+  position: initial !important;
+}
 #content .leaflet-pane {
   z-index: auto;
 }
