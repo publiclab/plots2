@@ -94,7 +94,10 @@ class Node < ActiveRecord::Base
 
   belongs_to :user, foreign_key: 'uid'
 
-  validates :title, presence: true, length: { minimum: 3 }
+  validates :title,
+    presence: true,
+    length: { minimum: 2 },
+    format: { with: /[A-Z][\w\-_]*/i, message: 'can only include letters, numbers, and dashes' }
   validates_with UniqueUrlValidator, on: :create
 
   scope :published, -> { where(status: 1) }
