@@ -71,6 +71,7 @@ function addComment(comment, submitTo, parentID = 0) {
 }
 
 function changeNotificationIcon(messageId, buttonId){
-    $(messageId).toggle();
-    $(buttonId).toggleClass("fa-bell-o fa-bell");
-}
+  const closestControlGroup = $(target).closest(".control-group")
+    closestControlGroup.siblings(messageId).toggle();
+    closestControlGroup.find(buttonId).toggleClass("fa-bell-o fa-bell");
+  }
