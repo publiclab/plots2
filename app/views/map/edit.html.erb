@@ -1,5 +1,5 @@
 <div class="col-md-3">
-  <%= javascript_include_tag "dragdrop" %>
+  <%= javascript_include_tag "editorToolbar" %>
 
   <h4>Use good metadata!</h4>
   <p>Remember to tag maps with useful terms like "ndvi", "gulf-coast", etc.</p>
@@ -16,15 +16,29 @@
   %>
 
   <%= form_for @revision, :as => :revision, :url => url, :html => {:class => "form"} do |f| %>
-
-    <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages :header_message => "Your map couldn't be saved." %></div><% end %>
-
+    <% if @revision.errors.any? %>
+      <div class="alert alert-danger">
+        <h2><%= pluralize(@revision.errors.count, "error") %> prohibited this map from being saved:</h2>
+        <ul>
+        <% @revision.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
   <% end %>
 
   <%= form_for @node, :as => :drupal_node, :url => url, :html => {:class => "form well"} do |f| %>
-
-    <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages :header_message => "Your map couldn't be saved." %></div><% end %>
-
+    <% if @node.errors.any? %>
+      <div class="alert alert-danger">
+        <h2><%= pluralize(@node.errors.count, "error") %> prohibited this map from being saved:</h2>
+        <ul>
+        <% @node.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
     <%= render :partial => "editor/main_image" %>
 
     <div class="form-group col-md-9 col-md-pull-3">
@@ -42,7 +56,7 @@
         <input id="longitude" tabindex="3" name="lon" type="text" class="form-control" placeholder="-71" value="<%= @node.lon %>"><br />
       </label>
      
-      <textarea name="body" tabindex="4" class="form-control" id="text-input" rows="20" cols="60"><% if @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
+      <textarea name="body" tabindex="4" class="form-control" id="text-input-main" rows="20" cols="60"><% if @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
     </div>
 
     <hr style="clear:both;" />

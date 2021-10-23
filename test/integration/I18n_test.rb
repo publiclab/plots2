@@ -2,7 +2,7 @@ require 'test_helper'
 require 'sanitize'
 
 class I18nTest < ActionDispatch::IntegrationTest
-
+  
   test 'should choose i18n-locale for header partial' do
     available_testing_locales.each do |lang|
       # This test could use a rewrite. Two `get`s in succession?
@@ -10,6 +10,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       # get '/change_locale/' + lang.to_s
       # follow_redirect!
       # assert_select 'p[class=facebook-summary]', I18n.t('layout._header.summary')
+      # this above assertion is the key
       post '/user_sessions',
         params: {
           user_session: {
@@ -52,141 +53,6 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
       get '/subscriptions'
       assert_select 'b', I18n.t('home.subscriptions.title')
-    end
-  end
-
-  test 'should choose i18n for dashboard/_activity' do
-    available_testing_locales.each do |lang|
-      get '/change_locale/' + lang.to_s
-      post '/user_sessions',
-        params: {
-          user_session: {
-            username: users(:jeff).username,
-            password: 'secretive'
-          }
-        }
-      follow_redirect!
-      assert_select 'h3', I18n.t('dashboard._activity.activity')
-    end
-  end
-
-  test 'should choose i18n for dashboard/_header' do
-    available_testing_locales.each do |lang|
-      get '/change_locale/' + lang.to_s
-      post '/user_sessions',
-        params: {
-          user_session: {
-            username: users(:jeff).username,
-            password: 'secretive'
-          }
-        }
-      follow_redirect!
-      assert_select 'h1', I18n.t('dashboard._header.dashboard')
-    end
-  end
-
-  test 'should choose i18n for dashboard/_node_comment' do
-    available_testing_locales.each do |lang|
-      get '/change_locale/' + lang.to_s
-      follow_redirect!
-      post '/user_sessions',
-        params: {
-          user_session: {
-            username: users(:jeff).username,
-            password: 'secretive'
-          }
-        }
-      follow_redirect!
-      get '/dashboard'
-      assert_select 'span', I18n.t('dashboard._node_comment.commented_on')
-    end
-  end
-
-  # turning this off due to policy change in https://github.com/publiclab/plots2/issues/6246
-  #test 'should choose i18n for dashboard/_node_moderate' do
-  #  available_testing_locales.each do |lang|
-  #    get '/change_locale/' + lang.to_s
-  #    follow_redirect!
-  #    post '/user_sessions',
-  #      params: {
-  #        user_session: {
-  #          username: users(:jeff).username,
-  #          password: 'secretive'
-  #        }
-  #      }
-  #    follow_redirect!
-  #    post '/notes/create',
-  #        params: {
-  #         title: 'Some post',
-  #         body: 'Some post body',
-  #         tags: 'Some-tag',
-  #         status: 4
-  #        }
-  #    get '/dashboard'
-  #    assert_select 'a[class=?]', 'btn btn-outline-secondary btn-sm float-right', I18n.t('dashboard.moderate.approve')
-  #  end
-  #end
-
-  test 'should choose i18n for dashboard/_node_question' do
-    available_testing_locales.each do |lang|
-      get '/change_locale/' + lang.to_s
-      follow_redirect!
-      post '/user_sessions',
-        params: {
-          user_session: {
-            username: users(:jeff).username,
-            password: 'secretive'
-          }
-        }
-      follow_redirect!
-      post '/notes/create',
-          params: {
-           title: 'Some question',
-           tags: 'question',
-           status: 1
-          }
-      get '/dashboard'
-    end
-  end
-
-  test 'should choose i18n for dashboard/_node_wiki' do
-    available_testing_locales.each do |lang|
-      get '/change_locale/' + lang.to_s
-      follow_redirect!
-      post '/user_sessions',
-        params: {
-          user_session: {
-            username: users(:jeff).username,
-            password: 'secretive'
-          }
-        }
-      follow_redirect!
-      post '/notes/create',
-          params: {
-           title: 'Some topic',
-           tags: 'some-tag',
-           type: 'page',
-           status: 1
-          }
-      get '/dashboard'
-      assert_select 'span', I18n.t('dashboard._node_wiki.new_page_by')
-    end
-  end
-
-  test 'should choose i18n for dashboard/_wiki' do
-    available_testing_locales.each do |lang|
-      get '/change_locale/' + lang.to_s
-      follow_redirect!
-      post '/user_sessions',
-        params: {
-          user_session: {
-            username: users(:jeff).username,
-            password: 'secretive'
-          }
-        }
-      follow_redirect!
-      get '/dashboard'
-      assert_select 'a', I18n.t('dashboard._wiki.more') + Sanitize.clean(' &raquo;')
     end
   end
 
@@ -357,27 +223,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       get '/wiki/' + nodes(:organizers).title.parameterize
-      assert_select 'a[rel=tooltip] i.fa.fa-comment'
-    end
-  end
-
-  test 'should choose i18n for sidebar/_author + sidebar/_post_button' do
-    available_testing_locales.each do |lang|
-      get '/change_locale/' + lang.to_s
-      follow_redirect!
-
-      post '/user_sessions',
-        params: {
-          user_session: {
-            username: users(:jeff).username,
-            password: 'secretive'
-          }
-        }
-      follow_redirect!
-
-      get '/notes/author/' + users(:jeff).username
-      assert_select 'h4', ActionView::Base.full_sanitizer.sanitize(I18n.t('sidebar._author.recent_tags_for_author', url1: '/people/' + users(:jeff).username, author: users(:jeff).username))
-      assert_select 'a', I18n.t('sidebar._post_button.write_research_note')
+      assert_select '.fa-comment'
     end
   end
 
@@ -433,7 +279,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       get '/tag/some-tag'
-      assert_select 'a span.d-none', I18n.t('tag.show.wiki_pages')
+      assert_select '.tags-tab-wiki', I18n.t('tag.show.wiki_pages')
     end
   end
 
@@ -520,6 +366,16 @@ class I18nTest < ActionDispatch::IntegrationTest
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s
       follow_redirect!
+
+      post '/user_sessions',
+        params: {
+          user_session: {
+            username: users(:jeff).username,
+            password: 'secretive'
+          }
+        }
+      follow_redirect!
+
       start_time = 1.month.ago
       end_time = Date.today
       @graph_notes = Node.contribution_graph_making('note', start_time.to_time, end_time.to_time)

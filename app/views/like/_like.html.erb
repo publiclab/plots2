@@ -1,29 +1,33 @@
 <div class="like-buttons d-print-none btn-toolbar" style="margin-bottom :4px;">
-    <% if logged_in_as(['admin', 'moderator']) || (current_user && (current_user.uid == node.uid || node.has_tag("with:#{current_user.username}"))) %>
+    <% if logged_in_as(['admin']) || (current_user && (current_user.uid == node.uid || node.has_tag("with:#{current_user.username}"))) %>
         <% if node.type == 'note' %>
+          <span data-toggle="tooltip" data-placement="top" rel="tooltip" title="Edit Note">
             <a aria-label="Edit post" <% if current_user && current_user.uid != node.uid %>data-confirm='Please be aware that you are editing a post by another contributor, a privilege you have only because you are an admin or co-author.' <% end %> class='btn btn-outline-secondary btn-circle btn-sm' href='/notes/edit/<%= node.id %>?t=<%= Time.now.to_i %><% if params[:controller] == "questions" %>&redirect=question&template=question<% end %>'>
                 <i class='ml-1 ff fa fa-pencil'></i>
             </a>
+          </span>
         <% end %>
     <% end %>
 
     <% if node.type == 'page' %>
-      <% if node.has_tag('locked') && (current_user ? (current_user.role != "moderator" && current_user.role != "admin") : true) %>
+      <% if node.has_tag('locked') && (current_user ? current_user.basic_user? : true) %>
         <a href="/wiki/locked" class='btn btn-outline-secondary btn-circle btn-sm'>
           <i class="ml-1 ff fa fa-lock"></i>
         </a>
       <% elsif current_user && current_user.first_time_poster %>
-        <a class='btn btn-outline-secondary btn-circle btn-sm' rel="tooltip" title="Please post a question or other content before editing the wiki. Click to learn why." data-placement="top" href="https://publiclab.org/notes/tester/04-23-2016/new-moderation-system-for-first-time-posters">
+        <a class='btn btn-outline-secondary btn-circle btn-sm' rel="tooltip" title="You can create the wiki once your research note/question is approved by moderators. Click to learn why." data-placement="top" href="https://publiclab.org/notes/tester/04-23-2016/new-moderation-system-for-first-time-posters">
           <i class="ml-1 ff fa fa-lock"></i>
         </a>
       <% else %>
-        <a class="btn-circle btn btn-outline-secondary" id="edit-btn" href='<%= node.edit_path %>?t=<%= Time.now.to_i %>'>
+        <span data-toggle="tooltip" data-placement="top" rel="tooltip" title="Edit">
+          <a class="btn-circle btn btn-outline-secondary" id="edit-btn" href='<%= node.edit_path %>?t=<%= Time.now.to_i %>'>
           <i class='ml-1 ff fa fa-pencil'></i>
-        </a>
+          </a>
+        </span>
       <% end %>
     <% end %>
 
-    <span data-toggle="tooltip" data-placement="top" rel="tooltip" title="Liked by <%= node.likers.length %> people" class="btn btn-outline-secondary btn-circle btn-like" node-id="<%= node.id %>" id="like-button-<%= node.id %>">
+    <span data-toggle="tooltip" data-placement="top" rel="tooltip" title="Liked by <%= node.likers.size %> people" class="btn btn-outline-secondary btn-circle btn-like" node-id="<%= node.id %>" id="like-button-<%= node.id %>">
         <% if !current_user %>
             <a id="open-login-like" data-hashparams="like" data-toggle="modal" data-target="#loginModal">
                 <span id="like-star-<%= node.id %>" class="ff fa fa-star"></span>
@@ -44,12 +48,14 @@
         <% end %>
     <% end %>
 
-    <span data-toggle="tooltip" data-placement="bottom" title="Tools" id="menu-btn" class="btn btn-outline-secondary btn-circle btn-sm" rel="popover" data-placement="left" data-html="true" style="overflow: auto; max-height: 500px" data-content="
-        <p><b>Users who liked this</b></p>
-        <% node.likers.each do |user| %>
-            <i class='fa fa-star-o'></i> <a href='/profile/<%= user.username %>/'><%= user.username %></a><br />
-        <% end %>
-        <% if node.likers.length == 0 %><i>None</i><% end %>
+    <span data-toggle="tooltip" data-placement="top" title="Tools" id="menu-btn" class="btn btn-outline-secondary btn-circle btn-sm" rel="popover" data-placement="left" data-html="true" style="overflow: auto; max-height: 500px" data-content="
+        <div class='mb-3'>    
+                <p><b>Users who liked this</b></p>
+                <% node.likers.each do |user| %>
+                    <i class='fa fa-star-o'></i> <a href='/profile/<%= user.username %>/'><%= user.username %></a><br />
+                <% end %>
+                <% if node.likers.size == 0 %><i>None</i><% end %>
+        </div>
         <% if node.type == 'note' && current_user && node.uid != current_user.uid%>
             <hr style='margin-bottom:3px;' />
             <p><b>Award a Barnstar:</b></p>
@@ -68,25 +74,26 @@
             <br>
         <% end %>
 
-        <p><a class='btn btn-sm btn-outline-secondary' rel='tooltip' title='Try the beta inline Rich Wiki editor.' data-placement='top' href='<%= node.path %>?raw=true'>
-          <i style='color:#0c8;' class='fa fa-pencil'></i>
-        </a></p>
+        <% if node.type == "page" %>
+          <p><a class='btn btn-sm btn-outline-secondary' rel='tooltip' title='Try the beta inline Rich Wiki editor.' data-placement='top' href='<%= node.path %>?raw=true'>
+            <i style='color:#0c8;' class='fa fa-pencil'></i>
+          </a></p>
+        <% end %>
+
+        <a rel='tooltip' title='Flag as spam' class='btn btn-sm btn-outline-secondary btn-flag-spam-<%= node.id %>' href='/moderate/flag_node/<%= node.id %>'>
+          <i class='fa fa-flag'></i>
+        </a>
 
         <% if logged_in_as(['admin', 'moderator']) || (current_user && current_user.uid == node.uid) %>
 
             <hr />
 
             <div class='btn-group'>
-                <a rel='tooltip' title='Flag as spam' class='btn btn-sm btn-outline-secondary btn-flag-spam-<%= node.id %>' href='mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+item+that+looks+like+spam+or+needs+to+be+moderated:+<%= node.title.gsub(/ /,'+') %>+https://publiclab.org/n/<%= node.id %>+by+https://publiclab.org/profile/<%= node.author.username %>+Thanks!'>
-                    <i class='fa fa-flag'></i>
-                </a>
-                <li data-toggle='tooltip' data-placement='top' title='Follow by tag or author' id='menu-follow-btn' class='btn btn-outline-secondary btn-sm requireLogin nestedPopover' data-html='true' rel='popover' data-placement='left' data-content=&quot;    <%= "No tags" if tagnames.nil? || tagnames.length == 0 %>    <% if tagnames %><% tagnames.each do |tagname| %><p style='margin-bottom:3px; overflow: hidden; text-overflow: ellipsis;'><a href='/subscribe/tag/<%= tagname %>' class='btn btn-outline-secondary btn-sm'><%= tagname %></a></p><% end %><% end %><hr /><i class='fa fa-user'></i><% if current_user && !current_user.following?(node.author) && node.author != current_user %>&nbsp;<a class='btn btn-sm' href='/relationships?followed_id=<%= node.author.id %>' data-method='post' > <%= node.author.name %></a><% else %>  &nbsp;<%= node.author.name %><% end %>&quot;>
+               <% if User.exists?(id: node.uid) %>
+                <li data-toggle='tooltip' data-placement='top' title='Follow by tag or author' id='menu-follow-btn' class='btn btn-outline-secondary btn-sm requireLogin nestedPopover' data-html='true' rel='popover' data-placement='left' data-content=&quot;    <%= "No tags" if tagnames.nil? || tagnames.size == 0 %>    <% if tagnames %><% tagnames.each do |tagname| %><p style='margin-bottom:3px; overflow: hidden; text-overflow: ellipsis;'><a href='/subscribe/tag/<%= tagname %>' class='btn btn-outline-secondary btn-sm'><%= tagname %></a></p><% end %><% end %><hr /><i class='fa fa-user'></i><% if current_user && !current_user.following?(node.author) && node.author != current_user %>&nbsp;<a class='btn btn-sm' href='/relationships?followed_id=<%= node.author.id %>' data-method='post' > <%= node.author.name %></a><% else %>  &nbsp;<%= node.author.name %><% end %>&quot;>
                     <i class='fa fa-user-plus' aria-hidden='true'></i>
                 </li>
-
-                <a href='/notes/delete/<%= node.id %>' class='btn btn-outline-secondary btn-sm' id='menu-delete-btn' data-confirm='All revisions will be lost, and you cannot undo this action. If this is a spam page, be sure that it did not overwrite valid content before deleting the entire page and the history.'>
-                    <i class='fa fa-trash'></i><span class='d-none d-lg-inline'></span>
-                </a>
+                <% end %>
                 <a href='/notes/raw/<%= node.id %>' class='btn btn-outline-secondary btn-sm'>
                     <i class='fa fa-code'></i><span class='d-none d-lg-inline'> Raw</span>
                 </a>
@@ -104,29 +111,42 @@
         <hr style='clear:both;' />
         <div>
             <span>
+                <!-- `translation()` javascript does not work in this area because it is within a Bootstrap Popover and is rendered later -->
                 <% if node.type == 'note' %>
-                    <%= number_with_delimiter(node.views) %> <%= translation('notes.show.views') %>
+                    <%= number_with_delimiter(node.views) %> <%= t('notes.show.views') %>
                     <% if node.comments %>
-                        | <a href='#comments'><%= node.comments.length %> <%= translation('notes.show.comments') %></a>
+                        | <a href='#comments'><%= node.comments.size %> <%= t('notes.show.comments') %></a>
                     <% end %>
-                    | <%= raw translation('wiki.show.last_edited', url1: "/profile/" + node.latest.author.name, author: node.latest.author.name, time: time_ago_in_words(node.latest.created_at)) %>
+                    | <%= raw t('wiki.show.last_edited', url1: "/profile/" + node.latest.author.name, author: node.latest.author.name, time: time_ago_in_words(node.latest.created_at)) %>
                 <% end %>
 
                 <% if node.type == 'page' %>
-                    <%= number_with_delimiter(node.views) %> <%= translation('wiki.show.views') %>
+                    <%= number_with_delimiter(node.views) %> <%= t('wiki.show.views') %>
                     <% if node.comments %>
-                        | <a href='#comments'><%= node.comments.length %> Comments</a>
+
+                        | <a href='<%= node.path %>/comments'><%= node.comments.length %> Comments</a>
+
                     <% end %>
-                    | <%= raw translation('wiki.show.last_edited', url1: "/profile/" + @revision.author.name, author: @revision.author.name, time: time_ago_in_words(@revision.created_at)) %>
+                    <% if @revision.author %>
+                    | <%= raw t('wiki.show.last_edited', url1: "/profile/" + @revision.author.name, author: @revision.author.name, time: time_ago_in_words(@revision.created_at)) %>
+                    <% end %>
                 <% end %>
+                <!-- END OF: `translation()` javascript does not work in this area because it is within a Bootstrap Popover and is rendered later -->
             </span>
         </div>
         <br />
         <hr style='clear:both;' />
         <div>
+            <p><a id='print-new' style='cursor:pointer;'><i class='fa fa-print'></i> Printable format (beta) </a></p>
             <p><a id='print-command-no-links'><i class='fa fa-print'></i> Print without page links</a></p>
             <p><a id='print-command-3-col'><i class='fa fa-print'></i> Print in 3-column layout</a></p>
         </div>
+        <% if logged_in_as(['admin', 'moderator']) || (current_user && current_user.uid == node.uid) %>
+            <hr style='clear: both;' />
+            <a href='/notes/delete/<%= node.id %>' class='btn btn-outline-danger btn-sm mb-2' id='menu-delete-btn' data-confirm='All revisions will be lost, and you cannot undo this action. If this is a spam page, be sure that it did not overwrite valid content before deleting the entire page and the history.'>
+                <i class='fa fa-trash mr-2' style='color: inherit'></i><span><%= t('sidebar._notes.delete') %></span>
+            </a>
+        <% end %>
     ">
         <span style="margin: 5px !important;" class="ff fa fa-ellipsis-h"></span>
     </span>
@@ -160,19 +180,45 @@
         $(this).tooltip('hide')
       })
       function print_three_column() {
-          $('body').css('column-count', 3)
-               .css('column-gap', '50px');
+          $('body').css({'column-count': 3, 'column-gap': '50px'});
+          $('h1').css('max-width', '30%');
+          $('#content').css('max-width', '30%');
+          $('#note-info').css('max-width', '30%');
           $('.popover').popover('hide');
+          $('hr').css({'max-width': '30%', 'margin-left': 0});
+          $('.main-image').css('max-width', '30%');
           window.print();
-          $('body').css('column-count', 1)
-               .css('column-gap', 0);
+          $('body').css({'column-count': 1, 'column-gap': 0});
+          $('h1').css('max-width', '100%');
+          $('#content').css('max-width', '100%');
+          $('#note-info').css('max-width', '100%');    
+          $('hr').css('max-width', '100%');   
+          $('.main-image').css('max-width', '100%');   
       }
       function print_linkless() {
           window.print();
       }
+      function print_new() {
+        var node_type = '<%= node.type %>';
+        if (node_type == 'page'){
+          <% if @revision %>
+          window.open(
+            "/wikis/print/<%= @node.id %>",
+            '_blank' // <- This is what makes it open in a new window.
+          );
+          <% end %>
+        }
+        else if (node_type == 'note'){
+          window.open(
+            "/notes/print/" + <%= node.id %>,
+            '_blank' // <- This is what makes it open in a new window.
+          );
+        }
+      }
       // Event listner on CLICK on links
       $(document).on("click", "#print-command-3-col",print_three_column);
       $(document).on("click", "#print-command-no-links",print_linkless);
+      $(document).on("click", "#print-new",print_new);
       jQuery(document).ready(function() {
           // 304 cached response yields no data to insert, which is not useful
           jQuery.ajaxSetup({

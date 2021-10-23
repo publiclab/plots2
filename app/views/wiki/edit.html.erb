@@ -1,5 +1,5 @@
 <div class="col-md-3">
-  <%= javascript_include_tag "dragdrop" %>
+  <%= javascript_include_tag "editorToolbar" %>
   <% if @related && @related.length > 0 %>
     <h3><%= translation('wiki.edit.did_you_mean') %>:</h3>
     <ul class="nav bullet">
@@ -34,17 +34,16 @@
   %>
 
   <%= form_for :node, :as => :node, :url => url do |f| %>
-    <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
+    <%= render partial: 'layouts/errorMessages', locals: { model: @node } %>
   <% end %>
   <div class="card bg-light">
     <div class="card-body">
       <%= form_for :revision, :as => :revision, :url => url, :html => {:class => "form well wiki-form row"} do |f| %>
 
-        <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
-
+        <%= render partial: 'layouts/errorMessages', locals: { model: @revision } %>
         <%= render :partial => "editor/main_image" %>
 
-        <div class="col-lg-9 order-lg-1">
+        <div id="legacy-editor-container" class="col-lg-9 order-lg-1">
 
           <% if @node && @node.latest && @node.latest.title %>
             <h3><%= translation('wiki.edit.editing_page') %>: <i><%= @node.latest.title %></i></h3>
@@ -57,10 +56,10 @@
           <input class="form-control" id="taginput" type="hidden" name="tags" value="<%= params[:tags] %>" />
 
           <div class="form-group">
-            <input tabindex="1" name="title" type="text" class="form-control" id="title" value="<% if @node && @node.latest %><%= @node.latest.title %><% else %><%= params[:title] %><% end %>">
+            <input aria-label="Wiki Title" tabindex="1" name="title" type="text" class="form-control" id="title" value="<% if @node && @node.latest %><%= @node.latest.title %><% else %><%= params[:title] %><% end %>">
           </div>
 
-          <script>
+          <script type="application/javascript">
             (function(){
               $D = {
                 uid: <%= current_user.uid %>,
@@ -71,8 +70,11 @@
 
           <%= render partial: 'editor/editor' %>
 
+          <%= render partial: 'editor/tag_input' %>
+          <br>
           <a id="publish" tabindex="5" class="publish btn btn-primary btn-lg"><%= translation('wiki.edit.publish') %></a>
-          <a tabindex="6" data-previewing-text="<%= translation('wiki.edit.previewing_text') %>" class="btn btn-outline-secondary btn-lg preview-btn" onClick="$E.toggle_preview()"><%= translation('wiki.edit.preview') %></a>
+          <!-- due to translation helper issues the following line cannot use the `translation()` helper - https://github.com/publiclab/plots2/issues/7798 -->
+          <a tabindex="6" id="toggle-preview-button-main" data-previewing-text="<%= t('wiki.edit.previewing_text') %>" class="btn btn-outline-secondary btn-lg preview-btn" onClick="$E.toggle_preview()"><%= t('wiki.edit.preview') %></a>
           <a class="btn btn-outline-secondary btn-lg" href="/wiki/<%= params["id"] %>">Cancel</a>
 
         </div>
@@ -84,7 +86,7 @@
           <br />
         </div>
 
-        <script>
+        <script type="application/javascript">
           (function(){
             publish = function(e) {
               $('form.wiki-form').submit()

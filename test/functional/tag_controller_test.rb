@@ -7,9 +7,9 @@ class TagControllerTest < ActionController::TestCase
 
   # create accepts comma-delimited list of tags
   test 'add one or two tags' do
-    UserSession.create(users(:bob))
+    UserSession.create(users(:jeff))
 
-    post :create, params: { name: 'mytag', nid: nodes(:one).nid, uid: users(:bob).id }
+    post :create, params: { name: 'mytag', nid: nodes(:one).nid }
 
     assert_equal 'mytag', assigns[:tags].last.name
     assert_redirected_to(nodes(:one).path)
@@ -17,15 +17,14 @@ class TagControllerTest < ActionController::TestCase
     post :create,
          params: {
          name: 'mysecondtag,mythirdtag',
-         nid: nodes(:one).nid,
-         uid: users(:bob).id
+         nid: nodes(:one).nid
          }
 
     assert_equal 'mysecondtag', assigns[:tags][assigns[:tags].length - 2].name
     assert_equal 'mythirdtag', assigns[:tags].last.name
     assert_redirected_to(nodes(:one).path)
 
-    post :create, params: { name: 'myfourthtag,myfifthtag', nid: nodes(:one).nid, uid: users(:bob).id }, xhr: true
+    post :create, params: { name: 'myfourthtag,myfifthtag', nid: nodes(:one).nid }, xhr: true
 
     assert_response :success
     assert_equal [['myfourthtag', Tag.find_by_name('myfourthtag').tid, nodes(:one).nid.to_s], ['myfifthtag', Tag.find_by_name('myfifthtag').tid, nodes(:one).nid.to_s]], JSON.parse(response.body)['saved']
@@ -48,6 +47,36 @@ class TagControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test 'normal users cannot add the locked tag' do
+    UserSession.create(users(:bob))
+    post :create,
+         params: {
+            name: 'locked',
+            nid: nodes(:one).nid
+         }
+    assert_equal 'Error: only admins can lock pages.', assigns[:output][:errors][0]
+  end
+
+  test 'admin can add the locked tag' do
+    UserSession.create(users(:admin))
+    post :create,
+         params: {
+            name: 'locked',
+            nid: nodes(:one).nid
+         }
+    assert nodes(:one).has_tag('locked')
+  end
+
+  test 'moderator can add the locked tag' do
+    UserSession.create(users(:moderator))
+    post :create,
+         params: {
+            name: 'locked',
+            nid: nodes(:one).nid
+         }
+    assert nodes(:one).has_tag('locked')
+  end
+
   test 'validate unused tag' do
     UserSession.create(users(:bob))
 
@@ -61,7 +90,7 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test "won't add invalid tags" do
-    UserSession.create(users(:bob))
+    UserSession.create(users(:jeff))
 
     post :create,
          params: {
@@ -101,13 +130,12 @@ class TagControllerTest < ActionController::TestCase
 
   # create returns JSON list of errors in response[:errors]
   test 'add duplicate tag' do
-    UserSession.create(users(:bob))
+    UserSession.create(users(:jeff))
 
     post :create,
          params: {
          name: 'mytag',
          nid: nodes(:one).nid,
-         uid: users(:bob)
          }
 
     assert_redirected_to(nodes(:one).path)
@@ -118,7 +146,6 @@ class TagControllerTest < ActionController::TestCase
          params: {
          name: 'mytag',
          nid: nodes(:one).nid,
-         uid: users(:bob)
          }
 
     assert_redirected_to(nodes(:one).path)
@@ -182,16 +209,8 @@ class TagControllerTest < ActionController::TestCase
     assert :success
     assert_not_nil :tags
 
-    assert_equal tags(:spectrometer).parent, 'spectrometry'
-    # iterate through results
-    assert !assigns['notes'].empty?
-    assigns['notes'].each do |node|
-      assert node.has_tag('spectrometry') # should return false
-      assert_not node.has_tag_without_aliasing('spectrometry') # should return false
-    end
-
     # assert_equal assigns['tags'].length, 1
-    assert_select '#wiki-content', 1
+    assert_select '#wiki-summary', 1
   end
 
   test 'show page for non-existent tag' do
@@ -253,21 +272,9 @@ class TagControllerTest < ActionController::TestCase
     assert :wikis
     assert assigns(:wikis).length > 0
 
+    selector = css_select '#wikis table tr'
+    assert_equal selector.size, 2
     assert_select '#note-graph', 0
-  end
-
-  test 'wildcard tag should list answered questions' do
-    get :show, params: { id: 'question:*' }
-
-    assert_not_nil assigns(:answered_questions)
-  end
-
-  test 'wildcard tag should have a active asked and an inactive answered tab for question' do
-    get :show, params: { id: 'question:*' }
-
-    selector = css_select '#asked-tab.active'
-    assert_equal selector.size, 1
-    assert_select '#answered-tab', 1
   end
 
   test "wildcard tag show wiki pages with author" do
@@ -305,11 +312,9 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test "should show a featured wiki page at top, if it exists" do
-    tag = tags(:test)
-
     get :show, params: { id: nodes(:organizers).slug }
 
-    assert_select '#wiki-content', 1
+    assert_select '#wiki-summary', 1
   end
 
   test 'show note with author and tagname without wildcard' do
@@ -454,73 +459,11 @@ class TagControllerTest < ActionController::TestCase
     assert (notes & expected).present?
   end
 
-  test 'can create tag instance (community_tag) using a parent tag' do
-    UserSession.create(users(:bob))
-
-    post :create, params: { name: 'spectrometry', nid: nodes(:one).nid, uid: users(:bob).id }
-
-    assert_equal 'spectrometry', assigns[:tags].last.name
-    assert_redirected_to(nodes(:one).path)
-  end
-
-  test 'shows things tagged with child tag' do
-    tag = tags(:spectrometer)
-    tag.parent = 'spectrometry'
-    tag.save
-    tag2 = tags(:spectrometry)
-    tag2.parent = ''
-    tag2.save
-
-    assert_equal 'spectrometry', tag.parent
-    assert_equal '',             tag2.parent
-    nodes(:blog).add_tag('spectrometry', users(:bob))
-    assert nodes(:blog).has_tag_without_aliasing('spectrometry')
-
-    get :show, params: { id: 'spectrometry' }
-
-    # order of timestamps during testing (almost same timestamps) was causing testing irregularities
-    notes = assigns(:notes).sort_by(&:title).reverse
-
-    assert_equal 2, notes.length
-    assert_equal [1, 13], notes.collect(&:nid)
-    assert_equal [nodes(:one).title, 'Blog post'], notes.collect(&:title)
-
-    # should be the first node, nid=1
-    assert_equal nodes(:one).title, notes.first.title
-    assert_equal ['spectrometer'], notes.first.tags.collect(&:name)
-    assert       notes.first.has_tag_without_aliasing('spectrometer')
-    assert_not notes.first.has_tag_without_aliasing('spectrometry')
-
-    # should be the blog node, nid=13
-    assert_equal 'Blog post', notes.last.title
-    assert_equal ['spectrometry'], notes.last.tags.collect(&:name)
-    assert_not notes.last.has_tag_without_aliasing('spectrometer')
-    assert notes.last.has_tag_without_aliasing('spectrometry')
-  end
-
-  test 'does not show things tagged with parent tag' do
-    tag = tags(:spectrometer)
-    tag.parent = 'spectrometry'
-    tag.save
-    tag2 = tags(:spectrometry)
-    tag2.parent = ''
-    tag2.save
-    assert_equal 'spectrometry', tags(:spectrometer).parent
-    assert_equal '',             tags(:spectrometry).parent
-    nodes(:blog).add_tag('spectrometry', users(:bob))
-
-    get :show, params: { id: 'spectrometer' }
-
-    assert_equal 1, assigns(:notes).length
-    assert_not assigns(:notes).first.has_tag_without_aliasing('spectrometry')
-    assert       assigns(:notes).first.has_tag_without_aliasing('spectrometer')
-  end
-
   test 'shows suggested tags' do
     get :suggested, params: { id: 'spectr' }
 
     assert_equal 4, assigns(:suggestions).length
-    assert_equal ['question:spectrometer', 'spectrometer', 'activity:spectrometer', 'activities:spectrometer'], JSON.parse(response.body)
+    assert_equal ['question:spectrometer', 'spectrometer', 'activity:spectrometer', 'activities:spectrometer'].sort, JSON.parse(response.body).sort
   end
 
   test 'should choose I18n for tag controller' do
@@ -532,9 +475,9 @@ class TagControllerTest < ActionController::TestCase
 
       @controller = old_controller
 
-      UserSession.create(users(:bob))
-      post :create, params: { name: 'mytag', nid: nodes(:one).nid, uid: users(:bob) }
-      post :create, params: { name: 'mytag', nid: nodes(:one).nid, uid: users(:bob) }
+      UserSession.create(users(:jeff))
+      post :create, params: { name: 'mytag', nid: nodes(:one).nid }
+      post :create, params: { name: 'mytag', nid: nodes(:one).nid }
       assert_equal I18n.t('tag_controller.tag_already_exists'), assigns[:output][:errors][0]
     end
   end
@@ -568,24 +511,6 @@ class TagControllerTest < ActionController::TestCase
     assert_equal selector.size, 1
     selector = css_select '#questions.active'
     assert_equal selector.size, 1
-  end
-
-  test 'should have a active asked and an inactive answered tab for question' do
-    tag = tags(:question)
-
-    get :show_for_author, params: { id: tag.name, author: 'jeff' }
-
-    selector = css_select '#asked-tab.active'
-    assert_equal selector.size, 1
-    assert_select '#answered-tab', 1
-  end
-
-  test 'should list answered questions' do
-    tag = tags(:question)
-
-    get :show_for_author, params: { id: tag.name, author: 'jeff' }
-
-    assert_not_nil assigns(:answered_questions)
   end
 
   test 'should take node type as note if tag is not a question tag for show_for_author' do
@@ -636,30 +561,11 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test 'should render a text/plain when a tag is deleted through post request xhr' do
-    user = UserSession.create(users(:jeff))
+    UserSession.create(users(:jeff))
     node_tag = node_tags(:awesome)
     post :delete, params: { nid: node_tag.nid, tid: node_tag.tid, uid: node_tag.uid}, xhr: true
     assert_equal node_tag.tid, JSON.parse(@response.body)['tid']
     assert_equal true, JSON.parse(@response.body)['status']
-  end
-
-  test 'add_parent method adds a tag parent' do
-    user = UserSession.create(users(:admin))
-    get :add_parent, params: { name: Tag.last.name, parent: Tag.first.name }
-    assert_response :redirect
-    assert_equal Tag.first.name, Tag.last.parent
-    # flash[:notice] = "Tag parent added."
-    # flash[:error] = "There was an error adding a tag parent."
-    # redirect_to '/tag/' + @tag.name + '?_=' + Time.now.to_i.to_s
-  end
-
-  test 'add_parent method works with non-existent parent' do
-    user = UserSession.create(users(:admin))
-    get :add_parent, params: { name: Tag.last.name, parent: Tag.first.name }
-    assert_response :redirect
-    assert_equal Tag.first.name, Tag.last.parent
-    get :index
-    assert_response :success
   end
 
   test 'sort according to followers ascending' do
@@ -695,20 +601,6 @@ class TagControllerTest < ActionController::TestCase
 
     get :index, params: { :powertags => 'true' }
     assert_not_equal 0, assigns(:tags).where("name LIKE ?", "%:%").length
-  end
-
-  # Bug 6855
-  test 'counts match the nodes' do
-    tag = tags(:sunny_day)
-    get :show, params: { id: tag.name }
-
-    assert_response :success
-
-    counts = assigns(:counts)
-    assert_equal 1, counts[:posts], "Note count should match"
-    assert_equal 0, counts[:questions], "Question count should match"
-    assert_equal 1, counts[:wiki], "Wiki count should match"
-    assert_equal 1, assigns(:total_posts), "Total posts should match"
   end
 
   # Bug 6855
@@ -776,5 +668,21 @@ class TagControllerTest < ActionController::TestCase
     assert_equal 1, counts[:questions], "Question count should match"
     assert_equal 2, counts[:wiki], "Wiki count should match"
     assert_equal 0, assigns(:total_posts), "Total posts should match"
+  end
+  
+  test 'should prevent first time posters to add tags on other users posts' do
+    UserSession.create(users(:newcomer))
+
+    post :create, params: { name: 'mytag', nid: nodes(:one).nid }
+
+    assert_equal 'Adding tags to other people’s posts is not available to you until your own first post has been approved by site moderators', assigns[:output][:errors][0]
+  end
+
+  test 'should allow first time posters to add tags on their own posts' do
+    UserSession.create(users(:newcomer))
+
+    post :create, params: { name: 'mytag', nid: nodes(:first_timer_note).nid }
+
+    assert_equal 'mytag', assigns[:tags].last.name
   end
 end

@@ -1,13 +1,17 @@
-$E = {
-  initialize: function(args) {
-    args = args || {}
-    args['textarea'] = args['textarea'] || 'text-input'
-    $E.textarea = $('#'+args['textarea'])
-    $E.title = $('#title')
-    args['preview'] = args['preview'] || 'preview'
-    $E.preview = $('#'+args['preview'])
-    $E.textarea.bind('input propertychange',$E.save)
-
+class Editor {
+  // default parameters:
+  //   defaultForm - when the Editor is initialized, there needs to be a default editor form:
+  //     1. the main comment form in multi-comment wikis, questions, & research notes.
+  //     2. the only editor form on /wiki/new and /wiki/edit
+  //   isSingleFormPage - to distinguish between a) pages with multiple comments b) pages like /wiki/new, and /features/new with only one comment form
+  //     elements have different ID naming conventions on the two kinds of pages:
+  //     1. multi-form pages with multiple comments: #comment-preview-123
+  //     2. /wiki/new and /wiki/edit: #preview-main
+  constructor(defaultForm = "main", isSingleFormPage = false) {
+    this.commentFormID = defaultForm;
+    this.isSingleFormPage = isSingleFormPage;
+    // this will get deleted in the next few PRs, so collapsing into one line to pass codeclimate
+      
     marked.setOptions({
       gfm: true,
       tables: true,
@@ -23,128 +27,161 @@ $E = {
         return code;
       }
     });
+  }
+  setState(commentFormID) {
+    this.commentFormID = commentFormID;
+    this.attachSaveListener();
+  }
+  get textAreaElement() {
+    const textAreaID = "#text-input-" + this.commentFormID;
+    return $(textAreaID);
+  }
+  get textAreaValue() { 
+    return this.textAreaElement.val(); 
+  }
+  get previewElement() {
+    // eg. on /wiki/new & /wiki/edit, the preview element is called #preview-main
+    const previewIDPrefix = this.isSingleFormPage ? "#preview-" : "#comment-preview-"
+    const previewID = previewIDPrefix + this.commentFormID;
+    return $(previewID);
+  }
+  // wraps currently selected text in textarea with strings startString & endString
+  wrap(startString, endString, newlineDesired = false, fallback) {
+    const selectionStart = this.textAreaElement[0].selectionStart;
+    const selectionEnd = this.textAreaElement[0].selectionEnd;
+    const selection = fallback || this.textAreaValue.substring(selectionStart, selectionEnd); // fallback if nothing has been selected, and we're simply dealing with an insertion point
 
-  },
-  is_editing: function() {
-    return ($E.textarea[0].selectionStart == 0 && $E.textarea[0].selectionEnd == 0)
-  },
+    let newText = newlineDesired ? startString + selection + endString + "\n\n" : startString + selection + endString; // ie. ** + selection + ** (wrapping selection in bold)
+    const selectionStartsMidText = this.textAreaElement[0].selectionStart > 0;
+    if (newlineDesired && selectionStartsMidText) { newText = "\n" + newText; }
 
-  refresh: function() {
-      if($D.selected) {
-          $E.textarea = ($D.selected).find('textarea').eq(0);
-          $E.preview = ($D.selected).find('#preview').eq(0);
-          $E.textarea.bind('input propertychange',$E.save);
-      }
-  },
+    const textLength = this.textAreaValue.length;
+    const textBeforeSelection = this.textAreaValue.substring(0, selectionStart);
+    const textAfterSelection = this.textAreaValue.substring(selectionEnd, textLength);
+    this.textAreaElement.val(textBeforeSelection + newText + textAfterSelection);
+  }
+  bold() {
+    this.wrap('**', '**');
+  }
+  italic() {
+    this.wrap('_', '_');
+  }
+  link(uri) {
+    uri = prompt('Enter a URL');
+    if (!uri) { uri = ""; }
+    this.wrap(
+      '[', 
+      '](' + uri + ')'
+    );
+  }
+  image(src) {
+    this.wrap(
+      '\n![', 
+      '](' + src + ')\n'
+    );
+  }
+  
+  h2() {
+    this.wrap('##', '');
+  }
 
-  // wraps currently selected text in textarea with strings a and b
-  wrap: function(a,b,args) {
-    var isWiki = (window.location + '').includes('wiki');
-    if (!isWiki) this.refresh();
-    var len = $E.textarea.val().length;
-    var start = $E.textarea[0].selectionStart;
-    var end = $E.textarea[0].selectionEnd;
-    var sel = $E.textarea.val().substring(start, end);
-    if (args && args['fallback']) { // an alternative if nothing has been selected, but we're simply dealing with an insertion point
-      sel = args['fallback']
-    }
-    var replace = a + sel + b;
-    if (args && args['newline']) {
-      if ($E.textarea[0].selectionStart > 0) replace = "\n"+replace
-      replace = replace+"\n\n"
-    }
-    $E.textarea.val($E.textarea.val().substring(0,start) + replace + $E.textarea.val().substring(end,len));
-  },
-  bold: function() {
-    $E.wrap('**','**')
-  },
-  italic: function() {
-    $E.wrap('_','_')
-  },
-  link: function(uri) {
-    uri = uri || prompt('Enter a URL')
-    $E.wrap('[',']('+uri+')')
-  },
-  image: function(src) {
-    src = src || prompt('Enter an image URL')
-    $E.wrap('\n![',']('+src+')\n')
-  },
+  //debounce function addition
+  debounce(func, wait, immediate) {
+    let timeout;
+    return function () {
+      let context = this,
+        args = arguments;
+      let later = function () {
+        timeout = null;
+        if (!immediate) func.apply(context, args);
+      };
+      let callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+      if (callNow) func.apply(context, args);
+    };
+  }
 
-  h1: function() {
-    $E.wrap('#','')
-  },
-  h2: function() {
-    $E.wrap('##','')
-  },
-  h3: function() {
-    $E.wrap('###','')
-  },
-  h4: function() {
-    $E.wrap('####','')
-  },
-  h5: function() {
-    $E.wrap('#####','')
-  },
-  h6: function() {
-    $E.wrap('######','')
-  },
-  h7: function() {
-    $E.wrap('#######','')
-  },
   // this function is dedicated to Don Blair https://github.com/donblair
-  save: function() {
-    localStorage.setItem('plots:lastpost',$E.textarea.val())
-    localStorage.setItem('plots:lasttitle',$E.title.val())
-  },
-  recover: function() {
-    $E.textarea.val(localStorage.getItem('plots:lastpost'))
-    $E.title.val(localStorage.getItem('plots:lasttitle'))
-  },
-  apply_template: function(template) {
-    if($E.textarea.val() == ""){
-      $E.textarea.val($E.templates[template])
-    }else if(($E.textarea.val() == $E.templates['event']) || ($E.textarea.val() == $E.templates['default']) || ($E.textarea.val() == $E.templates['support'])){
-        $E.textarea.val($E.templates[template])
-    }else{
-      $E.textarea.val($E.textarea.val()+'\n\n'+$E.templates[template])
+  attachSaveListener() {
+    // remove any other existing eventHandler
+    $("textarea").off("input.save"); // input.save is a custom jQuery eventHandler
+    const thisEditor = this; // save a reference to this editor, because inside the eventListener, "this" points to e.target
+    //implementing a debounce function on save method
+    this.textAreaElement.on(
+    "input.save",
+    debounce(function () {
+      //changing styles and text
+      //explicitly handling main comment form
+      if ($('#text-input-main').is(':focus')) {
+       
+       $("#comment-form-main .btn-toolbar #save-button-main").find("i").removeClass("fa fa-save").addClass("fas fa-sync fa-spin");
+     
+       let saving_text = $('<p id="saving-text" style="padding-bottom: 8px"> Saving... </p>');
+       $("#comment-form-main .imagebar").prepend(saving_text);
+       $("#comment-form-main .imagebar p").not("#saving-text").hide();
+        
+       //adding delay and revering the styles
+        setTimeout(() => {
+          $("#comment-form-main .btn-toolbar #save-button-main").find("i").removeClass("fas fa-sync fa-spin").addClass("fa fa-save");
+          
+          $("#comment-form-main .imagebar").find("#saving-text").remove();
+          $("#comment-form-main .imagebar p").not("#saving-text").show();
+        }, 400);
     }
-  },
-  templates: {
-    'blog': "## The beginning\n\n## What we did\n\n## Why it matters\n\n## How can you help",
-    'default': "## What I want to do\n\n## My attempt and results\n\n## Questions and next steps\n\n## Why I'm interested",
-    'support': "## Details about the problem\n\n## A photo or screenshot of the setup",
-    'event': "## Event details\n\nWhen, where, what\n\n## Background\n\nWho, why",
-    'question': "## What I want to do or know\n\n## Background story"
-  },
-  previewing: false,
-  previewed: false,
-  generate_preview: function(id,text) {
-    $('#'+id)[0].innerHTML = marked(text)
-  },
-  toggle_preview: function (comment_id = null) {
-    let previewBtn;
-    let dropzone;
+    else { 
+        //handling other comment forms
+        let comment_temp_id = (document.activeElement.parentElement.parentElement.id);
+        let imager_bar = (document.activeElement.nextElementSibling.className);
 
+        $('#'+comment_temp_id).find('.btn-toolbar').find(".save-button").find("i").removeClass("fa fa-save").addClass("fas fa-sync fa-spin");
+
+        let saving_text = $('<p id="saving-text" style="padding-bottom: 8px"> Saving... </p>');
+        $('#'+comment_temp_id).find('.'+imager_bar).prepend(saving_text);
+        $('#'+comment_temp_id).find('.'+imager_bar).find("p").not("#saving-text").hide();
+
+        setTimeout(() => {
+          $('#'+comment_temp_id).find('.btn-toolbar').find(".save-button").find("i").removeClass("fas fa-sync fa-spin").addClass("fa fa-save");
+          
+          $('#'+comment_temp_id).find('.'+imager_bar).find("#saving-text").remove();
+          $('#'+comment_temp_id).find('.'+imager_bar).find("p").not("#saving-text").show();
+        }, 400);
+    }
+      thisEditor.save(thisEditor);
+      }, 700)
+    );
+  }  
+    save(thisEditor) {
+    const storageKey = "plots:" + window.location.pathname + ":" + thisEditor.commentFormID;
+    localStorage.setItem(storageKey, thisEditor.textAreaValue);
+  }
+  recover() {
+    const storageKey = "plots:" + window.location.pathname + ":" + this.commentFormID;
+    this.textAreaElement.val(localStorage.getItem(storageKey));
+  }
+  apply_template(template) {
+    if(this.textAreaValue == ""){
+      this.textAreaElement.val(this.templates[template])
+    }else if((this.textAreaValue == this.templates['event']) || (this.textAreaValue == this.templates['default']) || (this.textAreaValue == this.templates['support'])){
+      this.textAreaElement.val(this.templates[template])
+    }else{
+      this.textAreaElement.val(this.textAreaValue+'\n\n'+this.templates[template])
+    }
+  }
+  toggle_preview() {
     // if the element is part of a multi-comment page,
     // ensure to grab the current element and not the other comment element.
-    if (comment_id) {
-      previewBtn = $('#' + comment_id);
-      const currentComment = $('#'+comment_id).parent('.control-group')
-      $E.preview = currentComment.siblings('#preview')
-      dropzone = currentComment.siblings('.dropzone')
-      $E.textarea = dropzone.children('#text-input')
-    } else {
-      previewBtn = $(this.textarea.context).find('#post_comment');
-      dropzone = $(this.textarea.context).find('.dropzone');
-    }
+    const previewBtn = $("#toggle-preview-button-" + this.commentFormID);
+    const formIdPrefix = this.isSingleFormPage ? "#form-body-" : "#comment-form-body-";
+    const commentFormBody = $(formIdPrefix + this.commentFormID);
 
-    $E.preview[0].innerHTML = marked($E.textarea.val())
-    $E.preview.toggle()
-    dropzone.toggle()
+    this.previewElement[0].innerHTML = marked(this.textAreaValue);
+    this.previewElement.toggle();
+    commentFormBody.toggle();
 
     this.toggleButtonPreviewMode(previewBtn);
-  },
-  toggleButtonPreviewMode: function (previewBtn) {
+  }
+  toggleButtonPreviewMode(previewBtn) {
     let isPreviewing = previewBtn.attr('data-previewing');
 
     // If data-previewing attribute is not present -> we are not in "preview" mode

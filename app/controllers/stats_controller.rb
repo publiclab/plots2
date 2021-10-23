@@ -1,24 +1,27 @@
 class StatsController < ApplicationController
+  before_action :require_user, only: %i(index range notes wikis users questions comments tags)
+
   def subscriptions
-    @tags = Rails.cache.fetch("stats-subscriptions-query", expires_in: 24.hours) do
-      TagSelection
-        .select("DISTINCT tag_selections.tid, tag_selections.user_id")
-        .where(following: true)
-        .joins("INNER JOIN community_tags ON community_tags.tid = tag_selections.tid")
-        .joins("INNER JOIN term_data ON term_data.tid = community_tags.tid")
+    @tags = Rails.cache.fetch("subscriptions-stats-query", expires_in: 24.hours) do
+      Tag
+        .joins("INNER JOIN tag_selections ON term_data.tid = tag_selections.tid")
+        .select("term_data.name")
+        .where(tag_selections: { following: true })
         .group("term_data.name")
         .joins("INNER JOIN rusers ON rusers.id = tag_selections.user_id")
         .where("rusers.status = 1 OR rusers.status = 4")
-        .count
+        .size
     end
     @tags = @tags.group_by { |_k, v| v / 10 }.sort_by { |k, _v| -k }
   end
 
   def range
     flash.now[:notice] = "Data is cached and recalculated daily"
-    if params[:options].present?
+    if params[:options].present? && params[:options] != 'For all time'
       params[:start] = Time.now - to_keyword(params[:options])
       params[:end] = Time.now
+    elsif params[:options] == 'For all time'
+      all_time_stats
     end
     @start = start
     @end = fin
@@ -39,9 +42,14 @@ class StatsController < ApplicationController
 
       total_questions = Node.published.questions
         .where(created: @start.to_i..@end.to_i)
-      @answers = total_questions.joins(:comments).size.count
-      @questions = total_questions.size.count
+      @answers = total_questions.joins(:comments).size.size
+      @questions = total_questions.size.size
     end
+  end
+
+  def all_time_stats
+    params[:start] = Date.new(2010, 01, 01).to_time
+    params[:end] = Time.now
   end
 
   def index
@@ -56,13 +64,11 @@ class StatsController < ApplicationController
       @weekly_notes = Node.past_week.select(:type).where(type: 'note').size
       @weekly_wikis = Revision.past_week.size
       @weekly_questions = Node.questions.past_week.size
-      @weekly_answers = Answer.past_week.size
       @weekly_members = User.past_week.where(status: 1).size
       @monthly_notes = Node.past_month.select(:type).where(type: 'note').size
       @monthly_wikis = Revision.past_month.size
       @monthly_members = User.past_month.where(status: 1).size
       @monthly_questions = Node.questions.past_month.size
-      @monthly_answers = Answer.past_month.size
 
       @notes_per_week_period = Node.frequency('note', @start, @end).round(2)
       @edits_per_week_period = Revision.frequency(@start, @end).round(2)
@@ -80,8 +86,8 @@ class StatsController < ApplicationController
         end
       end
 
-      @all_notes = nids.uniq.length
-      @all_contributors = users.uniq.length
+      @all_notes = nids.uniq.size
+      @all_contributors = users.uniq.size
     end
     Rails.cache.fetch("total-contributors-all-time", expires_in: 1.weeks) do
       @all_time_contributors = User.count_all_time_contributor

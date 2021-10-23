@@ -1,0 +1,30 @@
+name: 'Set up test environment'
+description: 'Set up test environment for plots2, except yarn'
+
+services:
+  mysql:
+    image: mysql:5.7
+    env:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+    - 3306
+    options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+runs:
+  using: "composite"
+  steps:
+
+  - name: Setup database
+    shell: bash
+    env:
+      RAILS_ENV: test
+      DB_PASSWORD: root
+      # tell Rails to use proper port for MySQL
+      DB_PORT: ${{ job.services.mysql.ports[3306] }}
+    run: |
+      cp config/database.yml.example config/database.yml
+      cp db/schema.rb.example db/schema.rb
+      sudo systemctl start mysql
+      mysql -uroot -proot -e "SET @@global.sql_mode=(SELECT REPLACE(@@global.sql_mode, 'ONLY_FULL_GROUP_BY', ''));"
+      mysql -uroot -proot -e "CREATE DATABASE plots;"
+      bundle exec rake db:schema:load db:migrate --trace
+      # above SET @@global.sql_mode is to address issue in https://github.com/publiclab/plots2/issues/3120

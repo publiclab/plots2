@@ -1,0 +1,6 @@
+<div class="input-group tags-input">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-tags"></i></span>
+            </div>
+            <input autocomplete="off" class="form-control" id="taginput" tabindex="3" name="tags" type="text" <% if params[:tags] || (@node && @node.power_tag('question')) || (@node && @node.tagnames) %>value="<%= params[:tags] || @node.tagnames.join(',') %><%= ','+@node.power_tag('question') if @node && @node.power_tag('question') != '' %>"<% else %>placeholder="balloon-mapping,gulf-coast"<% end %> data-provide="typeahead" />
+          </div>

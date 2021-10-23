@@ -172,7 +172,7 @@ class ScreenshotsTest < ApplicationSystemTestCase
 
   test 'wiki revisions' do
     visit "/wiki/revisions/#{nodes(:about).slug}"
-    click_on '1'
+    click_on '2'
     take_screenshot
   end
 
@@ -217,7 +217,6 @@ class ScreenshotsTest < ApplicationSystemTestCase
     click_on "Log in"
     visit nodes(:blog).path
     find('a#tags-open').click # open the tagging form
-    find('a.blurred-location-input').click
     # click_on(class: 'blurred-location-input') # alternative
     # fill_in("placenameInput", with: "Pusan")
     take_screenshot

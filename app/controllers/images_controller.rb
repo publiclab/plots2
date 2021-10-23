@@ -5,15 +5,20 @@ class ImagesController < ApplicationController
   before_action :require_user, only: %i(create new update delete)
 
   def shortlink
-    params[:size] = params[:size] || params[:s]
-    params[:size] = params[:size] || :large
-    params[:size] = :thumb if (params[:size].to_s == "t")
-    params[:size] = :thumb if (params[:size].to_s == "thumbnail")
-    params[:size] = :medium if (params[:size].to_s == "m")
-    params[:size] = :large if (params[:size].to_s == "l")
-    params[:size] = :original if (params[:size].to_s == "o")
+    size = params[:size] || params[:s]
+    size = size || :large
+    size = :thumb if (size.to_s == "t")
+    size = :thumb if (size.to_s == "thumbnail")
+    size = :medium if (size.to_s == "m")
+    size = :large if (size.to_s == "l")
+    size = :original if (size.to_s == "o")
     image = Image.find(params[:id])
-    redirect_to URI.parse(image.path(params[:size])).path
+    if image.is_image?
+      path = URI.parse(image.path(size)).path
+    else
+      path = URI.parse(image.path(:original)).path # PDFs etc don't get resized
+    end
+    redirect_to path
   end
 
   def create
@@ -33,7 +38,7 @@ class ImagesController < ApplicationController
                          title: params[:image][:title],
                          notes: params[:image][:notes])
     end
-    @image.nid = Node.find(params[:nid].to_i).nid unless params[:nid].nil? || params[:nid] == 'undefined'
+    @image.nid = Node.find(params[:nid].to_i).nid unless params[:nid].nil? || params[:nid] == 'undefined' || params[:nid].to_i == 0
     if @image.save!
       render json: {
         id: @image.id,

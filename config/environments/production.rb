@@ -16,6 +16,8 @@ Plots2::Application.configure do
   # Compress JavaScripts and CSS
   config.assets.compress = true
   config.assets.js_compressor = Uglifier.new(harmony: true)
+  Uglifier.new(harmony: true).compile(File.read("public/lib/leaflet-environmental-layers/dist/LeafletEnvironmentalLayers.js"))
+  Uglifier.new(harmony: true).compile(File.read("public/lib/leaflet-environmental-layers/lib/glify.js"))
 
   # Don't fallback to assets pipeline if a precompiled asset is missed
   config.assets.compile = true
@@ -24,7 +26,7 @@ Plots2::Application.configure do
   config.assets.digest = true
 
   # Add non-concatenated scripts
-  config.assets.precompile += ['dragdrop.js', 'post.js']
+  config.assets.precompile += ['editorToolbar.js', 'post.js']
 
   # Defaults to nil and saved in location specified by config.assets.prefix
   # config.assets.manifest = YOUR_PATH
@@ -65,9 +67,14 @@ Plots2::Application.configure do
   config.action_mailer.delivery_method = :smtp
 
   config.action_mailer.smtp_settings = {
-  :address => "smtp",
-  :port => 25,
+  :address => ENV["SMTP_HOST"] || "smtp",
+  :port => ENV["SMTP_PORT"] || 25
   }
+
+  if not ENV["SMTP_USER"].blank? then config.action_mailer.smtp_settings[:user_name] = ENV["SMTP_USER"] end
+  if not ENV["SMTP_PASS"].blank? then config.action_mailer.smtp_settings[:password] = ENV["SMTP_PASS"] end
+  if not ENV["SMTP_AUTH"].blank? then config.action_mailer.smtp_settings[:authentication] = ENV["SMTP_AUTH"] end
+  if not ENV["SMTP_STLS"].blank? then config.action_mailer.smtp_settings[:enable_starttls_auto] = ENV["SMTP_STLS"] end
 
   # Enable threaded mode
   # config.threadsafe!

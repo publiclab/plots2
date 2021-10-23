@@ -88,7 +88,7 @@ Answers are similar to Comments, but are used in Question-type Notes, and may ea
 
 Our primary user type is User. Users can login via email using the [Authlogic gem (a simple ruby authentication
 solution)](https://github.com/binarylogic/authlogic). Also, recently we have added the option to login via Twitter, Github, Facebook and Google using the
-[Omniauth gem](https://github.com/publiclab/plots2/blob/master/doc/Omniauth.md).
+[Omniauth gem](https://github.com/publiclab/plots2/blob/main/doc/Omniauth.md).
 
 Users each have a profile at `/profile/USERNAME`, which displays content stored in the `user.bio` text field.
 
@@ -97,6 +97,8 @@ Users each have a profile at `/profile/USERNAME`, which displays content stored 
 * 0: banned
 * 1: normal
 * 5: moderated
+
+These are the basic user statuses. However, being a "first timer" for commenting or node posting is calculated on the fly here, rather than being stored as a state: https://github.com/publiclab/plots2/blob/main/app/models/user.rb#L227-L233 (see `first_time_poster` and `first_time_commenter`)
 
 User `role` can be:
 

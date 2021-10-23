@@ -17,10 +17,16 @@ services:
       # if you want to re-import simply put away ../../mysql/*
   web:
     ports:
-      - "127.0.0.1:4001:4001"
+      - "127.0.0.1:4000:4000"
     build: ..
-    command: /bin/bash -c "sleep 5 && /usr/local/bundle/bin/passenger start --max-request-queue-size 200 --max-pool-size 4 --min-instances 4 -p 4001"
     environment:
+      - COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME}
+      - DB_USER=${DB_USER}
+      - DB_NAME=${DB_NAME}
+      - DB_PASS=${DB_PASS}
+      - DB_HOST=${DB_HOST}
+      - DB_SOCKET=${DB_SOCKET}
+      - RAILS_MAX_THREADS=${RAILS_MAX_THREADS}
       - RAILS_ENV=${RAILS_ENV}
       - SECRET_KEY_BASE=${SECRET_KEY_BASE}
       - RECAPTCHA_SECRET_KEY=${RECAPTCHA_SECRET_KEY}
@@ -28,6 +34,12 @@ services:
       - SERVER_ADDRESS=${SERVER_ADDRESS}
       - USERNAME=${USERNAME}
       - EMAIL_PASSWORD=${EMAIL_PASSWORD}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASS=${SMTP_PASS}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_AUTH=${SMTP_AUTH}
+      - SMTP_STLS=${SMTP_STLS}
       - OAUTH_GOOGLE_APP_KEY=${OAUTH_GOOGLE_APP_KEY}
       - OAUTH_GOOGLE_APP_SECRET=${OAUTH_GOOGLE_APP_SECRET}
       - OAUTH_GITHUB_APP_KEY=${OAUTH_GITHUB_APP_KEY}
@@ -43,6 +55,11 @@ services:
       - TWITTER_ACCESS_TOKEN_SECRET=${TWITTER_ACCESS_TOKEN_SECRET}
       - WEBSITE_HOST_PATTERN=${WEBSITE_HOST_PATTERN}
       - TWEET_SEARCH=${TWEET_SEARCH}
+      - GOOGLE_STORAGE_SECRET=${GOOGLE_STORAGE_SECRET}
+      - GOOGLE_STORAGE_KEY=${GOOGLE_STORAGE_KEY}
+      - GOOGLE_STORAGE_BUCKET_NAME=${GOOGLE_STORAGE_BUCKET_NAME}
+      - GOOGLE_JSON_KEY_FILE=${GOOGLE_JSON_KEY_FILE}
+      - FOG_PROVIDER=${FOG_PROVIDER}
     volumes:
       - ..:/app
       - /etc/passwd:/etc/passwd:ro
@@ -69,6 +86,17 @@ services:
       - RAILS_ENV=${RAILS_ENV}
       - REDIS_URL=redis://redis:6379/0
       - SECRET_KEY_BASE=${SECRET_KEY_BASE}
+      - DB_USER=${DB_USER}
+      - DB_NAME=${DB_NAME}
+      - DB_PASS=${DB_PASS}
+      - DB_HOST=${DB_HOST}
+      - DB_SOCKET=${DB_SOCKET}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASS=${SMTP_PASS}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_AUTH=${SMTP_AUTH}
+      - SMTP_STLS=${SMTP_STLS}
   mailman:
     build: ..
     command: script/mailman_server
@@ -79,6 +107,11 @@ services:
       - SERVER_ADDRESS=${SERVER_ADDRESS}
       - USERNAME=${USERNAME}
       - EMAIL_PASSWORD=${EMAIL_PASSWORD}
+      - DB_USER=${DB_USER}
+      - DB_NAME=${DB_NAME}
+      - DB_PASS=${DB_PASS}
+      - DB_HOST=${DB_HOST}
+      - DB_SOCKET=${DB_SOCKET}
     volumes:
       - ..:/app
     restart: on-failure:5

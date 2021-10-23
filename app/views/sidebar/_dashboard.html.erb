@@ -7,31 +7,38 @@
         <span class="sr-only">Toggle Dropdown</span>
       </a>
       <div class="dropdown-menu dropdown-menu-right mt-2">
-        <a class="dropdown-item" href="/post?n=15322&title=How%20to%20...&tags=activity:new,draft"><%= translation('dashboard._header.dropdown.share_activity') %></a>
-        <a class="dropdown-item" href="/post"><%= translation('dashboard._header.dropdown.share_research_note') %></a>
-        <a class="dropdown-item" href="/questions/new?tags=question:general"><%= translation('dashboard._header.dropdown.ask_question') %></a>
-        <a class="dropdown-item" href="/post?template=event&tags=event"><%= translation('dashboard._header.dropdown.post_event') %></a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="/post?tags=blog-submission"><%= translation('dashboard._header.dropdown.tell_story_blog') %></a>
+          <%= create_nav_dropdown_item("post?n=15322&title=How%20to%20...&tags=activity:new,draft","dashboard._header.dropdown.share_activity") %>
+          <%= create_nav_dropdown_item("post","dashboard._header.dropdown.share_research_note") %>
+          <%= create_nav_dropdown_item("questions/new?tags=question:general","dashboard._header.dropdown.ask_question") %>
+          <%= create_nav_dropdown_item("post?template=event&tags=event","dashboard._header.dropdown.post_event") %>
+          <div class="dropdown-divider"></div>
+          <%= create_nav_dropdown_item("post?tags=blog-submission","dashboard._header.dropdown.tell_story_blog") %>
       </div>
     </div>
   </div>
   
 <% if current_user %>
-  <div style="margin: 2.2rem 0;">
-    <a class="btn btn-lg btn-outline-secondary blurred-location-input" submit_to="/profile/tags/create/<%= current_user.uid %>"><i class="fa fa-map-marker" style="color:#c40;"></i> Add your location</a>
-    <p style="font-size: smaller; margin: 0.3rem 0;">
-      Add your location to see work near you<br>
-      <a href="https://publiclab.org/location-privacy" target="_blank">About location privacy »</a>
-    </p>
-  </div>
+  <% if current_user.has_power_tag("lat") && current_user.has_power_tag("lon")%>
+    <div style="margin: 2.2rem 0;">
+      <a class="btn btn-lg btn-outline-secondary" href="https://publiclab.org/map/#<%= current_user.get_value_of_power_tag("zoom").to_i%>/<%=current_user.lat.to_f %>/<%=current_user.lon.to_f %>">
+      <i class="fa fa-map-marker" style="color:#c40;"></i> Nearby Activity</a>
+    </div>
+  <%else %>
+    <div style="margin: 2.2rem 0;">
+      <a class="btn btn-lg btn-outline-secondary blurred-location-input" submit_to="/profile/tags/create/<%= current_user.uid %>"><i class="fa fa-map-marker" style="color:#c40;"></i> Add your location</a>
+      <p style="font-size: smaller; margin: 0.3rem 0;">
+        Add your location to see work near you<br>
+        <a href="https://publiclab.org/location-privacy" target="_blank">About location privacy »</a>
+      </p>
+    </div>
+  <% end %>
 <% end %>
 
 <ul class="nav nav-tabs" style="margin-top:2.2rem;">
   <li class="nav-item" style="width:49%;">
     <a class="nav-link active lists-tab" href="#ask-question" data-toggle="tab">
       <span class="d-md-none"><i class="fa fa-comment"></i></span>
-      <span class="d-none d-md-inline">Ask a question</span>
+      <span class="d-none d-md-inline"><%=translation('dashboard._header.dropdown.ask_question')%></span>
     </a>
   </li>
   <li class="nav-item" style="width:49%;">

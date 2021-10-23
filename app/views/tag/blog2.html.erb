@@ -1,150 +1,181 @@
-<div>
-  <div style="text-align:center;">
-  <div class="blog2-header"  style="margin-top: 10px;">
-    <p>Public lab logo (size=65x65)</p>
-    <h3><b>The Public Lab Blog</b></h3>
-    <hr>
-    <p>
-      <a href="/wiki/blog">ABOUT</a>
-      <a href="/research">RESEARCH</a>
-      <a href="/tools">METHODS</a>
-      <% if current_user %>
-        <a href="/feed/tag/<%= params[:id] %>.rss">RSS <i style="color:#696969;"class="fa fa-rss"></i></a>
-        <% if current_user.following(params[:id]) %>
-        <a rel="tooltip" title="Click to unfollow" href="/unsubscribe/tag/<%= params[:id] %>">Following <i style="color:#696969;" class="fa fa-user-plus" aria-hidden="true"></i></a>
-        <% end %>
-      <% end %>
-    </p>
-    <br>
-    <% if current_user %>
-      <% if !current_user.following(params[:id]) %>
-      <div class="alert alert-success" role="alert">
-      Want to get updates for new blog posts? <a class="btn btn-default btn-sm" href="/subscribe/tag/<%= params[:id] %>">
-      <b>Click here to subscribe!</a>
+<div style="width: 100%; height: auto" class="blog2">
+   <div style="text-align:center;">
+      <div class="blog2-header" style="margin-top: 10px;">
+         <p><img src="https://i.publiclab.org/system/images/photos/000/000/354/thumb/Boots-ground-02.png" alt="Public Lab logo" /></p>
+         <h3><b>The Public Lab Blog</b></h3>
+         <hr>
+         <p>
+            <a href="/wiki/blog">ABOUT</a>
+            <a href="/tags">TOPICS</a>
+            <a href="/tools">METHODS</a>
+            <% if current_user %>
+            <a href="/feed/tag/<%= params[:id] %>.rss">RSS <i style="color:#696969;" class="fa fa-rss"></i></a>
+            <% if current_user.following(params[:id]) %>
+            <a rel="tooltip" title="Click to unfollow" href="/unsubscribe/tag/<%= params[:id] %>">Following <i style="color:#696969;" class="fa fa-user-plus" aria-hidden="true"></i></a>
+            <% end %>
+            <% end %>
+         </p>
+         <br>
+         <% if current_user %>
+         <% if !current_user.following(params[:id]) %>
+         <div class="alert alert-success" role="alert">
+            Want to get updates for new blog posts? <a class="btn btn-default btn-sm" href="/subscribe/tag/<%= params[:id] %>">
+            <b>Click here to subscribe!</a>
+         </div>
+         <br>
+         <% end %>
+         <% end %>
       </div>
-      <br>
-      <% end %>
-    <% end %>
-  </div>
-  </div>
-  <div class="row">
-    <div class="blog-main col-md-8 jumbotron">
-     <h3>
-     This is basic html layout
-     </h3>
-     <hr>
-    <p class="more">
-    Here is the lorem ipsum content
-    <br>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-      ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-      velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-      cupidatat non proident, sunt in culpa qui officia deserunt mollit anim
-      id est laborum.
-    </p>
-    </div>
-    <div class="col-md-3">
-      <div class="row">
-        <div clas="col-md-12">
-          <div class="jumbotron" id="blog-post">
-            <div class="recent-heading">
-            <h4>Recent Post</h3>
+   </div>
+   <div class="row">
+      <div class="col-md-9">
+         <div class="blog-main">
+            <% if @notes.nil? || @notes.length == 0 %>
+            <p><%= raw translation('tag.blog.no_results', :search => params[:id]) %>:</p>
+            <%= render template: "search/new" %>
+            <% else %>
+            <% @notes.each_with_index do |node,i| %>
+            <div class="clearfix blog-entry">
+               <% if node.main_image %>
+               <a class="img blog-main-image" href="<%= node.path %>"><%= image_tag(node.main_image.path(:default)) %></a>
+               <% end %>
+               <h1 class="text-center"><a href="<%= node.path %>"><%= node.title %></a></h1>
+               <p class="meta text-center" style="color:#888;"><small>
+                  <%=raw translation('tag.blog.by') %> <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a> <%= node.author.new_contributor %>
+                  <% if node.has_power_tag('with') %>with <% node.coauthors.each_with_index do |coauthor,i| %>
+                  <a href="/profile/<%= coauthor.username %>">
+                  <%= coauthor.username%></a> <%= coauthor.new_contributor %>
+                  <%= ',' if i < node.coauthors.length-1 %><% end %><% end %>
+                  | <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>
+                  | <a href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= node.comments_viewable_by(current_user).length %></a>
+                  <% if params[:controller] == "notes" && params[:action] == "popular" %>
+                  | <%= number_with_delimiter(node.views) %> <%=raw translation('tag.blog.views') %>
+                  <% else %>
+                  | <i style="color:#888;" class="fa fa-star-o"></i> <%= node.likes %>
+                  <% end %>
+                  </small>
+               </p>
+               <p><%= raw auto_link(insert_extras(node.latest.render_body), :sanitize => false) %></p>
+               <a class="btn btn-outline-secondary btn-md" href="<%= node.path %>" style="color: black"><%=raw translation('tag.blog.read_more')%> <i class="fa fa-angle-double-right"></i></a><%= render partial: 'tag/subscribe_button', locals:{tags: node.tags} %>
+               <p>
+                  <%= render :partial => "like/like", :locals => {:node => node, :tagnames => node.tags.collect(&:name) } %>
+                  <% node.tags[0..3].each do |tag| %>
+                  <a class="badge badge-primary" href="/tag/<%= tag.name %>"><%= tag.name %></a>
+                  <% end %>
+               </p>
+               <% if params[:mod] %>
+               <a class="btn btn-outline-secondary btn-sm" href="#"><i class="fa fa-ban-circle"></i> <%=raw translation('tag.blog.spam') %></a>
+               <% end %>
             </div>
-            <hr>
-            <div class="recent-content">
-              <ul>
-              <li>Dummy Text 1 </li>
-              <li>Dummy Text 2 </li>
-              <li>Dummy Text 3 </li>
-              <li>Dummy Text 4 </li>
-              <li>Dummy Text 5 </li>
-              <li>Dummy Text 6 </li>
-              </ul>
+            <hr />
+            <% end %>
+            <div class="text-center">
+               <% if @pagy %>
+               <%== pagy_bootstrap_nav @pagy %>
+               <% else %>
+               <%= will_paginate @notes, renderer: WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated %>
+               <% end %>
             </div>
-          </div>
-        </div>
-
-        <div clas="col-md-12">
-          <div class="jumbotron" id="blog-category">
-            <div class="recent-heading">
-            <h4>Categories</h3>
-            </div>
-            <hr>
-            <div class="recent-content">
-              <ul>
-              <li>Dummy Text 1 </li>
-              <li>Dummy Text 2 </li>
-              <li>Dummy Text 3 </li>
-              <li>Dummy Text 4 </li>
-              <li>Dummy Text 5 </li>
-              <li>Dummy Text 6 </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
+            <% end %>
+         </div>
       </div>
-    </div>
-  </div>
+      <div class="col-md-3">
+         <div class="row">
+            <div class="col-12">
+               <div id="blog-post">
+                  <div class="recent-heading">
+                     <h4>
+                     Recent Posts</h4>
+                  </div>
+                  <hr style="background-color: black;">
+                  <div class="recent-content">
+                     <% if @notes.nil? || @notes.length == 0 %>
+                        <p><%= raw translation('tag.blog.no_recent_posts', :search => params[:id]) %>
+                        </p>
+                     <% else %>
+                        <% @notes[0...3].each do |node| %>
+                        <div class="blog-entry">
+                            <div class="row">
+                                <div class="col-3">
+                                    <% if node.main_image %>
+                                    <a class="img" href="<%= node.path %>"><%= image_tag(node.main_image.path(:default)) %></a>
+                                    <% end %>
+                                </div>
+                                <div class="col-9">
+                                    <h5><a href="<%= node.path %>"><%= node.title %></a></h5>
+                                    <br>
+                                    <h6><%= node.created_at.strftime("%B %d, %Y") %></h6>
+                                </div>
+                            </div>
+                        </div><hr>
+                        <% end %>
+                     <% end %>
+                  </div>
+               </div>
+            </div>
+            <div class="col-12 pt-4">
+               <div id="categories-content">
+                 <% cache('feature_blog-sidebar', skip_digest: true) do %>
+                   <%= feature('blog-sidebar') %>
+                 <% end %>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
 </div>
-
 <style>
-.blog-main {
-  margin-left: 2em;
-  margin-right: 2em;
-}
-p a{
-    color:#696969;
-    margin-left:3em;
-  }
-
-
-.blog-content {
-  margin-right:1em;
-  margin-left:1em;
-}
-.blog-category{
-  margin-right:1em;
-  margin-left:1em;
-}
-.more-content span {
-    display: none;
-}
-.more-link {
-    width: 150px;
-}
-.more-button{
-  text-align: center;
-  margin: 20px;
-}
+   .blog-main {
+      margin-right: 4em;
+   }
+   .blog-main-image {
+      display: block;
+      margin-bottom:20px;
+   }
+   .blog2-header p a {
+      color: #696969;
+      margin-left: 3em;
+   }
+   .blog2 .more-content span {
+      display: none;
+   }
+   .blog2 .more-link {
+      width: 150px;
+   }
+   .blog2 .more-button {
+      text-align: center;
+      margin: 20px;
+   }
+   .blog2 .blog-main p img {
+      max-width: 100%;
+   }
 </style>
 <script>
-  $(document).ready(function() {
-    var showChar = 300;  // How many characters are shown by default
-    var moretext = "Read more";
-    var lesstext = "Read less";
-    $('.more').each(function() {
-        var content = $(this).html();
-        if(content.length > showChar) {
-            var c = content.substr(0, showChar);
-            var h = content.substr(showChar, content.length - showChar);
-            var html = c + '<span class="moreellipses">' + '</span><span class="more-content"><span>' + h + '</span>&nbsp;&nbsp;<div class="more-button"><a class="btn btn-default more-link">' + moretext + '</a></div></span>';
-            $(this).html(html);
-        }
-    });
-    $(".more-link").click(function(){
-        if($(this).hasClass("less")) {
-            $(this).removeClass("less");
-            $(this).html(moretext);
-        } else {
-            $(this).addClass("less");
-            $(this).html(lesstext);
-        }
-        $(this).parent().prev().toggle();
-        $(this).prev().toggle();
-        return false;
-    });
-});
+   $(document).ready(function() {
+       $("img").lazyload();
+       var showChar = 300; // How many characters are shown by default
+       var moretext = "Read more";
+       var lesstext = "Read less";
+       $('.more').each(function() {
+           var content = $(this).html();
+           if (content.length > showChar) {
+               var c = content.substr(0, showChar);
+               var h = content.substr(showChar, content.length - showChar);
+               var html = c + '<span class="moreellipses">' + '</span><span class="more-content"><span>' + h + '</span>&nbsp;&nbsp;<div class="more-button"><a class="btn btn-default more-link">' + moretext + '</a></div></span>';
+               $(this).html(html);
+           }
+       });
+       $(".more-link").click(function() {
+           if ($(this).hasClass("less")) {
+               $(this).removeClass("less");
+               $(this).html(moretext);
+           } else {
+               $(this).addClass("less");
+               $(this).html(lesstext);
+           }
+           $(this).parent().prev().toggle();
+           $(this).prev().toggle();
+           return false;
+       });
+   });
 </script>

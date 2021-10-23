@@ -10,7 +10,7 @@
     <% node.coauthors.each_with_index do |coauthor,i| %>
       <a href="/profile/<%= coauthor.username %>">
         <%= coauthor.username%> <%= coauthor.new_contributor %></a>
-      <%= ',' if i < node.coauthors.length-1 %>
+      <%= ',' if i < node.coauthors.size-1 %>
     <% end %>
   <% end %>
 <% end %>

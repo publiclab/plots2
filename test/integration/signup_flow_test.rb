@@ -81,6 +81,24 @@ class SignUpTest < ActionDispatch::IntegrationTest
     assert response.body.include? 'Email should look like an email address.'
   end
   
+  test 'incomplete spamaway test does not create new user record, returns useful validation' do
+    assert_difference 'User.count', 0 do
+      post '/register', params: {
+        user: {
+           username: "newuser",
+           email: @new_user[:email],
+           password: @new_user[:password],
+           password_confirmation: @new_user[:password]
+        },
+        spamaway: {
+          follow_instructions: ""
+         }
+       } 
+    end
+    assert response.body.include? '1 error prohibited this user from being saved'
+    assert response.body.include? "It doesn&#39;t seem like you are a real person! If you disagree or are having trouble, please see https://publiclab.org/registration-test."
+  end
+  
   test 'spamaway text area not blank error message' do
     post '/register', params: {
       user: {

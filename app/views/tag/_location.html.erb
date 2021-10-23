@@ -15,7 +15,7 @@
       <% end %>
       if( $(this).attr("submit_to") ) {
         modalUrl += firstVar ? '?' : '&';
-        modalUrl += 'url=' + encodeURIComponent(locationInput.attr("submit_to"));
+        modalUrl += 'url=' + encodeURIComponent($(this).attr("submit_to"));
         firstVar = false;
       }
       $.ajax(modalUrl)

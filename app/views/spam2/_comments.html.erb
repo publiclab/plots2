@@ -1,12 +1,69 @@
 <script>
 $(document).ready(function () {
-	table_main("#comment_table");
+  var table = table_main("#comment_table");
+	$("#all").click(function () { //select all button
+		$('.selectedId').prop('checked', !$('.selectedId').prop('checked'));
+		var check = ($('.selectedId').filter(":checked").length == $('.selectedId').length);
+		$('#select-count').text($('.selectedId').filter(":checked").length);
+		$('#selectall').prop("checked", check);
+		disable_buttons('#selectall');
+  });
+  var pageselect_val = localStorage.getItem('page-select') || '';
+  $("#pageselect").val(pageselect_val);
+	$('#pageselect').change(function () {
+		pagination("#pageselect", "/spam2/comments/filter/");
+	});
+	$('#reset').on('click', function () { // reset filter
+		search_table("all", "/spam2/comments/filter/");
+	});
+	$('#spammed').on('click', function () { //spam filter 
+		search_table("spammed", "/spam2/comments/filter/");
+	});
+	$('#flagged').on('click', function () { // flagged filter
+		search_table("flagged", "/spam2/comments/filter/");
+	});
+	$('#unmoderated').on('click', function () { // unmoderated filter
+		search_table("unmoderated", "/spam2/comments/filter/");
+  });
+	$('#published').on('click', function () { // published filter
+		search_table("published", "/spam2/comments/filter/");
+  });
+	$("#batch-spam").bind('click', function (e) { //batch spam
+		batch_nav("batch_comment/spam");
+	});
+	$("#batch-publish").bind('click', function (e) { //batch publish
+		batch_nav("batch_comment/publish");
+	});
+	$("#batch-delete").bind('click', function (e) { //batch delete
+		batch_nav("batch_comment/delete");
+	});
 });
 </script>
 <div class="card" id="table-card">
-  <div class="card-header">
+  <div class="bg-light  navbar navbar-expand">
+      <ul class="nav navbar-expand  navbar-nav-scroll">
+      <li class="nav-item">
+        <a class="btn nav-link text-secondary" data-toggle="tooltip" data-placement="top" title="Selected per page">Selected <span id="select-count" class="badge badge-dark">0</span></a>
+      </li>
+      <li class="nav-item">
+        <a id="reset" class="btn nav-link <% if params[:type] == "all" %> active<% else %> text-secondary<% end %>"><i class="fa fa-arrow-circle-o-up <% if params[:type] == "all" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Latest updated Comments"></i> New Activity</a>
+      </li>
+      <li class="nav-item">
+        <a id="spammed" class="btn nav-link <% if params[:type] == "spammed" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-ban <% if params[:type] == "spammed" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all Spammed Comments "></i> Spammed </a>
+      </li>
+      <li class="nav-item">
+        <a id="unmoderated" class="btn nav-link <% if params[:type] == "unmoderated" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-exclamation-circle <% if params[:type] == "unmoderated" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all unmoderated Comments"></i> Unmoderated</a>
+      </li>
+      <li class="nav-item">
+        <a id="flagged" class="btn nav-link <% if params[:type] == "flagged" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-flag <% if params[:type] == "flagged" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all Flagged Comments and sort by flag count"></i> Flagged</a>
+      </li>
+      <li class="nav-item">
+        <a id="published" class="btn nav-link  <% if params[:type] == "published" %> active <% else %> text-secondary <% end %>"> <i class="fa fa-check-circle <% if params[:type] == "published" %> text-dark<% else %> text-secondary<% end %>" data-toggle="tooltip" data-placement="top" title="Filter all Published Comments"></i> Published</a>
+      </li>
+    </ul>
   </div>
   <div class="card-body" style="overflow-x:hidden;" >
+    <div class="my-0 text-secondary small "><%= page_entries_info(@comments) %></div>
     <table  id="comment_table" class="nowrap table table-hover" style="width:100%; text-align:left">
       <thead style="text-align:left;">
         <tr>
@@ -14,7 +71,7 @@ $(document).ready(function () {
           <th>Node</th>
           <th>Content</th>
           <th>Author</th>
-          <th>Date</th>
+          <th>Created at</th>
           <th>Action</th>                                
         </tr>       
       </thead>
@@ -24,27 +81,47 @@ $(document).ready(function () {
             <td><input  class="selectedId" value="<%= comment.id %>" type="checkbox" /></td>
             <td>
               <% unless comment.node.nil? %>
-                <i class="fa fa-file"></i> <a href="<%= comment.node.path %>" data-toggle="modal" data-target="#ninfo<%= comment.id %>"><%= comment.node.title.truncate(20) %></a>
+                <% if comment.status == 1 %><i class="fa fa-check text-success"></i> <% elsif comment.status == 0 %><i class="fa fa-ban text-danger"></i> <% elsif comment.status == 4 %><i class="fa fa-circle text-primary"></i><% end %>
+                <a href="<%= comment.node&.path %>" id="node-hover" class="text-dark font-weight-bold" data-toggle="modal" data-target="#ninfo<%= comment.id %>"><%= comment.node&.title.truncate(15) %></a><br>
+                <span class="text-secondary small"><%= comment.node&.type.capitalize %> | <%= time_ago_in_words(comment.node&.created_at) %> ago</span>
               <% end %>            
               </td>
-            <td style="width:200px;">
-              <%= comment.body.truncate(40) %>
+            <td style="width:200px;" class="text-secondary font-italic">
+              <%= comment.body.truncate(20) %>
             </td>
             <td>
-              <a href="/profile/<%= comment.author&.name %>"><%= comment.author&.name %></a>
+              <a href="/profile/<%= comment.author&.name %>" class="text-info"><%= comment.author&.name.truncate(15) %></a><br> <% if comment.flag > 0 %><span class="text-secondary small"><%= comment.flag%> Flagged </span><% end %>
             </td>
             <td>
               <% unless comment.node.nil? %>
-                <span style="color:grey;"><%= time_ago_in_words(comment.timestamp.seconds.ago) %> ago</span>
+                <span class="text-secondary"><%= time_ago_in_words(comment.timestamp) %> ago</span>
               <% end %>
             </td>
-            <td>
-              <a class="badge badge-pill badge<% if comment.status == 0 %>-success<% else %>-secondary disabled<% end %> publish" href="/admin/publish_comment/<%= comment.id %>"><i class="fa fa-check-circle fa-white"></i> Publish</a>
-              <% if comment.author&.status == 0 %>
-                <a class="badge badge-pill badge-danger a<%= comment.author&.id %>" href="/ban/<%= comment.author&.id %>">Ban</a>
-              <% elsif comment.author&.status == 1 %>
-                <a class="badge badge-pill badge-secondary unban a-unban<%= comment.author&.id %>" href="/unban/<%= comment.author&.id %>">Unban</a>
-              <% end %>
+            <td style="height:35px !important;">
+               <a class="btn btn-xs border-curve font-weight-bold btn<% if comment.status != 1 %>-success<% else %>-secondary disabled<% end %> publish" data-remote="true" href="/admin/publish_comment/<%= comment.id %>" ><i class="fa fa-check-circle fa-white"></i> Publish</a>
+               <a class="btn btn-xs border-curve font-weight-bold btn<% if comment.status != 0 %>-danger<% else %>-secondary disabled<% end %> spam" data-remote="true" href="/admin/mark_comment_spam/<%= comment.id %>"><i class="fa fa-ban fa-white"></i> Spam</a>
+               <a class="btn btn-xs border-curve text-dark font-weight-bold unflag btn-<% if comment.flag > 0%>warning <% else %>warning disabled<% end %>" data-remote="true" href="/moderate/remove_flag_comment/<%= comment.id %>">Unflag</a>
+               <%= link_to "/comment/delete/#{comment.cid}", data: { confirm: "Are you sure you want to delete this comment?" }, :remote => true, :class => "btn border-curve btn-sm font-weight-bold btn-light delete" do %>
+                  <i class="fa fa-trash text-dark"></i>
+                <% end %>
+                <script>
+                $('#n<%= comment.id %> .delete').bind('ajax:success', function(e){
+                  $('#n<%= comment.id %>').fadeOut()
+                  notyNotification('relax', 3000, 'danger', 'topRight', 'Comment deleted');
+                });
+                $('#n<%= comment.id %> .publish').bind('ajax:success', function(e){
+                  $('#n<%= comment.id %>').hide()
+                  notyNotification('relax', 3000, 'success', 'topRight', 'Comment published');
+                });
+                $('#n<%= comment.id %> .spam').bind('ajax:success', function(e){
+                  $('#n<%= comment.id %>').hide()
+                  notyNotification('relax', 3000, 'danger', 'topRight', 'Comment spammed');
+                });
+                $('#n<%= comment.id %> .unflag').bind('ajax:success', function(e){
+                  $('#n<%= comment.id %>').hide()
+                  notyNotification('relax', 3000, 'warning', 'topRight', 'Comment unflagged');
+                });
+                </script>
             </td>
           </tr>
             <div class="modal fade" id="ninfo<%= comment.id %>"> 
@@ -61,7 +138,7 @@ $(document).ready(function () {
                   <%= comment.body %>
                 </div>
                 <div class="modal-footer">
-                  <%= time_ago_in_words(comment.timestamp.seconds.ago) %> ago
+                  <%= time_ago_in_words(comment.timestamp) %> ago
                 </div>
               </div>
               <% end %>
