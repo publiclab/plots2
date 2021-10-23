@@ -10,10 +10,9 @@
  
   <p><i><small>
     <% if !@map_lat.nil? && !@map_lon.nil? %>
-      Current view based on your shared location. Click <a href='/profile'>here</a> to adjust.
+      <%= translation('map.index.current_view') %>
     <% else %>
-      Share your own location on <a href='/profile'>your profile</a>.
-      Learn about <a href='https://publiclab.org/wiki/location-privacy'>privacy</a>
+      <%= translation('map.index.share') %><%= translation('map.index.privacy') %>
     <% end %>
   </small></i></p>
 
