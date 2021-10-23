@@ -72,6 +72,6 @@ function addComment(comment, submitTo, parentID = 0) {
 
 function changeNotificationIcon(target, messageId, buttonId){
   const closestControlGroup = $(target).closest(".control-group")
-    closestControlGroup.siblings(messageId).toggle();
-    closestControlGroup.find(buttonId).toggleClass("fa-bell-o fa-bell");
+  closestControlGroup.siblings(messageId).toggle();
+  closestControlGroup.find(buttonId).toggleClass("fa-bell-o fa-bell");
 }
