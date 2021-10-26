@@ -1,6 +1,6 @@
-<div id="c<%= comment.cid %>" class="comment" style="margin-top: 20px;padding-bottom: 9px; word-wrap: break-word">
+<div id="c<%= comment.cid %>" class="comment" style="margin-top: 20px; margin-bottom: 20px; padding-bottom: 9px; word-wrap: break-word;">
 
-  <div style="margin-bottom: 0;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-bottom: 0;" class="navbar navbar-light bg-light">
+  <div style="margin-bottom: 0;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-bottom: 0;overflow-y: visible;" class="navbar navbar-light bg-light">
     <% if comment.status == 4 %>
       <p class="alert alert-warning moderated">
         <% if logged_in_as(['admin','moderator']) %>
@@ -53,42 +53,56 @@
         <i data-toggle="tooltip" title="This comment was posted by email." class="fa fa-envelope"></i>
       <% end %>
       <% if current_user && comment.uid == current_user.uid %>
-        <a aria-label="Edit comment" class="btn btn-outline-secondary btn-sm" id="edit-comment-btn" href="javascript:void(0)" onClick="$('#c<%= comment.cid %>edit').toggle();$('#c<%= comment.cid %>show').toggle();setInit(<%= comment.cid %>);">
+        <a 
+          aria-label="Edit Comment" 
+          class="btn btn-outline-secondary btn-sm edit-comment-btn" 
+          data-toggle="tooltip" 
+          title="Edit Comment"
+          href="javascript:void(0)" onClick="
+            $('#comment-form-wrapper-edit-<%= comment.cid %>').toggle();
+            $('#<%= comment.cid %>-like-emojis').toggle();                               
+            $('#comment-form-edit-<%= comment.cid %>').toggle();
+            $('#c<%= comment.cid %>show').toggle();
+          "
+        >
           <i class="fa fa-pencil"></i>
         </a>
       <% end %>
       <% if current_user &. can_moderate? %>
-        <a aria-label="Mark as spam" rel="tooltip" title="Mark as spam" class="btn btn-sm btn-outline-secondary btn-flag-spam-<%= comment.id %>" data-confirm="Are you sure? The user will no longer be able to log in or publish, and their content will be hidden except comments." href="/admin/mark_comment_spam/<%= comment.id %>">
+        <a aria-label="Mark Spam" data-toggle="tooltip" title="Mark Spam: Remove Comment and Ban User" class="btn btn-sm btn-outline-secondary btn-flag-spam-<%= comment.id %>" data-confirm="Are you sure? The user will no longer be able to log in or publish, and their content will be hidden except comments." href="/admin/mark_comment_spam/<%= comment.id %>">
           <i class="fa fa-ban"></i>
         </a>
       <% else %>
-        <a aria-label="Flag as spam" rel="tooltip" title="Flag as spam" class="btn btn-sm btn-outline-secondary btn-flag-spam-<%= comment.id %>" href="mailto:moderators@publiclab.org?subject=Reporting%20spam%20on%20Public%20Lab&body=Hi,%20I%20found%20this%20comment%20that%20looks%20like%20spam%20or%20needs%20to%20be%20moderated:%20https://publiclab.org/<%= comment.parent.path %>#c<%= comment.cid %>%20by%20https://publiclab.org/profile/<% if comment.author %><%= comment.author.name %><% end %>%20Thanks!">
+        <a aria-label="Flag as spam" data-toggle="tooltip" title="Flag as spam to moderators" class="btn btn-sm btn-outline-secondary btn-flag-spam-<%= comment.id %>" href="/moderate/flag_comment/<%= comment.id %>" data-toggle="tooltip" data-placement="top" title="Flag this Comment">
           <i class="fa fa-flag"></i>
         </a>
       <% end %>
       <% if logged_in_as(['admin', 'moderator']) || (current_user && (comment.uid == current_user.uid || comment.parent.uid == current_user.uid)) %>
-        <a aria-label="Delete comment" rel="tooltip" title="Delete comment" class="btn btn-outline-secondary btn-sm" id="c<%= comment.cid %>delete-btn">
+        <a aria-label="Delete Comment" data-toggle="tooltip" title="Delete Comment" class="btn btn-outline-secondary btn-sm delete-comment-btn" id="c<%= comment.cid %>delete-btn">
           <i class='icon fa fa-trash'></i>
         </a>
       <% end %>
       <% if current_user %>
-            <button style="border: 1px solid;padding: 4px 6px;" class="btn btn-outline-secondary dropdown" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class='icon fa fa-smile-o'></i>
-              <sup style="font-size: 12px;">+</sup>
-            </button>
-            <div id="emoji-dropdown" style="background: #f8f8f8;" class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-              <% emoji_names, emoji_image_map = emoji_info %>
-              <% emoji_names.each do |e| %>
+        <a aria-label="Leave an Emoji Reaction" rel="tooltip" title="Leave an Emoji Reaction" class="btn btn-outline-secondary btn-sm dropdown" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class='far fa-heart'></i>
+        </a>
+        <div id="emoji-dropdown" style="background:#f8f8f8;padding:0;" class=" dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+          <p id="emoji-title" style="text-align: center;color: #586069; font-size:14px;margin:6px;">Pick Your Reaction</p>
+          <div id= "dropdown-divider" style="display: block;height: 0;border-top: 1px solid #e1e4e8;">
+          </div>         
+          <div id="emoji-list" class="emoji-container">              
+            <% emoji_names, emoji_image_map = emoji_info %>                           
+            <% emoji_names.each do |e| %>
               <% capitalized_emoji_name = e.split("-").map(&:capitalize).join %>
-              <% str = "/comment/like?comment_id=#{comment.cid}&user_id=#{current_user.uid}&emoji_type=#{capitalized_emoji_name}" %>
-              <%= link_to str, data: { method: "post", remote: true }, style: "padding: 0;" do %>
-                <img alt="React to post" class="emoji" height="20" width="20" src="<%= emoji_image_map[e] %>">
+              <% str = "/comment/like?comment_id=#{comment.cid}&user_id=#{current_user.uid}&emoji_type=#{capitalized_emoji_name}" %>               
+              <%= link_to str, data: { method: "post", remote: true }, style: "margin: 6px;", class: "emoji-btn" do %>                     
+                <img alt="React to post" class="emoji grow" height="20" width="20" src="<%= emoji_image_map[e] %>">                         
               <% end %>
-              <% end %>
-        <% end %>
-      </div>
-    </div>
-
+            <% end %>
+          </div>
+        </div>  
+      <% end %>      
+    </div>  
   </div>
 
   <script>
@@ -119,12 +133,15 @@
       });
     });
 
-    $(function () {
-      $('[data-toggle="tooltip"]').tooltip()
-    })
+    $('.emoji-btn').click(function() {
+      setTimeout(() => {
+        $('#emoji-dropdown').removeClass('show');
+        $('#dropdownMenuButton').attr('aria-expanded', 'false');
+      }, 5000);
+    });
   </script>
 
-  <div style="border: 1px solid #e7e7e7;padding: 18px;" id="c<%= comment.cid %>show">
+  <div style="border: 1px solid #e7e7e7;padding: 36px;" id="c<%= comment.cid %>show">
 
     <% comment_body = comment.render_body %>
     <div class="comment-body" id="comment-body-<%= comment.cid %>">
@@ -148,18 +165,37 @@
       <div class="alert alert-info">Have you attempted or completed this activity? Consider <a href="/post?n=15798&tags=replication:<%= comment.nid %>,<%= comment.parent.tagnames.join(',') %>">sharing how it went</a> to help refine and improve it.</div>
     <% end %>
 
-
     <% if comment.reply_to.nil? %>
       <% comment.replied_comments.order("timestamp ASC").each do |replied_comment| %>
-        <%= render :partial => "notes/comment", :locals => {:comment => replied_comment} %>
+        <% if logged_in_as(['admin','moderator'])%>
+          <% if replied_comment.status == 4 || replied_comment.status == 1 %>
+            <%= render :partial => "notes/comment", :locals => {:comment => replied_comment} %>
+          <% end %>
+        <% elsif current_user && current_user.id == replied_comment.author.id %>
+          <% if replied_comment.status == 1 || (replied_comment.status == 4 && replied_comment.uid == current_user.id) %>
+            <%= render :partial => "notes/comment", :locals => {:comment => replied_comment} %>
+          <% end %>
+        <% else %>
+          <% if replied_comment.status == 1 %>
+            <%= render :partial => "notes/comment", :locals => {:comment => replied_comment} %>
+          <% end %>
+        <% end %>
       <% end %>
-
-      <p style="color: #006dcc;cursor: pointer;margin-top: 20px;" id="comment-<%= comment.cid %>-reply-toggle">Reply to this comment...</p>
+      <p style="color: #006dcc; cursor: pointer; user-select: none;" id="comment-<%= comment.cid %>-reply-toggle">Reply to this comment...</p>
       <div id="comment-<%= comment.cid %>-reply" style="margin-top: 30px;display: none;">
         <div id="comment-<%= comment.cid %>-reply-section">
           <% if current_user %>
             <div class="inline" id="question-comment-form">
-              <%= render :partial => "comments/form", :locals => { title: "Reply to this comment", reply_to: comment.cid, comment: false, placeholder: "Help the author refine their post, or point them at other helpful information on the site. Mention users by @username to notify them of this thread by email", url1: '/conduct', author: current_user.title, is_new_contributor:current_user.is_new_contributor? } %>
+              <%= render :partial => "comments/form", :locals => { 
+                title: "Reply to this comment", 
+                reply_to: comment.cid, 
+                comment: false, 
+                placeholder: "Help the author refine their post, or point them at other helpful information on the site. Mention users by @username to notify them of this thread by email", 
+                url1: '/conduct', 
+                author: current_user.title, 
+                is_new_contributor:current_user.is_new_contributor?,
+                location: :reply # toolbar needs this to create dropzone ID
+              } %>
             </div>
           <% else %>
             <p><%= link_to "Log in", "/login?return_to=#{request.path}" %> to comment</p>
@@ -170,25 +206,34 @@
 
   </div>
   <% str = "#{comment.id}-like-emojis" %>
-  <div id="<%= str %>" class="navbar-text float-right" style="margin: 0;width: 100%;display: flex;border: 1px solid #e7e7e7;border-top: 0;">
-    <% emoji_names, emoji_image_map = emoji_info %>
-    <% emoji_like_map = comment.emoji_likes %>
-    <% user_reactions_map = comment.user_reactions_map %>
+  <% emoji_names, emoji_image_map = emoji_info %>
+  <% user_reactions_map = comment.user_reactions_map %>
+  <div id="<%= str %>" class="float-right comment-reactions-container" style="margin: 0; width: 100%; display: flex; border: 1px solid #e7e7e7; border-top: 0;">
     <% emoji_names.each do |e| %>
       <% capitalized_emoji_name = e.split("-").map(&:capitalize).join %>
       <% str = "#{comment.id}-emoji-button-#{e}" %>
-      <% display = (emoji_like_map.has_key? capitalized_emoji_name) ? "display: flex;" : "display: none;" %>
-      <button aria-label="Reaction" id="<%= str %>" style="border: 0;background: #f1f8ff;border-radius: 0;border-right: 1px solid #e7e7e7;<%= display %>" type="button" class="btn btn-outline-secondary btn-sm" data-toggle="tooltip" data-placement="bottom" title="<%= user_reactions_map[capitalized_emoji_name] %>">
+      <% user_reactions_exist = user_reactions_map.has_key? capitalized_emoji_name %>
+      <% display = user_reactions_exist ? "display: flex;" : "display: none;" %>
+      <% title = user_reactions_exist ? user_reactions_map[capitalized_emoji_name][:users_string] : "" %>
+      <% likes_num = user_reactions_exist ? user_reactions_map[capitalized_emoji_name][:likes_num] : "" %>
+      <button aria-label="Reaction" id="<%= str %>" style="border: 0; border-radius: 0px; background: #f1f8ff; border-right: 1px solid #e7e7e7; padding-top: 8px; padding-bottom: 8px; <%= display %>" type="button" class="btn btn-sm" data-toggle="tooltip" data-placement="bottom" title="<%= title %>">
         <img alt="<%= str %>" height="20" width="20" src="<%= emoji_image_map[e] %>">
-        <div style="margin-left: 6px;font-size: 14px;"><%= emoji_like_map[capitalized_emoji_name] %></div>
+        <div style="margin-left: 6px;font-size: 14px;"><%= likes_num %></div>
       </button>
     <% end %>
   </div>
 
   <% if current_user %>
-    <% h = { title: I18n.t('notes._comment.edit_comment'), comment: comment, placeholder: I18n.t('notes._comment.edit_placeholder') } %>
+    <% 
+      h = { 
+        title: I18n.t('notes._comment.edit_comment'), 
+        comment: comment, 
+        location: :edit,
+        placeholder: I18n.t('notes._comment.edit_placeholder')
+      } 
+    %>
     <% h[:is_answer] = true if local_assigns[:is_answer] %>
-    <%=  render :partial => "comments/edit", :locals => h %>
+    <%=  render :partial => "comments/form", :locals => h %>
   <% end %>
   <br />
 
@@ -201,18 +246,22 @@
 </script>
 
 <style>
-  .open>#emoji-dropdown.dropdown-menu {
+  .emoji-container {
     display: flex;
-    justify-content: space-around;
-    padding: 6px;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: start;
+    align-content:center; 
+    box-sizing: border-box;
+    padding:6px;
   }
 
   #emoji-dropdown .dropdown-menu {
-    min-width: 196px;
+    max-width: 196px;
   }
 
   .grow {
-    transition: all .1s ease-in-out;
+    transition: transform .15s cubic-bezier(.2,0,.13,2);
   }
 
   .grow:hover {

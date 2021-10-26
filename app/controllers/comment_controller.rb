@@ -4,10 +4,9 @@ class CommentController < ApplicationController
   before_action :require_user, only: %i(create update delete)
 
   def index
-    comments = Comment.joins(:node, :user)
+    @pagy, comments = pagy(Comment.joins(:node, :user)
                    .order('timestamp DESC')
-                   .where('node.status = ?', 1)
-                   .paginate(page: params[:page], per_page: 30)
+                   .where('node.status = ?', 1), items: 30)
 
     @normal_comments = comments.where('comments.status = 1')
     if logged_in_as(%w(admin moderator))
@@ -51,8 +50,8 @@ class CommentController < ApplicationController
         end
       end
     rescue CommentError
-      flash[:error] = 'The comment could not be saved.'
-      render plain: 'failure'
+      flash.now[:error] = 'The comment could not be saved.'
+      render plain: 'failure', status: :bad_request
     end
   end
 
@@ -144,19 +143,82 @@ class CommentController < ApplicationController
     @emoji_type = params["emoji_type"]
     comment = Comment.where(cid: @comment_id).first
     like = comment.likes.where(user_id: @user_id, emoji_type: @emoji_type)
-    @is_liked = like.count.positive?
-    if like.count.positive?
+    @is_liked = like.size.positive?
+    if like.size.positive?
       like.first.destroy
     else
       comment.likes.create(user_id: @user_id, emoji_type: @emoji_type)
     end
-
-    @likes = comment.likes.group(:emoji_type).count
+    # select likes from users that aren't banned (status = 0)
+    @likes = comment.likes.joins(:user).select(:emoji_type, :status).where("emoji_type IS NOT NULL").where("status != 0").group(:emoji_type).size
     @user_reactions_map = comment.user_reactions_map
     respond_with do |format|
       format.js do
         render template: 'comments/like_comment'
       end
+    end
+  end
+
+  def react_create
+    @node = Node.find params[:id]
+    @body = params[:body]
+    @user = current_user
+
+    begin
+      @comment = create_comment(@node, @user, @body)
+
+      if params[:reply_to].present?
+        @comment.reply_to = params[:reply_to].to_i
+        @comment.save
+      end
+
+      new_comment = helpers.get_react_comments([@comment])
+      render json: { comment: new_comment }
+    rescue CommentError
+      flash.now[:error] = 'The comment could not be saved.'
+      render plain: 'failure', status: :bad_request
+    end
+  end
+
+  def react_delete
+    @comment = Comment.find params[:id]
+
+    comments_node_and_path
+
+    if current_user.uid == @node.uid ||
+       @comment.uid == current_user.uid ||
+       logged_in_as(%w(admin moderator))
+
+      if @comment.destroy
+        render json: { success: true }
+        return
+      else
+        flash[:error] = 'The comment could not be deleted.'
+        render plain: 'failure'
+      end
+    else
+      prompt_login 'Only the comment or post author can delete this comment'
+    end
+  end
+
+  def react_update
+    @comment = Comment.find params[:id]
+
+    comments_node_and_path
+
+    if @comment.uid == current_user.uid
+      # should abstract ".comment" to ".body" for future migration to native db
+      @comment.comment = params[:body]
+      if @comment.save
+        new_comment = helpers.get_react_comments([@comment])
+        render json: { comment: new_comment }
+      else
+        flash[:error] = 'The comment could not be updated.'
+        redirect_to @path
+      end
+    else
+      flash[:error] = 'Only the author of the comment can edit it.'
+      redirect_to @path
     end
   end
 end

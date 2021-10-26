@@ -44,6 +44,14 @@ h5,h6, h1 small, h3 small {
   line-height: 1.4em;
 }
 
+h6.dropdown-header {
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 75%;
+    color: #aaa;
+}
+
 .pl-content h1,
 .pl-content h2,
 .pl-content h3 {
@@ -143,6 +151,10 @@ a .fa-white,
   min-width: 190px;
 }
 
+#header .input-group #searchform_input:focus {
+  box-shadow: 0 0 0 3px rgba(21, 156, 228, 0.4) inset !important;
+}
+
 @media (max-width:992px) {
     #pl_pad {
         width:250%;
@@ -220,19 +232,19 @@ a .fa-white,
   -moz-columns:2;
   columns:2;
 }
-
 #header .navbar-brand {
   color: white;
-  /*padding-top: 19px;*/
   font-family: "Junction Light", lucida grande,lucida sans console,sans-serif;
   font-size: 22px;
+  line-height: 22px;
+  padding-top: .5rem;
+  padding-bottom: .2rem;
 }
 
 @media (max-width: 768px) {
   #header #brand,
   #header #brand-compact {
-    margin-top: 0.3125rem;
-    padding-bottom: 0;
+    /* padding-top: 22px; */
     padding-right: 4px;
   }
 }
@@ -280,6 +292,10 @@ a .fa-white,
   list-style: none;
   padding-left: 0;
   line-height: 2em;
+}
+
+.footer a {
+  color: #007bff !important;
 }
 
 .caption {
@@ -348,7 +364,7 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active  {
-    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    -webkit-box-shadow: 0 0 0 3px rgba(21, 156, 228, 0.4) inset !important;
 }
 
 .form-element-valid {
@@ -567,10 +583,10 @@ a.btn-outline-secondary .fa {
 
 .back-to-top i {
 
-  font-size: 60px;
+  font-size: 40px;
   position: fixed;
-  bottom: 40px;
-  right: 50px;
+  bottom: 20px;
+  right: 20px;
 
 }
 

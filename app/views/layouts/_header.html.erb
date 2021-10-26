@@ -9,7 +9,7 @@
 
 <nav id="header" class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
     <!-- ||| menu, displayed for mobile: -->
-  <a class="navbar-brand ml-lg-5" id="brand" href="<%= root_path %>">Public Lab</a>
+  <a data-toggle="tooltip" title="Home" data-placement="bottom" class="navbar-brand ml-lg-5" id="brand" href="<%= root_path %>">Public Lab</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#header-navbar-collapse">
     <span class="fa fa-bars fa-white"></span>
   </button>
@@ -17,7 +17,7 @@
     <div class="collapse navbar-collapse" id="header-navbar-collapse">
       <form class="form-inline mr-3" id="searchform" autocomplete="off">
         <div class="input-group">
-          <input aria-label="Enter Search Query" type="text" id="searchform_input" class="form-control search-query typeahead" role="search" qryType="tags" placeholder="<%= t('layout._header.search') %>"  value="<%= params[:query] %>" required>
+          <input aria-label="Enter Search Query" type="text" id="searchform_input" class="form-control search-query typeahead" role="search" qryType="tags" placeholder="<%= translation('layout._header.search', {}, false) %>"  value="<%= params[:query] %>" required>
           <div class="input-group-append">
             <button class="btn btn-light" type="submit" title="Search button" aria-label="Search Button"><i class="fa fa-search"></i></button>
           </div>
@@ -31,49 +31,66 @@
         <% end %>
 
         <li class="nav-item dropdown" style="min-width:80px;">
-          <a class="nav-link" data-toggle="dropdown" href="#">
-            <%= translate('Community') %>
-          </a>
+          <div class="nav-link" data-toggle="dropdown" onclick="location.href='#">
+            <%= translation('layout._header.community.community_title') %>
+          </div>  
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="/getting-started"><b><%= translate('Get started') %> &raquo;</b></a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="/people"><%= translate('People') %></a>
-            <a class="dropdown-item" href="/map"><%= translate('Places') %></a>
-            <a class="dropdown-item" href="/projects"><%= translate('Projects') %></a>
-            <a class="dropdown-item" href="/events"><%= translate('Events') %></a>
-            <a class="dropdown-item" href="/questions"><%= translate('Questions') %></a>
-            <a class="dropdown-item" href="/chat"><%= translate('Chat') %></a>
+            <% if current_user&.has_tag('translation-helper') && I18n.locale != :en %>
+              <div class="dropdown-item">
+                <a class="text-body" href="/getting-started"><b><%= translation('layout._header.community.get_started') %> &raquo;</b></a>
+              </div>
+            <% else %>
+              <a class="dropdown-item" href="/getting-started"><b><%= translation('layout._header.community.get_started') %> &raquo;</b></a>
+            <% end %>
+              <div class="dropdown-divider"></div>
+              <%= create_nav_dropdown_item("/people","layout._header.community.people") %>
+              <%= create_nav_dropdown_item("/map","layout._header.community.places") %>
+              <%= create_nav_dropdown_item("/projects","layout._header.community.projects") %>
+              <%= create_nav_dropdown_item("/events","layout._header.community.events") %>
+              <%= create_nav_dropdown_item("/questions","layout._header.community.questions") %>
+              <%= create_nav_dropdown_item("/chat","layout._header.community.chat") %>
           </div>
         </li>
 
         <li class="nav-item dropdown" style="min-width:80px;">
-          <a class="nav-link" data-toggle="dropdown" href="#">
-            <%= translate('Tools') %>
-          </a>
+          
+            <div class="nav-link" data-toggle="dropdown" onclick="location.href='#">
+            <%= translation('layout._header.tools.tools_title') %>
+            </div>
+          
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="/methods"><%= translate('Methods') %></a>
-            <div class="dropdown-divider"></div>
-            <h6 class="dropdown-header">Kits</h6>
-            <a class="dropdown-item" href="/kits"><%= translate('Kits initiative') %></a>
-            <a class="dropdown-item" href="//store.publiclab.org"><%= translate('Store') %></a>
-            <div class="dropdown-divider"></div>
-            <h6 class="dropdown-header">Software</h6>
-            <a class="dropdown-item" href="https://mapknitter.org"><%= translate('MapKnitter') %></a>
-            <a class="dropdown-item" href="https://infragram.org"><%= translate('Infragram') %></a>
-            <a class="dropdown-item" href="https://spectralworkbench.org"><%= translate('Spectral Workbench') %></a>
-            <a class="dropdown-item" href="https://code.publiclab.org#r=all"><%= translate('Code community') %></a>
+            <% if current_user&.has_tag('translation-helper') && I18n.locale != :en %>
+              <div class="nav-link dropdown-item">
+                <a class="text-body" href="/methods"><%= translation('layout._header.tools.methods') %></a>
+              </div>
+            <% else %>
+                <a class="dropdown-item" href="/methods"><%= translation('layout._header.tools.methods') %></a>
+            <% end %>
+              
+              <div class="dropdown-divider"></div>
+              <h6 class="dropdown-header">Kits</h6>
+              <%= create_nav_dropdown_item("/kits","layout._header.tools.kits_initiative") %>
+              <%= create_nav_dropdown_item("//store.publiclab.org","layout._header.tools.store") %>
+              <h6 class="dropdown-header">Software</h6>
+              <%= create_nav_dropdown_item("//mapknitter.org","layout._header.tools.map_knitter") %>
+              <%= create_nav_dropdown_item("//infragram.org","layout._header.tools.infragram") %>
+              <%= create_nav_dropdown_item("//spectralworkbench.org","layout._header.tools.spectral_workbench") %>
+              <%= create_nav_dropdown_item("//code.publiclab.org#r=all","layout._header.tools.code_community") %>
           </div>
         </li>
 
         <li class="nav-item dropdown" style="min-width:80px;">
-          <a class="nav-link" data-toggle="dropdown" href="#">
+          <div class="nav-link" data-toggle="dropdown" onclick="location.href='#'">
+            <!-- <a > -->
             <%= t('layout._header.about.about_title') %>
-          </a>
+            <!-- </a> -->
+          </div>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="/about"><%= translation('layout._header.about.about_public_lab') %></a>
-            <a class="dropdown-item" href="/blog"><%= translation('layout._header.about.blog') %></a>
-            <a class="dropdown-item" href="/newsletter"><%= translation('Newsletter') %></a>
-            <a class="dropdown-item" href="/wiki/contact"><%= translation('layout._header.about.contact') %></a>
+              <%= create_nav_dropdown_item("/about","layout._header.about.about_public_lab") %>
+              <%= create_nav_dropdown_item("/blog","layout._header.about.blog") %>
+              <%= create_nav_dropdown_item("/newsletter","Newsletter") %>
+              <%= create_nav_dropdown_item("/public-lab-careers","Careers") %>
+              <%= create_nav_dropdown_item("/wiki/contact","layout._header.about.contact") %>
           </div>
         </li>
 
@@ -91,7 +108,7 @@
       <ul class="navbar-nav mr-lg-5">
         <% if current_user %>
           <li class="nav-item d-sm-none d-xl-inline">
-            <a rel="tooltip" class="nav-link" title="<%= t('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard">Dashboard</a>
+            <a rel="tooltip" class="nav-link" title="<%= t('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard"><%= translation('layout._header.dashboard') %></a>
           </li>
         <% else %>
         <li class="d-md-none d-xl-inline nav-item"> <!-- signup button -->
@@ -109,7 +126,7 @@
                   <% if current_user.profile_image == "https://www.gravatar.com/avatar/eb721d116a28f4a4da4ea67340c8ce75" %>
                     <i class="fa fa-user-circle fa-lg" style="color:white;"></i>
                   <% else %>
-                    <img class="rounded-circle" id="profile-photo" alt="profile-photo" style="width:20px; height:20px; margin-right:8px;" src="<%= current_user.profile_image %>" />
+                    <%= image_tag(current_user.profile_image, class:'rounded-circle', style:'width:20px; height:20px; margin-right:8px;', alt:'profile-photo', id:'profile-photo') %>
                   <% end %>
                 </div>
               </a>
@@ -120,22 +137,56 @@
                        - logged in as <%= current_user.role %>
                     <% end %>
                   </h5>
-
+                  <% if current_user&.has_tag('translation-helper') && I18n.locale != :en %>
+                    <div class="dropdown-item">
+                      <a class="text-body" href="/profile/<%= current_user.username %>"><%= translation('layout._header.profile') %></a>
+                    </div>
+                  <% else %>
                     <a class="dropdown-item" href="/profile/<%= current_user.username %>"><%= translation('layout._header.profile') %></a>
-                    <a class="dropdown-item" href="/profile/edit"><%= translation('layout._header.edit_profile') %></a>
-                    <a class="dropdown-item" href="/settings" >Notifications</a>
+                  <% end %>
+                    <%= create_nav_dropdown_item("/profile/edit","layout._header.edit_profile") %>
+                    <%= create_nav_dropdown_item("/settings","Notification Settings") %>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="/subscriptions"><%= translation('layout._header.subscriptions') %></a>
+                    <%= create_nav_dropdown_item("/subscriptions","layout._header.subscriptions") %>
+                    <% if current_user&.has_tag('translation-helper') && I18n.locale != :en %>
+                    <div class="dropdown-item">
+                      <a class="text-body" href="/profile/<%= current_user.username %>/likes"><%= translation('layout._header.notes_liked') %></a>
+                    </div>
+                  <% else %>
                     <a class="dropdown-item" href="/profile/<%= current_user.username %>/likes"><%= translation('layout._header.notes_liked') %></a>
+                  <% end %>
                     <div class="dropdown-divider"></div>
                       <% if logged_in_as(['admin']) %>
                       <a class="dropdown-item" href="/useremail">Email search</a>
                       <a class="dropdown-item" href="/wiki/locked">Locked pages</a>
                       <a class="dropdown-item" href="/spam">Spam moderation</a>
-                      <a class="dropdown-item" href="/people">Contributors</a>
+                      <a class="dropdown-item" href="/people"><%= translation('sidebar._related.contributors') %></a>
+                      <a class="dropdown-item" href="/features"><%= translation('layout._header.features') %></a>
                       <div class="dropdown-divider"></div>
                       <% end %>
-                      <%= link_to translation('layout._header.logout'), logout_path, class: "dropdown-item" %>
+
+                      <% if Rails.env==="development" %> 
+                          <% if current_user %>
+                              <% if current_user&.has_tag('translation-helper') %>
+                                  <a rel="tooltip" class="dropdown-item" data-placement="bottom" data-method="delete" href="/profile/tags/delete/<%= current_user.id %>?name=translation-helper&translationswitch=yes">
+                                        Switch off Translation
+                                  </a>        
+                              <% else %>
+                                  <a rel="tooltip" class="dropdown-item" data-placement="bottom" data-method="post" href="/profile/tags/create/<%= current_user.id %>?translationswitch=yes&name=translation-helper">
+                                      Switch on Translation
+                                  </a>
+                              <% end %>
+                            <div class="dropdown-divider"></div>
+                          <% end %>
+                      <% end %>
+                      
+                      <% if current_user&.has_tag('translation-helper') && I18n.locale != :en %>
+                      <div class="dropdown-item">
+                      <%= link_to translation('layout._header.logout'), logout_path, class: "text-body" %>
+                      </div>
+                      <% else %>
+                        <%= link_to translation('layout._header.logout'), logout_path, class: "dropdown-item" %>
+                      <% end %>
                     <a class="dropdown-item" href="/logoutRemotely">Logout from all devices</a>
                   </div>
               </li>
@@ -149,15 +200,15 @@
           <% end %>
         </li>
         <li id="md-ham" class="d-lg-none dropdown">
-          <a href="#" class="btn btn-dark" data-toggle="dropdown"><span class="fa fa-white" style="vertical-align: middle;"></span></a>
+          <a href="#" class="btn" data-toggle="dropdown"><span class="fa fa-bars fa-white" style="vertical-align: middle;"></span></a>
           <div class="dropdown-menu dropdown-menu-right">
             <a class="dropdown-item d-lg-none" href="//store.publiclab.org"><%= translation('layout._header.store') %></a>
             <a class="dropdown-item d-lg-none"  href="/donate"><%= translation('layout._header.donate') %></a>
             <!--These menu items will only appear in the "More" dropdown menu. -->
             <% if current_user %>
-              <a class="dropdown-item d-xl-none" rel="tooltip" title="<%= translation('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard">Dashboard</a>
+              <a class="dropdown-item d-xl-none" rel="tooltip" title="<%= translation('layout._header.your_dashboard',{},false) %>" data-placement="bottom" href="/dashboard"><%= translation('layout._header.dashboard') %></a>
             <% else %>
-              <a class="dropdown-item d-xl-none" rel="tooltip" title="<%= translation('layout._header.become_part_community') %>" href="/signup"><%= translation('layout._header.join') %></a>
+              <a class="dropdown-item d-xl-none" rel="tooltip" title="<%= translation('layout._header.become_part_community',{},false) %>" href="/signup"><%= translation('layout._header.join') %></a>
             <% end %>
           </div>
         </li>

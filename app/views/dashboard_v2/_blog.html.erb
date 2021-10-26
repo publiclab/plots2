@@ -1,0 +1,31 @@
+<%= render partial: "dashboard_v2/header" %>
+<div class="pt-2 d-block" >
+  <% if @blog %>
+      <% if @blog.main_image %>
+        <div aria-hidden = 'true' class="img" style="background-image: url('<%= @blog.main_image.path(:large) %>')">
+        <% elsif @blog.scraped_image %>
+        <div aria-hidden = 'true' class="img" style="background-image: url('<%= @blog.scraped_image %>')">
+      <% end %>
+      <%# subscribe to blog updates possibly via email %>
+      <a class="ellipsis pull-right pl-2" data-toggle="dropdown" rel="tooltip" title="<%= translation('tag.show.blog_updates',{},false) %>" style="cursor:pointer; background-color: #444" aria-expanded="true"><i class="fa fa-ellipsis-h" style="color:#ccc;font-size:18px;margin-right:10px;"></i></a>
+      <div class="dropdown-menu">
+        <div class="dropdown-item">
+          <a style="margin-top:-8px;" rel="tooltip" title="<%= translation('tag.show.blog_updates',{},false) %>" href="/subscribe/tag/blog">
+            <%= translation('tag.show.subscribe') %>
+          </a>
+        </div>
+      </div>
+      <%# blog caption %>
+      <div style="padding-top: 220px">
+          <h4 class="blog-caption tabindex='1'">
+            <small style="font-size: 13px;" class="float-right d-none d-lg-inline"><%= raw translation('dashboard_v2.dashboard.from_blog', :url => '/blog') %></small>
+            <a style="color: #444;" href="/blog"><%= @blog.title %></a>
+            <small style="font-size: 13px;"><%= translation('dashboard_v2.dashboard.by') %>
+            <a href="/profile/<%= @blog.author.username %>"><%= @blog.author.username %></a></small>
+          </h4>
+      </div>
+      <% if @blog.main_image || @blog.scraped_image %>
+        </div>
+      <% end %>
+  <% end %>
+</div>

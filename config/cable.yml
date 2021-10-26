@@ -1,9 +1,12 @@
 development:
   adapter: redis
-  url: <%= "redis://localhost:6379/0" %>
+  url: "redis://localhost:6379/0"
   channel_prefix: plots_development
+
 test:
-  adapter: async
+  adapter: redis
+  url: "redis://localhost:6379/0"
+  channel_prefix: plots_test
 
 production:
   adapter: redis

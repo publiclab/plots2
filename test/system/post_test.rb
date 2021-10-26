@@ -38,9 +38,10 @@ class PostTest < ApplicationSystemTestCase
 
     find('.tag-input').set('nature').native.send_keys(:return)
     find('.tag-input').set('mountains').native.send_keys(:return)
+    find('.tag-input').set('test:one').native.send_keys(:return)
 
     # Make sure that the 2 tags are added
-    page.assert_selector('.tags-list p.badge', :count => 2)
+    page.assert_selector('.tags-list p.badge', :count => 3)
   end
 
   test 'removing tags from the post' do
@@ -48,16 +49,17 @@ class PostTest < ApplicationSystemTestCase
 
     find('a#tags-open').click()
 
-    # There should be 1 tag that shows up as a badge and 2 as a card
+    # There should be 2 tags that show up as a card
     page.assert_selector('.tags-list .card-body', :count => 2)
-    # page.assert_selector('.tags-list p.badge', :count => 1)
 
-    # accept_alert do
-    #   find('.tags-list p.badge .tag-delete').click()
-    # end
+    find(".tags-list .card-body .ellipsis", match: :first).click()
+
+    accept_alert do
+      find('.tags-list .card-body .tag-delete').click()
+    end
     
-    # Make sure that 1 of the 3 tags is removed
-    page.assert_selector('.tags-list p.badge', :count => 0)
+    # Make sure that 1 of the 2 tags is removed
+    page.assert_selector('.tags-list .card-body', :count => 2)
   end
 
   test 'like button on the post' do
@@ -109,7 +111,7 @@ class PostTest < ApplicationSystemTestCase
     visit '/wiki/new'
 
     # Upload the image
-    drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", ".dropzone")
+    drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", ".dropzone-large")
 
     # Wait for image upload to finish
     wait_for_ajax
@@ -119,7 +121,21 @@ class PostTest < ApplicationSystemTestCase
     find('.preview-btn').click()
 
     # Make sure that image has been uploaded
-    page.assert_selector('#preview img', count: 1)
+    page.assert_selector('#preview-main img', count: 1)
+  end
+
+  test 'preview works in legacy wiki editor' do
+    visit '/wiki/new'
+    legacy_editor = page.find('#legacy-editor-container')
+    preview_button = page.find("#toggle-preview-button-main")
+    legacy_editor
+      .find('#text-input-main')
+      .click
+      .fill_in with: 'stuff!'
+    preview_button.click
+    assert_equal('Hide Preview', preview_button.text)
+    assert_selector('#preview-main')
+    assert legacy_editor.has_no_selector?('#text-input-main')
   end
 
   test "changing and reverting versions works correctly for wiki" do
@@ -129,7 +145,7 @@ class PostTest < ApplicationSystemTestCase
     old_wiki_content = find("#content p").text
 
     find("a#edit-btn").click()
-    find("#text-input").set("wiki text")
+    find("#text-input-main").set("wiki text")
     find("a#publish").click()
 
     # view wiki
@@ -156,7 +172,7 @@ class PostTest < ApplicationSystemTestCase
     visit wiki.path
 
     find("a#edit-btn").click()
-    find("#text-input").native.send_keys(:enter, :enter, "wiki text")
+    find("#text-input-main").native.send_keys(:enter, :enter, "wiki text")
     find("a#publish").click()
 
     find("a[data-original-title='View all revisions for this page.']").click()
@@ -201,10 +217,12 @@ class PostTest < ApplicationSystemTestCase
 
     # Wait for the location to be added
     wait_for_ajax
-    find('.tags-list a.show-more-tags').click()
+
+    # there should also be a page reload now, because we want to reload to see the sidebar mini-map
+    find('a#tags-open').click()
 
     # Make sure proper latitude and longitude tags are added
-    assert_selector('.tags-list .badge a[href="/tag/lat:22"]', text: "lat:22")
+    assert_selector('.tags-list .card a[href="/tag/lat:22"]', text: "lat:22") #This is displayed as a miniCard since it's the first power tag
     assert_selector('.tags-list .badge a[href="/tag/lon:76"]', text: "lon:76")
   end
 
@@ -229,9 +247,9 @@ class PostTest < ApplicationSystemTestCase
     find("span[data-original-title='Tools']").click()
     find("input[value='Give']").click()
 
-    page.assert_selector("div.alert-success", text: "You awarded the basic barnstar to #{note.author.name}")
-    page.assert_selector("p", text: "#{note.author.name} was awarded the Basic Barnstar by palpatine for their work in this research note.")
-    page.assert_selector(".comment-body p", text: "@palpatine awards a barnstar to #{note.author.name} for their awesome contribution!")
+    page.find("div.alert-success", text: "You awarded the basic barnstar to #{note.author.name}")
+    assert_selector("p", text: "#{note.author.name} was awarded the Basic Barnstar by palpatine for their work in this research note.")
+    assert_selector(".comment-body p", text: "@palpatine awards a barnstar to #{note.author.name} for their awesome contribution!")
   end
 
 end

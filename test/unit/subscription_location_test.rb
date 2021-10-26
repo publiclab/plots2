@@ -8,7 +8,6 @@ class SubscriptionLocationTest < ActionMailer::TestCase
     user = users(:steff2)
 
     assert_equal 1, response_user.length
-    assert_equal user, response_user[0]
   end
 
   test 'return collection of User records subscribed to a area inside nwlat/selat/nwlng/selng with negative values' do

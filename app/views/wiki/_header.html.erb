@@ -1,10 +1,11 @@
-<% if current_user && @node.tags.length == 0 %>
+<% if current_user && @node.tags.size == 0 %>
   <div class="alert alert-warning"><%= raw translation('wiki.show.page_has_no_tags', url: 'javascript: document.getElementById("tags-open").click();') %></div>
 <% end %>
 
 <% if @node.main_image && !@presentation %>
+  <% img_path = @node.main_image.path(@node.main_image.photo_file_name == "blob" ? :original : :large) # special case for "blob" images, see https://github.com/publiclab/plots2/issues/10210 %>
   <a style="margin-bottom:10px;" href="<%= @node.main_image.path(:original) %>">
-    <%= image_tag(@node.main_image.path(:large), class:"rounded", style:'max-width:100%;max-height:600px;margin-bottom:10px;') %>
+    <%= image_tag(img_path, class:"rounded", style:'max-width:100%;max-height:600px;margin-bottom:10px;', lazy: @node.main_image.photo_file_name == "blob") %>
   </a>
 <% end %>
 
@@ -13,7 +14,7 @@
 <h1 style="font-size:3em;margin-top:20px;text-align:center;font-family:'Junction Light';">
   <%= @revision.title %>
   <% if @presentation || @node.has_tag('style:minimal') %>
-    <a onClick="$('#wiki-toolbar').toggle()" class="btn btn-link"><b><i class="fa fa-caret-down"></i></b></a>
+  <a rel="tooltip" title="Show or Hide the toolbar." data-placement="right" onClick="$('#wiki-toolbar').toggle()" class="btn btn-link"><b class="fa fa-caret-down"></b></a>
   <% end %>
 </h1>
 
@@ -31,11 +32,21 @@
 
     <div style="padding-top:8px;text-align:center">
       <span class="d-none d-lg-inline">
-        <span rel="tooltip" title="The number of authors for this page." data-placement="top"><i style="color:#888;" class="fa fa-user"></i> <%= number_with_delimiter(@node.authors.length) %></span>  |
-        <a rel="tooltip" title="View all revisions for this page." data-placement="top" href="/wiki/revisions/<%= @node.slug_from_path %>"><i style="color:#888;" class="fa fa-history"></i> <%= @node.revisions.length %></a> |
-        <a href="/talk/<%= @node.slug_from_path %>" rel="tooltip" title="Practice in a realtime doc." data-placement="top"><i class="fa fa-comment"></i></a> |
-        <a href="/n/<%= @node.id %>"><i style="color:#888;" class="fa fa-link"></i></a> <span class="d-none d-xl-inline"><a href="/n/<%= @node.id %>">#<%= @node.id %></a></span>
+        <span rel="popover" style='cursor: pointer;' title="Authors" data-html="true" data-placement="top" data-content= "
+        <ul>
+        <% @node.authors.each do |author| %>
+          <li style='list-style: none;'><a href='/profile/<%= author&.username %>' style='color: #009bff;'>@<%= author&.username %></a></li>
+        <% end %>
+      </ul>
+      "> <i style="color:#888;" class="fa fa-user"></i> <%= number_with_delimiter(@node.authors.size) %></span>  | 
+        <a rel="tooltip" title="View all revisions for this page." data-placement="top" href="/wiki/revisions/<%= @node.slug_from_path %>"><i style="color:#888;" class="fa fa-history"></i> <%= @node.revisions.size %></a> |
+        <a aria-label="Practice in a realtime doc" href="/talk/<%= @node.slug_from_path %>" rel="tooltip" title="Practice in a realtime doc." data-placement="top"><i class="fa fa-comment"></i></a> |
+        <a aria-label="Link to wiki" href="/n/<%= @node.id %>"><i style="color:#888;" class="fa fa-link"></i></a> <span class="d-none d-xl-inline"><a href="/n/<%= @node.id %>">#<%= @node.id %></a></span>
       </span>
+      <details class="d-inline-flex flex-column position-relative">
+        <summary id="toc-menu" class="btn btn-light" role="button" aria-label="Table of Contents" aria-haspopup="menu"><i class="fa fa-list-ul" aria-hidden="true"></i></summary>
+        <span class="js-toc position-absolute shadow p-0 rounded" role="menu"></span>
+      </details>
     </div>
   </div>
 </div>
@@ -56,9 +67,10 @@
 <% if @node.has_power_tag('tabbed') %>
 <nav class="navbar navbar-light bg-light navbar-expand">
   <ul class="navbar-nav">
-    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab-overview"><%= translation('wiki.show.overview') %></a></li>
+    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#legacy-editor-container"><%= translation('wiki.show.overview') %></a></li>
     <% if @node.power_tags('tabbed').include?("notes") %><li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#tab-notes"><%= translation('wiki.show.research') %></a></li><% end %>
     <% if @node.power_tags('tabbed').include?("wikis") %><li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#tab-wikis"><%= raw translation('wiki.show.wiki_pages') %></a></li><% end %>
   </ul>
 </nav>
 <% end %>
+

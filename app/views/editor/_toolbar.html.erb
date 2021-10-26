@@ -1,36 +1,118 @@
 <div class="btn-toolbar" style="margin-bottom:8px;">
+  <!-- defined in application_helper.rb -->
+  <% toolbar_element_id = get_comment_form_id(location, local_assigns[:reply_to], local_assigns[:comment_id]) %>
+  <div class="btn-group mr-2">
+    <a
+      id="bold-button-<%= toolbar_element_id %>"
+      title="Bold" 
+      data-action="bold"
+      <%# to setState on editor.js %>
+      data-form-id="<%= toolbar_element_id %>" 
+      data-placement="bottom" 
+      data-toggle="tooltip" 
+      class="bold-button btn btn-outline-secondary btn-sm rich-text-button" 
+    >
+      <i class="fa fa-bold" ></i>
+    </a>
+    <a
+      id="italic-button-<%= toolbar_element_id %>"
+      title="Italic" 
+      data-action="italic"
+      <%# to setState on editor.js %>
+      data-form-id="<%= toolbar_element_id %>"
+      data-placement="bottom" 
+      data-toggle="tooltip" 
+      class="italic-button btn btn-outline-secondary btn-sm rich-text-button" 
+    >
+      <i class="fa fa-italic" ></i>
+    </a>
+    <a
+      id="header-button-<%= toolbar_element_id %>"
+      title="Header" 
+      data-action="h2"
+      <%# to setState on editor.js %>
+      data-form-id="<%= toolbar_element_id %>"
+      data-placement="bottom" 
+      data-toggle="tooltip" 
+      class="header-button btn btn-outline-secondary btn-sm rich-text-button" 
+    >
+      <b>
+          <i class="fa fa-header"></i>
+      </b>
+    </a>
+    <a
+      id="link-button-<%= toolbar_element_id %>"
+      aria-label="Link" 
+      title="Link" 
+      data-action="link"
+      <%# to setState on editor.js %>
+      data-form-id="<%= toolbar_element_id %>"
+      data-placement="bottom" 
+      data-toggle="tooltip" 
+      class="link-button btn btn-outline-secondary btn-sm rich-text-button" href="javascript:void(0)" 
+      style="color: #6c757d;"
+    >
+      <i class="fa fa-link"></i>
+    </a>
+    <a
+      id="image-upload-button-<%= toolbar_element_id %>"
+      aria-label="Upload Image" 
+      data-toggle="tooltip" 
+      title="Upload Image" 
+      data-placement="bottom" 
+      class="upload-button btn btn-outline-secondary btn-sm"
+    >
+      <%# data-form-id is for setState on editor.js %>
+      <div id="dropzone-small-<%= toolbar_element_id %>" class="dropzone dropzone-small" data-form-id="<%= toolbar_element_id %>">
+        <span id="create_prompt" class="prompt">
+          <label class="fileinput-dropzone-label" for="fileinput-button-<%= toolbar_element_id %>" style="margin-bottom: 0; cursor: pointer;">
+            <input id="fileinput-button-<%= toolbar_element_id %>" class="fileinput" type="file" name="image[photo]" accept="image/*" style="display:none;" />
+            <i class="fa fa-image"></i>
+            <span class="d-md-none">
+              <i class="fa fa-upload"></i>
+            </span>
+          </label>
+        </span>
+      </div>
+    </a>
+  </div>
 
   <div class="btn-group mr-2 ">
-    <a data-toggle="tooltip" title="Bold" data-placement="bottom" class="btn btn-outline-secondary btn-sm " onClick="$E.bold()"><i class="fa fa-bold" ></i></a>
-    <a data-toggle="tooltip" title="Italic" data-placement="bottom" class="btn btn-outline-secondary btn-sm " onClick="$E.italic()"><i class="fa fa-italic" ></i></a>
-    <a data-toggle="tooltip" title="Header" data-placement="bottom" class="btn btn-outline-secondary btn-sm " onClick="$E.h2()"><b><span class="d-md-none d-lg-inline  ">Header</span><span class="d-none d-md-inline d-lg-none">H</span></b></a>
-  </div>
-
-  <div class="btn-group mr-2">
-    <a data-toggle="tooltip" title="Make a link" data-placement="bottom" class="btn btn-outline-secondary btn-sm" href="javascript:void(0)" onClick="$E.link()"><i class="fa fa-link"></i></a>
-  </div>
-
-  <div class="dropdown mr-2">
-    <div class="d-md-none d-lg-inline">
-      <a class="btn btn-outline-secondary btn-sm dropdown-toggle" data-toggle="dropdown" href="#" >
-        Templates
-        <span class="caret"></span>
-      </a>
-      <div class="dropdown-menu">
-        <a class="dropdown-item" onClick="$E.apply_template('default')">Default</a>
-        <a class="dropdown-item" onClick="$E.apply_template('support')">Request help</a>
-        <a class="dropdown-item" onClick="$E.apply_template('event')">Post an event</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="btn-group mr-2">
-    <a data-toggle="tooltip" title="Save" data-placement="bottom" onClick="$E.save()" class="btn btn-outline-secondary btn-sm"><i class="fa fa-save"></i></a>
-    <a data-toggle="tooltip" title="Recover" data-placement="bottom" onClick="$E.recover()" class="btn btn-outline-secondary btn-sm">Recover</a>
+    <a
+      id="save-button-<%= toolbar_element_id %>"
+      class="save-button btn btn-outline-secondary btn-sm"
+      title="Save" 
+      data-form-id="<%= toolbar_element_id %>" 
+      data-placement="bottom" 
+      data-toggle="tooltip" 
+    >
+      <i class="fa fa-save"></i>
+    </a>
+    <a 
+      id="recover-button-<%= toolbar_element_id %>"
+      class="recover-button btn btn-outline-secondary btn-sm"
+      title="Recover" 
+      data-form-id="<%= toolbar_element_id %>" 
+      data-placement="bottom" 
+      data-toggle="tooltip" 
+    >
+      <i class="fas fa-undo"></i>
+    </a>
   </div>
 
   <div class="btn-group">
-    <a data-toggle="tooltip" title="Help" data-placement="bottom" class="btn btn-outline-secondary btn-sm" target="_blank" href="/wiki/authoring-help"><i class="fa fa-question-circle" ></i></a>
+    <a 
+      id="help-button-<%= toolbar_element_id %>"
+      aria-label="Help" 
+      data-toggle="tooltip" 
+      title="Help" 
+      data-placement="bottom" 
+      class="help-button btn btn-outline-secondary btn-sm" 
+      target="_blank" 
+      href="/wiki/authoring-help"
+      style="color: #6c757d;"
+    >
+      <i class="fa fa-question-circle"></i>
+    </a>
   </div>
-
 </div>

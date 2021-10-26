@@ -50,65 +50,70 @@ class UserSessionsController < ApplicationController
         redirect_to return_to + hash_params, notice: "Already linked to another account!"
       end
     else # not signed in
-      # User U has Provider P linked to U. U has email E1 while P has email E2. So, User table can't find E2 provided
-      # from auth hash, hence U is found by the user of identity having E2 as email
-      @user = User.where(email: auth["info"]["email"]) ? User.find_by(email: auth["info"]["email"]) : @identity.user
-      if @user&.status&.zero?
-        flash[:error] = I18n.t('user_sessions_controller.user_has_been_banned', username: @user.username).html_safe
-        redirect_to return_to + hash_params
-      elsif @user&.status == 5
-        flash[:error] = I18n.t('user_sessions_controller.user_has_been_moderated', username: @user.username).html_safe
-        redirect_to return_to + hash_params
-      elsif @identity&.user.present?
-        # The identity we found had a user associated with it so let's
-        # just log them in here
-        @user = @identity.user
-        @user_session = UserSession.create(@identity.user)
-        if session[:openid_return_to] # for openid login, redirects back to openid auth process
-          return_to = session[:openid_return_to]
-          session[:openid_return_to] = nil
+      if auth["info"]["email"].nil?
+        flash[:error] = "You have tried using a Twitter account with no associated email address. Unfortunately we need an email address; please add one and try again, or sign up a different way. Thank you!"
+        redirect_to return_to
+      else
+        # User U has Provider P linked to U. U has email E1 while P has email E2. So, User table can't find E2 provided
+        # from auth hash, hence U is found by the user of identity having E2 as email
+        @user = User.where(email: auth["info"]["email"]) ? User.find_by(email: auth["info"]["email"]) : @identity.user
+        if @user&.status&.zero?
+          flash[:error] = I18n.t('user_sessions_controller.user_has_been_banned', username: @user.username).html_safe
           redirect_to return_to + hash_params
-        else
-          redirect_to return_to + hash_params, notice: I18n.t('user_sessions_controller.logged_in')
-        end
-      else # identity does not exist so we need to either create a user with identity OR link identity to existing user
-        if User.where(email: auth["info"]["email"]).empty?
-          # Create a new user as email provided is not present in PL database
-          user = User.create_with_omniauth(auth)
-          WelcomeMailer.notify_newcomer(user).deliver_now
-          @identity = UserTag.create_with_omniauth(auth, user.id)
-          key = user.generate_reset_key
+        elsif @user&.status == 5
+          flash[:error] = I18n.t('user_sessions_controller.user_has_been_moderated', username: @user.username).html_safe
+          redirect_to return_to + hash_params
+        elsif @identity&.user.present?
+          # The identity we found had a user associated with it so let's
+          # just log them in here
+          @user = @identity.user
           @user_session = UserSession.create(@identity.user)
-          @user = user
-          # send key to user email
-          PasswordResetMailer.reset_notify(user, key).deliver_now unless user.nil? # respond the same to both successes and failures; security
           if session[:openid_return_to] # for openid login, redirects back to openid auth process
             return_to = session[:openid_return_to]
             session[:openid_return_to] = nil
             redirect_to return_to + hash_params
-          elsif params[:return_to] && params[:return_to].split('/')[0..3] == ["", "subscribe", "multiple", "tag"]
-            flash[:notice] = "You are now following '#{params[:return_to].split('/')[4]}'."
-            subscribe_multiple_tag(params[:return_to].split('/')[4])
-            redirect_to '/dashboard', notice: "You have successfully signed in. Please change your password using the link sent to you via e-mail."
           else
-            redirect_to "/dashboard", notice: "You have successfully signed in. Please change your password using the link sent to you via e-mail."
+            redirect_to return_to + hash_params, notice: I18n.t('user_sessions_controller.logged_in')
           end
-        else # email exists so link the identity with existing user and log in the user
-          user = User.where(email: auth["info"]["email"])
-          # If no identity was found, create a brand new one here
-          @identity = UserTag.create_with_omniauth(auth, user.ids.first)
-          # The identity is not associated with the current_user so lets
-          # associate the identity
-          @identity.save
-          @user = user
-          # log in them
-          @user_session = UserSession.create(@identity.user)
-          if session[:openid_return_to] # for openid login, redirects back to openid auth process
-            return_to = session[:openid_return_to]
-            session[:openid_return_to] = nil
-            redirect_to return_to + hash_params
-          else
-            redirect_to return_to + hash_params, notice: "Successfully linked to your account!"
+        else # identity does not exist so we need to either create a user with identity OR link identity to existing user
+          if User.where(email: auth["info"]["email"]).empty?
+            # Create a new user as email provided is not present in PL database
+            user = User.create_with_omniauth(auth)
+            WelcomeMailer.notify_newcomer(user).deliver_later
+            @identity = UserTag.create_with_omniauth(auth, user.id)
+            key = user.generate_reset_key
+            @user_session = UserSession.create(@identity.user)
+            @user = user
+            # send key to user email
+            PasswordResetMailer.reset_notify(user, key).deliver_later unless user.nil? # respond the same to both successes and failures; security
+            if session[:openid_return_to] # for openid login, redirects back to openid auth process
+              return_to = session[:openid_return_to]
+              session[:openid_return_to] = nil
+              redirect_to return_to + hash_params
+            elsif params[:return_to] && params[:return_to].split('/')[0..3] == ["", "subscribe", "multiple", "tag"]
+              flash[:notice] = "You are now following '#{params[:return_to].split('/')[4]}'."
+              subscribe_multiple_tag(params[:return_to].split('/')[4])
+              redirect_to '/dashboard', notice: "You have successfully signed in. Please change your password using the link sent to you via e-mail."
+            else
+              redirect_to '/dashboard', notice: "You have successfully signed in. Please change your password using the link sent to you via e-mail."
+            end
+          else # email exists in user db so link the identity with existing user and log in the user
+            user = User.where(email: auth["info"]["email"])
+            # If no identity was found, create a brand new one here
+            @identity = UserTag.create_with_omniauth(auth, user.ids.first)
+            # The identity is not associated with the current_user so lets
+            # associate the identity
+            @identity.save
+            @user = user
+            # log in them
+            @user_session = UserSession.create(@identity.user)
+            if session[:openid_return_to] # for openid login, redirects back to openid auth process
+              return_to = session[:openid_return_to]
+              session[:openid_return_to] = nil
+              redirect_to return_to + hash_params
+            else
+              redirect_to return_to + hash_params, notice: "Successfully linked to your account!"
+            end
           end
         end
       end

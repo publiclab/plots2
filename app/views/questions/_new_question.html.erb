@@ -1,6 +1,6 @@
 <% questions = questions || @questions # accept local if present, default to instance %>
 <div id="notes">
-	<div class="row"> 
+	<div class="row">
 	<% questions.each_with_index do |node,i| %>
 		<div class="<% if @widget %>col-4 <% end %>col-lg-4 note note-container-question" style="margin-top:20px;">
     <div class="card">
@@ -42,7 +42,7 @@
               <% node.coauthors.each_with_index do |coauthor,i| %>
               <a href="/profile/<%= coauthor.username %>">
               @<%= coauthor.username%> <%= coauthor.new_contributor %></a>
-              <%= ',' if i < node.coauthors.length-1 %>
+              <%= ',' if i < node.coauthors.size-1 %>
               <% end %>
               <% end %>
       <% end %>
@@ -63,12 +63,12 @@
               <span class="">
                 <% if params[:controller] == 'questions' %>
                   <li>
-                  <a href="<%= node.path(:question) %>#answers" title="Answers"><i class="fa fa-comments-o" style="color: #DAA583;"></i> <%= node.answers.length %></a>
+                  <a href="<%= node.path(:question) %>#answers" title="Answers"><i class="fa fa-comments-o" style="color: #DAA583;"></i> <%= node.answers.size %></a>
                   </li>
 
                 <% end %>
                   <li>
-                  <a href="<%= node.path %>#comments">Total Comments: <%= node.comments_viewable_by(current_user).length %></a>
+                  <a href="<%= node.path %>#comments">Total Comments: <%= node.comments_viewable_by(current_user).size %></a>
                   </li>
                   <li>
                   <a href="/n/<%= node.id %>">Read More</a>
@@ -104,8 +104,14 @@
 <% end %>
 </div>
 </div>
+<div class="text-center">
+<% if @pagy %>
+  <%== pagy_bootstrap_nav @pagy %>
+<% else %>
+  <%= will_paginate questions, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || questions.empty? %>
+<% end %>
 </div>
-<div class="text-center"><%= will_paginate questions, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || questions.empty? %></div>
+</div>
 
 <style>
 

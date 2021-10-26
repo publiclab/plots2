@@ -18,8 +18,8 @@
    
    <br>
    <% if @address %>
-   <h3>Searched for <%= @address %>(<%= @users.length %>)</h3> 
-   <% if @users.length > 0 %>
+   <h3>Searched for <%= @address %>(<%= @users.size %>)</h3> 
+   <% if @users.size > 0 %>
    <ul>
       <% @users.each do |user| %>
       <li><a href="/profile/<%= user.username %>"><%= user.username %></a></li>

@@ -10,25 +10,22 @@ class UserTagsController < ApplicationController
     @paginated = true
     if params[:search]
       keyword = params[:search]
-      @user_tags = UserTag
+      @pagy, @user_tags = pagy_array(UserTag
         .select('value')
         .where("value LIKE :keyword", keyword: "%#{keyword}%")
         .group(:value)
         .order('value ASC')
-        .count('value').to_a
-        .paginate(page: params[:page], per_page: 24)
+        .count('value').to_a, items: 24)
     elsif @toggle == "value"
-      @user_tags = UserTag.group(:value)
+      @pagy, @user_tags = pagy_array(UserTag.group(:value)
         .select('value')
         .order('value ASC')
-        .count('value').to_a
-        .paginate(page: params[:page], per_page: 24)
+        .count('value').to_a, items: 24)
     else # @toggle == "uses"
-      @user_tags = UserTag.group(:value)
+      @pagy, @user_tags = pagy_array(UserTag.group(:value)
         .select('value')
         .order('count_value DESC')
-        .count('value').to_a
-        .paginate(page: params[:page], per_page: 24)
+        .count('value').to_a, items: 24)
     end
   end
 
@@ -71,6 +68,9 @@ class UserTagsController < ApplicationController
       else
         @output[:errors] << I18n.t('user_tags_controller.value_cannot_be_empty')
       end
+      if params[:translationswitch]
+        redirect_to URI.parse('/change_locale/zh-CN').path and return
+      end
     else
       @output[:errors] << I18n.t('user_tags_controller.admin_user_manage_tags')
     end
@@ -106,6 +106,10 @@ class UserTagsController < ApplicationController
       end
     else
       output[:errors] = I18n.t('user_tags_controller.tag_doesnt_exist')
+    end
+
+    if params[:translationswitch]
+      redirect_to URI.parse('/change_locale/en').path and return
     end
 
     output[:tid] = @user_tag&.id

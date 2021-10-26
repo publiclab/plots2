@@ -1,12 +1,21 @@
-<div class="card" style="clear:left;">
+<div class="card" style="clear:left; <% if local_assigns[:grey] %>background:#eee;<% end %>">
   <div class="card-body">
 
     <a class="ellipsis pull-right" data-toggle="dropdown" style="cursor:pointer"><i class="fa fa-ellipsis-h" style="color:#666;font-size:18px;margin-right:10px;"></i></a>
+    <% if tag.name.include? ':' %>
+      <a href="https://publiclab.org/wiki/power-tags" class="pull-right" style="margin:0px 12px;">
+        <span class="fa fa-question-circle"></span>
+      </a>
+    <% end %>
     <div class="dropdown-menu" style = "font-size:13px;">
       <div class="dropdown-item"><a href='/tag/<%= tag.name %>' style="color:black; text-decoration: underline;"><%= Tag.tagged_node_count(tag.name) || 0 %> notes</a></div>
       <div class="dropdown-item">created by <a href='/profile/<%= tag.try(:author).try(:username) %>' style="color:black; text-decoration: underline;"><%= tag.try(:author).try(:username) %></a> <%= time_ago_in_words(Time.at(tag.date)) %> ago</div>
-      <% if current_user && !current_user.following(tag.name) %>
-        <div class="dropdown-item"><a class="pull-right btn btn-primary" href='/unsubscribe/tag/<%= tag.name %>'>Unfollow</a></div>
+      <% if current_user %>
+        <% if !current_user.following(tag.name) %>
+          <div class="dropdown-item"><a class="pull-right btn btn-primary" href='/subscribe/tag/<%= tag.name %>'><%= translation('tag.show.follow') %></a></div>
+        <% else %>
+            <div class="dropdown-item"><a class="pull-right btn btn-primary" href='/unsubscribe/tag/<%= tag.name %>'><%= translation('tag.show.unfollow_text') %></a></div>
+        <% end %>
       <% end %>
       <% if logged_in_as(['admin', 'moderator']) || (current_user && ( current_user.uid ==  @node.uid || current_user.uid == tag.uid)) %>
         <% if tag.name.include? ':' %>
@@ -20,14 +29,16 @@
     <a href="/tag/<%= tag.name%>">
       <h5 style="text-decoration:underline;color:black;"><%= tag.name %></h5>
     </a>
-    <p style="font-size:15px;">
-      <a style="color:#808080;" href="/tag/<%= tag.name %>"><%= Tag.follower_count(tag.name) %> following</a>
-    </p>
+    <% if !tag.name.include? ':' %>
+      <p style="font-size:15px;">
+        <a style="color:#808080;" href="/tag/<%= tag.name %>"><%= Tag.follower_count(tag.name) %> following</a>
+      </p>
+    <% end %>
 
     <% if current_user && current_user.following(tag.name) %>
       <a class="pull-right btn btn-primary requireLogin" href="/post?tags=<%= tag.name %>">Post <i class="fa fa-plus fa-white"></i></a>
-    <% else %>
-      <a class="pull-right btn btn-primary requireLogin" href='/subscribe/tag/<%= tag.name %>'>Follow</a>
+    <% elsif !tag.name.include? ':' %>
+      <a class="pull-right btn btn-primary requireLogin" href='/subscribe/tag/<%= tag.name %>'><%= translation('tag.show.follow') %></a>
     <% end %>
   </div>
 </div>

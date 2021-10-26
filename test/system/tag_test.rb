@@ -52,4 +52,80 @@ class TagTest < ApplicationSystemTestCase
 
   end
 
+  test 'hide add tag form from first time posters' do
+    visit "/wiki/wiki-page-path"
+
+    # check whether element with id `tags-open` present or not for normal user
+    assert_selector("#tags-open")
+    
+    find("#sidebar-tags a").click()
+    # check whether element with id `tagform` present or not for normal user
+    assert_selector("#tagform")
+
+    # logout
+    visit '/logout'
+    visit '/'
+
+    # login to first time user
+    find(".nav-link.loginToggle").click()
+    fill_in("username-login", with: "sushmita")
+    fill_in("password-signup", with: "secretive")
+
+    find(".login-modal-form #login-button").click()
+
+    visit "/wiki/wiki-page-path"
+
+    # check whether element with id `tags-open` present or not
+    assert_selector("#tags-open", count: 0)
+    
+    find("#sidebar-tags a").click()
+
+    # check whether element with id `tagform` present or not
+    assert_selector("#tagform", count: 0)
+    # check that the error message showed up on the page
+    assert_selector(".popover-body", text: 'Adding tags to other people’s posts is not available to you until your own first post has been approved by site moderators')
+
+  end
+
+  test 'block adding tag using javascript by first time posters' do
+    # logout
+    visit '/logout'
+    visit '/'
+
+    # login to first time poster
+    find(".nav-link.loginToggle").click()
+    fill_in("username-login", with: "sushmita")
+    fill_in("password-signup", with: "secretive")
+
+    find(".login-modal-form #login-button").click()
+
+    visit "/wiki/wiki-page-path"
+
+    # run the javascript function
+    page.evaluate_script("addTag('bluebell')")
+
+    # check if tag showed up on the page
+    assert_selector('.tags-list a', {count: 0, text: 'bluebell'})
+  end
+
+  test 'block adding tag using javascript with only url by first time posters' do
+    # logout
+    visit '/logout'
+    visit '/'
+
+    # login to first time poster
+    find(".nav-link.loginToggle").click()
+    fill_in("username-login", with: "sushmita")
+    fill_in("password-signup", with: "secretive")
+
+    find(".login-modal-form #login-button").click()
+
+    visit "/wiki/wiki-page-path"
+
+    # run the javascript function
+    page.evaluate_script("addTag('mytag', '/tag/create/11')")
+
+    # check if tag showed up on the page
+    assert_selector('.tags-list a', {count: 0, text: 'mytag'})
+  end
 end

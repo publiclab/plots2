@@ -6,7 +6,7 @@ Hi! There's been a response to a discussion you're involved in. You can reply to
 
 <hr /> 
 
-<p><%= raw auto_link(RDiscount.new(@comment.body_email(ActionMailer::Base.default_url_options[:host])).to_html) %></p>
+<p><%= raw auto_link(@comment.body_email_html(ActionMailer::Base.default_url_options[:host]).to_html) %></p>
 
 <hr />
 

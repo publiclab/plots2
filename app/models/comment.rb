@@ -30,7 +30,7 @@ class Comment < ApplicationRecord
     (0..span).each do |week|
       weeks[span - week] = Comment.select(:timestamp)
         .where(timestamp: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
-        .count
+        .size
     end
     weeks
   end
@@ -116,21 +116,21 @@ class Comment < ApplicationRecord
   def notify_callout_users
     # notify mentioned users
     mentioned_users.each do |user|
-      CommentMailer.notify_callout(self, user).deliver_now if user.username != author.username
+      CommentMailer.notify_callout(self, user).deliver_later if user.username != author.username
     end
   end
 
   def notify_tag_followers(already_mailed_uids = [])
     # notify users who follow the tags mentioned in the comment
     followers_of_mentioned_tags.each do |user|
-      CommentMailer.notify_tag_followers(self, user).deliver_now unless already_mailed_uids.include?(user.uid)
+      CommentMailer.notify_tag_followers(self, user).deliver_later unless already_mailed_uids.include?(user.uid)
     end
   end
 
   def notify_users(uids, current_user)
     User.where('id IN (?)', uids).find_each do |user|
       if user.uid != current_user.uid
-        CommentMailer.notify(user, self).deliver_now
+        CommentMailer.notify(user, self).deliver_later
       end
     end
   end
@@ -142,7 +142,7 @@ class Comment < ApplicationRecord
       AdminMailer.notify_comment_moderators(self).deliver_later!(wait_until: 24.hours.from_now)
     else
       if parent.uid != current_user.uid && !UserTag.exists?(parent.uid, 'notify-comment-direct:false')
-        CommentMailer.notify_note_author(parent.author, self).deliver_now
+        CommentMailer.notify_note_author(parent.author, self).deliver_later
       end
 
       notify_callout_users
@@ -193,52 +193,72 @@ class Comment < ApplicationRecord
     self
   end
 
+  def flag_comment
+    self.flag += 1
+    save
+    self
+  end
+
+  def unflag_comment
+    self.flag = 0
+    save
+    self
+  end
+
   def liked_by(user_id)
-    likes.where(user_id: user_id).count > 0
+    likes.where(user_id: user_id).present?
   end
 
   def likers
     User.where(id: likes.pluck(:user_id))
   end
 
-  def emoji_likes
-    likes.group(:emoji_type).count
-  end
-
   def user_reactions_map
-    likes_map = likes.where.not(emoji_type: nil).includes(:user).group_by(&:emoji_type)
+    # select likes from users that aren't banned (status = 0)
+    likes_map = likes.joins(:user).select(:emoji_type, :username, :status).where("emoji_type IS NOT NULL").where("status != 0").group_by(&:emoji_type)
     user_like_map = {}
     likes_map.each do |reaction, likes|
       users = []
       likes.each do |like|
-        users << like.user.name
+        users << like.username
       end
-
       emoji_type = reaction.underscore.humanize.downcase
-      users_string = (users.length > 1 ? users[0..-2].join(", ") + " and " + users[-1] : users[0]) + " reacted with " + emoji_type + " emoji"
-      user_like_map[reaction] = users_string
+      users_string = (users.size > 1 ? users[0..-2].join(", ") + " and " + users[-1] : users[0]) + " reacted with " + emoji_type + " emoji"
+      like_data = {}
+      like_data[:users_string] = users_string
+      like_data[:likes_num] = users.size
+      user_like_map[reaction] = like_data
     end
     user_like_map
   end
 
-  def self.receive_mail(mail)
+  def self.new_comment_from_email(mail)
     user = User.where(email: mail.from.first).first
     if user
       node_id = mail.subject[/#([\d]+)/, 1] # This tooks out the node ID from the subject line
       comment_id = mail.subject[/#c([\d]+)/, 1] # This tooks out the comment ID from the subject line if it exists
       unless Comment.where(message_id: mail.message_id).any?
         if node_id.present? && !comment_id.present?
-          add_comment(mail, node_id, user)
+          parse_comment_from_email(mail, node_id, user)
         elsif comment_id.present?
           comment = Comment.find comment_id
-          add_comment(mail, comment.nid, user, [true, comment.id])
+          parse_comment_from_email(mail, comment.nid, user, [true, comment.id])
         end
       end
+      return node_id
+    else
+      email = mail.select { |s| s.match(/.*@.*/) }
+      ActionMailer::Base.mail(
+        from: "do-not-reply@publiclab.org",
+        to: email,
+        subject: "Could not post your reply",
+        body: "Your reply wasn't posted since we couldn't find your account on publiclab.org. Please sign up at https://publiclab.org or try sending email from the account matching your username. Thank you!"
+      ).deliver
     end
   end
 
   # parse mail and add comments based on emailed replies
-  def self.add_comment(mail, node_id, user, reply_to = [false, nil])
+  def self.parse_comment_from_email(mail, node_id, user, reply_to = [false, nil])
     node = Node.where(nid: node_id).first
     if node && mail&.html_part
       mail_doc = Nokogiri::HTML(mail&.html_part&.body&.decoded) # To parse the mail to extract comment content and reply content
@@ -307,8 +327,12 @@ class Comment < ApplicationRecord
     email[/(?<=@)[^.]+(?=\.)/, 0]
   end
 
+  def self.yahoo_quote_present?(mail_doc)
+    mail_doc.css(".yahoo_quoted").any?
+  end
+
   def self.yahoo_parsed_mail(mail_doc)
-    if mail_doc.css(".yahoo_quoted")
+    if yahoo_quote_present?(mail_doc)
       extra_content = mail_doc.css(".yahoo_quoted")[0]
       mail_doc.css(".yahoo_quoted")[0].remove
       comment_content = mail_doc
@@ -430,7 +454,7 @@ class Comment < ApplicationRecord
       next unless url.include? "https://"
 
       if url.last == "."
-        url = url[0...url.length - 1]
+        url = url[0...url.size - 1]
       end
       response = Net::HTTP.get_response(URI(url))
       redirected_url = response['location']

@@ -15,13 +15,15 @@ class NodeSharedTest < ActiveSupport::TestCase
     before = "Here are some nodes in a table: \n\n[nodes:test] \n\nThis is how you make it work:\n\n`[nodes:tagname]`\n\n `[nodes:tagname]`\n\nMake sense?"
     nodes(:one).add_tag('pinned:test', User.first)
     nodes(:one).add_tag('test', User.first) # ensure it would appear anyways (although we aren't yet asserting order below, we should)
+    assert nodes(:one).has_tag('pinned:test')
+    assert nodes(:one).has_tag('test')
     html = NodeShared.nodes_grid(before)
     assert html
     assert_equal 1, html.scan('<table class="table inline-grid nodes-grid nodes-grid-test nodes-grid-test-').length
     assert_equal 1, html.scan('<table').length
     assert_equal 5, html.scan('nodes-grid-test').length
     assert_equal 2, html.scan('<td class="author">').length # but not 3 because it shouldn't appear twice
-    assert_equal 1, html.scan(nodes(:one).title).length
+    assert_equal 1, html.scan(nodes(:question).title).length
   end
 
   test 'that NodeShared can be used to convert short codes like [nodes:grid:foo] into tables which list nodes with image thumbnails' do

@@ -1,4 +1,5 @@
 include ActionView::Helpers::DateHelper # required for time_ago_in_words()
+include Pagy::Backend
 class ApplicationController < ActionController::Base
   protect_from_forgery unless: -> { is_dataurl_post }
   layout 'application'
@@ -7,7 +8,7 @@ class ApplicationController < ActionController::Base
 
   before_action :set_locale
 
-  before_action :set_raven_context
+  before_action :set_sentry_context
 
   private
 
@@ -16,52 +17,11 @@ class ApplicationController < ActionController::Base
     params[:controller] == "editor" && params[:action] == "post" && !params[:datauri_main_image].nil?
   end
 
-  def set_raven_context
-    Raven.user_context(id: session[:current_user_id]) # or anything else in session
-    Raven.extra_context(params: params.to_unsafe_h, url: request.url)
-  end
-
-  # eventually videos could be a power tag
-  def set_sidebar(type = :generic, data = :all, args = {})
-    args[:note_count] ||= 8
-    if type == :tags # accepts data of array of tag names as strings
-      @notes ||= if params[:controller] == 'questions'
-                   Tag.find_nodes_by_type(data, 'note', args[:note_count])
-                 else
-                   Tag.find_research_notes(data, args[:note_count])
-                 end
-
-      @notes = @notes.where('node.nid != (?)', @node.nid) if @node
-      @wikis = Tag.find_pages(data, 10)
-      @videos = Tag.find_nodes_by_type_with_all_tags(%w(video) + data, 'note', 8) if args[:videos] && data.length > 1
-      @maps = Tag.find_nodes_by_type(data, 'map', 20)
-    else # type is generic
-      # remove "classroom" postings; also switch to an EXCEPT operator in sql, see https://github.com/publiclab/plots2/issues/375
-      hidden_nids = Node.where(type: :note, status: 1).select { |n| n.has_a_tag('hidden:response') }.collect(&:nid)
-      @notes = if params[:controller] == 'questions'
-                 Node.questions
-                   .joins(:revision)
-               else
-                 Node.research_notes.joins(:revision).order('node.nid DESC').paginate(page: params[:page])
-      end
-
-      @notes = @notes.where('node.nid != (?)', @node.nid) if @node
-      @notes = @notes.where('node_revisions.status = 1 AND node.nid NOT IN (?)', hidden_nids) unless hidden_nids.empty?
-
-      @notes = if logged_in_as(['admin', 'moderator'])
-                 @notes.where('(node.status = 1 OR node.status = 4)')
-               elsif current_user
-                 @notes.where('(node.status = 1 OR (node.status = 4 AND node.uid = ?))', current_user.uid)
-               else
-                 @notes.where('node.status = 1')
-               end
-
-      @wikis = Node.order('changed DESC')
-        .joins(:revision)
-        .where('node_revisions.status = 1 AND node.status = 1 AND type = "page"')
-        .limit(10)
-        .group('node_revisions.nid')
-        .order('node_revisions.timestamp DESC')
+  def set_sentry_context
+    Sentry.with_scope do |scope|
+      scope.set_user(id: session[:current_user_id])
+      scope.set_extras(params: params.to_unsafe_h)
+      scope.set_extras(url: request.url)
     end
   end
 
@@ -156,7 +116,7 @@ class ApplicationController < ActionController::Base
       flash.now[:warning] = "This is a draft note. Once you're ready, click <a class='btn btn-success btn-xs' href='/notes/publish_draft/#{@node.id}'>Publish Draft</a> to make it public. You can share it with collaborators using this private link <a href='#{@node.draft_url(request.base_url)}'>#{@node.draft_url(request.base_url)}</a>"
     elsif @node.status == 3 && (params[:token].nil? || (params[:token].present? && @node.slug.split('token:').last != params[:token]))
       page_not_found
-    elsif @node.status != 1 && @node.status != 3 && !(logged_in_as(['admin', 'moderator']))
+    elsif @node.status != 1 && @node.status != 3 && current_user&.id != @node.author.id && !(logged_in_as(['admin', 'moderator']))
       # if it's spam or a draft
       # no notification; don't let people easily fish for existing draft titles; we should try to 404 it
       redirect_to '/'
@@ -201,7 +161,7 @@ class ApplicationController < ActionController::Base
     render file: "#{Rails.root}/public/404.html", layout: false, status: :not_found
   end
 
-  # TODO: make less redundant with https://github.com/publiclab/plots2/blob/master/app/helpers/application_helper.rb#L3
+  # TODO: make less redundant with https://github.com/publiclab/plots2/blob/main/app/helpers/application_helper.rb#L3
   def logged_in_as(roles)
     return false unless current_user
 

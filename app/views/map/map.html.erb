@@ -36,6 +36,8 @@
         $('.body-container').css('padding-top', $('#header').css('height'));
       }
 
+      const queryParams = new URLSearchParams(window.location.search);
+
       var urlHash = urlMapHash();
 
         // if there are location params in URL let them override, otherwise save lat/lon/zoom from controller
@@ -87,9 +89,10 @@
 
       var markers_hash = new Map();
       var options = {
-        layers: ['PLpeople'],
+        layers: ['PLpeople','mapknitter'],
         mainContent: "content",
-        setHash: false
+        setHash: false,
+        queryLimit: queryParams.get("limit") || 50,
       }
       setupLEL(map, markers_hash, options);
 
