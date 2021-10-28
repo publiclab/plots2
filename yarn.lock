@@ -2259,15 +2259,15 @@ bootstrap-tokenfield@^0.12.0, bootstrap-tokenfield@~0.12.0:
   dependencies:
     jquery "^2.1.0"
 
-bootstrap@4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.1.0.tgz#110b05c31a236d56dbc9adcda6dd16f53738a28a"
-  integrity sha512-kCo82nE8qYVfOa/Z3hL98CPgPIEkh6iPdiJrUJMQ9n9r0+6PEET7cmhLlV0XVYmEj5QtKIOaSGMLxy5jSFhKog==
-
 bootstrap@4.5.3:
   version "4.5.3"
   resolved "https://registry.npmjs.org/bootstrap/-/bootstrap-4.5.3.tgz#c6a72b355aaf323920be800246a6e4ef30997fe6"
   integrity sha512-o9ppKQioXGqhw8Z7mah6KdTYpNQY//tipnkxppWhPbiSWdD+1raYsnhwEZjkTHYbGee4cVQ0Rx65EhOY/HNLcQ==
+
+bootstrap@4.6.1:
+  version "4.6.1"
+  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.6.1.tgz#bc25380c2c14192374e8dec07cf01b2742d222a2"
+  integrity sha512-0dj+VgI9Ecom+rvvpNZ4MUZJz8dcX7WCX+eTID9+/8HgOkv3dsRzi8BGeZJCQU6flWQVYxwTQnEZFrmJSEO7og==
 
 bootstrap@^3.4.1, bootstrap@~3.4.0:
   version "3.4.1"
