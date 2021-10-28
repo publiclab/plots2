@@ -8067,10 +8067,10 @@ leaflet.blurred-location-display@^1.3.2:
   dependencies:
     jquery "^3.3.1"
 
-leaflet.fullscreen@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/leaflet.fullscreen/-/leaflet.fullscreen-2.0.0.tgz#ef60c291dccde6508ce690561b2c3a5d933e0384"
-  integrity sha512-MCgTKmdEF9Twh8nWI7SVBiEFvDmxS78Y+k63SwjNiFRzp3T4b9G7HmR69sdSKr0yOhCiDEssLw1RUoswMxD21Q==
+leaflet.fullscreen@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/leaflet.fullscreen/-/leaflet.fullscreen-2.1.0.tgz#31a16400e962a736e5d2088bc030c8c33737869d"
+  integrity sha512-Q6Yq9v2SoSQ2LDqeBnVx5evys+9AYvzz+Gvv/PcW3DC5YLMKFLeChoMxMpU+ham7J+5DDeWtz6zn5tXC4vhW6g==
 
 "leaflet.glify@github:robertleeplummerjr/Leaflet.glify#aa2b356":
   version "2.1.0"
