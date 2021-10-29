@@ -173,6 +173,10 @@ en:
       everything: "For everything"
       likes: "When someone likes my work"
   notes:
+    _title_suggestion:
+      suggesting_title: "is suggesting an alternative title,"
+      accept_post: "To accept this as a new title to your post,"
+      click: "click here"
     index:
       search_results_for: "Search results for <i style=\"color:#aaa;\">%{params}</i>"
       advanced_search: "advanced search"
