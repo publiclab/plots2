@@ -446,7 +446,10 @@ en:
       advanced_search: "Or try an <a href='%{url}'>advanced search</a>"
       by: "by"
       views: "views"
-      read_more: "Read more"
+      delete: "Delete"
+      are_you_sure_delete: "Are you absolutely sure you want to delete '%{path}'? All
+        revisions will be lost, and you cannot undo this action. If this is a spam
+        page, be sure that it did not overwrite valid content before deleting."
       spam: "Spam"
     index:
       popular_tags: "Popular tags"
