@@ -1,6 +1,0 @@
-<div class="alert alert-warning">
-	<a href="/profile/<%= user %>"><%= user %></a> is suggesting an alternative title, "<%= title %>".
-	<% if is_creator %> 
-	+ 4 <% = translation ('notes._title_suggestion.accept_post')%> <a href="/node/update/title?id=<%= nid %> & title = <% = title% > "data-method = 'post'> <% = translation ('notes._title_suggestion.click')%> </a>
-	<% end %> 
-</div>
