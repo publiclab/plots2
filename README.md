@@ -94,25 +94,27 @@ For information on how to install for use with the cloud environment, please see
 1. Fork our repo from https://github.com/publiclab/plots2.
 2. In the console, download a copy of your forked repo with `git clone https://github.com/your_username/plots2.git` where `your_username` is your GitHub username.
 3. Enter the new **plots2** directory with `cd plots2`.
-4. Steps to install gems:
+4. Set the upstream remote to the original repository url so that git knows where to fetch updates from in future: `git remote add upstream https://github.com/publiclab/plots2.git`
+5. Steps to install gems:
     * You may need to first run `bundle install` if you have older gems in your environment from previous Rails work. If you get an error message like `Your Ruby version is 2.x.x, but your Gemfile specified 2.4.4` then you need to install the ruby version 2.4.4 using `rvm` or `rbenv`.
 	    * Using **rvm**: `rvm install 2.4.4` followed by `rvm use 2.4.4`
 	    * Using **rbenv**:  `rbenv install 2.4.4` followed by `rbenv local 2.4.4`
     * Install gems with `bundle install --without production mysql` from the rails root folder, to install the gems you'll need, excluding those needed only in production.
-5. Run `cp db/schema.rb.example db/schema.rb` to make a copy of `db/schema.rb.example` in `db/schema.rb`.
-6. Run `cp config/database.yml.sqlite.example config/database.yml` to make a copy of `config/database.yml.sqlite.example` in `config/database.yml`.
-7. Run `rake db:setup` to set up the database
-8. Install static assets (like external javascript libraries, fonts) with `yarn install`
-9. By default, start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser.
+6. Run `cp db/schema.rb.example db/schema.rb` to make a copy of `db/schema.rb.example` in `db/schema.rb`.
+7. Run `cp config/database.yml.sqlite.example config/database.yml` to make a copy of `config/database.yml.sqlite.example` in `config/database.yml`.
+8. Run `rake db:setup` to set up the database
+9. Install static assets (like external javascript libraries, fonts) with `yarn install`
+10. By default, start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser.
 (for local SSL work, see [SSL](#ssl-in-development) below)
-10. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
-11. Run `rails test` to confirm that your install is working properly. Or `rails test:system` for system tests.
+11. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
+12. Run `rails test` to confirm that your install is working properly. Or `rails test:system` for system tests.
 
 ### Windows Installation
 
 We recommend you either work in a virtual environment, or on a dual booted system to avoid dependencies issues and also Unix system works smoother with Ruby and Rails. This will not only benefit you now for plots2, but also in future while working on other Ruby projects, a Linux or Mac based OS will make your development so much smoother. 
-1. [Dual Booting](https://www.tecmint.com/install-ubuntu-alongside-with-windows-dual-boot/amp/), [option2](https://askubuntu.com/questions/1031993/how-to-install-ubuntu-18-04-alongside-windows-10), [video guide](https://www.youtube.com/watch?v=qNeJvujdB-0&fbclid=IwAR0APhs89jlNR_ENKbSwrp6TI6P-wxlx-a0My9XBvPNAfwtADZaAXqcKtP4)
-2. [Setting up a linux virtual env](https://itsfoss.com/install-linux-in-virtualbox/)
+1. [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10) (recommended)
+2. [Dual Booting](https://www.tecmint.com/install-ubuntu-alongside-with-windows-dual-boot/amp/), [option2](https://askubuntu.com/questions/1031993/how-to-install-ubuntu-18-04-alongside-windows-10), [video guide](https://www.youtube.com/watch?v=qNeJvujdB-0&fbclid=IwAR0APhs89jlNR_ENKbSwrp6TI6P-wxlx-a0My9XBvPNAfwtADZaAXqcKtP4)
+3. [Setting up a linux virtual env](https://itsfoss.com/install-linux-in-virtualbox/)
 
 ## Redis Installation
 
@@ -196,6 +198,8 @@ To see it in action, click on the 'Language' drop-down located in the footer sec
 Translations are arranged in the YAML files [here](https://github.com/publiclab/plots2/tree/master/config/locales), which are
 set in a similar way to [views](https://github.com/publiclab/plots2/tree/master/app/views) files. An example for adding translations can be found [here](http://guides.rubyonrails.org/i18n.html#adding-translations).
 
+Since the implementation of our new [Translation system](https://github.com/publiclab/plots2/issues/5737), we now use the `translation()` helper, [found here](https://github.com/publiclab/plots2/blob/438b649669b2029d01437bec9eb2826cf764851b/app/helpers/application_helper.rb#L141-L153). This provides some extra translation features such as inserting a prompt visible to site visitors if no translation exists yet. 
+
 To add new languages or for additional support, please write to plots-dev@googlegroups.com
 
 ## Security
@@ -207,12 +211,11 @@ To report security vulnerabilities or for questions about security, please conta
 Help improve Public Lab software!
 
 * Join the plots-dev@googlegroups.com discussion list to get involved
+* Most of the contributors network on our [gitter chat](https://gitter.im/publiclab/publiclab)
 * Look for open issues at https://github.com/publiclab/plots2/labels/help-wanted
 * We're specifically asking for help with issues labelled with [help-wanted](https://github.com/publiclab/plots2/labels/help-wanted) tag
 * Find lots of info on contributing at http://publiclab.org/wiki/developers
-* Review specific contributor guidelines at http://publiclab.org/wiki/contributing-to-public-lab-software
-* Some devs hang out in http://publiclab.org/chat (irc webchat)
-* Join our gitter chat at https://gitter.im/publiclab/publiclab
+* Review specific contributor guidelines at http://publiclab.org/wiki/contributing-to-public-lab-software 
 * Try out some supportive tasks https://github.com/publiclab/plots2/wiki/Supportive-Tasks
 * Get involved with our weekly community check-ins. For guidelines: [https://github.com/publiclab/plots2/tree/master/doc/CHECKINS.md
 ](https://github.com/publiclab/plots2/tree/master/doc/CHECKINS.md)

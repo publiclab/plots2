@@ -433,7 +433,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       get '/tag/some-tag'
-      assert_select 'a', I18n.t('tag.show.maps')
+      assert_select 'a span.d-none', I18n.t('tag.show.wiki_pages')
     end
   end
 

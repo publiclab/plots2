@@ -52,5 +52,7 @@ Rails.application.config.assets.precompile += [
   'horsey.js',
   'atwho_autocomplete.js',
   'async_tag_subscriptions.js',
-  'cable.js'
+  'cable.js',
+  'spam2.css',
+  'spam2.js',
 ]

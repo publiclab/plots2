@@ -38,9 +38,6 @@ class MapTest < ApplicationSystemTestCase
     page.execute_script("map.setView([13, 60], 15)")
     url_hash = page.evaluate_script("window.location.hash")
 
-    # Wait for any potential asynchronous operations to complete
-    wait_for_ajax
-
     # check that the url hash is correct
     assert_equal("#15/13/60", url_hash)
   end

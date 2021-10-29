@@ -1,0 +1,93 @@
+/*
+*= require datatables/dataTables.bootstrap4
+*/
+
+.nav_top {
+	z-index: 5;
+	width: 100%;
+}
+
+#batch-spam:hover {
+	color: red !important;
+	cursor: pointer;
+}
+
+#batch-publish:hover {
+	color: green !important;
+	cursor: pointer;
+}
+
+#delete-batch:hover {
+	color: red !important;
+	cursor: pointer;
+}
+
+#all:hover {
+	color: blue !important;
+	cursor: pointer;
+}
+
+#batch-ban:hover {
+	color: orange !important;
+	cursor: pointer;
+}
+
+#batch-unban:hover {
+	color: green !important;
+	cursor: pointer;
+}
+
+#node-hover:hover {
+	color: blue !important;
+}
+
+#table-card {
+	width: 100%;
+}
+
+#card-top {
+	margin-top: 2vh;
+}
+
+#bulk-nav {
+	margin-top: 2%;
+	margin-bottom: 1%;
+	width: 100%;
+}
+
+.active .drop {
+	color: white !important;
+}
+
+#col-search {
+	cursor: text;
+	text-align: left !important;
+	margin-top: 2px;
+}
+
+#col-select {
+	margin-top: 2px;
+}
+
+.page-table {
+	width: 100%;
+	margin-top: 10px;
+}
+
+@media (max-width: 750px) {
+	#table-card,
+	#bulk-nav,
+	.nav_top,
+	.page-table,
+	#card-top {
+		margin-left: 5vw;
+		width: 90vw;
+	}
+	.nav_title {
+		font-size: 18px;
+		margin-bottom: 10px;
+	}
+	#card-top .card-header {
+		font-size: 18px;
+	}
+}

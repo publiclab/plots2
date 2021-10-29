@@ -13,7 +13,7 @@
     <% end %>
 
     <div id="c<%= comment.id%>div" class="form-group">
-      <textarea onFocus="editing=true" name="body" class="form-control" id="c<%= comment.id%>text" rows="6" cols="40" placeholder="<%= placeholder %>"><%= !(comment.is_a?Answer) ? comment.comment : comment.content %></textarea>
+      <textarea aria-label="Edit Comment" onFocus="editing=true" name="body" class="form-control" id="c<%= comment.id%>text" rows="6" cols="40" placeholder="<%= placeholder %>"><%= !(comment.is_a?Answer) ? comment.comment : comment.content %></textarea>
 
       <div id="imagebar">
         <div id="c<%= comment.id%>progress" style="display:none;" class="progress progress-striped active pull-right">

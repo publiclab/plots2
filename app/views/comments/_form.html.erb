@@ -44,7 +44,7 @@
             <% end %>
           </div>
         <% end %>
-        <textarea style="border: 1px solid #bbb;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-bottom: 0;padding: 10px;" onFocus="editing=true" name="body" class="form-control" id="text-input" rows="6" cols="40" placeholder="<%= placeholder %>"><%= body %></textarea>
+        <textarea aria-label="Comment Text" style="border: 1px solid #bbb;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-bottom: 0;padding: 10px;" onFocus="editing=true" name="body" class="form-control" id="text-input" rows="6" cols="40" placeholder="<%= placeholder %>"><%= body %></textarea>
         <div id="imagebar">
 
           <div id="create_progress" style="display:none;" class="progress float-right">
@@ -62,8 +62,7 @@
               </span>
 
               <!-- http://stackoverflow.com/questions/11235206/twitter-bootstrap-form-file-element-upload-button -->
-              <label id="input_label" class="" for="fileinput">
-                <input id="fileinput" type="file" name="image[photo]" style="display:none;" />
+                <input aria-label="Choose File" id="fileinput" type="file" name="image[photo]" style="display:none;" />
                 <a onClick="handleClick()" class="d-none d-md-inline text-underline">choose one</a>
                 <span class="d-md-none">
                   <i class="fa fa-upload"></i>
@@ -119,15 +118,14 @@
 
             <span style="color:#888;"> &nbsp;
               <br class="d-md-none" /><%= raw translation('comments._form.logged_in', :username => current_user.username) %> &nbsp;
-              <a target="_blank" href="/wiki/authoring-help#Formatting"><i class="fa fa-question-circle"></i></a> &nbsp;
-              <a onClick="$('#who-is-notified-form').toggle()"><i class="fa fa-bell-o"></i></a>
+              <a aria-label="Authoring Help" target="_blank" href="/wiki/authoring-help#Formatting"><i class="fa fa-question-circle"></i></a> &nbsp;
+              <a onClick="changeNotificationIcon('#who-is-notified-form', '#bell')"><i id="bell" class="fa fa-bell-o"></i></a>
             </span>
           </div>
 
           <p id="who-is-notified-form" style="display:none;color:#888;">
             <%= translation('comments._form.email_notifications') %>
           </p>
-
     </form>
   </div>
 </div>

@@ -73,15 +73,6 @@ class TagController < ApplicationController
   end
 
   def show
-
-    # Enhancement #6306 - Add counts to `by type` dropdown on tag pages
-    @counts = {:posts => 0, :questions => 0, :wiki => 0 }
-    @counts[:posts] = Tag.find_nodes_by_type([params[:id]], 'note', false).count
-    @counts[:questions] = Tag.find_nodes_by_type("question:#{params[:id]}", 'note', false).count
-    @counts[:wiki] = Tag.find_nodes_by_type([params[:id]], 'page', false).count
-    params[:counts] = @counts
-    # end Enhancement #6306 ============================================
-
     if params[:id].is_a? Integer
       @wiki = Node.find(params[:id])&.first
     else
@@ -120,55 +111,31 @@ class TagController < ApplicationController
     if params[:id][-1..-1] == '*' # wildcard tags
       @wildcard = true
       @tags = Tag.where('name LIKE (?)', params[:id][0..-2] + '%')
-      nodes = Node.where(status: 1, type: node_type)
-        .includes(:revision, :tag, :answers)
-        .references(:term_data, :node_revisions)
-        .where('term_data.name LIKE (?) OR term_data.parent LIKE (?)', params[:id][0..-2] + '%', params[:id][0..-2] + '%')
-        .paginate(page: params[:page], per_page: 24)
-        .order(order_by)
+      nodes = Node.for_tagname_and_type(params[:id], node_type, wildcard: true)
     else
       @tags = Tag.where(name: params[:id])
-
-      if @node_type == 'questions'
-        other_tag = if params[:id].include? "question:"
-                      params[:id].split(':')[1]
-                    else
-                      "question:" + params[:id]
-                    end
-
-        nodes = Node.where(status: 1, type: node_type)
-          .includes(:revision, :tag)
-          .references(:term_data, :node_revisions)
-          .where('term_data.name = ? OR term_data.name = ? OR term_data.parent = ?', params[:id], other_tag, params[:id])
-          .paginate(page: params[:page], per_page: 24)
-          .order(order_by)
-      else
-        nodes = Node.where(status: 1, type: node_type)
-          .includes(:revision, :tag)
-          .references(:term_data, :node_revisions)
-          .where('term_data.name = ? OR term_data.parent = ?', params[:id], params[:id])
-          .paginate(page: params[:page], per_page: 24)
-          .order(order_by)
-      end
+      nodes = Node.for_tagname_and_type(params[:id], node_type, question: (@node_type == 'questions'))
     end
+
+    nodes = nodes.paginate(page: params[:page], per_page: 24).order(order_by)
 
     if @start && @end
       nodes = nodes.where(created: @start.to_i..@end.to_i)
     else
       @pinned_nodes = NodeShared.pinned_nodes(params[:id])
-      if @pinned_nodes.length > 0 && params[:page].nil? # i.e. first page
+      if @pinned_nodes.size.positive? && params[:page].nil? # i.e. first page
         nodes = nodes.where.not(nid: @pinned_nodes.collect(&:id))
       end
     end
 
-    qids = Node.questions.where(status: 1)
+    @qids = Node.questions.where(status: 1)
                .collect(&:nid)
-    if qids.empty?
+    if @qids.empty?
       @notes = nodes
       @questions = []
     else
-      @notes = nodes.where('node.nid NOT IN (?)', qids) if @node_type == 'note'
-      @questions = nodes.where('node.nid IN (?)', qids) if @node_type == 'questions'
+      @notes = nodes.where('node.nid NOT IN (?)', @qids) if @node_type == 'note'
+      @questions = nodes.where('node.nid IN (?)', @qids) if @node_type == 'questions'
     end
 
     @answered_questions = []
@@ -185,6 +152,8 @@ class TagController < ApplicationController
     @note_count = Tag.tagged_node_count(params[:id]) || 0
     @users = Tag.contributors(@tagnames[0])
     @related_tags = Tag.related(@tagnames[0])
+
+    fetch_counts
 
     respond_with(nodes) do |format|
       format.html { render 'tag/show' }
@@ -234,7 +203,9 @@ class TagController < ApplicationController
 
     nodes = Tag.tagged_nodes_by_author(@tagname, @user)
       .where(status: 1, type: node_type)
-      .paginate(page: params[:page], per_page: 24)
+    @total_posts = nodes.count
+
+    nodes = nodes.paginate(page: params[:page], per_page: 24)
 
     @notes ||= []
 
@@ -565,6 +536,27 @@ class TagController < ApplicationController
       params[:order] == "asc" ? "count ASC" : "count DESC"
     else
       params[:order] == "asc" ? "name ASC" : "name DESC"
+    end
+  end
+
+  def fetch_counts
+    # Enhancement #6306 - Add counts to `by type` dropdown on tag pages
+    @counts = {}
+    @counts[:posts] = Node.for_tagname_and_type(params[:id], 'note', wildcard: @wildcard).where('node.nid NOT IN (?)', @qids).count
+    @counts[:questions] = Node.for_tagname_and_type(params[:id], 'note', question: true, wildcard: @wildcard).where('node.nid IN (?)', @qids).count
+    @counts[:wiki] = Node.for_tagname_and_type(params[:id], 'page', wildcard: @wildcard).count
+    params[:counts] = @counts
+    # end Enhancement #6306 ============================================
+
+    @total_posts = case @node_type
+    when 'note'
+      @notes.count
+    when 'questions'
+      @questions.count
+    when 'wiki'
+      @wikis.count
+    when 'maps'
+      @nodes.count
     end
   end
 end

@@ -19,18 +19,21 @@ cache:
 
 git:
     depth: false
-  
+
 env:
   global:
     - CI=true
     - GENERATE_REPORT=true
     - RAILS_ENV=test
+    - RAILS_SYSTEM_TESTING_SCREENSHOT=simple
 
 before_install:
   - sudo wget https://chromedriver.storage.googleapis.com/73.0.3683.68/chromedriver_linux64.zip
   - sudo unzip chromedriver_linux64.zip -d /usr/local/bin/
   - sudo chmod +x /usr/local/bin/chromedriver
   - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+  - yes | gem update --system --force
+  - gem install bundler
 
 install:
   - rm -rf test/reports
@@ -38,13 +41,14 @@ install:
   - cp db/schema.rb.example db/schema.rb
   - bundle config set path 'vendor/.bundle/'
   - bundle install
+  - gem list
   - if [ $RAILS_ENV != 'production' ]; then
       yarn check || yarn install;
     fi
   - mysql -e "CREATE DATABASE plots;";
   - bundle exec rake db:schema:load
   - bundle exec rake db:migrate
-  - if [ "$TRAVIS_PULL_REQUEST" == "true" ]; then 
+  - if [ "$TRAVIS_PULL_REQUEST" == "true" ]; then
       gem install danger danger-junit google-cloud-storage;
     fi
   - echo "$GOOGLE_APPLICATION_CREDENTIALS_JSON" > /tmp/credentials.json # needs to be a path to a json file, so we shuffle...
@@ -58,8 +62,8 @@ jobs:
     - name: "Integration Tests"
       script: bundle exec rails test test/integration
     - name: "System Tests"
-      script: bundle exec rails test:system > /dev/null
-    
+      script: bundle exec rails test:system
+
 after_script:
   - echo -e '<?xml version="1.0" encoding="UTF-8"?>' > output.xml;
   - tail -n +2 -q ./test/reports/TEST*.xml >> output.xml

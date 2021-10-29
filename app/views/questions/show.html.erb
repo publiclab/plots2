@@ -1,14 +1,16 @@
 <%= javascript_include_tag('comment_expand') %>
 <%= javascript_include_tag('notes') %>
 <%= javascript_include_tag('textbox_expand') %>
-<script> var comments_length = <%= @node.comments.length %>; </script>
+<script> var comments_length = <%= @node.comments.length %>; $(function(){
+  $("img").lazyload();
+});</script>
 <%= javascript_include_tag('question') %>
 <div class="col-lg-9 note-show question-show">
 
    <% if @node.main_image %>
     <a class="main-image" style="max-width:100%;width:800px;" href="<%= @node.main_image.path(:original) %>">
-      <img style="max-height:600px;" class="rounded d-none d-lg-inline" src="<%= @node.main_image.path(:large) %>" />
-      <img style="width:100%;" class="rounded d-lg-none" src="<%= @node.main_image.path(:large) %>" />
+      <%= image_tag(@node.main_image.path(:large), class:"rounded d-none d-lg-inline", style:'max-height:600px;max-width:100%;') %>
+      <%= image_tag(@node.main_image.path(:large), class:"rounded d-lg-none", style:'width:100%;') %>
     </a>
   <% end %>
 

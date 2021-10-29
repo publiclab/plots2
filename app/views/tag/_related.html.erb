@@ -1,6 +1,6 @@
 <div class="row related-tags">
   <ul class= "list-inline col-lg-10">
-    <li class="list-inline-item"><strong style="font-size:11px;">Related Topics:</strong></li>
+    <li class="list-inline-item"><strong style="font-size:11px;">Related Tags:</strong></li>
     <% tags.each do |tag| %>
         <li class="list-inline-item"><a href='/tag/<%= tag.name %>' id="tag_<%= tag.tid %>" class="badge <%= tag.name.include?(":") ? 'badge-primary' : 'badge-secondary' %>">
           <%= tag.name %>

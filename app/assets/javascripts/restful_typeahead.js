@@ -16,7 +16,7 @@ $(function() {
       autoSelect: false,
       source: debounce(function (query, process) {
 
-        query = query.replace(' ', /-/g); // replace spaces with hyphens
+        query = query.replace(' ', '-'); // replace spaces with hyphens
         var encoded_query = encodeURIComponent(query); 
         var qryType = $(el).attr('qryType'); 
         if (qryType == "tags") {

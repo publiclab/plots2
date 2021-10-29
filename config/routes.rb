@@ -289,6 +289,15 @@ Plots2::Application.routes.draw do
   get 'spam/comments' => 'admin#spam_comments'
   get 'spam/:type' => 'admin#spam'
   get 'spam/batch/:ids' => 'admin#batch'
+  get 'spam2' => 'spam2#_spam'  
+  get 'spam2/revisions' => 'spam2#_spam_revisions'
+  get 'spam2/comments' => 'spam2#_spam_comments'
+  get 'spam2/:type' => 'spam2#_spam'
+  get 'spam2/batch_spam/:ids' => 'spam2#batch_spam'
+  get 'spam2/batch_publish/:ids' => 'spam2#batch_publish'
+  get 'spam2/batch_delete/:ids' => 'spam2#batch_delete'
+  get 'spam2/batch_ban/:ids' => 'spam2#batch_ban'
+  get 'spam2/batch_unban/:ids' => 'spam2#batch_unban'
   get 'admin/users' => 'admin#users'
   get 'admin/queue' => 'admin#queue'
   get 'ban/:id' => 'admin#ban'
@@ -310,6 +319,7 @@ Plots2::Application.routes.draw do
 
   get 'post' => 'editor#post', :as => :editor_post
   post 'post' => 'editor#post', :as => :editor_path
+  get 'post/choose' => 'editor#choose'
   get 'legacy' => 'editor#legacy'
   get 'editor' => 'editor#editor'
   get 'editor/rich/(:n)' => 'editor#rich'
@@ -334,6 +344,7 @@ Plots2::Application.routes.draw do
   get 'questions/liked(/:tagnames)' => 'questions#liked'
 
   post 'users/test_digest_email' => 'users#test_digest_email'
+  post 'admin/test_digest_email_spam' => 'admin#test_digest_email_spam'
 
   get 'comment/delete/:id' => 'comment#delete'
   get 'comment/update/:id' => 'comment#update'

@@ -1,18 +1,18 @@
 <div class="col-lg-6 note-container-question">
   <div class="note note-pane note-question<% if node.status == 4 %> moderated<% end %>">
-    
+
     <div class="header-icon"><i class="fa fa-question-circle"></i> <a href="/q/<%= node.id %>"><i class="fa fa-link"></i></a></div>
 
     <div style="overflow: hidden;">
 
       <%= render partial: 'dashboard/node_moderate', locals: { node: node } %>
- 
+
       <% if node.main_image %>
-        <a class="img" href="<%= node.path(:question) %>"><img src="<%= node.main_image.path(:default) %>" style="width:100%;" /></a>
+        <a class="img" href="<%= node.path(:question) %>"><%= image_tag(node.main_image.path(:default), style:'width:100%;') %></a>
       <% elsif node.scraped_image %>
-        <a class="img" href="<%= node.path %>"><img src="<%= node.scraped_image %>" style="width:100%;" /></a>
+        <a class="img" href="<%= node.path %>"><%= image_tag(node.scraped_image, style:'width:100%;') %></a>
       <% end %>
-  
+
       <h4><a href="<%= node.path(:question) %>"><%= node.title %></a></h4>
 
       <p class="meta"><%= translation('dashboard._node_question.question') %> <%= render partial: "dashboard/node_meta", locals: { node: node } %></p>
@@ -20,3 +20,9 @@
     </div>
   </div>
 </div>
+
+<script>
+$(function(){
+  $("img").lazyload();
+});
+</script>

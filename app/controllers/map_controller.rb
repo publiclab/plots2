@@ -23,7 +23,7 @@ class MapController < ApplicationController
   def map
     @lat = 0
     @lon = 0
-    @zoom = 3
+    @zoom = 10
 
     if current_user&.has_power_tag("lat") && current_user&.has_power_tag("lon")
       @lat = current_user.get_value_of_power_tag("lat").to_f

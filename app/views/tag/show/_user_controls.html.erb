@@ -8,12 +8,12 @@
     <% unless @wildcard %>
       <% if current_user.following(params[:id]) %>
         <div class="dropdown-item">
-          <a style="width: 100px;" rel="tooltip" title="<%= t('tag.show.unfollow') %>" class="btn btn-light btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>"> <%= t('tag.index.unsubscribe') %></a>
+          <a style="width: 100px;" rel="tooltip" title="<%= translation('tag.show.unfollow') %>" class="btn btn-light btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>"> <%= translation('tag.index.unsubscribe') %></a>
         </div>
       <% else %>
         <div class="dropdown-item">
           <a style="width: 100px;" class="btn btn-outline-secondary btn-sm" href="/subscribe/tag/<%= params[:id] %>" data-remote="true">
-            <%= t('tag.index.subscribe') %>
+            <%= translation('tag.index.subscribe') %>
           </a>
         </div>
       <% end %>

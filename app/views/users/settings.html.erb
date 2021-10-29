@@ -4,9 +4,10 @@
   <hr style="width: 35%;  margin-left: 0;" />
 
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-    <span>Do you want to be notified by email for comments on your posts? </span>
+    <span>Do you want to be notified by a email for comments on your posts? </span>
     <span>
     <label class="switch">
+      <p> Notification switch </p>
       <input type="checkbox" name="notify-comment-direct:false" <% unless UserTag.exists?(current_user.id, 'notify-comment-direct:false') %>checked<% end %>>
       <span class="slider round"></span>
     </label>
@@ -17,9 +18,10 @@
   <br />
 
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-    <span>Do you want to be notified by email for likes on your posts? </span>
+    <span>Do you want to be notified by a email for likes on your posts? </span>
     <span>
     <label class="switch">
+      <p> Notification switch </p>
       <input type="checkbox" name="notify-likes-direct:false" <% unless UserTag.exists?(current_user.id, 'notify-likes-direct:false') %>checked<% end %>>
       <span class="slider round"></span>
     </label>
@@ -30,9 +32,10 @@
   <br />
 
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-    <span>Do you want to be notified by email for comments on all posts you've commented on? </span>
+    <span>Do you want to be notified by a email for comments on all posts you've commented on? </span>
     <span>
     <label class="switch">
+      <p> Notification switch </p>
       <input type="checkbox" name="notify-comment-indirect:false" <% unless UserTag.exists?(current_user.id, 'notify-comment-indirect:false') %>checked<% end %>>
       <span class="slider round"></span>
     </label>
@@ -44,9 +47,10 @@
 
   <% if logged_in_as(['admin', 'moderator']) %>
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-    <span>Do you want to be notified by email for moderation emails? </span>
+    <span>Do you want to be notified by a email for moderation emails? </span>
     <span>
     <label class="switch">
+      <p> Notification switch </p>
       <input type="checkbox" name="no-moderation-emails" <% unless UserTag.exists?(current_user.id, 'no-moderation-emails') %>checked<% end %>>
       <span class="slider round"></span>
     </label>
@@ -59,9 +63,10 @@
 
 
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-    <span>Do you want to receive customized digest weekly?</span>
+    <span>Do you want to receive a customized digest weekly?</span>
     <span>
     <label style=" vertical-align: middle;" class="switch">
+      <p> Notification switch </p>
       <input type="checkbox" name="digest:weekly" <% if UserTag.exists?(current_user.id, 'digest:weekly') %>checked<% end %>>
       <span class="slider round"></span>
     </label>
@@ -72,9 +77,10 @@
   <br />
 
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-    <span>Do you want to receive customized digest daily?</span>
+    <span>Do you want to receive a customized digest daily?</span>
     <span>
     <label style=" vertical-align: middle;" class="switch">
+      <p> Notification switch </p>
       <input type="checkbox" name="digest:daily" <% if UserTag.exists?(current_user.id, 'digest:daily') %>checked<% end %>>
       <span class="slider round"></span>
     </label>
@@ -85,9 +91,10 @@
   <br />
 
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-    <span>Do you want to receive browser notification when you are mentioned?</span>
+    <span>Do you want to receive a browser notification when you are mentioned?</span>
     <span>
     <label style=" vertical-align: middle;" class="switch">
+      <p> Notification switch </p>
       <input type="checkbox" name="notifications:mentioned" <% if UserTag.exists?(current_user.id, 'notifications:mentioned') %>checked<% end %>>
       <span class="slider round"></span>
     </label>
@@ -98,9 +105,10 @@
   <br />
 
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-    <span>Do you want to receive browser notification for all ?</span>
+    <span>Do you want to receive a browser notification for all ?</span>
     <span>
     <label style=" vertical-align: middle;" class="switch">
+      <p> Notification switch </p>
       <input type="checkbox" name="notifications:all" <% if UserTag.exists?(current_user.id, 'notifications:all') %>checked<% end %>>
       <span class="slider round"></span>
     </label>
@@ -111,9 +119,10 @@
   <br />
 
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
-    <span>Do you want to receive browser notification when someone likes your work?</span>
+    <span>Do you want to receive a browser notification when someone likes your work?</span>
     <span>
     <label style=" vertical-align: middle;" class="switch">
+      <p> Notification switch </p>
       <input type="checkbox" name="notifications:like" <% if UserTag.exists?(current_user.id, 'notifications:like') %>checked<% end %>>
       <span class="slider round"></span>
     </label>
@@ -163,8 +172,40 @@
 <!--  <br />-->
 <!--  <br />-->
 
-</div>
 
+  <br>
+  <% if current_user.can_moderate? %>
+  <h4><b>Spam Digest Settings</b></h4>
+  <hr style="width: 35%;  margin-left: 0;" />
+    <div style="display: inline-flex; justify-content: space-between; width: 90%;">
+      <span>Do you want to receive a weekly digest for unmoderated posts?</span>
+      <span>
+        <label style=" vertical-align: middle;" class="switch">
+          <p> Notification switch </p>
+          <input type="checkbox" name="digest:weekly:spam" <% if UserTag.exists?(current_user.id, 'digest:weekly:spam') %>checked<% end %>>
+          <span class="slider round"></span>
+        </label>
+      </span>
+    </div>
+
+    <br />
+    <br />
+
+    <div style="display: inline-flex; justify-content: space-between; width: 90%;">
+      <span>Do you want to receive a daily digest for unmoderated posts?</span>
+      <span>
+        <label style=" vertical-align: middle;" class="switch">
+          <p> Notification switch </p>
+          <input type="checkbox" name="digest:daily:spam" <% if UserTag.exists?(current_user.id, 'digest:daily:spam') %>checked<% end %>>
+          <span class="slider round"></span>
+        </label>
+      </span>
+    </div>
+
+    <br />
+    <br />
+  <% end %>
+</div>
 
 <br />
 <br />
@@ -191,7 +232,7 @@
 
   }
 
-  .switch input {display:none;}
+  .switch input,p {display:none;}
 
   .slider {
     position: absolute;
@@ -257,6 +298,17 @@
         $(':input[name="digest:weekly"]').change(function () {
             if($(':input[name="digest:weekly"]').prop('checked') === true){
                 $(':input[name="digest:daily"]').prop('checked', false);
+            }
+        });
+        $(':input[name="digest:daily:spam"]').change(function () {
+            if($(':input[name="digest:daily:spam"]').prop('checked') === true){
+                $(':input[name="digest:weekly:spam"]').prop('checked', false);
+            }
+        });
+
+        $(':input[name="digest:weekly:spam"]').change(function () {
+            if($(':input[name="digest:weekly:spam"]').prop('checked') === true){
+                $(':input[name="digest:daily:spam"]').prop('checked', false);
             }
         });
     });

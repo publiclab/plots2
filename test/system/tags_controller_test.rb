@@ -13,17 +13,6 @@ class TagTest < ApplicationSystemTestCase
     find(".login-modal-form #login-button").click()
   end
 
-  test 'viewing the dropdown menu' do
-    visit '/tag/test'
-
-    take_screenshot
-
-    click_on "by type"
-
-    take_screenshot
-
-  end
-
   test 'subscribing to a tag' do
     visit '/tag/nature'
 

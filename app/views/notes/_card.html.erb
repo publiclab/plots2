@@ -1,10 +1,10 @@
 <div class="card">
   <% if node.main_image %>
-    <a class="card-img-top img" style="overflow: hidden; height:10em;"<% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" style="width:100%;"/></a>
+    <a class="card-img-top img" style="overflow: hidden; height:10em;"<% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= image_tag(node.main_image.path(:default), style:'width:100%;') %></a>
   <% elsif node.scraped_image %>
-    <a class="card-img-top img" style="overflow: hidden; height:10em;" href="<%= node.path %>"><img src="<%= node.scraped_image %>" style="width:100%;" /></a>
+    <a class="card-img-top img" style="overflow: hidden; height:10em;" href="<%= node.path %>"><%= image_tag(node.scraped_image, style:'width:100%;') %></a>
   <%  else %>
-    <a class="imgg" style="height:10em; margin-bottom: 10px;">
+    <a class="imgg" style="height:10em; margin-bottom: 10px;padding: 1rem;">
     <i class="fa fa-picture-o note-not aria-hidden="true" style="color: #ccc; font-size: 6em;"></i>
     </a>
   <% end %>
@@ -40,7 +40,7 @@
           <%= node.comments.size %> &nbsp; | &nbsp; <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope:'datetime.time_ago_in_words' }).gsub('about ','') %>
         </span>
       <% end %>
-      <a class="ellipsis bottom-right" data-toggle="dropdown">&nbsp;<i class="fa fa-ellipsis-h" style="color : #666; font-size:15px; float:right;"></i></a>
+      <a class="ellipsis bottom-right" data-toggle="dropdown"><i class="fa fa-ellipsis-h" style="color : #666; font-size:15px; float:right;"></i></a>
 
       <ul class="dropdown-menu" style = "width: 150px; font-size:10px;">
         <% if node.type == 'note' %>
@@ -50,7 +50,7 @@
           <li><a><%= distance_of_time_in_words(Time.at(node.latest.timestamp), Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></a></li>
         <% end %>
         <li><a>Total Views: </i> <%= number_with_delimiter(node.views) %> <span class="d-none d-lg-inline"><%= t('notes._notes.views') %></span></a></li>
-        <li><a>Total Likes: <%= node.likers.length %></a></li>
+        <li><a>Total Likes: <%= node.likers.size %></a></li>
         <div class="content" style="width: 100%" >
           <% if @compact.nil? %>
 
@@ -66,3 +66,9 @@
     </div>
   </small>
 </div>
+
+<script>
+$(function(){
+  $("img").lazyload();
+});
+</script>

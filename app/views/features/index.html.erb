@@ -1,6 +1,7 @@
-<h2>Features</h2>
-
-<p>Features allow admins to edit/update text and images displayed around the site, for example banners, sidebar content, and alerts or notices.</p>
+<div class="row" style="align-items:baseline;">
+   <h2>Features</h2>
+   <p style="margin-inline-start:1rem;">Features allow admins to edit/update text and images displayed around the site, for example banners, sidebar content, and alerts or notices.</p>
+</div>
 <% if current_user.admin? %>
 <p><a class="btn btn-outline-secondary" href="/features/new">New feature</a></p>
 <% end %>
@@ -18,7 +19,7 @@
       <% if current_user.admin? %>
       <td><a href="/features/<%= feature.id %>/edit?t=<%= Time.now.to_i %>">edit</a></td>
       <% end %>
-      <td><%= time_ago_in_words(feature.latest.created_at) %> ago by 
+      <td><%= time_ago_in_words(feature.latest.created_at) %> ago by
       <a href="/profile/<%= feature.latest.author.name %>"><%= feature.latest.author.name %></td>
     </tr>
   <% end %>

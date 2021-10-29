@@ -66,6 +66,7 @@
 
       <div class="ple-module-content col-lg-9">
         <input
+          aria-label="Enter Note Title"
           class="form-control input-lg"
           type="text"
           id="title-input"
@@ -100,6 +101,7 @@
           </div>
           <p>
             <input
+              aria-label="Upload image"
               type="file"
               accept=".png, .jpg, .jpeg"
               name="image[photo]"
@@ -145,7 +147,7 @@
 
             <div class="col-lg-6">
               <div class="form-group">
-                <label>By place name</label>
+                <label for="placenameInput">By place name</label>
                 <p>
                   <input id="placenameInput" type="text" class="form-control" />
                 </p>
@@ -156,7 +158,7 @@
 
                 <div id="coord_input" class="row">
                   <div class="col-sm-6">
-                    <label>Latitude</label>
+                    <label for="lat">Latitude</label>
                     <p>
                       <input
                         id="lat"
@@ -168,7 +170,7 @@
                   </div>
 
                   <div class="col-sm-6">
-                    <label>Longitude</label>
+                    <label for="lng">Longitude</label>
                     <p>
                       <input
                         id="lng"
@@ -221,7 +223,7 @@
       </div>
 
       <div class="ple-module-content col-lg-9">
-        <textarea id="text-input" class="ple-textarea form-control"><% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
+        <textarea aria-label="Enter note description" id="text-input" class="ple-textarea form-control"><% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
       </div>
 
     </div>
@@ -237,6 +239,7 @@
 
       <div class="ple-module-content col-lg-9">
         <input
+          aria-label="Enter related tags"
           class="form-control input-lg"
           type="text"
           placeholder="balloon-mapping, water-quality..."
@@ -278,6 +281,9 @@
 
 
   </div>
+  <div class="bug-btn-wrapper">
+        <a href="https://publiclab.org/post?n=23853" class="bug-btn" target="_blank">Found an issue with the editor? Report a bug.</a>
+  </div>
 
   <div class="ple-footer">
 
@@ -292,7 +298,7 @@
       -->
     </div>
 
-    <button class="btn btn-lg btn-outline-secondary btn-more">...</button>
+    <button class="btn btn-lg btn-outline-secondary btn-more"><i class="fa fa-clock-o"></i></button>
 
     <span> &nbsp; By publishing, you agree to <a href="https://publiclab.org/licenses">open source your work</a><span class="d-none d-md-inline"> so that others may use it.</span></span>
     <button class="ple-publish btn btn-lg btn-primary float-right disabled"><% if controller.action_name == "edit" && @node.status == 3 %>Save<% else %>Publish<% end %></button>
@@ -424,7 +430,7 @@
       new L.LatLng(-90, 180)
     );
     editor.mapModule.blurredLocation.map.setMaxBounds(bounds);
-    
+
     <% if @lat and @lon %>
       <% if @zoom %>
         editor.mapModule.blurredLocation.setZoom(<%= @zoom %>);
@@ -440,7 +446,7 @@
       $('#coord_input').toggle();
     });
     $("#coord_input").hide();
-    
+
     $(function() {
       var target = document.querySelector('#map_content');
       var observer = new MutationObserver(function(mutations) {
@@ -459,7 +465,7 @@
       }
     }
     setLocationButtonText();
-    
+
     $("#obscureLocation").prop('checked', <%= @map_blurred %>);
     editor.mapModule.blurredLocation.setBlurred(<%= @map_blurred %>);
 
@@ -508,4 +514,3 @@
   }
 
 </script>
-

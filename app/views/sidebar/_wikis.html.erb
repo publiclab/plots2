@@ -13,16 +13,16 @@
         </p>
         <p>
           <small style="color:#888;">
-            <%= raw t('sidebar._wikis.updated_by', :time => time_ago_in_words(wiki.latest.updated_at), :url1 => "/profile/"+wiki.latest.author.name, :author => wiki.latest.author.name) %>
+            <%= raw translation('sidebar._wikis.updated_by', :time => time_ago_in_words(wiki.latest.updated_at), :url1 => "/profile/"+wiki.latest.author.name, :author => wiki.latest.author.name) %>
           </small>
         </p>
       <% end %>
     <% end %>
 
     <% if params[:controller] == "search" %>
-      <p><a href="/tag/<%= params[:id] %>"><%= t('sidebar._wikis.more') %></a></p>
+      <p><a href="/tag/<%= params[:id] %>"><%= translation('sidebar._wikis.more') %></a></p>
     <% else %>
-      <p><a href="/wiki/"><%= t('sidebar._wikis.more') %> &raquo;</a></p>
+      <p><a href="/wiki/"><%= translation('sidebar._wikis.more') %> &raquo;</a></p>
     <% end %>
 
   </div>

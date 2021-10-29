@@ -13,40 +13,12 @@
                       class: "img-fluid d-sm-none",
                       id: "tag-wiki-header-image2") %>
         </div>
-        <div class="bottom-right">
-          <a href="/contributors/<%= params[:id] %>">
-            <%= Tag.follower_count(params[:id]) %> following
-          </a>
-        </div>
       </div>
-
-    <% else %>
-
-    <div class="im d-none d-md-block" id="wiki-empty1">
-      <div class="bottom-right">
-        <a href="/contributors/<%= params[:id] %>">
-          <%= Tag.follower_count(params[:id]) %> following 
-        </a>
-      </div>
-    </div>
-    <div class="im d-sm-none" id="wiki-empty2">
-      <div class="bottom-right"><%= Tag.follower_count(params[:id]) %> following</div>
-    </div>
 
     <% end %>
 
   </div>
 
-<% elsif @wildcard %>
-
-<% else %>
-
-<div class="im d-none d-md-block" id="wiki-empty1">
-    <div class="bottom-right"><%= pluralize(Tag.follower_count(params[:id]), 'person') %> discussing</div>
-</div>
-<div class="im d-sm-none" id="wiki-empty2">
-    <div class="bottom-right"><%= pluralize(Tag.follower_count(params[:id]), 'person') %> discussing</div>
-</div>
 <% end %>
 
 <style>
@@ -128,22 +100,20 @@
   margin-top: -20px;
 }
 
-.bottom-right {
+.card .bottom-right {
   position: absolute;
   bottom: 10px;
   right: 40px;
   color: #fff;
   overflow-x: hidden;
-  text-shadow: 0.5px 0.5px #333;
-  /* text-decoration: underline; */
 }
-.bottom-right a {
+.card .bottom-right a {
   color: #fff;
 }
 
 @media (min-width: 576px) {
-  .d-md-block {
-      display: block !important;
+  .card .d-md-block {
+    display: block !important;
   }
 }
 </style>

@@ -35,33 +35,10 @@
 
   <% responses = @node.responses if @node %>
   <% if @node && responses.length > 0 %>
-    <%= render partial: 'sidebar/notes', locals: { notes: @node.responded_to, title: I18n.translation('sidebar._related.response_to'), node: @node } %>
+
   <% end %>
 
-  <% if @node && @node.has_power_tag('response') %>
-    <%= render partial: 'sidebar/notes', locals: { notes: @node.responses, title: I18n.translation('sidebar._related.responses_to_note'), node: @node } %>
-  <% end %>
-
-    <% if @node && @node.lat && @node.lon %>
-      <% if @node.has_tag("place") %>
-        <%= render_top_map(@node.lat, @node.lon, @node.zoom) %>
-      <% else %>
-        <%= render_map(@node.lat, @node.lon, @node.zoom) %>
-      <% end %>
-      <%# Link to map %>
-      <% zoom = @node.zoom ? @node.zoom : "" %>
-      <% url = "/map#" + zoom.to_s + "/" + @node.lat.to_s + "/" + @node.lon.to_s %>
-      <% if @node.type == "page" %>
-        <% url = "/map/" + @node.slug_from_path %>
-      <% end %>
-      <a href="<%= url %>" class="btn btn-outline-secondary btn-location mt-2"><i class="fa fa-map" aria-hidden="true"></i> View on a map</a>
-    <% elsif !@node.lat && !@node.lon %>
-      <div id="map_template" style="position: relative; display: inline-block;">
-        <a class="blurred-location-input btn btn-outline-secondary btn-lg btn-location my-2"><i class="fa fa-map-marker" style="color:#c40;" ></i>   <strong>Add a location</strong></a> 
-      </div>
-      <br>    
-      <span>Learn about location <a href="https://publiclab.org/location-privacy">privacy</a></span>
-    <% end %>
+    <%= render partial: "sidebar/map" %>
 
   <br style="clear:both;" />
 

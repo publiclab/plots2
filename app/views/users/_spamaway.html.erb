@@ -2,9 +2,7 @@
 
   <div class="form-group spamaway">
 
-    <label for="spamaway_follow_instructions">
       <%= translation('users._form.are_you_human') %>
-    </label>
     <p style="font-size: 1.3em;">
       <%= translation('users._form.spam_filtering') %>
     </p>
@@ -16,6 +14,7 @@
         <div class="btn-group d-flex" role="group">
           <% [0,1].each_with_index do |s, j| %><% statement = turingtest[i][s] %>
             <button type="button" class="col-5 btn btn-outline-secondary" style="font-size:3em;text-align:left;<% if i.odd? %> background:#eef;<% end %>" id="spamaway-<%= caller %>-<%= i.to_s + j.to_s %>">
+            <label id="selectAnimal" for="spamaway_statement_<%= caller %>_<%= i.to_s + j.to_s %>">
             <%= spam.radio_button vars[i], statement, { id: "spamaway_statement_#{caller}_#{i.to_s}#{j.to_s}" } %> <%= statement %>
             </button>
           <% end %>
@@ -27,7 +26,6 @@
   </div>
 
   <div class="form-group d-none">
-
     <%= spam.text_area :follow_instructions, { class: "form-control col-lg-6",
                                              rows: 8,
                                              tabindex: 7,

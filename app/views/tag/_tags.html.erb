@@ -1,7 +1,7 @@
 <% user = user || @user # allow overriding w/ local variable %>
 <div class="tags-list">
 <% if tags.length > 0 && power_tag %>
-  <a class="btn btn-circle btn-circle-sm show-more-tags" href="javascript:void(0);" style="float:left;"><i class="fa fa-ellipsis-h" style="color:#808080;margin-left:3px;"></i></a>
+  <a aria-label="Show more tags" class="btn btn-circle btn-circle-sm show-more-tags" href="javascript:void(0);" style="float:left;"><i class="fa fa-ellipsis-h" style="color:#808080;"></i></a>
 <% end %>
 <% tags.each_with_index do |tag, i| %>
   <% if tag.class == NodeTag %>
@@ -18,7 +18,7 @@
         <a class='tag-name' href='/tag/<%= tag.name %>'><%= tag.name %></a>
         <% if logged_in_as(['admin', 'moderator']) || (current_user && ( current_user.uid ==  @node.uid || current_user.uid == tag.uid)) %>
           <% if tag.name.include? ':' %>
-            <a data-confirm="This is a power tag (see https://publiclab.org/wiki/power-tags) -- and may drive a specific function on this page. Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/tag/delete/<%= @node.id %>/<%= tag.tid %>" data-tag-id="<%= tag.tid %>" data-method="delete"><i class='fa fa-times-circle fa-white blue pl-1' aria-hidden='true' ></i></a>
+            <a aria-label="Delete tag" data-confirm="This is a power tag (see https://publiclab.org/wiki/power-tags) -- and may drive a specific function on this page. Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/tag/delete/<%= @node.id %>/<%= tag.tid %>" data-tag-id="<%= tag.tid %>" data-method="delete"><i class='fa fa-times-circle fa-white blue pl-1' aria-hidden='true' ></i></a>
           <% else %>
             <a data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/tag/delete/<%= @node.id %>/<%= tag.tid %>" data-tag-id="<%= tag.tid %>" data-method="delete"><i class='fa fa-times-circle fa-white blue pl-1' aria-hidden='true' ></i></a>
           <% end %>
@@ -48,7 +48,7 @@
         <% end %>
       </a>
       <% if logged_in_as(['admin', 'moderator']) || (current_user && current_user.uid == tag.uid) %>
-        <a data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/profile/tags/delete/<%= user.id %>?name=<%= tag.name %>" data-method="delete"><i class='fa fa-times-circle fa-white blue pl-1' aria-hidden='true' ></i></a>
+      <a aria-label="Delete tag" data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/profile/tags/delete/<%= user.id %>?name=<%= tag.name %>" data-method="delete"><i class='fa fa-times-circle fa-white blue pl-1' aria-hidden='true' ></i></a>     
       <% end %>
     </span>
     </li>

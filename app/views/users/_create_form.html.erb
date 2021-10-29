@@ -21,13 +21,13 @@
     <div class="row">
       <div class="col-md-6">
         <div class="form-group" id="username_div">
-          <label for="username"><%= t('user_sessions.new.username') %></label>
+          <label for="username-signup"><%= translation('user_sessions.new.username') %></label>
           <%= f.text_field :username, { tabindex: 1, placeholder: "Username", class: 'form-control', id: 'username-signup' } %>
           <small class="invisible">Placeholder</small>
         </div>
 
         <div class="form-group">
-          <label for="email"><%= t('users._form.email') %></label>
+          <label for="email"><%= translation('users._form.email') %></label>
           <%= f.text_field :email, { tabindex: 3, placeholder: "you@email.com", class: 'form-control', id: 'email' } %>
           <small class="invisible">Placeholder</small>
         </div>
@@ -35,9 +35,10 @@
 
       <div class="col-md-6" style="display:flex; justify-content: center;">
         <div class="propic">
-          <img class="something_something rounded" src="https://www.gravatar.com/avatar/1aedb8d9dc4751e229a335e371db8058" style="width: 120px; height: 115px; margin-top: 10px; margin-bottom: 25px; margin-left: 55px; background:#ccc;" onerror="this.src='https://www.gravatar.com/avatar/1aedb8d9dc4751e229a335e371db8058'">
+          <img class="something_something rounded" alt="Profile Photo" src="https://www.gravatar.com/avatar/1aedb8d9dc4751e229a335e371db8058" style="width: 120px; height: 115px; margin-top: 10px; margin-bottom: 25px; margin-left: 55px; background:#ccc;" onerror="this.src='https://www.gravatar.com/avatar/1aedb8d9dc4751e229a335e371db8058'">
           <div class="form-group">
             <span class="btn btn-outline-primary btn-file">
+              <label id="selectProfilePhoto" for="something_else_unique">
               <u style="cursor: pointer;">Choose image</u> or drag one here
               <%= f.file_field :photo, id:"something_else_unique", onchange:'showFile(this, "something_something");', accept: "image/*", style: 'draggable: true' %>
             </span>
@@ -48,7 +49,7 @@
 
     <div class="form-group row">
       <div class="form-group col-md-6">
-        <label for="password"><%= t('users._form.create_password') %></label>
+        <label for="password1"><%= translation('users._form.create_password') %></label>
         <%= f.password_field :password, { placeholder: 'Enter your new password',
                                           tabindex: 4,
                                           class: 'form-control',
@@ -59,7 +60,7 @@
       </div>
 
       <div class="form-group col-md-6">
-        <label for="password_confirmation"><%= t('users._form.password_confirmation') %></label>
+        <label for="password-confirmation"><%= translation('users._form.password_confirmation') %></label>
         <%= f.password_field :password_confirmation, { placeholder: I18n.t('users._form.confirm_password'),
                                                        tabindex: 5,
                                                        class: 'form-control',
@@ -72,10 +73,11 @@
 
     <div class="form-group row">
       <div class="col-md-12">
-        <label for="user_bio"><%= t('users._form.bio') %></label>
+        <label for="user-bio"><%= translation('users._form.bio') %></label>
         <%= f.text_area :bio, { placeholder: I18n.t('users._form.add_bio'),
                                             rows: 8,
                                             class: 'form-control',
+                                            id: 'user-bio',
                                             tabindex: 6 }
         %>
       </div>
@@ -108,9 +110,9 @@
 
     <div class="col-md-12 form-group form-inline" style="clear:both;padding-top:10px;">
         <!-- button for creating new users -->
-        <button style="margin-right:8px;" class="btn btn-lg btn-primary btn-save sranje" type="submit" tabindex="7"><%= t('users._form.sign_up') %></button>
+        <button style="margin-right:8px;" class="btn btn-lg btn-primary btn-save sranje" type="submit" tabindex="7"><%= translation('users._form.sign_up') %></button>
         <span>or <a id="toLogin" href="/login">
-          <%= t('users._form.log_in') %>
+          <%= translation('users._form.log_in') %>
         </a>
         </span>
 

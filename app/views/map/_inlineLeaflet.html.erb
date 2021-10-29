@@ -5,9 +5,6 @@
     #postOnMap<%= unique_id %> {
       margin-top: 5px;
     }
-    .leaflet-popup-content {
-      width: auto !important;
-    }
     a.grid-embed {
       float:right;
       padding:8px;
@@ -17,7 +14,7 @@
     }
   </style>
 
-  <div class="leaflet-map inline-fullwidth-content" id="map<%= unique_id %>"></div>
+  <div class="leaflet-map inline-map inline-fullwidth-content" id="map<%= unique_id %>"></div>
 
   <a id="iframeID<%= unique_id %>" class="grid-embed" rel="tooltip" title="Embed this map on another site."><i class="fa fa-code" style="color:#aaa;"></i></a>
 
@@ -33,6 +30,7 @@
       maxBounds: bounds ,
       maxBoundsViscosity: 0.75,
       fullscreenControl: true,
+      scrollWheelZoom: false,
       fullscreenControlOptions: {
         position: 'topleft'
     }}).setView([<%= lat %>,<%= lon %>], <%= lat.to_s.length.to_i %> + 6);

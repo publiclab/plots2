@@ -120,4 +120,15 @@ class AdminMailer < ActionMailer::Base
       subject: subject
     )
   end
+
+  def send_digest_spam(nodes, frequency_digest)
+    if frequency_digest == User::Frequency::DAILY
+      @subject = 'Your daily digest for moderation'
+    elsif frequency_digest == User::Frequency::WEEKLY
+      @subject = 'Your weekly digest for moderation'
+    end
+    moderators = User.where(role: %w(moderator admin)).collect(&:email)
+    @nodes = nodes
+    mail(to: moderators, subject: @subject)
+  end
 end

@@ -162,7 +162,7 @@ en:
       recent: "Recent"
       popular: "Popular"
       liked: "Liked"
-      wiki_pages: "Wiki<span class=\"hidden-sm\"> pages</span>"
+      wiki_pages: "Wiki pages"
     _notes:
       moderate_first_time_post: "Moderate first-time post:"
       approve: "Approve"
@@ -174,7 +174,7 @@ en:
       read_more: "Read more"
     show:
       note_no_tags: "This note has no tags yet; help connect it to other content by
-        <a href='%{url}'>adding descriptive tags below</a>."
+        <a href='#' onClick='%{url}'>adding descriptive tags below</a>."
       replication: "This is an attempt to replicate "
       series: "This is part of a series on "
       replication_link: "an activity"
@@ -392,9 +392,9 @@ en:
       or_subscribe_to_answer: "<a style='margin-bottom:6px;' class='btn btn-primary
         requireLogin' target='_blank' href='%{url1}'>Subscribe to answer questions
         on this topic</a>"
-      research_notes: "<span class=\"hidden-sm\">Research </span>Notes"
+      research_notes: "Research notes"
       questions: "Questions"
-      wiki_pages: "Wiki<span class=\"hidden-sm\"> pages</span>"
+      wiki_pages: "Wiki pages"
       maps: "Maps"
       no_results_found: "No results found; try searching for '<b>%{tag}</b>'"
       try_advanced_search: "Or try an <a href='%{url1}'>advanced search</a>"
@@ -454,7 +454,7 @@ en:
         projects."
     show:
       page_has_no_tags: "This page has no tags yet; help connect it to other content
-        by <a href='%{url}'>adding descriptive tags below</a>"
+        by <a href ='#' onClick='%{url}'>adding descriptive tags below</a>"
       revision_from: "This is a revision from %{time}."
       view_all_revisions: "View all revisions"
       views: "views"
@@ -471,7 +471,7 @@ en:
       back_to_wiki: "Back to <a href='%{url1}'>%{title}"
       overview: "Overview"
       research: "Research"
-      wiki_pages: "Wiki<span class=\"hidden-sm\"> pages</span>"
+      wiki_pages: "Wiki pages"
       more_research: "More research on \"%{tag}\""
       more_tag_research: "More \"%{tag}\" research"
     _wikis:
@@ -618,7 +618,7 @@ en:
       username: "Username"
       password: "Password"
       remember_me: "Remember me"
-      reset_by_clicking_here: "Forgot your password? Reset it <a href='%{url1}'>here</a>"
+      reset_by_clicking_here: "Forgot your password? <a href='%{url1}'>Reset it here</a>"
   home:
     dashboard:
       welcome: "Welcome!"
