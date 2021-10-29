@@ -192,7 +192,7 @@ class TagTest < ActiveSupport::TestCase
     tag = tags(:test)
     # including current date
     contributors = Tag.contributors(tag.name, start: Time.now-1.month, finish: Time.now+1.day)
-    assert_equal [1, 2], contributors.pluck(:id)
+    assert_equal [1, 2, 5, 6, 12], contributors.pluck(:id)
     # during presumably mostly empty time period
     contributors2 = Tag.contributors(tag.name, start: Time.now-10.years, finish: Time.now-9.years)
     assert_equal [2], contributors2.pluck(:id)
