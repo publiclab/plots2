@@ -2,10 +2,7 @@ class Comment < ApplicationRecord
   include CommentsShared
   extend RawStats
 
-  after_save :update_counter
-  after_destroy :update_counter
-
-  belongs_to :node, foreign_key: 'nid', touch: true
+  belongs_to :node, foreign_key: 'nid', touch: true, counter: true
   belongs_to :user, foreign_key: 'uid'
   belongs_to :answer, foreign_key: 'aid'
   has_many :likes, as: :likeable
@@ -13,6 +10,8 @@ class Comment < ApplicationRecord
   has_many :replied_comments, class_name: "Comment", foreign_key: 'reply_to', dependent: :destroy
 
   validates :comment, presence: true
+
+  scope :published, -> { where(status: 1) }
 
   self.table_name = 'comments'
   self.primary_key = 'cid'
@@ -529,12 +528,5 @@ class Comment < ApplicationRecord
         .references(:node, :term_data)
         .where('term_data.name = ?', tagname))
       .order('timestamp DESC')
-  end
-
-  def update_counter
-    return if node.nil?
-
-    node.comments_count = Comment.where(status: 1, nid: node.id).count
-    node.save
   end
 end

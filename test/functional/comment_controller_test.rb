@@ -212,7 +212,7 @@ class CommentControllerTest < ActionController::TestCase
           }, xhr: true
     end
     assert :success
-    assert_equal comment.node.comments.where(status: 1).count, JSON.parse(@response.body)['comment_count']
+    assert_equal comment.node.comments.published.count, JSON.parse(@response.body)['comment_count']
   end
 
   test 'should delete note comment if user is note author' do
@@ -225,7 +225,7 @@ class CommentControllerTest < ActionController::TestCase
           }, xhr: true
     end
     assert :success
-    assert_equal comment.node.comments.where(status: 1).count, JSON.parse(@response.body)['comment_count']
+    assert_equal comment.node.comments.published.count, JSON.parse(@response.body)['comment_count']
   end
 
   test 'should delete note comment if user is admin' do
@@ -235,7 +235,7 @@ class CommentControllerTest < ActionController::TestCase
       get :delete, params: { id: comment.id }, xhr: true
     end
     assert :success
-    assert_equal comment.node.comments.where(status: 1).count, JSON.parse(@response.body)['comment_count']
+    assert_equal comment.node.comments.published.count, JSON.parse(@response.body)['comment_count']
   end
 
   test 'should delete note comment if user is comment moderator' do
@@ -248,7 +248,7 @@ class CommentControllerTest < ActionController::TestCase
           }, xhr: true
     end
     assert :success
-    assert_equal comment.node.comments.where(status: 1).count, JSON.parse(@response.body)['comment_count']
+    assert_equal comment.node.comments.published.count, JSON.parse(@response.body)['comment_count']
   end
 
   test 'should not delete note comment if user is neither of the above' do

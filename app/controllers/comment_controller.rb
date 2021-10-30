@@ -30,7 +30,7 @@ class CommentController < ApplicationController
         @comment.save
       end
 
-      @comment_count = @node.comments.where(status: 1).count
+      @comment_count = @node.comments.published.count
 
       respond_to do |format|
         @answer_id = 0
@@ -115,7 +115,7 @@ class CommentController < ApplicationController
        logged_in_as(%w(admin moderator))
 
       if @comment.destroy
-        @comment_count = @node.comments.where(status: 1).count
+        @comment_count = @node.comments.published.count
 
         respond_with do |format|
           if params[:type] && params[:type] == 'question'
