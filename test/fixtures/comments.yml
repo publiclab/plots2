@@ -135,6 +135,7 @@ spam_comment:
   comment: This thing is spam.
   timestamp: <%= Time.now.to_i + 14 %>
   thread: /01
+  flag: 1
 
 comment_by_test_user:
   uid: 8
@@ -160,3 +161,80 @@ comment_by_first_time_user:
   comment: This is comment is replied to first
   timestamp: <%= Time.now.to_i + 10 %>
   thread: /01
+
+reply_to_this_comment: # comment on question, for comment system tests
+  uid: 1
+  nid: 37
+  status: 1
+  comment: Uhh...
+  timestamp: <%= Time.now.to_i + 10 %>
+
+note_comment_for_responses: # comment on note, for comment system tests
+  uid: 1
+  nid: 38
+  status: 1
+  comment: I do what I want!
+  timestamp: <%= Time.now.to_i + 10 %>
+
+ketchup_comment: # question fixture for testing multiple comments
+  uid: 1
+  nid: 40
+  status: 1
+  comment: I like ketchup
+  timestamp: <%= Time.now.to_i + 10 %>
+
+mustard_comment:
+  uid: 5
+  nid: 40
+  status: 1
+  comment: I like mustard
+  timestamp: <%= Time.now.to_i + 20 %>
+
+mayo_comment:
+  uid: 6
+  nid: 40
+  status: 1
+  comment: I like mayo
+  timestamp: <%= Time.now.to_i + 30 %>
+
+ouija_comment_1: # note fixture for testing multiple comments
+  uid: 1
+  nid: 41
+  status: 1
+  comment: P
+  timestamp: <%= Time.now.to_i + 10 %>
+
+ouija_comment_2:
+  uid: 5
+  nid: 41
+  status: 1
+  comment: O
+  timestamp: <%= Time.now.to_i + 20 %>
+
+ouija_comment_3:
+  uid: 6
+  nid: 41
+  status: 1
+  comment: O
+  timestamp: <%= Time.now.to_i + 30 %>
+
+pokemon_comment_1: # wiki fixture for testing multiple comments
+  uid: 1
+  nid: 42
+  status: 1
+  comment: Squirtle
+  timestamp: <%= Time.now.to_i + 10 %>
+
+pokemon_comment_2:
+  uid: 5
+  nid: 42
+  status: 1
+  comment: Charmander
+  timestamp: <%= Time.now.to_i + 20 %>
+
+pokemon_comment_3:
+  uid: 6
+  nid: 42
+  status: 1
+  comment: Bulbasaur
+  timestamp: <%= Time.now.to_i + 30 %>

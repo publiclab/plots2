@@ -37,7 +37,7 @@ class Tag < ApplicationRecord
   end
 
   def run_count
-    self.count = NodeTag.where(tid: tid).count
+    self.count = NodeTag.joins(:node).where(tid: tid).where('node.status = 1').size
     save
   end
 
@@ -61,24 +61,24 @@ class Tag < ApplicationRecord
     node_tag && node_tag.uid == current_user.uid || node_tag.node.uid == current_user.uid
   end
 
-  def self.contributors(tagname)
-    tag = Tag.includes(:node).where(name: tagname).first
+  def self.contributors(tagname, start: Time.now-100.years, finish: Time.now+1.years)
+    tag = Tag.where(name: tagname).first
     return [] if tag.nil?
 
-    nodes = tag.node.includes(:revision, :comments, :answers).where(status: 1)
+    nodes = tag.node.includes(:revision, :comments).where(status: 1)
     uids = nodes.collect(&:uid)
     nodes.each do |n|
-      uids += n.comments.collect(&:uid)
-      uids += n.answers.collect(&:uid)
-      uids += n.revision.collect(&:uid)
+      uids += n.comments.where(timestamp: start.to_i..finish.to_i).collect(&:uid)
+      uids += n.revision.where(timestamp: start.to_i..finish.to_i).collect(&:uid)
     end
     uids = uids.uniq
     User.where(id: uids)
+        .where(status: [1, 4])
   end
 
   def self.contributor_count(tagname)
     uids = Tag.contributors(tagname)
-    uids.length
+    uids.size
   end
 
   # finds highest viewcount nodes
@@ -99,15 +99,9 @@ class Tag < ApplicationRecord
                 .where('term_data.name IN (?)', tagnames)
     # .select(%i[node.nid node.status node.type community_tags.nid community_tags.tid term_data.name term_data.tid])
     # above select could be added later for further optimization
-    # .where('term_data.name IN (?) OR term_data.parent in (?)', tagnames, tagnames) # greedily fetch children
-    tags = Tag.where('term_data.name IN (?)', tagnames)
-    parents = Node.where(status: 1, type: type)
-                  .includes(:tag)
-                  .references(:term_data)
-                  .where('term_data.name IN (?)', tags.collect(&:parent))
     order = 'node_revisions.timestamp DESC'
     order = 'created DESC' if type == 'note'
-    Node.where('node.nid IN (?)', (nodes + parents).collect(&:nid))
+    Node.where('node.nid IN (?)', nodes.collect(&:nid))
         .includes(:revision, :tag)
         .references(:node_revisions)
         .where(status: 1)
@@ -115,17 +109,9 @@ class Tag < ApplicationRecord
         .order(order)
   end
 
-  def self.counter(tagname)
-    Node.where(type: %w(note page))
-        .where('term_data.name = ?', tagname)
-        .includes(:node_tag, :tag)
-        .references(:term_data)
-        .count
-  end
-
-  # just like find_nodes_by_type, but searches wiki pages, places, and tools
+  # just like find_nodes_by_type, but searches wiki pages
   def self.find_pages(tagnames, limit = 10)
-    find_nodes_by_type(tagnames, %w(page place tool), limit)
+    find_nodes_by_type(tagnames, %w(page), limit)
   end
 
   def self.find_nodes_by_type_with_all_tags(tagnames, type = 'note', limit = 10)
@@ -139,11 +125,7 @@ class Tag < ApplicationRecord
       tag = Tag.where(name: tagname).last
       next unless tag
 
-      parents = Node.where(status: 1, type: type)
-                    .includes(:revision, :tag)
-                    .references(:term_data)
-                    .where('term_data.name LIKE ?', tag.parent)
-      nids += tag_nids + parents.collect(&:nid)
+      nids += tag_nids
     end
     Node.where('nid IN (?)', nids)
         .order('nid DESC')
@@ -175,7 +157,7 @@ class Tag < ApplicationRecord
                        .collect(&:user_id)
     User.where(id: uids)
         .where(status: [1, 4])
-        .count
+        .size
   end
 
   def self.followers(tagname)
@@ -215,7 +197,7 @@ class Tag < ApplicationRecord
         nids,
         (Time.now.to_i - week.weeks.to_i).to_s,
         (Time.now.to_i - (week - 1).weeks.to_i).to_s
-      ).count(:all)
+      ).size
     end
     weeks
   end
@@ -237,7 +219,7 @@ class Tag < ApplicationRecord
           nids,
           (fin.to_i - week.weeks.to_i).to_s,
           (fin.to_i - (week - 1).weeks.to_i).to_s
-        ).count(:all)
+        ).size
 
       weeks[(month.to_f * 1000)] = current_week
       week -= 1
@@ -253,9 +235,9 @@ class Tag < ApplicationRecord
     while week >= 1
       month = (fin - (week * 7 - 1).days)
       weekly_quiz = questions.where(created: range(fin, week))
-        .count(:all)
+        .size
 
-      weeks[(month.to_f * 1000)] = weekly_quiz.count
+      weeks[(month.to_f * 1000)] = weekly_quiz.size
       week -= 1
     end
     weeks
@@ -269,7 +251,7 @@ class Tag < ApplicationRecord
     while week >= 1
       month = (fin - (week * 7 - 1).days)
       weekly_comments = comments.where(timestamp: range(fin, week))
-        .count(:all)
+        .size
 
       weeks[(month.to_f * 1000)] = weekly_comments
       week -= 1
@@ -334,7 +316,7 @@ class Tag < ApplicationRecord
 
   # https://github.com/publiclab/plots2/pull/4266
   def self.trending(limit = 5, start_date = DateTime.now - 1.month, end_date = DateTime.now)
-    Tag.select([:name])
+    Tag.select('term_data.tid, term_data.name, term_data.count') # ONLY_FULL_GROUP_BY, issue #8152 & #3120
        .joins(:node_tag, :node)
        .where('node.status = ?', 1)
        .where('node.created > ?', start_date.to_i)
@@ -349,41 +331,41 @@ class Tag < ApplicationRecord
     if tagname[-1..-1] == '*'
       @wildcard = true
       Node.includes(:node_tag, :tag)
-          .where('term_data.name LIKE(?) OR term_data.parent LIKE (?)', tagname[0..-2] + '%', tagname[0..-2] + '%')
+          .where('term_data.name LIKE(?)', tagname[0..-2] + '%')
           .references(:term_data, :node_tag)
           .where('node.uid = ?', user_id)
           .order('node.nid DESC')
     else
       Node.includes(:node_tag, :tag)
-          .where('term_data.name = ? OR term_data.parent = ?', tagname, tagname)
+          .where('term_data.name = ?', tagname)
           .references(:term_data, :node_tag)
           .where('node.uid = ?', user_id)
           .order('node.nid DESC')
     end
   end
 
-  def self.tagged_node_count(tag_name)
-    Node.where(status: 1, type: 'note')
+  def self.tagged_node_count(tag_name, type = 'note')
+    Node.where(status: 1, type: type)
         .includes(:revision, :tag)
         .references(:term_data, :node_revisions)
         .where('term_data.name = ?', tag_name)
-        .count
+        .size
   end
 
   def self.related(tag_name, count = 5)
-    Rails.cache.fetch("related-tags/#{tag_name}/#{count}", expires_in: 1.weeks) do
-      nids = NodeTag.joins(:tag)
-                     .where(Tag.table_name => { name: tag_name })
-                     .select(:nid)
-
-      # sort them by how often they co-occur:
-      nids = nids.group_by{ |v| v }.map{ |k, v| [k, v.size] }
-      nids = nids.collect(&:first)[0..4]
-                 .collect(&:nid) # take top 5
+    Rails.cache.fetch("related-tags/#{tag_name}/#{count}/new", expires_in: 1) do
+      nids = NodeTag.joins(:tag, :node)
+                    .where(Node.table_name => { status: 1 })
+                    .where(Tag.table_name => { name: tag_name })
+                    .group(:nid)
+                    .order(NodeTag.arel_table[:nid].count.desc)
+                    .limit(5)
+                    .pluck(:nid)
 
       Tag.joins(:node_tag)
          .where(NodeTag.table_name => { nid: nids })
          .where.not(name: tag_name)
+         .where.not(name: 'first-time-poster')
          .group(:tid)
          .order(count: :desc)
          .limit(count)
@@ -391,24 +373,49 @@ class Tag < ApplicationRecord
   end
 
   # for Cytoscape.js http://js.cytoscape.org/
-  def self.graph_data(limit = 250)
-    Rails.cache.fetch("graph-data/#{limit}", expires_in: 1.weeks) do
+  def self.graph_data(limit = 250, type = 'nodes', weight = 0)
+    Rails.cache.fetch("graph-data/#{limit}/#{type}/#{weight}", expires_in: 1.weeks) do
       data = {}
       data["tags"] = []
-      Tag.joins(:node)
-        .group(:tid)
-        .where('node.status': 1)
-        .order(count: :desc)
-        .limit(limit).each do |tag|
-        data["tags"] << {
-          "name" => tag.name,
-          "count" => tag.count
-        }
+      if type == 'nodes' # notes
+        Tag.joins(:node)
+          .group(:tid)
+          .where('node.status': 1)
+          .where('term_data.name NOT LIKE (?)', '%:%')
+          .where.not(name: 'first-time-poster')
+          .order(count: :desc)
+          .having("count >= ?", weight)
+          .limit(limit).each do |tag|
+          data["tags"] << {
+            "name" => tag.name,
+            "count" => tag.count
+          }
+        end
+      elsif type == 'subscribers' # subscribers
+        Tag.select("name, count(tag_selections.tid) as subcount")
+          .joins("LEFT OUTER JOIN tag_selections ON tag_selections.tid = term_data.tid")
+          .group('term_data.name')
+          .where('term_data.name NOT LIKE (?)', '%:%')
+          .where.not(name: 'first-time-poster')
+          .order(subcount: :desc)
+          .having("subcount >= ?", weight)
+          .limit(limit).each do |tag|
+            unless tag.name.strip.empty?
+              data["tags"] << {
+              "name" => tag.name,
+              "count" => tag.subcount
+            }
+            end
+        end
       end
+
       data["edges"] = []
       data["tags"].each do |tag|
         Tag.related(tag["name"], 10).each do |related_tag|
-          data["edges"] << { "from" => tag["name"], "to" => related_tag.name }
+          reverse = { "from" => related_tag.name, "to" => tag["name"] }
+          unless data["edges"].include? reverse
+            data["edges"] << { "from" => tag["name"], "to" => related_tag.name }
+          end
         end
       end
       data
@@ -432,6 +439,22 @@ class Tag < ApplicationRecord
       week -= 1
     end
     date_hash
+  end
+
+  def self.tag_frequency(limit)
+    uids = User.where('rusers.role = ?', 'moderator').or(User.where('rusers.role = ?', 'admin')).collect(&:uid)
+    tids = TagSelection.where(following: true, user_id: uids).collect(&:tid)
+    hash = tids.uniq.map { |id| p (Tag.find id).name, tids.count(id) }.to_h
+    hash.sort_by { |_, v| v }.reverse.first(limit).to_h
+  end
+
+  def self.update_tags_activity(tids = [], activity_id = nil)
+    Tag.transaction do
+      # this lock is to avoid db errors in testing: https://github.com/publiclab/plots2/issues/9873
+      Tag.lock
+        .where(tid: tids)
+        .update_all(activity_timestamp: DateTime.now, latest_activity_nid: activity_id) 
+    end
   end
 
   private

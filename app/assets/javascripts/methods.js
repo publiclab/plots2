@@ -52,6 +52,7 @@ jQuery(document).ready(function($) {
       $('#methods h2.related').hide();
       $('#methods h2.recent').show();
     }
+    $('#notes .row:first').append($('#notes .tag-method').remove());
   }
 
 });

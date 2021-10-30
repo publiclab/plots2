@@ -33,4 +33,25 @@ jQuery(document).ready(function($) {
   $('.activity-comment#i-did-this').find('button.btn-primary').click(function(e) {
     $('.activity-comment#i-did-this').hide();
   });
+  $(".datepicker").datepicker({format: 'mm-dd-yyyy'});
+  $("#collapse-button").click(function(){
+      $(this).remove();
+  });
+  $(function() {
+    $("img").lazyload();
+  });
+  $("#event-datepicker").hide();
+  $("#date-toggle").click(function(){
+    $("#event-datepicker").toggle();
+  });
+  $("#save-event-date").click(function(){
+    eventDate= $(".datepicker").datepicker();
+    if(eventDate!== null)
+    {
+      addTag("date:"+eventDate.val());
+      $('#mytoast').addClass("show").fadeIn('fast').delay(2000).fadeOut('fast');
+      $("#event-datepicker").hide();
+      $("#date-toggle").hide();
+    }
+  });
 });

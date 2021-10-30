@@ -1,4 +1,6 @@
 module ApplicationHelper
+  include Pagy::Frontend
+
   # returns true if user is logged in and has any of the roles given, as ['admin','moderator']
   def logged_in_as(roles)
     return false unless current_user
@@ -60,6 +62,20 @@ module ApplicationHelper
       return features.last
     else
       ''
+    end
+  end
+
+  # used in views/comments/_form.html.erb
+  def get_comment_form_id(location, reply_to, comment_id)
+    case location
+    when :main
+      'main'
+    when :reply
+      'reply-' + reply_to.to_s
+    when :edit
+      'edit-' + comment_id
+    when :responses
+      'responses'
     end
   end
 
@@ -138,17 +154,27 @@ module ApplicationHelper
     'is-active' if request.path == page
   end
 
-  def translation(key, options = {})
+  def translation(key, options = {}, html = true)
     translated_string = t(key, options)
     options[:fallback] = false
     translated_string2 = t(key, options)
+    english_translation = t(key, locale: :en)
 
-    if current_user&.has_tag('translation-helper') && translated_string2.include?("translation missing") && !translated_string.include?("<")
-      raw(%(<span>#{translated_string} <a href="https://www.transifex.com/publiclab/publiclaborg/translate/#de/$?q=text%3A#{translated_string}">
-          <i data-toggle='tooltip' data-placement='top' title='Needs translation? Click to help translate this text.' style='position:relative; right:2px; color:#bbb; font-size: 15px;' class='fa fa-globe'></i></a>
+    if html && current_user&.has_tag('translation-helper') && (translated_string2.include?("translation missing") || translated_string === "") && !translated_string.include?("<")
+      raw(%(<span>#{english_translation} <a class="translationIcon" style='display: none; padding-left: 3px;' href="https://www.transifex.com/publiclab/publiclaborg/translate/#de/$?q=text%3A#{translated_string}">
+          <i data-toggle='tooltip' data-placement='top' title='Needs translation? Click to help translate the text \" #{translated_string} \" .' style='position:relative; right:2px; color:#bbb; font-size: 15px;' class='fa fa-globe'></i></a>
        </span>))
     else
       raw(translated_string)
+    end
+  end
+
+  def create_nav_dropdown_item(href, text)
+    translated_string = translation(text)
+    if current_user&.has_tag('translation-helper') && I18n.locale != :en
+      raw(%(<div class="dropdown-item"> <a class="text-body" href="#{href}"> #{translated_string}</a> </div>))
+    else
+      raw(%(<a class="dropdown-item" href="#{href}"> #{translated_string} </a>))
     end
   end
 end

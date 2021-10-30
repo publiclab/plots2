@@ -66,7 +66,7 @@ class SearchService
 
   def search_wikis(input, limit = 25, order = :natural, type = :boolean)
     Node.search(query: input, order: order, type: type, limit: limit)
-        .where("`node`.`type` = 'page' OR `node`.`type` = 'place' OR `node`.`type` = 'tool'")
+        .where("`node`.`type` = 'page'")
   end
 
   def search_maps(input, limit = 25, order = :natural, type = :boolean)
@@ -78,12 +78,16 @@ class SearchService
   # chained to the notes that are tagged with those values
   def search_tags(query, limit = 10)
     suggestions = []
+    # order tag autosuggestions by placing exact match of the tag on the top, then tags with query and some other text as suffix, 
+    # then tags with some text as prefix or suffix and lastly the tags with some text as prefix
+    tags_order = 'CASE WHEN name LIKE ? OR name LIKE ? THEN 1 WHEN name LIKE ? OR name LIKE ? THEN 2 WHEN name LIKE ? OR name LIKE ? THEN 4 ELSE 3 END', "#{query}", "#{query.to_s.gsub(' ', '-')}", "#{query}%", "#{query.to_s.gsub(' ', '-')}%", "%#{query}", "%#{query.to_s.gsub(' ', '-')}"
     # filtering out tag spam by requiring tags attached to a published node
     # also, we search for both "balloon mapping" and "balloon-mapping":
     Tag.where('name LIKE ? OR name LIKE ?', "%#{query}%", "%#{query.to_s.gsub(' ', '-')}%")
       .includes(:node)
       .references(:node)
       .where('node.status = 1')
+      .order(tags_order)
       .limit(limit).each do |tag|
       suggestions << tag
     end
@@ -141,11 +145,7 @@ class SearchService
       .where('created BETWEEN ' + period["from"].to_s + ' AND ' + period["to"].to_s)
 
     # selects the items whose node_tags don't have the location:blurred tag
-    items.select do |item|
-      item.node_tags.none? do |node_tag|
-        node_tag.name == "location:blurred"
-      end
-    end
+    items.joins(:term_data).where('term_data.name <> "location:blurred"')
 
     # sort nodes by recent activities if the sort_by==recent
     if sort_by == "recent"
@@ -200,11 +200,7 @@ class SearchService
     items = user_locations
 
     # selects the items whose node_tags don't have the location:blurred tag
-    items.select do |item|
-      item.user_tags.none? do |user_tag|
-        user_tag.name == "location:blurred"
-      end
-    end
+    items = items.where('user_tags.value <> "location:blurred"')
 
     # Here we use period["from"] and period["to"] in the query only if they have been specified,
     # so we avoid to join revision table

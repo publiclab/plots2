@@ -1,0 +1,39 @@
+<div class="node-types mr-3" style="margin-bottom:8px;">
+  <ul class="nav nav-tabs" aria-labelledby="dropdownMenuButton">
+
+    <li class="nav-item">
+      <a class="nav-link active" href="/notes/author/<%= @user.name %>">
+        <i class="fa fa-file"></i>
+        <span class="d-lg-inline"><%= translation('notes.index.research_notes') %></span>
+          <span class="d-none d-sm-inline badge badge-primary"><%= @notes.count %></span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" href="/tag/question:*/author/<%= @user.name %>">
+        <i class="fa fa-question-circle"></i> <span class="d-lg-inline"><%= translation('notes.index.questions') %></span>
+      </a>
+    </li>
+
+        <li class="nav-item">
+      <a class="nav-link" href="/wikis/author/<%= @user.name %>">
+        <i class="fa fa-book"></i> <span class="d-lg-inline"><%= translation('notes.index.wiki_pages') %></span>
+      </a>
+    </li>
+
+        <li class="nav-item">
+      <a class="nav-link" href="/profile/comments/<%= @user.name %>">
+        <i class="fa fa-comment"></i>
+        <span class="d-lg-inline"><%= translation('notes.index.comments') %></span>
+      </a>
+    </li>
+
+    <% if current_user&.can_moderate? || current_user == @user %>
+      <li class="nav-item" style="width: 155px;">
+        <a class="nav-link" href="/drafts/author/<%= @user.name %>">
+          <i class="fa fa-pencil"></i> <span class="d-lg-inline"><%= translation('notes.index.drafts') %></span>
+        </a>
+      </li>
+    <% end %>
+  </ul>
+</div>

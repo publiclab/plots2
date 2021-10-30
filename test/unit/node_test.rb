@@ -14,15 +14,9 @@ class NodeTest < ActiveSupport::TestCase
     node = nodes(:about)
     assert_equal 'page', node.type
     assert_equal 1, node.status
-    assert !node.answered
     assert_equal [], node.location_tags
     assert node.body
     assert node.summary
-  end
-
-  test 'basic question attributes' do
-    question = nodes(:question)
-    assert question.answered
   end
 
   test 'basic location attributes' do
@@ -42,9 +36,11 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'adding a question:FOO style tag adds FOO tag as well; also for subtags' do
     node = nodes(:one)
+    assert !node.is_question?
     assert_difference 'node.tags.count', 2 do
       node.add_tag('question:kites', users(:bob))
     end
+    assert node.is_question?
     assert node.has_tag('kites')
     assert_difference 'node.tags.count', 2 do
       node.add_tag('pm', users(:bob))
@@ -53,9 +49,10 @@ class NodeTest < ActiveSupport::TestCase
   end
 
   test 'notify_callout_users' do
+    perform_enqueued_jobs do
     saved, node, revision = Node.new_note(uid: users(:naman).id,
-                    title: 'Note with mentioned users',
-                    body: '@naman18996 and @jeffrey are being mentioned in the body')
+                                          title: 'Note with mentioned users',
+                                          body: '@naman18996 and @jeffrey are being mentioned in the body')
     node.notify_callout_users
     emails = []
     ActionMailer::Base.deliveries.each do |m|
@@ -65,6 +62,7 @@ class NodeTest < ActiveSupport::TestCase
     end
     assert_equal 2, emails.count
     assert_equal ["naman18996@yahoo.com", "jeff@publiclab.org"].to_set, emails.to_set
+    end
   end
 
   test 'emoji conversion' do
@@ -300,9 +298,9 @@ class NodeTest < ActiveSupport::TestCase
     assert !node.node_tags.empty?
     assert_not_nil node.tagnames
     assert node.tagnames.first.is_a?(String)
-    assert_equal 'test awesome spectrometer activity:spectrometer', node.tagnames.join(' ')
+    assert_equal 'test awesome spectrometer activity:spectrometer sub:tag', node.tagnames.join(' ')
     # used to generate CSS classes:
-    assert_equal 'tag-test tag-awesome tag-spectrometer tag-activity-spectrometer', node.tagnames_as_classes
+    assert_equal 'tag-test tag-awesome tag-spectrometer tag-activity-spectrometer tag-sub-tag', node.tagnames_as_classes
   end
 
   test 'should have subscribers' do
@@ -348,12 +346,42 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'should find all research notes' do
     notes = Node.research_notes
-    expected = [nodes(:one), nodes(:spam), nodes(:first_timer_note), nodes(:blog),
-                nodes(:moderated_user_note), nodes(:activity), nodes(:upgrade),
-                nodes(:draft), nodes(:post_test1), nodes(:post_test2),
-                nodes(:post_test3), nodes(:post_test4), nodes(:scraped_image), nodes(:search_trawling),
-                nodes(:purple_air_without_hyphen), nodes(:purple_air_with_hyphen),
-                nodes(:sun_note), nodes(:sunny_day_note)]
+    expected = [
+      nodes(:one), 
+      nodes(:spam), 
+      nodes(:first_timer_note), 
+      nodes(:blog),
+      nodes(:moderated_user_note), 
+      nodes(:activity), 
+      nodes(:upgrade),
+      nodes(:draft), 
+      nodes(:post_test1), 
+      nodes(:post_test2),
+      nodes(:post_test3), 
+      nodes(:post_test4), 
+      nodes(:scraped_image), 
+      nodes(:search_trawling),
+      nodes(:purple_air_without_hyphen), 
+      nodes(:purple_air_with_hyphen),
+      nodes(:sun_note), 
+      nodes(:sunny_day_note), 
+      nodes(:comment_note), 
+      nodes(:hidden_response_note),
+      nodes(:note_with_multiple_comments),
+      nodes(:checkbox_one),
+      nodes(:checkbox_two),
+      nodes(:hashtag_one),
+      nodes(:hashtag_two),
+      nodes(:hashtag_three),
+      nodes(:hashtag_four),
+      nodes(:hashtag_with_hyphens),
+      nodes(:hashtag_with_punctuation),
+      nodes(:hashtag_in_header),
+      nodes(:subheader),
+      nodes(:hashtag_in_link),
+      nodes(:hashtag_in_url),
+      nodes(:email),
+    ]
     assert_equal expected, notes
   end
 
@@ -363,8 +391,8 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'should find all questions' do
     questions = Node.questions
-    expected = [nodes(:question), nodes(:question2), nodes(:first_timer_question), nodes(:question3), nodes(:sun_question)]
-    assert_equal expected, questions
+    expected = [nodes(:question), nodes(:question2), nodes(:first_timer_question), nodes(:question3), nodes(:sun_question), nodes(:comment_question), nodes(:question_with_multiple_comments)]
+    assert_equal expected.sort, questions.sort
   end
 
   test 'should find all activities associated with this node' do
@@ -415,14 +443,6 @@ class NodeTest < ActiveSupport::TestCase
 
     assert !replaced
     assert_equal 'Jingle Jingle Bells', node.body
-  end
-
-  test "question has an accepted answer" do
-    question2 = nodes(:question2)
-    assert !question2.has_accepted_answers
-
-    question = nodes(:question)
-    assert question.has_accepted_answers
   end
 
   test "user likes node or not" do
@@ -520,7 +540,7 @@ class NodeTest < ActiveSupport::TestCase
 
   # node.authors should be anyone who's written a revision for this node (a wiki, presumably)
   test 'authors' do
-    authors = Node.last.authors
+    authors = Node.where(uid: 2, type: 'page').first.authors
 
     assert authors
     assert_equal 1, authors.length
@@ -597,5 +617,12 @@ class NodeTest < ActiveSupport::TestCase
     nodes = Node.for_wildcard_tagname_and_type(tag.name + "*", 'note')
     assert nodes.include?(node1), "Should include note tagged with sun for sun*"
     assert nodes.include?(node2), "Should include note tagged with sunny-day for sun*"
+  end
+
+  test 'for_hidden_response_node_ids' do
+    node = nodes(:hidden_response_note)
+
+    hidden_nids = Node.hidden_response_node_ids
+    assert hidden_nids.include?(node.nid)
   end
 end

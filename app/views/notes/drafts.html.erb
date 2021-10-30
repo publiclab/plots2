@@ -1,0 +1,18 @@
+<div class="col-lg-9">
+  <h3 class="mb-4">Your Drafts (<%= @drafts.count %>)</h3>
+  <div id="notes">
+    <div class="row">
+      <% @drafts.each_with_index do |node,i| %>
+        <div class="<% if @widget %>col-4 <% end %><%= node.tagnames_as_classes %> col-lg-4 col-md-6 clearfix node note node-nid-<%= node.id %> note-nid-<%= node.id %>">
+          <%= render partial: 'notes/card', locals: { node: node, i: i, tagname: false } %>
+        </div>
+        <% unless @widget %><hr class="d-md-none" /><% end %>
+      <% end %>
+    </div>
+  </div>
+  <% if @pagy %>
+    <%== pagy_bootstrap_nav @pagy %>
+  <% else %>
+    <%= will_paginate notes, renderer: WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated || (unpaginated ||= false) %>
+  <% end %>
+</div>

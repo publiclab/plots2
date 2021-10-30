@@ -1,0 +1,17 @@
+<div class="dropdown pull-right" style="<%if params[:action] == 'author'%> margin-top: -57px; <%else%>margin-top: -26px; <%end%>">
+  <button class="btn btn-outline-secondary dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" > <%=translation('tag.index.sort_by')%> </button>
+  <div class="dropdown-menu dropdown-menu-right mt-1" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item <% if params[:action] == 'recent' %> active<% end %>" href="/notes/recent/">
+      <i class="fa fa-clock-o"></i> <span class="d-lg-inline"><%= translation('notes.index.recent') %></span>
+    </a>
+    <a class="dropdown-item <% if params[:action] == 'popular' %> active<% end %>" href="/notes/popular/">
+      <i class="fa fa-bolt"></i> <span class="d-lg-inline"><%= translation('notes.index.popular') %></span>
+    </a>
+    <a class="dropdown-item <% if params[:action] == 'liked' %> active<% end %>" href="/notes/liked/">
+      <i class="fa fa-star"></i> <span class="d-lg-inline"><%= translation('notes.index.liked')%></span>
+    </a>
+    <a class="dropdown-item <% if params[:action] == 'index' %> active<% end %>" href="/notes/">
+      <i class="fa fa-file"></i> <span class="d-lg-inline"><%= translation('notes.index.all_notes')%></span>
+    </a>
+  </div>
+</div>

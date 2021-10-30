@@ -1,4 +1,4 @@
-<%= javascript_include_tag('async_tag_subscriptions.js') %>
+<%= javascript_include_tag('asyncTagSubscriptions.js') %>
 <div class="col-md-6">
   <h1 style="padding-top:40px;font-family:Junction Light;"><%= translation('tag.index.popular_tags') %></h1>
 
@@ -8,20 +8,13 @@
 
   <p><%= translation('tag.index.browse_popular_tags') %></p>
   <br/>
-  <form id="tagform" class="form-horizontal" method="GET" action="/tag/" autocomplete="off" style="width: 250px;">
-    <div class="input-group">
-      <input type="text" tabindex="1" id="taginput" name="id" placeholder="Search for topics" data-provide="typeahead" class="form-control" role="search" required="required" />
-      <span class="input-group-append">
-        <button class="btn btn-outline-secondary" type="submit"><i class="fa fa-search"></i></button>
-      </span>
-    </div>
-  </form>
+  <%= render :partial => "tag/typeahead_search" %>
   <br/><br/>
 
    <% powertags = '&powertags=' + params[:powertags] if params[:powertags] %>
    <p style="width: 100%; text-align: center; border-bottom: 1px solid #ccc; line-height:2px; margin: 10px 0 20px;">
     <span style="background-color: #fff; padding: 0 10px; color: #808080;">Sort by:
-      <a href = "<%= tags_path %>?sort=name&order=<%= @order_type %><%= powertags %>" style="text-decoration: underline; color: #808080;"><%= translation('tag.index.tag') %></a><span> | </span>
+      <a href = "<%= tags_path %>?sort=name&order=<%= @order_type_for_name %><%= powertags %>" style="text-decoration: underline; color: #808080;"><%= translation('tag.index.tag') %></a><span> | </span>
       <a href = "<%= tags_path %>?sort=followers&order=<%= @order_type %><%= powertags %>" style="text-decoration: underline; color: #808080;"><%= translation('tag.index.number_of_subscriptions')%></a><span> | </span>
       <a href = "<%= tags_path %>?sort=uses&order=<%= @order_type %><%= powertags %>" style="text-decoration: underline; color: #808080;"><%= translation('tag.index.number_of_uses') %></a>
     </span>
@@ -34,14 +27,14 @@
 
 <div class="col-lg-6">
   <br><br>
-  <iframe id="myImage" src="stats/graph?limit=50" height="500" width="100%" frameborder="0" ></iframe>
+  <iframe id="myImage" src="/stats/graph?limit=50" height="500" width="100%" frameborder="0" ></iframe>
   <p class="text-right" style="color:#808080;">
     <small>
-      Most common tags, linked by how often they are used together. (<a href="stats/graph">full screen</a>)<br />
-      View <a style="cursor:pointer;" onclick="document.getElementById('myImage').src='stats/graph?limit=50'"><u>50</u></a> |
-      <a style="cursor: pointer;" onclick="document.getElementById('myImage').src='stats/graph?limit=100'"><u>100</u></a> |
-      <a style="cursor: pointer;" onclick="document.getElementById('myImage').src='stats/graph?limit=250'"><u>250</u></a> |
-      <a style="cursor: pointer;" onclick="document.getElementById('myImage').src='stats/graph?limit=500'"><u>500</u></a>
+      Most common tags, linked by how often they are used together. (<a href="/stats/graph">full screen</a>)<br />
+      View <a style="cursor:pointer;" onclick="document.getElementById('myImage').src='/stats/graph?limit=50'"><u>50</u></a> |
+      <a style="cursor: pointer;" onclick="document.getElementById('myImage').src='/stats/graph?limit=100'"><u>100</u></a> |
+      <a style="cursor: pointer;" onclick="document.getElementById('myImage').src='/stats/graph?limit=250'"><u>250</u></a> |
+      <a style="cursor: pointer;" onclick="document.getElementById('myImage').src='/stats/graph?limit=500'"><u>500</u></a>
     </small>
   </p>
 

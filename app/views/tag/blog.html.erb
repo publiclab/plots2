@@ -2,7 +2,7 @@
 </div>
 <div class="col-lg-8 blog">
   <div class="blog-header">
-    <h1><%= params[:id] == "blog" ? I18n.t('tag.blog.the_public_lab') : params[:id].split('-').join(' ').capitalize %> <%=raw translation('tag.blog.blog') %></h1>
+    <h1><%=h params[:id] == "blog" ? I18n.t('tag.blog.the_public_lab') : params[:id].split('-').join(' ').capitalize %> <%=raw translation('tag.blog.blog') %></h1>
 
     <% if params[:id] == "blog" %>
       <br />
@@ -13,13 +13,13 @@
         <a href="/tools"><%=raw translation('tag.methods') %></a>
       </p>
       <% if current_user %>
-        <a class="btn btn-outline-secondary btn-sm" href="/feed/tag/<%= params[:id] %>.rss"><i class="fa fa-rss"></i> RSS</a>
+        <a class="btn btn-outline-secondary btn-sm" href="/feed/tag/<%=h params[:id] %>.rss"><i class="fa fa-rss"></i> RSS</a>
         <% if current_user.following(params[:id]) %>
-          <a rel="tooltip" title="<%= translation('tag.blog.unfollow') %>" class="btn btn-outline-secondary btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>"><i class="fa fa-user-plus" aria-hidden="true"></i> <%= translation('tag.blog.following') %> <b><%= params[:id] %></b></a>
+          <a rel="tooltip" title="<%= translation('tag.blog.unfollow',{},false) %>" class="btn btn-outline-secondary btn-sm active" href="/unsubscribe/tag/<%=h params[:id] %>"><i class="fa fa-user-plus" aria-hidden="true"></i> <%= translation('tag.blog.following') %> <b><%=h params[:id] %></b></a>
         <% else %>
           <br><br>
           <div class="alert alert-success" role="alert">
-            Want to get updates for new blog posts? <a class="btn btn-outline-secondary btn-sm" href="/subscribe/tag/<%= params[:id] %>">
+            Want to get updates for new blog posts? <a class="btn btn-outline-secondary btn-sm" href="/subscribe/tag/<%=h params[:id] %>">
             <b><%=raw translation('Click here to subscribe!') %></b></a>
           </div>
         <% end %>
@@ -37,7 +37,7 @@
   <hr />
 
   <% if @notes.nil? || @notes.length == 0 %>
-    <p><%= raw translation('tag.blog.no_results', :search => params[:id]) %>:</p>
+    <p><%= raw translation('tag.blog.no_results', :search => sanitize(params[:id])) %>:</p>
 
     <%= render template: "search/new" %>
 
@@ -46,11 +46,15 @@
       <% @notes.each_with_index do |node,i| %>
         <div class="clearfix blog-entry">
           <% if node.main_image %>
-            <a class="img" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
+              <a class="img" href="<%= node.path %>"><%= image_tag(node.main_image.path(:default)) %></a>
           <% end %>
           <h1><a href="<%= node.path %>"><%= node.title %></a></h1>
           <p class="meta" style="color:#888;"><small>
             <%=raw translation('tag.blog.by') %> <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a>  <%= node.author.new_contributor %>
+	    <% if node.has_power_tag('with') %>with <% node.coauthors.each_with_index do |coauthor,i| %>
+              <a href="/profile/<%= coauthor.username %>">
+              <%= coauthor.username%></a> <%= coauthor.new_contributor %>
+              <%= ',' if i < node.coauthors.length-1 %><% end %><% end %>
 	    | <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>
             | <a href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= node.comments_viewable_by(current_user).length %></a>
             <% if params[:controller] == "notes" && params[:action] == "popular" %>
@@ -75,7 +79,11 @@
       <% end %>
 
     <div class="text-center">
+      <% if @pagy %>
+        <%== pagy_bootstrap_nav @pagy %>
+      <% else %>
         <%= will_paginate @notes, renderer: WillPaginate::ActionView::BootstrapLinkRenderer unless @unpaginated %>
+      <% end %>
     </div>
 
   <% end %>
@@ -83,3 +91,4 @@
   <hr />
 
 </div>
+

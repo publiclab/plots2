@@ -4,7 +4,7 @@
   <% if current_user && (current_user.moderator? || current_user.admin?) %>
     <a href="/spam" class="btn btn-sm btn-outline-secondary float-right" type="button">
       <i class="fa fa-flag"></i> 
-      <%= Node.where(status: 4).count %>
+      <%= Node.where(status: 4).size %>
     </a>
   <% end %>
 </div>
@@ -66,11 +66,11 @@
       </a>
       <!--
       <li class="divider"></li>
-      <li class="dropdown-header">Sort by</li>
-      <li><a href="#"><a href="#">Post date</a></li>
-      <li><a href="#"><a href="#">Recent activity</a></li>
+      <li class="dropdown-header"><%=translation('tag.index.sort_by')%></li>
+      <li><a href="#"><a href="#"><%= translation('dashboard._activity.post_date') %></a></li>
+      <li><a href="#"><a href="#"><%= translation('dashboard._activity.recent_activity') %></a></li>
       -->
-    </div>
+       </div>
   </div> &nbsp;
   <span class="d-none d-md-inline"><%= translation('dashboard._activity.from_other') %> <a href=""><%= translation('dashboard._activity.community_scientists') %></a></span> <%= translation('dashboard._activity.past_week') %>
   <% if current_user %>
@@ -83,7 +83,7 @@
 <%= feature('dashboard-activity-feature') %>
 
 <div>
-  <small><a href="/tags" class="form-grey">Trending topics:</a></small>
+  <small><a href="/tags" class="form-grey"><%= translation('dashboard_v2.sidebar.trending_topics') %>:</a></small>
   <span class="topics-span">
    <% cache('trending-tags', expires_in: 24.hours, skip_digest: true) do %>
       <% Tag.trending.each do |i| %>

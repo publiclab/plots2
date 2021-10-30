@@ -1,0 +1,49 @@
+image:
+    file: .gitpod.dockerfile
+ports:
+    - port: 3000
+      onOpen: open-preview
+tasks:
+
+    - name: Chromium
+      init: gp sync-await bundle # await Rails command
+      command: chromium-browser --no-sandbox
+      openMode: tab-before
+
+    - name: Redis
+      init: gp sync-await bundle # await Rails command
+      command: redis-server
+      openMode: tab-before
+
+    - name: Rails
+      init: >
+        export CHROME_BIN=/usr/bin/chromium-browser &&
+        gem install bundler &&
+        bundle config set without 'production' &&
+        bundle install &&
+        gp sync-done bundle &&
+        cp config/database.yml.gitpod config/database.yml &&
+        mysql -e "SET @@global.sql_mode=(SELECT REPLACE(@@global.sql_mode, 'ONLY_FULL_GROUP_BY', ''));" &&
+        mysql -e "CREATE DATABASE plots;" &&
+        cp db/schema.rb.example db/schema.rb &&
+        rake db:setup &&
+        yarn install &&
+        rails g react:install
+      command: >
+          passenger start
+      openMode: split-left
+
+    - name: Rails console
+      init: gp sync-await bundle # await Rails command
+      command: rails c
+      openMode: split-right
+
+github:
+    prebuilds:
+        branches: true
+        pullRequests: true
+        pullRequestsFromForks: true
+        addCheck: true
+        addComment: true
+        addBadge: false
+        addLabel: false

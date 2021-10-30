@@ -1,50 +1,52 @@
 <div class="tab-content" style="clear:both;">
-  <!-- separate these in partials-->
-  <!-- use controller to determine which partial to render -->
+
+  <% if @start && @end %>
+    <p>Displaying content from <%= @start.to_formatted_s(:long) %> to <%= @end.to_formatted_s(:long) %>. <a href="/tag/<%=h params[:id] %>">View all</a></p>
+  <% end %>
+
   <% if @node_type == "note" %>
     <div class="tab-pane active" id="notes">
       <% if @notes.nil? || @notes.length == 0 %>
-        <p><%= raw translation('tag.show.no_results_found', tag: params[:id]) %>:</p>
-        <p><a href="/search/<%= params[:id] %>">Search for "<%= params[:id] %>"</a></p>
+      <p><%= raw translation('tag.show.no_notes_results_found') %></p>
+      <p><%= raw translation('tag.show.or_try_searching') %> <a href="/search/<%=h params[:id] %>"><%=h params[:id] %></a></p>
       <% else %>
-        <%= render partial: "notes/notes", locals: { tagname: params[:id] } %>
+        <%= render partial: "notes/notes", locals: { tagname: sanitize(params[:id]) } %>
       <% end %>
     </div>
   <% end %>
 
   <% if @node_type == "questions" %>
     <div class="tab-pane active" id="questions">
-      <div class="tab-pane" id="questions-tab">
-        <div class="btn-group text-center">
-          <a href="#asked-tab" class="btn btn-outline-secondary active" data-toggle="tab">Asked</a>
-          <a href="#answered-tab" class="btn btn-outline-secondary" data-toggle="tab">Answered</a>
-        </div>
-
-        <div class="tab-content">
-          <div class="tab-pane active" id="asked-tab">
-            <%= render partial: "questions/new_question" %>
+      <div id="questions-tab">
+        <% if @questions.nil? || @questions.length == 0 %>
+          <p><%= raw translation('tag.show.no_questions_results_found') %></p>
+          <p>Or try searching: <a href="/search/<%=h params[:id] %>"><%=h params[:id] %></a></p>
+        <% else %>
+          <div class="tab-content">
+            <div id="asked-content">
+              <%= render partial: "questions/new_question" %>
+            </div>
           </div>
-
-          <div class="tab-pane" id="answered-tab">
-            <% if @answered_questions %>
-              <%= render partial: "users/answered" %>
-            <% end %>
-          </div>
-        </div>
+        <% end %>
       </div>
     </div>
   <% end %>
 
   <% if @node_type == "wiki" %>
     <div class="tab-pane active" id="wikis">
+      <% if @wikis.nil? || @wikis.length == 0 %>
+        <p><%= raw translation('tag.show.no_wikis_results_found') %></p>
+        <p>Or try searching: <a href="/search/<%=h params[:id] %>"><%=h params[:id] %></a></p>
+      <% else %>
       <%= render partial: "wiki/wikis" %>
+      <% end %>
     </div>
-  <% end %>
+   <% end %>
 
   <% if @node_type == "maps" %>
     <div class="tab-pane active" id="wikis">
      <% if @nodes.empty? %>
-        <p><%= raw translation('tag.show.no_map_results_found', :tag => params[:id]) %>. You can view other maps <a href="/maps">here</a>.</p>
+        <%= raw translation('tag.show.no_map_results_found', tag: strip_tags(params[:id])) %>.
       <% else %>
         <%= render partial: "map/maps" %>
       <% end %>
@@ -52,10 +54,10 @@
   <% end %>
 
   <% if @node_type == "contributors" %>
-      <div class="tab-pane active" id="contributors">
-        <%= render partial: "tag/contributors" %>
-      </div>
+    <div class="tab-pane active" id="contributors">
+      <%= render partial: "tag/contributors" %>
+    </div>
   <% end %>
-  <br />
+  <br>
 
 </div>

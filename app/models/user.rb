@@ -38,18 +38,19 @@ class User < ActiveRecord::Base
     c.validates_format_of_login_field_options = { with: Authlogic::Regex::LOGIN, message: I18n.t('error_messages.login_invalid', default: "can only consist of alphabets, numbers, underscore '_', and hyphen '-'.") }
   end
 
-  has_attached_file :photo, styles: { thumb: '200x200#', medium: '500x500#', large: '800x800#' },
-                                    url: '/system/profile/photos/:id/:style/:basename.:extension'
-  #:path => ":rails_root/public/system/images/photos/:id/:style/:basename.:extension"
+  has_attached_file :photo,
+                    styles: { thumb: '200x200#', medium: '500x500#', large: '800x800#' },
+                    url: '/public/system/profile/photos/:id/:style/:basename.:extension',
+                    path: ':rails_root/public/system/public/system/profile/photos/:id/:style/:filename'
 
   do_not_validate_attachment_file_type :photo_file_name
   # validates_attachment_content_type :photo_file_name, :content_type => %w(image/jpeg image/jpg image/png)
 
   has_many :images, foreign_key: :uid
-  has_many :node, foreign_key: 'uid'
+  has_many :node, foreign_key: 'uid', dependent: :destroy
   has_many :csvfiles, foreign_key: :uid
   has_many :node_selections, foreign_key: :user_id
-  has_many :revision, foreign_key: 'uid'
+  has_many :revision, foreign_key: 'uid', dependent: :destroy
   has_many :user_tags, foreign_key: 'uid', dependent: :destroy
   has_many :active_relationships, class_name: 'Relationship', foreign_key: 'follower_id', dependent: :destroy
   has_many :passive_relationships, class_name: 'Relationship', foreign_key: 'followed_id', dependent: :destroy
@@ -69,7 +70,7 @@ class User < ActiveRecord::Base
   scope :past_month, -> { where("created_at > ?", 1.month.ago) }
 
   def is_new_contributor?
-    Node.where(uid: id).length === 1 && Node.where(uid: id).first.created_at > 1.month.ago
+    Node.where(uid: id).size === 1 && Node.where(uid: id).first.created_at > 1.month.ago
   end
 
   def new_contributor
@@ -126,6 +127,10 @@ class User < ActiveRecord::Base
     get_value_of_power_tag('lon')
   end
 
+  def zoom
+    get_value_of_power_tag('zoom')
+  end
+
   # we can revise/improve this for m2m later...
   def has_role(some_role)
     role == some_role
@@ -143,6 +148,10 @@ class User < ActiveRecord::Base
     admin? || moderator?
   end
 
+  def basic_user?
+    can_moderate? ? false : true
+  end
+
   def is_coauthor?(node)
     id == node.author.id || node.has_tag("with:#{username}")
   end
@@ -157,7 +166,7 @@ class User < ActiveRecord::Base
 
   def tagnames(limit = 20, defaults = true)
     tagnames = []
-    Node.order('nid DESC').where(type: 'note', status: 1, uid: id).limit(limit).each do |node|
+    Node.includes(:tag).order('nid DESC').where(type: 'note', status: 1, uid: id).limit(limit).each do |node|
       tagnames += node.tags.collect(&:name)
     end
     tagnames.uniq
@@ -202,7 +211,7 @@ class User < ActiveRecord::Base
 
   def add_to_lists(lists)
     lists.each do |list|
-      WelcomeMailer.add_to_list(self, list).deliver_now
+      WelcomeMailer.add_to_list(self, list).deliver_later
     end
   end
 
@@ -217,11 +226,11 @@ class User < ActiveRecord::Base
   end
 
   def first_time_poster
-    notes.where(status: 1).count.zero?
+    notes.where(status: 1).size.zero?
   end
 
   def first_time_commenter
-    Comment.where(status: 1, uid: uid).count.zero?
+    Comment.where(status: 1, uid: uid).size.zero?
   end
 
   def follow(other_user)
@@ -248,7 +257,7 @@ class User < ActiveRecord::Base
     Node.questions.where(status: 1, uid: id)
   end
 
-  def content_followed_in_period(start_time, end_time, node_type = 'note', include_revisions = false)
+  def content_followed_in_period(start_time, end_time, order_by = 'node_revisions.timestamp DESC', node_type = 'note', include_revisions = false)
     tagnames = TagSelection.where(following: true, user_id: uid)
     node_ids = []
     tagnames.each do |tagname|
@@ -264,25 +273,17 @@ class User < ActiveRecord::Base
     .where('node.status = 1')
     .where(type: node_type)
     .where(range)
-    .order('node_revisions.timestamp DESC')
+    .order(order_by)
     .distinct
   end
 
   def unmoderated_in_period(start_time, end_time)
-    tag_following = TagSelection.where(following: true, user_id: uid)
-    ids = []
-    tag_following.each do |tagname|
-      ids += NodeTag.where(tid: tagname.tid).collect(&:nid)
-    end
     range = "(created >= #{start_time.to_i} AND created <= #{end_time.to_i})"
-    Node.where(nid: ids)
-    .includes(:revision, :tag)
-    .references(:node_revision)
-    .where('node.status = 4')
-    .where(type: 'note')
-    .where(range)
-    .order('node_revisions.timestamp DESC')
-    .distinct
+    Node.where('node.status = 4')
+        .where(type: 'note')
+        .where(range)
+        .order('created DESC')
+        .distinct
   end
 
   def social_link(site)
@@ -333,11 +334,11 @@ class User < ActiveRecord::Base
   end
 
   def note_count
-    Node.where(status: 1, uid: uid, type: 'note').count
+    Node.where(status: 1, uid: uid, type: 'note').size
   end
 
   def node_count
-    Node.where(status: 1, uid: uid).count + Revision.where(uid: uid).count
+    Node.where(status: 1, uid: uid).size + Revision.where(uid: uid).size
   end
 
   def liked_notes
@@ -369,7 +370,7 @@ class User < ActiveRecord::Base
     end
 
     if @nodes.size.positive?
-      SubscriptionMailer.send_digest(id, @nodes, @frequency).deliver_now
+      SubscriptionMailer.send_digest(id, @nodes, @frequency).deliver_later
     end
   end
 
@@ -382,7 +383,7 @@ class User < ActiveRecord::Base
       @nodes_unmoderated = unmoderated_in_period(1.day.ago, Time.current)
     end
     if @nodes_unmoderated.size.positive?
-      AdminMailer.send_digest_spam(@nodes_unmoderated, @frequency_digest).deliver_now
+      AdminMailer.send_digest_spam(@nodes_unmoderated, @frequency_digest).deliver_later
     end
  end
 
@@ -407,11 +408,15 @@ class User < ActiveRecord::Base
 
   class << self
     def search(query)
-      User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', "#{query}*")
+      query = query.gsub('@',' ') # @ is a special char in full text search in MYSQL, and cannot be escaped; https://github.com/publiclab/plots2/issues/8344
+      query = query + '*' unless query.empty?
+      User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', "#{query}")
     end
 
     def search_by_username(query)
-      User.where('MATCH(username) AGAINST(? IN BOOLEAN MODE)', "#{query}*")
+      query = query.gsub('@',' ') # @ is a special char in full text search in MYSQL, and cannot be escaped; https://github.com/publiclab/plots2/issues/8344
+      query = query + '*' unless query.empty?
+      User.where('MATCH(username) AGAINST(? IN BOOLEAN MODE)', "#{query}")
     end
 
     def validate_token(token)
@@ -439,7 +444,7 @@ class User < ActiveRecord::Base
       questions = Node.questions.where(status: 1, created: start_time.to_i..end_time.to_i).pluck(:uid)
       comments = Comment.where(timestamp: start_time.to_i..end_time.to_i).pluck(:uid)
       revisions = Revision.where(status: 1, timestamp: start_time.to_i..end_time.to_i).pluck(:uid)
-      contributors = (notes + answers + questions + comments + revisions).compact.uniq.length
+      contributors = (notes + answers + questions + comments + revisions).compact.uniq.size
       contributors
     end
 
@@ -471,7 +476,7 @@ class User < ActiveRecord::Base
       comments = Comment.pluck(:uid)
       revisions = Revision.where(status: 1).pluck(:uid)
 
-      (notes + answers + questions + comments + revisions).compact.uniq.length
+      (notes + answers + questions + comments + revisions).compact.uniq.size
     end
 
     def watching_location(nwlat, selat, nwlng, selng)
@@ -499,6 +504,24 @@ class User < ActiveRecord::Base
 
   def latest_location
     recent_locations.last
+  end
+
+  def self.recently_active_users(limit = 15, order = 'last_updated DESC')
+    Rails.cache.fetch('users/active', expires_in: 1.hour) do
+      User.select('rusers.username, rusers.status, rusers.id, MAX(node_revisions.timestamp) AS last_updated')
+        .joins("INNER JOIN `node_revisions` ON `node_revisions`.`uid` = `rusers`.`id` ")
+        .where("node_revisions.status = 1")
+        .where("rusers.status = 1")
+        .group('rusers.id')
+        .order(order)
+        .limit(limit)
+    end
+  end
+
+  def drafts
+    Node.where(uid: uid)
+    .where(status: 3, type: 'note')
+    .order('created DESC')
   end
 
   private
