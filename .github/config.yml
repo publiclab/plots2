@@ -16,7 +16,10 @@ newPRWelcomeComment: |
  `Dangerbot` will test out your code and reply in a bit with some pointers and requests.
  Also please refer [here](https://github.com/publiclab/plots2/issues/3840) for installation help 💿
  There may be some errors, **but don't worry!** We'll work through them with you! 👍🎉😄
- 
+ <br />
+ One thing that can help to get started is to make sure you've included a link back to the original issue you're solving, in the format `fixes #0000` (for example). And to make sure the PR title describes what you're trying to do! (often it can be the same as the issue title) Thanks! 🙌 
+ <br />
+ Then, you can [say hello in our chatroom](https://gitter.im/publiclab/publiclab) & share a link to this PR to get a review! 👋 ✅
  
 # Configuration for first-pr-merge - https://github.com/behaviorbot/first-pr-merge
 
