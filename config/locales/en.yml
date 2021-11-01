@@ -422,7 +422,7 @@ en:
       location_saved: "How this location will be saved"
       save: "Save"
       modal:
-      location: "Enter a location"
+        location: "Enter a location"
   like:
     index:
       recent_likes: "Recent Likes"
