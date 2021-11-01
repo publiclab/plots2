@@ -421,8 +421,8 @@ en:
       learn_more: "Learn more »"
       location_saved: "How this location will be saved"
       save: "Save"
-  modal:
-    location: "Enter a location"
+      modal:
+      location: "Enter a location"
   like:
     index:
       recent_likes: "Recent Likes"
