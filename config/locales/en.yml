@@ -755,12 +755,12 @@ en:
     _comment:
       promotion: "Promote this comment to an answer"
     index_shadow:
-      what_is_your_question: "What's your question?"
-      to_ask_a_question_please: "To ask a question, please"
-      log_in: "log in"
-      or: "or"
-      sign_up: "sign_up"
-      first: "first."
+      recent_questions: "Recent questions"
+      great_questions: "see some of the great questions people have asked, and get a feel for how it works"
+      featured_questions: "Featured questions"
+      continue: "Continue"
+      ask_question: "Ask a question with the entered title"
+      type_question: "type your question"
     _questions_shadow:
       people_responded: "people responded"
       read_more: "Read More"
