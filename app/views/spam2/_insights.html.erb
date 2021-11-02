@@ -31,7 +31,7 @@
         <a class="card-title h5 text-secondary font-weight-bold" href="/spam2/filter/published/30"> <i class="fa fa-check text-success"></i>  Published</a>
         <ul class="list-group list-group-flush text-secondary mt-3">
             <li class="list-group-item"><span data-toggle="tooltip" data-placement="top" title="Published Nodes"><%= Node.where(status: 1).size%></span></li>
-            <li class="list-group-item"><span data-toggle="tooltip" data-placement="top" title="Published Comments"><%= Comment.where(status: 1).count %></span></li>
+            <li class="list-group-item"><span data-toggle="tooltip" data-placement="top" title="Published Comments"><%= Comment.published.count %></span></li>
         </ul>
     </div>
   </div>

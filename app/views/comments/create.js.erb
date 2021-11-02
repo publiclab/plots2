@@ -43,6 +43,6 @@ fileUploadElements.forEach(function(element) {
   $(element.selector).fileupload(options);
 });
 notyNotification('mint', 3000, 'success', 'topRight', 'Comment Added!');
-$('#comment-count')[0].innerHTML = parseInt($('#comment-count')[0].innerHTML, 10)+1;
+$('#comment-count')[0].innerHTML = <%= @comment_count %>;
 // attach tooltips to comment buttons
 $('[data-toggle="tooltip"]').tooltip();

@@ -38,19 +38,19 @@
   <% end %>
     <% if type == "notes" || type == "questions" %>
       <td class="title">
-        <% if node.has_tag("pin:#{tagname}") %><i rel="tooltip" title="This item was pinned with the tag 'pin:<%= tagname %>'." class="fa fa-thumb-tack"></i> 
-        <% elsif node.has_tag("pin:question:#{tagname}") %><i rel="tooltip" title="This item was pinned with the tag 'pin:question:<%= tagname %>'." class="fa fa-thumb-tack"></i> 
+        <% if node.has_tag("pin:#{tagname}") %><i rel="tooltip" title="This item was pinned with the tag 'pin:<%= tagname %>'." class="fa fa-thumb-tack"></i>
+        <% elsif node.has_tag("pin:question:#{tagname}") %><i rel="tooltip" title="This item was pinned with the tag 'pin:question:<%= tagname %>'." class="fa fa-thumb-tack"></i>
         <% end %>
         <a href="<%= node.path %>"><%= node.title %></a>
       </td>
       <td class="author"><a href="/profile/<%= node.author.username %>">@<%= node.author.username %> <%=node.author.new_contributor %></a></td>
       <td class="updated" data-timestamp="<%= node.latest.timestamp.to_s %>"><%= distance_of_time_in_words(Time.at(node.latest.updated_at), Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></td>
       <td class="likes"><%= node.cached_likes.to_s %></td>
-      <td><%= node.comments_count.to_s %></td>
+      <td><%= node.comments.published.count.to_s %></td>
     <% else %>
       <td class="title">
-        <% if node.has_tag("pin:#{tagname}") %><i rel="tooltip" title="This item was pinned with the tag 'pin:<%= tagname %>'." class="fa fa-thumb-tack"></i> 
-        <% elsif node.has_tag("pin:activity:#{tagname}") %><i rel="tooltip" title="This item was pinned with the tag 'pin:activity:<%= tagname %>'." class="fa fa-thumb-tack"></i> 
+        <% if node.has_tag("pin:#{tagname}") %><i rel="tooltip" title="This item was pinned with the tag 'pin:<%= tagname %>'." class="fa fa-thumb-tack"></i>
+        <% elsif node.has_tag("pin:activity:#{tagname}") %><i rel="tooltip" title="This item was pinned with the tag 'pin:activity:<%= tagname %>'." class="fa fa-thumb-tack"></i>
         <% end %>
         <a href="<%= node.path %>"><%= node.latest.title %></a>
       </td>

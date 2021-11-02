@@ -1,5 +1,7 @@
 $("#answer-<%= @answer_id %>-comment-<%= @comment.id %>-delete-btn").bind('ajax:success', function(e,response){
-  $("#answer-<%= @answer_id %>-comment-<%= @comment.id %>").remove()
-      $('#answer-<%= @answer_id %>-comment-count')[0].innerHTML = parseInt($('#answer-<%= @answer_id %>-comment-count')[0].innerHTML)-1 
+  $("#answer-<%= @answer_id %>-comment-<%= @comment.id %>").remove();
+  $('#answer-<%= @answer_id %>-comment-count')[0].innerHTML = <%= @comment_count %>;
 })
+
+$('#comment-count')[0].innerHTML = <%= @comment_count %>;
 

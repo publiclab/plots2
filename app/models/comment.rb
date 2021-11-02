@@ -11,6 +11,8 @@ class Comment < ApplicationRecord
 
   validates :comment, presence: true
 
+  scope :published, -> { where(status: 1) }
+
   self.table_name = 'comments'
   self.primary_key = 'cid'
 
