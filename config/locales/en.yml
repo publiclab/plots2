@@ -421,7 +421,7 @@ en:
       learn_more: "Learn more »"
       location_saved: "How this location will be saved"
       save: "Save"
-      modal:
+    modal:
       location: "Enter a location"
   like:
     index:
