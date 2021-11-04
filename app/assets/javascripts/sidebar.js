@@ -1,10 +1,8 @@
 function toggle_sidebar() { 
-  if ($('#sidebar').hasClass('hidden-sm')) { 
-    $('#sidebar').removeClass('hidden-sm') 
-                 .removeClass('hidden-xs') 
+  if ($('#sidebar').hasClass('hidden-sidebar')) { 
+    $('#sidebar').removeClass('hidden-sidebar') 
   } else { 
-    $('#sidebar').addClass('hidden-sm') 
-                 .addClass('hidden-xs') 
+    $('#sidebar').addClass('hidden-sidebar')
   } 
 }
  
