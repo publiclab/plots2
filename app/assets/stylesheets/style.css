@@ -644,5 +644,5 @@ textarea, input {
 @media (max-width: 992px) {
   .hidden-sidebar {
     display: none !important;
-}
+  }
 }
