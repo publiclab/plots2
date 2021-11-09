@@ -407,6 +407,22 @@ en:
       interest_topics: "Click to start <a href='%{url}' class='form-grey' style='text-decoration: underline;'>following</a> topics that interest you"
       welcome: "Welcome to the new dashboard!"
       all_new_activity: "<a href='%{url}' class='form-grey'>All new activity</a>"
+  locations:
+    form:
+      scale: "Scale"
+      world: "World"
+      building: "Building"
+      search_name: "Search by place name"
+      coordinates: "Or <a href="#" id="coord_button">by entering coordinates</a>"
+      latitude: "Latitude"
+      longitude: "Longitude"
+      current_location: "Use current location"
+      blur_location: "Blur my location"
+      learn_more: "Learn more »"
+      location_saved: "How this location will be saved"
+      save: "Save"
+    modal:
+      location: "Enter a location"
   like:
     index:
       recent_likes: "Recent Likes"
