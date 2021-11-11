@@ -7,3 +7,4 @@ function toggle_sidebar() {
                  .addClass('d-xs-none') 
   } 
 }
+
