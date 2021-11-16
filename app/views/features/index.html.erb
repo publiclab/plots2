@@ -7,7 +7,7 @@
 <% end %>
 <table class="table">
   <tr>
-    <th><a href = "?sort=title">Title</a> <i class="fa fa-sort" aria-hidden="true"></i></th>
+    <th><a href = "?sort=title"><%= translation('features.title') %></a> <i class="fa fa-sort" aria-hidden="true"></i></th>
     <% if current_user.admin? %>
     <th>Edit</th>
     <% end %>
