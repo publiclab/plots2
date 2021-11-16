@@ -12,7 +12,7 @@
  <div class= "question-form">
     <form id="questions_searchform" role="search" autocomplete="off" action="/post">
       <div class="input-group">
-        <textarea tabindex="1" id="questions_searchform_input" type="text" name="title" class="<%= "disabled " if !current_user %>form-control search-query typeahead" qryType="questions" placeholder="type your question"></textarea>
+        <textarea tabindex="1" id="questions_searchform_input" type="text" name="title" class="<%= "disabled " if !current_user %>form-control search-query typeahead" qryType="questions" placeholder="<%= translation('questions.index_shadow.type_question') %>"></textarea>
         <input type="hidden" name="tags" value="question:general">
         <input type="hidden" name="template" value="question">
         <input type="hidden" name="redirect" value="question">
