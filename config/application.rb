@@ -113,7 +113,7 @@ module Plots2
       else
         ENV["RAILS_ENV"]
       end
-      config.enabled_environments = %w[production, stable, unstable]
+      config.enabled_environments = %w[production stable unstable]
 
       # use Rails' parameter filter to sanitize the event payload:
       # for Rails 6+:
