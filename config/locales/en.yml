@@ -292,7 +292,11 @@ en:
       members_and_contributors: |
           <b>%{member_count}  member registrations</b>
           and <b>%{people_count}  contributors </b> posted notes, wikis, questions, comments, or revisions in this period.
-   
+  images:
+    upload_an_image: "Upload an image"
+    image_title: "Image title"
+    short_description: "a short description"
+    upload: "Upload"
   dashboard:
     _flag_list:
       flag_post: "Flag post to moderators"
@@ -407,6 +411,22 @@ en:
       interest_topics: "Click to start <a href='%{url}' class='form-grey' style='text-decoration: underline;'>following</a> topics that interest you"
       welcome: "Welcome to the new dashboard!"
       all_new_activity: "<a href='%{url}' class='form-grey'>All new activity</a>"
+  locations:
+    form:
+      scale: "Scale"
+      world: "World"
+      building: "Building"
+      search_name: "Search by place name"
+      coordinates: "Or <a href="#" id="coord_button">by entering coordinates</a>"
+      latitude: "Latitude"
+      longitude: "Longitude"
+      current_location: "Use current location"
+      blur_location: "Blur my location"
+      learn_more: "Learn more »"
+      location_saved: "How this location will be saved"
+      save: "Save"
+    modal:
+      location: "Enter a location"
   like:
     index:
       recent_likes: "Recent Likes"
@@ -755,6 +775,12 @@ en:
     _comment:
       promotion: "Promote this comment to an answer"
     index_shadow:
+      recent_questions: "Recent questions"
+      great_questions: "see some of the great questions people have asked, and get a feel for how it works"
+      featured_questions: "Featured questions"
+      continue: "Continue"
+      ask_question: "Ask a question with the entered title"
+      type_question: "type your question"
       what_is_your_question: "What's your question?"
       to_ask_a_question_please: "To ask a question, please"
       log_in: "log in"

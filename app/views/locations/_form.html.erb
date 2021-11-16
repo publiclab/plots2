@@ -9,10 +9,10 @@
 
       <div id="map" class="leaflet-map" style="width: 100%; height: 300px; margin-bottom:10px;"></div>
       <div class="slide-container">
-        <label>Scale</label>
+        <label><%= translation('locations.form.scale') %></label>
         <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="1" data-slider-max="18" data-slider-step="1" data-slider-value="6" style="width: 100%"/>
-        <p class="small-description d-inline">World</p>
-        <p class="small-description d-inline" style="float: right">Building</p>
+        <p class="small-description d-inline"><%= translation('locations.form.world') %></p>
+        <p class="small-description d-inline" style="float: right"><%= translation('locations.form.building') %></p>
       </div>
 
     </div>
@@ -30,13 +30,13 @@
 
         <div id="coord_input" class="row">
           <div class="col-sm-6">
-            <label class="small-description">Latitude</label>
-            <input id="lat" type="text" class="form-control" placeholder="Latitude" />
+            <label class="small-description"><%= translation('locations.form.latitude') %></label>
+            <input id="lat" type="text" class="form-control" placeholder="<%= translation('locations.form.latitude') %>" />
           </div>
 
           <div class="col-sm-6">
-            <label class="small-description">Longitude</label>
-            <input id="lng" type="text" class="form-control" placeholder="Longitude" />
+            <label class="small-description"><%= translation('locations.form.longitude') %></label>
+            <input id="lng" type="text" class="form-control" placeholder="<%=translation('locations.form.longitude') %>" />
           </div>
         </div>
       </div>
@@ -65,7 +65,7 @@
         <button class="btn btn-lg btn-outline-secondary" onclick="blurredLocation.geocodeWithBrowser(true);">
           <div id="ldi-geocode-button">
             <i class="fa fa-compass"></i>
-            Use current location
+            <%= translation('locations.form.current_location') %>
           </div>
         </button>
       </div>
@@ -75,7 +75,7 @@
           <input id="obscureLocation" type="checkbox" checked class="form-check-input" onchange='blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);' />
           Blur my location
         </label>
-        <span class="small-description"><a href="https://publiclab.org/location-privacy" target="_blank">Learn more »</a></span>
+        <span class="small-description"><a href="https://publiclab.org/location-privacy" target="_blank"><%= translation('locations.form.learn_more') %></a></span>
       </div>
 
     </div>
@@ -88,13 +88,13 @@
   <div class="location-box text-left">
     <div id="place_name">
       <input id="placenameDisplay" type="text" class="form-control" data-preventOverwrite="false" />
-      <label for="placenameDisplay" class="small-description">How this location will be saved</label>
+      <label for="placenameDisplay" class="small-description"><%= translation('locations.form.location_saved')%></label>
     </div>
   </div>
 
   <div class="button-box">
     <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
-    <button data-dismiss="modal" class="btn btn-lg btn-primary" onclick="saveLocation()">Save</button>
+    <button data-dismiss="modal" class="btn btn-lg btn-primary" onclick="saveLocation()"><%= translation('locations.form.save') %></button>
   </div>
 
 </div>

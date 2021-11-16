@@ -120,8 +120,8 @@
               type: 'GET',
               success: function(response){
                 notyNotification('sunset', 3000, 'error', 'topRight', 'Comment deleted');
-                $("#c<%= comment.cid %>").remove()
-                $('#comment-count')[0].innerHTML = parseInt($('#comment-count')[0].innerHTML)-1;
+                $("#c<%= comment.cid %>").remove();
+                $('#comment-count')[0].innerHTML = response.comment_count;
               }
             });
           },
