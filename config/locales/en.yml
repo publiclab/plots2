@@ -405,6 +405,7 @@ en:
       trending_topics: "Trending topics"
       featured_topics: "Featured topics"
       learn_more: "learn more"
+      search_topics: "Search topics"
       add_topics: "Click to add topics, or"
       all_topics: "<a href='%{url}' class='form-grey'>All topics</a>"
       more_topics: "<a href='%{url}' class='form-grey'>more...</a>"
