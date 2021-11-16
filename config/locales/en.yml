@@ -1,5 +1,13 @@
 ---
 en:
+  features:
+    features_title: "Features"
+    description: "Features allow admins to edit/update text and images displayed around the site, for example banners, sidebar content, and alerts or notices."
+    add_feature: "New feature"
+    title: "Title"
+    edit: "Edit"
+    last_edition: "Last edited"
+    ago_by: "ago by"
   users:
     reset:
       reset_password: "Reset your password"
