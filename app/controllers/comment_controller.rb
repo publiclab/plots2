@@ -30,6 +30,8 @@ class CommentController < ApplicationController
         @comment.save
       end
 
+      @comment_count = @node.comments.published.count
+
       respond_to do |format|
         @answer_id = 0
         format.js do
@@ -113,6 +115,8 @@ class CommentController < ApplicationController
        logged_in_as(%w(admin moderator))
 
       if @comment.destroy
+        @comment_count = @node.comments.published.count
+
         respond_with do |format|
           if params[:type] && params[:type] == 'question'
             @answer_id = @comment.aid
@@ -120,7 +124,7 @@ class CommentController < ApplicationController
           else
             format.html do
               if request.xhr?
-                render plain: 'success'
+                render json: { comment_count: @comment_count }
               else
                 flash[:notice] = 'Comment deleted.'
                 redirect_to '/' + @node.path

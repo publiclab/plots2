@@ -12,7 +12,7 @@ gem 'authlogic-oid'
 gem "composite_primary_keys"
 gem 'figaro' # To easily test OAuth providers in the development mode
 gem 'friendly_id'
-gem 'fog-google', '1.13.0' # Limited to `v1.13.0` due to https://github.com/fog/fog-google/issues/535
+gem 'fog-google', '1.17.0' # Limited to `v1.13.0` due to https://github.com/fog/fog-google/issues/535
 gem 'fog-local', '0.7.0'
 gem 'gemoji'
 gem 'geocoder'
@@ -53,7 +53,7 @@ gem 'rdiscount', '~> 2.2'
 gem 'react-rails'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'responders', '~> 3.0'
-gem 'rubocop', '~> 1.20.0', require: false
+gem 'rubocop', '~> 1.23.0', require: false
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
 gem 'sentry-ruby'

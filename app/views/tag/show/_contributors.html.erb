@@ -1,7 +1,7 @@
 <% if params[:action] == 'show' && @node_type=="contributors" %>
-  <h3><%= raw translation('tag.contributors.contributors_for', :tag_name => params[:id]) %></h3>
+  <h3><%= raw translation('tag.contributors.contributors_for', :tag_name => strip_tags(params[:id])) %></h3>
 <% elsif params[:action] == 'show' %>
-  <!-- <h3><%= raw translation('tag.show.notes_tagged', tag: params[:id]) %></h3> -->
+  <!-- <h3><%= raw translation('tag.show.notes_tagged', tag: strip_tags(params[:id])) %></h3> -->
 <% else %>
   <h3> <%= @node_type == "questions" ? "Questions" : "Notes" %> on <%= params[:id] %> by <%= link_to(@user.name,"/profile/#{@user.name}") %> </h3>
 <% end %>
