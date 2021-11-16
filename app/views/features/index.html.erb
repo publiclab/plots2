@@ -3,7 +3,7 @@
   <p style="margin-inline-start:1rem;"><%= translation('features.description') %></p>
 </div>
 <% if current_user.admin? %>
-<p><a class="btn btn-outline-secondary" href="/features/new">New feature</a></p>
+<p><a class="btn btn-outline-secondary" href="/features/new"><%= translation('features.add_feature') %></a></p>
 <% end %>
 <table class="table">
   <tr>
