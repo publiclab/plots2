@@ -45,16 +45,6 @@
             </span>
           <% elsif node.type == 'page' %>
             Wiki page by <%= node.revisions.collect(&:uid).uniq.length %> people
-          <% elsif node.type == 'question' %>
-            <div class="card bg-white rounded<% if node.status == 4 %> moderated<% end %>">
-              <div class="card-header">
-                <%= render partial: 'dashboard/node_moderate', locals: { node: node } %>
-                <h4><a <% if @widget %>target="_blank"<% end %> href="<%= node.path(:question) %>"><%= node.title %></a></h4>
-              </div>
-              <div class="card-footer">
-                <p class="meta"><%= render partial: "dashboard/node_meta", locals: { node: node } %></p>
-              </div>
-            </div>
           <% end %>
         </p>
       </div>
