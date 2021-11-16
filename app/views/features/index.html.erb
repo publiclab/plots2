@@ -9,7 +9,7 @@
   <tr>
     <th><a href = "?sort=title"><%= translation('features.title') %></a> <i class="fa fa-sort" aria-hidden="true"></i></th>
     <% if current_user.admin? %>
-    <th>Edit</th>
+    <th><%= translation('features.edit') %></th>
     <% end %>
     <th><a href = "?sort=last_edited">Last edited</a> <i class="fa fa-sort" aria-hidden="true"></i></th>
   </tr>
