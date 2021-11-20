@@ -1,10 +1,14 @@
 function toggle_sidebar() { 
-  if ($('#sidebar').hasClass('d-sm-none')) { 
-    $('#sidebar').removeClass('d-sm-none') 
-                 .removeClass('d-xs-none') 
+  if ($('#sidebar').hasClass('d-none')) { 
+    $('#sidebar').removeClass('d-none') 
+                 .removeClass('d-sm-block') 
+                 .removeClass('d-md-none') 
+                 .removeClass('d-lg-block') 
   } else { 
-    $('#sidebar').addClass('d-sm-none') 
-                 .addClass('d-xs-none') 
+    $('#sidebar').addClass('d-none') 
+                 .addClass('d-sm-block') 
+                 .addClass('d-lg-block') 
+                 .addClass('d-md-none') 
   } 
 }
-
+ 
