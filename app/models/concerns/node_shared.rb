@@ -394,8 +394,8 @@ module NodeShared
 
       pinned + Node.where(status: 1)
                    .where('node.type = ? OR node.type = ?', type1, type2)
-                   .includes(:revision, :tag)
-                   .references(:term_data, :node_revisions)
+                   .joins(:revision,:tag)
+                   .group(:nid)
                    .where('term_data.name = ?', tagname)
                    .order('node_revisions.timestamp DESC')
                    .limit(limit)
@@ -406,8 +406,8 @@ module NodeShared
 
       pinned + Node.where(status: 1)
                    .where('node.type = ?', type)
-                   .includes(:revision, :tag)
-                   .references(:term_data, :node_revisions)
+                   .joins(:revision,:tag)
+                   .group(:nid)
                    .where('term_data.name = ?', tagname)
                    .order('node_revisions.timestamp DESC')
                    .limit(limit)
