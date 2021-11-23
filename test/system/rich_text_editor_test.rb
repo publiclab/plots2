@@ -16,6 +16,9 @@ class RichTextEditorTest < ApplicationSystemTestCase
 
   test 'thumbnail image drag and drop upload' do
     visit '/post'
+    
+    fill_in("title-input", with: "My note")
+    fill_in("text-input", with: "All about this interesting stuff")
 
     # Upload the image
     drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", '.ple-drag-drop')
@@ -27,6 +30,18 @@ class RichTextEditorTest < ApplicationSystemTestCase
 
     # Make sure that image has been uploaded
     assert_equal( is_image_url_undefined, false )
+
+    find('.ple-publish').click()
+
+    assert_selector('h1', text: "My note")
+    assert_selector('#content', text: "All about this interesting stuff")
+    assert_selector('.alert-success', text: "×\nResearch note published. Get the word out on the discussion lists!")
+    page.find('.main-image img.d-print-none')['src'].should have_content 'pl.png'
+
+    # Check it works after logout
+    click_on "Logout"
+    page.find('.main-image img.d-print-none')['src'].should have_content 'pl.png'
+
   end
 
   test 'main textarea image drag and drop upload' do

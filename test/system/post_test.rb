@@ -130,7 +130,8 @@ class PostTest < ApplicationSystemTestCase
 
     assert_selector('h1', text: "My wiki page")
     assert_selector('#content', text: "All about this interesting stuff")
-    assert_selector('.alert-success', text: "×\nResearch note published. Get the word out on the discussion lists!")
+    assert_selector('.alert-success', text: "×\nWiki page created.")
+    # assert_selector('.alert-success', text: "×\nResearch note published. Get the word out on the discussion lists!")
     page.find('.main-image img.d-print-none')['src'].should have_content 'pl.png'
 
     # Check it works after logout
