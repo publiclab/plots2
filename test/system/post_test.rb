@@ -124,7 +124,7 @@ class PostTest < ApplicationSystemTestCase
     page.assert_selector('#preview-main img', count: 1)
     
     fill_in("title", with: "My wiki page")
-    fill_in("body", with: "All about this interesting stuff")
+    fill_in("text-input-main", with: "All about this interesting stuff")
 
     find('.ple-publish').click()
 
