@@ -18,6 +18,7 @@ class RichTextEditorTest < ApplicationSystemTestCase
     visit '/post'
     
     fill_in("title-input", with: "My note")
+    find('.woofmark-mode-markdown').click() # switch to markdown mode for plain text entry
     fill_in("text-input", with: "All about this interesting stuff")
 
     # Upload the image
@@ -36,7 +37,7 @@ class RichTextEditorTest < ApplicationSystemTestCase
     assert_selector('h1', text: "My note")
     assert_selector('#content', text: "All about this interesting stuff")
     assert_selector('.alert-success', text: "×\nResearch note published. Get the word out on the discussion lists!")
-    page.find('.main-image img.d-print-none')['src'].should have_content 'pl.png'
+    page.find('.main-content img.d-print-none')['src'].should have_content 'pl.png'
 
     # Check it works after logout
     click_on "Logout"
