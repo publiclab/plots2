@@ -123,7 +123,7 @@ class PostTest < ApplicationSystemTestCase
     # Make sure that image has been uploaded
     page.assert_selector('#preview-main img', count: 1)
     
-    fill_in("#title", with: "My wiki page")
+    fill_in("title", with: "My wiki page")
     el = find("#text-input-main") # rich text input
     el.set("All about this interesting stuff")
 
