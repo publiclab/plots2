@@ -122,6 +122,23 @@ class PostTest < ApplicationSystemTestCase
 
     # Make sure that image has been uploaded
     page.assert_selector('#preview-main img', count: 1)
+    
+    fill_in("#legacy-editor-container input#title", with: "My wiki page")
+    el = find("#text-input-main") # rich text input
+    el.set("All about this interesting stuff")
+
+    find('.ple-publish').click()
+
+    assert_selector('h1', text: "My wiki page")
+    assert_selector('#content', text: "All about this interesting stuff")
+    assert_selector('.alert-success', text: "×\nResearch note published. Get the word out on the discussion lists!")
+    page.find('.main-image img.d-print-none')['src'].should have_content 'pl.png'
+
+    # Check it works after logout
+    click_on "Logout"
+    page.find('.main-image img.d-print-none')['src'].should have_content 'pl.png'
+    # could also be:
+    # expect(page.find('#profile-avatar')['src']).to have_content 'default.png' expect(page.find('#profile-avatar')['alt']).to match(/some-value/)
   end
 
   test 'preview works in legacy wiki editor' do
