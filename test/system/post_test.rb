@@ -126,7 +126,7 @@ class PostTest < ApplicationSystemTestCase
     # Make sure that image has been uploaded
     page.assert_selector('#preview-main img', count: 1)
 
-    find('.ple-publish').click()
+    find('.publish').click()
 
     assert_selector('h1', text: "My wiki page")
     assert_selector('#content', text: "All about this interesting stuff")
