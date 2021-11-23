@@ -11,7 +11,7 @@
     <% if current_user.admin? %>
     <th><%= translation('features.edit') %></th>
     <% end %>
-    <th><a href = "?sort=last_edited">Last edited</a> <i class="fa fa-sort" aria-hidden="true"></i></th>
+    <th><a href = "?sort=last_edited"><%= translation('features.last_edition') %></a> <i class="fa fa-sort" aria-hidden="true"></i></th>
   </tr>
   <% @sorted_features.each do |feature| %>
     <tr>
