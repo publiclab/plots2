@@ -109,6 +109,9 @@ class PostTest < ApplicationSystemTestCase
   test 'drag and drop image upload to wiki post editor' do
     Capybara.ignore_hidden_elements = false
     visit '/wiki/new'
+    
+    fill_in("title", with: "My wiki page")
+    fill_in("text-input-main", with: "All about this interesting stuff")
 
     # Upload the image
     drop_in_dropzone("#{Rails.root.to_s}/public/images/pl.png", ".dropzone-large")
@@ -122,9 +125,6 @@ class PostTest < ApplicationSystemTestCase
 
     # Make sure that image has been uploaded
     page.assert_selector('#preview-main img', count: 1)
-    
-    fill_in("title", with: "My wiki page")
-    fill_in("text-input-main", with: "All about this interesting stuff")
 
     find('.ple-publish').click()
 
