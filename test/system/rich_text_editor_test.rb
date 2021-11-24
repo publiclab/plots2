@@ -37,12 +37,17 @@ class RichTextEditorTest < ApplicationSystemTestCase
     assert_selector('h1', text: "My note")
     assert_selector('#content', text: "All about this interesting stuff")
     assert_selector('.alert-success', text: "×\nResearch note published. Get the word out on the discussion lists!")
-    page.find('.main-content img.d-print-none')['src'].should have_content 'pl.png'
+    assert_select ".main-content img.d-print-none" do
+      assert_select "[src=?]", /pl.png/
+    end
+    # page.find('.main-content img.d-print-none')['src'].should have_content 'pl.png'
 
     # Check it works after logout
     click_on "Logout"
-    page.find('.main-image img.d-print-none')['src'].should have_content 'pl.png'
-
+    assert_select ".main-content img.d-print-none" do
+      assert_select "[src=?]", /pl.png/
+    end
+    # page.find('.main-image img.d-print-none')['src'].should have_content 'pl.png'
   end
 
   test 'main textarea image drag and drop upload' do
