@@ -393,10 +393,12 @@ module NodeShared
                .where('node.type = ? OR node.type = ?', type1, type2)
 
       pinned + Node.where(status: 1)
+                   .select('node.*, max(node.vid) as mvid, community_tags.nid, max(community_tags.tid), term_data.name, max(term_data.tid)')
+                   .group(:nid)
                    .where('node.type = ? OR node.type = ?', type1, type2)
                    .joins(:revision,:tag)
                    .where('term_data.name = ?', tagname)
-                   .order('node.vid DESC')
+                   .order('mvid DESC')
                    .limit(limit)
                    .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
     else
@@ -404,10 +406,12 @@ module NodeShared
                .where('node.type = ?', type)
 
       pinned + Node.where(status: 1)
+                   .select('node.*, max(node.vid) as mvid, community_tags.nid, max(community_tags.tid), term_data.name, max(term_data.tid)')
+                   .group(:nid)
                    .where('node.type = ?', type)
                    .joins(:tag)
                    .where('term_data.name = ?', tagname)
-                   .order('node.vid DESC')
+                   .order('mvid DESC')
                    .limit(limit)
                    .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
     end
