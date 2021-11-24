@@ -47,8 +47,8 @@ class RichTextEditorTest < ApplicationSystemTestCase
     # Check it works after logout
     click_on "Logout"
 
-    find('.main-image img.d-print-none')['src'].should have_content 'pl.png'
-    assert_select ".main-content img.d-print-none" do
+    find('img.main-image-tag')['src'].should have_content 'pl.png'
+    assert_select "img.main-image-tag" do
       assert_select "[src=?]", /pl.png/
     end
   end

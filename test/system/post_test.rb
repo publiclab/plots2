@@ -23,7 +23,6 @@ class PostTest < ApplicationSystemTestCase
     el = find(".wk-wysiwyg") # rich text input
     el.set("All about this interesting stuff")
 
-
     find('.ple-publish').click()
 
     assert_selector('h1', text: "My new post")
