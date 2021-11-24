@@ -130,20 +130,11 @@ class PostTest < ApplicationSystemTestCase
     assert_selector('h1', text: "My wiki page")
     assert_selector('#content', text: "All about this interesting stuff")
     assert_selector('.alert-success', text: "×\nWiki page created.")
-    assert_select "img.main-image" do
-      assert_select "[src=?]", /pl.png/
-    end
-    # page.find('img.main-image')['src'].should have_content 'pl.png'
+    expect(page.find('.main-image')['src']).to have_content 'pl.png'
 
     # Check it works after logout
     click_on "Logout"
-    assert_select "img.main-image" do
-      assert_select "[src=?]", /pl.png/
-    end
-    # page.find('img.main-image')['src'].should have_content 'pl.png'
-    # could also be:
-    # expect(page.find('#profile-avatar')['src']).to have_content 'default.png'
-    # expect(page.find('#profile-avatar')['alt']).to match(/some-value/)
+    expect(page.find('.main-image')['src']).to have_content 'pl.png'
   end
 
   test 'preview works in legacy wiki editor' do
