@@ -395,9 +395,8 @@ module NodeShared
       pinned + Node.where(status: 1)
                    .where('node.type = ? OR node.type = ?', type1, type2)
                    .joins(:revision,:tag)
-                   .group(:nid)
                    .where('term_data.name = ?', tagname)
-                   .order('node_revisions.timestamp DESC')
+                   .order('node.changed DESC')
                    .limit(limit)
                    .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
     else
@@ -406,10 +405,9 @@ module NodeShared
 
       pinned + Node.where(status: 1)
                    .where('node.type = ?', type)
-                   .joins(:revision,:tag)
-                   .group(:nid)
+                   .joins(:tag)
                    .where('term_data.name = ?', tagname)
-                   .order('node_revisions.timestamp DESC')
+                   .order('node.changed DESC')
                    .limit(limit)
                    .where.not(nid: pinned.collect(&:nid)) # don't include pinned items twice
     end
