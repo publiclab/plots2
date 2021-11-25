@@ -62,7 +62,6 @@ module.exports = function(api) {
           useBuiltIns: true
         }
       ],
- 
       [
         '@babel/plugin-transform-runtime',
         {
