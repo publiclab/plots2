@@ -811,9 +811,12 @@ en:
       remember_me: "Remember me"
       reset_by_clicking_here: "Forgot your password? <a href='%{url1}'>Reset it here</a>"
   home:
+<<<<<<< HEAD
     home: 
       read_more: "Read more"
       more_projects: "More projects"
+=======
+>>>>>>> parent of a8e53fd9 (added keys to en.yml)
     dashboard:
       welcome: "Welcome!"
       need_help: "Need help, want to float an idea, or find collaborators?"
