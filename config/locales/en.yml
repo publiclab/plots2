@@ -426,7 +426,7 @@ en:
       world: "World"
       building: "Building"
       search_name: "Search by place name"
-      coordinates: "Or <a href="#" id="coord_button">by entering coordinates</a>"
+      coordinates: "Or <a href='#' id='coord_button'>by entering coordinates</a>"
       latitude: "Latitude"
       longitude: "Longitude"
       current_location: "Use current location"
