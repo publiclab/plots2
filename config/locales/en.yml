@@ -811,6 +811,9 @@ en:
       remember_me: "Remember me"
       reset_by_clicking_here: "Forgot your password? <a href='%{url1}'>Reset it here</a>"
   home:
+    home:
+      read_more: "Read more"
+      more_projects: "More projects"
     dashboard:
       welcome: "Welcome!"
       need_help: "Need help, want to float an idea, or find collaborators?"
