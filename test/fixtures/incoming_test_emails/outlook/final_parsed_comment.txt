@@ -1,4 +1,3 @@
-
  This is the second reply sent by the user.
 <!-- @@$$%% Trimmed Content @@$$%% -->* * *
 
@@ -15,7 +14,6 @@ p
 	margin-bottom:0}
 -->
 </style>
-
 
  This is the first reply sent by the user.
 
