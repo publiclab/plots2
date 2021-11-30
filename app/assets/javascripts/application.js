@@ -28,7 +28,7 @@
 //= require jquery-file-upload/js/jquery.fileupload.js
 //= require jquery-file-upload/js/jquery.iframe-transport.js
 //= require jsdiff.js
-//= require marked/lib/marked.js
+//= require marked/marked.min.js
 //= require megamark/dist/megamark.min.js
 //= require ics/ics.deps.min.js
 //= require ics/ics.min.js
