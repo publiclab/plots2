@@ -647,9 +647,6 @@ GEM
       unf_ext
     unf_ext (0.0.7.7)
     unicode-display_width (2.1.0)
-    unicode-emoji (2.8.0)
-      unicode-version (~> 1.0)
-    unicode-version (1.1.0)
     vegas (0.1.11)
       rack (>= 1.0.0)
     web-console (3.7.0)
@@ -786,7 +783,6 @@ DEPENDENCIES
   twitter
   tzinfo-data
   uglifier (>= 1.0.3)
-  unicode-emoji
   web-console (>= 3.3.0)
   webmock (~> 3.14)
   webpacker
@@ -798,4 +794,4 @@ RUBY VERSION
    ruby 2.6.6p146
 
 BUNDLED WITH
-   2.2.29
+   2.2.32
