@@ -39,10 +39,16 @@
             <div class="col-lg-12 nopadding">
               <div class="card-info">
                 <div class="d-flex justify-content-between">
-                 <div>
+                  <div>
                     <a href="/profile/<%= user.username %>" style="word-break:break-word;"><%= user.username %></a>
-                   </div>
-                   <div>
+                    <% if current_user && current_user.role == "admin" %>
+                      <% if user.has_power_tag("oauth:twitter") %><i class="fa fa-twitter" rel="tooltip" title="Twitter OAuth connected"></i><% end %>
+                      <% if user.has_power_tag("oauth:facebook") %><i class="fa fa-facebook" rel="tooltip" title="Facebook OAuth connected"></i><% end %>
+                      <% if user.has_power_tag("oauth:github") %><i class="fa fa-github" rel="tooltip" title="GitHub OAuth connected"></i><% end %>
+                      <% if user.has_power_tag("oauth:google_oauth2") %><i class="fa fa-google" rel="tooltip" title="Google OAuth connected"></i><% end %>
+                    <% end %>
+                  </div>
+                  <div>
                       <a class="ellipsis" data-toggle="dropdown">&nbsp<i class="fa fa-ellipsis-h" style="color: #666; font-size:15px;"></i></a>
                       <ul class="dropdown-menu dropdown-menu-right" style="font-size:10px;">
                       <li><a style="color: #808080; cursor: no-drop;">Joined <%= distance_of_time_in_words(user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></a></li>
