@@ -291,7 +291,7 @@ GEM
       phantomjs (>= 1.9)
       railties (>= 3.2.0)
       sprockets-rails
-    jbuilder (2.11.2)
+    jbuilder (2.11.3)
       activesupport (>= 5.0.0)
     jquery-atwho-rails (1.5.4)
     jquery-datatables (1.10.20)
