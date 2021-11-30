@@ -396,7 +396,7 @@ GEM
       rack
     openssl (2.2.0)
     os (1.1.4)
-    pagy (3.13.0)
+    pagy (5.6.3)
     paperclip (6.1.0)
       activemodel (>= 4.2.0)
       activesupport (>= 4.2.0)
@@ -616,7 +616,7 @@ GEM
       teaspoon (>= 1.0.0)
     terrapin (0.6.0)
       climate_control (>= 0.0.3, < 1.0)
-    test-unit (3.4.7)
+    test-unit (3.5.1)
       power_assert
     thor (1.1.0)
     thread_safe (0.3.6)
