@@ -10,9 +10,9 @@
  
   <p><i><small>
     <% if !@map_lat.nil? && !@map_lon.nil? %>
-      <%= ActionController::Base.helpers.translation('map.index.current_view') %>
+      <%= ApplicationController.helpers.translation('map.index.current_view') %>
     <% else %>
-      <%= ActionController::Base.helpers.translation('map.index.share') %><%= ActionController::Base.helpers.translation('map.index.privacy') %>
+      <%= ApplicationController.helpers.translation('map.index.share') %><%= ApplicationController.helpers.translation('map.index.privacy') %>
     <% end %>
   </small></i></p>
 

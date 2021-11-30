@@ -1,6 +1,5 @@
 module NodeShared
   extend ActiveSupport::Concern
-  include ActionView::Helpers::ApplicationHelper
 
   def likes
     cached_likes
