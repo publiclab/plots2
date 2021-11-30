@@ -554,7 +554,7 @@ GEM
       tilt
     scrypt (3.0.7)
       ffi-compiler (>= 1.0, < 2.0)
-    selenium-webdriver (4.0.3)
+    selenium-webdriver (4.1.0)
       childprocess (>= 0.5, < 5.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2)
@@ -768,7 +768,7 @@ DEPENDENCIES
   sassc (~> 2.4.0)
   sassc-rails
   scrypt (~> 3)
-  selenium-webdriver (~> 4.0.3)
+  selenium-webdriver (~> 4.1.0)
   sentry-delayed_job
   sentry-rails
   sentry-resque
