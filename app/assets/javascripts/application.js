@@ -50,7 +50,6 @@
 //= require like.js
 //= require mainImage.js
 //= require restfulTypeahead.js
-//= require users.js
 //= require searchform.js
 //= require tagging.js
 //= require leafletHelper
