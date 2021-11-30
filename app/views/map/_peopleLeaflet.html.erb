@@ -10,7 +10,7 @@
  
   <p><i><small>
     <% if !@map_lat.nil? && !@map_lon.nil? %>
-      <%= translation('map.index.current_view') %>
+      <%= ActionController::Base.helpers.translation('map.index.current_view') %>
     <% else %>
       <%= translation('map.index.share') %><%= translation('map.index.privacy') %>
     <% end %>
