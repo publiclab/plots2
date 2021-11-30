@@ -175,7 +175,7 @@ class Editor {
     const formIdPrefix = this.isSingleFormPage ? "#form-body-" : "#comment-form-body-";
     const commentFormBody = $(formIdPrefix + this.commentFormID);
 
-    this.previewElement[0].innerHTML = marked(this.textAreaValue);
+    this.previewElement[0].innerHTML = marked.parse(this.textAreaValue);
     this.previewElement.toggle();
     commentFormBody.toggle();
 
