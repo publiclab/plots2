@@ -28,7 +28,7 @@
     "bootstrap-datepicker": "^1.6.0",
     "bootstrap-tokenfield": "^0.12.0",
     "chart.js": "^2.9.4",
-    "cytoscape": "^3.19.1",
+    "cytoscape": "^3.20.0",
     "debounce": "jywarren/debounce#patch-1",
     "file-saver": "^2.0.5",
     "i18n-js": "^3.8.0",
@@ -49,7 +49,7 @@
     "leaflet-hash": "^0.2.1",
     "leaflet-spin": "1.1.0",
     "leaflet.fullscreen": "2.1.0",
-    "marked": "^3.0.7",
+    "marked": "^4.0.5",
     "megamark": "~3.3.0",
     "moment": "~> 2.29.1",
     "noty": "3.1.4",
@@ -69,7 +69,7 @@
     "woofmark": "~4.2.0"
   },
   "devDependencies": {
-    "webpack-dev-server": "^4.5.0"
+    "webpack-dev-server": "^4.6.0"
   },
   "homepage": "https://github.com/publiclab/plots2",
   "engines": {
