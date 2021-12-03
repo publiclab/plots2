@@ -447,32 +447,6 @@ class TagController < ApplicationController
     end
   end
 
-  def contributors
-    @tagnames = [params[:id]]
-    @tag = Tag.find_by(name: params[:id])
-    @note_count = Tag.tagged_node_count(params[:id]) || 0
-    @users = Tag.contributors(@tagnames[0])
-  end
-
-  # /contributors
-  def contributors_index
-    @tagnames = ['balloon-mapping', 'spectrometer', 'infragram', 'air-quality', 'water-quality']
-    @tagdata = {}
-    @tags = []
-
-    @tagnames.each do |tagname|
-      tag = Tag.find_by(name: tagname)
-      @tags << tag if tag
-      @tagdata[tagname] = {}
-      t = Tag.where(name: tagname)
-      nct = NodeTag.where('tid in (?)', t.collect(&:tid))
-      @tagdata[tagname][:users] = Node.where('nid IN (?)', nct.collect(&:nid)).collect(&:author).uniq.size
-      @tagdata[tagname][:wikis] = Node.where("nid IN (?) AND (type = 'page')", nct.collect(&:nid)).size
-      @tagdata[:notes] = Node.where("nid IN (?) AND type = 'note'", nct.collect(&:nid)).size
-    end
-    render template: 'tag/contributors-index'
-  end
-
   def location
     render template: 'locations/_form'
   end
@@ -526,6 +500,7 @@ class TagController < ApplicationController
       (ftp_nids & tag_nids).count # intersection of 2 collections
     end
 
+    @overall_contributor_tally = Tag.contributors(@tag_name, start: @start, finish: @end).size
     @all_subscriptions = TagSelection.graph(@start, @end)
 
     total_questions = Node.published.questions

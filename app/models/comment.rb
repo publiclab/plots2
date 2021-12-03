@@ -11,6 +11,8 @@ class Comment < ApplicationRecord
 
   validates :comment, presence: true
 
+  scope :published, -> { where(status: 1) }
+
   self.table_name = 'comments'
   self.primary_key = 'cid'
 
@@ -145,23 +147,25 @@ class Comment < ApplicationRecord
         CommentMailer.notify_note_author(parent.author, self).deliver_later
       end
 
-      notify_callout_users
+      if parent.status != 3 # if it's not a draft
+        notify_callout_users
 
-      # notify other commenters, revisers, and likers, but not those already @called out
-      already = mentioned_users.collect(&:uid) + [parent.uid]
-      uids = uids_to_notify - already
-      uids+= current_user.followers.collect(&:uid)
-      uids.uniq!
-
-      # Send Browser Notification Using Action Cable
-      notify_user_ids = uids_to_notify + already
-      notify_user_ids = notify_user_ids.uniq
-      send_browser_notification notify_user_ids
-
-      uids = uids.select { |i| i != 0 } # remove bad comments (some early ones lack uid)
-
-      notify_users(uids, current_user)
-      notify_tag_followers(already + uids)
+        # notify other commenters, revisers, and likers, but not those already @called out
+        already = mentioned_users.collect(&:uid) + [parent.uid]
+        uids = uids_to_notify - already
+        uids+= current_user.followers.collect(&:uid)
+        uids.uniq!
+        
+        # Send Browser Notification Using Action Cable
+        notify_user_ids = uids_to_notify + already
+        notify_user_ids = notify_user_ids.uniq
+        send_browser_notification notify_user_ids
+        
+        uids = uids.select { |i| i != 0 } # remove bad comments (some early ones lack uid)
+        
+        notify_users(uids, current_user)
+        notify_tag_followers(already + uids)
+      end
     end
   end
 

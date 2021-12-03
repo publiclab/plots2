@@ -19,7 +19,7 @@
     
     <div id="moreTopics" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
       <div class="card-body">
-        <small class="form-grey"><%= translation('dashboard_v2.sidebar.add_topics') %> <a href="#" class="form-grey" style="text-decoration: underline;"><%= translation('dashboard_v2.sidebar.learn_more') %></a></small>
+       <small class="form-grey"><%= translation('dashboard_v2.sidebar.add_topics') %> <a href="/wiki/topics" class="form-grey" style="text-decoration: underline;"><%= translation('dashboard_v2.sidebar.learn_more') %></a></small>
         <br/> <br/>
         <%# Featured topics %>
         <small><a href="/tags" class="form-grey"><%= translation('dashboard_v2.sidebar.featured_topics') %>:</a></small>
@@ -39,7 +39,7 @@
           </div>
         </div>
         <br>
-        <small class="form-grey">Search topics</small>
+        <small class="form-grey"><%= translation('dashboard_v2.sidebar.search_topics') %></small>
         <%= render :partial => "tag/typeahead_search" %>
         <br/>
         <small class="form-grey" style="text-decoration: underline">
@@ -47,6 +47,9 @@
         </small> |
         <small class="form-grey" style="text-decoration: underline; margin-top: -34px;">
           <%= translation('dashboard_v2.sidebar.all_posts',:url => '/notes') %>
+        </small> |
+        <small class="form-grey" style="text-decoration: underline; margin-top: -34px;">
+          <%= translation('dashboard_v2.sidebar.all_new_activity',:url => '/research') %>
         </small>
       </div>
     </div>

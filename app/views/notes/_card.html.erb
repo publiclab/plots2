@@ -1,12 +1,12 @@
 <div class="card">
   <% if node.main_image %>
     <% img_path = node.main_image.path(node.main_image.photo_file_name == "blob" ? :original : :default) # special case for "blob" images, see https://github.com/publiclab/plots2/issues/10210 %>
-    <a class="card-img-top img" style="overflow: hidden; height:10em;"<% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= image_tag(img_path, style:'width:100%;', lazy: node.main_image.photo_file_name =! "blob") %></a>
+    <a class="card-img-top img" style="overflow: hidden; height:10em;"<% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= image_tag(img_path, style:'width:100%;', lazy: node.main_image.photo_file_name != "blob") %></a>
   <% elsif node.scraped_image %>
     <a class="card-img-top img" style="overflow: hidden; height:10em;" href="<%= node.path %>"><%= image_tag(node.scraped_image, style:'width:100%;') %></a>
   <%  else %>
     <a class="imgg" style="height:10em; margin-bottom: 10px;padding: 1rem;">
-    <i class="fa fa-picture-o note-not aria-hidden="true" style="color: #ccc; font-size: 6em;"></i>
+    <i class="fa fa-picture-o note-not" aria-hidden="true" style="color: #ccc; font-size: 6em;"></i>
     </a>
   <% end %>
 
@@ -41,20 +41,10 @@
             Post by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>" style="color: #303030">@<%= node.author.name %></a> <%= node.author.new_contributor %>
             <span style="color:darkgray;">
               <i class="fa fa-comment-o"></i>
-              <%= node.comments.size %> &nbsp; | &nbsp; <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope:'datetime.time_ago_in_words' }).gsub('about ','') %>
+              <%= node.comments.published.count %> &nbsp; | &nbsp; <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope:'datetime.time_ago_in_words' }).gsub('about ','') %>
             </span>
           <% elsif node.type == 'page' %>
             Wiki page by <%= node.revisions.collect(&:uid).uniq.length %> people
-          <% elsif node.type == 'question' %>
-            <div class="card bg-white rounded<% if node.status == 4 %> moderated<% end %>">
-              <div class="card-header">
-                <%= render partial: 'dashboard/node_moderate', locals: { node: node } %>
-                <h4><a <% if @widget %>target="_blank"<% end %> href="<%= node.path(:question) %>"><%= node.title %></a></h4>
-              </div>
-              <div class="card-footer">
-                <p class="meta"><%= render partial: "dashboard/node_meta", locals: { node: node } %></p>
-              </div>
-            </div>
           <% end %>
         </p>
       </div>

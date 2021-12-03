@@ -35,7 +35,7 @@
   background-color: #FFF;
 }
 .fdb-block, .rounded {
-  overflow: hidden;
+  overflow: visible;
 }
 .fdb-block, .fdb-block .container {
   background-position: center;
@@ -49,12 +49,25 @@
   background-repeat: no-repeat;
 }
 .fdb-block .fdb-box {
-  background: #FFF;
-  padding: 2.75rem 2.5rem;
-  overflow: hidden;
   color: #444;
   border-radius: .25rem;
-  box-shadow: 0 .3125rem .875rem 0 rgba(129,129,129,.2)!important;
+  position: relative;
+}
+.fdb-box-content-wrapper{
+  z-index: 1;
+  padding: 2.75rem 2.5rem;
+  background: #FFF;
+  position: relative;
+}
+.fdb-box::after{
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 10px;
+  z-index: 0;
+  box-shadow: 0 .3125rem .875rem 0 rgba(129,129,129,.2)!important; 
 }
 .fdb-block .rounded-bottom-0 {
   border-bottom-left-radius: 0!important;
@@ -73,7 +86,7 @@
     <div class="container">
         <div class="row text-left justify-content-start">
             <div class="col-12 col-md-6 col-xl-5"><div class="fdb-box rounded-bottom-0">
-
+                  <div class='fdb-box-content-wrapper'>
                     <div class="pull-right"><%= render :partial => "tag/show/user_controls" %></div>
 
                     <h1 style="margin-top:6px;">
@@ -113,7 +126,7 @@
                     <% end %>
 
                     <% if @wiki %>
-                        <p class = "wiki-sub wiki-summary" id="wiki-summary"><%= @wiki.latest.body.split('\n').first %>...</p>
+                      <p class = "wiki-sub wiki-summary" id="wiki-summary"><%= strip_tags(@wiki.latest.body.split('\n').first) %>...</p>
                     <% end %>
 
                     <div class="tag-buttons">
@@ -134,7 +147,7 @@
                             <a class="btn btn-outline-secondary" href="/wiki/new?title=<%= core_tag %>">Add a description <span class="fa fa-plus"></span></a>
                         <% end %>
                     </div>
-
+                  </div>
                 </div></div>
         </div>
     </div>
