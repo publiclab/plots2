@@ -64,6 +64,7 @@ en:
       liked_by: "Liked by"
       updated: "updated"
       no_likes: "No notes liked by"
+      you: "you"
     profile:
       follow: "Follow"
       migrate_new_site: "Migrate to new site"
