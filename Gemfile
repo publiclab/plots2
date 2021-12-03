@@ -12,7 +12,7 @@ gem 'authlogic-oid'
 gem "composite_primary_keys"
 gem 'figaro' # To easily test OAuth providers in the development mode
 gem 'friendly_id'
-gem 'fog-google', '1.13.0' # Limited to `v1.13.0` due to https://github.com/fog/fog-google/issues/535
+gem 'fog-google', '1.17.0' # Limited to `v1.13.0` due to https://github.com/fog/fog-google/issues/535
 gem 'fog-local', '0.7.0'
 gem 'gemoji'
 gem 'geocoder'
@@ -20,7 +20,7 @@ gem 'georuby', '2.0'
 gem "google-cloud-storage"
 gem 'grape'
 gem 'grape-entity'
-gem 'grape-swagger', '~> 1.4.0'
+gem 'grape-swagger', '~> 1.4.2'
 gem 'grape-swagger-entity', '0.5.1'
 gem 'grape-swagger-rails'
 gem 'grape-swagger-ui'
@@ -33,7 +33,7 @@ gem 'mocha', '~> 1.13'
 gem 'mimemagic', '~> 0.3.10'
 gem 'mustermann' , '1.1.1'
 gem 'omniauth', '~> 1.9'
-gem 'omniauth-facebook', '~> 8.0'
+gem 'omniauth-facebook', '~> 9.0'
 gem 'omniauth-github', '~> 1.4'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
@@ -53,15 +53,18 @@ gem 'rdiscount', '~> 2.2'
 gem 'react-rails'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'responders', '~> 3.0'
-gem 'rubocop', '~> 1.20.0', require: false
+gem 'rubocop', '~> 1.23.0', require: false
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
-gem 'sentry-raven'
+gem 'sentry-ruby'
+gem 'sentry-rails'
+gem 'sentry-resque'
+gem 'sentry-sidekiq'
+gem 'sentry-delayed_job'
 gem 'sidekiq'
 gem 'skylight' # performance tracking via skylight.io
 gem 'turbolinks', '~> 5'
 gem 'tzinfo-data', platforms: %i(mingw mswin x64_mingw jruby)
-gem 'unicode-emoji'
 gem 'webpacker'
 gem 'whenever', require: false
 gem 'will_paginate', '>= 3.0.6'
@@ -121,14 +124,14 @@ group :test, :development do
   gem 'jasmine-rails'
   gem 'json_expressions'
   gem 'minitest-reporters', '~> 1.4.3'
-  gem 'openssl', '~> 2.2.0'
+  gem 'openssl', '~> 2.2.1'
   gem 'phantomjs'
   gem 'puma', '~> 5.5'
   gem 'rails-perftest'
   gem 'rake', '~> 13.0.6'
   gem 'rest-client'
   gem 'rspec'
-  gem 'selenium-webdriver', '~> 3.142.7'
+  gem 'selenium-webdriver', '~> 4.1.0'
   gem 'test-unit'
   gem 'teaspoon-mocha'
   gem 'timecop'

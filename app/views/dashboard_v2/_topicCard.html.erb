@@ -32,7 +32,7 @@
                <div class="row no-gutters">
                 <% notes.each do |node|  %>
                 <% shown_nids << node.id %>
-                  <div class="col-md-4 card-responsive mb-2 pr-2">
+                  <div class="col-md-4 card-responsive mb-2 pr-1">
                     <div class="card">
                       <% if node.main_image %>
                           <img class="card-img-top" style="margin-bottom: 10px;" aria-hidden="true" src="<%= node.main_image.path(:default) %>" />
@@ -90,8 +90,7 @@
 <style>
 
   .node-list {
-    display: grid;
-    margin-right: 12px;
+    margin-right: 20px;
   }
 
   .circle {

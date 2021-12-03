@@ -1,5 +1,13 @@
 ---
 en:
+  features:
+    features_title: "Features"
+    description: "Features allow admins to edit/update text and images displayed around the site, for example banners, sidebar content, and alerts or notices."
+    add_feature: "New feature"
+    title: "Title"
+    edit: "Edit"
+    last_edition: "Last edited"
+    ago_by: "ago by"
   users:
     reset:
       reset_password: "Reset your password"
@@ -292,7 +300,11 @@ en:
       members_and_contributors: |
           <b>%{member_count}  member registrations</b>
           and <b>%{people_count}  contributors </b> posted notes, wikis, questions, comments, or revisions in this period.
-   
+  images:
+    upload_an_image: "Upload an image"
+    image_title: "Image title"
+    short_description: "a short description"
+    upload: "Upload"
   dashboard:
     _flag_list:
       flag_post: "Flag post to moderators"
@@ -401,11 +413,29 @@ en:
       trending_topics: "Trending topics"
       featured_topics: "Featured topics"
       learn_more: "learn more"
+      search_topics: "Search topics"
       add_topics: "Click to add topics, or"
       all_topics: "<a href='%{url}' class='form-grey'>All topics</a>"
       more_topics: "<a href='%{url}' class='form-grey'>more...</a>"
       interest_topics: "Click to start <a href='%{url}' class='form-grey' style='text-decoration: underline;'>following</a> topics that interest you"
       welcome: "Welcome to the new dashboard!"
+      all_new_activity: "<a href='%{url}' class='form-grey'>All new activity</a>"
+  locations:
+    form:
+      scale: "Scale"
+      world: "World"
+      building: "Building"
+      search_name: "Search by place name"
+      coordinates: "Or <a href='#' id='coord_button'>by entering coordinates</a>"
+      latitude: "Latitude"
+      longitude: "Longitude"
+      current_location: "Use current location"
+      blur_location: "Blur my location"
+      learn_more: "Learn more »"
+      location_saved: "How this location will be saved"
+      save: "Save"
+    modal:
+      location: "Enter a location"
   like:
     index:
       recent_likes: "Recent Likes"
@@ -452,8 +482,8 @@ en:
       browse_popular_tags: "We use tags to group research by topic -- browse below
         to see the most popular tags over the past month."
       tag: "name"
-      number_of_uses: "# of uses"
-      number_of_subscriptions: "# of people"
+      number_of_uses: "posts"
+      number_of_subscriptions: "followers"
       subscriptions: "Your subscriptions"
       sort_by: "Sort By"
       post: "post"
@@ -754,6 +784,12 @@ en:
     _comment:
       promotion: "Promote this comment to an answer"
     index_shadow:
+      recent_questions: "Recent questions"
+      great_questions: "see some of the great questions people have asked, and get a feel for how it works"
+      featured_questions: "Featured questions"
+      continue: "Continue"
+      ask_question: "Ask a question with the entered title"
+      type_question: "type your question"
       what_is_your_question: "What's your question?"
       to_ask_a_question_please: "To ask a question, please"
       log_in: "log in"
@@ -775,6 +811,9 @@ en:
       remember_me: "Remember me"
       reset_by_clicking_here: "Forgot your password? <a href='%{url1}'>Reset it here</a>"
   home:
+    home:
+      read_more: "Read more"
+      more_projects: "More projects"
     dashboard:
       welcome: "Welcome!"
       need_help: "Need help, want to float an idea, or find collaborators?"
@@ -941,6 +980,7 @@ en:
       consider_sharing: "Consider sharing:"
       what_resources_you_need: "What resources you need"
       where_you_are_working: "Where you are working"
+      help: "Help"
       why_you_are_interested: "Why you are interested"
   home_controller:
     science_community: "a DIY environmental science community"

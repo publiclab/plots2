@@ -12,13 +12,13 @@
  <div class= "question-form">
     <form id="questions_searchform" role="search" autocomplete="off" action="/post">
       <div class="input-group">
-        <textarea tabindex="1" id="questions_searchform_input" type="text" name="title" class="<%= "disabled " if !current_user %>form-control search-query typeahead" qryType="questions" placeholder="type your question"></textarea>
+        <textarea tabindex="1" id="questions_searchform_input" type="text" name="title" class="<%= "disabled " if !current_user %>form-control search-query typeahead" qryType="questions" placeholder="<%= translation('questions.index_shadow.type_question') %>"></textarea>
         <input type="hidden" name="tags" value="question:general">
         <input type="hidden" name="template" value="question">
         <input type="hidden" name="redirect" value="question">
       </div>
       <div class="input-group-append"  style="padding-bottom:15px;">
-        <button id="question_search" type="submit" rel="tooltip" title="Ask a question with the entered title" class="btn btn-primary">Continue</button>
+        <button id="question_search" type="submit" rel="tooltip" title="<%=translation('questions.index_shadow.ask_question')%>" class="btn btn-primary"><%=translation('questions.index_shadow.continue')%></button>
       </div>
     </form>
   </div>
@@ -33,7 +33,7 @@
 <%= render partial: "questions/questions_shadow" %>
 
 <div class="RecentQuestions col-md-12">
-    <span class="d-none d-lg-inline"><h2>Recent questions </h2></span>
+  <span class="d-none d-lg-inline"><h2><%= translation('questions.index_shadow.recent_questions') %> </h2></span>
 </div>
 
 <div class="col-md-12">
