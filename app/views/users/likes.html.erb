@@ -24,7 +24,7 @@
 
   <hr />
   <% if @notes && @notes.count == 0 %>  
-    <p><%= translation('users.likes.no_likes') %> <%= current_user && (current_user.id == user.uid) ? 'you' : user.name %></p>
+    <p><%= translation('users.likes.no_likes') %> <%= current_user && (current_user.id == user.uid) ? translation('users.likes.you') : user.name %></p>
   <% end %>
  <%= render :partial => "notes/notes" %>
 
