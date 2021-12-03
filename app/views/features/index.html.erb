@@ -1,17 +1,17 @@
 <div class="row" style="align-items:baseline;">
-   <h2>Features</h2>
-   <p style="margin-inline-start:1rem;">Features allow admins to edit/update text and images displayed around the site, for example banners, sidebar content, and alerts or notices.</p>
+  <h2><%= translation('features.features_title')%></h2>
+  <p style="margin-inline-start:1rem;"><%= translation('features.description') %></p>
 </div>
 <% if current_user.admin? %>
-<p><a class="btn btn-outline-secondary" href="/features/new">New feature</a></p>
+<p><a class="btn btn-outline-secondary" href="/features/new"><%= translation('features.add_feature') %></a></p>
 <% end %>
 <table class="table">
   <tr>
-    <th><a href = "?sort=title">Title</a> <i class="fa fa-sort" aria-hidden="true"></i></th>
+    <th><a href = "?sort=title"><%= translation('features.title') %></a> <i class="fa fa-sort" aria-hidden="true"></i></th>
     <% if current_user.admin? %>
-    <th>Edit</th>
+    <th><%= translation('features.edit') %></th>
     <% end %>
-    <th><a href = "?sort=last_edited">Last edited</a> <i class="fa fa-sort" aria-hidden="true"></i></th>
+    <th><a href = "?sort=last_edited"><%= translation('features.last_edition') %></a> <i class="fa fa-sort" aria-hidden="true"></i></th>
   </tr>
   <% @sorted_features.each do |feature| %>
     <tr>
@@ -19,7 +19,7 @@
       <% if current_user.admin? %>
       <td><a href="/features/<%= feature.id %>/edit?t=<%= Time.now.to_i %>">edit</a></td>
       <% end %>
-      <td><%= time_ago_in_words(feature.latest.created_at) %> ago by
+      <td><%= time_ago_in_words(feature.latest.created_at) %><%= translation('features.ago_by') %>
       <a href="/profile/<%= feature.latest.author.name %>"><%= feature.latest.author.name %></td>
     </tr>
   <% end %>

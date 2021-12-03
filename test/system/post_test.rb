@@ -247,12 +247,10 @@ class PostTest < ApplicationSystemTestCase
     find("span[data-original-title='Tools']").click()
     find("input[value='Give']").click()
 
-    # Wait for the alert to be shown
-    wait_for_ajax
-
-    page.assert_selector("div.alert-success", text: "You awarded the basic barnstar to #{note.author.name}")
-    page.assert_selector("p", text: "#{note.author.name} was awarded the Basic Barnstar by palpatine for their work in this research note.")
-    page.assert_selector(".comment-body p", text: "@palpatine awards a barnstar to #{note.author.name} for their awesome contribution!")
+    # undependable: https://github.com/publiclab/plots2/issues/10140
+    # page.find("div.alert-success", text: "You awarded the basic barnstar to #{note.author.name}")
+    assert_selector("p", text: "#{note.author.name} was awarded the Basic Barnstar by palpatine for their work in this research note.")
+    assert_selector(".comment-body p", text: "@palpatine awards a barnstar to #{note.author.name} for their awesome contribution!")
   end
 
 end

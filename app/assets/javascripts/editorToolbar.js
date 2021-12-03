@@ -186,37 +186,39 @@ $(function() {
     e.preventDefault();
   });
 
-  $('#side-dropzone').fileupload({
-    url: "/images",
-    paramName: "image[photo]",
-    dropZone: $('#side-dropzone'),
-    dataType: 'json',
-    formData: {
-      'uid':$D.uid,
-      'nid':$D.nid
-    },
-    start: function(e) {
-      $('.side-dropzone').css('border-color','#ccc');
-      $('.side-dropzone').css('background','none');
-      $('#side-progress').show();
-      $('#side-dropzone').removeClass('hover');
-      $('.side-uploading').show();
-    },
-    done: function (e, data) {
-      $('#side-progress').hide();
-      $('#side-dropzone').show();
-      $('.side-uploading').hide();
-      $('#leadImage')[0].src = data.result.url;
-      $('#leadImage').show();
-      // here append the image id to the note as the lead image
-      $('#main_image').val(data.result.id);
-      $("#image_revision").append('<option selected="selected" id="'+data.result.id+'" value="'+data.result.url+'">Temp Image '+data.result.id+'</option>');
-    },
-    fileuploadfail: function(e, data) {
-      console.log(e);
-    },
-    progressall: function (e, data) {
-      return progressAll('#side-progress .progress-bar', data);
-    }
-  });
+  if (document.hasOwnProperty('$D')) {
+    $('#side-dropzone').fileupload({
+      url: "/images",
+      paramName: "image[photo]",
+      dropZone: $('#side-dropzone'),
+      dataType: 'json',
+      formData: {
+        'uid':$D.uid,
+        'nid':$D.nid
+      },
+      start: function(e) {
+        $('.side-dropzone').css('border-color','#ccc');
+        $('.side-dropzone').css('background','none');
+        $('#side-progress').show();
+        $('#side-dropzone').removeClass('hover');
+        $('.side-uploading').show();
+      },
+      done: function (e, data) {
+        $('#side-progress').hide();
+        $('#side-dropzone').show();
+        $('.side-uploading').hide();
+        $('#leadImage')[0].src = data.result.url;
+        $('#leadImage').show();
+        // here append the image id to the note as the lead image
+        $('#main_image').val(data.result.id);
+        $("#image_revision").append('<option selected="selected" id="'+data.result.id+'" value="'+data.result.url+'">Temp Image '+data.result.id+'</option>');
+      },
+      fileuploadfail: function(e, data) {
+        console.log(e);
+      },
+      progressall: function (e, data) {
+        return progressAll('#side-progress .progress-bar', data);
+      }
+    });
+  }
 });

@@ -3,7 +3,7 @@ on:
   pull_request:
     types: [assigned, opened, synchronize, reopened]
   workflow_run:
-    workflows: ["Upload coverage on PR merge"]
+    workflows: ["Upload coverage on PR merge and create Sentry release"]
     type:
       - complete
 
