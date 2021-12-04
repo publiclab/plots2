@@ -174,13 +174,11 @@ class Editor {
     const previewBtn = $("#toggle-preview-button-" + this.commentFormID);
     const formIdPrefix = this.isSingleFormPage ? "#form-body-" : "#comment-form-body-";
     const commentFormBody = $(formIdPrefix + this.commentFormID);
-    // const toolbar = $('.btn-toolbar')[0];
-    const toolbar = commentFormBody.parentElement.children[3]
+    commentFormBody.parent().children().eq(3).toggle();
 
     this.previewElement[0].innerHTML = marked(this.textAreaValue);
     this.previewElement.toggle();
     commentFormBody.toggle();
-    toolbar.style.display = toolbar.style.display == "none" ? "block" : "none";
 
     this.toggleButtonPreviewMode(previewBtn);
   }
