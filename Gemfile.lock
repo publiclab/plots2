@@ -398,7 +398,7 @@ GEM
     openssl (2.2.1)
       ipaddr
     os (1.1.4)
-    pagy (5.6.3)
+    pagy (5.6.4)
     paperclip (6.1.0)
       activemodel (>= 4.2.0)
       activesupport (>= 4.2.0)
