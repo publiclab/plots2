@@ -166,7 +166,7 @@ module ApplicationHelper
             <i data-toggle='tooltip' data-placement='top' title='Needs translation? Click to help translate the text \" #{translated_string} \" .' style='position:relative; right:2px; color:#bbb; font-size: 15px;' class='fa fa-globe'></i></a>
          </span>))
       else # no translation available but not logged in, so no prompt to translate
-        raw(english_translation)
+        raw(%(<span>#{english_translation}</span>))
       end
     else
       raw(translated_string)
