@@ -186,7 +186,7 @@ $(function() {
     e.preventDefault();
   });
 
-  if (document.hasOwnProperty('$D')) {
+  if (window.hasOwnProperty('$D')) {
     $('#side-dropzone').fileupload({
       url: "/images",
       paramName: "image[photo]",
