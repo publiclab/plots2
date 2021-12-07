@@ -2,6 +2,7 @@ require "application_system_test_case"
 # https://guides.rubyonrails.org/testing.html#implementing-a-system-test
 
 class PostTest < ApplicationSystemTestCase
+  include RSpec::Matchers
   include ActiveJob::TestHelper
   Capybara.default_max_wait_time = 60
 
