@@ -124,7 +124,7 @@ class PostTest < ApplicationSystemTestCase
     find('.preview-btn').click()
 
     # Make sure that image has been uploaded
-    page.assert_selector('#preview-main img', count: 1)
+    expect(page.find('#leadImage')['src']).to have_content 'pl.png'
 
     find('.publish').click()
 
