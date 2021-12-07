@@ -160,10 +160,14 @@ module ApplicationHelper
     translated_string2 = t(key, options)
     english_translation = t(key, locale: :en)
 
-    if html && defined? current_user && current_user&.has_tag('translation-helper') && (translated_string2.include?("translation missing") || translated_string === "") && !translated_string.include?("<")
-      raw(%(<span>#{english_translation} <a class="translationIcon" style='display: none; padding-left: 3px;' href="https://www.transifex.com/publiclab/publiclaborg/translate/#de/$?q=text%3A#{translated_string}">
-          <i data-toggle='tooltip' data-placement='top' title='Needs translation? Click to help translate the text \" #{translated_string} \" .' style='position:relative; right:2px; color:#bbb; font-size: 15px;' class='fa fa-globe'></i></a>
-       </span>))
+    if html && (translated_string2.include?("translation missing") || translated_string === "") && !translated_string.include?("<")
+      if defined? current_user && current_user&.has_tag('translation-helper')
+        raw(%(<span>#{english_translation} <a class="translationIcon" style='display: none; padding-left: 3px;' href="https://www.transifex.com/publiclab/publiclaborg/translate/#de/$?q=text%3A#{translated_string}">
+            <i data-toggle='tooltip' data-placement='top' title='Needs translation? Click to help translate the text \" #{translated_string} \" .' style='position:relative; right:2px; color:#bbb; font-size: 15px;' class='fa fa-globe'></i></a>
+         </span>))
+      else # no translation available but not logged in, so no prompt to translate
+        raw(english_translation)
+      end
     else
       raw(translated_string)
     end
