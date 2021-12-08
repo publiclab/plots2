@@ -174,11 +174,11 @@ class Editor {
     const previewBtn = $("#toggle-preview-button-" + this.commentFormID);
     const formIdPrefix = this.isSingleFormPage ? "#form-body-" : "#comment-form-body-";
     const commentFormBody = $(formIdPrefix + this.commentFormID);
-    commentFormBody.parent().children().eq(3).toggle();
 
     this.previewElement[0].innerHTML = marked(this.textAreaValue);
     this.previewElement.toggle();
     commentFormBody.toggle();
+    commentFormBody.parent().find(".btn-toolbar").toggle();    // toggles comment toolbar
 
     this.toggleButtonPreviewMode(previewBtn);
   }
