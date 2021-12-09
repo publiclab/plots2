@@ -56,6 +56,15 @@
         </a>
       <% end %>
 
+      <li class="nav-item">
+        <a class="nav-link <% if @node_type == "comments" %> active <% end %>" href="/tag/comments/<%= params[:id] %>">
+          <i class="fa fa-comments"></i> 
+          <span class="d-lg-inline">
+            <span class="d-none d-md-inline"><%= raw t('tag.show.comments') %></span>
+          </span>
+        </a>
+      </li>
+
     <% else %>
 
       <% unless params[:id].match("question:") %>
