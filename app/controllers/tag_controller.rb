@@ -516,7 +516,7 @@ class TagController < ApplicationController
     tids = Tag.where(name: params[:id]).collect(&:tid)
     nids = NodeTag.where('tid IN (?)', tids).collect(&:nid)
     @pagy, @comments = pagy(Comment.where(nid: nids).order('timestamp DESC'), items: 24)
-    render template: 'comments/_comments', :locals => { :comments => @comments }
+    render template: 'comments/_comments', locals: { comments: @comments }
   end
 
   private
