@@ -26,8 +26,7 @@
 
             <p><%= project.summary %></p>
 
-            <p><a href="<%= project.path %>">Read more &raquo;</a></p>
-
+            <p><a href="<%= project.path %>"><%= translation('home.home.read_more') %> &raquo;</a></p>
             <div class="people">
               <!-- people most associated with it? editors? pinnable? -->
               <!-- replace authors with 'featured people' or something? -->
@@ -53,7 +52,7 @@
 
       <% end %>
 
-      <p><center><a class="btn btn-outline-secondary" href="/projects">More projects</a></center></p>
+      <p><center><a class="btn btn-outline-secondary" href="/projects"><%= translation('home.home.more_projects') %></a></center></p>
 
     <% end %>
   <% end %>

@@ -1,4 +1,3 @@
-
 <%= form_for @image, :html => { :multipart => true, :class => "col-md-6" } do |f| %>
 
   <h2><%= translation('images.upload_an_image') %></h2>
@@ -9,8 +8,7 @@
 
   <p><%= f.text_field :title, {:placeholder => translation('images.image_title'), :tabindex => 2} %></p>
   <p><%= f.text_field :notes, {:placeholder => translation('images.short_description')} %></p>
-  
-  <p><button class="btn-lg btn-primary" type="submit">Upload</button></p>
+
+  <p><button class="btn-lg btn-primary" type="submit"><%= translation('images.upload') %></button></p> 
 
 <% end %>
-

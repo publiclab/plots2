@@ -426,7 +426,7 @@ en:
       world: "World"
       building: "Building"
       search_name: "Search by place name"
-      coordinates: "Or <a href="#" id="coord_button">by entering coordinates</a>"
+      coordinates: "Or <a href='#' id='coord_button'>by entering coordinates</a>"
       latitude: "Latitude"
       longitude: "Longitude"
       current_location: "Use current location"
@@ -500,6 +500,7 @@ en:
         one: "1 comment"
         other: "%{count} comments"
     show:
+      displaying_content: "Displaying content from"
       notes_tagged: "Notes tagged with <i style=\"color:#aaa;\">%{tag}</i>"
       following: "Following"
       unfollow: "Click to unfollow"
@@ -811,6 +812,9 @@ en:
       remember_me: "Remember me"
       reset_by_clicking_here: "Forgot your password? <a href='%{url1}'>Reset it here</a>"
   home:
+    home:
+      read_more: "Read more"
+      more_projects: "More projects"
     dashboard:
       welcome: "Welcome!"
       need_help: "Need help, want to float an idea, or find collaborators?"
@@ -977,6 +981,7 @@ en:
       consider_sharing: "Consider sharing:"
       what_resources_you_need: "What resources you need"
       where_you_are_working: "Where you are working"
+      help: "Help"
       why_you_are_interested: "Why you are interested"
   home_controller:
     science_community: "a DIY environmental science community"

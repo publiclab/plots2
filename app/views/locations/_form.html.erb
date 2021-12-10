@@ -26,7 +26,7 @@
       </div>
 
       <div class="form-group">
-        Or <a href="#" id="coord_button">by entering coordinates</a>
+        <%= translation('locations.form.coordinates') %>
 
         <div id="coord_input" class="row">
           <div class="col-sm-6">
@@ -73,7 +73,7 @@
       <div class="form-check">
         <label class="form-check-label">
           <input id="obscureLocation" type="checkbox" checked class="form-check-input" onchange='blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);' />
-          Blur my location
+          <%= translation('locations.form.blur_location') %>
         </label>
         <span class="small-description"><a href="https://publiclab.org/location-privacy" target="_blank"><%= translation('locations.form.learn_more') %></a></span>
       </div>

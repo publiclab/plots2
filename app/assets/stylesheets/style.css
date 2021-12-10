@@ -360,6 +360,67 @@ a .fa-white,
 
 /* Styles for specific areas of the site */
 /* Remove blue background on Chrome autocomplete */
+@media(max-width: 768px) {
+  .ple-module-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .ple-module-content .wk-wysiwyg {
+      width: 100%;
+  }
+    
+  .ple-content .wk-commands {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 390px;
+  }
+
+  .ple-content .wk-commands .btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min-width: 50px;
+    height: 38px;
+    background: white;
+    margin: 0px;
+    border-radius: 0 !important;
+    border: 1px solid #ddd;
+    border-left: none;
+  }
+  
+  .ple-content .wk-commands button.btn:nth-of-type(1),
+  .ple-content .wk-commands .btn:nth-of-type(8) {
+      border-left: 1px solid #ddd;
+  }
+  
+  .ple-content .wk-commands .btn:nth-of-type(8),
+  .ple-content .wk-commands .btn:nth-of-type(9),
+  .ple-content .wk-commands .btn:nth-of-type(10),
+  .ple-content .wk-commands a.btn{
+      border-top: 0;
+  }
+
+  .ple-content .wk-switchboard {
+    text-align: center;
+    float: none;
+  }
+}
+
+@media(max-width: 480px) {
+    .ple-content .wk-commands {
+        max-width: 325px;
+    }
+    .ple-content .wk-commands .btn {
+        min-width: 30px;
+        max-width: 43px;
+        width: 100%;
+    }
+}
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
