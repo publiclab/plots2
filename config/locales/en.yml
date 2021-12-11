@@ -978,6 +978,7 @@ en:
     wikiRich:
       new_wiki: "New Wiki Page"
     questionRich:
+      ask: "Ask"
       consider_sharing: "Consider sharing:"
       what_resources_you_need: "What resources you need"
       where_you_are_working: "Where you are working"
