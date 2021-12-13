@@ -1061,6 +1061,8 @@ en:
       email you registered with."
     image_saved: "Image saved."
     image_not_saved: "The image could not be saved."
+    image_deleted: "Profile photo was deleted successfully!"
+    image_not_deleted: "Profile photo could not be deleted"
     preference_saved: "Your preference has been saved"
     something_went_wrong: "Something went wrong, Please try again"
   user_sessions_controller:

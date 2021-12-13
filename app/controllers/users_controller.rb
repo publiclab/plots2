@@ -316,6 +316,21 @@ class UsersController < ApplicationController
     end
   end
 
+  def delete_photo
+    @user = User.find_by(id: params[:id])
+    if current_user.uid == @user.uid || current_user.admin?
+      @user.photo = nil
+      if @user.save!
+        flash[:notice] = I18n.t('users_controller.image_deleted')
+      else
+        flash[:error] = I18n.t('users_controller.image_not_deleted')
+      end
+    else
+      flash[:error] = I18n.t('users_controller.image_not_deleted')
+    end
+    redirect_to  "/profile/" + @user.username + "/edit"
+  end
+
   def info; end
 
   # content this person follows
