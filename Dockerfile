@@ -18,9 +18,9 @@ RUN echo \
 # Install dependencies
 ADD nodesource.gpg.key /tmp/nodesource.gpg.key
 RUN apt-key add /tmp/nodesource.gpg.key && apt-get update -qq \
-    && apt-get install --no-install-recommends -y apt build-essential libmariadbclient-dev \
+    && apt-get install --no-install-recommends -y build-essential libmariadbclient-dev \
                 wget curl procps cron make nodejs unzip \
-                apt-transport-https libfreeimage3 \
+                libfreeimage3 \
     && npm install -g yarn
 
 
