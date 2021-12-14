@@ -191,17 +191,19 @@ jobs:
 
   screenshots_link:
     name: Comment screenshots link
-    needs: system-tests
+    #needs: system-tests
     runs-on: ubuntu-latest
     steps:
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-      - name: Comment with a link to download screenshots
-        uses: thollander/actions-comment-pull-request@v1
+      - uses: actions/github-script@v5
         if: github.event_name == 'pull_request'
         with:
-          message: "This pull request generated screenshots of many common pages in the running app. You should be able to download and view them here: ${{ github.run_id }}"
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "This pull request generated screenshots of many common pages in the running app. You should be able to download and view them here: ${{ context.run_id }}"
+            })
 
   remove-labels:
     runs-on: ubuntu-latest
