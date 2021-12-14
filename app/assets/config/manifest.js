@@ -5,6 +5,7 @@
 //= link application.css
 //= link application.js
 //= link location_tags.css
+//= link user_tags.css
 //
 //= link editorToolbar.js
 //= link post.js
