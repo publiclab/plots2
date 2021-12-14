@@ -202,7 +202,7 @@ jobs:
               context.repo.owner,
               context.repo.repo,
             }).then((response) => {
-              suite_check_id = github.check_suite_id
+              check_suite_id = github.check_suite_id
               artifact_id = response.data.artifacts[0].id
               github.rest.issues.createComment({
                 issue_number: context.issue.number,
