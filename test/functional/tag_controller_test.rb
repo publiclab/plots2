@@ -685,4 +685,13 @@ class TagControllerTest < ActionController::TestCase
 
     assert_equal 'mytag', assigns[:tags].last.name
   end
+
+  test 'should render comments template with all comments of tagname ' do
+    get :comments, params: {
+      id: 'blog'
+    }
+    assert_response :success
+    assert_not_nil comments
+    assert_template 'comments/_comments'
+  end
 end
