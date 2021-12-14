@@ -449,8 +449,9 @@ class Node < ActiveRecord::Base
     all_tags = tags.select { |tag| !tag.name.include?(':') }
     tids = all_tags.collect(&:tid)
     if order == :followers
-      tags = NodeTag.where('nid = ? AND tid IN (?)', id, tids)
-        .order('count DESC')
+      tags = NodeTag.where('nid = ? AND term_data.tid IN (?)', id, tids)
+        .joins(:tag)
+        .order(count: :desc)
     else
       tags = NodeTag.where('nid = ? AND tid IN (?)', id, tids)
     end
