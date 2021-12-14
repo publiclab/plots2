@@ -198,7 +198,7 @@ jobs:
         if: github.event_name == 'pull_request'
         with:
           script: |
-            artifacts = await octokit.rest.actions.listArtifactsForRepo({
+            const artifacts = await octokit.rest.actions.listArtifactsForRepo({
               context.repo.owner,
               context.repo.repo,
             }
