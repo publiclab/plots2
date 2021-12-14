@@ -29,11 +29,14 @@
     </p>
     <br class="d-md-none d-lg-inline" />
   </div>
-  <div style="float:right; margin-top:-58px;">
-    <%= link_to "/profile/photo/delete/"+current_user.uid.to_s, method: :delete, class: "btn btn-default" do %>
-      <i class="fa fa-trash"></i>
-    <% end %>
-  </div>
+  <% if current_user.photo.exists? %>
+    <div style="float:right; margin-right:5px; margin-top:-63px;">
+      <%= link_to "/profile/photo/delete/"+current_user.uid.to_s, method: :delete, class: "btn btn-default",
+      data: { confirm: "Are you sure you want to delete the profile photo?"} do %>
+        <i class="fa fa-trash"></i>
+      <% end %>
+    </div>
+  <% end %>
   <input id="profile-fileinput" type="file" name="image[photo]" >
 
 <div id="profile-progress" style="display:none;" class="progress">
