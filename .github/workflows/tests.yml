@@ -198,11 +198,18 @@ jobs:
         if: github.event_name == 'pull_request'
         with:
           script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: "This pull request generated screenshots of many common pages in the running app. You should be able to download and view them here: ${{ github.run_id }}"
+            artifacts = octokit.rest.actions.listArtifactsForRepo({
+              context.repo.owner,
+              context.repo.repo,
+            }).then((response) => {
+              suite_check_id = github.check_suite_id
+              artifact_id = response.data.artifacts[0].id
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: "This pull request generated screenshots of many common pages in the running app. You should be able to download and view them here: https://github.com/publiclab/plots2/suites/${{ check_suite_id }}/artifacts/${{ artifact_id }}"
+              })
             })
 
   remove-labels:
