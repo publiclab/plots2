@@ -99,6 +99,8 @@ class TagController < ApplicationController
                   'map'
                 elsif @node_type == 'contributors'
                   'contributor'
+                elsif @node_type == 'comments'
+                  'comments'
                 end
 
     if params[:id][-1..-1] == '*' # wildcard tags
@@ -508,6 +510,13 @@ class TagController < ApplicationController
       .where(nid: Node.find_by_tag(tagname))
     @answers = total_questions.joins(:comments).size.size
     @questions = total_questions.size.size
+  end
+
+  def comments
+    tids = Tag.where(name: params[:id]).collect(&:tid)
+    nids = NodeTag.where('tid IN (?)', tids).collect(&:nid)
+    @pagy, @comments = pagy(Comment.where(nid: nids).order('timestamp DESC'), items: 24)
+    render template: 'comments/_comments', locals: { comments: @comments }
   end
 
   private

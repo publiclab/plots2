@@ -66,7 +66,7 @@
               <a style="text-decoration:underline;color:#808080;display:inline-block;" href="/wiki/<%= tag_name %>"><%= wiki_count %><% if wiki_count > 1 %> <%= translation('tag.index.wiki').pluralize %> <% else %> <%= translation('tag.index.wiki') %> <% end %></a>
               <% if latest_activity_nid&.start_with?('c') %>
                 |
-                &#8226; <a style="text-decoration:underline;color:#808080;display:inline-block;" href="/comments/"> <%= translation('dashboard_v2.dashboard.new_comment')%></a>
+                &#8226; <a style="text-decoration:underline;color:#808080;display:inline-block;" href="/tag/comments/<%= tag_name %>"> <%= translation('dashboard_v2.dashboard.new_comment')%></a>
               <% end %>
               <div id="new-post" style="float:right;margin:10px 0 10px 10px;">
                 <% if current_user %>
