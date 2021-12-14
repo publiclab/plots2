@@ -129,9 +129,6 @@ class TagController < ApplicationController
                  'node_revisions.timestamp DESC'
                end
 
-    @pagy, nodes = pagy(nodes.order(order_by), items: 24)
-    @paginated = true
-
     @qids = Node.questions.where(status: 1)
                .collect(&:nid)
     if @qids.empty?
@@ -141,6 +138,9 @@ class TagController < ApplicationController
       @notes = nodes.where('node.nid NOT IN (?)', @qids) if @node_type == 'note'
       @questions = nodes.where('node.nid IN (?)', @qids) if @node_type == 'questions'
     end
+    
+    @pagy, nodes = pagy(nodes.order(order_by), items: 24)
+    @paginated = true
 
     @wikis = nodes if @node_type == 'wiki'
     @wikis ||= []
