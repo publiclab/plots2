@@ -449,9 +449,12 @@ class Node < ActiveRecord::Base
     all_tags = tags.select { |tag| !tag.name.include?(':') }
     tids = all_tags.collect(&:tid)
     if order == :followers
-      tags = NodeTag.where('nid = ? AND term_data.tid IN (?)', id, tids)
-        .joins(:tag)
-        .order(count: :desc)
+     tags = NodeTag.where(nid: id)
+       .where(tid: tids)
+       .joins(:tag)
+       .joins("LEFT OUTER JOIN tag_selections ON term_data.tid = tag_selections.tid") 
+       .order(Arel.sql('count(tag_selections.user_id) DESC')) 
+       .group('community_tags.tid, community_tags.uid, community_tags.date, community_tags.created_at, community_tags.updated_at') 
     else
       tags = NodeTag.where('nid = ? AND tid IN (?)', id, tids)
     end
