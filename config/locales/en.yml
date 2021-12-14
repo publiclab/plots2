@@ -500,6 +500,7 @@ en:
         one: "1 comment"
         other: "%{count} comments"
     show:
+      displaying_content: "Displaying content from"
       notes_tagged: "Notes tagged with <i style=\"color:#aaa;\">%{tag}</i>"
       following: "Following"
       unfollow: "Click to unfollow"
@@ -977,6 +978,7 @@ en:
     wikiRich:
       new_wiki: "New Wiki Page"
     questionRich:
+      ask: "Ask"
       consider_sharing: "Consider sharing:"
       what_resources_you_need: "What resources you need"
       where_you_are_working: "Where you are working"
