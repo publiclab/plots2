@@ -202,12 +202,11 @@ jobs:
               context.repo.owner,
               context.repo.repo,
             }).then((response) => {
-              let artifact_id = response.data.artifacts[0].id
               github.rest.issues.createComment({
                 issue_number: context.issue.number,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                body: "This pull request generated screenshots of many common pages in the running app. You should be able to download and view them here: https://github.com/publiclab/plots2/suites/${{ github.check_suite_id }}/artifacts/${ artifact_id }"
+                body: "This pull request generated screenshots of many common pages in the running app. You should be able to download and view them here: https://github.com/publiclab/plots2/suites/${{ github.check_suite_id }}/artifacts/${{ fromJSON(response.data.artifacts[0].id) }}"
               })
             })
 
