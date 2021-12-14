@@ -202,7 +202,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: "This pull request generated screenshots of many common pages in the running app. You should be able to download and view them here: ${{ context.run_id }}"
+              body: "This pull request generated screenshots of many common pages in the running app. You should be able to download and view them here: ${{ github.run_id }}"
             })
 
   remove-labels:
