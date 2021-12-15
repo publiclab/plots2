@@ -191,7 +191,7 @@ jobs:
 
   screenshots_link:
     name: Comment screenshots link
-    needs: system-tests
+    needs: [system-tests, comment-system-tests]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v5
