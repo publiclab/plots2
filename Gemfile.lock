@@ -97,8 +97,8 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
-    composite_primary_keys (11.2.0)
-      activerecord (~> 5.2.1)
+    composite_primary_keys (11.3.1)
+      activerecord (~> 5.2.4)
     concurrent-ruby (1.1.9)
     connection_pool (2.2.5)
     crack (0.4.5)
@@ -340,7 +340,7 @@ GEM
       rake
     mini_mime (1.1.2)
     mini_portile2 (2.6.1)
-    minitest (5.14.4)
+    minitest (5.15.0)
     minitest-reporters (1.4.3)
       ansi
       builder
