@@ -206,8 +206,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: artifacts.data.artifacts[0].id
-#              body: "This pull request generated screenshots of many common pages in the running app. You should be able to download and view them here: https://github.com/publiclab/plots2/suites/${{ github.check_suite_id }}/artifacts/" + await artifacts.data.artifacts[0].id
+              body: artifacts.data.artifacts[0].id // "This pull request generated screenshots of many common pages in the running app. You should be able to download and view them here: https://github.com/publiclab/plots2/suites/${{ github.check_suite_id }}/artifacts/" + await artifacts.data.artifacts[0].id
             })
 
   remove-labels:
