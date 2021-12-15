@@ -194,6 +194,10 @@ jobs:
     #needs: system-tests
     runs-on: ubuntu-latest
     steps:
+      - name: View context attributes
+        uses: actions/github-script@v5
+        with:
+          script: console.log(context)
       - uses: actions/github-script@v5
         if: github.event_name == 'pull_request'
         with:
