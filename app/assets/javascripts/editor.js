@@ -178,6 +178,7 @@ class Editor {
     this.previewElement[0].innerHTML = marked.parse(this.textAreaValue);
     this.previewElement.toggle();
     commentFormBody.toggle();
+    commentFormBody.parent().find(".btn-toolbar").toggle();    // toggles comment toolbar
 
     this.toggleButtonPreviewMode(previewBtn);
   }
