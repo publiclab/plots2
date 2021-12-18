@@ -1,7 +1,7 @@
 # Dockerfile # Plots2
 # https://github.com/publiclab/plots2
 
-FROM ruby:2.6.6-stretch
+FROM ruby:2.7.3-buster
 
 LABEL description="This image deploys Plots2."
 
@@ -18,9 +18,9 @@ RUN echo \
 # Install dependencies
 ADD nodesource.gpg.key /tmp/nodesource.gpg.key
 RUN apt-key add /tmp/nodesource.gpg.key && apt-get update -qq \
-    && apt-get install --no-install-recommends -y build-essential libmariadbclient-dev \
+    && apt-get install --no-install-recommends -y apt build-essential libmariadbclient-dev \
                 wget curl procps cron make nodejs unzip \
-                apt-transport-https libfreeimage3 \
+                libfreeimage3 \
     && npm install -g yarn
 
 

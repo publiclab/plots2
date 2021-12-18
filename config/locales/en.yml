@@ -530,6 +530,7 @@ en:
       notes_not_available: "This topic has no available notes. View other posts by clicking the link below."
       by: "by"
       new_post: "New post"
+      comments: "Comments"
     contributors-index:
       contributors_over_last_week: "Contributors for <i style=\"color:#aaa;\">%{tag_name}</i>
         over the past 52 weeks"
