@@ -1,10 +1,8 @@
 name: Leave comment with artifacts link 
 on:
   workflow_run:
-    workflows:
-      - tests
-    types:
-      - complete
+    workflows: ["tests"]
+    types: [completed]
 
 jobs:
   screenshots_link:
