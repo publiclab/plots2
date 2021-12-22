@@ -378,4 +378,37 @@ class UsersControllerTest < ActionController::TestCase
     assert_redirected_to '/login'
     assert_match 'You should receive an email with instructions on how to reset your password. If you do not, please double check that you are using the email you',flash[:notice]
   end
+
+  test 'should delete profile photo' do
+    user = users(:bob)
+    UserSession.create(user)
+    user.photo = File.new("test/fixtures/rails.png")
+    user.save
+    delete :delete_photo, params: { id: user.id }
+    assert_not user.photo.exists?
+    assert_equal I18n.t('users_controller.image_deleted'), flash[:notice]
+    assert_redirected_to '/profile/' + user.name + '/edit'
+  end
+  
+  test 'admin should delete profile photo of normal user' do
+    UserSession.create(users(:jeff))
+    user = users(:bob)
+    user.photo = File.new("test/fixtures/rails.png")
+    user.save
+    delete :delete_photo, params: { id: user.id }
+    assert_not user.photo.exists?
+    assert_equal I18n.t('users_controller.image_deleted'), flash[:notice]
+    assert_redirected_to '/profile/' + user.name + '/edit'
+  end
+  
+  test 'normal user should not delete profile photo of other users' do
+    UserSession.create(users(:bob))
+    user = users(:jeff)
+    user.photo = File.new("test/fixtures/rails.png")
+    user.save
+    delete :delete_photo, params: { id: user.id }
+    assert user.photo.exists?
+    assert_equal I18n.t('users_controller.image_not_deleted'), flash[:error]
+    assert_redirected_to '/profile/' + user.name + '/edit'
+  end
 end
