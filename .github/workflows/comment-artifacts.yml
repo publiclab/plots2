@@ -4,7 +4,7 @@ on:
     workflows:
       - tests
     types:
-      - completed
+      - complete
 
 jobs:
   screenshots_link:
