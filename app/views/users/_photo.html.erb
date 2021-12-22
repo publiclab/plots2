@@ -29,6 +29,14 @@
     </p>
     <br class="d-md-none d-lg-inline" />
   </div>
+  <% if current_user.photo.exists? %>
+    <div style="float:right; margin-right:5px; margin-top:-63px;">
+      <%= link_to "/profile/photo/delete/"+current_user.uid.to_s, method: :delete, class: "btn btn-default",
+      data: { confirm: "Are you sure you want to delete the profile photo?"} do %>
+        <i class="fa fa-trash"></i>
+      <% end %>
+    </div>
+  <% end %>
   <input id="profile-fileinput" type="file" name="image[photo]" >
 
 <div id="profile-progress" style="display:none;" class="progress">
@@ -75,7 +83,7 @@
       $('#profile-photo')[0].src = data.result.url
       $('#profile-pic')[0].src = data.result.url
       notyNotification('sunset', 3000, 'success', 'topRight', 'Profile photo was uploaded successfully!');
-
+      location.reload();
       
     },
     // see callbacks at https://github.com/blueimp/jQuery-File-Upload/wiki/Options
