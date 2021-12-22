@@ -513,10 +513,13 @@ class TagController < ApplicationController
   end
 
   def comments
+    fetch_counts 
+
     tids = Tag.where(name: params[:id]).collect(&:tid)
     nids = NodeTag.where('tid IN (?)', tids).collect(&:nid)
     @pagy, @comments = pagy(Comment.where(nid: nids).order('timestamp DESC'), items: 24)
-    render template: 'comments/_comments', locals: { comments: @comments }
+    @node_type = "comments"
+    render 'show', locals: { comments: @comments } 
   end
 
   private

@@ -1,7 +1,7 @@
 <div class="node-types" style="margin-bottom:8px;">
   <ul class="nav nav-tabs" aria-labelledby="dropdownMenuButton">
 
-    <% if params[:action] == "show" %>
+    <% if params[:action] == "show" || params[:action] == "comments" %>
       <% unless params[:id].match("question:") %>
         <li class="nav-item">
           <a class="nav-link <% if @node_type == "note" %> active<% end %>" href="/tag/<%= params[:id] %>">
@@ -45,7 +45,7 @@
             <i class="fa fa-user"></i> 
             <span class="d-lg-inline">
               <span class="d-none d-lg-inline"><%= raw t('tag.show.people') %></span>
-              <span class="d-none d-sm-inline badge badge-primary"><%= @contributor_count %></span>
+              <span class="d-none d-sm-inline badge badge-primary"><%= @contributor_count || 0 %></span>
             </span>
           </a>
         </li>
@@ -93,6 +93,16 @@
           <i class="fa fa-user"></i> <span class="d-lg-inline"><%= raw t('tag.show.contributors') %></span>
         </a>
       </li>
+
+      <li class="nav-item">
+        <a class="nav-link <% if @node_type == "comments" %> active <% end %>" href="/tag/comments/<%= params[:id] %>">
+          <i class="fa fa-comments"></i> 
+          <span class="d-lg-inline">
+            <span class="d-none d-md-inline"><%= raw t('tag.show.comments') %></span>
+          </span>
+        </a>
+      </li>
+      
     <% end %>
   </ul>
 </div>
