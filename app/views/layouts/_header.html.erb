@@ -112,7 +112,7 @@
           </li>
         <% else %>
         <li class="d-md-none d-xl-inline nav-item"> <!-- signup button -->
-          <a rel="tooltip" class="nav-link signupToggle" title="<%= t('layout._header.become_part_community') %>" href="#">
+          <a rel="tooltip" class="nav-link <% unless current_page?('/signup') %> signupToggle <% end %>" title="<%= t('layout._header.become_part_community') %>" href="#">
             <%= t('layout._header.join') %>
           </a>
         </li>
@@ -192,7 +192,7 @@
               </li>
             <% else %> <!-- Login button -->
                 <li class="nav-item">
-                    <a class="nav-link loginToggle" href="#">
+                    <a class="nav-link <% unless current_page?('/login') %> loginToggle <% end %>" href="#">
                     <%= t('layout._header.login.login_title') %>
                     </a>
                 </li>
