@@ -284,7 +284,6 @@ GEM
       i18n (>= 0.6.6)
     impressionist (1.6.1)
       nokogiri (~> 1)
-    ipaddr (1.2.3)
     jasmine-core (3.4.0)
     jasmine-jquery-rails (2.0.3)
     jasmine-rails (0.15.0)
@@ -394,8 +393,7 @@ GEM
     omniauth-twitter (1.4.0)
       omniauth-oauth (~> 1.1)
       rack
-    openssl (2.2.1)
-      ipaddr
+    openssl (3.0.0)
     os (1.1.4)
     pagy (5.6.6)
     paperclip (6.1.0)
@@ -733,7 +731,7 @@ DEPENDENCIES
   omniauth-github (~> 1.4)
   omniauth-google-oauth2
   omniauth-twitter
-  openssl (~> 2.2.1)
+  openssl (~> 3.0.0)
   pagy (>= 3.8.3)
   paperclip (~> 6.1.0)
   passenger
