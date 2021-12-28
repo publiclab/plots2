@@ -12,12 +12,16 @@
         <div class="clearfix"> <!-- clearfix class allows the modal to expand to fit the content of this div -->
           <div id="signupContainer">
             <!-- signup partial -->
+            <% unless current_page?('/signup') %>
             <%= render partial: "users/create_form" , locals: {caller: "modal"} %>
+            <% end %>
           </div>
 
           <div id="loginContainer">
             <!-- login partial -->
+            <% unless current_page?('/login') %>
             <%= render partial: "user_sessions/form" %>
+            <% end %>
           </div>
         </div>
 
