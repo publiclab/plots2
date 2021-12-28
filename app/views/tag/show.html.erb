@@ -164,8 +164,9 @@
   <div class="box">
     <div class="row">
       <div class="col-md-12">
-
-        <%= render partial: 'tag/show/contributors' %>
+        <% unless @node_type == 'comments' %>
+          <%= render partial: 'tag/show/contributors' %>
+        <% end %>
         <%= render partial: 'tag/show/sort' %>
         <%= render partial: 'tag/show/nav_tabs' %>
         <%= render partial: 'tag/show/tab_content' %>
