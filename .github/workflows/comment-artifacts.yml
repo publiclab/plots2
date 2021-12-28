@@ -16,6 +16,7 @@ jobs:
         if: github.event_name == 'pull_request'
         with:
           script: |
+            console.log(github.event.workflow_run);
             const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
               owner: context.repo.owner,
               repo: context.repo.repo,
