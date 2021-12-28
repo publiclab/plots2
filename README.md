@@ -9,9 +9,14 @@ PublicLab.org
 [![codecov](https://codecov.io/gh/publiclab/plots2/branch/main/graph/badge.svg)](https://codecov.io/gh/publiclab/plots2)
 [![View performance data on Skylight](https://badges.skylight.io/typical/GZDPChmcfm1Q.svg)](https://oss.skylight.io/app/applications/GZDPChmcfm1Q)
 [![Newcomers welcome](https://img.shields.io/badge/newcomers-welcome-pink.svg)](https://code.publiclab.org) [![GitHub license](https://img.shields.io/github/license/publiclab/plots2?logo=gpl)](https://github.com/publiclab/plots2/blob/main/LICENSE)
+<<<<<<< HEAD
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/publiclab/plots2/)
 
 The content management system for the Public Lab research community, the `plots2` web application is a combination of a group research blog -what we call "research notes"-and a wiki. Read more about the [data model here](https://github.com/publiclab/plots2/blob/main/doc/DATA_MODEL.md).
+=======
+
+The content management system for the Public Lab research community, the `plots2` web application is a combination of a group research blog of what we call "research notes" and a wiki. Read more about the [data model here](https://github.com/publiclab/plots2/blob/main/doc/DATA_MODEL.md).
+>>>>>>> a21d7e41 (more master => main changes (#8096))
 
 Begin running (and contributing to) this codebase immediately with [GitPod](https://gitpod.io):
 
@@ -213,7 +218,11 @@ Adding `bundle exec` ensures you're using the version of passenger you just inst
 
 ## Reply-by-email
 
+<<<<<<< HEAD
 Public Lab now supports "reply by email to comment" feature. For more details, go to the [email documentation](https://github.com/publiclab/plots2/blob/main/doc/EMAIL.md)
+=======
+Public Lab now supports reply by email to comment feature. For more details regarding it go to the [email documentation](https://github.com/publiclab/plots2/blob/main/doc/EMAIL.md)
+>>>>>>> a21d7e41 (more master => main changes (#8096))
 
 
 ## Bugs and support
@@ -225,7 +234,11 @@ For urgent requests, email web@publiclab.org
 
 ## Recaptcha
 
+<<<<<<< HEAD
 This application uses RECAPTCHA via the recaptcha gem in production only. For more information, [click here](https://github.com/publiclab/plots2/blob/main/doc/RECAPTCHA.md).
+=======
+This application uses RECAPTCHA via the recaptcha gem in production only. For more information, click [here](https://github.com/publiclab/plots2/blob/main/doc/RECAPTCHA.md).
+>>>>>>> a21d7e41 (more master => main changes (#8096))
 
 ## Internationalization
 
@@ -264,8 +277,8 @@ Help improve Public Lab software!
 =======
 * Review specific contributor guidelines at http://publiclab.org/wiki/contributing-to-public-lab-software 
 * Try out some supportive tasks https://github.com/publiclab/plots2/wiki/Supportive-Tasks
-* Get involved with our weekly community check-ins. For guidelines: [https://github.com/publiclab/plots2/tree/master/doc/CHECKINS.md
-](https://github.com/publiclab/plots2/tree/master/doc/CHECKINS.md)
+* Get involved with our weekly community check-ins. For guidelines: [https://github.com/publiclab/plots2/tree/main/doc/CHECKINS.md
+](https://github.com/publiclab/plots2/tree/main/doc/CHECKINS.md)
 * You can help us by opening first timers issues or fto. The template for opening an issue can be found https://docs.google.com/document/d/1dO-CAgModEGM5cOaMmcnBh2pEON0hv_rH3P2ou2r1eE/edit 
 >>>>>>> b70cbefa (Update README.md (#9657))
 
