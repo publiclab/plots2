@@ -1,7 +1,7 @@
 <div class="node-types" style="margin-bottom:8px;">
   <ul class="nav nav-tabs" aria-labelledby="dropdownMenuButton">
 
-    <% if params[:action] == "show" %>
+    <% if params[:action] == "show" || params[:action] == "comments"%>
       <% unless params[:id].match("question:") %>
         <li class="nav-item">
           <a class="nav-link <% if @node_type == "note" %> active<% end %>" href="/tag/<%= params[:id] %>">
