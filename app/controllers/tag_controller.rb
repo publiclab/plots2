@@ -85,7 +85,7 @@ class TagController < ApplicationController
     end
     @node = @wiki # expose the wiki node in the @node variable so we get open graph meta tags in the layout
 
-    default_type = params[:id].match?('question:') ? 'questions' : 'note'
+    default_type = params[:id]&.match?('question:') ? 'questions' : 'note'
 
     @node_type = params[:node_type] || default_type
     @start = Time.parse(params[:start]) if params[:start]
