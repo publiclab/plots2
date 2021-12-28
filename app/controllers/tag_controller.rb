@@ -519,7 +519,7 @@ class TagController < ApplicationController
     nids = NodeTag.where('tid IN (?)', tids).collect(&:nid)
     @pagy, @comments = pagy(Comment.where(nid: nids).order('timestamp DESC'), items: 24)
     @node_type = "comments"
-    render 'show', locals: { comments: @comments }
+    render 'show'
   end
 
   private
