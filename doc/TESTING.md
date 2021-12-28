@@ -174,6 +174,7 @@ But, don't worry, feel free to ping @publiclab/maintainers on your open PR to re
 3. See build progress at https://jenkins.laboratoriopublico.org/job/Plots-Unstable/. It takes 8-15 mins for build to complete. 
 4. Test website: https://unstable.publiclab.org/. 
 
+<<<<<<< HEAD
 
 ### Stable Server
 
@@ -194,3 +195,6 @@ After some time (usually a week or two), one of the maintainers deploys the code
 
 ## Build Status
 You can monitor all the buils at [Jenkins](https://jenkins.laboratoriopublico.org/)
+=======
+Once your PR is merged into plots2/main, code is only deployed to the live site [publiclab.org](publiclab.org) after some time by our maintainers. (They often send a message in our chatroom to notify contributors of this update). Fortunately, you can see your changes implemented immediately at https://stable.publiclab.org, which builds from the main branch. This is useful for testing your work again after a merge.
+>>>>>>> a21d7e41 (more master => main changes (#8096))
