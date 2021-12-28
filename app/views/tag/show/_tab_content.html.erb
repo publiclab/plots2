@@ -61,7 +61,7 @@
 
   <% if @node_type == "comments" %>
     <div class="tab-pane active" id="comments">
-      <%= render partial: "comments/comments" %>
+      <%= render partial: "comments/comments", locals: {comments: @comments} %>
     </div>
   <% end %>
   
