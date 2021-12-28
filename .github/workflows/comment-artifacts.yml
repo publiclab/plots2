@@ -13,7 +13,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/github-script@v5
-        if: github.event_name == 'pull_request'
         with:
           script: |
             console.log(github.event.workflow_run);
