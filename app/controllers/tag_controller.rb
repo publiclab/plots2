@@ -509,7 +509,19 @@ class TagController < ApplicationController
 
   def comments
     get_wiki_title
+    @qids = Node.questions.where(status: 1).collect(&:nid)
+    @wildcard = true if params[:id][-1..-1] == '*' # wildcard tags
     fetch_counts
+    if params[:id].is_a? Integer
+      @wiki = Node.find(params[:id])&.first
+    elsif params[:id].to_s.match?(":")
+      @wiki = Node.where(slug: params[:id].match('[^:]*$').to_s).try(:first)
+    else
+      @wiki = Node.where(path: "/wiki/#{params[:id]}").try(:first) || Node.where(path: "/#{params[:id]}").try(:first)
+      @wiki = Node.where(slug: @wiki.power_tag('redirect'))&.first if @wiki&.has_power_tag('redirect') # use a redirected wiki page if it exists
+    end
+    @title = params[:id]
+    @contributor_count = Tag.contributor_count(params[:id]) || 0
     @title = params[:id]
     tids = Tag.where(name: params[:id]).collect(&:tid)
     nids = NodeTag.where('tid IN (?)', tids).collect(&:nid)
