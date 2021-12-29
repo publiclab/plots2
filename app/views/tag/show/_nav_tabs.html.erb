@@ -95,7 +95,7 @@
       </li>
 
       <li class="nav-item">
-        <a class="nav-link <% if @node_type == "comments" %> active <% end %>" href="/tag/comments/<%= params[:id] %>">
+        <a class="nav-link <% if @node_type == "comments" %> active <% end %>" href="#" rel="tooltip" title="Comments can't be listed for tag searches with Authors">
           <i class="fa fa-comments"></i> 
           <span class="d-lg-inline">
             <span class="d-none d-md-inline"><%= raw t('tag.show.comments') %></span>
