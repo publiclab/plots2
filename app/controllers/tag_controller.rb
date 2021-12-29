@@ -514,7 +514,6 @@ class TagController < ApplicationController
     get_wiki
     @title = params[:id]
     @contributor_count = Tag.contributor_count(params[:id]) || 0
-    @title = params[:id]
     tids = Tag.where(name: params[:id]).collect(&:tid)
     nids = NodeTag.where('tid IN (?)', tids).collect(&:nid)
     @pagy, @comments = pagy(Comment.where(nid: nids).order('timestamp DESC'), items: 24)
