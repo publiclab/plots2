@@ -75,14 +75,8 @@ class TagController < ApplicationController
   end
 
   def show
-    if params[:id].is_a? Integer
-      @wiki = Node.find(params[:id])&.first
-    elsif params[:id].to_s.match?(":")
-      @wiki = Node.where(slug: params[:id].match('[^:]*$').to_s).try(:first)
-    else
-      @wiki = Node.where(path: "/wiki/#{params[:id]}").try(:first) || Node.where(path: "/#{params[:id]}").try(:first)
-      @wiki = Node.where(slug: @wiki.power_tag('redirect'))&.first if @wiki&.has_power_tag('redirect') # use a redirected wiki page if it exists
-    end
+    get_wiki_title
+
     @node = @wiki # expose the wiki node in the @node variable so we get open graph meta tags in the layout
 
     default_type = params[:id]&.match?('question:') ? 'questions' : 'note'
@@ -514,7 +508,9 @@ class TagController < ApplicationController
   end
 
   def comments
+    get_wiki_title
     fetch_counts
+    @title = params[:id]
     tids = Tag.where(name: params[:id]).collect(&:tid)
     nids = NodeTag.where('tid IN (?)', tids).collect(&:nid)
     @pagy, @comments = pagy(Comment.where(nid: nids).order('timestamp DESC'), items: 24)
@@ -529,6 +525,17 @@ class TagController < ApplicationController
       params[:order].blank? || (params[:order] == "desc") ? "count DESC" : "count ASC"
     else
       params[:order].blank? || (params[:order] == "desc") ? "name DESC" : "name ASC"
+    end
+  end
+
+  def get_wiki_title
+    if params[:id].is_a? Integer
+      @wiki = Node.find(params[:id])&.first
+    elsif params[:id].to_s.match?(":")
+      @wiki = Node.where(slug: params[:id].match('[^:]*$').to_s).try(:first)
+    else
+      @wiki = Node.where(path: "/wiki/#{params[:id]}").try(:first) || Node.where(path: "/#{params[:id]}").try(:first)
+      @wiki = Node.where(slug: @wiki.power_tag('redirect'))&.first if @wiki&.has_power_tag('redirect') # use a redirected wiki page if it exists
     end
   end
 
