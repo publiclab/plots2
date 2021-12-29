@@ -75,7 +75,7 @@ class TagController < ApplicationController
   end
 
   def show
-    get_wiki_title
+    get_wiki
 
     @node = @wiki # expose the wiki node in the @node variable so we get open graph meta tags in the layout
 
@@ -508,7 +508,7 @@ class TagController < ApplicationController
   end
 
   def comments
-    get_wiki_title
+    get_wiki
     @qids = Node.questions.where(status: 1).collect(&:nid)
     @wildcard = true if params[:id][-1..-1] == '*' # wildcard tags
     fetch_counts
@@ -540,7 +540,7 @@ class TagController < ApplicationController
     end
   end
 
-  def get_wiki_title
+  def get_wiki
     if params[:id].is_a? Integer
       @wiki = Node.find(params[:id])&.first
     elsif params[:id].to_s.match?(":")
