@@ -395,7 +395,7 @@ GEM
       rack
     openssl (3.0.0)
     os (1.1.4)
-    pagy (5.6.6)
+    pagy (5.6.8)
     paperclip (6.1.0)
       activemodel (>= 4.2.0)
       activesupport (>= 4.2.0)
