@@ -65,13 +65,27 @@ class Tag < ApplicationRecord
     tag = Tag.where(name: tagname).first
     return [] if tag.nil?
 
-    nodes = tag.node.includes(:revision, :comments).where(status: 1)
-    uids = nodes.collect(&:uid)
+    nodes = tag.node
+      .includes(:revision, :comments)
+      .order(created: :desc)
+      .where(status: 1)
+    uids = nodes.pluck(:uid, :created)
     nodes.each do |n|
-      uids += n.comments.where(timestamp: start.to_i..finish.to_i).collect(&:uid)
-      uids += n.revision.where(timestamp: start.to_i..finish.to_i).collect(&:uid)
+      uids += n.comments
+        .where(timestamp: start.to_i..finish.to_i)
+        .order(timestamp: :desc)
+        .pluck(:uid, :timestamp)
+      uids += n.revision
+        .where(timestamp: start.to_i..finish.to_i)
+        .order(timestamp: :desc)
+        .pluck(:uid, :timestamp)
     end
-    uids = uids.uniq
+    uids.sort_by do |t|
+      timestamp = t.timestamp || t.created # try sorting by .timestamp, but if it doesn't exist (as for nodes) fall back to .created
+      -timestamp
+    end
+    uids = uids.uniq(&:uid) # eliminate those without unique uids
+      .collect(&:uid) # flatten to an array of just uids
     User.where(id: uids)
         .where(status: [1, 4])
   end
