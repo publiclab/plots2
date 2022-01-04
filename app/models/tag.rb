@@ -83,7 +83,7 @@ class Tag < ApplicationRecord
     uids.sort_by do |t|
       -t[1]
     end
-    uids = uids.uniq(&:0) # eliminate those without unique uids
+    uids = uids.uniq(&:first) # eliminate those without unique uids
       .collect(&:first) # flatten to an array of just uids
     User.where(id: uids)
         .where(status: [1, 4])
