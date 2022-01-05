@@ -12,6 +12,7 @@
 <div class="tab-content col-lg-9 col-md-9 col-sm-12">
 
   <div class="tab-pane fade show active" id="comments" role="tabpanel">
+    <h1> <%= translation('comments._comments.comments') %> </h1>
     <%= render :partial => "comments/comments", :locals => { :comments => @normal_comments }  %>
   </div>
 
