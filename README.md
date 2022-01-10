@@ -258,7 +258,7 @@ Help improve Public Lab software!
 * Try out some [supportive tasks](https://github.com/publiclab/plots2/wiki/Supportive-Tasks)
 * Get involved with our weekly community check-ins. For guidelines: [https://github.com/publiclab/plots2/tree/main/doc/CHECKINS.md
 ](https://github.com/publiclab/plots2/tree/main/doc/CHECKINS.md)
-* You can help us by opening first timers issues or fto. The template for opening an issue can be found at https://docs.google.com/document/d/1dO-CAgModEGM5cOaMmcnBh2pEON0hv_rH3P2ou2r1eE/edit
+* You can help us by opening first timers issues or fto. The template for opening an issue can be found at https://github.com/publiclab/plots2/blob/main/.github/ISSUE_TEMPLATE/--first-timers-only.md
 
 ## First Time?
 
