@@ -166,8 +166,8 @@
       <div class="col-md-12">
         <% unless @node_type == 'comments' %>
           <%= render partial: 'tag/show/contributors' %>
+          <%= render partial: 'tag/show/sort' %>
         <% end %>
-        <%= render partial: 'tag/show/sort' %>
         <%= render partial: 'tag/show/nav_tabs' %>
         <%= render partial: 'tag/show/tab_content' %>
         <div>
