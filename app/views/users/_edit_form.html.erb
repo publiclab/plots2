@@ -33,18 +33,25 @@
 
       <div class="form-group col-md-6">
         <label for="email"><%= translation('users._form.email') %></label>
-        <%= f.text_field :email, { tabindex: 3, required: true, placeholder: "you@email.com", class: 'form-control', id: 'email'} %>
+        <%= f.text_field :email, { tabindex: 3, required: true, placeholder: "you@email.com", class: 'form-control', id: 'new_email'} %>
       </div>
 
     </div>
 
     <div class="form-group">
        <label for="current_password"><%= translation('users._form.current_password') %></label>
-      <%= f.password_field :current_password, { placeholder: "Type your current password for verification",
-                                                      tabindex: 4,
-                                                      class: 'form-control',
-                                                      id: 'current-password' }
-      %>
+        <div class="input-group">
+          <%= f.password_field :current_password, { placeholder: "Type your current password for verification",
+                                                    tabindex: 4,
+                                                    class: 'form-control',
+                                                    id: 'current-password'
+                                                  }
+          %>
+          <div class="input-group-append">
+            <a id="show_password" class="fa fa-eye input-group-text d-flex align-items-center" aria-hidden="true">
+            </a>
+          </div>
+        </div>
     </div>
 
     <div class="row">
@@ -57,7 +64,7 @@
         <%= f.password_field :password, { placeholder: "Enter your new password",
                                           tabindex: 5,
                                           class: 'form-control',
-                                          id: 'password1',
+                                          id: 'new_password',
                                           onpaste: 'return false;' }
         %>
       </div>
@@ -67,7 +74,7 @@
         <%= f.password_field :password_confirmation, { placeholder: I18n.t('users._form.confirm_password'),
                                                        tabindex: 6,
                                                        class: 'form-control',
-                                                       id: 'password-confirmation',
+                                                       id: 'new_password-confirmation',
                                                        onpaste: 'return false;' }
         %>
       </div>
@@ -90,7 +97,7 @@
       <script>
         (function() {
           $('.btn-save').click(function onClick(e) {
-            if(document.form.email.text_field != "" && document.form.email.pattern == '[^@]+@[^@]+\.[a-zA-Z]{2,6}')
+            if(document.form.new_email.text_field != "" && document.form.new_email.pattern == '[^@]+@[^@]+\.[a-zA-Z]{2,6}')
                    {
                      $(this).addClass("disabled") // disable the button after it is clicked
                      .html("<i class='fa fa-spinner fa-spin'></i>"); // make a spinner that spins when clicked
@@ -113,3 +120,20 @@
     color: #D34836;
   }
 </style> 
+
+<script>
+  $("#show_password").on("click", function (e) {
+    e.preventDefault();
+    var interval_ID = setInterval(hide, 1500);
+    // changes type from password to text along with the eye icon
+    $("#show_password").toggleClass("fa-eye-slash");
+    $("#current-password").attr("type", "text");
+
+    function hide() {
+      // changes type from text again to password after 1.5 seconds along with eye-slash icon
+      clearInterval(interval_ID);
+      $("#current-password").attr("type", "password");
+      $("#show_password").toggleClass("fa-eye-slash");
+    }
+  });
+</script>

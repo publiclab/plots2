@@ -1,29 +1,26 @@
 $(document).ready(function() {
   $("#edit-form").validate({
     rules: {
-      email: {
+      'user[email]': {
         required: true,
         email: true
       },
-      password1: {
-        required: true,
+      'user[password]': {
         minlength: 8
       },
-      password2: {
-        equalTo: "#password1"
+      'user[password_confirmation]': {
+        equalTo: "#new_password"
       }
     },
     messages: {
-      password1: {
-        required: "Please enter password",
-        minlength: "Password should be minimum 8 characters long"
-      },
-      email: {
+      'user[email]': {
         required: "Please enter email",
         email: "Invalid email address"
       },
-      password2: {
-        required: "Please enter password",
+      'user[password]': {
+        minlength: "Password should be minimum 8 characters long"
+      },
+      'user[password_confirmation]': {
         minlength: "Password should be minimum 8 characters long",
         equalTo: "Passwords doesn't match"
       }
