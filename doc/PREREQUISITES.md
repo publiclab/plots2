@@ -24,9 +24,9 @@ Install rvm for Ruby management (http://rvm.io)
 
 **Ubuntu users:** You may need to enable `Run command as a login shell` in Ubuntu's Terminal, under `Edit > Profile Preferences > Title and Command`. Then close the terminal and reopen it. You may also want to run `source ~/.rvm/scripts/rvm` to load RVM.
 
-Then, use RVM to install version 2.6.6 of Ruby. (v1.9.3+ should also work):
+Then, use RVM to install version 2.7.3 of Ruby. (v1.9.3+ should also work):
 
-`rvm install 2.6.6`
+`rvm install 2.7.3`
 
 
 ### Gems with Bundler
