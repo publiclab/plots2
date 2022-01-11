@@ -6920,10 +6920,10 @@ image-sequencer-invert@^1.0.0:
   resolved "https://registry.yarnpkg.com/image-sequencer-invert/-/image-sequencer-invert-1.0.0.tgz#bb5c0cc2f50ed9ff4cd8d89a7929188f381a5dd4"
   integrity sha512-LL9jwCnSbUy676q9ULJ6M04mp1TVOxpjlckMGN2SyFOgPE4SGL2/IRcO33BDwafmFiupqDdgs7gUHEbsFcCqgQ==
 
-image-sequencer@^3.6.0:
-  version "3.6.0"
-  resolved "https://registry.yarnpkg.com/image-sequencer/-/image-sequencer-3.6.0.tgz#4b2961e48bfa39313965ed91ee0ba82d4c34d734"
-  integrity sha512-od2/hRihAhP7HFnnKpK9CPlQRvSvGt7InF5F7PYaZzTIbZ16ptRNjzzLyuiz7L0B1VtpPFW1BFlq0L0qFuWe2g==
+image-sequencer@^3.6.1:
+  version "3.6.1"
+  resolved "https://registry.yarnpkg.com/image-sequencer/-/image-sequencer-3.6.1.tgz#da379a0397f17a558f07bbc50980e82e1a52ba64"
+  integrity sha512-y13oVKSoqF9G5CWZFLld9VZKMcEe08bGXmAGXsmtkuqrfKbBJW9vG1H2035mBPgAStx0/ZiWHugFCYtwtYL8Cg==
   dependencies:
     atob "^2.1.2"
     base64-img "^1.0.4"
@@ -6947,7 +6947,7 @@ image-sequencer@^3.6.0:
     imagemin "^7.0.1"
     imagemin-jpegtran "^7.0.0"
     imagemin-pngquant "^9.0.1"
-    imgareaselect "git://github.com/jywarren/imgareaselect.git#v1.0.0-rc.2"
+    imgareaselect "git+https://github.com/jywarren/imgareaselect.git#v1.0.0-rc.2"
     istanbul "^0.4.5"
     jasmine "^3.4.0"
     jpegtran-bin "^5.0.2"
@@ -7013,9 +7013,10 @@ imagemin@^7.0.1:
     p-pipe "^3.0.0"
     replace-ext "^1.0.0"
 
-"imgareaselect@git://github.com/jywarren/imgareaselect.git#v1.0.0-rc.2":
+"imgareaselect@git+https://github.com/jywarren/imgareaselect.git#v1.0.0-rc.2":
   version "0.9.11-rc.1"
-  resolved "git://github.com/jywarren/imgareaselect.git#db8ae869ca0fcb289252678cebd17d6f40711f61"
+  uid db8ae869ca0fcb289252678cebd17d6f40711f61
+  resolved "git+https://github.com/jywarren/imgareaselect.git#db8ae869ca0fcb289252678cebd17d6f40711f61"
 
 import-cwd@^2.0.0:
   version "2.1.0"
@@ -8345,12 +8346,7 @@ lodash@^3.9.0:
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
   integrity sha1-W/Rejkm6QYnhfUgnid/RW9FAt7Y=
 
-lodash@^4.14.2, lodash@^4.17.11, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19:
-  version "4.17.20"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
-  integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
-
-lodash@^4.17.5:
+lodash@^4.14.2, lodash@^4.17.11, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.5:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
