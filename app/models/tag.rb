@@ -74,6 +74,7 @@ class Tag < ApplicationRecord
     uids = uids.uniq
     User.where(id: uids)
         .where(status: [1, 4])
+        .order(created_at: :desc)
   end
 
   def self.contributor_count(tagname)
@@ -166,6 +167,7 @@ class Tag < ApplicationRecord
                        .collect(&:user_id)
     User.where(id: uids)
         .where(status: [1, 4])
+        .order(created_at: :desc)
   end
 
   def self.sort_according_to_followers(raw_tags, order)
