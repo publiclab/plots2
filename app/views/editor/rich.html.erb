@@ -58,7 +58,7 @@
   }
 
   .publish-space {
-    margin-right: 10px;
+    margin-right: 1vw;
   }
 
   .post-footer {
@@ -76,21 +76,19 @@
     margin: auto 5px;
   }
 
+  @media (min-width: 769px) {
+    .short-text {
+      display: none;
+    }
+  }
+
   @media (max-width: 768px) {
-    .btn-responsive {
-      padding:2px 4px;
-      font-size:80%;
-      line-height: 1;
-      border-radius:3px;
+    .short-text {
+      display: inline-block;
     }
 
-    .text-responsive{
-      font-size: 2vw;
-    }
-
-    .checkbox-responsive{
-      width: 2vw;
-      height: 2vw;
+    .long-text {
+      display: none;
     }
   }
 </style>
@@ -354,15 +352,20 @@
     </div>
 
     <div class="post-footer">
-      <button class="btn btn-lg btn-outline-secondary btn-responsive btn-more"><i class="fa fa-clock-o"></i></button>
-      <span class="post-footer-text text-responsive"> By publishing, you agree to <a href="https://publiclab.org/licenses">open source your work</a> so that others may use it.</span>
-      <div class="post-footer-buttons"> 
-        <button class="btn btn-lg btn-primary disabled btn-responsive float-right publish-space ple-publish "><% if controller.action_name == "edit" && @node.status == 3 %>Save<% else %>Publish<% end %></button>
-        <button class="btn btn-lg btn-outline-secondary btn-responsive float-right" onclick="preview()">Preview</button>
+      <button class="btn btn-outline-secondary btn-more"><i class="fa fa-clock-o"></i></button>
+      <span class="post-footer-text text-responsive long-text">By publishing, you agree to <a href="https://publiclab.org/licenses">open source your work</a> so that others may use it.</span>
+      <span class="post-footer-text short-text">
+        <a href="#" data-toggle="popover" data-placement="top" title="" data-content="By publishing, you agree to <a href='https://publiclab.org/licenses'>open source your work">
+           About Posting
+        </a>
+      </span>
+      <div class="post-footer-buttons">
+        <button class="btn btn-primary disabled float-right publish-space ple-publish "><% if controller.action_name == "edit" && @node.status == 3 %>Save<% else %>Publish<% end %></button>
+        <button class="btn btn-outline-secondary float-right" onclick="preview()">Preview</button>
       </div>
     </div>
     
-    <span class="ple-help text-responsive float-right">
+    <span class="ple-help float-right">
       <% if controller.action_name != "edit" && !current_user.first_time_poster %>
         <span id="newOpts" style="display: inline-block;">
         <span id="text" style="display: none; color:red;">
@@ -370,7 +373,7 @@
           (<a href="https://publiclab.org/draft-feature" target="_blank">?</a>) &nbsp; &nbsp;</span>
           <span class="checkbox">
             <label>
-              <input type="checkbox" class="checkbox-responsive" id="myCheck" onclick="draftCheck()" />
+              <input type="checkbox" id="myCheck" onclick="draftCheck()" />
               Save as draft
             </label> |
           </span>
@@ -506,6 +509,23 @@
       $('#coord_input').toggle();
     });
     $("#coord_input").hide();
+
+    // tooltip
+    $('[data-toggle="popover"]').popover({ trigger: "manual" , html: true, animation:false})
+        .on("mouseenter", function () {
+            var _this = this;
+            $(this).popover("show");
+            $(".popover").on("mouseleave", function () {
+                $(_this).popover('hide');
+            });
+        }).on("mouseleave", function () {
+            var _this = this;
+            setTimeout(function () {
+                if (!$(".popover:hover").length) {
+                    $(_this).popover("hide");
+                }
+            }, 300);
+    });
 
     $(function() {
       var target = document.querySelector('#map_content');
