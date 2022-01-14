@@ -564,6 +564,19 @@ en:
     location:
       tooltip: "This is a geographical tag for placing this content on a map. 
         Please visit our <a href='https://publiclab.org/wiki/location-privacy'>location privacy</a> page."
+    advanced_tagging:
+      recently_used_tags: "Recently used tags"
+      link_to_parent: "Link to a 'parent' page (wikis only)"
+      add_style: "Add style"
+      add_translation_widget: "Add translation widget"
+      request_photos: "Request response photos"
+      hide_responses: "Hide responses from dashboard"
+      add_coauthor: "Add Coauthor (notes only)"
+      mark_as_series: "Mark as part of a series"
+      add_template: "Add template to the comment form"
+      write_template: "Write template for the comment form"
+      lock_note: "Lock Note"
+      learn_about_powertags: "Learn About Powertags"
   wiki:
     index:
       wiki_pages_tagged_with: "Wiki pages tagged with <i style='color:#aaa;'>%{tag}</i>"
