@@ -192,6 +192,19 @@ This API method can be found [here](https://github.com/publiclab/plots2/blob/mai
   }
   ```
 
+# Image upload API
+
+Images can be uploaded using data-URI strings, using the following script, from the JavaScript console on any PublicLab.org page:
+
+```js
+var token = "r0bzzuKtNIF8HpQmSmTndzNM+a1ndsWm/keBtL9nQZaWav70zqSM1bv+hsNqT9fDmvJZrtMKii2xF2md8MylkQ=="; // CSRF token
+
+var data = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAQABADASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAf/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAABgj/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABykX//Z";
+
+$.post('/images/create', { authenticity_token: token,  data: data, uid: 1, photo: { title: '', notes: '' }  }, console.log);
+```
+
+
 ****
 
 # Legacy API
