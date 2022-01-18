@@ -58,7 +58,38 @@
   }
 
   .publish-space {
-    margin-right: 10px;
+    margin-right: 1vw;
+  }
+
+  .post-footer {
+    display: flex; 
+    justify-content: flex-end; 
+    justify-self: flex-start;
+  }
+
+  .post-footer-buttons {
+    margin-left: auto; 
+    display: flex;
+  }
+
+  .post-footer-text {
+    margin: auto 5px;
+  }
+
+  @media (min-width: 651px) {
+    .short-text {
+      display: none;
+    }
+  }
+
+  @media (max-width: 650px) {
+    .short-text {
+      display: inline-block;
+    }
+
+    .long-text {
+      display: none;
+    }
   }
 </style>
 
@@ -320,11 +351,20 @@
       -->
     </div>
 
-    <button class="btn btn-lg btn-outline-secondary btn-more"><i class="fa fa-clock-o"></i></button>
-
-    <span> &nbsp; By publishing, you agree to <a href="https://publiclab.org/licenses">open source your work</a><span class="d-none d-md-inline"> so that others may use it.</span></span>
-    <button class="btn btn-outline-secondary btn-lg float-right" onclick="preview()">Preview</button>
-    <button class="publish-space ple-publish btn btn-lg btn-primary float-right disabled"><% if controller.action_name == "edit" && @node.status == 3 %>Save<% else %>Publish<% end %></button>
+    <div class="post-footer">
+      <button class="btn btn-outline-secondary btn-more"><i class="fa fa-clock-o"></i></button>
+      <span class="post-footer-text text-responsive long-text">By publishing, you agree to <a href="https://publiclab.org/licenses">open source your work</a> so that others may use it.</span>
+      <span class="post-footer-text short-text">
+        <a href="#" data-toggle="popover" data-placement="top" title="" data-content="By publishing, you agree to <a href='https://publiclab.org/licenses'>open source your work">
+           About Posting
+        </a>
+      </span>
+      <div class="post-footer-buttons">
+        <button class="btn btn-primary disabled float-right publish-space ple-publish "><% if controller.action_name == "edit" && @node.status == 3 %>Save<% else %>Publish<% end %></button>
+        <button class="btn btn-outline-secondary float-right" onclick="preview()">Preview</button>
+      </div>
+    </div>
+    
     <span class="ple-help float-right">
       <% if controller.action_name != "edit" && !current_user.first_time_poster %>
         <span id="newOpts" style="display: inline-block;">
@@ -341,8 +381,7 @@
           <span class="d-none d-md-inline"> steps left</span>
         </span>
       <% end %>
-    </span>
-
+    </span> 
   </div>
 </div>
 <script>
@@ -470,6 +509,23 @@
       $('#coord_input').toggle();
     });
     $("#coord_input").hide();
+
+    // tooltip
+    $('[data-toggle="popover"]').popover({ trigger: "manual" , html: true, animation:false})
+        .on("mouseenter", function () {
+            var _this = this;
+            $(this).popover("show");
+            $(".popover").on("mouseleave", function () {
+                $(_this).popover('hide');
+            });
+        }).on("mouseleave", function () {
+            var _this = this;
+            setTimeout(function () {
+                if (!$(".popover:hover").length) {
+                    $(_this).popover("hide");
+                }
+            }, 300);
+    });
 
     $(function() {
       var target = document.querySelector('#map_content');
