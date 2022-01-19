@@ -236,7 +236,7 @@ To see it in action, click on the 'Language' drop-down located in the footer sec
 Translations are arranged in the YAML files [here](https://github.com/publiclab/plots2/tree/main/config/locales), which are
 set in a similar way to [views](https://github.com/publiclab/plots2/tree/main/app/views) files. An example for adding translations can be found [here](http://guides.rubyonrails.org/i18n.html#adding-translations).
 
-Since the implementation of our new [Translation system](https://github.com/publiclab/plots2/issues/5737), we now use the `translation()` helper, [found here](https://github.com/publiclab/plots2/blob/438b649669b2029d01437bec9eb2826cf764851b/app/helpers/application_helper.rb#L141-L153). This provides some extra translation features such as inserting a prompt visible to site visitors if no translation exists yet.
+Since the implementation of our new [Translation system](https://github.com/publiclab/plots2/issues/5737), we now use the `translation()` helper, [found here](https://github.com/publiclab/plots2/blob/438b649669b2029d01437bec9eb2826cf764851b/app/helpers/application_helper.rb#L141-L153). This provides some extra translation features such as inserting a prompt visible to site visitors if no translation exists yet. You can learn more about our translation system by reading our [Translation system docs](https://github.com/publiclab/plots2/blob/main/doc/Translation_System.md).
 
 To add new languages or for additional support, please write to plots-dev@googlegroups.com
 
