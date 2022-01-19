@@ -531,6 +531,7 @@ en:
       by: "by"
       new_post: "New post"
       comments: "Comments"
+      view_all: "View all"
     contributors-index:
       contributors_over_last_week: "Contributors for <i style=\"color:#aaa;\">%{tag_name}</i>
         over the past 52 weeks"

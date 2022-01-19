@@ -1,7 +1,7 @@
 <div class="tab-content" style="clear:both;">
 
   <% if @start && @end %>
-    <p><%= raw translation('tag.show.displaying_content') %> <%= @start.to_formatted_s(:long) %> to <%= @end.to_formatted_s(:long) %>. <a href="/tag/<%=h params[:id] %>">View all</a></p>
+    <p><%= raw translation('tag.show.displaying_content') %> <%= @start.to_formatted_s(:long) %> to <%= @end.to_formatted_s(:long) %>. <a href="/tag/<%=h params[:id] %>"><%= raw translation('tag.show.view_all') %></a></p>
   <% end %>
 
   <% if @node_type == "note" %>
@@ -20,7 +20,7 @@
       <div id="questions-tab">
         <% if @questions.nil? || @questions.length == 0 %>
           <p><%= raw translation('tag.show.no_questions_results_found') %></p>
-          <p>Or try searching: <a href="/search/<%=h params[:id] %>"><%=h params[:id] %></a></p>
+          <p><%= raw translation('tag.show.or_try_searching') %> <a href="/search/<%=h params[:id] %>"><%=h params[:id] %></a></p>
         <% else %>
           <div class="tab-content">
             <div id="asked-content">
@@ -36,7 +36,7 @@
     <div class="tab-pane active" id="wikis">
       <% if @wikis.nil? || @wikis.length == 0 %>
         <p><%= raw translation('tag.show.no_wikis_results_found') %></p>
-        <p>Or try searching: <a href="/search/<%=h params[:id] %>"><%=h params[:id] %></a></p>
+        <p><%= raw translation('tag.show.or_try_searching') %> <a href="/search/<%=h params[:id] %>"><%=h params[:id] %></a></p>
       <% else %>
       <%= render partial: "wiki/wikis" %>
       <% end %>
