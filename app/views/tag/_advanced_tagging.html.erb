@@ -10,24 +10,24 @@
   <% end %>
   <div class="dropdown-divider"></div>
   <% if @node && @node.type == "page" %>
-+    <a class="dropdown-item" href="#" data-value="parent:"><%= translation('tag.advanced_tagging.link_to_parent') %></a>
-+    <a class="dropdown-item" href="#" data-value="style:"><%= translation('tag.advanced_tagging.add_style') %></a>
-+    <a class="dropdown-item" href="#" data-value="lang:"><%= translation('tag.advanced_tagging.add_translation_widget') %></a>
+    <a class="dropdown-item" href="#" data-value="parent:"><%= translation('tag.advanced_tagging.link_to_parent') %></a>
+    <a class="dropdown-item" href="#" data-value="style:"><%= translation('tag.advanced_tagging.add_style') %></a>
+    <a class="dropdown-item" href="#" data-value="lang:"><%= translation('tag.advanced_tagging.add_translation_widget') %></a>
   <% else %>
-+    <a class="dropdown-item" href="#" data-value="seeks:photos"><%= translation('tag.advanced_tagging.request_photos') %></a>
-+    <a class="dropdown-item" href="#" data-value="hidden:response"><%= translation('tag.advanced_tagging.hide_responses') %></a>
-+    <a class="dropdown-item" href="#" data-value="with:"><%= translation('tag.advanced_tagging.add_coauthor') %></a>
-+    <a class="dropdown-item" href="#" data-value="series:"><%= translation('tag.advanced_tagging.mark_as_series') %></a>
-+    <a class="dropdown-item" href="#" data-value="comment-template:"><%= translation('tag.advanced_tagging.add_template') %></a>
-+    <a class="dropdown-item" target="_blank" href="/wiki/comment-templates"><%= translation('tag.advanced_tagging.write_template') %></a>
+    <a class="dropdown-item" href="#" data-value="seeks:photos"><%= translation('tag.advanced_tagging.request_photos') %></a>
+    <a class="dropdown-item" href="#" data-value="hidden:response"><%= translation('tag.advanced_tagging.hide_responses') %></a>
+    <a class="dropdown-item" href="#" data-value="with:"><%= translation('tag.advanced_tagging.add_coauthor') %></a>
+    <a class="dropdown-item" href="#" data-value="series:"><%= translation('tag.advanced_tagging.mark_as_series') %></a>
+    <a class="dropdown-item" href="#" data-value="comment-template:"><%= translation('tag.advanced_tagging.add_template') %></a>
+    <a class="dropdown-item" target="_blank" href="/wiki/comment-templates"><%= translation('tag.advanced_tagging.write_template') %></a>
   <% end %>
   <div class="dropdown-divider"></div>
   <% if current_user && current_user.can_moderate? && @node && !(@node.has_tag('locked')) %> 
-   <div class="dropdown-divider"></div>
-+  <a class="dropdown-item" href="javascript:window.location.reload(true)" onClick="addTag('locked');"><%= translation('tag.advanced_tagging.lock_note') %></a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="javascript:window.location.reload(true)" onClick="addTag('locked');"><%= translation('tag.advanced_tagging.lock_note') %></a>
   <% end %>
 
-+  <a class="dropdown-item" href="https://publiclab.org/power-tags" target="_blank"><%= translation('tag.advanced_tagging.learn_about_powertags') %></a>
+  <a class="dropdown-item" href="https://publiclab.org/power-tags" target="_blank"><%= translation('tag.advanced_tagging.learn_about_powertags') %></a>
 </div>
 
 <script type="text/javascript">
