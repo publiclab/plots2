@@ -3,31 +3,31 @@
 </button>
 <div class="dropdown-menu dropdown-menu-right float-right" style="margin-top:5px;" id="pt-list">
   <% if current_user %>
-    <p class="dropdown-header"><b>Recently used tags</b></p>
+    <p class="dropdown-header"><b><%= translation('tag.advanced_tagging.recently_used_tags') %></b></p>
     <% NodeTag.includes(:tag).where(uid: current_user.id).order('date DESC').limit(5).each do |tag| %>
       <a class="dropdown-item" onClick="addTag('<%= tag.name %>')"><span style="cursor:pointer;" class="badge badge-primary"><%= tag.name %></span></a>
     <% end %>
   <% end %>
   <div class="dropdown-divider"></div>
   <% if @node && @node.type == "page" %>
-    <a class="dropdown-item" href="#" data-value="parent:">Link to a "parent" page (wikis only)</a>
-    <a class="dropdown-item" href="#" data-value="style:">Add style</a>
-    <a class="dropdown-item" href="#" data-value="lang:">Add Translation widget</a>
+    <a class="dropdown-item" href="#" data-value="parent:"><%= translation('tag.advanced_tagging.link_to_parent') %></a>
+    <a class="dropdown-item" href="#" data-value="style:"><%= translation('tag.advanced_tagging.add_style') %></a>
+    <a class="dropdown-item" href="#" data-value="lang:"><%= translation('tag.advanced_tagging.add_translation_widget') %></a>
   <% else %>
-    <a class="dropdown-item" href="#" data-value="seeks:photos">Request response photos</a>
-    <a class="dropdown-item" href="#" data-value="hidden:response">Hide responses from dashboard</a>
-    <a class="dropdown-item" href="#" data-value="with:">Add Coauthor (notes only)</a>
-    <a class="dropdown-item" href="#" data-value="series:">Mark as part of a series</a>
-    <a class="dropdown-item" href="#" data-value="comment-template:">Add template to the comment form</a>
-    <a class="dropdown-item" target="_blank" href="/wiki/comment-templates">Write a template for the comment form</a>
+    <a class="dropdown-item" href="#" data-value="seeks:photos"><%= translation('tag.advanced_tagging.request_photos') %></a>
+    <a class="dropdown-item" href="#" data-value="hidden:response"><%= translation('tag.advanced_tagging.hide_responses') %></a>
+    <a class="dropdown-item" href="#" data-value="with:"><%= translation('tag.advanced_tagging.add_coauthor') %></a>
+    <a class="dropdown-item" href="#" data-value="series:"><%= translation('tag.advanced_tagging.mark_as_series') %></a>
+    <a class="dropdown-item" href="#" data-value="comment-template:"><%= translation('tag.advanced_tagging.add_template') %></a>
+    <a class="dropdown-item" target="_blank" href="/wiki/comment-templates"><%= translation('tag.advanced_tagging.write_template') %></a>
   <% end %>
   <div class="dropdown-divider"></div>
   <% if current_user && current_user.can_moderate? && @node && !(@node.has_tag('locked')) %> 
-   <div class="dropdown-divider"></div>
-   <a class="dropdown-item" href="javascript:window.location.reload(true)" onClick="addTag('locked');">Lock Note</a> 
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="javascript:window.location.reload(true)" onClick="addTag('locked');"><%= translation('tag.advanced_tagging.lock_note') %></a>
   <% end %>
 
-  <a class="dropdown-item" href="https://publiclab.org/power-tags" target="_blank">Learn About Powertags</a>
+  <a class="dropdown-item" href="https://publiclab.org/power-tags" target="_blank"><%= translation('tag.advanced_tagging.learn_about_powertags') %></a>
 </div>
 
 <script type="text/javascript">
