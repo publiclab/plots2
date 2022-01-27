@@ -1,3 +1,16 @@
-<h2>Content from the past week on topics you've subscribed to</h2>
+<% nodes ||= @nodes #accept local if present, default to instance %>
+<% if local_assigns[:digest] and nodes.size == 0 %>
+  <div class="alert alert-warning" role="alert">
+    You haven't subscribed to any topic yet. Visit <a href="https://publiclab.org/subscriptions">https://publiclab.org/subscriptions</a> to subscribe to more topics.
+  </div>
+<% else %>
+  <div style="width:85%;margin: 0 auto;margin-top: 5px;color: black;">
+    <%= render partial: "wiki/digest"%>
+  </div>
+<% end %>
 
-<%= render partial: "wiki/wikis", locals: { digest: "digest" } %> 
+<% if @pagy %>
+  <%== pagy_bootstrap_nav @pagy %>
+<% else %>
+  <%= will_paginate nodes, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer if @paginated %>
+<% end %>

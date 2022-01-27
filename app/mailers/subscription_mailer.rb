@@ -83,6 +83,7 @@ class SubscriptionMailer < ActionMailer::Base
     end
     @user = User.find(user_id)
     @nodes = nodes
+    @base_url = "https://" + ActionMailer::Base.default_url_options[:host]
     mail(to: @user.email, subject: @subject)
   end
 end

@@ -1,0 +1,39 @@
+
+  <p style="font-size: 1.2em; font-family: sans-serif;margin-bottom: 0;color: lightgray;">Based on what you're following at <a href="https://publiclab.org">PublicLab.org</a></p>
+  <hr id="first" style="border: none;height: 1px;background-color: #e2e2e2;margin-bottom: 32px;">
+  <table style="font-family: sans-serif;">
+    <% @nodes.each do |node| %>
+      <tr>
+        <div style="margin-bottom: 10px">
+          <h3 style="font-weight:500;margin:0;">
+            <a href="<%= @base_url + node.path %>"><%= node.latest.title %></a>
+          </h3>
+        </div>
+        <div style="float:left;">
+          <% if node.latest.author.photo? %>
+            <img style="width:40px;margin-right:8px;border-radius:50%;"src="<%= @base_url %><%= node.latest.author.photo_path(:thumb) %>" />
+          <% else %>
+            <img style="width:40px;margin-right:8px;border-radius:50%;"src="https://www.gravatar.com/avatar/1aedb8d9dc4751e229a335e371db8058" />
+          <% end %>
+        </div>
+        <div style="margin-bottom: 20px;">
+          <b style="font-weight: 500;"><%= node.latest.author.username.capitalize %></b>
+          <p style="margin: 0;color: #999;font-weight: 500;">Published <%= node.latest.created_at.strftime("%B %-d %Y") %></p>
+        </div>
+        <% if node.main_image.present? %>
+          <div style="padding-bottom: 30px;">
+            <img src="<%= @base_url %><%= node.main_image.path(:default) %>" style="width:120px;border-radius:5px;">
+          </div>
+        <% elsif node.scraped_image %>
+          <div style="padding-bottom:30px;padding-top:10px;">
+            <img src="<%= @base_url %><%= node.scraped_image %>" style="width:120px;border-radius:5px;">
+          </div>
+        <% end %>
+        <div colspan="2" style="padding-bottom: 32px;">
+          <hr style="border: none;height: 1px;background-color: #e2e2e2;width: 140px;">
+        </div>
+      </tr>
+    <% end %>
+  </table>
+  <p>Click <a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/subscriptions">here</a> to choose your followed topics</p>
+  <p>Click <a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/settings">here</a> to change your subscription settings</p>
