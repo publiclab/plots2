@@ -109,7 +109,7 @@ class SubscriptionController < ApplicationController
   end
 
   def digest
-    @nodes = current_user.content_followed_in_period(1.week.ago, Time.now).paginate(page: params[:page], per_page: 100)
+    @wikis = current_user.content_followed_in_period(1.week.ago, Time.now).paginate(page: params[:page], per_page: 100)
     @base_url = ""
     @paginated = true
     render template: "subscriptions/digest"

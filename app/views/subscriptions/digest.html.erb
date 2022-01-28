@@ -1,16 +1,15 @@
-<% nodes ||= @nodes #accept local if present, default to instance %>
-<% if local_assigns[:digest] and nodes.size == 0 %>
+<% wikis ||= @wikis #accept local if present, default to instance %>
+<% if local_assigns[:digest] and wikis.size == 0 %>
   <div class="alert alert-warning" role="alert">
     You haven't subscribed to any topic yet. Visit <a href="https://publiclab.org/subscriptions">https://publiclab.org/subscriptions</a> to subscribe to more topics.
   </div>
 <% else %>
   <div style="width:85%;margin: 0 auto;margin-top: 5px;color: black;">
-    <%= render partial: "wiki/digest"%>
+    <%= render partial: "wiki/wikis"%>
   </div>
 <% end %>
-
 <% if @pagy %>
   <%== pagy_bootstrap_nav @pagy %>
 <% else %>
-  <%= will_paginate nodes, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer if @paginated %>
+  <%= will_paginate wikis, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer if @paginated %>
 <% end %>
