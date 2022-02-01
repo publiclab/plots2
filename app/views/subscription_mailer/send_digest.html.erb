@@ -4,6 +4,11 @@
   <p><%= Time.now.strftime("%B %-d %Y") %></p>
 </header>
 
-<div style="width:95%;margin: 0 auto;margin-top: 54px;color: black;"></div>
+<div style="width:95%;margin: 0 auto;margin-top: 54px;color: black;">
+  <p style="font-size: 1.2em; font-family: sans-serif;margin-bottom: 0;color: lightgray;">Based on what you're following at <a href="https://publiclab.org">PublicLab.org</a></p>
+
   <%= render partial: "wiki/wikis"%>
+  
+  <p>Discover more <a href="<%= @base_url %>/subscriptions">topics to follow</a></p>
+  <p><a href="<%= @base_url %>/settings">Manage your subscription settings</a></p>
 </div>
