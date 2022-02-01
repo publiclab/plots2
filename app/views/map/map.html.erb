@@ -1,24 +1,28 @@
 <% if @node %>
   <div class="map-intro">
-    <span style="float:right;margin-top:-14px;" onclick="$('.map-intro').toggle()"><i style="color:#888;" class="fa fa-times"></i></span>
-    <p>&laquo; back to <a href="<%= @node.path %>"><%= @node.title %></a>.</p>
+    <p>
+      &laquo; back to <a href="<%= @node.path %>"><%= @node.title %></a>
+      &nbsp; <span onclick="$('.map-intro').toggle()"><i style="color:#888;" class="fa fa-times"></i></span>
+    </p>
   </div>
 <% else %>
   <%= feature('map-intro') %>
 <% end %>
+
 <style>
   body, body>.container, body>.container>.row {
     margin: 0;
     padding: 0;
     width: 100vw;
-    max-width: 100%;  }
-  body>.container {
+    max-width: 100%;
+  }
+  body > .container {
     padding-top: 0px;
   }
   .footer {
     margin: 0;
   }
-  #map{ 
+  #map {
     padding: 0;
     margin: 0;
     width: 100%;
@@ -34,9 +38,10 @@
     bottom: 30px;
     left: 30px;
     background: white;
-    padding:30px 20px 20px;
+    padding:30px 20px 10px;
     z-index: 999;
     border-radius: 6px;
+    min-width:25%;
   }
   .map-intro p {
     color: #888;
