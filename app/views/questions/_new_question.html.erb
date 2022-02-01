@@ -55,7 +55,7 @@
       </span>
 
       <a class="ellipsis bottom-right" data-toggle="dropdown"><i class="fa fa-ellipsis-h" style="color : #666; font-size:15px; float:right;"></i></a>
-          <ul class="dropdown-menu" style = "width: 150px; font-size:10px;">
+          <ul class="dropdown-menu dropdown-menu-right" style = "width: 150px; font-size:10px;">
               <li>
               <a>Made: <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></a>
               </li>
@@ -81,8 +81,15 @@
                   </li>
                   <% if params[:mod] %>| <a href="#"><i class="fa fa-ban"></i></a><% end %>
                   <% if current_user %>
-                    <li class="buttons"><a class="btn btn-outline-secondary btn-sm" rel="popover" data-container="body" data-placement="top" data-template='<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-body"><%= render partial:'dashboard/flag_list', locals: { node: node } %></div></div>' data-html="true" data-content="sample" > Spam </a>
-                    </a></li>
+                    <li class="buttons dropdown-submenu">
+                      <a class="btn btn-outline-secondary btn-sm spam">Spam</a>
+                      <ul class="dropdown-menu">
+                        <li>
+                        <div class="dropdown-arrow"></div>
+                        <%= render partial:'dashboard/flag_list', locals: { node: node } %>
+                        </li>
+                      </ul>
+                    </li>
                   <% else %>
                     <li class="buttons"><a data-toggle="modal" data-target="#loginModal" class="btn btn-outline-secondary btn-sm" role="button" aria-pressed="true"> Spam </a></li>
                   <% end %>
@@ -164,5 +171,37 @@
 
 .buttons {
   text-align: center;
+  margin: 10px 0px;
+}
+
+.dropdown-submenu {
+  position: relative;
+}
+
+.dropdown-submenu .dropdown-menu {
+  left: -20%;
+  margin-top: 11px;
+}
+
+.dropdown-arrow {
+  position: absolute;
+  height: 16px;
+  width: 16px;
+  left: 50%;
+  top: 0px;
+  background-color: #fff;
+  border-left: 1px solid rgb(217 217 217);
+  border-top: 1px solid rgb(217 217 217);
+  transform: translate(-50%, -50%) rotate(45deg);
 }
 </style>
+
+<script>
+  $(document).ready(function(){
+    $('.spam').on("click", function(e){
+      $(this).next('ul').toggle();
+      e.stopPropagation();
+      e.preventDefault();
+    });
+  });
+</script>
