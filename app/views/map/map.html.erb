@@ -1,4 +1,9 @@
-<% if !@node %>
+<% if @node %>
+  <div class="map-intro">
+    <span style="float:right;margin-top:-14px;" onclick="$('.map-intro').toggle()"><i style="color:#888;" class="fa fa-times"></i></span>
+    <p>&laquo; back to <a href="<%= @node.path %>"><%= @node.title %></a>.</p>
+  </div>
+<% else %>
   <%= feature('map-intro') %>
 <% end %>
 <style>
@@ -23,7 +28,25 @@
   .alert {
     z-index: 600;
   }
-  </style>
+  .map-intro {
+    max-width: 400px;
+    position:absolute;
+    bottom: 30px;
+    left: 30px;
+    background: white;
+    padding:30px 20px 20px;
+    z-index: 999;
+    border-radius: 6px;
+  }
+  .map-intro p {
+    color: #888;
+  }
+  @media screen and (max-width: 630px) {
+    .map-intro {
+      bottom: 130px;
+    }
+  }
+</style>
 
 <div id="map"></div>
 
