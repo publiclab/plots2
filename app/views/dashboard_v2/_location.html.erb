@@ -12,7 +12,7 @@
     <a class="btn btn-lg btn-outline-secondary blurred-location-input" submit_to="/profile/tags/create/<%= current_user.uid %>"><i class="fa fa-map-marker" style="color:#c40;"></i> <%= translation('dashboard_v2.sidebar.add_location') %></a>
     <p><small class="form-grey">
       <%= translation('dashboard_v2.sidebar.location_work') %> |
-      <a class="form-grey" style="text-decoration: underline;" href="https://publiclab.org/location-privacy" target="_blank"><%= translation('dashboard_v2.sidebar.location_privacy') %></a>
+      <a class="form-grey" style="text-decoration: underline;" href="https://publiclab.org/location-privacy" target="_blank" rel="noreferrer"><%= translation('dashboard_v2.sidebar.location_privacy') %></a>
     </p></small>
   </div>
   <%= render partial: 'tag/location' %>

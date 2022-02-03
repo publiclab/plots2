@@ -11,7 +11,7 @@
 
           <div class="card-info">
             <p class="meta"><%= render partial: "dashboard/question_node_meta", locals: { node: node } %></p>
-            <h5><a class="question" <% if @widget %>target="_blank"<% end %> href="<%= node.path(:question) %>"><%= node.title %></a></h5>
+            <h5><a class="question" <% if @widget %>target="_blank" rel="noreferrer"<% end %> href="<%= node.path(:question) %>"><%= node.title %></a></h5>
             <div>
             <div class="answer">
               <% if params[:controller] == 'questions' %>

@@ -7,7 +7,7 @@
     <div class="<% if node.status == 4 %> moderated<% end %>">
 
     <% if node.main_image %>
-      <a class="card-img-top img" style="overflow: hidden; height:10em;"<% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" style="width:100%;"/></a>
+      <a class="card-img-top img" style="overflow: hidden; height:10em;"<% if @widget %>target="_blank" rel="noreferrer"<% end %> href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" style="width:100%;"/></a>
     <% elsif node.scraped_image %>
       <a class="card-img-top img" style="overflow: hidden; height:10em;" href="<%= node.path %>"><img src="<%= node.scraped_image %>" style="width:100%;" /></a>
     <%  else %>
@@ -32,7 +32,7 @@
 
 
 
-      <h5><a <% if @widget %>target="_blank"<% end %> href="<%= node.path(:question) %>"><%= node.title %></a></h5>
+      <h5><a <% if @widget %>target="_blank" rel="noreferrer"<% end %> href="<%= node.path(:question) %>"><%= node.title %></a></h5>
 
       <span style="display: block;">
       <% unless node.is_a?(Comment) || node.is_a?(Revision) || node.type == 'page' %>

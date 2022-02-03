@@ -3,7 +3,7 @@
     <% @questions.limit(3).each_with_index do |node,i| %>
       <span style="padding:0.5em;">
         <img class="img" src="<%= node.author.profile_image %>" width="25" height="25"/>
-        <a class="ml-3 questions"<% if @widget %>target="_blank"<% end %> href="<%= node.path(:question) %>"><%= node.title %></a>
+        <a class="ml-3 questions"<% if @widget %>target="_blank" rel="noreferrer"<% end %> href="<%= node.path(:question) %>"><%= node.title %></a>
         <span class="by-author"><%=translation('questions._recent_questions_shadow.by')%> <a href="/profile/<%= node.author.name %>">@<%= node.author.name %></a></span>
       </span>
     <% end %>

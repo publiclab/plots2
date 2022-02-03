@@ -1,7 +1,7 @@
 <div class="card">
   <% if node.main_image %>
     <% img_path = node.main_image.path(node.main_image.photo_file_name == "blob" ? :original : :default) # special case for "blob" images, see https://github.com/publiclab/plots2/issues/10210 %>
-    <a class="card-img-top img" style="overflow: hidden; height:10em;"<% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= image_tag(img_path, style:'width:100%;', lazy: node.main_image.photo_file_name != "blob") %></a>
+    <a class="card-img-top img" style="overflow: hidden; height:10em;"<% if @widget %>target="_blank" rel="noreferrer"<% end %> href="<%= node.path %>"><%= image_tag(img_path, style:'width:100%;', lazy: node.main_image.photo_file_name != "blob") %></a>
   <% elsif node.scraped_image %>
     <a class="card-img-top img" style="overflow: hidden; height:10em;" href="<%= node.path %>"><%= image_tag(node.scraped_image, style:'width:100%;') %></a>
   <%  else %>
@@ -23,11 +23,11 @@
       </p>
     <% end %>
 
-    <h5 style="margin-bottom: 0px;"><a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>" style="color: black"><%= (node.type == 'note') ? node.title : node.latest.title %></a></h5>
+    <h5 style="margin-bottom: 0px;"><a <% if @widget %>target="_blank" rel="noreferrer"<% end %> href="<%= node.path %>" style="color: black"><%= (node.type == 'note') ? node.title : node.latest.title %></a></h5>
     <% if node.has_tag("method") %>
       <p style="margin-bottom: 0px;"><small>
-        <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#Activities"><i class="fa fa-flask" style="color:#3da56a;"></i> <%= node.activities.count %> activities</a>
-        <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#Questions"><i class="fa fa-question-circle" style="color:#db3a1e;"></i> <span id="questions-count-<%= node.id %>"><%= node.questions.count %> questions</span></a>
+        <a <% if @widget %>target="_blank" rel="noreferrer"<% end %> href="<%= node.path %>#Activities"><i class="fa fa-flask" style="color:#3da56a;"></i> <%= node.activities.count %> activities</a>
+        <a <% if @widget %>target="_blank" rel="noreferrer"<% end %> href="<%= node.path %>#Questions"><i class="fa fa-question-circle" style="color:#db3a1e;"></i> <span id="questions-count-<%= node.id %>"><%= node.questions.count %> questions</span></a>
       </small></p>
     <% end %>
 
@@ -38,7 +38,7 @@
             <span style="margin-right:4px;"><i rel="tooltip" title="This item was pinned with the tag 'pin:<%= tagname %>'." class="fa fa-thumb-tack"></i></span>
           <% end %>
           <% if node.type == 'note' %>
-            Post by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>" style="color: #303030">@<%= node.author.name %></a> <%= node.author.new_contributor %>
+            Post by <a <% if @widget %>target="_blank" rel="noreferrer"<% end %> href="/profile/<%= node.author.name %>" style="color: #303030">@<%= node.author.name %></a> <%= node.author.new_contributor %>
             <span style="color:darkgray;">
               <i class="fa fa-comment-o"></i>
               <%= node.comments.published.count %> &nbsp; | &nbsp; <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope:'datetime.time_ago_in_words' }).gsub('about ','') %>

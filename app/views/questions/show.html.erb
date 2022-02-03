@@ -27,7 +27,7 @@
   <% pt = @node.power_tag('question') %>
   <div class="alert alert-warning">
   <a href="/profile/<%= @node.author.name %>"> <%= @node.author.name %> </a><%=translation('questions.show.question_about')%> <b><a href="/questions/tag/<%= pt %>"><%= pt %></a></b>:
-    <a class="btn btn-outline-secondary requireLogin" target="_blank" href="/subscribe/tag/question:<%= pt %>">
+    <a class="btn btn-outline-secondary requireLogin" target="_blank" rel="noreferrer" href="/subscribe/tag/question:<%= pt %>">
       Follow this topic
     </a>
   </div>

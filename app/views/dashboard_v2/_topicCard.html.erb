@@ -44,11 +44,11 @@
                         </a>
                       <% end %>
                       <div class="card-body">
-                          <h5 style="margin-bottom: 0px;" class="text-truncate"><a style="color: inherit; text-decoration: none;" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>" style="color: black"><%= (node.type == 'note') ? node.title : node.latest.title %></a></h5>
+                          <h5 style="margin-bottom: 0px;" class="text-truncate"><a style="color: inherit; text-decoration: none;" <% if @widget %>target="_blank" rel="noreferrer"<% end %> href="<%= node.path %>" style="color: black"><%= (node.type == 'note') ? node.title : node.latest.title %></a></h5>
                           <div style="font-size:1.0em;color:darkgray;">
                               <p>
                                  <%= translation('tag.show.by') %>
-                                  <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>" style="color: #303030">@<%= node.author.name %></a>
+                                  <a <% if @widget %>target="_blank" rel="noreferrer"<% end %> href="/profile/<%= node.author.name %>" style="color: #303030">@<%= node.author.name %></a>
                               </p>
                           </div>
                       </div>

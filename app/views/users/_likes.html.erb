@@ -4,7 +4,7 @@
       <div class="<% if @widget %>col-xs-3 col-sm-3 col-md-3 <% end %><%= like.tagnames_as_classes %> col-lg-3 clearfix like note like-nid-<%= like.id %> note-nid-<%= like.id %><% if like.status == 4 %> moderated<% end %>" style="overflow:hidden; text-align:center">
 
         <% if like.main_image %>
-          <a class="img" <% if @widget %>target="_blank"<% end %> href="<%= like.path %>"><img src="<%= like.main_image.path(:default) %>" style="width:100%;" /></a>
+          <a class="img" <% if @widget %>target="_blank" rel="noreferrer"<% end %> href="<%= like.path %>"><img src="<%= like.main_image.path(:default) %>" style="width:100%;" /></a>
         <% end %>
 
         <% if like.status == 4 %>
@@ -19,15 +19,15 @@
           </p>
         <% end %>
 
-        <h3><a <% if @widget %>target="_blank"<% end %> href="<%= like.path %>"><%= (like.type == 'note') ? like.title : like.latest.title %></a></h3>
+        <h3><a <% if @widget %>target="_blank" rel="noreferrer"<% end %> href="<%= like.path %>"><%= (like.type == 'note') ? like.title : like.latest.title %></a></h3>
 
         <p class="meta"><small>
           <% if like.type == 'note' %>
-            by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= like.author.name %>"><%= like.author.name %></a>
+            by <a <% if @widget %>target="_blank" rel="noreferrer"<% end %> href="/profile/<%= like.author.name %>"><%= like.author.name %></a>
 	    <%= distance_of_time_in_words(like.created_at, Time.current, { include_seconds: false, scope:'datetime.time_ago_in_words' }) %>
-            | <a <% if @widget %>target="_blank"<% end %> href="<%= like.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= like.comments.count %></a>
+            | <a <% if @widget %>target="_blank" rel="noreferrer"<% end %> href="<%= like.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= like.comments.count %></a>
           <% else %>
-            <%= translation('notes._notes.last_edit_by') %> <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= like.latest.author.name %>"><%= like.latest.author.name %></a>
+            <%= translation('notes._notes.last_edit_by') %> <a <% if @widget %>target="_blank" rel="noreferrer"<% end %> href="/profile/<%= like.latest.author.name %>"><%= like.latest.author.name %></a>
 	    <%= distance_of_time_in_words(Time.at(like.latest.timestamp), Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>
           <% end %>
           | <i class="fa fa-eye"></i> <%= number_with_delimiter(like.views) %> <span class="d-none d-lg-inline"><%= translation('notes._notes.views') %></span>
@@ -38,9 +38,9 @@
           <% if @compact.nil? %>
             <% if params[:action].to_s.include?("methods") %>
               <p><small>
-                <a <% if @widget %>target="_blank"<% end %> href="<%= like.path %>#Activities"><i class="fa fa-flask" style="color:#3da56a;"></i> <%= like.activities.count %> activities</a> &nbsp;
+                <a <% if @widget %>target="_blank" rel="noreferrer"<% end %> href="<%= like.path %>#Activities"><i class="fa fa-flask" style="color:#3da56a;"></i> <%= like.activities.count %> activities</a> &nbsp;
                 <!-- <p><i class="fa fa-users" style="color:blue"></i> contributors</p> -->
-                <a <% if @widget %>target="_blank"<% end %> href="<%= like.path %>#Questions"><i class="fa fa-question-circle" style="color:#db3a1e;"></i> <%= like.questions.count %> questions</a>
+                <a <% if @widget %>target="_blank" rel="noreferrer"<% end %> href="<%= like.path %>#Questions"><i class="fa fa-question-circle" style="color:#db3a1e;"></i> <%= like.questions.count %> questions</a>
               </small></p>
             <% else %>
               <p><%= raw strip_tags(sanitize(RDiscount.new(like.body_preview).to_html)) if like.body %></p>

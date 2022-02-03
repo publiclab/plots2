@@ -16,7 +16,7 @@
           <% else %>
             <div class="circle"></div>
           <% end %>
-          <a class="post-title" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= (node.type == 'note') ? node.title : node.latest.title %></a>
+          <a class="post-title" <% if @widget %>target="_blank" rel="noreferrer"<% end %> href="<%= node.path %>"><%= (node.type == 'note') ? node.title : node.latest.title %></a>
           &nbsp; by @<%= node.author.name %>
         </div>
       <% end %>
