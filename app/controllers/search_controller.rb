@@ -26,7 +26,7 @@ class SearchController < ApplicationController
 
   def profiles
     @title = "Search profiles"
-    @search_criteria.sort_by = "recent"
+    @search_criteria.sort_by = params[:sort]
     if params[:query]
       @pagy, @profiles = pagy(ExecuteSearch.new.by(:profiles, @search_criteria), items: 20)
     else

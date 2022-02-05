@@ -48,10 +48,25 @@ class SearchService
         .where("node_revisions.status = 1")
         .order("node_revisions.timestamp #{search_criteria.order_direction}")
         .distinct
+      elsif search_criteria.sort_by == "username"
+        user_scope.joins(:revisions)
+        .where("node_revisions.status = 1")
+        .order("username #{search_criteria.order_direction}")
+        .distinct
+      elsif search_criteria.sort_by == "last_activity"
+        user_scope.joins(:revisions)
+        .where("node_revisions.status = 1")
+        .order("updated_at #{search_criteria.order_direction}")
+        .distinct
+      elsif search_criteria.sort_by == "joined"
+        user_scope.joins(:revisions)
+        .where("node_revisions.status = 1")
+        .order("created_at #{search_criteria.order_direction}")
+        .distinct
       else
         user_scope.order(id: :desc)
       end
-
+      
     user_scope.limit(search_criteria.limit)
   end
 
