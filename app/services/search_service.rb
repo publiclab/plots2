@@ -44,10 +44,10 @@ class SearchService
 
     user_scope =
       if search_criteria.sort_by == "recent"
-      user_scope.joins(:revisions)
-      .where("node_revisions.status = 1")
-      .order("node_revisions.timestamp #{search_criteria.order_direction}")
-      .distinct
+        user_scope.joins(:revisions)
+        .where("node_revisions.status = 1")
+        .order("node_revisions.timestamp #{search_criteria.order_direction}")
+        .distinct
       elsif search_criteria.sort_by == "username"
         user_scope
         .order("username #{search_criteria.order_direction}")
