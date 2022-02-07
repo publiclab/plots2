@@ -159,7 +159,7 @@ GEM
     faraday-patron (1.0.0)
     faraday-rack (1.0.0)
     faraday-retry (1.0.3)
-    ffi (1.15.3)
+    ffi (1.15.5)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
@@ -314,7 +314,7 @@ GEM
     lemmatizer (0.2.2)
     letter_opener (1.7.0)
       launchy (~> 2.2)
-    listen (3.7.0)
+    listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     loadcss-rails (2.0.1)
@@ -343,7 +343,7 @@ GEM
       nokogiri (~> 1)
       rake
     mini_mime (1.1.2)
-    mini_portile2 (2.6.1)
+    mini_portile2 (2.7.1)
     minitest (5.15.0)
     minitest-reporters (1.5.0)
       ansi
@@ -364,8 +364,8 @@ GEM
     netrc (0.11.0)
     nifty-generators (0.4.6)
     nio4r (2.5.8)
-    nokogiri (1.12.5)
-      mini_portile2 (~> 2.6.1)
+    nokogiri (1.13.1)
+      mini_portile2 (~> 2.7.0)
       racc (~> 1.4)
     nokogumbo (2.0.4)
       nokogiri (~> 1.8, >= 1.8.4)
@@ -400,7 +400,8 @@ GEM
       rack
     openssl (3.0.0)
     os (1.1.4)
-    pagy (5.6.10)
+    pagy (5.10.1)
+      activesupport
     paperclip (6.1.0)
       activemodel (>= 4.2.0)
       activesupport (>= 4.2.0)
@@ -408,7 +409,7 @@ GEM
       mimemagic (~> 0.3.0)
       terrapin (~> 0.6.0)
     parallel (1.21.0)
-    parser (3.0.3.2)
+    parser (3.1.0.0)
       ast (~> 2.4.1)
     passenger (6.0.12)
       rack
@@ -422,7 +423,7 @@ GEM
     pry-rails (0.3.9)
       pry (>= 0.10.4)
     public_suffix (4.0.6)
-    puma (5.5.2)
+    puma (5.6.1)
       nio4r (~> 2.0)
     racc (1.6.0)
     rack (2.2.3)
@@ -473,7 +474,7 @@ GEM
       method_source
       rake (>= 0.8.7)
       thor (>= 0.19.0, < 2.0)
-    rainbow (3.0.0)
+    rainbow (3.1.1)
     rake (13.0.6)
     rb-fsevent (0.11.0)
     rb-inotify (0.10.1)
@@ -529,9 +530,9 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.10.0)
     rspec-support (3.10.0)
-    rubocop (1.24.1)
+    rubocop (1.25.1)
       parallel (~> 1.10)
-      parser (>= 3.0.0.0)
+      parser (>= 3.1.0.0)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.8, < 3.0)
       rexml
@@ -566,9 +567,9 @@ GEM
     sentry-delayed_job (4.8.3)
       delayed_job (>= 4.0)
       sentry-ruby-core (~> 4.8.3)
-    sentry-rails (4.8.1)
+    sentry-rails (4.8.3)
       railties (>= 5.0)
-      sentry-ruby-core (~> 4.8.1)
+      sentry-ruby-core (~> 4.8.3)
     sentry-resque (4.8.1)
       resque (>= 1.24)
       sentry-ruby-core (~> 4.8.1)
@@ -582,7 +583,7 @@ GEM
     sentry-sidekiq (4.8.1)
       sentry-ruby-core (~> 4.8.1)
       sidekiq (>= 3.0)
-    sidekiq (6.3.1)
+    sidekiq (6.4.0)
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
       redis (>= 4.2.0)
@@ -621,7 +622,7 @@ GEM
       climate_control (>= 0.0.3, < 1.0)
     test-unit (3.5.3)
       power_assert
-    thor (1.1.0)
+    thor (1.2.1)
     thread_safe (0.3.6)
     tilt (2.0.10)
     timecop (0.9.4)
@@ -722,7 +723,7 @@ DEPENDENCIES
   lazyload-rails
   lemmatizer (~> 0.2.2)
   letter_opener
-  listen (~> 3.7.0)
+  listen (~> 3.7.1)
   loadcss-rails (~> 2.0.1)
   mailman
   mimemagic (~> 0.3.10)
@@ -743,7 +744,7 @@ DEPENDENCIES
   phantomjs
   php-serialize
   pry-rails
-  puma (~> 5.5)
+  puma (~> 5.6)
   rack-cors
   rack-openid
   rack-test (= 1.1.0)
@@ -762,7 +763,7 @@ DEPENDENCIES
   rest-client
   reverse_markdown
   rspec
-  rubocop (~> 1.24.1)
+  rubocop (~> 1.25.1)
   ruby-openid
   sanitize
   sassc (~> 2.4.0)
