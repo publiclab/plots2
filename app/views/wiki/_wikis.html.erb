@@ -5,7 +5,7 @@
       <div>
         <div style="margin-bottom: 10px">
           <h4 style="font-weight:500;margin:0;">
-            <a href="<%= @base_url=%><%= wiki.path %>"><%= wiki.latest.title %></a>
+            <a href="<%= @base_url%><%= wiki.path %>"><%= wiki.latest.title %></a>
           </h3>
         </div>
         <div style="float:left;">
@@ -21,7 +21,7 @@
         </div>
       </div>
       <div>
-        <% if wiki.main_image.present? %>
+        <% if wiki.main_image.present? && wiki.main_image.is_image? %>
           <div style="padding-bottom: 30px;" class="pl-md-5 pl-lg-5">
             <img src="<%= @base_url %><%= wiki.main_image.path(:default) %>" style="width:120px;border-radius:5px;">
           </div>
