@@ -489,7 +489,7 @@ GEM
       tilt
     recaptcha (4.14.0)
       json
-    redis (4.5.1)
+    redis (4.6.0)
     redis-namespace (1.8.1)
       redis (>= 3.0.4)
     regexp_parser (2.2.0)
@@ -570,9 +570,9 @@ GEM
     sentry-rails (4.8.3)
       railties (>= 5.0)
       sentry-ruby-core (~> 4.8.3)
-    sentry-resque (4.8.1)
+    sentry-resque (4.8.3)
       resque (>= 1.24)
-      sentry-ruby-core (~> 4.8.1)
+      sentry-ruby-core (~> 4.8.3)
     sentry-ruby (4.8.3)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       faraday (~> 1.0)
