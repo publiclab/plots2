@@ -126,7 +126,7 @@ group :test, :development do
   gem 'minitest-reporters', '~> 1.5.0'
   gem 'openssl', '~> 3.0.0'
   gem 'phantomjs'
-  gem 'puma', '~> 5.5'
+  gem 'puma', '~> 5.6'
   gem 'rails-perftest'
   gem 'rake', '~> 13.0.6'
   gem 'rest-client'
