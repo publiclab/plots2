@@ -1,3 +1,20 @@
-<h2>Content from the past week on topics you've subscribed to</h2>
+<% wikis ||= @wikis #accept local if present, default to instance %>
+<% if local_assigns[:digest] and wikis.size == 0 %>
+  <div class="alert alert-warning" role="alert">
+    <%= translation('subscriptions.digest.no_subscriptions')%>
+  </div>
+<% else %>
+  <div style="width:85%;margin: 0 auto;margin-top: 5px;color: black;">
+    <p style="font-size: 1.2em; font-family: sans-serif;margin-bottom: 0;color: lightgray;"><%= translation('subscriptions.digest.based_on_follow')%></p>
+    
+    <%= render partial: "wiki/wikis"%>
 
-<%= render partial: "wiki/wikis", locals: { digest: "digest" } %> 
+    <p><%= translation('subscriptions.digest.discover_more') %> <a href="<%= @base_url %>/subscriptions"><%= translation('subscriptions.digest.topics_to_follow') %></a></p>
+    <p><a href="<%= @base_url %>/settings"><%= translation('subscriptions.digest.manage_subscriptions') %></a></p>
+  </div>
+<% end %>
+<% if @pagy %>
+  <%== pagy_bootstrap_nav @pagy %>
+<% else %>
+  <%= will_paginate wikis, :renderer => WillPaginate::ActionView::BootstrapLinkRenderer if @paginated %>
+<% end %>

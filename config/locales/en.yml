@@ -622,12 +622,7 @@ en:
       more_research: "More research on \"%{tag}\""
       more_tag_research: "More \"%{tag}\" research"
     _wikis:
-      title: "Title"
-      last_edited: "Last edited"
-      edits: "Edits"
-      page_views: "Page Views"
-      likes: "Likes"
-      by: "by"
+      published: "Published"
     revisions:
       revisions_for: "Revisions for <i>%{wiki}</i>"
       view: "View"
@@ -667,6 +662,13 @@ en:
       agree_to_open_source_work: "By publishing, you agree to <a target='_blank' href='%{url1}'>open
         source your work</a> so that others may use it."
       last_edited_by: "This page was last edited %{time} ago by <a href='%{url1}'>%{author}</a>"
+  subscriptions:
+    digest:
+      topics_to_follow: "topics to follow"
+      manage_subscriptions: "Manage your subscription settings"
+      no_subscriptions: "You haven't subscribed to any topic yet. Visit <a href='https://publiclab.org/subscriptions'>https://publiclab.org/subscriptions</a> to subscribe to more topics."
+      based_on_follow: "Based on what you're following at <a href='https://publiclab.org'>PublicLab.org</a>"
+      discover_more: "Discover more"
   layout:
     _alerts:
       request_access: " A website has requested access to your account. "
