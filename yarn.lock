@@ -6337,6 +6337,14 @@ graceful-fs@~2.0.0:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-2.0.3.tgz#7cd2cdb228a4a3f36e95efa6cc142de7d1a136d0"
   integrity sha1-fNLNsiiko/Nule+mzBQt59GhNtA=
 
+"grow-textarea@git+https://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669":
+  version "1.0.1"
+  uid d54141c9456343f14cc6c935faa0915af09eb669
+  resolved "git+https://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669"
+  dependencies:
+    component-event "^0.1.4"
+    ianstormtaylor-css "^0.3.1"
+
 "grow-textarea@git://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669":
   version "1.0.1"
   resolved "git://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669"
@@ -11152,10 +11160,10 @@ publiclab-editor@^2.0.0:
     woofmark "git://github.com/jywarren/woofmark.git#plots2"
     xhr "~2.5.0"
 
-publiclab-editor@^3.0.3:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/publiclab-editor/-/publiclab-editor-3.0.3.tgz#6ef1280210044eab5fb6cd33cd48cd140dd39813"
-  integrity sha512-ToEgSQQnchTbGCsvaJ6ntc+bBWdeVXMJwxNDZCStBRRd9VsEZ9TmKv0nPy3yCV5ea9CocUzj1bZ0jCcP041WCw==
+publiclab-editor@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/publiclab-editor/-/publiclab-editor-3.1.0.tgz#1568cc69e9e184527b5573cfb2df772399c75928"
+  integrity sha512-euEYjK67dpvhOd1km6mYf4eNA0EJUtWgKYqSs4iye9ptrJ/xULo5iLybifPaV5hk6o31j7XDhSgkjGhZQdyuDg==
   dependencies:
     at.js "^1.5.4"
     blueimp-file-upload "^10.30.1"
@@ -11165,7 +11173,7 @@ publiclab-editor@^3.0.3:
     crossvent "1.5.5"
     domador "2.4.4"
     font-awesome "~4.7.0"
-    grow-textarea "git://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669"
+    grow-textarea "git+https://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669"
     http-server "^0.12.3"
     jquery "^3.6.0"
     leaflet "^1.6.0"
@@ -11175,7 +11183,7 @@ publiclab-editor@^3.0.3:
     popper.js "1.16.1"
     resig-class "~1.0.0"
     typeahead.js-browserify "~1.0.7"
-    woofmark "git://github.com/jywarren/woofmark.git#plots2"
+    woofmark "git+https://github.com/jywarren/woofmark.git#plots2"
     xhr "~2.5.0"
 
 pump@^2.0.0:
@@ -14106,6 +14114,19 @@ window-size@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
   integrity sha1-VDjNLqk7IC76Ohn+iIeu58lPnJ0=
+
+"woofmark@git+https://github.com/jywarren/woofmark.git#plots2":
+  version "4.0.3"
+  uid "78821fad8687757a4201fbef3be4b85418e785ef"
+  resolved "git+https://github.com/jywarren/woofmark.git#78821fad8687757a4201fbef3be4b85418e785ef"
+  dependencies:
+    bullseye "1.4.6"
+    bureaucracy "1.0.7"
+    crossvent "1.5.0"
+    http-server "^0.12.3"
+    kanye "3.0.2"
+    local-storage "1.4.2"
+    seleccion "2.0.0"
 
 "woofmark@git://github.com/jywarren/woofmark.git#plots2":
   version "4.0.3"
