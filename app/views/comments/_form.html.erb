@@ -64,7 +64,8 @@
       class="comment-form-body form-group dropzone dropzone-large"
       data-form-id="<%= comment_form_id %>"
     >
-      <% if location != :edit && is_new_contributor %>
+      <!-- display welcome message only if node author is a new contributor and not the current user -->
+      <% if location != :edit && @node.author.is_new_contributor? && @node.author != current_user %>
         <div id="new_contributor_msg">
           <% cache('feature_welcome-msg', skip_digest: true) do %>
           <%= feature("welcome-msg") %>
