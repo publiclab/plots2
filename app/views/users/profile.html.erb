@@ -66,6 +66,14 @@
       <% if @profile_user.status == 0 %> | <i class="fa fa-ban" style="color:#a00;"></i> <%= translation('users.profile.banned') %><% end %>
     </small>
   </h4>
+
+  <div>
+    <i class="fas fa-user-friends"></i>
+    <a href="/people/<%= @profile_user.username %>/followers" class="link-secondary"><%= pluralize(@profile_user.followers.count, 'follower', plural: 'followers')%></a>
+    &#8226;
+    <a href="/people/<%= @profile_user.username %>/following" class="link-secondary"><%= pluralize(@profile_user.following_users.count, 'following', plural: 'following')%></a>
+  </div>
+
   <%if @content_approved or (!current_user.nil? && current_user.id == @profile_user.id)%>
     <p><%= raw auto_link(RDiscount.new(@profile_user.bio || '').to_html, :sanitize => false) %></p>
   <%end%>
@@ -271,8 +279,6 @@
       <li><h5><a href = "/tag/activity:*/author/<%= params[:id] %>"><%= pluralize(@count_activities_posted, 'activity posted', plural:'activities posted') %> </a></h5></li>
       <li><h5><a href = "/tag/replication:*/author/<%= params[:id] %>"><%= pluralize(@count_activities_attempted, 'activity attempted', plural:'activities attempted')%></a> </h5></li>
       <li><h5><a href = "/tag/with:<%= @profile_user.username %>"><%= pluralize(Tag.find_nodes_by_type("with:#{@profile_user.username}").count, 'note co-authored', plural: 'notes co-authored')%></a> </h5></li>
-      <li><h5><a href = "/people/<%= @profile_user.username %>/followers"><%= pluralize(@profile_user.followers.count, 'follower', plural: 'followers')%></a> </h5></li>
-      <li><h5><a href = "/people/<%= @profile_user.username %>/following"><%= pluralize(@profile_user.following_users.count, 'following', plural: 'following')%></a> </h5></li>
     </ul>
   </div>
 
@@ -382,6 +388,9 @@
   .links {
     font-size: 18px;
     padding: 8px 5px 8px 4px;
+  }
+  .link-secondary {
+    color: #808080;
   }
 
 </style>
