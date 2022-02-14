@@ -17,7 +17,7 @@
             <div class="circle"></div>
           <% end %>
           <a class="post-title" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= (node.type == 'note') ? node.title : node.latest.title %></a>
-          &nbsp; by @<%= node.author.name %>
+          by <a href="/profile/<%= node.author.name %>" class="text-decoration-none">@<%= node.author.name %></a>
         </div>
       <% end %>
     </div>
