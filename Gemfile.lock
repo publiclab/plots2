@@ -165,13 +165,13 @@ GEM
       rake
     figaro (1.2.0)
       thor (>= 0.14.0, < 2)
-    fog-core (2.1.0)
+    fog-core (2.2.4)
       builder
-      excon (~> 0.58)
+      excon (~> 0.71)
       formatador (~> 0.2)
       mime-types
-    fog-google (1.17.0)
-      fog-core (<= 2.1.0)
+    fog-google (1.18.0)
+      fog-core (< 2.3)
       fog-json (~> 1.2)
       fog-xml (~> 0.1.0)
       google-apis-compute_v1 (~> 0.14)
@@ -200,7 +200,7 @@ GEM
     georuby (2.0.0)
     globalid (1.0.0)
       activesupport (>= 5.0)
-    google-apis-compute_v1 (0.19.0)
+    google-apis-compute_v1 (0.25.0)
       google-apis-core (>= 0.4, < 2.a)
     google-apis-core (0.4.2)
       addressable (~> 2.5, >= 2.5.1)
@@ -211,15 +211,15 @@ GEM
       retriable (>= 2.0, < 4.a)
       rexml
       webrick
-    google-apis-dns_v1 (0.15.0)
+    google-apis-dns_v1 (0.19.0)
       google-apis-core (>= 0.4, < 2.a)
     google-apis-iamcredentials_v1 (0.10.0)
       google-apis-core (>= 0.4, < 2.a)
-    google-apis-monitoring_v3 (0.17.0)
+    google-apis-monitoring_v3 (0.21.0)
       google-apis-core (>= 0.4, < 2.a)
-    google-apis-pubsub_v1 (0.9.0)
+    google-apis-pubsub_v1 (0.12.0)
       google-apis-core (>= 0.4, < 2.a)
-    google-apis-sqladmin_v1beta4 (0.20.0)
+    google-apis-sqladmin_v1beta4 (0.24.0)
       google-apis-core (>= 0.4, < 2.a)
     google-apis-storage_v1 (0.11.0)
       google-apis-core (>= 0.4, < 2.a)
@@ -237,7 +237,7 @@ GEM
       google-cloud-core (~> 1.6)
       googleauth (>= 0.16.2, < 2.a)
       mini_mime (~> 1.0)
-    googleauth (1.1.0)
+    googleauth (1.1.1)
       faraday (>= 0.17.3, < 2.0)
       jwt (>= 1.4, < 3.0)
       memoist (~> 0.16)
@@ -693,7 +693,7 @@ DEPENDENCIES
   critical-path-css-rails (~> 4.1.1)
   execjs
   figaro
-  fog-google (= 1.17.0)
+  fog-google (= 1.18.0)
   fog-local (= 0.8.0)
   font-awesome-rails
   friendly_id
