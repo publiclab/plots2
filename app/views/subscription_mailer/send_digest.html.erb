@@ -7,8 +7,5 @@
 <div style="width:95%;margin: 0 auto;margin-top: 54px;color: black;">
   <p style="font-size: 1.2em; font-family: sans-serif;margin-bottom: 0;color: lightgray;"><%= translation('subscriptions.digest.based_on_follow')%></p>
 
-  <%= render partial: "wiki/wikis"%>
-
-  <p><%= translation('subscriptions.digest.discover_more') %> <a href="<%= @base_url %>/subscriptions"><%= translation('subscriptions.digest.topics_to_follow') %></a></p>
-  <p><a href="<%= @base_url %>/settings"><%= translation('subscriptions.digest.manage_subscriptions') %></a></p>
+  <%= render partial: "subscriptions/digest"%>
 </div>

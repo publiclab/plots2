@@ -183,7 +183,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       get '/wiki'
-      assert_select 'span', I18n.t('wiki._wikis.published')
+      assert_select 'th', I18n.t('wiki._wikis.likes')
       assert_select 'small', I18n.t('wiki.index.collaborative_documentation')
     end
   end

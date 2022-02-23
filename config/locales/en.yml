@@ -622,6 +622,12 @@ en:
       more_research: "More research on \"%{tag}\""
       more_tag_research: "More \"%{tag}\" research"
     _wikis:
+      title: "Title"
+      last_edited: "Last edited"
+      edits: "Edits"
+      page_views: "Page Views"
+      likes: "Likes"
+      by: "by"
       published: "Published"
     revisions:
       revisions_for: "Revisions for <i>%{wiki}</i>"
