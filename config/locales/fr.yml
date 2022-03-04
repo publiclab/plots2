@@ -433,6 +433,7 @@ fr:
       page_views: "Vues de pages"
       likes: "Likes"
       by: "par"
+      published: "Publié"
     revisions:
       revisions_for: "Révisions pour <i>%{wiki}</i>"
       view: "Vues"
@@ -470,6 +471,13 @@ fr:
       previewing_text: "Prévisualiser (cliquez pour éditer)"
       agree_to_open_source_work: "En publiant, vous acceptez <a target='_blank' href='%{url1}'>d'ouvrir votre travail et ses sources</a> afin que d'autres puissent l'utiliser."
       last_edited_by: "Cette page fut éditée la dernière fois en %{time} par <a href='%{url1}'>%{author}</a>"
+  subscriptions:
+    digest:
+      topics_to_follow: "sujets à suivre"
+      manage_subscriptions: "Gérer vos paramètres d'abonnement"
+      no_subscriptions: "Vous n'êtes encore abonné à aucun sujet. Visitez <a href='https://publiclab.org/subscriptions'>https://publiclab.org/subscriptions</a> pour vous abonner à plus de sujets."
+      based_on_follow: "D'après ce que vous suivez sur <a href='https://publiclab.org'>PublicLab.org</a>"
+      discover_more: "Découvrez d'autres"
   layout:
     _alerts:
       request_access: "Un site web demande l'accès à votre compte"
