@@ -73,6 +73,69 @@ class SearchApiTest < ActiveSupport::TestCase
      assert matcher =~ json
   end
 
+# search by username and returns users ordered by username and sorted by ASC direction
+test 'search recent profiles by username with sort_by=username present and order_direction ASC' do
+  get '/api/srch/profiles?query=steff&field=username&sort_by=username&order_direction=ASC'
+  assert last_response.ok?
+
+  # Expected search pattern
+  pattern = {
+    srchParams: {
+      query: 'steff',
+      seq: nil
+    }.ignore_extra_keys!
+  }.ignore_extra_keys!
+
+  matcher = JsonExpressions::Matcher.new(pattern)
+  json = JSON.parse(last_response.body)
+
+  assert_equal "/profile/steff1",     json['items'][0]['doc_url']
+  assert_equal "/profile/steff2",     json['items'][1]['doc_url']
+  assert_equal "/profile/steff3",     json['items'][2]['doc_url']
+  assert matcher =~ json
+end
+
+# search by username and returns users ordered by joined and sorted by ASC direction
+test 'search recent profiles by username with sort_by=joined present and order_direction ASC' do
+  get '/api/srch/profiles?query=user&field=username&sort_by=joined&order_direction=ASC'
+  assert last_response.ok?
+
+  # Expected search pattern
+  pattern = {
+    srchParams: {
+      query: 'user',
+      seq: nil
+    }.ignore_extra_keys!
+  }.ignore_extra_keys!
+
+  matcher = JsonExpressions::Matcher.new(pattern)
+  json = JSON.parse(last_response.body)
+
+  assert_equal "/profile/olduser",     json['items'][0]['doc_url']
+  assert matcher =~ json
+end
+
+# search by username and returns users ordered by last_activity and sorted by ASC direction
+test 'search recent profiles by username with sort_by=last_activity present and order_direction ASC' do
+  get '/api/srch/profiles?query=user&field=username&sort_by=last_activity&order_direction=ASC'
+  assert last_response.ok?
+
+  # Expected search pattern
+  pattern = {
+    srchParams: {
+      query: 'user',
+      seq: nil
+    }.ignore_extra_keys!
+  }.ignore_extra_keys!
+
+  matcher = JsonExpressions::Matcher.new(pattern)
+  json = JSON.parse(last_response.body)
+
+  assert_equal "/profile/inactiveUser",     json['items'][0]['doc_url']
+  assert matcher =~ json
+end
+
+
   test 'search content functionality' do
     get '/api/srch/content?query=Blog'
     assert last_response.ok?
