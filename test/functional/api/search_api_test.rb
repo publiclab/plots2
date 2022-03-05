@@ -96,8 +96,8 @@ test 'search recent profiles by username with sort_by=username present and order
 end
 
 # search by username and returns users ordered by joined and sorted by ASC direction
-test 'search recent profiles by username with sort_by=joined present and order_direction ASC' do
-  get '/api/srch/profiles?query=user&field=username&sort_by=joined&order_direction=ASC'
+test 'search recent profiles by username with sort_by=joined present and order_direction DESC' do
+  get '/api/srch/profiles?query=user&field=username&sort_by=joined&order_direction=DESC'
   assert last_response.ok?
 
   # Expected search pattern
@@ -111,13 +111,13 @@ test 'search recent profiles by username with sort_by=joined present and order_d
   matcher = JsonExpressions::Matcher.new(pattern)
   json = JSON.parse(last_response.body)
 
-  assert_equal "/profile/olduser",     json['items'][0]['doc_url']
+  assert_equal "/profile/inactive_user",     json['items'][0]['doc_url']
   assert matcher =~ json
 end
 
 # search by username and returns users ordered by last_activity and sorted by ASC direction
-test 'search recent profiles by username with sort_by=last_activity present and order_direction ASC' do
-  get '/api/srch/profiles?query=user&field=username&sort_by=last_activity&order_direction=ASC'
+test 'search recent profiles by username with sort_by=last_activity present and order_direction DESC' do
+  get '/api/srch/profiles?query=user&field=username&sort_by=last_activity&order_direction=DESC'
   assert last_response.ok?
 
   # Expected search pattern
