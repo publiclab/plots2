@@ -290,9 +290,9 @@ sushmita:
   updated_at: <%= Time.now %>
 
 inactiveUser:
-  username: inactiveUser
+  username: inactive_user
   status: 1
-  email: 'inactiveUser@publiclab.org'
+  email: 'inactiveuser@publiclab.org'
   id: 24
   password_salt: <%= salt = Authlogic::Random.hex_token %>
   crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
