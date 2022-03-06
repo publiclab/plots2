@@ -111,7 +111,7 @@ test 'search recent profiles by username with sort_by=joined present and order_d
   matcher = JsonExpressions::Matcher.new(pattern)
   json = JSON.parse(last_response.body)
 
-  assert_equal "/profile/olduser",     json['items'][0]['doc_url']
+  assert_equal "/profile/user_first_time_poster",     json['items'][0]['doc_url']
   assert_equal "/profile/testuser",     json['items'][1]['doc_url']
   assert matcher =~ json
 end
@@ -132,7 +132,7 @@ test 'search recent profiles by username with sort_by=last_activity present and 
   matcher = JsonExpressions::Matcher.new(pattern)
   json = JSON.parse(last_response.body)
 
-  assert_equal "/profile/inactiveUser",     json['items'][0]['doc_url']
+  assert_equal "/profile/user_first_time_poster",     json['items'][0]['doc_url']
   assert_equal "/profile/testuser",     json['items'][1]['doc_url']
   assert matcher =~ json
 end
