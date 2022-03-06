@@ -18,7 +18,7 @@
         <td style="width:50%"><i class="fa fa-file"></i> <a href="<%= wiki.path %>"><%= wiki.latest.title %></a></td>
         <td>
           <% if wiki.main_image.present? && wiki.main_image.is_image? %>
-            <div style="padding-bottom: 30px;" class="pl-md-5 pl-lg-5">
+            <div style="padding-bottom: 30px;" class="rounded mx-auto d-block"">
               <img src="<%= wiki.main_image.path(:default) %>" style="width:120px;border-radius:5px;">
             </div>
           <% elsif wiki.scraped_image %>
