@@ -112,6 +112,7 @@ test 'search recent profiles by username with sort_by=joined present and order_d
   json = JSON.parse(last_response.body)
 
   assert_equal "/profile/olduser",     json['items'][0]['doc_url']
+  assert_equal "/profile/testuser",     json['items'][1]['doc_url']
   assert matcher =~ json
 end
 
@@ -132,6 +133,7 @@ test 'search recent profiles by username with sort_by=last_activity present and 
   json = JSON.parse(last_response.body)
 
   assert_equal "/profile/inactiveUser",     json['items'][0]['doc_url']
+  assert_equal "/profile/testuser",     json['items'][1]['doc_url']
   assert matcher =~ json
 end
 
