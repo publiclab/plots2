@@ -124,19 +124,19 @@ class TagController < ApplicationController
                else # params[:order] == 'last_updated'
                  'node_revisions.timestamp DESC'
                end
-    nodes = nodes.order(order_by)
 
     @qids = Node.questions.where(status: 1)
                .collect(&:nid)
     if @qids.empty?
-      @notes = nodes
       @questions = []
     else
-      @notes = nodes.where('node.nid NOT IN (?)', @qids) if @node_type == 'note'
+      nodes = nodes.where('node.nid NOT IN (?)', @qids) if @node_type == 'note'
       @questions = nodes.where('node.nid IN (?)', @qids) if @node_type == 'questions'
     end
+    nodes = nodes.order(order_by)
 
     @pagy, nodes = pagy(nodes, items: 24)
+    @notes = nodes
     @paginated = true
 
     @wikis = nodes if @node_type == 'wiki'
