@@ -1,6 +1,6 @@
 <% if following %>
   notyNotification('sunset', 3000, 'success', 'topRight', 'You have started following <%= profile_user.username %>');
-  $('#follow_form').html('<a id="profile-unfollow-button" class="btn btn-primary" data-method="delete" data-remote="true" href="/relationships/<%= profile_user.id %>">Unfollow</a>');
+  $('#follow_form').html('<a id="profile-unfollow-button" class="btn btn-secondary" data-method="delete" data-remote="true" href="/relationships/<%= profile_user.id %>">Unfollow</a>');
 <% else %>
     notyNotification('sunset', 3000, 'error', 'topRight', 'Error in following user');
 <% end %>
