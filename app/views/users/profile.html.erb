@@ -77,9 +77,9 @@
     <% end %>    
     <% if @profile_user.following_users.count>0 %>
       <a href="/people/<%= @profile_user.username %>/following" class="link-secondary"><%= pluralize(@profile_user.following_users.count, 'following', plural: 'following')%></a>
-      <% else %>    
+    <% else %>    
       <%= pluralize(@profile_user.following_users.count, 'following', plural: 'following')%>
-      <% end %>
+    <% end %>
   </div>
 
   <%if @content_approved or (!current_user.nil? && current_user.id == @profile_user.id)%>
