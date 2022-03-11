@@ -73,7 +73,7 @@
       <a href="/people/<%= @profile_user.username %>/followers" class="link-secondary"><%= pluralize(@profile_user.followers.count, 'follower', plural: 'followers')%></a>
       &#8226;
       <a href="/people/<%= @profile_user.username %>/following" class="link-secondary"><%= pluralize(@profile_user.following_users.count, 'following', plural: 'following')%></a>
-    <%else%>
+    <% else %>
       <%= pluralize(@profile_user.followers.count, 'follower', plural: 'followers')%>
       <%= pluralize(@profile_user.following_users.count, 'following', plural: 'following')%>
     <% end %>
