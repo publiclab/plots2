@@ -69,8 +69,9 @@
 a.navbar-offset {
     display: block;
     position: relative;
-    top: -100px;
     visibility: hidden;
+    padding-top: 150px;
+    margin-top: -150px;
 }
 
 #toc-menu:hover, .toc-active {
