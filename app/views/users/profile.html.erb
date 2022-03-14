@@ -71,10 +71,10 @@
     <i class="fas fa-user-friends"></i>
     <% if @profile_user.followers.count>0 %>
       <a href="/people/<%= @profile_user.username %>/followers" class="link-secondary"><%= pluralize(@profile_user.followers.count, 'follower', plural: 'followers')%></a>
-      &#8226;
     <% else %>
       <%= pluralize(@profile_user.followers.count, 'follower', plural: 'followers')%>
-    <% end %>    
+    <% end %>
+    &#8226;    
     <% if @profile_user.following_users.count>0 %>
       <a href="/people/<%= @profile_user.username %>/following" class="link-secondary"><%= pluralize(@profile_user.following_users.count, 'following', plural: 'following')%></a>
     <% else %>    
