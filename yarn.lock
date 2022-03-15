@@ -2555,7 +2555,7 @@ bullseye@1.4.6:
 
 bureaucracy@1.0.7:
   version "1.0.7"
-  resolved "git://github.com/jywarren/bureaucracy.git#f2522f42eba0f09444971e7138a56179cd8bffa9"
+  resolved "git+https://github.com/jywarren/bureaucracy.git#f2522f42eba0f09444971e7138a56179cd8bffa9"
   dependencies:
     contra "1.9.4"
     crossvent "1.5.4"
@@ -10632,7 +10632,7 @@ publiclab-editor@^2.0.0:
     moment "~2.27.0"
     resig-class "~1.0.0"
     typeahead.js-browserify "~1.0.7"
-    woofmark "git://github.com/jywarren/woofmark.git#plots2"
+    woofmark "git+https://github.com/jywarren/woofmark.git#plots2"
     xhr "~2.5.0"
 
 publiclab-editor@^3.1.0:
@@ -13533,9 +13533,9 @@ window-size@0.1.0:
     local-storage "1.4.2"
     seleccion "2.0.0"
 
-"woofmark@git://github.com/jywarren/woofmark.git#plots2":
+"woofmark@git+https://github.com/jywarren/woofmark.git#plots2":
   version "4.0.3"
-  resolved "git://github.com/jywarren/woofmark.git#39237b798308e6855acde1a938c18a8e4da62fce"
+  resolved "git+https://github.com/jywarren/woofmark.git#39237b798308e6855acde1a938c18a8e4da62fce"
   dependencies:
     bullseye "1.4.6"
     bureaucracy "1.0.7"
