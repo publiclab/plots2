@@ -1,6 +1,5 @@
 
 <div class="col-md-7 order-last order-md-first">
-
   <% if !@map_lat.nil? && !@map_lon.nil? %>
     <%= render :partial => "map/leaflet" , locals: { lat: @map_lat, lon: @map_lon, zoom: @map_zoom, blurred: @map_blurred, topmap: true, user: @profile_user } %>
   <% elsif !current_user.nil? && current_user.id == @profile_user.id %>
@@ -28,7 +27,10 @@
     <span id="commontags">
       <% tags = Tag.sort_according_to_followers(@profile_user.tags,"desc") %>
       <% tags.each do |tag| %>
-          <span id="tag_<%= tag.id %>" style=""><a class="badge badge-primary mb-1" style="color: white;" href="/tag/<%= tag.name %>"><%= tag.name %></a></span>
+          <span id="tag_<%= tag.id %>" style="">
+
+            <a class="badge badge-primary mb-1" style="color: white;
+            " href="/tag/<%= tag.name %>"><%= tag.name %>
       <% end %>
     </span>
   </div>
@@ -69,17 +71,9 @@
 
   <div>
     <i class="fas fa-user-friends"></i>
-    <% if @profile_user.followers.count>0 %>
-      <a href="/people/<%= @profile_user.username %>/followers" class="link-secondary"><%= pluralize(@profile_user.followers.count, 'follower', plural: 'followers')%></a>
-    <% else %>
-      <%= pluralize(@profile_user.followers.count, 'follower', plural: 'followers')%>
-    <% end %>
-    &#8226;    
-    <% if @profile_user.following_users.count>0 %>
-      <a href="/people/<%= @profile_user.username %>/following" class="link-secondary"><%= pluralize(@profile_user.following_users.count, 'following', plural: 'following')%></a>
-    <% else %>    
-      <%= pluralize(@profile_user.following_users.count, 'following', plural: 'following')%>
-    <% end %>
+    <a href="/people/<%= @profile_user.username %>/followers" class="link-secondary"><%= pluralize(@profile_user.followers.count, 'follower', plural: 'followers')%></a>
+    &#8226;
+    <a href="/people/<%= @profile_user.username %>/following" class="link-secondary"><%= pluralize(@profile_user.following_users.count, 'following', plural: 'following')%></a>
   </div>
 
   <%if @content_approved or (!current_user.nil? && current_user.id == @profile_user.id)%>
@@ -107,25 +101,38 @@
 
     <div class="profile_icons d-flex justify-content-center" style="gap: 8px">
       <% if @twitter.nil? == false %>
+      <span>
+       <a aria-label="Delete tag" data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/profile/tags/delete/<%= @profile_user.id %>?name=twitter:<%= @twitter_user %>" data-method="delete"><span style=" color: white; position: absolute; display: block; " class="badge badge-primary mb-1">x</span></a>         
         <a href="<%= @twitter %>" >
-          <i class="fa fa-twitter fa-3x" aria-hidden="true"></i>
+          <i class="fa fa-twitter fa-3x" ></i>
         </a>
+</span>         
       <% end %>
       <% if @facebook.nil? == false %>
+      <span> 
+       <a aria-label="Delete tag" data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/profile/tags/delete/<%= @profile_user.id %>?name=facebook:<%= @facebook_user %>" data-method="delete"><span style=" color: white; position: absolute; display: block; " class="badge badge-primary mb-1">x</span></a> 
+
         <a href="<%= @facebook %>" >
-          <i class="fa fa-facebook fa-3x" aria-hidden="true"></i>
-        </a>
+          <i class="fa fa-facebook fa-3x" ></i>
+        </a>            </span>       
+
       <% end %>
       <% if @github.nil? == false %>
+      <span>
+       <a aria-label="Delete tag" data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/profile/tags/delete/<%= @profile_user.id %>?name=github:<%= @github_user %>" data-method="delete"><span style=" color: white; position: absolute; display: block; " class="badge badge-primary mb-1">x</span></a>         
         <a href="<%= @github %>" >
-          <i class="fa fa-github fa-3x" aria-hidden="true"></i>
+          <i class="fa fa-github fa-3x" ></i>
         </a>
+            </span>     
       <% end %>
       <% if @instagram.nil? == false %>
+     <span>
+       <a aria-label="Delete tag" data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/profile/tags/delete/<%= @profile_user.id %>?name=instagram:<%= @instagram_user %>" data-method="delete"><span style=" color: white; position: absolute; display: block; " class="badge badge-primary mb-1">x</span></a>       
         <a href="<%= @instagram %>" >
-          <i class="fa fa-instagram fa-3x" aria-hidden="true"></i>
-        </a>
-      <% end %>
+            <i  class="fa fa-instagram fa-3x"></i>      
+              </a>
+            </span>
+    <% end %>
     </div>
     <br>
     <% if current_user && @profile_user %>
@@ -273,7 +280,7 @@
       <% end %>
     </div>
   </div>
-
+</div>
   <div class="info float:left">
     <ul>
     <li class="mt-3"><h5>@<%= @profile_user.name %> has</h5></li>
@@ -363,10 +370,10 @@
     margin-left: 8px;
   }
 
-  i:hover{
+/*  i:hover{
     transition-duration: .2s;
     transform: scale(1.2);
-  }
+  }*/
 
   .info h5{
     color: grey;
