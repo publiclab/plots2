@@ -38,7 +38,7 @@ class User < ActiveRecord::Base
     c.validates_format_of_login_field_options = { with: Authlogic::Regex::LOGIN, message: I18n.t('error_messages.login_invalid', default: "can only consist of alphabets, numbers, underscore '_', and hyphen '-'.") }
   end
 
-  has_attached_file :photo, 
+  has_attached_file :photo,
     styles: { thumb: '200x200#', medium: '500x500#', large: '800x800#' },
     url: '/public/system/profile/photos/:id/:style/:basename.:extension',
     path: ':rails_root/public/system/public/system/profile/photos/:id/:style/:filename'
@@ -257,7 +257,7 @@ class User < ActiveRecord::Base
     Node.questions.where(status: 1, uid: id)
   end
 
-  def content_followed_in_period(start_time, end_time, 
+  def content_followed_in_period(start_time, end_time,
     order_by = 'node_revisions.timestamp DESC', node_type = 'note', include_revisions = false)
     tagnames = TagSelection.where(following: true, user_id: uid)
     node_ids = []
