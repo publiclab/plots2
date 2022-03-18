@@ -164,7 +164,7 @@ class User < ActiveRecord::Base
     tags(limit).select { |tag| !tag.name.include?(':') }
   end
 
-  def tagnames(limit = 20, _defaults = true)
+  def tagnames(limit = 20)
     tagnames = []
     Node.includes(:tag).order('nid DESC').where(type: 'note', status: 1, uid: id).limit(limit).each do |node|
       tagnames += node.tags.collect(&:name)
@@ -411,13 +411,15 @@ class User < ActiveRecord::Base
     def search(query)
       query = query.tr('@', ' ') # @ is a special char in full text search in MYSQL, and cannot be escaped; https://github.com/publiclab/plots2/issues/8344
       query += '*' unless query.empty?
-      User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', query.to_s)
+
+      User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', query)
     end
 
     def search_by_username(query)
       query = query.tr('@', ' ') # @ is a special char in full text search in MYSQL, and cannot be escaped; https://github.com/publiclab/plots2/issues/8344
       query += '*' unless query.empty?
-      User.where('MATCH(username) AGAINST(? IN BOOLEAN MODE)', query.to_s)
+
+      User.where('MATCH(username) AGAINST(? IN BOOLEAN MODE)', query)
     end
 
     def validate_token(token)
@@ -494,13 +496,13 @@ class User < ActiveRecord::Base
     end
   end
 
-  def recent_locations(_limit = 5)
+  def recent_locations(limit = 5)
     recent_nodes = nodes.includes(:tag)
       .references(:term_data)
       .where('term_data.name LIKE ?', 'lat:%')
       .joins("INNER JOIN term_data AS lon_tag ON lon_tag.name LIKE 'lat:%'")
       .order(created: :desc)
-      .limit(5)
+      .limit(limit)
   end
 
   def latest_location
