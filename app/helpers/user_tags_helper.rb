@@ -8,6 +8,6 @@ module UserTagsHelper
     tags
   end
   def social_link(site, user_name)
-      "https://#{site}.com/#{user_name}"
-    end  
+    "https://#{site}.com/#{user_name}"
+  end  
 end
