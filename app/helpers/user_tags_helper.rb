@@ -6,7 +6,8 @@ module UserTagsHelper
       tags = UserTag.where(uid: uid).where('value LIKE ?', type + ':' + '%')
     end
     tags
-  end
+  end  
+
   def social_link(site, user_name)
     "https://#{site}.com/#{user_name}"
   end
