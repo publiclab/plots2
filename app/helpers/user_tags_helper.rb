@@ -7,7 +7,8 @@ module UserTagsHelper
     end
     tags
   end
+  
   def social_link(site, user_name)
     "https://#{site}.com/#{user_name}"
-  end  
+  end
 end
