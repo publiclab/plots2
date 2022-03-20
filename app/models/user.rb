@@ -544,4 +544,14 @@ class User < ActiveRecord::Base
     self.email = registration['email'] if email.blank?
     self.username = registration['nickname'] if username.blank?
   end
+
+  def notes_for_tags(tagnames)
+    nids = NodeTag.includes(:node, :tag)
+    .references(:term_data)
+    .where(type: 'note')
+    .where(name: tagnames, uid: :uid)
+    @pagy, @notes = pagy(Node
+      .order('nid DESC')
+      .where(nid: nids), items: 24)
+  end
 end
