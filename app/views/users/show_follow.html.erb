@@ -64,7 +64,7 @@
     </div>
     </br>
     <% if @pagy %> 
-      <%= raw pagy_bootstrap_nav @pagy %>       
+      <%= raw pagy_bootstrap_nav @pagy if @pagy.pages > 1 %>       
   </div>
   <% else %> 
     <%= will_paginate @users, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
