@@ -286,13 +286,6 @@ class User < ActiveRecord::Base
         .distinct
   end
 
-  def social_link(site)
-    return nil unless has_power_tag(site)
-
-    user_name = get_last_value_of_power_tag(site)
-    "https://#{site}.com/#{user_name}"
-  end
-
   def moderate
     self.status = Status::MODERATED
     save
