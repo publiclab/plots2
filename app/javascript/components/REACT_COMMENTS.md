@@ -3,6 +3,8 @@
 **Last Updated: 3/13/2021**
 
 This documents the React rewrite of the commenting system that PR #9176 initiated. Also see the corresponding issue at #9175.
+ 
+(brief addition 3/18/22: Latest status at https://github.com/publiclab/plots2/issues/9365)
 
 ## `How to Access`
 
@@ -48,3 +50,4 @@ _(Help Wanted!)_
 - Currently you must be logged into the website to see React comments (no guest browsing, it will throw an error)
 - Any contributors MUST install the following linters to protect the React codebase: `plugin:react/recommended`, `plugin:react-hooks/recommended`.
   - We need to fix the `.eslintrc` config to install these linters permanently, and get them working with codeclimate.
+ 
