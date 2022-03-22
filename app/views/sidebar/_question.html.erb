@@ -1,10 +1,10 @@
 <div class="col-lg-3">
 
 <%= render :partial => "like/like", :locals => {:node => @node, :tagnames => @tagnames } %>
+  <div class="accordion">
+  <button style="margin-top:-16px;margin-bottom:0;" aria-expanded="false" class="btn btn-sm btn-block btn-link" href="javascript:void()" onclick="toggle_sidebar()"><i class="pt-3 pb-3 fa fa-chevron-down fa-2x"></i></button>
 
-  <a style="margin-top:-16px;margin-bottom:0;" class="btn btn-sm btn-block btn-link d-lg-none" href="javascript:void()" onClick="toggle_sidebar()"><i class="fa fa-chevron-down"></i></a>
-
-  <div id="sidebar" class="d-lg-inline">
+  <div id="sidebar" class="d-lg-inline accordion-content">
 
     <a rel="tooltip" title="Ask question<% if @tagnames %> about <%= (@tagnames.uniq.collect {|x| x.gsub(/[\w-]+:/, '') }).join(',') %><% end %>" data-placement="bottom" href="/post<%= '?tags=' + @tagnames.uniq.join(',') if @tagnames %>&template=question&redirect=question" class="btn btn-primary btn-lg btn-block requireLogin"><i class="fa fa-question-circle fa-white"></i> Ask related question &raquo;</a>
 
@@ -17,6 +17,7 @@
     <%= render partial: "sidebar/map" %>
     <%= render partial: 'sidebar/notes', locals: { notes: @notes, title: "Related Questions", node: @node } %>
   </div>
+  </div>
 
   <div id=sidebar-tags>
     <%= render partial: 'tag/tagging' %>
@@ -24,3 +25,32 @@
 
 </div>
 <%= javascript_include_tag 'sidebar' %>
+<style>
+.accordion button:hover, .accordion button:focus {
+  cursor: pointer;
+}
+
+.accordion button:hover::after, .accordion button:focus::after {
+  cursor: pointer;
+}
+
+button i{
+  color: #222;
+}
+.accordion button[aria-expanded='true'] + .accordion-content {
+  opacity: 1;
+  max-height: fit-content;
+  -webkit-transition: all 800ms linear;
+  transition: all 800ms linear;
+  will-change: opacity, max-height;
+}
+
+.accordion .accordion-content {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  -webkit-transition: opacity 800ms linear, max-height 800ms linear;
+  transition: opacity 800ms linear, max-height 800ms linear;
+  will-change: opacity, max-height;
+}
+</style>
