@@ -2126,7 +2126,6 @@ blueimp-canvas-to-blob@3, blueimp-canvas-to-blob@^3.16.0:
 
 blueimp-file-upload@^10.30.1, blueimp-file-upload@blueimp/jQuery-File-Upload#^10.32.0, jquery-file-upload@blueimp/jQuery-File-Upload#~10.32.0:
   version "10.32.0"
-  uid "0c85627dfb551e2ce25b82cddef557069bd803ed"
   resolved "https://codeload.github.com/blueimp/jQuery-File-Upload/tar.gz/0c85627dfb551e2ce25b82cddef557069bd803ed"
   optionalDependencies:
     blueimp-canvas-to-blob "3"
@@ -5967,7 +5966,6 @@ graceful-fs@~2.0.0:
 
 "grow-textarea@git+https://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669":
   version "1.0.1"
-  uid d54141c9456343f14cc6c935faa0915af09eb669
   resolved "git+https://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669"
   dependencies:
     component-event "^0.1.4"
@@ -6763,7 +6761,6 @@ imagemin@^7.0.1:
 
 "imgareaselect@git+https://git@github.com/jywarren/imgareaselect.git#v1.0.0-rc.2":
   version "0.9.11-rc.1"
-  uid db8ae869ca0fcb289252678cebd17d6f40711f61
   resolved "git+https://git@github.com/jywarren/imgareaselect.git#db8ae869ca0fcb289252678cebd17d6f40711f61"
 
 import-cwd@^2.0.0:
@@ -10638,7 +10635,7 @@ publiclab-editor@^3.1.0:
     crossvent "1.5.5"
     domador "2.4.4"
     font-awesome "~4.7.0"
-    grow-textarea "git+https://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669"
+    grow-textarea "https://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669"
     http-server "^0.12.3"
     jquery "^3.6.0"
     leaflet "^1.6.0"
@@ -10648,7 +10645,7 @@ publiclab-editor@^3.1.0:
     popper.js "1.16.1"
     resig-class "~1.0.0"
     typeahead.js-browserify "~1.0.7"
-    woofmark "git+https://github.com/jywarren/woofmark.git#plots2"
+    woofmark "https://github.com/jywarren/woofmark.git#plots2"
     xhr "~2.5.0"
 
 pump@^2.0.0:
