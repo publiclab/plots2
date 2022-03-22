@@ -110,7 +110,7 @@
           <span>
            <a aria-label="Delete tag" data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/profile/tags/delete/<%= @profile_user.id %>?name=<%= @twitter_user %>" data-method="delete">
             <span class="badge badge-secondary delete_badge mb-1">x</span></a>         
-            <a href="<%= @twitter %>"><i class="fa fa-twitter fa-3x"></i></a>
+            <a href="<%= social_link('twitter', @twitter_user)%>"><i class="fa fa-twitter fa-3x"></i></a>
           </span>         
           <% end %>
           <% if @facebook_user.nil? == false %>
