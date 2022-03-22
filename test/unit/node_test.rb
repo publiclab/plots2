@@ -255,7 +255,7 @@ class NodeTest < ActiveSupport::TestCase
   test 'title should not be too short' do
     node = Node.new(uid: users(:bob).id,
                     type: 'note',
-                    title: 'ok')
+                    title: 'o')
     assert_not node.valid?
   end
   test 'create a node_revision' do
