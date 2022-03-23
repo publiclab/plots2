@@ -26,6 +26,8 @@
 </div>
 <%= will_paginate @wikis, :renderer => BootstrapPagination::Rails if @paginated %>
 
+<%= render partial: 'grids/embedButton' , locals: {className: className, randomSeed: randomSeed, type: type, tagname: tagname, thumbnails: false} %>
+
 <script>
 (function(){
   $(".<%= className %>-<%= randomSeed %> .show-all a").click(function() {

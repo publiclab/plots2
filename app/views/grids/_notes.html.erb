@@ -78,6 +78,8 @@
 </table>
 </div>
 
+<%= render partial: 'grids/embedButton' , locals: {className: className, randomSeed: randomSeed, type: type, tagname: tagname, thumbnails: false} %>
+
 <% if type == "questions" || tagname.include?('question:') %>
   <p><a href='/post?tags=question:<%= tagname %>,<%= tagname %>&template=question&title=How%20do%20I...&redirect=question' class='btn btn-primary add-activity requireLogin'>Ask a question</a> &nbsp;or <a class="requireLogin" href='/subscribe/tag/question:<%= tagname %>'>help answer future questions<span class='d-none d-lg-inline'> on this topic</span></a></p>
 <% elsif type == "activity" || tagname.include?('activity:') %>
