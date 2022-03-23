@@ -5,7 +5,7 @@
   "main": "app/assets/javascripts/application.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/publiclab/plots2.git"
+    "url": "https://github.com/publiclab/plots2.git"
   },
   "keywords": [
     "wiki",
