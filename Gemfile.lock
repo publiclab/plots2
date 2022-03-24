@@ -196,7 +196,7 @@ GEM
     friendly_id (5.4.2)
       activerecord (>= 4.0.0)
     gemoji (3.0.1)
-    geocoder (1.7.3)
+    geocoder (1.7.5)
     georuby (2.0.0)
     globalid (1.0.0)
       activesupport (>= 5.0)
