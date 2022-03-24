@@ -88,7 +88,7 @@ $(document).ready(function () {
             <td>
               <i class="fa fa-flag text-<% if flag.flag > 10%>danger<% else%>secondary<%end%>"></i> 
               <a href="javascript:void(0);" class="text-dark font-weight-bold" id="node-hover" data-toggle="modal" data-target="#ninfo<%= flag.id %>"><%= flag.title.truncate(15) %></a><br />
-              <span class="text-secondary small"><%= flag.type.capitalize %> | <%= time_ago_in_words(flag.created_at) %> ago</span>
+	      <span class="text-secondary small"><%= flag.type.capitalize %> | Created <%= time_ago_in_words(flag.created_at) %> ago</span>
             </td>
             <td>  
               <a href="/profile/<%= flag.author&.name %>" class="text-info"><%= flag.author&.name %> <%= flag.author&.new_contributor%></a><br>
