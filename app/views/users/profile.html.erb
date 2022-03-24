@@ -108,7 +108,7 @@
         <div class="profile_icons d-flex justify-content-center" style="gap: 8px">
           <% if @twitter_user.nil? == false %>
           <span>
-           <a aria-label="Delete tag" data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/profile/tags/delete/<%= @profile_user.id %>?name=<%= @twitter_user %>" data-method="delete">
+           <a aria-label="Delete tag" data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/profile/tags/delete/<%= @profile_user.id %>?name=twitter:<%= @twitter_user %>" data-method="delete">
             <span class="badge badge-secondary delete_badge mb-1">
               x
             </span>
@@ -120,7 +120,7 @@
           <% end %>
           <% if @facebook_user.nil? == false %>
           <span> 
-           <a aria-label="Delete tag" data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/profile/tags/delete/<%= @profile_user.id %>?name=<%= @facebook_user %>" data-method="delete">
+           <a aria-label="Delete tag" data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/profile/tags/delete/<%= @profile_user.id %>?name=facebook:<%= @facebook_user %>" data-method="delete">
             <span class="badge badge-secondary delete_badge mb-1">
               x
             </span>
@@ -133,7 +133,7 @@
           <% end %>
           <% if @github_user.nil? == false %>
           <span>
-           <a aria-label="Delete tag" data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/profile/tags/delete/<%= @profile_user.id %>?name=<%= @github_user %>" data-method="delete">
+           <a aria-label="Delete tag" data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/profile/tags/delete/<%= @profile_user.id %>?name=github:<%= @github_user %>" data-method="delete">
             <span class="badge badge-secondary delete_badge mb-1">
               x
             </span>
@@ -145,7 +145,7 @@
           <% end %>
           <% if @instagram_user.nil? == false %>
           <span>
-           <a aria-label="Delete tag" data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/profile/tags/delete/<%= @profile_user.id %>?name=<%= @instagram_user %>" data-method="delete">
+           <a aria-label="Delete tag" data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/profile/tags/delete/<%= @profile_user.id %>?name=instagram:<%= @instagram_user %>" data-method="delete">
             <span class="badge badge-secondary delete_badge mb-1">
               x
             </span>
