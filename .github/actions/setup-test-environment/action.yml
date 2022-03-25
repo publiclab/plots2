@@ -28,3 +28,6 @@ runs:
       mysql -uroot -proot -e "CREATE DATABASE plots;"
       bundle exec rake db:schema:load db:migrate --trace
       # above SET @@global.sql_mode is to address issue in https://github.com/publiclab/plots2/issues/3120
+  - name: Reconfigure git to use HTTP authentication
+    run: >
+      git config --global url."https://github.com/".insteadOf git://github.com/
