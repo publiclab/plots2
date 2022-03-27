@@ -95,9 +95,16 @@ $(document).ready(function () {
                 <span class="text-secondary small"><%= Node.where(uid: flag.author&.id).count %> Nodes<span>
              </td>
             <td>
-              <% if flag.status == 1 %><span class="badge badge-pill badge-success"><i class="fa fa-check-circle text-white"></i> Published</span><% elsif flag.status == 0 %><span class="badge badge-pill badge-danger"><i class="fa fa-ban text-white"></i> Spammed</span><% elsif flag.status == 4 %><span class="badge badge-pill badge-primary"><i class="fa fa-circle text-white"></i> Unmoderated</span><% end %> <span class="badge badge-pill badge-light"><%=  flag.flag %></span>
+              <% if flag.status == 1 %>
+	       <span class="badge badge-pill badge-success"><i class="fa fa-check-circle text-white"></i> Published</span>
+              <% elsif flag.status == 0 %>
+               <span class="badge badge-pill badge-danger"><i class="fa fa-ban text-white"></i> Spammed</span>
+              <% elsif flag.status == 4 %>
+               <span class="badge badge-pill badge-primary"><i class="fa fa-circle text-white"></i> Unmoderated</span>
+              <% end %>
+               <span data-toggle="tooltip" data-placement="top" title="# of flags" class="badge badge-pill badge-light"><%= flag.flag %></span>
             </td>
-             <td>
+            <td> 
                <span class="text-dark"><%= time_ago_in_words(flag.updated_at) %> ago</span>
             </td>
              <td style="height:35px !important;">
