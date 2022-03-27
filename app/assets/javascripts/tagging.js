@@ -24,7 +24,8 @@ function setupTagDelete(el) {
     })
     .bind('ajax:success', function(e, response){
       if (typeof response == "string") response = JSON.parse(response)
-      if (response['status'] == true) { 
+      if (response['status'] == true) {
+        $("#social-links-list").load(location.href + " #social-links-list > *");        
         $('#tag_' + response['tid']).remove() 
       } else {
         $('.control-group').addClass('has-error')
