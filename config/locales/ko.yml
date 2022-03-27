@@ -61,7 +61,7 @@ ko:
     - :month
     - :day
   datetime:
-    distance_in_words:
+    time_ago_in_words:
       about_x_hours:
         one: 약 한 시간
         other: 약 %{count}시간
