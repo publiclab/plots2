@@ -61,7 +61,7 @@ ar:
     - :month
     - :year
   datetime:
-    distance_in_words:
+    time_ago_in_words:
       about_x_hours:
         zero: حوالي صفر ساعات
         one: حوالي ساعة واحدة
