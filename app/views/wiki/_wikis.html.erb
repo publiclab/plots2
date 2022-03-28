@@ -25,6 +25,10 @@
             <div style="padding-bottom:30px;" class="rounded mx-auto d-block">
               <img src="<%= wiki.scraped_image %>" style="width:120px;border-radius:5px;">
             </div>
+          <% else %>
+            <div>
+              <p class="font-italic">None</p>
+            </div>
           <% end %>
         </td>
         <td><%= distance_of_time_in_words(Time.at(wiki.latest.created_at), Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %> <%= raw translation('wiki._wikis.by') %>
