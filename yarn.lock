@@ -6019,9 +6019,9 @@ graceful-fs@~2.0.0:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-2.0.3.tgz#7cd2cdb228a4a3f36e95efa6cc142de7d1a136d0"
   integrity sha1-fNLNsiiko/Nule+mzBQt59GhNtA=
 
-"grow-textarea@git+https://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669":
+"grow-textarea@git://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669":
   version "1.0.1"
-  resolved "git+https://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669"
+  resolved "git://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669"
   dependencies:
     component-event "^0.1.4"
     ianstormtaylor-css "^0.3.1"
@@ -6798,7 +6798,6 @@ image-sequencer@^3.7.3:
 
 "imagejs@git+https://git@github.com/glennjones/imagejs.git#1119a31e6eabc87563bc573cd62c11bd487ce8a9":
   version "0.0.10"
-  uid "1119a31e6eabc87563bc573cd62c11bd487ce8a9"
   resolved "git+https://git@github.com/glennjones/imagejs.git#1119a31e6eabc87563bc573cd62c11bd487ce8a9"
   dependencies:
     bluebird "*"
@@ -10788,7 +10787,7 @@ publiclab-editor@^2.0.0:
     crossvent "1.5.5"
     domador "2.4.4"
     font-awesome "~4.7.0"
-    grow-textarea "git+https://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669"
+    grow-textarea "git://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669"
     jquery "~3"
     leaflet "^1.6.0"
     leaflet-blurred-location "^1.5.1"
@@ -10796,7 +10795,7 @@ publiclab-editor@^2.0.0:
     moment "~2.27.0"
     resig-class "~1.0.0"
     typeahead.js-browserify "~1.0.7"
-    woofmark "git+https://github.com/jywarren/woofmark.git#plots2"
+    woofmark "git://github.com/jywarren/woofmark.git#plots2"
     xhr "~2.5.0"
 
 publiclab-editor@^3.1.0:
@@ -13693,13 +13692,14 @@ window-size@0.1.0:
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
   integrity sha1-VDjNLqk7IC76Ohn+iIeu58lPnJ0=
 
-"woofmark@git+https://github.com/jywarren/woofmark.git#plots2":
+"woofmark@git://github.com/jywarren/woofmark.git#plots2":
   version "4.0.3"
-  resolved "git+https://github.com/jywarren/woofmark.git#39237b798308e6855acde1a938c18a8e4da62fce"
+  resolved "git://github.com/jywarren/woofmark.git#78821fad8687757a4201fbef3be4b85418e785ef"
   dependencies:
     bullseye "1.4.6"
     bureaucracy "1.0.7"
     crossvent "1.5.0"
+    http-server "^0.12.3"
     kanye "3.0.2"
     local-storage "1.4.2"
     seleccion "2.0.0"
