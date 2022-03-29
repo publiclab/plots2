@@ -1,3 +1,4 @@
 <div class="thumbnail-grid">
   <%= render partial: 'notes/notes', locals: { notes: nodes, unpaginated: true } %>
+  <%= render partial: 'grids/embedButton' , locals: {className: className, randomSeed: randomSeed, type: type, tagname: tagname, thumbnails: true} %>
 </div>
