@@ -105,28 +105,57 @@
 
   <div id="social-links">
 
-    <div class="profile_icons d-flex justify-content-center" style="gap: 8px">
-      <% if @twitter.nil? == false %>
-        <a href="<%= @twitter %>" >
-          <i class="fa fa-twitter fa-3x" aria-hidden="true"></i>
-        </a>
-      <% end %>
-      <% if @facebook.nil? == false %>
-        <a href="<%= @facebook %>" >
-          <i class="fa fa-facebook fa-3x" aria-hidden="true"></i>
-        </a>
-      <% end %>
-      <% if @github.nil? == false %>
-        <a href="<%= @github %>" >
-          <i class="fa fa-github fa-3x" aria-hidden="true"></i>
-        </a>
-      <% end %>
-      <% if @instagram.nil? == false %>
-        <a href="<%= @instagram %>" >
-          <i class="fa fa-instagram fa-3x" aria-hidden="true"></i>
-        </a>
-      <% end %>
-    </div>
+        <div id="social-links-list" class="profile_icons d-flex justify-content-center" style="gap: 8px">
+          <% if @twitter_user.nil? == false %>
+          <span>
+           <a aria-label="Delete tag" data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/profile/tags/delete/<%= @profile_user.id %>?name=twitter:<%= @twitter_user %>" data-method="delete">
+            <span class="badge badge-secondary delete_badge mb-1">
+              x
+            </span>
+           </a>         
+            <a href="<%= social_link('twitter', @twitter_user)%>">
+              <i class="fa fa-twitter fa-3x"></i>
+            </a>
+          </span>         
+          <% end %>
+          <% if @facebook_user.nil? == false %>
+          <span> 
+           <a aria-label="Delete tag" data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/profile/tags/delete/<%= @profile_user.id %>?name=facebook:<%= @facebook_user %>" data-method="delete">
+            <span class="badge badge-secondary delete_badge mb-1">
+              x
+            </span>
+            </a> 
+            <a href="<%= social_link('facebook', @facebook_user)%>">
+              <i class="fa fa-facebook fa-3x"></i>
+            </a>
+          </span>       
+
+          <% end %>
+          <% if @github_user.nil? == false %>
+          <span>
+           <a aria-label="Delete tag" data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/profile/tags/delete/<%= @profile_user.id %>?name=github:<%= @github_user %>" data-method="delete">
+            <span class="badge badge-secondary delete_badge mb-1">
+              x
+            </span>
+            </a>         
+            <a href="<%= social_link('github', @github_user)%>">
+              <i class="fa fa-github fa-3x"></i>
+            </a>
+          </span>     
+          <% end %>
+          <% if @instagram_user.nil? == false %>
+          <span>
+           <a aria-label="Delete tag" data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/profile/tags/delete/<%= @profile_user.id %>?name=instagram:<%= @instagram_user %>" data-method="delete">
+            <span class="badge badge-secondary delete_badge mb-1">
+              x
+            </span>
+            </a>       
+            <a href="<%= social_link('instagram', @instagram_user)%>">
+              <i  class="fa fa-instagram fa-3x"></i>
+            </a>
+          </span>
+          <% end %>
+        </div>    
     <br>
     <% if current_user && @profile_user %>
       <% unless current_user == @profile_user %>
@@ -399,8 +428,19 @@
   .link-secondary {
     color: #808080;
   }
-
+  .delete_badge{
+    color: white;
+    position: absolute;
+    display: block; 
+    z-index: 10;
+  }
+  .delete_badge:hover{
+    transition-duration: .2s;
+    transform: scale(1.2);
+  }
 </style>
 
 <%= stylesheet_link_tag "dashboard" %>
 <%= javascript_include_tag "dashboard" %>
+
+
