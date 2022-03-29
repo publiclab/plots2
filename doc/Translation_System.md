@@ -12,6 +12,8 @@ You can find language resource files stored as YAML files [here](https://github.
 
 There is a custom Ruby helper function which we've created to simplify using translation strings in the codebase. You can find it [here](https://github.com/publiclab/plots2/blob/236381bc57d36361d1584059a94693e079744583/app/helpers/application_helper.rb#L157) . This is one of the most important part of the project. It basically returns translation of the string if it is present, or else returns a html tag with the English translation of the string and a globe icon beside it which tells the [translation team members](https://publiclab.org/translation) that translation to this string is missing. Note that this globe icon prompt is a unique feature of our helper function and not a default behavior of the Ruby `i18n` gem. 
 
+As of https://github.com/publiclab/plots2/pull/9826 and [09d8ed3](https://github.com/publiclab/plots2/commit/09d8ed37834ee420e2b2b7e1ec75856f5e2849d5), only every 3rd translation is requested, for a maximum of 10, so as not to create too many prompts across the site.
+
 The function is designed in  such a way that it presents two very similar experience to normal user and members of the translation team. 
 
 ### JavaScript translation helper

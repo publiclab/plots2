@@ -43,7 +43,7 @@ gem "php-serialize", :require => "php_serialize"
 gem 'rack-cors', :require => 'rack/cors'
 gem "rack-openid"
 gem "rack-test", "1.1.0"
-gem 'rails', '5.2.6.2'
+gem 'rails', '5.2.7'
 gem 'rails-controller-testing'
 gem 'rails-dom-testing'
 gem 'rails-i18n', '~> 5.1.3'
@@ -53,7 +53,7 @@ gem 'rdiscount', '~> 2.2'
 gem 'react-rails'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'responders', '~> 3.0'
-gem 'rubocop', '~> 1.25.1', require: false
+gem 'rubocop', '~> 1.26.1', require: false
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
 gem 'sentry-ruby'

@@ -427,6 +427,12 @@ fr:
       more_research: "Plus de recherches sur \"%{tag}\""
       more_tag_research: "Plus de recherche sur \"%{tag}\""
     _wikis:
+      title: "Titre"
+      last_edited: "Dernière modification"
+      edits: "Modifications"
+      page_views: "Vues de pages"
+      likes: "Likes"
+      by: "par"
       published: "Publié"
     revisions:
       revisions_for: "Révisions pour <i>%{wiki}</i>"

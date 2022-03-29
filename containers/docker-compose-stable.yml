@@ -19,6 +19,10 @@ services:
     ports:
       - "127.0.0.1:4000:4000"
     build: ..
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1024m"
     environment:
       - COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME}
       - DB_USER=${DB_USER}

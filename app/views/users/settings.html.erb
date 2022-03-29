@@ -1,4 +1,4 @@
-<form name="settingsForm" action="/save_settings" method='post' data-remote="true">
+<form name="settingsForm" action="/save_settings" method='post' data-remote="true" class="mx-3">
 <div class="emailSettings">
   <h4><b>Email Notifications</b></h4>
   <hr style="width: 35%;  margin-left: 0;" />
@@ -64,7 +64,7 @@
   <% end %>
   
   <br />
-  +<h4><b><%= translation('users.settings.email_notifications')%> </b></h4>
+  <h4><b><%= translation('users.settings.email_notifications')%> </b></h4>
 
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
     <span><%=translation('users.settings.weekly_digest')%> </span>

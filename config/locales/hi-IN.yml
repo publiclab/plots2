@@ -58,7 +58,7 @@ hi-IN:
     - :month
     - :year
   datetime:
-    distance_in_words:
+    time_ago_in_words:
       about_x_hours:
         one: लग - भग एक घंटा
         other: लग - भग %{count} घंटा

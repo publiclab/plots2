@@ -39,8 +39,8 @@
                       <% elsif node.scraped_image %>
                           <img class="card-img-top" style="margin-bottom: 10px;" aria-hidden="true" src="<%= node.scraped_image %>" />
                       <% else %>
-                        <a class="imgg" style="background: #aaa; margin-bottom: 10px;">
-                          <i class="fa fa-picture-o image-block" aria-hidden="true" style="color: #ccc; font-size: 6em; padding: 1.5rem;"></i>
+                        <a class="imgg" style="background:#ddd; margin-bottom: 10px;overflow:hidden;">
+                          <img src="https://storage.googleapis.com/publiclab-production/public/system/images/photos/000/045/449/medium/paint-bucket.png" style="width: 100%;padding: 15% 30%;opacity: 0.3;">
                         </a>
                       <% end %>
                       <div class="card-body">
@@ -62,8 +62,8 @@
             <div class="card-footer" style="background-color: inherit; border:none;">
               <% note_count = post_count(tag_name, 'note') %>
               <% wiki_count = post_count(tag_name, 'page') %>
-              <a style="padding-top:15px;text-decoration:underline;color:#808080;display:inline-block;" href="/tag/<%= tag_name %>"><%= note_count %> <% if note_count > 1 %> <%= translation('tag.index.post').pluralize %> <% else %> <%= translation('tag.index.post') %> <% end %></a> |
-              <a style="text-decoration:underline;color:#808080;display:inline-block;" href="/wiki/<%= tag_name %>"><%= wiki_count %><% if wiki_count > 1 %> <%= translation('tag.index.wiki').pluralize %> <% else %> <%= translation('tag.index.wiki') %> <% end %></a>
+              <a style="padding-top:15px;text-decoration:underline;color:#808080;display:inline-block;" href="/tag/<%= tag_name %>"><%= note_count %> <% if note_count > 1 %> <%=raw translation('tag.index.post').pluralize %> <% else %> <%= translation('tag.index.post') %> <% end %></a> |
+              <a style="text-decoration:underline;color:#808080;display:inline-block;" href="/wiki/<%= tag_name %>"><%= wiki_count %><% if wiki_count > 1 %> <%=raw translation('tag.index.wiki').pluralize %> <% else %> <%= translation('tag.index.wiki') %> <% end %></a>
               <% if latest_activity_nid&.start_with?('c') %>
                 |
                 &#8226; <a style="text-decoration:underline;color:#808080;display:inline-block;" href="/tag/comments/<%= tag_name %>"> <%= translation('dashboard_v2.dashboard.new_comment')%></a>

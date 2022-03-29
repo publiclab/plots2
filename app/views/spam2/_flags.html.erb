@@ -88,16 +88,23 @@ $(document).ready(function () {
             <td>
               <i class="fa fa-flag text-<% if flag.flag > 10%>danger<% else%>secondary<%end%>"></i> 
               <a href="javascript:void(0);" class="text-dark font-weight-bold" id="node-hover" data-toggle="modal" data-target="#ninfo<%= flag.id %>"><%= flag.title.truncate(15) %></a><br />
-              <span class="text-secondary small"><%= flag.type.capitalize %> | <%= time_ago_in_words(flag.created_at) %> ago</span>
+	      <span class="text-secondary small"><%= flag.type.capitalize %> | Created <%= time_ago_in_words(flag.created_at) %> ago</span>
             </td>
             <td>  
               <a href="/profile/<%= flag.author&.name %>" class="text-info"><%= flag.author&.name %> <%= flag.author&.new_contributor%></a><br>
                 <span class="text-secondary small"><%= Node.where(uid: flag.author&.id).count %> Nodes<span>
              </td>
             <td>
-              <% if flag.status == 1 %><span class="badge badge-pill badge-success"><i class="fa fa-check-circle text-white"></i> Published</span><% elsif flag.status == 0 %><span class="badge badge-pill badge-danger"><i class="fa fa-ban text-white"></i> Spammed</span><% elsif flag.status == 4 %><span class="badge badge-pill badge-primary"><i class="fa fa-circle text-white"></i> Unmoderated</span><% end %> <span class="badge badge-pill badge-light"><%=  flag.flag %></span>
+              <% if flag.status == 1 %>
+	       <span class="badge badge-pill badge-success"><i class="fa fa-check-circle text-white"></i> Published</span>
+              <% elsif flag.status == 0 %>
+               <span class="badge badge-pill badge-danger"><i class="fa fa-ban text-white"></i> Spammed</span>
+              <% elsif flag.status == 4 %>
+               <span class="badge badge-pill badge-primary"><i class="fa fa-circle text-white"></i> Unmoderated</span>
+              <% end %>
+               <span data-toggle="tooltip" data-placement="top" title="# of flags" class="badge badge-pill badge-light"><%= flag.flag %></span>
             </td>
-             <td>
+            <td> 
                <span class="text-dark"><%= time_ago_in_words(flag.updated_at) %> ago</span>
             </td>
              <td style="height:35px !important;">
