@@ -26,14 +26,19 @@ const CommentsContainer = ({
   //   ie. the value that shows inside a comment form's <textarea>
   //   main and reply contain empty strings
   //   edit forms contain the raw comment text to be edited
-  const [textAreaValues, setTextAreaValues] = useState(initialTextAreaValues);
+  // const [textAreaValues, setTextAreaValues] = useState(initialTextAreaValues);
 
   // function for handling user input into comment form <textarea>s
   const handleTextAreaChange = (event) => {
     const value = event.target.value;
     const formId = event.target.dataset.formId // eg. "main", "reply-123", "edit-432"
     // keep the old state values (as ...state) and insert the new one
-    setTextAreaValues(state => ({ ...state, [formId]: value }));
+    // setTextAreaValues(state => ({ ...state, [formId]: value }));
+    dispatch({
+      type: "UPDATE TEXTAREA VALUE",
+      commentFormId: formId,
+      newValue: value
+    });
   }
 
   // Functions for Creating, Updating, Deleting Comments
@@ -41,7 +46,8 @@ const CommentsContainer = ({
   const handleCreateComment = (commentId, formType) => {
     // form ID is either reply-123 or main
     const formId = formType === "reply" ? "reply-" + commentId : "main";
-    const commentBody = textAreaValues[formId];
+    console.log(state.textAreaValues);
+    const commentBody = state.textAreaValues[formId];
 
     $.post(
       "/comment/react/create/" + nodeId, 
@@ -55,17 +61,28 @@ const CommentsContainer = ({
         const newCommentId = data.comment[0].commentId;
         const newCommentRawText = data.comment[0].rawCommentText;
         // blank out the value of textarea & also create a value for the new comment's edit form
-        setTextAreaValues(oldState => ({ ...oldState, [formId]: "", ["edit-" + newCommentId]: newCommentRawText }));
-        // the new comment form comes with an edit form, its toggle state needs to be created as well
+        // setTextAreaValues(oldState => ({ ...oldState, [formId]: "", ["edit-" + newCommentId]: newCommentRawText }));
         dispatch({
-          type: "HIDE COMMENT FORM",
+          type: "UPDATE TEXTAREA VALUE",
+          commentFormId: formId,
+          newValue: ""
+        });
+        dispatch({
+          type: "CREATE NEW TEXTAREA VALUE",
+          commentFormId: "edit-" + newCommentId,
+          newValue: newCommentRawText
+        });
+        // the new comment form comes with an edit form, its toggle state needs to be created as well
+        // TODO: create multicase for "CREATE NEW COMMENT FORM" in reducers.js
+        dispatch({
+          type: "CREATE NEW COMMENT FORM VISIBILITY",
           commentFormId: "edit-" + newCommentId
         })
         // if the comment doesn't have a replyTo, then it's a parent comment
         // parent comments have reply forms, this needs to be set in state as well.
         if (!data.comment[0].replyTo) {
           dispatch({
-            type: "HIDE COMMENT FORM",
+            type: "CREATE NEW COMMENT FORM VISIBILITY",
             commentFormId: "reply-" + newCommentId
           })
         }
@@ -87,7 +104,7 @@ const CommentsContainer = ({
 
   const handleUpdateComment = (commentId) => {
     const formId = "edit-" + commentId;
-    const commentBody = textAreaValues[formId];
+    const commentBody = state.textAreaValues[formId];
 
     $.post(
       "/comment/react/update/" + commentId,
@@ -144,8 +161,8 @@ const CommentsContainer = ({
               handleDeleteComment={handleDeleteComment}
               handleTextAreaChange={handleTextAreaChange}
               handleUpdateComment={handleUpdateComment}
-              setTextAreaValues={setTextAreaValues}
-              textAreaValues={textAreaValues}
+              // setTextAreaValues={setTextAreaValues}
+              textAreaValues={state.textAreaValues}
             />
             {/* main comment form */}
             <CommentForm 
@@ -153,7 +170,7 @@ const CommentsContainer = ({
               formId="main"
               handleFormSubmit={handleCreateComment}
               handleTextAreaChange={handleTextAreaChange}
-              textAreaValue={textAreaValues["main"]}
+              textAreaValue={state.textAreaValues["main"]}
             />
           </div>
         </div>

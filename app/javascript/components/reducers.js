@@ -3,6 +3,7 @@ import { makeDeepCopy } from "./helpers";
 
 const reducer = (state, action) => {
   switch(action.type) {
+    // COMMENT actions
     case "CREATE COMMENT":
       return {
         ...state,
@@ -40,6 +41,8 @@ const reducer = (state, action) => {
         }
       }
       break;
+
+    // COMMENT FORM VISIBILITY actions (eg. handles when a reply form is visible or not)
     case "TOGGLE COMMENT FORM VISIBILITY": // shows/hides reply & edit comment forms when user clicks the toggle button
       return {
         ...state,
@@ -48,6 +51,7 @@ const reducer = (state, action) => {
           [action.commentFormId]: !state.commentFormsVisibility[action.commentFormId]
         }
       };
+    case "CREATE NEW COMMENT FORM VISIBILITY":
     case "HIDE COMMENT FORM":
       return {
         ...state,
@@ -56,6 +60,18 @@ const reducer = (state, action) => {
           [action.commentFormId]: false
         }
       }
+
+    // TEXTAREA VALUE actions (eg. updates the values that are displayed in comment form <textarea>s)
+    case "CREATE NEW TEXTAREA VALUE":
+    case "UPDATE TEXTAREA VALUE":
+      return {
+        ...state,
+        textAreaValues: {
+          ...state.textAreaValues,
+          [action.commentFormId]: action.newValue
+        }
+      };
+
     default:
       throw new Error(); // default should never be called
   }
