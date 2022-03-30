@@ -1,9 +1,5 @@
 # Start with Spotifys style guide as a base then customize from there
 
-require:
-  - rubocop-rspec
-  - rubocop-performance
-
 inherit_from:
   - .rubocop_shopify_styleguide.yml
   - .rubocop_todo.yml
@@ -30,7 +26,6 @@ AllCops:
     - 'public/**/*'
     - 'Dangerfile'
     - 'app/views/**/*'
-  TargetRubyVersion: '2.5'
 
 Layout/MultilineMethodCallIndentation:
   Enabled: false
