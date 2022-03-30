@@ -46,7 +46,7 @@
           <% if @users %>
             <% @users.each do |user| %>
               <tr class="users-row">
-                <td><a href='/profile/<%= user.name %>'><i class="fa fa-user"></i> <%= user.name %></a></td>
+                <td><a href='/profile/<%= user.name %>'><i class="fa fa-user"></i> <%= user.name %></a> <% if user.following(params[:id])%><a aria-label="Following" data-toggle="tooltip" title="Following" data-placement="top"> <i class="fa fa-eye"></i></a><% end %> </td>
                 <td><a href='/tag/<%=h params[:id] %>/author/<%= user.name %>'><%= translation('tag.contributors.notes') %> &raquo;</a></td>
               </tr>
             <% end %>
