@@ -1,7 +1,6 @@
 # Start with Spotifys style guide as a base then customize from there
 
 require:
-  - rubocop-rails
   - rubocop-rspec
   - rubocop-performance
 

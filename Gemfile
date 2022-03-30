@@ -138,7 +138,7 @@ group :test, :development do
   gem 'pry-rails'
   gem 'action-cable-testing'
   gem "webmock", "~> 3.14"
-  gem 'rubocop-rails'
+  gem 'rubocop-rails', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rspec', require: false
 end
