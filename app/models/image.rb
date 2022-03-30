@@ -54,7 +54,7 @@ class Image < ApplicationRecord
   end
 
   def remote_url_provided?
-    !remote_url.blank?
+    remote_url.present?
   end
 
   def download_remote_image
