@@ -1,11 +1,17 @@
 # Start with Spotifys style guide as a base then customize from there
+
+require:
+  - rubocop-rails
+  - rubocop-rspec
+  - rubocop-performance
+
 inherit_from:
   - .rubocop_shopify_styleguide.yml
   - .rubocop_todo.yml
 
 # Apply rule to all cops
 AllCops:
-  Include:
+  Include: 
     - '*/**/*.rb'
     - '/Rakefile'
     - '/config.ru'
@@ -25,7 +31,7 @@ AllCops:
     - 'public/**/*'
     - 'Dangerfile'
     - 'app/views/**/*'
-  TargetRubyVersion: '2.4'
+  TargetRubyVersion: '2.5'
 
 Layout/MultilineMethodCallIndentation:
   Enabled: false
@@ -72,7 +78,7 @@ Metrics/ParameterLists:
 Style/StringLiterals:
   Enabled: false
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 423
 
 Style/Documentation:

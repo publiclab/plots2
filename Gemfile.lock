@@ -541,6 +541,15 @@ GEM
       unicode-display_width (>= 1.4.0, < 3.0)
     rubocop-ast (1.16.0)
       parser (>= 3.1.1.0)
+    rubocop-performance (1.13.3)
+      rubocop (>= 1.7.0, < 2.0)
+      rubocop-ast (>= 0.4.0)
+    rubocop-rails (2.14.2)
+      activesupport (>= 4.2.0)
+      rack (>= 1.1)
+      rubocop (>= 1.7.0, < 2.0)
+    rubocop-rspec (2.9.0)
+      rubocop (~> 1.19)
     ruby-openid (2.9.2)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
@@ -762,6 +771,9 @@ DEPENDENCIES
   reverse_markdown
   rspec
   rubocop (~> 1.26.1)
+  rubocop-performance
+  rubocop-rails
+  rubocop-rspec
   ruby-openid
   sanitize
   sassc (~> 2.4.0)

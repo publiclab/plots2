@@ -113,6 +113,7 @@ group :development do
   gem 'listen', '~> 3.7.1'
   gem "nifty-generators"
   gem 'web-console', '>= 3.3.0'
+  gem 'mysql2', '>= 0.4.4'
 end
 
 group :test, :development do
@@ -138,6 +139,9 @@ group :test, :development do
   gem 'pry-rails'
   gem 'action-cable-testing'
   gem "webmock", "~> 3.14"
+  gem 'rubocop-rails', require: false
+  gem 'rubocop-performance', require: false
+  gem 'rubocop-rspec', require: false
 end
 
 group :production do
