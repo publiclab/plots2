@@ -61,3 +61,13 @@ function batch_nav(bulk) {
 	});
 	window.location = "/spam2/" + bulk + "/" + vals.join(',');
 }
+
+function select_all() {
+      $('.selectedId').prop('checked', !$('.selectedId').prop('checked'));
+      let selectedLength = $('.selectedId').filter(":checked").length
+      // enable buttons only if there are nodes in the table and number of selected nodes == total node length
+       var check = (selectedLength == $('.selectedId').length && selectedLength > 0);
+       $('#select-count').text(selectedLength);
+       $('#selectall').prop("checked", check);
+       disable_buttons('#selectall');
+}
