@@ -55,6 +55,10 @@ function search_table(filter, url) {
 }
 
 function batch_nav(bulk) {
+	if((bulk == "batch_delete" || bulk == "batch_comment/delete") && !confirm("Are you sure you want to delete the selected nodes?")) {
+	return false;
+}
+
 	vals = []
 	$('.selectedId').each(function (i, a) { // batch nav
 		if (a.checked) vals.push(a.value);
