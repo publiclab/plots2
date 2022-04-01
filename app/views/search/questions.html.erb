@@ -9,7 +9,10 @@
 
     <%= render partial: "search/form", locals: { searchType: "questions/" } %>
 
-    <% if @questions.present? %>
+    <% if params[:query].blank?%>
+      <p>Please enter a search term.</p>
+      
+    <% elsif @questions.present? %>
       <h4>Results for "<b><%= params[:query] %></b>":</h4>
 
       <div class="related-tags-container">
