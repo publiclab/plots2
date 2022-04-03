@@ -61,7 +61,7 @@ ru:
     - :month
     - :year
   datetime:
-    distance_in_words:
+    time_ago_in_words:
       about_x_hours:
         one: около %{count} часа
         few: около %{count} часов
