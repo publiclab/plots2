@@ -82,20 +82,6 @@
   
 <script>
 (function(){
-  $(".<%= className %>-<%= randomSeed %> .show-all a").click(function(event) {
-    var cName = ".<%= className %>-<%= randomSeed %>";
-    var sName = cName + " tr.extra";
-    $(sName).toggleClass("hide");
-    if ($(sName)[0].classList.contains("hide"))
-      var hiding = true;    
-    var myElement = event.target;    
-    if (event.target.classList.contains("caret")) 
-      myElement = event.target.parentElement;
-    if (!hiding) 
-      myElement.innerHTML = 'Show less <b class="caret" style = "transform: rotate(180deg);"></b>';
-    else
-      myElement.innerHTML = 'Show more <b class="caret"></b>';
-  });
   //setupGridSorters(".<%= className %>-<%= randomSeed %>"); Should order the items by time. Commented out because it reorders the items each time show more/less is clicked
 })()
 </script>
