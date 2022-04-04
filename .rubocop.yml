@@ -26,6 +26,8 @@ AllCops:
     - 'public/**/*'
     - 'Dangerfile'
     - 'app/views/**/*'
+  SuggestExtensions: false
+  NewCops: enable
   TargetRubyVersion: '2.5'
 
 Layout/MultilineMethodCallIndentation:

@@ -5,7 +5,7 @@ Layout/AccessModifierIndentation:
   SupportedStyles:
   - outdent
   - indent
-  IndentationWidth:
+  IndentationWidth: 2
 
 Style/Alias:
   EnforcedStyle: prefer_alias_method
@@ -28,7 +28,7 @@ Layout/ParameterAlignment:
   SupportedStyles:
   - with_first_parameter
   - with_fixed_indentation
-  IndentationWidth:
+  IndentationWidth: 2
 
 Style/AndOr:
   EnforcedStyle: always
@@ -77,7 +77,7 @@ Layout/CaseIndentation:
   - case
   - end
   IndentOneStep: false
-  IndentationWidth:
+  IndentationWidth: 2
 
 Style/ClassAndModuleChildren:
   EnforcedStyle: nested
@@ -153,12 +153,7 @@ Naming/FileName:
   IgnoreExecutableScripts: true
 
 Layout/AssignmentIndentation:
-  EnforcedStyle: consistent
-  SupportedStyles:
-  - consistent
-  - special_for_inner_method_call
-  - special_for_inner_method_call_in_parentheses
-  IndentationWidth:
+  IndentationWidth: 2
 
 Style/For:
   EnforcedStyle: each
@@ -198,10 +193,7 @@ Layout/FirstArrayElementIndentation:
   - special_inside_parentheses
   - consistent
   - align_brackets
-  IndentationWidth:
-
-Layout/AssignmentIndentation:
-  IndentationWidth:
+  - align_parentheses
 
 Layout/FirstHashElementIndentation:
   EnforcedStyle: consistent
@@ -209,7 +201,8 @@ Layout/FirstHashElementIndentation:
   - special_inside_parentheses
   - consistent
   - align_braces
-  IndentationWidth:
+  - align_brackets
+  - align_parentheses
 
 Style/LambdaCall:
   EnforcedStyle: call
@@ -587,9 +580,6 @@ Layout/EmptyLinesAroundMethodBody:
   Enabled: true
 
 Style/EmptyLiteral:
-  Enabled: true
-
-Style/EndBlock:
   Enabled: true
 
 Layout/EndOfLine:
