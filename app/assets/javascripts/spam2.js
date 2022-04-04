@@ -18,7 +18,9 @@ function table_main(id) {
 	});
 	$('#selectall').click(function () {
 		$('.selectedId').prop('checked', this.checked);
-		$('#select-count').text($('.selectedId').filter(":checked").length);
+		let selectedLength = $('.selectedId').filter(":checked").length
+                $('#select-count').text(selectedLength);
+                if(selectedLength == 0) return
 		disable_buttons('#selectall');
 	});
 	$('.selectedId').change(function () {
