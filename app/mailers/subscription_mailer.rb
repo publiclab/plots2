@@ -18,7 +18,7 @@ class SubscriptionMailer < ActionMailer::Base
                     .collect(&:email)
     recipients += node.author.followers.collect(&:email)
     recipients.uniq!
-    while recipients.length > 0
+    while recipients.length.positive?
       mail(
         to: "notifications@#{ActionMailer::Base.default_url_options[:host]}",
         bcc: recipients.pop(50),
@@ -66,7 +66,7 @@ class SubscriptionMailer < ActionMailer::Base
       end
     end
     @footer = feature('email-footer')
-    while recipients.length > 0
+    while recipients.length.positive?
       mail(
         to: "notifications@#{ActionMailer::Base.default_url_options[:host]}",
         bcc: recipients.pop(50),
