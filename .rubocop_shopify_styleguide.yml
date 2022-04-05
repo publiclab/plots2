@@ -5,7 +5,7 @@ Layout/AccessModifierIndentation:
   SupportedStyles:
   - outdent
   - indent
-  IndentationWidth:
+  IndentationWidth: 2
 
 Style/Alias:
   EnforcedStyle: prefer_alias_method
@@ -13,7 +13,7 @@ Style/Alias:
   - prefer_alias
   - prefer_alias_method
 
-Layout/AlignHash:
+Layout/HashAlignment:
   EnforcedHashRocketStyle: key
   EnforcedColonStyle: key
   EnforcedLastArgumentHashStyle: ignore_implicit
@@ -23,12 +23,12 @@ Layout/AlignHash:
   - ignore_implicit
   - ignore_explicit
 
-Layout/AlignParameters:
+Layout/ParameterAlignment:
   EnforcedStyle: with_fixed_indentation
   SupportedStyles:
   - with_first_parameter
   - with_fixed_indentation
-  IndentationWidth:
+  IndentationWidth: 2
 
 Style/AndOr:
   EnforcedStyle: always
@@ -69,12 +69,7 @@ Style/BlockDelimiters:
   - proc
   - it
 
-Style/BracesAroundHashParameters:
-  EnforcedStyle: no_braces
-  SupportedStyles:
-  - braces
-  - no_braces
-  - context_dependent
+
 
 Layout/CaseIndentation:
   EnforcedStyle: end
@@ -82,7 +77,7 @@ Layout/CaseIndentation:
   - case
   - end
   IndentOneStep: false
-  IndentationWidth:
+  IndentationWidth: 2
 
 Style/ClassAndModuleChildren:
   EnforcedStyle: nested
@@ -157,13 +152,8 @@ Naming/FileName:
   Regex:
   IgnoreExecutableScripts: true
 
-Layout/IndentFirstArgument:
-  EnforcedStyle: consistent
-  SupportedStyles:
-  - consistent
-  - special_for_inner_method_call
-  - special_for_inner_method_call_in_parentheses
-  IndentationWidth:
+Layout/AssignmentIndentation:
+  IndentationWidth: 2
 
 Style/For:
   EnforcedStyle: each
@@ -197,24 +187,22 @@ Layout/IndentationConsistency:
 Layout/IndentationWidth:
   Width: 2
 
-Layout/IndentFirstArrayElement:
+Layout/FirstArrayElementIndentation:
   EnforcedStyle: consistent
   SupportedStyles:
   - special_inside_parentheses
   - consistent
   - align_brackets
-  IndentationWidth:
+  - align_parentheses
 
-Layout/IndentAssignment:
-  IndentationWidth:
-
-Layout/IndentFirstHashElement:
+Layout/FirstHashElementIndentation:
   EnforcedStyle: consistent
   SupportedStyles:
   - special_inside_parentheses
   - consistent
   - align_braces
-  IndentationWidth:
+  - align_brackets
+  - align_parentheses
 
 Style/LambdaCall:
   EnforcedStyle: call
@@ -311,9 +299,9 @@ Style/PercentQLiterals:
 Naming/PredicateName:
   NamePrefix:
   - is_
-  NamePrefixBlacklist:
+  ForbiddenPrefixes:
   - is_
-  NameWhitelist:
+  AllowedMethods:
   - is_a?
   Exclude:
   - 'spec/**/*'
@@ -438,7 +426,7 @@ Style/TernaryParentheses:
   - require_no_parentheses
   AllowSafeAssignment: true
 
-Layout/TrailingBlankLines:
+Layout/TrailingEmptyLines:
   EnforcedStyle: final_newline
   SupportedStyles:
   - final_newline
@@ -449,7 +437,7 @@ Style/TrivialAccessors:
   AllowPredicates: true
   AllowDSLWriters: false
   IgnoreClassMethods: false
-  Whitelist:
+  AllowedMethods:
   - to_ary
   - to_a
   - to_c
@@ -512,95 +500,14 @@ Lint/UnusedMethodArgument:
   AllowUnusedKeywordArguments: false
   IgnoreEmptyMethods: true
 
-Performance/RedundantMerge:
-  MaxKeyValuePairs: 2
 
-Rails/ActionFilter:
-  EnforcedStyle: action
-  SupportedStyles:
-  - action
-  - filter
-  Include:
-  - app/controllers/**/*.rb
 
-Rails/Date:
-  EnforcedStyle: flexible
-  SupportedStyles:
-  - strict
-  - flexible
 
-Rails/DynamicFindBy:
-  Whitelist:
-  - find_by_sql
-
-Rails/Exit:
-  Include:
-  - app/**/*.rb
-  - config/**/*.rb
-  - lib/**/*.rb
-  Exclude:
-  - 'lib/**/*.rake'
-
-Rails/FindBy:
-  Include:
-  - app/models/**/*.rb
-
-Rails/FindEach:
-  Include:
-  - app/models/**/*.rb
-
-Rails/HasAndBelongsToMany:
-  Include:
-  - app/models/**/*.rb
-
-Rails/NotNullColumn:
-  Include:
-  - db/migrate/*.rb
-
-Rails/Output:
-  Include:
-  - app/**/*.rb
-  - config/**/*.rb
-  - db/**/*.rb
-  - lib/**/*.rb
-
-Rails/ReadWriteAttribute:
-  Include:
-  - app/models/**/*.rb
-
-Rails/RequestReferer:
-  EnforcedStyle: referer
-  SupportedStyles:
-  - referer
-  - referrer
-
-Rails/SafeNavigation:
-  ConvertTry: false
-
-Rails/ScopeArgs:
-  Include:
-  - app/models/**/*.rb
-
-Rails/TimeZone:
-  EnforcedStyle: flexible
-  SupportedStyles:
-  - strict
-  - flexible
-
-Rails/UniqBeforePluck:
-  EnforcedStyle: conservative
-  SupportedStyles:
-  - conservative
-  - aggressive
-
-Rails/Validation:
-  Include:
-  - app/models/**/*.rb
 
 Naming/AccessorMethodName:
   Enabled: true
 
-Layout/AlignArray:
+Layout/ArrayAlignment:
   Enabled: true
 
 Style/ArrayJoin:
@@ -673,9 +580,6 @@ Layout/EmptyLinesAroundMethodBody:
   Enabled: true
 
 Style/EmptyLiteral:
-  Enabled: true
-
-Style/EndBlock:
   Enabled: true
 
 Layout/EndOfLine:
@@ -837,7 +741,7 @@ Layout/SpaceInsideRangeLiteral:
 Style/SymbolLiteral:
   Enabled: true
 
-Layout/Tab:
+Layout/IndentationStyle:
   Enabled: true
 
 Layout/TrailingWhitespace:
@@ -846,13 +750,13 @@ Layout/TrailingWhitespace:
 Style/UnlessElse:
   Enabled: true
 
-Style/UnneededCapitalW:
+Style/RedundantCapitalW:
   Enabled: true
 
-Style/UnneededInterpolation:
+Style/RedundantInterpolation:
   Enabled: true
 
-Style/UnneededPercentQ:
+Style/RedundantPercentQ:
   Enabled: true
 
 Style/VariableInterpolation:
@@ -867,8 +771,6 @@ Style/WhileUntilDo:
 Style/ZeroLengthPredicate:
   Enabled: true
 
-Layout/IndentHeredoc:
-  EnforcedStyle: squiggly
 
 Lint/AmbiguousOperator:
   Enabled: true
@@ -891,7 +793,7 @@ Lint/DeprecatedClassMethods:
 Lint/DuplicateMethods:
   Enabled: true
 
-Lint/DuplicatedKey:
+Lint/DuplicateHashKey:
   Enabled: true
 
 Lint/EachWithObjectArgument:
@@ -906,7 +808,7 @@ Lint/EmptyEnsure:
 Lint/EmptyInterpolation:
   Enabled: true
 
-Lint/EndInMethod:
+Style/EndBlock:
   Enabled: true
 
 Lint/EnsureReturn:
@@ -918,7 +820,7 @@ Lint/FloatOutOfRange:
 Lint/FormatParameterMismatch:
   Enabled: true
 
-Lint/HandleExceptions:
+Lint/SuppressedException:
   Enabled: true
 
 Lint/ImplicitStringConcatenation:
@@ -974,7 +876,7 @@ Lint/ShadowedException:
 Lint/ShadowingOuterLocalVariable:
   Enabled: true
 
-Lint/StringConversionInInterpolation:
+Lint/RedundantStringCoercion:
   Enabled: true
 
 Lint/UnderscorePrefixedVariableName:
@@ -983,7 +885,7 @@ Lint/UnderscorePrefixedVariableName:
 Lint/UnifiedInteger:
   Enabled: true
 
-Lint/UnneededSplatExpansion:
+Lint/RedundantSplatExpansion:
   Enabled: true
 
 Lint/UnreachableCode:
@@ -992,7 +894,7 @@ Lint/UnreachableCode:
 Lint/UselessAccessModifier:
   ContextCreatingMethods: []
 
-Lint/UselessComparison:
+Lint/BinaryOperatorWithIdenticalOperands:
   Enabled: true
 
 Lint/UselessElseWithoutRescue:
@@ -1004,72 +906,13 @@ Lint/UselessSetterCall:
 Lint/Void:
   Enabled: true
 
-Performance/CaseWhenSplat:
-  Enabled: true
-
-Performance/Count:
-  SafeMode: true
-
-Performance/Detect:
-  SafeMode: true
-
-Performance/DoubleStartEndWith:
-  Enabled: true
-
-Performance/EndWith:
-  Enabled: true
-
-Performance/FixedSize:
-  Enabled: true
-
-Performance/FlatMap:
-  EnabledForFlattenWithoutParams: false
-
-Performance/LstripRstrip:
-  Enabled: true
-
-Performance/RangeInclude:
-  Enabled: true
-
-Performance/RedundantBlockCall:
-  Enabled: true
-
-Performance/RedundantMatch:
-  Enabled: true
 
 Style/RedundantSortBy:
   Enabled: true
 
-Performance/ReverseEach:
-  Enabled: true
+
 
 Style/Sample:
-  Enabled: true
-
-Performance/Size:
-  Enabled: true
-
-Performance/CompareWithBlock:
-  Enabled: true
-
-Performance/StartWith:
-  Enabled: true
-
-Performance/StringReplacement:
-  Enabled: true
-
-Rails/DelegateAllowBlank:
-  Enabled: true
-
-Rails/HttpPositionalArguments:
-  Include:
-  - spec/**/*
-  - test/**/*
-
-Rails/OutputSafety:
-  Enabled: true
-
-Rails/PluralizationGrammar:
   Enabled: true
 
 Security/Eval:
