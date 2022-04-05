@@ -108,13 +108,13 @@
         <div id="social-links-list" class="profile_icons d-flex justify-content-center" style="gap: 8px">
           <% if @twitter_user.nil? == false %>
           <span>
-            <% if logged_in_as(['admin', 'moderator']) || (current_user && current_user.uid == @profile_user.uid) %> 
+           <% if logged_in_as(['admin', 'moderator']) || (current_user && current_user.uid == @profile_user.uid) %> 
            <a aria-label="Delete tag" data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/profile/tags/delete/<%= @profile_user.id %>?name=twitter:<%= @twitter_user %>" data-method="delete">
             <span class="badge badge-secondary delete_badge mb-1">
               x
             </span>
            </a>
-            <% end %>
+           <% end %>
             <a href="<%= social_link('twitter', @twitter_user)%>">
               <i class="fa fa-twitter fa-3x"></i>
             </a>
@@ -122,13 +122,13 @@
           <% end %>
           <% if @facebook_user.nil? == false %>
           <span>
-            <% if logged_in_as(['admin', 'moderator']) || (current_user && current_user.uid == @profile_user.uid) %> 
+           <% if logged_in_as(['admin', 'moderator']) || (current_user && current_user.uid == @profile_user.uid) %> 
            <a aria-label="Delete tag" data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/profile/tags/delete/<%= @profile_user.id %>?name=facebook:<%= @facebook_user %>" data-method="delete">
             <span class="badge badge-secondary delete_badge mb-1">
               x
             </span>
-            </a> 
-             <% end %>
+           </a> 
+           <% end %>
             <a href="<%= social_link('facebook', @facebook_user)%>">
               <i class="fa fa-facebook fa-3x"></i>
             </a>
@@ -137,13 +137,13 @@
           <% end %>
           <% if @github_user.nil? == false %>
           <span>
-            <% if logged_in_as(['admin', 'moderator']) || (current_user && current_user.uid == @profile_user.uid) %> 
+           <% if logged_in_as(['admin', 'moderator']) || (current_user && current_user.uid == @profile_user.uid) %> 
            <a aria-label="Delete tag" data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/profile/tags/delete/<%= @profile_user.id %>?name=github:<%= @github_user %>" data-method="delete">
             <span class="badge badge-secondary delete_badge mb-1">
               x
             </span>
-            </a> 
-            <% end %>
+           </a> 
+           <% end %>
             <a href="<%= social_link('github', @github_user)%>">
               <i class="fa fa-github fa-3x"></i>
             </a>
@@ -151,13 +151,13 @@
           <% end %>
           <% if @instagram_user.nil? == false %>
           <span>
-             <% if logged_in_as(['admin', 'moderator']) || (current_user && current_user.uid == @profile_user.uid) %> 
+           <% if logged_in_as(['admin', 'moderator']) || (current_user && current_user.uid == @profile_user.uid) %> 
            <a aria-label="Delete tag" data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/profile/tags/delete/<%= @profile_user.id %>?name=instagram:<%= @instagram_user %>" data-method="delete">
             <span class="badge badge-secondary delete_badge mb-1">
               x
             </span>
-            </a>
-            <% end %> 
+           </a>
+           <% end %> 
             <a href="<%= social_link('instagram', @instagram_user)%>">
               <i  class="fa fa-instagram fa-3x"></i>
             </a>
