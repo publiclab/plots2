@@ -1,45 +1,45 @@
 <script>
 $(document).ready(function () {
-	var table = table_main("#flag_table");
-	$("#all").click(function () { //select all button
-		select_all();
+    var table = table_main("#flag_table");
+    $("#all").click(function () { //select all button
+    select_all();
   });
-  var pageselect_val = localStorage.getItem('page-select') || '';
-  $("#pageselect").val(pageselect_val);
-	$("#batch-spam").bind('click', function (e) { //batch spam
-		batch_nav("batch_spam");
-	});
-	$("#batch-publish").bind('click', function (e) { //batch publish
-		batch_nav("batch_publish");
-	});
-	$("#batch-ban").bind('click', function (e) { //batch ban
-		batch_nav("batch_ban");
-	});
-	$("#batch-unban").bind('click', function (e) { //batch ban
-		batch_nav("batch_unban");
-	});
-	$("#delete-batch").bind('click', function (e) { // batch delete
-		batch_nav("batch_delete");
-	});
-	$('#pageselect').change(function () {
-		pagination("#pageselect", "/spam2/flags/filter/");
-	});
-	$('#spammed').on('click', function () { //spam filter
-		search_table("spammed", "/spam2/flags/filter/");
-	});
-	$('#unmoderated').on('click', function () { // unmoderated filter
-		search_table("unmoderated", "/spam2/flags/filter/");
-	});
-	$('#page').on('click', function () { // page filter
-		search_table("page", "/spam2/flags/filter/");
-	});
-	$('#note').on('click', function () { // note filter
-		search_table("note", "/spam2/flags/filter/");
-	});
-	$('#reset').on('click', function () { // all filter
-		search_table("all", "/spam2/flags/filter/");
-	});
-});
+    var pageselect_val = localStorage.getItem('page-select') || '';
+   $("#pageselect").val(pageselect_val);
+   $("#batch-spam").bind('click', function (e) { //batch spam
+     batch_nav("batch_spam");
+   });
+    $("#batch-publish").bind('click', function (e) { //batch publish
+      batch_nav("batch_publish");
+   });
+    $("#batch-ban").bind('click', function (e) { //batch ban
+     batch_nav("batch_ban");
+   });
+    $("#batch-unban").bind('click', function (e) { //batch ban
+     batch_nav("batch_unban");
+    });
+    $("#delete-batch").bind('click', function (e) { // batch delete
+      batch_nav("batch_delete");
+   });
+    $('#pageselect').change(function () {
+      pagination("#pageselect", "/spam2/flags/filter/");
+    });
+   $('#spammed').on('click', function () { //spam filter
+      search_table("spammed", "/spam2/flags/filter/");
+    });
+    $('#unmoderated').on('click', function () { // unmoderated filter
+      search_table("unmoderated", "/spam2/flags/filter/");
+    });
+    $('#page').on('click', function () { // page filter
+     search_table("page", "/spam2/flags/filter/");
+   });
+   $('#note').on('click', function () { // note filter
+      search_table("note", "/spam2/flags/filter/");
+    });
+   $('#reset').on('click', function () { // all filter
+    search_table("all", "/spam2/flags/filter/");
+    });
+  });
 </script>
 <div class="card" id="table-card">
   <div class="bg-light  navbar navbar-expand">
