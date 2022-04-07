@@ -105,22 +105,22 @@ $(document).ready(function () {
                 <i class="fa fa-trash text-dark"></i>
               <% end %>
               <script>
-              $('#n<%= comment.id %> .delete').bind('ajax:success', function(e){
-                $('#n<%= comment.id %>').fadeOut()
-                notyNotification('relax', 3000, 'danger', 'topRight', 'Comment deleted');
-              });
-              $('#n<%= comment.id %> .publish').bind('ajax:success', function(e){
-                $('#n<%= comment.id %>').hide()
-                notyNotification('relax', 3000, 'success', 'topRight', 'Comment published');
-              });
-              $('#n<%= comment.id %> .spam').bind('ajax:success', function(e){
-                $('#n<%= comment.id %>').hide()
-                notyNotification('relax', 3000, 'danger', 'topRight', 'Comment spammed');
-              });
-              $('#n<%= comment.id %> .unflag').bind('ajax:success', function(e){
-                $('#n<%= comment.id %>').hide()
-                notyNotification('relax', 3000, 'warning', 'topRight', 'Comment unflagged');
-              });
+                $('#n<%= comment.id %> .delete').bind('ajax:success', function(e){
+                  $('#n<%= comment.id %>').fadeOut()
+                  notyNotification('relax', 3000, 'danger', 'topRight', 'Comment deleted');
+                });
+                $('#n<%= comment.id %> .publish').bind('ajax:success', function(e){
+                  $('#n<%= comment.id %>').hide()
+                  notyNotification('relax', 3000, 'success', 'topRight', 'Comment published');
+                });
+                $('#n<%= comment.id %> .spam').bind('ajax:success', function(e){
+                  $('#n<%= comment.id %>').hide()
+                  notyNotification('relax', 3000, 'danger', 'topRight', 'Comment spammed');
+                });
+                $('#n<%= comment.id %> .unflag').bind('ajax:success', function(e){
+                  $('#n<%= comment.id %>').hide()
+                  notyNotification('relax', 3000, 'warning', 'topRight', 'Comment unflagged');
+                });
               </script>
             </td>
           </tr>
