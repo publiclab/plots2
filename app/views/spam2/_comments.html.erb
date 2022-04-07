@@ -41,7 +41,7 @@ $(document).ready(function () {
 </script>
 <div class="card" id="table-card">
   <div class="bg-light  navbar navbar-expand">
-      <ul class="nav navbar-expand  navbar-nav-scroll">
+    <ul class="nav navbar-expand  navbar-nav-scroll">
       <li class="nav-item">
         <a class="btn nav-link text-secondary" data-toggle="tooltip" data-placement="top" title="Selected per page">Selected <span id="select-count" class="badge badge-dark">0</span></a>
       </li>
@@ -94,7 +94,7 @@ $(document).ready(function () {
             </td>
             <td>
               <% unless comment.node.nil? %>
-              <span class="text-secondary"><%= time_ago_in_words(comment.timestamp) %> ago</span>
+                <span class="text-secondary"><%= time_ago_in_words(comment.timestamp) %> ago</span>
               <% end %>
             </td>
             <td style="height:35px !important;">
