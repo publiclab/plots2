@@ -408,7 +408,7 @@ GEM
       mime-types
       mimemagic (~> 0.3.0)
       terrapin (~> 0.6.0)
-    parallel (1.22.0)
+    parallel (1.22.1)
     parser (3.1.1.0)
       ast (~> 2.4.1)
     passenger (6.0.13)
@@ -530,7 +530,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.11.0)
     rspec-support (3.11.0)
-    rubocop (1.26.1)
+    rubocop (1.27.0)
       parallel (~> 1.10)
       parser (>= 3.1.0.0)
       rainbow (>= 2.2.2, < 4.0)
@@ -770,7 +770,7 @@ DEPENDENCIES
   rest-client
   reverse_markdown
   rspec
-  rubocop (~> 1.26.1)
+  rubocop (~> 1.27.0)
   rubocop-performance
   rubocop-rails
   rubocop-rake
