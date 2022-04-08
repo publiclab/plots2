@@ -180,7 +180,7 @@ class NodeSharedTest < ActiveSupport::TestCase
     html = NodeShared.people_grid(before)
     assert_equal 1, html.scan('<table class="table inline-grid people-grid people-grid-organizer people-grid-organizer-').length
     assert_equal 1, html.scan('<table').length
-    assert_equal 6, html.scan('people-grid').length
+    assert_equal 4, html.scan('people-grid').length
   end
 
   test 'that NodeShared can be used to convert short codes like [graph://example.com] into graphs which display csv data' do
@@ -261,6 +261,6 @@ class NodeSharedTest < ActiveSupport::TestCase
     html = NodeShared.people_grid(before)
     assert_equal 1, html.scan('<table class="table inline-grid people-grid people-grid-organizer people-grid-organizer-').length
     assert_equal 1, html.scan('<table').length
-    assert_equal 6, html.scan('people-grid').length
+    assert_equal 4, html.scan('people-grid').length
   end
 end

@@ -105,7 +105,7 @@ For installation, prerequisites include sqlite3 and rvm. [Click here for a compl
     * Run this `bundle config set without 'production mysql'` from the rails root folder to set your project to exclude libraries only needed in production.
     * Install gems with `bundle install` from the rails root folder.
 6. Run `cp db/schema.rb.example db/schema.rb` to make a copy of `db/schema.rb.example` in `db/schema.rb`.
-7. You could choose to use mysql2 or sqlite3 as your database
+7. You could choose to use mysql2 or sqlite3 as your database. *We **recommend** using `sqlite3` as your plots2 database as some of our contributors have reported issues while using `mysql2`*.
     * If mysql2,  run `cp config/database.yml.mysql.example config/database.yml` to make a copy of `config/database.yml.mysql.example` in `config/database.yml`
     * If sqlite3, run `cp config/database.yml.sqlite.example config/database.yml` to make a copy of `config/database.yml.sqlite.example` in `config/database.yml`.
 _kindly note if you choose to use sqlite some tests may fail. The project was setup initially to use mysql and some tests are tailored for mysql db. No need for alarm, we are working to fix these and this will not interfere with your development process_

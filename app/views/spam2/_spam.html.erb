@@ -78,10 +78,14 @@
         <li class="nav-item pr-4">
           <a class="nav-link btn btn-light border disabled text-dark d-inline-flex border-curve" id="delete-batch"><i class=" pt-1 pr-2 fa fa-trash text-danger" data-toggle="tooltip" data-placement="top" title="Delete Selected items"></i> Delete</a>
         </li>
+        <% end %>
+      
+        <% if params[:action] != "_spam_insights" %>
         <li class="nav-item pr-4">
           <a class="nav-link btn btn-light border text-dark d-inline-flex border-curve"  id="all" ><i class=" pt-1 pr-2 fa fa-check text-primary" data-toggle="tooltip" data-placement="top" title="Select all in this page"></i> Select</a>
         </li>
         <% end %>
+      
         <% if params[:action] != "_spam_revisions" && params[:action] != "_spam_insights" &&  params[:action] != "_spam_comments" %>
         <li class="nav-item pr-4">
           <a class="nav-link btn btn-light border disabled text-dark d-inline-flex border-curve" id="batch-ban" ><i class=" pt-1 pr-2 fa fa-flag text-warning" data-toggle="tooltip" data-placement="top" title="Ban Users"></i> Ban</a>

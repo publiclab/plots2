@@ -18,7 +18,9 @@ function table_main(id) {
 	});
 	$('#selectall').click(function () {
 		$('.selectedId').prop('checked', this.checked);
-		$('#select-count').text($('.selectedId').filter(":checked").length);
+		let selectedLength = $('.selectedId').filter(":checked").length
+                $('#select-count').text(selectedLength);
+                if(selectedLength == 0) return
 		disable_buttons('#selectall');
 	});
 	$('.selectedId').change(function () {
@@ -55,9 +57,23 @@ function search_table(filter, url) {
 }
 
 function batch_nav(bulk) {
+	if(bulk == "batch_delete" || bulk == "batch_comment/delete") {
+        	let result = confirm("Are you sure you want to delete the selected nodes?");
+        	if(!result) return false
+	}
 	vals = []
 	$('.selectedId').each(function (i, a) { // batch nav
 		if (a.checked) vals.push(a.value);
 	});
 	window.location = "/spam2/" + bulk + "/" + vals.join(',');
+}
+
+function select_all() {
+      $('.selectedId').prop('checked', !$('.selectedId').prop('checked'));
+      let selectedLength = $('.selectedId').filter(":checked").length
+      // enable buttons only if there are nodes in the table and number of selected nodes == total node length
+       var check = (selectedLength == $('.selectedId').length && selectedLength > 0);
+       $('#select-count').text(selectedLength);
+       $('#selectall').prop("checked", check);
+       disable_buttons('#selectall');
 }

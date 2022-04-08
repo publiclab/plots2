@@ -1,0 +1,221 @@
+---
+cz:
+  activerecord:
+    errors:
+      messages:
+        record_invalid: 'Ověření se nezdařilo: %{errors}'
+        restrict_dependent_destroy:
+          has_one: Záznam nelze smazat, jelikož je závislý na %{record}
+          has_many: Záznamy nelze smazat, jelikož jsou závislé na %{record}
+  date:
+    abbr_day_names:
+    - Ne
+    - Po
+    - Ut
+    - St
+    - Čt
+    - Pá
+    - So
+    abbr_month_names:
+    -
+    - led
+    - úno
+    - bře
+    - dub
+    - kvě
+    - čvn
+    - čvc
+    - srp
+    - zář
+    - říj
+    - lis
+    - pro
+    day_names:
+    - neděle
+    - pondělí
+    - úterý
+    - středa
+    - čtvrtek
+    - pátek
+    - sobota
+    formats:
+      default: "%d.%m.%Y"
+      long: "%e. %B %Y"
+      short: "%e. %b"
+    month_names:
+    -
+    - leden
+    - únor
+    - březen
+    - duben
+    - květen
+    - červen
+    - červenec
+    - srpen
+    - září
+    - říjen
+    - listopad
+    - prosinec
+    order:
+    - :den
+    - :měsíc
+    - :rok
+  datetime:
+    distance_in_words:
+      about_x_hours:
+        one: asi před 1 hodinou
+        other: asi před %{count} hodinami
+      about_x_months:
+        one: asi před 1 měsícem
+        other: asi před %{count} měsíci
+      about_x_years:
+        one: asi před 1 rokem
+        other: asi před %{count} lety
+      almost_x_years:
+        one: téměř před 1 rokem
+        other: před téměř %{count} lety
+      half_a_minute: před půl minutou
+      less_than_x_seconds:
+        one: před méně než 1 sekundou
+        other: před méně než %{count} sekundami
+      less_than_x_minutes:
+        one: před méně než minutou
+        other: před méně než %{count} minutami
+      over_x_years:
+        one: před více než 1 rokem
+        other: před více než %{count} lety
+      x_seconds:
+        one: 1 vteřina
+        other: před %{count} sekundami
+      x_minutes:
+        one: před 1 minutou
+        other: před %{count} minutami
+      x_days:
+        one: před 1 dnem
+        other: před %{count} dny
+      x_months:
+        one: před měsícem
+        other: před %{count} měsíci
+      x_years:
+        one: 1 rok
+        other: před %{count} lety
+    prompts:
+      second: Sekunda
+      minute: Minuta
+      hour: Hodina
+      day: Den
+      month: Měsíc
+      year: Rok
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      accepted: musí být přijato
+      blank: nemůže být prázdné
+      confirmation: neodpovídá %{attribute}
+      empty: nemůže být prázdné
+      equal_to: musí se rovnat %{count}
+      even: musí být sudý
+      exclusion: je vyhrazeno
+      greater_than: musí být větší než %{count}
+      greater_than_or_equal_to: musí být větší nebo rovno %{count}
+      inclusion: není zahrnuto v seznamu
+      invalid: je neplatný
+      less_than: musí být menší než %{count}
+      less_than_or_equal_to: musí být menší nebo rovno %{count}
+      model_invalid: 'Ověření se nezdařilo: %{errors}'
+      not_a_number: není číslo
+      not_an_integer: musí být celé číslo
+      odd: musí být lichý
+      other_than: musí být jiné než %{count}
+      present: musí být prázdné
+      required: musí existovat
+      taken: již používáno
+      too_long:
+        one: je příliš dlouhé (maximálně 1 znak)
+        other: je příliš dlouhé (maximum je %{count} znaků)
+      too_short:
+        one: je příliš krátké (minimum je 1 znak)
+        other: je příliš krátké (minimum je %{count} znaků)
+      wrong_length:
+        one: nemá požadovanou délku (měla by být 1 znak)
+        other: nemá požadovanou délku (měla by být %{count} znaků)
+    template:
+      body: 'Nastal problém u následujících položek:'
+      header:
+        one: Tento %{model} nelze uložit, jelikož nastala 1 chyba
+        other: Tento %{model} nelze uložit, jelikož nastalo %{count} chyb
+  helpers:
+    select:
+      prompt: Vyberte prosím
+    submit:
+      create: Vytvořit %{model}
+      submit: Uložit %{model}
+      update: Aktualizovat %{model}
+  number:
+    currency:
+      format:
+        delimiter: "."
+        format: "%n %u"
+        precision: 2
+        separator: ","
+        significant: false
+        strip_insignificant_zeros: false
+        unit: "€"
+    format:
+      delimiter: "."
+      precision: 3
+      separator: ","
+      significant: false
+      strip_insignificant_zeros: false
+    human:
+      decimal_units:
+        format: "%n %u"
+        units:
+          billion:
+            one: miliarda
+            other: miliard
+          million:
+            one: milion
+            other: miliony
+          quadrillion: biliarda
+          thousand: tisíc
+          trillion:
+            one: bilion
+            other: biliony
+          unit: ''
+      format:
+        delimiter: ''
+        precision: 1
+        significant: true
+        strip_insignificant_zeros: true
+      storage_units:
+        format: "%n %u"
+        units:
+          byte:
+            one: Byte
+            other: Bytes
+          eb: EB
+          gb: GB
+          kb: KB
+          mb: MB
+          pb: PB
+          tb: TB
+    percentage:
+      format:
+        delimiter: ''
+        format: "%n %"
+    precision:
+      format:
+        delimiter: ''
+  support:
+    array:
+      last_word_connector: " a "
+      two_words_connector: " a "
+      words_connector: ", "
+  time:
+    am: dopoledne
+    formats:
+      default: "%A, %-d. %B %Y, %H:%M:%S %z"
+      long: "%-d. %B %Y, %H:%M"
+      short: "%-d. %b, %H:%M"
+    pm: odpoledne
