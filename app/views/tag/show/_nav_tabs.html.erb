@@ -2,17 +2,15 @@
   <ul class="nav nav-tabs" aria-labelledby="dropdownMenuButton">
 
     <% if params[:action] == "show" || params[:action] == "comments"%>
-      <% unless params[:id].match("question:") %>
-        <li class="nav-item">
-          <a class="nav-link <% if @node_type == "note" %> active<% end %>" href="/tag/<%= params[:id] %>">
-            <i class="fa fa-file"></i> 
-            <span class="d-lg-inline"> 
-              <span class="d-none d-md-inline"><%= t('tag.show.research_notes') %></span>
-              <span class="d-none d-sm-inline badge badge-primary"><%= params[:counts][:posts] %></span>
-            </span>
-          </a>
-        </li>
-      <% end %>
+      <li class="nav-item">
+        <a class="nav-link <% if @node_type == "note" %> active<% end %>" href="/tag/<%= params[:id] %>">
+          <i class="fa fa-file"></i> 
+          <span class="d-lg-inline"> 
+            <span class="d-none d-md-inline"><%= t('tag.show.research_notes') %></span>
+            <span class="d-none d-sm-inline badge badge-primary"><%= params[:counts][:posts] %></span>
+          </span>
+        </a>
+      </li>
       <li class="nav-item">
         <a class="nav-link <% if @node_type == "questions" %> active<% end %>" href="/questions/tag/<%= params[:id] %>">
           <i class="fa fa-question-circle"></i> 
@@ -40,15 +38,7 @@
       </li>
       -->
       <% if !@wildcard %>
-        <li class="nav-item">
-          <a class="nav-link <% if @node_type == "contributors" %> active <% end %>" href="/contributors/<%= params[:id] %>">
-            <i class="fa fa-user"></i> 
-            <span class="d-lg-inline">
-              <span class="d-none d-lg-inline"><%= raw t('tag.show.people') %></span>
-              <span class="d-none d-sm-inline badge badge-primary"><%= @contributor_count %></span>
-            </span>
-          </a>
-        </li>
+
       <% else %>
         <a class="disabled" class="nav-item<% if @node_type == "contributors" %> active <% end %>" href="#" rel="tooltip" title="Contributors cannot be listed for wildcard tag searches" >
           <i class="fa fa-user"></i> 

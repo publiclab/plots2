@@ -108,7 +108,9 @@ class SpamTest < ApplicationSystemTestCase
     within "#n#{page2.id}" do
       find(".selectedId").click()
     end
-    find("#delete-batch").click()
+    accept_confirm do
+      find("#delete-batch").click()
+    end
     assert_selector('div.alert', text: '2 nodes deleted')
   end
 

@@ -2,7 +2,8 @@
 
 <%= render :partial => "like/like", :locals => {:node => @node, :tagnames => @tagnames } %>
   <div class="accordion">
-  <button style="margin-top:-16px;margin-bottom:0;" aria-expanded="false" class="btn btn-sm btn-block btn-link" href="javascript:void()" onclick="toggle_sidebar()"><i class="pt-3 pb-3 fa fa-chevron-down fa-2x"></i></button>
+  
+   <button style="margin-top:-16px;margin-bottom:0;" aria-expanded="false" class="btn btn-sm btn-block btn-link d-lg-none" href="javascript:void()" onclick="toggle_sidebar()"><i class="pt-3 pb-3 fa fa-chevron-down fa-2x"></i></button>
 
   <div id="sidebar" class="d-lg-inline accordion-content">
 
