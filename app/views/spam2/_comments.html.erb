@@ -7,15 +7,12 @@ $(document).ready(function () {
       $('#select-count').text($('.selectedId').filter(":checked").length);
       $('#selectall').prop("checked", check);
       disable_buttons('#selectall');
-  
   });
   var pageselect_val = localStorage.getItem('page-select') || '';
   $("#pageselect").val(pageselect_val);
-
   $('#pageselect').change(function () {
     pagination("#pageselect", "/spam2/comments/filter/");
-   });
-
+  });
   $('#reset').on('click', function () { // reset filter
     search_table("all", "/spam2/comments/filter/");
   });
