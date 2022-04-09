@@ -21,7 +21,7 @@ class Comment < ApplicationRecord
   def self.inheritance_column
     'rails_type'
   end
-
+  
   def self.search(query)
     Comment.where('MATCH(comment) AGAINST(?)', query)
       .where(status: 1)
@@ -503,10 +503,7 @@ class Comment < ApplicationRecord
   end
 
   def render_body
-    body = RDiscount.new(
-      title_suggestion(self),
-      :autolink
-    ).to_html
+    body = RDiscount.new(title_suggestion(self)).to_html
     # if it has quoted email text that wasn't caught by the yahoo and gmail filters,
     # manually insert the comment filter delimeter:
     parsed = parse_quoted_text
