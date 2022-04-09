@@ -145,7 +145,7 @@
 
     <% comment_body = comment.render_body %>
     <div class="comment-body" id="comment-body-<%= comment.cid %>">
-      <%= raw insert_extras(filtered_comment_body(comment_body)) %>
+      <%= raw auto_link(insert_extras(filtered_comment_body(comment_body)), :sanitize => false) %>
     </div>
 
     <% if contain_trimmed_body?(comment_body) %>
