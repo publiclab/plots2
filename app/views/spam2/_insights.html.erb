@@ -65,31 +65,31 @@
 var options = {
   chart: {
     type: "line",
-	height: 300,
-	foreColor: "#999",
-	scroller: {
-	  enabled: true,
-	  track: {
-	    height: 7,
-	    background: '#e0e0e0'
-	  },
-	  thumb: {
-	    height: 10,
-	    background: '#94E3FF'
-	  },
-	  scrollButtons: {
-	    enabled: true,
-	    size: 9,
-	    borderWidth: 2,
-	    borderColor: '#008FFB',
-	    fillColor: '#008FFB'
-	  },
-	  padding: {
-		left: 30,
-		right: 20
-	  }
-	}
-  },
+    height: 300,
+    foreColor: "#999",
+    scroller: {
+      enabled: true,
+      track: {
+        height: 7,
+        background: '#e0e0e0'
+      },
+      thumb: {
+        height: 10,
+        background: '#94E3FF'
+      },
+      scrollButtons: {
+        enabled: true,
+        size: 9,
+        borderWidth: 2,
+        borderColor: '#008FFB',
+        fillColor: '#008FFB'
+      },
+      padding: {
+        left: 30,
+        right: 20
+      }
+    }
+  }
   colors: ['#E8D020', '#E85C20', '#165F8B'],
   stroke: {
     curve: "smooth",
@@ -102,11 +102,11 @@ var options = {
     name: 'Flagged Nodes',
     data: generateWeekWiseTimeSeries(0)
   }, {
-	name: 'Spammed Nodes',
-	data: generateWeekWiseTimeSeries(1)
+    name: 'Spammed Nodes',
+    data: generateWeekWiseTimeSeries(1)
   }, {
-	name: 'Unmoderated  Nodes',
-	data: generateWeekWiseTimeSeries(2)
+    name: 'Unmoderated  Nodes',
+    data: generateWeekWiseTimeSeries(2)
   }],
   markers: {
     size: 0,
@@ -115,39 +115,39 @@ var options = {
     strokeOpacity: 1,
     fillOpacity: 1,
     hover: {
-	  size: 6
+      size: 6
     }
-  },
+ },
   xaxis: {
     type: "datetime",
     axisBorder: {
-	  show: false
+      show: false
     },
     axisTicks: {
-	  show: false
+      show: false
     }
   },
   yaxis: {
-	tickAmount: 6,
-	min: 0,
-	opposite: true,
-	labels: {
-	  offsetX: 24,
-	  offsetY: -5
-	},
-	tooltip: {
-	  enabled: true
-	}
+    tickAmount: 6,
+    min: 0,
+    opposite: true,
+    labels: {
+      offsetX: 24,
+      offsetY: -5
+    },
+    tooltip: {
+      enabled: true
+    }
   },
   grid: {
     padding: {
-	  left: -5,
-	  right: 5
+      left: -5,
+      right: 5
     }
   },
   tooltip: {
     x: {
-	  format: "dd MMM yyyy"
+      format: "dd MMM yyyy"
     },
   },
   legend: {
@@ -171,8 +171,8 @@ function generateWeekWiseTimeSeries(s) {
   var series = [];
   while (i < count) {
     for (var j = 0; j < months.length; j++) {
-	  series.push([months[j], values[s][i]]);
-	  i++;
+      series.push([months[j], values[s][i]]);
+      i++;
     }
   }
   return series;
@@ -202,14 +202,14 @@ plotOptions: {
 },
 dataLabels: {
   enabled: false
-  },
-  series: [{
-    name: 'Tag count',
-    data: values
-  }],
-  xaxis: {
-    categories: data
-  }
+},
+series: [{
+  name: 'Tag count',
+  data: values
+}],
+xaxis: {
+  categories: data
+}
 };
 var chart_tag = new ApexCharts(document.querySelector("#moderator_tag"), options);
 chart_tag.render();
