@@ -2,7 +2,7 @@
 
 # Configuration for new-issue-welcome - https://github.com/behaviorbot/new-issue-welcome
 
-# Comment to be posted to on first time issues
+# Comment to be posted on first time issues
 newIssueWelcomeComment: |
   Thanks for opening your first issue! This space is [protected by our Code of Conduct](https://publiclab.org/conduct) - and we're here to help.
   Please follow the issue template to help us help you 👍🎉😄
@@ -10,7 +10,7 @@ newIssueWelcomeComment: |
   Do join our [Gitter channel](https://gitter.im/publiclab/publiclab) for some brainstorming discussions. 
 # Configuration for new-pr-welcome - https://github.com/behaviorbot/new-pr-welcome
 
-# Comment to be posted to on PRs from first time contributors in your repository
+# Comment to be posted on PRs from first time contributors in your repository
 newPRWelcomeComment: |
  Thanks for opening this pull request!  This space is [protected by our Code of Conduct](https://publiclab.org/conduct) - and we're here to help.
  `Dangerbot` will test out your code and reply in a bit with some pointers and requests.
@@ -23,7 +23,7 @@ newPRWelcomeComment: |
  
 # Configuration for first-pr-merge - https://github.com/behaviorbot/first-pr-merge
 
-# Comment to be posted to on pull requests merged by a first time user
+# Comment to be posted on pull requests merged by a first time user
 firstPRMergeComment: |
  Congrats on merging your first pull request! 🙌🎉⚡️
  Your code will likely be published to PublicLab.org in the next few days, but first it will be published to https://stable.publiclab.org/ (it will take some minutes for this to load, and until then you may see logs from the build process). Please test out your work on this testing server and report back with a comment that all has gone well!
