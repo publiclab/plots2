@@ -74,18 +74,18 @@ hr {
         display:block;
         padding:0;
 }
+
 #links li {
         list-style:none;
         position:relative;
         float:left;
-}
-#links li {
         background:black;
         margin-right:8px;
         margin-bottom:8px;
         padding:0;
         color:white;
 }
+
 #links li a {
         text-decoration:none;
         display:block;
