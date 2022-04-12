@@ -67,14 +67,6 @@
     <% end %>
   </tr>
 <% end %>
-<% if nodes.count > 10 %>
-    <tfoot>
-      <th class="show-all" id="notes-table-footer" style="min-width: 110px;"><a style="cursor: pointer;">Show more <b class="caret"></b></a></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tfoot>
-<% end %>
 </table>
 </div>
 
@@ -91,26 +83,13 @@
   <p><i>Activities should include a materials list, costs and a step-by-step guide to construction with photos. Learn what <a href="https://publiclab.org/notes/warren/09-17-2016/what-makes-a-good-activity">makes a good activity here</a>.</i>
   </p>
 <% end %>
-
+  
 <script>
 (function(){
-  $(".<%= className %>-<%= randomSeed %> .show-all a").click(function(event) {
-    var cName = ".<%= className %>-<%= randomSeed %>";
-    var sName = cName + " tr.extra";
-    $(sName).toggleClass("hide");
-    if ($(sName)[0].classList.contains("hide"))
-      var hiding = true;    
-    var myElement = event.target;    
-    if (event.target.classList.contains("caret")) 
-      myElement = event.target.parentElement;
-    if (!hiding) 
-      myElement.innerHTML = 'Show less <b class="caret" style = "transform: rotate(180deg);"></b>';
-    else
-      myElement.innerHTML = 'Show more <b class="caret"></b>';
-  });
   //setupGridSorters(".<%= className %>-<%= randomSeed %>"); Should order the items by time. Commented out because it reorders the items each time show more/less is clicked
 })()
 </script>
+
 <style>
   th {
     position: sticky;
