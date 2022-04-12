@@ -63,153 +63,153 @@
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
 var options = {
-	chart: {
-		type: "line",
-		height: 300,
-		foreColor: "#999",
-		scroller: {
-			enabled: true,
-			track: {
-				height: 7,
-				background: '#e0e0e0'
-			},
-			thumb: {
-				height: 10,
-				background: '#94E3FF'
-			},
-			scrollButtons: {
-				enabled: true,
-				size: 9,
-				borderWidth: 2,
-				borderColor: '#008FFB',
-				fillColor: '#008FFB'
-			},
-			padding: {
-				left: 30,
-				right: 20
-			}
-		}
-	},
-	colors: ['#E8D020', '#E85C20', '#165F8B'],
-	stroke: {
-		curve: "smooth",
-		width: 3
-	},
-	dataLabels: {
-		enabled: false
-	},
-	series: [{
-		name: 'Flagged Nodes',
-		data: generateWeekWiseTimeSeries(0)
-	}, {
-		name: 'Spammed Nodes',
-		data: generateWeekWiseTimeSeries(1)
-	}, {
-		name: 'Unmoderated  Nodes',
-		data: generateWeekWiseTimeSeries(2)
-	}],
-	markers: {
-		size: 0,
-		strokeColor: "#fff",
-		strokeWidth: 3,
-		strokeOpacity: 1,
-		fillOpacity: 1,
-		hover: {
-			size: 6
-		}
-	},
-	xaxis: {
-		type: "datetime",
-		axisBorder: {
-			show: false
-		},
-		axisTicks: {
-			show: false
-		}
-	},
-	yaxis: {
-		tickAmount: 6,
-		min: 0,
-		opposite: true,
-		labels: {
-			offsetX: 24,
-			offsetY: -5
-		},
-		tooltip: {
-			enabled: true
-		}
-	},
-	grid: {
-		padding: {
-			left: -5,
-			right: 5
-		}
-	},
-	tooltip: {
-		x: {
-			format: "dd MMM yyyy"
-		},
-	},
-	legend: {
-		position: 'top',
-		horizontalAlign: 'left'
-	}
+  chart: {
+    type: "line",
+    height: 300,
+    foreColor: "#999",
+    scroller: {
+      enabled: true,
+      track: {
+        height: 7,
+        background: '#e0e0e0'
+      },
+      thumb: {
+        height: 10,
+        background: '#94E3FF'
+      },
+      scrollButtons: {
+        enabled: true,
+        size: 9,
+        borderWidth: 2,
+        borderColor: '#008FFB',
+        fillColor: '#008FFB'
+      },
+      padding: {
+        left: 30,
+        right: 20
+      }
+    }
+  }
+  colors: ['#E8D020', '#E85C20', '#165F8B'],
+  stroke: {
+    curve: "smooth",
+    width: 3
+  },
+  dataLabels: {
+    enabled: false
+  },
+  series: [{
+    name: 'Flagged Nodes',
+    data: generateWeekWiseTimeSeries(0)
+  }, {
+    name: 'Spammed Nodes',
+    data: generateWeekWiseTimeSeries(1)
+  }, {
+    name: 'Unmoderated  Nodes',
+    data: generateWeekWiseTimeSeries(2)
+  }],
+  markers: {
+    size: 0,
+    strokeColor: "#fff",
+    strokeWidth: 3,
+    strokeOpacity: 1,
+    fillOpacity: 1,
+    hover: {
+      size: 6
+    }
+ },
+  xaxis: {
+    type: "datetime",
+    axisBorder: {
+      show: false
+    },
+    axisTicks: {
+      show: false
+    }
+  },
+  yaxis: {
+    tickAmount: 6,
+    min: 0,
+    opposite: true,
+    labels: {
+      offsetX: 24,
+      offsetY: -5
+    },
+    tooltip: {
+      enabled: true
+    }
+  },
+  grid: {
+    padding: {
+      left: -5,
+      right: 5
+    }
+  },
+  tooltip: {
+    x: {
+      format: "dd MMM yyyy"
+    },
+  },
+  legend: {
+    position: 'top',
+    horizontalAlign: 'left'
+  }
 };
 var chart = new ApexCharts(document.querySelector("#timeline_spam"), options);
 chart.render();
 
 function generateWeekWiseTimeSeries(s) {
-	var values = [
-		<%= @graph_flagged.values if @graph_flagged.present? %>,
-		<%= @graph_spammed.values if @graph_spammed.present? %>,
-		<%= @graph_unmoderated.values if @graph_unmoderated.present? %>
-	];
-	var i = 0;
-	var months_dates = <%= @graph_spammed.keys if @graph_spammed.present? %>;
-	var count = months_dates.length;
-	var months = months_dates.map(x => new Date(x).getTime());
-	var series = [];
-	while (i < count) {
-		for (var j = 0; j < months.length; j++) {
-			series.push([months[j], values[s][i]]);
-			i++;
-		}
-	}
-	return series;
+  var values = [
+    <%= @graph_flagged.values if @graph_flagged.present? %>,
+    <%= @graph_spammed.values if @graph_spammed.present? %>,
+    <%= @graph_unmoderated.values if @graph_unmoderated.present? %>
+  ];
+  var i = 0;
+  var months_dates = <%= @graph_spammed.keys if @graph_spammed.present? %>;
+  var count = months_dates.length;
+  var months = months_dates.map(x => new Date(x).getTime());
+  var series = [];
+  while (i < count) {
+    for (var j = 0; j < months.length; j++) {
+      series.push([months[j], values[s][i]]);
+      i++;
+    }
+  }
+  return series;
 }
 var values = <%=  @popular_tags.values if @popular_tags.present? %>;
 var data = <%= raw (@popular_tags.keys) if @popular_tags.present? %>;
 var page;
 var options = {
-	chart: {
-		height: 500,
-		type: 'bar',
-		fontFamily: 'Junction Light',
-		active: {
-			allowMultipleDataPointsSelection: true,
-		},
-		events: {
-			dataPointSelection: function (event, chartContext, config) {
-				page = data[config.selectedDataPoints];
-				parent.location = '/tag/' + page;
-			}
-		}
-	},
-	plotOptions: {
-		bar: {
-			horizontal: true,
-		}
-	},
-	dataLabels: {
-		enabled: false
-	},
-	series: [{
-		name: 'Tag count',
-		data: values
-	}],
-	xaxis: {
-		categories: data
-	}
+  chart: {
+    height: 500,
+    type: 'bar',
+    fontFamily: 'Junction Light',
+    active: {
+      allowMultipleDataPointsSelection: true,
+    },
+    events: {
+      dataPointSelection: function (event, chartContext, config) {
+        page = data[config.selectedDataPoints];
+	parent.location = '/tag/' + page;
+      }
+    }
+  },
+  plotOptions: {
+    bar: {
+      horizontal: true,
+    }
+  },
+  dataLabels: {
+    enabled: false
+  },
+  series: [{
+    name: 'Tag count',
+    data: values
+  }],
+  xaxis: {
+    categories: data
+  }
 };
 var chart_tag = new ApexCharts(document.querySelector("#moderator_tag"), options);
 chart_tag.render();
