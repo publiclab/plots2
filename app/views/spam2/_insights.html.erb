@@ -181,35 +181,35 @@ var values = <%=  @popular_tags.values if @popular_tags.present? %>;
 var data = <%= raw (@popular_tags.keys) if @popular_tags.present? %>;
 var page;
 var options = {
-chart: {
-  height: 500,
-  type: 'bar',
-  fontFamily: 'Junction Light',
-  active: {
-    allowMultipleDataPointsSelection: true,
-  },
-  events: {
-    dataPointSelection: function (event, chartContext, config) {
-	  page = data[config.selectedDataPoints];
-	  parent.location = '/tag/' + page;
+  chart: {
+    height: 500,
+    type: 'bar',
+    fontFamily: 'Junction Light',
+    active: {
+      allowMultipleDataPointsSelection: true,
+    },
+    events: {
+      dataPointSelection: function (event, chartContext, config) {
+        page = data[config.selectedDataPoints];
+	parent.location = '/tag/' + page;
+      }
     }
+  },
+  plotOptions: {
+    bar: {
+      horizontal: true,
+    }
+  },
+  dataLabels: {
+    enabled: false
+  },
+  series: [{
+    name: 'Tag count',
+    data: values
+  }],
+  xaxis: {
+    categories: data
   }
-},
-plotOptions: {
-  bar: {
-    horizontal: true,
-  }
-},
-dataLabels: {
-  enabled: false
-},
-series: [{
-  name: 'Tag count',
-  data: values
-}],
-xaxis: {
-  categories: data
-}
 };
 var chart_tag = new ApexCharts(document.querySelector("#moderator_tag"), options);
 chart_tag.render();
