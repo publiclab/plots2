@@ -166,6 +166,7 @@ en:
     edit:
       edit_profile: "Edit Profile"
     settings:
+      cancel: "Cancel"
       notified_by_email: "I want to be notified by email for:"
       direct_comment: "Comments on my posts"
       direct_likes: "Likes on my posts"
