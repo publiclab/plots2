@@ -61,7 +61,7 @@ zh-CN:
     - :month
     - :day
   datetime:
-    distance_in_words:
+    time_ago_in_words:
       about_x_hours: 大约 %{count} 小时
       about_x_months: 大约 %{count} 个月
       about_x_years: 大约 %{count} 年

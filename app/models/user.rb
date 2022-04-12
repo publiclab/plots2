@@ -39,9 +39,9 @@ class User < ActiveRecord::Base
   end
 
   has_attached_file :photo,
-                    styles: { thumb: '200x200#', medium: '500x500#', large: '800x800#' },
-                    url: '/public/system/profile/photos/:id/:style/:basename.:extension',
-                    path: ':rails_root/public/system/public/system/profile/photos/:id/:style/:filename'
+    styles: { thumb: '200x200#', medium: '500x500#', large: '800x800#' },
+    url: '/public/system/profile/photos/:id/:style/:basename.:extension',
+    path: ':rails_root/public/system/public/system/profile/photos/:id/:style/:filename'
 
   do_not_validate_attachment_file_type :photo_file_name
   # validates_attachment_content_type :photo_file_name, :content_type => %w(image/jpeg image/jpg image/png)
@@ -161,10 +161,10 @@ class User < ActiveRecord::Base
   end
 
   def normal_tags(limit = false)
-    tags(limit).select{ |tag| ! tag.name.include?(':') }
+    tags(limit).select { |tag| !tag.name.include?(':') }
   end
 
-  def tagnames(limit = 20, defaults = true)
+  def tagnames(limit = 20)
     tagnames = []
     Node.includes(:tag).order('nid DESC').where(type: 'note', status: 1, uid: id).limit(limit).each do |node|
       tagnames += node.tags.collect(&:name)
@@ -257,7 +257,8 @@ class User < ActiveRecord::Base
     Node.questions.where(status: 1, uid: id)
   end
 
-  def content_followed_in_period(start_time, end_time, order_by = 'node_revisions.timestamp DESC', node_type = 'note', include_revisions = false)
+  def content_followed_in_period(start_time, end_time,
+    order_by = 'node_revisions.timestamp DESC', node_type = 'note', include_revisions = false)
     tagnames = TagSelection.where(following: true, user_id: uid)
     node_ids = []
     tagnames.each do |tagname|
@@ -284,13 +285,6 @@ class User < ActiveRecord::Base
         .where(range)
         .order('created DESC')
         .distinct
-  end
-
-  def social_link(site)
-    return nil unless has_power_tag(site)
-
-    user_name = get_last_value_of_power_tag(site)
-    "https://#{site}.com/#{user_name}"
   end
 
   def moderate
@@ -408,15 +402,17 @@ class User < ActiveRecord::Base
 
   class << self
     def search(query)
-      query = query.gsub('@',' ') # @ is a special char in full text search in MYSQL, and cannot be escaped; https://github.com/publiclab/plots2/issues/8344
-      query = query + '*' unless query.empty?
-      User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', "#{query}")
+      query = query.tr('@', ' ') # @ is a special char in full text search in MYSQL, and cannot be escaped; https://github.com/publiclab/plots2/issues/8344
+      query += '*' unless query.empty?
+
+      User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', query)
     end
 
     def search_by_username(query)
-      query = query.gsub('@',' ') # @ is a special char in full text search in MYSQL, and cannot be escaped; https://github.com/publiclab/plots2/issues/8344
-      query = query + '*' unless query.empty?
-      User.where('MATCH(username) AGAINST(? IN BOOLEAN MODE)', "#{query}")
+      query = query.tr('@', ' ') # @ is a special char in full text search in MYSQL, and cannot be escaped; https://github.com/publiclab/plots2/issues/8344
+      query += '*' unless query.empty?
+
+      User.where('MATCH(username) AGAINST(? IN BOOLEAN MODE)', query)
     end
 
     def validate_token(token)
@@ -494,12 +490,12 @@ class User < ActiveRecord::Base
   end
 
   def recent_locations(limit = 5)
-    recent_nodes = self.nodes.includes(:tag)
+    recent_nodes = nodes.includes(:tag)
       .references(:term_data)
       .where('term_data.name LIKE ?', 'lat:%')
       .joins("INNER JOIN term_data AS lon_tag ON lon_tag.name LIKE 'lat:%'")
       .order(created: :desc)
-      .limit(5)
+      .limit(limit)
   end
 
   def latest_location

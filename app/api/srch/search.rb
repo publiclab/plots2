@@ -319,7 +319,7 @@ module Srch
               doc_url: model.path(:items),
               doc_title: model.title,
               doc_author: model.user.username,
-              doc_image_url: !model.images.empty? ? model.images.first.path : 0,
+              doc_image_url: model.images.empty? ? 0 : model.images.first.path,
               score: model.answers.length,
               latitude: model.lat,
               longitude: model.lon,
@@ -358,7 +358,7 @@ module Srch
               longitude: model.lon,
               blurred: model.blurred?,
               created_at: model.created_at,
-              doc_image_url: model.profile_image ? model.profile_image : ""
+              doc_image_url: model.profile_image || ""
             )
           end
           DocList.new(docs, search_request)

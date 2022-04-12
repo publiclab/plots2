@@ -8,7 +8,12 @@ class SettingsController < ApplicationController
     if request.referer
       redirect_to request.referer + '?_=' + Time.now.to_i.to_s
     else
-      redirect_to root_url
+      flash[:notice] = "Language changed to '#{I18n.locale}'"
+      if Rails.env == "development"
+        redirect_to '/'
+      else
+        redirect_to root_url
+      end
     end
   end
 end

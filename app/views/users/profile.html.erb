@@ -45,14 +45,14 @@
 
 <div class="offset-md-1 order-first order-md-last col-md-4 text-center">
   <div class="text-center d-none d-lg-block">
-    <%if @content_approved or (!current_user.nil? && current_user.id == @profile_user.id)%>
-      <img src="<%= @profile_user.profile_image %>" class="rounded-circle" id="profile-photo" style="width:50%;margin-bottom:10px;" />
-    <%end%>
+    <% if @content_approved || (!current_user.nil? && current_user.id == @profile_user.id) || logged_in_as(['admin', 'moderator']) %>
+      <%= image_tag(@profile_user.profile_image, class:'rounded-circle', id:'profile-photo', style:"width:50%;margin-bottom:10px;") %>
+    <% end %>
     <h4 class="mt-3"><strong>@<%= @profile_user.name %> <%= @profile_user.new_contributor %></strong></h4>
   </div>
   <div style="text-align:center;" class="d-lg-none">
-    <%if @content_approved or (!current_user.nil? && current_user.id == @profile_user.id)%>
-      <img src="<%= @profile_user.profile_image(:medium) %>" class="rounded-circle" id="profile-photo" style="width:50%;margin-bottom:20px;" />
+    <% if @content_approved || (!current_user.nil? && current_user.id == @profile_user.id) || logged_in_as(['admin', 'moderator']) %>
+      <%= image_tag(@profile_user.profile_image(:medium), class:'rounded-circle', id:'profile-photo', style:"width:50%;margin-bottom:20px;") %>
     <%end%>
   <h4 class="mt-3"><strong>@<%= @profile_user.name %> <%= @profile_user.new_contributor %></strong></h4>
   </div>
@@ -60,7 +60,7 @@
   <h4>
     <small>
       <% if logged_in_as(['admin']) %><%= @profile_user.email %><% end %>
-      <span style = "font-size:24px;"><small> <%= raw translation('users.profile.joined_time_ago', :time_ago => distance_of_time_in_words(@profile_user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' })) %></small></span>
+      <span style = "font-size:24px;"><small> <%= raw translation('users.profile.joined') %> <%= distance_of_time_in_words(@profile_user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></small></span>
       <% if @profile_user.moderator? %> | <i class="fa fa-certificate"></i> <%= translation('users.profile.moderator') %><% end %>
       <% if @profile_user.admin? %> | <i class="fa fa-certificate"></i> <%= translation('users.profile.admin') %><% end %>
       <% if @profile_user.status == 0 %> | <i class="fa fa-ban" style="color:#a00;"></i> <%= translation('users.profile.banned') %><% end %>
@@ -69,9 +69,17 @@
 
   <div>
     <i class="fas fa-user-friends"></i>
-    <a href="/people/<%= @profile_user.username %>/followers" class="link-secondary"><%= pluralize(@profile_user.followers.count, 'follower', plural: 'followers')%></a>
-    &#8226;
-    <a href="/people/<%= @profile_user.username %>/following" class="link-secondary"><%= pluralize(@profile_user.following_users.count, 'following', plural: 'following')%></a>
+    <% if @profile_user.followers.count>0 %>
+      <a href="/people/<%= @profile_user.username %>/followers" class="link-secondary"><%= pluralize(@profile_user.followers.count, 'follower', plural: 'followers')%></a>
+    <% else %>
+      <%= pluralize(@profile_user.followers.count, 'follower', plural: 'followers')%>
+    <% end %>
+    &#8226;    
+    <% if @profile_user.following_users.count>0 %>
+      <a href="/people/<%= @profile_user.username %>/following" class="link-secondary"><%= pluralize(@profile_user.following_users.count, 'following', plural: 'following')%></a>
+    <% else %>    
+      <%= pluralize(@profile_user.following_users.count, 'following', plural: 'following')%>
+    <% end %>
   </div>
 
   <%if @content_approved or (!current_user.nil? && current_user.id == @profile_user.id)%>
@@ -97,35 +105,72 @@
 
   <div id="social-links">
 
-    <div class="profile_icons d-flex justify-content-center" style="gap: 8px">
-      <% if @twitter.nil? == false %>
-        <a href="<%= @twitter %>" >
-          <i class="fa fa-twitter fa-3x" aria-hidden="true"></i>
-        </a>
-      <% end %>
-      <% if @facebook.nil? == false %>
-        <a href="<%= @facebook %>" >
-          <i class="fa fa-facebook fa-3x" aria-hidden="true"></i>
-        </a>
-      <% end %>
-      <% if @github.nil? == false %>
-        <a href="<%= @github %>" >
-          <i class="fa fa-github fa-3x" aria-hidden="true"></i>
-        </a>
-      <% end %>
-      <% if @instagram.nil? == false %>
-        <a href="<%= @instagram %>" >
-          <i class="fa fa-instagram fa-3x" aria-hidden="true"></i>
-        </a>
-      <% end %>
-    </div>
+        <div id="social-links-list" class="profile_icons d-flex justify-content-center" style="gap: 8px">
+          <% if @twitter_user.nil? == false %>
+          <span>
+           <% if logged_in_as(['admin', 'moderator']) || (current_user && current_user.uid == @profile_user.uid) %> 
+           <a aria-label="Delete tag" data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/profile/tags/delete/<%= @profile_user.id %>?name=twitter:<%= @twitter_user %>" data-method="delete">
+            <span class="badge badge-secondary delete_badge mb-1">
+              x
+            </span>
+           </a>
+           <% end %>
+            <a href="<%= social_link('twitter', @twitter_user)%>">
+              <i class="fa fa-twitter fa-3x"></i>
+            </a>
+          </span>         
+          <% end %>
+          <% if @facebook_user.nil? == false %>
+          <span>
+           <% if logged_in_as(['admin', 'moderator']) || (current_user && current_user.uid == @profile_user.uid) %> 
+           <a aria-label="Delete tag" data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/profile/tags/delete/<%= @profile_user.id %>?name=facebook:<%= @facebook_user %>" data-method="delete">
+            <span class="badge badge-secondary delete_badge mb-1">
+              x
+            </span>
+           </a> 
+           <% end %>
+            <a href="<%= social_link('facebook', @facebook_user)%>">
+              <i class="fa fa-facebook fa-3x"></i>
+            </a>
+          </span>       
+
+          <% end %>
+          <% if @github_user.nil? == false %>
+          <span>
+           <% if logged_in_as(['admin', 'moderator']) || (current_user && current_user.uid == @profile_user.uid) %> 
+           <a aria-label="Delete tag" data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/profile/tags/delete/<%= @profile_user.id %>?name=github:<%= @github_user %>" data-method="delete">
+            <span class="badge badge-secondary delete_badge mb-1">
+              x
+            </span>
+           </a> 
+           <% end %>
+            <a href="<%= social_link('github', @github_user)%>">
+              <i class="fa fa-github fa-3x"></i>
+            </a>
+          </span>     
+          <% end %>
+          <% if @instagram_user.nil? == false %>
+          <span>
+           <% if logged_in_as(['admin', 'moderator']) || (current_user && current_user.uid == @profile_user.uid) %> 
+           <a aria-label="Delete tag" data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/profile/tags/delete/<%= @profile_user.id %>?name=instagram:<%= @instagram_user %>" data-method="delete">
+            <span class="badge badge-secondary delete_badge mb-1">
+              x
+            </span>
+           </a>
+           <% end %> 
+            <a href="<%= social_link('instagram', @instagram_user)%>">
+              <i  class="fa fa-instagram fa-3x"></i>
+            </a>
+          </span>
+          <% end %>
+        </div>    
     <br>
     <% if current_user && @profile_user %>
       <% unless current_user == @profile_user %>
         <hr />
         <div id="follow_form" class="col-md-offset-4">
           <% if current_user.following?(@profile_user) %>
-            <a id="profile-unfollow-button" class="btn btn-primary" data-method="delete" data-remote="true" href="../relationships/<%= @profile_user.id %>"><%= translation('users.profile.unfollow') %></a>
+            <a id="profile-unfollow-button" class="btn btn-secondary" data-method="delete" data-remote="true" href="../relationships/<%= @profile_user.id %>"><%= translation('users.profile.unfollow') %></a>
           <% else %>
             <a id="profile-follow-button" class="btn btn-primary" data-method="post" data-remote="true" href="/relationships" data-params="followed_id=<%= @profile_user.id %>"><%= translation('users.profile.follow') %></a>
           <% end %>
@@ -283,7 +328,6 @@
   </div>
 
 </div>
-<%= javascript_include_tag "translation" %>
 
 <script src = "https://cdn.jsdelivr.net/npm/frappe-charts@0.0.8/dist/frappe-charts.min.iife.js"></script>
 
@@ -392,8 +436,19 @@
   .link-secondary {
     color: #808080;
   }
-
+  .delete_badge{
+    color: white;
+    position: absolute;
+    display: block; 
+    z-index: 10;
+  }
+  .delete_badge:hover{
+    transition-duration: .2s;
+    transform: scale(1.2);
+  }
 </style>
 
 <%= stylesheet_link_tag "dashboard" %>
 <%= javascript_include_tag "dashboard" %>
+
+

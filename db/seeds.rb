@@ -93,5 +93,5 @@ Revision.create! "nid"=>home_intro_feature.nid, "uid"=>admin.uid, "title"=>"home
                   This message is displayed only to developers running the code in a development environment (normally it's the front page content!).
                   To use a lot of the features on this site, even locally, you'll have to <a href='/login'>log in</a>. Default username and password are
                   username: admin, moderator, or user and password: password. If you run into trouble, please reach out at https://publiclab.org/chat or in our getting started issue at https://github.com/publiclab/plots2/issues/3840 .
-                  To test UI changes related to 'Translation-System' please login and 'Switch on Translation' from the drop-down menu visible on hoverig over profile picture in top navigation bar.",
+                  To test UI changes related to 'Translation-System' please login and 'Switch on Translation' from the drop-down menu visible on hoverig over profile picture in top navigation bar, then navigate to <a href='/change_locale/es'>/change_locale/es</a> (for spanish, for example) to change languages.",
                   "teaser"=>"", "log"=>"", "format"=>1

@@ -40,6 +40,10 @@ Thanks so much `xyz` <!-- Replace `xyz` with the contributors who worked on the 
 ## Next Check-in
 If you would like to open the next check-in..Leave a comment below. We are happy to help if its your first time
 
+### Check-in Ideas
+We are collecting a list of check-in ideas [here](https://github.com/publiclab/plots2/issues/9480). If you have any ideas please leave a comment there or if you are looking for next check-in ideas you could also browse there too.
+ 
+
 **Thanks everyone for making Public Lab awesome** :heart:  
 Have a great week ahead all :balloon: 
 

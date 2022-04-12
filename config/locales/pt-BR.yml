@@ -61,7 +61,7 @@ pt-BR:
     - :month
     - :year
   datetime:
-    distance_in_words:
+    time_ago_in_words:
       about_x_hours:
         one: aproximadamente 1 hora
         other: aproximadamente %{count} horas

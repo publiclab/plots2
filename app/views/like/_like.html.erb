@@ -11,7 +11,7 @@
 
     <% if node.type == 'page' %>
       <% if node.has_tag('locked') && (current_user ? current_user.basic_user? : true) %>
-        <a href="/wiki/locked" class='btn btn-outline-secondary btn-circle btn-sm'>
+        <a href="/wiki/locked" class='btn btn-outline-secondary btn-circle btn-sm' rel="tooltip" title="This page is locked. Click to learn why." data-placement="top">
           <i class="ml-1 ff fa fa-lock"></i>
         </a>
       <% elsif current_user && current_user.first_time_poster %>
@@ -69,7 +69,7 @@
                     <option value='excessive-enthusiasm'>The enthusiasm barnstar</option>
                 </select><br />
                 <input type='hidden' name='nid' value='<%= node.id %>'/>
-                <input type='submit' class='btn btn-primary' value='Give'/> &nbsp; <a _target='blank' href='/wiki/barnstars'>Learn more</a>
+                <input type='submit' class='btn btn-primary' value='Give'/> &nbsp; <a _target='blank' href='/wiki/barnstars'>Learn more about barnstars</a>
             </form>
             <br>
         <% end %>

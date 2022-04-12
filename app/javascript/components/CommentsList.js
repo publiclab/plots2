@@ -17,7 +17,6 @@ const CommentsList = ({
   handleDeleteComment,
   handleTextAreaChange,
   handleUpdateComment,
-  setTextAreaValues,
   textAreaValues
 }) => {
   // this takes an array of comment JSON, then returns a list of React <Comment /> components
@@ -103,7 +102,6 @@ const CommentsList = ({
           editCommentForm={editCommentForm}
           isEditFormVisible={commentFormsVisibility[editFormId]}
           isReplyFormVisible={comment.replyTo ? null : commentFormsVisibility[replyFormId]}
-          setTextAreaValues={setTextAreaValues}
           toggleEditButton={toggleEditButton}
         >
           {replySection}
@@ -154,7 +152,6 @@ CommentsList.propTypes = {
   handleDeleteComment: PropTypes.func.isRequired,
   handleTextAreaChange: PropTypes.func.isRequired,
   handleUpdateComment: PropTypes.func.isRequired,
-  setTextAreaValues: PropTypes.func.isRequired,
   textAreaValues: PropTypes.objectOf(PropTypes.string).isRequired
 };
 

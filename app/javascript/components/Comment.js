@@ -97,7 +97,6 @@ Comment.propTypes = {
   editCommentForm: PropTypes.element.isRequired,
   isEditFormVisible: PropTypes.bool.isRequired,
   isReplyFormVisible: PropTypes.bool,
-  setTextAreaValues: PropTypes.func.isRequired,
   toggleEditButton: PropTypes.element.isRequired
 };
 

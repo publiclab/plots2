@@ -23,7 +23,7 @@
     </a>
   <% end %>
 
-  <h1 style="margin-top: 20px;"><span class="question"><%=translation('questions.show.question')%>:</span><a href="<%= @node.path(:question) %>"><%= @node.title %></a></h1>
+  <h1 style="margin-top: 20px;"><span class="question"><%=translation('questions.show.question')%>: </span><a href="<%= @node.path(:question) %>"><%= @node.title %></a></h1>
   <% pt = @node.power_tag('question') %>
   <div class="alert alert-warning">
   <a href="/profile/<%= @node.author.name %>"> <%= @node.author.name %> </a><%=translation('questions.show.question_about')%> <b><a href="/questions/tag/<%= pt %>"><%= pt %></a></b>:

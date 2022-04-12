@@ -55,5 +55,5 @@ If this happens to you, don't sweat it! Grab another open issue.
 
 ### 🤔❓ Questions?
 
-Leave a comment below!
+Leave a comment below, and [reach out in our chatroom](https://publiclab.org/chat)!
 

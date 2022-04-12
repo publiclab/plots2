@@ -1,6 +1,6 @@
-<form name="settingsForm" action="/save_settings" method='post' data-remote="true">
+<form name="settingsForm" action="/save_settings" method='post' data-remote="true" class="mx-3">
 <div class="emailSettings">
-  <h4><b>Email Notifications</b></h4>
+  <h4><b><%=translation('user.settings.email_notifications_title')%></b></h4>
   <hr style="width: 35%;  margin-left: 0;" />
 
   <h4><b><%=translation('users.settings.notified_by_email')%></b></h4>
@@ -64,7 +64,7 @@
   <% end %>
   
   <br />
-  +<h4><b><%= translation('users.settings.email_notifications')%> </b></h4>
+  <h4><b><%= translation('users.settings.email_notifications')%> </b></h4>
 
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
     <span><%=translation('users.settings.weekly_digest')%> </span>
@@ -218,7 +218,7 @@
 
 <div class="page-footer">
   <button type="submit" class="btn btn-success" id="save">Save</button>
-  <a type="button" class="btn btn-outline-secondary" href="/dashboard">Cancel</a>
+  <a type="button" class="btn btn-outline-secondary" href="/dashboard"><%=translation('users.settings.cancel')%></a>
 </div>
 
 </form>

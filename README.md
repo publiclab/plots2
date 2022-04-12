@@ -45,11 +45,12 @@ A full description of the features, audiences, inter-relationships, and goals of
     - [Standard Installation](#standard-installation)
     - [Windows Installation](#windows-installation)
     - [Windows Subsystem for Linux 2 Installation](#windows-subsystem-for-linux-2-installation)
+    - [Redis Installation](#redis-installation)
 6. [SSL in Development](#ssl-in-development)
 7. [Login](#login)
 8. [Testing](#testing)
 9. [Maintainers](#maintainers)
-10. [API](https://github.com/publiclab/plots2/blob/main/doc/API.md)
+10. [How to start and modify cron jobs](#how-to-start-and-modify-cron-jobs)
 11. [Bundle Exec](#bundle-exec)
 12. [Reply-by-email](#reply-by-email)
 13. [Bugs and Support](#bugs-and-support)
@@ -104,7 +105,7 @@ For installation, prerequisites include sqlite3 and rvm. [Click here for a compl
     * Run this `bundle config set without 'production mysql'` from the rails root folder to set your project to exclude libraries only needed in production.
     * Install gems with `bundle install` from the rails root folder.
 6. Run `cp db/schema.rb.example db/schema.rb` to make a copy of `db/schema.rb.example` in `db/schema.rb`.
-7. You could choose to use mysql2 or sqlite3 as your database
+7. You could choose to use mysql2 or sqlite3 as your database. *We **recommend** using `sqlite3` as your plots2 database as some of our contributors have reported issues while using `mysql2`*.
     * If mysql2,  run `cp config/database.yml.mysql.example config/database.yml` to make a copy of `config/database.yml.mysql.example` in `config/database.yml`
     * If sqlite3, run `cp config/database.yml.sqlite.example config/database.yml` to make a copy of `config/database.yml.sqlite.example` in `config/database.yml`.
 _kindly note if you choose to use sqlite some tests may fail. The project was setup initially to use mysql and some tests are tailored for mysql db. No need for alarm, we are working to fix these and this will not interfere with your development process_
@@ -123,7 +124,7 @@ We recommend you either work in a virtual environment, or on a dual booted syste
 2. [Dual Booting](https://www.tecmint.com/install-ubuntu-alongside-with-windows-dual-boot/amp/), [option2](https://askubuntu.com/questions/1031993/how-to-install-ubuntu-18-04-alongside-windows-10), [video guide](https://www.youtube.com/watch?v=qNeJvujdB-0&fbclid=IwAR0APhs89jlNR_ENKbSwrp6TI6P-wxlx-a0My9XBvPNAfwtADZaAXqcKtP4)
 3. [Setting up a Linux virtual env](https://itsfoss.com/install-linux-in-virtualbox/)
 
-## Windows Subsystem for Linux 2 Installation
+### Windows Subsystem for Linux 2 Installation
 
 Before continuing with the installation steps in this README, users of Windows Subsystem for Linux 2 (WSL 2) should open the WSL 2 Terminal and type out the commands below.
 
@@ -143,7 +144,7 @@ Before continuing with the installation steps in this README, users of Windows S
   * `rvm --default use ruby-x.x.x (replace x.x.x with this project's Ruby version)`
 5. For further reference, [read here](https://linuxize.com/post/how-to-install-ruby-on-ubuntu-20-04/)
 
-## Redis Installation
+### Redis Installation
 
 Public Lab uses Redis and may be required for some functionality when running the application locally.
 1. Install Redis if you haven't already:

@@ -164,10 +164,11 @@ class UsersController < ApplicationController
         @wikis = wikis.collect(&:parent).uniq
         # User's social links
         @content_approved = !(Node.where(status: 1, uid: @profile_user.id).empty?) or !(Comment.where(status: 1, uid: @profile_user.id).empty?)
-        @github = @profile_user.social_link("github")
-        @twitter = @profile_user.social_link("twitter")
-        @facebook = @profile_user.social_link("facebook")
-        @instagram = @profile_user.social_link("instagram")
+        @github_user = @profile_user.get_value_of_power_tag("github")
+        @twitter_user = @profile_user.get_value_of_power_tag("twitter")
+        @facebook_user = @profile_user.get_value_of_power_tag("facebook")
+        @instagram_user = @profile_user.get_value_of_power_tag("instagram")
+
         @count_activities_posted = Tag.tagged_nodes_by_author("activity:*", @profile_user).size
         @count_activities_attempted = Tag.tagged_nodes_by_author("replication:*", @profile_user).size
         @map_lat = nil

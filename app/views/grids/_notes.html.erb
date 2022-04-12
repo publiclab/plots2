@@ -1,5 +1,5 @@
 <div class="inline-grid-container">
-<div style="max-height:800px;overflow:scroll;">
+<div style="max-height:800px;overflow:auto;">
 <table class="table inline-grid <%= type %>-grid <%= className %> <%= className %>-<%= randomSeed %>">
   <tr>
     <% if type == "questions" || type == "notes" %>
@@ -67,56 +67,30 @@
     <% end %>
   </tr>
 <% end %>
-<% if nodes.count > 10 %>
-    <tfoot>
-      <th class="show-all" id="notes-table-footer" style="min-width: 110px;"><a style="cursor: pointer;">Show more <b class="caret"></b></a></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tfoot>
-<% end %>
 </table>
 </div>
 
-<a class="grid-embed grid-embed-<%= randomSeed %>" title="Embed this table on another site."><i class="fa fa-code" style="color:#aaa;"></i></a>
+<%= render partial: 'grids/embedButton' , locals: {className: className, randomSeed: randomSeed, type: type, tagname: tagname, thumbnails: false} %>
+
 <% if type == "questions" || tagname.include?('question:') %>
-  <p><a href='/post?tags=question:<%= tagname %>,<%= tagname %>&template=question&title=How%20do%20I...&redirect=question' class='btn btn-primary add-activity requireLogin'>Ask a question</a> &nbsp;or <a class="requireLogin" href='/subscribe/tag/question:<%= tagname %>'>help answer future questions<span class='d-none d-lg-inline'> on this topic</span></a></p>
+  <div>
+    <a href='/post?tags=question:<%= tagname %>,<%= tagname %>&template=question&title=How%20do%20I...&redirect=question' class='btn btn-primary add-activity requireLogin'>Ask a question</a> &nbsp;or <a class="requireLogin" href='/subscribe/tag/question:<%= tagname %>'>help answer future questions<span class='d-none d-lg-inline'> on this topic</span></a>
+  </div>
 <% elsif type == "activity" || tagname.include?('activity:') %>
-  <p><a href='/post?tags=activity:<%= tagname %>,<%= tagname %>,seeks:replications&title=How%20to%20do%20X' class='btn btn-primary add-activity requireLogin'>Add an activity</a> &nbsp;or <a href='/post?tags=<%= tagname %>,question:<%= tagname %>,request:activity&template=question&title=How%20do%20I...&redirect=question' class='request-activity requireLogin'>request an activity<span class='d-none d-lg-inline'> guide you don't see listed</span></a></p>
+  <div>
+    <a href='/post?tags=activity:<%= tagname %>,<%= tagname %>,seeks:replications&title=How%20to%20do%20X' class='btn btn-primary add-activity requireLogin'>Add an activity</a> &nbsp;or <a href='/post?tags=<%= tagname %>,question:<%= tagname %>,request:activity&template=question&title=How%20do%20I...&redirect=question' class='request-activity requireLogin'>request an activity<span class='d-none d-lg-inline'> guide you don't see listed</span></a>
+  </div>
   <p><i>Activities should include a materials list, costs and a step-by-step guide to construction with photos. Learn what <a href="https://publiclab.org/notes/warren/09-17-2016/what-makes-a-good-activity">makes a good activity here</a>.</i>
   </p>
 <% end %>
-
+  
 <script>
 (function(){
-  $(".<%= className %>-<%= randomSeed %> .show-all a").click(function(event) {
-    var cName = ".<%= className %>-<%= randomSeed %>";
-    var sName = cName + " tr.extra";
-    $(sName).toggleClass("hide");
-    if ($(sName)[0].classList.contains("hide"))
-      var hiding = true;    
-    var myElement = event.target;    
-    if (event.target.classList.contains("caret")) 
-      myElement = event.target.parentElement;
-    if (!hiding) 
-      myElement.innerHTML = 'Show less <b class="caret" style = "transform: rotate(180deg);"></b>';
-    else
-      myElement.innerHTML = 'Show more <b class="caret"></b>';
-  });
-  $(".grid-embed-<%= randomSeed %>").click(function() {
-    prompt('Use this HTML code to embed this table on another site.', '<iframe style="border:none;" width="100%" height="900px" src="//publiclab.org/embed/grid/<% if type != "notes" %><%= type.gsub('questions', 'question').gsub('activities', 'activity') %>:<% end %><%= tagname %>"></iframe>')
-  });
   //setupGridSorters(".<%= className %>-<%= randomSeed %>"); Should order the items by time. Commented out because it reorders the items each time show more/less is clicked
 })()
 </script>
+
 <style>
-  a.grid-embed {
-    float:right;
-    padding:8px;
-  }
-  a.grid-embed:hover {
-    color: #888;
-  }
   th {
     position: sticky;
     top: 0;

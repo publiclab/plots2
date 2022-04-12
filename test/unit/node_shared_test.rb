@@ -40,7 +40,7 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert html
     assert_equal 1, html.scan('<table class="table inline-grid notes-grid notes-grid-test notes-grid-test-').length
     assert_equal 1, html.scan('<table').length
-    assert_equal 5, html.scan('notes-grid-test').length
+    assert_equal 3, html.scan('notes-grid-test').length
     assert html.scan('<td class="title">').length > 1
   end
  
@@ -80,7 +80,7 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert html
     assert_equal 1, html.scan('<table class="table inline-grid notes-grid notes-grid-activity-spectrometer notes-grid-activity-spectrometer-').length
     assert_equal 1, html.scan('<table').length
-    assert_equal 5, html.scan('notes-grid-activity-spectrometer').length
+    assert_equal 3, html.scan('notes-grid-activity-spectrometer').length
     assert_equal 1, html.scan('<td class="title">').length
   end
 
@@ -90,7 +90,7 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert html
     assert_equal 1, html.scan('<table class="table inline-grid questions-grid questions-grid-spectrometer questions-grid-spectrometer-').length
     assert_equal 1, html.scan('<table').length
-    assert_equal 5, html.scan('questions-grid-spectrometer').length
+    assert_equal 3, html.scan('questions-grid-spectrometer').length
     assert html.scan('<td class="title">').length > 1
   end
 
@@ -102,7 +102,7 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert_equal 1, html.scan('<table class="table inline-grid activity-grid activity-grid-spectrometer activity-grid-spectrometer-').length
     assert_equal 7, html.scan('<td').length
     assert_equal 1, html.scan('<table').length
-    assert_equal 5, html.scan('activity-grid-spectrometer').length
+    assert_equal 3, html.scan('activity-grid-spectrometer').length
     assert_equal 1, html.scan('<td class="title">').length
   end
 
@@ -112,7 +112,7 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert html
     assert_equal 1, html.scan('<table class="table inline-grid upgrades-grid upgrades-grid-latest upgrades-grid-latest-').length
     assert_equal 1, html.scan('<table').length
-    assert_equal 5, html.scan('upgrades-grid-latest').length
+    assert_equal 3, html.scan('upgrades-grid-latest').length
     assert html.scan('<td class="title">').length > 1
   end
 
@@ -180,7 +180,7 @@ class NodeSharedTest < ActiveSupport::TestCase
     html = NodeShared.people_grid(before)
     assert_equal 1, html.scan('<table class="table inline-grid people-grid people-grid-organizer people-grid-organizer-').length
     assert_equal 1, html.scan('<table').length
-    assert_equal 6, html.scan('people-grid').length
+    assert_equal 4, html.scan('people-grid').length
   end
 
   test 'that NodeShared can be used to convert short codes like [graph://example.com] into graphs which display csv data' do
@@ -203,7 +203,7 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert html
     assert_equal 1, html.scan('<table class="table inline-grid notes-grid notes-grid-test notes-grid-test-').length
     assert_equal 1, html.scan('<table').length
-    assert_equal 5, html.scan('notes-grid-test').length
+    assert_equal 3, html.scan('notes-grid-test').length
     assert_equal 5, html.scan('<td').length
   end
 
@@ -213,7 +213,7 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert html
     assert_equal 1, html.scan('<table class="table inline-grid questions-grid questions-grid-spectrometer questions-grid-spectrometer-').length
     assert_equal 1, html.scan('<table').length
-    assert_equal 5, html.scan('questions-grid-spectrometer').length
+    assert_equal 3, html.scan('questions-grid-spectrometer').length
     assert html.scan('<td class="title">').length > 1
   end
 
@@ -223,7 +223,7 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert html
     assert_equal 1, html.scan('<table class="table inline-grid questions-grid questions-grid-spectrometer questions-grid-spectrometer-').length
     assert_equal 1, html.scan('<table').length
-    assert_equal 5, html.scan('questions-grid-spectrometer').length
+    assert_equal 3, html.scan('questions-grid-spectrometer').length
     assert html.scan('<td class="title">').length > 1
   end
 
@@ -235,7 +235,7 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert_equal 1, html.scan('<table class="table inline-grid activity-grid activity-grid-spectrometer activity-grid-spectrometer-').length
     assert_equal 4, html.scan('<td').length
     assert_equal 1, html.scan('<table').length
-    assert_equal 5, html.scan('activity-grid-spectrometer').length
+    assert_equal 3, html.scan('activity-grid-spectrometer').length
   end
 
   test 'about ability of power tags to exclude tags like [upgrades:foo!foo1]' do
@@ -244,7 +244,7 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert html
     assert_equal 1, html.scan('<table class="table inline-grid upgrades-grid upgrades-grid-latest upgrades-grid-latest-').length
     assert_equal 1, html.scan('<table').length
-    assert_equal 5, html.scan('upgrades-grid-latest').length
+    assert_equal 3, html.scan('upgrades-grid-latest').length
     assert html.scan('<td class="title">').length > 1
   end
 
@@ -261,6 +261,6 @@ class NodeSharedTest < ActiveSupport::TestCase
     html = NodeShared.people_grid(before)
     assert_equal 1, html.scan('<table class="table inline-grid people-grid people-grid-organizer people-grid-organizer-').length
     assert_equal 1, html.scan('<table').length
-    assert_equal 6, html.scan('people-grid').length
+    assert_equal 4, html.scan('people-grid').length
   end
 end

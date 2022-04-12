@@ -1,0 +1,22 @@
+<a class="grid-embed grid-embed-<%= randomSeed %>" title="Embed this <% if thumbnails %>grid<% else %>table<% end %> on another site.">
+  <i class="fa fa-code" style="color:#aaa;"></i>
+</a>
+<br />
+
+<script>
+(function(){
+  $(".grid-embed-<%= randomSeed %>").click(function() {
+    prompt('Use this HTML code to embed this <% if thumbnails %>grid<% else %>table<% end %> on another site.', '<iframe style="border:none;" width="100%" height="900px" src="//publiclab.org/embed/grid/<% if type != "notes" %><%= type.gsub('questions', 'question').gsub('activities', 'activity') %>:<% end %><% if thumbnails %>notes:grid:<% end %><%= tagname %>"></iframe>')
+  });
+})()
+</script>
+
+<style>
+  a.grid-embed {
+    float:right;
+    padding:8px;
+  }
+  a.grid-embed:hover{
+    color: #888;
+  }
+</style>

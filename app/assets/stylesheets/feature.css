@@ -16,7 +16,7 @@ a.feature {
 }
 .feature.img {
   background-color:#eef;
-  background-width:100%;
+  width:100%;
   background-position:center center;
   border:none;
   /*background-width:100%;*/

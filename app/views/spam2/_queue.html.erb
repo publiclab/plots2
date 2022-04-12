@@ -2,11 +2,7 @@
 $(document).ready(function () {
 	var table = table_main("#queue_table");
 	$("#all").click(function () { //select all button
-		$('.selectedId').prop('checked', !$('.selectedId').prop('checked'));
-		var check = ($('.selectedId').filter(":checked").length == $('.selectedId').length);
-		$('#select-count').text($('.selectedId').filter(":checked").length);
-		$('#selectall').prop("checked", check);
-		disable_buttons('#selectall');
+		select_all();
   });
 	$("#batch-spam").bind('click', function (e) { //batch spam
 		batch_nav("batch_spam");
