@@ -5981,13 +5981,6 @@ graceful-fs@~2.0.0:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-2.0.3.tgz#7cd2cdb228a4a3f36e95efa6cc142de7d1a136d0"
   integrity sha1-fNLNsiiko/Nule+mzBQt59GhNtA=
 
-"grow-textarea@git://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669":
-  version "1.0.1"
-  resolved "git://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669"
-  dependencies:
-    component-event "^0.1.4"
-    ianstormtaylor-css "^0.3.1"
-
 "grow-textarea@https://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669":
   version "1.0.1"
   uid d54141c9456343f14cc6c935faa0915af09eb669
@@ -10725,7 +10718,7 @@ publiclab-editor@^2.0.0:
     crossvent "1.5.5"
     domador "2.4.4"
     font-awesome "~4.7.0"
-    grow-textarea "git://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669"
+    grow-textarea "https://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669"
     jquery "~3"
     leaflet "^1.6.0"
     leaflet-blurred-location "^1.5.1"
