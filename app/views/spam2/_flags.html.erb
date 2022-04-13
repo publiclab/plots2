@@ -22,7 +22,7 @@ $(document).ready(function () {
     batch_nav("batch_delete");
   });
   $('#pageselect').change(function () {
-      pagination("#pageselect", "/spam2/flags/filter/");
+    pagination("#pageselect", "/spam2/flags/filter/");
     });
    $('#spammed').on('click', function () { //spam filter
       search_table("spammed", "/spam2/flags/filter/");
