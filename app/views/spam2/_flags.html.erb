@@ -21,7 +21,7 @@ $(document).ready(function () {
     $("#delete-batch").bind('click', function (e) { // batch delete
       batch_nav("batch_delete");
    });
-    $('#pageselect').change(function () {
+  $('#pageselect').change(function () {
       pagination("#pageselect", "/spam2/flags/filter/");
     });
    $('#spammed').on('click', function () { //spam filter
