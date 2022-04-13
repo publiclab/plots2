@@ -4,7 +4,7 @@ $(document).ready(function () {
   $("#all").click(function () { //select all button
     select_all();
   });
-    var pageselect_val = localStorage.getItem('page-select') || '';
+  var pageselect_val = localStorage.getItem('page-select') || '';
    $("#pageselect").val(pageselect_val);
    $("#batch-spam").bind('click', function (e) { //batch spam
     batch_nav("batch_spam");
