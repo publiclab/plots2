@@ -28,7 +28,7 @@
   </h1>
   <% pt = @node.power_tag('question') %>
   
-  <div class="alert alert-warning d-flex align-items-center justify-content-between">
+  <div class="alert alert-warning d-flex align-items-center justify-content-sm-between flex-column flex-sm-row">
     <div>
       <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %> </a>
       <%=translation('questions.show.question_about')%> <b><a href="/questions/tag/<%= pt %>"><%= pt %></a></b>
