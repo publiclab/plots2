@@ -51,6 +51,10 @@
         <%= javascript_include_tag "cable" %>
     <% end %>
 
+    <% if @is_revision %>
+        <meta name="robots" content="noindex">
+    <% end %>
+
     <% if @node && @node.body %>
       <meta property="og:title" content="<%= @title %>" />
       <meta property="og:site_name" content="Public Lab" />

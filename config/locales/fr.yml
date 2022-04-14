@@ -378,6 +378,7 @@ fr:
       write_research_note: "Écrire une note de recherche"
     _tagging:
       enter_tags: "entrez des tags"
+      part_of: "Cela fait partie de:"
     contributors:
       contributors_for: "Contributeur·ices pour <i style=\"color:#aaa;\">%{tag_name}</i>"
       contributions_over_past_year: "Ci-dessus : contributions de la dernière année."
