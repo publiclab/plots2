@@ -1,6 +1,5 @@
 PublicLab.org
 ======
-I forked and cloned this repo.
 
 [![Code of Conduct](https://img.shields.io/badge/code-of%20conduct-green.svg)](https://publiclab.org/conduct)
 [![Build Status](https://github.com/publiclab/plots2/workflows/tests/badge.svg?branch=main)](https://github.com/publiclab/plots2/actions)
