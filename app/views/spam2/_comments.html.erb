@@ -1,47 +1,43 @@
 <script>
 $(document).ready(function () {
   var table = table_main("#comment_table");
-	$("#all").click(function () { //select all button
-		$('.selectedId').prop('checked', !$('.selectedId').prop('checked'));
-		var check = ($('.selectedId').filter(":checked").length == $('.selectedId').length);
-		$('#select-count').text($('.selectedId').filter(":checked").length);
-		$('#selectall').prop("checked", check);
-		disable_buttons('#selectall');
+  $("#all").click(function () { //select all button
+    select_all();
   });
   var pageselect_val = localStorage.getItem('page-select') || '';
   $("#pageselect").val(pageselect_val);
-	$('#pageselect').change(function () {
-		pagination("#pageselect", "/spam2/comments/filter/");
-	});
-	$('#reset').on('click', function () { // reset filter
-		search_table("all", "/spam2/comments/filter/");
-	});
-	$('#spammed').on('click', function () { //spam filter 
-		search_table("spammed", "/spam2/comments/filter/");
-	});
-	$('#flagged').on('click', function () { // flagged filter
-		search_table("flagged", "/spam2/comments/filter/");
-	});
-	$('#unmoderated').on('click', function () { // unmoderated filter
-		search_table("unmoderated", "/spam2/comments/filter/");
+  $('#pageselect').change(function () {
+    pagination("#pageselect", "/spam2/comments/filter/");
   });
-	$('#published').on('click', function () { // published filter
-		search_table("published", "/spam2/comments/filter/");
+  $('#reset').on('click', function () { // reset filter
+    search_table("all", "/spam2/comments/filter/");
   });
-	$("#batch-spam").bind('click', function (e) { //batch spam
-		batch_nav("batch_comment/spam");
-	});
-	$("#batch-publish").bind('click', function (e) { //batch publish
-		batch_nav("batch_comment/publish");
-	});
-	$("#batch-delete").bind('click', function (e) { //batch delete
-		batch_nav("batch_comment/delete");
-	});
+  $('#spammed').on('click', function () { //spam filter 
+    search_table("spammed", "/spam2/comments/filter/");
+  });
+  $('#flagged').on('click', function () { // flagged filter
+    search_table("flagged", "/spam2/comments/filter/");
+  });
+  $('#unmoderated').on('click', function () { // unmoderated filter
+    search_table("unmoderated", "/spam2/comments/filter/");
+  });
+  $('#published').on('click', function () { // published filter
+    search_table("published", "/spam2/comments/filter/");
+  });
+  $("#batch-spam").bind('click', function (e) { //batch spam
+    batch_nav("batch_comment/spam");
+  });
+  $("#batch-publish").bind('click', function (e) { //batch publish
+    batch_nav("batch_comment/publish");
+  });
+  $("#batch-delete").bind('click', function (e) { //batch delete
+    batch_nav("batch_comment/delete");
+  });
 });
 </script>
 <div class="card" id="table-card">
   <div class="bg-light  navbar navbar-expand">
-      <ul class="nav navbar-expand  navbar-nav-scroll">
+    <ul class="nav navbar-expand  navbar-nav-scroll">
       <li class="nav-item">
         <a class="btn nav-link text-secondary" data-toggle="tooltip" data-placement="top" title="Selected per page">Selected <span id="select-count" class="badge badge-dark">0</span></a>
       </li>
@@ -85,7 +81,7 @@ $(document).ready(function () {
                 <a href="<%= comment.node&.path %>" id="node-hover" class="text-dark font-weight-bold" data-toggle="modal" data-target="#ninfo<%= comment.id %>"><%= comment.node&.title.truncate(15) %></a><br>
                 <span class="text-secondary small"><%= comment.node&.type.capitalize %> | <%= time_ago_in_words(comment.node&.created_at) %> ago</span>
               <% end %>            
-              </td>
+            </td>
             <td style="width:200px;" class="text-secondary font-italic">
               <%= comment.body.truncate(20) %>
             </td>
@@ -98,13 +94,13 @@ $(document).ready(function () {
               <% end %>
             </td>
             <td style="height:35px !important;">
-               <a class="btn btn-xs border-curve font-weight-bold btn<% if comment.status != 1 %>-success<% else %>-secondary disabled<% end %> publish" data-remote="true" href="/admin/publish_comment/<%= comment.id %>" ><i class="fa fa-check-circle fa-white"></i> Publish</a>
-               <a class="btn btn-xs border-curve font-weight-bold btn<% if comment.status != 0 %>-danger<% else %>-secondary disabled<% end %> spam" data-remote="true" href="/admin/mark_comment_spam/<%= comment.id %>"><i class="fa fa-ban fa-white"></i> Spam</a>
-               <a class="btn btn-xs border-curve text-dark font-weight-bold unflag btn-<% if comment.flag > 0%>warning <% else %>warning disabled<% end %>" data-remote="true" href="/moderate/remove_flag_comment/<%= comment.id %>">Unflag</a>
-               <%= link_to "/comment/delete/#{comment.cid}", data: { confirm: "Are you sure you want to delete this comment?" }, :remote => true, :class => "btn border-curve btn-sm font-weight-bold btn-light delete" do %>
-                  <i class="fa fa-trash text-dark"></i>
-                <% end %>
-                <script>
+              <a class="btn btn-xs border-curve font-weight-bold btn<% if comment.status != 1 %>-success<% else %>-secondary disabled<% end %> publish" data-remote="true" href="/admin/publish_comment/<%= comment.id %>" ><i class="fa fa-check-circle fa-white"></i> Publish</a>
+              <a class="btn btn-xs border-curve font-weight-bold btn<% if comment.status != 0 %>-danger<% else %>-secondary disabled<% end %> spam" data-remote="true" href="/admin/mark_comment_spam/<%= comment.id %>"><i class="fa fa-ban fa-white"></i> Spam</a>
+              <a class="btn btn-xs border-curve text-dark font-weight-bold unflag btn-<% if comment.flag > 0%>warning <% else %>warning disabled<% end %>" data-remote="true" href="/moderate/remove_flag_comment/<%= comment.id %>">Unflag</a>
+              <%= link_to "/comment/delete/#{comment.cid}", data: { confirm: "Are you sure you want to delete this comment?" }, :remote => true, :class => "btn border-curve btn-sm font-weight-bold btn-light delete" do %>
+                <i class="fa fa-trash text-dark"></i>
+              <% end %>
+              <script>
                 $('#n<%= comment.id %> .delete').bind('ajax:success', function(e){
                   $('#n<%= comment.id %>').fadeOut()
                   notyNotification('relax', 3000, 'danger', 'topRight', 'Comment deleted');
@@ -121,10 +117,10 @@ $(document).ready(function () {
                   $('#n<%= comment.id %>').hide()
                   notyNotification('relax', 3000, 'warning', 'topRight', 'Comment unflagged');
                 });
-                </script>
+              </script>
             </td>
           </tr>
-            <div class="modal fade" id="ninfo<%= comment.id %>"> 
+          <div class="modal fade" id="ninfo<%= comment.id %>"> 
             <div class="modal-dialog" >
               <% unless comment.node.nil? %>
               <div class="modal-content">
