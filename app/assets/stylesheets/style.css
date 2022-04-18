@@ -80,6 +80,26 @@ h6.dropdown-header {
   font-size: 1.95rem;
 }
 
+
+@media (max-width:400px) {
+  .note-show h1, #main-content h1 {
+    font-size: 1.6rem;
+  }
+  .note-show h2, #main-content h2 {
+    font-size: 1.4rem;
+  }
+  .note-show h3, #main-content h3 {
+    font-size: 1.3rem;
+  }
+  .note-show h4, #main-content h4 {
+    font-size: 1.25rem;
+  }
+  .note-show h5, #main-content h5 {
+    font-size: 1.2rem;
+  }
+}
+
+
 .btn-circle {
   height: 45px;
   width: 45px;
