@@ -174,7 +174,7 @@ const CommentsContainer = ({
                 textAreaValue={state.textAreaValues["main"]} 
               /> :
               <p>
-                <a href="https://publiclab.org/login">Login</a> to comment.
+                <a href="/login">Login</a> to comment.
               </p>
             }
           </div>
