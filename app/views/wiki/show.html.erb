@@ -35,6 +35,7 @@
         <%= render partial: "notes/comments", :locals => {:nodes => @nodes} %>
       <% else %>
         <div <% unless @node.has_tag('style:wide') %>style="max-width:800px;"<% end %> id="content" class="pl-content wiki">
+        word-wrap: break-word;"<% end %> id="content" class="pl-content wiki">
           <% if @node.has_tag('format:raw') %>
             <%= raw @revision.render_body_raw %>
           <% else %>
