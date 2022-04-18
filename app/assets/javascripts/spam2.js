@@ -19,7 +19,7 @@ function table_main(id) {
 	$('#selectall').on('click',function () {
 		$('.selectedId').prop('checked', this.checked);
 		let selectedLength = $('.selectedId').filter(":checked").length;
-        $('#select-count').text(selectedLength);
+		$('#select-count').text(selectedLength);
 		disable_buttons('.selectedId');
 	});
 	$('.selectedId').on('change', function () {
