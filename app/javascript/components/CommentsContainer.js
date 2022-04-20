@@ -161,17 +161,22 @@ const CommentsContainer = ({
               handleDeleteComment={handleDeleteComment}
               handleTextAreaChange={handleTextAreaChange}
               handleUpdateComment={handleUpdateComment}
-              // setTextAreaValues={setTextAreaValues}
               textAreaValues={state.textAreaValues}
             />
             {/* main comment form */}
-            <CommentForm 
-              commentFormType="main" 
-              formId="main"
-              handleFormSubmit={handleCreateComment}
-              handleTextAreaChange={handleTextAreaChange}
-              textAreaValue={state.textAreaValues["main"]}
-            />
+            {
+              currentUser ?
+              <CommentForm 
+                commentFormType="main" 
+                formId="main"
+                handleFormSubmit={handleCreateComment}
+                handleTextAreaChange={handleTextAreaChange}
+                textAreaValue={state.textAreaValues["main"]} 
+              /> :
+              <p>
+                <a href="/login">Login</a> to comment.
+              </p>
+            }
           </div>
         </div>
       )}
