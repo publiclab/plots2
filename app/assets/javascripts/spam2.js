@@ -16,14 +16,13 @@ function table_main(id) {
 			"search": "Filter displayed results"
 		}
 	});
-	$('#selectall').click(function () {
+	$('#selectall').on('click',function () {
 		$('.selectedId').prop('checked', this.checked);
-		let selectedLength = $('.selectedId').filter(":checked").length
-                $('#select-count').text(selectedLength);
-                if(selectedLength == 0) return
-		disable_buttons('#selectall');
+		let selectedLength = $('.selectedId').filter(":checked").length;
+		$('#select-count').text(selectedLength);
+		disable_buttons('.selectedId');
 	});
-	$('.selectedId').change(function () {
+	$('.selectedId').on('change', function () {
 		var check = ($('.selectedId').filter(":checked").length === $('.selectedId').length);
 		$('#select-count').text($('.selectedId').filter(":checked").length);
 		$('#selectall').prop("checked", check);
@@ -70,7 +69,7 @@ function batch_nav(bulk) {
 
 function select_all() {
       $('.selectedId').prop('checked', !$('.selectedId').prop('checked'));
-      let selectedLength = $('.selectedId').filter(":checked").length
+      let selectedLength = $('.selectedId').filter(":checked").length;
       // enable buttons only if there are nodes in the table and number of selected nodes == total node length
        var check = (selectedLength == $('.selectedId').length && selectedLength > 0);
        $('#select-count').text(selectedLength);
