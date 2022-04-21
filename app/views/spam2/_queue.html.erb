@@ -1,24 +1,24 @@
 <script>
 $(document).ready(function () {
-	var table = table_main("#queue_table");
-	$("#all").click(function () { //select all button
-		select_all();
+  var table = table_main("#queue_table");
+  $("#all").click(function () { //select all button
+    select_all();
   });
-	$("#batch-spam").bind('click', function (e) { //batch spam
-		batch_nav("batch_spam");
+  $("#batch-spam").bind('click', function (e) { //batch spam
+    batch_nav("batch_spam");
   });
-	$("#batch-publish").bind('click', function (e) { //batch publish
-		batch_nav("batch_publish");
-	});
-	$("#batch-ban").bind('click', function (e) { //batch ban
-		batch_nav("batch_ban");
-	});
-	$("#batch-unban").bind('click', function (e) { //batch unban
-		batch_nav("batch_unban");
-	});
-	$("#delete-batch").bind('click', function (e) { // batch delete
-		batch_nav("batch_delete");
-	});
+  $("#batch-publish").bind('click', function (e) { //batch publish
+    batch_nav("batch_publish");
+  });
+  $("#batch-ban").bind('click', function (e) { //batch ban
+    batch_nav("batch_ban");
+  });
+  $("#batch-unban").bind('click', function (e) { //batch unban
+    batch_nav("batch_unban");
+  });
+  $("#delete-batch").bind('click', function (e) { // batch delete
+    batch_nav("batch_delete");
+  });
 });
 </script>
 
@@ -85,7 +85,7 @@ $(document).ready(function () {
                <script>
                 $('#n<%= node.id %> .delete').bind('ajax:success', function(e){
                   $('#n<%= node.id %>').fadeOut()
-                  noyNotification('relax', 3000, 'danger', 'topRight', 'Node deleted');
+                  notyNotification('relax', 3000, 'danger', 'topRight', 'Node deleted');
                 });
                 $('#n<%= node.id %> .publish').bind('ajax:success', function(e){
                   $('#n<%= node.id %>').hide()
