@@ -4,7 +4,6 @@ $(document).ready(function () {
   $("#all").click(function () { //select all button
     select_all();
   });
-    
   var pageselect = localStorage.getItem('page-select') || '30';
   $("#pageselect").val(pageselect);
   $("#batch-spam").bind('click', function (e) { //batch spam
