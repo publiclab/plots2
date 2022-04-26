@@ -57,24 +57,24 @@
                 });
             }
         });
-
+        
         $('#' + prevFile).click(function(){
-            $.ajax({
-                url: '/graph/prev_file',
-                type: 'get',
-                data: { uid: <%= current_user.id %> },
-                success: function(data){
-                    displayPreviousFiles(data);
-                },
-                error: function(XMLHttpRequest, textStatus, errorThrown){
-                        console.log(errorThrown);
-                        let divAlert = document.createElement('div');
-                        divAlert.classList.add('alert');
-                        divAlert.classList.add('alert-danger');
-                        divAlert.innerHTML = 'There was some error in retrieving the file.';
-                        headerContainer.appendChild(divAlert);
-                }
-            });
+        $.ajax({
+        url: '/graph/prev_file',
+        type: 'get',
+        data: { uid: <%= current_user.id %> },
+        success: function(data){
+        displayPreviousFiles(data);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+        console.log(errorThrown);
+        let divAlert = document.createElement('div');
+        divAlert.classList.add('alert');
+        divAlert.classList.add('alert-danger');
+        divAlert.innerHTML = 'There was some error in retrieving the file.';
+        headerContainer.appendChild(divAlert);
+        }
+        });
         });
 
         function displayPreviousFiles(data){
