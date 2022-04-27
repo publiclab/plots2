@@ -10,7 +10,7 @@ You can find language resource files stored as YAML files [here](https://github.
 
 ## Translation helper
 
-There is a custom Ruby helper function which we've created to simplify using translation strings in the codebase. You can find it [here](https://github.com/publiclab/plots2/blob/236381bc57d36361d1584059a94693e079744583/app/helpers/application_helper.rb#L157) . This is one of the most important part of the project. It basically returns translation of the string if it is present, or else returns a html tag with the English translation of the string and a globe icon beside it which tells the [translation team members](https://publiclab.org/translation) that translation to this string is missing. Note that this globe icon prompt is a unique feature of our helper function and not a default behavior of the Ruby `i18n` gem. 
+There is a custom Ruby helper function that we've created to simplify using translation strings in the codebase. You can find it [here](https://github.com/publiclab/plots2/blob/236381bc57d36361d1584059a94693e079744583/app/helpers/application_helper.rb#L157). This is one of the most important parts of the project. It basically returns the translation of the string if it is present, or else returns an HTML tag with the English translation of the string and a globe icon beside it which tells the [translation team members](https://publiclab.org/translation) that translation to this string is missing. Note that this globe icon prompt is a unique feature of our helper function and not a default behavior of the Ruby `i18n` gem. 
 
 As of https://github.com/publiclab/plots2/pull/9826 and [09d8ed3](https://github.com/publiclab/plots2/commit/09d8ed37834ee420e2b2b7e1ec75856f5e2849d5), only every 3rd translation is requested, for a maximum of 10, so as not to create too many prompts across the site.
 
@@ -22,16 +22,16 @@ There is a corresponding JavaScript version of this function, however it is not 
 
 ### Experience for normal users
 
-The translation function does not interfere with normal user experince it presents translated string if present or English translation if translation is not there. There are no globe icons rendered for normal users and UI breaks do not occur for normal users. This is done to prevent anonymous contributions and prevent site-wide UI breaks due to translation function.
+The translation function does not interfere with the normal user experience. It presents translated string if present or English translation if the translation is not available. There are no globe icons rendered for normal users and UI breaks do not occur for normal users. This is done to prevent anonymous contributions and prevent site-wide UI breaks due to translation function.
 
 ### Experience for translation team members 
 
-You can be a part of translation team by following this [wiki](https://publiclab.org/notes/liz/10-26-2016/how-to-join-public-lab-s-transifex-project) detailed wiki by @gauravano and @liz. The only difference in experience for members is the globe icons which can be seen at some places accross the site. More about it [here](https://publiclab.org/notes/ajitmujumdar25999/07-18-2021/globe-icon-for-translation-team-members). 
-There are breaks in the UI sometimes (especially if translations are used within complex HTML UI elements like menus, buttons, or forms), but most of them have been fixed but as impacts nearly all pages and is constantly updated by first-time contributors some breaks can be missed out. Feel free to raise a issue if you find one.
+You can be a part of the translation team by following this [wiki](https://publiclab.org/notes/liz/10-26-2016/how-to-join-public-lab-s-transifex-project) detailed wiki by [@gauravano](https://publiclab.org/profile/gauravano) and [@liz](https://publiclab.org/profile/liz). The only difference in experience for members is the globe icons which can be seen at some places across the site. More about it [here](https://publiclab.org/notes/ajitmujumdar25999/07-18-2021/globe-icon-for-translation-team-members).
+There are breaks in the UI sometimes (especially if translations are used within complex HTML UI elements like menus, buttons, or forms) but most of them have been fixed. But as the code is constantly being updated by first-time contributors some breaks can be missed out. Feel free to raise an issue if you find one.
 
 ## Calling translation function
 
-The function works on the `i18n` gem [here](https://guides.rubyonrails.org/i18n.html) and [yaml file structure](https://github.com/publiclab/plots2/tree/main/config/locales). Each yaml file in mapped with corresponding translation resource on [Transifex project](https://www.transifex.com/publiclab/publiclaborg/dashboard/).This function from any `.html.erb` view files. 
+The function works on the `i18n` gem [here](https://guides.rubyonrails.org/i18n.html) and [yaml file structure](https://github.com/publiclab/plots2/tree/main/config/locales). Each yaml file in mapped with corresponding translation resource on [Transifex project](https://www.transifex.com/publiclab/publiclaborg/dashboard/). This function from any `.html.erb` view files.
 
 Here is how the call looks
 
@@ -39,7 +39,7 @@ Here is how the call looks
 <%= translation('yaml key to string',option,html parameter) %>
 ```
 
-See an [example here](https://github.com/publiclab/plots2/blob/e646cfd248e46fe9cf11a2eb7860bbf29f949b7d/app/views/dashboard/_header.html.erb#L6)
+See an [example here](https://github.com/publiclab/plots2/blob/e646cfd248e46fe9cf11a2eb7860bbf29f949b7d/app/views/dashboard/_header.html.erb#L6).
 
 There is one prerequisite to call translation function for a string, it should be present in the [`en.yml` file](https://github.com/publiclab/plots2/tree/main/config/locales/en.yml) else function won't correctly. In most of the cases, function call only requires the YAML keys. You can read more about YAML keys [here](https://yaml.org/spec/1.2/spec.html), I feel various calls that exist in the views files code are kind of self-explanatory. 
 
@@ -53,7 +53,7 @@ This parameter helps deal with expection cases of translation function - sometim
 
 You can find calls like this in views that have translation function call in search bars and buttons.
 
-Some improvements to this call can be reorganising the parameters to make it bit concise but it is tricky as lots of tests are written that follow the existing call structure, many function calls have this structure and also the gem has an inbuilt options parameter that can be passsed as array of options or as list of key value pairs , so for now, this call is simple to check and for now though a bit longer.
+Some improvements to this call can be reorganising the parameters to make it bit concise but it is tricky as lots of tests are written that follow the existing call structure, many function calls have this structure and also the gem has an inbuilt options parameter that can be passsed as an array of options or as a list of key value pairs, so for now, this call is simple to check and for now though a bit longer.
 
 ![Untitled Diagram](https://user-images.githubusercontent.com/38528640/131227801-aa46fe85-a2a0-4385-833f-36f6d433d3fe.png)
 
@@ -71,8 +71,8 @@ Here is where managers can trigger a pull request
 
 ### Exporting translations 
 
- Transifex bot automatically raises a PR when a language resource is 100% reviewed. Managers and admins can also trigger a manual sync by `settings->integrations->Send to Github` option, we can specify a threshold percentage and any language files having reviewed percentage above the threshold will be added and a PR will be raised by the Transifex bot. Alternatively, we can also directly download a yaml file for the translation resource from the transifex site. More about it [here](https://publiclab.org/notes/ajitmujumdar25999/07-18-2021/importing-new-translations-from-transifex-project)
-Here is a [sample pull request](https://github.com/publiclab/plots2/pull/10079)
+Transifex bot automatically raises a PR when a language resource is 100% reviewed. Managers and admins can also trigger a manual sync by `settings->integrations->Send to Github` option, we can specify a threshold percentage and any language files having reviewed percentage above the threshold will be added and a PR will be raised by the Transifex bot. Alternatively, we can also directly download a yaml file for the translation resource from the transifex site. More about it [here](https://publiclab.org/notes/ajitmujumdar25999/07-18-2021/importing-new-translations-from-transifex-project)
+Here is a [sample pull request](https://github.com/publiclab/plots2/pull/10079).
 
 ## Translation life-cycle
 
@@ -92,7 +92,7 @@ Translation team members can add translations on the Transifex site. You can fin
 
 ### Step 4: Exporting translated strings
 
-Once the string is reviewed,it can be added back to the Github repo. The Transifex bot automatically raises a PR once language resource is 100% reviewed. Managers and admins can also trigger a manual sync, which you can do by [opening an issue at the plots2 repository](https://github.com/publiclab/plots2/issues/new), specifying which language you're interested in.
+Once the string is reviewed, it can be added back to the GitHub repo. The Transifex bot automatically raises a PR once language resource is 100% reviewed. Managers and admins can also trigger a manual sync, which you can do by [opening an issue at the plots2 repository](https://github.com/publiclab/plots2/issues/new), specifying which language you're interested in.
 
 ### Step 5: Viewing Public Lab in other langauges
 
