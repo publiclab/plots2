@@ -22,7 +22,7 @@ There is a corresponding JavaScript version of this function, however it is not 
 
 ### Experience for normal users
 
-The translation function does not interfere with the normal user experience. It presents translated string if present or English translation if the translation is not available. There are no globe icons rendered for normal users and UI breaks do not occur for normal users. This is done to prevent anonymous contributions and prevent site-wide UI breaks due to translation function..
+The translation function does not interfere with the normal user experience. It presents translated string if present or English translation if the translation is not available. There are no globe icons rendered for normal users and UI breaks do not occur for normal users. This is done to prevent anonymous contributions and prevent site-wide UI breaks due to translation function.
 
 ### Experience for translation team members 
 
@@ -53,7 +53,7 @@ This parameter helps deal with expection cases of translation function - sometim
 
 You can find calls like this in views that have translation function call in search bars and buttons.
 
-SSome improvements to this call can be reorganising the parameters to make it bit concise but it is tricky as lots of tests are written that follow the existing call structure, many function calls have this structure and also the gem has an inbuilt options parameter that can be passsed as an array of options or as a list of key value pairs, so for now, this call is simple to check and for now though a bit longer.
+Some improvements to this call can be reorganising the parameters to make it bit concise but it is tricky as lots of tests are written that follow the existing call structure, many function calls have this structure and also the gem has an inbuilt options parameter that can be passsed as an array of options or as a list of key value pairs, so for now, this call is simple to check and for now though a bit longer.
 
 ![Untitled Diagram](https://user-images.githubusercontent.com/38528640/131227801-aa46fe85-a2a0-4385-833f-36f6d433d3fe.png)
 
@@ -71,7 +71,7 @@ Here is where managers can trigger a pull request
 
 ### Exporting translations 
 
- Transifex bot automatically raises a PR when a language resource is 100% reviewed. Managers and admins can also trigger a manual sync by `settings->integrations->Send to Github` option, we can specify a threshold percentage and any language files having reviewed percentage above the threshold will be added and a PR will be raised by the Transifex bot. Alternatively, we can also directly download a yaml file for the translation resource from the transifex site. More about it [here](https://publiclab.org/notes/ajitmujumdar25999/07-18-2021/importing-new-translations-from-transifex-project)
+Transifex bot automatically raises a PR when a language resource is 100% reviewed. Managers and admins can also trigger a manual sync by `settings->integrations->Send to Github` option, we can specify a threshold percentage and any language files having reviewed percentage above the threshold will be added and a PR will be raised by the Transifex bot. Alternatively, we can also directly download a yaml file for the translation resource from the transifex site. More about it [here](https://publiclab.org/notes/ajitmujumdar25999/07-18-2021/importing-new-translations-from-transifex-project)
 Here is a [sample pull request](https://github.com/publiclab/plots2/pull/10079).
 
 ## Translation life-cycle
