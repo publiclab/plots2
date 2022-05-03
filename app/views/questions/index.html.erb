@@ -32,7 +32,11 @@
           <input type="hidden" name="template" value="question">
           <input type="hidden" name="redirect" value="question">
           <div class="input-group-append">
-            <button id="question_search" type="submit" rel="tooltip" title="Ask a question with the entered title" class="btn btn-primary">Continue</button>
+              <% if !current_user %>
+              <a id="question_search"  class="btn btn-primary btn-md index-follow-buttons follow-btn-remote requireLogin" href="/questions/" data-remote="true" onclick="return theQuestion();" rel="tooltip" title="Ask a question with the entered title">Continue</a>
+              <% else %>
+              <button id="question_search" type="submit" rel="tooltip" title="Ask a question with the entered title" class="btn btn-primary">Continue</button>
+              <% end %> 
           </div>
         </div>
       </form>
@@ -81,13 +85,20 @@
 </div>
 <% if !current_user %>
 <script>
-  $('#question_search').on('click', function(e) {
-      e.preventDefault();
-      $('#loginModal').modal();
-      var postQuery = '/post?tags=question:general&template=question&title=' + encodeURI($('#questions_searchform_input').val()) + '&redirect=question';
-      //console.log(postQuery);
-      $.getJSON(postQuery);
-  });
+    function theQuestion () {
+        // return true or false, depending on whether you want to allow the `href` property to follow through or not
+        document.getElementById('question_search').setAttribute("href", '/questions/new?title='+ encodeURI($('#questions_searchform_input').val()) +'&tags=question%3Ageneral&template=question&redirect=question');
+        return true;
+      }
+    </script>
+    <% else %>
+    <script>
+      $('#question_search').on('click', function(e) {
+        var postQuery = '/post?tags=question:general&template=question&title=' + encodeURI($('#questions_searchform_input').val()) + '&redirect=question';
+
+        $.getJSON(postQuery);
+      });
+    </script>
 </script>
 <% end %>
 <%= stylesheet_link_tag "dashboard" %>
