@@ -1,5 +1,138 @@
 ---
 cz:
+  home:
+    dashboard:
+      welcome: "Vítejte!"
+      need_help: "Potřebujete pomoc, chcete vytvořit projekt nebo najít spolupracovníky?"
+      join_discussion_list: "Připojte se k aktuálnímu či místnímu diskusnímu fóru na Public Lab"
+      no_research_note: "Ještě jste nezveřejnili žádný výzkum – prosím zvažte to"
+      sharing_work: "sdílení Vaší práce a zájmů"
+      please: "prosím"
+      create_password: "Vytvořit heslo pro nové webové stránky PublicLab.org"
+      older_site_deactive: "starší PublicLaboratory.org bude brzy vyřazen."
+      coming_soon: "Již brzy"
+      revised_dashboard: "revidovaný kontrolní panel!"
+      try_it: "Vyzkoušejte to tady"
+      dashboard_main:
+        dashboard_title: "Panel"
+        welcome: "Vítejte!"
+        notes: "poznámky"
+        and: "a"
+        wiki_edits: "úpravy wiki"
+        posted_last_week: "byly zveřejněny v minulém týdnu."
+      nav_tabs:
+        recent: "Nedávné"
+        activity: "Aktivita"
+        comments: "Komentáře"
+        liked: "Líbí se mi"
+        subscriptions: "Předplatné"
+        lists: "Seznamy"
+      read_more_research_notes: "Přečíst více vědeckých studií"
+    subscriptions:
+      title: "Předplatné"
+      up_to_date_emails: "Udržujte aktuální informace o tématech na Public Lab. Můžete si zvolit, zda je chcete dostávat e-mailem či formou přehledu."
+      manage_subscriptions: "Správa předplatného"
+      click_unfollow: "Kliknutím stopnete sledování"
+      following: "Sledovat"
+      research_notes: "všechny poznámky k výzkumu"
+      subscribe_to: "Zaregistrovat se"
+      all: "vše"
+      notes: "poznámky"
+      receive_mails: "Dostávat e-maily pro všechny poznámky výzkumu."
+      enter_tags: "zadejte štítek"
+      add: "Přidat"
+      tag: "Štítek"
+      options: "Možnosti"
+      share_subscription_link: "Sdílet tento odkaz"
+      share: "Sdílet"
+      unsubscribe: "Zrušit sledování"
+    _comments:
+      commented: "komentoval"
+      read_more: "Přečíst více"
+  comments:
+    _form:
+      uploading: "Načítání..."
+      drag_and_drop: "GPřetažením přidáte obrázek nebo soubor, nebo"
+      choose_one: "zvolte jeden"
+      upload_image: "Nahrát obrázek"
+      preview: "Náhled"
+      cancel: "Zrušit"
+      publish: "Publikovat"
+      logged_in: "Přihlášen jako <b>%{username}</b>"
+      formatting: "Formátování"
+      notifications: "Oznámení"
+      email_notifications: "Autor, komentující a ti, kteří dali této poznámce \"To se mi líbí\" obdrží upozornění e-mailem"
+    _edit:
+      uploading: "Načítání..."
+      drag_and_drop: "Přetažením přidáte obrázek či soubor, anebo"
+      choose_one: "Zvolte jeden"
+      upload_image: "Nahrát obrázek"
+      preview: "Náhled"
+      cancel: "Zrušit"
+      publish: "Publikovat"
+      logged_in: "Přihlášen jako <b>%{username}</b>"
+      formatting: "Formátování"
+      notifications: "Oznámení"
+      email_notifications: "Autor, komentující a ti, kteří dali této poznámce \"To se mi líbí\" obdrží upozornění e-mailem"
+  sidebar:
+    _events:
+      post_event: "Zveřejnit událost"
+      local_events: "Místní dění"
+      no_events: "Žádná událost"
+    _notes:
+      updated_by: |
+        aktualizováno před %{time}
+        od <a href='%{url1}'>%{author_name}</a>
+      more: "Více..."
+      delete: "Smazat příspěvek"
+    _related:
+      write_research_note: "Napište příspěvek"
+      share_your_work: "Sdílejte svou práci s ostatními"
+      ask_a_question: "Položit otázku"
+      translation: "Překlad"
+      response_to: "Toto je odpověď na"
+      responses_to_note: "V reakci na tuto poznámku"
+      recent_topic_contributors: "Nedávní přispěvatelé tématu"
+      view_all: "Zobrazit vše"
+      contributors: "Přispěvatelé"
+      recent_wiki_edits: "Poslední úpravy wiki"
+      recent_wiki_pages: "Nedávné stránky wiki"
+      related_research_notes: "Poznámky související s výzkumem"
+      related_maps: "Související mapy"
+      contributors_for_this_topic: "Přispěvatelé na toto téma"
+    _author:
+      recent_tags_for_author: "Nedávné štítky pro <a href='%{url1}'>%{author}</a>"
+    _wikis:
+      updated_by: |
+        aktualizováno před %{time}
+        od <a href='%{url1}'>%{author}</a>
+      more: "Více..."
+    _post_button:
+      share_your_work: "Sdílejte svoji práci s ostatními"
+      write_research_note: "Napište poznámku k výzkumu"
+      post_research: "Zveřejnit průzkum"
+      post_research_note: "Poznámka k výzkumu"
+      create_wiki_page: "Vytvořit stránku Wiki"
+      about_posting: "O příspěvcích"
+      moderate_spam: "Řízení spamu"
+      email_search: "Vyledání e-mailové adresy"
+      tools: "Nástroje"
+      post_newsletter: "Zveřejnit newsletter"
+      browse_wiki: "Procházet Public Lab Wiki"
+    _list:
+      mailing_list: "Přihlásit se k odběru <a href='%{url1}'<b>%{mailing_list}</b> mailing listu</a>"
+      subscribe: "Sledovat"
+      recent_discussion_topics: "Nedávná diskusní témata"
+      all_topics: "Všechna témata"
+    _user:
+      discussion_list: "Seznam diskuzí"
+      work_happens_on_discussion_lists: "Většina naší práce se odehrává na našich regionálních a aktuálních diskusních fórech."
+      join_one_today: "Připojte se ještě dnes!"
+      recent_wiki_edits: "Poslední úpravy wiki"
+  talk:
+    show:
+      welcome: "Diskusní stránka <a href='%{url1}'>%{page}</a>| Tato stránka umožňuje synchronizované úpravy více lidí najedou. <a href='%{url2}'>Více informací</a>"
+      try_direct_link: "Pokud se tato stránka nenačte správně, <a href='%{url1}'>zkuste zde</a>"
   activerecord:
     errors:
       messages:
