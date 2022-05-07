@@ -31,7 +31,8 @@ There are breaks in the UI sometimes (especially if translations are used within
 
 ## Calling translation function
 
-The function works on the `i18n` gem [here](https://guides.rubyonrails.org/i18n.html) and [yaml file structure](https://github.com/publiclab/plots2/tree/main/config/locales). Each yaml file in mapped with corresponding translation resource on [Transifex project](https://www.transifex.com/publiclab/publiclaborg/dashboard/). This function from any `.html.erb` view files.
+The function works on the `i18n` gem [here](https://guides.rubyonrails.org/i18n.html) and [yaml file structure](https://github.com/publiclab/plots2/tree/main/config/locales). Each yaml file is mapped with corresponding translation resource on the [Transifex project](https://www.transifex.com/publiclab/publiclaborg/dashboard/). This function may be called from any of the `.html.erb` view files.
+
 
 Here is how the call looks
 
@@ -41,7 +42,8 @@ Here is how the call looks
 
 See an [example here](https://github.com/publiclab/plots2/blob/e646cfd248e46fe9cf11a2eb7860bbf29f949b7d/app/views/dashboard/_header.html.erb#L6).
 
-There is one prerequisite to call translation function for a string, it should be present in the [`en.yml` file](https://github.com/publiclab/plots2/tree/main/config/locales/en.yml) else function won't correctly. In most of the cases, function call only requires the YAML keys. You can read more about YAML keys [here](https://yaml.org/spec/1.2/spec.html), I feel various calls that exist in the views files code are kind of self-explanatory. 
+There is one prerequisite to call translation function for a string, it should be present in the [`en.yml` file](https://github.com/publiclab/plots2/tree/main/config/locales/en.yml) else it won't work correctly. In most of the cases, function call only requires the YAML keys. You can read more about YAML keys [here](https://yaml.org/spec/1.2/spec.html). I feel various calls that exist in the views files code are kind of self-explanatory.
+
 
 ### Additional html parameter
 
