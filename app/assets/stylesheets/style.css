@@ -77,16 +77,16 @@ h6.dropdown-header {
 
 
 .note-show h1 {
-  font-size: 2rem;
+  font-size: 2.25rem;
 }
 
 
 @media (max-width:400px) {
   .note-show h1 {
-    font-size: 1.6rem;
+    font-size: 2rem;
   }
   .note-show h2 {
-    font-size: 1.4rem;
+    font-size: 1.875rem;
   }
 }
 
