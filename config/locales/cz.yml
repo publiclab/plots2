@@ -1,5 +1,206 @@
 ---
 cz:
+  users:
+    reset:
+      reset_password: "Obnovit heslo"
+      enter_username_and_password: "Zadejte své uživatelské jméno a nové heslo"
+      username_placeholder: "uživatelské jméno"
+      password_placeholder: "zadejte nové heslo"
+      retype_password_placeholder: "zadejte znovu své heslo"
+      save: "Uložit"
+      enter_email_reset_password: "Zadejte svou e-mailovou adresu pro obnovení hesla"
+      reset: "Resetovat"
+    _tags_form:
+      skills: "Dovednosti"
+      enter_tags: "Zadejte štítky"
+      gears: "Zařízení "
+      tools: "Nástroje"
+      roles: "Role"
+      location: "Umístění"
+      type_location: "Zadejte polohu"
+      map: "Mapa"
+      location_privacy: "Polohové služby a soukromí"
+    new:
+      sign_up: "Přihlaste se a připojte se ke komunitě Public Lab"
+      licensing_agreement: "Licenční smlouva"
+      licensing_detail: 'Jako komunita s otevřeným zdrojovým kódem věříme v otevřené licencování obsahu, aby ostatní členové komunity mohli legálně využívat Vaši práci – se samozřejmostí uvedeného zdroje. Připojením k webu Public Lab <b>souhlasíte k uvolnění obsahu, který zde zveřejňujete pod <a href="%{url1}" target="_blank">Creative Commons Attribution Sharealike licence</a></b> a hardware navrhne zveřejnění v rámci <b><a href="%{url2}" target="_blank">CERN Open Hardware License
+        1.1</a> (<a href="%{url3}" target="_blank">úplné znění</a>)</b>. To má své výhody, kdy se na oplátku s Vámi musí ostatní podělit o svá vylepšení.'
+      code_of_conduct_agreement: "Dohoda o kodexu chování"
+      code_of_conduct_detail: 'Přihlášením <b>souhlasíte s <a href="%{url1}" target="_blank">Kodexem chování</a></b>, který platí pro všechny online i osobně spravované komunitou Public Lab a neziskovou organizací.'
+      about_public_lab: |2
+        <h3>Co je Public Lab?</h3>
+        <p>Public Lab je otevřená komunita, která vyvíjí a používá open source nástroje pro průzkum a vyšetřování životního prostředí. <a href="/about">Další informace naleznete zde</a></p>
+        <p>Zaregistrováním se připojíte k různorodé skupině výzkumných pracovníků a využijete mnoho místních odborných znalostí. Vyvíjíme nové nástroje pro studium a řešení environmentálních a environmentálních zdravotních problémů se zaměřením na:</p>
+        <ul>
+        <li>nízkou cenu</li>
+        <li>čitelnost dat</li>
+        <li>snadné použití/nízké bariéry vstupu za vysoké účasti veřejnosti</li>
+        <li>vysoce kvalitní data relevantní z hlediska životního prostředí a společnosti</li>
+        <li>kreativní a opětovné použití spotřebitelských technologií</li>
+        <li>open source a uživatelsky upravitelné návrhy</li>
+        </ul>
+    map:
+      search: "Hledat"
+      location: "Poloha"
+      skill: "Know-how"
+      gear: "Vybavení "
+      role: "Role"
+      tool: "Nástroj"
+    likes:
+      wiki_liked_by: "Stránky Wiki, které se mi líbí"
+      more: "Více"
+      liked_by: "To se mi líbí"
+      updated: "aktualizováno"
+    profile:
+      follow: "Sledovat"
+      migrate_new_site: "Přesměrování na nový web"
+      make_admin: "Vytvořit správce"
+      revert_to_basic_user: "Vrátit se do základního uživatelského nastavení"
+      make_moderator: "Vytvořit moderátora"
+      unban_user: "Povolit uživatele"
+      ban_user: "Zakázat uživatele"
+      confirm_ban_user: "Jste si jistý? Uživatel se již nebude moci přihlásit ani přidávat příspěvky a jeho obsah bude skrytý."
+      unmoderate_user: "Povolit uživatele"
+      moderate_user: "Usměrnit uživatele"
+      confirm_moderate_user: "Jste si jistý? Uživatel se již nebude moci přihlásit ani přidávat příspěvky."
+      reset_user: "Reset uživatele "
+      rss_feed_for: "RSS zdroj pro"
+      edit_profile: "Upravit profil"
+      preview_profile_tag: "Náhled profilu štítků"
+      location: "Poloha"
+      edit_information: "Upravit informace"
+      wiki_contributed_to: "Wiki stránky, na které jste nedávno přispěli"
+      updated: "aktualizováno"
+      by: "od"
+      more: "Více"
+      notes_and_edits: "<a href='%{url1}'>poznámky k výzkumu</a> a úpravy wiki"
+      moderator: "Moderátor"
+      admin: "Správce"
+      banned: "Zakázán"
+      barnstar_awarded_to_by: "<a href='%{url1}'>%{author}</a> byl oceněn <a href='%{url2}'>%{barnstar} hvězdičkami</a> od <a href='%{url3}'>%{awarder}</a> za práci publikovanou v <a href='%{url4}'>%{work}</a>."
+      joined_time_ago: "Připojen před %{time_ago}"
+      research: "Výzkum"
+      Coauthored: "Ve spolupráci"
+      questions: "Dotazy"
+      comments: "Komentáře"
+      liked: "To se mi líbilo"
+      view_these_maps: "Zobrazit tyto mapy <a href='%{url1}'>na MapKnitter.org &raquo;</a>"
+      title: "Název"
+      creation_date: "Vytvořeno"
+      image: "Obrázek"
+    info:
+      additonal_information: "Dodatečné informace"
+    _form:
+      username: "Uživatelské jméno"
+      email: "E-mailová adresa"
+      create_password: "Vytvořit heslo"
+      change_password: "Změnit heslo"
+      password: "heslo"
+      password_confirmation: "Potvrzení hesla"
+      confirm_password: "Pro potvrzení znovu zadejte heslo"
+      bio: "Bio"
+      add_bio: "Přidejte krátký životopis, který se zobrazí na Vašem profilu"
+      are_you_human: "Jste člověk?"
+      spam_filtering: "Promiňte, filtrování spamu! Vyberte prosím zvířata - \U0001F981 - níže, abyste ukázali, že jste skutečný člověk."
+      dont_write_here: "Nepište sem nic, pokud jste skutečný člověk."
+      sign_up: "Zaregistrovat se"
+      log_in: "Přihlásit se"
+      save: "Uložit"
+    list:
+      user_moderation: "Moderování uživatelů"
+      admins_ban_spam: 'Běžní uživatelé vidí pouze seznam nedávno přihlášených uživatelů, ale moderátoři
+        a správci mohou zakázat uživatelé "spamu" a videt ty, kteří již byli zablokováni.'
+      members_last_activity: "Členové Public Lab <small>podle poslední aktivity</small>"
+      username: "Uživatelské jméno"
+      last_activity: "Poslední činnost"
+      history: "Historie"
+      joined: "Připojen"
+      moderation: "Moderování"
+      notes_and_edits: "Poznámky k výzkumu a úpravy Wiki"
+      banned: "Blokovaní"
+      are_you_sure: "Jste si jistý? Uživatel se již nebude moci přihlásit ani publikovat."
+      ban: "Zakázat"
+    _photo:
+      profile_photo: "Profilová fotka"
+      drag_and_drop_image: "Přetažením přidáte obrázek, nebo"
+      choose_image: "vyberte obrázek"
+      uploading: "Nahrávání"
+    edit:
+      edit_profile: "Upravit profil"
+    settings:
+      cancel: "Zrušit"
+      notified_by_email: "Chci byt upozorněn e-mailem na:"
+      direct_comment: "Komentáře k mým příspěvkům"
+      direct_likes: "To se mi líbí u mých příspěvků"
+      indirect_comment: "Komentáře ke všem příspěvkům, které jsem okomentoval"
+      moderation_email: "Moderování e-mailů"
+      email_notifications: "E-mailová upozornění jsou zasílána pro každý příspěvek u témat, která sledujete. Chcete-li dostávat přehled, vyberte jednu z těchto možností:"
+      email_notifications_title: "E-mailová upozornění"
+      weekly_digest: "Týdenní přehled"
+      daily_digest: "Denní přehled"
+      spam_weekly_digest: "Týdenní přehled pro nemoderované příspěvky"
+      spam_daily_digest: "Denní přehled nemoderovaných příspěvků"
+      browser_notifications: "Chci dostávat upozornění prohlížeče:"
+      mentioned: "Když mě někdo zmíní"
+      everything: "Všechno"
+      likes: "Když se někomu líbí moje práce"
+  notes:
+    index:
+      search_results_for: "Výsledky vyhledávání pro <i style=\"color:#aaa;\">%{params}</i>"
+      advanced_search: "pokročilé vyhledávání"
+      notes_tagged_with: "Poznámky označené <i style=\"color:#aaa;\">%{params}</i>"
+      popular_research_notes: "Oblíbený výzkum"
+      recent_research_notes: "Poznámky k nedávnému výzkumu"
+      research_on: "Výzkum \"%{tags}\" od <a href='%{url1}'>%{user_name}</a>"
+      research_notes_and_wiki_edits_with_time: "%{count} výzkumných poznámek a úprav wiki před %{time}"
+      research_by: "Hledat podle <a href='%{url1}'>%{user_name}</a>"
+      research_notes_and_wiki_edits: "%{count1} průzkum/y %{word1} a %{count2} wiki %{word2}"
+      starting_time: "před %{time}"
+      research_notes_ideas_and_documentation: "Poznámky k výzkumu <small class=\"hidden-sm\">nápady a dokumentace od uživatelů, jako jste Vy</small>"
+      recent: "Nedávné"
+      popular: "Populární"
+      liked: "To se mi líbilo"
+      wiki_pages: "Stránky Wiki"
+      research_notes: "Poznámky průzkumu"
+      questions: "Dotazy"
+      comments: "Komentáře"
+      drafts: "Koncepty"
+      all_notes: "Všechny poznámky"
+    _notes:
+      moderate_first_time_post: "Moderovat první příspěvek:"
+      approve: "Schválit"
+      spam: "Spam"
+      pending_approval: "Čeká na schválení <a href='%{url1}'>moderátory komunity</a>. Prosím, buďte trpěliví!"
+      last_edit_by: "poslední úprava"
+      views: "zobrazeno"
+      read_more: "Přečíst více"
+    show:
+      note_no_tags: "Tato poznámka nemá žádný štítek. Pomozte ji propojit s jiným obsahem <a href='#' onClick='%{url}'>přidáním značky popisu níže</a>."
+      replication: "Toto je pokus o kopii"
+      series: "Toto je část série o "
+      replication_link: "aktivita"
+      build: "Toto je pokus o sestavení"
+      build_link: "aktualizace"
+      question: "Otázka:"
+      author_is_asking_about: |
+        <a href='%{url1}'> %{author} </a>
+        se ptá na téma <b>%{tag}</b>:
+      sign_up_to_answer: "Přihlaste se k zodpovězení otázek na toto téma"
+      unpublished: "NEPUBLIKOVÀNO"
+      views: "zobrazení"
+      comments: "komentáře"
+      shortlink: "krátký odkaz"
+      barnstar_awarded_to_by: "<a href='%{url1}'>%{author}</a> byl oceněn <a href='%{url2}'>%{barnstar} hvězdiček</a>od <a href='%{url3}'>%{awarder}</a> za práci na tomto výzkumu."
+      file_table: |
+        <th>Soubory</th>
+        <th>Velikost</th>
+        <th>Nahráno</th>
+      event_is_on: "Tato událost se koná %{date}"
+      ical: "iCal"
+      login_to: "Prosím,<a href='%{url1}'> přihlaste se</a> do"
+      people_will_attend: "%{count} lidí se zúčastní"
+      preview: "Právě si prohlížíte náhled."
+      preview_topics: "This preview is not yet published and is not part of any topics yet."
   home:
     dashboard:
       welcome: "Vítejte!"
