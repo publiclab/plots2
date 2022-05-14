@@ -167,7 +167,7 @@ cz:
       drafts: "Koncepty"
       all_notes: "Všechny poznámky"
     _notes:
-      moderate_first_time_post: "Moderovat první příspěvek:"
+      moderate_first_time_post: "Schválit první příspěvek:"
       approve: "Schválit"
       spam: "Spam"
       pending_approval: "Čeká na schválení <a href='%{url1}'>moderátory komunity</a>. Prosím, buďte trpěliví!"
@@ -200,7 +200,149 @@ cz:
       login_to: "Prosím,<a href='%{url1}'> přihlaste se</a> do"
       people_will_attend: "%{count} lidí se zúčastní"
       preview: "Právě si prohlížíte náhled."
-      preview_topics: "This preview is not yet published and is not part of any topics yet."
+      preview_topics: "Tento náhled ještě nebyl publikován, ani není součástí žádného jiného tématu."
+      comments: "Komentáře"
+      post_comment: "Přidat komentář"
+      post_placeholder: "Pomozte autorovi vylepšit jeho příspěvek, či jej nasměrujte na další užitečné informace na webu. Zmiňte uživatele pomocí @přezdívky, abyste jej upozornili e-mailem na aktivitu v tomto vláknu"
+      must_be_logged_in: "Abyste mohli okomentovat příspěveky, musíte být <a href='%{url1}'>přihlášeni</a>."
+    tools_places:
+      tools_and_techniques: "Metody"
+      subtitle: "vytvořeno uživateli Public Lab"
+      public_lab_chapters: "Témata Public Lab"
+      start_a_chapter: "místní skupiny a setkání po celém světě | <a href='%{url1}'>Začít téma &raquo;</a>"
+      tools: "Nástroje"
+      places: "Místa"
+    _tagged_notes:
+      by_author_time_ago: |
+        od <a href='%{url1}'>%{author}</a>
+        | před %{time}
+      views: "zobrazení"
+      read_more: "Přečíst více"
+      spam: "Spam"
+    _comment:
+      commented: "komentoval"
+      streak_title: "%{author} je v zápalu! %{streak_notes} poznámky, %{streak_wiki} úpravy wiki, %{streak_comments} komentářů za posledních %{streak_days} dnů"
+      are_you_sure: "Jste si jistý?"
+      please_exercise_caution: "Buďte prosím opatrní při mazání/správě komentářů od ostatních uživatelů. Tuto akci nelze vrátit zpět."
+      edit_comment: "Upravit komentář"
+      edit_placeholder: "Pomozte autorovi vylepšit jeho příspěvek, nebo jej nasměrovat na jiné užitečné informace na webu. Chcete-li jej upozornit, zmiňte uživatele pomocí, abyste jej upozornili e-mailem na aktivitu v tomto vláknu"
+    _responses:
+      post_response: "Zveřejněte svoji odpověď"
+      post_build: "To jsem vytvořil"
+      post_replication: "To jsem udělal"
+      responses: "Odpovědi"
+      builds: "Lidé, kteří to vytvořili"
+      replications: "Lidé, kteří to udělali"
+    stats:
+      about_this_page: |
+        <h4> O této stránce</h4>
+        <p>Public Lab vznikla díky příspěvkům členů naší komunity, stejně tak tyto webové stránky byly vytvořeny společným úsilím na bázi volného přístupu (open source work).</p>
+      contributors_statistics: "Statistiky přispěvatelů"
+      research_notes_posted_by_contributors: "%{note_count} poznámek průzkumů bylo zveřejněno %{contributors_count} přispěvateli od %{time}"
+      total_contributors: "%{all_contributors_count} Celkový počet přispěvatelů (sečteno týdně)"
+      notes_per_week: "%{note_count} poznámek týdně během tohoto období."
+      edits_per_week: "%{count} úprav za týden během tohoto období"
+      notes_wikis_comments: |
+        <b>%{notes_count} poznámky</b>, <b>%{wikis_count} úprav wiki</b>
+        a <b>%{comments_count} komentářů</b> zveřejněných v tomto období.
+      members_and_contributors: |
+        <b>%{member_count} registrace členů</b>
+        a <b>%{people_count} přispěvatelů</b> v tomto období zveřejnili poznámky, wiki, otázky, komentáře nebo revize.
+  images:
+    upload_an_image: "Nahrát obrázek"
+    image_title: "Název obrázku"
+    short_description: "krátký popisek"
+    upload: "Nahrát"
+  dashboard:
+    _flag_list:
+      flag_post: "Označit příspěvek moderátorům"
+      become_moderator: "Staňte se moderátorem"
+    _node_comment:
+      commented_on: "okomentoval"
+      comments: "komentáře"
+    _sidebar:
+      wiki: "Wiki"
+      discussion_list: "Seznam diskuzí"
+      all: "Všechny"
+      public_laboratory: "Public Laboratory"
+      grassroots_mapping: "Základy mapování"
+      spectrometry: "Spektrometrie"
+      infrared: 'Infračervené'
+      air_quality: "Kvalita vzduchu"
+      water_quality: "Kvalita vody"
+      developers: "Vývojáři"
+    _activity:
+      activity: "Aktivita"
+      all_updates: "Všechny aktualizace"
+      dropdown:
+        all: "Vše"
+        research_notes: "Poznámky výzkumu"
+        questions: "Dotazy"
+        events: "Události"
+        comments: "Komentáře"
+        wiki: "Wiki"
+      from_other: "Jiné"
+      community_scientists: "komunitní vědci"
+      recent_activity: "Nedávná činnost"
+      post_date: "Datum odeslání"
+      past_week: "v minulém týdnu"
+      your_work: "Vaše práce"
+      share_work: "Sdílejte svoji práci"
+    dashboard:
+      from_blog: "Z <a href='%{url}'>blogu Public Lab</a>"
+      by: "od "
+    _node_event:
+      rsvp: "RSVP"
+    _node_question:
+      post_answer: "Zveřejnit odpověď"
+      question: "Otázka"
+    _node_wiki:
+      new_page_by: "Nová stránka od"
+      new_edit_by: "Nové úpravy od"
+      changes: "Změny"
+    _header:
+      share_work: "Sdílejte svoji práci"
+      dropdown:
+        share_activity: "Sdílejte svoji činnost krok za krokem"
+        share_research_note: "Sdílejte poznámku k výzkumu"
+        ask_question: "Položit otázku"
+        post_event: "Zveřejnit událost"
+        tell_story_blog: "Povězte svůj příběh na blogu"
+      dashboard: "Kontrolní panel"
+      community_research: "Komunitní výzkum"
+      welcome: "Vítejte"
+      notes: "poznámky"
+      note: "poznámka"
+      and: "a"
+      wiki_edits: "úpravy wiki"
+      posted_past_week: "přidáno za minulý týden."
+      you_shared: "Sdíleli jste"
+      research_note: "poznámky výzkumu"
+      research_notes: "notes de recherche"
+      this_could_be_dashboard: "Tohle by mohl být váš řídicí panel, pokud Vy"
+      joined_public_lab: "připojen k Public Lab"
+    _wiki:
+      shared_knowledge_base: "<a href='%{url}'>sdílení znalostí</a> pro komunitní vědu"
+      search: "Hledat..."
+      new_page: "Nová stránka"
+      new_page_by: "Nová stránka od"
+      new_edit_by: "Nová úprava od"
+      changes: "změny"
+      more: "Více"
+    moderate:
+      approve: "Schválit"
+      spam: "Spam"
+      pending_approval: "Čeká na schválení <a href='%{url1}'>moderátory komunity</a>. Prosím, buďte trpěliví!"
+    _node_moderate:
+      first_time_post: "Schválený první příspěvek:"
+    _comment_moderate:
+      first_time_post: "Schválený první komentář:"
+  like:
+    index:
+      recent_likes: "Poslední hodnocení"
+      user: "Uživatel"
+      liked: "To se mi líbilo"
+      action: "Akce"
   home:
     dashboard:
       welcome: "Vítejte!"
