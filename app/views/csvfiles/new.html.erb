@@ -22,24 +22,25 @@
             saveFlag = true;
         });
         $('#' + SimpleDataGrapherObject.view.plotGraphId).click(function(){
-                if (saveFlag){
-                  var arr = {};
-                  arr['completeCsvMatrix'] = SimpleDataGrapherObject.view.csvParser.completeCsvMatrix;
-                  arr['csvHeaders'] = SimpleDataGrapherObject.view.csvParser.csvHeaders;
-                  arr['csvSampleData'] = SimpleDataGrapherObject.view.csvParser.csvSampleData;
-                  arr['csvValidForYAxis'] = SimpleDataGrapherObject.view.csvParser.csvValidForYAxis;
-                  arr['completeCsvMatrixTranspose'] = SimpleDataGrapherObject.view.csvParser.completeCsvMatrixTranspose;
-                  let csvStringMatrix = SimpleDataGrapherObject.view.csvParser.completeCsvMatrixTranspose;
-                  let csvStringForDownload = encodeURI('data:text/csv;charset=utf-8,' + csvStringMatrix.map(e => e.join(',')).join('\n'));
-                  $.ajax({
+            if (saveFlag){
+                var arr = {};
+                arr['completeCsvMatrix'] = SimpleDataGrapherObject.view.csvParser.completeCsvMatrix;
+                arr['csvHeaders'] = SimpleDataGrapherObject.view.csvParser.csvHeaders;
+                arr['csvSampleData'] = SimpleDataGrapherObject.view.csvParser.csvSampleData;
+                arr['csvValidForYAxis'] = SimpleDataGrapherObject.view.csvParser.csvValidForYAxis;
+                arr['completeCsvMatrixTranspose'] = SimpleDataGrapherObject.view.csvParser.completeCsvMatrixTranspose;
+                let csvStringMatrix = SimpleDataGrapherObject.view.csvParser.completeCsvMatrixTranspose;
+                let csvStringForDownload = encodeURI('data:text/csv;charset=utf-8,' + csvStringMatrix.map(e => e.join(',')).join('\n'));
+                $.ajax({
                     url: '/graph/object',
                     type: 'post',
-                    data:   { object: JSON.stringify(arr),
-                          uid: <%= current_user.id %>,
-                          filetitle: SimpleDataGrapherObject.view.fileTitle,
-                          filedescription: SimpleDataGrapherObject.view.fileDescription,
-                          filestring: csvStringForDownload },
-                      success: function(data){
+                    data:   { 
+                        object: JSON.stringify(arr),
+                        uid: <%= current_user.id %>,
+                        filetitle: SimpleDataGrapherObject.view.fileTitle,
+                        filedescription: SimpleDataGrapherObject.view.fileDescription,
+                        filestring: csvStringForDownload },
+                    success: function(data){
                         let divAlert = document.createElement('div');
                         divAlert.classList.add('alert');
                         divAlert.classList.add('alert-success');
@@ -47,35 +48,34 @@
                         headerContainer.appendChild(divAlert);
                     },
                     error: function(XMLHttpRequest, textStatus, errorThrown){
-                            console.log(errorThrown);
-                            let divAlert = document.createElement('div');
-                            divAlert.classList.add('alert');
-                            divAlert.classList.add('alert-danger');
-                            divAlert.innerHTML = 'There was some error in saving the file.';
-                            headerContainer.appendChild(divAlert);
+                        console.log(errorThrown);
+                        let divAlert = document.createElement('div');
+                        divAlert.classList.add('alert');
+                        divAlert.classList.add('alert-danger');
+                        divAlert.innerHTML = 'There was some error in saving the file.';
+                        headerContainer.appendChild(divAlert);
                     }
                 });
             }
         });
-
           $('#' + prevFile).click(function(){
-                $.ajax({
+              $.ajax({
                   url: '/graph/prev_file',
                   type: 'get',
                   data: { uid: <%= current_user.id %> },
                   success: function(data){
-                    displayPreviousFiles(data);
-                        },
-                  error: function(XMLHttpRequest, textStatus, errorThrown){
-                      console.log(errorThrown);
-                      let divAlert = document.createElement('div');
-                      divAlert.classList.add('alert');
-                      divAlert.classList.add('alert-danger');
-                      divAlert.innerHTML = 'There was some error in retrieving the file.';
-                      headerContainer.appendChild(divAlert);
-                }
+                      displayPreviousFiles(data);
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown){
+                        console.log(errorThrown);
+                        let divAlert = document.createElement('div');
+                        divAlert.classList.add('alert');
+                        divAlert.classList.add('alert-danger');
+                        divAlert.innerHTML = 'There was some error in retrieving the file.';
+                        headerContainer.appendChild(divAlert);
+                    }
+                });
             });
-        });
 
         function displayPreviousFiles(data){
             var table=document.createElement('table');
@@ -89,7 +89,7 @@
                 td.appendChild(radio);
                 td.appendChild(document.createTextNode(data[i]['csvfile']['filetitle']));
                 tr.appendChild(td);
-            table.appendChild(tr);
+                table.appendChild(tr);
             }
             let div = document.getElementById(SimpleDataGrapherObject.view.upload_button_container);
             div.appendChild(table);
