@@ -130,7 +130,7 @@ Tags have come to define "topical interest groups" - like forums - both collecti
 
 In general, the site has evolved to be more of a collection of distinct (though interlinked) topical groups, rather than a mixed collection of content and people. Each tag is intended to be a sub-community dedicated to a specific topic. 
 
-**Followers vs. contributors:** Followers of a tag are listed on the tag page alongside "contributors," which are people who have _posted wikis or notes tagged with a given tagname, edited wikis or commented on pages with a given tagname_. See https://publiclab.org/contributors/water-quality for example. 
+**Followers vs. contributors:** Followers of a tag ([see code](https://github.com/publiclab/plots2/blob/9cedf36fc20de1c8982885d8ca73338214c3fa57/app/models/tag.rb#L164-L171)) are listed on the tag page alongside "contributors," which are people who have _posted wikis or notes tagged with a given tagname, edited wikis or commented on pages with a given tagname_ ([see code](https://github.com/publiclab/plots2/blob/9cedf36fc20de1c8982885d8ca73338214c3fa57/app/models/tag.rb#L64-L78)). See https://publiclab.org/contributors/water-quality for example. 
 
 **Notifications:** When you follow tags, you begin getting email notifications when content is posted bearing that tag. If a page is newly tagged with a tag you follow, you also get an email notification unless you have already received one for a prior tag which you are following and which already existed on that page. You can adjust your notification preferences at https://publiclab.org/settings
 
