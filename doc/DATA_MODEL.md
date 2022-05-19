@@ -110,4 +110,48 @@ User `role` can be:
 
 ## Tagging
 
-Tags (`Tag`) are unique tag names with primary key `tid`, which may be linked (by a user) to Nodes via NodeTag (database table `community_tag`) via the latter's `nid` and `tid` fields.
+We use 2 types of tags to organize and interconnect content and users across PublicLab.org: "node tags" or "Tags" and "profile tags". 
+
+### Tagging content
+
+The most widely used system is Tags, which is where pages (nodes, such as wikis or notes or questions) have been tagged by users with topic-specific words like `water-quality`. Each page may have many tags, and each tag also has its own page, such as https://publiclab.org/tag/water-quality, listing all the pages using that tag. When a page is tagged, we record who tagged it and when.
+
+How this works technically:
+
+* The `Tag` [model](https://github.com/publiclab/plots2/blob/main/app/models/tag.rb) has 1 entry for each unique tagname (`tag.name`), such as `water-quality`. 
+* `Tag` entries are linked with the many nodes (note, wiki, etc) which are "tagged" with this tagname, with the model `NodeTag` (which, for Drupal legacy reasons uses the table `community_tags`) - that is, `tag.nid = node_tag.nid`
+* `NodeTag` [entries](https://github.com/publiclab/plots2/blob/main/app/models/node_tag.rb) also have a timestamp, and a user, `node_tag.user`, which is the person who applied the tag to the node.
+
+Some tags activate additional functions; these are known as Power Tags, and are documented at https://publiclab.org/power-tags
+
+### Following tags
+
+Tags have come to define "topical interest groups" - like forums - both collecting topically related content (pages, notes, questions) and also allowing users to "follow" (i.e. subscribe or join, although we stylistically prefer "follow" as a verb) topical content. To post content with tags does not currently mean you automatically follow (join) that topic, but we are considering changing this (May '22). You can manage the tags you follow on the Subscriptions page, at https://publiclab.org/subscriptions
+
+In general, the site has evolved to be more of a collection of distinct (though interlinked) topical groups, rather than a mixed collection of content and people. Each tag is intended to be a sub-community dedicated to a specific topic. 
+
+**Followers vs. contributors:** Followers of a tag are listed on the tag page alongside "contributors," which are people who have _posted wikis or notes tagged with a given tagname, edited wikis or commented on pages with a given tagname_. See https://publiclab.org/contributors/water-quality for example. 
+
+**Notifications:** When you follow tags, you begin getting email notifications when content is posted bearing that tag. If a page is newly tagged with a tag you follow, you also get an email notification unless you have already received one for a prior tag which you are following and which already existed on that page. You can adjust your notification preferences at https://publiclab.org/settings
+
+How this works technically:
+
+* The `TagSelection` [model](https://github.com/publiclab/plots2/blob/main/app/models/tag_selection.rb) links `Tag` records with `User` [records](https://github.com/publiclab/plots2/blob/main/app/models/user.rb) when a user follows a tag. 
+
+### Profile tags
+
+Profile Tags are a completely separate system from Tags, though they are structured similarly. Instead of applying tags to content, Profile Tags are applied to user accounts, and appear on users' profiles. They do not reference nodes (wikis, notes, questions) at all. They have a more limited, infrastructural use and are more rarely used in practice, but these uses include:
+
+* adding a location to your profile with `lat:41`, `lon:-71`, and `zoom:6` style tags, subject to location privacy tag `location:blurred`; [read more here](https://publiclab.org/location-privacy)
+* determining membership in a "group" -- such as moderators, or educators. This is an old and not much used system; [read more here](https://publiclab.org/wiki/power-tags#Inline+People+Lists).
+* opting into the Translation group (with tag `translation-helper`), which activates translation helpers across the site to crowdsource translation of the site's interfaces
+* adjusting notification preferences; note that these are generated automatically through https://publiclab.org/settings. They include:
+    * whether you receive email (`notifications:noemail`)
+    * what types of events trigger notifications (`notifications:like`, `notifications:mentioned`)
+    * whether you receive notifications for the moderation system (`no-moderation-emails`)
+    * whether you receive a weekly digest of spam posts (`digest:weekly:spam`)
+* your OAuth login methods (`oauth:twitter`), such as "log in with Google/Facebook/Twitter" - these cannot be added manually, but only through the login process
+
+As suggested from the above list, some profile tags generate additional features, similarly to Power Tags (see above). 
+
+Note that adding a profile tag such as `water-quality` would have no relation or effect on membership or subscription to the `water-quality` tag, as the systems are separate. 
