@@ -140,7 +140,7 @@ How this works technically:
 
 ### Profile tags
 
-Profile Tags are a completely separate system from Tags, though they are structured similarly. Instead of applying tags to content, Profile Tags are applied to user accounts, and appear on users' profiles. They do not reference nodes (wikis, notes, questions) at all. They have a more limited, infrastructural use and are more rarely used in practice, but these uses include:
+Profile Tags (Rails model `UserTag`) are a completely separate system from Tags, though they are structured similarly. Instead of applying tags to content, Profile Tags are applied to user accounts, and appear on users' profiles. They do not reference nodes (wikis, notes, questions) at all. They have a more limited, infrastructural use and are more rarely used in practice, but these uses include:
 
 * adding a location to your profile with `lat:41`, `lon:-71`, and `zoom:6` style tags, subject to location privacy tag `location:blurred`; [read more here](https://publiclab.org/location-privacy)
 * determining membership in a "group" -- such as moderators, or educators. This is an old and not much used system; [read more here](https://publiclab.org/wiki/power-tags#Inline+People+Lists).
