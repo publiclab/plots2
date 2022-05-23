@@ -318,7 +318,7 @@ GEM
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     loadcss-rails (2.0.1)
-    loofah (2.15.0)
+    loofah (2.18.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -364,7 +364,7 @@ GEM
     netrc (0.11.0)
     nifty-generators (0.4.6)
     nio4r (2.5.8)
-    nokogiri (1.13.3)
+    nokogiri (1.13.6)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     nokogumbo (2.0.4)
@@ -481,7 +481,7 @@ GEM
       ffi (~> 1.0)
     rb-readline (0.5.5)
     rdiscount (2.2.0.2)
-    react-rails (2.6.1)
+    react-rails (2.6.2)
       babel-transpiler (>= 0.7.0)
       connection_pool
       execjs
