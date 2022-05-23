@@ -10982,12 +10982,12 @@ react@^18.0.0:
   dependencies:
     loose-envify "^1.1.0"
 
-react_ujs@^2.6.0, react_ujs@^2.6.1:
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/react_ujs/-/react_ujs-2.6.1.tgz#a202a33c95c9e2bb18ab56926b7e79f3325ec855"
-  integrity sha512-9M33/A8cubStkZ2cpJSimcTD0RlCWiqXF6e90IQmMw/Caf/W0dtAzOtHtiQE3JjLbt/nhRR7NLPxMfnlm141ig==
+react_ujs@^2.6.1, react_ujs@^2.6.2:
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/react_ujs/-/react_ujs-2.6.2.tgz#28230c4082c6e99ecfe8cf59a8a95f3562fe89c5"
+  integrity sha512-4WH91hVZp0533LsTjbcd9uI9xS/7/e4QkFbDpDjy8Pr7GuUt1gE+cM0zml7Ii9aSUDl2A/zzkUrLN5X9akmViQ==
   dependencies:
-    react_ujs "^2.6.0"
+    react_ujs "^2.6.1"
 
 read-cache@^1.0.0:
   version "1.0.0"
@@ -13603,18 +13603,6 @@ window-size@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
   integrity sha1-VDjNLqk7IC76Ohn+iIeu58lPnJ0=
-
-"woofmark@git+https://github.com/jywarren/woofmark.git#plots2":
-  version "4.0.3"
-  resolved "git+https://github.com/jywarren/woofmark.git#78821fad8687757a4201fbef3be4b85418e785ef"
-  dependencies:
-    bullseye "1.4.6"
-    bureaucracy "1.0.7"
-    crossvent "1.5.0"
-    http-server "^0.12.3"
-    kanye "3.0.2"
-    local-storage "1.4.2"
-    seleccion "2.0.0"
 
 "woofmark@https://github.com/jywarren/woofmark.git#plots2":
   version "4.0.3"
