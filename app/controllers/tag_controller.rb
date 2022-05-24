@@ -131,11 +131,15 @@ class TagController < ApplicationController
       @questions = []
     else
       nodes = nodes.where('node.nid NOT IN (?)', @qids) if @node_type == 'note'
-      @questions = nodes.where('node.nid IN (?)', @qids) if @node_type == 'questions'
+      if @node_type == 'questions'
+        @questions = nodes.where('node.nid IN (?)', @qids)
+        @pagy, nodes = pagy(@questions, items: 24)
+      else
+        @pagy, nodes = pagy(nodes, items: 24)
+      end
     end
     nodes = nodes.order(order_by)
 
-    @pagy, nodes = pagy(nodes, items: 24)
     @notes = nodes
     @paginated = true
 
