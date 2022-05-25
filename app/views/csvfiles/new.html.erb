@@ -38,7 +38,8 @@
             uid: <%= current_user.id %>,
             filetitle: SimpleDataGrapherObject.view.fileTitle,
             filedescription: SimpleDataGrapherObject.view.fileDescription,
-            filestring: csvStringForDownload },
+            filestring: csvStringForDownload 
+        },
         success: function(data){
           let divAlert = document.createElement('div');
           divAlert.classList.add('alert');
@@ -53,9 +54,9 @@
           divAlert.classList.add('alert-danger');
           divAlert.innerHTML = 'There was some error in saving the file.';
           headerContainer.appendChild(divAlert);
-             }
-         });
-      }
+        }
+    });
+  }
   });     
   $('#' + prevFile).click(function(){
     $.ajax({
@@ -66,14 +67,14 @@
         displayPreviousFiles(data);
       },
       error: function(XMLHttpRequest, textStatus, errorThrown){
-          console.log(errorThrown);
-          let divAlert = document.createElement('div');
-          divAlert.classList.add('alert');
-          divAlert.classList.add('alert-danger');
-          divAlert.innerHTML = 'There was some error in retrieving the file.';
-          headerContainer.appendChild(divAlert);
-          }
-      });
+        console.log(errorThrown);
+        let divAlert = document.createElement('div');
+        divAlert.classList.add('alert');
+        divAlert.classList.add('alert-danger');
+        divAlert.innerHTML = 'There was some error in retrieving the file.';
+        headerContainer.appendChild(divAlert);
+      } 
+   });
   }); 
 
   function displayPreviousFiles(data){
@@ -129,13 +130,14 @@
          filetitle: SimpleDataGrapherObject.view.fileTitle,
          filedescription: SimpleDataGrapherObject.view.fileDescription,
          filestring: csvStringForDownload,
-         graphobject: JSON.stringify(dataObject) },
+         graphobject: JSON.stringify(dataObject) 
+      }, 
       success: function(data){
         window.location = '/post?body=%5Bsimple-data-grapher:i/' + data['uid'] + '/' + data['id'] + '%5D';
       },
       error: function(XMLHttpRequest, textStatus, errorThrown){
         console.log(errorThrown);
-            }
+      }
         });
     });
 
