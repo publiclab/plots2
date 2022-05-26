@@ -611,7 +611,7 @@ GEM
       rack (~> 2.2)
       rack-protection (= 2.2.0)
       tilt (~> 2.0)
-    skylight (5.3.1)
+    skylight (5.3.2)
       activesupport (>= 5.2.0)
     sprockets (4.0.3)
       concurrent-ruby (~> 1.0)
