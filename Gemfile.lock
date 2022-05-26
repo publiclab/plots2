@@ -359,7 +359,7 @@ GEM
       ruby2_keywords (~> 0.0.1)
     mustermann-grape (1.0.1)
       mustermann (>= 1.0.0)
-    mysql2 (0.5.3)
+    mysql2 (0.5.4)
     naught (1.1.0)
     netrc (0.11.0)
     nifty-generators (0.4.6)
