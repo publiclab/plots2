@@ -51,7 +51,7 @@
     "leaflet.fullscreen": "2.2.0",
     "marked": "^4.0.12",
     "megamark": "~3.3.0",
-    "moment": "~> 2.29.1",
+    "moment": "~> 2.29.3",
     "noty": "3.1.4",
     "phantomjs-prebuilt": "^2.1.16",
     "popper.js": "^1.16.1",
