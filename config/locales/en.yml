@@ -343,6 +343,11 @@ en:
       your_work: "Your work"
       share_work: "Share your work"
     dashboard:
+      welcome: "Hello, welcome to Public Lab!"
+      description: "This is your dashboard, where recent updates from other community members show up. It'll keep you updated with recent progress, news and developments."
+      get_started: "To get started at Public Lab, try:"
+      ask_question: "Asking a question"
+      explore_projects: "Exploring projects"
       from_blog: "From the <a href='%{url}'>Public Lab Blog</a>"
       by: "by"
     _node_event: 
