@@ -125,13 +125,14 @@
     $.ajax({
       url: '/graph/note/graphobject',
       type: 'post',
-      data: { object: JSON.stringify(arr),
-         uid: <%= current_user.id %>,
-         filetitle: SimpleDataGrapherObject.view.fileTitle,
-         filedescription: SimpleDataGrapherObject.view.fileDescription,
-         filestring: csvStringForDownload,
-         graphobject: JSON.stringify(dataObject) 
-      }, 
+      data: {
+        object: JSON.stringify(arr),
+        uid: <%= current_user.id %>,
+        filetitle: SimpleDataGrapherObject.view.fileTitle,
+        filedescription: SimpleDataGrapherObject.view.fileDescription,
+        filestring: csvStringForDownload,
+        graphobject: JSON.stringify(dataObject) 
+     }, 
       success: function(data){
         window.location = '/post?body=%5Bsimple-data-grapher:i/' + data['uid'] + '/' + data['id'] + '%5D';
       },
