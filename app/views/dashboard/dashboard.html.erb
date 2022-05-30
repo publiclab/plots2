@@ -3,20 +3,20 @@
   <div class="alert alert-success">
     <button type="button" class="close" data-dismiss="alert">×</button>
 
-    <h2>Hello, welcome to Public Lab!</h2>
+    <h2><%= translation('dashboard.dashboard.welcome') %></h2>
 
-    This is your dashboard, where recent updates from other community members show up. It'll keep you updated with
-    recent progress, news and developments.
+    <%= translation('dashboard.dashboard.description') %>
+
     <br>
-    To get started at Public Lab, try:
+    <%= translation('dashboard.dashboard.get_started') %>
     <br><br>
     <p>
       <a class="btn btn-sm btn-light" href="/questions" target="_blank">
-        Asking a question
+        <%= translation('dashboard.dashboard.ask_question') %>
       </a>
 
       <a class="btn btn-sm btn-light" href="/methods" target="_blank">
-        Exploring projects
+        <%= translation('dashboard.dashboard.explore_projects') %>
       </a>
     </p>
   </div>
