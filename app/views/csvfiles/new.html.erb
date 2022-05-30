@@ -34,11 +34,12 @@
       $.ajax({
         url: '/graph/object',
         type: 'post',
-        data:   { object: JSON.stringify(arr),
-            uid: <%= current_user.id %>,
-            filetitle: SimpleDataGrapherObject.view.fileTitle,
-            filedescription: SimpleDataGrapherObject.view.fileDescription,
-            filestring: csvStringForDownload 
+        data: {
+          object: JSON.stringify(arr),
+          uid: <%= current_user.id %>,
+          filetitle: SimpleDataGrapherObject.view.fileTitle,
+          filedescription: SimpleDataGrapherObject.view.fileDescription,
+          filestring: csvStringForDownload 
         },
         success: function(data){
           let divAlert = document.createElement('div');
