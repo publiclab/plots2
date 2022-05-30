@@ -25,13 +25,15 @@
     </div>
   <%else %>
     <div style="margin: 2.2rem 0;">
-    <a class="btn btn-lg btn-outline-secondary blurred-location-input" submit_to="/profile/tags/create/<%= current_us
-    er.uid %>"><i class="fa fa-map-marker" style="color:#c40;"></i><%= translation('dashboard_v2.sidebar.add_location') %> <
-    /a>
+    <a class="btn btn-lg btn-outline-secondary blurred-location-input" submit_to="/profile/tags/create/<%= current_user.uid %>">
+      <i class="fa fa-map-marker" style="color:#c40;"></i>
+      <%= translation('dashboard_v2.sidebar.add_location') %> 
+    </a>
       <p style="font-size: smaller; margin: 0.3rem 0;">
         <%= translation('dashboard_v2.sidebar.location_work') %><br>
-        <a href="https://publiclab.org/location-privacy" target="_blank"><%= translation('dashboard_v2.sidebar.location
-      _privacy') %> »</a>
+        <a href="https://publiclab.org/location-privacy" target="_blank">
+          <%= translation('dashboard_v2.sidebar.location_privacy') %> »
+        </a>
       </p>
     </div>
   <% end %>
