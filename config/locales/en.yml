@@ -846,6 +846,8 @@ en:
     home:
       read_more: "Read more"
       more_projects: "More projects"
+    _social:
+      tweet: "Tweet"
     dashboard:
       welcome: "Welcome!"
       need_help: "Need help, want to float an idea, or find collaborators?"
