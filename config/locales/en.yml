@@ -325,6 +325,7 @@ en:
       air_quality: "Air Quality"
       water_quality: "Water Quality"
       developers: "Developers"
+      follow_publiclab: "Follow @PublicLab"
     _activity:
       activity: "Activity"
       all_updates: "All updates"
@@ -367,6 +368,7 @@ en:
         ask_question: "Ask a question"
         post_event: "Post an event"
         tell_story_blog: "Tell your story on the blog"
+        toggle_dropdown: "Toggle Dropdown"
       dashboard: "Dashboard"
       community_research: "Community research"
       welcome: "Welcome"
