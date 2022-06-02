@@ -567,10 +567,11 @@ GEM
       tilt
     scrypt (3.0.7)
       ffi-compiler (>= 1.0, < 2.0)
-    selenium-webdriver (4.1.0)
+    selenium-webdriver (4.2.1)
       childprocess (>= 0.5, < 5.0)
       rexml (~> 3.2, >= 3.2.5)
-      rubyzip (>= 1.2.2)
+      rubyzip (>= 1.2.2, < 3.0)
+      websocket (~> 1.0)
     semantic_range (3.0.0)
     sentry-delayed_job (5.3.1)
       delayed_job (>= 4.0)
@@ -671,6 +672,7 @@ GEM
       railties (>= 5.2)
       semantic_range (>= 2.3.0)
     webrick (1.7.0)
+    websocket (1.2.9)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -776,7 +778,7 @@ DEPENDENCIES
   sassc (~> 2.4.0)
   sassc-rails
   scrypt (~> 3)
-  selenium-webdriver (~> 4.1.0)
+  selenium-webdriver (~> 4.2.1)
   sentry-delayed_job
   sentry-rails
   sentry-resque
