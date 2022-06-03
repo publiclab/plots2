@@ -57,7 +57,7 @@
     "popper.js": "^1.16.1",
     "prop-types": "^15.8.1",
     "publiclab-editor": "^3.1.0",
-    "react": "^18.0.0",
+    "react": "^18.1.0",
     "react-dom": "^18.0.0",
     "react_ujs": "^2.6.2",
     "short-code-forms": "jywarren/short-code-forms#~0.0.1",
@@ -69,7 +69,7 @@
     "woofmark": "~4.2.0"
   },
   "devDependencies": {
-    "webpack-dev-server": "^4.9.0"
+    "webpack-dev-server": "^4.9.1"
   },
   "homepage": "https://github.com/publiclab/plots2",
   "engines": {

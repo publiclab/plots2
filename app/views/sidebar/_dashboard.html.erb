@@ -4,7 +4,7 @@
     <div class="btn-group" role="group">
       <a class="btn btn-primary btn-lg dropdown-toggle fa-white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <span class="caret"></span>
-        <span class="sr-only">Toggle Dropdown</span>
+        <span class="sr-only"><%= translation('dashboard._header.dropdown.toggle_dropdown') %></span>
       </a>
       <div class="dropdown-menu dropdown-menu-right mt-2">
           <%= create_nav_dropdown_item("post?n=15322&title=How%20to%20...&tags=activity:new,draft","dashboard._header.dropdown.share_activity") %>
@@ -21,14 +21,19 @@
   <% if current_user.has_power_tag("lat") && current_user.has_power_tag("lon")%>
     <div style="margin: 2.2rem 0;">
       <a class="btn btn-lg btn-outline-secondary" href="https://publiclab.org/map/#<%= current_user.get_value_of_power_tag("zoom").to_i%>/<%=current_user.lat.to_f %>/<%=current_user.lon.to_f %>">
-      <i class="fa fa-map-marker" style="color:#c40;"></i> Nearby Activity</a>
+      <i class="fa fa-map-marker" style="color:#c40;"></i> <%= translation('dashboard_v2.sidebar.nearby_activity') %></a>
     </div>
   <%else %>
     <div style="margin: 2.2rem 0;">
-      <a class="btn btn-lg btn-outline-secondary blurred-location-input" submit_to="/profile/tags/create/<%= current_user.uid %>"><i class="fa fa-map-marker" style="color:#c40;"></i> Add your location</a>
+      <a class="btn btn-lg btn-outline-secondary blurred-location-input" submit_to="/profile/tags/create/<%= current_user.uid %>">
+        <i class="fa fa-map-marker" style="color:#c40;"></i>
+        <%= translation('dashboard_v2.sidebar.add_location') %> 
+      </a>
       <p style="font-size: smaller; margin: 0.3rem 0;">
-        Add your location to see work near you<br>
-        <a href="https://publiclab.org/location-privacy" target="_blank">About location privacy »</a>
+      <%= translation('dashboard_v2.sidebar.location_work') %><br>
+      <a href="https://publiclab.org/location-privacy" target="_blank">
+        <%= translation('dashboard_v2.sidebar.location_privacy') %> »
+      </a>
       </p>
     </div>
   <% end %>
@@ -60,7 +65,7 @@
     <% end %>
     <!-- Twitter follow button, options can be adjusted here: https://publish.twitter.com/# -->
     <div class="social-media-btn">
-      <a href="https://twitter.com/PublicLab?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-size="large" data-show-count="false">Follow @PublicLab</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+      <a href="https://twitter.com/PublicLab?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-size="large" data-show-count="false"><%= translation('dashboard._sidebar.follow_publiclab') %></a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
     </div>
     <!-- Facebook like button, options can be adjusted here: https://developers.facebook.com/docs/plugins/like-button/  -->
     <div class="social-media-btn">  

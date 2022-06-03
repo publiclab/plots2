@@ -183,58 +183,58 @@ var questions = [<%= @questions %>];
 var answers = [<%= @answers %>];
 
 var options = {
-    chart: {
-        type: 'bar',
-        height: 130,
-        width: '90%',
-        stacked: true,
-        stackType: '100%'
+  chart: {
+    type: 'bar',
+    height: 130,
+    width: '90%',
+    stacked: true,
+    stackType: '100%'
+  },
+  plotOptions: {
+    bar: {
+      horizontal: true,
     },
-    plotOptions: {
-        bar: {
-            horizontal: true,
-        },
-    },
-    stroke: {
-        width: 1,
-        colors: ['#fff']
-    },
-    series: [{
-        name: 'Questions asked',
-        data: questions
-    },{
-        name: 'Questions answered',
-        data: answers
-    }],
-        fill: {
-            opacity: 1
-        },
-        title: {
-            text: "Questions asked vs Answered in this period",
-        },
+  },
+  stroke: {
+    width: 1,
+    colors: ['#fff']
+  },
+  series: [{
+    name: 'Questions asked',
+    data: questions
+  },{
+    name: 'Questions answered',
+    data: answers
+  }],
+  fill: {
+    opacity: 1
+  },
+  title: {
+    text: "Questions asked vs Answered in this period",
+  },
 
-        legend: {
-            show: false,
-        },
-        grid: {
-            show: false,
-        },
-        xaxis: {
-            labels: {
-                show: false,
-            },
-            axisBorder: {
-                show: false
-            },
-            lines: {
-                show: false,
-            }
-        },
-        yaxis: {
-            labels: {
-                show: false,
-            }
-        }
+  legend: {
+    show: false,
+  },
+  grid: {
+    show: false,
+  },
+  xaxis: {
+    labels: {
+      show: false,
+    },
+    axisBorder: {
+      show: false
+    },
+    lines: {
+      show: false,
+    }
+  },
+  yaxis: {
+    labels: {
+      show: false,
+    }
+  }
 
 }
 
