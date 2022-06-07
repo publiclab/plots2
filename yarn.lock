@@ -1997,6 +1997,13 @@ basic-auth@^1.0.3:
   resolved "https://registry.yarnpkg.com/basic-auth/-/basic-auth-1.1.0.tgz#45221ee429f7ee1e5035be3f51533f1cdfd29884"
   integrity sha1-RSIe5Cn37h5QNb4/UVM/HN/SmIQ=
 
+basic-auth@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/basic-auth/-/basic-auth-2.0.1.tgz#b998279bf47ce38344b4f3cf916d4679bbf51e3a"
+  integrity sha512-NF+epuEdnUYVlGuhaxbbq+dvJttwLnGY+YixlXlME5KpQ5W3CnXA5cVTneY3SPbPDRkcjMbifrwmFYcClgOZeg==
+  dependencies:
+    safe-buffer "5.1.2"
+
 batch@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/batch/-/batch-0.6.1.tgz#dc34314f4e679318093fc760272525f94bf25c16"
@@ -2834,7 +2841,7 @@ chalk@^2.0, chalk@^2.0.0, chalk@^2.0.1, chalk@^2.4.1, chalk@^2.4.2:
     escape-string-regexp "^1.0.5"
     supports-color "^5.3.0"
 
-chalk@^4.0.0, chalk@^4.1.0:
+chalk@^4.0.0, chalk@^4.1.0, chalk@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-4.1.2.tgz#aac4e2b7734a740867aeb16bf02aad556a1e7a01"
   integrity sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==
@@ -5833,6 +5840,14 @@ global@~4.3.0:
     min-document "^2.19.0"
     process "~0.5.1"
 
+global@~4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/global/-/global-4.4.0.tgz#3e7b105179006a323ed71aafca3e9c57a5cc6406"
+  integrity sha512-wv/LAoHdRE3BeTGz53FAamhGlPLhlssK45usmGFThIi4XqnBmjKQ16u+RNbP7WvigRZDxUsM0J3gcQ5yicaL0w==
+  dependencies:
+    min-document "^2.19.0"
+    process "^0.11.10"
+
 globals@^11.1.0:
   version "11.12.0"
   resolved "https://registry.yarnpkg.com/globals/-/globals-11.12.0.tgz#ab8795338868a0babd8525758018c2a7eb95c42e"
@@ -5988,6 +6003,14 @@ graceful-fs@~2.0.0:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-2.0.3.tgz#7cd2cdb228a4a3f36e95efa6cc142de7d1a136d0"
   integrity sha1-fNLNsiiko/Nule+mzBQt59GhNtA=
+
+"grow-textarea@git+https://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669":
+  version "1.0.1"
+  uid d54141c9456343f14cc6c935faa0915af09eb669
+  resolved "git+https://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669"
+  dependencies:
+    component-event "^0.1.4"
+    ianstormtaylor-css "^0.3.1"
 
 "grow-textarea@https://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669":
   version "1.0.1"
@@ -6328,7 +6351,7 @@ hawk@~3.1.0:
     hoek "2.x.x"
     sntp "1.x.x"
 
-he@1.2.0, he@^1.1.1:
+he@1.2.0, he@^1.1.1, he@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/he/-/he-1.2.0.tgz#84ae65fa7eafb165fddb61566ae14baf05664f0f"
   integrity sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==
@@ -6550,6 +6573,25 @@ http-server@^0.12.3:
     portfinder "^1.0.25"
     secure-compare "3.0.1"
     union "~0.5.0"
+
+http-server@^14.1.0:
+  version "14.1.1"
+  resolved "https://registry.yarnpkg.com/http-server/-/http-server-14.1.1.tgz#d60fbb37d7c2fdff0f0fbff0d0ee6670bd285e2e"
+  integrity sha512-+cbxadF40UXd9T01zUHgA+rlo2Bg1Srer4+B4NwIHdaGxAGGv59nYRnGGDJ9LBk7alpS0US+J+bLLdQOOkJq4A==
+  dependencies:
+    basic-auth "^2.0.1"
+    chalk "^4.1.2"
+    corser "^2.0.1"
+    he "^1.2.0"
+    html-encoding-sniffer "^3.0.0"
+    http-proxy "^1.18.1"
+    mime "^1.6.0"
+    minimist "^1.2.6"
+    opener "^1.5.1"
+    portfinder "^1.0.28"
+    secure-compare "3.0.1"
+    union "~0.5.0"
+    url-join "^4.0.1"
 
 http-signature@~0.10.0:
   version "0.10.1"
@@ -8575,6 +8617,11 @@ minimist@^1.1.0, minimist@^1.1.3, minimist@^1.2.0, minimist@^1.2.3, minimist@^1.
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
   integrity sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
 
+minimist@^1.2.6:
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.6.tgz#8637a5b759ea0d6e98702cfb3a9283323c93af44"
+  integrity sha512-Jsjnk4bw3YJqYzbdyBiNsPWHPfO++UGG749Cxs6peCu5Xg4nrena6OVxOYxrQTqww0Jmwt+Ref8rggumkTLz9Q==
+
 minimist@~0.0.1:
   version "0.0.10"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-0.0.10.tgz#de3f98543dbf96082be48ad1a0c7cda836301dcf"
@@ -9918,7 +9965,7 @@ popper.js@1.16.1, popper.js@^1.16.1:
   resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.16.1.tgz#2a223cb3dc7b6213d740e40372be40de43e65b1b"
   integrity sha512-Wb4p1J4zyFTbM+u6WuO4XstYx4Ky9Cewe4DWrel7B0w6VVICvPwdOpotjzcf6eD8TsckVnIMNONQyPIUFOUbCQ==
 
-portfinder@^1.0.13, portfinder@^1.0.25:
+portfinder@^1.0.13, portfinder@^1.0.25, portfinder@^1.0.28:
   version "1.0.28"
   resolved "https://registry.yarnpkg.com/portfinder/-/portfinder-1.0.28.tgz#67c4622852bd5374dd1dd900f779f53462fac778"
   integrity sha512-Se+2isanIcEqf2XMHjyUKskczxbPH7dQnlMjXX6+dybayyHvAf/TCgyMRlzf/B6QDhAEFOGes0pzRo3by4AbMA==
@@ -10737,10 +10784,10 @@ publiclab-editor@^2.0.0:
     woofmark "https://github.com/jywarren/woofmark.git#plots2"
     xhr "~2.5.0"
 
-publiclab-editor@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/publiclab-editor/-/publiclab-editor-3.1.0.tgz#1568cc69e9e184527b5573cfb2df772399c75928"
-  integrity sha512-euEYjK67dpvhOd1km6mYf4eNA0EJUtWgKYqSs4iye9ptrJ/xULo5iLybifPaV5hk6o31j7XDhSgkjGhZQdyuDg==
+publiclab-editor@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/publiclab-editor/-/publiclab-editor-3.1.1.tgz#58c3cdf9b5c683f33862f694098a94658e7aa615"
+  integrity sha512-6bIuwKcVQlrb4oOjmqM3gYG+BVtqaWfHeVQK06JEgYFK/TsuYfj9BC3XBqzXyE4KboD7awY4BhLDF2R+jjhj2g==
   dependencies:
     at.js "^1.5.4"
     blueimp-file-upload "^10.30.1"
@@ -10750,8 +10797,8 @@ publiclab-editor@^3.1.0:
     crossvent "1.5.5"
     domador "2.4.4"
     font-awesome "~4.7.0"
-    grow-textarea "https://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669"
-    http-server "^0.12.3"
+    grow-textarea "git+https://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669"
+    http-server "^14.1.0"
     jquery "^3.6.0"
     leaflet "^1.6.0"
     leaflet-blurred-location "^1.7.1"
@@ -10760,8 +10807,8 @@ publiclab-editor@^3.1.0:
     popper.js "1.16.1"
     resig-class "~1.0.0"
     typeahead.js-browserify "~1.0.7"
-    woofmark "https://github.com/jywarren/woofmark.git#plots2"
-    xhr "~2.5.0"
+    woofmark "git+https://github.com/jywarren/woofmark.git#plots2"
+    xhr "~2.6.0"
 
 pump@^2.0.0:
   version "2.0.1"
@@ -13170,6 +13217,11 @@ url-join@^2.0.5:
   resolved "https://registry.yarnpkg.com/url-join/-/url-join-2.0.5.tgz#5af22f18c052a000a48d7b82c5e9c2e2feeda728"
   integrity sha1-WvIvGMBSoACkjXuCxenC4v7tpyg=
 
+url-join@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/url-join/-/url-join-4.0.1.tgz#b642e21a2646808ffa178c4c5fda39844e12cde7"
+  integrity sha512-jk1+QP6ZJqyOiuEI9AEWQfju/nB2Pw466kbA0LEZljHwKeMgd9WrAEgEGxjPDD2+TNbbb37rTyhEfrCXfuKXnA==
+
 url-parse-lax@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/url-parse-lax/-/url-parse-lax-1.0.0.tgz#7af8f303645e9bd79a272e7a14ac68bc0609da73"
@@ -13617,6 +13669,19 @@ window-size@0.1.0:
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
   integrity sha1-VDjNLqk7IC76Ohn+iIeu58lPnJ0=
 
+"woofmark@git+https://github.com/jywarren/woofmark.git#plots2":
+  version "4.0.3"
+  uid "78821fad8687757a4201fbef3be4b85418e785ef"
+  resolved "git+https://github.com/jywarren/woofmark.git#78821fad8687757a4201fbef3be4b85418e785ef"
+  dependencies:
+    bullseye "1.4.6"
+    bureaucracy "1.0.7"
+    crossvent "1.5.0"
+    http-server "^0.12.3"
+    kanye "3.0.2"
+    local-storage "1.4.2"
+    seleccion "2.0.0"
+
 "woofmark@https://github.com/jywarren/woofmark.git#plots2":
   version "4.0.3"
   uid "78821fad8687757a4201fbef3be4b85418e785ef"
@@ -13706,6 +13771,16 @@ xhr@~2.5.0:
   integrity sha512-4nlO/14t3BNUZRXIXfXe+3N6w3s1KoxcJUUURctd64BLRe67E4gRwp4PjywtDY72fXpZ1y6Ch0VZQRY/gMPzzQ==
   dependencies:
     global "~4.3.0"
+    is-function "^1.0.1"
+    parse-headers "^2.0.0"
+    xtend "^4.0.0"
+
+xhr@~2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/xhr/-/xhr-2.6.0.tgz#b69d4395e792b4173d6b7df077f0fc5e4e2b249d"
+  integrity sha512-/eCGLb5rxjx5e3mF1A7s+pLlR6CGyqWN91fv1JgER5mVWg1MZmlhBvy9kjcsOdRk8RrIujotWyJamfyrp+WIcA==
+  dependencies:
+    global "~4.4.0"
     is-function "^1.0.1"
     parse-headers "^2.0.0"
     xtend "^4.0.0"
