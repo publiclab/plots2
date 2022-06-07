@@ -1,6 +1,6 @@
 <%= form_for :user_session, :as => :user_session, :url => "/user_sessions", :html => {:class => "form user-sessions-form"} do |f| %>
 
-<input type="hidden" name="return_to" class="login-modal-redirect" value="<%= request.fullpath %>" />
+<input type="hidden" name="return_to" class="login-modal-redirect" value="<%= params[:return_to] || request.fullpath %>" />
 
 <center>
 <h2><%= raw translation('user_sessions.new.log_in') %></h2>
