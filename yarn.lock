@@ -13629,18 +13629,6 @@ window-size@0.1.0:
     local-storage "1.4.2"
     seleccion "2.0.0"
 
-woofmark@~4.2.0:
-  version "4.2.6"
-  resolved "https://registry.yarnpkg.com/woofmark/-/woofmark-4.2.6.tgz#de6670a7abeee1e6252c4dc8f7eae748f0da50c7"
-  integrity sha512-DnCFnvnnBWelwrY6mAOj7DuHAJmZ8QB3Qbk5a6sGLMcV3KU/HXF2dbK7GnvC4WlErAPGMiznS7qXRc7f9kl+CA==
-  dependencies:
-    bullseye "1.4.6"
-    bureaucracy "1.0.7"
-    crossvent "1.5.0"
-    kanye "3.0.2"
-    local-storage "1.4.2"
-    seleccion "2.0.0"
-
 word-wrap@^1.2.3, word-wrap@~1.2.3:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/word-wrap/-/word-wrap-1.2.3.tgz#610636f6b1f703891bd34771ccb17fb93b47079c"
