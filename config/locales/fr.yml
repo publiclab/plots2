@@ -507,6 +507,16 @@ fr:
         fellows: "Suit"
         lending_library: "Librairie de prêts"
       search: "Rechercher dans Public Lab"
+      tools:
+        tools_title: "Outils"
+        methods: "Méthodes"
+        kits_initiative: "Initiative des trousses"
+        store: "Magasin"
+        map_knitter: "Map Knitter"
+        spectral_workbench: "Spectral Workbench"
+        code_community: "Communauté de codes"
+        kits: "Trousses"
+        software: "Logiciel"
       about:
         about_title: "À propos de nous"
         stories: "Récits"
@@ -518,6 +528,8 @@ fr:
         fund: "Comment nous sommes financés"
         press_and_media: "Presse et Média"
         contact: "Contact"
+        newsletter: "Bulletin"
+        careers: "Carrières"
       get_involved:
         get_involved_title: "Participez"
         getting_started: "Pour Commencer"
