@@ -48,9 +48,11 @@
     <meta name="google-translate-customization" content="4ce4c7c384354172-5179499fc244f592-g2b333d0d29f59663-d" />
 
     <% if current_user %>
-        <%= javascript_include_tag "cable" %>
+      <%= javascript_include_tag "cable" %>
     <% end %>
 
+    <script src='https://js.sentry-cdn.com/0490297edae647b3bd935bdb4658da54.min.js' crossorigin="anonymous"></script>
+    
     <% if @is_revision %>
         <meta name="robots" content="noindex">
     <% end %>
@@ -107,11 +109,11 @@
       background: #BABABA;
       }
 
-  </style>
+    </style>
 
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/bootstrap-slider.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/css/bootstrap-slider.min.css" />
-  <%= javascript_pack_tag 'application' %>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/bootstrap-slider.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/css/bootstrap-slider.min.css" />
+    <%= javascript_pack_tag 'application' %>
   </head>
 
   <body>
