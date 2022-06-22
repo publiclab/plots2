@@ -94,17 +94,17 @@ class Tag < ApplicationRecord
 
   # finds recent nodes - should drop "limit" and allow use of chainable .limit()
   def self.find_nodes_by_type(tagnames, type = 'note', limit = 10, author_id = -1)
-    if author_id != -1
-      nodes = Node.where(status: 1, type: type, uid: author_id)
-                  .includes(:tag)
-                  .references(:term_data)
-                  .where('term_data.name IN (?)', tagnames)
-    else 
-      nodes = Node.where(status: 1, type: type)
-                  .includes(:tag)
-                  .references(:term_data)
-                  .where('term_data.name IN (?)', tagnames)
-    end
+    nodes = if author_id != -1
+              Node.where(status: 1, type: type, uid: author_id)
+              .includes(:tag)
+              .references(:term_data)
+              .where('term_data.name IN (?)', tagnames)
+            else
+              Node.where(status: 1, type: type)
+              .includes(:tag)
+              .references(:term_data)
+              .where('term_data.name IN (?)', tagnames)
+            end
     # .select(%i[node.nid node.status node.type community_tags.nid community_tags.tid term_data.name term_data.tid])
     # above select could be added later for further optimization
     order = 'node_revisions.timestamp DESC'
