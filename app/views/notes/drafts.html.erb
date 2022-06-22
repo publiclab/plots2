@@ -1,5 +1,5 @@
 <div class="col-lg-9">
-  <h3 class="mb-4">Your Drafts (<%= @drafts.count %>)</h3>
+  <h3 class="mb-4"><%= translation('notes.drafts.your_drafts') %> (<%= @drafts.count %>)</h3>
   <div id="notes">
     <div class="row">
       <% @drafts.each_with_index do |node,i| %>
