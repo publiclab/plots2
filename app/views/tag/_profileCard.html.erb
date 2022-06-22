@@ -7,7 +7,7 @@
       <p class="posted-by-links"><a href="/tag/<%= tag.name %>"><%= pluralize(Tag.follower_count(tag.name), 'person') %> discussing</a></p>
     </div>
     <div class="card-body">
-      <% Tag.find_nodes_by_type(tag.name, type = 'note', limit = 3).each do |node|  %>
+      <% Tag.find_nodes_by_type(tag.name, type = 'note', limit = 3, author_id = @profile_user.id).each do |node|  %>
         <div class="posted-by-links">
           <% if node.main_image %>
             <img class="rounded-circle" id="profile-photo" style="width:20px; height:20px; margin-right:8px; display: inline-block;" src="<%= node.main_image.path(:default) %>" />
@@ -17,7 +17,6 @@
             <div class="circle"></div>
           <% end %>
           <a class="post-title" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= (node.type == 'note') ? node.title : node.latest.title %></a>
-          by <a href="/profile/<%= node.author.name %>" class="text-decoration-none">@<%= node.author.name %></a>
         </div>
       <% end %>
     </div>
