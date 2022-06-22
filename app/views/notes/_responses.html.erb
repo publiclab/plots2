@@ -16,12 +16,12 @@
         <%= translation('notes._responses.post_' + response_type) %>
       </a>
 
-      Help out by offering feedback!
+      <%= translation('notes._responses.offer_feedback') %>
 
       <% if @node.power_tag('activity') %>
         <% if Tag.where(name: 'activities:' + @node.power_tag('activity')).first %>
           <% if Tag.where(name: 'activities:' + @node.power_tag('activity')).first.nodes.size > 0 %>
-            <a id="other-activities" href="<%= Tag.where(name: 'activities:' + @node.power_tag('activity')).first.nodes.first.path %>">Browse other activities for "<%= @node.power_tag('activity') %>"</a>
+            <a id="other-activities" href="<%= Tag.where(name: 'activities:' + @node.power_tag('activity')).first.nodes.first.path %>"><%= translation('notes._responses.browse_activities') %> "<%= @node.power_tag('activity') %>"</a>
           <% end %>
         <% end %>
       <% end %>
@@ -54,7 +54,7 @@
         <%= raw insert_extras(" [notes:#{response_type}:#{@node.id}]") %>
       <% else %>
         <p>
-          None yet. <a href="/post?tags=<%= response_type %>:<%= @node.id %><% if response_type == 'response' %>,hidden:response<% end %><%= ',' + (@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') if @tagnames && @tagnames.size > 0%>">Be the first to post one!</a>
+          <%= translation('notes._responses.none_yet') %> <a href="/post?tags=<%= response_type %>:<%= @node.id %><% if response_type == 'response' %>,hidden:response<% end %><%= ',' + (@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') if @tagnames && @tagnames.size > 0%>"><%= translation('notes._responses.be_the_first_to_post') %></a>
         </p>
       <% end %>
     <% end %>
