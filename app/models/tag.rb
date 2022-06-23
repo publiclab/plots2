@@ -94,7 +94,9 @@ class Tag < ApplicationRecord
 
   # finds recent nodes - should drop "limit" and allow use of chainable .limit()
   def self.find_nodes_by_type(tagnames, type = 'note', limit = 10, author_id = nil)
-    nodes = Node.where(status: 1, type: type, uid: author_id)
+    query = {status: 1, type: type}
+    query['uid'] = author_id unless author_id.blank? 
+    nodes = Node.where(query)
               .includes(:tag)
               .references(:term_data)
               .where('term_data.name IN (?)', tagnames)
