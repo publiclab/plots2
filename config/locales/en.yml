@@ -303,7 +303,7 @@ en:
           <b>%{member_count}  member registrations</b>
           and <b>%{people_count}  contributors </b> posted notes, wikis, questions, comments, or revisions in this period.
     drafts:
-        your_drafts: "Your Drafts"
+      your_drafts: "Your Drafts"
   images:
     upload_an_image: "Upload an image"
     image_title: "Image title"
