@@ -733,6 +733,8 @@ en:
         map_knitter: "Map Knitter"
         spectral_workbench: "Spectral Workbench"
         code_community: "Code Community"
+        kits: "Kits"
+        software: "Software"
       about:
         about_title: "About Us"
         stories: "Stories"
@@ -744,6 +746,8 @@ en:
         fund: "How we're funded"
         press_and_media: "Press and Media"
         contact: "Contact"
+        newsletter: "Newsletter"
+        careers: "Careers"
       get_involved:
         get_involved_title: "Get Involved"
         getting_started: "Getting started"

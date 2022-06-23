@@ -62,7 +62,7 @@
 </div>
 
 <div class="collapse" id="info-div">
-  <p class="text-secondary font-italic"><i class="fa fa-certificate text-info" aria-hidden="true"></i> Moderators and admins have the ability to "spam" posts if they include inappropriate content, blatant advertising, or are otherwise problematic. If you're not sure, email at <a href="mailto:organizers@<%= request.host %>" class="badge badge-info badge-pill text-white">moderators@<%= request.host %></a>. If we all work together, we can keep spam to a minimum. Thanks for helping out!</p>
+  <p class="text-secondary font-italic"><i class="fa fa-certificate text-info" aria-hidden="true"></i> Moderators and admins have the ability to "spam" posts if they include inappropriate content, blatant advertising, or are otherwise problematic. If you're not sure, email at <a href="mailto:moderators@<%= request.host %>" class="badge badge-info badge-pill text-white">moderators@<%= request.host %></a>. If we all work together, we can keep spam to a minimum. Thanks for helping out!</p>
 </div>
 
 <nav class="navbar navbar-expand " id="bulk-nav">
@@ -89,7 +89,7 @@
 
       <% if params[:action] != "_spam_revisions" && params[:action] != "_spam_insights" &&  params[:action] != "_spam_comments" %>
         <li class="nav-item pr-4">
-          <a class="nav-link btn btn-light border disabled text-dark d-inline-flex border-curve" id="batch-ban" ><i class=" pt-1 pr-2 fa fa-flag text-warning" data-toggle="tooltip" data-placement="top" title="Ban users"></i> Ban</a>
+          <a class="nav-link btn btn-light border disabled text-dark d-inline-flex border-curve" id="batch-ban" ><i class=" pt-1 pr-2 fa fa-flag text-danger" data-toggle="tooltip" data-placement="top" title="Ban users"></i> Ban</a>
         </li>
         <li class="nav-item pr-4">
           <a class="nav-link btn btn-light border disabled text-dark d-inline-flex border-curve" id="batch-unban" ><i class=" pt-1 pr-2 fa fa-flag text-success" data-toggle="tooltip" data-placement="top" title="Unban users"></i> Unban</a>

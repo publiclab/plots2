@@ -19,6 +19,41 @@
     <h6 class="dropdown-header">View date range</h6>
     <a class="dropdown-item" href="?start=<%= (@start || Time.now - 1.month).to_formatted_s(:long) %>&end=<%= (@end || Time.now).to_formatted_s(:long) %>" >past month</a>
     <a class="dropdown-item" href="?start=<%= (@start || Time.now - 1.year).to_formatted_s(:long) %>&end=<%= (@end || Time.now).to_formatted_s(:long) %>" >past year</a>
+    <a class="dropdown-item" data-toggle="modal" data-target="#dateModal" >custom</a>
   <% end %>
+  </div>
+</div>
+
+<div class="modal" id="dateModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Select Custom Range</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-6">
+          <label>From</label><br>
+          <input type="date" id="from">
+          </div>
+          <div class="col-sm-6">
+            <label>To</label><br>
+            <input type="date" id="to">
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+      </div>
+
+    </div>
   </div>
 </div>

@@ -426,7 +426,7 @@ GEM
     puma (5.6.4)
       nio4r (~> 2.0)
     racc (1.6.0)
-    rack (2.2.3)
+    rack (2.2.3.1)
     rack-accept (0.4.5)
       rack (>= 0.4)
     rack-cors (1.1.1)
@@ -492,7 +492,7 @@ GEM
     redis (4.6.0)
     redis-namespace (1.8.2)
       redis (>= 3.0.4)
-    regexp_parser (2.4.0)
+    regexp_parser (2.5.0)
     representable (3.1.1)
       declarative (< 0.1.0)
       trailblazer-option (>= 0.1.1, < 0.2.0)
@@ -529,7 +529,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.11.0)
     rspec-support (3.11.0)
-    rubocop (1.30.0)
+    rubocop (1.30.1)
       parallel (~> 1.10)
       parser (>= 3.1.0.0)
       rainbow (>= 2.2.2, < 4.0)
@@ -540,10 +540,10 @@ GEM
       unicode-display_width (>= 1.4.0, < 3.0)
     rubocop-ast (1.18.0)
       parser (>= 3.1.1.0)
-    rubocop-performance (1.14.0)
+    rubocop-performance (1.14.2)
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
-    rubocop-rails (2.14.2)
+    rubocop-rails (2.15.0)
       activesupport (>= 4.2.0)
       rack (>= 1.1)
       rubocop (>= 1.7.0, < 2.0)
@@ -590,7 +590,7 @@ GEM
     sentry-sidekiq (5.3.1)
       sentry-ruby-core (~> 5.3.1)
       sidekiq (>= 3.0)
-    sidekiq (6.4.2)
+    sidekiq (6.5.1)
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
       redis (>= 4.2.0)
@@ -620,7 +620,7 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
-    sqlite3 (1.4.2)
+    sqlite3 (1.4.4)
     teaspoon (1.1.5)
       railties (>= 3.2.5, < 6)
     teaspoon-mocha (2.3.3)
@@ -769,7 +769,7 @@ DEPENDENCIES
   rest-client
   reverse_markdown
   rspec
-  rubocop (~> 1.30.0)
+  rubocop (~> 1.30.1)
   rubocop-performance
   rubocop-rails
   rubocop-rake
@@ -787,7 +787,7 @@ DEPENDENCIES
   sidekiq
   simplecov
   skylight
-  sqlite3 (~> 1.4.2)
+  sqlite3 (~> 1.4.4)
   teaspoon-mocha
   test-unit
   timecop
