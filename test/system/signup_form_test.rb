@@ -28,6 +28,7 @@ class SignupFormTest < ApplicationSystemTestCase
   end
 
   test "javascript I18njs translation helper working" do
+    visit '/signup'
     helper_output = page.execute_script("I18n.t('users._form.confirm_password')")
     assert_equal helper_output, "Retype your password to confirm"
   end
