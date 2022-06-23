@@ -37,7 +37,9 @@
           location: :responses
         } %>
       <% else %>
-        <p><%= raw translation('notes._comments.must_be_logged_in', :url1 => new_user_session_path( return_to: request.path )) %></p>
+        <p>
+          <%= raw translation('notes._comments.must_be_logged_in', :url1 => new_user_session_path( return_to: request.path )) %>
+        </p>
       <% end %>
     </div>
     <hr />
