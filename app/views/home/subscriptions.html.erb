@@ -15,7 +15,7 @@
 
   <hr />
   <p>
-    <a href="/subscriptions/digest" class="btn btn-outline-secondary"><i class="fa fa-list"></i> Subscriptions digest</a>
+    <a href="/subscriptions/digest" class="btn btn-outline-secondary"><i class="fa fa-list"></i> <%= raw translation('home.subscriptions.subscriptions_digest') %></a>
   </p>
   <hr />
 
@@ -32,9 +32,9 @@
 
   <hr />
 
-  <a href="/settings" class="btn btn-outline-secondary" style="margin-bottom: 10px;"><i class="fa fa-bell"></i> Notification settings </a>
+  <a href="/settings" class="btn btn-outline-secondary" style="margin-bottom: 10px;"><i class="fa fa-bell"></i> <%= raw translation('home.subscriptions.notification_settings') %> </a>
 
-  <p style="font-style: italic;"> Control how you get notifications. </p>
+  <p style="font-style: italic;"> <%= raw translation('home.subscriptions.control_notifications') %> </p>
 
 </div>
 
@@ -56,13 +56,13 @@
   </form>
 
   <% if current_user.subscriptions.size == 0 %>
-  <p> You haven't subscribed to any topic yet </p>
+  <p> <%= raw translation('home.subscriptions.subscribe_topic') %> </p>
   <% else %>
     <table class="table">
     <tr><th><%=raw translation('home.subscriptions.tag') %></th><th><%=raw translation('home.subscriptions.options') %></th></tr>
     <% current_user.subscriptions(:tag).includes(:tag).each do |subscription| %>
     <tr>
-      <td><a href="/tag/<%= subscription.tagname %>"><%= subscription.tagname %></a> <i style="color:#aaa;"> +<%= Tag.follower_count(subscription.tagname).to_i-1 %> other people</i></td>
+      <td><a href="/tag/<%= subscription.tagname %>"><%= subscription.tagname %></a> <i style="color:#aaa;"> +<%= Tag.follower_count(subscription.tagname).to_i-1 %> <%= raw translation('home.subscriptions.other_people') %></i></td>
       <td><div class="btn-toolbar" style="margin:0;">
         <div class="btn-group">
           <!--
