@@ -10,7 +10,7 @@
     </div>
     <% if current_user && (@map_lat.blank? || @map_lon.blank?) %>
       <div class="col-md-4">
-        <a class="btn btn-outline-secondary blurred-location-input" style="color:#666;" hover="this.style.background='grey';" submit_to="/profile/tags/create/<%= current_user.uid %>"><i class="fa fa-map-marker" style="color:#c40;"></i> Add your location</a>
+        <a class="btn btn-outline-secondary blurred-location-input" style="color:#666;" hover="this.style.background='grey';" submit_to="/profile/tags/create/<%= current_user.uid %>"><i class="fa fa-map-marker" style="color:#c40;"></i> <%= translation('users.list.add_your_location') %> </a>
       </div>
     <% end %>
   </div>
@@ -59,7 +59,7 @@
                            <li class="btn-success"><a  style="color: white;" href="/profile/<%= user.username %>"><i class="fa fa-check-circle fa-white"></i> Unban on profile</a></li>
                            <i class='fa fa-ban' style="color:#a00;"></i> <%= translation('users.list.banned') %>
                            <% elsif user.status == 1 && user != current_user %>
-                             <li><a href="/profile/<%= user.username %>">See Full Profile</a></li>
+                             <li><a href="/profile/<%= user.username %>"><%= translation('users.list.see_full_profile') %></a></li>
                              <li class="btn-danger"><a style="color: white;" data-confirm="<%= translation('users.list.are_you_sure',{},false) %>" href="/ban/<%= user.uid %>" ><i class="fa fa-ban fa-white"></i> <%= translation('users.list.ban') %></a></li>
                          <% end %>
                        <% end %>
