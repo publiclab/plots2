@@ -158,6 +158,8 @@ en:
       banned: "Banned"
       are_you_sure: "Are you sure? The user will no longer be able to log in or publish."
       ban: "Ban"
+      add_your_location: "Add your location"
+      see_full_profile: "See Full Profile"
     _photo:
       profile_photo: "Profile photo"
       drag_and_drop_image: "Drag and drop to add an image, or"
