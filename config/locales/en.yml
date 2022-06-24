@@ -902,6 +902,12 @@ en:
       share_subscription_link: "Share this subscription link"
       share: "Share"
       unsubscribe: "Unfollow"
+      subscribe_topic: "Subscribe to Topics"
+      notification_settings: "Notification Settings"
+      subscriptions_digest: "Subscriptions Digest"
+      control_notifications: "Control how you get notifications"
+      subscribe_topics: "You haven't subscribed to any topic yet"
+      other_people: "other people"
     _comments:
       commented: "commented"
       read_more: "Read more"
