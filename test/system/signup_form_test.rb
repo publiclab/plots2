@@ -29,7 +29,7 @@ class SignupFormTest < ApplicationSystemTestCase
 
   test "javascript I18njs translation helper working" do
     assert_selector('.navbar-brand') # ensure page is loaded
-    helper_output = page.execute_script("I18n.t('users._form.confirm_password')")
+    helper_output = page.evaluate_script("I18n.t('users._form.confirm_password')")
     assert_equal helper_output, "Retype your password to confirm"
   end
 end
