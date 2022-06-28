@@ -42,7 +42,7 @@ gem 'passenger'
 gem "php-serialize", :require => "php_serialize"
 gem 'rack-cors', :require => 'rack/cors'
 gem "rack-openid"
-gem "rack-test", "2.0.0"
+gem "rack-test", "2.0.2"
 gem 'rails', '5.2.8'
 gem 'rails-controller-testing'
 gem 'rails-dom-testing'
