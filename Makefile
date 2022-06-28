@@ -6,7 +6,7 @@ build:
 
 redeploy-container:
 	docker-compose build --pull
-	docker-compose run --rm web yarn install
+	docker-compose run --rm web yarn install --frozen-lockfile
 	docker-compose run --rm web bash -c "bundle exec rake db:migrate && bundle exec rake assets:precompile && bundle exec rake tmp:cache:clear"
 	docker-compose down --remove-orphans
 	docker-compose up -d
@@ -22,7 +22,7 @@ pull-from-stable:
 automated-redeploy: pull-from-stable redeploy-container
 
 deploy-container:
-	docker-compose run --rm web yarn install
+	docker-compose run --rm web yarn install --frozen-lockfile
 	docker-compose run --rm web bash -c "sleep 5 && bundle exec rails webpacker:install && bundle exec rails webpacker:install:react && bundle exec rails g react:install"
 	docker-compose run --rm web bash -c "sleep 5 && bundle exec rake db:migrate && bundle exec rake assets:precompile"
 	docker-compose up -d
@@ -36,7 +36,7 @@ test-container:
 	docker-compose up -d
 	docker-compose exec -T web bundle exec rake db:setup
 	docker-compose exec -T web bundle exec rake db:migrate
-	docker-compose exec -T web bundle exec yarn install
+	docker-compose exec -T web bundle exec yarn install --frozen-lockfile
 	docker-compose exec -T web bundle exec rake assets:precompile
 	docker-compose exec -T web bundle exec rake test:all
 	docker-compose exec -T web rails test -d
@@ -46,7 +46,7 @@ install-dev:
 	echo "Installing RubyGems"
 	bundle install --without production mysql
 	echo "Installing yarn Packages"
-	yarn install
+	yarn install --frozen-lockfile
 	echo "Copying example configuartions"
 	cp db/schema.rb.example db/schema.rb
 	cp config/database.yml.sqlite.example config/database.yml
