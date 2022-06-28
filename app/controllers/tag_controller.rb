@@ -567,7 +567,5 @@ class TagController < ApplicationController
     end
   end
 
-  def topic_tree
-  end
-  
+  def topic_tree; end
 end
