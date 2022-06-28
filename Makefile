@@ -23,7 +23,7 @@ automated-redeploy: pull-from-stable redeploy-container
 
 deploy-container:
 	docker-compose run --rm web yarn install --frozen-lockfile
-	docker-compose run --rm web bash -c "sleep 5 && bundle exec rails webpacker:install && bundle exec rails webpacker:install:react && bundle exec rails g react:install"
+	docker-compose run --rm web bash -c "sleep 5 && bundle exec rails g react:install"
 	docker-compose run --rm web bash -c "sleep 5 && bundle exec rake db:migrate && bundle exec rake assets:precompile"
 	docker-compose up -d
 	docker-compose exec -T web bash -c "echo 172.17.0.1 smtp >> /etc/hosts"
