@@ -287,6 +287,10 @@ en:
       responses: "Responses"
       builds: "People who made this"
       replications: "People who did this"
+      offer_feedback: "Help out by offering feedback!"
+      browse_activities: "Browse other activities for"
+      none_yet: "None yet."
+      be_the_first_to_post: "Be the first to post one!"
     stats:
       about_this_page: |
         <h4>About this page</h4>
