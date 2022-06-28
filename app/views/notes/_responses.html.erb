@@ -21,7 +21,8 @@
       <% if @node.power_tag('activity') %>
         <% if Tag.where(name: 'activities:' + @node.power_tag('activity')).first %>
           <% if Tag.where(name: 'activities:' + @node.power_tag('activity')).first.nodes.size > 0 %>
-            <a id="other-activities" href="<%= Tag.where(name: 'activities:' + @node.power_tag('activity')).first.nodes.first.path %>"><%= translation('notes._responses.browse_activities') %> "<%= @node.power_tag('activity') %>"</a>          <% end %>
+            <a id="other-activities" href="<%= Tag.where(name: 'activities:' + @node.power_tag('activity')).first.nodes.first.path %>"><%= translation('notes._responses.browse_activities') %> "<%= @node.power_tag('activity') %>"</a>
+          <% end %>
         <% end %>
       <% end %>
     </p>
