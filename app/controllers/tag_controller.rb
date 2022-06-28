@@ -566,4 +566,8 @@ class TagController < ApplicationController
       @nodes.size
     end
   end
+
+  def topic_tree
+  end
+  
 end
