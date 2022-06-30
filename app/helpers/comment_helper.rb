@@ -25,7 +25,7 @@ module CommentHelper
       comment_json[:commentId] = comment.cid
       comment_json[:commentName] = comment.name
       comment_json[:createdAt] = comment.created_at
-      comment_json[:htmlCommentText] = raw insert_extras(filtered_comment_body(comment.render_body))
+      comment_json[:htmlCommentText] = raw auto_link(insert_extras(filtered_comment_body(comment.render_body)), :sanitize => false)
       comment_json[:rawCommentText] = comment.comment
       comment_json[:replyTo] = comment.reply_to
       time_created_string = distance_of_time_in_words(comment.created_at, Time.current, include_seconds: false, scope: 'datetime.time_ago_in_words')

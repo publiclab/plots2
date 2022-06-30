@@ -3762,10 +3762,10 @@ cyclist@^1.0.1:
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
   integrity sha1-WW6WmP0MgOEgOMK4LW6xs1tiJNk=
 
-cytoscape@^3.21.1:
-  version "3.21.1"
-  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.21.1.tgz#2d3a8b8ade8661c9efab2e9bf7a354b374d6cf0e"
-  integrity sha512-mxdxCzuGHOMSWHUFO+/ZQPeMNtJAm81LGzdwP02LhT592ZRfHWCvHUY++HpnSjg/SgrKg1CMqegY/HvYLUS1qg==
+cytoscape@^3.21.2:
+  version "3.21.2"
+  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.21.2.tgz#95ce212092e82decf6a446ac06c64462b34d9d73"
+  integrity sha512-VFvgKCaiPnZHpBQFZP6lYAQrnzNAy62Dw7ehcgejxn1Lb2xX2oaVxTuMrAz0kwRifJK/z9sc6M6I3dObSckUrw==
   dependencies:
     heap "^0.2.6"
     lodash.debounce "^4.0.8"
@@ -6638,10 +6638,10 @@ humanize@^0.0.9:
   resolved "https://registry.yarnpkg.com/humanize/-/humanize-0.0.9.tgz#1994ffaecdfe9c441ed2bdac7452b7bb4c9e41a4"
   integrity sha1-GZT/rs3+nEQe0r2sdFK3u0yeQaQ=
 
-i18n-js@^3.8.0:
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/i18n-js/-/i18n-js-3.8.0.tgz#b8fd6b12e1d88cb71f9806c29bca7c31c012e504"
-  integrity sha512-hDsGgPuvw/2P+lXSbOafAwspK8Ste8YrwuuUg17W3wEcO1JkQxBlPgsN1t2+852nTnz4YSYTjZc/1nAA2PC/nw==
+i18n-js@^3.9.2:
+  version "3.9.2"
+  resolved "https://registry.yarnpkg.com/i18n-js/-/i18n-js-3.9.2.tgz#4a015dcfabd4c9fc73115fc2d02d2627e4c15ca5"
+  integrity sha512-+Gm8h5HL0emzKhRx2avMKX+nKiVPXeaOZm7Euf2/pbbFcLQoJ3zZYiUykAzoRasijCoWos2Kl1tslmScTgAQKw==
 
 ianstormtaylor-css@^0.3.1:
   version "0.3.1"
@@ -10999,13 +10999,13 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-dom@^18.1.0:
-  version "18.1.0"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.1.0.tgz#7f6dd84b706408adde05e1df575b3a024d7e8a2f"
-  integrity sha512-fU1Txz7Budmvamp7bshe4Zi32d0ll7ect+ccxNu9FlObT605GOEB8BfO4tmRJ39R5Zj831VCpvQ05QPBW5yb+w==
+react-dom@^18.2.0:
+  version "18.2.0"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.2.0.tgz#22aaf38708db2674ed9ada224ca4aa708d821e3d"
+  integrity sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==
   dependencies:
     loose-envify "^1.1.0"
-    scheduler "^0.22.0"
+    scheduler "^0.23.0"
 
 react-is@^16.13.1:
   version "16.13.1"
@@ -11576,10 +11576,10 @@ saxes@^5.0.1:
   dependencies:
     xmlchars "^2.2.0"
 
-scheduler@^0.22.0:
-  version "0.22.0"
-  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.22.0.tgz#83a5d63594edf074add9a7198b1bae76c3db01b8"
-  integrity sha512-6QAm1BgQI88NPYymgGQLCZgvep4FyePDWFpXVK+zNSUgHwlqpJy8VEh8Et0KxTACS4VWwMousBElAZOH9nkkoQ==
+scheduler@^0.23.0:
+  version "0.23.0"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.23.0.tgz#ba8041afc3d30eb206a487b6b384002e4e61fdfe"
+  integrity sha512-CtuThmgHNg7zIZWAXi3AsyIzA3n4xx7aNyjwC2VJldO2LMVDhFK+63xGqq6CsJH4rTAt6/M+N4GhZiDYPx9eUw==
   dependencies:
     loose-envify "^1.1.0"
 

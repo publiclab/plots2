@@ -382,6 +382,8 @@ Plots2::Application.routes.draw do
   post 'comment/react/delete/:id' => 'comment#react_delete'
   post 'comment/react/update/:id' => 'comment#react_update'
 
+  get 'topic-tree' => 'tag#topic_tree'
+
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 
