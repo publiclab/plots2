@@ -40,7 +40,7 @@
     "jquery-confirm": "^3.3.4",
     "jquery-file-upload": "blueimp/jQuery-File-Upload#~10.32.0",
     "jquery-lazyload": "1.9.7",
-    "jquery-validation": "^1.19.4",
+    "jquery-validation": "^1.19.5",
     "jsdiff": "components/jsdiff#~3.4.0",
     "junction": "theleagueof/junction#*",
     "leaflet": "^1.8.0",
