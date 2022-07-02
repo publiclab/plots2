@@ -627,6 +627,8 @@ GEM
       teaspoon (>= 1.0.0)
     terrapin (0.6.0)
       climate_control (>= 0.0.3, < 1.0)
+    terser (1.1.11)
+      execjs (>= 0.3.0, < 3)
     test-unit (3.5.3)
       power_assert
     thor (1.2.1)
@@ -651,8 +653,6 @@ GEM
     tzinfo (1.2.9)
       thread_safe (~> 0.1)
     uber (0.1.0)
-    uglifier (4.2.0)
-      execjs (>= 0.3.0, < 3)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.7)
@@ -789,12 +789,12 @@ DEPENDENCIES
   skylight
   sqlite3 (~> 1.4.4)
   teaspoon-mocha
+  terser (~> 1.1.8)
   test-unit
   timecop
   turbolinks (~> 5)
   twitter
   tzinfo-data
-  uglifier (>= 1.0.3)
   web-console (>= 3.3.0)
   webmock (~> 3.14)
   webpacker
@@ -806,4 +806,4 @@ RUBY VERSION
    ruby 2.7.3p183
 
 BUNDLED WITH
-   2.2.32
+   2.3.16
