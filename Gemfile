@@ -42,7 +42,7 @@ gem 'passenger'
 gem "php-serialize", :require => "php_serialize"
 gem 'rack-cors', :require => 'rack/cors'
 gem "rack-openid"
-gem "rack-test", "2.0.0"
+gem "rack-test", "2.0.2"
 gem 'rails', '5.2.8'
 gem 'rails-controller-testing'
 gem 'rails-dom-testing'
@@ -53,7 +53,7 @@ gem 'rdiscount', '~> 2.2'
 gem 'react-rails'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'responders', '~> 3.0'
-gem 'rubocop', '~> 1.30.1', require: false
+gem 'rubocop', '~> 1.31.1', require: false
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
 gem 'sentry-ruby'
@@ -104,7 +104,7 @@ gem 'coffee-rails', '~> 5.0.0'
 gem 'execjs' # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem "sassc", "~> 2.4.0"
 gem 'sassc-rails'
-gem 'uglifier', '>= 1.0.3'
+gem 'terser', '~> 1.1.8'
 gem 'grape-rails-cache'
 
 group :development do
