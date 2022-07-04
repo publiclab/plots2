@@ -2,13 +2,13 @@ class ConvertMapToNoteNodes < ActiveRecord::Migration[5.2]
   def change
     Node.where(type: 'map').each do |node|
       revision = node.latest
-      iframe_link = "<iframe style='width:100%;border:none;background:#ddd;margin-bottom:8px;' height='375' src='https://publiclab.github.io/plots-leaflet-viewer/?tms=#{node.map&.tms}&lon=#{node.lon}&lat=#{node.lat}&zoom=#{node.map&.min_zoom+1}'></iframe>"
+      iframe_link = "<iframe style='width:100%;border:none;background:#ddd;margin-bottom:8px;' height='375' src='https://publiclab.github.io/plots-leaflet-viewer/?tms=#{node.map&.tms}&lon=#{node.lon}&lat=#{node.lat}&zoom=#{node.map&.min_zoom.to_i+1}'></iframe>"
       conversion_buttons =
         "<div class='btn-toolbar'>"\
           "<div class='btn-group'>"\
             "<a class='btn btn-sm btn-danger' rel='tooltip' title='View the map in a full-screen web viewer' href='https://publiclab.github.io/plots-leaflet-viewer/?tms=#{node.map&.tms}&lon=#{node.lon}&lat=#{node.lat}&zoom=17'>Web viewer</a>"\
-            "<a class='btn btn-sm btn-success' rel='tooltip' title='' href='#{node.map&.field_jpg_url_value}'>JPG (#{node.map&.field_jpg_filesize_value.to_i} MB)</a>"\
-            "<a class='btn btn-sm btn-info' rel='tooltip' title='' href='#{node.map&.field_geotiff_url_value}'>GeoTiff (#{node.map&.field_geotiff_filesize_value.to_i} MB)</a>"\
+            "<a class='btn btn-sm btn-success #{ "disabled" if node.map&.field_jpg_filesize_value.nil? }' rel='tooltip' title='' href='#{node.map&.field_jpg_url_value}'>JPG (#{node.map&.field_jpg_filesize_value.to_i} MB)</a>"\
+            "<a class='btn btn-sm btn-info #{ "disabled" if node.map&.field_geotiff_filesize_value.nil? }' rel='tooltip' title='' href='#{node.map&.field_geotiff_url_value}'>GeoTiff (#{node.map&.field_geotiff_filesize_value.to_i} MB)</a>"\
             "<a class='btn btn-sm btn-warning' rel='tooltip' title='Tiled Map Service (for developers)' href='#{node.map&.field_tms_url_value}'>TMS</a>"\
           "</div>"\
         "</div>"
@@ -34,7 +34,7 @@ class ConvertMapToNoteNodes < ActiveRecord::Migration[5.2]
       map_details +=
             "<p><b>Capture date:</b> #{node.map&.captured_on.to_s}</p>"\
             "<p><b>Publication date:</b> #{node.map&.published_on.to_s}</p>"\
-            "<p><b>License:</b> #{node.map&.license.html_safe}</p>"\
+            "<p><b>License:</b> #{node.map&.license&.html_safe}</p>"\
           "</small>"\
         "</div><hr />"\
         "<style>.map-details p { margin:4px 0; }</style>"
