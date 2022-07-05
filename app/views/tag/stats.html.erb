@@ -34,8 +34,7 @@
 
   <%= render 'stats/barchart' %>
 
-  <br><br><br>
-  <div class="graph">
+  <div class="graph mt-4">
     <p> <b><%= params[:id].capitalize%></b> graph from <b><%= (@start).to_formatted_s(:long)%></b> to <b><%= @end.to_formatted_s(:long)%></b> </p>
     <br>
     <%= render partial: "tag/graph", locals: { wikis: @tag_wikis, notes: @tag_notes, questions: @tag_questions, comments: @tag_comments  } %>
