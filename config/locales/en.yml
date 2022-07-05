@@ -218,8 +218,7 @@ en:
       views: "views"
       read_more: "Read more"
     show:
-      note_no_tags: "This note has no tags yet; help connect it to other content by
-        <a href='#' onClick='%{url}'>adding descriptive tags below</a>."
+      note_no_tags: "This note has no tags yet, but you can <a href='#' onClick='%{url}'>add some descriptive tags below</a> below anytime 🏷️! Tags help to collect related work in one place and connect people around a topic. To learn more about tags click <a href='/wiki/about-tags'>here</a>."
       replication: "This is an attempt to replicate "
       series: "This is part of a series on "
       replication_link: "an activity"
