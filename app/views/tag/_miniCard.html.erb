@@ -26,9 +26,15 @@
       <% end %>
     </div>
 
+    <% if tag.name == "first-time-poster" %>
+    <a href="/tag/<%= tag.name%>" rel="tooltip" title="This tag has been added by default.">
+      <h5 style="text-decoration:underline;color:black;"><%= tag.name %></h5>
+    </a>
+    <% else %>
     <a href="/tag/<%= tag.name%>">
       <h5 style="text-decoration:underline;color:black;"><%= tag.name %></h5>
     </a>
+    <% end %>
     <% if !tag.name.include? ':' %>
       <p style="font-size:15px;">
         <a style="color:#808080;" href="/tag/<%= tag.name %>"><%= Tag.follower_count(tag.name) %> following</a>
