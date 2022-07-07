@@ -1,9 +1,10 @@
 <form name="settingsForm" action="/save_settings" method='post' data-remote="true" class="mx-3">
 <div class="emailSettings">
-  <h4><b><%=translation('user.settings.email_notifications_title')%></b></h4>
+<h4><b><%=translation('users.settings.email_notifications_title')%></b></h4>
   <hr style="width: 35%;  margin-left: 0;" />
 
-  <h4><b><%=translation('users.settings.notified_by_email')%></b></h4>
+  <p class="notif-desc"><b><%=translation('users.settings.notified_by_email')%></b></p>
+
 
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
     <span><%=translation('users.settings.direct_comment')%> </span>
@@ -64,8 +65,8 @@
   <% end %>
   
   <br />
-  <h4><b><%= translation('users.settings.email_notifications')%> </b></h4>
-
+ <h5><b><%= translation('users.settings.email_digests')%> </b></h5>
+ <p class="notif-desc"><b><%= translation('users.settings.email_notifications')%> </b></p>
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
     <span><%=translation('users.settings.weekly_digest')%> </span>
     <span>
@@ -129,7 +130,7 @@
   <h4><b>Browser Notifications</b></h4>
   <hr style="width: 35%;  margin-left: 0;" />
 
-  <h4><b><%=translation('users.settings.browser_notifications')%> </b></h4>
+  <p class="notif-desc"><b><%=translation('users.settings.browser_notifications')%> </b></p>
 
   <div style="display: inline-flex; justify-content: space-between; width: 90%;">
     <span><%=translation('users.settings.mentioned')%></span>
@@ -282,10 +283,18 @@
   .slider.round {
     border-radius: 17px;
   }
-
+.notif-desc {
+        font-size: 1.1rem;
+      }
+      .notif-desc {
+        font-size: 1.1rem;
+      }
   .slider.round:before {
     border-radius: 50%;
   }
+
+  
+
 </style>
 
 <script>
