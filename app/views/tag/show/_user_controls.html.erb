@@ -1,8 +1,8 @@
 <% if current_user %>
 <!-- AJAXify -->
 <div class="dropdown-menu">
+<a class="ellipsis" data-toggle="dropdown">&nbsp<i class="fa fa-ellipsis-h" style="color : #666; font-size:15px; float:right;"></i></a>
 <% unless @wildcard %>
-      <a class="ellipsis" data-toggle="dropdown">&nbsp<i class="fa fa-ellipsis-h" style="color : #666; font-size:15px; float:right;"></i></a>
       <% if current_user.following(params[:id]) %>
         <div class="dropdown-item">
           <a style="width: 100px;" data-method="delete" rel="tooltip" title="<%= translation('tag.show.unfollow',{},false) %>" class="btn btn-light btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>"> <%= translation('tag.index.unsubscribe') %></a>
@@ -37,7 +37,7 @@
     <a href="/stats/subscriptions">
     <div class="dropdown-item tag-dropdown">Statistics for all topics</div>
     </a>
-
+  
 
 <% end %>
 </div>
