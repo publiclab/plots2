@@ -17,28 +17,28 @@
         <div class="dropdown-divider"></div>
       <% end %>
 
-			<a href="/feed/tag/<%= params[:id] %>.rss">  
-				<div class="dropdown-item tag-dropdown"><i class="fa fa-rss"></i> RSS</div>
-			</a>
+      <a href="/feed/tag/<%= params[:id] %>.rss">  
+	<div class="dropdown-item tag-dropdown"><i class="fa fa-rss"></i> RSS</div>
+      </a>
     
-			<a href="/tag-pages">
-				<div class="dropdown-item tag-dropdown">How to edit this card</div>
-			</a>
+      <a href="/tag-pages">
+	<div class="dropdown-item tag-dropdown">How to edit this card</div>
+      </a>
 
-			<%= link_to tag_stats_path, id: params[:id], title: "Click to view graph" do %>
-				<div class="dropdown-item tag-dropdown"><i class="fa fa-bar-chart"></i> Topic statistics</div>
-			<% end %>
+      <%= link_to tag_stats_path, id: params[:id], title: "Click to view graph" do %>
+	<div class="dropdown-item tag-dropdown"><i class="fa fa-bar-chart"></i> Topic statistics</div>
+      <% end %>
     
     
-			<a href="/tags">
-				<div class="dropdown-item tag-dropdown">All topics</div>
-			</a>    
+      <a href="/tags">
+	<div class="dropdown-item tag-dropdown">All topics</div>
+      </a>    
 
-			<a href="/stats/subscriptions">
-				<div class="dropdown-item tag-dropdown">Statistics for all topics</div>
-			</a>
-  	</div>
-	<% end %>
+      <a href="/stats/subscriptions">
+	<div class="dropdown-item tag-dropdown">Statistics for all topics</div>
+      </a>
+   </div>
+ <% end %>
 <!-- AJAXify -->
 <% end %>
 <style>
