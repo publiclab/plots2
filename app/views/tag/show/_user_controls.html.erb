@@ -1,8 +1,8 @@
 <% if current_user %>
 <!-- AJAXify -->
-  <a class="ellipsis" data-toggle="dropdown">&nbsp<i class="fa fa-ellipsis-h" style="color : #666; font-size:15px; float:right;"></i></a>
-  <div class="dropdown-menu">
-    <% unless @wildcard %>
+  <% unless @wildcard %>
+    <a class="ellipsis" data-toggle="dropdown">&nbsp<i class="fa fa-ellipsis-h" style="color : #666; font-size:15px; float:right;"></i></a>
+    <div class="dropdown-menu">
       <% if current_user.following(params[:id]) %>
         <div class="dropdown-item">
           <a style="width: 100px;" data-method="delete" rel="tooltip" title="<%= translation('tag.show.unfollow',{},false) %>" class="btn btn-light btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>"> <%= translation('tag.index.unsubscribe') %></a>
@@ -17,29 +17,28 @@
         <div class="dropdown-divider"></div>
       <% end %>
 
-    <a href="/feed/tag/<%= params[:id] %>.rss">  
-    <div class="dropdown-item tag-dropdown"><i class="fa fa-rss"></i> RSS</div>
-    </a>
+      <a href="/feed/tag/<%= params[:id] %>.rss">  
+	<div class="dropdown-item tag-dropdown"><i class="fa fa-rss"></i> RSS</div>
+      </a>
     
-    <a href="/tag-pages">
-    <div class="dropdown-item tag-dropdown">How to edit this card</div>
-    </a>
+      <a href="/tag-pages">
+	<div class="dropdown-item tag-dropdown">How to edit this card</div>
+      </a>
 
-    <%= link_to tag_stats_path, id: params[:id], title: "Click to view graph" do %>
-      <div class="dropdown-item tag-dropdown"><i class="fa fa-bar-chart"></i> Topic statistics</div>
-    <% end %>
+      <%= link_to tag_stats_path, id: params[:id], title: "Click to view graph" do %>
+	<div class="dropdown-item tag-dropdown"><i class="fa fa-bar-chart"></i> Topic statistics</div>
+      <% end %>
     
     
-    <a href="/tags">
-    <div class="dropdown-item tag-dropdown">All topics</div>
-    </a>    
+      <a href="/tags">
+	<div class="dropdown-item tag-dropdown">All topics</div>
+      </a>    
 
-    <a href="/stats/subscriptions">
-    <div class="dropdown-item tag-dropdown">Statistics for all topics</div>
-    </a>
-
-  <% end %>
-</div>
+      <a href="/stats/subscriptions">
+	<div class="dropdown-item tag-dropdown">Statistics for all topics</div>
+      </a>
+   </div>
+ <% end %>
 <!-- AJAXify -->
 <% end %>
 <style>
