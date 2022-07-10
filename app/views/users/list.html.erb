@@ -20,7 +20,7 @@
       <span style="background-color: #fff; padding: 0 10px; color: #808080;">Sort by:
       <a href = "<%= people_path %>?sort=username" class="sort-style <% if params[:sort] == "username" %>selected<%end%>"> <%= translation('users.list.username') %></a><span> | </span>
       <a href = "<%= people_path %>?sort=last_activity" class="sort-style <% if params[:sort] == "last_activity" %>selected<%end%>"> <%= translation('users.list.last_activity') %></a><span> | </span>
-      <a href = "<%= people_path %>?sort=joined" class="sort-style <% if params[:sort] == "joined" %>selected<%end%>"><%= translation('users.list.joined') %></a><span> | </span>
+      <a href = "<%= people_path %>?sort=joined" class="sort-style <% if params[:sort] == "joined" %>selected<%end%>"><%= translation('users.list.joined') %></a>
       </span>
       </p>
       <br/>
