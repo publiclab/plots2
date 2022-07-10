@@ -13,12 +13,12 @@
 
   <%= raw translation('wiki.edit.whats_a_wiki_page') %>
   <hr />
-  <div class="navbar d-md-none d-lg-block">
-    <ul class="navbar-nav">
-      <li class="nav-item navbar-brand"><%= translation('wiki.edit.more') %></li>
+  <div class="d-md-none d-lg-block">
+     <h5><%= translation('wiki.edit.more') %></h5>
+     <ul class="pl-3">
       <% if @node.path %><li><a href="/wiki/revisions/<%= @node.slug_from_path %>"><%= translation('wiki.edit.revisions_for_this_page') %></a></li><% end %>
-      <li class="nav-item"><a href="/wiki/posting-research"><%= translation('wiki.edit.about_posting_research') %></a></li>
-      <li class="nav-item"><a href="/wiki/authoring-help#Advanced+formatting"><%= translation('wiki.edit.advanced_formatting') %></a></li>
+      <li class=""><a href="/wiki/posting-research"><%= translation('wiki.edit.about_posting_research') %></a></li>
+      <li class=""><a href="/wiki/authoring-help#Advanced+formatting"><%= translation('wiki.edit.advanced_formatting') %></a></li>
     </ul>
   </div>
 </div>
