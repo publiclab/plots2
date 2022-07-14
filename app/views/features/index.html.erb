@@ -1,10 +1,10 @@
-<div class="row" style="align-items:baseline;">
+<div class="col" style="align-items:baseline;">
   <h2><%= translation('features.features_title')%></h2>
-  <p style="margin-inline-start:1rem;"><%= translation('features.description') %></p>
+  <p><%= translation('features.description') %></p>
+  <% if current_user.admin? %>
+    <p><a class="btn btn-outline-secondary" href="/features/new"><%= translation('features.add_feature') %></a></p>
+  <% end %>
 </div>
-<% if current_user.admin? %>
-<p><a class="btn btn-outline-secondary" href="/features/new"><%= translation('features.add_feature') %></a></p>
-<% end %>
 <table class="table">
   <tr>
     <th><a href = "?sort=title"><%= translation('features.title') %></a> <i class="fa fa-sort" aria-hidden="true"></i></th>
@@ -19,7 +19,7 @@
       <% if current_user.admin? %>
       <td><a href="/features/<%= feature.id %>/edit?t=<%= Time.now.to_i %>">edit</a></td>
       <% end %>
-      <td><%= time_ago_in_words(feature.latest.created_at) %><%= translation('features.ago_by') %>
+      <td><%= time_ago_in_words(feature.latest.created_at) %> <%= translation('features.ago_by') %>
       <a href="/profile/<%= feature.latest.author.name %>"><%= feature.latest.author.name %></td>
     </tr>
   <% end %>
