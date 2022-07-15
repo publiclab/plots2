@@ -104,7 +104,7 @@ gem 'coffee-rails', '~> 5.0.0'
 gem 'execjs' # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem "sassc", "~> 2.4.0"
 gem 'sassc-rails'
-gem 'terser', '~> 1.1.8'
+gem 'terser', '~> 1.1.12'
 gem 'grape-rails-cache'
 
 group :development do
