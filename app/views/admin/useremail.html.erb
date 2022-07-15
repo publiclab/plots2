@@ -1,5 +1,4 @@
-<div class="col-lg-3">&nbsp;</div>
-<div class="col-lg-9">
+<div class="col-lg-9 mx-auto my-0">
 
    <h3>User lookup by email:</h3> 
 
@@ -10,15 +9,15 @@
           <i class="fa fa-search fa fa-white"></i>
        <% end %>
        </button>
-       <label>
+       <label class="d-block">
          <input type="checkbox" id="myCheck" name="include_banned" />
-         Include banned accounts after 2015 (careful: can result in server slowness for all users)
+         Include banned accounts after 2015 (<em>careful: can result in server slowness for all users</em>)
        </label>
    <% end %>
    
    <br>
    <% if @address %>
-   <h3>Searched for <%= @address %>(<%= @users.size %>)</h3> 
+   <h4>Searched for <%= @address %>(<%= @users.size %>)</h4>
    <% if @users.size > 0 %>
    <ul>
       <% @users.each do |user| %>
