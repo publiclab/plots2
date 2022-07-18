@@ -58,16 +58,18 @@
   </div>
 
   <div>
+    <h4 class="mb-0">
+      <small>
+        <% if @profile_user.moderator? %> <i class="fa fa-certificate"></i> <%= translation('users.profile.moderator') %><% end %>
+        <% if @profile_user.admin? %> <i class="fa fa-certificate"></i> <%= translation('users.profile.admin') %><% end %>
+        <% if @profile_user.status == 0 %> <i class="fa fa-ban" style="color:#a00;"></i> <%= translation('users.profile.banned') %><% end %>
+      </small>
+    </h4>
+
      <h4 class="mb-0">
        <% if logged_in_as(['admin']) %>
         <small><%= @profile_user.email %></small>
       <% end %>
-
-      <small>
-        <% if @profile_user.moderator? %> | <i class="fa fa-certificate"></i> <%= translation('users.profile.moderator') %><% end %>
-        <% if @profile_user.admin? %> | <i class="fa fa-certificate"></i> <%= translation('users.profile.admin') %><% end %>
-        <% if @profile_user.status == 0 %> | <i class="fa fa-ban" style="color:#a00;"></i> <%= translation('users.profile.banned') %><% end %>
-      </small>
     </h4>
 
     <h4 style="font-size:24px;">
