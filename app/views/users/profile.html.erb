@@ -62,7 +62,7 @@
       <small>
         <% if @profile_user.moderator? %> <i class="fa fa-certificate"></i> <%= translation('users.profile.moderator') %><% end %>
         <% if @profile_user.admin? %> <i class="fa fa-certificate"></i> <%= translation('users.profile.admin') %><% end %>
-        <% if @profile_user.status == 0 %> | <i class="fa fa-ban" style="color:#a00;"></i> <%= translation('users.profile.banned') %><% end %>
+        <% if @profile_user.status == 0 %> <i class="fa fa-ban" style="color:#a00;"></i> <%= translation('users.profile.banned') %><% end %>
       </small>
     </h4>
 
