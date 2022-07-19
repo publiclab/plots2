@@ -44,7 +44,7 @@ Rails.application.configure do
 
   config.active_job.queue_adapter = :inline
 
-  config.active_record.yaml_column_permitted_classes = [OAuth::AccessToken, OAuth::Consumer]
+  config.active_record.yaml_column_permitted_classes = [OAuth::AccessToken, OAuth::Consumer, Symbol]
   
   OmniAuth.config.test_mode = true
   #OAuth hash for different providers for testing purpose
