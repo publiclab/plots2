@@ -134,7 +134,7 @@ GEM
       dry-logic (~> 1.0, >= 1.0.2)
     equalizer (0.0.11)
     erubi (1.10.0)
-    excon (0.91.0)
+    excon (0.92.3)
     execjs (2.7.0)
     faraday (1.10.0)
       faraday-em_http (~> 1.0)
@@ -170,7 +170,7 @@ GEM
       excon (~> 0.71)
       formatador (~> 0.2)
       mime-types
-    fog-google (1.18.0)
+    fog-google (1.19.0)
       fog-core (< 2.3)
       fog-json (~> 1.2)
       fog-xml (~> 0.1.0)
@@ -200,8 +200,8 @@ GEM
     georuby (2.0.0)
     globalid (1.0.0)
       activesupport (>= 5.0)
-    google-apis-compute_v1 (0.25.0)
-      google-apis-core (>= 0.4, < 2.a)
+    google-apis-compute_v1 (0.42.0)
+      google-apis-core (>= 0.7, < 2.a)
     google-apis-core (0.7.0)
       addressable (~> 2.5, >= 2.5.1)
       googleauth (>= 0.16.2, < 2.a)
@@ -211,18 +211,18 @@ GEM
       retriable (>= 2.0, < 4.a)
       rexml
       webrick
-    google-apis-dns_v1 (0.19.0)
-      google-apis-core (>= 0.4, < 2.a)
-    google-apis-iamcredentials_v1 (0.12.0)
-      google-apis-core (>= 0.6, < 2.a)
-    google-apis-monitoring_v3 (0.21.0)
-      google-apis-core (>= 0.4, < 2.a)
-    google-apis-pubsub_v1 (0.12.0)
-      google-apis-core (>= 0.4, < 2.a)
-    google-apis-sqladmin_v1beta4 (0.24.0)
-      google-apis-core (>= 0.4, < 2.a)
-    google-apis-storage_v1 (0.16.0)
-      google-apis-core (>= 0.6, < 2.a)
+    google-apis-dns_v1 (0.23.0)
+      google-apis-core (>= 0.7, < 2.a)
+    google-apis-iamcredentials_v1 (0.13.0)
+      google-apis-core (>= 0.7, < 2.a)
+    google-apis-monitoring_v3 (0.30.0)
+      google-apis-core (>= 0.7, < 2.a)
+    google-apis-pubsub_v1 (0.23.0)
+      google-apis-core (>= 0.7, < 2.a)
+    google-apis-sqladmin_v1beta4 (0.32.0)
+      google-apis-core (>= 0.7, < 2.a)
+    google-apis-storage_v1 (0.18.0)
+      google-apis-core (>= 0.7, < 2.a)
     google-cloud-core (1.6.0)
       google-cloud-env (~> 1.0)
       google-cloud-errors (~> 1.0)
@@ -355,7 +355,7 @@ GEM
     multi_json (1.15.0)
     multi_xml (0.6.0)
     multipart-post (2.2.3)
-    mustermann (1.1.1)
+    mustermann (1.1.2)
       ruby2_keywords (~> 0.0.1)
     mustermann-grape (1.0.1)
       mustermann (>= 1.0.0)
@@ -364,7 +364,7 @@ GEM
     netrc (0.11.0)
     nifty-generators (0.4.6)
     nio4r (2.5.8)
-    nokogiri (1.13.6)
+    nokogiri (1.13.7)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     nokogumbo (2.0.4)
@@ -628,7 +628,7 @@ GEM
       teaspoon (>= 1.0.0)
     terrapin (0.6.0)
       climate_control (>= 0.0.3, < 1.0)
-    terser (1.1.11)
+    terser (1.1.12)
       execjs (>= 0.3.0, < 3)
     test-unit (3.5.3)
       power_assert
@@ -702,7 +702,7 @@ DEPENDENCIES
   critical-path-css-rails (~> 4.1.1)
   execjs
   figaro
-  fog-google (= 1.18.0)
+  fog-google (= 1.19.0)
   fog-local (= 0.8.0)
   font-awesome-rails
   friendly_id
@@ -736,7 +736,7 @@ DEPENDENCIES
   mimemagic (~> 0.3.10)
   minitest-reporters (~> 1.5.0)
   mocha (~> 1.14)
-  mustermann (= 1.1.1)
+  mustermann (= 1.1.2)
   mysql2 (>= 0.4.4)
   nifty-generators
   omniauth (~> 1.9)
@@ -790,7 +790,7 @@ DEPENDENCIES
   skylight
   sqlite3 (~> 1.4.4)
   teaspoon-mocha
-  terser (~> 1.1.8)
+  terser (~> 1.1.12)
   test-unit
   timecop
   turbolinks (~> 5)

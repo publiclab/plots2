@@ -12,7 +12,7 @@ gem 'authlogic-oid'
 gem "composite_primary_keys"
 gem 'figaro' # To easily test OAuth providers in the development mode
 gem 'friendly_id'
-gem 'fog-google', '1.18.0' # Limited to `v1.13.0` due to https://github.com/fog/fog-google/issues/535
+gem 'fog-google', '1.19.0' # Limited to `v1.13.0` due to https://github.com/fog/fog-google/issues/535
 gem 'fog-local', '0.8.0'
 gem 'gemoji'
 gem 'geocoder'
@@ -31,7 +31,7 @@ gem 'jbuilder', '~> 2.11'
 gem 'jquery-rails'
 gem 'mocha', '~> 1.14'
 gem 'mimemagic', '~> 0.3.10'
-gem 'mustermann' , '1.1.1'
+gem 'mustermann' , '1.1.2'
 gem 'omniauth', '~> 1.9'
 gem 'omniauth-facebook', '~> 9.0'
 gem 'omniauth-github', '~> 1.4'
@@ -104,7 +104,7 @@ gem 'coffee-rails', '~> 5.0.0'
 gem 'execjs' # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem "sassc", "~> 2.4.0"
 gem 'sassc-rails'
-gem 'terser', '~> 1.1.8'
+gem 'terser', '~> 1.1.12'
 gem 'grape-rails-cache'
 
 group :development do
