@@ -28,7 +28,8 @@ tasks:
         cp db/schema.rb.example db/schema.rb &&
         rake db:setup &&
         yarn install &&
-        rails g react:install
+        rails g react:install &&
+        rails webpacker:install
       command: >
           passenger start
       openMode: split-left
