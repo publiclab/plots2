@@ -176,6 +176,7 @@ en:
       moderation_email: "Moderation emails"
       email_notifications: "Email notifications are sent for each post in topics you follow. If you prefer to receive a digest, choose one of these options:"
       email_notifications_title: "Email Notifications"
+      email_digests: "Email Digests"                                        //updated
       weekly_digest: "In a weekly digest"
       daily_digest: "In a daily digest"
       spam_weekly_digest: "In a weekly digest for unmoderated posts"
