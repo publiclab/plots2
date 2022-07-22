@@ -40,15 +40,17 @@
           <div class="row">
             <div class="col-sm-6">
             <label>From</label><br>
-            <input type="date" id="from", class="form-control" type="text" name="start">  
+            <input type="date" id="from", class="form-control hasDatepicker" data-date-format="dd-mm-yyyy" type="text" name="start" required>  
             </div>
             <div class="col-sm-6">
               <label>To</label><br>
-              <input type="date" id="to", class="form-control" type="text" name="end">
+              <input type="date" id="to", class="form-control hasDatepicker" type="text" name="end" required>
             </div>
           </div>
         </div>
-  
+        <div class="alert alert-danger hide" role="alert">
+        Please select a valid date.
+      </div>
         <!-- Modal footer -->
         <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -59,3 +61,57 @@
       </div>
     </div>
   </div>
+  <style>
+    .invalid{
+      background-color: red;
+    }
+
+    .success{
+      background-color: green;
+    }
+
+    .hide{
+      display: none;
+    }
+
+  </style>
+
+  <script>
+    $(function () {
+      Date.prototype.ddmmyyyy = function () {
+          var day = this.getDate().toString();
+          var month = (this.getMonth() + 1).toString();
+          var year = this.getFullYear().toString();
+          return (day[1] ? day : "0" + day[0]) + "-" + (month[1] ? month : "0" + month[0]) + "-" + year;
+      };
+
+      $("#from").on('change', function () {
+          var fromDate = new Date($("#from").val()).ddmmyyyy();
+          var todaysDate = new Date().ddmmyyyy();
+          if (fromDate > todaysDate) {
+              $(".alert").removeClass("hide");
+              $(this).val('');
+          }
+          else{
+            $(".alert").addClass("hide");
+          }
+      });
+
+      $("#to").on('change', function () {
+          var selectedDate = new Date($("#to").val()).ddmmyyyy();
+          var todaysDate = new Date().ddmmyyyy();
+          var from = new Date($("#from").val()).ddmmyyyy();
+          if (selectedDate > todaysDate) {
+            $(".alert").removeClass("hide");
+            $(this).val('');
+          }
+          else if (selectedDate < todaysDate && selectedDate < from ){
+            $(".alert").removeClass("hide");
+            $(this).val('');
+          }
+          else{
+            $(".alert").addClass("hide");
+          }
+      });
+  }); 
+  </script>
