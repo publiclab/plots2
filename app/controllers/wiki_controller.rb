@@ -135,7 +135,7 @@ class WikiController < ApplicationController
   def new
     @revision = Revision.new
     if current_user &.first_time_poster
-      flash[:notice] = "You can edit the wiki once your research note/question is approved by moderators. Click <a href='https://publiclab.org/notes/tester/04-23-2016/new-moderation-system-for-first-time-posters'>here</a> to learn why."
+      flash[:notice] = "You can create a wiki once your research note/question has been approved by moderators. Click <a href='https://publiclab.org/notes/tester/04-23-2016/new-moderation-system-for-first-time-posters'>here</a> to learn why."
       redirect_to '/'
       return
     end
