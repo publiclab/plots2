@@ -200,7 +200,7 @@ class WikiControllerTest < ActionController::TestCase
         id: 'chicago'
         }
 
-    assert_equal flash[:notice], "You can edit the wiki once your research note/question is approved by moderators. Click <a href='https://publiclab.org/notes/tester/04-23-2016/new-moderation-system-for-first-time-posters'>here</a> to learn why."
+    assert_equal flash[:notice], "You can edit this wiki once your research note/question has been approved by moderators. Click <a href='https://publiclab.org/notes/tester/04-23-2016/new-moderation-system-for-first-time-posters'>here</a> to learn why."
     assert_redirected_to nodes(:place).path
   end
 
