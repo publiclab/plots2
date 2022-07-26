@@ -44,7 +44,19 @@ Rails.application.configure do
 
   config.active_job.queue_adapter = :inline
 
-  config.active_record.yaml_column_permitted_classes = [OAuth::AccessToken, OAuth::Consumer, Symbol, Net::HTTP, OpenSSL::SSL::SSLContext, OpenSSL::SSL::Session, URI::HTTPS, URI::RFC3986_Parser, Regexp, Net::HTTPOK, ActiveSupport::HashWithIndifferentAccess]
+  config.active_record.yaml_column_permitted_classes = [
+    OAuth::AccessToken,
+    OAuth::Consumer,
+    Symbol,
+    Net::HTTP,
+    OpenSSL::SSL::SSLContext,
+    OpenSSL::SSL::Session,
+    URI::HTTPS,
+    URI::RFC3986_Parser,
+    Regexp,
+    Net::HTTPOK,
+    ActiveSupport::HashWithIndifferentAccess
+  ]
   
   OmniAuth.config.test_mode = true
   #OAuth hash for different providers for testing purpose
