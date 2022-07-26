@@ -44,6 +44,7 @@ Rails.application.configure do
 
   config.active_job.queue_adapter = :inline
 
+  # These are required to load classes into YAML, eg /test/fixtures/user_tags.yml#L129
   config.active_record.yaml_column_permitted_classes = [
     OAuth::AccessToken,
     OAuth::Consumer,
