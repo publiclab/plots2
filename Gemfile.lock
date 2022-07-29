@@ -114,15 +114,11 @@ GEM
     docile (1.4.0)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
-    dry-configurable (0.13.0)
+    dry-container (0.10.1)
       concurrent-ruby (~> 1.0)
-      dry-core (~> 0.6)
-    dry-container (0.9.0)
+    dry-core (0.8.1)
       concurrent-ruby (~> 1.0)
-      dry-configurable (~> 0.13, >= 0.13.0)
-    dry-core (0.7.1)
-      concurrent-ruby (~> 1.0)
-    dry-inflector (0.2.1)
+    dry-inflector (0.3.0)
     dry-logic (1.2.0)
       concurrent-ruby (~> 1.0)
       dry-core (~> 0.5, >= 0.5)
@@ -257,7 +253,7 @@ GEM
     grape-rails-cache (0.1.2)
       activesupport
       grape
-    grape-swagger (1.4.2)
+    grape-swagger (1.5.0)
       grape (~> 1.3)
     grape-swagger-entity (0.5.1)
       grape-entity (>= 0.6.0)
@@ -357,7 +353,7 @@ GEM
     multipart-post (2.2.3)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
-    mustermann-grape (1.0.1)
+    mustermann-grape (1.0.2)
       mustermann (>= 1.0.0)
     mysql2 (0.5.4)
     naught (1.1.0)
@@ -651,7 +647,7 @@ GEM
       multipart-post (~> 2.0)
       naught (~> 1.0)
       simple_oauth (~> 0.3.0)
-    tzinfo (1.2.9)
+    tzinfo (1.2.10)
       thread_safe (~> 0.1)
     uber (0.1.0)
     unf (0.1.4)
@@ -713,7 +709,7 @@ DEPENDENCIES
   grape
   grape-entity
   grape-rails-cache
-  grape-swagger (~> 1.4.2)
+  grape-swagger (~> 1.5.0)
   grape-swagger-entity (= 0.5.1)
   grape-swagger-rails
   grape-swagger-ui
