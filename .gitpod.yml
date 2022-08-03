@@ -26,10 +26,10 @@ tasks:
         mysql -e "SET @@global.sql_mode=(SELECT REPLACE(@@global.sql_mode, 'ONLY_FULL_GROUP_BY', ''));" &&
         mysql -e "CREATE DATABASE plots;" &&
         cp db/schema.rb.example db/schema.rb &&
+        rake db:setup &&
         yarn install &&
         rails webpacker:install &&
-        rails g react:install &&
-        rake db:setup
+        rails g react:install
       command: >
           passenger start
       openMode: split-left
