@@ -119,7 +119,7 @@ en:
       access_token: "My Access Token"
       link_social_media: "Link Social Media"
       copy: "Copy"
-      enter_social_media: "Enter Your Social Media User name like twitter:publiclab or instagram:publiclab"
+      enter_social_media: "Enter your social media username like <em>twitter:publiclab</em> or <em>instagram:publiclab</em>"
       close: "Close"
       save_changes: "Save changes"
       followers: "Followers"
