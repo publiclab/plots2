@@ -60,6 +60,11 @@ class WikiController < ApplicationController
     if !@node.nil? # it's a place page!
       @tags = @node.tags
       @tags += [Tag.find_by(name: params[:id])] if Tag.find_by(name: params[:id])
+      
+      tag1, tag2 = @node.normal_tags(:followers).includes(:tag).pluck(:name).first(2)
+ 
+      # get recommendations
+      @recommendations = Tag.get_recommendations(tag1, tag2)
     else # it's a new wiki page!
       @title = I18n.t('wiki_controller.new_wiki_page')
       if current_user

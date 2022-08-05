@@ -478,4 +478,34 @@ class Tag < ApplicationRecord
   def range(fin, week)
     (fin.to_i - week.weeks.to_i).to_s..(fin.to_i - (week - 1).weeks.to_i).to_s
   end
+
+  def self.get_recommendations(tag1, tag2)
+ 
+    tag1_content_nids = find_recommended_nodes(tag1)
+    tag2_content_nids = find_recommended_nodes(tag2)
+ 
+    random_content_nids = tag1_content_nids.sample(3) + tag2_content_nids.sample(3)
+ 
+    Node.where("nid IN (?)", random_content_nids)
+  end  
+ 
+  def self.find_recommended_nodes(tagnames, limit = 10)
+ 
+    date_ranges = [1.years.ago..3.years.ago, 4.years.ago..6.years.ago, 7.years.ago..9.years.ago]
+ 
+    selected_date_range = date_ranges.sample(1)
+ 
+    nodes = Node.where("cached_likes > 20 AND views > 100", status: 1)
+                .where(created: selected_date_range)
+                .includes(:tag)
+                .references(:term_data)
+                .where('term_data.name IN (?)', tagnames)
+ 
+    Node.where('node.nid IN (?)', nodes.collect(&:nid))
+        .includes(:revision, :tag)
+        .references(:node_revisions)
+        .where(status: 1)
+        .limit(limit)
+        .pluck(:nid)
+  end
 end
