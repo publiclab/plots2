@@ -68,6 +68,7 @@ class Node < ActiveRecord::Base
           .distinct
       end
     else
+      query ||= ""
       Node.limit(limit)
         .where('title LIKE ?', '%' + query + '%')
         .where(status: 1)
