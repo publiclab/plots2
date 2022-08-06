@@ -529,7 +529,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.11.0)
     rspec-support (3.11.0)
-    rubocop (1.32.0)
+    rubocop (1.33.0)
       json (~> 2.3)
       parallel (~> 1.10)
       parser (>= 3.1.0.0)
@@ -583,9 +583,8 @@ GEM
     sentry-resque (5.3.1)
       resque (>= 1.24)
       sentry-ruby-core (~> 5.3.1)
-    sentry-ruby (5.3.1)
+    sentry-ruby (5.4.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
-      sentry-ruby-core (= 5.3.1)
     sentry-ruby-core (5.3.1)
       concurrent-ruby
     sentry-sidekiq (5.3.1)
@@ -770,7 +769,7 @@ DEPENDENCIES
   rest-client
   reverse_markdown
   rspec
-  rubocop (~> 1.32.0)
+  rubocop (~> 1.33.0)
   rubocop-performance
   rubocop-rails
   rubocop-rake
