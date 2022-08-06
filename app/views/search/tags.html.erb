@@ -4,7 +4,6 @@
 
 <div class="col-md-10">
   <div class="container">
-    <h2>Search tags</h2>
 
     <% if params[:query].blank?%>
       <%= render partial: "search/form", locals: { searchType: "tags/" } %>
