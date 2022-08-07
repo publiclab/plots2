@@ -23,9 +23,9 @@
     <div class="card-footer row align-items-center">
       <div class="col-12 col-xl-auto">
         <div class="posted-by-links">
-          <a href="/tag/<%= tag.name %>/author/<%= @profile_user.name %>"><i class="fa fa-file"></i>&nbsp;<%= translation('tag.index.notes', count: Node.find_by_tag_and_author(tag.name, @profile_user.id, 'notes').size) %></a> |
+          <a href="/tag/<%= tag.name %>/author/<%= @profile_user.name %>"><i class="fa fa-file pr-1"></i><%= translation('tag.index.notes', count: Node.find_by_tag_and_author(tag.name, @profile_user.id, 'notes').size) %></a> |
           <a href="/questions/tag/<%= tag.name %>/author/<%= @profile_user.name %>"><i class="fa fa-question-circle pr-1"></i><%= translation('tag.index.questions', count: Node.find_by_tag_and_author(tag.name, @profile_user.id, 'questions').size) %></a> |
-          <a href="/profile/comments/<%= @profile_user.name %>/tag/<%= tag.name %>"><i class="fa fa-comments"></i>&nbsp;<%= translation('tag.index.comments', count: Comment.find_by_tag_and_author(tag.name, @profile_user.id).size) %></a>
+          <a href="/profile/comments/<%= @profile_user.name %>/tag/<%= tag.name %>"><i class="fa fa-comments pr-1"></i><%= translation('tag.index.comments', count: Comment.find_by_tag_and_author(tag.name, @profile_user.id).size) %></a>
           by @<%= @profile_user.name %>
         </div>
       </div>
