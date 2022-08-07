@@ -8,7 +8,8 @@ assignees: ''
 ---
 
 ### 💡Format this Issue Into a First Timers Issue
-This has been marked as a good candidate for becoming a [first-timers-only issue](https://code.publiclab.org/#r=all) like these, meaning that it's **simple, self-contained**, and with some extra formatting✍️, could be a great entry point for a new contributor. If you're familiar enough with this code, please consider **reformatting it as a first-timers-only issue**, and then ping @publiclab/reviewers to get it labelled🏷. Or, if this is not your first time, **try to solve it yourself**🧑‍💻!
+
+This has been marked as a good candidate for becoming a [first-timers-only issue](https://code.publiclab.org/#r=all) like these, meaning that it's **simple, self-contained**, and with some extra formatting✍️, could be a great entry point for a new contributor. If you're familiar enough with this code, please consider **reformatting it as a first-timers-only issue**, and then ping @publiclab/reviewers to get it labeled🏷. Or, if this is not your first time, **try to solve it yourself**🧑‍💻!
 
 ****
 
@@ -56,7 +57,7 @@ $DIFF
 
 ### Please keep us updated
 
-💬⏰ - We encourage contributors to be respectful to the community and provide an update **within a week** of claiming a first-timers-only issue. We're happy to keep it assigned to you as long as you need if you update us with a request for more time or help, but if we don't see any activity a week after you claim it we may reassign it to give someone else a chance. Thank you in advance!
+💬⏰ - We encourage contributors to be respectful to the community and provide an update **within a week** of claiming the `first-timers-only` issue. We're happy to keep it assigned to you as long as you need it if you update us with a request for more time or help, but if we don't see any activity a week after you claim it we may reassign it to give someone else a chance. Thank you in advance!
 
 If this happens to you, don't sweat it! Grab another open issue.
 
