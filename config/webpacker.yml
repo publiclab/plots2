@@ -51,6 +51,7 @@ default: &default
 development:
   <<: *default
   compile: true
+  extract_css: true
 
   # Reference: https://webpack.js.org/configuration/dev-server/
   dev_server:
