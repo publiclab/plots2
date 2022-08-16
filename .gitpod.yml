@@ -30,7 +30,7 @@ tasks:
         yarn install &&
         rails g react:install
       command: >
-          passenger start
+          yarn add @rails/webpacker && passenger start
       openMode: split-left
 
     - name: Rails console
