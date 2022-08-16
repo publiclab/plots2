@@ -27,9 +27,10 @@ tasks:
         mysql -e "CREATE DATABASE plots;" &&
         cp db/schema.rb.example db/schema.rb &&
         rake db:setup &&
-        rails g react:install &&
-        bundle exec rails webpacker:yarn_install
+        rails g react:install
       command: >
+        bundle exec webpacker:yarn_install &&
+        yarn add @rails/webpacker &&
         passenger start
       openMode: split-left
 
