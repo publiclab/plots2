@@ -344,7 +344,7 @@ GEM
       rake
     mini_mime (1.1.2)
     mini_portile2 (2.8.0)
-    minitest (5.16.2)
+    minitest (5.16.3)
     minitest-reporters (1.5.0)
       ansi
       builder
@@ -489,7 +489,7 @@ GEM
       tilt
     recaptcha (5.10.0)
       json
-    redis (4.6.0)
+    redis (4.7.1)
     redis-namespace (1.8.2)
       redis (>= 3.0.4)
     regexp_parser (2.5.0)
@@ -574,9 +574,9 @@ GEM
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
     semantic_range (3.0.0)
-    sentry-delayed_job (5.3.1)
+    sentry-delayed_job (5.4.1)
       delayed_job (>= 4.0)
-      sentry-ruby-core (~> 5.3.1)
+      sentry-ruby (~> 5.4.1)
     sentry-rails (5.3.1)
       railties (>= 5.0)
       sentry-ruby-core (~> 5.3.1)
@@ -590,10 +590,10 @@ GEM
     sentry-sidekiq (5.3.1)
       sentry-ruby-core (~> 5.3.1)
       sidekiq (>= 3.0)
-    sidekiq (6.5.1)
+    sidekiq (6.5.4)
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
-      redis (>= 4.2.0)
+      redis (>= 4.5.0)
     signet (0.17.0)
       addressable (~> 2.8)
       faraday (>= 0.17.5, < 3.a)
@@ -650,7 +650,7 @@ GEM
       multipart-post (~> 2.0)
       naught (~> 1.0)
       simple_oauth (~> 0.3.0)
-    tzinfo (1.2.9)
+    tzinfo (1.2.10)
       thread_safe (~> 0.1)
     uber (0.1.0)
     unf (0.1.4)
