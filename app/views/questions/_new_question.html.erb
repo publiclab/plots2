@@ -68,16 +68,16 @@
 
                 <% end %>
                   <li>
-                  <a href="<%= node.path %>#comments">Total Comments: <%= node.comments_viewable_by(current_user).size %></a>
-                  </li>
-                  <li>
-                  <a href="/n/<%= node.id %>">Read More</a>
-                  </li>
-                  <li>
                   <a><span class="d-none d-lg-inline">Total Views: <%= number_with_delimiter(node.views) %></span></a>
                   </li>
                   <li>
                   <a>Total Likes: <%= node.likes %></a>
+                  </li>
+                  <li>
+                  <a href="<%= node.path %>#comments">Total Comments: <%= node.comments_viewable_by(current_user).size%></a>
+                  </li>
+                  <li>
+                  <a href="/n/<%= node.id %>">Read More</a>
                   </li>
                   <% if params[:mod] %>| <a href="#"><i class="fa fa-ban"></i></a><% end %>
                   <% if current_user %>
