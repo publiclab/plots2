@@ -150,8 +150,10 @@ class CommentController < ApplicationController
     @is_liked = like.size.positive?
     if like.size.positive?
       like.first.destroy
+      @notification = "Removed '#{@emoji_type&.titleize}' Reaction."
     else
       comment.likes.create(user_id: @user_id, emoji_type: @emoji_type)
+      @notification = "Reacted with '#{@emoji_type&.titleize}' to Comment."
     end
     # select likes from users that aren't banned (status = 0)
     @likes = comment.likes.joins(:user).select(:emoji_type, :status).where("emoji_type IS NOT NULL").where("status != 0").group(:emoji_type).size
