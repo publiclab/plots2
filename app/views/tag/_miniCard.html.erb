@@ -46,6 +46,7 @@
     <% elsif !tag.name.include? ':' %>
       <a class="pull-right btn btn-primary requireLogin" href='/subscribe/tag/<%= tag.name %>'><%= translation('tag.show.follow') %></a>
     <% end %>
+    <a class="pull-left btn btn-outline-secondary requireLogin" href="/tag/<%= LINKS["tags"]["tag"] %>">Store<i class="fa fa-shopping-cart "></i></a>
   </div>
 </div>
 <br />
