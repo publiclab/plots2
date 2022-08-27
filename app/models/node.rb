@@ -91,7 +91,6 @@ class Node < ActiveRecord::Base
   has_many :drupal_content_field_map_editor, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
   has_many :images, foreign_key: :nid
   has_many :node_selections, foreign_key: :nid, dependent: :destroy
-  has_many :answers, foreign_key: :nid, dependent: :destroy
 
   belongs_to :user, foreign_key: 'uid'
 
@@ -639,7 +638,7 @@ class Node < ActiveRecord::Base
   def self.for_wildcard_tagname_and_type(tagname, type = 'note')
     search_term = tagname[0..-2] + '%'
     Node.where(status: 1, type: type)
-      .includes(:revision, :tag, :answers)
+      .includes(:revision, :tag)
       .references(:term_data, :node_revisions)
       .where('term_data.name LIKE (?) OR term_data.parent LIKE (?)', search_term, search_term)
   end

@@ -803,17 +803,12 @@ class NotesControllerTest < ActionController::TestCase
     UserSession.create(users(:moderator))
     node = nodes(:question)
     node.save
-    answer1 = answers(:one)
-    answer1.save
-    answer2 = answers(:two)
-    answer2.save
     n_count = Node.count
 
     post :delete, params: { id: node.id }, xhr: true
 
     assert_response :success
     assert_equal Node.count, n_count - 1
-    assert_equal Answer.count, 0
   end
 
   test 'moderator can publish the draft' do

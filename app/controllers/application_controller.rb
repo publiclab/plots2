@@ -137,7 +137,7 @@ class ApplicationController < ActionController::Base
   end
 
   def comments_node_and_path
-    @node = @comment.aid == 0 ? @comment.node : @comment.answer.node
+    @node = @comment.node
 
     @path = params[:type] && params[:type] == 'question' ? @node.path(:question) : @node.path
   end
