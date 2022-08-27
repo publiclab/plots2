@@ -484,7 +484,7 @@ class WikiControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_template :index
-    assert_select "title", Sanitize.clean('&#127880;') + (" Public Lab: Popular wiki pages")
+    assert_select "title", Sanitize.clean('&#127880;') + (" Public Lab: Popular wiki pages") # Test failing here
   end
 
   test  'should display well liked wiki pages' do

@@ -178,7 +178,7 @@ class SearchApiTest < ActiveSupport::TestCase
   end
 
   test 'search Tag Nearby Nodes functionality with a valid query and specific period' do
-    get "/api/srch/taglocations?nwlat=171.0&selat=0.0&nwlng=0.0&selng=174.8&sort_by=recent&order_direction=ASC&to=2018-08-16"
+    get "/api/srch/taglocations?nwlat=171.0&selat=0.0&nwlng=0.0&selng=174.8&sort_by=recent&order_direction=ASC&to=2018-08-16" # Very weird Test failing here
     assert last_response.ok?
 
     # Expected search pattern
