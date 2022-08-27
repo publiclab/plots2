@@ -1,1 +1,2 @@
-LINKS = YAML.load(File.read('#{Rails.root}/config/links.yml'))
+require 'yaml'
+LINKS = YAML.load(File.read('config/links.yml'))
