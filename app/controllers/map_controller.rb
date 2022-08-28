@@ -13,7 +13,7 @@ class MapController < ApplicationController
       @map_lon = current_user.get_value_of_power_tag("lon").to_f
     end
     @maps = Node.joins(:tag)
-      .where('(term_data.name LIKE ? OR term_data.name LIKE ?) AND nid IN (?)', 'lat:%', 'lon:%', nodes.collect(&:nid))
+      .where('(term_data.name LIKE ? OR term_data.name LIKE ?) AND node.nid IN (?)', 'lat:%', 'lon:%', nodes.collect(&:nid))
       .distinct
   end
 
