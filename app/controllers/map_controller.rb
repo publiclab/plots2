@@ -2,7 +2,7 @@ class MapController < ApplicationController
   def index
     @title = 'Maps'
     nodes = Node.find_by_tag('map-archive')
-      .order('nodes.nid DESC')
+      .order('node.nid DESC')
       .where(status: 1)
     @pagy, @nodes = pagy(nodes, items: 32)
 
