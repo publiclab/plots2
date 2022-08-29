@@ -37,6 +37,10 @@
         <% end %>
     </span>
 
+    <span data-toggle="tooltip" data-placement="top" rel="tooltip" title="Store" class="btn btn-outline-secondary btn-circle">
+        <a><span class="fa fa-shopping-cart"></span></a>
+    </span>
+
     <% if @node %>
         <% subpage_count = Tag.find_pages("parent:#{@node.slug}", 100).count %>
         <% if subpage_count > 0 %>
