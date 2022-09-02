@@ -568,4 +568,8 @@ class TagController < ApplicationController
   end
 
   def topic_tree; end
+
+  def subtopics
+    Tag.find_by(name: params[:subtopic])
+    render "tags/subtopic", layout: false
 end
