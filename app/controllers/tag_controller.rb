@@ -570,6 +570,8 @@ class TagController < ApplicationController
   def topic_tree; end
 
   def subtopics
-    Tag.find_by(name: params[:subtopic])
+nodes = Tag.find_by(name: "parent:#{params[:topic]}") # here, we look for this special tag marking a node as having a parent
+  .nodes
+  .collect(&:slug) # collect the "slugs" i.e. the unique part of the URL, which should correspond to a tagname
     render "tags/subtopic", layout: false
 end
