@@ -114,15 +114,11 @@ GEM
     docile (1.4.0)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
-    dry-configurable (0.13.0)
+    dry-container (0.10.1)
       concurrent-ruby (~> 1.0)
-      dry-core (~> 0.6)
-    dry-container (0.9.0)
+    dry-core (0.8.1)
       concurrent-ruby (~> 1.0)
-      dry-configurable (~> 0.13, >= 0.13.0)
-    dry-core (0.7.1)
-      concurrent-ruby (~> 1.0)
-    dry-inflector (0.2.1)
+    dry-inflector (0.3.0)
     dry-logic (1.2.0)
       concurrent-ruby (~> 1.0)
       dry-core (~> 0.5, >= 0.5)
@@ -251,13 +247,13 @@ GEM
       mustermann-grape (~> 1.0.0)
       rack (>= 1.3.0)
       rack-accept
-    grape-entity (0.10.1)
+    grape-entity (0.10.2)
       activesupport (>= 3.0.0)
       multi_json (>= 1.3.2)
     grape-rails-cache (0.1.2)
       activesupport
       grape
-    grape-swagger (1.4.2)
+    grape-swagger (1.5.0)
       grape (~> 1.3)
     grape-swagger-entity (0.5.1)
       grape-entity (>= 0.6.0)
@@ -344,7 +340,7 @@ GEM
       rake
     mini_mime (1.1.2)
     mini_portile2 (2.8.0)
-    minitest (5.16.2)
+    minitest (5.16.3)
     minitest-reporters (1.5.0)
       ansi
       builder
@@ -355,9 +351,9 @@ GEM
     multi_json (1.15.0)
     multi_xml (0.6.0)
     multipart-post (2.2.3)
-    mustermann (1.1.1)
+    mustermann (3.0.0)
       ruby2_keywords (~> 0.0.1)
-    mustermann-grape (1.0.1)
+    mustermann-grape (1.0.2)
       mustermann (>= 1.0.0)
     mysql2 (0.5.4)
     naught (1.1.0)
@@ -409,7 +405,7 @@ GEM
       mimemagic (~> 0.3.0)
       terrapin (~> 0.6.0)
     parallel (1.22.1)
-    parser (3.1.2.0)
+    parser (3.1.2.1)
       ast (~> 2.4.1)
     passenger (6.0.14)
       rack
@@ -434,8 +430,6 @@ GEM
     rack-openid (1.4.2)
       rack (>= 1.1.0)
       ruby-openid (>= 2.1.8)
-    rack-protection (2.2.0)
-      rack
     rack-proxy (0.7.0)
       rack
     rack-test (2.0.2)
@@ -487,7 +481,7 @@ GEM
       execjs
       railties (>= 3.2)
       tilt
-    recaptcha (5.10.0)
+    recaptcha (5.12.1)
       json
     redis (4.7.1)
     redis-namespace (1.8.2)
@@ -539,9 +533,9 @@ GEM
       rubocop-ast (>= 1.19.1, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 3.0)
-    rubocop-ast (1.19.1)
+    rubocop-ast (1.21.0)
       parser (>= 3.1.1.0)
-    rubocop-performance (1.14.2)
+    rubocop-performance (1.14.3)
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
     rubocop-rails (2.15.2)
@@ -574,9 +568,9 @@ GEM
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
     semantic_range (3.0.0)
-    sentry-delayed_job (5.3.1)
+    sentry-delayed_job (5.4.1)
       delayed_job (>= 4.0)
-      sentry-ruby-core (~> 5.3.1)
+      sentry-ruby (~> 5.4.1)
     sentry-rails (5.3.1)
       railties (>= 5.0)
       sentry-ruby-core (~> 5.3.1)
@@ -606,11 +600,8 @@ GEM
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.12.3)
     simplecov_json_formatter (0.1.3)
-    sinatra (2.2.0)
-      mustermann (~> 1.0)
-      rack (~> 2.2)
-      rack-protection (= 2.2.0)
-      tilt (~> 2.0)
+    sinatra (1.0)
+      rack (>= 1.0)
     skylight (5.3.3)
       activesupport (>= 5.2.0)
     sprockets (4.1.1)
@@ -633,7 +624,7 @@ GEM
       power_assert
     thor (1.2.1)
     thread_safe (0.3.6)
-    tilt (2.0.10)
+    tilt (2.0.11)
     timecop (0.9.5)
     trailblazer-option (0.1.2)
     turbolinks (5.2.1)
@@ -650,7 +641,7 @@ GEM
       multipart-post (~> 2.0)
       naught (~> 1.0)
       simple_oauth (~> 0.3.0)
-    tzinfo (1.2.9)
+    tzinfo (1.2.10)
       thread_safe (~> 0.1)
     uber (0.1.0)
     unf (0.1.4)
@@ -712,7 +703,7 @@ DEPENDENCIES
   grape
   grape-entity
   grape-rails-cache
-  grape-swagger (~> 1.4.2)
+  grape-swagger (~> 1.5.0)
   grape-swagger-entity (= 0.5.1)
   grape-swagger-rails
   grape-swagger-ui
@@ -735,7 +726,7 @@ DEPENDENCIES
   mimemagic (~> 0.3.10)
   minitest-reporters (~> 1.5.0)
   mocha (~> 1.14)
-  mustermann (= 1.1.1)
+  mustermann (= 3.0.0)
   mysql2 (>= 0.4.4)
   nifty-generators
   omniauth (~> 1.9)
