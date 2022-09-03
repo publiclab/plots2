@@ -89,7 +89,7 @@ class Comment < ApplicationRecord
   end
 
   def parent
-    aid.zero? ? node : answer&.node
+    node
   end
 
   def status_value
