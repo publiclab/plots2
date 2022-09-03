@@ -458,6 +458,15 @@ class TagControllerTest < ActionController::TestCase
     assert_not_nil assigns(:notes)
     assert (notes & expected).present?
   end
+  
+  test 'subtopics partial' do
+    get :subtopics,
+        params: {
+          topic: 'test'
+        }
+    assert :success
+    assert_not_nil assigns(:subtopics)
+  end
 
   test 'shows suggested tags' do
     get :suggested, params: { id: 'spectr' }
