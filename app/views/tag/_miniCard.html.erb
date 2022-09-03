@@ -46,11 +46,9 @@
     <% elsif !tag.name.include? ':' %>
       <a class="pull-right btn btn-primary requireLogin" href='/subscribe/tag/<%= tag.name %>'><%= translation('tag.show.follow') %></a>
     <% end %>
-    <% if tag.name == "one" %>
-    <a class="pull-left btn btn-outline-secondary requireLogin" href="<%= LINKS["tags"]["tag"] %>">Store<i class="fa fa-shopping-cart "></i></a>
-    <% elsif tag.name == "two" %>
-    <a class="pull-left btn btn-outline-secondary requireLogin" href="<%= LINKS["tags"]["another"] %>">Store<i class="fa fa-shopping-cart "></i></a>
-    <% end %>
+    <% if LINKS.has_key?("tags") && LINKS["tags"].has_key?(tag.name) %>
+    <a class="pull-left btn btn-outline-secondary requireLogin" href="<%= LINKS["tags"][tag.name] %>">Store<i class="fa fa-shopping-cart "></i></a>
+    <% end %> 
   </div>
 </div>
 <br />
