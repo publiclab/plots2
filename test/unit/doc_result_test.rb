@@ -9,7 +9,7 @@ class DocResultTest < ActiveSupport::TestCase
       doc_type: 'QUESTIONS',
       doc_url: question.path(:question),
       doc_title: question.title,
-      # score: question.answers.length    What should I do about this particular field?
+      score: question.comments.length
     )
 
     assert_equal question.nid,    result.doc_id
