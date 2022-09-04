@@ -3,25 +3,25 @@
         <% if node.type == 'note' %>
           <span data-toggle="tooltip" data-placement="top" rel="tooltip" title="Edit Note">
             <a aria-label="Edit post" <% if current_user && current_user.uid != node.uid %>data-confirm='Please be aware that you are editing a post by another contributor, a privilege you have only because you are an admin or co-author.' <% end %> class='btn btn-outline-secondary btn-circle btn-sm' href='/notes/edit/<%= node.id %>?t=<%= Time.now.to_i %><% if params[:controller] == "questions" %>&redirect=question&template=question<% end %>'>
-                <i class='ml-1 ff fa fa-pencil'></i>
+                <i class='ff fa fa-pencil'></i>
             </a>
           </span>
         <% end %>
     <% end %>
 
-    <% if node.type == 'page' %>
+    <% if node.type == 'page' && current_user %>
       <% if node.has_tag('locked') && (current_user ? current_user.basic_user? : true) %>
         <a href="/wiki/locked" class='btn btn-outline-secondary btn-circle btn-sm' rel="tooltip" title="This page is locked. Click to learn why." data-placement="top">
-          <i class="ml-1 ff fa fa-lock"></i>
+          <i class="ff fa fa-lock"></i>
         </a>
-      <% elsif current_user && current_user.first_time_poster %>
+      <% elsif current_user.first_time_poster %>
         <a class='btn btn-outline-secondary btn-circle btn-sm' rel="tooltip" title="You can edit this wiki once your research note/question has been approved by moderators. Click to learn why." data-placement="top" href="https://publiclab.org/notes/tester/04-23-2016/new-moderation-system-for-first-time-posters">
-          <i class="ml-1 ff fa fa-lock"></i>
+          <i class="ff fa fa-lock"></i>
         </a>
       <% else %>
         <span data-toggle="tooltip" data-placement="top" rel="tooltip" title="Edit">
           <a class="btn-circle btn btn-outline-secondary" id="edit-btn" href='<%= node.edit_path %>?t=<%= Time.now.to_i %>'>
-          <i class='ml-1 ff fa fa-pencil'></i>
+          <i class="ff fa fa-pencil"></i>
           </a>
         </span>
       <% end %>
@@ -35,6 +35,10 @@
         <% else %>
             <span id="like-star-<%= node.id %>" class="ff fa fa-star<% if !node.liked_by(current_user.uid) %>-o<% end %>"></span>
         <% end %>
+    </span>
+
+    <span data-toggle="tooltip" data-placement="top" rel="tooltip" title="Store" class="btn btn-outline-secondary btn-circle">
+        <a><span class="fa fa-shopping-cart"></span></a>
     </span>
 
     <% if @node %>
