@@ -155,10 +155,8 @@ class CommentTest < ActiveSupport::TestCase
   end
 
   test 'should create comments for answers' do
-    answer = answers(:one)
     comment = Comment.new(
       uid: users(:bob).id,
-      aid: answer.id,
       comment: 'Test comment'
     )
     assert comment.save

@@ -145,22 +145,14 @@ class HomeController < ApplicationController
     # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
     comments = comments.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
     comments = comments.to_a # ensure it can be serialized for caching
-    answer_comments = Comment.joins(:answer, :user)
-      .order('timestamp DESC')
-      .where('timestamp - answers.created_at > ?', 86_400)
-      .limit(20)
-      .group(['answers.id', 'comments.cid']) # ONLY_FULL_GROUP_BY, issue #3120
-    answer_comments = answer_comments.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
-    answer_comments = answer_comments.to_a # ensure it can be serialized for caching
-    activity = (notes + wikis + comments + answer_comments).sort_by(&:created_at).reverse
+    activity = (notes + wikis + comments).sort_by(&:created_at).reverse
     response = [
       activity,
       blog,
       notes,
       wikis,
       revisions,
-      comments,
-      answer_comments
+      comments
     ]
     response
   end

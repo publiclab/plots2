@@ -381,6 +381,7 @@ class NodeTest < ActiveSupport::TestCase
       nodes(:hashtag_in_link),
       nodes(:hashtag_in_url),
       nodes(:email),
+      nodes(:dummy_node)
     ]
     assert_equal expected, notes
   end

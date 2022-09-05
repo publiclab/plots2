@@ -686,3 +686,16 @@ email:
   type: "note"
   cached_likes: 0
   slug: "note-email-links"
+
+# Node to link comments with no parent nodes, so that other tests don't fail
+dummy_node:
+  nid: 56
+  uid: 2
+  title: "Dummy Node"
+  path: "/notes/jeff/12-23-2020/dummy-node"
+  created: <%= DateTime.new(2020,12,23).to_i %>
+  changed: <%= DateTime.new(2020,12,23).to_i %>
+  status: 8 # Intentional status so that other tests do not fail.
+  type: "note"
+  cached_likes: 0
+  slug: "note-dummy-node"

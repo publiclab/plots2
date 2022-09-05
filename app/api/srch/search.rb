@@ -77,7 +77,7 @@ module Srch
               doc_type: 'QUESTIONS',
               doc_url: model.path(:question),
               doc_title: model.title,
-              score: model.answers.length
+              score: model.comments.length
             )
           end
           DocList.new(results_list.flatten, search_request)
@@ -257,7 +257,7 @@ module Srch
               doc_type: 'QUESTIONS',
               doc_url: model.path(:question),
               doc_title: model.title,
-              score: model.answers.length
+              score: model.comments.length
             )
           end
 
@@ -320,7 +320,7 @@ module Srch
               doc_title: model.title,
               doc_author: model.user.username,
               doc_image_url: model.images.empty? ? 0 : model.images.first.path,
-              score: model.answers.length,
+              score: model.comments.length,
               latitude: model.lat,
               longitude: model.lon,
               blurred: model.blurred?,
