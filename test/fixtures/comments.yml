@@ -50,16 +50,14 @@ moderator:
 
 answer_comment_one:
   uid: 1
-  nid: 0
-  aid: 1
+  nid: 56
   status: 1
   comment: Answer comment one
   timestamp: <%= Time.now.to_i + 7 %>
 
 answer_comment_two:
   uid: 2
-  nid: 0
-  aid: 1
+  nid: 56
   status: 1
   comment: Answer comment two
   timestamp: <%= Time.now.to_i + 8 %>
@@ -75,7 +73,6 @@ wiki_comment:
 question:
   uid: 1
   nid: 8
-  aid: 0
   status: 1
   comment: Question comment
   timestamp: <%= Time.now.to_i + 9 %>
@@ -104,7 +101,6 @@ comment_status_4:
 question_one:
   uid: 2
   nid: 8
-  aid: 0
   status: 1
   comment: Question comment one
   timestamp: <%= Time.now.to_i + 11 %>
@@ -113,7 +109,6 @@ question_one:
 question_callout:
   uid: 2
   nid: 8
-  aid: 0
   status: 1
   comment: Hey, @bob nice question
   timestamp: <%= Time.now.to_i + 12 %>
@@ -122,7 +117,6 @@ question_callout:
 question_tag:
   uid: 2
   nid: 8
-  aid: 0
   status: 1
   comment: 'Question #everything'
   timestamp: <%= Time.now.to_i + 13 %>

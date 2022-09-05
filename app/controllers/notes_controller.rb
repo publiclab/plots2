@@ -256,10 +256,6 @@ class NotesController < ApplicationController
           i.vid = @revision.vid
           i.save
         end
-        @node.drupal_content_field_image_gallery.each do |img|
-          img.vid = @revision.vid
-          img.save
-        end
         @node.title = @revision.title
         # save main image
         if params[:main_image] && params[:main_image] != ''

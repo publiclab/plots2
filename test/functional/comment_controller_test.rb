@@ -174,7 +174,7 @@ class CommentControllerTest < ActionController::TestCase
     post :update, params: { id: comment.id, body: new_comment_body, type: 'question' }
     comment.reload
     assert_equal new_comment_body, comment.comment
-    assert_redirected_to comment.answer.node.path(:question) + '?_=' + Time.now.to_i.to_s
+    assert_redirected_to comment.node.path(:question) + '?_=' + Time.now.to_i.to_s
     assert_equal flash[:notice], 'Comment updated.'
   end
 

@@ -4,7 +4,6 @@ class Comment < ApplicationRecord
 
   belongs_to :node, foreign_key: 'nid', touch: true, counter_cache: true
   belongs_to :user, foreign_key: 'uid'
-  belongs_to :answer, foreign_key: 'aid'
   has_many :likes, as: :likeable
 
   has_many :replied_comments, class_name: "Comment", foreign_key: 'reply_to', dependent: :destroy
@@ -21,7 +20,7 @@ class Comment < ApplicationRecord
   def self.inheritance_column
     'rails_type'
   end
-  
+
   def self.search(query)
     Comment.where('MATCH(comment) AGAINST(?)', query)
       .where(status: 1)
@@ -90,7 +89,7 @@ class Comment < ApplicationRecord
   end
 
   def parent
-    aid.zero? ? node : answer&.node
+    node
   end
 
   def status_value
@@ -155,14 +154,14 @@ class Comment < ApplicationRecord
         uids = uids_to_notify - already
         uids+= current_user.followers.collect(&:uid)
         uids.uniq!
-        
+
         # Send Browser Notification Using Action Cable
         notify_user_ids = uids_to_notify + already
         notify_user_ids = notify_user_ids.uniq
         send_browser_notification notify_user_ids
-        
+
         uids = uids.select { |i| i != 0 } # remove bad comments (some early ones lack uid)
-        
+
         notify_users(uids, current_user)
         notify_tag_followers(already + uids)
       end

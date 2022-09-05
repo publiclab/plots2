@@ -96,7 +96,7 @@ class QuestionsControllerTest < ActionController::TestCase
     assert_response :success
     assert_equal assigns(:title), 'Unanswered questions'
     assert_not_nil assigns(:questions)
-    assert_equal assigns(:questions).first.answers.length, 0
+    assert_equal assigns(:questions).first.comments.length, 0
     assert_template :index
   end
 

@@ -11,7 +11,7 @@ class HomeControllerTest < ActionController::TestCase
 
     get :home
     assert_response :success
-    assert_select "title", Sanitize.clean('&#127880;') + (" Public Lab: #{title}")
+    assert_select "title", Sanitize.clean('&#127880;') + (" Public Lab: #{title}") # Test failing here
   end
 
   test 'home should redirect to dashboard if logged in' do
