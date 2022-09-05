@@ -1,21 +1,19 @@
-<h2>New Feature</h2>
+<div class="col-md-6">
+  <h2>New Feature</h2>
+  <% url = { :controller => "features", :action => "create", :id => params[:id] } %>
 
+  <%= form_for :revision, :as => :revision, :url => url, :html => {:class => "form"} do |f| %>
+
+      <% if defined?(@revision) %>
+          <%= render partial: 'layouts/errorMessages', locals: { model: @revision } %>
+      <% end %>
+
+  <% end %>
+
+  <%= form_for :node, :as => :drupal_node, :url => url do |f| %>
+    <%= render partial: 'layouts/errorMessages', locals: { model: @node } %>
+
+    <%= render :partial => "features/form" %>
+
+  <% end %>
 </div>
-
-<div class="row">
-<% url = { :controller => "features", :action => "create", :id => params[:id] } %>
-
-<%= form_for :revision, :as => :revision, :url => url, :html => {:class => "form"} do |f| %>
-
-    <% if defined?(@revision) %>
-        <%= render partial: 'layouts/errorMessages', locals: { model: @revision } %>
-    <% end %>
-
-<% end %>
-
-<%= form_for :node, :as => :drupal_node, :url => url do |f| %>
-  <%= render partial: 'layouts/errorMessages', locals: { model: @node } %>
-
-  <%= render :partial => "features/form" %>
-
-<% end %>
