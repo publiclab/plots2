@@ -577,4 +577,5 @@ class TagController < ApplicationController
       .collect(&:slug)
     @subtopics = Tag.find_by(name: subtopic_names)
     render "tags/subtopics", layout: false
+  end
 end
