@@ -3,7 +3,7 @@ class RemoveDrupalGalleryFromNode < ActiveRecord::Migration[5.2]
     Node.all.each do |node|
       new_revision = node.revisions.first.dup
       gallery_images = ""
-      node.gallery.each do |image|
+      node&.gallery.each do |image|
         html = "<a target='_blank' href='#{image&.image&.path(:original)}'><img rel='tooltip' data-title='#{image&.description}' style='margin-bottom:4px;' class='rounded' src='#{image&.image&.path(:thumb)}' /></a>"
         gallery_images << html
       end
