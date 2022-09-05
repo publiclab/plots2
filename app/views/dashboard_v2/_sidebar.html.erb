@@ -56,18 +56,17 @@
   </div>
 </div>
 <div>
-<% if !@recommendations.nil? %>
+<% @recommendations ||= Tag.get_recommendations("blog", "three") %>
   <% @recommendations.each do |node| %>
-    <div class="card" style="width: 18rem;">
-    <img class="card-img-top" src="#" alt="Card image cap">
-    <div class="card-body">
-    <h5 class="card-title"><%= node.nid %></h5>
-    <p class="card-text">Post content here</p>
-    <a href="#" class="btn btn-primary">Read more button here</a>
-    </div>
+    <div class="card recommendations" style="width: 18rem;">
+      <img class="card-img-top" src="#" alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title"><%= node.nid %></h5>
+        <p class="card-text">Post content here</p>
+        <a href="#" class="btn btn-primary">Read more button here</a>
+      </div>
     </div>
   <% end %>
-<% end %>
 </div>
 
 <style>

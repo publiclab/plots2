@@ -294,4 +294,9 @@ class TagTest < ActiveSupport::TestCase
     assert lat.location_tag?
     assert lon.location_tag?
   end
+
+  test 'Tag.get_recommendations' do
+    nodes = Tag.get_recommendations("blog", "test")
+    assert_not_nil nodes
+  end
 end
