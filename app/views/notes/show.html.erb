@@ -69,8 +69,6 @@
     <hr />
   <% end %>
 
-  <%= render :partial => "notes/gallery" %>
-
   <div id="content" class="pl-content note">
     <% body = @preview ? @body.render_body : @node.latest.render_body %>
     <%= raw auto_link(insert_extras(body), :sanitize => false) %>

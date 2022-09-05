@@ -358,20 +358,6 @@ class Node < ActiveRecord::Base
     match&.split('src="')&.last&.split('"')&.first
   end
 
-  # was unable to set up this relationship properly with ActiveRecord associations
-  def drupal_content_field_image_gallery
-    DrupalContentFieldImageGallery.where(nid: nid)
-                                  .order('field_image_gallery_fid')
-  end
-
-  def gallery
-    if !drupal_content_field_image_gallery.empty? && drupal_content_field_image_gallery.first.field_image_gallery_fid
-      drupal_content_field_image_gallery
-    else
-      []
-    end
-  end
-
   # ============================================
   # Tag-related methods
 
