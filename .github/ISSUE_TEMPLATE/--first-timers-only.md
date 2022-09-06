@@ -1,23 +1,22 @@
 ---
 name: "\U00002728 First Timers Only issue"
 about: Open a First Timers Only issue for someone
-title: ''
+title: ""
 labels: fto-candidate
-assignees: ''
-
+assignees: ""
 ---
 
 ### 💡Format this Issue Into a First Timers Issue
 
 This has been marked as a good candidate for becoming a [first-timers-only issue](https://code.publiclab.org/#r=all) like these, meaning that it's **simple, self-contained**, and with some extra formatting✍️, could be a great entry point for a new contributor. If you're familiar enough with this code, please consider **reformatting it as a first-timers-only issue**, and then ping @publiclab/reviewers to get it labeled🏷. Or, if this is not your first time, **try to solve it yourself**🧑‍💻!
 
-****
+---
 
 Hi, this is a [first-timers-only issue](https://code.publiclab.org/#r=all). This means we've worked to make it more legible to folks who either **haven't contributed to our codebase before, or even folks who haven't contributed to open source before**.
 
-If that's you, we're interested in helping you take the first step and can answer questions and help you out as you do. Note that we're especially interested in contributions from people from groups underrepresented in free and open source software!
+If that's you, we're interested in helping you take the first step and can answer questions and help you out as you do. Note that we're especially interested in contributions from people from underrepresented groups in free and open source software!
 
-We know that the process of creating a pull request is the biggest barrier for new contributors. This issue is for you 💝
+We know that the process of creating a pull request is one of the biggest barrier for new contributors. This issue is for you 💝
 
 If you have contributed before, **consider leaving this one for someone new** and looking through our general [help wanted](https://github.com/publiclab/plots2/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) issues. Thanks!
 
@@ -53,7 +52,7 @@ $DIFF
 
 2. You can also [edit files directly in your browser](https://help.github.com/articles/editing-files-in-your-repository/) and open a pull request from there.
 
-- [ ] 🏁 **Done** Ask in comments for a review :)
+- [ ] 🏁 **Done** Ask in the comments for a review :)
 
 ### Please keep us updated
 
