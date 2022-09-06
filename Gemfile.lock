@@ -481,7 +481,7 @@ GEM
       execjs
       railties (>= 3.2)
       tilt
-    recaptcha (5.10.0)
+    recaptcha (5.12.3)
       json
     redis (4.7.1)
     redis-namespace (1.8.2)
