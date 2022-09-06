@@ -298,5 +298,6 @@ class TagTest < ActiveSupport::TestCase
   test 'Tag.get_recommendations' do
     nodes = Tag.get_recommendations("blog", "test")
     assert_not_nil nodes
+    assert nodes.length > 0
   end
 end
