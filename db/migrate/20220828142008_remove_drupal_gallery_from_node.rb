@@ -11,9 +11,12 @@ class RemoveDrupalGalleryFromNode < ActiveRecord::Migration[5.2]
           gallery_images << html
         end
       end
-      new_revision.body = gallery_images + new_revision.body
-      puts "#{new_revision.title} #{new_revision.body}"
-      new_revision.save! unless new_revision.body.strip.empty? || new_revision.body.strip == ""
+      unless gallery_images == "" || new_revision.body.strip.empty? || new_revision.body.strip == ""
+        new_revision.body = gallery_images + new_revision.body
+        puts "#######"
+        puts "#{new_revision.title} / #{new_revision.nid} / #{new_revision.body}"
+        new_revision.save!
+      end
     end
   end
 end
