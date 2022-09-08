@@ -150,3 +150,7 @@ hidden_response_tag:
 subscribed_tag:
   tid: 37
   name: sub:tag
+
+subtopic_tag:
+  tid: 38
+  name: parent:one
