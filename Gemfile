@@ -97,7 +97,7 @@ group :mysql, :production do
 end
 
 group :sqlite, :development do
-  gem 'sqlite3', '~> 1.4.4'
+  gem 'sqlite3', '~> 1.5.0'
 end
 
 gem 'coffee-rails', '~> 5.0.0'
