@@ -394,7 +394,7 @@ GEM
     omniauth-twitter (1.4.0)
       omniauth-oauth (~> 1.1)
       rack
-    openssl (3.0.0)
+    openssl (3.0.1)
     os (1.1.4)
     pagy (5.10.1)
       activesupport
@@ -653,7 +653,7 @@ GEM
       activemodel (>= 5.0)
       bindex (>= 0.4.0)
       railties (>= 5.0)
-    webmock (3.14.0)
+    webmock (3.18.1)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
@@ -734,7 +734,7 @@ DEPENDENCIES
   omniauth-github (~> 1.4)
   omniauth-google-oauth2
   omniauth-twitter
-  openssl (~> 3.0.0)
+  openssl (~> 3.0.1)
   pagy (>= 3.8.3)
   paperclip (~> 6.1.0)
   passenger
@@ -787,7 +787,7 @@ DEPENDENCIES
   twitter
   tzinfo-data
   web-console (>= 3.3.0)
-  webmock (~> 3.14)
+  webmock (~> 3.18)
   webpacker
   whenever
   will_paginate (>= 3.0.6)

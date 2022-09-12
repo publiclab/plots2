@@ -124,7 +124,7 @@ group :test, :development do
   gem 'jasmine-rails'
   gem 'json_expressions'
   gem 'minitest-reporters', '~> 1.5.0'
-  gem 'openssl', '~> 3.0.0'
+  gem 'openssl', '~> 3.0.1'
   gem 'phantomjs'
   gem 'puma', '~> 5.6'
   gem 'rails-perftest'
@@ -137,7 +137,7 @@ group :test, :development do
   gem 'timecop'
   gem 'pry-rails'
   gem 'action-cable-testing'
-  gem "webmock", "~> 3.14"
+  gem "webmock", "~> 3.18"
   gem 'rubocop-rails', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rake', require: false
