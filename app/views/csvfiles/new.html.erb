@@ -10,27 +10,27 @@
 <%= stylesheet_link_tag '/lib/simple-data-grapher/examples/upload_file.css'%>
 <div id='first'></div>
 <script>
-    var headerContainer = document.getElementsByClassName('body-container')[0];
-    SimpleDataGrapherObject = new SimpleDataGrapher('first');
-    var value = '<%= current_user %>';
-    <% if current_user %>
-        SimpleDataGrapherObject.view.createButtons('yes');
-        var saveButton = SimpleDataGrapherObject.view.elementId + '_save_CSV';
-        var prevFile = SimpleDataGrapherObject.view.elementId + '_prev_file';
-        var saveFlag = false;
-        $('#' + saveButton).click(function(){
-            saveFlag = true;
-        });
+  var headerContainer = document.getElementsByClassName('body-container')[0];
+  SimpleDataGrapherObject = new SimpleDataGrapher('first');
+  var value = '<%= current_user %>';
+  <% if current_user %>
+    SimpleDataGrapherObject.view.createButtons('yes');
+    var saveButton = SimpleDataGrapherObject.view.elementId + '_save_CSV';
+    var prevFile = SimpleDataGrapherObject.view.elementId + '_prev_file';
+    var saveFlag = false;
+    $('#' + saveButton).click(function(){
+      saveFlag = true;
+    });
   $('#' + SimpleDataGrapherObject.view.plotGraphId).click(function(){
     if (saveFlag){
-      var arr = {};
-      arr['completeCsvMatrix'] = SimpleDataGrapherObject.view.csvParser.completeCsvMatrix;
-      arr['csvHeaders'] = SimpleDataGrapherObject.view.csvParser.csvHeaders;
-      arr['csvSampleData'] = SimpleDataGrapherObject.view.csvParser.csvSampleData;
-      arr['csvValidForYAxis'] = SimpleDataGrapherObject.view.csvParser.csvValidForYAxis;
-      arr['completeCsvMatrixTranspose'] = SimpleDataGrapherObject.view.csvParser.completeCsvMatrixTranspose;
-      let csvStringMatrix = SimpleDataGrapherObject.view.csvParser.completeCsvMatrixTranspose;
-      let csvStringForDownload = encodeURI('data:text/csv;charset=utf-8,' + csvStringMatrix.map(e => e.join(',')).join('\n'));
+    var arr = {};
+    arr['completeCsvMatrix'] = SimpleDataGrapherObject.view.csvParser.completeCsvMatrix;
+    arr['csvHeaders'] = SimpleDataGrapherObject.view.csvParser.csvHeaders;
+    arr['csvSampleData'] = SimpleDataGrapherObject.view.csvParser.csvSampleData;
+    arr['csvValidForYAxis'] = SimpleDataGrapherObject.view.csvParser.csvValidForYAxis;
+    arr['completeCsvMatrixTranspose'] = SimpleDataGrapherObject.view.csvParser.completeCsvMatrixTranspose;
+    let csvStringMatrix = SimpleDataGrapherObject.view.csvParser.completeCsvMatrixTranspose;
+    let csvStringForDownload = encodeURI('data:text/csv;charset=utf-8,' + csvStringMatrix.map(e => e.join(',')).join('\n'));
       $.ajax({
         url: '/graph/object',
         type: 'post',
