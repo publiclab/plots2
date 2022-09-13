@@ -338,6 +338,7 @@ class NodeTest < ActiveSupport::TestCase
       nodes(:one), 
       nodes(:spam), 
       nodes(:first_timer_note), 
+      nodes(:map),
       nodes(:blog),
       nodes(:moderated_user_note), 
       nodes(:activity), 
