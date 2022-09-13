@@ -86,9 +86,6 @@ class Node < ActiveRecord::Base
   has_many :node_tag, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
   has_many :tag, through: :node_tag
   has_many :comments, foreign_key: 'nid', dependent: :destroy # re-enable in Rails 5
-  has_many :drupal_content_type_map, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
-  has_many :drupal_content_field_mappers, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
-  has_many :drupal_content_field_map_editor, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
   has_many :images, foreign_key: :nid
   has_many :node_selections, foreign_key: :nid, dependent: :destroy
 
@@ -158,8 +155,6 @@ class Node < ActiveRecord::Base
     when "note"
       username = User.find_by(id: uid).name # name? or username?
       "/notes/#{username}/#{time}/#{title.parameterize}"
-    when "map"
-      "/map/#{title.parameterize}/#{time}"
     when "feature"
       "/feature/#{title.parameterize}"
     when "page"
@@ -513,7 +508,6 @@ class Node < ActiveRecord::Base
   def icon
     icon = 'file' if type == 'note'
     icon = 'book' if type == 'page'
-    icon = 'map-marker' if type == 'map'
     icon = 'flag' if has_tag('chapter')
     # icon = 'wrench' if type == 'tool'
     icon = 'question-circle' if has_power_tag('question')
@@ -554,12 +548,6 @@ class Node < ActiveRecord::Base
 
   def self.find_by_path(title)
     Node.where(path: ["/#{title}"]).first
-  end
-
-  def map
-    # This fires off a query that orders by vid DESC
-    # and is quicker than doing .order(vid: :DESC) for some reason.
-    drupal_content_type_map.last
   end
 
   def blurred?
@@ -917,10 +905,6 @@ class Node < ActiveRecord::Base
     Node.where(path: "/notes/#{author}/#{date}/#{title}").first
   end
 
-  def self.find_map(name, date)
-    Node.where(path: "/map/#{name}/#{date}").first
-  end
-
   def self.find_wiki(title)
     Node.where(path: ["/#{title}", "/tool/#{title}", "/wiki/#{title}", "/place/#{title}"]).first
   end
@@ -978,8 +962,7 @@ class Node < ActiveRecord::Base
 
     node_type = 'note' if type == 'notes' || type == 'questions'
     node_type = 'page' if type == 'wiki'
-    # node_type = 'map' if type == 'maps'  # Tag.tagged_nodes_by_author does not seem to work with maps, more testing required
-
+    
     order = 'node_revisions.timestamp DESC'
     order = 'created DESC' if node_type == 'note'
 
