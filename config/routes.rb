@@ -260,12 +260,8 @@ Plots2::Application.routes.draw do
   get 'map/:id' => 'map#wiki'
   get 'maps' => redirect('/map/')
   get 'users/map' => 'users#map'
-  get 'maps/:id' => 'map#tag'
-  get 'map/edit/:id' => 'map#edit'
-  put 'map/update/:id' => 'map#update'
-  delete 'map/delete/:id' => 'map#delete'
   get 'map/:name/:date' => 'map#show'
-  get 'archive' => 'map#index'
+  get 'archive' => redirect('wiki/map-archive')
   get 'stats/range' => 'stats#range'
   get 'stats' => 'stats#index'
   get 'stats/range/:start/:end' => 'stats#range'
