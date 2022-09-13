@@ -135,7 +135,7 @@ wiki_page:
 
 map:
   nid: 12
-  uid: 1
+  uid: 2
   title: "A map page"
   path: "/map/a-map-page/<%= Time.now.strftime("%m-%d-%Y") %>"
   created: <%= Time.now.to_i %>
