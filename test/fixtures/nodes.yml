@@ -141,7 +141,7 @@ map:
   created: <%= Time.now.to_i %>
   changed: <%= Time.now.to_i %>
   status: 1
-  type: "map"
+  type: "note"
   cached_likes: 0
   latitude: 71.0
   longitude: 52.0
