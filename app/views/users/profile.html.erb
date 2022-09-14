@@ -15,7 +15,7 @@
 
   <div style="text-align: center;">
   <h5><a href='/notes/author/<%= @profile_user.name %>'><%= pluralize(@profile_user.note_count, 'research note', plural: 'research notes') %></a>
-  +  <a class="ml-2" href = "/tag/question:*/author/<%= params[:id] %>"><%= pluralize(Node.questions.where(status: 1, uid: @profile_user.id).length, 'question')
+  <a class="ml-2" href = "/tag/question:*/author/<%= params[:id] %>"><%= pluralize(Node.questions.where(status: 1, uid: @profile_user.id).length, 'question')
    %> </a></h5>
   </div>
 
