@@ -13,7 +13,7 @@
     var headerContainer = document.getElementsByClassName('body-container')[0];
     SimpleDataGrapherObject = new SimpleDataGrapher('first');
     var value = '<%= current_user %>';
-  <% if current_user %>
+    <% if current_user %>
     SimpleDataGrapherObject.view.createButtons('yes');
     var saveButton = SimpleDataGrapherObject.view.elementId + '_save_CSV';
     var prevFile = SimpleDataGrapherObject.view.elementId + '_prev_file';
