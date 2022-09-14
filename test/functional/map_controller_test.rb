@@ -5,12 +5,9 @@ class MapControllerTest < ActionController::TestCase
     activate_authlogic
   end
 
-  test 'should get index' do
-    get :index
-    assert_response :success
-  end
-
   test 'should get show' do
+    # note these are now just note nodes since https://github.com/publiclab/plots2/pull/11225
+    # but they should still have special "map" paths
     map = nodes(:map)
     get :show, params: { name: map.title.parameterize, date: map.created_at.strftime('%m-%d-%Y').slice(0, 19) }
 
