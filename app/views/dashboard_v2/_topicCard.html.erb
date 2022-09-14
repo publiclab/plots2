@@ -34,15 +34,17 @@
                 <% shown_nids << node.id %>
                   <div class="col-md-4 card-responsive mb-2 pr-1">
                     <div class="card">
-                      <% if node.main_image %>
-                          <img class="card-img-top" style="margin-bottom: 10px;" aria-hidden="true" src="<%= node.main_image.path(:default) %>" />
-                      <% elsif node.scraped_image %>
-                          <img class="card-img-top" style="margin-bottom: 10px;" aria-hidden="true" src="<%= node.scraped_image %>" />
-                      <% else %>
-                        <a class="imgg" style="background:#ddd; margin-bottom: 10px;overflow:hidden;">
-                          <img src="https://storage.googleapis.com/publiclab-production/public/system/images/photos/000/045/449/medium/paint-bucket.png" style="width: 100%;padding: 15% 30%;opacity: 0.3;">
-                        </a>
-                      <% end %>
+                      <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>">
++                        <% if node.main_image %>
++                            <img class="card-img-top" style="margin-bottom: 10px;" aria-hidden="true" src="<%= node.main_image.path(:default) %>" />
++                        <% elsif node.scraped_image %>
++                            <img class="card-img-top" style="margin-bottom: 10px;" aria-hidden="true" src="<%= node.scraped_image %>" />
++                        <% else %>
++                          <div class="imgg" style="background:#ddd; margin-bottom: 10px;overflow:hidden;">
++                            <img src="https://storage.googleapis.com/publiclab-production/public/system/images/photos/000/045/449/medium/paint-bucket.png" style="width: 100%;padding: 15% 30%;opacity: 0.3;">
++                          </div>
++                        <% end %>
++                      </a>
                       <div class="card-body">
                           <h5 style="margin-bottom: 0px;" class="text-truncate"><a style="color: inherit; text-decoration: none;" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>" style="color: black"><%= (node.type == 'note') ? node.title : node.latest.title %></a></h5>
                           <div style="font-size:1.0em;color:darkgray;">

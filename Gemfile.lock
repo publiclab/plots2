@@ -129,7 +129,7 @@ GEM
       dry-inflector (~> 0.1, >= 0.1.2)
       dry-logic (~> 1.0, >= 1.0.2)
     equalizer (0.0.11)
-    erubi (1.10.0)
+    erubi (1.11.0)
     excon (0.92.3)
     execjs (2.7.0)
     faraday (1.10.2)
@@ -360,7 +360,7 @@ GEM
     netrc (0.11.0)
     nifty-generators (0.4.6)
     nio4r (2.5.8)
-    nokogiri (1.13.7)
+    nokogiri (1.13.8)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     nokogumbo (2.0.4)
@@ -571,13 +571,13 @@ GEM
     sentry-delayed_job (5.4.1)
       delayed_job (>= 4.0)
       sentry-ruby (~> 5.4.1)
-    sentry-rails (5.3.1)
+    sentry-rails (5.4.1)
       railties (>= 5.0)
-      sentry-ruby-core (~> 5.3.1)
+      sentry-ruby (~> 5.4.1)
     sentry-resque (5.4.1)
       resque (>= 1.24)
       sentry-ruby (~> 5.4.1)
-    sentry-ruby (5.4.1)
+    sentry-ruby (5.4.2)
       concurrent-ruby (~> 1.0, >= 1.0.2)
     sentry-ruby-core (5.3.1)
       concurrent-ruby
@@ -653,7 +653,7 @@ GEM
       activemodel (>= 5.0)
       bindex (>= 0.4.0)
       railties (>= 5.0)
-    webmock (3.14.0)
+    webmock (3.18.1)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
@@ -787,7 +787,7 @@ DEPENDENCIES
   twitter
   tzinfo-data
   web-console (>= 3.3.0)
-  webmock (~> 3.14)
+  webmock (~> 3.18)
   webpacker
   whenever
   will_paginate (>= 3.0.6)
