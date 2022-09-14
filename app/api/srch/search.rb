@@ -30,7 +30,7 @@ module Srch
           results_list << results[:profiles].map do |model|
             DocResult.new(
               doc_type: 'USERS',
-              doc_url: '/profile/' + model.name,
+              doc_url: "/profile/#{model.name}",
               doc_title: model.username
             )
           end
@@ -104,7 +104,7 @@ module Srch
             docs = results.map do |model|
               DocResult.new(
                 doc_type: 'USERS',
-                doc_url: '/profile/' + model.name,
+                doc_url: "/profile/#{model.name}",
                 doc_title: model.username,
                 latitude: model.lat,
                 longitude: model.lon,
@@ -325,7 +325,7 @@ module Srch
               longitude: model.lon,
               blurred: model.blurred?,
               place_name: model.has_power_tag('place') ? model.power_tag('place') : '',
-              created_at: model.created_at,
+              created_at: model.created_at
               # time_since: distance_of_time_in_words(model.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }),  # works, but really slows down the search results
               # comment_count: model.comments_viewable_by(current_user).length  # causes an error because of current_user?
             )
