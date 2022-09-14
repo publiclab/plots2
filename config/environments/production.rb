@@ -94,4 +94,18 @@ Plots2::Application.configure do
   }
   config.action_controller.default_url_options = { host: 'publiclab.org' }
 
+  # These are required to load classes into YAML, see https://github.com/publiclab/plots2/issues/11355
+  config.active_record.yaml_column_permitted_classes = [ 
+    OAuth::AccessToken, 
+    OAuth::Consumer, 
+    Symbol, 
+    Net::HTTP, 
+    OpenSSL::SSL::SSLContext, 
+    OpenSSL::SSL::Session, 
+    URI::HTTPS, 
+    URI::RFC3986_Parser, 
+    Regexp, 
+    Net::HTTPOK, 
+    ActiveSupport::HashWithIndifferentAccess 
+  ]
 end
