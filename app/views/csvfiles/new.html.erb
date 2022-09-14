@@ -11,7 +11,7 @@
 <div id='first'></div>
 <script>
     var headerContainer = document.getElementsByClassName('body-container')[0];
-  SimpleDataGrapherObject = new SimpleDataGrapher('first');
+    SimpleDataGrapherObject = new SimpleDataGrapher('first');
   var value = '<%= current_user %>';
   <% if current_user %>
     SimpleDataGrapherObject.view.createButtons('yes');
