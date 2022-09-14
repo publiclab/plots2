@@ -441,11 +441,14 @@ class NotesController < ApplicationController
   private
 
   def set_node
-    @node = if params[:author] && params[:date] && params[:id]
-              Node.find_notes(params[:author], params[:date], params[:id]) || Node.where(path: "/report/#{params[:id]}").first
-            else
-              Node.find(params[:id])
-            end
+    @node = if params[:node_type] == "map"
+        # legacy map type converted to notes but preserving paths:
+        Node.where(path: "/map/#{params[:name]}/#{params[:date]}").first
+      elsif params[:author] && params[:date] && params[:id]
+        Node.find_notes(params[:author], params[:date], params[:id]) || Node.where(path: "/report/#{params[:id]}").first
+      else
+        Node.find(params[:id])
+      end
   end
 
   def redirect_power_tag_redirect

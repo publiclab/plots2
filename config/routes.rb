@@ -260,7 +260,7 @@ Plots2::Application.routes.draw do
   get 'map/:id' => 'map#wiki'
   get 'maps' => redirect('/map/')
   get 'users/map' => 'users#map'
-  get 'map/:name/:date' => 'map#show'
+  get 'map/:name/:date' => 'notes#show', node_type: "map"
   get 'archive' => redirect('wiki/map-archive')
   get 'stats/range' => 'stats#range'
   get 'stats' => 'stats#index'
