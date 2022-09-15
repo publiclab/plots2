@@ -6,6 +6,9 @@ class UserChannel < ApplicationCable::Channel
       reject
     end
   end
+    if current_user.nil?
+      reject
+    else
 
   def unsubscribed
     # Any cleanup needed when channel is unsubscribed
