@@ -43,7 +43,7 @@
     "jquery-validation": "^1.19.5",
     "jsdiff": "components/jsdiff#~3.4.0",
     "junction": "theleagueof/junction#*",
-    "leaflet": "^1.8.0",
+    "leaflet": "^1.9.0",
     "leaflet-blurred-location": "^1.7.1",
     "leaflet-environmental-layers": "^2.4.9",
     "leaflet-hash": "^0.2.1",
