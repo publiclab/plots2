@@ -15,7 +15,7 @@ class AdminController < ApplicationController
         flash[:error] = 'Only admins can promote other users to admins.'
       end
     end
-    redirect_to '/profile/' + @user.username + '?_=' + Time.now.to_i.to_s
+    redirect_to "/profile/#{@user.username}?
   end
 
   def promote_moderator
@@ -29,7 +29,7 @@ class AdminController < ApplicationController
         flash[:error] = 'Only moderators can promote other users.'
       end
     end
-    redirect_to '/profile/' + @user.username + '?_=' + Time.now.to_i.to_s
+    redirect_to "/profile/#{@user.username}?_=#{Time.now.to_i}"
   end
 
   def demote_basic
@@ -43,7 +43,7 @@ class AdminController < ApplicationController
         flash[:error] = 'Only admins and moderators can demote other users.'
       end
     end
-    redirect_to '/profile/' + @user.username + '?_=' + Time.now.to_i.to_s
+    redirect_to "/profile/#{@user.username}?_=#{Time.now.to_i}"
   end
 
   def reset_user_password
@@ -56,7 +56,7 @@ class AdminController < ApplicationController
         PasswordResetMailer.reset_notify(user, key).deliver_later unless user.nil? # respond the same to both successes and failures; security
       end
       flash[:notice] = "#{user.name} should receive an email with instructions on how to reset their password. If they do not, please double check that they are using the email they registered with."
-      redirect_to URI.parse("/profile/" + user.name).path
+      redirect_to "/profile/#{user.name}?_=#{Time.now.to_i}"
     end
   end
 
@@ -291,7 +291,7 @@ class AdminController < ApplicationController
     else
       flash[:error] = 'Only moderators can unmoderate other users.'
     end
-    redirect_to '/profile/' + user.name + '?_=' + Time.now.to_i.to_s
+    redirect_to "/profile/#{user.name}?_=#{Time.now.to_i}"
   end
 
   def ban
@@ -301,7 +301,7 @@ class AdminController < ApplicationController
     else
       flash[:error] = 'Only moderators can ban other users.'
     end
-    redirect_to '/profile/' + user.name + '?_=' + Time.now.to_i.to_s
+    redirect_to "/profile/#{user.name}?_=#{Time.now.to_i}"
   end
 
   def unban
@@ -312,7 +312,7 @@ class AdminController < ApplicationController
     else
       flash[:error] = 'Only moderators can unban other users.'
     end
-    redirect_to '/profile/' + user.name + '?_=' + Time.now.to_i.to_s
+    redirect_to "/profile/#{user.name}?_=#{Time.now.to_i}"
   end
 
   def users
@@ -320,7 +320,7 @@ class AdminController < ApplicationController
       @users = User.order('uid DESC').limit(200)
     else
       flash[:error] = 'Only moderators can moderate other users.'
-      redirect_to '/dashboard'
+      redirect_to "/profile/#{du.name}"
     end
   end
 
