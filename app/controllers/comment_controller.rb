@@ -45,9 +45,9 @@ class CommentController < ApplicationController
               "<a href='/subscribe/tag/#{tagname}'>#{tagname}</a>"
             end
             tagnames = tagnames.join(', ')
-            tagnames = " Click to subscribe to updates on these tags or topics: " + tagnames unless tagnames.empty?
+            tagnames = "Click to subscribe to updates on these tags or topics: #{tagnames}" unless tagnames.empty?        
             flash[:notice] = "Comment posted.#{tagnames}"
-            redirect_to @node.path + '#last' # to last comment
+            redirect_to "#{@node.path}#last" # to last comment
           end
         end
       end
@@ -94,7 +94,7 @@ class CommentController < ApplicationController
       @comment.comment = params[:body]
       if @comment.save
         flash[:notice] = 'Comment updated.'
-        redirect_to @path + '?_=' + Time.now.to_i.to_s
+        redirect_to "#{@path}?_=#{Time.now.to_i}"
       else
         flash[:error] = 'The comment could not be updated.'
         redirect_to @path
@@ -127,7 +127,7 @@ class CommentController < ApplicationController
                 render json: { comment_count: @comment_count }
               else
                 flash[:notice] = 'Comment deleted.'
-                redirect_to '/' + @node.path
+                redirect_to "/#{@node.path}"
               end
             end
           end
@@ -197,7 +197,6 @@ class CommentController < ApplicationController
 
       if @comment.destroy
         render json: { success: true }
-        return
       else
         flash[:error] = 'The comment could not be deleted.'
         render plain: 'failure'
