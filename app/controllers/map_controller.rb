@@ -58,7 +58,7 @@ class MapController < ApplicationController
 
   def edit
     @node = Node.find_by(id: params[:id])
-    if current_user.uid == @node.uid || logged_in_as(['admin'])
+    if current_user.uid == @node.uid || logged_in_as(%w(admin))
       render template: 'map/edit'
     else
       prompt_login 'Only admins can edit maps at this time.'
@@ -67,7 +67,7 @@ class MapController < ApplicationController
 
   def delete
     @node = Node.find_by(id: params[:id])
-    if current_user.uid == @node.uid || logged_in_as(['admin'])
+    if current_user.uid == @node.uid || logged_in_as(%w(admin))
       @node.delete
       flash[:notice] = 'Content deleted.'
       redirect_to '/archive'
@@ -78,7 +78,7 @@ class MapController < ApplicationController
 
   def update
     @node = Node.find(params[:id])
-    if current_user.uid == @node.uid || logged_in_as(['admin'])
+    if current_user.uid == @node.uid || logged_in_as(%w(admin))
 
       @node.title = params[:title]
       @revision = @node.latest
@@ -99,11 +99,11 @@ class MapController < ApplicationController
       end
 
       %i(lat lon).each do |coordinate|
-        if coordinate_name = coordinate.to_s + ':' + @node.power_tag(coordinate.to_s)
+        if coordinate_name = "#{coordinate}:#{@node.power_tag(coordinate.to_s)}"
           existing_coordinate_node_tag = NodeTag.where(nid: @node.id).joins(:tag).where("name = ?", coordinate_name).first
           existing_coordinate_node_tag.delete
         end
-        @node.add_tag(coordinate.to_s + ':' + params[coordinate], current_user)
+        @node.add_tag("#{coordinate}:#{params[coordinate]}", current_user)
       end
 
       map = @node.map
@@ -146,7 +146,7 @@ class MapController < ApplicationController
   end
 
   def new
-    if logged_in_as(['admin'])
+    if logged_in_as(%w(admin))
       @node = Node.new(type: 'map')
       render template: 'map/edit'
     else
@@ -157,7 +157,7 @@ class MapController < ApplicationController
   # must require min_zoom and lat/lon location, and TMS URL
   # solving this by min_zoom default here, but need better solution
   def create
-    if logged_in_as(['admin'])
+    if logged_in_as(%w(admin))
       saved, @node, @revision = Node.new_node(uid: current_user.uid,
                                               title: params[:title],
                                               body: params[:body],
@@ -178,8 +178,8 @@ class MapController < ApplicationController
           end
         end
 
-        @node.add_tag('lat:' + params[:lat], current_user)
-        @node.add_tag('lon:' + params[:lon], current_user)
+        @node.add_tag("lat:#{params[:lat]}", current_user)
+        @node.add_tag("lon:#{params[:lon]}", current_user)
 
         map = DrupalContentTypeMap.new
         map.nid = @node.nid
