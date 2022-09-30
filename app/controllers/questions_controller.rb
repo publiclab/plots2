@@ -9,10 +9,10 @@ class QuestionsController < ApplicationController
       .joins(:tag)
       .where('node.nid IN (?)', nids)
       .group('node.nid')
-    if !tagnames.empty?
-      questions.where('term_data.name IN (?)', tagnames)
-    else
+    if tagnames.empty?
       questions
+    else
+      questions.where('term_data.name IN (?)', tagnames)
     end
   end
 
