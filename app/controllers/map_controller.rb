@@ -26,4 +26,5 @@ class MapController < ApplicationController
 
     render :map
   end
+
 end
