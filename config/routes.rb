@@ -170,6 +170,8 @@ Plots2::Application.routes.draw do
   get 'notes/:id' => 'legacy#notes'
   get 'sites/default/files/:filename.:format' => 'legacy#file'
   get 'sites/default/files/imagecache/:size/:filename.:format' => 'legacy#image'
+  get 'map/:name/:date' => 'notes#show', node_type: "map"
+  get 'archive' => redirect('wiki/map-archive')
 
   get 'research' => 'home#research'
   get 'notes' => 'legacy#notes'
@@ -260,8 +262,6 @@ Plots2::Application.routes.draw do
   get 'map/:id' => 'map#wiki'
   get 'maps' => redirect('/map/')
   get 'users/map' => 'users#map'
-  get 'map/:name/:date' => 'notes#show', node_type: "map"
-  get 'archive' => redirect('wiki/map-archive')
   get 'stats/range' => 'stats#range'
   get 'stats' => 'stats#index'
   get 'stats/range/:start/:end' => 'stats#range'
