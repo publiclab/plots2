@@ -117,18 +117,6 @@ class NodeTest < ActiveSupport::TestCase
     assert_equal "/feature/#{node.title.parameterize}", node.path
   end
 
-  test 'create a map' do
-    node = Node.new(uid: users(:bob).id,
-                    type: 'map',
-                    title: 'My map')
-    assert node.save!
-    assert_equal 'map', node.type
-    username = users(:bob).username
-    time = Time.now.strftime('%m-%d-%Y')
-    title = node.title.parameterize
-    assert_equal "/map/#{title}/#{time}", node.path
-  end
-
   test 'create a research note' do
     node = Node.new(uid: users(:bob).id,
                     type: 'note',
@@ -350,6 +338,7 @@ class NodeTest < ActiveSupport::TestCase
       nodes(:one), 
       nodes(:spam), 
       nodes(:first_timer_note), 
+      nodes(:map),
       nodes(:blog),
       nodes(:moderated_user_note), 
       nodes(:activity), 

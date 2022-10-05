@@ -45,6 +45,20 @@ class NotesControllerTest < ActionController::TestCase
     assert_select '#other-activities', false
   end
 
+  test 'should show a map node' do
+    # note these are now just note nodes since https://github.com/publiclab/plots2/pull/11225
+    # but they should still have special "map" paths
+    map = nodes(:map)
+    get :show, params: {
+      use_route: "map/#{map.title.parameterize}/#{map.created_at.strftime('%m-%d-%Y').slice(0, 19)}", 
+      name: map.title.parameterize,
+      date: map.created_at.strftime('%m-%d-%Y').slice(0, 19),
+      node_type: 'map' # this isn't necessary from a browser, since our routes.rb provides it (functional testing bypasses routes.rb)
+    }
+
+    assert_response :success
+  end
+
   test 'print note template' do
     note = nodes(:blog)
 

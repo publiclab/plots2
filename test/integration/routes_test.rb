@@ -26,10 +26,6 @@ class RoutesTest < ActionDispatch::IntegrationTest
     assert_routing({ path: '/places', method: :get }, { controller: 'notes', action: 'places' })
   end
 
-  test "test archive route" do
-    assert_routing({ path: '/archive', method: :get }, { controller: 'map', action: 'index' })
-  end
-
   test "test images route" do
     assert_routing({ path: '/images', method: :get }, { controller: 'images', action: 'index' })
   end
