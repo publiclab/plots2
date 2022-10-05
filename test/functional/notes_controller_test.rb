@@ -52,7 +52,8 @@ class NotesControllerTest < ActionController::TestCase
     get :show, params: {
       use_route: "map/#{map.title.parameterize}/#{map.created_at.strftime('%m-%d-%Y').slice(0, 19)}", 
       name: map.title.parameterize,
-      date: map.created_at.strftime('%m-%d-%Y').slice(0, 19)
+      date: map.created_at.strftime('%m-%d-%Y').slice(0, 19),
+      node_type: 'map' # this isn't necessary from a browser, since our routes.rb provides it (functional testing bypasses routes.rb)
     }
 
     assert_response :success
