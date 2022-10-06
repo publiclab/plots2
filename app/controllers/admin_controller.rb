@@ -58,7 +58,6 @@ class AdminController < ApplicationController
       flash[:notice] = "#{user.name} should receive an email with instructions on how to reset their password. If they do not, please double check that they are using the email they registered with."
       redirect_to URI.parse("/profile/" + user.name).path
     end
-    redirect_to "/profile/#{user.name}?_=#{Time.now.to_i}"
   end
 
   def useremail 
@@ -323,7 +322,6 @@ class AdminController < ApplicationController
       flash[:error] = 'Only moderators can moderate other users.'
       redirect_to '/dashboard'
     end
-    redirect_to "/profile/#{du.name}"
   end
 
   def batch
