@@ -140,7 +140,7 @@ class NotesController < ApplicationController
       return
     elsif params[:draft] == "true"
       token = SecureRandom.urlsafe_base64(16, false)
-      @node.slug = @node.slug + " token:" + token
+      @node.slug = "#{@node.slug} token:#{token}"
       @node.save!
     end
 
@@ -153,7 +153,7 @@ class NotesController < ApplicationController
       if params[:event] == 'on'
         @node.add_tag('event', current_user)
         @node.add_tag('event:rsvp', current_user)
-        @node.add_tag('date:' + params[:date], current_user) if params[:date]
+        @node.add_tag("date:#{params[:date]}", current_user) if params[:date]
       end
 
       @node.add_tag('first-time-poster', current_user) if current_user.first_time_poster
@@ -273,7 +273,7 @@ class NotesController < ApplicationController
         if request.xhr?
           render plain: "#{@node.path(format)}?_=#{Time.now.to_i}"
         else
-          redirect_to URI.parse(@node.path(format)).path + '?_=' + Time.now.to_i.to_s
+          redirect_to "#{URI.parse(@node.path(format)).path}?_=#{Time.now.to_i}"
         end
       else
         flash[:error] = I18n.t('notes_controller.edit_not_saved')
@@ -301,13 +301,13 @@ class NotesController < ApplicationController
               render plain: I18n.t('notes_controller.content_deleted')
             else
               flash[:notice] = I18n.t('notes_controller.content_deleted')
-              redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
+              redirect_to "/dashboard?_=#{Time.now.to_i}"
             end
           end
         end
       else
         flash[:error] = I18n.t('notes_controller.more_than_one_contributor')
-        redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
+        redirect_to "/dashboard?_=#{Time.now.to_i}"
     end
     else
       prompt_login
@@ -328,7 +328,7 @@ class NotesController < ApplicationController
   def author_topic
     @user = User.find_by(name: params[:author])
     @tagnames = params[:topic].split('+')
-    @title = @user.name + " on '" + @tagnames.join(', ') + "'"
+    @title = "#{@user.name} on '#{@tagnames.join(', ')}'"
     @notes = @user.notes_for_tags(@tagnames)
     @unpaginated = true
     render template: 'notes/index'
@@ -391,8 +391,8 @@ class NotesController < ApplicationController
     # leave a comment
     @comment = @node.add_comment(subject: 'rsvp', uid: current_user.uid, body: 'I will be attending!')
     # make a tag
-    @node.add_tag('rsvp:' + current_user.username, current_user)
-    redirect_to URI.parse(@node.path).path + '#comments'
+    @node.add_tag("rsvp:#{current_user.username}", current_user)
+    redirect_to "#{URI.parse(node.path).path}#comments"
   end
 
   # Updates title of a wiki page, takes id and title as query string params. maps to '/node/update/title'
@@ -400,21 +400,21 @@ class NotesController < ApplicationController
     node = Node.find params[:id].to_i
     unless current_user && current_user == node.author
       flash.keep[:error] = I18n.t('notes_controller.author_can_edit_note')
-      return redirect_to URI.parse(node.path).path + "#comments"
+      return redirect_to "#{URI.parse(node.path).path}#comments"
     end
     node.update(title: params[:title])
-    redirect_to URI.parse(node.path).path + "#comments"
+    redirect_to "#{URI.parse(node.path).path}#comments"
   end
 
   def publish_draft
     @node = Node.find(params[:id])
-    if current_user && current_user.uid == @node.uid || current_user.can_moderate? || @node.has_tag("with:#{current_user.username}")
+    if (current_user && current_user.uid == @node.uid) || current_user.can_moderate? || @node.has_tag("with:#{current_user.username}")
       @node.path = @node.generate_path
       @node.slug = @node.slug.split('token').first
       @node['created'] = DateTime.now.to_i # odd assignment needed due to legacy Drupal column types
       @node['changed'] = DateTime.now.to_i
       revision = @node.latest
-      revision['timestamp'] = DateTime.now.to_i # odd assignment needed due to legacy Drupal column types 
+      revision['timestamp'] = DateTime.now.to_i # odd assignment needed due to legacy Drupal column types
       revision.save
       @node.save
       @node.publish
@@ -462,7 +462,8 @@ class NotesController < ApplicationController
   end
 
   def new_note
-    Node.new_note(uid: current_user.uid,
+    Node.new_preview_note(
+                  uid: current_user.uid,
                   title: params[:title],
                   body: params[:body],
                   main_image: params[:main_image],
@@ -474,7 +475,8 @@ class NotesController < ApplicationController
       title: params[:title],
       body: params[:body],
       main_image: params[:main_image],
-      location: params[:location])
+      location: params[:location]
+    )  
   end
 
   def not_draft_and_user_is_first_time_poster?
