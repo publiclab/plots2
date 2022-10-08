@@ -33,7 +33,7 @@ class FeaturesController < ApplicationController
   def create
     if !current_user.admin?
       flash[:warning] = 'Only admins may edit features.'
-      redirect_to '/features?_=' + Time.now.to_i.to_s
+      redirect_to "/features?_=#{Time.now.to_i}"
     else
       @node = Node.new(uid:   current_user.id,
                        title: params[:title],
@@ -58,7 +58,7 @@ class FeaturesController < ApplicationController
       end
       if saved
         flash[:notice] = 'Feature saved.'
-        redirect_to '/features?_=' + Time.now.to_i.to_s
+        redirect_to "/features?_=#{Time.now.to_i}"
       else
         render template: 'features/new'
       end
@@ -68,7 +68,7 @@ class FeaturesController < ApplicationController
   def update
     if !current_user.admin?
       flash[:warning] = 'Only admins may edit features.'
-      redirect_to '/features?_=' + Time.now.to_i.to_s
+      redirect_to "/features?_=#{Time.now.to_i}"
     else
       @node = Node.find(params[:id])
       @revision = @node.new_revision(uid: current_user.uid)
@@ -83,7 +83,7 @@ class FeaturesController < ApplicationController
         end
         ActionController::Base.new.expire_fragment("feature_#{params[:title]}")
         flash[:notice] = 'Edits saved and cache cleared.'
-        redirect_to '/features?_=' + Time.now.to_i.to_s
+        redirect_to "/features?_=#{Time.now.to_i}"
       else
         flash[:error] = 'Your edit could not be saved.'
         render action: 'edit'
