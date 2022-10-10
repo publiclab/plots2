@@ -5,6 +5,7 @@ class ImagesController < ApplicationController
   before_action :require_user, only: %i(create new update delete)
 
   def shortlink
+    size = params[:size] || params[:s]
     size ||= :large
     size = :thumb if size.to_s == 't'
     size = :thumb if size.to_s == 'thumbnail'
