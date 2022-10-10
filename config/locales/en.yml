@@ -1133,10 +1133,17 @@ en:
     logged_out: "Successfully logged out."
   notes_controller:
     research_notes: "Research notes"
-    thank_you_for_contribution: "Success! Thank you for contributing open research,
-      and thanks for your patience while your post is approved by <a href='/wiki/moderation'>community
-      moderators</a> and we'll email you when it is published. In the meantime, if
-      you have more to contribute, feel free to do so."
+    thank_you_for_contribution: |
+     <h2>Success! You did it! Hooray!</h2>
+     <hr>
+     <p>Thank you so much for contributing open research and being part of our community.</p>
+      <h2>Here's what's happening now:</h2>
+     <hr>
+      <p>Your <a href='/wiki/first-contribution'>first contribution</a> is awaiting approval by <a href='/wiki/moderation'>community moderators</a>. 
+      <b>If you have asked an urgent question about an environmental concern, we will prioritize reviewing it</b>.
+      Thank you for your patience, in the next hours your contribution should be public. We'll email you when it is published.
+      In the meantime, if you have more to contribute, feel free to do so. Visit the <a href='/wiki/welcome'>Welcome Page</a> to discover more ways to connect.
+      </p>
     thank_you_for_question: "Success! Thank you for contributing with a question, and
       thanks for your patience while your question is approved by <a href='/wiki/moderation'>community
       moderators</a> and we'll email you when it is published."
