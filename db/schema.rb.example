@@ -153,20 +153,6 @@ ActiveRecord::Schema.define(version: 2021_02_10_162026) do
     t.string "string"
     t.text "graphobject"
   end
-  
-  create_table "files", primary_key: "fid", force: true do |t|
-    t.integer "uid",       default: 0,  null: false
-    t.string  "filename",  default: "", null: false
-    t.string  "filepath",  default: "", null: false
-    t.string  "filemime",  default: "", null: false
-    t.integer "filesize",  default: 0,  null: false
-    t.integer "status",    default: 0,  null: false
-    t.integer "timestamp", default: 0,  null: false
-  end
-
-  add_index "files", ["status"], name: "index_files_status", using: :btree
-  add_index "files", ["timestamp"], name: "index_files_timestamp", using: :btree
-  add_index "files", ["uid"], name: "index_files_uid", using: :btree
 
   create_table "friendly_id_slugs", force: true do |t|
     t.string   "slug",                      null: false
@@ -397,18 +383,6 @@ ActiveRecord::Schema.define(version: 2021_02_10_162026) do
 
   add_index "term_node", ["nid"], name: "index_term_node_nid", using: :btree
   add_index "term_node", ["vid"], name: "index_term_node_vid", using: :btree
-
-  create_table "upload", id: false, force: true do |t|
-    t.integer "fid",                   default: 0,  null: false
-    t.integer "nid",                   default: 0,  null: false
-    t.integer "vid",                   default: 0,  null: false
-    t.string  "description",           default: "", null: false
-    t.integer "list",        limit: 1, default: 0,  null: false
-    t.integer "weight",      limit: 1, default: 0,  null: false
-  end
-
-  add_index "upload", ["fid"], name: "index_upload_fid", using: :btree
-  add_index "upload", ["nid"], name: "index_upload_nid", using: :btree
 
   create_table "user_selections", id: false, force: true do |t|
     t.integer "self_id"
