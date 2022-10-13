@@ -327,8 +327,7 @@ class Node < ActiveRecord::Base
                    .last
   end
 
-  # provide either a Drupally main_image or a Railsy one
-  def main_image(node_type = :all)
+  def main_image
     if main_image_id.blank?
       images.order('vid').last
     else
