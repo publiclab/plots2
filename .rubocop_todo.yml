@@ -59,7 +59,6 @@ Naming/PredicateName:
   Exclude:
     - 'spec/**/*'
     - 'app/controllers/openid_controller.rb'
-    - 'app/models/drupal_file.rb'
     - 'app/models/image.rb'
     - 'app/models/node.rb'
     - 'app/models/revision.rb'

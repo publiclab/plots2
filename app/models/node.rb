@@ -81,8 +81,6 @@ class Node < ActiveRecord::Base
   end
 
   has_many :revision, foreign_key: 'nid', dependent: :destroy
-  has_many :drupal_upload, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
-  has_many :drupal_files, through: :drupal_upload
   has_many :node_tag, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
   has_many :tag, through: :node_tag
   has_many :comments, foreign_key: 'nid', dependent: :destroy # re-enable in Rails 5
@@ -256,10 +254,6 @@ class Node < ActiveRecord::Base
     self
   end
 
-  def files
-    drupal_files
-  end
-
   # users who like this node
   def likers
     node_selections
@@ -335,14 +329,10 @@ class Node < ActiveRecord::Base
 
   # provide either a Drupally main_image or a Railsy one
   def main_image(node_type = :all)
-    if !images.empty? && node_type != :drupal
-      if main_image_id.blank?
-        images.order('vid').last
-      else
-        images.where(id: main_image_id).first
-      end
-    elsif drupal_main_image && node_type != :rails
-      drupal_main_image.drupal_file
+    if main_image_id.blank?
+      images.order('vid').last
+    else
+      images.where(id: main_image_id).first
     end
   end
 
