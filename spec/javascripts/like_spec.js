@@ -25,7 +25,7 @@ describe("Like Button", function () {
       
     });
  
-    $("#like-button-1").click();
+    $("#like-button-1").trigger("click");
 
     expect(ajaxStub).to.have.been.called;
     
@@ -55,7 +55,7 @@ describe("Like Button", function () {
        //   response = data;
        // })
 
-      $("#like-button-1").click();
+      $("#like-button-1").trigger("click");
       expect($('#like-count-1').html()).to.eql('0');
       
   });
@@ -71,7 +71,7 @@ describe("Like Button", function () {
 
     });
 
-    $("#like-button-1").click();
+    $("#like-button-1").trigger("click");
     expect($('#like-star-1')[0].className).to.eql('fa fa-star-o');
 
   });
