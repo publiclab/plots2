@@ -1,9 +1,9 @@
 class UserChannel < ApplicationCable::Channel
   def subscribed
-    if !current_user.nil?
-      stream_from "users:#{current_user.id}"
-    else
+    if current_user.nil?
       reject
+    else
+      stream_from "users:#{current_user.id}"
     end
   end
 
