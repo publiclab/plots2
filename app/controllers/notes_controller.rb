@@ -273,7 +273,7 @@ class NotesController < ApplicationController
         if request.xhr?
           render plain: "#{@node.path(format)}?_=#{Time.now.to_i}"
         else
-          redirect_to "#{URI.parse(@node.path(format)).path}?_=#{Time.now.to_i}
+          redirect_to "#{URI.parse(@node.path(format)).path}?_=#{Time.now.to_i}"
         end
       else
         flash[:error] = I18n.t('notes_controller.edit_not_saved')
@@ -471,7 +471,7 @@ class NotesController < ApplicationController
 
   def new_preview_note
     Node.new_preview_note(
-+      uid: current_user.uid,
++     uid: current_user.uid,
       title: params[:title],
       body: params[:body],
       main_image: params[:main_image],
