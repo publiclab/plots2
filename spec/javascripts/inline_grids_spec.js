@@ -1,6 +1,6 @@
 /* eslint-disable no-empty-label */
 
-var editor;
+let editor;
 
 fixture.preload("inline_grid.html");
 
