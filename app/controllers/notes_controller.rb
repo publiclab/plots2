@@ -471,7 +471,7 @@ class NotesController < ApplicationController
 
   def new_preview_note
     Node.new_preview_note(
-+    uid: current_user.uid,
+     uid: current_user.uid,
      title: params[:title],
      body: params[:body],
      main_image: params[:main_image],
