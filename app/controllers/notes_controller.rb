@@ -476,7 +476,7 @@ class NotesController < ApplicationController
      body: params[:body],
      main_image: params[:main_image],
      location: params[:location]
-+    )
+    )
   end
 
   def not_draft_and_user_is_first_time_poster?
