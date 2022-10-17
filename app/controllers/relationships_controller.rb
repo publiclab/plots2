@@ -4,7 +4,6 @@ class RelationshipsController < ApplicationController
   def create
     user = User.find(params[:followed_id])
     respond_to do |format|
-      # made changes here
       if current_user.following?(user)
         format.html {
           flash[:error] = "Error in following user"
@@ -23,7 +22,6 @@ class RelationshipsController < ApplicationController
     user = User.find_by_id(params[:id])
     relation = Relationship.where(follower_id: current_user.id, followed_id: params[:id])
     respond_to do |format|
-      # made changes here too
       if relation.nil?
         format.html {
           flash[:error] = "Error in unfollowing user"
