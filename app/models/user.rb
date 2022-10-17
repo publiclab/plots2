@@ -523,6 +523,7 @@ class User < ActiveRecord::Base
         .references(:term_data, :node_tag)
         .where(type: 'note')
         .order('node.nid DESC')
+        .where(uid: uid)
   end
 
   private
