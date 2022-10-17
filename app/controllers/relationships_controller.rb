@@ -11,7 +11,7 @@ class RelationshipsController < ApplicationController
           redirect_to URI.parse(request.referer || "/").path
         }
         format.js { render "create", locals: { following: false, profile_user: user } }
-      else 
+      else
         current_user.follow(user)
         format.html { redirect_to URI.parse(request.referer || "/").path, notice: "You have started following #{user.username}" }
         format.js { render "create", locals: { following: true, profile_user: user } }
@@ -30,7 +30,7 @@ class RelationshipsController < ApplicationController
           redirect_to URI.parse(request.referer || "/").path
         }
         format.js { render "destroy", locals: { unfollowing: false, profile_user: user } }
-      else 
+      else
         current_user.unfollow(user)
         format.html { redirect_to URI.parse(request.referer || "/").path, notice: "You have unfollowed " + user.username }
         format.js { render "destroy", locals: { unfollowing: true, profile_user: user } }
