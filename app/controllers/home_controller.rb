@@ -98,7 +98,7 @@ class HomeController < ApplicationController
                    .page(params[:page])
                    .group(['title', 'comments.cid']) # ONLY_FULL_GROUP_BY, issue #3120
 
-    if logged_in_as((%w(moderator admin)))
+    if logged_in_as(%w(moderator admin))
       notes = notes.where('(node.status = 1 OR node.status = 3)')
       comments = comments.where('comments.status = 1')
     elsif current_user
