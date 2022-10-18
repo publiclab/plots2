@@ -124,6 +124,7 @@ We recommend you either work in a virtual environment, or on a dual booted syste
 2. [Dual Booting](https://www.tecmint.com/install-ubuntu-alongside-with-windows-dual-boot/amp/), [option2](https://askubuntu.com/questions/1031993/how-to-install-ubuntu-18-04-alongside-windows-10), [video guide](https://www.youtube.com/watch?v=qNeJvujdB-0&fbclid=IwAR0APhs89jlNR_ENKbSwrp6TI6P-wxlx-a0My9XBvPNAfwtADZaAXqcKtP4)
 3. [Setting up a Linux virtual env](https://itsfoss.com/install-linux-in-virtualbox/)
 
+
 ### Windows Subsystem for Linux 2 Installation
 
 Before continuing with the installation steps in this README, users of Windows Subsystem for Linux 2 (WSL 2) should open the WSL 2 Terminal and type out the commands below.
