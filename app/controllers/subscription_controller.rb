@@ -69,7 +69,7 @@ class SubscriptionController < ApplicationController
             render json: { status: status, message: message, id: tag.tid, tagname: params[:name], url: "/tags" + "?_=" + Time.now.to_i.to_s } if current_user
           else
             flash[:notice] = "You are now following '#{params[:name]}'."
-            redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
+            redirect_back fallback_location: "/subscriptions?_=#{Time.now.to_i}"
           end
         end
       end
