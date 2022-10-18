@@ -13,7 +13,7 @@ class BatchController < ApplicationController
         user_spamed << user.id
         user.ban
       end
-      flash[:notice] = node_spamed.to_s + ' nodes spammed and ' + user_spamed.length.to_s + ' users banned.'
+      flash[:notice] = "#{node_spamed} nodes spammed and #{user_spamed.length} users banned."
       redirect_to '/spam2'
     else
       flash[:error] = 'Only admins and moderators can mark a batch spam.'
@@ -33,8 +33,7 @@ class BatchController < ApplicationController
         user.unban
         user_published << user.id
       end
-      flash[:notice] = node_published.to_s + ' nodes published and ' + user_published.length.to_s + ' users unbanned.'
-      redirect_to '/spam2'
+      flash[:notice] = "#{node_published} nodes published and #{user_published.length} users unbanned."      redirect_to '/spam2'
     else
       flash[:error] = 'Only admins and moderators can batch publish.'
       redirect_to '/dashboard'
@@ -49,7 +48,7 @@ class BatchController < ApplicationController
         node_delete += 1
         node.delete
       end
-      flash[:notice] = node_delete.to_s + ' nodes deleted'
+      flash[:notice] = "#{node_delete} nodes deleted"
       redirect_back fallback_location: root_path
     else
       flash[:error] = 'Only admins and moderators can batch delete.'
@@ -66,7 +65,7 @@ class BatchController < ApplicationController
         user_ban << user.id
         user.ban
       end
-      flash[:notice] = user_ban.length.to_s + ' users banned.'
+      flash[:notice] = "#{user_ban.length} users banned."
       redirect_back fallback_location: root_path
     else
       flash[:error] = 'Only admins and moderators can ban users.'
@@ -83,7 +82,7 @@ class BatchController < ApplicationController
         unbanned_users << user_unban.id
         user_unban.unban
       end
-      flash[:notice] = unbanned_users.length.to_s + ' users unbanned.'
+      flash[:notice] = "#{unbanned_users.length} users unbanned."
       redirect_back fallback_location: root_path
     else
       flash[:error] = 'Only admins and moderators can unban users.'
@@ -99,7 +98,7 @@ class BatchController < ApplicationController
         users << user_ban.id
         user_ban.ban
       end
-      flash[:notice] = users.length.to_s + ' users banned.'
+      flash[:notice] = "#{users.length} users banned."
       redirect_back fallback_location: root_path
     else
       flash[:error] = 'Only moderators can moderate users.'
@@ -113,7 +112,7 @@ class BatchController < ApplicationController
         unban_user = User.find id
         unban_user.unban
       end
-      flash[:notice] = 'Success! users unbanned.'
+      flash[:notice] = "#{comment_total} comments moderated."
       redirect_back fallback_location: root_path
     else
       flash[:error] = 'Only admins and moderators can moderate users.'
