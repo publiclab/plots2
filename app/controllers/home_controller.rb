@@ -98,7 +98,7 @@ class HomeController < ApplicationController
                    .page(params[:page])
                    .group(['title', 'comments.cid']) # ONLY_FULL_GROUP_BY, issue #3120
 
-    if logged_in_as(['admin', 'moderator'])
+    if logged_in_as(%w(moderator admin))
       notes = notes.where('(node.status = 1 OR node.status = 3)')
       comments = comments.where('comments.status = 1')
     elsif current_user
@@ -140,15 +140,7 @@ class HomeController < ApplicationController
     comments = comments.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
     comments = comments.to_a # ensure it can be serialized for caching
     activity = (notes + wikis + comments).sort_by(&:created_at).reverse
-    response = [
-      activity,
-      blog,
-      notes,
-      wikis,
-      revisions,
-      comments
-    ]
-    response
+    [activity, blog, notes, wikis, revisions, comments]
   end
 
   def trending
