@@ -36,9 +36,9 @@ class RelationshipsController < ApplicationController
     end
   end
 
-#   private
+  private
 
-#   def require_user
-#     head(:unprocessable_entity) unless current_user
-#   end
-# end
+  def require_user
+    head(:unprocessable_entity) unless current_user
+  end
+end
