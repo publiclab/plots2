@@ -30,7 +30,7 @@ class RelationshipsController < ApplicationController
         format.js { render "destroy", locals: { unfollowing: false, profile_user: user } }
       else
         current_user.unfollow(user)
-        format.html { redirect_to URI.parse(request.referer || "/").path, notice: "You have unfollowed " + user.username }
+        format.html { redirect_to URI.parse(request.referer || "/").path, notice: "You have  unfollowing #{user.username}" }
         format.js { render "destroy", locals: { unfollowing: true, profile_user: user } }
       end
     end
