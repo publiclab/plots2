@@ -10,7 +10,7 @@ class Spam2Controller < ApplicationController
                  when 'unmoderated'
                    @nodes.where(status: 4).order('changed DESC')
                  when 'published'
-+                  @nodes.where(status: 1).order('changed DESC')
+                  @nodes.where(status: 1).order('changed DESC')
                  when 'spammed'
                    @nodes.where(status: 0).order('changed DESC')
                  when 'created'
