@@ -517,6 +517,15 @@ class User < ActiveRecord::Base
     .order('created DESC')
   end
 
+  def notes_for_tags(tagnames)
+    Node.includes(:node_tag, :tag)
+        .where('term_data.name IN (?)', tagnames)
+        .references(:term_data, :node_tag)
+        .where(type: 'note')
+        .order('node.nid DESC')
+        .where(uid: uid)
+  end
+
   private
 
   def decrease_likes_banned
