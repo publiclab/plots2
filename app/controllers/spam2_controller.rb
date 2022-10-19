@@ -9,8 +9,8 @@ class Spam2Controller < ApplicationController
                    @nodes.where(type: 'page', status: 1).order('changed DESC')
                  when 'unmoderated'
                    @nodes.where(status: 4).order('changed DESC')
-                  when 'published'
-                    @nodes.where(status: 1).order('changed DESC')
+                 when 'published'
++                  @nodes.where(status: 1).order('changed DESC')
                  when 'spammed'
                    @nodes.where(status: 0).order('changed DESC')
                  when 'created'
@@ -80,9 +80,7 @@ class Spam2Controller < ApplicationController
       @users = case params[:type]
                  when 'banned'
                    @users.where('rusers.status = 0')
-                 when 'moderator'
-                   @users.where('rusers.role = ?', params[:type])
-                 when 'admin'
+                 when 'moderator', 'admin'
                    @users.where('rusers.role = ?', params[:type])
                  else
                    @users.where('rusers.status = 1')
