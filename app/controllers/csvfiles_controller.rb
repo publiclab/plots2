@@ -7,7 +7,7 @@ class CsvfilesController < ApplicationController
       filetitle: params[:filetitle],
       filedescription: params[:filedescription],
       filepath: params[:object],
-      filename: "file" + Time.now.to_i.to_s,
+      filename: "file#{Time.now.to_i}",
       filestring: params[:filestring]
     )
     render json: @csvfile if @csvfile.save
@@ -28,7 +28,7 @@ class CsvfilesController < ApplicationController
       filetitle: params[:filetitle],
       filedescription: params[:filedescription],
       filepath: params[:object],
-      filename: "file" + Time.now.to_i.to_s,
+      filename: "file#{Time.now.to_i}",
       filestring: params[:filestring],
       graphobject: params[:graphobject]
     )
