@@ -28,7 +28,7 @@ class CsvfilesController < ApplicationController
       filetitle: params[:filetitle],
       filedescription: params[:filedescription],
       filepath: params[:object],
-      filename: "file #{Time.now.to_i}",
+      filename: "file#{Time.now.to_i}",
       filestring: params[:filestring],
       graphobject: params[:graphobject]
     )
