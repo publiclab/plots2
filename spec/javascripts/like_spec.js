@@ -19,7 +19,7 @@ describe("Like Button", function () {
     ajaxStub = sinon.stub($, 'ajax', function (object) {
       response = object.url === '/likes/node/1/create' ? '4' : 'none'
 
-      var d = $.Deferred();
+      const d = $.Deferred();
       response === '4' ? d.resolve(response) : d.reject(response);
       return d.promise();
       
@@ -44,7 +44,7 @@ describe("Like Button", function () {
       //   console.log('Failed to fake response to:', object.url);
       // }
 
-      var d = $.Deferred();
+      const d = $.Deferred();
       response === '4' ? d.resolve(response) : d.reject(response);
       return d.promise();
 
@@ -65,7 +65,7 @@ describe("Like Button", function () {
     ajaxStub = sinon.stub($, 'ajax', function (object) {
       response = object.url === '/likes/node/1/delete' ? '4' : 'none'
 
-      var d = $.Deferred();
+      const d = $.Deferred();
       response === '4' ? d.resolve(response) : d.reject(response);
       return d.promise();
 
