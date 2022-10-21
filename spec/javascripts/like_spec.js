@@ -24,7 +24,7 @@ describe("Like Button", function () {
       return d.promise();
       
     });
- 
+
     $("#like-button-1").trigger("click");
 
     expect(ajaxStub).to.have.been.called;
