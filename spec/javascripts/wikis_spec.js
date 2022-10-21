@@ -1,7 +1,7 @@
 //= require application
 //= require wikis
 
-var editor;
+const editor;
 
 describe("Wikis", function() {
 
