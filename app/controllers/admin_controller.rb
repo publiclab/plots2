@@ -15,7 +15,7 @@ class AdminController < ApplicationController
         flash[:error] = 'Only admins can promote other users to admins.'
       end
     end
-   redirect_to "/profile/#{@user.username}?_=#{Time.now.to_i}"
+    redirect_to "/profile/#{@user.username}?_=#{Time.now.to_i}"
   end
 
   def promote_moderator
