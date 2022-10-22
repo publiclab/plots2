@@ -359,7 +359,7 @@ class AdminController < ApplicationController
     else
       flash[:error] = 'Only admins can migrate users.'
     end
-   redirect_to "/profile/#{du.name}"
+    redirect_to "/profile/#{du.name}"
   end
 
   def queue
