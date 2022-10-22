@@ -301,7 +301,7 @@ class AdminController < ApplicationController
     else
       flash[:error] = 'Only moderators can ban other users.'
     end
-     redirect_to "/profile/#{user.name}?_=#{Time.now.to_i}"
+    redirect_to "/profile/#{user.name}?_=#{Time.now.to_i}"
   end
 
   def unban
