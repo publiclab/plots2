@@ -29,7 +29,7 @@ class AdminController < ApplicationController
         flash[:error] = 'Only moderators can promote other users.'
       end
     end
-   redirect_to "/profile/#{@user.username}?_=#{Time.now.to_i}"
+    redirect_to "/profile/#{@user.username}?_=#{Time.now.to_i}"
   end
 
   def demote_basic
