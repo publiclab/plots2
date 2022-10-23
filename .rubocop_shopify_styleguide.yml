@@ -64,7 +64,7 @@ Style/BlockDelimiters:
   - let!
   - subject
   - watch
-  IgnoredMethods:
+  AllowedMethods:
   - lambda
   - proc
   - it
@@ -415,7 +415,7 @@ Layout/SpaceInsideStringInterpolation:
   - no_space
 
 Style/SymbolProc:
-  IgnoredMethods:
+  AllowedMethods:
   - respond_to
   - define_method
 
