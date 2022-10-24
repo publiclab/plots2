@@ -1134,8 +1134,8 @@ en:
   notes_controller:
     research_notes: "Research notes"
   thank_you_for_contribution: |
-      <h2>Success! You did it! Hooray!</h2>
-      <hr>
+                  <h2>Success! You did it! Hooray!</h2>
+       <hr>
       <p>Thank you so much for contributing open research and being part of our community.</p>
       <h2>Here's what's happening now:</h2>
      <hr>
