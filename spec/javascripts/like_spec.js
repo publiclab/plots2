@@ -44,7 +44,7 @@ describe("Like Button", function () {
       //   console.log('Failed to fake response to:', object.url);
       // }
 
-      let d = $.Deferred();
+      const d = $.Deferred();
       response === '4' ? d.resolve(response) : d.reject(response);
       return d.promise();
 
