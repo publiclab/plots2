@@ -19,7 +19,7 @@ describe("Like Button", function () {
     ajaxStub = sinon.stub($, 'ajax', function (object) {
       response = object.url === '/likes/node/1/create' ? '4' : 'none'
 
-      let d = $.Deferred();
+      const d = $.Deferred();
       response === '4' ? d.resolve(response) : d.reject(response);
       return d.promise();
       
