@@ -35,12 +35,12 @@ class EditorController < ApplicationController
       @main_image = Image.find_by(id: params[:main_image]).path
     end
 
-    if params[:tags]&.include? "lat:" and params[:tags]&.include? "lon:"
+    if params[:tags]&.include?('lat:') && params[:tags]&.include?('lon:')
       tags = params[:tags].split(',')
       tags.each do |x|
-        x.include? "lat:" and (@lat = x.split(':')[1])
-        x.include? "lon:" and (@lon = x.split(':')[1])
-        x.include? "zoom:" and (@zoom = x.split(':')[1])
+        x.include? "lat:" && (@lat = x.split(':')[1])
+        x.include? "lon:" && (@lon = x.split(':')[1])
+        x.include? "zoom:" && (@zoom = x.split(':')[1])
       end
     end
 
