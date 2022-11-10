@@ -19,13 +19,13 @@ describe("Like Button", function () {
     ajaxStub = sinon.stub($, 'ajax', function (object) {
       response = object.url === '/likes/node/1/create' ? '4' : 'none'
 
-      var d = $.Deferred();
+      const d = $.Deferred();
       response === '4' ? d.resolve(response) : d.reject(response);
       return d.promise();
       
     });
- 
-    $("#like-button-1").click();
+
+    $("#like-button-1").trigger("click");
 
     expect(ajaxStub).to.have.been.called;
     
@@ -44,7 +44,7 @@ describe("Like Button", function () {
       //   console.log('Failed to fake response to:', object.url);
       // }
 
-      var d = $.Deferred();
+      const d = $.Deferred();
       response === '4' ? d.resolve(response) : d.reject(response);
       return d.promise();
 
@@ -55,7 +55,7 @@ describe("Like Button", function () {
        //   response = data;
        // })
 
-      $("#like-button-1").click();
+      $("#like-button-1").trigger("click");
       expect($('#like-count-1').html()).to.eql('0');
       
   });
@@ -65,13 +65,13 @@ describe("Like Button", function () {
     ajaxStub = sinon.stub($, 'ajax', function (object) {
       response = object.url === '/likes/node/1/delete' ? '4' : 'none'
 
-      var d = $.Deferred();
+      const d = $.Deferred();
       response === '4' ? d.resolve(response) : d.reject(response);
       return d.promise();
 
     });
 
-    $("#like-button-1").click();
+    $("#like-button-1").trigger("click");
     expect($('#like-star-1')[0].className).to.eql('fa fa-star-o');
 
   });

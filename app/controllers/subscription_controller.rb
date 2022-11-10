@@ -97,7 +97,7 @@ class SubscriptionController < ApplicationController
               render json: true
             else
               flash[:notice] = "You have stopped following '#{params[:name]}'."
-              redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
+              redirect_back fallback_location: "/subscriptions?_=#{Time.now.to_i}"
             end
           end
         end
