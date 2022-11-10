@@ -1143,7 +1143,7 @@ en:
     thank_you_for_question: "Success! Thank you for contributing with a question, and
       thanks for your patience while your question is approved by <a href='/wiki/moderation'>community
       moderators</a> and we'll email you when it is published."
-  question_note_published: "Question published. In the meantime, if you have more
+    question_note_published: "Question published. In the meantime, if you have more
       to contribute, feel free to do so."
     research_note_published: "Research note published. Get the word out on <a href='/lists'>the
       discussion lists</a>!"
