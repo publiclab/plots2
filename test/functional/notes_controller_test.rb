@@ -315,11 +315,8 @@ class NotesControllerTest < ActionController::TestCase
       <p>Thank you so much for contributing open research and being part of our community.</p>
       <h2>Here's what's happening now:</h2>
      <hr>
-      <p>Your <a href='/wiki/first-contribution'>first contribution</a> is awaiting approval by <a href='/wiki/moderation'>community moderators</a>.
-      <b>If you have asked an urgent question about an environmental concern, we will prioritize reviewing it</b>.
-      Thank you for your patience, in the next hours your contribution should be public. We'll email you when it is published.
-      In the meantime, if you have more to contribute, feel free to do so. Visit the <a href='/wiki/welcome'>Welcome Page</a> to discover more ways to connect.
-    </p>", flash[:notice]
+      <p>Your <a href='/wiki/first-contribution'>first contribution</a> is awaiting approval by <a href='/wiki/moderation'>community moderators</a>. <b>If you have asked an urgent question about an environmental concern, we will prioritize reviewing it</b>. Thank you for your patience, in the next hours your contribution should be public. We will email you when it is published. In the meantime, if you have more to contribute, feel free to do so. Visit the <a href='/wiki/welcome'>Welcome Page</a> to discover more ways to connect.</p>
+        ", flash[:notice]
     assert_nil flash[:warning] # no double notice
     assert_equal 4, Node.last.status
     assert_equal title, Node.last.title
