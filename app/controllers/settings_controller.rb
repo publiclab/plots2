@@ -6,7 +6,7 @@ class SettingsController < ApplicationController
     cookies.permanent[:plots2_locale] = lang
     I18n.locale = lang
     if request.referer
-      redirect_to request.referer + '?_=' + Time.now.to_i.to_s
+      redirect_to "#{request.referer}?_=#{Time.now.to_i}"
     else
       flash[:notice] = "Language changed to '#{I18n.locale}'"
       if Rails.env == "development"
