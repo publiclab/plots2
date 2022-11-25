@@ -31,7 +31,7 @@
     "cytoscape": "^3.22.1",
     "debounce": "jywarren/debounce#patch-1",
     "file-saver": "^2.0.5",
-    "i18n-js": "^3.9.2",
+    "i18n-js": "^4.2.0",
     "ics": "nwcell/ics.js#^0.2.0",
     "image-sequencer": "^3.7.3",
     "inline-markdown-editor": "^0.5.0",
