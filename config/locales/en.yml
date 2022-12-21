@@ -7,14 +7,14 @@ en:
     title: "Title"
     edit: "Edit"
     last_edition: "Last edited"
-    ago_by: "ago by"
+    ago_by: "Ago by"
   users:
     reset:
       reset_password: "Reset your password"
       enter_username_and_password: "Enter your username and a new password"
-      username_placeholder: "username"
-      password_placeholder: "enter a new password"
-      retype_password_placeholder: "retype your password"
+      username_placeholder: "Esername"
+      password_placeholder: "Enter a new password"
+      retype_password_placeholder: "Retype your password"
       save: "Save"
       enter_email_reset_password: "Enter your email address to reset your password"
       reset: "Reset"
@@ -52,12 +52,12 @@ en:
               <p>By signing up, you will be joining a diverse group of community researchers and tapping into a lot of grassroots expertise. We're developing new tools to investigate and meet environmental and environmental health challenges, with an emphasis on:</p>
 
               <ul>
-                <li>low cost</li>
-                <li>data legibility</li>
-                <li>ease of use/low barrier to entry &amp; high public participation</li>
-                <li>high quality, environmentally and socially relevant data</li>
-                <li>creative reuse of consumer technology</li>
-                <li>open source and user modifiable designs</li>
+                <li>Low cost</li>
+                <li>Data legibility</li>
+                <li>Ease of use/low barrier to entry &amp; high public participation</li>
+                <li>High quality, environmentally and socially relevant data</li>
+                <li>Creative reuse of consumer technology</li>
+                <li>Open source and user modifiable designs</li>
               </ul>
     map:
       search: "Search"
@@ -70,7 +70,7 @@ en:
       wiki_liked_by: "Wiki pages liked by"
       more: "More"
       liked_by: "Liked by"
-      updated: "updated"
+      updated: "Updated"
     profile:
       follow: "Follow"
       migrate_new_site: "Migrate to new site"
