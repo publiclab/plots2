@@ -394,7 +394,7 @@ GEM
     omniauth-twitter (1.4.0)
       omniauth-oauth (~> 1.1)
       rack
-    openssl (3.0.0)
+    openssl (3.1.0)
     os (1.1.4)
     pagy (5.10.1)
       activesupport
@@ -735,7 +735,7 @@ DEPENDENCIES
   omniauth-github (~> 1.4)
   omniauth-google-oauth2
   omniauth-twitter
-  openssl (~> 3.0.0)
+  openssl (~> 3.1.0)
   pagy (>= 3.8.3)
   paperclip (~> 6.1.0)
   passenger
