@@ -194,7 +194,7 @@ GEM
     gemoji (3.0.1)
     geocoder (1.8.0)
     georuby (2.0.0)
-    globalid (1.0.0)
+    globalid (1.0.1)
       activesupport (>= 5.0)
     google-apis-compute_v1 (0.42.0)
       google-apis-core (>= 0.7, < 2.a)
@@ -340,7 +340,7 @@ GEM
       rake
     mini_mime (1.1.2)
     mini_portile2 (2.8.0)
-    minitest (5.16.3)
+    minitest (5.17.0)
     minitest-reporters (1.5.0)
       ansi
       builder
