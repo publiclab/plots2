@@ -13,10 +13,6 @@ PublicLab.org
 
 The content management system for the Public Lab research community, the `plots2` web application is a combination of a group research blog -what we call "research notes"-and a wiki. Read more about the [data model here](https://github.com/publiclab/plots2/blob/main/doc/DATA_MODEL.md).
 
-Begin running (and contributing to) this codebase immediately with [GitPod](https://gitpod.io):
-
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/publiclab/plots2)
-
 It showcases a variety of features that help the Public Lab community collaborate on environmental technology, design, documentation, and community organizing. Originally a Drupal site, it was rewritten in 2012 with Ruby on Rails and has since extended but [not yet entirely replaced](https://github.com/publiclab/plots2/issues/956) the legacy Drupal data model and database design. We ❤️ Open Source and actively participate in various OSS programs such as [Google Summer of Code(GSoC)](https://publiclab.org/wiki/gsoc), Rails Girls Summer of Code (RGSoC), Outreachy, and Google Code-In (GCI).
 Some key features include:
 
@@ -43,6 +39,7 @@ A full description of the features, audiences, inter-relationships, and goals of
 4. [Prerequisites](#prerequisites)
 5. [Installation](#installation)
     - [Standard Installation](#standard-installation)
+    - [Gitpod Cloud Environment](#gitpod-cloud-environment)
     - [Windows Installation](#windows-installation)
     - [Windows Subsystem for Linux 2 Installation](#windows-subsystem-for-linux-2-installation)
     - [Redis Installation](#redis-installation)
@@ -91,7 +88,7 @@ Please read and abide by our [Code of Conduct](https://publiclab.org/conduct); o
 For installation, prerequisites include sqlite3 and rvm. [Click here for a complete list and instructions](https://github.com/publiclab/plots2/blob/main/doc/PREREQUISITES.md).
 
 ## Installation
-
+There are several ways to run your own instance of Public Lab:
 ### Standard Installation
 
 1. Fork our repo from https://github.com/publiclab/plots2.
@@ -116,6 +113,15 @@ _kindly note if you choose to use sqlite some tests may fail. The project was se
 11. Start the server with `passenger start` and navigate to `http://localhost:3000/` on your browser.
 12. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
 13. Run `rails test` to confirm that your install is working properly. You can also run `rails test:system` for system tests. (_Note: if you chose sqlite as your database, some tests may fail; Please ignore these, we are working to fix this. If your server starts correctly, you are all set_)
+
+### Gitpod Cloud Environment
+
+[Gitpod](https://www.gitpod.io/) is a free platform that allows you to develop Public Lab in a cloud VS Code environment.
+
+Click below👇 to start development immediately!!
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/publiclab/plots2)
+
 
 ### Windows Installation
 
