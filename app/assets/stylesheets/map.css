@@ -16,6 +16,7 @@
 }
 .leaflet-top{
   z-index:800 !important;
+  position: initial !important;
 }
 .leaflet-popup .leaflet-popup-content {
   width: 300px;
@@ -50,4 +51,10 @@
 }
 .leaflet-container .add-content-button {
   margin-right: 10px;
+}
+.leaflet-pane, .leaflet-bar, .leaflet-control{
+  position: initial !important;
+}
+.leaflet-bottom{
+  z-index: auto !important;
 }
