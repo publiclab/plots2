@@ -124,7 +124,9 @@
 }
 
 .dashboard .dashboard-blog .img {
-  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 @media (max-width:992px) {
