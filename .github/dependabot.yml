@@ -66,3 +66,7 @@ updates:
   - dependency-name: y18n
     versions:
     - 4.0.1
+- package-ecosystem: github-actions
+  directory: /
+  schedule:
+    interval: daily
