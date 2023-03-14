@@ -3,5 +3,4 @@ class DrupalMainImage < ApplicationRecord
   self.primary_key = :nid
 
   belongs_to :node, foreign_key: 'nid', dependent: :destroy
-  belongs_to :drupal_file, foreign_key: 'field_main_image_fid'
 end

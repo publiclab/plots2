@@ -50,7 +50,7 @@
           <% else %>
             <h3><%= translation('wiki.edit.create_page') %>: <i><%=h params[:id] %></i></h3>
           <% end %>
-          <input class="form-control" id="main_image" type="hidden" name="main_image" value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>" />
+          <input class="form-control" id="main_image" type="hidden" name="main_image" value="<% if @node && @node.main_image %><%= @node.main_image.id %><% else %><%= params[:main_image] %><% end %>" />
           <input class="form-control" id="images_input" type="hidden" name="images" value="" />
 
           <input class="form-control" id="taginput" type="hidden" name="tags" value="<%= params[:tags] %>" />
