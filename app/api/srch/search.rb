@@ -303,7 +303,7 @@ module Srch
                                                                                             nickname: 'search_tag_locations'
 
       params do
-        use :geographical, :additional, :period, :sorting, :ordering
+        use :geographical, :additional, :period, :sorting, :ordering, :latitude, :longitude
       end
       get :taglocations do
         search_request = SearchRequest.from_request(params)
