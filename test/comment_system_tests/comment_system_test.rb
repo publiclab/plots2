@@ -1,4 +1,4 @@
-require 'test_helper'
+
 require "application_system_test_case"
 # https://guides.rubyonrails.org/testing.html#implementing-a-system-test
 
