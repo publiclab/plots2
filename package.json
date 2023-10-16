@@ -70,7 +70,7 @@
     "webpack-cli": "^3.3.12"
   },
   "devDependencies": {
-    "webpack-dev-server": "^3"
+    "webpack-dev-server": "^4"
   },
   "homepage": "https://github.com/publiclab/plots2",
   "engines": {
