@@ -99,7 +99,7 @@ GEM
     coffee-script-source (1.12.2)
     composite_primary_keys (11.3.1)
       activerecord (~> 5.2.4)
-    concurrent-ruby (1.1.10)
+    concurrent-ruby (1.2.2)
     connection_pool (2.2.5)
     crack (0.4.5)
       rexml
@@ -278,7 +278,7 @@ GEM
     http_accept_language (2.1.1)
     http_parser.rb (0.6.0)
     httpclient (2.8.3)
-    i18n (1.12.0)
+    i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     i18n-js (3.8.0)
       i18n (>= 0.6.6)
@@ -340,7 +340,7 @@ GEM
       rake
     mini_mime (1.1.2)
     mini_portile2 (2.8.0)
-    minitest (5.16.3)
+    minitest (5.20.0)
     minitest-reporters (1.5.0)
       ansi
       builder
@@ -602,7 +602,7 @@ GEM
     simplecov_json_formatter (0.1.3)
     sinatra (1.0)
       rack (>= 1.0)
-    skylight (5.3.3)
+    skylight (6.0.1)
       activesupport (>= 5.2.0)
     sprockets (4.1.1)
       concurrent-ruby (~> 1.0)
@@ -642,7 +642,7 @@ GEM
       multipart-post (~> 2.0)
       naught (~> 1.0)
       simple_oauth (~> 0.3.0)
-    tzinfo (1.2.10)
+    tzinfo (1.2.11)
       thread_safe (~> 0.1)
     uber (0.1.0)
     unf (0.1.4)
