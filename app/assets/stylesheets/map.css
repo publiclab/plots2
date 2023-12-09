@@ -14,6 +14,14 @@
 #content .leaflet-popup-pane {
   z-index: 760;
 }
+
+.leaflet-pane{
+  position: initial !important;
+}
+.leaflet-bar, .leaflet-top{
+  position: initial !important;
+}
+
 .leaflet-top{
   z-index:800 !important;
 }
@@ -51,3 +59,4 @@
 .leaflet-container .add-content-button {
   margin-right: 10px;
 }
+
