@@ -11,7 +11,7 @@ PublicLab.org
 [![Newcomers welcome](https://img.shields.io/badge/newcomers-welcome-pink.svg)](https://code.publiclab.org) [![GitHub license](https://img.shields.io/github/license/publiclab/plots2?logo=gpl)](https://github.com/publiclab/plots2/blob/main/LICENSE)
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/publiclab/plots2/)
 
-The content management system for the Public Lab research community, the `plots2` web application is a combination of a group research blog -what we call "research notes"-and a wiki. Read more about the [data model here](https://github.com/publiclab/plots2/blob/main/doc/DATA_MODEL.md).
+Public Lab’s `plots2` is a content management system that combines a research blog and wiki. Learn more about the [data model here](https://github.com/publiclab/plots2/blob/main/doc/DATA_MODEL.md).
 
 Begin running (and contributing to) this codebase immediately with [GitPod](https://gitpod.io):
 
@@ -27,7 +27,7 @@ Some key features include:
 * Email notification subscriptions for topics and comments
 * A search interface built out of [our growing API](https://github.com/publiclab/plots2/blob/main/doc/API.md)
 * A user dashboard [presenting recent activity](https://publiclab.org/dashboard)
-* A privacy-sensitive, Leaflet-based [location tagging system](https://github.com/publiclab/leaflet-blurred-location/) and [community map](https://publiclab.org/people)
+* A privacy-sensitive, Leaflet-based [location tagging system](https://github.com/publiclab/leaflet-blurred-location/) and [community map](https://publiclab.org/people), which anonymizes user data to ensure privacy and safety while allowing environmental collaboration.
 
 ## Roadmap
 
@@ -60,7 +60,6 @@ A full description of the features, audiences, inter-relationships, and goals of
 17. [Developers](#developers)
 18. [First Time?](#first-time)
 19. [Hacktoberfest](#hacktoberfest)
-****
 
 ## What makes this project different
 
@@ -68,7 +67,7 @@ The people who create our platform make very different design and technology dec
 
 From design to system architecture to basic vocabulary and communication patterns, our systems have grown organically since 2010 to support a powerful, diverse, and cooperative network of people capable of taking on environmental problems that affect communities globally. The platform we have built together speaks to this shared history in many ways, big and small. It reflects input from people facing serious health issues, on-the-ground organizers, policy specialists, hardware hackers, educators, and civil servants.
 
-This broad community and the Public Lab team have facilitated a space where we can discuss, break down, construct, prototype, and critique  real-world projects. Together we have shaped a platform that incorporates familiar pieces but ultimately looks and feels quite different from anything else on the internet. Despite the growth of our platform, it remains committed to hearing the voices of others, mutual respect and support, an awareness of the barriers and challenges presented by gaps in expertise and knowledge, and a sensitivity to the inequalities and power imbalances perpetuated by many mainstream modes of knowledge production and technological and scientific development.
+This broad community and the Public Lab team have facilitated a space where we can discuss, break down, construct, prototype, and critique real-world projects. Together we have shaped a platform that incorporates familiar pieces but ultimately looks and feels quite different from anything else on the internet. Despite the growth of our platform, it remains committed to hearing the voices of others, mutual respect and support, an awareness of the barriers and challenges presented by gaps in expertise and knowledge, and a sensitivity to the inequalities and power imbalances perpetuated by many mainstream modes of knowledge production and technological and scientific development.
 
 Our mutual aim to democratize inexpensive and accessible do-it-yourself techniques has allowed us to create a collaborative network of practitioners who actively re-imagine the human relationship with the environment. Our goals are supported and facilitated by a system which questions and even challenges how collaborative work can happen.
 
@@ -98,24 +97,22 @@ For installation, prerequisites include sqlite3 and rvm. [Click here for a compl
 2. In the console, download a copy of your forked repo with `git clone https://github.com/your_username/plots2.git` where `your_username` is your GitHub username.
 3. Enter the new **plots2** directory with `cd plots2`.
 4. Set the upstream remote to the original repository url so that git knows where to fetch updates from in future: `git remote add upstream https://github.com/publiclab/plots2.git`
-5. Steps to install gems:
-    * You may need to first run `bundle install` if you have older gems in your environment from previous Rails work. If you get an error message like `Your Ruby version is 2.x.x, but your Gemfile specified 2.7.3` then you need to install the ruby version 2.7.3 using `rvm` or `rbenv`.
-	    * Using **rvm**: `rvm install 2.7.3` followed by `rvm use 2.7.3`
-	    * Using **rbenv**:  `rbenv install 2.7.3` followed by `rbenv local 2.7.3`
-    * Run this `bundle config set without 'production mysql'` from the rails root folder to set your project to exclude libraries only needed in production.
-    * Install gems with `bundle install` from the rails root folder.
+5. Install required Ruby gems:
+    * Run `bundle install`. If you get an error about Ruby version mismatch, install Ruby 2.7.3:
+        * For **rvm**: `rvm install 2.7.3 && rvm use 2.7.3`
+        * For **rbenv**: `rbenv install 2.7.3 && rbenv local 2.7.3`
 6. Run `cp db/schema.rb.example db/schema.rb` to make a copy of `db/schema.rb.example` in `db/schema.rb`.
 7. You could choose to use mysql2 or sqlite3 as your database. *We **recommend** using `sqlite3` as your plots2 database as some of our contributors have reported issues while using `mysql2`*.
     * If mysql2,  run `cp config/database.yml.mysql.example config/database.yml` to make a copy of `config/database.yml.mysql.example` in `config/database.yml`
     * If sqlite3, run `cp config/database.yml.sqlite.example config/database.yml` to make a copy of `config/database.yml.sqlite.example` in `config/database.yml`.
-_kindly note if you choose to use sqlite some tests may fail. The project was setup initially to use mysql and some tests are tailored for mysql db. No need for alarm, we are working to fix these and this will not interfere with your development process_
-8. Run `rake db:setup` to set up the database
-9. Install static assets (like external javascript libraries, fonts) with `yarn install`
-10. Setup React & webpacker by running `rails webpacker:install && rails webpacker:install:react && rails generate react:install`(for local SSL work, see [SSL](#ssl-in-development) below)
+    _kindly note if you choose to use sqlite some tests may fail. The project was setup initially to use mysql and some tests are tailored for mysql db. No need for alarm, we are working to fix these and this will not interfere with your development process_
+8. Run `rake db:setup` to set up the database.
+9. Install static assets (like external javascript libraries, fonts) with `yarn install`.
+10. Setup React & webpacker by running `rails webpacker:install && rails webpacker:install:react && rails generate react:install`(for local SSL work, see [SSL](#ssl-in-development) below).
    * If you get any prompt to overwrite files in this step please choose no. The prompt will be something like _"Overwrite /home/plots2/config/webpacker.yml? (enter "h" for help) [Ynaqdhm]"_ :-  type "n" and enter.
 11. Start the server with `passenger start` and navigate to `http://localhost:3000/` on your browser.
 12. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
-13. Run `rails test` to confirm that your install is working properly. You can also run `rails test:system` for system tests. (_Note: if you chose sqlite as your database, some tests may fail; Please ignore these, we are working to fix this. If your server starts correctly, you are all set_)
+13. Run `rails test` to confirm that your install is working properly. You can also run `rails test:system` for system tests. (_Note: if you chose sqlite as your database, some tests may fail; Please ignore these, we are working to fix this. If your server starts correctly, you are all set_).
 
 ### Windows Installation
 
@@ -129,11 +126,13 @@ We recommend you either work in a virtual environment, or on a dual booted syste
 Before continuing with the installation steps in this README, users of Windows Subsystem for Linux 2 (WSL 2) should open the WSL 2 Terminal and type out the commands below.
 
 1. Install Dependencies required from Ruby Source with the following commands:
-  * `sudo apt update`
-  * `sudo apt install curl g++ gcc autoconf automake bison libc6-dev`
-  * `sudo apt install libffi-dev libgdbm-dev libncurses5-dev libsqlite3-dev libtool`
-  * `sudo apt install libyaml-dev make pkg-config sqlite3 zlib1g-dev libgmp-dev`
-  * `sudo apt install libreadline-dev libssl-dev`
+    ```bash
+    sudo apt update
+    sudo apt install curl g++ gcc autoconf automake bison libc6-dev
+    sudo apt install libffi-dev libgdbm-dev libncurses5-dev libsqlite3-dev libtool
+    sudo apt install libyaml-dev make pkg-config sqlite3 zlib1g-dev libgmp-dev
+    sudo apt install libreadline-dev libssl-dev
+    ```
 2. Add GPG Key & Install RVM:
   * Install gnupg2 if you haven't already:  `sudo apt install gnupg2`
   * `gpg2 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB`
@@ -141,9 +140,8 @@ Before continuing with the installation steps in this README, users of Windows S
 3. Load the Script environment variables using source command:
   * `source ~/.rvm/scripts/rvm`
 4. Install and use specific Ruby version:
-  * `rvm install ruby-x.x.x (this projects Ruby version)`
+  * `rvm install ruby-x.x.x (this project's Ruby version)`
   * `rvm --default use ruby-x.x.x (replace x.x.x with this project's Ruby version)`
-5. For further reference, [read here](https://linuxize.com/post/how-to-install-ruby-on-ubuntu-20-04/)
 
 ### Redis Installation
 
@@ -152,15 +150,12 @@ Public Lab uses Redis and may be required for some functionality when running th
   * Using **MacOS**: `brew install redis`
   * Using **Linux**: `sudo yum -y install redis`
   * Using **Ubuntu WSL2**:
-  	* update & upgrade Ubuntu: `sudo apt update && apt upgrade`
-	* install redis: `sudo apt install Redis-server`
-	* open Redis.config file: `sudo nano /etc/redis/redis.conf`
-	* update the file by changing the supervised no line to supervised systemd(ubuntu uses systemd)
-	* start Redis: `sudo service redis-server start`
-	* open Redis CLI: `redis-cli`
-	* test Redis: type `ping` & response should be `pong`
-	* exit cli: type `quit`
-	* Awesome :thumbsup: All done :white_check_mark:
+    ```bash
+    sudo apt update && apt upgrade
+    sudo apt install redis-server
+    sudo service redis-server start
+    redis-cli ping  # test Redis, response should be pong
+    ```
 2. Run Redis server:
   * Using **MacOS**: `brew services start redis`
   * Using **Linux**: `redis-server`
@@ -197,26 +192,19 @@ Click [here](https://github.com/publiclab/plots2/blob/main/doc/TESTING.md) for a
 ## How to start and modify cron jobs
 
 1. We are using [Whenever](https://github.com/javan/whenever) gem to schedule cron jobs.
-2. All the cron jobs are written in easy ruby syntax using this gem and can be found in config/schedule.rb.
-2. Go to the config/schedule.rb file to create and modify the cron jobs.
+2. Cron jobs are written in simple Ruby syntax and located in `config/schedule.rb`.
 3. [Click here](https://github.com/javan/whenever) to learn more about how to write cron jobs.
 4. After updating config/schedule.rb file run the command `whenever --update-crontab` to update the cron jobs.
 5. To see the installed list of cron jobs use command `crontab -l`
 6. For more details about this gem, visit the official repository of the [Whenever](https://github.com/javan/whenever) gem.
 
-
 ## Bundle exec
 
-For some, it will be necessary to prepend your gem-related commands with `bundle exec`.
-For example, `bundle exec passenger start`.
-Adding `bundle exec` ensures you're using the version of passenger you just installed with Bundler.
-`bundle exec rake db:setup`, `bundle exec rake db:seed` are other examples of where this might be necessary.
-
+For some, it will be necessary to prepend your gem-related commands with `bundle exec`. For example, `bundle exec passenger start`. Adding `bundle exec` ensures you're using the version of passenger you just installed with Bundler. `bundle exec rake db:setup`, `bundle exec rake db:seed` are other examples of where this might be necessary.
 
 ## Reply-by-email
 
 Public Lab now supports "reply by email to comment" feature. For more details, go to the [email documentation](https://github.com/publiclab/plots2/blob/main/doc/EMAIL.md)
-
 
 ## Bugs and support
 
@@ -281,6 +269,5 @@ Wishing to contribute to Publiclab as part of Hacktoberfest? Check out our [Hack
 #### [Platforms that :heart: OSS](./doc/SUPPORTERS.md)
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/PublicLab?style=social)](https://twitter.com/PublicLab)
-
 
 </center>
