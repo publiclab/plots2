@@ -1,13 +1,10 @@
 .follow-list{
     margin: -1px;
     list-style-type: none;
+    width: 50%;
 }
 .follow-list .follow-img img{
     max-width: 100%;
-}
-.follow-list{
-    margin: -1px;
-    list-style-type: none;
 }
 .follow-list {
     padding: 0;
@@ -15,6 +12,7 @@
 .follow-list > li {
     float: left;
     width: 50%;
+    
 }
 .follow-list > li > a {
     display: block;
@@ -61,4 +59,13 @@
         float: none;
         width: auto;
     }
+}
+
+.media-body{
+    padding-left: 10px;
+}
+
+.follow-list li:hover {
+    font-weight: bold;
+    color: #00008B;
 }
