@@ -92,7 +92,16 @@ Comment.propTypes = {
     PropTypes.array,
     PropTypes.element
   ]),
-  comment: PropTypes.object.isRequired,
+  comment: PropTypes.shape({
+  authorId: PropTypes.number.isRequired,
+  authorPicUrl: PropTypes.string,
+  authorPicFilename: PropTypes.string,
+  authorUsername: PropTypes.string.isRequired,
+  commentId: PropTypes.number.isRequired,
+  commentName: PropTypes.string,
+  htmlCommentText: PropTypes.string.isRequired,
+  timeCreatedString: PropTypes.string.isRequired
+}).isRequired,
   deleteButton: PropTypes.element.isRequired,
   editCommentForm: PropTypes.element.isRequired,
   isEditFormVisible: PropTypes.bool.isRequired,
