@@ -501,4 +501,9 @@ class NotesController < ApplicationController
         .where('node.status = 1')
         .where.not(nid: hidden_nids)
   end
+  def random
+    post = Post.order("RANDOM()").first
+    redirect_to post_path(post)
+  end
+  
 end

@@ -121,12 +121,17 @@
     <%= render :partial => 'layouts/header' %>
     <div id="top_map"> </div>
     <div class="container">
-      <div class="row">
-
-        <%= yield %>
-
-      </div><!--/row-->
-    </div><!--/container-->
+    <div class="row">
+  
+      <div class="col-md-12 mb-2">
+        <%= link_to '🎲 Random Post', random_path, class: 'btn btn-secondary' %>
+      </div>
+  
+      <%= yield %>
+  
+    </div><!--/row-->
+  </div><!--/container-->
+  
 
     <%= render :partial => "layouts/footer" %>
 

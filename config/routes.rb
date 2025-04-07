@@ -8,6 +8,8 @@ Plots2::Application.routes.draw do
 
   # Manually written API functions
   post 'comment/create/token/:id.:format', to: 'comment#create_by_token'
+  get '/random', to: 'posts#random'
+
 
   post '/node/update/title' => 'notes#update_title'
 
