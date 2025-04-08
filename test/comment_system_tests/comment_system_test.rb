@@ -1,8 +1,8 @@
-require 'test_helper'
+class CommentSystemTest < ApplicationSystemTestCaseclass CommentSystemTest < ApplicationSystemTestCaserequire 'test_helper'
 require "application_system_test_case"
 # https://guides.rubyonrails.org/testing.html#implementing-a-system-test
 
-class CommentTest < ApplicationSystemTestCase
+class CommentSystemTest < ApplicationSystemTestCase
   Capybara.default_max_wait_time = 60
 
   def setup
