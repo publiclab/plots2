@@ -70,7 +70,7 @@ From design to system architecture to basic vocabulary and communication pattern
 
 This broad community and the Public Lab team have facilitated a space where we can discuss, break down, construct, prototype, and critique  real-world projects. Together we have shaped a platform that incorporates familiar pieces but ultimately looks and feels quite different from anything else on the internet. Despite the growth of our platform, it remains committed to hearing the voices of others, mutual respect and support, an awareness of the barriers and challenges presented by gaps in expertise and knowledge, and a sensitivity to the inequalities and power imbalances perpetuated by many mainstream modes of knowledge production and technological and scientific development.
 
-Our mutual aim to democratize inexpensive and accessible do-it-yourself techniques has allowed us to create a collaborative network of practitioners who actively re-imagine the human relationship with the environment. Our goals are supported and facilitated by a system which questions and even challenges how collaborative work can happen.
+Our mutual aim to democratize inexpensive and accessible do-it-yourself techniques has allowed us to create a collaborative network of practitioners who actively re-imagine the human relationship with the environment. Our goals are supported and facilitated by a system that questions and even challenges how collaborative work can happen.
 
 ## Data Model
 
