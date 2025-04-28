@@ -1027,10 +1027,10 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@rails/webpacker@5.4.3":
-  version "5.4.3"
-  resolved "https://registry.yarnpkg.com/@rails/webpacker/-/webpacker-5.4.3.tgz#cfe2d8faffe7db5001bad50a1534408b4f2efb2f"
-  integrity sha512-tEM8tpUtfx6FxKwcuQ9+v6pzgqM5LeAdhT6IJ4Te3BPKFO1xrGrXugqeRuZ+gE8ASDZRTOK6yuQkapOpuX5JdA==
+"@rails/webpacker@5.4.4":
+  version "5.4.4"
+  resolved "https://registry.yarnpkg.com/@rails/webpacker/-/webpacker-5.4.4.tgz#971a41b987c096c908ce4088accd57c1a9a7e2f7"
+  integrity sha512-hp9myb2MChYFPfE5Fd/3gF4q2m4wpxC+WWCkxcg6My3HYCptWuqMVXRwrBZ5EJHYiL/WRyMLvVNWwlFV47xhUw==
   dependencies:
     "@babel/core" "^7.15.0"
     "@babel/plugin-proposal-class-properties" "^7.14.5"
@@ -2066,7 +2066,7 @@ blueimp-canvas-to-blob@3, blueimp-canvas-to-blob@^3.16.0:
   resolved "https://registry.yarnpkg.com/blueimp-canvas-to-blob/-/blueimp-canvas-to-blob-3.28.0.tgz#c8ab4dc6bb08774a7f273798cdf94b0776adf6c8"
   integrity sha512-5q+YHzgGsuHQ01iouGgJaPJXod2AzTxJXmVv90PpGrRxU7G7IqgPqWXz+PBmt3520jKKi6irWbNV87DicEa7wg==
 
-blueimp-file-upload@^10.30.1, blueimp-file-upload@blueimp/jQuery-File-Upload#^10.32.0, jquery-file-upload@blueimp/jQuery-File-Upload#~10.32.0:
+blueimp-file-upload@^10.30.1, blueimp-file-upload@blueimp/jQuery-File-Upload#^10.32.0:
   version "10.32.0"
   resolved "https://codeload.github.com/blueimp/jQuery-File-Upload/tar.gz/0c85627dfb551e2ce25b82cddef557069bd803ed"
   optionalDependencies:
@@ -5667,30 +5667,7 @@ glob@7.1.3:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
-"glob@>= 3.1.4", glob@^7.1.3, glob@^7.1.4, glob@^7.1.7:
-  version "7.1.7"
-  resolved "https://registry.yarnpkg.com/glob/-/glob-7.1.7.tgz#3b193e9233f01d42d0b3f78294bbeeb418f94a90"
-  integrity sha512-OvD9ENzPLbegENnYP5UUfJIirTg4+XwMWGaQfQTY0JenxNvvIKP3U3/tAQSPIu/lHxXYSZmpXlUHeqAIdKzBLQ==
-  dependencies:
-    fs.realpath "^1.0.0"
-    inflight "^1.0.4"
-    inherits "2"
-    minimatch "^3.0.4"
-    once "^1.3.0"
-    path-is-absolute "^1.0.0"
-
-glob@^5.0.15:
-  version "5.0.15"
-  resolved "https://registry.yarnpkg.com/glob/-/glob-5.0.15.tgz#1bc936b9e02f4a603fcc222ecf7633d30b8b93b1"
-  integrity sha1-G8k2ueAvSmA/zCIuz3Yz0wuLk7E=
-  dependencies:
-    inflight "^1.0.4"
-    inherits "2"
-    minimatch "2 || 3"
-    once "^1.3.0"
-    path-is-absolute "^1.0.0"
-
-glob@^7.0.3:
+"glob@>= 3.1.4", glob@^7.0.3, glob@^7.1.3, glob@^7.1.4, glob@^7.1.6, glob@^7.1.7:
   version "7.2.3"
   resolved "https://registry.yarnpkg.com/glob/-/glob-7.2.3.tgz#b8df0fb802bbfa8e89bd1d938b4e16578ed44f2b"
   integrity sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==
@@ -5702,15 +5679,14 @@ glob@^7.0.3:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
-glob@^7.1.6:
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/glob/-/glob-7.2.0.tgz#d15535af7732e02e948f4c41628bd910293f6023"
-  integrity sha512-lmLf6gtyrPq8tTjSmrO94wBeQbFR3HbLHbuyD69wuyQkImp2hWqMGB47OX65FBkPffO641IP9jWa1z4ivqG26Q==
+glob@^5.0.15:
+  version "5.0.15"
+  resolved "https://registry.yarnpkg.com/glob/-/glob-5.0.15.tgz#1bc936b9e02f4a603fcc222ecf7633d30b8b93b1"
+  integrity sha1-G8k2ueAvSmA/zCIuz3Yz0wuLk7E=
   dependencies:
-    fs.realpath "^1.0.0"
     inflight "^1.0.4"
     inherits "2"
-    minimatch "^3.0.4"
+    minimatch "2 || 3"
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
@@ -5950,10 +5926,10 @@ graceful-fs@~2.0.0:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-2.0.3.tgz#7cd2cdb228a4a3f36e95efa6cc142de7d1a136d0"
   integrity sha1-fNLNsiiko/Nule+mzBQt59GhNtA=
 
-"grow-textarea@git+https://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669":
+"grow-textarea@git://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669":
   version "1.0.1"
   uid d54141c9456343f14cc6c935faa0915af09eb669
-  resolved "git+https://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669"
+  resolved "git://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669"
   dependencies:
     component-event "^0.1.4"
     ianstormtaylor-css "^0.3.1"
@@ -7522,6 +7498,14 @@ jquery-confirm@^3.3.4:
   integrity sha512-SF3mX2kWAK9FP/Hut1uLHI30LPZ9DAki3Jq6JId9vg6AlMVugjlh40APtuxPQ/0C44XTkQFSVyRrg57NMbaicA==
   dependencies:
     jquery ">=1.6"
+
+jquery-file-upload@blueimp/jQuery-File-Upload#~10.32.0:
+  version "10.32.0"
+  resolved "https://codeload.github.com/blueimp/jQuery-File-Upload/tar.gz/0c85627dfb551e2ce25b82cddef557069bd803ed"
+  optionalDependencies:
+    blueimp-canvas-to-blob "3"
+    blueimp-load-image "5"
+    blueimp-tmpl "3"
 
 jquery-lazyload@1.9.7:
   version "1.9.7"
@@ -13717,10 +13701,10 @@ window-size@0.1.0:
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
   integrity sha1-VDjNLqk7IC76Ohn+iIeu58lPnJ0=
 
-"woofmark@git+https://github.com/jywarren/woofmark.git#plots2":
+"woofmark@git://github.com/jywarren/woofmark.git#plots2":
   version "4.0.3"
   uid "78821fad8687757a4201fbef3be4b85418e785ef"
-  resolved "git+https://github.com/jywarren/woofmark.git#78821fad8687757a4201fbef3be4b85418e785ef"
+  resolved "git://github.com/jywarren/woofmark.git#78821fad8687757a4201fbef3be4b85418e785ef"
   dependencies:
     bullseye "1.4.6"
     bureaucracy "1.0.7"

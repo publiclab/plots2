@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@babel/preset-react": "^7.18.6",
-    "@rails/webpacker": "5.4.3",
+    "@rails/webpacker": "5.4.4",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "blob.js": "^1.0.1",
     "blueimp-file-upload": "blueimp/jQuery-File-Upload#^10.32.0",
