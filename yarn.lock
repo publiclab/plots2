@@ -2066,7 +2066,7 @@ blueimp-canvas-to-blob@3, blueimp-canvas-to-blob@^3.16.0:
   resolved "https://registry.yarnpkg.com/blueimp-canvas-to-blob/-/blueimp-canvas-to-blob-3.28.0.tgz#c8ab4dc6bb08774a7f273798cdf94b0776adf6c8"
   integrity sha512-5q+YHzgGsuHQ01iouGgJaPJXod2AzTxJXmVv90PpGrRxU7G7IqgPqWXz+PBmt3520jKKi6irWbNV87DicEa7wg==
 
-blueimp-file-upload@^10.30.1, blueimp-file-upload@blueimp/jQuery-File-Upload#^10.32.0, jquery-file-upload@blueimp/jQuery-File-Upload#~10.32.0:
+blueimp-file-upload@^10.30.1, blueimp-file-upload@blueimp/jQuery-File-Upload#^10.32.0:
   version "10.32.0"
   resolved "https://codeload.github.com/blueimp/jQuery-File-Upload/tar.gz/0c85627dfb551e2ce25b82cddef557069bd803ed"
   optionalDependencies:
@@ -3678,13 +3678,10 @@ cyclist@^1.0.1:
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
   integrity sha1-WW6WmP0MgOEgOMK4LW6xs1tiJNk=
 
-cytoscape@^3.22.1:
-  version "3.22.1"
-  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.22.1.tgz#bf9374193ce1d4dda31ef26a8997311a19e6077b"
-  integrity sha512-+wMWCXI+c6h7xhh0BQpttOPO7zIB7z6KyDd7D+8AkRhE9E6csXNnV5inBkdo2mxbBoll1jePVxXHqxA2J5cAog==
-  dependencies:
-    heap "^0.2.6"
-    lodash "^4.17.21"
+cytoscape@^3.33.1:
+  version "3.33.1"
+  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.33.1.tgz#449e05d104b760af2912ab76482d24c01cdd4c97"
+  integrity sha512-iJc4TwyANnOGR1OmWhsS9ayRS3s+XQ185FmuHObThD+5AeJCakAAbWv8KimMTt08xCCLNgneQwFp+JRJOr9qGQ==
 
 d@1, d@^1.0.1:
   version "1.0.1"
@@ -5950,10 +5947,10 @@ graceful-fs@~2.0.0:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-2.0.3.tgz#7cd2cdb228a4a3f36e95efa6cc142de7d1a136d0"
   integrity sha1-fNLNsiiko/Nule+mzBQt59GhNtA=
 
-"grow-textarea@git+https://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669":
+"grow-textarea@git://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669":
   version "1.0.1"
   uid d54141c9456343f14cc6c935faa0915af09eb669
-  resolved "git+https://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669"
+  resolved "git://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669"
   dependencies:
     component-event "^0.1.4"
     ianstormtaylor-css "^0.3.1"
@@ -6312,11 +6309,6 @@ he@^0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/he/-/he-0.5.0.tgz#2c05ffaef90b68e860f3fd2b54ef580989277ee2"
   integrity sha1-LAX/rvkLaOhg8/0rVO9YCYknfuI=
-
-heap@^0.2.6:
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/heap/-/heap-0.2.6.tgz#087e1f10b046932fc8594dd9e6d378afc9d1e5ac"
-  integrity sha1-CH4fELBGky/IWU3Z5tN4r8nR5aw=
 
 heatmap.js@*:
   version "2.0.5"
@@ -7523,6 +7515,14 @@ jquery-confirm@^3.3.4:
   dependencies:
     jquery ">=1.6"
 
+jquery-file-upload@blueimp/jQuery-File-Upload#~10.32.0:
+  version "10.32.0"
+  resolved "https://codeload.github.com/blueimp/jQuery-File-Upload/tar.gz/0c85627dfb551e2ce25b82cddef557069bd803ed"
+  optionalDependencies:
+    blueimp-canvas-to-blob "3"
+    blueimp-load-image "5"
+    blueimp-tmpl "3"
+
 jquery-lazyload@1.9.7:
   version "1.9.7"
   resolved "https://registry.yarnpkg.com/jquery-lazyload/-/jquery-lazyload-1.9.7.tgz#9982b388c533c0b611214b3c5aaa0b9fede071f7"
@@ -8125,7 +8125,7 @@ lodash@^3.9.0:
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
   integrity sha1-W/Rejkm6QYnhfUgnid/RW9FAt7Y=
 
-lodash@^4.14.2, lodash@^4.17.11, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.21, lodash@^4.17.5:
+lodash@^4.14.2, lodash@^4.17.11, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.5:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -13717,10 +13717,10 @@ window-size@0.1.0:
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
   integrity sha1-VDjNLqk7IC76Ohn+iIeu58lPnJ0=
 
-"woofmark@git+https://github.com/jywarren/woofmark.git#plots2":
+"woofmark@git://github.com/jywarren/woofmark.git#plots2":
   version "4.0.3"
   uid "78821fad8687757a4201fbef3be4b85418e785ef"
-  resolved "git+https://github.com/jywarren/woofmark.git#78821fad8687757a4201fbef3be4b85418e785ef"
+  resolved "git://github.com/jywarren/woofmark.git#78821fad8687757a4201fbef3be4b85418e785ef"
   dependencies:
     bullseye "1.4.6"
     bureaucracy "1.0.7"
