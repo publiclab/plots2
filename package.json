@@ -25,7 +25,7 @@
     "blueimp-file-upload": "blueimp/jQuery-File-Upload#^10.32.0",
     "bootstrap": "4.1.0",
     "bootstrap-3-typeahead": "^4.0.2",
-    "bootstrap-datepicker": "^1.6.0",
+    "bootstrap-datepicker": "^1.10.1",
     "bootstrap-tokenfield": "^0.12.0",
     "chart.js": "^3.8.0",
     "cytoscape": "^3.22.1",
