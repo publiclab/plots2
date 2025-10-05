@@ -20,7 +20,7 @@ jobs:
   unit-tests:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.7.3 # Not needed with a .ruby-version file
@@ -48,7 +48,7 @@ jobs:
           # Maps port 6379 on service container to the host
           - 6379:6379
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.7.3 # Not needed with a .ruby-version file
@@ -73,7 +73,7 @@ jobs:
   integration-tests:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.7.3 # Not needed with a .ruby-version file
@@ -109,7 +109,7 @@ jobs:
           # Maps port 6379 on service container to the host
           - 6379:6379
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.7.3 # Not needed with a .ruby-version file
@@ -136,7 +136,7 @@ jobs:
         chromedriver --url-base=/wd/hub &
         bundle exec rails test:system
     - name: Archive system test screenshots
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: system-test-screenshots
         path: tmp/screenshots/*
@@ -156,7 +156,7 @@ jobs:
           # Maps port 6379 on service container to the host
           - 6379:6379
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.7.3 # Not needed with a .ruby-version file
@@ -183,7 +183,7 @@ jobs:
         chromedriver --url-base=/wd/hub &
         bundle exec rails test test/comment_system_tests
     - name: Archive system test screenshots
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: system-test-screenshots
         path: tmp/screenshots/*

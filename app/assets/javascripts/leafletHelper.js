@@ -39,8 +39,19 @@
                    var title = data.items[i].doc_title;
                    var m = L.marker([data.items[i].latitude, data.items[i].longitude], {
                        title: title,
-                       icon: default_markers
+                       icon: default_markers,
+                       alt: title,
+                       keyboard: true,
+                       aria: true
                    }) ;
+                   
+                   // Set aria-label on the marker's DOM element after it's added to the map
+                   m.on('add', function() {
+                       if (this._icon) {
+                           this._icon.setAttribute('aria-label', "User marker: " + title);
+                           this._icon.setAttribute('role', 'button');
+                       }
+                   });
                    if(markers_hash.has(mid) === false){
                        m.addTo(map).bindPopup("<a href=" + url + ">" + title + "</a>") ;
                        markers_hash.set(mid , m) ;
@@ -83,7 +94,21 @@
                var time_since = TimeAgo().inWords(new Date(data.items[i].created_at));
                // var comment_count = data.items[i].comment_count;
 
-               var m = L.marker([data.items[i].latitude, data.items[i].longitude], {icon: map_marker});
+               var m = L.marker([data.items[i].latitude, data.items[i].longitude], {
+                   icon: map_marker,
+                   title: title,
+                   alt: title,
+                   keyboard: true,
+                   aria: true
+               });
+               
+               // Set aria-label on the marker's DOM element after it's added to the map
+               m.on('add', function() {
+                   if (this._icon) {
+                       this._icon.setAttribute('aria-label', nodetype + " marker: " + title);
+                       this._icon.setAttribute('role', 'button');
+                   }
+               });
 
                if(markers_hash.has(mid) === false){
                   var popup_content = "";

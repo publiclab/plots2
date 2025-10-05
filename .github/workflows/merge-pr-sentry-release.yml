@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: Triggering tests workflow
         run: echo "Triggering tests workflow"
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Sentry Release
         uses: getsentry/action-release@v1.1.5
         env:
