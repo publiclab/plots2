@@ -11,22 +11,22 @@ Our community aspires to be a respectful place. Please read and abide by our [Co
 
 New to open source/free software? See our WELCOME PAGE, including a selection of issues we've made especially for first-timers. We're here to help, so just ask if one looks interesting:
 
-https://code.publiclab.org/#r=all
+- [Public Lab Welcome page]https://code.publiclab.org/#r=all
 
 Thank you so much!
 
 Learn more about contributing to Public Lab code projects on these pages:
 
-* https://publiclab.org/developers
-* https://publiclab.org/contributing-to-public-lab-software
-* https://publiclab.org/soc
-* https://publiclab.org/wiki/developers
-* https://publiclab.org/wiki/gsoc-ideas
+* [Developers Guide]https://publiclab.org/developers
+* [Contributing to Public Lab Software]https://publiclab.org/contributing-to-public-lab-software
+* [Summer of code]https://publiclab.org/soc
+* [Developers Wiki]https://publiclab.org/wiki/developers
+* [GSOC Ideas]https://publiclab.org/wiki/gsoc-ideas
 
 ## Bug reports & troubleshooting
 
-If you are submitting a bug/issue , please go to https://github.com/publiclab/plots2/issues/new
+If you are submitting a bug or issues, please create one using GitHub Issues:https://github.com/publiclab/plots2/issues/new
 
-Follow the [First Timers Issue Template](https://github.com/publiclab/plots2/blob/main/.github/ISSUE_TEMPLATE/--first-timers-only.md) for submitting First Timers Only issues.
+for First-time contributers, please use the following templates:(https://github.com/publiclab/plots2/blob/main/.github/ISSUE_TEMPLATE/--first-timers-only.md) 
 
-Follow this standard [Issue Template](https://github.com/publiclab/plots2/blob/main/.github/ISSUE_TEMPLATE/ISSUE_TEMPLATE.md) for other issues.
+For all other issues, use the standard issue template:(https://github.com/publiclab/plots2/blob/main/.github/ISSUE_TEMPLATE/ISSUE_TEMPLATE.md) 
