@@ -268,6 +268,10 @@ New to open source/free software? Here is a selection of issues we've made **esp
 
 [Here](https://publiclab.org/notes/warren/11-22-2017/use-git-and-github-to-contribute-and-improve-public-lab-software) is a link to our Git workflow.
 
+### Contributor Note
+This change was made as part of my first open-source contribution while started open-source.
+
+
 ## Hacktoberfest
 Wishing to contribute to Publiclab as part of Hacktoberfest? Check out our [Hacktoberfest contributing docs](https://github.com/publiclab/plots2/blob/main/HACKTOBERFEST.md)
 
