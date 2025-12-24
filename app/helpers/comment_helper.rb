@@ -2,6 +2,11 @@ module CommentHelper
   class CommentError < ArgumentError
   end
 
+  # NOTE:
+# reply_to parameter is handled in CommentsController,
+# but it is not passed to add_comment here.
+# This may cause replies to be posted as independent comments.
+
   def create_comment(node, user, body)
     @comment = node.add_comment(uid: user.uid, body: body)
     if user && @comment.save
