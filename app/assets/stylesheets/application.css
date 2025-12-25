@@ -39,4 +39,10 @@
  *= require location
  *= require notes
  *= require spam2
-*/
+
+ /* Fix: prevent anchor-linked headings from being hidden under fixed header */
+h2, h3, h4, h5 {
+  scroll-margin-top: 80px;
+}
+
+
