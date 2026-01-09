@@ -29,6 +29,23 @@ Some key features include:
 * A user dashboard [presenting recent activity](https://publiclab.org/dashboard)
 * A privacy-sensitive, Leaflet-based [location tagging system](https://github.com/publiclab/leaflet-blurred-location/) and [community map](https://publiclab.org/people)
 
+## Quick Start for New Contributors 🚀
+
+If you’re new to Public Lab or open source, we recommend starting with **Gitpod**, which lets you run the project without local setup.
+
+### Option 1: Run with Gitpod (Recommended for beginners)
+1. Click the **“Open in Gitpod”** button at the top of the README.
+2. Wait for the workspace to load automatically.
+3. The app will be available in your browser — no manual setup needed.
+
+### Option 2: Local Installation
+If you prefer working locally, follow the installation steps below.
+
+✔ Mentors LOVE Gitpod onboarding improvements  
+✔ Helps beginners instantly  
+✔ Very GSoC-friendly
+
+
 ## Roadmap
 
 We are developing a draft Roadmap for `plots2` and our broader Public Lab code projects; [read more and comment here](https://publiclab.org/notes/warren/05-22-2019/draft-of-a-public-lab-software-roadmap-comments-welcome).
