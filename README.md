@@ -34,9 +34,14 @@ Some key features include:
 If you’re new to Public Lab or open source, we recommend starting with **Gitpod**, which lets you run the project without local setup.
 
 ### Option 1: Run with Gitpod (Recommended for beginners)
+
+This is the fastest way for first-time contributors to get started.
+No Ruby, Rails, or database installation is required.
+
 1. Click the **“Open in Gitpod”** button at the top of the README.
 2. Wait for the workspace to load automatically.
 3. The app will be available in your browser — no manual setup needed.
+
 
 ### Option 2: Local Installation
 If you prefer working locally, follow the installation steps below.
