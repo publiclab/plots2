@@ -11,6 +11,15 @@ PublicLab.org
 [![Newcomers welcome](https://img.shields.io/badge/newcomers-welcome-pink.svg)](https://code.publiclab.org) [![GitHub license](https://img.shields.io/github/license/publiclab/plots2?logo=gpl)](https://github.com/publiclab/plots2/blob/main/LICENSE)
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/publiclab/plots2/)
 
+
+**Note on Documentation:**
+
+This repository moved documentation from the Wiki to Markdown (.md) files to improve clarity and maintainability.  
+Markdown files allow version control, inline linking, and contributions via pull requests.  
+Wikis, while useful for collaborative editing, are harder to track in Git history and cannot be directly reviewed via PRs.  
+Using .md files ensures all contributors can suggest improvements and maintain consistency.
+
+
 The content management system for the Public Lab research community, the `plots2` web application is a combination of a group research blog -what we call "research notes"-and a wiki. Read more about the [data model here](https://github.com/publiclab/plots2/blob/main/doc/DATA_MODEL.md).
 
 Begin running (and contributing to) this codebase immediately with [GitPod](https://gitpod.io):

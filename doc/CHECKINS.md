@@ -16,11 +16,11 @@ Below we provide you with information for getting involved and making your own p
 - Volunteer to open the next check-in by leaving a comment on the current one.
 
 -  When you open a check-in please use our [Gitter](https://gitter.im/publiclab/publiclab) chatroom to
-notify everyone by referencing `@/all` and linking the post. Include a brief message for new contributors so that they know what it is. ex:
+notify everyone (or other current Public Lab chat channels) by referencing `@/all` and linking the post. Include a brief message for new contributors so that they know what it is. ex:
 
 "<em>Hey! Please see our weekly check-in \<here\>. Everyone is welcome to contribute and we encourage new users to get involved</em>."
 
-- Check-ins have a <em>theme</em>. Select any theme that interests you to guide the general flow of responses from the community. 
+- Check-ins have a <em>Theme</em>. Select any theme that interests you to guide the general flow of responses from the community. 
 
 - Add anything else you'd like. 
 
