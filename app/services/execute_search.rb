@@ -25,7 +25,21 @@ class ExecuteSearch
      when :tags
        sservice.search_tags(search_criteria.query, search_criteria.limit)
      when :taglocations
-       sservice.tagNearbyNodes(search_criteria.coordinates, search_criteria.tag, search_criteria.period, search_criteria.sort_by, search_criteria.order_direction, search_criteria.limit)
+  limit = search_criteria.limit
+
+  # Special case: fetch all results for question:* tag searches
+  if search_criteria.tag == 'question:*'
+    limit = nil
+  end
+
+  sservice.tagNearbyNodes(
+    search_criteria.coordinates,
+    search_criteria.tag,
+    search_criteria.period,
+    search_criteria.sort_by,
+    search_criteria.order_direction,
+    limit
+  )
      when :nearbyPeople
        sservice.tagNearbyPeople(search_criteria.coordinates, search_criteria.tag, search_criteria.field, search_criteria.period, search_criteria.sort_by, search_criteria.order_direction, search_criteria.limit)
      else
