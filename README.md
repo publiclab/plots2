@@ -12,6 +12,18 @@ PublicLab.org
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/publiclab/plots2/)
 
 The content management system for the Public Lab research community, the `plots2` web application is a combination of a group research blog -what we call "research notes"-and a wiki. Read more about the [data model here](https://github.com/publiclab/plots2/blob/main/doc/DATA_MODEL.md).
+## Quick Start for New Contributors
+
+If you're new to Public Lab or open source, welcome! 👋  
+Here’s how to get started quickly:
+
+1. Read the [Code of Conduct](https://publiclab.org/conduct)
+2. Browse beginner-friendly issues at https://code.publiclab.org
+3. Fork this repository and follow the installation steps below
+4. Check `CONTRIBUTING.md` for contribution guidelines
+5. Ask questions anytime — the community is here to help
+
+No prior Ruby on Rails experience is required for documentation and first-timers-only issues.
 
 Begin running (and contributing to) this codebase immediately with [GitPod](https://gitpod.io):
 
@@ -72,6 +84,18 @@ This broad community and the Public Lab team have facilitated a space where we c
 
 Our mutual aim to democratize inexpensive and accessible do-it-yourself techniques has allowed us to create a collaborative network of practitioners who actively re-imagine the human relationship with the environment. Our goals are supported and facilitated by a system which questions and even challenges how collaborative work can happen.
 
+## Project Architecture (High-Level)
+
+`plots2` is a Ruby on Rails application.
+
+- **Backend:** Ruby on Rails (models, controllers, background jobs)
+- **Frontend:** ERB views, JavaScript, React components
+- **Database:** MySQL (production), SQLite (recommended for local development)
+- **Background jobs:** Sidekiq with Redis
+- **Docs:** `/doc` directory contains detailed technical documentation
+
+New contributors do not need to understand the full architecture to get started.
+
 ## Data Model
 
 ![Diagram](https://user-images.githubusercontent.com/24359/50705765-d84ae000-1029-11e9-9e4c-f166a0c0d5d1.png)
@@ -93,6 +117,7 @@ For installation, prerequisites include sqlite3 and rvm. [Click here for a compl
 ## Installation
 
 ### Standard Installation
+💡 Tip: If you want to avoid local setup, you can start contributing instantly using GitPod (recommended for first-time contributors).
 
 1. Fork our repo from https://github.com/publiclab/plots2.
 2. In the console, download a copy of your forked repo with `git clone https://github.com/your_username/plots2.git` where `your_username` is your GitHub username.
