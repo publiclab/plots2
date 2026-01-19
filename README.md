@@ -108,14 +108,14 @@ For installation, prerequisites include sqlite3 and rvm. [Click here for a compl
 7. You could choose to use mysql2 or sqlite3 as your database. *We **recommend** using `sqlite3` as your plots2 database as some of our contributors have reported issues while using `mysql2`*.
     * If mysql2,  run `cp config/database.yml.mysql.example config/database.yml` to make a copy of `config/database.yml.mysql.example` in `config/database.yml`
     * If sqlite3, run `cp config/database.yml.sqlite.example config/database.yml` to make a copy of `config/database.yml.sqlite.example` in `config/database.yml`.
-_kindly note if you choose to use sqlite some tests may fail. The project was setup initially to use mysql and some tests are tailored for mysql db. No need for alarm, we are working to fix these and this will not interfere with your development process_
+Kindly note if you choose to use sqlite some tests may fail. The project was setup initially to use mysql and some tests are tailored for mysql db. No need for alarm, we are working to fix these and this will not interfere with your development process.
 8. Run `rake db:setup` to set up the database
-9. Install static assets (like external javascript libraries, fonts) with `yarn install`
+9. Install static assets (like external javascript libraries, fonts) with `yarn install`.
 10. Setup React & webpacker by running `rails webpacker:install && rails webpacker:install:react && rails generate react:install`(for local SSL work, see [SSL](#ssl-in-development) below)
    * If you get any prompt to overwrite files in this step please choose no. The prompt will be something like _"Overwrite /home/plots2/config/webpacker.yml? (enter "h" for help) [Ynaqdhm]"_ :-  type "n" and enter.
 11. Start the server with `passenger start` and navigate to `http://localhost:3000/` on your browser.
 12. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
-13. Run `rails test` to confirm that your install is working properly. You can also run `rails test:system` for system tests. (_Note: if you chose sqlite as your database, some tests may fail; Please ignore these, we are working to fix this. If your server starts correctly, you are all set_)
+13. Run `rails test` to confirm that your install is working properly. You can also run `rails test:system` for system tests. (_Note: if you chose sqlite as your database, some tests may fail; Please ignore these, we are working to fix this. If your server starts correctly, you are all set_).
 
 ### Windows Installation
 
@@ -201,7 +201,7 @@ Click [here](https://github.com/publiclab/plots2/blob/main/doc/TESTING.md) for a
 2. Go to the config/schedule.rb file to create and modify the cron jobs.
 3. [Click here](https://github.com/javan/whenever) to learn more about how to write cron jobs.
 4. After updating config/schedule.rb file run the command `whenever --update-crontab` to update the cron jobs.
-5. To see the installed list of cron jobs use command `crontab -l`
+5. To see the installed list of cron jobs use command `crontab -l`.
 6. For more details about this gem, visit the official repository of the [Whenever](https://github.com/javan/whenever) gem.
 
 
@@ -215,15 +215,15 @@ Adding `bundle exec` ensures you're using the version of passenger you just inst
 
 ## Reply-by-email
 
-Public Lab now supports "reply by email to comment" feature. For more details, go to the [email documentation](https://github.com/publiclab/plots2/blob/main/doc/EMAIL.md)
+Public Lab now supports "reply by email to comment" feature. For more details, go to the [email documentation](https://github.com/publiclab/plots2/blob/main/doc/EMAIL.md).
 
 
 ## Bugs and support
 
-To report bugs and request features, please use the [GitHub issue tracker](https://github.com/publiclab/plots2/issues)
+To report bugs and request features, please use the [GitHub issue tracker](https://github.com/publiclab/plots2/issues).
 
 For additional support, join the Public Lab website and mailing list at http://publiclab.org/lists.
-For urgent requests, email web@publiclab.org
+For urgent requests, email web@publiclab.org.
 
 ## Recaptcha
 
