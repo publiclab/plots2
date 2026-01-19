@@ -17,6 +17,25 @@ Begin running (and contributing to) this codebase immediately with [GitPod](http
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/publiclab/plots2)
 
+## Quick Start for Beginners
+
+New to open source? Want to get started in 5 minutes? Here's how:
+
+### Option 1: Gitpod (Easiest - No Setup Required!)
+Click the "Open in Gitpod" button above. It will automatically set up the development environment in your browser. Once ready, the app will be running at the provided URL. Log in with username: `user`, password: `password`.
+
+### Option 2: Docker (If you have Docker installed)
+Run this command in your terminal:
+```bash
+docker-compose -f containers/docker-compose-unstable.yml up
+```
+Then visit http://localhost:5001 in your browser. Log in with username: `user`, password: `password`.
+
+### Option 3: Manual Setup
+If the above don't work, follow the [Installation](#installation) section below.
+
+After setup, look for [first-timers-only issues](https://code.publiclab.org/#r=all) to make your first contribution!
+
 It showcases a variety of features that help the Public Lab community collaborate on environmental technology, design, documentation, and community organizing. Originally a Drupal site, it was rewritten in 2012 with Ruby on Rails and has since extended but [not yet entirely replaced](https://github.com/publiclab/plots2/issues/956) the legacy Drupal data model and database design. We ❤️ Open Source and actively participate in various OSS programs such as [Google Summer of Code(GSoC)](https://publiclab.org/wiki/gsoc), Rails Girls Summer of Code (RGSoC), Outreachy, and Google Code-In (GCI).
 Some key features include:
 
@@ -37,29 +56,30 @@ A full description of the features, audiences, inter-relationships, and goals of
 
 ## Table of Contents
 
-1. [What Makes This Project Different](#what-makes-this-project-different)
-2. [Data model](#data-model)
-3. [Contributing](#contributing)
-4. [Prerequisites](#prerequisites)
-5. [Installation](#installation)
+1. [Quick Start for Beginners](#quick-start-for-beginners)
+2. [What Makes This Project Different](#what-makes-this-project-different)
+3. [Data model](#data-model)
+4. [Contributing](#contributing)
+5. [Prerequisites](#prerequisites)
+6. [Installation](#installation)
     - [Standard Installation](#standard-installation)
     - [Windows Installation](#windows-installation)
     - [Windows Subsystem for Linux 2 Installation](#windows-subsystem-for-linux-2-installation)
     - [Redis Installation](#redis-installation)
-6. [SSL in Development](#ssl-in-development)
-7. [Login](#login)
-8. [Testing](#testing)
-9. [Maintainers](#maintainers)
-10. [How to start and modify cron jobs](#how-to-start-and-modify-cron-jobs)
-11. [Bundle Exec](#bundle-exec)
-12. [Reply-by-email](#reply-by-email)
-13. [Bugs and Support](#bugs-and-support)
-14. [Recaptcha](#recaptcha)
-15. [Internationalization](#internationalization)
-16. [Security](#security)
-17. [Developers](#developers)
-18. [First Time?](#first-time)
-19. [Hacktoberfest](#hacktoberfest)
+7. [SSL in Development](#ssl-in-development)
+8. [Login](#login)
+9. [Testing](#testing)
+10. [Maintainers](#maintainers)
+11. [How to start and modify cron jobs](#how-to-start-and-modify-cron-jobs)
+12. [Bundle Exec](#bundle-exec)
+13. [Reply-by-email](#reply-by-email)
+14. [Bugs and Support](#bugs-and-support)
+15. [Recaptcha](#recaptcha)
+16. [Internationalization](#internationalization)
+17. [Security](#security)
+18. [Developers](#developers)
+19. [First Time?](#first-time)
+20. [Hacktoberfest](#hacktoberfest)
 ****
 
 ## What makes this project different
@@ -91,6 +111,10 @@ Please read and abide by our [Code of Conduct](https://publiclab.org/conduct); o
 For installation, prerequisites include sqlite3 and rvm. [Click here for a complete list and instructions](https://github.com/publiclab/plots2/blob/main/doc/PREREQUISITES.md).
 
 ## Installation
+
+**Note for beginners**: If you're new to development, start with the [Quick Start for Beginners](#quick-start-for-beginners) section above. It uses Gitpod or Docker for quick setup without installing dependencies.
+
+If you prefer manual setup or the quick options don't work, follow the steps below.
 
 ### Standard Installation
 

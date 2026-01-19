@@ -1,11 +1,18 @@
 Contributing to PLOTS2
 ==========================
 
-We welcome community contributions to PLOTS2! To install PLOTS2 locally, follow the instructions in the [README.md file](https://github.com/publiclab/plots2#installation).
-
-We especially welcome contributions from people from groups underrepresented in free and open source software!
+We welcome community contributions to PLOTS2! We especially welcome contributions from people belonging to groups underrepresented in free and open source software!
 
 Our community aspires to be a respectful place. Please read and abide by our [Code of Conduct](https://publiclab.org/conduct).
+
+## Quick Start for Contributors
+
+1. **Set up the project**: Follow the [Quick Start](#quick-start-for-beginners) in the README.md to get the app running in minutes.
+2. **Find an issue**: Look for [first-timers-only issues](https://code.publiclab.org/#r=all) or [help-wanted](https://github.com/publiclab/plots2/labels/help-wanted) issues.
+3. **Contribute**: Fork the repo, make changes, and submit a pull request.
+4. **Get help**: Join our chat at https://publiclab.org/chat or email plots-dev@googlegroups.com.
+
+For detailed installation instructions, see the [README.md file](https://github.com/publiclab/plots2#installation).
 
 ## First Timers Welcome!
 
