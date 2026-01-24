@@ -302,13 +302,15 @@ module Srch
                                                                                             is_array: false,
                                                                                             nickname: 'search_tag_locations'
 
-      params do
-        use :geographical, :additional, :period, :sorting, :ordering
       end
       get :taglocations do
         search_request = SearchRequest.from_request(params)
-        results = Search.execute(:taglocations, params)
 
+        if params[:tagName] == 'question:*'
+        params[:rows] = 10_000
+        end
+        
+        results = Search.execute(:taglocations, params)
         if results.present?
           docs = results.map do |model|
             doctype = model.has_power_tag('question') ? 'QUESTION' : 'NOTE'
