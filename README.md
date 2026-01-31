@@ -41,26 +41,64 @@ A full description of the features, audiences, inter-relationships, and goals of
 2. [Data model](#data-model)
 3. [Contributing](#contributing)
 4. [Prerequisites](#prerequisites)
-5. [Installation](#installation)
+5. [Quick Local Setup (TL;DR)](#quick-local-setup-tldr)
+6. [Common Gotchas for First-Time Contributors](#common-gotchas-for-first-time-contributors)
+7. [Installation](#installation)
     - [Standard Installation](#standard-installation)
     - [Windows Installation](#windows-installation)
     - [Windows Subsystem for Linux 2 Installation](#windows-subsystem-for-linux-2-installation)
     - [Redis Installation](#redis-installation)
-6. [SSL in Development](#ssl-in-development)
-7. [Login](#login)
-8. [Testing](#testing)
-9. [Maintainers](#maintainers)
-10. [How to start and modify cron jobs](#how-to-start-and-modify-cron-jobs)
-11. [Bundle Exec](#bundle-exec)
-12. [Reply-by-email](#reply-by-email)
-13. [Bugs and Support](#bugs-and-support)
-14. [Recaptcha](#recaptcha)
-15. [Internationalization](#internationalization)
-16. [Security](#security)
-17. [Developers](#developers)
-18. [First Time?](#first-time)
-19. [Hacktoberfest](#hacktoberfest)
+8. [SSL in Development](#ssl-in-development)
+9. [Login](#login)
+10. [Testing](#testing)
+11. [Maintainers](#maintainers)
+12. [How to start and modify cron jobs](#how-to-start-and-modify-cron-jobs)
+13. [Bundle Exec](#bundle-exec)
+14. [Reply-by-email](#reply-by-email)
+15. [Bugs and Support](#bugs-and-support)
+16. [Recaptcha](#recaptcha)
+17. [Internationalization](#internationalization)
+18. [Security](#security)
+19. [Developers](#developers)
+20. [First Time?](#first-time)
+21. [Hacktoberfest](#hacktoberfest)
 ****
+
+## Quick Local Setup (TL;DR)
+
+If you just want to get the app running locally without reading the full setup guide, follow these minimal steps:
+
+1. Install Ruby (as specified in the project) and Node.js
+2. Clone the repository and install dependencies:
+   - `bundle install`
+   - `yarn install`
+3. Copy the sample database config and setup the database:
+   - `cp config/database.yml.sqlite.example config/database.yml`
+   - `rails db:setup`
+4. Start the server:
+   - `passenger start`
+5. Open http://localhost:3000
+
+---
+
+## Common Gotchas for First-Time Contributors
+
+While the README is comprehensive, first-time contributors often run into the following issues during setup:
+
+- **Ruby / Node version mismatches**  
+  Ensure your Ruby and Node versions match the versions expected by the project.
+
+- **Database confusion (SQLite vs MySQL)**  
+  SQLite is recommended for local development. Some tests may fail with SQLite — this is expected and documented.
+
+- **Missing dependencies**  
+  Redis and webpacker are required for some features. Make sure Redis is running and assets are installed.
+
+- **Webpacker or asset build errors**  
+  Running `rails webpacker:install` and `yarn install` usually resolves asset-related issues.
+
+This section is intended as a quick entry point and does not replace the detailed setup instructions below.
+
 
 ## What makes this project different
 
