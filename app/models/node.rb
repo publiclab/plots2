@@ -529,13 +529,11 @@ class Node < ActiveRecord::Base
   # Here we re-query to fetch /all/ tagnames; this is used in
   # /views/notes/_notes.html.erb in a way that would otherwise only
   # return a single tag due to a join, yet select() keeps this efficient
-  def tagnames_as_classes
-    Node.select([:nid])
-        .find(id)
-        .tagnames
-        .map { |t| 'tag-' + t.tr(':', '-') }
-        .join(' ')
-  end
+def tagnames_as_classes
+  tagnames
+    .map { |t| 'tag-' + t.tr(':', '-') }
+    .join(' ')
+end
 
   def edit_path
     path = if type == 'page'
