@@ -30,3 +30,29 @@ If you are submitting a bug/issue , please go to https://github.com/publiclab/pl
 Follow the [First Timers Issue Template](https://github.com/publiclab/plots2/blob/main/.github/ISSUE_TEMPLATE/--first-timers-only.md) for submitting First Timers Only issues.
 
 Follow this standard [Issue Template](https://github.com/publiclab/plots2/blob/main/.github/ISSUE_TEMPLATE/ISSUE_TEMPLATE.md) for other issues.
+
+---
+
+## Common Setup Issues (Windows)
+
+Some contributors may face setup issues on Windows while installing PLOTS2 locally. Below are a few common problems and suggested solutions:
+
+### PowerShell script execution error
+If you see an error like:
+`running scripts is disabled on this system`
+
+You can fix it by running PowerShell as Administrator and executing:
+```
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+### Node.js and npm version compatibility
+We recommend using **Node.js 16** for local development, as newer versions may cause dependency resolution issues.
+
+### npm dependency resolution errors
+If `npm install` fails due to dependency conflicts, try:
+```
+npm install --legacy-peer-deps
+```
+
+These steps can help first-time contributors get the project running more smoothly on Windows systems.
