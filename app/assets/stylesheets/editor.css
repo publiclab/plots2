@@ -199,3 +199,21 @@ version of the editor is released. */
   margin:3px 10px 10px;
   width:30%;
 }
+/* Mobile fix: compact editor bottom bar */
+@media (max-width: 480px) {
+  .imagebar {
+    padding: 4px 6px;
+    font-size: 12px;
+  }
+
+  .imagebar p {
+    padding: 4px 6px;
+    margin: 0;
+  }
+
+  .imagebar .progress-bar-container,
+  #side-progress {
+    width: 60%;
+    margin: 4px auto;
+  }
+}
