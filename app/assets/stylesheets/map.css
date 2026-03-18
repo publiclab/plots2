@@ -51,3 +51,9 @@
 .leaflet-container .add-content-button {
   margin-right: 10px;
 }
+.leaflet-pane{
+  position: initial !important;
+}
+.leaflet-bar, .leaflet-top{
+  position: initial !important;
+}
