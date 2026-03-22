@@ -40,3 +40,19 @@
  *= require notes
  *= require spam2
 */
+.social-container {
+  clear: both;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.social-item {
+  display: flex;
+  align-items: center;
+}
+
+.twitter-share-button {
+  margin: 0 !important;
+}
