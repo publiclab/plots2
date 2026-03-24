@@ -40,3 +40,6 @@
  *= require notes
  *= require spam2
 */
+html{
+    scroll-padding-top: 80px;
+}
