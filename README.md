@@ -64,13 +64,13 @@ A full description of the features, audiences, inter-relationships, and goals of
 
 ## What makes this project different
 
-The people who create our platform make very different design and technology decisions from other projects. This stems from our deep belief that, to see a change in the world, we must build and maintain systems that **reflect our values and principles.**
+The people who create our platform make very different design and technology decisions from other projects. This stems from our deep belief that, to see change in the world, we must build and maintain systems that **reflect our values and principles.**
 
-From design to system architecture to basic vocabulary and communication patterns, our systems have grown organically since 2010 to support a powerful, diverse, and cooperative network of people capable of taking on environmental problems that affect communities globally. The platform we have built together speaks to this shared history in many ways, big and small. It reflects input from people facing serious health issues, on-the-ground organizers, policy specialists, hardware hackers, educators, and civil servants.
+From design to system architecture to basic vocabulary and communication patterns, our systems have grown organically since 2010 to support a powerful, diverse, and cooperative network of people capable of addressing environmental problems that affect communities globally. The platform we have built together speaks to this shared history in many ways, big and small. It reflects input from people facing serious health issues, on-the-ground organizers, policy specialists, hardware hackers, educators, and civil servants.
 
-This broad community and the Public Lab team have facilitated a space where we can discuss, break down, construct, prototype, and critique  real-world projects. Together we have shaped a platform that incorporates familiar pieces but ultimately looks and feels quite different from anything else on the internet. Despite the growth of our platform, it remains committed to hearing the voices of others, mutual respect and support, an awareness of the barriers and challenges presented by gaps in expertise and knowledge, and a sensitivity to the inequalities and power imbalances perpetuated by many mainstream modes of knowledge production and technological and scientific development.
+This broad community and the Public Lab team have facilitated a space where we can discuss, break down, construct, prototype, and critique real-world projects. Together, we have shaped a platform that incorporates familiar pieces but ultimately looks and feels quite different from anything else on the internet. Despite the growth of our platform, it remains committed to hearing the voices of others, mutual respect and support, an awareness of the barriers and challenges presented by gaps in expertise and knowledge, and a sensitivity to the inequalities and power imbalances perpetuated by many mainstream modes of knowledge production and technological and scientific development.
 
-Our mutual aim to democratize inexpensive and accessible do-it-yourself techniques has allowed us to create a collaborative network of practitioners who actively re-imagine the human relationship with the environment. Our goals are supported and facilitated by a system which questions and even challenges how collaborative work can happen.
+Our mutual aim to democratize inexpensive and accessible do-it-yourself techniques has allowed us to create a collaborative network of practitioners who actively reimagine the human relationship with the environment. Our goals are supported and facilitated by a system that questions and even challenges how collaborative work can happen.
 
 ## Data Model
 
@@ -196,14 +196,13 @@ Click [here](https://github.com/publiclab/plots2/blob/main/doc/TESTING.md) for a
 
 ## How to start and modify cron jobs
 
-1. We are using [Whenever](https://github.com/javan/whenever) gem to schedule cron jobs.
-2. All the cron jobs are written in easy ruby syntax using this gem and can be found in config/schedule.rb.
-2. Go to the config/schedule.rb file to create and modify the cron jobs.
-3. [Click here](https://github.com/javan/whenever) to learn more about how to write cron jobs.
-4. After updating config/schedule.rb file run the command `whenever --update-crontab` to update the cron jobs.
-5. To see the installed list of cron jobs use command `crontab -l`
-6. For more details about this gem, visit the official repository of the [Whenever](https://github.com/javan/whenever) gem.
-
+1. We are using the [Whenever](https://github.com/javan/whenever) gem to schedule cron jobs.
+2. All cron jobs are written in simple Ruby syntax using this gem and can be found in `config/schedule.rb`.
+3. Go to the `config/schedule.rb` file to create or modify cron jobs.
+4. [Click here](https://github.com/javan/whenever) to learn more about writing cron jobs.
+5. After updating the `config/schedule.rb` file, run the command `whenever --update-crontab` to update the cron jobs.
+6. To see the list of installed cron jobs, use the command `crontab -l`.
+7. For more details, visit the official repository of the [Whenever](https://github.com/javan/whenever) gem.
 
 ## Bundle exec
 
@@ -244,7 +243,7 @@ To add new languages or for additional support, please write to plots-dev@google
 
 ## Security
 
-To report security vulnerabilities or for questions about security, please contact web@publiclab.org. Our Web Working Group will assess and respond promptly.
+To report security vulnerabilities or ask questions about security, please contact web@publiclab.org. Our Web Working Group will review and respond promptly.
 
 ## Developers
 
