@@ -95,77 +95,27 @@ For installation, prerequisites include sqlite3 and rvm. [Click here for a compl
 ### Standard Installation
 
 1. Fork our repo from https://github.com/publiclab/plots2.
-2. In the console, download a copy of your forked repo with `git clone https://github.com/your_username/plots2.git` where `your_username` is your GitHub username.
+2. In the console, download a copy of your forked repo with `git clone https://github.com/your_username/plots2.git`, where `your_username` is your GitHub username.
 3. Enter the new **plots2** directory with `cd plots2`.
-4. Set the upstream remote to the original repository url so that git knows where to fetch updates from in future: `git remote add upstream https://github.com/publiclab/plots2.git`
+4. Set the upstream remote to the original repository URL so that Git knows where to fetch updates from in the future: `git remote add upstream https://github.com/publiclab/plots2.git`
 5. Steps to install gems:
-    * You may need to first run `bundle install` if you have older gems in your environment from previous Rails work. If you get an error message like `Your Ruby version is 2.x.x, but your Gemfile specified 2.7.3` then you need to install the ruby version 2.7.3 using `rvm` or `rbenv`.
+    * You may need to first run `bundle install` if you have older gems in your environment from previous Rails work. If you get an error message like `Your Ruby version is 2.x.x, but your Gemfile specified 2.7.3`, then you need to install Ruby version 2.7.3 using `rvm` or `rbenv`.
 	    * Using **rvm**: `rvm install 2.7.3` followed by `rvm use 2.7.3`
-	    * Using **rbenv**:  `rbenv install 2.7.3` followed by `rbenv local 2.7.3`
-    * Run this `bundle config set without 'production mysql'` from the rails root folder to set your project to exclude libraries only needed in production.
-    * Install gems with `bundle install` from the rails root folder.
+	    * Using **rbenv**: `rbenv install 2.7.3` followed by `rbenv local 2.7.3`
+    * Run `bundle config set without 'production mysql'` from the Rails root folder to exclude libraries only needed in production.
+    * Install gems with `bundle install` from the Rails root folder.
 6. Run `cp db/schema.rb.example db/schema.rb` to make a copy of `db/schema.rb.example` in `db/schema.rb`.
-7. You could choose to use mysql2 or sqlite3 as your database. *We **recommend** using `sqlite3` as your plots2 database as some of our contributors have reported issues while using `mysql2`*.
-    * If mysql2,  run `cp config/database.yml.mysql.example config/database.yml` to make a copy of `config/database.yml.mysql.example` in `config/database.yml`
+7. You could choose to use mysql2 or sqlite3 as your database. *We **recommend** using `sqlite3` as your plots2 database, as some contributors have reported issues while using `mysql2`.*
+    * If mysql2, run `cp config/database.yml.mysql.example config/database.yml` to make a copy of `config/database.yml.mysql.example` in `config/database.yml`.
     * If sqlite3, run `cp config/database.yml.sqlite.example config/database.yml` to make a copy of `config/database.yml.sqlite.example` in `config/database.yml`.
-_kindly note if you choose to use sqlite some tests may fail. The project was setup initially to use mysql and some tests are tailored for mysql db. No need for alarm, we are working to fix these and this will not interfere with your development process_
-8. Run `rake db:setup` to set up the database
-9. Install static assets (like external javascript libraries, fonts) with `yarn install`
-10. Setup React & webpacker by running `rails webpacker:install && rails webpacker:install:react && rails generate react:install`(for local SSL work, see [SSL](#ssl-in-development) below)
-   * If you get any prompt to overwrite files in this step please choose no. The prompt will be something like _"Overwrite /home/plots2/config/webpacker.yml? (enter "h" for help) [Ynaqdhm]"_ :-  type "n" and enter.
-11. Start the server with `passenger start` and navigate to `http://localhost:3000/` on your browser.
+_kindly note that if you choose to use sqlite, some tests may fail. The project was set up initially to use mysql, and some tests are tailored for mysql DB. No need for alarm; we are working to fix these, and this will not interfere with your development process._
+8. Run `rake db:setup` to set up the database.
+9. Install static assets (like external JavaScript libraries and fonts) with `yarn install`.
+10. Setup React & webpacker by running `rails webpacker:install && rails webpacker:install:react && rails generate react:install` (for local SSL work, see [SSL](#ssl-in-development) below).
+   * If you get any prompt to overwrite files in this step, please choose no. The prompt will be something like _"Overwrite /home/plots2/config/webpacker.yml? (enter "h" for help) [Ynaqdhm]"_ — type "n" and press Enter.
+11. Start the server with `passenger start` and navigate to `http://localhost:3000/` in your browser.
 12. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
-13. Run `rails test` to confirm that your install is working properly. You can also run `rails test:system` for system tests. (_Note: if you chose sqlite as your database, some tests may fail; Please ignore these, we are working to fix this. If your server starts correctly, you are all set_)
-
-### Windows Installation
-
-We recommend you either work in a virtual environment, or on a dual booted system to avoid dependencies issues as Unix systems tend to work smoother with Ruby and Rails. This will not only benefit you now for plots2, but also in the future while working on other Ruby projects, a Linux or Mac based OS will make your development much easier.
-1. [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10) (recommended)
-2. [Dual Booting](https://www.tecmint.com/install-ubuntu-alongside-with-windows-dual-boot/amp/), [option2](https://askubuntu.com/questions/1031993/how-to-install-ubuntu-18-04-alongside-windows-10), [video guide](https://www.youtube.com/watch?v=qNeJvujdB-0&fbclid=IwAR0APhs89jlNR_ENKbSwrp6TI6P-wxlx-a0My9XBvPNAfwtADZaAXqcKtP4)
-3. [Setting up a Linux virtual env](https://itsfoss.com/install-linux-in-virtualbox/)
-
-### Windows Subsystem for Linux 2 Installation
-
-Before continuing with the installation steps in this README, users of Windows Subsystem for Linux 2 (WSL 2) should open the WSL 2 Terminal and type out the commands below.
-
-1. Install Dependencies required from Ruby Source with the following commands:
-  * `sudo apt update`
-  * `sudo apt install curl g++ gcc autoconf automake bison libc6-dev`
-  * `sudo apt install libffi-dev libgdbm-dev libncurses5-dev libsqlite3-dev libtool`
-  * `sudo apt install libyaml-dev make pkg-config sqlite3 zlib1g-dev libgmp-dev`
-  * `sudo apt install libreadline-dev libssl-dev`
-2. Add GPG Key & Install RVM:
-  * Install gnupg2 if you haven't already:  `sudo apt install gnupg2`
-  * `gpg2 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB`
-  * `curl -sSL https://get.rvm.io | bash -s stable`
-3. Load the Script environment variables using source command:
-  * `source ~/.rvm/scripts/rvm`
-4. Install and use specific Ruby version:
-  * `rvm install ruby-x.x.x (this projects Ruby version)`
-  * `rvm --default use ruby-x.x.x (replace x.x.x with this project's Ruby version)`
-5. For further reference, [read here](https://linuxize.com/post/how-to-install-ruby-on-ubuntu-20-04/)
-
-### Redis Installation
-
-Public Lab uses Redis and may be required for some functionality when running the application locally.
-1. Install Redis if you haven't already:
-  * Using **MacOS**: `brew install redis`
-  * Using **Linux**: `sudo yum -y install redis`
-  * Using **Ubuntu WSL2**:
-  	* update & upgrade Ubuntu: `sudo apt update && apt upgrade`
-	* install redis: `sudo apt install Redis-server`
-	* open Redis.config file: `sudo nano /etc/redis/redis.conf`
-	* update the file by changing the supervised no line to supervised systemd(ubuntu uses systemd)
-	* start Redis: `sudo service redis-server start`
-	* open Redis CLI: `redis-cli`
-	* test Redis: type `ping` & response should be `pong`
-	* exit cli: type `quit`
-	* Awesome :thumbsup: All done :white_check_mark:
-2. Run Redis server:
-  * Using **MacOS**: `brew services start redis`
-  * Using **Linux**: `redis-server`
-3. Run SideKiq: `bundle exec sidekiq`
-4. If SideKiq started correctly Redis is now configured and working!
+13. Run `rails test` to confirm that your installation is working properly. You can also run `rails test:system` for system tests. (_Note: if you chose sqlite as your database, some tests may fail; please ignore these. If your server starts correctly, you are all set._)
 
 ## SSL in Development
 
