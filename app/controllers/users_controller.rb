@@ -81,15 +81,25 @@ class UsersController < ApplicationController
   def edit
     @action = "update" # sets the form url
     @user = if params[:id] # admin only
-              User.find_by(username: params[:id])
-            else
-              current_user
-            end
+          if params[:id].to_s =~ /\A\d+\z/
+            User.find_by(id: params[:id])
+          else
+            User.find_by(username: params[:id])
+          end
+        else
+          current_user
+        end
+    unless @user
+      flash[:error] = I18n.t('users_controller.no_user_found_name', username: params[:id])
+      redirect_to root_path
+      return
+    end
+
     if current_user && current_user.uid == @user.uid || logged_in_as(['admin'])
       render template: "users/edit"
     else
       flash[:error] = I18n.t('users_controller.only_user_edit_profile', user: @user.name).html_safe
-      redirect_to "/profile/" + @user.name
+      redirect_to user_path(@user.username)
     end
   end
 
@@ -147,14 +157,17 @@ class UsersController < ApplicationController
 
   def profile
     if current_user && params[:id].nil?
-      redirect_to "/profile/#{current_user.username}"
+      redirect_to user_path(current_user.username)
     elsif !current_user && params[:id].nil?
-      redirect_to "/"
+      redirect_to root_path
     else
       @profile_user = User.find_by(username: params[:id])
       if !@profile_user
-        flash[:error] = I18n.t('users_controller.no_user_found_name', username: params[:id])
-        redirect_to "/"
+        flash[:error] = I18n.t(
+          'users_controller.no_user_found_name',
+          username: params[:id]
+        )
+        redirect_to root_path
       else
         @title = @profile_user.name
         wikis = Revision.order("nid DESC")
@@ -186,7 +199,7 @@ class UsersController < ApplicationController
             flash.now[:error] = I18n.t('users_controller.user_has_been_banned')
           else
             flash[:error] = I18n.t('users_controller.user_has_been_banned')
-            redirect_to "/"
+            redirect_to root_path
           end
         elsif @profile_user.status == 5
           flash.now[:warning] = I18n.t('users_controller.user_has_been_moderated')
