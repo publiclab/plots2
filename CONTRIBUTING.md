@@ -11,7 +11,7 @@ Our community aspires to be a respectful place. Please read and abide by our [Co
 
 New to open source/free software? See our WELCOME PAGE, including a selection of issues we've made especially for first-timers. We're here to help, so just ask if one looks interesting:
 
-https://code.publiclab.org/#r=all
+https://github.com/publiclab/plots2/issues?q=is%3Aissue%20is%3Aopen%20label%3Afirst-timers-only
 
 Thank you so much!
 
