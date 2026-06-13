@@ -5,3 +5,11 @@
   div.leaflet-map { height:100% !important; }
 </style>
 <%= raw auto_link(insert_extras(" [#{params[:t] || "notes:"}#{params[:tagname]}]"), :sanitize => false) %>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll("a").forEach(function(link) {
+      link.setAttribute("target", "_blank");
+      link.setAttribute("rel", "noopener noreferrer");
+    });
+  });
+</script>
