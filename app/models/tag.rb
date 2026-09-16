@@ -326,7 +326,7 @@ class Tag < ApplicationRecord
        .where('node.created > ?', start_date.to_i)
        .where('node.created <= ?', end_date.to_i)
        .distinct
-       .order('count DESC')
+       .order(Arel.sql('count DESC'))
        .limit(limit)
   end
 
