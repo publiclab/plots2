@@ -1,0 +1,19 @@
+<% list = local_assigns[:subtopics] || @subtopics %>
+<% if list.present? %>
+  <% list.each do |subtopic| %>
+    <% name = subtopic.respond_to?(:name) ? subtopic.name : (subtopic.respond_to?(:slug) ? subtopic.slug : subtopic.to_s) %>
+    <div class="topic-item" data-topic="<%= name %>">
+      <div class="list-group-item list-group-item-action d-flex align-items-center">
+        <span class="expand-btn" data-topic="<%= name %>" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+          &emsp;<i class="fa fa-chevron-right icon"></i>
+        </span>
+        <a href="/<%= name %>" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;<%= name %></a>
+      </div>
+      <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+    </div>
+  <% end %>
+<% else %>
+  <div class="list-group-item text-muted" style="font-style: italic;">
+    &emsp;No subtopics found
+  </div>
+<% end %>

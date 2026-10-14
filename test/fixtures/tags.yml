@@ -150,3 +150,12 @@ hidden_response_tag:
 subscribed_tag:
   tid: 37
   name: sub:tag
+
+subtopic_parent_tag:
+  tid: 38
+  name: parent:water
+
+subtopic_child_tag:
+  tid: 39
+  name: about
+

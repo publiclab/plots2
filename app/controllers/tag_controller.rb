@@ -242,6 +242,35 @@ class TagController < ApplicationController
     render partial: 'tag/related', layout: false, locals: { tags: @tags }
   end
 
+  def subtopics
+    @topic = (params[:subtopic] || params[:topic] || params[:id]).to_s.strip
+    if @topic.blank?
+      @subtopics = []
+    else
+      parent_tag = Tag.find_by(name: "parent:#{@topic}")
+      node_subtopics = parent_tag ? parent_tag.nodes.where(status: 1) : []
+      node_slugs = node_subtopics.collect(&:slug).compact.uniq
+
+      if node_slugs.present?
+        @subtopics = Tag.where(name: node_slugs).or(Tag.where(parent: @topic)).order(:name)
+      else
+        @subtopics = Tag.where(parent: @topic).order(:name)
+      end
+
+      existing_names = @subtopics.collect(&:name)
+      missing_slugs = node_slugs - existing_names
+      if missing_slugs.present?
+        missing_tags = missing_slugs.map { |slug| Tag.new(name: slug) }
+        @subtopics = @subtopics.to_a + missing_tags
+        @subtopics.sort_by!(&:name)
+      end
+    end
+
+    render partial: 'tag/subtopics', layout: false, locals: { subtopics: @subtopics, topic: @topic }
+  end
+
+  def topic_tree; end
+
   def widget
     num = params[:n] || 4
     nids = Tag.find_nodes_by_type(params[:id], 'note', num).collect(&:nid)
@@ -566,6 +595,4 @@ class TagController < ApplicationController
       @nodes.size
     end
   end
-
-  def topic_tree; end
 end

@@ -1,107 +1,553 @@
 <h1 style="width: 100vw">Topic Tree</h1>
 <br>
 
-
 <div id="accordion">
 <div class="list-group">
   <details>
     <summary class="list-group-item list-group-item-action topic"><i class="fa fa-chevron-right" style="font-size: small;"></i>&nbsp;Water</summary>
     <div class="list-group">
-      <a href="/drinking-water" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;drinking-water</a>
-      <a href="/fracking" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;fracking</a>
-      <a href="/microplastics" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;microplastics</a>
-      <a href="/lead" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;lead</a>
-      <a href="/mining" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;mining</a>
-      <a href="/agriculture" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;agriculture</a>
-      <a href="/oil-and-gas" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;oil-and-gas</a>
-      <a href="/filters" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;filters</a>
-      <a href="/wastewater" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;wastewater</a>
+      <div class="topic-item" data-topic="drinking-water">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="drinking-water" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/drinking-water" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;drinking-water</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="fracking">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="fracking" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/fracking" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;fracking</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="microplastics">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="microplastics" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/microplastics" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;microplastics</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="lead">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="lead" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/lead" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;lead</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="mining">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="mining" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/mining" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;mining</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="agriculture">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="agriculture" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/agriculture" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;agriculture</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="oil-and-gas">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="oil-and-gas" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/oil-and-gas" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;oil-and-gas</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="filters">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="filters" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/filters" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;filters</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="wastewater">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="wastewater" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/wastewater" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;wastewater</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
     </div>
   </details>
 
+  <details>
+    <summary class="list-group-item list-group-item-action topic"><i class="fa fa-chevron-right" style="font-size: small;"></i>&nbsp;Soil</summary>
+    <div class="list-group">
+      <div class="topic-item" data-topic="lead">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="lead" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/lead" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;lead</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="mining">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="mining" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/mining" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;mining</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="agriculture">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="agriculture" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/agriculture" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;agriculture</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="oil-and-gas">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="oil-and-gas" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/oil-and-gas" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;oil-and-gas</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+    </div>
+  </details>
 
-<details>
-  <summary class="list-group-item list-group-item-action topic"><i class="fa fa-chevron-right" style="font-size: small;"></i>&nbsp;Soil</summary>
-  <div class="list-group">
-    <a href="/lead" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;lead</a>
-    <a href="/mining" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;mining</a>
-    <a href="/agriculture" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;agriculture</a>
-    <a href="/oil-and-gas" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;oil-and-gas</a>
-  </div>
-</details>
+  <details>
+    <summary class="list-group-item list-group-item-action topic"><i class="fa fa-chevron-right" style="font-size: small;"></i>&nbsp;Air</summary>
+    <div class="list-group">
+      <div class="topic-item" data-topic="indoor-air">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="indoor-air" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/indoor-air" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;indoor-air</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="formaldehyde">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="formaldehyde" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/formaldehyde" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;formaldehyde</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="dust">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="dust" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/dust" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;dust</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="particulate-matter">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="particulate-matter" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/particulate-matter" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;particulate-matter</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="oil-and-gas">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="oil-and-gas" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/oil-and-gas" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;oil-and-gas</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="transportation">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="transportation" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/transportation" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;transportation</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="filters">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="filters" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/filters" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;filters</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+    </div>
+  </details>
 
+  <details>
+    <summary class="list-group-item list-group-item-action topic"><i class="fa fa-chevron-right" style="font-size: small;"></i>&nbsp;Industry</summary>
+    <div class="list-group">
+      <div class="topic-item" data-topic="land-use">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="land-use" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/land-use" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;land-use</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="land-change">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="land-change" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/land-change" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;land-change</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="particulate-matter">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="particulate-matter" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/particulate-matter" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;particulate-matter</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="oil-and-gas">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="oil-and-gas" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/oil-and-gas" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;oil-and-gas</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="transportation">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="transportation" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/transportation" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;transportation</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="mining">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="mining" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/mining" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;mining</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="agriculture">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="agriculture" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/agriculture" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;agriculture</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="waste">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="waste" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/waste" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;waste</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="noise">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="noise" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/noise" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;noise</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="chemicals">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="chemicals" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/chemicals" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;chemicals</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="pipeline-monitoring">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="pipeline-monitoring" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/pipeline-monitoring" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;pipeline-monitoring</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="cafo">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="cafo" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/cafo" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;cafo</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+    </div>
+  </details>
 
-<details>
-  <summary class="list-group-item list-group-item-action topic"><i class="fa fa-chevron-right" style="font-size: small;"></i>&nbsp;Air</summary>
-  <div class="list-group">
-    <a href="/indoor-air" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;indoor-air</a>
-    <a href="/formaldehyde" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;formaldehyde</a>
-    <a href="/dust" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;dust</a>
-    <a href="/particulate-matter" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;particulate-matter</a>
-    <a href="/oil-and-gas" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;oil-and-gas</a>
-    <a href="/transportation" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;transportation</a>
-    <a href="/filters" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;filters</a>
-  </div>
-</details>
+  <details>
+    <summary class="list-group-item list-group-item-action topic"><i class="fa fa-chevron-right" style="font-size: small;"></i>&nbsp;Climate</summary>
+    <div class="list-group">
+      <div class="topic-item" data-topic="stormwater">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="stormwater" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/stormwater" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;stormwater</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="land-change">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="land-change" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/land-change" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;land-change</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="particulate-matter">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="particulate-matter" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/particulate-matter" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;particulate-matter</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="oil-and-gas">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="oil-and-gas" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/oil-and-gas" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;oil-and-gas</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+    </div>
+  </details>
 
-<details>
-  <summary class="list-group-item list-group-item-action topic"><i class="fa fa-chevron-right" style="font-size: small;"></i>&nbsp;Industry</summary>
-  <div class="list-group">
-    <a href="/land-use" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;land-use</a>
-    <a href="/land-change" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;land-change</a>
-    <a href="/particulate-matter" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;particulate-matter</a>
-    <a href="/oil-and-gas" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;oil-and-gas</a>
-    <a href="/transportation" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;transportation</a>
-    <a href="/mining" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;mining</a>
-    <a href="/agriculture" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;agriculture</a>
-    <a href="/waste" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;waste</a>
-    <a href="/noise" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;noise</a>
-    <a href="/chemicals" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;chemicals</a>
-    <a href="/pipeline-monitoring" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;pipeline-monitoring</a>
-    <a href="/cafo" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;cafo</a>
-  </div>
-</details>
+  <details>
+    <summary class="list-group-item list-group-item-action topic"><i class="fa fa-chevron-right" style="font-size: small;"></i>&nbsp;Organizing</summary>
+    <div class="list-group">
+      <div class="topic-item" data-topic="advocacy">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="advocacy" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/advocacy" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;advocacy</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="community-organizing">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="community-organizing" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/community-organizing" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;community-organizing</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="legal">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="legal" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/legal" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;legal</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="public-comment">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="public-comment" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/public-comment" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;public-comment</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="host-an-event">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="host-an-event" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/host-an-event" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;host-an-event</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+    </div>
+  </details>
 
-<details>
-  <summary class="list-group-item list-group-item-action topic"><i class="fa fa-chevron-right" style="font-size: small;"></i>&nbsp;Climate</summary>
-  <div class="list-group">
-    <a href="/stormwater" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;stormwater</a>
-    <a href="/land-change" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;land-change</a>
-    <a href="/particulate-matter" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;particulate-matter</a>
-    <a href="/oil-and-gas" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;oil-and-gas</a>
-  </div>
-</details>
-
-<details>
-  <summary class="list-group-item list-group-item-action topic"><i class="fa fa-chevron-right" style="font-size: small;"></i>&nbsp;Organizing</summary>
-  <div class="list-group">
-    <a href="/advocacy" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;advocacy</a>
-    <a href="/community-organizing" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;community-organizing</a>
-    <a href="/legal" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;legal</a>
-    <a href="/public-comment" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;public-comment</a>
-    <a href="/host-an-event" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;host-an-event</a>
-  </div>
-</details>
-
-<details>
-  <summary class="list-group-item list-group-item-action topic"><i class="fa fa-chevron-right" style="font-size: small;"></i>&nbsp;Monitoring</summary>
-  <div class="list-group">
-    <a href="/air-sensors" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;air-sensors</a>
-    <a href="/water-sensors" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;water-sensors</a>
-    <a href="/balloon-mapping" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;balloon-mapping</a>
-    <a href="/study-design" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;study-design</a>
-    <a href="/methods" class="list-group-item list-group-item-action">&emsp;<i class="fa fa-chevron-right icon"></i>&nbsp;other methods</a>
-  </div>
-</details>
+  <details>
+    <summary class="list-group-item list-group-item-action topic"><i class="fa fa-chevron-right" style="font-size: small;"></i>&nbsp;Monitoring</summary>
+    <div class="list-group">
+      <div class="topic-item" data-topic="air-sensors">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="air-sensors" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/air-sensors" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;air-sensors</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="water-sensors">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="water-sensors" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/water-sensors" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;water-sensors</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="balloon-mapping">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="balloon-mapping" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/balloon-mapping" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;balloon-mapping</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="study-design">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="study-design" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/study-design" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;study-design</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+      <div class="topic-item" data-topic="methods">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="expand-btn" data-topic="methods" style="cursor: pointer; margin-right: 5px;" title="Expand subtopics">
+            &emsp;<i class="fa fa-chevron-right icon"></i>
+          </span>
+          <a href="/methods" style="color: inherit; text-decoration: none;" class="flex-grow-1">&nbsp;other methods</a>
+        </div>
+        <div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>
+      </div>
+    </div>
+  </details>
 
 </div>
 </div>
 
 <style>
-  .topic{
-    background-color: #F5F5F5
+  .topic {
+    background-color: #F5F5F5;
   }
-  .icon{
+  .icon {
     font-size: small;
   }
+  .expand-btn {
+    user-select: none;
+  }
 </style>
+
+<script>
+  $(document).ready(function() {
+    $(document).on('click', '.expand-btn, a.list-group-item > i.icon', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      var $trigger = $(this);
+      var $item = $trigger.closest('.topic-item');
+      var topic = $trigger.data('topic');
+      var $container;
+      var $icon;
+
+      if ($trigger.is('i.icon')) {
+        $icon = $trigger;
+      } else {
+        $icon = $trigger.find('i.icon');
+      }
+
+      if ($item.length > 0) {
+        $container = $item.children('.subtopics-container');
+        if (!topic) {
+          topic = $item.data('topic');
+        }
+      } else {
+        var $a = $trigger.closest('a');
+        if (!topic && $a.length > 0) {
+          topic = $a.attr('href').replace(/^\//, '').replace(/^tag\//, '').trim();
+        }
+        $container = $a.next('.subtopics-container');
+        if ($container.length === 0) {
+          $container = $('<div class="subtopics-container list-group" style="display: none; margin-left: 20px;"></div>');
+          $a.after($container);
+        }
+      }
+
+      if (!topic) {
+        return;
+      }
+
+      if ($container.data('loading')) {
+        return;
+      }
+
+      if ($container.data('loaded')) {
+        $container.slideToggle(200, function() {
+          if ($container.is(':visible')) {
+            $icon.removeClass('fa-chevron-right').addClass('fa-chevron-down');
+          } else {
+            $icon.removeClass('fa-chevron-down').addClass('fa-chevron-right');
+          }
+        });
+        return;
+      }
+
+      $container.data('loading', true);
+      $icon.removeClass('fa-chevron-right fa-chevron-down').addClass('fa-spinner fa-spin');
+
+      $.ajax({
+        url: '/tags/subtopics',
+        data: { subtopic: topic },
+        method: 'GET',
+        dataType: 'html'
+      }).done(function(response) {
+        $container.html(response);
+        $container.data('loaded', true);
+        $container.data('loading', false);
+        $container.slideDown(200);
+        $icon.removeClass('fa-spinner fa-spin').addClass('fa-chevron-down');
+      }).fail(function() {
+        $container.data('loading', false);
+        $icon.removeClass('fa-spinner fa-spin').addClass('fa-chevron-right');
+        $container.html('<div class="list-group-item text-danger" style="font-style: italic;">&emsp;Failed to load subtopics.</div>');
+        $container.slideDown(200);
+      });
+    });
+  });
+</script>
