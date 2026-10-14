@@ -9,7 +9,11 @@ class SearchController < ApplicationController
 
   # a route to convert /search/_____ to /search?q=______ style search queries
   def google_redirect
-    redirect_to "/search?q=#{params[:query]}"
+    if params[:query].present?
+      redirect_to "/search?q=#{CGI.escape(params[:query].to_s)}"
+    else
+      redirect_to "/search"
+    end
   end
 
   def notes

@@ -7,6 +7,37 @@ class SearchControllerTest < ActionController::TestCase
     assert_redirected_to '/search?q=test'
   end
 
+  test "/search/_____ URL-encodes special characters in query" do
+    get :google_redirect, params: { query: 'browser based' }
+    assert_redirected_to '/search?q=browser+based'
+
+    get :google_redirect, params: { query: '"browser based"' }
+    assert_redirected_to '/search?q=%22browser+based%22'
+
+    get :google_redirect, params: { query: 'air & water' }
+    assert_redirected_to '/search?q=air+%26+water'
+
+    get :google_redirect, params: { query: 'c#' }
+    assert_redirected_to '/search?q=c%23'
+
+    get :google_redirect, params: { query: 'café' }
+    assert_redirected_to '/search?q=caf%C3%A9'
+  end
+
+  test "/search/_____ redirects to /search when query is blank or nil" do
+    get :google_redirect, params: { query: '' }
+    assert_redirected_to '/search'
+
+    get :google_redirect, params: { query: '   ' }
+    assert_redirected_to '/search'
+
+    get :google_redirect, params: { query: nil }
+    assert_redirected_to '/search'
+
+    get :google_redirect
+    assert_redirected_to '/search'
+  end
+
   test "new search page at /search" do
     get :new
     assert_response :success
