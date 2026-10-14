@@ -694,4 +694,52 @@ class TagControllerTest < ActionController::TestCase
     assert_not_nil comments
     assert_template 'comments/_comments'
   end
+
+  test 'subtopics partial with parent column tag' do
+    get :subtopics, params: { subtopic: 'spectrometry' }
+    assert_response :success
+    assert_not_nil assigns(:subtopics)
+    assert_includes assigns(:subtopics).map(&:name), 'spectrometer'
+    assert_template partial: 'tag/_subtopics'
+    assert_select '.topic-item[data-topic="spectrometer"]'
+  end
+
+  test 'subtopics partial with parent:tagname on node' do
+    get :subtopics, params: { subtopic: 'water' }
+    assert_response :success
+    assert_not_nil assigns(:subtopics)
+    assert_includes assigns(:subtopics).map(&:name), 'about'
+    assert_template partial: 'tag/_subtopics'
+    assert_select '.topic-item[data-topic="about"]'
+  end
+
+  test 'subtopics accepts topic parameter alias' do
+    get :subtopics, params: { topic: 'water' }
+    assert_response :success
+    assert_not_nil assigns(:subtopics)
+    assert_includes assigns(:subtopics).map(&:name), 'about'
+  end
+
+  test 'subtopics with missing or empty parameter' do
+    get :subtopics, params: { subtopic: '' }
+    assert_response :success
+    assert_equal [], assigns(:subtopics)
+    assert_select '.text-muted'
+  end
+
+  test 'subtopics with nonexistent topic returns empty list message' do
+    get :subtopics, params: { subtopic: 'nonexistent-topic-xyz' }
+    assert_response :success
+    assert_equal [], assigns(:subtopics)
+    assert_select '.text-muted'
+  end
+
+  test 'topic_tree page renders correctly with expandable topics' do
+    get :topic_tree
+    assert_response :success
+    assert_select '#accordion'
+    assert_select '.topic-item'
+    assert_select '.expand-btn'
+    assert_select '.subtopics-container'
+  end
 end

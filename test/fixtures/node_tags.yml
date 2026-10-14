@@ -284,3 +284,10 @@ sub_tag:
   tid: 37
   nid: 1
   uid: 2
+
+subtopic_node_tag:
+  tid: 38
+  uid: 1
+  nid: 2
+  date: <%= DateTime.now.to_i %>
+
