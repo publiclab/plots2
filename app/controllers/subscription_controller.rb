@@ -116,7 +116,10 @@ class SubscriptionController < ApplicationController
   end
 
   def multiple_add
-    return_to = params[:return_to] || "/subscriptions?_=" + Time.now.to_i.to_s
+    return_to = params[:return_to].to_s
+    # only allow local, non-protocol-relative paths to avoid open redirect
+    return_to = "" unless return_to.start_with?("/") && !return_to.start_with?("//")
+    return_to = "/subscriptions?_=" + Time.now.to_i.to_s if return_to.empty?
     if params[:tagnames].blank?
       flash[:notice] = "Please enter tags for subscription in the url."
       redirect_to return_to
