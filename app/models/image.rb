@@ -1,4 +1,6 @@
 require 'open-uri'
+require 'ipaddr'
+require 'resolv'
 
 class Image < ApplicationRecord
   belongs_to :user, foreign_key: :uid
@@ -63,10 +65,26 @@ class Image < ApplicationRecord
   end
 
   def do_download_remote_image
-    io = open(URI.parse(remote_url)).base_uri.path.split('/').last
+    uri = URI.parse(remote_url)
+    raise "Unsupported image URL" unless remote_url_fetchable?(uri)
+    io = open(uri).base_uri.path.split('/').last
 
     io.blank? ? nil : io
   rescue StandardError
     raise
+  end
+
+  # Guard server-side remote image fetches against SSRF: only http(s) and
+  # only hosts that do not resolve to private, loopback or link-local addresses.
+  def remote_url_fetchable?(uri)
+    return false unless %w(http https).include?(uri.scheme)
+    return false if uri.host.blank?
+
+    Resolv.getaddresses(uri.host).any? do |addr|
+      ip = IPAddr.new(addr)
+      !(ip.loopback? || ip.private? || ip.link_local?)
+    end
+  rescue StandardError
+    false
   end
 end
